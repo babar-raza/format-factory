@@ -139,7 +139,7 @@ def _cmd_scan(args: argparse.Namespace) -> int:
             stale_reasons[reason] = stale_reasons.get(reason, 0) + 1
 
     print()
-    print("─" * 60)
+    print("-" * 60)
     print(f"Summary: {total} entries scanned, {stale_count} stale")
 
     if stale_count > 0:
@@ -199,7 +199,7 @@ def _cmd_show(args: argparse.Namespace) -> int:
         return 1
 
     print(f"spec-index.yaml entry: {args.format_id}/{args.version}")
-    print("─" * 60)
+    print("-" * 60)
     for key, value in sorted(entry.items()):
         print(f"  {key:30}: {value}")
 

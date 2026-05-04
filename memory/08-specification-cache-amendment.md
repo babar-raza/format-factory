@@ -137,15 +137,19 @@ Phase 0 added policy only:
 
 No specs were downloaded in Phase 0.
 
-## Phase 1/2 implementation (run019)
+## Phase 1/2 implementation (run019, independently verified and fixed run020)
 
-TC-0007 implemented in run019 (2026-05-04). Three scripts in `tools/spec-cache/`:
+TC-0007 implemented in run019 (2026-05-04). Independently verified and fixed in run020. Three scripts in `tools/spec-cache/`:
 
-- `spec_index.py` — library: read/write/validate spec-index.yaml, compute SHA-256, staleness check
-- `acquire_spec.py` — download + hash + index; dry-run by default; `--allow-network` required for live download; legal metadata required
-- `refresh_check.py` — scan/validate/show; no auto-download
+- `spec_index.py` — library: read/write/validate spec-index.yaml, compute SHA-256, staleness check. **run020 fix:** REQUIRED_FIELDS restructured into REQUIRED_FIELDS (always-required), NULLABLE_DOWNLOAD_FIELDS (present but may be null pre-download), OPTIONAL_FIELDS (new metadata fields). Pre-download metadata entries now validate without needing file-related fields.
+- `acquire_spec.py` — download + hash + index; dry-run by default; `--allow-network` required for live download; legal metadata required. **run020 fix:** Removed spurious WARNING when redistribution_permitted=False (False is the correct default for local-only caching of standards-body documents; not a warning condition).
+- `refresh_check.py` — scan/validate/show; no auto-download. **run020 fix:** Windows cp1252 encoding bug fixed — U+2500 box-drawing character replaced with ASCII hyphen.
 
-Status: `completed_pending_independent_verification`. Spec not downloaded (T3 not authorized in run019). No spec-index.yaml entries exist in `.local/spec-cache/`.
+**docs/specification-cache.md run020 updates:** Schema expanded to include canonical_url, publisher, local_only, and new metadata fields. Stage 2 lifecycle text corrected: draft phase from recorded URLs is allowed; Gate 2 cannot pass without cache-backed evidence or explicit rationale.
+
+**Spec download attempt (run020):** --allow-network was invoked but denied by in-session permission check (settings.json deny rule: `Bash(python *acquire_spec*)`). A pre-download metadata-only spec-index.yaml entry was created at `.local/spec-cache/fods/1.3/spec-index.yaml` with all file-content fields null.
+
+Status: `completed_independently_verified_run020`. Spec not downloaded. Pre-download metadata entry exists at `.local/spec-cache/fods/1.3/spec-index.yaml`.
 
 Implementation is Phase 1 via TC-0007.
 

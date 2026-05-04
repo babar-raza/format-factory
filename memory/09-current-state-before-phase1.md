@@ -3,7 +3,7 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run019 to reflect Phase 2 active, Gate 1 passed, TC-0007 tooling implemented, TC-0009 Gate 2 evidence draft complete
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run020 to reflect Phase 2 active, Gate 1 passed, TC-0007 independently verified and fixed, TC-0009 Gate 2 evidence strengthened
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
@@ -13,7 +13,7 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 
 This file captures the current state after run017. Phase 0 has been accepted. Phase 1A FODS scoring is complete. Gate 1 has been approved by Babar Raza. Phase 2 (FODS Spec and Legal Evidence Planning) is now active — awaiting an explicit Phase 2 execution prompt.
 
-**Last updated:** run019 (combined sprint: run018 committed 0c97256; TC-0007 spec-cache tooling implemented; TC-0009 Gate 2 evidence draft completed; master-plan.md v2.15).
+**Last updated:** run020 (independent verification + schema reconciliation + spec acquisition attempt; 5 tooling fixes; evidence strengthened; master-plan.md v2.16).
 
 ## Current status
 
@@ -23,25 +23,25 @@ This file captures the current state after run017. Phase 0 has been accepted. Ph
 | Phase 0 accepted | YES — 2026-05-04 (run015, human-authorized) |
 | Phase 1A complete | YES — FODS scored 93/100 (run015), independently verified (run016) |
 | Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
-| Gate 2 status | **evidence_draft_pending_independent_verification** — run019 draft complete |
+| Gate 2 status | **evidence_draft_pending_independent_verification** — run019 draft + run020 strengthened |
 | Active formats | fods (gate_1: passed; gate_2: evidence_draft_pending_independent_verification) |
 | Registry | FODS entry with scoring (93/100, Accept band); gate_1: passed; gate_2: evidence_draft |
-| FODS acquisition pack | EXISTS — acquisition-packs/fods/ (5 files; spec-evidence.md + legal-notes.md updated run019) |
+| FODS acquisition pack | EXISTS — acquisition-packs/fods/ (5 files; spec-evidence.md + legal-notes.md updated run019+run020) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |
-| TC-0007 status | **completed_pending_independent_verification** — spec_index.py, acquire_spec.py, refresh_check.py |
-| TC-0009 status | **evidence_draft_pending_independent_verification** — Gate 2 draft completed run019 |
+| TC-0007 status | **completed_independently_verified_run020** — spec_index.py schema fixed, refresh_check.py encoding fixed |
+| TC-0009 status | **evidence_draft_pending_independent_verification** — Gate 2 draft run019; strengthened run020 |
 | Phase 2 allowed | YES — Gate 1 passed; TC-0009 governs next steps |
-| Phase 2 Gate 2 evidence | DRAFTED — awaiting independent verification + project lead sign-off |
+| Phase 2 Gate 2 evidence | STRENGTHENED — 5/8 fast-path items; spec download blocked; awaiting project lead sign-off |
 | Samples | None |
 | Schemas | None |
 | Prototypes | None |
 | Product source | None |
 | CI workflows | None |
 | Commercial source folder | Must not exist |
-| Specs downloaded | None (T3 not authorized in run019; spec claims are SUPPORTED_BY_RECORDED_URL or PLAUSIBLE) |
-| Commits made | c9d02da (run015); c79f2d1 (run017); 0c97256 (run018 via run019) |
-| Uncommitted | run019 changes (TC-0007 scripts, TC-0009 evidence, master-plan v2.15) — authorized for commit |
-| Master plan version | 2.15 (as of run019) |
+| Specs downloaded | None — spec download attempted run020 but --allow-network denied; pre-download metadata entry created |
+| Commits made | c9d02da (run015); c79f2d1 (run017); 0c97256 (run018 via run019); 589c1af (run019); 1e69121 (run020 tooling fixes) |
+| Uncommitted | run020 evidence updates (spec-evidence.md, legal-notes.md, pack.yaml, registry, TC-0009, master-plan v2.16) |
+| Master plan version | 2.16 (as of run020) |
 | AGENTS.md sections | A through V (22 sections) |
 | Memory integration | Completed run010; AGENTS.md Section U added |
 | Source layout propagated | YES — completed run011 (master-plan.md v2.8) |
@@ -63,7 +63,8 @@ This file captures the current state after run017. Phase 0 has been accepted. Ph
 | run016 | Independent verification sprint | All run015 claims independently verified; new governance rule DEC-034 added (independent verification before human review); AGENTS.md Section V added; GOVERNANCE.md Section 15 added; 5 memory files updated; master-plan v2.12 |
 | run017 | Gate 1 approval + Phase 2 setup | Gate 1 approved (Babar Raza, 2026-05-04); registry updated; TC-0001 closed; acquisition-packs/fods/ skeleton created; TC-0009 created; 6 memory files updated; combined commit made; master-plan v2.13 |
 | run018 | State reconciliation (committed via run019) | README.md, ROADMAP.md, settings.json Phase 2, master-plan v2.14 healed. G-HEAL-018–025. No commit in run018. |
-| run019 | Combined sprint | run018 committed (0c97256). TC-0007 spec_index.py + acquire_spec.py + refresh_check.py. TC-0009 Gate 2 evidence draft (spec-evidence.md, legal-notes.md). master-plan v2.15. |
+| run019 | Combined sprint | run018 committed (0c97256). TC-0007 spec_index.py + acquire_spec.py + refresh_check.py. TC-0009 Gate 2 evidence draft (spec-evidence.md, legal-notes.md). Committed run019 (589c1af). master-plan v2.15. |
+| run020 | Independent verification + schema reconciliation + spec acquisition attempt | 5 TC-0007 fixes: spec_index.py schema, acquire_spec.py warning, refresh_check.py encoding, docs/specification-cache.md, settings.json. Spec download blocked (--allow-network denied). Pre-download spec-index.yaml metadata entry created. Evidence updated (5/8 fast-path). G-021 logged. Committed 1e69121. master-plan v2.16. |
 
 ## Latest known evidence bundles
 
@@ -71,7 +72,8 @@ This file captures the current state after run017. Phase 0 has been accepted. Ph
 run015: phase0-run015-phase0-acceptance-and-scoring-[timestamp].zip
 run016: run016-independent-verification-sprint.zip
 run017: run017-gate1-approval-phase2-setup-[timestamp].zip
-run019: run019-phase2-spec-cache-and-evidence-staging/ (staging dir; zip pending)  ← CURRENT
+run019: run019-phase2-spec-cache-and-evidence-staging/ (staging dir; zip pending)
+run020: run020-verify-cache-and-strengthen-gate2-staging/ (staging dir; zip pending)  ← CURRENT
 ```
 
 ## Source layout (PROPAGATED — run011, CONFIRMED run013)
@@ -85,29 +87,28 @@ Old paths are OBSOLETE: `src/python/open-source/`, `src/dotnet/open-source/`, `s
 
 .NET FOSS packaging: deferred as DEC-033. Must resolve before Gate 10 .NET release.
 
-## Gate 2 evidence status (run019)
+## Gate 2 evidence status (run019+run020)
 
-Phase 2 execution prompt was issued in run019. TC-0009 Gate 2 evidence draft completed.
+Phase 2 execution prompt was issued in run019. TC-0009 Gate 2 evidence draft completed. run020 strengthened the evidence.
 
-- `acquisition-packs/fods/spec-evidence.md` — filled with primary source, XML structure, security analysis (SUPPORTED_BY_RECORDED_URL + PLAUSIBLE_PENDING_VERIFICATION)
-- `acquisition-packs/fods/legal-notes.md` — Category 1 fast-path checklist 4/7 items confirmed; 3 items pending project lead review
-- `acquisition-packs/fods/pack.yaml` — gate_2 status updated to evidence_draft_pending_independent_verification
-- `registry/format-registry.yaml` — gate_2 status and evidence_drafted_by updated
+- `acquisition-packs/fods/spec-evidence.md` — filled with primary source, XML structure, security analysis; updated run020 with acquisition-blocked status
+- `acquisition-packs/fods/legal-notes.md` — Category 1 fast-path checklist 5/8 items confirmed (run020 added spec-index.yaml metadata entry item); 3 items pending project lead review
+- `acquisition-packs/fods/pack.yaml` — gate_2 status + spec_cache blocked status updated
+- `registry/format-registry.yaml` — gate_2 notes updated (run020 acquisition blocked)
 
-Spec NOT downloaded (T3 not authorized). Source hash = null. All claims are SUPPORTED_BY_RECORDED_URL or PLAUSIBLE_PENDING_VERIFICATION.
+Spec NOT downloaded. Spec download attempted run020 — --allow-network denied by in-session permission check. Pre-download spec-index.yaml metadata entry created at .local/spec-cache/fods/1.3/spec-index.yaml. All spec claims remain SUPPORTED_BY_RECORDED_URL or PLAUSIBLE_PENDING_VERIFICATION.
 
-## TC-0007 spec-cache tooling (run019)
+## TC-0007 spec-cache tooling (run019+run020)
 
-Three scripts implemented in `tools/spec-cache/`:
-- `spec_index.py` — library for spec-index.yaml CRUD, validation, staleness check, SHA-256
-- `acquire_spec.py` — dry-run by default; `--allow-network` requires T3 authorization
-- `refresh_check.py` — scan/validate/show subcommands; no auto-download
+Three scripts in `tools/spec-cache/`, independently verified and fixed in run020:
+- `spec_index.py` — REQUIRED_FIELDS restructured (run020 fix): always-required vs nullable post-download fields; pre-download entries now valid
+- `acquire_spec.py` — spurious redistribution_permitted=False warning removed (run020 fix)
+- `refresh_check.py` — Windows cp1252 encoding bug fixed (U+2500 → ASCII hyphen, run020 fix)
 
-Smoke tests: spec_index.py validate_entry PASS, refresh_check.py scan PASS (empty cache).
+`docs/specification-cache.md` — schema expanded and Stage 2 lifecycle corrected (run020).
 
 ## Next required actions
 
-1. Commit run019 changes (authorized by run019 execution prompt).
-2. Independent verification sprint (separate session, DEC-034) for TC-0007 + Gate 2 evidence.
-3. Project lead reviews legal-notes.md fast-path checklist (3 pending items).
-4. Human Gate 2 sign-off.
+1. Human reviews legal-notes.md fast-path checklist (3 pending items).
+2. Human Gate 2 sign-off (run020 serves as independent verification per DEC-034).
+3. Retry spec acquisition with explicit --allow-network authorization in a future session (G-021).

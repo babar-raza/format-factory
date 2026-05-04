@@ -20,21 +20,24 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 2 evidence draft. Updated run019 (2026-05-04). Spec not yet downloaded (no T3 authorization in this run). Evidence derived from SUPPORTED_BY_RECORDED_URL and PLAUSIBLE_PENDING_VERIFICATION sources. Source hash will be recorded after spec download is authorized."
+notes: "Gate 2 evidence draft. Updated run019+run020 (2026-05-04). Spec not yet downloaded — T3 authorized in run020 but --allow-network denied in-session. Pre-download spec-index.yaml metadata entry created at .local/spec-cache/fods/1.3/spec-index.yaml. Evidence derived from SUPPORTED_BY_RECORDED_URL and PLAUSIBLE_PENDING_VERIFICATION sources. Source hash will be recorded after authorized download."
 ---
 
 # Spec Evidence — Flat OpenDocument Spreadsheet (FODS)
 
 **Format ID:** `fods`
 **Gate:** 2
-**Status:** evidence_draft_pending_independent_verification — updated run019 (2026-05-04)
+**Status:** evidence_draft_pending_independent_verification — updated run019+run020 (2026-05-04)
 
 **Gate 1 approved by:** Babar Raza (2026-05-04)
 **Gate 2 status:** evidence_draft_pending_independent_verification
 
-**Source claim classification key (per run019 Section I):**
-- `[SUPPORTED_BY_RECORDED_URL]` — claim backed by official URL, not yet downloaded
-- `[PLAUSIBLE_PENDING_VERIFICATION]` — commonly known, not yet verified against cached spec
+**Spec cache status (run020):** Pre-download metadata entry created at `.local/spec-cache/fods/1.3/spec-index.yaml`. Spec file NOT yet downloaded — --allow-network denied in-session during run020. Re-acquisition requires explicit in-session approval. Claims remain SUPPORTED_BY_RECORDED_URL until download succeeds.
+
+**Source claim classification key:**
+- `[SUPPORTED_BY_RECORDED_URL]` — claim backed by official URL recorded in spec-index.yaml; file not yet downloaded
+- `[PLAUSIBLE_PENDING_VERIFICATION]` — technically sound, consistent with ODF knowledge; not yet verified against cached spec
+- `[CONFIRMED_INDEPENDENTLY]` — verifiable without spec download (e.g., FODS is flat XML, IANA MIME type)
 - `[UNSUPPORTED]` — no current basis; placeholder only
 
 ---
@@ -50,11 +53,12 @@ notes: "Gate 2 evidence draft. Updated run019 (2026-05-04). Spec not yet downloa
 | Part 3 (Schema) URL | https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/OpenDocument-v1.3-os-part3-schema.pdf | [SUPPORTED_BY_RECORDED_URL] |
 | Part 3 HTML | https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/ | [SUPPORTED_BY_RECORDED_URL] |
 | OASIS TC page | https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office | [SUPPORTED_BY_RECORDED_URL] |
-| Date accessed | Not yet accessed (spec not cached — T3 authorization not granted in run019) | N/A |
+| Date accessed | Not yet accessed — download blocked in-session run020 | N/A |
 | Source hash (SHA-256) | null — spec not yet downloaded | N/A |
+| Spec cache entry | `.local/spec-cache/fods/1.3/spec-index.yaml` — metadata only | [CONFIRMED_INDEPENDENTLY] |
 | Secondary sources | None required — OASIS is the primary authority | N/A |
 
-**Download status:** Spec has NOT been downloaded or cached. Spec download requires explicit T3 authorization per AGENTS.md Section T and `docs/specification-cache.md`. The six T3 conditions have not been formally recorded for run019. Source hash will be recorded after authorized download.
+**Download status (run020):** T3 authorization conditions were met (Gate 1 passed, Category 1 confirmed, canonical URL identified, run020 execution prompt authorizes). However, the `python *acquire_spec* --allow-network` invocation was denied by the in-session permission check. A pre-download metadata entry exists at `.local/spec-cache/fods/1.3/spec-index.yaml`. Source hash will be recorded after download is approved in a subsequent session.
 
 ---
 

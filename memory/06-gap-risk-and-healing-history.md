@@ -39,6 +39,8 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 | G-022 | docs/architecture.md does not reference /memory | Low — clarity gap | Phase 1 docs update |
 | G-023 | /sync-memory command not implemented (TC-0008 planned only) | Memory consistency automation unavailable | TC-0008 Phase 1 implementation |
 
+| G-024 (master-plan G-021) | Spec download blocked — --allow-network denied by in-session permission check in run020; pre-download spec-index.yaml metadata entry created but spec content not cached; Gate 2 evidence remains at draft/pending status | **OPEN** — retry spec acquisition in a dedicated session with explicit --allow-network authorization recorded in the execution prompt |
+
 ## Healing gaps found through bundle review
 
 | ID | Problem | Status |
@@ -61,6 +63,7 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 | G-HEAL-016 | Agent review items lacked independent verification before being presented for human approval | Resolved run016 (DEC-034 added; AGENTS.md Section V; GOVERNANCE.md Section 15 — independent verification sprint required before any human review request) |
 | G-HEAL-017 | Gate 1 approval pending (FODS 93/100, Accept band, all pre-conditions met) | **RESOLVED run017** — Gate 1 approved by Babar Raza (2026-05-04); registry updated; TC-0001 closed; acquisition-packs/fods/ skeleton created; TC-0009 created |
 | G-HEAL-018–025 | State reconciliation: stale sections in master-plan.md, README.md, ROADMAP.md, settings.json | **RESOLVED run018** (committed via run019) — 8 healing gaps registered and resolved. See master-plan.md Section 28. |
+| G-HEAL-026 (run020) | TC-0007 spec_index.py REQUIRED_FIELDS included post-download fields, breaking pre-download metadata entries; acquire_spec.py had spurious WARNING for redistribution_permitted=False; refresh_check.py had Windows cp1252 encoding bug (U+2500); docs/specification-cache.md schema was incomplete and Stage 2 lifecycle text was overly strict; settings.json phase_note said spec-cache scripts were DENIED when they had been moved to ALLOW in run019 | **RESOLVED run020** — 5 fixes applied and committed (1e69121) |
 
 ## Major risks
 

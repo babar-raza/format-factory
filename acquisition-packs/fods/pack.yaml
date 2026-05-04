@@ -67,8 +67,12 @@ gate_2:
 spec_cache:
   required: true
   downloaded: false
-  local_path: null
-  next_action: plan_spec_cache_acquisition
+  metadata_entry_created: true
+  local_path: ".local/spec-cache/fods/1.3/spec-index.yaml"
+  acquisition_attempted: true
+  acquisition_blocked: true
+  blocked_reason: "--allow-network denied by in-session permission check (run020)"
+  next_action: retry_spec_acquisition_with_allow_network_approval
 
 # --- Sample status ---
 samples:
