@@ -38,28 +38,49 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 REQUIRED_FIELDS = {
+    # Always required — must be present with non-null values.
     "format_id",
     "spec_name",
     "version",
     "source_url",
     "canonical_url",
     "publisher",
+    "legal_category",
+    "license",
+    "redistribution_permitted",
+    "local_only",
+    "stale",
+}
+
+# Post-download fields: present in the dict but may be None/null before download.
+# acquire_spec.py populates these on live download (or synthetic values on dry-run).
+# Pre-download / metadata-only entries may omit or set these to null.
+NULLABLE_DOWNLOAD_FIELDS = {
     "download_date",
     "file_path",
     "file_size_bytes",
     "sha256",
     "mime_type",
-    "legal_category",
-    "license",
-    "redistribution_permitted",
-    "local_only",
-    "fetched_at",
     "content_hash",
-    "stale",
+    "fetched_at",
 }
 
 OPTIONAL_FIELDS = {
+    # Identity metadata
+    "spec_id",
+    "source_type",
+    "date_published",
+    "date_accessed",
+    "local_path",
+    "fetched_by",
+    # Refresh / HTTP metadata
     "last_verified",
+    "etag",
+    "last_modified",
+    "refresh_policy",
+    # Release control
+    "release_blockers",
+    # Misc
     "notes",
     "dry_run",
 }

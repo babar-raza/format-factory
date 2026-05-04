@@ -383,13 +383,11 @@ def main() -> int:
     parser = _build_parser()
     args = parser.parse_args()
 
-    # Validate required legal fields before any network access
-    if not args.redistribution_permitted and int(args.legal_category) in (1, 2):
-        print(
-            "WARNING: --redistribution-permitted not set for a Category 1/2 spec. "
-            "Proceeding, but verify your legal determination.",
-            file=sys.stderr,
-        )
+    # redistribution_permitted=False is the correct default for local-only caching
+    # of standards-body documents (OASIS, W3C, ECMA). Do NOT warn when it is False —
+    # that is the expected and safe default. Only warn if redistribution_permitted is
+    # explicitly True but the legal basis has not been independently verified.
+    # (Actual redistribution enforcement happens at commit/release time, not here.)
 
     if args.allow_network:
         return _run_live(args)

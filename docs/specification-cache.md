@@ -61,24 +61,55 @@ Every acquired specification version is indexed at `.local/spec-cache/<format-id
 
 ```yaml
 spec_cache_entry:
+  # --- Always required ---
   format_id: string              # e.g. "fods"
-  spec_name: string              # e.g. "ODF 1.3 Part 1 — Packages"
+  spec_name: string              # e.g. "ODF 1.3 Part 3 — Open Document Schema"
   version: string                # e.g. "1.3"
-  source_url: string             # Canonical URL used to download
-  download_date: string          # ISO-8601 date of download
-  file_path: string              # Relative path within this version directory
-  file_size_bytes: integer       # Size at download time
-  sha256: string                 # SHA-256 hex digest of the downloaded file
-  mime_type: string              # e.g. "application/pdf" or "text/html"
+  source_url: string             # URL where file was downloaded from
+  canonical_url: string          # Official canonical URL for this spec version
+  publisher: string              # Standards body name, e.g. "OASIS"
   legal_category: integer        # 1-4 per docs/legal-and-licensing.md
-  license: string|null           # SPDX or descriptive (e.g. "OASIS RF terms")
-  redistribution_permitted: boolean  # Whether the file can be redistributed
+  license: string|null           # SPDX or descriptive (e.g. "OASIS RF on Limited Terms")
+  redistribution_permitted: boolean  # Whether this file may be redistributed to third parties.
+                                 # false is the correct default for local-only caching of most
+                                 # standards-body documents. false does NOT block acquisition.
+                                 # Only warn if redistribution is actually attempted.
+  local_only: boolean            # Always true — spec files are never committed to git
   stale: boolean                 # true if source may have changed since download
+
+  # --- Identity metadata (optional, recommended) ---
+  spec_id: string|null           # Unique ID for this cache entry, e.g. "fods-odf13-part3"
+  source_type: string|null       # official-standard|vendor-spec|registry-entry|schema|reference-doc|sample|other
+  date_published: string|null    # ISO-8601 date the spec was published by the standards body
+  date_accessed: string|null     # ISO-8601 date this URL was last accessed
+
+  # --- Post-download fields (null until file is downloaded) ---
+  download_date: string|null     # ISO-8601 date of download
+  local_path: string|null        # Path relative to .local/spec-cache/ (alias for file_path)
+  file_path: string|null         # Relative path within this version directory
+  file_size_bytes: integer|null  # File size at download time (bytes)
+  sha256: string|null            # "sha256:<hex>" digest of the downloaded file
+  content_hash: string|null      # "sha256:<hex>" content hash (same as sha256 for downloads)
+  mime_type: string|null         # e.g. "application/pdf" or "text/html"
+  fetched_at: string|null        # ISO-8601 datetime of download
+  fetched_by: string|null        # human|claude|codex|tool:<name>
+
+  # --- Refresh and HTTP metadata ---
   last_verified: string|null     # ISO-8601 date of last staleness check
+  etag: string|null              # HTTP ETag from last fetch (for conditional refresh)
+  last_modified: string|null     # HTTP Last-Modified header from last fetch
+  refresh_policy:
+    trigger: source-hash-changed|etag-changed|last-modified-changed|manual|age
+    max_age_days: integer|null
+
+  # --- Release control ---
+  release_blockers: []           # List of blocking issues; empty means no blockers
   notes: string|null             # Any relevant notes about this specific download
 ```
 
 Agents must write a `spec-index.yaml` entry for every file acquired into the cache. Entries without a `spec-index.yaml` are untracked and treated as stale.
+
+**On `redistribution_permitted`:** This field records whether the spec document may be redistributed to third parties. `redistribution_permitted: false` is correct and expected for most standards-body documents (OASIS, W3C, ECMA) that permit implementation but not redistribution of the document itself. `false` does NOT block local-only caching under `.local/spec-cache/`. It only blocks committing the spec file to git or distributing it externally. Do not treat `false` as suspicious or erroneous for local-only cache entries.
 
 ---
 
@@ -138,7 +169,15 @@ Specification cache files are inputs to multiple acquisition pipeline stages:
 
 **Stage 1 (Scoring):** Stage 1 may identify which specification is relevant and confirm its legal category, but does not download the spec. The spec URL is recorded for future use.
 
-**Stage 2 (Evidence Gathering):** Before drafting `spec-evidence.md`, an agent must verify that a cached spec version exists. If the cache is missing, the agent must stop, log the missing-spec condition as a gap, and proceed only if the current execution prompt explicitly authorizes acquisition. If acquisition is not authorized, the agent must create or update a taskcard for spec acquisition. Gate 2 requires either a cached spec citation or an explicit documented rationale for why no official spec exists.
+**Stage 2 (Evidence Gathering):** Gate 2 evidence drafting proceeds in two phases:
+
+1. **Draft phase (from recorded URLs):** An agent may begin drafting `spec-evidence.md` from officially recorded source URLs without a cached spec. Claims must be classified per the source-claim protocol: `[SUPPORTED_BY_RECORDED_URL]` for URL-backed claims, `[PLAUSIBLE_PENDING_VERIFICATION]` for technically sound but unverified claims. Draft evidence is marked `evidence_draft_pending_independent_verification`.
+
+2. **Cache-backed phase (after authorized download):** After spec acquisition is authorized and completed, claims should be upgraded to `[SUPPORTED_BY_CACHED_SOURCE]` where the cached source supports them. Gate 2 evidence that includes cached-source claims is marked `evidence_cached_pending_independent_verification`.
+
+**Gate 2 cannot pass until:** Either (a) cached-source-backed evidence exists, or (b) an explicit documented rationale for why no official spec can be cached is recorded in `spec-evidence.md`. A draft based on recorded URLs alone is not sufficient for Gate 2 passage without human review and sign-off.
+
+**If the cache is missing:** The agent may draft from recorded URLs (draft phase above). The agent must NOT self-authorize a download. If download is needed to complete Gate 2 evidence, log the missing-spec condition as a gap and proceed only if the current execution prompt explicitly authorizes acquisition. If acquisition is not authorized, create or update a taskcard for spec acquisition.
 
 **Missing cache is not automatic authorization to download.** See the Authorization Model section below.
 
@@ -203,18 +242,18 @@ If a specification document contains content with copyright restrictions that ma
 
 ## Implementation
 
-The specification cache tooling is deferred to Phase 1 via TC-0007:
+The specification cache tooling was implemented in Phase 1 (run019) via TC-0007:
 
-| Component | Phase | Path | Description |
-|---|---|---|---|
-| Cache policy (this doc) | Phase 0 | `docs/specification-cache.md` | Policy and schema |
-| Cache directory orientation | Phase 0 | `tools/spec-cache/_readme.md` | Directory orientation file |
-| Cache implementation taskcard | Phase 0 | `taskcards/TC-0007-specification-cache.md` | Phase 1 implementation scope |
-| Acquisition script | Phase 1 | `tools/spec-cache/acquire_spec.py` | Download, hash, index |
-| Refresh script | Phase 1 | `tools/spec-cache/refresh_check.py` | Staleness checking |
-| Index reader | Phase 1 | `tools/spec-cache/spec_index.py` | Read/write spec-index.yaml |
+| Component | Phase | Path | Description | Status |
+|---|---|---|---|---|
+| Cache policy (this doc) | Phase 0 | `docs/specification-cache.md` | Policy and schema | Complete |
+| Cache directory orientation | Phase 0 | `tools/spec-cache/_readme.md` | Directory orientation file | Complete |
+| Cache implementation taskcard | Phase 0 | `taskcards/TC-0007-specification-cache.md` | Phase 1 implementation scope | completed_pending_independent_verification |
+| Index library | Phase 1 | `tools/spec-cache/spec_index.py` | Read/write/validate spec-index.yaml | Implemented run019 |
+| Acquisition script | Phase 1 | `tools/spec-cache/acquire_spec.py` | Download, hash, index; dry-run default; --allow-network for live download | Implemented run019 |
+| Refresh script | Phase 1 | `tools/spec-cache/refresh_check.py` | Staleness checking; never downloads | Implemented run019 |
 
-In Phase 0, no spec files are downloaded and no scripts exist. The policy is defined now so that Phase 1 implementation has clear requirements.
+**As of run020:** All three scripts are implemented, committed, and smoke-tested. No spec files have been downloaded yet. FODS/ODF spec acquisition is authorized in run020 (see TC-0009 and run020 execution prompt).
 
 ---
 
