@@ -96,6 +96,15 @@ The project followed this pattern:
 
 This pattern should continue.
 
+## Independent verification sprint requirement (added run016)
+
+When writing execution prompts that request human review or approval, the prompt must either:
+
+1. Reference a completed independent verification sprint for the items being submitted for review, or
+2. Explicitly state that the human is waiving the independent verification requirement for this session.
+
+This is DEC-034 (AGENTS.md Section V). The verification sprint pattern should continue as a permanent part of the execution workflow after any run that produces human-review-ready evidence.
+
 ## No em dash preference
 
 The user has a broader style preference to avoid em dashes. Agents should avoid em dashes in user-facing prompts and docs unless preserving quoted content.

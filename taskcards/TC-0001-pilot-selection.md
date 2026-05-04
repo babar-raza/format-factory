@@ -26,12 +26,12 @@ notes: Gate 1 scoring taskcard for FODS pilot format.
 # TC-0001: Pilot Format Selection and Gate 1 Scoring — FODS
 
 **Phase:** 1A
-**Status:** in_progress — scoring evidence produced; awaiting human Gate 1 approval
-**Owner:** Claude (scoring); Human (Gate 1 approval)
+**Status:** completed — Gate 1 approved by Babar Raza (2026-05-04, run017)
+**Owner:** Claude (scoring, run015); Claude (independent verification, run016); Babar Raza (Gate 1 approval, run017)
 **Created:** 2026-05-03
-**Last updated:** 2026-05-04 (run015: scoring completed, registry entry created)
-**Blocking:** TC-0002, TC-0003 (FODS must be confirmed as pilot before schema and SDK work begins)
-**Blocked by:** Phase 0 completion and human review of foundation files
+**Last updated:** 2026-05-04 (run017: Gate 1 human approval recorded; TC-0001 closed)
+**Blocking:** TC-0002, TC-0003 (FODS confirmed as pilot — now unblocked)
+**Blocked by:** None — Phase 0 accepted, Gate 1 passed
 **Format:** fods
 **Gate:** Gate 1
 
@@ -172,17 +172,18 @@ FODS entry created in `registry/format-registry.yaml` with:
 - [x] No automatic-reject triggers present
 - [x] FODS registry entry created with `gate_1.status: scored_pending_human_approval`
 - [x] `approved_by` and `approved_date` left as null
-- [ ] Evidence bundle produced for human review — **(created in run015 bundle)**
-- [ ] Human has reviewed and explicitly set `gate_1.status: passed` — **PENDING HUMAN ACTION**
-- [ ] `plans/master-plan.md` updated — **done (v2.11)**
-- [ ] Self-challenge completed — **completed (Section I, all 14 questions answered)**
+- [x] Evidence bundle produced for human review — **(created in run015 bundle; re-verified in run016 bundle)**
+- [x] Human has reviewed and explicitly set `gate_1.status: passed` — **APPROVED by Babar Raza (2026-05-04, run017)**
+- [x] `plans/master-plan.md` updated — **done (v2.13 after run017)**
+- [x] Self-challenge completed — **completed (Section I, all 15 questions answered)**
 
 ---
 
 ## Completion Record
 
-**Completed by:** Phase 1A scoring: claude-sonnet-4-6 (run015). Gate 1 approval: pending human.
-**Completion date:** Phase 1A scoring: 2026-05-04. Gate 1 approval: TBD.
-**Artifacts produced:** registry/format-registry.yaml FODS entry; scoring evidence above.
+**Completed by:** Phase 1A scoring: claude-sonnet-4-6 (run015). Independent verification: claude-sonnet-4-6 (run016). Gate 1 approval: Babar Raza (run017).
+**Completion date:** Phase 1A scoring: 2026-05-04. Independent verification: 2026-05-04. Gate 1 approval: 2026-05-04.
+**Artifacts produced:** registry/format-registry.yaml FODS entry; scoring evidence above; acquisition-packs/fods/ skeleton (created run017).
 **Gaps discovered:** None.
-**Notes:** Gate 1 approval is a human-only action. Human must set gate_1.status: passed in registry/format-registry.yaml after reviewing this scoring evidence.
+**Gate 2 status:** not_started. Gate 2 must not begin without an explicit Phase 2 execution prompt.
+**Notes:** Gate 1 is complete. TC-0009 (fods-phase2-spec-legal-evidence) governs the next phase of FODS acquisition work. No specs downloaded. No samples acquired. No prototype or source code created.

@@ -233,16 +233,14 @@ Changes applied in run014:
 - 28 search/audit patterns verified: 1 FIXED (stale run003 bundle reference), rest PASS.
 - No contradictions found beyond the three fixed items above.
 
-## Current status after run014
+## run015/run016/run017 status (Phase 1A complete, Phase 2 started)
 
-Phase 0 still requires human inspection of all run bundles and formal acceptance.
+- **run015** (2026-05-04): Phase 0 accepted (all 36 checks PASS). Phase 0 baseline commit made (c9d02da). FODS scored 93/100 (Accept band). Registry entry created (gate_1: scored_pending_human_approval). master-plan.md v2.11.
+- **run016** (2026-05-04): Independent verification sprint. All run015 claims verified. DEC-034 added (independent verification before human review). AGENTS.md Section V + question 15. GOVERNANCE.md Section 15. master-plan.md v2.12.
+- **run017** (2026-05-04): Gate 1 approved by Babar Raza. acquisition-packs/fods/ skeleton created (5 files). TC-0009 created (Phase 2, not_started). run016+run017 changes committed. master-plan.md v2.13.
 
-No Phase 1 work may begin until:
+## Current status after run017
 
-1. run009 bundle inspected
-2. run010 bundle inspected
-3. run011 bundle inspected
-4. run012 bundle inspected
-5. run013 bundle inspected
-6. run014 bundle inspected
-7. Human declares Phase 0 accepted
+Phase 0: ACCEPTED. Phase 1A: COMPLETE. Gate 1: PASSED (Babar Raza, 2026-05-04). Phase 2: IN PROGRESS (awaiting Phase 2 execution prompt). TC-0009 governs next steps.
+
+No spec downloaded. No samples acquired. No prototype or source code created.

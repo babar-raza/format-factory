@@ -15,8 +15,8 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 
 | ID | Gap | Why it matters | Status |
 |---|---|---|---|
-| G-001 | Latest evidence bundle must be inspected before next step | Prevents acting on bad summaries | Open until human inspection |
-| G-002 | Phase 0 acceptance not formally recorded | Phase 1 cannot start | Open until human sign-off |
+| G-001 | Latest evidence bundle must be inspected before next step | Prevents acting on bad summaries | **RESOLVED run015** — Phase 0 accepted by human; bundles inspected |
+| G-002 | Phase 0 acceptance not formally recorded | Phase 1 cannot start | **RESOLVED run015** — Phase 0 formally accepted; baseline commit made |
 | G-003 | Command/skill format not finalized | Commands needed for consistency | Phase 1 TC-0004 |
 | G-004 | LLM endpoint discovery not implemented | Needed before LLM-assisted evidence work | Phase 1 TC-0005 |
 | G-005 | Model selection policy not implemented | Needed before local/remote model use | Phase 1 TC-0005 |
@@ -58,6 +58,8 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 | G-HEAL-013 | AGENTS.md had no /memory guidance; agents had no rule for memory usage | Resolved run010 (Section U added) |
 | G-HEAL-014 | AGENTS.md had duplicate Section Q and P1-P4 internal IDs in Security Rules | Resolved run010 (sections renumbered Q→R, R→S, S→T; IDs corrected) |
 | G-HEAL-015 | /memory files (03, 09, 07, 10, 00-index) still showed "pending propagation" for source layout after run011 had completed | Resolved run013 (stale notes removed; propagation status recorded) |
+| G-HEAL-016 | Agent review items lacked independent verification before being presented for human approval | Resolved run016 (DEC-034 added; AGENTS.md Section V; GOVERNANCE.md Section 15 — independent verification sprint required before any human review request) |
+| G-HEAL-017 | Gate 1 approval pending (FODS 93/100, Accept band, all pre-conditions met) | **RESOLVED run017** — Gate 1 approved by Babar Raza (2026-05-04); registry updated; TC-0001 closed; acquisition-packs/fods/ skeleton created; TC-0009 created |
 
 ## Major risks
 

@@ -117,7 +117,7 @@
 
 ## I. Self-Challenge Requirement
 
-Before marking any gate complete, any taskcard complete, or any significant work done, the agent must explicitly answer all fourteen questions:
+Before marking any gate complete, any taskcard complete, or any significant work done, the agent must explicitly answer all fifteen questions:
 
 1. Did I perform all required steps for this gate or task?
 2. Is any required evidence missing?
@@ -133,8 +133,9 @@ Before marking any gate complete, any taskcard complete, or any significant work
 12. Did I treat `/memory` as context only, not as operational authority?
 13. Did I log any contradictions I found between `/memory` and the master plan?
 14. Did I update `/memory` or create a memory-update taskcard when a trigger event occurred?
+15. Am I asking for human review or approval, and if yes, did an independent agent verification sprint already occur in a separate session for this item? (See Section V.)
 
-The agent must answer "no" to questions 4, 5, 6, 7, 8, and 10, and "yes" to questions 1, 2 (all evidence present), 3 (evidence is sufficient), and 9. For questions 11-14: if a memory read was required for the task type, answer "yes" to 11 and 12. If no contradiction existed, "yes" to 13 means "I confirmed there was no contradiction to log." For question 14, if no memory-update trigger event occurred during the task, the acceptable answer is "Not applicable — no trigger event occurred." If any required answer is wrong, the agent must log the gap and wait for human resolution before marking work complete.
+The agent must answer "no" to questions 4, 5, 6, 7, 8, and 10, and "yes" to questions 1, 2 (all evidence present), 3 (evidence is sufficient), and 9. For questions 11-14: if a memory read was required for the task type, answer "yes" to 11 and 12. If no contradiction existed, "yes" to 13 means "I confirmed there was no contradiction to log." For question 14, if no memory-update trigger event occurred during the task, the acceptable answer is "Not applicable — no trigger event occurred." For question 15: if asking for human review, the answer must be "yes — independent verification sprint completed." If not asking for human review, the acceptable answer is "Not applicable — no human review requested." If any required answer is wrong, the agent must log the gap and wait for human resolution before marking work complete.
 
 ---
 
@@ -390,3 +391,28 @@ If any `/memory` file is changed during an execution run:
 ### U9. Future /sync-memory Command
 
 A future `/sync-memory` command or taskcard (`TC-0008`) should be created (Phase 1 or later) to automate memory consistency checks: compare `/memory` files against `plans/master-plan.md`, flag contradictions, and produce a `memory-sync-report.md`. This command does not exist yet. Do not implement it in Phase 0. Log it as a planned capability via TC-0008.
+
+---
+
+## V. Independent Verification Before Human Review
+
+**V1. The Rule.** Any item that an agent produces as a candidate for human review — including gate scoring evidence, phase acceptance claims, commit acceptability, release readiness, or any other artifact requiring human approval — must first be verified by an independent agent in a separate verification sprint before the human is asked to review it.
+
+**V2. What Counts as Human Review.** Human review is required (and therefore this rule applies) for:
+- Any gate approval request (Gates 1–11)
+- Any phase acceptance request (Phase 0, 1, 2, 3, 4)
+- Any commit authorization request
+- Any release authorization request
+- Any scoring evidence presented for Gate 1 human approval
+- Any governance amendment proposed for human sign-off
+
+**V3. What Is a Verification Sprint.** A verification sprint is a separate execution session in which:
+- A different run ID is used (e.g., run015 produces evidence; run016 verifies it)
+- The verifying agent independently re-reads all source files referenced in the claim
+- The verifying agent independently re-computes or re-checks all quantitative claims (scores, counts, file lists)
+- The verifying agent produces a verification audit document in the evidence bundle
+- If contradictions or errors are found: they are logged as gaps and corrected before the human is asked to review
+
+**V4. Exception.** If the human explicitly waives this requirement in the execution prompt for the current session (e.g., "I am waiving the verification sprint requirement for this approval"), the agent may proceed without a prior verification sprint. The waiver must be explicit and in writing in the prompt. The agent must note the waiver in the run record.
+
+**V5. Decision Register Reference.** This rule is recorded as DEC-034 in `plans/master-plan.md`.

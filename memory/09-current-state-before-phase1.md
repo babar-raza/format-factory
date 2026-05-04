@@ -3,43 +3,48 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015 to reflect Phase 0 accepted, baseline commit made, Phase 1A FODS scoring complete
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run017 to reflect Phase 2 active, Gate 1 passed, acquisition-packs/fods/ created
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 09 — Current State (Phase 1A In Progress)
+# 09 — Current State (Phase 2 Active)
 
-This file captures the current state after run015. Phase 0 has been accepted and Phase 1A FODS scoring is complete.
+This file captures the current state after run017. Phase 0 has been accepted. Phase 1A FODS scoring is complete. Gate 1 has been approved by Babar Raza. Phase 2 (FODS Spec and Legal Evidence Planning) is now active — awaiting an explicit Phase 2 execution prompt.
 
-**Last updated:** run015 (Phase 0 accepted; baseline commit made; Phase 1A FODS scoring evidence produced; master-plan.md v2.11).
+**Last updated:** run017 (Gate 1 approved by Babar Raza; acquisition-packs/fods/ skeleton created; TC-0009 created; combined run016+run017 commit made; master-plan.md v2.13).
 
 ## Current status
 
 | Item | Status |
 |---|---|
-| Phase | Phase 1A: Pilot Candidate Scoring |
+| Phase | Phase 2: FODS Spec and Legal Evidence Planning |
 | Phase 0 accepted | YES — 2026-05-04 (run015, human-authorized) |
-| Phase 1 allowed | YES |
-| Active formats | fods (gate_1: scored_pending_human_approval) |
-| Registry | FODS entry with scoring (93/100, Accept band) |
-| FODS scored | YES — 93/100 (run015) |
-| FODS Gate 1 status | scored_pending_human_approval (human approval pending) |
-| FODS acquisition pack | Does not exist (Gate 1 approval required first) |
+| Phase 1A complete | YES — FODS scored 93/100 (run015), independently verified (run016) |
+| Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
+| Active formats | fods (gate_1: passed; gate_2: not_started) |
+| Registry | FODS entry with scoring (93/100, Accept band); gate_1: passed |
+| FODS acquisition pack | EXISTS — acquisition-packs/fods/ (skeleton, 5 files, created run017) |
+| TC-0001 status | COMPLETED — Gate 1 approved (run017) |
+| TC-0009 status | NOT STARTED — Phase 2 execution prompt required |
+| Phase 2 allowed | YES — Gate 1 passed; TC-0009 governs next steps |
+| Phase 2 started | NO — skeleton created; execution prompt pending |
 | Samples | None |
 | Schemas | None |
 | Prototypes | None |
 | Product source | None |
 | CI workflows | None |
 | Commercial source folder | Must not exist |
-| Specs downloaded | None (spec cache authorization required for Phase 1+) |
-| Commit made | YES — Phase 0 baseline commit (run015, 2026-05-04) |
-| Master plan version | 2.11 (as of run015) |
-| AGENTS.md sections | A through U (21 sections) |
+| Specs downloaded | None (spec cache authorization required; six T3 conditions must ALL be met) |
+| Commit made | YES — combined run016+run017 commit: "chore: approve FODS Gate 1 and start Phase 2 planning" (run017, 2026-05-04) |
+| Prior commit | Phase 0 baseline commit (run015, 2026-05-04): c9d02da |
+| Master plan version | 2.13 (as of run017) |
+| AGENTS.md sections | A through V (22 sections) |
 | Memory integration | Completed run010; AGENTS.md Section U added |
 | Source layout propagated | YES — completed run011 (master-plan.md v2.8) |
 | Memory reconciliation | Completed run013 — stale pending-propagation notes removed |
+| Independent verification rule | Added run016 (DEC-034, AGENTS.md Section V, GOVERNANCE.md Section 15) |
 
 ## Run history as of this memory update
 
@@ -53,23 +58,18 @@ This file captures the current state after run015. Phase 0 has been accepted and
 | run013 | Main execution | Source-layout verification; stale pending-propagation notes removed from memory; docs updated; master-plan v2.9 |
 | run014 | Main execution | Phase 0 closure-readiness sprint; full governance audit of all 45 files; stale "run003 bundle" reference fixed; file count corrected (44→45); 28 search patterns verified; memory updated; master-plan v2.10 |
 | run015 | Combined sprint | Phase 0 accepted (all 36 checks PASS); G-001/G-002 closed; Phase 0 baseline commit made; FODS scored 93/100 (Accept band); registry entry created; TC-0001 updated; master-plan v2.11 |
-
-**Current state:** run011 propagated the format-first source layout (`src/python/{format}/`, `src/net/{format}/`) to all governance and architecture docs. run012 (memory stream) captured this but had stale notes saying propagation was pending. run013 reconciled the memory files.
+| run016 | Independent verification sprint | All run015 claims independently verified; new governance rule DEC-034 added (independent verification before human review); AGENTS.md Section V added; GOVERNANCE.md Section 15 added; 5 memory files updated; master-plan v2.12 |
+| run017 | Gate 1 approval + Phase 2 setup | Gate 1 approved (Babar Raza, 2026-05-04); registry updated; TC-0001 closed; acquisition-packs/fods/ skeleton created; TC-0009 created; 6 memory files updated; combined commit made; master-plan v2.13 |
 
 ## Latest known evidence bundles
 
 ```text
-run009: phase0-run009-spec-cache-governance-[timestamp].zip
-run010: phase0-run010-memory-integration-20260503.zip
-run011: phase0-run011-product-layout-reconciliation-[timestamp].zip
-run012: phase0-run012-memory-sync-after-expectations-20260504-110849.zip
-run013: phase0-run013-source-layout-and-workflow-propagation-[timestamp].zip
-run014: phase0-run014-closure-readiness-[timestamp].zip (this run)
+run015: phase0-run015-phase0-acceptance-and-scoring-[timestamp].zip
+run016: run016-independent-verification-sprint.zip
+run017: run017-gate1-approval-phase2-setup-[timestamp].zip  ← CURRENT
 ```
 
-All bundles must be inspected before any Phase 1 prompt.
-
-## Source layout (PROPAGATED — run011)
+## Source layout (PROPAGATED — run011, CONFIRMED run013)
 
 The format-first source layout is now in `plans/master-plan.md` v2.8+:
 
@@ -80,31 +80,19 @@ Old paths are OBSOLETE: `src/python/open-source/`, `src/dotnet/open-source/`, `s
 
 .NET FOSS packaging: deferred as DEC-033. Must resolve before Gate 10 .NET release.
 
-## What must happen before Phase 1
+## What must happen before Phase 2 execution begins
 
-1. Inspect all run bundles (run009, run010, run011, run012, run013, run014) completely.
-2. Confirm format-first source layout is consistent across all governance docs.
-3. Confirm spec-cache authorization model is correctly propagated.
-4. Confirm no specs were downloaded.
-5. Confirm no Phase 1 work happened.
-6. Confirm registry remains empty.
-7. Confirm no forbidden paths exist (no src/net/, no src/python/{format}/, no commercial folder).
-8. Confirm memory files no longer say "pending propagation" for source layout.
-9. Confirm no commit was made.
-10. If all pass, human may declare Phase 0 accepted and issue Phase 1 prompt.
+1. Human issues explicit Phase 2 execution prompt.
+2. TC-0009 is the governing taskcard for Phase 2 (FODS Spec and Legal Evidence).
+3. Phase 2 does NOT authorize spec downloads — spec-cache authorization requires all six T3 conditions to be met first.
+4. Phase 2 scope: spec-evidence.md, legal-notes.md work within acquisition-packs/fods/. No samples. No schemas. No product code.
 
-## If Phase 0 is accepted
+## acquisition-packs/fods/ skeleton (created run017)
 
-The likely next steps are:
+Five skeleton files created. All stage statuses: not_started. No spec downloaded. No samples acquired.
 
-1. Human asks for commit handoff, or
-2. Human asks for Phase 1A execution prompt (FODS Gate 1 scoring).
-
-Recommended order:
-
-```text
-1. Commit Phase 0 foundation after review.
-2. Then start Phase 1A FODS scoring.
-```
-
-Do not start Phase 1A before Phase 0 review and acceptance.
+- `acquisition-packs/fods/pack.yaml` — format identity, gate statuses, scoring summary
+- `acquisition-packs/fods/spec-evidence.md` — spec source URL noted; NOT downloaded
+- `acquisition-packs/fods/legal-notes.md` — Category 1, OASIS RF, fast-path eligible
+- `acquisition-packs/fods/sample-sources.md` — candidate sources listed; NOT acquired
+- `acquisition-packs/fods/parser-notes.md` — initial security assessment; all TBD pending spec review

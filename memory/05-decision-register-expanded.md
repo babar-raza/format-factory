@@ -56,6 +56,8 @@ This decision log preserves the rationale behind major choices.
 | D-039 | Product source layout: src/net/{format} and src/python/{format} | Decided (propagated run011, confirmed run013) | Human stated flat format-keyed layout replaces old dotnet/python/open-source nesting. Propagated to master-plan.md v2.8 in run011; verified in run013. |
 | D-040 | Repeatability over speed: every format must traverse the same 11-gate pipeline | Decided (run012) | Rushing a format skips gates and undermines the acquisition system's correctness guarantees. |
 | D-041 | Spec-cache authorization model: downloads require explicit prompt authorization | Decided (run009) | Agents must never self-authorize a spec download. Missing specs create a gap, not an automatic fetch. |
+| D-042 | Any agent-produced human-review candidate must first pass an independent agent verification sprint in a separate session | Decided (run016) | DEC-034. Agent summaries repeatedly overstated correctness. Independent re-read and re-compute before human is asked to approve. See AGENTS.md Section V. |
+| D-043 | Gate 1 approved by Babar Raza (FODS, 93/100, Accept band) | Decided (run017, 2026-05-04) | Gate 1 is a human-only approval gate. Human approval recorded in run017 prompt. Gate status: passed. |
 
 ## Pending decisions
 

@@ -91,6 +91,16 @@ Commercial source can be created only after:
 
 Gate 11 is **commercial release readiness**, not permission to start writing source.
 
-## Current standing blocker
+## Independent verification before human review (added run016)
 
-As of the latest memory package, Phase 0 has not yet been accepted. The run008 bundle must be inspected and accepted before Phase 1 can begin.
+Any item that an agent produces as a candidate for human review must first pass an independent agent verification sprint in a separate execution session before the human is asked to review it.
+
+This applies to: gate approval requests, phase acceptance requests, commit authorization requests, release authorization requests, and any other item requiring human approval.
+
+The human may explicitly waive this requirement in the execution prompt for the current session. Waivers must be explicit and in writing.
+
+This rule is recorded as DEC-034 in `plans/master-plan.md` and as AGENTS.md Section V and GOVERNANCE.md Section 15.
+
+## Current standing
+
+Phase 0 accepted (run015, 2026-05-04). Phase 1A FODS scoring complete (run015). run016 independently verified all run015 claims. Gate 1 human review may now proceed.

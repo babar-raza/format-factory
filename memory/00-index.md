@@ -63,6 +63,8 @@ Then it should read only the memory files relevant to the task.
 
 | Run | Stream | Files updated |
 |-----|--------|---------------|
+| run017 | Main execution | 00-index.md, 04-phase0-evolution-and-bundle-reviews.md, 05-decision-register-expanded.md, 06-gap-risk-and-healing-history.md, 09-current-state-before-phase1.md, 10-memory-maintenance-protocol.md (Gate 1 approval by Babar Raza; Phase 2 started; acquisition-packs/fods/ skeleton; TC-0009 created; master-plan.md v2.13) |
+| run016 | Main execution | 02-standing-operating-rules.md, 07-agent-governance-model.md, 09-current-state-before-phase1.md, 10-memory-maintenance-protocol.md, 11-prompting-and-agent-style-rules.md (DEC-034 governance rule; AGENTS.md Section V; run016 verification sprint recorded) |
 | run014 | Main execution | 00-index.md, 04-phase0-evolution-and-bundle-reviews.md, 09-current-state-before-phase1.md (run014 closure-readiness sprint recorded; master-plan.md v2.10; stale file-count and bundle references fixed) |
 | run013 | Main execution | 00-index.md, 03-architecture-and-product-tracks.md, 04-phase0-evolution-and-bundle-reviews.md, 05-decision-register-expanded.md, 06-gap-risk-and-healing-history.md, 07-agent-governance-model.md, 09-current-state-before-phase1.md, 10-memory-maintenance-protocol.md (stale pending-propagation notes removed; run011/run013 status recorded) |
 | run012 | Memory stream | 00-index.md, 03-architecture-and-product-tracks.md, 04-phase0-evolution-and-bundle-reviews.md, 05-decision-register-expanded.md, 06-gap-risk-and-healing-history.md, 07-agent-governance-model.md, 08-specification-cache-amendment.md, 09-current-state-before-phase1.md, 10-memory-maintenance-protocol.md |

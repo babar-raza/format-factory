@@ -1,0 +1,111 @@
+# Acquisition Pack — FODS (Flat OpenDocument Spreadsheet)
+#
+# Gate 1: PASSED (Babar Raza, 2026-05-04)
+# Gate 2: not_started — spec and legal evidence planning required
+# No specs downloaded. No samples acquired. Skeleton only.
+
+---
+artifact_id: fods-pack
+artifact_type: acquisition-pack
+path: acquisition-packs/fods/pack.yaml
+format_id: fods
+product_family: cells
+visibility: evidence-only
+publish_allowed: false
+license: null
+provenance_required: false
+provenance_status: not-applicable
+source_hash: null
+generated_by: claude
+generated_at: "2026-05-04"
+reusable: false
+refresh_policy:
+  trigger: spec-version-changed
+  max_age_days: null
+stale: false
+open_source_allowed: false
+commercial_allowed: false
+release_blockers: []
+notes: "Gate 1 passed 2026-05-04 by Babar Raza. Gate 2 not started. No spec downloaded. No samples acquired. Skeleton only created in run017."
+
+# --- Format identity ---
+format_id: fods
+display_name: "Flat OpenDocument Spreadsheet"
+family: cells
+extensions:
+  - .fods
+mime_type: "application/vnd.oasis.opendocument.spreadsheet-flat-xml"
+spec_body: "OASIS"
+spec_version: "ODF 1.3"
+spec_url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/"
+spec_accessed_date: null
+source_hash: null
+
+# --- Legal classification ---
+legal_category: 1
+legal_category_name: "Open Standard RF"
+fast_path_eligible: true
+
+# --- Scoring summary (from Gate 1) ---
+scoring:
+  weighted_total: 93
+  band: accept
+  gate_1_approved_by: "Babar Raza"
+  gate_1_approved_date: "2026-05-04"
+
+# --- Gate status ---
+gate_1:
+  status: passed
+  approved_by: "Babar Raza"
+  approved_date: "2026-05-04"
+gate_2:
+  status: not_started
+
+# --- Spec cache status ---
+spec_cache:
+  required: true
+  downloaded: false
+  local_path: null
+  next_action: plan_spec_cache_acquisition
+
+# --- Sample status ---
+samples:
+  acquired: false
+  next_action: plan_sample_policy_and_sources
+
+# --- Parser status ---
+parser:
+  prototype_created: false
+
+# --- Acquisition stage status ---
+stages:
+  spec_evidence:
+    status: not_started
+    artifact: acquisition-packs/fods/spec-evidence.md
+    gate: 2
+  legal_notes:
+    status: not_started
+    artifact: acquisition-packs/fods/legal-notes.md
+    gate: 2
+  sample_sources:
+    status: not_started
+    artifact: acquisition-packs/fods/sample-sources.md
+    gate: 3
+  parser_notes:
+    status: not_started
+    artifact: acquisition-packs/fods/parser-notes.md
+    gate: 4
+  oracle_tool:
+    name: null
+    version: null
+    gate: 6
+  tier_map:
+    status: not_started
+    gate: 9
+  delivery_plan:
+    first_oss_release_tiers: []
+    deferred_tiers: []
+    gate: 9
+
+# --- Notes ---
+notes: "Skeleton created in run017 after Gate 1 approval. TC-0009 governs Phase 2 work. All stage statuses are not_started. No downstream artifacts created."

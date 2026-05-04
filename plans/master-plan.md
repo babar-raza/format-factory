@@ -3,13 +3,14 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.11 (run015 combined sprint: Phase 0 accepted, baseline commit made, Phase 1A FODS candidate scoring evidence produced)
+**Version:** 2.13 (run017: FODS Gate 1 human approval recorded; acquisition-packs/fods/ skeleton created; TC-0009 created; Phase 2 planning started)
 **Last updated:** 2026-05-04
-**Current phase:** Phase 1A: Pilot Candidate Scoring
-**Current status:** Phase 0 fully accepted (run015, 2026-05-04) — all 36 acceptance checks independently passed; G-001 and G-002 closed. Phase 0 baseline commit made: `chore: establish format-factory Phase 0 foundation`. Phase 1A started: FODS scored on all seven factors (93/100, Accept band); registry entry created with gate_1.status: scored_pending_human_approval; TC-0001 updated with scoring evidence. Gate 1 approval is now pending human review.
-**Phase 1 allowed:** YES — Phase 0 accepted by human authorization (run015, 2026-05-04). Phase 1A in progress: FODS Gate 1 scoring evidence produced.
-**Commit allowed:** NO — Phase 0 baseline commit was made (run015). Next commit requires explicit human instruction in a new session.
-**Next required action:** Human reviews FODS Gate 1 scoring evidence in registry/format-registry.yaml and TC-0001, then either records Gate 1 approval (approved_by + approved_date) or issues a scoring review prompt.
+**Current phase:** Phase 2: FODS Spec and Legal Evidence Planning
+**Current status:** Gate 1 approved by Babar Raza (2026-05-04). acquisition-packs/fods/ skeleton created (5 files). TC-0009 created (not started — awaits Phase 2 execution prompt). Gate 2 not started. No specs downloaded. No samples acquired. No prototype or source code created. run016 governance amendments committed with run017 changes.
+**Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
+**Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
+**Commit allowed:** NO — next commit requires explicit human instruction in a new session.
+**Next required action:** Human issues Phase 2 execution prompt to begin TC-0009 Gate 2 spec and legal evidence work for FODS.
 
 ---
 
@@ -32,6 +33,7 @@ These rules override convenience, speed, and agent summaries. They are permanent
 13. No commit unless explicitly requested by the human. An agent must never commit on its own initiative.
 14. No gate may be self-approved. All 11 gates require human approval.
 15. No Phase 1 work may begin until Phase 0 is reviewed and accepted by the human.
+16. Any agent-produced request for human review (gate approval, phase acceptance, scoring evidence approval, commit acceptance, or release readiness) must first pass an independent agent verification sprint in a separate execution session. The human must not be asked to approve until independent verification has been completed and recorded. See DEC-034 and AGENTS.md Section V.
 
 ---
 
@@ -109,17 +111,25 @@ The project goal is to build a production-quality pipeline for acquiring format 
 
 | Property | Value |
 |---|---|
-| Current phase | Phase 1A: Pilot Candidate Scoring |
+| Current phase | Phase 2: FODS Spec and Legal Evidence Planning |
 | Phase 0 files created | Yes — 45/45 files (41 created run001; 3 added run008; 1 added run010: TC-0008) |
 | Phase 0 healing run | Completed (run002) — compliance gaps G-HEAL-001 to G-HEAL-004 resolved |
 | Master-plan canonicalization | Completed (run003) |
 | Phase 0 accepted | YES — 2026-05-04, run015 (all 36 checks passed; human-authorized acceptance) |
 | Phase 1 allowed | YES — Phase 0 accepted |
-| Active formats in registry | fods (gate_1: scored_pending_human_approval, score 93/100) |
-| Commit made | Yes — Phase 0 baseline commit (run015, 2026-05-04) |
-| Phase 1A scoring | FODS scored 93/100 (Accept band); Gate 1 evidence bundle produced |
-| Last evidence bundle | run015-phase0-acceptance-and-phase1a-scoring (created this run) |
-| Next required human action | Review FODS Gate 1 scoring evidence; record Gate 1 approval in registry/format-registry.yaml if satisfied |
+| Phase 2 allowed | YES — Gate 1 passed (run017, Babar Raza, 2026-05-04) |
+| Active formats in registry | fods (gate_1: passed; gate_2: not_started) |
+| Gate 1 status | PASSED — Babar Raza, 2026-05-04, score 93/100, run016 verified |
+| Gate 2 status | not_started — awaiting Phase 2 execution prompt |
+| Acquisition pack | acquisition-packs/fods/ skeleton exists (5 files, run017) |
+| Spec downloaded | No — spec acquisition requires explicit authorization per AGENTS.md T3 |
+| Samples acquired | No |
+| Prototype created | No |
+| Product source created | No |
+| Commits made | c9d02da (Phase 0 + Phase 1A, run015); run016+run017 changes (pending commit in this run) |
+| Active taskcard | TC-0009 (not_started — awaiting Phase 2 prompt) |
+| Last evidence bundle | run017-gate1-approval-phase2-setup (this run) |
+| Next required human action | Issue Phase 2 execution prompt to begin TC-0009 Gate 2 work |
 
 ---
 
@@ -684,6 +694,7 @@ All taskcards are in `taskcards/` as Markdown files. Current status is Phase 0 p
 | DEC-031 | Python track is the FOSS product path | Decided (run011) | `src/python/{format}/` is the Python FOSS product workspace per format. Feature ceiling: Tier 0-4. License: Apache-2.0 or MIT. One directory per format (e.g. `src/python/fods/`). No `src/python/open-source/` — that path is obsolete. |
 | DEC-032 | .NET track is the commercial/full-feature path | Decided (run011) | `src/net/{format}/` is the .NET product workspace per format. Covers commercial/full-feature product path by default. Tier ceiling: 0-6 (commercial). One directory per format (e.g. `src/net/fods/`). No `src/dotnet/open-source/` or `src/dotnet/commercial/` — those paths are obsolete. |
 | DEC-033 | .NET FOSS packaging strategy deferred | Deferred (run011) | Whether `src/net/{format}/` includes a separate FOSS-tier packaging model (parallel to Python FOSS) is not yet decided. The .NET workspace covers the full commercial path. If a .NET FOSS package is desired, the master plan must explicitly authorize and describe the separation mechanism before any source folder is created. This decision must be made before the first .NET release at Gate 10. |
+| DEC-034 | Agent-requested human review requires independent agent verification first | Decided (run016) | Any agent-produced request for human gate approval, phase acceptance, scoring evidence approval, commit acceptance, or release readiness must first pass an independent agent verification sprint in a separate execution session. The human must not be asked to approve until independent verification is completed and recorded. Exceptions require explicit human waiver in the current session prompt. See AGENTS.md Section V. |
 | DEC-028 | `/memory` is persistent project context, not operational authority | Decided | run010. `/memory` provides historical context, decision rationale, and phase evolution. It does not supersede `plans/master-plan.md`, `AGENTS.md`, or `GOVERNANCE.md`. Contradictions between `/memory` and master plan must be logged as gaps and resolved through human governance. |
 | DEC-029 | `AGENTS.md` must require memory reads for relevant tasks | Decided | run010. Agents must read minimal required memory files before complex planning, phase transitions, governance changes, and long-running resumed tasks. Task-type-specific additional files are listed in AGENTS.md Section U4. |
 | DEC-030 | Memory updates or memory-update taskcards required after major project evolution | Decided | run010. After phase acceptance, gate transition, major decision, major gap, significant healing run, architecture amendment, spec-cache policy change, release control change, or governance change — agent must update `/memory` in scope or create a taskcard. Deferred for this run via TC-0008. |
@@ -895,12 +906,12 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 32 — Current Next Action
 
-1. **Completed (run015):** Phase 0 accepted (all 36 checks passed). Phase 0 baseline commit made. Phase 1A started: FODS scored 93/100 (Accept band). FODS registry entry created with gate_1.status: scored_pending_human_approval. TC-0001 updated with scoring evidence. Evidence bundle created.
-2. **Human action required:** Review FODS Gate 1 scoring evidence in `registry/format-registry.yaml`. If satisfied, record Gate 1 approval: set `gate_1.status: passed`, `approved_by: <your name>`, `approved_date: 2026-05-04` (or current date). Update `plans/master-plan.md` with Gate 1 approved.
-3. **After Gate 1 approval:** Issue Phase 1B execution prompt to create `acquisition-packs/fods/` and begin Stage 2 evidence work.
-4. **If scoring review finds issues:** Issue a targeted scoring correction prompt — not a full Gate 1 approval.
+1. **Completed (run015):** Phase 0 accepted (all 36 checks passed). Phase 0 baseline commit made. Phase 1A: FODS scored 93/100 (Accept band). Registry entry created (gate_1: scored_pending_human_approval). TC-0001 updated. Evidence bundle created.
+2. **Completed (run016):** Independent verification sprint. All run015 claims verified. DEC-034 added. AGENTS.md Section V + question 15. GOVERNANCE.md Section 15. Evidence bundle produced.
+3. **Completed (run017):** Gate 1 approved by Babar Raza (2026-05-04). Registry updated (gate_1: passed). TC-0001 closed. acquisition-packs/fods/ skeleton created (5 files). TC-0009 created (Phase 2 taskcard, not_started). run016+run017 changes committed. Evidence bundle produced. master-plan.md v2.13.
+4. **Next required action:** Human issues Phase 2 execution prompt to begin TC-0009 Gate 2 spec and legal evidence work for FODS.
 
-**Gate 1 approval for FODS is a human-only action. Agent cannot self-approve.**
+**Gate 2 approval for FODS is a human-only action. Agent cannot self-approve.**
 
 ### Run History
 
@@ -921,14 +932,16 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 | run013 | 2026-05-04 | Source-layout verification and memory reconciliation | Confirmed run011 propagation complete; stale pending-propagation notes removed from /memory files; docs/release-control.md and docs/llm-endpoint-strategy.md updated; repeatable agentic workflow section added; master-plan.md v2.9 |
 | run014 | 2026-05-04 | Phase 0 closure-readiness sprint — full governance audit | All 45 Phase 0 files audited; stale "run003 bundle" reference in Section 7 fixed; Section 8 and Section 31 file count corrected (44→45); 28 search patterns verified (1 FIXED, rest PASS); memory files updated; master-plan.md v2.10 |
 | run015 | 2026-05-04 | Combined sprint: Phase 0 acceptance + baseline commit + Phase 1A FODS scoring | Phase 0 accepted (all 36 checks PASS); G-001/G-002 closed; Phase 0 baseline commit made; FODS scored 93/100 (Accept band); registry entry created (gate_1: scored_pending_human_approval); TC-0001 updated; master-plan.md v2.11 |
+| run016 | 2026-05-04 | Independent verification sprint for run015 Phase 0 acceptance, commit c9d02da, FODS Gate 1 scoring, and governance rule addition | Phase 0 acceptance independently verified (all 36 checks PASS). Commit c9d02da verified (61 files, no forbidden paths, no secrets). FODS scoring independently verified (93/100 math confirmed, 7-factor weights correct, status correctly scored_pending_human_approval, no self-approval). Source claims reviewed (all PLAUSIBLE or SUPPORTED; none OVERSTATED or FABRICATED). New governance rule added (DEC-034): agent-requested human review requires independent agent verification sprint first. AGENTS.md Section V added. GOVERNANCE.md Section 15 added. Memory files updated. master-plan.md v2.12 |
+| run017 | 2026-05-04 | Gate 1 approval and Phase 2 setup | Gate 1 approved by Babar Raza (2026-05-04). Registry gate_1.status set to passed. TC-0001 closed. acquisition-packs/fods/ skeleton created (5 files: pack.yaml, spec-evidence.md, legal-notes.md, sample-sources.md, parser-notes.md). TC-0009 created (Phase 2, not_started). run016+run017 changes committed. Evidence bundle produced (full-width). master-plan.md v2.13 |
 
 ---
 
 ## Section 33 — Commit Policy
 
-**No commit has been made as of this document.**
+**Latest commit:** run017 — run016+run017 changes (AGENTS.md Section V, GOVERNANCE.md Section 15, registry Gate 1 approval, TC-0001 closed, acquisition-packs/fods/ skeleton, TC-0009, master-plan.md v2.13, memory files).
 
-Commits are made only when the human explicitly requests a commit. An agent must never commit on its own initiative — even if it believes the work is complete.
+**Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative — even if it believes the work is complete.
 
 When a commit is eventually requested, it will:
 - Include only the Phase 0 foundation files

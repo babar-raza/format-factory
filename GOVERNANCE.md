@@ -202,6 +202,20 @@ Before any Gate 10 (OSS release) is approved, the project lead must verify:
 
 ---
 
+## 15. Independent Verification Before Human Review
+
+**15.1.** Any item that an agent produces as a candidate for human review must first pass an independent agent verification sprint in a separate execution session before the human is asked to review it.
+
+**15.2.** This requirement applies to: gate scoring evidence, phase acceptance claims, commit acceptability, release readiness, and any other item requiring human approval.
+
+**15.3.** The human must not be asked to approve, accept, or sign off on any agent-produced claim until an independent verification sprint has been completed and a verification audit document has been produced in the evidence bundle.
+
+**15.4.** The human may explicitly waive this requirement for a specific item by stating so in the execution prompt for the current session. The waiver must be explicit, in writing, and named to the specific item being waived. The agent must record the waiver in the run record.
+
+**15.5.** This rule is recorded as DEC-034 in `plans/master-plan.md` and governed in detail by AGENTS.md Section V.
+
+---
+
 ## Relationship to Other Documents
 
 - `AGENTS.md` — non-negotiable operating rules for agents

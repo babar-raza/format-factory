@@ -138,3 +138,7 @@ Phase 0 has used two concurrent stream types:
 | 3 | Repo files, taskcards | Implementation artifacts |
 | 4 | Evidence bundles | Audit trail |
 | 5 | `/memory` | Historical context and rationale only |
+
+## DEC-034: Independent verification before human review (run016)
+
+Recorded as DEC-034 in `plans/master-plan.md`. Any agent-produced request for human review must first pass an independent agent verification sprint in a separate execution session. See AGENTS.md Section V for the full rule. GOVERNANCE.md Section 15 covers the human-side governance of this requirement.

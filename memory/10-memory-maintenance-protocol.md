@@ -99,3 +99,7 @@ When a main execution stream run and a memory stream run are concurrent:
 | .NET FOSS packaging question | `memory/03` | `plans/master-plan.md` as DEC-033 (deferred, must resolve before Gate 10 .NET release) | run011 ✅ |
 
 All pending propagation items from run012 are resolved. run013 verified the propagation and cleaned stale notes from `/memory` files. Agents may now read the source layout from `plans/master-plan.md` directly.
+
+**run016 memory update:** Memory files 02, 07, 09, 10, 11 updated. Trigger: governance change (DEC-034 added — independent verification before human review). Changes: new governance rule, DEC-034 reference, run016 run history entry, verification sprint pattern documented.
+
+**run017 memory update:** Memory files 00-index, 04, 05, 06, 09, 10 updated. Trigger: gate transition (Gate 1 approved by Babar Raza, 2026-05-04) + phase start (Phase 2 active). Changes: run017 run history entries, DEC-042/DEC-043 added to decision register, G-001/G-002 marked resolved, G-HEAL-016/G-HEAL-017 added, 09-current-state fully rewritten to reflect Phase 2 active and acquisition-packs/fods/ existence.
