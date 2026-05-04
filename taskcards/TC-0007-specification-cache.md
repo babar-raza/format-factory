@@ -26,10 +26,10 @@ notes: Phase 1 infrastructure taskcard — implements generic specification cach
 # TC-0007: Specification Cache Tooling Implementation
 
 **Phase:** 1
-**Status:** completed_pending_independent_verification
-**Owner:** Claude (run019)
+**Status:** completed_independently_verified_run020
+**Owner:** Claude (run019; independently verified run020; spec acquisition run021)
 **Created:** 2026-05-03
-**Last updated:** 2026-05-04 (run019 — three scripts implemented; smoke tests pass; awaiting human review)
+**Last updated:** 2026-05-04 (run020 — 5 issues found and fixed; run021 — FODS spec acquired using these tools)
 **Blocking:** TC-0001 Phase 2 work (Stage 2 evidence gathering requires a cached spec, but acquisition is separately authorized)
 **Blocked by:** Phase 0 completion and human review of foundation files; TC-0005 (artifact index must exist before spec cache can register entries)
 **Format:** none (infrastructure taskcard)
@@ -98,8 +98,8 @@ Completion requires ALL of the following:
 - [x] No spec files appear in any committed directory
 - [x] No format-specific cache entry is produced as part of TC-0007 completion
 - [x] Evidence bundle proves no specs were downloaded (`.local/spec-cache/` absent — no entries exist)
-- [ ] Self-challenge completed (AGENTS.md Section I) — included in run019 Section Q
-- [ ] `plans/master-plan.md` updated with taskcard completion and any new decisions or gaps discovered — pending (Section J)
+- [x] Self-challenge completed (AGENTS.md Section I) — included in run019 Section Q; independently verified run020; run021 self-challenge in bundle-metadata
+- [x] `plans/master-plan.md` updated with taskcard completion and any new decisions or gaps discovered — updated run020 (v2.16) and run021 (v2.17)
 
 ---
 

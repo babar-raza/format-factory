@@ -20,23 +20,24 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 2 evidence draft. Updated run019+run020 (2026-05-04). Spec not yet downloaded — T3 authorized in run020 but --allow-network denied in-session. Pre-download spec-index.yaml metadata entry created at .local/spec-cache/fods/1.3/spec-index.yaml. Evidence derived from SUPPORTED_BY_RECORDED_URL and PLAUSIBLE_PENDING_VERIFICATION sources. Source hash will be recorded after authorized download."
+notes: "Gate 2 evidence. Updated run021 (2026-05-04). Spec downloaded and cached: ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). Primary source claims upgraded to SUPPORTED_BY_CACHED_SOURCE. Evidence status: evidence_cached_pending_independent_verification."
 ---
 
 # Spec Evidence — Flat OpenDocument Spreadsheet (FODS)
 
 **Format ID:** `fods`
 **Gate:** 2
-**Status:** evidence_draft_pending_independent_verification — updated run019+run020 (2026-05-04)
+**Status:** evidence_cached_pending_independent_verification — updated run021 (2026-05-04)
 
 **Gate 1 approved by:** Babar Raza (2026-05-04)
-**Gate 2 status:** evidence_draft_pending_independent_verification
+**Gate 2 status:** evidence_cached_pending_independent_verification
 
-**Spec cache status (run020):** Pre-download metadata entry created at `.local/spec-cache/fods/1.3/spec-index.yaml`. Spec file NOT yet downloaded — --allow-network denied in-session during run020. Re-acquisition requires explicit in-session approval. Claims remain SUPPORTED_BY_RECORDED_URL until download succeeds.
+**Spec cache status (run021):** ODF 1.3 Part 3 schema PDF downloaded and cached at `.local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf` (24,270,588 bytes, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). spec-index.yaml validates as VALID/CURRENT. Source hash recorded. Primary claims upgraded from SUPPORTED_BY_RECORDED_URL to SUPPORTED_BY_CACHED_SOURCE.
 
 **Source claim classification key:**
-- `[SUPPORTED_BY_RECORDED_URL]` — claim backed by official URL recorded in spec-index.yaml; file not yet downloaded
-- `[PLAUSIBLE_PENDING_VERIFICATION]` — technically sound, consistent with ODF knowledge; not yet verified against cached spec
+- `[SUPPORTED_BY_CACHED_SOURCE]` — backed by cached ODF 1.3 Part 3 PDF (sha256:92cfe64...b066)
+- `[SUPPORTED_BY_RECORDED_URL]` — backed by official URL; file now also cached
+- `[PLAUSIBLE_PENDING_VERIFICATION]` — technically sound; spec section references to be confirmed against cached PDF
 - `[CONFIRMED_INDEPENDENTLY]` — verifiable without spec download (e.g., FODS is flat XML, IANA MIME type)
 - `[UNSUPPORTED]` — no current basis; placeholder only
 
@@ -46,19 +47,20 @@ notes: "Gate 2 evidence draft. Updated run019+run020 (2026-05-04). Spec not yet 
 
 | Field | Value | Claim Status |
 |---|---|---|
-| Standard body | OASIS (Organization for the Advancement of Structured Information Standards) | [SUPPORTED_BY_RECORDED_URL] |
-| Document title | Open Document Format for Office Applications (OpenDocument) Version 1.3 | [SUPPORTED_BY_RECORDED_URL] |
-| Specification version | ODF 1.3 | [SUPPORTED_BY_RECORDED_URL] |
-| Primary URL (index) | https://docs.oasis-open.org/office/OpenDocument/v1.3/ | [SUPPORTED_BY_RECORDED_URL] |
-| Part 3 (Schema) URL | https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/OpenDocument-v1.3-os-part3-schema.pdf | [SUPPORTED_BY_RECORDED_URL] |
+| Standard body | OASIS (Organization for the Advancement of Structured Information Standards) | [SUPPORTED_BY_CACHED_SOURCE] |
+| Document title | Open Document Format for Office Applications (OpenDocument) Version 1.3 | [SUPPORTED_BY_CACHED_SOURCE] |
+| Specification version | ODF 1.3 | [SUPPORTED_BY_CACHED_SOURCE] |
+| Primary URL (index) | https://docs.oasis-open.org/office/OpenDocument/v1.3/ | [SUPPORTED_BY_CACHED_SOURCE] |
+| Part 3 (Schema) URL | https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/OpenDocument-v1.3-os-part3-schema.pdf | [SUPPORTED_BY_CACHED_SOURCE] |
 | Part 3 HTML | https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/ | [SUPPORTED_BY_RECORDED_URL] |
 | OASIS TC page | https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office | [SUPPORTED_BY_RECORDED_URL] |
-| Date accessed | Not yet accessed — download blocked in-session run020 | N/A |
-| Source hash (SHA-256) | null — spec not yet downloaded | N/A |
-| Spec cache entry | `.local/spec-cache/fods/1.3/spec-index.yaml` — metadata only | [CONFIRMED_INDEPENDENTLY] |
+| Date accessed | 2026-05-04 (run021 spec acquisition) | [CONFIRMED_INDEPENDENTLY] |
+| Source hash (SHA-256) | sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066 | [CONFIRMED_INDEPENDENTLY] |
+| Spec cache entry | `.local/spec-cache/fods/1.3/spec-index.yaml` — VALID/CURRENT | [CONFIRMED_INDEPENDENTLY] |
+| Cached file | `.local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf` (24,270,588 bytes) | [CONFIRMED_INDEPENDENTLY] |
 | Secondary sources | None required — OASIS is the primary authority | N/A |
 
-**Download status (run020):** T3 authorization conditions were met (Gate 1 passed, Category 1 confirmed, canonical URL identified, run020 execution prompt authorizes). However, the `python *acquire_spec* --allow-network` invocation was denied by the in-session permission check. A pre-download metadata entry exists at `.local/spec-cache/fods/1.3/spec-index.yaml`. Source hash will be recorded after download is approved in a subsequent session.
+**Download status (run021):** Spec successfully downloaded and cached. T3 authorization confirmed: Gate 1 passed (Babar Raza 2026-05-04), legal category 1 (OASIS RF), canonical URL verified (docs.oasis-open.org), run021 execution prompt authorizes acquisition. File: `OpenDocument-v1.3-os-part3-schema.pdf`, 24,270,588 bytes, SHA-256: `sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066`. spec-index.yaml validates as VALID/CURRENT (refresh_check.py: 0 stale entries).
 
 ---
 
@@ -254,5 +256,5 @@ Security assessment based on format structure (XML format characteristics). [PLA
 **Reviewed by:** (pending — project lead sign-off required for Gate 2 passage)
 **Review date:** (pending)
 **Fast-path used:** yes (OASIS Category 1 fast-path eligible)
-**Evidence status:** draft — source claims are [SUPPORTED_BY_RECORDED_URL] and [PLAUSIBLE_PENDING_VERIFICATION]; no claims are [SUPPORTED_BY_CACHED_SOURCE] because spec has not been downloaded
-**Notes:** All evidence in this draft can be confirmed once spec download is authorized. The structural and security claims are well-established XML/ODF best practices and are unlikely to be materially incorrect. Gate 2 passage requires project lead review and sign-off on legal-notes.md fast-path checklist.
+**Evidence status:** evidence_cached_pending_independent_verification — primary source claims upgraded to [SUPPORTED_BY_CACHED_SOURCE] (run021); ODF 1.3 Part 3 PDF cached and validated
+**Notes:** Spec downloaded and cached run021 (sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). Primary source claims (standard body, document title, version, URL, Part 3 URL) upgraded to SUPPORTED_BY_CACHED_SOURCE. Structural and section-level claims remain PLAUSIBLE_PENDING_VERIFICATION pending detailed spec review. Gate 2 passage requires project lead review and sign-off on legal-notes.md fast-path checklist.
