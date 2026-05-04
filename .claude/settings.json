@@ -1,6 +1,6 @@
 {
   "projectName": "format-factory",
-  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 0 CONSERVATIVE MODE.",
+  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 2 CONSERVATIVE MODE.",
   "model": "claude-opus-4-6",
   "permissions": {
     "allow": [
@@ -12,6 +12,7 @@
       "Write(registry/format-registry.yaml)",
       "Write(registry/scoring/_scoring-model.md)",
       "Write(acquisition-packs/_template/**)",
+      "Write(acquisition-packs/fods/**)",
       "Write(tools/llm/endpoints.yaml)",
       "Write(tools/_readme.md)",
       "Write(tools/spec-cache/_readme.md)",
@@ -53,7 +54,6 @@
       "Write(tests/fuzz/**)",
       "Write(reports/security/**)",
       "Write(reports/legal/**)",
-      "Write(acquisition-packs/fods/**)",
       "Write(.github/**)",
       "Write(tools/llm/endpoint_client.py)",
       "Write(tools/llm/run_record.py)",
@@ -81,14 +81,14 @@
       "Bash(python *acquire_spec*)"
     ]
   },
-  "phase": "0",
-  "phase_note": "Phase 0 ONLY. Broad Write permissions for src/python/**/*, src/net/**, src/python/open-source/**, src/dotnet/open-source/**, src/dotnet/commercial/**, samples/by-format/**, schemas/neutral-model/**, prototypes/by-format/**, reports/security/**, reports/legal/**, acquisition-packs/<format-id>/**, Phase 1+ LLM tool scripts, spec-cache implementation scripts, and network download commands are DENIED. Phase 1 permissions are activated after human review and Phase 0 sign-off. See AGENTS.md Section N for the full list of Phase 0 forbidden files. Format-first layout: src/python/{format}/ and src/net/{format}/ are Phase 4+ targets (also denied in Phase 0).",
+  "phase": "2",
+  "phase_note": "Phase 2 CONSERVATIVE MODE. Gate 1 passed (2026-05-04, Babar Raza). acquisition-packs/fods/** is now ALLOWED (skeleton created in run017). Network download commands remain DENIED — spec download requires explicit T3 authorization (six conditions in docs/specification-cache.md). samples/by-format/**, schemas/neutral-model/**, prototypes/by-format/**, src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts, spec-cache implementation scripts are DENIED. Phase 2 scope: update acquisition-packs/fods/ evidence files only. Format-first layout: src/python/{format}/ and src/net/{format}/ are Phase 4+ targets.",
   "notes": [
-    "PHASE 0 CONSERVATIVE MODE: Only Phase 0 file paths are in the allow list.",
-    "New format-first source layout (run011): src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Old paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE and must not be created.",
-    "Phase 1+ paths (src/python/**/*, src/net/**, src/python/open-source/**, src/dotnet/open-source/**, src/dotnet/commercial/**, samples/by-format/, schemas/neutral-model/, prototypes/by-format/, tests/fixtures|oracle|fuzz/, reports/security|legal/, LLM client scripts, spec-cache implementation scripts, project commands) are explicitly denied.",
-    "Network download commands (curl, wget, Invoke-WebRequest, iwr, python *acquire_spec*) are denied in Phase 0.",
-    "Spec-cache implementation scripts (acquire_spec.py, refresh_check.py, spec_index.py) are denied in Phase 0; created in Phase 1 via TC-0007.",
+    "PHASE 2 CONSERVATIVE MODE: Gate 1 passed. acquisition-packs/fods/** added to allow list (run018).",
+    "Format-first source layout: src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE — must not be created.",
+    "Phase 3+ paths (samples/by-format/, schemas/neutral-model/, prototypes/by-format/, tests/fixtures|oracle|fuzz/, reports/security|legal/) remain DENIED.",
+    "Network download commands (curl, wget, Invoke-WebRequest, iwr, python *acquire_spec*) are DENIED — spec download requires T3 authorization.",
+    "Spec-cache implementation scripts (acquire_spec.py, refresh_check.py, spec_index.py) are denied; created in Phase 1 via TC-0007.",
     "NOTE: powershell *Invoke-WebRequest* and Bash(iwr *) patterns are approximated via separate curl/wget/Invoke-WebRequest/iwr entries. If the settings schema does not enforce these patterns at the shell level, the restriction is documented in AGENTS.md Section T and docs/specification-cache.md.",
     "Read AGENTS.md before taking any action in this project.",
     "Read plans/master-plan.md to verify current phase and gate status.",
@@ -97,6 +97,6 @@
     "See docs/llm-endpoint-strategy.md for endpoint configuration rules.",
     "See docs/release-control.md for artifact visibility classification rules.",
     "See docs/specification-cache.md for spec acquisition authorization model.",
-    "This settings.json will be updated at Phase 1 start to add Phase 1 allowed paths."
+    "This settings.json was updated to Phase 2 in run018 (2026-05-04)."
   ]
 }

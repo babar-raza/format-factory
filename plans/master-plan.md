@@ -3,7 +3,7 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.13 (run017: FODS Gate 1 human approval recorded; acquisition-packs/fods/ skeleton created; TC-0009 created; Phase 2 planning started)
+**Version:** 2.14 (run018: state reconciliation — stale Section 23/25/27/28/33/footer healed; README/ROADMAP phase status updated; settings.json advanced to Phase 2 conservative mode; run018 history added)
 **Last updated:** 2026-05-04
 **Current phase:** Phase 2: FODS Spec and Legal Evidence Planning
 **Current status:** Gate 1 approved by Babar Raza (2026-05-04). acquisition-packs/fods/ skeleton created (5 files). TC-0009 created (not started — awaits Phase 2 execution prompt). Gate 2 not started. No specs downloaded. No samples acquired. No prototype or source code created. run016 governance amendments committed with run017 changes.
@@ -126,7 +126,7 @@ The project goal is to build a production-quality pipeline for acquiring format 
 | Samples acquired | No |
 | Prototype created | No |
 | Product source created | No |
-| Commits made | c9d02da (Phase 0 + Phase 1A, run015); run016+run017 changes (pending commit in this run) |
+| Commits made | c9d02da (Phase 0 baseline, run015); c79f2d1 (Gate 1 approval + Phase 2 setup, run017) |
 | Active taskcard | TC-0009 (not_started — awaiting Phase 2 prompt) |
 | Last evidence bundle | run017-gate1-approval-phase2-setup (this run) |
 | Next required human action | Issue Phase 2 execution prompt to begin TC-0009 Gate 2 work |
@@ -616,15 +616,17 @@ All 11 gates require human approval. No agent may self-approve.
 - Legal category: 1 (Open Standard RF)
 - Format family: Cells (spreadsheet)
 - Rationale: flat XML (no zip), complete public spec, large existing OSS ecosystem, simple fast-path legal, good gateway to full ODF family.
-- Formal Gate 1 scoring has not yet been performed. TC-0001 will compute the formal score in Phase 1A. No pre-score is authoritative.
-- No FODS-specific work before Gate 1.
+- Gate 1 scoring completed in run015 (score: 93/100, Accept band, claude-sonnet-4-6).
+- Gate 1 independently verified in run016 (all claims PASS, no fabrication).
+- Gate 1 approved by Babar Raza on 2026-05-04 (run017). TC-0001 is closed.
+- acquisition-packs/fods/ skeleton created run017 (5 files, no spec downloaded, no samples acquired).
+- TC-0009 (Phase 2 taskcard) created run017, status not_started — awaiting Phase 2 execution prompt.
+- Gate 2 not started.
 
 **Second likely candidate: Gnumeric .gnumeric**
 - Open-source, XML-based, category 1 or 2.
 - Shares Python tooling interest.
-- To be evaluated in Phase 1 after FODS Gate 1.
-
-**No pilot work in Phase 0.** TC-0001 drives Gate 1 work in Phase 1.
+- To be evaluated after FODS Gate 3+ completes.
 
 ---
 
@@ -647,16 +649,17 @@ A format counts toward WIP from the moment it enters Gate 1 until it exits Gate 
 
 | TC ID | Title | Phase | Status | Depends On |
 |---|---|---|---|---|
-| TC-0001 | Pilot Selection (FODS Gate 1) | 1 | Pending — awaits Phase 0 acceptance | Phase 0 acceptance |
-| TC-0002 | Schema Language Selection | 1 | Pending | Phase 0 acceptance |
-| TC-0003 | SDK Baseline Confirmation | 1 | Pending | Phase 0 acceptance |
-| TC-0004 | Commands and Skills Design | 1 | Pending | Phase 0 acceptance |
-| TC-0005 | LLM Endpoint Client Implementation | 1 | Pending | Phase 0 acceptance |
-| TC-0006 | Release Manifest Generator | 3+ | Pending | Gate 9 |
-| TC-0007 | Specification Cache Tooling | 1 | Pending — generic tooling only; no spec download in Phase 0 | Phase 0 acceptance |
-| TC-0008 | Memory Sync Command | 1+ | Not started — planned capability only; no implementation in Phase 0 | Phase 0 acceptance |
+| TC-0001 | Pilot Selection (FODS Gate 1) | 1 | **completed** — Gate 1 approved by Babar Raza (2026-05-04, run017) | Phase 0 acceptance |
+| TC-0002 | Schema Language Selection | 1 | not_started | Phase 0 acceptance |
+| TC-0003 | SDK Baseline Confirmation | 1 | not_started | Phase 0 acceptance |
+| TC-0004 | Commands and Skills Design | 1 | not_started | Phase 0 acceptance |
+| TC-0005 | LLM Endpoint Client Implementation | 1 | not_started | Phase 0 acceptance |
+| TC-0006 | Release Manifest Generator | 3+ | not_started | Gate 9 |
+| TC-0007 | Specification Cache Tooling | 1 | not_started — generic tooling only; no spec download until T3 conditions met | Phase 0 acceptance |
+| TC-0008 | Memory Sync Command | 1+ | not_started — planned capability only | Phase 0 acceptance |
+| TC-0009 | FODS Phase 2 Spec and Legal Evidence | 2 | **not_started** — active; awaiting explicit Phase 2 execution prompt | Gate 1 passed |
 
-All taskcards are in `taskcards/` as Markdown files. Current status is Phase 0 pending — none may begin until Phase 0 is accepted.
+All taskcards are in `taskcards/` as Markdown files. Current phase is Phase 2. TC-0009 is the active taskcard.
 
 ---
 
@@ -705,7 +708,7 @@ All taskcards are in `taskcards/` as Markdown files. Current status is Phase 0 p
 
 ### Current Blockers
 
-*(None — G-001 and G-002 resolved by run015. Next blocker: Gate 1 human approval for FODS.)*
+*(None — G-001 and G-002 resolved by run015. Gate 1 passed by Babar Raza (run017, 2026-05-04). Next required action: explicit Phase 2 execution prompt for TC-0009 Gate 2 spec and legal evidence work.)*
 
 ### Resolved Phase Blockers
 
@@ -767,7 +770,27 @@ All taskcards are in `taskcards/` as Markdown files. Current status is Phase 0 p
 
 | G-HEAL-015 | Product source layout in governance docs used obsolete paths `src/python/open-source/`, `src/dotnet/open-source/`, `src/dotnet/commercial/` instead of the intended format-first layout `src/python/{format}/`, `src/net/{format}/`. The old paths were present in plans/master-plan.md, docs/architecture.md, docs/product-tracks.md, AGENTS.md, GOVERNANCE.md, docs/release-control.md, docs/gates.md, docs/security.md, docs/acquisition-workflow.md, src/dotnet/_readme.md, src/python/_readme.md, and taskcards. Memory files correctly described the expected layout but the master plan had not been updated. | RESOLVED | run011 — All governance and architecture files updated with format-first layout. Old paths marked obsolete. DEC-031, DEC-032, DEC-033 added. G-020 logged for .NET FOSS packaging decision. |
 
-All fifteen healing gaps confirmed resolved. Verification conditions:
+| G-HEAL-016 | Agent review items (Gate 1 scoring, Phase 0 acceptance) were presented for human approval without independent verification sprint. No governance rule existed requiring pre-review verification. | RESOLVED | run016 — DEC-034 added (independent verification before human review). AGENTS.md Section V added (V1-V5). GOVERNANCE.md Section 15 added (15.1-15.5). Memory files updated. |
+
+| G-HEAL-017 | Gate 1 approval was pending (all pre-conditions met in run016) but no commit had been made to record it. Registry still showed scored_pending_human_approval. | RESOLVED | run017 — Gate 1 approved by Babar Raza (2026-05-04). Registry gate_1.status: passed. TC-0001 closed. acquisition-packs/fods/ skeleton created. TC-0009 created. Commit c79f2d1 made. |
+
+| G-HEAL-018 | Section 23 (Pilot Recommendation) still contained stale language "Formal Gate 1 scoring has not yet been performed. TC-0001 will compute the formal score in Phase 1A. No pre-score is authoritative." and "No FODS-specific work before Gate 1." — written in Phase 0 and never updated after Gate 1 passage. | RESOLVED | run018 — Section 23 updated with Gate 1 completion record. |
+
+| G-HEAL-019 | Section 25 (Active Taskcards) still showed TC-0001 as "Pending — awaits Phase 0 acceptance" and all other TCs as "Pending". TC-0009 was missing from the table. The final line still said "Current status is Phase 0 pending". | RESOLVED | run018 — Section 25 updated: TC-0001 completed, TC-0009 added (not_started, active), all others not_started. |
+
+| G-HEAL-020 | Section 27 Current Blockers still said "Next blocker: Gate 1 human approval for FODS" — Gate 1 was passed in run017. | RESOLVED | run018 — Section 27 Current Blockers updated to reflect Gate 1 passed; next action is Phase 2 execution prompt. |
+
+| G-HEAL-021 | master-plan.md footer still said "version 2.7 — 2026-05-03" — written in run010 when the plan was v2.7 and never updated by subsequent runs despite the header advancing to v2.13. | RESOLVED | run018 — footer updated to v2.14 — 2026-05-04. |
+
+| G-HEAL-022 | README.md Project Status section still said "Current phase: Phase 0 — Foundation" and "No format-specific content exists yet." — written in Phase 0 and never updated. | RESOLVED | run018 — README.md updated to Phase 2 status. |
+
+| G-HEAL-023 | ROADMAP.md Phase 0 section still said "Status: In progress." and "Phase 0: Foundation (Current)" — written in Phase 0 and never updated. Phase 1 exit condition incorrectly required "endpoint client implemented" alongside Gate 1 passage; endpoint client is infrastructure work not required for Gate 1. | RESOLVED | run018 — ROADMAP.md Phase 0 status updated to Complete; Phase 1 exit condition corrected; Phase 2 marked Current. |
+
+| G-HEAL-024 | .claude/settings.json still said phase: "0" and "PHASE 0 CONSERVATIVE MODE" and had acquisition-packs/fods/** in the deny list — all stale since Phase 2 began and run017 authorized acquisition pack work. | RESOLVED | run018 — settings.json updated to Phase 2 conservative mode. acquisition-packs/fods/** moved to allow list. Dangerous paths remain denied. |
+
+| G-HEAL-025 | Section 33 Commit Policy still said "Include only Phase 0 foundation files" for the next commit — stale; multiple commits have been made since Phase 0. | RESOLVED | run018 — Section 33 updated to reflect current commit history. |
+
+All twenty-five healing gaps confirmed resolved. Verification conditions:
 - G-HEAL-001: run002 bundle contains all 11 bundle-metadata files. Confirmed by validation script.
 - G-HEAL-002: run002 bundle has no `ocal/` entries. Confirmed by validation script.
 - G-HEAL-003: `docs/release-control.md` has "Hybrid Classification Policy" section. `AGENTS.md` has Section F (F1–F7).
@@ -909,7 +932,8 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 1. **Completed (run015):** Phase 0 accepted (all 36 checks passed). Phase 0 baseline commit made. Phase 1A: FODS scored 93/100 (Accept band). Registry entry created (gate_1: scored_pending_human_approval). TC-0001 updated. Evidence bundle created.
 2. **Completed (run016):** Independent verification sprint. All run015 claims verified. DEC-034 added. AGENTS.md Section V + question 15. GOVERNANCE.md Section 15. Evidence bundle produced.
 3. **Completed (run017):** Gate 1 approved by Babar Raza (2026-05-04). Registry updated (gate_1: passed). TC-0001 closed. acquisition-packs/fods/ skeleton created (5 files). TC-0009 created (Phase 2 taskcard, not_started). run016+run017 changes committed. Evidence bundle produced. master-plan.md v2.13.
-4. **Next required action:** Human issues Phase 2 execution prompt to begin TC-0009 Gate 2 spec and legal evidence work for FODS.
+4. **Completed (run018):** State reconciliation. Stale Sections 23, 25, 27, 28, 33, footer healed. README.md and ROADMAP.md Phase 0/2 status updated. `.claude/settings.json` advanced to Phase 2 conservative mode. G-HEAL-018 through G-HEAL-025 resolved. No Gate 2 evidence work performed. No commit made.
+5. **Next required action:** Human issues Phase 2 execution prompt to begin TC-0009 Gate 2 spec and legal evidence work for FODS.
 
 **Gate 2 approval for FODS is a human-only action. Agent cannot self-approve.**
 
@@ -934,20 +958,25 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 | run015 | 2026-05-04 | Combined sprint: Phase 0 acceptance + baseline commit + Phase 1A FODS scoring | Phase 0 accepted (all 36 checks PASS); G-001/G-002 closed; Phase 0 baseline commit made; FODS scored 93/100 (Accept band); registry entry created (gate_1: scored_pending_human_approval); TC-0001 updated; master-plan.md v2.11 |
 | run016 | 2026-05-04 | Independent verification sprint for run015 Phase 0 acceptance, commit c9d02da, FODS Gate 1 scoring, and governance rule addition | Phase 0 acceptance independently verified (all 36 checks PASS). Commit c9d02da verified (61 files, no forbidden paths, no secrets). FODS scoring independently verified (93/100 math confirmed, 7-factor weights correct, status correctly scored_pending_human_approval, no self-approval). Source claims reviewed (all PLAUSIBLE or SUPPORTED; none OVERSTATED or FABRICATED). New governance rule added (DEC-034): agent-requested human review requires independent agent verification sprint first. AGENTS.md Section V added. GOVERNANCE.md Section 15 added. Memory files updated. master-plan.md v2.12 |
 | run017 | 2026-05-04 | Gate 1 approval and Phase 2 setup | Gate 1 approved by Babar Raza (2026-05-04). Registry gate_1.status set to passed. TC-0001 closed. acquisition-packs/fods/ skeleton created (5 files: pack.yaml, spec-evidence.md, legal-notes.md, sample-sources.md, parser-notes.md). TC-0009 created (Phase 2, not_started). run016+run017 changes committed. Evidence bundle produced (full-width). master-plan.md v2.13 |
+| run018 | 2026-05-04 | State reconciliation — stale docs and settings healed | Verified actual repo state. Registered G-HEAL-018 through G-HEAL-025. Fixed Section 23 (stale pilot text), Section 25 (stale taskcard table), Section 27 (stale blocker), Section 28 (added G-HEAL-016 through G-HEAL-025), Section 33 (stale commit policy), footer (v2.7→v2.14). Fixed README.md (Phase 0→Phase 2 status). Fixed ROADMAP.md (Phase 0 In progress→Complete; Phase 2 Current; corrected Phase 1 exit condition). Updated .claude/settings.json to Phase 2 conservative mode. No Gate 2 evidence work. No commit made. master-plan.md v2.14 |
 
 ---
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** run017 — run016+run017 changes (AGENTS.md Section V, GOVERNANCE.md Section 15, registry Gate 1 approval, TC-0001 closed, acquisition-packs/fods/ skeleton, TC-0009, master-plan.md v2.13, memory files).
+**Latest commit:** c79f2d1 (run017) — "chore: approve FODS Gate 1 and start Phase 2 planning"
 
-**Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative — even if it believes the work is complete.
+**Committed so far:**
+- c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
+- c79f2d1 (run017): Gate 1 approval, acquisition-packs/fods/ skeleton, TC-0009, AGENTS.md Section V, GOVERNANCE.md Section 15, memory updates
 
-When a commit is eventually requested, it will:
-- Include only the Phase 0 foundation files
-- Exclude all `.local/` contents
-- Exclude `.env`
-- Have a commit message reviewed by the human before execution
+**Uncommitted run018 changes:**
+- plans/master-plan.md (v2.14)
+- README.md
+- ROADMAP.md
+- .claude/settings.json
+
+**Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative — even if it believes the work is complete. run018 changes are NOT committed.
 
 ---
 
@@ -1022,5 +1051,5 @@ TC-0008 defines a planned `/sync-memory` command for Phase 1 or later. It will c
 
 ---
 
-*End of plans/master-plan.md — version 2.7 — 2026-05-03*
+*End of plans/master-plan.md — version 2.14 — 2026-05-04*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

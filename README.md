@@ -16,8 +16,8 @@ The project never engages in unauthorized binary reverse engineering, bypasses a
 
 | Track | Technology | License | Status |
 |---|---|---|---|
-| Python open-source library | Python 3.11+ | Apache 2.0 | Phase 0 — no formats released yet |
-| .NET product library | net8.0, net10.0 | Proprietary (FOSS packaging deferred — DEC-033) | Phase 0 — no formats released yet |
+| Python open-source library | Python 3.11+ | Apache 2.0 | No release yet — source not created (Phase 4+) |
+| .NET product library | net8.0, net10.0 | Proprietary (FOSS packaging deferred — DEC-033) | No release yet — source not created (Phase 4+) |
 
 Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{format}/` for .NET product.
 
@@ -25,7 +25,11 @@ Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{form
 
 ## First Pilot: FODS
 
-The first format to be acquired is **FODS** — Flat OpenDocument Spreadsheet — a flat XML variant of the ODF spreadsheet format. FODS is published by OASIS under royalty-free terms as part of ODF 1.3. It is a suitable pilot format: single-file XML, well-documented specification, no ZIP complexity, permissive license.
+**Gate 1 passed — 2026-05-04. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
+
+**FODS** — Flat OpenDocument Spreadsheet — is the active pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. Single-file XML, well-documented specification, no ZIP complexity, permissive license.
+
+Phase 2 (Spec and Legal Evidence) is next. The acquisition pack skeleton exists at `acquisition-packs/fods/`. Phase 2 execution requires an explicit human prompt.
 
 ---
 
@@ -64,9 +68,12 @@ Every format passes through 11 mandatory gates before any product code is writte
 
 ## Project Status
 
-**Current phase:** Phase 0 — Foundation
+**Current phase:** Phase 2 — FODS Spec and Legal Evidence (active pilot: FODS)
 
-Phase 0 creates governance, policy, folder structure, and templates. No format-specific content exists yet. No product code exists yet.
+- Phase 0 (Foundation): Complete — accepted 2026-05-04
+- Phase 1A (Scoring): Complete — FODS scored 93/100, Accept band
+- Phase 1B (Gate 1): Complete — Gate 1 passed, approved by Babar Raza, 2026-05-04
+- Phase 2 (Spec + Legal Evidence): Active — awaiting Phase 2 execution prompt
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md).
 

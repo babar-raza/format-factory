@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-03
+**Last reviewed:** 2026-05-04
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
 
 ---
@@ -13,14 +13,14 @@ The project proceeds through five phases. Each phase has a clear entry condition
 | Phase | Name | Entry Condition | Exit Condition |
 |---|---|---|---|
 | 0 | Foundation | Repository created | All 41 foundation files exist, human-reviewed |
-| 1 | Gate 1 — FODS Scoring | Phase 0 complete | FODS passes Gate 1; endpoint client implemented |
+| 1 | Gate 1 — FODS Scoring | Phase 0 complete | FODS passes Gate 1 (human approval recorded in registry) |
 | 2 | Gates 2-3 — FODS Evidence and Samples | Gate 1 passed | FODS passes Gate 3 |
 | 3 | Gates 4-9 — FODS Prototype through Security | Gate 3 passed | FODS passes Gate 9 |
 | 4+ | Gates 10-11 — FODS Product and Release | Gate 9 passed | FODS product shipped in at least one track |
 
 ---
 
-## Phase 0: Foundation (Current)
+## Phase 0: Foundation (Complete)
 
 **Goal:** Establish governance, policy, folder structure, and templates before any format-specific work begins.
 
@@ -46,11 +46,11 @@ The project proceeds through five phases. Each phase has a clear entry condition
 - Project command files (beyond `_readme.md`)
 - CI workflows
 
-**Status:** In progress.
+**Status:** Complete — accepted 2026-05-04 (run015). All 45 foundation files exist and human-reviewed.
 
 ---
 
-## Phase 1: Gate 1 — FODS Scoring
+## Phase 1: Gate 1 — FODS Scoring (Complete)
 
 **Goal:** Score FODS against the scoring model, pass Gate 1, and implement the infrastructure needed for LLM-assisted evidence work.
 
@@ -65,9 +65,11 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Exit condition:** Gate 1 passed for FODS (human approval recorded in registry).
 
+**Status:** Complete — Gate 1 passed 2026-05-04, approved by Babar Raza. FODS score: 93/100, Accept band. run015/run016/run017.
+
 ---
 
-## Phase 2: Gates 2-3 — FODS Evidence and Samples
+## Phase 2: Gates 2-3 — FODS Evidence and Samples (Current)
 
 **Goal:** Complete legal review, spec analysis, and sample acquisition for FODS.
 

@@ -13,7 +13,7 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 
 This file captures the current state after run017. Phase 0 has been accepted. Phase 1A FODS scoring is complete. Gate 1 has been approved by Babar Raza. Phase 2 (FODS Spec and Legal Evidence Planning) is now active — awaiting an explicit Phase 2 execution prompt.
 
-**Last updated:** run017 (Gate 1 approved by Babar Raza; acquisition-packs/fods/ skeleton created; TC-0009 created; combined run016+run017 commit made; master-plan.md v2.13).
+**Last updated:** run018 (state reconciliation sprint: README.md, ROADMAP.md, .claude/settings.json Phase 0→2, master-plan.md v2.14; 10 G-HEAL healing gaps registered; no commit).
 
 ## Current status
 
