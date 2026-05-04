@@ -1,0 +1,275 @@
+# Gate Model
+
+**Document type:** Process Reference — Phase 0 Foundation
+**Last reviewed:** 2026-05-04 (run014: global audit — content verified consistent with current governance)
+**Authority:** This document defines all 11 acquisition gates: their pass criteria, required artifacts, authorization rules, and fast-path options. No gate may be bypassed. All gates require human approval.
+
+---
+
+## Purpose
+
+Gates are mandatory checkpoints that a format must pass before work at the next stage may begin. They enforce quality, legal safety, security, and release readiness at defined points in the acquisition pipeline. Gates cannot be self-approved by an agent. Human review and sign-off is required for every gate.
+
+---
+
+## Gate Authorization Rules
+
+1. **No self-approval.** An agent that completes the work required for a gate may NOT mark the gate as passed. It must request human review.
+2. **Human sign-off required.** A human must explicitly record gate passage in `registry/format-registry.yaml` by setting `gate_N_status: passed` and `gate_N_approved_by: <name>` and `gate_N_approved_date: <ISO-8601 date>`.
+3. **Sequential progression.** A format may not begin Stage N+1 work until Gate N has been passed and recorded in the registry.
+4. **No retroactive approval.** Artifacts produced before a preceding gate was passed do not count toward the later gate. For example, a prototype started before Gate 3 was passed does not satisfy Gate 4.
+5. **Master plan update required.** After any gate passage, `plans/master-plan.md` must be updated with the gate history entry before the format proceeds to the next stage.
+
+---
+
+## Gate 1: Candidate Accepted
+
+**Stage:** Candidate Scoring
+
+**Pass criteria:**
+1. The format has been scored using the model in `registry/scoring/_scoring-model.md`.
+2. The weighted total score places the format in the "accept" band (see scoring model for thresholds).
+3. The format has been assigned a legal category (Categories 1-4 only; Categories 5-6 are automatic rejects).
+4. Score is not 0 on any single dimension that triggers automatic rejection (legal safety).
+5. A registry entry exists in `registry/format-registry.yaml` with format-id, family, tier target, legal category, and scoring notes.
+
+**Required artifacts:**
+- Registry entry in `registry/format-registry.yaml`
+- Completed scoring sheet (embedded in registry entry or linked acquisition pack)
+
+**Fast-path:** None. All Gate 1 evaluations require the scoring model to be applied.
+
+**Automatic rejects:**
+- Legal Category 5 (reverse-engineered binary): reject regardless of other scores.
+- Legal Category 6 (blocked): reject, record reason in registry.
+- Score 0 on the legal safety dimension: reject regardless of total score.
+
+---
+
+## Gate 2: Evidence Complete
+
+**Stage:** Evidence Gathering
+
+**Pass criteria:**
+1. `spec-evidence.md` exists in `acquisition-packs/<format-id>/` and has been populated with: primary source URL, specification version, date accessed, source hash (SHA-256), key sections and their relevance, and a summary of the parsing approach.
+2. The primary source is an official specification from the recognized standard body or rights holder — not a secondary analysis or blog post.
+3. `legal-notes.md` exists and has been populated with: legal category confirmation, citation of the specific permission grant or standard body publication, patent risk assessment (for non-Category 1 formats), and project lead sign-off.
+4. For Category 1 (open standard RF) formats: fast-path approval is available. See fast-path rules below.
+5. For all other categories: full legal review notes must be present with project lead sign-off.
+
+**Required artifacts:**
+- `acquisition-packs/<format-id>/spec-evidence.md` (with source hash and spec version)
+- `acquisition-packs/<format-id>/legal-notes.md` (with sign-off)
+
+**Fast-path (Category 1 only):**
+If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing.md`, the project lead may self-approve Gate 2 with a brief rationale in `legal-notes.md`. No external legal review required. The fast-path requires: (1) documented RF license citation, (2) named standard body, (3) date reviewed, (4) project lead sign-off.
+
+---
+
+## Gate 3: Sample Corpus Ready
+
+**Stage:** Sample Acquisition
+
+**Pass criteria:**
+1. A minimum sample corpus exists in `samples/by-format/<format-id>/` covering: minimal valid file, empty/trivial file, file with all core data structures present, at least one edge-case file.
+2. Every sample in the corpus has a `_provenance.yaml` entry with `provenance_status: confirmed`.
+3. Every sample's license is in the acceptable licenses list in `docs/legal-and-licensing.md`.
+4. No sample has `visibility: blocked` (blocked samples may not be used in the corpus).
+5. All provenance entries have been human-reviewed.
+
+**Required artifacts:**
+- `samples/by-format/<format-id>/` directory with corpus files
+- `_provenance.yaml` entries for all samples
+
+**Fast-path:** None. All sample provenance must be confirmed.
+
+---
+
+## Gate 4: Prototype Complete
+
+**Stage:** Prototype Development
+
+**Pass criteria:**
+1. A working prototype parser exists in `prototypes/by-format/<format-id>/`.
+2. The prototype correctly parses all samples in the corpus from Gate 3 without crashing.
+3. The prototype README documents: parsing approach, key decisions, known limitations, and security mitigations applied (per `docs/security.md`).
+4. The prototype demonstrates that XXE and entity expansion mitigations are in place (for XML-based formats).
+5. The prototype has been human-reviewed for correctness and security baseline.
+
+**Required artifacts:**
+- `prototypes/by-format/<format-id>/` with parser source code
+- Prototype README with security section
+
+**Fast-path:** None. Human review is required for prototype correctness and security baseline.
+
+---
+
+## Gate 5: Neutral Model Defined
+
+**Stage:** Neutral Model Design
+
+**Pass criteria:**
+1. A neutral model schema exists in `schemas/neutral-model/<format-family>/` that can represent all core data from this format without being tied to the format's encoding.
+2. The neutral model has been validated: all samples in the corpus can be represented in the neutral model without data loss.
+3. The neutral model schema is documented with field descriptions and any constraints.
+4. For format families that already have a neutral model (e.g., a second Cells format after ODS/FODS), the new format has been verified to be representable by the existing neutral model (or the model has been extended with a documented rationale).
+5. Human review and sign-off recorded.
+
+**Required artifacts:**
+- `schemas/neutral-model/<format-family>/<schema-file>`
+- Neutral model validation notes in the acquisition pack
+
+---
+
+## Gate 6: Oracle Comparison Complete
+
+**Stage:** Oracle Comparison
+
+**Pass criteria:**
+1. An oracle tool has been selected and its version recorded.
+2. All samples in the corpus have been loaded with the oracle tool and with the prototype parser.
+3. An oracle comparison report exists at `reports/<format-id>-oracle.md` documenting all discrepancies.
+4. Every discrepancy has been classified: prototype bug (fixed), spec ambiguity (documented), or oracle deviation from spec (documented).
+5. No unresolved data-loss discrepancies remain. Minor presentation differences are acceptable.
+6. Human review of the comparison report recorded.
+
+**Required artifacts:**
+- `reports/<format-id>-oracle.md`
+
+---
+
+## Gate 7: Fuzz Testing Complete
+
+**Stage:** Fuzz Testing
+
+**Pass criteria:**
+1. Fuzz seeds exist in `tests/fuzz/<format-id>/` covering the required seed types (minimal valid, empty, truncated, illegal values, oversized fields).
+2. The prototype parser has been run against the fuzz corpus for the minimum iteration count: 10,000 for XML formats; 100,000 for binary formats.
+3. All crashes have been documented in `reports/security/<format-id>.md` with: input characterization, stack trace, root cause, and mitigation.
+4. No unmitigated crashes that could result in arbitrary code execution, uncontrolled memory exhaustion, or file system writes outside the output directory remain.
+5. Human review of the fuzz report recorded.
+
+**Required artifacts:**
+- `tests/fuzz/<format-id>/` with seed files
+- `reports/security/<format-id>.md` with fuzz results section
+
+---
+
+## Gate 8: Security Review Complete
+
+**Stage:** Security Review
+
+**Pass criteria:**
+1. The security report in `reports/security/<format-id>.md` covers all applicable threat categories from `docs/security.md`.
+2. Each threat category is marked as: mitigated (with implementation notes), explicitly deferred (with rationale), or not applicable (with rationale).
+3. A human security reviewer has signed off on the security report by populating the `sign-off` field with their name and the review date.
+4. No residual risks are classified as "unacceptable." Accepted residual risks are documented.
+5. For prototype-phase reviews: the reviewer may be the project lead. A dedicated security reviewer is recommended at Gate 10.
+
+**Required artifacts:**
+- `reports/security/<format-id>.md` with sign-off field populated
+
+**Note:** Gate 8 requires human sign-off. An agent cannot approve Gate 8.
+
+---
+
+## Gate 9: Product Mapping Complete
+
+**Stage:** Product Mapping
+
+**Pass criteria:**
+1. All features of the format have been assigned to tiers 0-6 using the model in `docs/product-tracks.md`.
+2. A delivery plan exists in the acquisition pack specifying which features ship in the first OSS release and which are deferred.
+3. Tier assignments are recorded in `registry/format-registry.yaml`.
+4. Any features assigned to Tier 5-6 (commercial) are explicitly noted with a deferral condition (Gate 10 + DD3 + explicit commercial implementation prompt).
+5. Implementation taskcards for the Phase 4 OSS implementation work have been created based on the delivery plan.
+6. Human review and sign-off recorded.
+
+**Required artifacts:**
+- Updated `registry/format-registry.yaml` with tier map
+- Delivery plan in acquisition pack
+- Phase 4 OSS implementation taskcards
+
+**Note on implementation authorization:** Gate 9 approval, combined with an explicit Phase 4 implementation execution prompt issued by a human, authorizes creation of `src/python/{format}/` and `src/net/{format}/`. Gate 9 alone does not create product source — it creates the delivery plan and implementation taskcards that enable Phase 4 execution. No product source may be written before both conditions are met. **Obsolete paths:** `src/python/open-source/` and `src/dotnet/open-source/` are not the target layout and must not be created.
+
+---
+
+## Gate 10: OSS Readiness Complete
+
+**Stage:** Open-Source Release Preparation
+
+**Pass criteria:**
+1. Production-quality Python source code exists in `src/python/{format}/` for Tier 0-4 features in the delivery plan, and/or .NET source code exists in `src/net/{format}/` for the implemented tiers.
+2. Unit tests and integration tests exist in `tests/` for the implemented features.
+3. A release manifest has been generated listing all artifacts with visibility, license, and provenance status.
+4. Human review of the release manifest: no `commercial`, `blocked`, or unreviewed `generated` artifacts present.
+5. The open-source solution has been built in isolation (boundary check): zero commercial namespace references confirmed.
+6. All samples used in tests have `provenance_status: confirmed` with a compatible open-source license.
+7. `registry/format-registry.yaml` updated with `gate_10_status: passed`.
+
+**Required artifacts:**
+- `src/python/{format}/` (Python FOSS) and/or `src/net/{format}/` (.NET product) with production source
+- `tests/` with passing tests
+- Release manifest (YAML) with human sign-off
+
+**Gate 10 is the gate that changes format-registry.yaml visibility from `internal` to `public`.**
+
+**Gate 10 semantics:** Gate 10 is OSS release readiness, not the authorization to start writing product source. OSS source writing begins after Gate 9 human approval and an explicit Phase 4 OSS implementation execution prompt. Gate 10 approves the completed OSS implementation as production-ready. The source code required by criteria 1 above is written during Phase 4 execution sessions (between Gate 9 and Gate 10), not as a consequence of Gate 10 passage.
+
+---
+
+## Gate 11: Commercial Readiness Complete
+
+**Stage:** Commercial Release Preparation
+
+**Precondition:** Gate 10 passed AND Decision DD3 (commercial isolation) formally resolved AND commercial implementation taskcards exist AND explicit commercial implementation execution prompt issued.
+
+**Pass criteria:**
+1. Commercial-tier source code exists within `src/net/{format}/` for all Tier 5-6 features in the delivery plan.
+2. One-way dependency verified: no open-source project references commercial projects.
+3. Commercial release manifest generated: correct proprietary license headers, no open-source-only content in commercial tier.
+4. Human review of commercial manifest with commercial product lead sign-off.
+5. Legal review of commercial license terms.
+6. `registry/format-registry.yaml` updated with `gate_11_status: passed`.
+
+**Required artifacts:**
+- Commercial-tier source within `src/net/{format}/` (e.g. `src/net/fods/`)
+- Commercial release manifest with sign-off
+
+**Gate 11 semantics:** Gate 11 is commercial release readiness, not the authorization to start writing commercial source. Commercial source writing begins after Gate 10 is passed, DD3 is resolved, commercial implementation taskcards exist, and the human issues an explicit commercial implementation execution prompt. Gate 11 approves the completed commercial implementation for release. The commercial source required by criterion 1 above is written during commercial implementation sessions (after the explicit commercial prompt), not as a consequence of Gate 11 passage.
+
+---
+
+## Gate Status Fields in Registry
+
+Every format entry in `registry/format-registry.yaml` includes gate status fields:
+
+```yaml
+gates:
+  gate_1:
+    status: passed | failed | not_started
+    approved_by: <name>
+    approved_date: <ISO-8601>
+    notes: <optional>
+  gate_2:
+    status: passed | failed | not_started
+    approved_by: <name>
+    approved_date: <ISO-8601>
+    fast_path: true | false
+    notes: <optional>
+  # ... gate_3 through gate_11
+```
+
+An agent must update `gate_N.status` to `passed` only after human approval has been confirmed and `approved_by` + `approved_date` have been recorded. An agent must never set `status: passed` without human confirmation.
+
+---
+
+## Relationship to Other Documents
+
+- `docs/acquisition-workflow.md` — stage-by-stage workflow with reuse rules
+- `docs/security.md` — Gate 7 and Gate 8 criteria detail
+- `docs/legal-and-licensing.md` — Gate 2 fast-path rules and legal categories
+- `docs/product-tracks.md` — Gate 9, 10, 11 tier model and boundary check
+- `docs/release-control.md` — release manifest requirements for Gate 10 and 11
+- `registry/scoring/_scoring-model.md` — Gate 1 scoring criteria
+- `plans/master-plan.md` — gate history for all in-flight formats

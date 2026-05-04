@@ -1,0 +1,164 @@
+# Roadmap
+
+**Document type:** Governance — Phase 0 Foundation
+**Last reviewed:** 2026-05-03
+**Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
+
+---
+
+## Phase Model
+
+The project proceeds through five phases. Each phase has a clear entry condition and exit condition. Work in a later phase requires all earlier phases to be complete for the relevant format.
+
+| Phase | Name | Entry Condition | Exit Condition |
+|---|---|---|---|
+| 0 | Foundation | Repository created | All 41 foundation files exist, human-reviewed |
+| 1 | Gate 1 — FODS Scoring | Phase 0 complete | FODS passes Gate 1; endpoint client implemented |
+| 2 | Gates 2-3 — FODS Evidence and Samples | Gate 1 passed | FODS passes Gate 3 |
+| 3 | Gates 4-9 — FODS Prototype through Security | Gate 3 passed | FODS passes Gate 9 |
+| 4+ | Gates 10-11 — FODS Product and Release | Gate 9 passed | FODS product shipped in at least one track |
+
+---
+
+## Phase 0: Foundation (Current)
+
+**Goal:** Establish governance, policy, folder structure, and templates before any format-specific work begins.
+
+**Deliverables:**
+- All governance documents (`AGENTS.md`, `GOVERNANCE.md`, `ROADMAP.md`, `README.md`)
+- All policy documents in `docs/` (architecture, product tracks, acquisition workflow, gates, security, legal, release control, LLM endpoint strategy)
+- Registry skeleton (`registry/format-registry.yaml` — no format entries)
+- Scoring model (`registry/scoring/_scoring-model.md`)
+- Acquisition pack template (`acquisition-packs/_template/`)
+- Sample policy and empty provenance skeleton (`samples/`)
+- Taskcards for next phase work (TC-0001 through TC-0006)
+- Configuration files (`.gitignore`, `.env.example`, `.claude/settings.json`, `tools/llm/endpoints.yaml`)
+- Directory orientation `_readme.md` files for all top-level directories
+- Living master plan (`plans/master-plan.md`)
+
+**Not in Phase 0:**
+- FODS registry entry
+- Any acquisition pack (beyond template)
+- Any sample files
+- Any prototype code
+- Any product source code
+- LLM endpoint client code
+- Project command files (beyond `_readme.md`)
+- CI workflows
+
+**Status:** In progress.
+
+---
+
+## Phase 1: Gate 1 — FODS Scoring
+
+**Goal:** Score FODS against the scoring model, pass Gate 1, and implement the infrastructure needed for LLM-assisted evidence work.
+
+**Deliverables:**
+- FODS registry entry in `registry/format-registry.yaml` with Gate 1 passage recorded
+- LLM endpoint client code in `tools/llm/` (TC-0005)
+- `tools/llm/model-selection.yaml`
+- Local artifact index bootstrap (`.local/artifact-index.yaml`)
+- Project commands in `.claude/commands/` (TC-0004): `/score-format`, `/create-acquisition-pack`, `/check-gate`, `/create-taskcard`
+
+**Entry condition:** Phase 0 complete and human-reviewed.
+
+**Exit condition:** Gate 1 passed for FODS (human approval recorded in registry).
+
+---
+
+## Phase 2: Gates 2-3 — FODS Evidence and Samples
+
+**Goal:** Complete legal review, spec analysis, and sample acquisition for FODS.
+
+**Deliverables:**
+- `acquisition-packs/fods/spec-evidence.md` (Gate 2)
+- `acquisition-packs/fods/legal-notes.md` with fast-path approval (Gate 2)
+- `samples/by-format/fods/` with minimum 4 samples (Gate 3)
+- Provenance entries for all FODS samples (Gate 3)
+
+**Entry condition:** Gate 1 passed for FODS.
+
+**Exit condition:** Gate 3 passed for FODS (human approval recorded in registry).
+
+---
+
+## Phase 3: Gates 4-9 — FODS Prototype through Security Review
+
+**Goal:** Build a working FODS parser, validate it against the oracle, fuzz it, and complete security review.
+
+**Deliverables:**
+- `prototypes/by-format/fods/` with Python prototype parser (Gate 4)
+- `schemas/neutral-model/cells/` with neutral-model schema (Gate 5)
+- Oracle comparison report for FODS (Gate 6)
+- Fuzz seeds in `tests/fuzz/fods/` (Gate 7)
+- Security report in `reports/security/fods.md` with sign-off (Gate 8)
+- FODS tier map and delivery plan in acquisition pack (Gate 9)
+
+**Entry condition:** Gate 3 passed for FODS.
+
+**Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
+
+---
+
+## Phase 4+: Gates 10-11 — FODS Product and Release
+
+**Goal:** Ship FODS support in at least one open-source product track.
+
+**Deliverables:**
+- Production Python FOSS source in `src/python/fods/` and/or .NET product source in `src/net/fods/` (Gate 10, format-first layout)
+- Passing test suite (Gate 10)
+- Release manifest with human sign-off (Gate 10)
+- Open-source release of Python FOSS tier (Gate 10)
+- .NET FOSS packaging strategy resolved (DEC-033, required before Gate 10 .NET release)
+- Commercial-tier source within `src/net/fods/` (Gate 11, deferred until DD3 resolved)
+
+**Entry condition:** Gate 9 passed for FODS.
+
+**Exit condition:** FODS ships in at least one open-source product track.
+
+---
+
+## Beyond FODS: Subsequent Formats
+
+After FODS, subsequent formats are scored and acquired in priority order as determined by the scoring model. The second acquisition is expected to be another format in the Cells family (ODS or XLSX) to build on the neutral model established for FODS. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
+
+The format registry (`registry/format-registry.yaml`) is the authoritative record of which formats are in-flight, deferred, or rejected.
+
+---
+
+## WIP Limits
+
+To prevent work in progress from spreading across too many formats simultaneously:
+
+- Maximum 1 format in Gates 7-9 (security-intensive) at a time.
+- Maximum 2 formats in Gates 4-6 (prototype-intensive) at a time.
+- Maximum 3 formats in Gates 1-3 (evidence-intensive) at a time.
+- No limit on formats scored but not yet accepted (scoring is lightweight).
+
+WIP limit violations require project lead approval to proceed.
+
+---
+
+## Infrastructure Milestones
+
+Alongside format acquisition, several infrastructure milestones are tracked:
+
+| Milestone | Phase | Taskcard |
+|---|---|---|
+| LLM endpoint client implemented | Phase 1 | TC-0005 |
+| Project commands implemented | Phase 1 | TC-0004 |
+| Artifact index bootstrap | Phase 1 | TC-0005 |
+| Release manifest generator | Phase 3+ | TC-0006 |
+| CI boundary check | Phase 4+ | (future taskcard) |
+| SQLite artifact index | Phase 3+ if needed | Decision DEC-020 |
+
+---
+
+## Relationship to Other Documents
+
+- `plans/master-plan.md` — current operational state (actual progress, not plan)
+- `docs/gates.md` — gate pass criteria
+- `docs/acquisition-workflow.md` — stage-by-stage workflow
+- `registry/format-registry.yaml` — which formats are active and at which gate
+- `taskcards/` — work units for current and upcoming phases

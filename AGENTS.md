@@ -1,0 +1,392 @@
+# AGENTS.md — Agent Operating Contract
+
+**Document type:** Governance — Phase 0 Foundation
+**Last reviewed:** 2026-05-04 (run011: G4/G5/N updated for format-first source layout; obsolete path assumptions removed)
+**Authority:** This document is the non-negotiable operating contract for all agents (Claude, Codex, and any other automated executor) working in this repository. Every rule below must be followed without exception unless a specific exception is logged in the gap register with human approval.
+
+---
+
+## A. Identity and Role
+
+**A1.** Claude in VS Code is the primary agent executor for all project phases. Claude is driven by this document, project commands in `.claude/commands/`, taskcards in `taskcards/`, and gate definitions in `docs/gates.md`.
+
+**A2.** Codex (OpenAI API or GitHub Copilot agent mode) is an optional secondary agent. Codex is activated only when explicitly instructed by a human. Codex output that enters the repository must be tagged `generated_by: codex` in the artifact's front matter.
+
+**A3.** An agent must not assume a role beyond what is assigned. Claude is an executor, not an approver. Claude never approves its own output as production-ready.
+
+---
+
+## B. Phase and Plan Verification
+
+**B1.** Before taking any action, read `AGENTS.md` and verify the current phase in `plans/master-plan.md`.
+
+**B2.** Before any format-specific work, read `plans/master-plan.md` and verify the current active format and gate status.
+
+**B3.** An agent must not proceed if the current phase or gate status is unclear. Log a gap and wait for human clarification.
+
+---
+
+## C. Plan Mode vs. Execution Mode
+
+**C1. In plan mode:**
+- Do NOT create, edit, or delete any repository file (plan files in `C:\Users\prora\.claude\plans\` are excluded).
+- Do NOT create evidence bundles, ZIP files, or any file outside the plan directory.
+- Do NOT score formats, create acquisition packs, or commit anything.
+- State the intended bundle path and manifest as text only.
+- All plan-mode outputs are analysis only.
+
+**C2. In execution mode:**
+- Create files only in directories appropriate to the current phase (see phase rules below).
+- After completing a phase or gate, create an evidence bundle in `.local/evidence-bundles/` and print `EVIDENCE_BUNDLE: <absolute Windows path to the zip>` as the final output line.
+- Update `plans/master-plan.md` after every gate transition.
+- Update `.local/artifact-index.yaml` after creating or modifying any artifact.
+
+---
+
+## D. Gate Rules
+
+**D1.** No agent may self-approve a gate. All 11 gates require human review and explicit sign-off recorded in `registry/format-registry.yaml`.
+
+**D2.** Before requesting gate approval, complete the self-challenge (Section I). Log the results.
+
+**D3.** A format must not begin Stage N+1 work until Gate N has been passed and recorded.
+
+**D4.** After human approval of a gate, update `plans/master-plan.md` with the gate history entry and the approver's name and date.
+
+---
+
+## E. Reuse-Before-Regenerate Rule
+
+**E1.** Before creating any artifact, check `.local/artifact-index.yaml` for an existing entry with the same `artifact_id` or the same (`format_id`, `artifact_type`) combination.
+
+**E2.** If the artifact exists and is current (all validity conditions met per `docs/acquisition-workflow.md` Section "Rule 2: Validity Conditions"), reuse it. Log `ARTIFACT_REUSED: <artifact_id>` in the run record.
+
+**E3.** If the artifact is stale (any validity condition fails), refresh only the stale artifact. Do not regenerate all artifacts from scratch.
+
+**E4.** If the artifact is missing, generate it.
+
+**E5.** Never re-create everything from scratch when partial valid work exists.
+
+---
+
+## F. Visibility Classification Requirement
+
+**F1.** Every artifact produced must have a visibility classification conforming to the schema in `docs/release-control.md`. Classification may be provided either (a) as YAML front matter in the file itself, or (b) as an entry in `.local/artifact-index.yaml`. See the Hybrid Classification Policy in `docs/release-control.md` for which files require which approach.
+
+**F2.** Phase 0 governance files (docs, AGENTS.md, GOVERNANCE.md, ROADMAP.md, README.md, registry skeleton, `_readme.md` files, config files) are classified via `.local/artifact-index.yaml`. This is explicitly permitted; these files are not required to carry inline front matter.
+
+**F3.** Phase 1+ acquisition artifacts (`acquisition-packs/<format-id>/`, `samples/by-format/`, `schemas/neutral-model/`, `src/`, `reports/`) must carry front matter directly in the file. Taskcards carry front matter by convention (the template provides it).
+
+**F4.** Default to `visibility: internal` when uncertain. Never default to `visibility: public`.
+
+**F5.** Do not change visibility from `internal` to `public` without human review and explicit approval.
+
+**F6.** LLM-generated content defaults to `visibility: generated`. Changing to `public` requires human approval.
+
+**F7.** LLM content that quotes spec text defaults to `visibility: evidence-only` pending legal review.
+
+---
+
+## G. Open-Source Release Boundary Rules
+
+**G1.** Never assign `visibility: public` or `open_source_allowed: true` to commercial artifacts.
+
+**G2.** Never include `evidence-only`, `generated`, or `blocked` artifacts in release manifests without human review.
+
+**G3.** Commercial artifacts must never appear in open-source releases. This is an absolute rule.
+
+**G4.** Commercial-tier source within `src/net/{format}/` must not be created until all of the following are true: (1) Gate 10 has been passed and recorded in `registry/format-registry.yaml`, (2) Decision DD3 (commercial isolation) is formally resolved, (3) commercial implementation taskcards for the format exist, and (4) an explicit commercial implementation execution prompt has been issued by a human. Gate 11 is commercial release readiness, not authorization to start writing commercial source. **Obsolete path:** `src/dotnet/commercial/` must not be created.
+
+**G5.** `src/python/{format}/` and `src/net/{format}/` must not be created until all of the following are true: (1) Gates 1-9 are complete and Gate 9 human approval is recorded in `registry/format-registry.yaml`, (2) implementation taskcards for the format exist, and (3) an explicit Phase 4 implementation execution prompt has been issued by a human. Gate 10 is OSS readiness, not authorization to start writing product source. **Obsolete paths:** `src/python/open-source/` and `src/dotnet/open-source/` must not be created — they are not the target layout.
+
+---
+
+## H. LLM Endpoint Rules
+
+**H1.** Consult `tools/llm/endpoints.yaml` and `tools/llm/model-selection.yaml` (when it exists) before any LLM API call.
+
+**H2.** Never embed API keys, tokens, or credentials in any committed file. Keys go in `.env` (gitignored).
+
+**H3.** Use environment variable names from `.env.example` when referencing authentication configuration.
+
+**H4.** If the preferred model is unavailable, try the next model in the fallback order. If no approved model is available, stop the task and log `ENDPOINT_UNAVAILABLE: <task_id>` in `.local/llm-logs/`. Do not proceed with an unapproved model.
+
+**H5.** Persist a run record in `.local/llm-logs/` for every LLM-assisted execution. See Section L for the run record format.
+
+---
+
+## I. Self-Challenge Requirement
+
+Before marking any gate complete, any taskcard complete, or any significant work done, the agent must explicitly answer all fourteen questions:
+
+1. Did I perform all required steps for this gate or task?
+2. Is any required evidence missing?
+3. Is any evidence I produced too thin to meet the criteria?
+4. Did I rely on a secondary source where a primary source was required?
+5. Did I create any file in a phase-forbidden directory?
+6. Did I attempt to self-approve a gate?
+7. Did I accidentally perform Phase N+1 work during Phase N?
+8. Did I commit or push without explicit human instruction?
+9. Did I preserve the rule that bundle inspection is required before the next prompt?
+10. Did I leave any gap unlogged?
+11. Did I read the relevant `/memory` files before this task?
+12. Did I treat `/memory` as context only, not as operational authority?
+13. Did I log any contradictions I found between `/memory` and the master plan?
+14. Did I update `/memory` or create a memory-update taskcard when a trigger event occurred?
+
+The agent must answer "no" to questions 4, 5, 6, 7, 8, and 10, and "yes" to questions 1, 2 (all evidence present), 3 (evidence is sufficient), and 9. For questions 11-14: if a memory read was required for the task type, answer "yes" to 11 and 12. If no contradiction existed, "yes" to 13 means "I confirmed there was no contradiction to log." For question 14, if no memory-update trigger event occurred during the task, the acceptable answer is "Not applicable — no trigger event occurred." If any required answer is wrong, the agent must log the gap and wait for human resolution before marking work complete.
+
+---
+
+## J. Commands and Skills
+
+**J1.** When a project command exists in `.claude/commands/` for a task, use that command rather than re-implementing the task ad hoc.
+
+**J2.** If no command exists for a required task and one should, log a gap (`Gx: missing command for <task>`) and continue with a manual approach this one time only.
+
+**J3.** Log all commands used in the run record under `commands_used`.
+
+---
+
+## K. Persistence Requirements
+
+**K1.** Every artifact produced must be registered in `.local/artifact-index.yaml` with full schema fields from `docs/release-control.md`.
+
+**K2.** LLM run records must be written to `.local/llm-logs/` in JSONL format. See Section L for the format.
+
+**K3.** Local-only artifacts (`.local/`) must never be committed to git.
+
+**K4.** Committed artifacts must never contain full LLM prompt or response text. Use `prompt_id` and `response_hash` for traceability.
+
+---
+
+## L. Run Record Format
+
+Every LLM-assisted execution must produce a JSONL run record entry in `.local/llm-logs/<session-date>-<run-id>.jsonl`:
+
+```jsonl
+{
+  "run_id": "<uuid>",
+  "agent": "claude|codex|other",
+  "model": "<model-id>",
+  "session_date": "<ISO-8601>",
+  "phase": "0|1|2|3|4",
+  "taskcard": "TC-NNNN|null",
+  "gate": "1-11|null",
+  "commands_used": ["/<command-name>"],
+  "artifacts_produced": ["<relative/path/to/file>"],
+  "artifacts_reused": ["<relative/path/to/file>"],
+  "gaps_logged": ["<G-ID>"],
+  "self_challenge_passed": true,
+  "gate_approved": false,
+  "bundle_path": "<.local/evidence-bundles/bundle-name.zip>|null"
+}
+```
+
+---
+
+## M. Gap Logging Requirement
+
+**M1.** If an agent encounters an unknown, an ambiguity, a missing required artifact, or a situation not covered by existing rules, it must log a gap before proceeding.
+
+**M2.** Gaps are logged by adding an entry to the Gap Register in `plans/master-plan.md` with: ID, description, owner, severity, what it blocks, resolution trigger, and whether it is a phase blocker.
+
+**M3.** An unlogged gap that is discovered and not recorded is a governance violation.
+
+---
+
+## N. Phase-Forbidden Files
+
+An agent must never create the following in Phase 0:
+
+- Any file in `registry/format-registry.yaml` that contains a format entry (empty skeleton only).
+- Any file in `acquisition-packs/` except the `_template/` directory.
+- Any file in `samples/by-format/` (empty provenance skeleton only).
+- `.github/workflows/` or any CI workflow files.
+- Any file in `tests/fixtures/`, `tests/oracle/`, or `tests/fuzz/`.
+- Any file in `reports/security/` or `reports/legal/` with format-specific content.
+- Any product source code in `src/python/{format}/` or `src/net/{format}/` (Phase 4+ only).
+- Any product source code in obsolete paths: `src/python/open-source/`, `src/dotnet/open-source/`, `src/dotnet/commercial/` — these paths must NEVER be created.
+- Any LLM client script in `tools/llm/` (Phase 0: config template only).
+- Any command file in `.claude/commands/` other than `_readme.md` (Phase 0: directory + readme only).
+
+---
+
+## O. Evidence Bundle Rules
+
+**O1.** In plan mode: provide intended bundle path and manifest text only. Never create a bundle.
+
+**O2.** In execution mode at phase or gate completion: create a ZIP evidence bundle in `.local/evidence-bundles/<phase>-<date>-<run-id>.zip`.
+
+**O3.** The final output line must be exactly: `EVIDENCE_BUNDLE: <absolute Windows path to the zip>`
+
+**O4.** Bundle must include: all files created during the phase, `git-status.txt`, `master-plan-snapshot.md`, and a phase-completion report.
+
+**O5.** Bundle must NEVER include: `.env`, `.local/` contents, `visibility: blocked` artifacts, LLM prompts or responses, or API keys.
+
+**O6.** Evidence bundle inspection before next prompt: before any next prompt (Phase 1 or otherwise) is issued, the latest bundle must be uploaded by the human, extracted, and inspected. Its contents must be challenged against the agent summary. No next prompt may rely on the agent summary alone. Bundles are evidence; summaries are hypotheses. See `plans/master-plan.md` Section 7.
+
+---
+
+## P. Commit and Push Rules
+
+**P1.** An agent must never run `git commit` or `git push` unless the human explicitly says to commit or push in the current session.
+
+**P2.** "Phase complete" does not mean "commit." Completing a phase produces an evidence bundle and awaits human review. Commits happen only when the human explicitly requests them.
+
+**P3.** If the human approved a commit in a previous session, that approval does not carry over to the current session. Each commit requires explicit human instruction in the current session.
+
+**P4.** Before any commit (when authorized): verify no `.env`, no secrets, no `.local/` contents, no `visibility: blocked` artifacts are staged.
+
+---
+
+## Q. Security Rules
+
+**Q1.** Never introduce security vulnerabilities: no command injection, no XSS, no SQL injection, no path traversal, no hard-coded credentials.
+
+**Q2.** Any code that parses untrusted file input must implement the mitigations in `docs/security.md` for all applicable threat categories.
+
+**Q3.** For XML parsing: use `defusedxml` (Python) or `XmlReaderSettings` with `DtdProcessing.Prohibit` and `XmlResolver = null` (.NET). Never use default XML parser settings on untrusted input.
+
+**Q4.** If security-relevant code is written, note which threat categories it addresses in the artifact front matter or inline comment.
+
+---
+
+## R. Acquisition Workflow Rules
+
+**R1.** The spec is the authority. The reference tool (oracle) is a comparison aid. When spec and oracle disagree, document the discrepancy — do not silently prefer one.
+
+**R2.** Prototype code is internal-only (`visibility: internal`). It is never promoted directly to `src/`. Product code is written from scratch using the prototype as a design reference.
+
+**R3.** No format-specific acquisition pack may be created until Gate 1 has been passed for that format.
+
+**R4.** No sample may be committed without a confirmed provenance entry in `samples/_provenance.yaml`.
+
+---
+
+## S. What This Document Does Not Cover
+
+This document governs agent behavior. For human contributor rules, see `GOVERNANCE.md`. For gate pass criteria, see `docs/gates.md`. For legal classification, see `docs/legal-and-licensing.md`. For artifact visibility and release rules, see `docs/release-control.md`. For LLM endpoint configuration, see `docs/llm-endpoint-strategy.md`. For specification cache policy, see `docs/specification-cache.md`. For historical project context, decision rationale, and phase evolution, see `memory/README.md` and `memory/00-index.md`.
+
+---
+
+## T. Specification Cache Rules
+
+**T1.** Before performing any spec-dependent acquisition work (Stage 2 evidence drafting, Stage 4 prototype development, Stage 5 neutral model design, Stage 6 oracle comparison), check whether a cached copy of the relevant specification exists at `.local/spec-cache/<format-id>/<version>/`. If the cache is missing, stale, or incomplete, stop and log the missing-spec condition (see T3-gap rule below). Do not proceed with spec-dependent work without a cached spec unless the task explicitly authorizes and explains the exception.
+
+**T2.** Check before downloading. If `.local/spec-cache/<format-id>/<version>/spec-index.yaml` exists and `stale: false`, reuse the cached file. Do not re-download.
+
+**T3 (Authorization Required for Download).** A spec download requires ALL of the following to be satisfied before any download may occur:
+  - The current phase permits spec acquisition (Phase 1+; Phase 0 prohibits all downloads).
+  - An explicit taskcard exists authorizing acquisition for this format.
+  - The format's legal category has been reviewed and confirmed (Legal Categories 1-3 only; see `docs/legal-and-licensing.md`).
+  - A canonical source URL has been identified and approved (standards body official page or stable archival URL; no mirrors).
+  - The current execution prompt explicitly authorizes the download (the prompt must name the format, version, canonical URL, and state that acquisition is permitted).
+  - Storage will be local-only under `.local/spec-cache/` (gitignored, never committed).
+  - A `spec-index.yaml` entry recording source, version, license, SHA-256, and redistribution status will be written.
+
+**T3-gap rule.** If a required spec is missing from the cache and download is not authorized by the current prompt and taskcard, the agent MUST stop, log the missing-spec condition as a gap in the gap register, and either create or update a taskcard for spec acquisition. The agent must NOT proceed with spec-dependent work until the gap is resolved by a subsequent authorized execution prompt.
+
+**T4.** Only acquire specifications from their canonical source URL (standards body official download page or stable archival URL). Never download from third-party mirrors, CDNs, or unofficial sources. If the canonical URL is unavailable, log a gap — do not substitute an unofficial source.
+
+**T5.** Before any download, confirm the format's legal category. Only specifications in Legal Categories 1-3 may be cached. Do not attempt to acquire Category 5 or 6 materials. Log the legal category in the `spec-index.yaml` entry.
+
+**T6.** Specification files are `visibility: evidence-only`. They are local-only and must never be committed to git. The `spec-index.yaml` metadata (without file content) may appear in evidence bundles. Cached specs are evidence inputs, not release artifacts.
+
+**T7.** After acquiring a specification, compute SHA-256 of the file and record it in `spec-index.yaml`. On every subsequent use, re-verify the SHA-256 matches. A hash mismatch means the file is stale — log a gap; do not silently re-download.
+
+**T8.** Specification cache contents must never be quoted at length in committed artifacts. Quote only the minimum necessary excerpts (a specific clause or key term definition) when citing the spec in `spec-evidence.md`. Full spec text in LLM prompts defaults to `visibility: evidence-only` per Section F7.
+
+**T9 (Remote LLM Restriction).** Full specification documents must not be sent to remote LLM endpoints by default. If spec content is needed in a remote LLM prompt, the request requires: (1) legal review of the spec's redistribution/transmission terms, (2) privacy/confidentiality review, and (3) explicit human authorization in the execution prompt. Local LLM endpoints may be preferred for spec analysis to avoid potential copyright or privacy concerns.
+
+**T10 (No Automatic Re-download).** A stale or missing cache entry does not automatically authorize re-download. Refresh checks (via `refresh_check.py`) may mark entries stale. Re-download requires the same authorization conditions as T3. Refresh automation is limited to metadata updates (updating `last_verified`, setting `stale: true`); it never automatically re-fetches spec content.
+
+---
+
+## U. Memory Usage and Maintenance
+
+### U1. Purpose of /memory
+
+The `/memory` folder contains historical context, decision rationale, project evolution records, bundle-review lessons, and ChatGPT conversation memory preserved as Markdown files.
+
+`/memory` is **context and rationale only**. It does not supersede `plans/master-plan.md`, `AGENTS.md`, or `GOVERNANCE.md`. When `/memory` conflicts with any of those documents or with the current repo state, the agent must log a gap and treat `plans/master-plan.md` as the operational authority until the contradiction is resolved by a human.
+
+### U2. When Agents Must Read Memory
+
+An agent must read the relevant memory files before:
+
+- any complex planning session
+- any phase transition
+- any change to governance files (`AGENTS.md`, `GOVERNANCE.md`)
+- any change to `plans/master-plan.md`
+- any contradiction-resolution task
+- any long-running task resumed after a gap in sessions
+- any bundle-review healing run
+- any major architecture or release-control amendment
+
+### U3. Minimal Required Memory Files for General Work
+
+Before any general task, read at minimum:
+
+- `memory/README.md`
+- `memory/00-index.md`
+- `memory/02-standing-operating-rules.md`
+- `memory/09-current-state-before-phase1.md`
+
+### U4. Additional Memory Files by Task Type
+
+Read these additional files when the task type matches:
+
+| Task type | Additional memory file |
+|-----------|------------------------|
+| Architecture work | `memory/03-architecture-and-product-tracks.md` |
+| Governance work | `memory/07-agent-governance-model.md` |
+| Specification cache work | `memory/08-specification-cache-amendment.md` |
+| Phase 0 review or healing | `memory/04-phase0-evolution-and-bundle-reviews.md` |
+| Prompt writing | `memory/11-prompting-and-agent-style-rules.md` |
+| Gap or risk review | `memory/06-gap-risk-and-healing-history.md` |
+| Current-state verification | `memory/09-current-state-before-phase1.md` |
+
+### U5. Memory Contradiction Rule
+
+If `/memory` conflicts with `plans/master-plan.md`, `AGENTS.md`, `GOVERNANCE.md`, or the current repo state:
+
+1. Log a gap in the Gap Register (`plans/master-plan.md`) with description, severity, and what it blocks.
+2. Do not silently update any file based only on memory content.
+3. Do not silently choose the memory version over the repo version.
+4. Treat `plans/master-plan.md` as operational authority until the human resolves the contradiction.
+5. If the contradiction requires file changes, produce a plan-mode proposal before touching any file.
+
+### U6. Memory Maintenance Rule
+
+After any of the following events, either update the relevant `/memory` file(s) in the same execution run (if explicitly in scope) or create a taskcard to update memory in the next run:
+
+- phase acceptance
+- gate transition
+- major decision recorded in the decision register
+- major gap discovery
+- significant healing run
+- architecture amendment
+- specification cache policy change
+- release control change
+- governance change
+
+### U7. Memory Content Restrictions
+
+Do not store in `/memory`:
+
+- secrets, API keys, or credentials
+- private tokens or endpoint secrets
+- raw LLM prompts or raw LLM responses
+- copyrighted specification excerpts or downloaded standards text
+
+### U8. Evidence Bundle Rule for Memory Changes
+
+If any `/memory` file is changed during an execution run:
+
+1. Include all changed `/memory` files in the evidence bundle under `repo/memory/`.
+2. Include a `memory-sync-report.md` in the bundle's `bundle-metadata/` directory. It must list: files changed, reason for change, and which master-plan section or decision prompted the update.
+
+### U9. Future /sync-memory Command
+
+A future `/sync-memory` command or taskcard (`TC-0008`) should be created (Phase 1 or later) to automate memory consistency checks: compare `/memory` files against `plans/master-plan.md`, flag contradictions, and produce a `memory-sync-report.md`. This command does not exist yet. Do not implement it in Phase 0. Log it as a planned capability via TC-0008.

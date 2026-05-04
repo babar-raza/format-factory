@@ -1,0 +1,88 @@
+# Acquisition Pack — Template
+#
+# Copy this file to acquisition-packs/<format-id>/pack.yaml and fill in all fields.
+# Do not create an acquisition pack until Gate 1 has been passed for this format.
+# See docs/acquisition-workflow.md for stage descriptions.
+# See docs/gates.md for gate pass criteria.
+
+---
+artifact_id: <format-id>-pack
+artifact_type: acquisition-pack
+path: acquisition-packs/<format-id>/pack.yaml
+format_id: <format-id>
+product_family: <cells|words|slides|imaging|diagram|archive>
+visibility: evidence-only
+publish_allowed: false
+license: null
+provenance_required: false
+provenance_status: not-applicable
+source_hash: null
+generated_by: <human|claude|codex>
+generated_at: <ISO-8601>
+reusable: false
+refresh_policy:
+  trigger: spec-version-changed
+  max_age_days: null
+stale: false
+open_source_allowed: false
+commercial_allowed: false
+release_blockers: []
+notes: null
+
+# --- Format identity ---
+format_id: <format-id>
+display_name: <Full Format Name>
+family: <cells|words|slides|imaging|diagram|archive>
+extensions:
+  - .<ext>
+mime_type: <mime-type>
+spec_body: <OASIS|W3C|ECMA|IETF|ISO|other>
+spec_version: <version string>
+spec_url: <primary specification URL>
+spec_accessed_date: <ISO-8601>
+source_hash: sha256:<hash-of-spec-content>
+
+# --- Legal classification ---
+legal_category: <1|2|3|4>
+legal_category_name: <Open Standard RF|Permissive OSS|Published Proprietary+Permission|Ambiguous>
+fast_path_eligible: <true|false>
+
+# --- Scoring summary (from Gate 1) ---
+scoring:
+  weighted_total: <0-33>
+  band: <accept|review|defer|reject>
+  gate_1_approved_by: <name>
+  gate_1_approved_date: <ISO-8601>
+
+# --- Acquisition stage status ---
+stages:
+  spec_evidence:
+    status: <not_started|in_progress|complete>
+    artifact: acquisition-packs/<format-id>/spec-evidence.md
+    gate: 2
+  legal_notes:
+    status: <not_started|in_progress|complete>
+    artifact: acquisition-packs/<format-id>/legal-notes.md
+    gate: 2
+  sample_sources:
+    status: <not_started|in_progress|complete>
+    artifact: acquisition-packs/<format-id>/sample-sources.md
+    gate: 3
+  parser_notes:
+    status: <not_started|in_progress|complete>
+    artifact: acquisition-packs/<format-id>/parser-notes.md
+    gate: 4
+  oracle_tool:
+    name: null
+    version: null
+    gate: 6
+  tier_map:
+    status: <not_started|complete>
+    gate: 9
+  delivery_plan:
+    first_oss_release_tiers: []
+    deferred_tiers: []
+    gate: 9
+
+# --- Notes ---
+notes: null

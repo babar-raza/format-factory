@@ -1,0 +1,42 @@
+# Sample Provenance Registry
+#
+# This file is the authoritative record of the license and provenance for every
+# sample file in samples/by-format/. Every sample must have an entry here with
+# provenance_status: confirmed before it may be committed or used in any test.
+#
+# See samples/_policy.md for acceptable licenses and provenance requirements.
+# See docs/legal-and-licensing.md for the legal framework.
+# See docs/gates.md for Gate 3 requirements.
+#
+# Schema:
+#   sample_id: unique identifier (format-id + descriptive name)
+#   format_id: matches the format-id in registry/format-registry.yaml
+#   file_path: relative path from repo root
+#   source_url: where the sample was obtained (null if project-created)
+#   source_date: ISO-8601 date the sample was obtained or created
+#   license: SPDX identifier or descriptive name (e.g. "CC0-1.0", "CC-BY-4.0", "project-created")
+#   license_url: URL of the license text (null if project-created or public domain)
+#   attribution: attribution text required by license (null if not required)
+#   creator: creator or organization (null if unknown or project-created)
+#   provenance_status: confirmed | unconfirmed | blocked
+#   block_reason: reason for blocked status (null if not blocked)
+#   visibility: public | blocked
+#   notes: optional human-readable note
+
+samples: []
+
+# Example entry (commented out):
+#
+# - sample_id: fods-minimal
+#   format_id: fods
+#   file_path: samples/by-format/fods/minimal.fods
+#   source_url: null
+#   source_date: 2026-05-03
+#   license: project-created
+#   license_url: null
+#   attribution: null
+#   creator: format-factory project
+#   provenance_status: confirmed
+#   block_reason: null
+#   visibility: public
+#   notes: Minimal FODS file created specifically for this project. Contains one empty sheet.

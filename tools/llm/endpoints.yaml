@@ -1,0 +1,115 @@
+# LLM Endpoint Configuration — format-factory
+#
+# This file configures LLM endpoint classes for the format-factory project.
+# It contains endpoint IDs, base URLs, and auth_env variable names.
+# It NEVER contains actual key values. Keys go in .env (gitignored).
+#
+# See docs/llm-endpoint-strategy.md for the full endpoint strategy and policy.
+# See .env.example for the required environment variable names.
+#
+# Endpoint priority: lower number = higher priority (0 = first choice)
+#
+# auth_env: the name of the environment variable that holds the API key.
+#           Set to null for endpoints that don't require authentication.
+#
+# discovery: true means the agent should probe this endpoint at startup
+#            to detect available models. Only for local endpoints.
+
+endpoints:
+
+  # Claude (Anthropic) — primary executor, agent-native
+  - id: claude-native
+    display_name: "Claude (Anthropic API)"
+    type: anthropic-native
+    url: null                          # Agent-native; no URL needed
+    auth_env: ANTHROPIC_API_KEY
+    priority: 0
+    discovery: false
+    task_types:
+      - spec-analysis
+      - evidence-drafting
+      - prototype-review
+      - oracle-comparison
+      - scoring
+      - gate-check
+      - general
+
+  # llm.professionalize.com — remote specialized endpoint
+  - id: professionalize
+    display_name: "llm.professionalize.com"
+    type: openai-compatible
+    url: "https://llm.professionalize.com/v1"
+    auth_env: PROFESSIONALIZE_API_KEY
+    priority: 2
+    discovery: false
+    task_types:
+      - spec-analysis
+      - batch-sample-analysis
+
+  # Local Ollama — local discoverable endpoint
+  - id: local-ollama
+    display_name: "Local Ollama"
+    type: openai-compatible
+    url: "http://localhost:11434/v1"
+    auth_env: null                     # No auth required for local Ollama
+    priority: 1
+    discovery: true
+    task_types:
+      - batch-sample-analysis
+      - privacy-sensitive
+      - oracle-comparison
+
+  # Local LM Studio — local discoverable endpoint
+  - id: local-lm-studio
+    display_name: "Local LM Studio"
+    type: openai-compatible
+    url: "http://localhost:1234/v1"
+    auth_env: null                     # No auth required for LM Studio
+    priority: 1
+    discovery: true
+    task_types:
+      - batch-sample-analysis
+      - privacy-sensitive
+
+  # Local custom endpoint (configurable via env var)
+  - id: local-custom
+    display_name: "Local Custom Endpoint"
+    type: openai-compatible
+    url: "${LOCAL_CUSTOM_ENDPOINT}"    # Read from env var; skip if not set
+    auth_env: null
+    priority: 3
+    discovery: true
+    task_types:
+      - general
+
+  # Codex (OpenAI) — optional secondary reviewer
+  - id: codex
+    display_name: "Codex (OpenAI API)"
+    type: openai-native
+    url: null                          # OpenAI SDK handles URL
+    auth_env: OPENAI_API_KEY
+    priority: 4
+    discovery: false
+    enabled: false                     # Disabled by default; activated only when explicitly instructed
+    task_types:
+      - prototype-review
+      - dotnet-code-review
+      - schema-crosscheck
+
+# --- Discovery settings ---
+discovery:
+  cache_file: ".local/discovered-models.yaml"
+  cache_max_age_hours: 24
+  probe_timeout_seconds: 5
+
+# --- Fallback rules ---
+# If the preferred endpoint for a task is unavailable:
+# 1. Try the next endpoint in priority order that supports the task type.
+# 2. If no approved endpoint is available, log ENDPOINT_UNAVAILABLE: <task_id>.
+# 3. Do NOT use an endpoint not listed for the task type.
+# Implementation: tools/llm/endpoint_client.py (Phase 1, TC-0005)
+
+# --- Security note ---
+# auth_env contains only the VARIABLE NAME, not the value.
+# The value lives in .env (gitignored) and is loaded at runtime via os.environ.get().
+# Never put actual key values in this file.

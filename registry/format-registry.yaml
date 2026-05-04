@@ -1,0 +1,211 @@
+# Format Registry — format-factory
+#
+# This file is the authoritative registry of all format candidates and their
+# acquisition pipeline status. It is a living document — updated at every gate
+# transition and whenever a format's status changes.
+#
+# Visibility: internal -> public at Gate 9 (product mapping complete)
+# Do NOT add format entries without passing Gate 1 scoring first.
+# See docs/gates.md for gate pass criteria.
+# See registry/scoring/_scoring-model.md for the scoring model.
+#
+# Schema reference: see docs/release-control.md for the artifact visibility schema.
+# All format entries must include the gate status block below.
+
+formats:
+  - format_id: fods
+    display_name: "Flat OpenDocument Spreadsheet"
+    family: cells
+    extensions: [.fods]
+    mime_type: "application/vnd.oasis.opendocument.spreadsheet-flat-xml"
+    spec_body: "OASIS"
+    spec_version: "ODF 1.3"
+    spec_url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/"
+    legal_category: 1
+    tier_target: 4
+    scoring_notes: |
+      FODS is the flat-XML variant of the OASIS ODF spreadsheet format. Legal Category 1 (OASIS royalty-free).
+      Comprehensive spec from OASIS TC. Flat XML structure is simpler to parse than ZIP-based ODS.
+      Moderate community demand (developer/debug/VCS use case). First acquisition in Cells family — high strategic value.
+      Total score: 93/100 (Accept band). See TC-0001 for full scoring sheet.
+    visibility: internal
+    scoring:
+      scorer: claude-sonnet-4-6
+      scored_date: "2026-05-04"
+      model_version: "7-factor-100pt-v1"
+      automatic_reject_check:
+        legal_category_classified: true
+        category_5_or_6: false
+        drm_bypass_evidence: false
+        legal_safety_score_zero: false
+        result: no_automatic_reject
+      dimensions:
+        legal_safety:
+          score: 3
+          points: 30
+          legal_category: 1
+          rationale: "OASIS ODF 1.3 is published under the OASIS royalty-free patent policy; no licensing fees or patent barriers for implementors."
+        spec_availability:
+          score: 3
+          points: 20
+          rationale: "ODF 1.3 specification is comprehensive, covers all XML structures and constraints, actively maintained by OASIS TC, and freely accessible at docs.oasis-open.org in HTML and PDF forms."
+        parseable_structure:
+          score: 3
+          points: 15
+          rationale: "FODS is a single flat XML file with no ZIP container or compression layer; standard XML parsers handle it directly, making it structurally simpler than ODS."
+        community_demand:
+          score: 2
+          points: 10
+          rationale: "FODS has moderate demand — used primarily by developers requiring human-readable, version-control-friendly spreadsheet files; supported by LibreOffice and Apache OpenOffice, though less common than ODS in production use."
+        strategic_track_value:
+          score: 3
+          points: 10
+          rationale: "FODS is the first acquisition in the Cells family and the validated pilot for the entire acquisition pipeline; success validates architecture and opens the ODF family (ODS, FODT, FODP, FODB) for follow-on acquisitions."
+        implementation_complexity:
+          score: 2
+          points: 3
+          rationale: "FODS removes the ZIP layer but ODF XML semantics remain complex — styles inheritance, formula syntax (OpenFormula), conditional formatting, and merged cells require meaningful parser work at higher tiers."
+        family_overlap:
+          score: 3
+          points: 5
+          rationale: "FODS is the first format in the registry; there is no overlap with any existing format. It is complementary to future ODF family acquisitions."
+      total_points: 93
+      band: accept
+      recommendation: "Strong candidate for Gate 1 approval. Legal Category 1 (OASIS RF), comprehensive spec, flat XML structure. Score 93/100 places this firmly in Accept band. Recommend human Gate 1 approval."
+      gate_1_status_set_by_agent: scored_pending_human_approval
+      approved_by: null
+      approved_date: null
+    gates:
+      gate_1:
+        status: scored_pending_human_approval
+        approved_by: null
+        approved_date: null
+        notes: "Scored by claude-sonnet-4-6 (run015, 2026-05-04): 93/100, Accept band. Awaiting human review and approval."
+      gate_2:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        fast_path: false
+        notes: null
+      gate_3:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_4:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_5:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_6:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_7:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_8:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        tier_map: null
+        notes: null
+      gate_10:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_11:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+
+# ---
+# FORMAT ENTRY TEMPLATE (do not uncomment — use acquisition-packs/_template/)
+# ---
+#
+# - format_id: <short-id>            # e.g. "fods", "ods", "xlsx"
+#   display_name: <Full Name>        # e.g. "Flat OpenDocument Spreadsheet"
+#   family: <family>                 # cells | words | slides | imaging | diagram | archive
+#   extensions: [.<ext>]             # e.g. [.fods]
+#   mime_type: <mime>                # e.g. "application/vnd.oasis.opendocument.spreadsheet-flat-xml"
+#   spec_body: <body>                # e.g. "OASIS"
+#   spec_version: <version>          # e.g. "ODF 1.3"
+#   legal_category: <1-4>            # 1=Open RF | 2=Permissive OSS | 3=Proprietary+Permission | 4=Ambiguous
+#   tier_target: <0-6>               # Highest tier planned for this format
+#   scoring_notes: <text>            # Brief rationale for Gate 1 scoring decision
+#   visibility: internal             # internal until Gate 9; public after Gate 9
+#   gates:
+#     gate_1:
+#       status: not_started          # not_started | scored_pending_human_approval | passed | rejected | failed
+#       # scored_pending_human_approval: agent has produced scoring evidence; awaiting human review
+#       # passed: human has explicitly approved; requires approved_by and approved_date
+#       approved_by: null
+#       approved_date: null
+#       notes: null
+#     gate_2:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       fast_path: false
+#       notes: null
+#     gate_3:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       notes: null
+#     gate_4:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       notes: null
+#     gate_5:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       notes: null
+#     gate_6:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       notes: null
+#     gate_7:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       notes: null
+#     gate_8:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       notes: null
+#     gate_9:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       tier_map: null
+#       notes: null
+#     gate_10:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       notes: null
+#     gate_11:
+#       status: not_started
+#       approved_by: null
+#       approved_date: null
+#       notes: null

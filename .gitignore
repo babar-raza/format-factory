@@ -1,0 +1,105 @@
+# format-factory .gitignore
+# Phase 0 Foundation — this file must be committed before anything else.
+
+# ============================================================
+# LOCAL-ONLY EXECUTION DATA (never commit)
+# ============================================================
+.local/
+.local/**
+
+# ============================================================
+# SECRETS AND CREDENTIALS (never commit)
+# ============================================================
+.env
+.env.*
+!.env.example
+
+# ============================================================
+# PYTHON
+# ============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+.tox/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# ============================================================
+# .NET / C#
+# ============================================================
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+*.nupkg
+*.snupkg
+TestResults/
+BenchmarkDotNet.Artifacts/
+
+# ============================================================
+# NODE (present but not primary)
+# ============================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================================
+# OS ARTIFACTS
+# ============================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ============================================================
+# EDITOR / IDE
+# ============================================================
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+.idea/
+*.sublime-workspace
+
+# ============================================================
+# LARGE BINARY SAMPLES (use Git LFS per samples/_policy.md)
+# ============================================================
+# Actual LFS tracking is configured via .gitattributes when needed.
+# Do not add binary sample files without an LFS policy entry.
+
+# ============================================================
+# GENERATED EVIDENCE BUNDLES (local only, upload manually)
+# ============================================================
+# Evidence bundles live in .local/evidence-bundles/ which is
+# already excluded by .local/ above.
+
+# ============================================================
+# REPORTS EVIDENCE SUBFOLDER (if accidentally created)
+# ============================================================
+reports/evidence/
