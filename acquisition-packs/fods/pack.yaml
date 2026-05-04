@@ -1,8 +1,8 @@
 # Acquisition Pack — FODS (Flat OpenDocument Spreadsheet)
 #
 # Gate 1: PASSED (Babar Raza, 2026-05-04)
-# Gate 2: not_started — spec and legal evidence planning required
-# No specs downloaded. No samples acquired. Skeleton only.
+# Gate 2: evidence_draft_pending_independent_verification (run019, 2026-05-04)
+# No specs downloaded (T3 not authorized in run019). No samples acquired.
 
 ---
 artifact_id: fods-pack
@@ -26,7 +26,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 1 passed 2026-05-04 by Babar Raza. Gate 2 not started. No spec downloaded. No samples acquired. Skeleton only created in run017."
+notes: "Gate 1 passed 2026-05-04 by Babar Raza. Gate 2 evidence draft completed in run019 (2026-05-04). Spec not downloaded (T3 not authorized). No samples acquired. Evidence draft pending independent verification and project lead sign-off."
 
 # --- Format identity ---
 format_id: fods
@@ -59,7 +59,9 @@ gate_1:
   approved_by: "Babar Raza"
   approved_date: "2026-05-04"
 gate_2:
-  status: not_started
+  status: evidence_draft_pending_independent_verification
+  evidence_draft_date: "2026-05-04"
+  evidence_drafted_by: "claude-sonnet-4-6 (run019)"
 
 # --- Spec cache status ---
 spec_cache:
@@ -80,13 +82,15 @@ parser:
 # --- Acquisition stage status ---
 stages:
   spec_evidence:
-    status: not_started
+    status: evidence_draft_pending_independent_verification
     artifact: acquisition-packs/fods/spec-evidence.md
     gate: 2
+    last_updated: "2026-05-04"
   legal_notes:
-    status: not_started
+    status: evidence_draft_pending_independent_verification
     artifact: acquisition-packs/fods/legal-notes.md
     gate: 2
+    last_updated: "2026-05-04"
   sample_sources:
     status: not_started
     artifact: acquisition-packs/fods/sample-sources.md
@@ -108,4 +112,4 @@ stages:
     gate: 9
 
 # --- Notes ---
-notes: "Skeleton created in run017 after Gate 1 approval. TC-0009 governs Phase 2 work. All stage statuses are not_started. No downstream artifacts created."
+notes: "Gate 1 passed run017. TC-0009 Gate 2 evidence draft completed run019. spec_evidence and legal_notes are evidence_draft_pending_independent_verification. Spec not downloaded (T3 not authorized). Samples and parser stages remain not_started."

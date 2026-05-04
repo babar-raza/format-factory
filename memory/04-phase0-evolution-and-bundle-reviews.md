@@ -239,8 +239,15 @@ Changes applied in run014:
 - **run016** (2026-05-04): Independent verification sprint. All run015 claims verified. DEC-034 added (independent verification before human review). AGENTS.md Section V + question 15. GOVERNANCE.md Section 15. master-plan.md v2.12.
 - **run017** (2026-05-04): Gate 1 approved by Babar Raza. acquisition-packs/fods/ skeleton created (5 files). TC-0009 created (Phase 2, not_started). run016+run017 changes committed. master-plan.md v2.13.
 
-## Current status after run017
+## run018/run019 combined (Phase 2 Gate 2 evidence draft + TC-0007 tooling)
 
-Phase 0: ACCEPTED. Phase 1A: COMPLETE. Gate 1: PASSED (Babar Raza, 2026-05-04). Phase 2: IN PROGRESS (awaiting Phase 2 execution prompt). TC-0009 governs next steps.
+- **run018** (2026-05-04, committed via run019): State reconciliation. README.md, ROADMAP.md, settings.json Phase 2, master-plan v2.14. G-HEAL-018–025 resolved. No Gate 2 work.
+- **run019** (2026-05-04): Combined sprint. run018 committed (0c97256). TC-0007 spec-cache tooling implemented (spec_index.py, acquire_spec.py, refresh_check.py). TC-0009 Gate 2 evidence draft completed (spec-evidence.md, legal-notes.md; OASIS fast-path 4/7 confirmed). Gate 2 status: evidence_draft_pending_independent_verification. master-plan.md v2.15.
 
-No spec downloaded. No samples acquired. No prototype or source code created.
+## Current status after run019
+
+Phase 0: ACCEPTED. Phase 1A: COMPLETE. Gate 1: PASSED. Gate 2: evidence_draft_pending_independent_verification. TC-0007: completed_pending_independent_verification. TC-0009: evidence_draft_pending_independent_verification.
+
+No spec downloaded. No samples acquired. No prototype or source code created. Spec claims are SUPPORTED_BY_RECORDED_URL or PLAUSIBLE_PENDING_VERIFICATION.
+
+Next: independent verification sprint + project lead Gate 2 sign-off.

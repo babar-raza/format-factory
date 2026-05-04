@@ -58,6 +58,8 @@ This decision log preserves the rationale behind major choices.
 | D-041 | Spec-cache authorization model: downloads require explicit prompt authorization | Decided (run009) | Agents must never self-authorize a spec download. Missing specs create a gap, not an automatic fetch. |
 | D-042 | Any agent-produced human-review candidate must first pass an independent agent verification sprint in a separate session | Decided (run016) | DEC-034. Agent summaries repeatedly overstated correctness. Independent re-read and re-compute before human is asked to approve. See AGENTS.md Section V. |
 | D-043 | Gate 1 approved by Babar Raza (FODS, 93/100, Accept band) | Decided (run017, 2026-05-04) | Gate 1 is a human-only approval gate. Human approval recorded in run017 prompt. Gate status: passed. |
+| D-044 | TC-0007 spec-cache tooling implemented in run019 (generic only; no spec download) | Decided (run019, 2026-05-04) | spec_index.py, acquire_spec.py (dry-run default), refresh_check.py implemented. TC-0007 status: completed_pending_independent_verification. |
+| D-045 | FODS Gate 2 evidence draft completed in run019 with SUPPORTED_BY_RECORDED_URL + PLAUSIBLE_PENDING_VERIFICATION claims | Decided (run019, 2026-05-04) | Spec not downloaded (T3 not authorized). OASIS fast-path checklist 4/7 confirmed. Gate 2: evidence_draft_pending_independent_verification. |
 
 ## Pending decisions
 

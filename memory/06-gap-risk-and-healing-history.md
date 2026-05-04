@@ -60,6 +60,7 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 | G-HEAL-015 | /memory files (03, 09, 07, 10, 00-index) still showed "pending propagation" for source layout after run011 had completed | Resolved run013 (stale notes removed; propagation status recorded) |
 | G-HEAL-016 | Agent review items lacked independent verification before being presented for human approval | Resolved run016 (DEC-034 added; AGENTS.md Section V; GOVERNANCE.md Section 15 — independent verification sprint required before any human review request) |
 | G-HEAL-017 | Gate 1 approval pending (FODS 93/100, Accept band, all pre-conditions met) | **RESOLVED run017** — Gate 1 approved by Babar Raza (2026-05-04); registry updated; TC-0001 closed; acquisition-packs/fods/ skeleton created; TC-0009 created |
+| G-HEAL-018–025 | State reconciliation: stale sections in master-plan.md, README.md, ROADMAP.md, settings.json | **RESOLVED run018** (committed via run019) — 8 healing gaps registered and resolved. See master-plan.md Section 28. |
 
 ## Major risks
 

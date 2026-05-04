@@ -20,18 +20,18 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Phase 2 taskcard for FODS spec and legal evidence planning. Created run017 after Gate 1 approval. Status: not_started."
+notes: "Phase 2 taskcard for FODS spec and legal evidence planning. Evidence draft completed run019 (2026-05-04). Status: evidence_draft_pending_independent_verification."
 ---
 
 # TC-0009: FODS Phase 2 — Spec and Legal Evidence Planning
 
 **Phase:** 2
-**Status:** not_started
-**Owner:** Claude (Phase 2 work); Human (Gate 2 approval)
+**Status:** evidence_draft_pending_independent_verification
+**Owner:** Claude (evidence draft done run019); Human (Gate 2 approval)
 **Created:** 2026-05-04 (run017)
-**Last updated:** 2026-05-04 (run017: created after Gate 1 approval)
+**Last updated:** 2026-05-04 (run019: evidence draft completed)
 **Blocking:** TC-0002 (schema language depends on spec evidence), Gate 2 approval
-**Blocked by:** Explicit Phase 2 execution prompt required before starting
+**Blocked by:** Independent verification sprint (DEC-034) + human Gate 2 sign-off
 **Format:** fods
 **Gate:** Gate 2
 
@@ -49,8 +49,8 @@ Plan and execute Phase 2 Gate 2 evidence for FODS: spec source verification, leg
 
 - [x] Gate 1 passed — Babar Raza (2026-05-04)
 - [x] acquisition-packs/fods/ skeleton exists
-- [ ] Explicit Phase 2 execution prompt issued by human
-- [ ] Independent agent verification sprint completed before Gate 2 human review (per DEC-034, AGENTS.md Section V)
+- [x] Explicit Phase 2 execution prompt issued by human (run019, 2026-05-04)
+- [ ] Independent agent verification sprint completed before Gate 2 human review (per DEC-034, AGENTS.md Section V) — pending
 
 ---
 
@@ -94,18 +94,18 @@ The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/o
 
 ## Acceptance Criteria
 
-- [ ] Canonical spec URL identified and documented in spec-evidence.md
-- [ ] Spec version confirmed: ODF 1.3
-- [ ] Legal fast-path checklist completed in legal-notes.md
-- [ ] Legal category confirmed as Category 1 (OASIS ODF 1.3, royalty-free)
-- [ ] Two independent open-source implementations confirmed
-- [ ] No patent litigation in past five years confirmed (or documented if found)
-- [ ] pack.yaml updated with spec URL, legal confirmation
-- [ ] Gate 2 evidence bundle produced
-- [ ] Independent agent verification sprint completed (DEC-034)
-- [ ] Human has reviewed and explicitly set gate_2.status: passed (human action, not agent action)
-- [ ] plans/master-plan.md updated with Gate 2 result
-- [ ] Self-challenge completed (AGENTS.md Section I, all 15 questions)
+- [x] Canonical spec URL identified and documented in spec-evidence.md (https://docs.oasis-open.org/office/OpenDocument/v1.3/)
+- [x] Spec version confirmed: ODF 1.3 [SUPPORTED_BY_RECORDED_URL]
+- [x] Legal fast-path checklist partially completed in legal-notes.md (4/7 items confirmed)
+- [x] Legal category confirmed as Category 1 (OASIS ODF 1.3, royalty-free) [SUPPORTED_BY_RECORDED_URL]
+- [x] Two independent open-source implementations confirmed: LibreOffice, Apache OpenOffice [CONFIRMED_INDEPENDENTLY]
+- [ ] No patent litigation in past five years confirmed — currently PLAUSIBLE_PENDING_VERIFICATION; pending project lead review
+- [x] pack.yaml updated with gate_2 evidence_draft status
+- [ ] Gate 2 evidence bundle produced — pending (Section P of run019)
+- [ ] Independent agent verification sprint completed (DEC-034) — pending (separate session)
+- [ ] Human has reviewed and explicitly set gate_2.status: passed (human action, not agent action) — pending
+- [ ] plans/master-plan.md updated with Gate 2 evidence status — pending (Section J run019)
+- [ ] Self-challenge completed (AGENTS.md Section I, all 15 questions) — pending (Section Q run019)
 
 ---
 
@@ -113,10 +113,10 @@ The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/o
 
 | Artifact | Path | Gate | Status |
 |---|---|---|---|
-| Spec evidence | `acquisition-packs/fods/spec-evidence.md` | 2 | not_started |
-| Legal notes | `acquisition-packs/fods/legal-notes.md` | 2 | not_started |
-| Pack manifest update | `acquisition-packs/fods/pack.yaml` | 2 | skeleton exists |
-| Gate 2 evidence bundle | `.local/evidence-bundles/` | 2 | not_started |
+| Spec evidence | `acquisition-packs/fods/spec-evidence.md` | 2 | evidence_draft_pending_independent_verification |
+| Legal notes | `acquisition-packs/fods/legal-notes.md` | 2 | evidence_draft_pending_independent_verification |
+| Pack manifest update | `acquisition-packs/fods/pack.yaml` | 2 | updated_run019 |
+| Gate 2 evidence bundle | `.local/evidence-bundles/` | 2 | pending (Section P run019) |
 
 ---
 
@@ -153,6 +153,12 @@ The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/o
 
 ## Completion Record
 
-**Status:** not_started — awaiting Phase 2 execution prompt.
+**Status:** evidence_draft_pending_independent_verification
 **Created:** 2026-05-04 by claude-sonnet-4-6 (run017).
-**Next action:** Human issues Phase 2 execution prompt to begin Gate 2 evidence work.
+**Evidence drafted:** 2026-05-04 by claude-sonnet-4-6 (run019 — Phase 2 execution prompt authorized by human).
+**Spec download status:** NOT performed (T3 authorization not granted in run019). All spec claims are [SUPPORTED_BY_RECORDED_URL] or [PLAUSIBLE_PENDING_VERIFICATION].
+**Next actions:**
+  1. Independent agent verification sprint (separate session, DEC-034)
+  2. Project lead review of legal-notes.md fast-path checklist (3 items pending)
+  3. Project lead sign-off for Gate 2 passage
+  4. After human approval: update registry gate_2.status → passed, update master plan

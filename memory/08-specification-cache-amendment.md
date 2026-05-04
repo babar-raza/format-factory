@@ -137,6 +137,16 @@ Phase 0 added policy only:
 
 No specs were downloaded in Phase 0.
 
+## Phase 1/2 implementation (run019)
+
+TC-0007 implemented in run019 (2026-05-04). Three scripts in `tools/spec-cache/`:
+
+- `spec_index.py` — library: read/write/validate spec-index.yaml, compute SHA-256, staleness check
+- `acquire_spec.py` — download + hash + index; dry-run by default; `--allow-network` required for live download; legal metadata required
+- `refresh_check.py` — scan/validate/show; no auto-download
+
+Status: `completed_pending_independent_verification`. Spec not downloaded (T3 not authorized in run019). No spec-index.yaml entries exist in `.local/spec-cache/`.
+
 Implementation is Phase 1 via TC-0007.
 
 ## run009 authorization model amendment

@@ -3,14 +3,14 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.14 (run018: state reconciliation — stale Section 23/25/27/28/33/footer healed; README/ROADMAP phase status updated; settings.json advanced to Phase 2 conservative mode; run018 history added)
+**Version:** 2.15 (run019: combined sprint — run018 committed; TC-0007 spec-cache tooling implemented; TC-0009 Gate 2 evidence draft completed; settings.json TC-0007 scripts moved allow→deny; run019 history added)
 **Last updated:** 2026-05-04
 **Current phase:** Phase 2: FODS Spec and Legal Evidence Planning
-**Current status:** Gate 1 approved by Babar Raza (2026-05-04). acquisition-packs/fods/ skeleton created (5 files). TC-0009 created (not started — awaits Phase 2 execution prompt). Gate 2 not started. No specs downloaded. No samples acquired. No prototype or source code created. run016 governance amendments committed with run017 changes.
+**Current status:** Gate 1 approved by Babar Raza (2026-05-04). TC-0007 spec-cache tools implemented (spec_index.py, acquire_spec.py, refresh_check.py). TC-0009 Gate 2 evidence draft complete (spec-evidence.md, legal-notes.md updated with SUPPORTED_BY_RECORDED_URL and PLAUSIBLE_PENDING_VERIFICATION claims). Gate 2 status: evidence_draft_pending_independent_verification. Spec not downloaded (T3 not authorized in run019). No samples. No prototype. No product source.
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
-**Commit allowed:** NO — next commit requires explicit human instruction in a new session.
-**Next required action:** Human issues Phase 2 execution prompt to begin TC-0009 Gate 2 spec and legal evidence work for FODS.
+**Commit allowed:** YES — run019 execution prompt authorizes commit "chore: draft FODS Gate 2 evidence and spec-cache tooling"
+**Next required action:** (1) Commit run019 changes per Section K. (2) Independent verification sprint for Gate 2 evidence (DEC-034, separate session). (3) Human reviews legal-notes.md fast-path checklist (3 items pending). (4) Human Gate 2 sign-off.
 
 ---
 
@@ -118,18 +118,19 @@ The project goal is to build a production-quality pipeline for acquiring format 
 | Phase 0 accepted | YES — 2026-05-04, run015 (all 36 checks passed; human-authorized acceptance) |
 | Phase 1 allowed | YES — Phase 0 accepted |
 | Phase 2 allowed | YES — Gate 1 passed (run017, Babar Raza, 2026-05-04) |
-| Active formats in registry | fods (gate_1: passed; gate_2: not_started) |
+| Active formats in registry | fods (gate_1: passed; gate_2: evidence_draft_pending_independent_verification) |
 | Gate 1 status | PASSED — Babar Raza, 2026-05-04, score 93/100, run016 verified |
-| Gate 2 status | not_started — awaiting Phase 2 execution prompt |
-| Acquisition pack | acquisition-packs/fods/ skeleton exists (5 files, run017) |
+| Gate 2 status | evidence_draft_pending_independent_verification — run019 draft complete |
+| Acquisition pack | acquisition-packs/fods/ — 5 files updated with Gate 2 evidence draft (run019) |
 | Spec downloaded | No — spec acquisition requires explicit authorization per AGENTS.md T3 |
 | Samples acquired | No |
 | Prototype created | No |
 | Product source created | No |
-| Commits made | c9d02da (Phase 0 baseline, run015); c79f2d1 (Gate 1 approval + Phase 2 setup, run017) |
-| Active taskcard | TC-0009 (not_started — awaiting Phase 2 prompt) |
-| Last evidence bundle | run017-gate1-approval-phase2-setup (this run) |
-| Next required human action | Issue Phase 2 execution prompt to begin TC-0009 Gate 2 work |
+| Commits made | c9d02da (Phase 0 baseline, run015); c79f2d1 (Gate 1 approval + Phase 2 setup, run017); 0c97256 (run018 reconciliation) |
+| Active taskcard | TC-0009 (evidence_draft_pending_independent_verification) |
+| Active infrastructure | TC-0007 (completed_pending_independent_verification — spec_index.py, acquire_spec.py, refresh_check.py) |
+| Last evidence bundle | run019 bundle (pending — see Section P) |
+| Next required human action | (1) Independent verification sprint (separate session). (2) Legal-notes fast-path checklist review. (3) Gate 2 sign-off. |
 
 ---
 
@@ -619,9 +620,11 @@ All 11 gates require human approval. No agent may self-approve.
 - Gate 1 scoring completed in run015 (score: 93/100, Accept band, claude-sonnet-4-6).
 - Gate 1 independently verified in run016 (all claims PASS, no fabrication).
 - Gate 1 approved by Babar Raza on 2026-05-04 (run017). TC-0001 is closed.
-- acquisition-packs/fods/ skeleton created run017 (5 files, no spec downloaded, no samples acquired).
-- TC-0009 (Phase 2 taskcard) created run017, status not_started — awaiting Phase 2 execution prompt.
-- Gate 2 not started.
+- acquisition-packs/fods/ skeleton created run017 (5 files). Updated run019 with Gate 2 evidence draft.
+- TC-0009 evidence draft completed run019: spec-evidence.md (primary source, XML structure, security analysis), legal-notes.md (fast-path checklist 4/7 confirmed). Gate 2 status: evidence_draft_pending_independent_verification.
+- Spec NOT downloaded (T3 not authorized in run019). All spec claims are [SUPPORTED_BY_RECORDED_URL] or [PLAUSIBLE_PENDING_VERIFICATION].
+- TC-0007 spec-cache tooling implemented run019: spec_index.py (library), acquire_spec.py (dry-run default), refresh_check.py (staleness scan).
+- Gate 2 awaits: independent verification sprint (DEC-034), project lead fast-path confirmation (3 items), human sign-off.
 
 **Second likely candidate: Gnumeric .gnumeric**
 - Open-source, XML-based, category 1 or 2.
@@ -655,11 +658,11 @@ A format counts toward WIP from the moment it enters Gate 1 until it exits Gate 
 | TC-0004 | Commands and Skills Design | 1 | not_started | Phase 0 acceptance |
 | TC-0005 | LLM Endpoint Client Implementation | 1 | not_started | Phase 0 acceptance |
 | TC-0006 | Release Manifest Generator | 3+ | not_started | Gate 9 |
-| TC-0007 | Specification Cache Tooling | 1 | not_started — generic tooling only; no spec download until T3 conditions met | Phase 0 acceptance |
+| TC-0007 | Specification Cache Tooling | 1 | **completed_pending_independent_verification** — spec_index.py, acquire_spec.py, refresh_check.py implemented run019; smoke tests pass | Phase 0 acceptance |
 | TC-0008 | Memory Sync Command | 1+ | not_started — planned capability only | Phase 0 acceptance |
-| TC-0009 | FODS Phase 2 Spec and Legal Evidence | 2 | **not_started** — active; awaiting explicit Phase 2 execution prompt | Gate 1 passed |
+| TC-0009 | FODS Phase 2 Spec and Legal Evidence | 2 | **evidence_draft_pending_independent_verification** — spec-evidence.md and legal-notes.md updated run019 | Gate 1 passed |
 
-All taskcards are in `taskcards/` as Markdown files. Current phase is Phase 2. TC-0009 is the active taskcard.
+All taskcards are in `taskcards/` as Markdown files. Current phase is Phase 2. TC-0009 is the active taskcard. TC-0007 now also requires independent verification.
 
 ---
 
@@ -931,9 +934,10 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 1. **Completed (run015):** Phase 0 accepted (all 36 checks passed). Phase 0 baseline commit made. Phase 1A: FODS scored 93/100 (Accept band). Registry entry created (gate_1: scored_pending_human_approval). TC-0001 updated. Evidence bundle created.
 2. **Completed (run016):** Independent verification sprint. All run015 claims verified. DEC-034 added. AGENTS.md Section V + question 15. GOVERNANCE.md Section 15. Evidence bundle produced.
-3. **Completed (run017):** Gate 1 approved by Babar Raza (2026-05-04). Registry updated (gate_1: passed). TC-0001 closed. acquisition-packs/fods/ skeleton created (5 files). TC-0009 created (Phase 2 taskcard, not_started). run016+run017 changes committed. Evidence bundle produced. master-plan.md v2.13.
-4. **Completed (run018):** State reconciliation. Stale Sections 23, 25, 27, 28, 33, footer healed. README.md and ROADMAP.md Phase 0/2 status updated. `.claude/settings.json` advanced to Phase 2 conservative mode. G-HEAL-018 through G-HEAL-025 resolved. No Gate 2 evidence work performed. No commit made.
-5. **Next required action:** Human issues Phase 2 execution prompt to begin TC-0009 Gate 2 spec and legal evidence work for FODS.
+3. **Completed (run017):** Gate 1 approved by Babar Raza (2026-05-04). Registry gate_1.status set to passed. TC-0001 closed. acquisition-packs/fods/ skeleton created (5 files). TC-0009 created (Phase 2 taskcard, not_started). run016+run017 changes committed. Evidence bundle produced. master-plan.md v2.13.
+4. **Completed (run018):** State reconciliation. Stale Sections 23, 25, 27, 28, 33, footer healed. README.md and ROADMAP.md Phase 0/2 status updated. `.claude/settings.json` advanced to Phase 2 conservative mode. G-HEAL-018 through G-HEAL-025 resolved. No Gate 2 evidence work performed. No commit made. master-plan.md v2.14.
+5. **Completed (run019):** Combined sprint. run018 state independently verified (27 checks PASS). run018 committed (0c97256 "chore: reconcile Phase 2 project state"). settings.json TC-0007 scripts moved from deny to allow. TC-0007 implemented (spec_index.py, acquire_spec.py, refresh_check.py; smoke tests pass; status: completed_pending_independent_verification). TC-0009 Gate 2 evidence draft completed (spec-evidence.md, legal-notes.md; 4/7 fast-path checklist items confirmed; gate_2 status: evidence_draft_pending_independent_verification). master-plan.md v2.15.
+6. **Next required action:** (1) Commit run019 changes. (2) Independent verification sprint for TC-0007 and Gate 2 evidence. (3) Project lead review of legal-notes.md 3 pending checklist items. (4) Human Gate 2 sign-off.
 
 **Gate 2 approval for FODS is a human-only action. Agent cannot self-approve.**
 
@@ -958,25 +962,36 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 | run015 | 2026-05-04 | Combined sprint: Phase 0 acceptance + baseline commit + Phase 1A FODS scoring | Phase 0 accepted (all 36 checks PASS); G-001/G-002 closed; Phase 0 baseline commit made; FODS scored 93/100 (Accept band); registry entry created (gate_1: scored_pending_human_approval); TC-0001 updated; master-plan.md v2.11 |
 | run016 | 2026-05-04 | Independent verification sprint for run015 Phase 0 acceptance, commit c9d02da, FODS Gate 1 scoring, and governance rule addition | Phase 0 acceptance independently verified (all 36 checks PASS). Commit c9d02da verified (61 files, no forbidden paths, no secrets). FODS scoring independently verified (93/100 math confirmed, 7-factor weights correct, status correctly scored_pending_human_approval, no self-approval). Source claims reviewed (all PLAUSIBLE or SUPPORTED; none OVERSTATED or FABRICATED). New governance rule added (DEC-034): agent-requested human review requires independent agent verification sprint first. AGENTS.md Section V added. GOVERNANCE.md Section 15 added. Memory files updated. master-plan.md v2.12 |
 | run017 | 2026-05-04 | Gate 1 approval and Phase 2 setup | Gate 1 approved by Babar Raza (2026-05-04). Registry gate_1.status set to passed. TC-0001 closed. acquisition-packs/fods/ skeleton created (5 files: pack.yaml, spec-evidence.md, legal-notes.md, sample-sources.md, parser-notes.md). TC-0009 created (Phase 2, not_started). run016+run017 changes committed. Evidence bundle produced (full-width). master-plan.md v2.13 |
-| run018 | 2026-05-04 | State reconciliation — stale docs and settings healed | Verified actual repo state. Registered G-HEAL-018 through G-HEAL-025. Fixed Section 23 (stale pilot text), Section 25 (stale taskcard table), Section 27 (stale blocker), Section 28 (added G-HEAL-016 through G-HEAL-025), Section 33 (stale commit policy), footer (v2.7→v2.14). Fixed README.md (Phase 0→Phase 2 status). Fixed ROADMAP.md (Phase 0 In progress→Complete; Phase 2 Current; corrected Phase 1 exit condition). Updated .claude/settings.json to Phase 2 conservative mode. No Gate 2 evidence work. No commit made. master-plan.md v2.14 |
+| run018 | 2026-05-04 | State reconciliation — stale docs and settings healed | Verified actual repo state. Registered G-HEAL-018 through G-HEAL-025. Fixed Section 23, 25, 27, 28, 33, footer. Fixed README.md, ROADMAP.md. Updated settings.json to Phase 2 conservative mode. No Gate 2 work. No commit made. master-plan.md v2.14 |
+| run019 | 2026-05-04 | Combined sprint: run018 commit + TC-0007 tooling + TC-0009 Gate 2 evidence draft | Independently verified run018 (27 checks PASS). Committed run018 (0c97256). Moved TC-0007 scripts from settings.json deny→allow. Implemented TC-0007 (spec_index.py 354 lines, acquire_spec.py, refresh_check.py; smoke tests pass). Completed TC-0009 Gate 2 evidence draft (spec-evidence.md, legal-notes.md; fast-path 4/7 confirmed; gate_2: evidence_draft_pending_independent_verification). Updated pack.yaml, registry gate_2 status, TC-0009 taskcard. master-plan.md v2.15 |
 
 ---
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** c79f2d1 (run017) — "chore: approve FODS Gate 1 and start Phase 2 planning"
+**Latest commit:** 0c97256 (run018 reconciliation commit, made in run019) — "chore: reconcile Phase 2 project state"
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
 - c79f2d1 (run017): Gate 1 approval, acquisition-packs/fods/ skeleton, TC-0009, AGENTS.md Section V, GOVERNANCE.md Section 15, memory updates
+- 0c97256 (run018 via run019): State reconciliation — README.md, ROADMAP.md, settings.json Phase 2, master-plan v2.14
 
-**Uncommitted run018 changes:**
-- plans/master-plan.md (v2.14)
-- README.md
-- ROADMAP.md
-- .claude/settings.json
+**Uncommitted run019 changes (authorized for commit by run019 execution prompt):**
+- plans/master-plan.md (v2.15)
+- .claude/settings.json (TC-0007 scripts moved allow list)
+- tools/spec-cache/spec_index.py (new)
+- tools/spec-cache/acquire_spec.py (new)
+- tools/spec-cache/refresh_check.py (new)
+- taskcards/TC-0007-specification-cache.md (updated)
+- acquisition-packs/fods/spec-evidence.md (updated)
+- acquisition-packs/fods/legal-notes.md (updated)
+- acquisition-packs/fods/pack.yaml (updated)
+- registry/format-registry.yaml (gate_2 status updated)
+- taskcards/TC-0009-fods-phase2-spec-legal-evidence.md (updated)
+- memory files (7 files)
+- staging audit files (.local/ — NOT committed)
 
-**Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative — even if it believes the work is complete. run018 changes are NOT committed.
+**Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative. run019 execution prompt authorizes commit: "chore: draft FODS Gate 2 evidence and spec-cache tooling".
 
 ---
 
@@ -1051,5 +1066,5 @@ TC-0008 defines a planned `/sync-memory` command for Phase 1 or later. It will c
 
 ---
 
-*End of plans/master-plan.md — version 2.14 — 2026-05-04*
+*End of plans/master-plan.md — version 2.15 — 2026-05-04*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

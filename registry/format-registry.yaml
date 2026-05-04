@@ -77,7 +77,7 @@ formats:
       approved_date: "2026-05-04"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: phase2_spec_and_legal_evidence_planning
+    next_allowed_action: human_review_and_gate2_sign_off
     gates:
       gate_1:
         status: passed
@@ -85,11 +85,13 @@ formats:
         approved_date: "2026-05-04"
         notes: "Scored by claude-sonnet-4-6 (run015, 2026-05-04): 93/100, Accept band. Independently verified by claude-sonnet-4-6 (run016, 2026-05-04). Human approval recorded by Babar Raza in run017 execution prompt (2026-05-04)."
       gate_2:
-        status: not_started
+        status: evidence_draft_pending_independent_verification
         approved_by: null
         approved_date: null
-        fast_path: false
-        notes: null
+        fast_path: true
+        fast_path_basis: "OASIS Category 1 RF — ODF 1.3 published under OASIS RF on Limited Terms"
+        evidence_drafted_by: "claude-sonnet-4-6 (run019, 2026-05-04)"
+        notes: "Evidence draft completed run019. spec-evidence.md and legal-notes.md updated with SUPPORTED_BY_RECORDED_URL and PLAUSIBLE_PENDING_VERIFICATION claims. Spec not downloaded (T3 not authorized in run019). Fast-path checklist 4/7 items confirmed; 3 pending project lead review. Awaiting independent verification and human sign-off."
       gate_3:
         status: not_started
         approved_by: null
