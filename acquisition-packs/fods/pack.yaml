@@ -2,7 +2,7 @@
 #
 # Gate 1: PASSED (Babar Raza, 2026-05-04)
 # Gate 2: PASSED (Babar Raza, 2026-05-05) — patent search waived; fast-path; run022 DEC-034 verified
-# Gate 3: sample_corpus_created_pending_independent_verification (run026, 2026-05-05)
+# Gate 3: PASSED (Babar Raza, 2026-05-05, run028) — 4/4 samples PASS, DEC-034 verified run027
 # Spec downloaded run021: ODF 1.3 Part 3 PDF (24.27 MB). 4 samples created run026 (Apache-2.0).
 
 ---
@@ -27,7 +27,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 1 passed 2026-05-04. Gate 2 PASSED 2026-05-05 (Babar Raza, run023). Spec downloaded run021 (24.27 MB). Gate 3 corpus executed run026: 4 Apache-2.0 synthetic samples, validated 4/4 PASS. Spec Navigation Layer: 884 sections, 940 chunks. TC-0013 in_progress. Awaiting independent verification and Gate 3 human approval."
+notes: "Gate 1 passed 2026-05-04. Gate 2 PASSED 2026-05-05 (Babar Raza, run023). Spec downloaded run021 (24.27 MB). Gate 3 corpus run026: 4 Apache-2.0 synthetic samples, validated 4/4 PASS. DEC-034 verified run027. Gate 3 PASSED (Babar Raza, 2026-05-05, run028). TC-0013 COMPLETED. TC-0014 planning_ready. Gate 4 planning package: parser-requirements.md, parser-scope.md, parser-test-plan.md (run028)."
 
 # --- Format identity ---
 format_id: fods
@@ -71,6 +71,15 @@ gate_2:
   evidence_drafted_by: "claude-sonnet-4-6 (run019)"
   evidence_strengthened_by: "claude-sonnet-4-6 (run020 independent verification + run021 spec acquisition)"
   evidence_verified_by: "claude-sonnet-4-6 (run022 independent verification, 2026-05-05)"
+gate_3:
+  status: passed
+  approved_by: "Babar Raza"
+  approved_date: "2026-05-05"
+  corpus_verified_by: "claude-sonnet-4-6 (run027 DEC-034 independent verification, 2026-05-05)"
+  sample_count: 4
+  all_project_owned: true
+  license: "Apache-2.0"
+  validation_result: "4/4 PASS"
 
 # --- Spec cache status ---
 spec_cache:
@@ -96,7 +105,7 @@ samples:
   license: Apache-2.0
   validated: true
   validation_result: "4/4 PASS (validate_fods_samples.py, run026)"
-  next_action: gate3_independent_verification_then_human_approval
+  next_action: gate4_parser_prototype_planning
 
 # --- Parser status ---
 parser:
@@ -142,5 +151,6 @@ notes: >-
   Normalization complete run025: 782 pages, 2.16M chars, G-NORM-001 resolved.
   Spec Navigation Layer run026: 884 sections, 940 chunks, sample-requirements.yaml.
   Gate 3 corpus run026 (2026-05-05): 4 Apache-2.0 synthetic samples created and validated 4/4 PASS.
-  TC-0013 in_progress. Awaiting independent verification (DEC-034) and Gate 3 human approval.
-  Parser stage and TC-0014 (Gate 4 planning) created run026 as not_started.
+  Gate 3 DEC-034 independently verified run027 (SHA-256 hashes confirmed, 4/4 PASS re-confirmed).
+  Gate 3 PASSED (Babar Raza, 2026-05-05, run028). TC-0013 COMPLETED. TC-0014 planning_ready.
+  Parser planning package created run028: parser-requirements.md, parser-scope.md, parser-test-plan.md.

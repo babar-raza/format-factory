@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 4 parser prototype planning taskcard for FODS. Created run026 (2026-05-05). NOT_STARTED — awaiting Gate 3 human approval and explicit Gate 4 execution prompt."
+notes: "Gate 4 parser prototype planning taskcard for FODS. Created run026 (2026-05-05). PLANNING_READY — Gate 3 PASSED (Babar Raza, 2026-05-05, run028). Parser planning package created run028: acquisition-packs/fods/parser-requirements.md, parser-scope.md, parser-test-plan.md. TC-0017/TC-0018 created. Awaiting explicit Gate 4 execution prompt."
 ---
 
 # TC-0014: FODS Gate 4 — Parser Prototype Planning
@@ -28,7 +28,7 @@ notes: "Gate 4 parser prototype planning taskcard for FODS. Created run026 (2026
 **Taskcard ID:** TC-0014
 **Phase:** 4 (Gate 4 execution)
 **Gate:** Gate 4 (Parser Prototype)
-**Status:** not_started
+**Status:** planning_ready
 **Created:** 2026-05-05 (run026)
 **Created by:** claude-sonnet-4-6 (run026)
 **Blocking:** Gate 4 approval
@@ -42,10 +42,13 @@ notes: "Gate 4 parser prototype planning taskcard for FODS. Created run026 (2026
 1. Gate 3 human approval is recorded in `registry/format-registry.yaml`
 2. A human issues an explicit Gate 4 execution prompt naming TC-0014
 
-Current state (as of run026):
-- Gate 3: sample_corpus_created_pending_independent_verification
-- Gate 4: not_started
+Current state (as of run028):
+- Gate 3: PASSED (Babar Raza, 2026-05-05, run028) ✓
+- Gate 4: planning_ready
 - parser-requirements-draft.yaml: EXISTS (local-only, `.local/spec-cache/fods/1.3/normalized/`)
+- Parser planning package: acquisition-packs/fods/parser-requirements.md, parser-scope.md, parser-test-plan.md (run028)
+- TC-0017 (Gate 4 prototype execution): created run028, not_started
+- TC-0018 (Gate 4 prototype verification): created run028, not_started
 
 ---
 
@@ -57,7 +60,7 @@ Create a parser prototype for the FODS format that demonstrates correct reading 
 
 ## Prerequisites
 
-- [ ] Gate 3 PASSED — human approval recorded in registry/format-registry.yaml
+- [x] Gate 3 PASSED — human approval recorded in registry/format-registry.yaml (Babar Raza, 2026-05-05, run028)
 - [ ] parser-requirements-draft.yaml reviewed and approved (local artifact upgraded to committed)
 - [x] TC-0013 executed — 4 FODS samples exist in samples/by-format/fods/ (run026)
 - [x] Spec Navigation Layer complete — sections.jsonl, chunks.jsonl, query tooling available (run026)

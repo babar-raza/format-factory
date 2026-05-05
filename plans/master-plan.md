@@ -3,15 +3,15 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.23 (run027: independent verification of run026 + stale state fixes + Hybrid Spec Retrieval Strategy)
+**Version:** 2.24 (run028: Gate 3 approved by Babar Raza, Gate 4 planning package created, TC-0017/TC-0018 created)
 **Last updated:** 2026-05-05
-**Current phase:** Phase 3: FODS Gate 3 Sample Corpus — independently verified, awaiting Gate 3 human approval
-**Current status:** Gate 1 PASSED (Babar Raza, 2026-05-04). Gate 2 PASSED (Babar Raza, 2026-05-05, run023). Gate 3 sample_corpus_verified_pending_human_review (run027 independent verification PASS). TC-0013 in_progress: 4 Apache-2.0 synthetic FODS samples validated 4/4 PASS; DEC-034 satisfied run027. Spec Navigation Layer: 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml. TC-0014 not_started (Gate 4 planning — blocked by Gate 3 approval). TC-0015 not_started (spec retrieval evaluation). TC-0016 not_started (FODS vector index pilot). Hybrid Spec Retrieval Strategy: docs/spec-retrieval-strategy.md added. No prototype. No product source. Latest commit: 8871777 (run026). Uncommitted: run027 changes (pending commit).
+**Current phase:** Phase 3: FODS Gate 3 PASSED — Gate 4 parser prototype planning active
+**Current status:** Gate 1 PASSED (Babar Raza, 2026-05-04). Gate 2 PASSED (Babar Raza, 2026-05-05, run023). Gate 3 PASSED (Babar Raza, 2026-05-05, run028). TC-0013 COMPLETED. TC-0014 planning_ready (Gate 4 parser planning). TC-0015 not_started (spec retrieval evaluation — blocked by human review). TC-0016 not_started (FODS vector index pilot — blocked by TC-0015). TC-0017 not_started (Gate 4 prototype execution — blocked by TC-0014 planning approval). TC-0018 not_started (Gate 4 prototype verification). Hybrid Spec Retrieval Strategy: docs/spec-retrieval-strategy.md (run027). Parser planning package: acquisition-packs/fods/parser-requirements.md, parser-scope.md, parser-test-plan.md (run028). No prototype. No product source. Latest commit: 09ee31f (run027). Uncommitted: run028 changes (pending commit).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
-**Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 corpus created run026, independently verified run027.
-**Commit allowed:** YES — run027 commit pending.
-**Next required action:** Gate 3 human approval. Then TC-0014 (Gate 4 parser planning) execution.
+**Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05).
+**Commit allowed:** YES — run028 commit pending.
+**Next required action:** Human reviews Gate 4 parser planning package. Then TC-0014 (Gate 4 parser planning) execution with explicit prompt.
 
 ---
 
@@ -962,7 +962,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 13. **Next required action:** Independent verification sprint (DEC-034) for run026. Then Gate 3 human approval.
 
 **Gate 2 for FODS: PASSED — approved by Babar Raza (2026-05-05). Patent search waived by project lead.**
-**Gate 3 for FODS: sample_corpus_verified_pending_human_review (run027 independent verification PASS). 4 Apache-2.0 synthetic samples, 4/4 PASS, SHA-256 verified. Spec Navigation Layer: 884 sections, 940 chunks. TC-0013 in_progress (11/12 criteria). Awaiting Gate 3 human approval.**
+**Gate 3 for FODS: PASSED — approved by Babar Raza (2026-05-05, run028). 4 Apache-2.0 synthetic samples, 4/4 PASS, SHA-256 verified run027. Spec Navigation Layer: 884 sections, 940 chunks. TC-0013 COMPLETED. Gate 4 planning package created (parser-requirements.md, parser-scope.md, parser-test-plan.md). TC-0014 planning_ready. TC-0017/TC-0018 created.**
 
 ### Run History
 
@@ -994,7 +994,8 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 | run024 | 2026-05-05 | Independent verification of run023 + stale fixes + Specification Normalization Layer + Gate 3 planning | Verified run023 (5 stale issues fixed: pack.yaml, settings.json, sample-sources.md). Created: docs/specification-normalization.md, tools/spec-normalize/ (4 files). Governance integration: AGENTS.md W, GOVERNANCE.md 16, gates.md, specification-cache.md. TC-0012 created. TC-0010 updated. Local normalization dry-run: SHA-256 MATCH, source-manifest.yaml written, G-NORM-001 logged. sample-sources.md corpus plan drafted. Master-plan v2.20. |
 | run025 | 2026-05-05 | Independent verification of run024 + full FODS spec normalization + TC-0013 creation | Verified run024 (01f7bbe; valid uncommitted leftover confirmed). pdfminer.six 20260107 installed. Full extraction: text.txt 2,160,370 chars, pages.jsonl 782 pages. Citations: 194 section refs, 35 external refs. Validation: 7 PASS, 1 WARN, 0 FAIL. G-NORM-001 RESOLVED. requirements.txt added. TC-0012 Phase 2 complete. TC-0013 created (not_started). sample-sources.md spec refs verified. Master-plan v2.21. |
 | run026 | 2026-05-05 | Spec Navigation Layer + Gate 3 corpus execution + TC-0014 | Verified run025 (f17bb12; valid uncommitted leftover confirmed). Built 4 navigation tools: build_section_index.py (884 sections, 705 pages), build_chunk_index.py (940 chunks), query_normalized_spec.py, export_sample_requirements.py. Produced: sample-requirements.yaml (4 samples), parser-requirements-draft.yaml (10 reqs). Created 4 FODS samples (Apache-2.0): minimal-spreadsheet.fods, multi-sheet-basic.fods, typed-values-basic.fods, formula-basic.fods. Validation: 4/4 PASS. create_fods_samples.py + validate_fods_samples.py created. Provenance: 4 confirmed entries. Registry gate_3 updated. TC-0013 → in_progress. TC-0014 created (not_started). spec-normalization.md updated. Master-plan v2.22. Committed 8871777. |
-| run027 | 2026-05-05 | Independent verification of run026 + stale fixes + Hybrid Spec Retrieval Strategy | Verified run026 (8871777; trivial master-plan leftover confirmed). Independent verification (DEC-034) PASS: 21 checks PASS, 6 stale issues found and fixed. Stale fixes: master-plan header (f17bb12→8871777), settings.json notes[0] (Phase 2→3), TC-0013 prerequisites (lines 67-68 checked), TC-0013 planned-sample-names labeled, sample-sources.md (full update: status, filenames, checklist, history), parser-notes.md gate status. SHA-256 hashes added to provenance.yaml. Validation re-run: 4/4 PASS. Nav layer smoke-tested: §3.1.2 query ✓, core-req query ✓, section rebuild 705pp ✓. Gate 3 status: sample_corpus_created_pending_independent_verification → sample_corpus_verified_pending_human_review. Hybrid Spec Retrieval Strategy: docs/spec-retrieval-strategy.md (10 sections, Tier 1+2+3 design). TC-0015 created (evaluation, not_started). TC-0016 created (vector index pilot, not_started). AGENTS.md Section X added. settings.json updated. Master-plan v2.23. Commit pending. |
+| run027 | 2026-05-05 | Independent verification of run026 + stale fixes + Hybrid Spec Retrieval Strategy | Verified run026 (8871777; trivial master-plan leftover confirmed). Independent verification (DEC-034) PASS: 21 checks PASS, 6 stale issues found and fixed. Stale fixes: master-plan header (f17bb12→8871777), settings.json notes[0] (Phase 2→3), TC-0013 prerequisites (lines 67-68 checked), TC-0013 planned-sample-names labeled, sample-sources.md (full update: status, filenames, checklist, history), parser-notes.md gate status. SHA-256 hashes added to provenance.yaml. Validation re-run: 4/4 PASS. Nav layer smoke-tested: §3.1.2 query ✓, core-req query ✓, section rebuild 705pp ✓. Gate 3 status: sample_corpus_created_pending_independent_verification → sample_corpus_verified_pending_human_review. Hybrid Spec Retrieval Strategy: docs/spec-retrieval-strategy.md (10 sections, Tier 1+2+3 design). TC-0015 created (evaluation, not_started). TC-0016 created (vector index pilot, not_started). AGENTS.md Section X added. settings.json updated. Master-plan v2.23. Committed 09ee31f. |
+| run028 | 2026-05-05 | Gate 3 approval + Gate 4 planning package + memory updates | Verified run027 (09ee31f; working tree clean). Recorded Gate 3 approval: Babar Raza, 2026-05-05. Updated registry gate_3 → passed. next_allowed_action → gate4_parser_prototype_planning. Stale fixes: master-plan header (8871777→09ee31f), settings.json notes[0] (run027 commit pending→Gate 3 PASSED), pack.yaml header/notes/next_action, README.md (Gate 3 PASSED, Gate 4 next), ROADMAP.md (Gate 3 PASSED). TC-0011 closed (superseded by run027 verification). TC-0013 completed (Gate 3 approval recorded). TC-0014 activated (planning_ready). TC-0015+TC-0016 updated (cloud-DB/no-mixing/stale-hash restrictions added). Created parser planning package: parser-requirements.md, parser-scope.md, parser-test-plan.md. Created TC-0017 (Gate 4 prototype execution, not_started) and TC-0018 (Gate 4 prototype verification DEC-034, not_started). Memory files updated: 03 (Hybrid Retrieval architecture section), 05 (D-046–D-049), 09 (complete rewrite to run028 current state), 10 (run027+run028 update entries). External MEMORY.md updated. Master-plan v2.24. Commit pending. |
 
 ---
 
@@ -1016,19 +1017,30 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - f17bb12 (run025): Full FODS spec normalization (G-NORM-001 resolved), requirements.txt, TC-0013 created, sample-sources.md updated, master-plan v2.21
 - 8871777 (run026): Spec Navigation Layer (4 tools) + Gate 3 corpus (4 FODS samples, 4/4 PASS) + TC-0014 + settings.json Phase 3 + master-plan v2.22
 
-**Uncommitted (run027 pending commit):**
-- plans/master-plan.md — v2.23 (run027 independent verification + stale fixes + Hybrid Spec Retrieval Strategy)
-- AGENTS.md — Section X added (Hybrid Spec Retrieval Strategy rules)
-- docs/spec-retrieval-strategy.md — NEW (Hybrid Spec Retrieval Strategy, 10 sections)
-- taskcards/TC-0015-spec-retrieval-strategy-evaluation.md — NEW
-- taskcards/TC-0016-fods-vector-index-pilot.md — NEW
-- .claude/settings.json — notes[0] updated; build_vector_index.py + retrieval docs added to allow list
-- samples/_provenance.yaml — SHA-256 hashes added for all 4 FODS samples (verified run027)
-- registry/format-registry.yaml — gate_3 status updated to sample_corpus_verified_pending_human_review
-- taskcards/TC-0013 — status updated, prerequisites checked, DEC-034 accepted criterion checked
-- acquisition-packs/fods/sample-sources.md — major stale update (status, filenames, checklist, history)
-- acquisition-packs/fods/parser-notes.md — gate_2/3 status updated
-- memory/MEMORY.md — to be updated before commit
+**Committed (09ee31f, run027):**
+- plans/master-plan.md v2.23, AGENTS.md Section X, docs/spec-retrieval-strategy.md (NEW), TC-0015 (NEW), TC-0016 (NEW), settings.json, samples/_provenance.yaml (SHA-256 hashes), registry gate_3 status, TC-0013 (updated), sample-sources.md, parser-notes.md
+
+**Uncommitted (run028 pending commit):**
+- plans/master-plan.md — v2.24 (Gate 3 approved, Gate 4 planning, TC-0017/TC-0018)
+- registry/format-registry.yaml — gate_3: passed, approved_by: Babar Raza, next_allowed_action updated
+- acquisition-packs/fods/pack.yaml — header, gate_3, notes, next_action updated
+- acquisition-packs/fods/parser-requirements.md — NEW (Gate 4 planning, 10 requirements)
+- acquisition-packs/fods/parser-scope.md — NEW (Gate 4 scope and tier definition)
+- acquisition-packs/fods/parser-test-plan.md — NEW (PT-001 through PT-004)
+- taskcards/TC-0011 — closed (superseded by run027 verification)
+- taskcards/TC-0013 — completed (Gate 3 approval recorded)
+- taskcards/TC-0014 — planning_ready, current state updated
+- taskcards/TC-0015 — cloud-DB/no-mixing/stale-hash restrictions added
+- taskcards/TC-0016 — cloud-DB/no-mixing/stale-hash restrictions added
+- taskcards/TC-0017-fods-gate4-parser-prototype-execution.md — NEW
+- taskcards/TC-0018-fods-gate4-parser-prototype-verification.md — NEW
+- README.md — Gate 3 PASSED, Gate 4 next, phase updated
+- ROADMAP.md — Gate 3 PASSED status updated
+- .claude/settings.json — notes[0] updated (Gate 3 PASSED, run028 pending)
+- memory/03 — Hybrid Spec Retrieval architecture section added
+- memory/05 — D-046 through D-049 added
+- memory/09 — complete rewrite to run028 current state
+- memory/10 — run027+run028 update entries added
 - (.local/ artifacts NOT committed — normalized/, spec cache, navigation artifacts, run records)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.

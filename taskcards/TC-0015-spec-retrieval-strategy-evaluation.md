@@ -86,6 +86,9 @@ This report is the prerequisite for TC-0016 (FODS vector index pilot implementat
 - Calling any remote LLM endpoint for embeddings — FORBIDDEN (local-only models only)
 - Storing embeddings in committed files — FORBIDDEN (local-only, `.local/`)
 - Using evaluation results to alter any Gate evidence before TC-0016 is approved — FORBIDDEN
+- Using a cloud vector database (Pinecone, Weaviate, Chroma cloud, etc.) — FORBIDDEN (local-only)
+- Mixing FODS embeddings with any other format's embeddings — FORBIDDEN (format isolation required)
+- Reusing a stale embedding if the source `chunks.jsonl` or `text.txt` SHA-256 has changed — FORBIDDEN (must rebuild)
 
 ---
 

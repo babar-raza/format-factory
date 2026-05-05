@@ -89,6 +89,9 @@ The pilot creates:
 - Committing the vector index to git — FORBIDDEN (`.local/` only, never committed)
 - Using Tier 3 for Gate evidence before TC-0016 is independently verified — FORBIDDEN
 - Building multi-format index — FORBIDDEN (format isolation required)
+- Using a cloud vector database (Pinecone, Weaviate, Chroma cloud, etc.) — FORBIDDEN (local-only index only)
+- Mixing FODS embeddings with any other format's embeddings in the same index — FORBIDDEN
+- Reusing a stale index if the source SHA-256 of `chunks.jsonl`, `text.txt`, or the FODS spec PDF has changed — FORBIDDEN (must rebuild from current source)
 
 ---
 

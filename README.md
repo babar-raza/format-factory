@@ -25,11 +25,11 @@ Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{form
 
 ## First Pilot: FODS
 
-**Gate 1 passed — 2026-05-04. Gate 2 passed — 2026-05-05. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
+**Gate 1 passed — 2026-05-04. Gate 2 passed — 2026-05-05. Gate 3 passed — 2026-05-05. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
 
 **FODS** — Flat OpenDocument Spreadsheet — is the active pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. Single-file XML, well-documented specification, no ZIP complexity, permissive license.
 
-Gate 2 (Spec and Legal Evidence) is complete. ODF 1.3 spec acquired and verified. Legal fast-path confirmed (OASIS Category 1, royalty-free). Patent search waived by project lead. Gate 3 (Sample Corpus) planning is next — requires an explicit human Gate 3 execution prompt. No samples acquired yet.
+Gate 3 (Sample Corpus) is complete — 4 Apache-2.0 synthetic samples validated 4/4 PASS, approved by Babar Raza (2026-05-05). Gate 4 (Parser Prototype) is next — parser planning package created; requires an explicit Gate 4 execution prompt.
 
 ---
 
@@ -68,13 +68,14 @@ Every format passes through 11 mandatory gates before any product code is writte
 
 ## Project Status
 
-**Current phase:** Phase 3 planning — FODS Gate 3 Sample Corpus Planning (active pilot: FODS)
+**Current phase:** Phase 3 — FODS Gate 3 PASSED, Gate 4 parser prototype planning active (active pilot: FODS)
 
 - Phase 0 (Foundation): Complete — accepted 2026-05-04
 - Phase 1A (Scoring): Complete — FODS scored 93/100, Accept band
 - Phase 1B (Gate 1): Complete — Gate 1 passed, approved by Babar Raza, 2026-05-04
 - Phase 2 (Spec + Legal Evidence): Complete — Gate 2 passed, approved by Babar Raza, 2026-05-05
-- Phase 3 (Sample Corpus): Planning ready (TC-0010) — Gate 3 execution requires explicit human prompt; no samples acquired
+- Phase 3 (Sample Corpus): Complete — Gate 3 passed, approved by Babar Raza, 2026-05-05; 4 samples validated 4/4 PASS
+- Phase 3 (Gate 4 Planning): Active — parser planning package ready; TC-0014 planning_ready; explicit Gate 4 execution prompt required
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md).
 

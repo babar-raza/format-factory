@@ -20,13 +20,13 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: [gate_3_execution_not_yet_started]
-notes: "DEC-034 independent verification taskcard for Gate 3 planning. Created run023. NOT STARTED. Will serve as independent agent verification sprint before Gate 3 human review."
+notes: "DEC-034 independent verification taskcard for Gate 3 planning. Created run023. SUPERSEDED — independent verification performed in run027 (combined verification sprint), satisfying DEC-034. Gate 3 PASSED (Babar Raza, 2026-05-05, run028). TC-0011 CLOSED run028."
 ---
 
 # TC-0011: FODS Gate 3 — Planning Independent Verification Sprint
 
 **Phase:** 3 planning verification (DEC-034 sprint)
-**Status:** not_started
+**Status:** closed (superseded by run027 combined verification)
 **Owner:** Pending — assigned when TC-0010 Gate 3 planning is complete
 **Created:** 2026-05-05 (run023)
 **Last updated:** 2026-05-05 (run023)
@@ -103,7 +103,8 @@ Perform an independent agent verification sprint on the TC-0010 Gate 3 corpus pl
 
 ## Completion Record
 
-**Status:** not_started
-**Created:** 2026-05-05 by claude-sonnet-4-6 (run023 — forward planning only; TC-0010 not yet executed).
+**Status:** closed (superseded)
+**Created:** 2026-05-05 by claude-sonnet-4-6 (run023 — forward planning only).
+**Closed:** 2026-05-05 (run028)
 
-**Next action:** Wait for TC-0010 execution. Then issue explicit DEC-034 verification prompt for this taskcard.
+**Closure note:** DEC-034 independent verification was performed in run027 as part of the combined verification sprint (not as a separate TC-0011 execution). TC-0027 verified all run026 claims: SHA-256 hashes confirmed, 4/4 PASS re-confirmed, navigation tools smoke-tested. This satisfied the DEC-034 requirement. Gate 3 PASSED by Babar Raza (2026-05-05, run028).

@@ -19,6 +19,8 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 Living Master Plan
 Agent Governance Layer
 Specification Acquisition and Local Cache Layer
+Spec Navigation Layer (run026: 884 sections, 940 chunks, query tooling)
+Hybrid Spec Retrieval Strategy (run027: Tier 1 deterministic → Tier 2 lexical → Tier 3 vector/future)
 Persistent Artifact Model
 Format Acquisition Pipeline
 Evidence, Legal, Security, and Oracle Validation
@@ -28,6 +30,23 @@ Python OSS Product Track
 .NET OSS Product Track
 .NET Commercial Product Track
 ```
+
+## Hybrid Spec Retrieval Strategy (added run027)
+
+Agents query the normalized spec using a 3-tier hierarchy. See `docs/spec-retrieval-strategy.md` for full policy.
+
+| Tier | Method | Tool invocation | When to use |
+|---|---|---|---|
+| 1 | Deterministic | `query_normalized_spec.py --section`, `--element`, `--page` | Known section number or element name |
+| 2 | Lexical (keyword) | `query_normalized_spec.py --keyword`, `--sample-req` | Known keyword; no exact section |
+| 3 | Vector/semantic | Not yet implemented (TC-0015, TC-0016) | Complex natural-language question after Tier 1+2 fail |
+
+Rules:
+- Always attempt Tier 1 before Tier 2 or Tier 3.
+- Every query must specify `--format-id fods` (format isolation — no cross-format bleed).
+- All retrieval is local-only (`.local/spec-cache/`). No remote calls during retrieval.
+- Every result cited in Gate evidence must include `spec_citation` provenance block (see `docs/spec-retrieval-strategy.md` §6).
+- Tier 3 vector search is NOT yet available. TC-0015 evaluates it; TC-0016 implements it (both blocked by human review).
 
 ## Product-neutral acquisition layer
 

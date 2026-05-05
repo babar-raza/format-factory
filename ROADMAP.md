@@ -85,7 +85,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Gate 2 status:** PASSED — approved by Babar Raza (2026-05-05). Spec acquired and verified. Legal fast-path confirmed (OASIS Category 1, royalty-free). Patent search waived by project lead.
 
-**Gate 3 status:** not_started. Planning ready (TC-0010). Requires explicit Gate 3 execution prompt. No samples acquired yet.
+**Gate 3 status:** PASSED — approved by Babar Raza (2026-05-05, run028). 4 Apache-2.0 synthetic samples validated 4/4 PASS (run026). DEC-034 independently verified (run027). Spec Navigation Layer complete: 884 sections, 940 chunks.
 
 ---
 

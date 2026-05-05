@@ -60,6 +60,10 @@ This decision log preserves the rationale behind major choices.
 | D-043 | Gate 1 approved by Babar Raza (FODS, 93/100, Accept band) | Decided (run017, 2026-05-04) | Gate 1 is a human-only approval gate. Human approval recorded in run017 prompt. Gate status: passed. |
 | D-044 | TC-0007 spec-cache tooling implemented in run019 (generic only; no spec download) | Decided (run019, 2026-05-04) | spec_index.py, acquire_spec.py (dry-run default), refresh_check.py implemented. TC-0007 status: completed_pending_independent_verification. |
 | D-045 | FODS Gate 2 evidence draft completed in run019 with SUPPORTED_BY_RECORDED_URL + PLAUSIBLE_PENDING_VERIFICATION claims | Decided (run019, 2026-05-04) | Spec not downloaded (T3 not authorized). OASIS fast-path checklist 4/7 confirmed. Gate 2: evidence_draft_pending_independent_verification. |
+| D-046 | FODS Gate 2 PASSED (Babar Raza, 2026-05-05, run023) | Decided (run023) | Patent search waived by project lead. Fast-path confirmed. ODF 1.3 spec acquired run021. Gate 2 evidence independently verified run022. |
+| D-047 | FODS Gate 3 PASSED (Babar Raza, 2026-05-05, run028) | Decided (run028) | 4 Apache-2.0 synthetic FODS samples validated 4/4 PASS (run026). DEC-034 independently verified run027. TC-0013 COMPLETED. |
+| D-048 | Hybrid Spec Retrieval Strategy: 3-tier hierarchy (deterministic → lexical → vector/future) | Decided (run027) | `docs/spec-retrieval-strategy.md` defines the policy. AGENTS.md Section X added. Tier 3 future: TC-0015/TC-0016. |
+| D-049 | Gate 4 parser planning package committed (parser-requirements.md, parser-scope.md, parser-test-plan.md) | Decided (run028) | TC-0014 planning_ready. TC-0017 (execution) and TC-0018 (verification) created. Explicit Gate 4 execution prompt required. |
 
 ## Pending decisions
 

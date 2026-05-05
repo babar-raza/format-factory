@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 3 sample corpus execution taskcard for FODS. Created run025. Executed run026 (2026-05-05): 4 samples created, validated 4/4 PASS, provenance confirmed. Spec Navigation Layer built (884 sections, 940 chunks). Independent verification (DEC-034) completed run027: SHA-256 hashes verified, 4/4 PASS re-confirmed. Awaiting Gate 3 human approval."
+notes: "Gate 3 sample corpus execution taskcard for FODS. Created run025. Executed run026 (2026-05-05): 4 samples created, validated 4/4 PASS, provenance confirmed. Spec Navigation Layer built (884 sections, 940 chunks). Independent verification (DEC-034) completed run027: SHA-256 hashes verified, 4/4 PASS re-confirmed. Gate 3 PASSED (Babar Raza, 2026-05-05, run028). TC-0013 COMPLETED run028."
 ---
 
 # TC-0013: FODS Gate 3 — Sample Corpus Execution
@@ -28,7 +28,7 @@ notes: "Gate 3 sample corpus execution taskcard for FODS. Created run025. Execut
 **Taskcard ID:** TC-0013
 **Phase:** 3 (Gate 3 execution)
 **Gate:** Gate 3 (Sample Corpus Ready)
-**Status:** sample_corpus_verified_pending_human_review
+**Status:** completed
 **Created:** 2026-05-05 (run025)
 **Created by:** claude-sonnet-4-6 (run025)
 **Executed:** 2026-05-05 (run026)
@@ -156,7 +156,7 @@ All executed samples: project-owned, Apache-2.0, reproducible from `tools/sample
 - [x] Spec Navigation Layer: sections.jsonl (884), chunks.jsonl (940), page-map.yaml
 - [x] sample-requirements.yaml and parser-requirements-draft.yaml produced
 - [x] Independent verification sprint completed (DEC-034) — run027: SHA-256 hashes verified, 4/4 PASS re-confirmed, nav tools smoke-tested
-- [ ] Gate 3 human approval recorded in `registry/format-registry.yaml`
+- [x] Gate 3 human approval recorded in `registry/format-registry.yaml` — PASSED (Babar Raza, 2026-05-05, run028)
 
 ---
 
