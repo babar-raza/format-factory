@@ -20,22 +20,22 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 3 planning artifact. Corpus plan drafted run024. Full normalization completed run025: text.txt 2,160,370 chars, pages.jsonl 782 pages, citations.yaml 194 section refs, 35 external refs. Spec section references verified against normalized text. No samples acquired."
+notes: "Gate 3 planning artifact. Corpus plan drafted run024. Full normalization completed run025. Gate 3 corpus EXECUTED run026: 4 Apache-2.0 synthetic FODS samples created (4/4 PASS). Independently verified run027. See samples/_provenance.yaml for confirmed entries."
 ---
 
 # Sample Sources — Flat OpenDocument Spreadsheet (FODS)
 
 **Format ID:** `fods`
 **Gate:** 3
-**Status:** planning_in_progress — corpus plan drafted run024; awaiting explicit Gate 3 execution prompt for acquisition
+**Status:** corpus_executed_independently_verified — 4 synthetic FODS samples created run026, validated 4/4 PASS, independently verified run027. Awaiting Gate 3 human approval.
 
 **Gate 1 approved by:** Babar Raza (2026-05-04)
 **Gate 2 status:** PASSED — Babar Raza (2026-05-05, run023)
-**Gate 3 status:** planning_ready (TC-0010); planning in progress (run024); awaiting explicit Gate 3 execution prompt for acquisition
+**Gate 3 status:** sample_corpus_verified_pending_human_review (run027)
 
 **Normalization status:** Full extraction completed run025 (G-NORM-001 resolved). pdfminer.six 20260107 installed. Extracted: text.txt (2,160,370 chars), pages.jsonl (782 pages), citations.yaml (194 section refs, 35 external refs). SHA-256 MATCH: `sha256:92cfe64...b066`. Validation: 7 PASS, 1 WARN (parser-requirements.yaml pending), 0 FAIL.
 
-**Important:** No samples have been acquired. `samples/by-format/fods/` does not exist and must not be created until Gate 3 is explicitly authorized by a human execution prompt.
+**Corpus executed:** `samples/by-format/fods/` created run026 with 4 project-owned synthetic Apache-2.0 files. See `samples/_provenance.yaml` for confirmed provenance entries. Independently verified run027.
 
 ---
 
@@ -165,14 +165,14 @@ For each sample acquired at Gate 3:
 
 ## Final Corpus Plan
 
-*(Status: planned — to be confirmed before Gate 3 acquisition is requested.)*
+*(Status: EXECUTED run026. Independently verified run027. All 4 provenance entries confirmed.)*
 
 | Sample File | Source | License | Sample Type | Provenance Entry Created? |
 |---|---|---|---|---|
-| `samples/by-format/fods/minimal.fods` | Project synthetic | Apache-2.0 | minimal_valid | No — Gate 3 execution required |
-| `samples/by-format/fods/empty.fods` | Project synthetic | Apache-2.0 | empty_trivial | No — Gate 3 execution required |
-| `samples/by-format/fods/core-data.fods` | Project synthetic | Apache-2.0 | core_data | No — Gate 3 execution required |
-| `samples/by-format/fods/edge-case.fods` | Project synthetic | Apache-2.0 | edge_case | No — Gate 3 execution required |
+| `samples/by-format/fods/minimal-spreadsheet.fods` | Project synthetic | Apache-2.0 | minimal_valid | Yes — fods-minimal-01 (run026) |
+| `samples/by-format/fods/multi-sheet-basic.fods` | Project synthetic | Apache-2.0 | core_data (multi-sheet) | Yes — fods-multi-sheet-01 (run026) |
+| `samples/by-format/fods/typed-values-basic.fods` | Project synthetic | Apache-2.0 | core_data (typed values) | Yes — fods-typed-values-01 (run026) |
+| `samples/by-format/fods/formula-basic.fods` | Project synthetic | Apache-2.0 | core_data (formula) | Yes — fods-formula-01 (run026) |
 
 ---
 
@@ -188,10 +188,10 @@ For each sample acquired at Gate 3:
 - [x] Normalization layer dependency noted (TC-0012)
 - [x] Full normalization completed (run025): text.txt, pages.jsonl, citations.yaml, G-NORM-001 resolved
 - [x] Spec section references verified against normalized text (run025)
-- [ ] Gate 3 execution prompt issued by human
-- [ ] Samples created/acquired
-- [ ] Provenance entries confirmed
-- [ ] Independent agent verification sprint (DEC-034)
+- [x] Gate 3 execution prompt issued by human (run026, 2026-05-05)
+- [x] Samples created/acquired — 4 project-owned synthetic FODS files (run026)
+- [x] Provenance entries confirmed — 4/4 in samples/_provenance.yaml (run026)
+- [x] Independent agent verification sprint (DEC-034) — completed run027
 - [ ] Gate 3 human approval
 
 ---
@@ -211,3 +211,5 @@ For each sample acquired at Gate 3:
 - **run023 (2026-05-05):** Gate 2 status updated to PASSED.
 - **run024 (2026-05-05):** Corpus plan drafted. Sample requirement types defined, blocked rules, synthetic strategy, candidate sources, provenance procedure. Normalization layer dependency noted. No samples acquired.
 - **run025 (2026-05-05):** Full normalization completed (pdfminer.six 20260107). Extracted text.txt (2,160,370 chars), pages.jsonl (782 pages), citations.yaml (194 section refs, 35 external refs). Spec section references updated with verified sections from normalized text. G-NORM-001 resolved.
+- **run026 (2026-05-05):** Gate 3 execution. 4 synthetic FODS samples created and validated (4/4 PASS). Provenance entries confirmed. Spec Navigation Layer built (884 sections, 940 chunks). TC-0013 in_progress. Committed 8871777.
+- **run027 (2026-05-05):** Independent verification (DEC-034). All run026 claims verified. Stale state fixed. Gate 3 status updated to sample_corpus_verified_pending_human_review. Hybrid Spec Retrieval Strategy added.

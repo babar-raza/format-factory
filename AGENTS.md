@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Operating Contract
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-05 (run024: Section W added — Specification Normalization Layer rules)
+**Last reviewed:** 2026-05-05 (run027: Section X added — Hybrid Spec Retrieval Strategy rules)
 **Authority:** This document is the non-negotiable operating contract for all agents (Claude, Codex, and any other automated executor) working in this repository. Every rule below must be followed without exception unless a specific exception is logged in the gap register with human approval.
 
 ---
@@ -446,3 +446,26 @@ A future `/sync-memory` command or taskcard (`TC-0008`) should be created (Phase
 **W10. No LLM Calls With Spec Text to Remote Endpoints.** Full specification documents must not be sent to remote LLM endpoints. This extends T9 of this document. Spec text may be used with local-only LLM endpoints if redistribution is not implicated and explicit authorization is in the execution prompt.
 
 See `docs/specification-normalization.md` for the complete policy. See `tools/spec-normalize/` for normalization tooling.
+
+---
+
+## X. Hybrid Spec Retrieval Strategy Rules
+
+**X1. Three-Tier Retrieval Hierarchy.** Agents must use the following hierarchy when retrieving information from normalized spec artifacts. Lower tiers must be exhausted before falling through to higher tiers:
+- **Tier 1 (Deterministic):** `query_normalized_spec.py --section` or `--element` or `--page`. Use when exact section ID, element name, or page is known.
+- **Tier 2 (Lexical):** `query_normalized_spec.py --keyword` or `--sample-req`. Use when a relevant keyword or structured requirement category is known.
+- **Tier 3 (Vector/Semantic):** `query_normalized_spec.py --semantic` (future, when implemented after TC-0016). Use only for complex natural-language questions that Tier 1 and Tier 2 cannot answer.
+
+**X2. Format Isolation.** Every retrieval query must specify `--format-id <id>`. Agents must never use a FODS index to answer questions about another format, and vice versa. Format bleed is a governance violation.
+
+**X3. Local-First.** All retrieval operates on locally cached artifacts in `.local/spec-cache/`. No remote calls are made during retrieval queries. If local artifacts are missing, log a gap and stop.
+
+**X4. Provenance Requirement.** Every spec excerpt cited in an evidence artifact must include: section ID, page number, source SHA-256 hash, spec version, and retrieval method (tier1_section, tier1_element, tier2_keyword, tier2_sample_req, or tier3_vector). Evidence without provenance is incomplete.
+
+**X5. Gate Evidence Restriction for Tier 3.** Tier 3 vector search may not be used in any Gate evidence artifact until TC-0016 (FODS Vector Index Pilot) is completed and independently verified. Until then, all Gate evidence must cite Tier 1 or Tier 2 results only.
+
+**X6. Do Not Scan text.txt Directly.** Agents must not scan or grep `text.txt` directly for spec content. Use the query tools. Direct scanning bypasses citation tracking and source hash provenance.
+
+**X7. Evaluation Before Implementation.** Tier 3 vector search must be evaluated (TC-0015) before it is implemented (TC-0016). TC-0016 must not proceed without TC-0015 evaluation report reviewed and approved by a human.
+
+See `docs/spec-retrieval-strategy.md` for the complete strategy. See `taskcards/TC-0015-spec-retrieval-strategy-evaluation.md` and `taskcards/TC-0016-fods-vector-index-pilot.md` for evaluation and implementation taskcards.

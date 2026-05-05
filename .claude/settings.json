@@ -38,6 +38,9 @@
       "Write(tools/spec-normalize/build_chunk_index.py)",
       "Write(tools/spec-normalize/query_normalized_spec.py)",
       "Write(tools/spec-normalize/export_sample_requirements.py)",
+      "Write(tools/spec-normalize/build_vector_index.py)",
+      "Write(docs/spec-retrieval-strategy.md)",
+      "Write(docs/spec-retrieval-evaluation-report.md)",
       "Write(schemas/_readme.md)",
       "Write(prototypes/_readme.md)",
       "Write(src/python/_readme.md)",
@@ -93,7 +96,7 @@
   "phase": "3",
   "phase_note": "Phase 3 EXECUTION. Gate 2 passed (2026-05-05, Babar Raza). Gate 3 corpus created run026 (4 FODS samples, 4/4 PASS). samples/by-format/fods/** and tools/samples/** ALLOWED (run026). spec-normalize navigation tools ALLOWED (run026). Awaiting independent verification (DEC-034) and Gate 3 human approval. IMPORTANT: Spec acquisition complete for FODS/ODF 1.3 (run021). Normalized artifacts local-only. Network commands (curl, wget, Invoke-WebRequest, iwr) DENIED. schemas/neutral-model/**, prototypes/by-format/**, src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts DENIED.",
   "notes": [
-    "PHASE 2 CONSERVATIVE MODE: Gate 1 passed. acquisition-packs/fods/** added to allow list (run018).",
+    "Phase 3 EXECUTION: Gate 2 passed (2026-05-05). Gate 3 corpus created run026 (4/4 PASS), independently verified run027. run027 commit pending.",
     "Format-first source layout: src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE — must not be created.",
     "Phase 3+ paths (samples/by-format/, schemas/neutral-model/, prototypes/by-format/, tests/fixtures|oracle|fuzz/, reports/security|legal/) remain DENIED.",
     "Network download commands (curl, wget, Invoke-WebRequest, iwr) are DENIED. Bash(python *acquire_spec*) deny was REMOVED in run021 (session-specific T3 authorization for FODS/ODF 1.3 only). FUTURE SESSIONS: re-verify all T3 conditions before any new --allow-network download.",

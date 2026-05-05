@@ -30,9 +30,9 @@ notes: "Gate 4 planning artifact. Skeleton only — not started. Parser design m
 **Status:** Not started — skeleton created run017 after Gate 1 approval
 
 **Gate 1 approved by:** Babar Raza (2026-05-04)
-**Gate 2 status:** not_started
-**Gate 3 status:** not_started
-**Gate 4 status:** not_started
+**Gate 2 status:** PASSED — Babar Raza (2026-05-05, run023)
+**Gate 3 status:** sample_corpus_verified_pending_human_review (run027)
+**Gate 4 status:** not_started (blocked by Gate 3 approval)
 
 **Important:** No prototype parser has been created. `prototypes/by-format/fods/` does not exist and must not be created until Gate 4 is passed and an explicit prototype implementation prompt is issued.
 

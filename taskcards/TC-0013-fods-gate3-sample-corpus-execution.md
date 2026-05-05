@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 3 sample corpus execution taskcard for FODS. Created run025. Executed run026 (2026-05-05): 4 samples created, validated 4/4 PASS, provenance confirmed. Spec Navigation Layer built (884 sections, 940 chunks). Awaiting independent verification and Gate 3 human approval."
+notes: "Gate 3 sample corpus execution taskcard for FODS. Created run025. Executed run026 (2026-05-05): 4 samples created, validated 4/4 PASS, provenance confirmed. Spec Navigation Layer built (884 sections, 940 chunks). Independent verification (DEC-034) completed run027: SHA-256 hashes verified, 4/4 PASS re-confirmed. Awaiting Gate 3 human approval."
 ---
 
 # TC-0013: FODS Gate 3 — Sample Corpus Execution
@@ -28,7 +28,7 @@ notes: "Gate 3 sample corpus execution taskcard for FODS. Created run025. Execut
 **Taskcard ID:** TC-0013
 **Phase:** 3 (Gate 3 execution)
 **Gate:** Gate 3 (Sample Corpus Ready)
-**Status:** sample_corpus_created_pending_independent_verification
+**Status:** sample_corpus_verified_pending_human_review
 **Created:** 2026-05-05 (run025)
 **Created by:** claude-sonnet-4-6 (run025)
 **Executed:** 2026-05-05 (run026)
@@ -64,8 +64,8 @@ Execute the Gate 3 corpus plan defined in `acquisition-packs/fods/sample-sources
 - [x] TC-0010 corpus plan drafted (run024) and normalization-verified (run025)
 - [x] TC-0012 Phase 2 complete — full extraction done; citations.yaml available (run025)
 - [x] Spec section references verified against normalized text (run025)
-- [ ] Explicit Gate 3 execution prompt issued by human
-- [ ] TC-0013 explicitly assigned to an agent in the execution prompt
+- [x] Explicit Gate 3 execution prompt issued by human (run026, 2026-05-05)
+- [x] TC-0013 explicitly assigned to an agent in the execution prompt (run026)
 
 ---
 
@@ -108,16 +108,18 @@ These facts were derived from `.local/spec-cache/fods/1.3/normalized/` artifacts
 
 ---
 
-## Planned Sample Files
+## Planned Sample Files (pre-execution plan — see Acceptance Criteria for actual executed files)
 
-| Sample File | Sample Type | Root Element | Key Structures |
-|---|---|---|---|
-| `samples/by-format/fods/minimal.fods` | minimal_valid | `<office:document>` §3.1.2 | One sheet, one cell with text |
-| `samples/by-format/fods/empty.fods` | empty_trivial | `<office:document>` §3.1.2 | Empty spreadsheet (§2.2.4 conforming) |
-| `samples/by-format/fods/core-data.fods` | core_data | `<office:document>` §3.1.2 | Multiple sheets, text/number/formula cells, basic styles (§9.4) |
-| `samples/by-format/fods/edge-case.fods` | edge_case | `<office:document>` §3.1.2 | Unicode chars, merged cells, empty rows |
+The names below were the planning names. Actual executed names differ (see Acceptance Criteria and `samples/_provenance.yaml`).
 
-All samples: project-owned, Apache-2.0, reproducible from generation script.
+| Planned File (pre-execution) | Sample Type | Executed As |
+|---|---|---|
+| `minimal.fods` | minimal_valid | `minimal-spreadsheet.fods` |
+| `empty.fods` | empty_trivial | (merged into minimal — single sheet with one cell) |
+| `core-data.fods` | core_data | `multi-sheet-basic.fods` + `typed-values-basic.fods` |
+| `edge-case.fods` | edge_case | `formula-basic.fods` |
+
+All executed samples: project-owned, Apache-2.0, reproducible from `tools/samples/create_fods_samples.py`.
 
 ---
 
@@ -153,7 +155,7 @@ All samples: project-owned, Apache-2.0, reproducible from generation script.
 - [x] No samples with blocked licenses present (all Apache-2.0)
 - [x] Spec Navigation Layer: sections.jsonl (884), chunks.jsonl (940), page-map.yaml
 - [x] sample-requirements.yaml and parser-requirements-draft.yaml produced
-- [ ] Independent verification sprint completed (DEC-034)
+- [x] Independent verification sprint completed (DEC-034) — run027: SHA-256 hashes verified, 4/4 PASS re-confirmed, nav tools smoke-tested
 - [ ] Gate 3 human approval recorded in `registry/format-registry.yaml`
 
 ---

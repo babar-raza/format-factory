@@ -1,7 +1,7 @@
 # GOVERNANCE.md — Human Governance Rules
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-05 (run024: Section 16 added — Specification Normalization Layer governance)
+**Last reviewed:** 2026-05-05 (run027: Section 17 added — Hybrid Spec Retrieval Strategy governance)
 **Authority:** This document governs the behavior of human contributors to format-factory. It defines decision-making authority, gate approval processes, visibility classification policy, and the rules that protect the open-source/commercial boundary.
 
 ---
@@ -231,6 +231,22 @@ Before any Gate 10 (OSS release) is approved, the project lead must verify:
 **16.6.** A human may approve redistribution of specific normalized content if the spec's redistribution terms permit it and legal review has confirmed this. This approval must be recorded explicitly (decision register or gate approval record). Without such approval, all normalized text content is local-only.
 
 See `docs/specification-normalization.md` for full policy. See AGENTS.md Section W for agent rules.
+
+---
+
+## 17. Hybrid Spec Retrieval Strategy Governance
+
+**17.1.** Agents must follow the three-tier retrieval hierarchy defined in `docs/spec-retrieval-strategy.md`: Tier 1 (deterministic) → Tier 2 (lexical) → Tier 3 (vector/semantic, future). Lower tiers must be exhausted before advancing to a higher tier.
+
+**17.2.** Tier 3 (vector search) must not be implemented until TC-0015 (evaluation) is completed and the evaluation report is reviewed and approved by a human. Human approval of TC-0015 is required before TC-0016 (implementation) begins.
+
+**17.3.** Every normalized spec query used in a Gate evidence artifact must include provenance: section ID, page, source SHA-256 hash, spec version, and retrieval method. Evidence without provenance is incomplete and cannot be submitted for Gate review.
+
+**17.4.** Format isolation is mandatory. No index, embedding, or query result from one format may be used as evidence for another format. Cross-format retrieval bleed is a governance violation.
+
+**17.5.** The vector index (when built) is local-only and must never be committed to git. It falls under the same local-only policy as normalized text artifacts.
+
+See `docs/spec-retrieval-strategy.md` for full strategy. See AGENTS.md Section X for agent rules.
 
 ---
 
