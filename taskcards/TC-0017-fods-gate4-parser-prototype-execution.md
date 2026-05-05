@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 4 parser prototype execution taskcard for FODS. Created run028 (2026-05-05). NOT_STARTED — blocked by TC-0014 planning approval and explicit Gate 4 execution prompt."
+notes: "Gate 4 parser prototype execution taskcard for FODS. Created run028 (2026-05-05). EXECUTED run029 (2026-05-05): prototype created at prototypes/by-format/fods/fods_parser.py. Validation PT-001–PT-004 PASS (4/4). Status: prototype_created_pending_independent_verification. TC-0018 independent verification (DEC-034) required before Gate 4 human approval."
 ---
 
 # TC-0017: FODS Gate 4 — Parser Prototype Execution
@@ -28,25 +28,28 @@ notes: "Gate 4 parser prototype execution taskcard for FODS. Created run028 (202
 **Taskcard ID:** TC-0017
 **Phase:** 3 (Gate 4 execution)
 **Gate:** Gate 4 (Parser Prototype)
-**Status:** not_started
+**Status:** prototype_created_pending_independent_verification
 **Created:** 2026-05-05 (run028)
 **Created by:** claude-sonnet-4-6 (run028)
+**Executed:** 2026-05-05 (run029)
+**Executed by:** claude-sonnet-4-6 (run029)
 **Blocking:** Gate 4 approval
-**Blocked by:** TC-0014 Gate 4 planning approval by human + explicit Gate 4 execution prompt
+**Blocked by:** TC-0018 independent verification (DEC-034) + Gate 4 human approval
 
 ---
 
-## STOP — Authorization Required
+## Execution Status (run029)
 
-**This taskcard must not be executed until:**
-1. Human reviews the Gate 4 planning package (`parser-requirements.md`, `parser-scope.md`, `parser-test-plan.md`)
-2. Human issues an explicit Gate 4 execution prompt naming TC-0017
+**Authorization:** Explicit Gate 4 execution prompt issued by human (run029, 2026-05-05).
 
-Current state (run028):
+Execution state:
 - Gate 3: PASSED (Babar Raza, 2026-05-05)
-- TC-0014: planning_ready
-- Gate 4: not_started
-- No prototype exists
+- TC-0014: planning_ready (Gate 4 planning package reviewed and authorized by run029 prompt)
+- Gate 4: prototype_created_pending_independent_verification
+- Prototype: `prototypes/by-format/fods/fods_parser.py` (created run029)
+- Validation: PT-001 PASS, PT-002 PASS, PT-003 PASS, PT-004 PASS (4/4)
+- Test plan discrepancies documented: PT-001 text prediction, PT-002 sheet name predictions, PT-003 date cell prediction — all noted in prototype-notes.md and parser-notes.md
+- Next: TC-0018 independent verification (DEC-034), then Gate 4 human approval
 
 ---
 
@@ -67,8 +70,8 @@ Implement the Gate 4 FODS parser prototype in `prototypes/by-format/fods/fods_pa
 - [x] `parser-scope.md` committed (run028)
 - [x] `parser-test-plan.md` committed (run028)
 - [x] `samples/by-format/fods/` — 4 samples with SHA-256 hashes (run026/run027)
-- [ ] Human reviews Gate 4 planning package
-- [ ] Explicit Gate 4 execution prompt issued by human (must name TC-0017)
+- [x] Human reviews Gate 4 planning package (authorized by run029 execution prompt)
+- [x] Explicit Gate 4 execution prompt issued by human (run029, 2026-05-05)
 
 ---
 
@@ -114,10 +117,10 @@ Implement the Gate 4 FODS parser prototype in `prototypes/by-format/fods/fods_pa
 
 ## Acceptance Criteria
 
-- [ ] `prototypes/by-format/fods/fods_parser.py` — reads all 4 Gate 3 samples
-- [ ] PT-001 through PT-004 all pass (per `parser-test-plan.md`)
-- [ ] `acquisition-packs/fods/parser-notes.md` — design decisions, limitations, security baseline
-- [ ] Registry `gate_4.status` updated
+- [x] `prototypes/by-format/fods/fods_parser.py` — reads all 4 Gate 3 samples (PASS, run029)
+- [x] PT-001 through PT-004 all pass (4/4 PASS, run029)
+- [x] `acquisition-packs/fods/parser-notes.md` — design decisions, limitations, security baseline (updated run029)
+- [x] Registry `gate_4.status` updated — prototype_created_pending_independent_verification
 - [ ] Independent verification sprint (TC-0018 / DEC-034) completed
 - [ ] Gate 4 human approval recorded
 

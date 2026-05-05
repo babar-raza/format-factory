@@ -3,31 +3,31 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run028 to reflect Gate 3 PASSED (Babar Raza, 2026-05-05), Gate 4 planning package created, TC-0017/TC-0018 created
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run029 to reflect Gate 4 prototype created (run029), validation 4/4 PASS, TC-0018 ready_for_execution, TC-0019 created
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 09 — Current State (Phase 3: Gate 3 PASSED, Gate 4 Planning Active)
+# 09 — Current State (Phase 3: Gate 3 PASSED, Gate 4 Prototype Created)
 
-This file captures the current state after run028. Gate 1, Gate 2, and Gate 3 have all PASSED. Gate 4 parser planning package is complete. TC-0014 is planning_ready. Explicit Gate 4 execution prompt required before TC-0017 begins.
+This file captures the current state after run029. Gate 1, Gate 2, and Gate 3 have all PASSED. Gate 4 prototype created — `prototypes/by-format/fods/fods_parser.py` validated 4/4 PASS. Gate 4 NOT approved. TC-0018 independent verification required.
 
-**Last updated:** run028 (Gate 3 approved by Babar Raza, 2026-05-05; parser planning package created; TC-0017/TC-0018 created; master-plan.md v2.24).
+**Last updated:** run029 (Gate 4 prototype created and validated 4/4 PASS; TC-0018 → ready_for_execution; TC-0019 created not_started; master-plan.md v2.25).
 
 ## Current status
 
 | Item | Status |
 |---|---|
-| Phase | Phase 3: Gate 3 PASSED, Gate 4 planning active |
+| Phase | Phase 3: Gate 3 PASSED, Gate 4 prototype created pending independent verification |
 | Phase 0 accepted | YES — 2026-05-04 (run015, human-authorized) |
 | Phase 1A complete | YES — FODS scored 93/100 (run015), independently verified (run016) |
 | Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
 | Gate 2 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run023); patent search waived; fast-path confirmed |
 | Gate 3 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run028); DEC-034 verified run027 |
-| Gate 4 status | not_started — TC-0014 planning_ready; TC-0017/TC-0018 created; explicit execution prompt required |
-| Active formats | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: not_started) |
-| Registry | FODS entry: gate_3: passed (run028); next_allowed_action: gate4_parser_prototype_planning |
+| Gate 4 status | prototype_created_pending_independent_verification — prototype at prototypes/by-format/fods/fods_parser.py; 4/4 PASS; TC-0018 DEC-034 required |
+| Active formats | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: prototype_created_pending_independent_verification) |
+| Registry | FODS entry: gate_4: prototype_created_pending_independent_verification (run029); next_allowed_action: gate4_independent_verification_tc0018 |
 | FODS acquisition pack | acquisition-packs/fods/ (8 files: spec-evidence, legal-notes, sample-sources, parser-notes, parser-requirements, parser-scope, parser-test-plan, pack.yaml) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |
 | TC-0007 status | completed_independently_verified_run020+run022 |
@@ -36,23 +36,24 @@ This file captures the current state after run028. Gate 1, Gate 2, and Gate 3 ha
 | TC-0011 status | closed (superseded by run027 combined verification, run028) |
 | TC-0012 status | completed — normalization layer complete (run025) |
 | TC-0013 status | COMPLETED — Gate 3 corpus executed, validated, independently verified, approved (run028) |
-| TC-0014 status | planning_ready — Gate 4 planning package ready; awaiting explicit Gate 4 execution prompt |
+| TC-0014 status | completed — Gate 4 planning package used in run029 execution |
 | TC-0015 status | not_started — spec retrieval evaluation; blocked by human review of spec-retrieval-strategy.md |
 | TC-0016 status | not_started — FODS vector index pilot; blocked by TC-0015 completion and human approval |
-| TC-0017 status | not_started — Gate 4 prototype execution; blocked by human Gate 4 prompt |
-| TC-0018 status | not_started — Gate 4 prototype DEC-034 verification; blocked by TC-0017 |
+| TC-0017 status | prototype_created_pending_independent_verification — Gate 4 prototype executed run029; 4/4 PASS |
+| TC-0018 status | ready_for_execution — DEC-034 independent verification; blocked by explicit TC-0018 prompt |
+| TC-0019 status | not_started — Gate 5 neutral model planning; blocked by Gate 4 approval + explicit Gate 5 prompt |
 | Samples | 4 Apache-2.0 synthetic FODS samples in samples/by-format/fods/ (run026, validated 4/4 PASS) |
 | Spec Navigation Layer | 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml (run026, local-only) |
 | Hybrid Spec Retrieval | docs/spec-retrieval-strategy.md (run027); AGENTS.md Section X; GOVERNANCE.md Section 17 |
 | Schemas | None |
-| Prototypes | None |
+| Prototypes | prototypes/by-format/fods/fods_parser.py (Gate 4 prototype; 4/4 PASS; pending independent verification — TC-0018) |
 | Product source | None |
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| Latest commit | 09ee31f (run027): verify FODS Gate 3 corpus, fix stale state, add Hybrid Spec Retrieval Strategy |
-| Uncommitted | run028 changes — pending commit |
-| Master plan version | 2.24 (run028) |
+| Latest commit | 5c93b88 (run028): approve FODS Gate 3, create Gate 4 planning package |
+| Uncommitted | run029 changes — Gate 4 prototype (prototypes/by-format/fods/), TC-0019, registry/TC/memory updates |
+| Master plan version | 2.25 (run029) |
 | AGENTS.md sections | A through X (24 sections) |
 
 ## Run history (run001–run028)
@@ -79,7 +80,8 @@ This file captures the current state after run028. Gate 1, Gate 2, and Gate 3 ha
 | run025 | Spec normalization layer | Full extraction: 782 pages, 2.16M chars; citations.yaml; master-plan v2.21 |
 | run026 | Gate 3 corpus execution + navigation layer | 4 FODS samples created 4/4 PASS; 884 sections, 940 chunks; master-plan v2.22; committed 8871777 |
 | run027 | Independent verification + stale state + Hybrid Spec Retrieval | 21 checks PASS; SHA-256 hashes computed; Gate 3 → sample_corpus_verified_pending_human_review; docs/spec-retrieval-strategy.md; TC-0015/0016; AGENTS.md X; committed 09ee31f; master-plan v2.23 |
-| run028 | Gate 3 approval + Gate 4 planning package | Gate 3 PASSED (Babar Raza, 2026-05-05); TC-0013 completed; TC-0014 planning_ready; parser planning docs; TC-0017/TC-0018 created; memory updated; master-plan v2.24 |
+| run028 | Gate 3 approval + Gate 4 planning package | Gate 3 PASSED (Babar Raza, 2026-05-05); TC-0013 completed; TC-0014 planning_ready; parser planning docs; TC-0017/TC-0018 created; memory updated; master-plan v2.24; committed 5c93b88 |
+| run029 | Gate 4 prototype creation + validation | TC-0017 executed; fods_parser.py created; 4/4 PASS (PT-001–PT-004); TC-0019 created; registry/TC/memory updated; master-plan v2.25 |
 
 ## Latest known evidence bundles
 
@@ -89,10 +91,11 @@ run016: run016-independent-verification-sprint.zip
 run017: run017-gate1-approval-phase2-setup-[timestamp].zip
 run021: run021-spec-acquisition-and-gate2-upgrade-20260504.zip (canonical; 74 entries)
 run027: run027-verify-gate3-hybrid-retrieval-[timestamp].zip (20 entries — see note below)
-run028: run028-gate3-approval-gate4-planning-[timestamp].zip ← CURRENT (pending creation)
+run028: run028-gate3-approval-gate4-planning-[timestamp].zip (102 entries)
+run029: run029-gate4-parser-prototype-[timestamp].zip ← CURRENT (pending creation)
 ```
 
-Note: run027 bundle had only 20 entries (missing memory files). run028 produces full bundle.
+Note: run027 bundle had only 20 entries (missing memory files). run028 had 102 entries (full bundle).
 
 ## Source layout (PROPAGATED — run011, CONFIRMED run013)
 

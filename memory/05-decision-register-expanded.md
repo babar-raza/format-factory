@@ -64,6 +64,7 @@ This decision log preserves the rationale behind major choices.
 | D-047 | FODS Gate 3 PASSED (Babar Raza, 2026-05-05, run028) | Decided (run028) | 4 Apache-2.0 synthetic FODS samples validated 4/4 PASS (run026). DEC-034 independently verified run027. TC-0013 COMPLETED. |
 | D-048 | Hybrid Spec Retrieval Strategy: 3-tier hierarchy (deterministic → lexical → vector/future) | Decided (run027) | `docs/spec-retrieval-strategy.md` defines the policy. AGENTS.md Section X added. Tier 3 future: TC-0015/TC-0016. |
 | D-049 | Gate 4 parser planning package committed (parser-requirements.md, parser-scope.md, parser-test-plan.md) | Decided (run028) | TC-0014 planning_ready. TC-0017 (execution) and TC-0018 (verification) created. Explicit Gate 4 execution prompt required. |
+| D-050 | Gate 4 prototype created (prototypes/by-format/fods/fods_parser.py) and validated 4/4 PASS | Decided (run029) | TC-0017 → prototype_created_pending_independent_verification. TC-0018 → ready_for_execution. TC-0019 created (Gate 5 planning, not_started). Gate 4 NOT approved. TC-0018 DEC-034 required. |
 
 ## Pending decisions
 

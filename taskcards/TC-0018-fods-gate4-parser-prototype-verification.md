@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 4 parser prototype DEC-034 independent verification taskcard for FODS. Created run028 (2026-05-05). NOT_STARTED — blocked by TC-0017 execution and explicit verification prompt."
+notes: "Gate 4 parser prototype DEC-034 independent verification taskcard for FODS. Created run028 (2026-05-05). Updated run029: TC-0017 executed (PASS 4/4) — TC-0018 now ready_for_execution. BLOCKED by explicit DEC-034 verification prompt (human must issue TC-0018 verification prompt in a new session)."
 ---
 
 # TC-0018: FODS Gate 4 — Parser Prototype Independent Verification
@@ -28,7 +28,7 @@ notes: "Gate 4 parser prototype DEC-034 independent verification taskcard for FO
 **Taskcard ID:** TC-0018
 **Phase:** 3 (Gate 4 verification — DEC-034 sprint)
 **Gate:** Gate 4 (Parser Prototype)
-**Status:** not_started
+**Status:** ready_for_execution
 **Created:** 2026-05-05 (run028)
 **Created by:** claude-sonnet-4-6 (run028)
 **Blocking:** Gate 4 human approval

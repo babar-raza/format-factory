@@ -103,6 +103,8 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Entry condition:** Gate 3 passed for FODS.
 
+**Gate 4 status:** Prototype created (run029, 2026-05-05). `prototypes/by-format/fods/fods_parser.py` — Python stdlib only. Validation: PT-001 through PT-004 PASS (4/4). Gate 4 NOT approved. TC-0018 independent verification (DEC-034) required before Gate 4 human approval.
+
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 
 ---

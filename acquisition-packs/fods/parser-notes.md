@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 4 planning artifact. Skeleton only — not started. Parser design must not proceed before Gate 2 spec review and Gate 3 sample corpus."
+notes: "Gate 4 execution artifact. Prototype created run029 (2026-05-05). Validation 4/4 PASS. Status: prototype_created_pending_independent_verification. TC-0018 independent verification required before Gate 4 human approval."
 ---
 
 # Parser Notes — Flat OpenDocument Spreadsheet (FODS)
@@ -31,16 +31,19 @@ notes: "Gate 4 planning artifact. Skeleton only — not started. Parser design m
 
 **Gate 1 approved by:** Babar Raza (2026-05-04)
 **Gate 2 status:** PASSED — Babar Raza (2026-05-05, run023)
-**Gate 3 status:** sample_corpus_verified_pending_human_review (run027)
-**Gate 4 status:** not_started (blocked by Gate 3 approval)
+**Gate 3 status:** PASSED — Babar Raza (2026-05-05, run028)
+**Gate 4 status:** prototype_created_pending_independent_verification (run029)
 
-**Important:** No prototype parser has been created. `prototypes/by-format/fods/` does not exist and must not be created until Gate 4 is passed and an explicit prototype implementation prompt is issued.
+**Prototype:** `prototypes/by-format/fods/fods_parser.py` — created run029 (2026-05-05)
+**Validation:** PT-001 through PT-004 PASS (4/4) — run029
+**Next step:** TC-0018 independent verification (DEC-034) before Gate 4 human approval
+**Gate 4 approved:** NO
 
 ---
 
 ## Purpose
 
-This document will record parser design decisions, implementation strategy, and security design choices for the FODS prototype parser. This is a skeleton — all sections are placeholders until Gate 2 spec review and Gate 3 sample corpus work are complete.
+This document records parser design decisions, implementation strategy, and security design choices for the FODS prototype parser. Updated with Gate 4 execution findings (run029).
 
 ---
 
@@ -54,15 +57,20 @@ Based on Gate 1 scoring evidence:
 
 ---
 
-## Parser Architecture Decision
+## Parser Architecture Decision (Gate 4 Prototype — run029)
 
-*(To be completed after spec review in TC-0009.)*
+**Parsing strategy:** ElementTree tree parse (full document loaded into memory). Appropriate for Gate 4 prototype scope. Production parser (Gate 9+) should use iterparse for large file streaming.
+**Programming language:** Python 3.11+ (prototype, stdlib only); Python and/or .NET (product — Phase 4+)
+**Key libraries (prototype):** `xml.etree.ElementTree` (stdlib). No third-party dependencies.
+**Namespace handling:** Clark notation `{uri}localname` — uses declared URI mappings from document (per PR-010).
 
-**Parsing strategy:** TBD — likely streaming (iterparse / SAX) for memory efficiency on large spreadsheets
-**Programming language:** Python (prototype); Python and/or .NET (product — Phase 4+)
-**Key libraries:**
-- Python: defusedxml (security requirement per AGENTS.md Q3), lxml or xml.etree.ElementTree
-- .NET: System.Xml.XmlReader with DtdProcessing.Prohibit and XmlResolver = null (per AGENTS.md Q3)
+**Test plan discrepancies discovered during Gate 4 execution (run029):**
+- PT-001: parser-test-plan.md predicted `text="Hello, World!"`. Actual sample: `text="Hello"`. No sample change needed; test updated to match actual.
+- PT-002: plan predicted sheet names "Sheet1", "Sheet2". Actual: "Data", "Summary". Test updated.
+- PT-003: plan predicted date cell present. Actual sample: no date cell (string, float, boolean only). Test updated.
+- Formula sample: `oooc:=SUM([.A1:.A3])` cached value 60.0 — matches plan prediction.
+
+All discrepancies between plan predictions and actual samples are documented here and in `prototypes/by-format/fods/prototype-notes.md`. The sample files are unchanged (SHA-256 hashes verified MATCH).
 
 ---
 

@@ -77,7 +77,7 @@ formats:
       approved_date: "2026-05-04"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: gate4_parser_prototype_planning
+    next_allowed_action: gate4_independent_verification_tc0018
     gates:
       gate_1:
         status: passed
@@ -106,10 +106,12 @@ formats:
         corpus_verified_by: "claude-sonnet-4-6 (run027 DEC-034 independent verification, 2026-05-05)"
         notes: "4 synthetic FODS samples created run026 (2026-05-05). All Apache-2.0 project-owned synthetic. Validated: 4/4 PASS. Spec Navigation Layer built: 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml. TC-0013 in_progress. Independent verification (DEC-034) completed run027: SHA-256 hashes verified (fods-minimal-01:a790b18a..., fods-multi-sheet-01:669b60be..., fods-typed-values-01:c873322d..., fods-formula-01:72b06541...), 4/4 PASS re-confirmed, nav layer tools smoke-tested (section query §3.1.2 ✓, core req query ✓, section rebuild 705 pages ✓). GATE 3 PASSED 2026-05-05 by Babar Raza (run028). Parser planning package created run028: parser-requirements.md, parser-scope.md, parser-test-plan.md. TC-0014 planning_ready."
       gate_4:
-        status: not_started
+        status: prototype_created_pending_independent_verification
         approved_by: null
         approved_date: null
-        notes: null
+        prototype_path: prototypes/by-format/fods/fods_parser.py
+        validation_status: pass
+        notes: "Prototype created run029 (2026-05-05) by claude-sonnet-4-6. Validation: PT-001 through PT-004 PASS (4/4). stdlib only (xml.etree.ElementTree). No formula evaluation. No product source. Gate 4 NOT approved. TC-0018 independent verification (DEC-034) required before human approval."
       gate_5:
         status: not_started
         approved_by: null
