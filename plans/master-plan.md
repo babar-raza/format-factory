@@ -3,15 +3,15 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.21 (run025: independent verification of run024 + full FODS spec normalization + G-NORM-001 resolved + TC-0013 created)
+**Version:** 2.22 (run026: Spec Navigation Layer + Gate 3 corpus execution + TC-0014 created)
 **Last updated:** 2026-05-05
-**Current phase:** Phase 3 planning: FODS Gate 3 Sample Corpus Planning
-**Current status:** Gate 1 approved by Babar Raza (2026-05-04). Gate 2 PASSED — approved by Babar Raza (2026-05-05, run023). Patent search waived by Babar Raza (2026-05-05). TC-0009 closed. TC-0010 planning_ready (corpus plan verified + spec references updated run025). TC-0012 in_progress (Phase 2 complete: full extraction done run025; parser-requirements.yaml pending). TC-0013 not_started (Gate 3 execution taskcard created run025). G-NORM-001 resolved (pdfminer.six 20260107 installed; text.txt 2.1M chars, pages.jsonl 782 pages, citations.yaml 194+35 refs). Gate 3 not_started (no samples). No samples. No prototype. No product source. Latest commit: 01f7bbe (run024) + pending run025 changes.
+**Current phase:** Phase 3: FODS Gate 3 Sample Corpus Created — awaiting independent verification
+**Current status:** Gate 1 PASSED (Babar Raza, 2026-05-04). Gate 2 PASSED (Babar Raza, 2026-05-05, run023). Gate 3 sample_corpus_created_pending_independent_verification (run026). TC-0013 in_progress: 4 Apache-2.0 synthetic FODS samples created and validated 4/4 PASS. Spec Navigation Layer: 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml. TC-0014 created (Gate 4 planning, not_started). No prototype. No product source. Latest commit: f17bb12 (run025). Uncommitted: run026 changes (pending commit).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
-**Phase 3 planning allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 planning only — no sample acquisition until explicit Gate 3 execution prompt.
-**Commit allowed:** YES — run025 execution prompt authorizes commit.
-**Next required action:** Human issues explicit Gate 3 execution prompt. TC-0013 is ready for execution when authorized.
+**Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 corpus created run026.
+**Commit allowed:** YES — run026 commit pending.
+**Next required action:** Independent verification sprint (DEC-034) for run026. Then human Gate 3 approval.
 
 ---
 
@@ -112,30 +112,30 @@ The project goal is to build a production-quality pipeline for acquiring format 
 
 | Property | Value |
 |---|---|
-| Current phase | Phase 3 planning: FODS Gate 3 Sample Corpus Planning |
+| Current phase | Phase 3: FODS Gate 3 corpus created, pending independent verification |
 | Phase 0 files created | Yes — 45/45 files (41 created run001; 3 added run008; 1 added run010: TC-0008) |
 | Phase 0 healing run | Completed (run002) — compliance gaps G-HEAL-001 to G-HEAL-004 resolved |
 | Master-plan canonicalization | Completed (run003) |
 | Phase 0 accepted | YES — 2026-05-04, run015 (all 36 checks passed; human-authorized acceptance) |
 | Phase 1 allowed | YES — Phase 0 accepted |
 | Phase 2 allowed | YES — Gate 1 passed (run017, Babar Raza, 2026-05-04) |
-| Phase 3 planning allowed | YES — Gate 2 passed (run023, Babar Raza, 2026-05-05) |
-| Active formats in registry | fods (gate_1: passed; gate_2: passed; gate_3: not_started) |
+| Phase 3 allowed | YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 corpus executed run026. |
+| Active formats in registry | fods (gate_1: passed; gate_2: passed; gate_3: sample_corpus_created_pending_independent_verification) |
 | Gate 1 status | PASSED — Babar Raza, 2026-05-04, score 93/100, run016 verified |
 | Gate 2 status | **PASSED** — approved by Babar Raza, 2026-05-05, run023; patent search waived; evidence verified by run022 (DEC-034) |
-| Gate 3 status | not_started — TC-0010 planning_ready; no samples acquired |
+| Gate 3 status | **sample_corpus_created_pending_independent_verification** (run026) — 4 Apache-2.0 samples, 4/4 PASS validation |
+| Spec Navigation Layer | COMPLETE (run026): 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml |
 | Acquisition pack | acquisition-packs/fods/ — 5 files; Gate 2 passed; spec_cache VALID/CURRENT |
 | Spec downloaded | YES — ODF 1.3 Part 3 PDF downloaded run021 (24.27 MB); SHA-256 independently re-verified run022: MATCH |
-| Samples acquired | No |
+| Samples acquired | YES — 4 synthetic FODS samples (Apache-2.0, project-owned), run026. Validated: 4/4 PASS |
 | Prototype created | No |
 | Product source created | No |
-| Commits made | c9d02da (run015); c79f2d1 (run017); 0c97256 (run018/run019); 589c1af (run019); 1e69121 (run020 tooling); e8ab83f (run020 evidence); 138effd (run021); 32cdb1c (run022) |
-| Active taskcard | TC-0010 (planning_ready — Gate 3 sample corpus planning) |
-| Closed taskcard | TC-0009 (closed — Gate 2 passed 2026-05-05) |
-| Active infrastructure | TC-0007 (completed_independently_verified_run020+run022) |
-| Future verification | TC-0011 (not_started — future Gate 3 planning verification before human Gate 3 review) |
-| Last evidence bundle | run022 canonical bundle: run022-independent-gate2-verification-20260505-112638.zip (104 entries) |
-| Next required action | Explicit Gate 3 planning execution prompt (not sample acquisition). TC-0010 is planning_ready. |
+| Commits made | c9d02da (run015); c79f2d1 (run017); 0c97256 (run018/run019); 589c1af (run019); 1e69121 (run020 tooling); e8ab83f (run020 evidence); 138effd (run021); 32cdb1c (run022); c9d8d8e (run023); 01f7bbe (run024); f17bb12 (run025). run026 pending. |
+| Active taskcard | TC-0013 (in_progress — Gate 3 corpus created; awaiting DEC-034 and Gate 3 approval) |
+| Active infrastructure | TC-0007 (completed_independently_verified_run020+run022); TC-0012 (Phase 2 done, nav layer complete run026) |
+| Future taskcard | TC-0011 (not_started — independent verification before Gate 3 human review, DEC-034); TC-0014 (not_started — Gate 4 planning) |
+| Last evidence bundle | run025: run025-fods-spec-normalization-functional-and-gate3-execution-staging/ (5 bundle-metadata files) |
+| Next required action | Independent verification sprint (DEC-034) for run026. Then Gate 3 human approval. |
 
 ---
 
@@ -669,9 +669,10 @@ A format counts toward WIP from the moment it enters Gate 1 until it exits Gate 
 | TC-0010 | FODS Gate 3 Sample Corpus Planning | 3 | **planning_ready** — Gate 2 passed (run023); corpus plan verified + spec refs updated (run025); awaiting Gate 3 execution prompt | Gate 2 passed |
 | TC-0011 | FODS Gate 3 Independent Verification Sprint | 3 | **not_started** — to be run before Gate 3 human review (DEC-034) | TC-0013 completion |
 | TC-0012 | Specification Normalization Layer | 2+ | **in_progress (Phase 2 done)** — full extraction completed (run025): text.txt 2.1M chars, pages.jsonl 782 pages, citations.yaml 194+35 refs; G-NORM-001 resolved; parser-requirements.yaml pending | Gate 2 passed |
-| TC-0013 | FODS Gate 3 Sample Corpus Execution | 3 | **not_started** — corpus plan ready; awaiting explicit Gate 3 execution prompt | Gate 3 execution prompt |
+| TC-0013 | FODS Gate 3 Sample Corpus Execution | 3 | **in_progress** — 4 samples created run026 (4/4 PASS); Spec Nav Layer built; awaiting DEC-034 and Gate 3 approval | Gate 3 approval |
+| TC-0014 | FODS Gate 4 Parser Prototype Planning | 4 | **not_started** — created run026; blocked by Gate 3 approval and explicit Gate 4 prompt | Gate 3 PASSED |
 
-All taskcards are in `taskcards/` as Markdown files. Current phase is Phase 3 planning. TC-0012 Phase 2 complete. TC-0013 ready for execution when authorized.
+All taskcards are in `taskcards/` as Markdown files. Current phase is Phase 3 (corpus created). TC-0012 Phase 2 complete. TC-0013 in_progress. TC-0014 created (not_started).
 
 ---
 
@@ -957,10 +958,11 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 9. **Completed (run023):** Human Gate 2 approval recorded. (a) run022 state verified (32cdb1c, clean tree, no forbidden paths, Gate 2 approved_by null confirmed); (b) stale status leftovers fixed (pack.yaml header/notes, TC-0009 artifact table, master-plan latest-commit); (c) registry gate_2.status → passed; approved_by: Babar Raza; approved_date: 2026-05-05; patent search waived by project lead; (d) acquisition pack Gate 2 status → passed; (e) spec-evidence.md + legal-notes.md sign-off sections updated; (f) TC-0009 closed; (g) TC-0010 activated (planning_ready); (h) TC-0011 created (not_started — future Gate 3 planning verification); (i) README.md + ROADMAP.md updated; (j) master-plan.md v2.19. No samples acquired. No push.
 10. **Completed (run024):** Independent verification of run023 + stale state fixes + Specification Normalization Layer. (a) run023 state independently verified (c9d8d8e; 5 stale issues found and fixed: pack.yaml notes/next_action, settings.json phase/description/allow-list, sample-sources.md Gate 2 status); (b) Specification Normalization Layer created: docs/specification-normalization.md (15 sections), tools/spec-normalize/ (4 files: _readme.md, normalize_pdf.py, build_citation_map.py, validate_normalized_spec.py); (c) governance integration: AGENTS.md Section W (10 rules), GOVERNANCE.md Section 16 (6 rules), docs/gates.md Gate 3/4 normalization notes, docs/specification-cache.md Normalization Layer section; (d) TC-0012 created (in_progress); (e) TC-0010 updated (normalization dependency + planning steps expanded); (f) Local normalization dry-run: SHA-256 MATCH confirmed (92cfe64...b066), source-manifest.yaml written, normalization-plan.md + extraction-report.md produced, G-NORM-001 logged (pdfminer.six not installed); (g) Gate 3 planning: sample-sources.md updated with corpus plan (4 sample types, blocked rules, synthetic strategy, 3 candidate sources, provenance procedure); (h) master-plan.md v2.20.
 11. **Completed (run025):** Independent verification of run024 + full FODS spec normalization + TC-0013. (a) run024 state verified (01f7bbe; valid uncommitted master-plan.md hash update confirmed); (b) pdfminer.six 20260107 installed (--user); (c) normalize_pdf.py run on FODS spec: full extraction SUCCESS — text.txt 2,160,370 chars, pages.jsonl 782 pages; (d) build_citation_map.py run: citations.yaml 194 section refs + 35 external refs; (e) validate_normalized_spec.py: 7 PASS, 1 WARN, 0 FAIL; (f) G-NORM-001 RESOLVED; (g) requirements.txt added to tools/spec-normalize/; (h) TC-0012 updated (Phase 2 complete, G-NORM-001 resolved); (i) sample-sources.md updated with verified spec section refs; (j) TC-0013 created (FODS Gate 3 Sample Corpus Execution, not_started); (k) master-plan.md v2.21.
-12. **Next required action:** Human issues explicit Gate 3 execution prompt. TC-0013 is the execution taskcard.
+12. **Completed (run026):** Spec Navigation Layer + Gate 3 corpus execution + TC-0014. (a) run025 state independently verified (f17bb12; valid uncommitted master-plan.md hash update confirmed); (b) 4 navigation tools created: build_section_index.py (884 sections, 705 pages mapped), build_chunk_index.py (940 chunks, 423,290 words), query_normalized_spec.py (multi-mode query), export_sample_requirements.py; (c) sample-requirements.yaml (4 samples), parser-requirements-draft.yaml (10 requirements) produced; (d) 4 synthetic FODS samples created: minimal-spreadsheet.fods, multi-sheet-basic.fods, typed-values-basic.fods, formula-basic.fods — all Apache-2.0 project-owned; (e) tools/samples/create_fods_samples.py + validate_fods_samples.py created; (f) Validation: 4/4 PASS; (g) samples/_provenance.yaml: 4 confirmed entries; (h) registry gate_3 → sample_corpus_created_pending_independent_verification; (i) TC-0013 updated (in_progress); (j) TC-0014 created (Gate 4 planning, not_started); (k) docs/specification-normalization.md updated with Navigation Layer section; (l) master-plan.md v2.22. Commit pending.
+13. **Next required action:** Independent verification sprint (DEC-034) for run026. Then Gate 3 human approval.
 
 **Gate 2 for FODS: PASSED — approved by Babar Raza (2026-05-05). Patent search waived by project lead.**
-**Gate 3 for FODS: not_started. No samples acquired. TC-0013 corpus execution taskcard ready.**
+**Gate 3 for FODS: sample_corpus_created_pending_independent_verification (run026). 4 Apache-2.0 synthetic samples, 4/4 PASS. Spec Navigation Layer: 884 sections, 940 chunks. TC-0013 in_progress. Awaiting DEC-034 verification and Gate 3 human approval.**
 
 ### Run History
 
@@ -991,13 +993,14 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 | run023 | 2026-05-05 | Human Gate 2 approval recording + Gate 3 planning transition | Verified run022 state (32cdb1c, clean tree). Fixed stale status leftovers (pack.yaml header/notes, TC-0009 artifact table). Recorded Gate 2 approval: Babar Raza, 2026-05-05, OASIS RF Category 1, fast-path, patent search waived. TC-0009 closed. TC-0010 activated (planning_ready). TC-0011 created (not_started — future Gate 3 verification). README.md + ROADMAP.md updated. Master-plan v2.19. No samples acquired. No push. |
 | run024 | 2026-05-05 | Independent verification of run023 + stale fixes + Specification Normalization Layer + Gate 3 planning | Verified run023 (5 stale issues fixed: pack.yaml, settings.json, sample-sources.md). Created: docs/specification-normalization.md, tools/spec-normalize/ (4 files). Governance integration: AGENTS.md W, GOVERNANCE.md 16, gates.md, specification-cache.md. TC-0012 created. TC-0010 updated. Local normalization dry-run: SHA-256 MATCH, source-manifest.yaml written, G-NORM-001 logged. sample-sources.md corpus plan drafted. Master-plan v2.20. |
 | run025 | 2026-05-05 | Independent verification of run024 + full FODS spec normalization + TC-0013 creation | Verified run024 (01f7bbe; valid uncommitted leftover confirmed). pdfminer.six 20260107 installed. Full extraction: text.txt 2,160,370 chars, pages.jsonl 782 pages. Citations: 194 section refs, 35 external refs. Validation: 7 PASS, 1 WARN, 0 FAIL. G-NORM-001 RESOLVED. requirements.txt added. TC-0012 Phase 2 complete. TC-0013 created (not_started). sample-sources.md spec refs verified. Master-plan v2.21. |
+| run026 | 2026-05-05 | Spec Navigation Layer + Gate 3 corpus execution + TC-0014 | Verified run025 (f17bb12; valid uncommitted leftover confirmed). Built 4 navigation tools: build_section_index.py (884 sections, 705 pages), build_chunk_index.py (940 chunks), query_normalized_spec.py, export_sample_requirements.py. Produced: sample-requirements.yaml (4 samples), parser-requirements-draft.yaml (10 reqs). Created 4 FODS samples (Apache-2.0): minimal-spreadsheet.fods, multi-sheet-basic.fods, typed-values-basic.fods, formula-basic.fods. Validation: 4/4 PASS. create_fods_samples.py + validate_fods_samples.py created. Provenance: 4 confirmed entries. Registry gate_3 updated. TC-0013 → in_progress. TC-0014 created (not_started). spec-normalization.md updated. Master-plan v2.22. Commit pending. |
 
 ---
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 01f7bbe (run024) — "chore: add spec normalization layer and prepare Gate 3 planning"
-**Pending commit (run025):** run025 execution prompt authorizes commit. Changes: tools/spec-normalize/requirements.txt (NEW), TC-0012 updated, TC-0013 created, sample-sources.md spec refs updated, plans/master-plan.md v2.21.
+**Latest commit:** f17bb12 (run025) — "chore: verify FODS spec normalization and prepare Gate 3 execution"
+**Pending commit:** run026 — Spec Navigation Layer + Gate 3 corpus + TC-0014
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1009,14 +1012,28 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - 138effd (run021): settings.json deny removed, spec-evidence.md SUPPORTED_BY_CACHED_SOURCE upgrade, legal-notes.md 6/8, pack.yaml spec_cache downloaded, registry gate_2 status, TC-0007+TC-0009 updated, master-plan v2.17, memory 06/09
 - 32cdb1c (run022): independent verification of run021 evidence, stale state fixed (G-HEAL-028–036), gate_2.status → evidence_cached_pending_human_review, TC-0010 created, master-plan v2.18, memory 06/09, registry/pack.yaml/settings.json updated
 - c9d8d8e (run023): Gate 2 approved (Babar Raza 2026-05-05), patent search waived, TC-0009 closed, TC-0010 planning_ready, TC-0011 created, README+ROADMAP updated, memory 06/09 updated, master-plan v2.19
+- 01f7bbe (run024): Specification Normalization Layer + AGENTS.md W + GOVERNANCE.md 16 + TC-0012 + docs + normalization dry-run
+- f17bb12 (run025): Full FODS spec normalization (G-NORM-001 resolved), requirements.txt, TC-0013 created, sample-sources.md updated, master-plan v2.21
 
-**Uncommitted (run025 pending commit):**
-- tools/spec-normalize/requirements.txt (NEW)
-- taskcards/TC-0013-fods-gate3-sample-corpus-execution.md (NEW)
-- taskcards/TC-0012-specification-normalization-layer.md (updated — Phase 2 complete)
-- acquisition-packs/fods/sample-sources.md (updated — spec refs verified, normalization status updated)
-- plans/master-plan.md v2.21 (this file)
-- (.local/ artifacts NOT committed — normalized/, spec cache, bundle, run record)
+**Uncommitted (post-commit run025 / run026 in progress):**
+- tools/spec-normalize/export_sample_requirements.py (NEW — run026)
+- tools/spec-normalize/build_section_index.py (NEW — run026)
+- tools/spec-normalize/build_chunk_index.py (NEW — run026)
+- tools/spec-normalize/query_normalized_spec.py (NEW — run026)
+- tools/samples/create_fods_samples.py (NEW — run026)
+- tools/samples/validate_fods_samples.py (NEW — run026)
+- samples/by-format/fods/minimal-spreadsheet.fods (NEW — run026)
+- samples/by-format/fods/multi-sheet-basic.fods (NEW — run026)
+- samples/by-format/fods/typed-values-basic.fods (NEW — run026)
+- samples/by-format/fods/formula-basic.fods (NEW — run026)
+- samples/_provenance.yaml (updated: 4 entries — run026)
+- registry/format-registry.yaml (updated: gate_3 status — run026)
+- acquisition-packs/fods/pack.yaml (updated: samples, gate_3 — run026)
+- taskcards/TC-0013-fods-gate3-sample-corpus-execution.md (updated: in_progress — run026)
+- taskcards/TC-0014-fods-gate4-parser-prototype-planning.md (NEW — run026)
+- docs/specification-normalization.md (updated: Navigation Layer section — run026)
+- plans/master-plan.md (updated: v2.22 — run026)
+- (.local/ artifacts NOT committed — normalized/, spec cache, navigation artifacts, bundle, run records)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 

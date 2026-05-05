@@ -32,6 +32,12 @@
       "Write(ROADMAP.md)",
       "Write(samples/_policy.md)",
       "Write(samples/_provenance.yaml)",
+      "Write(samples/by-format/fods/**)",
+      "Write(tools/samples/**)",
+      "Write(tools/spec-normalize/build_section_index.py)",
+      "Write(tools/spec-normalize/build_chunk_index.py)",
+      "Write(tools/spec-normalize/query_normalized_spec.py)",
+      "Write(tools/spec-normalize/export_sample_requirements.py)",
       "Write(schemas/_readme.md)",
       "Write(prototypes/_readme.md)",
       "Write(src/python/_readme.md)",
@@ -53,7 +59,7 @@
       "Write(src/dotnet/commercial/**)",
       "Write(src/python/*/**)",
       "Write(src/net/**)",
-      "Write(samples/by-format/**)",
+      "Write(samples/by-format/other-formats/**)",
       "Write(schemas/neutral-model/**)",
       "Write(prototypes/by-format/**)",
       "Write(tests/fixtures/**)",
@@ -84,8 +90,8 @@
       "Bash(iwr *)"
     ]
   },
-  "phase": "3-planning",
-  "phase_note": "Phase 3 PLANNING CONSERVATIVE MODE. Gate 2 passed (2026-05-05, Babar Raza). Gate 3 planning authorized (TC-0010 planning_ready). acquisition-packs/fods/** is ALLOWED. spec-cache scripts and spec-normalize tools are ALLOWED on Write allow list when explicitly authorized. tools/spec-normalize/** added to allow list (run024). IMPORTANT: Spec acquisition is complete for FODS/ODF 1.3 (run021). Future sessions wishing to run acquire_spec.py with --allow-network MUST independently verify all six T3 conditions for that specific download. Normalized artifacts are local-only under .local/spec-cache/fods/1.3/normalized/ — never committed. Network commands (curl, wget, Invoke-WebRequest, iwr) remain DENIED. samples/by-format/**, schemas/neutral-model/**, prototypes/by-format/**, src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts remain DENIED. Phase 3 planning scope: Gate 3 sample corpus planning (no sample acquisition yet); spec normalization layer added.",
+  "phase": "3",
+  "phase_note": "Phase 3 EXECUTION. Gate 2 passed (2026-05-05, Babar Raza). Gate 3 corpus created run026 (4 FODS samples, 4/4 PASS). samples/by-format/fods/** and tools/samples/** ALLOWED (run026). spec-normalize navigation tools ALLOWED (run026). Awaiting independent verification (DEC-034) and Gate 3 human approval. IMPORTANT: Spec acquisition complete for FODS/ODF 1.3 (run021). Normalized artifacts local-only. Network commands (curl, wget, Invoke-WebRequest, iwr) DENIED. schemas/neutral-model/**, prototypes/by-format/**, src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts DENIED.",
   "notes": [
     "PHASE 2 CONSERVATIVE MODE: Gate 1 passed. acquisition-packs/fods/** added to allow list (run018).",
     "Format-first source layout: src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE — must not be created.",

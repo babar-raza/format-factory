@@ -23,7 +23,74 @@
 #   visibility: public | blocked
 #   notes: optional human-readable note
 
-samples: []
+samples:
+  - sample_id: fods-minimal-01
+    format_id: fods
+    file_path: samples/by-format/fods/minimal-spreadsheet.fods
+    source_url: null
+    source_date: 2026-05-05
+    license: Apache-2.0
+    license_url: https://www.apache.org/licenses/LICENSE-2.0
+    attribution: null
+    creator: format-factory project
+    provenance_status: confirmed
+    block_reason: null
+    visibility: public
+    notes: >-
+      Minimal conforming FODS document. Single sheet, one string cell.
+      Project-owned synthetic content. No spec text copied.
+      Spec basis: ODF 1.3 §3.1.2, §3.7, §9.4. Created run026.
+
+  - sample_id: fods-multi-sheet-01
+    format_id: fods
+    file_path: samples/by-format/fods/multi-sheet-basic.fods
+    source_url: null
+    source_date: 2026-05-05
+    license: Apache-2.0
+    license_url: https://www.apache.org/licenses/LICENSE-2.0
+    attribution: null
+    creator: format-factory project
+    provenance_status: confirmed
+    block_reason: null
+    visibility: public
+    notes: >-
+      Two-sheet FODS document with string values. Tests table:table enumeration
+      and table:name attributes. Project-owned synthetic content.
+      Spec basis: ODF 1.3 §3.1.2, §3.7, §9.4. Created run026.
+
+  - sample_id: fods-typed-values-01
+    format_id: fods
+    file_path: samples/by-format/fods/typed-values-basic.fods
+    source_url: null
+    source_date: 2026-05-05
+    license: Apache-2.0
+    license_url: https://www.apache.org/licenses/LICENSE-2.0
+    attribution: null
+    creator: format-factory project
+    provenance_status: confirmed
+    block_reason: null
+    visibility: public
+    notes: >-
+      FODS document with float, string, and boolean value types.
+      Tests office:value-type attribute parsing. Project-owned synthetic content.
+      Spec basis: ODF 1.3 §2.2.4, §9.4. Created run026.
+
+  - sample_id: fods-formula-01
+    format_id: fods
+    file_path: samples/by-format/fods/formula-basic.fods
+    source_url: null
+    source_date: 2026-05-05
+    license: Apache-2.0
+    license_url: https://www.apache.org/licenses/LICENSE-2.0
+    attribution: null
+    creator: format-factory project
+    provenance_status: confirmed
+    block_reason: null
+    visibility: public
+    notes: >-
+      FODS document with a SUM formula (oooc: namespace prefix) and cached result.
+      Tests table:formula attribute parsing. Project-owned synthetic content.
+      Spec basis: ODF 1.3 §9.4. Created run026.
 
 # Example entry (commented out):
 #

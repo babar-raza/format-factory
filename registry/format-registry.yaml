@@ -77,7 +77,7 @@ formats:
       approved_date: "2026-05-04"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: gate3_sample_corpus_planning
+    next_allowed_action: gate3_sample_corpus_review
     gates:
       gate_1:
         status: passed
@@ -100,10 +100,10 @@ formats:
         evidence_verified_by: "claude-sonnet-4-6 (run022 independent verification, 2026-05-05)"
         notes: "Evidence draft completed run019. Independently verified and strengthened run020 (5/8 fast-path items; tooling fixes). Spec downloaded run021: ODF 1.3 Part 3 PDF (24,270,588 bytes, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066) from https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/OpenDocument-v1.3-os-part3-schema.pdf. spec-index.yaml validates VALID/CURRENT. Primary claims SUPPORTED_BY_CACHED_SOURCE. Fast-path 6/8 confirmed. run022 (2026-05-05): SHA-256 independently re-verified MATCH; spec-cache VALID/CURRENT; tooling smoke-checks pass; evidence claims reviewed — no overclaiming found. GATE 2 PASSED 2026-05-05 by Babar Raza. Patent search waived by project lead. No samples acquired."
       gate_3:
-        status: not_started
+        status: sample_corpus_created_pending_independent_verification
         approved_by: null
         approved_date: null
-        notes: null
+        notes: "4 synthetic FODS samples created run026 (2026-05-05). All Apache-2.0 project-owned synthetic. Validated: 4/4 PASS. Spec Navigation Layer built: 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml. TC-0013 in_progress. Awaiting Gate 3 human approval."
       gate_4:
         status: not_started
         approved_by: null

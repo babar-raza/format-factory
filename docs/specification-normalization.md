@@ -1,7 +1,7 @@
 # Specification Normalization Layer
 
 **Document type:** Policy — Phase 2+ Foundation
-**Last reviewed:** 2026-05-05 (run024: added for Specification Normalization Layer)
+**Last reviewed:** 2026-05-05 (run026: Spec Navigation Layer complete)
 **Authority:** This document governs the conversion of cached specification source files into local-only machine-readable derived artifacts. It is a companion to `docs/specification-cache.md`.
 
 ---
@@ -217,12 +217,34 @@ This provenance enables:
 
 | Component | Phase | Path | Status |
 |---|---|---|---|
-| This policy document | Phase 2+ | `docs/specification-normalization.md` | Created run024 |
+| This policy document | Phase 2+ | `docs/specification-normalization.md` | Created run024; updated run026 |
 | Tool orientation | Phase 2+ | `tools/spec-normalize/_readme.md` | Created run024 |
-| PDF normalization tool | Phase 2+ | `tools/spec-normalize/normalize_pdf.py` | Created run024 (skeleton) |
-| Citation map tool | Phase 2+ | `tools/spec-normalize/build_citation_map.py` | Created run024 (skeleton) |
-| Validation tool | Phase 2+ | `tools/spec-normalize/validate_normalized_spec.py` | Created run024 (skeleton) |
-| TC-0012 taskcard | Phase 2+ | `taskcards/TC-0012-specification-normalization-layer.md` | Created run024 |
+| PDF normalization tool | Phase 2+ | `tools/spec-normalize/normalize_pdf.py` | Created run024; functional run025 |
+| Citation map tool | Phase 2+ | `tools/spec-normalize/build_citation_map.py` | Created run024; functional run025 |
+| Validation tool | Phase 2+ | `tools/spec-normalize/validate_normalized_spec.py` | Created run024; functional run025 |
+| Dependencies | Phase 2+ | `tools/spec-normalize/requirements.txt` | Created run025 (PyYAML, pdfminer.six) |
+| Section index tool | Phase 3+ | `tools/spec-normalize/build_section_index.py` | Created run026 |
+| Chunk index tool | Phase 3+ | `tools/spec-normalize/build_chunk_index.py` | Created run026 |
+| Spec query tool | Phase 3+ | `tools/spec-normalize/query_normalized_spec.py` | Created run026 |
+| Sample req exporter | Phase 3+ | `tools/spec-normalize/export_sample_requirements.py` | Created run026 |
+| TC-0012 taskcard | Phase 2+ | `taskcards/TC-0012-specification-normalization-layer.md` | Created run024; Phase 2 complete run025 |
+
+### Spec Navigation Layer (added run026)
+
+The Spec Navigation Layer is a set of four tools built on top of the normalized spec artifacts. They convert the 50,000-line `text.txt` into indexed, query-able artifacts. **Agents must use these tools instead of scanning `text.txt` directly.**
+
+**Run order (after normalization):**
+1. `build_section_index.py` → `sections.jsonl`, `page-map.yaml`
+2. `build_chunk_index.py` → `chunks.jsonl`, `navigation-report.md`
+3. `query_normalized_spec.py` → on-demand cited excerpts (no persistent output)
+4. `export_sample_requirements.py` → `sample-requirements.yaml`, `parser-requirements-draft.yaml`
+
+**FODS 1.3 navigation layer status (run026):**
+- `sections.jsonl`: 884 sections extracted from TOC
+- `chunks.jsonl`: 940 chunks, 423,290 words indexed
+- `page-map.yaml`: 705 pages mapped to sections
+- `sample-requirements.yaml`: 4 sample requirements (Gate 3)
+- `parser-requirements-draft.yaml`: 10 draft parser requirements (Gate 4)
 
 ---
 
