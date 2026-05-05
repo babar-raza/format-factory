@@ -20,17 +20,17 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 2 legal artifact. Updated run021 (2026-05-04). Spec now cached (ODF 1.3 Part 3 PDF, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). Fast-path checklist 6/8 confirmed (run021 added cached spec entry). Awaiting project lead sign-off for 2 remaining items and Gate 2 passage."
+notes: "Gate 2 legal artifact. Updated run022 (2026-05-05). Spec cached (sha256:92cfe64...b066). Fast-path 6/8. run022 independent verification complete (DEC-034). Status: evidence_cached_pending_human_review. Awaiting project lead sign-off for 2 remaining checklist items."
 ---
 
 # Legal Notes — Flat OpenDocument Spreadsheet (FODS)
 
 **Format ID:** `fods`
 **Gate:** 2
-**Status:** evidence_cached_pending_independent_verification — updated run021 (2026-05-04)
+**Status:** evidence_cached_pending_human_review — updated run022 (2026-05-05): independent verification complete
 
 **Gate 1 approved by:** Babar Raza (2026-05-04)
-**Gate 2 status:** evidence_cached_pending_independent_verification
+**Gate 2 status:** evidence_cached_pending_human_review
 
 **Source claim classification key:**
 - `[SUPPORTED_BY_RECORDED_URL]` — backed by official URL, not yet downloaded
@@ -137,7 +137,7 @@ The spec cache stores a local copy of the ODF 1.3 specification for internal use
 **Review date:** (pending)
 **Fast-path used:** yes (OASIS Category 1 fast-path)
 **Fast-path basis:** OASIS ODF 1.3, published under OASIS RF on Limited Terms; OASIS is on the Category 1 Pre-Approved Fast-Path List
-**Evidence status:** evidence_cached_pending_independent_verification — spec downloaded and cached (run021); 6/8 fast-path items confirmed; awaiting project lead confirmation of patent search waiver and sign-off
+**Evidence status:** evidence_cached_pending_human_review — run022 independent verification complete (DEC-034); 6/8 fast-path items confirmed; 2 items pending human review (patent search waiver + sign-off)
 **Notes:** All claims can be confirmed by reviewing https://www.oasis-open.org/committees/office/ipr.php. No contrary evidence found. Recommend Gate 2 passage conditional on project lead sign-off.
 
 ---

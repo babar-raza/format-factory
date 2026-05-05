@@ -20,17 +20,17 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 2 evidence. Updated run021 (2026-05-04). Spec downloaded and cached: ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). Primary source claims upgraded to SUPPORTED_BY_CACHED_SOURCE. Evidence status: evidence_cached_pending_independent_verification."
+notes: "Gate 2 evidence. Updated run021 (2026-05-04). Spec downloaded and cached: ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). Primary source claims SUPPORTED_BY_CACHED_SOURCE. run022 independent verification (2026-05-05): SHA-256 MATCH; no overclaiming found. Evidence status: evidence_cached_pending_human_review."
 ---
 
 # Spec Evidence — Flat OpenDocument Spreadsheet (FODS)
 
 **Format ID:** `fods`
 **Gate:** 2
-**Status:** evidence_cached_pending_independent_verification — updated run021 (2026-05-04)
+**Status:** evidence_cached_pending_human_review — updated run022 (2026-05-05): independent verification complete
 
 **Gate 1 approved by:** Babar Raza (2026-05-04)
-**Gate 2 status:** evidence_cached_pending_independent_verification
+**Gate 2 status:** evidence_cached_pending_human_review
 
 **Spec cache status (run021):** ODF 1.3 Part 3 schema PDF downloaded and cached at `.local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf` (24,270,588 bytes, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). spec-index.yaml validates as VALID/CURRENT. Source hash recorded. Primary claims upgraded from SUPPORTED_BY_RECORDED_URL to SUPPORTED_BY_CACHED_SOURCE.
 
@@ -256,5 +256,5 @@ Security assessment based on format structure (XML format characteristics). [PLA
 **Reviewed by:** (pending — project lead sign-off required for Gate 2 passage)
 **Review date:** (pending)
 **Fast-path used:** yes (OASIS Category 1 fast-path eligible)
-**Evidence status:** evidence_cached_pending_independent_verification — primary source claims upgraded to [SUPPORTED_BY_CACHED_SOURCE] (run021); ODF 1.3 Part 3 PDF cached and validated
-**Notes:** Spec downloaded and cached run021 (sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). Primary source claims (standard body, document title, version, URL, Part 3 URL) upgraded to SUPPORTED_BY_CACHED_SOURCE. Structural and section-level claims remain PLAUSIBLE_PENDING_VERIFICATION pending detailed spec review. Gate 2 passage requires project lead review and sign-off on legal-notes.md fast-path checklist.
+**Evidence status:** evidence_cached_pending_human_review — run022 (2026-05-05) independent verification complete; SHA-256 re-verified MATCH; no overclaiming found
+**Notes:** Spec downloaded and cached run021 (sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). Primary source claims (standard body, document title, version, URL, Part 3 URL) SUPPORTED_BY_CACHED_SOURCE. Structural and section-level claims PLAUSIBLE_PENDING_VERIFICATION (correctly labeled). run022 verified: evidence appropriate for human Gate 2 review. Gate 2 passage requires project lead review and sign-off on legal-notes.md fast-path checklist.

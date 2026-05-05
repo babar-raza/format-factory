@@ -20,18 +20,18 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Phase 2 taskcard for FODS spec and legal evidence planning. Evidence draft completed run019; independently verified run020; spec acquired and evidence upgraded run021. Status: evidence_cached_pending_independent_verification."
+notes: "Phase 2 taskcard for FODS spec and legal evidence planning. Evidence draft completed run019; independently verified run020; spec acquired and evidence upgraded run021; run022 independent verification complete (DEC-034). Status: evidence_cached_pending_human_review."
 ---
 
 # TC-0009: FODS Phase 2 — Spec and Legal Evidence Planning
 
 **Phase:** 2
-**Status:** evidence_cached_pending_independent_verification
-**Owner:** Claude (evidence draft run019; verified run020; spec acquired run021); Human (Gate 2 approval)
+**Status:** evidence_cached_pending_human_review
+**Owner:** Claude (evidence draft run019; verified run020; spec acquired run021; run022 independent verification complete); Human (Gate 2 approval)
 **Created:** 2026-05-04 (run017)
-**Last updated:** 2026-05-04 (run021: spec downloaded and cached; evidence upgraded to SUPPORTED_BY_CACHED_SOURCE)
+**Last updated:** 2026-05-05 (run022: independent verification complete; status upgraded to evidence_cached_pending_human_review)
 **Blocking:** TC-0002 (schema language depends on spec evidence), Gate 2 approval
-**Blocked by:** Independent verification sprint (DEC-034) + human Gate 2 sign-off
+**Blocked by:** Human Gate 2 sign-off (DEC-034 independent verification complete as of run022)
 **Format:** fods
 **Gate:** Gate 2
 
@@ -50,7 +50,7 @@ Plan and execute Phase 2 Gate 2 evidence for FODS: spec source verification, leg
 - [x] Gate 1 passed — Babar Raza (2026-05-04)
 - [x] acquisition-packs/fods/ skeleton exists
 - [x] Explicit Phase 2 execution prompt issued by human (run019, 2026-05-04)
-- [ ] Independent agent verification sprint completed before Gate 2 human review (per DEC-034, AGENTS.md Section V) — pending
+- [x] Independent agent verification sprint completed before Gate 2 human review (per DEC-034, AGENTS.md Section V) — run022 (2026-05-05): SHA-256 re-verified, tooling smoke-checks pass, evidence claims reviewed, no overclaiming found
 
 ---
 
@@ -102,7 +102,7 @@ The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/o
 - [ ] No patent litigation in past five years confirmed — currently PLAUSIBLE_PENDING_VERIFICATION; pending project lead review
 - [x] pack.yaml updated with gate_2 evidence_cached status and run021 spec_cache downloaded/validated status
 - [x] Gate 2 evidence bundle produced — run019 bundle created; run020 staging bundle created; run021 full-width clean bundle created (Section J)
-- [x] Independent agent verification sprint completed (DEC-034) — run020 served as the independent verification sprint; run021 added spec acquisition and evidence upgrade
+- [x] Independent agent verification sprint completed (DEC-034) — run022 (2026-05-05) independently verified run021 evidence: SHA-256 MATCH, VALID/CURRENT, no overclaiming found
 - [ ] Human has reviewed and explicitly set gate_2.status: passed (human action, not agent action) — pending
 - [x] plans/master-plan.md updated with Gate 2 evidence status — v2.16 (run020)
 - [x] Self-challenge completed (AGENTS.md Section I, all 15 questions) — run020 self-challenge in bundle
@@ -153,14 +153,14 @@ The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/o
 
 ## Completion Record
 
-**Status:** evidence_cached_pending_independent_verification
+**Status:** evidence_cached_pending_human_review
 **Created:** 2026-05-04 by claude-sonnet-4-6 (run017).
 **Evidence drafted:** 2026-05-04 by claude-sonnet-4-6 (run019 — Phase 2 execution prompt authorized by human).
 **Independently verified and strengthened:** 2026-05-04 by claude-sonnet-4-6 (run020 — combined verification and fix sprint).
 **Spec acquired and evidence upgraded:** 2026-05-04 by claude-sonnet-4-6 (run021 — combined sprint: hygiene, settings.json fix, spec acquisition, evidence upgrade).
 **Spec download status (run021):** SUCCESS. ODF 1.3 Part 3 PDF downloaded from https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/OpenDocument-v1.3-os-part3-schema.pdf (24,270,588 bytes, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066). spec-index.yaml validates VALID/CURRENT. Primary claims upgraded to SUPPORTED_BY_CACHED_SOURCE.
-**run021 changes:** __pycache__ removed; settings.json deny rule for python *acquire_spec* removed with T3 authorization note; spec acquired and cached; spec-evidence.md upgraded (SUPPORTED_BY_CACHED_SOURCE); legal-notes.md updated (6/8 checklist); pack.yaml spec_cache section updated; registry gate_2 status → evidence_cached_pending_independent_verification; TC-0007 status → completed_independently_verified_run020; master-plan.md v2.17.
+**run022 independent verification (2026-05-05):** SHA-256 re-verified: MATCH. spec_index.py VALID/CURRENT. refresh_check.py: 0 stale entries. Tooling dry-run mode confirmed. Evidence claims reviewed: primary source SUPPORTED_BY_CACHED_SOURCE confirmed; structural claims PLAUSIBLE_PENDING_VERIFICATION correctly labeled; no overclaiming found. Stale state fixed. Status upgraded to evidence_cached_pending_human_review. DEC-034 independent verification COMPLETE.
 **Next actions:**
-  1. Project lead review of legal-notes.md fast-path checklist (2 items pending: patent search waiver + sign-off)
-  2. Project lead sign-off for Gate 2 passage
-  3. After human approval: update registry gate_2.status → passed, update master plan v2.18
+  1. Human (project lead) reviews legal-notes.md fast-path checklist (2 items pending: patent search waiver + sign-off)
+  2. Human Gate 2 sign-off (DEC-034 independent verification complete as of run022)
+  3. After human approval: update registry gate_2.status → passed, update master plan v2.19

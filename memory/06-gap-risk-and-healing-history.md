@@ -65,6 +65,15 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 | G-HEAL-018–025 | State reconciliation: stale sections in master-plan.md, README.md, ROADMAP.md, settings.json | **RESOLVED run018** (committed via run019) — 8 healing gaps registered and resolved. See master-plan.md Section 28. |
 | G-HEAL-026 (run020) | TC-0007 spec_index.py REQUIRED_FIELDS included post-download fields, breaking pre-download metadata entries; acquire_spec.py had spurious WARNING for redistribution_permitted=False; refresh_check.py had Windows cp1252 encoding bug (U+2500); docs/specification-cache.md schema was incomplete and Stage 2 lifecycle text was overly strict; settings.json phase_note said spec-cache scripts were DENIED when they had been moved to ALLOW in run019 | **RESOLVED run020** — 5 fixes applied and committed (1e69121) |
 | G-HEAL-027 (run021) | __pycache__ directory existed in tools/spec-cache/ working tree (not tracked by git, but should be removed for cleanliness); master-plan.md Section 33 stale (didn't know about e8ab83f commit); TC-0007 taskcard status stale (still completed_pending_independent_verification after run020 independently verified it); run020 bundle was staging bundle with non-canonical path and included .pyc file | **RESOLVED run021** — __pycache__ removed; master-plan.md and TC-0007 updated; clean canonical bundle created |
+| G-HEAL-028 (run022) | master-plan.md Section 33 said "Latest commit: e8ab83f" but latest was 138effd (run021) | **RESOLVED run022** — Section 33 updated |
+| G-HEAL-029 (run022) | master-plan.md Section 33 listed "Uncommitted run021 changes" despite 138effd having committed all of them | **RESOLVED run022** — Section 33 rewritten with run022 uncommitted list |
+| G-HEAL-030 (run022) | master-plan.md header+Section 32 listed next action as "Human Gate 2 sign-off" without independent verification first (DEC-034) | **RESOLVED run022** — next action updated; run022 verification recorded |
+| G-HEAL-031 (run022) | TC-0009 said "run020 served as independent verification" for evidence modified in run021 | **RESOLVED run022** — TC-0009 checkbox updated: run022 is the independent verification sprint |
+| G-HEAL-032 (run022) | master-plan.md footer said "version 2.16" (header said v2.17) | **RESOLVED run022** — footer updated to v2.18 |
+| G-HEAL-033 (run022) | master-plan.md Section 6 showed "gate_2: evidence_draft_pending_independent_verification" (run019-era) | **RESOLVED run022** — Section 6 updated to evidence_cached_pending_human_review |
+| G-HEAL-034 (run022) | master-plan.md Section 6 said "run021 commit (pending)" | **RESOLVED run022** — 138effd recorded |
+| G-HEAL-035 (run022) | pack.yaml stages said "evidence_draft_pending_independent_verification" — two runs stale | **RESOLVED run022** — both stages updated to evidence_cached_pending_human_review |
+| G-HEAL-036 (run022) | registry next_allowed_action implied skipping independent verification | **RESOLVED run022** — updated to human_gate2_sign_off; evidence_verified_by added |
 
 ## Major risks
 
