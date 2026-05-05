@@ -1,7 +1,7 @@
 # GOVERNANCE.md — Human Governance Rules
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-04 (run011: Sections 6.1 and 6.5 updated for format-first source layout)
+**Last reviewed:** 2026-05-05 (run024: Section 16 added — Specification Normalization Layer governance)
 **Authority:** This document governs the behavior of human contributors to format-factory. It defines decision-making authority, gate approval processes, visibility classification policy, and the rules that protect the open-source/commercial boundary.
 
 ---
@@ -216,6 +216,24 @@ Before any Gate 10 (OSS release) is approved, the project lead must verify:
 
 ---
 
+## 16. Specification Normalization Layer Governance
+
+**16.1.** Normalized spec artifacts (text extractions, section maps, citation maps) are local-only derived materials. They are never the authoritative source. The cached spec PDF is the authority.
+
+**16.2.** Human reviewers must not treat normalized artifact content as the primary spec source. When in doubt, verify against the original cached PDF and its SHA-256 hash.
+
+**16.3.** Evidence pack files (committed to git) must not contain full extracted spec text. Short cited excerpts (≤ 3 sentences with page/section citation) are acceptable. Full text remains local-only under `.local/spec-cache/{format-id}/{version}/normalized/`.
+
+**16.4.** Before Gate 4 (Prototype) may begin, `parser-requirements.yaml` must exist under the normalized directory, OR a human-approved explicit waiver must be logged as a gap with gap ID G-NORM-004. This is a hard gate dependency.
+
+**16.5.** Normalization tools (`normalize_pdf.py`, `build_citation_map.py`, `validate_normalized_spec.py`) must not call remote network endpoints or LLM endpoints. Normalization is a local, deterministic operation. Any normalization tool that calls a remote endpoint is a governance violation.
+
+**16.6.** A human may approve redistribution of specific normalized content if the spec's redistribution terms permit it and legal review has confirmed this. This approval must be recorded explicitly (decision register or gate approval record). Without such approval, all normalized text content is local-only.
+
+See `docs/specification-normalization.md` for full policy. See AGENTS.md Section W for agent rules.
+
+---
+
 ## Relationship to Other Documents
 
 - `AGENTS.md` — non-negotiable operating rules for agents
@@ -224,3 +242,4 @@ Before any Gate 10 (OSS release) is approved, the project lead must verify:
 - `docs/release-control.md` — visibility classifications and release policy
 - `docs/legal-and-licensing.md` — format legal classification and license policy
 - `docs/llm-endpoint-strategy.md` — LLM endpoint and prompt handling policy
+- `docs/specification-normalization.md` — specification normalization layer policy

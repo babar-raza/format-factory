@@ -29,7 +29,7 @@ notes: "Gate 3 sample corpus planning for FODS. ACTIVATED run023 (2026-05-05): G
 **Status:** planning_ready
 **Owner:** Pending — assigned when Gate 3 execution prompt is issued
 **Created:** 2026-05-05 (run022 — forward planning only)
-**Last updated:** 2026-05-05 (run023 — Gate 2 passed; TC-0010 activated)
+**Last updated:** 2026-05-05 (run024 — normalization layer dependency added; TC-0012 created)
 **Blocking:** Gate 3 execution (Gate 3 is Sample Corpus Ready)
 **Blocked by:** Explicit Gate 3 execution prompt from human (Gate 2 passed ✓)
 **Format:** fods
@@ -58,7 +58,9 @@ After Gate 2 is approved: plan the Gate 3 sample corpus for FODS. Define allowed
 ## Prerequisites
 
 - [x] Gate 2 passed — Babar Raza (2026-05-05, run023); `registry/format-registry.yaml` gate_2.status: passed
+- [x] TC-0012 (Specification Normalization Layer) policy and tools created (run024)
 - [ ] Explicit Gate 3 / Phase 3 execution prompt issued by human after Gate 2 passes
+- [ ] Normalization dry-run completed on FODS spec (source-manifest.yaml + extraction-report.md in .local/spec-cache/fods/1.3/normalized/)
 - [ ] Independent agent verification sprint before Gate 3 human review (DEC-034)
 
 ---
@@ -115,16 +117,18 @@ See `samples/_policy.md` for the sample acquisition policy.
 
 ## Steps (to be executed after Gate 2 passes and Gate 3 execution prompt is issued)
 
-1. Review `docs/gates.md` Gate 3 criteria.
+1. Review `docs/gates.md` Gate 3 criteria (including normalization dependency note).
 2. Review `docs/legal-and-licensing.md` sample license requirements.
 3. Review `samples/_policy.md`.
-4. Define synthetic sample plan.
-5. Identify real-world sample sources.
-6. Classify each source by license.
-7. Define edge-case sample requirements.
-8. Produce Gate 3 corpus plan.
-9. Request independent agent verification sprint (DEC-034).
-10. After verification: request human Gate 3 approval.
+4. Verify TC-0012 normalization dry-run is complete (source-manifest.yaml present and SHA-256 MATCH).
+5. Review any available normalized artifacts (sections.jsonl, page-map.yaml) to inform sample categories.
+6. Define synthetic sample plan.
+7. Identify real-world sample sources.
+8. Classify each source by license.
+9. Define edge-case sample requirements informed by spec-defined data structures (if normalization artifacts available).
+10. Produce Gate 3 corpus plan.
+11. Request independent agent verification sprint (DEC-034).
+12. After verification: request human Gate 3 approval.
 
 ---
 
@@ -134,4 +138,6 @@ See `samples/_policy.md` for the sample acquisition policy.
 **Created:** 2026-05-05 by claude-sonnet-4-6 (run022 — forward planning only).
 **Activated:** 2026-05-05 by claude-sonnet-4-6 (run023 — Gate 2 passed; TC-0010 set to planning_ready).
 
-**Next action:** Human issues explicit Gate 3 execution prompt. Then run TC-0011 independent verification sprint before Gate 3 human review.
+**Next action:** Human issues explicit Gate 3 execution prompt. Complete TC-0012 normalization dry-run. Then run TC-0011 independent verification sprint before Gate 3 human review.
+
+**run024 update (2026-05-05):** Specification Normalization Layer (TC-0012) policy and tools created. Normalization dependency added to prerequisites and steps. Sample-sources.md updated with Gate 3 planning structure.

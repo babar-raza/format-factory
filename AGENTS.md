@@ -1,7 +1,7 @@
 # AGENTS.md — Agent Operating Contract
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-04 (run011: G4/G5/N updated for format-first source layout; obsolete path assumptions removed)
+**Last reviewed:** 2026-05-05 (run024: Section W added — Specification Normalization Layer rules)
 **Authority:** This document is the non-negotiable operating contract for all agents (Claude, Codex, and any other automated executor) working in this repository. Every rule below must be followed without exception unless a specific exception is logged in the gap register with human approval.
 
 ---
@@ -267,7 +267,7 @@ An agent must never create the following in Phase 0:
 
 ## S. What This Document Does Not Cover
 
-This document governs agent behavior. For human contributor rules, see `GOVERNANCE.md`. For gate pass criteria, see `docs/gates.md`. For legal classification, see `docs/legal-and-licensing.md`. For artifact visibility and release rules, see `docs/release-control.md`. For LLM endpoint configuration, see `docs/llm-endpoint-strategy.md`. For specification cache policy, see `docs/specification-cache.md`. For historical project context, decision rationale, and phase evolution, see `memory/README.md` and `memory/00-index.md`.
+This document governs agent behavior. For human contributor rules, see `GOVERNANCE.md`. For gate pass criteria, see `docs/gates.md`. For legal classification, see `docs/legal-and-licensing.md`. For artifact visibility and release rules, see `docs/release-control.md`. For LLM endpoint configuration, see `docs/llm-endpoint-strategy.md`. For specification cache policy, see `docs/specification-cache.md`. For specification normalization policy, see `docs/specification-normalization.md`. For historical project context, decision rationale, and phase evolution, see `memory/README.md` and `memory/00-index.md`.
 
 ---
 
@@ -416,3 +416,33 @@ A future `/sync-memory` command or taskcard (`TC-0008`) should be created (Phase
 **V4. Exception.** If the human explicitly waives this requirement in the execution prompt for the current session (e.g., "I am waiving the verification sprint requirement for this approval"), the agent may proceed without a prior verification sprint. The waiver must be explicit and in writing in the prompt. The agent must note the waiver in the run record.
 
 **V5. Decision Register Reference.** This rule is recorded as DEC-034 in `plans/master-plan.md`.
+
+---
+
+## W. Specification Normalization Layer Rules
+
+**W1. Three-Layer Model.** Specifications exist in three layers: (1) the original cached spec file (immutable, local-only, never modified), (2) normalized derived artifacts (local-only, machine-readable, reproducible from source), and (3) evidence pack claims (committed, cited, short excerpts only). Each layer has different rules. Do not conflate them.
+
+**W2. Immutable Source Rule.** The cached spec file (e.g., `.local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf`) must never be modified, deleted by automation, or committed. It is the single authoritative source for all spec-derived claims.
+
+**W3. Hash Verification Before Normalization.** Before running any normalization tool, verify the cached spec file's SHA-256 against the value in `spec-index.yaml`. A hash mismatch means the file may be corrupted. Log gap G-NORM-002 and stop. Do not normalize a potentially corrupted file.
+
+**W4. Normalized Artifacts Are Local-Only.** All normalized artifacts are stored under `.local/spec-cache/{format-id}/{version}/normalized/` (gitignored). They must never be committed unless an explicit exception is granted (metadata-only artifacts that contain no spec text and have redistribution rights confirmed). Full extracted text (`text.txt`, `pages.jsonl`) is always local-only.
+
+**W5. Normalization Tools Must Not Call Remote Endpoints.** `normalize_pdf.py`, `build_citation_map.py`, `validate_normalized_spec.py`, and any other normalization tool must not call network endpoints or LLM endpoints. Normalization is a local-only operation.
+
+**W6. Stale Normalized Artifacts.** If the source spec file changes (hash mismatch detected on re-verification), all normalized artifacts derived from it are stale. Do not use stale normalized artifacts. Regenerate from the re-acquired source before using.
+
+**W7. Evidence Pack Citations.** When making a claim in a committed evidence file (e.g., `spec-evidence.md`), cite the source spec (source_url, sha256, page, section), not just the normalized artifact. Short excerpts (≤ 3 sentences) are acceptable under fair use. Full text is not.
+
+**W8. Gate 4 Normalization Dependency.** `parser-requirements.yaml` (or an explicit human-approved waiver) is required before Gate 4 (Prototype) may begin. If normalization tooling is unavailable, log gap G-NORM-004 and document the waiver condition. See `docs/specification-normalization.md` for the full gate relationship model.
+
+**W9. Evidence Classification.** Normalized artifacts support the following evidence classifications:
+- `[SUPPORTED_BY_NORMALIZED_ARTIFACT]` — claim extracted from spec with citation (normalized artifact exists)
+- `[SUPPORTED_BY_CACHED_SOURCE]` — claim verified directly from cached spec (no normalization needed)
+- `[PLAUSIBLE_PENDING_VERIFICATION]` — technically plausible but not yet verified from source
+- `[SPECULATION]` — not grounded in spec text; must not appear in production evidence
+
+**W10. No LLM Calls With Spec Text to Remote Endpoints.** Full specification documents must not be sent to remote LLM endpoints. This extends T9 of this document. Spec text may be used with local-only LLM endpoints if redistribution is not implicated and explicit authorization is in the execution prompt.
+
+See `docs/specification-normalization.md` for the complete policy. See `tools/spec-normalize/` for normalization tooling.

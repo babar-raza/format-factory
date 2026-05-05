@@ -20,26 +20,28 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 3 planning artifact. Skeleton only — not started. Lists candidate sample sources for future acquisition. Actual provenance records go in samples/_provenance.yaml."
+notes: "Gate 3 planning artifact. Corpus plan drafted run024 (Phase 3 planning). Synthetic sample strategy, blocked rules, and provenance procedure defined. No samples acquired. Actual provenance records go in samples/_provenance.yaml when Gate 3 execution is authorized."
 ---
 
 # Sample Sources — Flat OpenDocument Spreadsheet (FODS)
 
 **Format ID:** `fods`
 **Gate:** 3
-**Status:** Not started — skeleton created run017 after Gate 1 approval
+**Status:** planning_in_progress — corpus plan drafted run024; awaiting explicit Gate 3 execution prompt for acquisition
 
 **Gate 1 approved by:** Babar Raza (2026-05-04)
-**Gate 2 status:** not_started
-**Gate 3 status:** not_started
+**Gate 2 status:** PASSED — Babar Raza (2026-05-05, run023)
+**Gate 3 status:** planning_ready (TC-0010); planning in progress (run024); awaiting explicit Gate 3 execution prompt for acquisition
 
-**Important:** No samples have been acquired. `samples/by-format/fods/` does not exist and must not be created until Gate 2 is passed and an explicit Gate 3 / Phase 2 sample acquisition prompt is issued.
+**Normalization status:** Metadata-only dry-run completed run024. Source-manifest.yaml (SHA-256 MATCH: `sha256:92cfe64...b066`). Full text extraction pending pdfminer.six installation (G-NORM-001).
+
+**Important:** No samples have been acquired. `samples/by-format/fods/` does not exist and must not be created until Gate 3 is explicitly authorized by a human execution prompt.
 
 ---
 
 ## Purpose
 
-This document records candidate sample sources for FODS sample acquisition. It is a working document for Gate 3 planning. The authoritative provenance records for acquired samples are in `samples/_provenance.yaml`. This document captures the research process: what sources were found, why some were selected and others rejected.
+This document records candidate sample sources for FODS sample acquisition. It is a working document for Gate 3 planning. The authoritative provenance records for acquired samples are in `samples/_provenance.yaml`. This document captures the research process: what sources were found, why some were selected and others rejected, and what the final corpus plan is.
 
 ---
 
@@ -47,63 +49,157 @@ This document records candidate sample sources for FODS sample acquisition. It i
 
 The minimum corpus for Gate 3 must include:
 
-| Sample Type | Description | Status |
-|---|---|---|
-| Minimal valid | Smallest valid FODS file; ideally hand-crafted | Needed |
-| Empty / trivial | Empty spreadsheet (no cells) | Needed |
-| Core data | File containing cells, multiple sheets, basic styles | Needed |
-| Edge case | File with empty rows, special characters, long strings, merged cells | Needed |
+| Sample Type | Description | Spec reference | Status |
+|---|---|---|---|
+| Minimal valid | Smallest valid FODS file with one sheet, one cell | ODF 1.3 Part 3 §3.1 (Document Root) | Needed |
+| Empty / trivial | Empty spreadsheet (no cells, no data) | ODF 1.3 Part 3 §3.8 (Spreadsheet) | Needed |
+| Core data | Multiple sheets, cells with text/numbers/formulas, basic styles | ODF 1.3 Part 3 §8.1–§8.5 | Needed |
+| Edge case | Empty rows, special characters (Unicode), long strings, merged cells | ODF 1.3 Part 3 §8.1, §9.1.5 | Needed |
 
-Preference order: (1) Created specifically for this project (owned by project), (2) CC0 / public domain, (3) CC-BY, (4) CC-BY-SA, (5) Apache 2.0 or MIT from open-source projects.
+Preference order: (1) Created specifically for this project (owned by project — Apache-2.0), (2) CC0 / public domain, (3) CC-BY (with attribution preserved), (4) CC-BY-SA, (5) Apache 2.0 or MIT from open-source projects.
+
+**Note on spec references:** Section references above are indicative, based on ODF 1.3 structure. Exact sections to be verified against normalized spec once pdfminer.six is installed (G-NORM-001).
+
+---
+
+## Blocked Sample Rules
+
+The following sample types must NOT be acquired:
+
+| Condition | Rule |
+|---|---|
+| License CC-BY-ND | BLOCKED — no-derivatives prevents format conversion testing |
+| License CC-NC (any variant) | BLOCKED — non-commercial limits our use |
+| License: unknown or "all rights reserved" | BLOCKED — must not acquire without explicit license confirmation |
+| Origin: proprietary corporate documents | BLOCKED — may contain confidential data or embedded PII |
+| Origin: user-uploaded without explicit license grant | BLOCKED — unknown provenance |
+
+---
+
+## Synthetic Sample Strategy
+
+For Gate 3, the preferred approach is project-owned synthetic samples:
+
+**Strategy:** Create minimal, well-defined FODS files by hand (or via LibreOffice automation) that:
+- Cover all required sample types
+- Contain no third-party content
+- Are explicitly licensed Apache-2.0 by this project
+- Are reproducible from a defined schema (documented in the provenance record)
+
+**Rationale:** For a pilot format, synthetic samples eliminate all provenance and license risk. Real-world samples may be added in subsequent gate cycles when sources with confirmed clean licenses are identified.
+
+**Generation approach (to be executed when Gate 3 is authorized):**
+1. Create FODS files using a Python script (`tools/samples/create_fods_samples.py`) — script to be created in Gate 3 execution.
+2. Verify output is valid FODS using LibreOffice or a FODS parser.
+3. Record provenance in `samples/_provenance.yaml` with: origin, generator script hash, creation date, spec version targeted.
 
 ---
 
 ## Candidate Sources
 
-*(To be researched and documented in TC-0009 Phase 2 work.)*
-
-### Source 1: LibreOffice Test Suite
-
-| Field | Value |
-|---|---|
-| URL | (to be identified — LibreOffice source repository) |
-| License | MPL 2.0 / LGPL (to be verified) |
-| Format variant | FODS |
-| File count | (to be determined) |
-| Sample types available | (to be determined) |
-| Acquisition status | pending |
-| Rejection reason | |
-
-### Source 2: Project-created minimal samples
+### Source A: Project-created synthetic samples (PREFERRED)
 
 | Field | Value |
 |---|---|
 | URL | N/A — created by project |
 | License | Apache-2.0 (project-owned) |
-| Format variant | FODS |
-| File count | 4 (minimal, empty, core-data, edge-case) |
+| Format variant | FODS (Flat OpenDocument Spreadsheet, XML) |
+| File count | 4–6 minimum (minimal, empty, core-data, edge-case, formula-test, style-test) |
 | Sample types available | All required types |
-| Acquisition status | pending — creation deferred to Gate 3 |
-| Rejection reason | |
+| Acquisition status | PENDING — deferred to Gate 3 execution prompt |
+| Notes | Requires `tools/samples/create_fods_samples.py` (to be created Gate 3) |
+
+### Source B: LibreOffice Test Suite (CANDIDATE — license review required)
+
+| Field | Value |
+|---|---|
+| URL | https://github.com/LibreOffice/core/tree/master/sc/qa/unit/data (indicative — verify at Gate 3) |
+| License | MPL 2.0 (LibreOffice source) — to be verified for test data files specifically |
+| Format variant | ODS and FODS mixed — must filter to .fods |
+| File count | To be determined at Gate 3 |
+| Sample types available | Core data, edge cases likely present |
+| Acquisition status | PENDING — license and content review required at Gate 3 |
+| Notes | MPL 2.0 is compatible with Apache-2.0 for most uses. Verify no NC/ND constraints on test data. |
+
+### Source C: OASIS ODF Interoperability Test Suite (CANDIDATE — check availability)
+
+| Field | Value |
+|---|---|
+| URL | To be identified — OASIS ODF Interoperability TC may publish test suites |
+| License | To be verified |
+| Format variant | ODF (may include FODS) |
+| File count | Unknown |
+| Acquisition status | PENDING — research required at Gate 3 |
+| Notes | If available and licensed for use, may provide spec-conformance edge cases |
+
+---
+
+## Provenance Tracking Procedure
+
+For each sample acquired at Gate 3:
+
+```yaml
+# Template for samples/_provenance.yaml entry
+- sample_id: fods-minimal-v1
+  format_id: fods
+  filename: minimal.fods
+  path: samples/by-format/fods/minimal.fods
+  source: project-synthetic
+  source_url: null
+  license: Apache-2.0
+  license_url: https://www.apache.org/licenses/LICENSE-2.0
+  provenance_status: confirmed
+  created_by: tools/samples/create_fods_samples.py
+  created_at: (to be filled)
+  spec_version: ODF 1.3
+  sample_type: minimal_valid
+  notes: Hand-crafted minimal FODS file for Gate 3 corpus
+```
 
 ---
 
 ## Final Corpus Plan
 
-*(To be confirmed before Gate 3 is requested.)*
+*(Status: planned — to be confirmed before Gate 3 acquisition is requested.)*
 
-| Sample File | Source | License | Provenance Entry Created? |
-|---|---|---|---|
-| `samples/by-format/fods/minimal.fods` | TBD | TBD | No |
-| `samples/by-format/fods/empty.fods` | TBD | TBD | No |
-| `samples/by-format/fods/core-data.fods` | TBD | TBD | No |
-| `samples/by-format/fods/edge-case.fods` | TBD | TBD | No |
+| Sample File | Source | License | Sample Type | Provenance Entry Created? |
+|---|---|---|---|---|
+| `samples/by-format/fods/minimal.fods` | Project synthetic | Apache-2.0 | minimal_valid | No — Gate 3 execution required |
+| `samples/by-format/fods/empty.fods` | Project synthetic | Apache-2.0 | empty_trivial | No — Gate 3 execution required |
+| `samples/by-format/fods/core-data.fods` | Project synthetic | Apache-2.0 | core_data | No — Gate 3 execution required |
+| `samples/by-format/fods/edge-case.fods` | Project synthetic | Apache-2.0 | edge_case | No — Gate 3 execution required |
+
+---
+
+## Gate 3 Planning Checklist
+
+- [x] Gate 2 passed — Babar Raza (2026-05-05, run023)
+- [x] Sample requirement types defined (4 required)
+- [x] Blocked sample rules documented
+- [x] Synthetic sample strategy defined
+- [x] Source candidates identified (A, B, C above)
+- [x] Provenance tracking procedure documented
+- [x] Corpus plan drafted
+- [x] Normalization layer dependency noted (TC-0012)
+- [ ] Gate 3 execution prompt issued by human
+- [ ] Samples created/acquired
+- [ ] Provenance entries confirmed
+- [ ] Independent agent verification sprint (DEC-034)
+- [ ] Gate 3 human approval
 
 ---
 
 ## Gate 3 Sign-off
 
-**Reviewed by:** (to be filled)
+**Reviewed by:** (to be filled at Gate 3)
 **Review date:** (to be filled)
 **All provenance entries confirmed:** (yes/no)
 **Notes:** (to be filled)
+
+---
+
+## Planning History
+
+- **run017 (2026-05-04):** Skeleton created after Gate 1 approval.
+- **run023 (2026-05-05):** Gate 2 status updated to PASSED.
+- **run024 (2026-05-05):** Corpus plan drafted. Sample requirement types defined, blocked rules, synthetic strategy, candidate sources, provenance procedure. Normalization layer dependency noted. No samples acquired.

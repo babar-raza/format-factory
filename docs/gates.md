@@ -81,6 +81,8 @@ If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing
 - `samples/by-format/<format-id>/` directory with corpus files
 - `_provenance.yaml` entries for all samples
 
+**Normalization dependency:** Normalization is not required to pass Gate 3, but absence must be noted. If `sections.jsonl` or `parser-requirements.yaml` have been produced by the normalization layer, sample categories should be validated against spec-defined data structures before Gate 3 is approved. If normalization is not available, document this as a noted absence in the Gate 3 approval record.
+
 **Fast-path:** None. All sample provenance must be confirmed.
 
 ---
@@ -99,6 +101,9 @@ If the format is on the Pre-Approved Fast-Path List in `docs/legal-and-licensing
 **Required artifacts:**
 - `prototypes/by-format/<format-id>/` with parser source code
 - Prototype README with security section
+- `parser-requirements.yaml` under `.local/spec-cache/{format-id}/{version}/normalized/` (or an explicit human-approved waiver logged as gap G-NORM-004)
+
+**Normalization dependency (REQUIRED):** Gate 4 may not begin until `parser-requirements.yaml` exists in the normalized artifact directory, OR an explicit human waiver is logged as gap G-NORM-004 in the gap register. If normalization tooling failed (G-NORM-001) or the cached spec is unavailable, the waiver must document this constraint and what alternative was used for parser requirement extraction.
 
 **Fast-path:** None. Human review is required for prototype correctness and security baseline.
 
@@ -271,5 +276,6 @@ An agent must update `gate_N.status` to `passed` only after human approval has b
 - `docs/legal-and-licensing.md` — Gate 2 fast-path rules and legal categories
 - `docs/product-tracks.md` — Gate 9, 10, 11 tier model and boundary check
 - `docs/release-control.md` — release manifest requirements for Gate 10 and 11
+- `docs/specification-normalization.md` — normalization gate dependencies (Gate 3 optional, Gate 4 required)
 - `registry/scoring/_scoring-model.md` — Gate 1 scoring criteria
 - `plans/master-plan.md` — gate history for all in-flight formats

@@ -1,6 +1,6 @@
 {
   "projectName": "format-factory",
-  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 2 CONSERVATIVE MODE.",
+  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3 PLANNING CONSERVATIVE MODE.",
   "model": "claude-opus-4-6",
   "permissions": {
     "allow": [
@@ -19,6 +19,10 @@
       "Write(tools/spec-cache/acquire_spec.py)",
       "Write(tools/spec-cache/refresh_check.py)",
       "Write(tools/spec-cache/spec_index.py)",
+      "Write(tools/spec-normalize/_readme.md)",
+      "Write(tools/spec-normalize/normalize_pdf.py)",
+      "Write(tools/spec-normalize/build_citation_map.py)",
+      "Write(tools/spec-normalize/validate_normalized_spec.py)",
       "Write(.claude/**)",
       "Write(.gitignore)",
       "Write(.env.example)",
@@ -80,8 +84,8 @@
       "Bash(iwr *)"
     ]
   },
-  "phase": "2",
-  "phase_note": "Phase 2 CONSERVATIVE MODE. Gate 1 passed (2026-05-04, Babar Raza). acquisition-packs/fods/** is ALLOWED. spec-cache scripts (acquire_spec.py, refresh_check.py, spec_index.py) are ALLOWED on Write allow list and Bash allow list (TC-0007 independently verified run020+run022). Bash(python *acquire_spec*) deny rule REMOVED in run021 (session-specific T3 authorization). IMPORTANT: This removal is NOT a permanent blanket authorization. Any future session wishing to run acquire_spec.py with --allow-network MUST independently verify all six T3 conditions for that specific download (format, version, canonical URL, legal category, gate status, local-only storage) before proceeding. The run021 FODS/ODF 1.3 acquisition is complete and must not be re-run without a specific new execution prompt. Network commands (curl, wget, Invoke-WebRequest, iwr) remain DENIED. samples/by-format/**, schemas/neutral-model/**, prototypes/by-format/**, src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts remain DENIED. Phase 2 scope: Gate 2 evidence package complete; awaiting human sign-off.",
+  "phase": "3-planning",
+  "phase_note": "Phase 3 PLANNING CONSERVATIVE MODE. Gate 2 passed (2026-05-05, Babar Raza). Gate 3 planning authorized (TC-0010 planning_ready). acquisition-packs/fods/** is ALLOWED. spec-cache scripts and spec-normalize tools are ALLOWED on Write allow list when explicitly authorized. tools/spec-normalize/** added to allow list (run024). IMPORTANT: Spec acquisition is complete for FODS/ODF 1.3 (run021). Future sessions wishing to run acquire_spec.py with --allow-network MUST independently verify all six T3 conditions for that specific download. Normalized artifacts are local-only under .local/spec-cache/fods/1.3/normalized/ — never committed. Network commands (curl, wget, Invoke-WebRequest, iwr) remain DENIED. samples/by-format/**, schemas/neutral-model/**, prototypes/by-format/**, src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts remain DENIED. Phase 3 planning scope: Gate 3 sample corpus planning (no sample acquisition yet); spec normalization layer added.",
   "notes": [
     "PHASE 2 CONSERVATIVE MODE: Gate 1 passed. acquisition-packs/fods/** added to allow list (run018).",
     "Format-first source layout: src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE — must not be created.",
@@ -96,6 +100,6 @@
     "See docs/llm-endpoint-strategy.md for endpoint configuration rules.",
     "See docs/release-control.md for artifact visibility classification rules.",
     "See docs/specification-cache.md for spec acquisition authorization model.",
-    "This settings.json was updated to Phase 2 in run018 (2026-05-04). TC-0007 scripts moved from deny to allow in run019 (2026-05-04). Bash(python *acquire_spec*) deny REMOVED in run021 (2026-05-04) — T3-authorized FODS/ODF 1.3 spec acquisition permitted in run021 execution session only."
+    "This settings.json was updated to Phase 2 in run018 (2026-05-04). TC-0007 scripts moved from deny to allow in run019 (2026-05-04). Bash(python *acquire_spec*) deny REMOVED in run021 (2026-05-04) — T3-authorized FODS/ODF 1.3 spec acquisition permitted in run021 execution session only. Updated to Phase 3 PLANNING CONSERVATIVE MODE in run024 (2026-05-05). tools/spec-normalize/** added to allow list (run024)."
   ]
 }

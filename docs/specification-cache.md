@@ -240,20 +240,30 @@ If a specification document contains content with copyright restrictions that ma
 
 ---
 
+## Normalization Layer
+
+Cached specification files are immutable source artifacts. The **Specification Normalization Layer** converts them into local-only machine-readable derived artifacts (text extractions, section maps, citation maps, parser requirements). Normalized artifacts live under `.local/spec-cache/{format-id}/{version}/normalized/` and are never committed.
+
+The normalization layer is a separate concern from the cache layer. The cache layer governs acquisition and storage of source files. The normalization layer governs conversion of cached source files into structured working materials. The cache must exist before normalization can run. Hash verification is required before normalization begins.
+
+See `docs/specification-normalization.md` for the complete normalization policy, tool list, and gate dependencies.
+
+---
+
 ## Implementation
 
-The specification cache tooling was implemented in Phase 1 (run019) via TC-0007:
+**As of run021:** FODS/ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) acquired and verified. As of run024: normalization tooling implemented (`tools/spec-normalize/`).
 
 | Component | Phase | Path | Description | Status |
 |---|---|---|---|---|
 | Cache policy (this doc) | Phase 0 | `docs/specification-cache.md` | Policy and schema | Complete |
 | Cache directory orientation | Phase 0 | `tools/spec-cache/_readme.md` | Directory orientation file | Complete |
-| Cache implementation taskcard | Phase 0 | `taskcards/TC-0007-specification-cache.md` | Phase 1 implementation scope | completed_pending_independent_verification |
+| Cache implementation taskcard | Phase 0 | `taskcards/TC-0007-specification-cache.md` | Phase 1 implementation scope | completed |
 | Index library | Phase 1 | `tools/spec-cache/spec_index.py` | Read/write/validate spec-index.yaml | Implemented run019 |
 | Acquisition script | Phase 1 | `tools/spec-cache/acquire_spec.py` | Download, hash, index; dry-run default; --allow-network for live download | Implemented run019 |
 | Refresh script | Phase 1 | `tools/spec-cache/refresh_check.py` | Staleness checking; never downloads | Implemented run019 |
-
-**As of run020:** All three scripts are implemented, committed, and smoke-tested. No spec files have been downloaded yet. FODS/ODF spec acquisition is authorized in run020 (see TC-0009 and run020 execution prompt).
+| Normalization policy | Phase 2+ | `docs/specification-normalization.md` | Policy for derived artifacts | Created run024 |
+| Normalization tools | Phase 2+ | `tools/spec-normalize/` | normalize_pdf.py, build_citation_map.py, validate_normalized_spec.py | Created run024 |
 
 ---
 
@@ -262,6 +272,10 @@ The specification cache tooling was implemented in Phase 1 (run019) via TC-0007:
 - `docs/acquisition-workflow.md` — Stage 2 requires a cached spec before `spec-evidence.md` is drafted
 - `docs/legal-and-licensing.md` — legal category governs which specs may be cached
 - `docs/release-control.md` — cached specs are `visibility: evidence-only`, never released
-- `AGENTS.md` Section S — spec-cache acquisition rules for agents
+- `docs/specification-normalization.md` — normalization layer policy (companion document)
+- `AGENTS.md` Section T — spec-cache acquisition rules for agents
+- `AGENTS.md` Section W — normalization layer rules for agents
 - `taskcards/TC-0007-specification-cache.md` — Phase 1 implementation scope
+- `taskcards/TC-0012-specification-normalization-layer.md` — normalization implementation scope
 - `tools/spec-cache/_readme.md` — directory orientation
+- `tools/spec-normalize/_readme.md` — normalization tools orientation
