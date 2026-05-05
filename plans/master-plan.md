@@ -670,9 +670,12 @@ A format counts toward WIP from the moment it enters Gate 1 until it exits Gate 
 | TC-0011 | FODS Gate 3 Independent Verification Sprint | 3 | **not_started** — to be run before Gate 3 human review (DEC-034) | TC-0013 completion |
 | TC-0012 | Specification Normalization Layer | 2+ | **in_progress (Phase 2 done)** — full extraction completed (run025): text.txt 2.1M chars, pages.jsonl 782 pages, citations.yaml 194+35 refs; G-NORM-001 resolved; parser-requirements.yaml pending | Gate 2 passed |
 | TC-0013 | FODS Gate 3 Sample Corpus Execution | 3 | **in_progress** — 4 samples created run026 (4/4 PASS); Spec Nav Layer built; awaiting DEC-034 and Gate 3 approval | Gate 3 approval |
-| TC-0014 | FODS Gate 4 Parser Prototype Planning | 4 | **not_started** — created run026; blocked by Gate 3 approval and explicit Gate 4 prompt | Gate 3 PASSED |
+| TC-0014 | FODS Gate 4 Parser Prototype Planning | 4 | **completed** — planning package used in run029; TC-0017 executed | Gate 3 PASSED |
+| TC-0017 | FODS Gate 4 Parser Prototype Execution | 4 | **prototype_created_pending_independent_verification** — fods_parser.py created run029; 4/4 PASS | TC-0018 DEC-034 |
+| TC-0018 | FODS Gate 4 Prototype Verification | 4 | **ready_for_execution** — DEC-034; blocked by explicit TC-0018 session prompt | Gate 4 approval |
+| TC-0019 | FODS Gate 5 Neutral Model Planning | 5 | **not_started** — blocked by Gate 4 approval + explicit Gate 5 prompt | Gate 4 PASSED |
 
-All taskcards are in `taskcards/` as Markdown files. Current phase is Phase 3 (corpus created). TC-0012 Phase 2 complete. TC-0013 in_progress. TC-0014 created (not_started).
+All taskcards are in `taskcards/` as Markdown files. Current phase is Phase 3 (Gate 4 prototype created). TC-0013 COMPLETED. TC-0014 completed. TC-0017 prototype_created_pending_independent_verification. TC-0018 ready_for_execution.
 
 ---
 
@@ -962,7 +965,8 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 13. **Next required action:** Independent verification sprint (DEC-034) for run026. Then Gate 3 human approval.
 
 **Gate 2 for FODS: PASSED — approved by Babar Raza (2026-05-05). Patent search waived by project lead.**
-**Gate 3 for FODS: PASSED — approved by Babar Raza (2026-05-05, run028). 4 Apache-2.0 synthetic samples, 4/4 PASS, SHA-256 verified run027. Spec Navigation Layer: 884 sections, 940 chunks. TC-0013 COMPLETED. Gate 4 planning package created (parser-requirements.md, parser-scope.md, parser-test-plan.md). TC-0014 planning_ready. TC-0017/TC-0018 created.**
+**Gate 3 for FODS: PASSED — approved by Babar Raza (2026-05-05, run028). 4 Apache-2.0 synthetic samples, 4/4 PASS, SHA-256 verified run027. Spec Navigation Layer: 884 sections, 940 chunks. TC-0013 COMPLETED.**
+**Gate 4 for FODS: prototype_created_pending_independent_verification — fods_parser.py created run029 (2026-05-05). Validation 4/4 PASS (PT-001–PT-004). Gate 4 NOT approved. TC-0018 DEC-034 independent verification required.**
 
 ### Run History
 
@@ -996,13 +1000,13 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 | run026 | 2026-05-05 | Spec Navigation Layer + Gate 3 corpus execution + TC-0014 | Verified run025 (f17bb12; valid uncommitted leftover confirmed). Built 4 navigation tools: build_section_index.py (884 sections, 705 pages), build_chunk_index.py (940 chunks), query_normalized_spec.py, export_sample_requirements.py. Produced: sample-requirements.yaml (4 samples), parser-requirements-draft.yaml (10 reqs). Created 4 FODS samples (Apache-2.0): minimal-spreadsheet.fods, multi-sheet-basic.fods, typed-values-basic.fods, formula-basic.fods. Validation: 4/4 PASS. create_fods_samples.py + validate_fods_samples.py created. Provenance: 4 confirmed entries. Registry gate_3 updated. TC-0013 → in_progress. TC-0014 created (not_started). spec-normalization.md updated. Master-plan v2.22. Committed 8871777. |
 | run027 | 2026-05-05 | Independent verification of run026 + stale fixes + Hybrid Spec Retrieval Strategy | Verified run026 (8871777; trivial master-plan leftover confirmed). Independent verification (DEC-034) PASS: 21 checks PASS, 6 stale issues found and fixed. Stale fixes: master-plan header (f17bb12→8871777), settings.json notes[0] (Phase 2→3), TC-0013 prerequisites (lines 67-68 checked), TC-0013 planned-sample-names labeled, sample-sources.md (full update: status, filenames, checklist, history), parser-notes.md gate status. SHA-256 hashes added to provenance.yaml. Validation re-run: 4/4 PASS. Nav layer smoke-tested: §3.1.2 query ✓, core-req query ✓, section rebuild 705pp ✓. Gate 3 status: sample_corpus_created_pending_independent_verification → sample_corpus_verified_pending_human_review. Hybrid Spec Retrieval Strategy: docs/spec-retrieval-strategy.md (10 sections, Tier 1+2+3 design). TC-0015 created (evaluation, not_started). TC-0016 created (vector index pilot, not_started). AGENTS.md Section X added. settings.json updated. Master-plan v2.23. Committed 09ee31f. |
 | run028 | 2026-05-05 | Gate 3 approval + Gate 4 planning package + memory updates | Verified run027 (09ee31f; working tree clean). Recorded Gate 3 approval: Babar Raza, 2026-05-05. Updated registry gate_3 → passed. next_allowed_action → gate4_parser_prototype_planning. Stale fixes: master-plan header (8871777→09ee31f), settings.json notes[0] (run027 commit pending→Gate 3 PASSED), pack.yaml header/notes/next_action, README.md (Gate 3 PASSED, Gate 4 next), ROADMAP.md (Gate 3 PASSED). TC-0011 closed (superseded by run027 verification). TC-0013 completed (Gate 3 approval recorded). TC-0014 activated (planning_ready). TC-0015+TC-0016 updated (cloud-DB/no-mixing/stale-hash restrictions added). Created parser planning package: parser-requirements.md, parser-scope.md, parser-test-plan.md. Created TC-0017 (Gate 4 prototype execution, not_started) and TC-0018 (Gate 4 prototype verification DEC-034, not_started). Memory files updated: 03 (Hybrid Retrieval architecture section), 05 (D-046–D-049), 09 (complete rewrite to run028 current state), 10 (run027+run028 update entries). External MEMORY.md updated. Master-plan v2.24. Committed 5c93b88. |
-| run029 | 2026-05-05 | run028 independent verification + stale-state fixes + TC-0017 Gate 4 prototype execution | Verified run028 (5c93b88; working tree clean). All 33 verification checks PASS. Stale fixes: master-plan header (09ee31f→5c93b88), settings.json description→Gate4 execution mode, prototypes/by-format/fods/** moved to allow list, notes[0] updated. parser-notes.md Gate 3 status fixed. TC-0017 executed: prototype created at prototypes/by-format/fods/fods_parser.py (Python stdlib only, ElementTree). Validation: PT-001 PASS (8/8), PT-002 PASS (6/6), PT-003 PASS (8/8), PT-004 PASS (8/8) = 4/4 overall PASS. Test plan discrepancies documented: PT-001 text "Hello" vs predicted "Hello, World!"; PT-002 sheets "Data"/"Summary" vs predicted "Sheet1"/"Sheet2"; PT-003 no date cell vs predicted date cell. All discrepancies in prototype-notes.md + parser-notes.md. Registry gate_4 → prototype_created_pending_independent_verification. next_allowed_action → gate4_independent_verification_tc0018. TC-0017 → prototype_created_pending_independent_verification (acceptance criteria updated). TC-0018 → ready_for_execution. TC-0019 created (Gate 5 neutral model planning, not_started). Created: prototypes/by-format/fods/fods_parser.py, README.md, validate_against_samples.py, prototype-notes.md. Updated: parser-notes.md, parser-test-plan acceptance criteria context. Memory files updated: 05 (D-050), 09 (current state rewrite), 10 (run029 entry). External MEMORY.md updated. Master-plan v2.25. Commit pending. No product source. No schema. No push. Gate 4 NOT approved. |
+| run029 | 2026-05-05 | run028 independent verification + stale-state fixes + TC-0017 Gate 4 prototype execution | Verified run028 (5c93b88; working tree clean). All 33 verification checks PASS. Stale fixes: master-plan header (09ee31f→5c93b88), settings.json description→Gate4 execution mode, prototypes/by-format/fods/** moved to allow list, notes[0] updated. parser-notes.md Gate 3 status fixed. TC-0017 executed: prototype created at prototypes/by-format/fods/fods_parser.py (Python stdlib only, ElementTree). Validation: PT-001 PASS (8/8), PT-002 PASS (6/6), PT-003 PASS (8/8), PT-004 PASS (8/8) = 4/4 overall PASS. Test plan discrepancies documented: PT-001 text "Hello" vs predicted "Hello, World!"; PT-002 sheets "Data"/"Summary" vs predicted "Sheet1"/"Sheet2"; PT-003 no date cell vs predicted date cell. All discrepancies in prototype-notes.md + parser-notes.md. Registry gate_4 → prototype_created_pending_independent_verification. next_allowed_action → gate4_independent_verification_tc0018. TC-0017 → prototype_created_pending_independent_verification (acceptance criteria updated). TC-0018 → ready_for_execution. TC-0019 created (Gate 5 neutral model planning, not_started). Created: prototypes/by-format/fods/fods_parser.py, README.md, validate_against_samples.py, prototype-notes.md. Updated: parser-notes.md, parser-test-plan acceptance criteria context. Memory files updated: 05 (D-050), 09 (current state rewrite), 10 (run029 entry). External MEMORY.md updated. Master-plan v2.25. Committed d8187e0. No product source. No schema. No push. Gate 4 NOT approved. |
 
 ---
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 5c93b88 (run028) — "chore: approve FODS Gate 3 and prepare Gate 4 planning"
+**Latest commit:** d8187e0 (run029) — "chore: create FODS Gate 4 parser prototype (run029)"
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1024,24 +1028,11 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 **Committed (5c93b88, run028):**
 - plans/master-plan.md v2.24, registry gate_3 passed, acquisition-packs/fods/pack.yaml, parser-requirements.md (NEW), parser-scope.md (NEW), parser-test-plan.md (NEW), TC-0011 closed, TC-0013 completed, TC-0014 planning_ready, TC-0015/TC-0016 restrictions, TC-0017 (NEW), TC-0018 (NEW), README.md, ROADMAP.md, settings.json, memory/03/05/09/10
 
-**Uncommitted (run029 pending commit):**
-- plans/master-plan.md — v2.25 (run029: prototype created, validation PASS)
-- registry/format-registry.yaml — gate_4 → prototype_created_pending_independent_verification
-- acquisition-packs/fods/parser-notes.md — Gate 4 execution findings, test plan discrepancies
-- acquisition-packs/fods/pack.yaml — gate_4 status updated (if applicable)
-- .claude/settings.json — description, allow/deny, notes[0] updated
-- taskcards/TC-0017 — prototype_created_pending_independent_verification, acceptance criteria checked
-- taskcards/TC-0018 — ready_for_execution
-- taskcards/TC-0019-fods-gate5-neutral-model-planning.md — NEW (not_started)
-- prototypes/by-format/fods/fods_parser.py — NEW prototype parser
-- prototypes/by-format/fods/README.md — NEW prototype README
-- prototypes/by-format/fods/validate_against_samples.py — NEW validation script
-- prototypes/by-format/fods/prototype-notes.md — NEW design notes
-- README.md — Gate 4 prototype created status
-- ROADMAP.md — Gate 4 prototype created status
-- memory/05 — D-050 added
-- memory/09 — run029 current state update
-- memory/10 — run029 maintenance entry
+**Committed (d8187e0, run029):**
+- prototypes/by-format/fods/fods_parser.py (NEW), prototypes/by-format/fods/README.md (NEW), prototypes/by-format/fods/validate_against_samples.py (NEW), prototypes/by-format/fods/prototype-notes.md (NEW), taskcards/TC-0019 (NEW), plans/master-plan.md v2.25, registry/format-registry.yaml gate_4 updated, acquisition-packs/fods/parser-notes.md, acquisition-packs/fods/pack.yaml gate_4 section, .claude/settings.json, taskcards/TC-0017/TC-0018 updated, README.md, ROADMAP.md, memory/05/09/10
+
+**Uncommitted:**
+- plans/master-plan.md — commit hash update (d8187e0 recorded above)
 - (.local/ artifacts NOT committed — normalized/, spec cache, navigation artifacts, run records, evidence bundles)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.

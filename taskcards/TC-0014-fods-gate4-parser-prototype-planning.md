@@ -42,13 +42,13 @@ notes: "Gate 4 parser prototype planning taskcard for FODS. Created run026 (2026
 1. Gate 3 human approval is recorded in `registry/format-registry.yaml`
 2. A human issues an explicit Gate 4 execution prompt naming TC-0014
 
-Current state (as of run028):
+Current state (as of run029):
 - Gate 3: PASSED (Babar Raza, 2026-05-05, run028) ✓
-- Gate 4: planning_ready
+- Gate 4: prototype_created_pending_independent_verification (run029)
 - parser-requirements-draft.yaml: EXISTS (local-only, `.local/spec-cache/fods/1.3/normalized/`)
-- Parser planning package: acquisition-packs/fods/parser-requirements.md, parser-scope.md, parser-test-plan.md (run028)
-- TC-0017 (Gate 4 prototype execution): created run028, not_started
-- TC-0018 (Gate 4 prototype verification): created run028, not_started
+- Parser planning package used in TC-0017 execution (run029)
+- TC-0017 (Gate 4 prototype execution): prototype_created_pending_independent_verification (run029, 4/4 PASS)
+- TC-0018 (Gate 4 prototype verification): ready_for_execution (blocked by explicit TC-0018 prompt)
 
 ---
 
