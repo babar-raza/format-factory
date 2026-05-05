@@ -1,0 +1,17 @@
+# tools/spec-normalize — Python dependencies
+#
+# Install with: pip install -r requirements.txt
+# Or: pip install --user -r requirements.txt
+#
+# Policy: These tools are local-only. They do not call network endpoints.
+# They only read from .local/spec-cache/ and write to .local/spec-cache/*/normalized/.
+#
+# See docs/specification-normalization.md for tool policy.
+
+# Required: YAML parsing (for spec-index.yaml, source-manifest.yaml)
+PyYAML>=6.0
+
+# Required for PDF extraction (normalize_pdf.py)
+# pdfminer.six is the preferred extraction library.
+# Without it, normalize_pdf.py falls back to metadata-only mode (G-NORM-001).
+pdfminer.six>=20211012

@@ -3,8 +3,9 @@
 **Taskcard ID:** TC-0012
 **Phase:** 2+ (Foundation Layer — supports all phases)
 **Gate:** Supports Gates 3–8 (required before Gate 4)
-**Status:** in_progress
+**Status:** in_progress (Phase 2 complete — full extraction done; parser-requirements.yaml pending)
 **Created:** 2026-05-05 (run024)
+**Last updated:** 2026-05-05 (run025)
 **Created by:** claude-sonnet-4-6 (run024)
 
 ---
@@ -33,7 +34,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Specification Normalization Layer taskcard. Created run024. Policy and tools created. Local normalization pending."
+notes: "Specification Normalization Layer taskcard. Created run024. Policy and tools created run024. Full pdfminer.six extraction completed run025: text.txt (2.2 MB), pages.jsonl (782 pages), citations.yaml (194 section refs, 35 external refs). G-NORM-001 resolved. parser-requirements.yaml pending (Gate 4 prerequisite)."
 ```
 
 ---
@@ -92,9 +93,9 @@ The normalization layer adds a derived working material layer:
 - [ ] GOVERNANCE.md Section 16 exists with 6 normalization governance rules
 - [ ] `docs/gates.md` Gate 3 and Gate 4 updated with normalization dependencies
 - [ ] `docs/specification-cache.md` references normalization layer
-- [ ] Local normalization run completed on `.local/spec-cache/fods/1.3/` (at minimum dry-run metadata artifacts produced)
-- [ ] `source-manifest.yaml` present under `.local/spec-cache/fods/1.3/normalized/` showing SHA-256 MATCH
-- [ ] `extraction-report.md` present in normalized directory
+- [x] Local normalization run completed on `.local/spec-cache/fods/1.3/` — full extraction with pdfminer.six (run025)
+- [x] `source-manifest.yaml` present under `.local/spec-cache/fods/1.3/normalized/` showing SHA-256 MATCH
+- [x] `extraction-report.md` present in normalized directory
 - [ ] `master-plan.md` updated with TC-0012 record
 
 ---
@@ -116,17 +117,18 @@ The normalization layer adds a derived working material layer:
 | specification-cache.md updates | DONE | Normalization Layer section added |
 | Local normalization dry-run | PENDING | Requires run024 completion |
 
-### Phase 2 (run025+): Full extraction
+### Phase 2 (run025): Full extraction
 
 | Item | Status | Notes |
 |---|---|---|
-| Install pdfminer.six | NOT_STARTED | `pip install pdfminer.six` |
-| Run full normalize_pdf.py on FODS spec | NOT_STARTED | After pdfminer.six installed |
-| Verify text.txt and pages.jsonl | NOT_STARTED | Inspect output quality |
-| Run build_citation_map.py | NOT_STARTED | After text artifacts available |
-| Run validate_normalized_spec.py | NOT_STARTED | Gate 4 readiness check |
-| Manual `parser-requirements.yaml` draft | NOT_STARTED | Gate 4 prerequisite |
-| Manual `verified-facts.yaml` starter | NOT_STARTED | Gate 5 useful |
+| Install pdfminer.six | DONE | `pip install --user pdfminer.six` (run025); version 20260107 |
+| Run full normalize_pdf.py on FODS spec | DONE | run025; text.txt 2,160,370 chars; pages.jsonl 782 pages |
+| Verify text.txt and pages.jsonl | DONE | run025; output quality confirmed; G-NORM-001 resolved |
+| Run build_citation_map.py | DONE | run025; 194 section refs; 35 external refs; citations.yaml + citation-report.md |
+| Run validate_normalized_spec.py | DONE | run025; 7 PASS, 1 WARN (parser-requirements.yaml), 0 FAIL, 3 SKIP |
+| Add requirements.txt | DONE | run025; tools/spec-normalize/requirements.txt created |
+| Manual `parser-requirements.yaml` draft | PENDING | Gate 4 prerequisite — deferred to Gate 4 execution |
+| Manual `verified-facts.yaml` starter | PENDING | Gate 5 useful — deferred |
 
 ---
 
@@ -135,7 +137,7 @@ The normalization layer adds a derived working material layer:
 | Dependency | Status | Notes |
 |---|---|---|
 | TC-0007 (Spec Cache) | COMPLETED | FODS spec cached run021 |
-| pdfminer.six | NOT_INSTALLED | `pip install pdfminer.six` |
+| pdfminer.six | INSTALLED | version 20260107, installed run025 |
 | Gate 2 PASSED | DONE | Babar Raza, 2026-05-05 |
 
 ---
@@ -144,7 +146,7 @@ The normalization layer adds a derived working material layer:
 
 | Gap ID | Description | Severity | Blocking |
 |---|---|---|---|
-| G-NORM-001 | PDF extraction library unavailable until pdfminer.six installed | Medium | Gate 4 (via parser-requirements.yaml) |
+| G-NORM-001 | PDF extraction library unavailable until pdfminer.six installed | ~~Medium~~ **RESOLVED run025** | Resolved — pdfminer.six 20260107 installed; full extraction succeeded |
 
 ---
 

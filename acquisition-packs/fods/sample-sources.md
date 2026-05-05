@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 3 planning artifact. Corpus plan drafted run024 (Phase 3 planning). Synthetic sample strategy, blocked rules, and provenance procedure defined. No samples acquired. Actual provenance records go in samples/_provenance.yaml when Gate 3 execution is authorized."
+notes: "Gate 3 planning artifact. Corpus plan drafted run024. Full normalization completed run025: text.txt 2,160,370 chars, pages.jsonl 782 pages, citations.yaml 194 section refs, 35 external refs. Spec section references verified against normalized text. No samples acquired."
 ---
 
 # Sample Sources — Flat OpenDocument Spreadsheet (FODS)
@@ -33,7 +33,7 @@ notes: "Gate 3 planning artifact. Corpus plan drafted run024 (Phase 3 planning).
 **Gate 2 status:** PASSED — Babar Raza (2026-05-05, run023)
 **Gate 3 status:** planning_ready (TC-0010); planning in progress (run024); awaiting explicit Gate 3 execution prompt for acquisition
 
-**Normalization status:** Metadata-only dry-run completed run024. Source-manifest.yaml (SHA-256 MATCH: `sha256:92cfe64...b066`). Full text extraction pending pdfminer.six installation (G-NORM-001).
+**Normalization status:** Full extraction completed run025 (G-NORM-001 resolved). pdfminer.six 20260107 installed. Extracted: text.txt (2,160,370 chars), pages.jsonl (782 pages), citations.yaml (194 section refs, 35 external refs). SHA-256 MATCH: `sha256:92cfe64...b066`. Validation: 7 PASS, 1 WARN (parser-requirements.yaml pending), 0 FAIL.
 
 **Important:** No samples have been acquired. `samples/by-format/fods/` does not exist and must not be created until Gate 3 is explicitly authorized by a human execution prompt.
 
@@ -51,14 +51,19 @@ The minimum corpus for Gate 3 must include:
 
 | Sample Type | Description | Spec reference | Status |
 |---|---|---|---|
-| Minimal valid | Smallest valid FODS file with one sheet, one cell | ODF 1.3 Part 3 §3.1 (Document Root) | Needed |
-| Empty / trivial | Empty spreadsheet (no cells, no data) | ODF 1.3 Part 3 §3.8 (Spreadsheet) | Needed |
-| Core data | Multiple sheets, cells with text/numbers/formulas, basic styles | ODF 1.3 Part 3 §8.1–§8.5 | Needed |
-| Edge case | Empty rows, special characters (Unicode), long strings, merged cells | ODF 1.3 Part 3 §8.1, §9.1.5 | Needed |
+| Minimal valid | Smallest valid FODS file with one sheet, one cell | ODF 1.3 Part 3 §3.1.2 (`<office:document>` root), §3.7 (`<office:spreadsheet>`) | Needed |
+| Empty / trivial | Empty spreadsheet (no cells, no data) | ODF 1.3 Part 3 §2.2.4 (Spreadsheet document conformance), §3.7 | Needed |
+| Core data | Multiple sheets, cells with text/numbers/formulas, basic styles | ODF 1.3 Part 3 §9.4 (Spreadsheet Document Content) | Needed |
+| Edge case | Empty rows, special characters (Unicode), long strings, merged cells | ODF 1.3 Part 3 §9.1.5, §20.8.3 (most-cited section in spec) | Needed |
 
 Preference order: (1) Created specifically for this project (owned by project — Apache-2.0), (2) CC0 / public domain, (3) CC-BY (with attribution preserved), (4) CC-BY-SA, (5) Apache 2.0 or MIT from open-source projects.
 
-**Note on spec references:** Section references above are indicative, based on ODF 1.3 structure. Exact sections to be verified against normalized spec once pdfminer.six is installed (G-NORM-001).
+**Spec section references verified run025** against normalized text.txt (2,160,370 chars, 782 pages). Key sections confirmed present:
+- §2.2.4: OpenDocument Spreadsheet Document conformance rules
+- §3.1.2: `<office:document>` element (single XML file root for FODS)
+- §3.7: `<office:spreadsheet>` element (spreadsheet content container)
+- §9.4: Spreadsheet Document Content
+- §20.8.3: Most frequently cross-referenced section (44 references in spec)
 
 ---
 
@@ -181,6 +186,8 @@ For each sample acquired at Gate 3:
 - [x] Provenance tracking procedure documented
 - [x] Corpus plan drafted
 - [x] Normalization layer dependency noted (TC-0012)
+- [x] Full normalization completed (run025): text.txt, pages.jsonl, citations.yaml, G-NORM-001 resolved
+- [x] Spec section references verified against normalized text (run025)
 - [ ] Gate 3 execution prompt issued by human
 - [ ] Samples created/acquired
 - [ ] Provenance entries confirmed
@@ -203,3 +210,4 @@ For each sample acquired at Gate 3:
 - **run017 (2026-05-04):** Skeleton created after Gate 1 approval.
 - **run023 (2026-05-05):** Gate 2 status updated to PASSED.
 - **run024 (2026-05-05):** Corpus plan drafted. Sample requirement types defined, blocked rules, synthetic strategy, candidate sources, provenance procedure. Normalization layer dependency noted. No samples acquired.
+- **run025 (2026-05-05):** Full normalization completed (pdfminer.six 20260107). Extracted text.txt (2,160,370 chars), pages.jsonl (782 pages), citations.yaml (194 section refs, 35 external refs). Spec section references updated with verified sections from normalized text. G-NORM-001 resolved.
