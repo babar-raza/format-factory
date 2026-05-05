@@ -74,6 +74,9 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 | G-HEAL-034 (run022) | master-plan.md Section 6 said "run021 commit (pending)" | **RESOLVED run022** — 138effd recorded |
 | G-HEAL-035 (run022) | pack.yaml stages said "evidence_draft_pending_independent_verification" — two runs stale | **RESOLVED run022** — both stages updated to evidence_cached_pending_human_review |
 | G-HEAL-036 (run022) | registry next_allowed_action implied skipping independent verification | **RESOLVED run022** — updated to human_gate2_sign_off; evidence_verified_by added |
+| G-HEAL-037 (run023) | pack.yaml header comment and front-matter notes still said `evidence_cached_pending_independent_verification` (stale from before run022) | **RESOLVED run023** — header and notes updated to gate_2_passed |
+| G-HEAL-038 (run023) | TC-0009 Artifacts table four rows still said `evidence_draft_pending_independent_verification` | **RESOLVED run023** — all four table rows updated to `evidence_cached_pending_human_review (run022 verified)` |
+| G-HEAL-039 (run023) | master-plan.md header latest commit said "138effd (run021)" despite run022 having committed 32cdb1c | **RESOLVED run023** — header updated to 32cdb1c (run022) |
 
 ## Major risks
 

@@ -20,17 +20,17 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 2 legal artifact. Updated run022 (2026-05-05). Spec cached (sha256:92cfe64...b066). Fast-path 6/8. run022 independent verification complete (DEC-034). Status: evidence_cached_pending_human_review. Awaiting project lead sign-off for 2 remaining checklist items."
+notes: "Gate 2 legal artifact. Updated run023 (2026-05-05). Spec cached (sha256:92cfe64...b066). Fast-path 6/8 confirmed; 2 items: patent search waived by Babar Raza (2026-05-05), Gate 2 sign-off by Babar Raza (2026-05-05). GATE 2 PASSED 2026-05-05."
 ---
 
 # Legal Notes — Flat OpenDocument Spreadsheet (FODS)
 
 **Format ID:** `fods`
 **Gate:** 2
-**Status:** evidence_cached_pending_human_review — updated run022 (2026-05-05): independent verification complete
+**Status:** gate_2_passed — Gate 2 approved by Babar Raza (2026-05-05, run023)
 
 **Gate 1 approved by:** Babar Raza (2026-05-04)
-**Gate 2 status:** evidence_cached_pending_human_review
+**Gate 2 status:** PASSED — approved by Babar Raza, 2026-05-05; patent search waived by project lead
 
 **Source claim classification key:**
 - `[SUPPORTED_BY_RECORDED_URL]` — backed by official URL, not yet downloaded
@@ -103,10 +103,10 @@ Status as of run021 (2026-05-04):
 - [x] `spec-evidence.md` contains primary source URL, exact version (ODF 1.3), date accessed, and source hash (SHA-256) [CONFIRMED_INDEPENDENTLY]
 - [x] Pre-download spec-index.yaml metadata entry created (run020) and upgraded to cached spec entry (run021): `.local/spec-cache/fods/1.3/spec-index.yaml` validates VALID/CURRENT; file at `.local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf` (24,270,588 bytes) [CONFIRMED_INDEPENDENTLY]
 - [x] ODF 1.3 Part 3 schema PDF successfully downloaded from official OASIS source (run021): sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066 [CONFIRMED_INDEPENDENTLY]
-- [ ] No patent litigation related to ODF 1.3 parser implementation in the past five years — **pending formal confirmation** (currently PLAUSIBLE_PENDING_VERIFICATION)
-- [ ] Project lead sign-off below — **pending** (awaiting human review)
+- [x] No patent litigation related to ODF 1.3 parser implementation in the past five years — **waived by project lead Babar Raza (2026-05-05)** per OASIS RF on Limited Terms policy; formal patent search not required for Category 1 fast-path
+- [x] Project lead sign-off — **Babar Raza, 2026-05-05** — Gate 2 approved
 
-**Fast-path assessment:** 6 of 8 checklist items confirmed (run021 added cached spec download confirmation; OASIS IPR page review consolidated into project lead sign-off item). 2 items pending project lead review. The pending items are confirmatory — no evidence against fast-path eligibility has been found. Fast-path passage highly likely once project lead reviews.
+**Fast-path assessment:** 8 of 8 checklist items confirmed/waived. Patent search waived by project lead (Babar Raza, 2026-05-05) based on OASIS RF on Limited Terms evidence and run021/run022 independently verified cached spec. Gate 2 sign-off provided by Babar Raza (2026-05-05). GATE 2 PASSED.
 
 ---
 
@@ -133,12 +133,13 @@ The spec cache stores a local copy of the ODF 1.3 specification for internal use
 
 ## Gate 2 Sign-off
 
-**Reviewed by:** (pending — project lead sign-off required for Gate 2 passage)
-**Review date:** (pending)
+**Reviewed by:** Babar Raza
+**Review date:** 2026-05-05
 **Fast-path used:** yes (OASIS Category 1 fast-path)
 **Fast-path basis:** OASIS ODF 1.3, published under OASIS RF on Limited Terms; OASIS is on the Category 1 Pre-Approved Fast-Path List
-**Evidence status:** evidence_cached_pending_human_review — run022 independent verification complete (DEC-034); 6/8 fast-path items confirmed; 2 items pending human review (patent search waiver + sign-off)
-**Notes:** All claims can be confirmed by reviewing https://www.oasis-open.org/committees/office/ipr.php. No contrary evidence found. Recommend Gate 2 passage conditional on project lead sign-off.
+**Evidence status:** ACCEPTED — Gate 2 passed (run023, 2026-05-05)
+**Patent search:** WAIVED by Babar Raza (2026-05-05) — OASIS RF on Limited Terms provides structural protection; formal search not required for Category 1 fast-path. This waiver applies to Gate 2 only and does not waive security, sample, parser, or release gate requirements.
+**Notes:** Gate 2 approved 2026-05-05 by Babar Raza. All claims confirmed appropriate for Category 1 fast-path. No contrary evidence found. Legal fast-path for Gate 2 is accepted. Gate 3 (sample corpus) requires separate authorization.
 
 ---
 
@@ -150,3 +151,5 @@ The spec cache stores a local copy of the ODF 1.3 specification for internal use
 | 2026-05-04 | Evidence draft completed (run019 — TC-0009 Phase 2) | claude-sonnet-4-6 |
 | 2026-05-04 | Checklist updated: spec-index.yaml metadata entry added; --allow-network blocked in-session; checklist 5/8 items confirmed (run020) | claude-sonnet-4-6 |
 | 2026-05-04 | Spec downloaded and cached run021: ODF 1.3 Part 3 PDF (24.27 MB); settings.json deny removed; checklist updated 6/8; status updated to evidence_cached_pending_independent_verification | claude-sonnet-4-6 |
+| 2026-05-05 | run022: independent verification (DEC-034) complete; status → evidence_cached_pending_human_review | claude-sonnet-4-6 |
+| 2026-05-05 | run023: Gate 2 approved by Babar Raza; patent search waived; checklist 8/8; status → gate_2_passed | Babar Raza (via run023 execution prompt) |

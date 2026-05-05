@@ -3,14 +3,15 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.18 (run022: independent verification of run021 + stale-state fixes + Gate 2 evidence verification + TC-0010 future planning taskcard created)
+**Version:** 2.19 (run023: human Gate 2 approval recorded + patent waiver + TC-0009 closed + TC-0010 activated + TC-0011 created + Gate 3 planning transition)
 **Last updated:** 2026-05-05
-**Current phase:** Phase 2: FODS Spec and Legal Evidence Planning
-**Current status:** Gate 1 approved by Babar Raza (2026-05-04). TC-0007 independently verified (run020+run022). FODS/ODF 1.3 Part 3 spec acquired and cached run021 (24.27 MB, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066) — SHA-256 independently re-verified run022 (MATCH). Gate 2 evidence run022-verified: primary claims SUPPORTED_BY_CACHED_SOURCE (hash-verified); fast-path 6/8; Gate 2 status: evidence_cached_pending_human_review. No samples. No prototype. No product source. Latest commit: 138effd (run021).
+**Current phase:** Phase 3 planning: FODS Gate 3 Sample Corpus Planning
+**Current status:** Gate 1 approved by Babar Raza (2026-05-04). Gate 2 PASSED — approved by Babar Raza (2026-05-05, run023). Patent search waived by Babar Raza (2026-05-05). TC-0009 closed. TC-0010 activated for Gate 3 planning. Gate 3 not_started. No samples. No prototype. No product source. Latest commit: 32cdb1c (run022).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
-**Commit allowed:** YES — run022 execution prompt authorizes commits for independent verification, stale-state fixes, and evidence status upgrade.
-**Next required action:** Human Gate 2 review and sign-off (run022 independent verification complete per DEC-034; evidence_cached_pending_human_review).
+**Phase 3 planning allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 planning only — no sample acquisition until explicit Gate 3 execution prompt.
+**Commit allowed:** YES — run023 execution prompt authorizes commits.
+**Next required action:** Explicit Gate 3 planning execution prompt (not sample acquisition). TC-0010 is planning_ready.
 
 ---
 
@@ -111,26 +112,30 @@ The project goal is to build a production-quality pipeline for acquiring format 
 
 | Property | Value |
 |---|---|
-| Current phase | Phase 2: FODS Spec and Legal Evidence Planning |
+| Current phase | Phase 3 planning: FODS Gate 3 Sample Corpus Planning |
 | Phase 0 files created | Yes — 45/45 files (41 created run001; 3 added run008; 1 added run010: TC-0008) |
 | Phase 0 healing run | Completed (run002) — compliance gaps G-HEAL-001 to G-HEAL-004 resolved |
 | Master-plan canonicalization | Completed (run003) |
 | Phase 0 accepted | YES — 2026-05-04, run015 (all 36 checks passed; human-authorized acceptance) |
 | Phase 1 allowed | YES — Phase 0 accepted |
 | Phase 2 allowed | YES — Gate 1 passed (run017, Babar Raza, 2026-05-04) |
-| Active formats in registry | fods (gate_1: passed; gate_2: evidence_cached_pending_human_review) |
+| Phase 3 planning allowed | YES — Gate 2 passed (run023, Babar Raza, 2026-05-05) |
+| Active formats in registry | fods (gate_1: passed; gate_2: passed; gate_3: not_started) |
 | Gate 1 status | PASSED — Babar Raza, 2026-05-04, score 93/100, run016 verified |
-| Gate 2 status | evidence_cached_pending_human_review — run022 independent verification complete; SHA-256 verified; evidence ready for human review |
-| Acquisition pack | acquisition-packs/fods/ — 5 files; spec_cache verified run022 (hash match, VALID/CURRENT) |
+| Gate 2 status | **PASSED** — approved by Babar Raza, 2026-05-05, run023; patent search waived; evidence verified by run022 (DEC-034) |
+| Gate 3 status | not_started — TC-0010 planning_ready; no samples acquired |
+| Acquisition pack | acquisition-packs/fods/ — 5 files; Gate 2 passed; spec_cache VALID/CURRENT |
 | Spec downloaded | YES — ODF 1.3 Part 3 PDF downloaded run021 (24.27 MB); SHA-256 independently re-verified run022: MATCH |
 | Samples acquired | No |
 | Prototype created | No |
 | Product source created | No |
-| Commits made | c9d02da (run015); c79f2d1 (run017); 0c97256 (run018/run019); 589c1af (run019); 1e69121 (run020 tooling); e8ab83f (run020 evidence); 138effd (run021) |
-| Active taskcard | TC-0009 (evidence_cached_pending_human_review) |
+| Commits made | c9d02da (run015); c79f2d1 (run017); 0c97256 (run018/run019); 589c1af (run019); 1e69121 (run020 tooling); e8ab83f (run020 evidence); 138effd (run021); 32cdb1c (run022) |
+| Active taskcard | TC-0010 (planning_ready — Gate 3 sample corpus planning) |
+| Closed taskcard | TC-0009 (closed — Gate 2 passed 2026-05-05) |
 | Active infrastructure | TC-0007 (completed_independently_verified_run020+run022) |
-| Last evidence bundle | run022 canonical bundle (see Section O) — PENDING |
-| Next required human action | Human Gate 2 review and sign-off (DEC-034 independent verification complete as of run022). 2 pending checklist items: patent search waiver + sign-off. |
+| Future verification | TC-0011 (not_started — future Gate 3 planning verification before human Gate 3 review) |
+| Last evidence bundle | run022 canonical bundle: run022-independent-gate2-verification-20260505-112638.zip (104 entries) |
+| Next required action | Explicit Gate 3 planning execution prompt (not sample acquisition). TC-0010 is planning_ready. |
 
 ---
 
@@ -943,10 +948,12 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 5. **Completed (run019):** Combined sprint. run018 state independently verified (27 checks PASS). run018 committed (0c97256 "chore: reconcile Phase 2 project state"). settings.json TC-0007 scripts moved from deny to allow. TC-0007 implemented (spec_index.py, acquire_spec.py, refresh_check.py; smoke tests pass; status: completed_pending_independent_verification). TC-0009 Gate 2 evidence draft completed (spec-evidence.md, legal-notes.md; 4/7 fast-path checklist items confirmed; gate_2 status: evidence_draft_pending_independent_verification). Committed run019 (589c1af). master-plan.md v2.15.
 6. **Completed (run020):** Independent verification + schema reconciliation + spec acquisition sprint. 5 issues found and fixed in TC-0007 tooling: (a) spec_index.py REQUIRED_FIELDS restructured; (b) acquire_spec.py spurious warning removed; (c) refresh_check.py Windows encoding bug fixed; (d) docs/specification-cache.md schema/lifecycle updated; (e) settings.json phase_note corrected. Spec download attempted but --allow-network denied; pre-download spec-index.yaml metadata entry created. Evidence updated (5/8 fast-path). G-021 logged. Committed tooling fixes (1e69121). Evidence leftovers committed (e8ab83f) in continuation session. master-plan.md v2.16.
 7. **Completed (run021):** Combined sprint: repo hygiene + settings.json fix + spec acquisition + Gate 2 evidence upgrade. (a) __pycache__ removed from working tree; (b) settings.json deny rule for python *acquire_spec* removed — T3 authorization confirmed in run021 prompt; (c) ODF 1.3 Part 3 PDF downloaded from OASIS official source (24,270,588 bytes, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066); spec-index.yaml validates VALID/CURRENT; (d) spec-evidence.md primary claims upgraded to SUPPORTED_BY_CACHED_SOURCE; (e) legal-notes.md fast-path checklist updated 6/8; (f) TC-0007 status updated to completed_independently_verified_run020; (g) all governance artifacts updated. Gap G-021 resolved. Committed 138effd. master-plan.md v2.17.
-8. **Completed (run022):** Independent verification sprint for run021 evidence (per DEC-034). (a) SHA-256 of cached FODS spec independently re-verified: MATCH (sha256:92cfe64...b066); (b) spec_index.py VALID/CURRENT confirmed; refresh_check.py 0 stale entries; (c) spec-cache tooling dry-run mode verified (no network by default); (d) Gate 2 evidence claims reviewed: primary source SUPPORTED_BY_CACHED_SOURCE confirmed; structural claims correctly labeled PLAUSIBLE_PENDING_VERIFICATION; (e) stale state fixed (master-plan latest-commit field, Section 33 uncommitted list, TC-0009 independent-verification checkbox, pack.yaml stages status, registry next_allowed_action); (f) Gate 2 status upgraded to evidence_cached_pending_human_review; (g) TC-0010 future planning taskcard created (not_started); (h) master-plan.md v2.18. Pending commit.
-9. **Next required action:** Human Gate 2 review and sign-off. run022 independent verification complete per DEC-034. Evidence at evidence_cached_pending_human_review.
+8. **Completed (run022):** Independent verification sprint for run021 evidence (per DEC-034). (a) SHA-256 of cached FODS spec independently re-verified: MATCH (sha256:92cfe64...b066); (b) spec_index.py VALID/CURRENT confirmed; refresh_check.py 0 stale entries; (c) spec-cache tooling dry-run mode verified (no network by default); (d) Gate 2 evidence claims reviewed: primary source SUPPORTED_BY_CACHED_SOURCE confirmed; structural claims correctly labeled PLAUSIBLE_PENDING_VERIFICATION; (e) stale state fixed (G-HEAL-028 through G-HEAL-036); (f) Gate 2 status upgraded to evidence_cached_pending_human_review; (g) TC-0010 future planning taskcard created (not_started); (h) master-plan.md v2.18. Committed 32cdb1c.
+9. **Completed (run023):** Human Gate 2 approval recorded. (a) run022 state verified (32cdb1c, clean tree, no forbidden paths, Gate 2 approved_by null confirmed); (b) stale status leftovers fixed (pack.yaml header/notes, TC-0009 artifact table, master-plan latest-commit); (c) registry gate_2.status → passed; approved_by: Babar Raza; approved_date: 2026-05-05; patent search waived by project lead; (d) acquisition pack Gate 2 status → passed; (e) spec-evidence.md + legal-notes.md sign-off sections updated; (f) TC-0009 closed; (g) TC-0010 activated (planning_ready); (h) TC-0011 created (not_started — future Gate 3 planning verification); (i) README.md + ROADMAP.md updated; (j) master-plan.md v2.19. No samples acquired. No push.
+10. **Next required action:** Explicit Gate 3 planning execution prompt. TC-0010 is planning_ready. No sample acquisition until Gate 3 authorized by explicit execution prompt.
 
-**Gate 2 approval for FODS is a human-only action. Agent cannot self-approve.**
+**Gate 2 for FODS: PASSED — approved by Babar Raza (2026-05-05). Patent search waived by project lead.**
+**Gate 3 for FODS: not_started. No samples acquired.**
 
 ### Run History
 
@@ -973,13 +980,14 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 | run019 | 2026-05-04 | Combined sprint: run018 commit + TC-0007 tooling + TC-0009 Gate 2 evidence draft | Independently verified run018 (27 checks PASS). Committed run018 (0c97256). Moved TC-0007 scripts from settings.json deny→allow. Implemented TC-0007 (spec_index.py 354 lines, acquire_spec.py, refresh_check.py; smoke tests pass). Completed TC-0009 Gate 2 evidence draft (spec-evidence.md, legal-notes.md; fast-path 4/7 confirmed; gate_2: evidence_draft_pending_independent_verification). Updated pack.yaml, registry gate_2 status, TC-0009 taskcard. Committed run019 (589c1af). master-plan.md v2.15 |
 | run020 | 2026-05-04 | Independent verification + schema reconciliation + spec acquisition attempt | Independently verified run019 (5 issues found): spec_index.py REQUIRED_FIELDS restructured; acquire_spec.py spurious warning removed; refresh_check.py Windows encoding bug fixed; docs/specification-cache.md schema/lifecycle updated; settings.json phase_note corrected. Spec download attempted — --allow-network denied; pre-download spec-index.yaml metadata entry created. spec-evidence.md + legal-notes.md updated (5/8 fast-path confirmed). G-021 logged. Committed tooling fixes (1e69121). Evidence leftovers committed (e8ab83f) in continuation session. master-plan.md v2.16 |
 | run021 | 2026-05-04 | Combined: hygiene + settings.json fix + spec acquisition + Gate 2 evidence upgrade | Verified run020 (e8ab83f committed all leftovers; clean working tree). __pycache__ removed. settings.json deny for python *acquire_spec* removed (T3 authorized in run021 prompt). ODF 1.3 Part 3 PDF downloaded (24.27 MB, sha256:92cfe64...b066). spec-index.yaml VALID/CURRENT. spec-evidence.md primary claims → SUPPORTED_BY_CACHED_SOURCE. legal-notes.md 6/8 checklist. TC-0007 → completed_independently_verified_run020. G-021 resolved. Committed 138effd. master-plan.md v2.17 |
-| run022 | 2026-05-05 | Independent verification sprint (DEC-034) for run021 evidence + stale-state fixes | Independently verified run021 commit 138effd (SHA-256 re-verified: MATCH; spec-cache VALID/CURRENT; tooling dry-run confirmed; evidence claims reviewed). Stale state fixed: master-plan latest-commit, Section 33, Section 6, TC-0009 independent-verification checkbox, pack.yaml stages, registry next_allowed_action. Gate 2 status upgraded: evidence_cached_pending_independent_verification → evidence_cached_pending_human_review. TC-0010 future planning taskcard created (not_started). G-HEAL-028 through G-HEAL-036 registered. Master-plan v2.18. |
+| run022 | 2026-05-05 | Independent verification sprint (DEC-034) for run021 evidence + stale-state fixes | Independently verified run021 commit 138effd (SHA-256 re-verified: MATCH; spec-cache VALID/CURRENT; tooling dry-run confirmed; evidence claims reviewed). Stale state fixed: master-plan latest-commit, Section 33, Section 6, TC-0009 independent-verification checkbox, pack.yaml stages, registry next_allowed_action. Gate 2 status upgraded: evidence_cached_pending_independent_verification → evidence_cached_pending_human_review. TC-0010 future planning taskcard created (not_started). G-HEAL-028 through G-HEAL-036 registered. Master-plan v2.18. Committed 32cdb1c. |
+| run023 | 2026-05-05 | Human Gate 2 approval recording + Gate 3 planning transition | Verified run022 state (32cdb1c, clean tree). Fixed stale status leftovers (pack.yaml header/notes, TC-0009 artifact table). Recorded Gate 2 approval: Babar Raza, 2026-05-05, OASIS RF Category 1, fast-path, patent search waived. TC-0009 closed. TC-0010 activated (planning_ready). TC-0011 created (not_started — future Gate 3 verification). README.md + ROADMAP.md updated. Master-plan v2.19. No samples acquired. No push. |
 
 ---
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 138effd (run021) — "chore: complete run021 — acquire FODS spec and upgrade Gate 2 evidence to SUPPORTED_BY_CACHED_SOURCE"
+**Latest commit:** 32cdb1c (run022) — "chore: verify FODS Gate 2 evidence package"
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -989,15 +997,20 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - 1e69121 (run020): spec_index.py schema fix, acquire_spec.py warning fix, refresh_check.py encoding fix, docs/specification-cache.md update, settings.json phase_note fix
 - e8ab83f (run020 continuation): pack.yaml spec_cache section, spec-evidence.md, legal-notes.md, registry gate_2 notes, TC-0009, master-plan v2.16, memory 06/08/09
 - 138effd (run021): settings.json deny removed, spec-evidence.md SUPPORTED_BY_CACHED_SOURCE upgrade, legal-notes.md 6/8, pack.yaml spec_cache downloaded, registry gate_2 status, TC-0007+TC-0009 updated, master-plan v2.17, memory 06/09
+- 32cdb1c (run022): independent verification of run021 evidence, stale state fixed (G-HEAL-028–036), gate_2.status → evidence_cached_pending_human_review, TC-0010 created, master-plan v2.18, memory 06/09, registry/pack.yaml/settings.json updated
 
-**Uncommitted run022 changes (authorized for commit by run022 execution prompt):**
-- plans/master-plan.md (v2.18 — run022 record, stale state fixes)
-- registry/format-registry.yaml (gate_2.status → evidence_cached_pending_human_review)
-- acquisition-packs/fods/pack.yaml (gate_2.status + stages status updated)
-- taskcards/TC-0009-fods-phase2-spec-legal-evidence.md (independent verification complete, status updated)
-- taskcards/TC-0010-fods-gate3-sample-corpus-planning.md (NEW — not_started future planning)
+**Uncommitted run023 changes (authorized for commit by run023 execution prompt):**
+- plans/master-plan.md (v2.19 — Gate 2 approval, TC-0009 closed, TC-0010 activated, TC-0011 created)
+- registry/format-registry.yaml (gate_2.status → passed; approved_by/date; patent_search waiver)
+- acquisition-packs/fods/pack.yaml (Gate 2 passed; stale header/notes fixed)
+- acquisition-packs/fods/spec-evidence.md (Gate 2 sign-off section updated)
+- acquisition-packs/fods/legal-notes.md (patent waiver recorded; Gate 2 sign-off)
+- taskcards/TC-0009-fods-phase2-spec-legal-evidence.md (status: closed; artifact table fixed)
+- taskcards/TC-0010-fods-gate3-sample-corpus-planning.md (status: planning_ready)
+- taskcards/TC-0011-fods-gate3-planning-verification.md (NEW — not_started)
+- README.md (current phase updated)
+- ROADMAP.md (Phase 2 complete, Gate 2 passed)
 - memory files (MEMORY.md + memory/09 + memory/06 updated)
-- .claude/settings.json (phase_note updated to clarify T3 re-authorization requirement)
 - (.local/ artifacts NOT committed — spec cache, bundle, run record)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative. run020 execution prompt authorizes commit for remaining run020 changes (evidence updates + master-plan v2.16).
@@ -1075,5 +1088,5 @@ TC-0008 defines a planned `/sync-memory` command for Phase 1 or later. It will c
 
 ---
 
-*End of plans/master-plan.md — version 2.18 — 2026-05-05*
+*End of plans/master-plan.md — version 2.19 — 2026-05-05*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

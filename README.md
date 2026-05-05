@@ -25,11 +25,11 @@ Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{form
 
 ## First Pilot: FODS
 
-**Gate 1 passed — 2026-05-04. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
+**Gate 1 passed — 2026-05-04. Gate 2 passed — 2026-05-05. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
 
 **FODS** — Flat OpenDocument Spreadsheet — is the active pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. Single-file XML, well-documented specification, no ZIP complexity, permissive license.
 
-Phase 2 (Spec and Legal Evidence) is next. The acquisition pack skeleton exists at `acquisition-packs/fods/`. Phase 2 execution requires an explicit human prompt.
+Gate 2 (Spec and Legal Evidence) is complete. ODF 1.3 spec acquired and verified. Legal fast-path confirmed (OASIS Category 1, royalty-free). Patent search waived by project lead. Gate 3 (Sample Corpus) planning is next — requires an explicit human Gate 3 execution prompt. No samples acquired yet.
 
 ---
 
@@ -68,12 +68,13 @@ Every format passes through 11 mandatory gates before any product code is writte
 
 ## Project Status
 
-**Current phase:** Phase 2 — FODS Spec and Legal Evidence (active pilot: FODS)
+**Current phase:** Phase 3 planning — FODS Gate 3 Sample Corpus Planning (active pilot: FODS)
 
 - Phase 0 (Foundation): Complete — accepted 2026-05-04
 - Phase 1A (Scoring): Complete — FODS scored 93/100, Accept band
 - Phase 1B (Gate 1): Complete — Gate 1 passed, approved by Babar Raza, 2026-05-04
-- Phase 2 (Spec + Legal Evidence): Active — awaiting Phase 2 execution prompt
+- Phase 2 (Spec + Legal Evidence): Complete — Gate 2 passed, approved by Babar Raza, 2026-05-05
+- Phase 3 (Sample Corpus): Planning ready (TC-0010) — Gate 3 execution requires explicit human prompt; no samples acquired
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md).
 

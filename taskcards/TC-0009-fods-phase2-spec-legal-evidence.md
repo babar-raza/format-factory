@@ -20,18 +20,18 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Phase 2 taskcard for FODS spec and legal evidence planning. Evidence draft completed run019; independently verified run020; spec acquired and evidence upgraded run021; run022 independent verification complete (DEC-034). Status: evidence_cached_pending_human_review."
+notes: "Phase 2 taskcard for FODS spec and legal evidence planning. CLOSED 2026-05-05. Gate 2 passed: approved by Babar Raza (2026-05-05). Patent search waived. Evidence: run019 drafted, run020 verified, run021 spec acquired, run022 DEC-034 verified, run023 Gate 2 approved."
 ---
 
 # TC-0009: FODS Phase 2 — Spec and Legal Evidence Planning
 
 **Phase:** 2
-**Status:** evidence_cached_pending_human_review
-**Owner:** Claude (evidence draft run019; verified run020; spec acquired run021; run022 independent verification complete); Human (Gate 2 approval)
+**Status:** closed — Gate 2 passed 2026-05-05
+**Owner:** Closed. Gate 2 approved by Babar Raza (2026-05-05, run023).
 **Created:** 2026-05-04 (run017)
-**Last updated:** 2026-05-05 (run022: independent verification complete; status upgraded to evidence_cached_pending_human_review)
-**Blocking:** TC-0002 (schema language depends on spec evidence), Gate 2 approval
-**Blocked by:** Human Gate 2 sign-off (DEC-034 independent verification complete as of run022)
+**Last updated:** 2026-05-05 (run023: Gate 2 approved; TC-0009 closed)
+**Blocking:** none — Gate 2 passed; TC-0010 activated
+**Blocked by:** none
 **Format:** fods
 **Gate:** Gate 2
 
@@ -103,7 +103,7 @@ The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/o
 - [x] pack.yaml updated with gate_2 evidence_cached status and run021 spec_cache downloaded/validated status
 - [x] Gate 2 evidence bundle produced — run019 bundle created; run020 staging bundle created; run021 full-width clean bundle created (Section J)
 - [x] Independent agent verification sprint completed (DEC-034) — run022 (2026-05-05) independently verified run021 evidence: SHA-256 MATCH, VALID/CURRENT, no overclaiming found
-- [ ] Human has reviewed and explicitly set gate_2.status: passed (human action, not agent action) — pending
+- [x] Human has reviewed and explicitly set gate_2.status: passed — Babar Raza, 2026-05-05 (via run023 execution prompt)
 - [x] plans/master-plan.md updated with Gate 2 evidence status — v2.16 (run020)
 - [x] Self-challenge completed (AGENTS.md Section I, all 15 questions) — run020 self-challenge in bundle
 
@@ -113,10 +113,10 @@ The ODF 1.3 specification is published by OASIS at https://docs.oasis-open.org/o
 
 | Artifact | Path | Gate | Status |
 |---|---|---|---|
-| Spec evidence | `acquisition-packs/fods/spec-evidence.md` | 2 | evidence_draft_pending_independent_verification |
-| Legal notes | `acquisition-packs/fods/legal-notes.md` | 2 | evidence_draft_pending_independent_verification |
-| Pack manifest update | `acquisition-packs/fods/pack.yaml` | 2 | updated_run019 |
-| Gate 2 evidence bundle | `.local/evidence-bundles/` | 2 | pending (Section P run019) |
+| Spec evidence | `acquisition-packs/fods/spec-evidence.md` | 2 | evidence_cached_pending_human_review (run022 verified) |
+| Legal notes | `acquisition-packs/fods/legal-notes.md` | 2 | evidence_cached_pending_human_review (run022 verified) |
+| Pack manifest update | `acquisition-packs/fods/pack.yaml` | 2 | evidence_cached_pending_human_review (run022 verified) |
+| Gate 2 evidence bundle | `.local/evidence-bundles/` | 2 | run022 canonical bundle created (run022-independent-gate2-verification-20260505-112638.zip) |
 
 ---
 

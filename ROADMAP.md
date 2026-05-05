@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-04
+**Last reviewed:** 2026-05-05
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
 
 ---
@@ -69,19 +69,23 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 ---
 
-## Phase 2: Gates 2-3 — FODS Evidence and Samples (Current)
+## Phase 2: Gates 2-3 — FODS Evidence and Samples
 
 **Goal:** Complete legal review, spec analysis, and sample acquisition for FODS.
 
 **Deliverables:**
-- `acquisition-packs/fods/spec-evidence.md` (Gate 2)
-- `acquisition-packs/fods/legal-notes.md` with fast-path approval (Gate 2)
-- `samples/by-format/fods/` with minimum 4 samples (Gate 3)
-- Provenance entries for all FODS samples (Gate 3)
+- `acquisition-packs/fods/spec-evidence.md` (Gate 2) ✓
+- `acquisition-packs/fods/legal-notes.md` with fast-path approval (Gate 2) ✓
+- `samples/by-format/fods/` with minimum 4 samples (Gate 3) — pending
+- Provenance entries for all FODS samples (Gate 3) — pending
 
 **Entry condition:** Gate 1 passed for FODS.
 
 **Exit condition:** Gate 3 passed for FODS (human approval recorded in registry).
+
+**Gate 2 status:** PASSED — approved by Babar Raza (2026-05-05). Spec acquired and verified. Legal fast-path confirmed (OASIS Category 1, royalty-free). Patent search waived by project lead.
+
+**Gate 3 status:** not_started. Planning ready (TC-0010). Requires explicit Gate 3 execution prompt. No samples acquired yet.
 
 ---
 

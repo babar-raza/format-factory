@@ -3,36 +3,39 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run022 to reflect Phase 2 active, Gate 1 passed, TC-0007 verified run020+run022, TC-0009 Gate 2 evidence independently verified run022 (evidence_cached_pending_human_review)
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run023 to reflect Gate 2 PASSED (Babar Raza, 2026-05-05), TC-0009 closed, TC-0010 planning_ready, TC-0011 created, Phase 3 planning active
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 09 — Current State (Phase 2 Active)
+# 09 — Current State (Phase 3 Planning Active)
 
-This file captures the current state after run017. Phase 0 has been accepted. Phase 1A FODS scoring is complete. Gate 1 has been approved by Babar Raza. Phase 2 (FODS Spec and Legal Evidence Planning) is now active — awaiting an explicit Phase 2 execution prompt.
+This file captures the current state after run023. Phase 0 accepted. Phase 1A FODS scoring complete. Gate 1 passed (Babar Raza, 2026-05-04). Gate 2 PASSED (Babar Raza, 2026-05-05). Phase 3 planning is now active — TC-0010 is planning_ready; awaiting explicit Gate 3 execution prompt.
 
-**Last updated:** run022 (independent verification of run021; stale-state fixes; Gate 2 status → evidence_cached_pending_human_review; TC-0010 created; master-plan.md v2.18).
+**Last updated:** run023 (Gate 2 approval recorded; patent search waived by project lead; TC-0009 closed; TC-0010 activated to planning_ready; TC-0011 created; master-plan.md v2.19).
 
 ## Current status
 
 | Item | Status |
 |---|---|
-| Phase | Phase 2: FODS Spec and Legal Evidence Planning |
+| Phase | Phase 3 planning: FODS Gate 3 Sample Corpus Planning |
 | Phase 0 accepted | YES — 2026-05-04 (run015, human-authorized) |
 | Phase 1A complete | YES — FODS scored 93/100 (run015), independently verified (run016) |
 | Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
-| Gate 2 status | **evidence_cached_pending_human_review** — run022 independent verification complete (DEC-034); SHA-256 verified; evidence ready for human review |
-| Active formats | fods (gate_1: passed; gate_2: evidence_cached_pending_human_review) |
-| Registry | FODS entry with scoring (93/100, Accept band); gate_1: passed; gate_2: evidence_cached_pending_human_review |
-| FODS acquisition pack | EXISTS — acquisition-packs/fods/ (5 files; stages evidence_cached_pending_human_review after run022) |
+| Gate 2 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run023); patent search waived; fast-path confirmed |
+| Gate 3 status | **not_started** — planning_ready; explicit Gate 3 execution prompt required |
+| Active formats | fods (gate_1: passed; gate_2: passed; gate_3: not_started) |
+| Registry | FODS entry with scoring (93/100, Accept band); gate_1: passed; gate_2: passed (run023) |
+| FODS acquisition pack | EXISTS — acquisition-packs/fods/ (5 files; gate_2 status: passed after run023) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |
 | TC-0007 status | **completed_independently_verified_run020+run022** — tooling smoke-checks pass; dry-run confirmed no network |
-| TC-0009 status | **evidence_cached_pending_human_review** — DEC-034 independent verification COMPLETE as of run022 |
-| TC-0010 status | **not_started** — future Gate 3 sample corpus planning; DO NOT START until Gate 2 passes |
-| Phase 2 allowed | YES — Gate 1 passed; TC-0009 governs next steps |
-| Phase 2 Gate 2 evidence | VERIFIED — spec downloaded run021 (24.27 MB, SHA-256 re-verified run022: MATCH); 6/8 fast-path; primary claims SUPPORTED_BY_CACHED_SOURCE; DEC-034 verification COMPLETE; awaiting human sign-off |
+| TC-0009 status | **CLOSED** — Gate 2 passed (Babar Raza, 2026-05-05, run023) |
+| TC-0010 status | **planning_ready** — Gate 3 sample corpus planning; awaiting explicit Gate 3 execution prompt |
+| TC-0011 status | **not_started** — future DEC-034 verification of Gate 3 planning (created run023) |
+| Phase 2 allowed | YES — Gate 1 passed |
+| Phase 3 planning allowed | YES — Gate 2 passed (run023, Babar Raza, 2026-05-05) |
+| Phase 2 Gate 2 evidence | PASSED — spec downloaded run021 (24.27 MB, SHA-256 re-verified run022: MATCH); 8/8 fast-path (patent search waived by project lead); DEC-034 verification COMPLETE |
 | Samples | None |
 | Schemas | None |
 | Prototypes | None |
@@ -40,9 +43,9 @@ This file captures the current state after run017. Phase 0 has been accepted. Ph
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| Commits made | c9d02da (run015); c79f2d1 (run017); 0c97256 (run018 via run019); 589c1af (run019); 1e69121 (run020 tooling fixes); e8ab83f (run020 evidence leftovers) |
-| Uncommitted | run022 changes (master-plan v2.18, registry, pack.yaml, TC-0009, TC-0010, spec-evidence.md, legal-notes.md, settings.json, memory/06, memory/09) — pending commit |
-| Master plan version | 2.18 (as of run022) |
+| Commits made | c9d02da (run015); c79f2d1 (run017); 0c97256 (run018/run019); 589c1af (run019); 1e69121 (run020); e8ab83f (run020 cont.); 138effd (run021); 32cdb1c (run022) |
+| Uncommitted | run023 changes (master-plan v2.19, registry gate_2 passed, pack.yaml, TC-0009/0010/0011, spec-evidence, legal-notes, README, ROADMAP, memory files) — pending commit |
+| Master plan version | 2.19 (as of run023) |
 | AGENTS.md sections | A through V (22 sections) |
 | Memory integration | Completed run010; AGENTS.md Section U added |
 | Source layout propagated | YES — completed run011 (master-plan.md v2.8) |

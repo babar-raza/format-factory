@@ -77,7 +77,7 @@ formats:
       approved_date: "2026-05-04"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: human_gate2_sign_off
+    next_allowed_action: gate3_sample_corpus_planning
     gates:
       gate_1:
         status: passed
@@ -85,15 +85,20 @@ formats:
         approved_date: "2026-05-04"
         notes: "Scored by claude-sonnet-4-6 (run015, 2026-05-04): 93/100, Accept band. Independently verified by claude-sonnet-4-6 (run016, 2026-05-04). Human approval recorded by Babar Raza in run017 execution prompt (2026-05-04)."
       gate_2:
-        status: evidence_cached_pending_human_review
-        approved_by: null
-        approved_date: null
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-05"
         fast_path: true
         fast_path_basis: "OASIS Category 1 RF — ODF 1.3 published under OASIS RF on Limited Terms"
+        patent_search:
+          status: waived_by_project_lead
+          waived_by: "Babar Raza"
+          waived_date: "2026-05-05"
+          rationale: "Project lead waived formal patent search for FODS Gate 2 based on OASIS RF on Limited Terms evidence, run021 cached official OASIS source, and run022 independent verification. This waiver applies only to Gate 2 evidence acceptance and does not waive future security, sample, parser, or release gates."
         evidence_drafted_by: "claude-sonnet-4-6 (run019, 2026-05-04)"
         evidence_strengthened_by: "claude-sonnet-4-6 (run020 independent verification, run021 spec acquisition)"
         evidence_verified_by: "claude-sonnet-4-6 (run022 independent verification, 2026-05-05)"
-        notes: "Evidence draft completed run019. Independently verified and strengthened run020 (5/8 fast-path items; tooling fixes). Spec downloaded run021: ODF 1.3 Part 3 PDF (24,270,588 bytes, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066) from https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/OpenDocument-v1.3-os-part3-schema.pdf. spec-index.yaml validates VALID/CURRENT. Primary claims SUPPORTED_BY_CACHED_SOURCE. Fast-path 6/8 confirmed. run022 (2026-05-05): SHA-256 independently re-verified MATCH; spec-cache VALID/CURRENT; tooling smoke-checks pass; evidence claims reviewed — no overclaiming found. Status upgraded to evidence_cached_pending_human_review. 2 items pending human review: patent search waiver + sign-off."
+        notes: "Evidence draft completed run019. Independently verified and strengthened run020 (5/8 fast-path items; tooling fixes). Spec downloaded run021: ODF 1.3 Part 3 PDF (24,270,588 bytes, sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066) from https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-schema/OpenDocument-v1.3-os-part3-schema.pdf. spec-index.yaml validates VALID/CURRENT. Primary claims SUPPORTED_BY_CACHED_SOURCE. Fast-path 6/8 confirmed. run022 (2026-05-05): SHA-256 independently re-verified MATCH; spec-cache VALID/CURRENT; tooling smoke-checks pass; evidence claims reviewed — no overclaiming found. GATE 2 PASSED 2026-05-05 by Babar Raza. Patent search waived by project lead. No samples acquired."
       gate_3:
         status: not_started
         approved_by: null

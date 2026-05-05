@@ -19,29 +19,31 @@ refresh_policy:
 stale: false
 open_source_allowed: false
 commercial_allowed: false
-release_blockers: [gate_2_not_yet_passed]
-notes: "FUTURE PLANNING ONLY. Created run022 as a forward-planning taskcard. DO NOT START until Gate 2 is approved by human. Gate 3 sample corpus planning for FODS."
+release_blockers: []
+notes: "Gate 3 sample corpus planning for FODS. ACTIVATED run023 (2026-05-05): Gate 2 passed (Babar Raza). Planning-ready; awaiting explicit Gate 3 execution prompt. No sample acquisition yet."
 ---
 
 # TC-0010: FODS Gate 3 — Sample Corpus Planning
 
-**Phase:** 2 (planning only) / 3 (execution — after Gate 2 passes)
-**Status:** not_started
-**Owner:** Pending — assigned after Gate 2 passes
+**Phase:** 3 planning (Gate 2 passed; awaiting Gate 3 execution prompt)
+**Status:** planning_ready
+**Owner:** Pending — assigned when Gate 3 execution prompt is issued
 **Created:** 2026-05-05 (run022 — forward planning only)
-**Last updated:** 2026-05-05 (run022)
+**Last updated:** 2026-05-05 (run023 — Gate 2 passed; TC-0010 activated)
 **Blocking:** Gate 3 execution (Gate 3 is Sample Corpus Ready)
-**Blocked by:** Gate 2 approval (human sign-off required first)
+**Blocked by:** Explicit Gate 3 execution prompt from human (Gate 2 passed ✓)
 **Format:** fods
 **Gate:** Gate 3
 
 ---
 
-## IMPORTANT: DO NOT START
+## Status: Planning Ready — Awaiting Gate 3 Execution Prompt
 
-This taskcard was created as forward planning only. No work in this taskcard may begin until Gate 2 has been approved by the human project lead and recorded in `registry/format-registry.yaml` with `gate_2.status: passed`, `gate_2.approved_by`, and `gate_2.approved_date`.
+Gate 2 has been approved by Babar Raza (2026-05-05, run023). This taskcard is now **planning_ready**. No work in this taskcard may begin until an explicit Gate 3 execution prompt is issued by the human project lead.
 
-**Gate 2 is not yet approved.** Creating this taskcard does NOT authorize any sample acquisition, sample directory creation, or corpus work.
+**Gate 2 is passed.** Gate 3 execution requires an explicit prompt naming the format, confirming sample acquisition is permitted, and satisfying all applicable AGENTS.md conditions.
+
+**No sample acquisition is authorized yet.** `samples/by-format/` directory must NOT be created until that explicit prompt is issued.
 
 ---
 
@@ -55,7 +57,7 @@ After Gate 2 is approved: plan the Gate 3 sample corpus for FODS. Define allowed
 
 ## Prerequisites
 
-- [ ] Gate 2 passed — human sign-off in `registry/format-registry.yaml` (gate_2.status: passed)
+- [x] Gate 2 passed — Babar Raza (2026-05-05, run023); `registry/format-registry.yaml` gate_2.status: passed
 - [ ] Explicit Gate 3 / Phase 3 execution prompt issued by human after Gate 2 passes
 - [ ] Independent agent verification sprint before Gate 3 human review (DEC-034)
 
@@ -101,7 +103,7 @@ See `samples/_policy.md` for the sample acquisition policy.
 
 ## Acceptance Criteria (planning phase — to be defined after Gate 2)
 
-- [ ] Gate 2 passed (prerequisite)
+- [x] Gate 2 passed — Babar Raza (2026-05-05, run023)
 - [ ] Synthetic sample strategy defined
 - [ ] Real-world sample source candidates identified with license review
 - [ ] Blocked sample rules documented
@@ -128,7 +130,8 @@ See `samples/_policy.md` for the sample acquisition policy.
 
 ## Completion Record
 
-**Status:** not_started
-**Created:** 2026-05-05 by claude-sonnet-4-6 (run022 — forward planning only; Gate 2 not yet passed).
+**Status:** planning_ready
+**Created:** 2026-05-05 by claude-sonnet-4-6 (run022 — forward planning only).
+**Activated:** 2026-05-05 by claude-sonnet-4-6 (run023 — Gate 2 passed; TC-0010 set to planning_ready).
 
-**Next action:** Wait for human Gate 2 sign-off. Then issue explicit Gate 3 execution prompt.
+**Next action:** Human issues explicit Gate 3 execution prompt. Then run TC-0011 independent verification sprint before Gate 3 human review.
