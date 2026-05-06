@@ -1012,7 +1012,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 4ca85ad (run030) — "chore: update master-plan v2.26 and Section 33 post-commit state (run030)"
+**Latest commit:** 40f4ae5 (run031) — "chore: add evidence bundle contracts and verify FODS workbench (run031)"
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1062,14 +1062,13 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 **Committed (4ca85ad, run030 post-commit):**
 - plans/master-plan.md Section 33 latest commit record, taskcards/TC-0014 current state
 
-**Uncommitted (run031 — pending commit):**
-- Evidence Bundle Contract system (tools/evidence/**)
-- TC-0022, TC-0023 created
-- TC-0021 quality_review_passed, TC-0019 ready_for_execution_after_gate4_approval
+**Committed (40f4ae5, run031):**
+- tools/evidence/** (Evidence Bundle Contract system: builder, validator, contracts, collectors)
+- TC-0022, TC-0023 created; TC-0021 quality_review_passed; TC-0019 ready_for_execution_after_gate4_approval
 - Gate 4 human-review packet (acquisition-packs/fods/gate4-human-review-packet.md)
 - AGENTS.md Section Y, GOVERNANCE.md Section 18
 - Stale state fixes (master-plan, memory/09, settings.json)
-- README.md, ROADMAP.md updated
+- README.md, ROADMAP.md, registry/format-registry.yaml updated
 - (.local/ artifacts NOT committed — normalized/, spec cache, workbench, run records, evidence bundles)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
