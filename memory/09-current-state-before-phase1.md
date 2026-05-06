@@ -3,34 +3,34 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run033 to reflect Gate 4 PASSED (Babar Raza, 2026-05-06), Gate 5 neutral model v1 created (run033)
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run034 to reflect Gate 5 DEC-034 PASSED (run034), evidence hardening, Gate 6 planning
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 09 — Current State (Phase 3: Gate 4 PASSED, Gate 5 Neutral Model Created)
+# 09 — Current State (Phase 3: Gate 5 Verified Pending Human Review)
 
-This file captures the current state after run033. Gates 1-4 have all PASSED. Gate 5 neutral model v1 created (run033) with 6 entities, 19 field mappings, 4/4 samples PASS. TC-0024 DEC-034 verification required before Gate 5 human approval.
+This file captures the current state after run034. Gates 1-4 PASSED. Gate 5 neutral model v1 created (run033) and DEC-034 independently verified (run034). TC-0024 PASS. Gate 5 human-review packet ready. Gate 6 planning complete.
 
-**Last updated:** run033 (Gate 4 approved by Babar Raza; TC-0018 closed; Gate 5 neutral model created; TC-0023 executed; TC-0024/TC-0025 created; master-plan.md v2.29).
+**Last updated:** run034 (TC-0024 DEC-034 PASS; evidence hardening; Gate 5 review packet; Gate 6 planning; TC-0026/TC-0027 created; master-plan.md v2.30).
 
 ## Current status
 
 | Item | Status |
 |---|---|
-| Phase | Phase 3: Gate 4 PASSED, Gate 5 neutral model created pending verification |
+| Phase | Phase 3: Gate 5 neutral model verified, pending human review |
 | Phase 0 accepted | YES — 2026-05-04 (run015, human-authorized) |
 | Phase 1A complete | YES — FODS scored 93/100 (run015), independently verified (run016) |
 | Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
 | Gate 2 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run023); patent search waived; fast-path confirmed |
 | Gate 3 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run028); DEC-034 verified run027 |
 | Gate 4 status | **PASSED** — approved by Babar Raza, 2026-05-06 (run033) |
-| Gate 5 status | neutral_model_created_pending_independent_verification — schemas/neutral-model/fods/ (6 entities, 4/4 PASS); TC-0024 DEC-034 required |
-| Active formats | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: passed; gate_5: neutral_model_created_pending_independent_verification) |
-| Registry | FODS entry: gate_5: neutral_model_created_pending_independent_verification; next_allowed_action: gate5_independent_verification_tc0024 |
+| Gate 5 status | **neutral_model_verified_pending_human_review** — schemas/neutral-model/fods/ (6 entities, 87 checks PASS); TC-0024 DEC-034 PASSED run034 |
+| Active formats | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: passed; gate_5: neutral_model_verified_pending_human_review) |
+| Registry | FODS entry: gate_5: neutral_model_verified_pending_human_review; next_allowed_action: gate5_human_approval |
 | Spec Workbench v1 | created run030 (local-only): .local/spec-cache/fods/1.3/workbench/ — verified-facts.yaml (10 facts), requirement packs (parser/sample/model), task packets, coverage matrices; 205/205 validation PASS |
-| FODS acquisition pack | acquisition-packs/fods/ (10 files: + neutral-model-notes.md, gate5-planning-checklist.md added run033) |
+| FODS acquisition pack | acquisition-packs/fods/ (14 files: + gate5-human-review-packet.md, gate6-oracle-plan.md, oracle-scope.md, oracle-risk-register.md added run034) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |
 | TC-0007 status | completed_independently_verified_run020+run022 |
 | TC-0009 status | CLOSED — Gate 2 passed (Babar Raza, 2026-05-05, run023) |
@@ -48,8 +48,10 @@ This file captures the current state after run033. Gates 1-4 have all PASSED. Ga
 | TC-0021 status | quality_review_verified — 205/205 PASS (run031, verified run032) |
 | TC-0022 status | completed_verified — Evidence Bundle Contract system (run031, verified run032) |
 | TC-0023 status | neutral_model_created_pending_independent_verification — Gate 5 executed run033; 6 entities, 4/4 PASS |
-| TC-0024 status | ready_for_execution — Gate 5 DEC-034 verification; blocked by explicit TC-0024 prompt |
+| TC-0024 status | **verification_passed_pending_human_review** — DEC-034 PASS (run034, 87 checks, 0 errors) |
 | TC-0025 status | not_started — Gate 6 oracle planning; blocked by Gate 5 approval + explicit prompt |
+| TC-0026 status | not_started — Gate 6 oracle execution; blocked by Gate 5 approval + TC-0025 review + explicit prompt |
+| TC-0027 status | not_started — Gate 6 oracle verification (DEC-034); blocked by TC-0026 + explicit prompt |
 | Samples | 4 Apache-2.0 synthetic FODS samples in samples/by-format/fods/ (run026, validated 4/4 PASS) |
 | Spec Navigation Layer | 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml (run026, local-only) |
 | Hybrid Spec Retrieval | docs/spec-retrieval-strategy.md (run027); AGENTS.md Section X; GOVERNANCE.md Section 17 |
@@ -59,10 +61,10 @@ This file captures the current state after run033. Gates 1-4 have all PASSED. Ga
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| Evidence contracts | 6 contracts: base-run, run031, gate-approval, gate-execution, independent-verification, spec-workbench |
-| Latest commit | ea20cde (run029 post-commit): run033 changes not yet committed |
-| Uncommitted | Full run033 changes (Gate 4 approval + Gate 5 neutral model + TC updates) |
-| Master plan version | 2.29 (run033) |
+| Evidence contracts | 7 contracts: base-run, run031, run033, gate-approval, gate-execution, independent-verification, spec-workbench |
+| Latest commit | ea20cde (run033 post-commit): run034 changes pending commit |
+| Uncommitted | run034 changes (TC-0024, evidence hardening, Gate 5 review, Gate 6 planning, TC-0026/TC-0027) |
+| Master plan version | 2.30 (run034) |
 | AGENTS.md sections | A through Y (25 sections) |
 
 ## Run history (run001–run028)
@@ -95,6 +97,7 @@ This file captures the current state after run033. Gates 1-4 have all PASSED. Ga
 | run031 | run030 independent verification + Evidence Bundle Contracts + TC-0021 quality review + Gate 4 review packet | 30/30 checks PASS; tools/evidence/ system created; TC-0022; workbench 205/205 PASS; TC-0018 rerun 4/4 PASS; gate4-human-review-packet.md; AGENTS.md Y; GOVERNANCE.md 18; master-plan v2.27; committed 40f4ae5+17bceff |
 | run032 | run031 independent verification + stale fixes + reusable contracts + Gate 5 prep | 31/31 checks PASS; TC-0022→completed_verified; TC-0021→quality_review_verified; 4 reusable contracts; gate5-planning-checklist.md; master-plan v2.28 |
 | run033 | run032 verification + Gate 4 approval + TC-0018 closed + Gate 5 neutral model (TC-0023) + TC-0024/TC-0025 | Gate 4 PASSED (Babar Raza); neutral model v1 (6 entities, 4/4 PASS); master-plan v2.29 |
+| run034 | run033 verification + evidence hardening + TC-0024 DEC-034 + Gate 5 review + Gate 6 planning + TC-0026/TC-0027 | TC-0024 PASS (87 checks, 0 errors); evidence builder/validator hardened; gate5-human-review-packet.md; gate6 planning docs; master-plan v2.30 |
 
 ## Latest known evidence bundles
 
@@ -147,7 +150,7 @@ All Apache-2.0, project-owned synthetic. SHA-256 hashes independently verified r
 
 ## Next required actions
 
-1. TC-0024 independent verification sprint (DEC-034) for Gate 5 neutral model (explicit TC-0024 prompt required).
-2. After TC-0024: Human reviews and approves Gate 5.
-3. After Gate 5 approval: TC-0025 Gate 6 oracle planning (explicit prompt required).
-4. TC-0021 workbench quality review already completed (run031) and verified (run032) — available for Gate 5 verification use.
+1. **Gate 5 human approval** — Babar Raza reviews gate5-human-review-packet.md and approves Gate 5.
+2. After Gate 5 approval: TC-0025 Gate 6 oracle planning review (planning docs already created run034).
+3. After TC-0025 review: TC-0026 Gate 6 oracle execution (explicit prompt required).
+4. After TC-0026: TC-0027 Gate 6 DEC-034 verification.

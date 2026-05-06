@@ -1,0 +1,157 @@
+# Evidence Bundle Contract — run034
+# Gate 5 DEC-034 verification + evidence hardening + Gate 6 planning
+# Created: 2026-05-06
+
+contract_id: run034-gate5-verification-gate6-planning
+contract_version: "1.0"
+run_id: run034
+run_date: "2026-05-06"
+description: "TC-0024 DEC-034 PASS; evidence system hardened; Gate 5 review packet; Gate 6 planning; TC-0026/TC-0027 created"
+
+# --- Hardening features (new in run034) ---
+min_metadata_count: 35
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run034-gate5-verification-gate6-planning.yaml
+require_manifest: true
+require_clean_git: true
+
+required_files:
+  # --- Gate 5 neutral model (from run033, verified run034) ---
+  - path: schemas/neutral-model/fods/README.md
+    must_exist: true
+  - path: schemas/neutral-model/fods/model.yaml
+    must_exist: true
+  - path: schemas/neutral-model/fods/model.schema.json
+    must_exist: true
+  - path: schemas/neutral-model/fods/field-map.yaml
+    must_exist: true
+  - path: schemas/neutral-model/fods/coverage-matrix.yaml
+    must_exist: true
+  - path: schemas/neutral-model/fods/validation-rules.yaml
+    must_exist: true
+
+  # --- Validation tool ---
+  - path: tools/model/validate_neutral_model.py
+    must_exist: true
+
+  # --- Evidence system (hardened run034) ---
+  - path: tools/evidence/build_evidence_bundle.py
+    must_exist: true
+  - path: tools/evidence/validate_evidence_bundle.py
+    must_exist: true
+
+  # --- Gate 5 review packet (NEW run034) ---
+  - path: acquisition-packs/fods/gate5-human-review-packet.md
+    must_exist: true
+
+  # --- Gate 6 planning (NEW run034) ---
+  - path: acquisition-packs/fods/gate6-oracle-plan.md
+    must_exist: true
+  - path: acquisition-packs/fods/oracle-scope.md
+    must_exist: true
+  - path: acquisition-packs/fods/oracle-risk-register.md
+    must_exist: true
+
+  # --- Acquisition pack ---
+  - path: acquisition-packs/fods/neutral-model-notes.md
+    must_exist: true
+  - path: acquisition-packs/fods/pack.yaml
+    must_exist: true
+  - path: acquisition-packs/fods/gate4-human-review-packet.md
+    must_exist: true
+
+  # --- Taskcards ---
+  - path: taskcards/TC-0023-fods-gate5-neutral-model-execution.md
+    must_exist: true
+  - path: taskcards/TC-0024-fods-gate5-neutral-model-verification.md
+    must_exist: true
+  - path: taskcards/TC-0025-fods-gate6-oracle-planning.md
+    must_exist: true
+  - path: taskcards/TC-0026-fods-gate6-oracle-execution.md
+    must_exist: true
+  - path: taskcards/TC-0027-fods-gate6-oracle-verification.md
+    must_exist: true
+
+  # --- Registry ---
+  - path: registry/format-registry.yaml
+    must_exist: true
+
+  # --- Governance and docs ---
+  - path: plans/master-plan.md
+    must_exist: true
+  - path: README.md
+    must_exist: true
+  - path: ROADMAP.md
+    must_exist: true
+  - path: .claude/settings.json
+    must_exist: true
+  - path: memory/09-current-state-before-phase1.md
+    must_exist: true
+
+  # --- Evidence contract (self) ---
+  - path: tools/evidence/contracts/run034-gate5-verification-gate6-planning.yaml
+    must_exist: true
+
+forbidden_paths:
+  - src/python/fods/
+  - src/net/fods/
+  - reports/security/
+  - reports/legal/
+  - .github/workflows/
+
+required_metadata_files:
+  - git-status.txt
+  - git-log.txt
+  - repo-tree.txt
+  - run034-verification-summary.md
+  - tc0024-dec034-results.md
+  - evidence-hardening-summary.md
+  - gate5-review-packet-summary.md
+  - gate6-planning-summary.md
+  - tc-status-table.md
+  - registry-gate-status.md
+  - forbidden-path-check.md
+  - self-challenge-answers.md
+  - validation-run-minimal.txt
+  - validation-run-multi-sheet.txt
+  - validation-run-typed-values.txt
+  - validation-run-formula.txt
+  - model-entity-check.txt
+  - schema-validity-check.txt
+  - field-map-count-check.txt
+  - coverage-matrix-check.txt
+  - validation-rules-check.txt
+  - gate5-approval-check.txt
+  - run033-verification-summary.md
+  - evidence-negative-test-result.txt
+  - pack-yaml-status.md
+  - settings-json-status.md
+  - readme-status.md
+  - roadmap-status.md
+  - master-plan-version.md
+  - memory-09-status.md
+  - commit-history.txt
+  - run034-file-changes.md
+  - search-audit-results.md
+  - final-validation-checklist.md
+  - bundle-manifest.yaml
+
+validation_checks:
+  - id: gate5_verified
+    description: "Registry gate_5.status is 'neutral_model_verified_pending_human_review'"
+  - id: gate5_not_approved
+    description: "Registry gate_5.approved_by is null"
+  - id: tc0024_passed
+    description: "TC-0024 status is 'verification_passed_pending_human_review'"
+  - id: no_gate5_approval
+    description: "No agent has approved Gate 5"
+  - id: no_gate6_execution
+    description: "No Gate 6 execution has occurred"
+  - id: model_entities
+    description: "model.yaml defines 6 entities"
+  - id: validation_pass
+    description: "validate_neutral_model.py runs 4/4 PASS against samples"
+  - id: thin_bundle_rejected
+    description: "Evidence system correctly rejects thin bundles (negative test)"
+  - id: min_metadata_35
+    description: "Bundle contains at least 35 metadata files"

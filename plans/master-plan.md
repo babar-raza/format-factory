@@ -3,15 +3,15 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.29 (run033: Gate 4 PASSED, TC-0018 closed, Gate 5 neutral model v1 created, TC-0023 executed, TC-0024/TC-0025 created)
+**Version:** 2.30 (run034: TC-0024 DEC-034 PASS, Gate 5 human-review packet ready, evidence hardening, Gate 6 planning, TC-0026/TC-0027 created)
 **Last updated:** 2026-05-06
-**Current phase:** Phase 3: FODS Gate 4 PASSED, Gate 5 neutral model created pending independent verification
-**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5: neutral_model_created_pending_independent_verification. TC-0018 closed. TC-0019 superseded_by_tc0023. TC-0023 neutral_model_created_pending_independent_verification. TC-0024 ready_for_execution (Gate 5 DEC-034 verification). TC-0025 not_started (Gate 6 planning). Neutral model v1 at schemas/neutral-model/fods/ (6 entities, 4/4 PASS). No product source. Latest commit: 28881e3 (run033). Working tree clean.
+**Current phase:** Phase 3: FODS Gate 5 neutral model verified, pending human review
+**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5: neutral_model_verified_pending_human_review (TC-0024 DEC-034 PASSED run034). TC-0024 verification_passed_pending_human_review. TC-0025 not_started (Gate 6 planning — planning docs created). TC-0026/TC-0027 not_started (Gate 6 execution/verification). Evidence bundle system hardened (run034). No product source. Latest commit: ea20cde (run033 post-commit). Working tree: run034 changes pending commit.
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06).
-**Commit allowed:** YES — run033 ready for commit.
-**Next required action:** TC-0024 independent verification sprint (DEC-034) for Gate 5 neutral model, then Gate 5 human approval.
+**Commit allowed:** YES — run034 ready for commit (authorized by execution prompt).
+**Next required action:** Gate 5 human approval (Babar Raza). Then Gate 6 execution (TC-0026, requires explicit prompt).
 
 ---
 
@@ -966,12 +966,13 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 11. **Completed (run025):** Independent verification of run024 + full FODS spec normalization + TC-0013. (a) run024 state verified (01f7bbe; valid uncommitted master-plan.md hash update confirmed); (b) pdfminer.six 20260107 installed (--user); (c) normalize_pdf.py run on FODS spec: full extraction SUCCESS — text.txt 2,160,370 chars, pages.jsonl 782 pages; (d) build_citation_map.py run: citations.yaml 194 section refs + 35 external refs; (e) validate_normalized_spec.py: 7 PASS, 1 WARN, 0 FAIL; (f) G-NORM-001 RESOLVED; (g) requirements.txt added to tools/spec-normalize/; (h) TC-0012 updated (Phase 2 complete, G-NORM-001 resolved); (i) sample-sources.md updated with verified spec section refs; (j) TC-0013 created (FODS Gate 3 Sample Corpus Execution, not_started); (k) master-plan.md v2.21.
 12. **Completed (run026):** Spec Navigation Layer + Gate 3 corpus execution + TC-0014. (a) run025 state independently verified (f17bb12; valid uncommitted master-plan.md hash update confirmed); (b) 4 navigation tools created: build_section_index.py (884 sections, 705 pages mapped), build_chunk_index.py (940 chunks, 423,290 words), query_normalized_spec.py (multi-mode query), export_sample_requirements.py; (c) sample-requirements.yaml (4 samples), parser-requirements-draft.yaml (10 requirements) produced; (d) 4 synthetic FODS samples created: minimal-spreadsheet.fods, multi-sheet-basic.fods, typed-values-basic.fods, formula-basic.fods — all Apache-2.0 project-owned; (e) tools/samples/create_fods_samples.py + validate_fods_samples.py created; (f) Validation: 4/4 PASS; (g) samples/_provenance.yaml: 4 confirmed entries; (h) registry gate_3 → sample_corpus_created_pending_independent_verification; (i) TC-0013 updated (in_progress); (j) TC-0014 created (Gate 4 planning, not_started); (k) docs/specification-normalization.md updated with Navigation Layer section; (l) master-plan.md v2.22. Commit pending.
 13. **Completed (run030):** TC-0018 DEC-034 verification + stale fixes + Spec Workbench v1. (a) validate_against_samples.py re-run: 4/4 PASS confirmed independently; (b) fods_parser.py imports verified: stdlib only, no network; (c) forbidden paths verified absent; (d) settings.json contradiction fixed (prototypes/fods deny→allow); (e) Spec Workbench v1 built (local-only): verified-facts.yaml (10 facts), parser/sample/model requirement packs (205/205 validation PASS), task packets (gate3: 59 lines, gate4: 120 lines, gate5-draft: 44 lines), coverage matrices; (f) 5 new tools created (build_spec_workbench.py, build_requirement_pack.py, validate_requirement_pack.py, export_task_packet.py) + docs/spec-consumption-workbench.md; (g) TC-0020 (Spec Workbench core) and TC-0021 (FODS quality review) created; (h) parser planning files updated with workbench refs and PASS statuses; (i) registry gate_4 → prototype_verified_pending_human_review; master-plan.md v2.26.
-14. **Next required action:** TC-0024 independent verification sprint (DEC-034) for Gate 5 neutral model.
+14. **Completed (run034):** run033 independent verification + evidence hardening + TC-0024 DEC-034 + Gate 5 review packet + Gate 6 planning + TC-0026/TC-0027. (a) run033 verified (35/35 checks PASS, working tree clean); (b) evidence bundle system hardened: builder+validator updated with git cleanliness check, contract-in-bundle, manifest generation, min metadata enforcement; negative test PASS (thin bundles correctly rejected); (c) TC-0024 DEC-034 executed: validate_neutral_model.py independently re-run (4/4 PASS, 87 checks, 0 errors); model.yaml 6 entities verified; model.schema.json valid; field-map.yaml 19 mappings verified; coverage-matrix.yaml 30 features verified; validation-rules.yaml 21 rules verified; no forbidden paths; no self-approval; (d) Gate 5 human-review packet created (gate5-human-review-packet.md); (e) Registry gate_5 → neutral_model_verified_pending_human_review; (f) Gate 6 planning: gate6-oracle-plan.md, oracle-scope.md, oracle-risk-register.md (planning only); (g) TC-0026 (Gate 6 execution, not_started), TC-0027 (Gate 6 verification, not_started) created; (h) master-plan.md v2.30.
+15. **Next required action:** Gate 5 human approval (Babar Raza). Then Gate 6 execution (TC-0026, requires explicit prompt).
 
 **Gate 2 for FODS: PASSED — approved by Babar Raza (2026-05-05). Patent search waived by project lead.**
 **Gate 3 for FODS: PASSED — approved by Babar Raza (2026-05-05, run028). 4 Apache-2.0 synthetic samples, 4/4 PASS, SHA-256 verified run027. Spec Navigation Layer: 884 sections, 940 chunks. TC-0013 COMPLETED.**
 **Gate 4 for FODS: PASSED — approved by Babar Raza (2026-05-06, run033 prompt). Prototype at prototypes/by-format/fods/fods_parser.py. TC-0018 DEC-034 PASS.**
-**Gate 5 for FODS: neutral_model_created_pending_independent_verification — 6 entities, 19 field mappings, 4/4 samples PASS (run033). TC-0024 DEC-034 required.**
+**Gate 5 for FODS: neutral_model_verified_pending_human_review — 6 entities, 19 field mappings, 4/4 samples PASS (87 checks, 0 errors). TC-0024 DEC-034 PASSED (run034). Gate 5 human-review packet ready.**
 
 ### Run History
 
@@ -1010,12 +1011,13 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 | run031 | 2026-05-06 | run030 independent verification + stale fixes + Evidence Bundle Contract system + TC-0021 workbench quality review + Gate 4 human-review packet | Verified run030 (4ca85ad; working tree clean, 30/30 checks PASS). Stale fixes: master-plan commit refs (ea20cde→4ca85ad), memory/09 commit refs, settings.json vector index allow→evidence allow. Evidence Bundle Contract system: tools/evidence/ (builder, validator, contracts, collectors). TC-0022 created (completed_pending_independent_verification). TC-0021 quality review PASS (205/205 validation, all packs verified). TC-0018 rerun: 4/4 PASS. Gate 4 human-review packet created (acquisition-packs/fods/gate4-human-review-packet.md). TC-0019 → ready_for_execution_after_gate4_approval. TC-0023 created (not_started). AGENTS.md Section Y + GOVERNANCE.md Section 18 (evidence bundle policy). No Gate 4 approval. No product source. No schema. No embeddings. Master-plan v2.27. |
 | run032 | 2026-05-06 | run031 independent verification (DEC-034) + stale fixes + reusable evidence contracts + Gate 5 planning prep | Verified run031 (31/31 checks PASS). Stale fixes: master-plan line 9 commit ref (4ca85ad→17bceff), TC-0021 header status, TC-0022 → completed_verified, gate4-human-review-packet TC-0021 status. Evidence contract system independently verified: dry-run FAIL correct, run031 bundle PASS. TC-0021 workbench quality independently verified: 205/205 PASS reproduced. TC-0018 prototype rerun: 4/4 PASS. Gate 4 review packet audit: all fields correct, gate_4_approved=false confirmed. Created 4 reusable evidence contracts (gate-approval, gate-execution, independent-verification, spec-workbench). Gate 5 planning checklist created. TC-0019 current state updated (run032). Registry gate_4 notes extended with run032 verification. No Gate 4 approval. No product source. No schema. No embeddings. Master-plan v2.28. |
 | run033 | 2026-05-06 | run032 independent verification + Gate 4 approval recording + TC-0018 closure + Gate 5 neutral model execution (TC-0023) + TC-0024/TC-0025 creation | Verified run032 (31/31 checks PASS). Gate 4 approved by Babar Raza (2026-05-06, run033 prompt). TC-0018 closed. Settings.json updated for Gate 5 (schemas/neutral-model/fods/** moved to allow). Gate 5 neutral model v1 created: schemas/neutral-model/fods/ (7 files: README.md, model.yaml, model.schema.json, field-map.yaml, coverage-matrix.yaml, validation-rules.yaml). tools/model/validate_neutral_model.py created. 6 entities: Workbook, Sheet, Row, Cell, Formula, Warning. 19 field mappings (14 direct, 1 rename, 1 expand, 3 derived). 30 coverage features (13 covered, 2 partial, 10 deferred, 5 out-of-scope). 21 validation rules (18 error, 3 warning). Validation: 4/4 samples PASS (87 total checks, 0 errors). acquisition-packs/fods/neutral-model-notes.md created. TC-0023 → neutral_model_created_pending_independent_verification. TC-0024 created (Gate 5 DEC-034 verification, ready_for_execution). TC-0025 created (Gate 6 oracle planning, not_started). TC-0019 superseded_by_tc0023. Registry gate_5 → neutral_model_created_pending_independent_verification. No Gate 5 approval. No product source. No embeddings. Master-plan v2.29. |
+| run034 | 2026-05-06 | run033 independent verification + evidence hardening + TC-0024 DEC-034 verification + Gate 5 review packet + Gate 6 planning + TC-0026/TC-0027 | Verified run033 (35/35 checks PASS, working tree clean). Evidence bundle system hardened: builder and validator updated with git cleanliness check, contract-in-bundle enforcement, manifest generation, min metadata count enforcement; negative test PASS (thin bundles correctly rejected). TC-0024 DEC-034 executed: validate_neutral_model.py independently re-run against all 4 samples (4/4 PASS, 87 checks, 82 PASS, 5 WARN, 0 ERROR). model.yaml 6 entities verified. model.schema.json valid JSON Schema. field-map.yaml 19 mappings verified. coverage-matrix.yaml 30 features verified. validation-rules.yaml 21 rules verified. No forbidden paths. No Gate 5 self-approval. Registry gate_5 → neutral_model_verified_pending_human_review. Gate 5 human-review packet created (gate5-human-review-packet.md). Gate 6 planning: gate6-oracle-plan.md, oracle-scope.md, oracle-risk-register.md (planning only, NO execution). TC-0026 (Gate 6 execution, not_started), TC-0027 (Gate 6 verification, not_started) created. No Gate 5 approval. No Gate 6 execution. No product source. No embeddings. Master-plan v2.30. |
 
 ---
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 28881e3 (run033) — "chore: approve FODS Gate 4, create Gate 5 neutral model v1 (run033)"
+**Latest commit:** ea20cde (run033 post-commit). run034 changes pending commit.
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1092,6 +1094,23 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - .claude/settings.json (Gate 5 execution mode)
 - README.md, ROADMAP.md, plans/master-plan.md v2.29, memory/09
 - acquisition-packs/fods/gate4-human-review-packet.md (Gate 4 passed status)
+
+**Pending (run034, 2026-05-06):**
+- tools/evidence/validate_evidence_bundle.py (HARDENED: git cleanliness check, contract-in-bundle, manifest validation, min metadata enforcement)
+- tools/evidence/build_evidence_bundle.py (HARDENED: git status check, manifest generation, contract-in-bundle, forbidden path matching)
+- acquisition-packs/fods/gate5-human-review-packet.md (NEW)
+- acquisition-packs/fods/gate6-oracle-plan.md (NEW)
+- acquisition-packs/fods/oracle-scope.md (NEW)
+- acquisition-packs/fods/oracle-risk-register.md (NEW)
+- taskcards/TC-0024 (verification_passed_pending_human_review — DEC-034 PASS)
+- taskcards/TC-0026 (NEW — Gate 6 execution, not_started)
+- taskcards/TC-0027 (NEW — Gate 6 verification, not_started)
+- registry/format-registry.yaml (gate_5 → neutral_model_verified_pending_human_review; tc0024_verification added)
+- acquisition-packs/fods/pack.yaml (gate_5 status updated; gate_4_approved true; notes updated)
+- .claude/settings.json (Gate 5 VERIFIED status)
+- README.md, ROADMAP.md, plans/master-plan.md v2.30
+- memory/09-current-state-before-phase1.md
+- tools/evidence/contracts/run034-*.yaml (evidence contract)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 

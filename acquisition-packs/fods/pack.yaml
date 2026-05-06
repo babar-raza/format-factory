@@ -27,7 +27,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 1 passed 2026-05-04. Gate 2 PASSED 2026-05-05 (Babar Raza, run023). Spec downloaded run021 (24.27 MB). Gate 3 corpus run026: 4 Apache-2.0 synthetic samples, validated 4/4 PASS. DEC-034 verified run027. Gate 3 PASSED (Babar Raza, 2026-05-05, run028). TC-0013 COMPLETED. Gate 4 prototype created run029 (2026-05-05): prototypes/by-format/fods/fods_parser.py. Validation 4/4 PASS (PT-001–PT-004). Gate 4 NOT approved — TC-0018 independent verification required."
+notes: "Gate 1 passed 2026-05-04. Gate 2 PASSED 2026-05-05. Gate 3 PASSED 2026-05-05. Gate 4 PASSED 2026-05-06 (Babar Raza). Gate 5 neutral model v1 created run033, DEC-034 verified run034 (4/4 PASS, 87 checks, 0 errors). Gate 5 awaiting human approval. Gate 6 planning complete run034."
 
 # --- Format identity ---
 format_id: fods
@@ -89,16 +89,16 @@ gate_4:
   validation_run: run029
   validation_date: "2026-05-05"
   gate_4_approved: true
-  next_action: gate5_independent_verification_tc0024
 gate_5:
-  status: neutral_model_created_pending_independent_verification
+  status: neutral_model_verified_pending_human_review
   approved_by: null
   approved_date: null
   model_path: schemas/neutral-model/fods/
   model_version: "1.0"
-  validation_result: "4/4 PASS (validate_neutral_model.py, run033)"
+  validation_result: "4/4 PASS (validate_neutral_model.py, run033+run034)"
   tc0023_run: run033
-  next_action: gate5_independent_verification_tc0024
+  tc0024_verification: "run034 DEC-034 PASS"
+  next_action: gate5_human_approval
 
 # --- Spec cache status ---
 spec_cache:
@@ -133,7 +133,7 @@ parser:
   prototype_created_run: run029
   prototype_created_date: "2026-05-05"
   validation_result: "4/4 PASS"
-  gate_4_approved: false
+  gate_4_approved: true
 
 # --- Acquisition stage status ---
 stages:
@@ -180,4 +180,9 @@ notes: >-
   Gate 3 PASSED (Babar Raza, 2026-05-05, run028). TC-0013 COMPLETED.
   Parser planning package created run028: parser-requirements.md, parser-scope.md, parser-test-plan.md.
   Gate 4 prototype created run029 (2026-05-05): prototypes/by-format/fods/fods_parser.py. 4/4 PASS.
-  Gate 4 NOT approved — TC-0018 DEC-034 independent verification required before Gate 4 human approval.
+  Gate 4 PASSED (Babar Raza, 2026-05-06, run033). TC-0018 closed.
+  Gate 5 neutral model v1 created run033: 6 entities, 19 field mappings, 30 coverage features.
+  TC-0024 DEC-034 independent verification PASSED run034 (87 checks, 0 errors).
+  Gate 5 human-review packet at gate5-human-review-packet.md. Awaiting human approval.
+  Gate 6 planning complete run034: gate6-oracle-plan.md, oracle-scope.md, oracle-risk-register.md.
+  TC-0026/TC-0027 created (not_started, blocked by Gate 5 approval).

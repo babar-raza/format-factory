@@ -105,7 +105,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Gate 4 status:** PASSED — approved by Babar Raza (2026-05-06, run033). Prototype at `prototypes/by-format/fods/fods_parser.py` — Python stdlib only. Validation: PT-001 through PT-004 PASS (4/4). TC-0018 DEC-034 PASS (run030+run032).
 
-**Gate 5 status:** Neutral model v1 created (run033, 2026-05-06). 6 entities (Workbook, Sheet, Row, Cell, Formula, Warning), 19 field mappings, 30 coverage features, 21 validation rules. Validation: 4/4 samples PASS. TC-0024 DEC-034 independent verification required before human approval.
+**Gate 5 status:** Neutral model v1 created (run033, 2026-05-06) and DEC-034 independently verified (run034). 6 entities (Workbook, Sheet, Row, Cell, Formula, Warning), 19 field mappings, 30 coverage features, 21 validation rules. Validation: 4/4 samples PASS (87 checks, 0 errors). TC-0024 DEC-034 PASSED. Gate 5 human-review packet ready. Awaiting human approval.
 
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 
