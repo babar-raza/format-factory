@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "FODS parser requirements document. Created run028 (2026-05-05) as Gate 4 parser planning package. Derived from parser-requirements-draft.yaml (local-only, .local/spec-cache/fods/1.3/normalized/). Committed version consolidates MUST/SHOULD/MAY requirements with spec citations."
+notes: "FODS parser requirements document. Created run028 (2026-05-05) as Gate 4 parser planning package. Derived from parser-requirements-draft.yaml (local-only, .local/spec-cache/fods/1.3/normalized/). Updated run030: Spec Workbench v1 created; requirement IDs PR-001..PR-010 cross-referenced with workbench requirement-packs/parser-requirements.yaml and coverage matrix."
 ---
 
 # FODS Parser Requirements
@@ -242,9 +242,32 @@ spec_citation:
 
 ---
 
+## Spec Workbench Cross-Reference (run030)
+
+Requirements PR-001..PR-010 are now cross-referenced with the FODS Spec Workbench v1 (local-only):
+
+| Req ID | Workbench ID | Workbench Artifact | Coverage |
+|---|---|---|---|
+| PR-001 | PR-001 | `requirement-packs/parser-requirements.yaml` | PT-001..PT-004 |
+| PR-002 | PR-002 | `requirement-packs/parser-requirements.yaml` | PT-001 |
+| PR-003 | PR-003 | `requirement-packs/parser-requirements.yaml` | PT-001..PT-004 |
+| PR-004 | PR-004 | `requirement-packs/parser-requirements.yaml` | PT-001..PT-004 |
+| PR-005 | PR-005 | `requirement-packs/parser-requirements.yaml` | PT-001..PT-004 |
+| PR-006 | PR-006 | `requirement-packs/parser-requirements.yaml` | PT-001..PT-004 |
+| PR-007 | PR-007 | `requirement-packs/parser-requirements.yaml` | PT-001..PT-004 |
+| PR-008 | PR-008 | `requirement-packs/parser-requirements.yaml` | PT-001..PT-004 |
+| PR-009 | PR-009 | `requirement-packs/parser-requirements.yaml` | PT-004 only |
+| PR-010 | PR-010 | `requirement-packs/parser-requirements.yaml` | PT-001..PT-004 |
+
+Full coverage matrix: `.local/spec-cache/fods/1.3/workbench/coverage/parser-coverage-matrix.yaml`
+Gate 4 task packet: `.local/spec-cache/fods/1.3/workbench/task-packets/gate4-parser-packet.yaml` (120 lines)
+
+---
+
 ## Revision History
 
 | Run | Change |
 |---|---|
 | run026 | `parser-requirements-draft.yaml` produced (local-only) from spec queries + sample inspection |
 | run028 | This document created from draft; requirements formalized with spec citations; committed as Gate 4 planning artifact |
+| run030 | Workbench cross-reference table added; requirement IDs PR-001..PR-010 linked to workbench requirement-packs; coverage matrix reference added |

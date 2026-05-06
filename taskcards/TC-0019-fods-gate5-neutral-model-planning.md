@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 5 neutral model planning taskcard for FODS. Created run029 (2026-05-05). NOT_STARTED — future planning only. Blocked by Gate 4 independent verification (TC-0018) and Gate 4 human approval."
+notes: "Gate 5 neutral model planning taskcard for FODS. Created run029 (2026-05-05). NOT_STARTED — future planning only. TC-0018 verification PASS (run030). Still blocked by Gate 4 human approval + explicit Gate 5 planning prompt."
 ---
 
 # TC-0019: FODS Gate 5 — Neutral Model Planning
@@ -32,7 +32,7 @@ notes: "Gate 5 neutral model planning taskcard for FODS. Created run029 (2026-05
 **Created:** 2026-05-05 (run029)
 **Created by:** claude-sonnet-4-6 (run029)
 **Blocking:** Gate 5 execution
-**Blocked by:** Gate 4 independent verification (TC-0018) + Gate 4 human approval + explicit Gate 5 planning prompt
+**Blocked by:** Gate 4 human approval (TC-0018 verification PASS run030) + explicit Gate 5 planning prompt
 
 ---
 

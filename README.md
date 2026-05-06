@@ -29,7 +29,7 @@ Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{form
 
 **FODS** — Flat OpenDocument Spreadsheet — is the active pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. Single-file XML, well-documented specification, no ZIP complexity, permissive license.
 
-Gate 3 (Sample Corpus) complete — 4 Apache-2.0 synthetic samples validated 4/4 PASS, approved by Babar Raza (2026-05-05). Gate 4 (Parser Prototype) prototype created (run029) — `prototypes/by-format/fods/fods_parser.py` passes PT-001 through PT-004 (4/4 PASS). Gate 4 NOT approved. TC-0018 independent verification (DEC-034) required before Gate 4 human approval.
+Gate 3 (Sample Corpus) complete — 4 Apache-2.0 synthetic samples validated 4/4 PASS, approved by Babar Raza (2026-05-05). Gate 4 (Parser Prototype) prototype created (run029), independently verified (TC-0018 DEC-034 PASS, run030) — `prototypes/by-format/fods/fods_parser.py` passes PT-001 through PT-004 (4/4 PASS). Gate 4 NOT approved — human approval required. Spec Workbench v1 created (run030, local-only).
 
 ---
 

@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 4 parser prototype execution taskcard for FODS. Created run028 (2026-05-05). EXECUTED run029 (2026-05-05): prototype created at prototypes/by-format/fods/fods_parser.py. Validation PT-001–PT-004 PASS (4/4). Status: prototype_created_pending_independent_verification. TC-0018 independent verification (DEC-034) required before Gate 4 human approval."
+notes: "Gate 4 parser prototype execution taskcard for FODS. Created run028 (2026-05-05). EXECUTED run029 (2026-05-05): prototype created at prototypes/by-format/fods/fods_parser.py. Validation PT-001–PT-004 PASS (4/4). TC-0018 independent verification PASS run030 (2026-05-06). Status: COMPLETED. Gate 4 approved: false — human approval required."
 ---
 
 # TC-0017: FODS Gate 4 — Parser Prototype Execution
@@ -28,7 +28,7 @@ notes: "Gate 4 parser prototype execution taskcard for FODS. Created run028 (202
 **Taskcard ID:** TC-0017
 **Phase:** 3 (Gate 4 execution)
 **Gate:** Gate 4 (Parser Prototype)
-**Status:** prototype_created_pending_independent_verification
+**Status:** completed — prototype verified (TC-0018 PASS run030); human Gate 4 approval required
 **Created:** 2026-05-05 (run028)
 **Created by:** claude-sonnet-4-6 (run028)
 **Executed:** 2026-05-05 (run029)

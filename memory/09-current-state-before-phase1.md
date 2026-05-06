@@ -3,17 +3,17 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run029 to reflect Gate 4 prototype created (run029), validation 4/4 PASS, TC-0018 ready_for_execution, TC-0019 created
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run030 to reflect Gate 4 verified (TC-0018 PASS run030), Spec Workbench v1 created, TC-0020/TC-0021 created
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 09 — Current State (Phase 3: Gate 3 PASSED, Gate 4 Prototype Created)
+# 09 — Current State (Phase 3: Gate 4 Verified Pending Human Approval)
 
-This file captures the current state after run029. Gate 1, Gate 2, and Gate 3 have all PASSED. Gate 4 prototype created — `prototypes/by-format/fods/fods_parser.py` validated 4/4 PASS. Gate 4 NOT approved. TC-0018 independent verification required.
+This file captures the current state after run030. Gate 1, Gate 2, and Gate 3 have all PASSED. Gate 4 prototype created (run029) and independently verified (TC-0018 DEC-034 PASS, run030) — `prototypes/by-format/fods/fods_parser.py` validated 4/4 PASS. Gate 4 NOT approved — human approval required. Spec Workbench v1 created (run030, local-only).
 
-**Last updated:** run029 (Gate 4 prototype created and validated 4/4 PASS; TC-0018 → ready_for_execution; TC-0019 created not_started; master-plan.md v2.25).
+**Last updated:** run030 (TC-0018 DEC-034 PASS; Gate 4 → prototype_verified_pending_human_review; Spec Workbench v1 created; TC-0020/TC-0021 created; master-plan.md v2.26).
 
 ## Current status
 
@@ -25,9 +25,10 @@ This file captures the current state after run029. Gate 1, Gate 2, and Gate 3 ha
 | Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
 | Gate 2 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run023); patent search waived; fast-path confirmed |
 | Gate 3 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run028); DEC-034 verified run027 |
-| Gate 4 status | prototype_created_pending_independent_verification — prototype at prototypes/by-format/fods/fods_parser.py; 4/4 PASS; TC-0018 DEC-034 required |
-| Active formats | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: prototype_created_pending_independent_verification) |
-| Registry | FODS entry: gate_4: prototype_created_pending_independent_verification (run029); next_allowed_action: gate4_independent_verification_tc0018 |
+| Gate 4 status | prototype_verified_pending_human_review — prototype at prototypes/by-format/fods/fods_parser.py; 4/4 PASS; TC-0018 DEC-034 PASS run030; human approval required |
+| Active formats | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: prototype_verified_pending_human_review) |
+| Registry | FODS entry: gate_4: prototype_verified_pending_human_review (run030); next_allowed_action: gate4_human_approval |
+| Spec Workbench v1 | created run030 (local-only): .local/spec-cache/fods/1.3/workbench/ — verified-facts.yaml (10 facts), requirement packs (parser/sample/model), task packets, coverage matrices; 205/205 validation PASS |
 | FODS acquisition pack | acquisition-packs/fods/ (8 files: spec-evidence, legal-notes, sample-sources, parser-notes, parser-requirements, parser-scope, parser-test-plan, pack.yaml) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |
 | TC-0007 status | completed_independently_verified_run020+run022 |
@@ -36,12 +37,14 @@ This file captures the current state after run029. Gate 1, Gate 2, and Gate 3 ha
 | TC-0011 status | closed (superseded by run027 combined verification, run028) |
 | TC-0012 status | completed — normalization layer complete (run025) |
 | TC-0013 status | COMPLETED — Gate 3 corpus executed, validated, independently verified, approved (run028) |
-| TC-0014 status | completed — Gate 4 planning package used in run029 execution |
+| TC-0014 status | completed — Gate 4 planning package used in run029 execution (verified run030) |
 | TC-0015 status | not_started — spec retrieval evaluation; blocked by human review of spec-retrieval-strategy.md |
 | TC-0016 status | not_started — FODS vector index pilot; blocked by TC-0015 completion and human approval |
-| TC-0017 status | prototype_created_pending_independent_verification — Gate 4 prototype executed run029; 4/4 PASS |
-| TC-0018 status | ready_for_execution — DEC-034 independent verification; blocked by explicit TC-0018 prompt |
-| TC-0019 status | not_started — Gate 5 neutral model planning; blocked by Gate 4 approval + explicit Gate 5 prompt |
+| TC-0017 status | completed — Gate 4 prototype executed run029; 4/4 PASS; TC-0018 verification PASS run030 |
+| TC-0018 status | verification_passed_pending_human_review — DEC-034 PASS run030; human Gate 4 approval required |
+| TC-0019 status | not_started — Gate 5 neutral model planning; blocked by Gate 4 human approval + explicit Gate 5 prompt |
+| TC-0020 status | not_started — Spec Workbench core (generic); tooling created run030 |
+| TC-0021 status | not_started — FODS workbench quality review; blocked by Gate 4 human approval |
 | Samples | 4 Apache-2.0 synthetic FODS samples in samples/by-format/fods/ (run026, validated 4/4 PASS) |
 | Spec Navigation Layer | 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml (run026, local-only) |
 | Hybrid Spec Retrieval | docs/spec-retrieval-strategy.md (run027); AGENTS.md Section X; GOVERNANCE.md Section 17 |
@@ -51,9 +54,9 @@ This file captures the current state after run029. Gate 1, Gate 2, and Gate 3 ha
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| Latest commit | 5c93b88 (run028): approve FODS Gate 3, create Gate 4 planning package |
-| Uncommitted | run029 changes — Gate 4 prototype (prototypes/by-format/fods/), TC-0019, registry/TC/memory updates |
-| Master plan version | 2.25 (run029) |
+| Latest commit | ea20cde (run029): update master-plan v2.25 and TC-0014 post-commit state |
+| Uncommitted | run030 changes — TC-0018 PASS, Spec Workbench v1, Gate 4 → prototype_verified_pending_human_review |
+| Master plan version | 2.26 (run030) |
 | AGENTS.md sections | A through X (24 sections) |
 
 ## Run history (run001–run028)
@@ -82,6 +85,7 @@ This file captures the current state after run029. Gate 1, Gate 2, and Gate 3 ha
 | run027 | Independent verification + stale state + Hybrid Spec Retrieval | 21 checks PASS; SHA-256 hashes computed; Gate 3 → sample_corpus_verified_pending_human_review; docs/spec-retrieval-strategy.md; TC-0015/0016; AGENTS.md X; committed 09ee31f; master-plan v2.23 |
 | run028 | Gate 3 approval + Gate 4 planning package | Gate 3 PASSED (Babar Raza, 2026-05-05); TC-0013 completed; TC-0014 planning_ready; parser planning docs; TC-0017/TC-0018 created; memory updated; master-plan v2.24; committed 5c93b88 |
 | run029 | Gate 4 prototype creation + validation | TC-0017 executed; fods_parser.py created; 4/4 PASS (PT-001–PT-004); TC-0019 created; registry/TC/memory updated; master-plan v2.25 |
+| run030 | TC-0018 DEC-034 verification + Spec Workbench v1 + stale fixes + parser planning updates | TC-0018 PASS (4/4 re-verified); Spec Workbench v1 (local-only, 205/205 PASS); TC-0020/TC-0021 created; registry gate_4 → prototype_verified_pending_human_review; master-plan v2.26; commit pending |
 
 ## Latest known evidence bundles
 
@@ -134,9 +138,6 @@ All Apache-2.0, project-owned synthetic. SHA-256 hashes independently verified r
 
 ## Next required actions
 
-1. Commit run028 changes (`chore: approve FODS Gate 3 and prepare Gate 4 planning`).
-2. Human reviews Gate 4 planning package (acquisition-packs/fods/parser-requirements.md, parser-scope.md, parser-test-plan.md).
-3. Human issues explicit Gate 4 execution prompt naming TC-0017.
-4. TC-0017 executes Gate 4 prototype (prototypes/by-format/fods/fods_parser.py).
-5. TC-0018 independently verifies Gate 4 prototype (DEC-034).
-6. Human approves Gate 4.
+1. Human reviews and approves Gate 4 (`gate_4.status` → `passed` in registry, `approved_by`, `approved_date`).
+2. After Gate 4 approval: TC-0021 FODS workbench quality review.
+3. After Gate 4 approval: TC-0019 Gate 5 neutral model planning (explicit Gate 5 prompt required).

@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 4 execution artifact. Prototype created run029 (2026-05-05). Validation 4/4 PASS. Status: prototype_created_pending_independent_verification. TC-0018 independent verification required before Gate 4 human approval."
+notes: "Gate 4 execution artifact. Prototype created run029 (2026-05-05). TC-0018 independent verification PASS (run030, 2026-05-06). Status: prototype_verified_pending_human_review. Human Gate 4 approval required. Spec Workbench v1 created run030 (.local/spec-cache/fods/1.3/workbench/)."
 ---
 
 # Parser Notes — Flat OpenDocument Spreadsheet (FODS)
@@ -32,12 +32,13 @@ notes: "Gate 4 execution artifact. Prototype created run029 (2026-05-05). Valida
 **Gate 1 approved by:** Babar Raza (2026-05-04)
 **Gate 2 status:** PASSED — Babar Raza (2026-05-05, run023)
 **Gate 3 status:** PASSED — Babar Raza (2026-05-05, run028)
-**Gate 4 status:** prototype_created_pending_independent_verification (run029)
+**Gate 4 status:** prototype_verified_pending_human_review (TC-0018 PASS — run030)
 
 **Prototype:** `prototypes/by-format/fods/fods_parser.py` — created run029 (2026-05-05)
-**Validation:** PT-001 through PT-004 PASS (4/4) — run029
-**Next step:** TC-0018 independent verification (DEC-034) before Gate 4 human approval
-**Gate 4 approved:** NO
+**Validation:** PT-001 through PT-004 PASS (4/4) — run029 (original) and run030 (TC-0018 independent re-verification)
+**TC-0018 result:** PASS — DEC-034 independent verification complete (run030, 2026-05-06)
+**Next step:** Human Gate 4 approval
+**Gate 4 approved:** NO — human approval required
 
 ---
 
@@ -146,10 +147,47 @@ All discrepancies between plan predictions and actual samples are documented her
 
 ---
 
+## Spec Workbench References (run030)
+
+The FODS Spec Workbench v1 was built in run030. All parser requirements are now cross-referenced with workbench artifacts:
+
+| Workbench Artifact | Location (local-only) | Description |
+|---|---|---|
+| `verified-facts.yaml` | `.local/spec-cache/fods/1.3/workbench/` | 10 core verified FODS facts |
+| `parser-requirements.yaml` | `.../workbench/requirement-packs/` | PR-001..PR-010 with full provenance |
+| `parser-coverage-matrix.yaml` | `.../workbench/coverage/` | PR-001..PR-010 × PT-001..PT-004 coverage |
+| `gate4-parser-packet.yaml` | `.../workbench/task-packets/` | Concise Gate 4 task packet (120 lines) |
+
+**Coverage summary (parser requirements × test samples):**
+
+| Req | PT-001 | PT-002 | PT-003 | PT-004 | Coverage |
+|---|---|---|---|---|---|
+| PR-001 (root element) | ✓ | ✓ | ✓ | ✓ | 4/4 |
+| PR-002 (mimetype) | ✓ | — | — | — | 1/4 |
+| PR-003 (body/spreadsheet) | ✓ | ✓ | ✓ | ✓ | 4/4 |
+| PR-004 (sheets) | ✓ | ✓ | ✓ | ✓ | 4/4 |
+| PR-005 (rows) | ✓ | ✓ | ✓ | ✓ | 4/4 |
+| PR-006 (typed cells) | ✓ | ✓ | ✓ | ✓ | 4/4 |
+| PR-007 (col-repeated) | ✓ | ✓ | ✓ | ✓ | 4/4 |
+| PR-008 (text:p) | ✓ | ✓ | ✓ | ✓ | 4/4 |
+| PR-009 (formula) | — | — | — | ✓ | 1/4 |
+| PR-010 (namespaces) | ✓ | ✓ | ✓ | ✓ | 4/4 |
+
+**Gaps for unsupported spec areas (Tier 0/1 subset only):**
+- Style resolution (§14+) — not covered by Gate 4 samples or prototype
+- Conditional formatting (§9.3) — not in Gate 4 scope
+- Merged cells / covered-table-cell — detected but not fully expanded
+- Date cell type — PT-003 sample does not include date cell (string/float/boolean only)
+- Formula evaluation — raw extraction only; no evaluation (OpenFormula out of scope)
+
+---
+
 ## Gate 4 Sign-off
 
-**Reviewed by:** (to be filled)
+**TC-0018 independent verification:** PASS (run030, 2026-05-06)
+**Prototype passes corpus:** YES — 4/4 PASS (PT-001 through PT-004)
+**Security baseline confirmed:** YES — stdlib only; no network; no formula evaluation
+**Human Gate 4 approval:** PENDING — required before Gate 5 work begins
+**Reviewed by:** (to be filled by human approver)
 **Review date:** (to be filled)
-**Prototype passes corpus:** (yes/no)
-**Security baseline confirmed:** (yes/no)
-**Notes:** (to be filled)
+**Notes:** Gate 4 approved = false until human explicitly approves
