@@ -1,0 +1,52 @@
+# Reusable Evidence Contract: Spec Workbench Operations
+# Use when: A run creates or validates spec workbench artifacts (requirement packs, task packets, coverage matrices).
+# Inherits: base-run.yaml
+# Created: run032 (2026-05-06)
+
+contract_id: spec-workbench
+version: "1.0"
+inherits: base-run
+description: "Reusable contract for spec workbench operations. Ensures workbench validation results and quality audit evidence are present."
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/*.chroma/**"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+
+min_metadata_count: 8
+
+required_repo_files:
+  - AGENTS.md
+  - GOVERNANCE.md
+  - plans/master-plan.md
+  - docs/spec-consumption-workbench.md
+  - tools/spec-normalize/validate_requirement_pack.py
+
+required_metadata_files:
+  - run-summary.md
+  - workbench-quality-report.md
+  - requirement-pack-validation.md
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-log.txt
+  - self-challenge.md
+  - verdict.md

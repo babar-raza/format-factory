@@ -1,0 +1,55 @@
+# Reusable Evidence Contract: Gate Execution
+# Use when: A gate's primary work is being executed (e.g., prototype creation, model design).
+# Inherits: base-run.yaml
+# Created: run032 (2026-05-06)
+
+contract_id: gate-execution
+version: "1.0"
+inherits: base-run
+description: "Reusable contract for gate execution runs. Ensures deliverables, validation results, and taskcards are present."
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/*.chroma/**"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+
+min_metadata_count: 10
+
+required_repo_files:
+  - README.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - .claude/settings.json
+
+required_metadata_files:
+  - run-summary.md
+  - validation-report.md
+  - files-created.txt
+  - files-modified.txt
+  - registry-check.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-log.txt
+  - self-challenge.md
+  - verdict.md

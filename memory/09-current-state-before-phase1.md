@@ -3,7 +3,7 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run030 to reflect Gate 4 verified (TC-0018 PASS run030), Spec Workbench v1 created, TC-0020/TC-0021 created
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run032 to reflect Gate 4 verified (TC-0018 PASS run030+run031+run032), TC-0022 completed_verified, TC-0021 quality_review_verified, reusable evidence contracts created
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
@@ -11,15 +11,15 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 
 # 09 — Current State (Phase 3: Gate 4 Verified Pending Human Approval)
 
-This file captures the current state after run030. Gate 1, Gate 2, and Gate 3 have all PASSED. Gate 4 prototype created (run029) and independently verified (TC-0018 DEC-034 PASS, run030) — `prototypes/by-format/fods/fods_parser.py` validated 4/4 PASS. Gate 4 NOT approved — human approval required. Spec Workbench v1 created (run030, local-only).
+This file captures the current state after run032. Gate 1, Gate 2, and Gate 3 have all PASSED. Gate 4 prototype created (run029), independently verified (TC-0018 DEC-034 PASS, run030+run031+run032). Evidence Bundle Contract system created (run031) and independently verified (run032). TC-0021 workbench quality review PASS (run031) and independently verified (run032). Gate 4 NOT approved — human approval required.
 
-**Last updated:** run030 (TC-0018 DEC-034 PASS; Gate 4 → prototype_verified_pending_human_review; Spec Workbench v1 created; TC-0020/TC-0021 created; master-plan.md v2.26).
+**Last updated:** run032 (independent verification of run031; TC-0022 completed_verified; TC-0021 quality_review_verified; reusable evidence contracts created; Gate 5 planning checklist; master-plan.md v2.28).
 
 ## Current status
 
 | Item | Status |
 |---|---|
-| Phase | Phase 3: Gate 3 PASSED, Gate 4 prototype created pending independent verification |
+| Phase | Phase 3: Gate 3 PASSED, Gate 4 prototype verified pending human approval |
 | Phase 0 accepted | YES — 2026-05-04 (run015, human-authorized) |
 | Phase 1A complete | YES — FODS scored 93/100 (run015), independently verified (run016) |
 | Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
@@ -41,23 +41,26 @@ This file captures the current state after run030. Gate 1, Gate 2, and Gate 3 ha
 | TC-0015 status | not_started — spec retrieval evaluation; blocked by human review of spec-retrieval-strategy.md |
 | TC-0016 status | not_started — FODS vector index pilot; blocked by TC-0015 completion and human approval |
 | TC-0017 status | completed — Gate 4 prototype executed run029; 4/4 PASS; TC-0018 verification PASS run030 |
-| TC-0018 status | verification_passed_pending_human_review — DEC-034 PASS run030; human Gate 4 approval required |
-| TC-0019 status | not_started — Gate 5 neutral model planning; blocked by Gate 4 human approval + explicit Gate 5 prompt |
+| TC-0018 status | verification_passed_pending_human_review — DEC-034 PASS run030; rerun PASS run031+run032; human Gate 4 approval required |
+| TC-0019 status | ready_for_execution_after_gate4_approval — Gate 5 planning; blocked by Gate 4 human approval + explicit Gate 5 prompt |
 | TC-0020 status | not_started — Spec Workbench core (generic); tooling created run030 |
-| TC-0021 status | not_started — FODS workbench quality review; blocked by Gate 4 human approval |
+| TC-0021 status | quality_review_verified_pending_gate4_human_approval — 205/205 PASS (run031, verified run032) |
+| TC-0022 status | completed_verified — Evidence Bundle Contract system (run031, verified run032) |
+| TC-0023 status | not_started — Gate 5 neutral model execution; blocked by Gate 4 + Gate 5 prompt |
 | Samples | 4 Apache-2.0 synthetic FODS samples in samples/by-format/fods/ (run026, validated 4/4 PASS) |
 | Spec Navigation Layer | 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml (run026, local-only) |
 | Hybrid Spec Retrieval | docs/spec-retrieval-strategy.md (run027); AGENTS.md Section X; GOVERNANCE.md Section 17 |
 | Schemas | None |
-| Prototypes | prototypes/by-format/fods/fods_parser.py (Gate 4 prototype; 4/4 PASS; pending independent verification — TC-0018) |
+| Prototypes | prototypes/by-format/fods/fods_parser.py (Gate 4 prototype; 4/4 PASS; verified run030+run031+run032) |
 | Product source | None |
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| Latest commit | 40f4ae5 (run031): add evidence bundle contracts and verify FODS workbench |
-| Uncommitted | Post-commit master-plan update only |
-| Master plan version | 2.26 (run030) |
-| AGENTS.md sections | A through X (24 sections) |
+| Evidence contracts | 6 contracts: base-run, run031, gate-approval, gate-execution, independent-verification, spec-workbench |
+| Latest commit | pending run032 commit |
+| Uncommitted | run032 changes (verification, reusable contracts, stale fixes, Gate 5 prep) |
+| Master plan version | 2.28 (run032) |
+| AGENTS.md sections | A through Y (25 sections) |
 
 ## Run history (run001–run028)
 
@@ -85,7 +88,9 @@ This file captures the current state after run030. Gate 1, Gate 2, and Gate 3 ha
 | run027 | Independent verification + stale state + Hybrid Spec Retrieval | 21 checks PASS; SHA-256 hashes computed; Gate 3 → sample_corpus_verified_pending_human_review; docs/spec-retrieval-strategy.md; TC-0015/0016; AGENTS.md X; committed 09ee31f; master-plan v2.23 |
 | run028 | Gate 3 approval + Gate 4 planning package | Gate 3 PASSED (Babar Raza, 2026-05-05); TC-0013 completed; TC-0014 planning_ready; parser planning docs; TC-0017/TC-0018 created; memory updated; master-plan v2.24; committed 5c93b88 |
 | run029 | Gate 4 prototype creation + validation | TC-0017 executed; fods_parser.py created; 4/4 PASS (PT-001–PT-004); TC-0019 created; registry/TC/memory updated; master-plan v2.25 |
-| run030 | TC-0018 DEC-034 verification + Spec Workbench v1 + stale fixes + parser planning updates | TC-0018 PASS (4/4 re-verified); Spec Workbench v1 (local-only, 205/205 PASS); TC-0020/TC-0021 created; registry gate_4 → prototype_verified_pending_human_review; master-plan v2.26; commit pending |
+| run030 | TC-0018 DEC-034 verification + Spec Workbench v1 + stale fixes + parser planning updates | TC-0018 PASS (4/4 re-verified); Spec Workbench v1 (local-only, 205/205 PASS); TC-0020/TC-0021 created; registry gate_4 → prototype_verified_pending_human_review; master-plan v2.26; committed 9382e66+4ca85ad |
+| run031 | run030 independent verification + Evidence Bundle Contracts + TC-0021 quality review + Gate 4 review packet | 30/30 checks PASS; tools/evidence/ system created; TC-0022; workbench 205/205 PASS; TC-0018 rerun 4/4 PASS; gate4-human-review-packet.md; AGENTS.md Y; GOVERNANCE.md 18; master-plan v2.27; committed 40f4ae5+17bceff |
+| run032 | run031 independent verification + stale fixes + reusable contracts + Gate 5 prep | 31/31 checks PASS; TC-0022→completed_verified; TC-0021→quality_review_verified; 4 reusable contracts; gate5-planning-checklist.md; master-plan v2.28 |
 
 ## Latest known evidence bundles
 
@@ -138,6 +143,7 @@ All Apache-2.0, project-owned synthetic. SHA-256 hashes independently verified r
 
 ## Next required actions
 
-1. Human reviews and approves Gate 4 (`gate_4.status` → `passed` in registry, `approved_by`, `approved_date`).
-2. After Gate 4 approval: TC-0021 FODS workbench quality review.
-3. After Gate 4 approval: TC-0019 Gate 5 neutral model planning (explicit Gate 5 prompt required).
+1. Human reviews and approves Gate 4 (gate4-human-review-packet.md; `gate_4.status` → `passed` in registry).
+2. After Gate 4 approval: TC-0019 Gate 5 neutral model planning (explicit Gate 5 prompt required).
+3. After Gate 4 approval: TC-0023 Gate 5 neutral model execution (explicit prompt required).
+4. TC-0021 workbench quality review already completed (run031) and verified (run032) — ready for Gate 5 use.

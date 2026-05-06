@@ -26,12 +26,12 @@ notes: "FODS Spec Workbench quality review taskcard. Created run030 (2026-05-06)
 # TC-0021: FODS Spec Workbench Quality Review
 
 **Taskcard ID:** TC-0021
-**Phase:** 3 (post-Gate 4 approval)
+**Phase:** 3 (authorized early quality review run031; independently verified run032)
 **Gate:** N/A — workbench quality review; feeds Gate 5
-**Status:** not_started
+**Status:** quality_review_verified_pending_gate4_human_approval
 **Created:** run030 (2026-05-06)
 **Format:** fods
-**Blocked by:** Gate 4 human approval (required before Gate 5 scope is confirmed)
+**Blocked by:** Gate 4 human approval (quality review completed early; Gate 5 scope requires Gate 4 approval)
 
 ---
 
@@ -143,3 +143,4 @@ Quality review executed run031: all 3 requirement packs validate (parser 116/116
 |---|---|
 | run030 | Taskcard created; FODS workbench v1 seeded (local-only) |
 | run031 | Quality review executed: 205/205 PASS; status → quality_review_passed_pending_human_review |
+| run032 | Independent verification PASS; status → quality_review_verified_pending_gate4_human_approval |

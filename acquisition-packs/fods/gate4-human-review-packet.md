@@ -42,7 +42,7 @@ notes: "Gate 4 human review packet for FODS. Created run031 (2026-05-06). TC-001
 | approved_date | null |
 | TC-0017 (execution) | completed |
 | TC-0018 (DEC-034 verification) | verification_passed_pending_human_review |
-| TC-0021 (workbench quality) | quality_review_passed (run031) |
+| TC-0021 (workbench quality) | quality_review_verified (run031+run032) |
 
 ---
 

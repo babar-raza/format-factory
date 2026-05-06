@@ -1,0 +1,57 @@
+# Reusable Evidence Contract: Independent Verification (DEC-034)
+# Use when: A run independently verifies claims from a prior run before human review.
+# Inherits: base-run.yaml
+# Created: run032 (2026-05-06)
+
+contract_id: independent-verification
+version: "1.0"
+inherits: base-run
+description: "Reusable contract for DEC-034 independent verification sprints. Ensures verification evidence, stale-state fixes, and audit trails are present."
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/*.chroma/**"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+
+min_metadata_count: 12
+
+required_repo_files:
+  - README.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - .claude/settings.json
+
+required_metadata_files:
+  - run-summary.md
+  - verification-report.md
+  - stale-state-fixes.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-log.txt
+  - memory-sync-report.md
+  - self-challenge.md
+  - verdict.md

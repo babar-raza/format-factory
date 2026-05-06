@@ -28,7 +28,7 @@ notes: "Evidence Bundle Contract System taskcard. Created run031 (2026-05-06). M
 **Taskcard ID:** TC-0022
 **Phase:** 3 (cross-cutting infrastructure)
 **Gate:** N/A — cross-cutting tooling
-**Status:** completed_pending_independent_verification
+**Status:** completed_verified
 **Created:** run031 (2026-05-06)
 **Format:** N/A (applies to all formats)
 **Blocked by:** None
@@ -88,14 +88,15 @@ Out of scope:
 
 ## Status
 
-**Current status:** completed_pending_independent_verification
+**Current status:** completed_verified
 
-Created and validated in run031. The run031 evidence bundle is built and validated using the new system. Future runs must use this system (policy added to AGENTS.md and GOVERNANCE.md).
+Created in run031, independently verified in run032. Evidence system smoke tests pass: dry-run correctly rejects missing metadata; run031 bundle validates PASS. Future runs must use this system (AGENTS.md Section Y, GOVERNANCE.md Section 18).
 
 ---
 
 ## Revision History
 
 | Run | Change |
+| run032 | Independent verification PASS; status → completed_verified |
 |---|---|
 | run031 | Taskcard created; all 7 artifacts delivered; run031 bundle built and validated |
