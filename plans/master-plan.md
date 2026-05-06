@@ -1017,7 +1017,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** ea20cde (run033 post-commit). run034 changes pending commit.
+**Latest commit:** 074386a (run034 builder fix). run034 complete.
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1095,7 +1095,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - README.md, ROADMAP.md, plans/master-plan.md v2.29, memory/09
 - acquisition-packs/fods/gate4-human-review-packet.md (Gate 4 passed status)
 
-**Pending (run034, 2026-05-06):**
+**Committed (2176266, run034):**
 - tools/evidence/validate_evidence_bundle.py (HARDENED: git cleanliness check, contract-in-bundle, manifest validation, min metadata enforcement)
 - tools/evidence/build_evidence_bundle.py (HARDENED: git status check, manifest generation, contract-in-bundle, forbidden path matching)
 - acquisition-packs/fods/gate5-human-review-packet.md (NEW)
@@ -1111,6 +1111,9 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - README.md, ROADMAP.md, plans/master-plan.md v2.30
 - memory/09-current-state-before-phase1.md
 - tools/evidence/contracts/run034-*.yaml (evidence contract)
+
+**Committed (074386a, run034 builder fix):**
+- tools/evidence/build_evidence_bundle.py (fix: manifest pre-check accounts for auto-generated manifest)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 
