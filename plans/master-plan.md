@@ -6,7 +6,7 @@
 **Version:** 2.28 (run032: run031 independently verified, stale fixed, reusable evidence contracts, Gate 5 planning prep, TC-0022 completed_verified, TC-0021 quality_review_verified)
 **Last updated:** 2026-05-06
 **Current phase:** Phase 3: FODS Gate 4 verified (TC-0018 PASS run030) — awaiting human Gate 4 approval; Spec Workbench v1 created
-**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4: prototype_verified_pending_human_review (TC-0018 PASS run030+run031+run032; TC-0021 quality verified run031+run032; human-review packet verified run032). TC-0019 ready_for_execution_after_gate4_approval. TC-0021 quality_review_verified_pending_gate4_human_approval. TC-0022 completed_verified. TC-0023 not_started. Evidence Bundle Contract system verified (run032). 4 reusable contracts created. No product source. No schema. Latest commit: pending run032 commit. Working tree: modified.
+**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4: prototype_verified_pending_human_review (TC-0018 PASS run030+run031+run032; TC-0021 quality verified run031+run032; human-review packet verified run032). TC-0019 ready_for_execution_after_gate4_approval. TC-0021 quality_review_verified_pending_gate4_human_approval. TC-0022 completed_verified. TC-0023 not_started. Evidence Bundle Contract system verified (run032). 4 reusable contracts created. No product source. No schema. Latest commit: ea141fb (run032). Working tree clean.
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05).
@@ -1013,7 +1013,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 40f4ae5 (run031) — "chore: add evidence bundle contracts and verify FODS workbench (run031)"
+**Latest commit:** ea141fb (run032) — "chore: independently verify run031 and add reusable evidence contracts (run032)"
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1071,6 +1071,13 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - Stale state fixes (master-plan, memory/09, settings.json)
 - README.md, ROADMAP.md, registry/format-registry.yaml updated
 - (.local/ artifacts NOT committed — normalized/, spec cache, workbench, run records, evidence bundles)
+
+**Committed (ea141fb, run032):**
+- tools/evidence/contracts/ (4 new reusable contracts: gate-approval, gate-execution, independent-verification, spec-workbench)
+- acquisition-packs/fods/gate5-planning-checklist.md (NEW), gate4-human-review-packet.md (TC-0021 status updated)
+- taskcards/TC-0021 (run032 revision history), TC-0022 (completed_verified), TC-0019 (current state updated)
+- registry/format-registry.yaml (gate_4 notes extended with run032 verification)
+- plans/master-plan.md v2.28, memory/09 updated
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 

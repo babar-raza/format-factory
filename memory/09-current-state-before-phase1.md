@@ -57,8 +57,8 @@ This file captures the current state after run032. Gate 1, Gate 2, and Gate 3 ha
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
 | Evidence contracts | 6 contracts: base-run, run031, gate-approval, gate-execution, independent-verification, spec-workbench |
-| Latest commit | pending run032 commit |
-| Uncommitted | run032 changes (verification, reusable contracts, stale fixes, Gate 5 prep) |
+| Latest commit | ea141fb (run032): independently verify run031 and add reusable evidence contracts |
+| Uncommitted | Post-commit master-plan/memory update only |
 | Master plan version | 2.28 (run032) |
 | AGENTS.md sections | A through Y (25 sections) |
 
