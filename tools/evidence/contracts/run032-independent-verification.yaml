@@ -1,0 +1,79 @@
+# run032 Evidence Bundle Contract
+# Sprint: run032 — Independent verification of run031 + reusable contracts + Gate 5 prep
+# Inherits: base-run.yaml
+# Created: run032 (2026-05-06)
+
+contract_id: run032-independent-verification
+version: "1.0"
+inherits: base-run
+description: "Contract for run032 evidence bundle. Requires run031 verification evidence, reusable contracts, Gate 5 planning checklist, and audit metadata."
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/*.chroma/**"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+
+min_metadata_count: 15
+
+required_repo_files:
+  - README.md
+  - ROADMAP.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - taskcards/TC-0019-fods-gate5-neutral-model-planning.md
+  - taskcards/TC-0021-fods-workbench-quality-review.md
+  - taskcards/TC-0022-evidence-bundle-contract-system.md
+  - taskcards/TC-0023-fods-gate5-neutral-model-execution.md
+  - acquisition-packs/fods/gate4-human-review-packet.md
+  - acquisition-packs/fods/gate5-planning-checklist.md
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/contracts/base-run.yaml
+  - tools/evidence/contracts/run031-gate4-and-workbench-quality.yaml
+  - tools/evidence/contracts/run032-independent-verification.yaml
+  - tools/evidence/contracts/gate-approval.yaml
+  - tools/evidence/contracts/gate-execution.yaml
+  - tools/evidence/contracts/independent-verification.yaml
+  - tools/evidence/contracts/spec-workbench.yaml
+  - prototypes/by-format/fods/fods_parser.py
+  - prototypes/by-format/fods/validate_against_samples.py
+  - .claude/settings.json
+  - .gitignore
+
+required_metadata_files:
+  - run032-summary.md
+  - run031-verification-report.md
+  - tc0022-verification.md
+  - tc0021-verification.md
+  - tc0018-rerun-report.md
+  - gate4-packet-audit.md
+  - reusable-contracts-report.md
+  - gate5-prep-report.md
+  - stale-state-fixes.md
+  - registry-check.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-log.txt
+  - self-challenge.md
+  - verdict.md
