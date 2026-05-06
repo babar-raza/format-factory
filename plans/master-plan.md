@@ -6,7 +6,7 @@
 **Version:** 2.29 (run033: Gate 4 PASSED, TC-0018 closed, Gate 5 neutral model v1 created, TC-0023 executed, TC-0024/TC-0025 created)
 **Last updated:** 2026-05-06
 **Current phase:** Phase 3: FODS Gate 4 PASSED, Gate 5 neutral model created pending independent verification
-**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5: neutral_model_created_pending_independent_verification. TC-0018 closed. TC-0019 superseded_by_tc0023. TC-0023 neutral_model_created_pending_independent_verification. TC-0024 ready_for_execution (Gate 5 DEC-034 verification). TC-0025 not_started (Gate 6 planning). Neutral model v1 at schemas/neutral-model/fods/ (6 entities, 4/4 PASS). No product source. Latest commit: ea20cde (run029). Working tree: uncommitted run033 changes.
+**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5: neutral_model_created_pending_independent_verification. TC-0018 closed. TC-0019 superseded_by_tc0023. TC-0023 neutral_model_created_pending_independent_verification. TC-0024 ready_for_execution (Gate 5 DEC-034 verification). TC-0025 not_started (Gate 6 planning). Neutral model v1 at schemas/neutral-model/fods/ (6 entities, 4/4 PASS). No product source. Latest commit: 28881e3 (run033). Working tree clean.
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06).
@@ -1015,7 +1015,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** c7315c9 (run032 post-commit) — run033 changes not yet committed
+**Latest commit:** 28881e3 (run033) — "chore: approve FODS Gate 4, create Gate 5 neutral model v1 (run033)"
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1080,6 +1080,18 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - taskcards/TC-0021 (run032 revision history), TC-0022 (completed_verified), TC-0019 (current state updated)
 - registry/format-registry.yaml (gate_4 notes extended with run032 verification)
 - plans/master-plan.md v2.28, memory/09 updated
+
+**Committed (28881e3, run033):**
+- schemas/neutral-model/fods/ (6 NEW files: README.md, model.yaml, model.schema.json, field-map.yaml, coverage-matrix.yaml, validation-rules.yaml)
+- tools/model/validate_neutral_model.py (NEW)
+- acquisition-packs/fods/neutral-model-notes.md (NEW)
+- taskcards/TC-0024 (NEW), TC-0025 (NEW)
+- registry/format-registry.yaml (gate_4 passed, gate_5 neutral_model_created_pending_independent_verification)
+- acquisition-packs/fods/pack.yaml (gate_4 passed, gate_5 status)
+- taskcards/TC-0018 (closed), TC-0019 (superseded), TC-0023 (executed)
+- .claude/settings.json (Gate 5 execution mode)
+- README.md, ROADMAP.md, plans/master-plan.md v2.29, memory/09
+- acquisition-packs/fods/gate4-human-review-packet.md (Gate 4 passed status)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 

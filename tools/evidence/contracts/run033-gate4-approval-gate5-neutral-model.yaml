@@ -1,0 +1,91 @@
+# Evidence Bundle Contract — run033
+# Gate 4 approval + Gate 5 neutral model execution
+# Created: 2026-05-06
+
+contract_id: run033-gate4-approval-gate5-neutral-model
+contract_version: "1.0"
+run_id: run033
+run_date: "2026-05-06"
+description: "Gate 4 approved (Babar Raza); Gate 5 neutral model v1 created; TC-0023 executed"
+
+required_files:
+  # --- Gate 5 neutral model (NEW) ---
+  - path: schemas/neutral-model/fods/README.md
+    must_exist: true
+  - path: schemas/neutral-model/fods/model.yaml
+    must_exist: true
+  - path: schemas/neutral-model/fods/model.schema.json
+    must_exist: true
+  - path: schemas/neutral-model/fods/field-map.yaml
+    must_exist: true
+  - path: schemas/neutral-model/fods/coverage-matrix.yaml
+    must_exist: true
+  - path: schemas/neutral-model/fods/validation-rules.yaml
+    must_exist: true
+
+  # --- Validation tool (NEW) ---
+  - path: tools/model/validate_neutral_model.py
+    must_exist: true
+
+  # --- Acquisition pack updates ---
+  - path: acquisition-packs/fods/neutral-model-notes.md
+    must_exist: true
+  - path: acquisition-packs/fods/pack.yaml
+    must_exist: true
+  - path: acquisition-packs/fods/gate4-human-review-packet.md
+    must_exist: true
+
+  # --- Registry ---
+  - path: registry/format-registry.yaml
+    must_exist: true
+
+  # --- Taskcards ---
+  - path: taskcards/TC-0018-fods-gate4-parser-prototype-verification.md
+    must_exist: true
+  - path: taskcards/TC-0019-fods-gate5-neutral-model-planning.md
+    must_exist: true
+  - path: taskcards/TC-0023-fods-gate5-neutral-model-execution.md
+    must_exist: true
+  - path: taskcards/TC-0024-fods-gate5-neutral-model-verification.md
+    must_exist: true
+  - path: taskcards/TC-0025-fods-gate6-oracle-planning.md
+    must_exist: true
+
+  # --- Governance and docs ---
+  - path: plans/master-plan.md
+    must_exist: true
+  - path: README.md
+    must_exist: true
+  - path: ROADMAP.md
+    must_exist: true
+  - path: .claude/settings.json
+    must_exist: true
+  - path: memory/09-current-state-before-phase1.md
+    must_exist: true
+
+  # --- Evidence contract (self) ---
+  - path: tools/evidence/contracts/run033-gate4-approval-gate5-neutral-model.yaml
+    must_exist: true
+
+forbidden_paths:
+  - src/python/fods/
+  - src/net/fods/
+  - reports/security/
+  - reports/legal/
+  - .github/workflows/
+
+validation_checks:
+  - id: gate4_passed
+    description: "Registry gate_4.status is 'passed'"
+  - id: gate5_pending
+    description: "Registry gate_5.status is 'neutral_model_created_pending_independent_verification'"
+  - id: no_gate5_approval
+    description: "Registry gate_5.approved_by is null"
+  - id: tc0018_closed
+    description: "TC-0018 status is 'closed'"
+  - id: tc0023_executed
+    description: "TC-0023 status is 'neutral_model_created_pending_independent_verification'"
+  - id: model_entities
+    description: "model.yaml defines 6 entities"
+  - id: validation_pass
+    description: "validate_neutral_model.py runs 4/4 PASS against samples"
