@@ -54,8 +54,8 @@ This file captures the current state after run030. Gate 1, Gate 2, and Gate 3 ha
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| Latest commit | ea20cde (run029): update master-plan v2.25 and TC-0014 post-commit state |
-| Uncommitted | run030 changes — TC-0018 PASS, Spec Workbench v1, Gate 4 → prototype_verified_pending_human_review |
+| Latest commit | 4ca85ad (run030): update master-plan v2.26 and Section 33 post-commit state |
+| Uncommitted | None — working tree clean |
 | Master plan version | 2.26 (run030) |
 | AGENTS.md sections | A through X (24 sections) |
 

@@ -131,9 +131,9 @@ For each of SR-001..SR-004:
 
 ## Status
 
-**Current status:** not_started
+**Current status:** quality_review_passed_pending_human_review
 
-Blocked by Gate 4 human approval. The v1 workbench seeded in run030 is usable for Gate 4 evidence but should be quality-reviewed before being used to drive Gate 5 requirements.
+Quality review executed run031: all 3 requirement packs validate (parser 116/116, sample 50/50, model 39/39 = 205/205 PASS). Verified facts non-empty (10 facts). Coverage matrix well-structured. Task packets concise. All workbench artifacts local-only, not tracked by git. Ready for human review alongside Gate 4.
 
 ---
 
@@ -142,3 +142,4 @@ Blocked by Gate 4 human approval. The v1 workbench seeded in run030 is usable fo
 | Run | Change |
 |---|---|
 | run030 | Taskcard created; FODS workbench v1 seeded (local-only) |
+| run031 | Quality review executed: 205/205 PASS; status → quality_review_passed_pending_human_review |

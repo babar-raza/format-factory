@@ -3,15 +3,15 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.26 (run030: run029 independently verified, stale state fixed, TC-0018 executed 4/4 PASS, Gate 4 verified, Spec Workbench v1 created)
-**Last updated:** 2026-05-05
+**Version:** 2.27 (run031: run030 independently verified, stale fixed, Evidence Bundle Contracts, TC-0021 workbench quality PASS, Gate 4 human-review packet prepared)
+**Last updated:** 2026-05-06
 **Current phase:** Phase 3: FODS Gate 4 verified (TC-0018 PASS run030) — awaiting human Gate 4 approval; Spec Workbench v1 created
-**Current status:** Gate 1 PASSED (Babar Raza, 2026-05-04). Gate 2 PASSED (Babar Raza, 2026-05-05, run023). Gate 3 PASSED (Babar Raza, 2026-05-05, run028). TC-0013 COMPLETED. TC-0014 completed (run029). TC-0015 not_started (spec retrieval evaluation — blocked by human review). TC-0016 not_started (FODS vector index pilot — blocked by TC-0015). TC-0017 prototype_created_pending_independent_verification. TC-0018 verification_passed_pending_human_review (run030). TC-0019 not_started. TC-0020 not_started (Spec Workbench core — run030). TC-0021 not_started (FODS workbench quality review — run030). Gate 4: prototype_verified_pending_human_review (TC-0018 PASS run030). Spec Workbench v1 created run030. No product source. Latest commit: ea20cde (run029). Uncommitted: run030 changes.
+**Current status:** Gate 1 PASSED (Babar Raza, 2026-05-04). Gate 2 PASSED (Babar Raza, 2026-05-05, run023). Gate 3 PASSED (Babar Raza, 2026-05-05, run028). TC-0013 COMPLETED. TC-0014 completed (run029). TC-0015 not_started (spec retrieval evaluation — blocked by human review). TC-0016 not_started (FODS vector index pilot — blocked by TC-0015). TC-0017 completed (run030). TC-0018 verification_passed_pending_human_review (run030). TC-0019 not_started. TC-0020 not_started (Spec Workbench core — run030). TC-0021 not_started (FODS workbench quality review — run030). Gate 4: prototype_verified_pending_human_review (TC-0018 PASS run030). Spec Workbench v1 created run030. No product source. Latest commit: 4ca85ad (run030). Working tree clean.
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05).
-**Commit allowed:** YES — run029 commit pending.
-**Next required action:** Gate 4 human approval (TC-0018 verified run030). Separately: TC-0021 Spec Workbench quality review.
+**Commit allowed:** YES — run030 committed (9382e66 + 4ca85ad).
+**Next required action:** Gate 4 human approval by Babar Raza (TC-0018 verified run030; TC-0021 quality review PASS run031; human-review packet at acquisition-packs/fods/gate4-human-review-packet.md).
 
 ---
 
@@ -1005,13 +1005,14 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 | run027 | 2026-05-05 | Independent verification of run026 + stale fixes + Hybrid Spec Retrieval Strategy | Verified run026 (8871777; trivial master-plan leftover confirmed). Independent verification (DEC-034) PASS: 21 checks PASS, 6 stale issues found and fixed. Stale fixes: master-plan header (f17bb12→8871777), settings.json notes[0] (Phase 2→3), TC-0013 prerequisites (lines 67-68 checked), TC-0013 planned-sample-names labeled, sample-sources.md (full update: status, filenames, checklist, history), parser-notes.md gate status. SHA-256 hashes added to provenance.yaml. Validation re-run: 4/4 PASS. Nav layer smoke-tested: §3.1.2 query ✓, core-req query ✓, section rebuild 705pp ✓. Gate 3 status: sample_corpus_created_pending_independent_verification → sample_corpus_verified_pending_human_review. Hybrid Spec Retrieval Strategy: docs/spec-retrieval-strategy.md (10 sections, Tier 1+2+3 design). TC-0015 created (evaluation, not_started). TC-0016 created (vector index pilot, not_started). AGENTS.md Section X added. settings.json updated. Master-plan v2.23. Committed 09ee31f. |
 | run028 | 2026-05-05 | Gate 3 approval + Gate 4 planning package + memory updates | Verified run027 (09ee31f; working tree clean). Recorded Gate 3 approval: Babar Raza, 2026-05-05. Updated registry gate_3 → passed. next_allowed_action → gate4_parser_prototype_planning. Stale fixes: master-plan header (8871777→09ee31f), settings.json notes[0] (run027 commit pending→Gate 3 PASSED), pack.yaml header/notes/next_action, README.md (Gate 3 PASSED, Gate 4 next), ROADMAP.md (Gate 3 PASSED). TC-0011 closed (superseded by run027 verification). TC-0013 completed (Gate 3 approval recorded). TC-0014 activated (planning_ready). TC-0015+TC-0016 updated (cloud-DB/no-mixing/stale-hash restrictions added). Created parser planning package: parser-requirements.md, parser-scope.md, parser-test-plan.md. Created TC-0017 (Gate 4 prototype execution, not_started) and TC-0018 (Gate 4 prototype verification DEC-034, not_started). Memory files updated: 03 (Hybrid Retrieval architecture section), 05 (D-046–D-049), 09 (complete rewrite to run028 current state), 10 (run027+run028 update entries). External MEMORY.md updated. Master-plan v2.24. Committed 5c93b88. |
 | run029 | 2026-05-05 | run028 independent verification + stale-state fixes + TC-0017 Gate 4 prototype execution | Verified run028 (5c93b88; working tree clean). All 33 verification checks PASS. Stale fixes: master-plan header (09ee31f→5c93b88), settings.json description→Gate4 execution mode, prototypes/by-format/fods/** moved to allow list, notes[0] updated. parser-notes.md Gate 3 status fixed. TC-0017 executed: prototype created at prototypes/by-format/fods/fods_parser.py (Python stdlib only, ElementTree). Validation: PT-001 PASS (8/8), PT-002 PASS (6/6), PT-003 PASS (8/8), PT-004 PASS (8/8) = 4/4 overall PASS. Test plan discrepancies documented: PT-001 text "Hello" vs predicted "Hello, World!"; PT-002 sheets "Data"/"Summary" vs predicted "Sheet1"/"Sheet2"; PT-003 no date cell vs predicted date cell. All discrepancies in prototype-notes.md + parser-notes.md. Registry gate_4 → prototype_created_pending_independent_verification. next_allowed_action → gate4_independent_verification_tc0018. TC-0017 → prototype_created_pending_independent_verification (acceptance criteria updated). TC-0018 → ready_for_execution. TC-0019 created (Gate 5 neutral model planning, not_started). Created: prototypes/by-format/fods/fods_parser.py, README.md, validate_against_samples.py, prototype-notes.md. Updated: parser-notes.md, parser-test-plan acceptance criteria context. Memory files updated: 05 (D-050), 09 (current state rewrite), 10 (run029 entry). External MEMORY.md updated. Master-plan v2.25. Committed d8187e0. No product source. No schema. No push. Gate 4 NOT approved. |
-| run030 | 2026-05-06 | run029 independent verification (TC-0018) + stale fixes + Spec Workbench v1 + parser planning updates | Verified run029 (ea20cde; working tree clean). TC-0018 DEC-034 independent verification sprint: validate_against_samples.py re-run 4/4 PASS, gate_4_approved=False confirmed, stdlib confirmed (no network imports), no forbidden paths. Stale fixes: settings.json contradiction (prototypes/fods deny→allow); master-plan header (ea20cde); TC-0014 completed. Created Spec Workbench v1 (local-only): verified-facts.yaml (10 facts), requirement-packs (parser/sample/model), task-packets (gate3/gate4/gate5-draft), coverage matrices. Validation: 205/205 checks PASS. Created 5 new tools (build_spec_workbench.py, build_requirement_pack.py, validate_requirement_pack.py, export_task_packet.py) + docs/spec-consumption-workbench.md. Updated parser planning files: parser-requirements.md (workbench cross-ref), parser-scope.md (status updated), parser-test-plan.md (all PASS; discrepancies corrected), parser-notes.md (Gate 4 verified; workbench section; gate sign-off). Created TC-0020 (Spec Workbench core) and TC-0021 (FODS workbench quality review). Updated registry gate_4 → prototype_verified_pending_human_review. Updated TC-0017 (completed), TC-0018 (verification_passed), TC-0019 (blocker updated). Memory files updated: 09/10/MEMORY.md. Master-plan v2.26. Commit pending. |
+| run030 | 2026-05-06 | run029 independent verification (TC-0018) + stale fixes + Spec Workbench v1 + parser planning updates | Verified run029. TC-0018 DEC-034 PASS. Spec Workbench v1 created (local-only, 205/205 PASS). 5 new tools + docs/spec-consumption-workbench.md. TC-0020/TC-0021 created. Registry gate_4 → prototype_verified_pending_human_review. Master-plan v2.26. Committed 9382e66 + 4ca85ad. |
+| run031 | 2026-05-06 | run030 independent verification + stale fixes + Evidence Bundle Contract system + TC-0021 workbench quality review + Gate 4 human-review packet | Verified run030 (4ca85ad; working tree clean, 30/30 checks PASS). Stale fixes: master-plan commit refs (ea20cde→4ca85ad), memory/09 commit refs, settings.json vector index allow→evidence allow. Evidence Bundle Contract system: tools/evidence/ (builder, validator, contracts, collectors). TC-0022 created (completed_pending_independent_verification). TC-0021 quality review PASS (205/205 validation, all packs verified). TC-0018 rerun: 4/4 PASS. Gate 4 human-review packet created (acquisition-packs/fods/gate4-human-review-packet.md). TC-0019 → ready_for_execution_after_gate4_approval. TC-0023 created (not_started). AGENTS.md Section Y + GOVERNANCE.md Section 18 (evidence bundle policy). No Gate 4 approval. No product source. No schema. No embeddings. Master-plan v2.27. |
 
 ---
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 9382e66 (run030) — "chore: verify FODS Gate 4 prototype and add Spec Workbench (run030)"
+**Latest commit:** 4ca85ad (run030) — "chore: update master-plan v2.26 and Section 33 post-commit state (run030)"
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1058,9 +1059,18 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - acquisition-packs/fods/parser-notes.md (Gate 4 status → verified; workbench section added; gate sign-off updated)
 - plans/master-plan.md v2.26 (Section 6 updated; Section 33 current; run030 history entry added)
 - memory/09 (latest commit, uncommitted, run030)
-**Uncommitted (post-run030):**
-- plans/master-plan.md Section 33 latest commit record (this update)
-- (.local/ artifacts NOT committed — normalized/, spec cache, workbench artifacts, run records, evidence bundles)
+**Committed (4ca85ad, run030 post-commit):**
+- plans/master-plan.md Section 33 latest commit record, taskcards/TC-0014 current state
+
+**Uncommitted (run031 — pending commit):**
+- Evidence Bundle Contract system (tools/evidence/**)
+- TC-0022, TC-0023 created
+- TC-0021 quality_review_passed, TC-0019 ready_for_execution_after_gate4_approval
+- Gate 4 human-review packet (acquisition-packs/fods/gate4-human-review-packet.md)
+- AGENTS.md Section Y, GOVERNANCE.md Section 18
+- Stale state fixes (master-plan, memory/09, settings.json)
+- README.md, ROADMAP.md updated
+- (.local/ artifacts NOT committed — normalized/, spec cache, workbench, run records, evidence bundles)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 

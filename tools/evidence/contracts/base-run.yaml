@@ -1,0 +1,45 @@
+# Base Evidence Bundle Contract
+# All sprint runs inherit these rules.
+# Format: YAML
+# Version: 1.0
+# Created: run031 (2026-05-06)
+
+contract_id: base-run
+version: "1.0"
+description: "Base contract for all format-factory evidence bundles."
+
+# Required top-level folders in the zip (exactly these, no others)
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+# Forbidden path patterns (glob-style, matched against zip entry paths)
+# Any match causes BUNDLE_VALIDATION: FAIL
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/*.chroma/**"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+
+# Minimum metadata files required
+min_metadata_count: 5
+
+# Required repo files (paths relative to repo/ in the zip)
+required_repo_files: []
+
+# Required metadata files (paths relative to bundle-metadata/ in the zip)
+required_metadata_files: []

@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-06 (run030)
+**Last reviewed:** 2026-05-06 (run031)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
 
 ---
@@ -103,7 +103,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Entry condition:** Gate 3 passed for FODS.
 
-**Gate 4 status:** Prototype created (run029, 2026-05-05) and independently verified (TC-0018 DEC-034 PASS, run030, 2026-05-06). `prototypes/by-format/fods/fods_parser.py` — Python stdlib only. Validation: PT-001 through PT-004 PASS (4/4). Spec Workbench v1 created (local-only). Gate 4 NOT approved — human approval required.
+**Gate 4 status:** Prototype created (run029, 2026-05-05), independently verified (TC-0018 DEC-034 PASS, run030, 2026-05-06), workbench quality review passed (run031, 2026-05-06). `prototypes/by-format/fods/fods_parser.py` — Python stdlib only. Validation: PT-001 through PT-004 PASS (4/4). Spec Workbench v1 quality-reviewed. Evidence Bundle Contract system added (run031). Gate 4 NOT approved — human review packet prepared, awaiting human approval.
 
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 

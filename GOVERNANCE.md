@@ -250,6 +250,20 @@ See `docs/spec-retrieval-strategy.md` for full strategy. See AGENTS.md Section X
 
 ---
 
+## 18. Evidence Bundle Policy
+
+**18.1.** Evidence bundles must be built using `tools/evidence/build_evidence_bundle.py` and validated using `tools/evidence/validate_evidence_bundle.py`. Manual zip packaging is prohibited for production bundles.
+
+**18.2.** The `EVIDENCE_BUNDLE:` path must not be printed unless the validator reports `BUNDLE_VALIDATION: PASS`.
+
+**18.3.** Every sprint must use a contract file (in `tools/evidence/contracts/`). Missing required metadata, forbidden files, or incorrect top-level folder layout are hard failures.
+
+**18.4.** Thin evidence bundles (below `min_metadata_count`) are not acceptable for Gate reviews or phase transitions.
+
+See AGENTS.md Section Y for agent-specific evidence bundle rules.
+
+---
+
 ## Relationship to Other Documents
 
 - `AGENTS.md` — non-negotiable operating rules for agents
@@ -259,3 +273,4 @@ See `docs/spec-retrieval-strategy.md` for full strategy. See AGENTS.md Section X
 - `docs/legal-and-licensing.md` — format legal classification and license policy
 - `docs/llm-endpoint-strategy.md` — LLM endpoint and prompt handling policy
 - `docs/specification-normalization.md` — specification normalization layer policy
+- `tools/evidence/_readme.md` — evidence bundle contract system

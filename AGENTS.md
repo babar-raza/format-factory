@@ -469,3 +469,25 @@ See `docs/specification-normalization.md` for the complete policy. See `tools/sp
 **X7. Evaluation Before Implementation.** Tier 3 vector search must be evaluated (TC-0015) before it is implemented (TC-0016). TC-0016 must not proceed without TC-0015 evaluation report reviewed and approved by a human.
 
 See `docs/spec-retrieval-strategy.md` for the complete strategy. See `taskcards/TC-0015-spec-retrieval-strategy-evaluation.md` and `taskcards/TC-0016-fods-vector-index-pilot.md` for evaluation and implementation taskcards.
+
+---
+
+## Y. Evidence Bundle Contract Rules
+
+**Y1. Deterministic Builder Required.** All evidence bundles must be built using `tools/evidence/build_evidence_bundle.py`. Manual zip packaging (Python zipfile, shell zip, etc.) is prohibited for production evidence bundles.
+
+**Y2. Contract Validation Required.** All evidence bundles must be validated using `tools/evidence/validate_evidence_bundle.py` before the `EVIDENCE_BUNDLE:` path is printed. An agent must not print `EVIDENCE_BUNDLE:` unless the validator outputs `BUNDLE_VALIDATION: PASS`.
+
+**Y3. Contract File Required.** Every sprint must have a contract file in `tools/evidence/contracts/` or use the `base-run.yaml` contract. The contract specifies required repo files, required metadata files, forbidden patterns, and top-level folder constraints.
+
+**Y4. Two Top-Level Folders Only.** Evidence bundles must contain exactly two top-level folders: `repo/` and `bundle-metadata/`. Any other top-level folder (including wrapper folders) is a hard failure.
+
+**Y5. Forbidden Files Are Hard Failures.** Any file matching a forbidden pattern (`.local/`, `.env`, `text.txt`, `pages.jsonl`, `chunks.jsonl`, embeddings, vector DB, `__pycache__/`, etc.) found in the bundle causes `BUNDLE_VALIDATION: FAIL`.
+
+**Y6. Missing Required Metadata Is a Hard Failure.** If any required metadata file listed in the contract is absent from `bundle-metadata/`, validation fails.
+
+**Y7. Thin Bundles Not Acceptable.** A bundle with fewer metadata files than `min_metadata_count` in the contract fails validation.
+
+**Y8. Emergency Exception.** Manual zipping is permitted only for emergency diagnostics explicitly labeled as "INVALID/UNVERIFIED — not a production evidence bundle" in the filename and contents.
+
+See `tools/evidence/_readme.md` for tooling documentation. See `tools/evidence/contracts/` for contract definitions.

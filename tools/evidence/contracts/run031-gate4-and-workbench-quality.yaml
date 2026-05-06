@@ -1,0 +1,123 @@
+# run031 Evidence Bundle Contract
+# Sprint: run031 — Gate 4 human-review preparation + Spec Workbench quality review + Evidence Bundle Contract system
+# Inherits: base-run.yaml
+# Created: run031 (2026-05-06)
+
+contract_id: run031-gate4-and-workbench-quality
+version: "1.0"
+inherits: base-run
+description: "Contract for run031 evidence bundle. Requires Gate 4 review artifacts, workbench quality audit, and evidence contract system artifacts."
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/*.chroma/**"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+
+min_metadata_count: 37
+
+required_repo_files:
+  - README.md
+  - ROADMAP.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - registry/scoring/_scoring-model.md
+  - taskcards/TC-0015-spec-retrieval-strategy-evaluation.md
+  - taskcards/TC-0016-fods-vector-index-pilot.md
+  - taskcards/TC-0017-fods-gate4-parser-prototype-execution.md
+  - taskcards/TC-0018-fods-gate4-parser-prototype-verification.md
+  - taskcards/TC-0019-fods-gate5-neutral-model-planning.md
+  - taskcards/TC-0020-spec-workbench-core.md
+  - taskcards/TC-0021-fods-workbench-quality-review.md
+  - taskcards/TC-0022-evidence-bundle-contract-system.md
+  - taskcards/TC-0023-fods-gate5-neutral-model-execution.md
+  - acquisition-packs/fods/pack.yaml
+  - acquisition-packs/fods/gate4-human-review-packet.md
+  - acquisition-packs/fods/parser-notes.md
+  - acquisition-packs/fods/parser-requirements.md
+  - acquisition-packs/fods/parser-scope.md
+  - acquisition-packs/fods/parser-test-plan.md
+  - docs/spec-consumption-workbench.md
+  - docs/spec-retrieval-strategy.md
+  - docs/specification-normalization.md
+  - docs/acquisition-workflow.md
+  - docs/gates.md
+  - docs/release-control.md
+  - docs/security.md
+  - tools/evidence/_readme.md
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/collect_git_state.py
+  - tools/evidence/collect_file_inventory.py
+  - tools/evidence/contracts/base-run.yaml
+  - tools/evidence/contracts/run031-gate4-and-workbench-quality.yaml
+  - prototypes/by-format/fods/fods_parser.py
+  - prototypes/by-format/fods/validate_against_samples.py
+  - prototypes/by-format/fods/prototype-notes.md
+  - samples/_provenance.yaml
+  - tools/spec-normalize/build_spec_workbench.py
+  - tools/spec-normalize/build_requirement_pack.py
+  - tools/spec-normalize/validate_requirement_pack.py
+  - tools/spec-normalize/export_task_packet.py
+  - .claude/settings.json
+  - .gitignore
+  - .env.example
+
+required_metadata_files:
+  - run031-summary.md
+  - run030-independent-verification.md
+  - run030-bundle-completeness-review.md
+  - run030-leftover-state-fix-report.md
+  - evidence-contract-system-report.md
+  - evidence-builder-validation-report.md
+  - tc-0022-status-audit.md
+  - tc-0021-workbench-quality-review.md
+  - fods-workbench-artifact-audit.md
+  - requirement-pack-quality-review.md
+  - coverage-matrix-quality-review.md
+  - task-packet-quality-review.md
+  - tc-0018-rerun-verification.md
+  - gate4-human-review-packet-audit.md
+  - tc-0019-status-audit.md
+  - tc-0023-creation-decision.md
+  - no-schema-no-product-source-check.md
+  - no-vector-index-created-check.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - yaml-validation-notes.txt
+  - python-tool-validation.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  - files-reviewed.txt
+  - files-modified.txt
+  - files-created.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - git-log.txt
+  - artifact-index-snapshot.yaml
+  - gap-log-update.md
+  - memory-sync-report.md
+  - self-challenge.md
+  - verdict.md
