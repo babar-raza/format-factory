@@ -1011,7 +1011,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** ea20cde (run029) — "chore: update master-plan v2.25 and TC-0014 post-commit state (run029)"
+**Latest commit:** 9382e66 (run030) — "chore: verify FODS Gate 4 prototype and add Spec Workbench (run030)"
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1039,7 +1039,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 **Committed (ea20cde, run029):**
 - plans/master-plan.md (TC table rows updated, master-plan.md Section 33 latest commit d8187e0 recorded), taskcards/TC-0014 (current state updated)
 
-**Uncommitted (run030 pending commit):**
+**Committed (9382e66, run030):**
 - docs/spec-consumption-workbench.md (NEW)
 - tools/spec-normalize/build_spec_workbench.py (NEW)
 - tools/spec-normalize/build_requirement_pack.py (NEW)
@@ -1058,6 +1058,8 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - acquisition-packs/fods/parser-notes.md (Gate 4 status → verified; workbench section added; gate sign-off updated)
 - plans/master-plan.md v2.26 (Section 6 updated; Section 33 current; run030 history entry added)
 - memory/09 (latest commit, uncommitted, run030)
+**Uncommitted (post-run030):**
+- plans/master-plan.md Section 33 latest commit record (this update)
 - (.local/ artifacts NOT committed — normalized/, spec cache, workbench artifacts, run records, evidence bundles)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
