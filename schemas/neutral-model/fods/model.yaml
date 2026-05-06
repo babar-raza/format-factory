@@ -1,0 +1,161 @@
+# FODS Neutral Model v1
+# Gate 5 artifact — defines the language-neutral intermediate representation
+# for parsed FODS spreadsheet content.
+# Created: run033 (2026-05-06)
+
+model_id: fods-neutral-model
+version: "1.0"
+format_id: fods
+spec_version: "ODF 1.3"
+gate: 5
+created: "2026-05-06"
+created_by: run033
+
+entities:
+
+  Workbook:
+    description: "Root container for a parsed FODS document."
+    fields:
+      format_id:
+        type: string
+        required: true
+        description: "Format identifier, always 'fods'."
+        example: "fods"
+      spec_version:
+        type: string
+        required: true
+        description: "ODF spec version string."
+        example: "ODF 1.3"
+      odf_version_attr:
+        type: string
+        required: true
+        description: "The office:version attribute value from the root element."
+        example: "1.3"
+      mimetype:
+        type: string
+        required: false
+        description: "The office:mimetype attribute. Null if absent."
+        example: "application/vnd.oasis.opendocument.spreadsheet-flat-xml"
+      sheet_count:
+        type: integer
+        required: true
+        description: "Number of sheets in the workbook."
+      sheets:
+        type: array
+        items: Sheet
+        required: true
+        description: "Ordered list of sheets."
+      warnings:
+        type: array
+        items: Warning
+        required: true
+        description: "Workbook-level warnings (e.g., missing mimetype, unsupported features)."
+
+  Sheet:
+    description: "A single spreadsheet sheet (table:table element)."
+    fields:
+      name:
+        type: string
+        required: true
+        description: "Sheet name from table:name attribute."
+      index:
+        type: integer
+        required: true
+        description: "Zero-based sheet index within the workbook."
+      row_count:
+        type: integer
+        required: true
+        description: "Number of rows in this sheet."
+      rows:
+        type: array
+        items: Row
+        required: true
+        description: "Ordered list of rows."
+
+  Row:
+    description: "A single row within a sheet (table:table-row element)."
+    fields:
+      index:
+        type: integer
+        required: true
+        description: "Zero-based row index within the sheet."
+      cells:
+        type: array
+        items: Cell
+        required: true
+        description: "Ordered list of cells in this row."
+
+  Cell:
+    description: "A single cell within a row (table:table-cell element)."
+    fields:
+      row_index:
+        type: integer
+        required: false
+        description: "Zero-based row index (redundant with parent Row, included for flat representations)."
+      col_index:
+        type: integer
+        required: true
+        description: "Zero-based column index within the row."
+      value_type:
+        type: string
+        required: false
+        description: "The office:value-type attribute. One of: float, string, boolean, date, time, currency, percentage. Null if cell is empty."
+        enum: ["float", "string", "boolean", "date", "time", "currency", "percentage"]
+      value:
+        type: any
+        required: false
+        description: "The typed value. Float for numeric types, string for string, boolean for boolean, null if absent."
+      text:
+        type: string
+        required: false
+        description: "Text content from text:p child elements, concatenated with newlines."
+      formula:
+        type: Formula
+        required: false
+        description: "Formula information if the cell has a table:formula attribute. Null if no formula."
+      repeated_columns:
+        type: integer
+        required: false
+        description: "Number of times this cell is repeated (table:number-columns-repeated). Null or 1 if not repeated."
+      warnings:
+        type: array
+        items: Warning
+        required: false
+        description: "Cell-level warnings (e.g., unsupported value type, covered cell)."
+
+  Formula:
+    description: "Formula information for a cell."
+    fields:
+      raw:
+        type: string
+        required: true
+        description: "Raw formula string from table:formula attribute (e.g., 'oooc:=SUM([.A1:.A3])')."
+      cached_value:
+        type: any
+        required: false
+        description: "The last computed value cached in the document (from office:value attribute)."
+      evaluated:
+        type: boolean
+        required: true
+        description: "Always false in v1 — formula evaluation is not supported."
+      evaluator:
+        type: string
+        required: false
+        description: "Identifier of the evaluator that produced cached_value. Null in v1."
+
+  Warning:
+    description: "A warning about unsupported or unexpected content."
+    fields:
+      code:
+        type: string
+        required: true
+        description: "Warning code for programmatic handling."
+        enum: ["MISSING_MIMETYPE", "UNEXPECTED_MIMETYPE", "UNSUPPORTED_VALUE_TYPE", "COVERED_CELL", "UNSUPPORTED_ELEMENT", "LARGE_REPEAT", "UNKNOWN"]
+      message:
+        type: string
+        required: true
+        description: "Human-readable warning message."
+      source:
+        type: string
+        required: false
+        description: "Location context (e.g., 'Sheet1:R2C3', 'workbook:root')."

@@ -81,13 +81,24 @@ gate_3:
   license: "Apache-2.0"
   validation_result: "4/4 PASS"
 gate_4:
-  status: prototype_created_pending_independent_verification
+  status: passed
+  approved_by: "Babar Raza"
+  approved_date: "2026-05-06"
   prototype_path: prototypes/by-format/fods/fods_parser.py
   validation_result: "4/4 PASS (PT-001 through PT-004)"
   validation_run: run029
   validation_date: "2026-05-05"
-  gate_4_approved: false
-  next_action: gate4_independent_verification_tc0018
+  gate_4_approved: true
+  next_action: gate5_independent_verification_tc0024
+gate_5:
+  status: neutral_model_created_pending_independent_verification
+  approved_by: null
+  approved_date: null
+  model_path: schemas/neutral-model/fods/
+  model_version: "1.0"
+  validation_result: "4/4 PASS (validate_neutral_model.py, run033)"
+  tc0023_run: run033
+  next_action: gate5_independent_verification_tc0024
 
 # --- Spec cache status ---
 spec_cache:

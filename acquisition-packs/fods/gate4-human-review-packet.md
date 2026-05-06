@@ -27,8 +27,8 @@ notes: "Gate 4 human review packet for FODS. Created run031 (2026-05-06). TC-001
 
 **Format:** FODS (Flat OpenDocument Spreadsheet)
 **Gate:** 4 — Parser Prototype
-**Current status:** prototype_verified_pending_human_review
-**Gate 4 approved:** NO
+**Current status:** passed
+**Gate 4 approved:** YES — Babar Raza, 2026-05-06 (run033 prompt)
 **Prepared by:** run031 (2026-05-06)
 
 ---
@@ -37,11 +37,11 @@ notes: "Gate 4 human review packet for FODS. Created run031 (2026-05-06). TC-001
 
 | Field | Value |
 |---|---|
-| Registry status | `prototype_verified_pending_human_review` |
-| approved_by | null |
-| approved_date | null |
+| Registry status | `passed` |
+| approved_by | Babar Raza |
+| approved_date | 2026-05-06 |
 | TC-0017 (execution) | completed |
-| TC-0018 (DEC-034 verification) | verification_passed_pending_human_review |
+| TC-0018 (DEC-034 verification) | closed (Gate 4 approved) |
 | TC-0021 (workbench quality) | quality_review_verified (run031+run032) |
 
 ---

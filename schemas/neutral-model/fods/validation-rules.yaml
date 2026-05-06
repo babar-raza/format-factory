@@ -1,0 +1,161 @@
+# FODS Neutral Model Validation Rules v1
+# Gate 5 artifact — defines rules for validating neutral model instances.
+# Created: run033 (2026-05-06)
+
+model_id: fods-neutral-model
+version: "1.0"
+format_id: fods
+gate: 5
+created: "2026-05-06"
+created_by: run033
+
+# These rules go beyond JSON Schema structural validation.
+# They define semantic invariants that a valid neutral model instance must satisfy.
+
+rules:
+
+  # --- Workbook-level ---
+
+  - id: VR-001
+    entity: Workbook
+    severity: error
+    rule: "format_id must equal 'fods'"
+    check: "workbook.format_id == 'fods'"
+
+  - id: VR-002
+    entity: Workbook
+    severity: error
+    rule: "sheet_count must equal length of sheets array"
+    check: "workbook.sheet_count == len(workbook.sheets)"
+
+  - id: VR-003
+    entity: Workbook
+    severity: error
+    rule: "spec_version must be a non-empty string"
+    check: "len(workbook.spec_version) > 0"
+
+  - id: VR-004
+    entity: Workbook
+    severity: error
+    rule: "odf_version_attr must be a non-empty string"
+    check: "len(workbook.odf_version_attr) > 0"
+
+  - id: VR-005
+    entity: Workbook
+    severity: warning
+    rule: "mimetype should be present for well-formed FODS documents"
+    check: "workbook.mimetype is not None"
+    warning_code: MISSING_MIMETYPE
+
+  # --- Sheet-level ---
+
+  - id: VR-010
+    entity: Sheet
+    severity: error
+    rule: "Sheet index must be unique within the workbook and match array position"
+    check: "sheet.index == position_in_array"
+
+  - id: VR-011
+    entity: Sheet
+    severity: error
+    rule: "row_count must equal length of rows array"
+    check: "sheet.row_count == len(sheet.rows)"
+
+  - id: VR-012
+    entity: Sheet
+    severity: error
+    rule: "Sheet name must be a non-empty string"
+    check: "len(sheet.name) > 0"
+
+  # --- Row-level ---
+
+  - id: VR-020
+    entity: Row
+    severity: error
+    rule: "Row index must be sequential within the sheet (0-based)"
+    check: "row.index == position_in_array"
+
+  - id: VR-021
+    entity: Row
+    severity: error
+    rule: "Row must contain a cells array (may be empty)"
+    check: "row.cells is list"
+
+  # --- Cell-level ---
+
+  - id: VR-030
+    entity: Cell
+    severity: error
+    rule: "col_index must be non-negative"
+    check: "cell.col_index >= 0"
+
+  - id: VR-031
+    entity: Cell
+    severity: error
+    rule: "col_index values must be non-decreasing within a row"
+    check: "cell.col_index >= previous_cell.col_index"
+
+  - id: VR-032
+    entity: Cell
+    severity: error
+    rule: "If value_type is 'float', value must be numeric (int or float) or null"
+    check: "cell.value_type == 'float' implies isinstance(cell.value, (int, float)) or cell.value is None"
+
+  - id: VR-033
+    entity: Cell
+    severity: error
+    rule: "If value_type is 'boolean', value must be boolean or null"
+    check: "cell.value_type == 'boolean' implies isinstance(cell.value, bool) or cell.value is None"
+
+  - id: VR-034
+    entity: Cell
+    severity: error
+    rule: "If value_type is 'string', value must be string or null"
+    check: "cell.value_type == 'string' implies cell.value is None or isinstance(cell.value, str)"
+
+  - id: VR-035
+    entity: Cell
+    severity: warning
+    rule: "If value_type is null, cell should have no value and no text (empty cell)"
+    check: "cell.value_type is None implies cell.value is None"
+
+  # --- Formula-level ---
+
+  - id: VR-040
+    entity: Formula
+    severity: error
+    rule: "Formula.raw must be a non-empty string"
+    check: "len(formula.raw) > 0"
+
+  - id: VR-041
+    entity: Formula
+    severity: error
+    rule: "Formula.evaluated must be false in v1"
+    check: "formula.evaluated == False"
+
+  - id: VR-042
+    entity: Formula
+    severity: error
+    rule: "Formula.evaluator must be null in v1"
+    check: "formula.evaluator is None"
+
+  # --- Warning-level ---
+
+  - id: VR-050
+    entity: Warning
+    severity: error
+    rule: "Warning.code must be from the defined enum"
+    check: "warning.code in ['MISSING_MIMETYPE', 'UNEXPECTED_MIMETYPE', 'UNSUPPORTED_VALUE_TYPE', 'COVERED_CELL', 'UNSUPPORTED_ELEMENT', 'LARGE_REPEAT', 'UNKNOWN']"
+
+  - id: VR-051
+    entity: Warning
+    severity: error
+    rule: "Warning.message must be a non-empty string"
+    check: "len(warning.message) > 0"
+
+# --- Summary ---
+summary:
+  total_rules: 21
+  error_rules: 18
+  warning_rules: 3
+  entities_covered: ["Workbook", "Sheet", "Row", "Cell", "Formula", "Warning"]

@@ -1,0 +1,169 @@
+# FODS Field Map v1
+# Gate 5 artifact — maps prototype parser JSON output to neutral model fields.
+# Created: run033 (2026-05-06)
+#
+# The prototype parser (prototypes/by-format/fods/fods_parser.py) outputs a flat
+# JSON structure. This field map documents how each parser output field maps to
+# the neutral model entity/field defined in model.yaml.
+
+model_id: fods-neutral-model
+version: "1.0"
+format_id: fods
+gate: 5
+created: "2026-05-06"
+created_by: run033
+
+# Parser output key → Neutral model entity.field
+# "transform" describes any conversion needed between prototype output and model.
+
+mappings:
+
+  # --- Workbook-level ---
+
+  - parser_path: "$.format"
+    model_entity: Workbook
+    model_field: format_id
+    transform: rename_key
+    notes: "Parser uses 'format', model uses 'format_id'. Value is always 'fods'."
+
+  - parser_path: "$.spec_version"
+    model_entity: Workbook
+    model_field: spec_version
+    transform: direct
+    notes: "Direct 1:1 mapping. String value."
+
+  - parser_path: "$.odf_version_attr"
+    model_entity: Workbook
+    model_field: odf_version_attr
+    transform: direct
+    notes: "Direct 1:1 mapping. String value."
+
+  - parser_path: "$.mimetype"
+    model_entity: Workbook
+    model_field: mimetype
+    transform: direct
+    notes: "Direct 1:1 mapping. String or null."
+
+  - parser_path: "$.sheet_count"
+    model_entity: Workbook
+    model_field: sheet_count
+    transform: direct
+    notes: "Direct 1:1 mapping. Integer."
+
+  - parser_path: "$.sheets"
+    model_entity: Workbook
+    model_field: sheets
+    transform: direct
+    notes: "Array of Sheet objects. Mapped recursively below."
+
+  - parser_path: "$.warnings"
+    model_entity: Workbook
+    model_field: warnings
+    transform: direct
+    notes: "Array of Warning objects. Parser already outputs structured warnings."
+
+  # --- Sheet-level ---
+
+  - parser_path: "$.sheets[*].name"
+    model_entity: Sheet
+    model_field: name
+    transform: direct
+
+  - parser_path: "$.sheets[*].index"
+    model_entity: Sheet
+    model_field: index
+    transform: direct
+    notes: "Parser does not output sheet index — it is implied by array position. Product code must add explicit index field."
+
+  - parser_path: "$.sheets[*].row_count"
+    model_entity: Sheet
+    model_field: row_count
+    transform: direct
+
+  - parser_path: "$.sheets[*].rows"
+    model_entity: Sheet
+    model_field: rows
+    transform: direct
+
+  # --- Row-level ---
+
+  - parser_path: "$.sheets[*].rows[*].index"
+    model_entity: Row
+    model_field: index
+    transform: direct
+
+  - parser_path: "$.sheets[*].rows[*].cells"
+    model_entity: Row
+    model_field: cells
+    transform: direct
+
+  # --- Cell-level ---
+
+  - parser_path: "$.sheets[*].rows[*].cells[*].col_index"
+    model_entity: Cell
+    model_field: col_index
+    transform: direct
+
+  - parser_path: "$.sheets[*].rows[*].cells[*].value_type"
+    model_entity: Cell
+    model_field: value_type
+    transform: direct
+    notes: "String enum or null. Parser outputs same enum values as model."
+
+  - parser_path: "$.sheets[*].rows[*].cells[*].value"
+    model_entity: Cell
+    model_field: value
+    transform: direct
+    notes: "Polymorphic: float, string, boolean, or null depending on value_type."
+
+  - parser_path: "$.sheets[*].rows[*].cells[*].text"
+    model_entity: Cell
+    model_field: text
+    transform: direct
+    notes: "Text content from text:p elements. String or null."
+
+  - parser_path: "$.sheets[*].rows[*].cells[*].formula"
+    model_entity: Cell
+    model_field: formula
+    transform: expand_to_formula_object
+    notes: >-
+      CRITICAL TRANSFORM: Parser outputs formula as a flat string (the raw formula)
+      or null. The neutral model expects a Formula object with fields: raw, cached_value,
+      evaluated, evaluator. Product code must expand the string to a Formula object:
+      { raw: <string>, cached_value: <cell.value>, evaluated: false, evaluator: null }.
+
+  # --- Cell fields NOT in prototype output (model enrichments) ---
+
+  - parser_path: null
+    model_entity: Cell
+    model_field: row_index
+    transform: derive_from_parent
+    notes: "Not in prototype output. Derived from parent Row.index in flat representations."
+
+  - parser_path: null
+    model_entity: Cell
+    model_field: repeated_columns
+    transform: derive_from_xml
+    notes: >-
+      Not in prototype v1 output. The prototype expands repeated cells inline.
+      Product code should preserve the repeat count from table:number-columns-repeated
+      for roundtrip fidelity.
+
+  - parser_path: null
+    model_entity: Cell
+    model_field: warnings
+    transform: derive_from_validation
+    notes: "Not in prototype v1 output at cell level. Product code should populate cell-level warnings."
+
+# --- Summary ---
+
+transform_summary:
+  direct_mappings: 14
+  rename_mappings: 1
+  expand_mappings: 1
+  derived_mappings: 3
+  total: 19
+  notes: >-
+    The prototype parser output is close to the neutral model. Only 3 transforms
+    are non-trivial: (1) 'format' → 'format_id' key rename, (2) formula string →
+    Formula object expansion, (3) 3 fields derived from context not in prototype output.

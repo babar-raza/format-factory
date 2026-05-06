@@ -1,0 +1,194 @@
+# FODS Neutral Model Coverage Matrix v1
+# Gate 5 artifact — documents what ODF 1.3 features are covered vs deferred.
+# Created: run033 (2026-05-06)
+
+model_id: fods-neutral-model
+version: "1.0"
+format_id: fods
+spec_version: "ODF 1.3"
+gate: 5
+created: "2026-05-06"
+created_by: run033
+
+# Coverage categories:
+#   covered     — fully represented in neutral model v1
+#   partial     — some aspects represented, limitations documented
+#   deferred    — recognized but not in v1; tracked for future versions
+#   out_of_scope — not relevant to the cells product family
+
+coverage:
+
+  # --- Structural elements ---
+  structure:
+    - element: "office:document (root)"
+      status: covered
+      model_entity: Workbook
+      notes: "Root element attributes mapped to Workbook fields."
+
+    - element: "office:body / office:spreadsheet"
+      status: covered
+      model_entity: Workbook
+      notes: "Container traversed to reach table:table elements."
+
+    - element: "table:table"
+      status: covered
+      model_entity: Sheet
+      notes: "Each table:table becomes a Sheet entity."
+
+    - element: "table:table-row"
+      status: covered
+      model_entity: Row
+      notes: "Each table:table-row becomes a Row entity."
+
+    - element: "table:table-cell"
+      status: covered
+      model_entity: Cell
+      notes: "Each table:table-cell becomes a Cell entity."
+
+    - element: "table:covered-table-cell"
+      status: partial
+      model_entity: Cell
+      notes: "Recognized with COVERED_CELL warning. Content not extracted in v1."
+
+    - element: "text:p (cell content)"
+      status: covered
+      model_entity: Cell.text
+      notes: "Text content extracted and concatenated."
+
+  # --- Value types ---
+  value_types:
+    - type: "float"
+      status: covered
+      notes: "office:value-type='float'; office:value parsed as float."
+
+    - type: "string"
+      status: covered
+      notes: "office:value-type='string'; text from text:p elements."
+
+    - type: "boolean"
+      status: covered
+      notes: "office:value-type='boolean'; office:boolean-value parsed."
+
+    - type: "date"
+      status: deferred
+      notes: "Recognized in enum. Parser v1 does not extract date-specific attributes (office:date-value). Product code must handle."
+
+    - type: "time"
+      status: deferred
+      notes: "Recognized in enum. Parser v1 does not extract time-specific attributes (office:time-value). Product code must handle."
+
+    - type: "currency"
+      status: deferred
+      notes: "Recognized in enum. Parser v1 does not extract currency attributes (office:currency, office:value). Product code must handle."
+
+    - type: "percentage"
+      status: deferred
+      notes: "Recognized in enum. Parser v1 does not extract percentage-specific display. Product code must handle."
+
+  # --- Formulas ---
+  formulas:
+    - feature: "table:formula attribute"
+      status: covered
+      model_entity: Formula.raw
+      notes: "Raw formula string preserved including namespace prefix (e.g., 'oooc:=SUM(...)')."
+
+    - feature: "Cached formula value"
+      status: covered
+      model_entity: Formula.cached_value
+      notes: "Cached value from office:value attribute. Stored but not re-evaluated."
+
+    - feature: "Formula evaluation"
+      status: deferred
+      model_entity: Formula.evaluated
+      notes: "Always false in v1. Formula evaluation engine is out of scope for Gate 5."
+
+  # --- Metadata and attributes ---
+  metadata:
+    - feature: "office:version attribute"
+      status: covered
+      model_entity: Workbook.odf_version_attr
+
+    - feature: "office:mimetype attribute"
+      status: covered
+      model_entity: Workbook.mimetype
+
+    - feature: "table:name attribute"
+      status: covered
+      model_entity: Sheet.name
+
+    - feature: "table:number-columns-repeated"
+      status: partial
+      model_entity: Cell.repeated_columns
+      notes: "Model field exists. Prototype v1 expands repeated cells inline instead of preserving count."
+
+    - feature: "table:number-rows-repeated"
+      status: deferred
+      notes: "Not modeled in v1. Prototype expands rows inline."
+
+  # --- Styling and formatting ---
+  styling:
+    - feature: "table:style-name"
+      status: out_of_scope
+      notes: "Cell/row/table styling not in scope for cells product family v1."
+
+    - feature: "office:automatic-styles"
+      status: out_of_scope
+      notes: "Style definitions not parsed or modeled."
+
+    - feature: "text:span with formatting"
+      status: out_of_scope
+      notes: "Rich text formatting within cells not modeled. Plain text only."
+
+  # --- Advanced features ---
+  advanced:
+    - feature: "table:table-column"
+      status: deferred
+      notes: "Column definitions (width, default style) not modeled in v1."
+
+    - feature: "table:named-range"
+      status: deferred
+      notes: "Named ranges not modeled in v1."
+
+    - feature: "table:database-range"
+      status: deferred
+      notes: "Database ranges not modeled in v1."
+
+    - feature: "table:data-pilot"
+      status: deferred
+      notes: "Pivot tables not modeled in v1."
+
+    - feature: "draw:frame / draw:image"
+      status: out_of_scope
+      notes: "Embedded images not in scope for cells product family."
+
+    - feature: "office:scripts"
+      status: out_of_scope
+      notes: "Macros/scripts not parsed. Security boundary."
+
+    - feature: "table:cell-range-source"
+      status: deferred
+      notes: "External data links not modeled in v1."
+
+    - feature: "office:font-face-decls"
+      status: out_of_scope
+      notes: "Font declarations not relevant to data extraction."
+
+    - feature: "table:consolidation"
+      status: deferred
+      notes: "Consolidation ranges not modeled in v1."
+
+# --- Summary ---
+summary:
+  covered: 13
+  partial: 2
+  deferred: 10
+  out_of_scope: 5
+  total_features: 30
+  coverage_percentage_v1: 50
+  notes: >-
+    v1 covers the core data extraction path: workbook structure, sheets, rows, cells,
+    basic value types (float, string, boolean), formulas (raw + cached), and text content.
+    Deferred items are primarily advanced value types (date, time, currency, percentage),
+    repeat compression, column definitions, and named ranges. Out-of-scope items are
+    styling, macros, and embedded objects — these are not relevant to the cells data
+    extraction mission.

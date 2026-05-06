@@ -25,11 +25,11 @@ Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{form
 
 ## First Pilot: FODS
 
-**Gate 1 passed — 2026-05-04. Gate 2 passed — 2026-05-05. Gate 3 passed — 2026-05-05. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
+**Gate 1 passed — 2026-05-04. Gate 2 passed — 2026-05-05. Gate 3 passed — 2026-05-05. Gate 4 passed — 2026-05-06. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
 
 **FODS** — Flat OpenDocument Spreadsheet — is the active pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. Single-file XML, well-documented specification, no ZIP complexity, permissive license.
 
-Gate 3 (Sample Corpus) complete — 4 Apache-2.0 synthetic samples validated 4/4 PASS, approved by Babar Raza (2026-05-05). Gate 4 (Parser Prototype) prototype created (run029), independently verified (TC-0018 DEC-034 PASS, run030), workbench quality review passed (run031) — `prototypes/by-format/fods/fods_parser.py` passes PT-001 through PT-004 (4/4 PASS). Gate 4 NOT approved — human approval required. Spec Workbench v1 quality-reviewed (run031). Evidence Bundle Contract system added (run031).
+Gate 4 (Parser Prototype) approved by Babar Raza (2026-05-06). Gate 5 (Neutral Model) in progress — neutral model v1 created (run033): 6 entities (Workbook, Sheet, Row, Cell, Formula, Warning), 19 field mappings, validation 4/4 PASS. Pending TC-0024 independent verification and human approval.
 
 ---
 
@@ -68,14 +68,15 @@ Every format passes through 11 mandatory gates before any product code is writte
 
 ## Project Status
 
-**Current phase:** Phase 3 — FODS Gate 3 PASSED, Gate 4 parser prototype planning active (active pilot: FODS)
+**Current phase:** Phase 3 — FODS Gate 4 PASSED, Gate 5 neutral model created pending verification (active pilot: FODS)
 
 - Phase 0 (Foundation): Complete — accepted 2026-05-04
 - Phase 1A (Scoring): Complete — FODS scored 93/100, Accept band
 - Phase 1B (Gate 1): Complete — Gate 1 passed, approved by Babar Raza, 2026-05-04
 - Phase 2 (Spec + Legal Evidence): Complete — Gate 2 passed, approved by Babar Raza, 2026-05-05
 - Phase 3 (Sample Corpus): Complete — Gate 3 passed, approved by Babar Raza, 2026-05-05; 4 samples validated 4/4 PASS
-- Phase 3 (Gate 4 Planning): Active — parser planning package ready; TC-0014 planning_ready; explicit Gate 4 execution prompt required
+- Phase 3 (Parser Prototype): Complete — Gate 4 passed, approved by Babar Raza, 2026-05-06
+- Phase 3 (Neutral Model): Active — Gate 5 neutral model v1 created (run033); TC-0024 verification required
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md).
 

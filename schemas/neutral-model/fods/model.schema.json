@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fods-neutral-model-v1",
+  "title": "FODS Neutral Model v1",
+  "description": "JSON Schema for validating FODS neutral model output. Gate 5 artifact.",
+  "type": "object",
+  "required": ["format_id", "spec_version", "odf_version_attr", "sheet_count", "sheets", "warnings"],
+  "additionalProperties": false,
+  "properties": {
+    "format_id": {
+      "type": "string",
+      "const": "fods",
+      "description": "Format identifier, always 'fods'."
+    },
+    "spec_version": {
+      "type": "string",
+      "description": "ODF spec version string."
+    },
+    "odf_version_attr": {
+      "type": "string",
+      "description": "The office:version attribute value from the root element."
+    },
+    "mimetype": {
+      "type": ["string", "null"],
+      "description": "The office:mimetype attribute. Null if absent."
+    },
+    "sheet_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of sheets in the workbook."
+    },
+    "sheets": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Sheet" },
+      "description": "Ordered list of sheets."
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Warning" },
+      "description": "Workbook-level warnings."
+    }
+  },
+  "$defs": {
+    "Sheet": {
+      "type": "object",
+      "required": ["name", "index", "row_count", "rows"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Sheet name from table:name attribute."
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Zero-based sheet index within the workbook."
+        },
+        "row_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of rows in this sheet."
+        },
+        "rows": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Row" },
+          "description": "Ordered list of rows."
+        }
+      }
+    },
+    "Row": {
+      "type": "object",
+      "required": ["index", "cells"],
+      "additionalProperties": false,
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Zero-based row index within the sheet."
+        },
+        "cells": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Cell" },
+          "description": "Ordered list of cells in this row."
+        }
+      }
+    },
+    "Cell": {
+      "type": "object",
+      "required": ["col_index"],
+      "additionalProperties": false,
+      "properties": {
+        "row_index": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "Zero-based row index (redundant with parent Row, included for flat representations)."
+        },
+        "col_index": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Zero-based column index within the row."
+        },
+        "value_type": {
+          "type": ["string", "null"],
+          "enum": ["float", "string", "boolean", "date", "time", "currency", "percentage", null],
+          "description": "The office:value-type attribute."
+        },
+        "value": {
+          "description": "The typed value. Float for numeric types, string for string, boolean for boolean, null if absent."
+        },
+        "text": {
+          "type": ["string", "null"],
+          "description": "Text content from text:p child elements."
+        },
+        "formula": {
+          "oneOf": [
+            { "$ref": "#/$defs/Formula" },
+            { "type": "null" }
+          ],
+          "description": "Formula information if present. Null if no formula."
+        },
+        "repeated_columns": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "description": "Number of times this cell is repeated. Null or 1 if not repeated."
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Warning" },
+          "description": "Cell-level warnings."
+        }
+      }
+    },
+    "Formula": {
+      "type": "object",
+      "required": ["raw", "evaluated"],
+      "additionalProperties": false,
+      "properties": {
+        "raw": {
+          "type": "string",
+          "description": "Raw formula string from table:formula attribute."
+        },
+        "cached_value": {
+          "description": "The last computed value cached in the document."
+        },
+        "evaluated": {
+          "type": "boolean",
+          "const": false,
+          "description": "Always false in v1 — formula evaluation is not supported."
+        },
+        "evaluator": {
+          "type": ["string", "null"],
+          "description": "Identifier of the evaluator. Null in v1."
+        }
+      }
+    },
+    "Warning": {
+      "type": "object",
+      "required": ["code", "message"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": ["MISSING_MIMETYPE", "UNEXPECTED_MIMETYPE", "UNSUPPORTED_VALUE_TYPE", "COVERED_CELL", "UNSUPPORTED_ELEMENT", "LARGE_REPEAT", "UNKNOWN"],
+          "description": "Warning code for programmatic handling."
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable warning message."
+        },
+        "source": {
+          "type": ["string", "null"],
+          "description": "Location context (e.g., 'Sheet1:R2C3')."
+        }
+      }
+    }
+  }
+}

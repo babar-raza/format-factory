@@ -1,6 +1,6 @@
 {
   "projectName": "format-factory",
-  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3 GATE 4 HUMAN-REVIEW PREPARATION. Embeddings/vector DB/vector index NOT authorized.",
+  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3 GATE 5 NEUTRAL MODEL EXECUTION. Gate 4 PASSED (Babar Raza, 2026-05-06). Embeddings/vector DB/vector index NOT authorized.",
   "model": "claude-opus-4-6",
   "permissions": {
     "allow": [
@@ -42,6 +42,8 @@
       "Write(docs/spec-retrieval-strategy.md)",
       "Write(docs/spec-retrieval-evaluation-report.md)",
       "Write(schemas/_readme.md)",
+      "Write(schemas/neutral-model/fods/**)",
+      "Write(tools/model/**)",
       "Write(prototypes/_readme.md)",
       "Write(prototypes/by-format/fods/**)",
       "Write(tools/spec-normalize/build_spec_workbench.py)",
@@ -68,7 +70,7 @@
       "Write(src/python/*/**)",
       "Write(src/net/**)",
       "Write(samples/by-format/other-formats/**)",
-      "Write(schemas/neutral-model/**)",
+      "Write(schemas/neutral-model/other-formats/**)",
       "Write(prototypes/by-format/other-formats/**)",
       "Write(tests/fixtures/**)",
       "Write(tests/oracle/**)",
@@ -99,9 +101,9 @@
     ]
   },
   "phase": "3",
-  "phase_note": "Phase 3 EXECUTION. Gate 2 passed (2026-05-05, Babar Raza). Gate 3 corpus created run026 (4 FODS samples, 4/4 PASS). samples/by-format/fods/** and tools/samples/** ALLOWED (run026). spec-normalize navigation tools ALLOWED (run026). Awaiting independent verification (DEC-034) and Gate 3 human approval. IMPORTANT: Spec acquisition complete for FODS/ODF 1.3 (run021). Normalized artifacts local-only. Network commands (curl, wget, Invoke-WebRequest, iwr) DENIED. schemas/neutral-model/**, prototypes/by-format/**, src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts DENIED.",
+  "phase_note": "Phase 3 GATE 5 EXECUTION. Gate 4 PASSED (Babar Raza, 2026-05-06, run033). schemas/neutral-model/fods/** and tools/model/** ALLOWED for Gate 5. Spec acquisition complete for FODS/ODF 1.3 (run021). Normalized artifacts local-only. Network commands (curl, wget, Invoke-WebRequest, iwr) DENIED. src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts DENIED.",
   "notes": [
-    "Phase 3 Gate 4 VERIFICATION CONSERVATIVE: Gate 4 prototype committed d8187e0 (run029). TC-0018 executed run030: 4/4 PASS — Gate 4 → prototype_verified_pending_human_review. prototypes/by-format/fods/** ALLOWED (was in deny list — contradiction FIXED run030). Spec Workbench tools added to allow list run030. Gate 4 NOT approved — TC-0018 verified, awaiting human Gate 4 approval.",
+    "Phase 3 Gate 5 EXECUTION: Gate 4 PASSED (Babar Raza, 2026-05-06). schemas/neutral-model/fods/** ALLOWED (moved from deny to allow run033). tools/model/** ALLOWED (new run033). Gate 5 NOT approved — neutral model execution in progress.",
     "Format-first source layout: src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE — must not be created.",
     "Phase 3+ paths: samples/by-format/fods/** ALLOWED. prototypes/by-format/fods/** ALLOWED (run029 Gate 4 execution). schemas/neutral-model/, prototypes/by-format/other-formats/, tests/fixtures|oracle|fuzz/, reports/security|legal/ remain DENIED.",
     "Network download commands (curl, wget, Invoke-WebRequest, iwr) are DENIED. Bash(python *acquire_spec*) deny was REMOVED in run021 (session-specific T3 authorization for FODS/ODF 1.3 only). FUTURE SESSIONS: re-verify all T3 conditions before any new --allow-network download.",

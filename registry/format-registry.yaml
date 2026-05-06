@@ -77,7 +77,7 @@ formats:
       approved_date: "2026-05-04"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: gate4_human_review
+    next_allowed_action: gate5_independent_verification_tc0024
     gates:
       gate_1:
         status: passed
@@ -106,19 +106,25 @@ formats:
         corpus_verified_by: "claude-sonnet-4-6 (run027 DEC-034 independent verification, 2026-05-05)"
         notes: "4 synthetic FODS samples created run026 (2026-05-05). All Apache-2.0 project-owned synthetic. Validated: 4/4 PASS. Spec Navigation Layer built: 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml. TC-0013 in_progress. Independent verification (DEC-034) completed run027: SHA-256 hashes verified (fods-minimal-01:a790b18a..., fods-multi-sheet-01:669b60be..., fods-typed-values-01:c873322d..., fods-formula-01:72b06541...), 4/4 PASS re-confirmed, nav layer tools smoke-tested (section query §3.1.2 ✓, core req query ✓, section rebuild 705 pages ✓). GATE 3 PASSED 2026-05-05 by Babar Raza (run028). Parser planning package created run028: parser-requirements.md, parser-scope.md, parser-test-plan.md. TC-0014 planning_ready."
       gate_4:
-        status: prototype_verified_pending_human_review
-        approved_by: null
-        approved_date: null
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-06"
+        evidence_verified_by: "run032 independent verification"
         prototype_path: prototypes/by-format/fods/fods_parser.py
         validation_status: pass
         tc0018_verification: pass
         tc0018_run: run030
-        notes: "Prototype created run029 (2026-05-05) by claude-sonnet-4-6. Validation: PT-001 through PT-004 PASS (4/4). stdlib only (xml.etree.ElementTree). No formula evaluation. No product source. TC-0018 independent verification (DEC-034) PASS run030 (2026-05-06): 4/4 re-verified PASS, gate_4_approved=False confirmed, stdlib confirmed, no network. run031: TC-0018 rerun 4/4 PASS, workbench quality 205/205 PASS, evidence contract system created. run032: independent verification of run031 PASS (31/31 checks + TC-0018 rerun 4/4 + workbench 205/205 + evidence contracts verified + gate4-human-review-packet audit PASS). TC-0022 completed_verified. Gate 4 NOT approved — human approval required."
+        notes: "Gate 4 approved by Babar Raza (2026-05-06, run033 prompt) after run032 independent verification: prototype validation 4/4 PASS, TC-0018 verification passed, TC-0021 workbench quality verified, TC-0022 evidence contract system verified, gate4-human-review-packet verified. This approval authorizes Gate 5 neutral model work only. It does not authorize product source, release, security reports, or commercial implementation."
       gate_5:
-        status: not_started
+        status: neutral_model_created_pending_independent_verification
         approved_by: null
         approved_date: null
-        notes: null
+        model_path: schemas/neutral-model/fods/
+        model_version: "1.0"
+        validation_status: "4/4 PASS (validate_neutral_model.py, run033)"
+        entities: ["Workbook", "Sheet", "Row", "Cell", "Formula", "Warning"]
+        tc0023_run: run033
+        notes: "Neutral model v1 created run033 (2026-05-06). 6 entities, 19 field mappings, 30 coverage features (13 covered, 2 partial, 10 deferred, 5 out-of-scope). Validation: 4/4 samples PASS (87 total checks, 0 errors). TC-0024 DEC-034 independent verification required before Gate 5 human approval."
       gate_6:
         status: not_started
         approved_by: null

@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 5 neutral model planning taskcard for FODS. Created run029 (2026-05-05). TC-0018 PASS (run030). TC-0021 quality review PASS (run031). Status: ready_for_execution_after_gate4_approval. Still blocked by Gate 4 human approval + explicit Gate 5 prompt. No schema creation yet. No neutral model yet."
+notes: "Gate 5 neutral model planning taskcard for FODS. Created run029 (2026-05-05). SUPERSEDED by TC-0023 (run033): Gate 4 approved, Gate 5 execution combined planning+execution in TC-0023. Neutral model v1 created run033."
 ---
 
 # TC-0019: FODS Gate 5 — Neutral Model Planning
@@ -28,7 +28,7 @@ notes: "Gate 5 neutral model planning taskcard for FODS. Created run029 (2026-05
 **Taskcard ID:** TC-0019
 **Phase:** 3 (Gate 5 planning — future)
 **Gate:** Gate 5 (Neutral Model)
-**Status:** ready_for_execution_after_gate4_approval
+**Status:** superseded_by_tc0023
 **Created:** 2026-05-05 (run029)
 **Created by:** claude-sonnet-4-6 (run029)
 **Blocking:** Gate 5 execution
