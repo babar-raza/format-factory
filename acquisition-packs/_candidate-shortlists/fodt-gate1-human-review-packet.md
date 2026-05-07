@@ -27,11 +27,11 @@ notes: "FODT Gate 1 human review packet. CANDIDATE-ONLY — no Gate 1 approval i
 
 **Format:** FODT — Flat OpenDocument Text
 **Gate:** 1 (Format Acceptance Scoring)
-**Status:** CANDIDATE-ONLY — pending human Gate 1 approval
+**Status:** GATE 1 APPROVED — approved by Babar Raza (2026-05-07, run041)
 **Prepared:** run040 (2026-05-07)
 **Submitted by:** claude-sonnet-4-6 (run040)
 **DEC-034 independent verification:** PASS (run040) — 7/7 factors verified
-**Gate 1 approved:** NO — requires human approval
+**Gate 1 approved:** YES — Babar Raza, 2026-05-07, run041 execution prompt
 
 ---
 

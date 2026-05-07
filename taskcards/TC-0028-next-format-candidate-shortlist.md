@@ -28,10 +28,10 @@ notes: "Next-format candidate shortlist taskcard. Created run038 (2026-05-07). C
 **Taskcard ID:** TC-0028
 **Phase:** 3 (parallel planning — does not require Gate 6 completion)
 **Gate:** Pre-Gate 1 (candidate evaluation only)
-**Status:** in_progress — shortlist independently verified run039; FODT scoring package created run039 (TC-0029)
+**Status:** COMPLETED — FODT Gate 1 approved by Babar Raza (2026-05-07, run041); registry entry created; acquisition-packs/fodt/ skeleton created
 **Created:** 2026-05-07 (run038)
 **Created by:** claude-sonnet-4-6 (run038)
-**Updated:** 2026-05-07 (run039)
+**Updated:** 2026-05-07 (run041) — Gate 1 approval recorded
 
 ---
 

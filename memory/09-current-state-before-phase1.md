@@ -3,7 +3,7 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run040 to reflect run039 independently verified PASS (44 checks), stale commit fixed (d052510→54a27dc), clean-git loophole closed (emergency_blocker_bundle added), consistency checker strengthened (10 checks), oracle preflight re-run 6 FAIL, TC-0029 DEC-034 PASS (7/7 factors, 88/100), FODT Gate 1 human-review packet created, master-plan v2.36
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run041 to reflect FODT Gate 1 APPROVED (Babar Raza, 2026-05-07), stable run-state authority model (docs/current-state-and-evidence-authority.md), consistency checker redesigned (PENDING-marker model), acquisition-packs/fodt/ skeleton created, TC-0030 created, oracle preflight re-run 7 FAIL (7 consecutive), master-plan v2.37
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
@@ -13,7 +13,7 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 
 This file captures the current state after run040. Gates 1-5 PASSED. Gate 5 approved by Babar Raza (2026-05-06, run035). TC-0024 CLOSED. Oracle preflight blocked (LibreOffice not installed — 6 consecutive fails: run035-run040). Oracle harness hardened (run036): oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI. Oracle provider abstraction added (run037): provider_registry.yaml, validate_oracle_environment.py, docs/oracle-provider-strategy.md. Oracle harness self-test added (run038): tools/oracle/self_test_oracle_harness.py (HARNESS_SELF_TEST_ONLY; PASS 4/4). Operator handoff added (run038): acquisition-packs/fods/oracle-operator-handoff.md. Consistency enforcement tool added (run039): tools/evidence/check_current_state_consistency.py — strengthened run040 (10 checks). Clean-git loophole closed run040 (emergency_blocker_bundle: true added as escape hatch). FODT Gate 1 scoring package (candidate-only, run039): registry/candidates/fodt-gate1-scoring-package.yaml. TC-0029 DEC-034 PASS run040 (7/7 factors, 88/100, Accept band). FODT Gate 1 human-review packet (run040): acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md. TC-0026 blocked_missing_oracle_tool. TC-0028 in_progress. TC-0029 verification_passed_pending_human_review.
 
-**Last updated:** run040 (run039 independently verified PASS — 44 checks; stale commit 54a27dc fixed; clean-git loophole closed; consistency checker strengthened to 10 checks; oracle preflight re-run 6 FAIL; TC-0029 DEC-034 PASS 7/7; FODT Gate 1 human-review packet created; master-plan.md v2.36).
+**Last updated:** run041 (run040 independently verified PASS; stable run-state authority model: docs/current-state-and-evidence-authority.md; check_current_state_consistency.py redesigned; FODT Gate 1 APPROVED Babar Raza 2026-05-07; registry FODT entry; acquisition-packs/fodt/ skeleton; TC-0030 created; TC-0029+TC-0028 COMPLETED; oracle preflight 7th FAIL; master-plan.md v2.37).
 
 ## Current status
 
@@ -27,7 +27,7 @@ This file captures the current state after run040. Gates 1-5 PASSED. Gate 5 appr
 | Gate 3 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run028); DEC-034 verified run027 |
 | Gate 4 status | **PASSED** — approved by Babar Raza, 2026-05-06 (run033) |
 | Gate 5 status | **PASSED** — approved by Babar Raza, 2026-05-06 (run035 human-authorized prompt); 6 entities, 87 checks PASS; TC-0024 DEC-034 PASSED run034; TC-0024 CLOSED run035 |
-| Gate 6 status | **oracle_blocked_missing_tool** — LibreOffice not installed (6 consecutive preflight FAIL: run035/036/037/038/039/040); harness hardened run036; provider abstraction run037; harness self-test + operator handoff run038; consistency enforcement run039 (strengthened run040 — 10 checks); clean-git loophole closed run040 |
+| Gate 6 status | **oracle_blocked_missing_tool** — LibreOffice not installed (7 consecutive preflight FAIL: run035/036/037/038/039/040/041); harness hardened run036; provider abstraction run037; harness self-test + operator handoff run038; consistency enforcement run039; redesigned run041 (stable run-state model) |
 | Active formats | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: passed; gate_5: passed; gate_6: oracle_blocked_missing_tool) |
 | Registry | FODS entry: gate_5: passed (Babar Raza 2026-05-06); gate_6: oracle_blocked_missing_tool; next_allowed_action: install_oracle_tool_then_execute_tc0026 |
 | Spec Workbench v1 | created run030 (local-only): .local/spec-cache/fods/1.3/workbench/ — verified-facts.yaml (10 facts), requirement packs (parser/sample/model), task packets, coverage matrices; 205/205 validation PASS |
@@ -53,8 +53,9 @@ This file captures the current state after run040. Gates 1-5 PASSED. Gate 5 appr
 | TC-0025 status | **completed** — Gate 6 planning reviewed run035; planning docs created run034 |
 | TC-0026 status | **blocked_missing_oracle_tool** — LibreOffice not installed; oracle harness ready at tools/oracle/; blocker wording CORRECTED run038 |
 | TC-0027 status | not_started — waiting for TC-0026 completion |
-| TC-0028 status | in_progress — shortlist created run038; independently verified run039 (4 claims PASS); presentation for Gate 1 approval pending |
-| TC-0029 status | **verification_passed_pending_human_review** — DEC-034 PASS run040; 7/7 factors verified, 88/100, Accept band confirmed; human-review packet ready |
+| TC-0028 status | **COMPLETED** — FODT Gate 1 approved run041 (Babar Raza, 2026-05-07); registry entry + acquisition pack created |
+| TC-0029 status | **COMPLETED** — Gate 1 approved by Babar Raza (2026-05-07, run041) |
+| TC-0030 status | **not_started** — FODT Gate 2 spec/legal evidence; requires explicit Gate 2 execution prompt |
 | Samples | 4 Apache-2.0 synthetic FODS samples in samples/by-format/fods/ (run026, validated 4/4 PASS) |
 | Spec Navigation Layer | 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml (run026, local-only) |
 | Hybrid Spec Retrieval | docs/spec-retrieval-strategy.md (run027); AGENTS.md Section X; GOVERNANCE.md Section 17 |
@@ -65,8 +66,8 @@ This file captures the current state after run040. Gates 1-5 PASSED. Gate 5 appr
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
 | Evidence contracts | 12 contracts (after run040): + run040-clean-evidence-and-fodt-gate1-verification |
-| Latest commit | 411180a (run040 final Section 33 housekeeping) |
-| Uncommitted | None — all run040 changes committed |
+| last_completed_run | run040 |
+| Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md) |
 | Master plan version | 2.36 (run040) |
 | AGENTS.md sections | A through Y (25 sections) |
 

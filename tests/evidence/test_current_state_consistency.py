@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
-Negative (and positive) tests for check_current_state_consistency.py.
+Tests for check_current_state_consistency.py — run-state authority model (run041+).
 
-Tests:
-1. PASS when master-plan header and Section 33 both match actual HEAD
-2. FAIL when master-plan header has a different (stale) commit hash
-3. FAIL when master-plan is missing entirely
-4. WARN (but PASS) when Section 33 has PENDING marker and head differs
-5. FAIL when Section 33 commit differs and no PENDING marker
+Checks performed:
+1. FAIL when master-plan Current Status contains "Latest commit: PENDING"
+2. FAIL when master-plan contains "changes pending commit"
+3. FAIL when memory/09 contains "changes pending commit"
+4. FAIL when registry FODS gate_6 approved_by is not null
+5. FAIL when FODT in registry but scoring package says gate_1_approved: false
+6. FAIL when master-plan is missing
+7. PASS on live repo after run041 fixes
 
 Run from repo root:
     python tests/evidence/test_current_state_consistency.py
@@ -20,141 +22,261 @@ import sys
 import tempfile
 from pathlib import Path
 
-# Add tools/evidence to path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "evidence"))
 
-import check_current_state_consistency as csc  # noqa: E402
+REPO_ROOT = Path(__file__).parent.parent.parent
 
 
-FAKE_HEAD = "abc1234"
-DIFFERENT_HASH = "def5678"
-
-
-def make_fake_repo(tmp_path: Path, master_plan_content: str | None) -> None:
-    """Set up a minimal fake repo structure."""
-    (tmp_path / "plans").mkdir(parents=True, exist_ok=True)
-    if master_plan_content is not None:
-        (tmp_path / "plans" / "master-plan.md").write_text(master_plan_content, encoding="utf-8")
-
-
-def run_checker(tmp_path: Path) -> tuple[int, str]:
-    """Run the checker script and return (exit_code, stdout)."""
+def run_checker(repo_root: Path) -> tuple[int, str]:
+    """Run the checker script and return (exit_code, stdout+stderr)."""
     result = subprocess.run(
         [sys.executable, "tools/evidence/check_current_state_consistency.py",
-         "--repo-root", str(tmp_path)],
+         "--repo-root", str(repo_root)],
         capture_output=True, text=True,
-        cwd=Path(__file__).parent.parent.parent
+        cwd=REPO_ROOT
     )
     return result.returncode, result.stdout + result.stderr
 
 
-def test_pass_when_matching():
-    """PASS when header and Section 33 both show the same commit as HEAD."""
-    # We can't control the actual git HEAD, so we test the extraction logic directly.
-    # Test the extract_latest_commit function with known text.
-    header_text = f"**Current status:** Latest commit: {FAKE_HEAD} (test). Working tree: clean."
-    commit, _ = csc.extract_latest_commit(header_text, "header")
-    if commit != FAKE_HEAD[:7]:
-        print(f"FAIL: test_pass_when_matching — extraction failed: got {commit!r}")
-        return False
-    print("PASS: test_pass_when_matching — extraction returned correct hash")
-    return True
+def make_minimal_repo(tmp_path: Path,
+                      master_plan_content: str | None,
+                      registry_content: str | None = None,
+                      mem09_content: str | None = None,
+                      scoring_pkg_content: str | None = None,
+                      pack_yaml_content: str | None = None) -> None:
+    """Set up a minimal fake repo structure for testing."""
+    (tmp_path / "plans").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "registry" / "candidates").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "memory").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "acquisition-packs" / "fods").mkdir(parents=True, exist_ok=True)
+
+    if master_plan_content is not None:
+        (tmp_path / "plans" / "master-plan.md").write_text(master_plan_content, encoding="utf-8")
+
+    if registry_content is not None:
+        (tmp_path / "registry" / "format-registry.yaml").write_text(registry_content, encoding="utf-8")
+    else:
+        # Default: FODS with gate_6 not approved, no FODT entry
+        (tmp_path / "registry" / "format-registry.yaml").write_text(
+            _default_registry(), encoding="utf-8"
+        )
+
+    if mem09_content is not None:
+        (tmp_path / "memory" / "09-current-state-before-phase1.md").write_text(
+            mem09_content, encoding="utf-8"
+        )
+
+    if scoring_pkg_content is not None:
+        (tmp_path / "registry" / "candidates" / "fodt-gate1-scoring-package.yaml").write_text(
+            scoring_pkg_content, encoding="utf-8"
+        )
+    else:
+        # Default: gate_1_approved: false (candidate-only)
+        (tmp_path / "registry" / "candidates" / "fodt-gate1-scoring-package.yaml").write_text(
+            "gate_1_approved: false\n", encoding="utf-8"
+        )
+
+    if pack_yaml_content is not None:
+        (tmp_path / "acquisition-packs" / "fods" / "pack.yaml").write_text(
+            pack_yaml_content, encoding="utf-8"
+        )
+    else:
+        # Default: gate_6 not approved
+        (tmp_path / "acquisition-packs" / "fods" / "pack.yaml").write_text(
+            _default_pack_yaml(), encoding="utf-8"
+        )
 
 
-def test_fail_when_stale_header():
-    """FAIL when header has a stale commit that doesn't match HEAD."""
-    # Build a master-plan with a header pointing to DIFFERENT_HASH and Section 33 with same
-    content = f"""# Master Plan
-**Current status:** Gate 1 PASSED. Latest commit: {DIFFERENT_HASH} (stale).
+def _default_master_plan() -> str:
+    return """# Master Plan
 
-## Section 33 — Commit Policy
+**Current status:** last_completed_run: run041. Gate 5 pending human review.
 
-**Latest commit:** {DIFFERENT_HASH} (old). run038 commits: abc + def.
+## Section 33 — Run Commit Ledger
+
+| Run | Commits |
+|-----|---------|
+| run041 | abc1234 |
+"""
+
+
+def _default_registry() -> str:
+    return """formats:
+  - format_id: fods
+    gates:
+      gate_6:
+        status: oracle_blocked_missing_tool
+        approved_by: null
+        approved_date: null
+"""
+
+
+def _default_pack_yaml() -> str:
+    return """format_id: fods
+gates:
+  gate_6:
+    status: oracle_blocked_missing_tool
+    approved: false
+"""
+
+
+def test_fail_latest_commit_pending() -> bool:
+    """FAIL when master-plan Current Status contains 'Latest commit: PENDING'."""
+    content = _default_master_plan().replace(
+        "**Current status:** last_completed_run: run041. Gate 5 pending human review.",
+        "**Current status:** Latest commit: PENDING (run041 in progress)."
+    )
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        make_minimal_repo(tmp_path, content)
+        rc, out = run_checker(tmp_path)
+        if rc == 0:
+            print(f"FAIL: test_fail_latest_commit_pending — expected FAIL exit code, got PASS")
+            print(f"  Output: {out[:300]}")
+            return False
+        if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
+            print(f"FAIL: test_fail_latest_commit_pending — expected FAIL message in output")
+            print(f"  Output: {out[:300]}")
+            return False
+        print("PASS: test_fail_latest_commit_pending — correctly rejected 'Latest commit: PENDING'")
+        return True
+
+
+def test_fail_changes_pending_commit() -> bool:
+    """FAIL when master-plan Current Status contains 'changes pending commit'."""
+    content = _default_master_plan().replace(
+        "**Current status:** last_completed_run: run041. Gate 5 pending human review.",
+        "**Current status:** run041 changes pending commit."
+    )
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        make_minimal_repo(tmp_path, content)
+        rc, out = run_checker(tmp_path)
+        if rc == 0:
+            print(f"FAIL: test_fail_changes_pending_commit — expected FAIL exit code, got PASS")
+            print(f"  Output: {out[:300]}")
+            return False
+        if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
+            print(f"FAIL: test_fail_changes_pending_commit — expected FAIL message in output")
+            return False
+        print("PASS: test_fail_changes_pending_commit — correctly rejected 'changes pending commit'")
+        return True
+
+
+def test_fail_memory09_pending() -> bool:
+    """FAIL when memory/09 contains 'changes pending commit'."""
+    mem09 = "**Current status:** run041 changes pending commit.\n"
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        make_minimal_repo(tmp_path, _default_master_plan(), mem09_content=mem09)
+        rc, out = run_checker(tmp_path)
+        if rc == 0:
+            print(f"FAIL: test_fail_memory09_pending — expected FAIL exit code, got PASS")
+            print(f"  Output: {out[:300]}")
+            return False
+        if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
+            print(f"FAIL: test_fail_memory09_pending — expected FAIL message in output")
+            return False
+        print("PASS: test_fail_memory09_pending — correctly rejected PENDING marker in memory/09")
+        return True
+
+
+def test_fail_gate6_approved() -> bool:
+    """FAIL when FODS registry gate_6 approved_by is not null."""
+    registry = """formats:
+  - format_id: fods
+    gates:
+      gate_6:
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-07"
 """
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
-        make_fake_repo(tmp_path, content)
-        # Initialize a minimal git repo so we can get a HEAD
-        subprocess.run(["git", "init"], cwd=tmp_path, capture_output=True)
-        subprocess.run(["git", "config", "user.email", "test@test.com"], cwd=tmp_path, capture_output=True)
-        subprocess.run(["git", "config", "user.name", "Test"], cwd=tmp_path, capture_output=True)
-        (tmp_path / "README.md").write_text("test")
-        subprocess.run(["git", "add", "."], cwd=tmp_path, capture_output=True)
-        subprocess.run(["git", "commit", "-m", "init", "--no-gpg-sign"], cwd=tmp_path, capture_output=True)
-
-        # Get actual HEAD of this new repo
-        head_result = subprocess.run(
-            ["git", "rev-parse", "--short=7", "HEAD"],
-            cwd=tmp_path, capture_output=True, text=True
-        )
-        actual_head = head_result.stdout.strip()
-
-        if actual_head == DIFFERENT_HASH[:7]:
-            # Extremely unlikely collision — skip test
-            print("SKIP: test_fail_when_stale_header — HEAD accidentally matched test hash")
-            return True
-
+        make_minimal_repo(tmp_path, _default_master_plan(), registry_content=registry)
         rc, out = run_checker(tmp_path)
         if rc == 0:
-            print(f"FAIL: test_fail_when_stale_header — expected FAIL exit code, got PASS")
-            print(f"  Output: {out}")
+            print(f"FAIL: test_fail_gate6_approved — expected FAIL exit code, got PASS")
+            print(f"  Output: {out[:300]}")
             return False
         if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
-            print(f"FAIL: test_fail_when_stale_header — expected FAIL message, got: {out}")
+            print(f"FAIL: test_fail_gate6_approved — expected FAIL message in output")
             return False
-        print("PASS: test_fail_when_stale_header — correctly detected stale commit in header")
+        print("PASS: test_fail_gate6_approved — correctly rejected gate_6 approved_by not null")
         return True
 
 
-def test_fail_when_master_plan_missing():
+def test_fail_fodt_inconsistent() -> bool:
+    """FAIL when FODT appears in official registry but scoring package says gate_1_approved: false."""
+    registry = _default_registry() + """  - format_id: fodt
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "Babar Raza"
+"""
+    scoring_pkg = "gate_1_approved: false\n"
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp)
+        make_minimal_repo(
+            tmp_path, _default_master_plan(),
+            registry_content=registry,
+            scoring_pkg_content=scoring_pkg
+        )
+        rc, out = run_checker(tmp_path)
+        if rc == 0:
+            print(f"FAIL: test_fail_fodt_inconsistent — expected FAIL exit code, got PASS")
+            print(f"  Output: {out[:300]}")
+            return False
+        if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
+            print(f"FAIL: test_fail_fodt_inconsistent — expected FAIL message in output")
+            return False
+        print("PASS: test_fail_fodt_inconsistent — correctly detected FODT registry/scoring mismatch")
+        return True
+
+
+def test_fail_master_plan_missing() -> bool:
     """FAIL when master-plan.md does not exist."""
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
-        make_fake_repo(tmp_path, None)  # No master-plan
-        # Initialize git repo
-        subprocess.run(["git", "init"], cwd=tmp_path, capture_output=True)
-        subprocess.run(["git", "config", "user.email", "test@test.com"], cwd=tmp_path, capture_output=True)
-        subprocess.run(["git", "config", "user.name", "Test"], cwd=tmp_path, capture_output=True)
-        (tmp_path / "README.md").write_text("test")
-        subprocess.run(["git", "add", "."], cwd=tmp_path, capture_output=True)
-        subprocess.run(["git", "commit", "-m", "init", "--no-gpg-sign"], cwd=tmp_path, capture_output=True)
-
+        make_minimal_repo(tmp_path, None)  # No master-plan
         rc, out = run_checker(tmp_path)
         if rc == 0:
-            print(f"FAIL: test_fail_when_master_plan_missing — expected FAIL exit code, got PASS")
+            print(f"FAIL: test_fail_master_plan_missing — expected FAIL exit code, got PASS")
             return False
         if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
-            print(f"FAIL: test_fail_when_master_plan_missing — expected FAIL message, got: {out}")
+            print(f"FAIL: test_fail_master_plan_missing — expected FAIL message in output")
             return False
-        print("PASS: test_fail_when_master_plan_missing — correctly FAILed when master-plan missing")
+        print("PASS: test_fail_master_plan_missing — correctly FAILed when master-plan missing")
         return True
 
 
-def test_pass_on_live_repo():
-    """PASS on the actual project repo (after stale-state fixes in Section C)."""
-    repo_root = Path(__file__).parent.parent.parent
-    rc, out = run_checker(repo_root)
+def test_pass_on_live_repo() -> bool:
+    """PASS on the actual project repo (after run041 state-authority fixes)."""
+    rc, out = run_checker(REPO_ROOT)
     if rc != 0:
         print(f"FAIL: test_pass_on_live_repo — expected PASS, got FAIL")
-        print(f"  Output: {out}")
+        print(f"  Output: {out[:600]}")
         return False
     if "CURRENT_STATE_CONSISTENCY: PASS" not in out:
-        print(f"FAIL: test_pass_on_live_repo — expected PASS message, got: {out}")
+        print(f"FAIL: test_pass_on_live_repo — expected PASS message, got:")
+        print(f"  {out[:300]}")
         return False
     print("PASS: test_pass_on_live_repo — live repo is consistent")
     return True
 
 
-def main():
+def main() -> int:
     print("=" * 60)
-    print("Tests: check_current_state_consistency.py")
+    print("Tests: check_current_state_consistency.py (run041+ model)")
     print("=" * 60)
     print()
 
     tests = [
-        test_pass_when_matching,
-        test_fail_when_stale_header,
-        test_fail_when_master_plan_missing,
+        test_fail_latest_commit_pending,
+        test_fail_changes_pending_commit,
+        test_fail_memory09_pending,
+        test_fail_gate6_approved,
+        test_fail_fodt_inconsistent,
+        test_fail_master_plan_missing,
         test_pass_on_live_repo,
     ]
 

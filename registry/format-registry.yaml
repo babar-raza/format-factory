@@ -165,6 +165,130 @@ formats:
         approved_date: null
         notes: null
 
+  - format_id: fodt
+    display_name: "Flat OpenDocument Text"
+    family: words
+    extensions: [.fodt]
+    mime_type: "application/vnd.oasis.opendocument.text-flat-xml"
+    spec_body: "OASIS"
+    spec_version: "ODF 1.3"
+    spec_url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/"
+    legal_category: 1
+    tier_target: 4
+    scoring_notes: |
+      FODT is the flat-XML variant of the OASIS ODF text document format. Legal Category 1 (OASIS royalty-free).
+      Same spec body as FODS (ODF 1.3). Flat XML structure; paragraph/style model is more complex than FODS cells.
+      Opens the Words family. Estimated ~40-50% FODS pipeline reuse effort.
+      Total score: 88/100 (Accept band). Scored run039, DEC-034 verified run040. See TC-0029 for scoring evidence.
+    visibility: internal
+    scoring:
+      scorer: claude-sonnet-4-6
+      scored_date: "2026-05-07"
+      model_version: "7-factor-100pt-v1"
+      automatic_reject_check:
+        legal_category_classified: true
+        category_5_or_6: false
+        drm_bypass_evidence: false
+        legal_safety_score_zero: false
+        result: no_automatic_reject
+      dimensions:
+        legal_safety:
+          score: 3
+          points: 30
+          legal_category: 1
+          rationale: "OASIS ODF 1.3 royalty-free RF — same legal basis as FODS Gate 2 legal-notes.md (passed Babar Raza 2026-05-05). No royalties, no patent restrictions."
+        spec_availability:
+          score: 3
+          points: 20
+          rationale: "ODF 1.3 spec already cached (24.27 MB, sha256:92cfe64..b066), normalized (782 pages, 884 sections). Same spec body as FODS."
+        parseable_structure:
+          score: 2
+          points: 10
+          rationale: "Flat XML (no ZIP), stdlib-parseable, but paragraph/style inheritance adds complexity vs FODS cells. ElementTree approach reusable."
+        community_demand:
+          score: 2
+          points: 10
+          rationale: "Moderate demand — VCS-friendly technical writing, LibreOffice Writer native, CI/CD documentation pipelines. Less widespread than ODT zip variant."
+        strategic_track_value:
+          score: 3
+          points: 10
+          rationale: "Opens Words family. Second ODF flat acquisition validates pipeline reuse pattern. High strategic value."
+        implementation_complexity:
+          score: 2
+          points: 3
+          rationale: "Extends FODS parser patterns (ElementTree, namespace handling). New work: paragraph/heading extraction, list handling, basic style resolution."
+        family_overlap:
+          score: 3
+          points: 5
+          rationale: "FODS = Cells family. FODT = Words family. Zero functional overlap. Different neutral model, different pipeline targets."
+      total_points: 88
+      band: accept
+      recommendation: "Accept. Legal Category 1, comprehensive spec already cached and normalized, moderate complexity, opens Words family. Score 88/100 in Accept band."
+      gate_1_status_set_by_agent: scored_pending_human_approval
+      approved_by: "Babar Raza"
+      approved_date: "2026-05-07"
+    human_gate1_approved: true
+    acquisition_pack_created: true
+    next_allowed_action: gate2_spec_legal_evidence
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-07"
+        notes: "Scored by claude-sonnet-4-6 (run039, 2026-05-07): 88/100, Accept band. DEC-034 independently verified by claude-sonnet-4-6 (run040, 2026-05-07): 7/7 factors verified, 88/100 confirmed. Human approval recorded by Babar Raza in run041 execution prompt (2026-05-07). This approval authorizes FODT Gate 2 spec/legal evidence work and creation of acquisition-packs/fodt/ skeleton. It does not authorize FODT samples, parser, neutral model, or product source."
+      gate_2:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        fast_path: null
+        notes: "Gate 2 evidence draft pending — spec already cached (ODF 1.3, same as FODS). Fast-path expected (OASIS RF, Category 1). Requires explicit Gate 2 execution prompt."
+      gate_3:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_4:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_5:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_6:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_7:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_8:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        tier_map: null
+        notes: null
+      gate_10:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_11:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+
 # ---
 # FORMAT ENTRY TEMPLATE (do not uncomment — use acquisition-packs/_template/)
 # ---

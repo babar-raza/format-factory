@@ -491,3 +491,15 @@ See `docs/spec-retrieval-strategy.md` for the complete strategy. See `taskcards/
 **Y8. Emergency Exception.** Manual zipping is permitted only for emergency diagnostics explicitly labeled as "INVALID/UNVERIFIED — not a production evidence bundle" in the filename and contents.
 
 See `tools/evidence/_readme.md` for tooling documentation. See `tools/evidence/contracts/` for contract definitions.
+
+---
+
+## Z. Run-State Authority Model (run041)
+
+**Z1. No Self-Referential Commit Hash in Committed Files.** Committed files (master-plan.md, memory/09, etc.) must NOT contain `Latest commit: <hash>` or `Latest commit: PENDING` in their current-state sections. Recording the exact final Git HEAD in a committed file creates an infinite loop of housekeeping commits.
+
+**Z2. Run-State Authority Model.** Committed files record `last_completed_run` (e.g., `run041`) and gate states. The exact final Git HEAD hash is authoritative **only** in evidence bundle metadata: `bundle-metadata/git-log.txt` and `bundle-metadata/git-status-final.txt`.
+
+**Z3. PENDING Markers Must Be Absent After Final Commit.** Sprint-in-progress PENDING markers (`Latest commit: PENDING`, `changes pending commit`, `run\d+ changes pending`) must be removed before the final commit of each sprint. The consistency checker (`tools/evidence/check_current_state_consistency.py`) and evidence bundle validator (`--check-no-pending` flag) enforce this rule.
+
+**Z4. Current-State Authority.** See `docs/current-state-and-evidence-authority.md` for the complete policy. See Section Y for evidence bundle contract rules.

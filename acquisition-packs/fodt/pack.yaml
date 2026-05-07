@@ -1,0 +1,133 @@
+# Acquisition Pack — FODT (Flat OpenDocument Text)
+#
+# Gate 1: PASSED (Babar Raza, 2026-05-07, run041)
+# Gate 2: NOT STARTED — evidence draft pending (fast-path expected)
+# Skeleton created: run041 (2026-05-07) after Gate 1 human approval
+# Spec: ODF 1.3 (already cached from FODS acquisition — .local/spec-cache/fods/1.3/)
+
+---
+artifact_id: fodt-pack
+artifact_type: acquisition-pack
+path: acquisition-packs/fodt/pack.yaml
+format_id: fodt
+product_family: words
+visibility: evidence-only
+publish_allowed: false
+license: null
+provenance_required: false
+provenance_status: not-applicable
+source_hash: null
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-07"
+reusable: false
+refresh_policy:
+  trigger: spec-version-changed
+  max_age_days: null
+stale: false
+open_source_allowed: false
+commercial_allowed: false
+release_blockers: []
+notes: "Gate 1 passed 2026-05-07 (Babar Raza, run041). Skeleton created run041. Gate 2 evidence draft pending — spec already cached (ODF 1.3 same as FODS). Fast-path Gate 2 expected (OASIS RF Category 1)."
+
+# --- Format identity ---
+format_id: fodt
+display_name: "Flat OpenDocument Text"
+family: words
+extensions:
+  - .fodt
+mime_type: "application/vnd.oasis.opendocument.text-flat-xml"
+spec_body: "OASIS"
+spec_version: "ODF 1.3"
+spec_url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/"
+legal_category: 1
+
+# --- Scoring ---
+gate_1_score: 88
+gate_1_band: accept
+gate_1_scoring_run: run039
+gate_1_verification_run: run040
+gate_1_approved_by: "Babar Raza"
+gate_1_approved_date: "2026-05-07"
+gate_1_scorer: claude-sonnet-4-6
+
+# --- Spec cache ---
+spec_cache:
+  cached: true
+  reuses_fods_cache: true
+  path: .local/spec-cache/fods/1.3/
+  filename: OpenDocument-v1.3-os-part3-schema.pdf
+  size_bytes: 24270588
+  sha256: "92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066"
+  downloaded_run: run021
+  downloaded_date: "2026-05-04"
+  verified_run: run022
+  normalized: true
+  normalized_run: run025
+  pages: 782
+  sections: 884
+  chunks: 940
+  note: "ODF 1.3 spec is shared with FODS acquisition. No separate download required for FODT."
+
+# --- Gate status ---
+stages:
+  gate_1:
+    status: passed
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-07"
+    score: 88
+    band: accept
+    scoring_run: run039
+    verification_run: run040
+    approval_run: run041
+    notes: "Scored run039 (88/100, Accept band). DEC-034 independently verified run040 (7/7 factors). Gate 1 approved by Babar Raza in run041 execution prompt."
+  gate_2:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    fast_path: null
+    notes: "Gate 2 spec/legal evidence pending. Fast-path expected (same OASIS RF Category 1 basis as FODS). ODF 1.3 spec already cached. Requires explicit Gate 2 execution prompt."
+  gate_3:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null
+  gate_4:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null
+  gate_5:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null
+  gate_6:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null
+  gate_7:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null
+  gate_8:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null
+  gate_9:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null
+  gate_10:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null
+  gate_11:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null

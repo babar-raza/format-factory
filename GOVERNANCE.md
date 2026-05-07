@@ -264,6 +264,18 @@ See AGENTS.md Section Y for agent-specific evidence bundle rules.
 
 ---
 
+## 19. Run-State Authority and Current-State Consistency (run041)
+
+**19.1.** The exact final Git HEAD hash must NOT be recorded in committed files (master-plan.md, memory/09, etc.). Doing so creates a self-referential loop requiring an infinite series of housekeeping commits.
+
+**19.2.** Committed files record `last_completed_run` and gate states. The final Git HEAD is authoritative only in evidence bundle metadata (`bundle-metadata/git-log.txt`, `bundle-metadata/git-status-final.txt`).
+
+**19.3.** Sprint-in-progress PENDING markers (`Latest commit: PENDING`, `changes pending commit`) must be absent from committed current-state files. The consistency checker (`tools/evidence/check_current_state_consistency.py`) enforces this.
+
+**19.4.** The complete policy is documented in `docs/current-state-and-evidence-authority.md`. See AGENTS.md Section Z for agent-specific rules.
+
+---
+
 ## Relationship to Other Documents
 
 - `AGENTS.md` — non-negotiable operating rules for agents
@@ -274,3 +286,4 @@ See AGENTS.md Section Y for agent-specific evidence bundle rules.
 - `docs/llm-endpoint-strategy.md` — LLM endpoint and prompt handling policy
 - `docs/specification-normalization.md` — specification normalization layer policy
 - `tools/evidence/_readme.md` — evidence bundle contract system
+- `docs/current-state-and-evidence-authority.md` — run-state authority model and current-state policy

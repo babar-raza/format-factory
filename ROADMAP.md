@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-07 (run040)
+**Last reviewed:** 2026-05-07 (run041)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
 
 ---
@@ -107,7 +107,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Gate 5 status:** PASSED — approved by Babar Raza (2026-05-06, run035). Neutral model v1: 6 entities, 19 field mappings, 30 coverage features, 21 validation rules. Validation 4/4 PASS (87 checks, 0 errors). TC-0024 CLOSED. TC-0023 COMPLETED.
 
-**Gate 6 status:** oracle_blocked_missing_tool (run035; re-confirmed run036 + run037 + run038 + run039 + run040 — 6 consecutive FAIL). LibreOffice not installed on dev machine. Oracle harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path, canonical paths, installation checklist. Provider abstraction added run037: provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md, oracle-provider-options.md. Harness self-test confirmed PASS run039 (HARNESS_SELF_TEST_ONLY 4/4). Operator handoff added run038: oracle-operator-handoff.md. TC-0026 blocker wording corrected run038. Consistency enforcement tool added (run039) and strengthened (run040 — 10 checks). Clean-git loophole closed run040 (emergency_blocker_bundle). Next: install LibreOffice per oracle-operator-handoff.md, then execute TC-0026 with explicit prompt. Gate 6 NOT approved. FODT Gate 1 scoring 88/100 verified run040 (DEC-034 PASS) — human-review packet ready.
+**Gate 6 status:** oracle_blocked_missing_tool (run035; re-confirmed run036 + run037 + run038 + run039 + run040 + run041 — 7 consecutive FAIL). LibreOffice not installed on dev machine. Oracle harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path, canonical paths, installation checklist. Provider abstraction added run037: provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md, oracle-provider-options.md. Harness self-test confirmed PASS run039 (HARNESS_SELF_TEST_ONLY 4/4). Operator handoff added run038: oracle-operator-handoff.md. TC-0026 blocker wording corrected run038. Consistency enforcement tool added (run039) and strengthened (run040 — 10 checks). Clean-git loophole closed run040 (emergency_blocker_bundle). Stable run-state authority model introduced run041 (replaces self-referential commit-hash model). Next: install LibreOffice per oracle-operator-handoff.md, then execute TC-0026 with explicit prompt. Gate 6 NOT approved. FODT Gate 1 APPROVED (Babar Raza, 2026-05-07, run041) — 88/100, Accept band; official registry entry and acquisition-packs/fodt/ skeleton created.
 
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 
@@ -133,7 +133,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 ## Beyond FODS: Subsequent Formats
 
-After FODS, subsequent formats are scored and acquired in priority order as determined by the scoring model. Next-format candidate shortlist created run038, independently verified run039: FODT (ODF flat text document) recommended as next candidate — candidate Gate 1 scoring package available (88/100 estimate, Accept band, Category 1 RF); ODF reuse strategy documented at `docs/odf-flat-family-reuse-strategy.md`. FODP, FODG, FODB also evaluated. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`; scoring package at `registry/candidates/fodt-gate1-scoring-package.yaml`. Gate 1 approval for next format requires human review of the verified shortlist and scoring package. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
+After FODS, subsequent formats are scored and acquired in priority order as determined by the scoring model. Next-format candidate shortlist created run038, independently verified run039. **FODT Gate 1 APPROVED** (Babar Raza, 2026-05-07, run041): 88/100, Accept band, Category 1 RF — official registry entry created; acquisition-packs/fodt/ skeleton created (6 files); TC-0030 created (not_started). ODF reuse strategy documented at `docs/odf-flat-family-reuse-strategy.md`. FODP, FODG, FODB remain in candidate pool. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`; scoring package at `registry/candidates/fodt-gate1-scoring-package.yaml`. Next for FODT: Gate 2 spec/legal evidence (TC-0030). Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
 
 The format registry (`registry/format-registry.yaml`) is the authoritative record of which formats are in-flight, deferred, or rejected.
 

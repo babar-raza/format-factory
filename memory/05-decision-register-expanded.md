@@ -65,6 +65,10 @@ This decision log preserves the rationale behind major choices.
 | D-048 | Hybrid Spec Retrieval Strategy: 3-tier hierarchy (deterministic → lexical → vector/future) | Decided (run027) | `docs/spec-retrieval-strategy.md` defines the policy. AGENTS.md Section X added. Tier 3 future: TC-0015/TC-0016. |
 | D-049 | Gate 4 parser planning package committed (parser-requirements.md, parser-scope.md, parser-test-plan.md) | Decided (run028) | TC-0014 planning_ready. TC-0017 (execution) and TC-0018 (verification) created. Explicit Gate 4 execution prompt required. |
 | D-050 | Gate 4 prototype created (prototypes/by-format/fods/fods_parser.py) and validated 4/4 PASS | Decided (run029) | TC-0017 → prototype_created_pending_independent_verification. TC-0018 → ready_for_execution. TC-0019 created (Gate 5 planning, not_started). Gate 4 NOT approved. TC-0018 DEC-034 required. |
+| D-051 | FODS Gate 4 PASSED (Babar Raza, 2026-05-06, run033) | Decided (run033) | TC-0017 completed, TC-0018 CLOSED. Prototype 4/4 PASS. Gate 4 approved. |
+| D-052 | FODS Gate 5 PASSED (Babar Raza, 2026-05-06, run035) | Decided (run035) | Neutral model v1: 6 entities, 19 field mappings. Validation 4/4 PASS (87 checks). TC-0024 CLOSED. |
+| D-053 | FODT Gate 1 APPROVED (Babar Raza, 2026-05-07, run041) | Decided (run041) | 88/100, Accept band, Category 1 RF. Official registry entry created. acquisition-packs/fodt/ skeleton created (6 files). TC-0030 created. |
+| D-054 | Self-referential commit-hash model replaced with stable run-state authority model | Decided (run041) | Committed files must not contain `Latest commit: <hash>` — creates infinite housekeeping commits. Exact final HEAD is authoritative only in bundle-metadata/. docs/current-state-and-evidence-authority.md documents the policy. AGENTS.md Section Z, GOVERNANCE.md Section 19 added. |
 
 ## Pending decisions
 

@@ -165,6 +165,47 @@ def check_git_clean(repo_root):
     return is_clean, status_text
 
 
+def auto_generate_git_metadata(repo_root, metadata_dir):
+    """Auto-generate git-log.txt and git-status-final.txt in the metadata directory.
+
+    These are the authoritative records of the exact final Git HEAD at bundle build time.
+    See docs/current-state-and-evidence-authority.md — the exact Git HEAD is recorded here,
+    not in committed repo files like master-plan.md.
+    """
+    metadata_path = Path(metadata_dir)
+    generated = []
+
+    # git-log.txt — full log (most recent 30 commits, one-line plus stats)
+    log_result = subprocess.run(
+        ["git", "log", "--oneline", "--stat", "-30"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if log_result.returncode == 0:
+        log_path = metadata_path / "git-log.txt"
+        log_path.write_text(log_result.stdout, encoding="utf-8")
+        generated.append("git-log.txt")
+
+    # git-status-final.txt — full git status at bundle build time
+    status_result = subprocess.run(
+        ["git", "status"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if status_result.returncode == 0:
+        status_path = metadata_path / "git-status-final.txt"
+        status_path.write_text(status_result.stdout, encoding="utf-8")
+        generated.append("git-status-final.txt")
+
+    return generated
+
+
 def write_manifest(manifest_path, included_repo, included_meta, missing_repo, missing_meta,
                    forbidden_skipped, contract_path, bundle_path):
     """Write bundle-manifest.yaml to the metadata directory."""
@@ -337,6 +378,15 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
             print(f"  - {e}")
         print("\nBUNDLE_BUILD: FAIL")
         return False
+
+    # Auto-generate git-log.txt and git-status-final.txt (final-state authority)
+    # These capture the exact Git HEAD at bundle build time.
+    # See docs/current-state-and-evidence-authority.md.
+    if metadata_path and metadata_path.exists() and not dry_run:
+        auto_generated = auto_generate_git_metadata(str(repo_root), str(metadata_path))
+        for ag in auto_generated:
+            if ag not in metadata_files:
+                metadata_files.append(ag)
 
     # Generate manifest before building zip
     if metadata_path:

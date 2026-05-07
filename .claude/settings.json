@@ -1,6 +1,6 @@
 {
   "projectName": "format-factory",
-  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3 GATE 5 PASSED (Babar Raza, 2026-05-06). Gate 6 oracle_blocked_missing_tool (LibreOffice not installed — 6 preflight FAIL). Embeddings/vector DB/vector index NOT authorized.",
+  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3 GATE 5 PASSED (Babar Raza, 2026-05-06). FODT Gate 1 APPROVED (Babar Raza, 2026-05-07, run041). Gate 6 oracle_blocked_missing_tool (LibreOffice not installed — 7 preflight FAIL). Embeddings/vector DB/vector index NOT authorized.",
   "model": "claude-opus-4-6",
   "permissions": {
     "allow": [
@@ -13,6 +13,7 @@
       "Write(registry/scoring/_scoring-model.md)",
       "Write(acquisition-packs/_template/**)",
       "Write(acquisition-packs/fods/**)",
+      "Write(acquisition-packs/fodt/**)",
       "Write(tools/llm/endpoints.yaml)",
       "Write(tools/_readme.md)",
       "Write(tools/spec-cache/_readme.md)",
@@ -105,7 +106,7 @@
     ]
   },
   "phase": "3",
-  "phase_note": "Phase 3 GATE 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6 oracle_blocked_missing_tool (run035+036+037+038+039+040 preflight: LibreOffice not installed — 6 consecutive FAIL). run040: clean-git loophole closed (emergency_blocker_bundle field added to validator/builder); consistency checker strengthened (10 checks: master-plan, memory/09, registry gate_6 not approved, FODT candidate-only, pack.yaml); TC-0029 DEC-034 PASS (7/7 factors, 88/100, FODT Gate 1 human-review packet ready: acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md); negative tests 6/6 PASS. Consistency enforcement tool added run039: tools/evidence/check_current_state_consistency.py. FODT Gate 1 scoring package run039: registry/candidates/fodt-gate1-scoring-package.yaml (CANDIDATE-ONLY; no Gate 1 approval). ODF reuse strategy run039: docs/odf-flat-family-reuse-strategy.md. TC-0029 verification_passed_pending_human_review (run040). schemas/neutral-model/fods/**, tools/model/**, tools/oracle/**, tests/evidence/** ALLOWED. registry/candidates/**, acquisition-packs/_candidate-shortlists/** ALLOWED (candidate-only). Spec acquisition complete for FODS/ODF 1.3 (run021). Network DENIED. src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM scripts DENIED.",
+  "phase_note": "Phase 3 GATE 5 PASSED (Babar Raza, 2026-05-06, run035). FODT Gate 1 APPROVED (Babar Raza, 2026-05-07, run041) — 88/100, Accept band, official registry entry created, acquisition-packs/fodt/ skeleton created (6 files), TC-0030 not_started. Gate 6 oracle_blocked_missing_tool (run035+036+037+038+039+040+041 preflight: LibreOffice not installed — 7 consecutive FAIL). run041: self-referential commit-hash model REPLACED with stable run-state authority model (docs/current-state-and-evidence-authority.md, check_current_state_consistency.py rewrite 7/7 tests PASS, validate_evidence_bundle.py repo-state PENDING scan, build_evidence_bundle.py auto-git-metadata). run040: clean-git loophole closed; consistency checker strengthened (10 checks). run039: consistency enforcement tool added. FODT Gate 1 scoring package: registry/candidates/fodt-gate1-scoring-package.yaml (gate_1_approved: true). ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md. schemas/neutral-model/fods/**, tools/model/**, tools/oracle/**, tests/evidence** ALLOWED. registry/candidates/**, acquisition-packs/_candidate-shortlists/**, acquisition-packs/fodt/** ALLOWED. Spec acquisition complete for FODS/ODF 1.3 (run021). Network DENIED. src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM scripts DENIED.",
   "notes": [
     "Phase 3 Gate 5 PASSED: Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). TC-0024 CLOSED. Gate 6 oracle_blocked_missing_tool: LibreOffice not installed. Install LibreOffice, then re-execute TC-0026 with explicit prompt. tools/oracle/** ALLOWED (new run035).",
     "Format-first source layout: src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE — must not be created.",

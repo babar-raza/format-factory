@@ -28,10 +28,11 @@ notes: "FODT Gate 1 scoring preparation taskcard. CANDIDATE-ONLY — no Gate 1 a
 **Taskcard ID:** TC-0029
 **Phase:** Pre-Gate 1 (candidate evaluation — CANDIDATE-ONLY)
 **Gate:** Pre-Gate 1 (scoring preparation only)
-**Status:** verification_passed_pending_human_review
+**Status:** COMPLETED — Gate 1 approved by Babar Raza (2026-05-07, run041)
 **Created:** 2026-05-07 (run039)
 **Created by:** claude-sonnet-4-6 (run039)
 **Verified:** 2026-05-07 (run040) — DEC-034 PASS (7/7 factors verified, 88/100 confirmed)
+**Approved:** 2026-05-07 (run041) — Babar Raza; Gate 1 recorded in registry/format-registry.yaml
 **Review packet:** acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md
 
 ---

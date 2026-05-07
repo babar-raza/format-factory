@@ -105,6 +105,8 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 | R-021 | Secrets, raw prompts, or copyrighted spec text stored in /memory | High | AGENTS.md Section U7 and GOVERNANCE.md 1.2a prohibit this |
 | R-022 | run009 and run010 contradictions not reconciled before Phase 1 | High | run011 must reconcile; run012 captured pending items |
 
+| G-HEAL-040 (run041) | Self-referential commit-hash loop: committed files had `Latest commit: HASH` patterns that required a new commit to update after every commit, creating an infinite housekeeping cycle | **RESOLVED run041** — Stable run-state authority model introduced. Committed files now use `last_completed_run: runNNN`. Exact final HEAD is authoritative only in bundle-metadata/. docs/current-state-and-evidence-authority.md documents the policy. AGENTS.md Section Z and GOVERNANCE.md Section 19 added. check_current_state_consistency.py rewritten (7/7 PASS). |
+
 ## Lesson from Phase 0
 
 Every agent summary must be verified. Multiple runs claimed completion while contradictions remained. The correct workflow is evidence-first: inspect files, search for contradictions, then decide next prompt.

@@ -140,6 +140,22 @@ PENDING_MARKER_PATTERNS = [
     "validation_status: PENDING",
 ]
 
+# Current-state PENDING patterns — sprint-in-progress markers that must NOT appear
+# in committed repo files (master-plan.md, memory/09) in their final state.
+# See docs/current-state-and-evidence-authority.md.
+REPO_STATE_PENDING_PATTERNS = [
+    r"Latest commit:\s*PENDING",
+    r"changes pending commit",
+    r"run\d+\s+changes\s+pending",
+]
+
+# Repo files whose header sections are scanned for REPO_STATE_PENDING_PATTERNS.
+# Only the first 3000 chars are scanned to avoid false positives in historical run notes.
+CURRENT_STATE_REPO_FILES = [
+    "plans/master-plan.md",
+    "memory/09-current-state-before-phase1.md",
+]
+
 
 def check_git_status_clean(metadata_files_content):
     """Check if a git status file in bundle metadata shows a clean working tree.
@@ -175,6 +191,38 @@ def check_git_status_clean(metadata_files_content):
             if indicator in line:
                 return False, f"{source_file} shows uncommitted changes: '{line.strip()}'"
     return True, f"{source_file} shows clean working tree"
+
+
+def check_repo_current_state_pending(zf):
+    """Scan bundled repo current-state files for sprint-in-progress PENDING patterns.
+
+    Checks the header sections (first 3000 chars) of CURRENT_STATE_REPO_FILES.
+    Returns a list of (filename, pattern_found) tuples for any hits.
+    See docs/current-state-and-evidence-authority.md.
+    """
+    hits = []
+    all_entries = set(zf.namelist())
+    for repo_rel_path in CURRENT_STATE_REPO_FILES:
+        zip_path = f"repo/{repo_rel_path}"
+        if zip_path not in all_entries:
+            continue
+        try:
+            content = zf.read(zip_path).decode("utf-8", errors="replace")
+        except Exception:
+            continue
+        header_section = content[:3000]
+        for pattern in REPO_STATE_PENDING_PATTERNS:
+            m = re.search(pattern, header_section, re.IGNORECASE)
+            if m:
+                # Skip matches that are clearly inside historical run table rows
+                line_start = header_section.rfind("\n", 0, m.start()) + 1
+                line_end = header_section.find("\n", m.end())
+                line = header_section[line_start:line_end] if line_end > 0 else header_section[line_start:]
+                if re.match(r"\|\s*run0\d+", line.strip()):
+                    continue
+                hits.append((repo_rel_path, m.group(0)))
+                break
+    return hits
 
 
 def check_no_pending_reports(metadata_files_content):
@@ -322,12 +370,19 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
                     f"use emergency_blocker_bundle: true only for explicitly blocked/failed bundles)"
                 )
 
-        # Check for PENDING markers in metadata files
+        # Check for PENDING markers in metadata files and repo current-state files
         pending_hits = []
+        repo_pending_hits = []
         if no_pending:
             pending_hits = check_no_pending_reports(metadata_files_content)
             for fname, pattern in pending_hits:
                 errors.append(f"PENDING marker in metadata file '{fname}': {pattern!r}")
+            repo_pending_hits = check_repo_current_state_pending(zf)
+            for repo_file, pattern in repo_pending_hits:
+                errors.append(
+                    f"Sprint-in-progress PENDING marker in repo file '{repo_file}': {pattern!r} "
+                    f"— see docs/current-state-and-evidence-authority.md"
+                )
 
     # Print validation report
     print("=" * 60)
@@ -353,8 +408,10 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         status_label = "PASS" if clean else ("FAIL" if clean is False else "MISSING")
         print(f"Git clean ({status_label}): {msg}")
     if no_pending:
-        pending_status = "PASS" if not pending_hits else "FAIL"
-        print(f"No-PENDING check ({pending_status}): {len(pending_hits)} PENDING marker(s) found in metadata files")
+        total_pending = len(pending_hits) + len(repo_pending_hits)
+        pending_status = "PASS" if total_pending == 0 else "FAIL"
+        print(f"No-PENDING check ({pending_status}): {len(pending_hits)} metadata PENDING + "
+              f"{len(repo_pending_hits)} repo current-state PENDING marker(s)")
     print()
 
     if warnings:

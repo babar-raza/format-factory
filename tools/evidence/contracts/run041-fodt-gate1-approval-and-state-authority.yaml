@@ -1,0 +1,82 @@
+# Evidence Bundle Contract — run041
+# Sprint: FODT Gate 1 approval + stable run-state authority model
+# Created: 2026-05-07 (run041)
+
+contract_id: run041-fodt-gate1-approval-and-state-authority
+version: "1.0"
+description: >
+  Evidence contract for run041: FODT Gate 1 approval (Babar Raza, 2026-05-07),
+  FODT acquisition skeleton, stable run-state authority model (replaces
+  self-referential commit-hash model), FODS Gate 6 7th consecutive preflight
+  FAIL, FODS Gate 5 neutral model verification.
+
+# Current-state authority: exact final Git HEAD is in bundle-metadata only
+current_state_authority: bundle-metadata
+
+# Top-level folders
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+# Forbidden patterns (inherits from base-run.yaml)
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+
+require_clean_git: true
+emergency_blocker_bundle: false
+
+min_metadata_count: 5
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+
+required_repo_files:
+  # New/updated run041 files
+  - docs/current-state-and-evidence-authority.md
+  - tools/evidence/contracts/run041-fodt-gate1-approval-and-state-authority.yaml
+  - tools/evidence/check_current_state_consistency.py
+  - tests/evidence/test_current_state_consistency.py
+  # FODT Gate 1 approval artifacts
+  - registry/format-registry.yaml
+  - registry/candidates/fodt-gate1-scoring-package.yaml
+  - taskcards/TC-0028-next-format-candidate-shortlist.md
+  - taskcards/TC-0029-fodt-gate1-scoring-preparation.md
+  - taskcards/TC-0030-fodt-gate2-spec-legal-evidence.md
+  - acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md
+  - acquisition-packs/fodt/pack.yaml
+  - acquisition-packs/fodt/spec-evidence.md
+  - acquisition-packs/fodt/legal-notes.md
+  - acquisition-packs/fodt/sample-sources.md
+  - acquisition-packs/fodt/parser-notes.md
+  - acquisition-packs/fodt/gate2-planning.md
+  # Updated governance files
+  - plans/master-plan.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - README.md
+  - ROADMAP.md
+  - .claude/settings.json
+  - memory/09-current-state-before-phase1.md
+  - memory/05-decision-register-expanded.md
+  - memory/06-gap-risk-and-healing-history.md
+  # Evidence tooling
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/contracts/base-run.yaml
