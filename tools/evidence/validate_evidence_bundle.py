@@ -93,6 +93,15 @@ def load_contract(contract_path):
                 elif isinstance(item, str):
                     paths.append(item)
             data["required_repo_files"] = paths
+        # Normalize required_repo_files list-of-dicts to flat list of paths
+        if "required_repo_files" in data and isinstance(data["required_repo_files"], list):
+            paths = []
+            for item in data["required_repo_files"]:
+                if isinstance(item, dict) and "path" in item:
+                    paths.append(item["path"])
+                elif isinstance(item, str):
+                    paths.append(item)
+            data["required_repo_files"] = paths
         return data
     else:
         return parse_yaml_minimal(text)
