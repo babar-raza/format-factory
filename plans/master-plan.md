@@ -6,7 +6,7 @@
 **Version:** 2.33 (run037: run036 independent verification PASS; stale state fixed; oracle provider abstraction added — provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md; oracle-provider-options.md; --check-no-pending validator flag; negative tests; preflight re-run 3 FAIL; Gate 6 still oracle_blocked_missing_tool)
 **Last updated:** 2026-05-07
 **Current phase:** Phase 3: FODS Gate 5 PASSED, Gate 6 oracle blocked (LibreOffice not installed)
-**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. No product source. Latest commit: de29c97 (run037). Working tree: clean.
+**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. No product source. Latest commit: f964eba (run037 final). Working tree: clean.
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
@@ -1027,7 +1027,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** de29c97 (run037 main commit). run037 commits: de29c97 (+ Section 33 pending). run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
+**Latest commit:** f964eba (run037 Section 33 final). run037 commits: de29c97 + f964eba. run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
