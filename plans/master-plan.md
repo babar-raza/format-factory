@@ -1018,7 +1018,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** (run035 — see pending run035 commit below). run034 commits: 2176266 + 074386a + f59fc46. run035 commit pending.
+**Latest commit:** 179e6db (run035). run034 commits: 2176266 + 074386a + f59fc46.
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1119,7 +1119,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 **Committed (f59fc46, run034 post-commit):**
 - plans/master-plan.md Section 33 latest commit updated to 074386a
 
-**Pending (run035, 2026-05-07):**
+**Committed (179e6db, run035):**
 - tools/oracle/ (5 NEW files: README.md, preflight_oracle.py, run_fods_oracle.py, compare_fods_oracle.py, summarize_oracle_results.py)
 - acquisition-packs/fods/gate6-oracle-blocker-report.md (NEW)
 - acquisition-packs/fods/gate5-human-review-packet.md (Gate 5 PASSED updated)
@@ -1131,7 +1131,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - registry/format-registry.yaml (gate_5 → passed approved_by Babar Raza; gate_6 → oracle_blocked_missing_tool)
 - .claude/settings.json (Gate 6 conservative mode)
 - README.md, ROADMAP.md, plans/master-plan.md v2.31, memory/09
-- tools/evidence/contracts/run035-*.yaml (evidence contract)
+- tools/evidence/contracts/run035-gate5-approval-gate6-oracle.yaml (evidence contract)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 
