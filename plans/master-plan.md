@@ -6,7 +6,7 @@
 **Version:** 2.35 (run039: run038 independently verified PASS; stale commit fixed (998412c→bc2bdf8); consistency enforcement tool added; oracle preflight re-run 5 FAIL; harness self-test confirmed PASS; candidate shortlist independently verified; FODT Gate 1 scoring package (candidate-only); ODF reuse strategy docs; Gate 6 still oracle_blocked_missing_tool)
 **Last updated:** 2026-05-07
 **Current phase:** Phase 3: FODS Gate 5 PASSED, Gate 6 oracle blocked (LibreOffice not installed)
-**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. TC-0028 in_progress (candidate shortlist — run038 created; run039 verified). TC-0029 created (FODT Gate 1 scoring package — candidate-only; no Gate 1 approval). No product source. Latest commit: 075edca (run039 final commit). Working tree: clean post-bundle (Section 33 update local prior to bundle).
+**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. TC-0028 in_progress (candidate shortlist — run038 created; run039 verified). TC-0029 created (FODT Gate 1 scoring package — candidate-only; no Gate 1 approval). No product source. Latest commit: d052510 (run039 post-bundle final). Working tree: clean.
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
@@ -1029,7 +1029,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 075edca (run039 final). run039 commits: 48f6a0d + 8cd2ed2 + 075edca. run038 commits: 1e1d504 + e0fc07c + 998412c + bc2bdf8. run037 commits: de29c97 + f964eba + a35b089. run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
+**Latest commit:** d052510 (run039 post-bundle final). run039 commits: 48f6a0d + 8cd2ed2 + 075edca + d052510. run038 commits: 1e1d504 + e0fc07c + 998412c + bc2bdf8. run037 commits: de29c97 + f964eba + a35b089. run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
