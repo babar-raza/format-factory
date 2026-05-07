@@ -131,13 +131,13 @@ formats:
         status: oracle_blocked_missing_tool
         approved_by: null
         approved_date: null
-        oracle_preflight: "run039 re-run (5th) — all candidates MISS; FORMAT_FACTORY_SOFFICE not set. ORACLE_ENV: BLOCKED (5 consecutive FAIL: run035/036/037/038/039)"
+        oracle_preflight: "run040 re-run (6th) — all candidates MISS; FORMAT_FACTORY_SOFFICE not set. ORACLE_ENV: BLOCKED (6 consecutive FAIL: run035/036/037/038/039/040)"
         oracle_harness_path: tools/oracle/
         oracle_harness_hardened: "run036 — oracle_common.py added; FORMAT_FACTORY_SOFFICE env var; --soffice-path CLI"
         provider_registry: "run037 — tools/oracle/provider_registry.yaml + validate_oracle_environment.py added"
         harness_self_test: "run038 — tools/oracle/self_test_oracle_harness.py (HARNESS_SELF_TEST_ONLY); ORACLE_HARNESS_SELF_TEST: PASS 4/4; synthetic CSV fixtures; no LibreOffice required"
         operator_handoff: "run038 — acquisition-packs/fods/oracle-operator-handoff.md; precise install/verify/execute instructions"
-        notes: "Gate 5 approved. Gate 6 oracle preflight failed (run035 + run036 + run037 + run038 + run039): LibreOffice not installed on dev machine. 5 consecutive FAIL. Oracle harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path, canonical path model. Provider abstraction added run037: provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md. Harness self-test added run038: self_test_oracle_harness.py (HARNESS_SELF_TEST_ONLY) — validates compare/summarize plumbing without LibreOffice; PASS 4/4. Operator handoff added run038: oracle-operator-handoff.md with exact install+verify+execute instructions. TC-0026 blocker wording corrected run038 (was wrong: 'Gate 6 human approval' → corrected: LibreOffice missing). Run039: consistency enforcement tool added (tools/evidence/check_current_state_consistency.py); stale commit bc2bdf8 fixed; FODT Gate 1 scoring package created (candidate-only, no approval); ODF reuse strategy doc created. Provider options: acquisition-packs/fods/oracle-provider-options.md. TC-0026 status: blocked_missing_oracle_tool. Next action: install LibreOffice per oracle-operator-handoff.md, then re-execute TC-0026 with explicit prompt. Gate 6 is NOT approved."
+        notes: "Gate 5 approved. Gate 6 oracle preflight failed (run035–run040): LibreOffice not installed on dev machine. 6 consecutive FAIL. Oracle harness hardened run036. Provider abstraction added run037. Harness self-test added run038. TC-0026 blocker wording corrected run038. Run039: consistency enforcement tool + FODT Gate 1 scoring package (candidate-only) + ODF reuse strategy. Run040: clean-git loophole closed (emergency_blocker_bundle), consistency checker strengthened (10 checks), FODT Gate 1 scoring DEC-034 verified (7/7 PASS, 88/100), human-review packet created. TC-0026 status: blocked_missing_oracle_tool. Next action: install LibreOffice per oracle-operator-handoff.md, then re-execute TC-0026 with explicit prompt. Gate 6 is NOT approved."
       gate_7:
         status: not_started
         approved_by: null

@@ -1,0 +1,242 @@
+# Evidence Bundle Contract — run040
+# Clean-git loophole closed + consistency checker strengthened (10 checks)
+# + TC-0029 DEC-034 PASS (7/7 factors, 88/100, Accept band confirmed)
+# + FODT Gate 1 human-review packet created
+# + run039 independent verification PASS (44 checks)
+# + stale-state fixes (d052510→54a27dc)
+# TC-0026 still blocked (LibreOffice not installed — 6th consecutive FAIL).
+#
+# Created: run040 (2026-05-07)
+# Authorized by: run040 execution prompt (human-authorized)
+# No Gate 6 approval. No FODT Gate 1 approval. No official new registry entries (candidates-only).
+# No product source. No embeddings. No LLM endpoint calls. No spec downloads.
+
+contract_id: run040-clean-evidence-and-fodt-gate1-verification
+run: run040
+created: "2026-05-07"
+purpose: >
+  Evidence bundle for run040 combined sprint: independent verification of run039 (PASS, 44 checks,
+  5 commits: 48f6a0d + 8cd2ed2 + 075edca + d052510 + 54a27dc; BUNDLE_VALIDATION: PASS),
+  stale-state fixes (master-plan header was showing d052510, actual final was 54a27dc; memory/09
+  updated), CURRENT_STATE_CONSISTENCY: PASS, clean-git loophole closed in
+  validate_evidence_bundle.py and build_evidence_bundle.py (dirty git now always fails even when
+  require_clean_git: false, unless emergency_blocker_bundle: true is set; this was a critical
+  governance gap that allowed unverified builds to pass), base-run.yaml updated with
+  require_clean_git: true and emergency_blocker_bundle: false as explicit defaults, 2 new negative
+  tests added (6/6 total PASS: dirty-git-fails-even-with-require_clean_git_false,
+  dirty-git-passes-with-emergency_blocker_bundle_true), consistency checker strengthened to
+  10 invariants (master-plan header commit, Section 33 commit, memory/09 commit, registry gate_6
+  approved_by null, registry gate_6 approved_date null, no official fodt in format-registry,
+  fodt-gate1-scoring-package gate_1_approved: false, no acquisition-packs/fodt/ dir, pack.yaml
+  gate_6 not approved), oracle preflight re-run 6 (ORACLE_ENV: BLOCKED — 6th consecutive FAIL),
+  TC-0029 DEC-034 PASS: all 7 scoring factors independently verified (88/100 confirmed, Accept
+  band confirmed, WIP limits confirmed), FODT Gate 1 human-review packet created
+  (acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md — 7-factor scoring
+  table, factor-by-factor evidence, WIP limit check, decision instructions; no Gate 1 approval
+  implied), TC-0029 status updated to verification_passed_pending_human_review,
+  README/ROADMAP/registry/settings.json/oracle-provider-strategy.md/gate6-oracle-blocker-report.md
+  updated, master-plan v2.36, memory/09 + MEMORY.md updated.
+
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run040-clean-evidence-and-fodt-gate1-verification.yaml
+
+require_manifest: true
+require_clean_git: true
+emergency_blocker_bundle: false
+# require_clean_git: true because run040 is a clean sprint with all changes committed before bundle
+
+min_metadata_count: 44
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+required_repo_files:
+  - path: README.md
+  - path: ROADMAP.md
+  - path: AGENTS.md
+  - path: GOVERNANCE.md
+  - path: plans/master-plan.md
+  - path: registry/format-registry.yaml
+  - path: registry/candidates/odf-flat-family-shortlist.yaml
+  - path: registry/candidates/fodt-gate1-scoring-package.yaml
+  - path: taskcards/TC-0026-fods-gate6-oracle-execution.md
+  - path: taskcards/TC-0027-fods-gate6-oracle-verification.md
+  - path: taskcards/TC-0028-next-format-candidate-shortlist.md
+  - path: taskcards/TC-0029-fodt-gate1-scoring-preparation.md
+  - path: acquisition-packs/fods/gate6-oracle-blocker-report.md
+  - path: acquisition-packs/fods/gate6-oracle-plan.md
+  - path: acquisition-packs/fods/oracle-scope.md
+  - path: acquisition-packs/fods/oracle-installation-checklist.md
+  - path: acquisition-packs/fods/oracle-provider-options.md
+  - path: acquisition-packs/fods/oracle-risk-register.md
+  - path: acquisition-packs/fods/oracle-operator-handoff.md
+  - path: acquisition-packs/fods/oracle-harness-self-test-report.md
+  - path: acquisition-packs/fods/pack.yaml
+  - path: acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md
+  - path: acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md
+  - path: docs/odf-flat-family-reuse-strategy.md
+  - path: docs/oracle-provider-strategy.md
+  - path: schemas/neutral-model/fods/README.md
+  - path: schemas/neutral-model/fods/model.yaml
+  - path: schemas/neutral-model/fods/field-map.yaml
+  - path: schemas/neutral-model/fods/validation-rules.yaml
+  - path: tools/oracle/oracle_common.py
+  - path: tools/oracle/preflight_oracle.py
+  - path: tools/oracle/run_fods_oracle.py
+  - path: tools/oracle/compare_fods_oracle.py
+  - path: tools/oracle/summarize_oracle_results.py
+  - path: tools/oracle/self_test_oracle_harness.py
+  - path: tools/oracle/README.md
+  - path: tools/oracle/provider_registry.yaml
+  - path: tools/oracle/validate_oracle_environment.py
+  - path: tools/evidence/build_evidence_bundle.py
+  - path: tools/evidence/validate_evidence_bundle.py
+  - path: tools/evidence/check_current_state_consistency.py
+  - path: tools/evidence/contracts/base-run.yaml
+  - path: tools/evidence/contracts/run039-consistency-and-fodt-scoring.yaml
+  - path: tools/evidence/contracts/run040-clean-evidence-and-fodt-gate1-verification.yaml
+  - path: tests/evidence/test_negative_bundle_validation.py
+  - path: tests/evidence/test_current_state_consistency.py
+  - path: memory/09-current-state-before-phase1.md
+  - path: .claude/settings.json
+
+forbidden_paths:
+  - src/python/fods
+  - src/python/open-source
+  - src/dotnet
+  - src/net
+  - acquisition-packs/fodt
+  - .github/workflows
+  - reports/security
+  - reports/legal
+
+# Branch A = oracle still blocked (current state — expected)
+# Branch B = oracle comparison created (not reached — requires LibreOffice)
+branch: A
+
+branch_a_required_files:
+  - path: acquisition-packs/fods/oracle-operator-handoff.md
+  - path: tools/oracle/self_test_oracle_harness.py
+  - path: tools/evidence/check_current_state_consistency.py
+  - path: acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md
+
+required_metadata_files:
+  - run039-independent-verification-report.md
+  - oracle-preflight-run040.md
+  - clean-git-loophole-fix-report.md
+  - consistency-checker-strengthening-report.md
+  - negative-tests-update-report.md
+  - tc0029-dec034-verification-report.md
+  - fodt-gate1-human-review-packet-report.md
+  - tc0029-taskcard-update.md
+  - stale-state-fix-report.md
+  - forbidden-path-audit.md
+  - self-challenge.md
+  - gap-log-update.md
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - verdict.md
+  - repo-tree.txt
+  - git-log.txt
+  - git-status-final.txt
+  - git-diff-stat.txt
+  - master-plan-snapshot.md
+  - settings-snapshot.json
+  - registry-snapshot.yaml
+  - tc0026-status.md
+  - oracle-blocker-summary.md
+  - oracle-preflight-consecutive-fail-summary.md
+  - new-files-list.md
+  - search-audit.md
+  - format-registry-gate6-notes.md
+  - evidence-bundle-contract-listing.md
+  - run040-artifacts-produced.md
+  - acquisition-pack-update-report.md
+  - memory-09-updated.md
+  - memory-md-updated.md
+  - readme-update.md
+  - roadmap-update.md
+  - settings-update.md
+  - master-plan-version-report.md
+  - blocker-report-update.md
+  - oracle-provider-strategy-update.md
+  - base-run-contract-update.md
+  - wip-limit-check.md
+  - tc0028-status.md
+  - tc0029-dec034-pass-summary.md
+  - bundle-manifest.yaml
+
+validation_checks:
+  - description: "run039 independent verification PASS (5 commits: 48f6a0d + 8cd2ed2 + 075edca + d052510 + 54a27dc; 44 checks PASS)"
+    expected: PASS
+  - description: "stale-state fixed: master-plan commit d052510 → 54a27dc"
+    expected: PASS
+  - description: "stale-state fixed: memory/09 commit updated to 54a27dc"
+    expected: PASS
+  - description: "CURRENT_STATE_CONSISTENCY: PASS (check_current_state_consistency.py — 10 checks)"
+    expected: PASS
+  - description: "clean-git loophole closed: dirty git fails even with require_clean_git: false"
+    expected: PASS
+  - description: "emergency_blocker_bundle: true added as escape hatch"
+    expected: PASS
+  - description: "base-run.yaml updated: require_clean_git: true + emergency_blocker_bundle: false"
+    expected: PASS
+  - description: "negative test: dirty-git-fails-even-with-require_clean_git_false — PASS"
+    expected: PASS
+  - description: "negative test: dirty-git-passes-with-emergency_blocker_bundle_true — PASS"
+    expected: PASS
+  - description: "negative tests total 6/6 PASS"
+    expected: PASS
+  - description: "consistency checker strengthened: 10 invariants validated"
+    expected: PASS
+  - description: "4/4 existing consistency tests still PASS after strengthening"
+    expected: PASS
+  - description: "oracle preflight re-run 6: ORACLE_ENV: BLOCKED (6th consecutive FAIL)"
+    expected: PASS
+  - description: "TC-0029 DEC-034 PASS: 7/7 scoring factors independently verified"
+    expected: PASS
+  - description: "TC-0029 DEC-034: 88/100 confirmed"
+    expected: PASS
+  - description: "TC-0029 DEC-034: Accept band confirmed"
+    expected: PASS
+  - description: "fodt-gate1-human-review-packet.md created with complete scoring evidence"
+    expected: PASS
+  - description: "TC-0029 status: verification_passed_pending_human_review"
+    expected: PASS
+  - description: "master-plan version: 2.36"
+    expected: PASS
+  - description: "registry gate_6.oracle_preflight: 6th consecutive FAIL recorded"
+    expected: PASS
+  - description: "settings.json phase_note updated with run040 artifacts"
+    expected: PASS
+  - description: "README.md gate_6 note: 6 consecutive FAIL"
+    expected: PASS
+  - description: "ROADMAP.md gate_6 status: 6 consecutive FAIL"
+    expected: PASS
+  - description: "TC-0028 status remains in_progress"
+    expected: PASS
+  - description: "gate6-oracle-blocker-report.md updated: run040 section + 6-column preflight table"
+    expected: PASS
+  - description: "oracle-provider-strategy.md updated: Section 6 — 6 FAIL, run040 note"
+    expected: PASS
+  - description: "No FODT Gate 1 approval (human-only — candidate-only status maintained)"
+    expected: NO_GATE_APPROVAL
+  - description: "No Gate 6 approval (human-only)"
+    expected: NO_GATE_APPROVAL
+  - description: "No official registry entry for FODT in registry/format-registry.yaml"
+    expected: ABSENT
+  - description: "No acquisition-packs/fodt/ directory"
+    expected: ABSENT
+  - description: "No product source created (src/python/fods/, src/net/fods/ absent)"
+    expected: ABSENT
+  - description: "No embeddings or vector DB"
+    expected: ABSENT
+  - description: "No push to remote"
+    expected: NOT_DONE
+  - description: "No LibreOffice auto-install"
+    expected: NOT_DONE
+  - description: "No new spec downloads"
+    expected: NOT_DONE
+  - description: "WIP limits: FODS in Gate 6 = 1/2 slot; FODT candidate-only = 0/3 Gate 1-3 slots used"
+    expected: PASS

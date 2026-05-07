@@ -128,6 +128,95 @@ def test_clean_bundle_passes_no_pending():
         return True
 
 
+def test_dirty_git_fails_even_with_require_clean_git_false():
+    """Validator must FAIL when git-status-final.txt shows dirty even if require_clean_git: false.
+
+    This is the Section D loophole fix (run040): dirty git always fails unless
+    emergency_blocker_bundle: true is set.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = tmp_dir / "test-dirty-git-contract.yaml"
+        contract.write_text(
+            """\
+contract_id: test-dirty-git
+require_clean_git: false
+emergency_blocker_bundle: false
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 1
+required_repo_files: []
+required_metadata_files: []
+forbidden_paths: []
+""",
+            encoding="utf-8",
+        )
+        bundle_path = tmp_dir / "test-dirty-bundle.zip"
+        with zipfile.ZipFile(bundle_path, "w") as zf:
+            zf.writestr("repo/placeholder.txt", "placeholder")
+            zf.writestr(
+                "bundle-metadata/git-status-final.txt",
+                "On branch main\nChanges not staged for commit:\n  modified: plans/master-plan.md\n",
+            )
+            zf.writestr("bundle-metadata/verdict.md", "Git clean: no")
+        result = validate_bundle(str(contract), str(bundle_path), strict_git=False, no_pending=False)
+        if result:
+            print(
+                "FAIL: test_dirty_git_fails_even_with_require_clean_git_false "
+                "— validator returned PASS but should have FAILed (loophole still open)"
+            )
+            return False
+        print(
+            "PASS: test_dirty_git_fails_even_with_require_clean_git_false "
+            "— correctly FAILed for dirty git even when require_clean_git: false"
+        )
+        return True
+
+
+def test_dirty_git_passes_with_emergency_blocker_bundle_true():
+    """Validator must PASS (warn only) when emergency_blocker_bundle: true and git is dirty.
+
+    This is the intentional escape hatch for documented blocker/failed bundles.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = tmp_dir / "test-emergency-contract.yaml"
+        contract.write_text(
+            """\
+contract_id: test-emergency-blocker
+require_clean_git: false
+emergency_blocker_bundle: true
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 1
+required_repo_files: []
+required_metadata_files: []
+forbidden_paths: []
+""",
+            encoding="utf-8",
+        )
+        bundle_path = tmp_dir / "test-blocker-bundle.zip"
+        with zipfile.ZipFile(bundle_path, "w") as zf:
+            zf.writestr("repo/placeholder.txt", "placeholder")
+            zf.writestr(
+                "bundle-metadata/git-status-final.txt",
+                "On branch main\nChanges not staged for commit:\n  modified: plans/master-plan.md\n",
+            )
+            zf.writestr("bundle-metadata/verdict.md", "BUNDLE_VALIDATION: FAIL — blocked bundle")
+        result = validate_bundle(str(contract), str(bundle_path), strict_git=False, no_pending=False)
+        if not result:
+            print(
+                "FAIL: test_dirty_git_passes_with_emergency_blocker_bundle_true "
+                "— validator returned FAIL but should have PASSed with emergency_blocker_bundle: true"
+            )
+            return False
+        print(
+            "PASS: test_dirty_git_passes_with_emergency_blocker_bundle_true "
+            "— correctly PASSed with emergency_blocker_bundle: true exception"
+        )
+        return True
+
+
 def main():
     print("=" * 60)
     print("Negative Tests: validate_evidence_bundle.py")
@@ -139,6 +228,8 @@ def main():
         test_pending_report_fails_with_flag,
         test_pending_report_passes_without_flag,
         test_clean_bundle_passes_no_pending,
+        test_dirty_git_fails_even_with_require_clean_git_false,
+        test_dirty_git_passes_with_emergency_blocker_bundle_true,
     ]
 
     results = []

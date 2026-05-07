@@ -301,13 +301,26 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
                 errors.append("Required bundle-manifest.yaml not found in metadata")
 
         # Check git status cleanliness
-        if require_clean_git:
-            clean, msg = check_git_status_clean(metadata_files_content)
-            if clean is None:
-                # Missing git status file is a hard failure when require_clean_git is true
+        # Rule: Dirty git-status-final.txt ALWAYS causes FAIL unless emergency_blocker_bundle: true.
+        # require_clean_git: false only suppresses the "no git status file found" error.
+        # It does NOT bypass the dirty-git check when the file is present and dirty.
+        emergency_blocker = contract.get("emergency_blocker_bundle", False)
+        clean, msg = check_git_status_clean(metadata_files_content)
+        if clean is None:
+            # No git status file found in bundle
+            if require_clean_git:
                 errors.append(f"Git cleanliness check FAILED: {msg}")
-            elif not clean:
-                errors.append(f"Git cleanliness check FAILED: {msg}")
+            else:
+                warnings.append(f"Git status file not found in bundle (require_clean_git: false): {msg}")
+        elif not clean:
+            if emergency_blocker:
+                warnings.append(f"Git dirty (allowed — emergency_blocker_bundle: true): {msg}")
+            else:
+                errors.append(
+                    f"Git cleanliness check FAILED: {msg} "
+                    f"(dirty git fails even when require_clean_git: false; "
+                    f"use emergency_blocker_bundle: true only for explicitly blocked/failed bundles)"
+                )
 
         # Check for PENDING markers in metadata files
         pending_hits = []

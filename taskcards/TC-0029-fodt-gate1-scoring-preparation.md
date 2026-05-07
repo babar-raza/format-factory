@@ -28,9 +28,11 @@ notes: "FODT Gate 1 scoring preparation taskcard. CANDIDATE-ONLY — no Gate 1 a
 **Taskcard ID:** TC-0029
 **Phase:** Pre-Gate 1 (candidate evaluation — CANDIDATE-ONLY)
 **Gate:** Pre-Gate 1 (scoring preparation only)
-**Status:** not_started
+**Status:** verification_passed_pending_human_review
 **Created:** 2026-05-07 (run039)
 **Created by:** claude-sonnet-4-6 (run039)
+**Verified:** 2026-05-07 (run040) — DEC-034 PASS (7/7 factors verified, 88/100 confirmed)
+**Review packet:** acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md
 
 ---
 
@@ -94,7 +96,8 @@ Prepare and independently verify the FODT Gate 1 scoring evidence, then present 
 - [x] TC-0028 candidate shortlist independently verified (run039)
 - [x] FODS Gate 1–5 PASSED (pipeline proven)
 - [x] Scoring package created: registry/candidates/fodt-gate1-scoring-package.yaml
-- [ ] Scoring package independently verified (DEC-034 sprint required)
+- [x] Scoring package independently verified (DEC-034 PASS — run040, 7/7 factors)
+- [x] Human-review packet created: acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md
 - [ ] Human Gate 1 approval for FODT (human-only gate)
 
 ---

@@ -218,17 +218,27 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
     contract_repo_path = contract.get("contract_repo_path", "")
     require_manifest_flag = contract.get("require_manifest", False)
     git_clean_required = contract.get("require_clean_git", require_clean_git)
+    emergency_blocker = contract.get("emergency_blocker_bundle", False)
 
     # Check git cleanliness FIRST (before any file collection)
-    if git_clean_required:
-        is_clean, git_porcelain = check_git_clean(repo_root)
-        if not is_clean:
+    # Rule: Dirty git ALWAYS causes BUNDLE_BUILD: FAIL unless emergency_blocker_bundle: true.
+    # require_clean_git: false only disables the "missing git status file" check during validation.
+    # It does NOT allow building with a dirty working tree.
+    is_clean, git_porcelain = check_git_clean(repo_root)
+    if not is_clean:
+        if emergency_blocker:
+            print("  WARN: Git working tree is not clean (emergency_blocker_bundle: true — exception).")
+            for line in git_porcelain.splitlines()[:5]:
+                print(f"  {line}")
+        else:
             print("BUILD ERROR: Git working tree is not clean.")
             print("Uncommitted changes:")
             for line in git_porcelain.splitlines()[:20]:
                 print(f"  {line}")
             print()
             print("Commit or stash all changes before building the evidence bundle.")
+            print("NOTE: require_clean_git: false does NOT bypass this check.")
+            print("To build a blocker/failed bundle with dirty git, set emergency_blocker_bundle: true.")
             print("BUNDLE_BUILD: FAIL")
             return False
 

@@ -7,7 +7,7 @@ visibility: internal
 publish_allowed: false
 generated_by: claude
 generated_at: "2026-05-07"
-notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist). Updated run037 (oracle provider strategy, provider registry, validate_oracle_environment.py, provider options doc, preflight re-run 3). Updated run038 (harness self-test HARNESS_SELF_TEST_ONLY PASS 4/4, operator handoff, TC-0026 blocker wording corrected, preflight re-run 4). Updated run039 (current-state consistency tool, FODT scoring package, ODF reuse strategy, preflight re-run 5 — 5 consecutive FAIL)."
+notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist). Updated run037 (oracle provider strategy, provider registry, validate_oracle_environment.py, provider options doc, preflight re-run 3). Updated run038 (harness self-test HARNESS_SELF_TEST_ONLY PASS 4/4, operator handoff, TC-0026 blocker wording corrected, preflight re-run 4). Updated run039 (current-state consistency tool, FODT scoring package, ODF reuse strategy, preflight re-run 5 — 5 consecutive FAIL). Updated run040 (clean-git loophole closed, consistency checker strengthened, FODT Gate 1 scoring verified DEC-034, human-review packet created, preflight re-run 6 — 6 consecutive FAIL)."
 ---
 
 # FODS Gate 6 Oracle Blocker Report
@@ -15,7 +15,7 @@ notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hard
 **Format:** FODS
 **Gate:** 6 — Oracle Comparison
 **Status:** oracle_blocked_missing_tool
-**Prepared by:** run035 (2026-05-07); updated run036 (2026-05-07); updated run037 (2026-05-07); updated run038 (2026-05-07); updated run039 (2026-05-07)
+**Prepared by:** run035 (2026-05-07); updated run036 (2026-05-07); updated run037 (2026-05-07); updated run038 (2026-05-07); updated run039 (2026-05-07); updated run040 (2026-05-07)
 **Gate 6 approved:** NO — blocked, cannot proceed to approval
 
 ---
@@ -61,19 +61,19 @@ Reasons:
 
 ### Preflight Result Table
 
-| Check | run035 | run036 | run037 | run038 | run039 |
-|---|---|---|---|---|---|
-| `soffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `libreoffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `C:\Program Files\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `C:\Program Files (x86)\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `/usr/bin/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `/usr/bin/libreoffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `/usr/lib/libreoffice/program/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `/Applications/LibreOffice.app/Contents/MacOS/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `FORMAT_FACTORY_SOFFICE` env var | Not checked | NOT SET | NOT SET | NOT SET | NOT SET |
-| FODS samples (4 required) | 4 found | 4 found | 4 found | 4 found | 4 found |
-| Oracle result | FAIL | FAIL | FAIL | FAIL | FAIL |
+| Check | run035 | run036 | run037 | run038 | run039 | run040 |
+|---|---|---|---|---|---|---|
+| `soffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `libreoffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `C:\Program Files\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `C:\Program Files (x86)\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/bin/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/bin/libreoffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/lib/libreoffice/program/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/Applications/LibreOffice.app/Contents/MacOS/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `FORMAT_FACTORY_SOFFICE` env var | Not checked | NOT SET | NOT SET | NOT SET | NOT SET | NOT SET |
+| FODS samples (4 required) | 4 found | 4 found | 4 found | 4 found | 4 found | 4 found |
+| Oracle result | FAIL | FAIL | FAIL | FAIL | FAIL | FAIL |
 
 ---
 
@@ -213,6 +213,32 @@ Despite the oracle tool still being unavailable, the following harness improveme
 | TC-0027 (Gate 6 verification) | not_started |
 | TC-0028 (Next-format candidate shortlist) | in_progress — shortlist verified run039; FODT scoring package created (TC-0029) |
 | TC-0029 (FODT Gate 1 scoring preparation) | not_started — independent verification sprint required |
+
+---
+
+## Improvements Completed (run040)
+
+| Deliverable | Status | Notes |
+|---|---|---|
+| `tools/evidence/validate_evidence_bundle.py` | **HARDENED** | Clean-git loophole closed: dirty git-status-final.txt now fails even with require_clean_git: false, unless emergency_blocker_bundle: true |
+| `tools/evidence/build_evidence_bundle.py` | **HARDENED** | Same loophole fix: dirty git always fails at build time unless emergency_blocker_bundle: true |
+| `tools/evidence/contracts/base-run.yaml` | **UPDATED** | require_clean_git: true + emergency_blocker_bundle: false added as base defaults |
+| `tools/evidence/check_current_state_consistency.py` | **STRENGTHENED** | Now checks 10 invariants: master-plan commits, memory/09 commit, registry gate_6 not approved, FODT candidate-only, no acquisition-packs/fodt/, pack.yaml gate_6 |
+| `tests/evidence/test_negative_bundle_validation.py` | **UPDATED** | 2 new negative tests added (6/6 total PASS): dirty-git-fails-even-with-require_clean_git_false, dirty-git-passes-with-emergency_blocker_bundle_true |
+| TC-0029 DEC-034 verification | **PASS** | 7/7 scoring factors independently verified; 88/100 confirmed; Accept band confirmed |
+| FODT Gate 1 human-review packet | **NEW** | acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md — ready for human Gate 1 review decision |
+| preflight re-run 6 | **CONFIRMED** | ORACLE_ENV: BLOCKED — 6 consecutive FAIL (run035–run040) |
+| stale commits | **FIXED** | master-plan header d052510→54a27dc; memory/09 stale→54a27dc; Section 33 PENDING marker added |
+
+## TC Status After run040
+
+| Taskcard | Status |
+|---|---|
+| TC-0025 (Gate 6 planning) | completed |
+| TC-0026 (Gate 6 execution) | blocked_missing_oracle_tool |
+| TC-0027 (Gate 6 verification) | not_started |
+| TC-0028 (Next-format candidate shortlist) | in_progress — shortlist verified run039; FODT scoring package created (TC-0029) |
+| TC-0029 (FODT Gate 1 scoring preparation) | verification_passed_pending_human_review — DEC-034 PASS run040; human-review packet ready |
 
 ---
 

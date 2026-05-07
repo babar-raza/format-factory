@@ -131,17 +131,19 @@ FODS Gate 6 currently has no approved fallback (only LibreOffice is approved).
 
 ---
 
-## 6. Current Oracle Provider Status (as of run039)
+## 6. Current Oracle Provider Status (as of run040)
 
 | Format | Gate | Primary Provider | Status | Preflight Runs |
 |---|---|---|---|---|
-| FODS | 6 | LibreOffice | `oracle_blocked_missing_tool` — LibreOffice not installed | 5 FAIL (run035/036/037/038/039) |
+| FODS | 6 | LibreOffice | `oracle_blocked_missing_tool` — LibreOffice not installed | 6 FAIL (run035/036/037/038/039/040) |
 
-LibreOffice has not been discovered on the dev machine across five consecutive runs (run035, run036, run037, run038, run039). The operator must install LibreOffice per `acquisition-packs/fods/oracle-operator-handoff.md` (most complete operator instructions, run038) before TC-0026 can execute.
+LibreOffice has not been discovered on the dev machine across six consecutive runs (run035, run036, run037, run038, run039, run040). The operator must install LibreOffice per `acquisition-packs/fods/oracle-operator-handoff.md` (most complete operator instructions, run038) before TC-0026 can execute.
 
 **Harness self-test added run038:** `tools/oracle/self_test_oracle_harness.py` validates the compare/summarize pipeline using synthetic CSV fixtures — no LibreOffice required. Result: `ORACLE_HARNESS_SELF_TEST: PASS 4/4`. Label: `HARNESS_SELF_TEST_ONLY` — this is **not** Gate 6 evidence and does not replace the oracle preflight.
 
-**Current-state consistency tool added run039:** `tools/evidence/check_current_state_consistency.py` validates that "Latest commit" references in master-plan match actual git HEAD. Result: `CURRENT_STATE_CONSISTENCY: PASS`.
+**Current-state consistency tool added run039, strengthened run040:** `tools/evidence/check_current_state_consistency.py` validates that "Latest commit" references in master-plan match actual git HEAD, and adds 7 additional checks (memory/09 commit, registry gate_6 not approved, FODT candidate-only invariants, pack.yaml gate_6 not approved). Result: `CURRENT_STATE_CONSISTENCY: PASS`.
+
+**Clean-git loophole closed run040:** `validate_evidence_bundle.py` and `build_evidence_bundle.py` now reject dirty git-status-final.txt even when `require_clean_git: false` in contract, unless `emergency_blocker_bundle: true` is set. New negative tests (6/6 PASS).
 
 ---
 

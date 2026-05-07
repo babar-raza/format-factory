@@ -35,6 +35,11 @@ forbidden_patterns:
   - "**/*.env"
   - "**/node_modules/**"
 
+# Git cleanliness requirement (default: true — all normal runs must have clean working tree)
+# Set emergency_blocker_bundle: true ONLY for documented blocker/failed bundles with dirty git.
+require_clean_git: true
+emergency_blocker_bundle: false
+
 # Minimum metadata files required
 min_metadata_count: 5
 
