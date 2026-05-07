@@ -28,7 +28,7 @@ notes: "Gate 6 oracle comparison execution taskcard for FODS. Created run034 (20
 **Taskcard ID:** TC-0026
 **Phase:** 3 (Gate 6 execution — future)
 **Gate:** Gate 6 (Oracle Comparison Complete)
-**Status:** not_started
+**Status:** blocked_missing_oracle_tool
 **Created:** 2026-05-06 (run034)
 **Created by:** claude-opus-4-6 (run034)
 **Blocking:** Gate 6 human approval
@@ -54,10 +54,13 @@ Execute the oracle comparison for FODS: run all 4 Gate 3 samples through both th
 
 ## Preconditions
 
-- [ ] Gate 5 PASSED (human approval)
-- [ ] TC-0025 planning reviewed
-- [ ] LibreOffice installed, version recorded
-- [ ] Explicit TC-0026 execution prompt from human
+- [x] Gate 5 PASSED (Babar Raza, 2026-05-06, run035 human-authorized prompt)
+- [x] TC-0025 planning reviewed (completed run035)
+- [ ] LibreOffice installed, version recorded — BLOCKER: not installed on dev machine (run035 preflight FAIL)
+- [ ] Explicit TC-0026 execution prompt from human — pending LibreOffice installation
+
+**BLOCKED:** LibreOffice not found on this machine. Install LibreOffice (https://www.libreoffice.org/download/libreoffice-still/) and re-execute TC-0026 with explicit prompt.
+Oracle harness ready at tools/oracle/ (created run035). Pre-flight tool: tools/oracle/preflight_oracle.py.
 
 ---
 

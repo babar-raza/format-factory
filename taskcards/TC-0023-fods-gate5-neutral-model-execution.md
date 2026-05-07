@@ -28,7 +28,7 @@ notes: "FODS Gate 5 neutral model execution taskcard. Created run031 (2026-05-06
 **Taskcard ID:** TC-0023
 **Phase:** 3+ (after Gate 4 approved)
 **Gate:** 5
-**Status:** neutral_model_created_pending_independent_verification
+**Status:** completed
 **Executed:** 2026-05-06 (run033)
 **Executed by:** claude-opus-4-6 (run033)
 **Created:** run031 (2026-05-06)
@@ -71,9 +71,9 @@ Execute Gate 5 (Neutral Model Defined) for FODS after Gate 4 is human-approved a
 
 ## Status
 
-**Current status:** neutral_model_created_pending_independent_verification
+**Current status:** completed
 
-Gate 4 PASSED (Babar Raza, 2026-05-06, run033 prompt). Gate 5 execution completed run033:
+Gate 4 PASSED (Babar Raza, 2026-05-06, run033 prompt). Gate 5 execution completed run033. Gate 5 PASSED (Babar Raza, 2026-05-06, run035 human-authorized prompt).
 - Neutral model v1 at `schemas/neutral-model/fods/` (7 files)
 - 6 entities: Workbook, Sheet, Row, Cell, Formula, Warning
 - 19 field mappings (14 direct, 1 rename, 1 expand, 3 derived)
@@ -90,3 +90,4 @@ Gate 4 PASSED (Babar Raza, 2026-05-06, run033 prompt). Gate 5 execution complete
 |---|---|
 | run031 | Taskcard created (not_started); blocked by Gate 4 approval |
 | run033 | EXECUTED: Gate 4 approved; neutral model v1 created (6 entities, 7 files); 4/4 PASS; TC-0024 created |
+| run035 | COMPLETED: Gate 5 approved by Babar Raza (2026-05-06, run035 human-authorized prompt); TC-0024 closed; status → completed |

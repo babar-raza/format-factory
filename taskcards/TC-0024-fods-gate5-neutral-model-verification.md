@@ -28,7 +28,7 @@ notes: "Gate 5 neutral model DEC-034 independent verification taskcard for FODS.
 **Taskcard ID:** TC-0024
 **Phase:** 3 (Gate 5 verification — DEC-034 sprint)
 **Gate:** Gate 5 (Neutral Model Defined)
-**Status:** verification_passed_pending_human_review
+**Status:** closed
 **Created:** 2026-05-06 (run033)
 **Executed:** 2026-05-06 (run034)
 **Created by:** claude-opus-4-6 (run033)
@@ -58,9 +58,9 @@ Perform an independent DEC-034 verification sprint on the Gate 5 neutral model. 
 
 ## Prerequisites
 
-- [ ] TC-0023 execution complete — neutral model files at `schemas/neutral-model/fods/` (run033)
-- [ ] Registry `gate_5.status` = `neutral_model_created_pending_independent_verification`
-- [ ] Explicit TC-0024 verification execution prompt issued by human
+- [x] TC-0023 execution complete — neutral model files at `schemas/neutral-model/fods/` (run033)
+- [x] Registry `gate_5.status` = `neutral_model_created_pending_independent_verification` (confirmed run034)
+- [x] Explicit TC-0024 verification execution prompt issued by human (run034 execution prompt)
 
 ---
 
@@ -110,16 +110,16 @@ Perform an independent DEC-034 verification sprint on the Gate 5 neutral model. 
 
 ## Acceptance Criteria
 
-- [ ] validate_neutral_model.py independently re-verified: 4/4 PASS
-- [ ] model.yaml: 6 entities verified
-- [ ] model.schema.json: valid JSON Schema, matches model.yaml
-- [ ] field-map.yaml: 19 mappings verified
-- [ ] coverage-matrix.yaml: 30 features, totals verified
-- [ ] validation-rules.yaml: 21 rules verified
-- [ ] No forbidden paths created
-- [ ] No Gate 5 self-approval in run033 history
-- [ ] Registry gate_5.status updated to `neutral_model_verified_pending_human_review`
-- [ ] Gate 5 human approval requested (NOT granted by agent)
+- [x] validate_neutral_model.py independently re-verified: 4/4 PASS (run034, confirmed run035)
+- [x] model.yaml: 6 entities verified (run034, confirmed run035)
+- [x] model.schema.json: valid JSON Schema, matches model.yaml (run034, confirmed run035)
+- [x] field-map.yaml: 19 mappings verified (run034, confirmed run035)
+- [x] coverage-matrix.yaml: 30 features, totals verified (run034, confirmed run035)
+- [x] validation-rules.yaml: 21 rules verified (run034, confirmed run035)
+- [x] No forbidden paths created (run034, confirmed run035)
+- [x] No Gate 5 self-approval in run033 history (run034, confirmed run035)
+- [x] Registry gate_5.status updated to `neutral_model_verified_pending_human_review` (run034)
+- [x] Gate 5 human approval requested (NOT granted by agent) — Gate 5 APPROVED by Babar Raza (run035, human-authorized prompt)
 
 ---
 
@@ -162,3 +162,4 @@ All acceptance criteria MET.
 |---|---|
 | run033 | Taskcard created (ready_for_execution) |
 | run034 | EXECUTED: DEC-034 verification PASS (4/4 samples, 87 checks, 0 errors); gate5-human-review-packet created; status → verification_passed_pending_human_review |
+| run035 | CLOSED: Gate 5 approved by Babar Raza (2026-05-06, human-authorized run035 prompt); all prerequisite and acceptance-criteria boxes checked; TC-0024 status → closed |

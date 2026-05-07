@@ -1,6 +1,6 @@
 {
   "projectName": "format-factory",
-  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3 GATE 5 VERIFIED PENDING HUMAN REVIEW. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 DEC-034 PASSED (run034). Embeddings/vector DB/vector index NOT authorized.",
+  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3 GATE 5 PASSED (Babar Raza, 2026-05-06). Gate 6 oracle_blocked_missing_tool (LibreOffice not installed). Embeddings/vector DB/vector index NOT authorized.",
   "model": "claude-opus-4-6",
   "permissions": {
     "allow": [
@@ -44,6 +44,7 @@
       "Write(schemas/_readme.md)",
       "Write(schemas/neutral-model/fods/**)",
       "Write(tools/model/**)",
+      "Write(tools/oracle/**)",
       "Write(prototypes/_readme.md)",
       "Write(prototypes/by-format/fods/**)",
       "Write(tools/spec-normalize/build_spec_workbench.py)",
@@ -101,9 +102,9 @@
     ]
   },
   "phase": "3",
-  "phase_note": "Phase 3 GATE 5 VERIFIED PENDING HUMAN REVIEW. Gate 4 PASSED (Babar Raza, 2026-05-06, run033). Gate 5 DEC-034 PASSED (run034). schemas/neutral-model/fods/** and tools/model/** ALLOWED for Gate 5. Gate 6 planning complete (run034). Spec acquisition complete for FODS/ODF 1.3 (run021). Normalized artifacts local-only. Network commands (curl, wget, Invoke-WebRequest, iwr) DENIED. src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts DENIED.",
+  "phase_note": "Phase 3 GATE 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6 oracle_blocked_missing_tool (run035 preflight: LibreOffice not installed). Oracle harness at tools/oracle/ (created run035). schemas/neutral-model/fods/**, tools/model/**, tools/oracle/** ALLOWED. Spec acquisition complete for FODS/ODF 1.3 (run021). Normalized artifacts local-only. Network commands DENIED. src/python/**/*, src/net/**, reports/security/**, reports/legal/**, LLM client scripts DENIED.",
   "notes": [
-    "Phase 3 Gate 5 VERIFIED: Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 DEC-034 PASSED (run034). schemas/neutral-model/fods/** ALLOWED (moved from deny to allow run033). tools/model/** ALLOWED (new run033). Gate 5 NOT approved — awaiting human review.",
+    "Phase 3 Gate 5 PASSED: Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). TC-0024 CLOSED. Gate 6 oracle_blocked_missing_tool: LibreOffice not installed. Install LibreOffice, then re-execute TC-0026 with explicit prompt. tools/oracle/** ALLOWED (new run035).",
     "Format-first source layout: src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE — must not be created.",
     "Phase 3+ paths: samples/by-format/fods/** ALLOWED. prototypes/by-format/fods/** ALLOWED (run029 Gate 4 execution). schemas/neutral-model/, prototypes/by-format/other-formats/, tests/fixtures|oracle|fuzz/, reports/security|legal/ remain DENIED.",
     "Network download commands (curl, wget, Invoke-WebRequest, iwr) are DENIED. Bash(python *acquire_spec*) deny was REMOVED in run021 (session-specific T3 authorization for FODS/ODF 1.3 only). FUTURE SESSIONS: re-verify all T3 conditions before any new --allow-network download.",

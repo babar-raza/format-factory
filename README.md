@@ -25,11 +25,11 @@ Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{form
 
 ## First Pilot: FODS
 
-**Gate 1 passed — 2026-05-04. Gate 2 passed — 2026-05-05. Gate 3 passed — 2026-05-05. Gate 4 passed — 2026-05-06. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
+**Gate 1 passed — 2026-05-04. Gate 2 passed — 2026-05-05. Gate 3 passed — 2026-05-05. Gate 4 passed — 2026-05-06. Gate 5 passed — 2026-05-06. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
 
 **FODS** — Flat OpenDocument Spreadsheet — is the active pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. Single-file XML, well-documented specification, no ZIP complexity, permissive license.
 
-Gate 4 (Parser Prototype) approved by Babar Raza (2026-05-06). Gate 5 (Neutral Model) — neutral model v1 created (run033), DEC-034 independently verified (run034): 6 entities, 19 field mappings, 87 validation checks PASS. Gate 5 human-review packet ready. Awaiting human approval.
+Gate 5 (Neutral Model) PASSED by Babar Raza (2026-05-06). Neutral model v1: 6 entities, 19 field mappings, 87 validation checks PASS. Gate 6 oracle comparison: BLOCKED — LibreOffice not installed. Oracle harness created at tools/oracle/. Install LibreOffice to proceed.
 
 ---
 
@@ -68,7 +68,7 @@ Every format passes through 11 mandatory gates before any product code is writte
 
 ## Project Status
 
-**Current phase:** Phase 3 — FODS Gate 4 PASSED, Gate 5 neutral model created pending verification (active pilot: FODS)
+**Current phase:** Phase 3 — FODS Gate 5 PASSED, Gate 6 oracle blocked — LibreOffice not installed (active pilot: FODS)
 
 - Phase 0 (Foundation): Complete — accepted 2026-05-04
 - Phase 1A (Scoring): Complete — FODS scored 93/100, Accept band
@@ -76,7 +76,8 @@ Every format passes through 11 mandatory gates before any product code is writte
 - Phase 2 (Spec + Legal Evidence): Complete — Gate 2 passed, approved by Babar Raza, 2026-05-05
 - Phase 3 (Sample Corpus): Complete — Gate 3 passed, approved by Babar Raza, 2026-05-05; 4 samples validated 4/4 PASS
 - Phase 3 (Parser Prototype): Complete — Gate 4 passed, approved by Babar Raza, 2026-05-06
-- Phase 3 (Neutral Model): Active — Gate 5 neutral model v1 created (run033); TC-0024 verification required
+- Phase 3 (Neutral Model): Complete — Gate 5 passed, approved by Babar Raza, 2026-05-06
+- Phase 3 (Oracle Comparison): Blocked — Gate 6 oracle_blocked_missing_tool (LibreOffice not installed); oracle harness at tools/oracle/
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md).
 

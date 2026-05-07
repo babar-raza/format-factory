@@ -28,7 +28,7 @@ notes: "Gate 6 oracle comparison planning taskcard for FODS. Created run033 (202
 **Taskcard ID:** TC-0025
 **Phase:** 3 (Gate 6 planning — future)
 **Gate:** Gate 6 (Oracle Comparison)
-**Status:** not_started
+**Status:** completed
 **Created:** 2026-05-06 (run033)
 **Created by:** claude-opus-4-6 (run033)
 **Blocking:** Gate 6 execution
@@ -43,12 +43,14 @@ notes: "Gate 6 oracle comparison planning taskcard for FODS. Created run033 (202
 2. Gate 5 is approved by a human
 3. A human issues an explicit Gate 6 planning prompt naming TC-0025
 
-Current state (run033):
-- Gate 5: neutral_model_created_pending_independent_verification
-- Gate 5 approved: NO
-- Gate 6: not_started
-- No oracle tool selected
-- No oracle comparison samples exist
+Current state (run035):
+- Gate 5: PASSED (Babar Raza, 2026-05-06, run035)
+- Gate 5 approved: YES
+- Gate 6: oracle_blocked_missing_tool (TC-0026 blocked — LibreOffice not installed)
+- Oracle tool selected (LibreOffice headless) — NOT YET INSTALLED on dev machine
+- Planning docs created run034: gate6-oracle-plan.md, oracle-scope.md, oracle-risk-register.md
+- Oracle harness created run035: tools/oracle/ (5 files: README.md + 4 Python scripts)
+- TC-0026 status: blocked_missing_oracle_tool
 
 ---
 

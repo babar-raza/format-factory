@@ -1,0 +1,131 @@
+# Evidence Bundle Contract — run035
+# Gate 5 approval, TC-0024 closure, Gate 6 oracle blocker
+#
+# Created: run035 (2026-05-07)
+# Authorized by: run035 execution prompt (human-authorized)
+# No Gate 6 approval. No product source. No embeddings.
+
+contract_id: run035-gate5-approval-gate6-oracle
+run: run035
+created: "2026-05-07"
+purpose: >
+  Evidence bundle for run035 combined sprint: Gate 5 approved (Babar Raza 2026-05-06),
+  TC-0024 closed, oracle preflight blocked (LibreOffice not installed), oracle harness
+  created at tools/oracle/, gate6 oracle_blocked_missing_tool.
+
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run035-gate5-approval-gate6-oracle.yaml
+
+require_manifest: true
+require_clean_git: true
+
+min_metadata_count: 38
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+required_repo_files:
+  - path: README.md
+  - path: ROADMAP.md
+  - path: AGENTS.md
+  - path: GOVERNANCE.md
+  - path: plans/master-plan.md
+  - path: registry/format-registry.yaml
+  - path: registry/scoring/_scoring-model.md
+  - path: taskcards/TC-0023-fods-gate5-neutral-model-execution.md
+  - path: taskcards/TC-0024-fods-gate5-neutral-model-verification.md
+  - path: taskcards/TC-0025-fods-gate6-oracle-planning.md
+  - path: taskcards/TC-0026-fods-gate6-oracle-execution.md
+  - path: taskcards/TC-0027-fods-gate6-oracle-verification.md
+  - path: acquisition-packs/fods/gate5-human-review-packet.md
+  - path: acquisition-packs/fods/gate6-oracle-blocker-report.md
+  - path: acquisition-packs/fods/gate6-oracle-plan.md
+  - path: acquisition-packs/fods/oracle-scope.md
+  - path: acquisition-packs/fods/oracle-risk-register.md
+  - path: acquisition-packs/fods/pack.yaml
+  - path: schemas/neutral-model/fods/README.md
+  - path: schemas/neutral-model/fods/model.yaml
+  - path: schemas/neutral-model/fods/model.schema.json
+  - path: schemas/neutral-model/fods/field-map.yaml
+  - path: schemas/neutral-model/fods/coverage-matrix.yaml
+  - path: schemas/neutral-model/fods/validation-rules.yaml
+  - path: tools/model/validate_neutral_model.py
+  - path: tools/oracle/README.md
+  - path: tools/oracle/preflight_oracle.py
+  - path: tools/oracle/run_fods_oracle.py
+  - path: tools/oracle/compare_fods_oracle.py
+  - path: tools/oracle/summarize_oracle_results.py
+  - path: tools/evidence/build_evidence_bundle.py
+  - path: tools/evidence/validate_evidence_bundle.py
+  - path: tools/evidence/contracts/run034-gate5-verification-gate6-planning.yaml
+  - path: tools/evidence/contracts/run035-gate5-approval-gate6-oracle.yaml
+  - path: prototypes/by-format/fods/fods_parser.py
+  - path: samples/_provenance.yaml
+  - path: .claude/settings.json
+  - path: memory/09-current-state-before-phase1.md
+
+required_metadata_files:
+  - run035-summary.md
+  - run034-independent-verification.md
+  - run034-commit-discrepancy-review.md
+  - run034-stale-state-fix-report.md
+  - gate5-approval-record.md
+  - tc-0024-closure-audit.md
+  - oracle-preflight-report.md
+  - oracle-tooling-report.md
+  - oracle-execution-report.md
+  - oracle-comparison-summary.md
+  - gate6-status-decision.md
+  - tc-0026-status-audit.md
+  - tc-0027-readiness-audit.md
+  - tc-0028-creation-decision.md
+  - no-product-source-check.md
+  - no-security-legal-report-check.md
+  - no-vector-index-created-check.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - yaml-validation-notes.txt
+  - json-validation-notes.txt
+  - python-tool-validation.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  - files-reviewed.txt
+  - files-modified.txt
+  - files-created.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - git-log.txt
+  - artifact-index-snapshot.yaml
+  - gap-log-update.md
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - self-challenge.md
+  - verdict.md
+  - bundle-manifest.yaml
+
+forbidden_paths:
+  - .git
+  - .env
+  - .local
+  - ocal
+  - __pycache__
+  - node_modules
+  - src/python/fods
+  - src/net
+  - reports/security
+  - reports/legal
+  - .github/workflows
+
+validation_checks:
+  - "run034 independently verified before Gate 5 approval"
+  - "Gate 5 approved_by: Babar Raza"
+  - "Gate 5 approved_date: 2026-05-06"
+  - "TC-0024 status: closed"
+  - "oracle preflight recorded (LibreOffice not found)"
+  - "Gate 6 status: oracle_blocked_missing_tool"
+  - "TC-0026 status: blocked_missing_oracle_tool"
+  - "no product source created"
+  - "no embeddings or vector DB created"

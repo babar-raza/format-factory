@@ -90,15 +90,16 @@ gate_4:
   validation_date: "2026-05-05"
   gate_4_approved: true
 gate_5:
-  status: neutral_model_verified_pending_human_review
-  approved_by: null
-  approved_date: null
+  status: passed
+  approved_by: "Babar Raza"
+  approved_date: "2026-05-06"
   model_path: schemas/neutral-model/fods/
   model_version: "1.0"
-  validation_result: "4/4 PASS (validate_neutral_model.py, run033+run034)"
+  validation_result: "4/4 PASS, 87 checks, 0 errors (validate_neutral_model.py, run033+run034)"
   tc0023_run: run033
   tc0024_verification: "run034 DEC-034 PASS"
-  next_action: gate5_human_approval
+  evidence_verified_by: "run034 independent verification"
+  next_action: gate6_oracle_execution_pending_oracle_install
 
 # --- Spec cache status ---
 spec_cache:
@@ -158,9 +159,10 @@ stages:
     gate: 4
     last_updated: "2026-05-05"
   oracle_tool:
-    name: null
+    name: LibreOffice headless (selected, not yet installed)
     version: null
     gate: 6
+    preflight_status: blocked_missing_tool
   tier_map:
     status: not_started
     gate: 9
@@ -183,6 +185,8 @@ notes: >-
   Gate 4 PASSED (Babar Raza, 2026-05-06, run033). TC-0018 closed.
   Gate 5 neutral model v1 created run033: 6 entities, 19 field mappings, 30 coverage features.
   TC-0024 DEC-034 independent verification PASSED run034 (87 checks, 0 errors).
-  Gate 5 human-review packet at gate5-human-review-packet.md. Awaiting human approval.
+  Gate 5 PASSED by Babar Raza (2026-05-06, run035 human-authorized prompt). TC-0024 CLOSED.
   Gate 6 planning complete run034: gate6-oracle-plan.md, oracle-scope.md, oracle-risk-register.md.
-  TC-0026/TC-0027 created (not_started, blocked by Gate 5 approval).
+  Gate 6 oracle preflight run035: BLOCKED — LibreOffice not installed on dev machine.
+  Oracle harness created run035 at tools/oracle/. TC-0026 blocked_missing_oracle_tool.
+  Next: install LibreOffice, then execute TC-0026 with explicit prompt.

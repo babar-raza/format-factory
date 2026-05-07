@@ -77,7 +77,7 @@ formats:
       approved_date: "2026-05-04"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: gate5_human_approval
+    next_allowed_action: install_oracle_tool_then_execute_tc0026
     gates:
       gate_1:
         status: passed
@@ -116,22 +116,24 @@ formats:
         tc0018_run: run030
         notes: "Gate 4 approved by Babar Raza (2026-05-06, run033 prompt) after run032 independent verification: prototype validation 4/4 PASS, TC-0018 verification passed, TC-0021 workbench quality verified, TC-0022 evidence contract system verified, gate4-human-review-packet verified. This approval authorizes Gate 5 neutral model work only. It does not authorize product source, release, security reports, or commercial implementation."
       gate_5:
-        status: neutral_model_verified_pending_human_review
-        approved_by: null
-        approved_date: null
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-06"
         model_path: schemas/neutral-model/fods/
         model_version: "1.0"
-        validation_status: "4/4 PASS (validate_neutral_model.py, run033+run034)"
+        validation_status: "4/4 PASS, 87 checks, 0 errors"
         entities: ["Workbook", "Sheet", "Row", "Cell", "Formula", "Warning"]
         tc0023_run: run033
         tc0024_verification: "run034 DEC-034 PASS — 87 checks, 0 errors"
-        evidence_verified_by: "claude-opus-4-6 (run034, 2026-05-06)"
-        notes: "Neutral model v1 created run033 (2026-05-06). 6 entities, 19 field mappings, 30 coverage features (13 covered, 2 partial, 10 deferred, 5 out-of-scope). Validation: 4/4 samples PASS (87 total checks, 0 errors). TC-0024 DEC-034 independent verification PASSED run034. Gate 5 human-review packet at acquisition-packs/fods/gate5-human-review-packet.md. Awaiting human approval."
+        evidence_verified_by: "run034 independent verification (claude-opus-4-6, 2026-05-06)"
+        notes: "Gate 5 approved by Babar Raza after run034 independent verification: neutral model v1 validated against all four FODS samples, TC-0024 verification passed, evidence contract validation passed, and Gate 5 human-review packet was prepared. This approval authorizes Gate 6 oracle compatibility work only. It does not authorize product source, release, security reports, legal reports, CI, or commercial implementation."
       gate_6:
-        status: not_started
+        status: oracle_blocked_missing_tool
         approved_by: null
         approved_date: null
-        notes: null
+        oracle_preflight: "run035 — soffice/libreoffice not found on PATH or standard Windows install paths"
+        oracle_harness_path: tools/oracle/
+        notes: "Gate 5 approved. Gate 6 oracle preflight failed: LibreOffice not installed on dev machine. Oracle harness created at tools/oracle/ (run035). TC-0026 status: blocked_missing_oracle_tool. Next action: install LibreOffice and re-execute TC-0026 with explicit prompt. Gate 6 is NOT approved."
       gate_7:
         status: not_started
         approved_by: null
