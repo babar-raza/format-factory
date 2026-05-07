@@ -79,5 +79,6 @@ Perform an independent DEC-034 verification sprint on the Gate 6 oracle comparis
 ## Related Files
 
 - `taskcards/TC-0026-fods-gate6-oracle-execution.md` — execution parent
-- `reports/fods-oracle.md` — oracle comparison report (TC-0026 deliverable)
+- `acquisition-packs/fods/gate6-oracle-comparison-report.md` — oracle comparison report (TC-0026 deliverable; committed sanitized summary)
 - `tools/oracle/compare_fods_oracle.py` — comparison tool (TC-0026 deliverable)
+- `.local/oracle/fods/` — raw oracle outputs (local-only, never committed)

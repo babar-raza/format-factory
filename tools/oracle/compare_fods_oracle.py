@@ -44,29 +44,18 @@ Rules:
 
 import csv
 import json
-import os
 import sys
-import traceback
 from pathlib import Path
 
-try:
-    sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-    from prototypes.by_format.fods import fods_parser
-except ImportError:
-    fods_parser = None
-
-SAMPLES_DIR = Path("samples/by-format/fods")
-ORACLE_LOCAL_DIR = Path(".local/oracle/fods")
-RAW_EXPORTS_DIR = ORACLE_LOCAL_DIR / "raw-exports"
-PER_SAMPLE_DIR = ORACLE_LOCAL_DIR / "per-sample-results"
-SUMMARY_PATH = ORACLE_LOCAL_DIR / "comparison-summary.json"
-
-EXPECTED_SAMPLES = [
-    "minimal-spreadsheet.fods",
-    "multi-sheet-basic.fods",
-    "typed-values-basic.fods",
-    "formula-basic.fods",
-]
+sys.path.insert(0, str(Path(__file__).parent))
+from oracle_common import (
+    EXPECTED_SAMPLES,
+    ORACLE_LOCAL_DIR,
+    PER_SAMPLE_DIR,
+    RAW_EXPORTS_DIR,
+    SAMPLES_DIR,
+    SUMMARY_PATH,
+)
 
 
 def load_oracle_csvs(sample_stem: str) -> list:
@@ -98,27 +87,6 @@ def count_non_empty_csv(sheets: list) -> int:
                 if cell.strip():
                     count += 1
     return count
-
-
-def run_parser(sample_path: Path):
-    """Run the FODS prototype parser on a sample. Returns parsed dict or None on error."""
-    if fods_parser is None:
-        # Try importing via subprocess to avoid sys.path issues
-        return None
-    try:
-        import importlib.util
-        spec = importlib.util.spec_from_file_location(
-            "fods_parser",
-            str(Path("prototypes/by-format/fods/fods_parser.py"))
-        )
-        mod = importlib.util.load_from_spec(spec) if hasattr(importlib.util, 'load_from_spec') else None
-        if mod is None:
-            spec.loader.exec_module(__import__("types").ModuleType("fods_parser"))
-            return None
-        mod = spec.loader.load_module()
-        return mod.parse_fods(str(sample_path))
-    except Exception:
-        return None
 
 
 def load_parser_via_subprocess(sample_path: Path):

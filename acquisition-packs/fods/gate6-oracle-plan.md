@@ -36,7 +36,7 @@ notes: "Gate 6 oracle comparison planning document for FODS. Created run034 (202
 
 1. An oracle tool has been selected and its version recorded.
 2. All samples in the corpus have been loaded with the oracle tool and with the prototype parser.
-3. An oracle comparison report exists at `reports/fods-oracle.md` documenting all discrepancies.
+3. An oracle comparison report exists at `acquisition-packs/fods/gate6-oracle-comparison-report.md` documenting all discrepancies.
 4. Every discrepancy has been classified: prototype bug (fixed), spec ambiguity (documented), or oracle deviation from spec (documented).
 5. No unresolved data-loss discrepancies remain. Minor presentation differences are acceptable.
 6. Human review of the comparison report recorded.
@@ -131,11 +131,13 @@ A comparison script will be created at `tools/oracle/compare_fods_oracle.py`:
 
 | Deliverable | Path | Description |
 |---|---|---|
-| Oracle comparison report | `reports/fods-oracle.md` | Full report with discrepancy table |
-| Oracle reference outputs | `.local/oracle-outputs/fods/` | CSV exports (local-only) |
+| Oracle comparison report | `acquisition-packs/fods/gate6-oracle-comparison-report.md` | Sanitized report with discrepancy table (committed) |
+| Oracle reference outputs | `.local/oracle/fods/` | CSV exports (local-only, never committed) |
 | Comparison tool | `tools/oracle/compare_fods_oracle.py` | Automated comparison script |
 | TC-0025 update | `taskcards/TC-0025-*.md` | Status update after planning |
 | TC-0026 | `taskcards/TC-0026-*.md` | Gate 6 execution taskcard |
+
+Note (run036): Canonical paths reconciled. `reports/fods-oracle.md` and `.local/oracle-outputs/fods/` were stale references — replaced with canonical paths above.
 
 ---
 

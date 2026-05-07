@@ -6,7 +6,10 @@ Converts each FODS sample to CSV using LibreOffice headless, storing raw
 exports under .local/oracle/fods/raw-exports/ (local-only, gitignored).
 
 Usage:
-    python tools/oracle/run_fods_oracle.py [--soffice PATH] [--dry-run]
+    python tools/oracle/run_fods_oracle.py [--soffice-path PATH] [--dry-run]
+
+Environment:
+    FORMAT_FACTORY_SOFFICE — explicit path to soffice binary (overrides discovery)
 
 Prerequisites:
     python tools/oracle/preflight_oracle.py must pass before running this tool.
@@ -25,7 +28,6 @@ Rules:
 """
 
 import argparse
-import os
 import platform
 import shutil
 import subprocess
@@ -33,40 +35,15 @@ import sys
 import tempfile
 from pathlib import Path
 
-SAMPLES_DIR = Path("samples/by-format/fods")
-ORACLE_LOCAL_DIR = Path(".local/oracle/fods")
-RAW_EXPORTS_DIR = ORACLE_LOCAL_DIR / "raw-exports"
-MANIFEST_PATH = ORACLE_LOCAL_DIR / "oracle-manifest.yaml"
-
-EXPECTED_SAMPLES = [
-    "minimal-spreadsheet.fods",
-    "multi-sheet-basic.fods",
-    "typed-values-basic.fods",
-    "formula-basic.fods",
-]
-
-LIBREOFFICE_CANDIDATES = [
-    "soffice",
-    "libreoffice",
-    r"C:\Program Files\LibreOffice\program\soffice.exe",
-    r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
-    "/usr/bin/soffice",
-    "/usr/bin/libreoffice",
-    "/usr/lib/libreoffice/program/soffice",
-    "/Applications/LibreOffice.app/Contents/MacOS/soffice",
-]
-
-
-def find_soffice(override=None):
-    candidates = ([override] if override else []) + LIBREOFFICE_CANDIDATES
-    for c in candidates:
-        try:
-            r = subprocess.run([c, "--version"], capture_output=True, text=True, timeout=15)
-            if r.returncode == 0 and r.stdout.strip():
-                return c, r.stdout.strip()
-        except (FileNotFoundError, PermissionError, subprocess.TimeoutExpired):
-            continue
-    return None, None
+sys.path.insert(0, str(Path(__file__).parent))
+from oracle_common import (
+    EXPECTED_SAMPLES,
+    MANIFEST_PATH,
+    ORACLE_LOCAL_DIR,
+    RAW_EXPORTS_DIR,
+    SAMPLES_DIR,
+    find_soffice,
+)
 
 
 def convert_fods_to_csv(soffice_path: str, fods_path: Path, out_dir: Path) -> dict:
@@ -143,15 +120,17 @@ def write_manifest(manifest_path: Path, soffice_version: str, results: list):
 
 def main():
     parser = argparse.ArgumentParser(description="Run FODS oracle CSV exports via LibreOffice")
-    parser.add_argument("--soffice", default=None, help="Path to soffice binary")
-    parser.add_argument("--dry-run", action="store_true", help="Show what would be done without running")
+    parser.add_argument("--soffice-path", default=None,
+                        help="Explicit path to soffice binary (overrides discovery)")
+    parser.add_argument("--dry-run", action="store_true",
+                        help="Show what would be done without running")
     args = parser.parse_args()
 
     print("=" * 60)
     print("FODS Oracle Runner — LibreOffice Headless CSV Export")
     print("=" * 60)
 
-    soffice_path, version = find_soffice(args.soffice)
+    soffice_path, version = find_soffice(override=args.soffice_path, verbose=True)
     if not soffice_path:
         print("ERROR: LibreOffice not found. Run preflight_oracle.py first.")
         print("ORACLE_RUN: FAIL")

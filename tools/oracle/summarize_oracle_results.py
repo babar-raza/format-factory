@@ -24,11 +24,13 @@ import json
 import sys
 from pathlib import Path
 
-ORACLE_LOCAL_DIR = Path(".local/oracle/fods")
-SUMMARY_PATH = ORACLE_LOCAL_DIR / "comparison-summary.json"
-PER_SAMPLE_DIR = ORACLE_LOCAL_DIR / "per-sample-results"
-REPORT_PATH = Path("acquisition-packs/fods/gate6-oracle-comparison-report.md")
-SANITIZED_YAML_PATH = ORACLE_LOCAL_DIR / "oracle-summary-sanitized.yaml"
+sys.path.insert(0, str(Path(__file__).parent))
+from oracle_common import (
+    COMPARISON_REPORT_PATH,
+    ORACLE_LOCAL_DIR,
+    SANITIZED_YAML_PATH,
+    SUMMARY_PATH,
+)
 
 
 def load_summary() -> dict:
@@ -71,7 +73,7 @@ def write_committed_report(summary: dict, dry_run: bool = False):
         "---",
         "artifact_id: fods-gate6-oracle-comparison-report",
         "artifact_type: gate-comparison-report",
-        "path: acquisition-packs/fods/gate6-oracle-comparison-report.md",
+        f"path: {COMPARISON_REPORT_PATH}",
         "format_id: fods",
         "visibility: internal",
         "publish_allowed: false",
@@ -150,9 +152,9 @@ def write_committed_report(summary: dict, dry_run: bool = False):
         print(content[:500])
         print("[dry-run — not written]")
     else:
-        REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-        REPORT_PATH.write_text(content, encoding="utf-8")
-        print(f"Report written to: {REPORT_PATH}")
+        COMPARISON_REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
+        COMPARISON_REPORT_PATH.write_text(content, encoding="utf-8")
+        print(f"Report written to: {COMPARISON_REPORT_PATH}")
 
     return overall
 

@@ -1,0 +1,138 @@
+# Evidence Bundle Contract — run036
+# Gate 6 oracle harness hardening (oracle_common.py, FORMAT_FACTORY_SOFFICE, canonical paths)
+# run035 independent verification PASS
+#
+# Created: run036 (2026-05-07)
+# Authorized by: run036 execution prompt (human-authorized)
+# No Gate 6 approval. No product source. No embeddings.
+
+contract_id: run036-gate6-oracle-harness-hardening
+run: run036
+created: "2026-05-07"
+purpose: >
+  Evidence bundle for run036 combined sprint: independent verification of run035 (PASS),
+  oracle harness hardened (oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI,
+  canonical path model), stale path refs fixed in TC-0026/TC-0027/gate6 docs,
+  oracle preflight re-run (FAIL — LibreOffice still not installed),
+  blocker report hardened, installation checklist created,
+  evidence validator hardened (git-status-final.txt OR git-status.txt),
+  master-plan v2.32.
+
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run036-gate6-oracle-harness-hardening.yaml
+
+require_manifest: true
+require_clean_git: true
+
+min_metadata_count: 38
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+required_repo_files:
+  - path: README.md
+  - path: ROADMAP.md
+  - path: AGENTS.md
+  - path: GOVERNANCE.md
+  - path: plans/master-plan.md
+  - path: registry/format-registry.yaml
+  - path: taskcards/TC-0026-fods-gate6-oracle-execution.md
+  - path: taskcards/TC-0027-fods-gate6-oracle-verification.md
+  - path: acquisition-packs/fods/gate6-oracle-blocker-report.md
+  - path: acquisition-packs/fods/gate6-oracle-plan.md
+  - path: acquisition-packs/fods/oracle-scope.md
+  - path: acquisition-packs/fods/oracle-installation-checklist.md
+  - path: acquisition-packs/fods/oracle-risk-register.md
+  - path: acquisition-packs/fods/pack.yaml
+  - path: schemas/neutral-model/fods/README.md
+  - path: schemas/neutral-model/fods/model.yaml
+  - path: schemas/neutral-model/fods/model.schema.json
+  - path: schemas/neutral-model/fods/field-map.yaml
+  - path: schemas/neutral-model/fods/coverage-matrix.yaml
+  - path: schemas/neutral-model/fods/validation-rules.yaml
+  - path: tools/model/validate_neutral_model.py
+  - path: tools/oracle/oracle_common.py
+  - path: tools/oracle/README.md
+  - path: tools/oracle/preflight_oracle.py
+  - path: tools/oracle/run_fods_oracle.py
+  - path: tools/oracle/compare_fods_oracle.py
+  - path: tools/oracle/summarize_oracle_results.py
+  - path: tools/evidence/build_evidence_bundle.py
+  - path: tools/evidence/validate_evidence_bundle.py
+  - path: tools/evidence/contracts/run035-gate5-approval-gate6-oracle.yaml
+  - path: tools/evidence/contracts/run036-gate6-oracle-harness-hardening.yaml
+  - path: prototypes/by-format/fods/fods_parser.py
+  - path: samples/_provenance.yaml
+  - path: .claude/settings.json
+  - path: memory/09-current-state-before-phase1.md
+
+required_metadata_files:
+  - run036-summary.md
+  - run035-independent-verification.md
+  - run035-commit-audit.md
+  - run035-stale-state-check.md
+  - oracle-common-creation-report.md
+  - oracle-harness-hardening-report.md
+  - oracle-preflight-rerun-report.md
+  - stale-path-fix-report.md
+  - installation-checklist-creation-report.md
+  - blocker-report-update-report.md
+  - validator-hardening-report.md
+  - gate6-status-check.md
+  - tc-0026-status-audit.md
+  - tc-0027-status-audit.md
+  - no-product-source-check.md
+  - no-security-legal-report-check.md
+  - no-vector-index-created-check.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - yaml-validation-notes.txt
+  - json-validation-notes.txt
+  - python-tool-validation.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  - files-reviewed.txt
+  - files-modified.txt
+  - files-created.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - git-log.txt
+  - artifact-index-snapshot.yaml
+  - gap-log-update.md
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - self-challenge.md
+  - verdict.md
+  - bundle-manifest.yaml
+
+forbidden_paths:
+  - .git
+  - .env
+  - .local
+  - ocal
+  - __pycache__
+  - node_modules
+  - src/python/fods
+  - src/net
+  - reports/security
+  - reports/legal
+  - .github/workflows
+
+validation_checks:
+  - "run035 independently verified (5 commits confirmed)"
+  - "Gate 5 status: passed (Babar Raza, 2026-05-06) — confirmed still present"
+  - "TC-0024 status: closed — confirmed still present"
+  - "oracle_common.py created at tools/oracle/oracle_common.py"
+  - "FORMAT_FACTORY_SOFFICE env var supported in oracle discovery"
+  - "oracle preflight re-run: ORACLE_PREFLIGHT: FAIL (expected — LibreOffice not installed)"
+  - "Gate 6 status: oracle_blocked_missing_tool — unchanged"
+  - "TC-0026 status: blocked_missing_oracle_tool — unchanged"
+  - "stale path refs fixed: .local/oracle/fods/ (not .local/oracle-outputs/fods/)"
+  - "stale path refs fixed: acquisition-packs/fods/gate6-oracle-comparison-report.md (not reports/fods-oracle.md)"
+  - "oracle-installation-checklist.md created at acquisition-packs/fods/"
+  - "no product source created"
+  - "no embeddings or vector DB created"
+  - "evidence validator hardened: git-status-final.txt OR git-status.txt accepted"

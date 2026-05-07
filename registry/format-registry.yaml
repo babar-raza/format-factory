@@ -131,9 +131,10 @@ formats:
         status: oracle_blocked_missing_tool
         approved_by: null
         approved_date: null
-        oracle_preflight: "run035 — soffice/libreoffice not found on PATH or standard Windows install paths"
+        oracle_preflight: "run036 re-run — all 10 candidates MISS (soffice/libreoffice/Windows paths/Linux paths/macOS path); FORMAT_FACTORY_SOFFICE not set"
         oracle_harness_path: tools/oracle/
-        notes: "Gate 5 approved. Gate 6 oracle preflight failed: LibreOffice not installed on dev machine. Oracle harness created at tools/oracle/ (run035). TC-0026 status: blocked_missing_oracle_tool. Next action: install LibreOffice and re-execute TC-0026 with explicit prompt. Gate 6 is NOT approved."
+        oracle_harness_hardened: "run036 — oracle_common.py added (shared constants+discovery); FORMAT_FACTORY_SOFFICE env var; --soffice-path CLI; all tools import oracle_common; stale path refs fixed"
+        notes: "Gate 5 approved. Gate 6 oracle preflight failed (run035 + run036 re-run): LibreOffice not installed on dev machine. Oracle harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI, canonical path model. Installation checklist at acquisition-packs/fods/oracle-installation-checklist.md. TC-0026 status: blocked_missing_oracle_tool. Next action: install LibreOffice and re-execute TC-0026 with explicit prompt. Gate 6 is NOT approved."
       gate_7:
         status: not_started
         approved_by: null

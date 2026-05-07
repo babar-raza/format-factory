@@ -66,12 +66,17 @@ Oracle harness ready at tools/oracle/ (created run035). Pre-flight tool: tools/o
 
 ## Deliverables
 
-1. Oracle reference outputs in `.local/oracle-outputs/fods/` (local-only CSV exports)
+1. Oracle reference outputs in `.local/oracle/fods/` (local-only CSV exports — never committed)
 2. Comparison tool at `tools/oracle/compare_fods_oracle.py`
-3. Oracle comparison report at `reports/fods-oracle.md`
+3. Oracle comparison report at `acquisition-packs/fods/gate6-oracle-comparison-report.md` (committed sanitized summary only)
 4. All discrepancies classified
 5. Prototype bug fixes (if any discrepancies reveal bugs)
 6. TC-0027 (Gate 6 verification) ready for execution
+
+**Path model (canonical — run036):**
+- Raw oracle outputs: `.local/oracle/fods/` (local-only, gitignored, never committed)
+- Committed report: `acquisition-packs/fods/gate6-oracle-comparison-report.md`
+- Blocker report (if oracle missing): `acquisition-packs/fods/gate6-oracle-blocker-report.md`
 
 ---
 

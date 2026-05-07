@@ -6,7 +6,10 @@ Checks that LibreOffice is installed and available for headless operation.
 Records the version found and confirms it can locate the expected binary.
 
 Usage:
-    python tools/oracle/preflight_oracle.py [--samples-dir SAMPLES_DIR]
+    python tools/oracle/preflight_oracle.py [--soffice-path PATH] [--verbose]
+
+Environment:
+    FORMAT_FACTORY_SOFFICE — explicit path to soffice binary (overrides discovery)
 
 Outputs:
     - Prints preflight result to stdout
@@ -23,64 +26,30 @@ Rules:
     - Local outputs under .local/oracle/fods/ only
 """
 
-import os
-import subprocess
-import sys
+import argparse
 import platform
+import sys
 from pathlib import Path
 
-# Candidate binary paths for LibreOffice on various platforms
-LIBREOFFICE_CANDIDATES = [
-    "soffice",
-    "libreoffice",
-    r"C:\Program Files\LibreOffice\program\soffice.exe",
-    r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
-    "/usr/bin/soffice",
-    "/usr/bin/libreoffice",
-    "/usr/lib/libreoffice/program/soffice",
-    "/Applications/LibreOffice.app/Contents/MacOS/soffice",
-]
-
-SAMPLES_DIR = Path("samples/by-format/fods")
-ORACLE_LOCAL_DIR = Path(".local/oracle/fods")
-PREFLIGHT_OUTPUT = ORACLE_LOCAL_DIR / "oracle-preflight.yaml"
-
-EXPECTED_SAMPLES = [
-    "minimal-spreadsheet.fods",
-    "multi-sheet-basic.fods",
-    "typed-values-basic.fods",
-    "formula-basic.fods",
-]
+# Import shared oracle discovery from oracle_common.py
+sys.path.insert(0, str(Path(__file__).parent))
+from oracle_common import (
+    EXPECTED_SAMPLES,
+    LIBREOFFICE_CANDIDATES,
+    ORACLE_LOCAL_DIR,
+    PREFLIGHT_OUTPUT,
+    SAMPLES_DIR,
+    SOFFICE_ENV_VAR,
+    check_samples,
+    find_soffice,
+    print_discovery_summary,
+)
 
 
-def find_soffice():
-    """Return (path, version_string) for the first working soffice binary, or (None, None)."""
-    for candidate in LIBREOFFICE_CANDIDATES:
-        try:
-            result = subprocess.run(
-                [candidate, "--version"],
-                capture_output=True,
-                text=True,
-                timeout=15,
-            )
-            if result.returncode == 0 and result.stdout.strip():
-                return candidate, result.stdout.strip()
-        except (FileNotFoundError, PermissionError, subprocess.TimeoutExpired):
-            continue
-    return None, None
-
-
-def check_samples(samples_dir: Path) -> list:
-    """Return list of missing expected sample files."""
-    missing = []
-    for s in EXPECTED_SAMPLES:
-        if not (samples_dir / s).exists():
-            missing.append(s)
-    return missing
-
-
-def write_preflight_yaml(oracle_dir: Path, soffice_path, version, missing_samples, passed):
+def write_preflight_yaml(oracle_dir, soffice_path, version, missing_samples, passed,
+                         candidates_tried):
     """Write oracle-preflight.yaml to the local oracle directory."""
+    oracle_dir = Path(oracle_dir)
     oracle_dir.mkdir(parents=True, exist_ok=True)
     lines = [
         "# Oracle preflight result — auto-generated, local-only",
@@ -90,6 +59,7 @@ def write_preflight_yaml(oracle_dir: Path, soffice_path, version, missing_sample
         f"soffice_found: {'true' if soffice_path else 'false'}",
         f"soffice_path: {soffice_path or 'null'}",
         f"soffice_version: {version or 'null'}",
+        f"env_var_checked: {SOFFICE_ENV_VAR}",
         f"samples_dir: {SAMPLES_DIR}",
         "missing_samples:",
     ]
@@ -97,45 +67,46 @@ def write_preflight_yaml(oracle_dir: Path, soffice_path, version, missing_sample
         lines.append(f"  - {m}")
     if not missing_samples:
         lines.append("  # (none)")
-    lines.append(f"candidates_checked: {len(LIBREOFFICE_CANDIDATES)}")
-    Path(PREFLIGHT_OUTPUT).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    lines.append(f"candidates_tried: {candidates_tried}")
+    lines.append("standard_candidates:")
+    for c in LIBREOFFICE_CANDIDATES:
+        lines.append(f"  - {c}")
+    PREFLIGHT_OUTPUT.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main():
+    parser = argparse.ArgumentParser(description="FODS oracle preflight check")
+    parser.add_argument("--soffice-path", default=None,
+                        help="Explicit path to soffice binary (overrides discovery)")
+    parser.add_argument("--verbose", "-v", action="store_true",
+                        help="Print each candidate path tried")
+    parser.add_argument("--samples-dir", default=None,
+                        help="Override samples directory path")
+    args = parser.parse_args()
+
     print("=" * 60)
     print("FODS Oracle Preflight Check")
     print("=" * 60)
-    print(f"Platform: {platform.system()} {platform.version()[:40]}")
-    print(f"Checking {len(LIBREOFFICE_CANDIDATES)} LibreOffice candidate paths...")
-    print()
 
-    soffice_path, version = find_soffice()
+    soffice_path, version = find_soffice(override=args.soffice_path, verbose=args.verbose)
 
-    if soffice_path:
-        print(f"FOUND: {soffice_path}")
-        print(f"Version: {version}")
-    else:
-        print("NOT FOUND: LibreOffice (soffice) not available on this machine.")
-        print("Checked candidates:")
-        for c in LIBREOFFICE_CANDIDATES:
-            print(f"  - {c}")
-        print()
-        print("To install: https://www.libreoffice.org/download/libreoffice-still/")
+    missing = check_samples(args.samples_dir)
 
-    print()
-    print("Checking FODS samples...")
-    missing = check_samples(SAMPLES_DIR)
-    if missing:
-        print(f"MISSING samples ({len(missing)}):")
-        for m in missing:
-            print(f"  - {m}")
-    else:
-        print(f"All {len(EXPECTED_SAMPLES)} expected samples found.")
+    print_discovery_summary(soffice_path, version, missing)
 
     passed = soffice_path is not None and not missing
 
-    print()
-    write_preflight_yaml(ORACLE_LOCAL_DIR, soffice_path, version, missing, passed)
+    # Count candidates tried (env var override + standard list)
+    candidates_tried = len(LIBREOFFICE_CANDIDATES) + (1 if args.soffice_path else 0)
+
+    write_preflight_yaml(
+        ORACLE_LOCAL_DIR,
+        soffice_path,
+        version,
+        missing,
+        passed,
+        candidates_tried,
+    )
     print(f"Preflight result written to: {PREFLIGHT_OUTPUT}")
     print()
 
@@ -147,12 +118,13 @@ def main():
         reasons = []
         if not soffice_path:
             reasons.append("LibreOffice (soffice) not found")
+            reasons.append(f"  To fix: install LibreOffice or set {SOFFICE_ENV_VAR}=<path>")
         if missing:
             reasons.append(f"Missing samples: {missing}")
         print("ORACLE_PREFLIGHT: FAIL")
         print("Reasons:")
         for r in reasons:
-            print(f"  - {r}")
+            print(f"  {r}")
         return 1
 
 

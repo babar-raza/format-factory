@@ -130,11 +130,28 @@ def matches_forbidden(path, forbidden_patterns):
     return False
 
 
+GIT_STATUS_CANDIDATE_FILES = ["git-status-final.txt", "git-status.txt"]
+
+
 def check_git_status_clean(metadata_files_content):
-    """Check if git-status.txt in bundle metadata shows a clean working tree."""
-    git_status_text = metadata_files_content.get("git-status.txt", "")
+    """Check if a git status file in bundle metadata shows a clean working tree.
+
+    Accepts git-status-final.txt (preferred) or git-status.txt as fallback.
+    Returns (None, msg) if neither is present — caller must treat this as FAIL
+    when require_clean_git is True.
+    """
+    git_status_text = None
+    source_file = None
+    for candidate in GIT_STATUS_CANDIDATE_FILES:
+        text = metadata_files_content.get(candidate, "")
+        if text:
+            git_status_text = text
+            source_file = candidate
+            break
+
     if not git_status_text:
-        return None, "git-status.txt not found in bundle metadata"
+        candidates_str = " or ".join(GIT_STATUS_CANDIDATE_FILES)
+        return None, f"No git status file found in bundle metadata (checked: {candidates_str})"
 
     lines = git_status_text.strip().splitlines()
     dirty_indicators = [
@@ -148,8 +165,8 @@ def check_git_status_clean(metadata_files_content):
     for line in lines:
         for indicator in dirty_indicators:
             if indicator in line:
-                return False, f"git-status.txt shows uncommitted changes: '{line.strip()}'"
-    return True, "git-status.txt shows clean working tree"
+                return False, f"{source_file} shows uncommitted changes: '{line.strip()}'"
+    return True, f"{source_file} shows clean working tree"
 
 
 def validate_bundle(contract_path, bundle_path, strict_git=True):
@@ -203,8 +220,8 @@ def validate_bundle(contract_path, bundle_path, strict_git=True):
             elif name.startswith("bundle-metadata/") and not name.endswith("/"):
                 fname = name[16:]  # strip "bundle-metadata/" prefix
                 metadata_files.add(fname)
-                # Read git-status.txt and manifest for validation
-                if fname in ("git-status.txt", "bundle-manifest.yaml"):
+                # Read git status files and manifest for validation
+                if fname in GIT_STATUS_CANDIDATE_FILES or fname == "bundle-manifest.yaml":
                     try:
                         metadata_files_content[fname] = zf.read(name).decode("utf-8", errors="replace")
                     except Exception:
@@ -261,7 +278,8 @@ def validate_bundle(contract_path, bundle_path, strict_git=True):
         if require_clean_git:
             clean, msg = check_git_status_clean(metadata_files_content)
             if clean is None:
-                warnings.append(f"Git cleanliness check skipped: {msg}")
+                # Missing git status file is a hard failure when require_clean_git is true
+                errors.append(f"Git cleanliness check FAILED: {msg}")
             elif not clean:
                 errors.append(f"Git cleanliness check FAILED: {msg}")
 
@@ -286,7 +304,8 @@ def validate_bundle(contract_path, bundle_path, strict_git=True):
         print(f"Manifest present: {'YES' if 'bundle-manifest.yaml' in metadata_files else 'NO'}")
     if require_clean_git:
         clean, msg = check_git_status_clean(metadata_files_content)
-        print(f"Git clean: {msg}")
+        status_label = "PASS" if clean else ("FAIL" if clean is False else "MISSING")
+        print(f"Git clean ({status_label}): {msg}")
     print()
 
     if warnings:

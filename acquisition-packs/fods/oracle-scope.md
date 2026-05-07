@@ -39,7 +39,7 @@ notes: "Gate 6 oracle comparison scope document for FODS. Created run034 (2026-0
 3. **Cell-by-cell comparison** — Parser JSON output vs oracle CSV, normalized to common format
 4. **Discrepancy classification** — Every difference classified (prototype_bug, spec_ambiguity, oracle_deviation, presentation_only, formula_evaluation)
 5. **Comparison tool** — Python script at `tools/oracle/compare_fods_oracle.py`
-6. **Oracle comparison report** — `reports/fods-oracle.md` with full discrepancy table
+6. **Oracle comparison report** — `acquisition-packs/fods/gate6-oracle-comparison-report.md` with sanitized discrepancy table (committed); raw outputs under `.local/oracle/fods/` (local-only)
 7. **Prototype bug fixes** — If discrepancies reveal prototype bugs, fix them
 
 ---
@@ -94,5 +94,5 @@ Gate 6 PASSES when:
 2. No unresolved data-loss discrepancies remain
 3. All discrepancies classified
 4. Formula evaluation differences documented as expected
-5. Oracle comparison report exists at `reports/fods-oracle.md`
+5. Oracle comparison report exists at `acquisition-packs/fods/gate6-oracle-comparison-report.md`
 6. Human has reviewed and approved the comparison report

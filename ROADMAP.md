@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-07 (run035)
+**Last reviewed:** 2026-05-07 (run036)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
 
 ---
@@ -107,7 +107,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Gate 5 status:** PASSED — approved by Babar Raza (2026-05-06, run035). Neutral model v1: 6 entities, 19 field mappings, 30 coverage features, 21 validation rules. Validation 4/4 PASS (87 checks, 0 errors). TC-0024 CLOSED. TC-0023 COMPLETED.
 
-**Gate 6 status:** oracle_blocked_missing_tool (run035). LibreOffice not installed on dev machine. Oracle harness created at tools/oracle/ (run035). Next: install LibreOffice, execute TC-0026 with explicit prompt. Gate 6 NOT approved.
+**Gate 6 status:** oracle_blocked_missing_tool (run035; re-confirmed run036). LibreOffice not installed on dev machine. Oracle harness hardened run036: oracle_common.py (shared constants+discovery), FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI arg, canonical path model, installation checklist (oracle-installation-checklist.md). Next: install LibreOffice, execute TC-0026 with explicit prompt. Gate 6 NOT approved.
 
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 
