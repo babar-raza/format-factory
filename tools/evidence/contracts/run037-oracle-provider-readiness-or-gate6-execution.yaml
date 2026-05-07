@@ -1,0 +1,158 @@
+# Evidence Bundle Contract — run037
+# Oracle provider readiness (oracle provider abstraction, --check-no-pending validator,
+# negative tests) — TC-0026 still blocked (LibreOffice not installed)
+# run036 independent verification PASS
+#
+# Created: run037 (2026-05-07)
+# Authorized by: run037 execution prompt (human-authorized)
+# No Gate 6 approval. No product source. No embeddings.
+
+contract_id: run037-oracle-provider-readiness-or-gate6-execution
+run: run037
+created: "2026-05-07"
+purpose: >
+  Evidence bundle for run037 combined sprint: independent verification of run036 (PASS),
+  stale state fixed (master-plan header 82281e6→3216dcf, memory/09 commit updated),
+  oracle provider abstraction added (provider_registry.yaml, validate_oracle_environment.py,
+  docs/oracle-provider-strategy.md), oracle-provider-options.md created
+  (4 alternatives evaluated — LibreOffice APPROVED as sole provider),
+  --check-no-pending flag added to validate_evidence_bundle.py,
+  negative tests added (tests/evidence/ — 4 tests PASS),
+  oracle preflight re-run 3 (FAIL — LibreOffice still not installed),
+  blocker report updated with run037 findings, master-plan v2.33.
+
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run037-oracle-provider-readiness-or-gate6-execution.yaml
+
+require_manifest: true
+require_clean_git: true
+
+min_metadata_count: 38
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+required_repo_files:
+  - path: README.md
+  - path: ROADMAP.md
+  - path: AGENTS.md
+  - path: GOVERNANCE.md
+  - path: plans/master-plan.md
+  - path: registry/format-registry.yaml
+  - path: taskcards/TC-0026-fods-gate6-oracle-execution.md
+  - path: taskcards/TC-0027-fods-gate6-oracle-verification.md
+  - path: acquisition-packs/fods/gate6-oracle-blocker-report.md
+  - path: acquisition-packs/fods/gate6-oracle-plan.md
+  - path: acquisition-packs/fods/oracle-scope.md
+  - path: acquisition-packs/fods/oracle-installation-checklist.md
+  - path: acquisition-packs/fods/oracle-provider-options.md
+  - path: acquisition-packs/fods/oracle-risk-register.md
+  - path: acquisition-packs/fods/pack.yaml
+  - path: schemas/neutral-model/fods/README.md
+  - path: schemas/neutral-model/fods/model.yaml
+  - path: schemas/neutral-model/fods/model.schema.json
+  - path: schemas/neutral-model/fods/field-map.yaml
+  - path: schemas/neutral-model/fods/coverage-matrix.yaml
+  - path: schemas/neutral-model/fods/validation-rules.yaml
+  - path: tools/oracle/oracle_common.py
+  - path: tools/oracle/preflight_oracle.py
+  - path: tools/oracle/run_fods_oracle.py
+  - path: tools/oracle/compare_fods_oracle.py
+  - path: tools/oracle/summarize_oracle_results.py
+  - path: tools/oracle/README.md
+  - path: tools/oracle/provider_registry.yaml
+  - path: tools/oracle/validate_oracle_environment.py
+  - path: docs/oracle-provider-strategy.md
+  - path: tools/evidence/build_evidence_bundle.py
+  - path: tools/evidence/validate_evidence_bundle.py
+  - path: tools/evidence/contracts/run036-gate6-oracle-harness-hardening.yaml
+  - path: tools/evidence/contracts/run037-oracle-provider-readiness-or-gate6-execution.yaml
+  - path: tests/evidence/test_negative_bundle_validation.py
+  - path: memory/09-current-state-before-phase1.md
+  - path: .claude/settings.json
+
+forbidden_paths:
+  - src/python/fods
+  - src/python/open-source
+  - src/dotnet
+  - src/net
+  - .github/workflows
+  - reports/security
+  - reports/legal
+
+required_metadata_files:
+  - run036-independent-verification-report.md
+  - oracle-preflight-run037.md
+  - provider-registry-validation.md
+  - negative-test-results.md
+  - stale-state-fix-report.md
+  - forbidden-path-audit.md
+  - self-challenge.md
+  - gap-log-update.md
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - verdict.md
+  - repo-tree.txt
+  - git-log.txt
+  - git-status-final.txt
+  - git-diff-stat.txt
+  - master-plan-snapshot.md
+  - settings-snapshot.json
+  - registry-snapshot.yaml
+  - tc0026-status.md
+  - oracle-blocker-summary.md
+  - oracle-provider-options-summary.md
+  - new-files-list.md
+  - search-audit.md
+  - format-registry-gate6-notes.md
+  - evidence-bundle-contract-listing.md
+  - run037-artifacts-produced.md
+  - validator-no-pending-test.md
+  - negative-tests-evidence.md
+  - acquisition-pack-update-report.md
+  - memory-09-updated.md
+  - memory-md-updated.md
+  - readme-update.md
+  - roadmap-update.md
+  - settings-update.md
+  - master-plan-version-report.md
+  - oracle-preflight-consecutive-fail-summary.md
+  - blocker-report-update.md
+  - bundle-manifest.yaml
+
+validation_checks:
+  - description: "run036 independent verification PASS (3 commits: 8acd48d+82281e6+3216dcf)"
+    expected: PASS
+  - description: "master-plan header updated: 82281e6 → 3216dcf"
+    expected: PASS
+  - description: "memory/09 latest commit: 1e14079→3216dcf, 'pending'→'working tree clean'"
+    expected: PASS
+  - description: "--check-no-pending flag added to validate_evidence_bundle.py"
+    expected: PASS
+  - description: "4 negative tests PASS: thin-bundle FAIL, PENDING-marker FAIL, pass-without-flag, clean-bundle-pass"
+    expected: PASS
+  - description: "tools/oracle/provider_registry.yaml created with LibreOffice entry and FODS assignment"
+    expected: PASS
+  - description: "tools/oracle/validate_oracle_environment.py created and functional (ORACLE_ENV: BLOCKED)"
+    expected: PASS
+  - description: "docs/oracle-provider-strategy.md created"
+    expected: PASS
+  - description: "acquisition-packs/fods/oracle-provider-options.md created"
+    expected: PASS
+  - description: "oracle preflight re-run 3: FAIL (LibreOffice not installed — unchanged)"
+    expected: PASS
+  - description: "blocker report updated with run037 improvements table and preflight run3 data"
+    expected: PASS
+  - description: "master-plan v2.33"
+    expected: PASS
+  - description: "No Gate 6 approval (human-only)"
+    expected: NO_GATE_APPROVAL
+  - description: "No product source created (src/python/fods/, src/net/fods/ absent)"
+    expected: ABSENT
+  - description: "No embeddings or vector DB"
+    expected: ABSENT
+  - description: "No push to remote"
+    expected: NOT_DONE
+  - description: "No LibreOffice auto-install"
+    expected: NOT_DONE

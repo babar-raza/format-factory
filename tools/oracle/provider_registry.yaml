@@ -1,0 +1,81 @@
+# Oracle Provider Registry — format-factory
+#
+# Maps format IDs to approved oracle execution providers.
+# Each provider defines: discovery rules, version requirements, capability,
+# and the acquisition pack that documents installation.
+#
+# This registry is the single authoritative source for:
+#   - Which providers are approved for each format's oracle gate
+#   - How to discover them on the local machine
+#   - What version is required
+#
+# See docs/oracle-provider-strategy.md for the full strategy.
+#
+# Maintenance: update when a new format requires a new oracle provider,
+# or when an existing provider's minimum version changes.
+
+schema_version: "1.0"
+last_updated: "2026-05-07"
+
+# ---------------------------------------------------------------------------
+# Provider definitions
+# ---------------------------------------------------------------------------
+
+providers:
+
+  - provider_id: libreoffice
+    display_name: LibreOffice
+    provider_type: desktop-application
+    description: >
+      LibreOffice is an open-source office suite capable of reading and writing
+      a wide range of document formats including ODF (FODS/ODS), OOXML (XLSX/DOCX),
+      and many legacy formats. It serves as the reference oracle for FODS Gate 6.
+    version_minimum: "7.0"
+    version_recommended: "24.2"
+    license: MPL-2.0
+    homepage: "https://www.libreoffice.org"
+    discovery:
+      env_var: FORMAT_FACTORY_SOFFICE
+      binary_names:
+        - soffice
+        - libreoffice
+      standard_paths:
+        - "C:\\Program Files\\LibreOffice\\program\\soffice.exe"
+        - "C:\\Program Files (x86)\\LibreOffice\\program\\soffice.exe"
+        - "/usr/bin/soffice"
+        - "/usr/bin/libreoffice"
+        - "/usr/lib/libreoffice/program/soffice"
+        - "/Applications/LibreOffice.app/Contents/MacOS/soffice"
+    headless_flag: "--headless"
+    convert_flag: "--convert-to"
+    version_flag: "--version"
+    acquisition_pack: acquisition-packs/fods/oracle-installation-checklist.md
+    status: approved
+
+# ---------------------------------------------------------------------------
+# Format-to-provider assignments
+# ---------------------------------------------------------------------------
+# Each format lists the gate number and the approved_providers list.
+# Only providers in approved_providers may be used for that format's oracle gate.
+# Adding a new provider requires: (1) a new entry in the providers section above,
+# (2) an updated approved_providers list here, (3) a gate document update,
+# (4) a new acquisition_pack entry documenting installation.
+
+format_provider_assignments:
+
+  fods:
+    gate: 6
+    description: >
+      FODS (Flat OpenDocument Spreadsheet) oracle compares parser output
+      against LibreOffice's authoritative interpretation of the same file.
+    approved_providers:
+      - libreoffice
+    fallback_providers: []
+    blocker_report: acquisition-packs/fods/gate6-oracle-blocker-report.md
+    installation_checklist: acquisition-packs/fods/oracle-installation-checklist.md
+    current_status: oracle_blocked_missing_tool
+    notes: >
+      LibreOffice is the sole approved oracle execution provider for FODS Gate 6.
+      No other provider may be used without updating this registry and the gate
+      documentation. The oracle comparison runs LibreOffice in headless mode to
+      export FODS files, then compares the export against our parser's output.

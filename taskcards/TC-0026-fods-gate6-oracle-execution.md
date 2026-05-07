@@ -59,8 +59,10 @@ Execute the oracle comparison for FODS: run all 4 Gate 3 samples through both th
 - [ ] LibreOffice installed, version recorded — BLOCKER: not installed on dev machine (run035 preflight FAIL)
 - [ ] Explicit TC-0026 execution prompt from human — pending LibreOffice installation
 
-**BLOCKED:** LibreOffice not found on this machine. Install LibreOffice (https://www.libreoffice.org/download/libreoffice-still/) and re-execute TC-0026 with explicit prompt.
-Oracle harness ready at tools/oracle/ (created run035). Pre-flight tool: tools/oracle/preflight_oracle.py.
+**BLOCKED:** LibreOffice not found on this machine. Install LibreOffice per `acquisition-packs/fods/oracle-installation-checklist.md` and re-execute TC-0026 with explicit prompt.
+Oracle harness ready at tools/oracle/ (hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI). Pre-flight tool: tools/oracle/preflight_oracle.py.
+Provider registry: tools/oracle/provider_registry.yaml. Environment check: tools/oracle/validate_oracle_environment.py.
+Provider options (alternatives considered): acquisition-packs/fods/oracle-provider-options.md.
 
 ---
 

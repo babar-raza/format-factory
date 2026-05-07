@@ -7,7 +7,7 @@ visibility: internal
 publish_allowed: false
 generated_by: claude
 generated_at: "2026-05-07"
-notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist)."
+notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist). Updated run037 (oracle provider strategy, provider registry, validate_oracle_environment.py, provider options doc, preflight re-run 3)."
 ---
 
 # FODS Gate 6 Oracle Blocker Report
@@ -15,14 +15,14 @@ notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hard
 **Format:** FODS
 **Gate:** 6 — Oracle Comparison
 **Status:** oracle_blocked_missing_tool
-**Prepared by:** run035 (2026-05-07); updated run036 (2026-05-07)
+**Prepared by:** run035 (2026-05-07); updated run036 (2026-05-07); updated run037 (2026-05-07)
 **Gate 6 approved:** NO — blocked, cannot proceed to approval
 
 ---
 
 ## Blocker: LibreOffice Not Installed
 
-Gate 6 oracle preflight has been executed twice — during run035 (initial) and run036 (re-run with hardened harness). Both runs produced `ORACLE_PREFLIGHT: FAIL`. The oracle tool (LibreOffice headless) was not found on the development machine.
+Gate 6 oracle preflight has been executed three times — during run035 (initial), run036 (re-run with hardened harness), and run037 (re-run with provider registry). All three runs produced `ORACLE_PREFLIGHT: FAIL`. The oracle tool (LibreOffice headless) was not found on the development machine.
 
 ---
 
@@ -61,19 +61,19 @@ Reasons:
 
 ### Preflight Result Table
 
-| Check | run035 | run036 |
-|---|---|---|
-| `soffice --version` (PATH) | NOT FOUND | NOT FOUND |
-| `libreoffice --version` (PATH) | NOT FOUND | NOT FOUND |
-| `C:\Program Files\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND |
-| `C:\Program Files (x86)\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND |
-| `/usr/bin/soffice` | N/A | NOT FOUND |
-| `/usr/bin/libreoffice` | N/A | NOT FOUND |
-| `/usr/lib/libreoffice/program/soffice` | N/A | NOT FOUND |
-| `/Applications/LibreOffice.app/Contents/MacOS/soffice` | N/A | NOT FOUND |
-| `FORMAT_FACTORY_SOFFICE` env var | Not checked | NOT SET |
-| FODS samples (4 required) | 4 found | 4 found |
-| Oracle result | FAIL | FAIL |
+| Check | run035 | run036 | run037 |
+|---|---|---|---|
+| `soffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND |
+| `libreoffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND |
+| `C:\Program Files\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND |
+| `C:\Program Files (x86)\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/bin/soffice` | N/A | NOT FOUND | NOT FOUND |
+| `/usr/bin/libreoffice` | N/A | NOT FOUND | NOT FOUND |
+| `/usr/lib/libreoffice/program/soffice` | N/A | NOT FOUND | NOT FOUND |
+| `/Applications/LibreOffice.app/Contents/MacOS/soffice` | N/A | NOT FOUND | NOT FOUND |
+| `FORMAT_FACTORY_SOFFICE` env var | Not checked | NOT SET | NOT SET |
+| FODS samples (4 required) | 4 found | 4 found | 4 found |
+| Oracle result | FAIL | FAIL | FAIL |
 
 ---
 
@@ -145,7 +145,20 @@ Despite the oracle tool still being unavailable, the following harness improveme
 
 ---
 
-## TC Status After run036
+## Improvements Completed (run037)
+
+| Deliverable | Status | Notes |
+|---|---|---|
+| `tools/oracle/provider_registry.yaml` | **NEW** | Oracle provider registry: LibreOffice entry + FODS assignment |
+| `tools/oracle/validate_oracle_environment.py` | **NEW** | Environment check tool (reads registry, discovers providers) |
+| `docs/oracle-provider-strategy.md` | **NEW** | Oracle provider architecture, governance rules, future-format guide |
+| `acquisition-packs/fods/oracle-provider-options.md` | **NEW** | Provider evaluation: LibreOffice APPROVED; others rejected/deferred |
+| `tools/evidence/validate_evidence_bundle.py` | **HARDENED** | --check-no-pending flag: fails if any metadata file has PENDING marker |
+| `tests/evidence/test_negative_bundle_validation.py` | **NEW** | 4 negative tests: thin bundle FAIL, PENDING marker FAIL, clean PASS |
+| `plans/master-plan.md` header | **FIXED** | Latest commit: 82281e6→3216dcf (stale reference corrected) |
+| `memory/09` latest commit | **FIXED** | "run036 commit pending"→3216dcf working tree clean |
+
+## TC Status After run037
 
 | Taskcard | Status |
 |---|---|
@@ -161,6 +174,7 @@ Despite the oracle tool still being unavailable, the following harness improveme
 
 1. Install LibreOffice locally (see [oracle-installation-checklist.md](oracle-installation-checklist.md))
 2. Run `python tools/oracle/preflight_oracle.py --verbose` to confirm
-3. Issue explicit TC-0026 execution prompt naming Oracle path and version
+3. Run `python tools/oracle/validate_oracle_environment.py --format fods` to verify registry check
+4. Issue explicit TC-0026 execution prompt naming Oracle path and version
 
 Gate 6 is NOT approved. No oracle comparison data exists.

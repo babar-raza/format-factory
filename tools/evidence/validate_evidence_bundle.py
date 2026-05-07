@@ -132,6 +132,14 @@ def matches_forbidden(path, forbidden_patterns):
 
 GIT_STATUS_CANDIDATE_FILES = ["git-status-final.txt", "git-status.txt"]
 
+# Patterns that indicate a metadata report was written as a placeholder before bundle
+# build and was never updated. When --check-no-pending is passed, any metadata file
+# containing one of these strings causes a FAIL.
+PENDING_MARKER_PATTERNS = [
+    "PENDING (bundle not yet built)",
+    "validation_status: PENDING",
+]
+
 
 def check_git_status_clean(metadata_files_content):
     """Check if a git status file in bundle metadata shows a clean working tree.
@@ -169,7 +177,22 @@ def check_git_status_clean(metadata_files_content):
     return True, f"{source_file} shows clean working tree"
 
 
-def validate_bundle(contract_path, bundle_path, strict_git=True):
+def check_no_pending_reports(metadata_files_content):
+    """Scan all metadata files for PENDING marker patterns.
+
+    Returns a list of (filename, matched_pattern) tuples for any file that
+    contains a PENDING marker. An empty list means no PENDING markers found.
+    """
+    hits = []
+    for fname, content in metadata_files_content.items():
+        for pattern in PENDING_MARKER_PATTERNS:
+            if pattern in content:
+                hits.append((fname, pattern))
+                break  # one hit per file is enough
+    return hits
+
+
+def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=False):
     """Validate a bundle zip against a contract."""
     contract = load_contract(contract_path)
     bundle_path = Path(bundle_path)
@@ -220,8 +243,11 @@ def validate_bundle(contract_path, bundle_path, strict_git=True):
             elif name.startswith("bundle-metadata/") and not name.endswith("/"):
                 fname = name[16:]  # strip "bundle-metadata/" prefix
                 metadata_files.add(fname)
-                # Read git status files and manifest for validation
-                if fname in GIT_STATUS_CANDIDATE_FILES or fname == "bundle-manifest.yaml":
+                # Read git status files, manifest, and (when --check-no-pending)
+                # all metadata files for PENDING marker scanning.
+                if (fname in GIT_STATUS_CANDIDATE_FILES
+                        or fname == "bundle-manifest.yaml"
+                        or no_pending):
                     try:
                         metadata_files_content[fname] = zf.read(name).decode("utf-8", errors="replace")
                     except Exception:
@@ -283,6 +309,13 @@ def validate_bundle(contract_path, bundle_path, strict_git=True):
             elif not clean:
                 errors.append(f"Git cleanliness check FAILED: {msg}")
 
+        # Check for PENDING markers in metadata files
+        pending_hits = []
+        if no_pending:
+            pending_hits = check_no_pending_reports(metadata_files_content)
+            for fname, pattern in pending_hits:
+                errors.append(f"PENDING marker in metadata file '{fname}': {pattern!r}")
+
     # Print validation report
     print("=" * 60)
     print("EVIDENCE BUNDLE VALIDATION REPORT")
@@ -306,6 +339,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True):
         clean, msg = check_git_status_clean(metadata_files_content)
         status_label = "PASS" if clean else ("FAIL" if clean is False else "MISSING")
         print(f"Git clean ({status_label}): {msg}")
+    if no_pending:
+        pending_status = "PASS" if not pending_hits else "FAIL"
+        print(f"No-PENDING check ({pending_status}): {len(pending_hits)} PENDING marker(s) found in metadata files")
     print()
 
     if warnings:
@@ -334,9 +370,17 @@ def main():
     parser.add_argument("--bundle", required=True, help="Bundle zip path")
     parser.add_argument("--no-strict-git", action="store_true",
                         help="Skip git cleanliness check even if contract requires it")
+    parser.add_argument("--check-no-pending", action="store_true",
+                        help="Fail if any metadata file contains PENDING marker patterns "
+                             "(use as final validation after report files are updated)")
     args = parser.parse_args()
 
-    success = validate_bundle(args.contract, args.bundle, strict_git=not args.no_strict_git)
+    success = validate_bundle(
+        args.contract,
+        args.bundle,
+        strict_git=not args.no_strict_git,
+        no_pending=args.check_no_pending,
+    )
     sys.exit(0 if success else 1)
 
 

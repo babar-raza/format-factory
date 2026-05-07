@@ -3,7 +3,7 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run036 to reflect run035 independent verification PASS, oracle harness hardened (oracle_common.py, FORMAT_FACTORY_SOFFICE), stale path fixes, installation checklist, master-plan v2.32
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run037 to reflect run036 independent verification PASS, stale state fixed, oracle provider abstraction (provider_registry.yaml, validate_oracle_environment.py), --check-no-pending validator flag, negative tests, master-plan v2.33
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
@@ -11,9 +11,9 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 
 # 09 — Current State (Phase 3: Gate 5 PASSED, Gate 6 oracle_blocked_missing_tool)
 
-This file captures the current state after run036. Gates 1-5 PASSED. Gate 5 approved by Babar Raza (2026-05-06, run035). TC-0024 CLOSED. Oracle preflight blocked (LibreOffice not installed). Oracle harness hardened (run036): oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI, canonical path model. TC-0026 blocked_missing_oracle_tool.
+This file captures the current state after run037. Gates 1-5 PASSED. Gate 5 approved by Babar Raza (2026-05-06, run035). TC-0024 CLOSED. Oracle preflight blocked (LibreOffice not installed — 3 consecutive fails: run035, run036, run037). Oracle harness hardened (run036): oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI. Oracle provider abstraction added (run037): provider_registry.yaml, validate_oracle_environment.py, docs/oracle-provider-strategy.md. TC-0026 blocked_missing_oracle_tool.
 
-**Last updated:** run036 (run035 independent verification PASS; oracle harness hardened; stale path fixes; installation checklist; master-plan.md v2.32).
+**Last updated:** run037 (run036 independent verification PASS; stale state fixed; oracle provider abstraction; --check-no-pending validator; negative tests; oracle preflight re-run 3 FAIL; master-plan.md v2.33).
 
 ## Current status
 
@@ -27,11 +27,11 @@ This file captures the current state after run036. Gates 1-5 PASSED. Gate 5 appr
 | Gate 3 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run028); DEC-034 verified run027 |
 | Gate 4 status | **PASSED** — approved by Babar Raza, 2026-05-06 (run033) |
 | Gate 5 status | **PASSED** — approved by Babar Raza, 2026-05-06 (run035 human-authorized prompt); 6 entities, 87 checks PASS; TC-0024 DEC-034 PASSED run034; TC-0024 CLOSED run035 |
-| Gate 6 status | **oracle_blocked_missing_tool** — LibreOffice not installed (run035 + run036 preflight FAIL); harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path, canonical paths, installation checklist |
+| Gate 6 status | **oracle_blocked_missing_tool** — LibreOffice not installed (run035 + run036 + run037 preflight FAIL); harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path, canonical paths, installation checklist; provider abstraction run037: provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md |
 | Active formats | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: passed; gate_5: passed; gate_6: oracle_blocked_missing_tool) |
 | Registry | FODS entry: gate_5: passed (Babar Raza 2026-05-06); gate_6: oracle_blocked_missing_tool; next_allowed_action: install_oracle_tool_then_execute_tc0026 |
 | Spec Workbench v1 | created run030 (local-only): .local/spec-cache/fods/1.3/workbench/ — verified-facts.yaml (10 facts), requirement packs (parser/sample/model), task packets, coverage matrices; 205/205 validation PASS |
-| FODS acquisition pack | acquisition-packs/fods/ (16 files: + oracle-installation-checklist.md added run036; gate5-human-review-packet.md, gate6 planning docs added run034/run035) |
+| FODS acquisition pack | acquisition-packs/fods/ (18 files: + oracle-installation-checklist.md run036; + oracle-provider-options.md run037; gate5-human-review-packet.md, gate6 planning docs added run034/run035) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |
 | TC-0007 status | completed_independently_verified_run020+run022 |
 | TC-0009 status | CLOSED — Gate 2 passed (Babar Raza, 2026-05-05, run023) |
@@ -62,10 +62,10 @@ This file captures the current state after run036. Gates 1-5 PASSED. Gate 5 appr
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| Evidence contracts | 8 contracts: base-run, run031, run033, run035, gate-approval, gate-execution, independent-verification, spec-workbench; run036 contract pending |
-| Latest commit | 1e14079 (run035 validator fix) — run036 commit pending |
-| Uncommitted | run036 changes: oracle_common.py (NEW), oracle tools rewritten, validator hardened, stale paths fixed, blocker report hardened, installation checklist (NEW), master-plan v2.32 |
-| Master plan version | 2.32 (run036) |
+| Evidence contracts | 9 contracts: base-run, run031, run033, run035, run036, gate-approval, gate-execution, independent-verification, spec-workbench |
+| Latest commit | 3216dcf (run036 final — Section 33 update) — working tree clean |
+| Uncommitted | None — run036 committed (8acd48d + 82281e6 + 3216dcf) |
+| Master plan version | 2.33 (run037) |
 | AGENTS.md sections | A through Y (25 sections) |
 
 ## Run history (run001–run028)
@@ -101,6 +101,7 @@ This file captures the current state after run036. Gates 1-5 PASSED. Gate 5 appr
 | run034 | run033 verification + evidence hardening + TC-0024 DEC-034 + Gate 5 review + Gate 6 planning + TC-0026/TC-0027 | TC-0024 PASS (87 checks, 0 errors); evidence builder/validator hardened; gate5-human-review-packet.md; gate6 planning docs; master-plan v2.30 |
 | run035 | run034 verification + Gate 5 approval + TC-0024 closure + Gate 6 oracle preflight + oracle harness | Gate 5 PASSED (Babar Raza, 2026-05-06); TC-0024 CLOSED; TC-0023/TC-0025 COMPLETED; oracle preflight FAIL (LibreOffice not installed); tools/oracle/ harness created; gate6-oracle-blocker-report.md; master-plan v2.31 |
 | run036 | run035 independent verification PASS + oracle harness hardening + stale path fixes + installation checklist + evidence validator fix | Verified 5 run035 commits; oracle_common.py NEW (shared constants+discovery); FORMAT_FACTORY_SOFFICE env var; --soffice-path CLI; all tools rewritten to use oracle_common; oracle preflight re-run: FAIL (same, 10 candidates); stale path refs fixed (TC-0026/TC-0027/gate6 docs); oracle-installation-checklist.md NEW; gate6-oracle-blocker-report.md hardened; validator fix (git-status-final.txt OR git-status.txt); master-plan v2.32 |
+| run037 | run036 independent verification PASS + stale state fixed + oracle provider abstraction + --check-no-pending validator + negative tests + oracle preflight re-run 3 | Verified 3 run036 commits (8acd48d+82281e6+3216dcf); stale fixes (master-plan header 82281e6→3216dcf, memory/09); provider_registry.yaml + validate_oracle_environment.py + oracle-provider-strategy.md NEW; oracle-provider-options.md NEW (4 alternatives evaluated); --check-no-pending flag added to validator; 4 negative tests PASS; oracle preflight 3rd FAIL; blocker report updated; master-plan v2.33 |
 
 ## Latest known evidence bundles
 
