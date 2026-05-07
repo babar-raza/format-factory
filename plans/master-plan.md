@@ -6,7 +6,7 @@
 **Version:** 2.32 (run036: run035 independent verification PASS; oracle harness hardened — oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path; stale path refs fixed in TC-0026/TC-0027/gate6 docs; blocker report hardened; installation checklist added; Gate 6 still oracle_blocked_missing_tool)
 **Last updated:** 2026-05-07
 **Current phase:** Phase 3: FODS Gate 5 PASSED, Gate 6 oracle blocked (LibreOffice not installed)
-**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. No product source. Latest commit: (see Section 33). Working tree: pending run036 commit.
+**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. No product source. Latest commit: 8acd48d (run036). Working tree: clean (run036 committed; post-commit Section 33 update pending).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
@@ -1026,7 +1026,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 1e14079 (run035 validator fix). run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079. run034 commits: 2176266 + 074386a + f59fc46. run036 commit: Pending (see below).
+**Latest commit:** 8acd48d (run036 main commit). run036 commits: 8acd48d. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1150,7 +1150,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 **Committed (1e14079, run035 validator fix):**
 - tools/evidence/validate_evidence_bundle.py (fix: normalize required_repo_files list-of-dicts)
 
-**Pending (run036 — authorized by execution prompt):**
+**Committed (8acd48d, run036):**
 - tools/oracle/oracle_common.py (NEW — shared constants, LibreOffice discovery, path model)
 - tools/oracle/preflight_oracle.py (REWRITTEN — uses oracle_common, --soffice-path, --verbose, FORMAT_FACTORY_SOFFICE)
 - tools/oracle/run_fods_oracle.py (REWRITTEN — uses oracle_common, --soffice-path)
@@ -1164,8 +1164,10 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - acquisition-packs/fods/oracle-scope.md (UPDATED — stale path refs fixed)
 - taskcards/TC-0026-fods-gate6-oracle-execution.md (UPDATED — canonical path model section)
 - taskcards/TC-0027-fods-gate6-oracle-verification.md (UPDATED — stale path refs fixed)
+- tools/evidence/contracts/run036-gate6-oracle-harness-hardening.yaml (NEW)
 - plans/master-plan.md v2.32
-- memory/09 (current state updated)
+- registry/format-registry.yaml gate_6 notes updated
+- README.md, ROADMAP.md, .claude/settings.json, memory/09 updated
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 
