@@ -6,7 +6,7 @@
 **Version:** 2.34 (run038: run037 independent verification PASS; stale commit fixed (f964eba→a35b089); TC-0026 blocker wording fixed; oracle preflight re-run 4 FAIL; harness self-test added; operator handoff doc added; next-format candidate shortlist created (FODT/FODP/FODG/FODB — candidate-only, no Gate 1 approval); Gate 6 still oracle_blocked_missing_tool)
 **Last updated:** 2026-05-07
 **Current phase:** Phase 3: FODS Gate 5 PASSED, Gate 6 oracle blocked (LibreOffice not installed)
-**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. TC-0028 created (candidate shortlist). No product source. Latest commit: a35b089 (run037 final). Working tree: clean after run038 commit.
+**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. TC-0028 created (candidate shortlist). No product source. Latest commit: 1e1d504 (run038). Working tree: clean (stray 'json' artifact unstaged).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
@@ -135,7 +135,7 @@ The project goal is to build a production-quality pipeline for acquiring format 
 | Samples acquired | YES — 4 synthetic FODS samples (Apache-2.0, project-owned), run026. Validated: 4/4 PASS |
 | Prototype created | YES — prototypes/by-format/fods/fods_parser.py (run029); 4/4 PASS; TC-0018 PASS |
 | Product source created | No |
-| Commits made | (see Section 33) — latest: a35b089 (run037 final). run038 commit pending. |
+| Commits made | (see Section 33) — latest: 1e1d504 (run038). |
 | Active taskcards | TC-0026 blocked_missing_oracle_tool (Gate 6 execution); TC-0027 not_started (Gate 6 verification) |
 | Closed/completed taskcards | TC-0018 CLOSED (Gate 4); TC-0024 CLOSED (DEC-034); TC-0023/TC-0025 completed |
 | Deferred taskcards | TC-0015 not_started (spec retrieval eval); TC-0016 not_started (vector index pilot); TC-0020 not_started (Spec Workbench core) |
@@ -1028,7 +1028,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** a35b089 (run037 Section 33 final — CORRECTED run038). run038 commits: (pending — to be recorded after commit). run037 commits: de29c97 + f964eba + a35b089. run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
+**Latest commit:** 1e1d504 (run038 combined sprint). run038 commits: 1e1d504. run037 commits: de29c97 + f964eba + a35b089. run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1170,6 +1170,42 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 - plans/master-plan.md v2.32
 - registry/format-registry.yaml gate_6 notes updated
 - README.md, ROADMAP.md, .claude/settings.json, memory/09 updated
+
+**Committed (82281e6, run036 post-commit):**
+- plans/master-plan.md Section 33 latest commit updated to 8acd48d; memory/09 updated
+
+**Committed (3216dcf, run036 Section 33):**
+- plans/master-plan.md Section 33 latest commit updated to 82281e6
+
+**Committed (de29c97, run037):**
+- tools/oracle/provider_registry.yaml (NEW), tools/oracle/validate_oracle_environment.py (NEW),
+  docs/oracle-provider-strategy.md (NEW), acquisition-packs/fods/oracle-provider-options.md (NEW),
+  tools/evidence/validate_evidence_bundle.py (--check-no-pending flag added),
+  tests/evidence/test_negative_bundle_validation.py (NEW — 4 negative tests),
+  tools/evidence/contracts/run037-oracle-provider-readiness-or-gate6-execution.yaml (NEW),
+  plans/master-plan.md v2.33, registry/format-registry.yaml gate_6 updated,
+  acquisition-packs/fods/gate6-oracle-blocker-report.md updated,
+  README.md, ROADMAP.md, .claude/settings.json, memory/09 updated
+
+**Committed (f964eba, run037 post-commit):**
+- plans/master-plan.md Section 33 latest commit updated to de29c97
+
+**Committed (a35b089, run037 Section 33 final):**
+- plans/master-plan.md Section 33 latest commit corrected to f964eba→a35b089
+
+**Committed (1e1d504, run038):**
+- tools/oracle/self_test_oracle_harness.py (NEW — HARNESS_SELF_TEST_ONLY; PASS 4/4)
+- acquisition-packs/fods/oracle-operator-handoff.md (NEW — precise install/verify/execute)
+- acquisition-packs/fods/oracle-harness-self-test-report.md (NEW — HARNESS_SELF_TEST_ONLY PASS)
+- registry/candidates/odf-flat-family-shortlist.yaml (NEW — FODT recommended; gate_1_approved: false)
+- acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md (NEW — CANDIDATE-ONLY)
+- taskcards/TC-0028-next-format-candidate-shortlist.md (NEW — not_started)
+- tools/evidence/contracts/run038-oracle-readiness-and-next-format-shortlist.yaml (NEW)
+- plans/master-plan.md v2.34, registry/format-registry.yaml gate_6 updated,
+  taskcards/TC-0026 blocker wording corrected,
+  acquisition-packs/fods/gate6-oracle-blocker-report.md updated (run038 column added),
+  acquisition-packs/fods/pack.yaml updated, docs/oracle-provider-strategy.md Section 6 updated,
+  README.md, ROADMAP.md, .claude/settings.json, memory/09 updated
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 
