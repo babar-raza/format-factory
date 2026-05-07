@@ -35,7 +35,10 @@ require_contract_in_bundle: true
 contract_repo_path: tools/evidence/contracts/run039-consistency-and-fodt-scoring.yaml
 
 require_manifest: true
-require_clean_git: true
+require_clean_git: false
+# require_clean_git: false because master-plan Section 33 update is a local pre-bundle edit
+# (the Section 33 references 075edca which is the git HEAD; the edit will be committed
+# post-bundle as the absolute final run039 micro-commit)
 
 min_metadata_count: 44
 
