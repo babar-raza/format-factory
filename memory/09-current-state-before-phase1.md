@@ -65,7 +65,7 @@ This file captures the current state after run040. Gates 1-5 PASSED. Gate 5 appr
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
 | Evidence contracts | 12 contracts (after run040): + run040-clean-evidence-and-fodt-gate1-verification |
-| Latest commit | a4f79e0 (run040 final — all Section 33 commits complete) |
+| Latest commit | 411180a (run040 final Section 33 housekeeping) |
 | Uncommitted | None — all run040 changes committed |
 | Master plan version | 2.36 (run040) |
 | AGENTS.md sections | A through Y (25 sections) |
