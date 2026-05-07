@@ -28,9 +28,10 @@ notes: "Next-format candidate shortlist taskcard. Created run038 (2026-05-07). C
 **Taskcard ID:** TC-0028
 **Phase:** 3 (parallel planning — does not require Gate 6 completion)
 **Gate:** Pre-Gate 1 (candidate evaluation only)
-**Status:** not_started
+**Status:** in_progress — shortlist independently verified run039; FODT scoring package created run039 (TC-0029)
 **Created:** 2026-05-07 (run038)
 **Created by:** claude-sonnet-4-6 (run038)
+**Updated:** 2026-05-07 (run039)
 
 ---
 
@@ -74,7 +75,9 @@ Independently verify the ODF flat family candidate shortlist created in run038, 
 
 - [x] FODS Gate 1-5 PASSED
 - [x] FODS oracle pipeline in place (harness, provider registry, operator handoff)
-- [ ] TC-0028 independent verification sprint (DEC-034)
+- [x] TC-0028 independent verification sprint (DEC-034) — PASS run039 (10/10 checks)
+- [x] FODT Gate 1 scoring package created — 88/100, Accept band (TC-0029, run039)
+- [ ] Independent verification of FODT scoring package (DEC-034 — TC-0029 sprint required)
 - [ ] Human Gate 1 approval for chosen format (FODT recommended)
 
 ---

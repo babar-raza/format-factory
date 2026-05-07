@@ -3,14 +3,14 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.34 (run038: run037 independent verification PASS; stale commit fixed (f964eba→a35b089); TC-0026 blocker wording fixed; oracle preflight re-run 4 FAIL; harness self-test added; operator handoff doc added; next-format candidate shortlist created (FODT/FODP/FODG/FODB — candidate-only, no Gate 1 approval); Gate 6 still oracle_blocked_missing_tool)
+**Version:** 2.35 (run039: run038 independently verified PASS; stale commit fixed (998412c→bc2bdf8); consistency enforcement tool added; oracle preflight re-run 5 FAIL; harness self-test confirmed PASS; candidate shortlist independently verified; FODT Gate 1 scoring package (candidate-only); ODF reuse strategy docs; Gate 6 still oracle_blocked_missing_tool)
 **Last updated:** 2026-05-07
 **Current phase:** Phase 3: FODS Gate 5 PASSED, Gate 6 oracle blocked (LibreOffice not installed)
-**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. TC-0028 created (candidate shortlist). No product source. Latest commit: 998412c (run038 final). Working tree: clean (stray 'json' artifact unstaged).
+**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. TC-0028 in_progress (candidate shortlist — run038 created; run039 verified). TC-0029 created (FODT Gate 1 scoring package — candidate-only; no Gate 1 approval). No product source. Latest commit: bc2bdf8 (run038 final commit). Working tree: clean.
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
-**Commit allowed:** YES — run038 authorized by execution prompt.
+**Commit allowed:** YES — run039 authorized by execution prompt.
 **Next required action:** Install/verify LibreOffice locally, then re-execute TC-0026 with explicit prompt.
 
 ---
@@ -135,7 +135,7 @@ The project goal is to build a production-quality pipeline for acquiring format 
 | Samples acquired | YES — 4 synthetic FODS samples (Apache-2.0, project-owned), run026. Validated: 4/4 PASS |
 | Prototype created | YES — prototypes/by-format/fods/fods_parser.py (run029); 4/4 PASS; TC-0018 PASS |
 | Product source created | No |
-| Commits made | (see Section 33) — latest: 1e1d504 (run038). |
+| Commits made | (see Section 33) — latest: bc2bdf8 (run038 final). |
 | Active taskcards | TC-0026 blocked_missing_oracle_tool (Gate 6 execution); TC-0027 not_started (Gate 6 verification) |
 | Closed/completed taskcards | TC-0018 CLOSED (Gate 4); TC-0024 CLOSED (DEC-034); TC-0023/TC-0025 completed |
 | Deferred taskcards | TC-0015 not_started (spec retrieval eval); TC-0016 not_started (vector index pilot); TC-0020 not_started (Spec Workbench core) |
@@ -975,13 +975,14 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 16. **Completed (run036):** run035 independent verification PASS + oracle harness hardening + stale path fixes + blocker report hardened + installation checklist. (a) run035 verified: all 5 commits present (179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a), validate_neutral_model.py 4/4 PASS re-confirmed, forbidden paths absent, no Gate 5/6 self-approval, Gate 5 PASSED status confirmed; (b) evidence validator hardened: git-status-final.txt OR git-status.txt accepted (either is sufficient), missing git status now FAIL not WARN; (c) oracle_common.py created (shared constants, find_soffice(), check_samples(), print_discovery_summary()); (d) preflight/run/compare/summarize all rewritten to import from oracle_common; (e) FORMAT_FACTORY_SOFFICE env var added to all discovery; (f) --soffice-path CLI arg added to preflight + run tools; (g) oracle preflight re-run with oracle_common harness: FAIL (same result, 10 candidates tried, FORMAT_FACTORY_SOFFICE not set); (h) stale path refs fixed in TC-0026/TC-0027/gate6-oracle-plan.md/oracle-scope.md (`.local/oracle-outputs/fods/` → `.local/oracle/fods/`; `reports/fods-oracle.md` → `acquisition-packs/fods/gate6-oracle-comparison-report.md`); (i) oracle-installation-checklist.md created; (j) gate6-oracle-blocker-report.md hardened with run036 diagnostics; (k) tools/oracle/README.md updated with canonical path model and discovery priority; master-plan.md v2.32.
 17. **Completed (run037):** run036 independent verification PASS + stale state fixed + oracle provider abstraction + --check-no-pending validator + negative tests + oracle preflight re-run 3. (a) run036 verified: all 3 commits present (8acd48d + 82281e6 + 3216dcf), forbidden paths absent, no self-approval, oracle_common.py and installation checklist confirmed; (b) stale state fixed: master-plan header 82281e6→3216dcf, memory/09 latest-commit updated; (c) validator --check-no-pending flag added (scans metadata files for PENDING markers); 4 negative tests PASS (thin bundle FAIL ✓, PENDING marker FAIL ✓, PASS without flag ✓, clean bundle PASS ✓); (d) oracle provider abstraction: tools/oracle/provider_registry.yaml (LibreOffice entry + FODS assignment), tools/oracle/validate_oracle_environment.py (reads registry, discovers providers), docs/oracle-provider-strategy.md (architecture + governance rules); (e) acquisition-packs/fods/oracle-provider-options.md created (LibreOffice APPROVED, 4 alternatives evaluated); (f) oracle preflight re-run (3rd): FAIL — 8 candidates tried, LibreOffice not installed; (g) blocker report updated with run037 findings and improvements table; (h) master-plan.md v2.33. Commits: de29c97 + f964eba + a35b089. No Gate 6 approval. No product source. No embeddings.
 18. **Completed (run038):** run037 independent verification PASS + stale commit fixed (f964eba→a35b089) + TC-0026 blocker wording fixed + oracle preflight re-run (4th): FAIL + oracle harness self-test added (self_test_oracle_harness.py — HARNESS_SELF_TEST_ONLY) + operator handoff doc (oracle-operator-handoff.md) + next-format candidate shortlist (TC-0028, registry/candidates/odf-flat-family-shortlist.yaml — candidate-only, no Gate 1 approval) + registry/memory/docs updated; master-plan.md v2.34. No Gate 6 approval. No product source. No embeddings.
-19. **Next required action:** Install LibreOffice locally (see oracle-installation-checklist.md). Run validate_oracle_environment.py to confirm ORACLE_ENV: READY. Then issue explicit TC-0026 execution prompt naming oracle path and version. OR: advance candidate shortlist to independent verification sprint before any new Gate 1 approval.
+19. **Completed (run039):** run038 independent verification PASS (all 4 commits confirmed: 1e1d504+e0fc07c+998412c+bc2bdf8; BUNDLE_VALIDATION: PASS) + stale commit fixed (998412c→bc2bdf8) + consistency enforcement tool added (tools/evidence/check_current_state_consistency.py — 4 negative tests PASS) + oracle preflight re-run (5th): FAIL + harness self-test confirmed PASS 4/4 + candidate shortlist independently verified (10/10 checks PASS) + FODT Gate 1 scoring package created (registry/candidates/fodt-gate1-scoring-package.yaml — 88/100, candidate-only, no Gate 1 approval) + TC-0029 created + ODF reuse strategy doc created (docs/odf-flat-family-reuse-strategy.md) + TC-0028 → in_progress + registry/memory/ROADMAP/README/settings.json updated; master-plan.md v2.35. No Gate 6 approval. No product source. No embeddings.
+20. **Next required action:** Install LibreOffice locally (see oracle-installation-checklist.md). Run validate_oracle_environment.py to confirm ORACLE_ENV: READY. Then issue explicit TC-0026 execution prompt naming oracle path and version. OR: issue TC-0029 independent verification sprint prompt, then Gate 1 approval for FODT by human (Babar Raza).
 
 **Gate 2 for FODS: PASSED — approved by Babar Raza (2026-05-05). Patent search waived by project lead.**
 **Gate 3 for FODS: PASSED — approved by Babar Raza (2026-05-05, run028). 4 Apache-2.0 synthetic samples, 4/4 PASS, SHA-256 verified run027. Spec Navigation Layer: 884 sections, 940 chunks. TC-0013 COMPLETED.**
 **Gate 4 for FODS: PASSED — approved by Babar Raza (2026-05-06, run033 prompt). Prototype at prototypes/by-format/fods/fods_parser.py. TC-0018 DEC-034 PASS.**
 **Gate 5 for FODS: PASSED — approved by Babar Raza (2026-05-06, run035 prompt). Neutral model at schemas/neutral-model/fods/ — 6 entities, 19 field mappings, 4/4 samples PASS (87 checks, 0 errors). TC-0024 DEC-034 PASS run034. TC-0024 CLOSED.**
-**Gate 6 for FODS: oracle_blocked_missing_tool — LibreOffice not installed. Oracle harness hardened run036 (oracle_common.py, FORMAT_FACTORY_SOFFICE, canonical paths, installation checklist). TC-0026 blocked. Gate 6 NOT approved.**
+**Gate 6 for FODS: oracle_blocked_missing_tool — LibreOffice not installed (5 consecutive preflight FAIL: run035/036/037/038/039). Oracle harness hardened run036 (oracle_common.py, FORMAT_FACTORY_SOFFICE, canonical paths, installation checklist). Consistency enforcement tool added run039. TC-0026 blocked. Gate 6 NOT approved.**
 
 ### Run History
 
@@ -1028,7 +1029,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** 998412c (run038 .gitignore fix). run038 commits: 1e1d504 + e0fc07c + 998412c. run037 commits: de29c97 + f964eba + a35b089. run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
+**Latest commit:** bc2bdf8 (run038 final). run039 commits: PENDING (run039 in progress). run038 commits: 1e1d504 + e0fc07c + 998412c + bc2bdf8. run037 commits: de29c97 + f964eba + a35b089. run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring

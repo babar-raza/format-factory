@@ -7,7 +7,7 @@ visibility: internal
 publish_allowed: false
 generated_by: claude
 generated_at: "2026-05-07"
-notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist). Updated run037 (oracle provider strategy, provider registry, validate_oracle_environment.py, provider options doc, preflight re-run 3). Updated run038 (harness self-test HARNESS_SELF_TEST_ONLY PASS 4/4, operator handoff, TC-0026 blocker wording corrected, preflight re-run 4)."
+notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist). Updated run037 (oracle provider strategy, provider registry, validate_oracle_environment.py, provider options doc, preflight re-run 3). Updated run038 (harness self-test HARNESS_SELF_TEST_ONLY PASS 4/4, operator handoff, TC-0026 blocker wording corrected, preflight re-run 4). Updated run039 (current-state consistency tool, FODT scoring package, ODF reuse strategy, preflight re-run 5 — 5 consecutive FAIL)."
 ---
 
 # FODS Gate 6 Oracle Blocker Report
@@ -15,14 +15,14 @@ notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hard
 **Format:** FODS
 **Gate:** 6 — Oracle Comparison
 **Status:** oracle_blocked_missing_tool
-**Prepared by:** run035 (2026-05-07); updated run036 (2026-05-07); updated run037 (2026-05-07); updated run038 (2026-05-07)
+**Prepared by:** run035 (2026-05-07); updated run036 (2026-05-07); updated run037 (2026-05-07); updated run038 (2026-05-07); updated run039 (2026-05-07)
 **Gate 6 approved:** NO — blocked, cannot proceed to approval
 
 ---
 
 ## Blocker: LibreOffice Not Installed
 
-Gate 6 oracle preflight has been executed four times — during run035 (initial), run036 (re-run with hardened harness), run037 (re-run with provider registry), and run038 (re-run with harness self-test + operator handoff). All four runs produced `ORACLE_PREFLIGHT: FAIL`. The oracle tool (LibreOffice headless) was not found on the development machine.
+Gate 6 oracle preflight has been executed five times — during run035 (initial), run036 (re-run with hardened harness), run037 (re-run with provider registry), run038 (re-run with harness self-test + operator handoff), and run039 (re-run with current-state consistency tool). All five runs produced `ORACLE_PREFLIGHT: FAIL`. The oracle tool (LibreOffice headless) was not found on the development machine.
 
 ---
 
@@ -61,19 +61,19 @@ Reasons:
 
 ### Preflight Result Table
 
-| Check | run035 | run036 | run037 | run038 |
-|---|---|---|---|---|
-| `soffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `libreoffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `C:\Program Files\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `C:\Program Files (x86)\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
-| `/usr/bin/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND |
-| `/usr/bin/libreoffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND |
-| `/usr/lib/libreoffice/program/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND |
-| `/Applications/LibreOffice.app/Contents/MacOS/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND |
-| `FORMAT_FACTORY_SOFFICE` env var | Not checked | NOT SET | NOT SET | NOT SET |
-| FODS samples (4 required) | 4 found | 4 found | 4 found | 4 found |
-| Oracle result | FAIL | FAIL | FAIL | FAIL |
+| Check | run035 | run036 | run037 | run038 | run039 |
+|---|---|---|---|---|---|
+| `soffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `libreoffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `C:\Program Files\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `C:\Program Files (x86)\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/bin/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/bin/libreoffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/lib/libreoffice/program/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/Applications/LibreOffice.app/Contents/MacOS/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `FORMAT_FACTORY_SOFFICE` env var | Not checked | NOT SET | NOT SET | NOT SET | NOT SET |
+| FODS samples (4 required) | 4 found | 4 found | 4 found | 4 found | 4 found |
+| Oracle result | FAIL | FAIL | FAIL | FAIL | FAIL |
 
 ---
 
@@ -189,6 +189,30 @@ Despite the oracle tool still being unavailable, the following harness improveme
 | TC-0026 (Gate 6 execution) | blocked_missing_oracle_tool |
 | TC-0027 (Gate 6 verification) | not_started |
 | TC-0028 (Next-format candidate shortlist) | not_started — independent verification required |
+
+---
+
+## Improvements Completed (run039)
+
+| Deliverable | Status | Notes |
+|---|---|---|
+| `tools/evidence/check_current_state_consistency.py` | **NEW** | Validates "Latest commit" in master-plan matches actual git HEAD; CURRENT_STATE_CONSISTENCY: PASS |
+| `tests/evidence/test_current_state_consistency.py` | **NEW** | 4 negative tests for consistency checker — all PASS |
+| `registry/candidates/fodt-gate1-scoring-package.yaml` | **NEW** | FODT Gate 1 7-factor scoring: 88/100, Accept band (candidate-only, gate_1_approved: false) |
+| `taskcards/TC-0029-fodt-gate1-scoring-preparation.md` | **NEW** | TC for FODT Gate 1 scoring preparation and independent verification |
+| `docs/odf-flat-family-reuse-strategy.md` | **NEW** | ODF flat family pipeline reuse strategy (FODS→FODT~40-50% effort) |
+| master-plan stale commit bc2bdf8 | **FIXED** | Was showing 998412c (stale run038 reference); corrected to bc2bdf8 |
+| preflight re-run 5 | **CONFIRMED** | ORACLE_ENV: BLOCKED — 5 consecutive FAIL (run035–run039) |
+
+## TC Status After run039
+
+| Taskcard | Status |
+|---|---|
+| TC-0025 (Gate 6 planning) | completed |
+| TC-0026 (Gate 6 execution) | blocked_missing_oracle_tool |
+| TC-0027 (Gate 6 verification) | not_started |
+| TC-0028 (Next-format candidate shortlist) | in_progress — shortlist verified run039; FODT scoring package created (TC-0029) |
+| TC-0029 (FODT Gate 1 scoring preparation) | not_started — independent verification sprint required |
 
 ---
 

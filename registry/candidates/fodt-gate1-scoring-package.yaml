@@ -1,0 +1,192 @@
+# FODT Gate 1 Scoring Package
+#
+# CANDIDATE-ONLY — NOT AN OFFICIAL REGISTRY ENTRY
+#
+# This package applies the 7-factor scoring model from registry/scoring/_scoring-model.md
+# to FODT (Flat OpenDocument Text). It is pre-Gate-1 evidence only.
+#
+# This package does NOT approve Gate 1. A human must:
+#   1. Review this package and the referenced FODS pipeline evidence.
+#   2. Agree that the score and evidence are sufficient.
+#   3. Explicitly issue a Gate 1 scoring execution prompt for FODT.
+#   4. Review the agent-produced Gate 1 scoring execution result.
+#   5. Record approval in registry/format-registry.yaml (gate_1.status: passed).
+#
+# Created: 2026-05-07 (run039)
+# Authorized by: run039 execution prompt (human-authorized candidate scoring package)
+# Independent verification required: YES (DEC-034)
+
+scoring_package_id: fodt-gate1-scoring-package-run039
+format_id: fodt
+display_name: "Flat OpenDocument Text"
+status: candidate_only
+gate_1_approved: false
+gate_1_approval_required_before: "any formal Gate 1 execution, official registry entry, or acquisition pack creation"
+created: "2026-05-07"
+scoring_model_version: "registry/scoring/_scoring-model.md (hardened run005)"
+
+# --- AUTOMATIC REJECT CHECKS ---
+# Must pass all AR-* rules before scoring.
+
+automatic_reject_checks:
+  AR-1_category5_reverse_engineered: "NOT TRIGGERED — FODT has a public OASIS standard"
+  AR-2_category6_blocked: "NOT TRIGGERED — OASIS ODF is legally open"
+  AR-3_legal_safety_zero: "NOT TRIGGERED — legal_category: 1 RF = 30/30"
+  AR-4_drm_circumvention: "NOT TRIGGERED — FODT is plain XML, no DRM"
+  AR-5_category_not_classified: "NOT TRIGGERED — legal_category: 1 confirmed (OASIS RF)"
+  result: "ALL AUTOMATIC REJECT RULES PASS — proceed with 7-factor scoring"
+
+# --- SEVEN-FACTOR SCORING ---
+
+factors:
+
+  factor_1_legal_safety:
+    weight_max: 30
+    score_level: 3
+    points: 30
+    criterion: "Legal Category 1: OASIS ODF 1.3 — Royalty-Free OASIS Standard (RF)"
+    evidence:
+      - "OASIS ODF TC website: https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office"
+      - "OASIS RF IPR Policy confirms RF commitments for all ODF 1.3 specifications"
+      - "FODS uses same spec body (OASIS ODF 1.3) — Gate 2 legal review already confirmed Category 1 (run023)"
+      - "FODT is a sub-format of ODF 1.3 (same MIME type family, flat XML variant of ODT)"
+      - "No royalties, no restrictions on parser implementation"
+    confidence: supported_by_fods_gate2_evidence
+    note: "Same legal basis as FODS. Gate 2 evidence for FODS confirms OASIS RF. No new legal review required for spec body; FODT-specific patent search should be waived or confirmed as part of Gate 1."
+
+  factor_2_spec_availability:
+    weight_max: 20
+    score_level: 3
+    points: 20
+    criterion: "Comprehensive official spec; covers all data structures, encoding, constraints; regularly maintained; publicly accessible"
+    evidence:
+      - "ODF 1.3 Part 2 (Packages) is the primary FODT specification"
+      - "ODF 1.3 spec is already cached: .local/spec-cache/fods/1.3/ (downloaded run021, 24.27 MB, SHA-256 verified)"
+      - "Spec normalized and indexed: 884 sections, 940 chunks, 782 pages (run025/run026)"
+      - "Text content elements in ODF 1.3 Part 2 include: paragraphs, headings, frames, tables, drawing objects, sections"
+      - "ODF 1.3 is maintained by OASIS ODF TC; v1.3 published 2021; actively revised"
+    confidence: supported_by_fods_pipeline_evidence
+    note: "Same spec body as FODS (ODF 1.3). The cached spec already covers FODT structure. FODT uses different element namespace hierarchy than FODS (text: vs table:) but same structural patterns."
+
+  factor_3_parseable_structure:
+    weight_max: 15
+    score_level: 2
+    points: 10
+    criterion: "Moderate complexity — FODT is flat XML (single file, no ZIP layer) but paragraph/style inheritance is more complex than spreadsheet cells"
+    evidence:
+      - "FODT is a flat XML file (application/vnd.oasis.opendocument.text-flat-xml)"
+      - "No ZIP container — same pattern as FODS (single XML file parseable with stdlib)"
+      - "Key complexity: paragraph styles, character styles, list styles, and automatic vs named styles"
+      - "ODF text model: office:body > office:text > text:p / text:h / text:list / table:table"
+      - "Style inheritance chain (automatic-styles → named styles → default styles) is more complex than FODS cell types"
+      - "FODS prototype (fods_parser.py) successfully parsed flat XML with ElementTree — same approach applies"
+      - "FODT parser would need: text extraction (paragraphs, headings), table cells, basic style resolution"
+    confidence: supported_by_existing_project_evidence
+    rationale_for_score_2_not_3: "FODS scored 3/3 on parseable structure (spreadsheet cells are simple). FODT's paragraph/style model adds a layer of complexity (style inheritance, nested lists, frames) that warrants score 2 rather than 3. Still parseable with standard library tools."
+
+  factor_4_community_demand:
+    weight_max: 15
+    score_level: 2
+    points: 10
+    criterion: "Moderate demand — FODT used for version-control-friendly document authoring; significant developer/technical user base"
+    evidence:
+      - "FODT is used in technical writing workflows where ODT needs version control (VCS-friendly flat XML)"
+      - "LibreOffice Writer natively saves/opens FODT"
+      - "Used in CI/CD documentation pipelines (e.g., generating manuals from version-controlled FODT)"
+      - "GitHub/GitLab search shows FODT in documentation repositories"
+      - "Community demand higher than FODS (more writers than spreadsheet flat-XML users) but lower than ODT (standard zip container)"
+      - "Key use case: programmatic text document manipulation, template systems"
+    confidence: plausible_based_on_market_knowledge
+    note: "Not as widespread as ODT (zip variant) but FODT has clear technical user community. Score 2/3 (moderate) rather than 3/3 (high, e.g., .docx level demand)."
+
+  factor_5_strategic_track_value:
+    weight_max: 10
+    score_level: 3
+    points: 10
+    criterion: "Core format in a target family (Words); second ODF flat acquisition; expands product catalog meaningfully; validates ODF pipeline reuse"
+    evidence:
+      - "Opens Words family (ODT/FODT) which is one of the six core families"
+      - "FODT is the second ODF flat format acquisition (FODS = Cells, FODT = Words)"
+      - "Validates that the acquisition pipeline is reusable across ODF flat family"
+      - "Demonstrates format-factory pattern: acquire once (pipeline), extend cheaply (same spec/oracle/pattern)"
+      - "High strategic value: Python FOSS (src/python/fodt/) and .NET product (src/net/fodt/) paths"
+    confidence: supported_by_existing_project_evidence
+
+  factor_6_implementation_complexity:
+    weight_max: 5
+    score_level: 2
+    points: 3
+    criterion: "Moderate complexity — extends FODS parser patterns; paragraph/style model requires new work; bounded and well-defined"
+    evidence:
+      - "FODS prototype pattern (fods_parser.py, ElementTree, Python stdlib) directly reusable for FODT"
+      - "New work required: paragraph extraction, heading levels, list handling, table-in-text, basic style resolution"
+      - "No binary encoding, no compression, no custom codecs — flat XML throughout"
+      - "ODF text element model is well-documented in Part 2"
+      - "Prototype phase (Gate 4) can extend fods_parser.py or create fodt_parser.py with shared utilities"
+    confidence: supported_by_fods_prototype_evidence
+    rationale_for_score_2_not_3: "FODS scored 3/3 on implementation complexity (spreadsheet cells are very straightforward). FODT's paragraph/style/list model is more involved. Score 2 = moderate is appropriate."
+
+  factor_7_family_overlap:
+    weight_max: 5
+    score_level: 3
+    points: 5
+    criterion: "No overlap — opens Words family which FODS (Cells family) does not cover; distinct format with unique characteristics"
+    evidence:
+      - "FODS is in the Cells family (spreadsheets); FODT is in the Words family (text documents)"
+      - "No functional overlap: a text document parser does not overlap with a spreadsheet parser"
+      - "Different neutral model required (Words family schema vs Cells family schema)"
+      - "Different pipeline targets: fodt vs fods — fully distinct format_id"
+      - "FODT fills a gap in the product catalog (no text format acquired yet)"
+    confidence: supported_by_existing_project_evidence
+
+# --- TOTAL SCORE ---
+
+total_score:
+  factor_1: 30
+  factor_2: 20
+  factor_3: 10
+  factor_4: 10
+  factor_5: 10
+  factor_6: 3
+  factor_7: 5
+  total: 88
+  band: accept
+  band_range: "70-100"
+  within_shortlist_estimate: true
+  shortlist_estimate_range: "87-93/100"
+  note: "Score 88/100 is within the shortlist estimate of 87-93/100. The shortlist estimate is confirmed."
+
+# --- SCORING CONFIDENCE NOTES ---
+
+confidence_notes:
+  overall: supported_by_existing_project_evidence
+  limitations:
+    - "Factor 3 (parseable structure) and Factor 6 (implementation complexity) are estimates based on reading ODF 1.3 spec structure from existing normalized spec. Actual complexity will be confirmed during prototype execution (Gate 4)."
+    - "Factor 4 (community demand) is based on general market knowledge. No formal demand survey conducted."
+    - "All Factor 1 and Factor 2 evidence is directly inherited from FODS Gate 2 legal review and cached spec."
+
+# --- PREREQUISITES FOR GATE 1 EXECUTION ---
+
+gate_1_prerequisites:
+  shortlist_independent_verification:
+    status: "DONE — run039 independent verification PASS (10/10 checks)"
+  scoring_package_independent_verification:
+    status: "REQUIRED before human Gate 1 review (DEC-034)"
+  human_gate_1_approval:
+    status: "REQUIRED — no agent may approve Gate 1"
+    approver: "project lead (Babar Raza)"
+  gate_1_execution_prompt:
+    status: "REQUIRED — must explicitly name format, version, and scoring evidence"
+  fods_gate_6_completion:
+    status: "NOT REQUIRED — FODT Gate 1 can begin while FODS Gate 6 remains blocked"
+    rationale: "WIP limit: Gates 4-6 max 2; FODS uses 1 slot; Gates 1-3 max 3; 0 used. FODT Gate 1 is eligible."
+
+# --- WHAT THIS PACKAGE DOES NOT DO ---
+
+does_not_do:
+  - "Does NOT approve Gate 1 for FODT"
+  - "Does NOT create an official registry entry for FODT"
+  - "Does NOT create an acquisition pack for FODT"
+  - "Does NOT authorize any spec download for FODT"
+  - "Does NOT create any samples, parser, or neutral model for FODT"
+  - "Does NOT grant any permissions beyond CANDIDATE-ONLY analysis"

@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-07 (run038)
+**Last reviewed:** 2026-05-07 (run039)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
 
 ---
@@ -107,7 +107,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Gate 5 status:** PASSED — approved by Babar Raza (2026-05-06, run035). Neutral model v1: 6 entities, 19 field mappings, 30 coverage features, 21 validation rules. Validation 4/4 PASS (87 checks, 0 errors). TC-0024 CLOSED. TC-0023 COMPLETED.
 
-**Gate 6 status:** oracle_blocked_missing_tool (run035; re-confirmed run036 + run037 + run038 — 4 consecutive FAIL). LibreOffice not installed on dev machine. Oracle harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path, canonical paths, installation checklist. Provider abstraction added run037: provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md, oracle-provider-options.md. Harness self-test added run038: HARNESS_SELF_TEST_ONLY PASS 4/4. Operator handoff added run038: oracle-operator-handoff.md. TC-0026 blocker wording corrected run038. Next: install LibreOffice per oracle-operator-handoff.md, then execute TC-0026 with explicit prompt. Gate 6 NOT approved.
+**Gate 6 status:** oracle_blocked_missing_tool (run035; re-confirmed run036 + run037 + run038 + run039 — 5 consecutive FAIL). LibreOffice not installed on dev machine. Oracle harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path, canonical paths, installation checklist. Provider abstraction added run037: provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md, oracle-provider-options.md. Harness self-test confirmed PASS run039 (HARNESS_SELF_TEST_ONLY 4/4). Operator handoff added run038: oracle-operator-handoff.md. TC-0026 blocker wording corrected run038. Consistency enforcement tool added run039. Next: install LibreOffice per oracle-operator-handoff.md, then execute TC-0026 with explicit prompt. Gate 6 NOT approved.
 
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 
@@ -133,7 +133,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 ## Beyond FODS: Subsequent Formats
 
-After FODS, subsequent formats are scored and acquired in priority order as determined by the scoring model. Next-format candidate shortlist created run038: FODT (ODF flat text document) recommended as next candidate — estimated score 87-93/100, Category 1 RF, high pipeline reuse from FODS. FODP, FODG, FODB also evaluated. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`. Gate 1 approval for next format requires human review of the shortlist. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
+After FODS, subsequent formats are scored and acquired in priority order as determined by the scoring model. Next-format candidate shortlist created run038, independently verified run039: FODT (ODF flat text document) recommended as next candidate — candidate Gate 1 scoring package available (88/100 estimate, Accept band, Category 1 RF); ODF reuse strategy documented at `docs/odf-flat-family-reuse-strategy.md`. FODP, FODG, FODB also evaluated. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`; scoring package at `registry/candidates/fodt-gate1-scoring-package.yaml`. Gate 1 approval for next format requires human review of the verified shortlist and scoring package. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
 
 The format registry (`registry/format-registry.yaml`) is the authoritative record of which formats are in-flight, deferred, or rejected.
 

@@ -3,7 +3,7 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run038 to reflect run037 independent verification PASS, stale commit fixed (f964eba→a35b089), TC-0026 blocker wording fixed, oracle preflight re-run 4 FAIL, harness self-test added, operator handoff added, candidate shortlist created (FODT/FODP/FODG candidate-only), master-plan v2.34
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run039 to reflect run038 independently verified PASS, stale commit fixed (998412c→bc2bdf8), consistency enforcement tool added, oracle preflight re-run 5 FAIL, candidate shortlist independently verified, FODT Gate 1 scoring package (candidate-only), ODF reuse strategy docs, master-plan v2.35
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
@@ -11,9 +11,9 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 
 # 09 — Current State (Phase 3: Gate 5 PASSED, Gate 6 oracle_blocked_missing_tool)
 
-This file captures the current state after run038. Gates 1-5 PASSED. Gate 5 approved by Babar Raza (2026-05-06, run035). TC-0024 CLOSED. Oracle preflight blocked (LibreOffice not installed — 4 consecutive fails: run035, run036, run037, run038). Oracle harness hardened (run036): oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI. Oracle provider abstraction added (run037): provider_registry.yaml, validate_oracle_environment.py, docs/oracle-provider-strategy.md. Oracle harness self-test added (run038): tools/oracle/self_test_oracle_harness.py. Operator handoff added (run038): acquisition-packs/fods/oracle-operator-handoff.md. TC-0026 blocked_missing_oracle_tool. TC-0028 created (candidate shortlist — FODT/FODP/FODG/FODB candidate-only, no Gate 1 approval).
+This file captures the current state after run039. Gates 1-5 PASSED. Gate 5 approved by Babar Raza (2026-05-06, run035). TC-0024 CLOSED. Oracle preflight blocked (LibreOffice not installed — 5 consecutive fails: run035, run036, run037, run038, run039). Oracle harness hardened (run036): oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI. Oracle provider abstraction added (run037): provider_registry.yaml, validate_oracle_environment.py, docs/oracle-provider-strategy.md. Oracle harness self-test added (run038): tools/oracle/self_test_oracle_harness.py (confirmed PASS run039). Operator handoff added (run038): acquisition-packs/fods/oracle-operator-handoff.md. Consistency enforcement tool added (run039): tools/evidence/check_current_state_consistency.py. FODT Gate 1 scoring package (candidate-only, run039): registry/candidates/fodt-gate1-scoring-package.yaml. ODF reuse strategy (run039): docs/odf-flat-family-reuse-strategy.md. TC-0026 blocked_missing_oracle_tool. TC-0028 in_progress (shortlist verified run039). TC-0029 created (FODT Gate 1 scoring — candidate-only).
 
-**Last updated:** run038 (run037 independent verification PASS; stale commit a35b089 fixed from f964eba; TC-0026 blocker wording corrected; oracle preflight re-run 4 FAIL; harness self-test + operator handoff added; next-format candidate shortlist created; master-plan.md v2.34).
+**Last updated:** run039 (run038 independently verified PASS; stale commit bc2bdf8 fixed from 998412c; consistency enforcement tool added; oracle preflight re-run 5 FAIL; candidate shortlist independently verified; FODT Gate 1 scoring package candidate-only; ODF reuse strategy; master-plan.md v2.35).
 
 ## Current status
 
@@ -27,7 +27,7 @@ This file captures the current state after run038. Gates 1-5 PASSED. Gate 5 appr
 | Gate 3 status | **PASSED** — approved by Babar Raza, 2026-05-05 (run028); DEC-034 verified run027 |
 | Gate 4 status | **PASSED** — approved by Babar Raza, 2026-05-06 (run033) |
 | Gate 5 status | **PASSED** — approved by Babar Raza, 2026-05-06 (run035 human-authorized prompt); 6 entities, 87 checks PASS; TC-0024 DEC-034 PASSED run034; TC-0024 CLOSED run035 |
-| Gate 6 status | **oracle_blocked_missing_tool** — LibreOffice not installed (4 consecutive preflight FAIL: run035/036/037/038); harness hardened run036; provider abstraction run037; harness self-test + operator handoff run038; TC-0026 blocker wording fixed run038 |
+| Gate 6 status | **oracle_blocked_missing_tool** — LibreOffice not installed (5 consecutive preflight FAIL: run035/036/037/038/039); harness hardened run036; provider abstraction run037; harness self-test + operator handoff run038; TC-0026 blocker wording fixed run038; consistency enforcement + FODT scoring package (candidate-only) run039 |
 | Active formats | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: passed; gate_5: passed; gate_6: oracle_blocked_missing_tool) |
 | Registry | FODS entry: gate_5: passed (Babar Raza 2026-05-06); gate_6: oracle_blocked_missing_tool; next_allowed_action: install_oracle_tool_then_execute_tc0026 |
 | Spec Workbench v1 | created run030 (local-only): .local/spec-cache/fods/1.3/workbench/ — verified-facts.yaml (10 facts), requirement packs (parser/sample/model), task packets, coverage matrices; 205/205 validation PASS |
@@ -53,7 +53,8 @@ This file captures the current state after run038. Gates 1-5 PASSED. Gate 5 appr
 | TC-0025 status | **completed** — Gate 6 planning reviewed run035; planning docs created run034 |
 | TC-0026 status | **blocked_missing_oracle_tool** — LibreOffice not installed; oracle harness ready at tools/oracle/; blocker wording CORRECTED run038 |
 | TC-0027 status | not_started — waiting for TC-0026 completion |
-| TC-0028 status | not_started — next-format candidate shortlist (FODT/FODP/FODG/FODB — candidate-only; no Gate 1 approval) |
+| TC-0028 status | in_progress — shortlist created run038; independently verified run039 (4 claims PASS); presentation for Gate 1 approval pending |
+| TC-0029 status | not_started — FODT Gate 1 scoring package (candidate-only; no Gate 1 approval); created run039 |
 | Samples | 4 Apache-2.0 synthetic FODS samples in samples/by-format/fods/ (run026, validated 4/4 PASS) |
 | Spec Navigation Layer | 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml (run026, local-only) |
 | Hybrid Spec Retrieval | docs/spec-retrieval-strategy.md (run027); AGENTS.md Section X; GOVERNANCE.md Section 17 |
@@ -63,10 +64,10 @@ This file captures the current state after run038. Gates 1-5 PASSED. Gate 5 appr
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| Evidence contracts | 10 contracts (after run038): + run038-oracle-readiness-and-next-format-shortlist |
-| Latest commit | a35b089 (run037 final — CORRECTED run038) — run038 commit pending |
-| Uncommitted | run038 changes pending commit |
-| Master plan version | 2.34 (run038) |
+| Evidence contracts | 11 contracts (after run039): + run039-consistency-enforcement-and-fodt-scoring |
+| Latest commit | bc2bdf8 (run038 final — CORRECTED run039) — run039 commit pending |
+| Uncommitted | run039 changes pending commit |
+| Master plan version | 2.35 (run039) |
 | AGENTS.md sections | A through Y (25 sections) |
 
 ## Run history (run001–run028)
@@ -104,6 +105,7 @@ This file captures the current state after run038. Gates 1-5 PASSED. Gate 5 appr
 | run036 | run035 independent verification PASS + oracle harness hardening + stale path fixes + installation checklist + evidence validator fix | Verified 5 run035 commits; oracle_common.py NEW (shared constants+discovery); FORMAT_FACTORY_SOFFICE env var; --soffice-path CLI; all tools rewritten to use oracle_common; oracle preflight re-run: FAIL (same, 10 candidates); stale path refs fixed (TC-0026/TC-0027/gate6 docs); oracle-installation-checklist.md NEW; gate6-oracle-blocker-report.md hardened; validator fix (git-status-final.txt OR git-status.txt); master-plan v2.32 |
 | run037 | run036 independent verification PASS + stale state fixed + oracle provider abstraction + --check-no-pending validator + negative tests + oracle preflight re-run 3 | Verified 3 run036 commits (8acd48d+82281e6+3216dcf); stale fixes (master-plan header 82281e6→3216dcf, memory/09); provider_registry.yaml + validate_oracle_environment.py + oracle-provider-strategy.md NEW; oracle-provider-options.md NEW (4 alternatives evaluated); --check-no-pending flag added to validator; 4 negative tests PASS; oracle preflight 3rd FAIL; blocker report updated; master-plan v2.33. Commits: de29c97 + f964eba + a35b089. |
 | run038 | run037 independent verification PASS + stale commit fixed (f964eba→a35b089) + TC-0026 blocker wording fixed + oracle preflight re-run 4 FAIL + harness self-test + operator handoff + next-format candidate shortlist (TC-0028) | Verified run037 (BUNDLE_VALIDATION: PASS, verdict.md PASS, a35b089 confirmed as actual latest commit); stale commit f964eba→a35b089 fixed in master-plan/memory/registry; TC-0026 "Blocking: Gate 6 human approval" corrected to "Blocking: LibreOffice missing"; oracle preflight 4th FAIL (ORACLE_ENV: BLOCKED); self_test_oracle_harness.py NEW (HARNESS_SELF_TEST_ONLY — not Gate 6 evidence); oracle-operator-handoff.md NEW; candidate shortlist: registry/candidates/odf-flat-family-shortlist.yaml + acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md + TC-0028 (candidate-only, no Gate 1 approval); master-plan v2.34. |
+| run039 | run038 independent verification PASS + stale commit fixed (998412c→bc2bdf8) + consistency enforcement tool + oracle preflight re-run 5 FAIL + harness self-test confirmed PASS + candidate shortlist independently verified + FODT Gate 1 scoring package (candidate-only) + ODF reuse strategy | Verified run038 (BUNDLE_VALIDATION: PASS, all 4 commits confirmed, bc2bdf8 actual latest); stale commit 998412c→bc2bdf8 fixed; tools/evidence/check_current_state_consistency.py NEW; negative tests added; oracle preflight 5th FAIL (ORACLE_PREFLIGHT: FAIL); harness self-test PASS 4/4; candidate shortlist verified (4 checks PASS: FODT estimate supported, pipeline reuse confirmed, legal category correct, WIP check correct); FODT Gate 1 scoring package: registry/candidates/fodt-gate1-scoring-package.yaml (candidate-only, no Gate 1 approval); docs/odf-flat-family-reuse-strategy.md NEW; TC-0028 → in_progress; TC-0029 created (FODT Gate 1 scoring); master-plan v2.35. |
 
 ## Latest known evidence bundles
 
