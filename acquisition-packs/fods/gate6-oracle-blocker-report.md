@@ -7,7 +7,7 @@ visibility: internal
 publish_allowed: false
 generated_by: claude
 generated_at: "2026-05-07"
-notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist). Updated run037 (oracle provider strategy, provider registry, validate_oracle_environment.py, provider options doc, preflight re-run 3)."
+notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist). Updated run037 (oracle provider strategy, provider registry, validate_oracle_environment.py, provider options doc, preflight re-run 3). Updated run038 (harness self-test HARNESS_SELF_TEST_ONLY PASS 4/4, operator handoff, TC-0026 blocker wording corrected, preflight re-run 4)."
 ---
 
 # FODS Gate 6 Oracle Blocker Report
@@ -15,14 +15,14 @@ notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hard
 **Format:** FODS
 **Gate:** 6 — Oracle Comparison
 **Status:** oracle_blocked_missing_tool
-**Prepared by:** run035 (2026-05-07); updated run036 (2026-05-07); updated run037 (2026-05-07)
+**Prepared by:** run035 (2026-05-07); updated run036 (2026-05-07); updated run037 (2026-05-07); updated run038 (2026-05-07)
 **Gate 6 approved:** NO — blocked, cannot proceed to approval
 
 ---
 
 ## Blocker: LibreOffice Not Installed
 
-Gate 6 oracle preflight has been executed three times — during run035 (initial), run036 (re-run with hardened harness), and run037 (re-run with provider registry). All three runs produced `ORACLE_PREFLIGHT: FAIL`. The oracle tool (LibreOffice headless) was not found on the development machine.
+Gate 6 oracle preflight has been executed four times — during run035 (initial), run036 (re-run with hardened harness), run037 (re-run with provider registry), and run038 (re-run with harness self-test + operator handoff). All four runs produced `ORACLE_PREFLIGHT: FAIL`. The oracle tool (LibreOffice headless) was not found on the development machine.
 
 ---
 
@@ -61,19 +61,19 @@ Reasons:
 
 ### Preflight Result Table
 
-| Check | run035 | run036 | run037 |
-|---|---|---|---|
-| `soffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND |
-| `libreoffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND |
-| `C:\Program Files\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND |
-| `C:\Program Files (x86)\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND |
-| `/usr/bin/soffice` | N/A | NOT FOUND | NOT FOUND |
-| `/usr/bin/libreoffice` | N/A | NOT FOUND | NOT FOUND |
-| `/usr/lib/libreoffice/program/soffice` | N/A | NOT FOUND | NOT FOUND |
-| `/Applications/LibreOffice.app/Contents/MacOS/soffice` | N/A | NOT FOUND | NOT FOUND |
-| `FORMAT_FACTORY_SOFFICE` env var | Not checked | NOT SET | NOT SET |
-| FODS samples (4 required) | 4 found | 4 found | 4 found |
-| Oracle result | FAIL | FAIL | FAIL |
+| Check | run035 | run036 | run037 | run038 |
+|---|---|---|---|---|
+| `soffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `libreoffice --version` (PATH) | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `C:\Program Files\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `C:\Program Files (x86)\LibreOffice\program\soffice.exe` | NOT FOUND | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/bin/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/bin/libreoffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/usr/lib/libreoffice/program/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND |
+| `/Applications/LibreOffice.app/Contents/MacOS/soffice` | N/A | NOT FOUND | NOT FOUND | NOT FOUND |
+| `FORMAT_FACTORY_SOFFICE` env var | Not checked | NOT SET | NOT SET | NOT SET |
+| FODS samples (4 required) | 4 found | 4 found | 4 found | 4 found |
+| Oracle result | FAIL | FAIL | FAIL | FAIL |
 
 ---
 
@@ -168,13 +168,37 @@ Despite the oracle tool still being unavailable, the following harness improveme
 
 ---
 
+## Improvements Completed (run038)
+
+| Deliverable | Status | Notes |
+|---|---|---|
+| `tools/oracle/self_test_oracle_harness.py` | **NEW** | HARNESS_SELF_TEST_ONLY; validates compare/summarize plumbing using synthetic CSV fixtures; no LibreOffice required; ORACLE_HARNESS_SELF_TEST: PASS 4/4 |
+| `acquisition-packs/fods/oracle-harness-self-test-report.md` | **NEW** | Auto-generated harness self-test report; PASS 4/4; clearly marked HARNESS_SELF_TEST_ONLY |
+| `acquisition-packs/fods/oracle-operator-handoff.md` | **NEW** | Precise install/verify/execute instructions; exact TC-0026 prompt text; "What NOT to do" table |
+| `taskcards/TC-0026-fods-gate6-oracle-execution.md` | **CORRECTED** | Blocker wording fixed: was "Blocking: Gate 6 human approval" (wrong), now "Blocking: LibreOffice missing" |
+| `registry/format-registry.yaml` gate_6 | **UPDATED** | run038 preflight recorded as 4th consecutive FAIL; harness self-test + operator handoff documented |
+| `registry/candidates/odf-flat-family-shortlist.yaml` | **NEW** | Next-format candidate shortlist; FODT recommended; gate_1_approved: false |
+| `acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md` | **NEW** | Human-readable shortlist summary; CANDIDATE-ONLY |
+| `taskcards/TC-0028-next-format-candidate-shortlist.md` | **NEW** | Independent verification sprint taskcard for shortlist |
+
+## TC Status After run038
+
+| Taskcard | Status |
+|---|---|
+| TC-0025 (Gate 6 planning) | completed |
+| TC-0026 (Gate 6 execution) | blocked_missing_oracle_tool |
+| TC-0027 (Gate 6 verification) | not_started |
+| TC-0028 (Next-format candidate shortlist) | not_started — independent verification required |
+
+---
+
 ## Gate 6 Next Action
 
 **next_allowed_action:** install_oracle_tool_then_execute_tc0026
 
-1. Install LibreOffice locally (see [oracle-installation-checklist.md](oracle-installation-checklist.md))
+1. Install LibreOffice per [oracle-operator-handoff.md](oracle-operator-handoff.md) (most complete instructions)
 2. Run `python tools/oracle/preflight_oracle.py --verbose` to confirm
 3. Run `python tools/oracle/validate_oracle_environment.py --format fods` to verify registry check
-4. Issue explicit TC-0026 execution prompt naming Oracle path and version
+4. Issue explicit TC-0026 execution prompt naming Oracle path and version (exact prompt text in oracle-operator-handoff.md Section 8)
 
 Gate 6 is NOT approved. No oracle comparison data exists.

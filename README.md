@@ -29,7 +29,7 @@ Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{form
 
 **FODS** — Flat OpenDocument Spreadsheet — is the active pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. Single-file XML, well-documented specification, no ZIP complexity, permissive license.
 
-Gate 5 (Neutral Model) PASSED by Babar Raza (2026-05-06). Neutral model v1: 6 entities, 19 field mappings, 87 validation checks PASS. Gate 6 oracle comparison: BLOCKED — LibreOffice not installed. Oracle harness hardened (run036): oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path. Oracle provider abstraction added (run037): provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md. See acquisition-packs/fods/oracle-installation-checklist.md to unblock.
+Gate 5 (Neutral Model) PASSED by Babar Raza (2026-05-06). Neutral model v1: 6 entities, 19 field mappings, 87 validation checks PASS. Gate 6 oracle comparison: BLOCKED — LibreOffice not installed (4 consecutive preflight FAIL: run035/036/037/038). Oracle harness hardened (run036): oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path. Provider abstraction added (run037): provider_registry.yaml, validate_oracle_environment.py. Harness self-test added (run038): HARNESS_SELF_TEST_ONLY PASS 4/4. Operator handoff: acquisition-packs/fods/oracle-operator-handoff.md. See oracle-installation-checklist.md to unblock. Next-format candidate shortlist created (run038): FODT recommended.
 
 ---
 

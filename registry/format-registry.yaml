@@ -131,11 +131,13 @@ formats:
         status: oracle_blocked_missing_tool
         approved_by: null
         approved_date: null
-        oracle_preflight: "run037 re-run (3rd) — all 8 candidates MISS (soffice/libreoffice/Windows paths/Linux paths/macOS path); FORMAT_FACTORY_SOFFICE not set"
+        oracle_preflight: "run038 re-run (4th) — all 8 candidates MISS (soffice/libreoffice/Windows paths/Linux paths/macOS path); FORMAT_FACTORY_SOFFICE not set. ORACLE_ENV: BLOCKED (4 consecutive FAIL: run035/036/037/038)"
         oracle_harness_path: tools/oracle/
         oracle_harness_hardened: "run036 — oracle_common.py added; FORMAT_FACTORY_SOFFICE env var; --soffice-path CLI"
         provider_registry: "run037 — tools/oracle/provider_registry.yaml + validate_oracle_environment.py added"
-        notes: "Gate 5 approved. Gate 6 oracle preflight failed (run035 + run036 + run037): LibreOffice not installed on dev machine. Oracle harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path, canonical path model. Provider abstraction added run037: provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md. Provider options doc: acquisition-packs/fods/oracle-provider-options.md. TC-0026 status: blocked_missing_oracle_tool. Next action: install LibreOffice and re-execute TC-0026 with explicit prompt. Gate 6 is NOT approved."
+        harness_self_test: "run038 — tools/oracle/self_test_oracle_harness.py (HARNESS_SELF_TEST_ONLY); ORACLE_HARNESS_SELF_TEST: PASS 4/4; synthetic CSV fixtures; no LibreOffice required"
+        operator_handoff: "run038 — acquisition-packs/fods/oracle-operator-handoff.md; precise install/verify/execute instructions"
+        notes: "Gate 5 approved. Gate 6 oracle preflight failed (run035 + run036 + run037 + run038): LibreOffice not installed on dev machine. 4 consecutive FAIL. Oracle harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path, canonical path model. Provider abstraction added run037: provider_registry.yaml, validate_oracle_environment.py, oracle-provider-strategy.md. Harness self-test added run038: self_test_oracle_harness.py (HARNESS_SELF_TEST_ONLY) — validates compare/summarize plumbing without LibreOffice; PASS 4/4. Operator handoff added run038: oracle-operator-handoff.md with exact install+verify+execute instructions. TC-0026 blocker wording corrected run038 (was wrong: 'Gate 6 human approval' → corrected: LibreOffice missing). Provider options: acquisition-packs/fods/oracle-provider-options.md. TC-0026 status: blocked_missing_oracle_tool. Next action: install LibreOffice per oracle-operator-handoff.md, then re-execute TC-0026 with explicit prompt. Gate 6 is NOT approved."
       gate_7:
         status: not_started
         approved_by: null

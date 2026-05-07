@@ -1,0 +1,195 @@
+# Evidence Bundle Contract — run038
+# Oracle readiness hardening (harness self-test HARNESS_SELF_TEST_ONLY, operator handoff,
+# TC-0026 blocker wording corrected) + next-format candidate shortlist (FODT recommended,
+# registry/candidates/, acquisition-packs/_candidate-shortlists/).
+# run037 independent verification PASS.
+# TC-0026 still blocked (LibreOffice not installed — 4th consecutive FAIL).
+#
+# Created: run038 (2026-05-07)
+# Authorized by: run038 execution prompt (human-authorized)
+# No Gate 6 approval. No product source. No official new registry entries (candidates-only).
+# No embeddings. No LLM endpoint calls.
+
+contract_id: run038-oracle-readiness-and-next-format-shortlist
+run: run038
+created: "2026-05-07"
+purpose: >
+  Evidence bundle for run038 combined sprint: independent verification of run037 (PASS),
+  stale-state fixes (TC-0026 blocker wording corrected: 'Gate 6 human approval' → 'LibreOffice missing',
+  master-plan v2.34, settings.json run038 phase note, memory/09 updated),
+  oracle preflight re-run 4 (ORACLE_ENV: BLOCKED — 4th consecutive FAIL),
+  oracle harness self-test created (tools/oracle/self_test_oracle_harness.py HARNESS_SELF_TEST_ONLY
+  ORACLE_HARNESS_SELF_TEST: PASS 4/4 — synthetic CSV fixtures, no LibreOffice),
+  oracle operator handoff created (acquisition-packs/fods/oracle-operator-handoff.md —
+  precise install/verify/execute instructions, exact TC-0026 prompt text),
+  next-format candidate shortlist created (registry/candidates/odf-flat-family-shortlist.yaml —
+  FODT recommended est. 87-93/100, gate_1_approved: false; 4 candidates evaluated),
+  acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md created,
+  TC-0028 created (not_started — independent verification sprint required before Gate 1 scoring),
+  master-plan v2.34.
+
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run038-oracle-readiness-and-next-format-shortlist.yaml
+
+require_manifest: true
+require_clean_git: true
+
+min_metadata_count: 41
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+required_repo_files:
+  - path: README.md
+  - path: ROADMAP.md
+  - path: AGENTS.md
+  - path: GOVERNANCE.md
+  - path: plans/master-plan.md
+  - path: registry/format-registry.yaml
+  - path: registry/candidates/odf-flat-family-shortlist.yaml
+  - path: taskcards/TC-0026-fods-gate6-oracle-execution.md
+  - path: taskcards/TC-0027-fods-gate6-oracle-verification.md
+  - path: taskcards/TC-0028-next-format-candidate-shortlist.md
+  - path: acquisition-packs/fods/gate6-oracle-blocker-report.md
+  - path: acquisition-packs/fods/gate6-oracle-plan.md
+  - path: acquisition-packs/fods/oracle-scope.md
+  - path: acquisition-packs/fods/oracle-installation-checklist.md
+  - path: acquisition-packs/fods/oracle-provider-options.md
+  - path: acquisition-packs/fods/oracle-risk-register.md
+  - path: acquisition-packs/fods/oracle-operator-handoff.md
+  - path: acquisition-packs/fods/oracle-harness-self-test-report.md
+  - path: acquisition-packs/fods/pack.yaml
+  - path: acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md
+  - path: schemas/neutral-model/fods/README.md
+  - path: schemas/neutral-model/fods/model.yaml
+  - path: schemas/neutral-model/fods/field-map.yaml
+  - path: schemas/neutral-model/fods/validation-rules.yaml
+  - path: tools/oracle/oracle_common.py
+  - path: tools/oracle/preflight_oracle.py
+  - path: tools/oracle/run_fods_oracle.py
+  - path: tools/oracle/compare_fods_oracle.py
+  - path: tools/oracle/summarize_oracle_results.py
+  - path: tools/oracle/self_test_oracle_harness.py
+  - path: tools/oracle/README.md
+  - path: tools/oracle/provider_registry.yaml
+  - path: tools/oracle/validate_oracle_environment.py
+  - path: docs/oracle-provider-strategy.md
+  - path: tools/evidence/build_evidence_bundle.py
+  - path: tools/evidence/validate_evidence_bundle.py
+  - path: tools/evidence/contracts/run037-oracle-provider-readiness-or-gate6-execution.yaml
+  - path: tools/evidence/contracts/run038-oracle-readiness-and-next-format-shortlist.yaml
+  - path: tests/evidence/test_negative_bundle_validation.py
+  - path: memory/09-current-state-before-phase1.md
+  - path: .claude/settings.json
+
+forbidden_paths:
+  - src/python/fods
+  - src/python/open-source
+  - src/dotnet
+  - src/net
+  - .github/workflows
+  - reports/security
+  - reports/legal
+
+# Branch A = oracle still blocked (current state — expected)
+# Branch B = oracle comparison created (not reached — would require LibreOffice)
+branch: A
+
+branch_a_required_files:
+  # All required_repo_files above apply; oracle-operator-handoff.md is Branch A specific
+  - path: acquisition-packs/fods/oracle-operator-handoff.md
+  - path: tools/oracle/self_test_oracle_harness.py
+
+required_metadata_files:
+  - run037-independent-verification-report.md
+  - oracle-preflight-run038.md
+  - harness-self-test-report.md
+  - operator-handoff-report.md
+  - candidate-shortlist-report.md
+  - tc0028-creation-report.md
+  - stale-state-fix-report.md
+  - forbidden-path-audit.md
+  - self-challenge.md
+  - gap-log-update.md
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - verdict.md
+  - repo-tree.txt
+  - git-log.txt
+  - git-status-final.txt
+  - git-diff-stat.txt
+  - master-plan-snapshot.md
+  - settings-snapshot.json
+  - registry-snapshot.yaml
+  - tc0026-status.md
+  - oracle-blocker-summary.md
+  - oracle-preflight-consecutive-fail-summary.md
+  - new-files-list.md
+  - search-audit.md
+  - format-registry-gate6-notes.md
+  - evidence-bundle-contract-listing.md
+  - run038-artifacts-produced.md
+  - acquisition-pack-update-report.md
+  - memory-09-updated.md
+  - memory-md-updated.md
+  - readme-update.md
+  - roadmap-update.md
+  - settings-update.md
+  - master-plan-version-report.md
+  - blocker-report-update.md
+  - candidate-shortlist-verification.md
+  - wip-limit-check.md
+  - tc0028-taskcard-report.md
+  - oracle-provider-strategy-update.md
+  - bundle-manifest.yaml
+
+validation_checks:
+  - description: "run037 independent verification PASS (3 commits: de29c97+f964eba+a35b089)"
+    expected: PASS
+  - description: "TC-0026 blocker wording corrected: 'Gate 6 human approval' → 'LibreOffice missing'"
+    expected: PASS
+  - description: "master-plan header commit updated: f964eba → a35b089 (stale ref fixed)"
+    expected: PASS
+  - description: "master-plan version: 2.34"
+    expected: PASS
+  - description: "settings.json phase_note updated with run038 artifacts"
+    expected: PASS
+  - description: "settings.json registry/candidates/** added to allow list"
+    expected: PASS
+  - description: "settings.json acquisition-packs/_candidate-shortlists/** added to allow list"
+    expected: PASS
+  - description: "memory/09 updated with run038 state"
+    expected: PASS
+  - description: "oracle preflight re-run 4: ORACLE_ENV: BLOCKED (4th consecutive FAIL)"
+    expected: PASS
+  - description: "tools/oracle/self_test_oracle_harness.py created (HARNESS_SELF_TEST_ONLY)"
+    expected: PASS
+  - description: "ORACLE_HARNESS_SELF_TEST: PASS 4/4 (synthetic CSV fixtures, no LibreOffice)"
+    expected: PASS
+  - description: "acquisition-packs/fods/oracle-harness-self-test-report.md created"
+    expected: PASS
+  - description: "acquisition-packs/fods/oracle-operator-handoff.md created"
+    expected: PASS
+  - description: "registry/candidates/odf-flat-family-shortlist.yaml created (gate_1_approved: false)"
+    expected: PASS
+  - description: "acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md created"
+    expected: PASS
+  - description: "taskcards/TC-0028-next-format-candidate-shortlist.md created"
+    expected: PASS
+  - description: "No new official registry entry in registry/format-registry.yaml (candidates-only)"
+    expected: ABSENT
+  - description: "No Gate 1 approval for FODT (human-only)"
+    expected: NO_GATE_APPROVAL
+  - description: "No Gate 6 approval (human-only)"
+    expected: NO_GATE_APPROVAL
+  - description: "No product source created (src/python/fods/, src/net/fods/ absent)"
+    expected: ABSENT
+  - description: "No embeddings or vector DB"
+    expected: ABSENT
+  - description: "No push to remote"
+    expected: NOT_DONE
+  - description: "No LibreOffice auto-install"
+    expected: NOT_DONE
+  - description: "WIP limits: FODS in Gate 6 = 1/2 slot; FODT candidate-only = 0/3 Gate 1-3 slots used"
+    expected: PASS

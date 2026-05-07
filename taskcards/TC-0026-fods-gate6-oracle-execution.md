@@ -31,18 +31,18 @@ notes: "Gate 6 oracle comparison execution taskcard for FODS. Created run034 (20
 **Status:** blocked_missing_oracle_tool
 **Created:** 2026-05-06 (run034)
 **Created by:** claude-opus-4-6 (run034)
-**Blocking:** Gate 6 human approval
-**Blocked by:** Gate 5 human approval + TC-0025 planning review + explicit Gate 6 execution prompt
+**Blocking:** LibreOffice missing — oracle provider unavailable (CORRECTED run038: not "Gate 6 human approval" — Gate 6 approval is the outcome of TC-0026, not a prerequisite)
+**Blocked by:** Oracle provider not installed (LibreOffice not found — 4 preflight runs FAIL: run035/036/037/038)
 
 ---
 
 ## STOP — Authorization Required
 
 **This taskcard must not be executed until:**
-1. Gate 5 is approved by a human
-2. TC-0025 (Gate 6 planning) has been reviewed
-3. Oracle tool (LibreOffice) is installed and version verified
-4. A human issues an explicit Gate 6 execution prompt naming TC-0026
+1. ~~Gate 5 is approved by a human~~ **DONE** — Gate 5 PASSED (Babar Raza, 2026-05-06, run035)
+2. ~~TC-0025 (Gate 6 planning) has been reviewed~~ **DONE** — TC-0025 completed (run035)
+3. Oracle tool (LibreOffice) is installed and version verified — **STILL BLOCKED**
+4. A human issues an explicit Gate 6 execution prompt naming TC-0026 — **SATISFIED** by current run038 prompt (conditional on oracle availability)
 
 ---
 

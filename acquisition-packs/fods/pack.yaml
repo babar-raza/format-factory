@@ -27,7 +27,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 1 passed 2026-05-04. Gate 2 PASSED 2026-05-05. Gate 3 PASSED 2026-05-05. Gate 4 PASSED 2026-05-06 (Babar Raza). Gate 5 neutral model v1 created run033, DEC-034 verified run034 (4/4 PASS, 87 checks, 0 errors). Gate 5 awaiting human approval. Gate 6 planning complete run034."
+notes: "Gate 1 passed 2026-05-04. Gate 2 PASSED 2026-05-05. Gate 3 PASSED 2026-05-05. Gate 4 PASSED 2026-05-06 (Babar Raza). Gate 5 PASSED 2026-05-06 (Babar Raza). Gate 6 oracle blocked: LibreOffice not installed (4 consecutive FAIL run035/036/037/038). Harness hardened run036. Provider abstraction run037. Harness self-test PASS run038 (HARNESS_SELF_TEST_ONLY). Operator handoff created run038."
 
 # --- Format identity ---
 format_id: fods
@@ -163,6 +163,10 @@ stages:
     version: null
     gate: 6
     preflight_status: blocked_missing_tool
+    preflight_run_count: 4
+    last_preflight_run: run038
+    harness_self_test: "PASS 4/4 (run038, HARNESS_SELF_TEST_ONLY)"
+    operator_handoff: acquisition-packs/fods/oracle-operator-handoff.md
   tier_map:
     status: not_started
     gate: 9
@@ -189,4 +193,10 @@ notes: >-
   Gate 6 planning complete run034: gate6-oracle-plan.md, oracle-scope.md, oracle-risk-register.md.
   Gate 6 oracle preflight run035: BLOCKED — LibreOffice not installed on dev machine.
   Oracle harness created run035 at tools/oracle/. TC-0026 blocked_missing_oracle_tool.
-  Next: install LibreOffice, then execute TC-0026 with explicit prompt.
+  Oracle harness hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE, --soffice-path.
+  Provider abstraction run037: provider_registry.yaml, validate_oracle_environment.py.
+  Harness self-test run038: ORACLE_HARNESS_SELF_TEST: PASS 4/4 (HARNESS_SELF_TEST_ONLY — no LibreOffice).
+  Operator handoff run038: oracle-operator-handoff.md (precise install/verify/execute instructions).
+  TC-0026 blocker wording corrected run038 (was "Gate 6 human approval", fixed to "LibreOffice missing").
+  4 consecutive preflight FAIL (run035/036/037/038).
+  Next: install LibreOffice per oracle-operator-handoff.md, then execute TC-0026 with explicit prompt.
