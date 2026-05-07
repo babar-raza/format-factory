@@ -6,7 +6,7 @@
 **Version:** 2.36 (run040: run039 independently verified PASS (44 checks); stale commit fixed (d052510→54a27dc); clean-git loophole closed (require_clean_git: false no longer bypasses dirty-git check; emergency_blocker_bundle: true added); consistency checker strengthened (10 checks: master-plan, memory/09, registry gate_6 not approved, FODT candidate-only, pack.yaml gate_6); oracle preflight re-run 6 FAIL (6 consecutive: run035–run040); TC-0029 DEC-034 PASS (7/7 factors, 88/100, Accept band confirmed); FODT Gate 1 human-review packet ready; Gate 6 still oracle_blocked_missing_tool)
 **Last updated:** 2026-05-07
 **Current phase:** Phase 3: FODS Gate 5 PASSED, Gate 6 oracle blocked (LibreOffice not installed)
-**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. TC-0028 in_progress (candidate shortlist — run038 created; run039 verified). TC-0029 verification_passed_pending_human_review (DEC-034 PASS run040; 7/7 factors verified, 88/100, Accept band; human-review packet ready at acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md). No product source. Latest commit: PENDING (run040 in progress). run039 final commit: 54a27dc. Working tree: dirty (run040 changes uncommitted).
+**Current status:** Gate 1 PASSED. Gate 2 PASSED. Gate 3 PASSED. Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). Gate 6: oracle_blocked_missing_tool. TC-0024 CLOSED. TC-0025 completed. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. TC-0028 in_progress (candidate shortlist — run038 created; run039 verified). TC-0029 verification_passed_pending_human_review (DEC-034 PASS run040; 7/7 factors verified, 88/100, Accept band; human-review packet ready at acquisition-packs/_candidate-shortlists/fodt-gate1-human-review-packet.md). No product source. Latest commit: b3cfdd7 (run040 main). Working tree: dirty (Section 33 update pending post-commit).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
@@ -1034,7 +1034,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 
 ## Section 33 — Commit Policy
 
-**Latest commit:** PENDING (run040 in progress). run039 commits: 48f6a0d + 8cd2ed2 + 075edca + d052510 + 54a27dc. run040 commits: PENDING. run038 commits: 1e1d504 + e0fc07c + 998412c + bc2bdf8. run037 commits: de29c97 + f964eba + a35b089. run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
+**Latest commit:** b3cfdd7 (run040 main commit). run040 commits: b3cfdd7 (main; Section 33 post-commit PENDING). run039 commits: 48f6a0d + 8cd2ed2 + 075edca + d052510 + 54a27dc. run038 commits: 1e1d504 + e0fc07c + 998412c + bc2bdf8. run037 commits: de29c97 + f964eba + a35b089. run036 commits: 8acd48d + 82281e6 + 3216dcf. run035 commits: 179e6db + 625fca1 + 2fb4e35 + 1e14079 + 1be6c0a. run034 commits: 2176266 + 074386a + f59fc46.
 
 **Committed so far:**
 - c9d02da (run015): Phase 0 foundation + Phase 1A FODS scoring
@@ -1245,7 +1245,7 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 **Committed (54a27dc, run039 final Section 33):**
 - plans/master-plan.md Section 33 latest commit corrected to d052510→54a27dc (run039 actual final)
 
-**Committed (run040 — PENDING):**
+**Committed (b3cfdd7, run040):**
 - tools/evidence/validate_evidence_bundle.py (HARDENED — clean-git loophole closed: dirty git fails even with require_clean_git: false; emergency_blocker_bundle: true added as escape hatch)
 - tools/evidence/build_evidence_bundle.py (HARDENED — same loophole fix: dirty git always fails unless emergency_blocker_bundle: true)
 - tools/evidence/contracts/base-run.yaml (UPDATED — require_clean_git: true + emergency_blocker_bundle: false added as base defaults)
