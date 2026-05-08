@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "FODT Gate 2 spec/legal evidence taskcard. Created run041 (2026-05-07) after Gate 1 approval. Execution blocked until explicit Gate 2 execution prompt is issued. DEC-034 independent verification required before human Gate 2 review."
+notes: "FODT Gate 2 spec/legal evidence taskcard. Created run041 (2026-05-07) after Gate 1 approval. Evidence executed run042 (2026-05-08): 8/8 fast-path items confirmed, SHA-256 MATCH (3rd verification), patent search waived. Status: evidence_cached_pending_independent_verification. DEC-034 independent verification required (TC-0031)."
 ---
 
 # TC-0030: FODT Gate 2 — Spec/Legal Evidence
@@ -28,11 +28,13 @@ notes: "FODT Gate 2 spec/legal evidence taskcard. Created run041 (2026-05-07) af
 **Taskcard ID:** TC-0030
 **Phase:** 3 (parallel execution alongside FODS Gate 6)
 **Gate:** 2 (Spec/Legal Evidence)
-**Status:** not_started — awaiting explicit Gate 2 execution prompt
+**Status:** evidence_executed_pending_dec034_verification
 **Created:** 2026-05-07 (run041)
+**Executed:** 2026-05-08 (run042)
 **Created by:** claude-sonnet-4-6 (run041)
+**Executed by:** claude-sonnet-4-6 (run042)
 **Gate 1 approved:** YES — Babar Raza, 2026-05-07, run041 (prerequisite met)
-**DEC-034 required:** YES — independent verification required before Gate 2 human review
+**DEC-034 required:** YES — TC-0031 (independent verification, separate execution session)
 
 ---
 
@@ -108,13 +110,13 @@ When the Gate 2 execution prompt is issued:
 
 ## Acceptance Criteria
 
-- [ ] spec-evidence.md status: `SUPPORTED_BY_CACHED_SOURCE`
-- [ ] legal-notes.md: fast-path determination complete with approval date
-- [ ] pack.yaml gate_2: status updated from `not_started`
-- [ ] Registry gate_2: status updated
-- [ ] DEC-034 independent verification: PASS (separate session)
-- [ ] Gate 2 human review packet prepared for Babar Raza
-- [ ] No FODT samples, parser, neutral model, or product source created
+- [x] spec-evidence.md status: `SUPPORTED_BY_CACHED_SOURCE` ✓ run042
+- [x] legal-notes.md: fast-path determination complete (8/8 items) ✓ run042
+- [x] pack.yaml gate_2: status updated from `not_started` → `evidence_cached_pending_independent_verification` ✓ run042
+- [x] Registry gate_2: status updated ✓ run042
+- [ ] DEC-034 independent verification: PASS (separate session — TC-0031)
+- [x] Gate 2 human review packet prepared for Babar Raza ✓ run042
+- [x] No FODT samples, parser, neutral model, or product source created ✓ confirmed
 
 ---
 

@@ -1,12 +1,15 @@
 # Base Evidence Bundle Contract
 # All sprint runs inherit these rules.
 # Format: YAML
-# Version: 1.1
+# Version: 1.2
 # Created: run031 (2026-05-06)
 # Updated: run041 (2026-05-07) — added current_state_authority field; git metadata auto-generated
+# Updated: run042 (2026-05-08) — raised min_metadata_count to 30 (normal PASS depth requirement);
+#          added normal_pass_min_metadata field; clarified .env.example policy;
+#          emergency_blocker_bundle exception: low metadata only for BLOCKED/FAIL bundles
 
 contract_id: base-run
-version: "1.1"
+version: "1.2"
 description: "Base contract for all format-factory evidence bundles."
 
 # Current-state authority policy (run041+)
@@ -23,6 +26,15 @@ required_top_level_folders:
 
 # Forbidden path patterns (glob-style, matched against zip entry paths)
 # Any match causes BUNDLE_VALIDATION: FAIL
+#
+# .env.example POLICY (run042):
+#   .env.example is a safe template file committed to the repo (explicitly un-ignored in .gitignore).
+#   It MUST NOT be excluded from evidence bundles.
+#   Forbidden pattern ".env" catches ".env.example" only if the validator uses wildcard expansion.
+#   The validator (run042+) uses exact matching for patterns without wildcards.
+#   So ".env" forbids the file named exactly ".env" but NOT ".env.example".
+#   Pattern "**/*.env" similarly forbids files ending in ".env" but NOT ".env.example".
+#   This policy is explicit and tested. See tests/evidence/test_env_example_handling.py.
 forbidden_patterns:
   - ".git/**"
   - ".env"
@@ -48,8 +60,15 @@ forbidden_patterns:
 require_clean_git: true
 emergency_blocker_bundle: false
 
-# Minimum metadata files required
-min_metadata_count: 5
+# Minimum metadata files required (run042+)
+# normal_pass_min_metadata: absolute floor for BUNDLE_VALIDATION: PASS on normal (non-blocker) runs.
+#   Any normal PASS bundle with fewer metadata files than this value fails validation.
+#   This prevents thin bundles (like run041's 5-file bundle) from passing.
+# min_metadata_count: effective threshold for this contract (may be higher than the floor).
+#   For run-specific contracts, set to the actual count for that sprint.
+#   Must be >= normal_pass_min_metadata unless emergency_blocker_bundle: true.
+normal_pass_min_metadata: 30
+min_metadata_count: 30
 
 # Required repo files (paths relative to repo/ in the zip)
 required_repo_files: []
@@ -60,3 +79,4 @@ required_repo_files: []
 required_metadata_files:
   - git-log.txt
   - git-status-final.txt
+  - bundle-manifest.yaml

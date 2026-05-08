@@ -1,0 +1,99 @@
+# run042 Evidence Contract
+#
+# Sprint: FODT Gate 2 evidence execution + evidence-contract regression repair
+# Date: 2026-05-08
+# Sections covered: A (files), B (run041 verification), C (contract repair),
+#   D (.env.example fix), E (post-approval wording), F (TC-0030 Gate 2),
+#   G (oracle preflight 8th FAIL), I (master-plan/memory/docs update)
+#
+# Key outcomes:
+#   - base-run.yaml v1.2 (min_metadata_count: 30, normal_pass_min_metadata: 30)
+#   - validate_evidence_bundle.py: matches_forbidden exact-match fix; NORMAL_PASS_METADATA_DEPTH
+#   - 8/8 negative tests PASS
+#   - FODT Gate 2 evidence: spec-evidence.md SUPPORTED_BY_CACHED_SOURCE
+#   - FODT Gate 2 legal: legal-notes.md FAST_PATH_DECLARED (8/8 items, patent waived)
+#   - TC-0030 executed; TC-0031 created (DEC-034 pending)
+#   - Oracle preflight 8th consecutive FAIL (LibreOffice still not installed)
+#
+# Version: 1.0
+
+contract_id: run042-fodt-gate2-evidence-and-contract-repair
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint_run: run042
+require_clean_git: true
+emergency_blocker_bundle: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run042-fodt-gate2-evidence-and-contract-repair.yaml
+require_manifest: true
+min_metadata_count: 46
+normal_pass_min_metadata: 46
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - repo-tree.txt
+  - sprint-summary.md
+  - evidence-contract-validation-report.md
+  - verdict.md
+  - self-challenge.md
+  - files-reviewed.txt
+  - files-modified.txt
+  - oracle-preflight-run8.txt
+  - spec-sha256-verify-run042.txt
+  - negative-tests-run042.txt
+
+required_repo_files:
+  # Evidence tooling (contract repair)
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/contracts/base-run.yaml
+  - tools/evidence/contracts/run042-fodt-gate2-evidence-and-contract-repair.yaml
+  # Negative tests
+  - tests/evidence/test_negative_bundle_validation.py
+  # FODT Gate 2 evidence
+  - acquisition-packs/fodt/spec-evidence.md
+  - acquisition-packs/fodt/legal-notes.md
+  - acquisition-packs/fodt/pack.yaml
+  - acquisition-packs/fodt/gate2-human-review-packet.md
+  - acquisition-packs/fodt/gate2-planning.md
+  - acquisition-packs/fodt/sample-sources.md
+  - acquisition-packs/fodt/parser-notes.md
+  # Registry
+  - registry/format-registry.yaml
+  # Taskcards
+  - taskcards/TC-0030-fodt-gate2-spec-legal-evidence.md
+  - taskcards/TC-0031-fodt-gate2-dec034-independent-verification.md
+  # FODT scoring package (post-approval cleanup)
+  - registry/candidates/fodt-gate1-scoring-package.yaml
+  # FODS oracle tooling
+  - tools/oracle/preflight_oracle.py
+  - tools/oracle/oracle_common.py
+  # Plans and governance
+  - plans/master-plan.md
+  - ROADMAP.md
+  - README.md
+  # Memory
+  - memory/09-current-state-before-phase1.md
+  - memory/MEMORY.md
+
+forbidden_paths:
+  - .env
+  - .local/
+  - .git/
+  - __pycache__/
+  - "*.pyc"
+  - reports/security/
+  - reports/legal/
+  - src/python/open-source/
+  - src/dotnet/open-source/
+  - src/dotnet/commercial/
+  - samples/by-format/other-formats/
+  - schemas/neutral-model/other-formats/
+  - prototypes/by-format/other-formats/
+  - tests/fixtures/
+  - tests/oracle/
+  - tests/fuzz/
+  - .github/

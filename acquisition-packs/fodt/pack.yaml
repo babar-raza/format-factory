@@ -81,11 +81,19 @@ stages:
     approval_run: run041
     notes: "Scored run039 (88/100, Accept band). DEC-034 independently verified run040 (7/7 factors). Gate 1 approved by Babar Raza in run041 execution prompt."
   gate_2:
-    status: not_started
+    status: evidence_cached_pending_independent_verification
     approved_by: null
     approved_date: null
-    fast_path: null
-    notes: "Gate 2 spec/legal evidence pending. Fast-path expected (same OASIS RF Category 1 basis as FODS). ODF 1.3 spec already cached. Requires explicit Gate 2 execution prompt."
+    fast_path: true
+    fast_path_items_met: 8
+    fast_path_total_items: 8
+    patent_search_waived: true
+    patent_search_waiver_basis: "Same as FODS Gate 2 waiver (Babar Raza, 2026-05-05) — OASIS RF covers all ODF 1.3 sub-formats"
+    evidence_executed_run: run042
+    evidence_executed_date: "2026-05-08"
+    sha256_verified_run: run042
+    sha256_status: "MATCH (3rd verification)"
+    notes: "Gate 2 evidence executed run042 (2026-05-08). 8/8 fast-path items confirmed. Patent search waived (same basis as FODS). DEC-034 independent verification pending (TC-0031). Status will advance to evidence_cached_pending_human_review after DEC-034 PASS."
   gate_3:
     status: not_started
     approved_by: null

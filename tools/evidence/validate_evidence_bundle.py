@@ -108,25 +108,42 @@ def load_contract(contract_path):
 
 
 def matches_forbidden(path, forbidden_patterns):
-    """Check if a path matches any forbidden pattern."""
+    """Check if a path matches any forbidden pattern.
+
+    For patterns WITHOUT wildcards (* ? [): exact filename match or directory-prefix
+    match only. This prevents `.env` from matching `.env.example`.
+
+    For patterns WITH wildcards: standard fnmatch behavior on the full path and all
+    trailing sub-paths (so `*.key` still matches `secrets/api.key`).
+    """
     path_normalized = path.replace("\\", "/")
     for pattern in forbidden_patterns:
         pattern_clean = pattern.rstrip("/")
-        if fnmatch.fnmatch(path_normalized, pattern_clean + "*"):
-            return True
-        if fnmatch.fnmatch(path_normalized, pattern_clean):
-            return True
-        if path_normalized.startswith(pattern_clean + "/"):
-            return True
-        if path_normalized.startswith(pattern_clean):
-            return True
-        parts = path_normalized.split("/")
-        for i in range(len(parts)):
-            subpath = "/".join(parts[i:])
-            if fnmatch.fnmatch(subpath, pattern_clean + "*"):
+        has_wildcards = any(c in pattern_clean for c in ("*", "?", "["))
+
+        if has_wildcards:
+            # Wildcard pattern — fnmatch on full path and all trailing sub-paths
+            if fnmatch.fnmatch(path_normalized, pattern_clean):
                 return True
-            if fnmatch.fnmatch(subpath, pattern_clean):
+            parts = path_normalized.split("/")
+            for i in range(len(parts)):
+                subpath = "/".join(parts[i:])
+                if fnmatch.fnmatch(subpath, pattern_clean):
+                    return True
+        else:
+            # Non-wildcard pattern — exact match or directory-prefix match only.
+            # `.env` matches `.env` and `.env/anything` but NOT `.env.example`.
+            if path_normalized == pattern_clean:
                 return True
+            if path_normalized.startswith(pattern_clean + "/"):
+                return True
+            parts = path_normalized.split("/")
+            for i in range(len(parts)):
+                subpath = "/".join(parts[i:])
+                if subpath == pattern_clean:
+                    return True
+                if subpath.startswith(pattern_clean + "/"):
+                    return True
     return False
 
 
@@ -255,6 +272,8 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
     required_repo_files = contract.get("required_repo_files", [])
     required_metadata_files = contract.get("required_metadata_files", [])
     min_metadata_count = contract.get("min_metadata_count", 5)
+    normal_pass_min = contract.get("normal_pass_min_metadata", 0)
+    emergency_blocker = contract.get("emergency_blocker_bundle", False)
     require_contract_in_bundle = contract.get("require_contract_in_bundle", False)
     contract_repo_path = contract.get("contract_repo_path", "")
     require_manifest = contract.get("require_manifest", False)
@@ -334,9 +353,19 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         if missing_metadata:
             errors.append(f"Missing required metadata files ({len(missing_metadata)}): {missing_metadata[:10]}")
 
-        # Check min metadata count
+        # Check min metadata count (contract-level floor)
         if len(metadata_files) < min_metadata_count:
             errors.append(f"Metadata count {len(metadata_files)} < minimum {min_metadata_count}")
+
+        # Check normal-pass metadata depth (base-run floor — not bypassable by emergency_blocker)
+        metadata_depth_fail = (
+            normal_pass_min > 0 and len(metadata_files) < normal_pass_min
+        )
+        if metadata_depth_fail:
+            errors.append(
+                f"NORMAL_PASS_METADATA_DEPTH: FAIL — "
+                f"metadata count {len(metadata_files)} < normal_pass_min_metadata {normal_pass_min}"
+            )
 
         # Check contract-in-bundle
         if require_contract_in_bundle and contract_repo_path:
@@ -352,7 +381,6 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         # Rule: Dirty git-status-final.txt ALWAYS causes FAIL unless emergency_blocker_bundle: true.
         # require_clean_git: false only suppresses the "no git status file found" error.
         # It does NOT bypass the dirty-git check when the file is present and dirty.
-        emergency_blocker = contract.get("emergency_blocker_bundle", False)
         clean, msg = check_git_status_clean(metadata_files_content)
         if clean is None:
             # No git status file found in bundle
@@ -398,6 +426,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
     print(f"Required repo files: {len(required_repo_files)} (missing: {len(missing_repo)})")
     print(f"Required metadata files: {len(required_metadata_files)} (missing: {len(missing_metadata)})")
     print(f"Min metadata required: {min_metadata_count}")
+    if normal_pass_min > 0:
+        depth_status = "FAIL" if metadata_depth_fail else "PASS"
+        print(f"NORMAL_PASS_METADATA_DEPTH ({depth_status}): {len(metadata_files)}/{normal_pass_min}")
     print(f"Forbidden hits: {len(forbidden_hits)}")
     if require_contract_in_bundle:
         print(f"Contract in bundle: {'YES' if contract_repo_path in repo_files else 'NO'}")

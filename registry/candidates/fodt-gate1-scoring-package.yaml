@@ -1,20 +1,17 @@
 # FODT Gate 1 Scoring Package
 #
-# CANDIDATE-ONLY — NOT AN OFFICIAL REGISTRY ENTRY
+# GATE 1 APPROVED — Official scoring record
+# Approved by: Babar Raza, 2026-05-07, run041
+# Score: 88/100 (Accept band)
+# Official registry entry created: registry/format-registry.yaml
+# Acquisition pack skeleton created: acquisition-packs/fodt/ (6 files)
 #
 # This package applies the 7-factor scoring model from registry/scoring/_scoring-model.md
-# to FODT (Flat OpenDocument Text). It is pre-Gate-1 evidence only.
-#
-# This package does NOT approve Gate 1. A human must:
-#   1. Review this package and the referenced FODS pipeline evidence.
-#   2. Agree that the score and evidence are sufficient.
-#   3. Explicitly issue a Gate 1 scoring execution prompt for FODT.
-#   4. Review the agent-produced Gate 1 scoring execution result.
-#   5. Record approval in registry/format-registry.yaml (gate_1.status: passed).
+# to FODT (Flat OpenDocument Text). It is the Gate 1 evidence record.
 #
 # Created: 2026-05-07 (run039)
-# Authorized by: run039 execution prompt (human-authorized candidate scoring package)
-# Independent verification required: YES (DEC-034)
+# Gate 1 independent verification: PASS (run040, DEC-034)
+# Gate 1 approved: 2026-05-07 (run041) by Babar Raza
 
 scoring_package_id: fodt-gate1-scoring-package-run039
 format_id: fodt
@@ -168,28 +165,20 @@ confidence_notes:
     - "Factor 4 (community demand) is based on general market knowledge. No formal demand survey conducted."
     - "All Factor 1 and Factor 2 evidence is directly inherited from FODS Gate 2 legal review and cached spec."
 
-# --- PREREQUISITES FOR GATE 1 EXECUTION ---
+# --- GATE 1 COMPLETION RECORD ---
 
-gate_1_prerequisites:
+gate_1_completion_record:
   shortlist_independent_verification:
     status: "DONE — run039 independent verification PASS (10/10 checks)"
   scoring_package_independent_verification:
-    status: "REQUIRED before human Gate 1 review (DEC-034)"
+    status: "DONE — run040 DEC-034 PASS (7/7 factors verified, 88/100 Accept band confirmed)"
   human_gate_1_approval:
-    status: "REQUIRED — no agent may approve Gate 1"
-    approver: "project lead (Babar Raza)"
-  gate_1_execution_prompt:
-    status: "REQUIRED — must explicitly name format, version, and scoring evidence"
-  fods_gate_6_completion:
-    status: "NOT REQUIRED — FODT Gate 1 can begin while FODS Gate 6 remains blocked"
-    rationale: "WIP limit: Gates 4-6 max 2; FODS uses 1 slot; Gates 1-3 max 3; 0 used. FODT Gate 1 is eligible."
-
-# --- WHAT THIS PACKAGE DOES NOT DO ---
-
-does_not_do:
-  - "Does NOT approve Gate 1 for FODT"
-  - "Does NOT create an official registry entry for FODT"
-  - "Does NOT create an acquisition pack for FODT"
-  - "Does NOT authorize any spec download for FODT"
-  - "Does NOT create any samples, parser, or neutral model for FODT"
-  - "Does NOT grant any permissions beyond CANDIDATE-ONLY analysis"
+    status: "APPROVED — Babar Raza, 2026-05-07, run041"
+  gate_1_outcomes:
+    registry_entry_created: true
+    acquisition_pack_created: true
+    acquisition_pack_path: "acquisition-packs/fodt/"
+    acquisition_pack_files: 6
+    tc_0029_status: "COMPLETED (run041)"
+    tc_0028_status: "COMPLETED (run041)"
+    tc_0030_created: "not_started — FODT Gate 2 spec/legal evidence"

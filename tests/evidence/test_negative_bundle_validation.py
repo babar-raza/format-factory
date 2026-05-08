@@ -217,6 +217,90 @@ forbidden_paths: []
         return True
 
 
+def test_env_example_not_blocked_by_env_pattern():
+    """.env.example in repo/ must NOT be blocked by the '.env' forbidden pattern (run042 fix).
+
+    The forbidden pattern '.env' should only match the exact file '.env', not '.env.example'.
+    This ensures .env.example (which is explicitly git-tracked) is included in bundles.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = tmp_dir / "test-env-contract.yaml"
+        contract.write_text(
+            """\
+contract_id: test-env-example
+require_clean_git: false
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 1
+required_repo_files:
+  - .env.example
+required_metadata_files: []
+forbidden_paths:
+  - .env
+  - .local/
+  - .git/
+""",
+            encoding="utf-8",
+        )
+        bundle_path = tmp_dir / "test-env-bundle.zip"
+        with zipfile.ZipFile(bundle_path, "w") as zf:
+            zf.writestr("repo/.env.example", "ANTHROPIC_API_KEY=your-key-here\n")
+            zf.writestr("bundle-metadata/git-log.txt", "abc1234 initial commit\n")
+        result = validate_bundle(str(contract), str(bundle_path), strict_git=False, no_pending=False)
+        if not result:
+            print(
+                "FAIL: test_env_example_not_blocked_by_env_pattern "
+                "— validator FAILed but .env.example should be allowed (not blocked by .env pattern)"
+            )
+            return False
+        print(
+            "PASS: test_env_example_not_blocked_by_env_pattern "
+            "— .env.example correctly allowed despite .env forbidden pattern"
+        )
+        return True
+
+
+def test_normal_pass_metadata_depth_fail():
+    """Validator must FAIL when metadata count is below normal_pass_min_metadata (run042 fix).
+
+    A bundle with only 5 metadata files must FAIL when base-run contract has
+    normal_pass_min_metadata: 30. This enforces evidence depth for normal PASS bundles.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = tmp_dir / "test-depth-contract.yaml"
+        contract.write_text(
+            """\
+contract_id: test-metadata-depth
+require_clean_git: false
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 5
+normal_pass_min_metadata: 30
+required_repo_files: []
+required_metadata_files: []
+forbidden_paths: []
+""",
+            encoding="utf-8",
+        )
+        # Bundle with exactly 5 metadata files — passes min_metadata_count but fails depth
+        meta = {f"file{i}.md": f"content {i}" for i in range(5)}
+        bundle = build_bundle_with_meta(tmp_dir, meta)
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=False)
+        if result:
+            print(
+                "FAIL: test_normal_pass_metadata_depth_fail "
+                "— validator returned PASS but should have FAILed (5 < normal_pass_min_metadata 30)"
+            )
+            return False
+        print(
+            "PASS: test_normal_pass_metadata_depth_fail "
+            "— validator correctly FAILed when metadata depth < normal_pass_min_metadata"
+        )
+        return True
+
+
 def main():
     print("=" * 60)
     print("Negative Tests: validate_evidence_bundle.py")
@@ -230,6 +314,8 @@ def main():
         test_clean_bundle_passes_no_pending,
         test_dirty_git_fails_even_with_require_clean_git_false,
         test_dirty_git_passes_with_emergency_blocker_bundle_true,
+        test_env_example_not_blocked_by_env_pattern,
+        test_normal_pass_metadata_depth_fail,
     ]
 
     results = []

@@ -20,16 +20,17 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 2 spec evidence draft — PENDING. Spec already cached from FODS acquisition. Status: REUSES_FODS_SPEC_CACHE — no new download required."
+notes: "Gate 2 spec evidence — SUPPORTED_BY_CACHED_SOURCE. SHA-256 verified run042 (2026-05-08): MATCH. Status: evidence_cached_pending_independent_verification. Fast-path declared: OASIS RF Category 1, 8/8 fast-path items met. DEC-034 independent verification required before human Gate 2 review."
 ---
 
 # FODT Spec Evidence — Gate 2
 
 **Format:** FODT — Flat OpenDocument Text
 **Gate:** 2 (Spec/Legal Evidence)
-**Status:** NOT_STARTED — Gate 2 evidence draft pending
+**Status:** SUPPORTED_BY_CACHED_SOURCE — evidence_cached_pending_independent_verification
 **Spec:** ODF 1.3 (same as FODS)
 **Spec status:** REUSES_FODS_SPEC_CACHE — spec already cached, normalized, and indexed
+**SHA-256 verified:** 2026-05-08 (run042) — MATCH confirmed (3rd verification)
 
 ---
 
@@ -84,11 +85,16 @@ The ODF 1.3 specification covers FODT through the following sections:
 
 ## Gate 2 Status
 
-**Status: NOT_STARTED**
+**Status: SUPPORTED_BY_CACHED_SOURCE — evidence_cached_pending_independent_verification**
 
-Gate 2 spec/legal evidence draft requires an explicit Gate 2 execution prompt.
+Gate 2 spec evidence executed (run042, 2026-05-08):
+- SHA-256 verified MATCH (3rd verification — run021 download, run022 verify, run042 verify)
+- FODT MIME type confirmed: `application/vnd.oasis.opendocument.text-flat-xml`
+- ODF 1.3 spec coverage for FODT confirmed (§2, §3, §5, §14, §15, §17, §18, §19)
+- Fast-path declared: 8/8 fast-path items met (see legal-notes.md)
 
-**Expected fast-path basis:** OASIS RF Category 1 — same as FODS Gate 2 (passed Babar Raza, 2026-05-05).
+**Next step:** DEC-034 independent verification (TC-0031, separate execution session).
+After DEC-034 PASS: status updates to `evidence_cached_pending_human_review`.
 
 See `legal-notes.md` for legal evidence. See `gate2-planning.md` for the Gate 2 execution plan.
 
@@ -101,4 +107,4 @@ The FODS Gate 2 evidence at `acquisition-packs/fods/spec-evidence.md` directly s
 - Spec cache is shared (no re-download needed)
 - Normalization artifacts are shared (same PDF, same sections.jsonl)
 
-When Gate 2 is executed, this file should be updated from `NOT_STARTED` to `SUPPORTED_BY_CACHED_SOURCE`.
+Gate 2 was executed in run042 (2026-05-08). This file has been updated to `SUPPORTED_BY_CACHED_SOURCE`. DEC-034 independent verification remains pending (TC-0031).

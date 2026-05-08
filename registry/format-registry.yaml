@@ -237,11 +237,15 @@ formats:
         approved_date: "2026-05-07"
         notes: "Scored by claude-sonnet-4-6 (run039, 2026-05-07): 88/100, Accept band. DEC-034 independently verified by claude-sonnet-4-6 (run040, 2026-05-07): 7/7 factors verified, 88/100 confirmed. Human approval recorded by Babar Raza in run041 execution prompt (2026-05-07). This approval authorizes FODT Gate 2 spec/legal evidence work and creation of acquisition-packs/fodt/ skeleton. It does not authorize FODT samples, parser, neutral model, or product source."
       gate_2:
-        status: not_started
+        status: evidence_cached_pending_independent_verification
         approved_by: null
         approved_date: null
-        fast_path: null
-        notes: "Gate 2 evidence draft pending — spec already cached (ODF 1.3, same as FODS). Fast-path expected (OASIS RF, Category 1). Requires explicit Gate 2 execution prompt."
+        fast_path: true
+        fast_path_items_met: 8
+        patent_search_waived: true
+        evidence_executed_run: run042
+        evidence_executed_date: "2026-05-08"
+        notes: "Gate 2 evidence executed run042 (2026-05-08). 8/8 fast-path items confirmed. OASIS RF Category 1. Patent search waived (same as FODS Gate 2, Babar Raza, 2026-05-05). DEC-034 independent verification pending (TC-0031). Status advances to evidence_cached_pending_human_review after DEC-034 PASS."
       gate_3:
         status: not_started
         approved_by: null
