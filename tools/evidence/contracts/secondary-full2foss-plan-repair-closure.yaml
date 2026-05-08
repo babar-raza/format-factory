@@ -1,12 +1,18 @@
-contract_id: secondary-full2foss-plan-repair
-description: Plan-repair sprint for Full2Foss-inspired secondary roadmap. Planning documents
-  only. No implementation. No gate changes. No product source.
-created_run: secondary-plan-repair-sprint
+contract_id: secondary-full2foss-plan-repair-closure
+description: Closure verification for S-F2F-00 secondary plan-repair sprint. Independently
+  verifies the prior bundle, repairs evidence defects, and confirms CLOSED_VERIFIED status.
+  Planning documents only. No implementation. No gate changes. No product source.
+created_run: secondary-plan-repair-closure-sprint
 plan_repair_only: true
 require_clean_git: true
 emergency_blocker_bundle: false
 current_state_authority: bundle-metadata
-min_metadata_count: 39
+min_metadata_count: 45
+
+# Note on placeholder source readmes:
+# src/python/_readme.md and src/dotnet/_readme.md are pre-existing placeholder files,
+# not product source. They are intentionally allowed and not listed as forbidden.
+# Only actual product format source directories are forbidden (fods/, fodt/, etc.)
 
 required_repo_files:
   - plans/secondary/full2foss-inspired-plan-repair-review.md
@@ -26,6 +32,7 @@ required_repo_files:
   - docs/acquisition-workflow.md
   - docs/current-state-and-evidence-authority.md
   - tools/evidence/contracts/secondary-full2foss-plan-repair.yaml
+  - tools/evidence/contracts/secondary-full2foss-plan-repair-closure.yaml
 
 forbidden_patterns:
   - .git/
@@ -40,8 +47,12 @@ forbidden_patterns:
   - acquisition-packs/_families/
   - tests/playbook/
   - plans/review-queues/
-  # Note: src/python/_readme.md and src/dotnet/_readme.md are placeholder readmes — intentionally allowed.
-  # Forbid only actual product format source directories:
+  - docs/playbook-layer.md
+  - docs/product-dependency-closure.md
+  - docs/python-product-closure-strategy.md
+  - docs/dotnet-product-closure-strategy.md
+  - docs/product-skeleton-generator.md
+  # Forbid actual product format source (NOT placeholder _readme.md files):
   - "src/python/fods/"
   - "src/python/fodt/"
   - "src/dotnet/fods/"
@@ -64,13 +75,14 @@ checks:
   no_push: true
 
 required_metadata_files:
-  - secondary-plan-repair-summary.md
-  - current-truth-review.md
-  - original-plan-defect-review.md
-  - plan-v2-summary.md
-  - taskcard-repair-report.md
-  - master-plan-update-report.md
-  - governance-update-report.md
+  - sf2f00b-summary.md
+  - sf2f00-independent-verification.md
+  - dirty-tree-classification-report.md
+  - prior-bundle-defect-review.md
+  - emergency-blocker-loophole-repair-report.md
+  - placeholder-source-readme-policy-report.md
+  - pending-validation-marker-repair-report.md
+  - final-status-decision.md
   - main-sprint-non-deviation-check.md
   - no-gate-status-change-check.md
   - no-implementation-code-check.md
@@ -80,14 +92,17 @@ required_metadata_files:
   - no-samples-created-check.md
   - no-endpoint-call-check.md
   - no-new-spec-download-check.md
-  - reproducibility-review.md
-  - all-format-applicability-review.md
-  - risk-register-review.md
+  - no-vector-index-created-check.md
+  - taskcard-status-audit.md
+  - plan-v2-status-audit.md
+  - master-plan-secondary-section-audit.md
+  - governance-proposed-only-audit.md
   - search-audit.md
   - forbidden-path-check.txt
   - registry-check.txt
   - yaml-validation-notes.txt
   - markdown-validation-notes.txt
+  - json-validation-notes.txt
   - secrets-scan-notes.txt
   - settings-json-check.txt
   - files-reviewed.txt
@@ -103,3 +118,5 @@ required_metadata_files:
   - bundle-manifest.yaml
   - self-challenge.md
   - verdict.md
+  - current-state-consistency-report.md
+  - final-bundle-validation-proof.txt

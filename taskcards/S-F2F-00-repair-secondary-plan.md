@@ -5,6 +5,8 @@ S-F2F-00: Repair Secondary Plan — Full2Foss-Inspired Roadmap
 
 ## 2. Status
 completed_by_plan_repair
+closure_verified: CLOSED_VERIFIED (S-F2F-00B, 2026-05-08)
+evidence_bundle: secondary-full2foss-plan-repair-closure-YYYYMMDD-HHMMSS.zip
 
 ## 3. Purpose
 Repair the defective Full2Foss-inspired secondary roadmap plan produced in plan mode

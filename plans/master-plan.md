@@ -1484,7 +1484,7 @@ plan-repair-review.md. The plan-repair sprint (S-F2F-00) corrected all defects a
 
 ### Authorization Status
 
-- S-F2F-00 (plan repair): completed_by_plan_repair — authorized by execution prompt
+- S-F2F-00 (plan repair): CLOSED_VERIFIED — S-F2F-00B closure sprint 2026-05-08; commit 881e333; evidence independently verified PASS
 - S-F2F-01 through S-F2F-08: proposed_pending_human_approval — NOT authorized
 
 No gate statuses were changed by this planning or repair sprint. No implementation artifacts
