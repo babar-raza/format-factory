@@ -466,6 +466,92 @@ forbidden_paths: []
         return True
 
 
+
+def test_required_metadata_depth_fails():
+    """REQUIRED_METADATA_DEPTH: FAIL when min_metadata_count>=80 but <10 named files."""
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = tmp_dir / "test-depth-contract.yaml"
+        contract.write_text(
+            """contract_id: test-depth-fail
+require_clean_git: false
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 90
+normal_pass_min_metadata: 0
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+  - bundle-manifest.yaml
+required_repo_files: []
+forbidden_paths: []
+""",
+            encoding="utf-8",
+        )
+        bundle = build_sufficient_bundle(tmp_dir, extra_meta={
+            f"_extra_{i:02d}.txt": f"extra {i}" for i in range(70)
+        })
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=False)
+        if result:
+            print(
+                "FAIL: test_required_metadata_depth_fails "
+                "-- validator returned PASS but should have FAILed "
+                "(min_metadata_count=90 but only 4 required_metadata_files)"
+            )
+            return False
+        print(
+            "PASS: test_required_metadata_depth_fails "
+            "-- REQUIRED_METADATA_DEPTH correctly rejected contract "
+            "with min=90 but only 4 named files"
+        )
+        return True
+
+
+def test_required_metadata_depth_passes_with_test_contract():
+    """REQUIRED_METADATA_DEPTH: PASS when test_contract: true is set (bypass allowed)."""
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = tmp_dir / "test-depth-bypass-contract.yaml"
+        contract.write_text(
+            """contract_id: test-depth-bypass
+test_contract: true
+require_clean_git: false
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 90
+normal_pass_min_metadata: 0
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+  - bundle-manifest.yaml
+required_repo_files: []
+forbidden_paths: []
+""",
+            encoding="utf-8",
+        )
+        bundle = build_sufficient_bundle(tmp_dir, extra_meta={
+            **{f"_extra_{i:02d}.txt": f"extra {i}" for i in range(70)},
+            "git-log.txt": "fake git log",
+            "git-status-final.txt": "nothing to commit",
+            "repo-tree.txt": "repo tree",
+            "bundle-manifest.yaml": "manifest: {}",
+        })
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=False)
+        if not result:
+            print(
+                "FAIL: test_required_metadata_depth_passes_with_test_contract "
+                "-- validator returned FAIL but test_contract: true should bypass check"
+            )
+            return False
+        print(
+            "PASS: test_required_metadata_depth_passes_with_test_contract "
+            "-- REQUIRED_METADATA_DEPTH correctly bypassed when test_contract: true"
+        )
+        return True
+
+
 def main():
     print("=" * 60)
     print("Negative Tests: validate_evidence_bundle.py")
@@ -484,6 +570,8 @@ def main():
         test_run_contract_metadata_floor_fails,
         test_run_contract_metadata_floor_bypassed_by_emergency,
         test_run_contract_minimum_not_below_base,
+        test_required_metadata_depth_fails,
+        test_required_metadata_depth_passes_with_test_contract,
     ]
 
     results = []
