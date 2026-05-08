@@ -77,7 +77,7 @@ formats:
       approved_date: "2026-05-04"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: tc0027_oracle_independent_verification_then_human_gate6_review
+    next_allowed_action: gate7_malformed_fuzz_planning_tc0033
     gates:
       gate_1:
         status: passed
@@ -128,9 +128,9 @@ formats:
         evidence_verified_by: "run034 independent verification (claude-opus-4-6, 2026-05-06)"
         notes: "Gate 5 approved by Babar Raza after run034 independent verification: neutral model v1 validated against all four FODS samples, TC-0024 verification passed, evidence contract validation passed, and Gate 5 human-review packet was prepared. This approval authorizes Gate 6 oracle compatibility work only. It does not authorize product source, release, security reports, legal reports, CI, or commercial implementation."
       gate_6:
-        status: oracle_comparison_created_pending_independent_verification
-        approved_by: null
-        approved_date: null
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-08"
         oracle_preflight: "run043 (10th attempt) — ORACLE_PREFLIGHT: PASS — soffice.com found at C:\\Program Files\\LibreOffice\\program\\soffice.com — LibreOffice 26.2.3.2"
         oracle_run: "run043 — ORACLE_RUN: PASS — 4/4 samples converted"
         oracle_compare: "run043 — ORACLE_COMPARE: PASS — 3/4 PASS, 1/4 WARN (multi-sheet CSV export limitation, expected)"
@@ -138,12 +138,17 @@ formats:
         oracle_harness_path: tools/oracle/
         oracle_harness_fixed_run043: "soffice.com added to candidates; FODS input filter fixed; parser subprocess call fixed"
         tc026_status: "COMPLETED (run043)"
-        notes: "Gate 6 oracle preflight blocked for 9 runs (run035–run042). Resolved run043: LibreOffice 26.2.3.2 installed via winget. oracle_common.py fixed (soffice.com console-mode variant). run_fods_oracle.py fixed (OpenDocument Spreadsheet Flat XML input filter). compare_fods_oracle.py fixed (parser CLI call). ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN. TC-0027 DEC-034 independent verification required next. Gate 6 is NOT approved — human approval required after TC-0027."
+        tc027_dec034_status: "COMPLETED PASS 24/24 (run044, 2026-05-08)"
+        dec034_verified_run: run044
+        notes: "Gate 6 oracle preflight blocked for 9 runs (run035–run042). Resolved run043: LibreOffice 26.2.3.2 installed via winget. oracle_common.py fixed (soffice.com console-mode variant). run_fods_oracle.py fixed (OpenDocument Spreadsheet Flat XML input filter). compare_fods_oracle.py fixed (parser CLI call). ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet CSV export limitation — expected, not a parser defect). TC-0027 DEC-034 independent verification PASS 24/24 (run044, 2026-05-08). Gate 6 APPROVED by Babar Raza (run044 execution prompt, 2026-05-08). This approval authorizes Gate 7 malformed/fuzz testing planning only."
       gate_7:
-        status: not_started
+        status: planning_ready
         approved_by: null
         approved_date: null
-        notes: null
+        tc0033_status: not_started
+        plan_path: acquisition-packs/fods/gate7-malformed-fuzz-plan.md
+        risk_scope_path: acquisition-packs/fods/gate7-risk-scope.md
+        notes: "Gate 7 planning created run044 (2026-05-08): TC-0033 (not_started), gate7-malformed-fuzz-plan.md, gate7-risk-scope.md. 18 malformed test inputs planned (4 categories). Execution requires explicit Gate 7 prompt + separate DEC-034 verification session."
       gate_8:
         status: not_started
         approved_by: null
@@ -230,7 +235,7 @@ formats:
       approved_date: "2026-05-07"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: gate3_sample_corpus_acquisition
+    next_allowed_action: gate4_parser_prototype_planning_tc0034
     gates:
       gate_1:
         status: passed
@@ -250,9 +255,9 @@ formats:
         approval_run: run043
         notes: "Gate 2 evidence executed run042 (2026-05-08). 8/8 fast-path items confirmed. OASIS RF Category 1. Patent search waived (same as FODS Gate 2, Babar Raza, 2026-05-05). DEC-034 independently verified run043 (20/20 checks PASS). Gate 2 approved by Babar Raza in run043 execution prompt (2026-05-08). This approval authorizes Gate 3 sample corpus acquisition."
       gate_3:
-        status: sample_corpus_created_pending_independent_verification
-        approved_by: null
-        approved_date: null
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-08"
         corpus_created_run: run043
         corpus_created_date: "2026-05-08"
         sample_count: 4
@@ -261,13 +266,18 @@ formats:
           - samples/by-format/fodt/headings-and-paragraphs.fodt
           - samples/by-format/fodt/list-basic.fodt
           - samples/by-format/fodt/table-basic.fodt
-        validation_status: "4/4 PASS (run043)"
-        notes: "Gate 3 sample corpus created run043 (2026-05-08). 4 synthetic FODT samples, all Apache-2.0 project-owned synthetic. XML well-formed, ODF 1.3 structure 4/4 PASS. DEC-034 independent verification required (TC-0032) before human Gate 3 review. Gate 3 is NOT approved."
+        validation_status: "4/4 PASS (run043 + run044 re-verification)"
+        dec034_verified_run: run044
+        tc032_status: "COMPLETED PASS 27/27 (run044, 2026-05-08)"
+        notes: "Gate 3 sample corpus created run043 (2026-05-08). 4 synthetic FODT samples, all Apache-2.0 project-owned synthetic. XML well-formed, ODF 1.3 structure 4/4 PASS. TC-0032 DEC-034 independent verification PASS 27/27 (run044, 2026-05-08): SHA-256 hashes verified (fodt-minimal-01:ed118bba..., fodt-headings-01:c3c14633..., fodt-list-01:5a32987e..., fodt-table-01:0996d75e...). Gate 3 APPROVED by Babar Raza (run044 execution prompt, 2026-05-08). This approval authorizes Gate 4 parser prototype planning."
       gate_4:
-        status: not_started
+        status: planning_ready
         approved_by: null
         approved_date: null
-        notes: null
+        tc0034_status: not_started
+        tc0035_status: not_started
+        plan_path: acquisition-packs/fodt/gate4-parser-prototype-plan.md
+        notes: "Gate 4 planning created run044 (2026-05-08): TC-0034 (not_started), TC-0035 (not_started), gate4-parser-prototype-plan.md, parser-requirements.md (FR-001..FR-007), parser-scope.md, parser-test-plan.md (PT-001..PT-004). Execution requires explicit Gate 4 prompt + separate DEC-034 verification session (TC-0035)."
       gate_5:
         status: not_started
         approved_by: null

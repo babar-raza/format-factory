@@ -1,0 +1,215 @@
+# run044 Evidence Contract
+#
+# Sprint: FODS Gate 6 DEC-034 verification + approval + FODT Gate 3 DEC-034 verification +
+#         approval + FODS Gate 7 planning + FODT Gate 4 planning + combined governance updates
+# Date: 2026-05-08
+# Sections covered:
+#   B: run043 independent verification (42 checks PASS)
+#   C: run043 stale state fixes (6 items: oracle stale text, TC-0026, FODT pack.yaml,
+#      FODT sample-sources.md, build_evidence_bundle.py bug1 metadata count,
+#      build_evidence_bundle.py bug2 matches_forbidden)
+#   D: FODS oracle re-run (ORACLE_PREFLIGHT PASS, ORACLE_RUN PASS 4/4,
+#      ORACLE_COMPARE PASS 3/4 WARN 1/4)
+#   E: TC-0027 FODS Gate 6 DEC-034 independent verification (24/24 PASS)
+#   F: FODS Gate 6 human approval recorded (Babar Raza, 2026-05-08)
+#   G: TC-0032 FODT Gate 3 DEC-034 independent verification (27/27 PASS)
+#   H: FODT Gate 3 human approval recorded (Babar Raza, 2026-05-08)
+#   I: FODS Gate 7 malformed/fuzz planning (TC-0033 + gate7-malformed-fuzz-plan.md +
+#      gate7-risk-scope.md)
+#   J: FODT Gate 4 parser prototype planning (TC-0034 + TC-0035 + gate4-parser-prototype-plan.md +
+#      parser-requirements.md + parser-scope.md + parser-test-plan.md)
+#   K: master-plan v2.40, README, ROADMAP, memory/09, settings.json updates
+#   L: run044 evidence contract (this file)
+#   M: git commit
+#   N+O: search audit (42 patterns) + final validation (41 checks)
+#   P: evidence bundle build + validation
+#   Q+R: artifact index, run record, self-challenge
+#
+# Key outcomes:
+#   - TC-0027 DEC-034 PASS 24/24: FODS Gate 6 independently verified (run044 separate from run043)
+#   - FODS Gate 6 PASSED (Babar Raza, 2026-05-08); gate6-human-review-packet.md created
+#   - TC-0032 DEC-034 PASS 27/27: FODT Gate 3 independently verified (run044 separate from run043)
+#   - FODT Gate 3 PASSED (Babar Raza, 2026-05-08); gate3-human-review-packet.md created
+#   - FODS Gate 7 planning_ready: TC-0033 (not_started), gate7-malformed-fuzz-plan.md,
+#     gate7-risk-scope.md (18 test inputs, 4 categories)
+#   - FODT Gate 4 planning_ready: TC-0034 + TC-0035 (not_started), gate4-parser-prototype-plan.md,
+#     parser-requirements.md (FR-001..FR-007), parser-scope.md, parser-test-plan.md (PT-001..PT-004)
+#   - build_evidence_bundle.py two bugs fixed (metadata count off-by-one; matches_forbidden
+#     false-positive on .env.example and .gitignore)
+#   - ORACLE_COMPARE: PASS 3/4, WARN 1/4 (multi-sheet SHEET_COUNT_MISMATCH — documented LO limit)
+#   - master-plan v2.40; BUNDLE_VALIDATION: PASS required
+#
+# Version: 1.0
+
+contract_id: run044-combined-sprint
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint_run: run044
+require_clean_git: true
+emergency_blocker_bundle: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run044-combined-sprint.yaml
+require_manifest: true
+min_metadata_count: 58
+normal_pass_min_metadata: 58
+
+required_metadata_files:
+  # Core bundle metadata (always required)
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - repo-tree.txt
+  - sprint-summary.md
+  - evidence-contract-validation-report.md
+  - verdict.md
+  - self-challenge.md
+  - files-reviewed.txt
+  - files-modified.txt
+  # Section B — run043 independent verification
+  - run043-verification-report.txt
+  # Section C — stale state fixes
+  - stale-state-fixes-record.txt
+  - build-evidence-bundle-bug1-metadata-count-fix.txt
+  - build-evidence-bundle-bug2-matches-forbidden-fix.txt
+  # Section D — FODS oracle re-run (run044)
+  - oracle-preflight-run044.txt
+  - oracle-run-fods-run044.txt
+  - oracle-compare-fods-run044.txt
+  - oracle-summary-fods-run044.txt
+  - oracle-per-sample-minimal-spreadsheet-run044.json
+  - oracle-per-sample-multi-sheet-basic-run044.json
+  - oracle-per-sample-typed-values-basic-run044.json
+  - oracle-per-sample-formula-basic-run044.json
+  - oracle-comparison-summary-run044.json
+  # Section E — TC-0027 FODS Gate 6 DEC-034 independent verification
+  - tc0027-dec034-verification-report.txt
+  - gate6-human-review-packet-creation-record.txt
+  # Section F — FODS Gate 6 human approval
+  - fods-gate6-approval-record.txt
+  - registry-fods-gate6-approved-update.txt
+  # Section G — TC-0032 FODT Gate 3 DEC-034 independent verification
+  - tc0032-dec034-verification-report.txt
+  - fodt-gate3-validation-rerun.txt
+  - fodt-sample-sha256-verify-run044.txt
+  - fodt-gate3-human-review-packet-creation-record.txt
+  # Section H — FODT Gate 3 human approval
+  - fodt-gate3-approval-record.txt
+  - registry-fodt-gate3-approved-update.txt
+  # Section I — FODS Gate 7 planning
+  - fods-gate7-plan-creation-record.txt
+  - tc0033-creation-record.txt
+  # Section J — FODT Gate 4 planning
+  - fodt-gate4-plan-creation-record.txt
+  - tc0034-creation-record.txt
+  - tc0035-creation-record.txt
+  - fodt-parser-requirements-creation-record.txt
+  - fodt-parser-scope-test-plan-creation-record.txt
+  # Section K — governance and doc updates
+  - master-plan-version.txt
+  - memory09-update-record.txt
+  - roadmap-update-record.txt
+  - readme-update-record.txt
+  - settings-update-record.txt
+  - registry-fods-gate7-update.txt
+  # Search audit and consistency check
+  - search-audit-report.txt
+  - consistency-check-report.txt
+  # Final validation and contract validation
+  - final-validation-report.txt
+  - run044-contract-validation.txt
+  # Git commit record
+  - git-commit-record.txt
+  # Post-commit master plan update record
+  - master-plan-post-commit-update.txt
+  # Registry FODT Gate 4 planning update
+  - registry-fodt-gate4-planning-update.txt
+  # Provenance and spec verification
+  - fodt-sample-provenance-verification.txt
+  - fods-spec-sha256-verify-run044.txt
+  # Taskcard status update records
+  - tc0027-status-update-record.txt
+  - tc0032-status-update-record.txt
+  # Gate 6 oracle comparison report update record
+  - gate6-oracle-comparison-report-update-record.txt
+
+required_repo_files:
+  # build_evidence_bundle.py (two bugs fixed run044)
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/contracts/base-run.yaml
+  - tools/evidence/contracts/run044-combined-sprint.yaml
+  # FODS Gate 6 — oracle comparison report (GATE_6_PASSED), human review packet
+  - acquisition-packs/fods/gate6-oracle-comparison-report.md
+  - acquisition-packs/fods/gate6-human-review-packet.md
+  # FODS Gate 7 planning
+  - acquisition-packs/fods/gate7-malformed-fuzz-plan.md
+  - acquisition-packs/fods/gate7-risk-scope.md
+  - acquisition-packs/fods/pack.yaml
+  # TC-0027 (COMPLETED), TC-0033 (not_started)
+  - taskcards/TC-0027-fods-gate6-oracle-verification.md
+  - taskcards/TC-0033-fods-gate7-malformed-fuzz-testing.md
+  # Oracle tooling (unchanged but included as evidence)
+  - tools/oracle/oracle_common.py
+  - tools/oracle/compare_fods_oracle.py
+  - tools/oracle/run_fods_oracle.py
+  - tools/oracle/preflight_oracle.py
+  - tools/oracle/summarize_oracle_results.py
+  # FODT Gate 3 — samples, validation tool, human review packet
+  - samples/by-format/fodt/minimal-document.fodt
+  - samples/by-format/fodt/headings-and-paragraphs.fodt
+  - samples/by-format/fodt/list-basic.fodt
+  - samples/by-format/fodt/table-basic.fodt
+  - tools/samples/validate_fodt_samples.py
+  - acquisition-packs/fodt/gate3-human-review-packet.md
+  - acquisition-packs/fodt/sample-sources.md
+  - acquisition-packs/fodt/pack.yaml
+  # TC-0032 (COMPLETED)
+  - taskcards/TC-0032-fodt-gate3-dec034-independent-verification.md
+  # FODT Gate 4 planning
+  - acquisition-packs/fodt/gate4-parser-prototype-plan.md
+  - acquisition-packs/fodt/parser-requirements.md
+  - acquisition-packs/fodt/parser-scope.md
+  - acquisition-packs/fodt/parser-test-plan.md
+  - acquisition-packs/fodt/parser-notes.md
+  # TC-0034 (not_started), TC-0035 (not_started)
+  - taskcards/TC-0034-fodt-gate4-parser-prototype.md
+  - taskcards/TC-0035-fodt-gate4-dec034-verification.md
+  # Provenance record (8 entries: 4 FODS + 4 FODT)
+  - samples/_provenance.yaml
+  # Registry
+  - registry/format-registry.yaml
+  # Plans and governance
+  - plans/master-plan.md
+  - ROADMAP.md
+  - README.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  # Memory
+  - memory/09-current-state-before-phase1.md
+  # Settings
+  - .claude/settings.json
+  # Negative tests
+  - tests/evidence/test_negative_bundle_validation.py
+
+forbidden_paths:
+  - .env
+  - .local/
+  - .git/
+  - __pycache__/
+  - "*.pyc"
+  - reports/security/
+  - reports/legal/
+  - src/python/open-source/
+  - src/dotnet/open-source/
+  - src/dotnet/commercial/
+  - samples/by-format/other-formats/
+  - schemas/neutral-model/other-formats/
+  - prototypes/by-format/other-formats/
+  - tests/fuzz/
+  - .github/
+  - src/net/
+  - src/python/fods/
+  - src/python/fodt/
+  - prototypes/by-format/fodt/
+  - schemas/neutral-model/fodt/

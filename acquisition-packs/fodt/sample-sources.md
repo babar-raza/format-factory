@@ -20,37 +20,38 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "FODT sample sources plan — NOT STARTED. Gate 3 samples are blocked until Gate 2 is approved. Skeleton created run041 for planning purposes."
+notes: "FODT sample sources — Gate 3 PASSED (Babar Raza, 2026-05-08, run044). 4 synthetic Apache-2.0 FODT samples: minimal-document.fodt, headings-and-paragraphs.fodt, list-basic.fodt, table-basic.fodt. FODT_SAMPLE_VALIDATION: PASS 4/4. SHA-256 hashes confirmed in samples/_provenance.yaml. TC-0032 DEC-034 PASS 27/27 (run044, 2026-05-08)."
 ---
 
-# FODT Sample Sources — Gate 3 Planning
+# FODT Sample Sources — Gate 3
 
 **Format:** FODT — Flat OpenDocument Text
 **Gate:** 3 (Sample Corpus)
-**Status:** NOT_STARTED — blocked until Gate 2 approval
+**Status:** GATE_3_PASSED — 4 synthetic Apache-2.0 FODT samples; FODT_SAMPLE_VALIDATION: PASS 4/4; Gate 3 approved Babar Raza (run044, 2026-05-08)
 **Sample strategy:** Synthetic project-owned samples (same approach as FODS)
 
 ---
 
 ## Status
 
-**Gate 3 sample acquisition is NOT STARTED.**
+**Gate 3 sample corpus created run043 (2026-05-08).** 4 synthetic FODT samples, all Apache-2.0,
+project-owned, hand-authored XML, validated by `tools/samples/validate_fodt_samples.py`.
 
-Samples may not be created until Gate 2 (spec/legal evidence) is approved by a human reviewer.
-This file is a planning skeleton only.
+FODT_SAMPLE_VALIDATION: PASS 4/4. SHA-256 hashes confirmed in `samples/_provenance.yaml` (run043).
+Validation script: `tools/samples/validate_fodt_samples.py` (created run043).
+
+Next: TC-0032 DEC-034 independent verification (separate session from run043) → Gate 3 human approval.
 
 ---
 
-## Planned Sample Set
-
-Following the FODS Gate 3 sample pattern (4 samples, Apache-2.0, synthetic, project-owned):
+## Actual Sample Set (Gate 3 corpus — created run043)
 
 | # | Sample Name | Coverage | Status |
 |---|---|---|---|
-| 1 | `fodt-minimal-text.fodt` | Minimal valid FODT: single paragraph (§3.1, §5.1) | NOT_STARTED |
-| 2 | `fodt-headings-paragraphs.fodt` | Multiple headings (text:h), paragraphs, text levels | NOT_STARTED |
-| 3 | `fodt-lists-tables.fodt` | Unordered list, ordered list, basic table | NOT_STARTED |
-| 4 | `fodt-styles-inline.fodt` | Named styles, automatic styles, inline character styles | NOT_STARTED |
+| 1 | `minimal-document.fodt` | Minimal valid FODT: single paragraph, office:document root (§2, §5.1) | CREATED — PASS |
+| 2 | `headings-and-paragraphs.fodt` | text:h (outline-level 1+2), text:p elements (§3.1, §5.1, §5.3) | CREATED — PASS |
+| 3 | `list-basic.fodt` | text:list bullet + numbered lists, text:list-item (§5.3) | CREATED — PASS |
+| 4 | `table-basic.fodt` | table:table 2×3, table:table-row, table:table-cell in text context (§14) | CREATED — PASS |
 
 **All samples:** Apache-2.0, project-owned, synthetic (not derived from any copyrighted document).
 

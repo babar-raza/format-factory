@@ -3,16 +3,16 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.39 (run043: run042 independently verified PASS (40+ checks); oracle_common.py soffice.com fix; LibreOffice 26.2.3.2 installed via winget; run_fods_oracle.py FODS input filter fixed; compare_fods_oracle.py parser CLI fixed; ORACLE_RUN PASS 4/4; ORACLE_COMPARE PASS 3/4 PASS 1/4 WARN; TC-0026 COMPLETED; TC-0031 FODT Gate 2 DEC-034 PASS (20/20 checks); FODT Gate 2 APPROVED Babar Raza 2026-05-08; FODT Gate 3 samples created 4/4 PASS; TC-0032 created; TC-0026 COMPLETED; oracle blocker RESOLVED)
+**Version:** 2.40 (run044: run043 independently verified PASS (42 checks); build_evidence_bundle.py 2 bugs fixed (metadata count, matches_forbidden); ORACLE_PREFLIGHT PASS + ORACLE_RUN PASS 4/4 + ORACLE_COMPARE PASS 3/4 WARN 1/4 re-run confirmed; TC-0027 DEC-034 PASS 24/24; FODS Gate 6 APPROVED Babar Raza 2026-05-08; TC-0032 DEC-034 PASS 27/27; FODT Gate 3 APPROVED Babar Raza 2026-05-08; FODS Gate 7 planning created; FODT Gate 4 planning created)
 **Last updated:** 2026-05-08
-**Current phase:** Phase 3: FODS Gates 1-5 PASSED. Gate 6: oracle comparison PASS (pending TC-0027 verification + human approval). FODT Gates 1-2 PASSED. Gate 3 samples created (pending TC-0032 verification + human approval).
-**Current status:** FODS: Gate 1-5 PASSED. Gate 6: oracle_comparison_created_pending_independent_verification (TC-0026 COMPLETED run043; TC-0027 not_started). FODT: Gate 1 PASSED (Babar Raza, 2026-05-07, run041); Gate 2 PASSED (Babar Raza, 2026-05-08, run043; TC-0031 PASS); Gate 3 sample_corpus_created_pending_independent_verification (run043; TC-0032 not_started). TC-0028 COMPLETED. TC-0029 COMPLETED. TC-0030 CLOSED. TC-0031 COMPLETED. TC-0032 not_started (FODT Gate 3 DEC-034). No product source. last_completed_run: run043 — commit bc92729. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current phase:** Phase 3: FODS Gates 1-6 PASSED. Gate 7: planning_ready (TC-0033 not_started). FODT Gates 1-3 PASSED. Gate 4: planning_ready (TC-0034 not_started).
+**Current status:** FODS: Gate 1-6 PASSED. Gate 7 planning_ready (TC-0033 not_started — requires explicit Gate 7 prompt). FODT: Gate 1 PASSED (Babar Raza, 2026-05-07, run041); Gate 2 PASSED (Babar Raza, 2026-05-08, run043); Gate 3 PASSED (Babar Raza, 2026-05-08, run044; TC-0032 DEC-034 PASS 27/27). Gate 4 planning_ready (TC-0034 not_started — requires explicit Gate 4 prompt). TC-0027 COMPLETED. TC-0032 COMPLETED. TC-0033 not_started. TC-0034 not_started. TC-0035 not_started. No product source. last_completed_run: run044 — PENDING. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
-**FODT Gate 2 allowed:** YES — Gate 2 PASSED (run043, Babar Raza, 2026-05-08). FODT Gate 3 samples created (run043). Gate 3 requires TC-0032 DEC-034 verification + human approval.
-**Commit allowed:** YES — run043 authorized by execution prompt.
-**Next required action:** (1) FODS: TC-0027 DEC-034 oracle verification sprint → Gate 6 human approval. (2) FODT: TC-0032 DEC-034 Gate 3 verification sprint (separate session) → Gate 3 human approval prompt.
+**FODT Gate 3 allowed:** YES — Gate 3 PASSED (run044, Babar Raza, 2026-05-08). Gate 4 planning_ready; execution requires explicit prompt.
+**Commit allowed:** YES — run044 authorized by execution prompt.
+**Next required action:** (1) FODS: explicit Gate 7 execution prompt → TC-0033 malformed/fuzz testing → DEC-034 verification sprint → Gate 7 human approval. (2) FODT: explicit Gate 4 execution prompt → TC-0034 parser prototype → TC-0035 DEC-034 verification sprint → Gate 4 human approval.
 
 ---
 
@@ -1335,6 +1335,31 @@ See `docs/current-state-and-evidence-authority.md`.
 - tools/samples/validate_fodt_samples.py (NEW — FODT Gate 3 sample validation tool)
 - samples/_provenance.yaml (UPDATED — 4 FODT entries, all provenance_status: confirmed)
 - plans/master-plan.md v2.39; memory/09, ROADMAP.md, settings.json updated
+
+**Committed (run044 — PENDING):**
+- tools/evidence/build_evidence_bundle.py (FIXED — 2 bugs: metadata count off-by-one; matches_forbidden false-positives .env.example/.gitignore)
+- acquisition-packs/fods/pack.yaml (UPDATED — gate_6 header + oracle_tool section; run043/run044 notes)
+- acquisition-packs/fods/gate6-oracle-comparison-report.md (UPDATED — Gate 6 PASSED status)
+- acquisition-packs/fods/gate6-human-review-packet.md (NEW — TC-0027 DEC-034 PASS 24/24 gate review packet)
+- acquisition-packs/fods/gate7-malformed-fuzz-plan.md (NEW — Gate 7 planning: 18 malformed inputs, 4 categories)
+- acquisition-packs/fods/gate7-risk-scope.md (NEW — Gate 7 risk and scope analysis)
+- acquisition-packs/fodt/pack.yaml (UPDATED — gate_3 → passed; Gate 3 approved header)
+- acquisition-packs/fodt/sample-sources.md (UPDATED — GATE_3_PASSED status; corpus table)
+- acquisition-packs/fodt/gate3-human-review-packet.md (NEW — TC-0032 DEC-034 PASS 27/27 gate review packet)
+- acquisition-packs/fodt/gate4-parser-prototype-plan.md (NEW — Gate 4 planning)
+- acquisition-packs/fodt/parser-requirements.md (NEW — FR-001..FR-007)
+- acquisition-packs/fodt/parser-scope.md (NEW — scope definition)
+- acquisition-packs/fodt/parser-test-plan.md (NEW — PT-001..PT-004)
+- acquisition-packs/fodt/parser-notes.md (UPDATED — PLANNING_READY status)
+- taskcards/TC-0026 (UPDATED — COMPLETED stale text replaced)
+- taskcards/TC-0027 (UPDATED — COMPLETED 24/24)
+- taskcards/TC-0032 (UPDATED — COMPLETED 27/27)
+- taskcards/TC-0033 (NEW — FODS Gate 7 malformed/fuzz; not_started)
+- taskcards/TC-0034 (NEW — FODT Gate 4 parser prototype; not_started)
+- taskcards/TC-0035 (NEW — FODT Gate 4 DEC-034 verification; not_started)
+- registry/format-registry.yaml (FODS gate_6 → passed; gate_7 → planning_ready; FODT gate_3 → passed; gate_4 → planning_ready; next_allowed_action updated)
+- plans/master-plan.md v2.40; memory/09, ROADMAP.md, README.md, settings.json updated
+- tools/evidence/contracts/run044-*.yaml (NEW — run044 evidence contract)
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 

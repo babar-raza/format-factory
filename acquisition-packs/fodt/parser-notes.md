@@ -20,21 +20,21 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "FODT parser planning notes — skeleton. Gate 4 parser prototype is NOT STARTED. Parser planning blocked until Gate 3 approval."
+notes: "FODT parser planning notes. Gate 3 PASSED (Babar Raza, 2026-05-08, run044). Gate 4 parser prototype planning complete (run044): TC-0034/TC-0035, gate4-parser-prototype-plan.md, parser-requirements.md, parser-scope.md, parser-test-plan.md. Execution requires explicit Gate 4 prompt."
 ---
 
 # FODT Parser Notes — Gate 4 Planning
 
 **Format:** FODT — Flat OpenDocument Text
 **Gate:** 4 (Parser Prototype)
-**Status:** NOT_STARTED — blocked until Gate 3 approval
+**Status:** PLANNING_READY — Gate 3 PASSED (Babar Raza, 2026-05-08, run044); awaiting explicit Gate 4 execution prompt
 **Parser approach:** ElementTree (stdlib) — reuse FODS fods_parser.py pattern
 
 ---
 
 ## Status
 
-**Gate 4 parser prototype is NOT STARTED.**
+**Gate 4 parser prototype planning is COMPLETE (run044). Execution is blocked pending explicit Gate 4 prompt.**
 
 Parser prototype may not be created until Gate 3 (sample corpus) is approved by a human reviewer.
 This file is a planning skeleton only, based on analysis at Gate 1 scoring time.

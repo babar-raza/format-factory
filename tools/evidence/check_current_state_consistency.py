@@ -5,7 +5,7 @@ check_current_state_consistency.py — Validate current-state consistency across
 PURPOSE:
     Verify that committed current-state files do not contain current-looking stale
     PENDING markers (e.g., "Latest commit: PENDING") and that gate states, FODT
-    status, and FODS Gate 6 status are internally consistent.
+    status, and FODS Gate 6/7 status are internally consistent.
 
     IMPORTANT: This checker does NOT require committed files to contain the exact
     final Git HEAD hash. That was a flawed "self-referential commit-hash loop" model
@@ -29,14 +29,14 @@ CHECKS PERFORMED:
        "Latest commit: PENDING" (sprint-in-progress marker must be absent after final commit)
     2. plans/master-plan.md does NOT contain "changes pending commit"
     3. memory/09-current-state-before-phase1.md does NOT contain "changes pending commit"
-    4. registry/format-registry.yaml FODS gate_6 approved_by is null
-    5. registry/format-registry.yaml FODS gate_6 approved_date is null
-    6. registry/format-registry.yaml FODS gate_6 status is NOT "passed"
+    4. registry/format-registry.yaml FODS gate_6 status is "passed" (Gate 6 APPROVED run044)
+    5. registry/format-registry.yaml FODS gate_6 approved_by is "Babar Raza"
+    6. registry/format-registry.yaml FODS gate_7 status is "planning_ready"
     7. FODT state is internally consistent:
        - If registry has FODT format_id entry: gate_1_approved must be true, pack must exist
        - If no FODT registry entry: gate_1_approved must be false, no pack
     8. acquisition-packs/fodt/ exists IFF FODT has approved Gate 1 in registry
-    9. acquisition-packs/fods/pack.yaml gate_6 not approved
+    9. acquisition-packs/fodt/pack.yaml gate_3 is passed (Gate 3 APPROVED run044)
     10. Section 33 (or Run Commit Ledger) exists in master-plan.md
 
 NOTES:
@@ -44,6 +44,7 @@ NOTES:
     - Does NOT require committed files to match git HEAD hash
     - Safe to run at any time (read-only)
     - If master-plan does not exist, reports FAIL with explanation
+    - Updated run044: Gate 6 PASSED (Babar Raza, 2026-05-08) — checks 4-6 reflect new state
 """
 
 import re
@@ -84,60 +85,77 @@ def check_no_pending_markers(text: str, context: str,
             )
 
 
-def check_registry_gate6_not_approved(repo_root: Path, issues: list, warnings: list) -> None:
-    """Check FODS registry gate_6 is NOT approved (approved_by: null, approved_date: null, not passed)."""
+def check_registry_gate6_passed(repo_root: Path, issues: list, warnings: list) -> None:
+    """Check FODS registry gate_6 IS passed (Gate 6 APPROVED Babar Raza, run044, 2026-05-08).
+    Also checks gate_7 is planning_ready."""
     registry = repo_root / "registry" / "format-registry.yaml"
     if not registry.exists():
-        warnings.append("registry/format-registry.yaml not found — skipping gate_6 check")
+        warnings.append("registry/format-registry.yaml not found — skipping gate_6/7 check")
         return
 
     text = registry.read_text(encoding="utf-8")
 
-    # Find FODS gate_6 section
-    # Look for the fods entry first, then find gate_6 within it
-    gate6_match = re.search(r'gate_6:.*?(?=gate_7:|$)', text, re.DOTALL)
-    if not gate6_match:
-        warnings.append("registry gate_6 section not found — skipping")
+    # Find FODS section (between format_id: fods and next format entry or end)
+    fods_section_m = re.search(r'(format_id:\s*fods.*?)(?=- format_id:|\Z)', text, re.DOTALL)
+    if not fods_section_m:
+        warnings.append("FODS section not found in registry — skipping gate_6/7 check")
         return
+    fods_text = fods_section_m.group(1)
 
-    gate6_text = gate6_match.group(0)
-
-    # Check approved_by is null
-    approved_by_m = re.search(r'approved_by:\s*(\S+)', gate6_text)
-    if approved_by_m:
-        approved_by = approved_by_m.group(1)
-        if approved_by.lower() not in ('null', 'none', '~'):
-            issues.append(
-                f"registry FODS gate_6.approved_by is '{approved_by}' — must be null "
-                f"(Gate 6 is NOT approved; oracle blocked)"
-            )
-        else:
-            print(f"  registry FODS gate_6.approved_by: {approved_by} (null — correct)")
+    # Find gate_6 section within FODS
+    gate6_match = re.search(r'gate_6:.*?(?=gate_7:|$)', fods_text, re.DOTALL)
+    if not gate6_match:
+        warnings.append("FODS registry gate_6 section not found — skipping")
     else:
-        warnings.append("registry gate_6.approved_by field not found")
+        gate6_text = gate6_match.group(0)
 
-    # Check approved_date is null
-    approved_date_m = re.search(r'approved_date:\s*(\S+)', gate6_text)
-    if approved_date_m:
-        approved_date = approved_date_m.group(1)
-        if approved_date.lower() not in ('null', 'none', '~'):
-            issues.append(
-                f"registry FODS gate_6.approved_date is '{approved_date}' — must be null"
-            )
+        # Check status is passed
+        status_m = re.search(r'status:\s*(\S+)', gate6_text)
+        if status_m:
+            status = status_m.group(1).strip('"\'')
+            if status.lower() == 'passed':
+                print(f"  registry FODS gate_6.status: passed (correct — Gate 6 APPROVED run044)")
+            else:
+                issues.append(
+                    f"registry FODS gate_6.status is '{status}' — must be 'passed' "
+                    f"(Gate 6 APPROVED by Babar Raza, run044, 2026-05-08)"
+                )
         else:
-            print(f"  registry FODS gate_6.approved_date: {approved_date} (null — correct)")
+            warnings.append("registry gate_6.status field not found")
 
-    # Check status is not passed
-    status_m = re.search(r'status:\s*(\S+)', gate6_text)
-    if status_m:
-        status = status_m.group(1)
-        if status.lower() in ('passed', 'approved'):
-            issues.append(
-                f"registry FODS gate_6.status is '{status}' — must not be passed/approved "
-                f"(oracle blocked)"
-            )
+        # Check approved_by is Babar Raza
+        approved_by_m = re.search(r'approved_by:\s*(.+)', gate6_text)
+        if approved_by_m:
+            approved_by = approved_by_m.group(1).strip().strip('"\'')
+            if 'babar' in approved_by.lower() or 'raza' in approved_by.lower():
+                print(f"  registry FODS gate_6.approved_by: '{approved_by}' (correct)")
+            elif approved_by.lower() in ('null', 'none', '~'):
+                issues.append(
+                    "registry FODS gate_6.approved_by is null — must be 'Babar Raza' "
+                    "(Gate 6 APPROVED run044)"
+                )
+            else:
+                warnings.append(f"registry gate_6.approved_by: '{approved_by}' — verify this is correct")
         else:
-            print(f"  registry FODS gate_6.status: {status} (not passed — correct)")
+            warnings.append("registry gate_6.approved_by field not found")
+
+    # Find gate_7 section within FODS
+    gate7_match = re.search(r'gate_7:.*?(?=gate_8:|next_allowed_action:|$)', fods_text, re.DOTALL)
+    if not gate7_match:
+        warnings.append("FODS registry gate_7 section not found — skipping")
+    else:
+        gate7_text = gate7_match.group(0)
+        status_m = re.search(r'status:\s*(\S+)', gate7_text)
+        if status_m:
+            status = status_m.group(1).strip('"\'')
+            if status.lower() == 'planning_ready':
+                print(f"  registry FODS gate_7.status: planning_ready (correct)")
+            elif status.lower() == 'not_started':
+                warnings.append("registry FODS gate_7.status is not_started — expected planning_ready after run044")
+            else:
+                print(f"  registry FODS gate_7.status: {status}")
+        else:
+            warnings.append("registry gate_7.status field not found")
 
 
 def check_fodt_state_consistent(repo_root: Path, issues: list, warnings: list) -> None:
@@ -225,29 +243,34 @@ def check_fodt_state_consistent(repo_root: Path, issues: list, warnings: list) -
             print("  acquisition-packs/fodt/: absent (correct — Gate 1 not yet approved)")
 
 
-def check_pack_yaml_gate6(repo_root: Path, issues: list, warnings: list) -> None:
-    """Check acquisition-packs/fods/pack.yaml gate_6 is not marked approved."""
-    pack_yaml = repo_root / "acquisition-packs" / "fods" / "pack.yaml"
+def check_fodt_pack_gate3_passed(repo_root: Path, issues: list, warnings: list) -> None:
+    """Check acquisition-packs/fodt/pack.yaml gate_3 is passed (Gate 3 APPROVED Babar Raza, run044)."""
+    pack_yaml = repo_root / "acquisition-packs" / "fodt" / "pack.yaml"
     if not pack_yaml.exists():
-        warnings.append("acquisition-packs/fods/pack.yaml not found — skipping gate_6 check")
+        warnings.append("acquisition-packs/fodt/pack.yaml not found — skipping FODT gate_3 check")
         return
 
     text = pack_yaml.read_text(encoding="utf-8")
 
-    gate6_m = re.search(r'gate_6:.*?(?=gate_7:|stage_7:|$)', text, re.DOTALL)
-    if not gate6_m:
-        warnings.append("acquisition-packs/fods/pack.yaml: gate_6 section not found")
+    gate3_m = re.search(r'gate_3:.*?(?=gate_4:|stages:|$)', text, re.DOTALL)
+    if not gate3_m:
+        warnings.append("acquisition-packs/fodt/pack.yaml: gate_3 section not found")
         return
 
-    gate6_text = gate6_m.group(0)
+    gate3_text = gate3_m.group(0)
 
-    if re.search(r'(approved:\s*true|status:\s*passed)', gate6_text, re.IGNORECASE):
-        issues.append(
-            "acquisition-packs/fods/pack.yaml gate_6 appears approved — "
-            "Gate 6 must remain blocked (oracle not installed)"
-        )
+    status_m = re.search(r'status:\s*(\S+)', gate3_text)
+    if status_m:
+        status = status_m.group(1).strip('"\'')
+        if status.lower() == 'passed':
+            print("  fodt pack.yaml gate_3: passed (correct — Gate 3 APPROVED run044)")
+        else:
+            issues.append(
+                f"acquisition-packs/fodt/pack.yaml gate_3.status is '{status}' — "
+                f"must be 'passed' (Gate 3 APPROVED by Babar Raza, run044, 2026-05-08)"
+            )
     else:
-        print("  pack.yaml gate_6: not approved (correct)")
+        warnings.append("fodt pack.yaml gate_3.status field not found")
 
 
 def check_run_commit_ledger_exists(text: str, issues: list, warnings: list) -> None:
@@ -304,17 +327,17 @@ def main() -> int:
     else:
         warnings.append("memory/09-current-state-before-phase1.md not found")
 
-    # --- Checks 4-6: FODS Gate 6 not approved ---
-    print("\n--- Checks 4-6: FODS Gate 6 approval state ---")
-    check_registry_gate6_not_approved(repo_root, issues, warnings)
+    # --- Checks 4-6: FODS Gate 6 PASSED + Gate 7 planning_ready ---
+    print("\n--- Checks 4-6: FODS Gate 6 approval state + Gate 7 status ---")
+    check_registry_gate6_passed(repo_root, issues, warnings)
 
     # --- Check 7+8: FODT state consistency ---
     print("\n--- Checks 7+8: FODT state consistency ---")
     check_fodt_state_consistent(repo_root, issues, warnings)
 
-    # --- Check 9: pack.yaml gate_6 ---
-    print("\n--- Check 9: pack.yaml gate_6 ---")
-    check_pack_yaml_gate6(repo_root, issues, warnings)
+    # --- Check 9: FODT pack.yaml gate_3 passed ---
+    print("\n--- Check 9: FODT pack.yaml gate_3 ---")
+    check_fodt_pack_gate3_passed(repo_root, issues, warnings)
 
     # --- Check 10: Section 33 exists ---
     print("\n--- Check 10: Run Commit Ledger section ---")

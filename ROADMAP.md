@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-08 (run043)
+**Last reviewed:** 2026-05-08 (run044)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
 
 ---
@@ -107,7 +107,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Gate 5 status:** PASSED — approved by Babar Raza (2026-05-06, run035). Neutral model v1: 6 entities, 19 field mappings, 30 coverage features, 21 validation rules. Validation 4/4 PASS (87 checks, 0 errors). TC-0024 CLOSED. TC-0023 COMPLETED.
 
-**Gate 6 status:** oracle_comparison_created_pending_independent_verification (run043). BLOCKER RESOLVED: LibreOffice 26.2.3.2 installed via winget (run043). oracle_common.py fixed (soffice.com console variant). run_fods_oracle.py fixed (FODS input filter). compare_fods_oracle.py fixed (parser CLI). ORACLE_RUN: PASS 4/4. ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet CSV export limitation, expected). TC-0026 COMPLETED. TC-0027 not_started (DEC-034 independent verification). Gate 6 NOT approved — requires TC-0027 PASS then human review. FODT Gate 1 APPROVED (Babar Raza, 2026-05-07, run041). FODT Gate 2 APPROVED (Babar Raza, 2026-05-08, run043; TC-0031 DEC-034 PASS 20/20). FODT Gate 3 sample corpus created run043: 4 FODT samples, FODT_SAMPLE_VALIDATION: PASS 4/4. TC-0032 not_started (Gate 3 DEC-034). Gate 3 NOT approved.
+**Gate 6 status:** PASSED — approved by Babar Raza (2026-05-08, run044). TC-0027 DEC-034 PASS 24/24 (run044). ORACLE_RUN: PASS 4/4. ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet CSV export limitation — expected, not a parser defect). Oracle harness: tools/oracle/. FODT Gate 1 APPROVED (Babar Raza, 2026-05-07, run041). FODT Gate 2 APPROVED (Babar Raza, 2026-05-08, run043). FODT Gate 3 APPROVED (Babar Raza, 2026-05-08, run044; TC-0032 DEC-034 PASS 27/27). FODS Gate 7 planning_ready (TC-0033 not_started). FODT Gate 4 planning_ready (TC-0034 not_started).
 
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 
@@ -133,7 +133,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 ## Beyond FODS: Subsequent Formats
 
-After FODS, subsequent formats are scored and acquired in priority order as determined by the scoring model. Next-format candidate shortlist created run038, independently verified run039. **FODT Gate 1 APPROVED** (Babar Raza, 2026-05-07, run041): 88/100, Accept band, Category 1 RF — official registry entry created; acquisition-packs/fodt/ skeleton created (6 files); TC-0030 created. **FODT Gate 2 evidence executed** (run042, 2026-05-08): 8/8 fast-path items confirmed, SHA-256 MATCH (3rd verification), patent search waived; TC-0030 status → evidence_executed_pending_dec034_verification; TC-0031 created (DEC-034 not_started). ODF reuse strategy documented at `docs/odf-flat-family-reuse-strategy.md`. FODP, FODG, FODB remain in candidate pool. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`; scoring package at `registry/candidates/fodt-gate1-scoring-package.yaml`. Next for FODT: TC-0032 DEC-034 independent verification sprint (separate session) → Gate 3 human review. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
+After FODS, subsequent formats are scored and acquired in priority order. **FODT Gates 1-3 ALL PASSED** (Babar Raza): Gate 1 run041 (88/100, Category 1 RF); Gate 2 run043 (8/8 fast-path, patent waived); Gate 3 run044 (4 FODT samples, TC-0032 DEC-034 PASS 27/27). FODT Gate 4 parser prototype planning complete (run044): TC-0034 + TC-0035, parser-requirements.md (FR-001..FR-007), parser-test-plan.md (PT-001..PT-004). Gate 4 execution requires explicit prompt. ODF reuse strategy documented at `docs/odf-flat-family-reuse-strategy.md`. FODP, FODG, FODB remain in candidate pool. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
 
 The format registry (`registry/format-registry.yaml`) is the authoritative record of which formats are in-flight, deferred, or rejected.
 

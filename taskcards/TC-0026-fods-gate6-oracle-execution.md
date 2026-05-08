@@ -43,8 +43,8 @@ notes: "Gate 6 oracle comparison execution taskcard for FODS. Created run034 (20
 **This taskcard must not be executed until:**
 1. ~~Gate 5 is approved by a human~~ **DONE** — Gate 5 PASSED (Babar Raza, 2026-05-06, run035)
 2. ~~TC-0025 (Gate 6 planning) has been reviewed~~ **DONE** — TC-0025 completed (run035)
-3. Oracle tool (LibreOffice) is installed and version verified — **STILL BLOCKED**
-4. A human issues an explicit Gate 6 execution prompt naming TC-0026 — **SATISFIED** by current run038 prompt (conditional on oracle availability)
+3. ~~Oracle tool (LibreOffice) is installed and version verified~~ **DONE** — LibreOffice 26.2.3.2 installed (winget, run043); soffice.com ORACLE_PREFLIGHT: PASS
+4. ~~A human issues an explicit Gate 6 execution prompt naming TC-0026~~ **DONE** — executed run043
 
 ---
 
@@ -58,13 +58,12 @@ Execute the oracle comparison for FODS: run all 4 Gate 3 samples through both th
 
 - [x] Gate 5 PASSED (Babar Raza, 2026-05-06, run035 human-authorized prompt)
 - [x] TC-0025 planning reviewed (completed run035)
-- [ ] LibreOffice installed, version recorded — BLOCKER: not installed on dev machine (run035 preflight FAIL)
-- [ ] Explicit TC-0026 execution prompt from human — pending LibreOffice installation
+- [x] LibreOffice installed, version recorded — LibreOffice 26.2.3.2 installed via winget (run043, 2026-05-08); ORACLE_PREFLIGHT: PASS
+- [x] Explicit TC-0026 execution prompt from human — executed run043
 
-**BLOCKED:** LibreOffice not found on this machine. Install LibreOffice per `acquisition-packs/fods/oracle-installation-checklist.md` and re-execute TC-0026 with explicit prompt.
-Oracle harness ready at tools/oracle/ (hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI). Pre-flight tool: tools/oracle/preflight_oracle.py.
-Provider registry: tools/oracle/provider_registry.yaml. Environment check: tools/oracle/validate_oracle_environment.py.
-Provider options (alternatives considered): acquisition-packs/fods/oracle-provider-options.md.
+**COMPLETED run043 (2026-05-08):** ORACLE_RUN: PASS 4/4. ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet-basic.fods SHEET_COUNT_MISMATCH — LibreOffice CSV exports only first/active sheet; parser correctly identifies all sheets; expected, not a parser defect).
+Oracle harness at tools/oracle/ (hardened run036: oracle_common.py, FORMAT_FACTORY_SOFFICE env var, --soffice-path CLI). Comparison report: acquisition-packs/fods/gate6-oracle-comparison-report.md.
+Next: TC-0027 DEC-034 independent verification (separate session).
 
 ---
 

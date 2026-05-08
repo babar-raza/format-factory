@@ -2,6 +2,7 @@
 #
 # Gate 1: PASSED (Babar Raza, 2026-05-07, run041)
 # Gate 2: PASSED (Babar Raza, 2026-05-08, run043)
+# Gate 3: PASSED (Babar Raza, 2026-05-08, run044) — 4/4 PASS, DEC-034 verified run044
 # Skeleton created: run041 (2026-05-07) after Gate 1 human approval
 # Spec: ODF 1.3 (already cached from FODS acquisition — .local/spec-cache/fods/1.3/)
 
@@ -27,7 +28,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 1 passed 2026-05-07 (Babar Raza, run041). Skeleton created run041. Gate 2 evidence draft pending — spec already cached (ODF 1.3 same as FODS). Fast-path Gate 2 expected (OASIS RF Category 1)."
+notes: "Gate 1 PASSED 2026-05-07 (Babar Raza, run041). Gate 2 PASSED 2026-05-08 (Babar Raza, run043) — 8/8 fast-path items, OASIS RF Category 1. Gate 3 PASSED 2026-05-08 (Babar Raza, run044) — 4 synthetic FODT samples, FODT_SAMPLE_VALIDATION PASS 4/4, TC-0032 DEC-034 PASS 27/27. Next: Gate 4 parser prototype planning (TC-0034)."
 
 # --- Format identity ---
 format_id: fodt
@@ -98,10 +99,24 @@ stages:
     approval_run: run043
     notes: "Gate 2 evidence executed run042 (2026-05-08). 8/8 fast-path items confirmed. Patent search waived (same basis as FODS). DEC-034 independently verified run043 (20/20 checks PASS). Gate 2 approved by Babar Raza in run043 execution prompt (2026-05-08)."
   gate_3:
-    status: not_started
-    approved_by: null
-    approved_date: null
-    notes: null
+    status: passed
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-08"
+    sample_count: 4
+    samples:
+      - samples/by-format/fodt/minimal-document.fodt
+      - samples/by-format/fodt/headings-and-paragraphs.fodt
+      - samples/by-format/fodt/list-basic.fodt
+      - samples/by-format/fodt/table-basic.fodt
+    validation_status: "FODT_SAMPLE_VALIDATION: PASS 4/4 (run043 + run044 re-verification)"
+    corpus_created_run: run043
+    corpus_created_date: "2026-05-08"
+    dec034_required: true
+    dec034_taskcard: TC-0032
+    dec034_status: COMPLETED_PASS_27_27
+    dec034_verified_run: run044
+    approval_run: run044
+    notes: "Gate 3 sample corpus created run043 (2026-05-08). 4 synthetic Apache-2.0 FODT samples. FODT_SAMPLE_VALIDATION: PASS 4/4. TC-0032 DEC-034 independent verification PASS 27/27 (run044, 2026-05-08). Gate 3 APPROVED by Babar Raza (run044 execution prompt, 2026-05-08). This approval authorizes Gate 4 parser prototype planning."
   gate_4:
     status: not_started
     approved_by: null

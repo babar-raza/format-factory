@@ -115,25 +115,21 @@ def load_contract(contract_path):
 
 
 def matches_forbidden(path, forbidden_patterns):
-    """Check if a path matches any forbidden pattern."""
+    """Check if a path matches any forbidden pattern.
+
+    A path is forbidden if it exactly matches a pattern or is inside a forbidden
+    directory (pattern + "/" prefix match). This mirrors validate_evidence_bundle.py
+    so that .env.example is NOT caught by .env and .gitignore is NOT caught by .git/.
+    """
     path_normalized = path.replace("\\", "/")
     for pattern in forbidden_patterns:
         pattern_clean = pattern.rstrip("/")
-        if fnmatch.fnmatch(path_normalized, pattern_clean + "*"):
-            return True
+        # Exact match
         if fnmatch.fnmatch(path_normalized, pattern_clean):
             return True
+        # Directory prefix match (path is inside a forbidden directory)
         if path_normalized.startswith(pattern_clean + "/"):
             return True
-        if path_normalized.startswith(pattern_clean):
-            return True
-        parts = path_normalized.split("/")
-        for i in range(len(parts)):
-            subpath = "/".join(parts[i:])
-            if fnmatch.fnmatch(subpath, pattern_clean + "*"):
-                return True
-            if fnmatch.fnmatch(subpath, pattern_clean):
-                return True
     return False
 
 
@@ -404,6 +400,9 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
     # Generate manifest before building zip
     if metadata_path:
         manifest_path = metadata_path / "bundle-manifest.yaml"
+        # Append bundle-manifest.yaml BEFORE write_manifest so the count includes it
+        if "bundle-manifest.yaml" not in metadata_files:
+            metadata_files.append("bundle-manifest.yaml")
         write_manifest(
             manifest_path,
             included_repo=repo_files_to_include,
@@ -414,8 +413,6 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
             contract_path=str(contract_path),
             bundle_path=str(output_path),
         )
-        if "bundle-manifest.yaml" not in metadata_files:
-            metadata_files.append("bundle-manifest.yaml")
 
     # Build the zip
     output_path = Path(output_path)

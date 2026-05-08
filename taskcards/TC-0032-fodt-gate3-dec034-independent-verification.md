@@ -28,11 +28,11 @@ notes: "FODT Gate 3 DEC-034 independent verification taskcard. Created run043 (2
 **Taskcard ID:** TC-0032
 **Phase:** 3 (Gate 3 sample corpus verification)
 **Gate:** 3 (Sample Corpus — independent verification)
-**Status:** not_started — awaiting explicit verification prompt in a separate session
+**Status:** COMPLETED — DEC-034 PASS 27/27 (run044, 2026-05-08)
 **Created:** 2026-05-08 (run043)
 **Created by:** claude-sonnet-4-6 (run043)
-**Prerequisite:** Gate 3 sample corpus created (run043) ✓
-**DEC-034 rule:** Must run in a separate execution session from run043
+**Completed:** 2026-05-08 (run044)
+**DEC-034:** Satisfied — run044 separate from run043 ✓
 
 ---
 
