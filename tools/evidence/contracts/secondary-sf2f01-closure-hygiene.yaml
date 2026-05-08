@@ -1,0 +1,158 @@
+contract_id: secondary-sf2f01-closure-hygiene
+description: >
+  S-F2F-01C evidence contract. Closure hygiene sprint for S-F2F-01 Playbook Schema and
+  Policy. Repairs evidence defects found in S-F2F-01B bundle: D-EV-03 (final-bundle-
+  validation-proof.txt still contained BUNDLE_VALIDATION: PENDING), D-EV-04 (pending-
+  marker-scan-report.md claimed proof was updated but ZIP showed contradicting content),
+  D-EV-05 (final-state-summary.yaml had stale MAIN SPRINT state). Hardens the evidence
+  validator by expanding PENDING_MARKER_PATTERNS from 2 to 6 entries. Adds 2 new negative
+  tests (suite 15/15). No S-F2F-02 execution. No tools/playbook/. No gate changes. No push.
+created_run: secondary-sf2f01-closure-hygiene
+secondary_sprint: true
+sf2f_taskcard: S-F2F-01
+closure_hygiene_only: true
+plan_repair_only: false
+require_clean_git: true
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+min_metadata_count: 65
+
+# S-F2F-01C specific checks
+no_sf2f02_started: true
+no_playbook_tools_created: true
+no_replay_engine_created: true
+no_apply_mode_created: true
+no_acquisition_pack_playbooks_created: true
+no_family_playbook_created: true
+no_product_source_created: true
+no_gate_status_changed: true
+no_main_sprint_deviation: true
+no_endpoint_call: true
+no_new_spec_download: true
+no_push: true
+no_final_pending_validation_markers: true
+
+required_repo_files:
+  - schemas/playbook/acquisition-playbook.schema.json
+  - schemas/playbook/review-queue.schema.json
+  - docs/playbook-layer.md
+  - docs/examples/acquisition-playbook-fods-documentation-example.yaml
+  - taskcards/S-F2F-01-playbook-schema-and-policy.md
+  - taskcards/S-F2F-02-playbook-validation-only.md
+  - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  - plans/master-plan.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - docs/acquisition-workflow.md
+  - docs/current-state-and-evidence-authority.md
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_negative_bundle_validation.py
+  - tools/evidence/contracts/secondary-sf2f01-playbook-schema-policy.yaml
+  - tools/evidence/contracts/secondary-sf2f01-independent-verification.yaml
+  - tools/evidence/contracts/secondary-sf2f01-closure-hygiene.yaml
+
+forbidden_patterns:
+  - .git/
+  - .env
+  - .local/
+  - "*.pyc"
+  - __pycache__/
+  - tools/playbook/
+  - tools/product/
+  - schemas/product/
+  - acquisition-packs/_families/
+  - acquisition-packs/fods/playbook.yaml
+  - acquisition-packs/fodt/playbook.yaml
+  - tests/playbook/
+  - plans/review-queues/
+  - docs/product-dependency-closure.md
+  - docs/python-product-closure-strategy.md
+  - docs/dotnet-product-closure-strategy.md
+  - docs/product-skeleton-generator.md
+  - reports/legal/
+  - ".github/workflows/"
+  - "src/net/"
+  - "src/python/fods/"
+  - "src/python/fodt/"
+
+checks:
+  no_gate_status_changed: true
+  no_product_source_created: true
+  no_parser_created: true
+  no_neutral_model_created: true
+  no_playbook_tools_created: true
+  no_product_tools_created: true
+  no_samples_created: true
+  no_endpoint_call: true
+  no_new_spec_download: true
+  no_embedding_vector_db: true
+  no_implementation_code_added: true
+  no_main_sprint_deviation: true
+  no_push: true
+
+required_metadata_files:
+  - sf2f01c-summary.md
+  - sf2f01c-current-state-review.md
+  - sf2f01b-evidence-defect-review.md
+  - sf2f01-artifact-reverification.md
+  - sf2f01-final-status-decision.md
+  - sf2f02-readiness-decision.md
+  - pending-marker-scan-report.md
+  - evidence-validator-pending-marker-test-report.md
+  - prior-bundle-contradiction-report.md
+  - validation-command-log.txt
+  - no-sf2f02-started-check.md
+  - no-replay-tool-created-check.md
+  - no-apply-mode-created-check.md
+  - no-family-playbook-created-check.md
+  - no-acquisition-pack-playbook-created-check.md
+  - no-vector-index-created-check.md
+  - no-gate-status-change-check.md
+  - no-main-sprint-deviation-check.md
+  - no-endpoint-call-check.md
+  - no-new-spec-download-check.md
+  - no-product-source-check.md
+  - no-product-source-directory-check.md
+  - no-reports-legal-check.md
+  - no-ci-workflow-check.md
+  - no-push-check.md
+  - no-tooling-implementation-proof.md
+  - no-stale-final-main-sprint-state-check.md
+  - no-final-pending-validation-marker-check.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - json-validation-notes.txt
+  - yaml-validation-notes.txt
+  - markdown-validation-notes.txt
+  - python-validation-notes.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - git-log.txt
+  - artifact-index-snapshot.yaml
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - current-state-consistency-report.md
+  - self-challenge.md
+  - schema-validation-summary.md
+  - policy-boundary-summary.md
+  - governance-boundary-summary.md
+  - main-sprint-snapshot-boundary-check.md
+  - authority-boundary-check.md
+  - dec034-boundary-check.md
+  - human-approval-boundary-check.md
+  - process-defect-followup.md
+  - future-secondary-sprint-guidance.md
+  - final-next-action-summary.md
+  - final-state-summary.yaml
+  - final-bundle-audit.md
+  - final-git-clean-proof.txt
+  - final-bundle-validation-proof.txt
+  - verdict.md
