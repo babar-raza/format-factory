@@ -1,0 +1,107 @@
+---
+artifact_id: fods-implementation-requirements
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fods/implementation-requirements.yaml
+format_id: fods
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/implementation-requirements.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — gate approvals are authoritative
+---
+
+# FODS Implementation Requirements
+# Compiled: run049 (2026-05-08), FUL-002
+
+format_id: fods
+schema: schemas/format-understanding/implementation-requirements.schema.yaml
+
+requirements:
+  - req_id: IR-FODS-001
+    tier: 0
+    description: >
+      Parse root element (office:document), validate MIME type attribute,
+      extract ODF version, return structured error on unparseable input.
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FR-001 in acquisition-packs/fods/parser-requirements.md. Gate 4 prototype PASS 4/4."
+
+  - req_id: IR-FODS-002
+    tier: 0
+    description: >
+      Implement streaming parse (ET.iterparse) for product source.
+      The Gate 4 prototype uses ET.parse() (full load); product source must use iterparse
+      to handle large enterprise FODS files without memory exhaustion.
+    source_gate: 10
+    priority: required
+    status: approved
+    notes: >
+      TC-6 from Gate 8 deferred to Gate 10 planning; resolved at Gate 10 level.
+      Implementation deferred to Phase 4 execution (explicit prompt required).
+      Reference: acquisition-packs/fods/gate10-product-source-readiness-report.md.
+
+  - req_id: IR-FODS-003
+    tier: 0
+    description: >
+      File size guard: reject files > 100MB before parsing to prevent memory exhaustion.
+    source_gate: 8
+    priority: required
+    status: approved
+    notes: "TC-2 in Gate 8 security review. MAX_FILE_BYTES = 100 * 1024 * 1024."
+
+  - req_id: IR-FODS-004
+    tier: 0
+    description: >
+      Add defusedxml as optional dependency for defense-in-depth XXE protection.
+      Fallback to stdlib xml.etree.ElementTree if defusedxml not installed.
+    source_gate: 10
+    priority: recommended
+    status: approved
+    notes: >
+      TC-1 from Gate 8; recommended for product source.
+      try: import defusedxml.ElementTree as ET
+      except ImportError: import xml.etree.ElementTree as ET
+
+  - req_id: IR-FODS-005
+    tier: 1
+    description: >
+      Extract sheet names (table:name attribute) and count rows per sheet
+      (table:table-row elements).
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FR-002 in parser-requirements.md. Gate 3 sample multi-sheet-basic.fods validated."
+
+  - req_id: IR-FODS-006
+    tier: 1
+    description: >
+      Extract string cell values (office:value-type=string, text:p content).
+      Handle empty cells (no value-type, empty or absent text).
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FR-002 in parser-requirements.md. Gate 4 PASS 4/4."
+
+  - req_id: IR-FODS-007
+    tier: 2
+    description: >
+      Extract typed cell values: float (office:value), boolean (office:boolean-value),
+      date (office:date-value), time (office:time-value).
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FR-003 in parser-requirements.md. Gate 3 sample typed-values-basic.fods validated."
+
+  - req_id: IR-FODS-008
+    tier: 3
+    description: >
+      Extract raw formula string (table:formula) and cached result value.
+      Handle column repeat expansion (table:number-columns-repeated).
+    source_gate: 4
+    priority: required
+    status: deferred
+    notes: >
+      Tier 3 deferred in first OSS release (run047 Gate 9 approval).
+      FR-004 in parser-requirements.md. Gate 3 sample formula-basic.fods created.

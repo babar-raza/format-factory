@@ -1,0 +1,111 @@
+---
+artifact_id: fods-verified-facts
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fods/verified-facts.yaml
+format_id: fods
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/verified-facts.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — spec citation is authoritative; facts here are derived
+---
+
+# FODS Verified Facts
+# Compiled: run049 (2026-05-08), FUL-002
+
+format_id: fods
+schema: schemas/format-understanding/verified-facts.schema.yaml
+
+facts:
+  - fact_id: FFODS-001
+    statement: >
+      The root element of a valid FODS file is office:document in the namespace
+      urn:oasis:names:tc:opendocument:xmlns:office:1.0.
+    spec_citation: "ODF 1.3 Part 3, §3.1.2 — Flat XML file structure"
+    evidence_source: "Gate 3 samples (4/4 PASS), Gate 4 prototype (FR-001)"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODS-002
+    statement: >
+      A valid FODS spreadsheet must have office:mimetype attribute value
+      'application/vnd.oasis.opendocument.spreadsheet-flat-xml'.
+    spec_citation: "ODF 1.3 Part 3, §3.1.2 and MIME type registration"
+    evidence_source: "Gate 4 prototype (FR-001 validation), Gate 3 samples"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODS-003
+    statement: >
+      The ODF version is declared in office:version attribute on the root element.
+      Current supported value: "1.3".
+    spec_citation: "ODF 1.3 Part 3, §3.1.2 — office:version attribute"
+    evidence_source: "Gate 3 samples (all 4 samples use office:version="1.3")"
+    confidence: deterministic
+    verified_by_oracle: false
+
+  - fact_id: FFODS-004
+    statement: >
+      Worksheets (sheets) are represented as table:table elements within
+      office:body/office:spreadsheet.
+    spec_citation: "ODF 1.3 Part 3, §9.1.2 — table:table element"
+    evidence_source: "Gate 4 prototype (FR-002), Gate 3 samples (multi-sheet-basic.fods)"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODS-005
+    statement: >
+      Table cells are represented as table:table-cell elements with
+      office:value-type attribute indicating the data type.
+    spec_citation: "ODF 1.3 Part 3, §9.4.2 — table:table-cell element"
+    evidence_source: "Gate 4 prototype (FR-002, FR-003), Gate 3 samples (typed-values-basic.fods)"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODS-006
+    statement: >
+      Supported office:value-type values include: string, float, boolean, date, time, currency,
+      percentage. Float values are stored in office:value attribute.
+      Boolean values are stored in office:boolean-value attribute.
+    spec_citation: "ODF 1.3 Part 3, §9.4.4 — office:value-type values"
+    evidence_source: "Gate 4 prototype (FR-003), Gate 3 sample typed-values-basic.fods (3 types verified)"
+    confidence: deterministic
+    verified_by_oracle: false
+
+  - fact_id: FFODS-007
+    statement: >
+      Formulas are stored as the table:formula attribute on table:table-cell elements.
+      The formula prefix is 'oooc:' for OpenDocument formula syntax.
+      Cached results appear as office:value alongside the formula.
+    spec_citation: "ODF 1.3 Part 3, §9.4.5 — table:formula attribute"
+    evidence_source: "Gate 4 prototype (FR-004), Gate 3 sample formula-basic.fods"
+    confidence: deterministic
+    verified_by_oracle: false
+
+  - fact_id: FFODS-008
+    statement: >
+      FODS is a UTF-8 encoded single XML file. No ZIP container or compression.
+      Standard XML parsers handle it directly without special extraction.
+    spec_citation: "ODF 1.3 Part 3, §3.1.2"
+    evidence_source: "Gate 3 samples (all 4 files), Gate 7 fuzz (no ZIP extraction)"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODS-009
+    statement: >
+      Python's xml.etree.ElementTree (Expat backend) rejects DOCTYPE declarations
+      by default, providing implicit XXE protection without requiring defusedxml.
+    spec_citation: "Gate 7 fixture d04-entity-injection-attempt.fods — Expat ParseError on DOCTYPE"
+    evidence_source: "Gate 7 PASS 18/18 (run035+run045), Gate 8 TC-1 MITIGATED"
+    confidence: deterministic
+    verified_by_oracle: false
+
+  - fact_id: FFODS-010
+    statement: >
+      Column repeat expansion is represented by table:number-columns-repeated attribute.
+      The parser must expand these repetitions to produce a complete cell grid.
+    spec_citation: "ODF 1.3 Part 3, §9.1.4 — table:number-columns-repeated"
+    evidence_source: "Gate 4 prototype notes, parser-requirements.md FR-004"
+    confidence: inferred
+    verified_by_oracle: false

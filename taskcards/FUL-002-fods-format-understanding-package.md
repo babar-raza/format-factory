@@ -1,7 +1,7 @@
 ---
 taskcard_id: FUL-002
 title: FODS Compiled Format Understanding Package
-status: proposed_pending_human_approval
+status: COMPLETED
 created: 2026-05-08
 sprint: memory-sprint-format-understanding-llm-strategy
 visibility: internal
@@ -80,4 +80,4 @@ Human authorizes FUL-002 execution after FUL-001 design is approved.
 
 ## Status
 
-proposed_pending_human_approval — blocked on FUL-001; no execution authorized in this memory sprint.
+COMPLETED — run049 (2026-05-08). 6 FUL files compiled in acquisition-packs/fods/. FUL-001 schemas used.

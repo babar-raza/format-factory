@@ -1,0 +1,64 @@
+---
+artifact_id: fods-format-profile
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fods/format-profile.yaml
+format_id: fods
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/format-profile.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — not a truth authority; see spec and gate evidence
+---
+
+# FODS Format Profile
+# Compiled: run049 (2026-05-08), FUL-002
+
+format_id: fods
+display_name: "Flat OpenDocument Spreadsheet"
+physical_representation: text_xml
+family: cells
+spec_body: OASIS
+spec_version: "ODF 1.3"
+spec_part: "Part 3 — Packages"
+spec_url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/"
+spec_cached: ".local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf"
+spec_sha256: "92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066"
+legal_category: 1
+legal_status: royalty_free
+royalty_free_basis: "OASIS RF on Limited Terms"
+legal_evidence: "acquisition-packs/fods/legal-notes.md"
+xml_namespace_root: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+root_element: "office:document"
+single_file: true
+container_model: none
+encoding: UTF-8
+mime_type: "application/vnd.oasis.opendocument.spreadsheet-flat-xml"
+extensions: [.fods]
+
+gate_evidence:
+  gate_1:
+    status: passed
+    score: 93
+    band: accept
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-04"
+  gate_2:
+    status: passed
+    fast_path: true
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-05"
+  gate_9:
+    status: passed
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-08"
+  gate_10:
+    status: passed
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-08"
+
+notes: >
+  FODS is the flat-XML (non-ZIP) variant of the ODF spreadsheet format.
+  Unlike ODS, FODS requires no ZIP extraction or container parsing.
+  Same ODF 1.3 spec as ODS, FODT, FODP. First acquisition in Cells family.
+  Pipeline reuse: significant spec, normalization, and tooling reused by FODT.

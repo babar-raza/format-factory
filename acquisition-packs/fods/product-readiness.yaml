@@ -1,0 +1,72 @@
+---
+artifact_id: fods-product-readiness
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fods/product-readiness.yaml
+format_id: fods
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/product-readiness.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — registry/format-registry.yaml gate approvals are authoritative
+---
+
+# FODS Product Readiness
+# Compiled: run049 (2026-05-08), FUL-002
+
+format_id: fods
+schema: schemas/format-understanding/product-readiness.schema.yaml
+planning_only: false
+
+gate_9_status: passed
+gate_9_approved_by: "Babar Raza"
+gate_9_approved_date: "2026-05-08"
+gate_9_run: run047
+tier_map: "acquisition-packs/fods/tier-map.yaml"
+
+gate_10_status: passed
+gate_10_approved_by: "Babar Raza"
+gate_10_approved_date: "2026-05-08"
+gate_10_run: run048
+gate_10_oss_scope: "Tiers 0-2 (12 features)"
+gate_10_packaging_plan: "acquisition-packs/fods/gate10-packaging-plan.md"
+
+first_oss_release_tiers: [0, 1, 2]
+deferred_tiers: [3, 4]
+oss_ceiling: 4
+
+first_oss_release_feature_count: 12
+total_planned_features: 16
+
+packaging:
+  package_name: "format-factory-fods"
+  version: "v0.1.0"
+  language: python
+  license: "Apache-2.0"
+
+product_source_authorization:
+  python_source_authorized: false
+  python_authorization_required: >
+    An explicit Phase 4 Python implementation execution prompt is required.
+    Gate 10 approval alone does NOT authorize product source creation.
+    See plans/master-plan.md Section 1 Rule 11.
+  net_source_authorized: false
+  net_authorization_blocked_by: "DEC-033 (NET FOSS packaging deferred)"
+
+gate_11_status: not_started
+gate_11_notes: "Gate 11 commercial planning blocked until DEC-033 resolved."
+
+known_gaps:
+  - gap_id: TC-6-deferred
+    description: "iterparse implementation deferred to Phase 4 (required in product source)"
+    blocker_for_release: false
+    resolution: "Implement ET.iterparse() in product source before any release"
+  - gap_id: DEC-033
+    description: ".NET FOSS packaging decision pending"
+    blocker_for_release: false
+    resolution: "Resolve before any .NET source creation or release"
+
+readiness_verdict: >
+  FODS Python FOSS product (Tiers 0-2) is READY FOR PHASE 4 after an explicit
+  Phase 4 Python implementation execution prompt is issued. All gates 1-10 passed.
+  No product source created. No premature source creation risk.

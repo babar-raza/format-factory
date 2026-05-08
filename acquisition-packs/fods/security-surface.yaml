@@ -1,0 +1,97 @@
+---
+artifact_id: fods-security-surface
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fods/security-surface.yaml
+format_id: fods
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/security-surface.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — reports/security/fods.md is authoritative
+---
+
+# FODS Security Surface
+# Compiled: run049 (2026-05-08), FUL-002
+# Source: reports/security/fods.md (Gate 8, run046, GATE8_SECURITY_REVIEW: PASS)
+
+format_id: fods
+schema: schemas/format-understanding/security-surface.schema.yaml
+gate_8_status: passed
+gate_8_approved_by: "Babar Raza"
+gate_8_approved_date: "2026-05-08"
+gate_8_run: run046
+security_report: "reports/security/fods.md"
+
+threats:
+  - tc_id: TC-1
+    category: "XML External Entities (XXE)"
+    status: MITIGATED
+    finding: >
+      ElementTree/Expat blocks external entities by default (Python 3.8+).
+      No external resources accessed via XML.
+    gate_evidence: "Gate 8 TC-1 MITIGATED. Gate 7 fixture d04 confirms SYSTEM entity rejected."
+    deferred_to: null
+    product_source_requirement: "RECOMMEND adding defusedxml as defense-in-depth (IR-FODS-004)"
+
+  - tc_id: TC-2
+    category: "DTD / Entity Expansion (Billion Laughs)"
+    status: MITIGATED
+    finding: >
+      Expat rejects DOCTYPE declarations. No entity expansion path exists.
+    gate_evidence: "Gate 8 TC-2 MITIGATED."
+    deferred_to: null
+    product_source_requirement: null
+
+  - tc_id: TC-3
+    category: "Zip Bombs / Decompression"
+    status: NOT_APPLICABLE
+    finding: "FODS is flat XML — no ZIP container. This threat class does not apply."
+    gate_evidence: "Gate 8 TC-3 NOT-APPLICABLE."
+    deferred_to: null
+    product_source_requirement: null
+
+  - tc_id: TC-4
+    category: "Path Traversal in Archives"
+    status: NOT_APPLICABLE
+    finding: "FODS is not archive-based. Single file input only. No path traversal risk."
+    gate_evidence: "Gate 8 TC-4 NOT-APPLICABLE."
+    deferred_to: null
+    product_source_requirement: null
+
+  - tc_id: TC-5
+    category: "Malformed File Handling"
+    status: MITIGATED
+    finding: "Gate 7 PASS 18/18: all malformed inputs handled safely. No crashes. No corruption."
+    gate_evidence: "Gate 7 GATE7_FUZZ_TEST: PASS 18/18 CRASH 0/18 CORRUPT 0/18 (run035, run045)"
+    deferred_to: null
+    product_source_requirement: null
+
+  - tc_id: TC-6
+    category: "Memory / Streaming"
+    status: DEFERRED
+    finding: >
+      ET.parse() loads full document into memory. Files are capped at 100MB.
+      For production use, iterparse is required.
+    gate_evidence: "Gate 8 TC-6 DEFERRED to Gate 10. Gate 10 planning confirms iterparse required."
+    deferred_to: "Phase 4 implementation (IR-FODS-002 required)"
+    product_source_requirement: "REQUIRED: Use ET.iterparse() in product source (IR-FODS-002)"
+
+  - tc_id: TC-7
+    category: "Recursive Processing"
+    status: MITIGATED
+    finding: >
+      FODS parser uses iterative code (no recursive functions). No recursion risk.
+    gate_evidence: "Gate 8 TC-7 MITIGATED (iterative code). Contrast with FODT TC-7 (recursive)."
+    deferred_to: null
+    product_source_requirement: "Maintain iterative approach in product source"
+
+  - tc_id: TC-8
+    category: "XXE via Namespace Prefixes"
+    status: NOT_APPLICABLE
+    finding: >
+      ODF namespace prefixes are fixed in the spec. No dynamic namespace resolution.
+      Expat handles namespace prefixes statically.
+    gate_evidence: "Gate 8 TC-8 NOT-APPLICABLE."
+    deferred_to: null
+    product_source_requirement: null
