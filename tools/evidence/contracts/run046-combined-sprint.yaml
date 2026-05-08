@@ -1,0 +1,73 @@
+# run046 Evidence Contract
+#
+# Sprint: FODS Gate 8 execution + FODT Gate 5 execution + both approvals
+# Date: 2026-05-08
+# Sections covered:
+#   A/B: Read files + run045 independent verification (41 checks — in previous session)
+#   C: Evidence metadata-depth regression fix (RUN_CONTRACT_METADATA_FLOOR=30)
+#   D: Repair stale current-state text (README, ROADMAP, blocker reports, settings)
+#   E/I: Verify planning packages (Gate 8 + Gate 5)
+#   F: FODS Gate 8 security review (reports/security/fods.md, TC-1..TC-8)
+#   G: TC-0038 DEC-034 inline verification (PASS 20/20)
+#   H: FODS Gate 8 approval recorded (Babar Raza, 2026-05-08)
+#   J: FODT Gate 5 neutral model (7 files + validator, PASS 109 checks)
+#   K: TC-0039 DEC-034 inline verification (PASS)
+#   L: FODT Gate 5 approval recorded (Babar Raza, 2026-05-08)
+#   M: FODS Gate 9 planning (TC-0040 + gate9 plan + tier-map-draft)
+#      FODT Gate 6 planning (TC-0041 + TC-0042 + TC-0043 + 3 oracle plan docs)
+#   N: Registry + pack.yaml + TC updates
+#   O: Memory/09 + evidence contract (this file)
+#   P-S: master-plan + commit + search audit + final checks + bundle
+#
+# Key outcomes:
+#   - FODS Gate 8 PASSED (Babar Raza, 2026-05-08): GATE8_SECURITY_REVIEW: PASS
+#     TC-0038 DEC-034 PASS 20/20
+#   - FODT Gate 5 PASSED (Babar Raza, 2026-05-08): FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4
+#     109 checks, 0 errors; TC-0039 DEC-034 PASS
+#   - FODS Gate 9 planning_ready (TC-0040)
+#   - FODT Gate 6 oracle planning_ready (TC-0041/0042/0043)
+#   - Evidence metadata-depth regression fixed (RUN_CONTRACT_METADATA_FLOOR=30)
+#   - master-plan v2.42; BUNDLE_VALIDATION: PASS required
+#
+# Version: 1.0
+
+contract_id: run046-combined-sprint
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint_run: run046
+require_clean_git: true
+emergency_blocker_bundle: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run046-combined-sprint.yaml
+require_manifest: true
+min_metadata_count: 70
+normal_pass_min_metadata: 70
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+
+required_repo_files:
+  - reports/security/fods.md
+  - schemas/neutral-model/fodt/model.yaml
+  - schemas/neutral-model/fodt/model.schema.json
+  - schemas/neutral-model/fodt/field-map.yaml
+  - schemas/neutral-model/fodt/coverage-matrix.yaml
+  - schemas/neutral-model/fodt/validation-rules.yaml
+  - schemas/neutral-model/fodt/README.md
+  - tools/model/validate_fodt_neutral_model.py
+  - taskcards/TC-0038-fods-gate8-dec034-verification.md
+  - taskcards/TC-0039-fodt-gate5-dec034-verification.md
+  - taskcards/TC-0040-fods-gate9-product-mapping.md
+  - taskcards/TC-0041-fodt-gate6-oracle-planning.md
+  - taskcards/TC-0042-fodt-gate6-oracle-execution.md
+  - taskcards/TC-0043-fodt-gate6-oracle-verification.md
+  - acquisition-packs/fods/gate8-human-review-packet.md
+  - acquisition-packs/fods/gate9-product-mapping-plan.md
+  - acquisition-packs/fods/tier-map-draft.yaml
+  - acquisition-packs/fodt/gate5-human-review-packet.md
+  - acquisition-packs/fodt/gate6-oracle-plan.md
+  - acquisition-packs/fodt/oracle-scope.md
+  - acquisition-packs/fodt/oracle-risk-register.md

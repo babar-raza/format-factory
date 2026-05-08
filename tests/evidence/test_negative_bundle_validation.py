@@ -54,6 +54,24 @@ def build_bundle_with_meta(tmp_dir: Path, meta_files: dict) -> Path:
     return bundle_path
 
 
+def build_sufficient_bundle(tmp_dir: Path, extra_meta: dict = None, bundle_name: str = "test-bundle.zip") -> Path:
+    """Build a bundle with >= RUN_CONTRACT_METADATA_FLOOR metadata files.
+
+    Used by tests that verify things other than metadata depth, so they pass the
+    hardcoded floor check without interference.
+    """
+    # 32 dummy files comfortably exceeds RUN_CONTRACT_METADATA_FLOOR=30
+    meta = {f"_dummy_{i:02d}.txt": f"padding content {i}" for i in range(32)}
+    if extra_meta:
+        meta.update(extra_meta)
+    bundle_path = tmp_dir / bundle_name
+    with zipfile.ZipFile(bundle_path, "w") as zf:
+        zf.writestr("repo/placeholder.txt", "placeholder")
+        for name, content in meta.items():
+            zf.writestr(f"bundle-metadata/{name}", content)
+    return bundle_path
+
+
 def test_thin_bundle_fails():
     """Validator must FAIL when metadata count is below min_metadata_count."""
     with tempfile.TemporaryDirectory() as tmp:
@@ -98,11 +116,10 @@ def test_pending_report_passes_without_flag():
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
         contract = build_minimal_contract(tmp_dir, min_meta=1)
-        # Same PENDING marker, but no_pending=False
-        meta = {
+        # Same PENDING marker, but no_pending=False — use sufficient bundle to clear floor
+        bundle = build_sufficient_bundle(tmp_dir, extra_meta={
             "verdict.md": "**Validation status:** PENDING (bundle not yet built)\n",
-        }
-        bundle = build_bundle_with_meta(tmp_dir, meta)
+        })
         result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=False)
         if not result:
             print("FAIL: test_pending_report_passes_without_flag — validator returned FAIL but should have PASSed")
@@ -116,10 +133,10 @@ def test_clean_bundle_passes_no_pending():
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
         contract = build_minimal_contract(tmp_dir, min_meta=1)
-        meta = {
+        # Use sufficient bundle to clear the floor check
+        bundle = build_sufficient_bundle(tmp_dir, extra_meta={
             "verdict.md": "**Validation status:** BUNDLE_VALIDATION: PASS\n",
-        }
-        bundle = build_bundle_with_meta(tmp_dir, meta)
+        })
         result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=True)
         if not result:
             print("FAIL: test_clean_bundle_passes_no_pending — validator returned FAIL but should have PASSed")
@@ -247,6 +264,9 @@ forbidden_paths:
         with zipfile.ZipFile(bundle_path, "w") as zf:
             zf.writestr("repo/.env.example", "ANTHROPIC_API_KEY=your-key-here\n")
             zf.writestr("bundle-metadata/git-log.txt", "abc1234 initial commit\n")
+            # Add dummy metadata to clear the RUN_CONTRACT_METADATA_FLOOR
+            for i in range(32):
+                zf.writestr(f"bundle-metadata/_dummy_{i:02d}.txt", f"padding {i}")
         result = validate_bundle(str(contract), str(bundle_path), strict_git=False, no_pending=False)
         if not result:
             print(
@@ -301,6 +321,101 @@ forbidden_paths: []
         return True
 
 
+def test_run_contract_metadata_floor_fails():
+    """Validator must FAIL when a contract sets min_metadata_count below the hardcoded floor.
+
+    This is the run045 regression test: run045 set min_metadata_count:3 and
+    normal_pass_min_metadata:3, but the bundle only had 4 metadata files.
+    The new RUN_CONTRACT_METADATA_FLOOR=30 prevents such bundles from passing.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        # Contract similar to run045's regressed contract (min_metadata_count: 3)
+        contract = tmp_dir / "test-floor-contract.yaml"
+        contract.write_text(
+            """\
+contract_id: test-run045-regression
+require_clean_git: false
+emergency_blocker_bundle: false
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 3
+normal_pass_min_metadata: 3
+required_repo_files: []
+required_metadata_files: []
+forbidden_paths: []
+""",
+            encoding="utf-8",
+        )
+        # Bundle with only 4 metadata files (as run045 produced)
+        meta = {
+            "git-log.txt": "ff47169 chore: fix run045 contract\n",
+            "git-status-final.txt": "On branch main\nnothing to commit, working tree clean\n",
+            "repo-tree.txt": ".\n./plans\n./plans/master-plan.md\n",
+            "bundle-manifest.yaml": "entries: []\n",
+        }
+        bundle = build_bundle_with_meta(tmp_dir, meta)
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=False)
+        if result:
+            print(
+                "FAIL: test_run_contract_metadata_floor_fails "
+                "— validator returned PASS but should have FAILed "
+                "(4 metadata files < RUN_CONTRACT_METADATA_FLOOR=30; run045 regression)"
+            )
+            return False
+        print(
+            "PASS: test_run_contract_metadata_floor_fails "
+            "— validator correctly FAILed for 4-file bundle even with min_metadata_count:3 contract "
+            "(RUN_CONTRACT_METADATA_FLOOR=30 enforced)"
+        )
+        return True
+
+
+def test_run_contract_metadata_floor_bypassed_by_emergency():
+    """Validator must PASS when emergency_blocker_bundle:true bypasses the floor.
+
+    Emergency bundles (blocked/failed sprints) are explicitly exempt from the floor.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = tmp_dir / "test-emergency-floor-contract.yaml"
+        contract.write_text(
+            """\
+contract_id: test-emergency-floor-bypass
+require_clean_git: false
+emergency_blocker_bundle: true
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 1
+normal_pass_min_metadata: 0
+required_repo_files: []
+required_metadata_files: []
+forbidden_paths: []
+""",
+            encoding="utf-8",
+        )
+        # Bundle with only 4 files — would fail floor, but emergency_blocker bypasses it
+        meta = {
+            "git-log.txt": "abc1234 blocker commit\n",
+            "git-status-final.txt": "On branch main\nnothing to commit, working tree clean\n",
+            "blocker-report.md": "ORACLE_ENV: BLOCKED\n",
+            "bundle-manifest.yaml": "entries: []\n",
+        }
+        bundle = build_bundle_with_meta(tmp_dir, meta)
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=False)
+        if not result:
+            print(
+                "FAIL: test_run_contract_metadata_floor_bypassed_by_emergency "
+                "— validator returned FAIL but emergency_blocker_bundle:true should bypass the floor"
+            )
+            return False
+        print(
+            "PASS: test_run_contract_metadata_floor_bypassed_by_emergency "
+            "— floor correctly bypassed when emergency_blocker_bundle:true"
+        )
+        return True
+
+
 def main():
     print("=" * 60)
     print("Negative Tests: validate_evidence_bundle.py")
@@ -316,6 +431,8 @@ def main():
         test_dirty_git_passes_with_emergency_blocker_bundle_true,
         test_env_example_not_blocked_by_env_pattern,
         test_normal_pass_metadata_depth_fail,
+        test_run_contract_metadata_floor_fails,
+        test_run_contract_metadata_floor_bypassed_by_emergency,
     ]
 
     results = []

@@ -147,6 +147,12 @@ def matches_forbidden(path, forbidden_patterns):
     return False
 
 
+# Absolute floor for metadata count in normal PASS bundles.
+# No run-specific contract may produce a BUNDLE_VALIDATION: PASS with fewer
+# metadata files than this value unless emergency_blocker_bundle: true.
+# This prevents future regressions like run045 (min_metadata_count:3 caused 4-file bundle).
+RUN_CONTRACT_METADATA_FLOOR = 30
+
 GIT_STATUS_CANDIDATE_FILES = ["git-status-final.txt", "git-status.txt"]
 
 # Patterns that indicate a metadata report was written as a placeholder before bundle
@@ -357,7 +363,7 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         if len(metadata_files) < min_metadata_count:
             errors.append(f"Metadata count {len(metadata_files)} < minimum {min_metadata_count}")
 
-        # Check normal-pass metadata depth (base-run floor — not bypassable by emergency_blocker)
+        # Check normal-pass metadata depth (contract-level floor from normal_pass_min_metadata)
         metadata_depth_fail = (
             normal_pass_min > 0 and len(metadata_files) < normal_pass_min
         )
@@ -365,6 +371,18 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             errors.append(
                 f"NORMAL_PASS_METADATA_DEPTH: FAIL — "
                 f"metadata count {len(metadata_files)} < normal_pass_min_metadata {normal_pass_min}"
+            )
+
+        # Check absolute hardcoded floor (RUN_CONTRACT_METADATA_FLOOR).
+        # This cannot be bypassed by setting a low min_metadata_count or normal_pass_min_metadata
+        # in the run-specific contract. Only emergency_blocker_bundle: true bypasses this.
+        # Prevents regression where a contract lowers the floor below the project standard.
+        if not emergency_blocker and len(metadata_files) < RUN_CONTRACT_METADATA_FLOOR:
+            errors.append(
+                f"RUN_CONTRACT_METADATA_FLOOR: FAIL — "
+                f"metadata count {len(metadata_files)} < absolute floor {RUN_CONTRACT_METADATA_FLOOR}. "
+                f"Ensure sprint produces sufficient metadata files. "
+                f"Only emergency_blocker_bundle: true may bypass this floor."
             )
 
         # Check contract-in-bundle
@@ -429,6 +447,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
     if normal_pass_min > 0:
         depth_status = "FAIL" if metadata_depth_fail else "PASS"
         print(f"NORMAL_PASS_METADATA_DEPTH ({depth_status}): {len(metadata_files)}/{normal_pass_min}")
+    floor_fail = not emergency_blocker and len(metadata_files) < RUN_CONTRACT_METADATA_FLOOR
+    floor_status = "FAIL" if floor_fail else "PASS"
+    print(f"RUN_CONTRACT_METADATA_FLOOR ({floor_status}): {len(metadata_files)}/{RUN_CONTRACT_METADATA_FLOOR}")
     print(f"Forbidden hits: {len(forbidden_hits)}")
     if require_contract_in_bundle:
         print(f"Contract in bundle: {'YES' if contract_repo_path in repo_files else 'NO'}")

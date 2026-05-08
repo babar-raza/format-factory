@@ -4,7 +4,7 @@
 # Gate 2: PASSED (Babar Raza, 2026-05-08, run043)
 # Gate 3: PASSED (Babar Raza, 2026-05-08, run044) — 4/4 PASS, DEC-034 verified run044
 # Gate 4: PASSED (Babar Raza, 2026-05-08, run045) — FODT_PROTOTYPE_VALIDATION PASS 4/4, DEC-034 PASS 20/20
-# Gate 5: planning_ready — TC-0037 not_started (run045); execution requires explicit Gate 5 prompt
+# Gate 5: PASSED (Babar Raza, 2026-05-08, run046) — FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4
 # Skeleton created: run041 (2026-05-07) after Gate 1 human approval
 # Spec: ODF 1.3 (already cached from FODS acquisition — .local/spec-cache/fods/1.3/)
 
@@ -30,7 +30,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 1 PASSED 2026-05-07 (Babar Raza, run041). Gate 2 PASSED 2026-05-08 (Babar Raza, run043) — 8/8 fast-path items. Gate 3 PASSED 2026-05-08 (Babar Raza, run044) — 4 FODT samples, TC-0032 DEC-034 PASS 27/27. Gate 4 PASSED 2026-05-08 (Babar Raza, run045) — FODT_PROTOTYPE_VALIDATION PASS 4/4, TC-0035 DEC-034 PASS 20/20. Gate 5 planning_ready run045 (2026-05-08) — TC-0037 not_started, plan at gate5-neutral-model-plan.md. Next: explicit Gate 5 execution prompt."
+notes: "Gate 1 PASSED 2026-05-07 (Babar Raza, run041). Gate 2 PASSED 2026-05-08 (Babar Raza, run043) — 8/8 fast-path items. Gate 3 PASSED 2026-05-08 (Babar Raza, run044) — 4 FODT samples, TC-0032 DEC-034 PASS 27/27. Gate 4 PASSED 2026-05-08 (Babar Raza, run045) — FODT_PROTOTYPE_VALIDATION PASS 4/4, TC-0035 DEC-034 PASS 20/20. Gate 5 PASSED run046 (2026-05-08) — Babar Raza; FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 (109 checks). Gate 6 oracle planning_ready (TC-0042 not_started). Next: explicit Gate 6 prompt."
 
 # --- Format identity ---
 format_id: fodt
@@ -132,12 +132,18 @@ stages:
     dec034_checks: "20/20 PASS"
     notes: "Gate 4 prototype created run045 (2026-05-08). Python stdlib ElementTree. FR-001..FR-007 all implemented. 4/4 PASS. DEC-034 PASS 20/20. Gate 4 APPROVED by Babar Raza (run045 execution prompt, 2026-05-08)."
   gate_5:
-    status: planning_ready
-    approved_by: null
-    approved_date: null
-    tc0037_status: not_started
+    status: passed
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-08"
+    tc0037_status: completed
+    tc0039_dec034: "PASS (run046 inline)"
+    model_path: schemas/neutral-model/fodt/
+    model_version: "1.0"
+    validation_result: "4/4 PASS, 109 checks, 0 errors"
+    entities: ["Document", "Block", "List", "ListItem", "Table", "TableRow", "TableCell"]
     plan_path: acquisition-packs/fodt/gate5-neutral-model-plan.md
-    notes: "Gate 5 planning package created run045 (2026-05-08). TC-0037 not_started. Execution requires explicit Gate 5 prompt. Proposed entities: Document, Block, List, ListItem, Table, TableRow, TableCell (7 total). FODS neutral model reuse: structural pattern only."
+    approval_run: run046
+    notes: "Gate 5 executed run046 (2026-05-08). 7 entities, 26 field mappings, 19 validation rules. FODT_NEUTRAL_MODEL_VALIDATION: PASS 4/4 (109 checks, 0 errors). TC-0039 DEC-034 PASS. Gate 5 APPROVED Babar Raza 2026-05-08 (run046). Authorizes FODT Gate 6 oracle planning only."
   gate_6:
     status: not_started
     approved_by: null

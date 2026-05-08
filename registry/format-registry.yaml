@@ -77,7 +77,7 @@ formats:
       approved_date: "2026-05-04"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: gate8_security_planning
+    next_allowed_action: gate9_product_mapping_planning
     gates:
       gate_1:
         status: passed
@@ -155,11 +155,14 @@ formats:
         dec034_verified_run: run045
         notes: "Gate 7 executed run045 (2026-05-08). 18 malformed FODS fixtures (4 categories). GATE7_FUZZ_TEST: PASS 18/18 CRASH 0/18 CORRUPT 0/18. Max elapsed 0.037s. No parser bugs found. DEC-034 PASS 18/18 (run045 separate from run044). Gate 7 APPROVED by Babar Raza (run045 execution prompt, 2026-05-08). Authorizes FODS Gate 8 security planning only."
       gate_8:
-        status: planning_ready
-        approved_by: null
-        approved_date: null
-        tc0036_status: not_started
-        notes: "Gate 8 planning package created run045 (2026-05-08). TC-0036 not_started. Execution requires explicit Gate 8 prompt. Security report at reports/security/fods.md (not yet created). DEC-034 verification required before human sign-off."
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-08"
+        tc0036_status: completed
+        tc0038_dec034_status: "PASS 20/20 (run046 inline)"
+        security_report_path: reports/security/fods.md
+        approval_run: run046
+        notes: "Gate 8 executed run046 (2026-05-08). GATE8_SECURITY_REVIEW: PASS. TC-1 XXE mitigated (ET/Expat default). TC-2 DTD mitigated (Expat rejects DOCTYPE). TC-3/TC-4/TC-8 not-applicable (flat XML). TC-5 malformed mitigated (Gate 7 18/18). TC-7 recursion mitigated (iterative code). TC-6 memory deferred to Gate 10. TC-0038 DEC-034 PASS 20/20. Gate 8 APPROVED by Babar Raza (run046 execution prompt, 2026-05-08). Authorizes FODS Gate 9 product mapping planning only."
       gate_9:
         status: not_started
         approved_by: null
@@ -241,7 +244,7 @@ formats:
       approved_date: "2026-05-07"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: gate5_neutral_model_planning
+    next_allowed_action: gate6_oracle_planning
     gates:
       gate_1:
         status: passed
@@ -289,16 +292,22 @@ formats:
         dec034_checks: "20/20 PASS"
         notes: "Gate 4 executed run045 (2026-05-08). fodt_parser.py created (stdlib ElementTree, FR-001..FR-007). FODT_PROTOTYPE_VALIDATION: PASS 4/4. DEC-034 PASS 20/20 (run045 separate from run044). Gate 4 APPROVED by Babar Raza (run045 execution prompt, 2026-05-08). Authorizes FODT Gate 5 neutral model planning only."
       gate_5:
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-08"
+        tc0037_status: completed
+        tc0039_dec034_status: "PASS (run046 inline)"
+        model_path: schemas/neutral-model/fodt/
+        model_version: "1.0"
+        validation_result: "4/4 PASS, 109 checks, 0 errors (validate_fodt_neutral_model.py, run046)"
+        entities: ["Document", "Block", "List", "ListItem", "Table", "TableRow", "TableCell"]
+        approval_run: run046
+        notes: "Gate 5 executed run046 (2026-05-08). 7 entities, 26 field mappings, 19 validation rules. FODT_NEUTRAL_MODEL_VALIDATION: PASS 4/4 (109 checks, 0 errors). TC-0039 DEC-034 PASS inline. Gate 5 APPROVED by Babar Raza (run046 execution prompt, 2026-05-08). Authorizes FODT Gate 6 oracle comparison planning only."
+      gate_6:
         status: planning_ready
         approved_by: null
         approved_date: null
-        tc0037_status: not_started
-        notes: "Gate 5 planning package created run045 (2026-05-08). TC-0037 not_started. Execution requires explicit Gate 5 prompt. Proposed 7 entities: Document, Block, List, ListItem, Table, TableRow, TableCell. DEC-034 verification required before human approval."
-      gate_6:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        notes: "Gate 6 planning created run046 (2026-05-08). TC-0041 completed (planning), TC-0042 not_started (execution), TC-0043 not_started (verification). Oracle plan: acquisition-packs/fodt/gate6-oracle-plan.md. LibreOffice already installed (soffice.com 26.2.3.2). Execution requires explicit Gate 6 prompt."
       gate_7:
         status: not_started
         approved_by: null

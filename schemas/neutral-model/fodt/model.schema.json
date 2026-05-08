@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FODT Neutral Model v1 — Parser Output Schema",
+  "description": "JSON Schema for validating fodt_parser.py output against the FODT neutral model.",
+  "type": "object",
+  "required": ["mime_type", "version", "paragraphs", "lists", "tables", "word_count", "errors"],
+  "properties": {
+    "mime_type": {
+      "type": "string",
+      "description": "FODT MIME type from office:mimetype attribute."
+    },
+    "version": {
+      "type": "string",
+      "description": "ODF version string from office:version attribute."
+    },
+    "paragraphs": {
+      "type": "array",
+      "description": "Block elements (paragraphs and headings).",
+      "items": {
+        "type": "object",
+        "required": ["element"],
+        "properties": {
+          "element": {
+            "type": "string",
+            "enum": ["paragraph", "heading"]
+          },
+          "text": {"type": ["string", "null"]},
+          "style_name": {"type": ["string", "null"]},
+          "outline_level": {"type": ["integer", "null"], "minimum": 1, "maximum": 10}
+        }
+      }
+    },
+    "lists": {
+      "type": "array",
+      "description": "List elements.",
+      "items": {
+        "type": "object",
+        "required": ["element", "list_style", "items"],
+        "properties": {
+          "element": {"type": "string"},
+          "list_style": {"type": ["string", "null"], "enum": ["bullet", "numbered", null]},
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["text", "level"],
+              "properties": {
+                "text": {"type": "string"},
+                "level": {"type": "integer", "minimum": 1}
+              }
+            }
+          }
+        }
+      }
+    },
+    "tables": {
+      "type": "array",
+      "description": "Table elements.",
+      "items": {
+        "type": "object",
+        "required": ["element", "name", "rows"],
+        "properties": {
+          "element": {"type": "string"},
+          "name": {"type": ["string", "null"]},
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "word_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "errors": {
+      "type": "array",
+      "description": "Parse errors. Should be empty for valid samples."
+    }
+  }
+}

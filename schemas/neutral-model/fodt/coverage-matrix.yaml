@@ -1,0 +1,110 @@
+# FODT Neutral Model Coverage Matrix v1
+# Documents which FODT/ODF elements are covered, partially covered, or deferred.
+# Created: run046 (2026-05-08)
+
+model_id: fodt-neutral-model
+version: "1.0"
+format_id: fodt
+gate: 5
+created: "2026-05-08"
+created_by: run046
+
+# FR-001 through FR-007 are from prototypes/by-format/fodt/fodt_parser.py requirements.
+
+fr_coverage:
+  FR-001:
+    requirement: "Extract text:p and text:h elements as block items."
+    status: COVERED
+    neutral_model_entity: Block
+    notes: "Block.element distinguishes 'paragraph' vs 'heading'. Outline level captured."
+
+  FR-002:
+    requirement: "Handle ODF XML namespaces correctly."
+    status: COVERED
+    neutral_model_entity: Document
+    notes: "mime_type and version extracted from correct namespaced attributes."
+
+  FR-003:
+    requirement: "Extract office:version attribute."
+    status: COVERED
+    neutral_model_entity: Document.version_attr
+    notes: "Mapped from parser 'version' key."
+
+  FR-004:
+    requirement: "Validate flat XML root element (office:document)."
+    status: COVERED
+    neutral_model_entity: Document
+    notes: "mime_type field captures document type confirmation."
+
+  FR-005:
+    requirement: "Compute approximate word count."
+    status: COVERED
+    neutral_model_entity: Document.word_count
+    notes: "Whitespace-split approximation of paragraph/heading text."
+
+  FR-006:
+    requirement: "Extract text:list structure with bullet/numbered style detection."
+    status: COVERED
+    neutral_model_entity: "List, ListItem"
+    notes: "list_style inferred from automatic-styles list style name prefix."
+
+  FR-007:
+    requirement: "Extract table:table structure with rows and cells."
+    status: COVERED
+    neutral_model_entity: "Table, TableRow, TableCell"
+    notes: "Identical pattern to FODS neutral model table coverage."
+
+odf_element_coverage:
+
+  covered:
+    - element: "text:p"
+      neutral_model: Block (element='paragraph')
+      notes: "Full text extraction including nested text:span content."
+    - element: "text:h"
+      neutral_model: Block (element='heading')
+      notes: "Includes text:outline-level attribute → Block.outline_level."
+    - element: "text:list"
+      neutral_model: List
+      notes: "List style inferred from automatic-styles."
+    - element: "text:list-item"
+      neutral_model: ListItem
+      notes: "Text and nesting level captured."
+    - element: "table:table"
+      neutral_model: Table
+      notes: "Name and row structure captured."
+    - element: "table:table-row"
+      neutral_model: TableRow
+      notes: "Cell list captured."
+    - element: "table:table-cell"
+      neutral_model: TableCell
+      notes: "Text content extracted."
+    - element: "office:document/@office:mimetype"
+      neutral_model: Document.mime_type
+    - element: "office:document/@office:version"
+      neutral_model: Document.version_attr
+
+  partially_covered:
+    - element: "text:span"
+      neutral_model: "(included in text content, formatting lost)"
+      notes: "Inline formatting attributes not captured in v1."
+    - element: "table:covered-table-cell"
+      neutral_model: "(treated as regular empty cell)"
+      notes: "Merged cell tracking deferred to Gate 10."
+
+  deferred:
+    - element: "text:note (footnotes/endnotes)"
+      reason: "Gate 10 scope"
+    - element: "draw:frame / draw:image (embedded images)"
+      reason: "Gate 10 scope"
+    - element: "office:automatic-styles (full resolution)"
+      reason: "Style inheritance resolution deferred to Gate 10"
+    - element: "text:bookmark / text:reference-mark"
+      reason: "Gate 10 scope"
+    - element: "text:table-of-content"
+      reason: "Gate 10 scope"
+
+  out_of_scope:
+    - element: "office:spreadsheet (FODS/ODS content)"
+      reason: "Different format family — FODS neutral model covers this."
+    - element: "office:presentation (FODP content)"
+      reason: "Different format family."

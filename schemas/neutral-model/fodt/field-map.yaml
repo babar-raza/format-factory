@@ -1,0 +1,168 @@
+# FODT Neutral Model Field Map v1
+# Maps each neutral model field to its ODF 1.3 XML source and parser output key.
+# Created: run046 (2026-05-08)
+
+model_id: fodt-neutral-model
+version: "1.0"
+format_id: fodt
+gate: 5
+created: "2026-05-08"
+created_by: run046
+
+# Note on naming:
+#   neutral_model_field: name in model.yaml
+#   parser_key: key in fodt_parser.parse_fodt() output dict
+#   odf_source: ODF 1.3 XML element or attribute
+#   reused_from_fods: whether this pattern is reused from FODS neutral model
+
+mappings:
+
+  # --- Document entity ---
+  - neutral_model_field: Document.format_id
+    parser_key: "(constant)"
+    odf_source: "(derived — format identity)"
+    value: "'fodt'"
+    reused_from_fods: true
+    notes: "Always 'fodt'; not extracted from XML."
+
+  - neutral_model_field: Document.spec_version
+    parser_key: "(constant)"
+    odf_source: "(derived — known spec version)"
+    value: "'ODF 1.3'"
+    reused_from_fods: true
+    notes: "Always 'ODF 1.3' for this acquisition."
+
+  - neutral_model_field: Document.mime_type
+    parser_key: "result['mime_type']"
+    odf_source: "office:document/@office:mimetype"
+    expected: "application/vnd.oasis.opendocument.text-flat-xml"
+    reused_from_fods: true
+
+  - neutral_model_field: Document.version_attr
+    parser_key: "result['version']"
+    odf_source: "office:document/@office:version"
+    expected: "'1.3'"
+    reused_from_fods: true
+    notes: "Parser key is 'version' (not 'version_attr'); renamed in neutral model."
+
+  - neutral_model_field: Document.word_count
+    parser_key: "result['word_count']"
+    odf_source: "(computed — concatenated text word split)"
+    reused_from_fods: false
+    notes: "Approximate count based on whitespace splitting of all paragraph/heading text."
+
+  - neutral_model_field: Document.block_count
+    parser_key: "len(result['paragraphs'])"
+    odf_source: "(derived — count of text:p and text:h elements)"
+    reused_from_fods: false
+
+  - neutral_model_field: Document.list_count
+    parser_key: "len(result['lists'])"
+    odf_source: "(derived — count of text:list elements)"
+    reused_from_fods: false
+
+  - neutral_model_field: Document.table_count
+    parser_key: "len(result['tables'])"
+    odf_source: "(derived — count of table:table elements)"
+    reused_from_fods: true
+
+  - neutral_model_field: Document.blocks
+    parser_key: "result['paragraphs']"
+    odf_source: "office:body/office:text/(text:p | text:h)"
+    reused_from_fods: false
+    notes: "Parser key is 'paragraphs'; neutral model renames to 'blocks' for generality."
+
+  - neutral_model_field: Document.lists
+    parser_key: "result['lists']"
+    odf_source: "office:body/office:text/text:list"
+    reused_from_fods: false
+
+  - neutral_model_field: Document.tables
+    parser_key: "result['tables']"
+    odf_source: "office:body/office:text/table:table"
+    reused_from_fods: true
+
+  # --- Block entity ---
+  - neutral_model_field: Block.element
+    parser_key: "block['element']"
+    odf_source: "(tag-derived: 'paragraph' for text:p, 'heading' for text:h)"
+    values: ["paragraph", "heading"]
+    reused_from_fods: false
+
+  - neutral_model_field: Block.text
+    parser_key: "block['text']"
+    odf_source: "text:p/text() | text:h/text() (concatenated)"
+    reused_from_fods: false
+
+  - neutral_model_field: Block.style_name
+    parser_key: "block['style_name']"
+    odf_source: "text:p/@text:style-name | text:h/@text:style-name"
+    reused_from_fods: false
+
+  - neutral_model_field: Block.outline_level
+    parser_key: "block['outline_level']"
+    odf_source: "text:h/@text:outline-level"
+    notes: "Null for paragraphs; integer 1-10 for headings."
+    reused_from_fods: false
+
+  # --- List entity ---
+  - neutral_model_field: List.list_style
+    parser_key: "list_entry['list_style']"
+    odf_source: "(inferred from office:automatic-styles list-style name prefix)"
+    values: ["bullet", "numbered", null]
+    reused_from_fods: false
+
+  - neutral_model_field: List.item_count
+    parser_key: "len(list_entry['items'])"
+    odf_source: "(derived — count of text:list-item)"
+    reused_from_fods: false
+
+  - neutral_model_field: List.items
+    parser_key: "list_entry['items']"
+    odf_source: "text:list/text:list-item"
+    reused_from_fods: false
+
+  # --- ListItem entity ---
+  - neutral_model_field: ListItem.text
+    parser_key: "item['text']"
+    odf_source: "text:list-item/text:p/text()"
+    reused_from_fods: false
+
+  - neutral_model_field: ListItem.level
+    parser_key: "item['level']"
+    odf_source: "(nesting depth, 1-based)"
+    notes: "1 = top level, 2 = first nested, etc."
+    reused_from_fods: false
+
+  # --- Table entity ---
+  - neutral_model_field: Table.name
+    parser_key: "table_entry['name']"
+    odf_source: "table:table/@table:name"
+    reused_from_fods: true
+
+  - neutral_model_field: Table.row_count
+    parser_key: "len(table_entry['rows'])"
+    odf_source: "(derived — count of table:table-row)"
+    reused_from_fods: true
+
+  - neutral_model_field: Table.column_count
+    parser_key: "len(table_entry['rows'][0]) if rows else 0"
+    odf_source: "(derived — count of cells in first row)"
+    reused_from_fods: true
+
+  - neutral_model_field: Table.rows
+    parser_key: "table_entry['rows']"
+    odf_source: "table:table/table:table-row"
+    reused_from_fods: true
+
+  # --- TableRow entity ---
+  - neutral_model_field: TableRow.cells
+    parser_key: "row (list of strings)"
+    odf_source: "table:table-row/table:table-cell"
+    reused_from_fods: true
+
+  # --- TableCell entity ---
+  - neutral_model_field: TableCell.text
+    parser_key: "cell (string)"
+    odf_source: "table:table-cell/text:p/text()"
+    reused_from_fods: true

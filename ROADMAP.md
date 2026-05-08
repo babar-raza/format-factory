@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance — Phase 0 Foundation
-**Last reviewed:** 2026-05-08 (run044)
+**Last reviewed:** 2026-05-08 (run046)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
 
 ---
@@ -107,7 +107,11 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Gate 5 status:** PASSED — approved by Babar Raza (2026-05-06, run035). Neutral model v1: 6 entities, 19 field mappings, 30 coverage features, 21 validation rules. Validation 4/4 PASS (87 checks, 0 errors). TC-0024 CLOSED. TC-0023 COMPLETED.
 
-**Gate 6 status:** PASSED — approved by Babar Raza (2026-05-08, run044). TC-0027 DEC-034 PASS 24/24 (run044). ORACLE_RUN: PASS 4/4. ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet CSV export limitation — expected, not a parser defect). Oracle harness: tools/oracle/. FODT Gate 1 APPROVED (Babar Raza, 2026-05-07, run041). FODT Gate 2 APPROVED (Babar Raza, 2026-05-08, run043). FODT Gate 3 APPROVED (Babar Raza, 2026-05-08, run044; TC-0032 DEC-034 PASS 27/27). FODS Gate 7 planning_ready (TC-0033 not_started). FODT Gate 4 planning_ready (TC-0034 not_started).
+**Gate 6 status:** PASSED — approved by Babar Raza (2026-05-08, run044). TC-0027 DEC-034 PASS 24/24 (run044). ORACLE_RUN: PASS 4/4. ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet CSV export limitation — expected, not a parser defect). Oracle harness: tools/oracle/.
+
+**Gate 7 status:** PASSED — approved by Babar Raza (2026-05-08, run045). GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18. 18 malformed fixtures (4 categories). TC-0033 DEC-034 PASS (run045). FODT Gates 1-4 ALL APPROVED (Babar Raza, run041/043/044/045).
+
+**Gate 8 status:** PASSED — approved by Babar Raza (2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. Security report: reports/security/fods.md. FODT Gate 5 APPROVED (Babar Raza, 2026-05-08, run046; FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4, 109 checks, TC-0039 DEC-034 PASS). FODS Gate 9 planning_ready (TC-0040 not_started). FODT Gate 6 oracle planning_ready (TC-0041 completed, TC-0042 not_started).
 
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 
@@ -133,7 +137,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 ## Beyond FODS: Subsequent Formats
 
-After FODS, subsequent formats are scored and acquired in priority order. **FODT Gates 1-3 ALL PASSED** (Babar Raza): Gate 1 run041 (88/100, Category 1 RF); Gate 2 run043 (8/8 fast-path, patent waived); Gate 3 run044 (4 FODT samples, TC-0032 DEC-034 PASS 27/27). FODT Gate 4 parser prototype planning complete (run044): TC-0034 + TC-0035, parser-requirements.md (FR-001..FR-007), parser-test-plan.md (PT-001..PT-004). Gate 4 execution requires explicit prompt. ODF reuse strategy documented at `docs/odf-flat-family-reuse-strategy.md`. FODP, FODG, FODB remain in candidate pool. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
+After FODS, subsequent formats are scored and acquired in priority order. **FODT Gates 1-5 ALL PASSED** (Babar Raza): Gate 1 run041 (88/100, Category 1 RF); Gate 2 run043 (8/8 fast-path, patent waived); Gate 3 run044 (4 FODT samples, TC-0032 DEC-034 PASS 27/27); Gate 4 run045 (fodt_parser.py 4/4 PASS, TC-0035 DEC-034 PASS 20/20); Gate 5 run046 (7 entities, FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 109 checks, TC-0039 DEC-034 PASS). FODT Gate 6 oracle planning_ready (TC-0042 not_started — requires explicit Gate 6 prompt). ODF reuse strategy documented at `docs/odf-flat-family-reuse-strategy.md`. FODP, FODG, FODB remain in candidate pool. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
 
 The format registry (`registry/format-registry.yaml`) is the authoritative record of which formats are in-flight, deferred, or rejected.
 

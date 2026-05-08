@@ -1,0 +1,132 @@
+# FODT Neutral Model Validation Rules v1
+# Defines semantic invariants for valid FODT neutral model instances.
+# Created: run046 (2026-05-08)
+
+model_id: fodt-neutral-model
+version: "1.0"
+format_id: fodt
+gate: 5
+created: "2026-05-08"
+created_by: run046
+
+rules:
+
+  # --- Document-level ---
+  - id: VR-F001
+    entity: Document
+    severity: error
+    rule: "format_id must equal 'fodt'"
+    check: "document.format_id == 'fodt'"
+
+  - id: VR-F002
+    entity: Document
+    severity: error
+    rule: "spec_version must be a non-empty string"
+    check: "isinstance(document.spec_version, str) and len(document.spec_version) > 0"
+
+  - id: VR-F003
+    entity: Document
+    severity: error
+    rule: "mime_type must be the FODT MIME type if present"
+    check: "document.mime_type == 'application/vnd.oasis.opendocument.text-flat-xml'"
+
+  - id: VR-F004
+    entity: Document
+    severity: error
+    rule: "version_attr must be non-empty string if present"
+    check: "document.version_attr is None or (isinstance(document.version_attr, str) and len(document.version_attr) > 0)"
+
+  - id: VR-F005
+    entity: Document
+    severity: error
+    rule: "word_count must be a non-negative integer"
+    check: "isinstance(document.word_count, int) and document.word_count >= 0"
+
+  - id: VR-F006
+    entity: Document
+    severity: error
+    rule: "block_count must equal number of blocks"
+    check: "document.block_count == len(document.blocks)"
+
+  - id: VR-F007
+    entity: Document
+    severity: error
+    rule: "list_count must equal number of lists"
+    check: "document.list_count == len(document.lists)"
+
+  - id: VR-F008
+    entity: Document
+    severity: error
+    rule: "table_count must equal number of tables"
+    check: "document.table_count == len(document.tables)"
+
+  # --- Block-level ---
+  - id: VR-F009
+    entity: Block
+    severity: error
+    rule: "block.element must be 'paragraph' or 'heading'"
+    check: "block.element in ('paragraph', 'heading')"
+
+  - id: VR-F010
+    entity: Block
+    severity: error
+    rule: "heading block must have a non-null outline_level"
+    check: "block.element != 'heading' or block.outline_level is not None"
+
+  - id: VR-F011
+    entity: Block
+    severity: error
+    rule: "heading outline_level must be between 1 and 10"
+    check: "block.element != 'heading' or (1 <= block.outline_level <= 10)"
+
+  - id: VR-F012
+    entity: Block
+    severity: warning
+    rule: "paragraph block should have null outline_level"
+    check: "block.element != 'paragraph' or block.outline_level is None"
+
+  # --- List-level ---
+  - id: VR-F013
+    entity: List
+    severity: error
+    rule: "list.list_style must be 'bullet', 'numbered', or null"
+    check: "list.list_style in ('bullet', 'numbered', None)"
+
+  - id: VR-F014
+    entity: List
+    severity: error
+    rule: "list.item_count must equal len(list.items)"
+    check: "list.item_count == len(list.items)"
+
+  # --- ListItem-level ---
+  - id: VR-F015
+    entity: ListItem
+    severity: error
+    rule: "list_item.text must be a string"
+    check: "isinstance(list_item.text, str)"
+
+  - id: VR-F016
+    entity: ListItem
+    severity: error
+    rule: "list_item.level must be an integer >= 1"
+    check: "isinstance(list_item.level, int) and list_item.level >= 1"
+
+  # --- Table-level ---
+  - id: VR-F017
+    entity: Table
+    severity: error
+    rule: "table.row_count must equal len(table.rows)"
+    check: "table.row_count == len(table.rows)"
+
+  - id: VR-F018
+    entity: Table
+    severity: error
+    rule: "table.column_count must equal len(rows[0]) if rows is non-empty"
+    check: "len(table.rows) == 0 or table.column_count == len(table.rows[0])"
+
+  # --- TableCell-level ---
+  - id: VR-F019
+    entity: TableCell
+    severity: error
+    rule: "cell text must be a string"
+    check: "isinstance(cell.text, str)"

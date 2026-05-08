@@ -18,18 +18,16 @@ notes: "Oracle operator handoff document for FODS Gate 6. Created run038 (2026-0
 # Oracle Operator Handoff — FODS Gate 6
 
 **Created:** 2026-05-07 (run038)
-**Status:** oracle_blocked_missing_tool
-**Action required by:** System operator (human)
+**Status:** RESOLVED — Gate 6 PASSED (Babar Raza, 2026-05-08, run044). LibreOffice installed run043. ORACLE_PREFLIGHT: PASS. ORACLE_RUN: PASS 4/4. ORACLE_COMPARE: PASS 3/4 WARN 1/4. TC-0026 COMPLETED. TC-0027 DEC-034 PASS 24/24.
+**Action required by:** None — Gate 6 is approved. This document is archived for historical reference.
 
 ---
 
-## 1. Current Situation
+## 1. Historical Situation (RESOLVED)
 
-Gate 6 (Oracle Comparison) for FODS is blocked because LibreOffice is not installed on the development machine.
+Gate 6 (Oracle Comparison) for FODS was blocked because LibreOffice was not installed on the development machine. The blocker was resolved in run043 (2026-05-08) when LibreOffice 26.2.3.2 was installed via `winget install -e --id TheDocumentFoundation.LibreOffice`. Gate 6 was subsequently APPROVED (Babar Raza, 2026-05-08, run044).
 
-The oracle harness is fully ready. All scripts, the provider registry, and the environment validator are in place. The only missing piece is the oracle binary.
-
-Oracle preflight results:
+Oracle preflight history (for reference):
 
 | Run | Date | Result |
 |---|---|---|
@@ -37,6 +35,7 @@ Oracle preflight results:
 | run036 | 2026-05-06 | ORACLE_PREFLIGHT: FAIL |
 | run037 | 2026-05-07 | ORACLE_PREFLIGHT: FAIL |
 | run038 | 2026-05-07 | ORACLE_ENV: BLOCKED |
+| run043 (after install) | 2026-05-08 | ORACLE_PREFLIGHT: PASS |
 
 ---
 

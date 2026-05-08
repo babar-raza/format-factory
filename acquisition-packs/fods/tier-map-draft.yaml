@@ -1,0 +1,95 @@
+# FODS Tier Map Draft v0.1
+# Gate 9 artifact (draft) — maps FODS features to product delivery tiers.
+# Created: run046 (2026-05-08) — DRAFT; requires Gate 9 execution and human approval.
+
+format_id: fods
+version: "0.1-draft"
+status: draft
+gate: 9
+created: "2026-05-08"
+created_by: run046
+approval_required: true
+notes: "Draft tier map created during Gate 8 approval sprint. Requires Gate 9 execution prompt and human approval before use in product planning."
+
+# Tiers for Python FOSS track (src/python/fods/)
+python_foss_tiers:
+  tier_0:
+    name: "File Identity"
+    features:
+      - id: T0-001
+        feature: "Parse root element (office:document)"
+        status: DRAFT
+      - id: T0-002
+        feature: "Validate MIME type attribute"
+        status: DRAFT
+      - id: T0-003
+        feature: "Extract ODF version attribute"
+        status: DRAFT
+      - id: T0-004
+        feature: "Return structured error on invalid input"
+        status: DRAFT
+
+  tier_1:
+    name: "Structural Extraction"
+    features:
+      - id: T1-001
+        feature: "Extract sheet names (table:name)"
+        status: DRAFT
+      - id: T1-002
+        feature: "Count rows per sheet"
+        status: DRAFT
+      - id: T1-003
+        feature: "Extract string cell values"
+        status: DRAFT
+      - id: T1-004
+        feature: "Handle empty cells"
+        status: DRAFT
+
+  tier_2:
+    name: "Typed Values"
+    features:
+      - id: T2-001
+        feature: "Float/numeric cell values (office:value-type=float)"
+        status: DRAFT
+      - id: T2-002
+        feature: "Boolean cell values (office:value-type=boolean)"
+        status: DRAFT
+      - id: T2-003
+        feature: "Date values (office:value-type=date)"
+        status: DRAFT
+      - id: T2-004
+        feature: "Time values (office:value-type=time)"
+        status: DRAFT
+
+  tier_3:
+    name: "Formula Access"
+    features:
+      - id: T3-001
+        feature: "Raw formula string extraction (table:formula)"
+        status: DRAFT
+      - id: T3-002
+        feature: "Cached formula value (office:value)"
+        status: DRAFT
+      - id: T3-003
+        feature: "Column repeat expansion (table:number-columns-repeated)"
+        status: DRAFT
+
+  tier_4:
+    name: "Full Fidelity"
+    features:
+      - id: T4-001
+        feature: "Basic style resolution (office:automatic-styles)"
+        status: DRAFT
+      - id: T4-002
+        feature: "Merged cell tracking (table:covered-table-cell)"
+        status: DRAFT
+      - id: T4-003
+        feature: "Named ranges"
+        status: DRAFT
+      - id: T4-004
+        feature: "Conditional formatting"
+        status: DRAFT
+
+first_oss_release_tier: 1
+commercial_tiers_deferred: true
+dec033_required_before_net_release: true

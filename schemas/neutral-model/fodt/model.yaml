@@ -1,0 +1,157 @@
+# FODT Neutral Model v1
+# Gate 5 artifact — language-neutral intermediate representation for parsed FODT documents.
+# Created: run046 (2026-05-08)
+
+model_id: fodt-neutral-model
+version: "1.0"
+format_id: fodt
+spec_version: "ODF 1.3"
+gate: 5
+created: "2026-05-08"
+created_by: run046
+
+entities:
+
+  Document:
+    description: "Root container for a parsed FODT document. Maps to top-level parser output dict."
+    fields:
+      format_id:
+        type: string
+        required: true
+        description: "Format identifier, always 'fodt'."
+        example: "fodt"
+      spec_version:
+        type: string
+        required: true
+        description: "ODF spec version string."
+        example: "ODF 1.3"
+      mime_type:
+        type: string
+        required: false
+        description: "office:mimetype attribute value. Null if absent."
+        example: "application/vnd.oasis.opendocument.text-flat-xml"
+      version_attr:
+        type: string
+        required: false
+        description: "office:version attribute value from root element."
+        example: "1.3"
+      word_count:
+        type: integer
+        required: true
+        description: "Approximate word count across all block text content."
+      block_count:
+        type: integer
+        required: true
+        description: "Number of block elements (paragraphs + headings). Equals len(parser.paragraphs)."
+      list_count:
+        type: integer
+        required: true
+        description: "Number of list elements. Equals len(parser.lists)."
+      table_count:
+        type: integer
+        required: true
+        description: "Number of table elements. Equals len(parser.tables)."
+      blocks:
+        type: array
+        items: Block
+        required: true
+        description: "Ordered list of paragraph and heading elements. Maps to parser 'paragraphs' key."
+      lists:
+        type: array
+        items: List
+        required: true
+        description: "Ordered list of list elements."
+      tables:
+        type: array
+        items: Table
+        required: true
+        description: "Ordered list of table elements."
+
+  Block:
+    description: "A paragraph or heading element (text:p or text:h). Maps to entries in parser 'paragraphs' list."
+    fields:
+      element:
+        type: string
+        required: true
+        description: "Element type: 'paragraph' or 'heading'."
+        enum: ["paragraph", "heading"]
+      text:
+        type: string
+        required: false
+        description: "Text content. Null if element is empty."
+      style_name:
+        type: string
+        required: false
+        description: "text:style-name attribute. Null if absent."
+      outline_level:
+        type: integer
+        required: false
+        description: "text:outline-level for headings (1-10). Always null for paragraphs."
+
+  List:
+    description: "A list element (text:list). Maps to entries in parser 'lists' list."
+    fields:
+      list_style:
+        type: string
+        required: false
+        description: "Inferred list type: 'bullet', 'numbered', or null if undetermined."
+        enum: ["bullet", "numbered", null]
+      item_count:
+        type: integer
+        required: true
+        description: "Number of items in this list. Equals len(items)."
+      items:
+        type: array
+        items: ListItem
+        required: true
+        description: "Ordered list of list items."
+
+  ListItem:
+    description: "A single item within a list (text:list-item). Maps to entries in parser list 'items' array."
+    fields:
+      text:
+        type: string
+        required: true
+        description: "Text content of this list item."
+      level:
+        type: integer
+        required: true
+        description: "Nesting depth (1 = top level, 2 = first nested level, etc.)."
+
+  Table:
+    description: "A table element (table:table). Maps to entries in parser 'tables' list."
+    fields:
+      name:
+        type: string
+        required: false
+        description: "table:name attribute. Null if absent."
+      row_count:
+        type: integer
+        required: true
+        description: "Number of rows. Equals len(rows)."
+      column_count:
+        type: integer
+        required: true
+        description: "Number of columns in the first row. Zero if table is empty."
+      rows:
+        type: array
+        items: TableRow
+        required: true
+        description: "Ordered list of rows."
+
+  TableRow:
+    description: "A row within a table (table:table-row). Maps to each list in parser table 'rows' array."
+    fields:
+      cells:
+        type: array
+        items: TableCell
+        required: true
+        description: "Ordered list of cells."
+
+  TableCell:
+    description: "A cell within a table row (table:table-cell). Maps to each string in a parser row list."
+    fields:
+      text:
+        type: string
+        required: true
+        description: "Text content. Empty string if cell is empty."

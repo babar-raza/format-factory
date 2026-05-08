@@ -28,7 +28,7 @@ notes: "FODT Gate 5 neutral model planning taskcard. Created run045 (2026-05-08)
 **Taskcard ID:** TC-0037
 **Phase:** 3 (Gate 5 — neutral model)
 **Gate:** Gate 5
-**Status:** not_started — awaiting explicit Gate 5 execution prompt
+**Status:** completed — FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 (109 checks, run046)
 **Created:** 2026-05-08 (run045)
 **Created by:** claude-sonnet-4-6 (run045)
 **Prerequisite:** Gate 4 PASSED ✓ (Babar Raza, 2026-05-08, run045)

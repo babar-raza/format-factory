@@ -28,7 +28,7 @@ notes: "FODS Gate 8 security review planning taskcard. Created run045 (2026-05-0
 **Taskcard ID:** TC-0036
 **Phase:** 3 (Gate 8 — security review)
 **Gate:** Gate 8
-**Status:** not_started — awaiting explicit Gate 8 execution prompt
+**Status:** completed — GATE8_SECURITY_REVIEW: PASS (run046, 2026-05-08)
 **Created:** 2026-05-08 (run045)
 **Created by:** claude-sonnet-4-6 (run045)
 **Prerequisite:** Gate 7 PASSED ✓ (Babar Raza, 2026-05-08, run045)

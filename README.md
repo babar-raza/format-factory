@@ -25,11 +25,11 @@ Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{form
 
 ## First Pilot: FODS
 
-**Gate 1 passed — 2026-05-04. Gate 2 passed — 2026-05-05. Gate 3 passed — 2026-05-05. Gate 4 passed — 2026-05-06. Gate 5 passed — 2026-05-06. Gate 6 passed — 2026-05-08. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
+**Gate 1 passed — 2026-05-04. Gate 2 passed — 2026-05-05. Gate 3 passed — 2026-05-05. Gate 4 passed — 2026-05-06. Gate 5 passed — 2026-05-06. Gate 6 passed — 2026-05-08. Gate 7 passed — 2026-05-08. Approved by: Babar Raza. FODS score: 93/100 (Accept band).**
 
 **FODS** — Flat OpenDocument Spreadsheet — is the active pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. Single-file XML, well-documented specification, no ZIP complexity, permissive license.
 
-Gate 6 (Oracle Comparison) PASSED by Babar Raza (2026-05-08, run044). ORACLE_COMPARE: PASS 3/4, WARN 1/4 (multi-sheet CSV export limitation — expected, not a parser defect). TC-0027 DEC-034 PASS 24/24 (run044). Gate 7 malformed/fuzz testing planning complete (TC-0033 not_started — requires explicit Gate 7 prompt). FODT Gates 1-3 ALL PASSED (Babar Raza): Gate 1 run041, Gate 2 run043, Gate 3 run044. FODT Gate 4 parser prototype planning complete (TC-0034 not_started — requires explicit Gate 4 prompt). ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md.
+Gate 6 (Oracle Comparison) PASSED (Babar Raza, 2026-05-08, run044). ORACLE_COMPARE: PASS 3/4, WARN 1/4 (multi-sheet CSV export limitation — expected, not a parser defect). Gate 7 (Fuzz Testing) PASSED (Babar Raza, 2026-05-08, run045). GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18. Gate 8 (Security Review) PASSED (Babar Raza, 2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. FODT Gates 1-5 ALL PASSED (Babar Raza): Gates 1-4 run041/043/044/045; Gate 5 run046 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4). FODT Gate 6 oracle planning_ready (TC-0042 not_started). ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md. ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md.
 
 ---
 
@@ -68,7 +68,7 @@ Every format passes through 11 mandatory gates before any product code is writte
 
 ## Project Status
 
-**Current phase:** Phase 3 — FODS Gate 6 PASSED (run044). Gate 7 planning_ready. FODT Gates 1-3 PASSED. Gate 4 planning_ready.
+**Current phase:** Phase 3 — FODS Gates 1-8 ALL PASSED. Gate 9 planning_ready. FODT Gates 1-5 ALL PASSED. Gate 6 oracle planning_ready.
 
 - Phase 0 (Foundation): Complete — accepted 2026-05-04
 - Phase 1A (Scoring): Complete — FODS scored 93/100, Accept band
@@ -78,7 +78,8 @@ Every format passes through 11 mandatory gates before any product code is writte
 - Phase 3 (Parser Prototype): Complete — Gate 4 passed, approved by Babar Raza, 2026-05-06
 - Phase 3 (Neutral Model): Complete — Gate 5 passed, approved by Babar Raza, 2026-05-06
 - Phase 3 (Oracle Comparison): Complete — Gate 6 passed, approved by Babar Raza, 2026-05-08; ORACLE_COMPARE PASS 3/4 WARN 1/4
-- Phase 3 (Fuzz Testing): planning_ready — Gate 7 planning complete (run044); TC-0033 not_started
+- Phase 3 (Fuzz Testing): Complete — Gate 7 passed, approved by Babar Raza, 2026-05-08; GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18; 18 malformed fixtures
+- Phase 3 (Security Review): Complete — Gate 8 passed, approved by Babar Raza, 2026-05-08; GATE8_SECURITY_REVIEW: PASS
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md).
 

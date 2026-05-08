@@ -14,9 +14,9 @@ notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hard
 
 **Format:** FODS
 **Gate:** 6 — Oracle Comparison
-**Status:** oracle_blocked_missing_tool
-**Prepared by:** run035 (2026-05-07); updated run036–run040 (2026-05-07); updated run043 (2026-05-08)
-**Gate 6 approved:** NO — oracle comparison completed; pending TC-0027 independent verification then human approval
+**Status:** RESOLVED — Gate 6 PASSED (Babar Raza, 2026-05-08, run044)
+**Prepared by:** run035 (2026-05-07); updated run036–run040 (2026-05-07); updated run043 (2026-05-08); status updated run046 (2026-05-08)
+**Gate 6 approved:** YES — PASSED (Babar Raza, 2026-05-08, run044). TC-0027 DEC-034 PASS 24/24. ORACLE_COMPARE: PASS 3/4 WARN 1/4.
 
 ---
 
@@ -287,12 +287,8 @@ Despite the oracle tool still being unavailable, the following harness improveme
 
 ---
 
-## Gate 6 Next Action
+## Gate 6 Status (Closed)
 
-**next_allowed_action:** tc0027_independent_verification_then_human_gate6_review
+**Gate 6 APPROVED** — Babar Raza, 2026-05-08, run044. TC-0027 DEC-034 PASS 24/24.
 
-1. TC-0027: Execute FODS Gate 6 DEC-034 independent verification sprint (separate session)
-2. After TC-0027 PASS: submit Gate 6 human review to Babar Raza
-3. Human approval: "FODS Gate 6 APPROVED" with date and run reference
-
-Gate 6 oracle comparison data exists. Gate 6 is NOT approved. Human approval required after TC-0027.
+Gate 6 oracle comparison and independent verification are complete. Human approval has been recorded in registry/format-registry.yaml. This blocker report is archived for historical reference. Gate 7 planning was already in place (TC-0033); Gate 7 execution proceeded in run045.
