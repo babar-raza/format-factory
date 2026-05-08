@@ -1,19 +1,27 @@
 """
-test_playbook_schema.py — S-F2F-02 Playbook Validation Tool Tests
+test_playbook_schema.py — S-F2F-02B Playbook Validation Tool Tests
 
 Tests for:
-1. Schema files are valid JSON.
-2. Documentation example YAML is valid YAML.
-3. Valid fixtures pass validation.
+1. Schema files are valid JSON and have required structure.
+2. Documentation example YAML is valid YAML with correct policy fields.
+3. Valid fixtures pass validation (both engines).
 4. Invalid fixtures fail validation.
 5. validate_playbook.py exit codes behave correctly.
 6. validate_playbook.py writes no files.
 7. validate_playbook.py does not import or execute replay/apply modules.
 8. No replay/apply modules exist.
+9. Engine selection behaves correctly.
+10. Documentation example passes full JSON Schema when jsonschema is available.
+11. Policy check catches missing not_for_execution.
 
-Runs without jsonschema (fallback structural validation is tested).
+Engine notes:
+- 'auto' uses jsonschema when available (PYTHONPATH required on Windows for Roaming install).
+- 'fallback_structural' never requires jsonschema.
+- 'jsonschema' fails clearly if jsonschema is not installed.
+- Structural fallback does NOT claim full JSON Schema compliance.
 """
 
+import importlib.util
 import json
 import os
 import subprocess
@@ -42,6 +50,13 @@ FIXTURE_INVALID_FORBIDDEN = repo_path("tests", "playbook", "fixtures", "invalid-
 FIXTURE_VALID_REVIEW_QUEUE = repo_path("tests", "playbook", "fixtures", "valid-review-queue.yaml")
 FIXTURE_INVALID_REVIEW_QUEUE = repo_path("tests", "playbook", "fixtures", "invalid-review-queue-missing-items.yaml")
 
+# Check if jsonschema is available in the current Python environment
+try:
+    import jsonschema as _jsonschema
+    JSONSCHEMA_AVAILABLE = True
+except ImportError:
+    JSONSCHEMA_AVAILABLE = False
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -57,6 +72,14 @@ def run_validator(*args, capture=True):
         cwd=REPO_ROOT,
     )
     return result.returncode, result.stdout, result.stderr
+
+
+def load_validator_module():
+    """Import the validator module for direct API testing."""
+    spec = importlib.util.spec_from_file_location("validate_playbook", VALIDATOR)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 # ---------------------------------------------------------------------------
@@ -98,9 +121,28 @@ class TestSchemaFilesValidJson:
         for field in ["schema_version", "queue_id", "items", "governance"]:
             assert field in required, f"Schema required must include '{field}'"
 
+    def test_acquisition_schema_has_not_for_execution_property(self):
+        """acquisition-playbook schema must define not_for_execution property (S-F2F-02B repair)."""
+        with open(SCHEMA_ACQUISITION, encoding="utf-8") as f:
+            schema = json.load(f)
+        properties = schema.get("properties", {})
+        assert "not_for_execution" in properties, (
+            "Schema must define not_for_execution property (schema gap repaired in S-F2F-02B)"
+        )
+        nfe = properties["not_for_execution"]
+        assert nfe.get("type") == "boolean", "not_for_execution must be type boolean"
+
+    def test_acquisition_schema_additional_properties_false(self):
+        """acquisition-playbook schema must keep additionalProperties: false."""
+        with open(SCHEMA_ACQUISITION, encoding="utf-8") as f:
+            schema = json.load(f)
+        assert schema.get("additionalProperties") is False, (
+            "Schema must keep additionalProperties: false"
+        )
+
 
 # ---------------------------------------------------------------------------
-# 2. Documentation example is valid YAML
+# 2. Documentation example is valid YAML with correct policy fields
 # ---------------------------------------------------------------------------
 
 class TestDocsExampleValidYaml:
@@ -149,12 +191,13 @@ class TestDocsExampleValidYaml:
 # ---------------------------------------------------------------------------
 
 class TestValidFixturesPass:
-    def test_valid_acquisition_playbook_passes(self):
-        """Valid acquisition playbook fixture must pass validation."""
+    def test_valid_acquisition_playbook_passes_auto_engine(self):
+        """Valid acquisition playbook fixture must pass validation with auto engine."""
         rc, stdout, stderr = run_validator(
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_VALID_ACQUISITION,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         assert rc == 0, (
             f"Expected exit code 0 for valid fixture, got {rc}\nstdout: {stdout}\nstderr: {stderr}"
@@ -163,39 +206,81 @@ class TestValidFixturesPass:
             f"Expected PLAYBOOK_VALIDATION: PASS in stdout\nstdout: {stdout}"
         )
 
-    def test_docs_example_passes_structural_validation(self):
-        """Documentation example must pass structural fallback validation.
+    def test_valid_acquisition_playbook_passes_structural_engine(self):
+        """Valid acquisition playbook fixture must pass structural engine."""
+        rc, stdout, stderr = run_validator(
+            "--schema", SCHEMA_ACQUISITION,
+            "--input", FIXTURE_VALID_ACQUISITION,
+            "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
+            "--engine", "fallback_structural",
+        )
+        assert rc == 0, (
+            f"Expected exit code 0 for valid fixture with structural engine, got {rc}\n"
+            f"stdout: {stdout}\nstderr: {stderr}"
+        )
+        assert "PLAYBOOK_VALIDATION: PASS" in stdout
+        assert "fallback_structural" in stderr
 
-        Note: When jsonschema is available, the docs example may fail full JSON Schema
-        validation because acquisition-playbook.schema.json has additionalProperties: false
-        and the docs example includes not_for_execution (a field added in S-F2F-01 that
-        is not in the schema properties list). This is a known schema gap from S-F2F-01.
+    @pytest.mark.skipif(not JSONSCHEMA_AVAILABLE, reason="jsonschema not available in current environment")
+    def test_valid_acquisition_playbook_passes_jsonschema_engine(self):
+        """Valid acquisition playbook must pass jsonschema engine when available."""
+        rc, stdout, stderr = run_validator(
+            "--schema", SCHEMA_ACQUISITION,
+            "--input", FIXTURE_VALID_ACQUISITION,
+            "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
+            "--engine", "jsonschema",
+        )
+        assert rc == 0, (
+            f"Expected exit code 0 for valid fixture with jsonschema engine, got {rc}\n"
+            f"stdout: {stdout}\nstderr: {stderr}"
+        )
+        assert "PLAYBOOK_VALIDATION: PASS" in stdout
+        assert "jsonschema" in stderr
 
-        This test validates via the Python API structural fallback directly, which does not
-        check for additional properties — consistent with the intent of the docs example
-        as a human-reviewed structural illustration.
-        """
-        import sys
-        import importlib.util
+    @pytest.mark.skipif(not JSONSCHEMA_AVAILABLE, reason="jsonschema not available in current environment")
+    def test_docs_example_passes_jsonschema_engine(self):
+        """Documentation example must pass full JSON Schema validation after S-F2F-02B repair."""
+        rc, stdout, stderr = run_validator(
+            "--schema", SCHEMA_ACQUISITION,
+            "--input", DOCS_EXAMPLE,
+            "--kind", "acquisition-playbook",
+            "--format-id", "fods",
+            "--engine", "jsonschema",
+        )
+        assert rc == 0, (
+            f"Documentation example must pass jsonschema engine after schema repair.\n"
+            f"stdout: {stdout}\nstderr: {stderr}"
+        )
+        assert "PLAYBOOK_VALIDATION: PASS" in stdout
 
-        # Import the validator module directly to test structural validation
-        spec = importlib.util.spec_from_file_location("validate_playbook", VALIDATOR)
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
+    def test_docs_example_passes_structural_engine(self):
+        """Documentation example must pass structural fallback validation."""
+        rc, stdout, stderr = run_validator(
+            "--schema", SCHEMA_ACQUISITION,
+            "--input", DOCS_EXAMPLE,
+            "--kind", "acquisition-playbook",
+            "--format-id", "fods",
+            "--engine", "fallback_structural",
+        )
+        assert rc == 0, (
+            f"Documentation example must pass structural engine.\n"
+            f"stdout: {stdout}\nstderr: {stderr}"
+        )
+        assert "PLAYBOOK_VALIDATION: PASS" in stdout
 
+    def test_docs_example_passes_structural_api(self):
+        """Documentation example must pass structural fallback via module API."""
+        mod = load_validator_module()
         with open(DOCS_EXAMPLE, encoding="utf-8") as f:
-            import yaml as _yaml
-            data = _yaml.safe_load(f)
-
+            data = yaml.safe_load(f)
         errors = mod._validate_acquisition_playbook_structural(data)
-        assert errors == [], (
-            f"Docs example should pass structural validation. Errors: {errors}"
-        )
-        # Also verify forbidden authority check passes
+        assert errors == [], f"Structural errors: {errors}"
         auth_errors = mod._check_forbidden_authority(data, "acquisition-playbook")
-        assert auth_errors == [], (
-            f"Docs example should pass forbidden authority check. Errors: {auth_errors}"
-        )
+        assert auth_errors == [], f"Authority errors: {auth_errors}"
+        policy_errors = mod._check_documentation_example_policy(data, "acquisition-playbook")
+        assert policy_errors == [], f"Policy errors: {policy_errors}"
 
     def test_valid_review_queue_passes(self):
         """Valid review queue fixture must pass validation."""
@@ -203,6 +288,7 @@ class TestValidFixturesPass:
             "--schema", SCHEMA_REVIEW_QUEUE,
             "--input", FIXTURE_VALID_REVIEW_QUEUE,
             "--kind", "review-queue",
+            "--format-id", "test-format",
         )
         assert rc == 0, (
             f"Expected exit code 0 for valid review queue, got {rc}\nstdout: {stdout}\nstderr: {stderr}"
@@ -221,6 +307,7 @@ class TestInvalidFixturesFail:
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_INVALID_MISSING_FIELD,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         assert rc == 1, (
             f"Expected exit code 1 for invalid fixture, got {rc}\nstdout: {stdout}\nstderr: {stderr}"
@@ -235,9 +322,11 @@ class TestInvalidFixturesFail:
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_INVALID_FORBIDDEN,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         assert rc == 1, (
-            f"Expected exit code 1 for forbidden authority fixture, got {rc}\nstdout: {stdout}\nstderr: {stderr}"
+            f"Expected exit code 1 for forbidden authority fixture, got {rc}\n"
+            f"stdout: {stdout}\nstderr: {stderr}"
         )
         assert "PLAYBOOK_VALIDATION: FAIL" in stdout
 
@@ -247,6 +336,7 @@ class TestInvalidFixturesFail:
             "--schema", SCHEMA_REVIEW_QUEUE,
             "--input", FIXTURE_INVALID_REVIEW_QUEUE,
             "--kind", "review-queue",
+            "--format-id", "test-format",
         )
         assert rc == 1, (
             f"Expected exit code 1 for invalid review queue, got {rc}\nstdout: {stdout}\nstderr: {stderr}"
@@ -259,6 +349,7 @@ class TestInvalidFixturesFail:
             "--schema", SCHEMA_ACQUISITION,
             "--input", "/nonexistent/path/playbook.yaml",
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         assert rc == 1, f"Expected exit code 1 for nonexistent input, got {rc}"
         assert "PLAYBOOK_VALIDATION: FAIL" in stdout
@@ -270,14 +361,90 @@ class TestInvalidFixturesFail:
             "--schema", "/nonexistent/schema.json",
             "--input", FIXTURE_VALID_ACQUISITION,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         assert rc == 1, f"Expected exit code 1 for nonexistent schema, got {rc}"
         assert "PLAYBOOK_VALIDATION: FAIL" in stdout
         assert "FILE_NOT_FOUND" in stdout
 
+    def test_docs_example_fails_policy_if_not_for_execution_missing(self):
+        """Policy check must catch missing not_for_execution for documentation_example_only."""
+        mod = load_validator_module()
+        with open(DOCS_EXAMPLE, encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+        # Remove not_for_execution to trigger policy error
+        data_no_nfe = {k: v for k, v in data.items() if k != "not_for_execution"}
+        policy_errors = mod._check_documentation_example_policy(data_no_nfe, "acquisition-playbook")
+        assert len(policy_errors) > 0, (
+            "Policy check must report error when not_for_execution is missing "
+            "for documentation_example_only status"
+        )
+        assert any("not_for_execution" in e for e in policy_errors)
+
 
 # ---------------------------------------------------------------------------
-# 5. Exit code correctness
+# 5. Engine selection
+# ---------------------------------------------------------------------------
+
+class TestEngineSelection:
+    def test_structural_engine_reports_fallback_in_stderr(self):
+        """Structural engine must report fallback in stderr."""
+        rc, stdout, stderr = run_validator(
+            "--schema", SCHEMA_ACQUISITION,
+            "--input", FIXTURE_VALID_ACQUISITION,
+            "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
+            "--engine", "fallback_structural",
+        )
+        assert "fallback_structural" in stderr, f"Structural engine must report in stderr: {stderr}"
+
+    def test_structural_engine_does_not_claim_full_json_schema(self):
+        """Structural engine stderr must not claim full JSON Schema compliance."""
+        rc, stdout, stderr = run_validator(
+            "--schema", SCHEMA_ACQUISITION,
+            "--input", FIXTURE_VALID_ACQUISITION,
+            "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
+            "--engine", "fallback_structural",
+        )
+        # Should explicitly say NOT full JSON Schema compliance
+        assert "NOT full JSON Schema compliance" in stderr, (
+            f"Structural engine must disclaim full compliance: {stderr}"
+        )
+
+    @pytest.mark.skipif(not JSONSCHEMA_AVAILABLE, reason="jsonschema not available in current environment")
+    def test_jsonschema_engine_reports_version_in_stderr(self):
+        """Jsonschema engine must report version in stderr."""
+        rc, stdout, stderr = run_validator(
+            "--schema", SCHEMA_ACQUISITION,
+            "--input", FIXTURE_VALID_ACQUISITION,
+            "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
+            "--engine", "jsonschema",
+        )
+        assert "jsonschema" in stderr, f"Jsonschema engine must report in stderr: {stderr}"
+
+    def test_jsonschema_engine_fails_clearly_when_unavailable(self):
+        """jsonschema engine must fail clearly when jsonschema not available in current env.
+
+        This test runs the validator without PYTHONPATH, so jsonschema is not available
+        in the default system Python. If jsonschema IS available, we skip this test.
+        """
+        if JSONSCHEMA_AVAILABLE:
+            pytest.skip("jsonschema is available in current environment; cannot test unavailable case")
+        rc, stdout, stderr = run_validator(
+            "--schema", SCHEMA_ACQUISITION,
+            "--input", FIXTURE_VALID_ACQUISITION,
+            "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
+            "--engine", "jsonschema",
+        )
+        assert rc == 1, f"Expected exit 1 when jsonschema unavailable, got {rc}"
+        assert "ENGINE_ERROR" in stdout or "PLAYBOOK_VALIDATION: FAIL" in stdout
+
+
+# ---------------------------------------------------------------------------
+# 6. Exit code correctness
 # ---------------------------------------------------------------------------
 
 class TestExitCodes:
@@ -287,6 +454,7 @@ class TestExitCodes:
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_VALID_ACQUISITION,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         assert rc == 0
 
@@ -296,6 +464,7 @@ class TestExitCodes:
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_INVALID_MISSING_FIELD,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         assert rc == 1
 
@@ -305,6 +474,7 @@ class TestExitCodes:
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_VALID_ACQUISITION,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
             "--json-output",
         )
         assert rc == 0
@@ -318,6 +488,7 @@ class TestExitCodes:
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_INVALID_MISSING_FIELD,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
             "--json-output",
         )
         assert rc == 1
@@ -325,9 +496,21 @@ class TestExitCodes:
         assert result.get("playbook_validation") == "FAIL"
         assert len(result.get("errors", [])) > 0
 
+    def test_json_output_has_engine_field(self):
+        """JSON output must include json_schema_engine field."""
+        rc, stdout, _ = run_validator(
+            "--schema", SCHEMA_ACQUISITION,
+            "--input", FIXTURE_VALID_ACQUISITION,
+            "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
+            "--json-output",
+        )
+        result = json.loads(stdout)
+        assert "json_schema_engine" in result, "JSON output must have json_schema_engine field"
+
 
 # ---------------------------------------------------------------------------
-# 6. No-write proof: validator must not create any files
+# 7. No-write proof: validator must not create any files
 # ---------------------------------------------------------------------------
 
 class TestNoWriteProof:
@@ -335,7 +518,6 @@ class TestNoWriteProof:
         """Validator must not create any files in the repo when running."""
         before_files = set()
         for root, dirs, files in os.walk(REPO_ROOT):
-            # Skip .git and .local
             dirs[:] = [d for d in dirs if d not in (".git", ".local", "__pycache__")]
             for fname in files:
                 before_files.add(os.path.join(root, fname))
@@ -344,16 +526,19 @@ class TestNoWriteProof:
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_VALID_ACQUISITION,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         run_validator(
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_INVALID_MISSING_FIELD,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         run_validator(
             "--schema", SCHEMA_REVIEW_QUEUE,
             "--input", FIXTURE_VALID_REVIEW_QUEUE,
             "--kind", "review-queue",
+            "--format-id", "test-format",
         )
 
         after_files = set()
@@ -363,7 +548,6 @@ class TestNoWriteProof:
                 after_files.add(os.path.join(root, fname))
 
         new_files = after_files - before_files
-        # Filter out .pyc and __pycache__ files that Python creates automatically
         new_non_cache = {f for f in new_files if ".pyc" not in f and "__pycache__" not in f}
         assert not new_non_cache, (
             f"Validator created unexpected files: {new_non_cache}"
@@ -376,18 +560,19 @@ class TestNoWriteProof:
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_VALID_ACQUISITION,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         assert not os.path.exists(review_queues_dir), (
             f"Validator must not create {review_queues_dir}"
         )
 
     def test_validator_does_not_create_playbook_outputs(self):
-        """Validator must not create any playbook output files."""
-        # Run validator and check no acquisition-pack files created
+        """Validator must not create any acquisition-pack playbook files."""
         run_validator(
             "--schema", SCHEMA_ACQUISITION,
             "--input", FIXTURE_VALID_ACQUISITION,
             "--kind", "acquisition-playbook",
+            "--format-id", "test-format",
         )
         assert not os.path.exists(repo_path("acquisition-packs", "fods", "playbook.yaml"))
         assert not os.path.exists(repo_path("acquisition-packs", "fodt", "playbook.yaml"))
@@ -395,7 +580,7 @@ class TestNoWriteProof:
 
 
 # ---------------------------------------------------------------------------
-# 7. No replay/apply modules exist or are imported
+# 8. No replay/apply modules exist or are imported
 # ---------------------------------------------------------------------------
 
 class TestNoReplayApplyModules:
@@ -403,44 +588,54 @@ class TestNoReplayApplyModules:
         """replay_acquisition_playbook.py must not exist."""
         assert not os.path.exists(
             repo_path("tools", "playbook", "replay_acquisition_playbook.py")
-        ), "replay_acquisition_playbook.py must not exist in S-F2F-02"
+        ), "replay_acquisition_playbook.py must not exist"
 
     def test_diff_module_does_not_exist(self):
         """diff_playbook_outputs.py must not exist."""
         assert not os.path.exists(
             repo_path("tools", "playbook", "diff_playbook_outputs.py")
-        ), "diff_playbook_outputs.py must not exist in S-F2F-02"
+        ), "diff_playbook_outputs.py must not exist"
 
     def test_export_review_queue_module_does_not_exist(self):
         """export_review_queue.py must not exist."""
         assert not os.path.exists(
             repo_path("tools", "playbook", "export_review_queue.py")
-        ), "export_review_queue.py must not exist in S-F2F-02"
+        ), "export_review_queue.py must not exist"
 
     def test_create_golden_case_module_does_not_exist(self):
         """create_golden_case.py must not exist."""
         assert not os.path.exists(
             repo_path("tools", "playbook", "create_golden_case.py")
-        ), "create_golden_case.py must not exist in S-F2F-02"
+        ), "create_golden_case.py must not exist"
 
     def test_golden_test_directory_does_not_exist(self):
         """tests/playbook/golden/ must not exist."""
         assert not os.path.exists(
             repo_path("tests", "playbook", "golden")
-        ), "tests/playbook/golden/ must not exist in S-F2F-02"
+        ), "tests/playbook/golden/ must not exist"
 
     def test_review_queues_directory_does_not_exist(self):
         """plans/review-queues/ must not exist."""
         assert not os.path.exists(
             repo_path("plans", "review-queues")
-        ), "plans/review-queues/ must not exist in S-F2F-02"
+        ), "plans/review-queues/ must not exist"
+
+    def test_no_product_source_directories(self):
+        """No product source directories may exist (src/python/fods/, src/python/fodt/, etc.)."""
+        forbidden_dirs = [
+            repo_path("src", "python", "fods"),
+            repo_path("src", "python", "fodt"),
+            repo_path("src", "net", "fods"),
+            repo_path("src", "net", "fodt"),
+            repo_path("acquisition-packs", "_families"),
+        ]
+        for d in forbidden_dirs:
+            assert not os.path.exists(d), f"Forbidden directory must not exist: {d}"
 
     def test_validator_source_does_not_import_replay(self):
         """validate_playbook.py source must not import replay or apply modules."""
         with open(VALIDATOR, encoding="utf-8") as f:
             source = f.read()
-        # Check for import statements or module references to forbidden modules
-        # (not substring matching of field names like 'blocks_apply_mode')
         import re
         forbidden_modules = [
             "replay_acquisition_playbook",
@@ -453,7 +648,6 @@ class TestNoReplayApplyModules:
                 f"validate_playbook.py must not import or reference module '{module}'"
             )
         # Check that apply_mode is not referenced as a module or function name
-        # (note: 'blocks_apply_mode' is a legitimate schema field name, not a module)
         forbidden_patterns = [
             r"\bimport apply_mode\b",
             r"\bfrom apply_mode\b",

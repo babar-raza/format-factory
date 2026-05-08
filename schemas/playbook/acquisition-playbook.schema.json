@@ -54,6 +54,10 @@
       "enum": ["format_playbook", "family_playbook", "documentation_example"],
       "description": "Kind of playbook. documentation_example must not be used for execution."
     },
+    "not_for_execution": {
+      "type": "boolean",
+      "description": "Documentation-only safety marker. When true, this playbook is not executable and must not be replayed, applied, or used to approve gates. Required when status is documentation_example_only or playbook_kind is documentation_example. Does not authorize any behavior — it restricts behavior."
+    },
     "source_format_if_derived": {
       "type": ["string", "null"],
       "description": "If this playbook derives from another format's playbook, the source format_id. Null if original."

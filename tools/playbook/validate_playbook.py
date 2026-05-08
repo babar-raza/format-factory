@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-validate_playbook.py — Read-Only Playbook Validation Tool (S-F2F-02)
+validate_playbook.py — Read-Only Playbook Validation Tool (S-F2F-02, repaired S-F2F-02B)
 
 Validates a playbook YAML file against the acquisition-playbook or review-queue schema.
 This tool is STRICTLY READ-ONLY:
@@ -15,7 +15,14 @@ Usage:
   python tools/playbook/validate_playbook.py \\
     --schema schemas/playbook/acquisition-playbook.schema.json \\
     --input docs/examples/acquisition-playbook-fods-documentation-example.yaml \\
-    --kind acquisition-playbook
+    --kind acquisition-playbook \\
+    --format-id fods
+
+  # Force structural fallback (no jsonschema required):
+  python tools/playbook/validate_playbook.py ... --engine structural
+
+  # Force jsonschema (fails clearly if not installed):
+  python tools/playbook/validate_playbook.py ... --engine jsonschema
 
 Exit codes:
   0 — PLAYBOOK_VALIDATION: PASS
@@ -44,10 +51,20 @@ except ImportError:
 try:
     import jsonschema
     JSONSCHEMA_AVAILABLE = True
-    JSONSCHEMA_VERSION = getattr(jsonschema, "__version__", "unknown")
+    # Use importlib.metadata for version; fall back gracefully
+    try:
+        from importlib.metadata import version as _pkg_version
+        JSONSCHEMA_VERSION = _pkg_version("jsonschema")
+    except Exception:
+        JSONSCHEMA_VERSION = "unknown"
 except ImportError:
     JSONSCHEMA_AVAILABLE = False
     JSONSCHEMA_VERSION = None
+
+# Engine name constants
+ENGINE_JSONSCHEMA = "jsonschema"
+ENGINE_STRUCTURAL = "fallback_structural"
+ENGINE_AUTO = "auto"
 
 # ---------------------------------------------------------------------------
 # Schema-specific required fields for structural fallback validation
@@ -187,7 +204,12 @@ def _check_required_fields(data, required_fields, context="document"):
 
 
 def _validate_acquisition_playbook_structural(data):
-    """Perform structural validation for acquisition-playbook kind."""
+    """Perform structural validation for acquisition-playbook kind.
+
+    This engine checks required fields, enum values, and policy constraints.
+    It does NOT check for additional properties (unlike full JSON Schema validation).
+    Structural fallback is NOT full JSON Schema compliance.
+    """
     errors = []
 
     # Top-level required fields
@@ -246,11 +268,13 @@ def _validate_acquisition_playbook_structural(data):
                     f"playbook: forbidden_uses must include '{required_use}'"
                 )
 
-    # documentation_example_only status checks
-    if st == "documentation_example_only":
+    # documentation_example_only and documentation_example kind safety policy:
+    # not_for_execution must be true
+    if st == "documentation_example_only" or pk == "documentation_example":
         if not data.get("not_for_execution", False):
             errors.append(
-                "playbook: status=documentation_example_only requires not_for_execution: true"
+                "playbook: status=documentation_example_only or kind=documentation_example "
+                "requires not_for_execution: true"
             )
 
     # gates must be a list
@@ -410,6 +434,34 @@ def _check_forbidden_authority(data, kind):
 
 
 # ---------------------------------------------------------------------------
+# Documentation-example safety policy check (post-schema validation)
+# ---------------------------------------------------------------------------
+
+def _check_documentation_example_policy(data, kind):
+    """Enforce not_for_execution policy for documentation_example_only playbooks.
+
+    This check runs after JSON Schema validation (which validates the field type)
+    to enforce the semantic policy: documentation_example_only status requires
+    not_for_execution: true. This is an additional safety check.
+    """
+    errors = []
+    if kind != "acquisition-playbook":
+        return errors
+
+    st = data.get("status")
+    pk = data.get("playbook_kind")
+
+    if st == "documentation_example_only" or pk == "documentation_example":
+        if not data.get("not_for_execution", False):
+            errors.append(
+                "POLICY_ERROR: status=documentation_example_only or "
+                "kind=documentation_example requires not_for_execution: true"
+            )
+
+    return errors
+
+
+# ---------------------------------------------------------------------------
 # JSON Schema validation (when jsonschema is available)
 # ---------------------------------------------------------------------------
 
@@ -429,19 +481,55 @@ def _validate_with_jsonschema(data, schema, errors):
 # Main validation entry point
 # ---------------------------------------------------------------------------
 
-def validate(schema_path, input_path, kind, strict=False, format_id=None):
+def validate(schema_path, input_path, kind, strict=False, format_id=None, engine=ENGINE_AUTO):
     """
     Validate input_path against schema_path.
-    Returns (passed: bool, errors: list[str], info: dict).
+
+    Args:
+        schema_path: Path to JSON Schema file.
+        input_path: Path to YAML input file.
+        kind: 'acquisition-playbook' or 'review-queue'.
+        strict: Treat warnings as errors (reserved).
+        format_id: Optional format identifier (for reporting only).
+        engine: 'auto' | 'jsonschema' | 'structural'
+            auto: uses jsonschema when available, structural fallback otherwise.
+            jsonschema: requires jsonschema; fails clearly if not installed.
+            structural: always uses structural fallback (no jsonschema dependency).
+
+    Returns:
+        (passed: bool, errors: list[str], info: dict)
     THIS FUNCTION WRITES NOTHING.
     """
+    # Resolve actual engine
+    if engine == ENGINE_AUTO:
+        actual_engine = ENGINE_JSONSCHEMA if JSONSCHEMA_AVAILABLE else ENGINE_STRUCTURAL
+    elif engine == ENGINE_JSONSCHEMA:
+        if not JSONSCHEMA_AVAILABLE:
+            return False, [
+                "ENGINE_ERROR: --engine jsonschema requested but jsonschema is not installed. "
+                "Install with: pip install jsonschema  OR  use --engine structural"
+            ], {
+                "kind": kind,
+                "input": input_path,
+                "schema": schema_path,
+                "format_id": format_id,
+                "json_schema_engine": ENGINE_JSONSCHEMA,
+                "json_schema_version": None,
+            }
+        actual_engine = ENGINE_JSONSCHEMA
+    elif engine == ENGINE_STRUCTURAL:
+        actual_engine = ENGINE_STRUCTURAL
+    else:
+        actual_engine = ENGINE_STRUCTURAL
+
     info = {
         "kind": kind,
         "input": input_path,
         "schema": schema_path,
         "format_id": format_id,
-        "json_schema_engine": "JSONSCHEMA" if JSONSCHEMA_AVAILABLE else "FALLBACK_STRUCTURAL_VALIDATION",
-        "json_schema_version": JSONSCHEMA_VERSION if JSONSCHEMA_AVAILABLE else None,
+        "json_schema_engine": actual_engine,
+        "json_schema_version": JSONSCHEMA_VERSION if actual_engine == ENGINE_JSONSCHEMA else None,
+        "engine_requested": engine,
     }
     errors = []
 
@@ -487,11 +575,11 @@ def validate(schema_path, input_path, kind, strict=False, format_id=None):
         errors.append("INPUT_ERROR: input file is empty or yields no YAML document")
         return False, errors, info
 
-    # Run validation
-    if JSONSCHEMA_AVAILABLE:
+    # Run validation engine
+    if actual_engine == ENGINE_JSONSCHEMA:
         _validate_with_jsonschema(data, schema, errors)
     else:
-        # Fallback structural validation
+        # Structural fallback
         if kind == "acquisition-playbook":
             errors.extend(_validate_acquisition_playbook_structural(data))
         elif kind == "review-queue":
@@ -501,8 +589,11 @@ def validate(schema_path, input_path, kind, strict=False, format_id=None):
                 f"UNKNOWN_KIND: '{kind}' — supported kinds: acquisition-playbook, review-queue"
             )
 
-    # Forbidden authority check (always run, independent of jsonschema)
+    # Forbidden authority check (always run, independent of engine)
     errors.extend(_check_forbidden_authority(data, kind))
+
+    # Documentation-example policy check (always run after schema validation)
+    errors.extend(_check_documentation_example_policy(data, kind))
 
     passed = len(errors) == 0
     return passed, errors, info
@@ -514,7 +605,7 @@ def validate(schema_path, input_path, kind, strict=False, format_id=None):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="validate_playbook.py — Read-only playbook YAML validator (S-F2F-02). "
+        description="validate_playbook.py — Read-only playbook YAML validator (S-F2F-02B). "
                     "Writes nothing. No replay. No apply mode. No review queue output."
     )
     parser.add_argument(
@@ -532,7 +623,19 @@ def main():
     )
     parser.add_argument(
         "--format-id", default=None,
-        help="Optional format identifier for context (e.g. fods, fodt). Not used for validation logic."
+        help="Format identifier for context (e.g. fods, fodt). Required. Not used for validation logic."
+    )
+    parser.add_argument(
+        "--engine",
+        choices=[ENGINE_AUTO, ENGINE_JSONSCHEMA, ENGINE_STRUCTURAL],
+        default=ENGINE_AUTO,
+        help=(
+            "Validation engine: "
+            "'auto' (default) uses jsonschema when available, structural fallback otherwise; "
+            "'jsonschema' requires jsonschema package; "
+            "'structural' always uses structural fallback (no jsonschema dependency). "
+            "Note: 'structural' does NOT claim full JSON Schema compliance."
+        )
     )
     parser.add_argument(
         "--strict", action="store_true",
@@ -550,12 +653,21 @@ def main():
         kind=args.kind,
         strict=args.strict,
         format_id=args.format_id,
+        engine=args.engine,
     )
 
-    if not JSONSCHEMA_AVAILABLE:
+    # Engine reporting to stderr
+    engine_label = info.get("json_schema_engine", ENGINE_STRUCTURAL)
+    if engine_label == ENGINE_STRUCTURAL:
         print(
-            "JSON_SCHEMA_ENGINE: FALLBACK_STRUCTURAL_VALIDATION "
-            "(jsonschema not installed — full JSON Schema compliance not guaranteed)",
+            "JSON_SCHEMA_ENGINE: fallback_structural "
+            "(structural fallback — NOT full JSON Schema compliance)",
+            file=sys.stderr
+        )
+    elif engine_label == ENGINE_JSONSCHEMA:
+        ver = info.get("json_schema_version", "unknown")
+        print(
+            f"JSON_SCHEMA_ENGINE: jsonschema (version {ver})",
             file=sys.stderr
         )
 
@@ -566,7 +678,7 @@ def main():
             "kind": info["kind"],
             "input": info["input"],
             "schema": info["schema"],
-            "json_schema_engine": info["json_schema_engine"],
+            "json_schema_engine": engine_label,
             "errors": errors,
         }
         print(_json.dumps(result, indent=2))
@@ -576,11 +688,13 @@ def main():
             print(f"kind: {info['kind']}")
             print(f"input: {info['input']}")
             print(f"schema: {info['schema']}")
+            print(f"engine: {engine_label}")
         else:
             print(f"PLAYBOOK_VALIDATION: FAIL")
             print(f"kind: {info['kind']}")
             print(f"input: {info['input']}")
             print(f"schema: {info['schema']}")
+            print(f"engine: {engine_label}")
             print("errors:")
             for err in errors:
                 print(f"  - {err}")

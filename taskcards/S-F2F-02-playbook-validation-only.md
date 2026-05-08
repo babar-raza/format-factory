@@ -4,20 +4,27 @@
 S-F2F-02: Playbook Validation Tool — Read-Only Schema Validation
 
 ## 2. Status
-completed_pending_independent_verification
+CLOSED_VERIFIED
 executed: 2026-05-08
+verified_by: S-F2F-02B
+verification_date: 2026-05-08
 tools_created:
-  - tools/playbook/validate_playbook.py (read-only, fallback structural validation)
+  - tools/playbook/validate_playbook.py (read-only; jsonschema + structural fallback engines; --engine option)
   - tools/playbook/__init__.py
 tests_created:
-  - tests/playbook/test_playbook_schema.py (30/30 PASS)
+  - tests/playbook/test_playbook_schema.py (42/42 PASS; 1 skip — jsonschema unavailable test correctly skipped when available)
   - tests/playbook/fixtures/valid-acquisition-playbook.yaml
   - tests/playbook/fixtures/invalid-missing-required-field.yaml
   - tests/playbook/fixtures/invalid-forbidden-authority.yaml
   - tests/playbook/fixtures/valid-review-queue.yaml
   - tests/playbook/fixtures/invalid-review-queue-missing-items.yaml
-jsonschema_availability: FALLBACK_STRUCTURAL_VALIDATION (jsonschema not installed in Python313)
-schema_gap_noted: not_for_execution field in docs example not in schema additionalProperties
+schema_repairs_s_f2f_02b:
+  - not_for_execution property added to acquisition-playbook.schema.json (S-F2F-02B)
+  - Schema gap from S-F2F-01 resolved; additionalProperties: false preserved
+  - Docs example now passes full JSON Schema validation with jsonschema engine
+jsonschema_availability: BOTH_ENGINES — jsonschema and fallback_structural both supported
+  jsonschema: available via PYTHONPATH (Roaming Python313); version 4.25.1
+  fallback_structural: always available without jsonschema dependency
 no_replay_engine: confirmed
 no_apply_mode: confirmed
 no_review_queue_output: confirmed
