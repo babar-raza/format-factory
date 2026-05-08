@@ -1,31 +1,24 @@
-# Memory Sprint — Format Understanding Layer and LLM Strategy
-# Evidence Contract
-# Sprint: memory-format-understanding-and-llm-strategy
+# Memory Sprint Closure Hygiene Contract
+# Sprint: memory-format-understanding-and-llm-strategy-closure
 # Date: 2026-05-08
-# Purpose: Memory and roadmap synchronization sprint — captures strategic decisions into
-#          local repo memory, backlog, governance, and roadmap. No MAIN SPRINT gate changes.
-#          No secondary implementation. No product source. No embeddings. No LLM production calls.
+# Purpose: Closure hygiene for the Format Understanding Layer + LLM strategy memory sprint.
+#          Normalizes the original memory sprint contract from emergency mode to clean PASS mode.
+#          No new implementation. No gate changes. No secondary work.
 
-contract_id: memory-format-understanding-and-llm-strategy
+contract_id: memory-format-understanding-and-llm-strategy-closure
 version: "1.0"
-sprint_type: memory_sprint
-description: "Memory sprint: Format Understanding Layer + LLM strategy + non-XML backlog + non-Aspose registry + discovered-gap capture rule. No gate changes. No product source."
+sprint_type: memory_closure_sprint
+description: "Closure hygiene: normalize memory sprint contract from emergency mode to normal clean PASS. Verify content validity. No new scope."
 
 # Current-state authority policy (run041+)
 current_state_authority: bundle-metadata
 
-# Git state: CLEAN. Normalized from emergency mode by closure hygiene sprint (2026-05-08).
-# Historical note: The original memory sprint was executed during run048 interleaving.
-# The session-start gitStatus snapshot showed uncommitted run048 changes, so emergency_blocker_bundle
-# was set as a precaution. By the time the memory sprint bundle was built and committed, the run048
-# changes had already been committed and the working tree was clean. The final bundle is a clean
-# PASS bundle. This normalized contract is the authority for future validation of the memory sprint
-# as a normal PASS bundle.
+# Clean git required — closure sprint runs on clean working tree
 require_clean_git: true
 emergency_blocker_bundle: false
 
-# Memory sprint constraints
-memory_sprint: true
+# Closure sprint constraints
+memory_closure_sprint: true
 no_main_sprint_gate_change: true
 no_secondary_execution: true
 no_product_source_created: true
@@ -34,11 +27,10 @@ no_vector_db_created: true
 no_llm_production_call: true
 no_new_spec_download: true
 no_push: true
-backlog_capture_required: true
+contract_normalization_required: true
 
-# Minimum metadata depth
-# Memory sprint produces 55+ metadata files by design.
-min_metadata_count: 55
+# Minimum metadata depth (closure sprint produces 45+ metadata files)
+min_metadata_count: 45
 normal_pass_min_metadata: 30
 
 # Required top-level folders
@@ -46,7 +38,7 @@ required_top_level_folders:
   - repo
   - bundle-metadata
 
-# Forbidden path patterns
+# Forbidden path patterns (inherited from base-run + memory sprint prohibitions)
 forbidden_patterns:
   - ".git/**"
   - ".env"
@@ -84,46 +76,35 @@ forbidden_patterns:
 
 # Required repo files
 required_repo_files:
-  - plans/master-plan.md
-  - ROADMAP.md
-  - AGENTS.md
-  - GOVERNANCE.md
+  - tools/evidence/contracts/memory-format-understanding-and-llm-strategy.yaml
+  - tools/evidence/contracts/memory-format-understanding-and-llm-strategy-closure.yaml
   - memory/11-format-understanding-and-llm-strategy.md
   - docs/format-understanding-layer.md
   - docs/llm-and-embedding-strategy.md
   - docs/format-representation-model.md
   - docs/non-aspose-format-candidate-registry-plan.md
   - taskcards/FUL-001-format-understanding-layer-design.md
-  - taskcards/FUL-002-fods-format-understanding-package.md
-  - taskcards/FUL-003-fodt-format-understanding-package.md
-  - taskcards/FUL-004-product-source-consumes-format-understanding.md
   - taskcards/LLM-001-llm-professionalize-model-discovery.md
   - taskcards/EMB-001-controlled-embedding-retrieval-design.md
   - taskcards/REP-001-format-representation-profile.md
-  - taskcards/REP-003-non-xml-adaptability-backlog.md
   - taskcards/NAC-001-non-aspose-format-candidate-registry.md
   - taskcards/GOV-001-discovered-gap-backlog-capture-rule.md
-  - tools/evidence/contracts/memory-format-understanding-and-llm-strategy.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+  - ROADMAP.md
+  - plans/master-plan.md
 
-# Required metadata files
+# Required metadata files (closure sprint produces these)
 required_metadata_files:
   - git-log.txt
   - git-status-final.txt
   - bundle-manifest.yaml
-  - memory-sprint-summary.md
-  - memory-sprint-current-state-review.md
-  - discussion-decision-capture-report.md
-  - format-understanding-layer-backlog-report.md
-  - llm-professionalize-strategy-report.md
-  - xml-first-scope-report.md
-  - non-xml-adaptability-backlog-report.md
-  - non-aspose-candidate-registry-backlog-report.md
-  - discovered-gap-capture-rule-report.md
-  - taskcard-creation-report.md
-  - master-plan-update-report.md
-  - roadmap-update-report.md
-  - memory-update-report.md
-  - governance-update-report.md
+  - memory-closure-summary.md
+  - memory-closure-current-state-review.md
+  - original-memory-bundle-review.md
+  - memory-sprint-content-reverification.md
+  - emergency-contract-normalization-report.md
+  - contract-diff-summary.md
   - no-main-sprint-gate-change-check.md
   - no-secondary-execution-check.md
   - no-product-source-check.md
@@ -149,17 +130,16 @@ required_metadata_files:
   - git-status-final.txt
   - artifact-index-snapshot.yaml
   - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
   - self-challenge.md
   - verdict.md
   - final-state-summary.yaml
-  - future-main-sprint-guidance.md
-  - future-secondary-sprint-guidance.md
-  - llm-usage-boundary-check.md
-  - embedding-authority-boundary-check.md
-  - format-representation-boundary-check.md
-  - product-source-readiness-boundary-check.md
-  - local-memory-diff-summary.md
-  - backlog-coverage-matrix.yaml
   - final-bundle-validation-proof.txt
   - final-git-clean-proof.txt
-  - controlled-embedding-backlog-report.md
+  - memory-taskcard-status-audit.md
+  - llm-usage-boundary-check.md
+  - embedding-authority-boundary-check.md
+  - backlog-capture-boundary-check.md
+  - final-next-action-summary.md
+  - no-raw-llm-log-check.md
+  - final-bundle-audit.md
