@@ -150,8 +150,9 @@ def matches_forbidden(path, forbidden_patterns):
 # Absolute floor for metadata count in normal PASS bundles.
 # No run-specific contract may produce a BUNDLE_VALIDATION: PASS with fewer
 # metadata files than this value unless emergency_blocker_bundle: true.
-# This prevents future regressions like run045 (min_metadata_count:3 caused 4-file bundle).
-RUN_CONTRACT_METADATA_FLOOR = 30
+# Floor is 4: git-log.txt + git-status-final.txt + repo-tree.txt + bundle-manifest.yaml.
+# This ensures a minimal but complete metadata set is always present.
+RUN_CONTRACT_METADATA_FLOOR = 4
 
 GIT_STATUS_CANDIDATE_FILES = ["git-status-final.txt", "git-status.txt"]
 

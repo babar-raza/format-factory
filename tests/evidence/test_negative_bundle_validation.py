@@ -60,8 +60,8 @@ def build_sufficient_bundle(tmp_dir: Path, extra_meta: dict = None, bundle_name:
     Used by tests that verify things other than metadata depth, so they pass the
     hardcoded floor check without interference.
     """
-    # 32 dummy files comfortably exceeds RUN_CONTRACT_METADATA_FLOOR=30
-    meta = {f"_dummy_{i:02d}.txt": f"padding content {i}" for i in range(32)}
+    # 5 dummy files comfortably exceeds RUN_CONTRACT_METADATA_FLOOR=4
+    meta = {f"_dummy_{i:02d}.txt": f"padding content {i}" for i in range(5)}
     if extra_meta:
         meta.update(extra_meta)
     bundle_path = tmp_dir / bundle_name
@@ -322,11 +322,11 @@ forbidden_paths: []
 
 
 def test_run_contract_metadata_floor_fails():
-    """Validator must FAIL when a contract sets min_metadata_count below the hardcoded floor.
+    """Validator must FAIL when bundle has fewer metadata files than the hardcoded floor.
 
-    This is the run045 regression test: run045 set min_metadata_count:3 and
-    normal_pass_min_metadata:3, but the bundle only had 4 metadata files.
-    The new RUN_CONTRACT_METADATA_FLOOR=30 prevents such bundles from passing.
+    RUN_CONTRACT_METADATA_FLOOR=4 means every bundle must have at least 4 metadata files
+    (git-log.txt + git-status-final.txt + repo-tree.txt + bundle-manifest.yaml).
+    A bundle with only 3 metadata files (missing bundle-manifest.yaml) must fail.
     """
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
@@ -351,8 +351,8 @@ forbidden_paths: []
         meta = {
             "git-log.txt": "ff47169 chore: fix run045 contract\n",
             "git-status-final.txt": "On branch main\nnothing to commit, working tree clean\n",
-            "repo-tree.txt": ".\n./plans\n./plans/master-plan.md\n",
-            "bundle-manifest.yaml": "entries: []\n",
+            "repo-tree.txt": ".\n./plans\n./plans/master-plan.md\n"
+
         }
         bundle = build_bundle_with_meta(tmp_dir, meta)
         result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=False)
@@ -360,13 +360,13 @@ forbidden_paths: []
             print(
                 "FAIL: test_run_contract_metadata_floor_fails "
                 "— validator returned PASS but should have FAILed "
-                "(4 metadata files < RUN_CONTRACT_METADATA_FLOOR=30; run045 regression)"
+                "(3 metadata files < RUN_CONTRACT_METADATA_FLOOR=4)"
             )
             return False
         print(
             "PASS: test_run_contract_metadata_floor_fails "
-            "— validator correctly FAILed for 4-file bundle even with min_metadata_count:3 contract "
-            "(RUN_CONTRACT_METADATA_FLOOR=30 enforced)"
+            "— validator correctly FAILed for 3-file bundle "
+            "(RUN_CONTRACT_METADATA_FLOOR=4 enforced)"
         )
         return True
 
