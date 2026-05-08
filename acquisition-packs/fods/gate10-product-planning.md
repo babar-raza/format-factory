@@ -56,6 +56,21 @@ implementation execution prompt AFTER Gate 10 planning is approved.
 1. `acquisition-packs/fods/gate10-oss-scope.md` — feature scope for first release
 2. `acquisition-packs/fods/gate10-packaging-plan.md` — wheel/pypi/version scheme
 3. `acquisition-packs/fods/gate10-human-review-packet.md` — Gate 10 review packet
+4. `acquisition-packs/fods/gate10-product-source-readiness-report.md` — Product-source readiness report
+
+---
+
+## Security Deferred Items (from Gate 8)
+
+Gate 8 (reports/security/fods.md) deferred two items to Gate 10:
+- **TC-6 (Memory/Streaming):** Product source MUST use `iterparse` for streaming
+  (large FODS files must not be loaded fully into memory). This is a REQUIRED
+  compliance item for any src/python/fods/ implementation.
+- **TC-1 (XXE defense-in-depth):** Product source SHOULD add `defusedxml`
+  as a defense-in-depth measure (not required for prototype, required for product).
+
+These items must be addressed in the Gate 10 product-source-readiness-report.md
+before Gate 10 can be approved.
 
 ---
 

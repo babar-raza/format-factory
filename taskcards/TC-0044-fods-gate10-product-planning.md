@@ -26,7 +26,7 @@ notes: "FODS Gate 10 OSS release planning taskcard. Created run047 (2026-05-08).
 # TC-0044: FODS Gate 10 — OSS Release Planning
 
 **Taskcard ID:** TC-0044
-**Status:** not_started — awaiting explicit Gate 10 execution prompt
+**Status:** COMPLETED — Gate 10 APPROVED Babar Raza 2026-05-08 run048
 **Gate:** Gate 10
 **Created:** 2026-05-08 (run047)
 **Prerequisite:** Gate 9 PASSED ✓ (Babar Raza, 2026-05-08, run047)
@@ -63,6 +63,16 @@ Define the OSS release readiness plan for FODS:
 | OSS release scope | acquisition-packs/fods/gate10-oss-scope.md |
 | Packaging plan | acquisition-packs/fods/gate10-packaging-plan.md |
 | Gate 10 review packet | acquisition-packs/fods/gate10-human-review-packet.md |
+| Product-source readiness report | acquisition-packs/fods/gate10-product-source-readiness-report.md |
+
+---
+
+## Security Deferred Items to Address
+
+Gate 8 (TC-6 memory concern) deferred to Gate 10:
+- Product source MUST use `iterparse` for streaming arbitrary-size FODS files.
+- Product source SHOULD add `defusedxml` defense-in-depth (TC-1).
+These must be documented in the product-source-readiness-report.
 
 ---
 
