@@ -380,3 +380,19 @@ See `docs/non-aspose-format-candidate-registry-plan.md`.
 - `docs/llm-and-embedding-strategy.md` — LLM and embedding strategy
 - `docs/format-representation-model.md` — format representation categories and non-XML adaptability backlog
 - `docs/non-aspose-format-candidate-registry-plan.md` — non-Aspose candidate registry plan
+
+---
+
+## 23. Planning and Agent Handoff Methodology (memory sprint 2026-05-08)
+
+**23.1. Local Planning Standards Are Authoritative.** The format-factory project maintains local planning and execution standards in docs/planning-methodology.md, docs/agent-execution-handoff-standard.md, and docs/plan-hardening-checklist.md. These documents are authoritative for how agents must write, harden, and execute plans. They supplement AGENTS.md.
+
+**23.2. Plans Must Pass Hardening Before Execution.** No execution prompt may be run on an un-hardened plan. The plan hardening checklist (docs/plan-hardening-checklist.md) must be completed. A plan scoring below 18/22 must be returned to PLAN MODE for revision.
+
+**23.3. Single-Go Handoffs Are the Standard for Complex Sprints.** When authorized, complex multi-section sprints are encoded as single-go execution prompts with internal gates and stop conditions. The agent self-manages the sprint. The human does not need to provide mid-execution guidance.
+
+**23.4. Fresh-Chat Continuity Is Required.** The project must maintain sufficient local docs that a fresh chat session can orient itself without conversation history. docs/fresh-chat-continuity-brief.md and the prompt templates in docs/prompts/ are maintained for this purpose.
+
+**23.5. No Broad Cleanup Commands as Default.** Agents must not use broad destructive git commands (stash -u, reset --hard, clean -fd) as defaults or shortcuts. If a dirty worktree blocks clean git, the agent must document the dirty_git_reason and use emergency_blocker_bundle: true rather than discarding uncommitted work.
+
+**23.6. Evidence Bundle Path Is Required.** Every evidence-producing sprint response must end with the line: EVIDENCE_BUNDLE: <absolute Windows path to zip>. This is a non-negotiable governance requirement. See AGENTS.md Section AD6.

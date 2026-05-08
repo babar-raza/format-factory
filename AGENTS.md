@@ -608,3 +608,21 @@ Non-XML adaptability (zip_container, binary_records, compound_document, delimite
 is backlog only. See `docs/format-representation-model.md`. The architecture must avoid
 hardcoding XML-only assumptions, but non-XML implementation is not authorized without explicit
 human prompt.
+
+---
+
+## AD. Planning and Agent Handoff Methodology (memory sprint 2026-05-08)
+
+**AD1. Plans Must Be Challenged Before Execution.** When asked to create or review a plan, agents must challenge every claim against repo truth. Plans are not ready for execution until all 22 items on docs/plan-hardening-checklist.md pass. Plans that lack exact allowed paths, forbidden paths, validation commands, stop conditions, or evidence bundle requirements are not execution-ready.
+
+**AD2. Agents Must Inspect Referenced Files.** Before acting on any plan, summary, or prompt, agents must read all referenced files. Agent summaries are not trusted until the referenced evidence bundles and repo files have been inspected in the current session.
+
+**AD3. Captured Gaps Are Required.** Any missing architecture, capability, or structural weakness discovered during a sprint must be captured in at least one durable local artifact (roadmap, backlog, taskcard, or memory). Gaps must not remain only in chat or evidence bundles. See AGENTS.md Section AB.
+
+**AD4. Agents Must Not Mix Sprint Streams.** MEMORY SPRINT work must not include gate changes. MAIN SPRINT commits must not include memory-only files. Each stream has its own evidence contract, commit, and bundle. Classify every dirty file by stream ownership before staging.
+
+**AD5. No Broad Destructive Defaults.** Agents must not use git stash -u, git reset --hard, or git clean -fd as default or catch-all commands. If cleanup is needed, scope it exactly and document the reason.
+
+**AD6. Evidence-Producing Sprints Must Print Bundle Path.** Every sprint that produces an evidence bundle must print, as its final line: EVIDENCE_BUNDLE: <absolute Windows path to zip>. No other line may follow it.
+
+**AD7. No Push Without Explicit Authorization.** Push is prohibited unless the human explicitly authorizes it in the current session. Default is no push.
