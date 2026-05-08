@@ -3,7 +3,7 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run048 to reflect run048 combined sprint: FODS Gate 10 APPROVED Babar Raza (Tiers 0-2 12 features); FODT Gate 7 APPROVED (FODT_GATE7_FUZZ_TEST PASS 18/18); FODT Gate 8 APPROVED (GATE8_SECURITY_REVIEW PASS); REQUIRED_METADATA_DEPTH check added; master-plan v2.44
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run049 to reflect run049: FUL-001 schemas (6); FUL-002 FODS 6 files; FUL-003 FODT 6 files (partial, Gate 9 required); stale state repairs; contract closure policy patched (21 contracts); master-plan v2.45
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
