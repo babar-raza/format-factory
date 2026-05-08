@@ -6,7 +6,7 @@
 **Version:** 2.39 (run043: run042 independently verified PASS (40+ checks); oracle_common.py soffice.com fix; LibreOffice 26.2.3.2 installed via winget; run_fods_oracle.py FODS input filter fixed; compare_fods_oracle.py parser CLI fixed; ORACLE_RUN PASS 4/4; ORACLE_COMPARE PASS 3/4 PASS 1/4 WARN; TC-0026 COMPLETED; TC-0031 FODT Gate 2 DEC-034 PASS (20/20 checks); FODT Gate 2 APPROVED Babar Raza 2026-05-08; FODT Gate 3 samples created 4/4 PASS; TC-0032 created; TC-0026 COMPLETED; oracle blocker RESOLVED)
 **Last updated:** 2026-05-08
 **Current phase:** Phase 3: FODS Gates 1-5 PASSED. Gate 6: oracle comparison PASS (pending TC-0027 verification + human approval). FODT Gates 1-2 PASSED. Gate 3 samples created (pending TC-0032 verification + human approval).
-**Current status:** FODS: Gate 1-5 PASSED. Gate 6: oracle_comparison_created_pending_independent_verification (TC-0026 COMPLETED run043; TC-0027 not_started). FODT: Gate 1 PASSED (Babar Raza, 2026-05-07, run041); Gate 2 PASSED (Babar Raza, 2026-05-08, run043; TC-0031 PASS); Gate 3 sample_corpus_created_pending_independent_verification (run043; TC-0032 not_started). TC-0028 COMPLETED. TC-0029 COMPLETED. TC-0030 CLOSED. TC-0031 COMPLETED. TC-0032 not_started (FODT Gate 3 DEC-034). No product source. last_completed_run: PENDING (run043 commit pending). Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current status:** FODS: Gate 1-5 PASSED. Gate 6: oracle_comparison_created_pending_independent_verification (TC-0026 COMPLETED run043; TC-0027 not_started). FODT: Gate 1 PASSED (Babar Raza, 2026-05-07, run041); Gate 2 PASSED (Babar Raza, 2026-05-08, run043; TC-0031 PASS); Gate 3 sample_corpus_created_pending_independent_verification (run043; TC-0032 not_started). TC-0028 COMPLETED. TC-0029 COMPLETED. TC-0030 CLOSED. TC-0031 COMPLETED. TC-0032 not_started (FODT Gate 3 DEC-034). No product source. last_completed_run: run043 — commit bc92729. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
@@ -1318,7 +1318,7 @@ See `docs/current-state-and-evidence-authority.md`.
 - taskcards/TC-0031 (NEW — DEC-034 independent verification; not_started)
 - plans/master-plan.md v2.38; memory/09, ROADMAP.md, README.md updated
 
-**Committed (run043 — PENDING):**
+**Committed (run043 — bc92729):**
 - tools/oracle/oracle_common.py (FIXED — soffice.com added before soffice.exe in LIBREOFFICE_CANDIDATES; env var .com variant auto-try on Windows)
 - tools/oracle/run_fods_oracle.py (FIXED — --infilter=OpenDocument Spreadsheet Flat XML; --convert-to csv:Text - txt - csv (StarCalc))
 - tools/oracle/compare_fods_oracle.py (FIXED — parser subprocess CLI call corrected)

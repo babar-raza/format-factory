@@ -71,10 +71,10 @@ This file captures the current state after run043. FODS Gates 1-5 PASSED. FODS G
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| Evidence contracts | 14 contracts (after run042): + run042-fodt-gate2-evidence-and-contract-repair |
-| last_completed_run | run042 |
+| Evidence contracts | 15 contracts (after run043): + run043-libreoffice-fix-fodt-gate2-and-gate3 |
+| last_completed_run | run043 — commit bc92729 |
 | Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md) |
-| Master plan version | 2.38 (run042) |
+| Master plan version | 2.39 (run043) |
 | AGENTS.md sections | A through Z (26 sections) |
 
 ## Run history (run001–run028)
