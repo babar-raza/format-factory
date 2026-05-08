@@ -1,0 +1,70 @@
+---
+artifact_id: fodt-product-readiness
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fodt/product-readiness.yaml
+format_id: fodt
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/product-readiness.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — registry/format-registry.yaml gate approvals are authoritative
+partial: true
+partial_reason: "Gate 9 not yet passed (TC-0048 not_started). Tier map not yet defined."
+---
+
+# FODT Product Readiness
+# Compiled: run049 (2026-05-08), FUL-003
+# PARTIAL — Gate 9 not yet passed. This file will be updated after Gate 9 approval.
+
+format_id: fodt
+schema: schemas/format-understanding/product-readiness.schema.yaml
+planning_only: true
+
+gate_8_status: passed
+gate_8_approved_by: "Babar Raza"
+gate_8_approved_date: "2026-05-08"
+
+gate_9_status: planning_ready
+gate_9_approved_by: null
+gate_9_approved_date: null
+gate_9_taskcard: "taskcards/TC-0048-fodt-gate9-product-mapping.md"
+gate_9_notes: >
+  TC-0048 not yet started. Requires explicit Gate 9 execution prompt.
+  After Gate 9: create tier-map.yaml, define first_oss_release_tiers, get human approval.
+
+gate_10_status: not_started
+
+product_source_authorization:
+  python_source_authorized: false
+  python_authorization_blocked_by: "Gate 9 not yet passed; tier map not defined"
+  net_source_authorized: false
+  net_authorization_blocked_by: "Gate 9 not yet passed; DEC-033 pending"
+
+known_security_gaps:
+  - tc_id: TC-6
+    status: DEFERRED
+    requirement: "Use ET.iterparse() in product source"
+  - tc_id: TC-7
+    status: PARTIALLY_MITIGATED
+    requirement: "Replace recursive _collect_list_items() with iterative traversal"
+
+odf_family_reuse_from_fods:
+  - "Namespace handling patterns"
+  - "Error dict return"
+  - "File size guard"
+  - "Expat XXE protection"
+  - "Spec cache (same ODF 1.3 Part 3 PDF)"
+  - "Normalization layer (same tools)"
+
+planned_first_oss_release_tiers_estimate: [0, 1]
+planned_first_oss_release_notes: >
+  Estimate only — pending Gate 9 tier map definition.
+  FODT has more content types than FODS (paragraphs, headings, lists, tables).
+  Tier structure may differ from FODS tier map.
+
+readiness_verdict: >
+  FODT product readiness is PARTIAL. Gate 9 (product mapping / tier map) must be
+  executed and approved before product source can be planned.
+  python_source_authorized: false.
+  This file must be updated after Gate 9 approval.

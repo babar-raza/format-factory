@@ -1,0 +1,99 @@
+---
+artifact_id: fodt-verified-facts
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fodt/verified-facts.yaml
+format_id: fodt
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/verified-facts.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — spec citation is authoritative
+---
+
+# FODT Verified Facts
+# Compiled: run049 (2026-05-08), FUL-003
+
+format_id: fodt
+schema: schemas/format-understanding/verified-facts.schema.yaml
+
+facts:
+  - fact_id: FFODT-001
+    statement: >
+      The root element of a valid FODT file is office:document in namespace
+      urn:oasis:names:tc:opendocument:xmlns:office:1.0.
+    spec_citation: "ODF 1.3 Part 3, §3.1.2 — Flat XML file structure"
+    evidence_source: "Gate 3 samples (4/4 PASS run043), Gate 4 prototype (FR-001)"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODT-002
+    statement: >
+      A valid FODT text document must have office:mimetype attribute value
+      'application/vnd.oasis.opendocument.text-flat-xml'.
+    spec_citation: "ODF 1.3 Part 3, §3.1.2 and MIME type registration"
+    evidence_source: "Gate 4 prototype (FR-001 validation), Gate 3 samples (run043)"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODT-003
+    statement: >
+      Text content in a FODT file is contained within office:body/office:text.
+    spec_citation: "ODF 1.3 Part 3, §3.6 — Text document body element"
+    evidence_source: "Gate 4 prototype extract logic, Gate 3 samples"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODT-004
+    statement: >
+      Paragraphs are represented as text:p elements within office:text.
+      Headings are represented as text:h elements with text:outline-level attribute.
+    spec_citation: "ODF 1.3 Part 3, §5.1 — Paragraph element; §5.3 — Heading element"
+    evidence_source: "Gate 4 prototype (FR-002, FR-003), Gate 3 sample headings-and-paragraphs.fodt"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODT-005
+    statement: >
+      Lists are represented as text:list elements containing text:list-item elements.
+      Nested lists appear as text:list children within text:list-item.
+    spec_citation: "ODF 1.3 Part 3, §5.5 — List element"
+    evidence_source: "Gate 4 prototype (FR-004), Gate 3 sample list-basic.fodt"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODT-006
+    statement: >
+      Tables in text documents use the same table:table / table:table-row / table:table-cell
+      structure as spreadsheets, but appear within office:text context.
+    spec_citation: "ODF 1.3 Part 3, §9.1 — Table element in text documents"
+    evidence_source: "Gate 4 prototype (FR-005), Gate 3 sample table-basic.fodt"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODT-007
+    statement: >
+      Python's ET implementation rejects DOCTYPE declarations for FODT by default,
+      providing XXE protection (confirmed Gate 7 fixture d04-entity-injection-attempt.fodt).
+    spec_citation: "Gate 7 fixture d04 — Expat ParseError on DOCTYPE SYSTEM entity"
+    evidence_source: "Gate 7 PASS 18/18 (run048), Gate 8 TC-1 MITIGATED"
+    confidence: deterministic
+    verified_by_oracle: false
+
+  - fact_id: FFODT-008
+    statement: >
+      FODT uses the same XML namespace root as FODS:
+      urn:oasis:names:tc:opendocument:xmlns:office:1.0
+    spec_citation: "ODF 1.3 Part 3, §3.1.1 — Namespace declarations"
+    evidence_source: "Gate 3 samples (all 4 FODT files, run043)"
+    confidence: deterministic
+    verified_by_oracle: false
+
+  - fact_id: FFODT-009
+    statement: >
+      The _collect_list_items() function in fodt_parser.py is recursive (not iterative).
+      This creates a risk of RecursionError on deeply nested FODT lists.
+    spec_citation: "Gate 7 fixture c03-deep-list-nesting.fodt (handled without crash)"
+    evidence_source: "Gate 8 TC-7 PARTIALLY_MITIGATED — deferred to Gate 10"
+    confidence: deterministic
+    verified_by_oracle: false

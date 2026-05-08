@@ -1,0 +1,96 @@
+---
+artifact_id: fodt-security-surface
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fodt/security-surface.yaml
+format_id: fodt
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/security-surface.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — reports/security/fodt.md is authoritative
+---
+
+# FODT Security Surface
+# Compiled: run049 (2026-05-08), FUL-003
+# Source: reports/security/fodt.md (Gate 8, run048, GATE8_SECURITY_REVIEW: PASS)
+
+format_id: fodt
+schema: schemas/format-understanding/security-surface.schema.yaml
+gate_8_status: passed
+gate_8_approved_by: "Babar Raza"
+gate_8_approved_date: "2026-05-08"
+gate_8_run: run048
+security_report: "reports/security/fodt.md"
+
+threats:
+  - tc_id: TC-1
+    category: "XML External Entities (XXE)"
+    status: MITIGATED
+    finding: >
+      ElementTree/Expat blocks external entities by default.
+      Gate 7 fixture d04-entity-injection-attempt.fodt confirms SYSTEM entity rejected.
+    gate_evidence: "Gate 8 TC-1 MITIGATED (run048). Gate 7 PASS 18/18."
+    deferred_to: null
+    product_source_requirement: "RECOMMEND adding defusedxml (IR-FODT-004)"
+
+  - tc_id: TC-2
+    category: "File Size Guard"
+    status: MITIGATED
+    finding: "parse_fodt() checks os.path.getsize() before parsing. Files > 100MB rejected."
+    gate_evidence: "Gate 8 TC-2 MITIGATED (run048)."
+    deferred_to: null
+    product_source_requirement: "Keep MAX_FILE_BYTES = 100 * 1024 * 1024"
+
+  - tc_id: TC-3
+    category: "XML Bomb / Billion Laughs"
+    status: MITIGATED
+    finding: "Expat built-in entity expansion protection. External entity resolution disabled."
+    gate_evidence: "Gate 8 TC-3 MITIGATED (run048)."
+    deferred_to: null
+    product_source_requirement: null
+
+  - tc_id: TC-4
+    category: "Malformed XML Handling"
+    status: MITIGATED
+    finding: "Gate 7 PASS 18/18: all malformed inputs handled safely. No crashes."
+    gate_evidence: "Gate 7 FODT_GATE7_FUZZ_TEST: PASS 18/18 CRASH 0/18 CORRUPT 0/18 (run048)"
+    deferred_to: null
+    product_source_requirement: null
+
+  - tc_id: TC-5
+    category: "DTD Injection"
+    status: MITIGATED
+    finding: "Expat rejects DOCTYPE declarations. Gate 7 fixture d04 confirms."
+    gate_evidence: "Gate 8 TC-3/TC-5 MITIGATED (run048)."
+    deferred_to: null
+    product_source_requirement: null
+
+  - tc_id: TC-6
+    category: "Memory / Streaming"
+    status: DEFERRED
+    finding: >
+      fodt_parser.py uses ET.parse() (full load). Files capped at 100MB.
+      For production, iterparse required.
+    gate_evidence: "Gate 8 TC-6 DEFERRED to Gate 10 (run048)."
+    deferred_to: "Phase 4 product source implementation"
+    product_source_requirement: "Use ET.iterparse() in product source"
+
+  - tc_id: TC-7
+    category: "Recursion (_collect_list_items)"
+    status: PARTIALLY_MITIGATED
+    finding: >
+      _collect_list_items() in fodt_parser.py is recursive. RecursionError is caught
+      within the outer ET.parse() try/except, but does not prevent stack growth
+      on deeply nested lists. Gate 7 c03 (deep nesting) handled gracefully.
+    gate_evidence: "Gate 8 TC-7 PARTIALLY_MITIGATED (run048). Deferred to Gate 10."
+    deferred_to: "Gate 10 / Phase 4 — must implement iterative list traversal (IR-FODT-003)"
+    product_source_requirement: "REQUIRED: Replace recursive _collect_list_items() with iterative traversal"
+
+  - tc_id: TC-8
+    category: "File Path Injection"
+    status: MITIGATED
+    finding: "parse_fodt() validates filepath before opening. No user-controlled path concatenation."
+    gate_evidence: "Gate 8 TC-8 MITIGATED (run048)."
+    deferred_to: null
+    product_source_requirement: null

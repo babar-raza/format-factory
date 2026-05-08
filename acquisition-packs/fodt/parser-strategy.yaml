@@ -1,0 +1,83 @@
+---
+artifact_id: fodt-parser-strategy
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fodt/parser-strategy.yaml
+format_id: fodt
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/parser-strategy.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — design guidance; product source developers must exercise judgment
+---
+
+# FODT Parser Strategy
+# Compiled: run049 (2026-05-08), FUL-003
+
+format_id: fodt
+schema: schemas/format-understanding/parser-strategy.schema.yaml
+
+decisions:
+  - decision_id: PD-FODT-001
+    title: "Reuse FODS pattern: stdlib ET, namespace-aware access, error dict return"
+    description: >
+      fodt_parser.py reuses the core patterns from fods_parser.py:
+      stdlib xml.etree.ElementTree, Clark notation namespace access,
+      error dict return on failure, file size guard.
+    rationale: >
+      ODF family shares XML conventions. Approximately 40-50% of FODS prototype patterns
+      directly applicable. Reduces implementation and review burden.
+    source_gate: 4
+    status: approved
+    reuse_from: "FODS Gate 4 prototype (PD-FODS-001, PD-FODS-002)"
+
+  - decision_id: PD-FODT-002
+    title: "Content extraction: paragraphs, headings, lists, tables"
+    description: >
+      FODT-specific content: text:p (paragraphs), text:h (headings, text:outline-level),
+      text:list (lists), table:table (tables in text context).
+    rationale: >
+      These are the primary content elements in ODF text documents.
+      Gate 3 samples cover all four element types.
+    source_gate: 4
+    status: approved
+    reuse_from: null
+
+  - decision_id: PD-FODT-003
+    title: "Recursive list traversal in prototype; must be iterative in product source"
+    description: >
+      Gate 4 prototype uses _collect_list_items() which is recursive.
+      Product source must replace with iterative traversal.
+    rationale: >
+      Gate 8 TC-7 identifies recursion risk with deeply nested lists.
+      Gate 7 fixture c03 handles gracefully due to RecursionError catch,
+      but iterative is required for product source safety.
+    source_gate: 8
+    status: deferred
+    reuse_from: null
+    product_source_note: "Implement iterative BFS/DFS list traversal instead of recursion"
+
+  - decision_id: PD-FODT-004
+    title: "Oracle: LibreOffice text export vs FODT parser output (word-count tolerance)"
+    description: >
+      Gate 6 oracle comparison: FODT_ORACLE_COMPARE: PASS 2/4 PASS 2/4 WARN.
+      2 WARN cases are word-count differences in heading/list text extraction.
+      Expected behavior — not a parser defect.
+    rationale: >
+      LibreOffice text export may include or exclude formatting artifacts differently.
+      Parser correctly extracts text content per ODF spec.
+    source_gate: 6
+    status: approved
+    reuse_from: null
+
+  - decision_id: PD-FODT-005
+    title: "Neutral model: 7-entity model (Document, Block, List, ListItem, Table, TableRow, TableCell)"
+    description: >
+      Gate 5 neutral model v1.0 defines 7 entities.
+      Product source should target this model.
+    rationale: >
+      Validated: 109 checks, 0 errors across all 4 FODT samples. Approved Babar Raza 2026-05-08.
+    source_gate: 5
+    status: approved
+    reuse_from: null
+    model_path: "schemas/neutral-model/fodt/"

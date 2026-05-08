@@ -1,0 +1,87 @@
+---
+artifact_id: fodt-implementation-requirements
+artifact_type: acquisition-pack-ful
+path: acquisition-packs/fodt/implementation-requirements.yaml
+format_id: fodt
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+schema: schemas/format-understanding/implementation-requirements.schema.yaml
+compilation_sprint: run049
+authority: compilation artifact — gate approvals are authoritative
+---
+
+# FODT Implementation Requirements
+# Compiled: run049 (2026-05-08), FUL-003
+
+format_id: fodt
+schema: schemas/format-understanding/implementation-requirements.schema.yaml
+
+requirements:
+  - req_id: IR-FODT-001
+    tier: 0
+    description: >
+      Parse root element (office:document), validate MIME type attribute,
+      extract ODF version, return structured error on unparseable input.
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FR-001 in acquisition-packs/fodt/parser-requirements.md. Gate 4 PASS 4/4."
+
+  - req_id: IR-FODT-002
+    tier: 0
+    description: >
+      File size guard: reject files > 100MB (MAX_FILE_BYTES) before parsing.
+    source_gate: 8
+    priority: required
+    status: approved
+    notes: "TC-2 in Gate 8 security review (run048). Same as FODS IR-FODS-003."
+
+  - req_id: IR-FODT-003
+    tier: 0
+    description: >
+      Migrate _collect_list_items() from recursive to iterative implementation
+      in product source. Prototype is recursive (TC-7 partially mitigated).
+    source_gate: 8
+    priority: required
+    status: deferred
+    notes: >
+      TC-7 PARTIALLY_MITIGATED in Gate 8. Deferred to Gate 10 (product source).
+      Current prototype catches RecursionError but does not prevent it.
+      Product source MUST use iterative list traversal.
+
+  - req_id: IR-FODT-004
+    tier: 0
+    description: >
+      Add defusedxml as optional dependency for defense-in-depth XXE protection.
+    source_gate: 8
+    priority: recommended
+    status: deferred
+    notes: "TC-1 recommended for product source. Same as FODS IR-FODS-004."
+
+  - req_id: IR-FODT-005
+    tier: 1
+    description: >
+      Extract paragraphs (text:p) and headings (text:h with text:outline-level).
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FR-002, FR-003 in parser-requirements.md. Gate 4 PASS 4/4."
+
+  - req_id: IR-FODT-006
+    tier: 1
+    description: >
+      Extract lists (text:list / text:list-item). Handle nested lists iteratively.
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FR-004 in parser-requirements.md. Must be iterative in product source (IR-FODT-003)."
+
+  - req_id: IR-FODT-007
+    tier: 2
+    description: >
+      Extract tables (table:table with rows and cells within office:text context).
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FR-005 in parser-requirements.md. Gate 3 sample table-basic.fodt validated."
