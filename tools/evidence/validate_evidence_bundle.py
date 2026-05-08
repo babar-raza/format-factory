@@ -173,6 +173,11 @@ GIT_STATUS_CANDIDATE_FILES = ["git-status-final.txt", "git-status.txt"]
 PENDING_MARKER_PATTERNS = [
     "PENDING (bundle not yet built)",
     "validation_status: PENDING",
+    # Final validation proof placeholders — must not appear in closure bundles
+    "BUNDLE_VALIDATION: PENDING",
+    "BUNDLE_VALIDATION: [PENDING]",
+    "TO BE UPDATED AFTER BUNDLE",
+    "PENDING — building evidence bundle",
 ]
 
 # Current-state PENDING patterns — sprint-in-progress markers that must NOT appear

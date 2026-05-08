@@ -552,6 +552,69 @@ forbidden_paths: []
         return True
 
 
+def test_bundle_validation_pending_fails_with_flag():
+    """BUNDLE_VALIDATION: PENDING in final-bundle-validation-proof.txt must fail --check-no-pending.
+
+    This is the S-F2F-01C fix: final-bundle-validation-proof.txt that still says
+    BUNDLE_VALIDATION: PENDING must be caught by the validator. Previously this pattern
+    was not in PENDING_MARKER_PATTERNS, allowing the defect to slip through.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = build_minimal_contract(tmp_dir, min_meta=1)
+        meta = {
+            "final-bundle-validation-proof.txt": (
+                "Final Bundle Validation Proof\n"
+                "BUNDLE_VALIDATION: PENDING\n"
+            ),
+        }
+        bundle = build_bundle_with_meta(tmp_dir, meta)
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=True)
+        if result:
+            print(
+                "FAIL: test_bundle_validation_pending_fails_with_flag "
+                "— validator returned PASS but should have FAILed "
+                "(BUNDLE_VALIDATION: PENDING not caught)"
+            )
+            return False
+        print(
+            "PASS: test_bundle_validation_pending_fails_with_flag "
+            "— BUNDLE_VALIDATION: PENDING correctly caught by --check-no-pending"
+        )
+        return True
+
+
+def test_proposed_pending_human_approval_does_not_fail():
+    """proposed_pending_human_approval in taskcard text must NOT fail --check-no-pending.
+
+    Legitimate taskcard status strings like 'proposed_pending_human_approval' should
+    not be flagged as PENDING markers. Only placeholder-style markers should fail.
+    Uses a sufficient bundle (>=30 metadata files) to clear the metadata floor check.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = build_minimal_contract(tmp_dir, min_meta=30)
+        bundle = build_sufficient_bundle(tmp_dir, extra_meta={
+            "sf2f02-taskcard-check.md": (
+                "# S-F2F-02 Taskcard Status Check\n"
+                "Status: proposed_pending_human_approval\n"
+                "TASKCARD_BOUNDARY: PASS\n"
+            ),
+        })
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=True)
+        if not result:
+            print(
+                "FAIL: test_proposed_pending_human_approval_does_not_fail "
+                "— validator FAILed but proposed_pending_human_approval should be allowed"
+            )
+            return False
+        print(
+            "PASS: test_proposed_pending_human_approval_does_not_fail "
+            "— proposed_pending_human_approval correctly NOT flagged as PENDING marker"
+        )
+        return True
+
+
 def main():
     print("=" * 60)
     print("Negative Tests: validate_evidence_bundle.py")
@@ -572,6 +635,8 @@ def main():
         test_run_contract_minimum_not_below_base,
         test_required_metadata_depth_fails,
         test_required_metadata_depth_passes_with_test_contract,
+        test_bundle_validation_pending_fails_with_flag,
+        test_proposed_pending_human_approval_does_not_fail,
     ]
 
     results = []
