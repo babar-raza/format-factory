@@ -3365,16 +3365,16 @@ audit_lines.append("\nAUDIT RESULT: PASS (no unexpected forbidden patterns)")
 sm("search-audit.md", "\n".join(audit_lines))
 
 # Check specific forbidden directories
-check("M01 no src/python/fods dir", not (REPO/"src"/"python"/"fods").exists())
-check("M02 no src/net/fods dir", not (REPO/"src"/"net"/"fods").exists())
-check("M03 no src/python/fodt dir", not (REPO/"src"/"python"/"fodt").exists())
-check("M04 no src/net/fodt dir", not (REPO/"src"/"net"/"fodt").exists())
-check("M05 no reports/legal dir", not (REPO/"reports"/"legal").exists())
-check("M06 no .github/workflows", not (REPO/".github"/"workflows").exists())
-check("M07 no .local/embeddings", not (REPO/".local"/"embeddings").exists())
-check("M08 no .local/vector", not (REPO/".local"/"vector").exists())
-check("M09 no tools/product", not (REPO/"tools"/"product").exists())
-check("M10 no schemas/product", not (REPO/"schemas"/"product").exists())
+ck("M01 no src/python/fods dir", not (REPO/"src"/"python"/"fods").exists())
+ck("M02 no src/net/fods dir", not (REPO/"src"/"net"/"fods").exists())
+ck("M03 no src/python/fodt dir", not (REPO/"src"/"python"/"fodt").exists())
+ck("M04 no src/net/fodt dir", not (REPO/"src"/"net"/"fodt").exists())
+ck("M05 no reports/legal dir", not (REPO/"reports"/"legal").exists())
+ck("M06 no .github/workflows", not (REPO/".github"/"workflows").exists())
+ck("M07 no .local/embeddings", not (REPO/".local"/"embeddings").exists())
+ck("M08 no .local/vector", not (REPO/".local"/"vector").exists())
+ck("M09 no tools/product", not (REPO/"tools"/"product").exists())
+ck("M10 no schemas/product", not (REPO/"schemas"/"product").exists())
 
 # ============================================================
 # SECTION N: Validation
@@ -3388,11 +3388,11 @@ try:
     body2 = fods_vf_new.split("---",2)[-1] if fods_vf_new.count("---")>=2 else fods_vf_new
     d = _y2.safe_load(body2)
     fods_fc_new = len(d.get("facts", []))
-    check("N01 FODS VF YAML valid after repair", True, f"facts={fods_fc_new}")
-    check("N02 FODS facts >= 20", fods_fc_new >= 20, f"{fods_fc_new}/20")
+    ck("N01 FODS VF YAML valid after repair", True, f"facts={fods_fc_new}")
+    ck("N02 FODS facts >= 20", fods_fc_new >= 20, f"{fods_fc_new}/20")
 except Exception as e:
-    check("N01 FODS VF YAML valid", False, str(e))
-    check("N02 FODS facts >= 20", False, "parse failed")
+    ck("N01 FODS VF YAML valid", False, str(e))
+    ck("N02 FODS facts >= 20", False, "parse failed")
     fods_fc_new = 0
 
 try:
@@ -3400,9 +3400,9 @@ try:
     ir_body = fods_ir_new.split("---",2)[-1] if fods_ir_new.count("---")>=2 else fods_ir_new
     d2 = _y2.safe_load(ir_body)
     fods_rc_new = len(d2.get("requirements", []))
-    check("N03 FODS reqs >= 20", fods_rc_new >= 20, f"{fods_rc_new}/20")
+    ck("N03 FODS reqs >= 20", fods_rc_new >= 20, f"{fods_rc_new}/20")
 except Exception as e:
-    check("N03 FODS reqs >= 20", False, str(e))
+    ck("N03 FODS reqs >= 20", False, str(e))
     fods_rc_new = 0
 
 try:
@@ -3410,9 +3410,9 @@ try:
     fodt_vf_body = fodt_vf_new.split("---",2)[-1] if fodt_vf_new.count("---")>=2 else fodt_vf_new
     d3 = _y2.safe_load(fodt_vf_body)
     fodt_fc_new = len(d3.get("facts", []))
-    check("N04 FODT facts >= 15", fodt_fc_new >= 15, f"{fodt_fc_new}/15")
+    ck("N04 FODT facts >= 15", fodt_fc_new >= 15, f"{fodt_fc_new}/15")
 except Exception as e:
-    check("N04 FODT facts >= 15", False, str(e))
+    ck("N04 FODT facts >= 15", False, str(e))
     fodt_fc_new = 0
 
 try:
@@ -3420,9 +3420,9 @@ try:
     fodt_ir_body = fodt_ir_new.split("---",2)[-1] if fodt_ir_new.count("---")>=2 else fodt_ir_new
     d4 = _y2.safe_load(fodt_ir_body)
     fodt_rc_new = len(d4.get("requirements", []))
-    check("N05 FODT reqs >= 15", fodt_rc_new >= 15, f"{fodt_rc_new}/15")
+    ck("N05 FODT reqs >= 15", fodt_rc_new >= 15, f"{fodt_rc_new}/15")
 except Exception as e:
-    check("N05 FODT reqs >= 15", False, str(e))
+    ck("N05 FODT reqs >= 15", False, str(e))
     fodt_rc_new = 0
 
 # N2: Run FUL validator for FODS
@@ -3433,7 +3433,7 @@ r_fods_val = subprocess.run(
      "--min-facts", "20", "--min-requirements", "20"],
     capture_output=True, text=True, cwd=str(REPO)
 )
-check("N06 FODS FUL validator PASS",
+ck("N06 FODS FUL validator PASS",
       "FORMAT_UNDERSTANDING_VALIDATION: PASS" in r_fods_val.stdout,
       r_fods_val.stdout[:200])
 
@@ -3445,7 +3445,7 @@ r_fodt_val = subprocess.run(
      "--allow-partial-product-readiness"],
     capture_output=True, text=True, cwd=str(REPO)
 )
-check("N07 FODT FUL validator PASS",
+ck("N07 FODT FUL validator PASS",
       "FORMAT_UNDERSTANDING_VALIDATION: PASS" in r_fodt_val.stdout,
       r_fodt_val.stdout[:200])
 
@@ -3456,7 +3456,7 @@ r_evtest = subprocess.run(
     env={**os.environ, "PYTHONUTF8": "1"}
 )
 ev_pass = r_evtest.returncode == 0
-check("N08 evidence tests pass", ev_pass, r_evtest.stdout[-300:])
+ck("N08 evidence tests pass", ev_pass, r_evtest.stdout[-300:])
 
 # N4: Run FUL validator tests
 r_fultest = subprocess.run(
@@ -3465,7 +3465,7 @@ r_fultest = subprocess.run(
     env={**os.environ, "PYTHONUTF8": "1"}
 )
 ful_pass = r_fultest.returncode == 0
-check("N09 FUL validator tests pass", ful_pass, r_fultest.stdout[-300:])
+ck("N09 FUL validator tests pass", ful_pass, r_fultest.stdout[-300:])
 
 # N5: run current state consistency checker
 r_cons = subprocess.run(
@@ -3483,14 +3483,14 @@ Exit code: {r_cons.returncode}
 """)
 # Note: consistency checker may have some issues due to FODT gate_9 now passed
 # Consider PASS if exit code 0 or if only expected warnings
-check("N10 current state consistency", r_cons.returncode == 0 or "CURRENT_STATE_CONSISTENCY: PASS" in r_cons.stdout,
+ck("N10 current state consistency", r_cons.returncode == 0 or "CURRENT_STATE_CONSISTENCY: PASS" in r_cons.stdout,
       f"exit={r_cons.returncode}")
 
 # N6: run047 no longer has test_contract
 ck47 = (REPO/"tools"/"evidence"/"contracts"/"run047-combined-sprint.yaml").read_text(encoding="utf-8")
-check("N11 run047 no test_contract", "test_contract: true" not in ck47)
-check("N12 run047 has historical_contract", "historical_contract: true" in ck47)
-check("N13 run049 min_metadata 110", "min_metadata_count: 110" in
+ck("N11 run047 no test_contract", "test_contract: true" not in ck47)
+ck("N12 run047 has historical_contract", "historical_contract: true" in ck47)
+ck("N13 run049 min_metadata 110", "min_metadata_count: 110" in
       (REPO/"tools"/"evidence"/"contracts"/"run049-combined-sprint.yaml").read_text(encoding="utf-8"))
 
 # N7: FODT tier map valid YAML
@@ -3498,17 +3498,17 @@ try:
     tm_txt = (REPO/"acquisition-packs"/"fodt"/"tier-map.yaml").read_text(encoding="utf-8")
     tm_body = tm_txt.split("---",2)[-1]
     tm_data = _y2.safe_load(tm_body)
-    check("N14 FODT tier map valid YAML", tm_data is not None)
-    check("N15 FODT tier map has tiers", "python_foss_tiers" in tm_data)
+    ck("N14 FODT tier map valid YAML", tm_data is not None)
+    ck("N15 FODT tier map has tiers", "python_foss_tiers" in tm_data)
 except Exception as e:
-    check("N14 FODT tier map valid YAML", False, str(e))
-    check("N15 FODT tier map has tiers", False, "parse failed")
+    ck("N14 FODT tier map valid YAML", False, str(e))
+    ck("N15 FODT tier map has tiers", False, "parse failed")
 
 # N8: product source not created
-check("N16 no src/python/fods", not (REPO/"src"/"python"/"fods").exists())
-check("N17 no src/python/fodt", not (REPO/"src"/"python"/"fodt").exists())
-check("N18 no reports/legal", not (REPO/"reports"/"legal").exists())
-check("N19 no .local/embeddings", not (REPO/".local"/"embeddings").exists())
+ck("N16 no src/python/fods", not (REPO/"src"/"python"/"fods").exists())
+ck("N17 no src/python/fodt", not (REPO/"src"/"python"/"fodt").exists())
+ck("N18 no reports/legal", not (REPO/"reports"/"legal").exists())
+ck("N19 no .local/embeddings", not (REPO/".local"/"embeddings").exists())
 
 sm("fods-ful-validation-report.md", f"""# FODS FUL Validation Report
 Sprint: run050 | Date: 2026-05-08

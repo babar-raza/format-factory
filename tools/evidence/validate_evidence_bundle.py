@@ -162,7 +162,8 @@ def matches_forbidden(path, forbidden_patterns):
 RUN_CONTRACT_METADATA_FLOOR = 30
 # Minimum named required_metadata_files for full-sprint contracts (run048+).
 # Any contract with min_metadata_count >= 80 must name at least this many
-# specific required_metadata_files, or set test_contract: true to bypass.
+# specific required_metadata_files, or set historical_contract: true to bypass.
+# Setting test_contract: true on a real sprint contract (contract_id matching run\d+) is REJECTED.
 REQUIRED_METADATA_DEPTH_MINIMUM_NAMED = 10
 
 GIT_STATUS_CANDIDATE_FILES = ["git-status-final.txt", "git-status.txt"]
@@ -423,8 +424,19 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         # high metadata counts but name only 4 generic files (git-log, etc.),
         # giving no meaningful evidence depth assurance.
         # Use test_contract: true for test/legacy contracts to bypass.
+        # Reject test_contract: true on real sprint contracts (contract_id matching run\d+)
+        import re as _re
+        contract_id = contract.get("contract_id", "")
+        if contract.get("test_contract", False) and _re.match(r"run\d+", contract_id):
+            errors.append(
+                f"TEST_CONTRACT_MISUSE: FAIL — contract_id '{contract_id}' matches run\\d+ pattern "
+                f"but has test_contract: true. Real sprint contracts must not use test_contract. "
+                f"Use historical_contract: true for legacy contracts that predate depth requirements."
+            )
+
         if (not emergency_blocker
                 and not contract.get("test_contract", False)
+                and not contract.get("historical_contract", False)
                 and min_metadata_count >= 80
                 and len(required_metadata_files) < REQUIRED_METADATA_DEPTH_MINIMUM_NAMED):
             errors.append(

@@ -25,7 +25,12 @@
 
 contract_id: run047-combined-sprint
 version: "1.0"
-test_contract: true  # run048: predates REQUIRED_METADATA_DEPTH check; only 4 named files
+historical_contract: true
+historical_reason: >  # run050: predates REQUIRED_METADATA_DEPTH; retained for historical validation only
+  Predates REQUIRED_METADATA_DEPTH_MINIMUM_NAMED check (added run048). This was a real sprint contract
+  (not a test fixture) but was incorrectly tagged test_contract to bypass the depth check.
+  Retained as historical_contract. Only 4 named required_metadata_files.
+  See run050 run047-contract-normalization-report.md for details.
 created: "2026-05-08"
 created_by: claude-sonnet-4-6
 current_state_authority: bundle-metadata  # run049: patched per docs/current-state-and-evidence-authority.md Section 6

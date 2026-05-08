@@ -12,15 +12,19 @@ Run from repo root:
 Exits 0 if all tests PASS, 1 if any test FAILS.
 """
 
+import subprocess
 import sys
 import tempfile
 import zipfile
 from pathlib import Path
 
 # Add tools/evidence to path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "evidence"))
+REPO_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(REPO_ROOT / "tools" / "evidence"))
 
 from validate_evidence_bundle import validate_bundle  # noqa: E402
+
+VALIDATE_SCRIPT = REPO_ROOT / "tools" / "evidence" / "validate_evidence_bundle.py"
 
 
 def build_minimal_contract(tmp_dir: Path, min_meta: int = 5) -> Path:
@@ -613,6 +617,105 @@ def test_proposed_pending_human_approval_does_not_fail():
             "— proposed_pending_human_approval correctly NOT flagged as PENDING marker"
         )
         return True
+
+
+
+def test_real_sprint_contract_with_test_contract_true_fails(tmp_path):
+    """A real sprint contract (run\d+) with test_contract: true must fail."""
+    contract = tmp_path / "run099-test.yaml"
+    contract.write_text(
+        "contract_id: run099-test\n"
+        "version: \"1.0\"\n"
+        "require_clean_git: false\n"
+        "emergency_blocker_bundle: false\n"
+        "test_contract: true\n"
+        "min_metadata_count: 1\n"
+        "normal_pass_min_metadata: 1\n"
+        "required_repo_files: []\n"
+        "required_metadata_files: []\n"
+        "forbidden_patterns: []\n",
+        encoding="utf-8"
+    )
+    bundle = tmp_path / "bundle.zip"
+    import zipfile
+    with zipfile.ZipFile(bundle, "w") as zf:
+        zf.writestr("repo/README.md", "test")
+        zf.writestr("bundle-metadata/bundle-manifest.yaml", "entries: 1")
+        zf.writestr("bundle-metadata/git-log.txt", "abc123 test commit")
+        zf.writestr("bundle-metadata/git-status-final.txt", "nothing to commit")
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--contract", str(contract), "--bundle", str(bundle)],
+        capture_output=True, text=True
+    )
+    assert "BUNDLE_VALIDATION: FAIL" in result.stdout or "TEST_CONTRACT_MISUSE" in result.stdout, (
+        f"Expected FAIL for test_contract: true on real sprint contract, got:\n{result.stdout}"
+    )
+
+
+def test_historical_contract_bypasses_depth_check(tmp_path):
+    """historical_contract: true should bypass REQUIRED_METADATA_DEPTH check."""
+    contract = tmp_path / "run001-historical.yaml"
+    # old contract with historical_contract: true and high min_metadata but few named files
+    contract.write_text(
+        "contract_id: run001-historical\n"
+        "version: \"1.0\"\n"
+        "require_clean_git: false\n"
+        "emergency_blocker_bundle: false\n"
+        "historical_contract: true\n"
+        "min_metadata_count: 1\n"
+        "normal_pass_min_metadata: 1\n"
+        "required_repo_files: []\n"
+        "required_metadata_files: [bundle-manifest.yaml, git-log.txt, git-status-final.txt]\n"
+        "forbidden_patterns: []\n",
+        encoding="utf-8"
+    )
+    bundle = tmp_path / "bundle.zip"
+    import zipfile
+    with zipfile.ZipFile(bundle, "w") as zf:
+        zf.writestr("repo/README.md", "test")
+        zf.writestr("bundle-metadata/bundle-manifest.yaml", "entries: 1")
+        zf.writestr("bundle-metadata/git-log.txt", "abc123 test commit")
+        zf.writestr("bundle-metadata/git-status-final.txt", "nothing to commit")
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--contract", str(contract), "--bundle", str(bundle)],
+        capture_output=True, text=True
+    )
+    # Should NOT fail due to REQUIRED_METADATA_DEPTH (historical_contract bypasses that check)
+    assert "REQUIRED_METADATA_DEPTH: FAIL" not in result.stdout, (
+        f"historical_contract should bypass depth check:\n{result.stdout}"
+    )
+
+
+def test_current_run_contract_missing_verdict_fails_with_named_requirement(tmp_path):
+    """A current sprint contract that explicitly requires verdict.md must fail if it is absent."""
+    contract = tmp_path / "run099-full.yaml"
+    contract.write_text(
+        "contract_id: run099-full\n"
+        "version: \"1.0\"\n"
+        "require_clean_git: false\n"
+        "emergency_blocker_bundle: false\n"
+        "min_metadata_count: 1\n"
+        "normal_pass_min_metadata: 1\n"
+        "required_repo_files: []\n"
+        "required_metadata_files: [bundle-manifest.yaml, git-log.txt, git-status-final.txt, verdict.md]\n"
+        "forbidden_patterns: []\n",
+        encoding="utf-8"
+    )
+    bundle = tmp_path / "bundle.zip"
+    import zipfile
+    with zipfile.ZipFile(bundle, "w") as zf:
+        zf.writestr("repo/README.md", "test")
+        zf.writestr("bundle-metadata/bundle-manifest.yaml", "entries: 1")
+        zf.writestr("bundle-metadata/git-log.txt", "abc123 test commit")
+        zf.writestr("bundle-metadata/git-status-final.txt", "nothing to commit")
+        # verdict.md is intentionally absent
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--contract", str(contract), "--bundle", str(bundle)],
+        capture_output=True, text=True
+    )
+    assert "BUNDLE_VALIDATION: FAIL" in result.stdout, (
+        f"Expected FAIL for missing verdict.md:\n{result.stdout}"
+    )
 
 
 def main():

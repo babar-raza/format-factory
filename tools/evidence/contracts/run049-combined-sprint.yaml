@@ -19,8 +19,13 @@
 # Version: 1.0
 
 contract_id: run049-combined-sprint
-version: "1.0"
+version: "1.1"
 created: "2026-05-08"
+historical_deficiency: true
+historical_deficiency_reason: >  # run050: documented post-hoc
+  run049 bundle had 74 metadata files against a 70-file minimum. This was insufficient.
+  run050 raises the standard to 110 for this contract and all future sprint contracts.
+  run049 bundle is retained but acknowledged as below the corrected standard.
 created_by: claude-sonnet-4-6
 sprint_run: run049
 require_clean_git: true
@@ -28,8 +33,8 @@ emergency_blocker_bundle: false
 require_contract_in_bundle: true
 contract_repo_path: tools/evidence/contracts/run049-combined-sprint.yaml
 require_manifest: true
-min_metadata_count: 70
-normal_pass_min_metadata: 70
+min_metadata_count: 110
+normal_pass_min_metadata: 110
 current_state_authority: bundle-metadata  # docs/current-state-and-evidence-authority.md Section 6
 
 required_metadata_files:
