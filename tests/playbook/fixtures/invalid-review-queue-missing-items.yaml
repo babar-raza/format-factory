@@ -1,0 +1,27 @@
+# Invalid review queue fixture: missing required 'items' field
+# This fixture must fail validation to test that the validator catches missing fields.
+
+schema_version: "1.0"
+queue_id: test-invalid-queue
+run_id: S-F2F-02-test
+generated_at: "2026-05-08T00:00:00Z"
+source_playbook_id: test-format-acquisition
+source_format_id: test-format
+
+# items: deliberately omitted — this is the missing required field
+
+summary:
+  total_items: 0
+  open_items: 0
+  blocker_count: 0
+  high_count: 0
+  blocks_apply_mode: false
+  blocks_gate_progress: false
+
+governance:
+  cannot_approve_gates: true
+  cannot_replace_dec034: true
+  cannot_replace_evidence_contracts: true
+  cannot_replace_human_approval: true
+  high_severity_blocks_apply: true
+  gate_progress_requires_resolution: true

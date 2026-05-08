@@ -1,0 +1,58 @@
+# Valid review queue fixture — S-F2F-02 tests
+# Minimal valid review queue with one open item.
+# NOT for use in plans/review-queues/ (which does not exist yet).
+# This file exists only for validator tests in S-F2F-02.
+
+schema_version: "1.0"
+queue_id: test-review-queue-sf2f02
+run_id: S-F2F-02-test
+generated_at: "2026-05-08T00:00:00Z"
+source_playbook_id: test-format-acquisition
+source_format_id: test-format
+
+items:
+  - item_id: RQ-001
+    format_id: test-format
+    gate: 1
+    operation_id: test-scoring-operation
+    target_path: registry/format-registry.yaml
+    issue_type: validation_failed
+    severity: medium
+    deterministic_failure_reason: >
+      Test review item: validation command returned non-zero exit code in dry-run.
+      This is a test fixture item only.
+    required_action: >
+      Re-run the validation command and verify the output matches expected state.
+      This is a test fixture only — no real action required.
+    suggested_fix: null
+    evidence_required:
+      - manual_inspection
+    status: open
+    resolution_notes: null
+    owner_role: human
+    blocks_apply_mode: false
+    blocks_gate_progress: false
+    provenance:
+      created_at: "2026-05-08T00:00:00Z"
+      created_by_sprint: S-F2F-02-test
+      resolved_at: null
+      resolved_by_sprint: null
+
+summary:
+  total_items: 1
+  open_items: 1
+  blocker_count: 0
+  high_count: 0
+  medium_count: 1
+  low_count: 0
+  blocks_apply_mode: false
+  blocks_gate_progress: false
+
+governance:
+  cannot_approve_gates: true
+  cannot_replace_dec034: true
+  cannot_replace_evidence_contracts: true
+  cannot_replace_human_approval: true
+  high_severity_blocks_apply: true
+  gate_progress_requires_resolution: true
+  policy_doc_reference: docs/playbook-layer.md

@@ -1,0 +1,42 @@
+# Invalid fixture: forbidden_uses missing required entries
+# This fixture must fail validation because it does not list the required
+# forbidden_uses entries (missing replacing_dec034, replacing_human_approval).
+
+schema_version: "1.0"
+playbook_id: test-missing-forbidden
+playbook_version: "1.0"
+format_id: test-format
+format_family: test-family
+playbook_kind: format_playbook
+status: draft
+
+authority_statement: >
+  This test fixture is missing required forbidden_uses entries to test forbidden authority detection.
+
+non_authority_statement: >
+  This test fixture is missing key forbidden_uses entries intentionally for test purposes.
+
+gates: []
+operations: []
+evidence_contracts: []
+validation_commands: []
+review_queue_policy:
+  severity_threshold_blocks_apply: high
+  auto_resolve_allowed: false
+reuse_policy:
+  family_reuse_allowed: false
+  inherited_gate_approval: false
+  reuse_requires_explicit_classification: true
+provenance:
+  created_by_sprint: S-F2F-02-test
+  created_at: "2026-05-08"
+  last_modified_sprint: S-F2F-02-test
+approvals_required: []
+
+# forbidden_uses is missing required entries: replacing_dec034 and replacing_human_approval
+# This must cause PLAYBOOK_VALIDATION: FAIL
+forbidden_uses:
+  - automatic_gate_approval
+  - spec_or_legal_authority
+  # replacing_dec034: intentionally omitted
+  # replacing_human_approval: intentionally omitted

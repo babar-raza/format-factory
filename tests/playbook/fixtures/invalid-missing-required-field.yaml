@@ -1,0 +1,38 @@
+# Invalid fixture: missing required 'status' field
+# This fixture must fail validation to test that the validator catches missing fields.
+
+schema_version: "1.0"
+playbook_id: test-missing-status
+playbook_version: "1.0"
+format_id: test-format
+format_family: test-family
+playbook_kind: format_playbook
+# status: deliberately omitted — this is the missing required field
+
+authority_statement: >
+  This test fixture is missing required fields to test validator error detection.
+
+non_authority_statement: >
+  This test fixture does not approve any gate, does not replace DEC-034 or human approval.
+
+gates: []
+operations: []
+evidence_contracts: []
+validation_commands: []
+review_queue_policy:
+  severity_threshold_blocks_apply: high
+  auto_resolve_allowed: false
+reuse_policy:
+  family_reuse_allowed: false
+  inherited_gate_approval: false
+  reuse_requires_explicit_classification: true
+provenance:
+  created_by_sprint: S-F2F-02-test
+  created_at: "2026-05-08"
+  last_modified_sprint: S-F2F-02-test
+approvals_required: []
+forbidden_uses:
+  - automatic_gate_approval
+  - spec_or_legal_authority
+  - replacing_dec034
+  - replacing_human_approval

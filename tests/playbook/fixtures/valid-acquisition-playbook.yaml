@@ -1,0 +1,128 @@
+# Valid acquisition playbook fixture — S-F2F-02 tests
+# status: draft (not documentation_example_only — this is a test fixture)
+# NOT for use in acquisition-packs/. This file exists only for validator tests.
+
+schema_version: "1.0"
+playbook_id: test-format-acquisition
+playbook_version: "1.0"
+format_id: test-format
+format_family: test-family
+playbook_kind: format_playbook
+source_format_if_derived: null
+status: draft
+
+authority_statement: >
+  This test fixture playbook is authoritative for nothing. It exists solely to test
+  the validate_playbook.py tool in S-F2F-02 tests.
+
+non_authority_statement: >
+  This test fixture does not approve any gate, does not replace DEC-034 independent
+  verification, does not replace human approval, has no legal or specification authority,
+  and does not authorize apply mode or product source creation.
+
+gates:
+  - gate_number: 1
+    gate_name: Format Scoring
+    status: covered
+    covered_by_operations:
+      - test-scoring-operation
+
+operations:
+  - operation_id: test-scoring-operation
+    gate: 1
+    operation_type: scoring
+    title: "Test Scoring Operation"
+    description: >
+      A minimal test operation for use in S-F2F-02 validator tests.
+      This is a test fixture only and does not represent a real acquisition operation.
+    mode_allowed: validate_only
+    target_paths:
+      - registry/format-registry.yaml
+    input_dependencies:
+      - path: acquisition-packs/test-format/pack.yaml
+        required: true
+        description: "Test pack configuration."
+    expected_outputs:
+      - path: registry/format-registry.yaml
+        description: "Registry entry created."
+        checksum_required: false
+        format: yaml
+    validation_commands:
+      - command: "python -c \"print('test validation command')\""
+        purpose: "Test validation command placeholder."
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+        notes: "Evidence bundle required."
+      - artifact_type: dec034_verification_report
+        required: true
+        notes: "DEC-034 verification required."
+      - artifact_type: human_approval_record
+        required: true
+        notes: "Human approval required."
+    conflict_policy: fail_and_queue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: none
+    format_specific_overrides: null
+    provenance:
+      created_by_sprint: S-F2F-02-test
+      created_at: "2026-05-08"
+      last_modified_sprint: S-F2F-02-test
+      source_commit: null
+    status: draft
+    approval_boundary: requires_dec034_and_human
+
+evidence_contracts:
+  - contract_path: tools/evidence/contracts/base-run.yaml
+    purpose: "Base contract."
+    gate: null
+
+validation_commands:
+  - command: "python tools/evidence/validate_evidence_bundle.py --help"
+    purpose: "Confirm validator tool is present."
+    expected_exit_code: 0
+
+review_queue_policy:
+  severity_threshold_blocks_apply: high
+  auto_resolve_allowed: false
+  required_owner_for_resolution: human
+
+reuse_policy:
+  family_reuse_allowed: false
+  inherited_gate_approval: false
+  reuse_requires_explicit_classification: true
+  source_family_playbook: null
+
+provenance:
+  created_by_sprint: S-F2F-02-test
+  created_at: "2026-05-08"
+  last_modified_sprint: S-F2F-02-test
+  source_commit: null
+
+approvals_required:
+  - approval_type: dec034_independent_verification
+    description: "Independent verification required before every human gate review."
+    mandatory: true
+    gate: null
+  - approval_type: human_gate_approval
+    description: "Human approval required for every gate advance."
+    mandatory: true
+    gate: null
+  - approval_type: human_sprint_authorization
+    description: "Human prompt must explicitly name the taskcard."
+    mandatory: true
+    gate: null
+
+forbidden_uses:
+  - automatic_gate_approval
+  - spec_or_legal_authority
+  - product_release_authority
+  - replacing_dec034
+  - replacing_human_approval
+  - applying_without_authorization
+  - evidence_substitution
+  - llm_fallback_authority
