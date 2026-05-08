@@ -1046,8 +1046,8 @@ The exact final Git HEAD for each run is authoritative in `bundle-metadata/git-l
 `bundle-metadata/git-status-final.txt` in the run's evidence bundle.
 See `docs/current-state-and-evidence-authority.md`.
 
-**last_completed_run:** run041
-**run042 commit set:** b6e4316
+**last_completed_run:** run042
+**run042 commit set:** b6e4316 + e31dc66 + fd098c9 + 079ba6d
 **run041 commit set (informational):** f16ddf0
 **run040 commit set (informational):** b3cfdd7 + 2ca4b78 + d4e6390 + a60826a + f451804 + 1bdafb5 + a4f79e0 + 931ef34 + 411180a
 **run039 commit set:** 48f6a0d + 8cd2ed2 + 075edca + d052510 + 54a27dc

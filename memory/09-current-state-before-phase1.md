@@ -67,7 +67,7 @@ This file captures the current state after run040. Gates 1-5 PASSED. Gate 5 appr
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
 | Evidence contracts | 14 contracts (after run042): + run042-fodt-gate2-evidence-and-contract-repair |
-| last_completed_run | run041 |
+| last_completed_run | run042 |
 | Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md) |
 | Master plan version | 2.38 (run042) |
 | AGENTS.md sections | A through Z (26 sections) |
