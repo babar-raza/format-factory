@@ -1,0 +1,191 @@
+# Memory Methodology Linkage and Enforcement Sprint
+# Evidence Contract
+# Sprint: memory-methodology-linkage-and-enforcement
+# Date: 2026-05-08
+# Purpose: Close methodology work by making all docs discoverable, linked, enforced, and validated.
+#          No MAIN SPRINT gate changes. No secondary implementation. No product source.
+#          No embeddings. No LLM production calls.
+
+contract_id: memory-methodology-linkage-and-enforcement
+version: "1.0"
+sprint_type: memory_sprint
+description: "Methodology linkage and enforcement closure sprint: central index, prompts README, README linkage, command registry update, AGENTS/GOVERNANCE enforcement, memory updates, link checker, tests, GOV-003. No gate changes. No product source."
+
+# Current-state authority policy (run041+)
+current_state_authority: bundle-metadata
+
+# Git state: DIRTY with SECONDARY_SPRINT_OWNED files (schemas/playbook/, tests/playbook/, tools/playbook/).
+# These are uncommitted S-F2F-02 changes. Memory sprint commits only MEMORY_METHOD_ALLOWED files.
+# Clean git not achievable without staging SECONDARY_SPRINT_OWNED files.
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Working tree contains uncommitted SECONDARY_SPRINT_OWNED S-F2F-02 changes (schemas/playbook/acquisition-playbook.schema.json, tests/playbook/test_playbook_schema.py, tools/playbook/validate_playbook.py). Memory sprint commits only MEMORY_METHOD_ALLOWED files. Classified: SECONDARY_SPRINT_OWNED -- do not stage or revert."
+
+# Memory sprint constraints
+memory_sprint: true
+methodology_closure: true
+local_accessibility_required: true
+local_enforcement_required: true
+no_main_sprint_gate_change: true
+no_secondary_execution: true
+no_product_source_created: true
+no_embedding_created: true
+no_vector_db_created: true
+no_llm_production_call: true
+no_new_spec_download: true
+no_push: true
+no_secondary_files_staged: true
+
+# Minimum metadata depth
+min_metadata_count: 75
+normal_pass_min_metadata: 75
+
+# Required top-level folders
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+# Forbidden path patterns
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/*.chroma/**"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+  - "repo/src/net/**"
+  - "repo/src/python/fods/**"
+  - "repo/src/python/fodt/**"
+  - "repo/reports/legal/**"
+  - "repo/.github/workflows/**"
+  - "repo/.local/vector/**"
+  - "repo/.local/embeddings/**"
+  - "repo/.local/chromadb/**"
+  - "repo/.local/qdrant/**"
+  - "repo/.local/faiss/**"
+  - "repo/acquisition-packs/fods/playbook.yaml"
+  - "repo/acquisition-packs/fodt/playbook.yaml"
+  - "repo/acquisition-packs/_families/**"
+  - "repo/tools/playbook/replay_acquisition_playbook.py"
+  - "repo/plans/review-queues/**"
+
+# Required repo files
+required_repo_files:
+  - docs/agent-methodology-index.md
+  - docs/prompts/README.md
+  - docs/planning-methodology.md
+  - docs/agent-execution-handoff-standard.md
+  - docs/plan-hardening-checklist.md
+  - docs/fresh-chat-continuity-brief.md
+  - docs/prompts/plan-hardening-prompt-template.md
+  - docs/prompts/execution-handoff-prompt-template.md
+  - docs/prompts/independent-verification-prompt-template.md
+  - docs/prompts/evidence-bundle-review-prompt-template.md
+  - docs/prompts/memory-sprint-prompt-template.md
+  - docs/prompts/closure-hygiene-prompt-template.md
+  - docs/prompts/unblocking-patch-prompt-template.md
+  - docs/prompts/fresh-chat-bootstrap-prompt.md
+  - README.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - .claude/commands/_readme.md
+  - .claude/commands/plan-hardening.md
+  - .claude/commands/execution-handoff.md
+  - .claude/commands/evidence-review-next-prompt.md
+  - .claude/commands/memory-sprint.md
+  - memory/00-index.md
+  - memory/12-planning-and-agent-handoff-methodology.md
+  - tools/governance/check_methodology_links.py
+  - tests/governance/test_methodology_links.py
+  - taskcards/GOV-003-methodology-linkage-and-local-enforcement.md
+  - tools/evidence/contracts/memory-methodology-linkage-and-enforcement.yaml
+
+# Required metadata files (75 minimum)
+required_metadata_files:
+  - methodology-linkage-summary.md
+  - methodology-linkage-current-state-review.md
+  - prior-methodology-bundle-review.md
+  - untracked-file-classification-report.md
+  - methodology-doc-accessibility-report.md
+  - readme-linkage-report.md
+  - command-readme-update-report.md
+  - prompt-readme-created-report.md
+  - agent-methodology-index-created-report.md
+  - agents-enforcement-update-report.md
+  - governance-enforcement-update-report.md
+  - memory-index-update-report.md
+  - memory-12-update-report.md
+  - methodology-link-checker-report.md
+  - methodology-link-checker-test-report.md
+  - local-command-accessibility-report.md
+  - fresh-chat-accessibility-report.md
+  - no-main-sprint-gate-change-check.md
+  - no-secondary-execution-check.md
+  - no-secondary-files-staged-check.md
+  - no-product-source-check.md
+  - no-embedding-created-check.md
+  - no-vector-db-created-check.md
+  - no-llm-production-call-check.md
+  - no-new-spec-download-check.md
+  - no-push-check.md
+  - no-broad-cleanup-check.md
+  - current-state-consistency-report.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - yaml-validation-notes.txt
+  - json-validation-notes.txt
+  - markdown-validation-notes.txt
+  - python-validation-notes.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - git-log.txt
+  - artifact-index-snapshot.yaml
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - self-challenge.md
+  - verdict.md
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - final-git-clean-proof.txt
+  - local-reuse-readiness-report.md
+  - methodology-enforcement-readiness-report.md
+  - fresh-chat-bootstrap-validation.md
+  - prompt-template-linkage-report.md
+  - command-to-template-linkage-report.md
+  - no-em-dash-check.md
+  - no-placeholder-template-check.md
+  - gap-capture-rule-check.md
+  - sprint-stream-separation-check.md
+  - agent-handoff-boundary-check.md
+  - evidence-boundary-check.md
+  - methodology-entrypoint-coverage.yaml
+  - methodology-link-matrix.yaml
+  - reproducibility-report.md
+  - risk-register-update-report.md
+  - final-next-action-summary.md
+  - final-bundle-audit.md
+  - final-methodology-accessibility-decision.md
+  - final-methodology-enforcement-decision.md
+  - validation-command-log.txt
+  - test-command-log.txt
+  - no-stash-used-check.md
+  - no-clean-reset-used-check.md
