@@ -7,7 +7,7 @@ visibility: internal
 generated_by: claude-sonnet-4-6
 generated_at: "2026-05-08"
 schema: schemas/format-understanding/format-profile.schema.yaml
-compilation_sprint: run049
+compilation_sprint: run050
 authority: compilation artifact — not a truth authority; see spec and gate evidence
 ---
 
@@ -73,6 +73,22 @@ odf_family_reuse:
     - "text:list / text:list-item list model"
     - "table:table within text documents"
     - "_collect_list_items() recursive function (TC-7 partially mitigated)"
+
+format_family: odf-flat
+product_family: words
+product_source_state: not_created
+source_authorization_state: not_authorized
+source_layout_future:
+  - src/python/fodt/
+  - src/net/fodt/
+
+format_family: odf-flat
+product_family: words
+product_source_state: not_created
+source_authorization_state: not_authorized
+source_layout_future:
+  - src/python/fodt/
+  - src/net/fodt/
 
 notes: >
   FODT is the flat-XML (non-ZIP) variant of the ODF text document format.

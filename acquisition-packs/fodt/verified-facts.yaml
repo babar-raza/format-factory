@@ -7,12 +7,13 @@ visibility: internal
 generated_by: claude-sonnet-4-6
 generated_at: "2026-05-08"
 schema: schemas/format-understanding/verified-facts.schema.yaml
-compilation_sprint: run049
-authority: compilation artifact — spec citation is authoritative
+compilation_sprint: run050
+authority: compilation artifact -- spec citation is authoritative
 ---
 
 # FODT Verified Facts
-# Compiled: run049 (2026-05-08), FUL-003
+# Compiled: run050 (2026-05-08), FUL-003 repaired
+# Expanded: 9 facts (run049) -> 15 facts (run050)
 
 format_id: fodt
 schema: schemas/format-understanding/verified-facts.schema.yaml
@@ -22,7 +23,7 @@ facts:
     statement: >
       The root element of a valid FODT file is office:document in namespace
       urn:oasis:names:tc:opendocument:xmlns:office:1.0.
-    spec_citation: "ODF 1.3 Part 3, §3.1.2 — Flat XML file structure"
+    spec_citation: "ODF 1.3 Part 3, section 3.1.2 -- Flat XML file structure"
     evidence_source: "Gate 3 samples (4/4 PASS run043), Gate 4 prototype (FR-001)"
     confidence: deterministic
     verified_by_oracle: true
@@ -31,7 +32,7 @@ facts:
     statement: >
       A valid FODT text document must have office:mimetype attribute value
       'application/vnd.oasis.opendocument.text-flat-xml'.
-    spec_citation: "ODF 1.3 Part 3, §3.1.2 and MIME type registration"
+    spec_citation: "ODF 1.3 Part 3, section 3.1.2 and MIME type registration"
     evidence_source: "Gate 4 prototype (FR-001 validation), Gate 3 samples (run043)"
     confidence: deterministic
     verified_by_oracle: true
@@ -39,7 +40,7 @@ facts:
   - fact_id: FFODT-003
     statement: >
       Text content in a FODT file is contained within office:body/office:text.
-    spec_citation: "ODF 1.3 Part 3, §3.6 — Text document body element"
+    spec_citation: "ODF 1.3 Part 3, section 3.6 -- Text document body element"
     evidence_source: "Gate 4 prototype extract logic, Gate 3 samples"
     confidence: deterministic
     verified_by_oracle: true
@@ -47,8 +48,9 @@ facts:
   - fact_id: FFODT-004
     statement: >
       Paragraphs are represented as text:p elements within office:text.
-      Headings are represented as text:h elements with text:outline-level attribute.
-    spec_citation: "ODF 1.3 Part 3, §5.1 — Paragraph element; §5.3 — Heading element"
+      Headings are represented as text:h elements with text:outline-level attribute
+      indicating heading depth (1-6).
+    spec_citation: "ODF 1.3 Part 3, section 5.1 -- Paragraph; section 5.3 -- Heading"
     evidence_source: "Gate 4 prototype (FR-002, FR-003), Gate 3 sample headings-and-paragraphs.fodt"
     confidence: deterministic
     verified_by_oracle: true
@@ -57,7 +59,7 @@ facts:
     statement: >
       Lists are represented as text:list elements containing text:list-item elements.
       Nested lists appear as text:list children within text:list-item.
-    spec_citation: "ODF 1.3 Part 3, §5.5 — List element"
+    spec_citation: "ODF 1.3 Part 3, section 5.5 -- List element"
     evidence_source: "Gate 4 prototype (FR-004), Gate 3 sample list-basic.fodt"
     confidence: deterministic
     verified_by_oracle: true
@@ -66,16 +68,15 @@ facts:
     statement: >
       Tables in text documents use the same table:table / table:table-row / table:table-cell
       structure as spreadsheets, but appear within office:text context.
-    spec_citation: "ODF 1.3 Part 3, §9.1 — Table element in text documents"
+    spec_citation: "ODF 1.3 Part 3, section 9.1 -- Table in text documents"
     evidence_source: "Gate 4 prototype (FR-005), Gate 3 sample table-basic.fodt"
     confidence: deterministic
     verified_by_oracle: true
 
   - fact_id: FFODT-007
     statement: >
-      Python's ET implementation rejects DOCTYPE declarations for FODT by default,
-      providing XXE protection (confirmed Gate 7 fixture d04-entity-injection-attempt.fodt).
-    spec_citation: "Gate 7 fixture d04 — Expat ParseError on DOCTYPE SYSTEM entity"
+      Python ET rejects DOCTYPE declarations for FODT by default, providing XXE protection.
+    spec_citation: "Gate 7 fixture d04-entity-injection-attempt.fodt -- Expat ParseError on DOCTYPE"
     evidence_source: "Gate 7 PASS 18/18 (run048), Gate 8 TC-1 MITIGATED"
     confidence: deterministic
     verified_by_oracle: false
@@ -83,17 +84,73 @@ facts:
   - fact_id: FFODT-008
     statement: >
       FODT uses the same XML namespace root as FODS:
-      urn:oasis:names:tc:opendocument:xmlns:office:1.0
-    spec_citation: "ODF 1.3 Part 3, §3.1.1 — Namespace declarations"
+      urn:oasis:names:tc:opendocument:xmlns:office:1.0.
+    spec_citation: "ODF 1.3 Part 3, section 3.1.1 -- Namespace declarations"
     evidence_source: "Gate 3 samples (all 4 FODT files, run043)"
     confidence: deterministic
     verified_by_oracle: false
 
   - fact_id: FFODT-009
     statement: >
-      The _collect_list_items() function in fodt_parser.py is recursive (not iterative).
-      This creates a risk of RecursionError on deeply nested FODT lists.
+      The _collect_list_items() function in fodt_parser.py is recursive. This creates
+      a risk of RecursionError on deeply nested FODT lists (Gate 7 fixture c03).
     spec_citation: "Gate 7 fixture c03-deep-list-nesting.fodt (handled without crash)"
-    evidence_source: "Gate 8 TC-7 PARTIALLY_MITIGATED — deferred to Gate 10"
+    evidence_source: "Gate 8 TC-7 PARTIALLY_MITIGATED -- deferred to Gate 10 product source"
+    confidence: deterministic
+    verified_by_oracle: false
+
+  - fact_id: FFODT-010
+    statement: >
+      The text:outline-level attribute on text:h elements carries the heading level
+      as an integer (1-6). Level 1 is the highest-level heading (h1 equivalent).
+    spec_citation: "ODF 1.3 Part 3, section 5.3 -- text:outline-level attribute"
+    evidence_source: "Gate 3 sample headings-and-paragraphs.fodt (H1, H2, H3 levels confirmed)"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODT-011
+    statement: >
+      Table structures within FODT use the same table:table / table:table-row /
+      table:table-cell / text:p hierarchy as FODS cells, but cell content is
+      typically paragraph text (text:p) without typed value attributes.
+    spec_citation: "ODF 1.3 Part 3, section 9.1 -- Table element; section 9.4 -- Cell content"
+    evidence_source: "Gate 3 sample table-basic.fodt, Gate 4 prototype (FR-005 table extraction)"
+    confidence: deterministic
+    verified_by_oracle: true
+
+  - fact_id: FFODT-012
+    statement: >
+      Nested list structures in FODT can reach arbitrary depth by nesting text:list
+      within text:list-item elements. Gate 7 fixture c03 tests a 50-level deep nesting.
+    spec_citation: "ODF 1.3 Part 3, section 5.5 -- List nesting"
+    evidence_source: "Gate 7 fixture c03-deep-list-nesting.fodt (50 levels, PASS 18/18)"
+    confidence: deterministic
+    verified_by_oracle: false
+
+  - fact_id: FFODT-013
+    statement: >
+      Unsupported draw:frame and draw:image elements may appear within office:text
+      to embed images or frames. These elements are detected but not parsed in Tier 0-2.
+    spec_citation: "ODF 1.3 Part 3, section 10 -- Graphic objects"
+    evidence_source: "Gate 8 security review (TC-3 NOT_APPLICABLE for flat XML), parser-notes.md"
+    confidence: cited_only
+    verified_by_oracle: false
+
+  - fact_id: FFODT-014
+    statement: >
+      Text field elements (text:date, text:time, text:page-number, text:chapter, etc.)
+      may appear within paragraphs. These are detected but their computed values are
+      not resolved by the Tier 0-2 parser.
+    spec_citation: "ODF 1.3 Part 3, section 7 -- Text fields"
+    evidence_source: "parser-notes.md (unsupported fields listed), Gate 8 security review"
+    confidence: cited_only
+    verified_by_oracle: false
+
+  - fact_id: FFODT-015
+    statement: >
+      Malformed XML in a FODT file causes xml.etree.ElementTree.ParseError. Gate 7
+      tests 18 malformed FODT fixtures (categories a-d) with 18/18 PASS (0 crashes).
+    spec_citation: "Gate 7 fixtures a01-a04, b01-b05, c01-c05, d01-d04"
+    evidence_source: "Gate 7 FODT_GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 (run048)"
     confidence: deterministic
     verified_by_oracle: false

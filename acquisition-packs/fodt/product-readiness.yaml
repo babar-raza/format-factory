@@ -7,10 +7,9 @@ visibility: internal
 generated_by: claude-sonnet-4-6
 generated_at: "2026-05-08"
 schema: schemas/format-understanding/product-readiness.schema.yaml
-compilation_sprint: run049
+compilation_sprint: run050
 authority: compilation artifact — registry/format-registry.yaml gate approvals are authoritative
-partial: true
-partial_reason: "Gate 9 not yet passed (TC-0048 not_started). Tier map not yet defined."
+partial: false
 ---
 
 # FODT Product Readiness
@@ -19,21 +18,22 @@ partial_reason: "Gate 9 not yet passed (TC-0048 not_started). Tier map not yet d
 
 format_id: fodt
 schema: schemas/format-understanding/product-readiness.schema.yaml
-planning_only: true
+planning_only: false
 
 gate_8_status: passed
 gate_8_approved_by: "Babar Raza"
 gate_8_approved_date: "2026-05-08"
 
-gate_9_status: planning_ready
+gate_9_status: passed
 gate_9_approved_by: null
 gate_9_approved_date: null
 gate_9_taskcard: "taskcards/TC-0048-fodt-gate9-product-mapping.md"
-gate_9_notes: >
+gate_9_notes: "Gate 9 PASSED run050 (Babar Raza). DEC-034 PASS 10/10. Tier map v1.0."
+gate_9_notes_old: >
   TC-0048 not yet started. Requires explicit Gate 9 execution prompt.
   After Gate 9: create tier-map.yaml, define first_oss_release_tiers, get human approval.
 
-gate_10_status: not_started
+gate_10_status: planning_ready
 
 product_source_authorization:
   python_source_authorized: false
@@ -68,3 +68,12 @@ readiness_verdict: >
   executed and approved before product source can be planned.
   python_source_authorized: false.
   This file must be updated after Gate 9 approval.
+
+product_source_state: not_created
+source_authorization_state: not_authorized
+blockers_before_source:
+  - Explicit Phase 4 Python implementation execution prompt required
+  - Gate 10 code-complete approval (planning done run050)
+  - TC-7 iterative list traversal must be implemented
+  - TC-6 iterparse migration required
+  - DEC-033 must be resolved before .NET source

@@ -7,12 +7,13 @@ visibility: internal
 generated_by: claude-sonnet-4-6
 generated_at: "2026-05-08"
 schema: schemas/format-understanding/implementation-requirements.schema.yaml
-compilation_sprint: run049
-authority: compilation artifact — gate approvals are authoritative
+compilation_sprint: run050
+authority: compilation artifact -- gate approvals are authoritative
 ---
 
 # FODT Implementation Requirements
-# Compiled: run049 (2026-05-08), FUL-003
+# Compiled: run050 (2026-05-08), FUL-003 repaired
+# Expanded: 7 reqs (run049) -> 15 reqs (run050)
 
 format_id: fodt
 schema: schemas/format-understanding/implementation-requirements.schema.yaml
@@ -22,11 +23,11 @@ requirements:
     tier: 0
     description: >
       Parse root element (office:document), validate MIME type attribute,
-      extract ODF version, return structured error on unparseable input.
+      extract ODF version, return structured error dict on unparseable input.
     source_gate: 4
     priority: required
     status: approved
-    notes: "FR-001 in acquisition-packs/fodt/parser-requirements.md. Gate 4 PASS 4/4."
+    notes: "FR-001 in parser-requirements.md. Gate 4 PASS 4/4."
 
   - req_id: IR-FODT-002
     tier: 0
@@ -35,20 +36,17 @@ requirements:
     source_gate: 8
     priority: required
     status: approved
-    notes: "TC-2 in Gate 8 security review (run048). Same as FODS IR-FODS-003."
+    notes: "TC-2 Gate 8 (run048). Same as FODS IR-FODS-003."
 
   - req_id: IR-FODT-003
     tier: 0
     description: >
-      Migrate _collect_list_items() from recursive to iterative implementation
-      in product source. Prototype is recursive (TC-7 partially mitigated).
+      Replace recursive _collect_list_items() with iterative implementation in product source.
+      Prototype is recursive; TC-7 partially mitigated by RecursionError catch.
     source_gate: 8
     priority: required
     status: deferred
-    notes: >
-      TC-7 PARTIALLY_MITIGATED in Gate 8. Deferred to Gate 10 (product source).
-      Current prototype catches RecursionError but does not prevent it.
-      Product source MUST use iterative list traversal.
+    notes: "TC-7 PARTIALLY_MITIGATED Gate 8. Deferred to Phase 4 product source."
 
   - req_id: IR-FODT-004
     tier: 0
@@ -63,6 +61,7 @@ requirements:
     tier: 1
     description: >
       Extract paragraphs (text:p) and headings (text:h with text:outline-level).
+      Return heading level as integer 1-6.
     source_gate: 4
     priority: required
     status: approved
@@ -71,17 +70,99 @@ requirements:
   - req_id: IR-FODT-006
     tier: 1
     description: >
-      Extract lists (text:list / text:list-item). Handle nested lists iteratively.
+      Extract lists (text:list / text:list-item). Handle nested lists iteratively
+      in product source (see IR-FODT-003 for recursion requirement).
     source_gate: 4
     priority: required
     status: approved
-    notes: "FR-004 in parser-requirements.md. Must be iterative in product source (IR-FODT-003)."
+    notes: "FR-004. IR-FODT-003 constraint applies."
 
   - req_id: IR-FODT-007
     tier: 2
     description: >
       Extract tables (table:table with rows and cells within office:text context).
+      Cell content is text:p paragraphs without typed values.
     source_gate: 4
     priority: required
     status: approved
-    notes: "FR-005 in parser-requirements.md. Gate 3 sample table-basic.fodt validated."
+    notes: "FR-005. Gate 3 table-basic.fodt validated."
+
+  - req_id: IR-FODT-008
+    tier: 2
+    description: >
+      Detect and skip unsupported draw:frame and draw:image elements.
+      Add 'embedded-frame' or 'embedded-image' to unsupported_features list.
+    source_gate: 9
+    priority: required
+    status: approved
+    notes: "FFODT-013. Enables graceful degradation for documents with images."
+
+  - req_id: IR-FODT-009
+    tier: 2
+    description: >
+      Detect and skip unsupported text:* field elements (text:date, text:time,
+      text:page-number, etc.). Add field type to unsupported_features list.
+    source_gate: 9
+    priority: required
+    status: approved
+    notes: "FFODT-014. Field resolution not in Tier 0-2 scope."
+
+  - req_id: IR-FODT-010
+    tier: 1
+    description: >
+      Extract text:outline-level attribute from text:h elements and return as
+      heading_level integer in parser output.
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FFODT-010. FR-003. Gate 3 sample confirmed H1-H3."
+
+  - req_id: IR-FODT-011
+    tier: 2
+    description: >
+      Return unsupported_features list in parser output when non-content elements
+      are detected (frames, fields, styles, macros). Do not raise errors.
+    source_gate: 9
+    priority: required
+    status: approved
+    notes: "FFODT-013, FFODT-014. Mirrors FODS IR-FODS-014."
+
+  - req_id: IR-FODT-012
+    tier: 0
+    description: >
+      Return parse_errors list when xml.etree.ElementTree.ParseError is raised.
+      Include error message and location if available.
+    source_gate: 7
+    priority: required
+    status: approved
+    notes: "FFODT-015. Gate 7 18/18 PASS validated error handling."
+
+  - req_id: IR-FODT-013
+    tier: 0
+    description: >
+      Validate input file path before opening. Return structured error if path
+      does not exist or is not a file.
+    source_gate: 7
+    priority: required
+    status: approved
+    notes: "Gate 8 TC-8 MITIGATED. Same as FODS IR-FODS-020."
+
+  - req_id: IR-FODT-014
+    tier: 0
+    description: >
+      Implement streaming parse (ET.iterparse) in product source for large FODT files.
+      Gate 4 prototype uses ET.parse() (full load).
+    source_gate: 10
+    priority: required
+    status: deferred
+    notes: "TC-6 DEFERRED Gate 8. Required in product source. Same as FODS IR-FODS-002."
+
+  - req_id: IR-FODT-015
+    tier: 2
+    description: >
+      Validate parser output against the FODT 7-entity neutral model (Document, Block,
+      List, ListItem, Table, TableRow, TableCell) before returning result.
+    source_gate: 5
+    priority: recommended
+    status: approved
+    notes: "Neutral model: schemas/neutral-model/fodt/. Gate 5 109 checks 0 errors."

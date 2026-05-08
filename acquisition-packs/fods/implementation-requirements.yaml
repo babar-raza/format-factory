@@ -7,12 +7,13 @@ visibility: internal
 generated_by: claude-sonnet-4-6
 generated_at: "2026-05-08"
 schema: schemas/format-understanding/implementation-requirements.schema.yaml
-compilation_sprint: run049
-authority: compilation artifact — gate approvals are authoritative
+compilation_sprint: run050
+authority: compilation artifact -- gate approvals are authoritative
 ---
 
 # FODS Implementation Requirements
-# Compiled: run049 (2026-05-08), FUL-002
+# Compiled: run050 (2026-05-08), FUL-002 repaired
+# Expanded: 8 reqs (run049) -> 20 reqs (run050)
 
 format_id: fods
 schema: schemas/format-understanding/implementation-requirements.schema.yaml
@@ -22,34 +23,32 @@ requirements:
     tier: 0
     description: >
       Parse root element (office:document), validate MIME type attribute,
-      extract ODF version, return structured error on unparseable input.
+      extract ODF version, return structured error dict on unparseable input.
     source_gate: 4
     priority: required
     status: approved
-    notes: "FR-001 in acquisition-packs/fods/parser-requirements.md. Gate 4 prototype PASS 4/4."
+    notes: "FR-001 in parser-requirements.md. Gate 4 prototype PASS 4/4."
 
   - req_id: IR-FODS-002
     tier: 0
     description: >
       Implement streaming parse (ET.iterparse) for product source.
-      The Gate 4 prototype uses ET.parse() (full load); product source must use iterparse
+      Gate 4 prototype uses ET.parse() (full load). Product source must use iterparse
       to handle large enterprise FODS files without memory exhaustion.
     source_gate: 10
     priority: required
     status: approved
-    notes: >
-      TC-6 from Gate 8 deferred to Gate 10 planning; resolved at Gate 10 level.
-      Implementation deferred to Phase 4 execution (explicit prompt required).
-      Reference: acquisition-packs/fods/gate10-product-source-readiness-report.md.
+    notes: "TC-6 resolved at Gate 10 planning. Implementation deferred to Phase 4 execution."
 
   - req_id: IR-FODS-003
     tier: 0
     description: >
       File size guard: reject files > 100MB before parsing to prevent memory exhaustion.
+      MAX_FILE_BYTES = 100 * 1024 * 1024.
     source_gate: 8
     priority: required
     status: approved
-    notes: "TC-2 in Gate 8 security review. MAX_FILE_BYTES = 100 * 1024 * 1024."
+    notes: "TC-2 in Gate 8 security review."
 
   - req_id: IR-FODS-004
     tier: 0
@@ -59,16 +58,13 @@ requirements:
     source_gate: 10
     priority: recommended
     status: approved
-    notes: >
-      TC-1 from Gate 8; recommended for product source.
-      try: import defusedxml.ElementTree as ET
-      except ImportError: import xml.etree.ElementTree as ET
+    notes: "TC-1 recommended for product source."
 
   - req_id: IR-FODS-005
     tier: 1
     description: >
-      Extract sheet names (table:name attribute) and count rows per sheet
-      (table:table-row elements).
+      Extract sheet names (table:name attribute) from all table:table elements
+      within office:body/office:spreadsheet.
     source_gate: 4
     priority: required
     status: approved
@@ -77,12 +73,12 @@ requirements:
   - req_id: IR-FODS-006
     tier: 1
     description: >
-      Extract string cell values (office:value-type=string, text:p content).
-      Handle empty cells (no value-type, empty or absent text).
+      Extract string cell values from text:p child elements within table:table-cell.
+      Handle empty cells (no value-type, no text:p) by returning empty string.
     source_gate: 4
     priority: required
     status: approved
-    notes: "FR-002 in parser-requirements.md. Gate 4 PASS 4/4."
+    notes: "FR-002. Gate 4 PASS 4/4."
 
   - req_id: IR-FODS-007
     tier: 2
@@ -92,16 +88,136 @@ requirements:
     source_gate: 4
     priority: required
     status: approved
-    notes: "FR-003 in parser-requirements.md. Gate 3 sample typed-values-basic.fods validated."
+    notes: "FR-003. Gate 3 sample typed-values-basic.fods validated."
 
   - req_id: IR-FODS-008
     tier: 3
     description: >
       Extract raw formula string (table:formula) and cached result value.
-      Handle column repeat expansion (table:number-columns-repeated).
     source_gate: 4
     priority: required
     status: deferred
-    notes: >
-      Tier 3 deferred in first OSS release (run047 Gate 9 approval).
-      FR-004 in parser-requirements.md. Gate 3 sample formula-basic.fods created.
+    notes: "Tier 3 deferred in first OSS release. FR-004. formula-basic.fods created."
+
+  - req_id: IR-FODS-009
+    tier: 1
+    description: >
+      Track cell position (zero-based row index, column index) for each extracted cell.
+      Required for structured spreadsheet output mapping cells to grid coordinates.
+    source_gate: 5
+    priority: required
+    status: approved
+    notes: "Neutral model Cell entity requires row_index, col_index fields."
+
+  - req_id: IR-FODS-010
+    tier: 1
+    description: >
+      Expand table:number-rows-repeated virtual rows. When a table:table-row has
+      number-rows-repeated > 1, treat it as N identical rows in sequence.
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FFODS-011. Required for accurate row count. Trailing empty filler rows may be skipped."
+
+  - req_id: IR-FODS-011
+    tier: 1
+    description: >
+      Expand table:number-columns-repeated virtual columns. When a table:table-cell
+      has number-columns-repeated > 1, treat it as N identical cells in sequence.
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FFODS-010. Required for accurate column count and cell grid."
+
+  - req_id: IR-FODS-012
+    tier: 2
+    description: >
+      Handle office:string-value attribute as alternative string source for cells
+      that carry both office:string-value and text:p. text:p content is preferred
+      for display; office:string-value carries the canonical data value.
+    source_gate: 4
+    priority: recommended
+    status: approved
+    notes: "FFODS-013. Improves string extraction fidelity."
+
+  - req_id: IR-FODS-013
+    tier: 2
+    description: >
+      Extract date values (office:date-value) when office:value-type='date'.
+      Return as ISO 8601 string. Same pattern for time (office:time-value).
+    source_gate: 4
+    priority: required
+    status: approved
+    notes: "FFODS-014. FR-003 date/time types."
+
+  - req_id: IR-FODS-014
+    tier: 2
+    description: >
+      Return unsupported_features list in parser output when non-data elements are
+      detected (draw:frame charts, office:scripts macros, advanced styles).
+      Do not raise errors for unsupported elements.
+    source_gate: 9
+    priority: required
+    status: approved
+    notes: "FFODS-017, FFODS-018. Enables graceful degradation."
+
+  - req_id: IR-FODS-015
+    tier: 2
+    description: >
+      Detect draw:frame elements within cells and add 'chart' or 'embedded-object'
+      to unsupported_features list. Do not attempt to parse chart content.
+    source_gate: 9
+    priority: required
+    status: approved
+    notes: "FFODS-017. chart detection within Tier 2 scope."
+
+  - req_id: IR-FODS-016
+    tier: 2
+    description: >
+      Detect office:scripts elements and add 'macros' to unsupported_features list.
+      Never execute macro content.
+    source_gate: 9
+    priority: required
+    status: approved
+    notes: "FFODS-018. Macro detection is a security requirement."
+
+  - req_id: IR-FODS-017
+    tier: 0
+    description: >
+      Return parse_errors list in parser output when xml.etree.ElementTree.ParseError
+      is raised. Include file path, error message, and line/column if available.
+    source_gate: 7
+    priority: required
+    status: approved
+    notes: "FFODS-020. Gate 7 18/18 PASS validated error handling."
+
+  - req_id: IR-FODS-018
+    tier: 2
+    description: >
+      Validate parser output structure against the 6-entity FODS neutral model
+      (Workbook, Sheet, Row, Cell, Formula, Warning) before returning.
+      Raise ValueError if structure violates required fields.
+    source_gate: 5
+    priority: recommended
+    status: approved
+    notes: "Neutral model schema: schemas/neutral-model/fods/. Gate 5 87 checks 0 errors."
+
+  - req_id: IR-FODS-019
+    tier: 1
+    description: >
+      Handle leading/trailing whitespace in text:p cell content. Normalize by
+      stripping surrounding whitespace unless span elements are present.
+    source_gate: 4
+    priority: recommended
+    status: approved
+    notes: "Improves output consistency. Observed in Gate 3 sample cells."
+
+  - req_id: IR-FODS-020
+    tier: 0
+    description: >
+      Validate input file path before opening. Return structured error if path does
+      not exist, is not a file, or is a directory. Do not raise unhandled exceptions.
+    source_gate: 7
+    priority: required
+    status: approved
+    notes: "Gate 8 TC-8 (path injection mitigated). Gate 7 PASS 18/18."
