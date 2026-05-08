@@ -29,7 +29,7 @@ Source layout (Phase 4+): `src/python/{format}/` for Python FOSS; `src/net/{form
 
 **FODS** — Flat OpenDocument Spreadsheet — is the active pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. Single-file XML, well-documented specification, no ZIP complexity, permissive license.
 
-Gate 6 (Oracle Comparison) PASSED (Babar Raza, 2026-05-08, run044). ORACLE_COMPARE: PASS 3/4, WARN 1/4 (multi-sheet CSV export limitation — expected, not a parser defect). Gate 7 (Fuzz Testing) PASSED (Babar Raza, 2026-05-08, run045). GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18. Gate 8 (Security Review) PASSED (Babar Raza, 2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. FODT Gates 1-5 ALL PASSED (Babar Raza): Gates 1-4 run041/043/044/045; Gate 5 run046 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4). FODT Gate 6 oracle planning_ready (TC-0042 not_started). ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md. ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md.
+Gate 6 (Oracle Comparison) PASSED (Babar Raza, 2026-05-08, run044). ORACLE_COMPARE: PASS 3/4, WARN 1/4 (multi-sheet CSV export limitation — expected, not a parser defect). Gate 7 (Fuzz Testing) PASSED (Babar Raza, 2026-05-08, run045). GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18. Gate 8 (Security Review) PASSED (Babar Raza, 2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. FODT Gates 1-5 ALL PASSED (Babar Raza): Gates 1-4 run041/043/044/045; Gate 5 run046 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4). FODT Gates 1-6 ALL PASSED (Babar Raza, run041-run047). FODS Gate 9 PASSED (Babar Raza, 2026-05-08, run047; tier-map.yaml v1.0). FODS Gate 10 PASSED (Babar Raza, 2026-05-08, run048). FODT Gate 7 PASSED (Babar Raza, 2026-05-08, run048; FODT_GATE7_FUZZ_TEST PASS 18/18). FODT Gate 8 PASSED (Babar Raza, 2026-05-08, run048). FODT Gate 9 product-mapping planning_ready. ODF reuse strategy: docs/odf-flat-family-reuse-strategy.md.
 
 ---
 
@@ -68,7 +68,7 @@ Every format passes through 11 mandatory gates before any product code is writte
 
 ## Project Status
 
-**Current phase:** Phase 3 — FODS Gates 1-8 ALL PASSED. Gate 9 planning_ready. FODT Gates 1-5 ALL PASSED. Gate 6 oracle planning_ready.
+**Current phase:** Phase 3 — FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready.
 
 - Phase 0 (Foundation): Complete — accepted 2026-05-04
 - Phase 1A (Scoring): Complete — FODS scored 93/100, Accept band
@@ -80,6 +80,9 @@ Every format passes through 11 mandatory gates before any product code is writte
 - Phase 3 (Oracle Comparison): Complete — Gate 6 passed, approved by Babar Raza, 2026-05-08; ORACLE_COMPARE PASS 3/4 WARN 1/4
 - Phase 3 (Fuzz Testing): Complete — Gate 7 passed, approved by Babar Raza, 2026-05-08; GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18; 18 malformed fixtures
 - Phase 3 (Security Review): Complete — Gate 8 passed, approved by Babar Raza, 2026-05-08; GATE8_SECURITY_REVIEW: PASS
+- Phase 3 (Product Mapping): Complete — Gate 9 passed, approved by Babar Raza, 2026-05-08; tier-map.yaml v1.0; Tiers 0-2 first OSS release
+- Phase 3/4 (OSS Readiness): Complete — Gate 10 passed, approved by Babar Raza, 2026-05-08; product-source readiness confirmed; Gate 11 planning_ready
+- FODT Gates 1-8: Complete — Gates 1-8 all passed (run041-run048, Babar Raza); Gate 9 product-mapping planning_ready
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md).
 

@@ -1,6 +1,6 @@
 {
   "projectName": "format-factory",
-  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3: FODS Gates 1-9 PASSED. Gate 10 planning_ready (TC-0044). FODT Gates 1-6 PASSED. Gate 7 fuzz planning_ready (TC-0045). Embeddings/vector DB/vector index NOT authorized.",
+  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3: FODS Gates 1-10 ALL PASSED. Gate 11 planning_ready (TC-0047, blocked DEC-033). FODT Gates 1-8 ALL PASSED. Gate 9 product-mapping planning_ready (TC-0048). Embeddings/vector DB/vector index NOT authorized.",
   "model": "claude-opus-4-6",
   "permissions": {
     "allow": [
@@ -111,7 +111,7 @@
     ]
   },
   "phase": "3",
-  "phase_note": "Phase 3. FODS: Gates 1-9 ALL PASSED (run047, Babar Raza). GATE9_PRODUCT_MAPPING: PASS, tier-map.yaml v1.0 approved. Gate 10 planning_ready. FODT: Gates 1-6 ALL PASSED (run047, Babar Raza). ORACLE_RUN PASS 4/4, COMPARE PASS 2/4 WARN 2/4. Gate 7 fuzz planning_ready.",
+  "phase_note": "Phase 3. FODS: Gates 1-10 ALL PASSED (run048). Gate 10 APPROVED Babar Raza 2026-05-08 (Tiers 0-2, 12 features). Gate 11 planning_ready (blocked DEC-033). FODT: Gates 1-8 ALL PASSED (run048). FODT_GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18. GATE8_SECURITY_REVIEW PASS. Gate 9 product-mapping planning_ready. REQUIRED_METADATA_DEPTH check added.",
   "notes": [
     "Phase 3 Gate 5 PASSED: Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). TC-0024 CLOSED. Gate 6 oracle_blocked_missing_tool: LibreOffice not installed. Install LibreOffice, then re-execute TC-0026 with explicit prompt. tools/oracle/** ALLOWED (new run035).",
     "Format-first source layout: src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE — must not be created.",

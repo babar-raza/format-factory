@@ -111,7 +111,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Gate 7 status:** PASSED — approved by Babar Raza (2026-05-08, run045). GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18. 18 malformed fixtures (4 categories). TC-0033 DEC-034 PASS (run045). FODT Gates 1-4 ALL APPROVED (Babar Raza, run041/043/044/045).
 
-**Gate 8 status:** PASSED — approved by Babar Raza (2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. Security report: reports/security/fods.md. FODT Gate 5 APPROVED (Babar Raza, 2026-05-08, run046; FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4, 109 checks, TC-0039 DEC-034 PASS). FODS Gate 9 planning_ready (TC-0040 not_started). FODT Gate 6 oracle planning_ready (TC-0041 completed, TC-0042 not_started).
+**Gate 8 status:** PASSED — approved by Babar Raza (2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. Security report: reports/security/fods.md. FODT Gate 5 APPROVED (Babar Raza, 2026-05-08, run046; FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4, 109 checks, TC-0039 DEC-034 PASS). FODS Gate 9 PASSED (Babar Raza, 2026-05-08, run047; tier-map.yaml v1.0; TC-0040 COMPLETED). Gate 10 PASSED (Babar Raza, 2026-05-08, run048; product-source readiness confirmed; Gate 11 planning_ready). FODT Gates 1-8 ALL PASSED (run041-run048, Babar Raza). Gate 9 product-mapping planning_ready (TC-0048 not_started).
 
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 
@@ -137,7 +137,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 ## Beyond FODS: Subsequent Formats
 
-After FODS, subsequent formats are scored and acquired in priority order. **FODT Gates 1-5 ALL PASSED** (Babar Raza): Gate 1 run041 (88/100, Category 1 RF); Gate 2 run043 (8/8 fast-path, patent waived); Gate 3 run044 (4 FODT samples, TC-0032 DEC-034 PASS 27/27); Gate 4 run045 (fodt_parser.py 4/4 PASS, TC-0035 DEC-034 PASS 20/20); Gate 5 run046 (7 entities, FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 109 checks, TC-0039 DEC-034 PASS). FODT Gate 6 oracle planning_ready (TC-0042 not_started — requires explicit Gate 6 prompt). ODF reuse strategy documented at `docs/odf-flat-family-reuse-strategy.md`. FODP, FODG, FODB remain in candidate pool. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
+After FODS, subsequent formats are scored and acquired in priority order. **FODT Gates 1-5 ALL PASSED** (Babar Raza): Gate 1 run041 (88/100, Category 1 RF); Gate 2 run043 (8/8 fast-path, patent waived); Gate 3 run044 (4 FODT samples, TC-0032 DEC-034 PASS 27/27); Gate 4 run045 (fodt_parser.py 4/4 PASS, TC-0035 DEC-034 PASS 20/20); Gate 5 run046 (7 entities, FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 109 checks, TC-0039 DEC-034 PASS). FODT Gates 1-8 ALL PASSED (Babar Raza): Gate 7 run048 (FODT_GATE7_FUZZ_TEST PASS 18/18); Gate 8 run048 (FODT_GATE8_SECURITY_REVIEW PASS). Gate 9 product-mapping planning_ready (TC-0048 not_started). ODF reuse strategy documented at `docs/odf-flat-family-reuse-strategy.md`. FODP, FODG, FODB remain in candidate pool. Shortlist at `registry/candidates/odf-flat-family-shortlist.yaml`. Formats in other families (Words, Slides, Imaging) are considered after the Cells family has at least two formats in product.
 
 The format registry (`registry/format-registry.yaml`) is the authoritative record of which formats are in-flight, deferred, or rejected.
 
