@@ -1,0 +1,206 @@
+contract_id: secondary-sf2f02b-independent-verification-and-closure
+description: >
+  S-F2F-02B Independent Verification and Permanent Closure of S-F2F-02.
+  Independently verifies S-F2F-02 evidence bundle, repairs schema gap
+  (not_for_execution added to acquisition-playbook.schema.json), strengthens
+  validator (--engine option, honest engine reporting, deprecated API fix),
+  expands tests to 42/42 PASS (both engines, docs example full JSON Schema),
+  repairs overbroad forbidden path in evidence contract, updates taskcard to
+  CLOSED_VERIFIED, and updates plan-v2 and master-plan. No replay engine,
+  no apply mode, no review queue, no acquisition-pack playbooks, no product
+  source, no MAIN SPRINT gate state changes, no push.
+  Subordinate secondary sprint — MAIN SPRINT remains the only active delivery path.
+created_run: secondary-sf2f02b-independent-verification-and-closure
+sprint_id: S-F2F-02B
+executed: "2026-05-08"
+plan_repair_only: false
+require_clean_git: true
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+min_metadata_count: 95
+no_push: true
+
+required_repo_files:
+  - tools/playbook/__init__.py
+  - tools/playbook/validate_playbook.py
+  - tests/playbook/__init__.py
+  - tests/playbook/test_playbook_schema.py
+  - tests/playbook/fixtures/valid-acquisition-playbook.yaml
+  - tests/playbook/fixtures/invalid-missing-required-field.yaml
+  - tests/playbook/fixtures/invalid-forbidden-authority.yaml
+  - tests/playbook/fixtures/valid-review-queue.yaml
+  - tests/playbook/fixtures/invalid-review-queue-missing-items.yaml
+  - schemas/playbook/acquisition-playbook.schema.json
+  - schemas/playbook/review-queue.schema.json
+  - docs/playbook-layer.md
+  - docs/examples/acquisition-playbook-fods-documentation-example.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+  - taskcards/S-F2F-02-playbook-validation-only.md
+  - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  - plans/master-plan.md
+  - tools/evidence/contracts/secondary-sf2f02-playbook-validation.yaml
+  - tools/evidence/contracts/secondary-sf2f02b-independent-verification-and-closure.yaml
+  - memory/README.md
+
+forbidden_patterns:
+  - .git/
+  - .env
+  - .local/
+  - "*.pyc"
+  - __pycache__/
+  - tools/playbook/replay_acquisition_playbook.py
+  - tools/playbook/diff_playbook_outputs.py
+  - tools/playbook/export_review_queue.py
+  - tools/playbook/create_golden_case.py
+  - tests/playbook/golden/
+  - tests/playbook/test_replay_dry_run.py
+  - acquisition-packs/fods/playbook.yaml
+  - acquisition-packs/fodt/playbook.yaml
+  - acquisition-packs/_families/
+  - schemas/product/
+  - tools/product/
+  - plans/review-queues/
+  - "src/python/fods/"
+  - "src/python/fodt/"
+  - "src/net/fods/"
+  - "src/net/fodt/"
+
+checks:
+  no_gate_status_changed: true
+  no_product_source_created: true
+  no_parser_created: true
+  no_neutral_model_created: true
+  no_replay_engine_created: true
+  no_apply_mode_created: true
+  no_review_queue_output: true
+  no_acquisition_pack_playbook: true
+  no_family_playbook_created: true
+  no_samples_created: true
+  no_endpoint_call: true
+  no_new_spec_download: true
+  no_embedding_vector_db: true
+  no_main_sprint_deviation: true
+  no_push: true
+  validator_writes_no_files: true
+
+required_metadata_files:
+  # Sprint summary and eligibility
+  - sprint-summary.md
+  - eligibility-verification.md
+  - sf2f02b-eligibility-verification.md
+  - main-sprint-non-deviation-check.md
+  # Independent verification of S-F2F-02
+  - s-f2f-02-bundle-verification-report.md
+  - s-f2f-02-test-rerun-report.md
+  - s-f2f-02-schema-gap-identification.md
+  - s-f2f-02-contract-forbidden-path-issue.md
+  - s-f2f-02-independent-verification-verdict.md
+  # Schema repair
+  - schema-gap-repair-report.md
+  - schema-gap-root-cause-analysis.md
+  - not-for-execution-property-added-report.md
+  - additional-properties-preserved-check.md
+  - docs-example-schema-validation-after-repair.md
+  # Validator strengthening
+  - validator-engine-option-report.md
+  - validator-deprecated-api-fix-report.md
+  - validator-engine-auto-report.md
+  - validator-engine-jsonschema-report.md
+  - validator-engine-structural-report.md
+  - validator-engine-honest-reporting-check.md
+  - validator-policy-enforcement-report.md
+  - validator-writes-no-files-check.md
+  # Test expansion
+  - test-expansion-report.md
+  - test-run-report.md
+  - test-coverage-summary.md
+  - test-42-pass-1-skip-verification.md
+  - test-both-engines-covered-check.md
+  - test-docs-example-jsonschema-engine-check.md
+  - test-not-for-execution-policy-test-check.md
+  - test-no-replay-apply-modules-check.md
+  # Contract repair
+  - contract-forbidden-path-repair-report.md
+  - contract-src-python-overbroad-fix.md
+  - contract-src-net-overbroad-fix.md
+  # Closure verification
+  - taskcard-closed-verified-report.md
+  - plan-v2-update-report.md
+  - master-plan-update-report.md
+  - next-secondary-action-updated-check.md
+  # No-overreach checks
+  - no-gate-status-change-check.md
+  - no-implementation-overreach-check.md
+  - no-replay-engine-check.md
+  - no-apply-mode-check.md
+  - no-review-queue-output-check.md
+  - no-acquisition-pack-playbook-check.md
+  - no-family-playbook-check.md
+  - no-product-source-check.md
+  - no-parser-neutral-model-check.md
+  - no-samples-created-check.md
+  - no-endpoint-call-check.md
+  - no-new-spec-download-check.md
+  - no-push-check.md
+  # CLI behavior
+  - cli-behavior-report.md
+  - cli-engine-flag-report.md
+  - exit-code-verification-report.md
+  - json-output-mode-report.md
+  - format-id-required-verification.md
+  # Engine and validation reports
+  - jsonschema-availability-report.md
+  - fallback-validation-report.md
+  - structural-validation-depth-report.md
+  - forbidden-authority-check-report.md
+  - valid-fixture-pass-report.md
+  - invalid-fixture-fail-report.md
+  - docs-example-conformance-report.md
+  - schema-gap-noted-report.md
+  # Boundary and format checks
+  - format-agnostic-verification.md
+  - read-only-boundary-verification.md
+  - no-write-proof.md
+  - secondary-sprint-isolation-check.md
+  - sprint-boundary-check.md
+  # Documentation updates
+  - playbook-layer-doc-update-report.md
+  - agents-md-update-report.md
+  - governance-md-update-report.md
+  - taskcard-status-update-report.md
+  - plan-v2-update-report.md
+  # Quality and reproducibility
+  - current-truth-review.md
+  - reproducibility-review.md
+  - all-format-applicability-review.md
+  - risk-register-review.md
+  - independence-verification-reminder.md
+  - tool-implementation-review.md
+  - test-design-review.md
+  # Search and audit
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - yaml-validation-notes.txt
+  - python-source-validation-notes.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  # File tracking
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - commit-hash-verification.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - git-log.txt
+  - repo-tree.txt
+  # Evidence and memory
+  - artifact-index-snapshot.yaml
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  # Self-challenge and verdict
+  - self-challenge.md
+  - verdict.md
