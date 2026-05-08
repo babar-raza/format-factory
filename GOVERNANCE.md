@@ -276,11 +276,16 @@ See AGENTS.md Section Y for agent-specific evidence bundle rules.
 
 ---
 
-## Section 20 — Playbook Layer Governance (Schema and Policy Active — S-F2F-01 Complete; Execution Tooling Unauthorized)
+## Section 20 — Playbook Layer Governance (S-F2F-01 and S-F2F-02 Complete; Replay/Apply Unauthorized)
 
-**STATUS: Playbook schema and policy ACTIVE after S-F2F-01 (2026-05-08). schemas/playbook/
-and docs/playbook-layer.md exist. Execution tooling (replay engine, apply mode, validation
-tool) remains unauthorized until S-F2F-02 through S-F2F-06 are explicitly authorized.**
+**STATUS: Playbook schema, policy, and read-only validation tool ACTIVE after S-F2F-02
+(2026-05-08). schemas/playbook/, docs/playbook-layer.md, and tools/playbook/validate_playbook.py
+exist. Replay engine, apply mode, acquisition-pack playbooks, and family playbooks remain
+unauthorized until S-F2F-03 through S-F2F-06 are explicitly authorized.**
+
+**20.0. Validation Tool Is Evidence-Eligible Input Only.** tools/playbook/validate_playbook.py
+output (PLAYBOOK_VALIDATION: PASS) is an evidence-eligible input. It is NOT gate approval,
+NOT a DEC-034 substitute, and NOT a human approval record. The tool writes no files.
 
 **20.1.** Playbook YAML files are internal artifacts. They are NOT evidence, NOT operational
 authority, and NOT gate approval substitutes. `plans/master-plan.md` and evidence bundle

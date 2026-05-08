@@ -298,7 +298,7 @@ The following uses of playbooks, review queues, and replay reports are explicitl
 | Phase | Taskcard | Status | Creates |
 |-------|----------|--------|---------|
 | S-F2F-01 | Playbook Schema and Policy | **COMPLETE** | schemas/playbook/, docs/playbook-layer.md, docs/examples/ |
-| S-F2F-02 | Playbook Validation Tool | proposed | tools/playbook/validate_playbook.py |
+| S-F2F-02 | Playbook Validation Tool | **COMPLETE** | tools/playbook/validate_playbook.py, tests/playbook/ |
 | S-F2F-03 | Dry-Run Replay + Review Queue | proposed | tools/playbook/replay_acquisition_playbook.py, review queue export |
 | S-F2F-04 | Golden Dry-Run Tests | proposed | tests/playbook/ golden fixtures |
 | S-F2F-05 | ODF-Flat Family Playbook | proposed | acquisition-packs/_families/odf-flat/ |
@@ -328,3 +328,51 @@ S-F2F-01 is DONE when:
 11. S-F2F-02 through S-F2F-08 remain proposed_pending_human_approval.
 12. No MAIN SPRINT gate statuses changed.
 13. No push performed.
+
+---
+
+## 21. S-F2F-02 Validation Tool (Active — Read-Only)
+
+**Created:** S-F2F-02 (2026-05-08)
+**Tool:** tools/playbook/validate_playbook.py
+**Tests:** tests/playbook/test_playbook_schema.py (30 tests PASS)
+
+### What the Validation Tool Does
+
+1. **Reads** a YAML file and a JSON Schema file.
+2. **Validates** the YAML against the schema (using jsonschema if available, otherwise
+   deterministic structural fallback validation).
+3. **Reports** PLAYBOOK_VALIDATION: PASS or PLAYBOOK_VALIDATION: FAIL on stdout.
+4. **Returns** exit code 0 on PASS, 1 on FAIL.
+
+### What the Validation Tool Does NOT Do
+
+1. **Does not write files.** All output goes to stdout/stderr only.
+2. **Does not replay operations.** No execution of playbook operations.
+3. **Does not create files.** No output files, logs, or artifacts.
+4. **Does not approve gates.** Validation PASS is not gate approval.
+5. **Does not replace DEC-034.** Validation is an evidence aid only.
+6. **Does not replace human approval.** Validation output is not a human approval record.
+7. **Does not operate in apply mode.** Apply mode is not authorized until S-F2F-06.
+8. **Does not create review queues.** Review queue generation requires S-F2F-03.
+9. **Does not call the network.** No endpoint calls, no spec downloads.
+10. **Does not use LLM.** Pure deterministic validation only.
+
+### Fallback Behavior
+
+When jsonschema is not available:
+- The tool uses deterministic structural validation against known required fields and enums.
+- It prints: `JSON_SCHEMA_ENGINE: FALLBACK_STRUCTURAL_VALIDATION`
+- Full JSON Schema compliance is not guaranteed in fallback mode.
+- Required fields, forbidden_uses, and authority boundary checks still run.
+
+### Authority Boundary
+
+Validation tool output is evidence-eligible input to a human or independent verifier.
+It does not approve gates. It does not replace DEC-034. It does not replace human review.
+S-F2F-03 (dry-run replay) is still required before any playbook.yaml can be executed.
+
+### Next Step
+
+S-F2F-02 is completed_pending_independent_verification.
+S-F2F-03 (Dry-Run Replay Engine) requires a separate human authorization prompt naming S-F2F-03.

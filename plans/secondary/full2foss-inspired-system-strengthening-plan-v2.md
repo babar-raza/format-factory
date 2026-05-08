@@ -34,7 +34,7 @@ conflict arises, MAIN SPRINT takes priority unconditionally.
 |----------|----------|
 | This plan-repair sprint (S-F2F-00) | AUTHORIZED by execution prompt |
 | S-F2F-01: Playbook schema + policy | CLOSED_VERIFIED — executed 2026-05-08; S-F2F-01B verification 2026-05-08 |
-| S-F2F-02: Playbook validation tool | PROPOSED — requires S-F2F-01 complete + approval |
+| S-F2F-02: Playbook validation tool | completed_pending_independent_verification — executed 2026-05-08 |
 | S-F2F-03: Dry-run replay + review queue | PROPOSED — requires S-F2F-02 complete + approval |
 | S-F2F-04: Golden dry-run tests | PROPOSED — requires S-F2F-03 complete + approval |
 | S-F2F-05: ODF-flat family playbook | PROPOSED — requires S-F2F-01 complete + approval |

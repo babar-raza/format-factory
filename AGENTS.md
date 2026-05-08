@@ -506,11 +506,19 @@ See `tools/evidence/_readme.md` for tooling documentation. See `tools/evidence/c
 
 ---
 
-## AA. Playbook Layer Rules (Schema and Policy Active — S-F2F-01 Complete; Tooling Not Yet Authorized)
+## AA. Playbook Layer Rules (S-F2F-01 and S-F2F-02 Complete; Replay/Apply Not Yet Authorized)
 
-**STATUS: Schema and policy ACTIVE after S-F2F-01 (2026-05-08). schemas/playbook/ and
-docs/playbook-layer.md exist. Replay tools, apply mode, acquisition-pack playbooks, and
-family playbooks remain unauthorized — see S-F2F-02 through S-F2F-06 for those phases.**
+**STATUS: Schema, policy, and read-only validation tool ACTIVE after S-F2F-02 (2026-05-08).
+schemas/playbook/, docs/playbook-layer.md, and tools/playbook/validate_playbook.py exist.
+validate_playbook.py is READ-ONLY — it writes nothing, has no replay behavior, no apply mode,
+and no review queue output. Replay tools, apply mode, acquisition-pack playbooks, and family
+playbooks remain unauthorized — see S-F2F-03 through S-F2F-06 for those phases.**
+
+**AA0. Validation Tool Is Read-Only.** tools/playbook/validate_playbook.py validates YAML
+files against schema and reports PASS/FAIL. It writes NO files, creates NO review queues,
+does NOT replay operations, does NOT approve gates, does NOT replace DEC-034, and does NOT
+replace human approval. Validation PASS is an evidence aid only. See docs/playbook-layer.md
+Section 21 for full tool policy.
 
 **AA1. Playbooks Are Execution Aids, Not Authority.** Playbook YAML files record what
 operations were performed, what files were expected/produced, what validation commands
