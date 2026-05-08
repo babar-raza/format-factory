@@ -503,3 +503,39 @@ See `tools/evidence/_readme.md` for tooling documentation. See `tools/evidence/c
 **Z3. PENDING Markers Must Be Absent After Final Commit.** Sprint-in-progress PENDING markers (`Latest commit: PENDING`, `changes pending commit`, `run\d+ changes pending`) must be removed before the final commit of each sprint. The consistency checker (`tools/evidence/check_current_state_consistency.py`) and evidence bundle validator (`--check-no-pending` flag) enforce this rule.
 
 **Z4. Current-State Authority.** See `docs/current-state-and-evidence-authority.md` for the complete policy. See Section Y for evidence bundle contract rules.
+
+---
+
+## AA. Playbook Layer Rules (Proposed — Requires S-F2F-01 Human Approval)
+
+**STATUS: PROPOSED ONLY. These rules are NOT active until S-F2F-01 (Playbook Schema and
+Policy) is implemented and explicitly approved by a human. Do not enforce these rules or
+create any playbook artifacts until S-F2F-01 authorization is granted.**
+
+**AA1. Playbooks Are Execution Aids, Not Authority.** Playbook YAML files record what
+operations were performed, what files were expected/produced, what validation commands
+confirm correctness, and what evidence artifacts are required. They are execution aids.
+`plans/master-plan.md` and evidence bundle metadata remain the sole operational authority
+for gate state and project state. Playbooks never supersede master-plan.md or bundle metadata.
+
+**AA2. Replay Engines: Deterministic First; No LLM Authority.** Replay engines must operate
+in deterministic mode first. LLM fallback is not implemented in any S-phase sprint and is
+never authoritative for specification interpretation or legal classification. No replay result
+can substitute for DEC-034 independent verification or human gate approval.
+
+**AA3. Review Queue Is Mandatory.** Any unresolved replay conflict must produce a review
+queue item (severity: low | medium | high). Items with `severity: high` block apply mode.
+The review queue is managed in `plans/review-queues/` and must be resolved by a human or
+by explicit downgrade with documented rationale before apply mode is unblocked.
+
+**AA4. Family Playbooks: Propose Reuse Only.** Family-level playbook files in
+`acquisition-packs/_families/` propose reuse patterns with explicit `reuse_level`
+classification (full | adapt | guide | new). Family playbooks never grant inherited gate
+approval. Each gate for each format requires independent DEC-034 verification and human
+approval regardless of family reuse level.
+
+**AA5. Product Tools: Phase 4+ Only.** No product dependency tools (tools/product/),
+product schemas (schemas/product/), or product source (src/python/, src/net/) are created
+until product-track gates (Gate 10+) explicitly unlock source work and a human authorization
+prompt names the specific sprint (S-F2F-07 or S-F2F-08). Secondary sprint documentation
+(S-F2F-07: design docs only) requires Gate 8 PASSED as a hard prerequisite.

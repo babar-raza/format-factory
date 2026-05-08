@@ -175,3 +175,17 @@ current_state_authority: bundle-metadata
 - Any agent that encounters a self-referential "Latest commit must equal HEAD" requirement must
   report it as a gap and apply this policy instead.
 - Human approval is not required to apply this policy (it is a bug fix, not a gate).
+
+---
+
+## Note on Playbook Replay Reports (Proposed — Requires S-F2F-01 Human Approval)
+
+A future playbook layer is proposed in the Full2Foss-inspired secondary sprint roadmap
+(plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md, S-F2F-03). If and
+when the dry-run replay engine is implemented, playbook replay reports will be produced as
+derived artifacts. These replay reports will carry the same authority as other evidence
+bundle metadata — informational inputs only, not authoritative for gate state. Gate state
+authority remains exclusively in plans/master-plan.md and the evidence bundle metadata
+(bundle-metadata/git-log.txt, bundle-metadata/git-status-final.txt). A replay report
+showing "PASS" does NOT constitute gate approval and does NOT supersede the DEC-034
+independent verification requirement or human gate approval.

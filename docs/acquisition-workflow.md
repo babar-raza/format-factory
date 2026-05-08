@@ -281,6 +281,19 @@ On a periodic basis (suggested: monthly while active, quarterly during maintenan
 
 ---
 
+## Note on Future Playbook Layer (Proposed — Requires S-F2F-01 Human Approval)
+
+A future playbook layer is proposed in the Full2Foss-inspired secondary sprint roadmap
+(plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md). If and when
+S-F2F-01 is approved and implemented, playbook.yaml files may be added to individual
+acquisition packs (e.g., acquisition-packs/fods/playbook.yaml) to record execution steps
+for reuse in future format acquisitions. This addition is OPTIONAL and does not change any
+existing workflow step described in this document. All current workflow steps remain
+mandatory regardless of playbook layer status. Playbook adoption requires explicit human
+authorization via S-F2F-01 execution.
+
+---
+
 ## Relationship to Other Documents
 
 - `docs/gates.md` — detailed pass criteria for each gate

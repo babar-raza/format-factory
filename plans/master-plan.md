@@ -3,16 +3,16 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.40 (run044: run043 independently verified PASS (42 checks); build_evidence_bundle.py 2 bugs fixed (metadata count, matches_forbidden); ORACLE_PREFLIGHT PASS + ORACLE_RUN PASS 4/4 + ORACLE_COMPARE PASS 3/4 WARN 1/4 re-run confirmed; TC-0027 DEC-034 PASS 24/24; FODS Gate 6 APPROVED Babar Raza 2026-05-08; TC-0032 DEC-034 PASS 27/27; FODT Gate 3 APPROVED Babar Raza 2026-05-08; FODS Gate 7 planning created; FODT Gate 4 planning created)
+**Version:** 2.41 (run045: run044 independently verified PASS (39 checks); stale state fixed (7 files); FODS Gate 7 executed PASS 18/18 CRASH 0/18 CORRUPT 0/18; Gate 7 APPROVED Babar Raza 2026-05-08 — in progress: FODT Gate 4 + Gate 8/Gate 5 planning)
 **Last updated:** 2026-05-08
-**Current phase:** Phase 3: FODS Gates 1-6 PASSED. Gate 7: planning_ready (TC-0033 not_started). FODT Gates 1-3 PASSED. Gate 4: planning_ready (TC-0034 not_started).
-**Current status:** FODS: Gate 1-6 PASSED. Gate 7 planning_ready (TC-0033 not_started — requires explicit Gate 7 prompt). FODT: Gate 1 PASSED (Babar Raza, 2026-05-07, run041); Gate 2 PASSED (Babar Raza, 2026-05-08, run043); Gate 3 PASSED (Babar Raza, 2026-05-08, run044; TC-0032 DEC-034 PASS 27/27). Gate 4 planning_ready (TC-0034 not_started — requires explicit Gate 4 prompt). TC-0027 COMPLETED. TC-0032 COMPLETED. TC-0033 not_started. TC-0034 not_started. TC-0035 not_started. No product source. last_completed_run: run044 — PENDING. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current phase:** Phase 3: FODS Gates 1-7 PASSED. Gate 8: planning_ready. FODT Gates 1-3 PASSED. Gate 4: in execution (run045).
+**Current status:** FODS: Gates 1-7 PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18); TC-0033 COMPLETED. Gate 8 planning_ready (TC-0036 not_started). FODT: Gates 1-3 PASSED; Gate 4 in execution (TC-0034 in_progress, run045 authorized). No product source. last_completed_run: run045 — PENDING. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
-**FODT Gate 3 allowed:** YES — Gate 3 PASSED (run044, Babar Raza, 2026-05-08). Gate 4 planning_ready; execution requires explicit prompt.
-**Commit allowed:** YES — run044 authorized by execution prompt.
-**Next required action:** (1) FODS: explicit Gate 7 execution prompt → TC-0033 malformed/fuzz testing → DEC-034 verification sprint → Gate 7 human approval. (2) FODT: explicit Gate 4 execution prompt → TC-0034 parser prototype → TC-0035 DEC-034 verification sprint → Gate 4 human approval.
+**FODT Gate 4 executing:** YES — TC-0034 in_progress (run045 authorized by execution prompt). Gate 4 results will be recorded upon completion.
+**Commit allowed:** YES — run045 authorized by execution prompt.
+**Next required action:** (1) Complete FODT Gate 4 execution (TC-0034) — in progress this sprint. (2) Then: FODS Gate 8 explicit prompt. (3) Then: FODT Gate 5 explicit prompt.
 
 ---
 
@@ -113,20 +113,21 @@ The project goal is to build a production-quality pipeline for acquiring format 
 
 | Property | Value |
 |---|---|
-| Current phase | Phase 3: Gate 5 PASSED (Babar Raza, 2026-05-06); Gate 6 oracle_blocked_missing_tool |
+| Current phase | Phase 3: FODS Gates 1-7 PASSED; Gate 8 planning_ready. FODT Gates 1-3 PASSED; Gate 4 in execution (run045) |
 | Phase 0 files created | Yes — 45/45 files (41 created run001; 3 added run008; 1 added run010: TC-0008) |
 | Phase 0 healing run | Completed (run002) — compliance gaps G-HEAL-001 to G-HEAL-004 resolved |
 | Phase 0 accepted | YES — 2026-05-04, run015 (all 36 checks passed; human-authorized acceptance) |
 | Phase 1 allowed | YES — Phase 0 accepted |
 | Phase 2 allowed | YES — Gate 1 passed (run017, Babar Raza, 2026-05-04) |
 | Phase 3 allowed | YES — Gate 2 passed (run023, Babar Raza, 2026-05-05); Gate 3 PASSED (run028, Babar Raza, 2026-05-05); Gate 4 PASSED (run033, Babar Raza, 2026-05-06); Gate 5 PASSED (run035, Babar Raza, 2026-05-06) |
-| Active formats in registry | fods (gate_1: passed; gate_2: passed; gate_3: passed; gate_4: passed; gate_5: passed; gate_6: oracle_blocked_missing_tool) |
+| Active formats in registry | fods (gate_1–7: passed; gate_8: planning_ready); fodt (gate_1–3: passed; gate_4: in_execution run045) |
 | Gate 1 status | **PASSED** — Babar Raza, 2026-05-04, score 93/100, run016 verified |
 | Gate 2 status | **PASSED** — Babar Raza, 2026-05-05, run023; patent search waived; evidence verified run022 (DEC-034) |
 | Gate 3 status | **PASSED** — Babar Raza, 2026-05-05, run028; DEC-034 satisfied run027; 4/4 PASS; SHA-256 verified |
 | Gate 4 status | **PASSED** — Babar Raza, 2026-05-06, run033; TC-0018 DEC-034 PASS run030+run031+run032 |
 | Gate 5 status | **PASSED** — Babar Raza, 2026-05-06, run035; neutral model 6 entities 19 mappings 4/4 PASS 87 checks; TC-0024 DEC-034 PASS run034 |
-| Gate 6 status | **oracle_blocked_missing_tool** — LibreOffice not installed; harness hardened run036; TC-0026 blocked |
+| Gate 6 status | **PASSED** — Babar Raza, 2026-05-08, run044; TC-0027 DEC-034 PASS 24/24; ORACLE_COMPARE PASS 3/4 WARN 1/4 |
+| Gate 7 status | **PASSED** — Babar Raza, 2026-05-08, run045; GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18; DEC-034 PASS 18/18 |
 | Spec Navigation Layer | COMPLETE (run026): 884 sections, 940 chunks, sample-requirements.yaml, parser-requirements-draft.yaml |
 | Spec Workbench v1 | CREATED run030 (local-only): verified-facts.yaml, parser/sample/model requirement packs, task packets, coverage matrices |
 | Neutral model | PASSED — schemas/neutral-model/fods/ (6 entities, 19 mappings, 21 rules); TC-0024 DEC-034 PASS; Gate 5 approved |
@@ -136,12 +137,12 @@ The project goal is to build a production-quality pipeline for acquiring format 
 | Samples acquired | YES — 4 synthetic FODS samples (Apache-2.0, project-owned), run026. Validated: 4/4 PASS |
 | Prototype created | YES — prototypes/by-format/fods/fods_parser.py (run029); 4/4 PASS; TC-0018 PASS |
 | Product source created | No |
-| Commits made | (see Section 33) — latest: bc2bdf8 (run038 final). |
-| Active taskcards | TC-0026 blocked_missing_oracle_tool (Gate 6 execution); TC-0027 not_started (Gate 6 verification) |
-| Closed/completed taskcards | TC-0018 CLOSED (Gate 4); TC-0024 CLOSED (DEC-034); TC-0023/TC-0025 completed |
+| Commits made | (see Section 33) — latest: b08e291 (run044 follow-up). |
+| Active taskcards | TC-0034 in_progress (FODT Gate 4 parser — executing run045); TC-0035 not_started (FODT Gate 4 DEC-034 — run045 inline) |
+| Closed/completed taskcards | TC-0018 CLOSED (Gate 4); TC-0024 CLOSED (DEC-034); TC-0023/TC-0025 completed; TC-0026 COMPLETED (Gate 6 oracle); TC-0027 COMPLETED (Gate 6 DEC-034 24/24); TC-0032 COMPLETED (FODT Gate 3 DEC-034 27/27); TC-0033 COMPLETED (FODS Gate 7 fuzz 18/18) |
 | Deferred taskcards | TC-0015 not_started (spec retrieval eval); TC-0016 not_started (vector index pilot); TC-0020 not_started (Spec Workbench core) |
-| Last evidence bundle | run037: run037-oracle-provider-readiness-or-gate6-execution-[pending].zip |
-| Next required action | Install LibreOffice locally (see oracle-installation-checklist.md). Then issue explicit TC-0026 execution prompt. |
+| Last evidence bundle | run044: run044-combined-sprint-gate6-gate3-planning-20260508.zip (run045 bundle PENDING) |
+| Next required action | (1) Complete FODT Gate 4 execution (TC-0034, in progress this sprint). (2) FODS Gate 8 security planning (TC-0036, this sprint). (3) FODT Gate 5 neutral model planning (TC-0037, this sprint). |
 
 ---
 
@@ -1438,5 +1439,74 @@ TC-0008 defines a planned `/sync-memory` command for Phase 1 or later. It will c
 
 ---
 
-*End of plans/master-plan.md — version 2.20 — 2026-05-05*
+---
+
+## Section 36 — Secondary Sprint Roadmap: Full2Foss-Inspired System Strengthening
+
+### Relationship to MAIN SPRINT
+
+This section records a SECONDARY sprint roadmap that is strictly subordinate to the MAIN
+SPRINT (FODS Gate 7, FODT Gate 4, and subsequent gates). The MAIN SPRINT remains the only
+active delivery path. All secondary sprints are optional, cannot interfere with MAIN SPRINT
+progress, and cannot change any active gate status or registry entry.
+
+### Origin
+
+The original secondary plan was produced in plan mode (iridescent-coalescing-stearns.md)
+during run044 planning. ExitPlanMode was rejected before execution. The plan-mode document
+contained 15 defects (D-01 through D-15) catalogued in plans/secondary/full2foss-inspired-
+plan-repair-review.md. The plan-repair sprint (S-F2F-00) corrected all defects and produced:
+- plans/secondary/full2foss-inspired-plan-repair-review.md (defect catalogue)
+- plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md (corrected plan)
+- taskcards/S-F2F-00 through S-F2F-08 (9 proposed taskcards)
+
+### Authorization Status
+
+- S-F2F-00 (plan repair): completed_by_plan_repair — authorized by execution prompt
+- S-F2F-01 through S-F2F-08: proposed_pending_human_approval — NOT authorized
+
+No gate statuses were changed by this planning or repair sprint. No implementation artifacts
+were created. All S-F2F taskcards except S-F2F-00 require separate explicit human authorization
+before execution.
+
+### Secondary Phase Map
+
+| Phase | Taskcard | Scope | Prerequisites |
+|-------|----------|-------|---------------|
+| S0 | S-F2F-00 | Plan repair (COMPLETE) | None |
+| S1 | S-F2F-01 | Playbook schema + policy doc only | Human approval of S-F2F-01 |
+| S2 | S-F2F-02 | Playbook validation tool (read-only) | S-F2F-01 complete |
+| S3 | S-F2F-03 | Dry-run replay + review queue export | S-F2F-02 complete |
+| S4 | S-F2F-04 | Golden dry-run tests | S-F2F-03 complete |
+| S5 | S-F2F-05 | ODF-flat family playbook docs | S-F2F-01 complete (parallel to S2-S4) |
+| S6 | S-F2F-06 | Apply-mode risk review (doc only) | S-F2F-04 complete |
+| P1 | S-F2F-07 | Product dependency closure design | FODS Gate 8 PASSED + human approval |
+| P2 | S-F2F-08 | Product skeleton/stub design (doc only) | S-F2F-07 complete + Gate 10 progress |
+
+### Product Dependency Closure and Skeleton Work
+
+Product dependency closure (P1) and product skeleton/stub design (P2) are deferred until:
+- Product-track gates (Gate 10+) explicitly authorize source work
+- FODS Gate 8 PASSED (hard prerequisite for P1)
+- Separate explicit human authorization for each P-phase sprint
+
+No product source files (src/python/, src/net/), no product schemas, and no product tools
+will be created until the appropriate gate sequence is satisfied.
+
+### Next Possible Secondary Action
+
+The next possible secondary action is S-F2F-01 (Playbook Schema and Policy), which requires:
+1. An explicit human authorization prompt naming "S-F2F-01 Playbook Schema and Policy"
+2. No concurrent MAIN SPRINT execution sprint in progress (WIP limit: max 1 secondary sprint)
+
+This section is informational only. Execution of any S-F2F sprint beyond S-F2F-00 requires
+the authorization conditions above to be met.
+
+### Evidence Bundle for Plan-Repair Sprint
+
+.local/evidence-bundles/secondary-full2foss-plan-repair-YYYYMMDD-HHMMSS.zip
+
+---
+
+*End of plans/master-plan.md — version 2.39 — 2026-05-08*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

@@ -276,6 +276,35 @@ See AGENTS.md Section Y for agent-specific evidence bundle rules.
 
 ---
 
+## Section 20 — Playbook Layer Governance (Proposed — Requires S-F2F-01 Human Approval)
+
+**STATUS: PROPOSED ONLY. These governance rules are NOT active until S-F2F-01 (Playbook
+Schema and Policy) is implemented and explicitly approved by a human. Do not apply these
+rules or create any playbook artifacts until S-F2F-01 authorization is granted.**
+
+**20.1.** Playbook YAML files are internal artifacts. They are NOT evidence, NOT operational
+authority, and NOT gate approval substitutes. `plans/master-plan.md` and evidence bundle
+metadata are the sole operational authority.
+
+**20.2.** Replay reports produced by the dry-run replay engine are evidence-eligible inputs
+to the evidence bundle. They are informational and subject to the same DEC-034 independent
+verification requirement as all other evidence. They are NOT substitutes for gate approval.
+
+**20.3.** Review queue items with `severity: high` require human resolution before apply mode
+is unblocked for the affected format. An agent must NOT proceed with apply mode when any
+unresolved `severity: high` item exists in `plans/review-queues/` for that format.
+
+**20.4.** Family reuse claims require explicit `reuse_level` classification in the family
+playbook file: `full` (exact reuse), `adapt` (minor changes), `guide` (major changes), or
+`new` (family pattern only). No gate approval is inherited from a family playbook regardless
+of reuse_level. Each gate for each format requires independent DEC-034 + human approval.
+
+**20.5.** No gate can pass purely through automated playbook replay. Independent DEC-034
+verification and explicit human approval are always required for any gate transition,
+regardless of replay success or family reuse level.
+
+---
+
 ## Relationship to Other Documents
 
 - `AGENTS.md` — non-negotiable operating rules for agents

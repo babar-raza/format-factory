@@ -1,0 +1,100 @@
+contract_id: secondary-full2foss-plan-repair
+description: Plan-repair sprint for Full2Foss-inspired secondary roadmap. Planning documents
+  only. No implementation. No gate changes. No product source.
+created_run: secondary-plan-repair-sprint
+plan_repair_only: true
+require_clean_git: true
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+min_metadata_count: 39
+
+required_repo_files:
+  - plans/secondary/full2foss-inspired-plan-repair-review.md
+  - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  - plans/master-plan.md
+  - taskcards/S-F2F-00-repair-secondary-plan.md
+  - taskcards/S-F2F-01-playbook-schema-and-policy.md
+  - taskcards/S-F2F-02-playbook-validation-only.md
+  - taskcards/S-F2F-03-dry-run-replay-and-review-queue.md
+  - taskcards/S-F2F-04-golden-dry-run-tests.md
+  - taskcards/S-F2F-05-odf-flat-family-playbook.md
+  - taskcards/S-F2F-06-apply-mode-risk-review.md
+  - taskcards/S-F2F-07-product-dependency-closure-design.md
+  - taskcards/S-F2F-08-product-skeleton-stub-design.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - docs/acquisition-workflow.md
+  - docs/current-state-and-evidence-authority.md
+  - tools/evidence/contracts/secondary-full2foss-plan-repair.yaml
+
+forbidden_patterns:
+  - .git/
+  - .env
+  - .local/
+  - "*.pyc"
+  - __pycache__/
+  - tools/playbook/
+  - schemas/playbook/
+  - schemas/product/
+  - tools/product/
+  - acquisition-packs/_families/
+  - tests/playbook/
+  - plans/review-queues/
+  - "src/python/"
+  - "src/net/"
+
+checks:
+  no_gate_status_changed: true
+  no_product_source_created: true
+  no_parser_created: true
+  no_neutral_model_created: true
+  no_playbook_tools_created: true
+  no_product_tools_created: true
+  no_samples_created: true
+  no_endpoint_call: true
+  no_new_spec_download: true
+  no_embedding_vector_db: true
+  no_implementation_code_added: true
+  no_main_sprint_deviation: true
+  no_push: true
+
+required_metadata_files:
+  - secondary-plan-repair-summary.md
+  - current-truth-review.md
+  - original-plan-defect-review.md
+  - plan-v2-summary.md
+  - taskcard-repair-report.md
+  - master-plan-update-report.md
+  - governance-update-report.md
+  - main-sprint-non-deviation-check.md
+  - no-gate-status-change-check.md
+  - no-implementation-code-check.md
+  - no-playbook-tool-created-check.md
+  - no-product-source-check.md
+  - no-parser-neutral-model-check.md
+  - no-samples-created-check.md
+  - no-endpoint-call-check.md
+  - no-new-spec-download-check.md
+  - reproducibility-review.md
+  - all-format-applicability-review.md
+  - risk-register-review.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - yaml-validation-notes.txt
+  - markdown-validation-notes.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - git-log.txt
+  - artifact-index-snapshot.yaml
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - self-challenge.md
+  - verdict.md
