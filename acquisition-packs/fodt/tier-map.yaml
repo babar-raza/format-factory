@@ -1,0 +1,162 @@
+---
+artifact_id: fodt-tier-map
+artifact_type: acquisition-pack
+path: acquisition-packs/fodt/tier-map.yaml
+format_id: fodt
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+stale: false
+notes: "FODT Gate 9 tier map v1.0. Created run050 (2026-05-08). Approved Babar Raza."
+---
+
+# FODT Tier Map v1.0 (Gate 9 Approved)
+# Gate 9 artifact -- maps FODT features to Python FOSS product delivery tiers.
+# Approved: Babar Raza, 2026-05-08 (run050 execution prompt)
+# DEC-034 inline verification: PASS (authorized by run050 execution prompt)
+
+format_id: fodt
+version: "1.0"
+status: approved
+gate: 9
+created: "2026-05-08"
+created_by: run050
+approved_by: "Babar Raza"
+approved_date: "2026-05-08"
+approved_run: run050
+dec034_inline_authorized: true
+dec034_authorization_source: "run050 execution prompt"
+
+# Tiers for Python FOSS track (src/python/fodt/ -- to be created at Gate 10+ only)
+# NO product source created in this sprint. Tier map is planning only.
+python_foss_tiers:
+  tier_0:
+    name: "File Identity and Validity"
+    first_oss_release: true
+    features:
+      - id: T0-001
+        feature: "Parse root element (office:document), validate MIME type"
+        source_evidence: "FR-001 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+      - id: T0-002
+        feature: "Extract ODF version (office:version)"
+        source_evidence: "FFODT-001, FFODT-002"
+        prototype_verified: true
+        status: APPROVED
+      - id: T0-003
+        feature: "Return structured error dict on invalid/unparseable input"
+        source_evidence: "Gate 7 18/18 PASS, FFODT-015"
+        prototype_verified: true
+        status: APPROVED
+      - id: T0-004
+        feature: "File size guard (100MB MAX_FILE_BYTES)"
+        source_evidence: "IR-FODT-002, Gate 8 TC-2 MITIGATED"
+        prototype_verified: true
+        status: APPROVED
+
+  tier_1:
+    name: "Core Text Content"
+    first_oss_release: true
+    features:
+      - id: T1-001
+        feature: "Extract paragraphs (text:p) as text blocks"
+        source_evidence: "FR-002, FFODT-004"
+        prototype_verified: true
+        status: APPROVED
+      - id: T1-002
+        feature: "Extract headings (text:h) with outline level"
+        source_evidence: "FR-003, FFODT-004, FFODT-010"
+        prototype_verified: true
+        status: APPROVED
+      - id: T1-003
+        feature: "Extract flat list items (text:list / text:list-item, 1 level)"
+        source_evidence: "FR-004, FFODT-005"
+        prototype_verified: true
+        status: APPROVED
+      - id: T1-004
+        feature: "Document statistics (paragraph count, estimated word count)"
+        source_evidence: "Gate 6 oracle comparison (word-count validation)"
+        prototype_verified: false
+        status: APPROVED
+
+  tier_2:
+    name: "Structured Content"
+    first_oss_release: true
+    features:
+      - id: T2-001
+        feature: "Extract nested list structures (iterative implementation required)"
+        source_evidence: "FFODT-005, FFODT-012, IR-FODT-003"
+        prototype_verified: false
+        status: APPROVED
+        constraint: "TC-7 -- must use iterative traversal, not recursive"
+      - id: T2-002
+        feature: "Extract table structure (table:table rows/cells)"
+        source_evidence: "FR-005, FFODT-006, FFODT-011"
+        prototype_verified: true
+        status: APPROVED
+      - id: T2-003
+        feature: "Detect unsupported elements (draw:frame, text:field) and report"
+        source_evidence: "FFODT-013, FFODT-014, IR-FODT-008, IR-FODT-009"
+        prototype_verified: false
+        status: APPROVED
+      - id: T2-004
+        feature: "Neutral model output (7 entities: Document, Block, List, ListItem, Table, TableRow, TableCell)"
+        source_evidence: "Gate 5 neutral model (109 checks 0 errors), IR-FODT-015"
+        prototype_verified: true
+        status: APPROVED
+
+  tier_3:
+    name: "Text Spans and Annotations (Deferred)"
+    first_oss_release: false
+    features:
+      - id: T3-001
+        feature: "Text spans and character formatting (text:span)"
+        source_evidence: null
+        prototype_verified: false
+        status: DEFERRED
+        deferred_reason: "Insufficient Gate evidence for span handling"
+      - id: T3-002
+        feature: "Footnotes and endnotes (text:note)"
+        source_evidence: null
+        prototype_verified: false
+        status: DEFERRED
+        deferred_reason: "Not covered in Gate 3 samples"
+      - id: T3-003
+        feature: "Document sections (text:section)"
+        source_evidence: null
+        prototype_verified: false
+        status: DEFERRED
+        deferred_reason: "Not in Gate 3 samples"
+
+  tier_4:
+    name: "Layout and Media (Deferred)"
+    first_oss_release: false
+    features:
+      - id: T4-001
+        feature: "Full layout rendering"
+        source_evidence: null
+        prototype_verified: false
+        status: DEFERRED
+      - id: T4-002
+        feature: "Image and media extraction"
+        source_evidence: null
+        prototype_verified: false
+        status: DEFERRED
+      - id: T4-003
+        feature: "Tracked changes"
+        source_evidence: null
+        prototype_verified: false
+        status: DEFERRED
+      - id: T4-004
+        feature: "Macros and scripts"
+        source_evidence: null
+        prototype_verified: false
+        status: DEFERRED
+
+first_oss_release_tiers: [0, 1, 2]
+deferred_tiers: [3, 4]
+oss_ceiling: 4
+
+first_oss_release_feature_count: 12
+total_planned_features: 16
