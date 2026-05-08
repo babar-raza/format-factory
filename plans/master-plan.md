@@ -6,7 +6,7 @@
 **Version:** 2.42 (run046: FODS Gate 8 PASS APPROVED Babar Raza 2026-05-08 (GATE8_SECURITY_REVIEW: PASS, TC-0038 DEC-034 PASS 20/20); FODT Gate 5 PASS APPROVED Babar Raza 2026-05-08 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 109 checks); FODS Gate 9 + FODT Gate 6 planning; master-plan v2.42)
 **Last updated:** 2026-05-08
 **Current phase:** Phase 3: FODS Gates 1-8 PASSED; Gate 9 planning_ready. FODT Gates 1-5 PASSED; Gate 6 oracle planning_ready.
-**Current status:** FODS: Gates 1-8 PASSED. Gate 8 APPROVED Babar Raza 2026-05-08 (GATE8_SECURITY_REVIEW: PASS; TC-0038 DEC-034 PASS 20/20); TC-0036 COMPLETED. Gate 9 planning_ready (TC-0040 not_started). FODT: Gates 1-5 PASSED; Gate 5 APPROVED Babar Raza 2026-05-08 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 109 checks; TC-0039 DEC-034 PASS); TC-0037 COMPLETED. Gate 6 oracle planning_ready (TC-0042 not_started). No product source. last_completed_run: run046 — RUN046_COMMIT_PENDING. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current status:** FODS: Gates 1-8 PASSED. Gate 8 APPROVED Babar Raza 2026-05-08 (GATE8_SECURITY_REVIEW: PASS; TC-0038 DEC-034 PASS 20/20); TC-0036 COMPLETED. Gate 9 planning_ready (TC-0040 not_started). FODT: Gates 1-5 PASSED; Gate 5 APPROVED Babar Raza 2026-05-08 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 109 checks; TC-0039 DEC-034 PASS); TC-0037 COMPLETED. Gate 6 oracle planning_ready (TC-0042 not_started). No product source. last_completed_run: run046 — f659307. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
@@ -139,7 +139,7 @@ The project goal is to build a production-quality pipeline for acquiring format 
 | Samples acquired | YES — 4 synthetic FODS samples (Apache-2.0, project-owned), run026. Validated: 4/4 PASS |
 | Prototype created | YES — prototypes/by-format/fods/fods_parser.py (run029); 4/4 PASS; TC-0018 PASS |
 | Product source created | No |
-| Commits made | (see Section 33) — run046: RUN046_COMMIT_PENDING. |
+| Commits made | (see Section 33) — run046: f659307. |
 | Active taskcards | TC-0040 not_started (FODS Gate 9 product mapping); TC-0042 not_started (FODT Gate 6 oracle execution); TC-0043 not_started (FODT Gate 6 DEC-034) |
 | Closed/completed taskcards | TC-0018 CLOSED; TC-0024 CLOSED; TC-0023/TC-0025/TC-0026/TC-0027/TC-0032/TC-0033/TC-0034/TC-0035 COMPLETED; TC-0036 COMPLETED (FODS Gate 8 security); TC-0037 COMPLETED (FODT Gate 5 neutral model); TC-0038 COMPLETED (FODS Gate 8 DEC-034 20/20); TC-0039 COMPLETED (FODT Gate 5 DEC-034); TC-0041 COMPLETED (FODT Gate 6 oracle planning) |
 | Deferred taskcards | TC-0015 not_started (spec retrieval eval); TC-0016 not_started (vector index pilot); TC-0020 not_started (Spec Workbench core) |
@@ -1053,7 +1053,7 @@ The exact final Git HEAD for each run is authoritative in `bundle-metadata/git-l
 `bundle-metadata/git-status-final.txt` in the run's evidence bundle.
 See `docs/current-state-and-evidence-authority.md`.
 
-**last_completed_run:** run046 (RUN046_COMMIT_PENDING)
+**last_completed_run:** run046 (f659307)
 **run044 commit set:** 0e732c3
 **run043 commit set (informational):** bc92729
 **run042 commit set:** b6e4316 + e31dc66 + fd098c9 + 079ba6d
