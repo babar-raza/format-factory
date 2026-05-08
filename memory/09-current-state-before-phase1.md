@@ -79,7 +79,7 @@ This file captures the current state after run045. FODS Gates 1-7 ALL PASSED. Ga
 | TC-0036 status | **not_started** — FODS Gate 8 security review; planning created run045; explicit Gate 8 prompt required |
 | TC-0037 status | **not_started** — FODT Gate 5 neutral model; planning created run045; explicit Gate 5 prompt required |
 | Evidence contracts | 17 contracts (after run045): + run045-combined-sprint |
-| last_completed_run | run045 — PENDING (see docs/current-state-and-evidence-authority.md) |
+| last_completed_run | run045 — 72f6590 (follow-up PENDING) |
 | Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md) |
 | Master plan version | 2.41 (run045) |
 | AGENTS.md sections | A through Z (26 sections) |

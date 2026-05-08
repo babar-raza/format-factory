@@ -6,7 +6,7 @@
 **Version:** 2.41 (run045: run044 independently verified PASS (39 checks); stale state fixed (7 files); FODS Gate 7 PASS 18/18 CRASH 0/18 APPROVED Babar Raza; FODT Gate 4 PASS 4/4 APPROVED Babar Raza; Gate 8 security planning + FODT Gate 5 neutral model planning created)
 **Last updated:** 2026-05-08
 **Current phase:** Phase 3: FODS Gates 1-7 PASSED; Gate 8 planning_ready. FODT Gates 1-4 PASSED; Gate 5 planning_ready.
-**Current status:** FODS: Gates 1-7 PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18); TC-0033 COMPLETED. Gate 8 planning_ready (TC-0036 not_started). FODT: Gates 1-4 PASSED; Gate 4 APPROVED Babar Raza 2026-05-08 (FODT_PROTOTYPE_VALIDATION PASS 4/4); TC-0034/TC-0035 COMPLETED. Gate 5 planning_ready (TC-0037 not_started). No product source. last_completed_run: run045 — PENDING. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current status:** FODS: Gates 1-7 PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18); TC-0033 COMPLETED. Gate 8 planning_ready (TC-0036 not_started). FODT: Gates 1-4 PASSED; Gate 4 APPROVED Babar Raza 2026-05-08 (FODT_PROTOTYPE_VALIDATION PASS 4/4); TC-0034/TC-0035 COMPLETED. Gate 5 planning_ready (TC-0037 not_started). No product source. last_completed_run: run045 — 72f6590 (follow-up PENDING). Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
@@ -137,7 +137,7 @@ The project goal is to build a production-quality pipeline for acquiring format 
 | Samples acquired | YES — 4 synthetic FODS samples (Apache-2.0, project-owned), run026. Validated: 4/4 PASS |
 | Prototype created | YES — prototypes/by-format/fods/fods_parser.py (run029); 4/4 PASS; TC-0018 PASS |
 | Product source created | No |
-| Commits made | (see Section 33) — run045: PENDING (run045 commit hash in bundle-metadata/git-log.txt). |
+| Commits made | (see Section 33) — run045: 72f6590. |
 | Active taskcards | TC-0036 not_started (FODS Gate 8 security planning); TC-0037 not_started (FODT Gate 5 neutral model planning) |
 | Closed/completed taskcards | TC-0018 CLOSED (Gate 4); TC-0024 CLOSED (DEC-034); TC-0023/TC-0025 completed; TC-0026 COMPLETED (Gate 6 oracle); TC-0027 COMPLETED (Gate 6 DEC-034 24/24); TC-0032 COMPLETED (FODT Gate 3 DEC-034 27/27); TC-0033 COMPLETED (FODS Gate 7 fuzz 18/18); TC-0034 COMPLETED (FODT Gate 4 parser 4/4); TC-0035 COMPLETED (FODT Gate 4 DEC-034 20/20) |
 | Deferred taskcards | TC-0015 not_started (spec retrieval eval); TC-0016 not_started (vector index pilot); TC-0020 not_started (Spec Workbench core) |
@@ -1364,7 +1364,7 @@ See `docs/current-state-and-evidence-authority.md`.
 - plans/master-plan.md v2.40; memory/09, ROADMAP.md, README.md, settings.json updated
 - tools/evidence/contracts/run044-*.yaml (NEW — run044 evidence contract)
 
-**Committed (run045 — PENDING):**
+**Committed (run045 — 72f6590):**
 - acquisition-packs/fods/gate7-malformed-fuzz-report.md (NEW — GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18)
 - acquisition-packs/fods/gate8-security-plan.md (NEW — Gate 8 security planning)
 - acquisition-packs/fodt/gate4-human-review-packet.md (NEW — DEC-034 PASS 20/20)
