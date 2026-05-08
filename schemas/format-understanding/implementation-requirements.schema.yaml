@@ -1,0 +1,49 @@
+# Implementation Requirements Schema — Format Understanding Layer
+# schema_id: implementation-requirements
+# Part of FUL-001 (run049, 2026-05-08)
+# Authority: docs/format-understanding-layer.md Section 4.3
+
+schema_id: implementation-requirements
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint: run049-FUL-001
+
+description: >
+  Product-facing parser requirements derived from gate evidence. Each requirement
+  maps to a tier in the tier map and has a source gate and priority.
+  These are the requirements that product source (Phase 4+) must implement.
+
+entry_structure:
+  req_id: "string — e.g. IR-FODS-001"
+  tier: "integer 0-6 (or null for cross-tier requirements)"
+  description: "string — what the parser must do"
+  source_gate: "integer 1-10 — which gate produced this requirement"
+  priority: "enum — required / recommended / optional"
+  status: "enum — approved / deferred / planning_only"
+  notes: "string — additional context"
+
+req_id_pattern: "IR-{FORMAT_ID_UPPER}-{NNN}"
+
+priority_values:
+  - required      # Must be implemented in the tier's release
+  - recommended   # Should be implemented; acceptable to defer with documented rationale
+  - optional      # Nice to have; not blocking release
+
+status_values:
+  - approved      # Gate-approved requirement
+  - deferred      # Explicitly deferred to a later tier or sprint
+  - planning_only # Identified at planning level; not yet gate-verified
+
+source_gate_note: >
+  Gate 4 = parser prototype requirements (FR-NNN in parser-requirements.md).
+  Gate 5 = neutral model field mappings.
+  Gate 6 = oracle comparison differences (implementation expectations).
+  Gate 7 = fuzz-identified robustness requirements.
+  Gate 8 = security requirements.
+  Gate 10 = product-source readiness requirements (TC-6, TC-1).
+
+authority_model: >
+  Implementation requirements are derived from gate evidence. They do not override
+  human gate approvals — they summarize what was approved. If a gate-approved
+  requirement is missing from this file, that is a gap, not an override.

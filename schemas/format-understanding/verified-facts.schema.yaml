@@ -1,0 +1,47 @@
+# Verified Facts Schema — Format Understanding Layer
+# schema_id: verified-facts
+# Part of FUL-001 (run049, 2026-05-08)
+# Authority: docs/format-understanding-layer.md Section 4.2
+
+schema_id: verified-facts
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint: run049-FUL-001
+
+description: >
+  Spec-cited, deterministic facts about a format's structure, parsing, encoding, and
+  constraints. Each fact entry must have a spec_citation and an evidence_source.
+  Compiled from Gate 2 spec normalization, Gate 3 sample corpus, Gate 4 prototype notes,
+  and spec workbench verified-facts (where available).
+
+entry_structure:
+  fact_id: "string — e.g. FFODS-001, FFODT-001"
+  statement: "string — the deterministic fact"
+  spec_citation: "string — ODF 1.3 section/page reference (required)"
+  evidence_source: "string — which gate produced or confirmed this fact"
+  confidence: "enum — see confidence_values"
+  verified_by_oracle: "boolean — true if oracle comparison confirmed this"
+
+fact_id_pattern: "F{FORMAT_ID_UPPER}-{NNN}"
+
+confidence_values:
+  - deterministic  # Verified by tests / oracle / hash-verified sample
+  - inferred       # Derived from spec text + prototype, not yet oracle-tested
+  - cited_only     # Spec cites this, not yet tested in this pipeline
+
+citation_required: true
+min_confidence: inferred
+
+authority_model: >
+  If a verified-facts.yaml claim conflicts with a spec citation, the spec wins.
+  If a verified-facts.yaml entry has confidence: deterministic but was disproved by
+  oracle or new samples, mark stale: true and file a gap.
+
+required_facts_per_format:
+  - Root element identification
+  - MIME type or format discriminator
+  - Encoding declaration
+  - Primary structural container element
+  - Cell/content element identification
+  - At least one typed-value fact (if applicable)

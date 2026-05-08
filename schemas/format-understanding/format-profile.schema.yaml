@@ -1,0 +1,61 @@
+# Format Profile Schema — Format Understanding Layer
+# schema_id: format-profile
+# Part of FUL-001 (run049, 2026-05-08)
+# Authority: docs/format-understanding-layer.md Section 3-4
+
+schema_id: format-profile
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint: run049-FUL-001
+
+description: >
+  Static classification of a file format. Captures representation type, spec authority,
+  legal category, and key structural facts. Derived from Gate 1 scoring and Gate 2 legal
+  evidence. Does not change once set (unless spec or legal category changes).
+
+required_fields:
+  - format_id
+  - display_name
+  - physical_representation
+  - family
+  - spec_body
+  - spec_version
+  - legal_category
+  - legal_status
+  - xml_namespace_root
+  - single_file
+  - container_model
+  - encoding
+  - mime_type
+  - extensions
+
+physical_representation_values:
+  - text_xml          # Single XML file (FODS, FODT, FODP, FODB)
+  - binary            # Binary format (XLS, DOC)
+  - zip_container     # ZIP-packaged XML (ODS, ODT, XLSX, DOCX)
+  - mixed             # Formats with both binary and XML sections
+
+legal_category_values:
+  1: "Open Standard, Royalty-Free (OASIS RF, W3C RF, ISO, etc.)"
+  2: "Permissive OSS Implementation"
+  3: "Published Proprietary Spec (Parser Permitted)"
+  4: "Ambiguous Public Documentation"
+
+legal_status_values:
+  - royalty_free
+  - permissive_oss
+  - proprietary_parser_permitted
+  - ambiguous
+
+citation_required: false
+authority_sources:
+  - Gate 1 scoring (registry/format-registry.yaml)
+  - Gate 2 legal evidence (acquisition-packs/{format}/legal-notes.md)
+  - Spec header / MIME type registry
+
+notes: >
+  This schema describes the format-profile.yaml compilation file for each format.
+  xml_namespace_root: null for non-XML formats.
+  single_file: true for flat XML formats; false for zip/binary.
+  container_model: "none" for single-file; "zip" for ODF zip; "cfb" for Office97 binary.

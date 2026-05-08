@@ -1,7 +1,7 @@
 ---
 taskcard_id: FUL-001
 title: Format Understanding Layer — Schema and Design
-status: proposed_pending_human_approval
+status: COMPLETED
 created: 2026-05-08
 sprint: memory-sprint-format-understanding-llm-strategy
 visibility: internal
@@ -89,4 +89,4 @@ Human authorizes FUL-001 execution after reviewing docs/format-understanding-lay
 
 ## Status
 
-proposed_pending_human_approval — no execution authorized in this memory sprint.
+COMPLETED — run049 (2026-05-08). 6 schemas created in schemas/format-understanding/. FUL-002 and FUL-003 authorized by run049 execution prompt.

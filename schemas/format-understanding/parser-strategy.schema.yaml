@@ -1,0 +1,35 @@
+# Parser Strategy Schema — Format Understanding Layer
+# schema_id: parser-strategy
+# Part of FUL-001 (run049, 2026-05-08)
+
+schema_id: parser-strategy
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint: run049-FUL-001
+
+description: >
+  Parser design decisions, approach choices, reuse from ODF family, edge cases,
+  and known limitations. Compiled from Gate 4 prototype, Gate 6 oracle, Gate 7 fuzz.
+  Provides a design rationale layer for Phase 4 developers.
+
+entry_structure:
+  decision_id: "string — e.g. PD-FODS-001"
+  title: "string — short decision title"
+  description: "string — what was decided"
+  rationale: "string — why this choice was made"
+  source_gate: "integer — which gate produced this decision"
+  status: "enum — approved / deferred / open"
+  reuse_from: "string or null — if this reuses a pattern from another format"
+
+decision_id_pattern: "PD-{FORMAT_ID_UPPER}-{NNN}"
+
+status_values:
+  - approved      # Decision is final, gate-backed
+  - deferred      # Decision deferred to a later gate or sprint
+  - open          # Decision is open / not yet finalized
+
+authority_model: >
+  Parser strategy decisions are design guidance, not specifications. They summarize
+  what worked in the prototype and what the oracle confirmed. Product source developers
+  must exercise judgment. These entries are informational with gate backing.

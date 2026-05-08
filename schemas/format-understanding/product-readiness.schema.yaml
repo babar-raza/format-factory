@@ -1,0 +1,54 @@
+# Product Readiness Schema — Format Understanding Layer
+# schema_id: product-readiness
+# Part of FUL-001 (run049, 2026-05-08)
+
+schema_id: product-readiness
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint: run049-FUL-001
+
+description: >
+  Compiled product readiness status: tier map, first OSS release tiers, feature list,
+  known gaps, and explicit authorization status for source creation.
+  For formats that have not yet passed Gate 9, this file is partial (planning_only: true).
+
+required_fields:
+  - format_id
+  - gate_9_status
+  - planning_only
+  - python_source_authorized
+  - net_source_authorized
+
+conditional_fields:
+  # These are required when gate_9_status: passed
+  - first_oss_release_tiers
+  - oss_ceiling
+  - deferred_tiers
+  - packaging_plan
+  # These are required when gate_10_status: passed
+  - gate_10_oss_scope
+  - gate_10_approved_by
+  - gate_10_approved_date
+
+gate_9_status_values:
+  - passed
+  - planning_ready
+  - not_started
+
+planning_only_note: >
+  When planning_only: true, this file is a partial draft compiled before Gate 9 approval.
+  It must not be used as authorization for product source creation.
+  python_source_authorized and net_source_authorized will be false.
+
+authorization_model: >
+  python_source_authorized: true ONLY when:
+  1. gate_9_status: passed (tier map approved)
+  2. gate_10_status: passed (OSS scope approved)
+  3. An explicit Phase 4 Python implementation execution prompt has been issued.
+  python_source_authorized is NEVER set by the FUL compilation process alone.
+  It requires human action in the form of an execution prompt.
+
+  net_source_authorized: true ONLY when all of the above PLUS:
+  4. DEC-033 resolved (NET FOSS packaging decision)
+  5. An explicit Phase 4 .NET implementation execution prompt has been issued.

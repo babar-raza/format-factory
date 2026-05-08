@@ -1,0 +1,37 @@
+# Security Surface Schema — Format Understanding Layer
+# schema_id: security-surface
+# Part of FUL-001 (run049, 2026-05-08)
+
+schema_id: security-surface
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint: run049-FUL-001
+
+description: >
+  Compiled security findings, mitigations, deferred items, and not-applicable determinations.
+  Derived from Gate 7 fuzz report and Gate 8 security report. Must be updated if new
+  vulnerability categories are identified in later gates.
+
+entry_structure:
+  tc_id: "string — TC-N (threat category number)"
+  category: "string — threat category name"
+  status: "enum — see status_values"
+  finding: "string — what was found and how it was handled"
+  gate_evidence: "string — which gate and report confirmed this status"
+  deferred_to: "string or null — gate or sprint for deferred items"
+  product_source_requirement: "string or null — what product source must implement"
+
+tc_id_pattern: "TC-{N}"
+
+status_values:
+  - MITIGATED              # Threat addressed in prototype
+  - PARTIALLY_MITIGATED    # Partially addressed; remainder deferred
+  - NOT_APPLICABLE         # This threat class does not apply to this format
+  - DEFERRED               # Threat acknowledged; mitigation deferred to specified gate/sprint
+  - OPEN                   # Threat identified but not yet assessed
+
+authority_sources:
+  - Gate 7 fuzz report (acquisition-packs/{format}/gate7-*-fuzz-report.md)
+  - Gate 8 security report (reports/security/{format}.md)
+  - Gate 8 human approval (registry gate_8)
