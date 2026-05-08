@@ -1,0 +1,101 @@
+# run049 Evidence Contract
+#
+# Sprint: Format Understanding Consolidation and Product-Source Readiness Bridge
+# Date: 2026-05-08
+# DEC-034: Same-session inline verification authorized by run049 execution prompt.
+#
+# Sections covered:
+#   B: run048 independent verification (35 checks)
+#   C: Evidence contract closure policy check and patch
+#   D: Stale state repair (memory/09, master-plan Section 6)
+#   E: FUL-001 schema design execution (6 schemas in schemas/format-understanding/)
+#   F-K: FODS Format Understanding Package (6 files in acquisition-packs/fods/)
+#   L-Q: FODT Format Understanding Package (6 files in acquisition-packs/fodt/, partial)
+#   R: XML-first consolidation (docs/format-understanding-layer.md updated)
+#   S: LLM/embedding policy preservation check
+#   T: State document updates (master-plan v2.45, README, ROADMAP, settings.json, memory/09)
+#   U: This contract
+#
+# Version: 1.0
+
+contract_id: run049-combined-sprint
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint_run: run049
+require_clean_git: true
+emergency_blocker_bundle: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run049-combined-sprint.yaml
+require_manifest: true
+min_metadata_count: 70
+normal_pass_min_metadata: 70
+current_state_authority: bundle-metadata  # docs/current-state-and-evidence-authority.md Section 6
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+  - bundle-manifest.yaml
+  - master-plan-snapshot.md
+  - run048-independent-verification.md
+  - evidence-contract-closure-policy-check.md
+  - stale-state-repair-run049.md
+  - ful-001-schema-design-report.md
+  - fods-ful-compilation-summary.md
+  - fodt-ful-compilation-summary.md
+  - xml-first-consolidation-report.md
+  - llm-embedding-policy-preservation-report.md
+  - state-docs-update-report.md
+  - b-check-001.txt
+  - b-check-010.txt
+  - b-check-024.txt
+  - b-check-025.txt
+  - b-check-034.txt
+  - fods-ful-01-format-profile.txt
+  - fods-ful-06-product-readiness.txt
+  - fodt-ful-01-format-profile.txt
+  - fodt-ful-06-product-readiness.txt
+  - c-check-001.txt
+  - ful-001-schema-01-format-profile.txt
+
+required_repo_files:
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_negative_bundle_validation.py
+  - tools/evidence/contracts/base-run.yaml
+  - tools/evidence/contracts/run048-combined-sprint.yaml
+  - schemas/format-understanding/format-profile.schema.yaml
+  - schemas/format-understanding/verified-facts.schema.yaml
+  - schemas/format-understanding/implementation-requirements.schema.yaml
+  - schemas/format-understanding/parser-strategy.schema.yaml
+  - schemas/format-understanding/security-surface.schema.yaml
+  - schemas/format-understanding/product-readiness.schema.yaml
+  - acquisition-packs/fods/format-profile.yaml
+  - acquisition-packs/fods/verified-facts.yaml
+  - acquisition-packs/fods/implementation-requirements.yaml
+  - acquisition-packs/fods/parser-strategy.yaml
+  - acquisition-packs/fods/security-surface.yaml
+  - acquisition-packs/fods/product-readiness.yaml
+  - acquisition-packs/fodt/format-profile.yaml
+  - acquisition-packs/fodt/verified-facts.yaml
+  - acquisition-packs/fodt/security-surface.yaml
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+
+forbidden_paths:
+  - .env
+  - .local/
+  - .git/
+  - __pycache__/
+  - "*.pyc"
+  - reports/legal/
+  - src/python/open-source/
+  - src/dotnet/open-source/
+  - src/dotnet/commercial/
+  - src/net/
+  - src/python/fods/
+  - src/python/fodt/
+  - .github/
+  - "**/.local/**"
+  - "**/embeddings/**"
+  - "**/vector/**"
