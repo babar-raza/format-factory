@@ -49,9 +49,9 @@ compiles it into 6 structured per-format files.
 
 ### 3.1 Immediate Scope
 
-XML-type formats that have passed Gate 9:
-- FODS (Gate 9 PASSED — run047)
-- FODT (Gate 9 planning_ready — TC-0048 not started)
+XML-type formats with Gate 9+ evidence:
+- FODS (Gates 1-10 PASSED — run049 FUL-002 COMPLETED)
+- FODT (Gates 1-8 PASSED, Gate 9 planning_ready — run049 FUL-003 PARTIAL)
 
 ### 3.2 Deferred Scope
 
@@ -185,5 +185,19 @@ rather than from raw uncited spec chunks.
 
 ## 11. Status
 
-**Current status:** Backlog only. No per-format FUL files created in this sprint.
-FUL-001 design taskcard is proposed_pending_human_approval.
+**Current status:** ACTIVE — run049 (2026-05-08).
+FUL-001: COMPLETED — 6 schemas created in schemas/format-understanding/.
+FUL-002: COMPLETED — FODS 6 FUL files compiled in acquisition-packs/fods/.
+FUL-003: PARTIAL — FODT 6 FUL files compiled in acquisition-packs/fodt/
+  (product-readiness.yaml is partial; Gate 9 required for full completion).
+
+## Schema References
+
+| Schema | Path |
+|---|---|
+| Format Profile | schemas/format-understanding/format-profile.schema.yaml |
+| Verified Facts | schemas/format-understanding/verified-facts.schema.yaml |
+| Implementation Requirements | schemas/format-understanding/implementation-requirements.schema.yaml |
+| Parser Strategy | schemas/format-understanding/parser-strategy.schema.yaml |
+| Security Surface | schemas/format-understanding/security-surface.schema.yaml |
+| Product Readiness | schemas/format-understanding/product-readiness.schema.yaml |
