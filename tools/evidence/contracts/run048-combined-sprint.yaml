@@ -1,0 +1,96 @@
+# run048 Evidence Contract
+#
+# Sprint: FODS Gate 10 approval + FODT Gate 7 fuzz + FODT Gate 8 security +
+#         FODS Gate 11 planning + FODT Gate 9 planning +
+#         REQUIRED_METADATA_DEPTH check hardening + stale state repair
+# Date: 2026-05-08
+# DEC-034: Inline for Gates 10, 7, 8 (authorized by run048 execution prompt)
+# Sections covered:
+#   B: run047 independent verification (44 checks)
+#   C: S-F2F-01 cross-sprint contamination classification (no revert)
+#   D: REQUIRED_METADATA_DEPTH check (min 10 named files for high-count contracts)
+#   E: Stale state repairs (README, ROADMAP, gate10-product-planning.md, TC-0044)
+#   G-I: FODS Gate 10 APPROVED (Babar Raza, 2026-05-08) — Tiers 0-2, 12 features
+#   J-M: FODT Gate 7 APPROVED (Babar Raza, 2026-05-08) — FODT_GATE7_FUZZ_TEST PASS 18/18
+#   N-Q: FODT Gate 8 APPROVED (Babar Raza, 2026-05-08) — GATE8_SECURITY_REVIEW PASS
+#   R:   FODS Gate 11 planning (TC-0047 not_started, blocked DEC-033)
+#   S:   FODT Gate 9 planning (TC-0048 not_started)
+#   T:   master-plan v2.44; registry; pack.yaml; settings.json; memory/09
+#   U:   This contract (min_metadata_count: 100, 20 named required_metadata_files)
+#
+# Version: 1.0
+
+contract_id: run048-combined-sprint
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint_run: run048
+require_clean_git: true
+emergency_blocker_bundle: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run048-combined-sprint.yaml
+require_manifest: true
+min_metadata_count: 100
+normal_pass_min_metadata: 100
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+  - bundle-manifest.yaml
+  - run047-verification-report.md
+  - cross-sprint-s-f2f-01-classification.md
+  - required-metadata-depth-check-report.md
+  - stale-state-repair-report.md
+  - fods-gate10-execution-report.md
+  - fods-gate10-dec034-verification.md
+  - fods-gate10-approval-record.md
+  - fodt-gate7-execution-report.md
+  - fodt-gate7-dec034-verification.md
+  - fodt-gate7-approval-record.md
+  - fodt-gate8-execution-report.md
+  - fodt-gate8-dec034-verification.md
+  - fodt-gate8-approval-record.md
+  - fods-gate11-planning-report.md
+  - fodt-gate9-planning-report.md
+  - master-plan-snapshot.md
+
+required_repo_files:
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_negative_bundle_validation.py
+  - tools/evidence/contracts/base-run.yaml
+  - tools/evidence/contracts/run047-combined-sprint.yaml
+  - acquisition-packs/fods/gate10-oss-scope.md
+  - acquisition-packs/fods/gate10-packaging-plan.md
+  - acquisition-packs/fods/gate10-product-source-readiness-report.md
+  - acquisition-packs/fods/gate10-human-review-packet.md
+  - tests/fixtures/fodt/malformed/a01-truncated-xml.fodt
+  - tests/fixtures/fodt/malformed/d05-unicode-text.fodt
+  - tools/fuzz/run_fodt_gate7_fuzz_test.py
+  - acquisition-packs/fodt/gate7-fuzz-report.md
+  - reports/security/fodt.md
+  - taskcards/TC-0046-fodt-gate8-security-review.md
+  - taskcards/TC-0047-fods-gate11-commercial-planning.md
+  - taskcards/TC-0048-fodt-gate9-product-mapping.md
+  - taskcards/TC-0044-fods-gate10-product-planning.md
+  - taskcards/TC-0045-fodt-gate7-fuzz-planning.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+
+forbidden_paths:
+  - .env
+  - .local/
+  - .git/
+  - __pycache__/
+  - "*.pyc"
+  - reports/legal/
+  - src/python/open-source/
+  - src/dotnet/open-source/
+  - src/dotnet/commercial/
+  - src/net/
+  - src/python/fods/
+  - src/python/fodt/
+  - .github/
+  - samples/by-format/other-formats/
+  - schemas/neutral-model/other-formats/
+  - prototypes/by-format/other-formats/
