@@ -3,16 +3,16 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.44 (run047: FODS Gate 9 PASS APPROVED Babar Raza 2026-05-08 (tier-map.yaml v1.0; first_oss_release_tiers [0,1,2]); FODT Gate 6 PASS APPROVED Babar Raza 2026-05-08 (FODT_ORACLE_RUN PASS 4/4; FODT_ORACLE_COMPARE PASS); metadata floor RESTORED 4→30; RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added; FODS Gate 10 planning; FODT Gate 7 planning; master-plan v2.43)
+**Version:** 2.45 (run049: Format Understanding Packages compiled — FUL-001 schemas (6), FUL-002 FODS 6 files, FUL-003 FODT 6 files partial; stale state repairs; contract closure policy patched; XML-first consolidation; LLM policy preservation confirmed)
 **Last updated:** 2026-05-08
 **Current phase:** Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready.
-**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (run048; FODT_GATE7_FUZZ_TEST PASS 18/18; TC-0045 COMPLETED). Gate 8 APPROVED Babar Raza 2026-05-08 (run048; GATE8_SECURITY_REVIEW PASS; TC-7 partially mitigated deferred Gate 10; TC-0046 COMPLETED). Gate 9 planning_ready (TC-0048 not_started). REQUIRED_METADATA_DEPTH check added (run048; min 10 named files for high-count contracts). No product source. last_completed_run: run048. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 9 planning_ready (TC-0048 not_started). Format Understanding Layer: FUL-001 schemas (run049; 6 schemas in schemas/format-understanding/); FUL-002 FODS package COMPLETED (run049; 6 files in acquisition-packs/fods/); FUL-003 FODT package partial (run049; 6 files in acquisition-packs/fodt/, product-readiness.yaml partial Gate 9 required). Stale state repaired (memory/09, master-plan Section 6). Contract closure policy patched. No product source. last_completed_run: run049. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
 **FODT Gate 6 allowed:** YES — Gate 6 PASSED (Babar Raza, 2026-05-08, run047). Gate 7 fuzz planning_ready; execution requires explicit prompt.
-**Commit allowed:** YES — run047 authorized by execution prompt.
-**Next required action:** (1) FODS Gate 11: DEC-033 must be resolved, then explicit TC-0047 execution prompt. (2) FODT Gate 9: explicit TC-0048 execution prompt → tier-map.yaml → DEC-034 → human approval. (3) Python Phase 4: separate explicit Phase 4 implementation prompt for src/python/fods/ after Gate 10 approval.
+**Commit allowed:** YES — run049 authorized by execution prompt.
+**Next required action:** (1) FODS Gate 11: DEC-033 must be resolved, then explicit TC-0047 execution prompt. (2) FODT Gate 9: explicit TC-0048 execution prompt → tier-map.yaml → DEC-034 → human approval. (3) FUL-003 FODT completion: after FODT Gate 9, update acquisition-packs/fodt/product-readiness.yaml. (4) FUL-001 schema human approval (proposed_pending → approved). (5) Python Phase 4 for FODS: separate explicit Phase 4 Python implementation prompt required.
 
 ---
 
@@ -113,14 +113,14 @@ The project goal is to build a production-quality pipeline for acquiring format 
 
 | Property | Value |
 |---|---|
-| Current phase | Phase 3: FODS Gates 1-7 PASSED; Gate 8 planning_ready. FODT Gates 1-4 PASSED; Gate 5 planning_ready |
+| Current phase | Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready |
 | Phase 0 files created | Yes — 45/45 files (41 created run001; 3 added run008; 1 added run010: TC-0008) |
 | Phase 0 healing run | Completed (run002) — compliance gaps G-HEAL-001 to G-HEAL-004 resolved |
 | Phase 0 accepted | YES — 2026-05-04, run015 (all 36 checks passed; human-authorized acceptance) |
 | Phase 1 allowed | YES — Phase 0 accepted |
 | Phase 2 allowed | YES — Gate 1 passed (run017, Babar Raza, 2026-05-04) |
 | Phase 3 allowed | YES — Gate 2 passed (run023, Babar Raza, 2026-05-05); Gate 3 PASSED (run028, Babar Raza, 2026-05-05); Gate 4 PASSED (run033, Babar Raza, 2026-05-06); Gate 5 PASSED (run035, Babar Raza, 2026-05-06) |
-| Active formats in registry | fods (gate_1–8: passed; gate_9: planning_ready); fodt (gate_1–5: passed; gate_6: planning_ready) |
+| Active formats in registry | fods (gates 1-10: passed; gate_11: not_started); fodt (gates 1-8: passed; gate_9: planning_ready) |
 | Gate 1 status | **PASSED** — Babar Raza, 2026-05-04, score 93/100, run016 verified |
 | Gate 2 status | **PASSED** — Babar Raza, 2026-05-05, run023; patent search waived; evidence verified run022 (DEC-034) |
 | Gate 3 status | **PASSED** — Babar Raza, 2026-05-05, run028; DEC-034 satisfied run027; 4/4 PASS; SHA-256 verified |
@@ -143,8 +143,8 @@ The project goal is to build a production-quality pipeline for acquiring format 
 | Active taskcards | TC-0040 not_started (FODS Gate 9 product mapping); TC-0042 not_started (FODT Gate 6 oracle execution); TC-0043 not_started (FODT Gate 6 DEC-034) |
 | Closed/completed taskcards | TC-0018 CLOSED; TC-0024 CLOSED; TC-0023/TC-0025/TC-0026/TC-0027/TC-0032/TC-0033/TC-0034/TC-0035 COMPLETED; TC-0036 COMPLETED (FODS Gate 8 security); TC-0037 COMPLETED (FODT Gate 5 neutral model); TC-0038 COMPLETED (FODS Gate 8 DEC-034 20/20); TC-0039 COMPLETED (FODT Gate 5 DEC-034); TC-0041 COMPLETED (FODT Gate 6 oracle planning) |
 | Deferred taskcards | TC-0015 not_started (spec retrieval eval); TC-0016 not_started (vector index pilot); TC-0020 not_started (Spec Workbench core) |
-| Last evidence bundle | run045: BUNDLE_VALIDATION PASS (run045-combined-sprint.zip); run046 bundle: PENDING — built at sprint end |
-| Next required action | (1) FODS Gate 9: explicit TC-0040 prompt → tier map + delivery plan. (2) FODT Gate 6: explicit TC-0042 prompt → oracle comparison. |
+| Last evidence bundle | run048: BUNDLE_VALIDATION PASS (run048-combined-sprint.zip; 448 entries); run049 bundle: built at sprint end |
+| Next required action | (1) FODS Gate 11: DEC-033 resolution + explicit TC-0047 prompt. (2) FODT Gate 9: explicit TC-0048 prompt. (3) FUL-001 schema approval + FUL-002/003 compilation (run049). |
 
 ---
 

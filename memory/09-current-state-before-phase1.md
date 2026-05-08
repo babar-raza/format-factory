@@ -13,7 +13,7 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 
 This file captures the current state after run048. FODS Gates 1-9 ALL PASSED. Gate 9 APPROVED Babar Raza (2026-05-08, run047): tier-map.yaml v1.0 approved, 16 features across 5 tiers (T0-T4), TC-0040 DEC-034 PASS 20/20. Gate 10 planning_ready: TC-0044 not_started, gate10-product-planning.md. FODT Gates 1-6 ALL PASSED: Gate 6 APPROVED Babar Raza (2026-05-08, run047): ORACLE_RUN PASS 4/4; ORACLE_COMPARE PASS 2/4 WARN 2/4 (word-count tolerances — expected); TC-0043 DEC-034 PASS inline. Gate 7 fuzz planning_ready: TC-0045 not_started, gate7-fuzz-plan.md. Evidence metadata floor restored to 30 (run046 regression fixed). RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added.
 
-**Last updated:** run048 (FODS Gate 10 APPROVED Babar Raza 2026-05-08 run048; FODT Gate 7 APPROVED Babar Raza run048; FODT Gate 8 APPROVED Babar Raza run048; Gate 11/Gate 9 planning created; REQUIRED_METADATA_DEPTH check added; master-plan.md v2.44).
+**Last updated:** run049 (FODS/FODT Format Understanding packages compiled: FUL-001 schemas + FUL-002 FODS 6 files + FUL-003 FODT 6 files (partial); stale state repairs; contract closure policy patched; master-plan v2.45).
 
 ## Current status
 
@@ -37,8 +37,14 @@ This file captures the current state after run048. FODS Gates 1-9 ALL PASSED. Ga
 | Gate 9 status | **PASSED** — approved Babar Raza, 2026-05-08, run047; GATE9_PRODUCT_MAPPING: PASS; tier-map.yaml v1.0; TC-0040 DEC-034 PASS 20/20 |
 | FODT Gate 5 | **PASSED** — Babar Raza, 2026-05-08, run046; FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 (109 checks); TC-0039 DEC-034 PASS |
 | FODT Gate 6 | **PASSED** — Babar Raza, 2026-05-08, run047; ORACLE_RUN PASS 4/4; ORACLE_COMPARE PASS 2/4 WARN 2/4; TC-0043 DEC-034 PASS inline |
-| Active formats | fods (gate_1–9: passed; gate_10: planning_ready); fodt (gate_1–6: passed; gate_7: fuzz planning_ready) |
-| Registry | FODS: gate_9 passed; gate_10 planning_ready; next_allowed_action: gate10_product_planning. FODT: gate_6 passed; gate_7 planning_ready; TC-0045 not_started |
+| FODT Gate 7 | **PASSED** — Babar Raza, 2026-05-08, run048; FODT_GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18; TC-0045 COMPLETED |
+| FODT Gate 8 | **PASSED** — Babar Raza, 2026-05-08, run048; GATE8_SECURITY_REVIEW: PASS; TC-7 partially mitigated; TC-0046 COMPLETED |
+| Gate 10 status | **PASSED** — approved Babar Raza, 2026-05-08, run048; OSS Tiers 0-2; format-factory-fods v0.1.0; TC-0044 COMPLETED |
+| FUL-001 | **COMPLETED** — run049 (2026-05-08); 6 schemas in schemas/format-understanding/ |
+| FUL-002 | **COMPLETED** — run049 (2026-05-08); 6 FODS FUL files in acquisition-packs/fods/ |
+| FUL-003 | partial_pending_gate9 — run049 (2026-05-08); 6 FODT FUL files in acquisition-packs/fodt/ (product-readiness partial) |
+| Active formats | fods (gates 1-10: ALL PASSED; gate_11: planning_ready); fodt (gates 1-8: ALL PASSED; gate_9: product-mapping planning_ready) |
+| Registry | FODS: gates 1-10 passed; gate_11 not_started; next_allowed_action: gate11_commercial_planning. FODT: gates 1-8 passed; gate_9 planning_ready; TC-0048 not_started |
 | Spec Workbench v1 | created run030 (local-only): .local/spec-cache/fods/1.3/workbench/ — verified-facts.yaml (10 facts), requirement packs (parser/sample/model), task packets, coverage matrices; 205/205 validation PASS |
 | FODS acquisition pack | acquisition-packs/fods/ (19 files after run038: + oracle-operator-handoff.md run038) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |
@@ -82,10 +88,10 @@ This file captures the current state after run048. FODS Gates 1-9 ALL PASSED. Ga
 | TC-0035 status | **COMPLETED** — FODT Gate 4 DEC-034 PASS 20/20 (run045, 2026-05-08) |
 | TC-0036 status | **completed** — FODS Gate 8 security review; GATE8_SECURITY_REVIEW: PASS; run046 |
 | TC-0037 status | **completed** — FODT Gate 5 neutral model; FODT_NEUTRAL_MODEL_VALIDATION PASS; run046 |
-| Evidence contracts | 18 contracts (after run046): + run046-combined-sprint |
-| last_completed_run | run046 — f659307 |
-| Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md) |
-| Master plan version | 2.42 (run046) |
+| Evidence contracts | 21 contracts (after run049): + run047/run048/run049 combined-sprint contracts |
+| last_completed_run | run048 |
+| Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md). last_completed_run: run049 |
+| Master plan version | 2.45 (run049) |
 | AGENTS.md sections | A through Z (26 sections) |
 
 ## Run history (run001–run028)

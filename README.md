@@ -83,6 +83,7 @@ Every format passes through 11 mandatory gates before any product code is writte
 - Phase 3 (Product Mapping): Complete — Gate 9 passed, approved by Babar Raza, 2026-05-08; tier-map.yaml v1.0; Tiers 0-2 first OSS release
 - Phase 3/4 (OSS Readiness): Complete — Gate 10 passed, approved by Babar Raza, 2026-05-08; product-source readiness confirmed; Gate 11 planning_ready
 - FODT Gates 1-8: Complete — Gates 1-8 all passed (run041-run048, Babar Raza); Gate 9 product-mapping planning_ready
+- Format Understanding Layer (run049): FUL-001 schemas created, FUL-002 FODS 6 files compiled, FUL-003 FODT 6 files compiled (product-readiness partial, Gate 9 required)
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md).
 

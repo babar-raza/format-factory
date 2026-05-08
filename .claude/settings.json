@@ -1,5 +1,6 @@
 {
   "projectName": "format-factory",
+  "description_last_updated": "run049",
   "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3: FODS Gates 1-10 ALL PASSED. Gate 11 planning_ready (TC-0047, blocked DEC-033). FODT Gates 1-8 ALL PASSED. Gate 9 product-mapping planning_ready (TC-0048). Embeddings/vector DB/vector index NOT authorized.",
   "model": "claude-opus-4-6",
   "permissions": {
@@ -64,6 +65,12 @@
       "Write(reports/_readme.md)",
       "Write(reports/security/fods.md)",
       "Write(schemas/neutral-model/fodt/**)",
+      "Write(schemas/playbook/**)",
+      "Write(tools/playbook/validate_playbook.py)",
+      "Write(tools/playbook/__init__.py)",
+      "Write(tests/playbook/test_playbook_schema.py)",
+      "Write(tests/playbook/__init__.py)",
+      "Write(tests/playbook/fixtures/**)",
       "Bash(git status)",
       "Bash(git log *)",
       "Bash(git diff *)",
