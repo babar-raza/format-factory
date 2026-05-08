@@ -66,9 +66,25 @@ notes: These are user preferences and planning standards recorded from the worki
 
 ## Key Doc Paths
 
+- Methodology entry point: docs/agent-methodology-index.md (START HERE for plan and prompt work)
 - Planning methodology: docs/planning-methodology.md
 - Execution handoff standard: docs/agent-execution-handoff-standard.md
 - Plan hardening checklist: docs/plan-hardening-checklist.md
 - Fresh-chat continuity brief: docs/fresh-chat-continuity-brief.md
+- Prompt template index: docs/prompts/README.md
 - Prompt templates: docs/prompts/ (8 templates)
 - Commands: .claude/commands/ (plan-hardening.md, execution-handoff.md, evidence-review-next-prompt.md, memory-sprint.md)
+- Command registry: .claude/commands/_readme.md
+- Methodology link checker: tools/governance/check_methodology_links.py
+
+## Local Bridge for Fresh-Chat Continuity
+
+These three files are the local bridge for a fresh chat session to find all methodology tools
+without needing conversation history:
+
+1. docs/agent-methodology-index.md -- links everything (entry point)
+2. docs/prompts/README.md -- template selection guide
+3. .claude/commands/_readme.md -- active command registry
+
+A future agent starting fresh should read docs/agent-methodology-index.md first,
+then follow the links to the relevant docs, templates, and commands for the current task.

@@ -22,7 +22,23 @@ Per `AGENTS.md` Section J: "When a project command exists for a task, the agent 
 
 ---
 
-## Planned Commands (Phase 1 — TC-0004)
+## Implemented Methodology Commands
+
+The following commands are active and available now. When a command exists for a methodology
+task, agents must use it rather than reinventing behavior ad hoc.
+
+| Command | File | Purpose | Mode | Creates Files | Commits | Methodology Doc | Template |
+|---------|------|---------|------|--------------|---------|----------------|---------|
+| `/plan-hardening` | [plan-hardening.md](plan-hardening.md) | Apply 22-item hardening checklist to a plan | PLAN MODE | No | No | [docs/plan-hardening-checklist.md](../docs/plan-hardening-checklist.md) | [plan-hardening-prompt-template.md](../docs/prompts/plan-hardening-prompt-template.md) |
+| `/execution-handoff` | [execution-handoff.md](execution-handoff.md) | Convert hardened plan to full single-go execution prompt | PLAN MODE | No | No | [docs/agent-execution-handoff-standard.md](../docs/agent-execution-handoff-standard.md) | [execution-handoff-prompt-template.md](../docs/prompts/execution-handoff-prompt-template.md) |
+| `/evidence-review-next-prompt` | [evidence-review-next-prompt.md](evidence-review-next-prompt.md) | Review evidence bundle, challenge claims, produce next prompt | PLAN MODE | No | No | [docs/planning-methodology.md](../docs/planning-methodology.md) | [evidence-bundle-review-prompt-template.md](../docs/prompts/evidence-bundle-review-prompt-template.md) |
+| `/memory-sprint` | [memory-sprint.md](memory-sprint.md) | Full memory sprint workflow: capture decisions, update memory, build bundle | EXECUTION MODE | Yes | Yes | [docs/planning-methodology.md](../docs/planning-methodology.md) | [memory-sprint-prompt-template.md](../docs/prompts/memory-sprint-prompt-template.md) |
+
+See [docs/agent-methodology-index.md](../docs/agent-methodology-index.md) for the full methodology entry point.
+
+---
+
+## Planned Commands (Phase 1 -- TC-0004)
 
 The following commands are designed but not yet implemented. They will be created in Phase 1 as part of taskcard TC-0004.
 

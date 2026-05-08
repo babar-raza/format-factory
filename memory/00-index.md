@@ -42,7 +42,18 @@ The memory package captures:
 | `11-prompting-and-agent-style-rules.md` | Prompt mode labels, execution handoffs, bundle requirements. |
 | `12-glossary.md` | Project terminology. |
 | `11-format-understanding-and-llm-strategy.md` | Format Understanding Layer, LLM/embedding strategy, non-XML backlog, non-Aspose registry, discovered-gap capture rule (memory sprint 2026-05-08). |
-| `12-planning-and-agent-handoff-methodology.md` | Planning methodology, execution handoff standard, user preferences for prompts and plans (memory sprint 2026-05-08). |
+| `12-planning-and-agent-handoff-methodology.md` | Planning methodology, execution handoff standard, user preferences for prompts and plans. Updated with methodology index and prompt README links (linkage sprint 2026-05-08). |
+
+## Local Methodology Entry Points (added linkage sprint 2026-05-08)
+
+These files provide the local bridge for fresh-chat continuity. Future agents should start
+from the methodology index before generating plans or prompts.
+
+| File | Purpose |
+|------|---------|
+| [docs/agent-methodology-index.md](../docs/agent-methodology-index.md) | Start here for all plan and prompt work. Links all methodology docs, templates, commands, and enforcement rules. |
+| [docs/prompts/README.md](../docs/prompts/README.md) | Index of all 8 prompt templates. Rules for using templates. |
+| [.claude/commands/_readme.md](../.claude/commands/_readme.md) | Command registry. Lists all active methodology commands (/plan-hardening, /execution-handoff, /evidence-review-next-prompt, /memory-sprint). |
 
 ## Priority reading for a new agent
 
@@ -52,11 +63,11 @@ A new agent should read in this order:
 plans/master-plan.md
 AGENTS.md
 GOVERNANCE.md
-memory/README.md
+docs/agent-methodology-index.md
 memory/00-index.md
+memory/12-planning-and-agent-handoff-methodology.md
 memory/09-current-state-before-phase1.md
-memory/02-standing-operating-rules.md
-memory/04-phase0-evolution-and-bundle-reviews.md
+docs/fresh-chat-continuity-brief.md
 ```
 
 Then it should read only the memory files relevant to the task.
@@ -73,6 +84,7 @@ Then it should read only the memory files relevant to the task.
 | run012 | Memory stream | 00-index.md, 03-architecture-and-product-tracks.md, 04-phase0-evolution-and-bundle-reviews.md, 05-decision-register-expanded.md, 06-gap-risk-and-healing-history.md, 07-agent-governance-model.md, 08-specification-cache-amendment.md, 09-current-state-before-phase1.md, 10-memory-maintenance-protocol.md |
 | memory-sprint-2026-05-08 | Memory sprint | 00-index.md, 11-format-understanding-and-llm-strategy.md (NEW), AGENTS.md Sections AB+AC, GOVERNANCE.md Sections 21+22, docs/format-understanding-layer.md (NEW), docs/llm-and-embedding-strategy.md (NEW), docs/format-representation-model.md (NEW), docs/non-aspose-format-candidate-registry-plan.md (NEW), plans/master-plan.md Section 37 (NEW), ROADMAP.md Architecture Backlog (NEW), taskcards/FUL-001--FUL-004 (NEW), taskcards/LLM-001 (NEW), taskcards/EMB-001 (NEW), taskcards/REP-001 (NEW), taskcards/REP-003 (NEW), taskcards/NAC-001 (NEW), taskcards/GOV-001 (NEW) |
 | memory-planning-methodology-2026-05-08 | Memory methodology sprint | 00-index.md (UPDATED), 12-planning-and-agent-handoff-methodology.md (NEW), docs/planning-methodology.md (NEW), docs/agent-execution-handoff-standard.md (NEW), docs/plan-hardening-checklist.md (NEW), docs/fresh-chat-continuity-brief.md (NEW), docs/prompts/ (8 templates NEW), AGENTS.md Section AD (NEW), GOVERNANCE.md Section 23 (NEW), taskcards/GOV-002 (NEW), .claude/commands/ (4 files NEW) |
+| memory-methodology-linkage-2026-05-08 | Memory methodology linkage sprint | 00-index.md (UPDATED), 12-planning-and-agent-handoff-methodology.md (UPDATED), docs/agent-methodology-index.md (NEW), docs/prompts/README.md (NEW), README.md (UPDATED -- agent methodology section), .claude/commands/_readme.md (UPDATED -- methodology commands table), AGENTS.md AD0/AD8-AD10 (ADDED), GOVERNANCE.md Section 23.0/23.7-23.8/24 (ADDED), tools/governance/check_methodology_links.py (NEW), tests/governance/test_methodology_links.py (NEW), taskcards/GOV-003 (NEW) |
 | run010 | Memory stream | Memory integration prompted by addition of /memory folder; AGENTS.md Section U added in run010 repo execution (not a /memory file edit — see run010 bundle) |
 
 ## Warning

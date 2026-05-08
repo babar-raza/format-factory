@@ -109,6 +109,26 @@ reports/      Security and legal reports
 
 ---
 
+## Agent Methodology and Fresh Chat Start
+
+Agents must start from the methodology index when producing plans or prompts.
+Fresh chat sessions should read the continuity brief before any planning work.
+Evidence bundle review must precede next prompt generation when a bundle exists.
+The local methodology is part of repo governance -- not optional guidance.
+Product work remains governed by gates and the master plan.
+
+| Resource | Purpose |
+|----------|---------|
+| [docs/agent-methodology-index.md](docs/agent-methodology-index.md) | Start here for all plan and prompt work |
+| [docs/planning-methodology.md](docs/planning-methodology.md) | Core planning principles and prompt anatomy |
+| [docs/agent-execution-handoff-standard.md](docs/agent-execution-handoff-standard.md) | Execution handoff standard |
+| [docs/plan-hardening-checklist.md](docs/plan-hardening-checklist.md) | 22-item plan hardening checklist |
+| [docs/fresh-chat-continuity-brief.md](docs/fresh-chat-continuity-brief.md) | Fresh session orientation guide |
+| [docs/prompts/README.md](docs/prompts/README.md) | Prompt template index |
+| [memory/00-index.md](memory/00-index.md) | Memory package index |
+
+---
+
 ## Contributing
 
 See [GOVERNANCE.md](GOVERNANCE.md) for human contributor rules and gate approval processes. See [AGENTS.md](AGENTS.md) for agent operating rules. See [docs/legal-and-licensing.md](docs/legal-and-licensing.md) before working on any format.

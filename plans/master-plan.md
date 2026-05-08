@@ -1521,7 +1521,7 @@ plan-repair-review.md. The plan-repair sprint (S-F2F-00) corrected all defects a
 
 - S-F2F-00 (plan repair): CLOSED_VERIFIED — S-F2F-00B closure sprint 2026-05-08; commit 881e333; evidence independently verified PASS
 - S-F2F-01 (playbook schema + policy): CLOSED_VERIFIED — executed 2026-05-08; independently verified S-F2F-01B 2026-05-08; schemas/playbook/ + docs/playbook-layer.md created; no replay tools, no apply mode, no acquisition-pack playbooks
-- S-F2F-02 (playbook validation tool): completed_pending_independent_verification — executed 2026-05-08; tools/playbook/validate_playbook.py (read-only, no writes, no replay, no apply mode); 30/30 tests PASS; jsonschema fallback structural validation confirmed; no MAIN SPRINT deviation
+- S-F2F-02 (playbook validation tool): CLOSED_VERIFIED — executed 2026-05-08; schema gap repaired in S-F2F-02B (not_for_execution added to schema); 42/42 tests PASS; both jsonschema and structural engines; docs example passes full JSON Schema; no MAIN SPRINT deviation
 - S-F2F-03 through S-F2F-08: proposed_pending_human_approval — NOT authorized
 
 No gate statuses were changed by S-F2F-00, S-F2F-01, or S-F2F-02. S-F2F-02 created a
@@ -1554,9 +1554,10 @@ will be created until the appropriate gate sequence is satisfied.
 
 ### Next Possible Secondary Action
 
-S-F2F-02 is completed_pending_independent_verification (executed 2026-05-08).
+S-F2F-02 is CLOSED_VERIFIED (executed 2026-05-08; schema gap repaired in S-F2F-02B;
+not_for_execution property added to acquisition-playbook.schema.json; 42/42 tests PASS;
+both jsonschema and structural engines verified; docs example passes full JSON Schema).
 The next possible secondary actions are:
-- S-F2F-02 independent verification (DEC-034 separate session) then S-F2F-02 CLOSED_VERIFIED
 - S-F2F-03 (Dry-run Replay + Review Queue) or S-F2F-05 (ODF-Flat Family Playbook)
   — each requires a separate explicit human authorization prompt naming the taskcard.
 
