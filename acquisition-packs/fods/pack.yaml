@@ -6,6 +6,8 @@
 # Gate 4: PASSED (Babar Raza, 2026-05-06) — prototype 4/4 PASS, DEC-034 verified run032
 # Gate 5: PASSED (Babar Raza, 2026-05-06) — neutral model 87 checks PASS, DEC-034 verified run034
 # Gate 6: PASSED (Babar Raza, 2026-05-08, run044) — oracle 3/4 PASS 1/4 WARN, DEC-034 verified run044
+# Gate 7: PASSED (Babar Raza, 2026-05-08, run045) — GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18, DEC-034 PASS 18/18
+# Gate 8: planning_ready — TC-0036 not_started (run045); explicit Gate 8 prompt required
 # Spec downloaded run021: ODF 1.3 Part 3 PDF (24.27 MB). 4 samples created run026 (Apache-2.0).
 
 ---
@@ -30,7 +32,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 1 passed 2026-05-04. Gate 2 PASSED 2026-05-05. Gate 3 PASSED 2026-05-05. Gate 4 PASSED 2026-05-06 (Babar Raza). Gate 5 PASSED 2026-05-06 (Babar Raza). Gate 6 PASSED 2026-05-08 (Babar Raza, run044): oracle blocker resolved run043 (LibreOffice 26.2.3.2 winget, soffice.com), ORACLE_PREFLIGHT PASS, ORACLE_RUN PASS 4/4, ORACLE_COMPARE PASS 3/4 WARN 1/4 (multi-sheet CSV export limit, expected). TC-0026 COMPLETED run043. TC-0027 DEC-034 PASS 24/24 (run044). Next: Gate 7 malformed/fuzz testing (TC-0033)."
+notes: "Gate 1 passed 2026-05-04. Gate 2 PASSED 2026-05-05. Gate 3 PASSED 2026-05-05. Gate 4 PASSED 2026-05-06 (Babar Raza). Gate 5 PASSED 2026-05-06 (Babar Raza). Gate 6 PASSED 2026-05-08 (Babar Raza, run044): oracle blocker resolved run043, ORACLE_COMPARE PASS 3/4 WARN 1/4. Gate 7 PASSED 2026-05-08 (Babar Raza, run045): GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18, TC-0033 COMPLETED. Gate 8 planning_ready run045 (2026-05-08) — TC-0036 not_started, plan at gate8-security-plan.md. Next: explicit Gate 8 execution prompt."
 
 # --- Format identity ---
 format_id: fods
@@ -103,6 +105,35 @@ gate_5:
   tc0024_verification: "run034 DEC-034 PASS"
   evidence_verified_by: "run034 independent verification"
   next_action: gate6_oracle_execution_pending_oracle_install
+gate_6:
+  status: passed
+  approved_by: "Babar Raza"
+  approved_date: "2026-05-08"
+  oracle_tool: "LibreOffice 26.2.3.2 (winget, soffice.com)"
+  oracle_compare_result: "ORACLE_COMPARE: PASS 3/4 WARN 1/4"
+  warn_note: "multi-sheet-basic.fods SHEET_COUNT_MISMATCH — expected (CSV export limitation)"
+  tc0026_status: COMPLETED
+  tc0027_dec034: "PASS 24/24 (run044)"
+  approval_run: run044
+gate_7:
+  status: passed
+  approved_by: "Babar Raza"
+  approved_date: "2026-05-08"
+  fuzz_test_result: "GATE7_FUZZ_TEST: PASS 18/18 CRASH 0/18 CORRUPT 0/18"
+  fixture_count: 18
+  fixture_categories: 4
+  dec034_verified_run: run045
+  dec034_checks: "18/18 PASS"
+  tc0033_status: COMPLETED
+  approval_run: run045
+  notes: "Gate 7 APPROVED Babar Raza 2026-05-08 (run045). No crashes. No silent corruption. Max elapsed 0.037s."
+gate_8:
+  status: planning_ready
+  approved_by: null
+  approved_date: null
+  tc0036_status: not_started
+  plan_path: acquisition-packs/fods/gate8-security-plan.md
+  notes: "Gate 8 planning created run045 (2026-05-08). TC-0036 not_started. Execution requires explicit Gate 8 prompt."
 
 # --- Spec cache status ---
 spec_cache:

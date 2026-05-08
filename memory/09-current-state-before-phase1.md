@@ -3,23 +3,23 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run044 to reflect run044 combined sprint: run043 verified (42 checks PASS); build_evidence_bundle.py 2 bugs fixed; oracle re-run PASS; TC-0027 DEC-034 PASS 24/24; FODS Gate 6 APPROVED (Babar Raza, 2026-05-08); TC-0032 DEC-034 PASS 27/27; FODT Gate 3 APPROVED (Babar Raza, 2026-05-08); Gate 7/Gate 4 planning created; master-plan v2.40
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run045 to reflect run045 combined sprint: run044 verified (39+ checks PASS); FODS Gate 7 PASS 18/18 CRASH 0/18 APPROVED Babar Raza; FODT Gate 4 PASS 4/4 APPROVED Babar Raza; Gate 8/Gate 5 planning created; master-plan v2.41
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 09 — Current State (Phase 3: FODS Gates 1-6 PASSED, Gate 7 planning_ready; FODT Gates 1-3 PASSED, Gate 4 planning_ready)
+# 09 — Current State (Phase 3: FODS Gates 1-7 PASSED, Gate 8 planning_ready; FODT Gates 1-4 PASSED, Gate 5 planning_ready)
 
-This file captures the current state after run044. FODS Gates 1-6 PASSED. TC-0027 DEC-034 PASS 24/24 (run044). Gate 6 APPROVED Babar Raza (2026-05-08, run044). FODS Gate 7 planning_ready: TC-0033 (not_started), gate7-malformed-fuzz-plan.md (18 inputs, 4 categories). FODT Gates 1-3 ALL PASSED: Gate 1 run041, Gate 2 run043, Gate 3 run044 (TC-0032 DEC-034 PASS 27/27, 4/4 FODT samples, 4/4 SHA-256 MATCH). FODT Gate 4 planning_ready: TC-0034 (not_started), TC-0035 (not_started), parser-requirements.md (FR-001..FR-007), parser-test-plan.md (PT-001..PT-004). run043 also: build_evidence_bundle.py 2 bugs fixed (metadata count, matches_forbidden).
+This file captures the current state after run045. FODS Gates 1-7 ALL PASSED. Gate 7 APPROVED Babar Raza (2026-05-08, run045): GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18; TC-0033 COMPLETED. Gate 8 planning_ready: TC-0036 not_started, gate8-security-plan.md (8 threat categories scoped). FODT Gates 1-4 ALL PASSED: Gate 1 run041, Gate 2 run043, Gate 3 run044, Gate 4 run045 (FODT_PROTOTYPE_VALIDATION PASS 4/4; TC-0035 DEC-034 PASS 20/20). Gate 5 planning_ready: TC-0037 not_started, gate5-neutral-model-plan.md (7 entities proposed).
 
-**Last updated:** run044 (run043 independently verified PASS 42 checks; FODS Gate 6 APPROVED Babar Raza 2026-05-08; FODT Gate 3 APPROVED Babar Raza 2026-05-08; Gate 7 + Gate 4 planning created; master-plan.md v2.40).
+**Last updated:** run045 (run044 independently verified PASS 39+ checks; FODS Gate 7 APPROVED Babar Raza 2026-05-08; FODT Gate 4 APPROVED Babar Raza 2026-05-08; Gate 8/Gate 5 planning created; master-plan.md v2.41).
 
 ## Current status
 
 | Item | Status |
 |---|---|
-| Phase | Phase 3: FODS Gates 1-6 PASSED; Gate 7 planning_ready; FODT Gates 1-3 PASSED; Gate 4 planning_ready |
+| Phase | Phase 3: FODS Gates 1-7 PASSED; Gate 8 planning_ready; FODT Gates 1-4 PASSED; Gate 5 planning_ready |
 | Phase 0 accepted | YES — 2026-05-04 (run015, human-authorized) |
 | Phase 1A complete | YES — FODS scored 93/100 (run015), independently verified (run016) |
 | Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
@@ -28,13 +28,13 @@ This file captures the current state after run044. FODS Gates 1-6 PASSED. TC-002
 | Gate 4 status | **PASSED** — approved by Babar Raza, 2026-05-06 (run033) |
 | Gate 5 status | **PASSED** — approved by Babar Raza, 2026-05-06 (run035 human-authorized prompt); 6 entities, 87 checks PASS; TC-0024 DEC-034 PASSED run034; TC-0024 CLOSED run035 |
 | Gate 6 status | **PASSED** — approved Babar Raza, 2026-05-08, run044; TC-0027 DEC-034 PASS 24/24; ORACLE_COMPARE PASS 3/4 WARN 1/4 |
-| Gate 7 status | **planning_ready** — TC-0033 not_started; 18 malformed inputs planned; explicit prompt required |
+| Gate 7 status | **PASSED** — approved Babar Raza, 2026-05-08, run045; GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18; TC-0033 COMPLETED |
 | FODT Gate 1 | **PASSED** — Babar Raza, 2026-05-07, run041; 88/100 Accept band; Category 1 RF |
 | FODT Gate 2 | **PASSED** — Babar Raza, 2026-05-08, run043; TC-0031 DEC-034 PASS (20/20 checks); 8/8 fast-path items; patent waived |
 | FODT Gate 3 | **PASSED** — Babar Raza, 2026-05-08, run044; TC-0032 DEC-034 PASS 27/27; 4/4 FODT samples; SHA-256 MATCH 4/4 |
-| FODT Gate 4 | **planning_ready** — TC-0034 not_started; gate4-parser-prototype-plan.md + parser-requirements.md + parser-scope.md + parser-test-plan.md |
-| Active formats | fods (gate_1–6: passed; gate_7: planning_ready); fodt (gate_1–3: passed; gate_4: planning_ready) |
-| Registry | FODS: gate_6 passed; gate_7 planning_ready; next_allowed_action: gate7_malformed_fuzz_planning_tc0033. FODT: gate_3 passed; gate_4 planning_ready; next_allowed_action: gate4_parser_prototype_planning_tc0034 |
+| FODT Gate 4 | **PASSED** — Babar Raza, 2026-05-08, run045; FODT_PROTOTYPE_VALIDATION PASS 4/4; TC-0035 DEC-034 PASS 20/20 |
+| Active formats | fods (gate_1–7: passed; gate_8: planning_ready); fodt (gate_1–4: passed; gate_5: planning_ready) |
+| Registry | FODS: gate_7 passed; gate_8 planning_ready; next_allowed_action: gate8_security_planning. FODT: gate_4 passed; gate_5 planning_ready; TC-0037 not_started |
 | Spec Workbench v1 | created run030 (local-only): .local/spec-cache/fods/1.3/workbench/ — verified-facts.yaml (10 facts), requirement packs (parser/sample/model), task packets, coverage matrices; 205/205 validation PASS |
 | FODS acquisition pack | acquisition-packs/fods/ (19 files after run038: + oracle-operator-handoff.md run038) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |
@@ -73,13 +73,15 @@ This file captures the current state after run044. FODS Gates 1-6 PASSED. TC-002
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |
-| TC-0033 status | **not_started** — FODS Gate 7 malformed/fuzz; planning created run044; explicit prompt required |
-| TC-0034 status | **not_started** — FODT Gate 4 parser prototype; planning created run044; explicit prompt required |
-| TC-0035 status | **not_started** — FODT Gate 4 DEC-034 verification; requires separate session from TC-0034 |
-| Evidence contracts | 16 contracts (after run044): + run044-combined-sprint |
-| last_completed_run | run044 — commit 0e732c3 |
+| TC-0033 status | **COMPLETED** — FODS Gate 7 PASS 18/18 CRASH 0/18 (run045, 2026-05-08) |
+| TC-0034 status | **COMPLETED** — FODT Gate 4 PASS 4/4 (run045, 2026-05-08) |
+| TC-0035 status | **COMPLETED** — FODT Gate 4 DEC-034 PASS 20/20 (run045, 2026-05-08) |
+| TC-0036 status | **not_started** — FODS Gate 8 security review; planning created run045; explicit Gate 8 prompt required |
+| TC-0037 status | **not_started** — FODT Gate 5 neutral model; planning created run045; explicit Gate 5 prompt required |
+| Evidence contracts | 17 contracts (after run045): + run045-combined-sprint |
+| last_completed_run | run045 — PENDING (see docs/current-state-and-evidence-authority.md) |
 | Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md) |
-| Master plan version | 2.40 (run044) |
+| Master plan version | 2.41 (run045) |
 | AGENTS.md sections | A through Z (26 sections) |
 
 ## Run history (run001–run028)
@@ -119,6 +121,7 @@ This file captures the current state after run044. FODS Gates 1-6 PASSED. TC-002
 | run038 | run037 independent verification PASS + stale commit fixed (f964eba→a35b089) + TC-0026 blocker wording fixed + oracle preflight re-run 4 FAIL + harness self-test + operator handoff + next-format candidate shortlist (TC-0028) | Verified run037 (BUNDLE_VALIDATION: PASS, verdict.md PASS, a35b089 confirmed as actual latest commit); stale commit f964eba→a35b089 fixed in master-plan/memory/registry; TC-0026 "Blocking: Gate 6 human approval" corrected to "Blocking: LibreOffice missing"; oracle preflight 4th FAIL (ORACLE_ENV: BLOCKED); self_test_oracle_harness.py NEW (HARNESS_SELF_TEST_ONLY — not Gate 6 evidence); oracle-operator-handoff.md NEW; candidate shortlist: registry/candidates/odf-flat-family-shortlist.yaml + acquisition-packs/_candidate-shortlists/odf-flat-family-next-candidates.md + TC-0028 (candidate-only, no Gate 1 approval); master-plan v2.34. |
 | run039 | run038 independent verification PASS + stale commit fixed (998412c→bc2bdf8) + consistency enforcement tool + oracle preflight re-run 5 FAIL + harness self-test confirmed PASS + candidate shortlist independently verified + FODT Gate 1 scoring package (candidate-only) + ODF reuse strategy | Verified run038 (BUNDLE_VALIDATION: PASS, all 4 commits confirmed, bc2bdf8 actual latest); stale commit 998412c→bc2bdf8 fixed; tools/evidence/check_current_state_consistency.py NEW; negative tests added; oracle preflight 5th FAIL (ORACLE_PREFLIGHT: FAIL); harness self-test PASS 4/4; candidate shortlist verified (4 checks PASS: FODT estimate supported, pipeline reuse confirmed, legal category correct, WIP check correct); FODT Gate 1 scoring package: registry/candidates/fodt-gate1-scoring-package.yaml (candidate-only, no Gate 1 approval); docs/odf-flat-family-reuse-strategy.md NEW; TC-0028 → in_progress; TC-0029 created (FODT Gate 1 scoring); master-plan v2.35. |
 | run040 | run039 independent verification PASS (44 checks) + stale commit fixed (d052510→54a27dc) + clean-git loophole closed + consistency checker strengthened (10 checks) + oracle preflight re-run 6 FAIL + TC-0029 DEC-034 PASS (7/7, 88/100) + FODT Gate 1 human-review packet | Verified run039 (44 checks PASS; 5 commits: 48f6a0d+8cd2ed2+075edca+d052510+54a27dc; BUNDLE_VALIDATION: PASS; 3 issues documented). Stale fixes: master-plan header d052510→54a27dc, memory/09 stale→54a27dc. CURRENT_STATE_CONSISTENCY: PASS. Clean-git loophole closed: validator+builder now always fail on dirty git unless emergency_blocker_bundle: true; base-run.yaml updated (require_clean_git: true, emergency_blocker_bundle: false); 2 new negative tests (6/6 total PASS). Consistency checker → 10 invariants. Oracle preflight 6th FAIL (6 consecutive FAIL). TC-0029 DEC-034 PASS: 7/7 scoring factors verified, 88/100 confirmed, Accept band confirmed. fodt-gate1-human-review-packet.md created. TC-0029 → verification_passed_pending_human_review. README/ROADMAP/registry/settings.json/oracle-provider-strategy.md/gate6-oracle-blocker-report.md updated. master-plan v2.36. |
+| run045 | run044 independent verification PASS (39+ checks) + FODS Gate 7 execution (GATE7_FUZZ_TEST PASS 18/18) + FODT Gate 4 execution (FODT_PROTOTYPE_VALIDATION PASS 4/4) + Gate 7 DEC-034 (18/18) + Gate 4 DEC-034 (20/20) + Gate 7 approval + Gate 4 approval + Gate 8 planning + FODT Gate 5 planning | Verified run044 (39+ checks PASS). FODS Gate 7: 18 malformed fixtures, 4 categories, GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18 (max 0.037s); TC-0033 COMPLETED; Gate 7 APPROVED Babar Raza 2026-05-08. FODT Gate 4: fodt_parser.py (stdlib ElementTree, FR-001..FR-007); FODT_PROTOTYPE_VALIDATION PASS 4/4 (PT-001..PT-004); TC-0034 COMPLETED; TC-0035 DEC-034 PASS 20/20; Gate 4 APPROVED Babar Raza 2026-05-08. Gate 8 planning: TC-0036 + gate8-security-plan.md (8 threat categories). FODT Gate 5 planning: TC-0037 + gate5-neutral-model-plan.md (7 entities). master-plan v2.41. |
 
 ## Latest known evidence bundles
 

@@ -3,6 +3,8 @@
 # Gate 1: PASSED (Babar Raza, 2026-05-07, run041)
 # Gate 2: PASSED (Babar Raza, 2026-05-08, run043)
 # Gate 3: PASSED (Babar Raza, 2026-05-08, run044) — 4/4 PASS, DEC-034 verified run044
+# Gate 4: PASSED (Babar Raza, 2026-05-08, run045) — FODT_PROTOTYPE_VALIDATION PASS 4/4, DEC-034 PASS 20/20
+# Gate 5: planning_ready — TC-0037 not_started (run045); execution requires explicit Gate 5 prompt
 # Skeleton created: run041 (2026-05-07) after Gate 1 human approval
 # Spec: ODF 1.3 (already cached from FODS acquisition — .local/spec-cache/fods/1.3/)
 
@@ -28,7 +30,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 1 PASSED 2026-05-07 (Babar Raza, run041). Gate 2 PASSED 2026-05-08 (Babar Raza, run043) — 8/8 fast-path items, OASIS RF Category 1. Gate 3 PASSED 2026-05-08 (Babar Raza, run044) — 4 synthetic FODT samples, FODT_SAMPLE_VALIDATION PASS 4/4, TC-0032 DEC-034 PASS 27/27. Next: Gate 4 parser prototype planning (TC-0034)."
+notes: "Gate 1 PASSED 2026-05-07 (Babar Raza, run041). Gate 2 PASSED 2026-05-08 (Babar Raza, run043) — 8/8 fast-path items. Gate 3 PASSED 2026-05-08 (Babar Raza, run044) — 4 FODT samples, TC-0032 DEC-034 PASS 27/27. Gate 4 PASSED 2026-05-08 (Babar Raza, run045) — FODT_PROTOTYPE_VALIDATION PASS 4/4, TC-0035 DEC-034 PASS 20/20. Gate 5 planning_ready run045 (2026-05-08) — TC-0037 not_started, plan at gate5-neutral-model-plan.md. Next: explicit Gate 5 execution prompt."
 
 # --- Format identity ---
 format_id: fodt
@@ -118,15 +120,24 @@ stages:
     approval_run: run044
     notes: "Gate 3 sample corpus created run043 (2026-05-08). 4 synthetic Apache-2.0 FODT samples. FODT_SAMPLE_VALIDATION: PASS 4/4. TC-0032 DEC-034 independent verification PASS 27/27 (run044, 2026-05-08). Gate 3 APPROVED by Babar Raza (run044 execution prompt, 2026-05-08). This approval authorizes Gate 4 parser prototype planning."
   gate_4:
-    status: not_started
-    approved_by: null
-    approved_date: null
-    notes: null
+    status: passed
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-08"
+    prototype_path: prototypes/by-format/fodt/fodt_parser.py
+    validation_result: "FODT_PROTOTYPE_VALIDATION: PASS 4/4 (PT-001..PT-004)"
+    validation_run: run045
+    tc0034_status: completed
+    tc0035_status: completed
+    dec034_verified_run: run045
+    dec034_checks: "20/20 PASS"
+    notes: "Gate 4 prototype created run045 (2026-05-08). Python stdlib ElementTree. FR-001..FR-007 all implemented. 4/4 PASS. DEC-034 PASS 20/20. Gate 4 APPROVED by Babar Raza (run045 execution prompt, 2026-05-08)."
   gate_5:
-    status: not_started
+    status: planning_ready
     approved_by: null
     approved_date: null
-    notes: null
+    tc0037_status: not_started
+    plan_path: acquisition-packs/fodt/gate5-neutral-model-plan.md
+    notes: "Gate 5 planning package created run045 (2026-05-08). TC-0037 not_started. Execution requires explicit Gate 5 prompt. Proposed entities: Document, Block, List, ListItem, Table, TableRow, TableCell (7 total). FODS neutral model reuse: structural pattern only."
   gate_6:
     status: not_started
     approved_by: null

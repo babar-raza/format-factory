@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mutation: table:table renamed to table:worksheet (invalid ODF element name) in multi-sheet-basic.fods -->
+<office:document
+  xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+  xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  office:version="1.3"
+  office:mimetype="application/vnd.oasis.opendocument.spreadsheet-flat-xml">
+  <office:body>
+    <office:spreadsheet>
+      <table:worksheet table:name="Sheet1">
+        <table:table-row>
+          <table:table-cell office:value-type="string">
+            <text:p>Sheet1 A1</text:p>
+          </table:table-cell>
+        </table:table-row>
+      </table:worksheet>
+      <table:worksheet table:name="Sheet2">
+        <table:table-row>
+          <table:table-cell office:value-type="string">
+            <text:p>Sheet2 A1</text:p>
+          </table:table-cell>
+        </table:table-row>
+      </table:worksheet>
+    </office:spreadsheet>
+  </office:body>
+</office:document>

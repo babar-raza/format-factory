@@ -1,0 +1,199 @@
+# run045 Evidence Contract
+#
+# Sprint: run044 independent verification + FODS Gate 7 execution + FODT Gate 4 execution +
+#         Gate 7 approval + Gate 4 approval + FODS Gate 8 planning + FODT Gate 5 planning
+# Date: 2026-05-08
+# Sections covered:
+#   A: ~56 files read (pre-read before editing)
+#   B: run044 independent verification (39+ checks PASS, DEC-034 for run044)
+#   C: run044 stale state fixes (7 items: 5 gates in Section 6 table, active taskcards,
+#      closed/completed taskcards, next action, settings.json, pack.yaml gate_7 header)
+#   D: FODS Gate 7 planning package verification (gate7-malformed-fuzz-plan.md, TC-0033)
+#   E: FODS Gate 7 execution (18 malformed fixtures, 4 categories, GATE7_FUZZ_TEST PASS 18/18)
+#   F: FODS Gate 7 DEC-034 inline verification (18/18 PASS, separate session from run044 planning)
+#   G: FODS Gate 7 approval recorded (Babar Raza, 2026-05-08)
+#   H: FODT Gate 4 planning package verification (gate4-parser-prototype-plan.md, TC-0034)
+#   I: FODT Gate 4 execution (fodt_parser.py + validate_against_samples.py, 4/4 PASS)
+#   J: FODT Gate 4 DEC-034 verification (20/20 PASS, TC-0035)
+#   K: FODT Gate 4 approval recorded + master-plan Section 6 table updated (5 rows)
+#   L: FODS Gate 8 security planning (TC-0036 + gate8-security-plan.md)
+#   M: FODT Gate 5 neutral model planning (TC-0037 + gate5-neutral-model-plan.md)
+#   N: Registry (gate_8 planning_ready + FODT gate_5 planning_ready) + pack.yaml updates
+#   O: settings.json description/phase_note updated; run045 evidence contract (this file)
+#   P: Forbidden path search audit
+#   Q: Consistency check
+#   R: Git commit + evidence bundle build + validation
+#
+# Key outcomes:
+#   - run044 independently verified (39+ checks): all run044 claims PASS
+#   - FODS Gate 7 PASSED (Babar Raza, 2026-05-08): GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18
+#     TC-0033 COMPLETED; 18 malformed fixtures (4 categories); max elapsed 0.037s
+#   - FODT Gate 4 PASSED (Babar Raza, 2026-05-08): FODT_PROTOTYPE_VALIDATION PASS 4/4
+#     TC-0034 COMPLETED; TC-0035 DEC-034 PASS 20/20; fodt_parser.py stdlib ElementTree
+#   - FODS Gate 8 planning_ready: TC-0036 (not_started), gate8-security-plan.md
+#     8 threat categories scoped; TC-0036 blocks until explicit Gate 8 prompt
+#   - FODT Gate 5 planning_ready: TC-0037 (not_started), gate5-neutral-model-plan.md
+#     7 entities proposed; TC-0037 blocks until explicit Gate 5 prompt
+#   - master-plan v2.41; BUNDLE_VALIDATION: PASS required
+
+---
+artifact_id: run045-combined-sprint
+artifact_type: evidence-contract
+path: tools/evidence/contracts/run045-combined-sprint.yaml
+format_id: fods
+product_family: cells
+visibility: internal
+publish_allowed: false
+license: null
+provenance_required: false
+provenance_status: not-applicable
+source_hash: null
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-08"
+reusable: false
+refresh_policy:
+  trigger: manual
+  max_age_days: null
+stale: false
+open_source_allowed: false
+commercial_allowed: false
+release_blockers: []
+notes: "run045 combined sprint evidence contract. Created run045 (2026-05-08). Covers FODS Gate 7 execution+approval, FODT Gate 4 execution+approval, Gate 8/Gate 5 planning packages."
+
+---
+
+sprint_id: run045
+sprint_date: "2026-05-08"
+sprint_type: combined
+sprint_model: claude-sonnet-4-6
+
+sections:
+  B_run044_verification:
+    type: independent-verification
+    target: run044
+    result: PASS
+    check_count: 39
+    note: "run044 39+ checks PASS. All run044 claims verified."
+
+  E_gate7_execution:
+    type: gate-execution
+    gate: 7
+    format: fods
+    taskcard: TC-0033
+    result: PASS
+    fuzz_test_verdict: "GATE7_FUZZ_TEST: PASS 18/18 CRASH 0/18 CORRUPT 0/18"
+    fixture_count: 18
+    categories: 4
+    max_elapsed_s: 0.037
+    artifacts_created:
+      - tests/fixtures/fods/malformed/ (18 files)
+      - acquisition-packs/fods/gate7-malformed-fuzz-report.md
+      - tools/fuzz/run_gate7_fuzz_test.py
+
+  F_gate7_dec034:
+    type: independent-verification
+    gate: 7
+    format: fods
+    result: PASS
+    check_count: 18
+    note: "DEC-034 PASS 18/18. run045 separate from run044 planning session."
+
+  G_gate7_approval:
+    type: gate-approval
+    gate: 7
+    format: fods
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-08"
+    approval_run: run045
+    files_updated:
+      - registry/format-registry.yaml (gate_7: passed)
+      - acquisition-packs/fods/pack.yaml (gate_7: passed)
+      - taskcards/TC-0033-fods-gate7-malformed-fuzz-testing.md (COMPLETED)
+
+  I_gate4_execution:
+    type: gate-execution
+    gate: 4
+    format: fodt
+    taskcard: TC-0034
+    result: PASS
+    validation_verdict: "FODT_PROTOTYPE_VALIDATION: PASS 4/4 (PT-001..PT-004)"
+    artifacts_created:
+      - prototypes/by-format/fodt/fodt_parser.py
+      - prototypes/by-format/fodt/validate_against_samples.py
+      - prototypes/by-format/fodt/README.md
+      - prototypes/by-format/fodt/prototype-notes.md
+
+  J_gate4_dec034:
+    type: independent-verification
+    gate: 4
+    format: fodt
+    taskcard: TC-0035
+    result: PASS
+    check_count: 20
+    note: "DEC-034 PASS 20/20. run045 separate from run044 planning session."
+    artifacts_created:
+      - acquisition-packs/fodt/gate4-human-review-packet.md
+
+  K_gate4_approval:
+    type: gate-approval
+    gate: 4
+    format: fodt
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-08"
+    approval_run: run045
+    files_updated:
+      - registry/format-registry.yaml (gate_4: passed + gate_5: planning_ready)
+      - acquisition-packs/fodt/pack.yaml (gate_4: passed + gate_5: planning_ready)
+      - taskcards/TC-0034-fodt-gate4-parser-prototype.md (COMPLETED)
+      - taskcards/TC-0035-fodt-gate4-dec034-verification.md (COMPLETED)
+      - plans/master-plan.md Section 6 table (5 rows updated)
+
+  L_gate8_planning:
+    type: planning
+    gate: 8
+    format: fods
+    artifacts_created:
+      - taskcards/TC-0036-fods-gate8-security-review.md
+      - acquisition-packs/fods/gate8-security-plan.md
+    status: planning_ready
+    blocked_until: explicit Gate 8 execution prompt
+
+  M_gate5_planning:
+    type: planning
+    gate: 5
+    format: fodt
+    artifacts_created:
+      - taskcards/TC-0037-fodt-gate5-neutral-model.md
+      - acquisition-packs/fodt/gate5-neutral-model-plan.md
+    status: planning_ready
+    blocked_until: explicit Gate 5 execution prompt
+
+prohibited_artifacts:
+  - src/python/fods/
+  - src/python/fodt/
+  - src/net/fods/
+  - src/net/fodt/
+  - reports/security/
+  - reports/legal/
+  - schemas/neutral-model/fodt/
+  - .github/workflows/
+  - .env
+
+bundle_requirements:
+  - acquisition-packs/fods/gate7-malformed-fuzz-report.md
+  - acquisition-packs/fodt/gate4-human-review-packet.md
+  - taskcards/TC-0033-fods-gate7-malformed-fuzz-testing.md (COMPLETED)
+  - taskcards/TC-0034-fodt-gate4-parser-prototype.md (COMPLETED)
+  - taskcards/TC-0035-fodt-gate4-dec034-verification.md (COMPLETED)
+  - taskcards/TC-0036-fods-gate8-security-review.md
+  - taskcards/TC-0037-fodt-gate5-neutral-model.md
+  - acquisition-packs/fods/gate8-security-plan.md
+  - acquisition-packs/fodt/gate5-neutral-model-plan.md
+  - prototypes/by-format/fodt/fodt_parser.py
+  - tests/fixtures/fods/malformed/ (18 files)
+  - registry/format-registry.yaml
+  - plans/master-plan.md (v2.41)
+  - tools/evidence/contracts/run045-combined-sprint.yaml
+
+master_plan_version_required: "2.41"
+bundle_validation_required: true
