@@ -1521,11 +1521,12 @@ plan-repair-review.md. The plan-repair sprint (S-F2F-00) corrected all defects a
 
 - S-F2F-00 (plan repair): CLOSED_VERIFIED — S-F2F-00B closure sprint 2026-05-08; commit 881e333; evidence independently verified PASS
 - S-F2F-01 (playbook schema + policy): CLOSED_VERIFIED — executed 2026-05-08; independently verified S-F2F-01B 2026-05-08; schemas/playbook/ + docs/playbook-layer.md created; no replay tools, no apply mode, no acquisition-pack playbooks
-- S-F2F-02 through S-F2F-08: proposed_pending_human_approval — NOT authorized
+- S-F2F-02 (playbook validation tool): completed_pending_independent_verification — executed 2026-05-08; tools/playbook/validate_playbook.py (read-only, no writes, no replay, no apply mode); 30/30 tests PASS; jsonschema fallback structural validation confirmed; no MAIN SPRINT deviation
+- S-F2F-03 through S-F2F-08: proposed_pending_human_approval — NOT authorized
 
-No gate statuses were changed by S-F2F-00 or S-F2F-01. S-F2F-01 created schema and policy
-artifacts only. All S-F2F taskcards from S-F2F-02 onward require separate explicit human
-authorization before execution.
+No gate statuses were changed by S-F2F-00, S-F2F-01, or S-F2F-02. S-F2F-02 created a
+read-only validation tool and tests only. All S-F2F taskcards from S-F2F-03 onward require
+separate explicit human authorization before execution.
 
 ### Secondary Phase Map
 
@@ -1533,7 +1534,7 @@ authorization before execution.
 |-------|----------|-------|---------------|
 | S0 | S-F2F-00 | Plan repair (COMPLETE) | None |
 | S1 | S-F2F-01 | Playbook schema + policy doc only | CLOSED_VERIFIED (2026-05-08) |
-| S2 | S-F2F-02 | Playbook validation tool (read-only) | S-F2F-01 complete |
+| S2 | S-F2F-02 | Playbook validation tool (read-only) | COMPLETE (2026-05-08) — 30/30 tests PASS |
 | S3 | S-F2F-03 | Dry-run replay + review queue export | S-F2F-02 complete |
 | S4 | S-F2F-04 | Golden dry-run tests | S-F2F-03 complete |
 | S5 | S-F2F-05 | ODF-flat family playbook docs | S-F2F-01 complete (parallel to S2-S4) |
@@ -1553,9 +1554,10 @@ will be created until the appropriate gate sequence is satisfied.
 
 ### Next Possible Secondary Action
 
-S-F2F-01 is CLOSED_VERIFIED (S-F2F-01B independent verification complete, 2026-05-08).
+S-F2F-02 is completed_pending_independent_verification (executed 2026-05-08).
 The next possible secondary actions are:
-- S-F2F-02 (Playbook Validation Tool) or S-F2F-05 (ODF-Flat Family Playbook)
+- S-F2F-02 independent verification (DEC-034 separate session) then S-F2F-02 CLOSED_VERIFIED
+- S-F2F-03 (Dry-run Replay + Review Queue) or S-F2F-05 (ODF-Flat Family Playbook)
   — each requires a separate explicit human authorization prompt naming the taskcard.
 
 This section is informational only. Execution of any S-F2F sprint beyond S-F2F-01 requires
