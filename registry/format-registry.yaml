@@ -181,10 +181,10 @@ formats:
         approval_run: run048
         notes: "Gate 10 executed run048 (2026-05-08). OSS scope Tiers 0-2 (12 features). Packaging plan: format-factory-fods v0.1.0. TC-6 iterparse required, TC-1 defusedxml recommended. DEC-034 PASS 20/20 inline. TC-0044 COMPLETED. Gate 10 APPROVED by Babar Raza (run048 execution prompt, 2026-05-08). Authorizes Gate 11 commercial planning (pending DEC-033 resolution)."
       gate_11:
-        status: not_started
+        status: planning_ready
         approved_by: null
         approved_date: null
-        notes: null
+        notes: "Gate 11 planning executed run050 (2026-05-08). DEC-033 unresolved. Python FOSS source independent of Gate 11 (authorized via Phase 4 Python prompt after Gate 10). .NET source blocked by DEC-033. Gate 11 PASS requires DEC-033 resolution + .NET implementation + explicit prompt."
 
   - format_id: fodt
     display_name: "Flat OpenDocument Text"
@@ -339,16 +339,20 @@ formats:
         approval_run: run048
         notes: "Gate 8 executed run048 (2026-05-08). GATE8_SECURITY_REVIEW: PASS. TC-1 XXE MITIGATED (Expat default). TC-2 file size MITIGATED (100MB). TC-5 malformed MITIGATED (Gate 7 18/18). TC-6 memory DEFERRED to Gate 10. TC-7 recursion (_collect_list_items) PARTIALLY MITIGATED deferred to Gate 10. TC-0046 DEC-034 PASS inline (authorized by run048 prompt). Gate 8 APPROVED by Babar Raza (run048 execution prompt, 2026-05-08). Authorizes FODT Gate 9 product mapping planning only."
       gate_9:
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-08"
+        tier_map: acquisition-packs/fodt/tier-map.yaml
+        first_oss_release_tiers: [0, 1, 2]
+        dec034_inline_authorized: true
+        approval_run: run050
+        notes: "Gate 9 executed run050 (2026-05-08). Tier map v1.0: 5 tiers 16 features. First OSS Tiers 0-2 (12 features). DEC-034 PASS 10/10 inline (authorized by run050 prompt). TC-0048 COMPLETED. Approves FODT Gate 10 OSS readiness planning only. No product source created."
+      gate_10:
         status: planning_ready
         approved_by: null
         approved_date: null
-        tier_map: null
-        notes: "Gate 9 planning created run048 (2026-05-08). TC-0048 not_started. Execution requires explicit Gate 9 prompt."
-      gate_10:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        approval_run: null
+        notes: "Gate 10 planning executed run050 (2026-05-08). OSS scope Tiers 0-2 (12 features). Packaging plan: format-factory-fodt v0.1.0. TC-7 iterative traversal required. TC-6 iterparse required. DEC-034 PASS 10/10 inline. Full code-complete Gate 10 approval requires Phase 4 sprint."
       gate_11:
         status: not_started
         approved_by: null

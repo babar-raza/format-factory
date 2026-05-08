@@ -20,13 +20,13 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "FODS Gate 11 commercial-tier planning taskcard. not_started. Blocked: DEC-033 must be resolved. Created run048 (2026-05-08)."
+notes: "FODS Gate 11 commercial-tier planning taskcard. planning_ready run050 (2026-05-08). Gate 11 PLANNING_READY. DEC-033 unresolved. Python FOSS source independent. .NET source blocked by DEC-033."
 ---
 
 # TC-0047: FODS Gate 11 — Commercial-Tier Planning
 
 **Taskcard ID:** TC-0047
-**Status:** not_started — blocked by DEC-033 (.NET FOSS packaging decision)
+**Status:** planning_ready — DEC-033 unresolved; planning complete (run050, 2026-05-08)
 **Gate:** Gate 11
 **Created:** 2026-05-08 (run048)
 **Prerequisite:** Gate 10 PASSED (Babar Raza, 2026-05-08, run048)

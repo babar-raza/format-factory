@@ -1,0 +1,143 @@
+# run050 Evidence Contract
+#
+# Sprint: FUL Repair, FODT Gate 9/10, FODS Gate 11 Decision, Phase 4 Plans
+# Date: 2026-05-08
+# DEC-034: Same-session inline verification authorized by run050 execution prompt
+#          for FODT Gate 9 (10/10) and Gate 10 (10/10)
+#
+# Sections covered:
+#   B: run049 independent verification (40 checks)
+#   C: Evidence contract repairs (run047 historical, run049 depth fix, validator update)
+#   D: Format Understanding validator tool (tools/format_understanding/)
+#   E: FODS FUL repair (20 facts, 20 reqs, format-profile/product-readiness updated)
+#   F: FODT FUL repair (15 facts, 15 reqs)
+#   G: FODT Gate 9 product mapping (tier-map.yaml v1.0, Babar Raza approved)
+#   H: FODT Gate 10 OSS readiness planning
+#   I: FODS Gate 11 decision (PLANNING_READY, DEC-033 unresolved)
+#   J: Phase 4 source execution plans (FODS+FODT Python, TC-0049..TC-0052)
+#   K: Current-state updates (registry, packs, master-plan, memory, README)
+#   L: This contract
+#   M: Search audit
+#   N: Validation
+#   R: Self-challenge + final metadata
+
+contract_id: run050-ful-repair-fodt-gate9-gate10-fods-gate11
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint_run: run050
+require_clean_git: true
+emergency_blocker_bundle: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run050-ful-repair-fodt-gate9-gate10-fods-gate11.yaml
+require_manifest: true
+current_state_authority: bundle-metadata
+meaningful_final_metadata_required: true
+run049_verification_required: true
+ful_validation_required: true
+fodt_gate9_required_if_eligible: true
+fodt_gate10_required_if_gate9_passes: true
+fods_gate11_decision_required: true
+phase4_source_plan_required_if_ready: true
+no_product_source_created: true
+no_embedding_vector_db: true
+no_production_llm_call: true
+no_push: true
+
+min_metadata_count: 140
+normal_pass_min_metadata: 140
+
+required_repo_files:
+  - tools/evidence/contracts/run050-ful-repair-fodt-gate9-gate10-fods-gate11.yaml
+  - tools/evidence/contracts/run049-combined-sprint.yaml
+  - tools/evidence/contracts/run047-combined-sprint.yaml
+  - tools/evidence/contracts/base-run.yaml
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/format_understanding/validate_format_understanding.py
+  - tests/format_understanding/test_validate_format_understanding.py
+  - acquisition-packs/fods/format-profile.yaml
+  - acquisition-packs/fods/verified-facts.yaml
+  - acquisition-packs/fods/implementation-requirements.yaml
+  - acquisition-packs/fods/parser-strategy.yaml
+  - acquisition-packs/fods/security-surface.yaml
+  - acquisition-packs/fods/product-readiness.yaml
+  - acquisition-packs/fodt/format-profile.yaml
+  - acquisition-packs/fodt/verified-facts.yaml
+  - acquisition-packs/fodt/implementation-requirements.yaml
+  - acquisition-packs/fodt/parser-strategy.yaml
+  - acquisition-packs/fodt/security-surface.yaml
+  - acquisition-packs/fodt/product-readiness.yaml
+  - acquisition-packs/fodt/tier-map.yaml
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+
+required_metadata_files:
+  - run050-summary.md
+  - run050-current-state-and-run049-verification.md
+  - run049-closure-defect-report.md
+  - run050-evidence-policy-repair-report.md
+  - run047-contract-normalization-report.md
+  - evidence-validator-test-report.md
+  - format-understanding-validator-implementation-report.md
+  - fods-ful-repair-and-expansion-report.md
+  - fods-ful-validation-report.md
+  - fods-ful-source-readiness-report.md
+  - fodt-ful-repair-and-expansion-report.md
+  - fodt-ful-validation-report.md
+  - fodt-ful-source-readiness-report.md
+  - fodt-gate9-eligibility-report.md
+  - fodt-gate9-product-mapping-report.md
+  - fodt-gate9-dec034-verification.md
+  - fodt-gate9-approval-boundary-report.md
+  - fodt-gate10-eligibility-report.md
+  - fodt-gate10-oss-readiness-report.md
+  - fodt-gate10-dec034-verification.md
+  - fodt-gate10-approval-boundary-report.md
+  - fods-gate11-eligibility-report.md
+  - fods-gate11-decision-report.md
+  - fods-gate11-dec033-report.md
+  - fods-gate11-source-authorization-boundary-report.md
+  - phase4-source-plan-report.md
+  - phase4-source-boundary-report.md
+  - current-state-update-report.md
+  - no-product-source-check.md
+  - no-embedding-created-check.md
+  - no-production-llm-call-check.md
+  - search-audit.md
+  - current-state-consistency-report.md
+  - self-challenge.md
+  - verdict.md
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - final-git-clean-proof.txt
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/*.chroma/**"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+  - "src/python/fods/**"
+  - "src/python/fodt/**"
+  - "src/net/fods/**"
+  - "src/net/fodt/**"
+  - "reports/legal/**"
+  - ".github/workflows/**"
+  - "tools/product/**"
+  - "schemas/product/**"

@@ -1,7 +1,7 @@
 ---
 taskcard_id: FUL-003
 title: FODT Compiled Format Understanding Package
-status: partial_pending_gate9
+status: verified_pending_gate9_human_review
 created: 2026-05-08
 sprint: memory-sprint-format-understanding-llm-strategy
 visibility: internal
@@ -56,4 +56,4 @@ Human authorizes FUL-003 after FUL-001 approved AND FODT Gate 9 PASSED.
 
 ## Status
 
-partial_pending_gate9 — run049 (2026-05-08). 6 FUL files compiled in acquisition-packs/fodt/ (product-readiness.yaml is PARTIAL: Gate 9 not yet passed). Must be updated after Gate 9 approval.
+verified_pending_gate9_human_review — run049 (2026-05-08). 6 FUL files compiled in acquisition-packs/fodt/ (product-readiness.yaml is PARTIAL: Gate 9 not yet passed). Must be updated after Gate 9 approval.

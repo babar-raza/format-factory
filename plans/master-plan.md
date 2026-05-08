@@ -3,10 +3,10 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.45 (run049: Format Understanding Packages compiled — FUL-001 schemas (6), FUL-002 FODS 6 files, FUL-003 FODT 6 files partial; stale state repairs; contract closure policy patched; XML-first consolidation; LLM policy preservation confirmed)
+**Version:** 2.46 (run050: FUL repair 20/20 FODS 15/15 FODT; FODT Gate 9 PASSED; FODT Gate 10 PLANNING_READY; FODS Gate 11 PLANNING_READY; Phase 4 plans created; FUL validator tool) (run049: Format Understanding Packages compiled — FUL-001 schemas (6), FUL-002 FODS 6 files, FUL-003 FODT 6 files partial; stale state repairs; contract closure policy patched; XML-first consolidation; LLM policy preservation confirmed)
 **Last updated:** 2026-05-08
 **Current phase:** Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready.
-**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 9 planning_ready (TC-0048 not_started). Format Understanding Layer: FUL-001 schemas (run049; 6 schemas in schemas/format-understanding/); FUL-002 FODS package COMPLETED (run049; 6 files in acquisition-packs/fods/); FUL-003 FODT package partial (run049; 6 files in acquisition-packs/fodt/, product-readiness.yaml partial Gate 9 required). Stale state repaired (memory/09, master-plan Section 6). Contract closure policy patched. No product source. last_completed_run: run049. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 9 PASSED (TC-0048 COMPLETED; tier-map.yaml v1.0; DEC-034 PASS 10/10 inline; run050). Format Understanding Layer: FUL-001 schemas (run049; 6 schemas in schemas/format-understanding/); FUL-002 FODS package COMPLETED (run049; 6 files in acquisition-packs/fods/); FUL-003 FODT package partial (run049; 6 files in acquisition-packs/fodt/, product-readiness.yaml partial Gate 9 required). Stale state repaired (memory/09, master-plan Section 6). Contract closure policy patched. No product source. last_completed_run: run050. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
@@ -1055,7 +1055,7 @@ The exact final Git HEAD for each run is authoritative in `bundle-metadata/git-l
 `bundle-metadata/git-status-final.txt` in the run's evidence bundle.
 See `docs/current-state-and-evidence-authority.md`.
 
-**last_completed_run:** run049 (exact final HEAD in bundle-metadata/git-log.txt)
+**last_completed_run:** run050 (exact final HEAD in bundle-metadata/git-log.txt)
 **run049 commit set:** 2b0d448 + 8fd26fa + 3964298 + f487d5e + 743fa38 + ba6aad2 + 740514f + 594f1a2 + 1c75d7e + 365ff9a + 8552d1c
 **run044 commit set:** 0e732c3
 **run043 commit set (informational):** bc92729
@@ -1649,5 +1649,5 @@ All agents and human contributors must capture discovered gaps in durable repo a
 
 ---
 
-*End of plans/master-plan.md — version 2.44 — 2026-05-08*
+*End of plans/master-plan.md — version 2.46 — 2026-05-08*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

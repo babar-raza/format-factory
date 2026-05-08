@@ -1,7 +1,7 @@
 ---
 taskcard_id: FUL-002
 title: FODS Compiled Format Understanding Package
-status: COMPLETED
+status: completed
 created: 2026-05-08
 sprint: memory-sprint-format-understanding-llm-strategy
 visibility: internal
@@ -80,4 +80,4 @@ Human authorizes FUL-002 execution after FUL-001 design is approved.
 
 ## Status
 
-COMPLETED — run049 (2026-05-08). 6 FUL files compiled in acquisition-packs/fods/. FUL-001 schemas used.
+COMPLETED — run049/run050 (2026-05-08). 6 FUL files compiled. run050: YAML quote bug fixed, expanded to 20 facts + 20 requirements. FUL validator PASS.
