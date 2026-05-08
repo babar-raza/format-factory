@@ -77,7 +77,7 @@ This file captures the current state after run044. FODS Gates 1-6 PASSED. TC-002
 | TC-0034 status | **not_started** — FODT Gate 4 parser prototype; planning created run044; explicit prompt required |
 | TC-0035 status | **not_started** — FODT Gate 4 DEC-034 verification; requires separate session from TC-0034 |
 | Evidence contracts | 16 contracts (after run044): + run044-combined-sprint |
-| last_completed_run | run044 — commit PENDING |
+| last_completed_run | run044 — commit 0e732c3 |
 | Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md) |
 | Master plan version | 2.40 (run044) |
 | AGENTS.md sections | A through Z (26 sections) |
