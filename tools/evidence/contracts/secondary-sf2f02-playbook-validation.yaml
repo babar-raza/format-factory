@@ -1,0 +1,147 @@
+contract_id: secondary-sf2f02-playbook-validation
+description: >
+  S-F2F-02 Playbook Validation Tool sprint. Creates a minimal, read-only Python validator
+  for acquisition playbook YAML files. No replay engine, no apply mode, no review queues,
+  no acquisition-pack playbooks, no MAIN SPRINT gate state changes.
+  Subordinate secondary sprint — MAIN SPRINT remains the only active delivery path.
+created_run: secondary-sf2f02-playbook-validation
+sprint_id: S-F2F-02
+executed: "2026-05-08"
+plan_repair_only: false
+require_clean_git: true
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+min_metadata_count: 70
+no_push: true
+
+required_repo_files:
+  - tools/playbook/__init__.py
+  - tools/playbook/validate_playbook.py
+  - tests/playbook/__init__.py
+  - tests/playbook/test_playbook_schema.py
+  - tests/playbook/fixtures/valid-acquisition-playbook.yaml
+  - tests/playbook/fixtures/invalid-missing-required-field.yaml
+  - tests/playbook/fixtures/invalid-forbidden-authority.yaml
+  - tests/playbook/fixtures/valid-review-queue.yaml
+  - tests/playbook/fixtures/invalid-review-queue-missing-items.yaml
+  - docs/playbook-layer.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - taskcards/S-F2F-02-playbook-validation-only.md
+  - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  - plans/master-plan.md
+  - tools/evidence/contracts/secondary-sf2f02-playbook-validation.yaml
+  - memory/MEMORY.md
+
+forbidden_patterns:
+  - .git/
+  - .env
+  - .local/
+  - "*.pyc"
+  - __pycache__/
+  - tools/playbook/replay_acquisition_playbook.py
+  - tools/playbook/diff_playbook_outputs.py
+  - tools/playbook/export_review_queue.py
+  - tools/playbook/create_golden_case.py
+  - tests/playbook/golden/
+  - acquisition-packs/fods/playbook.yaml
+  - acquisition-packs/fodt/playbook.yaml
+  - acquisition-packs/_families/
+  - schemas/product/
+  - tools/product/
+  - plans/review-queues/
+  - "src/python/"
+  - "src/net/"
+  - "tests/playbook/test_replay_dry_run.py"
+
+checks:
+  no_gate_status_changed: true
+  no_product_source_created: true
+  no_parser_created: true
+  no_neutral_model_created: true
+  no_replay_engine_created: true
+  no_apply_mode_created: true
+  no_review_queue_output: true
+  no_acquisition_pack_playbook: true
+  no_family_playbook_created: true
+  no_samples_created: true
+  no_endpoint_call: true
+  no_new_spec_download: true
+  no_embedding_vector_db: true
+  no_main_sprint_deviation: true
+  no_push: true
+  validator_writes_no_files: true
+
+required_metadata_files:
+  - sprint-summary.md
+  - eligibility-verification.md
+  - main-sprint-non-deviation-check.md
+  - no-gate-status-change-check.md
+  - no-implementation-overreach-check.md
+  - no-replay-engine-check.md
+  - no-apply-mode-check.md
+  - no-review-queue-output-check.md
+  - no-acquisition-pack-playbook-check.md
+  - no-family-playbook-check.md
+  - no-product-source-check.md
+  - no-parser-neutral-model-check.md
+  - no-samples-created-check.md
+  - no-endpoint-call-check.md
+  - no-new-spec-download-check.md
+  - no-push-check.md
+  - validator-writes-no-files-check.md
+  - test-run-report.md
+  - test-coverage-summary.md
+  - cli-behavior-report.md
+  - jsonschema-availability-report.md
+  - fallback-validation-report.md
+  - structural-validation-depth-report.md
+  - forbidden-authority-check-report.md
+  - valid-fixture-pass-report.md
+  - invalid-fixture-fail-report.md
+  - exit-code-verification-report.md
+  - json-output-mode-report.md
+  - format-id-required-verification.md
+  - docs-example-conformance-report.md
+  - schema-gap-noted-report.md
+  - playbook-layer-doc-update-report.md
+  - agents-md-update-report.md
+  - governance-md-update-report.md
+  - taskcard-status-update-report.md
+  - plan-v2-update-report.md
+  - master-plan-update-report.md
+  - current-truth-review.md
+  - format-agnostic-verification.md
+  - read-only-boundary-verification.md
+  - no-write-proof.md
+  - reproducibility-review.md
+  - all-format-applicability-review.md
+  - risk-register-review.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - yaml-validation-notes.txt
+  - python-source-validation-notes.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - commit-hash-verification.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - git-log.txt
+  - repo-tree.txt
+  - artifact-index-snapshot.yaml
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - self-challenge.md
+  - verdict.md
+  - secondary-sprint-isolation-check.md
+  - sprint-boundary-check.md
+  - independence-verification-reminder.md
+  - sf2f02-eligibility-verification.md
+  - tool-implementation-review.md
+  - test-design-review.md
