@@ -539,3 +539,64 @@ product schemas (schemas/product/), or product source (src/python/, src/net/) ar
 until product-track gates (Gate 10+) explicitly unlock source work and a human authorization
 prompt names the specific sprint (S-F2F-07 or S-F2F-08). Secondary sprint documentation
 (S-F2F-07: design docs only) requires Gate 8 PASSED as a hard prerequisite.
+
+---
+
+## AB. Discovered Gap Backlog Capture Rule (memory sprint 2026-05-08)
+
+**AB1. Discovered Gaps Must Be Captured.** When any agent identifies a missing architectural
+layer, missing capability, or structural weakness that is NOT authorized for immediate execution
+in the current sprint, the agent MUST still create or update at least one durable local artifact:
+(1) roadmap (`ROADMAP.md`), (2) backlog (master-plan.md Gap Register or Backlog section),
+(3) taskcard (`taskcards/` — status: proposed_pending_human_approval), (4) memory file (`memory/`),
+(5) risk/gap register in master-plan.md, or (6) future sprint recommendation. The gap must NOT
+remain only in chat or only in an evidence bundle.
+
+**AB2. Gap Entry Requirements.** Every captured gap entry must include: what the gap is,
+why it matters, owner (human approval required to act), scope (what is missing, what is
+blocked without it), and future trigger (what condition authorizes addressing it).
+
+**AB3. Scope Boundary.** Capturing a gap does not authorize implementing it. Backlog taskcards
+must be marked `proposed_pending_human_approval`. Implementation requires an explicit
+human-authorized execution prompt naming the taskcard, sprint, and allowed files.
+
+**AB4. Gap Register vs. Chat.** Gaps discovered in chat that are not in the Gap Register or
+backlog taskcards are considered undocumented gaps — a governance violation equivalent to
+"I noticed a gap but proceeded anyway without logging it" (see GOVERNANCE.md Section 10.5).
+
+---
+
+## AC. Format Understanding Layer and LLM/Embedding Strategy (memory sprint 2026-05-08)
+
+**AC1. Format Understanding Layer is a Required Backlog Layer.** Before Phase 4 product source
+begins for any format, a compiled Format Understanding Layer should exist (or be explicitly
+waived). See `docs/format-understanding-layer.md`. The six per-format files are:
+format-profile.yaml, verified-facts.yaml, implementation-requirements.yaml,
+parser-strategy.yaml, security-surface.yaml, product-readiness.yaml.
+
+**AC2. Product Source Must Not Precede Compiled Understanding (unless waived).** Creating
+src/python/{format}/ or src/net/{format}/ before the relevant FUL files are available
+requires explicit human waiver recorded in the decision register.
+
+**AC3. LLM Use is Authorized for Future Governed Work (backlog).** Controlled use of LLMs
+and embeddings via `llm.professionalize.com` is authorized for future sprints under governance.
+Model families: GPT OSS, Qwen Next, embedding models. See `docs/llm-and-embedding-strategy.md`.
+No production LLM calls in this memory sprint.
+
+**AC4. LLMs Are Not Authority.** LLMs may propose facts, summaries, draft code, and suggest
+edge cases. They are not gate approval authority, not spec authority, not legal authority, and
+not replacement for citations, DEC-034, or human approval.
+
+**AC5. Embeddings Are Retrieval, Not Truth.** Embedding indexes are controlled retrieval tools.
+They are not truth authority. Every embedding entry must include provenance (source hash, source
+path, spec version, chunk ID, model name, created_at, refresh policy). Preferred source content:
+verified-facts.yaml and implementation-requirements.yaml, not raw uncited spec chunks.
+
+**AC6. No Secrets in Repo.** API keys, tokens, and model credentials must not be committed.
+Environment variables only. Redact all credentials from logs and evidence bundles.
+
+**AC7. Non-XML Formats Are Backlog.** The immediate focus is XML-type formats (text_xml).
+Non-XML adaptability (zip_container, binary_records, compound_document, delimited_text, json_like)
+is backlog only. See `docs/format-representation-model.md`. The architecture must avoid
+hardcoding XML-only assumptions, but non-XML implementation is not authorized without explicit
+human prompt.

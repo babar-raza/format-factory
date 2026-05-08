@@ -168,6 +168,42 @@ Alongside format acquisition, several infrastructure milestones are tracked:
 | Release manifest generator | Phase 3+ | TC-0006 |
 | CI boundary check | Phase 4+ | (future taskcard) |
 | SQLite artifact index | Phase 3+ if needed | Decision DEC-020 |
+| Format Understanding Layer design | Before Phase 4+ source | FUL-001 (backlog) |
+| FODS compiled understanding package | After FUL-001; FODS Gate 9 PASSED | FUL-002 (backlog) |
+| FODT compiled understanding package | After FUL-001; FODT Gate 9 PASSED | FUL-003 (backlog) |
+| LLM model discovery (llm.professionalize.com) | After LLM-001 authorized | LLM-001 (backlog) |
+| Embedding/retrieval architecture | After LLM-001 + FUL-001 | EMB-001 (backlog) |
+| Format representation profile schema | After FUL-001 | REP-001 (backlog) |
+| Non-XML adaptability architecture | After REP-001; non-XML candidate identified | REP-003 (backlog) |
+| Non-Aspose candidate registry | Human authorization | NAC-001 (backlog) |
+
+---
+
+## Architecture Backlog (added memory sprint 2026-05-08)
+
+### Format Understanding Layer
+
+Format knowledge accumulated through gates 1–9 is scattered. Before Phase 4 product source begins,
+each format should have compiled understanding artifacts (format-profile.yaml, verified-facts.yaml,
+implementation-requirements.yaml, parser-strategy.yaml, security-surface.yaml, product-readiness.yaml).
+See `docs/format-understanding-layer.md`.
+
+### Controlled LLM and Embedding Strategy
+
+Controlled use of `llm.professionalize.com` (GPT OSS, Qwen Next, embedding models) is authorized
+for future governed work. LLMs propose — they do not approve. Embeddings are retrieval, not truth.
+See `docs/llm-and-embedding-strategy.md`.
+
+### XML-First Focus; Non-XML Adaptability Backlog
+
+The pipeline is validated for XML-type formats (text_xml). Non-XML formats (zip_container,
+binary_records, compound_document, etc.) are explicit backlog. Architecture avoids XML-only
+hardcoding. See `docs/format-representation-model.md`.
+
+### Non-Aspose Format Candidate Registry
+
+A visible registry of formats underserved by Aspose products is planned. Candidates must be
+verified before claiming Aspose non-overlap. See `docs/non-aspose-format-candidate-registry-plan.md`.
 
 ---
 

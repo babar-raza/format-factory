@@ -305,6 +305,61 @@ regardless of replay success or family reuse level.
 
 ---
 
+---
+
+## 21. Discovered Gap Backlog Capture Rule (memory sprint 2026-05-08)
+
+**21.1.** Any gap discovered by any contributor (human or agent) that is not authorized for
+immediate execution must be captured in at least one durable local artifact before the session
+ends: the Gap Register in `plans/master-plan.md`, a `taskcards/` entry with status
+`proposed_pending_human_approval`, a `memory/` file update, or the roadmap. Discovered gaps
+must not remain only in chat or only in evidence bundles.
+
+**21.2.** This rule extends Section 10.1 (Gap Logging Requirement) to explicitly cover gaps
+that are out of scope for the current sprint. The gap must be recorded even if no resolution
+is authorized or planned.
+
+**21.3.** Each captured gap entry (wherever recorded) must include: description, owner,
+what it blocks, reason it is not in scope now, and future trigger.
+
+---
+
+## 22. Format Understanding Layer, LLM Strategy, and Non-XML Adaptability (memory sprint 2026-05-08)
+
+**22.1. Format Understanding Layer is a Required Planning Layer.** Before Phase 4 product
+source begins for any format, a compiled Format Understanding Layer should be in place or
+explicitly waived by the project lead. See `docs/format-understanding-layer.md` for the
+plan. The six per-format target files are: format-profile.yaml, verified-facts.yaml,
+implementation-requirements.yaml, parser-strategy.yaml, security-surface.yaml,
+product-readiness.yaml. These are in backlog (FUL-001 through FUL-005).
+
+**22.2. Controlled LLM and Embedding Use Authorized for Future Work.** The project lead
+authorizes controlled use of `llm.professionalize.com` model families (GPT OSS, Qwen Next,
+embedding models) for future governed format understanding work. This authorization does not
+authorize production LLM calls in any sprint unless an explicit execution prompt names the
+taskcard, model family, and allowed outputs. See `docs/llm-and-embedding-strategy.md`.
+
+**22.3. LLMs Are Not Gate Approvers or Spec Authority.** No LLM output becomes a verified
+fact without citation and deterministic or human verification. LLMs may not approve gates,
+classify legal status, or replace human review or DEC-034.
+
+**22.4. Embeddings Are Controlled Retrieval.** Embedding indexes (when built) must use
+verified-facts-first content strategy, include full provenance metadata, and must not be
+treated as truth authority. See AGENTS.md Section AC.
+
+**22.5. Non-XML Adaptability Is Explicit Backlog.** The current pipeline is validated for
+XML-type formats (text_xml). Non-XML formats (zip_container, binary_records, compound_document)
+are backlog. The pipeline architecture must avoid hardcoding XML-only assumptions, but no
+non-XML implementation is authorized without explicit human prompt. See
+`docs/format-representation-model.md`.
+
+**22.6. Non-Aspose Candidate Registry Is Planned.** A registry of formats underserved by
+Aspose products will be maintained at `registry/non-aspose-format-candidates.yaml` (future).
+Candidates may not be claimed as not-supported by Aspose without verification evidence.
+See `docs/non-aspose-format-candidate-registry-plan.md`.
+
+---
+
 ## Relationship to Other Documents
 
 - `AGENTS.md` — non-negotiable operating rules for agents
@@ -316,3 +371,7 @@ regardless of replay success or family reuse level.
 - `docs/specification-normalization.md` — specification normalization layer policy
 - `tools/evidence/_readme.md` — evidence bundle contract system
 - `docs/current-state-and-evidence-authority.md` — run-state authority model and current-state policy
+- `docs/format-understanding-layer.md` — Format Understanding Layer backlog plan
+- `docs/llm-and-embedding-strategy.md` — LLM and embedding strategy
+- `docs/format-representation-model.md` — format representation categories and non-XML adaptability backlog
+- `docs/non-aspose-format-candidate-registry-plan.md` — non-Aspose candidate registry plan

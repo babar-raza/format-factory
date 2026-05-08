@@ -1,0 +1,163 @@
+# Memory Sprint — Format Understanding Layer and LLM Strategy
+# Evidence Contract
+# Sprint: memory-format-understanding-and-llm-strategy
+# Date: 2026-05-08
+# Purpose: Memory and roadmap synchronization sprint — captures strategic decisions into
+#          local repo memory, backlog, governance, and roadmap. No MAIN SPRINT gate changes.
+#          No secondary implementation. No product source. No embeddings. No LLM production calls.
+
+contract_id: memory-format-understanding-and-llm-strategy
+version: "1.0"
+sprint_type: memory_sprint
+description: "Memory sprint: Format Understanding Layer + LLM strategy + non-XML backlog + non-Aspose registry + discovered-gap capture rule. No gate changes. No product source."
+
+# Current-state authority policy (run041+)
+current_state_authority: bundle-metadata
+
+# Git state: working tree is DIRTY with MAIN_SPRINT_OWNED run048 changes.
+# Memory sprint files are committed separately. Clean git not achievable without staging
+# MAIN_SPRINT_OWNED run048 files. emergency_blocker_bundle: true to allow dirty git.
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Working tree contains uncommitted MAIN_SPRINT_OWNED run048 changes (FODS Gate 10, FODT Gates 7-8 files). Memory sprint commits only MEMORY_SPRINT_ALLOWED files. Classified: MAIN_SPRINT_OWNED — do not stage or revert."
+
+# Memory sprint constraints
+memory_sprint: true
+no_main_sprint_gate_change: true
+no_secondary_execution: true
+no_product_source_created: true
+no_embedding_created: true
+no_vector_db_created: true
+no_llm_production_call: true
+no_new_spec_download: true
+no_push: true
+backlog_capture_required: true
+
+# Minimum metadata depth
+# Note: emergency_blocker_bundle = true allows below-floor count per base-run policy.
+# Memory sprint produces 55+ metadata files by design.
+min_metadata_count: 55
+normal_pass_min_metadata: 30
+
+# Required top-level folders
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+# Forbidden path patterns
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/ocal/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/embeddings/**"
+  - "**/vector/**"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/*.chroma/**"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+  - "repo/src/net/**"
+  - "repo/src/python/fods/**"
+  - "repo/src/python/fodt/**"
+  - "repo/reports/legal/**"
+  - "repo/.github/workflows/**"
+  - "repo/.local/vector/**"
+  - "repo/.local/embeddings/**"
+  - "repo/.local/chromadb/**"
+  - "repo/.local/qdrant/**"
+  - "repo/.local/faiss/**"
+  - "repo/tools/playbook/**"
+  - "repo/tests/playbook/**"
+  - "repo/acquisition-packs/fods/playbook.yaml"
+  - "repo/acquisition-packs/fodt/playbook.yaml"
+  - "repo/acquisition-packs/_families/**"
+
+# Required repo files
+required_repo_files:
+  - plans/master-plan.md
+  - ROADMAP.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - memory/11-format-understanding-and-llm-strategy.md
+  - docs/format-understanding-layer.md
+  - docs/llm-and-embedding-strategy.md
+  - docs/format-representation-model.md
+  - docs/non-aspose-format-candidate-registry-plan.md
+  - taskcards/FUL-001-format-understanding-layer-design.md
+  - taskcards/FUL-002-fods-format-understanding-package.md
+  - taskcards/FUL-003-fodt-format-understanding-package.md
+  - taskcards/FUL-004-product-source-consumes-format-understanding.md
+  - taskcards/LLM-001-llm-professionalize-model-discovery.md
+  - taskcards/EMB-001-controlled-embedding-retrieval-design.md
+  - taskcards/REP-001-format-representation-profile.md
+  - taskcards/REP-003-non-xml-adaptability-backlog.md
+  - taskcards/NAC-001-non-aspose-format-candidate-registry.md
+  - taskcards/GOV-001-discovered-gap-backlog-capture-rule.md
+  - tools/evidence/contracts/memory-format-understanding-and-llm-strategy.yaml
+
+# Required metadata files
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - memory-sprint-summary.md
+  - memory-sprint-current-state-review.md
+  - discussion-decision-capture-report.md
+  - format-understanding-layer-backlog-report.md
+  - llm-professionalize-strategy-report.md
+  - xml-first-scope-report.md
+  - non-xml-adaptability-backlog-report.md
+  - non-aspose-candidate-registry-backlog-report.md
+  - discovered-gap-capture-rule-report.md
+  - taskcard-creation-report.md
+  - master-plan-update-report.md
+  - roadmap-update-report.md
+  - memory-update-report.md
+  - governance-update-report.md
+  - no-main-sprint-gate-change-check.md
+  - no-secondary-execution-check.md
+  - no-product-source-check.md
+  - no-embedding-created-check.md
+  - no-vector-db-created-check.md
+  - no-llm-production-call-check.md
+  - no-new-spec-download-check.md
+  - no-push-check.md
+  - current-state-consistency-report.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - yaml-validation-notes.txt
+  - json-validation-notes.txt
+  - markdown-validation-notes.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - artifact-index-snapshot.yaml
+  - evidence-contract-validation-report.md
+  - self-challenge.md
+  - verdict.md
+  - final-state-summary.yaml
+  - future-main-sprint-guidance.md
+  - future-secondary-sprint-guidance.md
+  - llm-usage-boundary-check.md
+  - embedding-authority-boundary-check.md
+  - format-representation-boundary-check.md
+  - product-source-readiness-boundary-check.md
+  - local-memory-diff-summary.md
+  - backlog-coverage-matrix.yaml
+  - final-bundle-validation-proof.txt
+  - final-git-clean-proof.txt
+  - controlled-embedding-backlog-report.md

@@ -1566,5 +1566,84 @@ human authorization conditions above to be met.
 
 ---
 
-*End of plans/master-plan.md — version 2.42 — 2026-05-08*
+---
+
+## Section 37 — Format Understanding Layer, LLM Strategy, and Architecture Backlog
+
+**Added:** memory sprint 2026-05-08
+**Status:** Backlog only. No items in this section are authorized for immediate execution.
+
+### 37.1 Format Understanding Layer (Backlog)
+
+Format knowledge is currently scattered across 12–20+ acquisition pack files per format.
+Before Phase 4 product source begins, a compiled Format Understanding Layer should exist for each format.
+See `docs/format-understanding-layer.md` for the full plan.
+
+**Per-format target files:**
+- `acquisition-packs/{format}/format-profile.yaml` — format classification, spec reference
+- `acquisition-packs/{format}/verified-facts.yaml` — spec-cited deterministic facts
+- `acquisition-packs/{format}/implementation-requirements.yaml` — product-facing requirements
+- `acquisition-packs/{format}/parser-strategy.yaml` — parser design decisions
+- `acquisition-packs/{format}/security-surface.yaml` — compiled security findings
+- `acquisition-packs/{format}/product-readiness.yaml` — compiled readiness from Gate 9/10
+
+**Backlog taskcards:** FUL-001, FUL-002, FUL-003, FUL-004, FUL-005
+
+### 37.2 Controlled LLM and Embedding Strategy (Backlog)
+
+Controlled use of `llm.professionalize.com` model families is authorized for future governed work.
+- Model families: GPT OSS, Qwen Next, embedding models
+- LLMs may propose facts, summaries, requirements, code drafts — NOT authority
+- Embeddings/vector DB are controlled retrieval — NOT truth authority
+- Embeddings should use verified-facts-first content strategy
+- No secrets committed; no raw transcripts in bundles
+
+See `docs/llm-and-embedding-strategy.md` for full policy.
+
+**Backlog taskcards:** LLM-001, LLM-002, EMB-001, EMB-002, EMB-003
+
+### 37.3 XML-first Focus; Non-XML Adaptability Backlog
+
+Current pipeline validated for XML-type formats (text_xml). Non-XML adaptability is explicit backlog.
+Architecture must avoid hardcoding XML-only assumptions.
+
+Physical representation categories defined: text_xml, zip_container, binary_records, compound_document, delimited_text, json_like, hybrid_container.
+
+See `docs/format-representation-model.md` for adaptation ranges and pipeline reuse analysis.
+
+**Backlog taskcards:** REP-001, REP-002, REP-003, REP-004, REP-005
+
+### 37.4 Non-Aspose Format Candidate Registry (Backlog)
+
+A visible registry of formats underserved by Aspose is planned at `registry/non-aspose-format-candidates.yaml`.
+Candidates must be verified before claiming Aspose non-overlap.
+
+See `docs/non-aspose-format-candidate-registry-plan.md`.
+
+**Backlog taskcards:** NAC-001, NAC-002, NAC-003, NAC-004
+
+### 37.5 Discovered Gap Backlog Capture Rule
+
+All agents and human contributors must capture discovered gaps in durable repo artifacts (roadmap, backlog, taskcard, memory, gap register) — not only in chat or evidence bundles. See AGENTS.md Section AB and GOVERNANCE.md Section 21.
+
+**Governance taskcard:** GOV-001
+
+### 37.6 Infrastructure Milestones Added
+
+| Milestone | Phase | Taskcard |
+|---|---|---|
+| Format Understanding Layer design | Before Phase 4+ source | FUL-001 |
+| FODS compiled understanding package | After FUL-001; FODS Gate 9 PASSED | FUL-002 |
+| FODT compiled understanding package | After FUL-001; FODT Gate 9 PASSED | FUL-003 |
+| Product source consumes FUL | After FUL-002 or FUL-003; Phase 4 prompt | FUL-004 |
+| LLM model discovery preflight | After LLM-001 authorized | LLM-001 |
+| Embedding/retrieval architecture design | After LLM-001 + FUL-001 | EMB-001 |
+| Format representation profile schema | After FUL-001 | REP-001 |
+| Non-XML adaptability architecture | After REP-001; non-XML format identified | REP-003 |
+| Non-Aspose candidate registry | Human authorization | NAC-001 |
+| Discovered-gap governance rule | Next governance update sprint | GOV-001 |
+
+---
+
+*End of plans/master-plan.md — version 2.44 — 2026-05-08*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
