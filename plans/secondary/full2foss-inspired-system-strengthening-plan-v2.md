@@ -410,7 +410,7 @@ Deferred until product-track gates explicitly authorize source work.
 |------|-------|-------|--------|--------------------------|
 | S-F2F-00 | S0 | Plan repair | completed_by_plan_repair | N/A |
 | S-F2F-01 | S1 | Playbook schema + policy | CLOSED_VERIFIED (S-F2F-01B, 2026-05-08) | YES — no gate conflict |
-| S-F2F-02 | S2 | Validation tool | proposed | YES — tool dev only |
+| S-F2F-02 | S2 | Validation tool | completed_pending_independent_verification — executed 2026-05-08 | YES — tool dev only |
 | S-F2F-03 | S3 | Dry-run + review queue | proposed | YES — no apply mode |
 | S-F2F-04 | S4 | Golden dry-run tests | proposed | YES — tests only |
 | S-F2F-05 | S5 | ODF-flat family playbook | proposed | YES — docs only |
