@@ -203,6 +203,20 @@ def auto_generate_git_metadata(repo_root, metadata_dir):
         status_path.write_text(status_result.stdout, encoding="utf-8")
         generated.append("git-status-final.txt")
 
+    # repo-tree.txt — sorted list of all tracked repo files at bundle build time
+    tree_result = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
+        cwd=repo_root,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if tree_result.returncode == 0:
+        tree_path = metadata_path / "repo-tree.txt"
+        tree_path.write_text(tree_result.stdout, encoding="utf-8")
+        generated.append("repo-tree.txt")
+
     return generated
 
 
@@ -303,6 +317,14 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
             if mf.is_file():
                 metadata_files.append(mf.name)
 
+    # Auto-generate git-log.txt, git-status-final.txt, repo-tree.txt before validation
+    # so required_metadata_files checks can see them.
+    if metadata_path and metadata_path.exists() and not dry_run:
+        auto_generated = auto_generate_git_metadata(str(repo_root), str(metadata_path))
+        for ag in auto_generated:
+            if ag not in metadata_files:
+                metadata_files.append(ag)
+
     # Validation
     errors = []
 
@@ -378,15 +400,6 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
             print(f"  - {e}")
         print("\nBUNDLE_BUILD: FAIL")
         return False
-
-    # Auto-generate git-log.txt and git-status-final.txt (final-state authority)
-    # These capture the exact Git HEAD at bundle build time.
-    # See docs/current-state-and-evidence-authority.md.
-    if metadata_path and metadata_path.exists() and not dry_run:
-        auto_generated = auto_generate_git_metadata(str(repo_root), str(metadata_path))
-        for ag in auto_generated:
-            if ag not in metadata_files:
-                metadata_files.append(ag)
 
     # Generate manifest before building zip
     if metadata_path:
