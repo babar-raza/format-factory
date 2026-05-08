@@ -1047,7 +1047,7 @@ The exact final Git HEAD for each run is authoritative in `bundle-metadata/git-l
 See `docs/current-state-and-evidence-authority.md`.
 
 **last_completed_run:** run041
-**run042 commit set:** PENDING — commits appended after run042 git commit
+**run042 commit set:** b6e4316
 **run041 commit set (informational):** f16ddf0
 **run040 commit set (informational):** b3cfdd7 + 2ca4b78 + d4e6390 + a60826a + f451804 + 1bdafb5 + a4f79e0 + 931ef34 + 411180a
 **run039 commit set:** 48f6a0d + 8cd2ed2 + 075edca + d052510 + 54a27dc
@@ -1304,7 +1304,7 @@ See `docs/current-state-and-evidence-authority.md`.
 **Committed (2d5548a, run041 post-commit):**
 - plans/master-plan.md Section 33 updated; memory/09 run041 state recorded
 
-**Committed (run042 commits — PENDING):**
+**Committed (b6e4316, run042):**
 - tools/evidence/validate_evidence_bundle.py (HARDENED — matches_forbidden exact-match fix; NORMAL_PASS_METADATA_DEPTH check)
 - tools/evidence/contracts/base-run.yaml v1.2 (min_metadata_count→30; normal_pass_min_metadata:30)
 - tests/evidence/test_negative_bundle_validation.py (UPDATED — 2 new tests; 8/8 PASS)
