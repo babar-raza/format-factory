@@ -90,12 +90,16 @@ def count_non_empty_csv(sheets: list) -> int:
 
 
 def load_parser_via_subprocess(sample_path: Path):
-    """Run prototype parser as subprocess, return parsed JSON or None."""
+    """Run prototype parser as subprocess, return parsed JSON or None.
+
+    Parser CLI: python fods_parser.py <file.fods> [output.json]
+    When no output.json is provided, JSON is written to stdout.
+    """
     import subprocess
     try:
         result = subprocess.run(
             [sys.executable, "prototypes/by-format/fods/fods_parser.py",
-             "--output", "json", str(sample_path)],
+             str(sample_path)],
             capture_output=True, text=True, timeout=30
         )
         if result.returncode == 0 and result.stdout.strip():

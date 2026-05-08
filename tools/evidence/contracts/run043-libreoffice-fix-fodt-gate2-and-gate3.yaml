@@ -1,0 +1,196 @@
+# run043 Evidence Contract
+#
+# Sprint: LibreOffice blocker resolution + FODS Gate 6 oracle execution +
+#         FODT Gate 2 DEC-034 verification + FODT Gate 2 human approval +
+#         FODT Gate 3 sample corpus creation
+# Date: 2026-05-08
+# Sections covered:
+#   B: run042 independent verification (20+ checks)
+#   C: run042 regression fixes
+#   D: LibreOffice blocker resolution (soffice.com discovery; oracle preflight PASS)
+#   E: FODS Gate 6 oracle execution (TC-0026 COMPLETED; 3/4 PASS 1/4 WARN)
+#   F: TC-0031 FODT Gate 2 DEC-034 independent verification (20/20 PASS)
+#   G: FODT Gate 2 human approval recorded (Babar Raza, 2026-05-08)
+#   H: FODT Gate 3 sample corpus (4 synthetic samples, 4/4 PASS)
+#   I: master-plan v2.39, memory/09, ROADMAP, registry, settings.json updates
+#   J: run043 evidence contract (this file)
+#   K: git commit
+#   L+M: search audit + final validation
+#   N: evidence bundle build + validation
+#   O+P: artifact index, run record, self-challenge
+#
+# Key outcomes:
+#   - LibreOffice blocker RESOLVED: soffice.com (console-mode) added to candidate list
+#   - oracle_common.py fixed: .com before .exe; auto-.com when env var points to .exe
+#   - run_fods_oracle.py fixed: --infilter=OpenDocument Spreadsheet Flat XML
+#   - compare_fods_oracle.py fixed: parser subprocess CLI call (positional args)
+#   - ORACLE_PREFLIGHT: PASS (9th attempt, first PASS)
+#   - ORACLE_RUN: PASS 4/4; ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN
+#   - WARN: multi-sheet-basic.fods SHEET_COUNT_MISMATCH (documented LO CSV export limit)
+#   - gate6-oracle-comparison-report.md created; TC-0026 COMPLETED
+#   - TC-0031 DEC-034 PASS 20/20 checks
+#   - FODT Gate 2 PASSED (Babar Raza, 2026-05-08); TC-0030 CLOSED
+#   - 4 FODT Gate 3 samples created + validated (FODT_SAMPLE_VALIDATION: PASS 4/4)
+#   - validate_fodt_samples.py NEW; TC-0032 created (not_started)
+#   - samples/_provenance.yaml: 4 FODT entries added (SHA-256 confirmed)
+#   - registry: FODS gate_6 updated; FODT gate_2 PASSED; FODT gate_3 corpus created
+#
+# Version: 1.0
+
+contract_id: run043-libreoffice-fix-fodt-gate2-and-gate3
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint_run: run043
+require_clean_git: true
+emergency_blocker_bundle: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run043-libreoffice-fix-fodt-gate2-and-gate3.yaml
+require_manifest: true
+min_metadata_count: 52
+normal_pass_min_metadata: 52
+
+required_metadata_files:
+  # Core bundle metadata (always required)
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - repo-tree.txt
+  - sprint-summary.md
+  - evidence-contract-validation-report.md
+  - verdict.md
+  - self-challenge.md
+  - files-reviewed.txt
+  - files-modified.txt
+  # Oracle tooling fix records
+  - soffice-com-version.txt
+  - soffice-com-discovery-record.txt
+  - oracle-infilter-fix-record.txt
+  - compare-parser-fix-record.txt
+  # Oracle execution evidence (FODS Gate 6)
+  - oracle-preflight-run9.txt
+  - oracle-run-fods.txt
+  - oracle-compare-fods.txt
+  - oracle-summary-fods.txt
+  - oracle-per-sample-minimal-spreadsheet.json
+  - oracle-per-sample-multi-sheet-basic.json
+  - oracle-per-sample-typed-values-basic.json
+  - oracle-per-sample-formula-basic.json
+  - oracle-comparison-summary.json
+  - tc0026-completion-record.txt
+  # TC-0031 FODT Gate 2 DEC-034 verification
+  - fodt-gate2-dec034-verification-report.txt
+  - tc0031-completion-record.txt
+  # FODT Gate 2 human approval
+  - gate2-human-approval-record.txt
+  - fodt-gate2-approval-record.txt
+  # run042 independent verification
+  - run042-verification-report.txt
+  # FODT Gate 3 sample corpus
+  - fodt-gate3-samples-validation.txt
+  - fodt-gate3-corpus-manifest.txt
+  - fodt-gate3-provenance-record.txt
+  - fodt-sample-xml-wellformed-check.txt
+  - fodt-sample-root-element-check.txt
+  - fodt-sample-mimetype-check.txt
+  - fodt-sample-version-check.txt
+  - fodt-sample-body-check.txt
+  # FODT sample SHA-256 hashes
+  - fodt-minimal-sha256.txt
+  - fodt-headings-sha256.txt
+  - fodt-list-sha256.txt
+  - fodt-table-sha256.txt
+  # TC-0032 creation record
+  - tc0032-creation-record.txt
+  # Registry update records
+  - registry-gate6-update.txt
+  - registry-fodt-gate2-update.txt
+  - registry-fodt-gate3-update.txt
+  # Spec SHA-256 verification
+  - spec-sha256-verify-run043.txt
+  # Master plan and governance update records
+  - master-plan-version.txt
+  - memory09-update-record.txt
+  - roadmap-update-record.txt
+  - settings-update-record.txt
+  # Contract validation
+  - run043-contract-validation.txt
+
+required_repo_files:
+  # Oracle tooling (fixed in run043)
+  - tools/oracle/oracle_common.py
+  - tools/oracle/run_fods_oracle.py
+  - tools/oracle/compare_fods_oracle.py
+  - tools/oracle/preflight_oracle.py
+  - tools/oracle/summarize_oracle_results.py
+  - tools/oracle/self_test_oracle_harness.py
+  # Gate 6 oracle report
+  - acquisition-packs/fods/gate6-oracle-comparison-report.md
+  - acquisition-packs/fods/gate6-oracle-blocker-report.md
+  # TC-0026 (COMPLETED)
+  - taskcards/TC-0026-fods-gate6-oracle-execution.md
+  # FODT Gate 2 evidence (verified + approved)
+  - acquisition-packs/fodt/spec-evidence.md
+  - acquisition-packs/fodt/legal-notes.md
+  - acquisition-packs/fodt/pack.yaml
+  - acquisition-packs/fodt/gate2-human-review-packet.md
+  - acquisition-packs/fodt/gate2-planning.md
+  - acquisition-packs/fodt/sample-sources.md
+  - acquisition-packs/fodt/parser-notes.md
+  # TC-0030 (CLOSED) + TC-0031 (COMPLETED) + TC-0032 (not_started)
+  - taskcards/TC-0030-fodt-gate2-spec-legal-evidence.md
+  - taskcards/TC-0031-fodt-gate2-dec034-independent-verification.md
+  - taskcards/TC-0032-fodt-gate3-dec034-independent-verification.md
+  # FODT Gate 3 samples
+  - samples/by-format/fodt/minimal-document.fodt
+  - samples/by-format/fodt/headings-and-paragraphs.fodt
+  - samples/by-format/fodt/list-basic.fodt
+  - samples/by-format/fodt/table-basic.fodt
+  # FODT sample validation tool
+  - tools/samples/validate_fodt_samples.py
+  # Provenance record (updated with 4 FODT entries)
+  - samples/_provenance.yaml
+  # Registry
+  - registry/format-registry.yaml
+  # FODT scoring package
+  - registry/candidates/fodt-gate1-scoring-package.yaml
+  # Evidence tooling
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/contracts/base-run.yaml
+  - tools/evidence/contracts/run043-libreoffice-fix-fodt-gate2-and-gate3.yaml
+  # Negative tests
+  - tests/evidence/test_negative_bundle_validation.py
+  # Plans and governance
+  - plans/master-plan.md
+  - ROADMAP.md
+  - README.md
+  - AGENTS.md
+  # Memory
+  - memory/09-current-state-before-phase1.md
+  # Settings
+  - .claude/settings.json
+
+forbidden_paths:
+  - .env
+  - .local/
+  - .git/
+  - __pycache__/
+  - "*.pyc"
+  - reports/security/
+  - reports/legal/
+  - src/python/open-source/
+  - src/dotnet/open-source/
+  - src/dotnet/commercial/
+  - samples/by-format/other-formats/
+  - schemas/neutral-model/other-formats/
+  - prototypes/by-format/other-formats/
+  - tests/fixtures/
+  - tests/oracle/
+  - tests/fuzz/
+  - .github/
+  - src/net/
+  - src/python/fods/
+  - src/python/fodt/
+  - prototypes/by-format/fodt/
+  - schemas/neutral-model/fodt/

@@ -3,16 +3,16 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.38 (run042: run041 independently verified PASS (47 checks); evidence-contract repair (base-run.yaml v1.2: min_metadata_count→30, normal_pass_min_metadata:30); validate_evidence_bundle.py hardened (matches_forbidden exact-match fix for .env.example; NORMAL_PASS_METADATA_DEPTH check); 8/8 negative tests PASS; fodt-gate1-scoring-package.yaml CANDIDATE-ONLY header replaced with GATE 1 APPROVED record; TC-0030 FODT Gate 2 executed: 8/8 fast-path items, SHA-256 MATCH (3rd verify), patent waived; gate2-human-review-packet.md created; TC-0031 created (DEC-034 pending); oracle preflight re-run 8 FAIL (8 consecutive: run035–run042))
+**Version:** 2.39 (run043: run042 independently verified PASS (40+ checks); oracle_common.py soffice.com fix; LibreOffice 26.2.3.2 installed via winget; run_fods_oracle.py FODS input filter fixed; compare_fods_oracle.py parser CLI fixed; ORACLE_RUN PASS 4/4; ORACLE_COMPARE PASS 3/4 PASS 1/4 WARN; TC-0026 COMPLETED; TC-0031 FODT Gate 2 DEC-034 PASS (20/20 checks); FODT Gate 2 APPROVED Babar Raza 2026-05-08; FODT Gate 3 samples created 4/4 PASS; TC-0032 created; TC-0026 COMPLETED; oracle blocker RESOLVED)
 **Last updated:** 2026-05-08
-**Current phase:** Phase 3: FODS Gate 5 PASSED, Gate 6 oracle blocked. FODT Gate 1 PASSED (Babar Raza, 2026-05-07). FODT Gate 2 evidence executed (run042).
-**Current status:** FODS: Gate 1-5 PASSED. Gate 6: oracle_blocked_missing_tool (8 consecutive FAIL). FODT: Gate 1 PASSED (Babar Raza, 2026-05-07, run041); Gate 2 evidence_cached_pending_independent_verification (TC-0030 executed run042; TC-0031 not_started). TC-0028 COMPLETED. TC-0029 COMPLETED. TC-0026 blocked_missing_oracle_tool. TC-0027 not_started. TC-0031 not_started (FODT Gate 2 DEC-034). No product source. last_completed_run: run041. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current phase:** Phase 3: FODS Gates 1-5 PASSED. Gate 6: oracle comparison PASS (pending TC-0027 verification + human approval). FODT Gates 1-2 PASSED. Gate 3 samples created (pending TC-0032 verification + human approval).
+**Current status:** FODS: Gate 1-5 PASSED. Gate 6: oracle_comparison_created_pending_independent_verification (TC-0026 COMPLETED run043; TC-0027 not_started). FODT: Gate 1 PASSED (Babar Raza, 2026-05-07, run041); Gate 2 PASSED (Babar Raza, 2026-05-08, run043; TC-0031 PASS); Gate 3 sample_corpus_created_pending_independent_verification (run043; TC-0032 not_started). TC-0028 COMPLETED. TC-0029 COMPLETED. TC-0030 CLOSED. TC-0031 COMPLETED. TC-0032 not_started (FODT Gate 3 DEC-034). No product source. last_completed_run: PENDING (run043 commit pending). Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
-**FODT Gate 1 allowed:** YES — Gate 1 PASSED (run041, Babar Raza, 2026-05-07). FODT Gate 2 requires explicit execution prompt.
-**Commit allowed:** YES — run041 authorized by execution prompt.
-**Next required action:** (1) FODS: install LibreOffice, re-execute TC-0026. (2) FODT: TC-0031 DEC-034 independent verification sprint (separate session) → then Gate 2 human approval prompt.
+**FODT Gate 2 allowed:** YES — Gate 2 PASSED (run043, Babar Raza, 2026-05-08). FODT Gate 3 samples created (run043). Gate 3 requires TC-0032 DEC-034 verification + human approval.
+**Commit allowed:** YES — run043 authorized by execution prompt.
+**Next required action:** (1) FODS: TC-0027 DEC-034 oracle verification sprint → Gate 6 human approval. (2) FODT: TC-0032 DEC-034 Gate 3 verification sprint (separate session) → Gate 3 human approval prompt.
 
 ---
 
@@ -1317,6 +1317,24 @@ See `docs/current-state-and-evidence-authority.md`.
 - taskcards/TC-0030 (status → evidence_executed_pending_dec034_verification; acceptance criteria updated)
 - taskcards/TC-0031 (NEW — DEC-034 independent verification; not_started)
 - plans/master-plan.md v2.38; memory/09, ROADMAP.md, README.md updated
+
+**Committed (run043 — PENDING):**
+- tools/oracle/oracle_common.py (FIXED — soffice.com added before soffice.exe in LIBREOFFICE_CANDIDATES; env var .com variant auto-try on Windows)
+- tools/oracle/run_fods_oracle.py (FIXED — --infilter=OpenDocument Spreadsheet Flat XML; --convert-to csv:Text - txt - csv (StarCalc))
+- tools/oracle/compare_fods_oracle.py (FIXED — parser subprocess CLI call corrected)
+- acquisition-packs/fods/gate6-oracle-comparison-report.md (NEW — 3/4 PASS, 1/4 WARN, multi-sheet CSV limit)
+- acquisition-packs/fods/gate6-oracle-blocker-report.md (UPDATED — BLOCKER RESOLVED; run043 improvements documented)
+- taskcards/TC-0026 (→ COMPLETED — oracle comparison executed run043)
+- taskcards/TC-0031 (→ COMPLETED — 20/20 PASS; DEC-034 satisfied)
+- taskcards/TC-0030 (→ CLOSED — Gate 2 APPROVED)
+- taskcards/TC-0032 (NEW — FODT Gate 3 DEC-034 verification; not_started)
+- acquisition-packs/fodt/pack.yaml (gate_2 → passed; Babar Raza, 2026-05-08)
+- acquisition-packs/fodt/gate2-human-review-packet.md (→ APPROVED)
+- registry/format-registry.yaml (FODT gate_2 → passed; gate_3 → sample_corpus_created; FODS gate_6 → oracle_comparison_created; next_allowed_action updated)
+- samples/by-format/fodt/ (NEW — 4 FODT samples: minimal-document.fodt, headings-and-paragraphs.fodt, list-basic.fodt, table-basic.fodt; FODT_SAMPLE_VALIDATION: PASS 4/4)
+- tools/samples/validate_fodt_samples.py (NEW — FODT Gate 3 sample validation tool)
+- samples/_provenance.yaml (UPDATED — 4 FODT entries, all provenance_status: confirmed)
+- plans/master-plan.md v2.39; memory/09, ROADMAP.md, settings.json updated
 
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 

@@ -1,7 +1,7 @@
 # Acquisition Pack — FODT (Flat OpenDocument Text)
 #
 # Gate 1: PASSED (Babar Raza, 2026-05-07, run041)
-# Gate 2: NOT STARTED — evidence draft pending (fast-path expected)
+# Gate 2: PASSED (Babar Raza, 2026-05-08, run043)
 # Skeleton created: run041 (2026-05-07) after Gate 1 human approval
 # Spec: ODF 1.3 (already cached from FODS acquisition — .local/spec-cache/fods/1.3/)
 
@@ -81,9 +81,9 @@ stages:
     approval_run: run041
     notes: "Scored run039 (88/100, Accept band). DEC-034 independently verified run040 (7/7 factors). Gate 1 approved by Babar Raza in run041 execution prompt."
   gate_2:
-    status: evidence_cached_pending_independent_verification
-    approved_by: null
-    approved_date: null
+    status: passed
+    approved_by: "Babar Raza"
+    approved_date: "2026-05-08"
     fast_path: true
     fast_path_items_met: 8
     fast_path_total_items: 8
@@ -91,9 +91,12 @@ stages:
     patent_search_waiver_basis: "Same as FODS Gate 2 waiver (Babar Raza, 2026-05-05) — OASIS RF covers all ODF 1.3 sub-formats"
     evidence_executed_run: run042
     evidence_executed_date: "2026-05-08"
+    dec034_verified_run: run043
+    dec034_verified_date: "2026-05-08"
     sha256_verified_run: run042
     sha256_status: "MATCH (3rd verification)"
-    notes: "Gate 2 evidence executed run042 (2026-05-08). 8/8 fast-path items confirmed. Patent search waived (same basis as FODS). DEC-034 independent verification pending (TC-0031). Status will advance to evidence_cached_pending_human_review after DEC-034 PASS."
+    approval_run: run043
+    notes: "Gate 2 evidence executed run042 (2026-05-08). 8/8 fast-path items confirmed. Patent search waived (same basis as FODS). DEC-034 independently verified run043 (20/20 checks PASS). Gate 2 approved by Babar Raza in run043 execution prompt (2026-05-08)."
   gate_3:
     status: not_started
     approved_by: null

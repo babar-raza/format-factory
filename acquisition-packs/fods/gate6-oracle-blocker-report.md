@@ -7,7 +7,7 @@ visibility: internal
 publish_allowed: false
 generated_by: claude
 generated_at: "2026-05-07"
-notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist). Updated run037 (oracle provider strategy, provider registry, validate_oracle_environment.py, provider options doc, preflight re-run 3). Updated run038 (harness self-test HARNESS_SELF_TEST_ONLY PASS 4/4, operator handoff, TC-0026 blocker wording corrected, preflight re-run 4). Updated run039 (current-state consistency tool, FODT scoring package, ODF reuse strategy, preflight re-run 5 — 5 consecutive FAIL). Updated run040 (clean-git loophole closed, consistency checker strengthened, FODT Gate 1 scoring verified DEC-034, human-review packet created, preflight re-run 6 — 6 consecutive FAIL)."
+notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hardened run036 (oracle_common.py, env var support, improved diagnostics, installation checklist). Updated run037 (oracle provider strategy, provider registry, validate_oracle_environment.py, provider options doc, preflight re-run 3). Updated run038 (harness self-test HARNESS_SELF_TEST_ONLY PASS 4/4, operator handoff, TC-0026 blocker wording corrected, preflight re-run 4). Updated run039 (current-state consistency tool, FODT scoring package, ODF reuse strategy, preflight re-run 5 — 5 consecutive FAIL). Updated run040 (clean-git loophole closed, consistency checker strengthened, FODT Gate 1 scoring verified DEC-034, human-review packet created, preflight re-run 6 — 6 consecutive FAIL). Updated run043 (BLOCKER RESOLVED: LibreOffice 26.2.3.2 installed via winget; oracle_common.py fixed for soffice.com; compare_fods_oracle.py parser call fixed; ORACLE_RUN PASS 4/4; ORACLE_COMPARE PASS 3 PASS 1 WARN; TC-0026 COMPLETED)."
 ---
 
 # FODS Gate 6 Oracle Blocker Report
@@ -15,14 +15,31 @@ notes: "Gate 6 oracle blocker report for FODS. Created run035 (2026-05-07). Hard
 **Format:** FODS
 **Gate:** 6 — Oracle Comparison
 **Status:** oracle_blocked_missing_tool
-**Prepared by:** run035 (2026-05-07); updated run036 (2026-05-07); updated run037 (2026-05-07); updated run038 (2026-05-07); updated run039 (2026-05-07); updated run040 (2026-05-07)
-**Gate 6 approved:** NO — blocked, cannot proceed to approval
+**Prepared by:** run035 (2026-05-07); updated run036–run040 (2026-05-07); updated run043 (2026-05-08)
+**Gate 6 approved:** NO — oracle comparison completed; pending TC-0027 independent verification then human approval
 
 ---
 
-## Blocker: LibreOffice Not Installed
+## BLOCKER RESOLVED (run043)
 
-Gate 6 oracle preflight has been executed five times — during run035 (initial), run036 (re-run with hardened harness), run037 (re-run with provider registry), run038 (re-run with harness self-test + operator handoff), and run039 (re-run with current-state consistency tool). All five runs produced `ORACLE_PREFLIGHT: FAIL`. The oracle tool (LibreOffice headless) was not found on the development machine.
+Gate 6 oracle blocker was resolved in run043 (2026-05-08):
+
+- LibreOffice 26.2.3.2 installed via `winget install -e --id TheDocumentFoundation.LibreOffice`
+- `oracle_common.py` updated: added `soffice.com` (Windows console-mode variant) to candidates before `soffice.exe` (GUI wrapper that does not write to stdout in subprocess capture)
+- `run_fods_oracle.py` updated: `--infilter=OpenDocument Spreadsheet Flat XML` + `--convert-to csv:Text - txt - csv (StarCalc)` for correct FODS→CSV conversion
+- `compare_fods_oracle.py` updated: parser subprocess call fixed to correct CLI convention
+- **ORACLE_PREFLIGHT: PASS** — LibreOffice 26.2.3.2 found at `C:\Program Files\LibreOffice\program\soffice.com`
+- **ORACLE_RUN: PASS** — 4/4 samples converted
+- **ORACLE_COMPARE: PASS** — 3/4 PASS, 1/4 WARN (multi-sheet CSV export limitation, expected)
+- **TC-0026: COMPLETED** (oracle comparison executed)
+
+Gate 6 is now pending TC-0027 independent verification, then human approval.
+
+---
+
+## Historical Blocker: LibreOffice Not Installed (runs 035–042)
+
+Gate 6 oracle preflight was executed 9 times before resolution — run035 (initial), run036–041 (re-runs with various harness improvements), run042 (8th consecutive FAIL), run043 pre-install (9th consecutive FAIL). The oracle tool (LibreOffice headless) was not installed on the development machine during these runs.
 
 ---
 
@@ -242,13 +259,40 @@ Despite the oracle tool still being unavailable, the following harness improveme
 
 ---
 
+## Improvements Completed (run043)
+
+| Deliverable | Status | Notes |
+|---|---|---|
+| LibreOffice 26.2.3.2 | **INSTALLED** | Via `winget install -e --id TheDocumentFoundation.LibreOffice` (official source, 355 MB MSI) |
+| `tools/oracle/oracle_common.py` | **FIXED** | Added `soffice.com` before `soffice.exe` in LIBREOFFICE_CANDIDATES; also auto-try `.com` variant when env var points to `.exe` |
+| `tools/oracle/run_fods_oracle.py` | **FIXED** | Replaced wrong `--infilter=calc_csv:44,34,UTF8` with `--infilter=OpenDocument Spreadsheet Flat XML`; `--convert-to` uses `csv:Text - txt - csv (StarCalc)` |
+| `tools/oracle/compare_fods_oracle.py` | **FIXED** | `load_parser_via_subprocess` call corrected: was `--output json <path>` (wrong), now `<path>` (correct CLI convention) |
+| Oracle preflight re-run 10 | **PASS** | ORACLE_PREFLIGHT: PASS — `soffice.com` found at `C:\Program Files\LibreOffice\program\soffice.com` |
+| `python tools/oracle/run_fods_oracle.py` | **PASS** | ORACLE_RUN: PASS — 4/4 samples converted to CSV |
+| `python tools/oracle/compare_fods_oracle.py` | **PASS** | ORACLE_COMPARE: PASS — 3/4 PASS, 1/4 WARN (multi-sheet CSV limit) |
+| `python tools/oracle/summarize_oracle_results.py` | **PASS** | ORACLE_SUMMARIZE: PASS |
+| `acquisition-packs/fods/gate6-oracle-comparison-report.md` | **CREATED** | 3 PASS, 1 WARN — oracle_comparison_created_pending_independent_verification |
+
+## TC Status After run043
+
+| Taskcard | Status |
+|---|---|
+| TC-0025 (Gate 6 planning) | completed |
+| TC-0026 (Gate 6 execution) | **COMPLETED** — oracle comparison PASS 3/4 PASS 1/4 WARN |
+| TC-0027 (Gate 6 verification) | not_started — DEC-034 independent verification required before human Gate 6 review |
+| TC-0028 (Next-format candidate shortlist) | COMPLETED (run041) |
+| TC-0029 (FODT Gate 1 scoring preparation) | COMPLETED (run041) |
+| TC-0030 (FODT Gate 2) | COMPLETED (run042) — FODT Gate 2 APPROVED (run043) |
+| TC-0031 (FODT Gate 2 DEC-034) | COMPLETED (run043) — independent verification PASS |
+
+---
+
 ## Gate 6 Next Action
 
-**next_allowed_action:** install_oracle_tool_then_execute_tc0026
+**next_allowed_action:** tc0027_independent_verification_then_human_gate6_review
 
-1. Install LibreOffice per [oracle-operator-handoff.md](oracle-operator-handoff.md) (most complete instructions)
-2. Run `python tools/oracle/preflight_oracle.py --verbose` to confirm
-3. Run `python tools/oracle/validate_oracle_environment.py --format fods` to verify registry check
-4. Issue explicit TC-0026 execution prompt naming Oracle path and version (exact prompt text in oracle-operator-handoff.md Section 8)
+1. TC-0027: Execute FODS Gate 6 DEC-034 independent verification sprint (separate session)
+2. After TC-0027 PASS: submit Gate 6 human review to Babar Raza
+3. Human approval: "FODS Gate 6 APPROVED" with date and run reference
 
-Gate 6 is NOT approved. No oracle comparison data exists.
+Gate 6 oracle comparison data exists. Gate 6 is NOT approved. Human approval required after TC-0027.

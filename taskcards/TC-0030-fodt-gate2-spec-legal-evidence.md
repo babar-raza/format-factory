@@ -28,7 +28,7 @@ notes: "FODT Gate 2 spec/legal evidence taskcard. Created run041 (2026-05-07) af
 **Taskcard ID:** TC-0030
 **Phase:** 3 (parallel execution alongside FODS Gate 6)
 **Gate:** 2 (Spec/Legal Evidence)
-**Status:** evidence_executed_pending_dec034_verification
+**Status:** CLOSED — Gate 2 APPROVED (Babar Raza, 2026-05-08, run043)
 **Created:** 2026-05-07 (run041)
 **Executed:** 2026-05-08 (run042)
 **Created by:** claude-sonnet-4-6 (run041)

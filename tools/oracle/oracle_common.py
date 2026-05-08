@@ -53,13 +53,19 @@ EXPECTED_SAMPLES = [
 SOFFICE_ENV_VAR = "FORMAT_FACTORY_SOFFICE"
 
 # --- Standard candidate paths (in discovery priority order) ---
+# NOTE: On Windows, soffice.exe is a GUI wrapper that opens a dialog box when
+# --version is called and does not write to stdout in subprocess capture mode.
+# soffice.com is the console-mode variant that correctly writes to stdout.
+# soffice.com is always tried before soffice.exe on Windows paths.
 
 LIBREOFFICE_CANDIDATES = [
     # PATH discovery
     "soffice",
     "libreoffice",
-    # Windows standard install paths
+    # Windows standard install paths — .com (console) before .exe (GUI wrapper)
+    r"C:\Program Files\LibreOffice\program\soffice.com",
     r"C:\Program Files\LibreOffice\program\soffice.exe",
+    r"C:\Program Files (x86)\LibreOffice\program\soffice.com",
     r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
     # Linux standard paths
     "/usr/bin/soffice",
@@ -96,6 +102,13 @@ def find_soffice(override=None, verbose=False):
     # 2. Environment variable
     env_path = os.environ.get(SOFFICE_ENV_VAR, "").strip()
     if env_path and env_path not in candidates:
+        # On Windows, if the env var points to soffice.exe, also try soffice.com
+        # (console-mode variant that writes to stdout in subprocess capture)
+        if platform.system() == "Windows" and env_path.lower().endswith(".exe"):
+            com_path = env_path[:-4] + ".com"
+            if com_path not in candidates:
+                candidates.append(com_path)
+                source_labels[com_path] = f"env:{SOFFICE_ENV_VAR} (.com variant)"
         candidates.append(env_path)
         source_labels[env_path] = f"env:{SOFFICE_ENV_VAR}"
 

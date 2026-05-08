@@ -28,11 +28,13 @@ notes: "Gate 6 oracle comparison execution taskcard for FODS. Created run034 (20
 **Taskcard ID:** TC-0026
 **Phase:** 3 (Gate 6 execution — future)
 **Gate:** Gate 6 (Oracle Comparison Complete)
-**Status:** blocked_missing_oracle_tool
+**Status:** COMPLETED
 **Created:** 2026-05-06 (run034)
 **Created by:** claude-opus-4-6 (run034)
-**Blocking:** LibreOffice missing — oracle provider unavailable (CORRECTED run038: not "Gate 6 human approval" — Gate 6 approval is the outcome of TC-0026, not a prerequisite)
-**Blocked by:** Oracle provider not installed (LibreOffice not found — 4 preflight runs FAIL: run035/036/037/038)
+**Completed:** 2026-05-08 (run043)
+**Completed by:** claude-sonnet-4-6 (run043)
+**Outcome:** ORACLE_COMPARE: PASS — 3/4 PASS, 1/4 WARN (SHEET_COUNT_MISMATCH on multi-sheet sample, expected LibreOffice CSV export limitation)
+**Previously blocked:** Oracle provider not installed (LibreOffice not found — 9 preflight runs FAIL: run035–run042 + run043 pre-install)
 
 ---
 

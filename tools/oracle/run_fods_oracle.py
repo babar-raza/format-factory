@@ -57,9 +57,13 @@ def convert_fods_to_csv(soffice_path: str, fods_path: Path, out_dir: Path) -> di
             [
                 soffice_path,
                 "--headless",
+                # Input filter: must be specified explicitly so LibreOffice treats
+                # FODS as a Calc (spreadsheet) document, not a Writer document.
+                # Without this, LibreOffice defaults to Writer/Web for .fods files.
+                "--infilter=OpenDocument Spreadsheet Flat XML",
                 "--convert-to",
-                "csv",
-                "--infilter=calc_csv:44,34,UTF8",
+                # Output filter: explicit filter name required for CSV export from Calc.
+                "csv:Text - txt - csv (StarCalc)",
                 "--outdir",
                 str(out_dir),
                 str(fods_path),
