@@ -3,16 +3,16 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.43 (run047: FODS Gate 9 PASS APPROVED Babar Raza 2026-05-08 (tier-map.yaml v1.0; first_oss_release_tiers [0,1,2]); FODT Gate 6 PASS APPROVED Babar Raza 2026-05-08 (FODT_ORACLE_RUN PASS 4/4; FODT_ORACLE_COMPARE PASS); metadata floor RESTORED 4→30; RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added; FODS Gate 10 planning; FODT Gate 7 planning; master-plan v2.43)
+**Version:** 2.44 (run047: FODS Gate 9 PASS APPROVED Babar Raza 2026-05-08 (tier-map.yaml v1.0; first_oss_release_tiers [0,1,2]); FODT Gate 6 PASS APPROVED Babar Raza 2026-05-08 (FODT_ORACLE_RUN PASS 4/4; FODT_ORACLE_COMPARE PASS); metadata floor RESTORED 4→30; RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added; FODS Gate 10 planning; FODT Gate 7 planning; master-plan v2.43)
 **Last updated:** 2026-05-08
-**Current phase:** Phase 3: FODS Gates 1-9 PASSED; Gate 10 planning_ready. FODT Gates 1-6 PASSED; Gate 7 fuzz planning_ready.
-**Current status:** FODS: Gates 1-9 PASSED. Gate 9 APPROVED Babar Raza 2026-05-08 (tier-map.yaml v1.0; first_oss_release_tiers [0,1,2]; TC-0040 COMPLETED). Gate 10 planning_ready (TC-0044 not_started). FODT: Gates 1-6 PASSED. Gate 6 APPROVED Babar Raza 2026-05-08 (FODT_ORACLE_RUN PASS 4/4; FODT_ORACLE_COMPARE PASS; TC-0042/0043 COMPLETED). Gate 7 fuzz planning_ready (TC-0045 not_started). Evidence metadata floor RESTORED to 30 (run047 repair). No product source. last_completed_run: run047. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current phase:** Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready.
+**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 7 APPROVED Babar Raza 2026-05-08 (run048; FODT_GATE7_FUZZ_TEST PASS 18/18; TC-0045 COMPLETED). Gate 8 APPROVED Babar Raza 2026-05-08 (run048; GATE8_SECURITY_REVIEW PASS; TC-7 partially mitigated deferred Gate 10; TC-0046 COMPLETED). Gate 9 planning_ready (TC-0048 not_started). REQUIRED_METADATA_DEPTH check added (run048; min 10 named files for high-count contracts). No product source. last_completed_run: run048. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
 **FODT Gate 6 allowed:** YES — Gate 6 PASSED (Babar Raza, 2026-05-08, run047). Gate 7 fuzz planning_ready; execution requires explicit prompt.
 **Commit allowed:** YES — run047 authorized by execution prompt.
-**Next required action:** (1) FODS Gate 10: explicit TC-0044 execution prompt → OSS scope + packaging plan → DEC-034 → human approval. (2) FODT Gate 7: explicit TC-0045 execution prompt → malformed fixtures + fuzz test → DEC-034 → human approval.
+**Next required action:** (1) FODS Gate 11: DEC-033 must be resolved, then explicit TC-0047 execution prompt. (2) FODT Gate 9: explicit TC-0048 execution prompt → tier-map.yaml → DEC-034 → human approval. (3) Python Phase 4: separate explicit Phase 4 implementation prompt for src/python/fods/ after Gate 10 approval.
 
 ---
 
@@ -1055,7 +1055,7 @@ The exact final Git HEAD for each run is authoritative in `bundle-metadata/git-l
 `bundle-metadata/git-status-final.txt` in the run's evidence bundle.
 See `docs/current-state-and-evidence-authority.md`.
 
-**last_completed_run:** run047 (exact final HEAD in bundle-metadata/git-log.txt)
+**last_completed_run:** run048 (exact final HEAD in bundle-metadata/git-log.txt)
 **run044 commit set:** 0e732c3
 **run043 commit set (informational):** bc92729
 **run042 commit set:** b6e4316 + e31dc66 + fd098c9 + 079ba6d
@@ -1394,6 +1394,32 @@ See `docs/current-state-and-evidence-authority.md`.
 - plans/master-plan.md v2.41; memory/09, settings.json updated
 - (run045 exact final HEAD in bundle-metadata/git-log.txt)
 
+**Committed (run048):**
+- tools/evidence/validate_evidence_bundle.py (HARDENED — REQUIRED_METADATA_DEPTH check; REQUIRED_METADATA_DEPTH_MINIMUM_NAMED=10)
+- tools/evidence/contracts/base-run.yaml v1.4 (UPDATED — run048 note; REQUIRED_METADATA_DEPTH)
+- tools/evidence/contracts/run047-combined-sprint.yaml (PATCHED — test_contract:true; legacy bypass)
+- tools/evidence/contracts/run048-combined-sprint.yaml (NEW — run048 evidence contract)
+- tests/evidence/test_negative_bundle_validation.py (UPDATED — 2 new tests; 13/13 PASS)
+- acquisition-packs/fods/gate10-oss-scope.md (NEW — Tiers 0-2, 12 features)
+- acquisition-packs/fods/gate10-packaging-plan.md (NEW — format-factory-fods v0.1.0)
+- acquisition-packs/fods/gate10-product-source-readiness-report.md (NEW — TC-6/TC-1 addressed)
+- acquisition-packs/fods/gate10-human-review-packet.md (NEW — Gate 10 APPROVED)
+- tests/fixtures/fodt/malformed/ (NEW — 18 malformed FODT fixtures, 4 categories)
+- tools/fuzz/run_fodt_gate7_fuzz_test.py (NEW — FODT Gate 7 fuzz runner)
+- acquisition-packs/fodt/gate7-fuzz-report.md (NEW — FODT_GATE7_FUZZ_TEST PASS 18/18)
+- reports/security/fodt.md (NEW — Gate 8 GATE8_SECURITY_REVIEW PASS; TC-7 partial)
+- taskcards/TC-0046-fodt-gate8-security-review.md (NEW — COMPLETED)
+- taskcards/TC-0047-fods-gate11-commercial-planning.md (NEW — not_started; blocked DEC-033)
+- taskcards/TC-0048-fodt-gate9-product-mapping.md (NEW — not_started)
+- taskcards/TC-0044 (UPDATED — COMPLETED; 4th deliverable added)
+- taskcards/TC-0045 (UPDATED — COMPLETED)
+- registry/format-registry.yaml (FODS gate_10 → passed; FODT gate_7/8 → passed; gate_9 → planning_ready)
+- acquisition-packs/fods/pack.yaml (gate_10 → passed; Babar Raza 2026-05-08)
+- acquisition-packs/fodt/pack.yaml (gate_7/8 → passed; gate_9 → planning_ready)
+- README.md, ROADMAP.md, .claude/settings.json, memory/09 updated
+- plans/master-plan.md v2.44
+- (run048 exact final HEAD in bundle-metadata/git-log.txt)
+
 **Commit policy:** Commits are made only when the human explicitly requests a commit (or the execution prompt authorizes it). An agent must never commit on its own initiative.
 
 ---
@@ -1493,7 +1519,7 @@ plan-repair-review.md. The plan-repair sprint (S-F2F-00) corrected all defects a
 ### Authorization Status
 
 - S-F2F-00 (plan repair): CLOSED_VERIFIED — S-F2F-00B closure sprint 2026-05-08; commit 881e333; evidence independently verified PASS
-- S-F2F-01 (playbook schema + policy): completed_pending_independent_verification — executed 2026-05-08; schemas/playbook/ + docs/playbook-layer.md created; no replay tools, no apply mode, no acquisition-pack playbooks
+- S-F2F-01 (playbook schema + policy): CLOSED_VERIFIED — executed 2026-05-08; independently verified S-F2F-01B 2026-05-08; schemas/playbook/ + docs/playbook-layer.md created; no replay tools, no apply mode, no acquisition-pack playbooks
 - S-F2F-02 through S-F2F-08: proposed_pending_human_approval — NOT authorized
 
 No gate statuses were changed by S-F2F-00 or S-F2F-01. S-F2F-01 created schema and policy
@@ -1505,7 +1531,7 @@ authorization before execution.
 | Phase | Taskcard | Scope | Prerequisites |
 |-------|----------|-------|---------------|
 | S0 | S-F2F-00 | Plan repair (COMPLETE) | None |
-| S1 | S-F2F-01 | Playbook schema + policy doc only | Human approval of S-F2F-01 |
+| S1 | S-F2F-01 | Playbook schema + policy doc only | CLOSED_VERIFIED (2026-05-08) |
 | S2 | S-F2F-02 | Playbook validation tool (read-only) | S-F2F-01 complete |
 | S3 | S-F2F-03 | Dry-run replay + review queue export | S-F2F-02 complete |
 | S4 | S-F2F-04 | Golden dry-run tests | S-F2F-03 complete |
@@ -1526,9 +1552,9 @@ will be created until the appropriate gate sequence is satisfied.
 
 ### Next Possible Secondary Action
 
-S-F2F-01 is complete (pending independent verification). The next possible secondary actions are:
-- S-F2F-01 independent verification sprint (DEC-034, separate session)
-- After verification: S-F2F-02 (Playbook Validation Tool) or S-F2F-05 (ODF-Flat Family Playbook)
+S-F2F-01 is CLOSED_VERIFIED (S-F2F-01B independent verification complete, 2026-05-08).
+The next possible secondary actions are:
+- S-F2F-02 (Playbook Validation Tool) or S-F2F-05 (ODF-Flat Family Playbook)
   — each requires a separate explicit human authorization prompt naming the taskcard.
 
 This section is informational only. Execution of any S-F2F sprint beyond S-F2F-01 requires
