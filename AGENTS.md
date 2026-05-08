@@ -506,11 +506,11 @@ See `tools/evidence/_readme.md` for tooling documentation. See `tools/evidence/c
 
 ---
 
-## AA. Playbook Layer Rules (Proposed — Requires S-F2F-01 Human Approval)
+## AA. Playbook Layer Rules (Schema and Policy Active — S-F2F-01 Complete; Tooling Not Yet Authorized)
 
-**STATUS: PROPOSED ONLY. These rules are NOT active until S-F2F-01 (Playbook Schema and
-Policy) is implemented and explicitly approved by a human. Do not enforce these rules or
-create any playbook artifacts until S-F2F-01 authorization is granted.**
+**STATUS: Schema and policy ACTIVE after S-F2F-01 (2026-05-08). schemas/playbook/ and
+docs/playbook-layer.md exist. Replay tools, apply mode, acquisition-pack playbooks, and
+family playbooks remain unauthorized — see S-F2F-02 through S-F2F-06 for those phases.**
 
 **AA1. Playbooks Are Execution Aids, Not Authority.** Playbook YAML files record what
 operations were performed, what files were expected/produced, what validation commands

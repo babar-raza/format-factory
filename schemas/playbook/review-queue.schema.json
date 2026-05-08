@@ -1,0 +1,303 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://format-factory.internal/schemas/playbook/review-queue.schema.json",
+  "title": "PlaybookReviewQueue",
+  "description": "Schema for format-factory playbook review queue. A review queue records unresolved deterministic replay conflicts from a playbook run. Review queues CANNOT approve gates, CANNOT replace DEC-034 independent verification, CANNOT replace evidence contracts, and CANNOT replace human approval. Items with severity 'high' or 'blocker' MUST block apply mode.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "queue_id",
+    "run_id",
+    "generated_at",
+    "source_playbook_id",
+    "source_format_id",
+    "items",
+    "summary",
+    "governance"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["1.0"],
+      "description": "Version of this schema."
+    },
+    "queue_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+      "description": "Unique identifier for this review queue instance."
+    },
+    "run_id": {
+      "type": "string",
+      "description": "Sprint or run identifier that produced this queue."
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 datetime when this queue was generated."
+    },
+    "source_playbook_id": {
+      "type": "string",
+      "description": "playbook_id of the playbook that produced this queue."
+    },
+    "source_format_id": {
+      "type": "string",
+      "description": "format_id of the format being acquired."
+    },
+    "items": {
+      "type": "array",
+      "description": "List of review items requiring human or independent-verifier attention.",
+      "items": {
+        "$ref": "#/definitions/review_item"
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total_items", "open_items", "blocker_count", "high_count", "blocks_apply_mode", "blocks_gate_progress"],
+      "properties": {
+        "total_items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "open_items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocker_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "high_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "medium_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "low_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocks_apply_mode": {
+          "type": "boolean",
+          "description": "True if any open item with severity high or blocker exists."
+        },
+        "blocks_gate_progress": {
+          "type": "boolean",
+          "description": "True if any open item with blocks_gate_progress=true exists."
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cannot_approve_gates",
+        "cannot_replace_dec034",
+        "cannot_replace_evidence_contracts",
+        "cannot_replace_human_approval",
+        "high_severity_blocks_apply",
+        "gate_progress_requires_resolution"
+      ],
+      "properties": {
+        "cannot_approve_gates": {
+          "type": "boolean",
+          "enum": [true],
+          "description": "Review queue cannot approve any gate."
+        },
+        "cannot_replace_dec034": {
+          "type": "boolean",
+          "enum": [true],
+          "description": "Review queue cannot replace DEC-034 independent verification."
+        },
+        "cannot_replace_evidence_contracts": {
+          "type": "boolean",
+          "enum": [true],
+          "description": "Review queue cannot replace evidence contracts."
+        },
+        "cannot_replace_human_approval": {
+          "type": "boolean",
+          "enum": [true],
+          "description": "Review queue cannot replace human approval."
+        },
+        "high_severity_blocks_apply": {
+          "type": "boolean",
+          "enum": [true],
+          "description": "Items with severity=high or blocker MUST block apply mode."
+        },
+        "gate_progress_requires_resolution": {
+          "type": "boolean",
+          "enum": [true],
+          "description": "Any item with blocks_gate_progress=true requires DEC-034 or human review before gate progress."
+        },
+        "policy_doc_reference": {
+          "type": "string",
+          "description": "Path to the policy document. Should be docs/playbook-layer.md."
+        }
+      }
+    }
+  },
+  "definitions": {
+    "review_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_id",
+        "format_id",
+        "gate",
+        "operation_id",
+        "target_path",
+        "issue_type",
+        "severity",
+        "deterministic_failure_reason",
+        "required_action",
+        "evidence_required",
+        "status",
+        "owner_role",
+        "blocks_apply_mode",
+        "blocks_gate_progress",
+        "provenance"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "pattern": "^RQ-[0-9]+$",
+          "description": "Stable unique identifier, e.g. RQ-001."
+        },
+        "format_id": {
+          "type": "string",
+          "description": "Format identifier this item relates to."
+        },
+        "gate": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 11
+        },
+        "operation_id": {
+          "type": "string",
+          "description": "operation_id from the playbook that triggered this item."
+        },
+        "target_path": {
+          "type": "string",
+          "description": "File path or artifact path that has the conflict."
+        },
+        "issue_type": {
+          "type": "string",
+          "enum": [
+            "missing_input",
+            "target_mismatch",
+            "checksum_mismatch",
+            "validation_failed",
+            "evidence_missing",
+            "policy_violation",
+            "ambiguous_reuse",
+            "unsupported_operation",
+            "main_sprint_conflict",
+            "other"
+          ],
+          "description": "Classification of the replay conflict type."
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "blocker"],
+          "description": "Severity. high and blocker MUST block apply mode."
+        },
+        "deterministic_failure_reason": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Exact reason the deterministic replay failed or produced a conflict."
+        },
+        "required_action": {
+          "type": "string",
+          "minLength": 10,
+          "description": "What action is required to resolve this item."
+        },
+        "suggested_fix": {
+          "type": ["string", "null"],
+          "description": "Optional suggested resolution. Not authoritative."
+        },
+        "evidence_required": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "dec034_verification",
+              "human_approval",
+              "updated_evidence_bundle",
+              "manual_inspection",
+              "rerun_validation"
+            ]
+          },
+          "description": "Evidence required before this item can be resolved."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "in_review",
+            "resolved",
+            "deferred",
+            "rejected",
+            "superseded"
+          ]
+        },
+        "resolution_notes": {
+          "type": ["string", "null"],
+          "description": "Notes on how the item was resolved. Required if status=resolved."
+        },
+        "owner_role": {
+          "type": "string",
+          "enum": [
+            "agent",
+            "independent_verifier",
+            "human",
+            "main_sprint_owner",
+            "secondary_sprint_owner"
+          ],
+          "description": "Who owns resolution of this item."
+        },
+        "blocks_apply_mode": {
+          "type": "boolean",
+          "description": "Whether this item blocks apply mode. MUST be true if severity=high or blocker."
+        },
+        "blocks_gate_progress": {
+          "type": "boolean",
+          "description": "Whether this item blocks gate progress. If true, requires DEC-034 or human review."
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["created_at", "created_by_sprint"],
+          "properties": {
+            "created_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "created_by_sprint": {
+              "type": "string"
+            },
+            "resolved_at": {
+              "type": ["string", "null"],
+              "format": "date-time"
+            },
+            "resolved_by_sprint": {
+              "type": ["string", "null"]
+            }
+          }
+        }
+      },
+      "if": {
+        "properties": {
+          "severity": {"enum": ["high", "blocker"]}
+        }
+      },
+      "then": {
+        "properties": {
+          "blocks_apply_mode": {"enum": [true]}
+        }
+      }
+    }
+  }
+}

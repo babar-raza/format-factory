@@ -60,8 +60,9 @@ def build_sufficient_bundle(tmp_dir: Path, extra_meta: dict = None, bundle_name:
     Used by tests that verify things other than metadata depth, so they pass the
     hardcoded floor check without interference.
     """
-    # 5 dummy files comfortably exceeds RUN_CONTRACT_METADATA_FLOOR=4
-    meta = {f"_dummy_{i:02d}.txt": f"padding content {i}" for i in range(5)}
+    # 32 dummy files comfortably exceeds RUN_CONTRACT_METADATA_FLOOR=30
+    # (run047: restored from 5 to 32 after floor was restored from 4 to 30)
+    meta = {f"_dummy_{i:02d}.txt": f"padding content {i}" for i in range(32)}
     if extra_meta:
         meta.update(extra_meta)
     bundle_path = tmp_dir / bundle_name
@@ -115,7 +116,7 @@ def test_pending_report_passes_without_flag():
     """Validator must PASS when --check-no-pending is NOT set, even if PENDING marker present."""
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
-        contract = build_minimal_contract(tmp_dir, min_meta=1)
+        contract = build_minimal_contract(tmp_dir, min_meta=30)
         # Same PENDING marker, but no_pending=False — use sufficient bundle to clear floor
         bundle = build_sufficient_bundle(tmp_dir, extra_meta={
             "verdict.md": "**Validation status:** PENDING (bundle not yet built)\n",
@@ -132,8 +133,8 @@ def test_clean_bundle_passes_no_pending():
     """Validator must PASS when --check-no-pending is set and no PENDING markers present."""
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
-        contract = build_minimal_contract(tmp_dir, min_meta=1)
-        # Use sufficient bundle to clear the floor check
+        contract = build_minimal_contract(tmp_dir, min_meta=30)
+        # Use sufficient bundle to clear the floor check (32 files >= floor 30)
         bundle = build_sufficient_bundle(tmp_dir, extra_meta={
             "verdict.md": "**Validation status:** BUNDLE_VALIDATION: PASS\n",
         })
@@ -249,7 +250,7 @@ contract_id: test-env-example
 require_clean_git: false
 require_contract_in_bundle: false
 require_manifest: false
-min_metadata_count: 1
+min_metadata_count: 30
 required_repo_files:
   - .env.example
 required_metadata_files: []
@@ -324,9 +325,10 @@ forbidden_paths: []
 def test_run_contract_metadata_floor_fails():
     """Validator must FAIL when bundle has fewer metadata files than the hardcoded floor.
 
-    RUN_CONTRACT_METADATA_FLOOR=4 means every bundle must have at least 4 metadata files
-    (git-log.txt + git-status-final.txt + repo-tree.txt + bundle-manifest.yaml).
-    A bundle with only 3 metadata files (missing bundle-manifest.yaml) must fail.
+    RUN_CONTRACT_METADATA_FLOOR=30 means every bundle must have at least 30 metadata files
+    for a normal PASS bundle (run047: restored from 4 back to 30 after run046 regression).
+    A bundle with only 3 metadata files must fail (3 < 30).
+    Contract with min_metadata_count=3 also fails RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE.
     """
     with tempfile.TemporaryDirectory() as tmp:
         tmp_dir = Path(tmp)
@@ -360,16 +362,64 @@ forbidden_paths: []
             print(
                 "FAIL: test_run_contract_metadata_floor_fails "
                 "— validator returned PASS but should have FAILed "
-                "(3 metadata files < RUN_CONTRACT_METADATA_FLOOR=4)"
+                "(3 metadata files < RUN_CONTRACT_METADATA_FLOOR=30)"
             )
             return False
         print(
             "PASS: test_run_contract_metadata_floor_fails "
             "— validator correctly FAILed for 3-file bundle "
-            "(RUN_CONTRACT_METADATA_FLOOR=4 enforced)"
+            "(RUN_CONTRACT_METADATA_FLOOR=30 enforced)"
         )
         return True
 
+
+
+
+def test_run_contract_minimum_not_below_base():
+    """Validator must FAIL when a run contract's min_metadata_count is below RUN_CONTRACT_METADATA_FLOOR.
+
+    Even if the bundle has 35 metadata files (above floor=30), a contract with
+    min_metadata_count=3 must FAIL with RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE.
+    This prevents run046-style regression where contract lowered the floor to 3.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        # Contract with min_metadata_count: 3 (below floor of 30), no emergency bypass
+        contract = tmp_dir / "test-contract-min-below-base.yaml"
+        contract.write_text(
+            """contract_id: test-contract-min-below-base
+require_clean_git: false
+emergency_blocker_bundle: false
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 3
+normal_pass_min_metadata: 3
+required_repo_files: []
+required_metadata_files: []
+forbidden_paths: []
+""",
+            encoding="utf-8",
+        )
+        # Bundle with 35 metadata files — well above the hardcoded floor of 30
+        bundle_path = tmp_dir / "test-bundle-35-files.zip"
+        with zipfile.ZipFile(bundle_path, "w") as zf:
+            zf.writestr("repo/placeholder.txt", "placeholder")
+            for i in range(35):
+                zf.writestr(f"bundle-metadata/file_{i:02d}.txt", f"content {i}")
+        result = validate_bundle(str(contract), str(bundle_path), strict_git=False, no_pending=False)
+        if result:
+            print(
+                "FAIL: test_run_contract_minimum_not_below_base "
+                "— validator returned PASS but should have FAILed "
+                "(contract min_metadata_count=3 < RUN_CONTRACT_METADATA_FLOOR=30)"
+            )
+            return False
+        print(
+            "PASS: test_run_contract_minimum_not_below_base "
+            "— validator correctly FAILed when contract min < base floor "
+            "(RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE enforced)"
+        )
+        return True
 
 def test_run_contract_metadata_floor_bypassed_by_emergency():
     """Validator must PASS when emergency_blocker_bundle:true bypasses the floor.
@@ -433,6 +483,7 @@ def main():
         test_normal_pass_metadata_depth_fail,
         test_run_contract_metadata_floor_fails,
         test_run_contract_metadata_floor_bypassed_by_emergency,
+        test_run_contract_minimum_not_below_base,
     ]
 
     results = []

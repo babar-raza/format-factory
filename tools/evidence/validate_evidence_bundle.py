@@ -150,9 +150,16 @@ def matches_forbidden(path, forbidden_patterns):
 # Absolute floor for metadata count in normal PASS bundles.
 # No run-specific contract may produce a BUNDLE_VALIDATION: PASS with fewer
 # metadata files than this value unless emergency_blocker_bundle: true.
-# Floor is 4: git-log.txt + git-status-final.txt + repo-tree.txt + bundle-manifest.yaml.
-# This ensures a minimal but complete metadata set is always present.
-RUN_CONTRACT_METADATA_FLOOR = 4
+#
+# Floor history:
+#   run031: floor introduced at 5
+#   run042: floor raised to 30 (normal PASS depth requirement)
+#   run046: floor REGRESSED to 4 (incorrect fix — reversed by run047)
+#   run047: floor RESTORED to 30 (correct project standard)
+#
+# A value of 30 ensures each sprint produces meaningful evidence depth.
+# Emergency blocker bundles (blocked/failed runs) may bypass via emergency_blocker_bundle: true.
+RUN_CONTRACT_METADATA_FLOOR = 30
 
 GIT_STATUS_CANDIDATE_FILES = ["git-status-final.txt", "git-status.txt"]
 
@@ -384,6 +391,21 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
                 f"metadata count {len(metadata_files)} < absolute floor {RUN_CONTRACT_METADATA_FLOOR}. "
                 f"Ensure sprint produces sufficient metadata files. "
                 f"Only emergency_blocker_bundle: true may bypass this floor."
+            )
+
+        # New check (run047): Contract itself cannot set min_metadata_count below the base floor.
+        # This prevents regression where a run-specific contract lowers the floor
+        # (as run046 did with min_metadata_count: 3). Even if the bundle has 35 files,
+        # a non-compliant contract must FAIL so the contract is repaired before use.
+        if not emergency_blocker and min_metadata_count < RUN_CONTRACT_METADATA_FLOOR:
+            errors.append(
+                f"RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE: FAIL — "
+                f"contract min_metadata_count={min_metadata_count} is below "
+                f"RUN_CONTRACT_METADATA_FLOOR={RUN_CONTRACT_METADATA_FLOOR}. "
+                f"A run contract may not lower the metadata floor below the project standard. "
+                f"Set min_metadata_count >= {RUN_CONTRACT_METADATA_FLOOR} or use "
+                f"emergency_blocker_bundle: true only for documented blocked/failed bundles. "
+                f"(This check prevents run046-style contract regression from passing in future sessions.)"
             )
 
         # Check contract-in-bundle

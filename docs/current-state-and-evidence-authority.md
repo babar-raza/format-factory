@@ -189,3 +189,5 @@ authority remains exclusively in plans/master-plan.md and the evidence bundle me
 (bundle-metadata/git-log.txt, bundle-metadata/git-status-final.txt). A replay report
 showing "PASS" does NOT constitute gate approval and does NOT supersede the DEC-034
 independent verification requirement or human gate approval.
+
+**Note on Playbook Schema Artifacts (S-F2F-01 Active — 2026-05-08):** schemas/playbook/ and docs/playbook-layer.md are now established. These are non-authoritative governance reference artifacts. The playbook schema layer introduces no new authority. schemas/playbook/acquisition-playbook.schema.json and schemas/playbook/review-queue.schema.json are structural definitions only. Future replay reports (when S-F2F-03 is authorized) will be informational inputs to evidence bundles — they do not alter the current-state authority model defined in this document.

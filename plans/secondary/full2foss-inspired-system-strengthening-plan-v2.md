@@ -33,7 +33,7 @@ conflict arises, MAIN SPRINT takes priority unconditionally.
 | Category | Decision |
 |----------|----------|
 | This plan-repair sprint (S-F2F-00) | AUTHORIZED by execution prompt |
-| S-F2F-01: Playbook schema + policy | PROPOSED — requires human approval |
+| S-F2F-01: Playbook schema + policy | COMPLETE (pending independent verification) — executed 2026-05-08 |
 | S-F2F-02: Playbook validation tool | PROPOSED — requires S-F2F-01 complete + approval |
 | S-F2F-03: Dry-run replay + review queue | PROPOSED — requires S-F2F-02 complete + approval |
 | S-F2F-04: Golden dry-run tests | PROPOSED — requires S-F2F-03 complete + approval |
@@ -409,7 +409,7 @@ Deferred until product-track gates explicitly authorize source work.
 | Card | Phase | Topic | Status | Can parallel MAIN SPRINT? |
 |------|-------|-------|--------|--------------------------|
 | S-F2F-00 | S0 | Plan repair | completed_by_plan_repair | N/A |
-| S-F2F-01 | S1 | Playbook schema + policy | proposed | YES — no gate conflict |
+| S-F2F-01 | S1 | Playbook schema + policy | completed_pending_independent_verification | YES — no gate conflict |
 | S-F2F-02 | S2 | Validation tool | proposed | YES — tool dev only |
 | S-F2F-03 | S3 | Dry-run + review queue | proposed | YES — no apply mode |
 | S-F2F-04 | S4 | Golden dry-run tests | proposed | YES — tests only |

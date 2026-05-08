@@ -1,0 +1,468 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://format-factory.internal/schemas/playbook/acquisition-playbook.schema.json",
+  "title": "AcquisitionPlaybook",
+  "description": "Schema for format-factory acquisition playbooks. Playbooks are execution aids only — they are NOT evidence authority, cannot approve gates, cannot replace DEC-034 independent verification, and cannot replace human approval. See docs/playbook-layer.md for full policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "playbook_id",
+    "playbook_version",
+    "format_id",
+    "format_family",
+    "playbook_kind",
+    "status",
+    "authority_statement",
+    "non_authority_statement",
+    "gates",
+    "operations",
+    "evidence_contracts",
+    "validation_commands",
+    "review_queue_policy",
+    "reuse_policy",
+    "provenance",
+    "approvals_required",
+    "forbidden_uses"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Semantic version of this schema document.",
+      "enum": ["1.0"]
+    },
+    "playbook_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+      "description": "Stable unique identifier for this playbook, e.g. 'fods-acquisition'."
+    },
+    "playbook_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "Semantic version of this playbook document, e.g. '1.0'."
+    },
+    "format_id": {
+      "type": "string",
+      "description": "Format identifier, e.g. 'fods', 'fodt'. Must match registry/format-registry.yaml."
+    },
+    "format_family": {
+      "type": "string",
+      "description": "Format family identifier, e.g. 'odf-flat'. Used for family-level reuse."
+    },
+    "playbook_kind": {
+      "type": "string",
+      "enum": ["format_playbook", "family_playbook", "documentation_example"],
+      "description": "Kind of playbook. documentation_example must not be used for execution."
+    },
+    "source_format_if_derived": {
+      "type": ["string", "null"],
+      "description": "If this playbook derives from another format's playbook, the source format_id. Null if original."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "proposed",
+        "active",
+        "deprecated",
+        "superseded",
+        "documentation_example_only"
+      ],
+      "description": "Lifecycle status of the playbook."
+    },
+    "authority_statement": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit statement of what this playbook IS authoritative for (typically nothing beyond replay reference)."
+    },
+    "non_authority_statement": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Explicit statement of what this playbook is NOT authoritative for. Must include gate approval, DEC-034, human approval, spec/legal."
+    },
+    "gates": {
+      "type": "array",
+      "description": "List of gates this playbook covers. Format-factory gates are 1-11.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gate_number", "gate_name", "status", "covered_by_operations"],
+        "properties": {
+          "gate_number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 11
+          },
+          "gate_name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["covered", "partial", "not_covered", "deferred"]
+          },
+          "covered_by_operations": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "List of operation_ids covering this gate."
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "description": "Ordered list of acquisition operations.",
+      "items": {
+        "$ref": "#/definitions/operation"
+      }
+    },
+    "evidence_contracts": {
+      "type": "array",
+      "description": "Evidence contract files required for this playbook.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["contract_path", "purpose"],
+        "properties": {
+          "contract_path": {"type": "string"},
+          "purpose": {"type": "string"},
+          "gate": {"type": ["integer", "null"]}
+        }
+      }
+    },
+    "validation_commands": {
+      "type": "array",
+      "description": "Top-level validation commands for the full playbook.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "purpose", "expected_exit_code"],
+        "properties": {
+          "command": {"type": "string"},
+          "purpose": {"type": "string"},
+          "expected_exit_code": {"type": "integer"},
+          "notes": {"type": "string"}
+        }
+      }
+    },
+    "review_queue_policy": {
+      "$ref": "#/definitions/review_queue_policy"
+    },
+    "reuse_policy": {
+      "$ref": "#/definitions/reuse_policy"
+    },
+    "provenance": {
+      "$ref": "#/definitions/provenance"
+    },
+    "approvals_required": {
+      "type": "array",
+      "description": "Required approvals before any gate can advance.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["approval_type", "description", "mandatory"],
+        "properties": {
+          "approval_type": {
+            "type": "string",
+            "enum": ["dec034_independent_verification", "human_gate_approval", "human_sprint_authorization"]
+          },
+          "description": {"type": "string"},
+          "mandatory": {"type": "boolean"},
+          "gate": {"type": ["integer", "null"]}
+        }
+      }
+    },
+    "forbidden_uses": {
+      "type": "array",
+      "description": "Explicit list of forbidden uses for this playbook.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "automatic_gate_approval",
+          "spec_or_legal_authority",
+          "product_release_authority",
+          "replacing_dec034",
+          "replacing_human_approval",
+          "applying_without_authorization",
+          "evidence_substitution",
+          "llm_fallback_authority"
+        ]
+      },
+      "minItems": 4,
+      "description": "Must include at minimum: automatic_gate_approval, spec_or_legal_authority, replacing_dec034, replacing_human_approval."
+    }
+  },
+  "definitions": {
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "gate",
+        "operation_type",
+        "title",
+        "description",
+        "mode_allowed",
+        "target_paths",
+        "input_dependencies",
+        "expected_outputs",
+        "validation_commands",
+        "evidence_requirements",
+        "conflict_policy",
+        "review_queue_policy",
+        "reuse_level",
+        "provenance",
+        "status",
+        "approval_boundary"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+          "description": "Stable unique identifier for this operation within the playbook."
+        },
+        "gate": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 11
+        },
+        "operation_type": {
+          "type": "string",
+          "enum": [
+            "scoring",
+            "spec_acquisition",
+            "spec_normalization",
+            "sample_corpus_creation",
+            "parser_prototype",
+            "neutral_model_creation",
+            "oracle_comparison",
+            "fuzz_testing",
+            "security_review",
+            "product_dependency_closure",
+            "product_skeleton",
+            "product_release_prep",
+            "evidence_bundle"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 5
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10
+        },
+        "mode_allowed": {
+          "type": "string",
+          "enum": [
+            "validate_only",
+            "dry_run",
+            "apply_proposed",
+            "apply_authorized"
+          ],
+          "description": "Strictest mode at which this operation may be executed. validate_only = no file writes; dry_run = simulated execution; apply_proposed = produces proposed outputs requiring human review; apply_authorized = produces committed outputs after human approval."
+        },
+        "target_paths": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Paths that this operation reads or writes."
+        },
+        "input_dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "required"],
+            "properties": {
+              "path": {"type": "string"},
+              "required": {"type": "boolean"},
+              "description": {"type": "string"}
+            }
+          }
+        },
+        "expected_outputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "description"],
+            "properties": {
+              "path": {"type": "string"},
+              "description": {"type": "string"},
+              "checksum_required": {"type": "boolean"},
+              "format": {"type": "string"}
+            }
+          }
+        },
+        "validation_commands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["command", "purpose", "expected_exit_code"],
+            "properties": {
+              "command": {"type": "string"},
+              "purpose": {"type": "string"},
+              "expected_exit_code": {"type": "integer"},
+              "notes": {"type": "string"}
+            }
+          }
+        },
+        "evidence_requirements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["artifact_type", "required"],
+            "properties": {
+              "artifact_type": {
+                "type": "string",
+                "enum": [
+                  "evidence_bundle",
+                  "dec034_verification_report",
+                  "human_approval_record",
+                  "gate_review_packet",
+                  "checksum_manifest",
+                  "validation_log"
+                ]
+              },
+              "required": {"type": "boolean"},
+              "path": {"type": "string"},
+              "notes": {"type": "string"}
+            }
+          }
+        },
+        "conflict_policy": {
+          "type": "string",
+          "enum": [
+            "fail_and_queue",
+            "warn_and_continue",
+            "fail_hard",
+            "defer_to_human"
+          ],
+          "description": "What to do when a deterministic replay conflict is detected."
+        },
+        "review_queue_policy": {
+          "$ref": "#/definitions/review_queue_policy"
+        },
+        "reuse_level": {
+          "type": "string",
+          "enum": ["none", "full", "adapt", "guide", "new"],
+          "description": "How this operation reuses another format or family operation. none = not applicable; full = identical procedure; adapt = same structure, format-specific adjustments; guide = reference only; new = no reuse."
+        },
+        "format_specific_overrides": {
+          "type": ["object", "null"],
+          "description": "Format-specific overrides to base family operation, if any. Null if no overrides."
+        },
+        "provenance": {
+          "$ref": "#/definitions/provenance"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "proposed",
+            "active",
+            "executed",
+            "verified",
+            "deprecated"
+          ]
+        },
+        "approval_boundary": {
+          "type": "string",
+          "enum": [
+            "no_gate_approval",
+            "requires_dec034",
+            "requires_human_approval",
+            "requires_dec034_and_human"
+          ],
+          "description": "What approval boundary must be crossed before this operation's outputs are authoritative."
+        }
+      }
+    },
+    "review_queue_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity_threshold_blocks_apply", "auto_resolve_allowed"],
+      "properties": {
+        "severity_threshold_blocks_apply": {
+          "type": "string",
+          "enum": ["high", "blocker", "medium", "low"],
+          "description": "Minimum severity that blocks apply mode. Should be 'high' or 'blocker'."
+        },
+        "auto_resolve_allowed": {
+          "type": "boolean",
+          "description": "Whether items can be auto-resolved without human review. Should be false for high/blocker."
+        },
+        "required_owner_for_resolution": {
+          "type": "string",
+          "enum": ["agent", "independent_verifier", "human", "main_sprint_owner"],
+          "description": "Who must resolve items at or above the severity threshold."
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "reuse_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family_reuse_allowed", "inherited_gate_approval", "reuse_requires_explicit_classification"],
+      "properties": {
+        "family_reuse_allowed": {
+          "type": "boolean",
+          "description": "Whether operations from a family playbook may be referenced."
+        },
+        "inherited_gate_approval": {
+          "type": "boolean",
+          "description": "MUST be false. Gate approval cannot be inherited from a family playbook.",
+          "enum": [false]
+        },
+        "reuse_requires_explicit_classification": {
+          "type": "boolean",
+          "description": "Whether each reused operation must have a reuse_level classification.",
+          "enum": [true]
+        },
+        "source_family_playbook": {
+          "type": ["string", "null"],
+          "description": "ID of the source family playbook, if any reuse occurs."
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["created_by_sprint", "created_at", "last_modified_sprint"],
+      "properties": {
+        "created_by_sprint": {
+          "type": "string",
+          "description": "Sprint identifier that created this playbook or operation."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date of creation."
+        },
+        "last_modified_sprint": {
+          "type": "string"
+        },
+        "last_modified_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "source_commit": {
+          "type": ["string", "null"],
+          "description": "Git commit hash at time of creation."
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

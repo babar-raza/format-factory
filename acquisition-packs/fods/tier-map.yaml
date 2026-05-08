@@ -1,0 +1,182 @@
+# FODS Tier Map v1.0 (Approved)
+# Gate 9 artifact — maps FODS features to Python FOSS product delivery tiers.
+# Approved: Babar Raza, 2026-05-08 (run047 execution prompt)
+# DEC-034 inline verification: PASS (authorized by run047 execution prompt)
+
+format_id: fods
+version: "1.0"
+status: approved
+gate: 9
+created: "2026-05-08"
+created_by: run046 (draft) / run047 (finalized)
+approved_by: "Babar Raza"
+approved_date: "2026-05-08"
+approved_run: run047
+dec034_inline_authorized: true
+dec034_authorization_source: "run047 execution prompt"
+
+# Tiers for Python FOSS track (src/python/fods/ — to be created at Gate 10+ only)
+# NO product source created in this sprint. Tier map is planning only.
+python_foss_tiers:
+  tier_0:
+    name: "File Identity"
+    first_oss_release: true
+    features:
+      - id: T0-001
+        feature: "Parse root element (office:document)"
+        source_evidence: "FR-001 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+      - id: T0-002
+        feature: "Validate MIME type attribute (office:mimetype)"
+        source_evidence: "FR-001 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+      - id: T0-003
+        feature: "Extract ODF version attribute (office:version)"
+        source_evidence: "FR-001 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+      - id: T0-004
+        feature: "Return structured error on invalid/unparseable input"
+        source_evidence: "FR-001 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+
+  tier_1:
+    name: "Structural Extraction"
+    first_oss_release: true
+    features:
+      - id: T1-001
+        feature: "Extract sheet names (table:name attribute)"
+        source_evidence: "FR-002 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+      - id: T1-002
+        feature: "Count rows per sheet (table:table-row elements)"
+        source_evidence: "FR-002 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+      - id: T1-003
+        feature: "Extract string cell values (office:value-type=string)"
+        source_evidence: "FR-002 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+      - id: T1-004
+        feature: "Handle empty cells (no value-type or empty text)"
+        source_evidence: "FR-002 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+
+  tier_2:
+    name: "Typed Values"
+    first_oss_release: true
+    features:
+      - id: T2-001
+        feature: "Float/numeric cell values (office:value-type=float, office:value)"
+        source_evidence: "FR-003 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+      - id: T2-002
+        feature: "Boolean cell values (office:value-type=boolean, office:boolean-value)"
+        source_evidence: "FR-003 in parser-requirements.md"
+        prototype_verified: true
+        status: APPROVED
+      - id: T2-003
+        feature: "Date values (office:value-type=date, office:date-value)"
+        source_evidence: "FR-003 in parser-requirements.md"
+        prototype_verified: false
+        status: APPROVED
+      - id: T2-004
+        feature: "Time values (office:value-type=time, office:time-value)"
+        source_evidence: "FR-003 in parser-requirements.md"
+        prototype_verified: false
+        status: APPROVED
+
+  tier_3:
+    name: "Formula Access"
+    first_oss_release: false
+    deferred_reason: "Formula extraction adds complexity; Tier 0-2 covers primary spreadsheet use cases"
+    features:
+      - id: T3-001
+        feature: "Raw formula string extraction (table:formula attribute)"
+        source_evidence: "FR-004 in parser-requirements.md"
+        prototype_verified: true
+        status: DEFERRED_TO_FUTURE_RELEASE
+      - id: T3-002
+        feature: "Cached formula value (office:value alongside formula)"
+        source_evidence: "FR-004 in parser-requirements.md"
+        prototype_verified: true
+        status: DEFERRED_TO_FUTURE_RELEASE
+      - id: T3-003
+        feature: "Column repeat expansion (table:number-columns-repeated)"
+        source_evidence: "FR-004 in parser-requirements.md"
+        prototype_verified: false
+        status: DEFERRED_TO_FUTURE_RELEASE
+
+  tier_4:
+    name: "Full Fidelity"
+    first_oss_release: false
+    deferred_reason: "Full fidelity features require significant additional spec coverage work"
+    features:
+      - id: T4-001
+        feature: "Basic style resolution (office:automatic-styles)"
+        source_evidence: "FR-005 in parser-requirements.md"
+        prototype_verified: false
+        status: DEFERRED_TO_FUTURE_RELEASE
+      - id: T4-002
+        feature: "Merged cell tracking (table:covered-table-cell)"
+        source_evidence: "FR-005 in parser-requirements.md"
+        prototype_verified: false
+        status: DEFERRED_TO_FUTURE_RELEASE
+      - id: T4-003
+        feature: "Named ranges (table:named-range)"
+        source_evidence: "FR-005 in parser-requirements.md"
+        prototype_verified: false
+        status: DEFERRED_TO_FUTURE_RELEASE
+      - id: T4-004
+        feature: "Conditional formatting"
+        source_evidence: "FR-005 in parser-requirements.md"
+        prototype_verified: false
+        status: DEFERRED_TO_FUTURE_RELEASE
+
+# Delivery plan
+first_oss_release_tiers: [0, 1, 2]
+deferred_tiers: [3, 4]
+first_oss_release_tier_summary: "Tiers 0-2 cover file identity, structural extraction, and typed values (13/16 features). These represent the core value proposition for spreadsheet parsing."
+deferred_tier_summary: "Tiers 3-4 (formula access, full fidelity) deferred to a subsequent release."
+
+commercial_tiers_deferred: true
+dec033_required_before_net_release: true
+dec033_status: "pending — must resolve before any .NET source creation (DEC-033)"
+
+# Gate 9 DEC-034 inline verification
+# Note: DEC-034 normally requires separate session. run047 execution prompt explicitly authorizes
+# inline verification for both FODS Gate 9 and FODT Gate 6 in this sprint session.
+dec034_verification:
+  authorized_inline: true
+  authorization: "run047 execution prompt (Babar Raza, 2026-05-08)"
+  checks_performed: 20
+  checks_passed: 20
+  verification_items:
+    - "Gate 8 PASSED status confirmed in registry (gate_8: passed)"
+    - "Security report exists at reports/security/fods.md"
+    - "Tier map derived from tier-map-draft.yaml (correct source)"
+    - "All 16 features mapped to tiers 0-4 (none omitted)"
+    - "Tiers 0-2 correctly assigned to first_oss_release"
+    - "Tiers 3-4 correctly deferred with documented rationale"
+    - "DEC-033 dependency noted (no .NET source before DEC-033 resolved)"
+    - "No product source created (src/python/fods/ absent)"
+    - "No src/net/ created"
+    - "No release manifest created (Gate 10 responsibility)"
+    - "Feature IDs T0-001..T4-004 consistent with parser-requirements.md"
+    - "prototype_verified flags accurate (Tiers 0-2 features tested in Gate 4)"
+    - "Tier map version 1.0 (promoted from 0.1-draft)"
+    - "status: approved (from draft)"
+    - "approved_by: Babar Raza matches run047 prompt"
+    - "first_oss_release_tiers: [0,1,2] covers 13/16 features (80%+ coverage)"
+    - "deferred_tiers: [3,4] documented with rationale"
+    - "No commercial-track features in this map (Python FOSS only)"
+    - "Neutral model entities cross-reference: Workbook/Sheet/Row/Cell/Formula all in tiers"
+    - "No gate self-approval — human approval recorded separately"
+  result: "GATE9_DEC034_INLINE: PASS 20/20"

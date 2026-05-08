@@ -1,0 +1,224 @@
+# DOCUMENTATION-ONLY EXAMPLE — NOT FOR EXECUTION
+# This file illustrates the acquisition-playbook schema structure using FODS as an example.
+# FODS is used because it is the deep pilot format in format-factory.
+#
+# WARNING: This file MUST NOT be:
+#   - Copied into acquisition-packs/fods/ or acquisition-packs/fodt/
+#   - Used as an active acquisition playbook
+#   - Used to approve any gate
+#   - Interpreted as a registry or evidence authority
+#   - Used to trigger apply mode
+#   - Used as LLM fallback authority
+#
+# Validation: This example is for structural illustration only.
+# Schema validation tools are created in S-F2F-02, not S-F2F-01.
+# Human structural review confirms this conforms to acquisition-playbook.schema.json.
+#
+# Policy reference: docs/playbook-layer.md
+
+schema_version: "1.0"
+playbook_id: fods-acquisition-documentation-example
+playbook_version: "1.0"
+format_id: fods
+format_family: odf-flat
+playbook_kind: documentation_example
+source_format_if_derived: null
+
+# MANDATORY: status must be documentation_example_only for this file
+status: documentation_example_only
+not_for_execution: true
+
+authority_statement: >
+  This documentation example is NOT authoritative for any purpose.
+  It illustrates the schema structure only.
+
+non_authority_statement: >
+  This playbook example DOES NOT approve any gate, does not replace DEC-034 independent
+  verification, does not replace human approval, does not constitute legal or specification
+  authority, and does not authorize apply mode or product source creation.
+
+gates:
+  - gate_number: 1
+    gate_name: Format Scoring and Registry Entry
+    status: covered
+    covered_by_operations:
+      - scoring-and-registry-entry
+    notes: "Example only. Actual gate status is in registry/format-registry.yaml."
+
+  - gate_number: 3
+    gate_name: Sample Corpus Creation
+    status: covered
+    covered_by_operations:
+      - sample-corpus-creation
+    notes: "Example only."
+
+operations:
+  - operation_id: scoring-and-registry-entry
+    gate: 1
+    operation_type: scoring
+    title: "Format Scoring — Gate 1"
+    description: >
+      Score the format against the 11-gate acquisition criteria. Create the registry entry.
+      This is a documentation example showing the operation record structure only.
+    mode_allowed: validate_only
+    target_paths:
+      - registry/format-registry.yaml
+      - registry/candidates/
+    input_dependencies:
+      - path: acquisition-packs/fods/pack.yaml
+        required: true
+        description: "Pack configuration with scoring inputs."
+    expected_outputs:
+      - path: registry/format-registry.yaml
+        description: "Registry entry created with gate_1 status."
+        checksum_required: false
+        format: yaml
+    validation_commands:
+      - command: "python -c \"import yaml; d=yaml.safe_load(open('registry/format-registry.yaml')); assert d['formats']['fods']['gate_1']['status'] == 'passed'\""
+        purpose: "Verify gate_1 is passed in registry."
+        expected_exit_code: 0
+        notes: "Documentation example only. Actual validation requires real registry state."
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+        path: ".local/evidence-bundles/"
+        notes: "Evidence bundle must validate with BUNDLE_VALIDATION: PASS."
+      - artifact_type: dec034_verification_report
+        required: true
+        notes: "DEC-034 independent verification required before human review."
+      - artifact_type: human_approval_record
+        required: true
+        notes: "Human approval prompt required to advance gate."
+    conflict_policy: fail_and_queue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: none
+    format_specific_overrides: null
+    provenance:
+      created_by_sprint: S-F2F-01-documentation-example
+      created_at: "2026-05-08"
+      last_modified_sprint: S-F2F-01-documentation-example
+      source_commit: null
+      notes: "Documentation example only — not an active operation record."
+    status: draft
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: sample-corpus-creation
+    gate: 3
+    operation_type: sample_corpus_creation
+    title: "Sample Corpus Creation — Gate 3"
+    description: >
+      Create the minimal sample corpus for format validation. Samples must be synthetic,
+      project-owned, Apache-2.0, and validated. This is a documentation example.
+    mode_allowed: validate_only
+    target_paths:
+      - samples/by-format/fods/
+    input_dependencies:
+      - path: acquisition-packs/fods/sample-sources.md
+        required: true
+        description: "Sample requirements and constraints."
+      - path: acquisition-packs/fods/spec-evidence.md
+        required: true
+        description: "Spec evidence confirming Gate 2 passed."
+    expected_outputs:
+      - path: samples/by-format/fods/minimal-spreadsheet.fods
+        description: "Minimal valid FODS sample."
+        checksum_required: true
+        format: fods
+      - path: samples/_provenance.yaml
+        description: "Provenance record with SHA-256 hashes."
+        checksum_required: false
+        format: yaml
+    validation_commands:
+      - command: "python tools/samples/validate_fods_samples.py"
+        purpose: "Validate all FODS samples pass structural validation."
+        expected_exit_code: 0
+        notes: "Documentation example. Real command requires actual samples."
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+        notes: "Evidence bundle must include samples and provenance."
+      - artifact_type: dec034_verification_report
+        required: true
+        notes: "DEC-034 required: SHA-256 re-verification before human review."
+      - artifact_type: human_approval_record
+        required: true
+        notes: "Gate 3 human approval required."
+    conflict_policy: fail_and_queue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+      notes: "Any sample checksum mismatch is severity=high and blocks apply mode."
+    reuse_level: none
+    format_specific_overrides: null
+    provenance:
+      created_by_sprint: S-F2F-01-documentation-example
+      created_at: "2026-05-08"
+      last_modified_sprint: S-F2F-01-documentation-example
+      source_commit: null
+      notes: "Documentation example only."
+    status: draft
+    approval_boundary: requires_dec034_and_human
+
+evidence_contracts:
+  - contract_path: tools/evidence/contracts/base-run.yaml
+    purpose: "Base contract inherited by all sprints."
+    gate: null
+  - contract_path: tools/evidence/contracts/run03x-gate3-example.yaml
+    purpose: "Gate 3 specific evidence contract (example path)."
+    gate: 3
+
+validation_commands:
+  - command: "python tools/evidence/validate_evidence_bundle.py --bundle <bundle.zip> --contract <contract.yaml> --check-no-pending"
+    purpose: "Validate evidence bundle before gate advance."
+    expected_exit_code: 0
+    notes: "Documentation example. Replace <bundle.zip> and <contract.yaml> with real paths."
+
+review_queue_policy:
+  severity_threshold_blocks_apply: high
+  auto_resolve_allowed: false
+  required_owner_for_resolution: human
+  notes: "Global policy: any high or blocker item blocks apply mode."
+
+reuse_policy:
+  family_reuse_allowed: true
+  inherited_gate_approval: false
+  reuse_requires_explicit_classification: true
+  source_family_playbook: null
+  notes: >
+    FODS is the pilot for the odf-flat family. Future FODT playbook may reference this
+    as a guide (reuse_level: guide) but cannot inherit any gate approval from FODS.
+
+provenance:
+  created_by_sprint: S-F2F-01
+  created_at: "2026-05-08"
+  last_modified_sprint: S-F2F-01
+  source_commit: null
+  notes: "Documentation example created in S-F2F-01 to illustrate schema structure."
+
+approvals_required:
+  - approval_type: dec034_independent_verification
+    description: "Independent agent verification sprint required before every human gate review."
+    mandatory: true
+    gate: null
+  - approval_type: human_gate_approval
+    description: "Human approval prompt required for every gate advance."
+    mandatory: true
+    gate: null
+  - approval_type: human_sprint_authorization
+    description: "Human prompt must explicitly name the taskcard before any sprint executes."
+    mandatory: true
+    gate: null
+
+forbidden_uses:
+  - automatic_gate_approval
+  - spec_or_legal_authority
+  - product_release_authority
+  - replacing_dec034
+  - replacing_human_approval
+  - applying_without_authorization
+  - evidence_substitution
+  - llm_fallback_authority

@@ -1,0 +1,133 @@
+contract_id: secondary-sf2f01-playbook-schema-policy
+description: >
+  S-F2F-01 evidence contract. Playbook schema and policy sprint. Creates
+  schemas/playbook/acquisition-playbook.schema.json,
+  schemas/playbook/review-queue.schema.json, docs/playbook-layer.md, and
+  docs/examples/acquisition-playbook-fods-documentation-example.yaml.
+  No replay tools, no apply mode, no acquisition-pack playbooks, no product source,
+  no gate status changes.
+created_run: secondary-sf2f01-playbook-schema-policy
+secondary_sprint: true
+sf2f_taskcard: S-F2F-01
+schema_policy_only: true
+plan_repair_only: false
+require_clean_git: true
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+min_metadata_count: 50
+
+# S-F2F-01 specific checks
+no_playbook_tools_created: true
+no_replay_engine_created: true
+no_apply_mode_created: true
+no_acquisition_pack_playbooks_created: true
+no_family_playbook_created: true
+no_product_source_created: true
+no_gate_status_changed: true
+no_main_sprint_deviation: true
+no_endpoint_call: true
+no_new_spec_download: true
+no_push: true
+
+required_repo_files:
+  - schemas/playbook/acquisition-playbook.schema.json
+  - schemas/playbook/review-queue.schema.json
+  - docs/playbook-layer.md
+  - docs/examples/acquisition-playbook-fods-documentation-example.yaml
+  - taskcards/S-F2F-01-playbook-schema-and-policy.md
+  - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  - plans/master-plan.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - docs/acquisition-workflow.md
+  - docs/current-state-and-evidence-authority.md
+  - tools/evidence/contracts/secondary-sf2f01-playbook-schema-policy.yaml
+
+forbidden_patterns:
+  - .git/
+  - .env
+  - .local/
+  - "*.pyc"
+  - __pycache__/
+  - tools/playbook/
+  - tools/product/
+  - schemas/product/
+  - acquisition-packs/_families/
+  - acquisition-packs/fods/playbook.yaml
+  - acquisition-packs/fodt/playbook.yaml
+  - tests/playbook/
+  - plans/review-queues/
+  - docs/product-dependency-closure.md
+  - docs/python-product-closure-strategy.md
+  - docs/dotnet-product-closure-strategy.md
+  - docs/product-skeleton-generator.md
+  - "src/net/"
+  - "src/python/fods/"
+  - "src/python/fodt/"
+
+checks:
+  no_gate_status_changed: true
+  no_product_source_created: true
+  no_parser_created: true
+  no_neutral_model_created: true
+  no_playbook_tools_created: true
+  no_product_tools_created: true
+  no_samples_created: true
+  no_endpoint_call: true
+  no_new_spec_download: true
+  no_embedding_vector_db: true
+  no_implementation_code_added: true
+  no_main_sprint_deviation: true
+  no_push: true
+
+required_metadata_files:
+  - sf2f01-summary.md
+  - sf2f01-eligibility-verification.md
+  - main-sprint-non-interference-check.md
+  - acquisition-playbook-schema-design-report.md
+  - review-queue-schema-design-report.md
+  - playbook-policy-doc-report.md
+  - documentation-example-report.md
+  - schema-json-validation-report.md
+  - example-yaml-review-report.md
+  - governance-activation-report.md
+  - taskcard-status-update-report.md
+  - no-replay-tool-created-check.md
+  - no-apply-mode-created-check.md
+  - no-acquisition-pack-playbook-created-check.md
+  - no-family-playbook-created-check.md
+  - no-product-source-check.md
+  - no-gate-status-change-check.md
+  - no-main-sprint-deviation-check.md
+  - no-endpoint-call-check.md
+  - no-new-spec-download-check.md
+  - no-vector-index-created-check.md
+  - current-state-consistency-report.md
+  - search-audit.md
+  - forbidden-path-check.txt
+  - registry-check.txt
+  - json-validation-notes.txt
+  - yaml-validation-notes.txt
+  - markdown-validation-notes.txt
+  - secrets-scan-notes.txt
+  - settings-json-check.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before-commit.txt
+  - git-status-after-commit.txt
+  - git-status-final.txt
+  - git-log.txt
+  - artifact-index-snapshot.yaml
+  - memory-sync-report.md
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - self-challenge.md
+  - verdict.md
+  - final-state-summary.yaml
+  - schema-field-coverage-matrix.yaml
+  - schema-governance-rule-mapping.md
+  - future-taskcard-boundary-check.md
+  - secondary-roadmap-status-report.md
+  - final-bundle-validation-proof.txt
+  - no-push-check.md

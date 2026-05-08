@@ -20,7 +20,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "FODS Gate 9 product mapping planning taskcard. Created run046 (2026-05-08). Planning only — execution requires explicit Gate 9 prompt after Gate 8 PASSED."
+notes: "FODS Gate 9 product mapping taskcard. Created run046 (2026-05-08). COMPLETED run047 (2026-05-08): tier-map.yaml v1.0 approved (Babar Raza 2026-05-08); delivery plan first_oss_release_tiers [0,1,2]; DEC-034 PASS 20/20 inline."
 ---
 
 # TC-0040: FODS Gate 9 — Product Mapping
@@ -28,7 +28,7 @@ notes: "FODS Gate 9 product mapping planning taskcard. Created run046 (2026-05-0
 **Taskcard ID:** TC-0040
 **Phase:** 3 (Gate 9 — product mapping)
 **Gate:** Gate 9
-**Status:** not_started — awaiting explicit Gate 9 execution prompt
+**Status:** completed — Gate 9 executed run047 (2026-05-08); tier-map.yaml v1.0 approved; APPROVED Babar Raza 2026-05-08
 **Created:** 2026-05-08 (run046)
 **Prerequisite:** Gate 8 PASSED ✓ (Babar Raza, 2026-05-08, run046)
 

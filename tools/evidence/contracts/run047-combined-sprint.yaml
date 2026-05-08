@@ -1,0 +1,79 @@
+# run047 Evidence Contract
+#
+# Sprint: FODS Gate 9 approval + FODT Gate 6 oracle execution + both approvals
+#         + metadata floor repair (run046 regression fix)
+#         + FODS Gate 10 planning + FODT Gate 7 planning
+# Date: 2026-05-08
+# Sections covered:
+#   B: run046 independent verification (40 checks — 38 PASS, 2 REGRESSION identified)
+#   C: Evidence metadata floor restored to 30 (RUN_CONTRACT_METADATA_FLOOR: 4→30)
+#      RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added to validator
+#      11 negative tests (was 10); base-run.yaml v1.3
+#   D: Stale state repairs (registry FODS gate_9 not_started→planning_ready,
+#      fodt/pack.yaml gate_6 not_started→planning_ready)
+#   E-H: FODS Gate 9 product mapping executed and approved (Babar Raza, 2026-05-08)
+#        tier-map.yaml v1.0; first_oss_release_tiers [0,1,2]; DEC-034 inline 20/20
+#   I-L: FODT Gate 6 oracle executed and approved (Babar Raza, 2026-05-08)
+#        FODT_ORACLE_RUN PASS 4/4; FODT_ORACLE_COMPARE PASS;
+#        TC-0043 DEC-034 inline 10/10 (authorized by execution prompt)
+#   M:  FODS Gate 10 planning (TC-0044) + FODT Gate 7 fuzz planning (TC-0045)
+#   N:  master-plan v2.43; memory/09; settings.json
+#   O:  This contract (min_metadata_count: 80)
+#   P-T: 80+ metadata files
+#
+# Version: 1.0
+
+contract_id: run047-combined-sprint
+version: "1.0"
+created: "2026-05-08"
+created_by: claude-sonnet-4-6
+sprint_run: run047
+require_clean_git: true
+emergency_blocker_bundle: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/run047-combined-sprint.yaml
+require_manifest: true
+min_metadata_count: 80
+normal_pass_min_metadata: 80
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+  - bundle-manifest.yaml
+
+required_repo_files:
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_negative_bundle_validation.py
+  - tools/evidence/contracts/base-run.yaml
+  - acquisition-packs/fods/tier-map.yaml
+  - acquisition-packs/fods/gate9-human-review-packet.md
+  - tools/oracle/run_fodt_oracle.py
+  - tools/oracle/compare_fodt_oracle.py
+  - acquisition-packs/fodt/gate6-oracle-comparison-report.md
+  - acquisition-packs/fodt/gate6-human-review-packet.md
+  - taskcards/TC-0040-fods-gate9-product-mapping.md
+  - taskcards/TC-0042-fodt-gate6-oracle-execution.md
+  - taskcards/TC-0043-fodt-gate6-oracle-verification.md
+  - taskcards/TC-0044-fods-gate10-product-planning.md
+  - taskcards/TC-0045-fodt-gate7-fuzz-planning.md
+  - acquisition-packs/fods/gate10-product-planning.md
+  - acquisition-packs/fodt/gate7-fuzz-plan.md
+
+forbidden_paths:
+  - .env
+  - .local/
+  - .git/
+  - __pycache__/
+  - "*.pyc"
+  - reports/legal/
+  - src/python/open-source/
+  - src/dotnet/open-source/
+  - src/dotnet/commercial/
+  - src/net/
+  - src/python/fods/
+  - src/python/fodt/
+  - .github/
+  - samples/by-format/other-formats/
+  - schemas/neutral-model/other-formats/
+  - prototypes/by-format/other-formats/

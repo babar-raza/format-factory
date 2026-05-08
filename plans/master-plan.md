@@ -3,16 +3,16 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.42 (run046: FODS Gate 8 PASS APPROVED Babar Raza 2026-05-08 (GATE8_SECURITY_REVIEW: PASS, TC-0038 DEC-034 PASS 20/20); FODT Gate 5 PASS APPROVED Babar Raza 2026-05-08 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 109 checks); FODS Gate 9 + FODT Gate 6 planning; master-plan v2.42)
+**Version:** 2.43 (run047: FODS Gate 9 PASS APPROVED Babar Raza 2026-05-08 (tier-map.yaml v1.0; first_oss_release_tiers [0,1,2]); FODT Gate 6 PASS APPROVED Babar Raza 2026-05-08 (FODT_ORACLE_RUN PASS 4/4; FODT_ORACLE_COMPARE PASS); metadata floor RESTORED 4→30; RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added; FODS Gate 10 planning; FODT Gate 7 planning; master-plan v2.43)
 **Last updated:** 2026-05-08
-**Current phase:** Phase 3: FODS Gates 1-8 PASSED; Gate 9 planning_ready. FODT Gates 1-5 PASSED; Gate 6 oracle planning_ready.
-**Current status:** FODS: Gates 1-8 PASSED. Gate 8 APPROVED Babar Raza 2026-05-08 (GATE8_SECURITY_REVIEW: PASS; TC-0038 DEC-034 PASS 20/20); TC-0036 COMPLETED. Gate 9 planning_ready (TC-0040 not_started). FODT: Gates 1-5 PASSED; Gate 5 APPROVED Babar Raza 2026-05-08 (FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 109 checks; TC-0039 DEC-034 PASS); TC-0037 COMPLETED. Gate 6 oracle planning_ready (TC-0042 not_started). No product source. last_completed_run: run046 — f659307. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current phase:** Phase 3: FODS Gates 1-9 PASSED; Gate 10 planning_ready. FODT Gates 1-6 PASSED; Gate 7 fuzz planning_ready.
+**Current status:** FODS: Gates 1-9 PASSED. Gate 9 APPROVED Babar Raza 2026-05-08 (tier-map.yaml v1.0; first_oss_release_tiers [0,1,2]; TC-0040 COMPLETED). Gate 10 planning_ready (TC-0044 not_started). FODT: Gates 1-6 PASSED. Gate 6 APPROVED Babar Raza 2026-05-08 (FODT_ORACLE_RUN PASS 4/4; FODT_ORACLE_COMPARE PASS; TC-0042/0043 COMPLETED). Gate 7 fuzz planning_ready (TC-0045 not_started). Evidence metadata floor RESTORED to 30 (run047 repair). No product source. last_completed_run: run047. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
-**FODT Gate 5 allowed:** YES — Gate 5 PASSED (Babar Raza, 2026-05-08, run046). Gate 6 planning_ready; execution requires explicit prompt.
-**Commit allowed:** YES — run046 authorized by execution prompt.
-**Next required action:** (1) FODS Gate 9: explicit TC-0040 execution prompt → tier map + delivery plan → DEC-034 → human approval. (2) FODT Gate 6: explicit TC-0042 execution prompt → oracle execution → DEC-034 (TC-0043) → human approval.
+**FODT Gate 6 allowed:** YES — Gate 6 PASSED (Babar Raza, 2026-05-08, run047). Gate 7 fuzz planning_ready; execution requires explicit prompt.
+**Commit allowed:** YES — run047 authorized by execution prompt.
+**Next required action:** (1) FODS Gate 10: explicit TC-0044 execution prompt → OSS scope + packaging plan → DEC-034 → human approval. (2) FODT Gate 7: explicit TC-0045 execution prompt → malformed fixtures + fuzz test → DEC-034 → human approval.
 
 ---
 
@@ -987,6 +987,8 @@ If any item fails: Log the failure as a new healing gap and issue a targeted hea
 24. **Completed (run044):** FODS Gate 6 DEC-034 (TC-0027 PASS 24/24; ORACLE_COMPARE PASS 3/4 WARN 1/4) + Gate 6 APPROVED (Babar Raza, 2026-05-08) + FODT Gate 4 prototype created (fodt_parser.py, TC-0035 DEC-034 PASS 20/20) + Gate 4 APPROVED (Babar Raza, 2026-05-08); master-plan v2.40.
 25. **Completed (run045):** FODS Gate 7 fuzz executed (18 malformed fixtures, GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18) + TC-0033 DEC-034 PASS + Gate 7 APPROVED (Babar Raza, 2026-05-08) + FODS Gate 8 planning (gate8-security-plan.md, TC-0036) + FODT Gate 5 planning (TC-0037); master-plan v2.41.
 26. **Completed (run046):** FODS Gate 8 security review executed (reports/security/fods.md; 8 threat categories; GATE8_SECURITY_REVIEW: PASS) + TC-0038 DEC-034 PASS 20/20 + Gate 8 APPROVED (Babar Raza, 2026-05-08) + FODT Gate 5 neutral model created (schemas/neutral-model/fodt/ — 7 entities, 26 mappings, 19 rules; FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 109 checks) + TC-0039 DEC-034 PASS + Gate 5 APPROVED (Babar Raza, 2026-05-08) + FODS Gate 9 planning (TC-0040, gate9-product-mapping-plan.md, tier-map-draft.yaml) + FODT Gate 6 oracle planning (TC-0041/TC-0042/TC-0043; gate6-oracle-plan.md, oracle-scope.md, oracle-risk-register.md); master-plan v2.42. No Gate 9 approval. No FODT Gate 6 execution. No product source. No embeddings.
+
+27. **Completed (run047):** Evidence metadata floor RESTORED 4→30 (run046 regression repaired) + RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added to validator + 11 negative tests (was 10) + base-run.yaml v1.3 + FODS Gate 9 APPROVED (Babar Raza, 2026-05-08): tier-map.yaml v1.0 (first_oss_release_tiers [0,1,2]) + gate9-human-review-packet.md + TC-0040 COMPLETED + DEC-034 inline 20/20 + FODT Gate 6 APPROVED (Babar Raza, 2026-05-08): run_fodt_oracle.py + compare_fodt_oracle.py + FODT_ORACLE_RUN PASS 4/4 + FODT_ORACLE_COMPARE PASS + TC-0042/TC-0043 COMPLETED + DEC-034 inline 10/10 + gate6-oracle-comparison-report.md + gate6-human-review-packet.md + FODS Gate 10 planning (TC-0044, gate10-product-planning.md) + FODT Gate 7 planning (TC-0045, gate7-fuzz-plan.md); master-plan v2.43. No product source. No Gate 10 approval. No FODT Gate 7 approval.
 27. **Next required action:** (1) FODS Gate 9: issue explicit TC-0040 execution prompt for product mapping + tier map. (2) FODT Gate 6: LibreOffice confirmed installed, issue explicit TC-0042 execution prompt. (3) FODT Gate 6 must run in separate session from TC-0043 DEC-034 verification.
 
 **Gate 2 for FODS: PASSED — approved by Babar Raza (2026-05-05). Patent search waived by project lead.**
@@ -1053,7 +1055,7 @@ The exact final Git HEAD for each run is authoritative in `bundle-metadata/git-l
 `bundle-metadata/git-status-final.txt` in the run's evidence bundle.
 See `docs/current-state-and-evidence-authority.md`.
 
-**last_completed_run:** run046 (f659307)
+**last_completed_run:** run047 (exact final HEAD in bundle-metadata/git-log.txt)
 **run044 commit set:** 0e732c3
 **run043 commit set (informational):** bc92729
 **run042 commit set:** b6e4316 + e31dc66 + fd098c9 + 079ba6d
@@ -1491,11 +1493,12 @@ plan-repair-review.md. The plan-repair sprint (S-F2F-00) corrected all defects a
 ### Authorization Status
 
 - S-F2F-00 (plan repair): CLOSED_VERIFIED — S-F2F-00B closure sprint 2026-05-08; commit 881e333; evidence independently verified PASS
-- S-F2F-01 through S-F2F-08: proposed_pending_human_approval — NOT authorized
+- S-F2F-01 (playbook schema + policy): completed_pending_independent_verification — executed 2026-05-08; schemas/playbook/ + docs/playbook-layer.md created; no replay tools, no apply mode, no acquisition-pack playbooks
+- S-F2F-02 through S-F2F-08: proposed_pending_human_approval — NOT authorized
 
-No gate statuses were changed by this planning or repair sprint. No implementation artifacts
-were created. All S-F2F taskcards except S-F2F-00 require separate explicit human authorization
-before execution.
+No gate statuses were changed by S-F2F-00 or S-F2F-01. S-F2F-01 created schema and policy
+artifacts only. All S-F2F taskcards from S-F2F-02 onward require separate explicit human
+authorization before execution.
 
 ### Secondary Phase Map
 
@@ -1523,12 +1526,13 @@ will be created until the appropriate gate sequence is satisfied.
 
 ### Next Possible Secondary Action
 
-The next possible secondary action is S-F2F-01 (Playbook Schema and Policy), which requires:
-1. An explicit human authorization prompt naming "S-F2F-01 Playbook Schema and Policy"
-2. No concurrent MAIN SPRINT execution sprint in progress (WIP limit: max 1 secondary sprint)
+S-F2F-01 is complete (pending independent verification). The next possible secondary actions are:
+- S-F2F-01 independent verification sprint (DEC-034, separate session)
+- After verification: S-F2F-02 (Playbook Validation Tool) or S-F2F-05 (ODF-Flat Family Playbook)
+  — each requires a separate explicit human authorization prompt naming the taskcard.
 
-This section is informational only. Execution of any S-F2F sprint beyond S-F2F-00 requires
-the authorization conditions above to be met.
+This section is informational only. Execution of any S-F2F sprint beyond S-F2F-01 requires
+human authorization conditions above to be met.
 
 ### Evidence Bundle for Plan-Repair Sprint
 

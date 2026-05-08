@@ -276,11 +276,11 @@ See AGENTS.md Section Y for agent-specific evidence bundle rules.
 
 ---
 
-## Section 20 — Playbook Layer Governance (Proposed — Requires S-F2F-01 Human Approval)
+## Section 20 — Playbook Layer Governance (Schema and Policy Active — S-F2F-01 Complete; Execution Tooling Unauthorized)
 
-**STATUS: PROPOSED ONLY. These governance rules are NOT active until S-F2F-01 (Playbook
-Schema and Policy) is implemented and explicitly approved by a human. Do not apply these
-rules or create any playbook artifacts until S-F2F-01 authorization is granted.**
+**STATUS: Playbook schema and policy ACTIVE after S-F2F-01 (2026-05-08). schemas/playbook/
+and docs/playbook-layer.md exist. Execution tooling (replay engine, apply mode, validation
+tool) remains unauthorized until S-F2F-02 through S-F2F-06 are explicitly authorized.**
 
 **20.1.** Playbook YAML files are internal artifacts. They are NOT evidence, NOT operational
 authority, and NOT gate approval substitutes. `plans/master-plan.md` and evidence bundle

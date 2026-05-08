@@ -3,23 +3,23 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run045 to reflect run045 combined sprint: run044 verified (39+ checks PASS); FODS Gate 7 PASS 18/18 CRASH 0/18 APPROVED Babar Raza; FODT Gate 4 PASS 4/4 APPROVED Babar Raza; Gate 8/Gate 5 planning created; master-plan v2.41
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run047 to reflect run047 combined sprint: run046 verified (38 PASS + 2 REGRESSION); FODS Gate 9 PASSED Babar Raza (tier-map v1.0); FODT Gate 6 PASSED Babar Raza (ORACLE_RUN 4/4; COMPARE 2/4 PASS 2/4 WARN); metadata floor restored to 30; RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added; master-plan v2.43
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 09 — Current State (Phase 3: FODS Gates 1-7 PASSED, Gate 8 planning_ready; FODT Gates 1-4 PASSED, Gate 5 planning_ready)
+# 09 — Current State (Phase 3: FODS Gates 1-9 PASSED, Gate 10 planning_ready; FODT Gates 1-6 PASSED, Gate 7 fuzz planning_ready)
 
-This file captures the current state after run045. FODS Gates 1-7 ALL PASSED. Gate 7 APPROVED Babar Raza (2026-05-08, run045): GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18; TC-0033 COMPLETED. Gate 8 planning_ready: TC-0036 not_started, gate8-security-plan.md (8 threat categories scoped). FODT Gates 1-4 ALL PASSED: Gate 1 run041, Gate 2 run043, Gate 3 run044, Gate 4 run045 (FODT_PROTOTYPE_VALIDATION PASS 4/4; TC-0035 DEC-034 PASS 20/20). Gate 5 planning_ready: TC-0037 not_started, gate5-neutral-model-plan.md (7 entities proposed).
+This file captures the current state after run047. FODS Gates 1-9 ALL PASSED. Gate 9 APPROVED Babar Raza (2026-05-08, run047): tier-map.yaml v1.0 approved, 16 features across 5 tiers (T0-T4), TC-0040 DEC-034 PASS 20/20. Gate 10 planning_ready: TC-0044 not_started, gate10-product-planning.md. FODT Gates 1-6 ALL PASSED: Gate 6 APPROVED Babar Raza (2026-05-08, run047): ORACLE_RUN PASS 4/4; ORACLE_COMPARE PASS 2/4 WARN 2/4 (word-count tolerances — expected); TC-0043 DEC-034 PASS inline. Gate 7 fuzz planning_ready: TC-0045 not_started, gate7-fuzz-plan.md. Evidence metadata floor restored to 30 (run046 regression fixed). RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added.
 
-**Last updated:** run045 (run044 independently verified PASS 39+ checks; FODS Gate 7 APPROVED Babar Raza 2026-05-08; FODT Gate 4 APPROVED Babar Raza 2026-05-08; Gate 8/Gate 5 planning created; master-plan.md v2.41).
+**Last updated:** run047 (run046 verified 38 PASS + 2 REGRESSION identified; FODS Gate 9 APPROVED Babar Raza 2026-05-08; FODT Gate 6 APPROVED Babar Raza 2026-05-08; Gate 10/Gate 7 planning created; master-plan.md v2.43).
 
 ## Current status
 
 | Item | Status |
 |---|---|
-| Phase | Phase 3: FODS Gates 1-7 PASSED; Gate 8 planning_ready; FODT Gates 1-4 PASSED; Gate 5 planning_ready |
+| Phase | Phase 3: FODS Gates 1-9 PASSED; Gate 10 planning_ready; FODT Gates 1-6 PASSED; Gate 7 fuzz planning_ready |
 | Phase 0 accepted | YES — 2026-05-04 (run015, human-authorized) |
 | Phase 1A complete | YES — FODS scored 93/100 (run015), independently verified (run016) |
 | Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
@@ -33,8 +33,12 @@ This file captures the current state after run045. FODS Gates 1-7 ALL PASSED. Ga
 | FODT Gate 2 | **PASSED** — Babar Raza, 2026-05-08, run043; TC-0031 DEC-034 PASS (20/20 checks); 8/8 fast-path items; patent waived |
 | FODT Gate 3 | **PASSED** — Babar Raza, 2026-05-08, run044; TC-0032 DEC-034 PASS 27/27; 4/4 FODT samples; SHA-256 MATCH 4/4 |
 | FODT Gate 4 | **PASSED** — Babar Raza, 2026-05-08, run045; FODT_PROTOTYPE_VALIDATION PASS 4/4; TC-0035 DEC-034 PASS 20/20 |
-| Active formats | fods (gate_1–7: passed; gate_8: planning_ready); fodt (gate_1–4: passed; gate_5: planning_ready) |
-| Registry | FODS: gate_7 passed; gate_8 planning_ready; next_allowed_action: gate8_security_planning. FODT: gate_4 passed; gate_5 planning_ready; TC-0037 not_started |
+| Gate 8 status | **PASSED** — approved Babar Raza, 2026-05-08, run046; GATE8_SECURITY_REVIEW: PASS; TC-0038 DEC-034 PASS 20/20 |
+| Gate 9 status | **PASSED** — approved Babar Raza, 2026-05-08, run047; GATE9_PRODUCT_MAPPING: PASS; tier-map.yaml v1.0; TC-0040 DEC-034 PASS 20/20 |
+| FODT Gate 5 | **PASSED** — Babar Raza, 2026-05-08, run046; FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4 (109 checks); TC-0039 DEC-034 PASS |
+| FODT Gate 6 | **PASSED** — Babar Raza, 2026-05-08, run047; ORACLE_RUN PASS 4/4; ORACLE_COMPARE PASS 2/4 WARN 2/4; TC-0043 DEC-034 PASS inline |
+| Active formats | fods (gate_1–9: passed; gate_10: planning_ready); fodt (gate_1–6: passed; gate_7: fuzz planning_ready) |
+| Registry | FODS: gate_9 passed; gate_10 planning_ready; next_allowed_action: gate10_product_planning. FODT: gate_6 passed; gate_7 planning_ready; TC-0045 not_started |
 | Spec Workbench v1 | created run030 (local-only): .local/spec-cache/fods/1.3/workbench/ — verified-facts.yaml (10 facts), requirement packs (parser/sample/model), task packets, coverage matrices; 205/205 validation PASS |
 | FODS acquisition pack | acquisition-packs/fods/ (19 files after run038: + oracle-operator-handoff.md run038) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |

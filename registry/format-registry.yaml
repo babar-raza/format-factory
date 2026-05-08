@@ -164,16 +164,21 @@ formats:
         approval_run: run046
         notes: "Gate 8 executed run046 (2026-05-08). GATE8_SECURITY_REVIEW: PASS. TC-1 XXE mitigated (ET/Expat default). TC-2 DTD mitigated (Expat rejects DOCTYPE). TC-3/TC-4/TC-8 not-applicable (flat XML). TC-5 malformed mitigated (Gate 7 18/18). TC-7 recursion mitigated (iterative code). TC-6 memory deferred to Gate 10. TC-0038 DEC-034 PASS 20/20. Gate 8 APPROVED by Babar Raza (run046 execution prompt, 2026-05-08). Authorizes FODS Gate 9 product mapping planning only."
       gate_9:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        tier_map: null
-        notes: null
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-08"
+        tier_map: acquisition-packs/fods/tier-map.yaml
+        first_oss_release_tiers: [0, 1, 2]
+        deferred_tiers: [3, 4]
+        tc0040_status: completed
+        dec034_inline_authorized: true
+        approval_run: run047
+        notes: "Gate 9 executed run047 (2026-05-08). Tier map finalized (v1.0): 5 tiers, 16 features. First OSS release Tiers 0-2 (13 features). Tiers 3-4 deferred. DEC-034 PASS 20/20 inline (authorized by run047 execution prompt). TC-0040 COMPLETED. Gate 9 APPROVED by Babar Raza (run047 execution prompt, 2026-05-08). Authorizes FODS Gate 10 OSS release planning only. No product source created."
       gate_10:
-        status: not_started
+        status: planning_ready
         approved_by: null
         approved_date: null
-        notes: null
+        notes: "Gate 10 planning created run047 (2026-05-08). gate10-product-planning.md created. TC-0044 not_started. Execution requires explicit Gate 10 prompt. NO product source created."
       gate_11:
         status: not_started
         approved_by: null
@@ -244,7 +249,7 @@ formats:
       approved_date: "2026-05-07"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: gate6_oracle_planning
+    next_allowed_action: gate7_fuzz_planning
     gates:
       gate_1:
         status: passed
@@ -304,15 +309,22 @@ formats:
         approval_run: run046
         notes: "Gate 5 executed run046 (2026-05-08). 7 entities, 26 field mappings, 19 validation rules. FODT_NEUTRAL_MODEL_VALIDATION: PASS 4/4 (109 checks, 0 errors). TC-0039 DEC-034 PASS inline. Gate 5 APPROVED by Babar Raza (run046 execution prompt, 2026-05-08). Authorizes FODT Gate 6 oracle comparison planning only."
       gate_6:
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-08"
+        oracle_tool: "LibreOffice 26.2.3.2 (soffice.com)"
+        oracle_run: "run047 — FODT_ORACLE_RUN: PASS 4/4"
+        oracle_compare: "run047 — FODT_ORACLE_COMPARE: PASS (with 2 WARN) 2/4 PASS 2/4 WARN"
+        oracle_compare_report: "acquisition-packs/fodt/gate6-oracle-comparison-report.md"
+        tc0042_status: "COMPLETED (run047)"
+        tc0043_dec034_status: "PASS 10/10 (run047 inline — authorized by execution prompt)"
+        approval_run: run047
+        notes: "Gate 6 oracle scripts created run047: tools/oracle/run_fodt_oracle.py, compare_fodt_oracle.py. LibreOffice text export (--convert-to txt:Text). FODT_ORACLE_RUN: PASS 4/4. FODT_ORACLE_COMPARE: PASS (with 2 WARN) 2/4 PASS 2/4 WARN. TC-0043 DEC-034 PASS 10/10 inline (authorized by run047 execution prompt). Gate 6 APPROVED by Babar Raza (run047 execution prompt, 2026-05-08). Authorizes FODT Gate 7 malformed/fuzz testing planning."
+      gate_7:
         status: planning_ready
         approved_by: null
         approved_date: null
-        notes: "Gate 6 planning created run046 (2026-05-08). TC-0041 completed (planning), TC-0042 not_started (execution), TC-0043 not_started (verification). Oracle plan: acquisition-packs/fodt/gate6-oracle-plan.md. LibreOffice already installed (soffice.com 26.2.3.2). Execution requires explicit Gate 6 prompt."
-      gate_7:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        notes: "Gate 7 planning created run047 (2026-05-08). gate7-fuzz-plan.md created. TC-0045 not_started. Execution requires explicit Gate 7 prompt."
       gate_8:
         status: not_started
         approved_by: null

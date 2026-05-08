@@ -1,15 +1,19 @@
 # Base Evidence Bundle Contract
 # All sprint runs inherit these rules.
 # Format: YAML
-# Version: 1.2
+# Version: 1.3
 # Created: run031 (2026-05-06)
 # Updated: run041 (2026-05-07) — added current_state_authority field; git metadata auto-generated
 # Updated: run042 (2026-05-08) — raised min_metadata_count to 30 (normal PASS depth requirement);
 #          added normal_pass_min_metadata field; clarified .env.example policy;
 #          emergency_blocker_bundle exception: low metadata only for BLOCKED/FAIL bundles
+# Updated: run046 (2026-05-08) — REGRESSION: floor lowered to 4 (INCORRECT — reversed by run047)
+# Updated: run047 (2026-05-08) — floor RESTORED to 30; added RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check;
+#          run contracts MUST set min_metadata_count >= 30 (RUN_CONTRACT_METADATA_FLOOR);
+#          contracts with min_metadata_count < 30 FAIL validation unless emergency_blocker_bundle: true
 
 contract_id: base-run
-version: "1.2"
+version: "1.3"
 description: "Base contract for all format-factory evidence bundles."
 
 # Current-state authority policy (run041+)

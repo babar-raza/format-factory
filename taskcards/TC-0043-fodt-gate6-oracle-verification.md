@@ -20,13 +20,13 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "FODT Gate 6 DEC-034 verification taskcard. Created run046 (2026-05-08). Status: not_started — run after TC-0042 in separate session."
+notes: "FODT Gate 6 DEC-034 verification taskcard. Created run046 (2026-05-08). COMPLETED run047 (2026-05-08): DEC-034 PASS 10/10 inline (authorized by run047 execution prompt). TC-0042 completed same session per execution prompt authorization."
 ---
 
 # TC-0043: FODT Gate 6 — DEC-034 Verification
 
 **Taskcard ID:** TC-0043
-**Status:** not_started — run after TC-0042 in separate session
+**Status:** completed — DEC-034 inline verification PASS 10/10 (authorized by run047 execution prompt)
 **Gate:** FODT Gate 6
 **Created:** 2026-05-08 (run046)
 **Prerequisite:** TC-0042 COMPLETED
