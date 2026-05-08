@@ -611,7 +611,9 @@ human prompt.
 
 ---
 
-## AD. Planning and Agent Handoff Methodology (memory sprint 2026-05-08)
+## AD. Planning and Agent Handoff Methodology (memory sprint 2026-05-08; updated memory-methodology-linkage-and-enforcement sprint 2026-05-08)
+
+**AD0. Methodology Index Is the Entry Point.** Before plan review, plan creation, or execution handoff work, read `docs/agent-methodology-index.md`. This file links all local methodology docs, prompt templates, commands, and enforcement rules. It is the authoritative local entry point for planning sessions and fresh chat orientation. If methodology docs are missing or unlinked, stop with METHODOLOGY_NOT_ACCESSIBLE.
 
 **AD1. Plans Must Be Challenged Before Execution.** When asked to create or review a plan, agents must challenge every claim against repo truth. Plans are not ready for execution until all 22 items on docs/plan-hardening-checklist.md pass. Plans that lack exact allowed paths, forbidden paths, validation commands, stop conditions, or evidence bundle requirements are not execution-ready.
 
@@ -626,3 +628,9 @@ human prompt.
 **AD6. Evidence-Producing Sprints Must Print Bundle Path.** Every sprint that produces an evidence bundle must print, as its final line: EVIDENCE_BUNDLE: <absolute Windows path to zip>. No other line may follow it.
 
 **AD7. No Push Without Explicit Authorization.** Push is prohibited unless the human explicitly authorizes it in the current session. Default is no push.
+
+**AD8. Before Converting Prose Plan, Use Methodology Docs.** Before converting a prose plan to an execution handoff, use `docs/planning-methodology.md` and `docs/plan-hardening-checklist.md`. Before writing a handoff prompt, use `docs/agent-execution-handoff-standard.md`. Before reviewing an evidence bundle and producing the next prompt, use `.claude/commands/evidence-review-next-prompt.md` or its template.
+
+**AD9. Agents Must Not Rely on Sprint Summaries Alone.** When evidence bundles and repo files are available, they are the truth source. Sprint summaries are hypotheses. Read the actual files.
+
+**AD10. No Methodology Skip.** Skipping plan hardening, independent verification, or evidence bundle validation is a governance violation. These steps are required infrastructure, not optional ceremony.

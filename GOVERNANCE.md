@@ -383,7 +383,9 @@ See `docs/non-aspose-format-candidate-registry-plan.md`.
 
 ---
 
-## 23. Planning and Agent Handoff Methodology (memory sprint 2026-05-08)
+## 23. Planning and Agent Handoff Methodology (memory sprint 2026-05-08; updated memory-methodology-linkage-and-enforcement sprint 2026-05-08)
+
+**23.0. Methodology Index Is the Governance Entry Point.** The file `docs/agent-methodology-index.md` is the local governance entry point for all plan and prompt work. It links all methodology docs, prompt templates, commands, and enforcement rules. Agents must read it before plan review or execution handoff work. The methodology index, prompt templates, and command files must remain linked from README, AGENTS.md, GOVERNANCE.md, memory/00-index.md, and the command registry. Any sprint that changes methodology docs must run the methodology link validation check.
 
 **23.1. Local Planning Standards Are Authoritative.** The format-factory project maintains local planning and execution standards in docs/planning-methodology.md, docs/agent-execution-handoff-standard.md, and docs/plan-hardening-checklist.md. These documents are authoritative for how agents must write, harden, and execute plans. They supplement AGENTS.md.
 
@@ -391,8 +393,26 @@ See `docs/non-aspose-format-candidate-registry-plan.md`.
 
 **23.3. Single-Go Handoffs Are the Standard for Complex Sprints.** When authorized, complex multi-section sprints are encoded as single-go execution prompts with internal gates and stop conditions. The agent self-manages the sprint. The human does not need to provide mid-execution guidance.
 
-**23.4. Fresh-Chat Continuity Is Required.** The project must maintain sufficient local docs that a fresh chat session can orient itself without conversation history. docs/fresh-chat-continuity-brief.md and the prompt templates in docs/prompts/ are maintained for this purpose.
+**23.4. Fresh-Chat Continuity Is Required.** The project must maintain sufficient local docs that a fresh chat session can orient itself without conversation history. docs/fresh-chat-continuity-brief.md and the prompt templates in docs/prompts/ are maintained for this purpose. Fresh chat sessions must read the continuity brief and memory index before planning work.
 
-**23.5. No Broad Cleanup Commands as Default.** Agents must not use broad destructive git commands (stash -u, reset --hard, clean -fd) as defaults or shortcuts. If a dirty worktree blocks clean git, the agent must document the dirty_git_reason and use emergency_blocker_bundle: true rather than discarding uncommitted work.
+**23.5. No Broad Cleanup Commands as Default.** Agents must not use broad destructive git commands (stash -u, reset --hard, clean -fd) as defaults or shortcuts. If a dirty worktree blocks clean git, the agent must document the dirty_git_reason and use emergency_blocker_bundle: true rather than discarding uncommitted work. Broad cleanup guidance requires explicit scoped justification.
 
 **23.6. Evidence Bundle Path Is Required.** Every evidence-producing sprint response must end with the line: EVIDENCE_BUNDLE: <absolute Windows path to zip>. This is a non-negotiable governance requirement. See AGENTS.md Section AD6.
+
+**23.7. Evidence Review Before Next Sprint.** When a prior sprint has produced an evidence bundle, that bundle must be reviewed (using /evidence-review-next-prompt or its template) before the next sprint prompt is generated.
+
+**23.8. Discovered Gaps Must Not Remain Only in Chat.** Any architecture gap, capability gap, or structural weakness identified during a sprint must be captured in at least one durable local artifact (roadmap, backlog, taskcard, or memory file). See AGENTS.md Section AB.
+
+---
+
+## 24. Methodology Linkage and Enforcement (memory-methodology-linkage-and-enforcement sprint 2026-05-08)
+
+**24.1. Methodology Must Be Locally Discoverable.** All methodology docs, prompt templates, and commands must be reachable from README.md, AGENTS.md, GOVERNANCE.md, memory/00-index.md, and .claude/commands/_readme.md. A fresh agent session must be able to find all planning tools without manual search.
+
+**24.2. Methodology Link Check Is Required.** The command `python tools/governance/check_methodology_links.py` must pass before any sprint that modifies methodology docs is considered complete. METHODOLOGY_LINK_CHECK: FAIL blocks bundle acceptance.
+
+**24.3. Command Registry Must Stay Current.** .claude/commands/_readme.md must list all active methodology commands. When a new command is added, the registry must be updated in the same sprint.
+
+**24.4. Prompt Templates Must Have an Index.** docs/prompts/README.md must exist and list all templates. Template selection guidance must be included.
+
+**24.5. No Methodology Regression.** Removing or unlinking methodology docs, prompt templates, or commands without an authorized replacement is a governance violation. If a methodology doc is renamed or moved, all cross-links must be updated atomically in the same commit.
