@@ -584,23 +584,41 @@ class TestNoWriteProof:
 # ---------------------------------------------------------------------------
 
 class TestNoReplayApplyModules:
-    def test_replay_module_does_not_exist(self):
-        """replay_acquisition_playbook.py must not exist."""
-        assert not os.path.exists(
-            repo_path("tools", "playbook", "replay_acquisition_playbook.py")
-        ), "replay_acquisition_playbook.py must not exist"
+    def test_replay_module_exists_and_has_no_apply_mode(self):
+        """replay_acquisition_playbook.py (S-F2F-03) must exist and must not implement apply mode."""
+        replay_path = repo_path("tools", "playbook", "replay_acquisition_playbook.py")
+        assert os.path.exists(replay_path), (
+            "replay_acquisition_playbook.py must exist (created by S-F2F-03)"
+        )
+        import ast as _ast
+        with open(replay_path, encoding="utf-8") as f:
+            source = f.read()
+        tree = _ast.parse(source)
+        # Apply mode IMPLEMENTATION functions must not exist (guards are OK)
+        forbidden_impl_patterns = [
+            "mode_apply", "apply_mode", "do_apply", "execute_apply",
+            "run_apply", "apply_proposed", "apply_authorized",
+        ]
+        for node in _ast.walk(tree):
+            if isinstance(node, _ast.FunctionDef):
+                name = node.name.lower()
+                for pattern in forbidden_impl_patterns:
+                    assert pattern not in name, (
+                        f"Found apply mode implementation: {node.name}. "
+                        "Apply mode is not authorized (S-F2F-06 not yet approved)."
+                    )
 
-    def test_diff_module_does_not_exist(self):
-        """diff_playbook_outputs.py must not exist."""
-        assert not os.path.exists(
+    def test_diff_module_exists(self):
+        """diff_playbook_outputs.py (S-F2F-03) must exist."""
+        assert os.path.exists(
             repo_path("tools", "playbook", "diff_playbook_outputs.py")
-        ), "diff_playbook_outputs.py must not exist"
+        ), "diff_playbook_outputs.py must exist (created by S-F2F-03)"
 
-    def test_export_review_queue_module_does_not_exist(self):
-        """export_review_queue.py must not exist."""
-        assert not os.path.exists(
+    def test_export_review_queue_module_exists(self):
+        """export_review_queue.py (S-F2F-03) must exist."""
+        assert os.path.exists(
             repo_path("tools", "playbook", "export_review_queue.py")
-        ), "export_review_queue.py must not exist"
+        ), "export_review_queue.py must exist (created by S-F2F-03)"
 
     def test_create_golden_case_module_does_not_exist(self):
         """create_golden_case.py must not exist."""
@@ -620,17 +638,20 @@ class TestNoReplayApplyModules:
             repo_path("plans", "review-queues")
         ), "plans/review-queues/ must not exist"
 
-    def test_no_product_source_directories(self):
-        """No product source directories may exist (src/python/fods/, src/python/fodt/, etc.)."""
+    def test_no_unauthorized_product_source_directories(self):
+        """Unauthorized product source directories must not exist.
+        Note: src/python/fods/ is authorized by Gate 10 + TC-0050 Phase 4 prompt.
+        Unauthorized: src/python/fodt/ (TC-0052 not started), src/net/fods/ (DEC-033 blocked),
+        src/net/fodt/ (DEC-033 blocked), acquisition-packs/_families/ (S-F2F-05 not authorized).
+        """
         forbidden_dirs = [
-            repo_path("src", "python", "fods"),
-            repo_path("src", "python", "fodt"),
-            repo_path("src", "net", "fods"),
-            repo_path("src", "net", "fodt"),
-            repo_path("acquisition-packs", "_families"),
+            repo_path("src", "python", "fodt"),    # TC-0052 not started
+            repo_path("src", "net", "fods"),        # DEC-033 unresolved
+            repo_path("src", "net", "fodt"),        # DEC-033 unresolved
+            repo_path("acquisition-packs", "_families"),  # S-F2F-05 not authorized
         ]
         for d in forbidden_dirs:
-            assert not os.path.exists(d), f"Forbidden directory must not exist: {d}"
+            assert not os.path.exists(d), f"Unauthorized directory must not exist: {d}"
 
     def test_validator_source_does_not_import_replay(self):
         """validate_playbook.py source must not import replay or apply modules."""
