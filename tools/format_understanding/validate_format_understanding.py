@@ -161,12 +161,14 @@ def validate_package(format_id, pack_dir, min_facts, min_requirements,
                                 f"product-readiness.yaml: missing field '{field}' (allowed with --allow-partial)"
                             )
                 pss = body.get("product_source_state", "")
-                if pss and pss not in ("not_created", "partial", ""):
+                valid_pss = ("not_created", "partial", "created", "")
+                if pss and pss not in valid_pss:
                     errors.append(
-                        f"product-readiness.yaml: product_source_state must be 'not_created' before source begins, got '{pss}'"
+                        f"product-readiness.yaml: product_source_state must be one of {valid_pss}, got '{pss}'"
                     )
                 sas = body.get("source_authorization_state", "")
-                if sas and sas not in ("not_authorized", "authorized", "partial"):
+                valid_sas = ("not_authorized", "authorized", "partial", "authorized_and_executed")
+                if sas and sas not in valid_sas:
                     warnings.append(
                         f"product-readiness.yaml: unexpected source_authorization_state '{sas}'"
                     )

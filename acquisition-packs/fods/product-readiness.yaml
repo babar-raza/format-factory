@@ -45,11 +45,8 @@ packaging:
   license: "Apache-2.0"
 
 product_source_authorization:
-  python_source_authorized: false
-  python_authorization_required: >
-    An explicit Phase 4 Python implementation execution prompt is required.
-    Gate 10 approval alone does NOT authorize product source creation.
-    See plans/master-plan.md Section 1 Rule 11.
+  python_source_authorized: true
+  python_authorization_exercised: "run051 (2026-05-09) -- explicit Phase 4 Python execution prompt issued"
   net_source_authorized: false
   net_authorization_blocked_by: "DEC-033 (NET FOSS packaging deferred)"
 
@@ -58,29 +55,25 @@ gate_11_notes: "Gate 11 commercial planning blocked until DEC-033 resolved."
 
 known_gaps:
   - gap_id: TC-6-deferred
-    description: "iterparse implementation deferred to Phase 4 (required in product source)"
+    description: "iterparse -- RESOLVED in TC-0050 Phase 4 source (ET.iterparse used)"
     blocker_for_release: false
-    resolution: "Implement ET.iterparse() in product source before any release"
+    resolution: "RESOLVED -- iterparse implemented in src/python/fods/parser.py"
   - gap_id: DEC-033
     description: ".NET FOSS packaging decision pending"
     blocker_for_release: false
     resolution: "Resolve before any .NET source creation or release"
 
-product_source_state: not_created
-source_authorization_state: not_authorized
-blockers_before_source:
-  - Explicit Phase 4 Python implementation execution prompt required
-  - DEC-033 must be resolved before any .NET source creation
-gate_11_commercial_status: planning_ready
-
-product_source_state: not_created
-source_authorization_state: not_authorized
-blockers_before_source:
-  - Explicit Phase 4 Python implementation execution prompt required
-  - DEC-033 must be resolved before any .NET source creation
+product_source_state: created
+source_authorization_state: authorized_and_executed
+python_source_path: src/python/fods/
+python_source_run: run051
+python_source_date: "2026-05-09"
+python_source_taskcard: TC-0050
+net_source_state: not_created
+net_source_blocked_by: DEC-033
 gate_11_commercial_status: planning_ready
 
 readiness_verdict: >
-  FODS Python FOSS product (Tiers 0-2) is READY FOR PHASE 4 after an explicit
-  Phase 4 Python implementation execution prompt is issued. All gates 1-10 passed.
-  No product source created. No premature source creation risk.
+  FODS Python FOSS product (Tiers 0-2) Phase 4 source CREATED (run051, 2026-05-09).
+  src/python/fods/ -- 6 files, iterparse streaming, 66 tests pass.
+  .NET source blocked by DEC-033. Gate 11 commercial release requires DEC-033 resolution.

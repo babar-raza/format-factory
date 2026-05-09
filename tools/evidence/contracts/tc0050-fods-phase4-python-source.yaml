@@ -1,10 +1,10 @@
 # Evidence Bundle Contract -- TC-0050 FODS Phase 4 Python FOSS Source
 # Inherits base-run.yaml rules.
-# Version: 1.0
+# Version: 2.0 (strengthened by TC0050-VERIFY-001, 2026-05-09)
 # Created: run051 (2026-05-09)
 
 contract_id: tc0050-fods-phase4-python-source
-version: "1.0"
+version: "2.0"
 description: "TC-0050 -- FODS Phase 4 Python FOSS source: src/python/fods/ + tests/python/fods/"
 
 inherits: base-run
@@ -12,7 +12,7 @@ inherits: base-run
 require_clean_git: true
 emergency_blocker_bundle: false
 
-min_metadata_count: 30
+min_metadata_count: 55
 
 required_repo_files:
   - src/python/fods/__init__.py
@@ -28,11 +28,47 @@ required_repo_files:
   - tests/python/fods/test_neutral_model.py
   - tests/python/fods/test_public_api.py
   - acquisition-packs/fods/phase4-traceability-matrix.md
+  - acquisition-packs/fods/product-readiness.yaml
+  - tools/evidence/contracts/tc0050-fods-phase4-python-source.yaml
+  - tools/format_understanding/validate_format_understanding.py
 
 required_metadata_files:
   - git-log.txt
   - git-status-final.txt
   - bundle-manifest.yaml
+  - git-status-before.txt
+  - git-status-after.txt
+  - sprint-summary.md
+  - verdict.md
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - evidence-contract-validation-report.md
+  - existing-bundle-contamination-report.md
+  - source-verification-report.md
+  - requirements-traceability-verification.md
+  - state-verification-report.md
+  - pytest-python-fods-report.md
+  - pytest-format-understanding-report.md
+  - pytest-evidence-report.md
+  - fods-ful-validation-report.md
+  - current-state-consistency-report.md
+  - static-safety-report.md
+  - json-serializability-report.md
+  - malformed-fixture-report.md
+  - formula-macro-safety-report.md
+  - draw-frame-detection-report.md
+  - no-fodt-source-check.md
+  - no-dotnet-source-check.md
+  - no-gate11-pass-check.md
+  - dec033-status-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-playbook-replay-check.md
+  - no-push-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - validation-command-log.txt
 
 forbidden_patterns:
   - "repo/src/python/fodt/**"
@@ -46,3 +82,22 @@ forbidden_patterns:
   - "**/text.txt"
   - "**/pages.jsonl"
   - "**/chunks.jsonl"
+
+# Semantic checks (documented in metadata, not enforced by structural validator)
+checks:
+  sprint_id_is_tc0050: true
+  contract_id_is_tc0050: true
+  product_source_created: true
+  fods_python_tests_pass: true
+  requirements_traceability_verified: true
+  no_cross_sprint_metadata: true
+  no_memory_sprint_metadata: true
+  no_sf2f03_metadata: true
+  no_fodt_source_created: true
+  no_dotnet_source_created: true
+  no_gate11_passed: true
+  dec033_unresolved: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_playbook_replay: true
+  no_push: true
