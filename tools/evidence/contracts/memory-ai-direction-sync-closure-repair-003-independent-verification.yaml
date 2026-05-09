@@ -1,5 +1,5 @@
 contract_id: memory-ai-direction-sync-closure-repair-003-independent-verification
-version: "1.0"
+version: "1.1"
 sprint_type: memory_sprint
 description: >
   Independent verification of the MEMORY-AI-DIR-SYNC-2026-05-09 closure repair v3 bundle.
@@ -8,6 +8,7 @@ description: >
   and that memory sprint content (memory/13-15, GOV-004/005/006, enforcement docs) is correct.
   Three metadata notes classified NON_BLOCKING (stale head wording, concurrent governance commit,
   concurrent governance dirty note). Verdict: PASS_WITH_METADATA_NOTE.
+  v1.1: corrected required_metadata_files to match actual filenames from create_iv_metadata.py.
 
 current_state_authority: bundle-metadata
 
@@ -123,13 +124,16 @@ required_repo_files:
   - taskcards/GOV-006-documentation-information-architecture-standardization.md
 
 required_metadata_files:
-  - phase0-baseline-and-git-state.md
-  - phase1-target-bundle-validation.md
+  - phase0-baseline-report.md
+  - phase1-target-bundle-validation-report.md
   - phase2-commit-proof-verification.md
-  - phase3-metadata-notes-classification.md
-  - phase4-memory-content-verification.md
-  - phase5-validation-commands.md
-  - phase6-scope-drift-check.md
+  - phase3-metadata-note-review.md
+  - phase4-memory-content-authority-verification.md
+  - phase5-methodology-link-check-report.md
+  - phase5-current-state-consistency-report.md
+  - phase5-target-bundle-validation-report.md
+  - phase5-evidence-tests-report.md
+  - phase6-no-scope-drift-report.md
   - phase7-repair-decision.md
   - metadata-notes-summary.md
   - no-stash-reset-restore-clean-check.md
