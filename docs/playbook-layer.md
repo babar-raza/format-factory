@@ -92,8 +92,9 @@ Playbooks are NOT:
 4. **Human approval substitutes** — human review of a replay report is NOT human gate approval.
 5. **Spec or legal authority** — they contain no normative legal or specification claims.
 6. **Product release authority** — they do not authorize source code creation or product release.
-7. **Active tools (yet)** — as of S-F2F-01, no replay tools exist. This policy document
-   precedes tooling. Tooling requires separate authorization (S-F2F-02 through S-F2F-04).
+7. **Active tools (partial)** — as of S-F2F-01, no replay tools existed. validate_playbook.py
+   was created in S-F2F-02 (CLOSED_VERIFIED, 2026-05-08). Replay and apply tools require
+   separate authorization (S-F2F-03 through S-F2F-04).
 8. **Apply mode mechanisms** — apply mode is not authorized; it is a future risk-review
    subject (S-F2F-06).
 9. **LLM authority** — any LLM fallback in a replay context is informational only and cannot
@@ -134,8 +135,8 @@ The following Full2Foss patterns are NOT being adopted:
 A playbook for a format goes through these phases:
 
 1. **Schema established** (S-F2F-01 — this sprint): schema.json files created; policy doc written.
-2. **Validation tool created** (S-F2F-02 — future): tools/playbook/validate_playbook.py validates
-   YAML against schema. Read-only. No writes.
+2. **Validation tool created** (S-F2F-02 — COMPLETE, 2026-05-08): tools/playbook/validate_playbook.py validates
+   YAML against schema. Read-only. No writes. Supports --engine auto|jsonschema|fallback_structural.
 3. **Dry-run replay** (S-F2F-03 — future): tools/playbook/replay_acquisition_playbook.py
    simulates operations and exports review queue. No file writes.
 4. **Golden tests** (S-F2F-04 — future): tests/playbook/ golden fixtures for replay consistency.
@@ -333,9 +334,10 @@ S-F2F-01 is DONE when:
 
 ## 21. S-F2F-02 Validation Tool (Active — Read-Only)
 
-**Created:** S-F2F-02 (2026-05-08)
+**Created:** S-F2F-02 (2026-05-08); **Verified:** S-F2F-02B (2026-05-08)
+**Status:** CLOSED_VERIFIED
 **Tool:** tools/playbook/validate_playbook.py
-**Tests:** tests/playbook/test_playbook_schema.py (30 tests PASS)
+**Tests:** tests/playbook/test_playbook_schema.py (42 PASS, 1 skip — correct)
 
 ### What the Validation Tool Does
 
@@ -362,7 +364,7 @@ S-F2F-01 is DONE when:
 
 When jsonschema is not available:
 - The tool uses deterministic structural validation against known required fields and enums.
-- It prints: `JSON_SCHEMA_ENGINE: FALLBACK_STRUCTURAL_VALIDATION`
+- It prints: `JSON_SCHEMA_ENGINE: fallback_structural (structural fallback — NOT full JSON Schema compliance)`
 - Full JSON Schema compliance is not guaranteed in fallback mode.
 - Required fields, forbidden_uses, and authority boundary checks still run.
 
@@ -374,5 +376,6 @@ S-F2F-03 (dry-run replay) is still required before any playbook.yaml can be exec
 
 ### Next Step
 
-S-F2F-02 is completed_pending_independent_verification.
-S-F2F-03 (Dry-Run Replay Engine) requires a separate human authorization prompt naming S-F2F-03.
+S-F2F-02 is CLOSED_VERIFIED (S-F2F-02B independent verification complete, 2026-05-08).
+S-F2F-03 (Dry-Run Replay Engine) requires a separate explicit human authorization prompt
+naming "S-F2F-03 Dry-Run Replay and Review Queue".

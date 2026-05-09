@@ -84,8 +84,15 @@ No replay engine. No review queue. No apply mode. No golden tests yet.
 
 ## 11. Validation Commands
 ```bash
-# Tool runs without error on valid YAML
-python tools/playbook/validate_playbook.py --format-id fods docs/playbook-layer.md
+# Tool runs without error on valid YAML (current CLI — S-F2F-02B)
+python tools/playbook/validate_playbook.py \
+  --schema schemas/playbook/acquisition-playbook.schema.json \
+  --input docs/examples/acquisition-playbook-fods-documentation-example.yaml \
+  --kind acquisition-playbook --format-id fods --engine jsonschema
+python tools/playbook/validate_playbook.py \
+  --schema schemas/playbook/acquisition-playbook.schema.json \
+  --input docs/examples/acquisition-playbook-fods-documentation-example.yaml \
+  --kind acquisition-playbook --format-id fods --engine fallback_structural
 # Unit tests pass
 python -m pytest tests/playbook/test_playbook_schema.py -v
 # Tool does not write any files

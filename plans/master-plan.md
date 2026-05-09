@@ -1535,7 +1535,7 @@ separate explicit human authorization before execution.
 |-------|----------|-------|---------------|
 | S0 | S-F2F-00 | Plan repair (COMPLETE) | None |
 | S1 | S-F2F-01 | Playbook schema + policy doc only | CLOSED_VERIFIED (2026-05-08) |
-| S2 | S-F2F-02 | Playbook validation tool (read-only) | COMPLETE (2026-05-08) — 30/30 tests PASS |
+| S2 | S-F2F-02 | Playbook validation tool (read-only) | CLOSED_VERIFIED (S-F2F-02B, 2026-05-08) — 42 PASS, 1 skip |
 | S3 | S-F2F-03 | Dry-run replay + review queue export | S-F2F-02 complete |
 | S4 | S-F2F-04 | Golden dry-run tests | S-F2F-03 complete |
 | S5 | S-F2F-05 | ODF-flat family playbook docs | S-F2F-01 complete (parallel to S2-S4) |

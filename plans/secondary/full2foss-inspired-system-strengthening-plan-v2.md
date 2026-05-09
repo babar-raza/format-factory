@@ -351,13 +351,13 @@ Outputs: plans/secondary/, taskcards/S-F2F-*.md, master-plan Section 34, governa
 evidence contract, evidence bundle
 Gate changes: NONE
 
-### S1 — Playbook Schema and Policy (FUTURE — requires human approval)
+### S1 — Playbook Schema and Policy (CLOSED_VERIFIED — S-F2F-01B, 2026-05-08)
 Sprint: S-F2F-01
 Authorization required: explicit prompt naming "S-F2F-01 Playbook Schema and Policy"
 Outputs: schemas/playbook/{schema}.json (2 files), docs/playbook-layer.md
 NOT included: actual playbook.yaml files in acquisition-packs/, replay tools
 
-### S2 — Playbook Validation Tool (FUTURE — requires S-F2F-01 + approval)
+### S2 — Playbook Validation Tool (CLOSED_VERIFIED — S-F2F-02B, 2026-05-08)
 Sprint: S-F2F-02
 Authorization required: explicit prompt naming "S-F2F-02 Playbook Validation Tool"
 Outputs: tools/playbook/validate_playbook.py, tests/playbook/test_playbook_schema.py

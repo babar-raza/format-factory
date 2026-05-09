@@ -1,0 +1,107 @@
+contract_id: secondary-sf2f02c-closure-normalization
+description: >
+  S-F2F-02C Closure Normalization: repair all stale S-F2F-02/S-F2F-02B references in
+  repository documents. Normalizes docs/playbook-layer.md (5 drift points), plans/master-plan.md
+  (Secondary Phase Map test count), plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  (S1 and S2 headings), and taskcards/S-F2F-02-playbook-validation-only.md (old CLI syntax).
+  Confirms S-F2F-03 taskcard and evidence contracts are already correct.
+  No implementation work. No gate state changes. No product source.
+  S-F2F-03 remains proposed_pending_human_approval throughout.
+created_run: secondary-sf2f02c-closure-normalization
+sprint_id: S-F2F-02C
+executed: "2026-05-09"
+plan_repair_only: false
+require_clean_git: true
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+min_metadata_count: 30
+no_push: true
+
+required_repo_files:
+  - docs/playbook-layer.md
+  - plans/master-plan.md
+  - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  - taskcards/S-F2F-02-playbook-validation-only.md
+  - taskcards/S-F2F-03-dry-run-replay-and-review-queue.md
+  - schemas/playbook/acquisition-playbook.schema.json
+  - schemas/playbook/review-queue.schema.json
+  - docs/examples/acquisition-playbook-fods-documentation-example.yaml
+  - tools/playbook/validate_playbook.py
+  - tests/playbook/test_playbook_schema.py
+  - tools/evidence/contracts/secondary-sf2f02b-independent-verification-and-closure.yaml
+  - tools/evidence/contracts/secondary-sf2f02c-closure-normalization.yaml
+
+forbidden_patterns:
+  - tools/playbook/replay_acquisition_playbook.py
+  - tools/playbook/diff_playbook_outputs.py
+  - tools/playbook/export_review_queue.py
+  - tools/playbook/create_golden_case.py
+  - tests/playbook/golden/
+  - tests/playbook/test_replay_dry_run.py
+  - plans/review-queues/
+  - acquisition-packs/fods/playbook.yaml
+  - acquisition-packs/fodt/playbook.yaml
+  - acquisition-packs/_families/
+  - schemas/product/
+  - tools/product/
+  - "src/python/fods/"
+  - "src/python/fodt/"
+  - "src/net/fods/"
+  - "src/net/fodt/"
+  - .env
+  - .local/
+  - __pycache__/
+  - "*.pyc"
+
+checks:
+  no_gate_status_changed: true
+  no_registry_gate_change: true
+  no_product_source_created: true
+  no_replay_engine_created: true
+  no_apply_mode_created: true
+  no_review_queue_output: true
+  no_acquisition_pack_playbook: true
+  no_family_playbook_created: true
+  no_endpoint_call: true
+  no_embedding_vector_db: true
+  no_new_spec_download: true
+  no_main_sprint_deviation: true
+  no_push: true
+  validator_writes_no_files: true
+  sf2f03_not_authorized: true
+
+required_metadata_files:
+  - sprint-summary.md
+  - s-f2f-02c-closure-drift-inventory.md
+  - s-f2f-02b-bundle-validation-report.md
+  - playbook-test-rerun-report.md
+  - validator-jsonschema-report.md
+  - validator-structural-report.md
+  - validator-json-output-report.md
+  - docs-playbook-layer-normalization-report.md
+  - master-plan-normalization-report.md
+  - secondary-plan-normalization-report.md
+  - sf2f02-taskcard-consistency-report.md
+  - sf2f03-taskcard-readiness-report.md
+  - no-replay-engine-check.md
+  - no-apply-mode-check.md
+  - no-review-queue-output-check.md
+  - no-acquisition-pack-playbook-check.md
+  - no-product-source-check.md
+  - no-gate-status-change-check.md
+  - no-main-sprint-deviation-check.md
+  - no-endpoint-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-new-spec-download-check.md
+  - no-push-check.md
+  - validator-writes-no-files-check.md
+  - files-reviewed.txt
+  - files-modified.txt
+  - files-created.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - verdict.md
