@@ -1,0 +1,125 @@
+contract_id: memory-ai-direction-sync-closure-repair-002
+version: "1.0"
+sprint_type: memory_sprint
+description: >
+  Final closure repair v2 for MEMORY-AI-DIR-SYNC-2026-05-09.
+  Prior repair bundle (001) was built BEFORE commit 8151b36 was made, causing
+  git-status-final.txt to show the repair contract as untracked and git-log.txt
+  to be missing 8151b36. This v2 bundle proves the repair contract is committed
+  and reachable from HEAD. Repair decision: COMMIT_ALREADY_EXISTS_REBUILD_ONLY.
+
+current_state_authority: bundle-metadata
+
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: >
+  Working tree has LF/CRLF line-ending differences (git autocrlf) in previously
+  committed files and untracked files from other sprint streams (GOV-REVERT-001,
+  SECONDARY). No content changes are present. All memory sprint content is
+  committed. Repair-001 contract committed in 8151b36, reachable from HEAD.
+
+memory_sprint: true
+closure_repair_v2: true
+old_repair_bundle_defect_confirmed: true
+repair_contract_tracked: true
+commit_proof_truthful: true
+phase_reports_not_pending: true
+metadata_identity_clean: true
+bundle_validation_pass: true
+no_stash_reset_restore_clean_used: true
+no_broad_staging_used: true
+no_gate_status_change: true
+no_registry_gate_change: true
+no_product_source_created: true
+no_llm_call: true
+no_embedding_created: true
+no_vector_db_created: true
+no_playbook_replay_created: true
+no_push: true
+no_raw_llm_prompt_or_response: true
+no_secrets: true
+
+repair_commit_hash: "8151b36"
+repair_commit_message: "docs(memory): add closure repair evidence contract for memory-ai-direction-sync"
+repair_decision: COMMIT_ALREADY_EXISTS_REBUILD_ONLY
+
+prior_sprint_commits_confirmed:
+  - "33cea5a"
+  - "d7854db"
+  - "8151b36"
+
+min_metadata_count: 30
+normal_pass_min_metadata: 30
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+  - "repo/src/python/fods/**"
+  - "repo/src/python/fodt/**"
+  - "repo/src/net/fods/**"
+  - "repo/src/net/fodt/**"
+  - "repo/tools/llm/**"
+  - "repo/tools/state/ffsm.py"
+  - "repo/tools/retrieval/embed.py"
+
+required_repo_files:
+  - tools/evidence/contracts/memory-ai-direction-sync-closure-repair-001.yaml
+  - tools/evidence/contracts/memory-ai-direction-sync-closure-repair-002.yaml
+  - tools/evidence/contracts/memory-ai-direction-sync-20260509.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+  - docs/agent-execution-handoff-standard.md
+  - docs/current-state-and-evidence-authority.md
+  - docs/llm-and-embedding-strategy.md
+  - memory/13-chatgpt-initial-project-analysis-20260509.md
+  - memory/14-ai-supervision-and-three-pilot-direction-20260509.md
+  - memory/15-ai-modules-and-state-management-architecture-20260509.md
+  - taskcards/GOV-004-chatgpt-ai-direction-memory-sync.md
+  - taskcards/GOV-005-ai-state-management-memory-sync.md
+  - taskcards/GOV-006-documentation-information-architecture-standardization.md
+
+required_metadata_files:
+  - phase0-baseline-and-contradiction-confirmation.md
+  - phase1-repair-decision.md
+  - phase2-commit-report.md
+  - phase3-validation-report.md
+  - phase4-final-self-verification.md
+  - dirty-state-classification-report.md
+  - old-bundle-defect-confirmation.md
+  - commit-proof-report.md
+  - no-stash-reset-restore-clean-check.md
+  - no-broad-staging-check.md
+  - no-product-source-check.md
+  - no-registry-gate-change-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-playbook-replay-check.md
+  - no-push-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - validation-command-log.txt
+  - evidence-contract-validation-report.md
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
