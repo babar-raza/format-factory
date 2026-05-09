@@ -300,8 +300,8 @@ The following uses of playbooks, review queues, and replay reports are explicitl
 |-------|----------|--------|---------|
 | S-F2F-01 | Playbook Schema and Policy | **COMPLETE** | schemas/playbook/, docs/playbook-layer.md, docs/examples/ |
 | S-F2F-02 | Playbook Validation Tool | **COMPLETE** | tools/playbook/validate_playbook.py, tests/playbook/ |
-| S-F2F-03 | Dry-Run Replay + Review Queue | proposed | tools/playbook/replay_acquisition_playbook.py, review queue export |
-| S-F2F-04 | Golden Dry-Run Tests | proposed | tests/playbook/ golden fixtures |
+| S-F2F-03 | Dry-Run Replay + Review Queue | **COMPLETE** | tools/playbook/replay_acquisition_playbook.py, diff_playbook_outputs.py, export_review_queue.py |
+| S-F2F-04 | Golden Dry-Run Tests | **COMPLETE** | tests/playbook/golden/ (7 fixtures), test_replay_golden.py, test_diff_golden.py, test_review_queue_golden.py, create_golden_case.py |
 | S-F2F-05 | ODF-Flat Family Playbook | proposed | acquisition-packs/_families/odf-flat/ |
 | S-F2F-06 | Apply-Mode Risk Review | proposed | Risk review doc only; apply mode NOT authorized |
 | S-F2F-07 | Product Dependency Closure | proposed | docs/product-dependency-closure.md (design only) |
@@ -326,7 +326,7 @@ S-F2F-01 is DONE when:
 8. BUNDLE_VALIDATION: PASS with --check-no-pending.
 9. Git status clean after commit.
 10. S-F2F-01 taskcard updated to completed_pending_independent_verification.
-11. S-F2F-02 through S-F2F-08 remain proposed_pending_human_approval.
+11. S-F2F-05 through S-F2F-08 remain proposed_pending_human_approval. (S-F2F-02, S-F2F-03, S-F2F-04 are CLOSED_VERIFIED.)
 12. No MAIN SPRINT gate statuses changed.
 13. No push performed.
 
@@ -427,5 +427,52 @@ exit 2. Output must target .local/ or an external path.
 ### Authority Boundary
 
 Replay results are informational only. They do not approve gates, replace DEC-034,
-or replace human review. S-F2F-04 (golden dry-run tests) is the next step;
+or replace human review. S-F2F-04 (golden dry-run tests) is CLOSED_VERIFIED (2026-05-09);
 S-F2F-06 (apply-mode risk review) is required before any apply mode is authorized.
+
+---
+
+## 23. S-F2F-04 Golden Dry-Run Tests (Active — Deterministic Golden Coverage)
+
+**Created:** S-F2F-04 (2026-05-09)
+**Status:** CLOSED_VERIFIED
+**Tests:**
+- tests/playbook/test_replay_golden.py — 21 golden tests for replay_acquisition_playbook.py
+- tests/playbook/test_diff_golden.py — 12 golden tests for diff_playbook_outputs.py
+- tests/playbook/test_review_queue_golden.py — 11 golden tests for export_review_queue.py
+**Golden fixtures:** tests/playbook/golden/ (7 fixtures: 6 YAML + 1 TXT)
+**Capture tool:** tools/playbook/create_golden_case.py (write-only to tests/playbook/golden/)
+**FODT fixture:** tests/playbook/fixtures/replay-fodt-valid.yaml (format-agnostic coverage)
+**Test result:** 140 PASS, 1 skip, 0 fail (combined with S-F2F-02 + S-F2F-03 tests)
+
+### What the Golden Tests Do
+
+1. **Capture** deterministic dry-run output as checked-in YAML/text fixtures.
+2. **Normalize** unstable fields (generated_at, queue_id, run_id) to sentinel values.
+3. **Compare** normalized actual output to golden fixtures on every test run.
+4. **Cover** both FODS and FODT format scenarios (format-agnostic requirement met).
+5. **Verify** no-repo-mutation by comparing git status before and after.
+6. **Reject** apply mode — TestApplyModeRejectionGolden confirms argparse + guard both block it.
+
+### What the Golden Tests Do NOT Do
+
+1. **Do not write to committed repo directories.** All temp output uses pytest tmp_path.
+2. **Do not require network access.** Fully offline, deterministic.
+3. **Do not implement apply mode.** Apply mode rejection is tested, not implemented.
+4. **Do not change gate statuses.** Golden tests are test artifacts only.
+5. **Do not replace DEC-034.** Golden test PASS is not gate approval.
+
+### Normalization Strategy
+
+- `generated_at` → `NORMALIZED_TIMESTAMP`
+- `diff_generated_at` → `NORMALIZED_TIMESTAMP`
+- `queue_id` (rq-fods-{ts}) → `rq-NORMALIZED`
+- `run_id` (s-f2f-03-export-{ts}) → `s-f2f-03-export-NORMALIZED`
+- `provenance.created_at` → `NORMALIZED_TIMESTAMP`
+- Path separators → forward slash
+
+### Next Step
+
+S-F2F-06 (apply-mode risk review) requires separate explicit human authorization.
+S-F2F-05 (ODF-flat family playbook) requires separate explicit human authorization.
+Neither is authorized by this sprint or document.

@@ -1,0 +1,89 @@
+contract_id: revert-rootcause-investigation-001
+contract_version: "1.0"
+sprint_id: REVERT-ROOTCAUSE-001
+sprint_type: investigative_execution_sprint
+created_at: "2026-05-09"
+visibility: internal
+current_state_authority: bundle-metadata
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Investigation sprint is intentionally preserving pre-existing unrelated dirty files and adding one authorized contract; no stash, restore, reset, clean, or source cleanup is allowed."
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+required_repo_files:
+  - AGENTS.md
+  - GOVERNANCE.md
+  - plans/master-plan.md
+  - docs/agent-execution-handoff-standard.md
+  - docs/current-state-and-evidence-authority.md
+  - .gitignore
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/check_current_state_consistency.py
+  - tools/evidence/contracts/revert-rootcause-investigation-001.yaml
+required_metadata_files:
+  - phase0-baseline.md
+  - phase1-reverted-files-inventory.md
+  - phase2-git-history-reflog-analysis.md
+  - phase3-hooks-and-governance-analysis.md
+  - phase4-ignore-hidden-file-analysis.md
+  - phase5-onedrive-filesystem-analysis.md
+  - phase6-bundle-snapshot-analysis.md
+  - phase7-agent-workflow-concurrency-analysis.md
+  - phase8-controlled-reproduction-report.md
+  - phase9-root-cause-classification.md
+  - phase10-mitigation-plan.md
+  - no-destructive-command-check.md
+  - no-source-change-check.md
+  - no-gate-status-change-check.md
+  - no-product-source-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-push-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - git-reflog.txt
+  - validation-command-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - command-redaction-check.md
+  - self-challenge.md
+  - verdict.md
+min_metadata_count: 35
+require_manifest: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/revert-rootcause-investigation-001.yaml
+forbidden_patterns:
+  - .env
+  - .env.*
+  - .local/
+  - .git/
+  - __pycache__/
+  - "*.pyc"
+  - text.txt
+  - pages.jsonl
+  - chunks.jsonl
+  - "*.sqlite"
+  - "*.sqlite3"
+  - "*.db"
+  - "*.faiss"
+  - "*.index"
+semantic_checks:
+  investigation_only: true
+  root_cause_classified: true
+  mitigation_plan_created: true
+  no_destructive_git_commands: true
+  no_source_changes: true
+  no_gate_status_change: true
+  no_product_source_created: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_push: true

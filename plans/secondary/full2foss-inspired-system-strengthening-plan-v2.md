@@ -36,7 +36,7 @@ conflict arises, MAIN SPRINT takes priority unconditionally.
 | S-F2F-01: Playbook schema + policy | CLOSED_VERIFIED — executed 2026-05-08; S-F2F-01B verification 2026-05-08 |
 | S-F2F-02: Playbook validation tool | CLOSED_VERIFIED — executed 2026-05-08; schema gap repaired (S-F2F-02B); 42/42 tests PASS; verified 2026-05-08 |
 | S-F2F-03: Dry-run replay + review queue | CLOSED_VERIFIED — executed 2026-05-09; 3 tools; 96 tests PASS |
-| S-F2F-04: Golden dry-run tests | PROPOSED — requires S-F2F-03 complete + approval |
+| S-F2F-04: Golden dry-run tests | CLOSED_VERIFIED — executed 2026-05-09; 140 PASS, 1 skip; 7 golden fixtures; FODT format-agnostic; commits: 5908d91 + b71e1ee + 4d7e536 |
 | S-F2F-05: ODF-flat family playbook | PROPOSED — requires S-F2F-01 complete + approval |
 | S-F2F-06: Apply-mode risk review | PROPOSED — requires S-F2F-04 complete + approval |
 | S-F2F-07: Product dependency closure design | PROPOSED — requires Gate 8 PASSED + human auth |
@@ -80,7 +80,7 @@ The following are hard prohibitions that apply to ALL secondary sprints forever:
 - acquisition-packs/fods/playbook.yaml (until explicitly named in authorization prompt)
 - acquisition-packs/fodt/playbook.yaml (until explicitly named in authorization prompt)
 - acquisition-packs/_families/ (until S-F2F-05 is explicitly authorized)
-- tests/playbook/ (until S-F2F-04 is explicitly authorized)
+- tests/playbook/ — CREATED by S-F2F-04 (CLOSED_VERIFIED 2026-05-09); acquisition-packs/_families/ remains forbidden until S-F2F-05 is explicitly authorized
 - plans/review-queues/ (until S-F2F-03 is explicitly authorized)
 - docs/playbook-layer.md (until S-F2F-01 is explicitly authorized)
 - docs/product-dependency-closure.md and related (until S-F2F-07 is explicitly authorized)
@@ -370,11 +370,13 @@ Outputs: tools/playbook/replay_acquisition_playbook.py (dry-run + review-queue m
 tools/playbook/diff_playbook_outputs.py, tools/playbook/export_review_queue.py
 NOT included: apply mode
 
-### S4 — Golden Dry-Run Tests (FUTURE — requires S-F2F-03 + approval)
+### S4 — Golden Dry-Run Tests (CLOSED_VERIFIED — 2026-05-09)
 Sprint: S-F2F-04
-Authorization required: explicit prompt naming "S-F2F-04 Golden Dry-Run Tests"
-Outputs: tests/playbook/test_replay_dry_run.py, tests/playbook/golden/, tools/playbook/create_golden_case.py
-Prerequisite: At least 4 golden dry-run scenarios passing
+Status: CLOSED_VERIFIED — executed 2026-05-09; 140 PASS, 1 skip, 0 fail; 7 golden fixtures
+Commits: 5908d91 + b71e1ee + 4d7e536
+Created: tests/playbook/test_replay_golden.py, tests/playbook/test_diff_golden.py,
+tests/playbook/test_review_queue_golden.py, tests/playbook/golden/ (7 fixtures),
+tests/playbook/fixtures/replay-fodt-valid.yaml, tools/playbook/create_golden_case.py
 
 ### S5 — ODF-Flat Family Playbook (FUTURE — requires S-F2F-01 + approval; parallel to S2-S4 OK)
 Sprint: S-F2F-05
@@ -411,8 +413,8 @@ Deferred until product-track gates explicitly authorize source work.
 | S-F2F-00 | S0 | Plan repair | completed_by_plan_repair | N/A |
 | S-F2F-01 | S1 | Playbook schema + policy | CLOSED_VERIFIED (S-F2F-01B, 2026-05-08) | YES — no gate conflict |
 | S-F2F-02 | S2 | Validation tool | CLOSED_VERIFIED — schema gap repaired (S-F2F-02B); 42/42 tests PASS | YES — tool dev only |
-| S-F2F-03 | S3 | Dry-run + review queue | proposed | YES — no apply mode |
-| S-F2F-04 | S4 | Golden dry-run tests | proposed | YES — tests only |
+| S-F2F-03 | S3 | Dry-run + review queue | CLOSED_VERIFIED (2026-05-09) | YES — no apply mode |
+| S-F2F-04 | S4 | Golden dry-run tests | CLOSED_VERIFIED (2026-05-09) | YES — tests only |
 | S-F2F-05 | S5 | ODF-flat family playbook | proposed | YES — docs only |
 | S-F2F-06 | S6 | Apply-mode risk review | proposed | YES — docs only |
 | S-F2F-07 | P1 | Product closure design | proposed | Only after Gate 8 PASSED |
