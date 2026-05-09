@@ -1,6 +1,6 @@
-# Roadmap
+﻿# Roadmap
 
-**Document type:** Governance — Phase 0 Foundation
+**Document type:** Governance â€” Phase 0 Foundation
 **Last reviewed:** 2026-05-08 (run049)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not a commitment. Actual progress is tracked in `plans/master-plan.md`.
 
@@ -13,10 +13,10 @@ The project proceeds through five phases. Each phase has a clear entry condition
 | Phase | Name | Entry Condition | Exit Condition |
 |---|---|---|---|
 | 0 | Foundation | Repository created | All 41 foundation files exist, human-reviewed |
-| 1 | Gate 1 — FODS Scoring | Phase 0 complete | FODS passes Gate 1 (human approval recorded in registry) |
-| 2 | Gates 2-3 — FODS Evidence and Samples | Gate 1 passed | FODS passes Gate 3 |
-| 3 | Gates 4-9 — FODS Prototype through Security | Gate 3 passed | FODS passes Gate 9 |
-| 4+ | Gates 10-11 — FODS Product and Release | Gate 9 passed | FODS product shipped in at least one track |
+| 1 | Gate 1 â€” FODS Scoring | Phase 0 complete | FODS passes Gate 1 (human approval recorded in registry) |
+| 2 | Gates 2-3 â€” FODS Evidence and Samples | Gate 1 passed | FODS passes Gate 3 |
+| 3 | Gates 4-9 â€” FODS Prototype through Security | Gate 3 passed | FODS passes Gate 9 |
+| 4+ | Gates 10-11 â€” FODS Product and Release | Gate 9 passed | FODS product shipped in at least one track |
 
 ---
 
@@ -27,7 +27,7 @@ The project proceeds through five phases. Each phase has a clear entry condition
 **Deliverables:**
 - All governance documents (`AGENTS.md`, `GOVERNANCE.md`, `ROADMAP.md`, `README.md`)
 - All policy documents in `docs/` (architecture, product tracks, acquisition workflow, gates, security, legal, release control, LLM endpoint strategy)
-- Registry skeleton (`registry/format-registry.yaml` — no format entries)
+- Registry skeleton (`registry/format-registry.yaml` â€” no format entries)
 - Scoring model (`registry/scoring/_scoring-model.md`)
 - Acquisition pack template (`acquisition-packs/_template/`)
 - Sample policy and empty provenance skeleton (`samples/`)
@@ -46,11 +46,11 @@ The project proceeds through five phases. Each phase has a clear entry condition
 - Project command files (beyond `_readme.md`)
 - CI workflows
 
-**Status:** Complete — accepted 2026-05-04 (run015). All 45 foundation files exist and human-reviewed.
+**Status:** Complete â€” accepted 2026-05-04 (run015). All 45 foundation files exist and human-reviewed.
 
 ---
 
-## Phase 1: Gate 1 — FODS Scoring (Complete)
+## Phase 1: Gate 1 â€” FODS Scoring (Complete)
 
 **Goal:** Score FODS against the scoring model, pass Gate 1, and implement the infrastructure needed for LLM-assisted evidence work.
 
@@ -65,31 +65,31 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Exit condition:** Gate 1 passed for FODS (human approval recorded in registry).
 
-**Status:** Complete — Gate 1 passed 2026-05-04, approved by Babar Raza. FODS score: 93/100, Accept band. run015/run016/run017.
+**Status:** Complete â€” Gate 1 passed 2026-05-04, approved by Babar Raza. FODS score: 93/100, Accept band. run015/run016/run017.
 
 ---
 
-## Phase 2: Gates 2-3 — FODS Evidence and Samples
+## Phase 2: Gates 2-3 â€” FODS Evidence and Samples
 
 **Goal:** Complete legal review, spec analysis, and sample acquisition for FODS.
 
 **Deliverables:**
-- `acquisition-packs/fods/spec-evidence.md` (Gate 2) ✓
-- `acquisition-packs/fods/legal-notes.md` with fast-path approval (Gate 2) ✓
-- `samples/by-format/fods/` with minimum 4 samples (Gate 3) — pending
-- Provenance entries for all FODS samples (Gate 3) — pending
+- `acquisition-packs/fods/spec-evidence.md` (Gate 2) âœ“
+- `acquisition-packs/fods/legal-notes.md` with fast-path approval (Gate 2) âœ“
+- `samples/by-format/fods/` with minimum 4 samples (Gate 3) â€” pending
+- Provenance entries for all FODS samples (Gate 3) â€” pending
 
 **Entry condition:** Gate 1 passed for FODS.
 
 **Exit condition:** Gate 3 passed for FODS (human approval recorded in registry).
 
-**Gate 2 status:** PASSED — approved by Babar Raza (2026-05-05). Spec acquired and verified. Legal fast-path confirmed (OASIS Category 1, royalty-free). Patent search waived by project lead.
+**Gate 2 status:** PASSED â€” approved by Babar Raza (2026-05-05). Spec acquired and verified. Legal fast-path confirmed (OASIS Category 1, royalty-free). Patent search waived by project lead.
 
-**Gate 3 status:** PASSED — approved by Babar Raza (2026-05-05, run028). 4 Apache-2.0 synthetic samples validated 4/4 PASS (run026). DEC-034 independently verified (run027). Spec Navigation Layer complete: 884 sections, 940 chunks.
+**Gate 3 status:** PASSED â€” approved by Babar Raza (2026-05-05, run028). 4 Apache-2.0 synthetic samples validated 4/4 PASS (run026). DEC-034 independently verified (run027). Spec Navigation Layer complete: 884 sections, 940 chunks.
 
 ---
 
-## Phase 3: Gates 4-9 — FODS Prototype through Security Review
+## Phase 3: Gates 4-9 â€” FODS Prototype through Security Review
 
 **Goal:** Build a working FODS parser, validate it against the oracle, fuzz it, and complete security review.
 
@@ -103,21 +103,21 @@ The project proceeds through five phases. Each phase has a clear entry condition
 
 **Entry condition:** Gate 3 passed for FODS.
 
-**Gate 4 status:** PASSED — approved by Babar Raza (2026-05-06, run033). Prototype at `prototypes/by-format/fods/fods_parser.py` — Python stdlib only. Validation: PT-001 through PT-004 PASS (4/4). TC-0018 DEC-034 PASS (run030+run032).
+**Gate 4 status:** PASSED â€” approved by Babar Raza (2026-05-06, run033). Prototype at `prototypes/by-format/fods/fods_parser.py` â€” Python stdlib only. Validation: PT-001 through PT-004 PASS (4/4). TC-0018 DEC-034 PASS (run030+run032).
 
-**Gate 5 status:** PASSED — approved by Babar Raza (2026-05-06, run035). Neutral model v1: 6 entities, 19 field mappings, 30 coverage features, 21 validation rules. Validation 4/4 PASS (87 checks, 0 errors). TC-0024 CLOSED. TC-0023 COMPLETED.
+**Gate 5 status:** PASSED â€” approved by Babar Raza (2026-05-06, run035). Neutral model v1: 6 entities, 19 field mappings, 30 coverage features, 21 validation rules. Validation 4/4 PASS (87 checks, 0 errors). TC-0024 CLOSED. TC-0023 COMPLETED.
 
-**Gate 6 status:** PASSED — approved by Babar Raza (2026-05-08, run044). TC-0027 DEC-034 PASS 24/24 (run044). ORACLE_RUN: PASS 4/4. ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet CSV export limitation — expected, not a parser defect). Oracle harness: tools/oracle/.
+**Gate 6 status:** PASSED â€” approved by Babar Raza (2026-05-08, run044). TC-0027 DEC-034 PASS 24/24 (run044). ORACLE_RUN: PASS 4/4. ORACLE_COMPARE: PASS 3/4 PASS 1/4 WARN (multi-sheet CSV export limitation â€” expected, not a parser defect). Oracle harness: tools/oracle/.
 
-**Gate 7 status:** PASSED — approved by Babar Raza (2026-05-08, run045). GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18. 18 malformed fixtures (4 categories). TC-0033 DEC-034 PASS (run045). FODT Gates 1-4 ALL APPROVED (Babar Raza, run041/043/044/045).
+**Gate 7 status:** PASSED â€” approved by Babar Raza (2026-05-08, run045). GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18. 18 malformed fixtures (4 categories). TC-0033 DEC-034 PASS (run045). FODT Gates 1-4 ALL APPROVED (Babar Raza, run041/043/044/045).
 
-**Gate 8 status:** PASSED — approved by Babar Raza (2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. Security report: reports/security/fods.md. FODT Gate 5 APPROVED (Babar Raza, 2026-05-08, run046; FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4, 109 checks, TC-0039 DEC-034 PASS). FODS Gate 9 PASSED (Babar Raza, 2026-05-08, run047; tier-map.yaml v1.0; TC-0040 COMPLETED). Gate 10 PASSED (Babar Raza, 2026-05-08, run048; product-source readiness confirmed; Gate 11 planning_ready). FODT Gates 1-8 ALL PASSED (run041-run048, Babar Raza). Gate 9 product-mapping planning_ready (TC-0048 not_started).
+**Gate 8 status:** PASSED â€” approved by Babar Raza (2026-05-08, run046). GATE8_SECURITY_REVIEW: PASS. TC-0038 DEC-034 PASS 20/20. Security report: reports/security/fods.md. FODT Gate 5 APPROVED (Babar Raza, 2026-05-08, run046; FODT_NEUTRAL_MODEL_VALIDATION PASS 4/4, 109 checks, TC-0039 DEC-034 PASS). FODS Gate 9 PASSED (Babar Raza, 2026-05-08, run047; tier-map.yaml v1.0; TC-0040 COMPLETED). Gate 10 PASSED (Babar Raza, 2026-05-08, run048; product-source readiness confirmed; Gate 11 planning_ready). FODT Gates 1-8 ALL PASSED (run041-run048, Babar Raza). Gate 9 product-mapping planning_ready (TC-0048 not_started).
 
 **Exit condition:** Gate 9 passed for FODS (human approval recorded in registry).
 
 ---
 
-## Phase 4+: Gates 10-11 — FODS Product and Release
+## Phase 4+: Gates 10-11 â€” FODS Product and Release
 
 **Goal:** Ship FODS support in at least one open-source product track.
 
@@ -183,7 +183,7 @@ Alongside format acquisition, several infrastructure milestones are tracked:
 
 ### Format Understanding Layer
 
-Format knowledge accumulated through gates 1–9 is scattered. Before Phase 4 product source begins,
+Format knowledge accumulated through gates 1â€“9 is scattered. Before Phase 4 product source begins,
 each format should have compiled understanding artifacts (format-profile.yaml, verified-facts.yaml,
 implementation-requirements.yaml, parser-strategy.yaml, security-surface.yaml, product-readiness.yaml).
 See `docs/format-understanding-layer.md`.
@@ -191,7 +191,7 @@ See `docs/format-understanding-layer.md`.
 ### Controlled LLM and Embedding Strategy
 
 Controlled use of `llm.professionalize.com` (GPT OSS, Qwen Next, embedding models) is authorized
-for future governed work. LLMs propose — they do not approve. Embeddings are retrieval, not truth.
+for future governed work. LLMs propose â€” they do not approve. Embeddings are retrieval, not truth.
 See `docs/llm-and-embedding-strategy.md`.
 
 ### XML-First Focus; Non-XML Adaptability Backlog
@@ -228,12 +228,23 @@ Key refinements agreed with ChatGPT supervision (2026-05-09):
 See: `memory/13-chatgpt-initial-project-analysis-20260509.md` and
 `memory/14-ai-supervision-and-three-pilot-direction-20260509.md`.
 
+### 2026-05-09: AI modules and state management documented
+
+Format Factory State Manager and governed LLM module architecture are documented in
+`memory/15-ai-modules-and-state-management-architecture-20260509.md`.
+
+Implementation remains pending explicit sprint authorization. Community-tested components may be
+used around the repo-native state core: LangGraph for agent state, Prefect for early workflow
+orchestration, Temporal later for durable long-running execution, and Dagster later if artifact
+lineage complexity grows. These components must not replace registry, master plan, taskcards, FUL,
+schemas, evidence bundles, or tests as authority.
+
 ---
 
 ## Relationship to Other Documents
 
-- `plans/master-plan.md` — current operational state (actual progress, not plan)
-- `docs/gates.md` — gate pass criteria
-- `docs/acquisition-workflow.md` — stage-by-stage workflow
-- `registry/format-registry.yaml` — which formats are active and at which gate
-- `taskcards/` — work units for current and upcoming phases
+- `plans/master-plan.md` â€” current operational state (actual progress, not plan)
+- `docs/gates.md` â€” gate pass criteria
+- `docs/acquisition-workflow.md` â€” stage-by-stage workflow
+- `registry/format-registry.yaml` â€” which formats are active and at which gate
+- `taskcards/` â€” work units for current and upcoming phases

@@ -1,22 +1,22 @@
----
+﻿---
 memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-08
 intended_location: /memory
-source: Memory sprint — discussion decisions captured from human review session 2026-05-08
+source: Memory sprint â€” discussion decisions captured from human review session 2026-05-08
 visibility: internal
 publish_allowed: false
 notes: These are strategic decisions recorded from the human review session. Must not supersede plans/master-plan.md for operational state.
 ---
 
-# 11 — Format Understanding Layer and LLM Strategy
+# 11 â€” Format Understanding Layer and LLM Strategy
 
 ## Decision Summary (2026-05-08 memory sprint)
 
 ### 1. Gates, evidence, and taskcards are not waste
 
 The gates, taskcards, evidence bundles, and status repair processes in this project are not waste.
-They are the foundation of trustworthy format knowledge. The issue is not too much evidence —
+They are the foundation of trustworthy format knowledge. The issue is not too much evidence â€”
 it is that format understanding is scattered across multiple files and has not been compiled
 into reusable, product-source-ready knowledge packages.
 
@@ -27,18 +27,18 @@ Each format that passes Gate 9 should produce a compiled set of understanding ar
 these compiled understanding files, not scattered evidence.
 
 **Target per-format files:**
-- `acquisition-packs/{format}/format-profile.yaml` — format classification, representation type, family
-- `acquisition-packs/{format}/verified-facts.yaml` — spec-cited deterministic facts
-- `acquisition-packs/{format}/implementation-requirements.yaml` — product-facing requirements derived from gates
-- `acquisition-packs/{format}/parser-strategy.yaml` — parser design decisions, edge cases, reuse
-- `acquisition-packs/{format}/security-surface.yaml` — compiled security findings from Gate 8
-- `acquisition-packs/{format}/product-readiness.yaml` — compiled readiness from Gate 9/10
+- `acquisition-packs/{format}/format-profile.yaml` â€” format classification, representation type, family
+- `acquisition-packs/{format}/verified-facts.yaml` â€” spec-cited deterministic facts
+- `acquisition-packs/{format}/implementation-requirements.yaml` â€” product-facing requirements derived from gates
+- `acquisition-packs/{format}/parser-strategy.yaml` â€” parser design decisions, edge cases, reuse
+- `acquisition-packs/{format}/security-surface.yaml` â€” compiled security findings from Gate 8
+- `acquisition-packs/{format}/product-readiness.yaml` â€” compiled readiness from Gate 9/10
 
 **Authority model:** These files compile and reference evidence. They do not replace specs, samples,
 oracle outputs, tests, evidence bundles, or human approvals. Verified facts, citations, samples,
 oracle results, tests, and human/DEC-034 approval remain the single source of truth.
 
-**Taskcards:** FUL-001 through FUL-005 — see `taskcards/FUL-*.md`
+**Taskcards:** FUL-001 through FUL-005 â€” see `taskcards/FUL-*.md`
 
 ### 3. XML-first focus; non-XML is backlog
 
@@ -46,15 +46,15 @@ The immediate format focus is XML-type formats (FODS, FODT, and ODF family).
 Non-XML adaptability is explicitly deferred. The architecture must avoid hardcoding XML-only assumptions.
 
 **Physical representation categories (for future profiles):**
-- `text_xml` — single flat XML file (FODS, FODT)
-- `zip_container` — ZIP with XML inside (ODS, ODT, DOCX, XLSX)
-- `binary_records` — legacy binary (DOC, XLS)
-- `compound_document` — OLE/CFB container (DOC, XLS, PPT)
-- `delimited_text` — CSV and variants
-- `json_like` — JSON-based formats
-- `hybrid_container` — mixed structures
+- `text_xml` â€” single flat XML file (FODS, FODT)
+- `zip_container` â€” ZIP with XML inside (ODS, ODT, DOCX, XLSX)
+- `binary_records` â€” legacy binary (DOC, XLS)
+- `compound_document` â€” OLE/CFB container (DOC, XLS, PPT)
+- `delimited_text` â€” CSV and variants
+- `json_like` â€” JSON-based formats
+- `hybrid_container` â€” mixed structures
 
-**Taskcards:** REP-001 through REP-005 — see `taskcards/REP-*.md`
+**Taskcards:** REP-001 through REP-005 â€” see `taskcards/REP-*.md`
 
 ### 4. Controlled LLM and embedding usage authorized for future work
 
@@ -86,7 +86,7 @@ model name, embedding model name, created_at, refresh policy, invalidation polic
 
 **Current status:** Backlog only. No embeddings or vector DB created.
 
-**Taskcards:** LLM-001, LLM-002, EMB-001 through EMB-003 — see `taskcards/LLM-*.md`, `taskcards/EMB-*.md`
+**Taskcards:** LLM-001, LLM-002, EMB-001 through EMB-003 â€” see `taskcards/LLM-*.md`, `taskcards/EMB-*.md`
 
 ### 5. Non-Aspose format candidate registry planned
 
@@ -95,7 +95,7 @@ Candidates cannot be claimed as not-supported without verification from Aspose d
 
 **Future registry file:** `registry/non-aspose-format-candidates.yaml`
 
-**Taskcard:** NAC-001 through NAC-004 — see `taskcards/NAC-*.md`
+**Taskcard:** NAC-001 through NAC-004 â€” see `taskcards/NAC-*.md`
 
 ### 6. Discovered gaps must be captured in durable artifacts
 
@@ -104,7 +104,7 @@ structural weakness that is NOT authorized for immediate execution, it must be r
 durable local artifact (roadmap, backlog, taskcard, memory, risk/gap register, or future sprint
 recommendation). It must not remain only in chat or only in an evidence bundle.
 
-**Taskcard:** GOV-001 — see `taskcards/GOV-001-discovered-gap-backlog-capture-rule.md`
+**Taskcard:** GOV-001 â€” see `taskcards/GOV-001-discovered-gap-backlog-capture-rule.md`
 
 ### 7. Product source consumption of compiled understanding
 
@@ -173,3 +173,26 @@ The following must guide all LLM integration work:
 LLM-001, EMB-001 remain proposed_pending_human_approval.
 
 This section records intent, not completion.
+
+## 2026-05-09 LLM module architecture refinement
+
+The detailed architecture direction is now captured in `memory/15-ai-modules-and-state-management-architecture-20260509.md`. That file is required reading before LLM, embedding, state management, no-drift, workflow orchestration, or AI-assisted source generation work.
+
+The planned LLM layer is a governed module family, not an ad hoc endpoint call. The design includes:
+
+- approved endpoint access through an endpoint client
+- model discovery for local and remote availability checks
+- model registry records for capability and task suitability
+- model routing by governed task type
+- prompt runner controls for templates, schemas, retries, caching, and logging
+- response schemas before model output can affect artifacts
+- run ledger entries with model, template, input hashes, output artifacts, and validation status
+- cache behavior to avoid repeated calls for identical inputs
+- safety checks for secrets, copyrighted spec text, unapproved endpoints, and unsupported tasks
+- provenance links from model output back to source artifacts and evidence
+
+FUL remains the prompt substrate for source generation. AI may draft from approved `format-profile.yaml`, `verified-facts.yaml`, `implementation-requirements.yaml`, `parser-strategy.yaml`, `security-surface.yaml`, `product-readiness.yaml`, neutral model schemas, approved samples, scope constraints, forbidden behaviors, and test requirements. AI must not generate product source from imagination or promote prototypes directly into product source.
+
+Embeddings retrieve cited artifacts, not truth. Retrieval must return source artifact path, source hash, chunk ID, and provenance. Embedding hits are pointers to evidence and must not become verified facts without deterministic review.
+
+This section records architecture direction only. No LLM endpoint clients, model discovery tools, model routers, prompt runners, embeddings, vector DBs, state manager code, or orchestration components were implemented by the memory sync sprint.

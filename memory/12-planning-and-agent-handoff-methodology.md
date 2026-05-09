@@ -1,4 +1,4 @@
----
+﻿---
 memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-08
@@ -149,3 +149,31 @@ execution sprint.
 The user does not need constant prompt suggestions. Prompts are generated only when requested.
 But once requested, the prompt must be comprehensive, execution-ready, and fully specific.
 It must not rely on agent in-context memory or prior chat history.
+
+## State-Aware Agent Handoff Rules (added 2026-05-09)
+
+Future prompts for AI, embedding, state-management, orchestration, no-drift, playbook replay,
+review queue, and Phase 4 source generation work must read
+`memory/15-ai-modules-and-state-management-architecture-20260509.md`.
+
+When Format Factory State Manager outputs exist, agents must use them during preflight and
+closeout. Until then, agents must continue reconstructing state from the registry, master plan,
+taskcards, FUL files, evidence bundles, tests, and current-state consistency checks.
+
+Future execution prompts should include:
+
+- state preflight from authority files
+- dirty-file stream classification before staging
+- explicit design-versus-implementation distinction
+- no-drift closeout after edits
+- evidence state summary in bundle metadata
+- current-state consistency confirmation
+- claim linting for stale or unsupported status claims
+
+Agent state should be checkpointed through approved systems such as LangGraph when implemented and
+authorized. Checkpointing must support bounded sprint prompts, human-in-the-loop stops, repair loops,
+review queues, files-read records, blocked-item records, and evidence bundle references.
+
+Sprint closeout must include evidence state and current-state consistency: bundle path, validation
+result, command outputs, fingerprints when available, final verdict, changed file list, and
+confirmation that registry and master-plan claims still align with actual repo state.

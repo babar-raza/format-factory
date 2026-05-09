@@ -1,4 +1,4 @@
-# Fresh Chat Continuity Brief
+﻿# Fresh Chat Continuity Brief
 
 **Document type:** Fresh Chat Orientation Guide
 **Created:** 2026-05-08 (memory-planning-methodology-and-agent-handoff sprint)
@@ -175,6 +175,7 @@ and provided architectural direction for the project's AI integration and proof 
 |------|---------|
 | [memory/13-chatgpt-initial-project-analysis-20260509.md](../memory/13-chatgpt-initial-project-analysis-20260509.md) | ChatGPT first analysis: project purpose, user requirement, strengths, gaps, bottom-line assessment |
 | [memory/14-ai-supervision-and-three-pilot-direction-20260509.md](../memory/14-ai-supervision-and-three-pilot-direction-20260509.md) | AI supervision rules, three-pilot proof path, parallel sprint handling, stream notes, what is not yet authorized |
+| [memory/15-ai-modules-and-state-management-architecture-20260509.md](../memory/15-ai-modules-and-state-management-architecture-20260509.md) | Governed LLM module, embedding retrieval, agent role, source generation, Format Factory State Manager, orchestration, and no-drift design direction |
 
 **Key decisions recorded:**
 - The proof goal is three XML-style format pilots with different feature profiles.
@@ -185,3 +186,9 @@ and provided architectural direction for the project's AI integration and proof 
 
 Always cross-check these memory files against `plans/master-plan.md` and `registry/format-registry.yaml`
 before acting. Memory is context, not authority.
+
+`memory/15-ai-modules-and-state-management-architecture-20260509.md` is required reading for AI,
+state management, orchestration, embeddings, workflow design, no-drift work, playbook replay,
+review queue design, and Phase 4 source generation planning. It records design direction, not
+implemented state. Agents must not infer that LLM modules, embeddings, vector DBs, state manager
+code, LangGraph, Prefect, Temporal, Dagster, or product source were implemented from that memory file.

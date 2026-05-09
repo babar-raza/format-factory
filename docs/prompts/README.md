@@ -1,4 +1,4 @@
-# Prompt Templates
+﻿# Prompt Templates
 
 **Document type:** Template Index and Usage Guide
 **Created:** 2026-05-08 (memory-methodology-linkage-and-enforcement sprint)
@@ -114,6 +114,22 @@ Sprint prompts generated from ChatGPT evidence review should follow these additi
 
 These rules complement the existing template rules. Do not change templates for templates that
 are already being used in active sprints -- adapt them only when starting a new sprint generation.
+
+## AI, State, and No-Drift Prompt Requirements (added 2026-05-09)
+
+Prompts for AI, embeddings, state management, orchestration, no-drift work, playbook replay,
+review queues, or Phase 4 source generation must require agents to read
+`memory/15-ai-modules-and-state-management-architecture-20260509.md`.
+
+Those prompts must distinguish design direction from implemented state. They must not imply that
+LLM modules, embedding indexes, vector DBs, the Format Factory State Manager, LangGraph, Prefect,
+Temporal, Dagster, workflow runtime code, or product source exist unless current repo files prove
+they exist.
+
+AI-related execution prompts must include explicit forbidden paths for endpoint client code,
+retrieval indexes, state-manager implementation files, vector DB files, workflow runtime files,
+product source, gate status changes, raw LLM prompt or response text, and secrets unless the
+specific sprint explicitly authorizes one of those outputs.
 
 ---
 

@@ -1,4 +1,4 @@
-# Agent Methodology Index
+﻿# Agent Methodology Index
 
 **Document type:** Local Planning and Execution Entry Point
 **Created:** 2026-05-08 (memory-methodology-linkage-and-enforcement sprint)
@@ -153,6 +153,7 @@ AI/LLM strategy, Phase 4 planning, or multi-stream sprint driving.
 |------|---------|
 | [memory/13-chatgpt-initial-project-analysis-20260509.md](../memory/13-chatgpt-initial-project-analysis-20260509.md) | ChatGPT first project analysis: what the project is, the real user requirement, where it stands, strengths, gaps, and next-level interpretation. |
 | [memory/14-ai-supervision-and-three-pilot-direction-20260509.md](../memory/14-ai-supervision-and-three-pilot-direction-20260509.md) | AI supervision workflow, three-pilot proof path, parallel sprint stream handling, what AI may and must not do, what is not yet authorized. |
+| [memory/15-ai-modules-and-state-management-architecture-20260509.md](../memory/15-ai-modules-and-state-management-architecture-20260509.md) | Governed LLM module, embedding retrieval, agent role, source generation, Format Factory State Manager, community component, sequencing, and no-drift architecture direction. |
 
 Note: The `/evidence-review-next-prompt` command and the `evidence-bundle-review-prompt-template.md`
 are the correct tools for reviewing sprint bundles and generating next prompts.
@@ -160,3 +161,8 @@ are the correct tools for reviewing sprint bundles and generating next prompts.
 When the review results in architectural direction changes or sprint supervision decisions, those
 must be captured in a memory sprint before the next execution sprint begins. This ensures
 discoverability for future agents.
+
+Use `memory/15-ai-modules-and-state-management-architecture-20260509.md` as a methodology and
+architecture reference for AI modules, embeddings, state management, no-drift work, workflow
+orchestration, playbook replay, review queues, and Phase 4 source generation. It is context only.
+Prompts must distinguish design direction from implemented state.

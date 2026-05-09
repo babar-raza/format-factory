@@ -1,4 +1,4 @@
----
+﻿---
 memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
@@ -9,7 +9,7 @@ publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 00 — Memory Index
+# 00 â€” Memory Index
 
 ## Purpose
 
@@ -18,7 +18,7 @@ This index helps an agent understand the complete picture without reading a sing
 The memory package captures:
 
 - the origin of the project
-- the user’s standing governance rules
+- the userâ€™s standing governance rules
 - the architecture decisions
 - the reason for each Phase 0 hardening run
 - the evidence-bundle review pattern
@@ -29,7 +29,7 @@ The memory package captures:
 
 | File | Purpose |
 |---|---|
-| `01-project-origin-and-intent.md` | Why the project exists and what “file format hacking” means here. |
+| `01-project-origin-and-intent.md` | Why the project exists and what â€œfile format hackingâ€ means here. |
 | `02-standing-operating-rules.md` | Non-negotiable rules the user established for ChatGPT and agents. |
 | `03-architecture-and-product-tracks.md` | Acquisition layer, OSS Python, OSS .NET, commercial .NET, tiers. |
 | `04-phase0-evolution-and-bundle-reviews.md` | Chronological account of plan versions and evidence bundle inspections. |
@@ -45,6 +45,7 @@ The memory package captures:
 | `12-planning-and-agent-handoff-methodology.md` | Planning methodology, execution handoff standard, user preferences for prompts and plans. Updated with methodology index and prompt README links (linkage sprint 2026-05-08). Updated 2026-05-09 with ChatGPT supervision and parallel sprint handling rules. |
 | `13-chatgpt-initial-project-analysis-20260509.md` | ChatGPT first project-level analysis (2026-05-09). Project purpose, user requirement, standing, strengths, gaps, intended path, next-level AI interpretation, bottom-line assessment. Required reading for AI/LLM, Phase 4, or multi-stream sprint work. |
 | `14-ai-supervision-and-three-pilot-direction-20260509.md` | AI supervision rules and three-pilot direction agreed in 2026-05-09 session. User confirmation, end goal, AI roles, ChatGPT supervisory workflow, parallel sprint rules, stream notes, LLM design refinement required. Required reading for Phase 4, AI strategy, and sprint driving. |
+| `15-ai-modules-and-state-management-architecture-20260509.md` | Detailed AI module, embedding retrieval, agent role, source generation, Format Factory State Manager, community component, and no-drift architecture direction. Required reading for LLM/embedding work, state management work, no-drift work, agent workflow design, Phase 4 source generation, playbook replay, and review queue design. |
 
 ## Local Methodology Entry Points (added linkage sprint 2026-05-08)
 
@@ -79,7 +80,11 @@ Then it should read only the memory files relevant to the task.
 | Task type | Additional required reading |
 |-----------|----------------------------|
 | AI/LLM/embedding strategy | memory/13-chatgpt-initial-project-analysis-20260509.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md, memory/11-format-understanding-and-llm-strategy.md |
+| State management and no-drift work | memory/15-ai-modules-and-state-management-architecture-20260509.md, memory/12-planning-and-agent-handoff-methodology.md, docs/current-state-and-evidence-authority.md |
+| Agent workflow design | memory/15-ai-modules-and-state-management-architecture-20260509.md, memory/12-planning-and-agent-handoff-methodology.md, docs/agent-execution-handoff-standard.md |
+| Playbook replay and review queue design | memory/15-ai-modules-and-state-management-architecture-20260509.md, docs/playbook-layer.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
 | Phase 4 product source planning | memory/13-chatgpt-initial-project-analysis-20260509.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
+| Phase 4 source generation | memory/15-ai-modules-and-state-management-architecture-20260509.md, memory/11-format-understanding-and-llm-strategy.md, docs/format-understanding-layer.md |
 | Three-pilot proof planning | memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
 | Sprint evidence review and next-prompt generation | memory/14-ai-supervision-and-three-pilot-direction-20260509.md, memory/12-planning-and-agent-handoff-methodology.md |
 
@@ -97,10 +102,11 @@ Then it should read only the memory files relevant to the task.
 | memory-planning-methodology-2026-05-08 | Memory methodology sprint | 00-index.md (UPDATED), 12-planning-and-agent-handoff-methodology.md (NEW), docs/planning-methodology.md (NEW), docs/agent-execution-handoff-standard.md (NEW), docs/plan-hardening-checklist.md (NEW), docs/fresh-chat-continuity-brief.md (NEW), docs/prompts/ (8 templates NEW), AGENTS.md Section AD (NEW), GOVERNANCE.md Section 23 (NEW), taskcards/GOV-002 (NEW), .claude/commands/ (4 files NEW) |
 | memory-methodology-linkage-2026-05-08 | Memory methodology linkage sprint | 00-index.md (UPDATED), 12-planning-and-agent-handoff-methodology.md (UPDATED), docs/agent-methodology-index.md (NEW), docs/prompts/README.md (NEW), README.md (UPDATED -- agent methodology section), .claude/commands/_readme.md (UPDATED -- methodology commands table), AGENTS.md AD0/AD8-AD10 (ADDED), GOVERNANCE.md Section 23.0/23.7-23.8/24 (ADDED), tools/governance/check_methodology_links.py (NEW), tests/governance/test_methodology_links.py (NEW), taskcards/GOV-003 (NEW) |
 | memory-ai-direction-sync-2026-05-09 | ChatGPT AI supervision and sprint rules memory sync | 00-index.md (UPDATED -- new file rows, priority tables, stream history), 10-memory-maintenance-protocol.md (UPDATED -- 2026-05-09 entry), 11-format-understanding-and-llm-strategy.md (UPDATED -- AI direction refinement section), 12-planning-and-agent-handoff-methodology.md (UPDATED -- ChatGPT supervision rules, parallel sprint handling), 13-chatgpt-initial-project-analysis-20260509.md (NEW), 14-ai-supervision-and-three-pilot-direction-20260509.md (NEW), docs/fresh-chat-continuity-brief.md (UPDATED -- 2026-05-09 section), docs/agent-methodology-index.md (UPDATED -- new memory context refs), docs/prompts/README.md (UPDATED -- ChatGPT prompt note), ROADMAP.md (UPDATED -- 2026-05-09 AI direction note), taskcards/GOV-004 (NEW), tools/evidence/contracts/memory-ai-direction-sync-20260509.yaml (NEW) |
-| run010 | Memory stream | Memory integration prompted by addition of /memory folder; AGENTS.md Section U added in run010 repo execution (not a /memory file edit — see run010 bundle) |
+| memory-ai-state-management-sync-2026-05-09 | AI module and state-management architecture memory sync | 15-ai-modules-and-state-management-architecture-20260509.md (NEW), 00-index.md (UPDATED), 10-memory-maintenance-protocol.md (UPDATED), 11-format-understanding-and-llm-strategy.md (UPDATED), 12-planning-and-agent-handoff-methodology.md (UPDATED), 14-ai-supervision-and-three-pilot-direction-20260509.md (UPDATED), docs/fresh-chat-continuity-brief.md (UPDATED), docs/agent-methodology-index.md (UPDATED), docs/prompts/README.md (UPDATED), docs/llm-and-embedding-strategy.md (UPDATED), ROADMAP.md (UPDATED), taskcards/GOV-005 (NEW), tools/evidence/contracts/memory-ai-state-management-sync-20260509.yaml (NEW). No LLM modules, embeddings, vector DB, state manager code, orchestration components, product source, gate changes, playbook replay, or push. |
+| run010 | Memory stream | Memory integration prompted by addition of /memory folder; AGENTS.md Section U added in run010 repo execution (not a /memory file edit â€” see run010 bundle) |
 
 ## Warning
 
 Never act from this memory package alone. Always cross-check the actual repo state and the current master plan.
 
-The source layout (`src/net/{format}`, `src/python/{format}`) was propagated to `plans/master-plan.md` v2.8 in run011 and verified in run013. Stale "pending propagation" notes have been removed. However, **no `src/` folders may be created in Phase 0** — source folder creation requires a Phase 4+ prompt with Gate 9 passed.
+The source layout (`src/net/{format}`, `src/python/{format}`) was propagated to `plans/master-plan.md` v2.8 in run011 and verified in run013. Stale "pending propagation" notes have been removed. However, **no `src/` folders may be created in Phase 0** â€” source folder creation requires a Phase 4+ prompt with Gate 9 passed.

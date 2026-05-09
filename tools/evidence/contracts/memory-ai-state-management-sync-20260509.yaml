@@ -1,0 +1,117 @@
+﻿contract_id: memory-ai-state-management-sync-20260509
+description: Evidence contract for the 2026-05-09 memory sprint syncing AI module and state-management architecture.
+contract_version: "1.0"
+created_at: "2026-05-09"
+sprint_type: memory_sprint
+require_clean_git: true
+emergency_blocker_bundle: false
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/memory-ai-state-management-sync-20260509.yaml
+require_manifest: true
+min_metadata_count: 45
+required_repo_files:
+  - memory/15-ai-modules-and-state-management-architecture-20260509.md
+  - memory/00-index.md
+  - memory/10-memory-maintenance-protocol.md
+  - memory/11-format-understanding-and-llm-strategy.md
+  - memory/12-planning-and-agent-handoff-methodology.md
+  - memory/14-ai-supervision-and-three-pilot-direction-20260509.md
+  - docs/fresh-chat-continuity-brief.md
+  - docs/agent-methodology-index.md
+  - docs/prompts/README.md
+  - docs/llm-and-embedding-strategy.md
+  - ROADMAP.md
+  - taskcards/GOV-005-ai-state-management-memory-sync.md
+  - tools/evidence/contracts/memory-ai-state-management-sync-20260509.yaml
+required_metadata_files:
+  - sprint-summary.md
+  - baseline-inspection.md
+  - ai-modules-memory-file-report.md
+  - state-management-memory-file-report.md
+  - memory-index-update-report.md
+  - memory-maintenance-update-report.md
+  - llm-strategy-memory-update-report.md
+  - planning-methodology-update-report.md
+  - ai-supervision-cross-reference-report.md
+  - fresh-chat-continuity-update-report.md
+  - methodology-index-update-report.md
+  - prompts-readme-update-report.md
+  - llm-strategy-doc-update-report.md
+  - roadmap-master-plan-propagation-report.md
+  - gov005-taskcard-report.md
+  - no-llm-module-implementation-check.md
+  - no-state-manager-implementation-check.md
+  - no-embedding-vector-db-check.md
+  - no-orchestration-component-check.md
+  - no-product-source-check.md
+  - no-gate-status-change-check.md
+  - no-registry-gate-change-check.md
+  - no-playbook-replay-check.md
+  - no-llm-call-check.md
+  - no-push-check.md
+  - no-secrets-check.md
+  - no-raw-llm-transcript-check.md
+  - no-em-dash-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - validation-command-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+forbidden_patterns:
+  - src/python/fods/
+  - src/python/fodt/
+  - src/net/fods/
+  - src/net/fodt/
+  - tools/llm/endpoint_client.py
+  - tools/llm/model_discovery.py
+  - tools/llm/router.py
+  - tools/retrieval/build_index.py
+  - tools/retrieval/query_index.py
+  - tools/state/state_model.py
+  - tools/state/state_snapshot.py
+  - tools/state/state_transition.py
+  - tools/state/state_fingerprint.py
+  - .local/embeddings/
+  - .local/vector/
+  - .local/state/
+  - .chroma/
+  - "*.faiss"
+  - "*.sqlite"
+  - "*.db"
+  - tools/playbook/replay_acquisition_playbook.py
+  - tools/playbook/export_review_queue.py
+  - plans/review-queues/
+  - reports/legal/
+  - .github/workflows/
+  - .env
+  - __pycache__/
+  - "*.pyc"
+required_checks:
+  memory_sprint: true
+  ai_design_synced: true
+  state_management_design_synced: true
+  state_manager_not_implemented: true
+  llm_modules_not_implemented: true
+  embeddings_not_created: true
+  vector_db_not_created: true
+  orchestration_components_not_added: true
+  no_product_source_created: true
+  no_gate_status_change: true
+  no_registry_gate_change: true
+  no_playbook_replay_created: true
+  no_llm_call: true
+  no_push: true
+  no_raw_llm_prompt_or_response: true
+  no_secrets: true
+  no_em_dash: true

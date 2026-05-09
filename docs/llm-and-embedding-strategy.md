@@ -1,4 +1,4 @@
-# LLM and Embedding Strategy
+﻿# LLM and Embedding Strategy
 
 **Document type:** Backlog / Strategy
 **Status:** Backlog only. No LLM calls or embeddings created in this sprint.
@@ -11,8 +11,8 @@
 ## 1. Purpose
 
 This document describes the authorized strategy for using LLM and embedding services in future
-format-factory sprints. The intent is to accelerate format understanding work — especially the
-Format Understanding Layer — while maintaining deterministic authority over facts, gate decisions,
+format-factory sprints. The intent is to accelerate format understanding work â€” especially the
+Format Understanding Layer â€” while maintaining deterministic authority over facts, gate decisions,
 and product requirements.
 
 ---
@@ -28,7 +28,7 @@ and product requirements.
 | Family | Type | Intended use |
 |---|---|---|
 | GPT OSS | LLM | Fact extraction, spec summarization, requirement drafting, code generation |
-| Qwen Next | LLM | Same — alternative when GPT OSS is unavailable or less suitable |
+| Qwen Next | LLM | Same â€” alternative when GPT OSS is unavailable or less suitable |
 | Embedding models | Embedding | Retrieval over verified facts, implementation requirements, section summaries |
 
 Agents may inspect available models through environment-configured credentials and endpoint metadata
@@ -36,6 +36,17 @@ when a future sprint authorizes execution. Model choice must be recorded with: m
 reason, fallback, and validation performed.
 
 **No model is chosen or called in this memory sprint.**
+
+### 2.3 2026-05-09 architecture direction
+
+The latest AI module, embedding retrieval, state-management, workflow orchestration, source
+generation, and no-drift design direction is captured in
+`memory/15-ai-modules-and-state-management-architecture-20260509.md`.
+
+That memory file refines this strategy with conceptual module layouts for governed LLM access,
+retrieval, and the Format Factory State Manager. It is design direction only. It does not mean
+`endpoint_client.py`, `model_discovery.py`, `router.py`, retrieval indexes, embeddings, vector DBs,
+state manager code, LangGraph, Prefect, Temporal, Dagster, or product source have been implemented.
 
 ---
 
@@ -45,7 +56,7 @@ The following rules are permanent and apply to all sprints:
 
 1. Do not commit API keys, endpoint tokens, or model secrets to the repository.
 2. Do not print secrets in logs, evidence bundles, or run records.
-3. Use environment variables only (`LLM_ENDPOINT`, `LLM_API_KEY`, etc. — names TBD by LLM-001).
+3. Use environment variables only (`LLM_ENDPOINT`, `LLM_API_KEY`, etc. â€” names TBD by LLM-001).
 4. Redact endpoint headers and tokens in all stored logs.
 5. Raw prompts/responses must not be bundled in evidence bundles by default.
 6. LLM-generated outputs stored as evidence must be summarized, validated, and non-secret.
@@ -58,13 +69,13 @@ When a future sprint explicitly authorizes LLM use, allowed tasks include:
 
 | Task | Notes |
 |---|---|
-| Candidate fact extraction | From normalized spec chunks — not raw PDF text |
+| Candidate fact extraction | From normalized spec chunks â€” not raw PDF text |
 | Spec section summarization | With spec citation required in output |
 | Requirement drafting | For review and validation against gate evidence |
 | Parser strategy drafting | For human and deterministic review |
 | Neutral model mapping suggestions | Human must approve all mappings |
 | Malformed/fuzz case suggestions | Must be added to fuzz fixture set with provenance |
-| Oracle-difference explanation | Descriptive only — not authoritative |
+| Oracle-difference explanation | Descriptive only â€” not authoritative |
 | Product-boundary review | For comparison against tier map |
 | Code/test draft generation | Under deterministic validation (tests must pass) |
 

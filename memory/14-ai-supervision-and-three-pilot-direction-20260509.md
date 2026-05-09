@@ -1,4 +1,4 @@
----
+﻿---
 memory_package: format-factory-chat-memory
 created_at: 2026-05-09
 source: ChatGPT AI-direction conversation and evidence-bundle review
@@ -262,6 +262,18 @@ The LLM implementation design needs refinement before operational rollout. The k
 
 These decisions must be captured in LLM-001 and related taskcards before LLM client code is created.
 The code must not precede the design.
+
+## Detailed AI module and state-management design
+
+See `memory/15-ai-modules-and-state-management-architecture-20260509.md` for the detailed design
+direction covering governed LLM modules, embedding retrieval, controlled agent roles, FUL-based
+source generation, the Format Factory State Manager, state categories, transition transactions,
+community components, and practical sequencing.
+
+This file records supervisory direction and three-pilot strategy. `memory/15` contains the detailed
+AI module and state-management architecture. Do not duplicate the full design here. Cross-check both
+files against `plans/master-plan.md`, `registry/format-registry.yaml`, taskcards, and evidence
+bundles before acting.
 
 ## Summary of what is NOT yet authorized
 

@@ -1,4 +1,4 @@
----
+﻿---
 memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
@@ -9,7 +9,7 @@ publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 10 — Memory Maintenance Protocol
+# 10 â€” Memory Maintenance Protocol
 
 ## Purpose
 
@@ -74,9 +74,9 @@ Do not rely on memory from ChatGPT alone. The agent should maintain local memory
 - U2: Agents must read relevant `/memory` files before complex work, phase transitions, governance changes.
 - U3: Minimal required files for general work (README, 00-index, 02-standing-operating-rules, 09-current-state).
 - U4: Task-type table for additional files.
-- U5: Contradiction rule — log gap, do not silently override.
-- U6: Maintenance triggers — update after major events.
-- U7: Content restrictions — no secrets, no raw prompts, no copyrighted spec text.
+- U5: Contradiction rule â€” log gap, do not silently override.
+- U6: Maintenance triggers â€” update after major events.
+- U7: Content restrictions â€” no secrets, no raw prompts, no copyrighted spec text.
 - U8: Evidence bundle rule for memory changes.
 - U9: TC-0008 placeholder for future /sync-memory command.
 
@@ -111,28 +111,30 @@ When a main execution stream run and a memory stream run are concurrent:
 2. Any pending propagation captured in memory must be labeled "pending-propagation" with the specific master-plan section it must target.
 3. A reconciliation main execution run (e.g., run011) must occur before Phase 1 to push all pending-propagation items into `plans/master-plan.md`.
 
-**Pending propagation as of run012 — RESOLVED run013:**
+**Pending propagation as of run012 â€” RESOLVED run013:**
 
 | Item | Captured in | Propagated to | By |
 |------|------------|----------------------|----|
-| `src/net/{format}` layout | `memory/03`, `memory/09` | `plans/master-plan.md` v2.8 product source layout section | run011 ✅ |
-| `src/python/{format}` layout | `memory/03`, `memory/09` | `plans/master-plan.md` v2.8 product source layout section | run011 ✅ |
-| .NET FOSS packaging question | `memory/03` | `plans/master-plan.md` as DEC-033 (deferred, must resolve before Gate 10 .NET release) | run011 ✅ |
+| `src/net/{format}` layout | `memory/03`, `memory/09` | `plans/master-plan.md` v2.8 product source layout section | run011 âœ… |
+| `src/python/{format}` layout | `memory/03`, `memory/09` | `plans/master-plan.md` v2.8 product source layout section | run011 âœ… |
+| .NET FOSS packaging question | `memory/03` | `plans/master-plan.md` as DEC-033 (deferred, must resolve before Gate 10 .NET release) | run011 âœ… |
 
 All pending propagation items from run012 are resolved. run013 verified the propagation and cleaned stale notes from `/memory` files. Agents may now read the source layout from `plans/master-plan.md` directly.
 
-**run016 memory update:** Memory files 02, 07, 09, 10, 11 updated. Trigger: governance change (DEC-034 added — independent verification before human review). Changes: new governance rule, DEC-034 reference, run016 run history entry, verification sprint pattern documented.
+**run016 memory update:** Memory files 02, 07, 09, 10, 11 updated. Trigger: governance change (DEC-034 added â€” independent verification before human review). Changes: new governance rule, DEC-034 reference, run016 run history entry, verification sprint pattern documented.
 
 **run017 memory update:** Memory files 00-index, 04, 05, 06, 09, 10 updated. Trigger: gate transition (Gate 1 approved by Babar Raza, 2026-05-04) + phase start (Phase 2 active). Changes: run017 run history entries, DEC-042/DEC-043 added to decision register, G-001/G-002 marked resolved, G-HEAL-016/G-HEAL-017 added, 09-current-state fully rewritten to reflect Phase 2 active and acquisition-packs/fods/ existence.
 
 **run019 memory update:** Memory files 00-index, 04, 09, 10 updated. Trigger: infrastructure taskcard completion (TC-0007) + Gate 2 evidence draft (TC-0009). Changes: run018/run019 run history entries; 09-current-state updated with Gate 2 draft status, TC-0007 status, new commits, next actions; 04-phase0-evolution updated with run018/run019 status.
 
-**run027 memory update:** External MEMORY.md updated. Trigger: gate status change (Gate 3 → sample_corpus_verified_pending_human_review) + architecture change (Hybrid Spec Retrieval Strategy). Changes: Phase 3 State section updated; TC-0015/TC-0016 added; run027 commit noted.
+**run027 memory update:** External MEMORY.md updated. Trigger: gate status change (Gate 3 â†’ sample_corpus_verified_pending_human_review) + architecture change (Hybrid Spec Retrieval Strategy). Changes: Phase 3 State section updated; TC-0015/TC-0016 added; run027 commit noted.
 
-**run028 memory update:** Memory files 03, 05, 09, 10 updated (+ external MEMORY.md). Trigger: gate transition (Gate 3 PASSED by Babar Raza, 2026-05-05) + major planning milestone (Gate 4 planning package created). Changes: 03 — Hybrid Spec Retrieval Strategy section added; 05 — decisions D-046 through D-049 added (Gate 2 PASSED, Gate 3 PASSED, Hybrid Retrieval, Gate 4 planning); 09 — complete rewrite to current state (run028); 10 — this entry.
+**run028 memory update:** Memory files 03, 05, 09, 10 updated (+ external MEMORY.md). Trigger: gate transition (Gate 3 PASSED by Babar Raza, 2026-05-05) + major planning milestone (Gate 4 planning package created). Changes: 03 â€” Hybrid Spec Retrieval Strategy section added; 05 â€” decisions D-046 through D-049 added (Gate 2 PASSED, Gate 3 PASSED, Hybrid Retrieval, Gate 4 planning); 09 â€” complete rewrite to current state (run028); 10 â€” this entry.
 
-**run029 memory update:** Memory files 05, 09, 10 updated (+ external MEMORY.md). Trigger: gate milestone (Gate 4 prototype created 4/4 PASS). Changes: 05 — D-050 added (Gate 4 prototype created and validated); 09 — TC-0014/TC-0017/TC-0018 statuses updated; TC-0019 row added; Prototypes row updated; latest commit updated to 5c93b88; run history rows for run028/run029 added; evidence bundle entry for run029 added; 10 — this entry.
+**run029 memory update:** Memory files 05, 09, 10 updated (+ external MEMORY.md). Trigger: gate milestone (Gate 4 prototype created 4/4 PASS). Changes: 05 â€” D-050 added (Gate 4 prototype created and validated); 09 â€” TC-0014/TC-0017/TC-0018 statuses updated; TC-0019 row added; Prototypes row updated; latest commit updated to 5c93b88; run history rows for run028/run029 added; evidence bundle entry for run029 added; 10 â€” this entry.
 
-**run030 memory update:** Memory files 09, 10 updated (+ external MEMORY.md). Trigger: gate milestone (TC-0018 DEC-034 verification PASS) + architecture change (Spec Workbench v1 created). Changes: 09 — latest commit updated to ea20cde; Uncommitted → run030; Gate 4 status → prototype_verified_pending_human_review; TC-0017 completed; TC-0018 verification_passed; TC-0020/TC-0021 rows added; master-plan version → 2.26; Next required actions updated; 10 — this entry; external MEMORY.md — run030 added to run history, Phase 3 State updated, Gate 4 status updated, TC-0020/TC-0021 added, Spec Workbench artifacts noted.
+**run030 memory update:** Memory files 09, 10 updated (+ external MEMORY.md). Trigger: gate milestone (TC-0018 DEC-034 verification PASS) + architecture change (Spec Workbench v1 created). Changes: 09 â€” latest commit updated to ea20cde; Uncommitted â†’ run030; Gate 4 status â†’ prototype_verified_pending_human_review; TC-0017 completed; TC-0018 verification_passed; TC-0020/TC-0021 rows added; master-plan version â†’ 2.26; Next required actions updated; 10 â€” this entry; external MEMORY.md â€” run030 added to run history, Phase 3 State updated, Gate 4 status updated, TC-0020/TC-0021 added, Spec Workbench artifacts noted.
 
 **memory-ai-direction-sync-2026-05-09 memory update:** Memory files 00, 10, 11, 12 updated; memory files 13 and 14 created. Trigger: ChatGPT supervisory analysis of run050 and S-F2F-02B bundles; AI direction decisions captured. Changes: 00-index -- new file rows, priority tables by task type, stream history entry; 10 -- this entry; 11 -- AI direction refinement section added; 12 -- ChatGPT supervision rules and parallel sprint handling added; 13 (NEW) -- ChatGPT initial project analysis from 2026-05-09 conversation; 14 (NEW) -- AI supervision rules and three-pilot direction. No gate status changes. No product source. No LLM calls. No embeddings. No playbook replay. No push.
+
+**memory-ai-state-management-sync-2026-05-09 memory update:** Memory files 00, 10, 11, 12, 14 updated; memory file 15 created. Trigger: ChatGPT AI module and state-management architecture direction captured for durable local discovery. Changes: 15 (NEW) -- governed LLM module design, embedding and retrieval design, agent roles, source generation substrate, Format Factory State Manager, state categories, transition transactions, community component sequencing, and no-drift controls. Future changes to LLM design, embedding design, state manager design, orchestration stack, no-drift controls, or AI source generation rules must be reflected in memory. Memory must distinguish design direction from implemented state. No LLM modules implemented. No embeddings created. No vector DB created. No state manager code created. No orchestration components added. No product source created. No gate status changes. No playbook replay. No push.
