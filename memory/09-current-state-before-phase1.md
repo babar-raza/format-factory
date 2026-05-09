@@ -91,7 +91,7 @@ This file captures the current state after run048. FODS Gates 1-9 ALL PASSED. Ga
 | Evidence contracts | 21 contracts (after run049): + run047/run048/run049 combined-sprint contracts |
 | last_completed_run | run050 |
 | Final HEAD authority | bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md). last_completed_run: run050 |
-| run050 commits | cc6d00c + 9da927d + 3a7c2b0 + c23588a + 3a14a05 + e5fcde7 + 134e3e9 + 7671e42 + dfb172f + 07fc026 |
+| run050 commits | cc6d00c + 9da927d + 3a7c2b0 + c23588a + 3a14a05 + e5fcde7 + 134e3e9 + 7671e42 + dfb172f + 07fc026 + cf43985 + 0b7fd81 + 045ed2d |
 | Master plan version | 2.45 (run049) |
 | AGENTS.md sections | A through Z (26 sections) |
 
