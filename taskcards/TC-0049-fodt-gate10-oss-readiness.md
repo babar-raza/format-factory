@@ -13,7 +13,7 @@ notes: "FODT Gate 10 OSS readiness taskcard. Created run050."
 # TC-0049: FODT Gate 10 -- OSS Release Readiness
 
 **Taskcard ID:** TC-0049
-**Status:** planning_ready -- Gate 9 passed (run050); planning complete; awaiting Phase 4 sprint
+**Status:** completed -- Gate 10 planning prerequisites verified (TC-0049-FODT-GATE10-EXECUTION, 2026-05-09)
 **Gate:** Gate 10
 **Format:** FODT
 
@@ -30,3 +30,4 @@ Full code-complete Gate 10 requires Phase 4 implementation sprint.
 ## Status History
 - not_started (run048)
 - planning_ready (run050 -- planning prerequisites complete)
+- completed (TC-0049-FODT-GATE10-EXECUTION, 2026-05-09 -- planning verified, FUL 15/15 PASS, stale fields repaired)

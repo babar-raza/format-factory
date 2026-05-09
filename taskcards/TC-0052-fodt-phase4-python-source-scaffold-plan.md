@@ -13,7 +13,7 @@ notes: "FODT Phase 4 Python source scaffold plan taskcard. Created run050."
 # TC-0052: FODT Phase 4 -- Python Source Scaffold Plan
 
 **Taskcard ID:** TC-0052
-**Status:** not_started -- requires explicit Phase 4 Python implementation execution prompt
+**Status:** planning_ready -- TC-0049 completed (2026-05-09); authorizable via explicit Phase 4 FODT Python execution prompt
 **Gate:** Post-Gate 10
 **Format:** FODT
 

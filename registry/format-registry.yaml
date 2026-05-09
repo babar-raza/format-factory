@@ -361,11 +361,14 @@ formats:
         approval_run: run050
         notes: "Gate 9 executed run050 (2026-05-08). Tier map v1.0: 5 tiers 16 features. First OSS Tiers 0-2 (12 features). DEC-034 PASS 10/10 inline (authorized by run050 prompt). TC-0048 COMPLETED. Approves FODT Gate 10 OSS readiness planning only. No product source created."
       gate_10:
-        status: planning_ready
+        status: planning_verified
         approved_by: null
         approved_date: null
         approval_run: null
-        notes: "Gate 10 planning executed run050 (2026-05-08). OSS scope Tiers 0-2 (12 features). Packaging plan: format-factory-fodt v0.1.0. TC-7 iterative traversal required. TC-6 iterparse required. DEC-034 PASS 10/10 inline. Full code-complete Gate 10 approval requires Phase 4 sprint."
+        tc0049_status: completed
+        tc0049_completed: "2026-05-09"
+        tc0052_status: planning_ready
+        notes: "Gate 10 planning verified TC-0049-FODT-GATE10-EXECUTION (2026-05-09). FUL 15/15 PASS. OSS scope Tiers 0-2 (12 features). TC-7 iterative traversal required. TC-6 iterparse required. Full code-complete Gate 10 approval requires Phase 4 sprint (TC-0052)."
       gate_11:
         status: not_started
         approved_by: null
