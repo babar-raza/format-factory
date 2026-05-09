@@ -3,16 +3,16 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.46 (run050: FUL repair 20/20 FODS 15/15 FODT; FODT Gate 9 PASSED; FODT Gate 10 PLANNING_READY; FODS Gate 11 PLANNING_READY; Phase 4 plans created; FUL validator tool) (run049: Format Understanding Packages compiled — FUL-001 schemas (6), FUL-002 FODS 6 files, FUL-003 FODT 6 files partial; stale state repairs; contract closure policy patched; XML-first consolidation; LLM policy preservation confirmed)
-**Last updated:** 2026-05-08
+**Version:** 2.47 (run051: FODS Phase 4 Python FOSS source COMPLETED -- TC-0050; src/python/fods/ 6 files; tests/python/fods/ 5 test files; 19/20 IR-FODS implemented; iterparse streaming) (run050: FUL repair 20/20 FODS 15/15 FODT; FODT Gate 9 PASSED; FODT Gate 10 PLANNING_READY; FODS Gate 11 PLANNING_READY; Phase 4 plans created; FUL validator tool) (run049: Format Understanding Packages compiled — FUL-001 schemas (6), FUL-002 FODS 6 files, FUL-003 FODT 6 files partial; stale state repairs; contract closure policy patched; XML-first consolidation; LLM policy preservation confirmed)
+**Last updated:** 2026-05-09
 **Current phase:** Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready.
-**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-8 ALL PASSED. Gate 9 PASSED (TC-0048 COMPLETED; tier-map.yaml v1.0; DEC-034 PASS 10/10 inline; run050). Format Understanding Layer: FUL-001 schemas (run049; 6 schemas in schemas/format-understanding/); FUL-002 FODS package COMPLETED (run049; 6 files in acquisition-packs/fods/); FUL-003 FODT package partial (run049; 6 files in acquisition-packs/fodt/, product-readiness.yaml partial Gate 9 required). Stale state repaired (memory/09, master-plan Section 6). Contract closure policy patched. No product source. last_completed_run: run050. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Phase 4 Python FOSS source CREATED (run051; TC-0050 COMPLETED; src/python/fods/ 6 files; 19/20 IR-FODS; iterparse streaming). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-9 ALL PASSED. Gate 9 PASSED (TC-0048 COMPLETED; tier-map.yaml v1.0; DEC-034 PASS 10/10 inline; run050). Gate 10 planning_ready (TC-0049 not_started). Format Understanding Layer: FUL-001 schemas (run049; 6 schemas); FUL-002 FODS COMPLETED (run049); FUL-003 FODT COMPLETED (run050). last_completed_run: run051. Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
 **FODT Gate 6 allowed:** YES — Gate 6 PASSED (Babar Raza, 2026-05-08, run047). Gate 7 fuzz planning_ready; execution requires explicit prompt.
 **Commit allowed:** YES — run049 authorized by execution prompt.
-**Next required action:** (1) FODS Gate 11: DEC-033 must be resolved, then explicit TC-0047 execution prompt. (2) FODT Gate 9: explicit TC-0048 execution prompt → tier-map.yaml → DEC-034 → human approval. (3) FUL-003 FODT completion: after FODT Gate 9, update acquisition-packs/fodt/product-readiness.yaml. (4) FUL-001 schema human approval (proposed_pending → approved). (5) Python Phase 4 for FODS: separate explicit Phase 4 Python implementation prompt required.
+**Next required action:** (1) FODS Gate 11: DEC-033 must be resolved, then explicit TC-0047 execution prompt. (2) FODT Gate 10: explicit TC-0049 execution prompt. (3) FODS Phase 4 .NET: blocked by DEC-033 (TC-0051). (4) FODT Phase 4 Python: explicit TC-0052 execution prompt after FODT Gate 10.
 
 ---
 
@@ -1055,7 +1055,8 @@ The exact final Git HEAD for each run is authoritative in `bundle-metadata/git-l
 `bundle-metadata/git-status-final.txt` in the run's evidence bundle.
 See `docs/current-state-and-evidence-authority.md`.
 
-**last_completed_run:** run050 (exact final HEAD in bundle-metadata/git-log.txt)
+**last_completed_run:** run051 (exact final HEAD in bundle-metadata/git-log.txt)
+**run051 commit set:** d18e73e
 **run050 commit set:** cc6d00c + 9da927d + 3a7c2b0 + c23588a + 3a14a05 + e5fcde7 + 134e3e9 + 7671e42 + dfb172f + 07fc026
 **run049 commit set:** 2b0d448 + 8fd26fa + 3964298 + f487d5e + 743fa38 + ba6aad2 + 740514f + 594f1a2 + 1c75d7e + 365ff9a + 8552d1c
 **run044 commit set:** 0e732c3
@@ -1556,14 +1557,12 @@ will be created until the appropriate gate sequence is satisfied.
 
 ### Next Possible Secondary Action
 
-S-F2F-02 is CLOSED_VERIFIED (executed 2026-05-08; schema gap repaired in S-F2F-02B;
-not_for_execution property added to acquisition-playbook.schema.json; 42/42 tests PASS;
-both jsonschema and structural engines verified; docs example passes full JSON Schema).
-The next possible secondary actions are:
-- S-F2F-03 (Dry-run Replay + Review Queue) or S-F2F-05 (ODF-Flat Family Playbook)
+S-F2F-03 is CLOSED_VERIFIED (executed 2026-05-09; 3 dry-run tools; 96 tests PASS;
+no apply mode; replay writes nothing to repo). The next possible secondary actions are:
+- S-F2F-04 (Golden Dry-Run Tests) or S-F2F-05 (ODF-Flat Family Playbook)
   — each requires a separate explicit human authorization prompt naming the taskcard.
 
-This section is informational only. Execution of any S-F2F sprint beyond S-F2F-01 requires
+This section is informational only. Execution of any S-F2F sprint beyond S-F2F-03 requires
 human authorization conditions above to be met.
 
 ### Evidence Bundle for Plan-Repair Sprint
@@ -1651,5 +1650,5 @@ All agents and human contributors must capture discovered gaps in durable repo a
 
 ---
 
-*End of plans/master-plan.md — version 2.46 — 2026-05-08*
+*End of plans/master-plan.md — version 2.47 — 2026-05-09*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
