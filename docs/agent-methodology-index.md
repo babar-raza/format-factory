@@ -141,3 +141,22 @@ If the check fails, address all listed issues before proceeding with plan or spr
 - [memory/12-planning-and-agent-handoff-methodology.md](../memory/12-planning-and-agent-handoff-methodology.md): user preferences and planning style
 - [docs/planning-methodology.md](planning-methodology.md): detailed methodology reference
 - [tools/governance/check_methodology_links.py](../tools/governance/check_methodology_links.py): automated link validator
+
+---
+
+## 11. ChatGPT Supervision Context (added 2026-05-09)
+
+These memory files provide the external AI supervision context. Read them when working on
+AI/LLM strategy, Phase 4 planning, or multi-stream sprint driving.
+
+| File | Purpose |
+|------|---------|
+| [memory/13-chatgpt-initial-project-analysis-20260509.md](../memory/13-chatgpt-initial-project-analysis-20260509.md) | ChatGPT first project analysis: what the project is, the real user requirement, where it stands, strengths, gaps, and next-level interpretation. |
+| [memory/14-ai-supervision-and-three-pilot-direction-20260509.md](../memory/14-ai-supervision-and-three-pilot-direction-20260509.md) | AI supervision workflow, three-pilot proof path, parallel sprint stream handling, what AI may and must not do, what is not yet authorized. |
+
+Note: The `/evidence-review-next-prompt` command and the `evidence-bundle-review-prompt-template.md`
+are the correct tools for reviewing sprint bundles and generating next prompts.
+
+When the review results in architectural direction changes or sprint supervision decisions, those
+must be captured in a memory sprint before the next execution sprint begins. This ensures
+discoverability for future agents.

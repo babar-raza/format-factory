@@ -205,6 +205,29 @@ hardcoding. See `docs/format-representation-model.md`.
 A visible registry of formats underserved by Aspose products is planned. Candidates must be
 verified before claiming Aspose non-overlap. See `docs/non-aspose-format-candidate-registry-plan.md`.
 
+### 2026-05-09: AI direction refined
+
+The project remains foundation-first. However, the LLM and embedding design must be refined
+so AI becomes a governed acceleration layer rather than remaining backlog-only.
+
+The near-term proof goal is three XML-style format pilots with different feature profiles.
+FODS and FODT are the first two pilots. A third will be selected when the first two reach
+near product-ready state.
+
+Key refinements agreed with ChatGPT supervision (2026-05-09):
+
+- LLM design must be refined before operational rollout. The code must not precede the design.
+  LLM-001 must capture governance, caching, audit, and schema validation decisions.
+- FUL (Format Understanding Layer) is the correct prompt substrate for source generation.
+  AI may not generate product source from raw imagination.
+- Embeddings are retrieval tools pointing back to cited artifacts. They are not truth authority.
+- AI outputs must become schema-validated artifacts before they are treated as authority.
+- ChatGPT will drive future sprints through detailed prompts after inspecting evidence bundles.
+- Agents must classify all active streams before staging files in any sprint.
+
+See: `memory/13-chatgpt-initial-project-analysis-20260509.md` and
+`memory/14-ai-supervision-and-three-pilot-direction-20260509.md`.
+
 ---
 
 ## Relationship to Other Documents

@@ -119,3 +119,57 @@ it drives product source decisions.
 - Format representation model: `docs/format-representation-model.md`
 - Non-XML adaptability backlog: covered in `docs/format-representation-model.md`
 - Non-Aspose candidate registry plan: `docs/non-aspose-format-candidate-registry-plan.md`
+
+## 2026-05-09 AI direction refinement
+
+This section records updated direction from the ChatGPT supervision session on 2026-05-09.
+See `memory/14-ai-supervision-and-three-pilot-direction-20260509.md` for full context.
+
+### Foundation-first strategy preserved
+
+The original plan to introduce LLMs at later stages after the foundation was laid correctly remains
+right. However, the LLM implementation design needs refinement before operational rollout.
+
+The project must resolve these design questions before implementing LLM client code:
+
+1. How are LLM calls governed (budget, authorization, caching)?
+2. How are LLM outputs converted to schema-validated artifacts?
+3. How are LLM calls audited (run IDs, prompt hashes, model versions)?
+4. How do LLM proposals get reviewed, cited, and promoted to facts?
+5. How are failed or low-confidence LLM outputs handled?
+
+These decisions must be captured in LLM-001 and related taskcards before any LLM client code is
+created. The code must not precede the design.
+
+### LLM should move from backlog-only toward governed acceleration
+
+After closure hygiene and readiness work (run050 closure, S-F2F-02C, etc.), LLMs should move from
+backlog-only status toward an operational role in:
+
+- FUL compilation (proposing candidate facts and requirements)
+- Test generation (from FUL artifacts and oracle results)
+- Failure repair (analyzing failing tests with governed prompts)
+- Playbook review queue assistance
+- Phase 4 source generation from approved FUL packages
+
+This is a gradual, governed rollout, not a sudden activation. Each capability must be authorized
+through a specific taskcard and explicit human approval.
+
+### AI roles clarified
+
+The following must guide all LLM integration work:
+
+- AI may propose. Deterministic evidence decides.
+- FUL (Format Understanding Layer) is the prompt substrate for source generation.
+  AI must not generate source from raw imagination.
+- Embeddings retrieve cited artifacts, not truth.
+  Vector/embedding results must point back to cited facts and spec sections.
+- AI outputs must become schema-validated artifacts before they are treated as authority.
+  A raw LLM response is not a verified fact. It is a proposal.
+
+### Current implementation status
+
+**No LLM client code exists.** No embeddings created. No vector DB created. Status: backlog.
+LLM-001, EMB-001 remain proposed_pending_human_approval.
+
+This section records intent, not completion.

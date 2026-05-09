@@ -88,3 +88,64 @@ without needing conversation history:
 
 A future agent starting fresh should read docs/agent-methodology-index.md first,
 then follow the links to the relevant docs, templates, and commands for the current task.
+
+## ChatGPT Supervision Rules (added 2026-05-09)
+
+ChatGPT serves as the external supervisor for this project. These rules govern how ChatGPT-driven
+sprints must be handled by agents in VS Code.
+
+### ChatGPT supervisory workflow
+
+For every sprint, ChatGPT will:
+
+1. Inspect the provided evidence bundle first.
+2. Challenge the prior agent summary.
+3. Reconstruct actual state from files and reports.
+4. Identify contradictions, stale state, and missing proof.
+5. Decide whether the sprint needs closure, repair, verification, or next-scope execution.
+6. Produce a detailed, comprehensive, exact prompt for the VS Code agent.
+7. Require the agent to produce a new evidence bundle.
+8. Use that evidence bundle to plan the next step.
+
+### Sprint prompt requirements
+
+Every sprint prompt from ChatGPT must tell agents exactly:
+
+- What files to read before acting.
+- What to verify (expected output, hashes, counts, statuses).
+- What to fix (exact file paths, exact change descriptions).
+- What not to touch (forbidden files and patterns).
+- What evidence to produce (metadata files, minimum counts, contract path).
+- How to report completion (exact final response format).
+
+Agents must not shorten, reinterpret, or skip these requirements.
+Agents must not convert execution prompts into informal plans unless the prompt says PLAN MODE.
+
+### Parallel sprint handling
+
+The user may run multiple sprints in parallel when they are independent streams.
+
+For each active stream, agents must classify the stream before staging any files:
+
+- MAIN_SPRINT_OWNED
+- SECONDARY_SPRINT_OWNED
+- MEMORY_SPRINT_OWNED
+- UNKNOWN_REQUIRES_STOP
+
+If multiple active streams touch shared authority files (master-plan, registry, AGENTS.md,
+GOVERNANCE.md, memory/, evidence contracts, or taskcards), a reconciliation sprint is required
+before major new scope.
+
+### Agents must inspect evidence bundles before advancing
+
+An agent summary is not sufficient authorization to start the next sprint. The human or ChatGPT
+must inspect the actual bundle contents and challenge the summary against real file state.
+
+Agents must produce `EVIDENCE_BUNDLE: <absolute Windows path>` as the final line of every
+execution sprint.
+
+### Prompts are requested only when needed, but must be comprehensive when given
+
+The user does not need constant prompt suggestions. Prompts are generated only when requested.
+But once requested, the prompt must be comprehensive, execution-ready, and fully specific.
+It must not rely on agent in-context memory or prior chat history.

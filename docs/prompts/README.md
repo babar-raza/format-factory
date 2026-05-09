@@ -91,6 +91,32 @@ governance violation -- not a time-saving shortcut.
 
 ---
 
+## ChatGPT Evidence-Review Sprint Prompts (added 2026-05-09)
+
+Sprint prompts generated from ChatGPT evidence review should follow these additional rules:
+
+1. **Classify active streams.** Every ChatGPT review prompt must identify which active stream
+   the sprint belongs to (MAIN_SPRINT, SECONDARY_SPRINT, or MEMORY_SPRINT) and which authority
+   files it may or may not touch.
+
+2. **Include memory update requirements.** When a ChatGPT sprint review produces architectural
+   direction changes or sprint supervision rule changes, the sprint prompt must require the agent
+   to run a memory sprint to capture those changes before the next execution sprint.
+
+3. **Include stream classification table.** If multiple streams are active, the prompt must
+   include a table classifying each untracked or dirty file by stream before any staging is done.
+
+4. **Include current state reconstruction.** Before prescribing fixes, the prompt must require
+   the agent to reconstruct actual state from files, not from prior summaries.
+
+5. **Require bundle validation against contract.** Every execution sprint prompt must name the
+   exact evidence contract file and run `validate_evidence_bundle.py --check-no-pending`.
+
+These rules complement the existing template rules. Do not change templates for templates that
+are already being used in active sprints -- adapt them only when starting a new sprint generation.
+
+---
+
 ## See Also
 
 - [docs/agent-methodology-index.md](../agent-methodology-index.md) -- full methodology entry point

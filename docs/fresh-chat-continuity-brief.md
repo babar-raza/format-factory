@@ -142,15 +142,46 @@ Also run:
 
 ---
 
-## 8. Current Gate Status Summary (as of 2026-05-08, run048)
+## 8. Current Gate Status Summary (as of 2026-05-09, run050)
 
 | Format | Gates Passed | Current State | Next |
 |---|---|---|---|
-| FODS | 1-10 | Gate 10 PASSED (run048) | Gate 11: TC-0047, DEC-033 resolution |
-| FODT | 1-8 | Gate 8 PASSED (run048) | Gate 9: TC-0048 explicit prompt |
+| FODS | 1-10 | Gate 11 planning_ready (run050) | Gate 11: DEC-033 resolution + TC-0047 explicit prompt |
+| FODT | 1-9 | Gate 10 planning_ready (run050) | Gate 10: TC-0049 explicit prompt; Phase 4 Python explicit prompt |
 
-FODS Gate 10 = OSS implementation readiness. Gate 11 = commercial implementation readiness.
-FODT Gate 9 = product mapping (tier map, delivery plan).
+FODS Gate 10 = OSS implementation readiness (PASSED run048). Gate 11 = commercial readiness.
+FODT Gate 9 = product mapping (PASSED run050). Gate 10 = OSS readiness (planning_ready).
 
-FUL-001 through FUL-004: proposed_pending_human_approval (not started).
+FUL-001 through FUL-004: In progress (FUL-002 FODS COMPLETED, FUL-003 FODT partial).
 LLM-001, EMB-001, REP-001, REP-003, NAC-001, GOV-001, GOV-002: proposed_pending_human_approval.
+
+Always verify against `registry/format-registry.yaml` and `plans/master-plan.md`. This summary
+may be behind if new sprints have run since the last memory update.
+
+---
+
+## 9. 2026-05-09 ChatGPT AI-Direction Memory
+
+On 2026-05-09, a ChatGPT supervision session reviewed the run050 and S-F2F-02B evidence bundles
+and provided architectural direction for the project's AI integration and proof strategy.
+
+**These files are required reading for:**
+- AI/LLM/embedding strategy work
+- Phase 4 product source planning
+- Three-pilot proof planning
+- Multi-stream sprint driving
+
+| File | Contents |
+|------|---------|
+| [memory/13-chatgpt-initial-project-analysis-20260509.md](../memory/13-chatgpt-initial-project-analysis-20260509.md) | ChatGPT first analysis: project purpose, user requirement, strengths, gaps, bottom-line assessment |
+| [memory/14-ai-supervision-and-three-pilot-direction-20260509.md](../memory/14-ai-supervision-and-three-pilot-direction-20260509.md) | AI supervision rules, three-pilot proof path, parallel sprint handling, stream notes, what is not yet authorized |
+
+**Key decisions recorded:**
+- The proof goal is three XML-style format pilots with different feature profiles.
+- LLM design must be refined before operational rollout (not just "turned on").
+- ChatGPT will drive sprints through detailed prompts after inspecting evidence bundles.
+- Agents must not advance to the next sprint based on agent summaries alone.
+- Evidence bundles must be inspected by ChatGPT or human before the next sprint is authorized.
+
+Always cross-check these memory files against `plans/master-plan.md` and `registry/format-registry.yaml`
+before acting. Memory is context, not authority.

@@ -41,8 +41,10 @@ The memory package captures:
 | `10-memory-maintenance-protocol.md` | How agents should maintain `/memory` over time. |
 | `11-prompting-and-agent-style-rules.md` | Prompt mode labels, execution handoffs, bundle requirements. |
 | `12-glossary.md` | Project terminology. |
-| `11-format-understanding-and-llm-strategy.md` | Format Understanding Layer, LLM/embedding strategy, non-XML backlog, non-Aspose registry, discovered-gap capture rule (memory sprint 2026-05-08). |
-| `12-planning-and-agent-handoff-methodology.md` | Planning methodology, execution handoff standard, user preferences for prompts and plans. Updated with methodology index and prompt README links (linkage sprint 2026-05-08). |
+| `11-format-understanding-and-llm-strategy.md` | Format Understanding Layer, LLM/embedding strategy, non-XML backlog, non-Aspose registry, discovered-gap capture rule (memory sprint 2026-05-08). Updated 2026-05-09 with AI direction refinement notes. |
+| `12-planning-and-agent-handoff-methodology.md` | Planning methodology, execution handoff standard, user preferences for prompts and plans. Updated with methodology index and prompt README links (linkage sprint 2026-05-08). Updated 2026-05-09 with ChatGPT supervision and parallel sprint handling rules. |
+| `13-chatgpt-initial-project-analysis-20260509.md` | ChatGPT first project-level analysis (2026-05-09). Project purpose, user requirement, standing, strengths, gaps, intended path, next-level AI interpretation, bottom-line assessment. Required reading for AI/LLM, Phase 4, or multi-stream sprint work. |
+| `14-ai-supervision-and-three-pilot-direction-20260509.md` | AI supervision rules and three-pilot direction agreed in 2026-05-09 session. User confirmation, end goal, AI roles, ChatGPT supervisory workflow, parallel sprint rules, stream notes, LLM design refinement required. Required reading for Phase 4, AI strategy, and sprint driving. |
 
 ## Local Methodology Entry Points (added linkage sprint 2026-05-08)
 
@@ -72,6 +74,15 @@ docs/fresh-chat-continuity-brief.md
 
 Then it should read only the memory files relevant to the task.
 
+### Additional priority files by task type
+
+| Task type | Additional required reading |
+|-----------|----------------------------|
+| AI/LLM/embedding strategy | memory/13-chatgpt-initial-project-analysis-20260509.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md, memory/11-format-understanding-and-llm-strategy.md |
+| Phase 4 product source planning | memory/13-chatgpt-initial-project-analysis-20260509.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
+| Three-pilot proof planning | memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
+| Sprint evidence review and next-prompt generation | memory/14-ai-supervision-and-three-pilot-direction-20260509.md, memory/12-planning-and-agent-handoff-methodology.md |
+
 ## Memory stream update history
 
 | Run | Stream | Files updated |
@@ -85,6 +96,7 @@ Then it should read only the memory files relevant to the task.
 | memory-sprint-2026-05-08 | Memory sprint | 00-index.md, 11-format-understanding-and-llm-strategy.md (NEW), AGENTS.md Sections AB+AC, GOVERNANCE.md Sections 21+22, docs/format-understanding-layer.md (NEW), docs/llm-and-embedding-strategy.md (NEW), docs/format-representation-model.md (NEW), docs/non-aspose-format-candidate-registry-plan.md (NEW), plans/master-plan.md Section 37 (NEW), ROADMAP.md Architecture Backlog (NEW), taskcards/FUL-001--FUL-004 (NEW), taskcards/LLM-001 (NEW), taskcards/EMB-001 (NEW), taskcards/REP-001 (NEW), taskcards/REP-003 (NEW), taskcards/NAC-001 (NEW), taskcards/GOV-001 (NEW) |
 | memory-planning-methodology-2026-05-08 | Memory methodology sprint | 00-index.md (UPDATED), 12-planning-and-agent-handoff-methodology.md (NEW), docs/planning-methodology.md (NEW), docs/agent-execution-handoff-standard.md (NEW), docs/plan-hardening-checklist.md (NEW), docs/fresh-chat-continuity-brief.md (NEW), docs/prompts/ (8 templates NEW), AGENTS.md Section AD (NEW), GOVERNANCE.md Section 23 (NEW), taskcards/GOV-002 (NEW), .claude/commands/ (4 files NEW) |
 | memory-methodology-linkage-2026-05-08 | Memory methodology linkage sprint | 00-index.md (UPDATED), 12-planning-and-agent-handoff-methodology.md (UPDATED), docs/agent-methodology-index.md (NEW), docs/prompts/README.md (NEW), README.md (UPDATED -- agent methodology section), .claude/commands/_readme.md (UPDATED -- methodology commands table), AGENTS.md AD0/AD8-AD10 (ADDED), GOVERNANCE.md Section 23.0/23.7-23.8/24 (ADDED), tools/governance/check_methodology_links.py (NEW), tests/governance/test_methodology_links.py (NEW), taskcards/GOV-003 (NEW) |
+| memory-ai-direction-sync-2026-05-09 | ChatGPT AI supervision and sprint rules memory sync | 00-index.md (UPDATED -- new file rows, priority tables, stream history), 10-memory-maintenance-protocol.md (UPDATED -- 2026-05-09 entry), 11-format-understanding-and-llm-strategy.md (UPDATED -- AI direction refinement section), 12-planning-and-agent-handoff-methodology.md (UPDATED -- ChatGPT supervision rules, parallel sprint handling), 13-chatgpt-initial-project-analysis-20260509.md (NEW), 14-ai-supervision-and-three-pilot-direction-20260509.md (NEW), docs/fresh-chat-continuity-brief.md (UPDATED -- 2026-05-09 section), docs/agent-methodology-index.md (UPDATED -- new memory context refs), docs/prompts/README.md (UPDATED -- ChatGPT prompt note), ROADMAP.md (UPDATED -- 2026-05-09 AI direction note), taskcards/GOV-004 (NEW), tools/evidence/contracts/memory-ai-direction-sync-20260509.yaml (NEW) |
 | run010 | Memory stream | Memory integration prompted by addition of /memory folder; AGENTS.md Section U added in run010 repo execution (not a /memory file edit — see run010 bundle) |
 
 ## Warning

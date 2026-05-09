@@ -82,6 +82,27 @@ Do not rely on memory from ChatGPT alone. The agent should maintain local memory
 
 This task is complete. The memory package is now formally integrated into the agent operating contract.
 
+## ChatGPT supervisory analysis and sprint-driving rules (added 2026-05-09)
+
+When ChatGPT provides architectural direction, sprint supervision rule changes, or active-stream
+conclusions, the memory package must be updated with a dedicated memory sprint.
+
+The update must:
+- Record ChatGPT analysis in a separate named memory file (do not embed in 00-index directly).
+- Record user decisions and confirmed directions in a separate named memory file.
+- Update 00-index and 10 (this file) with dated entries.
+- Update 11 and 12 if LLM strategy or planning methodology changed.
+- Update discoverability docs (fresh-chat-continuity-brief, agent-methodology-index).
+
+Memory files must distinguish between:
+1. **Verified repo state** -- from actual file inspection and evidence bundles.
+2. **ChatGPT analysis** -- reasoning and assessment from the AI supervision session.
+3. **User decisions** -- confirmed by the user in the supervision session.
+4. **Recommended next prompt** -- what ChatGPT recommends the next sprint should be.
+5. **Pending execution** -- work recommended but not yet performed.
+
+These must never be mixed. A ChatGPT recommendation is not the same as a completed sprint.
+
 ## Stream separation and reconciliation (added run012)
 
 When a main execution stream run and a memory stream run are concurrent:
@@ -113,3 +134,5 @@ All pending propagation items from run012 are resolved. run013 verified the prop
 **run029 memory update:** Memory files 05, 09, 10 updated (+ external MEMORY.md). Trigger: gate milestone (Gate 4 prototype created 4/4 PASS). Changes: 05 — D-050 added (Gate 4 prototype created and validated); 09 — TC-0014/TC-0017/TC-0018 statuses updated; TC-0019 row added; Prototypes row updated; latest commit updated to 5c93b88; run history rows for run028/run029 added; evidence bundle entry for run029 added; 10 — this entry.
 
 **run030 memory update:** Memory files 09, 10 updated (+ external MEMORY.md). Trigger: gate milestone (TC-0018 DEC-034 verification PASS) + architecture change (Spec Workbench v1 created). Changes: 09 — latest commit updated to ea20cde; Uncommitted → run030; Gate 4 status → prototype_verified_pending_human_review; TC-0017 completed; TC-0018 verification_passed; TC-0020/TC-0021 rows added; master-plan version → 2.26; Next required actions updated; 10 — this entry; external MEMORY.md — run030 added to run history, Phase 3 State updated, Gate 4 status updated, TC-0020/TC-0021 added, Spec Workbench artifacts noted.
+
+**memory-ai-direction-sync-2026-05-09 memory update:** Memory files 00, 10, 11, 12 updated; memory files 13 and 14 created. Trigger: ChatGPT supervisory analysis of run050 and S-F2F-02B bundles; AI direction decisions captured. Changes: 00-index -- new file rows, priority tables by task type, stream history entry; 10 -- this entry; 11 -- AI direction refinement section added; 12 -- ChatGPT supervision rules and parallel sprint handling added; 13 (NEW) -- ChatGPT initial project analysis from 2026-05-09 conversation; 14 (NEW) -- AI supervision rules and three-pilot direction. No gate status changes. No product source. No LLM calls. No embeddings. No playbook replay. No push.
