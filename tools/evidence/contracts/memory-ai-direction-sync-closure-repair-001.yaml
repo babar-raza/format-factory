@@ -1,0 +1,126 @@
+contract_id: memory-ai-direction-sync-closure-repair-001
+version: "1.0"
+sprint_type: memory_sprint
+description: >
+  Closure repair bundle for MEMORY-AI-DIR-SYNC-2026-05-09. The prior bundle
+  (memory-ai-direction-sync-20260509-final.zip) had defective phase8/9/10 metadata
+  (PENDING markers) and a dirty git-status-final.txt contradicting the COMPLETE verdict.
+  This repair sprint provides truthful metadata. All substantive memory sprint content
+  is confirmed committed in 33cea5a and d7854db.
+
+current_state_authority: bundle-metadata
+
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: >
+  Working tree has LF/CRLF line-ending differences (git autocrlf) in MEMORY_SPRINT_COMMITTED
+  files and unrelated untracked files from other sprint streams. No content changes are
+  present in the modified files. Memory sprint content is confirmed committed in 33cea5a.
+
+memory_sprint: true
+no_gate_status_change: true
+no_registry_gate_change: true
+no_product_source_created: true
+no_llm_call: true
+no_embedding_created: true
+no_vector_db_created: true
+no_playbook_replay_created: true
+no_push: true
+no_raw_llm_prompt_or_response: true
+no_secrets: true
+no_ffsm_code_created: true
+no_langraph_integration: true
+no_prefect_integration: true
+no_temporal_integration: true
+no_dagster_integration: true
+
+prior_sprint_commits_confirmed:
+  - "33cea5a"
+  - "d7854db"
+
+prior_bundle_defects_repaired:
+  - "DEFECT-001: phase8-bundle-build-report.md was PENDING"
+  - "DEFECT-002: phase9-final-self-verification.md was PENDING"
+  - "DEFECT-003: phase10-commit-report.md was PENDING"
+  - "DEFECT-004: git-status-final.txt showed dirty contradicting COMPLETE verdict"
+
+min_metadata_count: 33
+normal_pass_min_metadata: 33
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+  - "repo/src/python/fods/**"
+  - "repo/src/python/fodt/**"
+  - "repo/src/net/fods/**"
+  - "repo/src/net/fodt/**"
+  - "repo/tools/llm/**"
+  - "repo/.local/embeddings/**"
+  - "repo/.local/vector/**"
+  - "repo/tools/state/ffsm.py"
+  - "repo/tools/retrieval/embed.py"
+
+required_repo_files:
+  - memory/13-chatgpt-initial-project-analysis-20260509.md
+  - memory/14-ai-supervision-and-three-pilot-direction-20260509.md
+  - memory/15-ai-modules-and-state-management-architecture-20260509.md
+  - memory/00-index.md
+  - taskcards/GOV-004-chatgpt-ai-direction-memory-sync.md
+  - taskcards/GOV-005-ai-state-management-memory-sync.md
+  - taskcards/GOV-006-documentation-information-architecture-standardization.md
+  - tools/evidence/contracts/memory-ai-direction-sync-20260509.yaml
+  - tools/evidence/contracts/memory-ai-direction-sync-closure-repair-001.yaml
+  - docs/agent-execution-handoff-standard.md
+  - docs/current-state-and-evidence-authority.md
+  - docs/llm-and-embedding-strategy.md
+
+required_metadata_files:
+  - phase0-baseline-and-dirty-state.md
+  - phase1-prior-bundle-inspection.md
+  - phase2-contract-state-reconciliation.md
+  - phase3-repair-metadata-creation-report.md
+  - phase4-validation-command-results.md
+  - phase5-final-self-verification.md
+  - phase6-no-scope-drift-report.md
+  - phase7-repair-bundle-build-report.md
+  - phase8-commit-report.md
+  - dirty-state-classification-report.md
+  - stream-ownership-verification.md
+  - untracked-file-classification-report.md
+  - prior-bundle-defect-report.md
+  - no-gate-status-change-check.md
+  - no-product-source-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-playbook-replay-check.md
+  - no-ffsm-code-check.md
+  - no-langraph-prefect-check.md
+  - no-push-check.md
+  - no-secrets-check.md
+  - no-em-dash-check.md
+  - repair-contract-validation-report.md
+  - methodology-link-check-report.md
+  - current-state-consistency-report.md
+  - git-status-before.txt
+  - git-status-final.txt
+  - git-log.txt
+  - files-reviewed.txt
+  - verdict.md
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
