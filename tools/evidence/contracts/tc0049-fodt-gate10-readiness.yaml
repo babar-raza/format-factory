@@ -1,0 +1,105 @@
+# Evidence Bundle Contract -- TC-0049 FODT Gate 10 Readiness
+# Governs the TC-0049 FODT Gate 10 planning verification evidence bundle.
+# Version: 1.0
+# Created: TC-0049-FODT-GATE10-EXECUTION (2026-05-09)
+
+contract_id: tc0049-fodt-gate10-readiness
+version: "1.0"
+description: "TC-0049 -- FODT Gate 10 planning prerequisites verified; TC-0049 completed; TC-0052 planning_ready"
+
+inherits: base-run
+
+require_clean_git: true
+emergency_blocker_bundle: false
+
+min_metadata_count: 35
+
+required_repo_files:
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+  - taskcards/TC-0049-fodt-gate10-oss-readiness.md
+  - taskcards/TC-0052-fodt-phase4-python-source-scaffold-plan.md
+  - acquisition-packs/fodt/format-profile.yaml
+  - acquisition-packs/fodt/verified-facts.yaml
+  - acquisition-packs/fodt/implementation-requirements.yaml
+  - acquisition-packs/fodt/parser-strategy.yaml
+  - acquisition-packs/fodt/security-surface.yaml
+  - acquisition-packs/fodt/product-readiness.yaml
+  - acquisition-packs/fodt/tier-map.yaml
+  - tools/evidence/contracts/tc0049-fodt-gate10-readiness.yaml
+
+required_metadata_files:
+  - phase0-baseline-authority-check.md
+  - phase1-fodt-ful-validation-report.md
+  - phase1-fodt-facts-review.md
+  - phase1-fodt-requirements-review.md
+  - phase1-fodt-parser-strategy-review.md
+  - phase1-fodt-security-surface-review.md
+  - phase1-fodt-product-readiness-review.md
+  - phase2-gate10-requirements-map.md
+  - phase3-readiness-repair-report.md
+  - phase4-state-transition-report.md
+  - phase5-validation-command-log.md
+  - phase5-fodt-ful-validation-final.md
+  - phase5-current-state-consistency-final.md
+  - phase5-format-understanding-tests.md
+  - phase5-evidence-tests.md
+  - phase6-no-scope-drift-report.md
+  - no-fodt-source-check.md
+  - no-fodt-tests-check.md
+  - no-dotnet-source-check.md
+  - no-gate11-pass-check.md
+  - no-tc0052-execution-check.md
+  - dec033-status-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-playbook-replay-check.md
+  - no-push-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+forbidden_patterns:
+  - "repo/src/python/fodt/**"
+  - "repo/src/net/**"
+  - "repo/reports/legal/**"
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+
+# Semantic checks
+checks:
+  sprint_id_is_tc0049: true
+  target_format_is_fodt: true
+  gate10_readiness_verified: true
+  fodt_ful_validation_pass: true
+  facts_have_provenance: true
+  requirements_trace_to_facts: true
+  parser_strategy_ready: true
+  security_surface_ready: true
+  product_readiness_consistent: true
+  tc0049_completed_or_transitioned: true
+  tc0052_not_started: true
+  no_fodt_source_created: true
+  no_fodt_tests_created: true
+  no_dotnet_source_created: true
+  gate11_not_passed: true
+  dec033_unchanged: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_playbook_replay: true
+  no_push: true
