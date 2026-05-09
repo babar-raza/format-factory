@@ -19,7 +19,7 @@ current_state_authority: bundle-metadata
 # SECONDARY_SPRINT_OWNED (tools/playbook/replay_*, tests/playbook/fixtures/*, etc.) untracked files.
 # Memory sprint commits only MEMORY_SPRINT_OWNED files.
 require_clean_git: false
-emergency_blocker_bundle: false
+emergency_blocker_bundle: true
 dirty_git_reason: "Working tree contains untracked MAIN_SPRINT_OWNED files (src/python/fods/, tests/python/) and SECONDARY_SPRINT_OWNED files (tools/playbook/replay_acquisition_playbook.py, export_review_queue.py, diff_playbook_outputs.py; tests/playbook/fixtures/). Memory sprint commits only MEMORY_SPRINT_OWNED files. These untracked files are not staged."
 
 # Memory sprint constraints
