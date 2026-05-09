@@ -15,19 +15,19 @@ emergency_blocker_bundle: false
 min_metadata_count: 30
 
 required_repo_files:
-  - repo/src/python/fods/__init__.py
-  - repo/src/python/fods/parser.py
-  - repo/src/python/fods/neutral_model.py
-  - repo/src/python/fods/constants.py
-  - repo/src/python/fods/exceptions.py
-  - repo/src/python/fods/README.md
-  - repo/tests/python/conftest.py
-  - repo/tests/python/fods/test_parser_basic.py
-  - repo/tests/python/fods/test_parser_malformed.py
-  - repo/tests/python/fods/test_parser_security.py
-  - repo/tests/python/fods/test_neutral_model.py
-  - repo/tests/python/fods/test_public_api.py
-  - repo/acquisition-packs/fods/phase4-traceability-matrix.md
+  - src/python/fods/__init__.py
+  - src/python/fods/parser.py
+  - src/python/fods/neutral_model.py
+  - src/python/fods/constants.py
+  - src/python/fods/exceptions.py
+  - src/python/fods/README.md
+  - tests/python/conftest.py
+  - tests/python/fods/test_parser_basic.py
+  - tests/python/fods/test_parser_malformed.py
+  - tests/python/fods/test_parser_security.py
+  - tests/python/fods/test_neutral_model.py
+  - tests/python/fods/test_public_api.py
+  - acquisition-packs/fods/phase4-traceability-matrix.md
 
 required_metadata_files:
   - git-log.txt
