@@ -1,0 +1,154 @@
+contract_id: memory-ai-direction-sync-closure-repair-003-independent-verification
+version: "1.0"
+sprint_type: memory_sprint
+description: >
+  Independent verification of the MEMORY-AI-DIR-SYNC-2026-05-09 closure repair v3 bundle.
+  Verifies that all three repair contracts are committed and reachable from HEAD,
+  that the v3 bundle git metadata is truthful (built after repair-003 contract commit 27d52db),
+  and that memory sprint content (memory/13-15, GOV-004/005/006, enforcement docs) is correct.
+  Three metadata notes classified NON_BLOCKING (stale head wording, concurrent governance commit,
+  concurrent governance dirty note). Verdict: PASS_WITH_METADATA_NOTE.
+
+current_state_authority: bundle-metadata
+
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: >
+  Working tree has LF/CRLF line-ending differences (git autocrlf) in previously
+  committed files and untracked files from other sprint streams. No content
+  changes in M files. All memory sprint content committed. All three repair
+  contracts committed before this IV bundle was built.
+
+memory_sprint: true
+independent_verification: true
+target_bundle_sprint_id: memory-ai-direction-sync-closure-repair-003
+target_bundle_contract: tools/evidence/contracts/memory-ai-direction-sync-closure-repair-003.yaml
+
+verification_verdict: MEMORY_AI_DIRECTION_SYNC_CLOSURE_REPAIR_V3_IV_PASS_WITH_METADATA_NOTE
+
+repair_001_contract_tracked: true
+repair_002_contract_tracked: true
+repair_003_contract_tracked: true
+all_repair_commits_in_target_bundle_git_log: true
+target_bundle_git_status_final_is_clean: true
+build_before_commit_defect_absent: true
+memory_content_verified: true
+enforcement_docs_verified: true
+
+metadata_notes:
+  - id: NOTE-001
+    description: >
+      verdict.md in v3 bundle says repair-003 commit "27d52db (IS HEAD)" --
+      stale wording because concurrent governance commit 347fc0e advanced HEAD
+      before metadata script ran. final-state-summary.yaml correctly records
+      head_commit: 347fc0e.
+    classification: NON_BLOCKING_STALE_HEAD_WORDING
+  - id: NOTE-002
+    description: >
+      Concurrent governance commit 347fc0e advanced HEAD between manual git
+      commands and Python metadata script execution. All repair contracts still
+      committed and reachable. No content integrity issue.
+    classification: NON_BLOCKING_CONCURRENT_GOVERNANCE_COMMIT
+  - id: NOTE-003
+    description: >
+      Governance dirty-note commit (97673a3) further advanced HEAD after IV
+      sprint began. Still does not affect repair contract tracking or memory
+      content correctness.
+    classification: NON_BLOCKING_CONCURRENT_GOVERNANCE_COMMIT
+
+no_stash_reset_restore_clean_used: true
+no_broad_staging_used: true
+no_gate_status_change: true
+no_registry_gate_change: true
+no_product_source_created: true
+no_llm_call: true
+no_embedding_created: true
+no_vector_db_created: true
+no_playbook_replay_created: true
+no_push: true
+no_raw_llm_prompt_or_response: true
+no_secrets: true
+
+verified_repair_commits:
+  repair_001: "8151b36"
+  repair_002: "61c6a9a"
+  repair_003: "27d52db"
+
+min_metadata_count: 30
+normal_pass_min_metadata: 30
+
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+
+forbidden_patterns:
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+  - "**/*.faiss"
+  - "**/*.sqlite"
+  - "**/*.db"
+  - "**/.DS_Store"
+  - "**/*.env"
+  - "**/node_modules/**"
+  - "repo/src/python/fods/**"
+  - "repo/src/python/fodt/**"
+  - "repo/src/net/fods/**"
+  - "repo/src/net/fodt/**"
+  - "repo/tools/llm/**"
+  - "repo/tools/state/ffsm.py"
+  - "repo/tools/retrieval/embed.py"
+
+required_repo_files:
+  - tools/evidence/contracts/memory-ai-direction-sync-closure-repair-001.yaml
+  - tools/evidence/contracts/memory-ai-direction-sync-closure-repair-002.yaml
+  - tools/evidence/contracts/memory-ai-direction-sync-closure-repair-003.yaml
+  - tools/evidence/contracts/memory-ai-direction-sync-closure-repair-003-independent-verification.yaml
+  - tools/evidence/contracts/memory-ai-direction-sync-20260509.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+  - docs/agent-execution-handoff-standard.md
+  - docs/current-state-and-evidence-authority.md
+  - docs/llm-and-embedding-strategy.md
+  - memory/13-chatgpt-initial-project-analysis-20260509.md
+  - memory/14-ai-supervision-and-three-pilot-direction-20260509.md
+  - memory/15-ai-modules-and-state-management-architecture-20260509.md
+  - taskcards/GOV-004-chatgpt-ai-direction-memory-sync.md
+  - taskcards/GOV-005-ai-state-management-memory-sync.md
+  - taskcards/GOV-006-documentation-information-architecture-standardization.md
+
+required_metadata_files:
+  - phase0-baseline-and-git-state.md
+  - phase1-target-bundle-validation.md
+  - phase2-commit-proof-verification.md
+  - phase3-metadata-notes-classification.md
+  - phase4-memory-content-verification.md
+  - phase5-validation-commands.md
+  - phase6-scope-drift-check.md
+  - phase7-repair-decision.md
+  - metadata-notes-summary.md
+  - no-stash-reset-restore-clean-check.md
+  - no-broad-staging-check.md
+  - no-product-source-check.md
+  - no-registry-gate-change-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-playbook-replay-check.md
+  - no-push-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - validation-command-log.txt
+  - evidence-contract-validation-report.md
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
