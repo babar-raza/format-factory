@@ -31,9 +31,13 @@ This document captures the repo-local standard for:
 6. Every prompt must distinguish authorized work from prohibited work. Hard prohibitions are non-negotiable.
 7. Product source must not start from scattered evidence when a compiled Format Understanding Layer is required (see docs/format-understanding-layer.md).
 8. LLMs may assist under governance, but verified facts, citations, DEC-034, oracle results, and human approvals remain the authority.
-9. No broad cleanup commands (git stash -u, git reset --hard, git clean -fd) as a default or catch-all. If cleanup is needed, scope it exactly.
+9. No cleanup commands (`git stash`, `git reset`, `git restore`, `git checkout --`, `git clean`) as a default or catch-all. If unrelated dirty work exists, classify it and stop or produce a blocker bundle; do not hide it to satisfy clean-tree pressure.
 10. No pushing unless the human explicitly authorizes it in the current session.
 11. No gate self-approval. All 11 gates require human approval.
+
+### Git Safety Requirements
+
+Execution plans must require exact-path staging only, a dirty-state classification before edits, and a `git-safety-policy-check.md` metadata report. New evidence bundles must use sprint-specific metadata directories under `.local/`; root `bundle-metadata/` is reserved only for legacy inspection and must not be used for new sprint bundles. Final execution responses must include `NO_STASH_RESET_RESTORE_CLEAN_USED: YES`.
 
 ---
 

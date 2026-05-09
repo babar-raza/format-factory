@@ -122,10 +122,11 @@ When git status shows untracked files:
 
 When the working tree is dirty with files owned by other sprint streams:
 
-1. Do not run git stash -u, git reset --hard, or git clean -fd.
+1. Do not run `git stash`, `git reset`, `git restore`, `git checkout --`, or `git clean`.
 2. Classify each dirty file.
-3. If clean git cannot be achieved without touching MAIN_SPRINT_OWNED files, use emergency_blocker_bundle: true and document the dirty_git_reason.
-4. After MAIN_SPRINT_OWNED files are committed (in a later MAIN SPRINT), run a closure hygiene sprint to normalize the contract.
+3. If clean git cannot be achieved without touching another sprint's files, stop or use emergency_blocker_bundle: true and document the dirty_git_reason.
+4. Do not hide unrelated work to satisfy clean-tree pressure from evidence tooling.
+5. After unrelated files are committed by their owning sprint, run a closure hygiene sprint to normalize the contract if needed.
 
 ---
 
@@ -172,7 +173,9 @@ For each sprint:
 3. Set require_clean_git: true unless dirty git is unavoidable (see section 8).
 4. Add forbidden_patterns for all paths that must not be in the bundle.
 5. List required_repo_files and required_metadata_files explicitly.
-6. Validate the contract YAML before building the bundle.
+6. Use a sprint-specific metadata directory under `.local/<sprint-id>-metadata/`; do not use root `bundle-metadata/` for new bundles.
+7. Include `git-safety-policy-check.md` and identity files that agree on the primary sprint ID.
+8. Validate the contract YAML before building the bundle.
 
 ---
 
@@ -187,6 +190,7 @@ Before the final response:
 5. Confirm metadata count >= min_metadata_count.
 6. Confirm no PENDING markers.
 7. Confirm no forbidden paths.
+8. Run `python tools/governance/check_git_safety.py --strict --metadata-dir <dir> --classification-file <classification-report>`.
 
 ---
 
@@ -256,6 +260,7 @@ The final response must include, in order:
    - NO PRODUCTION LLM CALL MADE
    - NO NEW SPECS DOWNLOADED
    - NO PUSH MADE
+   - NO_STASH_RESET_RESTORE_CLEAN_USED: YES
 8. Final line: EVIDENCE_BUNDLE: <absolute Windows path to zip>
 
 The final line is always the evidence bundle path. Nothing follows it.

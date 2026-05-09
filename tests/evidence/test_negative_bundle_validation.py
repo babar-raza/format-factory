@@ -46,6 +46,26 @@ forbidden_paths: []
     return contract
 
 
+def build_identity_contract(tmp_dir: Path, require_identity: bool = True) -> Path:
+    """Write a contract that requires metadata identity validation."""
+    contract = tmp_dir / "identity-contract.yaml"
+    contract.write_text(
+        f"""\
+contract_id: gov-revert-identity-test
+require_clean_git: false
+require_contract_in_bundle: false
+require_manifest: false
+require_metadata_identity: {'true' if require_identity else 'false'}
+min_metadata_count: 30
+required_repo_files: []
+required_metadata_files: []
+forbidden_paths: []
+""",
+        encoding="utf-8",
+    )
+    return contract
+
+
 def build_bundle_with_meta(tmp_dir: Path, meta_files: dict) -> Path:
     """Build a bundle zip with the given metadata files. No repo files."""
     bundle_path = tmp_dir / "test-bundle.zip"
@@ -792,6 +812,41 @@ def test_closure_contradiction_passes_when_consistent(tmp_path):
         f"Expected PASS for consistent proof/verdict:\n{result.stdout}"
     )
     assert "CLOSURE_CONTRADICTION" not in result.stdout or "PASS" in result.stdout
+
+
+def test_mixed_metadata_identity_fails(tmp_path):
+    """Mixed sprint IDs across identity files must fail validation."""
+    contract = build_identity_contract(tmp_path)
+    bundle = build_sufficient_bundle(tmp_path, {
+        "verdict.md": "# Verdict\nSprint: tc0050\n",
+        "final-state-summary.yaml": "sprint_id: memory-ai-direction-sync\n",
+    })
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--contract", str(contract), "--bundle", str(bundle)],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode != 0
+    assert "METADATA_IDENTITY" in result.stdout
+    assert "BUNDLE_VALIDATION: FAIL" in result.stdout
+
+
+def test_clean_metadata_identity_passes(tmp_path):
+    """Consistent sprint identity across metadata files must pass."""
+    contract = build_identity_contract(tmp_path)
+    bundle = build_sufficient_bundle(tmp_path, {
+        "metadata-identity-report.md": "sprint_id: gov-revert-001\ncontract_id: gov-revert-001\n",
+        "verdict.md": "# Verdict\nSprint: gov-revert-001\n",
+        "final-state-summary.yaml": "sprint_id: gov-revert-001\n",
+    })
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--contract", str(contract), "--bundle", str(bundle)],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    assert "Metadata identity check (PASS)" in result.stdout
+    assert "BUNDLE_VALIDATION: PASS" in result.stdout
 
 
 def main():

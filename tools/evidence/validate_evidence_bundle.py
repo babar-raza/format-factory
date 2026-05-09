@@ -197,6 +197,15 @@ CURRENT_STATE_REPO_FILES = [
     "memory/09-current-state-before-phase1.md",
 ]
 
+IDENTITY_METADATA_FILES = [
+    "metadata-identity-report.md",
+    "verdict.md",
+    "final-state-summary.yaml",
+    "final-bundle-validation-proof.txt",
+    "evidence-contract-validation-report.md",
+    "sprint-summary.md",
+]
+
 
 def check_git_status_clean(metadata_files_content):
     """Check if a git status file in bundle metadata shows a clean working tree.
@@ -313,6 +322,52 @@ def check_closure_contradictions(metadata_files_content):
     return hits
 
 
+def extract_metadata_identity(text):
+    """Extract likely primary sprint/contract IDs from identity-critical metadata."""
+    identities = set()
+    patterns = [
+        r"\bsprint_id:\s*['\"]?([A-Za-z0-9_.-]+)",
+        r"\bSprint:\s*([A-Za-z0-9_.-]+)",
+        r"\bcontract_id:\s*['\"]?([A-Za-z0-9_.-]+)",
+        r"\bContract:\s*.*?([A-Za-z0-9_.-]+\.ya?ml)",
+    ]
+    for pattern in patterns:
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            value = match.group(1).strip().strip("'\"")
+            if value.endswith((".yaml", ".yml")):
+                value = Path(value).stem
+            if value and value.lower() not in {"true", "false", "null"}:
+                identities.add(value)
+    return identities
+
+
+def check_metadata_identity(metadata_files_content, require_identity=False):
+    """Verify identity-critical metadata files agree on the primary sprint."""
+    identities = set()
+    inspected = []
+    for fname in IDENTITY_METADATA_FILES:
+        content = metadata_files_content.get(fname)
+        if not content:
+            continue
+        inspected.append(fname)
+        identities.update(extract_metadata_identity(content))
+
+    if not inspected:
+        if require_identity:
+            return ["METADATA_IDENTITY: missing identity-critical metadata files"]
+        return []
+    if not identities:
+        if require_identity:
+            return ["METADATA_IDENTITY: identity files exist but no sprint identity was found"]
+        return []
+    if len(identities) > 1:
+        return [
+            "METADATA_IDENTITY: mixed primary sprint/contract identities found: "
+            + ", ".join(sorted(identities))
+        ]
+    return []
+
+
 def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=False):
     """Validate a bundle zip against a contract."""
     contract = load_contract(contract_path)
@@ -334,6 +389,7 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
     contract_repo_path = contract.get("contract_repo_path", "")
     require_manifest = contract.get("require_manifest", False)
     require_clean_git = contract.get("require_clean_git", strict_git)
+    require_metadata_identity = contract.get("require_metadata_identity", False)
 
     errors = []
     warnings = []
@@ -369,6 +425,7 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
                 # Read git status files, manifest, and (when --check-no-pending)
                 # all metadata files for PENDING marker scanning.
                 if (fname in GIT_STATUS_CANDIDATE_FILES
+                        or fname in IDENTITY_METADATA_FILES
                         or fname == "bundle-manifest.yaml"
                         or no_pending):
                     try:
@@ -530,6 +587,13 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             for msg in closure_contradiction_hits:
                 errors.append(msg)
 
+        identity_hits = check_metadata_identity(
+            metadata_files_content,
+            require_identity=require_metadata_identity,
+        )
+        for msg in identity_hits:
+            errors.append(msg)
+
     # Print validation report
     print("=" * 60)
     print("EVIDENCE BUNDLE VALIDATION REPORT")
@@ -568,6 +632,10 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             print(f"Closure-contradiction check (FAIL): {len(closure_contradiction_hits)} contradiction(s)")
         else:
             print("Closure-contradiction check (PASS): no proof/verdict/summary contradictions")
+    identity_status = "PASS"
+    if 'identity_hits' in locals() and identity_hits:
+        identity_status = "FAIL"
+    print(f"Metadata identity check ({identity_status})")
     print()
 
     if warnings:

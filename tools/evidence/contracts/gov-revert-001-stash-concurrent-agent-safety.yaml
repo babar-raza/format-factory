@@ -1,0 +1,111 @@
+contract_id: gov-revert-001-stash-concurrent-agent-safety
+contract_version: "1.0"
+sprint_id: gov-revert-001-stash-concurrent-agent-safety
+sprint_type: governance_fix_sprint
+created_at: "2026-05-09"
+visibility: internal
+current_state_authority: bundle-metadata
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "GOV-REVERT-001 preserved pre-existing unrelated dirty and untracked work from memory sync, GOV-006, S-F2F-04, and the prior investigation contract. The sprint did not hide this work with stash, reset, restore, checkout cleanup, or clean."
+require_metadata_identity: true
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+required_repo_files:
+  - AGENTS.md
+  - GOVERNANCE.md
+  - plans/master-plan.md
+  - docs/agent-execution-handoff-standard.md
+  - docs/planning-methodology.md
+  - docs/prompts/README.md
+  - docs/prompts/execution-handoff-prompt-template.md
+  - docs/prompts/independent-verification-prompt-template.md
+  - taskcards/GOV-REVERT-001-stash-concurrent-agent-safety.md
+  - taskcards/GOV-REVERT-002-hidden-work-recovery.md
+  - taskcards/GOV-REVERT-003-active-sprint-lock-tooling.md
+  - tools/governance/check_git_safety.py
+  - tests/governance/test_check_git_safety.py
+  - tests/governance/fixtures/git_safety/mixed-metadata/verdict.md
+  - tests/governance/fixtures/git_safety/mixed-metadata/final-state-summary.yaml
+  - tests/governance/fixtures/git_safety/clean-metadata/verdict.md
+  - tests/governance/fixtures/git_safety/clean-metadata/final-state-summary.yaml
+  - tests/governance/fixtures/git_safety/command-logs/validation-command-log.txt
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_negative_bundle_validation.py
+  - tools/evidence/contracts/gov-revert-001-stash-concurrent-agent-safety.yaml
+required_metadata_files:
+  - phase0-preservation-and-dirty-state.md
+  - phase1-stash-recoverability-inventory.md
+  - phase2-safe-git-policy-report.md
+  - phase3-git-safety-checker-report.md
+  - phase4-evidence-isolation-hardening.md
+  - phase5-concurrent-sprint-lock-standard.md
+  - phase6-root-bundle-metadata-quarantine.md
+  - phase7-validation-report.md
+  - phase8-no-scope-drift-report.md
+  - pytest-governance-report.md
+  - pytest-evidence-report.md
+  - git-safety-check-report.md
+  - current-state-consistency-report.md
+  - git-safety-policy-check.md
+  - no-stash-reset-restore-clean-check.md
+  - no-broad-staging-check.md
+  - no-source-change-check.md
+  - no-gate-status-change-check.md
+  - no-product-source-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-push-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - validation-command-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - metadata-identity-report.md
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+min_metadata_count: 35
+require_manifest: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/gov-revert-001-stash-concurrent-agent-safety.yaml
+forbidden_patterns:
+  - .env
+  - .env.*
+  - .local/
+  - .git/
+  - __pycache__/
+  - "*.pyc"
+  - text.txt
+  - pages.jsonl
+  - chunks.jsonl
+  - "*.sqlite"
+  - "*.sqlite3"
+  - "*.db"
+  - "*.faiss"
+  - "*.index"
+semantic_checks:
+  root_cause_addressed: true
+  stash_policy_enforced: true
+  reset_restore_clean_policy_enforced: true
+  concurrent_sprint_policy_enforced: true
+  git_safety_checker_created: true
+  bundle_metadata_isolation_hardened: true
+  root_bundle_metadata_rejected_or_quarantined: true
+  metadata_identity_validation_enforced: true
+  no_unrelated_work_hidden: true
+  no_stash_created: true
+  no_reset_restore_checkout_clean_used: true
+  no_broad_staging_used: true
+  no_product_source_created: true
+  no_gate_status_change: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_push: true

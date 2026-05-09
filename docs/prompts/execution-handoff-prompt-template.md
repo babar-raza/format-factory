@@ -51,6 +51,8 @@ Do not create src/python/fodt/.
 Do not create reports/legal/.
 Do not create .github/workflows/.
 Do not create embeddings or vector DB files.
+Do not use git stash, git reset, git restore, git checkout -- <path>, or git clean to hide or discard work.
+Do not use git add . or git add -A.
 Do not push.
 <add any sprint-specific prohibitions>
 
@@ -68,6 +70,7 @@ Read these files before starting:
 Also run:
 - git log --oneline -5
 - git status --short
+- python tools/governance/check_git_safety.py --strict --metadata-dir <sprint-metadata-dir> --classification-file <dirty-state-classification-report>
 - python tools/evidence/check_current_state_consistency.py
 
 If CURRENT_STATE_CONSISTENCY: FAIL, stop and print BLOCKED_CONSISTENCY_CHECK.
@@ -85,6 +88,8 @@ Record:
 
 If working tree has MAIN_SPRINT_OWNED or SECONDARY_SPRINT_OWNED files and clean git cannot be
 achieved, document dirty_git_reason and set emergency_blocker_bundle: true in the contract.
+Do not use stash, reset, restore, checkout cleanup, or clean to make the tree appear clean.
+If unrelated dirty work exists, classify it and stop or produce a blocker bundle.
 
 B. <First execution section>
 
@@ -109,14 +114,16 @@ Validation
 Run or perform:
 1. YAML validation: python -c "import yaml; yaml.safe_load(open('<file>'))" -- expected: no error.
 2. JSON validation: <if applicable>
-3. python tools/evidence/check_current_state_consistency.py -- expected: CURRENT_STATE_CONSISTENCY: PASS
-4. python tools/evidence/validate_evidence_bundle.py --bundle <path> --contract <path> -- expected: BUNDLE_VALIDATION: PASS
-5. git status -- expected: nothing to commit, working tree clean (or documented dirty with reason)
+3. python tools/governance/check_git_safety.py --strict --metadata-dir <sprint-metadata-dir> --classification-file <dirty-state-classification-report> -- expected: pass, or documented blocker
+4. python tools/evidence/check_current_state_consistency.py -- expected: CURRENT_STATE_CONSISTENCY: PASS
+5. python tools/evidence/validate_evidence_bundle.py --bundle <path> --contract <path> -- expected: BUNDLE_VALIDATION: PASS
+6. git status -- expected: nothing to commit, working tree clean (or documented dirty with reason)
 
 Evidence contract
 
 Contract path: tools/evidence/contracts/<sprint-name>.yaml
 Required fields: require_clean_git, emergency_blocker_bundle, min_metadata_count, memory_sprint (if applicable)
+Required metadata: git-safety-policy-check.md and sprint identity files.
 Output path: .local/evidence-bundles/<sprint-name>-YYYYMMDD-HHMMSS.zip
 
 Commit (if authorized)
@@ -157,6 +164,8 @@ Answer YES or NO to each:
 15. Did I avoid pushing?
 16. Did I update all relevant taskcards?
 17. Did I capture any discovered gaps in backlog/memory?
+18. Did I avoid git stash/reset/restore/checkout cleanup/clean?
+19. Did I avoid broad staging?
 
 Final response format:
 
@@ -174,5 +183,6 @@ Final response format:
    - NO PRODUCTION LLM CALL MADE
    - NO NEW SPECS DOWNLOADED
    - NO PUSH MADE
+   - NO_STASH_RESET_RESTORE_CLEAN_USED: YES
 
 EVIDENCE_BUNDLE: <absolute Windows path to zip>

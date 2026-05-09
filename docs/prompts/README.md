@@ -24,6 +24,7 @@ sections, and enforcement rules so that every session produces consistent result
 5. Include evidence contract and bundle requirements. Every execution sprint must specify a contract file (min_metadata_count, required_repo_files, required_metadata_files, forbidden_patterns).
 6. Include self-challenge. Every execution sprint must end with a self-challenge section (minimum 17 yes/no questions) before the final response format.
 7. Include final response format. The last line must be: EVIDENCE_BUNDLE: <absolute Windows path to zip>
+8. Include Git safety closeout. Every execution prompt must require `git-safety-policy-check.md`, exact-path staging only, sprint-specific `.local/<sprint-id>-metadata/`, and final response line `NO_STASH_RESET_RESTORE_CLEAN_USED: YES`.
 
 ---
 

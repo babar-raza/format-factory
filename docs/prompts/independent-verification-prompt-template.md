@@ -34,10 +34,13 @@ This prompt does NOT authorize:
 2. Modifying any approved artifacts.
 3. Creating product source.
 4. Pushing.
+5. Cleaning, stashing, resetting, restoring, or hiding unrelated working-tree changes.
 
 Hard prohibitions:
 Do not modify existing artifacts or evidence.
 Do not approve gates (gate approval is human-only).
+Do not use git stash, git reset, git restore, git checkout -- <path>, or git clean.
+Do not use git add . or git add -A.
 Do not push.
 
 Read first:
@@ -50,7 +53,8 @@ Read first:
 2. Read the specific artifacts claimed in the prior sprint (list them from the bundle).
 3. Read relevant taskcards.
 4. Run git log --oneline -10 to confirm the commit exists.
-5. Run python tools/evidence/check_current_state_consistency.py.
+5. Run python tools/governance/check_git_safety.py --metadata-dir <verification-metadata-dir> --classification-file <dirty-state-classification-report>, if a classification file is required by current state.
+6. Run python tools/evidence/check_current_state_consistency.py.
 
 Verification steps:
 
@@ -94,6 +98,8 @@ Self-challenge
 6. Did I avoid gate self-approval?
 7. Did I avoid pushing?
 8. Did the verification bundle validate?
+9. Did I avoid git stash/reset/restore/checkout cleanup/clean?
+10. Did I avoid broad staging?
 
 Final response format:
 
@@ -104,5 +110,6 @@ Final response format:
 5. DEC-034 result: PASS or FAIL.
 6. Commit hash.
 7. Stream declaration.
+8. NO_STASH_RESET_RESTORE_CLEAN_USED: YES
 
 EVIDENCE_BUNDLE: <absolute Windows path to zip>
