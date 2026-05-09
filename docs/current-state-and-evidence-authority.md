@@ -191,3 +191,82 @@ showing "PASS" does NOT constitute gate approval and does NOT supersede the DEC-
 independent verification requirement or human gate approval.
 
 **Note on Playbook Schema Artifacts (S-F2F-01 Active — 2026-05-08):** schemas/playbook/ and docs/playbook-layer.md are now established. These are non-authoritative governance reference artifacts. The playbook schema layer introduces no new authority. schemas/playbook/acquisition-playbook.schema.json and schemas/playbook/review-queue.schema.json are structural definitions only. Future replay reports (when S-F2F-03 is authorized) will be informational inputs to evidence bundles — they do not alter the current-state authority model defined in this document.
+
+---
+
+## 8. FFSM Authority Level Mapping (added 2026-05-09)
+
+The Format Factory State Manager (FFSM) is a planned repo-native state subsystem (design only --
+no code exists yet). The authority hierarchy below governs both the current manual enforcement
+model and the planned FFSM automated model.
+
+### 8.1 Seven-level authority hierarchy
+
+| Level | Source | Type | Role |
+|-------|--------|------|------|
+| Level 1 | registry/format-registry.yaml | Gate authority | Highest -- gate status source of truth |
+| Level 2 | plans/master-plan.md | Operational authority | Run state, taskcard status, active sprint |
+| Level 3 | taskcards/ | Task authority | Per-task scope, status, DEC-034 refs |
+| Level 4 | Evidence bundles | Sprint output authority | Committed sprint proof |
+| Level 5 | ROADMAP.md, README.md | Navigation authority | Discovery and orientation |
+| Level 6 | Session hints | Context authority | memory/09, settings.json, fresh-chat-continuity-brief.md |
+| Level 7 | Derived mirrors | Derived authority | pack.yaml, format-profile.yaml, product-readiness.yaml |
+
+### 8.2 Conflict resolution rules
+
+- Higher authority always wins when sources conflict.
+- Level 1 (registry) overrides everything. If registry says gate_6.status: passed and
+  master-plan says pending, the registry is correct. Fix the master-plan.
+- Level 6 session hints are orientation only. If memory/09 says FODT Gate 10 is passed but
+  the registry says planning_ready, the registry is correct.
+- Level 7 derived mirrors must mirror Level 1-3. A pack.yaml with stale gate status is a
+  consistency failure requiring the always-updated enforcement model.
+
+### 8.3 FFSM role (future -- design only)
+
+When FFSM is operational:
+- FFSM reads Level 1-3 as authority inputs (read-only).
+- FFSM tracks Level 4 evidence state (bundle paths, hashes, validation results).
+- FFSM tracks Level 6 session state (sprint ID, phase, active taskcard, dirty files).
+- FFSM enforces that Level 6 and Level 7 files are updated before any commit.
+
+Until FFSM is operational, enforcement is manual through the sprint closeout steps in
+docs/agent-execution-handoff-standard.md Section 19 and the CURRENT_STATE_CONSISTENCY check.
+
+**Current status:** FFSM is design only. No tools/state/ffsm.py or related code exists.
+See memory/15-ai-modules-and-state-management-architecture-20260509.md for the full design.
+
+
+## Section 8 -- FFSM Authority Level Mapping (Added memory-ai-direction-sync-2026-05-09)
+
+This section documents the planned seven-level authority hierarchy for the Format Factory State
+Manager (FFSM). The FFSM is DESIGN ONLY -- see memory/15 Section 15.5 for details.
+
+### 8.1 Seven-Level Authority Hierarchy
+
+| Level | Files | Role | Who Updates |
+|-------|-------|------|-------------|
+| 1 | registry/format-registry.yaml | Gate authority -- highest | Human approval + agent execution |
+| 2 | plans/master-plan.md | Operational authority | Agent + human review |
+| 3 | taskcards/ | Task authority | Agent execution |
+| 4 | Evidence bundles (.local/evidence-bundles/) | Sprint output authority | Builder + validator |
+| 5 | ROADMAP.md, README.md | Navigation authority | Agent + human |
+| 6 | memory/09, .claude/settings.json, docs/fresh-chat-continuity-brief.md | Session hints | Agent (mandatory closeout) |
+| 7 | pack.yaml, format-profile.yaml, product-readiness.yaml | Derived mirrors | Agent (must match Level 1-4) |
+
+### 8.2 Conflict Resolution Rules
+
+1. When Level 1 (registry) and Level 2 (master-plan) disagree: Level 1 wins. Update Level 2 to match.
+2. When Level 6 (session hints) and Level 1 (registry) disagree: Level 1 wins. Update Level 6.
+3. When Level 7 (derived mirrors) and Level 1 (registry) disagree: Level 1 wins. Update Level 7.
+4. No agent or LLM may override Level 1-3 authority without a human-approved gate or taskcard.
+
+### 8.3 FFSM Role (Design Only)
+
+When the Format Factory State Manager (FFSM) is operational (future), it will enforce this hierarchy
+automatically. State transitions will fail if Level 6-7 do not match Level 1-4. Until FFSM is
+operational, this enforcement is manual through the mandatory sprint closeout (Section 19 of
+docs/agent-execution-handoff-standard.md) and the CURRENT_STATE_CONSISTENCY check.
+
+FFSM planned location: tools/state/ (NOT YET CREATED).
+FFSM governing taskcard: to be created in a future sprint after GOV-006 authorization.

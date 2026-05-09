@@ -259,3 +259,45 @@ The final response must include, in order:
 8. Final line: EVIDENCE_BUNDLE: <absolute Windows path to zip>
 
 The final line is always the evidence bundle path. Nothing follows it.
+
+---
+
+## 19. Always-Updated Enforcement Model (added 2026-05-09)
+
+Every execution sprint must include a mandatory closeout phase. This is not optional.
+The closeout phase runs after all sprint work is complete and before the evidence bundle is built.
+
+### 19.1 Mandatory closeout steps
+
+1. Update all Level 6 session hint files:
+   - memory/09-current-state-before-phase1.md
+   - .claude/settings.json
+   - docs/fresh-chat-continuity-brief.md
+   These files must not contain stale gate statuses or stale run references after the sprint.
+
+2. If gate status changed: update registry/format-registry.yaml, plans/master-plan.md header,
+   and all pack.yaml files for the affected format. All three must agree before bundle build.
+
+3. If a new taskcard was created or completed: update plans/master-plan.md (taskcards table).
+
+4. If ROADMAP.md or README.md are stale: update or create a pending-propagation report at
+   reports/propagation/{sprint-id}-propagation-pending.md.
+
+5. Run the current-state consistency checker:
+   python tools/evidence/check_current_state_consistency.py
+   Expected: CURRENT_STATE_CONSISTENCY: PASS
+
+6. If CURRENT_STATE_CONSISTENCY fails: fix the failing check before building the bundle.
+
+### 19.2 Pending propagation reports
+
+When a sprint cannot safely update a file because another active stream owns it:
+- Create reports/propagation/{sprint-id}-propagation-pending.md
+- Required fields: sprint_id, blocked_file, blocking_stream, propagation_content, follow_up_sprint
+
+### 19.3 Failure rule
+
+A sprint that skips the always-updated closeout and builds a bundle with a known stale-state
+failure is considered INCOMPLETE. Build the bundle only after CURRENT_STATE_CONSISTENCY: PASS.
+
+See memory/15-ai-modules-and-state-management-architecture-20260509.md for the full model.

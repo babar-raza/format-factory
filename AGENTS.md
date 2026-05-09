@@ -634,3 +634,77 @@ human prompt.
 **AD9. Agents Must Not Rely on Sprint Summaries Alone.** When evidence bundles and repo files are available, they are the truth source. Sprint summaries are hypotheses. Read the actual files.
 
 **AD10. No Methodology Skip.** Skipping plan hardening, independent verification, or evidence bundle validation is a governance violation. These steps are required infrastructure, not optional ceremony.
+
+---
+
+## AE. Always-Updated Enforcement Model (memory sprint 2026-05-09)
+
+**AE1. Mandatory Closeout Phase.** Every execution sprint must include a mandatory closeout
+phase before the evidence bundle is built. The closeout phase is not optional. Failure to
+complete it means the sprint is INCOMPLETE.
+
+**AE2. Level 6 Session Hint Files Must Be Updated.** After every execution sprint, update all
+Level 6 session hint files (memory/09-current-state-before-phase1.md, .claude/settings.json,
+docs/fresh-chat-continuity-brief.md) to reflect the sprint's actual final state.
+
+**AE3. Gate Changes Require Multi-File Updates.** If gate status changes in a sprint, update
+all three sources consistently: registry/format-registry.yaml, plans/master-plan.md header,
+and all pack.yaml files for the affected format. All three must agree before bundle build.
+
+**AE4. CURRENT_STATE_CONSISTENCY Must Pass.** Run python tools/evidence/check_current_state_consistency.py
+before building the evidence bundle. Confirm CURRENT_STATE_CONSISTENCY: PASS before proceeding.
+
+**AE5. Pending Propagation Reports for Blocked Files.** When a sprint cannot safely update a
+file because another stream owns it, create reports/propagation/{sprint-id}-propagation-pending.md
+recording: sprint_id, blocked_file, blocking_stream, propagation_content, follow_up_sprint.
+
+**AE6. Authority Level Hierarchy.** When sources conflict, higher authority wins:
+Level 1 (registry) > Level 2 (master-plan) > Level 3 (taskcards) > Level 4 (evidence bundles)
+> Level 5 (ROADMAP/README) > Level 6 (session hints) > Level 7 (derived mirrors).
+See docs/current-state-and-evidence-authority.md Section 8 for the full hierarchy.
+
+**AE7. No Memory/16+ Without GOV-006.** No new memory/NN files may be created beyond memory/15
+without GOV-006 authorization. See taskcards/GOV-006-documentation-information-architecture-standardization.md.
+
+**AE8. FFSM Is Design Only.** No tools/state/, tools/llm/, or tools/retrieval/ code may be
+created without explicit human-authorized taskcards. See memory/15 for design direction.
+
+
+## Section AE -- Always-Updated Enforcement Model (Added memory-ai-direction-sync-2026-05-09)
+
+Every execution sprint must include a mandatory closeout phase before the evidence bundle is built.
+This section records the enforcement rules that apply to ALL execution agents.
+
+**AE1. Mandatory Closeout Phase.** Every execution sprint must update all Level 6 session hint files
+(memory/09-current-state-before-phase1.md, .claude/settings.json, docs/fresh-chat-continuity-brief.md)
+before building the evidence bundle. Skipping this step is a governance violation.
+
+**AE2. Level 6 Session Hint Files.** After any sprint that changes gate status, sprint state, or
+strategic direction, the Level 6 files must reflect the actual new state. Stale hints that contradict
+authority state (registry, master-plan) are governance violations.
+
+**AE3. Gate Changes Require Multi-File Consistency.** If a gate status changes, the agent must update
+registry/format-registry.yaml, plans/master-plan.md header, and all pack.yaml files for the affected
+format. All three must agree before the evidence bundle is built.
+
+**AE4. CURRENT_STATE_CONSISTENCY Must Pass.** The agent must run
+python tools/evidence/check_current_state_consistency.py and confirm CURRENT_STATE_CONSISTENCY: PASS
+before building the evidence bundle. If it fails, fix the inconsistency first.
+
+**AE5. Pending Propagation Reports.** When a sprint cannot safely update a file because another
+active stream owns it, the agent must create
+reports/propagation/{sprint-id}-propagation-pending.md with: sprint_id, blocked_file,
+blocking_stream, propagation_content, follow_up_sprint. Do not silently skip the update.
+
+**AE6. Authority Hierarchy.** The seven-level authority hierarchy applies to all file updates:
+Level 1 (registry) > Level 2 (master-plan) > Level 3 (taskcards) > Level 4 (evidence bundles) >
+Level 5 (ROADMAP/README) > Level 6 (session hints) > Level 7 (derived mirrors).
+Level 6 and 7 must match Level 1-4 after every sprint closeout.
+
+**AE7. No memory/16+ Without GOV-006 Authorization.** No new numbered memory files may be created
+beyond memory/15 without explicit authorization from the documentation standard (GOV-006) or an
+explicit human sprint prompt. This prevents memory sprawl.
+
+**AE8. FFSM Is Design Only.** The Format Factory State Manager (FFSM) described in memory/15 and
+docs/current-state-and-evidence-authority.md Section 8 is design direction only. No tools/state/ code
+exists. Do not create FFSM code without an explicit authorized taskcard and sprint prompt.

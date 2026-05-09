@@ -188,3 +188,36 @@ See `taskcards/LLM-001-*.md` and `taskcards/EMB-001-*.md` for full definitions.
 
 **BACKLOG ONLY.** No LLM calls, no embeddings, no vector DB created in this memory sprint.
 Implementation of any item in this document requires an explicit human-authorized execution prompt.
+
+---
+
+## 13. AI Module and FFSM Design Direction (added 2026-05-09)
+
+The detailed AI module and state-management architecture direction is captured in:
+memory/15-ai-modules-and-state-management-architecture-20260509.md
+
+The key planned module layouts (design only -- no code exists):
+
+**tools/llm/ (planned -- not yet created):**
+- endpoint_client.py: Governed LLM client -- requires LLM-001 authorization
+- call_log.yaml: Audit log schema
+- schemas/: Schema validation for LLM outputs
+- prompts/: Versioned prompt templates
+- replay/: Deterministic replay support
+
+**tools/retrieval/ (planned -- not yet created):**
+- embed.py: Embedding generation -- requires EMB-001 authorization
+- index.py: Vector index build/update
+- query.py: Retrieval query interface
+- audit_log.yaml: Retrieval audit schema
+
+**tools/state/ / FFSM (planned -- not yet created):**
+- ffsm.py: State manager core
+- transitions.py: Validated state transition logic
+- schema/: State schemas
+
+The FFSM authority hierarchy is in docs/current-state-and-evidence-authority.md Section 8.
+
+**Current status:** DESIGN ONLY. No code exists in tools/llm/, tools/retrieval/, or tools/state/.
+No LangGraph, Prefect, Temporal, or Dagster is installed or imported. Implementation requires
+explicit human-authorized taskcards (LLM-001, EMB-001, plus FFSM taskcard not yet created).

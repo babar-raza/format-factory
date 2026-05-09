@@ -34,6 +34,26 @@ no_playbook_replay_created: true
 no_s_f2f_03_execution: true
 no_run050_closure_execution: true
 no_push: true
+
+# v1.2-v1.4 additions (memory sprint continuation)
+ai_module_architecture_memory_file_created: true
+no_ffsm_code_created: true
+no_state_manager_code: true
+no_llm_module_code_created: true
+no_retrieval_module_code_created: true
+no_langraph_integration: true
+no_prefect_integration: true
+no_temporal_integration: true
+no_dagster_integration: true
+always_updated_enforcement_documented: true
+gov005_taskcard_created: true
+gov006_taskcard_created: true
+documentation_architecture_assessed: true
+memory_files_marked_transitional: true
+option_b_selected: true
+no_random_memory_sprawl: true
+no_unclassified_docs_created: true
+future_docs_governance_defined: true
 no_raw_llm_prompt_or_response: true
 no_secrets: true
 no_copyrighted_spec_text: true
@@ -43,8 +63,8 @@ memory_index_updated: true
 fresh_chat_discoverability_updated: true
 
 # Minimum metadata depth
-min_metadata_count: 45
-normal_pass_min_metadata: 45
+min_metadata_count: 50
+normal_pass_min_metadata: 50
 
 # Required top-level folders
 required_top_level_folders:
@@ -97,6 +117,12 @@ required_repo_files:
   - docs/prompts/README.md
   - ROADMAP.md
   - taskcards/GOV-004-chatgpt-ai-direction-memory-sync.md
+  - memory/15-ai-modules-and-state-management-architecture-20260509.md
+  - taskcards/GOV-005-ai-state-management-memory-sync.md
+  - taskcards/GOV-006-documentation-information-architecture-standardization.md
+  - docs/agent-execution-handoff-standard.md
+  - docs/current-state-and-evidence-authority.md
+  - docs/llm-and-embedding-strategy.md
   - tools/evidence/contracts/memory-ai-direction-sync-20260509.yaml
   - AGENTS.md
   - GOVERNANCE.md

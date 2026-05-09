@@ -416,3 +416,85 @@ See `docs/non-aspose-format-candidate-registry-plan.md`.
 **24.4. Prompt Templates Must Have an Index.** docs/prompts/README.md must exist and list all templates. Template selection guidance must be included.
 
 **24.5. No Methodology Regression.** Removing or unlinking methodology docs, prompt templates, or commands without an authorized replacement is a governance violation. If a methodology doc is renamed or moved, all cross-links must be updated atomically in the same commit.
+
+---
+
+## 25. Always-Updated Enforcement and FFSM Policy (memory sprint 2026-05-09)
+
+**25.1. Mandatory Closeout Phase.** Every execution sprint must include a mandatory closeout
+phase before the evidence bundle is built. This phase updates Level 6 session hint files,
+ensures gate status is consistent across all authority sources, and runs
+CURRENT_STATE_CONSISTENCY: PASS before bundle build. Skipping this phase means the sprint
+is INCOMPLETE.
+
+**25.2. Authority Level Hierarchy.** Format Factory uses a seven-level authority hierarchy:
+- Level 1: registry/format-registry.yaml (gate authority -- highest)
+- Level 2: plans/master-plan.md (operational authority)
+- Level 3: taskcards/ (task authority)
+- Level 4: Evidence bundles (sprint output authority)
+- Level 5: ROADMAP.md, README.md (navigation authority)
+- Level 6: Session hints: memory/09, .claude/settings.json, docs/fresh-chat-continuity-brief.md
+- Level 7: Derived mirrors: pack.yaml, format-profile.yaml, product-readiness.yaml
+
+When sources conflict, higher authority always wins. Full rules in
+docs/current-state-and-evidence-authority.md Section 8.
+
+**25.3. Gate Changes Require Multi-File Consistency.** When a gate status changes, all three
+sources must be updated atomically in the same commit: registry/format-registry.yaml,
+plans/master-plan.md header, and pack.yaml for the format. CURRENT_STATE_CONSISTENCY: PASS
+must be confirmed before the bundle is built.
+
+**25.4. No Memory/16+ Without GOV-006.** No new memory/NN files may be created beyond
+memory/15 without GOV-006 taskcard authorization. See
+taskcards/GOV-006-documentation-information-architecture-standardization.md.
+
+**25.5. FFSM Is Design Only.** The Format Factory State Manager is defined in design direction
+documents only. No tools/state/, tools/llm/, or tools/retrieval/ code exists. No LangGraph,
+Prefect, Temporal, or Dagster is installed or imported. Creating any of these requires explicit
+human-authorized taskcards approved before code is written. See
+memory/15-ai-modules-and-state-management-architecture-20260509.md.
+
+**25.6. Pending Propagation Reports.** When a sprint cannot safely update a file because
+another active stream owns it, a pending-propagation report must be created at
+reports/propagation/{sprint-id}-propagation-pending.md. See
+docs/agent-execution-handoff-standard.md Section 19.
+
+
+## Section 25 -- Always-Updated Enforcement and FFSM Policy (Added memory-ai-direction-sync-2026-05-09)
+
+**25.1. Mandatory Sprint Closeout.** Every execution sprint must run a mandatory closeout phase
+after all sprint work and before the evidence bundle is built. The closeout phase must:
+(a) update all Level 6 session hint files (memory/09, settings.json, docs/fresh-chat-continuity-brief.md),
+(b) if gate status changed: update registry, master-plan header, and all pack.yaml files,
+(c) if a taskcard was created or completed: update plans/master-plan.md taskcards table,
+(d) run python tools/evidence/check_current_state_consistency.py and confirm PASS,
+(e) create propagation reports for files that cannot be updated due to stream ownership.
+
+**25.2. Seven-Level Authority Hierarchy.** The project authority hierarchy is:
+Level 1 (registry/format-registry.yaml) > Level 2 (plans/master-plan.md) > Level 3 (taskcards/) >
+Level 4 (evidence bundles) > Level 5 (ROADMAP.md, README.md) > Level 6 (session hints) >
+Level 7 (derived mirrors). After every sprint, Level 6 and 7 must match Level 1-4.
+
+**25.3. Gate Changes Require Consistent Multi-File Update.** A gate status change is not complete
+until registry, master-plan header, and pack.yaml all agree. If any of these is inconsistent,
+the sprint is incomplete. An evidence bundle must not be built until they agree.
+
+**25.4. No memory/16+ Without GOV-006.** No new numbered memory files (memory/16 or higher) may be
+created without explicit authorization from the GOV-006 documentation standard sprint or an explicit
+human-authorized sprint prompt naming the new file. This is enforced per AGENTS.md Section AE7.
+
+**25.5. FFSM Is Design Direction Only.** The Format Factory State Manager (FFSM) architecture
+documented in memory/15 and docs/current-state-and-evidence-authority.md Section 8 is DESIGN ONLY.
+No tools/state/, tools/llm/, or tools/retrieval/ code may be created without an explicit authorized
+taskcard and sprint prompt. LangGraph, Prefect, Temporal, and Dagster must not be imported without
+an explicit integration sprint.
+
+**25.6. Documentation Taxonomy Requires GOV-006.** Until GOV-006 is executed, no new architecture
+decisions may be filed as docs/architecture/decisions/ADR-*.md, no standards as
+docs/governance/standards/*.md, and no context snapshots as docs/context/chat-sync/*.md. Use
+transitional memory/NN files (if authorized) or create a propagation report.
+
+**25.7. Pending Propagation Reports Are Required.** When a sprint cannot update a file because
+another stream owns it, a pending propagation report is REQUIRED at
+reports/propagation/{sprint-id}-propagation-pending.md. Silently skipping the update is a
+governance violation.

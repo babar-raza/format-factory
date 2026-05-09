@@ -380,6 +380,45 @@ Recommended sequence:
 10. retrieval and embedding registry
 11. LLM run ledger
 
+
+## Always-Updated Enforcement Model
+
+Every execution sprint must include a mandatory closeout phase. The closeout phase is not
+optional. It runs after all sprint work is complete and before the evidence bundle is built.
+
+**Mandatory closeout steps for every execution sprint:**
+
+1. Update all Level 6 session hint files to reflect the sprint's actual final state:
+   - memory/09-current-state-before-phase1.md
+   - .claude/settings.json
+   - docs/fresh-chat-continuity-brief.md
+
+2. If gate status changed: update registry/format-registry.yaml, plans/master-plan.md header,
+   and all pack.yaml files for the affected format. All three must agree before bundle build.
+
+3. If a new taskcard was created or completed: update plans/master-plan.md (taskcards table).
+
+4. If ROADMAP.md or README.md are stale: update or create a pending-propagation report at
+   reports/propagation/{sprint-id}-propagation-pending.md.
+
+5. Run python tools/evidence/check_current_state_consistency.py before building the bundle.
+   Expected: CURRENT_STATE_CONSISTENCY: PASS
+
+6. If CURRENT_STATE_CONSISTENCY fails: fix the failing check before bundle build.
+
+**Dirty-file classification labels for mixed-stream sprints:**
+
+| Label | Meaning | Staging allowed? |
+|---|---|---|
+| MEMORY_SPRINT_OWNED | In scope for this memory sprint | Yes |
+| MAIN_SPRINT_OWNED | Owned by active main sprint | No |
+| SECONDARY_SPRINT_OWNED | Owned by active secondary sprint | No |
+| UNKNOWN_REQUIRES_STOP | Cannot be classified | Stop immediately |
+
+**FFSM role (future -- design only now):** When FFSM is operational, it will enforce the
+always-updated model automatically. Until then, enforcement is manual through the sprint
+closeout steps above and the CURRENT_STATE_CONSISTENCY check.
+
 ## Current Position
 
 The project has strong governance and evidence controls. The next architecture step is to add a state manager and governed AI modules so AI accelerates work without causing drift or inconsistent outputs.
