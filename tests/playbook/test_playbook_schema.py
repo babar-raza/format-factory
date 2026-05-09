@@ -641,11 +641,11 @@ class TestNoReplayApplyModules:
     def test_no_unauthorized_product_source_directories(self):
         """Unauthorized product source directories must not exist.
         Note: src/python/fods/ is authorized by Gate 10 + TC-0050 Phase 4 prompt.
-        Unauthorized: src/python/fodt/ (TC-0052 not started), src/net/fods/ (DEC-033 blocked),
-        src/net/fodt/ (DEC-033 blocked), acquisition-packs/_families/ (S-F2F-05 not authorized).
+        Note: src/python/fodt/ is authorized by Gate 10 planning_ready + TC-0052 Phase 4 execution.
+        Unauthorized: src/net/fods/ (DEC-033 blocked), src/net/fodt/ (DEC-033 blocked),
+        acquisition-packs/_families/ (S-F2F-05 not authorized).
         """
         forbidden_dirs = [
-            repo_path("src", "python", "fodt"),    # TC-0052 not started
             repo_path("src", "net", "fods"),        # DEC-033 unresolved
             repo_path("src", "net", "fodt"),        # DEC-033 unresolved
             repo_path("acquisition-packs", "_families"),  # S-F2F-05 not authorized

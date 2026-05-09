@@ -1,0 +1,75 @@
+# Evidence Bundle Contract: TC-0052 FODT Phase 4 Python Source
+# Sprint: tc0052-fodt-phase4-python-source
+# Date: 2026-05-09
+# Inherits: base-run.yaml v1.4
+
+contract_id: tc0052-fodt-phase4-python-source
+version: "1.0"
+description: "TC-0052 FODT Phase 4 Python source implementation evidence bundle."
+sprint_id: tc0052-fodt-phase4-python-source
+
+require_clean_git: true
+emergency_blocker_bundle: false
+min_metadata_count: 30
+
+required_repo_files:
+  # Source modules
+  - repo/src/python/fodt/__init__.py
+  - repo/src/python/fodt/constants.py
+  - repo/src/python/fodt/exceptions.py
+  - repo/src/python/fodt/list_traversal.py
+  - repo/src/python/fodt/neutral_model.py
+  - repo/src/python/fodt/parser.py
+  # Test files
+  - repo/tests/python/fodt/conftest.py
+  - repo/tests/python/fodt/test_list_traversal.py
+  - repo/tests/python/fodt/test_neutral_model.py
+  - repo/tests/python/fodt/test_parser_basic.py
+  - repo/tests/python/fodt/test_parser_malformed.py
+  - repo/tests/python/fodt/test_security.py
+  - repo/tests/python/fodt/test_traceability.py
+  # pytest config
+  - repo/pytest.ini
+  # State updates
+  - repo/registry/format-registry.yaml
+  - repo/plans/master-plan.md
+  - repo/taskcards/TC-0052-fodt-phase4-python-source-scaffold-plan.md
+  - repo/tests/playbook/test_playbook_schema.py
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+
+semantic_checks:
+  - id: SC-001
+    description: FODT test suite passes 115/115
+    verification: python -m pytest tests/python/fodt/ -q returns 115 passed
+
+  - id: SC-002
+    description: Full test suite passes 377+/0 failed
+    verification: python -m pytest tests/ -q returns 0 failed
+
+  - id: SC-003
+    description: IR-FODT-003 iterative traversal implemented (no recursion)
+    verification: list_traversal.py contains collect_list_items with explicit stack
+
+  - id: SC-004
+    description: IR-FODT-014 iterparse streaming implemented
+    verification: parser.py contains iterparse
+
+  - id: SC-005
+    description: TC-0052 status updated to source_implemented_pending_human_review
+    verification: registry gate_10 tc0052_status = source_implemented_pending_human_review
+
+  - id: SC-006
+    description: FODT Gate 10 not self-approved
+    verification: registry gate_10 approved_by = null; approved_date = null
+
+  - id: SC-007
+    description: No .NET source created
+    verification: src/net/fodt/ does not exist
+
+  - id: SC-008
+    description: pytest.ini sets importlib mode only
+    verification: pytest.ini addopts = --import-mode=importlib
