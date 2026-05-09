@@ -4,7 +4,7 @@
 S-F2F-04: Golden Dry-Run Tests
 
 ## 2. Status
-in_progress (executed 2026-05-09, S-F2F-04 sprint)
+CLOSED_VERIFIED -- executed 2026-05-09; 140 PASS, 1 skip, 0 fail; 7 golden fixtures; BUNDLE_VALIDATION: PASS; commits: 5908d91 + b71e1ee
 
 ## 3. Purpose
 Create golden test fixtures and a test suite that validates the dry-run replay engine
