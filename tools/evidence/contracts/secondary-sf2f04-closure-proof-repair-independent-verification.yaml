@@ -1,0 +1,117 @@
+contract_id: S-F2F-04-CLOSURE-PROOF-REPAIR-IV-001
+sprint_id: S-F2F-04-CLOSURE-PROOF-REPAIR-IV-001
+description: >
+  Independent verification of the S-F2F-04 closure proof repair bundle.
+  Verifies that the final-bundle-validation-proof.txt defect was fixed,
+  metadata identity is clean, pending markers resolved, and S-F2F-04
+  remains CLOSED_VERIFIED.
+created_run: sf2f04-closure-proof-repair-iv
+independent_verification: true
+target_sprint: S-F2F-04-CLOSURE-PROOF-REPAIR-001
+target_bundle: secondary-sf2f04-closure-proof-repair-20260509-final.zip
+require_clean_git: true
+emergency_blocker_bundle: false
+no_push: true
+min_metadata_count: 40
+
+required_repo_files:
+  - taskcards/S-F2F-04-golden-dry-run-tests.md
+  - plans/master-plan.md
+  - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  - docs/playbook-layer.md
+  - tests/playbook/test_replay_golden.py
+  - tests/playbook/test_diff_golden.py
+  - tests/playbook/test_review_queue_golden.py
+  - tests/playbook/golden/replay-valid-dry-run.expected.yaml
+  - tests/playbook/golden/replay-missing-inputs-dry-run.expected.yaml
+  - tests/playbook/golden/replay-fodt-valid-dry-run.expected.yaml
+  - tests/playbook/golden/replay-explain-fods.expected.txt
+  - tests/playbook/golden/diff-unchanged.expected.yaml
+  - tests/playbook/golden/diff-regression.expected.yaml
+  - tests/playbook/golden/diff-improvement.expected.yaml
+  - tests/playbook/golden/review-queue-missing-inputs.expected.yaml
+  - tests/playbook/fixtures/replay-fodt-valid.yaml
+  - tools/playbook/create_golden_case.py
+  - tools/evidence/contracts/secondary-sf2f04-golden-dry-run-tests.yaml
+  - tools/evidence/contracts/secondary-sf2f04-closure-normalization.yaml
+  - tools/evidence/contracts/secondary-sf2f04-closure-proof-repair.yaml
+  - tools/evidence/contracts/secondary-sf2f04-closure-proof-repair-independent-verification.yaml
+
+required_metadata_files:
+  - phase0-baseline-report.md
+  - phase1-target-bundle-validation-report.md
+  - phase2-final-proof-note-review.md
+  - phase3-authority-status-verification.md
+  - phase4-test-and-tool-verification.md
+  - phase5-no-scope-drift-report.md
+  - phase6-repair-decision.md
+  - pytest-playbook-report.md
+  - current-state-consistency-report.md
+  - target-bundle-validation-report.md
+  - no-sf2f05-start-check.md
+  - no-sf2f06-start-check.md
+  - no-family-playbook-check.md
+  - no-apply-mode-check.md
+  - no-product-source-check.md
+  - no-registry-gate-change-check.md
+  - no-main-sprint-deviation-check.md
+  - no-tc0052-execution-check.md
+  - no-gov006-execution-check.md
+  - no-gov-revert-002-execution-check.md
+  - no-memory-sync-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-push-check.md
+  - no-stash-reset-restore-clean-check.md
+  - no-broad-staging-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - validation-command-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+forbidden_patterns:
+  - .git/
+  - .env
+  - .local/
+  - "*.pyc"
+  - __pycache__/
+  - acquisition-packs/_families/
+  - plans/review-queues/
+  - "src/python/fodt/"
+  - "src/net/"
+
+checks:
+  independent_verification: true
+  target_bundle_validated: true
+  final_proof_defect_repaired: true
+  final_proof_references_current_bundle: true
+  size_note_classified: true
+  pending_marker_repair_verified: true
+  contract_identity_repair_verified: true
+  sf2f04_closed_verified: true
+  playbook_tests_pass: true
+  no_sf2f05_started: true
+  no_sf2f06_started: true
+  no_family_playbook_created: true
+  no_apply_mode: true
+  no_product_source_created: true
+  no_registry_gate_change: true
+  no_main_sprint_deviation: true
+  no_tc0052_execution: true
+  no_gov006_execution: true
+  no_gov_revert_002_execution: true
+  no_memory_sync: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_push: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true
