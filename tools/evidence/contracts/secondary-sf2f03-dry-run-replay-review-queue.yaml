@@ -1,0 +1,80 @@
+contract_id: secondary-sf2f03-dry-run-replay-review-queue
+description: >
+  S-F2F-03 Dry-Run Replay Engine and Review Queue Export: implement three read-only tools
+  (replay_acquisition_playbook.py modes validate/dry-run/explain/export-review-queue;
+  diff_playbook_outputs.py; export_review_queue.py) with full test coverage. Apply mode
+  is explicitly rejected. No file mutations to repo from dry-run execution.
+  No gate state changes. No product source. No MAIN SPRINT deviation.
+created_run: secondary-sf2f03-dry-run-replay-review-queue
+sprint_id: S-F2F-03
+executed: "2026-05-09"
+plan_repair_only: false
+require_clean_git: true
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+min_metadata_count: 30
+no_push: true
+
+required_repo_files:
+  - tools/playbook/replay_acquisition_playbook.py
+  - tools/playbook/diff_playbook_outputs.py
+  - tools/playbook/export_review_queue.py
+  - tests/playbook/test_replay_dry_run.py
+  - tests/playbook/test_review_queue_export.py
+  - tests/playbook/test_diff_playbook_outputs.py
+  - tests/playbook/fixtures/replay-valid-acquisition-playbook.yaml
+  - tests/playbook/fixtures/replay-with-missing-inputs.yaml
+  - tests/playbook/test_playbook_schema.py
+  - docs/playbook-layer.md
+  - plans/master-plan.md
+  - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  - taskcards/S-F2F-03-dry-run-replay-and-review-queue.md
+  - tools/evidence/contracts/secondary-sf2f03-dry-run-replay-review-queue.yaml
+  - schemas/playbook/acquisition-playbook.schema.json
+  - schemas/playbook/review-queue.schema.json
+
+forbidden_patterns:
+  - .env
+  - .local/
+  - __pycache__/
+  - "*.pyc"
+  - "src/python/fods/"
+  - "src/python/fodt/"
+  - "src/net/fods/"
+  - "src/net/fodt/"
+  - acquisition-packs/_families/
+  - tests/playbook/golden/
+  - plans/review-queues/
+
+checks:
+  no_gate_status_changed: true
+  no_registry_gate_change: true
+  no_product_source_created: true
+  no_apply_mode_created: true
+  no_endpoint_call: true
+  no_embedding_vector_db: true
+  no_new_spec_download: true
+  no_main_sprint_deviation: true
+  no_push: true
+  validator_writes_no_files: true
+
+required_metadata_files:
+  - sprint-summary.md
+  - test-run-report.md
+  - apply-mode-check.md
+  - no-repo-mutation-check.md
+  - no-gate-status-change-check.md
+  - no-product-source-check.md
+  - no-endpoint-call-check.md
+  - no-main-sprint-deviation-check.md
+  - no-push-check.md
+  - files-reviewed.txt
+  - files-modified.txt
+  - files-created.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - verdict.md

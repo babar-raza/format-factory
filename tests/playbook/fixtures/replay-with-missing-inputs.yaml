@@ -1,0 +1,113 @@
+# Replay test fixture — playbook with a missing required input dependency.
+# Dry-run should produce conflicts for this playbook.
+# Used by tests/playbook/test_replay_dry_run.py.
+
+schema_version: "1.0"
+playbook_id: fods-test-missing-inputs-fixture
+playbook_version: "1.0"
+format_id: fods
+format_family: odf-flat
+playbook_kind: format_playbook
+source_format_if_derived: null
+status: active
+not_for_execution: false
+
+authority_statement: >
+  This is a test fixture for S-F2F-03 dry-run conflict detection tests.
+  NOT authoritative for any production purpose.
+
+non_authority_statement: >
+  This test fixture does NOT approve any gate, does not replace DEC-034 independent
+  verification, does not replace human approval, does not constitute legal or
+  specification authority, and does not authorize apply mode.
+
+gates:
+  - gate_number: 3
+    gate_name: Sample Corpus Creation
+    status: covered
+    covered_by_operations:
+      - test-missing-input-op
+    notes: "Test fixture — references deliberately absent file."
+
+operations:
+  - operation_id: test-missing-input-op
+    gate: 3
+    operation_type: sample_corpus_creation
+    title: Test Operation With Missing Required Input
+    description: >
+      Test operation that references a file known to be absent.
+      Used to verify dry-run correctly reports conflicts for missing inputs.
+    mode_allowed: dry_run
+    target_paths:
+      - this/path/does/not/exist/input.yaml
+    input_dependencies:
+      - path: this/path/does/not/exist/input.yaml
+        required: true
+        description: Deliberately absent file for conflict detection test
+    expected_outputs:
+      - path: this/path/does/not/exist/output.yaml
+        description: Output that cannot be produced because input is absent
+    validation_commands:
+      - command: "echo test"
+        purpose: Placeholder
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+    conflict_policy: fail_and_queue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: none
+    format_specific_overrides: null
+    provenance:
+      created_by_sprint: S-F2F-03
+      created_at: "2026-05-09"
+      last_modified_sprint: S-F2F-03
+      source_commit: null
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+evidence_contracts:
+  - contract_path: tools/evidence/contracts/base-run.yaml
+    purpose: Base evidence contract
+    gate: null
+
+validation_commands:
+  - command: "echo placeholder"
+    purpose: Placeholder validation
+    expected_exit_code: 0
+
+review_queue_policy:
+  severity_threshold_blocks_apply: high
+  auto_resolve_allowed: false
+  required_owner_for_resolution: human
+
+reuse_policy:
+  family_reuse_allowed: false
+  inherited_gate_approval: false
+  reuse_requires_explicit_classification: true
+  source_family_playbook: null
+
+provenance:
+  created_by_sprint: S-F2F-03
+  created_at: "2026-05-09"
+  last_modified_sprint: S-F2F-03
+  source_commit: null
+
+approvals_required:
+  - approval_type: dec034_independent_verification
+    description: DEC-034 required
+    mandatory: true
+    gate: 3
+  - approval_type: human_gate_approval
+    description: Human gate approval required
+    mandatory: true
+    gate: 3
+
+forbidden_uses:
+  - automatic_gate_approval
+  - spec_or_legal_authority
+  - replacing_dec034
+  - replacing_human_approval
