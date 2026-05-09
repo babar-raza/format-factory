@@ -1,13 +1,14 @@
 contract_id: gov-revert-001-independent-verification-20260509
-contract_version: "1.0"
+contract_version: "1.1"
 sprint_id: gov-revert-001-independent-verification-20260509
 sprint_type: independent_verification
 created_at: "2026-05-09"
+updated_at: "2026-05-09"
+description: "GOV-REVERT-001-IV-002 -- clean re-run with correct file names and clean tree"
 visibility: internal
 current_state_authority: bundle-metadata
-require_clean_git: false
-emergency_blocker_bundle: true
-dirty_git_reason: "During IV bundle build, unrelated untracked S-F2F metadata appeared at tools/evidence/contracts/secondary-sf2f04-closure-proof-repair.yaml. GOV-REVERT-001-IV classified and preserved it rather than hiding, deleting, stashing, restoring, or cleaning it."
+require_clean_git: true
+emergency_blocker_bundle: false
 require_metadata_identity: true
 required_top_level_folders:
   - repo
@@ -32,9 +33,9 @@ required_metadata_files:
   - phase0-baseline-report.md
   - phase1-target-bundle-validation-report.md
   - phase1-metadata-identity-report.md
-  - phase2-metadata-contradiction-review.md
-  - phase3-policy-doc-verification.md
-  - phase4-tool-verification.md
+  - phase2-metadata-note-review.md
+  - phase3-policy-verification.md
+  - phase4-git-safety-checker-verification.md
   - phase5-evidence-tooling-verification.md
   - phase6-governance-tests-report.md
   - phase6-evidence-tests-report.md
@@ -86,15 +87,15 @@ forbidden_patterns:
 semantic_checks:
   independent_verification: true
   target_bundle_validated: true
-  metadata_contradictions_reviewed: true
-  verdict_mismatch_classified: true
+  metadata_notes_reviewed: true
+  verdict_difference_classified: true
+  hidden_work_status_classified: true
   pytest_report_inconsistency_classified: true
   policy_docs_verified: true
   git_safety_checker_verified: true
   evidence_metadata_isolation_verified: true
   metadata_identity_validation_verified: true
-  hidden_work_recovery_pending_verified: true
-  gov_revert_002_exists: true
+  gov_revert_002_status_verified: true
   no_hidden_work_recovery_done: true
   no_stash_created: true
   no_reset_restore_checkout_clean_used: true
