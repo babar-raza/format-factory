@@ -1,0 +1,48 @@
+# Evidence Bundle Contract -- TC-0050 FODS Phase 4 Python FOSS Source
+# Inherits base-run.yaml rules.
+# Version: 1.0
+# Created: run051 (2026-05-09)
+
+contract_id: tc0050-fods-phase4-python-source
+version: "1.0"
+description: "TC-0050 -- FODS Phase 4 Python FOSS source: src/python/fods/ + tests/python/fods/"
+
+inherits: base-run
+
+require_clean_git: true
+emergency_blocker_bundle: false
+
+min_metadata_count: 30
+
+required_repo_files:
+  - repo/src/python/fods/__init__.py
+  - repo/src/python/fods/parser.py
+  - repo/src/python/fods/neutral_model.py
+  - repo/src/python/fods/constants.py
+  - repo/src/python/fods/exceptions.py
+  - repo/src/python/fods/README.md
+  - repo/tests/python/conftest.py
+  - repo/tests/python/fods/test_parser_basic.py
+  - repo/tests/python/fods/test_parser_malformed.py
+  - repo/tests/python/fods/test_parser_security.py
+  - repo/tests/python/fods/test_neutral_model.py
+  - repo/tests/python/fods/test_public_api.py
+  - repo/acquisition-packs/fods/phase4-traceability-matrix.md
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+
+forbidden_patterns:
+  - "repo/src/python/fodt/**"
+  - "repo/src/net/**"
+  - "repo/reports/legal/**"
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"

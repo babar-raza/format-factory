@@ -1,0 +1,157 @@
+"""
+neutral_model.py -- Neutral model builder and validator for format-factory-fods.
+
+Builds and validates the 6-entity FODS neutral model output:
+  Workbook -> Sheet -> Row -> Cell (-> Formula), Warning
+
+Used by parser.py to assemble the final result and validate structure
+before returning (IR-FODS-018).
+
+Neutral model schema reference: schemas/neutral-model/fods/model.yaml
+Gate 5 artifact: Gate 5 PASSED (Babar Raza, 2026-05-06, run035).
+
+License: Apache-2.0
+Package: format-factory-fods v0.1.0
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from .constants import FORMAT_ID, SPEC_VERSION
+
+
+# ---------------------------------------------------------------------------
+# Warning helper
+# ---------------------------------------------------------------------------
+
+def make_warning(code: str, message: str, source: str | None = None) -> dict[str, Any]:
+    """Build a structured Warning dict matching the neutral model Warning entity."""
+    w: dict[str, Any] = {"code": code, "message": message}
+    if source is not None:
+        w["source"] = source
+    return w
+
+
+# ---------------------------------------------------------------------------
+# Workbook builder
+# ---------------------------------------------------------------------------
+
+def build_workbook(
+    odf_version_attr: str,
+    mimetype: str | None,
+    sheets: list[dict[str, Any]],
+    warnings: list[dict[str, Any]],
+    unsupported_features: list[str],
+    parse_errors: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Assemble the Workbook-level result dict matching the neutral model.
+
+    Fields conform to the Workbook entity in schemas/neutral-model/fods/model.yaml.
+    Additional fields (unsupported_features, parse_errors) extend the neutral
+    model for product parser transparency.
+    """
+    return {
+        "format_id": FORMAT_ID,
+        "spec_version": SPEC_VERSION,
+        "odf_version_attr": odf_version_attr,
+        "mimetype": mimetype,
+        "sheet_count": len(sheets),
+        "sheets": sheets,
+        "warnings": warnings,
+        "unsupported_features": sorted(unsupported_features),
+        "parse_errors": parse_errors,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Workbook validator (IR-FODS-018)
+# ---------------------------------------------------------------------------
+
+def validate_workbook(result: dict[str, Any]) -> list[str]:
+    """Validate a parse_fods() result against the neutral model structure.
+
+    Returns a list of violation strings. Empty list means valid.
+    Does NOT raise -- callers decide whether to treat violations as fatal.
+    """
+    violations: list[str] = []
+
+    # Required top-level fields
+    for field in ("format_id", "spec_version", "odf_version_attr", "sheet_count", "sheets", "warnings"):
+        if field not in result:
+            violations.append(f"Workbook missing required field: {field!r}")
+
+    if result.get("format_id") != FORMAT_ID:
+        violations.append(
+            f"Workbook.format_id must be {FORMAT_ID!r}; got {result.get('format_id')!r}"
+        )
+
+    sheets = result.get("sheets")
+    if not isinstance(sheets, list):
+        violations.append("Workbook.sheets must be a list")
+        return violations  # can't validate sheets further
+
+    sheet_count = result.get("sheet_count")
+    if sheet_count != len(sheets):
+        violations.append(
+            f"Workbook.sheet_count {sheet_count} != len(sheets) {len(sheets)}"
+        )
+
+    for i, sheet in enumerate(sheets):
+        violations.extend(_validate_sheet(sheet, i))
+
+    warnings = result.get("warnings")
+    if not isinstance(warnings, list):
+        violations.append("Workbook.warnings must be a list")
+
+    return violations
+
+
+def _validate_sheet(sheet: dict[str, Any], expected_index: int) -> list[str]:
+    violations: list[str] = []
+    prefix = f"Sheet[{expected_index}]"
+
+    for field in ("name", "index", "row_count", "rows"):
+        if field not in sheet:
+            violations.append(f"{prefix} missing required field: {field!r}")
+
+    if sheet.get("index") != expected_index:
+        violations.append(
+            f"{prefix}.index must be {expected_index}; got {sheet.get('index')!r}"
+        )
+
+    rows = sheet.get("rows")
+    if not isinstance(rows, list):
+        violations.append(f"{prefix}.rows must be a list")
+        return violations
+
+    row_count = sheet.get("row_count")
+    if row_count != len(rows):
+        violations.append(
+            f"{prefix}.row_count {row_count} != len(rows) {len(rows)}"
+        )
+
+    for j, row in enumerate(rows):
+        violations.extend(_validate_row(row, j, prefix))
+
+    return violations
+
+
+def _validate_row(row: dict[str, Any], expected_index: int, sheet_prefix: str) -> list[str]:
+    violations: list[str] = []
+    prefix = f"{sheet_prefix}.Row[{expected_index}]"
+
+    for field in ("index", "cells"):
+        if field not in row:
+            violations.append(f"{prefix} missing required field: {field!r}")
+
+    if row.get("index") != expected_index:
+        violations.append(
+            f"{prefix}.index must be {expected_index}; got {row.get('index')!r}"
+        )
+
+    cells = row.get("cells")
+    if not isinstance(cells, list):
+        violations.append(f"{prefix}.cells must be a list")
+
+    return violations

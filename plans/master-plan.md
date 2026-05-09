@@ -1523,11 +1523,12 @@ plan-repair-review.md. The plan-repair sprint (S-F2F-00) corrected all defects a
 - S-F2F-00 (plan repair): CLOSED_VERIFIED — S-F2F-00B closure sprint 2026-05-08; commit 881e333; evidence independently verified PASS
 - S-F2F-01 (playbook schema + policy): CLOSED_VERIFIED — executed 2026-05-08; independently verified S-F2F-01B 2026-05-08; schemas/playbook/ + docs/playbook-layer.md created; no replay tools, no apply mode, no acquisition-pack playbooks
 - S-F2F-02 (playbook validation tool): CLOSED_VERIFIED — executed 2026-05-08; schema gap repaired in S-F2F-02B (not_for_execution added to schema); 42/42 tests PASS; both jsonschema and structural engines; docs example passes full JSON Schema; no MAIN SPRINT deviation
-- S-F2F-03 through S-F2F-08: proposed_pending_human_approval — NOT authorized
+- S-F2F-03 (dry-run replay + review queue): CLOSED_VERIFIED — executed 2026-05-09; 3 tools (replay/diff/export); 96 tests PASS; no apply mode; no repo mutations from dry-run; no MAIN SPRINT deviation
+- S-F2F-04 through S-F2F-08: proposed_pending_human_approval — NOT authorized
 
-No gate statuses were changed by S-F2F-00, S-F2F-01, or S-F2F-02. S-F2F-02 created a
-read-only validation tool and tests only. All S-F2F taskcards from S-F2F-03 onward require
-separate explicit human authorization before execution.
+No gate statuses were changed by S-F2F-00 through S-F2F-03. S-F2F-03 created read-only
+dry-run tools only (no apply mode, no file mutations). All S-F2F taskcards from S-F2F-04
+onward require separate explicit human authorization before execution.
 
 ### Secondary Phase Map
 
@@ -1536,7 +1537,7 @@ separate explicit human authorization before execution.
 | S0 | S-F2F-00 | Plan repair (COMPLETE) | None |
 | S1 | S-F2F-01 | Playbook schema + policy doc only | CLOSED_VERIFIED (2026-05-08) |
 | S2 | S-F2F-02 | Playbook validation tool (read-only) | CLOSED_VERIFIED (S-F2F-02B, 2026-05-08) — 42 PASS, 1 skip |
-| S3 | S-F2F-03 | Dry-run replay + review queue export | S-F2F-02 complete |
+| S3 | S-F2F-03 | Dry-run replay + review queue export | CLOSED_VERIFIED (2026-05-09) — 96 PASS, 1 skip |
 | S4 | S-F2F-04 | Golden dry-run tests | S-F2F-03 complete |
 | S5 | S-F2F-05 | ODF-flat family playbook docs | S-F2F-01 complete (parallel to S2-S4) |
 | S6 | S-F2F-06 | Apply-mode risk review (doc only) | S-F2F-04 complete |
