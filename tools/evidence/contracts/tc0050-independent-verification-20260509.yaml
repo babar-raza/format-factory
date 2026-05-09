@@ -1,0 +1,66 @@
+# Evidence Bundle Contract -- TC-0050 Independent Verification (TC-0050-IV-001)
+# Verifies the clean TC-0050 FODS Phase 4 Python source evidence bundle.
+# Version: 1.0
+# Created: TC-0050-IV-001 (2026-05-09)
+
+contract_id: tc0050-independent-verification-20260509
+version: "1.0"
+description: "TC-0050-IV-001 -- Independent verification of clean TC-0050 FODS Phase 4 Python FOSS source bundle"
+
+inherits: base-run
+
+require_clean_git: true
+emergency_blocker_bundle: false
+
+min_metadata_count: 5
+
+required_repo_files:
+  - src/python/fods/__init__.py
+  - src/python/fods/parser.py
+  - src/python/fods/neutral_model.py
+  - src/python/fods/constants.py
+  - src/python/fods/exceptions.py
+  - src/python/fods/README.md
+  - tests/python/fods/test_parser_basic.py
+  - tests/python/fods/test_parser_malformed.py
+  - tests/python/fods/test_parser_security.py
+  - tests/python/fods/test_neutral_model.py
+  - tests/python/fods/test_public_api.py
+  - acquisition-packs/fods/phase4-traceability-matrix.md
+  - acquisition-packs/fods/product-readiness.yaml
+  - tools/evidence/contracts/tc0050-fods-phase4-python-source.yaml
+  - tools/evidence/contracts/tc0050-independent-verification-20260509.yaml
+  - tools/format_understanding/validate_format_understanding.py
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - iv-baseline-report.md
+  - iv-final-report.md
+
+forbidden_patterns:
+  - "repo/src/python/fodt/**"
+  - "repo/src/net/**"
+  - "repo/reports/legal/**"
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+
+# Semantic checks
+checks:
+  sprint_id_is_tc0050_iv: true
+  clean_bundle_verified_pass: true
+  fods_python_tests_pass: true
+  ful_validation_pass: true
+  state_propagation_correct: true
+  no_fodt_source_created: true
+  no_dotnet_source_created: true
+  no_gate11_passed: true
+  dec033_unresolved: true
+  no_push: true
