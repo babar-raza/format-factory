@@ -281,6 +281,38 @@ def check_no_pending_reports(metadata_files_content):
     return hits
 
 
+def check_closure_contradictions(metadata_files_content):
+    """Detect obvious final closure contradictions in bundle metadata.
+
+    Triggered when --check-no-pending is active. Looks for cases where a final
+    proof file claims PASS while a verdict or summary file claims FAIL — the pattern
+    that occurred in run050 when stale intermediate-run metadata was not overwritten.
+
+    Returns a list of (description) strings for each contradiction found.
+    """
+    hits = []
+    proof_content = metadata_files_content.get("final-bundle-validation-proof.txt", "")
+    verdict_content = metadata_files_content.get("verdict.md", "")
+    summary_content = metadata_files_content.get("final-state-summary.yaml", "")
+
+    proof_says_pass = "BUNDLE_VALIDATION: PASS" in proof_content
+    verdict_says_fail = "SPRINT_VERDICT: FAIL" in verdict_content
+    summary_says_fail = "result: FAIL" in summary_content
+
+    if proof_says_pass and verdict_says_fail:
+        hits.append(
+            "CLOSURE_CONTRADICTION: final-bundle-validation-proof.txt says BUNDLE_VALIDATION: PASS "
+            "but verdict.md says SPRINT_VERDICT: FAIL — stale closure metadata must be repaired "
+            "before bundle is considered authoritative."
+        )
+    if proof_says_pass and summary_says_fail:
+        hits.append(
+            "CLOSURE_CONTRADICTION: final-bundle-validation-proof.txt says BUNDLE_VALIDATION: PASS "
+            "but final-state-summary.yaml says result: FAIL — stale closure metadata must be repaired."
+        )
+    return hits
+
+
 def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=False):
     """Validate a bundle zip against a contract."""
     contract = load_contract(contract_path)
@@ -483,6 +515,7 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         # Check for PENDING markers in metadata files and repo current-state files
         pending_hits = []
         repo_pending_hits = []
+        closure_contradiction_hits = []
         if no_pending:
             pending_hits = check_no_pending_reports(metadata_files_content)
             for fname, pattern in pending_hits:
@@ -493,6 +526,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
                     f"Sprint-in-progress PENDING marker in repo file '{repo_file}': {pattern!r} "
                     f"— see docs/current-state-and-evidence-authority.md"
                 )
+            closure_contradiction_hits = check_closure_contradictions(metadata_files_content)
+            for msg in closure_contradiction_hits:
+                errors.append(msg)
 
     # Print validation report
     print("=" * 60)
@@ -528,6 +564,10 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         pending_status = "PASS" if total_pending == 0 else "FAIL"
         print(f"No-PENDING check ({pending_status}): {len(pending_hits)} metadata PENDING + "
               f"{len(repo_pending_hits)} repo current-state PENDING marker(s)")
+        if closure_contradiction_hits:
+            print(f"Closure-contradiction check (FAIL): {len(closure_contradiction_hits)} contradiction(s)")
+        else:
+            print("Closure-contradiction check (PASS): no proof/verdict/summary contradictions")
     print()
 
     if warnings:

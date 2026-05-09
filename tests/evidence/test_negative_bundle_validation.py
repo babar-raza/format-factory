@@ -718,6 +718,82 @@ def test_current_run_contract_missing_verdict_fails_with_named_requirement(tmp_p
     )
 
 
+def test_closure_contradiction_fails_when_proof_pass_verdict_fail(tmp_path):
+    """Bundle with final proof=PASS but verdict=FAIL must fail --check-no-pending."""
+    contract = tmp_path / "run099-closure.yaml"
+    contract.write_text(
+        "contract_id: run099-closure\n"
+        "version: \"1.0\"\n"
+        "require_clean_git: false\n"
+        "emergency_blocker_bundle: true\n"
+        "min_metadata_count: 1\n"
+        "normal_pass_min_metadata: 1\n"
+        "required_repo_files: []\n"
+        "required_metadata_files: [bundle-manifest.yaml, git-log.txt, git-status-final.txt]\n"
+        "forbidden_patterns: []\n",
+        encoding="utf-8"
+    )
+    bundle = tmp_path / "bundle.zip"
+    with zipfile.ZipFile(bundle, "w") as zf:
+        zf.writestr("repo/README.md", "test")
+        zf.writestr("bundle-metadata/bundle-manifest.yaml", "entries: 1")
+        zf.writestr("bundle-metadata/git-log.txt", "abc123 test commit")
+        zf.writestr("bundle-metadata/git-status-final.txt", "nothing to commit")
+        # Contradiction: proof says PASS, verdict says FAIL
+        zf.writestr("bundle-metadata/final-bundle-validation-proof.txt",
+                    "BUNDLE_VALIDATION: PASS\n")
+        zf.writestr("bundle-metadata/verdict.md",
+                    "# Sprint Verdict\nSPRINT_VERDICT: FAIL\n")
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--contract", str(contract), "--bundle", str(bundle),
+         "--check-no-pending"],
+        capture_output=True, text=True
+    )
+    assert "BUNDLE_VALIDATION: FAIL" in result.stdout, (
+        f"Expected FAIL for proof/verdict contradiction:\n{result.stdout}"
+    )
+    assert "CLOSURE_CONTRADICTION" in result.stdout, (
+        f"Expected CLOSURE_CONTRADICTION in output:\n{result.stdout}"
+    )
+
+
+def test_closure_contradiction_passes_when_consistent(tmp_path):
+    """Bundle with final proof=PASS and verdict=PASS must pass --check-no-pending."""
+    contract = tmp_path / "run099-consistent.yaml"
+    contract.write_text(
+        "contract_id: run099-consistent\n"
+        "version: \"1.0\"\n"
+        "require_clean_git: false\n"
+        "emergency_blocker_bundle: true\n"
+        "min_metadata_count: 1\n"
+        "normal_pass_min_metadata: 1\n"
+        "required_repo_files: []\n"
+        "required_metadata_files: [bundle-manifest.yaml, git-log.txt, git-status-final.txt]\n"
+        "forbidden_patterns: []\n",
+        encoding="utf-8"
+    )
+    bundle = tmp_path / "bundle.zip"
+    with zipfile.ZipFile(bundle, "w") as zf:
+        zf.writestr("repo/README.md", "test")
+        zf.writestr("bundle-metadata/bundle-manifest.yaml", "entries: 1")
+        zf.writestr("bundle-metadata/git-log.txt", "abc123 test commit")
+        zf.writestr("bundle-metadata/git-status-final.txt", "nothing to commit")
+        # Consistent: both say PASS
+        zf.writestr("bundle-metadata/final-bundle-validation-proof.txt",
+                    "BUNDLE_VALIDATION: PASS\n")
+        zf.writestr("bundle-metadata/verdict.md",
+                    "# Sprint Verdict\nSPRINT_VERDICT: COMPLETE_WITH_CLOSURE_HYGIENE_REPAIR\n")
+    result = subprocess.run(
+        [sys.executable, str(VALIDATE_SCRIPT), "--contract", str(contract), "--bundle", str(bundle),
+         "--check-no-pending"],
+        capture_output=True, text=True
+    )
+    assert "BUNDLE_VALIDATION: PASS" in result.stdout, (
+        f"Expected PASS for consistent proof/verdict:\n{result.stdout}"
+    )
+    assert "CLOSURE_CONTRADICTION" not in result.stdout or "PASS" in result.stdout
+
+
 def main():
     print("=" * 60)
     print("Negative Tests: validate_evidence_bundle.py")
