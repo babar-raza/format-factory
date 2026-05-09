@@ -1,0 +1,107 @@
+contract_id: S-F2F-04-CLOSURE-PROOF-REPAIR-001
+description: >
+  S-F2F-04 Closure Proof Repair: fix the final-bundle-validation-proof.txt which
+  said BUNDLE_VALIDATION: (pending) instead of the actual PASS result. Prior closure
+  normalization bundle (20260509-133529-final.zip) passed all validator checks but
+  the human-readable proof file contained a placeholder. This repair sprint creates
+  a new bundle with a proof file containing the actual BUNDLE_VALIDATION: PASS result.
+  No new implementation. No authority file changes. No gate changes. No push.
+created_run: S-F2F-04-CLOSURE-PROOF-REPAIR-001
+sprint_id: S-F2F-04-CLOSURE-PROOF-REPAIR-001
+executed: "2026-05-09"
+plan_repair_only: true
+require_clean_git: true
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+min_metadata_count: 35
+no_push: true
+
+required_repo_files:
+  - taskcards/S-F2F-04-golden-dry-run-tests.md
+  - plans/master-plan.md
+  - plans/secondary/full2foss-inspired-system-strengthening-plan-v2.md
+  - docs/playbook-layer.md
+  - tests/playbook/test_replay_golden.py
+  - tests/playbook/test_diff_golden.py
+  - tests/playbook/test_review_queue_golden.py
+  - tests/playbook/golden/replay-valid-dry-run.expected.yaml
+  - tests/playbook/golden/replay-missing-inputs-dry-run.expected.yaml
+  - tests/playbook/golden/replay-fodt-valid-dry-run.expected.yaml
+  - tests/playbook/golden/replay-explain-fods.expected.txt
+  - tests/playbook/golden/diff-unchanged.expected.yaml
+  - tests/playbook/golden/diff-regression.expected.yaml
+  - tests/playbook/golden/diff-improvement.expected.yaml
+  - tests/playbook/golden/review-queue-missing-inputs.expected.yaml
+  - tests/playbook/fixtures/replay-fodt-valid.yaml
+  - tools/playbook/create_golden_case.py
+  - tools/evidence/contracts/secondary-sf2f04-golden-dry-run-tests.yaml
+  - tools/evidence/contracts/secondary-sf2f04-closure-normalization.yaml
+  - tools/evidence/contracts/secondary-sf2f04-closure-proof-repair.yaml
+
+forbidden_patterns:
+  - .env
+  - .local/
+  - __pycache__/
+  - "*.pyc"
+  - "src/net/fodt/"
+  - acquisition-packs/_families/
+  - plans/review-queues/
+  - "tests/playbook/test_apply_mode.py"
+
+checks:
+  closure_proof_repair: true
+  prior_final_proof_pending_defect_confirmed: true
+  final_proof_not_pending: true
+  final_proof_references_current_bundle: true
+  bundle_validation_pass: true
+  metadata_identity_clean: true
+  sf2f04_still_closed_verified: true
+  golden_tests_still_pass: true
+  no_sf2f05_started: true
+  no_sf2f06_started: true
+  no_family_playbook_created: true
+  no_apply_mode: true
+  no_product_source_created: true
+  no_registry_gate_change: true
+  no_main_sprint_deviation: true
+  no_tc0052_execution: true
+  no_gov006_execution: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_push: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true
+
+required_metadata_files:
+  - phase0-baseline-and-prior-defect-confirmation.md
+  - phase1-contract-and-emergency-flag-review.md
+  - phase2-validation-rerun-report.md
+  - phase3-final-proof-repair-report.md
+  - phase4-final-self-verification.md
+  - no-sf2f05-start-check.md
+  - no-sf2f06-start-check.md
+  - no-family-playbook-check.md
+  - no-apply-mode-check.md
+  - no-product-source-check.md
+  - no-registry-gate-change-check.md
+  - no-main-sprint-deviation-check.md
+  - no-tc0052-execution-check.md
+  - no-gov006-execution-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-push-check.md
+  - no-stash-reset-restore-clean-check.md
+  - no-broad-staging-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - validation-command-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
