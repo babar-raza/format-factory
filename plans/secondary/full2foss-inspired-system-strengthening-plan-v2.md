@@ -35,7 +35,7 @@ conflict arises, MAIN SPRINT takes priority unconditionally.
 | This plan-repair sprint (S-F2F-00) | AUTHORIZED by execution prompt |
 | S-F2F-01: Playbook schema + policy | CLOSED_VERIFIED — executed 2026-05-08; S-F2F-01B verification 2026-05-08 |
 | S-F2F-02: Playbook validation tool | CLOSED_VERIFIED — executed 2026-05-08; schema gap repaired (S-F2F-02B); 42/42 tests PASS; verified 2026-05-08 |
-| S-F2F-03: Dry-run replay + review queue | PROPOSED — requires S-F2F-02 complete + approval |
+| S-F2F-03: Dry-run replay + review queue | CLOSED_VERIFIED — executed 2026-05-09; 3 tools; 96 tests PASS |
 | S-F2F-04: Golden dry-run tests | PROPOSED — requires S-F2F-03 complete + approval |
 | S-F2F-05: ODF-flat family playbook | PROPOSED — requires S-F2F-01 complete + approval |
 | S-F2F-06: Apply-mode risk review | PROPOSED — requires S-F2F-04 complete + approval |
@@ -363,7 +363,7 @@ Authorization required: explicit prompt naming "S-F2F-02 Playbook Validation Too
 Outputs: tools/playbook/validate_playbook.py, tests/playbook/test_playbook_schema.py
 Mode: read-only schema validation; no file writes
 
-### S3 — Dry-Run Replay and Review Queue (FUTURE — requires S-F2F-02 + approval)
+### S3 — Dry-Run Replay and Review Queue (CLOSED_VERIFIED — 2026-05-09)
 Sprint: S-F2F-03
 Authorization required: explicit prompt naming "S-F2F-03 Dry-Run Replay and Review Queue"
 Outputs: tools/playbook/replay_acquisition_playbook.py (dry-run + review-queue modes only),

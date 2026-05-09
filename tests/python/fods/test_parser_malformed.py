@@ -80,7 +80,10 @@ def test_wrong_root_returns_error():
         result = parse_fods(fname)
         assert "error" in result
     finally:
-        os.unlink(fname)
+        try:
+            os.unlink(fname)
+        except PermissionError:
+            pass  # Windows: iterparse may hold the file handle briefly
 
 
 def test_parse_errors_field_present_on_error():

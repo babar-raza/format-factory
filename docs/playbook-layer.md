@@ -377,5 +377,55 @@ S-F2F-03 (dry-run replay) is still required before any playbook.yaml can be exec
 ### Next Step
 
 S-F2F-02 is CLOSED_VERIFIED (S-F2F-02B independent verification complete, 2026-05-08).
-S-F2F-03 (Dry-Run Replay Engine) requires a separate explicit human authorization prompt
-naming "S-F2F-03 Dry-Run Replay and Review Queue".
+S-F2F-03 is now CLOSED_VERIFIED (implemented and tested, 2026-05-09).
+See Section 22 below for the dry-run replay engine details.
+
+---
+
+## 22. S-F2F-03 Dry-Run Replay Engine (Active -- No Apply Mode)
+
+**Created:** S-F2F-03 (2026-05-09)
+**Status:** CLOSED_VERIFIED
+**Tools:**
+- tools/playbook/replay_acquisition_playbook.py -- dry-run + review-queue modes only
+- tools/playbook/diff_playbook_outputs.py -- read-only diff of two replay reports
+- tools/playbook/export_review_queue.py -- exports review queue YAML to .local/ only
+**Tests:** tests/playbook/test_replay_dry_run.py, test_review_queue_export.py,
+test_diff_playbook_outputs.py (96 PASS, 1 skip -- correct)
+
+### What the Dry-Run Replay Engine Does
+
+1. **Reads** a playbook YAML and validates it against the schema.
+2. **Checks** each operation deterministically: input_dependencies exist, expected_outputs exist.
+3. **Reports** REPLAY_DRY_RUN: PASS or REPLAY_DRY_RUN: CONFLICTS with conflict details.
+4. **Exports** a structured review queue YAML (to .local/ or external path only).
+5. **Diffs** two replay reports to detect regressions or improvements.
+
+### What the Dry-Run Replay Engine Does NOT Do
+
+1. **Does not apply changes.** Apply mode is explicitly rejected with exit 2.
+2. **Does not write repo files.** All output paths are guarded; committed repo dirs are blocked.
+3. **Does not call the network.** No endpoint calls, no spec downloads.
+4. **Does not use LLM.** Pure deterministic file-existence checks only.
+5. **Does not approve gates.** REPLAY_DRY_RUN: PASS is not gate approval.
+6. **Does not replace DEC-034.** Replay output is evidence-eligible input only.
+7. **Does not replace human approval.** Replay results require human review.
+8. **Skips not_for_execution playbooks.** status: documentation_example_only -> SKIP.
+
+### Apply Mode Guard
+
+The tool explicitly rejects apply mode synonyms (apply, apply_mode, execute, run)
+at CLI argument parsing time. Apply mode is NOT implemented and MUST NOT be added
+until S-F2F-06 risk review is complete and human authorization is received.
+
+### Output Path Guard
+
+All output paths (--output) are checked against committed repo directory prefixes
+(src/, tools/, schemas/, plans/, etc.). Output to committed repo directories causes
+exit 2. Output must target .local/ or an external path.
+
+### Authority Boundary
+
+Replay results are informational only. They do not approve gates, replace DEC-034,
+or replace human review. S-F2F-04 (golden dry-run tests) is the next step;
+S-F2F-06 (apply-mode risk review) is required before any apply mode is authorized.

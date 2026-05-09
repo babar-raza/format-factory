@@ -267,7 +267,7 @@ def _process_row_elem(
         tag = child.tag
 
         if tag == QN_DRAW_FRAME:
-            # IR-FODS-015: chart/image detection
+            # IR-FODS-015: chart/image detection (draw:frame as direct row child)
             unsupported_features.add("chart")
             warnings.append(make_warning(
                 WARN_UNSUPPORTED_ELEMENT,
@@ -281,6 +281,17 @@ def _process_row_elem(
             continue
 
         is_covered = tag == QN_COVERED
+
+        # IR-FODS-015: also detect draw:frame nested inside a cell
+        for cell_child in child:
+            if cell_child.tag == QN_DRAW_FRAME:
+                unsupported_features.add("chart")
+                warnings.append(make_warning(
+                    WARN_UNSUPPORTED_ELEMENT,
+                    f"draw:frame in row {row_idx} col {col_idx}: "
+                    "embedded objects not supported",
+                ))
+                break
 
         # Column repeat (IR-FODS-011)
         col_repeat = _safe_int(child.get(ATTR_COL_REPEAT, "1"), 1)
