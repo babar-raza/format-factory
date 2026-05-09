@@ -1,0 +1,109 @@
+# Evidence Bundle Contract -- TC-0049 Independent Verification
+# Governs the TC-0049-IV-001 independent verification evidence bundle.
+# Version: 1.0
+# Created: TC-0049-IV-001 (2026-05-09)
+
+contract_id: tc0049-independent-verification-20260509
+version: "1.0"
+description: "TC-0049-IV-001 -- Independent verification that TC-0049 correctly closed FODT Gate 10 planning readiness"
+
+inherits: base-run
+
+require_clean_git: true
+emergency_blocker_bundle: false
+
+min_metadata_count: 35
+
+required_repo_files:
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+  - taskcards/TC-0049-fodt-gate10-oss-readiness.md
+  - taskcards/TC-0052-fodt-phase4-python-source-scaffold-plan.md
+  - acquisition-packs/fodt/verified-facts.yaml
+  - acquisition-packs/fodt/implementation-requirements.yaml
+  - acquisition-packs/fodt/parser-strategy.yaml
+  - acquisition-packs/fodt/security-surface.yaml
+  - acquisition-packs/fodt/product-readiness.yaml
+  - acquisition-packs/fodt/tier-map.yaml
+  - tools/evidence/contracts/tc0049-fodt-gate10-readiness.yaml
+  - tools/evidence/contracts/tc0049-independent-verification-20260509.yaml
+
+required_metadata_files:
+  - phase0-baseline-report.md
+  - phase1-target-bundle-validation-report.md
+  - phase1-metadata-identity-report.md
+  - phase2-internal-contradiction-review.md
+  - phase3-fodt-ful-validation-report.md
+  - phase3-format-understanding-tests-report.md
+  - phase3-evidence-tests-report.md
+  - phase3-current-state-consistency-report.md
+  - phase4-state-verification-report.md
+  - phase5-gate10-semantics-review.md
+  - phase6-no-scope-drift-report.md
+  - phase7-repair-decision-report.md
+  - no-fodt-source-check.md
+  - no-fodt-tests-check.md
+  - no-dotnet-source-check.md
+  - no-gate11-pass-check.md
+  - no-tc0052-execution-check.md
+  - dec033-status-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-playbook-replay-check.md
+  - no-memory-sync-check.md
+  - no-gov006-execution-check.md
+  - no-push-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - validation-command-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+forbidden_patterns:
+  - "repo/src/python/fodt/**"
+  - "repo/src/net/**"
+  - "repo/reports/legal/**"
+  - ".git/**"
+  - ".env"
+  - ".local/**"
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/text.txt"
+  - "**/pages.jsonl"
+  - "**/chunks.jsonl"
+
+# Semantic checks
+checks:
+  independent_verification: true
+  target_bundle_validated: true
+  target_bundle_metadata_identity_clean: true
+  internal_contradiction_reviewed: true
+  fodt_ful_validation_pass: true
+  format_understanding_tests_pass: true
+  evidence_tests_pass: true
+  current_state_consistency_pass: true
+  gate10_planning_verified: true
+  gate10_not_passed: true
+  tc0049_completed: true
+  tc0052_planning_ready: true
+  tc0052_not_executed: true
+  product_source_not_created: true
+  gate11_not_started: true
+  dec033_unresolved: true
+  no_fodt_source_created: true
+  no_fodt_tests_created: true
+  no_dotnet_source_created: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_playbook_replay: true
+  no_memory_sync: true
+  no_gov006_execution: true
+  no_push: true
