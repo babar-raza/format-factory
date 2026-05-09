@@ -1,0 +1,26 @@
+# Golden fixture: diff of valid(baseline) vs missing-inputs(current) — expect REGRESSION.
+# diff_generated_at normalized to NORMALIZED_TIMESTAMP.
+# S-F2F-04 — do not edit without updating test_diff_golden.py.
+diff_generated_at: NORMALIZED_TIMESTAMP
+baseline_playbook_id: fods-test-replay-fixture
+current_playbook_id: fods-test-missing-inputs-fixture
+overall_diff: REGRESSION
+regression_count: 0
+improvement_count: 0
+new_conflict_count: 2
+resolved_conflict_count: 0
+operation_diffs:
+- operation_id: test-missing-input-op
+  change: added_in_current
+- operation_id: test-scoring-op
+  change: removed_in_current
+conflict_diffs:
+- operation_id: test-missing-input-op
+  target_path: this/path/does/not/exist/input.yaml
+  change: new_conflict_in_current
+  severity: high
+- operation_id: test-missing-input-op
+  target_path: this/path/does/not/exist/output.yaml
+  change: new_conflict_in_current
+  severity: high
+authority: "INFORMATIONAL ONLY \u2014 diff does not approve gates or replace DEC-034."

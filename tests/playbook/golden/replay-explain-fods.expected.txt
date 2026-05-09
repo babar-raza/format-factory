@@ -1,0 +1,17 @@
+PLAYBOOK_ID: fods-test-replay-fixture
+FORMAT_ID: fods
+STATUS: active
+
+Operation 1: test-scoring-op
+  Gate:            1
+  Title:           Test Scoring Operation for Dry-Run Fixture
+  Description:     Test operation that references files known to exist in the repo. Used to verify dry-run passes when all inputs are present.
+
+  Mode allowed:    validate_only
+  Conflict policy: fail_and_queue
+  Approval:        requires_dec034_and_human
+  Reuse level:     none
+  Inputs:          acquisition-packs/fods/pack.yaml, registry/format-registry.yaml
+  Outputs:         registry/format-registry.yaml
+
+REPLAY_EXPLAIN: DONE (1 operations)

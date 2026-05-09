@@ -1,0 +1,75 @@
+# Golden fixture: review queue for FODS missing-inputs dry-run.
+# queue_id, run_id, and all timestamps normalized.
+# S-F2F-04 — do not edit without updating test_review_queue_golden.py.
+schema_version: '1.0'
+queue_id: rq-NORMALIZED
+run_id: s-f2f-03-export-NORMALIZED
+generated_at: NORMALIZED_TIMESTAMP
+source_playbook_id: fods-test-missing-inputs-fixture
+source_format_id: fods
+items:
+- item_id: RQ-001
+  format_id: fods
+  gate: 3
+  operation_id: test-missing-input-op
+  target_path: this/path/does/not/exist/input.yaml
+  issue_type: missing_input
+  severity: high
+  deterministic_failure_reason: 'Required input dependency is absent: this/path/does/not/exist/input.yaml'
+  required_action: Verify that 'this/path/does/not/exist/input.yaml' exists and is
+    committed before replaying operation 'test-missing-input-op'.
+  suggested_fix: null
+  evidence_required:
+  - manual_inspection
+  status: open
+  resolution_notes: null
+  owner_role: secondary_sprint_owner
+  blocks_apply_mode: true
+  blocks_gate_progress: true
+  provenance:
+    created_at: NORMALIZED_TIMESTAMP
+    created_by_sprint: S-F2F-03
+    resolved_at: null
+    resolved_by_sprint: null
+- item_id: RQ-002
+  format_id: fods
+  gate: 3
+  operation_id: test-missing-input-op
+  target_path: this/path/does/not/exist/output.yaml
+  issue_type: target_mismatch
+  severity: high
+  deterministic_failure_reason: 'Expected output not present: this/path/does/not/exist/output.yaml.
+    In a real execution, this path should have been created.'
+  required_action: Verify whether 'this/path/does/not/exist/output.yaml' should exist
+    for operation 'test-missing-input-op'. If so, re-run the sprint that produces
+    it.
+  suggested_fix: null
+  evidence_required:
+  - manual_inspection
+  status: open
+  resolution_notes: null
+  owner_role: secondary_sprint_owner
+  blocks_apply_mode: true
+  blocks_gate_progress: true
+  provenance:
+    created_at: NORMALIZED_TIMESTAMP
+    created_by_sprint: S-F2F-03
+    resolved_at: null
+    resolved_by_sprint: null
+summary:
+  total_items: 2
+  open_items: 2
+  blocker_count: 0
+  high_count: 2
+  medium_count: 0
+  low_count: 0
+  blocks_apply_mode: true
+  blocks_gate_progress: true
+governance:
+  cannot_approve_gates: true
+  cannot_replace_dec034: true
+  cannot_replace_evidence_contracts: true
+  cannot_replace_human_approval: true
+  high_severity_blocks_apply: true
+  gate_progress_requires_resolution: true
+  policy_doc_reference: docs/playbook-layer.md

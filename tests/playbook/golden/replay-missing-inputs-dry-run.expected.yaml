@@ -1,0 +1,36 @@
+# Golden fixture: FODS missing-inputs dry-run — expect CONFLICTS (2 conflicts).
+# Timestamps normalized to NORMALIZED_TIMESTAMP.
+# S-F2F-04 — do not edit without updating test_replay_golden.py.
+playbook_id: fods-test-missing-inputs-fixture
+format_id: fods
+replay_mode: dry-run
+generated_at: NORMALIZED_TIMESTAMP
+total_operations: 1
+pass_operations: 0
+conflict_operations: 1
+total_conflicts: 2
+operation_results:
+- operation_id: test-missing-input-op
+  gate: 3
+  status: CONFLICT
+  conflict_count: 2
+conflicts:
+- operation_id: test-missing-input-op
+  gate: 3
+  target_path: this/path/does/not/exist/input.yaml
+  issue_type: missing_input
+  severity: high
+  deterministic_failure_reason: 'Required input dependency is absent: this/path/does/not/exist/input.yaml'
+  required_action: Verify that 'this/path/does/not/exist/input.yaml' exists and is
+    committed before replaying operation 'test-missing-input-op'.
+- operation_id: test-missing-input-op
+  gate: 3
+  target_path: this/path/does/not/exist/output.yaml
+  issue_type: target_mismatch
+  severity: high
+  deterministic_failure_reason: 'Expected output not present: this/path/does/not/exist/output.yaml.
+    In a real execution, this path should have been created.'
+  required_action: Verify whether 'this/path/does/not/exist/output.yaml' should exist
+    for operation 'test-missing-input-op'. If so, re-run the sprint that produces
+    it.
+replay_authority: "INFORMATIONAL ONLY \u2014 not gate approval, not evidence authority."

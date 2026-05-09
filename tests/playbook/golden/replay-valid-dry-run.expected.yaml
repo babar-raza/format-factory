@@ -1,0 +1,18 @@
+# Golden fixture: FODS valid playbook dry-run — expect PASS, no conflicts.
+# Timestamps are normalized to NORMALIZED_TIMESTAMP sentinel.
+# S-F2F-04 — do not edit without updating test_replay_golden.py.
+playbook_id: fods-test-replay-fixture
+format_id: fods
+replay_mode: dry-run
+generated_at: NORMALIZED_TIMESTAMP
+total_operations: 1
+pass_operations: 1
+conflict_operations: 0
+total_conflicts: 0
+operation_results:
+- operation_id: test-scoring-op
+  gate: 1
+  status: PASS
+  conflict_count: 0
+conflicts: []
+replay_authority: "INFORMATIONAL ONLY \u2014 not gate approval, not evidence authority."

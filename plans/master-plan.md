@@ -1525,11 +1525,13 @@ plan-repair-review.md. The plan-repair sprint (S-F2F-00) corrected all defects a
 - S-F2F-01 (playbook schema + policy): CLOSED_VERIFIED — executed 2026-05-08; independently verified S-F2F-01B 2026-05-08; schemas/playbook/ + docs/playbook-layer.md created; no replay tools, no apply mode, no acquisition-pack playbooks
 - S-F2F-02 (playbook validation tool): CLOSED_VERIFIED — executed 2026-05-08; schema gap repaired in S-F2F-02B (not_for_execution added to schema); 42/42 tests PASS; both jsonschema and structural engines; docs example passes full JSON Schema; no MAIN SPRINT deviation
 - S-F2F-03 (dry-run replay + review queue): CLOSED_VERIFIED — executed 2026-05-09; 3 tools (replay/diff/export); 96 tests PASS; no apply mode; no repo mutations from dry-run; no MAIN SPRINT deviation
-- S-F2F-04 through S-F2F-08: proposed_pending_human_approval — NOT authorized
+- S-F2F-04 (golden dry-run tests): in_progress — executed 2026-05-09; 140 tests PASS (96 original + 44 golden); 7 golden fixtures; 3 golden test files; FODT format-agnostic coverage; no apply mode; no repo mutations
+- S-F2F-05 through S-F2F-08: proposed_pending_human_approval — NOT authorized
 
-No gate statuses were changed by S-F2F-00 through S-F2F-03. S-F2F-03 created read-only
-dry-run tools only (no apply mode, no file mutations). All S-F2F taskcards from S-F2F-04
-onward require separate explicit human authorization before execution.
+No gate statuses were changed by S-F2F-00 through S-F2F-04. S-F2F-03 created read-only
+dry-run tools only (no apply mode, no file mutations). S-F2F-04 adds deterministic golden
+coverage only. All S-F2F taskcards from S-F2F-05 onward require separate explicit human
+authorization before execution.
 
 ### Secondary Phase Map
 
@@ -1539,7 +1541,7 @@ onward require separate explicit human authorization before execution.
 | S1 | S-F2F-01 | Playbook schema + policy doc only | CLOSED_VERIFIED (2026-05-08) |
 | S2 | S-F2F-02 | Playbook validation tool (read-only) | CLOSED_VERIFIED (S-F2F-02B, 2026-05-08) — 42 PASS, 1 skip |
 | S3 | S-F2F-03 | Dry-run replay + review queue export | CLOSED_VERIFIED (2026-05-09) — 96 PASS, 1 skip |
-| S4 | S-F2F-04 | Golden dry-run tests | S-F2F-03 complete |
+| S4 | S-F2F-04 | Golden dry-run tests | in_progress (2026-05-09) — 140 PASS, 7 golden fixtures |
 | S5 | S-F2F-05 | ODF-flat family playbook docs | S-F2F-01 complete (parallel to S2-S4) |
 | S6 | S-F2F-06 | Apply-mode risk review (doc only) | S-F2F-04 complete |
 | P1 | S-F2F-07 | Product dependency closure design | FODS Gate 8 PASSED + human approval |
@@ -1557,10 +1559,10 @@ will be created until the appropriate gate sequence is satisfied.
 
 ### Next Possible Secondary Action
 
-S-F2F-03 is CLOSED_VERIFIED (executed 2026-05-09; 3 dry-run tools; 96 tests PASS;
+S-F2F-04 is in_progress (executed 2026-05-09; 140 tests PASS; 7 golden fixtures;
 no apply mode; replay writes nothing to repo). The next possible secondary actions are:
-- S-F2F-04 (Golden Dry-Run Tests) or S-F2F-05 (ODF-Flat Family Playbook)
-  — each requires a separate explicit human authorization prompt naming the taskcard.
+- S-F2F-04 must be committed and verified to become CLOSED_VERIFIED.
+- S-F2F-05 (ODF-Flat Family Playbook) requires separate explicit human authorization.
 
 This section is informational only. Execution of any S-F2F sprint beyond S-F2F-03 requires
 human authorization conditions above to be met.

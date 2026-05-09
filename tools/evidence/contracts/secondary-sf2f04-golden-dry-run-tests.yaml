@@ -1,0 +1,95 @@
+contract_id: secondary-sf2f04-golden-dry-run-tests
+description: >
+  S-F2F-04 Golden Dry-Run Tests: add deterministic golden test coverage for the
+  replay engine. Creates tests/playbook/golden/ with 7 golden fixtures,
+  three new golden test files (test_replay_golden.py, test_diff_golden.py,
+  test_review_queue_golden.py), a FODT format-agnostic fixture, and
+  tools/playbook/create_golden_case.py. No apply mode. No repo mutations.
+  No gate status changes. No MAIN SPRINT deviation.
+created_run: secondary-sf2f04-golden-dry-run-tests
+sprint_id: S-F2F-04
+executed: "2026-05-09"
+plan_repair_only: false
+require_clean_git: true
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+min_metadata_count: 25
+no_push: true
+
+required_repo_files:
+  - tests/playbook/golden/replay-valid-dry-run.expected.yaml
+  - tests/playbook/golden/replay-missing-inputs-dry-run.expected.yaml
+  - tests/playbook/golden/replay-fodt-valid-dry-run.expected.yaml
+  - tests/playbook/golden/replay-explain-fods.expected.txt
+  - tests/playbook/golden/diff-unchanged.expected.yaml
+  - tests/playbook/golden/diff-regression.expected.yaml
+  - tests/playbook/golden/diff-improvement.expected.yaml
+  - tests/playbook/golden/review-queue-missing-inputs.expected.yaml
+  - tests/playbook/fixtures/replay-fodt-valid.yaml
+  - tests/playbook/test_replay_golden.py
+  - tests/playbook/test_diff_golden.py
+  - tests/playbook/test_review_queue_golden.py
+  - tools/playbook/create_golden_case.py
+  - tools/evidence/contracts/secondary-sf2f04-golden-dry-run-tests.yaml
+  - taskcards/S-F2F-04-golden-dry-run-tests.md
+  - plans/master-plan.md
+
+forbidden_patterns:
+  - .env
+  - .local/
+  - __pycache__/
+  - "*.pyc"
+  - "src/python/fodt/"
+  - "src/net/fods/"
+  - "src/net/fodt/"
+  - acquisition-packs/_families/
+  - plans/review-queues/
+  - "tests/playbook/test_apply_mode.py"
+
+checks:
+  no_gate_status_changed: true
+  no_registry_gate_change: true
+  no_product_source_created: true
+  no_apply_mode_created: true
+  no_endpoint_call: true
+  no_embedding_vector_db: true
+  no_new_spec_download: true
+  no_main_sprint_deviation: true
+  no_push: true
+  validator_writes_no_files: true
+  no_llm_call: true
+  no_golden_apply_mode_tests: true
+  dry_run_writes_zero_repo_files: true
+  all_tests_pass: true
+  test_count_140_or_more: true
+  golden_fixtures_7_or_more: true
+  format_agnostic_fodt_covered: true
+  no_s_f2f_05_started: true
+  no_s_f2f_06_started: true
+
+required_metadata_files:
+  - sprint-summary.md
+  - test-run-report.md
+  - golden-fixture-verification.md
+  - no-apply-mode-check.md
+  - no-repo-mutation-check.md
+  - no-gate-status-change-check.md
+  - no-product-source-check.md
+  - no-main-sprint-deviation-check.md
+  - no-push-check.md
+  - format-agnostic-check.md
+  - files-reviewed.txt
+  - files-modified.txt
+  - files-created.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - verdict.md
+  - tool-verification-report.md
+  - test-count-verification.txt
+  - no-s-f2f-05-check.md
+  - no-s-f2f-06-check.md
+  - taskcard-status-check.md

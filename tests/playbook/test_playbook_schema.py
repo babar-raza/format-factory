@@ -620,17 +620,17 @@ class TestNoReplayApplyModules:
             repo_path("tools", "playbook", "export_review_queue.py")
         ), "export_review_queue.py must exist (created by S-F2F-03)"
 
-    def test_create_golden_case_module_does_not_exist(self):
-        """create_golden_case.py must not exist."""
-        assert not os.path.exists(
+    def test_create_golden_case_module_exists(self):
+        """create_golden_case.py must exist (created by S-F2F-04)."""
+        assert os.path.exists(
             repo_path("tools", "playbook", "create_golden_case.py")
-        ), "create_golden_case.py must not exist"
+        ), "create_golden_case.py must exist (created by S-F2F-04)"
 
-    def test_golden_test_directory_does_not_exist(self):
-        """tests/playbook/golden/ must not exist."""
-        assert not os.path.exists(
+    def test_golden_test_directory_exists(self):
+        """tests/playbook/golden/ must exist (created by S-F2F-04)."""
+        assert os.path.exists(
             repo_path("tests", "playbook", "golden")
-        ), "tests/playbook/golden/ must not exist"
+        ), "tests/playbook/golden/ must exist (created by S-F2F-04)"
 
     def test_review_queues_directory_does_not_exist(self):
         """plans/review-queues/ must not exist."""
