@@ -1,0 +1,104 @@
+contract_id: gov-revert-001-independent-verification-20260509
+contract_version: "1.0"
+sprint_id: gov-revert-001-independent-verification-20260509
+sprint_type: independent_verification
+created_at: "2026-05-09"
+visibility: internal
+current_state_authority: bundle-metadata
+require_clean_git: true
+require_metadata_identity: true
+required_top_level_folders:
+  - repo
+  - bundle-metadata
+required_repo_files:
+  - AGENTS.md
+  - GOVERNANCE.md
+  - docs/agent-execution-handoff-standard.md
+  - docs/planning-methodology.md
+  - docs/prompts/README.md
+  - taskcards/GOV-REVERT-001-stash-concurrent-agent-safety.md
+  - taskcards/GOV-REVERT-002-hidden-work-recovery.md
+  - taskcards/GOV-REVERT-003-active-sprint-lock-tooling.md
+  - tools/governance/check_git_safety.py
+  - tests/governance/test_check_git_safety.py
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_negative_bundle_validation.py
+  - tools/evidence/contracts/gov-revert-001-stash-concurrent-agent-safety.yaml
+  - tools/evidence/contracts/gov-revert-001-independent-verification-20260509.yaml
+required_metadata_files:
+  - phase0-baseline-report.md
+  - phase1-target-bundle-validation-report.md
+  - phase1-metadata-identity-report.md
+  - phase2-metadata-contradiction-review.md
+  - phase3-policy-doc-verification.md
+  - phase4-tool-verification.md
+  - phase5-evidence-tooling-verification.md
+  - phase6-governance-tests-report.md
+  - phase6-evidence-tests-report.md
+  - phase6-current-state-consistency-report.md
+  - phase6-git-safety-check-report.md
+  - phase7-hidden-work-recovery-status.md
+  - phase8-no-scope-drift-report.md
+  - phase9-repair-decision.md
+  - no-stash-reset-restore-clean-check.md
+  - no-broad-staging-check.md
+  - no-source-change-check.md
+  - no-gate-status-change-check.md
+  - no-product-source-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-push-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - validation-command-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+min_metadata_count: 35
+require_manifest: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/gov-revert-001-independent-verification-20260509.yaml
+forbidden_patterns:
+  - .env
+  - .env.*
+  - .local/
+  - .git/
+  - __pycache__/
+  - "*.pyc"
+  - text.txt
+  - pages.jsonl
+  - chunks.jsonl
+  - "*.sqlite"
+  - "*.sqlite3"
+  - "*.db"
+  - "*.faiss"
+  - "*.index"
+semantic_checks:
+  independent_verification: true
+  target_bundle_validated: true
+  metadata_contradictions_reviewed: true
+  verdict_mismatch_classified: true
+  pytest_report_inconsistency_classified: true
+  policy_docs_verified: true
+  git_safety_checker_verified: true
+  evidence_metadata_isolation_verified: true
+  metadata_identity_validation_verified: true
+  hidden_work_recovery_pending_verified: true
+  gov_revert_002_exists: true
+  no_hidden_work_recovery_done: true
+  no_stash_created: true
+  no_reset_restore_checkout_clean_used: true
+  no_broad_staging_used: true
+  no_product_source_created: true
+  no_gate_status_change: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_push: true
