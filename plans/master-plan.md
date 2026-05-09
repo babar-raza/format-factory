@@ -1055,7 +1055,8 @@ The exact final Git HEAD for each run is authoritative in `bundle-metadata/git-l
 `bundle-metadata/git-status-final.txt` in the run's evidence bundle.
 See `docs/current-state-and-evidence-authority.md`.
 
-**last_completed_run:** run051 (exact final HEAD in bundle-metadata/git-log.txt)
+**last_completed_run:** TC-0052-FODT-PHASE4-PYTHON-SOURCE (2026-05-09) (exact final HEAD in bundle-metadata/git-log.txt)
+**run_tc0052 commit set:** f100954 + acec4b9
 **run051 commit set:** d18e73e + 559c672 + b960609 + 199cff3
 **run050 commit set:** cc6d00c + 9da927d + 3a7c2b0 + c23588a + 3a14a05 + e5fcde7 + 134e3e9 + 7671e42 + dfb172f + 07fc026
 **run049 commit set:** 2b0d448 + 8fd26fa + 3964298 + f487d5e + 743fa38 + ba6aad2 + 740514f + 594f1a2 + 1c75d7e + 365ff9a + 8552d1c
