@@ -1,0 +1,48 @@
+# FODT Gate 10 Manual Review Judgment — Machine-Readable Summary
+# Prepared: 2026-05-11
+# Sprint: FODT-GATE10-MANUAL-REVIEW-JUDGMENT-001
+
+format_id: fodt
+gate: 10
+judgment_date: "2026-05-11"
+sprint_id: FODT-GATE10-MANUAL-REVIEW-JUDGMENT-001
+
+verdict: RECOMMEND_GATE10_APPROVAL
+agent_approved: false
+
+packet_review:
+  result: PACKET_ACCEPTED_FOR_HUMAN_GATE10_DECISION
+  questions_passed: 12
+  questions_total: 12
+
+source_and_test_review:
+  result: SOURCE_AND_TEST_EVIDENCE_ACCEPTED
+  source_modules: 7
+  test_files: 6
+  fodt_tests_passed: 115
+  fodt_tests_failed: 0
+  full_suite_passed: 377
+  full_suite_failed: 0
+  traceability_verified: 15
+  traceability_total: 15
+
+gate_state_review:
+  result: GATE_STATE_READY_FOR_HUMAN_DECISION
+  contradictions_found: 0
+
+note_classification:
+  approval_blockers: 0
+  narrow_repair_before_approval: 0
+  non_blocking_metadata_notes: 2
+  non_blocking_followups: 3
+  accepted: 4
+  total_notes: 9
+
+next_step: AUTHORIZE_GATE10_APPROVAL_RECORDING
+next_step_actions:
+  - "Update registry gate_10 approved_by and approved_date"
+  - "Update master plan"
+  - "Create approval evidence bundle"
+  - "Do NOT start Gate 11 automatically"
+  - "Do NOT start .NET source"
+  - "Leave DEC-033 unresolved"

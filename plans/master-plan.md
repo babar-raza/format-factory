@@ -3,7 +3,7 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.50 (FODT Gate 10 review packet prepared 2026-05-11; TC-0052 IV proof repair accepted with metadata note; acceleration plan created; S-F2F-05 queued; Gate 10 NOT approved -- awaiting human decision)
+**Version:** 2.51 (FODT Gate 10 manual review judgment prepared 2026-05-11; verdict: RECOMMEND_GATE10_APPROVAL; 0 blockers, 0 repairs needed; Gate 10 still NOT approved -- next step: human authorizes approval recording sprint)
 **Last updated:** 2026-05-11
 **Current phase:** Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready; Phase 4 Python FOSS CREATED. FODT Gates 1-9 ALL PASSED; Gate 10 planning_verified; TC-0052 source_implemented_pending_human_review.
 **Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Phase 4 Python FOSS source CREATED (run051; TC-0050 COMPLETED; src/python/fods/ 6 files; 19/20 IR-FODS; iterparse streaming). Gate 11 planning_ready (TC-0047 not_started, blocked DEC-033). FODT: Gates 1-9 ALL PASSED. Gate 9 PASSED (TC-0048 COMPLETED; tier-map.yaml v1.0; DEC-034 PASS 10/10 inline; run050). Gate 10 planning_verified (TC-0049 COMPLETED 2026-05-09; FUL 15/15 PASS). TC-0052 SOURCE IMPLEMENTED (2026-05-09): src/python/fodt/ 6 modules (constants/exceptions/list_traversal/neutral_model/parser/__init__) + tests/python/fodt/ 6 test files; 115/115 PASS; IR-FODT-001..015 all satisfied; IR-FODT-003 iterative DFS list_traversal.py; IR-FODT-014 iterparse streaming; pytest.ini --import-mode=importlib added; playbook governance test updated. Gate 10 approval requires human review. Format Understanding Layer: FUL-001 schemas (run049; 6 schemas); FUL-002 FODS COMPLETED (run049); FUL-003 FODT COMPLETED (run050). last_completed_run: TC-0052-FODT-PHASE4-PYTHON-SOURCE (2026-05-09). Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
@@ -12,7 +12,7 @@
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
 **FODT Gate 6 allowed:** YES — Gate 6 PASSED (Babar Raza, 2026-05-08, run047). Gate 7 fuzz planning_ready; execution requires explicit prompt.
 **Commit allowed:** YES — run049 authorized by execution prompt.
-**Next required action:** (1) FODT Gate 10 human review + approval decision (review packet: reports/gate-review/fodt/gate10-review-packet-20260511.md). (2) FODS Gate 11: DEC-033 must be resolved, then explicit TC-0047 execution prompt. (3) FODS Phase 4 .NET: blocked by DEC-033 (TC-0051). (4) FODT Phase 4 .NET: blocked by DEC-033. (5) S-F2F-05 queued (Lane B). (6) Acceleration plan active (reports/acceleration/controlled-parallel-lanes-20260511.md).
+**Next required action:** (1) FODT Gate 10 manual review judgment: RECOMMEND_GATE10_APPROVAL (reports/gate-review/fodt/gate10-manual-review-judgment-20260511.md). Human must authorize approval recording sprint to write approved_by/approved_date. (2) FODS Gate 11: DEC-033 must be resolved, then explicit TC-0047 execution prompt. (3) FODS Phase 4 .NET: blocked by DEC-033 (TC-0051). (4) FODT Phase 4 .NET: blocked by DEC-033. (5) S-F2F-05 queued (Lane B). (6) Acceleration plan active (reports/acceleration/controlled-parallel-lanes-20260511.md).
 
 ---
 

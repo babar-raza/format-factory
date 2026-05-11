@@ -1,0 +1,75 @@
+# Evidence Contract: FODT Gate 10 Manual Review Judgment
+# Sprint: FODT-GATE10-MANUAL-REVIEW-JUDGMENT-001
+# Created: 2026-05-11
+
+contract_id: "FODT-GATE10-MANUAL-REVIEW-JUDGMENT-001"
+sprint_id: "FODT-GATE10-MANUAL-REVIEW-JUDGMENT-001"
+version: "1.0"
+description: "Manual review judgment for FODT Gate 10 OSS release readiness"
+current_state_authority: "docs/current-state-and-evidence-authority.md"
+
+required_repo_files:
+  - reports/gate-review/fodt/gate10-review-packet-20260511.md
+  - reports/gate-review/fodt/gate10-review-packet-20260511.yaml
+  - reports/gate-review/fodt/gate10-manual-review-judgment-20260511.md
+  - reports/gate-review/fodt/gate10-manual-review-judgment-20260511.yaml
+  - taskcards/FODT-GATE10-manual-review-judgment.md
+  - plans/master-plan.md
+  - tools/evidence/contracts/fodt-gate10-manual-review-judgment.yaml
+
+required_metadata_files:
+  - phase0-baseline-and-safety.md
+  - phase1-gate10-packet-review.md
+  - phase2-source-and-test-evidence-review.md
+  - phase3-gate-state-authority-review.md
+  - phase4-risk-and-notes-review.md
+  - phase6-next-step-judgment.md
+  - phase8-validation-report.md
+  - phase9-no-scope-drift-report.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - validation-command-log.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+min_metadata_count: 30
+
+semantic_checks:
+  manual_review_completed: true
+  judgment_report_created: true
+  machine_readable_judgment_created: true
+  gate10_packet_reviewed: true
+  source_and_test_evidence_reviewed: true
+  gate_state_reviewed: true
+  risk_notes_classified: true
+  next_step_judgment_created: true
+  gate10_not_approved_by_this_sprint: true
+  gate11_not_started: true
+  dec033_unresolved: true
+  no_net_source_created: true
+  no_source_behavior_change: true
+  no_sf2f05_execution: true
+  no_gov_revert_002_execution: true
+  no_gov006_execution: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_push: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true
+
+forbidden_patterns:
+  - ".env"
+  - ".local/spec-cache/"
+  - "__pycache__/"
+  - ".pytest_cache/"
+  - "node_modules/"
