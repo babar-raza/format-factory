@@ -1,0 +1,178 @@
+# Evidence Bundle Contract: TC-0052 FODT Phase 4 Python Source — Independent Verification
+# Sprint: TC-0052-FODT-PHASE4-PYTHON-SOURCE-IV-001
+# Date: 2026-05-11
+# Inherits: base-run.yaml v1.4
+
+contract_id: tc0052-fodt-phase4-python-source-independent-verification
+version: "1.0"
+description: "Independent verification of TC-0052 FODT Phase 4 Python source implementation."
+sprint_id: TC-0052-FODT-PHASE4-PYTHON-SOURCE-IV-001
+
+require_clean_git: true
+emergency_blocker_bundle: false
+min_metadata_count: 50
+
+required_repo_files:
+  # Source modules
+  - src/python/fodt/__init__.py
+  - src/python/fodt/constants.py
+  - src/python/fodt/exceptions.py
+  - src/python/fodt/list_traversal.py
+  - src/python/fodt/neutral_model.py
+  - src/python/fodt/parser.py
+  - src/python/fodt/README.md
+  # Test files
+  - tests/python/fodt/conftest.py
+  - tests/python/fodt/test_list_traversal.py
+  - tests/python/fodt/test_neutral_model.py
+  - tests/python/fodt/test_parser_basic.py
+  - tests/python/fodt/test_parser_malformed.py
+  - tests/python/fodt/test_security.py
+  - tests/python/fodt/test_traceability.py
+  # pytest config
+  - pytest.ini
+  # State files
+  - tests/playbook/test_playbook_schema.py
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+  - taskcards/TC-0052-fodt-phase4-python-source-scaffold-plan.md
+  # Contracts
+  - tools/evidence/contracts/tc0052-fodt-phase4-python-source.yaml
+  - tools/evidence/contracts/tc0052-fodt-phase4-python-source-independent-verification.yaml
+
+required_metadata_files:
+  - phase0-baseline-and-safety.md
+  - phase1-target-bundle-validation-report.md
+  - phase2-contract-strength-review.md
+  - phase3-authority-state-verification.md
+  - phase4-source-review.md
+  - phase5-test-review-and-rerun.md
+  - phase6-traceability-review.md
+  - phase7-readme-and-packaging-review.md
+  - phase8-authorized-non-fodt-change-review.md
+  - phase9-no-scope-drift-report.md
+  - phase10-repair-decision.md
+  - pytest-fodt-report.md
+  - pytest-format-understanding-report.md
+  - pytest-playbook-report.md
+  - pytest-full-suite-report.md
+  - current-state-consistency-report.md
+  - git-safety-check-report.md
+  - validation-command-log.txt
+  - no-net-source-check.md
+  - no-fods-source-change-check.md
+  - no-gate10-approval-check.md
+  - no-gate11-pass-check.md
+  - no-dec033-resolution-check.md
+  - no-gov-revert-002-execution-check.md
+  - no-hidden-work-recovery-check.md
+  - no-sf2f05-execution-check.md
+  - no-gov006-execution-check.md
+  - no-memory-sync-check.md
+  - no-llm-call-check.md
+  - no-embedding-vector-db-check.md
+  - no-playbook-apply-mode-check.md
+  - no-push-check.md
+  - no-stash-reset-restore-clean-check.md
+  - no-broad-staging-check.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+semantic_checks:
+  - id: IV-SC-001
+    key: independent_verification
+    value: true
+  - id: IV-SC-002
+    key: target_bundle_validated
+    value: true
+  - id: IV-SC-003
+    key: contract_strength_reviewed
+    value: true
+  - id: IV-SC-004
+    key: source_reviewed
+    value: true
+  - id: IV-SC-005
+    key: source_accepted
+    value: true
+  - id: IV-SC-006
+    key: tests_rerun
+    value: true
+  - id: IV-SC-007
+    key: fodt_tests_pass
+    value: true
+  - id: IV-SC-008
+    key: full_suite_pass
+    value: true
+  - id: IV-SC-009
+    key: traceability_verified
+    value: true
+  - id: IV-SC-010
+    key: all_ir_fodt_001_to_015_verified
+    value: true
+  - id: IV-SC-011
+    key: readme_status_classified
+    value: true
+  - id: IV-SC-012
+    key: authorized_non_fodt_changes_reviewed
+    value: true
+  - id: IV-SC-013
+    key: state_consistency_verified
+    value: true
+  - id: IV-SC-014
+    key: gate10_not_approved
+    value: true
+  - id: IV-SC-015
+    key: gate11_not_started
+    value: true
+  - id: IV-SC-016
+    key: dec033_unresolved
+    value: true
+  - id: IV-SC-017
+    key: no_net_source_created
+    value: true
+  - id: IV-SC-018
+    key: no_fods_source_changed
+    value: true
+  - id: IV-SC-019
+    key: no_gov_revert_002_execution
+    value: true
+  - id: IV-SC-020
+    key: no_hidden_work_recovery
+    value: true
+  - id: IV-SC-021
+    key: no_sf2f05_execution
+    value: true
+  - id: IV-SC-022
+    key: no_gov006_execution
+    value: true
+  - id: IV-SC-023
+    key: no_memory_sync
+    value: true
+  - id: IV-SC-024
+    key: no_llm_call
+    value: true
+  - id: IV-SC-025
+    key: no_embedding_vector_db
+    value: true
+  - id: IV-SC-026
+    key: no_playbook_apply_mode
+    value: true
+  - id: IV-SC-027
+    key: no_push
+    value: true
+  - id: IV-SC-028
+    key: no_stash_reset_restore_clean_used
+    value: true
+  - id: IV-SC-029
+    key: no_broad_staging_used
+    value: true
