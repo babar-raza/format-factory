@@ -1,0 +1,23 @@
+# S-F2F-05 Readiness — Machine-Readable
+# Sprint: FODT-GATE10-APPROVAL-AND-SWARM-NEXT-LANES-001 (Lane C)
+
+sf2f_id: "S-F2F-05"
+readiness_date: "2026-05-11"
+sf2f04_status: CLOSED_VERIFIED
+objective: "ODF-flat family playbook"
+can_run_parallel: true
+apply_mode_allowed: false
+
+file_scope:
+  creates:
+    - schemas/playbook/odf-flat-family-playbook.yaml
+  reads:
+    - schemas/playbook/acquisition-playbook.schema.json
+    - schemas/playbook/review-queue.schema.json
+  may_update:
+    - docs/playbook-layer.md
+    - tests/playbook/
+
+conflicts_with_main_lane: false
+conflicts_with_gate11: false
+conflicts_with_evidence_tooling: false

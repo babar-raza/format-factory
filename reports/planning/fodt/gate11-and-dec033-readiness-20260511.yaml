@@ -1,0 +1,30 @@
+# FODT Gate 11 and DEC-033 Readiness — Machine-Readable
+# Sprint: FODT-GATE10-APPROVAL-AND-SWARM-NEXT-LANES-001 (Lane B)
+
+format_id: fodt
+gate: 11
+readiness_date: "2026-05-11"
+gate11_status: not_started
+dec033_status: unresolved
+net_source_exists: false
+
+blockers:
+  - id: DEC-033
+    description: ".NET FOSS packaging decision unresolved"
+    blocks: [gate_11, net_source, commercial_licensing]
+
+resolution_options:
+  - id: A
+    label: ".NET FOSS + Commercial"
+    recommended: false
+  - id: B
+    label: ".NET Commercial Only"
+    recommended: true
+  - id: C
+    label: "Defer .NET Entirely"
+    recommended: false
+  - id: D
+    label: ".NET FOSS Only"
+    recommended: false
+
+proposed_next_sprint: "DEC-033 Resolution Sprint (planning-only)"

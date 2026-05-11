@@ -3,23 +3,25 @@ memory_package: format-factory-chat-memory
 version: 1.0
 created_at: 2026-05-03
 intended_location: /memory
-source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated run015–run049 to reflect run049: FUL-001 schemas (6); FUL-002 FODS 6 files; FUL-003 FODT 6 files (partial, Gate 9 required); stale state repairs; contract closure policy patched (21 contracts); master-plan v2.45
+source: ChatGPT conversation memory plus inspected Phase 0 evidence bundles through run015; updated through 2026-05-11 documentation status sync to reflect master-plan v2.50 and registry state.
 visibility: internal
 publish_allowed: false
 notes: Place this folder at repo root as /memory. These files are for agent context and must not supersede plans/master-plan.md.
 ---
 
-# 09 — Current State (Phase 3: FODS Gates 1-10 PASSED, Gate 11 planning_ready; FODT Gates 1-8 PASSED, Gate 9 product-mapping planning_ready)
+# 09 — Current State (FODS Gates 1-10 PASSED; FODT Gates 1-9 PASSED; Phase 4 Python source created)
 
-This file captures the current state after run048. FODS Gates 1-9 ALL PASSED. Gate 9 APPROVED Babar Raza (2026-05-08, run047): tier-map.yaml v1.0 approved, 16 features across 5 tiers (T0-T4), TC-0040 DEC-034 PASS 20/20. Gate 10 planning_ready: TC-0044 not_started, gate10-product-planning.md. FODT Gates 1-6 ALL PASSED: Gate 6 APPROVED Babar Raza (2026-05-08, run047): ORACLE_RUN PASS 4/4; ORACLE_COMPARE PASS 2/4 WARN 2/4 (word-count tolerances — expected); TC-0043 DEC-034 PASS inline. Gate 7 fuzz planning_ready: TC-0045 not_started, gate7-fuzz-plan.md. Evidence metadata floor restored to 30 (run046 regression fixed). RUN_CONTRACT_MINIMUM_NOT_BELOW_BASE check added.
+This file captures current state context, but it is not the authority. FODS Gates 1-10 are passed and FODS Phase 4 Python source has been created under `src/python/fods/`. FODT Gates 1-9 are passed; Gate 10 is planning_verified, and TC-0052 Python source implementation is pending human review. Evidence metadata, bundle validation, and current-state consistency remain governed by `plans/master-plan.md`, `registry/format-registry.yaml`, and evidence bundle metadata.
 
-**Last updated:** run050 (FODT Gate 9 PASSED; FODT Gate 10 PLANNING_READY; FODS Gate 11 PLANNING_READY; FUL 20/20 FODS 15/15 FODT; Phase 4 plans created) (FODS/FODT Format Understanding packages compiled: FUL-001 schemas + FUL-002 FODS 6 files + FUL-003 FODT 6 files (partial); stale state repairs; contract closure policy patched; master-plan v2.45).
+**Last updated:** 2026-05-11 documentation status sync. Authority remains `plans/master-plan.md` and `registry/format-registry.yaml`.
 
 ## Current status
 
+> Status sync note, 2026-05-11: this memory file is context only. The current authority is `plans/master-plan.md` and `registry/format-registry.yaml`. Current authority says FODS Gates 1-10 are passed with Python source created under `src/python/fods/`; FODT Gates 1-9 are passed, Gate 10 is planning_verified, and Python source under `src/python/fodt/` is pending human review. Older historical paragraphs in this file remain for run history and should not override the master plan.
+
 | Item | Status |
 |---|---|
-| Phase | Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready (run050); FODT Gates 1-9 ALL PASSED; Gate 9 PASSED run050; Gate 10 planning_ready run050 |
+| Phase | Phase 3/4: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-9 ALL PASSED; Gate 10 planning_verified; TC-0052 source_implemented_pending_human_review. |
 | Phase 0 accepted | YES — 2026-05-04 (run015, human-authorized) |
 | Phase 1A complete | YES — FODS scored 93/100 (run015), independently verified (run016) |
 | Gate 1 status | **PASSED** — approved by Babar Raza, 2026-05-04 (run017) |
@@ -42,9 +44,9 @@ This file captures the current state after run048. FODS Gates 1-9 ALL PASSED. Ga
 | Gate 10 status | **PASSED** — approved Babar Raza, 2026-05-08, run048; OSS Tiers 0-2; format-factory-fods v0.1.0; TC-0044 COMPLETED |
 | FUL-001 | **COMPLETED** — run049 (2026-05-08); 6 schemas in schemas/format-understanding/ |
 | FUL-002 | **COMPLETED** — run049 (2026-05-08); 6 FODS FUL files in acquisition-packs/fods/ |
-| FUL-003 | partial_pending_gate9 — run049 (2026-05-08); 6 FODT FUL files in acquisition-packs/fodt/ (product-readiness partial) |
-| Active formats | fods (gates 1-10: ALL PASSED; gate_11: planning_ready); fodt (gates 1-8: ALL PASSED; gate_9: product-mapping planning_ready) |
-| Registry | FODS: gates 1-10 passed; gate_11 not_started; next_allowed_action: gate11_commercial_planning. FODT: gates 1-8 passed; gate_9 planning_ready; TC-0048 not_started |
+| FUL-003 | COMPLETED — 6 FODT FUL files in acquisition-packs/fodt/ after Gate 9 |
+| Active formats | fods (gates 1-10: ALL PASSED; gate_11: planning_ready; Phase 4 Python source created); fodt (gates 1-9: ALL PASSED; gate_10: planning_verified; Phase 4 Python source implemented pending human review) |
+| Registry | FODS: gates 1-10 passed; gate_11 planning_ready; next_allowed_action: gate11_commercial_planning. FODT: gates 1-9 passed; gate_10 planning_verified; TC-0052 source_implemented_pending_human_review |
 | Spec Workbench v1 | created run030 (local-only): .local/spec-cache/fods/1.3/workbench/ — verified-facts.yaml (10 facts), requirement packs (parser/sample/model), task packets, coverage matrices; 205/205 validation PASS |
 | FODS acquisition pack | acquisition-packs/fods/ (19 files after run038: + oracle-operator-handoff.md run038) |
 | TC-0001 status | COMPLETED — Gate 1 approved (run017) |
@@ -79,7 +81,7 @@ This file captures the current state after run048. FODS Gates 1-9 ALL PASSED. Ga
 | Hybrid Spec Retrieval | docs/spec-retrieval-strategy.md (run027); AGENTS.md Section X; GOVERNANCE.md Section 17 |
 | Schemas | schemas/neutral-model/fods/ — neutral model v1 (7 files: model.yaml, model.schema.json, field-map.yaml, coverage-matrix.yaml, validation-rules.yaml, README.md) |
 | Prototypes | prototypes/by-format/fods/fods_parser.py (Gate 4 prototype; 4/4 PASS; verified run030+run031+run032) |
-| Product source | None |
+| Product source | FODS Python source exists in `src/python/fods/`; FODT Python source exists in `src/python/fodt/`; .NET source has not been created |
 | CI workflows | None |
 | Commercial source folder | Must not exist |
 | Specs downloaded | YES — ODF 1.3 Part 3 PDF (24.27 MB, sha256:92cfe64...b066) downloaded run021; stored at .local/spec-cache/fods/1.3/ (gitignored) |

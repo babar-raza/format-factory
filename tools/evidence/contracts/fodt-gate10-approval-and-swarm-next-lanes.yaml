@@ -1,0 +1,70 @@
+# Evidence contract: FODT-GATE10-APPROVAL-AND-SWARM-NEXT-LANES-001
+# Type: controlled swarm — Gate 10 approval + next-lane planning
+sprint_id: "FODT-GATE10-APPROVAL-AND-SWARM-NEXT-LANES-001"
+contract_id: "FODT-GATE10-APPROVAL-AND-SWARM-NEXT-LANES-001"
+format_id: fodt
+gate: 10
+type: approval_and_planning
+
+required_repo_files:
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+  - reports/gate-review/fodt/gate10-approval-recording-20260511.md
+  - reports/gate-review/fodt/gate10-approval-recording-20260511.yaml
+  - reports/planning/fodt/gate11-and-dec033-readiness-20260511.md
+  - reports/planning/fodt/gate11-and-dec033-readiness-20260511.yaml
+  - reports/planning/secondary/sf2f05-readiness-20260511.md
+  - reports/planning/secondary/sf2f05-readiness-20260511.yaml
+  - reports/acceleration/evidence-final-proof-automation-20260511.md
+  - reports/acceleration/evidence-final-proof-automation-20260511.yaml
+  - reports/governance/memory-governance-sync-20260511.md
+  - taskcards/FODT-GATE10-approval-recording.md
+  - taskcards/FODT-GATE11-readiness-planning.md
+  - taskcards/DEC-033-resolution-planning.md
+  - taskcards/ACCEL-003-final-proof-two-pass-automation.md
+  - tools/evidence/contracts/fodt-gate10-approval-and-swarm-next-lanes.yaml
+
+required_metadata_files:
+  - phase0-coordinator-preflight.md
+  - lane-ownership-matrix.md
+  - git-status-before.txt
+  - lane-a-gate10-approval.md
+  - lane-b-gate11-dec033-readiness.md
+  - lane-c-sf2f05-readiness.md
+  - lane-d-evidence-tooling-acceleration.md
+  - lane-m-memory-governance-sync.md
+  - phase7-coordinator-integration.md
+  - phase8-validation-and-drift.md
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+  - bundle-manifest.yaml
+  - final-bundle-validation-proof.txt
+
+min_metadata_count: 30
+
+semantic_checks:
+  - "registry fodt gate_10 status is passed"
+  - "registry fodt gate_10 approved_by is Babar Raza"
+  - "registry fodt gate_10 approved_date is 2026-05-11"
+  - "master-plan version is 2.52"
+  - "no src/ files created"
+  - "no .NET files created"
+  - "no tests/ files created"
+  - "no samples/ created"
+  - "no schema changes"
+  - "no prototype changes"
+  - "no tools/ modified"
+  - "no .env or secrets"
+  - "all new files in reports/ or taskcards/"
+  - "CURRENT_STATE_CONSISTENCY: PASS"
+  - "all 5 lanes LANE_PASS"
+  - "coordinator integration ALL_LANES_PASS"
+  - "no self-approval of Gate 10"
+
+forbidden_patterns:
+  - ".env"
+  - ".local/"
+  - ".git/"
+  - "src/net/"
+  - "__pycache__/"

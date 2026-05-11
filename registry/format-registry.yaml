@@ -263,7 +263,7 @@ formats:
       approved_date: "2026-05-07"
     human_gate1_approved: true
     acquisition_pack_created: true
-    next_allowed_action: gate9_product_mapping_planning
+    next_allowed_action: gate11_commercial_planning
     gates:
       gate_1:
         status: passed
@@ -361,15 +361,15 @@ formats:
         approval_run: run050
         notes: "Gate 9 executed run050 (2026-05-08). Tier map v1.0: 5 tiers 16 features. First OSS Tiers 0-2 (12 features). DEC-034 PASS 10/10 inline (authorized by run050 prompt). TC-0048 COMPLETED. Approves FODT Gate 10 OSS readiness planning only. No product source created."
       gate_10:
-        status: planning_verified
-        approved_by: null
-        approved_date: null
-        approval_run: null
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-11"
+        approval_run: "FODT-GATE10-APPROVAL-AND-SWARM-NEXT-LANES-001"
         tc0049_status: completed
         tc0049_completed: "2026-05-09"
-        tc0052_status: source_implemented_pending_human_review
+        tc0052_status: completed
         tc0052_completed: "2026-05-09"
-        notes: "Gate 10 planning verified TC-0049-FODT-GATE10-EXECUTION (2026-05-09). FUL 15/15 PASS. OSS scope Tiers 0-2 (12 features). TC-7 iterative traversal required. TC-6 iterparse required. TC-0052 PHASE4 EXECUTED (2026-05-09): src/python/fodt/ 6 modules + tests/python/fodt/ 6 test files; 115/115 PASS; IR-FODT-001..015 all satisfied. Full Gate 10 approval requires human review."
+        notes: "Gate 10 APPROVED by Babar Raza (2026-05-11). Manual review verdict: RECOMMEND_GATE10_APPROVAL (0 blockers, 0 repairs). TC-0052 Phase 4 Python source: 7 modules, 115/115 PASS, 15/15 IR-FODT. Evidence: gate10-review-packet-20260511.md, gate10-manual-review-judgment-20260511.md. Authorizes Gate 11 commercial readiness planning only. Does NOT authorize .NET source (DEC-033 unresolved)."
       gate_11:
         status: not_started
         approved_by: null

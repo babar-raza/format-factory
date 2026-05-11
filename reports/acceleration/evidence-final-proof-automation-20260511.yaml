@@ -1,0 +1,33 @@
+# Evidence Final-Proof Two-Pass Automation — Machine-Readable
+# Sprint: FODT-GATE10-APPROVAL-AND-SWARM-NEXT-LANES-001 (Lane D)
+
+accel_id: "ACCEL-003"
+title: "Evidence final-proof two-pass automation"
+date: "2026-05-11"
+status: planned
+implementation_sprint: null
+
+problem: "Manual two-pass proof placeholder causes recurring repair sprints"
+affected_tool: "tools/evidence/build_evidence_bundle.py"
+proposed_flag: "--auto-proof"
+
+passes:
+  - id: 1
+    action: "Build candidate zip with placeholder proof"
+    validation: "Run validator on candidate"
+  - id: 2
+    action: "Rebuild final zip with real proof containing candidate metadata"
+    validation: "Run validator on final"
+
+tests_required: 6
+backwards_compatible: true
+new_dependencies: none
+migration_required: false
+
+acceptance_criteria:
+  - "--auto-proof flag accepted"
+  - "Two-pass build completes without manual intervention"
+  - "Final proof contains candidate hash, size, entries"
+  - "All 6 tests pass"
+  - "Without flag, existing behavior unchanged"
+  - "No new dependencies"

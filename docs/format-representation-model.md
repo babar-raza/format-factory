@@ -1,21 +1,18 @@
 # Format Representation Model
 
 **Document type:** Architecture / Backlog
-**Status:** Active (XML-type immediate focus); non-XML is backlog only.
+**Status:** Active for XML-type formats; non-XML is backlog only.
 **Created:** 2026-05-08 (memory sprint)
-**Last updated:** 2026-05-08
+**Last updated:** 2026-05-11
 **Visibility:** internal
 
 ---
 
 ## 1. Purpose
 
-This document defines the physical representation categories for file formats in format-factory,
-establishes the immediate XML-first scope, and captures non-XML adaptability as explicit backlog.
+This document defines the physical representation categories for file formats in format-factory, establishes the immediate XML-first scope, and captures non-XML adaptability as explicit backlog.
 
-The project must avoid hardcoding XML-only assumptions in its architecture — the gates, evidence
-system, oracle harness, and product source should be adaptable to non-XML formats without rework.
-However, non-XML adaptability is backlog only and must not be implemented now.
+The project must avoid hardcoding XML-only assumptions in its architecture. The gates, evidence system, oracle harness, and product source should be adaptable to non-XML formats without rework. However, non-XML adaptability is backlog only and must not be implemented without explicit authorization.
 
 ---
 
@@ -25,97 +22,102 @@ However, non-XML adaptability is backlog only and must not be implemented now.
 |---|---|---|
 | `text_xml` | Single flat XML file | FODS, FODT, FODP, FODG |
 | `zip_container` | ZIP archive containing XML parts | ODS, ODT, XLSX, DOCX, PPTX |
-| `binary_records` | Sequential binary record stream | XLS (BIFF), DOC (Word97) |
-| `compound_document` | OLE/CFB compound file | DOC, XLS, PPT (Office 97-2003) |
+| `binary_records` | Sequential binary record stream | XLS BIFF, DOC Word97 |
+| `compound_document` | OLE/CFB compound file | DOC, XLS, PPT Office 97-2003 |
 | `delimited_text` | Character-delimited rows | CSV, TSV |
 | `json_like` | JSON or JSON-adjacent structures | GeoJSON, some export formats |
 | `hybrid_container` | Mixed or non-standard container | Some scientific formats |
 
 ---
 
-## 3. Immediate Focus: XML-type Formats
+## 3. Immediate Focus: XML-Type Formats
 
-**Current work:** `text_xml` formats only — FODS (Gate 10 PASSED), FODT (Gates 1–8 PASSED).
+Current work is `text_xml` only:
 
-The full acquisition pipeline has been validated on two `text_xml` formats. The gates, evidence
-system, spec cache, oracle harness, fuzz infrastructure, and product mapping process all work
-for `text_xml`. No changes are needed to support additional `text_xml` formats (e.g., FODP, FODG).
+- FODS: Gate 10 passed; Python source created in `src/python/fods/`.
+- FODT: Gates 1-9 passed; Gate 10 planning_verified; Python source implemented in `src/python/fodt/` pending human review.
+
+The acquisition pipeline has been validated on two `text_xml` formats. The gates, evidence system, spec cache, oracle harness, fuzz infrastructure, product mapping process, and Phase 4 Python source pattern all work for this representation family.
+
+Additional `text_xml` formats such as FODP and FODG can reuse the pipeline, but they still require their own gates, evidence, samples, models, tests, and human approvals.
 
 ---
 
-## 4. XML Pipeline Reuse vs. Format-Specific Work
+## 4. XML Pipeline Reuse Vs. Format-Specific Work
 
-### 4.1 What another XML format can reuse
+### What Another XML Format Can Reuse
 
 | Reusable infrastructure | Notes |
 |---|---|
 | 11-gate pipeline | Same gates, same DEC-034, same approval process |
-| Evidence bundle system | Same contracts, same validator, same builder |
-| Spec cache and normalization | If using the same spec body (OASIS ODF 1.3) |
+| Evidence bundle system | Same contracts, validator, and builder |
+| Spec cache and normalization | If using the same spec body, such as OASIS ODF 1.3 |
 | Sample provenance policy | Same license requirements |
-| XML safety patterns | XXE/DTD mitigations from Gate 7/8 are reusable |
+| XML safety patterns | XXE and DTD mitigations from Gate 7/8 are reusable |
 | Oracle harness pattern | `run_{format}_oracle.py` pattern is reusable |
 | Evidence contracts | Base contract reusable; format-specific contract extends it |
 | Product mapping process | Tier model and feature enumeration reusable |
 
-### 4.2 What another XML format still needs new
+### What Another XML Format Still Needs New
 
 | Format-specific work | Notes |
 |---|---|
-| Domain model | New neutral model for new format family |
+| Domain model | New neutral model for the format family |
 | Sample corpus | New synthetic samples for the format |
-| Parser semantics | New parser understanding (paragraph vs cell vs slide) |
+| Parser semantics | New parser understanding, such as cells vs paragraphs vs slides |
 | Oracle comparison logic | New output comparison for the format |
 | Fuzz cases | New malformed input categories |
 | Product tier map | New feature enumeration and tier assignment |
-| Security surface | New threat model (different XML elements, different attack surface) |
+| Security surface | New threat model for that format's elements and behavior |
 
-### 4.3 Expected adaptation ranges (directional estimates only)
+### Expected Adaptation Ranges
+
+These are directional estimates, not guaranteed metrics:
 
 | Format type | Expected format-specific effort |
 |---|---|
-| Different XML format (same spec body) | 20–40% format-specific |
-| Different XML format (different spec body) | 30–50% format-specific |
-| ZIP/container format | 40–60% format-specific |
-| Binary format | 55–75% format-specific |
-
-These are directional estimates, not guaranteed metrics. Actual effort depends on format complexity,
-spec quality, and domain model similarity.
+| Different XML format, same spec body | 20-40% format-specific |
+| Different XML format, different spec body | 30-50% format-specific |
+| ZIP/container format | 40-60% format-specific |
+| Binary format | 55-75% format-specific |
 
 ---
 
 ## 5. Non-XML Adaptability Backlog
 
-### 5.1 ZIP/Container Formats (e.g., ODS, XLSX, DOCX)
+### ZIP/Container Formats
 
-**Parser strategy:** Extract XML from ZIP, then apply XML pipeline. Adds ZIP layer complexity.
-**Sample strategy:** Same license requirements; more complex to create synthetically.
-**Oracle strategy:** Same harness pattern; different export format.
-**Fuzz/security surface:** ZIP bomb attacks, path traversal, malformed ZIP headers, nested ZIP.
-**Expected reusable infrastructure:** All XML-layer patterns.
-**Expected format-specific work:** ZIP extraction layer, multi-part relationships.
+Examples: ODS, XLSX, DOCX.
 
-### 5.2 Binary Record Formats (e.g., XLS BIFF, DOC Word97)
+- Parser strategy: Extract XML from ZIP, then apply XML pipeline.
+- Security surface: ZIP bombs, path traversal, malformed ZIP headers, nested ZIP.
+- Expected reusable infrastructure: XML-layer patterns, gates, evidence system, product mapping.
+- Expected new work: ZIP extraction layer and relationship handling.
 
-**Parser strategy:** Requires structured binary reader; no XML reuse.
-**Sample strategy:** May need LibreOffice to generate samples; provenance harder.
-**Oracle strategy:** May need different reference tool (not LibreOffice text export).
-**Fuzz/security surface:** Integer overflow, truncated records, malformed record headers.
-**Expected reusable infrastructure:** Pipeline gates, evidence system, product mapping.
-**Expected format-specific work:** Binary parser, spec analysis from documentation only.
+### Binary Record Formats
 
-### 5.3 Compound Document Formats (OLE/CFB)
+Examples: XLS BIFF, DOC Word97.
 
-**Parser strategy:** Requires OLE/CFB layer before content parsing.
-**Fuzz/security surface:** CFB corruption, directory traversal, stream overflow.
-**Expected format-specific work:** CFB reader, stream identification, OLE metadata.
+- Parser strategy: Structured binary reader; no XML parser reuse.
+- Security surface: Integer overflow, truncated records, malformed record headers.
+- Expected reusable infrastructure: Pipeline gates, evidence system, product mapping.
+- Expected new work: Binary parser and spec analysis from documentation.
 
-### 5.4 Delimited Text (CSV, TSV)
+### Compound Document Formats
 
-**Parser strategy:** Simple record/field parsing; no binary complexity.
-**Oracle strategy:** Round-trip through LibreOffice or similar.
-**Fuzz/security surface:** CSV injection, very long fields, null bytes, encoding attacks.
-**Expected format-specific work:** Dialect detection, encoding handling, injection detection.
+Examples: OLE/CFB based DOC, XLS, PPT.
+
+- Parser strategy: OLE/CFB layer before content parsing.
+- Security surface: CFB corruption, stream overflow, directory structure issues.
+- Expected new work: CFB reader, stream identification, OLE metadata.
+
+### Delimited Text
+
+Examples: CSV, TSV.
+
+- Parser strategy: Record and field parsing.
+- Security surface: CSV injection, very long fields, null bytes, encoding attacks.
+- Expected new work: Dialect detection, encoding handling, injection detection.
 
 ---
 
@@ -129,12 +131,10 @@ spec quality, and domain model similarity.
 | REP-004 | ZIP/container pilot planning | proposed_pending_human_approval |
 | REP-005 | Binary-record pilot planning | proposed_pending_human_approval |
 
-See `taskcards/REP-*.md` for definitions. None of these are authorized for execution in this sprint.
+None of these are authorized for execution unless a human prompt names the taskcard and allowed files.
 
 ---
 
 ## 7. Prohibition
 
-Do not implement non-XML format support, ZIP container extraction, or binary record parsing
-without an explicit human-authorized execution prompt that names the format, representation type,
-and gate entry point.
+Do not implement non-XML format support, ZIP container extraction, or binary record parsing without an explicit human-authorized execution prompt that names the format, representation type, and gate entry point.
