@@ -1,0 +1,100 @@
+# Evidence Bundle Contract: FODT Gate 10 Review Packet and Next-Lane Acceleration
+# Sprint: FODT-GATE10-REVIEW-PACKET-AND-NEXT-LANE-ACCELERATION-001
+# Date: 2026-05-11
+# Inherits: base-run.yaml v1.4
+
+contract_id: FODT-GATE10-REVIEW-PACKET-AND-NEXT-LANE-ACCELERATION-001
+version: "1.0"
+description: "FODT Gate 10 human review packet and controlled acceleration plan."
+sprint_id: FODT-GATE10-REVIEW-PACKET-AND-NEXT-LANE-ACCELERATION-001
+
+require_clean_git: true
+emergency_blocker_bundle: false
+min_metadata_count: 30
+
+required_repo_files:
+  - reports/gate-review/fodt/gate10-review-packet-20260511.md
+  - reports/gate-review/fodt/gate10-review-packet-20260511.yaml
+  - reports/acceleration/controlled-parallel-lanes-20260511.md
+  - taskcards/FODT-GATE10-review-packet.md
+  - taskcards/ACCEL-001-controlled-parallel-lanes.md
+  - taskcards/ACCEL-002-larger-sprint-policy.md
+  - plans/master-plan.md
+  - tools/evidence/contracts/fodt-gate10-review-packet-and-next-lane-acceleration.yaml
+
+required_metadata_files:
+  - phase0-baseline-and-safety.md
+  - phase1-readiness-source-verification.md
+  - phase5-validation-report.md
+  - phase6-no-scope-drift-report.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - validation-command-log.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+semantic_checks:
+  - id: G10P-SC-001
+    key: gate10_packet_created
+    value: true
+  - id: G10P-SC-002
+    key: machine_readable_gate10_packet_created
+    value: true
+  - id: G10P-SC-003
+    key: acceleration_plan_created
+    value: true
+  - id: G10P-SC-004
+    key: larger_sprint_policy_created
+    value: true
+  - id: G10P-SC-005
+    key: tc0052_iv_proof_repair_accepted
+    value: true
+  - id: G10P-SC-006
+    key: gate10_not_approved
+    value: true
+  - id: G10P-SC-007
+    key: gate11_not_started
+    value: true
+  - id: G10P-SC-008
+    key: dec033_unresolved
+    value: true
+  - id: G10P-SC-009
+    key: no_net_source_created
+    value: true
+  - id: G10P-SC-010
+    key: no_source_behavior_change
+    value: true
+  - id: G10P-SC-011
+    key: no_sf2f05_execution
+    value: true
+  - id: G10P-SC-012
+    key: no_gov_revert_002_execution
+    value: true
+  - id: G10P-SC-013
+    key: no_gov006_execution
+    value: true
+  - id: G10P-SC-014
+    key: no_llm_call
+    value: true
+  - id: G10P-SC-015
+    key: no_embedding_vector_db
+    value: true
+  - id: G10P-SC-016
+    key: no_push
+    value: true
+  - id: G10P-SC-017
+    key: no_stash_reset_restore_clean_used
+    value: true
+  - id: G10P-SC-018
+    key: no_broad_staging_used
+    value: true

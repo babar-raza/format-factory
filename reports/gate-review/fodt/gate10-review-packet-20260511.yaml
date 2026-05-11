@@ -1,0 +1,70 @@
+# FODT Gate 10 Review Packet — Machine-Readable Summary
+# Prepared: 2026-05-11
+# Sprint: FODT-GATE10-REVIEW-PACKET-AND-NEXT-LANE-ACCELERATION-001
+
+format_id: fodt
+gate: 10
+packet_date: "2026-05-11"
+recommended_status: READY_FOR_HUMAN_GATE10_REVIEW
+agent_approved: false
+
+source:
+  location: src/python/fodt/
+  modules: 7
+  package: format-factory-fodt
+  version: "0.1.0"
+  license: Apache-2.0
+  api:
+    - parse_fodt
+    - parse_fodt_strict
+  design:
+    parser: iterparse_streaming
+    list_traversal: explicit_stack_dfs
+    error_model: never_raises_or_strict
+    security: defusedxml_optional_100mb_guard
+
+tests:
+  fodt_count: 115
+  fodt_passed: 115
+  fodt_failed: 0
+  full_suite_count: 377
+  full_suite_passed: 377
+  full_suite_failed: 0
+  full_suite_skipped: 5
+  full_suite_warnings: 22
+
+traceability:
+  total_requirements: 15
+  verified_implemented: 15
+  deferred: 0
+  coverage: "IR-FODT-001 through IR-FODT-015"
+
+evidence_chain:
+  - id: tc0052-source-bundle
+    result: PASS
+    size: 1348824
+  - id: tc0052-iv-bundle
+    result: PASS
+    size: 1351694
+  - id: tc0052-iv-proof-repair
+    result: PASS
+    size: 1348414
+  - id: gov-revert-001-iv
+    result: PASS
+  - id: sf2f04-iv
+    result: PASS
+
+gate_state:
+  gate_10_status: planning_verified
+  gate_10_approved_by: null
+  gate_10_approved_date: null
+  gate_11_status: not_started
+  dec033_resolved: false
+  net_source_created: false
+
+non_blocking_notes:
+  - "Target contract weakness compensated by IV"
+  - "IV proof repair metadata note accepted"
+  - "22 full suite warnings (third-party plugins)"
+  - "GOV-REVERT-002 backlog"
+  - "S-F2F-05 queued"
