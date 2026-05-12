@@ -563,7 +563,10 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
     validate_out = result.stdout + result.stderr
     if "BUNDLE_VALIDATION: PASS" not in validate_out:
         print("[AUTO-PROOF PASS 1] Candidate validation FAIL.")
-        print(validate_out[-2000:])
+        try:
+            print(validate_out[-2000:])
+        except UnicodeEncodeError:
+            print(validate_out[-2000:].encode("ascii", errors="replace").decode("ascii"))
         if candidate_path.exists():
             candidate_path.unlink()
         return False
@@ -625,7 +628,10 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
     validate_out2 = result2.stdout + result2.stderr
     if "BUNDLE_VALIDATION: PASS" not in validate_out2:
         print("[AUTO-PROOF PASS 2] Final validation FAIL.")
-        print(validate_out2[-2000:])
+        try:
+            print(validate_out2[-2000:])
+        except UnicodeEncodeError:
+            print(validate_out2[-2000:].encode("ascii", errors="replace").decode("ascii"))
         if Path(output_path).exists():
             Path(output_path).unlink()
         return False
