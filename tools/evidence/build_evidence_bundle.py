@@ -502,6 +502,139 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
     return True
 
 
+def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
+                            allow_legacy_root_metadata=False, require_clean_git=True):
+    """Two-pass auto-proof bundle build (ACCEL-003).
+
+    Pass 1: Write placeholder proof, build candidate zip, validate.
+    Pass 2: Write real proof with candidate metadata, rebuild final zip, validate.
+
+    Eliminates manual proof-placeholder pattern that caused repair sprints.
+    Does NOT leave a misleading final bundle on validation failure.
+
+    Returns True on success (final BUNDLE_VALIDATION: PASS), False on any failure.
+    """
+    import hashlib
+    import zipfile as _zf
+
+    metadata_path = Path(metadata_dir).resolve() if metadata_dir else None
+    output_path_obj = Path(output_path)
+    candidate_path = output_path_obj.with_name(
+        output_path_obj.stem + "-candidate" + output_path_obj.suffix
+    )
+    proof_file = metadata_path / "final-bundle-validation-proof.txt" if metadata_path else None
+
+    # Extract sprint_id for the proof from contract
+    contract_data = load_contract(contract_path)
+    sprint_id = contract_data.get("sprint_id", contract_data.get("contract_id", Path(contract_path).stem))
+
+    # Write placeholder proof (required_metadata_files may list it; must exist for pass 1)
+    if proof_file:
+        proof_file.write_text(
+            "PLACEHOLDER — will be replaced after candidate validation\n",
+            encoding="utf-8",
+        )
+        print(f"[AUTO-PROOF] Placeholder proof written: {proof_file.name}")
+
+    # --- PASS 1: Build candidate ---
+    print("[AUTO-PROOF PASS 1] Building candidate bundle...")
+    ok = build_bundle(
+        repo_root, contract_path, str(candidate_path), metadata_dir,
+        dry_run=False,
+        require_clean_git=require_clean_git,
+        allow_legacy_root_metadata=allow_legacy_root_metadata,
+    )
+    if not ok:
+        print("[AUTO-PROOF PASS 1] FAIL — candidate build failed. Stopping.")
+        if candidate_path.exists():
+            candidate_path.unlink()
+        return False
+
+    # --- PASS 1: Validate candidate ---
+    print("[AUTO-PROOF PASS 1] Validating candidate...")
+    validator = Path(__file__).parent / "validate_evidence_bundle.py"
+    result = subprocess.run(
+        [sys.executable, str(validator),
+         "--bundle", str(candidate_path),
+         "--contract", contract_path,
+         "--check-no-pending"],
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
+    )
+    validate_out = result.stdout + result.stderr
+    if "BUNDLE_VALIDATION: PASS" not in validate_out:
+        print("[AUTO-PROOF PASS 1] Candidate validation FAIL.")
+        print(validate_out[-2000:])
+        if candidate_path.exists():
+            candidate_path.unlink()
+        return False
+    print("[AUTO-PROOF PASS 1] Candidate validation PASS.")
+
+    # Compute candidate metrics
+    candidate_bytes = candidate_path.stat().st_size
+    candidate_sha256 = hashlib.sha256(candidate_path.read_bytes()).hexdigest()
+    with _zf.ZipFile(candidate_path, "r") as zc:
+        names = zc.namelist()
+        candidate_entries = len(names)
+        candidate_metadata = sum(
+            1 for n in names
+            if n.startswith("bundle-metadata/") and not n.endswith("/")
+        )
+
+    # --- Write real proof ---
+    if proof_file:
+        proof_text = "\n".join([
+            "BUNDLE_VALIDATION: PASS",
+            f"sprint_id: {sprint_id}",
+            f"contract_id: {sprint_id}",
+            f"Candidate: {candidate_path.name}",
+            f"Candidate SHA-256: {candidate_sha256}",
+            f"Candidate entries: {candidate_entries}",
+            f"Candidate bytes: {candidate_bytes:,}",
+            f"Candidate metadata: {candidate_metadata}",
+            "Validator: validate_evidence_bundle.py",
+            f"Timestamp: {datetime.now().astimezone().isoformat()}",
+            "Final rebuild includes this proof file.",
+            "",
+        ])
+        proof_file.write_text(proof_text, encoding="utf-8")
+        print(f"[AUTO-PROOF] Real proof written: {proof_file.name}")
+
+    # --- PASS 2: Build final ---
+    print("[AUTO-PROOF PASS 2] Building final bundle...")
+    ok = build_bundle(
+        repo_root, contract_path, str(output_path), metadata_dir,
+        dry_run=False,
+        require_clean_git=require_clean_git,
+        allow_legacy_root_metadata=allow_legacy_root_metadata,
+    )
+    if not ok:
+        print("[AUTO-PROOF PASS 2] FAIL — final build failed.")
+        if Path(output_path).exists():
+            Path(output_path).unlink()
+        return False
+
+    # --- PASS 2: Validate final ---
+    print("[AUTO-PROOF PASS 2] Validating final bundle...")
+    result2 = subprocess.run(
+        [sys.executable, str(validator),
+         "--bundle", str(output_path),
+         "--contract", contract_path,
+         "--check-no-pending"],
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
+    )
+    validate_out2 = result2.stdout + result2.stderr
+    if "BUNDLE_VALIDATION: PASS" not in validate_out2:
+        print("[AUTO-PROOF PASS 2] Final validation FAIL.")
+        print(validate_out2[-2000:])
+        if Path(output_path).exists():
+            Path(output_path).unlink()
+        return False
+
+    print(f"BUNDLE_VALIDATION: PASS")
+    print(f"EVIDENCE_BUNDLE: {Path(output_path).resolve()}")
+    return True
+
+
 def main():
     parser = argparse.ArgumentParser(description="Build evidence bundle from contract")
     parser.add_argument("--repo-root", required=True, help="Repository root path")
@@ -513,17 +646,30 @@ def main():
                         help="Skip git cleanliness check")
     parser.add_argument("--allow-legacy-root-metadata", action="store_true",
                         help="Allow root bundle-metadata/ for legacy bundle reconstruction only")
+    parser.add_argument("--auto-proof", action="store_true",
+                        help="Two-pass build: candidate -> validate -> write proof -> final -> "
+                             "validate final. Eliminates manual proof-placeholder pattern (ACCEL-003). "
+                             "Incompatible with --dry-run.")
     args = parser.parse_args()
 
-    success = build_bundle(
-        args.repo_root,
-        args.contract,
-        args.output,
-        args.metadata_dir,
-        args.dry_run,
-        require_clean_git=not args.no_git_check,
-        allow_legacy_root_metadata=args.allow_legacy_root_metadata,
-    )
+    if args.auto_proof:
+        success = build_auto_proof_bundle(
+            args.repo_root,
+            args.contract,
+            args.output,
+            args.metadata_dir,
+            allow_legacy_root_metadata=args.allow_legacy_root_metadata,
+        )
+    else:
+        success = build_bundle(
+            args.repo_root,
+            args.contract,
+            args.output,
+            args.metadata_dir,
+            args.dry_run,
+            require_clean_git=not args.no_git_check,
+            allow_legacy_root_metadata=args.allow_legacy_root_metadata,
+        )
     sys.exit(0 if success else 1)
 
 

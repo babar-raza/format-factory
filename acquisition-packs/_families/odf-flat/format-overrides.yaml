@@ -1,0 +1,83 @@
+# ODF-Flat Family Format Overrides
+# Sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001 (Lane C / S-F2F-05)
+# Documents per-format exceptions to the family playbook defaults.
+
+schema_version: "1.0"
+family_id: odf-flat
+created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+created_at: "2026-05-11"
+
+formats:
+  fods:
+    status: gates_1_through_10_passed
+    acquisition_phase: phase_4_python_foss_complete
+    root_element: "office:spreadsheet"
+    content_namespace: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    python_package: format-factory-fods
+    python_module: src/python/fods/
+    gate_overrides:
+      gate_1:
+        score: 93
+        approved_date: "2026-05-04"
+      gate_10:
+        approved_date: "2026-05-08"
+    parser_notes: "iterparse streaming; elem.clear() after row; multi-sheet support"
+    neutral_model_entities: 6
+    ir_count: 20
+    ir_deferred: [IR-FODS-008]  # Tier 3 feature, deferred
+    oracle_known_warn: "multi_sheet_csv_limit"
+    fuzz_result: "18/18 PASS CRASH=0"
+    security_report: reports/security/fods.md
+    tier_map: acquisition-packs/fods/tier-map.yaml
+
+  fodt:
+    status: gates_1_through_10_passed
+    acquisition_phase: phase_4_python_foss_complete
+    root_element: "office:text"
+    content_namespace: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    python_package: format-factory-fodt
+    python_module: src/python/fodt/
+    gate_overrides:
+      gate_1:
+        score: 88
+        approved_date: "2026-05-07"
+      gate_10:
+        approved_date: "2026-05-11"
+    parser_notes: "iterparse streaming; iterative DFS list_traversal; elem.clear()"
+    neutral_model_entities: 7
+    ir_count: 15
+    ir_deferred: []
+    oracle_known_warn: "word_count_tolerance"
+    fuzz_result: "18/18 PASS CRASH=0"
+    security_report: reports/security/fodt.md
+    tier_map: acquisition-packs/fodt/tier-map.yaml
+
+  fodp:
+    status: candidate_only
+    acquisition_phase: not_started
+    root_element: "office:presentation"
+    content_namespace: "urn:oasis:names:tc:opendocument:xmlns:presentation:1.0"
+    python_package: null
+    python_module: null
+    gate_overrides: {}
+    notes: "Candidate only. Gate 1 scoring requires explicit human authorization."
+
+  fodg:
+    status: candidate_only
+    acquisition_phase: not_started
+    root_element: "office:drawing"
+    content_namespace: "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+    python_package: null
+    python_module: null
+    gate_overrides: {}
+    notes: "Candidate only. Gate 1 scoring requires explicit human authorization."
+
+  fodb:
+    status: candidate_only
+    acquisition_phase: not_started
+    root_element: "office:database"
+    content_namespace: "urn:oasis:names:tc:opendocument:xmlns:database:1.0"
+    python_package: null
+    python_module: null
+    gate_overrides: {}
+    notes: "Candidate only. Gate 1 scoring requires explicit human authorization."

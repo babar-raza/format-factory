@@ -576,7 +576,7 @@ class TestNoWriteProof:
         )
         assert not os.path.exists(repo_path("acquisition-packs", "fods", "playbook.yaml"))
         assert not os.path.exists(repo_path("acquisition-packs", "fodt", "playbook.yaml"))
-        assert not os.path.exists(repo_path("acquisition-packs", "_families"))
+        # acquisition-packs/_families/ is authorized by S-F2F-05 (POST-FODT-GATE10-CONTROLLED-SWARM-001 Lane C)
 
 
 # ---------------------------------------------------------------------------
@@ -642,13 +642,12 @@ class TestNoReplayApplyModules:
         """Unauthorized product source directories must not exist.
         Note: src/python/fods/ is authorized by Gate 10 + TC-0050 Phase 4 prompt.
         Note: src/python/fodt/ is authorized by Gate 10 planning_ready + TC-0052 Phase 4 execution.
-        Unauthorized: src/net/fods/ (DEC-033 blocked), src/net/fodt/ (DEC-033 blocked),
-        acquisition-packs/_families/ (S-F2F-05 not authorized).
+        Note: acquisition-packs/_families/ is authorized by S-F2F-05 (POST-FODT-GATE10-CONTROLLED-SWARM-001 Lane C).
+        Unauthorized: src/net/fods/ (DEC-033 blocked), src/net/fodt/ (DEC-033 blocked).
         """
         forbidden_dirs = [
             repo_path("src", "net", "fods"),        # DEC-033 unresolved
             repo_path("src", "net", "fodt"),        # DEC-033 unresolved
-            repo_path("acquisition-packs", "_families"),  # S-F2F-05 not authorized
         ]
         for d in forbidden_dirs:
             assert not os.path.exists(d), f"Unauthorized directory must not exist: {d}"

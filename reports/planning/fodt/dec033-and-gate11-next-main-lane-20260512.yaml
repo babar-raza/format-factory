@@ -1,0 +1,37 @@
+report_id: dec033-and-gate11-next-main-lane-20260512
+sprint_id: POST-FODT-GATE10-CONTROLLED-SWARM-001
+lane: D
+date: "2026-05-12"
+status: planning_ready
+
+dec033:
+  status: unresolved
+  recommended_option: B
+  options:
+    A: dotnet_foss_and_commercial
+    B: dotnet_commercial_only
+    C: defer_dotnet_entirely
+    D: dotnet_foss_only
+  blocks:
+    - fods_gate_11
+    - fodt_gate_11
+    - all_src_net_source_creation
+
+gate_11:
+  fods_status: not_started
+  fodt_status: not_started
+  blocker: DEC-033_unresolved
+  requires_human_decision: true
+
+python_foss_status:
+  fods: completed
+  fodt: completed
+  note: Python FOSS source is independent of DEC-033
+
+next_main_lane_prerequisites:
+  - human_dec033_option_choice
+  - human_dotnet_target_framework_confirmation
+  - TC_DEC033_EXEC_authorized
+  - TC_GATE11_EXEC_FODT_authorized
+
+dotnet_sdk_note: "net10.0 LTS recommended; 9.0.200 near EOL"

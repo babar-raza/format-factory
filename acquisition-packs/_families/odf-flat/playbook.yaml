@@ -1,0 +1,826 @@
+# ODF-Flat Family Acquisition Playbook
+# Sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001 (Lane C / S-F2F-05)
+# WARNING: This is a FAMILY-LEVEL playbook covering shared acquisition patterns.
+# It is NOT an active per-format playbook. It does NOT approve any gate.
+# It does NOT inherit any gate status from FODS to FODT or any other format.
+# See reuse-policy.md for explicit inheritance prohibition.
+
+schema_version: "1.0"
+playbook_id: odf-flat-family-acquisition
+playbook_version: "1.0"
+format_id: odf-flat
+format_family: odf-flat
+playbook_kind: family_playbook
+source_format_if_derived: null
+status: proposed
+not_for_execution: false
+
+authority_statement: >
+  This family playbook is authoritative only for documenting shared ODF-flat acquisition
+  patterns and reuse proposals. It does not approve any gate, does not constitute legal
+  or specification authority, and does not authorize apply mode.
+
+non_authority_statement: >
+  This family playbook DOES NOT approve any gate for any format. Gate approvals require
+  per-format DEC-034 independent verification and explicit human approval for each format.
+  No gate status passes from FODS to FODT, FODP, FODG, or FODB. This playbook does not
+  replace DEC-034, does not replace human approval, and is not a legal or spec authority.
+
+gates:
+  - gate_number: 1
+    gate_name: Format Scoring and Registry Entry
+    status: covered
+    covered_by_operations:
+      - odf-flat-scoring
+    notes: >
+      Shared scoring framework: ODF 1.3 OASIS standard base, IETF and ISO registration,
+      existing LibreOffice reference implementation. Each format scored independently.
+
+  - gate_number: 2
+    gate_name: Specification Acquisition
+    status: covered
+    covered_by_operations:
+      - odf-flat-spec-acquisition
+    notes: >
+      Shared specification: ODF 1.3 Part 3 (schemas) applies to all flat formats.
+      Legal basis shared: OASIS RF + ISO 26300 clear-patent. Each format acquires independently.
+
+  - gate_number: 3
+    gate_name: Sample Corpus Creation
+    status: covered
+    covered_by_operations:
+      - odf-flat-sample-corpus
+    notes: >
+      Synthetic samples required per format. XML structure shared; content namespace differs.
+      Samples must be project-owned and Apache-2.0.
+
+  - gate_number: 4
+    gate_name: Parser Prototype
+    status: covered
+    covered_by_operations:
+      - odf-flat-parser-prototype
+    notes: >
+      Shared parser patterns: iterparse streaming, defusedxml, size guard, namespace-aware
+      element extraction. Each format has distinct content namespaces and element mapping.
+
+  - gate_number: 5
+    gate_name: Neutral Model Creation
+    status: covered
+    covered_by_operations:
+      - odf-flat-neutral-model
+    notes: >
+      Shared neutral model approach: YAML schema, field-map, coverage-matrix, validation-rules.
+      Entities differ per format (spreadsheet cells vs text blocks vs slides).
+
+  - gate_number: 6
+    gate_name: Oracle Comparison
+    status: covered
+    covered_by_operations:
+      - odf-flat-oracle-comparison
+    notes: >
+      Shared oracle tool: LibreOffice soffice.com (console mode). Shared preflight checks.
+      Format-specific --infilter and output handling required per format.
+
+  - gate_number: 7
+    gate_name: Fuzz Testing
+    status: covered
+    covered_by_operations:
+      - odf-flat-fuzz-testing
+    notes: >
+      Shared fuzz categories: malformed XML, missing namespace, truncated file, encoding
+      corruption, size limit. Format-specific element categories per fuzz plan.
+
+  - gate_number: 8
+    gate_name: Security Review
+    status: covered
+    covered_by_operations:
+      - odf-flat-security-review
+    notes: >
+      Shared threat model: XML injection, XXE, zip bomb (not applicable for flat XML),
+      namespace confusion, macro absence. Security report per format.
+
+  - gate_number: 9
+    gate_name: Product Dependency Closure and Tier Mapping
+    status: covered
+    covered_by_operations:
+      - odf-flat-tier-mapping
+    notes: >
+      Shared tier framework: T0-T4 with first_oss=[0,1,2]. Tier assignment per format.
+      FODS uses spreadsheet tiers; FODT uses document tiers.
+
+  - gate_number: 10
+    gate_name: OSS Product Skeleton
+    status: covered
+    covered_by_operations:
+      - odf-flat-oss-skeleton
+    notes: >
+      Shared Python package structure: constants.py, exceptions.py, neutral_model.py,
+      parser.py (iterparse), list_traversal.py (where applicable), __init__.py, README.md.
+      IR validation pattern shared. Package name: format-factory-{format_id}.
+
+  - gate_number: 11
+    gate_name: Commercial Product Readiness
+    status: not_covered
+    covered_by_operations: []
+    notes: >
+      Gate 11 requires DEC-033 resolution (FOSS vs commercial .NET packaging decision).
+      Not covered by this family playbook. Requires separate authorization.
+
+operations:
+  - operation_id: odf-flat-scoring
+    gate: 1
+    operation_type: scoring
+    title: "ODF Flat Format Scoring — Gate 1"
+    description: >
+      Score each ODF flat format against the 11-gate criteria. Use the shared ODF 1.3 base
+      score, then adjust per-format for ubiquity, risk, and legal clarity. FODS: 93/100.
+      FODT: 88/100. FODP/FODG/FODB: candidates only (not yet scored).
+    mode_allowed: validate_only
+    target_paths:
+      - registry/format-registry.yaml
+      - registry/candidates/
+    input_dependencies:
+      - path: registry/format-registry.yaml
+        required: true
+        description: "Registry entry for each format."
+    expected_outputs:
+      - path: registry/format-registry.yaml
+        description: "Registry entry with gate_1 status per format."
+        checksum_required: false
+        format: yaml
+    validation_commands:
+      - command: >
+          python -c "import yaml; r=yaml.safe_load(open('registry/format-registry.yaml'));
+          assert r['formats']['fods']['gates']['gate_1']['status']=='passed';
+          assert r['formats']['fodt']['gates']['gate_1']['status']=='passed'"
+        purpose: "Confirm FODS and FODT gate_1 passed."
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+        notes: "Per-format evidence bundle required."
+      - artifact_type: dec034_verification_report
+        required: true
+        notes: "Independent verification per format."
+      - artifact_type: human_approval_record
+        required: true
+        notes: "Human approval per format gate."
+    conflict_policy: fail_and_queue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: guide
+    format_specific_overrides:
+      fods:
+        score: 93
+        status: gate_1_passed
+      fodt:
+        score: 88
+        status: gate_1_passed
+      fodp:
+        score: null
+        status: candidate_only
+      fodg:
+        score: null
+        status: candidate_only
+      fodb:
+        score: null
+        status: candidate_only
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+      notes: "Family-level scoring operation. Per-format scores from individual gate reviews."
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: odf-flat-spec-acquisition
+    gate: 2
+    operation_type: spec_acquisition
+    title: "ODF Flat Specification Acquisition — Gate 2"
+    description: >
+      Acquire ODF 1.3 Part 3 specification (schemas + content model). Shared by all
+      ODF flat formats. Single acquisition serves all family members. Legal basis:
+      OASIS RF patent policy. Canonical source: docs.oasis-open.org.
+    mode_allowed: validate_only
+    target_paths:
+      - .local/spec-cache/
+      - acquisition-packs/{format_id}/spec-evidence.md
+      - acquisition-packs/{format_id}/legal-notes.md
+    input_dependencies:
+      - path: docs/specification-cache.md
+        required: true
+        description: "Spec cache policy governing downloads."
+    expected_outputs:
+      - path: .local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf
+        description: "Cached ODF 1.3 Part 3 spec (local only)."
+        checksum_required: true
+        format: pdf
+    validation_commands:
+      - command: "python tools/spec-normalize/validate_normalized_spec.py --format fods"
+        purpose: "Validate normalized spec integrity."
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+        notes: "Spec evidence per format."
+      - artifact_type: dec034_verification_report
+        required: true
+        notes: "SHA-256 re-verification required."
+      - artifact_type: human_approval_record
+        required: true
+        notes: "Gate 2 human approval per format."
+    conflict_policy: fail_and_queue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: full
+    format_specific_overrides:
+      fods:
+        status: gate_2_passed
+        spec_reuse: primary
+      fodt:
+        status: gate_2_passed
+        spec_reuse: shared_same_spec
+      fodp:
+        status: not_started
+        spec_reuse: shared_same_spec
+      fodg:
+        status: not_started
+        spec_reuse: shared_same_spec
+      fodb:
+        status: not_started
+        spec_reuse: shared_same_spec
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+      notes: "ODF 1.3 spec shared across all flat formats. Legal: OASIS RF + ISO 26300."
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: odf-flat-sample-corpus
+    gate: 3
+    operation_type: sample_corpus_creation
+    title: "ODF Flat Sample Corpus Creation — Gate 3"
+    description: >
+      Create synthetic, project-owned, Apache-2.0 samples per format. ODF flat XML structure
+      is shared (single XML file, not zipped). Content differs: FODS=spreadsheet cells,
+      FODT=text paragraphs/headings, FODP=presentation slides, etc. 4 samples minimum per format.
+    mode_allowed: validate_only
+    target_paths:
+      - samples/by-format/{format_id}/
+      - samples/_provenance.yaml
+    input_dependencies:
+      - path: samples/_provenance.yaml
+        required: true
+        description: "Provenance registry for all samples."
+    expected_outputs:
+      - path: samples/by-format/{format_id}/
+        description: "At least 4 valid samples per format."
+        checksum_required: true
+        format: xml
+    validation_commands:
+      - command: "python tools/samples/validate_fods_samples.py"
+        purpose: "Validate FODS samples."
+        expected_exit_code: 0
+        notes: "Replace with format-specific validator."
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+        notes: "Samples and provenance in bundle."
+      - artifact_type: dec034_verification_report
+        required: true
+        notes: "SHA-256 re-verification of all samples."
+      - artifact_type: human_approval_record
+        required: true
+        notes: "Gate 3 human approval per format."
+    conflict_policy: fail_hard
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: guide
+    format_specific_overrides:
+      fods:
+        status: gate_3_passed
+        samples: 4
+        root_element: "office:spreadsheet"
+      fodt:
+        status: gate_3_passed
+        samples: 4
+        root_element: "office:text"
+      fodp:
+        status: not_started
+        root_element: "office:presentation"
+      fodg:
+        status: not_started
+        root_element: "office:drawing"
+      fodb:
+        status: not_started
+        root_element: "office:database"
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: odf-flat-parser-prototype
+    gate: 4
+    operation_type: parser_prototype
+    title: "ODF Flat Parser Prototype — Gate 4"
+    description: >
+      Build streaming parser prototype using ET.iterparse. Shared patterns: namespace-aware
+      element extraction, elem.clear() after processing, defusedxml optional import, 100MB
+      size guard, error hierarchy (FodXError > FodXInputError/SizeError/ParseError).
+      Format-specific: content element mapping, entity types.
+    mode_allowed: validate_only
+    target_paths:
+      - prototypes/by-format/{format_id}/
+    input_dependencies:
+      - path: samples/by-format/{format_id}/
+        required: true
+        description: "Samples for prototype validation (PT-001..PT-004)."
+    expected_outputs:
+      - path: prototypes/by-format/{format_id}/{format_id}_parser.py
+        description: "Parser prototype passing PT-001..PT-004."
+        checksum_required: false
+        format: python
+    validation_commands:
+      - command: "python prototypes/by-format/{format_id}/validate_against_samples.py"
+        purpose: "Validate prototype against all samples."
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+      - artifact_type: dec034_verification_report
+        required: true
+      - artifact_type: human_approval_record
+        required: true
+    conflict_policy: fail_and_queue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: adapt
+    format_specific_overrides:
+      fods:
+        status: gate_4_passed
+        content_element: "table:table"
+      fodt:
+        status: gate_4_passed
+        content_element: "text:p, text:h, text:list"
+      fodp:
+        status: not_started
+        content_element: "draw:page"
+      fodg:
+        status: not_started
+        content_element: "draw:page"
+      fodb:
+        status: not_started
+        content_element: "db:tables"
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: odf-flat-neutral-model
+    gate: 5
+    operation_type: neutral_model_creation
+    title: "ODF Flat Neutral Model Creation — Gate 5"
+    description: >
+      Define neutral model (YAML schema + field-map + coverage-matrix + validation-rules).
+      Shared approach across family. FODS: 6 entities (Row, Cell, Column, Formula,
+      NamedRange, Document). FODT: 7 entities (Document, Block, List, ListItem, Table,
+      TableRow, TableCell). FODP/FODG/FODB: design not started.
+    mode_allowed: validate_only
+    target_paths:
+      - schemas/neutral-model/{format_id}/
+    input_dependencies:
+      - path: schemas/neutral-model/{format_id}/model.yaml
+        required: true
+    expected_outputs:
+      - path: schemas/neutral-model/{format_id}/model.yaml
+        description: "Neutral model definition."
+        checksum_required: false
+        format: yaml
+    validation_commands:
+      - command: "python tools/model/validate_neutral_model.py --format {format_id}"
+        purpose: "Validate neutral model PASS."
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+      - artifact_type: dec034_verification_report
+        required: true
+      - artifact_type: human_approval_record
+        required: true
+    conflict_policy: fail_and_queue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: adapt
+    format_specific_overrides:
+      fods:
+        status: gate_5_passed
+        entities: 6
+      fodt:
+        status: gate_5_passed
+        entities: 7
+      fodp:
+        status: not_started
+      fodg:
+        status: not_started
+      fodb:
+        status: not_started
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: odf-flat-oracle-comparison
+    gate: 6
+    operation_type: oracle_comparison
+    title: "ODF Flat Oracle Comparison — Gate 6"
+    description: >
+      Run LibreOffice oracle comparison. Shared tooling: tools/oracle/oracle_common.py,
+      soffice.com (console mode — not soffice.exe which hangs). FORMAT_FACTORY_SOFFICE
+      env var or --soffice-path. Per-format: run_fods_oracle.py / run_fodt_oracle.py.
+      Expected WARN for multi-sheet CSV limit (FODS) and word-count tolerance (FODT).
+    mode_allowed: validate_only
+    target_paths:
+      - tools/oracle/
+      - .local/oracle/{format_id}/
+    input_dependencies:
+      - path: tools/oracle/oracle_common.py
+        required: true
+      - path: samples/by-format/{format_id}/
+        required: true
+    expected_outputs:
+      - path: .local/oracle/{format_id}/
+        description: "Oracle output files (local only)."
+        checksum_required: false
+        format: csv
+    validation_commands:
+      - command: "python tools/oracle/run_fods_oracle.py --soffice-path <path>"
+        purpose: "Run oracle for FODS."
+        expected_exit_code: 0
+        notes: "Replace with format-specific oracle runner."
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+      - artifact_type: dec034_verification_report
+        required: true
+      - artifact_type: human_approval_record
+        required: true
+    conflict_policy: warn_and_continue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+      notes: "WARN-level oracle mismatches (known format limits) do not block approval."
+    reuse_level: full
+    format_specific_overrides:
+      fods:
+        status: gate_6_passed
+        known_warn: multi_sheet_csv_limit
+      fodt:
+        status: gate_6_passed
+        known_warn: word_count_tolerance
+      fodp:
+        status: not_started
+      fodg:
+        status: not_started
+      fodb:
+        status: not_started
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: odf-flat-fuzz-testing
+    gate: 7
+    operation_type: fuzz_testing
+    title: "ODF Flat Fuzz Testing — Gate 7"
+    description: >
+      Run 18 malformed XML inputs across 4 categories: malformed XML structure, namespace
+      errors, truncated files, encoding corruption. Shared fuzz framework.
+      Target: CRASH=0, CORRUPT=0, PASS=18/18. Format-specific element categories.
+    mode_allowed: validate_only
+    target_paths:
+      - .local/fuzz/{format_id}/
+    input_dependencies:
+      - path: acquisition-packs/{format_id}/gate7-malformed-fuzz-plan.md
+        required: true
+    expected_outputs:
+      - path: .local/fuzz/{format_id}/
+        description: "Fuzz test results."
+        checksum_required: false
+        format: txt
+    validation_commands:
+      - command: "python tools/fuzz/run_fuzz_test.py --format {format_id}"
+        purpose: "Run fuzz tests and assert 18/18 PASS."
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+      - artifact_type: dec034_verification_report
+        required: true
+      - artifact_type: human_approval_record
+        required: true
+    conflict_policy: fail_hard
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: adapt
+    format_specific_overrides:
+      fods:
+        status: gate_7_passed
+        crash_count: 0
+      fodt:
+        status: gate_7_passed
+        crash_count: 0
+      fodp:
+        status: not_started
+      fodg:
+        status: not_started
+      fodb:
+        status: not_started
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: odf-flat-security-review
+    gate: 8
+    operation_type: security_review
+    title: "ODF Flat Security Review — Gate 8"
+    description: >
+      Review 8 threat categories: XML injection, external entities (XXE), oversized input,
+      namespace confusion, path traversal (not applicable flat XML), memory exhaustion,
+      malicious encoding, macro/script injection (ODF macros absent in flat read-only).
+      Shared threat model. Per-format: reports/security/{format_id}.md.
+    mode_allowed: validate_only
+    target_paths:
+      - reports/security/{format_id}.md
+    input_dependencies:
+      - path: prototypes/by-format/{format_id}/{format_id}_parser.py
+        required: true
+    expected_outputs:
+      - path: reports/security/{format_id}.md
+        description: "Security review report per format."
+        checksum_required: false
+        format: md
+    validation_commands:
+      - command: "grep -q 'GATE8_SECURITY_REVIEW: PASS' reports/security/{format_id}.md"
+        purpose: "Confirm security review PASS."
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+      - artifact_type: dec034_verification_report
+        required: true
+      - artifact_type: human_approval_record
+        required: true
+    conflict_policy: fail_hard
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: adapt
+    format_specific_overrides:
+      fods:
+        status: gate_8_passed
+        report: reports/security/fods.md
+      fodt:
+        status: gate_8_passed
+        report: reports/security/fodt.md
+      fodp:
+        status: not_started
+      fodg:
+        status: not_started
+      fodb:
+        status: not_started
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: odf-flat-tier-mapping
+    gate: 9
+    operation_type: product_dependency_closure
+    title: "ODF Flat Tier Mapping — Gate 9"
+    description: >
+      Map features to tiers T0-T4. Shared framework: first_oss=[0,1,2] (OSS covers
+      Tiers 0-2, 12 features). T3-T4 commercial. Tier-map.yaml v1.0 per format.
+    mode_allowed: validate_only
+    target_paths:
+      - acquisition-packs/{format_id}/tier-map.yaml
+    input_dependencies:
+      - path: schemas/neutral-model/{format_id}/model.yaml
+        required: true
+    expected_outputs:
+      - path: acquisition-packs/{format_id}/tier-map.yaml
+        description: "Tier map with T0-T4 feature assignments."
+        checksum_required: false
+        format: yaml
+    validation_commands:
+      - command: "python -c \"import yaml; t=yaml.safe_load(open('acquisition-packs/{format_id}/tier-map.yaml')); assert t['version']=='1.0'\""
+        purpose: "Validate tier-map.yaml version."
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+      - artifact_type: dec034_verification_report
+        required: true
+      - artifact_type: human_approval_record
+        required: true
+    conflict_policy: fail_and_queue
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: guide
+    format_specific_overrides:
+      fods:
+        status: gate_9_passed
+        first_oss: "[0,1,2]"
+        features: 16
+      fodt:
+        status: gate_9_passed
+        first_oss: "[0,1,2]"
+        features: 16
+      fodp:
+        status: not_started
+      fodg:
+        status: not_started
+      fodb:
+        status: not_started
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+  - operation_id: odf-flat-oss-skeleton
+    gate: 10
+    operation_type: product_skeleton
+    title: "ODF Flat OSS Product Skeleton — Gate 10"
+    description: >
+      Create Python FOSS package under src/python/{format_id}/. Shared structure:
+      constants.py (namespace URIs, QN names, MAX_FILE_BYTES), exceptions.py (hierarchy),
+      parser.py (iterparse streaming), neutral_model.py (model builder + IR validation),
+      list_traversal.py (where applicable), __init__.py, README.md.
+      Test suite: tests/python/{format_id}/ with traceability tests (IR-{FORMAT}-001..015).
+    mode_allowed: validate_only
+    target_paths:
+      - src/python/{format_id}/
+      - tests/python/{format_id}/
+    input_dependencies:
+      - path: schemas/neutral-model/{format_id}/model.yaml
+        required: true
+      - path: acquisition-packs/{format_id}/tier-map.yaml
+        required: true
+    expected_outputs:
+      - path: src/python/{format_id}/parser.py
+        description: "Production parser (iterparse)."
+        checksum_required: false
+        format: python
+      - path: src/python/{format_id}/neutral_model.py
+        description: "Neutral model builder."
+        checksum_required: false
+        format: python
+    validation_commands:
+      - command: "python -m pytest tests/python/{format_id}/ -q"
+        purpose: "All tests PASS."
+        expected_exit_code: 0
+    evidence_requirements:
+      - artifact_type: evidence_bundle
+        required: true
+      - artifact_type: dec034_verification_report
+        required: true
+      - artifact_type: human_approval_record
+        required: true
+    conflict_policy: fail_hard
+    review_queue_policy:
+      severity_threshold_blocks_apply: high
+      auto_resolve_allowed: false
+      required_owner_for_resolution: human
+    reuse_level: adapt
+    format_specific_overrides:
+      fods:
+        status: gate_10_passed
+        modules: 6
+        tests: 115
+        ir_satisfied: 20
+      fodt:
+        status: gate_10_passed
+        modules: 7
+        tests: 115
+        ir_satisfied: 15
+      fodp:
+        status: not_started
+      fodg:
+        status: not_started
+      fodb:
+        status: not_started
+    provenance:
+      created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      created_at: "2026-05-11"
+      last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+      source_commit: null
+    status: active
+    approval_boundary: requires_dec034_and_human
+
+evidence_contracts:
+  - contract_path: tools/evidence/contracts/base-run.yaml
+    purpose: "Base contract inherited by all sprints."
+    gate: null
+  - contract_path: tools/evidence/contracts/s-f2f-05-family-playbook.yaml
+    purpose: "S-F2F-05 family playbook sprint evidence contract."
+    gate: null
+
+validation_commands:
+  - command: >
+      python tools/playbook/validate_playbook.py
+      --schema schemas/playbook/acquisition-playbook.schema.json
+      --input acquisition-packs/_families/odf-flat/playbook.yaml
+      --kind family_playbook
+      --format-id odf-flat
+    purpose: "Validate family playbook against schema."
+    expected_exit_code: 0
+  - command: "grep -n 'inherited_gate_approval: false' acquisition-packs/_families/odf-flat/reuse-policy.md"
+    purpose: "Confirm no inherited gate approval."
+    expected_exit_code: 0
+
+review_queue_policy:
+  severity_threshold_blocks_apply: high
+  auto_resolve_allowed: false
+  required_owner_for_resolution: human
+  notes: "Any high-severity item blocks apply mode. No auto-resolution allowed for gate decisions."
+
+reuse_policy:
+  family_reuse_allowed: true
+  inherited_gate_approval: false
+  reuse_requires_explicit_classification: true
+  source_family_playbook: null
+  notes: >
+    This IS the family playbook. Per-format playbooks may reference this as reuse_level: guide
+    or reuse_level: adapt for operation patterns. No gate approval transfers between formats.
+    Each format gate requires independent DEC-034 verification and human approval.
+
+provenance:
+  created_by_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+  created_at: "2026-05-11"
+  last_modified_sprint: POST-FODT-GATE10-CONTROLLED-SWARM-001
+  source_commit: null
+  notes: "ODF-flat family playbook created in S-F2F-05 as part of controlled swarm."
+
+approvals_required:
+  - approval_type: dec034_independent_verification
+    description: "Independent verification sprint required before every human gate review."
+    mandatory: true
+    gate: null
+  - approval_type: human_gate_approval
+    description: "Human approval prompt required for every gate advance, per format."
+    mandatory: true
+    gate: null
+  - approval_type: human_sprint_authorization
+    description: "Human prompt must explicitly name the sprint before execution."
+    mandatory: true
+    gate: null
+
+forbidden_uses:
+  - automatic_gate_approval
+  - spec_or_legal_authority
+  - product_release_authority
+  - replacing_dec034
+  - replacing_human_approval
+  - applying_without_authorization
+  - evidence_substitution
+  - llm_fallback_authority
