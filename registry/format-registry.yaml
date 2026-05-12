@@ -181,10 +181,16 @@ formats:
         approval_run: run048
         notes: "Gate 10 executed run048 (2026-05-08). OSS scope Tiers 0-2 (12 features). Packaging plan: format-factory-fods v0.1.0. TC-6 iterparse required, TC-1 defusedxml recommended. DEC-034 PASS 20/20 inline. TC-0044 COMPLETED. Gate 10 APPROVED by Babar Raza (run048 execution prompt, 2026-05-08). Authorizes Gate 11 commercial planning (pending DEC-033 resolution)."
       gate_11:
-        status: planning_ready
+        status: commercial_readiness_in_progress
         approved_by: null
         approved_date: null
-        notes: "Gate 11 planning executed run050 (2026-05-08). DEC-033 unresolved. Python FOSS source independent of Gate 11 (authorized via Phase 4 Python prompt after Gate 10). .NET source blocked by DEC-033. Gate 11 PASS requires DEC-033 resolution + .NET implementation + explicit prompt."
+        dec033_status: resolved
+        dec033_option: B
+        dec033_option_description: ".NET Commercial Only — Python is FOSS track, no .NET FOSS package"
+        dec033_resolved_by: "Babar Raza"
+        dec033_resolved_date: "2026-05-12"
+        dotnet_target: "net10.0"
+        notes: "Gate 11 planning executed run050 (2026-05-08). DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only. .NET skeleton created under src/net/fods/ targeting net10.0. Gate 11 PASS requires full .NET implementation + DEC-034 IV + explicit human approval."
       phase_4_python_source:
         status: created
         run: run051
@@ -371,10 +377,16 @@ formats:
         tc0052_completed: "2026-05-09"
         notes: "Gate 10 APPROVED by Babar Raza (2026-05-11). Manual review verdict: RECOMMEND_GATE10_APPROVAL (0 blockers, 0 repairs). TC-0052 Phase 4 Python source: 7 modules, 115/115 PASS, 15/15 IR-FODT. Evidence: gate10-review-packet-20260511.md, gate10-manual-review-judgment-20260511.md. Authorizes Gate 11 commercial readiness planning only. Does NOT authorize .NET source (DEC-033 unresolved)."
       gate_11:
-        status: not_started
+        status: commercial_readiness_in_progress
         approved_by: null
         approved_date: null
-        notes: null
+        dec033_status: resolved
+        dec033_option: B
+        dec033_option_description: ".NET Commercial Only — Python is FOSS track, no .NET FOSS package"
+        dec033_resolved_by: "Babar Raza"
+        dec033_resolved_date: "2026-05-12"
+        dotnet_target: "net10.0"
+        notes: "DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only. .NET skeleton created under src/net/fodt/ targeting net10.0. Gate 11 PASS requires full .NET implementation + DEC-034 IV + explicit human approval."
 
 # ---
 # FORMAT ENTRY TEMPLATE (do not uncomment — use acquisition-packs/_template/)

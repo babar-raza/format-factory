@@ -636,6 +636,45 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
             Path(output_path).unlink()
         return False
 
+    # Compute final bundle metrics and update proof with full details
+    final_bytes = Path(output_path).stat().st_size
+    final_sha256 = hashlib.sha256(Path(output_path).read_bytes()).hexdigest()
+    with _zf.ZipFile(output_path, "r") as zf:
+        final_names = zf.namelist()
+        final_entries = len(final_names)
+        final_metadata = sum(
+            1 for n in final_names
+            if n.startswith("bundle-metadata/") and not n.endswith("/")
+        )
+
+    if proof_file:
+        full_proof_text = "\n".join([
+            "BUNDLE_VALIDATION: PASS",
+            f"sprint_id: {sprint_id}",
+            f"contract_id: {sprint_id}",
+            "",
+            "=== CANDIDATE (Pass 1) ===",
+            f"Candidate: {candidate_path.name}",
+            f"Candidate SHA-256: {candidate_sha256}",
+            f"Candidate entries: {candidate_entries}",
+            f"Candidate bytes: {candidate_bytes:,}",
+            f"Candidate metadata: {candidate_metadata}",
+            "",
+            "=== FINAL BUNDLE (Pass 2) ===",
+            f"Final: {output_path_obj.name}",
+            f"Final SHA-256: {final_sha256}",
+            f"Final entries: {final_entries}",
+            f"Final bytes: {final_bytes:,}",
+            f"Final metadata: {final_metadata}",
+            "",
+            "Validator: validate_evidence_bundle.py --check-no-pending",
+            "Final validation: PASS",
+            f"Timestamp: {datetime.now().astimezone().isoformat()}",
+            "",
+        ])
+        proof_file.write_text(full_proof_text, encoding="utf-8")
+        print(f"[AUTO-PROOF] Final proof updated with complete metrics (candidate + final).")
+
     print(f"BUNDLE_VALIDATION: PASS")
     print(f"EVIDENCE_BUNDLE: {Path(output_path).resolve()}")
     return True

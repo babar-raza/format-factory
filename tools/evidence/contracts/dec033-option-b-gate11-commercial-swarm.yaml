@@ -1,0 +1,144 @@
+sprint_id: DEC033-OPTION-B-GATE11-COMMERCIAL-SWARM-001
+contract_id: DEC033-OPTION-B-GATE11-COMMERCIAL-SWARM-001
+description: >
+  DEC-033 Option B resolution (commercial .NET only), Gate 11 commercial skeletons for
+  FODS and FODT, GitHub PAT readiness probe, ACCEL-003 auto-proof hardening, and
+  memory/governance sync.
+require_clean_git: true
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 50
+
+required_repo_files:
+  - path: src/net/fods/FormatFactory.Fods.csproj
+  - path: src/net/fods/FodsParser.cs
+  - path: src/net/fods/README.md
+  - path: src/net/fodt/FormatFactory.Fodt.csproj
+  - path: src/net/fodt/FodtParser.cs
+  - path: src/net/fodt/README.md
+  - path: acquisition-packs/fods/dec033-resolution-record.md
+  - path: acquisition-packs/fods/gate11-commercial-licensing.md
+  - path: acquisition-packs/fods/gate11-packaging-plan.md
+  - path: acquisition-packs/fods/gate11-human-review-packet.md
+  - path: acquisition-packs/fodt/dec033-resolution-record.md
+  - path: acquisition-packs/fodt/gate11-commercial-licensing.md
+  - path: acquisition-packs/fodt/gate11-packaging-plan.md
+  - path: acquisition-packs/fodt/gate11-human-review-packet.md
+  - path: reports/decision/dec033-option-b-resolution-20260512.md
+  - path: reports/decision/dec033-option-b-resolution-20260512.yaml
+  - path: reports/gate-review/fods/gate11-commercial-readiness-20260512.md
+  - path: reports/gate-review/fods/gate11-commercial-readiness-20260512.yaml
+  - path: reports/gate-review/fodt/gate11-commercial-readiness-20260512.md
+  - path: reports/gate-review/fodt/gate11-commercial-readiness-20260512.yaml
+  - path: reports/github/github-pat-readiness-probe-20260512.md
+  - path: reports/github/github-pat-readiness-probe-20260512.yaml
+  - path: reports/governance/governance-sync-dec033-option-b-20260512.md
+  - path: taskcards/FODS-GATE11-commercial-readiness.md
+  - path: taskcards/GITHUB-PAT-readiness-probe.md
+  - path: memory/17-dec033-option-b-gate11-and-github-pat-20260512.md
+  - path: tests/evidence/test_auto_proof_bundle.py
+  - path: tools/evidence/build_evidence_bundle.py
+
+required_metadata_files:
+  - final-bundle-validation-proof.txt
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+  - bundle-manifest.yaml
+
+forbidden_paths:
+  - .env
+  - .local/spec-cache
+  - src/dotnet/open-source
+  - src/dotnet/commercial
+  - src/python/open-source
+
+semantic_checks:
+  - id: SC-001
+    description: "DEC-033 resolved as Option B in registry"
+    file: registry/format-registry.yaml
+    must_contain: "dec033_option: B"
+  - id: SC-002
+    description: "FODS dec033_status resolved"
+    file: registry/format-registry.yaml
+    must_contain: "dec033_status: resolved"
+  - id: SC-003
+    description: "Gate 11 NOT approved (still in_progress)"
+    file: registry/format-registry.yaml
+    must_not_contain: "gate_11:\n    approved_by"
+  - id: SC-004
+    description: "FODS .NET skeleton targets net10.0"
+    file: src/net/fods/FormatFactory.Fods.csproj
+    must_contain: "net10.0"
+  - id: SC-005
+    description: "FODT .NET skeleton targets net10.0"
+    file: src/net/fodt/FormatFactory.Fodt.csproj
+    must_contain: "net10.0"
+  - id: SC-006
+    description: "FODS skeleton is commercial-only (no .NET FOSS)"
+    file: src/net/fods/README.md
+    must_contain: "commercial-only"
+  - id: SC-007
+    description: "FODT skeleton is commercial-only (no .NET FOSS)"
+    file: src/net/fodt/README.md
+    must_contain: "commercial-only"
+  - id: SC-008
+    description: "DEC-033 resolution document exists with resolved status"
+    file: reports/decision/dec033-option-b-resolution-20260512.md
+    must_contain: "DEC033_RESOLVED: YES"
+  - id: SC-009
+    description: "GitHub PAT probe — no token printed"
+    file: reports/github/github-pat-readiness-probe-20260512.md
+    must_contain: "GITHUB_PAT value was NOT printed"
+  - id: SC-010
+    description: "GitHub PAT probe — no remote mutation"
+    file: reports/github/github-pat-readiness-probe-20260512.md
+    must_contain: "NO_REMOTE_MUTATION_CONFIRMED: YES"
+  - id: SC-011
+    description: "ACCEL-003 proof includes final bundle metrics"
+    file: tools/evidence/build_evidence_bundle.py
+    must_contain: "Final SHA-256:"
+  - id: SC-012
+    description: "ACCEL-003 test 7 added (final bundle metrics)"
+    file: tests/evidence/test_auto_proof_bundle.py
+    must_contain: "test_auto_proof_includes_final_bundle_metrics"
+  - id: SC-013
+    description: "Memory 17 created"
+    file: memory/17-dec033-option-b-gate11-and-github-pat-20260512.md
+    must_contain: "DEC-033"
+  - id: SC-014
+    description: "FODS Gate 11 human review packet updated"
+    file: acquisition-packs/fods/gate11-human-review-packet.md
+    must_contain: "COMMERCIAL_READINESS_IN_PROGRESS"
+  - id: SC-015
+    description: "FODT Gate 11 human review packet created"
+    file: acquisition-packs/fodt/gate11-human-review-packet.md
+    must_contain: "Gate 11"
+  - id: SC-016
+    description: "FODS Gate 11 packaging plan has SDK blocker noted"
+    file: acquisition-packs/fods/gate11-packaging-plan.md
+    must_contain: "DOTNET_SDK_BLOCKER"
+  - id: SC-017
+    description: "Governance sync report marks LANE_M_PASS"
+    file: reports/governance/governance-sync-dec033-option-b-20260512.md
+    must_contain: "LANE_M_PASS"
+  - id: SC-018
+    description: "No .NET FOSS package reference in FODS csproj"
+    file: src/net/fods/FormatFactory.Fods.csproj
+    must_contain: "no .NET FOSS package"
+  - id: SC-019
+    description: "No .NET FOSS package reference in FODT csproj"
+    file: src/net/fodt/FormatFactory.Fodt.csproj
+    must_contain: "no .NET FOSS package"
+  - id: SC-020
+    description: "FODS GATE11 taskcard exists with commercial skeleton created flag"
+    file: taskcards/FODS-GATE11-commercial-readiness.md
+    must_contain: "in_progress"
+  - id: SC-021
+    description: "GitHub PAT taskcard records Lane D completed"
+    file: taskcards/GITHUB-PAT-readiness-probe.md
+    must_contain: "LANE_D_PASS_WITH_ENV_PROPAGATION_NOTE"
+  - id: SC-022
+    description: "ACCEL-003 proof text updated to include final bundle section"
+    file: tools/evidence/build_evidence_bundle.py
+    must_contain: "FINAL BUNDLE (Pass 2)"

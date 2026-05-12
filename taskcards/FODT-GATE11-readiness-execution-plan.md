@@ -1,8 +1,11 @@
 ---
 taskcard_id: FODT-GATE11-READINESS-EXECUTION-PLAN
-sprint_id: POST-FODT-GATE10-CONTROLLED-SWARM-001
+sprint_id: DEC033-OPTION-B-GATE11-COMMERCIAL-SWARM-001
 format_id: fodt
 gate: 11
+status_updated: "2026-05-12"
+commercial_skeleton_created: true
+dotnet_sdk_blocker: true
 type: execution_plan
 status: not_started
 created: "2026-05-12"

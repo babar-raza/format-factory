@@ -643,11 +643,17 @@ class TestNoReplayApplyModules:
         Note: src/python/fods/ is authorized by Gate 10 + TC-0050 Phase 4 prompt.
         Note: src/python/fodt/ is authorized by Gate 10 planning_ready + TC-0052 Phase 4 execution.
         Note: acquisition-packs/_families/ is authorized by S-F2F-05 (POST-FODT-GATE10-CONTROLLED-SWARM-001 Lane C).
-        Unauthorized: src/net/fods/ (DEC-033 blocked), src/net/fodt/ (DEC-033 blocked).
+        Note: src/net/fods/ and src/net/fodt/ are authorized by DEC-033 Option B resolution
+              (DEC033-OPTION-B-GATE11-COMMERCIAL-SWARM-001, 2026-05-12, Babar Raza).
+              Commercial-only .NET skeletons. Gate 11 NOT approved. SDK blocker active.
+        Unauthorized: src/dotnet/open-source/, src/dotnet/commercial/ (old sub-layout),
+                      src/python/open-source/ (old layout sub-dir).
+        Note: src/dotnet/ itself exists as Phase 0 scaffold (_readme.md only) — allowed.
         """
         forbidden_dirs = [
-            repo_path("src", "net", "fods"),        # DEC-033 unresolved
-            repo_path("src", "net", "fodt"),        # DEC-033 unresolved
+            repo_path("src", "dotnet", "open-source"),   # Old layout sub-dir — must never be created
+            repo_path("src", "dotnet", "commercial"),     # Old layout sub-dir — must never be created
+            repo_path("src", "python", "open-source"),   # Old layout — must never be created
         ]
         for d in forbidden_dirs:
             assert not os.path.exists(d), f"Unauthorized directory must not exist: {d}"

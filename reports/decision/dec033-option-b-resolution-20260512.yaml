@@ -1,0 +1,18 @@
+decision_id: DEC-033
+status: resolved
+option: B
+option_description: ".NET Commercial Only"
+resolved_by: "Babar Raza"
+resolved_date: "2026-05-12"
+sprint_id: "DEC033-OPTION-B-GATE11-COMMERCIAL-SWARM-001"
+dotnet_target: "net10.0"
+foss_track: "Python only (src/python/{format}/)"
+commercial_track: ".NET only (src/net/{format}/)"
+dotnet_foss_package: false
+formats_unblocked:
+  - fods
+  - fodt
+gate_11_status_after:
+  fods: commercial_readiness_in_progress
+  fodt: commercial_readiness_in_progress
+gate_11_approved: false

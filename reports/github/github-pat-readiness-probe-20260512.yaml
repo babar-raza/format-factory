@@ -1,0 +1,33 @@
+---
+artifact_id: github-pat-readiness-probe-20260512
+artifact_type: report
+path: reports/github/github-pat-readiness-probe-20260512.yaml
+visibility: internal
+generated_by: claude-sonnet-4-6
+generated_at: "2026-05-12"
+sprint_id: DEC033-OPTION-B-GATE11-COMMERCIAL-SWARM-001
+lane: D
+notes: "Machine-readable summary of GitHub PAT readiness probe."
+
+pat_scope_machine: "MISSING"
+pat_scope_user: "PRESENT"
+pat_scope_bash: "NOT_VISIBLE"
+gh_auth_probe: "PASS"
+gh_auth_account: "babar-raza"
+gh_auth_method: "GH_TOKEN"
+current_remote_github: "YES"
+repo_owner: "babar-raza"
+repo_name: "format-factory"
+repo_visibility: "PUBLIC"
+push_permission_inferred: "LIKELY"
+no_remote_mutation: "YES"
+no_push_executed: "YES"
+no_pr_created: "YES"
+lane_verdict: "LANE_D_PASS_WITH_ENV_PROPAGATION_NOTE"
+
+notes_detail:
+  - "GITHUB_PAT stored as Windows User env var, not Machine scope."
+  - "Token NOT printed; mapped in-memory to GH_TOKEN for gh auth check only."
+  - "gh auth status: authenticated as babar-raza via GH_TOKEN (fine-grained PAT)."
+  - "Repo format-factory is PUBLIC, owned by babar-raza."
+  - "Bash propagation requires explicit export from PowerShell — documented in probe report."

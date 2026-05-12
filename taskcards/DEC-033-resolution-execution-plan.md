@@ -1,8 +1,11 @@
 ---
 taskcard_id: DEC-033-RESOLUTION-EXECUTION-PLAN
-sprint_id: POST-FODT-GATE10-CONTROLLED-SWARM-001
+sprint_id: DEC033-OPTION-B-GATE11-COMMERCIAL-SWARM-001
 type: decision_execution
-status: not_started
+status: completed
+completed_date: "2026-05-12"
+resolved_by: "Babar Raza"
+option_selected: B
 created: "2026-05-12"
 blocked_by: human_decision_required
 blocks:

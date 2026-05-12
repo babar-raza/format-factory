@@ -9,6 +9,7 @@ Verifies:
 4. sprint_id in proof matches contract sprint_id.
 5. Without --auto-proof, build_bundle behavior unchanged.
 6. Final bundle validates with --check-no-pending.
+7. Proof includes final bundle path/SHA-256/entries/bytes/metadata count (ACCEL-003 hardening).
 
 Run from repo root:
     python -m pytest tests/evidence/test_auto_proof_bundle.py -v
@@ -149,6 +150,12 @@ def test_auto_proof_proof_file_content(tmp_path):
     assert "bytes:" in proof_text, "Proof must include byte size"
     assert "metadata:" in proof_text, "Proof must include metadata count"
     assert "PLACEHOLDER" not in proof_text, "Proof must not be a placeholder"
+    # ACCEL-003 hardening: final bundle metrics must also be present
+    assert "Final SHA-256:" in proof_text, "Proof must include final bundle SHA-256"
+    assert "Final entries:" in proof_text, "Proof must include final bundle entry count"
+    assert "Final bytes:" in proof_text, "Proof must include final bundle byte size"
+    assert "Final metadata:" in proof_text, "Proof must include final bundle metadata count"
+    assert "Final validation: PASS" in proof_text, "Proof must record final validation PASS"
 
 
 # ---------------------------------------------------------------------------
@@ -242,6 +249,42 @@ def test_auto_proof_final_no_pending(tmp_path):
     combined = result.stdout + result.stderr
     assert "BUNDLE_VALIDATION: PASS" in combined, \
         f"Final bundle must pass --check-no-pending. Output:\n{combined}"
+
+
+# ---------------------------------------------------------------------------
+# Test 7: Proof includes final bundle metrics (ACCEL-003 hardening)
+# ---------------------------------------------------------------------------
+
+def test_auto_proof_includes_final_bundle_metrics(tmp_path):
+    """Proof file must contain final bundle path, SHA-256, entries, bytes, metadata count."""
+    contract = _write_contract(tmp_path, min_meta=5)
+    meta_dir = tmp_path / "metadata"
+    _write_metadata(meta_dir, count=6)
+
+    output = tmp_path / "mybundle.zip"
+    ok = build_auto_proof_bundle(
+        str(REPO_ROOT), str(contract), str(output), str(meta_dir),
+        allow_legacy_root_metadata=False,
+        require_clean_git=False,
+    )
+    assert ok
+
+    proof_text = (meta_dir / "final-bundle-validation-proof.txt").read_text(encoding="utf-8")
+
+    # Final section header
+    assert "FINAL BUNDLE" in proof_text, "Proof must contain 'FINAL BUNDLE' section"
+    # Final bundle filename
+    assert "mybundle.zip" in proof_text, "Proof must include the final bundle filename"
+    # Final metrics
+    assert "Final SHA-256:" in proof_text, "Proof must include Final SHA-256"
+    assert "Final entries:" in proof_text, "Proof must include Final entries count"
+    assert "Final bytes:" in proof_text, "Proof must include Final bytes"
+    assert "Final metadata:" in proof_text, "Proof must include Final metadata count"
+    # Final validation result
+    assert "Final validation: PASS" in proof_text, "Proof must record Final validation: PASS"
+    # Candidate section still present
+    assert "CANDIDATE" in proof_text, "Proof must still contain CANDIDATE section"
+    assert "-candidate.zip" in proof_text, "Proof must still name the candidate zip"
 
 
 if __name__ == "__main__":
