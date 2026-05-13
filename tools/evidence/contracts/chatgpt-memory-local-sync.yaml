@@ -10,7 +10,17 @@ sprint_type: memory_governance_sync
 current_state_authority: docs/current-state-and-evidence-authority.md
 date: "2026-05-13"
 visibility: internal
-emergency_blocker_bundle: false
+emergency_blocker_bundle: true
+dirty_git_reason: >
+  Pre-existing uncommitted changes from parallel sprints remain in the working tree:
+  generated-requirements/fods/, generated-requirements/fodt/, tests/requirements/,
+  plans/master-plan.md, docs/commercial-product-capability-model.md,
+  src/net/fods/README.md, src/net/fodt/README.md (from FF-CURRENT-STATE sprint),
+  and untracked files from CHATGPT-MEMORY-LOCAL-SYNC-ADDENDUM sprint.
+  All sprint files for CHATGPT-MEMORY-LOCAL-SYNC-20260513 are committed (commit 849f93b).
+  Dirty git is due to parallel sprint work that is not in scope of this sprint and
+  cannot be staged without violating the prohibited-files rule (AGENTS.md AF13-AF14).
+  Using emergency_blocker_bundle per GOVERNANCE.md 23.5 and 23.6 pattern.
 
 description: >
   Memory and governance sync sprint. Syncs ChatGPT project continuity into local repo so future
