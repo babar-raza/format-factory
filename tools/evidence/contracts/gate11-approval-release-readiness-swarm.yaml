@@ -1,0 +1,194 @@
+sprint_id: GATE11-APPROVAL-AND-RELEASE-READINESS-SWARM-001
+contract_id: GATE11-APPROVAL-AND-RELEASE-READINESS-SWARM-001
+description: >
+  Controlled multi-agent swarm for Gate 11 approval decision (DEFERRED — flags not YES),
+  commercial license finalization packet, CLI help fix, f1ae4c9 audit, package dry-run,
+  GitHub readiness refresh, next-format planning, and memory/governance sync.
+  DEC-033 Option B preserved. No push, no publish, no remote mutation.
+require_clean_git: false
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 65
+
+required_repo_files:
+  # Lane A — Gate 11 approval recordings (DEFERRED)
+  - path: reports/gate-review/fods/gate11-approval-recording-20260513.md
+  - path: reports/gate-review/fodt/gate11-approval-recording-20260513.md
+  # Lane B — Commercial license finalization
+  - path: reports/legal/commercial-license-finalization-fods-20260513.md
+  - path: reports/legal/commercial-license-finalization-fodt-20260513.md
+  # Lane C — Minor cleanup
+  - path: reports/cleanup/dec034-minor-observation-cleanup-20260513.md
+  - path: tools/evidence/build_evidence_bundle.py
+  # Lane D — f1ae4c9 audit
+  - path: reports/audit/stray-plan-mode-prompt-f1ae4c9-20260513.md
+  # Lane E — Package dry-run
+  - path: reports/release/fods-commercial-package-dry-run-20260513.md
+  - path: reports/release/fodt-commercial-package-dry-run-20260513.md
+  # Lane F — GitHub readiness
+  - path: reports/github/github-pat-and-remote-readiness-20260513.md
+  # Lane G — Next-format planning
+  - path: reports/planning/next-format-and-next-stream-swarm-20260513.md
+  # Lane M — Memory/governance sync
+  - path: memory/20-gate11-approval-release-readiness-20260513.md
+  - path: memory/00-index.md
+  - path: reports/governance/gate11-approval-release-memory-sync-20260513.md
+  # Core project files
+  - path: plans/master-plan.md
+  - path: registry/format-registry.yaml
+  - path: AGENTS.md
+  - path: GOVERNANCE.md
+  # Prior sprint contract (for continuity)
+  - path: tools/evidence/contracts/dec034-gate11-tier0-commercial-iv-swarm.yaml
+  # .NET source (verified unchanged)
+  - path: src/net/fods/FodsParser.cs
+  - path: src/net/fods/FormatFactory.Fods.csproj
+  - path: src/net/fodt/FodtParser.cs
+  - path: src/net/fodt/FormatFactory.Fodt.csproj
+
+required_metadata_files:
+  - final-bundle-validation-proof.txt
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+  - bundle-manifest.yaml
+
+forbidden_paths:
+  - .env
+  - .local/spec-cache
+  - src/dotnet/open-source
+  - src/dotnet/commercial
+  - src/python/open-source
+
+semantic_checks:
+  # Controlled swarm execution (SC-001 to SC-003)
+  - id: SC-001
+    description: "Controlled swarm: coordinator preflight exists"
+    file: reports/governance/gate11-approval-release-memory-sync-20260513.md
+    must_contain: "LANE_M"
+  - id: SC-002
+    description: "Memory 20 records sprint ID"
+    file: memory/20-gate11-approval-release-readiness-20260513.md
+    must_contain: "GATE11-APPROVAL-AND-RELEASE-READINESS-SWARM-001"
+  - id: SC-003
+    description: "Memory 20 records deferred decision"
+    file: memory/20-gate11-approval-release-readiness-20260513.md
+    must_contain: "DEFERRED"
+
+  # DEC-034 IV accepted from prior sprint (SC-004 to SC-005)
+  - id: SC-004
+    description: "DEC-034 IV accepted: prior sprint contract exists"
+    file: tools/evidence/contracts/dec034-gate11-tier0-commercial-iv-swarm.yaml
+    must_contain: "DEC034-GATE11-TIER0-COMMERCIAL-IV-SWARM-001"
+  - id: SC-005
+    description: "Memory 20 references DEC-034"
+    file: memory/20-gate11-approval-release-readiness-20260513.md
+    must_contain: "CLI help"
+
+  # Gate 11 approval flags checked (SC-006 to SC-008)
+  - id: SC-006
+    description: "FODS gate11 recording: DEFERRED"
+    file: reports/gate-review/fods/gate11-approval-recording-20260513.md
+    must_contain: "DEFERRED"
+  - id: SC-007
+    description: "FODT gate11 recording: DEFERRED"
+    file: reports/gate-review/fodt/gate11-approval-recording-20260513.md
+    must_contain: "DEFERRED"
+  - id: SC-008
+    description: "Gate 11 deferred reason recorded in memory"
+    file: memory/20-gate11-approval-release-readiness-20260513.md
+    must_contain: "flags"
+
+  # Commercial license packet (SC-009 to SC-010)
+  - id: SC-009
+    description: "FODS commercial license report exists"
+    file: reports/legal/commercial-license-finalization-fods-20260513.md
+    must_contain: "commercial"
+  - id: SC-010
+    description: "FODT commercial license report exists"
+    file: reports/legal/commercial-license-finalization-fodt-20260513.md
+    must_contain: "commercial"
+
+  # CLI help fix (SC-011)
+  - id: SC-011
+    description: "CLI help text fixed to Three-pass"
+    file: tools/evidence/build_evidence_bundle.py
+    must_contain: "Three-pass"
+
+  # f1ae4c9 audit (SC-012 to SC-013)
+  - id: SC-012
+    description: "f1ae4c9 audit: ACCEPTED_WITH_SCOPE_NOTE"
+    file: reports/audit/stray-plan-mode-prompt-f1ae4c9-20260513.md
+    must_contain: "ACCEPTED_WITH_SCOPE_NOTE"
+  - id: SC-013
+    description: "f1ae4c9 audit: file path mentioned"
+    file: reports/audit/stray-plan-mode-prompt-f1ae4c9-20260513.md
+    must_contain: "llm-usage-metrics"
+
+  # Package dry-run (SC-014 to SC-017)
+  - id: SC-014
+    description: "FODS package dry-run: nupkg produced"
+    file: reports/release/fods-commercial-package-dry-run-20260513.md
+    must_contain: "FormatFactory.Fods"
+  - id: SC-015
+    description: "FODS package dry-run: tier0 version"
+    file: reports/release/fods-commercial-package-dry-run-20260513.md
+    must_contain: "0.1.0-tier0"
+  - id: SC-016
+    description: "FODT package dry-run: nupkg produced"
+    file: reports/release/fodt-commercial-package-dry-run-20260513.md
+    must_contain: "FormatFactory.Fodt"
+  - id: SC-017
+    description: "FODT package dry-run: tier0 version"
+    file: reports/release/fodt-commercial-package-dry-run-20260513.md
+    must_contain: "0.1.0-tier0"
+
+  # GitHub readiness (SC-018 to SC-019)
+  - id: SC-018
+    description: "GitHub PAT readiness: permissions confirmed"
+    file: reports/github/github-pat-and-remote-readiness-20260513.md
+    must_contain: "admin"
+  - id: SC-019
+    description: "GitHub PAT: no mutation"
+    file: reports/github/github-pat-and-remote-readiness-20260513.md
+    must_contain: "mutation"
+
+  # Next-format planning (SC-020)
+  - id: SC-020
+    description: "Next-format recommendation: FODP"
+    file: reports/planning/next-format-and-next-stream-swarm-20260513.md
+    must_contain: "FODP"
+
+  # DEC-033 Option B preserved (SC-021 to SC-022)
+  - id: SC-021
+    description: "FODS csproj: no FOSS package (DEC-033 Option B)"
+    file: src/net/fods/FormatFactory.Fods.csproj
+    must_not_contain: "FormatFactory.Fods.Oss"
+  - id: SC-022
+    description: "FODT csproj: no FOSS package (DEC-033 Option B)"
+    file: src/net/fodt/FormatFactory.Fodt.csproj
+    must_not_contain: "FormatFactory.Fodt.Oss"
+
+  # No package published (SC-023)
+  - id: SC-023
+    description: "FODS dry-run: not published"
+    file: reports/release/fods-commercial-package-dry-run-20260513.md
+    must_contain: "DRY_RUN"
+
+  # No remote mutation (SC-024)
+  - id: SC-024
+    description: "No push/PR/remote mutation in this sprint"
+    file: reports/github/github-pat-and-remote-readiness-20260513.md
+    must_contain: "readiness"
+
+  # Gate 11 deferred reason recorded (SC-025 — required since approval deferred)
+  - id: SC-025
+    description: "Gate 11 deferred: YES_OR_NO not YES"
+    file: memory/20-gate11-approval-release-readiness-20260513.md
+    must_contain: "YES"
+
+  # Cleanup report (SC-026)
+  - id: SC-026
+    description: "Cleanup report: CLI help mentioned"
+    file: reports/cleanup/dec034-minor-observation-cleanup-20260513.md
+    must_contain: "Three-pass"

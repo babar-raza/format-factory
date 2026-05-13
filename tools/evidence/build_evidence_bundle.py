@@ -781,7 +781,7 @@ def main():
     parser.add_argument("--allow-legacy-root-metadata", action="store_true",
                         help="Allow root bundle-metadata/ for legacy bundle reconstruction only")
     parser.add_argument("--auto-proof", action="store_true",
-                        help="Two-pass build: candidate -> validate -> write proof -> final -> "
+                        help="Three-pass auto-proof build: candidate -> validate -> write proof -> final -> "
                              "validate final. Eliminates manual proof-placeholder pattern (ACCEL-003). "
                              "Incompatible with --dry-run.")
     args = parser.parse_args()
