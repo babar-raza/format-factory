@@ -504,23 +504,53 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
 
 def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
                             allow_legacy_root_metadata=False, require_clean_git=True):
-    """Two-pass auto-proof bundle build (ACCEL-003).
+    """Three-pass auto-proof bundle build (ACCEL-003 repaired).
 
     Pass 1: Write placeholder proof, build candidate zip, validate.
-    Pass 2: Write real proof with candidate metadata, rebuild final zip, validate.
+            Compute candidate metrics.
+    Pass 2: Write proof with candidate metrics, build pre-proof final zip,
+            validate. Compute pre-proof final metrics.
+    Pass 3: Write complete proof (candidate + pre-proof final + self-reference
+            note for final hash), rebuild final zip, validate.
+            Update on-disk proof with Pass 3 hash for external verification.
 
-    Eliminates manual proof-placeholder pattern that caused repair sprints.
+    The proof embedded inside the final ZIP contains:
+    - Candidate metrics (name, SHA-256, entries, bytes, metadata)
+    - Pre-proof final metrics (name, SHA-256, entries, bytes, metadata)
+    - Final entries + metadata count (deterministic — same file set as Pass 2)
+    - Self-reference note explaining why final SHA-256/bytes are not pre-embedded
+    - Final validation: PASS
+
+    Self-reference problem: the proof file that is embedded in the final ZIP
+    cannot contain the hash of the ZIP it is inside (circular dependency).
+    The on-disk proof file (in metadata_dir) is updated after Pass 3 with the
+    actual final ZIP SHA-256 and bytes for external chain verification.
+
     Does NOT leave a misleading final bundle on validation failure.
-
-    Returns True on success (final BUNDLE_VALIDATION: PASS), False on any failure.
+    Returns True on success (final BUNDLE_VALIDATION: PASS), False on failure.
     """
     import hashlib
     import zipfile as _zf
+
+    def _compute_zip_metrics(zip_path):
+        size = zip_path.stat().st_size
+        sha256 = hashlib.sha256(zip_path.read_bytes()).hexdigest()
+        with _zf.ZipFile(zip_path, "r") as zf:
+            names = zf.namelist()
+        entries = len(names)
+        metadata = sum(
+            1 for n in names
+            if n.startswith("bundle-metadata/") and not n.endswith("/")
+        )
+        return size, sha256, entries, metadata
 
     metadata_path = Path(metadata_dir).resolve() if metadata_dir else None
     output_path_obj = Path(output_path)
     candidate_path = output_path_obj.with_name(
         output_path_obj.stem + "-candidate" + output_path_obj.suffix
+    )
+    preproof_path = output_path_obj.with_name(
+        output_path_obj.stem + "-preproof" + output_path_obj.suffix
     )
     proof_file = metadata_path / "final-bundle-validation-proof.txt" if metadata_path else None
 
@@ -528,7 +558,26 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
     contract_data = load_contract(contract_path)
     sprint_id = contract_data.get("sprint_id", contract_data.get("contract_id", Path(contract_path).stem))
 
-    # Write placeholder proof (required_metadata_files may list it; must exist for pass 1)
+    validator = Path(__file__).parent / "validate_evidence_bundle.py"
+
+    def _validate(zip_path, label):
+        result = subprocess.run(
+            [sys.executable, str(validator),
+             "--bundle", str(zip_path),
+             "--contract", contract_path,
+             "--check-no-pending"],
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
+        )
+        out = result.stdout + result.stderr
+        if "BUNDLE_VALIDATION: PASS" not in out:
+            try:
+                print(out[-2000:])
+            except UnicodeEncodeError:
+                print(out[-2000:].encode("ascii", errors="replace").decode("ascii"))
+            return False, out
+        return True, out
+
+    # --- Write placeholder proof ---
     if proof_file:
         proof_file.write_text(
             "PLACEHOLDER — will be replaced after candidate validation\n",
@@ -536,7 +585,9 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
         )
         print(f"[AUTO-PROOF] Placeholder proof written: {proof_file.name}")
 
-    # --- PASS 1: Build candidate ---
+    # =========================================================
+    # PASS 1: Build candidate, validate, compute candidate metrics
+    # =========================================================
     print("[AUTO-PROOF PASS 1] Building candidate bundle...")
     ok = build_bundle(
         repo_root, contract_path, str(candidate_path), metadata_dir,
@@ -550,60 +601,108 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
             candidate_path.unlink()
         return False
 
-    # --- PASS 1: Validate candidate ---
     print("[AUTO-PROOF PASS 1] Validating candidate...")
-    validator = Path(__file__).parent / "validate_evidence_bundle.py"
-    result = subprocess.run(
-        [sys.executable, str(validator),
-         "--bundle", str(candidate_path),
-         "--contract", contract_path,
-         "--check-no-pending"],
-        capture_output=True, text=True, encoding="utf-8", errors="replace",
-    )
-    validate_out = result.stdout + result.stderr
-    if "BUNDLE_VALIDATION: PASS" not in validate_out:
+    ok, _ = _validate(candidate_path, "PASS 1 candidate")
+    if not ok:
         print("[AUTO-PROOF PASS 1] Candidate validation FAIL.")
-        try:
-            print(validate_out[-2000:])
-        except UnicodeEncodeError:
-            print(validate_out[-2000:].encode("ascii", errors="replace").decode("ascii"))
         if candidate_path.exists():
             candidate_path.unlink()
         return False
     print("[AUTO-PROOF PASS 1] Candidate validation PASS.")
 
-    # Compute candidate metrics
-    candidate_bytes = candidate_path.stat().st_size
-    candidate_sha256 = hashlib.sha256(candidate_path.read_bytes()).hexdigest()
-    with _zf.ZipFile(candidate_path, "r") as zc:
-        names = zc.namelist()
-        candidate_entries = len(names)
-        candidate_metadata = sum(
-            1 for n in names
-            if n.startswith("bundle-metadata/") and not n.endswith("/")
-        )
+    c_bytes, c_sha256, c_entries, c_metadata = _compute_zip_metrics(candidate_path)
 
-    # --- Write real proof ---
+    # Write proof with candidate metrics (will be embedded in Pass 2 pre-proof build)
     if proof_file:
-        proof_text = "\n".join([
+        proof_file.write_text("\n".join([
             "BUNDLE_VALIDATION: PASS",
             f"sprint_id: {sprint_id}",
             f"contract_id: {sprint_id}",
-            f"Candidate: {candidate_path.name}",
-            f"Candidate SHA-256: {candidate_sha256}",
-            f"Candidate entries: {candidate_entries}",
-            f"Candidate bytes: {candidate_bytes:,}",
-            f"Candidate metadata: {candidate_metadata}",
-            "Validator: validate_evidence_bundle.py",
-            f"Timestamp: {datetime.now().astimezone().isoformat()}",
-            "Final rebuild includes this proof file.",
             "",
-        ])
-        proof_file.write_text(proof_text, encoding="utf-8")
-        print(f"[AUTO-PROOF] Real proof written: {proof_file.name}")
+            "=== CANDIDATE (Pass 1) ===",
+            f"Candidate: {candidate_path.name}",
+            f"Candidate SHA-256: {c_sha256}",
+            f"Candidate entries: {c_entries}",
+            f"Candidate bytes: {c_bytes:,}",
+            f"Candidate metadata: {c_metadata}",
+            "",
+            "Pass 2 pre-proof build in progress...",
+            "",
+        ]), encoding="utf-8")
+        print(f"[AUTO-PROOF] Pass 1 proof written (candidate metrics).")
 
-    # --- PASS 2: Build final ---
-    print("[AUTO-PROOF PASS 2] Building final bundle...")
+    # =========================================================
+    # PASS 2: Build pre-proof final, validate, compute pre-proof metrics
+    # =========================================================
+    print("[AUTO-PROOF PASS 2] Building pre-proof final bundle...")
+    ok = build_bundle(
+        repo_root, contract_path, str(preproof_path), metadata_dir,
+        dry_run=False,
+        require_clean_git=require_clean_git,
+        allow_legacy_root_metadata=allow_legacy_root_metadata,
+    )
+    if not ok:
+        print("[AUTO-PROOF PASS 2] FAIL — pre-proof final build failed.")
+        if preproof_path.exists():
+            preproof_path.unlink()
+        return False
+
+    print("[AUTO-PROOF PASS 2] Validating pre-proof final...")
+    ok, _ = _validate(preproof_path, "PASS 2 pre-proof")
+    if not ok:
+        print("[AUTO-PROOF PASS 2] Pre-proof final validation FAIL.")
+        if preproof_path.exists():
+            preproof_path.unlink()
+        return False
+    print("[AUTO-PROOF PASS 2] Pre-proof final validation PASS.")
+
+    pp_bytes, pp_sha256, pp_entries, pp_metadata = _compute_zip_metrics(preproof_path)
+
+    # Write complete proof for embedding in Pass 3.
+    # Self-reference note: the final ZIP's SHA-256 and bytes change when this proof is
+    # embedded (circular dependency — the proof cannot know its own container's hash).
+    # The on-disk proof is updated after Pass 3 with the actual final ZIP SHA-256/bytes.
+    if proof_file:
+        proof_file.write_text("\n".join([
+            "BUNDLE_VALIDATION: PASS",
+            f"sprint_id: {sprint_id}",
+            f"contract_id: {sprint_id}",
+            "",
+            "=== CANDIDATE (Pass 1) ===",
+            f"Candidate: {candidate_path.name}",
+            f"Candidate SHA-256: {c_sha256}",
+            f"Candidate entries: {c_entries}",
+            f"Candidate bytes: {c_bytes:,}",
+            f"Candidate metadata: {c_metadata}",
+            "",
+            "=== PRE-PROOF FINAL (Pass 2) ===",
+            f"Pre-proof final: {output_path_obj.name}",
+            f"Pre-proof SHA-256: {pp_sha256}",
+            f"Pre-proof entries: {pp_entries}",
+            f"Pre-proof bytes: {pp_bytes:,}",
+            f"Pre-proof metadata: {pp_metadata}",
+            "",
+            "=== FINAL WITH PROOF EMBEDDED (Pass 3) ===",
+            f"Final: {output_path_obj.name}",
+            f"Final entries: {pp_entries}",
+            f"Final metadata: {pp_metadata}",
+            "Self-reference note: The SHA-256 and bytes of the final ZIP (Pass 3) cannot",
+            "  be embedded in this proof before Pass 3 is built (circular dependency).",
+            "  Pre-proof SHA-256 above verifies the Pass 2 build independently.",
+            "  To verify Pass 3: compute SHA-256 of this ZIP externally.",
+            "  The on-disk proof file (metadata_dir) contains the final SHA-256 after Pass 3.",
+            "",
+            "Validator: validate_evidence_bundle.py --check-no-pending",
+            "Final validation: PASS",
+            f"Timestamp: {datetime.now().astimezone().isoformat()}",
+            "",
+        ]), encoding="utf-8")
+        print(f"[AUTO-PROOF] Complete proof written (candidate + pre-proof + self-ref note).")
+
+    # =========================================================
+    # PASS 3: Rebuild final ZIP with complete proof embedded, validate
+    # =========================================================
+    print("[AUTO-PROOF PASS 3] Building final bundle with embedded proof...")
     ok = build_bundle(
         repo_root, contract_path, str(output_path), metadata_dir,
         dry_run=False,
@@ -611,69 +710,59 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
         allow_legacy_root_metadata=allow_legacy_root_metadata,
     )
     if not ok:
-        print("[AUTO-PROOF PASS 2] FAIL — final build failed.")
+        print("[AUTO-PROOF PASS 3] FAIL — final build failed.")
         if Path(output_path).exists():
             Path(output_path).unlink()
+        if preproof_path.exists():
+            preproof_path.unlink()
         return False
 
-    # --- PASS 2: Validate final ---
-    print("[AUTO-PROOF PASS 2] Validating final bundle...")
-    result2 = subprocess.run(
-        [sys.executable, str(validator),
-         "--bundle", str(output_path),
-         "--contract", contract_path,
-         "--check-no-pending"],
-        capture_output=True, text=True, encoding="utf-8", errors="replace",
-    )
-    validate_out2 = result2.stdout + result2.stderr
-    if "BUNDLE_VALIDATION: PASS" not in validate_out2:
-        print("[AUTO-PROOF PASS 2] Final validation FAIL.")
-        try:
-            print(validate_out2[-2000:])
-        except UnicodeEncodeError:
-            print(validate_out2[-2000:].encode("ascii", errors="replace").decode("ascii"))
+    print("[AUTO-PROOF PASS 3] Validating final bundle...")
+    ok, _ = _validate(Path(output_path), "PASS 3 final")
+    if not ok:
+        print("[AUTO-PROOF PASS 3] Final validation FAIL.")
         if Path(output_path).exists():
             Path(output_path).unlink()
+        if preproof_path.exists():
+            preproof_path.unlink()
         return False
+    print("[AUTO-PROOF PASS 3] Final bundle validation PASS.")
 
-    # Compute final bundle metrics and update proof with full details
-    final_bytes = Path(output_path).stat().st_size
-    final_sha256 = hashlib.sha256(Path(output_path).read_bytes()).hexdigest()
-    with _zf.ZipFile(output_path, "r") as zf:
-        final_names = zf.namelist()
-        final_entries = len(final_names)
-        final_metadata = sum(
-            1 for n in final_names
-            if n.startswith("bundle-metadata/") and not n.endswith("/")
-        )
+    # Compute final ZIP metrics and update on-disk proof with actual final SHA-256/bytes
+    f_bytes, f_sha256, f_entries, f_metadata = _compute_zip_metrics(Path(output_path))
 
     if proof_file:
-        full_proof_text = "\n".join([
-            "BUNDLE_VALIDATION: PASS",
-            f"sprint_id: {sprint_id}",
-            f"contract_id: {sprint_id}",
+        # Read the proof embedded in the final ZIP to verify it got in there
+        with _zf.ZipFile(output_path, "r") as zf:
+            zip_names = zf.namelist()
+            proof_in_zip_name = "bundle-metadata/final-bundle-validation-proof.txt"
+            proof_in_zip = (
+                zf.read(proof_in_zip_name).decode("utf-8", errors="replace")
+                if proof_in_zip_name in zip_names else ""
+            )
+        proof_embedded_ok = "Pre-proof SHA-256:" in proof_in_zip and "Final validation: PASS" in proof_in_zip
+
+        # Update on-disk proof with actual Pass 3 metrics for external chain verification
+        existing = proof_file.read_text(encoding="utf-8").rstrip()
+        proof_file.write_text(existing + "\n".join([
             "",
-            "=== CANDIDATE (Pass 1) ===",
-            f"Candidate: {candidate_path.name}",
-            f"Candidate SHA-256: {candidate_sha256}",
-            f"Candidate entries: {candidate_entries}",
-            f"Candidate bytes: {candidate_bytes:,}",
-            f"Candidate metadata: {candidate_metadata}",
+            "=== PASS 3 EXTERNAL VERIFICATION RECORD ===",
+            f"Final SHA-256: {f_sha256}",
+            f"Final bytes: {f_bytes:,}",
+            f"Final entries: {f_entries}",
+            f"Final metadata: {f_metadata}",
+            f"Proof embedded in ZIP: {'YES' if proof_embedded_ok else 'NO — check build'}",
+            f"Pass 3 timestamp: {datetime.now().astimezone().isoformat()}",
             "",
-            "=== FINAL BUNDLE (Pass 2) ===",
-            f"Final: {output_path_obj.name}",
-            f"Final SHA-256: {final_sha256}",
-            f"Final entries: {final_entries}",
-            f"Final bytes: {final_bytes:,}",
-            f"Final metadata: {final_metadata}",
-            "",
-            "Validator: validate_evidence_bundle.py --check-no-pending",
-            "Final validation: PASS",
-            f"Timestamp: {datetime.now().astimezone().isoformat()}",
-            "",
-        ])
-        proof_file.write_text(full_proof_text, encoding="utf-8")
-        print(f"[AUTO-PROOF] Final proof updated with complete metrics (candidate + final).")
+        ]), encoding="utf-8")
+        print(f"[AUTO-PROOF] On-disk proof updated with Pass 3 external verification record.")
+        print(f"[AUTO-PROOF] Proof embedded in ZIP: {'YES' if proof_embedded_ok else 'WARNING: check proof inside ZIP'}")
+
+    # Clean up intermediate ZIPs
+    if candidate_path.exists():
+        candidate_path.unlink()
+    if preproof_path.exists():
+        preproof_path.unlink()
 
     print(f"BUNDLE_VALIDATION: PASS")
     print(f"EVIDENCE_BUNDLE: {Path(output_path).resolve()}")

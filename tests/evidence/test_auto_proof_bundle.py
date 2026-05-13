@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """
-Tests for --auto-proof two-pass bundle build (ACCEL-003).
+Tests for --auto-proof three-pass bundle build (ACCEL-003 repaired).
 
 Verifies:
-1. Auto-proof happy path: candidate -> proof -> final, both validate.
+1. Auto-proof happy path: all three passes succeed, final ZIP exists.
 2. Candidate validation failure stops final output.
-3. Proof file content: sprint_id, candidate name, sha256, entries, bytes, metadata count.
+3. On-disk proof content: candidate + pre-proof + final verification record.
 4. sprint_id in proof matches contract sprint_id.
 5. Without --auto-proof, build_bundle behavior unchanged.
 6. Final bundle validates with --check-no-pending.
-7. Proof includes final bundle path/SHA-256/entries/bytes/metadata count (ACCEL-003 hardening).
+7. On-disk proof contains Final SHA-256/entries/bytes/metadata (ACCEL-003 hardening).
+8. Proof INSIDE the final ZIP is NOT candidate-only (contains pre-proof section).
+9. Proof INSIDE the final ZIP contains final path, entries, metadata, and Final validation: PASS.
 
 Run from repo root:
     python -m pytest tests/evidence/test_auto_proof_bundle.py -v
@@ -18,7 +20,6 @@ Exits 0 if all tests pass, non-zero otherwise.
 """
 
 import sys
-import tempfile
 import zipfile
 from pathlib import Path
 
@@ -28,6 +29,8 @@ REPO_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "evidence"))
 
 from build_evidence_bundle import build_auto_proof_bundle, build_bundle  # noqa: E402
+
+PROOF_ENTRY = "bundle-metadata/final-bundle-validation-proof.txt"
 
 
 # ---------------------------------------------------------------------------
@@ -77,12 +80,20 @@ def _write_metadata(metadata_dir: Path, count: int = 6,
         )
 
 
+def _read_proof_from_zip(zip_path: Path) -> str:
+    """Read the proof file from inside the final ZIP."""
+    with zipfile.ZipFile(zip_path, "r") as zf:
+        if PROOF_ENTRY not in zf.namelist():
+            return ""
+        return zf.read(PROOF_ENTRY).decode("utf-8", errors="replace")
+
+
 # ---------------------------------------------------------------------------
 # Test 1: Happy path
 # ---------------------------------------------------------------------------
 
 def test_auto_proof_happy_path(tmp_path):
-    """--auto-proof builds candidate, validates, writes real proof, builds final, validates."""
+    """Auto-proof three-pass build succeeds: final ZIP exists and proof is not placeholder."""
     contract = _write_contract(tmp_path, min_meta=5)
     meta_dir = tmp_path / "metadata"
     _write_metadata(meta_dir, count=6)
@@ -101,6 +112,11 @@ def test_auto_proof_happy_path(tmp_path):
     proof_text = proof_file.read_text(encoding="utf-8")
     assert "BUNDLE_VALIDATION: PASS" in proof_text
     assert "PLACEHOLDER" not in proof_text, "Proof must not still be a placeholder"
+    # Intermediate ZIPs must be cleaned up
+    candidate = output.with_name(output.stem + "-candidate.zip")
+    preproof = output.with_name(output.stem + "-preproof.zip")
+    assert not candidate.exists(), "Candidate ZIP must be cleaned up after success"
+    assert not preproof.exists(), "Pre-proof ZIP must be cleaned up after success"
 
 
 # ---------------------------------------------------------------------------
@@ -125,11 +141,11 @@ def test_auto_proof_candidate_fail_stops_final(tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# Test 3: Proof file content
+# Test 3: On-disk proof file content
 # ---------------------------------------------------------------------------
 
 def test_auto_proof_proof_file_content(tmp_path):
-    """Proof file must contain candidate name, sha256, entries, bytes, metadata count."""
+    """On-disk proof must contain candidate name, sha256, entries, bytes, metadata."""
     contract = _write_contract(tmp_path, min_meta=5)
     meta_dir = tmp_path / "metadata"
     _write_metadata(meta_dir, count=6)
@@ -145,16 +161,16 @@ def test_auto_proof_proof_file_content(tmp_path):
     proof_text = (meta_dir / "final-bundle-validation-proof.txt").read_text(encoding="utf-8")
 
     assert "-candidate.zip" in proof_text, "Proof must name the candidate zip"
-    assert "SHA-256:" in proof_text, "Proof must include candidate SHA-256"
+    assert "SHA-256:" in proof_text, "Proof must include a SHA-256"
     assert "entries:" in proof_text, "Proof must include entry count"
     assert "bytes:" in proof_text, "Proof must include byte size"
     assert "metadata:" in proof_text, "Proof must include metadata count"
     assert "PLACEHOLDER" not in proof_text, "Proof must not be a placeholder"
-    # ACCEL-003 hardening: final bundle metrics must also be present
-    assert "Final SHA-256:" in proof_text, "Proof must include final bundle SHA-256"
-    assert "Final entries:" in proof_text, "Proof must include final bundle entry count"
-    assert "Final bytes:" in proof_text, "Proof must include final bundle byte size"
-    assert "Final metadata:" in proof_text, "Proof must include final bundle metadata count"
+    # ACCEL-003 hardening: final metrics in external verification record
+    assert "Final SHA-256:" in proof_text, "On-disk proof must include Pass 3 Final SHA-256"
+    assert "Final entries:" in proof_text, "On-disk proof must include Final entries count"
+    assert "Final bytes:" in proof_text, "On-disk proof must include Final bytes"
+    assert "Final metadata:" in proof_text, "On-disk proof must include Final metadata count"
     assert "Final validation: PASS" in proof_text, "Proof must record final validation PASS"
 
 
@@ -252,11 +268,11 @@ def test_auto_proof_final_no_pending(tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# Test 7: Proof includes final bundle metrics (ACCEL-003 hardening)
+# Test 7: On-disk proof contains Final SHA-256/entries/bytes/metadata (ACCEL-003)
 # ---------------------------------------------------------------------------
 
 def test_auto_proof_includes_final_bundle_metrics(tmp_path):
-    """Proof file must contain final bundle path, SHA-256, entries, bytes, metadata count."""
+    """On-disk proof must contain final bundle path, SHA-256, entries, bytes, metadata."""
     contract = _write_contract(tmp_path, min_meta=5)
     meta_dir = tmp_path / "metadata"
     _write_metadata(meta_dir, count=6)
@@ -271,20 +287,106 @@ def test_auto_proof_includes_final_bundle_metrics(tmp_path):
 
     proof_text = (meta_dir / "final-bundle-validation-proof.txt").read_text(encoding="utf-8")
 
-    # Final section header
-    assert "FINAL BUNDLE" in proof_text, "Proof must contain 'FINAL BUNDLE' section"
-    # Final bundle filename
+    # PASS 3 external verification record
+    assert "PASS 3" in proof_text or "Final SHA-256:" in proof_text, \
+        "On-disk proof must contain Pass 3 verification record"
     assert "mybundle.zip" in proof_text, "Proof must include the final bundle filename"
-    # Final metrics
     assert "Final SHA-256:" in proof_text, "Proof must include Final SHA-256"
     assert "Final entries:" in proof_text, "Proof must include Final entries count"
     assert "Final bytes:" in proof_text, "Proof must include Final bytes"
     assert "Final metadata:" in proof_text, "Proof must include Final metadata count"
-    # Final validation result
     assert "Final validation: PASS" in proof_text, "Proof must record Final validation: PASS"
-    # Candidate section still present
     assert "CANDIDATE" in proof_text, "Proof must still contain CANDIDATE section"
     assert "-candidate.zip" in proof_text, "Proof must still name the candidate zip"
+
+
+# ---------------------------------------------------------------------------
+# Test 8: Proof INSIDE the final ZIP is NOT candidate-only (ACCEL-003 repair)
+# ---------------------------------------------------------------------------
+
+def test_proof_inside_zip_is_not_candidate_only(tmp_path):
+    """The proof embedded inside the final ZIP must contain pre-proof metrics.
+
+    This is the core ACCEL-003 repair test: verifies the final ZIP itself
+    contains more than just candidate data.
+    """
+    contract = _write_contract(tmp_path, min_meta=5)
+    meta_dir = tmp_path / "metadata"
+    _write_metadata(meta_dir, count=6)
+
+    output = tmp_path / "final.zip"
+    ok = build_auto_proof_bundle(
+        str(REPO_ROOT), str(contract), str(output), str(meta_dir),
+        allow_legacy_root_metadata=False,
+        require_clean_git=False,
+    )
+    assert ok
+
+    # Read proof FROM INSIDE THE ZIP — not from metadata_dir
+    proof_in_zip = _read_proof_from_zip(output)
+    assert proof_in_zip, f"Proof file must exist at {PROOF_ENTRY!r} inside the final ZIP"
+
+    # Must not be candidate-only
+    assert "CANDIDATE" in proof_in_zip, "ZIP proof must contain CANDIDATE section"
+    candidate_section_only = (
+        "PRE-PROOF" not in proof_in_zip
+        and "Pre-proof" not in proof_in_zip
+        and "FINAL" not in proof_in_zip
+    )
+    assert not candidate_section_only, (
+        "ZIP proof must NOT be candidate-only. "
+        "Expected pre-proof and final sections. Got:\n" + proof_in_zip[:500]
+    )
+
+    # Must contain pre-proof section
+    assert "PRE-PROOF" in proof_in_zip or "Pre-proof" in proof_in_zip, \
+        "ZIP proof must contain pre-proof section"
+
+    # Must NOT still be a placeholder
+    assert "PLACEHOLDER" not in proof_in_zip, \
+        "ZIP proof must not still be PLACEHOLDER"
+    assert "in progress" not in proof_in_zip, \
+        "ZIP proof must not contain 'in progress' (unfinished pass marker)"
+
+
+# ---------------------------------------------------------------------------
+# Test 9: Proof INSIDE the final ZIP has required fields (ACCEL-003 repair)
+# ---------------------------------------------------------------------------
+
+def test_proof_inside_zip_has_required_fields(tmp_path):
+    """Proof inside the final ZIP must contain path, entries, metadata, and final validation."""
+    contract = _write_contract(tmp_path, min_meta=5)
+    meta_dir = tmp_path / "metadata"
+    _write_metadata(meta_dir, count=6)
+
+    output = tmp_path / "target.zip"
+    ok = build_auto_proof_bundle(
+        str(REPO_ROOT), str(contract), str(output), str(meta_dir),
+        allow_legacy_root_metadata=False,
+        require_clean_git=False,
+    )
+    assert ok
+
+    # Read proof FROM INSIDE THE ZIP
+    proof_in_zip = _read_proof_from_zip(output)
+    assert proof_in_zip, "Proof must be present inside the final ZIP"
+
+    assert "target.zip" in proof_in_zip, \
+        "Proof inside ZIP must reference the final bundle filename"
+    assert "Pre-proof SHA-256:" in proof_in_zip, \
+        "Proof inside ZIP must include Pre-proof SHA-256 (verifiable)"
+    assert "Pre-proof entries:" in proof_in_zip, \
+        "Proof inside ZIP must include Pre-proof entries"
+    assert "Pre-proof bytes:" in proof_in_zip, \
+        "Proof inside ZIP must include Pre-proof bytes"
+    assert "Final entries:" in proof_in_zip, \
+        "Proof inside ZIP must include Final entries"
+    assert "Final metadata:" in proof_in_zip, \
+        "Proof inside ZIP must include Final metadata"
+    assert "Final validation: PASS" in proof_in_zip, \
+        "Proof inside ZIP must record Final validation: PASS"
+    assert "Self-reference note" in proof_in_zip, \
+        "Proof inside ZIP must include self-reference note explaining the hash limitation"
 
 
 if __name__ == "__main__":

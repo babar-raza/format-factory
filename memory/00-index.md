@@ -48,6 +48,7 @@ The memory package captures:
 | `15-ai-modules-and-state-management-architecture-20260509.md` | Detailed AI module, embedding retrieval, agent role, source generation, Format Factory State Manager, community component, and no-drift architecture direction. Required reading for LLM/embedding work, state management work, no-drift work, agent workflow design, Phase 4 source generation, playbook replay, and review queue design. |
 | `16-controlled-swarm-execution-and-acceleration-20260512.md` | Controlled swarm model, ACCEL-003 pattern, S-F2F-05 schema fix, METADATA_IDENTITY pattern, DEC-033 status record, Gate 10 approval record. POST-FODT-GATE10-CONTROLLED-SWARM-001 sprint record. |
 | `17-dec033-option-b-gate11-and-github-pat-20260512.md` | DEC-033 Option B resolution (Babar Raza, 2026-05-12), Gate 11 commercial skeleton status, SDK blocker, GitHub PAT scope/propagation rules, ACCEL-003 hardening (final bundle metrics in proof). |
+| `18-gate11-tier0-dotnet-and-accel003-repair-20260513.md` | GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001 (2026-05-13): ACCEL-003 3-pass repair (proof inside ZIP), .NET 10 SDK 10.0.204 installed, FODS Tier 0 12/12 tests PASS, FODT Tier 0 13/13 tests PASS, DEC-034 IV prep, GitHub PAT refresh. |
 
 ## Local Methodology Entry Points (added linkage sprint 2026-05-08)
 

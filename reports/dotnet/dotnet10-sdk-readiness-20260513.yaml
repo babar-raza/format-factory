@@ -1,0 +1,19 @@
+artifact_id: dotnet10-sdk-readiness-20260513
+artifact_type: report
+sprint_id: GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001
+lane: B
+generated_at: "2026-05-13"
+visibility: internal
+
+dotnet_sdk_before: "9.0.200"
+install_command: "winget install --id Microsoft.DotNet.SDK.10 --source winget --accept-source-agreements --accept-package-agreements"
+package_id: "Microsoft.DotNet.SDK.10"
+package_version: "10.0.204"
+install_source: "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.204/dotnet-sdk-10.0.204-win-x64.exe"
+hash_verified: true
+install_result: "Successfully installed"
+dotnet_sdk_after: "10.0.204"
+dotnet_version_active: "10.0.204"
+fods_skeleton_build: "PASS"
+fodt_skeleton_build: "PASS"
+lane_verdict: "LANE_B_PASS_DOTNET10_INSTALLED"

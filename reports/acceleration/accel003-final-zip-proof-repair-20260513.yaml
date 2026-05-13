@@ -1,0 +1,36 @@
+artifact_id: accel003-final-zip-proof-repair-20260513
+artifact_type: report
+sprint_id: GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001
+lane: A
+generated_at: "2026-05-13"
+visibility: internal
+
+defect: proof_inside_final_zip_was_candidate_only
+fix: three_pass_build_with_self_reference_note
+design_choice: Option 1 (pre-proof SHA-256 verifiable, self-reference note for Pass 3 hash)
+
+pass_1: build_candidate_validate_compute_candidate_metrics
+pass_2: build_preproof_final_validate_compute_preproof_metrics
+pass_3: rebuild_final_with_complete_proof_embedded_validate
+
+proof_inside_zip_has_candidate_metrics: true
+proof_inside_zip_has_preproof_metrics: true
+proof_inside_zip_has_final_entries: true
+proof_inside_zip_has_final_metadata: true
+proof_inside_zip_has_final_validation_pass: true
+proof_inside_zip_self_reference_note: true
+proof_inside_zip_not_candidate_only: true
+proof_inside_zip_not_placeholder: true
+
+on_disk_proof_has_final_sha256: true
+on_disk_proof_has_final_bytes: true
+on_disk_proof_updated_after_pass3: true
+
+tests_pass: 9
+tests_total: 9
+new_tests_added: 2
+new_tests:
+  - test_proof_inside_zip_is_not_candidate_only
+  - test_proof_inside_zip_has_required_fields
+
+lane_verdict: LANE_A_PASS_WITH_SELF_REFERENCE_NOTE

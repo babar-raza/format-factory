@@ -1,12 +1,14 @@
 ---
 taskcard_id: ACCEL-003
-sprint_id: POST-FODT-GATE10-CONTROLLED-SWARM-001
+sprint_id: GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001
 type: acceleration
-status: completed
+status: completed_repaired
 created: "2026-05-11"
 completed: "2026-05-11"
+repaired: "2026-05-13"
 created_by: "FODT-GATE10-APPROVAL-AND-SWARM-NEXT-LANES-001 (Lane D)"
 completed_by: "POST-FODT-GATE10-CONTROLLED-SWARM-001 (Lane B)"
+repaired_by: "GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001 (Lane A)"
 ---
 
 # ACCEL-003: Final-Proof Two-Pass Automation
@@ -35,3 +37,22 @@ None. Can run as standalone sprint.
 ## Stop Conditions
 - Must not break existing bundle builds (backwards compatibility required)
 - Must not add external dependencies
+
+## Repair Notes (2026-05-13)
+
+**Defect found:** The 2-pass implementation updated the on-disk proof after Pass 2, but
+the proof INSIDE the final ZIP still contained only candidate metrics.
+
+**Repair:** Upgraded to 3-pass algorithm:
+- Pass 1: candidate build + validate
+- Pass 2: pre-proof final build + validate → compute pre-proof metrics
+- Pass 3: final build with complete proof embedded + validate
+
+**Self-reference design decision:** The proof inside the final ZIP contains a self-reference
+note explaining that the Pass 3 SHA-256/bytes cannot be pre-embedded (circular dependency).
+Pre-proof SHA-256 is the verifiable hash. On-disk proof records the actual Pass 3 hash.
+
+**New tests added:** Test 8 (proof inside ZIP not candidate-only) + Test 9 (proof inside ZIP
+has required fields). Total: 9/9 PASS.
+
+See: reports/acceleration/accel003-final-zip-proof-repair-20260513.md

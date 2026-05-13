@@ -1,0 +1,140 @@
+sprint_id: GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001
+contract_id: GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001
+description: >
+  ACCEL-003 3-pass proof repair (proof inside ZIP), .NET 10 SDK installation,
+  FODS Tier 0 .NET commercial parser (12/12 tests), FODT Tier 0 .NET commercial
+  parser (13/13 tests), DEC-034 IV prep, GitHub PAT refresh, memory/governance sync.
+require_clean_git: false
+require_contract_in_bundle: false
+require_manifest: false
+min_metadata_count: 50
+
+required_repo_files:
+  - path: tools/evidence/build_evidence_bundle.py
+  - path: tests/evidence/test_auto_proof_bundle.py
+  - path: reports/acceleration/accel003-final-zip-proof-repair-20260513.md
+  - path: reports/acceleration/accel003-final-zip-proof-repair-20260513.yaml
+  - path: taskcards/ACCEL-003-final-proof-two-pass-automation.md
+  - path: taskcards/DOTNET10-SDK-readiness.md
+  - path: reports/dotnet/dotnet10-sdk-readiness-20260513.md
+  - path: reports/dotnet/dotnet10-sdk-readiness-20260513.yaml
+  - path: src/net/fods/FodsParser.cs
+  - path: src/net/fods/FormatFactory.Fods.csproj
+  - path: src/net/fods/README.md
+  - path: tests/net/fods/FormatFactory.Fods.Tests.csproj
+  - path: tests/net/fods/FodsParserTests.cs
+  - path: src/net/fodt/FodtParser.cs
+  - path: src/net/fodt/FormatFactory.Fodt.csproj
+  - path: src/net/fodt/README.md
+  - path: tests/net/fodt/FormatFactory.Fodt.Tests.csproj
+  - path: tests/net/fodt/FodtParserTests.cs
+  - path: acquisition-packs/fods/gate11-human-review-packet.md
+  - path: acquisition-packs/fodt/gate11-human-review-packet.md
+  - path: taskcards/FODS-FODT-GATE11-TIER0-DEC034-IV.md
+  - path: reports/github/github-pat-refresh-20260513.md
+  - path: memory/18-gate11-tier0-dotnet-and-accel003-repair-20260513.md
+  - path: reports/governance/governance-sync-gate11-tier0-20260513.md
+
+required_metadata_files:
+  - final-bundle-validation-proof.txt
+  - git-log.txt
+  - git-status-final.txt
+  - repo-tree.txt
+  - bundle-manifest.yaml
+
+forbidden_paths:
+  - .env
+  - .local/spec-cache
+  - src/dotnet/open-source
+  - src/dotnet/commercial
+  - src/python/open-source
+
+semantic_checks:
+  - id: SC-001
+    description: "ACCEL-003 3-pass proof: PRE-PROOF section present in builder"
+    file: tools/evidence/build_evidence_bundle.py
+    must_contain: "PRE-PROOF"
+  - id: SC-002
+    description: "ACCEL-003 3-pass proof: PASS 3 section present in builder"
+    file: tools/evidence/build_evidence_bundle.py
+    must_contain: "PASS 3"
+  - id: SC-003
+    description: "ACCEL-003 test 8 present"
+    file: tests/evidence/test_auto_proof_bundle.py
+    must_contain: "test_proof_inside_zip_is_not_candidate_only"
+  - id: SC-004
+    description: "ACCEL-003 test 9 present"
+    file: tests/evidence/test_auto_proof_bundle.py
+    must_contain: "test_proof_inside_zip_has_required_fields"
+  - id: SC-005
+    description: "FODS csproj targets net10.0"
+    file: src/net/fods/FormatFactory.Fods.csproj
+    must_contain: "net10.0"
+  - id: SC-006
+    description: "FODT csproj targets net10.0"
+    file: src/net/fodt/FormatFactory.Fodt.csproj
+    must_contain: "net10.0"
+  - id: SC-007
+    description: "FODS csproj version is tier0"
+    file: src/net/fods/FormatFactory.Fods.csproj
+    must_contain: "0.1.0-tier0"
+  - id: SC-008
+    description: "FODT csproj version is tier0"
+    file: src/net/fodt/FormatFactory.Fodt.csproj
+    must_contain: "0.1.0-tier0"
+  - id: SC-009
+    description: "FODS parser has DTD prohibition"
+    file: src/net/fods/FodsParser.cs
+    must_contain: "DtdProcessing.Prohibit"
+  - id: SC-010
+    description: "FODT parser has DTD prohibition"
+    file: src/net/fodt/FodtParser.cs
+    must_contain: "DtdProcessing.Prohibit"
+  - id: SC-011
+    description: "FODS parser has XmlResolver null"
+    file: src/net/fods/FodsParser.cs
+    must_contain: "XmlResolver"
+  - id: SC-012
+    description: "FODT parser has XmlResolver null"
+    file: src/net/fodt/FodtParser.cs
+    must_contain: "XmlResolver"
+  - id: SC-013
+    description: "FODS README is commercial-only"
+    file: src/net/fods/README.md
+    must_contain: "commercial-only"
+  - id: SC-014
+    description: "FODT README is commercial-only"
+    file: src/net/fodt/README.md
+    must_contain: "commercial-only"
+  - id: SC-015
+    description: "FODS gate11 review packet updated for Tier 0"
+    file: acquisition-packs/fods/gate11-human-review-packet.md
+    must_contain: "COMMERCIAL_READINESS_IN_PROGRESS"
+  - id: SC-016
+    description: "FODT gate11 review packet updated for Tier 0"
+    file: acquisition-packs/fodt/gate11-human-review-packet.md
+    must_contain: "Gate 11"
+  - id: SC-017
+    description: "GitHub PAT probe not printed"
+    file: reports/github/github-pat-refresh-20260513.md
+    must_contain: "GITHUB_PAT_VALUE_NOT_PRINTED: YES"
+  - id: SC-018
+    description: "GitHub PAT no mutation"
+    file: reports/github/github-pat-refresh-20260513.md
+    must_contain: "NO_REMOTE_MUTATION_CONFIRMED: YES"
+  - id: SC-019
+    description: "Memory 18 created"
+    file: memory/18-gate11-tier0-dotnet-and-accel003-repair-20260513.md
+    must_contain: "ACCEL-003"
+  - id: SC-020
+    description: "Governance sync Lane M PASS"
+    file: reports/governance/governance-sync-gate11-tier0-20260513.md
+    must_contain: "LANE_M_PASS"
+  - id: SC-021
+    description: "FODS no .NET FOSS package (DEC-033 Option B)"
+    file: src/net/fods/FormatFactory.Fods.csproj
+    must_not_contain: "FormatFactory.Fods.Oss"
+  - id: SC-022
+    description: "FODT no .NET FOSS package (DEC-033 Option B)"
+    file: src/net/fodt/FormatFactory.Fodt.csproj
+    must_not_contain: "FormatFactory.Fodt.Oss"
