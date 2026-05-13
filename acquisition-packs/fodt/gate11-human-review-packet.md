@@ -6,7 +6,7 @@ format_id: fodt
 visibility: internal
 generated_by: claude-sonnet-4-6
 generated_at: "2026-05-12"
-notes: "FODT Gate 11 human review packet. COMMERCIAL_READINESS_IN_PROGRESS. Updated 2026-05-13: Tier 0 complete, SDK installed."
+notes: "FODT Gate 11 human review packet. COMMERCIAL_READINESS_IN_PROGRESS. Updated 2026-05-13: Tier 0 complete, SDK installed, DEC-034 IV PASSED."
 ---
 
 # FODT Gate 11 — Human Review Packet
@@ -33,7 +33,7 @@ DEC-033 RESOLVED: Option B — .NET Commercial Only (Babar Raza, 2026-05-12).
 4. ✅ Tier 0 .NET implementation complete — streaming XmlReader, paragraph/list/table extraction
 5. ✅ .NET test suite created and passing — tests/net/fodt/ 13/13 PASS
 6. ❌ Commercial license not finalized
-7. ❌ DEC-034 independent verification not run (required before approval)
+7. ✅ DEC-034 independent verification PASSED (DEC034-GATE11-TIER0-COMMERCIAL-IV-SWARM-001, 2026-05-13)
 8. ❌ Explicit Gate 11 human approval not given
 
 ## DEC-033 Resolution
@@ -75,4 +75,4 @@ Progress as of 2026-05-13:
 2. ✅ Tier 0 implementation complete (paragraph/heading/list counts, table extraction)
 3. ✅ .NET test suite PASS (tests/net/fodt/ 13/13)
 4. ❌ Commercial license not finalized
-5. ❌ DEC-034 IV not run (must be a separate session from implementation work)
+5. ✅ DEC-034 IV PASSED (DEC034-GATE11-TIER0-COMMERCIAL-IV-SWARM-001, 2026-05-13)

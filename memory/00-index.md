@@ -49,6 +49,7 @@ The memory package captures:
 | `16-controlled-swarm-execution-and-acceleration-20260512.md` | Controlled swarm model, ACCEL-003 pattern, S-F2F-05 schema fix, METADATA_IDENTITY pattern, DEC-033 status record, Gate 10 approval record. POST-FODT-GATE10-CONTROLLED-SWARM-001 sprint record. |
 | `17-dec033-option-b-gate11-and-github-pat-20260512.md` | DEC-033 Option B resolution (Babar Raza, 2026-05-12), Gate 11 commercial skeleton status, SDK blocker, GitHub PAT scope/propagation rules, ACCEL-003 hardening (final bundle metrics in proof). |
 | `18-gate11-tier0-dotnet-and-accel003-repair-20260513.md` | GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001 (2026-05-13): ACCEL-003 3-pass repair (proof inside ZIP), .NET 10 SDK 10.0.204 installed, FODS Tier 0 12/12 tests PASS, FODT Tier 0 13/13 tests PASS, DEC-034 IV prep, GitHub PAT refresh. |
+| `19-dec034-gate11-tier0-commercial-iv-20260513.md` | DEC034-GATE11-TIER0-COMMERCIAL-IV-SWARM-001 (2026-05-13): DEC-034 independent verification of Gate 11 Tier 0 work. All lanes PASS. FODS 12/12, FODT 13/13, ACCEL-003 38/38, DEC-033 Option B confirmed. READY_FOR_GATE11_HUMAN_APPROVAL. |
 
 ## Local Methodology Entry Points (added linkage sprint 2026-05-08)
 
