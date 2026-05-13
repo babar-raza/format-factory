@@ -533,3 +533,14 @@ approval may be delegated to AI. No secrets may be sent to AI. AI-generated code
 pass the same validation gates as human/agent work. LLM calls for repo-changing work must be logged
 in `.local/llm-logs/`. Embeddings and RAG are retrieval aids, not truth. Full policy: AGENTS.md §AF12
 and `docs/ai-usage-operating-model.md`.
+
+**26.11. Generated Requirements Mandatory Before Implementation.** AI-generated requirements in
+`generated-requirements/{format}/` must be schema-validated, verifier-reviewed, and have at least
+one requirement marked `ACCEPTED_FOR_VERTICAL_SLICE` before any commercial implementation sprint
+begins for that format. Collapsing requirements generation, validation, and acceptance into a
+single unreviewed step is a governance violation. See AGENTS.md §AF13.
+
+**26.12. Local Repo Authority Over External Memory.** Local repo files are the authoritative source
+of truth. External AI memory (ChatGPT, conversation summaries) is supplementary and may be stale.
+When local files contradict external memory, local repo wins. New sessions must read authority
+files before acting. Entry point: `docs/fresh-chat-project-bootstrap.md`. See AGENTS.md §AF14.

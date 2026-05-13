@@ -1,0 +1,72 @@
+---
+# Governance Gap Check Report (Machine-Readable)
+# Sprint: CHATGPT-MEMORY-LOCAL-SYNC-20260513
+# Date: 2026-05-13
+
+document_type: governance_gap_check
+sprint_id: CHATGPT-MEMORY-LOCAL-SYNC-20260513
+date: "2026-05-13"
+visibility: internal
+
+files_inspected:
+  - AGENTS.md
+  - GOVERNANCE.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - docs/current-state-and-evidence-authority.md
+  - docs/commercial-product-capability-model.md
+  - docs/ai-usage-operating-model.md
+  - docs/fresh-chat-project-bootstrap.md
+
+rules_already_present:
+  - rule: No agent may self-approve a gate
+    location: AGENTS.md §D1
+  - rule: AI is accelerator not authority
+    location: "AGENTS.md §AF12, GOVERNANCE.md §26.10"
+  - rule: Commercial readiness requires C7+
+    location: "AGENTS.md §AF9, GOVERNANCE.md §26.8"
+  - rule: Gate 11 tied to capability model
+    location: AGENTS.md §AF10
+  - rule: No broad cleanup commands
+    location: GOVERNANCE.md §23.5
+  - rule: DEC-034 independent verification required
+    location: "AGENTS.md §V, GOVERNANCE.md §15"
+  - rule: Evidence bundles required
+    location: AGENTS.md §Y
+  - rule: LLM credential security
+    location: AGENTS.md §H
+  - rule: No gate approval via AI
+    location: "AGENTS.md §AF12, GOVERNANCE.md §26.10"
+
+rules_added:
+  - rule: Generated requirements mandatory before implementation
+    added_to: AGENTS.md
+    section: AF13
+  - rule: Local repo authority over external memory
+    added_to: AGENTS.md
+    section: AF14
+  - rule: Generated requirements mandatory before implementation
+    added_to: GOVERNANCE.md
+    section: "26.11"
+  - rule: Local repo authority over external memory
+    added_to: GOVERNANCE.md
+    section: "26.12"
+
+intentional_non_updates:
+  - file: plans/master-plan.md
+    reason: No narrow clarification needed
+  - file: registry/format-registry.yaml
+    reason: Gate status unchanged; no new gate approvals
+  - file: DEC-033
+    reason: Immutable — no agent may modify
+
+contradictions_found: []
+contradictions_repaired: []
+
+remaining_gaps: []
+
+all_required_rules_present: true
+
+files_updated:
+  - AGENTS.md
+  - GOVERNANCE.md

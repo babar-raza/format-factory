@@ -1,0 +1,173 @@
+---
+# Format Factory — Current Project Continuity Map
+# Date: 2026-05-13
+# Sprint: CHATGPT-MEMORY-LOCAL-SYNC-20260513
+
+document_type: project_continuity_map
+version: "1.0"
+created_at: "2026-05-13"
+visibility: internal
+
+major_decisions:
+  - id: DEC-033
+    status: RESOLVED
+    resolution: Option B — .NET Commercial Only
+    date: "2026-05-12"
+    commit: "47dcd60"
+    immutable: true
+  - id: DEC-034
+    status: ACTIVE
+    resolution: Independent verification required before any gate human review
+    ongoing: true
+  - id: commercial-product-direction
+    status: RESOLVED
+    resolution: C7+ load-inspect-edit-save-convert
+    date: "2026-05-13"
+    reference: docs/commercial-product-capability-model.md
+  - id: ai-usage-authorization
+    status: RESOLVED
+    resolution: AI accelerator authorized, not authority
+    date: "2026-05-13"
+    reference: docs/ai-usage-operating-model.md
+  - id: gate-11
+    status: commercial_readiness_in_progress
+    approved: false
+    formats: [FODS, FODT]
+
+current_source_status:
+  python_foss:
+    fods:
+      phase4_status: COMPLETED
+      taskcard: TC-0050
+      path: src/python/fods/
+    fodt:
+      phase4_status: COMPLETED
+      taskcard: TC-0052
+      path: src/python/fodt/
+  dotnet_commercial:
+    fods:
+      capability: C4-C6-vertical-slice
+      tests: "42/42 PASS"
+      commercial_product_ready: false
+      gate_11_approved: false
+      key_files:
+        - src/net/fods/FodsDocument.cs
+        - src/net/fods/FodsWriter.cs
+        - src/net/fods/Model/FodsSheet.cs
+        - src/net/fods/Model/FodsRow.cs
+        - src/net/fods/Model/FodsCell.cs
+    fodt:
+      capability: C4-C6-vertical-slice
+      tests: "43/43 PASS"
+      commercial_product_ready: false
+      gate_11_approved: false
+      key_files:
+        - src/net/fodt/FodtDocument.cs
+        - src/net/fodt/FodtWriter.cs
+        - src/net/fodt/Model/FodtBody.cs
+        - src/net/fodt/Model/FodtParagraph.cs
+
+evidence_bundle_chain:
+  - file: .local/commercial-load-save-vertical-slice-swarm-20260513.zip
+    sprint: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001
+    status: BUNDLE_VALIDATION_PASS
+    primary: true
+  - file: .local/dec034-gate11-tier0-commercial-iv-swarm-20260513.zip
+    sprint: DEC034-GATE11-TIER0-COMMERCIAL-IV-SWARM-001
+    status: BUNDLE_VALIDATION_PASS
+  - file: .local/gate11-approval-release-readiness-swarm-20260513.zip
+    sprint: GATE11-APPROVAL-AND-RELEASE-READINESS-SWARM-001
+    status: BUNDLE_VALIDATION_PASS
+  - file: .local/gate11-tier0-commercial-accel003-repair-swarm-20260513.zip
+    sprint: GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001
+    status: BUNDLE_VALIDATION_PASS
+
+memory_files:
+  - file: memory/24-chatgpt-session-memory-sync-20260513.md
+    topic: Full session continuity (this sync)
+    priority: 1
+  - file: memory/23-ai-usage-operating-model-20260513.md
+    topic: AI usage policy
+    priority: 2
+  - file: memory/22-commercial-load-save-vertical-slice-20260513.md
+    topic: Vertical slice result
+    priority: 3
+  - file: memory/21-commercial-product-direction-reset-20260513.md
+    topic: Commercial product direction
+    priority: 4
+  - file: memory/20-gate11-approval-release-readiness-20260513.md
+    topic: Gate 11 deferred
+    priority: 5
+
+plans:
+  master_plan:
+    path: plans/master-plan.md
+    version: "2.47"
+    section_current_state: 33
+
+taskcards:
+  in_progress:
+    - taskcards/FODS-GATE11-commercial-readiness.md
+    - taskcards/FODT-COMMERCIAL-EDIT-SAVE-VERTICAL-SLICE.md
+  new_this_sprint:
+    - taskcards/CHATGPT-MEMORY-LOCAL-SYNC.md
+    - taskcards/FRESH-CHAT-BOOTSTRAP.md
+    - taskcards/LOCAL-MEMORY-CONTINUITY.md
+
+generated_requirements:
+  fods:
+    path: generated-requirements/fods/
+    status: generated_schema_validated_verifier_reviewed
+    next_step: independent_verification
+    files:
+      - commercial-requirements.yaml
+      - object-model-requirements.yaml
+      - save-edit-requirements.yaml
+      - conversion-requirements.yaml
+      - verifier-review.yaml
+      - traceability-map.yaml
+    dirty_files:
+      - generated-requirements/fods/object-model-requirements.yaml
+      - generated-requirements/fods/verifier-review.yaml
+  fodt:
+    path: generated-requirements/fodt/
+    status: generated_schema_validated_verifier_reviewed
+    next_step: independent_verification
+    files:
+      - commercial-requirements.yaml
+      - object-model-requirements.yaml
+      - save-edit-requirements.yaml
+      - conversion-requirements.yaml
+      - verifier-review.yaml
+      - traceability-map.yaml
+    dirty_files:
+      - generated-requirements/fodt/object-model-requirements.yaml
+
+ai_governance_docs:
+  - docs/ai-usage-operating-model.md
+  - docs/ai-usage-operating-model.yaml
+  - docs/ai-assisted-commercial-development.md
+  - docs/ai-assisted-commercial-development.yaml
+  - docs/spec-retrieval-and-rag-policy.md
+  - docs/spec-retrieval-and-rag-policy.yaml
+  - docs/agent-swarm-ai-orchestration.md
+
+next_recommended_work:
+  - priority: 1
+    id: GENERATED-REQUIREMENTS-IV-SPRINT
+    description: AI-generated requirements independent verification
+    action: Verify FODS/FODT requirements against schema and spec; accept requirement IDs
+    unblocks: Next .NET implementation swarm
+    requires_human_auth: true
+  - priority: 2
+    id: DOTNET-ENTITY-EXPANSION-SWARM
+    description: .NET entity expansion (lists, tables, styles)
+    action: Expand entity coverage; advance toward C7
+    requires: accepted_requirement_ids
+    requires_human_auth: true
+  - priority: 3
+    id: SKILL-SYSTEM-REQUIREMENTS-PIPELINE
+    description: Implement tools/skills/ requirements pipeline
+    action: Build format context resolver, retrieval, generation, verifier, prompt generator
+    unblocks: Scaling to future formats
+    requires_human_auth: true

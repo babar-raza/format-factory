@@ -750,3 +750,20 @@ not truth — see `docs/spec-retrieval-and-rag-policy.md`. LLM calls must be log
 `.local/llm-logs/` (AGENTS.md §H5) when used for repo-changing work. AI-generated code, tests,
 and documentation must pass the same validation gates as human/agent work. No secrets may be sent
 to AI. No gate approval may be delegated to AI. Full AI operating model: `docs/ai-usage-operating-model.md`.
+
+**AF13. Generated Requirements Are Mandatory Before Implementation.** For format-specific commercial
+implementation work, AI-generated requirements (in `generated-requirements/{format}/`) must exist,
+be schema-validated, verifier-reviewed, and have at least one requirement marked
+`ACCEPTED_FOR_VERTICAL_SLICE` before implementation consumes them. Agents must not begin a
+commercial implementation sprint for a format without first verifying that accepted requirement IDs
+exist. Requirements generation, validation, verifier review, and acceptance are separate tracked
+steps and may not be collapsed into a single unreviewed AI output. The skill system (when
+implemented) must generate and validate requirements before producing an implementation prompt.
+
+**AF14. Local Repo Authority Over External Memory.** Local repo files are the authoritative source
+of truth for project state. ChatGPT saved memory, conversation summaries, and external AI memory
+are supplementary and may be stale or incomplete. When local repo files contradict external memory,
+local repo wins. A new chat or agent session must read local authority files
+(`plans/master-plan.md`, `AGENTS.md`, `GOVERNANCE.md`, `memory/00-index.md`,
+`registry/format-registry.yaml`) before acting. The fresh-chat bootstrap document at
+`docs/fresh-chat-project-bootstrap.md` provides the intended entry point for new sessions.

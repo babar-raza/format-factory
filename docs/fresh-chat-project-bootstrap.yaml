@@ -1,0 +1,194 @@
+---
+# Format Factory — Fresh Chat Project Bootstrap (Machine-Readable)
+# Last updated: 2026-05-13
+# Sprint: CHATGPT-MEMORY-LOCAL-SYNC-20260513
+
+document_type: fresh_chat_bootstrap
+version: "1.0"
+created_at: "2026-05-13"
+visibility: internal
+publish_allowed: false
+
+repo_path: "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory"
+
+read_first_files:
+  - plans/master-plan.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - memory/00-index.md
+  - memory/24-chatgpt-session-memory-sync-20260513.md
+  - registry/format-registry.yaml
+  - docs/commercial-product-capability-model.md
+  - docs/current-state-and-evidence-authority.md
+
+current_decisions:
+  dec_033:
+    id: DEC-033
+    resolution: Option B
+    summary: .NET Commercial Only
+    details: Python is FOSS track; .NET is commercial track only; no .NET FOSS packages
+    resolved_by: Babar Raza
+    resolved_date: "2026-05-12"
+    commit: "47dcd60"
+    immutable: true
+
+  commercial_product_direction:
+    target: load-inspect-edit-save-convert
+    minimum_capability: C7
+    current_capability_fods: C4-C6-vertical-slice
+    current_capability_fodt: C4-C6-vertical-slice
+    commercial_product_ready: false
+    gate_11_approved: false
+    reference: docs/commercial-product-capability-model.md
+
+  ai_policy:
+    role: accelerator_not_authority
+    authorized: true
+    gate_approval_via_ai: false
+    logging_required: true
+    logging_location: .local/llm-logs/
+    reference: docs/ai-usage-operating-model.md
+
+  generated_requirements:
+    mandatory: true
+    status_fods: generated_schema_validated_verifier_reviewed
+    status_fodt: generated_schema_validated_verifier_reviewed
+    next_step: independent_verification_then_acceptance
+    location: generated-requirements/
+    implementation_must_consume: ACCEPTED_FOR_VERTICAL_SLICE
+
+current_capability_state:
+  fods:
+    python_phase4: COMPLETED
+    dotnet_capability: C4-C6-vertical-slice
+    dotnet_tests: "42/42 PASS"
+    commercial_product_ready: false
+    gate_11: commercial_readiness_in_progress
+    gate_11_approved: false
+  fodt:
+    python_phase4: COMPLETED
+    dotnet_capability: C4-C6-vertical-slice
+    dotnet_tests: "43/43 PASS"
+    commercial_product_ready: false
+    gate_11: commercial_readiness_in_progress
+    gate_11_approved: false
+
+gate_state:
+  fods:
+    gates_1_through_10: ALL_PASSED
+    gate_11: commercial_readiness_in_progress
+    gate_11_approved: false
+  fodt:
+    gates_1_through_10: ALL_PASSED
+    gate_11: commercial_readiness_in_progress
+    gate_11_approved: false
+  gate_11_requirements:
+    - Full C7+ capability (load-edit-save minimum)
+    - All Gate 11 sub-gates passed (G11-A through G11-G)
+    - Human approval by Babar Raza
+    - Evidence bundle passing BUNDLE_VALIDATION
+    - DEC-034 independent verification
+  gate_11_prohibited_basis:
+    - Parser skeleton or Tier 0 count extraction
+    - Package dry-run success only
+    - Self-approval by any agent
+
+ai_policy_summary:
+  authorized_uses:
+    - spec retrieval and summarization
+    - requirements extraction
+    - object model design proposals
+    - code drafting
+    - test generation
+    - adversarial review
+    - gap analysis
+    - evidence summarization
+    - planning and orchestration
+  prohibited_uses:
+    - gate approval
+    - inventing unsupported spec claims
+    - claiming commercial readiness without evidence
+    - bypassing tests
+    - hiding uncertainty
+    - sending secrets or raw spec text to AI endpoints
+    - persisting tokens in repo
+    - committing raw LLM transcripts
+    - committing embeddings or vector DB files
+
+prohibited_actions:
+  - approve Gate 11 without full C7+ evidence and human approval
+  - equate parser/count extraction with commercial product readiness
+  - create .NET FOSS packages (DEC-033 Option B)
+  - use git stash/reset/restore/clean
+  - use broad staging (git add . or git add -A)
+  - push without explicit human authorization
+  - self-approve any gate (1-11)
+  - modify generated-requirements/ without proper lane assignment
+  - modify src/net/ or src/python/ outside authorized implementation sprint
+  - change DEC-033 without new human decision
+
+next_recommended_sprints:
+  - id: GENERATED-REQUIREMENTS-IV-SPRINT
+    priority: 1
+    description: >
+      Independent verification of generated-requirements/fods/ and generated-requirements/fodt/.
+      Accept requirement IDs as ACCEPTED_FOR_VERTICAL_SLICE.
+      Unblocks next implementation swarm.
+    requires_human_auth: true
+  - id: DOTNET-ENTITY-EXPANSION-SWARM
+    priority: 2
+    description: >
+      Expand .NET entity coverage — lists, tables, styles, row/column operations.
+      Must consume accepted requirement IDs.
+      Advances FODS/FODT from C4-C6-vertical-slice toward C7.
+    requires_human_auth: true
+  - id: SKILL-SYSTEM-REQUIREMENTS-PIPELINE
+    priority: 3
+    description: >
+      Implement tools/skills/ with format context resolver, local retrieval,
+      requirements generation, verifier, and implementation prompt generator.
+      Enables scaling to future formats (FODP, ODS, ODT, etc.).
+    requires_human_auth: true
+
+assistant_working_style_files:
+  - docs/assistant-supervision-methodology.md
+  - docs/project-execution-standards.md
+  - memory/25-assistant-supervision-methodology-20260513.md
+
+assistant_working_style_summary:
+  evidence_first: true
+  challenge_agent_claims: true
+  ready_to_send_prompts: true
+  controlled_swarm_default: true
+  ai_acceleration_governed: true
+  local_memory_sync_required: true
+  system_design_over_patches: true
+  no_overclaiming_readiness: true
+
+latest_known_memory_file: memory/25-assistant-supervision-methodology-20260513.md
+
+latest_known_evidence_bundles:
+  - path: .local/commercial-load-save-vertical-slice-swarm-20260513.zip
+    sprint: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001
+    status: BUNDLE_VALIDATION_PASS
+    note: Latest primary bundle as of 2026-05-13
+
+git_safety:
+  prohibited_commands:
+    - git stash
+    - git reset
+    - git reset --hard
+    - git restore
+    - git checkout -- .
+    - git clean
+    - git add .
+    - git add -A
+    - git push (without explicit authorization)
+  allowed_read_only:
+    - git status
+    - git log
+    - git diff
+    - git show
+    - git stash list
+    - git worktree list
+  staging_policy: exact_path_only

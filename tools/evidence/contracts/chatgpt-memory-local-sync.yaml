@@ -1,0 +1,102 @@
+---
+# Evidence Contract: CHATGPT-MEMORY-LOCAL-SYNC-20260513
+# Sprint: CHATGPT-MEMORY-LOCAL-SYNC-20260513
+# Type: Memory and governance sync
+# Date: 2026-05-13
+
+contract_id: CHATGPT-MEMORY-LOCAL-SYNC-20260513
+sprint_id: CHATGPT-MEMORY-LOCAL-SYNC-20260513
+sprint_type: memory_governance_sync
+current_state_authority: docs/current-state-and-evidence-authority.md
+date: "2026-05-13"
+visibility: internal
+emergency_blocker_bundle: false
+
+description: >
+  Memory and governance sync sprint. Syncs ChatGPT project continuity into local repo so future
+  chats and agents can continue from disk. Creates memory file, fresh-chat bootstrap, continuity
+  map, governance gap updates, taskcards, and evidence bundle.
+
+required_repo_files:
+  - path: memory/24-chatgpt-session-memory-sync-20260513.md
+    note: Primary memory file for this sync
+  - path: docs/fresh-chat-project-bootstrap.md
+    note: Fresh-chat bootstrap doc
+  - path: docs/fresh-chat-project-bootstrap.yaml
+    note: Machine-readable bootstrap
+  - path: reports/governance/chatgpt-memory-local-sync-20260513.md
+    note: Governance gap check report
+  - path: reports/governance/chatgpt-memory-local-sync-20260513.yaml
+    note: Governance gap check report (machine-readable)
+  - path: reports/planning/current-project-continuity-map-20260513.md
+    note: Continuity map
+  - path: reports/planning/current-project-continuity-map-20260513.yaml
+    note: Continuity map (machine-readable)
+  - path: taskcards/CHATGPT-MEMORY-LOCAL-SYNC.md
+    note: Sprint taskcard
+  - path: taskcards/FRESH-CHAT-BOOTSTRAP.md
+    note: Bootstrap taskcard
+  - path: taskcards/LOCAL-MEMORY-CONTINUITY.md
+    note: Memory continuity taskcard
+  - path: tools/evidence/contracts/chatgpt-memory-local-sync.yaml
+    note: This contract
+  - path: memory/00-index.md
+    note: Memory index (updated with memory/24 entry)
+  - path: AGENTS.md
+    note: Updated with AF13 and AF14
+  - path: GOVERNANCE.md
+    note: Updated with 26.11 and 26.12
+
+required_metadata_files:
+  - phase0-preflight.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - validation-command-log.txt
+  - no-scope-drift-report.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+min_metadata_count: 17
+
+forbidden_paths:
+  - .env
+  - .local/spec-cache/
+  - GITHUB_PAT
+  - .git/
+  - src/net/
+  - src/python/
+  - tests/net/
+  - tests/python/
+  - generated-requirements/
+
+semantic_checks:
+  chatgpt_memory_synced_to_local: true
+  fresh_chat_bootstrap_created: true
+  continuity_map_created: true
+  commercial_product_direction_recorded: true
+  ai_generated_requirements_direction_recorded: true
+  ai_accelerator_not_authority_recorded: true
+  controlled_swarm_execution_recorded: true
+  gate11_not_approved: true
+  dec033_option_b_preserved: true
+  no_product_source_modified: true
+  no_python_source_behavior_change: true
+  no_dotnet_foss_source_created: true
+  no_package_publish: true
+  no_github_remote_mutation: true
+  no_token_persisted: true
+  no_raw_llm_transcripts_committed: true
+  no_embeddings_or_vector_db_committed: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true
+  governance_gaps_checked: true
