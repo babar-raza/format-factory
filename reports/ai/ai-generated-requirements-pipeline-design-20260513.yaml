@@ -1,0 +1,11 @@
+---
+report_id: ai-generated-requirements-pipeline-design-20260513
+lane: LANE_R1
+date: "2026-05-13"
+status: completed
+artifacts:
+  - docs/ai-generated-format-requirements-pipeline.md
+  - docs/ai-generated-format-requirements-pipeline.yaml
+pipeline_version: "1.0"
+input_source_types: [EXISTING_SOURCE, TEST_EVIDENCE, VERIFIED_FACT, SPEC, PRODUCT_DECISION, AI_PROPOSAL]
+implementation_gate_condition: "LANE_R3_PASS AND LANE_R4_PASS AND LANE_R5_PASS"
