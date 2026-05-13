@@ -1,0 +1,117 @@
+---
+document_id: ai-usage-operating-model
+version: "1.0"
+created: "2026-05-13"
+human_authorization: "Babar Raza, 2026-05-13 — AI acceleration authorized for commercial product work"
+
+core_philosophy:
+  ai_role: accelerator_not_authority
+  authority_sources:
+    - specifications
+    - verified_local_facts
+    - source_code
+    - deterministic_tests
+    - evidence_bundles
+    - gates_1_through_11
+    - human_decisions
+  ai_becomes_authority: "Only after: validation + testing + human or evidence-bundle acceptance"
+
+existing_governance_references:
+  - file: AGENTS.md
+    sections: [H, T, V, W, X, AF]
+    do_not_duplicate: true
+  - file: docs/llm-endpoint-strategy.md
+    covers: [endpoint_config, model_selection, spec_content_policy, secrets]
+    do_not_duplicate: true
+  - file: docs/llm-and-embedding-strategy.md
+    covers: [allowed_uses, prohibited_uses, secret_policy, embedding_controls]
+    do_not_duplicate: true
+  - file: docs/spec-retrieval-strategy.md
+    covers: [three_tier_retrieval, format_isolation, local_first_policy, provenance]
+    do_not_duplicate: true
+
+allowed_uses:
+  retrieval_and_analysis:
+    - local_spec_search
+    - embeddings_over_local_artifacts
+    - requirement_extraction
+    - gap_analysis
+  design_and_drafting:
+    - object_model_design_proposals
+    - save_serialization_strategy_proposals
+    - conversion_export_strategy_proposals
+    - csharp_code_drafting
+    - python_code_drafting
+    - test_drafting
+    - fixture_generation
+    - documentation_drafting
+  review_and_quality:
+    - adversarial_review
+    - security_review
+    - evidence_summarization
+    - taskcard_and_sprint_planning
+  orchestration:
+    - lane_planning_for_swarm_execution
+    - dependency_analysis
+    - ai_lane_output_to_coordinator
+
+prohibited_uses:
+  - gate_approval
+  - human_approval_simulation
+  - unverified_commercial_readiness_claims
+  - final_source_of_truth_decisions
+  - secret_handling
+  - hidden_remote_mutation
+  - unsourced_spec_claims
+  - undocumented_model_calls_for_repo_changes
+  - committing_raw_embeddings_or_vector_db
+  - committing_raw_long_llm_transcripts
+  - llm_output_as_proof_without_tests
+  - broad_refactors_without_evidence
+  - replacing_deterministic_validation
+
+model_endpoint_policy:
+  low_risk: cheapest_adequate_local_or_remote
+  medium_risk: claude_sonnet_or_equivalent
+  high_risk: claude_opus_or_strongest_available
+  spec_analysis: local_preferred_remote_requires_legal_review
+  commercial_code_drafting: remote_ok_if_no_spec_text_transmitted
+  log_required: true
+  log_location: .local/llm-logs/{sprint-id}.jsonl
+
+ai_output_acceptance_workflow:
+  steps:
+    - ai_suggestion
+    - source_or_spec_citation
+    - schema_or_structured_artifact
+    - implementation_or_test_artifact
+    - deterministic_validation
+    - evidence_bundle_inclusion
+    - coordinator_acceptance
+    - authority_file_update_if_needed
+  status_values:
+    - PROPOSED
+    - ACCEPTED_AFTER_VALIDATION
+    - ACCEPTED_WITH_MODIFICATION
+    - REJECTED_FALSE_POSITIVE
+    - REJECTED_UNSOURCED
+    - REJECTED_FAILED_TESTS
+    - DEFERRED_FOLLOWUP
+    - NEEDS_HUMAN_REVIEW
+
+gate_safeguards:
+  ai_can_approve_gates: false
+  ai_can_set_commercial_product_ready: false
+  gate11_from_parser_success_alone: false
+  current_capability_level: C2
+  current_is_commercial_ready: false
+  minimum_for_gate11_review: C7
+
+cross_references:
+  capability_model: docs/commercial-product-capability-model.md
+  architecture: docs/commercial-dotnet-architecture.md
+  retrieval_rag: docs/spec-retrieval-and-rag-policy.md
+  commercial_patterns: docs/ai-assisted-commercial-development.md
+  swarm_orchestration: docs/agent-swarm-ai-orchestration.md
+  endpoint_policy: docs/llm-endpoint-strategy.md
+  embedding_strategy: docs/llm-and-embedding-strategy.md

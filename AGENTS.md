@@ -742,3 +742,11 @@ and run a direction rebaseline sprint before proceeding.
 requirements, agents must update authority files (registry, master-plan, capability model) before
 continuing gate or implementation work. Product direction and gate integrity override speed.
 Controlled swarm execution is preferred for larger work, but must preserve product direction.
+
+**AF12. AI Is Permitted and Encouraged — Within Governance.** AI (LLMs, agents, embeddings) may be
+used to accelerate implementation when it improves speed and quality. AI output is not authority
+until validated per `docs/ai-usage-operating-model.md`. Embeddings and RAG are retrieval aids,
+not truth — see `docs/spec-retrieval-and-rag-policy.md`. LLM calls must be logged in
+`.local/llm-logs/` (AGENTS.md §H5) when used for repo-changing work. AI-generated code, tests,
+and documentation must pass the same validation gates as human/agent work. No secrets may be sent
+to AI. No gate approval may be delegated to AI. Full AI operating model: `docs/ai-usage-operating-model.md`.

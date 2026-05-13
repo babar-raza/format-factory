@@ -1,0 +1,60 @@
+---
+document_id: spec-retrieval-and-rag-policy
+version: "1.0"
+created: "2026-05-13"
+extends: docs/spec-retrieval-strategy.md
+
+retrieval_tier_authorization:
+  tier_1_deterministic: {authorized: true, gate_evidence: true}
+  tier_2_lexical: {authorized: true, gate_evidence: true, requires_citation: true}
+  tier_3_vector_rag: {authorized: false, gate_evidence: false, status: "DESIGN_ONLY TC-0015/TC-0016", allowed_for: "local_exploration_and_drafts_only"}
+
+local_spec_artifacts:
+  fods_pdf:
+    path: .local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf
+    provenance: SHA-256 verified, OASIS ODF 1.3
+    immutable: true
+    commit: never
+  normalized_text:
+    path: .local/spec-normalize/fods/text.txt
+    chars: 2160370
+    derived: true
+  chunk_index:
+    path: .local/spec-normalize/fods/pages.jsonl
+    pages: 782
+    derived: true
+
+rag_guardrails:
+  - source_citation_required: true
+  - retrieval_produces_candidates_not_truth: true
+  - local_only_by_default: true
+  - validate_citations_against_spec: true
+  - hallucinations_classified_as: REJECTED_UNSOURCED
+  - vector_db_commit: false
+  - evidence_bundles_exclude_raw_indexes: true
+
+provenance_required_fields:
+  - claim
+  - retrieval_tier
+  - source_file
+  - page
+  - section
+  - chunk_hash
+  - validated
+  - validated_by
+
+embedding_policy:
+  allowed_sources: [normalized_spec_text, verified_facts, requirements_yaml]
+  prohibited_sources: [raw_llm_transcripts, uncommitted_drafts]
+  preferred_models: [nomic-embed-text, all-MiniLM-L6-v2]
+  remote_embedding_api: {requires_explicit_authorization: true, no_spec_text: true}
+  index_storage: .local/embeddings/
+  commit: false
+  rebuild_triggers: [spec_update, normalization_change, schema_change]
+
+cross_references:
+  retrieval_strategy: docs/spec-retrieval-strategy.md
+  embedding_strategy: docs/llm-and-embedding-strategy.md
+  llm_spec_rules: AGENTS.md §T9
+  ai_operating_model: docs/ai-usage-operating-model.md
+  normalization: docs/specification-normalization.md

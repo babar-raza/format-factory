@@ -1,0 +1,375 @@
+---
+# AI-Generated FODT Commercial Requirements
+format: fodt
+spec_version: "ODF 1.3"
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+model_tool: "claude-sonnet-4-6 (via agent, local evidence retrieval)"
+ai_available: true
+product_goals_ref: "docs/commercial-product-capability-model.md"
+input_source_hashes:
+  verified_facts: "acquisition-packs/fodt/verified-facts.yaml"
+  neutral_model: "schemas/neutral-model/fodt/model.yaml"
+  existing_source_parser: "src/net/fodt/FodtParser.cs"
+  existing_source_document: "src/net/fodt/FodtDocument.cs (confirmed existing)"
+  existing_tests: "tests/net/fodt/ (confirmed existing)"
+  tier_map: "acquisition-packs/fodt/tier-map.yaml"
+  implementation_requirements: "acquisition-packs/fodt/implementation-requirements.yaml"
+
+requirements:
+
+  # ---- LOAD REQUIREMENTS ----
+
+  - requirement_id: FODT-REQ-001
+    format: fodt
+    capability_level: C0
+    requirement_type: load
+    title: "File path validation and existence check"
+    description: "Load pipeline validates non-null, non-empty path and file existence before XML parsing. Errors are structured, not unhandled exceptions."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtParser.cs (path validation confirmed)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load with null path → error"
+      - "Load with nonexistent path → error"
+    validation_notes: null
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODT-REQ-002
+    format: fodt
+    capability_level: C0
+    requirement_type: security
+    title: "File size guard (50 MB default)"
+    description: "Load pipeline rejects files exceeding 50 MB (configurable). Zero-byte files rejected."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtParser.cs (MaxFileSizeBytes = 50MB)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fodt/security-surface.yaml"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load > 50MB file → error"
+      - "Load empty file → error"
+    validation_notes: null
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODT-REQ-003
+    format: fodt
+    capability_level: C0
+    requirement_type: security
+    title: "DTD prohibition and XXE prevention"
+    description: "XML parser uses DtdProcessing.Prohibit and XmlResolver=null. No external entity resolution."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtParser.cs (DtdProcessing.Prohibit, XmlResolver=null)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fodt/security-surface.yaml"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODT with DTD → error"
+      - "Load FODT with external entity → error, no network"
+    validation_notes: null
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODT-REQ-004
+    format: fodt
+    capability_level: C1
+    requirement_type: load
+    title: "MIME type and ODF version detection"
+    description: "office:mimetype must equal 'application/vnd.oasis.opendocument.text-flat-xml'. ODF version from office:version."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtParser.cs (MIME type validation)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fodt/verified-facts.yaml"
+      - source_type: SPEC
+        reference: "ODF 1.3 §3.1.2"
+    source_type: VERIFIED_FACT
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load valid FODT → MimeType = 'application/vnd.oasis.opendocument.text-flat-xml'"
+      - "Load FODS as FODT → error or warning"
+    validation_notes: null
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODT-REQ-005
+    format: fodt
+    capability_level: C1
+    requirement_type: load
+    title: "Document metadata extraction"
+    description: "Extract dc:title, dc:creator, dc:subject, meta:initial-creator from office:meta."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtParser.cs (metadata extraction)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fodt/verified-facts.yaml"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODT with metadata → title/creator populated"
+      - "Load FODT without metadata → null, no error"
+    validation_notes: null
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODT-REQ-006
+    format: fodt
+    capability_level: C2
+    requirement_type: load
+    title: "Paragraph and heading enumeration"
+    description: "Load pipeline counts and enumerates text:p (paragraph) and text:h (heading) elements under office:body/office:text. For headings, text:outline-level attribute provides depth (1-10)."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtParser.cs (paragraph/heading counting)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fodt/verified-facts.yaml"
+      - source_type: SPEC
+        reference: "ODF 1.3 §5.1.2 (text:h), §5.1.3 (text:p)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODT with 3 paragraphs → ParagraphCount = 3"
+      - "Load FODT with heading level 2 → OutlineLevel = 2"
+    validation_notes: null
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODT-REQ-007
+    format: fodt
+    capability_level: C2
+    requirement_type: load
+    title: "List enumeration (iterative traversal)"
+    description: "text:list elements enumerated. Nested lists traversed ITERATIVELY (not recursively) per IR-FODT-003. List items at each nesting level tracked with 1-based level integer."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fodt/implementation-requirements.yaml (IR-FODT-003)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §5.5 (text:list, text:list-item)"
+    source_type: VERIFIED_FACT
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODT with 50-level nested list → no stack overflow"
+      - "Load FODT with nested list → items have correct level integers"
+    validation_notes: "IR-FODT-003: ITERATIVE required. Prototype used recursive which was fragile."
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: "Initial version: List.ListStyle may be null if style not resolvable"
+
+  - requirement_id: FODT-REQ-008
+    format: fodt
+    capability_level: C2
+    requirement_type: load
+    title: "Table enumeration with row and cell structure"
+    description: "table:table elements enumerated with name (table:name), row count, and cell text (text:p content within cells)."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtParser.cs (FodtTableInfo, table counting)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §9.1 (table:table in text context)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODT with table 'T1' → table.Name = 'T1'"
+      - "Load FODT with 3-row table → RowCount = 3"
+    validation_notes: null
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null
+
+  # ---- OBJECT MODEL REQUIREMENTS ----
+
+  - requirement_id: FODT-REQ-010
+    format: fodt
+    capability_level: C4
+    requirement_type: object_model
+    title: "FodtDocument class as top-level document model"
+    description: "FodtDocument loaded via FodtDocument.Load(path). Exposes Body, metadata properties, and MimeType/OdfVersion."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtDocument.cs (confirmed)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "FodtDocument.Load(validPath) returns FodtDocument"
+      - "document.Body is non-null"
+    validation_notes: null
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODT-REQ-011
+    format: fodt
+    capability_level: C4
+    requirement_type: object_model
+    title: "FodtBody exposing paragraphs collection"
+    description: "FodtBody wraps office:body/office:text. Exposes Paragraphs (top-level text:p and text:h)."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/Model/FodtBody.cs (confirmed)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "document.Body.Paragraphs is IReadOnlyList<FodtParagraph>"
+    validation_notes: null
+    implementation_target: "src/net/fodt/Model/FodtBody.cs"
+    known_limitations: null
+
+  - requirement_id: FODT-REQ-012
+    format: fodt
+    capability_level: C5
+    requirement_type: object_model
+    title: "FodtParagraph with text and SetText()"
+    description: "FodtParagraph exposes Text (string, all descendant text concatenated), IsHeading (bool), OutlineLevel (0 if not heading, 1-10 for headings). SetText(value) replaces child content with plain text node."
+    product_goal_mapping: ["PG-002", "PG-003"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/Model/FodtParagraph.cs (confirmed; SetText confirmed)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §5.1.2, §5.1.3"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "paragraph.Text = concatenated text content"
+      - "heading.IsHeading = true, heading.OutlineLevel = 2"
+      - "paragraph.SetText('new') → paragraph.Text = 'new' after save-reload"
+    validation_notes: "SetText confirmed in FodtParagraph.cs"
+    implementation_target: "src/net/fodt/Model/FodtParagraph.cs"
+    known_limitations: "SetText strips inline formatting (text:span). Formatting is lost on edit."
+
+  - requirement_id: FODT-REQ-013
+    format: fodt
+    capability_level: C5
+    requirement_type: object_model
+    title: "Opaque XML node preservation"
+    description: "Unrecognized XML elements (styles, draw:frame, text:span formatting, custom elements) preserved as opaque nodes and re-emitted on save."
+    product_goal_mapping: ["PG-004"]
+    source_evidence:
+      - source_type: PRODUCT_DECISION
+        reference: "docs/commercial-dotnet-architecture.md (OpaqueNode model)"
+    source_type: PRODUCT_DECISION
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODT with office:styles → Save → styles present in output"
+      - "Load FODT with draw:frame → Save → frame preserved"
+    validation_notes: null
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null
+
+  # ---- EDIT REQUIREMENTS ----
+
+  - requirement_id: FODT-REQ-020
+    format: fodt
+    capability_level: C6
+    requirement_type: edit
+    title: "Paragraph text edit via SetText()"
+    description: "FodtParagraph.SetText(value) replaces child content with plain text. Unrelated paragraphs unchanged."
+    product_goal_mapping: ["PG-003"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/Model/FodtParagraph.cs"
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fodt/FodtDocumentEditTests.cs (confirmed)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "SetText on paragraph → after Save+Load, paragraph.Text = new value"
+      - "SetText on one paragraph → other paragraphs unchanged"
+    validation_notes: "Edit tests confirmed"
+    implementation_target: "src/net/fodt/Model/FodtParagraph.cs"
+    known_limitations: "Inline formatting (text:span) stripped on edit"
+
+  # ---- SAVE REQUIREMENTS ----
+
+  - requirement_id: FODT-REQ-030
+    format: fodt
+    capability_level: C7
+    requirement_type: save
+    title: "No-edit round-trip save"
+    description: "Load → Save → Load produces structurally equivalent document. All paragraphs, lists, tables, and opaque nodes preserved."
+    product_goal_mapping: ["PG-004"]
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fodt/FodtDocumentRoundtripTests.cs (confirmed)"
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtWriter.cs (confirmed)"
+    source_type: TEST_EVIDENCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODT, save, load → paragraph count matches"
+      - "Load FODT, save, load → all paragraph text matches"
+    validation_notes: "FodtDocumentRoundtripTests.cs confirmed"
+    implementation_target: "src/net/fodt/FodtWriter.cs"
+    known_limitations: null
+
+  - requirement_id: FODT-REQ-031
+    format: fodt
+    capability_level: C7
+    requirement_type: save
+    title: "Edit-and-save persistence"
+    description: "Modified paragraph text must persist in the saved file. Output is well-formed FODT XML."
+    product_goal_mapping: ["PG-003", "PG-004"]
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fodt/FodtDocumentEditTests.cs (confirmed)"
+    source_type: TEST_EVIDENCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Edit paragraph → Save → Load → paragraph has edited text"
+      - "Output is well-formed XML"
+    validation_notes: "FodtDocumentEditTests.cs confirmed"
+    implementation_target: "src/net/fodt/FodtWriter.cs"
+    known_limitations: null
+
+  # ---- CRITICAL: ITERATIVE LIST REQUIREMENT ----
+
+  - requirement_id: FODT-REQ-040
+    format: fodt
+    capability_level: C3
+    requirement_type: load
+    title: "IR-FODT-003: Iterative list traversal (not recursive)"
+    description: "Product source MUST use iterative BFS or DFS traversal for nested text:list/text:list-item structures. Recursive traversal is PROHIBITED due to stack overflow risk on deeply nested lists (50+ levels)."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fodt/implementation-requirements.yaml (IR-FODT-003)"
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fodt/ (fuzz test c03: 50-level list handled)"
+    source_type: VERIFIED_FACT
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Parse 50-level nested list → no StackOverflowException"
+      - "Parse deeply nested list → items have correct level integers"
+    validation_notes: "CRITICAL: Gate 7 fuzz identified recursive risk. IR-FODT-003 mandates iterative."
+    implementation_target: "src/net/fodt/FodtDocument.cs"
+    known_limitations: null

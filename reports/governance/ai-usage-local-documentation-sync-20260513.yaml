@@ -1,0 +1,64 @@
+---
+report_id: ai-usage-local-documentation-sync-20260513
+sprint: AI-USAGE-LOCAL-DOC-SYNC-20260513
+lane: K
+date: "2026-05-13"
+human_authorization: "Babar Raza, 2026-05-13 — AI acceleration authorized for commercial product work"
+
+gap_audit_coverage: "95% pre-existing (AGENTS.md §H/T/V/W/X, llm-endpoint-strategy.md, llm-and-embedding-strategy.md, spec-retrieval-strategy.md)"
+gap_audit_result: "No contradictions found; 4 documentation gaps filled"
+
+files_created: 17
+files_updated: 2
+
+created_files:
+  - docs/ai-usage-operating-model.md
+  - docs/ai-usage-operating-model.yaml
+  - docs/ai-assisted-commercial-development.md
+  - docs/ai-assisted-commercial-development.yaml
+  - docs/spec-retrieval-and-rag-policy.md
+  - docs/spec-retrieval-and-rag-policy.yaml
+  - docs/agent-swarm-ai-orchestration.md
+  - taskcards/AI-USAGE-OPERATING-MODEL.md
+  - taskcards/AI-SPEC-RETRIEVAL-RAG-POLICY.md
+  - taskcards/AI-COMMERCIAL-DEVELOPMENT-PATTERNS.md
+  - taskcards/AI-USAGE-LEDGER-AND-METRICS.md
+  - taskcards/AI-VALIDATION-GATES.md
+  - memory/23-ai-usage-operating-model-20260513.md
+  - reports/governance/ai-usage-local-documentation-sync-20260513.md
+  - reports/governance/ai-usage-local-documentation-sync-20260513.yaml
+  - reports/ai/ai-usage-documentation-gap-audit-20260513.md
+  - reports/ai/ai-usage-documentation-gap-audit-20260513.yaml
+
+updated_files:
+  - path: AGENTS.md
+    changes: "AF12 — AI permitted and encouraged within governance"
+  - path: GOVERNANCE.md
+    changes: "26.10 — AI governance rule"
+
+contradictions_found: 0
+contradictions_repaired: 0
+
+remaining_gaps:
+  - description: "AI-USAGE-LEDGER-AND-METRICS taskcard not_started"
+    severity: medium
+  - description: "AI-VALIDATION-GATES taskcard not_started"
+    severity: medium
+  - description: "Tier 3 vector/RAG not yet authorized for gate evidence"
+    severity: low_by_design
+
+semantic_checks:
+  ai_usage_operating_model_documented: true
+  ai_authorized_as_accelerator_not_authority: true
+  allowed_ai_uses_documented: true
+  prohibited_ai_uses_documented: true
+  model_endpoint_policy_documented: true
+  embeddings_rag_policy_documented: true
+  ai_usage_ledger_policy_documented: true
+  ai_output_acceptance_workflow_documented: true
+  ai_commercial_development_patterns_documented: true
+  ai_gate_readiness_safeguards_documented: true
+  no_gate_approval_delegated_to_ai: true
+  no_secrets_to_ai_policy_documented: true
+  memory_governance_sync_completed: true
+  future_agents_guided_on_ai_usage: true

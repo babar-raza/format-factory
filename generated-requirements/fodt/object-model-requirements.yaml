@@ -1,0 +1,128 @@
+---
+# AI-Generated FODT Object Model Requirements
+format: fodt
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+model_tool: "claude-sonnet-4-6 (local evidence retrieval)"
+
+entities:
+
+  - entity_id: FODT-ENT-001
+    class_name: FodtDocument
+    xml_element: "office:document"
+    xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    description: "Top-level document class. FodtDocument.Load(path) factory."
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtDocument.cs (confirmed)"
+    properties:
+      - name: MimeType
+        csharp_type: "string?"
+        xml_source: "office:document/@office:mimetype"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+      - name: OdfVersion
+        csharp_type: "string?"
+        xml_source: "office:document/@office:version"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+      - name: Title
+        csharp_type: "string?"
+        xml_source: "office:meta/dc:title"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+      - name: Creator
+        csharp_type: "string?"
+        xml_source: "office:meta/dc:creator"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+      - name: Body
+        csharp_type: "FodtBody?"
+        xml_source: "office:body/office:text"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+      - name: Paragraphs
+        csharp_type: "IReadOnlyList<FodtParagraph>"
+        xml_source: "office:body/office:text/text:p + text:h (top-level)"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+        notes: "Convenience accessor for Body.Paragraphs"
+    relationships:
+      - "Contains FodtBody"
+    known_limitations: null
+
+  - entity_id: FODT-ENT-002
+    class_name: FodtBody
+    xml_element: "office:text"
+    xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    description: "Body container. Wraps office:body/office:text."
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/Model/FodtBody.cs (confirmed)"
+    properties:
+      - name: Paragraphs
+        csharp_type: "IReadOnlyList<FodtParagraph>"
+        xml_source: "text:p and text:h (top-level children)"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+    relationships:
+      - "Child of FodtDocument"
+      - "Contains N FodtParagraph"
+    known_limitations: "Only top-level paragraphs; paragraphs inside lists/tables accessed separately"
+
+  - entity_id: FODT-ENT-003
+    class_name: FodtParagraph
+    xml_element: "text:p or text:h"
+    xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    description: "Paragraph or heading entity. SetText() edits content."
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/Model/FodtParagraph.cs (confirmed; SetText confirmed)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §5.1.2, §5.1.3"
+    properties:
+      - name: Text
+        csharp_type: "string"
+        xml_source: "Element.Value (all descendant text)"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+        notes: "SetText replaces with plain text node"
+      - name: IsHeading
+        csharp_type: "bool"
+        xml_source: "element local name = 'h'"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+      - name: OutlineLevel
+        csharp_type: "int"
+        xml_source: "text:h/@text:outline-level"
+        source_type: EXISTING_SOURCE
+        status: ACCEPTED_FOR_VERTICAL_SLICE
+        notes: "0 if not heading or absent; 1-10 for headings"
+    relationships:
+      - "Child of FodtBody.Paragraphs"
+    known_limitations: "SetText strips inline span formatting"
+
+  - entity_id: FODT-ENT-004
+    class_name: FodtWriter
+    xml_element: "(serializer)"
+    xml_namespace: "(N/A)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    description: "Save pipeline. FodtDocument.Save() delegates to FodtWriter."
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtWriter.cs (confirmed)"
+    properties: []
+    relationships:
+      - "Used by FodtDocument.Save()"
+    known_limitations: null

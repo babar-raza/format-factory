@@ -1,0 +1,58 @@
+---
+# AI-Generated FODS Conversion/Export Requirements
+# SCOPE: FUTURE — These requirements are NOT in the current vertical slice sprint.
+format: fods
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+model_tool: "claude-sonnet-4-6 (local evidence retrieval)"
+scope_note: "All conversion requirements are future-scoped. Not ACCEPTED_FOR_VERTICAL_SLICE in this sprint."
+
+requirements:
+
+  - requirement_id: FODS-CONV-001
+    target_format: html
+    title: "Export FODS to HTML table"
+    description: "FodsDocument.ExportToHtml(path) produces an HTML file with table structure representing sheets, rows, and cells."
+    product_goal_mapping: ["PG-005"]
+    source_type: PRODUCT_DECISION
+    confidence: HIGH
+    status: GENERATED
+    sprint_scope: future
+    dependency: "FODS-REQ-030 (round-trip save must work first)"
+    known_limitations: "Multi-sheet HTML export may require separate files or tab navigation"
+
+  - requirement_id: FODS-CONV-002
+    target_format: pdf
+    title: "Export FODS to PDF"
+    description: "FodsDocument.ExportToPdf(path) produces a PDF rendering of sheet content."
+    product_goal_mapping: ["PG-005"]
+    source_type: PRODUCT_DECISION
+    confidence: MEDIUM
+    status: GENERATED
+    sprint_scope: future
+    dependency: "FODS-CONV-001 (HTML export is simpler baseline)"
+    known_limitations: "Requires PDF rendering library; formula values not evaluated"
+
+  - requirement_id: FODS-CONV-003
+    target_format: png
+    title: "Export FODS sheet to PNG image"
+    description: "FodsDocument.ExportToPng(path, sheetIndex) produces a PNG image of the specified sheet."
+    product_goal_mapping: ["PG-005"]
+    source_type: PRODUCT_DECISION
+    confidence: MEDIUM
+    status: GENERATED
+    sprint_scope: future
+    dependency: "FODS-CONV-002 (PDF rendering pipeline can produce raster)"
+    known_limitations: "Requires rendering engine (SkiaSharp or similar)"
+
+  - requirement_id: FODS-CONV-004
+    target_format: ods
+    title: "Export FODS to ODS (ZIP-based)"
+    description: "FodsDocument.SaveAs(path, format: ODS) converts the FODS flat-XML representation to ZIP-based ODS format."
+    product_goal_mapping: ["PG-005"]
+    source_type: PRODUCT_DECISION
+    confidence: LOW
+    status: GENERATED
+    sprint_scope: future
+    dependency: "FODS-REQ-030 (save pipeline)"
+    known_limitations: "Requires ZIP-building pipeline; separate ODS schema knowledge"

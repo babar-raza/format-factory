@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "conversion-requirements.schema.json",
+  "title": "Conversion and Export Requirements",
+  "description": "Schema for export/conversion requirements (future-scoped)",
+  "type": "object",
+  "required": ["format", "generator_version", "generation_timestamp", "scope_note", "requirements"],
+  "additionalProperties": false,
+  "properties": {
+    "format": {"type": "string", "enum": ["fods", "fodt"]},
+    "generator_version": {"type": "string"},
+    "generation_timestamp": {"type": "string"},
+    "model_tool": {"type": "string"},
+    "scope_note": {"type": "string", "description": "Must state these are future-scoped"},
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["requirement_id", "target_format", "title", "description", "source_type", "confidence", "status", "sprint_scope"],
+        "additionalProperties": false,
+        "properties": {
+          "requirement_id": {"type": "string"},
+          "target_format": {"type": "string", "enum": ["html", "pdf", "png", "ods", "odt", "family"]},
+          "title": {"type": "string"},
+          "description": {"type": "string"},
+          "product_goal_mapping": {"type": ["array", "null"], "items": {"type": "string"}},
+          "source_type": {"type": "string", "enum": ["SPEC", "VERIFIED_FACT", "PRODUCT_DECISION", "EXISTING_SOURCE", "TEST_EVIDENCE", "AI_PROPOSAL"]},
+          "confidence": {"type": "string", "enum": ["HIGH", "MEDIUM", "LOW"]},
+          "status": {"type": "string", "enum": ["GENERATED", "ACCEPTED", "REJECTED", "NEEDS_REVIEW", "ACCEPTED_FOR_VERTICAL_SLICE"]},
+          "sprint_scope": {"type": "string", "enum": ["current", "future"], "description": "Conversion must be 'future' for initial vertical slice sprint"},
+          "dependency": {"type": ["string", "null"]},
+          "known_limitations": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}

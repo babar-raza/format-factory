@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- fodt-minimal-roundtrip.fodt
+     Minimal FODT fixture for FodtDocument roundtrip tests.
+     License: Apache-2.0 (project-owned synthetic)
+     Created: 2026-05-13 (COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001)
+     Spec: ODF 1.3 §3.1.2, §3.3, §5.1.3
+-->
+<office:document
+  xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+  xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+  office:mimetype="application/vnd.oasis.opendocument.text-flat-xml"
+  office:version="1.3">
+  <office:automatic-styles/>
+  <office:body>
+    <office:text>
+      <text:p>Hello, world.</text:p>
+      <text:p>Second paragraph.</text:p>
+      <text:h text:outline-level="1">A Heading</text:h>
+      <text:p>Third paragraph after heading.</text:p>
+    </office:text>
+  </office:body>
+</office:document>

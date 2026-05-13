@@ -526,3 +526,10 @@ Commercial readiness requires C7+ (load-edit-save-convert with object model and 
 **26.9. Direction Rebaseline Required on Requirement Change.** If user requirements conflict with
 current plan or gate status, agents must pause approval and publish work and run a direction
 rebaseline sprint before proceeding. Product direction and gate integrity override execution speed.
+
+**26.10. AI Governance.** AI is permitted and encouraged as an accelerator when it improves speed and
+quality. AI output is not authority until validated per `docs/ai-usage-operating-model.md`. No gate
+approval may be delegated to AI. No secrets may be sent to AI. AI-generated code and evidence must
+pass the same validation gates as human/agent work. LLM calls for repo-changing work must be logged
+in `.local/llm-logs/`. Embeddings and RAG are retrieval aids, not truth. Full policy: AGENTS.md §AF12
+and `docs/ai-usage-operating-model.md`.

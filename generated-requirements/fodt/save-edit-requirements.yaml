@@ -1,0 +1,92 @@
+---
+# AI-Generated FODT Save and Edit Requirements
+format: fodt
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+model_tool: "claude-sonnet-4-6 (local evidence retrieval)"
+
+requirements:
+
+  - requirement_id: FODT-SE-001
+    category: edit
+    title: "Paragraph text edit via SetText()"
+    description: "FodtParagraph.SetText(value) replaces child XML content with plain text node."
+    product_goal_mapping: ["PG-003"]
+    source_type: EXISTING_SOURCE
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/Model/FodtParagraph.cs"
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fodt/FodtDocumentEditTests.cs"
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "paragraph.SetText('Hello') → paragraph.Text = 'Hello'"
+      - "SetText strips span formatting"
+    known_limitations: "Inline formatting (text:span) lost on edit"
+    validation_notes: null
+
+  - requirement_id: FODT-SE-010
+    category: save
+    title: "No-edit round-trip save"
+    description: "Load → Save → Load produces equivalent FODT. All paragraphs, metadata, opaque nodes preserved."
+    product_goal_mapping: ["PG-004"]
+    source_type: TEST_EVIDENCE
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fodt/FodtDocumentRoundtripTests.cs"
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fodt/FodtWriter.cs"
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODT → Save → Load → paragraph count matches"
+      - "Load FODT → Save → Load → heading text matches"
+    known_limitations: null
+    validation_notes: null
+
+  - requirement_id: FODT-SE-011
+    category: save
+    title: "Edit-and-save persistence"
+    description: "Modified paragraph text persists in saved file. Output is well-formed FODT XML."
+    product_goal_mapping: ["PG-003", "PG-004"]
+    source_type: TEST_EVIDENCE
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fodt/FodtDocumentEditTests.cs"
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Edit paragraph → Save → Load → paragraph has edited text"
+    known_limitations: null
+    validation_notes: null
+
+  - requirement_id: FODT-SE-020
+    category: preservation
+    title: "Opaque node preservation on save"
+    description: "Unrecognized elements (styles, draw:frame, custom) re-emitted unchanged."
+    product_goal_mapping: ["PG-004"]
+    source_type: PRODUCT_DECISION
+    source_evidence: []
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODT with office:styles → Save → styles present in output"
+    known_limitations: null
+    validation_notes: "PRODUCT_DECISION"
+
+  - requirement_id: FODT-SE-030
+    category: roundtrip
+    title: "Oracle comparison with LibreOffice"
+    description: "Saved FODT files openable by LibreOffice without data loss for supported features."
+    product_goal_mapping: ["PG-004"]
+    source_type: TEST_EVIDENCE
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fodt/FodtRoundtripOracleTests.cs"
+    confidence: MEDIUM
+    status: ACCEPTED
+    test_requirements:
+      - "LibreOffice opens saved FODT without error"
+    known_limitations: "Requires LibreOffice installed; word-count tolerance expected"
+    validation_notes: null

@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "object-model-requirements.schema.json",
+  "title": "Object Model Requirements",
+  "description": "Schema for AI-generated object model entity requirements",
+  "type": "object",
+  "required": ["format", "generator_version", "generation_timestamp", "entities"],
+  "additionalProperties": false,
+  "properties": {
+    "format": {"type": "string", "enum": ["fods", "fodt"]},
+    "generator_version": {"type": "string"},
+    "generation_timestamp": {"type": "string"},
+    "model_tool": {"type": "string"},
+    "entities": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/EntityRequirement"},
+      "minItems": 1
+    }
+  },
+  "definitions": {
+    "EntityRequirement": {
+      "type": "object",
+      "required": ["entity_id", "class_name", "xml_element", "xml_namespace", "source_type", "confidence", "status", "properties"],
+      "additionalProperties": false,
+      "properties": {
+        "entity_id": {"type": "string"},
+        "class_name": {"type": "string"},
+        "xml_element": {"type": "string"},
+        "xml_namespace": {"type": "string"},
+        "source_type": {"type": "string", "enum": ["SPEC", "VERIFIED_FACT", "PRODUCT_DECISION", "EXISTING_SOURCE", "TEST_EVIDENCE", "AI_PROPOSAL"]},
+        "confidence": {"type": "string", "enum": ["HIGH", "MEDIUM", "LOW"]},
+        "status": {"type": "string", "enum": ["GENERATED", "ACCEPTED", "REJECTED", "NEEDS_REVIEW", "ACCEPTED_FOR_VERTICAL_SLICE"]},
+        "description": {"type": ["string", "null"]},
+        "source_evidence": {"type": ["array", "null"]},
+        "properties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "csharp_type", "xml_source", "source_type", "status"],
+            "properties": {
+              "name": {"type": "string"},
+              "csharp_type": {"type": "string"},
+              "xml_source": {"type": "string"},
+              "source_type": {"type": "string"},
+              "status": {"type": "string"},
+              "nullable": {"type": ["boolean", "null"]},
+              "notes": {"type": ["string", "null"]}
+            },
+            "additionalProperties": false
+          }
+        },
+        "relationships": {
+          "type": ["array", "null"],
+          "items": {"type": "string"}
+        },
+        "known_limitations": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

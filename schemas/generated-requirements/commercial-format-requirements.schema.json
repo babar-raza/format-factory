@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "commercial-format-requirements.schema.json",
+  "title": "Commercial Format Requirements",
+  "description": "Schema for AI-generated commercial format requirements",
+  "type": "object",
+  "required": ["format", "spec_version", "generator_version", "generation_timestamp", "model_tool", "product_goals_ref", "requirements"],
+  "additionalProperties": false,
+  "properties": {
+    "format": {"type": "string", "enum": ["fods", "fodt"]},
+    "spec_version": {"type": "string"},
+    "generator_version": {"type": "string"},
+    "generation_timestamp": {"type": "string", "format": "date-time"},
+    "model_tool": {"type": "string"},
+    "ai_available": {"type": "boolean"},
+    "product_goals_ref": {"type": "string"},
+    "input_source_hashes": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "requirements": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/Requirement"},
+      "minItems": 1
+    }
+  },
+  "definitions": {
+    "Requirement": {
+      "type": "object",
+      "required": [
+        "requirement_id", "format", "capability_level", "requirement_type",
+        "title", "description", "product_goal_mapping", "source_evidence",
+        "source_type", "confidence", "status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "requirement_id": {"type": "string", "pattern": "^(FODS|FODT)-REQ-[0-9]{3}$"},
+        "format": {"type": "string", "enum": ["fods", "fodt"]},
+        "capability_level": {"type": "string", "enum": ["C0","C1","C2","C3","C4","C5","C6","C7","C8","C9","C10"]},
+        "requirement_type": {"type": "string", "enum": ["load", "object_model", "edit", "save", "convert", "security", "error_handling", "preservation"]},
+        "title": {"type": "string", "minLength": 5},
+        "description": {"type": "string", "minLength": 10},
+        "product_goal_mapping": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^PG-[0-9]{3}$"},
+          "minItems": 1
+        },
+        "source_evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["source_type", "reference"],
+            "properties": {
+              "source_type": {"type": "string", "enum": ["SPEC", "VERIFIED_FACT", "PRODUCT_DECISION", "EXISTING_SOURCE", "TEST_EVIDENCE", "AI_PROPOSAL"]},
+              "reference": {"type": "string"},
+              "page": {"type": ["integer", "null"]},
+              "section": {"type": ["string", "null"]}
+            },
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "source_type": {"type": "string", "enum": ["SPEC", "VERIFIED_FACT", "PRODUCT_DECISION", "EXISTING_SOURCE", "TEST_EVIDENCE", "AI_PROPOSAL"]},
+        "confidence": {"type": "string", "enum": ["HIGH", "MEDIUM", "LOW"]},
+        "status": {"type": "string", "enum": ["GENERATED", "ACCEPTED", "REJECTED", "NEEDS_REVIEW", "ACCEPTED_FOR_VERTICAL_SLICE"]},
+        "validation_notes": {"type": ["string", "null"]},
+        "implementation_target": {"type": ["string", "null"]},
+        "test_requirements": {
+          "type": ["array", "null"],
+          "items": {"type": "string"}
+        },
+        "known_limitations": {"type": ["string", "null"]},
+        "manually_edited": {"type": ["boolean", "null"]}
+      }
+    }
+  }
+}

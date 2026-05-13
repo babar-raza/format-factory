@@ -1,0 +1,35 @@
+---
+report_id: ai-usage-documentation-gap-audit-20260513
+sprint: AI-USAGE-LOCAL-DOC-SYNC-20260513
+date: "2026-05-13"
+
+existing_coverage_pct: 95
+pre_existing_correct_files:
+  - AGENTS.md §H,T,V,W,X
+  - docs/llm-endpoint-strategy.md
+  - docs/llm-and-embedding-strategy.md
+  - docs/spec-retrieval-strategy.md
+  - docs/planning-methodology.md §8
+  - docs/agent-execution-handoff-standard.md §17-18
+  - memory/14
+  - memory/15
+
+gaps_found:
+  - {description: "No single AI-is-accelerator statement", severity: medium, filled: true, in: docs/ai-usage-operating-model.md}
+  - {description: "No AI swarm orchestration guide", severity: medium, filled: true, in: docs/agent-swarm-ai-orchestration.md}
+  - {description: "No RAG-specific policy", severity: medium, filled: true, in: docs/spec-retrieval-and-rag-policy.md}
+  - {description: "No commercial implementation AI patterns", severity: high, filled: true, in: docs/ai-assisted-commercial-development.md}
+  - {description: "AGENTS.md missing AI-permitted rule", severity: low, filled: true, in: AGENTS.md AF12}
+  - {description: "GOVERNANCE.md missing AI governance rule", severity: low, filled: true, in: GOVERNANCE.md 26.10}
+  - {description: "No AI ledger template", severity: medium, filled: false, taskcard: AI-USAGE-LEDGER-AND-METRICS}
+  - {description: "No AI validation gates doc", severity: medium, filled: false, taskcard: AI-VALIDATION-GATES}
+
+overcautious_rules_found: 0
+unsafe_rules_found: 0
+
+corrections_applied:
+  - {correction: AI_operating_model, file: docs/ai-usage-operating-model.md}
+  - {correction: AI_as_accelerator_statement, files: [AGENTS.md, GOVERNANCE.md]}
+  - {correction: commercial_implementation_patterns, file: docs/ai-assisted-commercial-development.md}
+  - {correction: RAG_policy, file: docs/spec-retrieval-and-rag-policy.md}
+  - {correction: swarm_orchestration_guide, file: docs/agent-swarm-ai-orchestration.md}

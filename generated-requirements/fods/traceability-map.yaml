@@ -1,0 +1,71 @@
+---
+# FODS Requirements Traceability Map
+format: fods
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+
+product_goal_coverage:
+  PG-001_load_build_dom:
+    requirements: [FODS-REQ-001, FODS-REQ-002, FODS-REQ-003, FODS-REQ-004, FODS-REQ-005, FODS-REQ-006, FODS-REQ-010, FODS-REQ-011, FODS-REQ-012, FODS-REQ-013]
+    coverage: COVERED
+
+  PG-002_inspect_manipulate:
+    requirements: [FODS-REQ-005, FODS-REQ-006, FODS-REQ-010, FODS-REQ-011, FODS-REQ-012, FODS-REQ-013, FODS-REQ-040]
+    coverage: COVERED
+
+  PG-003_edit_entities:
+    requirements: [FODS-REQ-013, FODS-REQ-020, FODS-REQ-021, FODS-SE-001, FODS-SE-002, FODS-SE-011]
+    coverage: COVERED_FOR_VERTICAL_SLICE
+
+  PG-004_save_roundtrip:
+    requirements: [FODS-REQ-014, FODS-REQ-030, FODS-REQ-031, FODS-SE-010, FODS-SE-011, FODS-SE-020, FODS-SE-030]
+    coverage: COVERED_FOR_VERTICAL_SLICE
+
+  PG-005_export_convert:
+    requirements: [FODS-CONV-001, FODS-CONV-002, FODS-CONV-003, FODS-CONV-004]
+    coverage: FUTURE_SCOPED
+
+accepted_for_vertical_slice:
+  - FODS-REQ-001
+  - FODS-REQ-002
+  - FODS-REQ-003
+  - FODS-REQ-004
+  - FODS-REQ-005
+  - FODS-REQ-006
+  - FODS-REQ-010
+  - FODS-REQ-011
+  - FODS-REQ-012
+  - FODS-REQ-013
+  - FODS-REQ-014
+  - FODS-REQ-020
+  - FODS-REQ-021
+  - FODS-REQ-030
+  - FODS-REQ-031
+  - FODS-SE-001
+  - FODS-SE-002
+  - FODS-SE-010
+  - FODS-SE-011
+  - FODS-SE-020
+
+deferred_requirements:
+  - FODS-REQ-040
+  - FODS-REQ-041
+  - FODS-CONV-001
+  - FODS-CONV-002
+  - FODS-CONV-003
+  - FODS-CONV-004
+
+spec_citations:
+  "ODF 1.3 §3.1.2": [FODS-REQ-004]
+  "ODF 1.3 §3.2": [FODS-REQ-005]
+  "ODF 1.3 §9.4.2": [FODS-REQ-006, FODS-ENT-002, FODS-REQ-021]
+  "ODF 1.3 §9.4.4": [FODS-REQ-006, FODS-ENT-003, FODS-REQ-041]
+  "ODF 1.3 §9.4.5": [FODS-REQ-013, FODS-ENT-004, FODS-REQ-040]
+
+source_evidence_summary:
+  EXISTING_SOURCE: 12
+  TEST_EVIDENCE: 5
+  VERIFIED_FACT: 6
+  SPEC: 4
+  PRODUCT_DECISION: 3
+  AI_PROPOSAL: 0

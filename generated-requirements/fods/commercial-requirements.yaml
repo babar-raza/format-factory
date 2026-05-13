@@ -1,0 +1,433 @@
+---
+# AI-Generated FODS Commercial Requirements
+# Pipeline: AI-GENERATED-FORMAT-REQUIREMENTS-PIPELINE v1.0
+# See: docs/ai-generated-format-requirements-pipeline.md
+
+format: fods
+spec_version: "ODF 1.3"
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+model_tool: "claude-sonnet-4-6 (via agent, local evidence retrieval)"
+ai_available: true
+product_goals_ref: "docs/commercial-product-capability-model.md"
+input_source_hashes:
+  verified_facts: "acquisition-packs/fods/verified-facts.yaml"
+  neutral_model: "schemas/neutral-model/fods/model.yaml"
+  existing_source_parser: "src/net/fods/FodsParser.cs"
+  existing_source_document: "src/net/fods/FodsDocument.cs (confirmed existing)"
+  existing_tests: "tests/net/fods/ (confirmed existing)"
+  tier_map: "acquisition-packs/fods/tier-map.yaml"
+  implementation_requirements: "acquisition-packs/fods/implementation-requirements.yaml"
+
+# Generation note: Requirements extracted from existing .NET source (FodsDocument.cs,
+# FodsWriter.cs, Model/), acquisition-pack verified-facts, neutral-model schema,
+# and human product goals. source_type reflects primary evidence for each requirement.
+
+requirements:
+
+  # ---- LOAD REQUIREMENTS ----
+
+  - requirement_id: FODS-REQ-001
+    format: fods
+    capability_level: C0
+    requirement_type: load
+    title: "File path validation and existence check"
+    description: "Load pipeline must validate the file path is non-null, non-empty, and the file exists before attempting XML parsing. Missing files must produce structured error, not unhandled exception."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/FodsParser.cs (null/empty path check + File.Exists)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fods/security-surface.yaml (input validation)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load with null path → structured error result"
+      - "Load with nonexistent file → structured error result"
+      - "Load with valid path → success"
+    validation_notes: "Confirmed in FodsParser.cs"
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-002
+    format: fods
+    capability_level: C0
+    requirement_type: security
+    title: "File size guard (50 MB default)"
+    description: "Load pipeline must reject files exceeding the maximum size limit (default 50 MB). Configurable via constructor parameter. Zero-byte files must also be rejected."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/FodsParser.cs (MaxFileSizeBytes = 50MB)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fods/security-surface.yaml TC-6"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load file > 50MB → error"
+      - "Load zero-byte file → error"
+      - "Load file exactly at limit → success"
+    validation_notes: null
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-003
+    format: fods
+    capability_level: C0
+    requirement_type: security
+    title: "DTD prohibition and XXE prevention"
+    description: "XML parser must use DtdProcessing.Prohibit and XmlResolver=null to prevent DTD processing and XXE attacks."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/FodsParser.cs (DtdProcessing.Prohibit, XmlResolver=null)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fods/security-surface.yaml TC-1"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODS with DTD declaration → DtdProcessingException or equivalent error"
+      - "Load FODS with external entity reference → error, no network call"
+    validation_notes: null
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-004
+    format: fods
+    capability_level: C1
+    requirement_type: load
+    title: "MIME type and ODF version detection"
+    description: "Load pipeline must extract office:mimetype attribute from root office:document element and validate it equals 'application/vnd.oasis.opendocument.spreadsheet-flat-xml'. ODF version must be read from office:version attribute."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/FodsParser.cs (NsOffice, office:mimetype, office:version)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fods/verified-facts.yaml (FACT-F-001)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §3.1.2 (office:document root element)"
+    source_type: VERIFIED_FACT
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load valid FODS → MimeType = 'application/vnd.oasis.opendocument.spreadsheet-flat-xml'"
+      - "Load FODT file as FODS → error or warning (wrong MIME)"
+      - "Load FODS → OdfVersion = '1.3'"
+    validation_notes: null
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-005
+    format: fods
+    capability_level: C1
+    requirement_type: load
+    title: "Document metadata extraction"
+    description: "Load pipeline must extract document metadata: dc:title, dc:creator, dc:subject, meta:initial-creator from office:meta section."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/FodsParser.cs (NsDc, NsMeta, metadata extraction)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fods/verified-facts.yaml (FACT-F-META)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODS with metadata → title, creator, subject, initial-creator populated"
+      - "Load FODS without metadata → null properties, no error"
+    validation_notes: null
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-006
+    format: fods
+    capability_level: C2
+    requirement_type: load
+    title: "Sheet enumeration with row and cell counting"
+    description: "Load pipeline must enumerate all table:table elements (sheets) under office:body/office:spreadsheet, extracting table:name attribute, row count, and cell count per sheet."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/FodsParser.cs (table:table enumeration, FodsSheetInfo)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fods/verified-facts.yaml (FACT-F-002)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §9.4.2 (table:table element, table:name attribute)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODS with 2 sheets → Sheets.Count = 2"
+      - "Load FODS sheet 'Sheet1' → sheet.Name = 'Sheet1'"
+      - "Load FODS with rows and cells → RowCount and CellCount accurate"
+    validation_notes: null
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null
+
+  # ---- OBJECT MODEL REQUIREMENTS ----
+
+  - requirement_id: FODS-REQ-010
+    format: fods
+    capability_level: C4
+    requirement_type: object_model
+    title: "FodsDocument class as top-level document model"
+    description: "FodsDocument must be a typed class representing the loaded FODS document. Must expose Sheets collection, metadata properties, and static Load() factory method. Must be loaded from file, not constructed empty."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/FodsDocument.cs (confirmed existing via agent)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "FodsDocument.Load(validPath) returns FodsDocument instance"
+      - "document.Sheets is non-null IReadOnlyList<FodsSheet>"
+    validation_notes: "File confirmed existing in src/net/fods/"
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-011
+    format: fods
+    capability_level: C4
+    requirement_type: object_model
+    title: "FodsSheet entity with name and rows collection"
+    description: "FodsSheet must expose Name (string, settable), Rows (IReadOnlyList<FodsRow>). Name must correspond to table:name XML attribute."
+    product_goal_mapping: ["PG-001", "PG-002", "PG-003"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/Model/FodsSheet.cs (confirmed existing via agent)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §9.4.2 (table:table, table:name)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "sheet.Name returns correct sheet name from XML"
+      - "sheet.Rows.Count matches actual row count"
+    validation_notes: null
+    implementation_target: "src/net/fods/Model/FodsSheet.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-012
+    format: fods
+    capability_level: C4
+    requirement_type: object_model
+    title: "FodsRow entity with cells collection"
+    description: "FodsRow must expose Cells (IReadOnlyList<FodsCell>). Row index must be accessible."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/Model/FodsRow.cs (confirmed existing via agent)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §9.4.4 (table:table-row)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "row.Cells.Count matches actual cell count"
+    validation_notes: null
+    implementation_target: "src/net/fods/Model/FodsRow.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-013
+    format: fods
+    capability_level: C5
+    requirement_type: object_model
+    title: "FodsCell entity with text value and SetText edit method"
+    description: "FodsCell must expose Value (string? from text:p child), IsCovered (bool for table:covered-table-cell). Must expose SetText(string) to edit cell value, updating underlying XML."
+    product_goal_mapping: ["PG-002", "PG-003"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/Model/FodsCell.cs (confirmed existing via agent; SetText confirmed)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §9.4.5 (table:table-cell, text:p, office:value-type)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "cell.Value returns text:p content for string cell"
+      - "cell.Value returns null for empty cell"
+      - "cell.SetText('new') → cell.Value = 'new' after save-reload"
+    validation_notes: "SetText confirmed in FodsCell via agent exploration"
+    implementation_target: "src/net/fods/Model/FodsCell.cs"
+    known_limitations: "Typed value cells (float, boolean, date) — Value property returns display text only in initial version"
+
+  - requirement_id: FODS-REQ-014
+    format: fods
+    capability_level: C5
+    requirement_type: object_model
+    title: "Opaque XML node preservation"
+    description: "Any XML elements not recognized by the parser (styles, scripts, embedded objects, custom elements) must be preserved as opaque nodes and re-emitted unchanged on save. This ensures round-trip fidelity for unsupported features."
+    product_goal_mapping: ["PG-004"]
+    source_evidence:
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fods/verified-facts.yaml (opaque preservation)"
+      - source_type: PRODUCT_DECISION
+        reference: "docs/commercial-dotnet-architecture.md (OpaqueNode preservation model)"
+    source_type: VERIFIED_FACT
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODS with styles section → save → styles section present in output"
+      - "Load FODS with unknown element → save → unknown element preserved"
+    validation_notes: null
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null
+
+  # ---- EDIT REQUIREMENTS ----
+
+  - requirement_id: FODS-REQ-020
+    format: fods
+    capability_level: C6
+    requirement_type: edit
+    title: "Cell text edit via SetText()"
+    description: "Calling SetText(value) on a FodsCell must update the cell's text:p child content and set office:value-type='string'. Unrelated cells must not be affected."
+    product_goal_mapping: ["PG-003"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/Model/FodsCell.cs (SetText confirmed)"
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fods/FodsDocumentEditTests.cs (edit tests confirmed)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "SetText on cell[0,0] → after Save+Load, cell[0,0].Value = new value"
+      - "SetText on one cell → other cells unchanged"
+    validation_notes: "Edit tests confirmed existing in tests/net/fods/"
+    implementation_target: "src/net/fods/Model/FodsCell.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-021
+    format: fods
+    capability_level: C6
+    requirement_type: edit
+    title: "Sheet rename via Name setter"
+    description: "Setting FodsSheet.Name must update the table:name attribute in the underlying XML model."
+    product_goal_mapping: ["PG-003"]
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/Model/FodsSheet.cs (Name setter confirmed)"
+      - source_type: SPEC
+        reference: "ODF 1.3 §9.4.2 (table:name attribute)"
+    source_type: EXISTING_SOURCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Set sheet.Name = 'NewName' → Save → Load → sheet.Name = 'NewName'"
+    validation_notes: null
+    implementation_target: "src/net/fods/Model/FodsSheet.cs"
+    known_limitations: null
+
+  # ---- SAVE REQUIREMENTS ----
+
+  - requirement_id: FODS-REQ-030
+    format: fods
+    capability_level: C7
+    requirement_type: save
+    title: "No-edit round-trip save"
+    description: "FodsDocument loaded from a valid FODS file and saved without edits must produce structurally equivalent XML output. All sheets, rows, cells, metadata, and opaque nodes must be preserved."
+    product_goal_mapping: ["PG-004"]
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fods/FodsDocumentRoundtripTests.cs (round-trip tests confirmed)"
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/FodsWriter.cs (confirmed existing)"
+    source_type: TEST_EVIDENCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODS → Save to tempfile → Load tempfile → sheet count matches"
+      - "Load FODS → Save → Load → cell values match original"
+      - "Load FODS → Save → Load → metadata matches original"
+    validation_notes: "FodsDocumentRoundtripTests.cs confirmed existing"
+    implementation_target: "src/net/fods/FodsWriter.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-031
+    format: fods
+    capability_level: C7
+    requirement_type: save
+    title: "Edit-and-save: modified value persists"
+    description: "After calling SetText() to edit a cell and then Save(), the modified value must be readable in the saved file. The save must produce valid FODS XML."
+    product_goal_mapping: ["PG-003", "PG-004"]
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fods/FodsDocumentEditTests.cs (edit+save tests confirmed)"
+    source_type: TEST_EVIDENCE
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "SetText on cell → Save → Load saved → cell.Value = edited value"
+      - "Edit + Save produces well-formed XML (XDocument.Parse must succeed)"
+    validation_notes: "FodsDocumentEditTests.cs confirmed existing"
+    implementation_target: "src/net/fods/FodsWriter.cs"
+    known_limitations: null
+
+  - requirement_id: FODS-REQ-032
+    format: fods
+    capability_level: C8
+    requirement_type: save
+    title: "Oracle comparison: saved FODS matches LibreOffice output"
+    description: "FODS files saved by FodsWriter must produce output that LibreOffice can open and display correctly. Oracle comparison should PASS or WARN (not FAIL) for supported features."
+    product_goal_mapping: ["PG-004"]
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fods/FodsRoundtripOracleTests.cs (oracle tests confirmed)"
+    source_type: TEST_EVIDENCE
+    confidence: MEDIUM
+    status: ACCEPTED
+    test_requirements:
+      - "LibreOffice can open saved FODS without error dialog"
+    validation_notes: "Oracle tests exist; LibreOffice must be installed for this test"
+    implementation_target: "tests/net/fods/FodsRoundtripOracleTests.cs"
+    known_limitations: "Multi-sheet CSV export limitation (WARN expected, not FAIL)"
+
+  # ---- FUTURE / NOT THIS SPRINT ----
+
+  - requirement_id: FODS-REQ-040
+    format: fods
+    capability_level: C3
+    requirement_type: load
+    title: "Typed cell value extraction (float, boolean, date, time)"
+    description: "FodsCell should expose typed values: FloatValue (double?), BoolValue (bool?), DateValue (DateTime?), TimeValue (TimeSpan?). Extracted from office:value, office:boolean-value, office:date-value, office:time-value attributes."
+    product_goal_mapping: ["PG-001", "PG-002"]
+    source_evidence:
+      - source_type: SPEC
+        reference: "ODF 1.3 §9.4.5 (office:value-type enum, typed attributes)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fods/implementation-requirements.yaml (IR-FODS-003)"
+    source_type: VERIFIED_FACT
+    confidence: HIGH
+    status: NEEDS_REVIEW
+    test_requirements:
+      - "Float cell office:value='42.5' → FloatValue = 42.5"
+      - "Boolean cell office:boolean-value='true' → BoolValue = true"
+    validation_notes: "Not in current vertical slice — FodsCell.Value returns display text only"
+    implementation_target: "src/net/fods/Model/FodsCell.cs"
+    known_limitations: "Deferred to typed-value expansion sprint"
+
+  - requirement_id: FODS-REQ-041
+    format: fods
+    capability_level: C3
+    requirement_type: load
+    title: "Row and column repeat expansion"
+    description: "table:number-rows-repeated and table:number-columns-repeated attributes must be expanded into the object model correctly."
+    product_goal_mapping: ["PG-001"]
+    source_evidence:
+      - source_type: SPEC
+        reference: "ODF 1.3 §9.4.4 (table:number-rows-repeated)"
+      - source_type: VERIFIED_FACT
+        reference: "acquisition-packs/fods/implementation-requirements.yaml"
+    source_type: SPEC
+    confidence: HIGH
+    status: NEEDS_REVIEW
+    test_requirements:
+      - "Row with rows-repeated=3 → 3 rows in model"
+      - "Cell with columns-repeated=5 → 5 cells in model"
+    validation_notes: "Not yet confirmed in current .NET source — needs audit"
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null

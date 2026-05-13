@@ -1,0 +1,58 @@
+---
+# AI-Generated FODT Conversion/Export Requirements
+# SCOPE: FUTURE — Not in current vertical slice sprint.
+format: fodt
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+model_tool: "claude-sonnet-4-6 (local evidence retrieval)"
+scope_note: "All conversion requirements are future-scoped. Not ACCEPTED_FOR_VERTICAL_SLICE in this sprint."
+
+requirements:
+
+  - requirement_id: FODT-CONV-001
+    target_format: html
+    title: "Export FODT to HTML"
+    description: "FodtDocument.ExportToHtml(path) produces HTML with headings (h1-h6), paragraphs (p), lists (ul/ol), tables (table)."
+    product_goal_mapping: ["PG-005"]
+    source_type: PRODUCT_DECISION
+    confidence: HIGH
+    status: GENERATED
+    sprint_scope: future
+    dependency: "FODT-REQ-030 (round-trip save must work first)"
+    known_limitations: "Inline formatting (text:span) may be lost in initial version"
+
+  - requirement_id: FODT-CONV-002
+    target_format: pdf
+    title: "Export FODT to PDF"
+    description: "FodtDocument.ExportToPdf(path) produces a PDF rendering of document content."
+    product_goal_mapping: ["PG-005"]
+    source_type: PRODUCT_DECISION
+    confidence: MEDIUM
+    status: GENERATED
+    sprint_scope: future
+    dependency: "FODT-CONV-001"
+    known_limitations: "Requires PDF rendering library"
+
+  - requirement_id: FODT-CONV-003
+    target_format: png
+    title: "Export FODT page to PNG"
+    description: "FodtDocument.ExportToPng(path, pageIndex) produces a PNG image of a document page."
+    product_goal_mapping: ["PG-005"]
+    source_type: PRODUCT_DECISION
+    confidence: MEDIUM
+    status: GENERATED
+    sprint_scope: future
+    dependency: "FODT-CONV-002"
+    known_limitations: "Requires rendering engine"
+
+  - requirement_id: FODT-CONV-004
+    target_format: odt
+    title: "Export FODT to ODT (ZIP-based)"
+    description: "FodtDocument.SaveAs(path, format: ODT) converts flat-XML to ZIP-based ODT."
+    product_goal_mapping: ["PG-005"]
+    source_type: PRODUCT_DECISION
+    confidence: LOW
+    status: GENERATED
+    sprint_scope: future
+    dependency: "FODT-REQ-030"
+    known_limitations: "Requires ZIP-building pipeline"

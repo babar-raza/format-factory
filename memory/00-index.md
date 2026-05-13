@@ -52,6 +52,7 @@ The memory package captures:
 | `19-dec034-gate11-tier0-commercial-iv-20260513.md` | DEC034-GATE11-TIER0-COMMERCIAL-IV-SWARM-001 (2026-05-13): DEC-034 independent verification of Gate 11 Tier 0 work. All lanes PASS. FODS 12/12, FODT 13/13, ACCEL-003 38/38, DEC-033 Option B confirmed. READY_FOR_GATE11_HUMAN_APPROVAL. |
 | `20-gate11-approval-release-readiness-20260513.md` | GATE11-APPROVAL-AND-RELEASE-READINESS-SWARM-001 (2026-05-13): Gate 11 approval DEFERRED (flags not YES). Commercial license NOT finalized. Package dry-run PASS. CLI help fixed. f1ae4c9 audited. FODP recommended next. |
 | `21-commercial-product-direction-reset-20260513.md` | COMMERCIAL-REQUIREMENTS-DOC-SYNC-20260513: Human clarified full commercial requirements (load-edit-save-convert). Current .NET is C2 (Tier 0 baseline). Gate 11 deferred/rebaselined. Capability model C0-C10 created. 10 implementation taskcards created. Authority files synced. |
+| `23-ai-usage-operating-model-20260513.md` | AI-USAGE-LOCAL-DOC-SYNC-20260513: Human authorized AI acceleration. AI is accelerator not authority. docs/ai-usage-operating-model.md, docs/ai-assisted-commercial-development.md, docs/spec-retrieval-and-rag-policy.md, docs/agent-swarm-ai-orchestration.md created. AGENTS.md AF12 + GOVERNANCE.md 26.10 added. 5 AI taskcards created. |
 
 ## Local Methodology Entry Points (added linkage sprint 2026-05-08)
 

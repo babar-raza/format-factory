@@ -1,0 +1,110 @@
+---
+# AI-Generated FODS Save and Edit Requirements
+format: fods
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+model_tool: "claude-sonnet-4-6 (local evidence retrieval)"
+
+requirements:
+
+  - requirement_id: FODS-SE-001
+    category: edit
+    title: "Cell text edit via SetText()"
+    description: "FodsCell.SetText(value) updates the text:p child element and sets office:value-type='string'. Null/empty value clears the cell."
+    product_goal_mapping: ["PG-003"]
+    source_type: EXISTING_SOURCE
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/Model/FodsCell.cs"
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fods/FodsDocumentEditTests.cs"
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "cell.SetText('Hello') → cell.Value = 'Hello'"
+      - "cell.SetText('') → cell.Value = '' or null"
+      - "SetText on covered cell → handled gracefully (error or no-op)"
+    known_limitations: null
+    validation_notes: null
+
+  - requirement_id: FODS-SE-002
+    category: edit
+    title: "Sheet rename"
+    description: "FodsSheet.Name setter updates table:name attribute in underlying XML."
+    product_goal_mapping: ["PG-003"]
+    source_type: EXISTING_SOURCE
+    source_evidence:
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/Model/FodsSheet.cs"
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "sheet.Name = 'NewName' → Save → Load → sheet.Name = 'NewName'"
+    known_limitations: null
+    validation_notes: null
+
+  - requirement_id: FODS-SE-010
+    category: save
+    title: "No-edit round-trip save"
+    description: "Load → Save → Load produces structurally equivalent document. All sheets, rows, cells, and opaque nodes preserved."
+    product_goal_mapping: ["PG-004"]
+    source_type: TEST_EVIDENCE
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fods/FodsDocumentRoundtripTests.cs"
+      - source_type: EXISTING_SOURCE
+        reference: "src/net/fods/FodsWriter.cs"
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODS, save, load → sheet count matches"
+      - "Load FODS, save, load → all cell values match"
+    known_limitations: null
+    validation_notes: null
+
+  - requirement_id: FODS-SE-011
+    category: save
+    title: "Edit-and-save persistence"
+    description: "Modified cell values must persist in the saved file. Save produces valid well-formed FODS XML."
+    product_goal_mapping: ["PG-003", "PG-004"]
+    source_type: TEST_EVIDENCE
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fods/FodsDocumentEditTests.cs"
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Edit cell → Save → Load → cell has edited value"
+      - "Saved output is well-formed XML"
+    known_limitations: null
+    validation_notes: null
+
+  - requirement_id: FODS-SE-020
+    category: preservation
+    title: "Opaque node preservation on save"
+    description: "Unrecognized XML elements (styles, scripts, custom namespaces) must be re-emitted unchanged in the saved output."
+    product_goal_mapping: ["PG-004"]
+    source_type: PRODUCT_DECISION
+    source_evidence: []
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    test_requirements:
+      - "Load FODS with office:styles → Save → output contains office:styles unchanged"
+    known_limitations: null
+    validation_notes: "PRODUCT_DECISION: opaque preservation is architectural requirement"
+
+  - requirement_id: FODS-SE-030
+    category: roundtrip
+    title: "Oracle comparison with LibreOffice"
+    description: "Saved FODS files should be openable by LibreOffice without data loss for supported features."
+    product_goal_mapping: ["PG-004"]
+    source_type: TEST_EVIDENCE
+    source_evidence:
+      - source_type: TEST_EVIDENCE
+        reference: "tests/net/fods/FodsRoundtripOracleTests.cs"
+    confidence: MEDIUM
+    status: ACCEPTED
+    test_requirements:
+      - "LibreOffice opens saved FODS without error"
+    known_limitations: "Requires LibreOffice installed; multi-sheet CSV export WARN expected"
+    validation_notes: null

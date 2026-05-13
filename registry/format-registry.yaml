@@ -190,11 +190,14 @@ formats:
         dec033_resolved_by: "Babar Raza"
         dec033_resolved_date: "2026-05-12"
         dotnet_target: "net10.0"
-        commercial_capability_level: C2
+        commercial_capability_level: "C4-C6-vertical-slice"
         commercial_product_ready: false
-        current_dotnet_source_classification: "tier0_readonly_extractor"
-        next_required_capability: "load_object_model_save_roundtrip"
-        notes: "Gate 11 deferred/rebaselined (2026-05-13). Current .NET source is Tier 0 streaming parser (C2: metadata + structure extraction). NOT commercial product ready. Commercial readiness requires C7+ (load-edit-save-convert per docs/commercial-product-capability-model.md). Next: object model + same-format save vertical slices. DEC-033 resolved Option B (2026-05-12, Babar Raza)."
+        current_dotnet_source_classification: "load_edit_save_vertical_slice"
+        next_required_capability: "broader_entity_coverage_and_export"
+        vertical_slice_sprint: "COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001"
+        vertical_slice_date: "2026-05-13"
+        vertical_slice_result: "PASS — FodsDocument.Load/Save/Sheets/Rows/Cells/SetText; 42/42 tests pass"
+        notes: "Gate 11 deferred/rebaselined (2026-05-13). C4-C6 vertical slice DEMONSTRATED: load object model, edit one cell, save same format, reload verified. NOT commercial product ready. Commercial readiness requires C7+ full entity coverage + export. DEC-033 resolved Option B (2026-05-12, Babar Raza)."
       phase_4_python_source:
         status: created
         run: run051
@@ -390,11 +393,14 @@ formats:
         dec033_resolved_by: "Babar Raza"
         dec033_resolved_date: "2026-05-12"
         dotnet_target: "net10.0"
-        commercial_capability_level: C2
+        commercial_capability_level: "C4-C6-vertical-slice"
         commercial_product_ready: false
-        current_dotnet_source_classification: "tier0_readonly_extractor"
-        next_required_capability: "load_object_model_save_roundtrip"
-        notes: "Gate 11 deferred/rebaselined (2026-05-13). Current .NET source is Tier 0 streaming parser (C2: metadata + structure counting). NOT commercial product ready. Commercial readiness requires C7+ (load-edit-save-convert per docs/commercial-product-capability-model.md). Next: object model + same-format save vertical slices. DEC-033 resolved Option B (2026-05-12, Babar Raza)."
+        current_dotnet_source_classification: "load_edit_save_vertical_slice"
+        next_required_capability: "broader_entity_coverage_and_export"
+        vertical_slice_sprint: "COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001"
+        vertical_slice_date: "2026-05-13"
+        vertical_slice_result: "PASS — FodtDocument.Load/Save/Body/Paragraphs/SetText; 43/43 tests pass"
+        notes: "Gate 11 deferred/rebaselined (2026-05-13). C4-C6 vertical slice DEMONSTRATED: load object model, edit one paragraph, save same format, reload verified. NOT commercial product ready. Commercial readiness requires C7+ full entity coverage + export. DEC-033 resolved Option B (2026-05-12, Babar Raza)."
 
 # ---
 # FORMAT ENTRY TEMPLATE (do not uncomment — use acquisition-packs/_template/)

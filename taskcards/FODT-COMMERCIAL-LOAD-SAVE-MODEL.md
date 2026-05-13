@@ -1,8 +1,9 @@
 # Taskcard: FODT-COMMERCIAL-LOAD-SAVE-MODEL
 
-**Status:** not_started
+**Status:** completed
 **Created:** 2026-05-13
-**Sprint:** (awaiting explicit human-authorized implementation sprint)
+**Completed:** 2026-05-13
+**Sprint:** COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001
 
 ## Purpose
 

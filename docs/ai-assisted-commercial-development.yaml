@@ -1,0 +1,88 @@
+---
+document_id: ai-assisted-commercial-development
+version: "1.0"
+created: "2026-05-13"
+applies_to: [fods_net, fodt_net, future_commercial_formats]
+
+governing_requirements:
+  capability_model: docs/commercial-product-capability-model.md
+  architecture: docs/commercial-dotnet-architecture.md
+  ai_operating_model: docs/ai-usage-operating-model.md
+  spec_retrieval: docs/spec-retrieval-and-rag-policy.md
+
+patterns:
+  - id: A
+    name: spec_to_requirements_extraction
+    purpose: Extract structured requirements from ODF spec sections
+    input: [spec_section_text, target_capability_level]
+    output: requirements_yaml_with_citations
+    validation: citations_verified_against_spec
+    prohibited: inventing_spec_behavior
+    status_progression: [PROPOSED, ACCEPTED_AFTER_VALIDATION]
+
+  - id: B
+    name: requirements_to_object_model_draft
+    purpose: Translate validated requirements to C# object model skeleton
+    input: [requirements_yaml, architecture_doc]
+    output: csharp_class_definitions
+    validation: [dotnet_build, structure_matches_architecture, unit_tests_pass]
+    prohibited: accepting_without_compile_and_test
+    status_progression: [PROPOSED, ACCEPTED_AFTER_VALIDATION]
+
+  - id: C
+    name: object_model_to_code_draft
+    purpose: Implement parse, save, and edit operations
+    input: [object_model_classes, requirements, architecture_doc]
+    output: [parser_impl, writer_impl, edit_operations]
+    validation: [dotnet_build, dotnet_test, round_trip_test]
+    prohibited: committing_untested_ai_code
+    status_progression: [PROPOSED, ACCEPTED_AFTER_VALIDATION]
+
+  - id: D
+    name: test_generation
+    purpose: Generate comprehensive test coverage
+    test_types: [positive, negative, edge, adversarial, round_trip, edit]
+    validation: [deterministic, fail_on_broken_impl]
+    prohibited: flaky_nondeterministic_tests
+    status_progression: [PROPOSED, ACCEPTED_AFTER_VALIDATION]
+
+  - id: E
+    name: adversarial_review
+    purpose: AI reviews code against requirements and capability model
+    finding_types:
+      - REAL_GAP
+      - REAL_BUG
+      - FALSE_POSITIVE
+      - FUTURE_SCOPE
+    action: only_REAL_GAP_and_REAL_BUG_become_changes
+    prohibited: unsourced_findings_as_default_TRUE
+    status_progression: [findings_classified, changes_applied]
+
+  - id: F
+    name: evidence_summarization
+    purpose: AI drafts human review packets and sprint summaries
+    validation: coordinator_verifies_all_claims_match_evidence
+    prohibited: overstating_capability_level
+
+commercial_direction_guard:
+  before_each_sprint:
+    - verify_target_capability_level
+    - verify_architecture_alignment
+    - verify_no_premature_commercial_ready_claims
+    - verify_load_edit_save_convert_advancement
+    - verify_deterministic_test_coverage
+
+formats:
+  fods:
+    current_source: src/net/fods/FodsParser.cs
+    current_level: C2
+    target_entities: [FodsDocument, FodsSheet, FodsRow, FodsCell, FodsStyle]
+    spec_location: .local/spec-cache/fods/1.3/
+    samples: samples/by-format/fods/
+
+  fodt:
+    current_source: src/net/fodt/FodtParser.cs
+    current_level: C2
+    target_entities: [FodtDocument, FodtParagraph, FodtList, FodtTable, FodtStyle]
+    spec_location: .local/spec-cache/fods/1.3/
+    samples: samples/by-format/fodt/

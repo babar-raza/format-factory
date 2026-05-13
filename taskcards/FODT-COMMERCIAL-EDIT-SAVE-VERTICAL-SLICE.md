@@ -1,8 +1,9 @@
 # Taskcard: FODT-COMMERCIAL-EDIT-SAVE-VERTICAL-SLICE
 
-**Status:** not_started
+**Status:** completed_partial
 **Created:** 2026-05-13
-**Sprint:** (awaiting explicit human-authorized implementation sprint)
+**Completed:** 2026-05-13 (vertical slice only — full C7 remains future work)
+**Sprint:** COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001
 **Depends on:** FODT-COMMERCIAL-LOAD-SAVE-MODEL
 
 ## Purpose

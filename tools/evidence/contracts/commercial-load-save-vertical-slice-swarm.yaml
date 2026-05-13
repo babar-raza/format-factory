@@ -1,0 +1,165 @@
+# Evidence Contract: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001
+# Date: 2026-05-13
+# Human authorization: Babar Raza, 2026-05-13
+
+contract_id: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001
+sprint_id: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001
+current_state_authority: docs/current-state-and-evidence-authority.md
+date: "2026-05-13"
+authorized_by: "Babar Raza"
+purpose: >
+  Commercial load-save-edit vertical slice for FODS and FODT.
+  Implements FodsDocument and FodtDocument DOM-backed models with load/save/edit.
+  Advances .NET capability from C2 to C4-C6-vertical-slice.
+
+min_metadata_count: 75
+
+required_repo_files:
+  - path: src/net/fods/FodsDocument.cs
+    role: FODS DOM-backed document model (Lane C)
+  - path: src/net/fods/FodsWriter.cs
+    role: FODS XML writer (Lane C)
+  - path: src/net/fods/Model/FodsSheet.cs
+    role: FODS sheet wrapper (Lane C)
+  - path: src/net/fods/Model/FodsRow.cs
+    role: FODS row wrapper (Lane C)
+  - path: src/net/fods/Model/FodsCell.cs
+    role: FODS cell wrapper with SetText (Lane D)
+  - path: src/net/fodt/FodtDocument.cs
+    role: FODT DOM-backed document model (Lane E)
+  - path: src/net/fodt/FodtWriter.cs
+    role: FODT XML writer (Lane E)
+  - path: src/net/fodt/Model/FodtBody.cs
+    role: FODT body wrapper (Lane E)
+  - path: src/net/fodt/Model/FodtParagraph.cs
+    role: FODT paragraph wrapper with SetText (Lane F)
+  - path: tests/net/fods/FodsDocumentRoundtripTests.cs
+    role: FODS roundtrip tests 13/13 PASS (Lane C)
+  - path: tests/net/fods/FodsDocumentEditTests.cs
+    role: FODS edit tests 10/10 PASS (Lane D)
+  - path: tests/net/fods/FodsRoundtripOracleTests.cs
+    role: FODS oracle tests 7/7 PASS (Lane G)
+  - path: tests/net/fods/Fixtures/fods-minimal-roundtrip.fods
+    role: FODS test fixture
+  - path: tests/net/fodt/FodtDocumentRoundtripTests.cs
+    role: FODT roundtrip tests 13/13 PASS (Lane E)
+  - path: tests/net/fodt/FodtDocumentEditTests.cs
+    role: FODT edit tests 10/10 PASS (Lane F)
+  - path: tests/net/fodt/FodtRoundtripOracleTests.cs
+    role: FODT oracle tests 7/7 PASS (Lane G)
+  - path: tests/net/fodt/Fixtures/fodt-minimal-roundtrip.fodt
+    role: FODT test fixture
+  - path: reports/ai/ai-usage-ledger-commercial-load-save-20260513.jsonl
+    role: AI usage ledger (Lane A)
+  - path: reports/ai/ai-usage-summary-commercial-load-save-20260513.md
+    role: AI usage summary (Lane A)
+  - path: reports/ai/ai-assisted-code-review-commercial-load-save-20260513.md
+    role: AI code review (Lane H)
+  - path: reports/ai/ai-gap-analysis-commercial-load-save-20260513.md
+    role: Gap analysis (Lane H)
+  - path: reports/architecture/commercial-load-save-architecture-decision-20260513.md
+    role: Architecture decision (Lane B)
+  - path: reports/implementation/fods-load-save-roundtrip-20260513.md
+    role: FODS roundtrip report (Lane C)
+  - path: reports/implementation/fods-edit-one-cell-20260513.md
+    role: FODS edit report (Lane D)
+  - path: reports/implementation/fodt-load-save-roundtrip-20260513.md
+    role: FODT roundtrip report (Lane E)
+  - path: reports/implementation/fodt-edit-one-paragraph-20260513.md
+    role: FODT edit report (Lane F)
+  - path: reports/testing/commercial-load-save-fixture-oracle-20260513.md
+    role: Fixture and oracle report (Lane G)
+  - path: reports/planning/commercial-capability-update-20260513.md
+    role: Capability state update (Lane I)
+  - path: reports/audit/commercial-load-save-package-hygiene-20260513.md
+    role: Package hygiene report (Lane J)
+  - path: memory/22-commercial-load-save-vertical-slice-20260513.md
+    role: Memory sync (Lane M)
+  - path: tools/evidence/contracts/commercial-load-save-vertical-slice-swarm.yaml
+    role: This contract (Phase 5)
+  - path: registry/format-registry.yaml
+    role: Registry capability state update (Lane I)
+
+required_metadata_files:
+  - phase0-coordinator-preflight.md
+  - lane-ownership-matrix.md
+  - lane-a-ai-acceleration-retrieval.md
+  - lane-b-architecture-decision.md
+  - lane-c-fods-roundtrip.md
+  - lane-d-fods-edit-save.md
+  - lane-e-fodt-roundtrip.md
+  - lane-f-fodt-edit-save.md
+  - lane-g-fixtures-oracle.md
+  - lane-h-ai-assisted-review.md
+  - lane-i-capability-state-update.md
+  - lane-j-package-hygiene-build.md
+  - lane-m-memory-governance-sync.md
+  - phase2-coordinator-integration.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - pytest-evidence-report.md
+  - dotnet-fods-build-report.md
+  - dotnet-fods-test-report.md
+  - dotnet-fodt-build-report.md
+  - dotnet-fodt-test-report.md
+  - ai-usage-validation-report.md
+  - package-hygiene-report.md
+  - no-scope-drift-report.md
+  - validation-command-log.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+semantic_checks:
+  controlled_swarm_execution: true
+  governed_ai_acceleration_used_or_unavailable_with_reason: true
+  ai_usage_logged: true
+  no_secrets_in_ai_logs: true
+  no_raw_copyrighted_spec_text_committed: true
+  no_embeddings_or_vector_db_in_bundle: true
+  architecture_decision_recorded: true
+  format_local_implementation_used_or_shared_core_justified: true
+  fods_document_model_created: true
+  fods_no_edit_roundtrip_pass: true
+  fods_edit_one_cell_save_reload_pass: true
+  fodt_document_model_created: true
+  fodt_no_edit_roundtrip_pass: true
+  fodt_edit_one_paragraph_save_reload_pass: true
+  save_is_not_noop: true
+  saved_files_reload_successfully: true
+  unknown_nodes_preserved_by_dom_strategy: true
+  existing_parse_api_compatibility_preserved: true
+  capability_state_updated_without_overclaim: true
+  gate11_not_approved: true
+  commercial_product_ready_false: true
+  dec033_option_b_preserved: true
+  no_dotnet_foss_source_created: true
+  no_python_source_behavior_change: true
+  no_package_publish: true
+  no_github_remote_mutation: true
+  no_token_persisted: true
+  memory_governance_sync_completed: true
+  no_gov_revert_002_execution: true
+  no_gov006_execution: true
+  no_push: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true
+
+forbidden_paths:
+  - .env
+  - .env.*
+  - secrets/
+  - .local/ai-retrieval/
+  - .local/venv/
+
+normal_pass_min_metadata: 30
+emergency_blocker_bundle: false
