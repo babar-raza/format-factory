@@ -1,0 +1,107 @@
+---
+report_id: commercial-requirements-local-doc-sync-20260513
+sprint: COMMERCIAL-REQUIREMENTS-DOC-SYNC-20260513
+date: "2026-05-13"
+triggered_by: "Human clarification of full commercial product requirements (Babar Raza)"
+
+human_requirements_captured:
+  load_build_dom: true
+  edit_modify_entities: true
+  save_same_format: true
+  export_convert_pdf_png_html: true
+  tier0_not_enough: true
+  current_source_is_baseline: true
+  load_edit_save_convert_architecture: true
+  gate11_must_distinguish_tiers: true
+
+files_inspected: 23
+files_updated: 6
+files_created: 14
+files_intentionally_not_updated: 13
+
+updated_files:
+  - path: plans/master-plan.md
+    changes: "Rule 12 capability model reference; next-action rewritten"
+  - path: registry/format-registry.yaml
+    changes: "FODS+FODT gate_11: 4 new fields (capability_level, product_ready, classification, next_capability)"
+  - path: AGENTS.md
+    changes: "AF9-AF11 commercial readiness rules"
+  - path: GOVERNANCE.md
+    changes: "26.8-26.9 commercial governance"
+  - path: docs/commercial-product-capability-model.md
+    changes: "CREATED - C0-C10 capability model"
+  - path: docs/commercial-dotnet-architecture.md
+    changes: "CREATED - expected API, object model, pipelines"
+
+created_files:
+  - docs/commercial-product-capability-model.md
+  - docs/commercial-dotnet-architecture.md
+  - memory/21-commercial-product-direction-reset-20260513.md
+  - reports/governance/commercial-requirements-local-doc-sync-20260513.md
+  - reports/governance/commercial-requirements-local-doc-sync-20260513.yaml
+  - taskcards/COMMERCIAL-CAPABILITY-MODEL.md
+  - taskcards/COMMERCIAL-DOTNET-ARCHITECTURE.md
+  - taskcards/GATE11-COMMERCIAL-REBASELINE.md
+  - taskcards/FODS-COMMERCIAL-LOAD-SAVE-MODEL.md
+  - taskcards/FODS-COMMERCIAL-EDIT-SAVE-VERTICAL-SLICE.md
+  - taskcards/FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG.md
+  - taskcards/FODT-COMMERCIAL-LOAD-SAVE-MODEL.md
+  - taskcards/FODT-COMMERCIAL-EDIT-SAVE-VERTICAL-SLICE.md
+  - taskcards/FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG.md
+  - taskcards/NEXT-COMMERCIAL-IMPLEMENTATION-SWARM.md
+
+contradictions_found: 0
+contradictions_repaired: 0
+
+remaining_gaps:
+  - description: "Gate 11 human review packets do not reference capability model"
+    severity: low
+  - description: "docs/gates.md does not reference C-levels"
+    severity: low
+
+gate11_impact:
+  status: commercial_readiness_in_progress
+  approved: false
+  commercial_product_ready: false
+  commercial_capability_level: C2
+  deferred_reason: "Tier 0 parser only; requires C7+ (load-edit-save-convert)"
+  next_required: "Object model + same-format save vertical slices"
+
+registry_impact:
+  fods_new_fields: [commercial_capability_level, commercial_product_ready, current_dotnet_source_classification, next_required_capability]
+  fodt_new_fields: [commercial_capability_level, commercial_product_ready, current_dotnet_source_classification, next_required_capability]
+
+master_plan_impact:
+  rule_12_updated: true
+  next_action_rewritten: true
+  capability_model_referenced: true
+
+taskcards_created: 10
+taskcards_updated: 0
+
+memory_governance_sync:
+  memory_21_created: true
+  agents_md_updated: true
+  governance_md_updated: true
+  sync_complete: true
+
+semantic_checks:
+  commercial_requirements_documented_locally: true
+  load_edit_save_convert_requirement_recorded: true
+  object_model_requirement_recorded: true
+  same_format_save_requirement_recorded: true
+  edit_and_save_requirement_recorded: true
+  export_conversion_requirement_recorded: true
+  current_tier0_source_not_overstated: true
+  gate11_not_approved: true
+  gate11_publish_work_paused_or_rebaselined: true
+  contradictory_commercial_ready_claims_audited: true
+  memory_governance_sync_completed: true
+  future_agents_guided_by_capability_model: true
+
+next_implementation_direction:
+  immediate: "No code changes - direction documented"
+  next_sprint: "FODS-COMMERCIAL-LOAD-SAVE-MODEL (C2->C7)"
+  then: "Edit-save vertical slices, export pipelines"
+  finally: "Gate 11 human review with C7+ capability evidence"
+  coordination: "NEXT-COMMERCIAL-IMPLEMENTATION-SWARM taskcard"

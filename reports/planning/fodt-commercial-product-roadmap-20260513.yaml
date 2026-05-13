@@ -1,0 +1,45 @@
+sprint_id: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001
+lane: F
+report_type: fodt_commercial_roadmap
+date: "2026-05-13"
+
+current_capability: C2
+target_capability: C7_minimum
+
+current_gaps:
+  - full_text_content_extraction: false
+  - in_memory_document_model: false
+  - edit_paragraph_text: false
+  - save_to_fodt: false
+  - roundtrip_fidelity: false
+  - html_export: false
+  - pdf_export: false
+  - png_export: false
+  - odt_conversion: false
+
+first_vertical_slice:
+  name: Load-Edit-Paragraph-Save-Verify
+  steps:
+    - Load minimal-document.fodt into FodtDocument
+    - Navigate to Body.Paragraphs[0]
+    - Edit paragraph text to "TestEditParagraph"
+    - Save to output.fodt
+    - Reload output.fodt
+    - Assert paragraph text == "TestEditParagraph"
+  tests_required: 4-6
+  gate11_subgate: G11-D
+
+later_slices:
+  S2: inline_runs_spans
+  S3: heading_outline_detection
+  S4: style_extraction
+  S5: list_nesting
+  S6: table_content
+  S7: sections
+  S8: images
+  S9: tracked_changes
+  S10: html_export
+  S11: pdf_png_export
+  S12: odt_family_conversion
+
+lane_verdict: LANE_F_PASS

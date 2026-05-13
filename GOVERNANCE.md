@@ -516,3 +516,13 @@ transitional memory/NN files (if authorized) or create a propagation report.
 another stream owns it, a pending propagation report is REQUIRED at
 reports/propagation/{sprint-id}-propagation-pending.md. Silently skipping the update is a
 governance violation.
+
+**26.8. Commercial Product Readiness Governance.** Agents must not claim commercial product readiness
+from Tier 0 parser success alone. Gate 11 approval or release readiness must be tied to the
+capability model defined in `docs/commercial-product-capability-model.md`. Current FODS/FODT .NET
+source is capability level C2 (streaming metadata extraction) — Tier 0 technical baseline only.
+Commercial readiness requires C7+ (load-edit-save-convert with object model and same-format save).
+
+**26.9. Direction Rebaseline Required on Requirement Change.** If user requirements conflict with
+current plan or gate status, agents must pause approval and publish work and run a direction
+rebaseline sprint before proceeding. Product direction and gate integrity override execution speed.

@@ -1,0 +1,104 @@
+sprint_id: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001
+lane: A
+report_type: source_audit
+date: "2026-05-13"
+
+evidence_bundle_requested: gate11-approval-release-readiness-swarm-20260513.zip
+evidence_bundle_exists: false
+note: >
+  Bundle not found in .local/evidence-bundles/. Sprint proceeds on direct source inspection.
+  Latest available: dec033-option-b-gate11-commercial-swarm-20260512.zip
+
+dec033_status:
+  resolved: true
+  option: B
+  meaning: .NET Commercial Only; Python remains sole FOSS track
+  commit: "47dcd60"
+
+fods_net_source:
+  path: src/net/fods/
+  tracked_files:
+    - FodsParser.cs
+    - FormatFactory.Fods.csproj
+    - README.md
+  local_artifacts:
+    - bin/  # gitignored
+    - obj/  # gitignored
+  classification: CURRENTLY_TIER0_READONLY_EXTRACTOR
+  capabilities_present:
+    - parse_fods_file: true
+    - extract_metadata: true
+    - count_sheets_rows_cells: true
+  capabilities_missing:
+    - load_object_model: false
+    - edit_model: false
+    - save_same_format: false
+    - roundtrip_preservation: false
+    - export_html: false
+    - export_pdf: false
+    - export_png: false
+    - family_conversion: false
+    - commercial_release_architecture: false
+
+fodt_net_source:
+  path: src/net/fodt/
+  tracked_files:
+    - FodtParser.cs
+    - FormatFactory.Fodt.csproj
+    - README.md
+  local_artifacts:
+    - bin/  # gitignored
+    - obj/  # gitignored
+  classification: CURRENTLY_TIER0_READONLY_EXTRACTOR
+  capabilities_present:
+    - parse_fodt_file: true
+    - extract_metadata: true
+    - count_paragraphs_headings_lists_tables: true
+  capabilities_missing:
+    - load_object_model: false
+    - edit_model: false
+    - save_same_format: false
+    - roundtrip_preservation: false
+    - export_html: false
+    - export_pdf: false
+    - export_png: false
+    - family_conversion: false
+    - commercial_release_architecture: false
+
+fods_python_source:
+  path: src/python/fods/
+  track: FOSS (Apache-2.0)
+  classification: TIER0_PARSE_NEUTRAL_MODEL
+  status: correct_for_scope
+
+fodt_python_source:
+  path: src/python/fodt/
+  track: FOSS (Apache-2.0)
+  classification: TIER0_PARSE_NEUTRAL_MODEL
+  status: correct_for_scope
+
+source_package_hygiene:
+  repo_status: CLEAN
+  gitignore_excludes_bin_obj: true
+  gitignore_excludes_pycache: true
+  gitignore_excludes_nupkg_snupkg: true
+  user_zip_path: src/src.zip
+  user_zip_tracked: false
+  user_zip_contains_artifacts: true
+  user_zip_artifact_count: 117
+  classification: REPO_CLEAN_BUT_USER_ZIP_DIRTY
+
+gate11_status:
+  fods: commercial_readiness_in_progress_NOT_APPROVED
+  fodt: commercial_readiness_in_progress_NOT_APPROVED
+  approval_deferred: true
+  commit: "c7ee7ab"
+
+product_direction_drift:
+  detected: true
+  risk: >
+    Agents may treat Tier 0 parser test success as commercial readiness and attempt
+    Gate 11 approval with an extractor, not a product.
+  correction_required: true
+
+lane_verdict: LANE_A_PASS_SOURCE_GAP_CONFIRMED

@@ -1,0 +1,31 @@
+sprint_id: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001
+lane: G
+report_type: source_package_hygiene_audit
+date: "2026-05-13"
+
+repo_checks:
+  bin_gitignored: PASS
+  obj_gitignored: PASS
+  pycache_gitignored: PASS
+  pyc_gitignored: PASS
+  nupkg_gitignored: PASS
+  snupkg_gitignored: PASS
+  local_gitignored: PASS
+  bundle_metadata_gitignored: PASS
+  test_results_gitignored: PASS
+  no_build_artifacts_committed: PASS
+
+user_zip:
+  path: src/src.zip
+  tracked: false
+  artifact_count: 117
+  includes_dll: true
+  includes_pdb: true
+  includes_obj: true
+  classification: REPO_CLEAN_BUT_USER_ZIP_DIRTY
+
+gitignore_adequate: true
+gitignore_modified: false
+policy_doc_created: docs/source-package-hygiene.md
+
+lane_verdict: LANE_G_PASS

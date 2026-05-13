@@ -1,0 +1,73 @@
+document_type: architectural_requirements
+authority_level: normative
+created: "2026-05-13"
+created_by: "Human direction (Babar Raza) — documented by agent sprint"
+sprint: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001
+
+purpose: >
+  Defines the expected architecture for the commercial .NET product under src/net/{format}/.
+  Guides future implementation sprints toward load-edit-save-convert capability.
+
+target_formats:
+  - FODS
+  - FODT
+
+expected_api_pattern: Load/Edit/Save/Export
+
+fods_object_model:
+  root: FodsDocument
+  children:
+    - Metadata (title, creator, date, description)
+    - Styles (named, automatic, default)
+    - Sheets:
+        - Name
+        - Columns (width, style, visibility)
+        - Rows:
+            - Cells (value, style, formula, annotation)
+        - NamedRanges
+    - OpaqueNodes (unsupported elements for round-trip)
+
+fodt_object_model:
+  root: FodtDocument
+  children:
+    - Metadata (title, creator, date, description)
+    - Styles (named, automatic, default)
+    - Body:
+        - Paragraphs (text, style, outline_level)
+        - Lists (list_style, items)
+        - Tables (name, columns, rows, cells)
+        - Sections
+    - OpaqueNodes (unsupported elements for round-trip)
+
+save_pipeline:
+  steps:
+    - collect: gather modified entity tree from DOM
+    - validate: check structural integrity
+    - merge: combine modified entities with opaque nodes
+    - serialize: write XML with correct ODF namespaces
+    - verify: optional post-save re-parse comparison
+
+key_principle: opaque_preservation_for_round_trip_fidelity
+
+source_layout:
+  pattern: src/net/{format}/
+  files:
+    - "{Format}Document.cs"       # top-level document class
+    - "{Format}Parser.cs"         # load/parse pipeline
+    - "{Format}Writer.cs"         # save/serialize pipeline
+    - "{Format}Exporter.cs"       # export/convert pipeline
+    - "Model/{entity}.cs"         # document object model classes
+    - "FormatFactory.{Format}.csproj"
+    - "README.md"
+
+current_vs_target:
+  current_level: C2
+  target_level: C7+
+  current_parser: streaming_xmlreader_metadata_only
+  target_parser: full_dom_building_parser
+  current_object_model: none
+  target_object_model: full_typed_entity_graph
+  current_writer: none
+  target_writer: same_format_xml_serializer
+  current_exporter: none
+  target_exporter: pdf_html_png_pipelines

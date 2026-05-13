@@ -1,0 +1,61 @@
+sprint_id: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001
+lane: D
+report_type: gate_roadmap_rebaseline
+date: "2026-05-13"
+
+gate11_current_status:
+  fods: commercial_readiness_in_progress
+  fodt: commercial_readiness_in_progress
+  approved: false
+  deferred: true
+  commit: "c7ee7ab"
+
+current_net_capability_level: C2
+
+gate11_minimum_for_approval: C7
+
+proposed_subgates:
+  G11-A:
+    name: Commercial Architecture Approved
+    status: PROPOSED_NOT_STARTED
+    criteria:
+      - capability model accepted by human
+      - architecture doc accepted by human
+  G11-B:
+    name: Full Object Model Implemented
+    status: NOT_STARTED
+    criteria:
+      - FodsDocument/FodtDocument with typed entity graph
+      - Load returns navigable DOM
+      - All 4 fixtures load successfully
+  G11-C:
+    name: No-Edit Roundtrip
+    status: NOT_STARTED
+    criteria:
+      - Load-Save-Reload semantically identical
+      - LibreOffice oracle confirms
+  G11-D:
+    name: Edit-and-Save Vertical Slice
+    status: NOT_STARTED
+    criteria:
+      - FODS: edit cell, save, reload, verify
+      - FODT: edit paragraph, save, reload, verify
+  G11-E:
+    name: Conversion Export Vertical Slice
+    status: NOT_STARTED
+    criteria:
+      - HTML export valid
+      - PDF export readable
+      - Family conversion works
+  G11-F:
+    name: Package/Release Readiness
+    status: NOT_STARTED
+    blocked_by: [G11-B, G11-C, G11-D]
+  G11-G:
+    name: Commercial Human Approval
+    status: NOT_STARTED
+    blocked_by: [G11-F]
+
+lane_verdict: LANE_D_PASS_WITH_PROPOSED_SUBGATES_ONLY
+gate11_approved: false
+dec033_option_b_preserved: true

@@ -190,7 +190,11 @@ formats:
         dec033_resolved_by: "Babar Raza"
         dec033_resolved_date: "2026-05-12"
         dotnet_target: "net10.0"
-        notes: "Gate 11 planning executed run050 (2026-05-08). DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only. .NET skeleton created under src/net/fods/ targeting net10.0. Gate 11 PASS requires full .NET implementation + DEC-034 IV + explicit human approval."
+        commercial_capability_level: C2
+        commercial_product_ready: false
+        current_dotnet_source_classification: "tier0_readonly_extractor"
+        next_required_capability: "load_object_model_save_roundtrip"
+        notes: "Gate 11 deferred/rebaselined (2026-05-13). Current .NET source is Tier 0 streaming parser (C2: metadata + structure extraction). NOT commercial product ready. Commercial readiness requires C7+ (load-edit-save-convert per docs/commercial-product-capability-model.md). Next: object model + same-format save vertical slices. DEC-033 resolved Option B (2026-05-12, Babar Raza)."
       phase_4_python_source:
         status: created
         run: run051
@@ -386,7 +390,11 @@ formats:
         dec033_resolved_by: "Babar Raza"
         dec033_resolved_date: "2026-05-12"
         dotnet_target: "net10.0"
-        notes: "DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only. .NET skeleton created under src/net/fodt/ targeting net10.0. Gate 11 PASS requires full .NET implementation + DEC-034 IV + explicit human approval."
+        commercial_capability_level: C2
+        commercial_product_ready: false
+        current_dotnet_source_classification: "tier0_readonly_extractor"
+        next_required_capability: "load_object_model_save_roundtrip"
+        notes: "Gate 11 deferred/rebaselined (2026-05-13). Current .NET source is Tier 0 streaming parser (C2: metadata + structure counting). NOT commercial product ready. Commercial readiness requires C7+ (load-edit-save-convert per docs/commercial-product-capability-model.md). Next: object model + same-format save vertical slices. DEC-033 resolved Option B (2026-05-12, Babar Raza)."
 
 # ---
 # FORMAT ENTRY TEMPLATE (do not uncomment — use acquisition-packs/_template/)

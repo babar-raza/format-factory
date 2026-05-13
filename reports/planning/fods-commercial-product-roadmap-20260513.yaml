@@ -1,0 +1,44 @@
+sprint_id: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001
+lane: E
+report_type: fods_commercial_roadmap
+date: "2026-05-13"
+
+current_capability: C2
+target_capability: C7_minimum
+
+current_gaps:
+  - full_cell_value_extraction: false
+  - in_memory_workbook_model: false
+  - edit_cell_values: false
+  - save_to_fods: false
+  - roundtrip_fidelity: false
+  - html_export: false
+  - pdf_export: false
+  - png_export: false
+  - ods_conversion: false
+
+first_vertical_slice:
+  name: Load-Edit-Cell-Save-Verify
+  steps:
+    - Load minimal.fods into FodsDocument
+    - Navigate to Sheet[0].Rows[0].Cells[0]
+    - Edit cell value to "TestEdit"
+    - Save to output.fods
+    - Reload output.fods
+    - Assert cell value == "TestEdit"
+  tests_required: 4-6
+  gate11_subgate: G11-D
+
+later_slices:
+  S2: full_cell_value_types
+  S3: formula_extraction
+  S4: style_references
+  S5: repeated_rows_columns
+  S6: named_ranges
+  S7: merged_cells
+  S8: multi_sheet_edit
+  S9: html_export
+  S10: pdf_png_export
+  S11: ods_family_conversion
+
+lane_verdict: LANE_E_PASS

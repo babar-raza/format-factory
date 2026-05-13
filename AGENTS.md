@@ -726,3 +726,19 @@ explicit human sprint prompt. This prevents memory sprawl.
 **AF8. FFSM Is Design Only.** The Format Factory State Manager (FFSM) described in memory/15 and
 docs/current-state-and-evidence-authority.md Section 8 is design direction only. No tools/state/ code
 exists. Do not create FFSM code without an explicit authorized taskcard and sprint prompt.
+
+**AF9. Commercial Product Readiness Requires Capability Model.** Agents must not claim commercial
+product readiness from Tier 0 parser success alone. Current `src/net/fods/` and `src/net/fodt/` are
+Tier 0 streaming parsers (capability level C2). Commercial readiness requires C7+ (load-edit-save-convert)
+per `docs/commercial-product-capability-model.md`. Gate 11 approval or release readiness must be tied
+to the capability model, not parser test pass counts.
+
+**AF10. Gate Approval Tied to Capability Model.** Gate 11 human review packets must reference
+`docs/commercial-product-capability-model.md` and state the achieved capability level (C0-C10).
+If user requirements conflict with current plan/gate status, agents must pause approval/publish work
+and run a direction rebaseline sprint before proceeding.
+
+**AF11. Commercial Direction Override.** If a human clarifies or changes commercial product
+requirements, agents must update authority files (registry, master-plan, capability model) before
+continuing gate or implementation work. Product direction and gate integrity override speed.
+Controlled swarm execution is preferred for larger work, but must preserve product direction.

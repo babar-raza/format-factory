@@ -1,0 +1,85 @@
+document_type: authoritative_product_requirements
+authority_level: normative
+created: "2026-05-13"
+created_by: "Human direction (Babar Raza) — documented by agent sprint"
+sprint: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001
+
+core_requirement: load_edit_save_convert
+
+commercial_requirements:
+  1_load: Build an in-memory document object model from a supported format file
+  2_edit: Modify format-specific entities in the document object model
+  3_save: Write modified model back to the same format with structural preservation
+  4_convert: Export/save to other formats (PDF, PNG, HTML, family formats)
+
+capability_levels:
+  C0:
+    name: Detection
+    description: Format identification by signature/extension
+    gate11_required: false
+    current_net_status: COMPLETE
+  C1:
+    name: Metadata Read
+    description: Extract document properties (title, author, dates)
+    gate11_required: false
+    current_net_status: PARTIAL
+  C2:
+    name: Structure Read
+    description: Count and enumerate structural elements (sheets, paragraphs, tables)
+    gate11_required: false
+    current_net_status: PARTIAL
+  C3:
+    name: Full Parse
+    description: Complete entity extraction into typed objects
+    gate11_required: false
+    current_net_status: NOT_IMPLEMENTED
+  C4:
+    name: Object Model
+    description: In-memory document object model with entity relationships
+    gate11_required: true
+    current_net_status: NOT_IMPLEMENTED
+  C5:
+    name: Read-Only DOM
+    description: Navigate and inspect any entity programmatically
+    gate11_required: true
+    current_net_status: NOT_IMPLEMENTED
+  C6:
+    name: Edit Support
+    description: Modify entities in the object model
+    gate11_required: true
+    current_net_status: NOT_IMPLEMENTED
+  C7:
+    name: Same-Format Save
+    description: Serialize modified DOM back to original format
+    gate11_required: true
+    current_net_status: NOT_IMPLEMENTED
+  C8:
+    name: Round-Trip Fidelity
+    description: Load-save preserves all supported features without loss
+    gate11_required: true
+    current_net_status: NOT_IMPLEMENTED
+  C9:
+    name: Export/Convert
+    description: Save to PDF, PNG, HTML, and related formats
+    gate11_required: true
+    current_net_status: NOT_IMPLEMENTED
+  C10:
+    name: Full Commercial
+    description: All C4-C9 at production quality with edge-case coverage
+    gate11_required: true
+    current_net_status: NOT_IMPLEMENTED
+
+current_status:
+  fods_net: C2  # streaming metadata + sheet enumeration
+  fodt_net: C2  # streaming metadata + structure counting
+
+gate11_minimum: C7  # load + object model + edit + same-format save
+
+tier0_is_not_commercial_product: true
+
+explicit_rules:
+  - Gate 11 approval MUST NOT proceed based on Tier 0 parser success alone
+  - Gate 11 human review packet MUST reference this capability model
+  - Gate 11 "full .NET implementation" means C7+ capability, not C0-C2
+  - Gate 11 publish/release work paused until load-edit-save-convert architecture is designed
+  - Agents must NOT treat package dry-run or Tier 0 test success as commercial readiness

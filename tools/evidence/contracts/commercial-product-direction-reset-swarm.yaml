@@ -1,0 +1,150 @@
+sprint_id: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001
+contract_id: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001
+contract_version: "1.0"
+date: "2026-05-13"
+type: controlled_multi_agent_swarm
+description: >
+  Product direction reset and architecture rebaseline. Confirms .NET source is Tier 0 C2 extractor,
+  defines commercial capability model C0-C10, documents Gate 11 sub-gates G11-A through G11-G,
+  creates FODS and FODT commercial roadmaps, designs next implementation swarm.
+require_clean_git: false
+emergency_blocker_bundle: false
+current_state_authority: bundle-metadata
+
+semantic_checks:
+  controlled_swarm_execution: true
+  latest_evidence_bundle_inspected: true
+  source_tree_inspected: true
+  current_dotnet_source_classified_as_tier0_extractor: true
+  commercial_product_requirements_recorded: true
+  load_edit_save_convert_capability_model_created: true
+  commercial_dotnet_architecture_created: true
+  gate11_rebaseline_completed: true
+  gate11_not_approved: true
+  fods_commercial_roadmap_created: true
+  fodt_commercial_roadmap_created: true
+  source_package_hygiene_audited: true
+  next_implementation_swarm_designed: true
+  memory_governance_sync_completed: true
+  no_product_behavior_change: true
+  no_package_publish: true
+  no_fodp_implementation: true
+  dec033_option_b_preserved: true
+  no_dotnet_foss_source_created: true
+  no_python_source_behavior_change: true
+  no_github_remote_mutation: true
+  no_gov_revert_002_execution: true
+  no_gov006_execution: true
+  no_llm_call: true
+  no_embedding_vector_db: true
+  no_push: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true
+
+min_metadata_count: 70
+
+required_metadata_files:
+  - phase0-coordinator-preflight.md
+  - lane-ownership-matrix.md
+  - lane-a-evidence-source-audit.md
+  - lane-b-commercial-capability-model.md
+  - lane-c-commercial-dotnet-architecture.md
+  - lane-d-gate-roadmap-rebaseline.md
+  - lane-e-fods-commercial-roadmap.md
+  - lane-f-fodt-commercial-roadmap.md
+  - lane-g-source-package-hygiene.md
+  - lane-h-next-implementation-swarm.md
+  - lane-m-memory-governance-sync.md
+  - phase2-coordinator-integration.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - no-scope-drift-report.md
+  - validation-command-log.txt
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-status-final.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+required_repo_files:
+  - path: docs/commercial-product-capability-model.md
+    purpose: authoritative capability model
+  - path: docs/commercial-product-capability-model.yaml
+    purpose: YAML form of capability model
+  - path: docs/commercial-dotnet-architecture.md
+    purpose: architecture blueprint
+  - path: docs/commercial-dotnet-architecture.yaml
+    purpose: YAML form of architecture blueprint
+  - path: docs/source-package-hygiene.md
+    purpose: source package hygiene policy
+  - path: reports/audit/commercial-product-current-source-audit-20260513.md
+    purpose: Lane A source audit (markdown)
+  - path: reports/audit/commercial-product-current-source-audit-20260513.yaml
+    purpose: Lane A source audit (YAML)
+  - path: reports/audit/source-package-hygiene-audit-20260513.md
+    purpose: Lane G hygiene audit (markdown)
+  - path: reports/audit/source-package-hygiene-audit-20260513.yaml
+    purpose: Lane G hygiene audit (YAML)
+  - path: reports/planning/commercial-product-requirements-normalization-20260513.md
+    purpose: Lane B requirements normalization
+  - path: reports/planning/commercial-dotnet-architecture-gap-plan-20260513.md
+    purpose: Lane C architecture gap plan
+  - path: reports/planning/gate11-commercial-rebaseline-20260513.md
+    purpose: Lane D gate rebaseline (markdown)
+  - path: reports/planning/gate11-commercial-rebaseline-20260513.yaml
+    purpose: Lane D gate rebaseline (YAML)
+  - path: reports/planning/fods-commercial-product-roadmap-20260513.md
+    purpose: Lane E FODS roadmap (markdown)
+  - path: reports/planning/fods-commercial-product-roadmap-20260513.yaml
+    purpose: Lane E FODS roadmap (YAML)
+  - path: reports/planning/fodt-commercial-product-roadmap-20260513.md
+    purpose: Lane F FODT roadmap (markdown)
+  - path: reports/planning/fodt-commercial-product-roadmap-20260513.yaml
+    purpose: Lane F FODT roadmap (YAML)
+  - path: reports/planning/next-commercial-implementation-swarm-20260513.md
+    purpose: Lane H next swarm design (markdown)
+  - path: reports/planning/next-commercial-implementation-swarm-20260513.yaml
+    purpose: Lane H next swarm design (YAML)
+  - path: reports/governance/commercial-product-direction-reset-memory-sync-20260513.md
+    purpose: Lane M governance sync report
+  - path: taskcards/COMMERCIAL-CAPABILITY-MODEL.md
+    purpose: taskcard for capability model
+  - path: taskcards/COMMERCIAL-DOTNET-ARCHITECTURE.md
+    purpose: taskcard for architecture blueprint
+  - path: taskcards/GATE11-COMMERCIAL-REBASELINE.md
+    purpose: taskcard for Gate 11 rebaseline
+  - path: taskcards/FODS-COMMERCIAL-LOAD-SAVE-MODEL.md
+    purpose: taskcard for FODS load/save model
+  - path: taskcards/FODS-COMMERCIAL-EDIT-SAVE-VERTICAL-SLICE.md
+    purpose: taskcard for FODS edit-save vertical slice
+  - path: taskcards/FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG.md
+    purpose: taskcard for FODS export
+  - path: taskcards/FODT-COMMERCIAL-LOAD-SAVE-MODEL.md
+    purpose: taskcard for FODT load/save model
+  - path: taskcards/FODT-COMMERCIAL-EDIT-SAVE-VERTICAL-SLICE.md
+    purpose: taskcard for FODT edit-save vertical slice
+  - path: taskcards/FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG.md
+    purpose: taskcard for FODT export
+  - path: taskcards/NEXT-COMMERCIAL-IMPLEMENTATION-SWARM.md
+    purpose: taskcard for next implementation swarm
+  - path: taskcards/SOURCE-PACKAGE-HYGIENE.md
+    purpose: taskcard for source package hygiene
+  - path: memory/21-commercial-product-direction-reset-20260513.md
+    purpose: memory file for direction reset
+  - path: plans/master-plan.md
+    purpose: updated master plan (v2.54)
+  - path: AGENTS.md
+    purpose: commercial readiness rules (AF9-AF11)
+  - path: GOVERNANCE.md
+    purpose: commercial governance (26.8-26.9)
+  - path: registry/format-registry.yaml
+    purpose: commercial_capability_level C2 for FODS+FODT
+  - path: tools/evidence/contracts/commercial-product-direction-reset-swarm.yaml
+    purpose: this contract
