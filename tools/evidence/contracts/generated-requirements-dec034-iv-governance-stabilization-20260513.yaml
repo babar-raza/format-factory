@@ -1,0 +1,38 @@
+# Sprint Evidence Contract
+# Sprint: GENERATED-REQUIREMENTS-DEC034-IV-AND-GOVERNANCE-STABILIZATION-001
+# Date: 2026-05-13
+# Type: IV + governance stabilization sprint (uncommitted changes; human commit authorization pending)
+
+contract_id: generated-requirements-dec034-iv-governance-stabilization-20260513
+version: "1.0"
+sprint: GENERATED-REQUIREMENTS-DEC034-IV-AND-GOVERNANCE-STABILIZATION-001
+description: >
+  DEC-034 independent verification of generated requirements system (FODS + FODT).
+  Governance stabilization: TC-0053 completed; AGENTS.md AF13 and GOVERNANCE.md 26.11 updated.
+  Four lane reports produced. No source implementation changes. No commit — awaiting human authorization.
+
+# Inherits from base-run.yaml v1.4
+base_contract: base-run
+
+# Git state: dirty (M files from prior uncommitted sprint + new sprint files)
+# This is normal for governance/IV sprints awaiting human commit authorization.
+require_clean_git: false
+emergency_blocker_bundle: true
+emergency_blocker_note: >
+  Governance/IV sprint — changes are pending human commit authorization per GOVERNANCE.md Section 2.
+  Dirty git state is expected. No stash/reset/restore/clean used.
+
+normal_pass_min_metadata: 5
+min_metadata_count: 5
+
+required_repo_files:
+  - reports/requirements/requirements-authority-iv-20260513.md
+  - reports/governance/generated-requirements-governance-stabilization-20260513.md
+  - reports/planning/conway-phase2-readiness-20260513.md
+  - reports/testing/requirements-tooling-environment-20260513.md
+  - taskcards/TC-0053-ai-requirements-pipeline-governance.md
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml

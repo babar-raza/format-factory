@@ -58,7 +58,7 @@ def make_document(reqs: list = None, overrides: dict = None) -> dict:
         "ai_available": False,
         "product_goals_ref": "docs/commercial-product-capability-model.md",
         "input_source_hashes": {},
-        "requirements": reqs or [make_requirement()],
+        "requirements": reqs if reqs is not None else [make_requirement()],
     }
     if overrides:
         doc.update(overrides)
@@ -233,3 +233,132 @@ class TestValidateFormatIntegration:
             for req in data.get("requirements", []):
                 scope = req.get("sprint_scope", "future")
                 assert scope == "future", f"{fmt} conversion req {req.get('requirement_id')} has sprint_scope={scope}"
+
+    def test_fods_traceability_map_exists(self):
+        """FODS traceability-map.yaml must exist."""
+        path = REPO_ROOT / "generated-requirements" / "fods" / "traceability-map.yaml"
+        assert path.exists(), f"Missing: {path}"
+
+    def test_fodt_traceability_map_exists(self):
+        """FODT traceability-map.yaml must exist."""
+        path = REPO_ROOT / "generated-requirements" / "fodt" / "traceability-map.yaml"
+        assert path.exists(), f"Missing: {path}"
+
+    def test_fods_verifier_review_exists(self):
+        """FODS verifier-review.yaml must exist (DEC-034 IV requirement)."""
+        path = REPO_ROOT / "generated-requirements" / "fods" / "verifier-review.yaml"
+        assert path.exists(), f"Missing: {path}"
+
+    def test_fodt_verifier_review_exists(self):
+        """FODT verifier-review.yaml must exist (DEC-034 IV requirement)."""
+        path = REPO_ROOT / "generated-requirements" / "fodt" / "verifier-review.yaml"
+        assert path.exists(), f"Missing: {path}"
+
+    def test_fods_verifier_review_is_lane_r5_pass(self):
+        """FODS verifier verdict must be LANE_R5_PASS."""
+        import yaml
+        path = REPO_ROOT / "generated-requirements" / "fods" / "verifier-review.yaml"
+        if not path.exists():
+            pytest.skip("FODS verifier-review not yet generated")
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        result = data.get("verifier_verdict", {}).get("result")
+        assert result == "LANE_R5_PASS", f"FODS verifier verdict is {result!r} — must be LANE_R5_PASS"
+
+    def test_fodt_verifier_review_is_lane_r5_pass(self):
+        """FODT verifier verdict must be LANE_R5_PASS."""
+        import yaml
+        path = REPO_ROOT / "generated-requirements" / "fodt" / "verifier-review.yaml"
+        if not path.exists():
+            pytest.skip("FODT verifier-review not yet generated")
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        result = data.get("verifier_verdict", {}).get("result")
+        assert result == "LANE_R5_PASS", f"FODT verifier verdict is {result!r} — must be LANE_R5_PASS"
+
+    def test_fods_cross_file_consistency(self):
+        """FODS traceability-map accepted IDs must match requirement files."""
+        from validate_generated_requirements import validate_cross_file_consistency
+        result = validate_cross_file_consistency("fods", verbose=False)
+        assert result["status"] == "PASS", f"FODS cross-file consistency FAIL: {result['errors']}"
+
+    def test_fodt_cross_file_consistency(self):
+        """FODT traceability-map accepted IDs must match requirement files."""
+        from validate_generated_requirements import validate_cross_file_consistency
+        result = validate_cross_file_consistency("fodt", verbose=False)
+        assert result["status"] == "PASS", f"FODT cross-file consistency FAIL: {result['errors']}"
+
+    def test_fods_ai_proposal_count_is_zero(self):
+        """FODS traceability-map AI_PROPOSAL count must be 0 (AUTHORITATIVE requirement)."""
+        import yaml
+        path = REPO_ROOT / "generated-requirements" / "fods" / "traceability-map.yaml"
+        if not path.exists():
+            pytest.skip("FODS traceability-map not yet generated")
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        ai_count = data.get("source_evidence_summary", {}).get("AI_PROPOSAL", -1)
+        assert ai_count == 0, f"FODS AI_PROPOSAL count={ai_count}, must be 0 (GOVERNANCE.md 26.11)"
+
+    def test_fodt_ai_proposal_count_is_zero(self):
+        """FODT traceability-map AI_PROPOSAL count must be 0 (AUTHORITATIVE requirement)."""
+        import yaml
+        path = REPO_ROOT / "generated-requirements" / "fodt" / "traceability-map.yaml"
+        if not path.exists():
+            pytest.skip("FODT traceability-map not yet generated")
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        ai_count = data.get("source_evidence_summary", {}).get("AI_PROPOSAL", -1)
+        assert ai_count == 0, f"FODT AI_PROPOSAL count={ai_count}, must be 0 (GOVERNANCE.md 26.11)"
+
+
+# ============================================================
+# Fixture-based tests (Lane C hardening)
+# ============================================================
+
+FIXTURES_DIR = REPO_ROOT / "tests" / "requirements" / "fixtures"
+
+
+class TestFixtures:
+    """Fixture-based validation tests — confirm validator catches known-bad inputs."""
+
+    def test_valid_fixture_passes(self):
+        """valid-commercial-requirements.yaml must pass schema validation."""
+        import yaml
+        fixture = FIXTURES_DIR / "valid-commercial-requirements.yaml"
+        assert fixture.exists(), f"Fixture missing: {fixture}"
+        data = yaml.safe_load(fixture.read_text(encoding="utf-8"))
+        schema_path = REPO_ROOT / "schemas" / "generated-requirements" / "commercial-format-requirements.schema.json"
+        import json
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        errors = manual_validate(data, schema, fixture)
+        assert errors == [], f"Valid fixture produced errors: {errors}"
+
+    def test_duplicate_ids_fixture_fails(self):
+        """invalid-duplicate-ids.yaml must fail with duplicate ID error."""
+        import yaml, json
+        fixture = FIXTURES_DIR / "invalid-duplicate-ids.yaml"
+        assert fixture.exists(), f"Fixture missing: {fixture}"
+        data = yaml.safe_load(fixture.read_text(encoding="utf-8"))
+        schema_path = REPO_ROOT / "schemas" / "generated-requirements" / "commercial-format-requirements.schema.json"
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        errors = manual_validate(data, schema, fixture)
+        assert any("Duplicate" in e for e in errors), f"Expected duplicate ID error, got: {errors}"
+
+    def test_ai_only_accepted_fixture_fails(self):
+        """invalid-ai-only-accepted.yaml must fail: AI_PROPOSAL cannot be ACCEPTED."""
+        import yaml, json
+        fixture = FIXTURES_DIR / "invalid-ai-only-accepted.yaml"
+        assert fixture.exists(), f"Fixture missing: {fixture}"
+        data = yaml.safe_load(fixture.read_text(encoding="utf-8"))
+        schema_path = REPO_ROOT / "schemas" / "generated-requirements" / "commercial-format-requirements.schema.json"
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        errors = manual_validate(data, schema, fixture)
+        assert any("AI_PROPOSAL" in e for e in errors), f"Expected AI_PROPOSAL error, got: {errors}"
+
+    def test_conversion_not_scoped_fixture_fails(self):
+        """invalid-conversion-not-scoped.yaml must fail: current scope not allowed."""
+        import yaml, json
+        fixture = FIXTURES_DIR / "invalid-conversion-not-scoped.yaml"
+        assert fixture.exists(), f"Fixture missing: {fixture}"
+        data = yaml.safe_load(fixture.read_text(encoding="utf-8"))
+        schema_path = REPO_ROOT / "schemas" / "generated-requirements" / "conversion-requirements.schema.json"
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        errors = manual_validate(data, schema, fixture)
+        assert any("cannot be ACCEPTED_FOR_VERTICAL_SLICE" in e for e in errors), \
+            f"Expected conversion scope error, got: {errors}"

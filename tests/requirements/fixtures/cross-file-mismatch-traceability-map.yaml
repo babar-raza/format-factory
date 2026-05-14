@@ -1,0 +1,24 @@
+---
+# Fixture: cross-file-mismatch-traceability-map.yaml
+# Purpose: Should trigger cross-file consistency FAIL.
+#          Lists FODS-REQ-999 as accepted_for_vertical_slice, but that ID does not exist
+#          in any requirement file. Used with the mismatch detection tests.
+format: fods
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+product_goal_coverage:
+  PG-001_load_build_dom:
+    requirements:
+      - FODS-REQ-999
+    coverage: COVERED
+accepted_for_vertical_slice:
+  - FODS-REQ-999
+deferred_requirements: []
+spec_citations: {}
+source_evidence_summary:
+  EXISTING_SOURCE: 0
+  TEST_EVIDENCE: 0
+  VERIFIED_FACT: 0
+  SPEC: 0
+  PRODUCT_DECISION: 0
+  AI_PROPOSAL: 0

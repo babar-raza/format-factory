@@ -1,0 +1,22 @@
+---
+# Fixture: conversion-not-scoped.yaml
+# Purpose: Should FAIL validation — conversion requirement with sprint_scope: current
+#          and status ACCEPTED_FOR_VERTICAL_SLICE (forbidden in initial sprint).
+format: fods
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+scope_note: "Conversion requirements for FODS format"
+requirements:
+  - requirement_id: FODS-CONV-001
+    target_format: html
+    title: "HTML export"
+    description: "Export FODS to HTML"
+    source_type: PRODUCT_DECISION
+    confidence: MEDIUM
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    sprint_scope: current
+    source_evidence: null
+    test_requirements:
+      - "Export to HTML and verify output"
+    known_limitations: null
+    validation_notes: "INVALID: conversion requirements cannot be ACCEPTED_FOR_VERTICAL_SLICE in initial sprint"

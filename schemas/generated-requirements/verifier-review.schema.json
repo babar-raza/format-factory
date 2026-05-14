@@ -1,0 +1,216 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "verifier-review.schema.json",
+  "title": "Verifier Review (Lane R5)",
+  "description": "Schema for the Lane R5 independent verifier challenge document. LANE_R5_PASS is required for ACCEPTED_FOR_VERTICAL_SLICE status. Authority: AUTHORITATIVE after DEC-034 IV (AGENTS.md AF13, GOVERNANCE.md 26.11).",
+  "type": "object",
+  "required": [
+    "format",
+    "verifier_version",
+    "review_timestamp",
+    "artifacts_reviewed",
+    "global_checks",
+    "requirement_challenges",
+    "object_model_challenges",
+    "traceability_map_challenges",
+    "verifier_verdict"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "type": "string",
+      "enum": ["fods", "fodt"],
+      "description": "Format identifier — must match the requirements being reviewed"
+    },
+    "verifier_version": {
+      "type": "string",
+      "description": "Version of the verifier protocol used"
+    },
+    "review_timestamp": {
+      "type": "string",
+      "description": "ISO 8601 timestamp of when this review was conducted"
+    },
+    "artifacts_reviewed": {
+      "type": "array",
+      "description": "List of artifact paths reviewed in this pass",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "global_checks": {
+      "type": "object",
+      "description": "Format-level checks applied to the entire requirements set. Each check has a result (PASS/FAIL/WARN) and explanatory note.",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["result", "note"],
+        "additionalProperties": false,
+        "properties": {
+          "result": {
+            "type": "string",
+            "enum": ["PASS", "FAIL", "WARN"],
+            "description": "Check result"
+          },
+          "note": {
+            "type": ["string", "null"],
+            "description": "Explanation of the check result"
+          }
+        }
+      }
+    },
+    "requirement_challenges": {
+      "type": "array",
+      "description": "Adversarial per-requirement challenges by the verifier",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["requirement_id", "verdict", "challenge"],
+        "additionalProperties": false,
+        "properties": {
+          "requirement_id": {
+            "type": "string",
+            "description": "Requirement ID being challenged"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "VERIFIED_ACCEPTED",
+              "VERIFIED_ACCEPTED_WITH_NOTES",
+              "REJECTED",
+              "DEFERRED"
+            ],
+            "description": "Verifier verdict for this requirement"
+          },
+          "challenge": {
+            "type": "string",
+            "description": "The adversarial challenge the verifier posed"
+          },
+          "notes": {
+            "type": ["string", "null"],
+            "description": "Additional context, known limitations, or enforcement notes"
+          }
+        }
+      }
+    },
+    "object_model_challenges": {
+      "type": "array",
+      "description": "Adversarial per-entity challenges for the object model",
+      "items": {
+        "type": "object",
+        "required": ["entity_id", "verdict", "challenge"],
+        "additionalProperties": false,
+        "properties": {
+          "entity_id": {
+            "type": "string",
+            "description": "Entity ID being challenged"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "VERIFIED_ACCEPTED",
+              "VERIFIED_ACCEPTED_WITH_NOTES",
+              "REJECTED",
+              "DEFERRED"
+            ]
+          },
+          "challenge": {
+            "type": "string"
+          },
+          "notes": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+    "traceability_map_challenges": {
+      "type": "object",
+      "description": "Challenges against the traceability map — product goal coverage, vertical slice count, AI_PROPOSAL count, spec citations",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["verdict"],
+        "properties": {
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "VERIFIED_ACCEPTED",
+              "VERIFIED_ACCEPTED_WITH_NOTES",
+              "REJECTED",
+              "DEFERRED"
+            ]
+          },
+          "notes": {
+            "type": ["string", "null"]
+          },
+          "count": {
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
+          "cited_sections": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      }
+    },
+    "verifier_verdict": {
+      "type": "object",
+      "description": "Final verifier verdict — LANE_R5_PASS or LANE_R5_FAIL — and implementation authorization",
+      "required": ["lane", "format", "result", "summary", "implementation_authorization", "repair_actions_required", "open_notes"],
+      "additionalProperties": false,
+      "properties": {
+        "lane": {
+          "type": "string",
+          "description": "Lane identifier (e.g. LANE_R3, LANE_R4)"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["fods", "fodt"]
+        },
+        "result": {
+          "type": "string",
+          "enum": ["LANE_R5_PASS", "LANE_R5_FAIL"],
+          "description": "AUTHORITY GATE: Only LANE_R5_PASS allows ACCEPTED_FOR_VERTICAL_SLICE requirements to proceed to DEC-034 IV"
+        },
+        "summary": {
+          "type": "string",
+          "description": "Human-readable summary of the verifier verdict"
+        },
+        "implementation_authorization": {
+          "type": "object",
+          "required": ["status", "scope"],
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["AUTHORIZED", "BLOCKED", "CONDITIONAL"],
+              "description": "Implementation authorization status — AUTHORIZED only after LANE_R5_PASS + DEC-034 IV"
+            },
+            "scope": {
+              "type": "string",
+              "description": "Scope of authorization (e.g. 'ACCEPTED_FOR_VERTICAL_SLICE requirements only')"
+            },
+            "critical_constraint": {
+              "type": ["string", "null"],
+              "description": "Optional: non-negotiable implementation constraint (e.g. FODT-REQ-040 iterative traversal)"
+            },
+            "blocked_from_implementation": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "Requirement IDs explicitly blocked from implementation"
+            }
+          }
+        },
+        "repair_actions_required": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "List of repair actions required before implementation may proceed (empty array = none)"
+        },
+        "open_notes": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Open notes for implementation team — known limitations, deferred items, CI guidance"
+        }
+      }
+    }
+  }
+}

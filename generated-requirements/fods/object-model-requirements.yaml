@@ -13,7 +13,7 @@ entities:
     xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     source_type: EXISTING_SOURCE
     confidence: HIGH
-    status: ACCEPTED_FOR_VERTICAL_SLICE
+    status: ACCEPTED
     description: "Top-level document class. Loaded via FodsDocument.Load(path). Wraps XDocument."
     source_evidence:
       - source_type: EXISTING_SOURCE
@@ -23,27 +23,27 @@ entities:
         csharp_type: "string?"
         xml_source: "office:document/@office:mimetype"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: OdfVersion
         csharp_type: "string?"
         xml_source: "office:document/@office:version"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: Title
         csharp_type: "string?"
         xml_source: "office:meta/dc:title"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: Creator
         csharp_type: "string?"
         xml_source: "office:meta/dc:creator"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: Sheets
         csharp_type: "IReadOnlyList<FodsSheet>"
         xml_source: "office:body/office:spreadsheet/table:table"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
     relationships:
       - "Contains 0..N FodsSheet"
     known_limitations: null
@@ -54,7 +54,7 @@ entities:
     xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     source_type: EXISTING_SOURCE
     confidence: HIGH
-    status: ACCEPTED_FOR_VERTICAL_SLICE
+    status: ACCEPTED
     description: "Sheet entity. Wraps table:table element. Name is settable."
     source_evidence:
       - source_type: EXISTING_SOURCE
@@ -66,14 +66,14 @@ entities:
         csharp_type: "string"
         xml_source: "table:table/@table:name"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
         nullable: false
         notes: "Settable — updates @table:name attribute"
       - name: Rows
         csharp_type: "IReadOnlyList<FodsRow>"
         xml_source: "table:table-row"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
     relationships:
       - "Child of FodsDocument.Sheets"
       - "Contains 0..N FodsRow"
@@ -85,7 +85,7 @@ entities:
     xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     source_type: EXISTING_SOURCE
     confidence: HIGH
-    status: ACCEPTED_FOR_VERTICAL_SLICE
+    status: ACCEPTED
     description: "Row entity. Wraps table:table-row element."
     source_evidence:
       - source_type: EXISTING_SOURCE
@@ -97,7 +97,7 @@ entities:
         csharp_type: "IReadOnlyList<FodsCell>"
         xml_source: "table:table-cell"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
     relationships:
       - "Child of FodsSheet.Rows"
       - "Contains 0..N FodsCell"
@@ -109,7 +109,7 @@ entities:
     xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     source_type: EXISTING_SOURCE
     confidence: HIGH
-    status: ACCEPTED_FOR_VERTICAL_SLICE
+    status: ACCEPTED
     description: "Cell entity. Wraps table:table-cell element. SetText() updates text:p child."
     source_evidence:
       - source_type: EXISTING_SOURCE
@@ -121,14 +121,14 @@ entities:
         csharp_type: "string?"
         xml_source: "text:p (text content)"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
         nullable: true
         notes: "Display text value; null for empty cells"
       - name: IsCovered
         csharp_type: "bool"
         xml_source: "table:covered-table-cell (element name)"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
         nullable: false
     relationships:
       - "Child of FodsRow.Cells"
@@ -140,7 +140,7 @@ entities:
     xml_namespace: "(N/A)"
     source_type: EXISTING_SOURCE
     confidence: HIGH
-    status: ACCEPTED_FOR_VERTICAL_SLICE
+    status: ACCEPTED
     description: "Save/serialization pipeline. FodsDocument.Save() delegates to FodsWriter. Emits valid FODS XML with ODF namespaces."
     source_evidence:
       - source_type: EXISTING_SOURCE

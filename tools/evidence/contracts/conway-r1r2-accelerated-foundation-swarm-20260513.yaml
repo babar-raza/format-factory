@@ -1,0 +1,56 @@
+# Evidence Contract: CONWAY-R1R2-ACCELERATED-FOUNDATION-SWARM-001
+# Sprint: Conway R1+R2 Accelerated Foundation Swarm
+# Date: 2026-05-13
+# Status: BLOCKER BUNDLE — git working tree has uncommitted changes from multiple sprints
+#         All changes are staged-pending-human-authorization-to-commit.
+#         See reports/planning/r3-readiness-decision-20260513.md for sprint summary.
+
+inherit: base-run
+contract_id: conway-r1r2-accelerated-foundation-swarm-20260513
+version: "1.0"
+description: >
+  Evidence contract for CONWAY-R1R2-ACCELERATED-FOUNDATION-SWARM-001.
+  Covers Lane A (schemas), Lane B (validator), Lane C (tests/fixtures),
+  Lane D (format-config schemas), Lane E (context resolver),
+  Lane F (lane library), Lane G (evidence contract template), Lane H (R3 readiness).
+
+# Dirty git: multiple uncommitted sprints awaiting human commit authorization
+require_clean_git: false
+emergency_blocker_bundle: true
+
+min_metadata_count: 5
+
+required_repo_files:
+  - schemas/generated-requirements/traceability-map.schema.json
+  - schemas/generated-requirements/verifier-review.schema.json
+  - tools/requirements/validate_generated_requirements.py
+  - tests/requirements/fixtures/valid-commercial-requirements.yaml
+  - tests/requirements/fixtures/invalid-duplicate-ids.yaml
+  - tests/requirements/fixtures/invalid-ai-only-accepted.yaml
+  - tests/requirements/fixtures/invalid-conversion-not-scoped.yaml
+  - schemas/skills/format-config.schema.yaml
+  - schemas/skills/skill-input.schema.yaml
+  - tools/skills/format_context_resolver.py
+  - templates/commercial-sprint/lane-library.yaml
+  - templates/evidence/base-commercial-sprint.contract.yaml
+  - reports/requirements/schema-hardening-report-20260513.md
+  - reports/requirements/validator-hardening-report-20260513.md
+  - reports/testing/requirements-test-hardening-report-20260513.md
+  - reports/planning/r3-readiness-decision-20260513.md
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+
+# Sprint verdicts
+sprint_verdicts:
+  FOUNDATION_HARDENING_STATUS: COMPLETE
+  VALIDATOR_AUTHORITY_LEVEL: CROSS_FILE_CONSISTENT
+  CROSS_FILE_VALIDATION_STATUS: PASS
+  STALE_FRAMEWORK_STATUS: STUB_IMPLEMENTED
+  R2_SCAFFOLDING_STATUS: COMPLETE
+  R3_READINESS: READY_WITH_LIMITATIONS
+  TEST_SUITE_STATUS: "32/32 PASS"
+  SCHEMA_COVERAGE: "6/6"
+  AUTONOMOUS_ROLLOUT_STATUS: NOT_READY

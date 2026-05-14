@@ -13,7 +13,7 @@ entities:
     xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     source_type: EXISTING_SOURCE
     confidence: HIGH
-    status: ACCEPTED_FOR_VERTICAL_SLICE
+    status: ACCEPTED
     description: "Top-level document class. FodtDocument.Load(path) factory."
     source_evidence:
       - source_type: EXISTING_SOURCE
@@ -23,32 +23,32 @@ entities:
         csharp_type: "string?"
         xml_source: "office:document/@office:mimetype"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: OdfVersion
         csharp_type: "string?"
         xml_source: "office:document/@office:version"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: Title
         csharp_type: "string?"
         xml_source: "office:meta/dc:title"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: Creator
         csharp_type: "string?"
         xml_source: "office:meta/dc:creator"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: Body
         csharp_type: "FodtBody?"
         xml_source: "office:body/office:text"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: Paragraphs
         csharp_type: "IReadOnlyList<FodtParagraph>"
         xml_source: "office:body/office:text/text:p + text:h (top-level)"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
         notes: "Convenience accessor for Body.Paragraphs"
     relationships:
       - "Contains FodtBody"
@@ -60,7 +60,7 @@ entities:
     xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
     source_type: EXISTING_SOURCE
     confidence: HIGH
-    status: ACCEPTED_FOR_VERTICAL_SLICE
+    status: ACCEPTED
     description: "Body container. Wraps office:body/office:text."
     source_evidence:
       - source_type: EXISTING_SOURCE
@@ -70,7 +70,7 @@ entities:
         csharp_type: "IReadOnlyList<FodtParagraph>"
         xml_source: "text:p and text:h (top-level children)"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
     relationships:
       - "Child of FodtDocument"
       - "Contains N FodtParagraph"
@@ -82,7 +82,7 @@ entities:
     xml_namespace: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
     source_type: EXISTING_SOURCE
     confidence: HIGH
-    status: ACCEPTED_FOR_VERTICAL_SLICE
+    status: ACCEPTED
     description: "Paragraph or heading entity. SetText() edits content."
     source_evidence:
       - source_type: EXISTING_SOURCE
@@ -94,18 +94,18 @@ entities:
         csharp_type: "string"
         xml_source: "Element.Value (all descendant text)"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
         notes: "SetText replaces with plain text node"
       - name: IsHeading
         csharp_type: "bool"
         xml_source: "element local name = 'h'"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
       - name: OutlineLevel
         csharp_type: "int"
         xml_source: "text:h/@text:outline-level"
         source_type: EXISTING_SOURCE
-        status: ACCEPTED_FOR_VERTICAL_SLICE
+        status: ACCEPTED
         notes: "0 if not heading or absent; 1-10 for headings"
     relationships:
       - "Child of FodtBody.Paragraphs"
@@ -117,7 +117,7 @@ entities:
     xml_namespace: "(N/A)"
     source_type: EXISTING_SOURCE
     confidence: HIGH
-    status: ACCEPTED_FOR_VERTICAL_SLICE
+    status: ACCEPTED
     description: "Save pipeline. FodtDocument.Save() delegates to FodtWriter."
     source_evidence:
       - source_type: EXISTING_SOURCE

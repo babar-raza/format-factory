@@ -219,7 +219,7 @@ object_model_challenges:
   - entity_id: FODS-ENT-004
     verdict: VERIFIED_ACCEPTED_WITH_NOTES
     challenge: "FodsCell confirmed existing. Value, IsCovered, SetText() confirmed."
-    notes: "TypedValue properties (FloatValue, BoolValue, DateValue, TimeValue) are listed with status NEEDS_REVIEW. Correct. Do not promote to ACCEPTED until typed-value sprint."
+    notes: "TypedValue properties (FloatValue, BoolValue, DateValue, TimeValue) are listed with status NEEDS_REVIEW. Correct. Do not promote to ACCEPTED until typed-value sprint. Entity-level status is ACCEPTED (not ACCEPTED_FOR_VERTICAL_SLICE) since entities are structure definitions; behavioral testing is via functional requirements."
 
   - entity_id: FODS-ENT-005
     verdict: VERIFIED_ACCEPTED

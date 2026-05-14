@@ -1,0 +1,23 @@
+# Fixture: invalid-conversion-not-scoped.yaml
+# Lane C: tests/requirements/fixtures
+# Purpose: conversion requirement with sprint_scope: current — must fail validation
+# Schema: schemas/generated-requirements/conversion-requirements.schema.json
+# Authority rule: All conversion requirements must be sprint_scope: future in initial sprint
+
+format: fods
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+model_tool: "test-fixture"
+scope_note: "These conversion requirements are future-scoped"
+requirements:
+  - requirement_id: FODS-CONV-001
+    target_format: html
+    title: Export to HTML
+    description: Export FODS spreadsheet content to HTML table format.
+    product_goal_mapping: [PG-005]
+    source_type: PRODUCT_DECISION
+    confidence: HIGH
+    status: ACCEPTED_FOR_VERTICAL_SLICE
+    sprint_scope: current
+    dependency: null
+    known_limitations: null

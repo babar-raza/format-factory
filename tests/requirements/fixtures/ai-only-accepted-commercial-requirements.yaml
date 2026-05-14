@@ -1,0 +1,30 @@
+---
+# Fixture: ai-only-accepted-commercial-requirements.yaml
+# Purpose: Should FAIL validation — AI_PROPOSAL requirement marked ACCEPTED (governance violation).
+format: fods
+spec_version: "ODF 1.3"
+generator_version: "1.0"
+generation_timestamp: "2026-05-13T00:00:00Z"
+model_tool: "test-fixture"
+ai_available: true
+product_goals_ref: "docs/commercial-product-capability-model.md"
+input_source_hashes: {}
+requirements:
+  - requirement_id: FODS-REQ-099
+    format: fods
+    capability_level: C4
+    requirement_type: object_model
+    title: "AI-only hypothetical requirement"
+    description: "This requirement has no grounding — pure AI proposal. Should not be ACCEPTED."
+    product_goal_mapping:
+      - PG-002
+    source_evidence:
+      - source_type: AI_PROPOSAL
+        reference: "AI synthesis — no confirmed source"
+    source_type: AI_PROPOSAL
+    confidence: LOW
+    status: ACCEPTED
+    test_requirements: null
+    validation_notes: "INVALID: AI_PROPOSAL cannot be ACCEPTED without verifier approval"
+    implementation_target: "src/net/fods/FodsDocument.cs"
+    known_limitations: null

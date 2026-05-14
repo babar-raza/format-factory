@@ -5,6 +5,7 @@ Validate AI-generated format requirements against JSON schemas.
 
 Usage:
     python tools/requirements/validate_generated_requirements.py [--format fods|fodt] [--verbose]
+    python tools/requirements/validate_generated_requirements.py [--format fods|fodt] [--check-stale]
     python -m pytest tests/requirements/ -q
 
 Exit codes:
@@ -27,6 +28,8 @@ SCHEMA_MAP = {
     "object-model-requirements": "object-model-requirements.schema.json",
     "save-edit-requirements": "save-edit-requirements.schema.json",
     "conversion-requirements": "conversion-requirements.schema.json",
+    "traceability-map": "traceability-map.schema.json",
+    "verifier-review": "verifier-review.schema.json",
 }
 
 
@@ -120,6 +123,215 @@ def manual_validate(data: dict, schema: dict, file_path: Path) -> list:
     return errors
 
 
+# ============================================================
+# CROSS-FILE CONSISTENCY CHECKS (Lane B hardening)
+# ============================================================
+
+def _collect_accepted_ids(fmt_dir: Path, filename: str) -> set:
+    """Extract ACCEPTED_FOR_VERTICAL_SLICE requirement IDs from a requirement file."""
+    try:
+        import yaml
+    except ImportError:
+        return set()
+    path = fmt_dir / filename
+    if not path.exists():
+        return set()
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    return {
+        r.get("requirement_id")
+        for r in data.get("requirements", [])
+        if r.get("status") == "ACCEPTED_FOR_VERTICAL_SLICE" and r.get("requirement_id")
+    }
+
+
+def _collect_all_requirement_ids(fmt_dir: Path) -> set:
+    """Collect all requirement and entity IDs across requirement files for a format."""
+    try:
+        import yaml
+    except ImportError:
+        return set()
+    ids = set()
+    for filename in ["commercial-requirements.yaml", "save-edit-requirements.yaml", "conversion-requirements.yaml"]:
+        path = fmt_dir / filename
+        if path.exists():
+            data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+            for r in data.get("requirements", []):
+                rid = r.get("requirement_id")
+                if rid:
+                    ids.add(rid)
+    obj_path = fmt_dir / "object-model-requirements.yaml"
+    if obj_path.exists():
+        data = yaml.safe_load(obj_path.read_text(encoding="utf-8")) or {}
+        for e in data.get("entities", []):
+            eid = e.get("entity_id")
+            if eid:
+                ids.add(eid)
+    return ids
+
+
+def _check_traceability_consistency(fmt: str) -> list:
+    """Check traceability-map.accepted_for_vertical_slice matches requirement files."""
+    errors = []
+    try:
+        import yaml
+    except ImportError:
+        return []
+
+    fmt_dir = REQS_DIR / fmt
+    tm_path = fmt_dir / "traceability-map.yaml"
+    if not tm_path.exists():
+        return [f"  [cross-file/{fmt}] traceability-map.yaml not found"]
+
+    tm_data = yaml.safe_load(tm_path.read_text(encoding="utf-8")) or {}
+    tm_accepted = set(tm_data.get("accepted_for_vertical_slice", []))
+
+    all_req_accepted = (
+        _collect_accepted_ids(fmt_dir, "commercial-requirements.yaml")
+        | _collect_accepted_ids(fmt_dir, "save-edit-requirements.yaml")
+    )
+
+    for rid in sorted(tm_accepted - all_req_accepted):
+        errors.append(
+            f"  [cross-file/{fmt}] traceability-map lists {rid} as accepted_for_vertical_slice "
+            f"but no requirement file has it ACCEPTED_FOR_VERTICAL_SLICE"
+        )
+    for rid in sorted(all_req_accepted - tm_accepted):
+        errors.append(
+            f"  [cross-file/{fmt}] {rid} is ACCEPTED_FOR_VERTICAL_SLICE in requirement files "
+            f"but missing from traceability-map.accepted_for_vertical_slice"
+        )
+
+    # Deferred/accepted overlap check
+    tm_deferred = set(tm_data.get("deferred_requirements", []))
+    for rid in sorted(tm_accepted & tm_deferred):
+        errors.append(
+            f"  [cross-file/{fmt}] {rid} appears in BOTH accepted_for_vertical_slice AND deferred_requirements"
+        )
+
+    # AI_PROPOSAL count authority check
+    ai_count = tm_data.get("source_evidence_summary", {}).get("AI_PROPOSAL", None)
+    if ai_count is not None and ai_count != 0:
+        errors.append(
+            f"  [cross-file/{fmt}] AUTHORITY VIOLATION: traceability-map AI_PROPOSAL count = {ai_count} "
+            f"(must be 0 for AUTHORITATIVE maps — GOVERNANCE.md 26.11)"
+        )
+
+    return errors
+
+
+def _check_verifier_review_consistency(fmt: str) -> list:
+    """Check verifier-review IDs exist in requirement files and result is valid."""
+    errors = []
+    try:
+        import yaml
+    except ImportError:
+        return []
+
+    fmt_dir = REQS_DIR / fmt
+    vr_path = fmt_dir / "verifier-review.yaml"
+    if not vr_path.exists():
+        return [f"  [cross-file/{fmt}] verifier-review.yaml not found"]
+
+    vr_data = yaml.safe_load(vr_path.read_text(encoding="utf-8")) or {}
+    known_ids = _collect_all_requirement_ids(fmt_dir)
+
+    for challenge in vr_data.get("requirement_challenges", []):
+        rid = challenge.get("requirement_id")
+        if rid and rid not in known_ids:
+            errors.append(f"  [cross-file/{fmt}] verifier-review challenges unknown requirement_id: {rid}")
+
+    for challenge in vr_data.get("object_model_challenges", []):
+        eid = challenge.get("entity_id")
+        if eid and eid not in known_ids:
+            errors.append(f"  [cross-file/{fmt}] verifier-review challenges unknown entity_id: {eid}")
+
+    verdict = vr_data.get("verifier_verdict", {})
+    result = verdict.get("result")
+    if result not in ("LANE_R5_PASS", "LANE_R5_FAIL"):
+        errors.append(
+            f"  [cross-file/{fmt}] verifier_verdict.result must be LANE_R5_PASS or LANE_R5_FAIL, got: {result!r}"
+        )
+
+    return errors
+
+
+def validate_cross_file_consistency(fmt: str, verbose: bool = False) -> dict:
+    """Run all cross-file consistency checks for a format."""
+    errors = []
+    errors.extend(_check_traceability_consistency(fmt))
+    errors.extend(_check_verifier_review_consistency(fmt))
+    status = "PASS" if not errors else "FAIL"
+    if verbose and not errors:
+        print(f"  [PASS] {fmt} cross-file consistency: all checks passed")
+    return {"status": status, "errors": errors}
+
+
+# ============================================================
+# STALE DETECTION FRAMEWORK HOOK (stub — full impl future sprint)
+# ============================================================
+
+def check_stale_metadata(fmt: str, verbose: bool = False) -> dict:
+    """
+    Stale detection framework hook (STUB).
+
+    Current behaviour: verifies generation_timestamp and input_source_hashes fields are
+    present and that referenced source paths still exist. Does NOT hash-compare file contents.
+
+    Full stale detection (hash comparison of input files against stored hashes) is deferred.
+    See GOVERNANCE.md 26.11 and TC-0053 for the governance rule.
+
+    Returns status:
+      PASS              — metadata present, all referenced paths exist
+      MANUAL_REQUIRED   — metadata present but hash comparison not implemented
+      FAIL              — metadata fields missing (structural error)
+      SKIP              — prerequisite files not found
+    """
+    try:
+        import yaml
+    except ImportError:
+        return {"status": "SKIP", "errors": ["PyYAML required"], "warnings": []}
+
+    fmt_dir = REQS_DIR / fmt
+    cr_path = fmt_dir / "commercial-requirements.yaml"
+    if not cr_path.exists():
+        return {"status": "SKIP", "errors": [f"commercial-requirements.yaml not found for {fmt}"], "warnings": []}
+
+    errors = []
+    warnings = []
+    data = yaml.safe_load(cr_path.read_text(encoding="utf-8")) or {}
+    gen_timestamp = data.get("generation_timestamp", "")
+    input_hashes = data.get("input_source_hashes", {})
+
+    if not gen_timestamp:
+        errors.append(f"  [stale/{fmt}] commercial-requirements.yaml missing generation_timestamp")
+
+    if not input_hashes:
+        warnings.append(
+            f"  [stale/{fmt}] WARN: no input_source_hashes — stale detection requires manual check. "
+            f"Verify source files against generation_timestamp={gen_timestamp} (GOVERNANCE.md 26.11)"
+        )
+    else:
+        for source_key, source_path_str in input_hashes.items():
+            if isinstance(source_path_str, str) and ("/" in source_path_str or "\\" in source_path_str):
+                candidate = REPO_ROOT / source_path_str
+                if not candidate.exists():
+                    warnings.append(f"  [stale/{fmt}] WARN: input source no longer exists: {source_path_str}")
+
+    if verbose:
+        if not errors and not warnings:
+            print(f"  [PASS] {fmt} stale metadata: generation_timestamp present; {len(input_hashes)} input hashes")
+        for w in warnings:
+            print(w)
+
+    if errors:
+        return {"status": "FAIL", "errors": errors, "warnings": warnings}
+    return {"status": "MANUAL_REQUIRED" if warnings else "PASS", "errors": [], "warnings": warnings}
+
+
+# ============================================================
+# MAIN VALIDATION ORCHESTRATION
+# ============================================================
+
 def validate_format(fmt: str, verbose: bool = False) -> dict:
     """Validate all requirement files for a given format."""
     results = {}
@@ -154,6 +366,15 @@ def main():
     parser = argparse.ArgumentParser(description="Validate AI-generated format requirements")
     parser.add_argument("--format", choices=["fods", "fodt", "all"], default="all")
     parser.add_argument("--verbose", "-v", action="store_true")
+    parser.add_argument(
+        "--check-stale",
+        action="store_true",
+        help=(
+            "Run stale detection framework hook (STUB). "
+            "Checks metadata presence and source path existence. "
+            "Full hash comparison deferred — see GOVERNANCE.md 26.11."
+        ),
+    )
     args = parser.parse_args()
 
     formats = ["fods", "fodt"] if args.format == "all" else [args.format]
@@ -174,6 +395,33 @@ def main():
             if status != "PASS":
                 all_pass = False
                 total_errors += len(errs)
+
+        # Cross-file consistency (always run)
+        cross_result = validate_cross_file_consistency(fmt, args.verbose)
+        cross_status = cross_result["status"]
+        cross_errs = cross_result["errors"]
+        print(f"  [{'PASS' if cross_status == 'PASS' else 'FAIL'}] cross-file-consistency: {cross_status} ({len(cross_errs)} issues)")
+        if cross_errs:
+            for e in cross_errs[:5]:
+                print(f"    {e}")
+            all_pass = False
+            total_errors += len(cross_errs)
+
+        # Stale check (only if --check-stale flag provided)
+        if args.check_stale:
+            stale_result = check_stale_metadata(fmt, args.verbose)
+            stale_status = stale_result["status"]
+            stale_errs = stale_result.get("errors", [])
+            stale_warns = stale_result.get("warnings", [])
+            icon = "PASS" if stale_status in ("PASS", "MANUAL_REQUIRED") else "FAIL"
+            print(f"  [{icon}] stale-check: {stale_status} ({len(stale_errs)} errors, {len(stale_warns)} warnings)")
+            if stale_status == "MANUAL_REQUIRED":
+                print(f"    STALE_DETECTION: MANUAL_REQUIRED — see GOVERNANCE.md 26.11")
+            for w in stale_warns[:2]:
+                print(f"    {w}")
+            if stale_status == "FAIL":
+                all_pass = False
+                total_errors += len(stale_errs)
 
     print(f"\n{'REQUIREMENTS_SCHEMA_VALIDATION: PASS' if all_pass else 'REQUIREMENTS_SCHEMA_VALIDATION: FAIL'}")
     print(f"Total issues: {total_errors}")
