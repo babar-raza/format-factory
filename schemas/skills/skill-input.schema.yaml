@@ -1,0 +1,99 @@
+# skill-input.schema.yaml
+# Lane D: Safe R2 scaffolding
+# Purpose: Schema for inputs consumed by skill tool entry points.
+#   Defines what context and parameters a skill invocation must provide.
+# Authority: governance-aware; no execution logic; no autonomous orchestration.
+# Visibility: internal
+
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "skill-input.schema.yaml"
+title: "Skill Input Schema"
+description: >
+  Defines the contract for inputs passed to format-factory skill tools.
+  Skills are analysis/planning tools only — they do not execute implementation,
+  generate commits, or trigger autonomous orchestration.
+  This schema ensures all skill calls carry the required governance context.
+
+type: object
+required:
+  - skill_id
+  - format_id
+  - invocation_mode
+additionalProperties: false
+
+properties:
+
+  skill_id:
+    type: string
+    description: "Identifier of the skill being invoked"
+    enum:
+      - format_context_resolver
+      - lane_selector
+      - stale_detector
+      - requirements_validator
+    # Future skills added here require human review before adding to enum
+
+  format_id:
+    type: string
+    description: "Format being processed — must exist in registry/format-registry.yaml"
+    pattern: "^[a-z][a-z0-9_-]{1,31}$"
+
+  invocation_mode:
+    type: string
+    description: "How this skill was invoked — determines output verbosity and safety checks"
+    enum:
+      - interactive       # human-driven invocation
+      - automated_check   # automated validation (e.g. CI, pre-sprint check)
+      - dry_run           # output only, no state mutation
+
+  session_id:
+    type: [string, "null"]
+    description: "Optional session identifier for traceability"
+
+  authority_context:
+    type: [object, "null"]
+    description: "Optional override for authority context — use only when explicitly instructed"
+    additionalProperties: false
+    properties:
+      agents_md_version:
+        type: [string, "null"]
+      governance_md_version:
+        type: [string, "null"]
+      master_plan_version:
+        type: [string, "null"]
+
+  options:
+    type: [object, "null"]
+    description: "Skill-specific options"
+    additionalProperties: false
+    properties:
+      verbose:
+        type: [boolean, "null"]
+        default: false
+      include_deferred:
+        type: [boolean, "null"]
+        description: "Include deferred/NEEDS_REVIEW requirements in output"
+        default: false
+      check_stale:
+        type: [boolean, "null"]
+        description: "Run stale metadata detection (stub — see GOVERNANCE.md 26.11)"
+        default: false
+
+  # Governance safety flags — these cannot override hard rules
+  governance_checks:
+    type: [object, "null"]
+    description: "Governance constraint reminders — all must remain true; cannot be overridden"
+    additionalProperties: false
+    properties:
+      no_gate_self_approval:
+        type: boolean
+        description: "Reminder: no skill output may self-approve a gate. Always true."
+        enum: [true]
+      no_commercial_readiness_claim:
+        type: boolean
+        description: "Reminder: no skill output may claim commercial_product_ready=true. Always true."
+        enum: [true]
+      no_autonomous_implementation:
+        type: boolean
+        description: "Reminder: skills are analysis-only; no implementation is triggered. Always true."
+        enum: [true]

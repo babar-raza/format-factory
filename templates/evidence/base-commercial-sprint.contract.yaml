@@ -1,0 +1,135 @@
+# base-commercial-sprint.contract.yaml
+# Lane G: Evidence contract template model
+# Sprint: CONWAY-R1R2-ACCELERATED-FOUNDATION-SWARM-001
+# Purpose: Reusable template for instantiating evidence contracts in commercial sprint runs.
+#   Coordinators instantiate this template with sprint-specific values.
+#   This is NOT a generator tool -- it is a template that humans and coordinators fill out.
+# Authority: Inherits evidence philosophy from tools/evidence/contracts/
+#   See tools/evidence/validate_evidence_bundle.py and build_evidence_bundle.py for validation.
+# Visibility: internal
+
+# ============================================================
+# TEMPLATE HEADER -- Replace all {{PLACEHOLDER}} values
+# ============================================================
+
+contract_version: "1.0"
+template_ref: "templates/evidence/base-commercial-sprint.contract.yaml"
+sprint_id: "{{SPRINT_ID}}"                      # e.g. COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-FODS-002
+format_id: "{{FORMAT_ID}}"                      # e.g. fods
+date: "{{DATE}}"                                # e.g. 2026-05-13
+coordinator: "{{COORDINATOR_SESSION_ID}}"       # e.g. claude-sonnet-4-6-run051
+visibility: internal
+
+# ============================================================
+# AUTHORITY CHAIN METADATA
+# ============================================================
+
+authority_chain:
+  agents_md_sections:
+    - "B1 (phase verification)"
+    - "D1 (no gate self-approval)"
+    - "AF9 (commercial product policy)"
+    - "AF12 (AI usage)"
+    - "AF13 (generated requirements authority)"
+    - "AF15 (ready-to-send prompts)"
+  governance_md_sections:
+    - "26.8 (commercial readiness)"
+    - "26.11 (requirements pipeline)"
+    - "26.13 (supervision methodology)"
+  master_plan_version: "{{MASTER_PLAN_VERSION}}"
+
+# ============================================================
+# GENERATED REQUIREMENTS METADATA
+# ============================================================
+
+generated_requirements_metadata:
+  format: "{{FORMAT_ID}}"
+  requirements_state: "{{REQUIREMENTS_STATE}}"   # Must be REQUIREMENTS_AUTHORITATIVE for implementation
+  verifier_result: "{{VERIFIER_RESULT}}"          # Must be LANE_R5_PASS
+  iv_status: "{{IV_STATUS}}"                      # Must be PASS (DEC-034)
+  accepted_requirement_ids_count: "{{ACCEPTED_COUNT}}"
+  traceability_map_path: "generated-requirements/{{FORMAT_ID}}/traceability-map.yaml"
+  verifier_review_path: "generated-requirements/{{FORMAT_ID}}/verifier-review.yaml"
+  accepted_requirement_ids_referenced:
+    # List the specific ACCEPTED_FOR_VERTICAL_SLICE IDs this sprint targets
+    - "{{REQ_ID_1}}"
+    - "{{REQ_ID_2}}"
+
+  requirements_schema_validation_result: "{{SCHEMA_VALIDATION_RESULT}}"  # PASS or FAIL
+  cross_file_consistency_result: "{{CROSS_FILE_RESULT}}"                 # PASS or FAIL
+  stale_detection_result: "{{STALE_RESULT}}"                             # PASS, MANUAL_REQUIRED, SKIP
+
+# ============================================================
+# STALE METADATA PLACEHOLDER
+# ============================================================
+# Populated by check_stale_metadata() in validate_generated_requirements.py
+# Full hash comparison deferred -- see GOVERNANCE.md 26.11
+
+stale_metadata:
+  checked: false
+  check_timestamp: null
+  stale_detection_status: MANUAL_REQUIRED
+  note: >
+    Full stale detection (input file hash comparison) deferred.
+    Human must verify requirements against source changes since generation_timestamp.
+  generation_timestamp_ref: "{{GENERATION_TIMESTAMP}}"
+
+# ============================================================
+# AI USAGE METADATA
+# ============================================================
+
+ai_usage:
+  ai_accelerator_role: true
+  ai_authority_role: false
+  generated_requirements_consumed: "{{REQUIREMENTS_STATE}}"
+  ai_proposal_count_in_requirements: 0  # Must be 0 for AUTHORITATIVE requirements
+  implementation_prompt_generated_by_ai: "{{AI_PROMPT_GENERATED}}"  # true or false
+  prompt_human_reviewed: "{{PROMPT_HUMAN_REVIEWED}}"                # Must be true before prompt sent
+  gate_approval_delegated_to_ai: false                               # Must always be false (AGENTS.md D1)
+  ref: docs/ai-usage-operating-model.md
+
+# ============================================================
+# SPRINT SCOPE METADATA
+# ============================================================
+
+sprint_scope:
+  capability_level_target: "{{CAPABILITY_LEVEL}}"  # e.g. C7
+  gates_targeted: "{{GATES_TARGETED}}"              # e.g. Gate 11 sub-gate G11-C
+  commercial_product_ready: false                    # MUST remain false until Gate 11 human approval
+  gate_11_status: "{{GATE_11_STATUS}}"              # not_started, in_progress, or approved
+  scope_statements:
+    - "Implementation limited to ACCEPTED_FOR_VERTICAL_SLICE requirements only"
+    - "No entity expansion beyond current capability level"
+    - "No export/conversion implementation (future sprint)"
+    - "No autonomous implementation execution"
+
+# ============================================================
+# EVIDENCE BUNDLE REQUIREMENTS
+# ============================================================
+
+evidence_bundle:
+  builder: tools/evidence/build_evidence_bundle.py
+  validator: tools/evidence/validate_evidence_bundle.py
+  validation_floor_min_entries: 30
+  required_artifacts:
+    - plans/master-plan.md
+    - registry/format-registry.yaml
+    - AGENTS.md
+    - GOVERNANCE.md
+    - "generated-requirements/{{FORMAT_ID}}/verifier-review.yaml"
+    - "generated-requirements/{{FORMAT_ID}}/traceability-map.yaml"
+    - "tools/evidence/contracts/{{CONTRACT_FILENAME}}"
+  bundle_validation_required_before_print: true
+  bundle_id_format: "{{SPRINT_ID}}-{{DATE}}.zip"
+
+# ============================================================
+# NON-NEGOTIABLE SAFETY FLAGS
+# ============================================================
+
+safety_flags:
+  no_stash_reset_restore_clean_used: null   # Confirmed as YES at end of sprint
+  no_push_no_publish: null                  # Confirmed as YES at end of sprint
+  no_gate_self_approval: true
+  no_broad_staging: true
+  exact_path_staging_only: true
+  bundle_validation_pass_before_print: true

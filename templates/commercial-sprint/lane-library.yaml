@@ -1,0 +1,282 @@
+# lane-library.yaml
+# Lane F: Safe R2/R3 scaffolding
+# Sprint: CONWAY-R1R2-ACCELERATED-FOUNDATION-SWARM-001
+# Purpose: Define all available lanes, their contracts, ownership, required evidence,
+#   prompt quality gates, and forbidden behaviors.
+#   This is a DEFINITION file only -- does not generate prompts or execute lanes.
+# Authority: AGENTS.md AF9-AF15 | GOVERNANCE.md 26.8-26.13 | docs/agent-swarm-ai-orchestration.md
+# Visibility: internal
+
+library_version: "1.0"
+created: "2026-05-13"
+authority_files:
+  - AGENTS.md
+  - GOVERNANCE.md
+  - plans/master-plan.md
+  - docs/agent-swarm-ai-orchestration.md
+  - docs/commercial-product-capability-model.md
+
+# ============================================================
+# LANE OWNERSHIP RULES
+# ============================================================
+
+coordinator_owns:
+  files:
+    - AGENTS.md
+    - GOVERNANCE.md
+    - plans/master-plan.md
+    - registry/format-registry.yaml
+    - "schemas/**"
+    - "templates/**"
+  responsibility: "Authority chain integrity, evidence contracts, state updates, overlap detection"
+
+execution_lanes_constraint: "Exact-path staging only. No broad git add. No push. No gate self-approval."
+
+# ============================================================
+# R-LANES: Requirements + Verification
+# ============================================================
+
+lanes:
+
+  LANE-R3:
+    name: Requirements Generation
+    type: requirements
+    phase: R1
+    owner: requirements_generator
+    purpose: >
+      Synthesize format requirements from local sources only.
+      Read acquisition pack, verified facts, neutral model, existing source, test files.
+      Produce commercial-requirements.yaml, object-model-requirements.yaml,
+      save-edit-requirements.yaml, conversion-requirements.yaml, traceability-map.yaml.
+    required_inputs:
+      - "acquisition-packs/{format_id}/verified-facts.yaml"
+      - "acquisition-packs/{format_id}/pack.yaml"
+      - "schemas/neutral-model/{format_id}/model.yaml"
+      - "docs/commercial-product-capability-model.md"
+      - "registry/format-registry.yaml"
+    outputs:
+      - "generated-requirements/{format_id}/commercial-requirements.yaml"
+      - "generated-requirements/{format_id}/object-model-requirements.yaml"
+      - "generated-requirements/{format_id}/save-edit-requirements.yaml"
+      - "generated-requirements/{format_id}/conversion-requirements.yaml"
+      - "generated-requirements/{format_id}/traceability-map.yaml"
+    required_authority_checks:
+      - Gates 1-9 passed in registry
+      - No existing AUTHORITATIVE requirements (stale check required)
+    forbidden_behaviors:
+      - AI_PROPOSAL source_type in any ACCEPTED requirement
+      - "status: ACCEPTED_FOR_VERTICAL_SLICE for conversion requirements"
+      - Any gate self-approval language
+    prompt_quality_gate_ref: prompt_quality_gate_criteria
+
+  LANE-R4:
+    name: Format Context Resolution
+    type: analysis
+    phase: R2
+    owner: format_context_resolver
+    purpose: >
+      Read all per-format data and return a structured context block.
+      Determine REQUIREMENTS_STATE, gate state, known constraints.
+      Output consumed by lane selection and prompt generation.
+    required_inputs:
+      - "registry/format-registry.yaml"
+      - "generated-requirements/{format_id}/ (if exists)"
+      - "acquisition-packs/{format_id}/pack.yaml (if exists)"
+    outputs:
+      - "structured context dict (in-memory; write to file only if explicitly requested)"
+    state_machine_outputs:
+      - REQUIREMENTS_MISSING
+      - REQUIREMENTS_GENERATED_UNVERIFIED
+      - REQUIREMENTS_VERIFIED_NO_IV
+      - REQUIREMENTS_AUTHORITATIVE
+      - BLOCKED
+    implementation_ref: "tools/skills/format_context_resolver.py"
+    forbidden_behaviors:
+      - Mutation of any file
+      - Gate approval
+      - Implementation orchestration
+
+  LANE-R5:
+    name: Independent Verifier Challenge
+    type: verification
+    phase: R0
+    owner: verifier_agent
+    purpose: >
+      Adversarial challenge of all generated requirements before implementation consumes them.
+      Produce verifier-review.yaml with per-requirement verdicts and global checks.
+      Result must be LANE_R5_PASS for requirements to proceed to DEC-034 IV.
+    required_inputs:
+      - "generated-requirements/{format_id}/commercial-requirements.yaml"
+      - "generated-requirements/{format_id}/object-model-requirements.yaml"
+      - "generated-requirements/{format_id}/save-edit-requirements.yaml"
+      - "generated-requirements/{format_id}/conversion-requirements.yaml"
+      - "generated-requirements/{format_id}/traceability-map.yaml"
+    outputs:
+      - "generated-requirements/{format_id}/verifier-review.yaml"
+    required_global_checks:
+      - "no_ai_proposal_accepted: PASS"
+      - "conversion_requirements_future_scoped: PASS"
+      - "no_gate11_approval_implication: PASS"
+      - "no_dotnet_foss_direction: PASS"
+    verdict_values:
+      - "LANE_R5_PASS  # implementation may proceed with ACCEPTED_FOR_VERTICAL_SLICE"
+      - "LANE_R5_FAIL  # implementation blocked pending repair"
+    schema_ref: "schemas/generated-requirements/verifier-review.schema.json"
+    forbidden_behaviors:
+      - LANE_R5_PASS without checking all global_checks
+      - Approving AI_PROPOSAL requirements
+      - Any gate self-approval
+
+# ============================================================
+# I-LANES: Implementation Lanes (by entity type)
+# ============================================================
+
+  LANE-I-LOAD:
+    name: Load Pipeline Implementation
+    type: implementation
+    phase: R7
+    capability_levels: [C0, C1, C2, C3]
+    prerequisites:
+      - "REQUIREMENTS_STATE: REQUIREMENTS_AUTHORITATIVE"
+      - "Gates 1-10 passed"
+      - "Evidence contract instantiated"
+    required_requirement_statuses: [ACCEPTED_FOR_VERTICAL_SLICE]
+    forbidden_requirement_statuses: [NEEDS_REVIEW, GENERATED]
+    fodt_critical_constraint: >
+      FODT-REQ-040: All iterative list traversal MUST be non-recursive.
+      This constraint MUST appear in the implementation prompt header.
+    forbidden_behaviors:
+      - Implementing NEEDS_REVIEW requirements
+      - "Implementing FODT lists with recursion (FODT-REQ-040)"
+      - Gate self-approval
+      - Broad git staging
+
+  LANE-I-OBJECT-MODEL:
+    name: Object Model Implementation
+    type: implementation
+    phase: R7
+    capability_levels: [C4, C5]
+    fodt_critical_constraint: "FODT-REQ-040: iterative traversal MUST NOT be recursive"
+    fods_deferred_constraints:
+      - "FODS-REQ-040: do NOT implement typed values in vertical slice sprint"
+      - "FODS-REQ-041: do NOT implement row/column repeat expansion without audit"
+
+  LANE-I-EDIT:
+    name: Edit Operations Implementation
+    type: implementation
+    phase: R7
+    capability_levels: [C6]
+    fodt_critical_constraint: "FODT-REQ-040: iterative traversal MUST NOT be recursive"
+
+  LANE-I-SAVE:
+    name: Save Pipeline Implementation
+    type: implementation
+    phase: R7
+    capability_levels: [C7]
+    fodt_critical_constraint: "FODT-REQ-040: iterative traversal MUST NOT be recursive"
+
+  LANE-I-TESTS:
+    name: Test Suite Implementation
+    type: implementation
+    phase: R7
+    capability_levels: [C4, C5, C6, C7]
+    required_coverage: "All ACCEPTED_FOR_VERTICAL_SLICE requirements must have test coverage"
+    known_limitation: "Oracle tests requiring LibreOffice must not block CI"
+
+  LANE-K:
+    name: AI Orchestration
+    type: orchestration
+    phase: all
+    ref: docs/agent-swarm-ai-orchestration.md
+    constraints:
+      - "AI is accelerator, NOT authority (AGENTS.md AF12)"
+      - "Generated requirements must be AUTHORITATIVE before consumption"
+      - "Gate approval cannot be delegated to AI"
+      - "All AI output requires human review before promotion"
+
+# ============================================================
+# C-LANES: Coordinator
+# ============================================================
+
+  LANE-C:
+    name: Sprint Coordinator
+    type: coordinator
+    phase: all
+    purpose: >
+      Own shared infrastructure, merge lane outputs, detect overlap conflicts,
+      normalize terminology, ensure no duplicate infrastructure,
+      produce evidence bundle, update roadmap and master-plan.
+    owned_files:
+      - AGENTS.md
+      - GOVERNANCE.md
+      - plans/master-plan.md
+      - registry/format-registry.yaml
+      - "schemas/**"
+      - "templates/**"
+    forbidden_behaviors:
+      - Approving any gate
+      - "Claiming commercial_product_ready: true"
+      - Broad git staging
+      - Pushing to remote
+      - Self-approving evidence bundle
+
+# ============================================================
+# PROMPT QUALITY GATE CRITERIA
+# ============================================================
+
+prompt_quality_gate_criteria:
+  version: "1.0"
+  description: >
+    All generated implementation prompts MUST pass ALL 10 criteria before being sent to human.
+    A prompt that fails any BLOCKER criterion must be repaired before human review.
+  design_doc_ref: "reports/planning/prompt-quality-gate-design-20260513.md"
+  criteria:
+    1:
+      name: no_forbidden_git_commands
+      rule: "No git stash, reset --hard, restore, clean, push, or force-push"
+      severity: BLOCKER
+
+    2:
+      name: no_broad_staging
+      rule: "No git add -A or git add . -- exact-path staging only"
+      severity: BLOCKER
+
+    3:
+      name: no_gate_self_approval
+      rule: "No language implying or requesting gate self-approval"
+      severity: BLOCKER
+
+    4:
+      name: no_commercial_readiness_claim
+      rule: "No claim that commercial_product_ready=true or Gate 11 is approved"
+      severity: BLOCKER
+
+    5:
+      name: all_required_components_present
+      rule: "All 20 required prompt components present (docs/agent-execution-handoff-standard.md)"
+      severity: BLOCKER
+
+    6:
+      name: accepted_requirement_ids_referenced
+      rule: "At least one ACCEPTED_FOR_VERTICAL_SLICE requirement ID referenced in scope section"
+      severity: BLOCKER
+
+    7:
+      name: no_invalid_status_ids_referenced
+      rule: "No NEEDS_REVIEW or GENERATED requirement IDs used as implementation targets"
+      severity: BLOCKER
+
+    8:
+      name: evidence_contract_path_referenced
+      rule: "Evidence contract path referenced (tools/evidence/contracts/)"
+      severity: BLOCKER
+
+    9:
+      name: dec034_iv_path_referenced
+      rule: "DEC-034 IV sprint referenced -- separate session required for Phase R8"
+      severity: WARNING
+
+    10:
+      name: no_capability_overclaim
+      rule: "No capability claims beyond current implemented capability level"
+      severity: BLOCKER

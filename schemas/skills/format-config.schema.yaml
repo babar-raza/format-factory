@@ -1,0 +1,173 @@
+# format-config.schema.yaml
+# Lane D: Safe R2 scaffolding
+# Purpose: Schema for per-format configuration consumed by skill tools.
+#   Defines the structure for format-specific class names, build paths, capability state,
+#   and requirements state used by context resolution and lane selection.
+# Authority: governance-aware; no execution logic; no command wrappers.
+# Visibility: internal
+
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "format-config.schema.yaml"
+title: "Format Configuration Schema"
+description: >
+  Defines the per-format configuration contract for skill tools.
+  This schema is consumed by format_context_resolver.py to resolve capability state,
+  requirements state, and implementation readiness.
+  Does NOT implement commands, orchestration, or autonomous flows.
+
+type: object
+required:
+  - format_id
+  - format_family
+  - capability_level_target
+  - source_paths
+  - requirements_state
+  - gate_state
+additionalProperties: false
+
+properties:
+
+  format_id:
+    type: string
+    description: "Short identifier matching registry/format-registry.yaml format_id"
+    pattern: "^[a-z][a-z0-9_-]{1,31}$"
+    examples: ["fods", "fodt"]
+
+  format_family:
+    type: string
+    description: "Format family group (e.g. odf, ooxml, pdf)"
+    enum: [odf, ooxml, pdf, csv, json, xml_generic]
+
+  display_name:
+    type: string
+    description: "Human-readable format name"
+
+  spec_reference:
+    type: string
+    description: "Primary specification reference (e.g. ODF 1.3)"
+
+  capability_level_target:
+    type: string
+    description: "Target commercial capability level for current sprint"
+    enum: [C0, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10]
+
+  source_paths:
+    type: object
+    description: "Authoritative source paths for this format"
+    required: [dotnet_src, dotnet_tests]
+    additionalProperties: false
+    properties:
+      dotnet_src:
+        type: string
+        description: "Path to .NET commercial source (src/net/{format_id}/)"
+      dotnet_tests:
+        type: string
+        description: "Path to .NET test project (tests/net/{format_id}/)"
+      python_src:
+        type: [string, "null"]
+        description: "Path to Python FOSS source (src/python/{format_id}/) — null if not yet created"
+      acquisition_pack:
+        type: [string, "null"]
+        description: "Path to acquisition pack (acquisition-packs/{format_id}/)"
+
+  dotnet_classes:
+    type: object
+    description: "Key .NET class names for this format"
+    additionalProperties: false
+    properties:
+      document_class:
+        type: string
+        description: "Root document class (e.g. FodsDocument)"
+      parser_class:
+        type: [string, "null"]
+      writer_class:
+        type: [string, "null"]
+      sheet_class:
+        type: [string, "null"]
+      row_class:
+        type: [string, "null"]
+      cell_class:
+        type: [string, "null"]
+
+  requirements_state:
+    $ref: "#/definitions/RequirementsState"
+
+  gate_state:
+    $ref: "#/definitions/GateState"
+
+  known_constraints:
+    type: [array, "null"]
+    description: "Critical implementation constraints surfaced from verifier review"
+    items:
+      type: object
+      required: [requirement_id, constraint]
+      additionalProperties: false
+      properties:
+        requirement_id:
+          type: string
+        constraint:
+          type: string
+          description: "Human-readable constraint that MUST be enforced in all implementation prompts"
+
+definitions:
+
+  RequirementsState:
+    type: object
+    description: "State of generated requirements — drives resolver output and lane selection"
+    required: [status]
+    additionalProperties: false
+    properties:
+      status:
+        type: string
+        enum:
+          - REQUIREMENTS_MISSING
+          - REQUIREMENTS_GENERATED_UNVERIFIED
+          - REQUIREMENTS_VERIFIED_NO_IV
+          - REQUIREMENTS_AUTHORITATIVE
+          - BLOCKED
+        description: |
+          State machine values (Phase R2 context resolver output):
+          REQUIREMENTS_MISSING          — no generated-requirements/{format_id}/ directory
+          REQUIREMENTS_GENERATED_UNVERIFIED — files exist but no verifier-review.yaml
+          REQUIREMENTS_VERIFIED_NO_IV   — verifier-review LANE_R5_PASS but DEC-034 IV not complete
+          REQUIREMENTS_AUTHORITATIVE    — LANE_R5_PASS + DEC-034 IV PASS — ready for implementation
+          BLOCKED                       — gate not passed, DEC-033 unresolved, or other blocker
+      iv_status:
+        type: [string, "null"]
+        enum: [null, PASS, FAIL, PENDING]
+        description: "DEC-034 IV status for these requirements"
+      accepted_count:
+        type: [integer, "null"]
+        minimum: 0
+        description: "Count of ACCEPTED_FOR_VERTICAL_SLICE requirements"
+      verifier_result:
+        type: [string, "null"]
+        enum: [null, LANE_R5_PASS, LANE_R5_FAIL]
+      stale:
+        type: [boolean, "null"]
+        description: "Whether requirements are flagged as potentially stale — null if stale detection not yet run"
+      blocker_reason:
+        type: [string, "null"]
+        description: "Human-readable reason if status is BLOCKED"
+
+  GateState:
+    type: object
+    description: "Gate passage state for this format (authoritative source: registry/format-registry.yaml)"
+    required: [gates_passed, commercial_product_ready]
+    additionalProperties: false
+    properties:
+      gates_passed:
+        type: integer
+        minimum: 0
+        maximum: 11
+        description: "Number of gates passed (0-11). Gate 11 requires human approval."
+      latest_gate_passed:
+        type: [integer, "null"]
+        minimum: 1
+        maximum: 11
+      commercial_product_ready:
+        type: boolean
+        description: "MUST remain false until all Gate 11 sub-gates pass and human approves"
+      gate_11_status:
+        type: [string, "null"]
+        enum: [null, not_started, in_progress, approved]
