@@ -1,0 +1,249 @@
+---
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "format-governance-classification.schema.yaml"
+title: "Format Governance Classification"
+description: >
+  Schema for classifying a format's governance readiness in the format-factory
+  orchestration layer (CONWAY-R9). This schema complements format-onboarding.schema.yaml
+  and focuses on the governed orchestration lifecycle, not the onboarding process itself.
+
+  A format governance classification record captures:
+  - Where a format stands in the governed planning/simulation lifecycle
+  - What lanes are available, blocked, or advisory
+  - What governance gates apply
+  - Whether simulation is authorized for this format
+
+  This is COMPLEMENTARY to format-onboarding.schema.yaml:
+  - format-onboarding: captures the format's technical readiness for ingestion
+  - format-governance-classification: captures the format's position in the planning lifecycle
+
+type: object
+required:
+  - format_id
+  - classification_id
+  - governance_tier
+  - onboarding_status
+  - requirements_authority_status
+  - stale_tier
+  - simulation_authorization
+  - gate_summary
+  - lane_availability
+  - governance
+  - classified_date
+  - classification_version
+
+additionalProperties: false
+
+properties:
+  format_id:
+    type: string
+    minLength: 2
+    maxLength: 32
+    pattern: "^[a-z][a-z0-9_-]*$"
+    description: "Format identifier (lowercase). e.g. 'fods', 'fodt', 'xlsx', 'docx'."
+
+  classification_id:
+    type: string
+    minLength: 8
+    maxLength: 64
+    description: "Deterministic SHA-256-derived ID for this classification record."
+
+  governance_tier:
+    type: string
+    enum:
+      - TIER_A_ACTIVE_GOVERNED
+      - TIER_B_CANDIDATE_GOVERNED
+      - TIER_C_ONBOARDING
+      - TIER_D_NEEDS_AUDIT
+      - TIER_E_DEFERRED
+      - TIER_F_EXCLUDED
+    description: >
+      Governance tier for this format.
+      TIER_A_ACTIVE_GOVERNED: Active in the orchestration layer; all infrastructure available.
+      TIER_B_CANDIDATE_GOVERNED: Candidate for governed infrastructure; onboarding in progress.
+      TIER_C_ONBOARDING: Undergoing format-onboarding process.
+      TIER_D_NEEDS_AUDIT: Backlog candidate; requires audit before advancement.
+      TIER_E_DEFERRED: Intentionally deferred; documented reason required.
+      TIER_F_EXCLUDED: Excluded from format-factory scope.
+
+  onboarding_status:
+    type: string
+    enum:
+      - NOT_STARTED
+      - IN_PROGRESS
+      - COMPLETE
+      - BLOCKED
+      - DEFERRED
+    description: "Status of the format-onboarding process for this format."
+
+  requirements_authority_status:
+    type: string
+    enum:
+      - REQUIREMENTS_AUTHORITATIVE
+      - REQUIREMENTS_REVIEW_REQUIRED
+      - REQUIREMENTS_PENDING
+      - REQUIREMENTS_MISSING
+      - REQUIREMENTS_NOT_APPLICABLE
+    description: "Authority status of generated requirements for this format."
+
+  stale_tier:
+    type: string
+    enum:
+      - TIER_0_CLEAN
+      - TIER_1_ADVISORY
+      - TIER_2_REVIEW
+      - TIER_3_BLOCKED
+      - TIER_4_CORRUPTED
+      - NOT_APPLICABLE
+    description: "Stale propagation tier from stale_propagation module, or NOT_APPLICABLE."
+
+  simulation_authorization:
+    type: object
+    required:
+      - authorized
+      - reason
+      - blocking_factors
+    additionalProperties: false
+    properties:
+      authorized:
+        type: boolean
+        description: "Whether simulation is currently authorized for this format."
+      reason:
+        type: string
+        minLength: 1
+        description: "Why simulation is authorized or not authorized."
+      blocking_factors:
+        type: array
+        items:
+          type: string
+        description: "List of factors that block simulation (empty if authorized)."
+    description: "Simulation authorization state for this format."
+
+  gate_summary:
+    type: object
+    required:
+      - gates_passed
+      - gate_11_approved
+      - gate_11_status
+    additionalProperties: true
+    properties:
+      gates_passed:
+        type: integer
+        minimum: 0
+        maximum: 11
+        description: "Number of gates passed (0-10; gate 11 is tracked separately)."
+      gate_11_approved:
+        type: boolean
+        enum: [false]
+        description: "MUST be false — gate 11 requires human approval."
+      gate_11_status:
+        type: string
+        description: "e.g. not_started, commercial_readiness_in_progress"
+    description: "Gate state summary for this format."
+
+  lane_availability:
+    type: object
+    required:
+      - available_lanes
+      - blocked_lanes
+      - advisory_lanes
+    additionalProperties: false
+    properties:
+      available_lanes:
+        type: array
+        items:
+          type: string
+        description: "Implementation lanes available for this format."
+      blocked_lanes:
+        type: array
+        items:
+          type: string
+        description: "Implementation lanes blocked (stale, authority, dependency)."
+      advisory_lanes:
+        type: array
+        items:
+          type: string
+        description: "Lanes with advisory warnings (proceed with caution)."
+    description: "Lane availability classification for this format."
+
+  expansion_tier_recommendation:
+    type: string
+    enum:
+      - TIER_A_NEAR_TERM
+      - TIER_B_MEDIUM_TERM
+      - TIER_C_LONG_TERM
+      - NOT_RECOMMENDED
+      - NOT_APPLICABLE
+    description: "Format expansion tier recommendation from the expansion roadmap."
+
+  public_spec_status:
+    type: string
+    enum:
+      - HAS_PUBLIC_SPEC
+      - PARTIAL_PUBLIC_SPEC
+      - NO_PUBLIC_SPEC
+      - REVERSE_ENGINEERING_REQUIRED
+      - NOT_ASSESSED
+    description: "Whether a public specification exists for this format."
+
+  classification_notes:
+    type: array
+    items:
+      type: string
+    description: "Free-text notes about this classification (optional)."
+
+  governance:
+    type: object
+    required:
+      - commercial_product_ready
+      - autonomous_execution_allowed
+      - gate_self_approval_allowed
+      - dry_run_only
+    additionalProperties: false
+    properties:
+      commercial_product_ready:
+        type: boolean
+        enum: [false]
+        description: "MUST be false. Not a runtime configuration."
+      autonomous_execution_allowed:
+        type: boolean
+        enum: [false]
+        description: "MUST be false."
+      gate_self_approval_allowed:
+        type: boolean
+        enum: [false]
+        description: "MUST be false."
+      dry_run_only:
+        type: boolean
+        enum: [true]
+        description: "MUST be true."
+    description: "Governance flags. Immutable."
+
+  classified_date:
+    type: string
+    pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    description: "ISO 8601 date of classification."
+
+  classification_version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    description: "Version of this classification record."
+
+# Sample classification examples (inline documentation only — not schema enforced)
+#
+# FODS (active governed format):
+#   format_id: fods
+#   governance_tier: TIER_A_ACTIVE_GOVERNED
+#   onboarding_status: COMPLETE
+#   requirements_authority_status: REQUIREMENTS_AUTHORITATIVE
+#   stale_tier: TIER_0_CLEAN
+#   simulation_authorization: {authorized: true, reason: "All checks pass", blocking_factors: []}
+#
+# XLSX (tier A expansion candidate):
+#   format_id: xlsx
+#   governance_tier: TIER_D_NEEDS_AUDIT
+#   onboarding_status: NOT_STARTED
+#   requirements_authority_status: REQUIREMENTS_NOT_APPLICABLE
+#   stale_tier: NOT_APPLICABLE
+#   simulation_authorization: {authorized: false, reason: "Not yet in governed pipeline",
+#                               blocking_factors: ["onboarding_not_started"]}

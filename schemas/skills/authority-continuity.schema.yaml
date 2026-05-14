@@ -1,0 +1,295 @@
+---
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "authority-continuity.schema.yaml"
+title: "Authority Continuity Entry"
+description: >
+  Schema for a single format's authority continuity entry within the governed
+  planning/orchestration layer (CONWAY-R9). Validates entries produced by
+  authority_continuity_registry.build_authority_entry().
+
+type: object
+required:
+  - authority_id
+  - format_id
+  - requirements_state
+  - accepted_requirement_count
+  - accepted_requirement_ids
+  - stale_verdict
+  - planning_slice_count
+  - planning_slice_ids
+  - gate_state
+  - source_hashes
+  - replay_fingerprint
+  - simulation_log
+  - dependency_lineage
+  - format_isolation_marker
+  - governance
+  - created_date
+
+additionalProperties: false
+
+properties:
+  authority_id:
+    type: string
+    minLength: 8
+    maxLength: 64
+    description: "Deterministic SHA-256-derived ID (hexdigest[:16]) of this entry."
+
+  format_id:
+    type: string
+    enum: ["fods", "fodt"]
+    description: "Format identifier. Must be an active governed format."
+
+  requirements_state:
+    type: string
+    enum:
+      - REQUIREMENTS_AUTHORITATIVE
+      - REQUIREMENTS_REVIEW_REQUIRED
+      - REQUIREMENTS_PENDING
+      - REQUIREMENTS_MISSING
+      - REQUIREMENTS_STALE
+    description: "Authority state of generated requirements for this format."
+
+  accepted_requirement_count:
+    type: integer
+    minimum: 0
+    description: "Count of accepted_requirement_ids."
+
+  accepted_requirement_ids:
+    type: array
+    items:
+      type: string
+      pattern: "^[A-Z]+-REQ-[0-9]+"
+    description: "Sorted list of ACCEPTED_FOR_VERTICAL_SLICE requirement IDs."
+    uniqueItems: true
+
+  stale_verdict:
+    type: string
+    enum:
+      - FRESH
+      - REVIEW_REQUIRED
+      - STALE_BLOCKED
+    description: "Stale-state verdict from stale_detection."
+
+  planning_slice_count:
+    type: integer
+    minimum: 0
+    description: "Count of planning_slice_ids."
+
+  planning_slice_ids:
+    type: array
+    items:
+      type: string
+      pattern: "^[A-Z]+-I-"
+    description: "Sorted list of planning slice IDs from implementation_plan_expander."
+    uniqueItems: true
+
+  gate_state:
+    type: object
+    required:
+      - gates_passed
+      - gate_11_status
+      - gate_11_approved
+    additionalProperties: false
+    properties:
+      gates_passed:
+        type: integer
+        minimum: 0
+        maximum: 11
+      gate_11_status:
+        type: string
+        description: "e.g. commercial_readiness_in_progress, not_started, unknown"
+      gate_11_approved:
+        type: boolean
+        description: "MUST be false — gate 11 approval is not delegatable to AI."
+    description: "Current gate status snapshot for this format."
+
+  source_hashes:
+    type: object
+    required:
+      - requirements_hash
+      - slice_hash
+      - gate_hash
+    additionalProperties: false
+    properties:
+      requirements_hash:
+        type: string
+        minLength: 8
+        maxLength: 64
+      slice_hash:
+        type: string
+        minLength: 8
+        maxLength: 64
+      gate_hash:
+        type: string
+        minLength: 8
+        maxLength: 64
+    description: "Deterministic hashes of source inputs. Used for replay consistency."
+
+  replay_fingerprint:
+    type: ["string", "null"]
+    description: "Replay fingerprint from replay_fingerprint module, or null."
+
+  simulation_log:
+    type: array
+    items:
+      $ref: "#/definitions/SimulationLogEntry"
+    description: "Append-only simulation history. Never modified after first write."
+
+  dependency_lineage:
+    type: array
+    items:
+      type: string
+    description: "Chain of authority IDs this entry depends on (may be empty for first entry)."
+
+  format_isolation_marker:
+    type: string
+    pattern: "^FORMAT:[A-Z]+"
+    description: "Cross-format isolation marker. Must match FORMAT:{FORMAT_ID.upper()}."
+
+  governance:
+    $ref: "#/definitions/GovernanceFlags"
+
+  created_date:
+    type: string
+    pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    description: "ISO 8601 date of entry creation."
+
+definitions:
+  SimulationLogEntry:
+    type: object
+    required:
+      - simulation_id
+      - simulation_status
+      - summary
+      - simulation_date
+      - appended_at_index
+    additionalProperties: false
+    properties:
+      simulation_id:
+        type: string
+        minLength: 1
+        description: "Unique identifier for this simulation run."
+      simulation_status:
+        type: string
+        enum:
+          - SIMULATION_PASS
+          - SIMULATION_FAIL
+          - BLOCKED_STALE
+          - BLOCKED_AUTHORITY
+          - BLOCKED_DEPENDENCY
+          - BLOCKED_GOVERNANCE
+          - REPLAY_MISMATCH
+        description: "Outcome of the simulation run."
+      summary:
+        type: string
+        minLength: 1
+        description: "Human-readable summary of simulation outcome."
+      simulation_date:
+        type: string
+        pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        description: "ISO 8601 date of simulation run."
+      appended_at_index:
+        type: integer
+        minimum: 0
+        description: "Zero-based index in the simulation_log (append-only enforcement)."
+
+  GovernanceFlags:
+    type: object
+    required:
+      - commercial_product_ready
+      - autonomous_execution_allowed
+      - gate_self_approval_allowed
+      - dry_run_only
+      - simulation_only
+      - implementation_requires_human_authorization
+    additionalProperties: false
+    properties:
+      commercial_product_ready:
+        type: boolean
+        enum: [false]
+        description: "MUST be false. Not a runtime configuration."
+      autonomous_execution_allowed:
+        type: boolean
+        enum: [false]
+        description: "MUST be false. Human authorization required."
+      gate_self_approval_allowed:
+        type: boolean
+        enum: [false]
+        description: "MUST be false. Gates cannot be self-approved."
+      dry_run_only:
+        type: boolean
+        enum: [true]
+        description: "MUST be true. No live execution permitted."
+      simulation_only:
+        type: boolean
+        enum: [true]
+        description: "MUST be true. Only simulation outputs are produced."
+      implementation_requires_human_authorization:
+        type: boolean
+        enum: [true]
+        description: "MUST be true. Implementation requires explicit human approval."
+
+# Full registry schema (wraps per-format entries)
+---
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "authority-continuity-registry.schema.yaml"
+title: "Authority Continuity Registry"
+description: >
+  Schema for the full authority continuity registry (all formats combined).
+  Validates the output of authority_continuity_registry.build_full_registry().
+
+type: object
+required:
+  - registry_id
+  - format_count
+  - formats
+  - format_ids
+  - all_authoritative
+  - any_stale_blocked
+  - governance
+  - created_date
+
+additionalProperties: false
+
+properties:
+  registry_id:
+    type: string
+    minLength: 8
+    maxLength: 64
+    description: "Deterministic hash of all authority_ids in the registry."
+
+  format_count:
+    type: integer
+    minimum: 0
+    description: "Number of formats in this registry."
+
+  formats:
+    type: object
+    description: "Map of format_id → authority entry."
+    additionalProperties:
+      $ref: "authority-continuity.schema.yaml"
+
+  format_ids:
+    type: array
+    items:
+      type: string
+      enum: ["fods", "fodt"]
+    uniqueItems: true
+    description: "Sorted list of format IDs in this registry."
+
+  all_authoritative:
+    type: boolean
+    description: "True iff all formats have requirements_state == REQUIREMENTS_AUTHORITATIVE."
+
+  any_stale_blocked:
+    type: boolean
+    description: "True iff any format has stale_verdict == STALE_BLOCKED."
+
+  governance:
+    $ref: "authority-continuity.schema.yaml#/definitions/GovernanceFlags"
+
+  created_date:
+    type: string
+    pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    description: "ISO 8601 date of registry creation."

@@ -1,0 +1,60 @@
+inherit: base-run
+contract_id: CONWAY-R9-GOVERNED-SIMULATION-AND-AUTHORITY-CONTINUITY-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: >
+  Parallel R9 sprint deliverables (tools, schemas, tests, reports, docs) are untracked
+  in git. All files are new additions — no prior tracked files are modified.
+  emergency_blocker_bundle: true is authorized for this in-progress sprint.
+min_metadata_count: 5
+required_repo_files:
+  # Lane R9-1: Authority Continuity Registry
+  - tools/skills/authority_continuity_registry.py
+  - schemas/skills/authority-continuity.schema.yaml
+  - tests/skills/test_authority_continuity_registry.py
+  # Lane R9-2: Governed Execution Simulator
+  - tools/skills/execution_simulator.py
+  - tests/skills/test_execution_simulator.py
+  # Lane R9-3: Planning Runtime Contract Schema
+  - schemas/skills/planning-runtime-contract.schema.yaml
+  # Lane R9-4: Cross-Format Isolation Review
+  - reports/governance/cross-format-isolation-review.md
+  # Lane R9-5: Stale Propagation
+  - tools/skills/stale_propagation.py
+  - tests/skills/test_stale_propagation.py
+  # Lane R9-6: Format Governance Classification Schema
+  - schemas/skills/format-governance-classification.schema.yaml
+  # Lane R9-7: Replay Lineage
+  - tools/skills/replay_lineage.py
+  - tests/skills/test_replay_lineage.py
+  # Lane R9-8: Governance Docs
+  - docs/conway-r9-governed-simulation.md
+  - docs/conway-r9-authority-continuity.md
+  - docs/conway-r9-swarm-governance.md
+  # Lane R9-9: Adversarial Review
+  - reports/governance/r9-adversarial-review.md
+  # R9-0: Preflight + Overlap Analysis
+  - reports/governance/r9-preflight.md
+  - reports/governance/r9-overlap-analysis.md
+  # R9 Coordination
+  - reports/planning/r9-coordination-final-report-20260514.md
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - metadata-identity-report.md
+sprint_verdicts:
+  AUTHORITY_CONTINUITY_REGISTRY_STATUS: COMPLETE
+  GOVERNED_SIMULATION_STATUS: COMPLETE
+  PLANNING_RUNTIME_CONTRACT_STATUS: COMPLETE
+  CROSS_FORMAT_ISOLATION_STATUS: COMPLETE
+  STALE_PROPAGATION_STATUS: COMPLETE
+  FORMAT_GOVERNANCE_CLASSIFICATION_STATUS: COMPLETE
+  REPLAY_LINEAGE_STATUS: COMPLETE
+  SWARM_GOVERNANCE_DOCS_STATUS: COMPLETE
+  ADVERSARIAL_REVIEW_STATUS: PASS
+  R9_COMPLETE: true
+  AUTONOMOUS_ROLLOUT_STATUS: NOT_AUTHORIZED
+  COMMERCIAL_PRODUCT_READY: false
+  GATE_11_APPROVED: false
