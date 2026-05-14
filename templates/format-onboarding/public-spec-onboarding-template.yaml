@@ -1,0 +1,51 @@
+# public-spec-onboarding-template.yaml
+# Template for onboarding publicly-specified formats.
+#
+# WARNING: This is a PLANNING TEMPLATE ONLY.
+# Onboarding execution requires human authorization per GOVERNANCE.md 26.8-26.13.
+# All entries begin as CANDIDATE with needs_audit status until fully audited.
+#
+# Usage: Copy this file and fill in the format-specific fields.
+# CONWAY-R7R8 Lane D deliverable.
+
+format_id: "<format-id>"           # e.g. odf, hwp, abw
+format_name: "<Format Full Name>"  # e.g. "OpenDocument Format"
+extensions:
+  - ".<ext>"                        # e.g. .odf, .odg
+
+legal_provenance_classification: PUBLIC_SPEC
+public_spec_availability: AVAILABLE
+
+# Audit status: must be AUDITED before onboarding proceeds
+support_matrix_audit_status: NEEDS_AUDIT
+
+# Technical classification
+parser_classification: UNKNOWN    # Set after audit: XML_PACKAGE | XML_FLAT | BINARY | HYBRID
+reverse_engineering_safe: true    # Public spec → safe; set false if any binary reverse-engineering required
+parser_difficulty_estimate: UNKNOWN
+
+# Readiness chain (all begin NOT_APPLICABLE until audit completes)
+normalization_readiness: REQUIRES_AUDIT
+requirements_generation_readiness: REQUIRES_SPEC_RETRIEVAL
+implementation_readiness: REQUIRES_REQUIREMENTS
+iv_readiness: REQUIRES_VERIFIER_REVIEW
+
+onboarding_readiness:
+  overall: CANDIDATE
+  notes: >
+    CANDIDATE ONLY. No audit has been performed. This entry was added by the
+    format expansion backlog sweep. Onboarding cannot begin until:
+    (1) support matrix audit is completed,
+    (2) legal provenance is confirmed,
+    (3) spec retrieval is confirmed available,
+    (4) human authorization is given to begin requirements generation.
+
+backlog_priority: NOT_PRIORITIZED
+
+# Fill in if spec is known
+# spec_urls:
+#   - "https://example.org/spec/format.html"
+
+# Fill in if related formats exist
+# related_formats:
+#   - "<related-format-id>"

@@ -298,6 +298,15 @@ def resolve_format_context(fmt: str, verbose: bool = False) -> dict:
     gate_state = _resolve_gate_state(fmt)
     constraints = _collect_known_constraints(fmt)
 
+    # Stale detection (CONWAY-R7R8 Lane A) — populate the 'stale' field
+    try:
+        sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
+        from stale_detection import detect_stale_state as _detect_stale
+        stale_result = _detect_stale(fmt)
+        reqs_state["stale"] = stale_result
+    except Exception:
+        reqs_state["stale"] = {"verdict": "INDETERMINATE", "reasons": ["stale_detection unavailable"], "checks": {}, "blocker_count": 0}
+
     context = {
         "format_id": fmt,
         "resolver_version": "1.0",

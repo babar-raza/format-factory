@@ -1,0 +1,44 @@
+inherit: base-run
+contract_id: CONWAY-R7R8-MULTI-FORMAT-PLANNING-AND-STALENESS-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+min_metadata_count: 5
+required_repo_files:
+  - tools/skills/stale_detection.py
+  - tools/skills/implementation_plan_expander.py
+  - tools/skills/multi_format_planning.py
+  - tools/skills/planning_bundle_runtime.py
+  - tools/skills/replay_fingerprint.py
+  - schemas/skills/format-onboarding.schema.yaml
+  - templates/format-onboarding/public-spec-onboarding-template.yaml
+  - templates/format-onboarding/reverse-engineering-safe-template.yaml
+  - tests/skills/test_stale_detection.py
+  - tests/skills/test_implementation_plan_expander.py
+  - tests/skills/test_multi_format_planning.py
+  - tests/skills/test_format_onboarding_templates.py
+  - tests/skills/test_replay_fingerprint.py
+  - tests/skills/test_planning_bundle_runtime.py
+  - reports/governance/stale-state-enforcement-report-20260514.md
+  - reports/governance/adversarial-r7r8-review-20260514.md
+  - reports/governance/replay-governance-strengthening-report-20260514.md
+  - reports/planning/implementation-plan-expansion-report-20260514.md
+  - reports/planning/multi-format-planning-report-20260514.md
+  - reports/planning/public-spec-onboarding-framework-report-20260514.md
+  - reports/planning/planning-bundle-runtime-report-20260514.md
+  - reports/planning/r9-readiness-decision-20260514.md
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - metadata-identity-report.md
+sprint_verdicts:
+  STALE_STATE_ENFORCEMENT_STATUS: COMPLETE
+  IMPLEMENTATION_PLAN_EXPANSION_STATUS: COMPLETE
+  MULTI_FORMAT_PLANNING_STATUS: COMPLETE
+  PUBLIC_SPEC_ONBOARDING_STATUS: COMPLETE
+  REPLAY_GOVERNANCE_STATUS: COMPLETE
+  PLANNING_BUNDLE_RUNTIME_STATUS: COMPLETE
+  ADVERSARIAL_REVIEW_STATUS: PASS
+  R9_READINESS: READY_WITH_LIMITATIONS
+  AUTONOMOUS_ROLLOUT_STATUS: NOT_AUTHORIZED

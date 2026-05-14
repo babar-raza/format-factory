@@ -197,6 +197,24 @@ def generate_prompt(
                                  f"REQUIREMENTS_AUTHORITATIVE required before prompt generation",
         }
 
+    # STALE BLOCK: cannot generate if requirements chain is stale
+    stale_info = fmt_ctx["requirements_state"].get("stale") or {}
+    stale_verdict = stale_info.get("verdict", "FRESH") if isinstance(stale_info, dict) else "FRESH"
+    if stale_verdict == "STALE_BLOCKED":
+        stale_reasons = stale_info.get("reasons", [])
+        return {
+            "format_id": fmt,
+            "sprint_id": sprint_id,
+            "prompt": None,
+            "accepted_count": 0,
+            "selected_lanes": [],
+            "blocked_lanes": [],
+            "requirements_state": req_state,
+            "governance": governance,
+            "generator_status": f"BLOCKED_STALE — requirements chain is stale; "
+                                 f"re-verification required. Reasons: {stale_reasons}",
+        }
+
     accepted = _load_accepted_requirements(fmt)
     constraints = fmt_ctx.get("known_constraints", [])
     repo_str = repo_root or str(REPO_ROOT)

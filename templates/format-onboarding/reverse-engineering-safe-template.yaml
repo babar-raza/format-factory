@@ -1,0 +1,53 @@
+# reverse-engineering-safe-template.yaml
+# Template for formats where implementation does NOT require reverse-engineering
+# proprietary binaries, but where no formal public specification exists.
+#
+# "Reverse-engineering safe" in this context means:
+#   - The format is community-documented or has a partial public spec
+#   - Implementation can proceed from community documentation without IP risk
+#   - No Aspose or third-party library reverse engineering is required
+#
+# WARNING: This is a PLANNING TEMPLATE ONLY.
+# Legal provenance MUST be verified by a human before onboarding proceeds.
+# All entries begin as CANDIDATE with needs_audit status until fully audited.
+#
+# CONWAY-R7R8 Lane D deliverable.
+
+format_id: "<format-id>"
+format_name: "<Format Full Name>"
+extensions:
+  - ".<ext>"
+
+legal_provenance_classification: COMMUNITY_DOCUMENTED  # or REVERSE_ENGINEERED if binary
+public_spec_availability: PARTIAL   # or NONE if only community-documented
+
+# IMPORTANT: This must be set to NEEDS_AUDIT until human reviews the legal status
+support_matrix_audit_status: NEEDS_AUDIT
+
+parser_classification: UNKNOWN
+reverse_engineering_safe: true   # Must be verified — set to false if binary reverse engineering needed
+parser_difficulty_estimate: UNKNOWN
+
+normalization_readiness: REQUIRES_AUDIT
+requirements_generation_readiness: REQUIRES_SPEC_RETRIEVAL
+implementation_readiness: REQUIRES_REQUIREMENTS
+iv_readiness: REQUIRES_VERIFIER_REVIEW
+
+onboarding_readiness:
+  overall: CANDIDATE
+  notes: >
+    CANDIDATE ONLY. This format was identified as potentially reverse-engineering-safe
+    based on community documentation. Before onboarding proceeds:
+    (1) A human must verify the legal provenance classification,
+    (2) A support matrix audit must be completed,
+    (3) The community documentation sources must be archived locally,
+    (4) Human authorization is required before any requirements generation begins.
+
+    If any uncertainty exists about IP risk, escalate to Babar Raza before proceeding.
+
+backlog_priority: NOT_PRIORITIZED
+
+# Community documentation sources (fill in when known)
+# spec_urls:
+#   - "https://wiki.example.org/Format_Specification"
+#   - "https://github.com/example/format-docs"

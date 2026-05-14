@@ -224,17 +224,38 @@ def select_lanes(format_context: dict) -> dict:
             )
 
     elif state == "REQUIREMENTS_AUTHORITATIVE":
-        for il in IMPLEMENTATION_LANES:
+        # Check stale verdict before enabling implementation lanes
+        stale_info = reqs_state.get("stale") or {}
+        stale_verdict = stale_info.get("verdict", "FRESH") if isinstance(stale_info, dict) else "FRESH"
+
+        if stale_verdict == "STALE_BLOCKED":
+            # Stale chain — redirect to re-verification
+            stale_reasons = stale_info.get("reasons", ["stale requirements chain detected"])
             _add_lane(
-                il,
-                "REQUIREMENTS_AUTHORITATIVE — ready for implementation",
+                "LANE-R5",
+                f"STALE_BLOCKED — requirements chain is stale; re-verification required. "
+                f"Reasons: {stale_reasons}",
             )
-        # Block R-lanes (requirements already authoritative)
-        for rl in ["LANE-R3", "LANE-R5", "LANE-R5-IV"]:
-            _block_lane(
-                rl,
-                "Requirements already AUTHORITATIVE — R-lanes not needed unless stale",
-            )
+            for il in IMPLEMENTATION_LANES:
+                _block_lane(
+                    il,
+                    f"STALE_BLOCKED — requirements chain must be re-verified before implementation",
+                )
+            # Block R3 and R5-IV since R5 (re-verification) is the right path
+            for rl in ["LANE-R3", "LANE-R5-IV"]:
+                _block_lane(rl, "STALE_BLOCKED — LANE-R5 re-verification is the correct path")
+        else:
+            for il in IMPLEMENTATION_LANES:
+                _add_lane(
+                    il,
+                    "REQUIREMENTS_AUTHORITATIVE — ready for implementation",
+                )
+            # Block R-lanes (requirements already authoritative)
+            for rl in ["LANE-R3", "LANE-R5", "LANE-R5-IV"]:
+                _block_lane(
+                    rl,
+                    "Requirements already AUTHORITATIVE — R-lanes not needed unless stale",
+                )
 
     elif state == "BLOCKED":
         for il in IMPLEMENTATION_LANES:

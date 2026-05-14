@@ -1,0 +1,175 @@
+# format-onboarding.schema.yaml
+# Schema for public-spec and non-Aspose format onboarding templates.
+# Authority: AGENTS.md AF9-AF15 | GOVERNANCE.md 26.8-26.13
+# CONWAY-R7R8 Lane D deliverable.
+
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "format-onboarding.schema.yaml"
+title: "Format Onboarding Template Schema"
+description: >
+  Schema for onboarding planning templates for new formats (public-spec,
+  reverse-engineering-safe, community-documented). Templates are planning
+  artifacts only — onboarding execution requires human authorization.
+
+type: object
+required:
+  - format_id
+  - format_name
+  - extensions
+  - legal_provenance_classification
+  - public_spec_availability
+  - support_matrix_audit_status
+  - parser_classification
+  - reverse_engineering_safe
+  - onboarding_readiness
+
+additionalProperties: false
+
+properties:
+  format_id:
+    type: string
+    description: "Short unique identifier (e.g. hwp, alz, odf)"
+
+  format_name:
+    type: string
+    description: "Human-readable format name"
+
+  extensions:
+    type: array
+    items:
+      type: string
+    minItems: 1
+    description: "List of file extensions (e.g. ['.hwp', '.hwpx'])"
+
+  legal_provenance_classification:
+    type: string
+    enum:
+      - PUBLIC_SPEC         # Publicly available specification
+      - REVERSE_ENGINEERED  # Reverse-engineered (legal risk must be assessed)
+      - COMMUNITY_DOCUMENTED # Community-documented (verify source)
+      - ASPOSE_SUPPORTED    # Aspose.* library supported
+      - PROPRIETARY_UNKNOWN # Proprietary with unknown legal status
+    description: "Legal/provenance classification of the format"
+
+  public_spec_availability:
+    type: string
+    enum:
+      - AVAILABLE           # Spec is publicly available
+      - PARTIAL             # Partial spec available
+      - NONE                # No public spec
+      - UNKNOWN             # Not yet audited
+    description: "Whether a public specification exists for this format"
+
+  support_matrix_audit_status:
+    type: string
+    enum:
+      - AUDITED             # Full support matrix audit completed
+      - PARTIAL_AUDIT       # Partial audit only
+      - NEEDS_AUDIT         # No audit yet (default for backlog entries)
+      - NOT_APPLICABLE      # e.g. already fully supported via Aspose
+    description: "Status of support matrix audit"
+
+  parser_classification:
+    type: string
+    enum:
+      - XML_PACKAGE         # ZIP-based XML package (e.g. OOXML, ODF)
+      - XML_FLAT            # Single flat XML file
+      - BINARY              # Binary format
+      - HYBRID              # Mixed binary+XML
+      - TEXT_STRUCTURED     # Structured text (e.g. CSV, RTF subset)
+      - UNKNOWN             # Not yet classified
+    description: "Technical classification of parser approach"
+
+  reverse_engineering_safe:
+    type: boolean
+    description: >
+      True if format can be implemented without reverse-engineering proprietary
+      binary formats (public spec available + no IP risk). False if reverse
+      engineering would be required.
+
+  parser_difficulty_estimate:
+    type: string
+    enum:
+      - LOW      # Public spec, XML, straightforward
+      - MEDIUM   # Partial spec or moderately complex binary
+      - HIGH     # Complex binary, no public spec
+      - UNKNOWN  # Not yet assessed
+    description: "Estimated difficulty of implementing a parser for this format"
+
+  normalization_readiness:
+    type: string
+    enum:
+      - READY              # Can be normalized immediately
+      - REQUIRES_AUDIT     # Needs further audit before normalization
+      - BLOCKED            # Blocked by legal or technical issue
+      - NOT_APPLICABLE
+    description: "Readiness for requirements normalization"
+
+  requirements_generation_readiness:
+    type: string
+    enum:
+      - READY
+      - REQUIRES_SPEC_RETRIEVAL
+      - BLOCKED
+      - NOT_APPLICABLE
+    description: "Readiness for AI-assisted requirements generation (DEC-034 process)"
+
+  implementation_readiness:
+    type: string
+    enum:
+      - READY
+      - REQUIRES_REQUIREMENTS
+      - BLOCKED
+      - NOT_APPLICABLE
+    description: "Readiness for implementation (requires REQUIREMENTS_AUTHORITATIVE)"
+
+  iv_readiness:
+    type: string
+    enum:
+      - READY
+      - REQUIRES_VERIFIER_REVIEW
+      - BLOCKED
+      - NOT_APPLICABLE
+    description: "Readiness for DEC-034 Independent Verification"
+
+  onboarding_readiness:
+    type: object
+    required:
+      - overall
+      - notes
+    additionalProperties: false
+    properties:
+      overall:
+        type: string
+        enum:
+          - CANDIDATE       # Candidate only — not yet audited
+          - AUDITED_READY   # Audit complete, ready to start onboarding
+          - IN_PROGRESS     # Onboarding in progress
+          - COMPLETE        # Onboarding complete
+          - DEFERRED        # Deferred — decision recorded
+          - BLOCKED         # Blocked by legal/technical issue
+        description: "Overall onboarding readiness state"
+      notes:
+        type: string
+        description: "Human-readable notes on onboarding status"
+
+  backlog_priority:
+    type: string
+    enum:
+      - HIGH
+      - MEDIUM
+      - LOW
+      - NOT_PRIORITIZED
+    description: "Backlog priority for this format"
+
+  spec_urls:
+    type: array
+    items:
+      type: string
+    description: "URLs to public specifications (if available)"
+
+  related_formats:
+    type: array
+    items:
+      type: string
+    description: "Related format IDs (e.g. hwp and hwpx are related)"
