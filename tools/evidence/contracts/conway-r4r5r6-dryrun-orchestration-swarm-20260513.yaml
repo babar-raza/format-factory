@@ -1,0 +1,33 @@
+inherit: base-run
+contract_id: CONWAY-R4R5R6-DRYRUN-ORCHESTRATION-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+min_metadata_count: 5
+required_repo_files:
+  - tools/skills/swarm_prompt_generator.py
+  - tools/skills/prompt_quality_gate.py
+  - tools/skills/commercial_sprint_dryrun.py
+  - tools/skills/commands/commercial_sprint.py
+  - tools/skills/commands/format_context.py
+  - tools/skills/commands/lane_select.py
+  - tests/skills/test_swarm_prompt_generator.py
+  - tests/skills/test_prompt_quality_gate.py
+  - tests/skills/test_commercial_sprint_dryrun.py
+  - tests/skills/test_dryrun_replay_fixtures.py
+  - tests/skills/fixtures/fods-sprint-prompt.md
+  - tests/skills/fixtures/fodt-sprint-prompt.md
+  - reports/planning/evidence-runtime-integration-report-20260513.md
+  - reports/planning/r7-readiness-decision-20260513.md
+  - reports/governance/adversarial-orchestration-review-20260513.md
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - metadata-identity-report.md
+sprint_verdicts:
+  DRY_RUN_STATUS: DRY_RUN_PASS
+  QUALITY_GATE_STATUS: PASS
+  R4_PROMPT_GENERATION_STATUS: GENERATED
+  ADVERSARIAL_REVIEW_STATUS: PASS
+  R7_READINESS: READY_WITH_LIMITATIONS
