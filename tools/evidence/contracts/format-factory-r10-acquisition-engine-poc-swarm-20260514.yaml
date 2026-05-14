@@ -1,0 +1,56 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R10-ACQUISITION-ENGINE-POC-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: >
+  R10 sprint deliverables (tools, tests, reports) are untracked in git.
+  All files are new additions — no prior tracked files are modified.
+  emergency_blocker_bundle: true is authorized for this in-progress sprint.
+min_metadata_count: 5
+required_repo_files:
+  # Lane A: R9 Independent Verification
+  - reports/verification/r9-independent-verification-20260514.md
+  # Lane B: Acquisition Lifecycle Simulator
+  - tools/skills/acquisition_lifecycle_simulator.py
+  - tests/skills/test_acquisition_lifecycle_simulator.py
+  # Lane C: Candidate Format Backlog
+  - tools/skills/candidate_format_backlog.py
+  - tests/skills/test_candidate_format_backlog.py
+  # Lane D: Public Spec Readiness Scorer
+  - tools/skills/public_spec_readiness_scorer.py
+  - tests/skills/test_public_spec_readiness_scorer.py
+  # Lane E: Multi-Format Acquisition Planner
+  - tools/skills/multi_format_acquisition_planner.py
+  - tests/skills/test_multi_format_acquisition_planner.py
+  # Lane F: Governed Implementation Simulation v2
+  - tools/skills/implementation_simulation_v2.py
+  - tests/skills/test_implementation_simulation_v2.py
+  # Lane G: Weekly Report
+  - reports/planning/weekly-report-poc-summary-20260514.md
+  # Lane H: Adversarial Review
+  - reports/governance/r10-adversarial-review-20260514.md
+  # Lane I: R11 Readiness Decision
+  - reports/planning/r11-readiness-decision-20260514.md
+  # Evidence contract itself
+  - tools/evidence/contracts/format-factory-r10-acquisition-engine-poc-swarm-20260514.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - metadata-identity-report.md
+sprint_verdicts:
+  R9_INDEPENDENT_VERIFICATION_STATUS: PASS
+  ACQUISITION_LIFECYCLE_SIMULATOR_STATUS: COMPLETE
+  CANDIDATE_FORMAT_BACKLOG_STATUS: COMPLETE
+  PUBLIC_SPEC_READINESS_SCORER_STATUS: COMPLETE
+  MULTI_FORMAT_ACQUISITION_PLANNER_STATUS: COMPLETE
+  GOVERNED_SIMULATION_V2_STATUS: COMPLETE
+  WEEKLY_REPORT_STATUS: COMPLETE
+  ADVERSARIAL_REVIEW_STATUS: PASS
+  R11_READINESS_DECISION_STATUS: COMPLETE
+  R10_COMPLETE: true
+  R11_READINESS: READY_WITH_LIMITATIONS
+  AUTONOMOUS_ROLLOUT_STATUS: NOT_AUTHORIZED
+  COMMERCIAL_PRODUCT_READY: false
+  GATE_11_APPROVED: false
