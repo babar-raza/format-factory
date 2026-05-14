@@ -1,0 +1,34 @@
+# Sprint Evidence Contract
+# Sprint: CONWAY-REBASELINE-AND-INFRASTRUCTURE-RECONCILIATION-001
+# Date: 2026-05-13
+# Type: Planning/rebaseline sprint (no implementation; uncommitted; human commit authorization pending)
+
+contract_id: conway-rebaseline-and-infrastructure-reconciliation-20260513
+version: "1.0"
+sprint: CONWAY-REBASELINE-AND-INFRASTRUCTURE-RECONCILIATION-001
+description: >
+  Conway commercial format skill system rebaseline against authoritative repo state.
+  5 lane reports produced. No implementation. No commands. No source changes.
+  Uncommitted changes awaiting human commit authorization.
+
+base_contract: base-run
+require_clean_git: false
+emergency_blocker_bundle: true
+emergency_blocker_note: >
+  Planning/rebaseline sprint — changes awaiting human commit authorization per GOVERNANCE.md Section 2.
+  Dirty git state expected. No stash/reset/restore/clean used.
+
+normal_pass_min_metadata: 5
+min_metadata_count: 5
+
+required_repo_files:
+  - reports/planning/conway-existing-infrastructure-audit-20260513.md
+  - reports/requirements/generated-requirements-authority-map-20260513.md
+  - reports/planning/conway-rebaseline-roadmap-20260513.md
+  - reports/planning/autonomous-rollout-readiness-20260513.md
+  - reports/planning/post-conway-rebaseline-next-sprint-20260513.md
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml

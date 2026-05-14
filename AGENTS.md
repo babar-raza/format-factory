@@ -759,6 +759,9 @@ commercial implementation sprint for a format without first verifying that accep
 exist. Requirements generation, validation, verifier review, and acceptance are separate tracked
 steps and may not be collapsed into a single unreviewed AI output. The skill system (when
 implemented) must generate and validate requirements before producing an implementation prompt.
+Generated requirements become authoritative only after both verifier review (verifier-review.yaml
+LANE_R5_PASS) and DEC-034 independent verification. Prior to that, they are proposals.
+Pipeline design: `docs/ai-generated-format-requirements-pipeline.md`. Governance rules: `taskcards/TC-0053-ai-requirements-pipeline-governance.md`.
 
 **AF14. Local Repo Authority Over External Memory.** Local repo files are the authoritative source
 of truth for project state. ChatGPT saved memory, conversation summaries, and external AI memory
@@ -767,3 +770,12 @@ local repo wins. A new chat or agent session must read local authority files
 (`plans/master-plan.md`, `AGENTS.md`, `GOVERNANCE.md`, `memory/00-index.md`,
 `registry/format-registry.yaml`) before acting. The fresh-chat bootstrap document at
 `docs/fresh-chat-project-bootstrap.md` provides the intended entry point for new sessions.
+
+**AF15. Ready-to-Send Prompts Are Required for Next Steps.** When an agent completes a sprint
+review, plan review, or evidence review and the output includes a recommended next step, that
+recommendation must include a complete ready-to-send execution prompt — not vague advice such
+as "you should ask the agent to check X." The prompt must include: mode label, sprint ID, repo
+path, current accepted state, scope, non-goals, safety rules, allowed files, validation commands,
+evidence contract requirements, and final response format. See `docs/assistant-supervision-methodology.md`
+Section 6 and `docs/project-execution-standards.md` Section 4 for the full prompt standard.
+Supervision methodology reference: `docs/assistant-supervision-methodology.md`.

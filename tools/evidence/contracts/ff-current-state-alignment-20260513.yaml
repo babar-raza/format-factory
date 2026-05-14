@@ -1,0 +1,43 @@
+---
+# Sprint contract — FF-CURRENT-STATE-AND-AI-REQUIREMENTS-ALIGNMENT-20260513
+contract_id: FF-CURRENT-STATE-AND-AI-REQUIREMENTS-ALIGNMENT-20260513
+version: "1.0"
+extends: base-run
+created: "2026-05-13"
+sprint_id: FF-CURRENT-STATE-AND-AI-REQUIREMENTS-ALIGNMENT-20260513
+
+# Dirty git: 4 modified files from prior sprint (COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001)
+# not yet committed (governance rule: no auto-commit without human request).
+# --no-git-check used in build_evidence_bundle.py to allow bundle creation.
+# Dirty state classified in .local/sprint-lock.yaml.
+# Dirty git is expected: this sprint produces changes that require human commit authorization.
+# emergency_blocker_bundle: true allows bundle creation with dirty git.
+# This is an audit sprint — not a production blocker — but dirty git is unavoidable per
+# governance rule "NO COMMIT unless human explicitly requests it."
+require_clean_git: false
+emergency_blocker_bundle: true
+
+# Metadata minimum: this is an alignment/audit sprint — not a full implementation sprint.
+# Uses base minimum of 30.
+min_metadata_count: 30
+
+# Required repo files for this sprint
+required_repo_files:
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+  - docs/commercial-product-capability-model.md
+  - docs/ai-generated-format-requirements-pipeline.md
+  - docs/ai-generated-format-requirements-pipeline.yaml
+  - generated-requirements/fods/commercial-requirements.yaml
+  - generated-requirements/fods/object-model-requirements.yaml
+  - generated-requirements/fods/verifier-review.yaml
+  - generated-requirements/fodt/commercial-requirements.yaml
+  - generated-requirements/fodt/object-model-requirements.yaml
+  - generated-requirements/fodt/verifier-review.yaml
+  - tools/requirements/validate_generated_requirements.py
+  - schemas/generated-requirements/commercial-format-requirements.schema.json
+  - taskcards/TC-0053-ai-requirements-pipeline-governance.md
+  - src/net/fods/FodsDocument.cs
+  - src/net/fodt/FodtDocument.cs

@@ -1,0 +1,128 @@
+---
+document_type: standards
+title: Project Execution Standards (Machine-Readable)
+version: "1.0"
+created_at: "2026-05-13"
+sprint: CHATGPT-MEMORY-LOCAL-SYNC-20260513-ADDENDUM
+visibility: internal
+publish_allowed: false
+authority: standards
+
+reference_doc: docs/project-execution-standards.md
+
+sprint_lifecycle_steps:
+  - preflight
+  - lane_execution
+  - integration
+  - validation
+  - no_scope_drift
+  - consistency_check
+  - evidence_bundle
+  - exact_path_commit
+  - final_response
+  - memory_sync
+
+evidence_requirements:
+  builder: tools/evidence/build_evidence_bundle.py
+  validator: tools/evidence/validate_evidence_bundle.py
+  validator_flags:
+    - --check-no-pending
+  required_result: BUNDLE_VALIDATION_PASS
+  top_level_folders_exactly:
+    - repo/
+    - bundle-metadata/
+  min_metadata_count: 30
+  required_metadata_files:
+    - final-bundle-validation-proof.txt
+    - git-status-final.txt  # or git-status.txt
+    - no-scope-drift-report.md
+    - git-safety-policy-check.md
+  forbidden_contents:
+    - .local/
+    - .env
+    - raw_spec_text
+    - embeddings
+    - llm_transcripts
+    - secrets
+
+final_response_required_fields:
+  - SPRINT
+  - VERDICT
+  - BUNDLE_VALIDATION
+  - NO_STASH_RESET_RESTORE_CLEAN_USED
+  - CURRENT_STATE_CONSISTENCY
+  - work_summary_with_artifact_references
+  - EVIDENCE_BUNDLE_path_as_last_line
+
+prompt_required_fields:
+  - mode_label
+  - sprint_id
+  - repo_path
+  - current_accepted_state
+  - scope
+  - non_goals
+  - lane_definitions
+  - safety_rules
+  - allowed_files
+  - prohibited_files
+  - validation_commands
+  - evidence_contract_requirements
+  - final_response_format
+  - exact_next_step
+
+iv_requirements:
+  separate_session_required: true
+  dec_034_reference: plans/master-plan.md
+  produces: iv_audit_document
+  waiver: explicit_human_authorization_in_current_session_only
+
+memory_sync_triggers:
+  - product_direction_change
+  - ai_policy_change
+  - gate_interpretation_change
+  - workflow_methodology_change
+  - major_sprint_accepted
+  - new_chat_bootstrap_needed
+
+ai_usage_requirements:
+  log_repo_changing_work: .local/llm-logs/
+  schema_validate_structured_output: true
+  test_ai_generated_code: true
+  verifier_review_ai_generated_requirements: true
+  cite_local_source: where_applicable
+  accept_or_reject_explicitly: true
+  prohibited:
+    - secrets_to_ai
+    - credentials_to_ai
+    - raw_spec_text_to_ai
+    - raw_llm_transcripts_committed
+    - gate_approval_by_ai
+
+safety_prohibitions:
+  - git stash
+  - git reset
+  - git reset --hard
+  - git restore
+  - "git checkout -- ."
+  - git clean
+  - git add .
+  - git add -A
+  - git push (without explicit current-session authorization)
+  - gate self-approval
+  - package publish without authorization
+  - secrets committed or logged
+  - raw LLM transcripts committed
+  - embeddings committed
+  - dotnet_foss_source (DEC-033 Option B)
+
+read_first_files:
+  - docs/fresh-chat-project-bootstrap.md
+  - plans/master-plan.md
+  - AGENTS.md
+  - GOVERNANCE.md
+  - memory/00-index.md
+  - registry/format-registry.yaml
+  - docs/commercial-product-capability-model.md
+  - docs/current-state-and-evidence-authority.md
+  - docs/assistant-supervision-methodology.md
+  - docs/project-execution-standards.md

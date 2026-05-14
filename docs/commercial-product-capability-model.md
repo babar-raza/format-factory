@@ -36,7 +36,7 @@ The commercial .NET product must support **load-edit-save-convert**:
 | Memory model | No allocation beyond current element | Full document in memory |
 | API shape | `Parse(path) -> counts/metadata` | `Load(path) -> Document -> Edit -> Save/Export` |
 
-**Current `src/net/fods/` and `src/net/fodt/` are Tier 0 parser prototypes / technical baselines. They are NOT commercial products.**
+**Current `src/net/fods/` and `src/net/fodt/` are C4-C6 vertical-slice implementations. They are NOT commercial products.** `commercial_product_ready: false`. Gate 11 NOT approved. Full C7+ capability coverage + Gate 11 human approval required.
 
 ---
 
@@ -58,8 +58,8 @@ Progress toward full commercial readiness is tracked using capability levels C0 
 | C9 | Export/Convert | Save to PDF, PNG, HTML, and related formats | Yes |
 | C10 | Full Commercial | All C4-C9 at production quality with edge-case coverage | Yes |
 
-**Current FODS .NET source:** C2 (streaming metadata + sheet enumeration)
-**Current FODT .NET source:** C2 (streaming metadata + structure counting)
+**Current FODS .NET source:** C4-C6 vertical slice (FodsDocument.Load/Save + FodsSheet/FodsRow/FodsCell edit; FodsParser.cs Tier 0 streaming retained)
+**Current FODT .NET source:** C4-C6 vertical slice (FodtDocument.Load/Save + FodtParagraph.SetText edit; FodtParser.cs Tier 0 streaming retained)
 
 **Gate 11 approval requires:** Minimum C7 demonstrated (load + object model + edit + same-format save). C9-C10 preferred for initial commercial release.
 

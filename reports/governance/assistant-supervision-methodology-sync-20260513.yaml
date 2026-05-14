@@ -1,0 +1,63 @@
+---
+report_type: governance_sync
+title: Assistant Supervision Methodology Sync Report (Machine-Readable)
+sprint: CHATGPT-MEMORY-LOCAL-SYNC-20260513-ADDENDUM
+date: "2026-05-13"
+visibility: internal
+publish_allowed: false
+
+files_created:
+  - docs/assistant-supervision-methodology.md
+  - docs/assistant-supervision-methodology.yaml
+  - docs/project-execution-standards.md
+  - docs/project-execution-standards.yaml
+  - memory/25-assistant-supervision-methodology-20260513.md
+  - taskcards/ASSISTANT-SUPERVISION-METHODOLOGY.md
+  - taskcards/PROJECT-EXECUTION-STANDARDS.md
+  - reports/governance/assistant-supervision-methodology-sync-20260513.md
+  - reports/governance/assistant-supervision-methodology-sync-20260513.yaml
+  - .local/chatgpt-memory-local-sync-20260513-metadata/assistant-supervision-methodology-sync-report.md
+
+files_updated:
+  - docs/fresh-chat-project-bootstrap.md
+  - docs/fresh-chat-project-bootstrap.yaml
+  - memory/00-index.md
+  - AGENTS.md
+  - GOVERNANCE.md
+
+files_not_updated:
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - src/net/
+  - src/python/
+  - tests/
+
+governance_rules_already_present:
+  - rule: inspect_evidence_before_accepting_claims
+    location: AGENTS.md AD2 AD9
+  - rule: preserve_controlled_swarm_safety
+    location: AGENTS.md AE GOVERNANCE.md 25
+  - rule: sync_durable_decisions_to_memory
+    location: AGENTS.md U6
+  - rule: treat_ai_output_as_proposal
+    location: AGENTS.md AC4 AF12 GOVERNANCE.md 26.10
+  - rule: no_overstatement_of_commercial_readiness
+    location: AGENTS.md AF9 AF10 AF11 GOVERNANCE.md 26.8 26.9
+
+governance_rules_added:
+  - rule: ready_to_send_prompts_required
+    location: AGENTS.md AF15
+  - rule: supervision_methodology_and_execution_standards
+    location: GOVERNANCE.md 26.13
+
+semantic_checks:
+  assistant_supervision_methodology_documented: true
+  evidence_first_review_style_documented: true
+  challenge_agent_claims_style_documented: true
+  ready_to_send_prompt_style_documented: true
+  controlled_swarm_default_documented: true
+  ai_governed_acceleration_style_documented: true
+  generated_requirements_first_style_documented: true
+  gate_readiness_anti_overclaim_style_documented: true
+  local_memory_sync_style_documented: true
+  future_chat_bootstrap_references_methodology: true

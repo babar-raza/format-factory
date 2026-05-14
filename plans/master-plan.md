@@ -3,16 +3,16 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.54 (COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001 2026-05-13: product direction reset; source audit confirms .NET is Tier 0 C2 extractor; sub-gates G11-A through G11-G defined; commercial roadmaps for FODS+FODT created; next swarm: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001)
+**Version:** 2.55 (FF-CURRENT-STATE-AND-AI-REQUIREMENTS-ALIGNMENT-20260513: Section 6 repaired; stale Tier 0 refs updated to C4-C6 vertical slice; TC-0053 created; .NET READMEs corrected; commercial-product-capability-model.md current capability updated; last_completed_sprint corrected)
 **Last updated:** 2026-05-13
 **Current phase:** Phase 3+: FODS Gates 1-10 ALL PASSED; Gate 11 commercial_readiness_in_progress; DEC-033 RESOLVED Option B. FODT Gates 1-10 ALL PASSED; Gate 11 commercial_readiness_in_progress; DEC-033 RESOLVED Option B.
-**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Phase 4 Python FOSS source CREATED (run051; TC-0050 COMPLETED; src/python/fods/ 6 files; 19/20 IR-FODS; iterparse streaming). Gate 11 commercial_readiness_in_progress: DEC-033 resolved Option B (Babar Raza 2026-05-12); src/net/fods/ skeleton created targeting net10.0; Gate 11 NOT approved; full implementation + human approval required. FODT: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-11 (TC-0052 COMPLETED; src/python/fodt/ 6 modules; 115/115 PASS). Gate 11 commercial_readiness_in_progress: DEC-033 resolved Option B (Babar Raza 2026-05-12); src/net/fodt/ skeleton created targeting net10.0; Gate 11 NOT approved; full implementation + human approval required. DEC-033 RESOLVED: Option B (.NET Commercial Only). Python is sole FOSS track. No .NET FOSS package. last_completed_sprint: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001 (2026-05-13). Prior: DEC033-OPTION-B-GATE11-COMMERCIAL-SWARM-001 (2026-05-12). Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
+**Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Phase 4 Python FOSS source CREATED (run051; TC-0050 COMPLETED; src/python/fods/ 6 files; 19/20 IR-FODS; iterparse streaming). Gate 11 commercial_readiness_in_progress: DEC-033 resolved Option B (Babar Raza 2026-05-12); src/net/fods/ skeleton created targeting net10.0; Gate 11 NOT approved; full implementation + human approval required. FODT: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-11 (TC-0052 COMPLETED; src/python/fodt/ 6 modules; 115/115 PASS). Gate 11 commercial_readiness_in_progress: DEC-033 resolved Option B (Babar Raza 2026-05-12); src/net/fodt/ skeleton created targeting net10.0; Gate 11 NOT approved; full implementation + human approval required. DEC-033 RESOLVED: Option B (.NET Commercial Only). Python is sole FOSS track. No .NET FOSS package. last_completed_sprint: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001 (2026-05-13; FODS 42/42 PASS; FODT 43/43 PASS; C4-C6 vertical slice; FodsDocument/FodtDocument Load/Save/Edit). Prior: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001 (2026-05-13). Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
 **Phase 2 allowed:** YES — Gate 1 passed (run017, Babar Raza, 2026-05-04).
 **Phase 3 allowed:** YES — Gate 2 passed (run023, Babar Raza, 2026-05-05). Gate 3 PASSED (run028, Babar Raza, 2026-05-05). Gate 4 PASSED (run033, Babar Raza, 2026-05-06). Gate 5 PASSED (run035, Babar Raza, 2026-05-06).
 **FODT Gate 6 allowed:** YES — Gate 6 PASSED (Babar Raza, 2026-05-08, run047). Gate 7 fuzz planning_ready; execution requires explicit prompt.
 **Commit allowed:** YES — run049 authorized by execution prompt.
-**Next required action:** Gate 11 approval/publish DEFERRED — current FODS/FODT .NET code is Tier 0 only (capability level C2: streaming metadata extraction). Next implementation goal is NOT packaging or publishing — it is load-edit-save-convert vertical slices (C4+ per docs/commercial-product-capability-model.md). Sub-gates G11-A through G11-G defined (2026-05-13): G11-A=architecture approved (proposed, needs human); G11-B=object model; G11-C=no-edit roundtrip; G11-D=edit-and-save vertical slice; G11-E=conversion/export; G11-F=package readiness; G11-G=human approval. Next authorized implementation swarm: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001 (requires human authorization and G11-A acceptance). See reports/planning/gate11-commercial-rebaseline-20260513.md, docs/commercial-product-capability-model.md, docs/commercial-dotnet-architecture.md. GOV-REVERT-002: queued, not blocking.
+**Next required action:** Gate 11 sub-gate G11-D (edit-and-save vertical slice) DEMONSTRATED by COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001 (FODS 42/42, FODT 43/43). Next implementation goal: G11-E (conversion/export) — PDF/HTML/PNG export — future roadmap requiring explicit human authorization. G11-F (package readiness) and G11-G (human approval) cannot proceed until G11-E or later sub-gates are explicitly authorized. commercial_product_ready: false. Gate 11 NOT approved. AI requirements pipeline OPERATIONAL — regeneration required only if input sources change (TC-0053). See docs/commercial-product-capability-model.md, docs/commercial-dotnet-architecture.md.
 
 ---
 
@@ -113,14 +113,14 @@ The project goal is to build a production-quality pipeline for acquiring format 
 
 | Property | Value |
 |---|---|
-| Current phase | Phase 3: FODS Gates 1-10 ALL PASSED; Gate 11 planning_ready. FODT Gates 1-8 ALL PASSED; Gate 9 product-mapping planning_ready |
+| Current phase | Phase 3+: FODS Gates 1-10 ALL PASSED; Gate 11 commercial_readiness_in_progress (NOT APPROVED). FODT Gates 1-10 ALL PASSED; Gate 11 commercial_readiness_in_progress (NOT APPROVED). DEC-033 RESOLVED Option B. |
 | Phase 0 files created | Yes — 45/45 files (41 created run001; 3 added run008; 1 added run010: TC-0008) |
 | Phase 0 healing run | Completed (run002) — compliance gaps G-HEAL-001 to G-HEAL-004 resolved |
 | Phase 0 accepted | YES — 2026-05-04, run015 (all 36 checks passed; human-authorized acceptance) |
 | Phase 1 allowed | YES — Phase 0 accepted |
 | Phase 2 allowed | YES — Gate 1 passed (run017, Babar Raza, 2026-05-04) |
 | Phase 3 allowed | YES — Gate 2 passed (run023, Babar Raza, 2026-05-05); Gate 3 PASSED (run028, Babar Raza, 2026-05-05); Gate 4 PASSED (run033, Babar Raza, 2026-05-06); Gate 5 PASSED (run035, Babar Raza, 2026-05-06) |
-| Active formats in registry | fods (gates 1-10: passed; gate_11: not_started); fodt (gates 1-8: passed; gate_9: planning_ready) |
+| Active formats in registry | fods (gates 1-10: passed; gate_11: commercial_readiness_in_progress; commercial_product_ready: false); fodt (gates 1-10: passed; gate_11: commercial_readiness_in_progress; commercial_product_ready: false) |
 | Gate 1 status | **PASSED** — Babar Raza, 2026-05-04, score 93/100, run016 verified |
 | Gate 2 status | **PASSED** — Babar Raza, 2026-05-05, run023; patent search waived; evidence verified run022 (DEC-034) |
 | Gate 3 status | **PASSED** — Babar Raza, 2026-05-05, run028; DEC-034 satisfied run027; 4/4 PASS; SHA-256 verified |
@@ -138,13 +138,14 @@ The project goal is to build a production-quality pipeline for acquiring format 
 | Spec downloaded | YES — ODF 1.3 Part 3 PDF downloaded run021 (24.27 MB); SHA-256 independently re-verified run022: MATCH |
 | Samples acquired | YES — 4 synthetic FODS samples (Apache-2.0, project-owned), run026. Validated: 4/4 PASS |
 | Prototype created | YES — prototypes/by-format/fods/fods_parser.py (run029); 4/4 PASS; TC-0018 PASS |
-| Product source created | No |
-| Commits made | (see Section 33) — run046: f659307. |
-| Active taskcards | TC-0040 not_started (FODS Gate 9 product mapping); TC-0042 not_started (FODT Gate 6 oracle execution); TC-0043 not_started (FODT Gate 6 DEC-034) |
-| Closed/completed taskcards | TC-0018 CLOSED; TC-0024 CLOSED; TC-0023/TC-0025/TC-0026/TC-0027/TC-0032/TC-0033/TC-0034/TC-0035 COMPLETED; TC-0036 COMPLETED (FODS Gate 8 security); TC-0037 COMPLETED (FODT Gate 5 neutral model); TC-0038 COMPLETED (FODS Gate 8 DEC-034 20/20); TC-0039 COMPLETED (FODT Gate 5 DEC-034); TC-0041 COMPLETED (FODT Gate 6 oracle planning) |
+| Product source created | YES — Python FOSS: src/python/fods/ (run051, TC-0050 COMPLETED; 6 files, 19/20 IR-FODS); src/python/fodt/ (Gate 10 approved 2026-05-11, TC-0052 COMPLETED; 7 modules, 115/115 PASS). .NET Commercial: src/net/fods/ (C4-C6 vertical slice, NOT commercial product ready); src/net/fodt/ (C4-C6 vertical slice, NOT commercial product ready) |
+| AI requirements pipeline | OPERATIONAL — generated-requirements/{fods,fodt}/ (6 artifacts each); validator: tools/requirements/validate_generated_requirements.py; schemas: schemas/generated-requirements/; REQUIREMENTS_SCHEMA_VALIDATION: PASS; no AI_PROPOSAL accepted |
+| Commits made | (see Section 33) — last sprint: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001 (2026-05-13) |
+| Active taskcards | TC-0053 not_started (AI requirements pipeline governance); Gate 11 sub-gates G11-A through G11-G all NOT_STARTED/PROPOSED |
+| Closed/completed taskcards | TC-0018 through TC-0052 all CLOSED or COMPLETED; TC-0047 (FODS Gate 11 planning); TC-0049 (FODT Gate 10); TC-0050 (FODS Phase 4 Python); TC-0051 (FODS Phase 4 .NET skeleton); TC-0052 (FODT Phase 4 Python) |
 | Deferred taskcards | TC-0015 not_started (spec retrieval eval); TC-0016 not_started (vector index pilot); TC-0020 not_started (Spec Workbench core) |
-| Last evidence bundle | run048: BUNDLE_VALIDATION PASS (run048-combined-sprint.zip; 448 entries); run049 bundle: built at sprint end |
-| Next required action | (1) FODS Gate 11: DEC-033 resolution + explicit TC-0047 prompt. (2) FODT Gate 9: explicit TC-0048 prompt. (3) FUL-001 schema approval + FUL-002/003 compilation (run049). |
+| Last evidence bundle | COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001: BUNDLE_VALIDATION PASS (761 entries, 1,681,456 bytes, 39 metadata). Current sprint bundle: FF-CURRENT-STATE-AND-AI-REQUIREMENTS-ALIGNMENT-20260513 (see final output). |
+| Next required action | Gate 11 sub-gate G11-A human approval required before implementation continues. commercial_product_ready: false. AI requirements pipeline operational — no new generation needed until .NET source expands beyond C4-C6 vertical slice. |
 
 ---
 

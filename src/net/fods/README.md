@@ -1,13 +1,14 @@
-# FormatFactory.Fods — .NET Commercial Parser (Tier 0)
+# FormatFactory.Fods — .NET Commercial (C4-C6 Vertical Slice)
 
-## Status: Gate 11 Tier 0 — NOT Release-Ready
+## Status: Gate 11 commercial_readiness_in_progress — NOT Release-Ready
 
-This is a **commercial-only** .NET Tier 0 implementation for the FODS (Flat OpenDocument
-Spreadsheet) parser. Skeleton created 2026-05-12; Tier 0 streaming parser implemented
-2026-05-13 during GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001.
+This is a **commercial-only** .NET implementation for the FODS (Flat OpenDocument
+Spreadsheet) format. Skeleton created 2026-05-12; C4-C6 load/edit/save vertical slice
+implemented 2026-05-13 during COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001.
 
-**Gate 11 has NOT been approved.** Full production hardening is required before Gate 11
-can be approved and this package can be released.
+**Gate 11 has NOT been approved.** `commercial_product_ready: false`.
+Full C7+ capability + human approval required before Gate 11 can be approved and
+this package can be released.
 
 ## Scope
 
@@ -25,27 +26,31 @@ Per DEC-033 resolution (Babar Raza, 2026-05-12), this project is **commercial-on
 - The FOSS track is Python: `src/python/fods/` (Apache-2.0, `format-factory-fods`)
 - Developers needing a free parser use the Python package
 
-## Current Implementation
+## Current Implementation (C4-C6 Vertical Slice)
 
-Tier 0 streaming parser (GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001, 2026-05-13):
-
+### Tier 0 streaming parser (FodsParser.cs — baseline, retained)
 - `FodsParser.cs`: `Parse()` returns `FodsParseResult` with sheets, metadata, errors/warnings
-- `FodsParser.GetSheetNames()`: convenience wrapper; throws `FodsParseException` on failure
+- `FodsParser.GetSheetNames()`: convenience wrapper
 - Security: `DtdProcessing.Prohibit`, `XmlResolver = null`, 50 MB size guard
-- Streaming XmlReader: no DOM allocation
-- Extracts: `office:document` mimetype/version, `office:meta` (title, creator, subject,
-  initial-creator), `table:table` sheet list with row and cell counts
-- xUnit test suite: `tests/net/fods/` — 12/12 PASS (null path, file-not-found, size guard,
-  empty file, malformed XML, DTD rejection, minimal FODS, multi-sheet, GetSheetNames,
-  GetSheetNames exception, real sample integration)
+- Streaming XmlReader; no DOM allocation
+
+### C4-C6 DOM implementation (FodsDocument.cs — vertical slice)
+- `FodsDocument.cs`: `Load(path)` → DOM-backed `FodsDocument`; `Save(path)` round-trip
+- `FodsWriter.cs`: DOM serialization (UTF-8, preserves opaque nodes)
+- `Model/FodsSheet.cs`: `Name` getter/setter, `Rows` collection
+- `Model/FodsRow.cs`: `Cells` collection
+- `Model/FodsCell.cs`: `Value` (display text), `SetText()` editor, `IsCovered`
+- Security: DTD prohibited, XmlResolver=null, 50 MB size guard
+- xUnit test suite: `tests/net/fods/` — 42/42 PASS (Tier 0 tests + DOM load/edit/save/roundtrip)
 
 ## What Remains for Gate 11
 
-1. Tier 1-2 features per `acquisition-packs/fods/tier-map.yaml`
-2. Full production hardening and error recovery
-3. NuGet packaging configuration
-4. DEC-034 independent verification
-5. Explicit Gate 11 human approval
+1. Broader entity coverage (styles, formulas, typed values) beyond Sheets/Rows/Cells
+2. C9 export/conversion (PDF, HTML, PNG) — future roadmap
+3. Full production hardening, error recovery, and edge-case coverage
+4. NuGet packaging configuration
+5. DEC-034 independent verification
+6. Explicit Gate 11 human approval (G11-A through G11-G sub-gates)
 
 ## Commercial Licensing
 

@@ -538,9 +538,22 @@ and `docs/ai-usage-operating-model.md`.
 `generated-requirements/{format}/` must be schema-validated, verifier-reviewed, and have at least
 one requirement marked `ACCEPTED_FOR_VERTICAL_SLICE` before any commercial implementation sprint
 begins for that format. Collapsing requirements generation, validation, and acceptance into a
-single unreviewed step is a governance violation. See AGENTS.md §AF13.
+single unreviewed step is a governance violation. Generated requirements become authoritative only
+after verifier review (verifier-review.yaml LANE_R5_PASS) AND DEC-034 independent verification by
+a separate session. Stale requirements (input sources changed since generation) must be regenerated
+before use. Pipeline design: `docs/ai-generated-format-requirements-pipeline.md`. Governance
+contract: `taskcards/TC-0053-ai-requirements-pipeline-governance.md`. See AGENTS.md §AF13.
 
 **26.12. Local Repo Authority Over External Memory.** Local repo files are the authoritative source
 of truth. External AI memory (ChatGPT, conversation summaries) is supplementary and may be stale.
 When local files contradict external memory, local repo wins. New sessions must read authority
 files before acting. Entry point: `docs/fresh-chat-project-bootstrap.md`. See AGENTS.md §AF14.
+
+**26.13. Supervision Methodology and Execution Standards.** Future agents and chat sessions must
+follow the project supervision methodology documented in `docs/assistant-supervision-methodology.md`
+and `docs/project-execution-standards.md`. This methodology governs: evidence inspection before
+claim acceptance, challenge of agent outputs, ready-to-send prompt generation, controlled swarm
+execution, AI governance, generated-requirements discipline, gate readiness language, and local
+memory continuity. The compact memory reference is `memory/25-assistant-supervision-methodology-20260513.md`.
+When reviewing a sprint or advising on next steps, agents must produce a complete ready-to-send
+prompt. Vague guidance is not acceptable. See AGENTS.md §AF15 for the prompt standard.

@@ -1,0 +1,193 @@
+---
+document_type: methodology
+title: Assistant Supervision Methodology (Machine-Readable)
+version: "1.0"
+created_at: "2026-05-13"
+sprint: CHATGPT-MEMORY-LOCAL-SYNC-20260513-ADDENDUM
+visibility: internal
+publish_allowed: false
+authority: methodology
+
+reference_doc: docs/assistant-supervision-methodology.md
+
+core_principles:
+  - evidence_before_acceptance
+  - source_before_summary
+  - tests_before_claims
+  - gates_before_release
+  - taskcards_before_drift
+  - local_memory_before_assumptions
+  - repeatability_before_one_off_fixes
+  - controlled_swarm_before_uncontrolled_parallelism
+  - ai_acceleration_before_manual_bottlenecks
+  - validation_before_authority
+  - clear_next_prompt_before_vague_advice
+
+evidence_first_review:
+  required_inspections:
+    - evidence_bundle_direct
+    - evidence_contract
+    - bundle_metadata
+    - final_bundle_validation_proof
+    - git_status_final
+    - no_scope_drift_report
+    - referenced_source_files
+    - claim_vs_artifact_comparison
+  on_missing_evidence: state_missing_and_provide_iv_prompt
+  never_do: accept_from_final_response_text_alone
+
+challenge_agent_claims:
+  claims_to_challenge:
+    - PASS
+    - complete
+    - ready
+    - commercial_ready
+    - gate_passed
+    - tests_passed
+    - no_scope_drift
+    - ai_verified
+    - requirement_accepted
+  check_against:
+    - registry/format-registry.yaml
+    - plans/master-plan.md
+    - actual_source_files
+    - test_output
+    - evidence_contracts
+    - taskcards
+
+prompt_generation:
+  required_fields:
+    - mode_label
+    - sprint_id
+    - repo_path
+    - current_accepted_state
+    - scope
+    - non_goals
+    - lane_definitions
+    - safety_rules
+    - allowed_files
+    - prohibited_files
+    - validation_commands
+    - evidence_contract_requirements
+    - final_response_format
+    - exact_next_step
+  modes:
+    - PLAN_MODE
+    - EXECUTION_MODE
+    - INDEPENDENT_VERIFICATION_MODE
+    - REPAIR_MODE
+  never_do: provide_vague_guidance_instead_of_full_prompt
+
+controlled_swarm:
+  required_components:
+    - sprint_id
+    - coordinator_lane
+    - per_lane_ownership
+    - shared_file_control
+    - dirty_state_preflight
+    - overlap_check
+    - lane_local_evidence
+    - final_integration
+    - cross_lane_validation
+    - single_evidence_bundle
+
+safety_prohibitions:
+  git:
+    - git stash
+    - git reset
+    - git reset --hard
+    - git restore
+    - "git checkout -- ."
+    - git clean
+    - git add .
+    - git add -A
+    - git push (without explicit authorization)
+  sprint:
+    - gate self-approval
+    - broad destructive file operations
+    - package publish without authorization
+    - secrets printed or persisted
+    - raw LLM transcripts committed
+    - embeddings committed
+    - DEC-033 violation
+
+gate_readiness_terms:
+  prototype: internal_only_design_reference
+  tier_0: capability_c2_metadata_count_extraction
+  vertical_slice: architecture_demo_limited_entity_coverage
+  partial_implementation: some_entities_not_all_commercial_required
+  release_readiness: all_gate11_subgates_c7_plus_evidence_human_approval
+  commercial_readiness: synonym_for_release_readiness_at_commercial_level
+  human_approval: must_name_approver_and_date_cannot_delegate_to_ai
+
+ai_usage:
+  authorized_uses:
+    - retrieval
+    - requirements_generation
+    - code_drafting
+    - test_generation
+    - gap_analysis
+    - adversarial_review
+    - evidence_summarization
+    - skill_generation
+    - orchestration
+  prohibited_uses:
+    - gate_approval
+    - inventing_spec_facts
+    - claiming_commercial_readiness_without_evidence
+    - bypassing_tests
+    - hiding_uncertainty
+  output_lifecycle:
+    - validate_schema_if_structured
+    - run_tests_if_code
+    - verifier_review_if_requirements
+    - accept_or_reject_explicitly
+    - log_if_repo_changing
+    - cite_source_where_applicable
+
+review_output_required:
+  - normalized_verdict
+  - accepted_facts
+  - rejected_or_unverified_claims
+  - gaps
+  - risks
+  - what_not_to_do_next
+  - what_to_do_next
+  - ready_to_send_prompt
+
+memory_sync_triggers:
+  - product_direction_changes
+  - ai_policy_changes
+  - gate_interpretation_changes
+  - workflow_methodology_changes
+  - requirements_model_changes
+  - safety_governance_changes
+  - major_sprint_result_accepted
+
+communication_style:
+  be_direct: true
+  be_honest: true
+  challenge_weak_work: true
+  no_flattery_of_agent_outputs: true
+  no_overstatement: true
+  explain_implications: true
+  give_clear_verdicts: true
+  provide_ready_to_send_prompts: true
+  no_unnecessary_questions_when_evidence_available: true
+  if_unsure_inspect_or_provide_iv_prompt: true
+
+anti_patterns:
+  - accepting_final_response_without_bundle_inspection
+  - calling_thin_parsers_commercial_ready
+  - approving_gate_before_criteria_met
+  - static_manual_requirements_instead_of_system_generated
+  - using_ai_output_as_truth
+  - vague_prompts
+  - micro_sprinting_every_small_note
+  - skipping_evidence_contracts
+  - broad_staging_in_git
+  - hiding_unresolved_gaps
+  - no_local_memory_for_future_agents
+  - claiming_iv_without_separate_session
+  - updating_gate_status_without_evidence
+  - mixing_stream_ownership_in_one_commit

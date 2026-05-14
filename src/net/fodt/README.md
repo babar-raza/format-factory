@@ -1,13 +1,14 @@
-# FormatFactory.Fodt — .NET Commercial Parser (Tier 0)
+# FormatFactory.Fodt — .NET Commercial (C4-C6 Vertical Slice)
 
-## Status: Gate 11 Tier 0 — NOT Release-Ready
+## Status: Gate 11 commercial_readiness_in_progress — NOT Release-Ready
 
-This is a **commercial-only** .NET Tier 0 implementation for the FODT (Flat OpenDocument
-Text) parser. Skeleton created 2026-05-12; Tier 0 streaming parser implemented
-2026-05-13 during GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001.
+This is a **commercial-only** .NET implementation for the FODT (Flat OpenDocument
+Text) format. Skeleton created 2026-05-12; C4-C6 load/edit/save vertical slice
+implemented 2026-05-13 during COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001.
 
-**Gate 11 has NOT been approved.** Full production hardening is required before Gate 11
-can be approved and this package can be released.
+**Gate 11 has NOT been approved.** `commercial_product_ready: false`.
+Full C7+ capability + human approval required before Gate 11 can be approved and
+this package can be released.
 
 ## Scope
 
@@ -25,29 +26,31 @@ Per DEC-033 resolution (Babar Raza, 2026-05-12), this project is **commercial-on
 - The FOSS track is Python: `src/python/fodt/` (Apache-2.0, `format-factory-fodt`)
 - Developers needing a free parser use the Python package
 
-## Current Implementation
+## Current Implementation (C4-C6 Vertical Slice)
 
-Tier 0 streaming parser (GATE11-TIER0-COMMERCIAL-AND-ACCEL003-REPAIR-SWARM-001, 2026-05-13):
-
+### Tier 0 streaming parser (FodtParser.cs — baseline, retained)
 - `FodtParser.cs`: `Parse()` returns `FodtParseResult` with paragraph/heading/list counts,
   tables, metadata, errors/warnings
-- `FodtParser.GetParagraphCount()`: convenience wrapper; throws `FodtParseException` on failure
+- `FodtParser.GetParagraphCount()`: convenience wrapper
 - Security: `DtdProcessing.Prohibit`, `XmlResolver = null`, 50 MB size guard
-- Streaming XmlReader: no DOM allocation
-- Extracts: `office:document` mimetype/version, `office:meta` (title, creator, subject,
-  initial-creator), `text:p`/`text:h` paragraph/heading counts, `text:list` counts,
-  `table:table` list with row and cell counts
-- xUnit test suite: `tests/net/fodt/` — 13/13 PASS (null path, file-not-found, size guard,
-  empty file, malformed XML, DTD rejection, paragraph counting, list counting, table
-  extraction, GetParagraphCount, GetParagraphCount exception, real sample integration)
+- Streaming XmlReader; no DOM allocation
+
+### C4-C6 DOM implementation (FodtDocument.cs — vertical slice)
+- `FodtDocument.cs`: `Load(path)` → DOM-backed `FodtDocument`; `Save(path)` round-trip
+- `FodtWriter.cs`: DOM serialization (UTF-8, preserves opaque nodes)
+- `Model/FodtBody.cs`: body container wrapping `office:body/office:text`
+- `Model/FodtParagraph.cs`: `Text` getter, `SetText()` editor, `OutlineLevel`, `IsParagraph`/`IsHeading`
+- Security: DTD prohibited, XmlResolver=null, 50 MB size guard
+- xUnit test suite: `tests/net/fodt/` — 43/43 PASS (Tier 0 tests + DOM load/edit/save/roundtrip)
 
 ## What Remains for Gate 11
 
-1. Tier 1-2 features per `acquisition-packs/fodt/tier-map.yaml`
-2. Full production hardening and error recovery
-3. NuGet packaging configuration
-4. DEC-034 independent verification
-5. Explicit Gate 11 human approval
+1. Broader entity coverage (styles, lists, tables) beyond Body/Paragraphs
+2. C9 export/conversion (PDF, HTML, PNG) — future roadmap
+3. Full production hardening, error recovery, and edge-case coverage
+4. NuGet packaging configuration
+5. DEC-034 independent verification
+6. Explicit Gate 11 human approval (G11-A through G11-G sub-gates)
 
 ## Commercial Licensing
 
