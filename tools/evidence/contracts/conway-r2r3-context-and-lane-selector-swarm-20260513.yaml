@@ -1,0 +1,53 @@
+# Evidence Contract: CONWAY-R2R3-CONTEXT-AND-LANE-SELECTOR-SWARM-001
+# Sprint: Conway R2+R3 Context Resolution and Lane Selector Swarm
+# Date: 2026-05-13
+# Status: BLOCKER BUNDLE — git working tree has uncommitted changes from multiple sprints
+#         All changes are staged-pending-human-authorization-to-commit.
+
+inherit: base-run
+contract_id: conway-r2r3-context-and-lane-selector-swarm-20260513
+version: "1.0"
+description: >
+  Evidence contract for CONWAY-R2R3-CONTEXT-AND-LANE-SELECTOR-SWARM-001.
+  Covers Lane A (R2 authority state completion — registry iv_status),
+  Lane B (context resolver tests), Lane C (lane selector + tests),
+  Lane D (lane library consistency review), Lane E (bundle size review),
+  Lane F (R4 readiness decision).
+
+# Dirty git: multiple uncommitted sprints awaiting human commit authorization
+require_clean_git: false
+emergency_blocker_bundle: true
+
+min_metadata_count: 5
+
+required_repo_files:
+  - registry/format-registry.yaml
+  - tools/skills/format_context_resolver.py
+  - tools/skills/lane_selector.py
+  - tests/skills/test_format_context_resolver.py
+  - tests/skills/test_lane_selector.py
+  - reports/planning/r2-authority-state-completion-20260513.md
+  - reports/planning/lane-library-consistency-review-20260513.md
+  - reports/planning/evidence-bundle-size-containment-20260513.md
+  - reports/planning/r4-readiness-decision-20260513.md
+  - templates/commercial-sprint/lane-library.yaml
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+
+# Sprint verdicts
+sprint_verdicts:
+  R2_AUTHORITY_STATE: FULLY_RESOLVED
+  FODS_REQUIREMENTS_STATE: REQUIREMENTS_AUTHORITATIVE
+  FODT_REQUIREMENTS_STATE: REQUIREMENTS_AUTHORITATIVE
+  CONTEXT_RESOLVER_TEST_SUITE: "26/26 PASS"
+  LANE_SELECTOR_STATUS: COMPLETE
+  LANE_SELECTOR_TEST_SUITE: "24/24 PASS"
+  TOTAL_TEST_COUNT: "82/82 PASS (32 requirements + 50 skills)"
+  LANE_LIBRARY_CONSISTENCY: CONSISTENT
+  BUNDLE_SIZE_ROOT_CAUSE: IDENTIFIED
+  R3_READINESS_GAPS_RESOLVED: "4/4"
+  R4_READINESS: READY_WITH_CONDITIONS
+  AUTONOMOUS_ROLLOUT_STATUS: NOT_READY
