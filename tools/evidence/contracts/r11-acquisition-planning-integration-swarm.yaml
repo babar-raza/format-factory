@@ -1,0 +1,126 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R11-ACQUISITION-PLANNING-INTEGRATION-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: false
+dirty_git_reason: ""
+min_metadata_count: 45
+required_repo_files:
+  # R10 tools (already committed — consumed by R11 runtime)
+  - tools/skills/acquisition_lifecycle_simulator.py
+  - tools/skills/candidate_format_backlog.py
+  - tools/skills/public_spec_readiness_scorer.py
+  - tools/skills/multi_format_acquisition_planner.py
+  - tools/skills/implementation_simulation_v2.py
+  # R11 primary deliverables
+  - tools/skills/acquisition_planning_runtime.py
+  - tests/skills/test_acquisition_planning_runtime.py
+  # R11 reports
+  - reports/architecture/r11-r10-tool-api-inventory-20260514.md
+  - reports/architecture/r11-planning-runtime-contract-20260514.md
+  - reports/implementation/r11-acquisition-planning-runtime-20260514.md
+  - reports/planning/r11-candidate-ranking-20260514.md
+  - reports/planning/r11-first-candidate-acquisition-plan-20260514.md
+  - reports/testing/r11-integration-test-report-20260514.md
+  - reports/governance/r11-adversarial-review-20260514.md
+  - reports/planning/r12-recommendation-20260514.md
+  - reports/planning/r11-readiness-decision-20260514.md
+  - reports/verification/r10-evidence-contract-hardening-20260514.md
+  - reports/verification/r10-closure-normalization-for-r11-20260514.md
+  # Memory
+  - memory/28-r11-acquisition-planning-integration-20260514.md
+  # This contract
+  - tools/evidence/contracts/r11-acquisition-planning-integration-swarm.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - phase0-coordinator-preflight.md
+  - lane-ownership-matrix.md
+  - lane-a-r10-r11-status-normalization.md
+  - lane-b-r10-tool-api-inventory.md
+  - lane-c-planning-runtime.md
+  - lane-d-first-candidate-plan.md
+  - lane-e-integration-tests.md
+  - lane-f-adversarial-review.md
+  - lane-g-r12-recommendation.md
+  - lane-h-memory-governance-sync.md
+  - phase2-coordinator-integration.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - r11-runtime-test-report.md
+  - r11-targeted-suite-report.md
+  - r11-full-suite-or-scope-policy-report.md
+  - validation-command-log.txt
+  - no-scope-drift-report.md
+  - r11-authorization-record.md
+  - r11-runtime-design-decisions.md
+  - r11-test-design-rationale.md
+  - r11-first-candidate-justification.md
+  - r11-governance-invariants-checklist.md
+  - r11-r10-tool-integration-verification.md
+  - r11-tier-a-scoring-summary.md
+  - r11-prohibited-operations-log.md
+  - r11-cross-tool-data-flow.md
+  - r11-lane-a-normalization-evidence.md
+  - r11-r10-contract-authority-confirmation.md
+  - r11-backlog-classification-snapshot.md
+  - r11-multi-format-plan-snapshot.md
+  - r11-zst-lifecycle-simulation-snapshot.md
+  - r11-planning-bundle-output-snapshot.md
+  - r11-bundle-pre-validation-checklist.md
+  - r11-tier-b-candidates-snapshot.md
+  - r11-runtime-api-contract-validation.md
+  - r11-evidence-requirements-checklist.md
+  - r11-lane-deliverables-matrix.md
+  - r11-integration-readiness-check.md
+  - r11-sprint-gate-status.md
+  - r11-runtime-governance-validation.md
+  - phase5-evidence-contract-preflight.md
+  - r11-determinism-validation.md
+sprint_verdicts:
+  # 1. sprint_id_matches
+  sprint_id: FORMAT-FACTORY-R11-ACQUISITION-PLANNING-INTEGRATION-SWARM-001
+  # 2. dry_run_enforced
+  dry_run_enforced: true
+  # 3. simulation_only_enforced
+  simulation_only_enforced: true
+  # 4. commercial_product_ready_false
+  commercial_product_ready_false: true
+  # 5. autonomous_execution_allowed_false
+  autonomous_execution_allowed_false: true
+  # 6. gate_self_approval_not_allowed
+  gate_self_approval_not_allowed: true
+  # 7. no_internet_access
+  no_internet_access: true
+  # 8. no_source_mutation
+  no_source_mutation: true
+  # 9. first_candidate_zst
+  first_candidate_zst: true
+  # 10. first_candidate_score_8_95
+  first_candidate_score: "8.95"
+  # 11. tier_a_near_term_resolved
+  tier_a_near_term_resolved: true
+  # 12. all_lanes_complete
+  all_lanes_complete: true
+  # 13. runtime_tests_pass
+  runtime_tests_count: "80 PASS"
+  # 14. full_suite_tests_pass
+  full_suite_tests_count: "914 PASS"
+  # 15. r10_tools_all_imported
+  r10_tools_all_imported: true
+  # 16. governance_immutable
+  governance_immutable: true
+  # 17. lane_a_normalization_complete
+  lane_a_normalization_complete: true
+  # 18. r12_recommendation_present
+  r12_recommendation_sprint: FORMAT-FACTORY-R12-ACQUISITION-PLAN-IV-SWARM-001
+  # 19. adversarial_review_complete
+  adversarial_review_attacks_blocked: "14 of 14"
+  # 20. no_scope_drift
+  SCOPE_DRIFT: NONE
+  # 21. overall
+  R11_STATUS: R11_ACQUISITION_PLANNING_INTEGRATION_COMPLETE
+  COMMERCIAL_PRODUCT_READY: false
+  GATE_11_APPROVED: false
+  AUTONOMOUS_ROLLOUT_STATUS: NOT_AUTHORIZED

@@ -37,3 +37,25 @@
 ## Lane E Verdict
 
 **LANE_E_PASS_CONTRACT_HARDENED**
+
+## NORMALIZATION ADDENDUM — R11 Sprint (2026-05-14)
+
+> Added by FORMAT-FACTORY-R11-ACQUISITION-PLANNING-INTEGRATION-SWARM-001.
+
+### Stale Value Note
+
+The table in this report shows `min_metadata_count` hardened to **45**.
+This was an aspirational intermediate value set during Lane E of the closure sprint.
+The value was subsequently corrected in two follow-up commits:
+- `35cbf4e` — set realistic min_metadata_count (lower than 45)
+- `7ae88e4` — raised to **30** to match project floor (RUN_CONTRACT_METADATA_FLOOR=30)
+
+**Authoritative final value: `min_metadata_count: 30`**
+This is verified in the current contract file:
+`tools/evidence/contracts/r10-closure-hardening-and-r11-readiness-repair-swarm.yaml`
+
+This report is archival evidence of the sprint process. The stale value 45 in the table
+reflects the intermediate contract state and is NOT edited deceptively. This addendum
+documents the correction for traceability.
+
+*Normalization authority: FORMAT-FACTORY-R11-ACQUISITION-PLANNING-INTEGRATION-SWARM-001*

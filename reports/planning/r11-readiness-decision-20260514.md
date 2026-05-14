@@ -2,7 +2,7 @@
 **Date:** 2026-05-14
 **Sprint:** FORMAT-FACTORY-R10-ACQUISITION-ENGINE-POC-SWARM-001
 **Lane:** I — Coordinator + R11 Readiness Decision
-**Status:** READY_WITH_LIMITATIONS
+**Status:** R11_READY_FOR_HUMAN_AUTHORIZATION *(normalized by R11 sprint; see Normalization Addendum below)*
 **Authority:** AGENTS.md AF9-AF15 | GOVERNANCE.md 26.8-26.13
 
 ---
@@ -207,7 +207,7 @@ R10 evidence bundle (when built) will establish the baseline for:
 **AUTONOMOUS_ROLLOUT_STATUS: NOT_AUTHORIZED**
 **COMMERCIAL_PRODUCT_READY: false**
 **GATE_11_APPROVED: false**
-**R11_READINESS: READY_WITH_LIMITATIONS**
+**R11_READINESS: R11_READY_FOR_HUMAN_AUTHORIZATION** *(normalized — see Normalization Addendum)*
 **R10_TEST_SUITE: 834 PASS, 0 failures**
 
 ---
@@ -239,3 +239,36 @@ Recommended R11 scope: governed acquisition-planning integration sprint consumin
 *This document is a SIMULATION POC artifact. All assessments are estimates.*
 *Authority: FORMAT-FACTORY-R10-ACQUISITION-ENGINE-POC-SWARM-001 | CONWAY-R10-COORDINATOR-LANE-I*
 *Addendum authority: FORMAT-FACTORY-R10-CLOSURE-HARDENING-AND-R11-READINESS-REPAIR-SWARM-001*
+
+## NORMALIZATION ADDENDUM — R11 Sprint (2026-05-14)
+
+> Added by FORMAT-FACTORY-R11-ACQUISITION-PLANNING-INTEGRATION-SWARM-001.
+> Authorization: Babar Raza (2026-05-14).
+
+### Status Normalization
+
+The top-level `Status` field and `R11_READINESS` field in the Sprint Conclusion section
+have been updated from `READY_WITH_LIMITATIONS` to `R11_READY_FOR_HUMAN_AUTHORIZATION`.
+
+**Rationale:** The R10 Closure Hardening sprint (FORMAT-FACTORY-R10-CLOSURE-HARDENING-AND-R11-READINESS-REPAIR-SWARM-001)
+resolved all closure gaps and confirmed all readiness criteria as MET. The closure
+hardening sprint's own addendum already stated all criteria are met and R11 is ready
+for human authorization. The original `READY_WITH_LIMITATIONS` was the mid-sprint
+POC status text that was not updated when the closure sprint confirmed full readiness.
+
+### R11 Authorization Confirmed
+
+R11 has been explicitly authorized by Babar Raza in the current session (2026-05-14).
+Sprint FORMAT-FACTORY-R11-ACQUISITION-PLANNING-INTEGRATION-SWARM-001 is now in progress.
+
+### Historical Metadata Note
+
+Prior R10 closure metadata files may contain references to `min_metadata_count=45`
+(from an intermediate contract version). The final hardened contract uses
+`min_metadata_count: 30` (the project absolute floor, RUN_CONTRACT_METADATA_FLOOR=30).
+Those historical metadata files are archival evidence of the sprint process and are NOT
+edited — only the live repo reports are normalized.
+
+---
+
+*Normalization authority: FORMAT-FACTORY-R11-ACQUISITION-PLANNING-INTEGRATION-SWARM-001*
