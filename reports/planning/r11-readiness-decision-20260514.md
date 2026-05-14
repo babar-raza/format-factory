@@ -94,9 +94,14 @@
 
 ### Criterion 8: Test Suite Passing
 **Requirement:** All existing tests continue to pass; new R10 tests pass.
-**Evidence:** Background pytest run initiated (task b8witra1g). Prior baseline: 502 PASS (R9 cumulative).
-**R10 new tests:** ~225 tests across 5 new test files.
-**Status: VERIFICATION_IN_PROGRESS** ⚠ — Full suite run result pending.
+**Evidence (confirmed):**
+- Task `bj2ioqocn` (R9 baseline, pre-R10): **502 PASS, 0 failures**
+- Task `b8witra1g` (post-R10, Lane E fix applied): **652 PASS, 0 failures**
+- Task `bkxp1oiht` (full `tests/skills/` run, definitive): **834 PASS, 0 failures, 41 warnings**
+- R10 new tests: 150 additional tests across 5 new test files
+- All warnings are pre-existing `datetime.utcnow()` deprecation notices unrelated to R10
+
+**Status: MET** ✓ — Full suite confirmed 834 PASS, 0 failures.
 
 ---
 
@@ -128,11 +133,11 @@ R10 has successfully demonstrated all acquisition-engine POC capabilities:
 - 6-graph simulation outputs per format
 - Adversarial review with 12/12 attacks blocked
 
-The single limitation is that full pytest suite confirmation is pending (task b8witra1g in progress). Based on code review, all new modules and tests are structurally correct and consistent with the existing patterns.
+Full test suite confirmed: **834 PASS, 0 failures** (task bkxp1oiht — full `tests/skills/` run).
 
 ### Limitations
 
-1. **Test suite confirmation pending** — Full pytest run result not yet retrieved. If failures occur, they must be resolved before R11 sprint begins.
+1. **R10 closure hardening required** — R10 deliverables were not committed to git in the POC sprint. This was resolved by FORMAT-FACTORY-R10-CLOSURE-HARDENING-AND-R11-READINESS-REPAIR-SWARM-001 (commit a3ae426). A hardened evidence contract is being produced in that sprint.
 2. **R11 not yet authorized** — This readiness assessment does not authorize R11 sprint execution. Human review of R10 deliverables is required first.
 3. **Candidate format audits not yet started** — hwp/hwpx/hwt/alz/egg remain at CANDIDATE with `needs_audit` status. R11 may address the first audit(s).
 
@@ -187,21 +192,50 @@ R10 evidence bundle (when built) will establish the baseline for:
 > **ACTION REQUIRED:** Human review of R10 deliverables before R11 sprint authorization.
 >
 > Specifically:
-> 1. Review this R11 readiness decision
+> 1. Review this R11 readiness decision (including addendum at end)
 > 2. Review `reports/governance/r10-adversarial-review-20260514.md`
-> 3. Review `reports/planning/weekly-report-poc-summary-20260514.md`
-> 4. Confirm pytest suite is passing (retrieve task b8witra1g or run fresh)
-> 5. Explicitly authorize R11 sprint in a new session with ready-to-send prompt
+> 3. Review `reports/planning/weekly-report-poc-summary-20260514.md` (including addendum)
+> 4. ~~Confirm pytest suite is passing~~ — **CONFIRMED: 834 PASS, 0 failures**
+> 5. Review `reports/verification/r10-closure-independent-review-20260514.md`
+> 6. Explicitly authorize R11 sprint in a new session with ready-to-send prompt
 
 ---
 
 ## R10 Sprint Conclusion
 
-**R10_COMPLETE: true** (pending test suite confirmation)
+**R10_COMPLETE: true**
 **AUTONOMOUS_ROLLOUT_STATUS: NOT_AUTHORIZED**
 **COMMERCIAL_PRODUCT_READY: false**
 **GATE_11_APPROVED: false**
 **R11_READINESS: READY_WITH_LIMITATIONS**
+**R10_TEST_SUITE: 834 PASS, 0 failures**
+
+---
+
+## ADDENDUM — R10 Closure Hardening (2026-05-14)
+
+> Added by FORMAT-FACTORY-R10-CLOSURE-HARDENING-AND-R11-READINESS-REPAIR-SWARM-001.
+
+### Closure Repairs Confirmed
+
+| Item | Status |
+|------|--------|
+| R10 deliverables committed to git | commit **a3ae426** (16 files) |
+| Test suite criterion 8 | **834 PASS, 0 failures** (full `tests/skills/`) |
+| Weekly report contradictions | REPAIRED (addendum added) |
+| Evidence contract hardened | `r10-closure-hardening-and-r11-readiness-repair-swarm.yaml` (min_metadata_count=45) |
+| Independent closure review | LANE_A_PASS_WITH_CLOSURE_GAPS → all gaps resolved |
+
+### Corrected R11 Readiness Status
+
+All 9 readiness criteria are now **MET**. No VERIFICATION_IN_PROGRESS items remain.
+
+**R11 remains NOT AUTHORIZED** — requires explicit human authorization in a new session.
+
+Recommended R11 scope: governed acquisition-planning integration sprint consuming R10 tools to produce an auditable first-candidate acquisition plan. No source mutation, no gate approval.
+
+---
 
 *This document is a SIMULATION POC artifact. All assessments are estimates.*
 *Authority: FORMAT-FACTORY-R10-ACQUISITION-ENGINE-POC-SWARM-001 | CONWAY-R10-COORDINATOR-LANE-I*
+*Addendum authority: FORMAT-FACTORY-R10-CLOSURE-HARDENING-AND-R11-READINESS-REPAIR-SWARM-001*

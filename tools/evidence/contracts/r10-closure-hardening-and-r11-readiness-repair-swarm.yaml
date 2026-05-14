@@ -1,0 +1,80 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R10-CLOSURE-HARDENING-AND-R11-READINESS-REPAIR-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: false
+dirty_git_reason: ""
+min_metadata_count: 45
+required_repo_files:
+  # R10 POC deliverables (now committed via a3ae426)
+  - tools/skills/acquisition_lifecycle_simulator.py
+  - tools/skills/candidate_format_backlog.py
+  - tools/skills/public_spec_readiness_scorer.py
+  - tools/skills/multi_format_acquisition_planner.py
+  - tools/skills/implementation_simulation_v2.py
+  - tests/skills/test_acquisition_lifecycle_simulator.py
+  - tests/skills/test_candidate_format_backlog.py
+  - tests/skills/test_public_spec_readiness_scorer.py
+  - tests/skills/test_multi_format_acquisition_planner.py
+  - tests/skills/test_implementation_simulation_v2.py
+  - reports/verification/r9-independent-verification-20260514.md
+  - reports/governance/r10-adversarial-review-20260514.md
+  - reports/planning/weekly-report-poc-summary-20260514.md
+  - reports/planning/r11-readiness-decision-20260514.md
+  - tools/evidence/contracts/format-factory-r10-acquisition-engine-poc-swarm-20260514.yaml
+  # R10 closure hardening deliverables (this sprint)
+  - reports/verification/r10-closure-independent-review-20260514.md
+  - reports/testing/r10-test-verification-20260514.md
+  - reports/governance/r10-closure-memory-sync-20260514.md
+  - memory/27-r10-acquisition-engine-poc-and-r11-readiness-20260514.md
+  - tools/evidence/contracts/r10-closure-hardening-and-r11-readiness-repair-swarm.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - metadata-identity-report.md
+  - phase0-coordinator-preflight.md
+  - lane-ownership-matrix.md
+  - lane-a-r10-evidence-review.md
+  - lane-b-r10-staging-commit-hygiene.md
+  - lane-c-report-contradiction-repair.md
+  - lane-d-test-verification.md
+  - lane-e-evidence-contract-hardening.md
+  - lane-f-r11-readiness-redecision.md
+  - lane-g-memory-governance-sync.md
+  - phase2-coordinator-integration.md
+  - no-scope-drift-report.md
+  - validation-command-log.txt
+sprint_verdicts:
+  # Prior bundle review
+  r10_prior_bundle_validated: true
+  r10_contract_weakness_classified: true
+  # Commit hygiene
+  r10_deliverables_committed_or_blocked_with_reason: true
+  r10_commit_hash: a3ae426
+  # Report repair
+  r10_weekly_report_contradiction_repaired: true
+  # Test verification
+  r10_test_verification_resolved: true
+  r10_targeted_r9r10_result: "561 PASS"
+  r10_lane_e_result: "74 PASS"
+  r10_full_suite_result: "834 PASS"
+  # R11 readiness
+  r11_ready_with_limitations_not_authorized: true
+  R11_READINESS: READY_WITH_LIMITATIONS
+  # Governance invariants
+  commercial_product_ready_false: true
+  gate11_not_approved: true
+  no_product_source_modified: true
+  no_dotnet_foss_created: true
+  no_python_source_behavior_change: true
+  no_package_publish: true
+  no_github_remote_mutation: true
+  no_push: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true
+  # Overall
+  COMMERCIAL_PRODUCT_READY: false
+  GATE_11_APPROVED: false
+  AUTONOMOUS_ROLLOUT_STATUS: NOT_AUTHORIZED
+  R10_CLOSURE_STATUS: R10_CLOSURE_HARDENED_R11_READY_FOR_AUTHORIZATION

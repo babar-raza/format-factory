@@ -1,7 +1,7 @@
 # FORMAT-FACTORY-R10 Weekly Report — Acquisition Engine POC Summary
 **Date:** 2026-05-14
 **Sprint:** FORMAT-FACTORY-R10-ACQUISITION-ENGINE-POC-SWARM-001
-**Status:** IN_PROGRESS → LANES_A_THROUGH_F_COMPLETE
+**Status:** COMPLETE — ALL 9 LANES DELIVERED (see addendum)
 **Coordinator:** CONWAY-R10
 **Authority:** AGENTS.md AF9-AF15 | GOVERNANCE.md 26.8-26.13
 
@@ -38,8 +38,8 @@ Build the first end-to-end governed acquisition-engine POC covering format lifec
 | E — Multi-Format Planner | `tools/skills/multi_format_acquisition_planner.py` + tests | COMPLETE |
 | F — Simulation v2 Graphs | `tools/skills/implementation_simulation_v2.py` + tests | COMPLETE |
 | G — Weekly Report | `reports/planning/weekly-report-poc-summary-20260514.md` (this file) | COMPLETE |
-| H — Adversarial Review | `reports/governance/r10-adversarial-review-20260514.md` | PENDING |
-| I — R11 Readiness | `reports/planning/r11-readiness-decision-20260514.md` | PENDING |
+| H — Adversarial Review | `reports/governance/r10-adversarial-review-20260514.md` | COMPLETE ✓ |
+| I — R11 Readiness | `reports/planning/r11-readiness-decision-20260514.md` | COMPLETE ✓ |
 
 ---
 
@@ -166,12 +166,14 @@ The R10 acquisition engine builds on the following R9 infrastructure:
 
 ---
 
-## Pending Items
+## Pending Items (as of mid-sprint snapshot)
 
-- **Lane H**: Adversarial review (9+ attack scenarios against R10 tooling)
-- **Lane I**: R11 readiness decision + coordinator integration
-- **Validation**: `pytest tests/skills/ -v`, consistency checks, requirements validation
-- **Evidence bundle**: Build and validate R10 sprint bundle
+> **NOTE:** This section was written mid-sprint. All items below were subsequently completed in the same sprint session. See addendum at end of document.
+
+- ~~**Lane H**: Adversarial review~~ — COMPLETE (12 attacks, all BLOCKED)
+- ~~**Lane I**: R11 readiness decision~~ — COMPLETE
+- ~~**Validation**: `pytest tests/skills/ -v`~~ — COMPLETE (834 PASS, 0 failures)
+- ~~**Evidence bundle**: Build and validate~~ — COMPLETE (BUNDLE_VALIDATION: PASS, 881 entries)
 
 ---
 
@@ -192,5 +194,26 @@ The R10 acquisition engine builds on the following R9 infrastructure:
 
 ---
 
+## ADDENDUM — Sprint Closure (2026-05-14, Closure Hardening Sprint)
+
+> This addendum was added by FORMAT-FACTORY-R10-CLOSURE-HARDENING-AND-R11-READINESS-REPAIR-SWARM-001 to resolve the mid-sprint snapshot contradiction.
+
+### Completed after this document was first written:
+
+| Item | Final Status |
+|------|-------------|
+| Lane H — Adversarial Review | COMPLETE — 12 attack scenarios, all BLOCKED |
+| Lane I — R11 Readiness Decision | COMPLETE — READY_WITH_LIMITATIONS, not authorized |
+| Full test suite (`tests/skills/`) | 834 PASS, 0 failures (bkxp1oiht) |
+| Evidence bundle | BUNDLE_VALIDATION: PASS (881 entries, 2,064,276 bytes) |
+| R10 deliverables committed to git | a3ae426 (this sprint) |
+
+### Final Sprint Status: **ALL 9 LANES COMPLETE**
+
+R11 remains **READY_WITH_LIMITATIONS** and **NOT AUTHORIZED** pending human review.
+
+---
+
 *This report is a SIMULATION POC artifact. All assessments are estimates. No execution authorized.*
 *Authority: FORMAT-FACTORY-R10-ACQUISITION-ENGINE-POC-SWARM-001*
+*Addendum authority: FORMAT-FACTORY-R10-CLOSURE-HARDENING-AND-R11-READINESS-REPAIR-SWARM-001*
