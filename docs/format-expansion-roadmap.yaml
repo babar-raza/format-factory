@@ -1,0 +1,298 @@
+---
+# Format Factory — Format Expansion Roadmap (Machine-Readable)
+# Sprint: FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001
+# Date: 2026-05-14
+
+document_type: format_expansion_roadmap
+version: "1.0"
+created_at: "2026-05-14"
+sprint: FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001
+visibility: internal
+publish_allowed: false
+authority: plans/master-plan.md Section 38
+
+strategic_position:
+  top_priority_project: true
+  preferred_execution_style: broader_controlled_swarm
+  speed_required: true
+  governance_non_negotiable: true
+  non_delegable_actions:
+    - push
+    - publish
+    - package_release
+    - external_credential_use
+    - gate_11_approval
+    - commercial_product_ready_true
+
+immediate_plan:
+  status: IN_PROGRESS
+  description: "Finish XML-based proof system (FODS/FODT) and Conway orchestration infrastructure"
+  current_proof_formats:
+    - fods
+    - fodt
+  do_not_add_formats_until: conway_r9_complete
+  conway_phases:
+    R0:
+      status: COMPLETE
+      description: "Requirements authority established"
+    R1:
+      status: PENDING
+      description: "Schema and tooling hardening (6/6 schemas, full test suite)"
+    R2:
+      status: PENDING
+      description: "Format context resolver (FODS/FODT → REQUIREMENTS_AUTHORITATIVE)"
+    R3:
+      status: PENDING
+      description: "Lane library (R-lanes + I-lanes + C-lanes)"
+    R4:
+      status: PENDING
+      description: "Prompt generator + quality gate (10 criteria)"
+    R5:
+      status: PENDING
+      description: "Evidence contract template"
+    R6:
+      status: PENDING
+      description: "Commands (9 .claude/commands/ skill files)"
+    R7:
+      status: PENDING
+      description: "Full test suite + FODS/FODT dry-runs"
+    R8:
+      status: PENDING
+      description: "Independent verification of skill system (separate session)"
+    R9:
+      status: PENDING
+      description: "First new format rollout — expansion begins here"
+
+short_term_plan:
+  status: PENDING
+  blocked_on: conway_r9_complete
+  description: "Expand to XML/package-based or public-spec formats after proof stable"
+  format_selection_criteria:
+    - public_specification_available
+    - public_structural_knowledge
+    - open_test_material
+    - reverse_engineering_safe_documentation
+
+long_term_plan:
+  status: BACKLOG
+  description: "Expand to any format family with sufficient public technical information"
+  not_limited_to_aspose_supported: true
+
+format_backlog_disclaimer:
+  all_candidates_status: needs_audit
+  aspose_audit_required: true
+  spec_availability_required: true
+  legal_classification_required: true
+  note: >
+    Every candidate is unsupported_by_aspose: needs_audit until verified against
+    current Aspose support matrices. Do not begin acquisition planning before audit.
+
+tier_a_candidates:
+  description: "Near-term (after XML/package proof stable)"
+  formats:
+    - id: hwpx
+      category: word_processing
+      aspose_support: needs_audit
+      public_spec: partial
+      notes: "Hancom Hangul XML/package"
+    - id: hwp
+      category: word_processing
+      aspose_support: needs_audit
+      public_spec: limited
+      notes: "Hancom Hangul binary — requires careful audit"
+    - id: hwt
+      category: word_processing
+      aspose_support: needs_audit
+      public_spec: partial
+      notes: "Hancom Hangul template"
+    - id: alz
+      category: archive
+      aspose_support: needs_audit
+      public_spec: no
+      notes: "ALZip — reverse-engineering documented"
+    - id: egg
+      category: archive
+      aspose_support: needs_audit
+      public_spec: partial
+      notes: "ESTsoft EGG — partial documentation"
+    - id: numbers
+      category: spreadsheet
+      aspose_support: needs_audit
+      public_spec: no
+      notes: "Apple Numbers (iWork)"
+    - id: key
+      category: presentation
+      aspose_support: needs_audit
+      public_spec: no
+      notes: "Apple Keynote (iWork)"
+    - id: pages
+      category: word_processing
+      aspose_support: needs_audit
+      public_spec: no
+      notes: "Apple Pages (iWork)"
+    - id: gnumeric
+      category: spreadsheet
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "GNOME Gnumeric — open source XML"
+    - id: abw
+      category: word_processing
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "AbiWord — open source XML"
+    - id: xar
+      category: archive
+      aspose_support: needs_audit
+      public_spec: partial
+    - id: lha
+      category: archive
+      aspose_support: needs_audit
+      public_spec: partial
+    - id: arj
+      category: archive
+      aspose_support: needs_audit
+      public_spec: partial
+    - id: zpaq
+      category: archive
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "ZPAQ — public spec"
+    - id: zst
+      category: compression
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "Zstandard — RFC standard"
+    - id: qoi
+      category: image
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "Quite OK Image — minimal public spec"
+    - id: ora
+      category: image
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "OpenRaster — LGPL spec, XML ZIP"
+    - id: xcf
+      category: image
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "GIMP native — documented"
+
+tier_b_candidates:
+  description: "Medium-term (after archive/package workflows mature)"
+  formats:
+    - id: idml
+      category: page_layout
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "InDesign Markup Language — XML-based"
+    - id: indd
+      category: page_layout
+      aspose_support: needs_audit
+      public_spec: no
+      notes: "InDesign binary (but accessible via IDML)"
+    - id: qxp
+      category: page_layout
+      aspose_support: needs_audit
+      public_spec: no
+    - id: sla
+      category: page_layout
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "Scribus — XML-based, FOSS"
+    - id: wpd
+      category: word_processing
+      aspose_support: needs_audit
+      public_spec: partial
+    - id: "123"
+      category: spreadsheet
+      aspose_support: needs_audit
+      public_spec: partial
+      notes: "Lotus 1-2-3"
+    - id: qpw
+      category: spreadsheet
+      aspose_support: needs_audit
+      public_spec: no
+      notes: "Quattro Pro"
+    - id: skp
+      category: cad
+      aspose_support: needs_audit
+      public_spec: partial
+      notes: "SketchUp"
+    - id: 3dm
+      category: cad
+      aspose_support: needs_audit
+      public_spec: partial
+      notes: "Rhino"
+    - id: fcstd
+      category: cad
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "FreeCAD — XML ZIP, FOSS"
+    - id: mbtiles
+      category: gis
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "MBTiles — SQLite-based"
+    - id: pmtiles
+      category: gis
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "PMTiles — cloud-optimized, public spec"
+    - id: osm
+      category: gis
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "OpenStreetMap XML — full public spec"
+    - id: pbf
+      category: gis
+      aspose_support: needs_audit
+      public_spec: full
+      notes: "Protobuf binary"
+
+tier_c_candidates:
+  description: "Long-term advanced/commercial targets"
+  categories:
+    - vendor_cad_binaries
+    - bim_formats
+    - camera_raw_families
+    - proprietary_dtp
+    - game_3d_scene
+    - email_pim
+    - advanced_geospatial
+
+governance_rules:
+  no_new_format_before_conway_r9: true
+  all_11_gates_required: true
+  human_approval_at_each_gate: true
+  support_matrix_audit_before_acquisition: true
+  public_spec_recorded_before_implementation: true
+  legal_classification_required: true
+  ai_role: accelerator_not_authority
+  speed_required: true
+  governance_non_negotiable: true
+
+format_expansion_process:
+  steps:
+    1: support_matrix_audit
+    2: specification_source_audit
+    3: legal_provenance_classification
+    4: local_spec_normalization
+    5: generated_requirements_with_schema_validation_verifier_review_dec034_iv
+    6: implementation_planning_taskcards
+    7: evidence_bundle_validation
+    8: tests_pass
+    9: gate_approvals_human_all_11
+    10: commercial_readiness_gate11_c7plus
+
+related_files:
+  - plans/master-plan.md
+  - memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md
+  - docs/format-expansion-roadmap.md
+  - taskcards/FORMAT-EXPANSION-ROADMAP.md
+  - taskcards/NON-ASPOSE-FORMAT-BACKLOG.md
+  - taskcards/PUBLIC-SPEC-FORMAT-EXPANSION.md
+  - taskcards/NAC-001-non-aspose-format-candidate-registry.md
+  - taskcards/REP-003-non-xml-adaptability-backlog.md
+  - reports/planning/format-expansion-roadmap-memory-sync-20260514.md
+  - registry/format-registry.yaml

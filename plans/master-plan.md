@@ -3,8 +3,8 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 2.55 (FF-CURRENT-STATE-AND-AI-REQUIREMENTS-ALIGNMENT-20260513: Section 6 repaired; stale Tier 0 refs updated to C4-C6 vertical slice; TC-0053 created; .NET READMEs corrected; commercial-product-capability-model.md current capability updated; last_completed_sprint corrected)
-**Last updated:** 2026-05-13
+**Version:** 2.56 (FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001: Section 38 added — format expansion roadmap, immediate/short-term/long-term plans, non-Aspose candidate backlog direction; prior: v2.55 FF-CURRENT-STATE-AND-AI-REQUIREMENTS-ALIGNMENT-20260513)
+**Last updated:** 2026-05-14
 **Current phase:** Phase 3+: FODS Gates 1-10 ALL PASSED; Gate 11 commercial_readiness_in_progress; DEC-033 RESOLVED Option B. FODT Gates 1-10 ALL PASSED; Gate 11 commercial_readiness_in_progress; DEC-033 RESOLVED Option B.
 **Current status:** FODS: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-08 (run048; Tiers 0-2, 12 features; format-factory-fods v0.1.0; TC-0044 COMPLETED). Phase 4 Python FOSS source CREATED (run051; TC-0050 COMPLETED; src/python/fods/ 6 files; 19/20 IR-FODS; iterparse streaming). Gate 11 commercial_readiness_in_progress: DEC-033 resolved Option B (Babar Raza 2026-05-12); src/net/fods/ skeleton created targeting net10.0; Gate 11 NOT approved; full implementation + human approval required. FODT: Gates 1-10 ALL PASSED. Gate 10 APPROVED Babar Raza 2026-05-11 (TC-0052 COMPLETED; src/python/fodt/ 6 modules; 115/115 PASS). Gate 11 commercial_readiness_in_progress: DEC-033 resolved Option B (Babar Raza 2026-05-12); src/net/fodt/ skeleton created targeting net10.0; Gate 11 NOT approved; full implementation + human approval required. DEC-033 RESOLVED: Option B (.NET Commercial Only). Python is sole FOSS track. No .NET FOSS package. last_completed_sprint: COMMERCIAL-LOAD-SAVE-VERTICAL-SLICE-SWARM-001 (2026-05-13; FODS 42/42 PASS; FODT 43/43 PASS; C4-C6 vertical slice; FodsDocument/FodtDocument Load/Save/Edit). Prior: COMMERCIAL-PRODUCT-DIRECTION-RESET-SWARM-001 (2026-05-13). Exact final HEAD in bundle-metadata/git-log.txt (see docs/current-state-and-evidence-authority.md).
 **Phase 1 allowed:** YES — Phase 0 accepted (run015) and independently verified (run016).
@@ -1656,5 +1656,93 @@ All agents and human contributors must capture discovered gaps in durable repo a
 
 ---
 
-*End of plans/master-plan.md — version 2.47 — 2026-05-09*
+---
+
+## Section 38 — Format Expansion Roadmap and Non-Aspose Backlog
+
+**Added:** FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001 (2026-05-14)
+**Status:** Strategic direction recorded. No acquisition or implementation authorized.
+**Authority:** This section records strategic direction only. All format expansion work requires explicit human authorization and the full 11-gate pipeline.
+
+### 38.1 Strategic Direction
+
+Format Factory is the **top-priority project**. Speed is required — but never at the expense of:
+evidence review, validation, governance, taskcards, authority-chain checks, delegated gate review,
+source inspection, tests, evidence bundles, no-stash/reset/restore/clean safety, no-push/publish safety,
+and no-commercial-readiness-overclaim safety.
+
+Preferred execution style: broader controlled swarm (more agents, more parallel lanes, bigger sprints,
+dependency-aware, coordinator integration, exact-path staging, lane ownership, no uncontrolled overlap).
+
+### 38.2 Immediate Plan (XML-Based Proof First)
+
+1. Finish current XML-based proof system cleanly on FODS/FODT.
+2. Prove the system works perfectly on active XML-style formats.
+3. Keep FODS/FODT as current proof formats.
+4. Preserve generated requirements as authoritative only after verifier review + DEC-034 IV.
+5. Continue Conway orchestration infrastructure (Phases R1–R9).
+6. Do NOT move to autonomous implementation execution until planning/dry-run orchestration is proven.
+7. Do NOT add new formats to the registry until Conway Phase R9 is complete.
+
+### 38.3 Short-Term Plan (After XML Proof Stable)
+
+After Conway R9 is proven:
+1. Expand to additional XML/package-based or public-spec formats.
+2. Prefer formats with public specifications, public structural knowledge, open test material,
+   or reverse-engineering-safe documentation.
+3. Build repeatable skills/playbooks so new formats require minimal custom engineering.
+4. Support both deterministic/manual-repeatable and governed autonomous AI-assisted flows.
+5. Every format must pass all 11 gates with human approval.
+
+See `docs/format-expansion-roadmap.md` for Tier A candidates.
+
+### 38.4 Long-Term Plan (Beyond XML-Family)
+
+Once XML-based formats are proven, enhance the system for any format family where specifications or
+sufficient public technical information are available, regardless of original source or vendor ecosystem.
+
+**The system must not be limited to formats currently supported by Aspose.**
+
+Strategic future backlog includes formats not currently supported by Aspose, minor/underserved formats,
+publicly specified formats, proprietary-but-documented formats, formats with public reverse-engineering
+documentation, archive/package formats, binary document formats, and CAD/3D/GIS/media/project/email/
+page-layout formats where public technical material exists.
+
+### 38.5 Non-Aspose Candidate Backlog
+
+A candidate backlog of ~200+ format extensions across 13 categories has been recorded.
+**All candidates are marked `unsupported_by_aspose: needs_audit`** — audit required before acquisition.
+
+Key examples (starter list — not the full universe):
+- .hwp, .hwpx, .hwt (Hancom Hangul)
+- .alz, .egg (Korean archive formats)
+- .numbers, .key, .pages (Apple iWork)
+- Plus: archives, images, CAD, GIS, email, page layout, 3D, and more
+
+Full backlog: `memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md` and `docs/format-expansion-roadmap.md`.
+
+### 38.6 Governance Rules
+
+1. No new format before Conway R9 complete.
+2. All 11 gates required with human approval at each.
+3. Support-matrix audit required before acquisition planning.
+4. Public-spec availability must be recorded before implementation.
+5. Proprietary/reverse-engineered formats must be legally classified.
+6. AI assists, not decides — authority from specs, evidence, validation, verifier review, DEC-034 IV.
+7. Speed required, but not at the expense of governance, correctness, evidence, or safety.
+
+### 38.7 Infrastructure Milestones
+
+| Milestone | Status | Taskcard |
+|-----------|--------|----------|
+| Format expansion roadmap synced to repo | COMPLETE (2026-05-14) | FORMAT-EXPANSION-ROADMAP.md |
+| Non-Aspose candidate backlog recorded | COMPLETE (2026-05-14) | NON-ASPOSE-FORMAT-BACKLOG.md |
+| Public-spec format expansion taskcard created | COMPLETE (2026-05-14) | PUBLIC-SPEC-FORMAT-EXPANSION.md |
+| Conway R1-R9 orchestration complete | NOT STARTED | (see reports/planning/conway-rebaseline-roadmap-20260513.md) |
+| Support-matrix audit (per candidate) | NOT STARTED | NAC-001 |
+| First new format acquisition (Tier A) | NOT STARTED | After Conway R9 |
+
+---
+
+*End of plans/master-plan.md — version 2.56 — 2026-05-14 (Section 38 added by FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

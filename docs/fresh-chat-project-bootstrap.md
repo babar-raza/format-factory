@@ -176,6 +176,29 @@ Enables systematic scaling to future formats.
 
 ---
 
+## Format Expansion Roadmap (as of 2026-05-14)
+
+**Immediate:** Complete XML-based proof (FODS/FODT) + Conway R1-R9 orchestration infrastructure.
+Do NOT add new formats until Conway R9 (first new format rollout) is proven.
+
+**Short-term:** After XML proof stable — expand to public-spec XML/package formats (Tier A candidates).
+
+**Long-term:** Expand to any format family with sufficient public technical information.
+Not limited to formats supported by Aspose.
+
+Candidate backlog: 13 categories, ~200+ formats, all `unsupported_by_aspose: needs_audit`.
+
+Key examples (starter list only):
+- .hwp, .hwpx, .hwt — Hancom Hangul
+- .alz, .egg — Korean archive formats
+- .numbers, .key, .pages — Apple iWork
+- .gnumeric, .abw — open source formats
+- Plus: archives, images, CAD, GIS, email, page layout, 3D, and more
+
+**Read:** `docs/format-expansion-roadmap.md` and `memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md`
+
+---
+
 ## Expected Assistant Working Style
 
 Read these methodology files before reviewing evidence, planning sprints, or generating prompts:

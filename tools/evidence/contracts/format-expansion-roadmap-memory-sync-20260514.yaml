@@ -1,0 +1,133 @@
+---
+# Evidence Contract: FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001
+# Sprint: FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001
+# Type: Memory and governance sync
+# Date: 2026-05-14
+
+contract_id: FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001
+sprint_id: FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001
+sprint_type: memory_roadmap_governance_sync
+current_state_authority: docs/current-state-and-evidence-authority.md
+date: "2026-05-14"
+visibility: internal
+publish_allowed: false
+emergency_blocker_bundle: true
+dirty_git_reason: >
+  Pre-existing uncommitted changes from parallel sprints (Conway R1-R9 work, skill tests,
+  adversarial orchestration review) remain in the working tree alongside the new files
+  created by this sprint. All sprint files for FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001
+  are new/modified as listed in required_repo_files. Dirty git is due to parallel sprint
+  work that is not in scope of this sprint and cannot be staged without violating the
+  prohibited-files rule (AGENTS.md AF13-AF14). Using emergency_blocker_bundle per
+  GOVERNANCE.md 23.5 and 23.6 pattern.
+
+description: >
+  Roadmap memory sync sprint. Synchronizes the latest strategic format expansion roadmap decisions
+  into local repo memory, planning, governance, and bootstrap files. Records the immediate, short-term,
+  and long-term direction for Format Factory including the full non-Aspose candidate backlog
+  (~234 candidates, 13 categories, all needs_audit). No implementation performed.
+
+required_repo_files:
+  - path: memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md
+    note: Primary memory file for format expansion roadmap sync
+  - path: memory/00-index.md
+    note: Memory index (updated with memory/26 entry and stream history)
+  - path: docs/format-expansion-roadmap.md
+    note: Human-readable format expansion roadmap
+  - path: docs/format-expansion-roadmap.yaml
+    note: Machine-readable format expansion roadmap
+  - path: docs/fresh-chat-project-bootstrap.md
+    note: Updated with format expansion roadmap section
+  - path: docs/fresh-chat-project-bootstrap.yaml
+    note: Updated with format_expansion_roadmap fields
+  - path: plans/master-plan.md
+    note: Updated with Section 38 (Format Expansion Roadmap and Non-Aspose Backlog), version 2.56
+  - path: taskcards/FORMAT-EXPANSION-ROADMAP.md
+    note: Format expansion roadmap governance taskcard
+  - path: taskcards/NON-ASPOSE-FORMAT-BACKLOG.md
+    note: Non-Aspose candidate backlog governance taskcard
+  - path: taskcards/PUBLIC-SPEC-FORMAT-EXPANSION.md
+    note: Public-spec format expansion planning taskcard
+  - path: reports/planning/format-expansion-roadmap-memory-sync-20260514.md
+    note: Planning report for this sprint
+  - path: tools/evidence/contracts/format-expansion-roadmap-memory-sync-20260514.yaml
+    note: This contract
+
+required_metadata_files:
+  - phase0-preflight.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - validation-command-log.txt
+  - no-scope-drift-report.md
+  - files-reviewed.txt
+  - files-created.txt
+  - files-modified.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-log.txt
+  - evidence-contract-validation-report.md
+  - bundle-manifest.yaml
+  - final-state-summary.yaml
+  - final-bundle-validation-proof.txt
+  - verdict.md
+
+min_metadata_count: 16
+
+forbidden_paths:
+  - .env
+  - .local/spec-cache/
+  - GITHUB_PAT
+  - .git/
+
+forbidden_actions:
+  - gate_11_approval
+  - commercial_product_ready_true
+  - format_registry_new_entry
+  - acquisition_pack_creation
+  - product_source_modification
+  - parser_implementation
+  - export_conversion_implementation
+  - autonomous_implementation
+  - vector_retrieval_implementation
+  - git_stash
+  - git_reset
+  - git_restore
+  - git_clean
+  - broad_staging
+  - push
+  - publish
+
+semantic_checks:
+  format_expansion_roadmap_synced: true
+  immediate_plan_recorded: true
+  short_term_plan_recorded: true
+  long_term_plan_recorded: true
+  candidate_backlog_recorded: true
+  all_candidates_needs_audit: true
+  tier_a_candidates_listed: true
+  tier_b_candidates_listed: true
+  tier_c_categories_listed: true
+  governance_rules_recorded: true
+  bootstrap_updated: true
+  master_plan_section_38_added: true
+  memory_00_index_updated: true
+  three_taskcards_created: true
+  planning_report_created: true
+  no_format_added_to_registry: true
+  no_gate_approved: true
+  gate_11_not_approved: true
+  commercial_product_ready_false: true
+  dec033_option_b_preserved: true
+  no_product_source_modified: true
+  no_parser_implementation: true
+  no_entity_expansion_implementation: true
+  no_export_conversion_implementation: true
+  no_autonomous_implementation: true
+  no_vector_retrieval_implementation: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true
+  no_push_no_publish: true
+  authority_hierarchy_preserved: true
+  generated_requirements_authority_not_contradicted: true
+  conway_r9_prerequisite_recorded: true
+  xml_proof_first_recorded: true
