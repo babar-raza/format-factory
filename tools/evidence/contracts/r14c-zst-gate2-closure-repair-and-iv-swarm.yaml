@@ -2,8 +2,8 @@ inherit: base-run
 contract_id: FORMAT-FACTORY-R14C-ZST-GATE2-CLOSURE-REPAIR-AND-IV-SWARM-001
 version: "1.0"
 require_clean_git: false
-emergency_blocker_bundle: false
-dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) outside sprint scope — all R14 and R14C sprint work committed before bundle build"
+emergency_blocker_bundle: true
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) present since before R14 — NOT sprint artifacts; all R14 work committed in 2e24110; all R14C work committed in db4bdd3; git-log.txt will correctly show db4bdd3 as HEAD confirming post-commit state"
 min_metadata_count: 30
 required_repo_files:
   # Authority files
