@@ -29,6 +29,11 @@ Key resolution:
 - 7 new governance rules: AQ-001, AQ-002, D-001 through D-005
 - 9/9 adversarial attacks blocked
 
+## R13A Bundle
+**Commit:** ebb5288 + d9804da (chore(acquisition): close R12 hygiene and prepare ZST Gate 1 packet)
+**Bundle:** .local/evidence-bundles/r13a-r12-closure-and-zst-gate1-packet-swarm-20260515.zip (947 entries, 927 repo + 20 metadata, 2.2MB)
+**BUNDLE_VALIDATION: PASS**
+
 ## R13A Sprint State (2026-05-15)
 
 **Sprint:** FORMAT-FACTORY-R13A-R12-CLOSURE-AND-ZST-GATE1-PACKET-SWARM-001
