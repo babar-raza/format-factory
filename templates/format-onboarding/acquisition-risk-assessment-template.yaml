@@ -1,0 +1,53 @@
+# acquisition-risk-assessment-template.yaml
+# Template for format onboarding acquisition risk assessment.
+#
+# WARNING: This is a PLANNING TEMPLATE ONLY.
+# Onboarding execution requires human authorization per GOVERNANCE.md 26.8-26.13.
+# All entries begin as NOT_ASSESSED until explicit audit is completed.
+#
+# R12 Lane D deliverable — extends schemas/skills/format-onboarding.schema.yaml
+# with acquisition governance hardening fields.
+
+format_id: "<format-id>"           # e.g. zst, hwp, alz
+format_name: "<Format Full Name>"  # e.g. "Zstandard Compressed File"
+extensions:
+  - ".<ext>"
+
+legal_provenance_classification: UNKNOWN
+public_spec_availability: UNKNOWN
+support_matrix_audit_status: NEEDS_AUDIT
+parser_classification: UNKNOWN
+reverse_engineering_safe: false     # Conservative default — set true only after review
+parser_difficulty_estimate: UNKNOWN
+
+# --- R12 acquisition governance fields ---
+
+acquisition_risk_classification: NOT_ASSESSED   # Must be set during support matrix audit
+
+spec_normalization_status: NOT_STARTED          # Updated as spec caching progresses
+
+oracle_classification: NOT_ASSESSED             # Set during requirements generation sprint
+
+public_spec_quality: UNKNOWN                    # Set during spec discovery
+
+sample_provenance_notes: >
+  NOT YET ASSESSED. Before oracle testing, confirm:
+  (1) open-license sample files are available,
+  (2) samples are not encumbered by proprietary licenses,
+  (3) sample source is documented in acquisition-packs/<format-id>/sample-sources.md.
+
+# --- Readiness chain (conservative defaults) ---
+normalization_readiness: REQUIRES_AUDIT
+requirements_generation_readiness: REQUIRES_SPEC_RETRIEVAL
+implementation_readiness: REQUIRES_REQUIREMENTS
+iv_readiness: REQUIRES_VERIFIER_REVIEW
+
+onboarding_readiness:
+  overall: CANDIDATE
+  notes: >
+    CANDIDATE — risk assessment template initialized. No audit has been performed.
+    Acquisition risk classification MUST be set to LOW or MEDIUM before
+    requirements generation can begin. HIGH risk requires additional human review.
+    CRITICAL risk blocks acquisition until legal/spec issues are resolved.
+
+backlog_priority: NOT_PRIORITIZED

@@ -173,3 +173,54 @@ properties:
     items:
       type: string
     description: "Related format IDs (e.g. hwp and hwpx are related)"
+
+  # R12 Lane D extensions — acquisition governance hardening
+  acquisition_risk_classification:
+    type: string
+    enum:
+      - LOW         # Full public spec, clear legal, no RE required
+      - MEDIUM      # Partial spec or minor legal uncertainty
+      - HIGH        # Reverse engineering, unclear legal, binary complexity
+      - CRITICAL    # Legal blocker or no spec — acquisition not recommended
+      - NOT_ASSESSED
+    description: "Overall acquisition risk classification for governed planning"
+
+  spec_normalization_status:
+    type: string
+    enum:
+      - NOT_STARTED       # Spec not yet locally cached
+      - CACHED_RAW        # Spec document retrieved and stored locally
+      - NORMALIZED        # Spec parsed and normalized into structured form
+      - REQUIREMENTS_READY # Normalization complete; AI req gen can begin
+      - STALE             # Cached spec is outdated; refresh required
+    description: "Status of spec normalization pipeline (local caching required before AI req gen)"
+
+  oracle_classification:
+    type: string
+    enum:
+      - ROUND_TRIP        # Compress/decompress or serialize/deserialize round-trip
+      - REFERENCE_DIFF    # Diff output against reference implementation
+      - SCHEMA_VALIDATE   # Validate output against published schema
+      - MANUAL_REVIEW     # No automated oracle; requires human review
+      - NOT_ASSESSED      # Oracle approach not yet determined
+    description: "Classification of test oracle approach for this format"
+
+  sample_provenance_notes:
+    type: string
+    description: >
+      Notes on sample file provenance — where open-license samples can be found,
+      any known provenance risks, or confirmation that sample files are safe to use.
+      Required before oracle testing can begin.
+
+  public_spec_quality:
+    type: string
+    enum:
+      - RFC_STANDARD      # IETF RFC or equivalent standards body publication
+      - ISO_IEC_STANDARD  # ISO/IEC standard
+      - ECMA_STANDARD     # ECMA standard (e.g. OOXML)
+      - OASIS_STANDARD    # OASIS standard (e.g. ODF)
+      - OPEN_SOURCE_DOC   # Documented via open-source reference implementation
+      - COMMUNITY_WIKI    # Community-maintained documentation (lower reliability)
+      - VENDOR_DOC        # Vendor-published documentation (may have gaps)
+      - UNKNOWN           # Not yet assessed
+    description: "Quality classification of the primary public specification"

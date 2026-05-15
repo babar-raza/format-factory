@@ -1,0 +1,126 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R12-ACQUISITION-ENGINE-IV-AND-ZST-GOVERNED-READINESS-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: false
+dirty_git_reason: ""
+min_metadata_count: 45
+required_repo_files:
+  # R10 tools (already committed)
+  - tools/skills/acquisition_lifecycle_simulator.py
+  - tools/skills/candidate_format_backlog.py
+  - tools/skills/public_spec_readiness_scorer.py
+  - tools/skills/multi_format_acquisition_planner.py
+  - tools/skills/implementation_simulation_v2.py
+  # R11 runtime (already committed)
+  - tools/skills/acquisition_planning_runtime.py
+  - tests/skills/test_acquisition_planning_runtime.py
+  # R12 new tools and tests
+  - tools/skills/acquisition_graph_simulator.py
+  - tests/skills/test_acquisition_graph_simulator.py
+  - tests/skills/test_public_spec_governance.py
+  # R12 schema extension and template
+  - schemas/skills/format-onboarding.schema.yaml
+  - templates/format-onboarding/acquisition-risk-assessment-template.yaml
+  # R12 reports — Lane A
+  - reports/verification/r12-acquisition-runtime-independent-verification-20260514.md
+  # R12 reports — Lane B
+  - reports/planning/zst-governed-candidate-audit-20260514.md
+  # R12 reports — Lane C
+  - reports/planning/cross-category-ranking-validation-20260514.md
+  # R12 reports — Lane D
+  - reports/governance/public-spec-governance-expansion-20260514.md
+  # R12 reports — Lane E
+  - reports/planning/acquisition-graph-simulation-report-20260514.md
+  # R12 reports — Lane F
+  - reports/planning/acquisition-pack-standardization-report-20260514.md
+  # R12 reports — Lane G
+  - reports/planning/weekly-report-r12-executive-summary-20260514.md
+  # R12 reports — Lane H
+  - reports/governance/r12-adversarial-acquisition-review-20260514.md
+  # R12 reports — Lane I
+  - reports/planning/r13-readiness-decision-20260514.md
+  # This contract
+  - tools/evidence/contracts/r12-acquisition-engine-iv-swarm.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - phase0-coordinator-preflight.md
+  - lane-ownership-matrix.md
+  - lane-a-iv-acquisition-runtime.md
+  - lane-b-zst-candidate-audit.md
+  - lane-c-cross-category-ranking.md
+  - lane-d-public-spec-governance.md
+  - lane-e-acquisition-graph-simulator.md
+  - lane-f-acquisition-pack-standardization.md
+  - lane-g-executive-weekly-report.md
+  - lane-h-adversarial-review.md
+  - lane-i-coordinator-integration.md
+  - r12-authorization-record.md
+  - r12-governance-validation.md
+  - r12-targeted-suite-report.md
+  - r12-full-suite-policy.md
+  - methodology-link-check-report.md
+  - current-state-consistency-report.md
+  - no-scope-drift-report.md
+  - r12-prohibited-operations-log.md
+  - r12-phase2-coordinator-integration.md
+  - validation-command-log.txt
+  - verdict.md
+  - r12-iv-weaknesses-log.md
+  - r12-iv-smoke-test-results.md
+  - r12-zst-score-decomposition.md
+  - r12-oracle-classification-table.md
+  - r12-graph-output-samples.md
+  - r12-graph-simulator-design.md
+  - r12-schema-extension-evidence.md
+  - r12-lane-d-test-rationale.md
+  - r12-adversarial-attack-details.md
+  - r12-public-spec-governance-rules.md
+  - r12-pack-standardization-gaps.md
+  - r12-r13-readiness-summary.md
+  - r12-backlog-tier-a-snapshot.md
+  - r12-tier-a-candidate-risk-table.md
+  - r12-new-tools-summary.md
+  - r12-sprint-gate-status.md
+  - r12-pre-bundle-checklist.md
+  - r12-stale-propagation-analysis.md
+  - r12-cross-tool-integration-check.md
+  - r12-determinism-confirmation.md
+  - r12-evidence-artifacts-list.md
+  - r12-executive-summary-notes.md
+sprint_verdicts:
+  sprint_id: FORMAT-FACTORY-R12-ACQUISITION-ENGINE-IV-AND-ZST-GOVERNED-READINESS-SWARM-001
+  dry_run_enforced: true
+  simulation_only_enforced: true
+  commercial_product_ready_false: true
+  autonomous_execution_allowed_false: true
+  gate_self_approval_not_allowed: true
+  no_internet_access: true
+  no_source_mutation: true
+  acquisition_not_authorized: true
+  # Lane A
+  R12_ACQUISITION_RUNTIME_IV_STATUS: IV_COMPLETE_18_OF_18_PASS
+  # Lane B
+  ZST_GOVERNED_READINESS_STATUS: ZST_ACQUISITION_READY_SCORE_8_95
+  # Lane C
+  CROSS_CATEGORY_RANKING_STATUS: RANKING_VALIDATED_10_FORMATS
+  # Lane D
+  PUBLIC_SPEC_GOVERNANCE_STATUS: GOVERNANCE_EXPANDED_5_NEW_FIELDS_34_TESTS_PASS
+  # Lane E
+  ACQUISITION_GRAPH_SIMULATION_STATUS: GRAPH_SIMULATOR_DELIVERED_6_GRAPHS_52_TESTS_PASS
+  # Lane F
+  ACQUISITION_PACK_STANDARDIZATION_STATUS: STANDARDIZATION_GAPS_DOCUMENTED
+  # Lane G — weekly report
+  WEEKLY_REPORT_STATUS: EXECUTIVE_POC_NARRATIVE_COMPLETE
+  # Lane H
+  ADVERSARIAL_REVIEW_STATUS: 9_OF_9_ATTACKS_BLOCKED_2_NEW_RULES
+  # Lane I
+  R13_READINESS: READY_FOR_R13
+  # Overall
+  AUTONOMOUS_ROLLOUT_STATUS: NOT_AUTHORIZED
+  COMMERCIAL_PRODUCT_READY: false
+  GATE_11_APPROVED: false
+  SCOPE_DRIFT: NONE
+  R12_SPRINT_STATUS: R12_ACQUISITION_ENGINE_IV_COMPLETE
