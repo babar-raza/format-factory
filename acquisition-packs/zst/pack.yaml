@@ -13,7 +13,7 @@ generated_by: claude
 generated_at: "2026-05-15"
 updated_at: "2026-05-15"
 sprint_created: FORMAT-FACTORY-R13B-DELEGATED-ZST-GATE1-REAL-SUPPORT-AUDIT-AND-GOVERNANCE-NORMALIZATION-SWARM-001
-sprint_updated: FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-SWARM-001
+sprint_updated: FORMAT-FACTORY-R15A-ZST-GATE3A-SAMPLE-SOURCE-IDENTIFICATION-SWARM-001
 reusable: false
 refresh_policy:
   trigger: spec-version-changed
@@ -70,10 +70,13 @@ stages:
     gate: 2
     notes: "Gate 2 legal: GATE2_PASS_WITH_LEGAL_NOTES. Errata noted (7 total). No IPR disclosures. BSD+patent grant."
   sample_sources:
-    status: not_started
+    status: source_identification_complete
     artifact: acquisition-packs/zst/sample-sources.md
     gate: 3
-    notes: "Gate 3 NOT authorized. Requires separate R15 authorization prompt."
+    sources_identified: 8
+    preferred_sources: 5
+    corpus_acquisition_status: not_started
+    notes: "Gate 3A complete (R15A, 2026-05-15). sample-sources.md created. 8 candidates, 5 preferred. Gate 3 NOT passed. Corpus acquisition requires R16 prompt."
   parser_notes:
     status: not_started
     artifact: acquisition-packs/zst/parser-notes.md

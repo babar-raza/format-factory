@@ -102,7 +102,7 @@ Agents may prepare evidence, but only a human can approve a gate.
 - FODT Python Phase 4 source: Created under `src/python/fodt/` with 115/115 tests passing (TC-0052 completed).
 - Format Understanding Layer: FUL-001 schemas created, FUL-002 FODS completed, FUL-003 FODT completed.
 - .NET C4-C6 vertical slice: Created for FODS (src/net/fods/) and FODT (src/net/fodt/); DEC-033 resolved Option B; commercial_product_ready: false.
-- ZST (Zstandard): Gate 1 APPROVED (R13B, 2026-05-15, delegated). Gate 2 PASSED (R14, 2026-05-15). RFC 8878 + RFC 9659 cached from rfc-editor.org. SHA-256 recorded. Gate 3 (sample sources) NOT yet authorized.
+- ZST (Zstandard): Gate 1 APPROVED (R13B, 2026-05-15, delegated). Gate 2 PASSED (R14, 2026-05-15). Gate 3A source identification COMPLETE (R15A, 2026-05-15): 8 candidates, 5 preferred; sample-sources.md created. Gate 3 NOT passed — corpus acquisition (Gate 3B) requires R16 prompt.
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md). The master plan and [registry/format-registry.yaml](registry/format-registry.yaml) are the authoritative status sources.
 

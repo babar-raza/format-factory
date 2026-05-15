@@ -1,11 +1,12 @@
 ---
 taskcard_id: ZST-R15-GATE3-SAMPLE-SOURCES
-title: "ZST Gate 3 — Sample Source Acquisition — Pending R15 Authorization"
+title: "ZST Gate 3A — Sample Source Identification — COMPLETED R15A"
 type: gate_packet
-sprint: null
+sprint: FORMAT-FACTORY-R15A-ZST-GATE3A-SAMPLE-SOURCE-IDENTIFICATION-SWARM-001
 created_by_sprint: FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-SWARM-001
 created_at: "2026-05-15"
-status: pending_authorization
+completed_at: "2026-05-15"
+status: completed
 visibility: internal
 publish_allowed: false
 authority: plans/master-plan.md
@@ -13,30 +14,29 @@ authority: plans/master-plan.md
 
 # Taskcard: ZST-R15-GATE3-SAMPLE-SOURCES
 
-## Current State: PENDING_AUTHORIZATION
+## Current State: COMPLETED (Gate 3A Source Identification)
 
-Gate 2 has been passed. Gate 3 (sample source acquisition) is NOT yet authorized.
-A separate R15 execution prompt is required to begin sample source identification.
+Gate 3A source identification complete (R15A, 2026-05-15).
+8 candidate sources identified. 5 preferred sources selected.
+acquisition-packs/zst/sample-sources.md created.
+Gate 3 NOT passed — corpus acquisition (Gate 3B) requires separate R16 prompt.
 
-Note per delegated execution model (GOVERNANCE.md §2.1a): this taskcard does NOT
-constitute a live "Babar must approve" blocker for delegation purposes. Gate 3 simply
-has not been authorized yet. An R15 execution prompt authorizes it.
+## Gate 3A Work (COMPLETED R15A)
 
-## Gate 3 Work (NOT YET STARTED)
+1. Identify open-license .zst sample files from authoritative sources — DONE (8 sources)
+2. Record candidate sample sources (URLs, license info) — DONE
+3. Classify each source: license, provenance, open/proprietary — DONE
+4. Create sample-sources.md in acquisition-packs/zst/ — DONE
+5. Prepare Gate 3A evidence — DONE (evidence bundle R15A)
 
-1. Identify open-license .zst sample files from authoritative sources
-2. Record candidate sample sources (URLs only — no downloading without Gate 3 authorization)
-3. Classify each source: license, provenance, open/proprietary
-4. Create sample-sources.md in acquisition-packs/zst/
-5. Prepare Gate 3 evidence
+## Pre-conditions for R16 (Gate 3B)
 
-## Pre-conditions for R15
-
-- Gate 2 PASSED: YES (R14, 2026-05-15)
-- RFC 8878 + RFC 9659 cached: YES
-- spec-evidence.md complete: YES
-- Gate 3 IVswarm recommended before human review (DEC-034)
+- Gate 3A complete: YES (R15A, 2026-05-15)
+- sample-sources.md created: YES
+- ZST-R16-GATE3B-SAMPLE-CORPUS-ACQUISITION.md taskcard: YES (created R15A)
+- ZST-GATE3-IV.md taskcard: YES (created R15A)
+- Gate 3B execution prompt from Babar Raza: REQUIRED
 
 ## Trigger
 
-Issue R15 prompt: FORMAT-FACTORY-R15-ZST-GATE3-SAMPLE-SOURCE-ACQUISITION-SWARM-001
+Issue R16 prompt: FORMAT-FACTORY-R16-ZST-GATE3B-SAMPLE-CORPUS-ACQUISITION-SWARM-001

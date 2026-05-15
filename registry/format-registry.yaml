@@ -500,10 +500,24 @@ formats:
           spec-index.yaml validated. 20/20 Gate 2 tests PASS.
           Gate 3 NOT authorized. Implementation NOT authorized.
       gate_3:
-        status: not_started
+        status: source_identification_complete
         approved_by: null
         approved_date: null
-        notes: null
+        source_identification_complete: true
+        candidate_sources_identified: 8
+        preferred_sources_selected: 5
+        sample_sources_doc: acquisition-packs/zst/sample-sources.md
+        corpus_design_plan: reports/samples/zst-corpus-design-plan-20260515.md
+        source_id_sprint: FORMAT-FACTORY-R15A-ZST-GATE3A-SAMPLE-SOURCE-IDENTIFICATION-SWARM-001
+        source_id_date: "2026-05-15"
+        notes: |
+          Gate 3A source identification COMPLETE (R15A, 2026-05-15).
+          8 candidate sources identified; 5 preferred (SOURCE-001 through SOURCE-005).
+          Preferred sources: facebook/zstd golden-decompression (BSD-3), decodecorpus self-gen,
+          python-zstandard self-gen, facebook/zstd golden-decompression-errors (BSD-3),
+          PD text + zstd CLI self-gen.
+          Gate 3 NOT passed. samples/by-format/zst/ does NOT exist.
+          Gate 3B corpus acquisition requires separate R16 execution prompt.
       gate_4:
         status: not_started
         approved_by: null
