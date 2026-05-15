@@ -1,0 +1,115 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R14C-ZST-GATE2-CLOSURE-REPAIR-AND-IV-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: false
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) outside sprint scope — all R14 and R14C sprint work committed before bundle build"
+min_metadata_count: 30
+required_repo_files:
+  # Authority files
+  - README.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+  # Acquisition pack
+  - acquisition-packs/zst/pack.yaml
+  - acquisition-packs/zst/legal-notes.md
+  - acquisition-packs/zst/spec-evidence.md
+  - acquisition-packs/zst/spec-cache-manifest-record.md
+  # Taskcards
+  - taskcards/ZST-R14-SPEC-RETRIEVAL.md
+  - taskcards/ZST-GATE2-IV.md
+  - taskcards/ZST-GATE1-DECISION-PACKET.md
+  - taskcards/ZST-R15-GATE3-SAMPLE-SOURCES.md
+  # Memory
+  - memory/30-delegated-human-action-governance-and-r13b-zst-audit-20260515.md
+  - memory/31-zst-r14-gate2-spec-retrieval-20260515.md
+  # Tests
+  - tests/skills/test_zst_spec_cache_gate2.py
+  # R14 reports (committed in 2e24110)
+  - reports/verification/r14-r13b-baseline-independent-verification-20260515.md
+  - reports/governance/r14-adversarial-review-20260515.md
+  - reports/governance/r14-no-scope-drift-report-20260515.md
+  - reports/specs/zst-spec-cache-retrieval-report-20260515.md
+  - reports/specs/zst-spec-cache-validation-report-20260515.md
+  - reports/legal/zst-gate2-legal-ipr-errata-report-20260515.md
+  - reports/governance/r14-zst-gate2-decision-execution-report-20260515.md
+  - reports/testing/r14-validation-command-log-20260515.md
+  # R14C reports
+  - reports/governance/r14c-preflight-and-commit-contradiction-report-20260515.md
+  - reports/verification/r14c-r14-evidence-contradiction-classification-20260515.md
+  - reports/verification/r14c-zst-gate2-independent-verification-20260515.md
+  - reports/governance/r14c-delegated-iv-taskcard-normalization-report-20260515.md
+  - reports/governance/r14c-local-spec-cache-evidence-policy-report-20260515.md
+  - reports/governance/r14c-commit-repair-report-20260515.md
+  - reports/governance/r14c-adversarial-review-20260515.md
+  - reports/governance/r14c-no-scope-drift-report-20260515.md
+  - reports/testing/r14c-validation-command-log-20260515.md
+  # Evidence contracts
+  - tools/evidence/contracts/r14-zst-spec-retrieval-and-gate2-swarm.yaml
+  - tools/evidence/contracts/r14c-zst-gate2-closure-repair-and-iv-swarm.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - verdict.md
+  - validation-command-log.txt
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - lane-ownership-matrix.md
+  - r14-commit-contradiction-resolution.md
+  - zst-gate2-iv-summary.md
+  - spec-cache-local-only-summary.md
+  - adversarial-review-summary.md
+  - no-scope-drift-report.md
+  - r14c-sprint-gate-status.md
+  - r14c-authorization-record.md
+  - r14c-preflight-summary.md
+  - r14c-gate2-iv-results.md
+  - r14c-taskcard-normalization-summary.md
+  - r14c-spec-cache-manifest-summary.md
+  - r14c-commit-repair-summary.md
+  - r14c-test-results.md
+  - r14c-governance-flags-snapshot.md
+  - r14c-scope-boundary-record.md
+  - r14c-iv-verification-record.md
+  - r14c-delegated-execution-record.md
+  - r14c-registry-state-snapshot.md
+  - r14c-post-repair-state-summary.md
+  - r14c-authority-files-changed.md
+  - r14c-next-sprint-readiness.md
+  - r14c-r15-next-prompt-record.md
+sprint_verdicts:
+  sprint_id: FORMAT-FACTORY-R14C-ZST-GATE2-CLOSURE-REPAIR-AND-IV-SWARM-001
+  dry_run_enforced: false
+  simulation_only_enforced: false
+  internet_access_authorized: false
+  commercial_product_ready_false: true
+  gate_self_approval_not_allowed: true
+  delegated_execution_model: true
+  no_source_mutation: true
+  no_generated_requirements_zst: true
+  no_gate3_authorized: true
+  full_rfc_text_not_committed: true
+  # Gate results
+  PREFLIGHT_STATUS: PASS_COMMIT_EXISTS_CLEAN_REPO
+  CONTRADICTION_CLASSIFICATION: BUNDLE_BUILT_BEFORE_COMMIT_NO_BLOCKER
+  ZST_GATE2_IV_STATUS: PASS_15_OF_15
+  TASKCARD_NORMALIZATION: COMPLETE
+  SPEC_CACHE_EVIDENCE_POLICY: COMPLIANT
+  COMMIT_REPAIR: POST_BUNDLE_COMMIT_EXISTS_R14C_SECOND_COMMIT
+  VALIDATION_STATUS: GATE6_PASS
+  TEST_SUITE_RESULT: 1020_PASS
+  ADVERSARIAL_REVIEW_STATUS: 20_OF_20_ATTACKS_BLOCKED
+  SCOPE_DRIFT: NONE
+  # Overall governance
+  ZST_GATE1_APPROVED: true
+  ZST_GATE2_PASSED: true
+  ZST_GATE2_IV_COMPLETE: true
+  ZST_GATE2_READY_FOR_HUMAN_REVIEW: true
+  ZST_GATE3_AUTHORIZED: false
+  GATE_11_FODS_APPROVED: false
+  GATE_11_FODT_APPROVED: false
+  COMMERCIAL_PRODUCT_READY: false
+  R14C_SPRINT_STATUS: R14C_COMPLETE_R14_CLOSURE_VERIFIED

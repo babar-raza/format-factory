@@ -63,7 +63,22 @@ ZST Gate 2 PASSED (R14, 2026-05-15, delegated under Babar Raza R14 execution pro
 - ZST generated_requirements_authorized: false
 - src/ mutations: NONE
 
+## R14C Closure Repair and IV (2026-05-15)
+
+Sprint: FORMAT-FACTORY-R14C-ZST-GATE2-CLOSURE-REPAIR-AND-IV-SWARM-001
+
+Contradiction resolved: R14 evidence bundle was built before commit 2e24110 (BUNDLE_BUILT_BEFORE_COMMIT).
+Commit 2e24110 exists and is HEAD. All R14 work correctly committed. Repo clean.
+
+IV result: ZST_GATE2_IV_STATUS: PASS_15_OF_15 (20/20 tests, all hashes verified independently)
+IV report: reports/verification/r14c-zst-gate2-independent-verification-20260515.md
+
+ZST-GATE2-IV.md taskcard: updated to completed.
+spec-cache-manifest-record.md: created in acquisition-packs/zst/ as committed evidence proxy.
+
+Gate 2 evidence status: evidence_verified_by_independent_sprint
+
 ## Next Sprint
 
-R15: FORMAT-FACTORY-R15-ZST-GATE3-SAMPLE-SOURCE-ACQUISITION-SWARM-001 (pending authorization)
-IV sprint recommended first: FORMAT-FACTORY-ZST-GATE2-IV-SWARM-001 (DEC-034)
+R15: FORMAT-FACTORY-R15-ZST-GATE3-SAMPLE-SOURCE-ACQUISITION-SWARM-001 (pending R15 authorization prompt)
+DEC-034 IV: COMPLETE (R14C served as the required IV sprint)
