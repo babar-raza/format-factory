@@ -1,0 +1,109 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R13-ZST-SUPPORT-MATRIX-AUDIT-SIMULATION-AND-GATE1-PACKET-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) outside sprint scope — NOT sprint blockers; all sprint work committed prior to bundle build"
+min_metadata_count: 30
+required_repo_files:
+  # R13A baseline files (inherited)
+  - README.md
+  - ROADMAP.md
+  - plans/master-plan.md
+  - acquisition-packs/_template/pack.yaml
+  - memory/29-r12-closure-and-r13a-zst-gate1-packet-20260515.md
+  - taskcards/R12-CLOSURE-VERIFICATION.md
+  - taskcards/ZST-GATE1-DECISION-PACKET.md
+  - taskcards/R13A-AUTHORITY-NORMALIZATION.md
+  # R13A report files (still valid baseline)
+  - reports/governance/r13a-preflight-and-authority-read-report-20260515.md
+  - reports/verification/r12-closure-contradiction-reconciliation-20260515.md
+  - reports/testing/r13a-full-suite-timeout-or-pass-report-20260515.md
+  - reports/governance/r13a-authority-normalization-report-20260515.md
+  - reports/planning/r13a-pack-template-standardization-repair-20260515.md
+  - reports/planning/zst-support-matrix-audit-simulation-20260515.md
+  - reports/planning/zst-gate1-decision-packet-report-20260515.md
+  - reports/planning/r13a-r14-forward-roadmap-20260515.md
+  - reports/governance/r13a-adversarial-review-20260515.md
+  # ZST decision packet v1.1 (updated in R13)
+  - acquisition-packs/_candidate-shortlists/zst-gate1-decision-packet-20260515.md
+  # R13 new report files
+  - reports/governance/r13-preflight-and-lane-ownership-20260515.md
+  - reports/verification/r13-r12-baseline-verification-20260515.md
+  - reports/planning/r13-acquisition-pack-standardization-repair-20260515.md
+  - reports/planning/r13-candidate-fallback-and-ranking-preservation-20260515.md
+  - reports/planning/zst-gate1-acquisition-graph-simulation-20260515.md
+  - reports/governance/r13-authority-normalization-report-20260515.md
+  - reports/planning/r13-taskcard-state-management-report-20260515.md
+  - reports/governance/r13-adversarial-review-20260515.md
+  - reports/governance/r13-no-scope-drift-report-20260515.md
+  # This contract
+  - tools/evidence/contracts/r13-zst-support-matrix-gate1-packet-swarm.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - verdict.md
+  - validation-command-log.txt
+  - lane-ownership-matrix.md
+  - r13-sprint-gate-status.md
+  - r13-authorization-record.md
+  - r13-governance-validation.md
+  - adversarial-review-summary.md
+  - no-scope-drift-report.md
+  - candidate-fallback-summary.md
+  - graph-simulation-summary.md
+  - zst-gate1-packet-v1.1-summary.md
+  - r12-baseline-verification.md
+  - current-state-consistency-report.md
+  - authority-normalization-summary.md
+  - taskcard-state-summary.md
+  - full-suite-proof-reference.md
+  - r13a-bundle-reference.md
+  - r13-pack-repair-reference.md
+  - r13-preflight-summary.md
+  - methodology-link-check-report.md
+  - r13-scope-boundary-record.md
+  - r13-acquisition-graph-params.md
+  - r13-fallback-decision-tree.md
+  - r13-ora-fallback-evidence.md
+  - r13-governance-flags-snapshot.md
+  - r13-decision-packet-options-summary.md
+  - r13-forward-roadmap-reference.md
+sprint_verdicts:
+  sprint_id: FORMAT-FACTORY-R13-ZST-SUPPORT-MATRIX-AUDIT-SIMULATION-AND-GATE1-PACKET-SWARM-001
+  dry_run_enforced: true
+  simulation_only_enforced: true
+  commercial_product_ready_false: true
+  autonomous_execution_allowed_false: true
+  gate_self_approval_not_allowed: true
+  no_internet_access: true
+  no_source_mutation: true
+  acquisition_not_authorized: true
+  # Gate 0
+  PREFLIGHT_STATUS: PASS
+  # Gate 1
+  R12_BASELINE_VERIFICATION_STATUS: VERIFIED_BASELINE_FOR_R13
+  # Gate 2
+  PACK_STANDARDIZATION_STATUS: ALREADY_REPAIRED_IN_R13A
+  # Gate 3
+  ZST_AUDIT_SIMULATION_STATUS: SIMULATION_COMPLETE_NO_REAL_AUDIT
+  # Gate 4
+  ZST_GATE1_PACKET_STATUS: V1.1_PREPARED_6_OPTIONS_AWAITING_HUMAN_APPROVAL
+  # Gate 5 (NEW)
+  CANDIDATE_FALLBACK_STATUS: ORA_8.85_DOCUMENTED_AS_FALLBACK
+  # Gate 6 (NEW)
+  GRAPH_SIMULATION_STATUS: 7_PATHS_SIMULATED_ISOLATION_VALID
+  # Gate 7
+  AUTHORITY_NORMALIZATION_STATUS: NO_REGRESSION_FROM_R13A
+  # Gate 8
+  TASKCARD_STATE_STATUS: CONSISTENT_NO_DRIFT
+  # Gate 9
+  ADVERSARIAL_REVIEW_STATUS: 15_OF_15_ATTACKS_BLOCKED
+  SCOPE_DRIFT: NONE
+  # Overall governance
+  ZST_GATE1_APPROVED: false
+  GATE_11_FODS_APPROVED: false
+  GATE_11_FODT_APPROVED: false
+  COMMERCIAL_PRODUCT_READY: false
+  R13_SPRINT_STATUS: R13_ZST_GATE1_PACKET_COMPLETE
