@@ -500,9 +500,10 @@ formats:
           spec-index.yaml validated. 20/20 Gate 2 tests PASS.
           Gate 3 NOT authorized. Implementation NOT authorized.
       gate_3:
-        status: source_identification_complete
-        approved_by: null
-        approved_date: null
+        status: passed
+        approved_by: "delegated (R16 prompt, Babar Raza instruction)"
+        approved_date: "2026-05-15"
+        approval_method: delegated_agent_execution_under_r16_prompt
         source_identification_complete: true
         candidate_sources_identified: 8
         preferred_sources_selected: 5
@@ -510,14 +511,26 @@ formats:
         corpus_design_plan: reports/samples/zst-corpus-design-plan-20260515.md
         source_id_sprint: FORMAT-FACTORY-R15A-ZST-GATE3A-SAMPLE-SOURCE-IDENTIFICATION-SWARM-001
         source_id_date: "2026-05-15"
+        corpus_acquisition_sprint: FORMAT-FACTORY-R16-ZST-GATE3B-CORPUS-ACQUISITION-IV-AND-MULTI-FORMAT-INTAKE-SWARM-001
+        corpus_acquisition_date: "2026-05-15"
+        corpus_manifest: samples/by-format/zst/_corpus-manifest.yaml
+        corpus_provenance: samples/by-format/zst/_provenance.yaml
+        corpus_valid_count: 8
+        corpus_invalid_count: 3
+        corpus_validation_tests: tests/skills/test_zst_gate3b_sample_corpus.py
+        corpus_validation_result: "57/57 PASS"
+        iv_report: reports/verification/r16-zst-gate3-independent-verification-20260515.md
+        iv_result: PASS
         notes: |
           Gate 3A source identification COMPLETE (R15A, 2026-05-15).
           8 candidate sources identified; 5 preferred (SOURCE-001 through SOURCE-005).
-          Preferred sources: facebook/zstd golden-decompression (BSD-3), decodecorpus self-gen,
-          python-zstandard self-gen, facebook/zstd golden-decompression-errors (BSD-3),
-          PD text + zstd CLI self-gen.
-          Gate 3 NOT passed. samples/by-format/zst/ does NOT exist.
-          Gate 3B corpus acquisition requires separate R16 execution prompt.
+          Gate 3B corpus acquisition COMPLETE (R16, 2026-05-15).
+          11 files acquired: 8 valid + 3 invalid. All SHA-256 verified. 57/57 corpus tests PASS.
+          Pinned commit: 5233c58e6ca0b1c4c6b353ad79649191ed195bdc (facebook/zstd).
+          SOURCE-002 (decodecorpus) replaced with python-zstandard level=19 structural variant.
+          DEC-034 IV PASS (R16, 2026-05-15). 10/10 IV checks PASS.
+          Gate 3 APPROVED under delegated authority (R16 execution prompt, Babar Raza instruction).
+          Gate 4 (Parser Prototype Planning) is now authorized.
       gate_4:
         status: not_started
         approved_by: null

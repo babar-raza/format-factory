@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance / Planning
-**Last reviewed:** 2026-05-15 (R13A authority normalization)
+**Last reviewed:** 2026-05-15 (R16 ZST Gate 3 PASSED)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not the operational authority. Actual progress is tracked in `plans/master-plan.md` and `registry/format-registry.yaml`.
 
 ---
@@ -130,6 +130,19 @@ Key deliverables:
 
 ---
 
+## ZST — Zstandard
+
+ZST is the third format in the acquisition pipeline. Gate 1 scored 8.95/10 (ACQUISITION_READY).
+
+**ZST status:**
+
+- Gate 1 PASSED (delegated, R13B, 2026-05-15). Score: 8.95/10. IETF RFC 8878.
+- Gate 2 PASSED (delegated, R14, 2026-05-15). RFC 8878 + RFC 9659 cached. 20 tests PASS.
+- **Gate 3 PASSED (delegated, R16, 2026-05-15).** 11-file corpus (8 valid + 3 invalid). 57 corpus tests PASS. DEC-034 IV PASS.
+- Gate 4: R17 taskcard created (ZST-R17-GATE4-PARSER-PROTOTYPE-PLANNING.md). Pending authorization.
+
+---
+
 ## Beyond FODS And FODT
 
 FODS and FODT are the first two XML-style pilots. They prove the acquisition pipeline across two product families: Cells and Words.
@@ -138,7 +151,11 @@ Next likely ODF flat XML candidates remain in the candidate pool:
 
 - FODP, flat OpenDocument Presentation
 - FODG, flat OpenDocument Graphics
-- FODB, flat OpenDocument Database
+- FODB, flat OpenDocument Database (deferred — Aspose support unclear)
+
+Non-ODF candidates from R11 planning bundle:
+- Gnumeric (.gnumeric) — score 8.75, ACQUISITION_READY
+- ABW (.abw) — score 8.75, ACQUISITION_READY
 
 The next format should be selected through the same scoring, evidence, gate, and human-approval process. No format inherits gate approval from FODS or FODT.
 

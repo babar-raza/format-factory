@@ -2,22 +2,25 @@
 taskcard_id: ZST-GATE3-IV
 title: "ZST Gate 3 — Independent Verification — Pending Gate 3B Completion"
 type: iv_packet
-sprint: null
+sprint: FORMAT-FACTORY-R16-ZST-GATE3B-CORPUS-ACQUISITION-IV-AND-MULTI-FORMAT-INTAKE-SWARM-001
 created_by_sprint: FORMAT-FACTORY-R15A-ZST-GATE3A-SAMPLE-SOURCE-IDENTIFICATION-SWARM-001
 created_at: "2026-05-15"
-status: pending_gate3b
+completed_at: "2026-05-15"
+status: completed
 visibility: internal
 publish_allowed: false
 authority: plans/master-plan.md
 dec034_required: true
+iv_report: reports/verification/r16-zst-gate3-independent-verification-20260515.md
+iv_result: PASS
 ---
 
 # Taskcard: ZST-GATE3-IV
 
-## Current State: PENDING_GATE3B
+## Current State: COMPLETED
 
-Gate 3B corpus acquisition has not yet been authorized or completed.
-This IV taskcard cannot be executed until Gate 3B produces the sample corpus.
+IV executed in R16 sprint under delegated authority (R16 prompt explicitly authorized in-sprint IV).
+All 10 IV checks PASS. Gate 3 technical criteria fully met. Gate 3 ready for delegated approval.
 
 ## IV Scope (when Gate 3B is complete)
 

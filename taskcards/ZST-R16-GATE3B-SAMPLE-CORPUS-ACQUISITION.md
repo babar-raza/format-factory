@@ -2,10 +2,11 @@
 taskcard_id: ZST-R16-GATE3B-SAMPLE-CORPUS-ACQUISITION
 title: "ZST Gate 3B — Sample Corpus Acquisition — Pending R16 Authorization"
 type: gate_packet
-sprint: null
+sprint: FORMAT-FACTORY-R16-ZST-GATE3B-CORPUS-ACQUISITION-IV-AND-MULTI-FORMAT-INTAKE-SWARM-001
 created_by_sprint: FORMAT-FACTORY-R15A-ZST-GATE3A-SAMPLE-SOURCE-IDENTIFICATION-SWARM-001
 created_at: "2026-05-15"
-status: pending_authorization
+completed_at: "2026-05-15"
+status: completed
 visibility: internal
 publish_allowed: false
 authority: plans/master-plan.md
@@ -13,11 +14,12 @@ authority: plans/master-plan.md
 
 # Taskcard: ZST-R16-GATE3B-SAMPLE-CORPUS-ACQUISITION
 
-## Current State: PENDING_AUTHORIZATION
+## Current State: COMPLETED
 
-Gate 3A source identification complete (R15A, 2026-05-15).
-Gate 3B corpus acquisition NOT yet authorized.
-A separate R16 execution prompt is required to begin corpus acquisition.
+Gate 3B corpus acquisition COMPLETE (R16, 2026-05-15).
+11 files acquired: 8 valid + 3 invalid. All SHA-256 verified. 57/57 tests PASS.
+Gate 3 APPROVED under delegated authority (R16 prompt).
+DEC-034 IV PASS.
 
 ## Gate 3B Work (NOT YET STARTED)
 

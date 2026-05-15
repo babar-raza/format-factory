@@ -27,10 +27,28 @@ PACK_YAML = ACQUISITION_PACK / "pack.yaml"
 TASKCARDS = REPO_ROOT / "taskcards"
 
 
+def _gate3_status():
+    """Return current gate_3.status from registry."""
+    with open(REGISTRY_PATH, encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+    for fmt in data.get("formats", []):
+        if fmt.get("format_id") == "zst":
+            return fmt.get("gates", {}).get("gate_3", {}).get("status", "not_started")
+    return "not_started"
+
+
+_GATE3A_ONLY_STATUSES = {"not_started", "source_identification_complete"}
+
+
 # ── Hard invariant: corpus NOT created ────────────────────────────────────────
 
 def test_samples_zst_directory_does_not_exist():
-    """Gate 3 hard invariant: samples/by-format/zst/ must NOT exist in Gate 3A."""
+    """Gate 3 hard invariant: samples/by-format/zst/ must NOT exist in Gate 3A.
+
+    Superseded once Gate 3B completes — skips when gate_3.status has advanced.
+    """
+    if _gate3_status() not in _GATE3A_ONLY_STATUSES:
+        pytest.skip("Gate 3A pre-corpus boundary: superseded by Gate 3B (corpus acquired)")
     assert not SAMPLES_ZST.exists(), (
         "INVARIANT VIOLATED: samples/by-format/zst/ must not exist in Gate 3A. "
         "Corpus acquisition is Gate 3B work only."
@@ -38,7 +56,12 @@ def test_samples_zst_directory_does_not_exist():
 
 
 def test_no_provenance_yaml_in_samples_zst():
-    """No _provenance.yaml should exist since corpus has not been acquired."""
+    """No _provenance.yaml should exist since corpus has not been acquired.
+
+    Superseded once Gate 3B completes.
+    """
+    if _gate3_status() not in _GATE3A_ONLY_STATUSES:
+        pytest.skip("Gate 3A pre-corpus boundary: superseded by Gate 3B (corpus acquired)")
     if SAMPLES_ZST.exists():
         provenance_files = list(SAMPLES_ZST.rglob("_provenance.yaml"))
         assert len(provenance_files) == 0, (
@@ -94,7 +117,12 @@ def test_registry_zst_entry_exists():
 
 
 def test_registry_gate3_status_not_passed():
-    """Gate 3 must NOT be set to passed in registry."""
+    """Gate 3 must NOT be set to passed in Gate 3A.
+
+    Superseded once Gate 3B IV passes and delegated approval is granted.
+    """
+    if _gate3_status() not in _GATE3A_ONLY_STATUSES:
+        pytest.skip("Gate 3A pre-approval boundary: superseded (gate_3 approved)")
     entry = _load_zst_registry_entry()
     if entry:
         gates = entry.get("gates", {})
@@ -107,7 +135,12 @@ def test_registry_gate3_status_not_passed():
 
 
 def test_registry_gate3_status_is_source_identification_complete():
-    """Gate 3 status should be source_identification_complete after R15A."""
+    """Gate 3 status should be source_identification_complete after R15A.
+
+    Superseded once Gate 3B completes.
+    """
+    if _gate3_status() not in _GATE3A_ONLY_STATUSES:
+        pytest.skip("Gate 3A status boundary: superseded (gate_3 advanced past source_identification_complete)")
     entry = _load_zst_registry_entry()
     if entry:
         gates = entry.get("gates", {})
@@ -119,7 +152,12 @@ def test_registry_gate3_status_is_source_identification_complete():
 
 
 def test_registry_gate3_approved_by_is_null():
-    """Gate 3 must not have a human approver set."""
+    """Gate 3 must not have a human approver set in Gate 3A.
+
+    Superseded once Gate 3 is approved.
+    """
+    if _gate3_status() not in _GATE3A_ONLY_STATUSES:
+        pytest.skip("Gate 3A pre-approval boundary: superseded (gate_3 approved)")
     entry = _load_zst_registry_entry()
     if entry:
         gates = entry.get("gates", {})
@@ -170,7 +208,12 @@ def _load_pack_yaml():
 
 
 def test_pack_yaml_sample_sources_status():
-    """pack.yaml sample_sources.status must be source_identification_complete."""
+    """pack.yaml sample_sources.status must be source_identification_complete in Gate 3A.
+
+    Superseded once Gate 3B completes.
+    """
+    if _gate3_status() not in _GATE3A_ONLY_STATUSES:
+        pytest.skip("Gate 3A pack status boundary: superseded (corpus acquired)")
     data = _load_pack_yaml()
     stages = data.get("stages", {})
     sample_sources = stages.get("sample_sources", {})
@@ -181,7 +224,12 @@ def test_pack_yaml_sample_sources_status():
 
 
 def test_pack_yaml_corpus_acquisition_status():
-    """pack.yaml corpus_acquisition_status must be not_started."""
+    """pack.yaml corpus_acquisition_status must be not_started in Gate 3A.
+
+    Superseded once Gate 3B completes.
+    """
+    if _gate3_status() not in _GATE3A_ONLY_STATUSES:
+        pytest.skip("Gate 3A pack corpus status boundary: superseded (corpus acquired)")
     data = _load_pack_yaml()
     stages = data.get("stages", {})
     sample_sources = stages.get("sample_sources", {})

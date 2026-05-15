@@ -1,0 +1,135 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R16-ZST-GATE3B-CORPUS-ACQUISITION-IV-AND-MULTI-FORMAT-INTAKE-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) present since before R14 — NOT sprint artifacts; all R16 work committed; git-log.txt will show correct HEAD confirming post-commit state"
+min_metadata_count: 30
+required_repo_files:
+  # Authority files
+  - README.md
+  - plans/master-plan.md
+  - ROADMAP.md
+  - registry/format-registry.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+  # Acquisition pack
+  - acquisition-packs/zst/pack.yaml
+  - acquisition-packs/zst/sample-sources.md
+  # Corpus files
+  - samples/by-format/zst/_corpus-manifest.yaml
+  - samples/by-format/zst/_provenance.yaml
+  - samples/by-format/zst/valid/block-128k.zst
+  - samples/by-format/zst/valid/empty-block.zst
+  - samples/by-format/zst/valid/rle-first-block.zst
+  - samples/by-format/zst/valid/zeroSeq_2B.zst
+  - samples/by-format/zst/valid/minimal-synthetic.zst
+  - samples/by-format/zst/valid/text-compressed.zst
+  - samples/by-format/zst/valid/dict-compressed.zst
+  - samples/by-format/zst/valid/random-data.zst
+  - samples/by-format/zst/invalid/off0.bin.zst
+  - samples/by-format/zst/invalid/truncated_huff_state.zst
+  - samples/by-format/zst/invalid/zeroSeq_extraneous.zst
+  - samples/by-format/zst/source-materials/generation-scripts/generate_synthetic_zst.py
+  # Taskcards
+  - taskcards/ZST-R16-GATE3B-SAMPLE-CORPUS-ACQUISITION.md
+  - taskcards/ZST-GATE3-IV.md
+  - taskcards/ZST-R17-GATE4-PARSER-PROTOTYPE-PLANNING.md
+  - taskcards/R17-MULTI-FORMAT-GATE1-INTAKE.md
+  # Memory
+  - memory/33-zst-r16-gate3b-corpus-acquisition-20260515.md
+  # Tests
+  - tests/skills/test_zst_gate3b_sample_corpus.py
+  - tests/skills/test_zst_gate3a_boundary.py
+  # Reports
+  - reports/governance/r16-preflight-r15a-closure-and-lane-ownership-20260515.md
+  - reports/verification/r16-r15a-closure-verification-and-repair-20260515.md
+  - reports/legal/r16-zst-sample-license-provenance-revalidation-20260515.md
+  - reports/testing/r16-zst-sample-corpus-validation-report-20260515.md
+  - reports/governance/r16-zst-pack-registry-gate3b-update-report-20260515.md
+  - reports/verification/r16-zst-gate3-independent-verification-20260515.md
+  - reports/governance/r16-zst-gate3-delegated-approval-report-20260515.md
+  - reports/planning/r16-multi-format-intake-and-next-candidates-20260515.md
+  - reports/planning/r16-opendocument-status-and-next-actions-20260515.md
+  - reports/planning/r16-taskcard-roadmap-memory-normalization-report-20260515.md
+  - reports/adversarial/r16-adversarial-review-20260515.md
+  - reports/governance/r16-no-scope-drift-report-20260515.md
+  # Candidate shortlist
+  - acquisition-packs/_candidate-shortlists/r16-multi-format-intake-and-next-candidates-20260515.md
+  # Contract
+  - tools/evidence/contracts/r16-zst-gate3b-corpus-acquisition-iv-and-multi-format-intake-swarm.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - verdict.md
+  - validation-command-log.txt
+  - current-state-consistency-report.md
+  - r16-preflight-summary.md
+  - r16-sprint-gate-status.md
+  - r16-authorization-record.md
+  - r16-r15a-closure-summary.md
+  - r16-license-revalidation-summary.md
+  - r16-corpus-acquisition-summary.md
+  - r16-sha256-verification-summary.md
+  - r16-decompression-test-summary.md
+  - r16-provenance-summary.md
+  - r16-corpus-manifest-summary.md
+  - r16-test-results.md
+  - r16-registry-update-summary.md
+  - r16-pack-update-summary.md
+  - r16-iv-summary.md
+  - r16-gate3-approval-summary.md
+  - r16-multi-format-intake-summary.md
+  - r16-odf-status-summary.md
+  - r16-taskcard-normalization-summary.md
+  - r16-roadmap-update-summary.md
+  - r16-memory-update-summary.md
+  - r16-governance-flags-snapshot.md
+  - r16-scope-boundary-record.md
+  - r16-adversarial-review-summary.md
+  - no-scope-drift-report.md
+  - r16-gate3b-completion-record.md
+  - r16-next-sprint-readiness.md
+sprint_verdicts:
+  sprint_id: FORMAT-FACTORY-R16-ZST-GATE3B-CORPUS-ACQUISITION-IV-AND-MULTI-FORMAT-INTAKE-SWARM-001
+  dry_run_enforced: false
+  simulation_only_enforced: false
+  internet_access_authorized: true
+  internet_download_authorized: true
+  commercial_product_ready_false: true
+  gate_self_approval_not_allowed: false
+  delegated_execution_model: true
+  no_source_mutation: true
+  no_generated_requirements_zst: true
+  # Gate results
+  PREFLIGHT_STATUS: PASS
+  R15A_CLOSURE_VERIFICATION: PASS
+  LICENSE_REVALIDATION: PASS_ALL_5_SOURCES_COMPLIANT
+  CORPUS_ACQUISITION: COMPLETE_11_FILES
+  SHA256_VERIFICATION: 11_OF_11_PASS
+  VALID_DECOMPRESSION: 8_OF_8_PASS
+  INVALID_ERROR_DETECTION: 3_OF_3_PASS
+  PROVENANCE_CONFIRMED: 11_OF_11_CONFIRMED
+  CORPUS_MANIFEST: VALID
+  CORPUS_TESTS: 57_OF_57_PASS
+  REGISTRY_UPDATE: gate_3_status_corpus_acquired_then_passed
+  PACK_UPDATE: COMPLETE
+  DEC034_IV: 10_OF_10_CHECKS_PASS
+  GATE3_APPROVAL: DELEGATED_APPROVED
+  MULTI_FORMAT_INTAKE: SURVEYED_NO_GATE1_APPROVED
+  ODF_STATUS_REPORT: COMPLETE
+  TASKCARD_NORMALIZATION: COMPLETE
+  VALIDATION_STATUS: FULL_SUITE_1367_PASS_11_SKIP
+  ADVERSARIAL_REVIEW_STATUS: 24_OF_24_ATTACKS_BLOCKED
+  SCOPE_DRIFT: NONE
+  # Overall governance
+  ZST_GATE1_APPROVED: true
+  ZST_GATE2_PASSED: true
+  ZST_GATE3_PASSED: true
+  ZST_GATE3_APPROVED_BY: delegated_r16_prompt_babar_raza_instruction
+  ZST_GATE4_AUTHORIZED: false
+  SAMPLES_DIR_PRESENT: true
+  IMPLEMENTATION_AUTHORIZED: false
+  COMMERCIAL_PRODUCT_READY: false
+  R16_SPRINT_STATUS: R16_COMPLETE_GATE3_PASSED

@@ -13,7 +13,7 @@ generated_by: claude
 generated_at: "2026-05-15"
 updated_at: "2026-05-15"
 sprint_created: FORMAT-FACTORY-R13B-DELEGATED-ZST-GATE1-REAL-SUPPORT-AUDIT-AND-GOVERNANCE-NORMALIZATION-SWARM-001
-sprint_updated: FORMAT-FACTORY-R15A-ZST-GATE3A-SAMPLE-SOURCE-IDENTIFICATION-SWARM-001
+sprint_updated: FORMAT-FACTORY-R16-ZST-GATE3B-CORPUS-ACQUISITION-IV-AND-MULTI-FORMAT-INTAKE-SWARM-001
 reusable: false
 refresh_policy:
   trigger: spec-version-changed
@@ -22,7 +22,7 @@ stale: false
 open_source_allowed: false
 commercial_allowed: false
 release_blockers: []
-notes: "Gate 1 approved (delegated R13B, 2026-05-15). Gate 2 spec retrieval complete (R14, 2026-05-15). RFC 8878 + RFC 9659 cached with SHA-256."
+notes: "Gate 1 approved (delegated R13B, 2026-05-15). Gate 2 spec retrieval complete (R14, 2026-05-15). RFC 8878 + RFC 9659 cached with SHA-256. Gate 3B corpus acquisition COMPLETE (R16, 2026-05-15): 11 files, 57/57 tests PASS. Pending IV and Gate 3 approval."
 
 # --- Format identity ---
 display_name: "Zstandard Compressed File"
@@ -70,13 +70,21 @@ stages:
     gate: 2
     notes: "Gate 2 legal: GATE2_PASS_WITH_LEGAL_NOTES. Errata noted (7 total). No IPR disclosures. BSD+patent grant."
   sample_sources:
-    status: source_identification_complete
+    status: passed
     artifact: acquisition-packs/zst/sample-sources.md
     gate: 3
     sources_identified: 8
     preferred_sources: 5
-    corpus_acquisition_status: not_started
-    notes: "Gate 3A complete (R15A, 2026-05-15). sample-sources.md created. 8 candidates, 5 preferred. Gate 3 NOT passed. Corpus acquisition requires R16 prompt."
+    corpus_acquisition_status: complete
+    corpus_manifest: samples/by-format/zst/_corpus-manifest.yaml
+    corpus_provenance: samples/by-format/zst/_provenance.yaml
+    corpus_valid_count: 8
+    corpus_invalid_count: 3
+    corpus_validation_tests: tests/skills/test_zst_gate3b_sample_corpus.py
+    corpus_validation_result: "57/57 PASS"
+    gate_3_approved_by: "delegated (R16 prompt, Babar Raza instruction)"
+    gate_3_approved_date: "2026-05-15"
+    notes: "Gate 3 PASSED (R16, 2026-05-15). DEC-034 IV PASS. 11 files, 57/57 tests PASS. Approved under delegated authority."
   parser_notes:
     status: not_started
     artifact: acquisition-packs/zst/parser-notes.md
