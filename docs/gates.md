@@ -14,8 +14,9 @@ Gates are mandatory checkpoints that a format must pass before work at the next 
 
 ## Gate Authorization Rules
 
-1. **No self-approval.** An agent that completes the work required for a gate may NOT mark the gate as passed. It must request human review.
-2. **Human sign-off required.** A human must explicitly record gate passage in `registry/format-registry.yaml` by setting `gate_N_status: passed` and `gate_N_approved_by: <name>` and `gate_N_approved_date: <ISO-8601 date>`.
+1. **No autonomous self-approval.** An agent that completes the work required for a gate may NOT mark the gate as passed on its own initiative. It must request human review, or await a delegated decision (see rule 1a).
+1a. **Delegated execution path.** When the human project lead explicitly delegates a gate decision to the agent via an execution prompt, the agent may record the decision on the human's behalf. The delegated execution must: (a) cite the execution prompt as authority; (b) be supported by complete evidence; (c) record `approval_method: delegated_agent_decision_under_<human>_instruction` in the registry; (d) produce a delegated-decision report. This is not autonomous self-approval — it is the agent carrying out an explicit human decision. See GOVERNANCE.md §2.1a and AGENTS.md §D1a.
+2. **Human sign-off required (or delegated sign-off).** Gate passage must be recorded in `registry/format-registry.yaml` by setting `gate_N_status: passed` and `gate_N_approved_by: <name>` and `gate_N_approved_date: <ISO-8601 date>`.
 3. **Sequential progression.** A format may not begin Stage N+1 work until Gate N has been passed and recorded in the registry.
 4. **No retroactive approval.** Artifacts produced before a preceding gate was passed do not count toward the later gate. For example, a prototype started before Gate 3 was passed does not satisfy Gate 4.
 5. **Master plan update required.** After any gate passage, `plans/master-plan.md` must be updated with the gate history entry before the format proceeds to the next stage.

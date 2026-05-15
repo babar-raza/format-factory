@@ -54,8 +54,10 @@ Candidates are NOT entered in the registry at this stage. They are informal note
 4. Classify the format into a legal category (see `docs/legal-and-licensing.md`).
 5. Create a registry entry in `registry/format-registry.yaml`. Set `gate_1.status: scored_pending_human_approval`. Leave `approved_by: null` and `approved_date: null` — these are human-only fields. If score is in the reject band or legal category is 5 or 6, set `gate_1.status: rejected` instead.
 6. Record scoring rationale per dimension and weighted total in the `scoring_notes` field.
-7. **Do NOT set `gate_1.status: passed`.** Gate 1 is NOT passed by the agent. The agent produces scoring evidence and requests human review. The human records the approval.
-8. After human records `gate_1.status: passed` (with `approved_by` and `approved_date`), update `plans/master-plan.md` to record Gate 1 passage.
+7. **Do NOT set `gate_1.status: passed` autonomously.** Gate 1 is NOT passed by the agent without authorization. The agent produces scoring evidence and requests human review — or, if the human has explicitly delegated the decision via an execution prompt, the agent records the decision under the delegated execution path (GOVERNANCE.md §2.1a, AGENTS.md §D1a). In a delegated execution, `approved_by` must identify the human principal and `approval_method` must be set to `delegated_agent_decision_under_<human>_instruction`.
+8. After gate_1 is recorded as passed (whether by direct human entry or delegated execution), update `plans/master-plan.md` to record Gate 1 passage.
+
+**Critical rule:** Scoring is evidence for Gate 1, not approval of Gate 1. Delegated execution is not autonomous self-approval — it requires explicit human delegation in the execution prompt.
 
 **Spec download rule for Stage 1:** Stage 1 may identify the relevant specification URL and confirm the format's legal category (required for scoring). Stage 1 does NOT download the specification. The spec URL is recorded in the registry entry for future use. Actual spec acquisition is Stage 2 work and requires Gate 1 passage plus separate explicit authorization.
 

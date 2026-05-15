@@ -1,0 +1,105 @@
+---
+artifact_id: zst-pack
+artifact_type: acquisition-pack
+path: acquisition-packs/zst/pack.yaml
+format_id: zst
+product_family: archive
+visibility: evidence-only
+publish_allowed: false
+license: null
+provenance_required: false
+provenance_status: not-applicable
+source_hash: null
+generated_by: claude
+generated_at: "2026-05-15"
+reusable: false
+refresh_policy:
+  trigger: spec-version-changed
+  max_age_days: null
+stale: false
+open_source_allowed: false
+commercial_allowed: false
+release_blockers: []
+notes: "Created at ZST Gate 1 approval (delegated, R13B, 2026-05-15). Spec retrieval NOT yet authorized."
+
+# --- Format identity ---
+format_id: zst
+display_name: "Zstandard Compressed File"
+family: archive
+extensions:
+  - .zst
+  - .tar.zst
+mime_type: "application/zstd"
+spec_body: IETF
+spec_version: "RFC 8878"
+spec_url: "https://www.ietf.org/rfc/rfc8878.txt"
+spec_accessed_date: null
+source_hash: null
+
+# --- Legal classification ---
+legal_category: 2
+legal_category_name: "Permissive OSS"
+fast_path_eligible: true
+
+# --- Scoring summary (from Gate 1) ---
+scoring:
+  weighted_total: 8.95
+  band: ACQUISITION_READY
+  gate_1_approved_by: "Babar Raza"
+  gate_1_approved_date: "2026-05-15"
+  gate_1_approval_method: "delegated_agent_decision_under_babar_instruction"
+
+# --- Acquisition stage status ---
+stages:
+  spec_evidence:
+    status: not_started
+    artifact: acquisition-packs/zst/spec-evidence.md
+    gate: 2
+    notes: "Spec retrieval not yet authorized. RFC citation available; full text not cached."
+  legal_notes:
+    status: complete
+    artifact: acquisition-packs/zst/legal-notes.md
+    gate: 2
+    notes: "Legal classification complete (R13B Gate 5). BSD/patent grant; python-zstandard BSD-3-Clause."
+  sample_sources:
+    status: not_started
+    artifact: acquisition-packs/zst/sample-sources.md
+    gate: 3
+  parser_notes:
+    status: not_started
+    artifact: acquisition-packs/zst/parser-notes.md
+    gate: 4
+  oracle_tool:
+    name: null
+    version: null
+    gate: 6
+    notes: "Oracle strategy: SHA-256 round-trip (compress → decompress → compare). Planned for Gate 6."
+  tier_map:
+    status: not_started
+    gate: 9
+  delivery_plan:
+    first_oss_release_tiers: []
+    deferred_tiers: []
+    gate: 9
+
+# --- R12 Acquisition Governance Fields ---
+acquisition_risk_classification: LOW
+oracle_classification: ROUND_TRIP
+spec_normalization_status: NOT_STARTED
+
+# --- Support matrix (R13B confirmed) ---
+aspose_supported: true
+aspose_support_level: "FULL_ROUND_TRIP"
+aspose_classes:
+  - Aspose.Zip.Zstandard.ZstandardArchive
+  - Aspose.Zip.Zstandard.ZstandardLoadOptions
+  - Aspose.Zip.Zstandard.ZstandardSaveOptions
+  - Aspose.Zip.Tar.TarArchive.SaveZstandard
+aspose_evidence_url: "https://docs.aspose.com/zip/net/supported-file-formats/"
+aspose_evidence_accessed: "2026-05-15"
+
+# --- Python library ---
+python_library: zstandard
+python_library_pypi: "https://pypi.org/project/zstandard/"
+python_library_license: "BSD-3-Clause"
+python_library_notes: "python-zstandard by Gregory Szorc (indygreg). Pure FOSS. No Aspose dependency for Python track."

@@ -45,7 +45,9 @@
 
 ## D. Gate Rules
 
-**D1.** No agent may self-approve a gate. All 11 gates require human review and explicit sign-off recorded in `registry/format-registry.yaml`.
+**D1.** No agent may self-approve a gate autonomously. All 11 gates require human review and explicit sign-off recorded in `registry/format-registry.yaml`.
+
+**D1a. Delegated Decision Execution.** When the human project lead explicitly delegates a gate decision to the agent via an execution prompt, the agent may execute that decision on the human's behalf, provided: (a) the delegation is explicit and named in the execution prompt; (b) complete evidence gates exist in the repo; (c) no external authority, credential, payment, or legal signature is required; (d) the decision and its basis are transparently recorded in a delegated-decision report; (e) the registry approval record identifies the approval_method as `delegated_agent_decision_under_<human>_instruction`. A delegated execution is the agent carrying out a human decision — it is not autonomous self-approval. Evidence requirements are not waived. See GOVERNANCE.md §2.1a.
 
 **D2.** Before requesting gate approval, complete the self-challenge (Section I). Log the results.
 

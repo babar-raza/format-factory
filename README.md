@@ -92,7 +92,7 @@ Agents may prepare evidence, but only a human can approve a gate.
 
 ## Project Status
 
-**Current phase:** Phase 3/4. FODS Gates 1-10 are passed and Gate 11 is `commercial_readiness_in_progress` (NOT approved). FODT Gates 1-10 are passed, Gate 11 is `commercial_readiness_in_progress` (NOT approved). DEC-033 resolved as Option B (.NET Commercial Only). commercial_product_ready: false.
+**Current phase:** Phase 3/4. FODS Gates 1-10 are passed and Gate 11 is `commercial_readiness_in_progress` (NOT approved). FODT Gates 1-10 are passed, Gate 11 is `commercial_readiness_in_progress` (NOT approved). DEC-033 resolved as Option B (.NET Commercial Only). commercial_product_ready: false. ZST Gate 1 APPROVED (R13B, 2026-05-15, delegated).
 
 - Phase 0 Foundation: Complete, accepted 2026-05-04.
 - FODS Gates 1-10: Complete, approved by Babar Raza across run017 through run048.
@@ -102,6 +102,7 @@ Agents may prepare evidence, but only a human can approve a gate.
 - FODT Python Phase 4 source: Created under `src/python/fodt/` with 115/115 tests passing (TC-0052 completed).
 - Format Understanding Layer: FUL-001 schemas created, FUL-002 FODS completed, FUL-003 FODT completed.
 - .NET C4-C6 vertical slice: Created for FODS (src/net/fods/) and FODT (src/net/fodt/); DEC-033 resolved Option B; commercial_product_ready: false.
+- ZST (Zstandard): Gate 1 APPROVED (R13B, 2026-05-15, delegated by Babar Raza). Aspose.ZIP support confirmed. acquisition-packs/zst/ created. Spec retrieval (Gate 2) NOT yet authorized — requires R14 prompt.
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md). The master plan and [registry/format-registry.yaml](registry/format-registry.yaml) are the authoritative status sources.
 

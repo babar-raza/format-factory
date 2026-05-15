@@ -1,0 +1,109 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R13B-DELEGATED-ZST-GATE1-REAL-SUPPORT-AUDIT-AND-GOVERNANCE-NORMALIZATION-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) outside sprint scope — NOT sprint blockers; all sprint work committed prior to bundle build"
+min_metadata_count: 30
+required_repo_files:
+  # Governance model updated
+  - GOVERNANCE.md
+  - AGENTS.md
+  - docs/gates.md
+  - docs/acquisition-workflow.md
+  # Authority files
+  - README.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  # Decision packet (historical, still valid)
+  - acquisition-packs/_candidate-shortlists/zst-gate1-decision-packet-20260515.md
+  # Acquisition pack (new)
+  - acquisition-packs/zst/pack.yaml
+  - acquisition-packs/zst/support-matrix.md
+  - acquisition-packs/zst/legal-notes.md
+  - acquisition-packs/zst/product-strategy-notes.md
+  # Taskcards
+  - taskcards/ZST-GATE1-DECISION-PACKET.md
+  - taskcards/ZST-R14-SPEC-RETRIEVAL.md
+  # Memory
+  - memory/30-delegated-human-action-governance-and-r13b-zst-audit-20260515.md
+  # R13B reports
+  - reports/governance/r13b-preflight-current-state-and-lane-ownership-20260515.md
+  - reports/verification/r13b-r13-evidence-acceptance-check-20260515.md
+  - reports/governance/r13b-delegated-human-action-governance-normalization-20260515.md
+  - reports/governance/r13b-delegated-zst-gate1-option-selection-20260515.md
+  - reports/audits/zst-aspose-support-matrix-audit-20260515.md
+  - reports/audits/zst-legal-and-public-spec-readiness-audit-20260515.md
+  - reports/planning/zst-product-strategy-alignment-audit-20260515.md
+  - reports/governance/r13b-zst-gate1-decision-execution-report-20260515.md
+  - reports/planning/r13b-taskcard-state-normalization-report-20260515.md
+  - reports/governance/r13b-authority-normalization-report-20260515.md
+  - reports/governance/r13b-adversarial-review-20260515.md
+  - reports/governance/r13b-no-scope-drift-report-20260515.md
+  # Evidence contract
+  - tools/evidence/contracts/r13b-delegated-zst-gate1-real-support-audit-swarm.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - verdict.md
+  - validation-command-log.txt
+  - lane-ownership-matrix.md
+  - delegated-decision-record.md
+  - support-audit-summary.md
+  - legal-audit-summary.md
+  - product-strategy-summary.md
+  - gate1-decision-execution-summary.md
+  - adversarial-review-summary.md
+  - no-scope-drift-report.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - r13b-sprint-gate-status.md
+  - r13b-authorization-record.md
+  - r13b-governance-validation.md
+  - r13b-governance-model-update-summary.md
+  - r13b-aspose-evidence-urls.md
+  - r13b-legal-classification-summary.md
+  - r13b-acquisition-pack-summary.md
+  - r13b-taskcard-changes-summary.md
+  - r13b-authority-files-changed.md
+  - r13b-test-results.md
+  - r13b-preflight-summary.md
+  - r13b-r13-baseline-reference.md
+  - r13b-ota-fallback-preserved.md
+  - r13b-scope-boundary-record.md
+  - r13b-governance-flags-snapshot.md
+sprint_verdicts:
+  sprint_id: FORMAT-FACTORY-R13B-DELEGATED-ZST-GATE1-REAL-SUPPORT-AUDIT-AND-GOVERNANCE-NORMALIZATION-SWARM-001
+  dry_run_enforced: false
+  simulation_only_enforced: false
+  internet_access_authorized: true
+  internet_scope: "Official Aspose + IETF + GitHub license metadata only"
+  commercial_product_ready_false: true
+  gate_self_approval_not_allowed: true
+  delegated_execution_model: true
+  no_source_mutation: true
+  no_spec_cache_created: true
+  no_rfc_full_text_retrieved: true
+  no_gate2_authorized: true
+  # Gate results
+  PREFLIGHT_STATUS: PASS
+  R13_EVIDENCE_ACCEPTANCE: PASS
+  GOVERNANCE_CORRECTION: PASS
+  DELEGATED_DECISION_SELECTION: APPROVE_ZST_GATE1_REAL_SUPPORT_AUDIT_ONLY
+  ASPOSE_AUDIT_STATUS: PASS_aspose_supported_true
+  LEGAL_AUDIT_STATUS: PASS_full_public_verified
+  PRODUCT_ALIGNMENT_STATUS: PASS_WITH_LIMITATIONS
+  GATE1_EXECUTION_STATUS: ZST_GATE1_APPROVED_DELEGATED
+  TASKCARD_STATE_STATUS: NORMALIZED
+  AUTHORITY_NORMALIZATION_STATUS: PASS
+  ADVERSARIAL_REVIEW_STATUS: 20_OF_20_ATTACKS_BLOCKED
+  SCOPE_DRIFT: NONE
+  # Overall governance
+  ZST_GATE1_APPROVED: true
+  ZST_GATE1_APPROVAL_METHOD: delegated_agent_decision_under_babar_instruction
+  ZST_GATE2_AUTHORIZED: false
+  GATE_11_FODS_APPROVED: false
+  GATE_11_FODT_APPROVED: false
+  COMMERCIAL_PRODUCT_READY: false
+  R13B_SPRINT_STATUS: R13B_COMPLETE_ZST_GATE1_APPROVED

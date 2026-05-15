@@ -414,6 +414,114 @@ formats:
         vertical_slice_result: "PASS — FodtDocument.Load/Save/Body/Paragraphs/SetText; 43/43 tests pass"
         notes: "Gate 11 deferred/rebaselined (2026-05-13). C4-C6 vertical slice DEMONSTRATED: load object model, edit one paragraph, save same format, reload verified. NOT commercial product ready. Commercial readiness requires C7+ full entity coverage + export. DEC-033 resolved Option B (2026-05-12, Babar Raza)."
 
+  - format_id: zst
+    display_name: "Zstandard Compressed File"
+    family: archive
+    extensions: [.zst, .tar.zst]
+    mime_type: "application/zstd"
+    spec_body: "IETF"
+    spec_version: "RFC 8878"
+    spec_url: "https://www.ietf.org/rfc/rfc8878.txt"
+    legal_category: 2
+    tier_target: 4
+    scoring_notes: |
+      ZST ranked #1 at 8.95/10 in R12 cross-category validation (ACQUISITION_READY band).
+      IETF RFC 8878 (Informational, 2021-02-01) is authoritative public spec.
+      Upstream reference implementation: BSD/GPLv2 dual-license (Meta/Facebook). Patent grant in ADDITIONAL_GRANT.
+      Python library: python-zstandard (zstandard) BSD-3-Clause. No IP risk identified.
+      Aspose.ZIP for .NET: ZstandardArchive class, full round-trip, TarArchive.SaveZstandard for .tar.zst.
+      Product value: decompression/extraction (archive handler), fixture/oracle pipeline validation.
+      Limitation: no document DOM; commercial value is archive handling, not document conversion.
+    visibility: internal
+    scoring:
+      scorer: claude-sonnet-4-6
+      scored_date: "2026-05-14"
+      model_version: "R12-acquisition-planning-runtime-v1"
+      total_points: 8.95
+      band: ACQUISITION_READY
+      recommendation: "Gate 1 approved under delegated authority. Real audit completed R13B."
+      gate_1_status_set_by_agent: "delegated_decision_executed"
+      approved_by: "Babar Raza"
+      approved_date: "2026-05-15"
+      approval_method: "delegated_agent_decision_under_babar_instruction"
+      delegation_instrument: "FORMAT-FACTORY-R13B-DELEGATED-ZST-GATE1-REAL-SUPPORT-AUDIT-AND-GOVERNANCE-NORMALIZATION-SWARM-001"
+    human_gate1_approved: true
+    acquisition_pack_created: true
+    aspose_supported: true
+    aspose_support_level: "FULL_ROUND_TRIP"
+    aspose_evidence: "Aspose.Zip.Zstandard namespace; ZstandardArchive class (compress+decompress); TarArchive.SaveZstandard (.tar.zst). Source: docs.aspose.com/zip/net/supported-file-formats/ accessed 2026-05-15."
+    spec_retrieval_authorized: false
+    implementation_authorized: false
+    commercial_product_ready: false
+    acquisition_risk_classification: LOW
+    oracle_classification: ROUND_TRIP
+    spec_normalization_status: NOT_STARTED
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-15"
+        approval_method: "delegated_agent_decision_under_babar_instruction"
+        notes: |
+          Gate 1 approved under delegated authority per R13B execution prompt (FORMAT-FACTORY-R13B-DELEGATED-ZST-GATE1-REAL-SUPPORT-AUDIT-AND-GOVERNANCE-NORMALIZATION-SWARM-001).
+          ZST scored 8.95/10 (ACQUISITION_READY) in R12 acquisition_planning_runtime.py.
+          Real Aspose audit: aspose_supported=true; ZstandardArchive + TarArchive.SaveZstandard (accessed 2026-05-15).
+          Legal audit: RFC 8878 IETF Informational (2021-02-01); BSD+patent grant; python-zstandard BSD-3-Clause.
+          Product alignment: PASS_WITH_LIMITATIONS (archive handling value; no document DOM).
+          This is a delegated execution, not autonomous self-approval. See GOVERNANCE.md §2.1a.
+      gate_2:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        fast_path: false
+        notes: "Spec retrieval NOT yet authorized. Requires separate R14 authorization prompt."
+      gate_3:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_4:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_5:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_6:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_7:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_8:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        tier_map: null
+        notes: null
+      gate_10:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_11:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+
 # ---
 # FORMAT ENTRY TEMPLATE (do not uncomment — use acquisition-packs/_template/)
 # ---
