@@ -32,7 +32,7 @@ The project goals are:
 | Track | Technology | License | Status |
 |---|---|---|---|
 | Python open-source library | Python 3.11+ | Apache 2.0 | Source created for FODS and FODT; no public release yet |
-| .NET product library | net8.0, net10.0 | Proprietary (FOSS packaging deferred, DEC-033) | Source not created; blocked by DEC-033 and explicit authorization |
+| .NET product library | net8.0, net10.0 | Proprietary (FOSS packaging deferred, DEC-033) | C4-C6 vertical slice created for FODS and FODT; not commercial-ready; Gate 11 NOT approved |
 
 Source layout: `src/python/{format}/` for Python FOSS; `src/net/{format}/` for .NET product.
 
@@ -40,7 +40,7 @@ Source layout: `src/python/{format}/` for Python FOSS; `src/net/{format}/` for .
 
 ## First Pilots: FODS and FODT
 
-**FODS Gates 1-10 passed. FODT Gates 1-9 passed. Approved gate decisions are recorded in `registry/format-registry.yaml`.**
+**FODS Gates 1-10 passed. FODT Gates 1-10 passed. Approved gate decisions are recorded in `registry/format-registry.yaml`.**
 
 **FODS**, Flat OpenDocument Spreadsheet, is the first pilot format. It is a flat XML variant of the ODF spreadsheet format, published by OASIS under royalty-free terms as part of ODF 1.3. It is a single XML file, so it avoids ZIP container complexity.
 
@@ -48,9 +48,9 @@ Source layout: `src/python/{format}/` for Python FOSS; `src/net/{format}/` for .
 
 Current implementation status:
 
-- FODS Python source exists in `src/python/fods/`; Gate 11 commercial planning is next and remains blocked by DEC-033.
-- FODT Python source exists in `src/python/fodt/`; Gate 10 human approval is still pending.
-- .NET source has not been created for either format.
+- FODS Python source exists in `src/python/fods/`; Gate 11 commercial_readiness_in_progress (NOT approved).
+- FODT Python source exists in `src/python/fodt/`; Gate 10 approved by Babar Raza 2026-05-11; Gate 11 commercial_readiness_in_progress (NOT approved).
+- .NET C4-C6 vertical slice exists for both formats in `src/net/fods/` and `src/net/fodt/`; not commercial-ready; Gate 11 NOT approved; commercial_product_ready: false.
 - ODF reuse strategy: [docs/odf-flat-family-reuse-strategy.md](docs/odf-flat-family-reuse-strategy.md).
 
 ---
@@ -92,16 +92,16 @@ Agents may prepare evidence, but only a human can approve a gate.
 
 ## Project Status
 
-**Current phase:** Phase 3/4. FODS Gates 1-10 are passed and Gate 11 is `planning_ready`. FODT Gates 1-9 are passed, Gate 10 is `planning_verified`, and FODT Python source is implemented pending human review.
+**Current phase:** Phase 3/4. FODS Gates 1-10 are passed and Gate 11 is `commercial_readiness_in_progress` (NOT approved). FODT Gates 1-10 are passed, Gate 11 is `commercial_readiness_in_progress` (NOT approved). DEC-033 resolved as Option B (.NET Commercial Only). commercial_product_ready: false.
 
 - Phase 0 Foundation: Complete, accepted 2026-05-04.
 - FODS Gates 1-10: Complete, approved by Babar Raza across run017 through run048.
 - FODS Python Phase 4 source: Created under `src/python/fods/` in run051, TC-0050 completed.
-- FODT Gates 1-9: Complete, approved by Babar Raza across run041 through run050.
-- FODT Gate 10: Planning verified, TC-0052 source implementation pending human review.
-- FODT Python Phase 4 source: Created under `src/python/fodt/` with 115/115 tests passing.
-- Format Understanding Layer: FUL-001 schemas created, FUL-002 FODS completed, FUL-003 FODT completed after Gate 9.
-- .NET product source: Not created; DEC-033 must be resolved before .NET product work proceeds.
+- FODT Gates 1-10: Complete, approved by Babar Raza across run041 through TC-0052 (Gate 10 approved 2026-05-11).
+- FODT Gate 11: commercial_readiness_in_progress; DEC-033 resolved Option B; NOT approved.
+- FODT Python Phase 4 source: Created under `src/python/fodt/` with 115/115 tests passing (TC-0052 completed).
+- Format Understanding Layer: FUL-001 schemas created, FUL-002 FODS completed, FUL-003 FODT completed.
+- .NET C4-C6 vertical slice: Created for FODS (src/net/fods/) and FODT (src/net/fodt/); DEC-033 resolved Option B; commercial_product_ready: false.
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md). The master plan and [registry/format-registry.yaml](registry/format-registry.yaml) are the authoritative status sources.
 

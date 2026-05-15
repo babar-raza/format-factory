@@ -1,0 +1,97 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R13A-R12-CLOSURE-AND-ZST-GATE1-PACKET-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: false
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) outside sprint scope"
+min_metadata_count: 18
+required_repo_files:
+  # Authority files normalized
+  - README.md
+  - ROADMAP.md
+  - plans/master-plan.md
+  # Pack template repaired
+  - acquisition-packs/_template/pack.yaml
+  # ZST decision packet
+  - acquisition-packs/_candidate-shortlists/zst-gate1-decision-packet-20260515.md
+  # Memory
+  - memory/29-r12-closure-and-r13a-zst-gate1-packet-20260515.md
+  # Taskcards
+  - taskcards/R12-CLOSURE-VERIFICATION.md
+  - taskcards/ZST-GATE1-DECISION-PACKET.md
+  - taskcards/R13A-AUTHORITY-NORMALIZATION.md
+  # Reports — Lane A (preflight)
+  - reports/governance/r13a-preflight-and-authority-read-report-20260515.md
+  # Reports — Lane B (R12 contradiction reconciliation)
+  - reports/verification/r12-closure-contradiction-reconciliation-20260515.md
+  # Reports — Lane C (full suite proof)
+  - reports/testing/r13a-full-suite-timeout-or-pass-report-20260515.md
+  # Reports — Lane D (authority normalization)
+  - reports/governance/r13a-authority-normalization-report-20260515.md
+  # Reports — Lane E (pack template)
+  - reports/planning/r13a-pack-template-standardization-repair-20260515.md
+  # Reports — Lane F (ZST audit simulation)
+  - reports/planning/zst-support-matrix-audit-simulation-20260515.md
+  # Reports — Lane G (ZST Gate 1 packet)
+  - reports/planning/zst-gate1-decision-packet-report-20260515.md
+  # Reports — Lane H (roadmap + taskcards)
+  - reports/planning/r13a-r14-forward-roadmap-20260515.md
+  - reports/planning/r13a-taskcard-state-management-report-20260515.md
+  # Reports — Lane I (adversarial)
+  - reports/governance/r13a-adversarial-review-20260515.md
+  - reports/governance/r13a-no-scope-drift-report-20260515.md
+  # This contract
+  - tools/evidence/contracts/r13a-r12-closure-and-zst-gate1-packet-swarm.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - verdict.md
+  - validation-command-log.txt
+  - lane-ownership-matrix.md
+  - r12-closure-contradiction-reconciliation.md
+  - zst-gate1-packet-summary.md
+  - adversarial-review-summary.md
+  - no-scope-drift-report.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - full-suite-proof.md
+  - r13a-sprint-gate-status.md
+  - authority-normalization-summary.md
+  - pack-template-repair-summary.md
+  - r13a-authorization-record.md
+  - r13a-governance-validation.md
+sprint_verdicts:
+  sprint_id: FORMAT-FACTORY-R13A-R12-CLOSURE-AND-ZST-GATE1-PACKET-SWARM-001
+  dry_run_enforced: true
+  simulation_only_enforced: true
+  commercial_product_ready_false: true
+  autonomous_execution_allowed_false: true
+  gate_self_approval_not_allowed: true
+  no_internet_access: true
+  no_source_mutation: true
+  acquisition_not_authorized: true
+  # Lane A
+  PREFLIGHT_STATUS: PASS
+  # Lane B
+  R12_CLOSURE_STATUS: VERIFIED_CLOSED_STALE_METADATA_RECONCILED
+  # Lane C
+  FULL_SUITE_STATUS: 1000_PASS_CONFIRMED
+  # Lane D
+  AUTHORITY_NORMALIZATION_STATUS: README_ROADMAP_MASTERPLAN_REPAIRED
+  # Lane E
+  PACK_TEMPLATE_STATUS: 3_GAPS_REPAIRED
+  # Lane F
+  ZST_AUDIT_SIMULATION_STATUS: SIMULATION_COMPLETE_NO_REAL_AUDIT
+  # Lane G
+  ZST_GATE1_PACKET_STATUS: PREPARED_AWAITING_HUMAN_APPROVAL
+  # Lane H
+  FORWARD_ROADMAP_STATUS: R13B_R14_SEQUENCE_DOCUMENTED
+  # Lane I
+  ADVERSARIAL_REVIEW_STATUS: 12_OF_12_ATTACKS_BLOCKED
+  # Overall
+  ZST_GATE1_APPROVED: false
+  GATE_11_APPROVED: false
+  COMMERCIAL_PRODUCT_READY: false
+  SCOPE_DRIFT: NONE
+  R13A_SPRINT_STATUS: R13A_COMPLETE

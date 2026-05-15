@@ -84,5 +84,14 @@ stages:
     deferred_tiers: []
     gate: 9
 
+# --- R12 Acquisition Governance Fields (format-onboarding.schema.yaml R12 Lane D extensions) ---
+# These fields align with schemas/skills/format-onboarding.schema.yaml
+# acquisition_risk_classification: LOW|MEDIUM|HIGH|CRITICAL|NOT_ASSESSED
+acquisition_risk_classification: NOT_ASSESSED
+# oracle_classification: ROUND_TRIP|REFERENCE_DIFF|SCHEMA_VALIDATE|MANUAL_REVIEW|NOT_ASSESSED
+oracle_classification: NOT_ASSESSED
+# spec_normalization_status: NOT_STARTED|CACHED_RAW|NORMALIZED|REQUIREMENTS_READY|STALE
+spec_normalization_status: NOT_STARTED
+
 # --- Notes ---
 notes: null

@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance / Planning
-**Last reviewed:** 2026-05-11 (documentation status sync)
+**Last reviewed:** 2026-05-15 (R13A authority normalization)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not the operational authority. Actual progress is tracked in `plans/master-plan.md` and `registry/format-registry.yaml`.
 
 ---
@@ -97,7 +97,7 @@ Key deliverables:
 - Gate 8 security review passed.
 - Gate 9 product mapping passed.
 
-**FODT status:** Complete through Gate 9.
+**FODT status:** Complete through Gate 9 (same as FODS).
 
 - Gate 4 prototype passed.
 - Gate 5 neutral model passed.
@@ -114,18 +114,19 @@ Key deliverables:
 
 **FODS status:**
 
-- Gate 10 passed in run048.
-- Python source created under `src/python/fods/` in run051.
-- Gate 11 commercial planning is `planning_ready`.
-- .NET source has not been created.
-- DEC-033 must be resolved before .NET/commercial movement.
+- Gate 10 passed in run048 (approved by Babar Raza 2026-05-08).
+- Python source created under `src/python/fods/` in run051 (TC-0050 completed).
+- Gate 11 is `commercial_readiness_in_progress` (C4-C6 vertical slice demonstrated; NOT approved).
+- .NET C4-C6 vertical slice created in `src/net/fods/`; DEC-033 resolved Option B.
+- commercial_product_ready: false. Requires C7+ capability and explicit human approval.
 
 **FODT status:**
 
-- Gate 10 is `planning_verified`.
-- Python source created under `src/python/fodt/`.
-- TC-0052 source implementation is pending human review.
-- .NET source has not been created.
+- Gate 10 passed (approved by Babar Raza 2026-05-11; TC-0052 completed).
+- Python source created under `src/python/fodt/`; 115/115 tests passing.
+- Gate 11 is `commercial_readiness_in_progress` (C4-C6 vertical slice demonstrated; NOT approved).
+- .NET C4-C6 vertical slice created in `src/net/fodt/`; DEC-033 resolved Option B.
+- commercial_product_ready: false. Requires C7+ capability and explicit human approval.
 
 ---
 
@@ -173,7 +174,7 @@ WIP limit violations require project lead approval.
 | Embedding/retrieval architecture | Backlog |
 | Non-XML adaptability architecture | Backlog |
 | Non-Aspose candidate registry | Backlog |
-| .NET product source | Blocked by DEC-033 and explicit authorization |
+| .NET C4-C6 vertical slice | Created for FODS + FODT; Gate 11 NOT approved; commercial_product_ready: false |
 
 ---
 
