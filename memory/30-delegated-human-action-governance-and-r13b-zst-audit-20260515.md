@@ -53,13 +53,16 @@ A new concept was added to the governance model:
 - taskcards/ZST-GATE1-DECISION-PACKET.md: updated to delegated_decision_executed
 - taskcards/ZST-R14-SPEC-RETRIEVAL.md: created (pending R14 authorization)
 
-### NOT authorized in R13B (still blocked)
+### NOT authorized in R13B — R14 NOW AUTHORIZED (2026-05-15)
 
-- RFC 8878 full retrieval (Gate 2) — requires R14 prompt
-- spec-cache/zst/ — not created
-- generated-requirements/zst/ — not created
-- src/python/zst/ or src/net/zst/ — not created
-- Gate 2 or later — requires separate authorization
+R14 (FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-SWARM-001) was issued by Babar Raza
+on 2026-05-15. Gate 2 spec retrieval is now executing.
+
+- RFC 8878 full retrieval (Gate 2) — AUTHORIZED by R14 execution prompt
+- .local/spec-cache/zst/ — AUTHORIZED for creation in R14
+- generated-requirements/zst/ — still NOT authorized (requires Gate 5+)
+- src/python/zst/ or src/net/zst/ — still NOT authorized (requires Gate 4+)
+- Gate 3+ — still requires separate authorization after Gate 2 completes
 
 ## Key Legal Facts (ZST)
 
@@ -68,11 +71,11 @@ A new concept was added to the governance model:
 - python-zstandard: BSD-3-Clause
 - legal_category: 2 (Permissive OSS)
 
-## Next Sprint
+## Next Sprint (ACTIVE)
 
-R14: FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-EVIDENCE-SWARM-001
-Trigger: Babar Raza authorization
-Template: acquisition-packs/_candidate-shortlists/zst-gate1-decision-packet-20260515.md section J
+R14: FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-SWARM-001
+Status: IN PROGRESS (2026-05-15)
+Authorization: Babar Raza via R14 execution prompt
 
 ## Governance Invariants (unchanged)
 

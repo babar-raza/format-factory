@@ -47,9 +47,11 @@ ZST Gate 1 has been recorded in registry/format-registry.yaml.
 - acquisition-packs/zst/legal-notes.md: CREATED
 - acquisition-packs/zst/product-strategy-notes.md: CREATED
 
-## Next Action
-Babar Raza should issue R14 prompt for spec retrieval if Gate 2 is desired.
-R14 prompt template is in acquisition-packs/_candidate-shortlists/zst-gate1-decision-packet-20260515.md section J (Option 2 path).
+## Next Action — COMPLETED
+
+R14 has been issued and is executing (FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-SWARM-001,
+2026-05-15). Gate 2 spec retrieval is in progress. This taskcard is historical.
+See taskcards/ZST-R14-SPEC-RETRIEVAL.md for live state.
 
 ## Linked Reports
 - reports/governance/r13b-delegated-zst-gate1-option-selection-20260515.md

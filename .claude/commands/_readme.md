@@ -1,7 +1,7 @@
 # Project Commands — format-factory
 
 **Document type:** Configuration Reference — Phase 0 Foundation
-**Last reviewed:** 2026-05-03
+**Last reviewed:** 2026-05-15
 **Status:** Directory created in Phase 0. Actual command files are implemented in Phase 1 via TC-0004.
 
 ---
@@ -33,6 +33,7 @@ task, agents must use it rather than reinventing behavior ad hoc.
 | `/execution-handoff` | [execution-handoff.md](execution-handoff.md) | Convert hardened plan to full single-go execution prompt | PLAN MODE | No | No | [docs/agent-execution-handoff-standard.md](../docs/agent-execution-handoff-standard.md) | [execution-handoff-prompt-template.md](../docs/prompts/execution-handoff-prompt-template.md) |
 | `/evidence-review-next-prompt` | [evidence-review-next-prompt.md](evidence-review-next-prompt.md) | Review evidence bundle, challenge claims, produce next prompt | PLAN MODE | No | No | [docs/planning-methodology.md](../docs/planning-methodology.md) | [evidence-bundle-review-prompt-template.md](../docs/prompts/evidence-bundle-review-prompt-template.md) |
 | `/memory-sprint` | [memory-sprint.md](memory-sprint.md) | Full memory sprint workflow: capture decisions, update memory, build bundle | EXECUTION MODE | Yes | Yes | [docs/planning-methodology.md](../docs/planning-methodology.md) | [memory-sprint-prompt-template.md](../docs/prompts/memory-sprint-prompt-template.md) |
+| `/export-plan-context` | [export-plan-context.md](export-plan-context.md) | Bundle long-term plan context files into a zip for sharing with an LLM | EXECUTION MODE | No | No | — | — |
 
 See [docs/agent-methodology-index.md](../docs/agent-methodology-index.md) for the full methodology entry point.
 

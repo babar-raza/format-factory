@@ -1,4 +1,10 @@
 # ZST Gate 1 Decision Packet
+
+> **SUPERSESSION NOTICE (R14, 2026-05-15):** This packet is now historical. Gate 1 was
+> approved under delegated authority (R13B, 2026-05-15). R14 execution
+> (FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-SWARM-001) is now executing Gate 2.
+> Live state: taskcards/ZST-R14-SPEC-RETRIEVAL.md
+
 Prepared by: FORMAT-FACTORY-R13A-R12-CLOSURE-AND-ZST-GATE1-PACKET-SWARM-001 (initial); updated by FORMAT-FACTORY-R13-ZST-SUPPORT-MATRIX-AUDIT-SIMULATION-AND-GATE1-PACKET-SWARM-001
 Lane: G (ZST Gate 1 Decision Packet)
 Date: 2026-05-15

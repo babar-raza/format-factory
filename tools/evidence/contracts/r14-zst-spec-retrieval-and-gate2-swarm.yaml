@@ -1,0 +1,112 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) outside sprint scope — NOT sprint blockers; all sprint work staged for commit"
+min_metadata_count: 30
+required_repo_files:
+  # Authority files
+  - README.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+  # Acquisition pack
+  - acquisition-packs/zst/pack.yaml
+  - acquisition-packs/zst/legal-notes.md
+  - acquisition-packs/zst/spec-evidence.md
+  - acquisition-packs/_candidate-shortlists/zst-gate1-decision-packet-20260515.md
+  # Taskcards
+  - taskcards/ZST-R14-SPEC-RETRIEVAL.md
+  - taskcards/ZST-GATE1-DECISION-PACKET.md
+  - taskcards/ZST-GATE2-IV.md
+  - taskcards/ZST-R15-GATE3-SAMPLE-SOURCES.md
+  # Memory
+  - memory/30-delegated-human-action-governance-and-r13b-zst-audit-20260515.md
+  - memory/31-zst-r14-gate2-spec-retrieval-20260515.md
+  # Tests
+  - tests/skills/test_zst_spec_cache_gate2.py
+  # R14 reports
+  - reports/governance/r14-preflight-and-lane-ownership-20260515.md
+  - reports/verification/r14-r13b-baseline-independent-verification-20260515.md
+  - reports/governance/r14-delegated-authorization-normalization-20260515.md
+  - reports/specs/zst-source-authority-map-20260515.md
+  - reports/specs/zst-spec-cache-retrieval-report-20260515.md
+  - reports/legal/zst-gate2-legal-ipr-errata-report-20260515.md
+  - reports/specs/zst-spec-cache-validation-report-20260515.md
+  - reports/governance/r14-zst-gate2-decision-execution-report-20260515.md
+  - reports/planning/r14-taskcard-and-roadmap-normalization-report-20260515.md
+  - reports/governance/r14-adversarial-review-20260515.md
+  - reports/governance/r14-no-scope-drift-report-20260515.md
+  - reports/testing/r14-validation-command-log-20260515.md
+  # Evidence contract
+  - tools/evidence/contracts/r14-zst-spec-retrieval-and-gate2-swarm.yaml
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - bundle-manifest.yaml
+  - verdict.md
+  - validation-command-log.txt
+  - lane-ownership-matrix.md
+  - adversarial-review-summary.md
+  - no-scope-drift-report.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - r14-sprint-gate-status.md
+  - r14-authorization-record.md
+  - r14-spec-retrieval-summary.md
+  - r14-legal-classification-summary.md
+  - r14-registry-update-summary.md
+  - r14-taskcard-changes-summary.md
+  - r14-authority-files-changed.md
+  - r14-test-results.md
+  - r14-baseline-verification-summary.md
+  - r14-delegated-normalization-summary.md
+  - r14-source-authority-map-summary.md
+  - r14-errata-ipr-summary.md
+  - r14-gate2-classification-record.md
+  - r14-gate2-decision-execution-summary.md
+  - r14-spec-cache-structure-summary.md
+  - r14-scope-boundary-record.md
+  - r14-governance-flags-snapshot.md
+  - r14-update-relationship-record.md
+  - r14-taskcard-normalization-summary.md
+  - r14-iv-sprint-created-record.md
+sprint_verdicts:
+  sprint_id: FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-SWARM-001
+  dry_run_enforced: false
+  simulation_only_enforced: false
+  internet_access_authorized: true
+  internet_scope: "rfc-editor.org canonical RFC retrieval only (RFC 8878, RFC 9659)"
+  commercial_product_ready_false: true
+  gate_self_approval_not_allowed: true
+  delegated_execution_model: true
+  no_source_mutation: true
+  no_generated_requirements_zst: true
+  no_gate3_authorized: true
+  spec_retrieved_from_rfc_editor_only: true
+  # Gate results
+  PREFLIGHT_STATUS: PASS
+  R13B_BASELINE_VERIFICATION: PASS
+  DELEGATED_NORMALIZATION_STATUS: PASS
+  SOURCE_AUTHORITY_MAP_STATUS: PASS
+  SPEC_RETRIEVAL_STATUS: PASS_RFC8878_AND_RFC9659_CACHED
+  LEGAL_IPR_ERRATA_STATUS: GATE2_PASS_WITH_LEGAL_NOTES
+  SPEC_CACHE_VALIDATION_STATUS: 20_OF_20_PASS
+  GATE2_DECISION_EXECUTION_STATUS: GATE2_COMPLETE_DELEGATED
+  TASKCARD_NORMALIZATION_STATUS: COMPLETE
+  ADVERSARIAL_REVIEW_STATUS: 20_OF_20_ATTACKS_BLOCKED
+  SCOPE_DRIFT: NONE
+  VALIDATION_STATUS: GATE10_PASS
+  TEST_SUITE_RESULT: 1020_PASS
+  # Overall governance
+  ZST_GATE1_APPROVED: true
+  ZST_GATE2_PASSED: true
+  ZST_GATE2_APPROVAL_METHOD: delegated_agent_execution_under_r14_prompt
+  ZST_GATE2_LEGAL_CLASSIFICATION: GATE2_PASS_WITH_LEGAL_NOTES
+  ZST_GATE3_AUTHORIZED: false
+  GATE_11_FODS_APPROVED: false
+  GATE_11_FODT_APPROVED: false
+  COMMERCIAL_PRODUCT_READY: false
+  R14_SPRINT_STATUS: R14_COMPLETE_ZST_GATE2_PASSED

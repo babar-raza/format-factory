@@ -450,12 +450,22 @@ formats:
     aspose_supported: true
     aspose_support_level: "FULL_ROUND_TRIP"
     aspose_evidence: "Aspose.Zip.Zstandard namespace; ZstandardArchive class (compress+decompress); TarArchive.SaveZstandard (.tar.zst). Source: docs.aspose.com/zip/net/supported-file-formats/ accessed 2026-05-15."
-    spec_retrieval_authorized: false
+    spec_url: "https://www.rfc-editor.org/info/rfc8878"
+    spec_retrieval_authorized: true
+    spec_retrieval_completed: true
+    spec_cache_path: ".local/spec-cache/zst/"
+    spec_base: "RFC 8878"
+    spec_updates:
+      - "RFC 9659"
+    spec_rfc8878_sha256: "sha256:8ee6be03534113f5689cda75b9539a02e0704a2506d420814223e506420aeea4"
+    spec_rfc9659_sha256: "sha256:a43584f250506db54df8bc9ff90652888135369fbc331453f67a71829b0827a2"
+    spec_accessed_date: "2026-05-15"
+    spec_normalization_status: INDEXED
     implementation_authorized: false
+    generated_requirements_authorized: false
     commercial_product_ready: false
     acquisition_risk_classification: LOW
     oracle_classification: ROUND_TRIP
-    spec_normalization_status: NOT_STARTED
     gates:
       gate_1:
         status: passed
@@ -470,11 +480,25 @@ formats:
           Product alignment: PASS_WITH_LIMITATIONS (archive handling value; no document DOM).
           This is a delegated execution, not autonomous self-approval. See GOVERNANCE.md §2.1a.
       gate_2:
-        status: not_started
-        approved_by: null
-        approved_date: null
+        status: passed
+        approved_by: "Babar Raza"
+        approved_date: "2026-05-15"
+        approval_method: "delegated_agent_execution_under_r14_prompt"
         fast_path: false
-        notes: "Spec retrieval NOT yet authorized. Requires separate R14 authorization prompt."
+        spec_cache_path: ".local/spec-cache/zst/"
+        spec_rfc8878_sha256: "sha256:8ee6be03534113f5689cda75b9539a02e0704a2506d420814223e506420aeea4"
+        spec_rfc9659_sha256: "sha256:a43584f250506db54df8bc9ff90652888135369fbc331453f67a71829b0827a2"
+        legal_classification: "GATE2_PASS_WITH_LEGAL_NOTES"
+        errata_noted: true
+        ipr_status: "no_disclosures_found"
+        notes: |
+          Gate 2 executed under R14 delegation (FORMAT-FACTORY-R14-ZST-SPEC-RETRIEVAL-AND-GATE2-SWARM-001).
+          RFC 8878 retrieved from rfc-editor.org (112,425 bytes, sha256 recorded).
+          RFC 9659 retrieved from rfc-editor.org (6,599 bytes, sha256 recorded; updates RFC 8878 HTTP window size only).
+          Both RFCs IETF Informational. 7 RFC 8878 errata noted (implementation-level).
+          No IETF IPR disclosures found. Meta patent grant documented (R13B).
+          spec-index.yaml validated. 20/20 Gate 2 tests PASS.
+          Gate 3 NOT authorized. Implementation NOT authorized.
       gate_3:
         status: not_started
         approved_by: null
