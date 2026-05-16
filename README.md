@@ -102,7 +102,8 @@ Agents may prepare evidence, but only a human can approve a gate.
 - FODT Python Phase 4 source: Created under `src/python/fodt/` with 115/115 tests passing (TC-0052 completed).
 - Format Understanding Layer: FUL-001 schemas created, FUL-002 FODS completed, FUL-003 FODT completed.
 - .NET C4-C6 vertical slice: Created for FODS (src/net/fods/) and FODT (src/net/fodt/); DEC-033 resolved Option B; commercial_product_ready: false.
-- ZST (Zstandard): Gate 1 APPROVED (R13B, 2026-05-15, delegated). Gate 2 PASSED (R14, 2026-05-15). **Gate 3 PASSED (R16, 2026-05-15, delegated):** 11-file corpus acquired (8 valid + 3 invalid); 57 corpus tests PASS; DEC-034 IV PASS. Gate 4 planning taskcard created (ZST-R17-GATE4-PARSER-PROTOTYPE-PLANNING.md).
+- ZST (Zstandard): Gate 1 APPROVED (R13B, delegated). Gate 2 PASSED (R14). **Gate 3 PASSED (R16, delegated).** **Gate 4: planning_complete (R17, 2026-05-16):** parser-notes.md created; DEC-034 IV PASS (10/10); Gate 4 prototype deferred to R18+.
+- Multi-format intake (R17): Gate 1 packets created for FODP, FODG, ORA, Gnumeric, ABW. dnumber/.numbers = AUTOMATIC_REJECT (Category 5).
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md). The master plan and [registry/format-registry.yaml](registry/format-registry.yaml) are the authoritative status sources.
 

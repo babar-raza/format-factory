@@ -2,10 +2,11 @@
 taskcard_id: R17-MULTI-FORMAT-GATE1-INTAKE
 title: "R17 Multi-Format Gate 1 Intake — Gnumeric, ABW, FODP, FODG"
 type: planning
-sprint: null
+sprint: FORMAT-FACTORY-R17-R16-CLOSURE-VERIFY-ZST-GATE4-PLANNING-AND-MULTI-FORMAT-GATE1-SWARM-001
 created_by_sprint: FORMAT-FACTORY-R16-ZST-GATE3B-CORPUS-ACQUISITION-IV-AND-MULTI-FORMAT-INTAKE-SWARM-001
 created_at: "2026-05-15"
-status: pending_authorization
+completed_at: "2026-05-16"
+status: completed
 visibility: internal
 publish_allowed: false
 authority: plans/master-plan.md

@@ -1,0 +1,92 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R17-R16-CLOSURE-VERIFY-ZST-GATE4-PLANNING-AND-MULTI-FORMAT-GATE1-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) present since before R14 — NOT sprint artifacts; all R17 work will be committed before bundle build; git-log.txt will show correct HEAD confirming post-commit state"
+min_metadata_count: 30
+required_repo_files:
+  # Authority files
+  - README.md
+  - plans/master-plan.md
+  - ROADMAP.md
+  - registry/format-registry.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+  # ZST acquisition pack
+  - acquisition-packs/zst/pack.yaml
+  - acquisition-packs/zst/parser-notes.md
+  - acquisition-packs/zst/sample-sources.md
+  # Corpus (from R16 — verified in R17)
+  - samples/by-format/zst/_corpus-manifest.yaml
+  - samples/by-format/zst/_provenance.yaml
+  - samples/by-format/zst/valid/block-128k.zst
+  - samples/by-format/zst/valid/empty-block.zst
+  - samples/by-format/zst/valid/minimal-synthetic.zst
+  - samples/by-format/zst/valid/text-compressed.zst
+  - samples/by-format/zst/valid/dict-compressed.zst
+  - samples/by-format/zst/valid/random-data.zst
+  - samples/by-format/zst/invalid/off0.bin.zst
+  - samples/by-format/zst/invalid/truncated_huff_state.zst
+  - samples/by-format/zst/invalid/zeroSeq_extraneous.zst
+  # Tests
+  - tests/skills/test_zst_gate3b_sample_corpus.py
+  - tests/skills/test_zst_gate3a_boundary.py
+  # Taskcards
+  - taskcards/ZST-R17-GATE4-PARSER-PROTOTYPE-PLANNING.md
+  - taskcards/R17-MULTI-FORMAT-GATE1-INTAKE.md
+  - taskcards/ZST-R18-GATE5-REQUIREMENTS-READINESS.md
+  - taskcards/FODP-FODG-GATE1-BATCH.md
+  - taskcards/ORA-GNUMERIC-ABW-GATE1-SCORING-IV.md
+  # Memory
+  - memory/33-zst-r16-gate3b-corpus-acquisition-20260515.md
+  - memory/34-zst-r17-gate4-and-multi-format-gate1-intake-20260516.md
+  # Candidate shortlists
+  - acquisition-packs/_candidate-shortlists/r16-multi-format-intake-and-next-candidates-20260515.md
+  - acquisition-packs/_candidate-shortlists/r17-gate1-candidate-packets-20260516.md
+  # R17 reports
+  - reports/governance/r17-preflight-r16-closure-and-lane-ownership-20260515.md
+  - reports/governance/r17-zst-gate4-decision-and-pack-registry-update-20260515.md
+  - reports/governance/r17-adversarial-review-20260516.md
+  - reports/governance/r17-no-scope-drift-report-20260516.md
+  - reports/planning/r17-zst-gate4-scope-definition-20260515.md
+  - reports/planning/r17-multi-format-gate1-intake-and-scoring-20260516.md
+  - reports/planning/r17-odf-family-acceleration-plan-20260516.md
+  - reports/planning/r17-taskcard-roadmap-memory-normalization-report-20260516.md
+  - reports/testing/r17-validation-command-log-20260516.md
+  - reports/verification/r17-r16-closure-verification-and-evidence-repair-20260515.md
+  - reports/verification/r17-zst-gate4-independent-verification-20260515.md
+  # Evidence contract
+  - tools/evidence/contracts/r17-r16-closure-zst-gate4-and-multi-format-gate1-swarm.yaml
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - verdict.md
+  - current-state-consistency-report.md
+  - methodology-link-check-report.md
+  - lane-ownership-matrix.md
+  - r16-closure-verification-summary.md
+  - zst-gate4-summary.md
+  - multi-format-gate1-intake-summary.md
+  - odf-acceleration-summary.md
+  - adversarial-review-summary.md
+  - no-scope-drift-report.md
+  - validation-command-log.txt
+  - r17-authorization-record.md
+  - r17-governance-flags-snapshot.md
+  - r17-test-results.md
+  - r17-sprint-gate-status.md
+  - r17-scope-boundary-record.md
+  - r17-zst-parser-notes-summary.md
+  - r17-iv-summary.md
+  - r17-dnumber-identity-summary.md
+  - r17-fodp-fodg-summary.md
+  - r17-gnumeric-abw-summary.md
+  - r17-ora-summary.md
+  - r17-taskcard-updates-summary.md
+  - r17-memory-update-summary.md
+  - r17-roadmap-update-summary.md
+  - r17-pack-registry-update-summary.md
+  - r17-next-sprint-readiness.md
+  - r17-preflight-summary.md

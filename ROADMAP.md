@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance / Planning
-**Last reviewed:** 2026-05-15 (R16 ZST Gate 3 PASSED)
+**Last reviewed:** 2026-05-16 (R17 ZST Gate 4 planning_complete; multi-format Gate 1 packets)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not the operational authority. Actual progress is tracked in `plans/master-plan.md` and `registry/format-registry.yaml`.
 
 ---
@@ -139,7 +139,8 @@ ZST is the third format in the acquisition pipeline. Gate 1 scored 8.95/10 (ACQU
 - Gate 1 PASSED (delegated, R13B, 2026-05-15). Score: 8.95/10. IETF RFC 8878.
 - Gate 2 PASSED (delegated, R14, 2026-05-15). RFC 8878 + RFC 9659 cached. 20 tests PASS.
 - **Gate 3 PASSED (delegated, R16, 2026-05-15).** 11-file corpus (8 valid + 3 invalid). 57 corpus tests PASS. DEC-034 IV PASS.
-- Gate 4: R17 taskcard created (ZST-R17-GATE4-PARSER-PROTOTYPE-PLANNING.md). Pending authorization.
+- **Gate 4: planning_complete (R17, 2026-05-16).** parser-notes.md created. Frame format, parsing strategy, validation plan documented. DEC-034 IV PASS (10/10). Gate 4 full pass (prototype + human review) deferred to R18+.
+- Gate 4 prototype: R18 taskcard created (ZST-R18-GATE5-REQUIREMENTS-READINESS.md). Pending execution prompt.
 
 ---
 
@@ -153,9 +154,17 @@ Next likely ODF flat XML candidates remain in the candidate pool:
 - FODG, flat OpenDocument Graphics
 - FODB, flat OpenDocument Database (deferred — Aspose support unclear)
 
-Non-ODF candidates from R11 planning bundle:
-- Gnumeric (.gnumeric) — score 8.75, ACQUISITION_READY
-- ABW (.abw) — score 8.75, ACQUISITION_READY
+Non-ODF candidates from R11 planning bundle (R17 Gate 1 packets ready):
+- Gnumeric (.gnumeric) — R11 score 8.75, ACQUISITION_READY; Gate 1 scoring packet created (R17)
+- ABW (.abw) — R11 score 8.75, ACQUISITION_READY; Gate 1 scoring packet created (R17)
+
+Other candidates:
+- ORA (.ora) — OpenRaster; estimated 6.5-7.0; Aspose audit required; Gate 1 packet created (R17)
+- dnumber/.numbers — Apple Numbers; AUTOMATIC_REJECT (Category 5 — no public spec)
+
+Batch sprint taskcards created in R17:
+- FODP-FODG-GATE1-BATCH.md — ODF batch; pending Conway R9 + execution prompt
+- ORA-GNUMERIC-ABW-GATE1-SCORING-IV.md — scoring IV; pending Aspose audits + execution prompt
 
 The next format should be selected through the same scoring, evidence, gate, and human-approval process. No format inherits gate approval from FODS or FODT.
 

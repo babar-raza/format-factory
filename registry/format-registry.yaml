@@ -532,10 +532,19 @@ formats:
           Gate 3 APPROVED under delegated authority (R16 execution prompt, Babar Raza instruction).
           Gate 4 (Parser Prototype Planning) is now authorized.
       gate_4:
-        status: not_started
+        status: planning_complete
         approved_by: null
         approved_date: null
-        notes: null
+        parser_notes: acquisition-packs/zst/parser-notes.md
+        parser_notes_sprint: FORMAT-FACTORY-R17-R16-CLOSURE-VERIFY-ZST-GATE4-PLANNING-AND-MULTI-FORMAT-GATE1-SWARM-001
+        parser_notes_date: "2026-05-16"
+        iv_result: PASS
+        iv_report: reports/verification/r17-zst-gate4-independent-verification-20260515.md
+        notes: >
+          Gate 4 parser notes created R17 (2026-05-16). planning_complete status.
+          Gate 4 full pass requires prototype in prototypes/by-format/zst/ + human review.
+          implementation_authorized: false. generated_requirements_authorized: false.
+          Prototype + approval deferred to R18+.
       gate_5:
         status: not_started
         approved_by: null
