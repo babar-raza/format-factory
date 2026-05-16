@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  shapes-basic.fodg
+  format-factory / samples/by-format/fodg/
+
+  Sample ID: fodg-shapes-01
+  Category: basic
+  Gate: 3
+  License: Apache-2.0
+  Provenance: project-owned synthetic (Apache-2.0, no external rights)
+  Generated: R19 (2026-05-16)
+
+  Spec basis:
+    §3.1.2  office:document root element (ODF 1.3)
+    §3.5    office:drawing body element
+    §9.2    draw:page drawing page structure
+    §10.3   draw:rect, draw:ellipse, draw:line shapes
+
+  Multiple shapes on one drawing page:
+  - Rectangle
+  - Ellipse
+  - Line
+  - Tests multi-shape drawing parsing
+-->
+<office:document
+    xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+    xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+    office:mimetype="application/vnd.oasis.opendocument.graphics-flat-xml"
+    office:version="1.3">
+  <office:body>
+    <office:drawing>
+      <draw:page draw:name="Page1" draw:style-name="">
+        <draw:rect svg:x="1cm" svg:y="1cm" svg:width="8cm" svg:height="4cm">
+          <text:p>Rect</text:p>
+        </draw:rect>
+        <draw:ellipse svg:x="11cm" svg:y="1cm" svg:width="6cm" svg:height="4cm">
+          <text:p>Ellipse</text:p>
+        </draw:ellipse>
+        <draw:line svg:x1="1cm" svg:y1="7cm" svg:x2="18cm" svg:y2="7cm"/>
+      </draw:page>
+    </office:drawing>
+  </office:body>
+</office:document>

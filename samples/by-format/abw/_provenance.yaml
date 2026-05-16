@@ -1,0 +1,35 @@
+format_id: abw
+corpus_gate: 3
+sprint: FORMAT-FACTORY-R19-HIGH-THROUGHPUT-ACQUISITION-TRAIN-001
+generated_date: "2026-05-16"
+provenance: project-owned synthetic
+license: Apache-2.0
+spec_basis: "AWML 1.0 (-//ABISOURCE//DTD AWML 1.0 Strict//EN)"
+
+samples:
+  - filename: minimal-document.abw
+    sample_id: abw-minimal-01
+    category: minimal
+    description: "Single section with 'Hello' paragraph. Minimal conforming ABW."
+    provenance: synthetic
+    license: Apache-2.0
+    encoding: plain-xml
+    size_bytes: 278
+
+  - filename: two-paragraphs.abw
+    sample_id: abw-basic-01
+    category: basic
+    description: "Two paragraphs with props attributes. Tests multi-paragraph parsing."
+    provenance: synthetic
+    license: Apache-2.0
+    encoding: plain-xml
+    size_bytes: 362
+
+  - filename: empty-section.abw
+    sample_id: abw-empty-01
+    category: edge-case
+    description: "Empty section (no content). Tests empty section parsing."
+    provenance: synthetic
+    license: Apache-2.0
+    encoding: plain-xml
+    size_bytes: 265

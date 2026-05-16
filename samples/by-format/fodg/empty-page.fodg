@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  empty-page.fodg
+  format-factory / samples/by-format/fodg/
+
+  Sample ID: fodg-empty-01
+  Category: edge-case
+  Gate: 3
+  License: Apache-2.0
+  Provenance: project-owned synthetic (Apache-2.0, no external rights)
+  Generated: R19 (2026-05-16)
+
+  Spec basis:
+    §3.1.2  office:document root element (ODF 1.3)
+    §3.5    office:drawing body element
+    §9.2    draw:page drawing page structure
+
+  Empty drawing page (no shapes):
+  - Tests zero-shape page parsing
+  - Minimal valid drawing document
+-->
+<office:document
+    xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+    xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    office:mimetype="application/vnd.oasis.opendocument.graphics-flat-xml"
+    office:version="1.3">
+  <office:body>
+    <office:drawing>
+      <draw:page draw:name="Page1" draw:style-name=""/>
+    </office:drawing>
+  </office:body>
+</office:document>

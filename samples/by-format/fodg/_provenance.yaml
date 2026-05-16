@@ -1,0 +1,29 @@
+format_id: fodg
+corpus_gate: 3
+sprint: FORMAT-FACTORY-R19-HIGH-THROUGHPUT-ACQUISITION-TRAIN-001
+generated_date: "2026-05-16"
+provenance: project-owned synthetic
+license: Apache-2.0
+spec_basis: "ODF 1.3 Part 3 (OASIS)"
+
+samples:
+  - filename: minimal-drawing.fodg
+    sample_id: fodg-minimal-01
+    category: minimal
+    description: "Single page with one rectangle. Minimal conforming FODG."
+    provenance: synthetic
+    license: Apache-2.0
+
+  - filename: shapes-basic.fodg
+    sample_id: fodg-shapes-01
+    category: basic
+    description: "One page with rectangle, ellipse, and line shapes. Tests multi-shape parsing."
+    provenance: synthetic
+    license: Apache-2.0
+
+  - filename: empty-page.fodg
+    sample_id: fodg-empty-01
+    category: edge-case
+    description: "Empty drawing page (no shapes). Tests zero-shape edge case."
+    provenance: synthetic
+    license: Apache-2.0

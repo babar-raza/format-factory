@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  title-only.fodp
+  format-factory / samples/by-format/fodp/
+
+  Sample ID: fodp-title-only-01
+  Category: edge-case
+  Gate: 3
+  License: Apache-2.0
+  Provenance: project-owned synthetic (Apache-2.0, no external rights)
+  Generated: R19 (2026-05-16)
+
+  Spec basis:
+    §3.1.2  office:document root element (ODF 1.3)
+    §3.6    office:presentation body element
+    §9.1    draw:page slide/page structure
+
+  Title-only FODP document:
+  - Empty presentation body (no slides)
+  - Tests empty presentation parsing
+-->
+<office:document
+    xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+    xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0"
+    xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    office:mimetype="application/vnd.oasis.opendocument.presentation-flat-xml"
+    office:version="1.3">
+  <office:body>
+    <office:presentation/>
+  </office:body>
+</office:document>

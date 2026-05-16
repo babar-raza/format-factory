@@ -51,10 +51,33 @@ stages:
     notes: "Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza). Legal Cat 2 (permissive OSS). Aspose.Cells NOT SUPPORTED (positive differentiation). Score ~8.2. DEC-034 IV PASS."
 
   gate_2:
-    status: not_started
+    status: passed
+    approved_by: "delegated_agent_execution_under_r19_prompt"
+    approved_date: "2026-05-16"
     fast_path_eligible: false
-    notes: "Gate 2 requires spec retrieval from GNOME project documentation. Not fast-path (different spec body from FODS/FODT)."
+    spec_cache_path: ".local/spec-cache/gnumeric/v10/"
+    spec_source: "https://gitlab.gnome.org/GNOME/gnumeric/-/raw/master/gnumeric.xsd"
+    spec_namespace: "http://www.gnumeric.org/v10.dtd"
+    spec_root_element: "Workbook"
+    legal_category: 2
+    legal_gap: minor
+    spec_evidence: acquisition-packs/gnumeric/spec-evidence.md
+    legal_notes: acquisition-packs/gnumeric/legal-notes.md
+    notes: >
+      Gate 2: XSD schema retrieved from GNOME GitLab. Namespace http://www.gnumeric.org/v10.dtd.
+      Root element Workbook. Key structure documented. Legal Cat 2 (minor gap). R19 delegated.
+      Report: reports/governance/r19-gnumeric-gate2-spec-retrieval-20260516.md
 
   gate_3:
-    status: not_started
-    notes: "Gate 3 corpus acquisition not yet authorized."
+    status: passed
+    approved_by: "delegated_agent_execution_under_r19_prompt"
+    approved_date: "2026-05-16"
+    corpus_count: 3
+    corpus_path: samples/by-format/gnumeric/
+    sample_sources: acquisition-packs/gnumeric/sample-sources.md
+    provenance: project-owned synthetic
+    license: Apache-2.0
+    encoding: gzip+xml
+    notes: >
+      Gate 3: 3 synthetic project-owned Gnumeric samples (minimal, basic, edge-case).
+      Gzip-compressed XML, gnm: namespace v10. Apache-2.0. R19 delegated.

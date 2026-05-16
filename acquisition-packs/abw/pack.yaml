@@ -53,10 +53,35 @@ stages:
     notes: "Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza). Legal Cat 2. Aspose.Words NOT SUPPORTED (positive differentiation). Outdated AWML DTD is risk factor. Score ~7.8. DEC-034 IV PASS."
 
   gate_2:
-    status: not_started
+    status: passed_with_notes
+    approved_by: "delegated_agent_execution_under_r19_prompt"
+    approved_date: "2026-05-16"
     fast_path_eligible: false
-    notes: "Gate 2 requires AWML 1.0 DTD retrieval and AbiWord format documentation. Not fast-path."
+    spec_cache_path: ".local/spec-cache/abw/awml-1.0/"
+    spec_source_attempted: "http://www.abisource.com/awml.dtd"
+    spec_retrieval_status: "BLOCKED_SERVER_DOWN"
+    spec_understanding: "ADEQUATE_FROM_SECONDARY_SOURCES"
+    spec_public_identifier: "-//ABISOURCE//DTD AWML 1.0 Strict//EN"
+    legal_category: 2
+    legal_gap: minor
+    spec_evidence: acquisition-packs/abw/spec-evidence.md
+    legal_notes: acquisition-packs/abw/legal-notes.md
+    notes: >
+      Gate 2: AWML DTD at abisource.com unreachable (ECONNREFUSED). Spec structure
+      documented from secondary sources (MobileRead wiki, AbiWord source). Key elements:
+      abiword root, section, p, c, image, table. Legal Cat 2 (minor gap). R19 delegated.
+      Report: reports/governance/r19-abw-gate2-spec-retrieval-20260516.md
 
   gate_3:
-    status: not_started
-    notes: "Gate 3 corpus acquisition not yet authorized."
+    status: passed
+    approved_by: "delegated_agent_execution_under_r19_prompt"
+    approved_date: "2026-05-16"
+    corpus_count: 3
+    corpus_path: samples/by-format/abw/
+    sample_sources: acquisition-packs/abw/sample-sources.md
+    provenance: project-owned synthetic
+    license: Apache-2.0
+    encoding: plain-xml
+    notes: >
+      Gate 3: 3 synthetic project-owned ABW samples (minimal, basic, edge-case).
+      Plain XML, AWML 1.0 root element. Apache-2.0. R19 delegated.

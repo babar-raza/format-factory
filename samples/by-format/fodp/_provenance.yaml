@@ -1,0 +1,29 @@
+format_id: fodp
+corpus_gate: 3
+sprint: FORMAT-FACTORY-R19-HIGH-THROUGHPUT-ACQUISITION-TRAIN-001
+generated_date: "2026-05-16"
+provenance: project-owned synthetic
+license: Apache-2.0
+spec_basis: "ODF 1.3 Part 3 (OASIS)"
+
+samples:
+  - filename: minimal-presentation.fodp
+    sample_id: fodp-minimal-01
+    category: minimal
+    description: "Single slide with title text 'Hello'. Minimal conforming FODP."
+    provenance: synthetic
+    license: Apache-2.0
+
+  - filename: two-slides-basic.fodp
+    sample_id: fodp-two-slides-01
+    category: basic
+    description: "Two-slide presentation: Introduction + Conclusion. Tests multi-page parsing."
+    provenance: synthetic
+    license: Apache-2.0
+
+  - filename: title-only.fodp
+    sample_id: fodp-title-only-01
+    category: edge-case
+    description: "Empty presentation body (no slides). Tests zero-slide edge case."
+    provenance: synthetic
+    license: Apache-2.0

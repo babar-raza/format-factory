@@ -34,15 +34,23 @@ stages:
     spec_version: "OpenRaster 0.0.3 (informal)"
 
   gate_1:
-    status: scored_pending_human_approval
-    approved_by: null
-    approved_date: null
+    status: deferred_borderline
+    approved_by: "delegated_agent_execution_under_r19_prompt"
+    approved_date: "2026-05-16"
+    decision: DEFERRED_BORDERLINE
     score_estimate: 6.8
+    accept_threshold: 7.0
     band: Borderline
     legal_category: 2
     aspose_support_level: NOT_SUPPORTED
     gate1_decision_packet: acquisition-packs/ora/gate1-scoring-packet.md
-    notes: "ORA scored ~6.8 (Borderline). Score below automatic-accept threshold. Requires human review before Gate 1 approval. Community demand limited (Krita/MyPaint only). Spec informal."
+    defer_rationale: >
+      Score 6.8 is below the 7.0 Accept threshold. No new evidence changes the score.
+      Community demand limited to Krita/MyPaint ecosystem. Spec is informal (freedesktop.org).
+      Aspose NOT_SUPPORTED provides differentiation but market is niche.
+      Delegated per R19 execution prompt: default DEFER_ORA if still borderline.
+      Report: reports/governance/r19-ora-gate1-deferred-decision-20260516.md
+    notes: "ORA deferred (borderline 6.8 < 7.0). No new evidence. R19 delegated DEFER decision."
 
   gate_2:
     status: not_started

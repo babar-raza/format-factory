@@ -1,0 +1,121 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R19-HIGH-THROUGHPUT-ACQUISITION-TRAIN-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) present since before R14 — NOT sprint artifacts; all R19 work will be committed before bundle build; git-log.txt will show correct HEAD confirming post-commit state"
+min_metadata_count: 30
+required_repo_files:
+  # Authority files
+  - README.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+
+  # ZST acquisition pack (Gates 4-7)
+  - acquisition-packs/zst/pack.yaml
+  - acquisition-packs/zst/gate5-requirements-readiness.md
+  - acquisition-packs/zst/gate6-oracle-plan.md
+  - acquisition-packs/zst/oracle-comparison-report.md
+  - acquisition-packs/zst/gate7-risk-scope.md
+  - acquisition-packs/zst/gate7-malformed-fuzz-plan.md
+  - acquisition-packs/zst/gate7-malformed-fuzz-report.md
+
+  # ZST tests (Gates 6-7)
+  - tests/skills/test_zst_gate6_oracle.py
+  - tests/skills/test_zst_gate7_security_fuzz.py
+
+  # ZST malformed corpus (Gate 7)
+  - samples/by-format/zst/invalid/generated/wrong-magic.zst
+  - samples/by-format/zst/invalid/generated/truncated-header-2b.zst
+  - samples/by-format/zst/invalid/generated/magic-only-no-fhd.zst
+  - samples/by-format/zst/invalid/generated/corrupted-block-data.zst
+  - samples/by-format/zst/invalid/generated/claimed-large-truncated.zst
+
+  # FODP acquisition pack (Gates 2-4)
+  - acquisition-packs/fodp/pack.yaml
+  - acquisition-packs/fodp/spec-evidence.md
+  - acquisition-packs/fodp/legal-notes.md
+  - acquisition-packs/fodp/sample-sources.md
+  - acquisition-packs/fodp/parser-notes.md
+
+  # FODP corpus (Gate 3)
+  - samples/by-format/fodp/minimal-presentation.fodp
+  - samples/by-format/fodp/two-slides-basic.fodp
+  - samples/by-format/fodp/title-only.fodp
+  - samples/by-format/fodp/_provenance.yaml
+
+  # FODG acquisition pack (Gates 2-4)
+  - acquisition-packs/fodg/pack.yaml
+  - acquisition-packs/fodg/spec-evidence.md
+  - acquisition-packs/fodg/legal-notes.md
+  - acquisition-packs/fodg/sample-sources.md
+  - acquisition-packs/fodg/parser-notes.md
+
+  # FODG corpus (Gate 3)
+  - samples/by-format/fodg/minimal-drawing.fodg
+  - samples/by-format/fodg/shapes-basic.fodg
+  - samples/by-format/fodg/empty-page.fodg
+  - samples/by-format/fodg/_provenance.yaml
+
+  # Gnumeric acquisition pack (Gates 2-3)
+  - acquisition-packs/gnumeric/pack.yaml
+  - acquisition-packs/gnumeric/spec-evidence.md
+  - acquisition-packs/gnumeric/legal-notes.md
+  - acquisition-packs/gnumeric/sample-sources.md
+
+  # Gnumeric corpus (Gate 3)
+  - samples/by-format/gnumeric/minimal-spreadsheet.gnumeric
+  - samples/by-format/gnumeric/multi-cell-basic.gnumeric
+  - samples/by-format/gnumeric/empty-sheet.gnumeric
+  - samples/by-format/gnumeric/_provenance.yaml
+
+  # ABW acquisition pack (Gates 2-3)
+  - acquisition-packs/abw/pack.yaml
+  - acquisition-packs/abw/spec-evidence.md
+  - acquisition-packs/abw/legal-notes.md
+  - acquisition-packs/abw/sample-sources.md
+
+  # ABW corpus (Gate 3)
+  - samples/by-format/abw/minimal-document.abw
+  - samples/by-format/abw/two-paragraphs.abw
+  - samples/by-format/abw/empty-section.abw
+  - samples/by-format/abw/_provenance.yaml
+
+  # ORA acquisition pack (Gate 1 deferred)
+  - acquisition-packs/ora/pack.yaml
+
+  # Governance reports (R19)
+  - reports/governance/r19-preflight-r18-baseline-and-lane-ownership-20260516.md
+  - reports/governance/r19-evidence-hygiene-and-post-commit-bundle-policy-20260516.md
+  - reports/governance/r19-delegated-decision-normalization-20260516.md
+  - reports/governance/r19-zst-gate4-delegated-approval-report-20260516.md
+  - reports/governance/r19-zst-gate5-waiver-delegated-approval-report-20260516.md
+  - reports/governance/r19-zst-python-source-authorization-decision-20260516.md
+  - reports/governance/r19-fodp-fodg-gate2-fastpath-20260516.md
+  - reports/governance/r19-gnumeric-gate2-spec-retrieval-20260516.md
+  - reports/governance/r19-abw-gate2-spec-retrieval-20260516.md
+  - reports/governance/r19-ora-gate1-deferred-decision-20260516.md
+  - reports/governance/r19-adversarial-review-and-no-scope-drift-20260516.md
+
+  # Verification reports (R19)
+  - reports/verification/r19-zst-gate6-oracle-verification-20260516.md
+
+  # Security reports (R19)
+  - reports/security/r19-zst-gate7-security-fuzz-report-20260516.md
+
+  # Planning reports (R19)
+  - reports/planning/r19-fods-fodt-gate11-commercial-train-plan-20260516.md
+
+  # Taskcards (new in R19)
+  - taskcards/ZST-IMPL-001-python-source-scaffold.md
+  - taskcards/FODP-GATE4-001-parser-prototype.md
+  - taskcards/FODG-GATE4-001-parser-prototype.md
+  - taskcards/GNUMERIC-GATE4-001-parser-prototype.md
+  - taskcards/ABW-GATE4-001-parser-prototype.md
+  - taskcards/EVIDENCE-HYGIENE-ENFORCEMENT.md
+
+  # Spec cache (new in R19)
+  - .local/spec-cache/gnumeric/v10/spec-index.yaml
+  - .local/spec-cache/abw/awml-1.0/spec-index.yaml

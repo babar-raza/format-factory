@@ -1,0 +1,35 @@
+format_id: gnumeric
+corpus_gate: 3
+sprint: FORMAT-FACTORY-R19-HIGH-THROUGHPUT-ACQUISITION-TRAIN-001
+generated_date: "2026-05-16"
+provenance: project-owned synthetic
+license: Apache-2.0
+spec_basis: "Gnumeric XSD v10 (http://www.gnumeric.org/v10.dtd)"
+
+samples:
+  - filename: minimal-spreadsheet.gnumeric
+    sample_id: gnumeric-minimal-01
+    category: minimal
+    description: "Single cell 'Hello' in Sheet1. Minimal conforming gzip-compressed Gnumeric XML."
+    provenance: synthetic
+    license: Apache-2.0
+    encoding: gzip+xml
+    size_bytes: 307
+
+  - filename: multi-cell-basic.gnumeric
+    sample_id: gnumeric-multi-01
+    category: basic
+    description: "2x2 grid: Name/Score headers + Alice/42 data row."
+    provenance: synthetic
+    license: Apache-2.0
+    encoding: gzip+xml
+    size_bytes: 337
+
+  - filename: empty-sheet.gnumeric
+    sample_id: gnumeric-empty-01
+    category: edge-case
+    description: "Empty sheet (MaxCol=-1, MaxRow=-1, no cells). Tests zero-cell parsing."
+    provenance: synthetic
+    license: Apache-2.0
+    encoding: gzip+xml
+    size_bytes: 264

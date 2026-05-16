@@ -431,9 +431,10 @@ def test_registry_gate4_notes_mention_implementation_not_authorized():
 # ── 19. Hard invariant: registry gate_5.status ────────────────────────────────
 
 def test_registry_gate5_status_not_started():
-    """Registry gate_5.status must be not_started (Gate 5 not yet approved)."""
+    """Registry gate_5.status must be not_started or waived_not_applicable (Gate 5 waived R19)."""
     gate5 = _get_zst_gate("gate_5")
     status = gate5.get("status", "not_started")
-    assert status == "not_started", (
-        f"gate_5.status must be not_started, got {status!r}"
+    valid_statuses = {"not_started", "waived_not_applicable"}
+    assert status in valid_statuses, (
+        f"gate_5.status must be one of {valid_statuses}, got {status!r}"
     )

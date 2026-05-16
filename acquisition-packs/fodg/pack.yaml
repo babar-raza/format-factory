@@ -49,11 +49,34 @@ stages:
     notes: "Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza). OASIS RF legal basis identical to FODS/FODT/FODP. Aspose.Imaging LOAD_ONLY confirmed. DEC-034 IV PASS. Commercial track requires round-trip solution (not yet confirmed)."
 
   gate_2:
-    status: not_started
+    status: passed_fast_path
+    approved_by: "delegated_agent_execution_under_r19_prompt"
+    approved_date: "2026-05-16"
     fast_path_eligible: true
     fast_path_basis: "OASIS ODF 1.3 spec already cached for FODS/FODT (same spec)"
-    notes: "Gate 2 fast-path eligible. OASIS ODF 1.3 Part 1 spec already cached. Fast-path authorization required."
+    spec_cache_path: ".local/spec-cache/fods/1.3/"
+    spec_sha256: "sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066"
+    spec_version: "ODF 1.3"
+    spec_publisher: OASIS
+    legal_category: 1
+    legal_gap: none
+    spec_evidence: acquisition-packs/fodg/spec-evidence.md
+    legal_notes: acquisition-packs/fodg/legal-notes.md
+    notes: >
+      Gate 2 fast-path: ODF 1.3 spec already cached from FODS/FODT Gate 2.
+      Same spec body, same legal category (1), same OASIS RF license.
+      No new download required. Delegated per R19 execution prompt.
+      Report: reports/governance/r19-fodp-fodg-gate2-fastpath-20260516.md
 
   gate_3:
-    status: not_started
-    notes: "Gate 3 corpus acquisition not yet authorized."
+    status: passed
+    approved_by: "delegated_agent_execution_under_r19_prompt"
+    approved_date: "2026-05-16"
+    corpus_count: 3
+    corpus_path: samples/by-format/fodg/
+    sample_sources: acquisition-packs/fodg/sample-sources.md
+    provenance: project-owned synthetic
+    license: Apache-2.0
+    notes: >
+      Gate 3: 3 synthetic project-owned FODG samples created (minimal, basic, edge-case).
+      Provenance: Apache-2.0, no external rights. R19 delegated.
