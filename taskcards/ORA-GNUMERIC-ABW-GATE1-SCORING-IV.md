@@ -2,10 +2,10 @@
 taskcard_id: ORA-GNUMERIC-ABW-GATE1-SCORING-IV
 title: "ORA + Gnumeric + ABW Gate 1 Scoring and IV (R19/R20)"
 type: gate_sprint
-sprint: null
+sprint: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
 created_by_sprint: FORMAT-FACTORY-R17-R16-CLOSURE-VERIFY-ZST-GATE4-PLANNING-AND-MULTI-FORMAT-GATE1-SWARM-001
 created_at: "2026-05-16"
-status: pending_execution_prompt
+status: partially_completed
 visibility: internal
 publish_allowed: false
 authority: plans/master-plan.md

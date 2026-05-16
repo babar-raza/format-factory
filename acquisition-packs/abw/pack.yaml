@@ -1,0 +1,62 @@
+# ABW Acquisition Pack
+# AbiWord Document
+# FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+
+format_id: abw
+display_name: "AbiWord Word Processing Document"
+extensions:
+  - .abw
+  - .abw.gz
+  - .zabw
+mime_type: "application/x-abiword"
+family: words
+spec_body: "AbiSource Project"
+spec_version: "AWML 1.0 (outdated DTD)"
+legal_category: 2
+legal_description: "Permissive OSS — GPL application; AWML 1.0 DTD published; format open"
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose.Words does not support .abw format. Confirmed via Aspose.Words supported formats documentation. No Aspose class handles AbiWord XML."
+aspose_notes: "NOT_SUPPORTED is POSITIVE for commercial differentiation. However, outdated AWML DTD requires reference implementation study. Python FOSS track viable (AbiWord codebase available for reference)."
+python_library: "Custom implementation (flat XML + gzip for .abw.gz)"
+oracle_strategy: "SHA-256 round-trip (XML parse + re-serialize)"
+acquisition_risk_classification: MEDIUM
+acquisition_risk_notes: "Outdated AWML 1.0 DTD is the primary risk — implementation must reference AbiWord source code behavior, not only the DTD."
+sprint_created: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+created_date: "2026-05-16"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: abw
+    display_name: "AbiWord Word Processing Document"
+    mime_type: "application/x-abiword"
+    extensions: [".abw", ".abw.gz", ".zabw"]
+    structure: "Flat XML (single file); .abw.gz is gzip-compressed; .zabw is also gzip-compressed"
+    spec_body: "AbiSource Project"
+    spec_version: "AWML 1.0 DTD (outdated)"
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_under_babar_instruction"
+    approved_by: Babar Raza
+    approved_date: "2026-05-16"
+    sprint: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+    iv_result: PASS
+    iv_report: reports/verification/r18-gnumeric-abw-gate1-iv-20260516.md
+    score_estimate: 7.8
+    band: Accept
+    legal_category: 2
+    aspose_support_level: NOT_SUPPORTED
+    gate1_decision_packet: acquisition-packs/abw/gate1-decision-packet.md
+    notes: "Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza). Legal Cat 2. Aspose.Words NOT SUPPORTED (positive differentiation). Outdated AWML DTD is risk factor. Score ~7.8. DEC-034 IV PASS."
+
+  gate_2:
+    status: not_started
+    fast_path_eligible: false
+    notes: "Gate 2 requires AWML 1.0 DTD retrieval and AbiWord format documentation. Not fast-path."
+
+  gate_3:
+    status: not_started
+    notes: "Gate 3 corpus acquisition not yet authorized."

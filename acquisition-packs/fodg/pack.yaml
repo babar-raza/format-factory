@@ -1,0 +1,59 @@
+# FODG Acquisition Pack
+# Flat OpenDocument Drawing
+# FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+
+format_id: fodg
+display_name: "Flat OpenDocument Drawing"
+extensions:
+  - .fodg
+mime_type: "application/vnd.oasis.opendocument.graphics-flat-xml"
+family: drawing
+spec_body: OASIS
+spec_version: "ODF 1.3"
+legal_category: 1
+legal_description: "OASIS Royalty-Free on Limited Terms — identical basis to FODS/FODT/FODP"
+aspose_supported: true
+aspose_support_level: LOAD_ONLY
+aspose_product: Aspose.Imaging
+aspose_evidence: "Aspose.Imaging supports ODG (OpenDocument Graphics) as import format. Load confirmed. Full round-trip (save as FODG) not confirmed. Limited commercial applicability — load/convert only."
+aspose_notes: "LOAD_ONLY reduces commercial differentiation compared to FULL_ROUND_TRIP. Not a Gate 1 blocker but impacts commercial track planning."
+acquisition_risk_classification: LOW
+sprint_created: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+created_date: "2026-05-16"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: fodg
+    display_name: "Flat OpenDocument Drawing"
+    mime_type: "application/vnd.oasis.opendocument.graphics-flat-xml"
+    extensions: [".fodg"]
+    structure: "Single-file flat XML (no ZIP container)"
+    spec_body: OASIS
+    spec_version: "ODF 1.3"
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_under_babar_instruction"
+    approved_by: Babar Raza
+    approved_date: "2026-05-16"
+    sprint: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+    iv_result: PASS
+    iv_report: reports/verification/r18-fodp-fodg-gate1-iv-20260516.md
+    score_estimate: 8.1
+    band: Accept
+    legal_category: 1
+    aspose_support_level: LOAD_ONLY
+    gate1_decision_packet: acquisition-packs/fodg/gate1-decision-packet.md
+    notes: "Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza). OASIS RF legal basis identical to FODS/FODT/FODP. Aspose.Imaging LOAD_ONLY confirmed. DEC-034 IV PASS. Commercial track requires round-trip solution (not yet confirmed)."
+
+  gate_2:
+    status: not_started
+    fast_path_eligible: true
+    fast_path_basis: "OASIS ODF 1.3 spec already cached for FODS/FODT (same spec)"
+    notes: "Gate 2 fast-path eligible. OASIS ODF 1.3 Part 1 spec already cached. Fast-path authorization required."
+
+  gate_3:
+    status: not_started
+    notes: "Gate 3 corpus acquisition not yet authorized."

@@ -1,0 +1,60 @@
+# Gnumeric Acquisition Pack
+# Gnumeric Spreadsheet
+# FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+
+format_id: gnumeric
+display_name: "Gnumeric Spreadsheet"
+extensions:
+  - .gnumeric
+  - .gnm
+mime_type: "application/x-gnumeric"
+family: cells
+spec_body: "GNOME Project"
+spec_version: "Gnumeric XML format (GNOME documentation)"
+legal_category: 2
+legal_description: "Permissive OSS — GPL application; format XML is open and documented"
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose.Cells does not support .gnumeric format. Confirmed via Aspose.Cells supported formats documentation. No Aspose class handles Gnumeric XML."
+aspose_notes: "NOT_SUPPORTED is POSITIVE for commercial differentiation — no Aspose competition for this format. Python FOSS track and .NET commercial track both viable without Aspose dependency."
+python_library: "python-gnumeric or custom implementation (gzip + XML)"
+oracle_strategy: "SHA-256 round-trip (gzip decompress + XML parse + recompress)"
+acquisition_risk_classification: LOW
+sprint_created: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+created_date: "2026-05-16"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: gnumeric
+    display_name: "Gnumeric Spreadsheet"
+    mime_type: "application/x-gnumeric"
+    extensions: [".gnumeric", ".gnm"]
+    structure: "Gzip-compressed XML (flat single file)"
+    spec_body: "GNOME Project"
+    spec_version: "Gnumeric XML format (GNOME docs + source code documentation)"
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_under_babar_instruction"
+    approved_by: Babar Raza
+    approved_date: "2026-05-16"
+    sprint: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+    iv_result: PASS
+    iv_report: reports/verification/r18-gnumeric-abw-gate1-iv-20260516.md
+    score_estimate: 8.2
+    band: Accept
+    legal_category: 2
+    aspose_support_level: NOT_SUPPORTED
+    gate1_decision_packet: acquisition-packs/gnumeric/gate1-decision-packet.md
+    notes: "Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza). Legal Cat 2 (permissive OSS). Aspose.Cells NOT SUPPORTED (positive differentiation). Score ~8.2. DEC-034 IV PASS."
+
+  gate_2:
+    status: not_started
+    fast_path_eligible: false
+    notes: "Gate 2 requires spec retrieval from GNOME project documentation. Not fast-path (different spec body from FODS/FODT)."
+
+  gate_3:
+    status: not_started
+    notes: "Gate 3 corpus acquisition not yet authorized."

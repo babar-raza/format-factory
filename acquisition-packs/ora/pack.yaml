@@ -1,0 +1,57 @@
+# ORA Acquisition Pack
+# OpenRaster Image
+# FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+
+format_id: ora
+display_name: "OpenRaster Image"
+extensions:
+  - .ora
+mime_type: "image/openraster"
+family: imaging
+spec_body: "freedesktop.org (community)"
+spec_version: "OpenRaster 0.0.3 (informal community spec)"
+legal_category: 2
+legal_description: "Permissive community spec — freedesktop.org; no royalty claims"
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose.Imaging does not support .ora format. NOT_SUPPORTED confirmed."
+aspose_notes: "NOT_SUPPORTED by Aspose — potential differentiation. However, ORA is a niche format with limited community demand."
+acquisition_risk_classification: MEDIUM
+acquisition_risk_notes: "Community spec (not formal standards body). ZIP + PNG + XML structure. Krita/MyPaint ecosystem primary users."
+sprint_created: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+created_date: "2026-05-16"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: ora
+    display_name: "OpenRaster Image"
+    mime_type: "image/openraster"
+    extensions: [".ora"]
+    structure: "ZIP container: stack.xml + PNG image tiles + thumbnail"
+    spec_body: "freedesktop.org / Krita project"
+    spec_version: "OpenRaster 0.0.3 (informal)"
+
+  gate_1:
+    status: scored_pending_human_approval
+    approved_by: null
+    approved_date: null
+    score_estimate: 6.8
+    band: Borderline
+    legal_category: 2
+    aspose_support_level: NOT_SUPPORTED
+    gate1_decision_packet: acquisition-packs/ora/gate1-scoring-packet.md
+    notes: "ORA scored ~6.8 (Borderline). Score below automatic-accept threshold. Requires human review before Gate 1 approval. Community demand limited (Krita/MyPaint only). Spec informal."
+
+  gate_2:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null
+
+  gate_3:
+    status: not_started
+    approved_by: null
+    approved_date: null
+    notes: null

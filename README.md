@@ -92,7 +92,7 @@ Agents may prepare evidence, but only a human can approve a gate.
 
 ## Project Status
 
-**Current phase:** Phase 3/4. FODS Gates 1-10 are passed and Gate 11 is `commercial_readiness_in_progress` (NOT approved). FODT Gates 1-10 are passed, Gate 11 is `commercial_readiness_in_progress` (NOT approved). DEC-033 resolved as Option B (.NET Commercial Only). commercial_product_ready: false. ZST Gates 1-3 PASSED (R13B/R14/R16, 2026-05-15, delegated). ZST Gate 4 planning taskcard created (R17).
+**Current phase:** Phase 3/4. FODS Gates 1-10 are passed and Gate 11 is `commercial_readiness_in_progress` (NOT approved). FODT Gates 1-10 are passed, Gate 11 is `commercial_readiness_in_progress` (NOT approved). DEC-033 resolved as Option B (.NET Commercial Only). commercial_product_ready: false. ZST Gates 1-4 prototype COMPLETE (R18, 2026-05-16). FODP/FODG/Gnumeric/ABW Gate 1 APPROVED (R18, delegated).
 
 - Phase 0 Foundation: Complete, accepted 2026-05-04.
 - FODS Gates 1-10: Complete, approved by Babar Raza across run017 through run048.
@@ -102,8 +102,8 @@ Agents may prepare evidence, but only a human can approve a gate.
 - FODT Python Phase 4 source: Created under `src/python/fodt/` with 115/115 tests passing (TC-0052 completed).
 - Format Understanding Layer: FUL-001 schemas created, FUL-002 FODS completed, FUL-003 FODT completed.
 - .NET C4-C6 vertical slice: Created for FODS (src/net/fods/) and FODT (src/net/fodt/); DEC-033 resolved Option B; commercial_product_ready: false.
-- ZST (Zstandard): Gate 1 APPROVED (R13B, delegated). Gate 2 PASSED (R14). **Gate 3 PASSED (R16, delegated).** **Gate 4: planning_complete (R17, 2026-05-16):** parser-notes.md created; DEC-034 IV PASS (10/10); Gate 4 prototype deferred to R18+.
-- Multi-format intake (R17): Gate 1 packets created for FODP, FODG, ORA, Gnumeric, ABW. dnumber/.numbers = AUTOMATIC_REJECT (Category 5).
+- ZST (Zstandard): Gates 1-3 PASSED. **Gate 4 prototype COMPLETE (R18, 2026-05-16):** prototypes/by-format/zst/ created; 38/38 tests PASS; 15/15 corpus PASS; Gate 5 N/A (codec format). Gate 4 approval pending human review.
+- Multi-format Gate 1 (R18): **FODP Gate 1 APPROVED** (8.7; OASIS RF; Aspose.Slides FULL_RT). **FODG Gate 1 APPROVED** (8.1; OASIS RF; Aspose.Imaging LOAD_ONLY). **Gnumeric Gate 1 APPROVED** (8.2; Cat2; Aspose NOT_SUPPORTED). **ABW Gate 1 APPROVED** (7.8; Cat2; Aspose NOT_SUPPORTED). ORA: scored 6.8 (Borderline; pending human review). dnumber/.numbers = FORMAL_REJECT (Category 5). 8 formats total in registry.
 
 For current status, active work, and decisions, see [plans/master-plan.md](plans/master-plan.md). The master plan and [registry/format-registry.yaml](registry/format-registry.yaml) are the authoritative status sources.
 

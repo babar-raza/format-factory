@@ -532,19 +532,442 @@ formats:
           Gate 3 APPROVED under delegated authority (R16 execution prompt, Babar Raza instruction).
           Gate 4 (Parser Prototype Planning) is now authorized.
       gate_4:
-        status: planning_complete
+        status: prototype_complete
         approved_by: null
         approved_date: null
         parser_notes: acquisition-packs/zst/parser-notes.md
         parser_notes_sprint: FORMAT-FACTORY-R17-R16-CLOSURE-VERIFY-ZST-GATE4-PLANNING-AND-MULTI-FORMAT-GATE1-SWARM-001
         parser_notes_date: "2026-05-16"
+        prototype_sprint: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+        prototype_date: "2026-05-16"
+        prototype_path: prototypes/by-format/zst/
+        prototype_iv_result: PASS
+        prototype_iv_report: reports/verification/r18-zst-gate4-prototype-iv-20260516.md
         iv_result: PASS
         iv_report: reports/verification/r17-zst-gate4-independent-verification-20260515.md
         notes: >
-          Gate 4 parser notes created R17 (2026-05-16). planning_complete status.
-          Gate 4 full pass requires prototype in prototypes/by-format/zst/ + human review.
+          Gate 4 parser notes created R17 (2026-05-16). Prototype created R18 (2026-05-16).
+          prototype_complete status. 38/38 Gate 4 tests PASS. 15/15 corpus validation PASS.
           implementation_authorized: false. generated_requirements_authorized: false.
-          Prototype + approval deferred to R18+.
+          Gate 4 full pass requires human review/approval. Prototype approval deferred to human.
+      gate_5:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_6:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_7:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_8:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        tier_map: null
+        notes: null
+      gate_10:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_11:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+
+  - format_id: fodp
+    display_name: Flat OpenDocument Presentation
+    family: presentation
+    extensions:
+      - .fodp
+    mime_type: "application/vnd.oasis.opendocument.presentation-flat-xml"
+    spec_body: OASIS
+    spec_version: "ODF 1.3"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: true
+    aspose_support_level: FULL_ROUND_TRIP
+    aspose_evidence: "Aspose.Slides LoadFormat.Fodp + SaveFormat.Fodp. FULL_ROUND_TRIP confirmed since Java 20.4."
+    acquisition_pack_created: true
+    sprint_added: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+    gates:
+      gate_1:
+        status: passed
+        approved_by: Babar Raza
+        approved_date: "2026-05-16"
+        approval_method: delegated_agent_decision_under_babar_instruction
+        score_estimate: 8.7
+        band: Accept
+        iv_result: PASS
+        iv_report: reports/verification/r18-fodp-fodg-gate1-iv-20260516.md
+        notes: >
+          Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza instruction).
+          OASIS RF Category 1 — identical legal basis to FODS/FODT. Aspose.Slides FULL_ROUND_TRIP
+          confirmed. Score ~8.7. DEC-034 IV PASS (20/20). Gate 2 fast-path eligible.
+      gate_2:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        fast_path: false
+        fast_path_eligible: true
+        fast_path_basis: "ODF 1.3 spec cached from FODS/FODT Gate 2 (same spec)"
+        notes: "Gate 2 fast-path eligible. Spec already cached. Fast-path authorization required."
+      gate_3:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_4:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_5:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_6:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_7:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_8:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        tier_map: null
+        notes: null
+      gate_10:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_11:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+
+  - format_id: fodg
+    display_name: Flat OpenDocument Drawing
+    family: drawing
+    extensions:
+      - .fodg
+    mime_type: "application/vnd.oasis.opendocument.graphics-flat-xml"
+    spec_body: OASIS
+    spec_version: "ODF 1.3"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: true
+    aspose_support_level: LOAD_ONLY
+    aspose_evidence: "Aspose.Imaging supports ODG (OpenDocument Graphics) as import/load format. Full round-trip (save as FODG) not confirmed. LOAD_ONLY."
+    acquisition_pack_created: true
+    sprint_added: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+    gates:
+      gate_1:
+        status: passed
+        approved_by: Babar Raza
+        approved_date: "2026-05-16"
+        approval_method: delegated_agent_decision_under_babar_instruction
+        score_estimate: 8.1
+        band: Accept
+        iv_result: PASS
+        iv_report: reports/verification/r18-fodp-fodg-gate1-iv-20260516.md
+        notes: >
+          Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza instruction).
+          OASIS RF Category 1 — identical legal basis to FODS/FODT. Aspose.Imaging LOAD_ONLY
+          (round-trip not confirmed). Score ~8.1. DEC-034 IV PASS (20/20). Gate 2 fast-path eligible.
+          Commercial track requires round-trip solution investigation (Gate 6+).
+      gate_2:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        fast_path: false
+        fast_path_eligible: true
+        fast_path_basis: "ODF 1.3 spec cached from FODS/FODT Gate 2 (same spec)"
+        notes: "Gate 2 fast-path eligible. Spec already cached. Fast-path authorization required."
+      gate_3:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_4:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_5:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_6:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_7:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_8:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        tier_map: null
+        notes: null
+      gate_10:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_11:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+
+  - format_id: gnumeric
+    display_name: Gnumeric Spreadsheet
+    family: cells
+    extensions:
+      - .gnumeric
+      - .gnm
+    mime_type: "application/x-gnumeric"
+    spec_body: "GNOME Project"
+    spec_version: "Gnumeric XML format (GNOME documentation)"
+    legal_category: 2
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    aspose_evidence: "Aspose.Cells does not support .gnumeric. NOT_SUPPORTED confirmed."
+    acquisition_pack_created: true
+    acquisition_risk_classification: LOW
+    sprint_added: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+    gates:
+      gate_1:
+        status: passed
+        approved_by: Babar Raza
+        approved_date: "2026-05-16"
+        approval_method: delegated_agent_decision_under_babar_instruction
+        score_estimate: 8.2
+        band: Accept
+        iv_result: PASS
+        iv_report: reports/verification/r18-gnumeric-abw-gate1-iv-20260516.md
+        notes: >
+          Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza instruction).
+          Legal Cat 2 (permissive OSS). Aspose.Cells NOT SUPPORTED (positive differentiation).
+          Score ~8.2. DEC-034 IV PASS (20/20).
+      gate_2:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        fast_path: false
+        fast_path_eligible: false
+        notes: "Gate 2 requires spec retrieval from GNOME project documentation. Not fast-path."
+      gate_3:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_4:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_5:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_6:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_7:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_8:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        tier_map: null
+        notes: null
+      gate_10:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_11:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+
+  - format_id: abw
+    display_name: AbiWord Word Processing Document
+    family: words
+    extensions:
+      - .abw
+      - .abw.gz
+      - .zabw
+    mime_type: "application/x-abiword"
+    spec_body: "AbiSource Project"
+    spec_version: "AWML 1.0 (outdated DTD)"
+    legal_category: 2
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    aspose_evidence: "Aspose.Words does not support .abw format. NOT_SUPPORTED confirmed."
+    acquisition_pack_created: true
+    acquisition_risk_classification: MEDIUM
+    acquisition_risk_notes: "Outdated AWML 1.0 DTD; reference implementation (AbiWord source) required"
+    sprint_added: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+    gates:
+      gate_1:
+        status: passed
+        approved_by: Babar Raza
+        approved_date: "2026-05-16"
+        approval_method: delegated_agent_decision_under_babar_instruction
+        score_estimate: 7.8
+        band: Accept
+        iv_result: PASS
+        iv_report: reports/verification/r18-gnumeric-abw-gate1-iv-20260516.md
+        notes: >
+          Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza instruction).
+          Legal Cat 2. Aspose.Words NOT SUPPORTED (positive differentiation). Outdated AWML 1.0 DTD
+          is primary risk factor — acquisition_risk_classification elevated to MEDIUM.
+          Score ~7.8. DEC-034 IV PASS (20/20).
+      gate_2:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        fast_path: false
+        fast_path_eligible: false
+        notes: "Gate 2 requires AWML 1.0 DTD retrieval and AbiWord format documentation. Reference implementation study required."
+      gate_3:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_4:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_5:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_6:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_7:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_8:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_9:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        tier_map: null
+        notes: null
+      gate_10:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_11:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+
+  - format_id: ora
+    display_name: OpenRaster Image
+    family: imaging
+    extensions:
+      - .ora
+    mime_type: "image/openraster"
+    spec_body: "freedesktop.org (community)"
+    spec_version: "OpenRaster 0.0.3 (informal)"
+    legal_category: 2
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    aspose_evidence: "Aspose.Imaging does not support .ora. NOT_SUPPORTED confirmed."
+    acquisition_pack_created: true
+    acquisition_risk_classification: MEDIUM
+    sprint_added: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+    gates:
+      gate_1:
+        status: scored_pending_human_approval
+        approved_by: null
+        approved_date: null
+        score_estimate: 6.8
+        band: Borderline
+        notes: "ORA scored ~6.8 (Borderline). Human review required before Gate 1 approval. Community demand limited (Krita/MyPaint only). Spec informal. See acquisition-packs/ora/gate1-scoring-packet.md."
+      gate_2:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_3:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
+      gate_4:
+        status: not_started
+        approved_by: null
+        approved_date: null
+        notes: null
       gate_5:
         status: not_started
         approved_by: null

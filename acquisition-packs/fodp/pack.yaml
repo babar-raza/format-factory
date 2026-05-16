@@ -1,0 +1,58 @@
+# FODP Acquisition Pack
+# Flat OpenDocument Presentation
+# FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+
+format_id: fodp
+display_name: "Flat OpenDocument Presentation"
+extensions:
+  - .fodp
+mime_type: "application/vnd.oasis.opendocument.presentation-flat-xml"
+family: presentation
+spec_body: OASIS
+spec_version: "ODF 1.3"
+legal_category: 1
+legal_description: "OASIS Royalty-Free on Limited Terms — identical basis to FODS/FODT"
+aspose_supported: true
+aspose_support_level: FULL_ROUND_TRIP
+aspose_product: Aspose.Slides
+aspose_evidence: "Aspose.Slides LoadFormat.Fodp + SaveFormat.Fodp. Confirmed since Aspose.Slides for Java 20.4. LoadFormat.Fodp returns presentation object; SaveFormat.Fodp saves as flat OpenDocument Presentation. Full round-trip."
+acquisition_risk_classification: LOW
+sprint_created: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+created_date: "2026-05-16"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: fodp
+    display_name: "Flat OpenDocument Presentation"
+    mime_type: "application/vnd.oasis.opendocument.presentation-flat-xml"
+    extensions: [".fodp"]
+    structure: "Single-file flat XML (no ZIP container)"
+    spec_body: OASIS
+    spec_version: "ODF 1.3"
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_under_babar_instruction"
+    approved_by: Babar Raza
+    approved_date: "2026-05-16"
+    sprint: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
+    iv_result: PASS
+    iv_report: reports/verification/r18-fodp-fodg-gate1-iv-20260516.md
+    score_estimate: 8.7
+    band: Accept
+    legal_category: 1
+    aspose_support_level: FULL_ROUND_TRIP
+    gate1_decision_packet: acquisition-packs/fodp/gate1-decision-packet.md
+    notes: "Gate 1 approved under delegated authority (R18 execution prompt, Babar Raza). OASIS RF legal basis identical to FODS/FODT. Aspose.Slides FULL_ROUND_TRIP confirmed. DEC-034 IV PASS."
+
+  gate_2:
+    status: not_started
+    fast_path_eligible: true
+    fast_path_basis: "OASIS ODF 1.3 spec already cached for FODS/FODT (same spec)"
+    notes: "Gate 2 fast-path eligible. OASIS ODF 1.3 Part 1 spec already in spec-cache from FODS/FODT Gate 2. Fast-path authorization required."
+
+  gate_3:
+    status: not_started
+    notes: "Gate 3 corpus acquisition not yet authorized."

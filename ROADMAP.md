@@ -1,7 +1,7 @@
 # Roadmap
 
 **Document type:** Governance / Planning
-**Last reviewed:** 2026-05-16 (R17 ZST Gate 4 planning_complete; multi-format Gate 1 packets)
+**Last reviewed:** 2026-05-16 (R18 ZST Gate 4 prototype COMPLETE; FODP/FODG/Gnumeric/ABW Gate 1 APPROVED; 8 formats in registry)
 **Note:** This roadmap describes planned phases and milestones. It is a planning document, not the operational authority. Actual progress is tracked in `plans/master-plan.md` and `registry/format-registry.yaml`.
 
 ---
