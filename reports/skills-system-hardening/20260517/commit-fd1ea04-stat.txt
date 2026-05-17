@@ -1,0 +1,39 @@
+commit fd1ea04f123b3ffecbd446bada2913373be1cd67
+Author: Babar Raza <babar.raza@aspose.com>
+Date:   Sun May 17 16:57:30 2026 +0500
+
+    fix(skills): repair command contracts, settings drift, git tracking (SKILLS-PRD-HARDENING-001)
+    
+    - Fix settings.json: update description/phase_note to R19 state; remove DEC-033
+      blocking language (resolved 2026-05-12); add ZST G1-7/FODP/FODG/Gnumeric/ABW
+    - Fix evidence-review-next-prompt.md: add Step 0 dependency preflight; replace
+      hardcoded memory/09 Phase 1 reference with dynamic lookup; add contract selection
+      guidance for 93+ contracts
+    - Fix memory-sprint.md: replace false autonomous commit claim with COMMIT_PENDING_HUMAN_APPROVAL
+      pattern; add 55-file floor justification; add permission dialog documentation
+    - Fix export-plan-context.md: add staleness guard (auto-fires); update file list
+      from R11/R12 era to R18 (memory/34+35, r17/r18 reports); add Step 0; add
+      MANDATORY MAINTENANCE note; stage file for first git commit (was untracked)
+    - Add AGENTS.md J4: classify tools/skills/commands/ as CURRENT_INTERNAL_ONLY
+    - Add /export-plan-context to docs/agent-methodology-index.md Section 5
+    - Add TC-0004 PREREQUISITES section documenting settings.json deny entry removal
+      required before implementation; add NOTE to _readme.md Planned Commands footer
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+ .claude/commands/_readme.md                        |   2 +
+ .claude/commands/evidence-review-next-prompt.md    |  36 +++--
+ .claude/commands/export-plan-context.md            | 153 +++++++++++++++++++++
+ .claude/commands/memory-sprint.md                  |  26 +++-
+ .claude/settings.json                              |   9 +-
+ AGENTS.md                                          |   2 +
+ docs/agent-methodology-index.md                    |   1 +
+ .../20260517/audit-claim-verification-matrix.md    |  35 +++++
+ .../20260517/final-verdict.md                      |  86 ++++++++++++
+ .../20260517/gap-analysis-beyond-audit.md          |  19 +++
+ .../skills-system-hardening/20260517/preflight.md  | 122 ++++++++++++++++
+ .../20260517/taskcard-state-machine.md             |  17 +++
+ .../20260517/verification-report.md                | 148 ++++++++++++++++++++
+ taskcards/TC-0004-commands-skills.md               |  16 +++
+ .../contracts/skills-prd-hardening-001.yaml        |  16 +++
+ 15 files changed, 669 insertions(+), 19 deletions(-)

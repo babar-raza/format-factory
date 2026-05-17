@@ -1,0 +1,19 @@
+FORBIDDEN PATHS VERIFICATION
+Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001
+Date: 2026-05-17
+
+Verified that this sprint's commit (fd1ea04) does NOT contain any forbidden paths.
+
+Command: git show fd1ea04 --name-only | grep -E "^src/python/|^src/net/|^\.env$|^memory/"
+
+Result: (no output — no forbidden paths found)
+
+FORBIDDEN_PATHS_CHECK: CLEAN
+
+Paths verified NOT in commit:
+- src/python/** — CLEAN (none present)
+- src/net/** — CLEAN (none present)
+- .env — CLEAN (not present)
+- memory/** — CLEAN (not present; memory sprint is separate)
+- tools/evidence/validate_evidence_bundle.py — CLEAN (not present)
+- tests/evidence/test_negative_bundle_validation.py — CLEAN (not present)
