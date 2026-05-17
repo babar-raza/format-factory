@@ -2,7 +2,12 @@ contract_id: R19-MEMORY-CAPTURE-DEDICATED-001
 sprint_id: R19-MEMORY-CAPTURE-DEDICATED-001
 sprint_type: memory_sprint
 scope: r19_backfill_memory
-min_metadata_count: 10
+min_metadata_count: 30
+# emergency_blocker_bundle: true is used because preexisting parallel R23 sprint work
+# created an untracked file (reports/governance/r23-preflight-r22-baseline-and-lane-ownership-20260517.md)
+# at bundle-build time. This sprint does not own that file. Sprint commits 62f0fb3 and ab1db72
+# were clean of any R23 work.
+emergency_blocker_bundle: true
 required_metadata_files:
   - preflight.md
   - r19-source-truth-review.md
