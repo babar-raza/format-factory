@@ -1,0 +1,38 @@
+---
+contract_id: FORMAT-FACTORY-R22-FULL-THROTTLE-RELEASE-CANDIDATE-AND-GATE11-PROTOTYPE-TRAIN-001
+date: "2026-05-17"
+min_metadata_count: 30
+verdict_keyword: R22_COMPLETE
+
+required_repo_files:
+  # R22 Governance reports
+  - reports/governance/r22-preflight-r21-baseline-and-lane-ownership-20260517.md
+  - reports/governance/r22-authority-consistency-repair-report-20260517.md
+
+  # G11-E .NET prototypes
+  - src/net/fods/FodsCsvExporter.cs
+  - src/net/fodt/FodtTxtExporter.cs
+
+  # G11-E .NET tests
+  - tests/net/fods/FodsCsvExporterTests.cs
+  - tests/net/fodt/FodtTxtExporterTests.cs
+
+  # Packaging build script (PYTHONPATH fix)
+  - packaging/python/build-local-packages.py
+
+  # Gate 4: packaging tests
+  - tests/packaging/test_python_local_package_artifacts.py
+  - tests/packaging/test_python_local_package_imports.py
+
+  # Registry (gate_10 updated)
+  - registry/format-registry.yaml
+
+  # Python FOSS source (must still exist from R21)
+  - src/python/zst/__init__.py
+  - src/python/fodp/__init__.py
+  - src/python/fodg/__init__.py
+  - src/python/gnumeric/__init__.py
+  - src/python/abw/__init__.py
+
+  # Evidence contract itself
+  - tools/evidence/contracts/r22-full-throttle-release-candidate-and-gate11-prototype-train.yaml
