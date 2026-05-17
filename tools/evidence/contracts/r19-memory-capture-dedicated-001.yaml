@@ -1,0 +1,18 @@
+contract_id: R19-MEMORY-CAPTURE-DEDICATED-001
+sprint_id: R19-MEMORY-CAPTURE-DEDICATED-001
+sprint_type: memory_sprint
+scope: r19_backfill_memory
+min_metadata_count: 10
+required_metadata_files:
+  - preflight.md
+  - r19-source-truth-review.md
+  - memory-numbering-decision.md
+  - verification-report.md
+  - no-secrets-check.txt
+  - git-status-before.txt
+  - git-status-after.txt
+  - changed-files-list.txt
+  - final-verdict.md
+forbidden_paths:
+  - .env
+  - node_modules
