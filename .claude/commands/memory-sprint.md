@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-05-08"
+version: "1.1"
+last-updated: "2026-05-17"
 phase-available: "all"
 gate-required: null
 created-by: memory-planning-methodology-and-agent-handoff sprint
@@ -24,8 +24,17 @@ Create a memory sprint to capture strategic decisions, architecture notes, or us
 10. Create taskcards (status: proposed_pending_human_approval) for any out-of-scope backlog items.
 11. Create the evidence contract for this memory sprint.
 12. Create metadata files (minimum 55).
+
+    **NOTE:** The 55-file metadata minimum is elevated from the project floor (30 files) to ensure full
+    memory state + decisions are captured. See AGENTS.md AF7 for evidence floor policy.
+
 13. Build and validate the evidence bundle.
-14. Stage only MEMORY_SPRINT_ALLOWED files. Commit.
+14. Stage only MEMORY_SPRINT_ALLOWED files (exact paths). Attempt: `git add <exact paths>`. Then attempt commit.
+
+    **PERMISSION NOTE:** `git commit` requires human approval via Claude Code permission dialog — watch for
+    the prompt and wait for approval. If denied, print `COMMIT_PENDING_HUMAN_APPROVAL` and output the
+    exact manual command: `git commit -m '<sprint-id> memory sprint complete'`.
+
 15. Print the final evidence bundle path.
 
 ## Output Format
@@ -35,7 +44,8 @@ Create a memory sprint to capture strategic decisions, architecture notes, or us
 3. Decisions captured.
 4. Backlog taskcards created (if any).
 5. Evidence contract validation result.
-6. Commit hash.
+6. Commit hash (populated if human approved permission dialog; otherwise: `COMMIT_PENDING_HUMAN_APPROVAL`
+   followed by the exact manual git commit command to run).
 7. Stream declaration:
    - MEMORY SPRINT ONLY
    - NO MAIN SPRINT GATE CHANGED
@@ -54,6 +64,14 @@ No MAIN SPRINT gate status may change.
 No product source may be created.
 No embeddings or vector DB may be created.
 
+If git commit is denied by Claude Code permissions, the sprint output is complete but not committed.
+Human must run the printed commit command to finalize. This is expected — `git commit` is intentionally
+permission-restricted in this project's settings.json.
+
 ## Changelog
 
 - 1.0 (2026-05-08): Initial version. Created in memory-planning-methodology-and-agent-handoff sprint.
+- 1.1 (2026-05-17): Fix Step 14 to document permission dialog behavior and `COMMIT_PENDING_HUMAN_APPROVAL`
+  fallback. Fix Output Format item 6 from "Commit hash." (impossible without permission) to conditional
+  form. Add Validation note explaining expected permission-denied behavior. Add NOTE in Step 12 explaining
+  55-file floor vs. 30-file project floor. Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001.

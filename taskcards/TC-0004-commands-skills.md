@@ -75,6 +75,22 @@ Also in scope: a command registry file `command-registry.yaml` in `.claude/comma
 
 ---
 
+## PREREQUISITES
+
+**Before implementing any planned command, remove the corresponding `Write(.claude/commands/<name>.md)` deny entry from `.claude/settings.json`.** Entries to remove:
+
+- `Write(.claude/commands/score-format.md)`
+- `Write(.claude/commands/create-acquisition-pack.md)`
+- `Write(.claude/commands/check-gate.md)`
+- `Write(.claude/commands/create-taskcard.md)`
+- `Write(.claude/commands/reproduce-master-plan.md)`
+- `Write(.claude/commands/build-evidence-bundle.md)`
+- `Write(.claude/commands/check-release-boundary.md)`
+
+This settings update must occur in an authorized sprint before TC-0004 execution. Without removing these deny entries, Claude Code will silently block all attempts to write the command files, causing TC-0004 to fail with no visible error.
+
+---
+
 ## Acceptance Criteria
 
 - [ ] All seven command files exist in `.claude/commands/` with correct front-matter blocks

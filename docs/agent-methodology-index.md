@@ -75,6 +75,7 @@ Use them rather than reinventing behavior ad hoc.
 | `/execution-handoff` | [.claude/commands/execution-handoff.md](../.claude/commands/execution-handoff.md) | Convert a hardened plan into a full single-go execution prompt. | PLAN MODE only. Does not create files or commit. |
 | `/evidence-review-next-prompt` | [.claude/commands/evidence-review-next-prompt.md](../.claude/commands/evidence-review-next-prompt.md) | Review a bundle, challenge claims, produce next prompt. | PLAN MODE only. Does not create files or commit. |
 | `/memory-sprint` | [.claude/commands/memory-sprint.md](../.claude/commands/memory-sprint.md) | Full memory sprint workflow from decision capture to bundle. | EXECUTION MODE. Creates files and commits. |
+| `/export-plan-context` | [.claude/commands/export-plan-context.md](../.claude/commands/export-plan-context.md) | Bundle long-term plan context files into a zip for sharing with an LLM. | EXECUTION MODE. No repo files created. No commit. |
 
 ---
 

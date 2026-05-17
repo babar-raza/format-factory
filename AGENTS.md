@@ -149,6 +149,8 @@ The agent must answer "no" to questions 4, 5, 6, 7, 8, and 10, and "yes" to ques
 
 **J3.** Log all commands used in the run record under `commands_used`.
 
+**J4.** The Python command entry points in `tools/skills/commands/` (`format_context.py`, `lane_select.py`, `commercial_sprint.py`) are **CURRENT_INTERNAL_ONLY** tools for fods/fodt format resolution and dry-run sprint orchestration. They are NOT registered as `.claude/commands/` slash commands and are not listed in docs/agent-methodology-index.md. Invocation: `python tools/skills/commands/format_context.py [format]` or `python tools/skills/commands/commercial_sprint.py [format] --dry-run`. These are scoped to fods/fodt only at runtime — other formats are blocked with an explicit error. Wrapper slash commands are deferred to Phase 1 (TC-0004 scope expansion). Added: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001.
+
 ---
 
 ## K. Persistence Requirements

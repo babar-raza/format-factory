@@ -53,6 +53,8 @@ The following commands are designed but not yet implemented. They will be create
 | `/build-evidence-bundle` | `build-evidence-bundle.md` | Build and validate an evidence bundle for the current phase/gate | 1 | None |
 | `/check-release-boundary` | `check-release-boundary.md` | Verify no commercial artifacts are in OSS release scope | 3+ | Gate 9 passed |
 
+> **NOTE:** Implementing any planned command requires first removing its `Write(...)` deny entry from `.claude/settings.json`. Deny entries exist for all 7 planned commands (lines 105–111). This settings update must occur in an authorized sprint before TC-0004 execution. See TC-0004 PREREQUISITES section.
+
 ---
 
 ## Command File Format
