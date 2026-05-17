@@ -1,3 +1,31 @@
+7a0ec0e chore(evidence): add sprint metadata for SKILLS-PRD-HARDENING-001 evidence bundle
+ .../20260517/command-version-summary.md            | 14 +++++++
+ .../20260517/commit-fd1ea04-files.txt              | 30 +++++++++++++
+ .../20260517/commit-fd1ea04-stat.txt               | 39 +++++++++++++++++
+ .../20260517/forbidden-paths-check.txt             | 19 +++++++++
+ .../20260517/lane-execution-log.md                 | 49 ++++++++++++++++++++++
+ .../20260517/recent-git-log.txt                    |  5 +++
+ .../20260517/settings-json-summary.md              | 22 ++++++++++
+ .../20260517/taskcard-closure-summary.md           | 17 ++++++++
+ 8 files changed, 195 insertions(+)
+d4a100e chore(skills): add FORMAT-FACTORY-SKILLS-PRD-HARDENING-001 metadata reports
+ .../20260517/acceptance-criteria-checklist.md      |   58 +
+ .../20260517/changed-files-list.txt                |   40 +
+ .../20260517/consistency-check-result.txt          |   31 +
+ .../20260517/git-diff-sprint-changes.txt           |  374 ++++++
+ .../skills-system-hardening/20260517/git-log.txt   |  609 ++++++++++
+ .../20260517/git-status-after.txt                  |   13 +
+ .../20260517/git-status-before.txt                 |   81 ++
+ .../20260517/git-status-final.txt                  |   10 +
+ .../20260517/head-rebaseline-check.txt             |   27 +
+ .../20260517/metadata-identity-report.md           |    9 +
+ .../20260517/no-secrets-check.txt                  |   11 +
+ .../20260517/path-references-check.txt             |   35 +
+ .../20260517/pytest-skills-result.txt              |   19 +
+ .../skills-system-hardening/20260517/repo-tree.txt | 1250 ++++++++++++++++++++
+ .../20260517/self-challenge.md                     |   30 +
+ .../20260517/sprint-overview.md                    |   37 +
+ 16 files changed, 2634 insertions(+)
 f1b7474 chore: gitignore format-factory.zip stray artifact
  .gitignore | 1 +
  1 file changed, 1 insertion(+)
@@ -560,50 +588,3 @@ fbdd2b0 feat(skills): add Conway R9 governed simulation and authority continuity
  tools/skills/replay_lineage.py                     | 351 +++++++++++++++
  tools/skills/stale_propagation.py                  | 395 ++++++++++++++++
  21 files changed, 5650 insertions(+)
-97eead3 feat(skills): add Conway R7R8 multi-format planning and staleness infrastructure (CONWAY-R7R8-MULTI-FORMAT-PLANNING-AND-STALENESS-SWARM-001)
- .../governance/adversarial-r7r8-review-20260514.md | 137 +++++++
- ...lay-governance-strengthening-report-20260514.md |  36 ++
- .../stale-state-enforcement-report-20260514.md     | 105 +++++
- ...mplementation-plan-expansion-report-20260514.md |  21 +
- .../multi-format-planning-report-20260514.md       |  20 +
- .../planning-bundle-runtime-report-20260514.md     |  37 ++
- ...ic-spec-onboarding-framework-report-20260514.md |  29 ++
- reports/planning/r9-readiness-decision-20260514.md | 179 +++++++++
- schemas/skills/format-onboarding.schema.yaml       | 175 +++++++++
- .../public-spec-onboarding-template.yaml           |  51 +++
- .../reverse-engineering-safe-template.yaml         |  53 +++
- tests/skills/test_format_onboarding_templates.py   | 139 +++++++
- tests/skills/test_implementation_plan_expander.py  | 163 ++++++++
- tests/skills/test_multi_format_planning.py         | 121 ++++++
- tests/skills/test_planning_bundle_runtime.py       | 134 +++++++
- tests/skills/test_replay_fingerprint.py            | 186 +++++++++
- tests/skills/test_stale_detection.py               | 366 ++++++++++++++++++
- ...rmat-planning-and-staleness-swarm-20260514.yaml |  44 +++
- tools/skills/format_context_resolver.py            |   9 +
- tools/skills/implementation_plan_expander.py       | 421 +++++++++++++++++++++
- tools/skills/lane_selector.py                      |  39 +-
- tools/skills/multi_format_planning.py              | 206 ++++++++++
- tools/skills/planning_bundle_runtime.py            | 213 +++++++++++
- tools/skills/replay_fingerprint.py                 | 264 +++++++++++++
- tools/skills/stale_detection.py                    | 360 ++++++++++++++++++
- tools/skills/swarm_prompt_generator.py             |  18 +
- 26 files changed, 3517 insertions(+), 9 deletions(-)
-e80d3d3 feat(skills): add Conway R4R5R6 dry-run orchestration platform (CONWAY-R4R5R6-DRYRUN-ORCHESTRATION-SWARM-001)
- .../adversarial-orchestration-review-20260513.md   | 115 +++++
- ...evidence-runtime-integration-report-20260513.md | 138 ++++++
- reports/planning/r7-readiness-decision-20260513.md | 166 ++++++++
- tests/skills/fixtures/fods-sprint-prompt.md        | 227 ++++++++++
- tests/skills/fixtures/fodt-sprint-prompt.md        | 234 +++++++++++
- tests/skills/test_commercial_sprint_dryrun.py      | 168 ++++++++
- tests/skills/test_dryrun_replay_fixtures.py        | 177 ++++++++
- tests/skills/test_prompt_quality_gate.py           | 192 +++++++++
- tests/skills/test_swarm_prompt_generator.py        | 198 +++++++++
- ...r4r5r6-dryrun-orchestration-swarm-20260513.yaml |  33 ++
- tools/skills/commands/__init__.py                  |   4 +
- tools/skills/commands/commercial_sprint.py         |  93 ++++
- tools/skills/commands/format_context.py            |  48 +++
- tools/skills/commands/lane_select.py               |  47 +++
- tools/skills/commercial_sprint_dryrun.py           | 300 +++++++++++++
- tools/skills/prompt_quality_gate.py                | 301 +++++++++++++
- tools/skills/swarm_prompt_generator.py             | 466 +++++++++++++++++++++
- 17 files changed, 2907 insertions(+)
