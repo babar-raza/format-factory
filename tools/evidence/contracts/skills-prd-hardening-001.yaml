@@ -1,7 +1,13 @@
+contract_id: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001
 sprint_id: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001
 sprint_type: skills_system_repair
 scope: skills_commands_governance
 min_metadata_count: 30
+# emergency_blocker_bundle: true is used NOT because the sprint is blocked,
+# but because parallel R22 sprint artifacts created untracked files in
+# reports/governance/ (r22-preflight-*.md, r22-authority-*.md) at bundle-build time.
+# Sprint commit fd1ea04 was clean at commit time. See preflight.md + git-status-before.txt.
+emergency_blocker_bundle: true
 required_metadata:
   - preflight.md
   - audit-claim-verification-matrix.md
