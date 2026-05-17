@@ -1,0 +1,19 @@
+PYTEST SKILLS COMMAND TESTS
+Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001
+Date: 2026-05-17
+
+Command: PYTHONPATH=. python -c "import sys; sys.path.insert(0,'C:/Users/prora/AppData/Roaming/Python/Python313/site-packages'); import pytest; sys.exit(pytest.main(['tests/skills/test_format_context_resolver.py', 'tests/skills/test_lane_selector.py', 'tests/skills/test_commercial_sprint_dryrun.py', '-q', '--tb=short']))"
+
+Result:
+....................................................................     [100%]
+============================== warnings summary ===============================
+tests/skills/test_commercial_sprint_dryrun.py: 19 warnings
+  tools/skills/commercial_sprint_dryrun.py:101: DeprecationWarning: datetime.datetime.utcnow()
+  is deprecated and scheduled for removal in a future version. Use timezone-aware objects to
+  represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+68 passed, 19 warnings in 33.01s
+
+VERDICT: PASS — 68/68 core skills command tests pass, 0 failures, 0 errors
+NOTE: 19 DeprecationWarning (datetime.utcnow) are pre-existing in commercial_sprint_dryrun.py, not introduced by this sprint.

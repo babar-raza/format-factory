@@ -1,0 +1,35 @@
+PATH REFERENCES VERIFICATION
+Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001
+Date: 2026-05-17
+
+Verified all file paths referenced in Steps sections of changed command files.
+
+Command: python -c "import os; files_to_check = {...}; ..."
+
+Result: PATH_REFERENCES: ALL_OK
+
+Files checked:
+  evidence-review-next-prompt.md:
+    memory/00-index.md → EXISTS
+    plans/master-plan.md → EXISTS
+    docs/planning-methodology.md → EXISTS
+    docs/agent-execution-handoff-standard.md → EXISTS
+    tools/evidence/check_current_state_consistency.py → EXISTS
+    tools/evidence/validate_evidence_bundle.py → EXISTS
+    docs/prompts/execution-handoff-prompt-template.md → EXISTS
+
+  memory-sprint.md:
+    memory/00-index.md → EXISTS
+    plans/master-plan.md → EXISTS
+    AGENTS.md → EXISTS
+    GOVERNANCE.md → EXISTS
+    docs/planning-methodology.md → EXISTS
+    tools/evidence/check_current_state_consistency.py → EXISTS
+
+  export-plan-context.md:
+    tools/evidence/contracts/ → EXISTS
+    memory/34-zst-r17-gate4-and-multi-format-gate1-intake-20260516.md → EXISTS
+    memory/35-r18-quarter-mile-zst-gate4-multi-format-gate1-20260516.md → EXISTS
+    reports/planning/r17-taskcard-roadmap-memory-normalization-report-20260516.md → EXISTS
+    reports/planning/r18-quarter-mile-roadmap-and-wip-control-20260516.md → EXISTS
+    reports/planning/r18-fodp-fodg-gate2-fastpath-decision-20260516.md → EXISTS

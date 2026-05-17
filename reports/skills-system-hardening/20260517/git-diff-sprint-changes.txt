@@ -1,0 +1,374 @@
+diff --git a/.claude/commands/_readme.md b/.claude/commands/_readme.md
+index 971fe62..464a211 100644
+--- a/.claude/commands/_readme.md
++++ b/.claude/commands/_readme.md
+@@ -53,6 +53,8 @@ The following commands are designed but not yet implemented. They will be create
+ | `/build-evidence-bundle` | `build-evidence-bundle.md` | Build and validate an evidence bundle for the current phase/gate | 1 | None |
+ | `/check-release-boundary` | `check-release-boundary.md` | Verify no commercial artifacts are in OSS release scope | 3+ | Gate 9 passed |
+ 
++> **NOTE:** Implementing any planned command requires first removing its `Write(...)` deny entry from `.claude/settings.json`. Deny entries exist for all 7 planned commands (lines 105–111). This settings update must occur in an authorized sprint before TC-0004 execution. See TC-0004 PREREQUISITES section.
++
+ ---
+ 
+ ## Command File Format
+diff --git a/.claude/commands/evidence-review-next-prompt.md b/.claude/commands/evidence-review-next-prompt.md
+index 9ac0c14..5bf7e58 100644
+--- a/.claude/commands/evidence-review-next-prompt.md
++++ b/.claude/commands/evidence-review-next-prompt.md
+@@ -1,6 +1,6 @@
+ ---
+-version: "1.0"
+-last-updated: "2026-05-08"
++version: "1.1"
++last-updated: "2026-05-17"
+ phase-available: "all"
+ gate-required: null
+ created-by: memory-planning-methodology-and-agent-handoff sprint
+@@ -12,20 +12,33 @@ Review a provided evidence bundle, challenge the prior sprint claims, and produc
+ 
+ ## Steps
+ 
+-1. Read memory/00-index.md, plans/master-plan.md, and memory/09-current-state-before-phase1.md.
+-2. Read docs/planning-methodology.md and docs/agent-execution-handoff-standard.md.
+-3. Read the evidence bundle (inspect zip entries, read key metadata files):
++0. **DEPENDENCY PREFLIGHT** — Verify required files exist before proceeding:
++   - `memory/00-index.md`
++   - `plans/master-plan.md`
++   - `docs/planning-methodology.md`
++   - `docs/agent-execution-handoff-standard.md`
++   - `tools/evidence/check_current_state_consistency.py`
++   - `tools/evidence/validate_evidence_bundle.py`
++
++   If any file is missing: print `BLOCKED: missing dependency <path>` and stop.
++
++1. Read `memory/00-index.md` to identify the most recent memory file. Read that file plus `plans/master-plan.md` Section 33 for current state. Read `docs/planning-methodology.md` and `docs/agent-execution-handoff-standard.md`.
++2. Read the evidence bundle (inspect zip entries, read key metadata files):
+    - bundle-metadata/git-log.txt (confirm HEAD commit)
+    - bundle-metadata/git-status-final.txt (confirm clean tree)
+    - bundle-metadata/bundle-manifest.yaml (confirm entry count)
+    - bundle-metadata/verdict.md (prior sprint verdict)
+    - bundle-metadata/self-challenge.md (any NO answers)
+-4. For each major claim in the verdict, read the supporting artifact in repo/.
+-5. Challenge each claim: CONFIRMED, DISPUTED, MISSING, or INCOMPLETE.
+-6. Run python tools/evidence/check_current_state_consistency.py.
+-7. Run python tools/evidence/validate_evidence_bundle.py --bundle <path> --contract <contract>.
+-8. Produce the next execution prompt using docs/prompts/execution-handoff-prompt-template.md.
+-9. Do not create repo files. Do not commit. Do not push.
++3. For each major claim in the verdict, read the supporting artifact in repo/.
++4. Challenge each claim: CONFIRMED, DISPUTED, MISSING, or INCOMPLETE.
++5. Run python tools/evidence/check_current_state_consistency.py.
++6. Run python tools/evidence/validate_evidence_bundle.py --bundle <path> --contract <contract_file>.
++   Select the contract file from `tools/evidence/contracts/` matching the sprint being reviewed.
++   Use the file whose name matches the sprint ID. If uncertain, list `tools/evidence/contracts/`
++   sorted by modification time (`ls -lt tools/evidence/contracts/` on bash) and use the most
++   recent file. Fallback: `tools/evidence/contracts/base-run.yaml`.
++7. Produce the next execution prompt using docs/prompts/execution-handoff-prompt-template.md.
++8. Do not create repo files. Do not commit. Do not push.
+ 
+ ## Output Format
+ 
+@@ -48,3 +61,4 @@ The next prompt must include any defects found as repair steps at the start.
+ ## Changelog
+ 
+ - 1.0 (2026-05-08): Initial version. Created in memory-planning-methodology-and-agent-handoff sprint.
++- 1.1 (2026-05-17): Add Step 0 dependency preflight. Replace hardcoded memory/09 reference in Step 1 with dynamic most-recent-memory lookup. Add contract selection guidance to Step 6 (was `--contract <contract>` placeholder with no guidance; 93+ contracts exist in directory). Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001.
+diff --git a/.claude/commands/export-plan-context.md b/.claude/commands/export-plan-context.md
+new file mode 100644
+index 0000000..236c076
+--- /dev/null
++++ b/.claude/commands/export-plan-context.md
+@@ -0,0 +1,153 @@
++---
++version: "1.1"
++last-updated: "2026-05-17"
++phase-available: "all"
++gate-required: null
++created-by: R12 sprint session
++---
++
++# /export-plan-context
++
++Bundle the long-term plan context files into a zip suitable for sharing with an LLM.
++
++## Purpose
++
++Produce a single zip at `.local/format-factory-longterm-plan-context.zip` containing
++all files an LLM needs to understand the project's long-term plan, architecture,
++governance, and current acquisition state.
++
++## Steps
++
++0. **DEPENDENCY + CURRENCY CHECK** — Verify standard files exist and detect staleness:
++   ```python
++   import pathlib, glob as _g
++   required = ["plans/master-plan.md", "memory/00-index.md", "AGENTS.md", "GOVERNANCE.md"]
++   missing_req = [f for f in required if not pathlib.Path(f).exists()]
++   if missing_req:
++       print("BLOCKED: missing required files:", missing_req)
++   all_mem = sorted(_g.glob("memory/[0-9]*.md"))
++   print("Latest memory in repo:", all_mem[-1] if all_mem else "NONE")
++   ```
++   If BLOCKED: stop. If latest memory is not in the standard file list below, add it before building.
++
++1. Verify all standard files listed below exist. Print any that are missing.
++2. Build the zip using Python's `zipfile` module (no shell zip dependency):
++
++```python
++import zipfile, os, glob as _g
++
++files = [
++    # Single operational authority
++    "plans/master-plan.md",
++    # Core docs
++    "docs/architecture.md",
++    "docs/gates.md",
++    "docs/product-tracks.md",
++    "docs/format-expansion-roadmap.md",
++    "docs/commercial-product-capability-model.md",
++    "docs/ai-usage-operating-model.md",
++    "docs/acquisition-workflow.md",
++    "docs/assistant-supervision-methodology.md",
++    # Root governance
++    "README.md",
++    "GOVERNANCE.md",
++    "AGENTS.md",
++    # Memory — project intent + decisions + latest acquisition state
++    "memory/00-index.md",
++    "memory/01-project-origin-and-intent.md",
++    "memory/03-architecture-and-product-tracks.md",
++    "memory/05-decision-register-expanded.md",
++    "memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md",
++    "memory/34-zst-r17-gate4-and-multi-format-gate1-intake-20260516.md",
++    "memory/35-r18-quarter-mile-zst-gate4-multi-format-gate1-20260516.md",
++    # Current acquisition planning state
++    "reports/planning/r17-taskcard-roadmap-memory-normalization-report-20260516.md",
++    "reports/planning/r17-multi-format-gate1-intake-and-scoring-20260516.md",
++    "reports/planning/r18-quarter-mile-roadmap-and-wip-control-20260516.md",
++    "reports/planning/r18-fodp-fodg-gate2-fastpath-decision-20260516.md",
++    "reports/planning/cross-category-ranking-validation-20260514.md",
++]
++
++out = ".local/format-factory-longterm-plan-context.zip"
++os.makedirs(".local", exist_ok=True)
++missing = [f for f in files if not os.path.exists(f)]
++if missing:
++    print("MISSING:", missing)
++present = [f for f in files if os.path.exists(f)]
++with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
++    for f in present:
++        zf.write(f)
++uncompressed = sum(os.path.getsize(f) for f in present)
++print(f"Files included: {len(present)}/{len(files)}")
++print(f"Uncompressed: {uncompressed:,} bytes")
++print(f"Zip size: {os.path.getsize(out):,} bytes")
++print(f"Output: {os.path.abspath(out)}")
++
++# Staleness guard
++all_mem = sorted(_g.glob("memory/[0-9]*.md"))
++latest_repo_mem = all_mem[-1] if all_mem else "none"
++zipped_mem = [f for f in present if f.startswith("memory/")]
++latest_zip_mem = max(zipped_mem) if zipped_mem else "none"
++if latest_repo_mem != latest_zip_mem:
++    print(f"\nSTALENESS_WARNING: Latest memory in repo: {latest_repo_mem}")
++    print(f"  Latest memory in zip: {latest_zip_mem}")
++    print("  Update the files list to include current sprint memory + readiness reports.")
++    print("  See Notes section of this command for update instructions.")
++else:
++    print(f"CONTEXT_CURRENCY: OK ({latest_zip_mem})")
++```
++
++3. Run the script via Bash from the repo root.
++4. Print the absolute Windows path to the zip.
++5. Print a table of files included, grouped by category.
++6. Print the suggested LLM prompt prefix (see Output Format below).
++
++## Customization
++
++If the user specifies additional files (e.g., "also include the R18 readiness report"),
++add them to the `files` list before building. If the user wants to exclude files,
++remove them. Re-run and report the updated zip.
++
++## Output Format
++
++Print:
++
++```
++EXPORT_PATH: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\format-factory-longterm-plan-context.zip
++
++Files: <N> | Uncompressed: <X> bytes | Zip: <Y> bytes
++
++| Category              | Files |
++|-----------------------|-------|
++| Single authority      | plans/master-plan.md |
++| Core docs (8)         | architecture, gates, product-tracks, ... |
++| Root governance (3)   | README, GOVERNANCE, AGENTS |
++| Memory (7)            | 00-index, 01-origin, 03-arch, 05-decisions, 26-roadmap, 34-r17, 35-r18 |
++| Planning state (5)    | r17-normalization, r17-intake, r18-wip, r18-fodp-fodg, cross-category |
++
++CONTEXT_CURRENCY: OK (memory/35-r18-...) [or STALENESS_WARNING if stale]
++
++Suggested LLM prompt prefix:
++"This zip contains the long-term plan and current state of the format-factory project.
++Start with plans/master-plan.md as the single authority, then memory/00-index.md for
++orientation. Key acquisition state: memory/35-r18-quarter-mile-zst-gate4-multi-format-gate1-20260516.md."
++```
++
++## Notes
++
++- Output zip is gitignored (`.local/` is excluded from version control).
++- Do not commit the zip or any `.local/` file.
++- Rebuild the zip at the start of any new session where plan context is needed.
++- **MANDATORY MAINTENANCE:** After every R-sprint, add the new memory file and latest
++  readiness-decision or normalization report to the standard `files` list. Run the staleness
++  guard (it fires automatically after zip creation) to verify. Failure to update will produce
++  `STALENESS_WARNING` on next execution. Current list reflects R18 state (memory/35).
++
++## Changelog
++
++- 1.0 (2026-05-15): Initial version. Created in R12 sprint session from ad-hoc zip build.
++- 1.1 (2026-05-17): Add Step 0 dependency + currency check. Add staleness guard Python snippet
++  (fires automatically, prints STALENESS_WARNING or CONTEXT_CURRENCY: OK). Update standard file
++  list from R11/R12 era to R18 state (memory/34, memory/35, r17/r18 planning reports). Remove
++  stale memory/27, memory/28, r11-ranking, r11-plan, r13-readiness, weekly-report-r12 entries.
++  Add MANDATORY MAINTENANCE note to Notes section. Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001.
+diff --git a/.claude/commands/memory-sprint.md b/.claude/commands/memory-sprint.md
+index 6e3b0ee..cb758e8 100644
+--- a/.claude/commands/memory-sprint.md
++++ b/.claude/commands/memory-sprint.md
+@@ -1,6 +1,6 @@
+ ---
+-version: "1.0"
+-last-updated: "2026-05-08"
++version: "1.1"
++last-updated: "2026-05-17"
+ phase-available: "all"
+ gate-required: null
+ created-by: memory-planning-methodology-and-agent-handoff sprint
+@@ -24,8 +24,17 @@ Create a memory sprint to capture strategic decisions, architecture notes, or us
+ 10. Create taskcards (status: proposed_pending_human_approval) for any out-of-scope backlog items.
+ 11. Create the evidence contract for this memory sprint.
+ 12. Create metadata files (minimum 55).
++
++    **NOTE:** The 55-file metadata minimum is elevated from the project floor (30 files) to ensure full
++    memory state + decisions are captured. See AGENTS.md AF7 for evidence floor policy.
++
+ 13. Build and validate the evidence bundle.
+-14. Stage only MEMORY_SPRINT_ALLOWED files. Commit.
++14. Stage only MEMORY_SPRINT_ALLOWED files (exact paths). Attempt: `git add <exact paths>`. Then attempt commit.
++
++    **PERMISSION NOTE:** `git commit` requires human approval via Claude Code permission dialog — watch for
++    the prompt and wait for approval. If denied, print `COMMIT_PENDING_HUMAN_APPROVAL` and output the
++    exact manual command: `git commit -m '<sprint-id> memory sprint complete'`.
++
+ 15. Print the final evidence bundle path.
+ 
+ ## Output Format
+@@ -35,7 +44,8 @@ Create a memory sprint to capture strategic decisions, architecture notes, or us
+ 3. Decisions captured.
+ 4. Backlog taskcards created (if any).
+ 5. Evidence contract validation result.
+-6. Commit hash.
++6. Commit hash (populated if human approved permission dialog; otherwise: `COMMIT_PENDING_HUMAN_APPROVAL`
++   followed by the exact manual git commit command to run).
+ 7. Stream declaration:
+    - MEMORY SPRINT ONLY
+    - NO MAIN SPRINT GATE CHANGED
+@@ -54,6 +64,14 @@ No MAIN SPRINT gate status may change.
+ No product source may be created.
+ No embeddings or vector DB may be created.
+ 
++If git commit is denied by Claude Code permissions, the sprint output is complete but not committed.
++Human must run the printed commit command to finalize. This is expected — `git commit` is intentionally
++permission-restricted in this project's settings.json.
++
+ ## Changelog
+ 
+ - 1.0 (2026-05-08): Initial version. Created in memory-planning-methodology-and-agent-handoff sprint.
++- 1.1 (2026-05-17): Fix Step 14 to document permission dialog behavior and `COMMIT_PENDING_HUMAN_APPROVAL`
++  fallback. Fix Output Format item 6 from "Commit hash." (impossible without permission) to conditional
++  form. Add Validation note explaining expected permission-denied behavior. Add NOTE in Step 12 explaining
++  55-file floor vs. 30-file project floor. Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001.
+diff --git a/.claude/settings.json b/.claude/settings.json
+index a3001d6..656ce16 100644
+--- a/.claude/settings.json
++++ b/.claude/settings.json
+@@ -1,7 +1,7 @@
+ {
+   "projectName": "format-factory",
+-  "description_last_updated": "run050",
+-  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3: FODS Gates 1-10 ALL PASSED. Gate 11 planning_ready (TC-0047, blocked DEC-033). FODT Gates 1-8 ALL PASSED. Gate 9 product-mapping planning_ready (TC-0048). Embeddings/vector DB/vector index NOT authorized.",
++  "description_last_updated": "r19-skills-hardening",
++  "description": "File Format Acquisition System — Claude Code project configuration. PHASE 3: FODS Gates 1-10 ALL PASSED. Gate 11 commercial_readiness_in_progress (NOT APPROVED). FODT Gates 1-10 ALL PASSED. Gate 11 commercial_readiness_in_progress (NOT APPROVED). ZST Gates 1-7 PASSED (G5 waived). FODP/FODG/Gnumeric/ABW Gates 1-3 PASSED. ORA DEFERRED_BORDERLINE. DEC-033 RESOLVED 2026-05-12 (Option B: .NET Commercial Only). Embeddings/vector DB/vector index NOT authorized.",
+   "model": "claude-opus-4-6",
+   "permissions": {
+     "allow": [
+@@ -120,7 +120,7 @@
+     ]
+   },
+   "phase": "3",
+-  "phase_note": "Phase 3. FODS: Gates 1-10 ALL PASSED (run048). Gate 10 APPROVED Babar Raza 2026-05-08 (Tiers 0-2, 12 features). Gate 11 planning_ready (blocked DEC-033). FODT: Gates 1-8 ALL PASSED (run048). FODT_GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18. GATE8_SECURITY_REVIEW PASS. Gate 9 product-mapping planning_ready. REQUIRED_METADATA_DEPTH check added.",
++  "phase_note": "Phase 3. FODS/FODT: Gates 1-10 ALL PASSED. Gate 11 commercial_readiness_in_progress (NOT APPROVED; C4-C6-vertical-slice demonstrated; human approval required). ZST: Gates 1-7 PASSED (G5 waived_not_applicable). FODP/FODG/Gnumeric/ABW: Gates 1-3 PASSED. ORA: DEFERRED_BORDERLINE (6.8/10 < 7.0 threshold). DEC-033: RESOLVED 2026-05-12 Option B (.NET Commercial Only). Latest sprint: R19 complete (2dcd7f8). REQUIRED_METADATA_DEPTH check added.",
+   "notes": [
+     "Phase 3 Gate 5 PASSED: Gate 4 PASSED (Babar Raza, 2026-05-06). Gate 5 PASSED (Babar Raza, 2026-05-06, run035). TC-0024 CLOSED. Gate 6 oracle_blocked_missing_tool: LibreOffice not installed. Install LibreOffice, then re-execute TC-0026 with explicit prompt. tools/oracle/** ALLOWED (new run035).",
+     "Format-first source layout: src/python/{format}/ and src/net/{format}/ are the Phase 4+ targets. Paths src/python/open-source/, src/dotnet/open-source/, src/dotnet/commercial/ are OBSOLETE — must not be created.",
+@@ -135,6 +135,7 @@
+     "See docs/llm-endpoint-strategy.md for endpoint configuration rules.",
+     "See docs/release-control.md for artifact visibility classification rules.",
+     "See docs/specification-cache.md for spec acquisition authorization model.",
+-    "This settings.json was updated to Phase 2 in run018 (2026-05-04). TC-0007 scripts moved from deny to allow in run019 (2026-05-04). Bash(python *acquire_spec*) deny REMOVED in run021 (2026-05-04) — T3-authorized FODS/ODF 1.3 spec acquisition permitted in run021 execution session only. Updated to Phase 3 PLANNING CONSERVATIVE MODE in run024 (2026-05-05). tools/spec-normalize/** added to allow list (run024)."
++    "This settings.json was updated to Phase 2 in run018 (2026-05-04). TC-0007 scripts moved from deny to allow in run019 (2026-05-04). Bash(python *acquire_spec*) deny REMOVED in run021 (2026-05-04) — T3-authorized FODS/ODF 1.3 spec acquisition permitted in run021 execution session only. Updated to Phase 3 PLANNING CONSERVATIVE MODE in run024 (2026-05-05). tools/spec-normalize/** added to allow list (run024).",
++    "UPDATED r19-skills-hardening (2026-05-17): description and phase_note corrected to R19 state. Prior description was stale: showed FODT Gates 1-8 only (actual: 1-10 PASSED), DEC-033 shown as blocking (resolved 2026-05-12 Option B), ZST/FODP/FODG/Gnumeric/ABW pipeline not mentioned. Updated per memory/35-r18-quarter-mile-zst-gate4-multi-format-gate1-20260516.md and R19 sprint verdict (2dcd7f8). Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001."
+   ]
+ }
+diff --git a/AGENTS.md b/AGENTS.md
+index 6b5baf0..fc48a02 100644
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -149,6 +149,8 @@ The agent must answer "no" to questions 4, 5, 6, 7, 8, and 10, and "yes" to ques
+ 
+ **J3.** Log all commands used in the run record under `commands_used`.
+ 
++**J4.** The Python command entry points in `tools/skills/commands/` (`format_context.py`, `lane_select.py`, `commercial_sprint.py`) are **CURRENT_INTERNAL_ONLY** tools for fods/fodt format resolution and dry-run sprint orchestration. They are NOT registered as `.claude/commands/` slash commands and are not listed in docs/agent-methodology-index.md. Invocation: `python tools/skills/commands/format_context.py [format]` or `python tools/skills/commands/commercial_sprint.py [format] --dry-run`. These are scoped to fods/fodt only at runtime — other formats are blocked with an explicit error. Wrapper slash commands are deferred to Phase 1 (TC-0004 scope expansion). Added: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001.
++
+ ---
+ 
+ ## K. Persistence Requirements
+diff --git a/docs/agent-methodology-index.md b/docs/agent-methodology-index.md
+index 232067d..c33a93a 100644
+--- a/docs/agent-methodology-index.md
++++ b/docs/agent-methodology-index.md
+@@ -75,6 +75,7 @@ Use them rather than reinventing behavior ad hoc.
+ | `/execution-handoff` | [.claude/commands/execution-handoff.md](../.claude/commands/execution-handoff.md) | Convert a hardened plan into a full single-go execution prompt. | PLAN MODE only. Does not create files or commit. |
+ | `/evidence-review-next-prompt` | [.claude/commands/evidence-review-next-prompt.md](../.claude/commands/evidence-review-next-prompt.md) | Review a bundle, challenge claims, produce next prompt. | PLAN MODE only. Does not create files or commit. |
+ | `/memory-sprint` | [.claude/commands/memory-sprint.md](../.claude/commands/memory-sprint.md) | Full memory sprint workflow from decision capture to bundle. | EXECUTION MODE. Creates files and commits. |
++| `/export-plan-context` | [.claude/commands/export-plan-context.md](../.claude/commands/export-plan-context.md) | Bundle long-term plan context files into a zip for sharing with an LLM. | EXECUTION MODE. No repo files created. No commit. |
+ 
+ ---
+ 
+diff --git a/taskcards/TC-0004-commands-skills.md b/taskcards/TC-0004-commands-skills.md
+index 66e5aae..b832a4e 100644
+--- a/taskcards/TC-0004-commands-skills.md
++++ b/taskcards/TC-0004-commands-skills.md
+@@ -75,6 +75,22 @@ Also in scope: a command registry file `command-registry.yaml` in `.claude/comma
+ 
+ ---
+ 
++## PREREQUISITES
++
++**Before implementing any planned command, remove the corresponding `Write(.claude/commands/<name>.md)` deny entry from `.claude/settings.json`.** Entries to remove:
++
++- `Write(.claude/commands/score-format.md)`
++- `Write(.claude/commands/create-acquisition-pack.md)`
++- `Write(.claude/commands/check-gate.md)`
++- `Write(.claude/commands/create-taskcard.md)`
++- `Write(.claude/commands/reproduce-master-plan.md)`
++- `Write(.claude/commands/build-evidence-bundle.md)`
++- `Write(.claude/commands/check-release-boundary.md)`
++
++This settings update must occur in an authorized sprint before TC-0004 execution. Without removing these deny entries, Claude Code will silently block all attempts to write the command files, causing TC-0004 to fail with no visible error.
++
++---
++
+ ## Acceptance Criteria
+ 
+ - [ ] All seven command files exist in `.claude/commands/` with correct front-matter blocks
