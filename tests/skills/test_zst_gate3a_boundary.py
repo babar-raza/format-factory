@@ -180,13 +180,13 @@ def test_registry_gate3_source_identification_complete_flag():
         )
 
 
-def test_registry_implementation_authorized_false():
-    """implementation_authorized must remain false."""
+def test_registry_implementation_authorized_true():
+    """implementation_authorized must be true — R20 authorized python_foss_only."""
     entry = _load_zst_registry_entry()
     if entry:
         impl_auth = entry.get("implementation_authorized", False)
-        assert impl_auth is False, (
-            f"INVARIANT VIOLATED: implementation_authorized must be false. Got: {impl_auth}"
+        assert impl_auth is True, (
+            f"Expected implementation_authorized=true after R20. Got: {impl_auth}"
         )
 
 
@@ -269,11 +269,11 @@ def test_r15_taskcard_completed():
 
 # ── No src/ mutations ──────────────────────────────────────────────────────────
 
-def test_no_zst_python_source():
-    """src/python/zst/ must not exist."""
+def test_zst_python_source_exists():
+    """src/python/zst/ must exist — R20 authorized and created python_foss source."""
     zst_src = REPO_ROOT / "src" / "python" / "zst"
-    assert not zst_src.exists(), (
-        "src/python/zst/ must not exist — ZST implementation not authorized"
+    assert zst_src.exists(), (
+        "src/python/zst/ must exist — ZST implementation authorized in R20"
     )
 
 

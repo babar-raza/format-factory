@@ -230,9 +230,9 @@ def test_gate7_bomb_guard_max_window_enforced():
 
 # ── Hard invariants ────────────────────────────────────────────────────────
 
-def test_gate7_no_src_python_zst():
-    """src/python/zst/ must NOT exist."""
-    assert not (_REPO / "src" / "python" / "zst").exists()
+def test_gate7_src_python_zst_exists():
+    """src/python/zst/ must exist — R20 authorized python_foss implementation."""
+    assert (_REPO / "src" / "python" / "zst").exists()
 
 
 def test_gate7_no_src_net_zst():

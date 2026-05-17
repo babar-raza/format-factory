@@ -1,0 +1,72 @@
+inherit: base-run
+contract_id: FORMAT-FACTORY-R20-PRODUCTIZATION-TRAIN-ZST-FODP-FODG-GNUMERIC-ABW-SOURCE-AND-GATE11-ARCHITECTURE-SWARM-001
+version: "1.0"
+require_clean_git: false
+emergency_blocker_bundle: true
+dirty_git_reason: "Two pre-existing untracked files (.claude/commands/export-plan-context.md, format-factory.zip) present since before R14 — NOT sprint artifacts; all R20 work committed before bundle build"
+min_metadata_count: 30
+required_repo_files:
+  # Authority files
+  - README.md
+  - plans/master-plan.md
+  - registry/format-registry.yaml
+  - AGENTS.md
+  - GOVERNANCE.md
+
+  # Evidence tooling (updated in R20)
+  - tools/evidence/validate_evidence_bundle.py
+
+  # ZST Python FOSS source (R20)
+  - src/python/zst/__init__.py
+  - src/python/zst/zst_codec.py
+  - tests/python/zst/test_zst_codec.py
+
+  # FODP prototype + source + tests (R20)
+  - prototypes/by-format/fodp/fodp_parser.py
+  - tests/skills/test_fodp_gate4_prototype.py
+  - src/python/fodp/__init__.py
+  - src/python/fodp/fodp_codec.py
+  - tests/python/fodp/test_fodp_codec.py
+
+  # FODG prototype + source + tests (R20)
+  - prototypes/by-format/fodg/fodg_parser.py
+  - tests/skills/test_fodg_gate4_prototype.py
+  - src/python/fodg/__init__.py
+  - src/python/fodg/fodg_codec.py
+  - tests/python/fodg/test_fodg_codec.py
+
+  # Gnumeric prototype + source + tests (R20)
+  - prototypes/by-format/gnumeric/gnumeric_parser.py
+  - tests/skills/test_gnumeric_gate4_prototype.py
+  - src/python/gnumeric/__init__.py
+  - src/python/gnumeric/gnumeric_codec.py
+  - tests/python/gnumeric/test_gnumeric_codec.py
+
+  # ABW prototype + source + tests (R20)
+  - prototypes/by-format/abw/abw_parser.py
+  - tests/skills/test_abw_gate4_prototype.py
+  - src/python/abw/__init__.py
+  - src/python/abw/abw_codec.py
+  - tests/python/abw/test_abw_codec.py
+
+  # Governance reports (R20)
+  - reports/governance/r20-preflight-r19-baseline-and-lane-ownership-20260516.md
+  - reports/governance/r20-evidence-hygiene-hardening-report-20260516.md
+  - reports/governance/r20-delegated-decision-cleanup-report-20260516.md
+  - reports/governance/r20-gate11-fods-fodt-executable-architecture-plan-20260517.md
+
+  # Implementation + verification reports (R20)
+  - reports/implementation/r20-zst-python-source-implementation-report-20260516.md
+  - reports/verification/r20-zst-python-source-independent-verification-20260516.md
+
+  # Updated ZST skills tests (R20 guard test updates)
+  - tests/skills/test_zst_gate3a_boundary.py
+  - tests/skills/test_zst_gate3b_sample_corpus.py
+  - tests/skills/test_zst_gate4_prototype.py
+  - tests/skills/test_zst_gate6_oracle.py
+  - tests/skills/test_zst_gate7_security_fuzz.py
+  - tests/skills/test_zst_spec_cache_gate2.py
+
+  # Evidence negative tests (R20 updated)
+  - tests/evidence/test_negative_bundle_validation.py
+  - tests/evidence/test_auto_proof_bundle.py

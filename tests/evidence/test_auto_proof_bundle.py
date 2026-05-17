@@ -71,8 +71,17 @@ forbidden_paths: []
 
 def _write_metadata(metadata_dir: Path, count: int = 6,
                     sprint_id: str = SPRINT_ID) -> None:
-    """Write enough metadata files to satisfy min_metadata_count."""
+    """Write enough metadata files to satisfy min_metadata_count.
+
+    Includes AUTHORITATIVE_TEST_RESULT in validation-command-log.txt to satisfy
+    P-EVID-003 when --check-no-pending is active.
+    """
     metadata_dir.mkdir(parents=True, exist_ok=True)
+    # P-EVID-003: at least one metadata file must contain AUTHORITATIVE_TEST_RESULT
+    (metadata_dir / "validation-command-log.txt").write_text(
+        f"sprint_id: {sprint_id}\nAUTHORITATIVE_TEST_RESULT: 1 passed, 0 skipped\n",
+        encoding="utf-8",
+    )
     for i in range(count):
         (metadata_dir / f"meta_{i:02d}.txt").write_text(
             f"sprint_id: {sprint_id}\ncontent: dummy {i}\n",

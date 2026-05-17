@@ -379,11 +379,11 @@ def test_validate_corpus_round_trips_all_pass():
 
 # ── 15. Hard invariant: no src/python/zst or src/net/zst ─────────────────────
 
-def test_no_src_python_zst():
-    """src/python/zst/ must NOT exist (implementation not authorized)."""
+def test_src_python_zst_exists():
+    """src/python/zst/ must exist — R20 authorized python_foss implementation."""
     path = REPO_ROOT / "src" / "python" / "zst"
-    assert not path.exists(), (
-        "src/python/zst/ must not exist — Gate 4 prototype only; no implementation authorized"
+    assert path.exists(), (
+        "src/python/zst/ must exist — ZST implementation authorized and created in R20"
     )
 
 

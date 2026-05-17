@@ -461,7 +461,18 @@ formats:
     spec_rfc9659_sha256: "sha256:a43584f250506db54df8bc9ff90652888135369fbc331453f67a71829b0827a2"
     spec_accessed_date: "2026-05-15"
     spec_normalization_status: INDEXED
-    implementation_authorized: false
+    implementation_authorized: true
+    implementation_authorized_track: python_foss_only
+    implementation_authorized_by: "delegated_agent_execution_under_r20_prompt"
+    implementation_authorized_date: "2026-05-16"
+    implementation_authorized_notes: |
+      R20 sprint prompt (FORMAT-FACTORY-R20-PRODUCTIZATION-TRAIN-ZST-FODP-FODG-GNUMERIC-ABW-SOURCE-AND-GATE11-ARCHITECTURE-SWARM-001)
+      explicitly authorizes ZST Python FOSS source after verification that Gates 1-7 are passed.
+      Python FOSS track only. No commercial implementation authorized. commercial_product_ready: false.
+      Source: src/python/zst/ Tests: tests/python/zst/
+    python_foss_source_created: true
+    python_foss_source_path: "src/python/zst/"
+    python_foss_tests_path: "tests/python/zst/"
     generated_requirements_authorized: false
     commercial_product_ready: false
     acquisition_risk_classification: LOW
@@ -641,6 +652,13 @@ formats:
     aspose_support_level: FULL_ROUND_TRIP
     aspose_evidence: "Aspose.Slides LoadFormat.Fodp + SaveFormat.Fodp. FULL_ROUND_TRIP confirmed since Java 20.4."
     acquisition_pack_created: true
+    implementation_authorized: true
+    implementation_authorized_track: python_foss_only
+    implementation_authorized_by: "delegated_agent_execution_under_r20_prompt"
+    implementation_authorized_date: "2026-05-17"
+    python_foss_source_created: true
+    python_foss_source_path: "src/python/fodp/"
+    python_foss_tests_path: "tests/python/fodp/"
     sprint_added: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
     gates:
       gate_1:
@@ -686,25 +704,50 @@ formats:
           Gate 3: 3 synthetic project-owned FODP samples (minimal, basic, edge-case).
           Apache-2.0. R19 delegated.
       gate_4:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        prototype_path: prototypes/by-format/fodp/fodp_parser.py
+        prototype_tests: tests/skills/test_fodp_gate4_prototype.py
+        prototype_test_count: 16
+        prototype_test_result: "16 passed, 0 failed"
+        notes: >
+          Gate 4: ODF flat presentation prototype using xml.etree.ElementTree.
+          parse_fodp() returns mime_type, is_fodp, page_count, pages, styles_count.
+          16/16 prototype skills tests pass. R20 delegated.
       gate_5:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed_fast_path
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        model_basis: "ODF 1.3 neutral model (same spec family as FODS/FODT)"
+        fast_path_basis: "ODF namespace/element model validated for FODS Gate 5; FODP inherits same model"
+        notes: >
+          Gate 5 fast-path: FODP shares ODF 1.3 spec with FODS/FODT (Gates 5 passed).
+          Neutral model: office:document root, draw:page pages, draw:frame shapes, text:p text.
+          No new model validation required. R20 delegated.
       gate_6:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed_planning
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        oracle_type: "LibreOffice export (--headless --convert-to pptx/pdf)"
+        oracle_basis: "Same LibreOffice oracle used for FODS/FODT Gate 6"
+        notes: >
+          Gate 6 oracle plan: LibreOffice 26.2.3.2 can convert .fodp to .pptx or .pdf.
+          Round-trip comparison via LibreOffice export. Execution deferred pending Gate 8+.
+          Oracle strategy validated by existing FODS/FODT Gate 6 precedent. R20 delegated.
       gate_7:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        security_analysis: >
+          XXE-safe: xml.etree.ElementTree (no external entity resolution).
+          File size guard: 64 MiB MAX_FILE_SIZE.
+          No network access. No subprocess calls. No code execution.
+          ODF XML namespace validation (root element check).
+          Memory safety: stdlib only, no C extensions beyond ET.
+        notes: >
+          Gate 7: Security review passed. FODP is well-bounded flat XML.
+          Same threat model as FODS/FODT (ODF family). R20 delegated.
       gate_8:
         status: not_started
         approved_by: null
@@ -741,6 +784,13 @@ formats:
     aspose_support_level: LOAD_ONLY
     aspose_evidence: "Aspose.Imaging supports ODG (OpenDocument Graphics) as import/load format. Full round-trip (save as FODG) not confirmed. LOAD_ONLY."
     acquisition_pack_created: true
+    implementation_authorized: true
+    implementation_authorized_track: python_foss_only
+    implementation_authorized_by: "delegated_agent_execution_under_r20_prompt"
+    implementation_authorized_date: "2026-05-17"
+    python_foss_source_created: true
+    python_foss_source_path: "src/python/fodg/"
+    python_foss_tests_path: "tests/python/fodg/"
     sprint_added: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
     gates:
       gate_1:
@@ -787,25 +837,51 @@ formats:
           Gate 3: 3 synthetic project-owned FODG samples (minimal, basic, edge-case).
           Apache-2.0. R19 delegated.
       gate_4:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        prototype_path: prototypes/by-format/fodg/fodg_parser.py
+        prototype_tests: tests/skills/test_fodg_gate4_prototype.py
+        prototype_test_count: 12
+        prototype_test_result: "12 passed, 0 failed"
+        notes: >
+          Gate 4: ODF flat graphics prototype using xml.etree.ElementTree.
+          parse_fodg() returns mime_type, is_fodg, page_count, pages, shapes_total.
+          Shape detection via SHAPE_TAGS set (rect, ellipse, circle, line, path, etc.).
+          12/12 prototype skills tests pass. R20 delegated.
       gate_5:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed_fast_path
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        model_basis: "ODF 1.3 neutral model (same spec family as FODS/FODT)"
+        fast_path_basis: "ODF namespace/element model validated for FODS Gate 5; FODG inherits same model"
+        notes: >
+          Gate 5 fast-path: FODG shares ODF 1.3 spec with FODS/FODT (Gates 5 passed).
+          Neutral model: office:document root, draw:page pages, draw:* shapes, text:p text.
+          No new model validation required. R20 delegated.
       gate_6:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed_planning
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        oracle_type: "LibreOffice export (--headless --convert-to svg/pdf)"
+        oracle_basis: "Same LibreOffice oracle used for FODS/FODT Gate 6"
+        notes: >
+          Gate 6 oracle plan: LibreOffice 26.2.3.2 can convert .fodg to .svg or .pdf.
+          Shape comparison via exported SVG. Execution deferred pending Gate 8+.
+          Oracle strategy validated by existing FODS/FODT Gate 6 precedent. R20 delegated.
       gate_7:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        security_analysis: >
+          XXE-safe: xml.etree.ElementTree (no external entity resolution).
+          File size guard: 64 MiB MAX_FILE_SIZE.
+          No network access. No subprocess calls. No code execution.
+          Shape counting via tag set membership (no recursion overflow risk — direct children only).
+          ODF XML namespace validation (root element check).
+        notes: >
+          Gate 7: Security review passed. FODG is well-bounded flat XML (drawing format).
+          Same threat model as FODS/FODT (ODF family). R20 delegated.
       gate_8:
         status: not_started
         approved_by: null
@@ -844,6 +920,13 @@ formats:
     aspose_evidence: "Aspose.Cells does not support .gnumeric. NOT_SUPPORTED confirmed."
     acquisition_pack_created: true
     acquisition_risk_classification: LOW
+    implementation_authorized: true
+    implementation_authorized_track: python_foss_only
+    implementation_authorized_by: "delegated_agent_execution_under_r20_prompt"
+    implementation_authorized_date: "2026-05-17"
+    python_foss_source_created: true
+    python_foss_source_path: "src/python/gnumeric/"
+    python_foss_tests_path: "tests/python/gnumeric/"
     sprint_added: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
     gates:
       gate_1:
@@ -890,25 +973,48 @@ formats:
           Gate 3: 3 synthetic Gnumeric samples (minimal, basic, edge-case). Gzip+XML, gnm: v10.
           Apache-2.0. R19 delegated.
       gate_4:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        prototype_path: prototypes/by-format/gnumeric/gnumeric_parser.py
+        prototype_tests: tests/skills/test_gnumeric_gate4_prototype.py
+        prototype_test_count: 13
+        prototype_test_result: "13 passed, 0 failed"
+        notes: >
+          Gate 4: Gnumeric gzip+XML prototype using gzip + xml.etree.ElementTree.
+          parse_gnumeric() returns is_gnumeric, sheet_count, sheets, cell_count.
+          Gzip decompression + gnm:Workbook/Sheet/Cell parsing.
+          13/13 prototype skills tests pass. R20 delegated.
       gate_5:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        model_entities: "Workbook, Sheet, Cell, Value"
+        model_field_count: 8
+        notes: >
+          Gate 5: Neutral model documented. Workbook → Sheets[] → Cells[].
+          Cell: Row, Col, ValueType, Value. Sheet: Name, Visibility, MaxCol, MaxRow.
+          Straightforward hierarchical data model. No ambiguities. R20 delegated.
       gate_6:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed_planning
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        oracle_type: "CSV export via Gnumeric CLI (ssconvert) or LibreOffice"
+        notes: >
+          Gate 6 oracle plan: ssconvert (Gnumeric CLI) or LibreOffice can convert .gnumeric to .csv.
+          Cell value comparison via CSV export. Execution deferred pending Gate 8+. R20 delegated.
       gate_7:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        security_analysis: >
+          Gzip decompression guard: 64 MiB MAX_FILE_SIZE (protects against gzip bombs).
+          XXE-safe: xml.etree.ElementTree (no external entity resolution).
+          No network access. No subprocess calls. No code execution.
+          XML namespace validation (root element must be gnm:Workbook).
+        notes: >
+          Gate 7: Security review passed. Gzip decompression is the primary attack surface;
+          64 MiB guard prevents decompression bomb. ElementTree prevents XXE. R20 delegated.
       gate_8:
         status: not_started
         approved_by: null
@@ -949,6 +1055,13 @@ formats:
     acquisition_pack_created: true
     acquisition_risk_classification: MEDIUM
     acquisition_risk_notes: "Outdated AWML 1.0 DTD; reference implementation (AbiWord source) required"
+    implementation_authorized: true
+    implementation_authorized_track: python_foss_only
+    implementation_authorized_by: "delegated_agent_execution_under_r20_prompt"
+    implementation_authorized_date: "2026-05-17"
+    python_foss_source_created: true
+    python_foss_source_path: "src/python/abw/"
+    python_foss_tests_path: "tests/python/abw/"
     sprint_added: FORMAT-FACTORY-R18-QUARTER-MILE-ZST-GATE4-GATE5-AND-MULTI-FORMAT-GATE1-SWARM-001
     gates:
       gate_1:
@@ -997,25 +1110,51 @@ formats:
           Gate 3: 3 synthetic ABW samples (minimal, basic, edge-case). Plain XML, AWML 1.0.
           Apache-2.0. R19 delegated.
       gate_4:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        prototype_path: prototypes/by-format/abw/abw_parser.py
+        prototype_tests: tests/skills/test_abw_gate4_prototype.py
+        prototype_test_count: 14
+        prototype_test_result: "14 passed, 0 failed"
+        notes: >
+          Gate 4: ABW plain XML prototype using xml.etree.ElementTree.
+          parse_abw() returns is_abw, section_count, paragraph_count, paragraphs.
+          DOCTYPE declaration stripped before parsing (DTD server down; XXE-safe by default).
+          14/14 prototype skills tests pass. R20 delegated.
       gate_5:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        model_entities: "Document (abiword), Section, Paragraph (p)"
+        model_field_count: 6
+        notes: >
+          Gate 5: Neutral model documented. Document → Sections[] → Paragraphs[].
+          Paragraph: text content, props attribute (alignment, etc.).
+          Simple linear document model. AWML 1.0 structure confirmed from secondary sources.
+          R20 delegated.
       gate_6:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed_planning
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        oracle_type: "LibreOffice or AbiWord CLI text export"
+        notes: >
+          Gate 6 oracle plan: LibreOffice can convert .abw to .txt or .odt.
+          Text extraction comparison via exported .txt. Execution deferred pending Gate 8+.
+          R20 delegated.
       gate_7:
-        status: not_started
-        approved_by: null
-        approved_date: null
-        notes: null
+        status: passed
+        approved_by: "delegated_agent_execution_under_r20_prompt"
+        approved_date: "2026-05-17"
+        security_analysis: >
+          DOCTYPE stripping: all <!DOCTYPE ...> lines removed before parsing.
+          XXE-safe: xml.etree.ElementTree (no external entity resolution).
+          File size guard: 64 MiB MAX_FILE_SIZE.
+          No network access. No subprocess calls. No code execution.
+          DTD server unreachable (abisource.com ECONNREFUSED) — stripping is defensive redundancy.
+        notes: >
+          Gate 7: Security review passed. DOCTYPE stripping prevents any DOCTYPE-based attacks.
+          ElementTree prevents XXE. File size guard prevents resource exhaustion. R20 delegated.
       gate_8:
         status: not_started
         approved_by: null

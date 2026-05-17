@@ -152,9 +152,10 @@ def test_no_src_net_zst():
     assert not path.exists(), "src/net/zst must not exist"
 
 
-def test_no_src_python_zst():
+def test_src_python_zst_exists():
+    """src/python/zst/ must exist — R20 authorized python_foss implementation."""
     path = REPO_ROOT / "src" / "python" / "zst"
-    assert not path.exists(), "src/python/zst must not exist"
+    assert path.exists(), "src/python/zst must exist — authorized in R20"
 
 
 def test_no_unrelated_specs_in_zst_cache():

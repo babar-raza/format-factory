@@ -267,10 +267,10 @@ def test_oracle_bomb_guard_documented():
 
 # ── Hard invariants ────────────────────────────────────────────────────────
 
-def test_gate6_no_src_python_zst():
-    """src/python/zst/ must NOT exist (no implementation yet)."""
+def test_gate6_src_python_zst_exists():
+    """src/python/zst/ must exist — R20 authorized python_foss implementation."""
     src_path = _REPO / "src" / "python" / "zst"
-    assert not src_path.exists(), "FORBIDDEN: src/python/zst/ exists"
+    assert src_path.exists(), "src/python/zst/ must exist — authorized in R20"
 
 
 def test_gate6_no_src_net_zst():

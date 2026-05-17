@@ -803,6 +803,9 @@ def test_closure_contradiction_passes_when_consistent(tmp_path):
                     "BUNDLE_VALIDATION: PASS\n")
         zf.writestr("bundle-metadata/verdict.md",
                     "# Sprint Verdict\nSPRINT_VERDICT: COMPLETE_WITH_CLOSURE_HYGIENE_REPAIR\n")
+        # P-EVID-003 (R20): AUTHORITATIVE_TEST_RESULT required when --check-no-pending is active
+        zf.writestr("bundle-metadata/validation-command-log.txt",
+                    "AUTHORITATIVE_TEST_RESULT: 99 passed, 0 skipped\n")
     result = subprocess.run(
         [sys.executable, str(VALIDATE_SCRIPT), "--contract", str(contract), "--bundle", str(bundle),
          "--check-no-pending"],
@@ -849,6 +852,71 @@ def test_clean_metadata_identity_passes(tmp_path):
     assert "BUNDLE_VALIDATION: PASS" in result.stdout
 
 
+
+
+def test_in_progress_gate_status_fails_with_flag():
+    """P-EVID-002: metadata with | IN PROGRESS | must fail --check-no-pending."""
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = build_minimal_contract(tmp_dir, min_meta=30)
+        content = "# Gate Status\n| Gate 16 | Bundle | IN PROGRESS |\n"
+        bundle = build_sufficient_bundle(tmp_dir, extra_meta={"gate-status.md": content})
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=True)
+        if result:
+            print("FAIL: | IN PROGRESS | should have blocked")
+            return False
+        print("PASS: | IN PROGRESS | correctly blocked by --check-no-pending")
+        return True
+
+
+def test_in_progress_gate_status_passes_without_flag():
+    """P-EVID-002: | IN PROGRESS | must PASS without --check-no-pending."""
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = build_minimal_contract(tmp_dir, min_meta=30)
+        content = "# Gate Status\n| Gate 16 | Bundle | IN PROGRESS |\n"
+        bundle = build_sufficient_bundle(tmp_dir, extra_meta={"gate-status.md": content})
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=False)
+        if not result:
+            print("FAIL: should have PASSED without --check-no-pending")
+            return False
+        print("PASS: correctly ignored without flag")
+        return True
+
+
+def test_missing_authoritative_test_result_fails():
+    """P-EVID-003: bundle without AUTHORITATIVE_TEST_RESULT fails --check-no-pending."""
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = build_minimal_contract(tmp_dir, min_meta=30)
+        bundle = build_sufficient_bundle(tmp_dir, extra_meta={
+            "validation-command-log.txt": "# Log\nResult: 42 passed",
+        })
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=True)
+        if result:
+            print("FAIL: missing AUTHORITATIVE_TEST_RESULT should have blocked")
+            return False
+        print("PASS: missing AUTHORITATIVE_TEST_RESULT correctly blocked")
+        return True
+
+
+def test_present_authoritative_test_result_passes():
+    """P-EVID-003: bundle with AUTHORITATIVE_TEST_RESULT passes --check-no-pending."""
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_dir = Path(tmp)
+        contract = build_minimal_contract(tmp_dir, min_meta=30)
+        log_content = "# Log\nAUTHORITATIVE_TEST_RESULT: 1181 passed, 8 skipped"
+        bundle = build_sufficient_bundle(tmp_dir, extra_meta={
+            "validation-command-log.txt": log_content,
+        })
+        result = validate_bundle(str(contract), str(bundle), strict_git=False, no_pending=True)
+        if not result:
+            print("FAIL: AUTHORITATIVE_TEST_RESULT present should have PASSED")
+            return False
+        print("PASS: AUTHORITATIVE_TEST_RESULT accepted")
+        return True
+
+
 def main():
     print("=" * 60)
     print("Negative Tests: validate_evidence_bundle.py")
@@ -871,6 +939,10 @@ def main():
         test_required_metadata_depth_passes_with_test_contract,
         test_bundle_validation_pending_fails_with_flag,
         test_proposed_pending_human_approval_does_not_fail,
+        test_in_progress_gate_status_fails_with_flag,       # P-EVID-002 (R20)
+        test_in_progress_gate_status_passes_without_flag,   # P-EVID-002 negative
+        test_missing_authoritative_test_result_fails,       # P-EVID-003 (R20)
+        test_present_authoritative_test_result_passes,      # P-EVID-003 positive
     ]
 
     results = []

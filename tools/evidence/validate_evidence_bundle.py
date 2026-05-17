@@ -179,6 +179,12 @@ PENDING_MARKER_PATTERNS = [
     "BUNDLE_VALIDATION: [PENDING]",
     "TO BE UPDATED AFTER BUNDLE",
     "PENDING — building evidence bundle",
+    # Gate/sprint status markers — sprint must be COMPLETE before final bundle
+    # Catches markdown table rows like "| Gate 19 | ... | IN PROGRESS |"
+    # and YAML-style "| IN_PROGRESS |" table entries.
+    # P-EVID-002: final bundles must not contain IN_PROGRESS gate status.
+    "| IN PROGRESS |",
+    "| IN_PROGRESS |",
 ]
 
 # Current-state PENDING patterns — sprint-in-progress markers that must NOT appear
@@ -288,6 +294,24 @@ def check_no_pending_reports(metadata_files_content):
                 hits.append((fname, pattern))
                 break  # one hit per file is enough
     return hits
+
+
+def check_authoritative_test_result_present(metadata_files_content):
+    """Check that at least one metadata file contains AUTHORITATIVE_TEST_RESULT.
+
+    P-EVID-003: validation-command-log.txt (or any metadata file) must contain
+    the AUTHORITATIVE_TEST_RESULT line so test counts are unambiguous across
+    the bundle. Called when --check-no-pending is active.
+
+    Returns a list of error strings (empty if the check passes).
+    """
+    for content in metadata_files_content.values():
+        if "AUTHORITATIVE_TEST_RESULT" in content:
+            return []
+    return [
+        "P-EVID-003 VIOLATION: No metadata file contains AUTHORITATIVE_TEST_RESULT. "
+        "Add 'AUTHORITATIVE_TEST_RESULT: N passed, M skipped' to validation-command-log.txt."
+    ]
 
 
 def check_closure_contradictions(metadata_files_content):
@@ -586,6 +610,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             closure_contradiction_hits = check_closure_contradictions(metadata_files_content)
             for msg in closure_contradiction_hits:
                 errors.append(msg)
+            authoritative_test_hits = check_authoritative_test_result_present(metadata_files_content)
+            for msg in authoritative_test_hits:
+                errors.append(msg)
 
         identity_hits = check_metadata_identity(
             metadata_files_content,
@@ -632,6 +659,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             print(f"Closure-contradiction check (FAIL): {len(closure_contradiction_hits)} contradiction(s)")
         else:
             print("Closure-contradiction check (PASS): no proof/verdict/summary contradictions")
+        auth_status = "FAIL" if authoritative_test_hits else "PASS"
+        print(f"AUTHORITATIVE_TEST_RESULT check ({auth_status}): "
+              f"{'missing — P-EVID-003 violation' if authoritative_test_hits else 'present in metadata'}")
     identity_status = "PASS"
     if 'identity_hits' in locals() and identity_hits:
         identity_status = "FAIL"
