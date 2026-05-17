@@ -1,0 +1,72 @@
+---
+# Release Manifest — Gnumeric Python FOSS Package
+# Sprint: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
+# Date: 2026-05-17
+
+format_id: gnumeric
+package_name: aspose-format-factory-gnumeric
+module_import: gnumeric
+version: 0.1.0.dev0
+source_path: src/python/gnumeric/
+tests_path: tests/python/gnumeric/
+examples_path: examples/python/gnumeric/
+
+acquisition_gates_passed:
+  - gate: 1
+    status: passed
+    notes: "Format authorized — Gnumeric open-source XML spreadsheet"
+  - gate: 2
+    status: passed
+    notes: "Spec retrieved — XML namespace http://www.gnumeric.org/v10.dtd"
+  - gate: 3
+    status: passed
+    notes: "Sample corpus (3 samples)"
+  - gate: 4
+    status: passed
+    notes: "Parser prototype (13 tests)"
+  - gate: 5
+    status: passed
+    notes: "Neutral model: Workbook/Sheet/Cell hierarchy"
+  - gate: 6
+    status: passed_planning
+    notes: "Oracle plan: ssconvert/LibreOffice Calc → CSV"
+  - gate: 7
+    status: passed
+    notes: "Gzip decompression bomb guard (64 MiB compressed)"
+
+unsupported_capabilities:
+  - Formula evaluation
+  - Chart, image, or macro extraction
+  - Write/modify operations
+  - Named ranges, conditional formatting
+  - Format conversion to XLSX/CSV (read-only)
+
+security_limits:
+  - MAX_FILE_SIZE: 64 MiB (compressed file size)
+  - Gzip decompression: MAX_FILE_SIZE applied to compressed input
+  - XML parser: xml.etree.ElementTree (XXE-safe)
+  - Decompression: stdlib gzip (no third-party library)
+
+dependencies:
+  runtime: []
+  dev:
+    - pytest>=8.0
+
+license: Apache-2.0
+spec_license: Gnumeric XML format (GNOME Project, LGPL application; format open)
+
+publication_status: not_published
+release_readiness:
+  source_ready: true
+  tests_ready: true
+  examples_ready: true
+  package_metadata_ready: true
+  docs_ready: true
+  publish_authorized: false
+
+blockers:
+  - publish_authorized=false
+  - Gate 6 oracle plan not yet fully executed (passed_planning)
+
+commercial_product_ready: false
+capability_level: alpha-foss-preview

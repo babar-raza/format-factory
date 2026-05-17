@@ -1,0 +1,74 @@
+---
+# Release Manifest — ABW (AbiWord) Python FOSS Package
+# Sprint: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
+# Date: 2026-05-17
+
+format_id: abw
+package_name: aspose-format-factory-abw
+module_import: abw
+version: 0.1.0.dev0
+source_path: src/python/abw/
+tests_path: tests/python/abw/
+examples_path: examples/python/abw/
+
+acquisition_gates_passed:
+  - gate: 1
+    status: passed
+    notes: "Format authorized — AbiWord AWML 1.0 open XML format"
+  - gate: 2
+    status: passed_with_notes
+    notes: "Spec retrieved — DTD URL unreachable (server down), format documented from source"
+  - gate: 3
+    status: passed
+    notes: "Sample corpus (3 samples)"
+  - gate: 4
+    status: passed
+    notes: "Parser prototype (14 tests)"
+  - gate: 5
+    status: passed
+    notes: "Neutral model: Document/Section/Paragraph"
+  - gate: 6
+    status: passed_planning
+    notes: "Oracle plan: LibreOffice Writer → .txt"
+  - gate: 7
+    status: passed
+    notes: "DOCTYPE stripping, XXE-safe, 64 MiB guard"
+
+unsupported_capabilities:
+  - DOCX/PDF/RTF conversion
+  - Table, footnote, or revision extraction
+  - Embedded image extraction
+  - Write/modify operations
+  - Compressed .abw.gz variant (not tested)
+  - Revision tracking metadata
+
+security_limits:
+  - MAX_FILE_SIZE: 64 MiB
+  - DOCTYPE stripping: <!DOCTYPE lines removed before parsing
+  - XML parser: xml.etree.ElementTree (XXE-safe by default)
+  - DTD URL (http://www.abisource.com/awml.dtd) unreachable — not resolved
+
+dependencies:
+  runtime: []
+  dev:
+    - pytest>=8.0
+
+license: Apache-2.0
+spec_license: AbiWord AWML 1.0 (AbiSource, LGPL application; XML format open)
+
+publication_status: not_published
+release_readiness:
+  source_ready: true
+  tests_ready: true
+  examples_ready: true
+  package_metadata_ready: true
+  docs_ready: true
+  publish_authorized: false
+
+blockers:
+  - publish_authorized=false
+  - Gate 6 oracle plan not yet fully executed (passed_planning)
+  - DTD URL permanently unreachable — documented as known limitation
+
+commercial_product_ready: false
+capability_level: alpha-foss-preview

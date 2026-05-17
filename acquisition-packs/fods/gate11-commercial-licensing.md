@@ -45,4 +45,16 @@ notes: "FODS Gate 11 commercial licensing note. DEC033-OPTION-B-GATE11-COMMERCIA
 - Legal review of commercial license terms recommended
 - License header must be added to all .NET source files before release
 
-STATUS: pending_legal_finalization
+## R21 Update
+
+Updated: 2026-05-17, Sprint R21
+G11-B Status: planning_level_license_confirmation_complete
+
+Planning-level confirmation:
+- OASIS ODF 1.3 RF — no patent risk CONFIRMED
+- .NET runtime: MIT license — no commercial conflict CONFIRMED
+- Python FOSS track: Apache-2.0 — independent CONFIRMED
+- Commercial license for .NET product: Proprietary (choice deferred to Babar Raza)
+- Formal legal counsel required before actual product release (not delegated to agent)
+
+STATUS: planning_level_license_confirmation_complete

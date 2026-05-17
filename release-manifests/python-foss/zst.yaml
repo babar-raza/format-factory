@@ -1,0 +1,73 @@
+---
+# Release Manifest — ZST (Zstandard) Python FOSS Package
+# Sprint: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
+# Date: 2026-05-17
+
+format_id: zst
+package_name: aspose-format-factory-zst
+module_import: zst
+version: 0.1.0.dev0
+source_path: src/python/zst/
+tests_path: tests/python/zst/
+examples_path: examples/python/zst/
+
+acquisition_gates_passed:
+  - gate: 1
+    status: passed
+    notes: "Format authorized — Zstandard RFC 8878"
+  - gate: 2
+    status: passed
+    notes: "Spec cached — RFC 8878"
+  - gate: 3
+    status: passed
+    notes: "Sample corpus acquired"
+  - gate: 4
+    status: passed
+    notes: "Parser prototype (ZST magic detection, frame probing)"
+  - gate: 5
+    status: waived_not_applicable
+    notes: "Compression codec — no neutral model applicable"
+  - gate: 6
+    status: passed
+    notes: "Oracle plan (file comparison)"
+  - gate: 7
+    status: passed
+    notes: "Security fuzz (malformed frame, bomb guards)"
+
+unsupported_capabilities:
+  - Streaming decompression for files larger than DEFAULT_MAX_OUTPUT_BYTES (256 MiB)
+  - Multi-frame concatenated streams beyond single-frame inspection
+  - Dictionary-based compression
+  - .tar.zst combined format handling
+  - Format conversion or export
+  - No write/modify operations
+
+security_limits:
+  - DEFAULT_MAX_OUTPUT_BYTES: 256 MiB (decompressed output bomb guard)
+  - DEFAULT_MAX_WINDOW_BYTES: 2 GiB
+  - Input: any type (str/bytes/Path accepted by probe_frame)
+
+dependencies:
+  runtime:
+    - zstandard>=0.21.0  # pure-FOSS C extension
+  dev:
+    - pytest>=8.0
+
+license: Apache-2.0
+spec_license: RFC 8878 (IETF — public domain)
+
+publication_status: not_published
+release_readiness:
+  source_ready: true
+  tests_ready: true
+  examples_ready: true
+  package_metadata_ready: true
+  docs_ready: true
+  publish_authorized: false
+
+blockers:
+  - zstandard library must be present for compress/decompress (not for probe_frame)
+  - publish_authorized=false — no PyPI publication without explicit release prompt
+
+commercial_product_ready: false
+capability_level: alpha-foss-preview

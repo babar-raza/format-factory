@@ -1,0 +1,102 @@
+---
+contract_id: r21-foss-release-readiness-and-gate11-preexecution-swarm
+sprint_id: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
+date: "2026-05-17"
+min_metadata_count: 30
+verdict_keyword: R21_COMPLETE_RELEASE_READINESS_TRAIN
+
+required_repo_files:
+  # Source (API normalization)
+  - src/python/zst/__init__.py
+  - src/python/fodp/__init__.py
+  - src/python/fodg/__init__.py
+  - src/python/gnumeric/__init__.py
+  - src/python/abw/__init__.py
+
+  # Examples
+  - examples/python/zst/compress_decompress_file.py
+  - examples/python/zst/README.md
+  - examples/python/fodp/extract_presentation_text.py
+  - examples/python/fodp/README.md
+  - examples/python/fodg/inspect_drawing_shapes.py
+  - examples/python/fodg/README.md
+  - examples/python/gnumeric/extract_cells.py
+  - examples/python/gnumeric/README.md
+  - examples/python/abw/extract_text.py
+  - examples/python/abw/README.md
+
+  # Packaging
+  - packaging/python/package-matrix.yaml
+  - packaging/python/pyproject.template.toml
+  - packaging/python/build-local-packages.py
+  - packaging/python/README.md
+
+  # Release manifests
+  - release-manifests/python-foss/zst.yaml
+  - release-manifests/python-foss/fodp.yaml
+  - release-manifests/python-foss/fodg.yaml
+  - release-manifests/python-foss/gnumeric.yaml
+  - release-manifests/python-foss/abw.yaml
+  - release-manifests/python-foss/_matrix.yaml
+
+  # Docs
+  - docs/python-foss/api-guidelines.md
+  - docs/python-foss/format-support-matrix.md
+  - docs/python-foss/security-model.md
+  - docs/python-foss/release-process.md
+  - docs/python-foss/examples-index.md
+
+  # Tests
+  - tests/evidence/test_python_package_matrix.py
+  - tests/evidence/test_python_release_manifests.py
+  - tests/examples/test_python_examples_smoke.py
+
+  # Gate 11 artifacts
+  - acquisition-packs/fods/gate11-architecture-approval.md
+  - acquisition-packs/fodt/gate11-architecture-approval.md
+  - acquisition-packs/fods/gate11-commercial-licensing.md
+  - acquisition-packs/fodt/gate11-commercial-licensing.md
+  - acquisition-packs/fods/gate11-nuget-package-plan.md
+  - acquisition-packs/fodt/gate11-nuget-package-plan.md
+  - acquisition-packs/fods/gate11-conversion-export-technical-design.md
+  - acquisition-packs/fodt/gate11-conversion-export-technical-design.md
+
+  # Taskcards
+  - taskcards/PYTHON-FOSS-ZST-GATE8-GATE10.md
+  - taskcards/PYTHON-FOSS-FODP-GATE8-GATE10.md
+  - taskcards/PYTHON-FOSS-FODG-GATE8-GATE10.md
+  - taskcards/PYTHON-FOSS-GNUMERIC-GATE8-GATE10.md
+  - taskcards/PYTHON-FOSS-ABW-GATE8-GATE10.md
+  - taskcards/PYTHON-FOSS-RELEASE-MATRIX.md
+  - taskcards/FODS-FODT-GATE11-G11A-G11C.md
+  - taskcards/R22-PYTHON-FOSS-PUBLISHING-DRY-RUN.md
+  - taskcards/R22-FODS-FODT-G11E-CONVERSION-PROTOTYPE.md
+
+  # Memory
+  - memory/38-r21-foss-release-readiness-and-gate11-preexecution-20260517.md
+
+  # Registry
+  - registry/format-registry.yaml
+
+  # Reports
+  - reports/governance/r21-preflight-r20-baseline-and-lane-ownership-20260517.md
+  - reports/verification/r21-r20-independent-verification-20260517.md
+  - reports/architecture/r21-python-foss-api-normalization-report-20260517.md
+  - reports/packaging/r21-python-foss-package-metadata-report-20260517.md
+  - reports/examples/r21-python-foss-examples-smoke-report-20260517.md
+  - reports/release/r21-python-foss-release-manifest-report-20260517.md
+  - reports/governance/r21-gate8-python-foss-implementation-readiness-report-20260517.md
+  - reports/governance/r21-gate9-python-foss-oss-readiness-report-20260517.md
+  - reports/release/r21-python-foss-local-package-build-report-20260517.md
+  - reports/governance/r21-fods-fodt-gate11-g11a-g11b-g11c-execution-report-20260517.md
+  - reports/verification/r21-fods-fodt-gate11-planning-iv-report-20260517.md
+  - reports/governance/r21-ora-dnumber-status-preservation-report-20260517.md
+  - reports/docs/r21-python-foss-docs-update-report-20260517.md
+  - reports/planning/r21-registry-pack-taskcard-roadmap-memory-normalization-report-20260517.md
+  - reports/testing/r21-validation-command-log-20260517.md
+  - reports/verification/r21-cross-lane-independent-verification-20260517.md
+  - reports/governance/r21-adversarial-review-20260517.md
+  - reports/governance/r21-no-scope-drift-report-20260517.md
+
+  # Evidence contract itself
+  - tools/evidence/contracts/r21-foss-release-readiness-and-gate11-preexecution-swarm.yaml

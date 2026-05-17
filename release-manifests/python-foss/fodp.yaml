@@ -1,0 +1,71 @@
+---
+# Release Manifest — FODP (Flat OpenDocument Presentation) Python FOSS Package
+# Sprint: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
+# Date: 2026-05-17
+
+format_id: fodp
+package_name: aspose-format-factory-fodp
+module_import: fodp
+version: 0.1.0.dev0
+source_path: src/python/fodp/
+tests_path: tests/python/fodp/
+examples_path: examples/python/fodp/
+
+acquisition_gates_passed:
+  - gate: 1
+    status: passed
+    notes: "Format authorized — ODF 1.3 OASIS RF Category 1"
+  - gate: 2
+    status: passed_fast_path
+    notes: "ODF family spec shared with FODS/FODT"
+  - gate: 3
+    status: passed
+    notes: "Sample corpus (3 samples)"
+  - gate: 4
+    status: passed
+    notes: "Parser prototype (16 tests)"
+  - gate: 5
+    status: passed_fast_path
+    notes: "ODF spec family shared — same namespace/schema"
+  - gate: 6
+    status: passed_planning
+    notes: "Oracle plan: LibreOffice Impress comparison"
+  - gate: 7
+    status: passed
+    notes: "XXE-safe (xml.etree.ElementTree), 64 MiB guard"
+
+unsupported_capabilities:
+  - Slide rendering or image/thumbnail export
+  - Embedded media extraction (audio, video)
+  - Animation metadata
+  - Write/modify operations
+  - ODP (zip-compressed) format — use LibreOffice to convert first
+  - Format conversion
+
+security_limits:
+  - MAX_FILE_SIZE: 64 MiB (file size guard)
+  - XML parser: xml.etree.ElementTree (XXE-safe by default)
+  - No external DTD loading
+
+dependencies:
+  runtime: []
+  dev:
+    - pytest>=8.0
+
+license: Apache-2.0
+spec_license: OASIS ODF 1.3 — Royalty-Free Category 1
+
+publication_status: not_published
+release_readiness:
+  source_ready: true
+  tests_ready: true
+  examples_ready: true
+  package_metadata_ready: true
+  docs_ready: true
+  publish_authorized: false
+
+blockers:
+  - publish_authorized=false — no PyPI publication without explicit release prompt
+
+commercial_product_ready: false
+capability_level: alpha-foss-preview

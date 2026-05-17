@@ -1,0 +1,47 @@
+# pyproject.template.toml
+# Template for format-factory Python FOSS packages.
+# NOT a live pyproject.toml — use build-local-packages.py to instantiate.
+#
+# Publication status: local_only_not_published
+# publication_authorized: false
+# commercial_ready: false
+#
+# Sprint: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+# Substitution variables (replaced by build-local-packages.py):
+#   {{PACKAGE_NAME}}     e.g. aspose-format-factory-zst
+#   {{MODULE_NAME}}      e.g. zst
+#   {{VERSION}}          e.g. 0.1.0.dev0
+#   {{DESCRIPTION}}      e.g. "Minimal FOSS Zstandard (.zst) codec"
+#   {{DEPENDENCIES}}     e.g. ["zstandard>=0.21.0"] or []
+name = "{{PACKAGE_NAME}}"
+version = "{{VERSION}}"
+description = "{{DESCRIPTION}} — ALPHA FOSS PREVIEW — NOT FOR COMMERCIAL USE"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "Apache-2.0"}
+keywords = ["file-format", "foss", "alpha", "format-factory"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: File Formats",
+]
+dependencies = {{DEPENDENCIES}}
+
+[project.urls]
+"Source" = "https://github.com/aspose/format-factory"
+"Bug Tracker" = "https://github.com/aspose/format-factory/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/python/{{MODULE_NAME}}"]
+
+# IMPORTANT: Do NOT publish to PyPI without explicit authorization.
+# publication_authorized: false
+# commercial_product_ready: false

@@ -1,0 +1,80 @@
+---
+# Python FOSS Release Manifest Matrix
+# Sprint: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
+# Date: 2026-05-17
+
+matrix_version: "1.0"
+created: "2026-05-17"
+sprint: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
+
+global_invariants:
+  publication_authorized: false
+  commercial_product_ready: false
+  capability_level: alpha-foss-preview
+  publish_status: not_published
+
+formats:
+  - format_id: zst
+    manifest: release-manifests/python-foss/zst.yaml
+    gates_passed: [1, 2, 3, 4, 5, 6, 7]
+    gate_8_status: passed_python_foss
+    gate_9_status: passed_oss_readiness
+    gate_10_status: local_release_candidate_ready
+    source_ready: true
+    tests_ready: true
+    examples_ready: true
+    package_metadata_ready: true
+    docs_ready: true
+    publish_authorized: false
+
+  - format_id: fodp
+    manifest: release-manifests/python-foss/fodp.yaml
+    gates_passed: [1, 2, 3, 4, 5, 6, 7]
+    gate_8_status: passed_python_foss
+    gate_9_status: passed_oss_readiness
+    gate_10_status: local_release_candidate_ready
+    source_ready: true
+    tests_ready: true
+    examples_ready: true
+    package_metadata_ready: true
+    docs_ready: true
+    publish_authorized: false
+
+  - format_id: fodg
+    manifest: release-manifests/python-foss/fodg.yaml
+    gates_passed: [1, 2, 3, 4, 5, 6, 7]
+    gate_8_status: passed_python_foss
+    gate_9_status: passed_oss_readiness
+    gate_10_status: local_release_candidate_ready
+    source_ready: true
+    tests_ready: true
+    examples_ready: true
+    package_metadata_ready: true
+    docs_ready: true
+    publish_authorized: false
+
+  - format_id: gnumeric
+    manifest: release-manifests/python-foss/gnumeric.yaml
+    gates_passed: [1, 2, 3, 4, 5, 6, 7]
+    gate_8_status: passed_python_foss
+    gate_9_status: passed_oss_readiness
+    gate_10_status: local_release_candidate_ready
+    source_ready: true
+    tests_ready: true
+    examples_ready: true
+    package_metadata_ready: true
+    docs_ready: true
+    publish_authorized: false
+
+  - format_id: abw
+    manifest: release-manifests/python-foss/abw.yaml
+    gates_passed: [1, 2, 3, 4, 5, 6, 7]
+    gate_8_status: passed_python_foss
+    gate_9_status: passed_oss_readiness
+    gate_10_status: local_release_candidate_ready
+    source_ready: true
+    tests_ready: true
+    examples_ready: true
+    package_metadata_ready: true
+    docs_ready: true
+    publish_authorized: false

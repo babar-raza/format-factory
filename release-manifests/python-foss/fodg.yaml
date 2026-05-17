@@ -1,0 +1,71 @@
+---
+# Release Manifest — FODG (Flat OpenDocument Graphics) Python FOSS Package
+# Sprint: FORMAT-FACTORY-R21-FOSS-RELEASE-READINESS-AND-GATE11-COMMERCIAL-PREEXECUTION-TRAIN-001
+# Date: 2026-05-17
+
+format_id: fodg
+package_name: aspose-format-factory-fodg
+module_import: fodg
+version: 0.1.0.dev0
+source_path: src/python/fodg/
+tests_path: tests/python/fodg/
+examples_path: examples/python/fodg/
+
+acquisition_gates_passed:
+  - gate: 1
+    status: passed
+    notes: "Format authorized — ODF 1.3 OASIS RF Category 1"
+  - gate: 2
+    status: passed_fast_path
+    notes: "ODF family spec shared"
+  - gate: 3
+    status: passed
+    notes: "Sample corpus (3 samples)"
+  - gate: 4
+    status: passed
+    notes: "Parser prototype (12 tests)"
+  - gate: 5
+    status: passed_fast_path
+    notes: "ODF spec family shared — same namespace/schema"
+  - gate: 6
+    status: passed_planning
+    notes: "Oracle plan: LibreOffice Draw → SVG/PDF"
+  - gate: 7
+    status: passed
+    notes: "XXE-safe, 64 MiB guard"
+
+unsupported_capabilities:
+  - SVG/PNG/PDF export or rendering
+  - Embedded bitmap/vector image extraction
+  - Write/modify operations
+  - ODG (zip-compressed) format
+  - Format conversion
+
+security_limits:
+  - MAX_FILE_SIZE: 64 MiB
+  - XML parser: xml.etree.ElementTree (XXE-safe)
+  - Shape counting: direct children only (no double-counting from draw:g groups)
+
+dependencies:
+  runtime: []
+  dev:
+    - pytest>=8.0
+
+license: Apache-2.0
+spec_license: OASIS ODF 1.3 — Royalty-Free Category 1
+
+publication_status: not_published
+release_readiness:
+  source_ready: true
+  tests_ready: true
+  examples_ready: true
+  package_metadata_ready: true
+  docs_ready: true
+  publish_authorized: false
+
+blockers:
+  - publish_authorized=false
+  - Gate 6 oracle plan not yet fully executed (passed_planning)
+
+commercial_product_ready: false
+capability_level: alpha-foss-preview
