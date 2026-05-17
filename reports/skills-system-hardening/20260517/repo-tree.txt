@@ -1,3 +1,10 @@
+reports/skills-system-hardening/20260517-closure-repair-001/consistency-check-result.txt
+reports/skills-system-hardening/20260517-closure-repair-001/contract-schema-repair-report.md
+reports/skills-system-hardening/20260517-closure-repair-001/forbidden-paths-check.txt
+reports/skills-system-hardening/20260517-closure-repair-001/full-pytest-suite-result.txt
+reports/skills-system-hardening/20260517-closure-repair-001/no-secrets-check.txt
+reports/skills-system-hardening/20260517-closure-repair-001/preflight.md
+reports/skills-system-hardening/20260517-closure-repair-001/prior-sprint-claim-review.md
 .claude/commands/_readme.md
 .claude/commands/evidence-review-next-prompt.md
 .claude/commands/execution-handoff.md
@@ -226,6 +233,7 @@ docs/specification-cache.md
 docs/specification-normalization.md
 evidence-bundles/r20-productization-train-bundle.zip
 evidence-bundles/r21-foss-release-readiness-and-gate11-preexecution-swarm-20260517.zip
+evidence-bundles/r22-full-throttle-release-candidate-and-gate11-prototype-train-20260517.zip
 examples/python/abw/README.md
 examples/python/abw/extract_text.py
 examples/python/fodg/README.md
@@ -479,6 +487,8 @@ reports/governance/r21-gate9-python-foss-oss-readiness-report-20260517.md
 reports/governance/r21-no-scope-drift-report-20260517.md
 reports/governance/r21-ora-dnumber-status-preservation-report-20260517.md
 reports/governance/r21-preflight-r20-baseline-and-lane-ownership-20260517.md
+reports/governance/r22-authority-consistency-repair-report-20260517.md
+reports/governance/r22-preflight-r21-baseline-and-lane-ownership-20260517.md
 reports/governance/r9-adversarial-review.md
 reports/governance/r9-overlap-analysis.md
 reports/governance/r9-preflight.md
@@ -588,6 +598,7 @@ reports/security/fodt.md
 reports/security/r19-zst-gate7-security-fuzz-report-20260516.md
 reports/skills-system-hardening/20260517/acceptance-criteria-checklist.md
 reports/skills-system-hardening/20260517/audit-claim-verification-matrix.md
+reports/skills-system-hardening/20260517/bundle-manifest.yaml
 reports/skills-system-hardening/20260517/changed-files-list.txt
 reports/skills-system-hardening/20260517/command-version-summary.md
 reports/skills-system-hardening/20260517/commit-fd1ea04-files.txt
@@ -739,6 +750,7 @@ schemas/skills/format-onboarding.schema.yaml
 schemas/skills/planning-runtime-contract.schema.yaml
 schemas/skills/skill-input.schema.yaml
 src/net/_readme.md
+src/net/fods/FodsCsvExporter.cs
 src/net/fods/FodsDocument.cs
 src/net/fods/FodsParser.cs
 src/net/fods/FodsWriter.cs
@@ -749,6 +761,7 @@ src/net/fods/Model/FodsSheet.cs
 src/net/fods/README.md
 src/net/fodt/FodtDocument.cs
 src/net/fodt/FodtParser.cs
+src/net/fodt/FodtTxtExporter.cs
 src/net/fodt/FodtWriter.cs
 src/net/fodt/FormatFactory.Fodt.csproj
 src/net/fodt/Model/FodtBody.cs
@@ -988,6 +1001,7 @@ tests/governance/fixtures/git_safety/mixed-metadata/verdict.md
 tests/governance/test_check_git_safety.py
 tests/governance/test_methodology_links.py
 tests/net/fods/Fixtures/fods-minimal-roundtrip.fods
+tests/net/fods/FodsCsvExporterTests.cs
 tests/net/fods/FodsDocumentEditTests.cs
 tests/net/fods/FodsDocumentRoundtripTests.cs
 tests/net/fods/FodsParserTests.cs
@@ -998,7 +1012,10 @@ tests/net/fodt/FodtDocumentEditTests.cs
 tests/net/fodt/FodtDocumentRoundtripTests.cs
 tests/net/fodt/FodtParserTests.cs
 tests/net/fodt/FodtRoundtripOracleTests.cs
+tests/net/fodt/FodtTxtExporterTests.cs
 tests/net/fodt/FormatFactory.Fodt.Tests.csproj
+tests/packaging/test_python_local_package_artifacts.py
+tests/packaging/test_python_local_package_imports.py
 tests/playbook/__init__.py
 tests/playbook/fixtures/invalid-forbidden-authority.yaml
 tests/playbook/fixtures/invalid-missing-required-field.yaml
@@ -1148,6 +1165,7 @@ tools/evidence/contracts/r18-quarter-mile-zst-gate4-multi-format-gate1-swarm.yam
 tools/evidence/contracts/r19-high-throughput-acquisition-train-swarm.yaml
 tools/evidence/contracts/r20-productization-train-zst-fodp-fodg-gnumeric-abw-swarm.yaml
 tools/evidence/contracts/r21-foss-release-readiness-and-gate11-preexecution-swarm.yaml
+tools/evidence/contracts/r22-full-throttle-release-candidate-and-gate11-prototype-train.yaml
 tools/evidence/contracts/revert-rootcause-investigation-001.yaml
 tools/evidence/contracts/run031-gate4-and-workbench-quality.yaml
 tools/evidence/contracts/run032-independent-verification.yaml

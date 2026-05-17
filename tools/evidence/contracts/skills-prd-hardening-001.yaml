@@ -7,16 +7,29 @@ min_metadata_count: 30
 # but because parallel R22 sprint artifacts created untracked files in
 # reports/governance/ (r22-preflight-*.md, r22-authority-*.md) at bundle-build time.
 # Sprint commit fd1ea04 was clean at commit time. See preflight.md + git-status-before.txt.
+# Also: R22 contract file (tools/evidence/contracts/r22-*.yaml) remains unstaged/modified
+# at closure repair bundle-build time. This is preexisting parallel work, not this sprint.
 emergency_blocker_bundle: true
-required_metadata:
+required_metadata_files:
   - preflight.md
   - audit-claim-verification-matrix.md
   - gap-analysis-beyond-audit.md
   - taskcard-state-machine.md
   - verification-report.md
   - final-verdict.md
-forbidden_content:
-  - src/python/
-  - src/net/
+  - git-status-before.txt
+  - git-status-after.txt
+  - git-diff-sprint-changes.txt
+  - changed-files-list.txt
+  - consistency-check-result.txt
+  - pytest-skills-result.txt
+  - no-secrets-check.txt
+  - bundle-manifest.yaml
+  - self-challenge.md
+  - sprint-overview.md
+  - lane-execution-log.md
+  - taskcard-closure-summary.md
+  - acceptance-criteria-checklist.md
+forbidden_paths:
   - .env
   - node_modules

@@ -1,5 +1,5 @@
 ---
-version: "1.1"
+version: "1.2"
 last-updated: "2026-05-17"
 phase-available: "all"
 gate-required: null
@@ -60,11 +60,13 @@ files = [
     "memory/26-format-expansion-roadmap-and-non-aspose-backlog-20260514.md",
     "memory/34-zst-r17-gate4-and-multi-format-gate1-intake-20260516.md",
     "memory/35-r18-quarter-mile-zst-gate4-multi-format-gate1-20260516.md",
+    "memory/38-r21-foss-release-readiness-and-gate11-preexecution-20260517.md",
     # Current acquisition planning state
     "reports/planning/r17-taskcard-roadmap-memory-normalization-report-20260516.md",
     "reports/planning/r17-multi-format-gate1-intake-and-scoring-20260516.md",
     "reports/planning/r18-quarter-mile-roadmap-and-wip-control-20260516.md",
     "reports/planning/r18-fodp-fodg-gate2-fastpath-decision-20260516.md",
+    "reports/planning/r21-registry-pack-taskcard-roadmap-memory-normalization-report-20260517.md",
     "reports/planning/cross-category-ranking-validation-20260514.md",
 ]
 
@@ -122,15 +124,15 @@ Files: <N> | Uncompressed: <X> bytes | Zip: <Y> bytes
 | Single authority      | plans/master-plan.md |
 | Core docs (8)         | architecture, gates, product-tracks, ... |
 | Root governance (3)   | README, GOVERNANCE, AGENTS |
-| Memory (7)            | 00-index, 01-origin, 03-arch, 05-decisions, 26-roadmap, 34-r17, 35-r18 |
-| Planning state (5)    | r17-normalization, r17-intake, r18-wip, r18-fodp-fodg, cross-category |
+| Memory (8)            | 00-index, 01-origin, 03-arch, 05-decisions, 26-roadmap, 34-r17, 35-r18, 38-r21 |
+| Planning state (6)    | r17-normalization, r17-intake, r18-wip, r18-fodp-fodg, r21-normalization, cross-category |
 
-CONTEXT_CURRENCY: OK (memory/35-r18-...) [or STALENESS_WARNING if stale]
+CONTEXT_CURRENCY: OK (memory/38-r21-...) [or STALENESS_WARNING if stale]
 
 Suggested LLM prompt prefix:
 "This zip contains the long-term plan and current state of the format-factory project.
 Start with plans/master-plan.md as the single authority, then memory/00-index.md for
-orientation. Key acquisition state: memory/35-r18-quarter-mile-zst-gate4-multi-format-gate1-20260516.md."
+orientation. Key acquisition state: memory/38-r21-foss-release-readiness-and-gate11-preexecution-20260517.md."
 ```
 
 ## Notes
@@ -141,7 +143,7 @@ orientation. Key acquisition state: memory/35-r18-quarter-mile-zst-gate4-multi-f
 - **MANDATORY MAINTENANCE:** After every R-sprint, add the new memory file and latest
   readiness-decision or normalization report to the standard `files` list. Run the staleness
   guard (it fires automatically after zip creation) to verify. Failure to update will produce
-  `STALENESS_WARNING` on next execution. Current list reflects R18 state (memory/35).
+  `STALENESS_WARNING` on next execution. Current list reflects R21 state (memory/38).
 
 ## Changelog
 
@@ -151,3 +153,6 @@ orientation. Key acquisition state: memory/35-r18-quarter-mile-zst-gate4-multi-f
   list from R11/R12 era to R18 state (memory/34, memory/35, r17/r18 planning reports). Remove
   stale memory/27, memory/28, r11-ranking, r11-plan, r13-readiness, weekly-report-r12 entries.
   Add MANDATORY MAINTENANCE note to Notes section. Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001.
+- 1.2 (2026-05-17): Update standard file list to R21 state. Add memory/38 and
+  r21-registry-pack-taskcard-roadmap-memory-normalization-report-20260517.md. Update Output Format
+  and Notes to reflect memory/38 as current. Sprint: SKILLS-PRD-HARDENING-001-CLOSURE-REPAIR-001.

@@ -1,7 +1,7 @@
 # Metadata Identity Report
 
 sprint_id: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001
-contract_id: unknown
+contract_id: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001
 sprint_type: skills_system_repair
 metadata_identity: primary
 

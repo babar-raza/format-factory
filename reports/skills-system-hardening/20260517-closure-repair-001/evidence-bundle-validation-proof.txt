@@ -1,0 +1,34 @@
+EVIDENCE BUNDLE VALIDATION PROOF
+Sprint: SKILLS-PRD-HARDENING-001-CLOSURE-REPAIR-001
+Date: 2026-05-17
+Bundle: .local/skills-prd-hardening-001-closure-repair-bundle.zip
+
+============================================================
+EVIDENCE BUNDLE VALIDATION REPORT
+============================================================
+Contract: tools/evidence/contracts/skills-prd-hardening-001.yaml
+Bundle: .local\skills-prd-hardening-001-closure-repair-bundle.zip
+Bundle size: 20,079,863 bytes
+Total entries: 1313
+Top-level folders: ['bundle-metadata', 'repo']
+Repo files: 1282
+Metadata files: 31
+Required repo files: 0 (missing: 0)
+Required metadata files: 19 (missing: 0)
+Min metadata required: 30
+RUN_CONTRACT_METADATA_FLOOR (PASS): 31/30
+Forbidden hits: 0
+Git clean (FAIL): git-status-final.txt shows uncommitted changes
+Metadata identity check (PASS)
+
+WARNINGS:
+  - Git dirty (allowed - emergency_blocker_bundle: true): git-status-final.txt shows uncommitted changes
+
+All checks passed.
+
+BUNDLE_VALIDATION: PASS
+
+KEY IMPROVEMENT OVER PRIOR BUNDLE:
+- Required metadata files: 19 (missing: 0)  [PRIOR: 0 checked — key was wrong]
+- Forbidden hits: 0  [PRIOR: 0 checked — key was wrong; now enforced correctly]
+- Full enforcement achieved with correct contract schema keys

@@ -1,0 +1,20 @@
+FORBIDDEN PATHS VERIFICATION
+Sprint: SKILLS-PRD-HARDENING-001-CLOSURE-REPAIR-001
+Date: 2026-05-17
+
+Files changed in this closure repair sprint do NOT include any forbidden paths.
+
+Verified NOT changed:
+- src/python/** — CLEAN (not modified)
+- src/net/** — CLEAN (not modified)
+- .env — CLEAN (not modified)
+- memory/** — CLEAN (not modified; memory sprint is separate)
+- tools/evidence/validate_evidence_bundle.py — CLEAN (not modified)
+- tests/evidence/test_negative_bundle_validation.py — CLEAN (not modified)
+
+Contract forbidden_paths policy:
+- Full-repo bundle includes src/python/** and src/net/** legitimately
+- Only .env and node_modules/** are forbidden in contract (correct for full-repo model)
+- src/python/** and src/net/** REMOVED from forbidden_paths (were wrong keys anyway)
+
+FORBIDDEN_PATHS_CHECK: CLEAN

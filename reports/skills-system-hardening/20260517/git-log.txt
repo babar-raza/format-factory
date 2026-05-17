@@ -1,3 +1,30 @@
+5d1c827 chore(evidence): add R22 evidence bundle with BUNDLE_VALIDATION: PASS
+ ...candidate-and-gate11-prototype-train-20260517.zip | Bin 0 -> 10135988 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+dcd2043 chore(evidence): add R22 evidence contract
+ ...lease-candidate-and-gate11-prototype-train.yaml | 38 ++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+1d7b8ee feat(r22): complete R22 sprint gates 0-8 — Python FOSS builds + G11-E prototypes
+ packaging/python/build-local-packages.py           |  11 +-
+ registry/format-registry.yaml                      |  30 +--
+ ...authority-consistency-repair-report-20260517.md |  76 +++++++
+ ...ght-r21-baseline-and-lane-ownership-20260517.md |  81 +++++++
+ src/net/fods/FodsCsvExporter.cs                    | 223 +++++++++++++++++++
+ src/net/fodt/FodtTxtExporter.cs                    | 170 ++++++++++++++
+ tests/net/fods/FodsCsvExporterTests.cs             | 246 +++++++++++++++++++++
+ tests/net/fodt/FodtTxtExporterTests.cs             | 219 ++++++++++++++++++
+ .../test_python_local_package_artifacts.py         |  83 +++++++
+ .../packaging/test_python_local_package_imports.py |  61 +++++
+ 10 files changed, 1183 insertions(+), 17 deletions(-)
+e5b424d fix(evidence): add contract_id and emergency_blocker for SKILLS-PRD-HARDENING-001 bundle
+ tools/evidence/contracts/skills-prd-hardening-001.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+71dac7d chore(skills): commit remaining SKILLS-PRD-HARDENING-001 artifacts
+ .../20260517/bundle-manifest.yaml                  | 10 +++
+ .../skills-system-hardening/20260517/git-log.txt   | 75 ++++++++--------------
+ .../20260517/git-status-final.txt                  | 12 ++--
+ .../skills-system-hardening/20260517/repo-tree.txt | 27 +++++++-
+ 4 files changed, 68 insertions(+), 56 deletions(-)
 7a0ec0e chore(evidence): add sprint metadata for SKILLS-PRD-HARDENING-001 evidence bundle
  .../20260517/command-version-summary.md            | 14 +++++++
  .../20260517/commit-fd1ea04-files.txt              | 30 +++++++++++++
@@ -531,60 +558,3 @@ d655ab9 feat(acquisition): R12 IV + ZST governed readiness + governance expansio
  ...r11-acquisition-planning-integration-swarm.yaml | 126 +++++
  tools/skills/acquisition_planning_runtime.py       | 420 ++++++++++++++++
  15 files changed, 2447 insertions(+), 2 deletions(-)
-7ae88e4 fix(contract): raise min_metadata_count to 30 to meet project floor
- .../contracts/r10-closure-hardening-and-r11-readiness-repair-swarm.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-35cbf4e fix(contract): set realistic min_metadata_count for R10 closure hardening sprint
- .../contracts/r10-closure-hardening-and-r11-readiness-repair-swarm.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-bf57c95 chore(skills): harden R10 closure and repair R11 readiness evidence (FORMAT-FACTORY-R10-CLOSURE-HARDENING-AND-R11-READINESS-REPAIR-SWARM-001)
- ...sition-engine-poc-and-r11-readiness-20260514.md |  64 ++++++++++
- .../governance/r10-closure-memory-sync-20260514.md |  31 +++++
- .../planning/r11-readiness-decision-20260514.md    |  54 +++++++--
- .../planning/weekly-report-poc-summary-20260514.md |  39 ++++--
- reports/testing/r10-test-verification-20260514.md  |  88 ++++++++++++++
- .../r10-closure-independent-review-20260514.md     | 135 +++++++++++++++++++++
- .../r10-evidence-contract-hardening-20260514.md    |  39 ++++++
- ...e-hardening-and-r11-readiness-repair-swarm.yaml |  80 ++++++++++++
- 8 files changed, 512 insertions(+), 18 deletions(-)
-a3ae426 feat(skills): close R10 acquisition-engine POC (FORMAT-FACTORY-R10-ACQUISITION-ENGINE-POC-SWARM-001)
- .../governance/r10-adversarial-review-20260514.md  | 265 +++++++++
- .../planning/r11-readiness-decision-20260514.md    | 207 +++++++
- .../planning/weekly-report-poc-summary-20260514.md | 196 +++++++
- .../r9-independent-verification-20260514.md        | 203 +++++++
- .../skills/test_acquisition_lifecycle_simulator.py | 378 +++++++++++++
- tests/skills/test_candidate_format_backlog.py      | 346 ++++++++++++
- tests/skills/test_implementation_simulation_v2.py  | 614 +++++++++++++++++++++
- .../test_multi_format_acquisition_planner.py       | 460 +++++++++++++++
- tests/skills/test_public_spec_readiness_scorer.py  | 299 ++++++++++
- ...-expansion-roadmap-memory-sync-iv-20260514.yaml |  97 ++++
- ...-r10-acquisition-engine-poc-swarm-20260514.yaml |  56 ++
- tools/skills/acquisition_lifecycle_simulator.py    | 498 +++++++++++++++++
- tools/skills/candidate_format_backlog.py           | 454 +++++++++++++++
- tools/skills/implementation_simulation_v2.py       | 591 ++++++++++++++++++++
- tools/skills/multi_format_acquisition_planner.py   | 361 ++++++++++++
- tools/skills/public_spec_readiness_scorer.py       | 404 ++++++++++++++
- 16 files changed, 5429 insertions(+)
-fbdd2b0 feat(skills): add Conway R9 governed simulation and authority continuity (CONWAY-R9-GOVERNED-SIMULATION-AND-AUTHORITY-CONTINUITY-SWARM-001)
- docs/conway-r9-authority-continuity.md             | 150 +++++++
- docs/conway-r9-governed-simulation.md              | 131 ++++++
- docs/conway-r9-swarm-governance.md                 | 161 +++++++
- .../governance/cross-format-isolation-review.md    | 207 +++++++++
- reports/governance/r9-adversarial-review.md        | 319 +++++++++++++
- reports/governance/r9-overlap-analysis.md          |  40 ++
- reports/governance/r9-preflight.md                 |  69 +++
- .../r9-coordination-final-report-20260514.md       | 145 ++++++
- ...at-expansion-roadmap-memory-sync-iv-20260514.md | 305 +++++++++++++
- schemas/skills/authority-continuity.schema.yaml    | 295 ++++++++++++
- .../format-governance-classification.schema.yaml   | 249 ++++++++++
- .../skills/planning-runtime-contract.schema.yaml   | 241 ++++++++++
- tests/skills/test_authority_continuity_registry.py | 500 +++++++++++++++++++++
- tests/skills/test_execution_simulator.py           | 495 ++++++++++++++++++++
- tests/skills/test_replay_lineage.py                | 382 ++++++++++++++++
- tests/skills/test_stale_propagation.py             | 375 ++++++++++++++++
- ...nway-r9-governed-simulation-swarm-20260514.yaml |  60 +++
- tools/skills/authority_continuity_registry.py      | 298 ++++++++++++
- tools/skills/execution_simulator.py                | 482 ++++++++++++++++++++
- tools/skills/replay_lineage.py                     | 351 +++++++++++++++
- tools/skills/stale_propagation.py                  | 395 ++++++++++++++++
- 21 files changed, 5650 insertions(+)
