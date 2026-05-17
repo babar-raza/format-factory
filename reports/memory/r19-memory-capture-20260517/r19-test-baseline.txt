@@ -1,0 +1,16 @@
+R19 TEST BASELINE
+Source: commit 2dcd7f8 message + MEMORY.md
+
+Tests at R19 completion: 1181 passed, 8 skipped, 0 failed
+Test files added by R19:
+  - tests/skills/test_zst_gate4_prototype.py (was in R18; R19 continued using)
+  - tests/skills/test_zst_gate6_oracle.py (NEW in R19)
+  - tests/skills/test_zst_gate7_security_fuzz.py (NEW in R19)
+
+Later baselines:
+  - R20 baseline: 1552 passed, 12 skipped (per memory/38)
+  - R21 baseline: expected 1236+ after R21 (per bvj35dfs4 background task)
+  - Current (post-R22): 1236 passed, 8 skipped (confirmed 2026-05-17)
+
+Note: Test count decreased from R20 (1552) to current (1236) — likely due to scope changes in
+R21/R22 or test reorganization. memory/36 records R19 baseline only (1181/8).

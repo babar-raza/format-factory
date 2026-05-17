@@ -1,0 +1,22 @@
+R19 EVIDENCE HYGIENE POLICIES SUMMARY
+Source: reports/planning/r19-evidence-hygiene-and-post-commit-bundle-policy-20260516.md (committed 2dcd7f8)
+
+Policies established by R19 (P-EVID-001 to P-EVID-004):
+
+P-EVID-001: Post-commit bundle required
+  Rule: Every sprint must produce an evidence bundle AFTER commit
+  Status: ACTIVE — applied to all sprints R19+
+
+P-EVID-002: No IN_PROGRESS in final bundle
+  Rule: Final bundle/verdict must not contain "IN_PROGRESS" states for the current sprint
+  Status: ACTIVE
+
+P-EVID-003: AUTHORITATIVE_TEST_RESULT line required
+  Rule: Final verdict must include AUTHORITATIVE_TEST_RESULT: <N> passed, <M> skipped
+  Status: ACTIVE
+
+P-EVID-004: No stale HEAD in verdict
+  Rule: Verdict must reflect actual HEAD at time of writing; not prior sprint HEAD
+  Status: ACTIVE
+
+These policies are durable governance additions that apply to all subsequent sprints.

@@ -1,0 +1,21 @@
+MEMORY FILE CONTENT SPOT CHECK — memory/36
+Sprint: R19-MEMORY-CAPTURE-DEDICATED-001
+Date: 2026-05-17
+
+Checking key content claims in memory/36:
+
+[PASS] Sprint identity: "FORMAT-FACTORY-R19-HIGH-THROUGHPUT-ACQUISITION-TRAIN-001" present
+[PASS] Commit SHA: "2dcd7f869845e9c21b3de88f9776cdf9b989b74a" present
+[PASS] Date: "2026-05-16" present
+[PASS] BACKFILL NOTE section present (explains post-R20/R21 creation context)
+[PASS] ZST Gate 4: "gate_4.status: passed" stated correctly (not prototype_complete)
+[PASS] ZST Gate 5: "G-NORM-004" and "waived_not_applicable" present
+[PASS] ORA: "DEFERRED_BORDERLINE" and "6.8 / 10.0" present
+[PASS] P-EVID-001 through P-EVID-004: all 4 policies listed
+[PASS] Test baseline: "1181 passed, 8 skipped, 0 failed" present
+[PASS] "14 gate state transitions" present
+[PASS] Post-R19 state section clarifies what later sprints resolved
+[PASS] "Hard Invariants Maintained" section confirms no src/ touches
+[PASS] memory/38 referenced as authoritative for post-R19 state
+
+SPOT_CHECK: ALL_PASS

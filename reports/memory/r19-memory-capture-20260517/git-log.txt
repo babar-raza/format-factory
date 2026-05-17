@@ -1,0 +1,559 @@
+62f0fb3 docs(memory): backfill R19 acquisition train state (R19-MEMORY-CAPTURE-DEDICATED-001)
+ memory/00-index.md                                 |   2 +
+ ...9-high-throughput-acquisition-train-20260517.md | 224 +++++++++++++++++++++
+ .../changed-files-list.txt                         |  27 +++
+ .../r19-memory-capture-20260517/final-verdict.md   |  31 +++
+ .../git-status-after.txt                           |   8 +
+ .../git-status-before.txt                          |  11 +
+ .../memory-numbering-decision.md                   |  31 +++
+ .../no-secrets-check.txt                           |  21 ++
+ .../r19-memory-capture-20260517/preflight.md       |  51 +++++
+ .../r19-source-truth-review.md                     |  54 +++++
+ .../r19-memory-capture-20260517/recent-git-log.txt |  24 +++
+ .../verification-report.md                         |  39 ++++
+ .../r19-memory-capture-dedicated-001.yaml          |  18 ++
+ 13 files changed, 541 insertions(+)
+f2ccdbf fix(evidence): repair contract schema for SKILLS-PRD-HARDENING-001 (CLOSURE-REPAIR-001)
+ .claude/commands/export-plan-context.md            | 17 +++--
+ .../consistency-check-result.txt                   | 18 +++++
+ .../contract-schema-repair-report.md               | 35 +++++++++
+ .../evidence-bundle-validation-proof.txt           | 34 +++++++++
+ .../final-closure-verdict.md                       | 58 +++++++++++++++
+ .../forbidden-paths-check.txt                      | 20 ++++++
+ .../full-pytest-suite-result.txt                   | 15 ++++
+ .../no-secrets-check.txt                           | 17 +++++
+ .../20260517-closure-repair-001/preflight.md       | 44 ++++++++++++
+ .../prior-sprint-claim-review.md                   | 44 ++++++++++++
+ .../20260517/bundle-manifest.yaml                  |  6 +-
+ .../skills-system-hardening/20260517/git-log.txt   | 84 +++++++---------------
+ .../20260517/git-status-final.txt                  | 12 +++-
+ .../20260517/metadata-identity-report.md           |  2 +-
+ .../skills-system-hardening/20260517/repo-tree.txt | 18 +++++
+ .../contracts/skills-prd-hardening-001.yaml        | 21 ++++--
+ 16 files changed, 373 insertions(+), 72 deletions(-)
+5d1c827 chore(evidence): add R22 evidence bundle with BUNDLE_VALIDATION: PASS
+ ...candidate-and-gate11-prototype-train-20260517.zip | Bin 0 -> 10135988 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+dcd2043 chore(evidence): add R22 evidence contract
+ ...lease-candidate-and-gate11-prototype-train.yaml | 38 ++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+1d7b8ee feat(r22): complete R22 sprint gates 0-8 — Python FOSS builds + G11-E prototypes
+ packaging/python/build-local-packages.py           |  11 +-
+ registry/format-registry.yaml                      |  30 +--
+ ...authority-consistency-repair-report-20260517.md |  76 +++++++
+ ...ght-r21-baseline-and-lane-ownership-20260517.md |  81 +++++++
+ src/net/fods/FodsCsvExporter.cs                    | 223 +++++++++++++++++++
+ src/net/fodt/FodtTxtExporter.cs                    | 170 ++++++++++++++
+ tests/net/fods/FodsCsvExporterTests.cs             | 246 +++++++++++++++++++++
+ tests/net/fodt/FodtTxtExporterTests.cs             | 219 ++++++++++++++++++
+ .../test_python_local_package_artifacts.py         |  83 +++++++
+ .../packaging/test_python_local_package_imports.py |  61 +++++
+ 10 files changed, 1183 insertions(+), 17 deletions(-)
+e5b424d fix(evidence): add contract_id and emergency_blocker for SKILLS-PRD-HARDENING-001 bundle
+ tools/evidence/contracts/skills-prd-hardening-001.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+71dac7d chore(skills): commit remaining SKILLS-PRD-HARDENING-001 artifacts
+ .../20260517/bundle-manifest.yaml                  | 10 +++
+ .../skills-system-hardening/20260517/git-log.txt   | 75 ++++++++--------------
+ .../20260517/git-status-final.txt                  | 12 ++--
+ .../skills-system-hardening/20260517/repo-tree.txt | 27 +++++++-
+ 4 files changed, 68 insertions(+), 56 deletions(-)
+7a0ec0e chore(evidence): add sprint metadata for SKILLS-PRD-HARDENING-001 evidence bundle
+ .../20260517/command-version-summary.md            | 14 +++++++
+ .../20260517/commit-fd1ea04-files.txt              | 30 +++++++++++++
+ .../20260517/commit-fd1ea04-stat.txt               | 39 +++++++++++++++++
+ .../20260517/forbidden-paths-check.txt             | 19 +++++++++
+ .../20260517/lane-execution-log.md                 | 49 ++++++++++++++++++++++
+ .../20260517/recent-git-log.txt                    |  5 +++
+ .../20260517/settings-json-summary.md              | 22 ++++++++++
+ .../20260517/taskcard-closure-summary.md           | 17 ++++++++
+ 8 files changed, 195 insertions(+)
+d4a100e chore(skills): add FORMAT-FACTORY-SKILLS-PRD-HARDENING-001 metadata reports
+ .../20260517/acceptance-criteria-checklist.md      |   58 +
+ .../20260517/changed-files-list.txt                |   40 +
+ .../20260517/consistency-check-result.txt          |   31 +
+ .../20260517/git-diff-sprint-changes.txt           |  374 ++++++
+ .../skills-system-hardening/20260517/git-log.txt   |  609 ++++++++++
+ .../20260517/git-status-after.txt                  |   13 +
+ .../20260517/git-status-before.txt                 |   81 ++
+ .../20260517/git-status-final.txt                  |   10 +
+ .../20260517/head-rebaseline-check.txt             |   27 +
+ .../20260517/metadata-identity-report.md           |    9 +
+ .../20260517/no-secrets-check.txt                  |   11 +
+ .../20260517/path-references-check.txt             |   35 +
+ .../20260517/pytest-skills-result.txt              |   19 +
+ .../skills-system-hardening/20260517/repo-tree.txt | 1250 ++++++++++++++++++++
+ .../20260517/self-challenge.md                     |   30 +
+ .../20260517/sprint-overview.md                    |   37 +
+ 16 files changed, 2634 insertions(+)
+f1b7474 chore: gitignore format-factory.zip stray artifact
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+fd1ea04 fix(skills): repair command contracts, settings drift, git tracking (SKILLS-PRD-HARDENING-001)
+ .claude/commands/_readme.md                        |   2 +
+ .claude/commands/evidence-review-next-prompt.md    |  36 +++--
+ .claude/commands/export-plan-context.md            | 153 +++++++++++++++++++++
+ .claude/commands/memory-sprint.md                  |  26 +++-
+ .claude/settings.json                              |   9 +-
+ AGENTS.md                                          |   2 +
+ docs/agent-methodology-index.md                    |   1 +
+ .../20260517/audit-claim-verification-matrix.md    |  35 +++++
+ .../20260517/final-verdict.md                      |  86 ++++++++++++
+ .../20260517/gap-analysis-beyond-audit.md          |  19 +++
+ .../skills-system-hardening/20260517/preflight.md  | 122 ++++++++++++++++
+ .../20260517/taskcard-state-machine.md             |  17 +++
+ .../20260517/verification-report.md                | 148 ++++++++++++++++++++
+ taskcards/TC-0004-commands-skills.md               |  16 +++
+ .../contracts/skills-prd-hardening-001.yaml        |  16 +++
+ 15 files changed, 669 insertions(+), 19 deletions(-)
+9e9ef97 chore(evidence): add R21 evidence bundle with BUNDLE_VALIDATION: PASS
+ ...adiness-and-gate11-preexecution-swarm-20260517.zip | Bin 0 -> 5133526 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+5e8d676 fix(evidence): align R21 contract_id to sprint_id for metadata identity check
+ .../r21-foss-release-readiness-and-gate11-preexecution-swarm.yaml      | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+144a52a feat(release): prepare Python FOSS release readiness and Gate 11 preexecution
+ .../fods/gate11-architecture-approval.md           |  56 +++++++
+ .../fods/gate11-commercial-licensing.md            |  14 +-
+ .../gate11-conversion-export-technical-design.md   |  83 ++++++++++
+ .../fods/gate11-nuget-package-plan.md              |  70 +++++++++
+ .../fodt/gate11-architecture-approval.md           |  56 +++++++
+ .../fodt/gate11-commercial-licensing.md            |  14 +-
+ .../gate11-conversion-export-technical-design.md   |  85 ++++++++++
+ .../fodt/gate11-nuget-package-plan.md              |  62 ++++++++
+ docs/python-foss/api-guidelines.md                 | 127 +++++++++++++++
+ docs/python-foss/examples-index.md                 |  63 ++++++++
+ docs/python-foss/format-support-matrix.md          |  74 +++++++++
+ docs/python-foss/release-process.md                |  56 +++++++
+ docs/python-foss/security-model.md                 |  71 +++++++++
+ examples/python/abw/README.md                      |  45 ++++++
+ examples/python/abw/extract_text.py                |  57 +++++++
+ examples/python/fodg/README.md                     |  45 ++++++
+ examples/python/fodg/inspect_drawing_shapes.py     |  59 +++++++
+ examples/python/fodp/README.md                     |  45 ++++++
+ examples/python/fodp/extract_presentation_text.py  |  57 +++++++
+ examples/python/gnumeric/README.md                 |  45 ++++++
+ examples/python/gnumeric/extract_cells.py          |  59 +++++++
+ examples/python/zst/README.md                      |  46 ++++++
+ examples/python/zst/compress_decompress_file.py    |  79 ++++++++++
+ ...e-readiness-and-gate11-preexecution-20260517.md |  71 +++++++++
+ packaging/python/README.md                         |  48 ++++++
+ packaging/python/build-local-packages.py           | 172 +++++++++++++++++++++
+ packaging/python/package-matrix.yaml               |  88 +++++++++++
+ packaging/python/pyproject.template.toml           |  47 ++++++
+ registry/format-registry.yaml                      | 120 +++++++-------
+ release-manifests/python-foss/_matrix.yaml         |  80 ++++++++++
+ release-manifests/python-foss/abw.yaml             |  74 +++++++++
+ release-manifests/python-foss/fodg.yaml            |  71 +++++++++
+ release-manifests/python-foss/fodp.yaml            |  71 +++++++++
+ release-manifests/python-foss/gnumeric.yaml        |  72 +++++++++
+ release-manifests/python-foss/zst.yaml             |  73 +++++++++
+ ...ython-foss-api-normalization-report-20260517.md |  64 ++++++++
+ .../r21-python-foss-docs-update-report-20260517.md |  38 +++++
+ ...1-python-foss-examples-smoke-report-20260517.md |  51 ++++++
+ .../governance/r21-adversarial-review-20260517.md  | 149 ++++++++++++++++++
+ ...e11-g11a-g11b-g11c-execution-report-20260517.md |  59 +++++++
+ ...oss-implementation-readiness-report-20260517.md |  43 ++++++
+ ...e9-python-foss-oss-readiness-report-20260517.md |  45 ++++++
+ .../r21-no-scope-drift-report-20260517.md          |  49 ++++++
+ ...-dnumber-status-preservation-report-20260517.md |  42 +++++
+ ...ght-r20-baseline-and-lane-ownership-20260517.md |  72 +++++++++
+ ...python-foss-package-metadata-report-20260517.md |  60 +++++++
+ ...roadmap-memory-normalization-report-20260517.md |  60 +++++++
+ ...hon-foss-local-package-build-report-20260517.md |  61 ++++++++
+ ...python-foss-release-manifest-report-20260517.md |  42 +++++
+ .../testing/r21-validation-command-log-20260517.md |  47 ++++++
+ ...cross-lane-independent-verification-20260517.md |  77 +++++++++
+ ...fods-fodt-gate11-planning-iv-report-20260517.md |  54 +++++++
+ .../r21-r20-independent-verification-20260517.md   |  57 +++++++
+ src/python/abw/__init__.py                         |   1 +
+ src/python/fodg/__init__.py                        |   1 +
+ src/python/fodp/__init__.py                        |   1 +
+ src/python/gnumeric/__init__.py                    |   1 +
+ src/python/zst/__init__.py                         |   1 +
+ taskcards/FODS-FODT-GATE11-G11A-G11C.md            |  23 +++
+ taskcards/PYTHON-FOSS-ABW-GATE8-GATE10.md          |  25 +++
+ taskcards/PYTHON-FOSS-FODG-GATE8-GATE10.md         |  25 +++
+ taskcards/PYTHON-FOSS-FODP-GATE8-GATE10.md         |  26 ++++
+ taskcards/PYTHON-FOSS-GNUMERIC-GATE8-GATE10.md     |  25 +++
+ taskcards/PYTHON-FOSS-RELEASE-MATRIX.md            |  21 +++
+ taskcards/PYTHON-FOSS-ZST-GATE8-GATE10.md          |  27 ++++
+ .../R22-FODS-FODT-G11E-CONVERSION-PROTOTYPE.md     |  35 +++++
+ taskcards/R22-PYTHON-FOSS-PUBLISHING-DRY-RUN.md    |  31 ++++
+ tests/evidence/test_python_package_matrix.py       | 158 +++++++++++++++++++
+ tests/evidence/test_python_release_manifests.py    | 155 +++++++++++++++++++
+ tests/examples/test_python_examples_smoke.py       | 154 ++++++++++++++++++
+ ...se-readiness-and-gate11-preexecution-swarm.yaml | 102 ++++++++++++
+ 71 files changed, 4175 insertions(+), 62 deletions(-)
+0392354 chore(evidence): add R20 evidence bundle with BUNDLE_VALIDATION: PASS
+ evidence-bundles/r20-productization-train-bundle.zip | Bin 0 -> 2626630 bytes
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+0d7e8c7 feat(acquisition): complete R20 productization train (ZST/FODP/FODG/Gnumeric/ABW source, evidence hygiene)
+ prototypes/by-format/abw/abw_parser.py             | 104 +++++++
+ prototypes/by-format/fodg/fodg_parser.py           | 133 +++++++++
+ prototypes/by-format/fodp/fodp_parser.py           | 158 +++++++++++
+ prototypes/by-format/gnumeric/gnumeric_parser.py   | 120 ++++++++
+ registry/format-registry.yaml                      | 269 +++++++++++++-----
+ ...0-delegated-decision-cleanup-report-20260516.md |  72 +++++
+ ...0-evidence-hygiene-hardening-report-20260516.md |  62 ++++
+ ...s-fodt-executable-architecture-plan-20260517.md | 128 +++++++++
+ ...ght-r19-baseline-and-lane-ownership-20260516.md |  56 ++++
+ ...python-source-implementation-report-20260516.md |  82 ++++++
+ ...hon-source-independent-verification-20260516.md |  58 ++++
+ src/python/abw/__init__.py                         |  31 ++
+ src/python/abw/abw_codec.py                        | 141 +++++++++
+ src/python/fodg/__init__.py                        |  33 +++
+ src/python/fodg/fodg_codec.py                      | 217 ++++++++++++++
+ src/python/fodp/__init__.py                        |  32 +++
+ src/python/fodp/fodp_codec.py                      | 192 +++++++++++++
+ src/python/gnumeric/__init__.py                    |  33 +++
+ src/python/gnumeric/gnumeric_codec.py              | 170 +++++++++++
+ src/python/zst/__init__.py                         |  35 +++
+ src/python/zst/zst_codec.py                        | 303 ++++++++++++++++++++
+ tests/evidence/test_auto_proof_bundle.py           |  11 +-
+ tests/evidence/test_negative_bundle_validation.py  |  72 +++++
+ tests/python/abw/test_abw_codec.py                 | 145 ++++++++++
+ tests/python/fodg/test_fodg_codec.py               | 167 +++++++++++
+ tests/python/fodp/test_fodp_codec.py               | 148 ++++++++++
+ tests/python/gnumeric/test_gnumeric_codec.py       | 146 ++++++++++
+ tests/python/zst/test_zst_codec.py                 | 315 +++++++++++++++++++++
+ tests/skills/test_abw_gate4_prototype.py           | 100 +++++++
+ tests/skills/test_fodg_gate4_prototype.py          |  88 ++++++
+ tests/skills/test_fodp_gate4_prototype.py          | 170 +++++++++++
+ tests/skills/test_gnumeric_gate4_prototype.py      |  95 +++++++
+ tests/skills/test_zst_gate3a_boundary.py           |  16 +-
+ tests/skills/test_zst_gate3b_sample_corpus.py      |  16 +-
+ tests/skills/test_zst_gate4_prototype.py           |   8 +-
+ tests/skills/test_zst_gate6_oracle.py              |   6 +-
+ tests/skills/test_zst_gate7_security_fuzz.py       |   6 +-
+ tests/skills/test_zst_spec_cache_gate2.py          |   5 +-
+ ...ion-train-zst-fodp-fodg-gnumeric-abw-swarm.yaml |  72 +++++
+ tools/evidence/validate_evidence_bundle.py         |  30 ++
+ 40 files changed, 3951 insertions(+), 94 deletions(-)
+2dcd7f8 feat(acquisition): complete R19 high-throughput acquisition train (ZST G4-G7, FODP/FODG/Gnumeric/ABW G2-3, ORA deferred)
+ acquisition-packs/abw/legal-notes.md               |  51 ++++
+ acquisition-packs/abw/pack.yaml                    |  33 ++-
+ acquisition-packs/abw/sample-sources.md            |  42 +++
+ acquisition-packs/abw/spec-evidence.md             |  79 ++++++
+ acquisition-packs/fodg/legal-notes.md              |  41 +++
+ acquisition-packs/fodg/pack.yaml                   |  31 ++-
+ acquisition-packs/fodg/parser-notes.md             | 121 +++++++++
+ acquisition-packs/fodg/sample-sources.md           |  35 +++
+ acquisition-packs/fodg/spec-evidence.md            |  48 ++++
+ acquisition-packs/fodp/legal-notes.md              |  41 +++
+ acquisition-packs/fodp/pack.yaml                   |  31 ++-
+ acquisition-packs/fodp/parser-notes.md             | 112 ++++++++
+ acquisition-packs/fodp/sample-sources.md           |  35 +++
+ acquisition-packs/fodp/spec-evidence.md            |  47 ++++
+ acquisition-packs/gnumeric/legal-notes.md          |  51 ++++
+ acquisition-packs/gnumeric/pack.yaml               |  31 ++-
+ acquisition-packs/gnumeric/sample-sources.md       |  41 +++
+ acquisition-packs/gnumeric/spec-evidence.md        |  62 +++++
+ acquisition-packs/ora/pack.yaml                    |  16 +-
+ .../zst/gate5-requirements-readiness.md            |  24 +-
+ acquisition-packs/zst/gate6-oracle-plan.md         |  85 ++++++
+ acquisition-packs/zst/gate7-malformed-fuzz-plan.md |  59 ++++
+ .../zst/gate7-malformed-fuzz-report.md             |  64 +++++
+ acquisition-packs/zst/gate7-risk-scope.md          | 118 ++++++++
+ acquisition-packs/zst/oracle-comparison-report.md  |  94 +++++++
+ registry/format-registry.yaml                      | 225 ++++++++++++----
+ .../r19-abw-gate2-spec-retrieval-20260516.md       |  65 +++++
+ ...versarial-review-and-no-scope-drift-20260516.md |  73 +++++
+ ...19-delegated-decision-normalization-20260516.md | 105 ++++++++
+ ...giene-and-post-commit-bundle-policy-20260516.md |  98 +++++++
+ .../r19-fodp-fodg-gate2-fastpath-20260516.md       |  54 ++++
+ .../r19-gnumeric-gate2-spec-retrieval-20260516.md  |  54 ++++
+ .../r19-ora-gate1-deferred-decision-20260516.md    |  71 +++++
+ ...ght-r18-baseline-and-lane-ownership-20260516.md |  82 ++++++
+ ...zst-gate4-delegated-approval-report-20260516.md |  75 ++++++
+ ...e5-waiver-delegated-approval-report-20260516.md |  68 +++++
+ ...ython-source-authorization-decision-20260516.md |  99 +++++++
+ ...s-fodt-gate11-commercial-train-plan-20260516.md | 115 ++++++++
+ .../r19-zst-gate7-security-fuzz-report-20260516.md |  64 +++++
+ .../r19-zst-gate6-oracle-verification-20260516.md  |  83 ++++++
+ samples/by-format/abw/_provenance.yaml             |  35 +++
+ samples/by-format/abw/empty-section.abw            |   6 +
+ samples/by-format/abw/minimal-document.abw         |   7 +
+ samples/by-format/abw/two-paragraphs.abw           |   8 +
+ samples/by-format/fodg/_provenance.yaml            |  29 ++
+ samples/by-format/fodg/empty-page.fodg             |  33 +++
+ samples/by-format/fodg/minimal-drawing.fodg        |  42 +++
+ samples/by-format/fodg/shapes-basic.fodg           |  46 ++++
+ samples/by-format/fodp/_provenance.yaml            |  29 ++
+ samples/by-format/fodp/minimal-presentation.fodp   |  46 ++++
+ samples/by-format/fodp/title-only.fodp             |  33 +++
+ samples/by-format/fodp/two-slides-basic.fodp       |  58 ++++
+ samples/by-format/gnumeric/_provenance.yaml        |  35 +++
+ samples/by-format/gnumeric/empty-sheet.gnumeric    | Bin 0 -> 264 bytes
+ .../gnumeric/minimal-spreadsheet.gnumeric          | Bin 0 -> 307 bytes
+ .../by-format/gnumeric/multi-cell-basic.gnumeric   | Bin 0 -> 337 bytes
+ .../invalid/generated/claimed-large-truncated.zst  | Bin 0 -> 16 bytes
+ .../zst/invalid/generated/corrupted-block-data.zst | Bin 0 -> 60 bytes
+ .../zst/invalid/generated/magic-only-no-fhd.zst    |   1 +
+ .../zst/invalid/generated/truncated-header-2b.zst  |   1 +
+ .../zst/invalid/generated/wrong-magic.zst          | Bin 0 -> 24 bytes
+ taskcards/ABW-GATE4-001-parser-prototype.md        |  43 +++
+ taskcards/EVIDENCE-HYGIENE-ENFORCEMENT.md          |  34 +++
+ taskcards/FODG-GATE4-001-parser-prototype.md       |  42 +++
+ taskcards/FODP-GATE4-001-parser-prototype.md       |  37 +++
+ taskcards/GNUMERIC-GATE4-001-parser-prototype.md   |  37 +++
+ taskcards/ZST-IMPL-001-python-source-scaffold.md   |  48 ++++
+ tests/skills/test_zst_gate4_prototype.py           |   7 +-
+ tests/skills/test_zst_gate6_oracle.py              | 297 +++++++++++++++++++++
+ tests/skills/test_zst_gate7_security_fuzz.py       | 240 +++++++++++++++++
+ ...19-high-throughput-acquisition-train-swarm.yaml | 121 +++++++++
+ 71 files changed, 3953 insertions(+), 85 deletions(-)
+42052c2 feat(acquisition): complete R18 quarter-mile format acquisition sprint
+ README.md                                          |   6 +-
+ ROADMAP.md                                         |   2 +-
+ .../r18-dnumber-formal-closure-20260516.md         |  84 ++++
+ acquisition-packs/abw/gate1-decision-packet.md     | 111 ++++++
+ acquisition-packs/abw/pack.yaml                    |  62 +++
+ acquisition-packs/fodg/gate1-decision-packet.md    | 119 ++++++
+ acquisition-packs/fodg/pack.yaml                   |  59 +++
+ acquisition-packs/fodp/gate1-decision-packet.md    | 118 ++++++
+ acquisition-packs/fodp/pack.yaml                   |  58 +++
+ .../gnumeric/gate1-decision-packet.md              | 117 ++++++
+ acquisition-packs/gnumeric/pack.yaml               |  60 +++
+ acquisition-packs/ora/gate1-scoring-packet.md      | 110 ++++++
+ acquisition-packs/ora/pack.yaml                    |  57 +++
+ .../zst/gate5-requirements-readiness.md            | 100 +++++
+ acquisition-packs/zst/pack.yaml                    |  12 +-
+ ...r-mile-zst-gate4-multi-format-gate1-20260516.md | 136 +++++++
+ plans/master-plan.md                               |   6 +-
+ prototypes/by-format/zst/README.md                 |  71 ++++
+ prototypes/by-format/zst/frame_header.py           | 163 ++++++++
+ prototypes/by-format/zst/validate_corpus.py        | 220 +++++++++++
+ prototypes/by-format/zst/zst_probe.py              | 112 ++++++
+ registry/format-registry.yaml                      | 431 +++++++++++++++++++-
+ .../governance/r18-adversarial-review-20260516.md  | 176 +++++++++
+ .../r18-no-scope-drift-report-20260516.md          |  57 +++
+ .../r18-preflight-and-lane-ownership-20260516.md   |  56 +++
+ ...8-fodp-fodg-gate2-fastpath-decision-20260516.md |  95 +++++
+ ...uarter-mile-roadmap-and-wip-control-20260516.md |  76 ++++
+ ...t-gate4-prototype-validation-report-20260516.md | 203 ++++++++++
+ .../r18-fodp-fodg-gate1-iv-20260516.md             | 200 ++++++++++
+ .../r18-gnumeric-abw-gate1-iv-20260516.md          | 188 +++++++++
+ .../r18-r17-baseline-verification-20260516.md      |  41 ++
+ .../r18-zst-gate4-prototype-iv-20260516.md         | 135 +++++++
+ taskcards/FODP-FODG-GATE1-BATCH.md                 |   4 +-
+ taskcards/ORA-GNUMERIC-ABW-GATE1-SCORING-IV.md     |   4 +-
+ taskcards/ZST-R18-GATE5-REQUIREMENTS-READINESS.md  |  41 +-
+ tests/skills/test_zst_gate4_prototype.py           | 439 +++++++++++++++++++++
+ ...er-mile-zst-gate4-multi-format-gate1-swarm.yaml | 119 ++++++
+ 37 files changed, 4008 insertions(+), 40 deletions(-)
+8ba4f83 feat(acquisition): complete ZST Gate 4 planning and multi-format intake
+ README.md                                          |   3 +-
+ ROADMAP.md                                         |  19 +-
+ .../r17-gate1-candidate-packets-20260516.md        | 160 ++++++++++
+ acquisition-packs/zst/pack.yaml                    |   9 +-
+ acquisition-packs/zst/parser-notes.md              | 321 ++++++++++++++++++++
+ ...gate4-and-multi-format-gate1-intake-20260516.md |  73 +++++
+ plans/master-plan.md                               |   6 +-
+ registry/format-registry.yaml                      |  13 +-
+ .../governance/r17-adversarial-review-20260516.md  | 168 +++++++++++
+ .../r17-no-scope-drift-report-20260516.md          |  46 +++
+ ...ight-r16-closure-and-lane-ownership-20260515.md |  91 ++++++
+ ...4-decision-and-pack-registry-update-20260515.md |  66 +++++
+ ...lti-format-gate1-intake-and-scoring-20260516.md | 326 +++++++++++++++++++++
+ .../r17-odf-family-acceleration-plan-20260516.md   | 136 +++++++++
+ ...roadmap-memory-normalization-report-20260516.md |  57 ++++
+ .../r17-zst-gate4-scope-definition-20260515.md     | 115 ++++++++
+ .../testing/r17-validation-command-log-20260516.md |  92 ++++++
+ ...re-verification-and-evidence-repair-20260515.md |  89 ++++++
+ ...-zst-gate4-independent-verification-20260515.md | 113 +++++++
+ taskcards/FODP-FODG-GATE1-BATCH.md                 |  65 ++++
+ taskcards/ORA-GNUMERIC-ABW-GATE1-SCORING-IV.md     |  67 +++++
+ taskcards/R17-MULTI-FORMAT-GATE1-INTAKE.md         |   5 +-
+ .../ZST-R17-GATE4-PARSER-PROTOTYPE-PLANNING.md     |   5 +-
+ taskcards/ZST-R18-GATE5-REQUIREMENTS-READINESS.md  |  76 +++++
+ ...ure-zst-gate4-and-multi-format-gate1-swarm.yaml |  92 ++++++
+ 25 files changed, 2197 insertions(+), 16 deletions(-)
+9feea07 feat(acquisition): complete ZST Gate 3 sample corpus (R16)
+ README.md                                          |   4 +-
+ ROADMAP.md                                         |  21 +-
+ ...i-format-intake-and-next-candidates-20260515.md | 163 +++++++++
+ acquisition-packs/zst/pack.yaml                    |  18 +-
+ ...3-zst-r16-gate3b-corpus-acquisition-20260515.md |  72 ++++
+ plans/master-plan.md                               |   8 +-
+ registry/format-registry.yaml                      |  29 +-
+ .../adversarial/r16-adversarial-review-20260515.md |  78 ++++
+ .../r16-no-scope-drift-report-20260515.md          |  59 +++
+ ...ght-r15a-closure-and-lane-ownership-20260515.md |  53 +++
+ ...zst-gate3-delegated-approval-report-20260515.md |  70 ++++
+ ...-pack-registry-gate3b-update-report-20260515.md |  56 +++
+ ...ple-license-provenance-revalidation-20260515.md |  69 ++++
+ ...i-format-intake-and-next-candidates-20260515.md |  81 +++++
+ ...pendocument-status-and-next-actions-20260515.md | 104 ++++++
+ ...roadmap-memory-normalization-report-20260515.md |  43 +++
+ ...zst-sample-corpus-validation-report-20260515.md | 115 ++++++
+ ...15a-closure-verification-and-repair-20260515.md |  31 ++
+ ...-zst-gate3-independent-verification-20260515.md | 133 +++++++
+ samples/by-format/zst/_corpus-manifest.yaml        | 165 +++++++++
+ samples/by-format/zst/_provenance.yaml             | 179 +++++++++
+ samples/by-format/zst/invalid/off0.bin.zst         | Bin 0 -> 17 bytes
+ .../by-format/zst/invalid/truncated_huff_state.zst | Bin 0 -> 19 bytes
+ .../by-format/zst/invalid/zeroSeq_extraneous.zst   | Bin 0 -> 27 bytes
+ .../source-materials/generation-scripts/README.md  |  28 ++
+ .../generation-scripts/generate_synthetic_zst.py   | 100 +++++
+ samples/by-format/zst/valid/block-128k.zst         | Bin 0 -> 131081 bytes
+ samples/by-format/zst/valid/dict-compressed.zst    | Bin 0 -> 74 bytes
+ samples/by-format/zst/valid/empty-block.zst        | Bin 0 -> 11 bytes
+ samples/by-format/zst/valid/minimal-synthetic.zst  | Bin 0 -> 10 bytes
+ samples/by-format/zst/valid/random-data.zst        | Bin 0 -> 276 bytes
+ samples/by-format/zst/valid/rle-first-block.zst    | Bin 0 -> 45 bytes
+ samples/by-format/zst/valid/text-compressed.zst    | Bin 0 -> 272 bytes
+ samples/by-format/zst/valid/zeroSeq_2B.zst         | Bin 0 -> 25 bytes
+ taskcards/R17-MULTI-FORMAT-GATE1-INTAKE.md         |  51 +++
+ taskcards/ZST-GATE3-IV.md                          |  13 +-
+ .../ZST-R16-GATE3B-SAMPLE-CORPUS-ACQUISITION.md    |  14 +-
+ .../ZST-R17-GATE4-PARSER-PROTOTYPE-PLANNING.md     |  60 +++
+ tests/skills/test_zst_gate3a_boundary.py           |  62 +++-
+ tests/skills/test_zst_gate3b_sample_corpus.py      | 403 +++++++++++++++++++++
+ ...quisition-iv-and-multi-format-intake-swarm.yaml | 135 +++++++
+ 41 files changed, 2378 insertions(+), 39 deletions(-)
+3a30082 feat(acquisition): identify ZST Gate 3 sample sources
+ README.md                                          |   2 +-
+ acquisition-packs/zst/pack.yaml                    |   9 +-
+ acquisition-packs/zst/sample-sources.md            |  97 +++++++++
+ ...gate3a-sample-source-identification-20260515.md |  59 +++++
+ plans/master-plan.md                               |   6 +-
+ registry/format-registry.yaml                      |  18 +-
+ .../governance/r15a-adversarial-review-20260515.md | 198 +++++++++++++++++
+ ...gate3-semantics-and-boundary-report-20260515.md |  59 +++++
+ .../r15a-no-scope-drift-report-20260515.md         |  55 +++++
+ .../r15a-preflight-and-lane-ownership-20260515.md  |  50 +++++
+ ...gistry-and-pack-state-update-report-20260515.md |  51 +++++
+ .../r15a-taskcard-normalization-report-20260515.md |  46 ++++
+ ...ple-source-license-provenance-audit-20260515.md | 147 +++++++++++++
+ ...t-candidate-source-discovery-report-20260515.md | 132 ++++++++++++
+ reports/samples/zst-corpus-design-plan-20260515.md |  88 ++++++++
+ .../r15a-validation-command-log-20260515.md        |  57 +++++
+ taskcards/ZST-GATE3-IV.md                          |  49 +++++
+ taskcards/ZST-R15-GATE3-SAMPLE-SOURCES.md          |  44 ++--
+ .../ZST-R16-GATE3B-SAMPLE-CORPUS-ACQUISITION.md    |  66 ++++++
+ tests/skills/test_zst_gate3a_boundary.py           | 237 +++++++++++++++++++++
+ ...-gate3a-sample-source-identification-swarm.yaml | 112 ++++++++++
+ 21 files changed, 1551 insertions(+), 31 deletions(-)
+1380c5a fix(contracts): set emergency_blocker_bundle for R14C pre-existing untracked files
+ .../contracts/r14c-zst-gate2-closure-repair-and-iv-swarm.yaml         | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+db4bdd3 chore(acquisition): verify ZST Gate 2 closure evidence
+ .../zst/spec-cache-manifest-record.md              | 119 +++++++++++++++++++++
+ memory/31-zst-r14-gate2-spec-retrieval-20260515.md |  19 +++-
+ .../governance/r14c-adversarial-review-20260515.md |  44 ++++++++
+ .../r14c-commit-repair-report-20260515.md          |  60 +++++++++++
+ ...ed-iv-taskcard-normalization-report-20260515.md |  46 ++++++++
+ ...l-spec-cache-evidence-policy-report-20260515.md |  61 +++++++++++
+ .../r14c-no-scope-drift-report-20260515.md         |  47 ++++++++
+ ...ght-and-commit-contradiction-report-20260515.md |  83 ++++++++++++++
+ .../r14c-validation-command-log-20260515.md        |  68 ++++++++++++
+ ...idence-contradiction-classification-20260515.md |  68 ++++++++++++
+ ...-zst-gate2-independent-verification-20260515.md |  80 ++++++++++++++
+ taskcards/ZST-GATE2-IV.md                          |  38 ++++---
+ ...r14c-zst-gate2-closure-repair-and-iv-swarm.yaml | 115 ++++++++++++++++++++
+ 13 files changed, 832 insertions(+), 16 deletions(-)
+2e24110 feat(acquisition): complete ZST Gate 2 spec retrieval
+ .claude/commands/_readme.md                        |   3 +-
+ README.md                                          |   4 +-
+ .../zst-gate1-decision-packet-20260515.md          |   6 +
+ acquisition-packs/zst/legal-notes.md               |  78 +++++++---
+ acquisition-packs/zst/pack.yaml                    |  31 ++--
+ acquisition-packs/zst/spec-evidence.md             | 101 +++++++++++++
+ ...ction-governance-and-r13b-zst-audit-20260515.md |  23 +--
+ memory/31-zst-r14-gate2-spec-retrieval-20260515.md |  69 +++++++++
+ plans/master-plan.md                               |   6 +-
+ registry/format-registry.yaml                      |  36 ++++-
+ .../governance/r14-adversarial-review-20260515.md  |  44 ++++++
+ ...legated-authorization-normalization-20260515.md |  78 ++++++++++
+ .../r14-no-scope-drift-report-20260515.md          |  62 ++++++++
+ .../r14-preflight-and-lane-ownership-20260515.md   |  84 +++++++++++
+ ...zst-gate2-decision-execution-report-20260515.md |  97 ++++++++++++
+ .../zst-gate2-legal-ipr-errata-report-20260515.md  | 145 ++++++++++++++++++
+ ...rd-and-roadmap-normalization-report-20260515.md |  61 ++++++++
+ reports/specs/zst-source-authority-map-20260515.md | 135 +++++++++++++++++
+ .../zst-spec-cache-retrieval-report-20260515.md    | 130 ++++++++++++++++
+ .../zst-spec-cache-validation-report-20260515.md   |  79 ++++++++++
+ .../testing/r14-validation-command-log-20260515.md |  51 +++++++
+ ...b-baseline-independent-verification-20260515.md |  97 ++++++++++++
+ taskcards/ZST-GATE1-DECISION-PACKET.md             |   8 +-
+ taskcards/ZST-GATE2-IV.md                          |  40 +++++
+ taskcards/ZST-R14-SPEC-RETRIEVAL.md                |  59 +++++---
+ taskcards/ZST-R15-GATE3-SAMPLE-SOURCES.md          |  42 ++++++
+ tests/skills/test_zst_spec_cache_gate2.py          | 166 +++++++++++++++++++++
+ .../r14-zst-spec-retrieval-and-gate2-swarm.yaml    | 112 ++++++++++++++
+ 28 files changed, 1767 insertions(+), 80 deletions(-)
+9b4e624 feat(acquisition): record delegated ZST Gate 1 audit result
+ AGENTS.md                                          |   4 +-
+ GOVERNANCE.md                                      |  11 +-
+ README.md                                          |   3 +-
+ acquisition-packs/zst/legal-notes.md               |  80 +++++++++++
+ acquisition-packs/zst/pack.yaml                    | 105 +++++++++++++++
+ acquisition-packs/zst/product-strategy-notes.md    |  83 ++++++++++++
+ acquisition-packs/zst/support-matrix.md            |  48 +++++++
+ docs/acquisition-workflow.md                       |   6 +-
+ docs/gates.md                                      |   5 +-
+ ...ction-governance-and-r13b-zst-audit-20260515.md |  83 ++++++++++++
+ plans/master-plan.md                               |   4 +-
+ registry/format-registry.yaml                      | 108 +++++++++++++++
+ .../zst-aspose-support-matrix-audit-20260515.md    | 142 ++++++++++++++++++++
+ ...gal-and-public-spec-readiness-audit-20260515.md | 147 +++++++++++++++++++++
+ .../governance/r13b-adversarial-review-20260515.md |  71 ++++++++++
+ ...r13b-authority-normalization-report-20260515.md |  85 ++++++++++++
+ ...man-action-governance-normalization-20260515.md |  92 +++++++++++++
+ ...elegated-zst-gate1-option-selection-20260515.md |  91 +++++++++++++
+ .../r13b-no-scope-drift-report-20260515.md         |  82 ++++++++++++
+ ...ht-current-state-and-lane-ownership-20260515.md | 108 +++++++++++++++
+ ...zst-gate1-decision-execution-report-20260515.md |  86 ++++++++++++
+ ...taskcard-state-normalization-report-20260515.md |  71 ++++++++++
+ ...st-product-strategy-alignment-audit-20260515.md | 128 ++++++++++++++++++
+ .../r13b-r13-evidence-acceptance-check-20260515.md |  78 +++++++++++
+ taskcards/ZST-GATE1-DECISION-PACKET.md             |  74 +++++------
+ taskcards/ZST-R14-SPEC-RETRIEVAL.md                |  40 ++++++
+ ...legated-zst-gate1-real-support-audit-swarm.yaml | 109 +++++++++++++++
+ 27 files changed, 1897 insertions(+), 47 deletions(-)
+6e78a28 chore(memory): update memory/29 with R13 bundle validation result
+ ...2-closure-and-r13a-zst-gate1-packet-20260515.md | 30 +++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 4 deletions(-)
+887cedd chore(acquisition): prepare ZST Gate 1 packet
+ .../zst-gate1-decision-packet-20260515.md          | 129 +++++++++----
+ .../governance/r13-adversarial-review-20260515.md  |  90 +++++++++
+ .../r13-authority-normalization-report-20260515.md |  94 +++++++++
+ .../r13-no-scope-drift-report-20260515.md          |  94 +++++++++
+ .../r13-preflight-and-lane-ownership-20260515.md   |  62 ++++++
+ ...isition-pack-standardization-repair-20260515.md |  44 +++++
+ ...e-fallback-and-ranking-preservation-20260515.md | 170 +++++++++++++++++
+ ...13-taskcard-state-management-report-20260515.md |  81 ++++++++
+ ...-gate1-acquisition-graph-simulation-20260515.md | 211 +++++++++++++++++++++
+ .../r13-r12-baseline-verification-20260515.md      |  78 ++++++++
+ .../r13-zst-support-matrix-gate1-packet-swarm.yaml | 109 +++++++++++
+ 11 files changed, 1122 insertions(+), 40 deletions(-)
+c48ea1e chore(memory): update memory/29 with R13A bundle validation result
+ memory/29-r12-closure-and-r13a-zst-gate1-packet-20260515.md | 5 +++++
+ 1 file changed, 5 insertions(+)
+d9804da chore(contracts): set emergency_blocker_bundle for pre-existing untracked files
+ .../contracts/r13a-r12-closure-and-zst-gate1-packet-swarm.yaml        | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+ebb5288 chore(acquisition): close R12 hygiene and prepare ZST Gate 1 packet
+ README.md                                          |  22 +-
+ ROADMAP.md                                         |  25 +--
+ .../zst-gate1-decision-packet-20260515.md          | 228 +++++++++++++++++++++
+ acquisition-packs/_template/pack.yaml              |   9 +
+ ...2-closure-and-r13a-zst-gate1-packet-20260515.md |  74 +++++++
+ plans/master-plan.md                               |   6 +-
+ .../governance/r13a-adversarial-review-20260515.md | 175 ++++++++++++++++
+ ...r13a-authority-normalization-report-20260515.md |  80 ++++++++
+ .../r13a-no-scope-drift-report-20260515.md         |  82 ++++++++
+ ...preflight-and-authority-read-report-20260515.md |  84 ++++++++
+ ...ack-template-standardization-repair-20260515.md |  68 ++++++
+ .../planning/r13a-r14-forward-roadmap-20260515.md  | 137 +++++++++++++
+ ...3a-taskcard-state-management-report-20260515.md |  47 +++++
+ .../zst-gate1-decision-packet-report-20260515.md   |  48 +++++
+ ...zst-support-matrix-audit-simulation-20260515.md | 163 +++++++++++++++
+ ...a-full-suite-timeout-or-pass-report-20260515.md |  91 ++++++++
+ ...losure-contradiction-reconciliation-20260515.md | 173 ++++++++++++++++
+ taskcards/R12-CLOSURE-VERIFICATION.md              |  40 ++++
+ taskcards/R13A-AUTHORITY-NORMALIZATION.md          |  55 +++++
+ taskcards/ZST-GATE1-DECISION-PACKET.md             |  61 ++++++
+ ...13a-r12-closure-and-zst-gate1-packet-swarm.yaml |  97 +++++++++
+ 21 files changed, 1739 insertions(+), 26 deletions(-)

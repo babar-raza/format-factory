@@ -1,0 +1,18 @@
+R19 COMMIT DETAILS
+Source: git show 2dcd7f8
+
+Commit: 2dcd7f869845e9c21b3de88f9776cdf9b989b74a
+Author: Babar Raza <babar.raza@aspose.com>
+Date:   Sat May 16 13:56:52 2026 +0500
+Message: feat(acquisition): complete R19 high-throughput acquisition train
+         (ZST G4-G7, FODP/FODG/Gnumeric/ABW G2-3, ORA deferred)
+
+Key stat:
+- 38 files changed
+- Acquisition packs: abw, fodg, fodp, gnumeric, ora, zst (gates 6-7 plans)
+- Registry: format-registry.yaml (+225 lines, -4 deletions = 14 gate transitions)
+- Planning reports: 12 new r19-*.md files
+- Samples: 3 each for FODP, FODG, Gnumeric, ABW
+- Test files: test_zst_gate4_prototype.py, test_zst_gate6_oracle.py, test_zst_gate7_security_fuzz.py
+- Evidence contract: tools/evidence/contracts/r19-high-throughput-acquisition-train-swarm.yaml
+- Taskcards: ZST-IMPL-001, FODP/FODG/Gnumeric/ABW-GATE4-001, EVIDENCE-HYGIENE-ENFORCEMENT

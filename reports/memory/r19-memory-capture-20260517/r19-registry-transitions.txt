@@ -1,0 +1,29 @@
+R19 REGISTRY GATE TRANSITIONS (14 total)
+Source: registry/format-registry.yaml diff in commit 2dcd7f8
+
+ZST (4 transitions):
+  gate_4: prototype_complete → passed (delegated approval)
+  gate_5: not_started → waived_not_applicable (G-NORM-004)
+  gate_6: not_started → passed (oracle verified)
+  gate_7: not_started → passed (fuzz passed)
+
+FODP (2 transitions):
+  gate_2: not_started → passed (fast-path ODF 1.3)
+  gate_3: not_started → passed (3 synthetic samples)
+
+FODG (2 transitions):
+  gate_2: not_started → passed (fast-path ODF 1.3)
+  gate_3: not_started → passed (3 synthetic samples)
+
+Gnumeric (2 transitions):
+  gate_2: not_started → passed (XSD v10 spec retrieval)
+  gate_3: not_started → passed (3 synthetic samples)
+
+ABW (2 transitions):
+  gate_2: not_started → passed (AWML DTD secondary source)
+  gate_3: not_started → passed (3 synthetic samples)
+
+ORA (1 transition):
+  gate_1: scored_pending_human_approval → deferred_borderline (6.8 < 7.0)
+
+FODS/FODT: no registry changes in R19 (Gate 11 plan only)
