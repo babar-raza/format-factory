@@ -1,0 +1,223 @@
+// FormatFactory.Fods -- Commercial .NET FODS → CSV Exporter (G11-E Prototype)
+// DEC-033 Option B: .NET Commercial Only
+// Gate 11 status: g11e_prototype_complete — G11-G NOT approved
+// Sprint: FORMAT-FACTORY-R22-FULL-THROTTLE-RELEASE-CANDIDATE-AND-GATE11-PROTOTYPE-TRAIN-001
+//
+// PROTOTYPE STATUS: design_complete_in_progress
+// This is a G11-E conversion/export prototype only.
+// commercial_product_ready: false
+// Do NOT package or publish.
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+namespace FormatFactory.Fods;
+
+/// <summary>
+/// G11-E Prototype: Exports a FODS spreadsheet to CSV (comma-separated values).
+///
+/// Scope:
+///   - Exports the FIRST sheet of a FODS document.
+///   - Each row becomes one CSV line.
+///   - Cell values are taken from text:p content (display/string value).
+///   - Numeric values that have no text:p are exported as empty.
+///   - Values are properly escaped (commas, quotes, newlines).
+///   - Output is UTF-8, LF line endings.
+///
+/// Limitations (prototype):
+///   - Only first sheet exported. Multi-sheet export is future work.
+///   - table:number-columns-repeated columns are NOT expanded (counted once).
+///   - Covered/merged cells are output as empty (IsCovered=true → empty field).
+///   - Formula results not available without evaluation engine.
+///   - No XLSX output yet (future G11-E hardening sprint).
+///
+/// ODF basis:
+///   §9.4.2 table:table, §9.4.4 table:table-row, §9.4.5 table:table-cell, §6.1.1 text:p
+///
+/// Gate 11 status: g11e_prototype_complete — NOT release-ready. G11-G not approved.
+/// commercial_product_ready: false
+/// </summary>
+public static class FodsCsvExporter
+{
+    // -------------------------------------------------------------------------
+    // Public API
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Load <paramref name="fodsPath"/> and export the first sheet to CSV at <paramref name="csvPath"/>.
+    /// </summary>
+    /// <param name="fodsPath">Path to the .fods source file.</param>
+    /// <param name="csvPath">Path to write the output .csv file.</param>
+    /// <param name="maxFileSizeBytes">File-size guard for the FODS input (default 50 MB).</param>
+    /// <returns>Export result with row/column counts and status.</returns>
+    /// <exception cref="FodsCsvExportException">On file-not-found, parse failure, or I/O error.</exception>
+    public static FodsCsvExportResult ExportFirstSheetToCsv(
+        string fodsPath,
+        string csvPath,
+        long maxFileSizeBytes = 50L * 1024 * 1024)
+    {
+        if (string.IsNullOrWhiteSpace(fodsPath))
+            throw new FodsCsvExportException("fodsPath must not be null or empty.");
+        if (string.IsNullOrWhiteSpace(csvPath))
+            throw new FodsCsvExportException("csvPath must not be null or empty.");
+
+        FodsDocument doc;
+        try
+        {
+            doc = FodsDocument.Load(fodsPath, maxFileSizeBytes);
+        }
+        catch (FodsDocumentException ex)
+        {
+            throw new FodsCsvExportException($"Failed to load FODS: {ex.Message}", ex);
+        }
+
+        var sheets = doc.Sheets;
+        if (sheets.Count == 0)
+        {
+            // Write empty CSV
+            var dir = Path.GetDirectoryName(csvPath);
+            if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+            File.WriteAllText(csvPath, string.Empty, Encoding.UTF8);
+            return new FodsCsvExportResult
+            {
+                SourcePath   = fodsPath,
+                OutputPath   = csvPath,
+                SheetName    = string.Empty,
+                RowsExported = 0,
+                MaxColumns   = 0,
+                Status       = "exported_empty_no_sheets",
+                Warnings     = { "Source FODS has no sheets." },
+            };
+        }
+
+        return ExportSheetToCsv(sheets[0], fodsPath, csvPath);
+    }
+
+    /// <summary>
+    /// Export a single <see cref="FodsSheet"/> to CSV at <paramref name="csvPath"/>.
+    /// </summary>
+    public static FodsCsvExportResult ExportSheetToCsv(
+        FodsSheet sheet,
+        string sourcePath,
+        string csvPath)
+    {
+        ArgumentNullException.ThrowIfNull(sheet);
+        if (string.IsNullOrWhiteSpace(csvPath))
+            throw new FodsCsvExportException("csvPath must not be null or empty.");
+
+        var dir = Path.GetDirectoryName(csvPath);
+        if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+
+        var result = new FodsCsvExportResult
+        {
+            SourcePath = sourcePath ?? string.Empty,
+            OutputPath = csvPath,
+            SheetName  = sheet.Name,
+            Status     = "unknown",
+        };
+
+        var sb = new StringBuilder();
+        var rows = sheet.Rows;
+        int maxCols = 0;
+
+        foreach (var row in rows)
+        {
+            var cells = row.Cells;
+            if (cells.Count > maxCols) maxCols = cells.Count;
+
+            var fields = new List<string>(cells.Count);
+            foreach (var cell in cells)
+            {
+                // Covered cells (merged) contribute an empty field
+                var rawValue = cell.IsCovered ? null : cell.Value;
+                fields.Add(EscapeCsvField(rawValue));
+            }
+            sb.AppendLine(string.Join(",", fields));
+        }
+
+        result.RowsExported = rows.Count;
+        result.MaxColumns   = maxCols;
+
+        try
+        {
+            // UTF-8 without BOM, LF line endings (normalize \r\n → \n)
+            var content = sb.ToString().Replace("\r\n", "\n");
+            File.WriteAllText(csvPath, content, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            result.Status = "exported";
+        }
+        catch (IOException ex)
+        {
+            throw new FodsCsvExportException($"Failed to write CSV to '{csvPath}': {ex.Message}", ex);
+        }
+
+        return result;
+    }
+
+    // -------------------------------------------------------------------------
+    // CSV escaping (RFC 4180 compatible)
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Escape a single CSV field value per RFC 4180:
+    /// - null/empty → empty string (no quotes)
+    /// - Contains comma, double-quote, or newline → wrap in double-quotes
+    /// - Embedded double-quotes → doubled ("")
+    /// </summary>
+    public static string EscapeCsvField(string? value)
+    {
+        if (value is null) return string.Empty;
+        if (value.Length == 0) return string.Empty;
+
+        bool needsQuoting = value.Contains(',') ||
+                            value.Contains('"') ||
+                            value.Contains('\n') ||
+                            value.Contains('\r');
+
+        if (!needsQuoting) return value;
+
+        // Escape embedded double-quotes by doubling them
+        return "\"" + value.Replace("\"", "\"\"") + "\"";
+    }
+}
+
+// -------------------------------------------------------------------------
+// Result type
+// -------------------------------------------------------------------------
+
+/// <summary>Result returned by <see cref="FodsCsvExporter.ExportFirstSheetToCsv"/>.</summary>
+public sealed class FodsCsvExportResult
+{
+    /// <summary>Path to the FODS source file.</summary>
+    public string SourcePath { get; init; } = string.Empty;
+
+    /// <summary>Path to the written CSV file.</summary>
+    public string OutputPath { get; init; } = string.Empty;
+
+    /// <summary>Name of the sheet that was exported.</summary>
+    public string SheetName { get; init; } = string.Empty;
+
+    /// <summary>Number of rows written to CSV.</summary>
+    public int RowsExported { get; set; }
+
+    /// <summary>Maximum number of columns across all rows.</summary>
+    public int MaxColumns { get; set; }
+
+    /// <summary>Export status: "exported", "exported_empty_no_sheets", or "unknown".</summary>
+    public string Status { get; set; } = "unknown";
+
+    /// <summary>Non-fatal warnings encountered during export.</summary>
+    public List<string> Warnings { get; } = new();
+}
+
+// -------------------------------------------------------------------------
+// Exception type
+// -------------------------------------------------------------------------
+
+/// <summary>Thrown by <see cref="FodsCsvExporter"/> when export cannot proceed.</summary>
+public sealed class FodsCsvExportException : Exception
+{
+    public FodsCsvExportException(string message) : base(message) { }
+    public FodsCsvExportException(string message, Exception inner) : base(message, inner) { }
+}

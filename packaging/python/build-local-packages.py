@@ -102,15 +102,22 @@ def build_package(module: str, package_name: str, version: str = "0.1.0.dev0") -
     dist_dir = pkg_dir / "dist"
     dist_dir.mkdir(exist_ok=True)
 
+    # Inject user site-packages so build/hatchling are found even via system Python
+    import site as _site
+    user_sp = _site.getusersitepackages()
+    env = os.environ.copy()
+    existing_pypath = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = (user_sp + os.pathsep + existing_pypath).rstrip(os.pathsep)
+
     try:
         proc = subprocess.run(
             [sys.executable, "-m", "build", "--wheel", "--sdist",
              "--outdir", str(dist_dir), str(pkg_dir)],
-            capture_output=True, text=True, timeout=120,
+            capture_output=True, text=True, timeout=180, env=env,
         )
         if proc.returncode == 0:
             result["status"] = "built"
-            for artifact in dist_dir.iterdir():
+            for artifact in sorted(dist_dir.iterdir()):
                 result["artifacts"].append({
                     "file": artifact.name,
                     "size_bytes": artifact.stat().st_size,
