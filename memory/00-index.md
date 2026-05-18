@@ -92,7 +92,7 @@ Then it should read only the memory files relevant to the task.
 
 | Task type | Additional required reading |
 |-----------|----------------------------|
-| AI/LLM/embedding strategy | memory/42-ai-llm-embedding-platform-plan-hardening-20260518.md (START HERE), docs/ai/ai-platform-operating-model.md, plans/master-plan.md Section 39, docs/ai/ai-risk-register.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
+| AI/LLM/embedding strategy | memory/43-ai-platform-phase1-control-plane-foundation-20260518.md (LATEST), memory/42-ai-llm-embedding-platform-plan-hardening-20260518.md, docs/ai/ai-platform-operating-model.md, plans/master-plan.md Section 39, docs/ai/ai-risk-register.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |
 | State management and no-drift work | memory/15-ai-modules-and-state-management-architecture-20260509.md, memory/12-planning-and-agent-handoff-methodology.md, docs/current-state-and-evidence-authority.md |
 | Agent workflow design | memory/15-ai-modules-and-state-management-architecture-20260509.md, memory/12-planning-and-agent-handoff-methodology.md, docs/agent-execution-handoff-standard.md |
 | Playbook replay and review queue design | memory/15-ai-modules-and-state-management-architecture-20260509.md, docs/playbook-layer.md, memory/14-ai-supervision-and-three-pilot-direction-20260509.md |

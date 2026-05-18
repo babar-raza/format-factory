@@ -4,7 +4,7 @@
 Implement the Phase 1 AI platform control plane foundation: model discovery, role-based routing, task contracts, prompt registry, schema registry, telemetry (local JSONL spool), and runtime guard.
 
 ## Status
-`plan_hardened` — Implementation not yet authorized. Plan must be reviewed and accepted first.
+`phase1_implemented` — Phase 1 control plane foundation implemented and tested. Sprint: FORMAT-FACTORY-AI-PLATFORM-PHASE1-CONTROL-PLANE-FOUNDATION-001 (2026-05-18).
 
 ## Prerequisites
 - AI platform plan reviewed and accepted by human authority

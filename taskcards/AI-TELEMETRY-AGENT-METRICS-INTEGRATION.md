@@ -4,7 +4,7 @@
 Implement AI telemetry: local JSONL spool with Agent Metrics-aligned schema (Phase 1), and Agent Metrics poster integration (Phase 5).
 
 ## Status
-`plan_hardened` — Implementation not yet authorized.
+`phase1_spool_implemented` — Local JSONL spool with Agent Metrics-aligned schema implemented. No external posting in Phase 1. Sprint: FORMAT-FACTORY-AI-PLATFORM-PHASE1-CONTROL-PLANE-FOUNDATION-001 (2026-05-18).
 
 ## Prerequisites
 - AI-PLATFORM-FOUNDATION-PLAN Phase 1 control plane operational

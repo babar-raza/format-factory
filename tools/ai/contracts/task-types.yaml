@@ -1,0 +1,40 @@
+---
+# AI Task Type Definitions
+
+task_types:
+  model_discovery:
+    description: "Discover available models at endpoint"
+    role: structured_extraction
+    max_retries: 1
+    timeout_seconds: 30
+
+  capability_probe:
+    description: "Probe model capabilities with harmless request"
+    role: structured_extraction
+    max_retries: 1
+    timeout_seconds: 30
+
+  spec_extraction:
+    description: "Extract requirements from format specifications"
+    role: structured_extraction
+    max_retries: 2
+    timeout_seconds: 60
+    require_citation: true
+
+  security_review:
+    description: "Security analysis of format parsers"
+    role: security_analysis
+    max_retries: 1
+    timeout_seconds: 60
+
+  test_case_generation:
+    description: "Generate test cases from specifications"
+    role: test_generation
+    max_retries: 2
+    timeout_seconds: 60
+
+  evidence_audit:
+    description: "Audit evidence bundles for completeness"
+    role: evidence_review
+    max_retries: 1
+    timeout_seconds: 30

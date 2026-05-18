@@ -1,0 +1,35 @@
+---
+# AI Artifact Authority Lifecycle — 12-state machine
+# No skip from ai_draft to authoritative_after_gate.
+
+states:
+  - ai_draft
+  - schema_validated
+  - source_cited
+  - source_verified
+  - contradiction_checked
+  - evaluator_passed
+  - accepted_for_planning
+  - accepted_for_tests
+  - accepted_for_source_requirements
+  - authoritative_after_gate
+  - rejected
+  - superseded
+
+terminal_states:
+  - rejected
+  - superseded
+
+transitions:
+  ai_draft: [schema_validated, rejected]
+  schema_validated: [source_cited, rejected]
+  source_cited: [source_verified, rejected]
+  source_verified: [contradiction_checked, rejected]
+  contradiction_checked: [evaluator_passed, rejected]
+  evaluator_passed: [accepted_for_planning, rejected]
+  accepted_for_planning: [accepted_for_tests, rejected, superseded]
+  accepted_for_tests: [accepted_for_source_requirements, rejected, superseded]
+  accepted_for_source_requirements: [authoritative_after_gate, rejected, superseded]
+  authoritative_after_gate: [superseded]
+  rejected: []
+  superseded: []

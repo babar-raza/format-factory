@@ -1,0 +1,29 @@
+---
+# Forbidden AI imports in product source paths
+# Runtime guard scans src/python/ and src/net/ for these patterns.
+
+protected_paths:
+  - "src/python/**"
+  - "src/net/**"
+
+forbidden_imports:
+  - "tools.ai"
+  - "tools/ai"
+  - "litellm"
+  - "lancedb"
+  - "llama_index"
+  - "langchain"
+  - "openai"
+  - "anthropic"
+  - "qdrant"
+  - "chromadb"
+  - "ollama"
+
+forbidden_env_references:
+  - "GPT_OSS_API_KEY"
+  - "GPT_OSS_ENDPOINT"
+  - "PROFESSIONALIZE_API_KEY"
+  - "PROFESSIONALIZE_BASE_URL"
+
+forbidden_url_references:
+  - "llm.professionalize.com"

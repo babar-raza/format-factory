@@ -1,6 +1,6 @@
 # Taskcard: AI-VALIDATION-GATES
 
-**Status:** not_started
+**Status:** phase1_foundation_implemented — Schema validation, authority lifecycle, runtime guard, and secret redaction implemented. Sprint: FORMAT-FACTORY-AI-PLATFORM-PHASE1-CONTROL-PLANE-FOUNDATION-001 (2026-05-18).
 **Created:** 2026-05-13
 
 ## Purpose

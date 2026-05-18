@@ -1,0 +1,40 @@
+---
+# AI Role Definitions — role-based model routing policy
+# Models are routed to roles dynamically, never hardcoded.
+
+roles:
+  structured_extraction:
+    description: "Extract structured data from specifications"
+    priority: high
+    requires_chat: true
+
+  security_analysis:
+    description: "Analyze security properties of formats and code"
+    priority: high
+    requires_chat: true
+
+  test_generation:
+    description: "Generate test cases from specifications"
+    priority: medium
+    requires_chat: true
+
+  evidence_review:
+    description: "Review evidence artifacts for completeness"
+    priority: medium
+    requires_chat: true
+
+  summarization:
+    description: "Summarize documents and reports"
+    priority: low
+    requires_chat: true
+
+  embedding_retrieval:
+    description: "Generate embeddings for retrieval (Phase 3+)"
+    priority: deferred
+    requires_embedding: true
+
+  agentic_low_risk:
+    description: "Low-risk agentic tasks via Qwen2 (Phase 4+)"
+    priority: deferred
+    requires_chat: true
+    restricted_to: "qwen2_only"

@@ -1,0 +1,85 @@
+---
+# AI Telemetry Record Schema
+# Aligned with Agent Metrics fields.
+# Local JSONL is spool/replay/evidence only.
+
+record_fields:
+  - name: timestamp
+    type: datetime
+    required: true
+  - name: run_id
+    type: string
+    required: false
+  - name: sprint_id
+    type: string
+    required: false
+  - name: taskcard_id
+    type: string
+    required: false
+  - name: gate_id
+    type: string
+    required: false
+  - name: provider
+    type: string
+    required: true
+  - name: endpoint_identity
+    type: string
+    required: true
+    description: "Hostname only, no secrets"
+  - name: model
+    type: string
+    required: true
+  - name: role
+    type: string
+    required: true
+  - name: operation
+    type: string
+    required: true
+  - name: input_tokens
+    type: integer
+    required: false
+  - name: output_tokens
+    type: integer
+    required: false
+  - name: total_tokens
+    type: integer
+    required: false
+  - name: api_calls_count
+    type: integer
+    required: true
+  - name: status
+    type: string
+    enum: [success, error, blocked_missing_env, blocked_no_model, blocked_fail_closed]
+    required: true
+  - name: error_class_redacted
+    type: string
+    required: false
+  - name: prompt_hash
+    type: string
+    required: false
+  - name: input_artifact_hashes
+    type: list_string
+    required: false
+  - name: output_artifact_hashes
+    type: list_string
+    required: false
+  - name: model_fingerprint
+    type: string
+    required: false
+  - name: fallback_used
+    type: boolean
+    required: true
+  - name: evidence_path
+    type: string
+    required: false
+  - name: posted_to_agent_metrics
+    type: boolean
+    required: true
+    description: "Always false in Phase 1"
+
+spool_format: jsonl
+spool_path: ".local/ai/spool/"
+never_log:
+  - api_key_values
+  - raw_prompts_by_default
+  - raw_responses_by_default

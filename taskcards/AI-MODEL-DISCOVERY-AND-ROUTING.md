@@ -4,7 +4,7 @@
 Implement and validate dynamic model discovery and role-based routing at llm.professionalize.com. Ensure fail-closed behavior, capability probing, model fingerprinting, and fallback policy.
 
 ## Status
-`plan_hardened` — Implementation not yet authorized.
+`phase1_discovery_implemented` — Model discovery, capability probe, and role-based routing implemented in Phase 1. 7 models discovered live. Sprint: FORMAT-FACTORY-AI-PLATFORM-PHASE1-CONTROL-PLANE-FOUNDATION-001 (2026-05-18).
 
 ## Prerequisites
 - AI-PLATFORM-FOUNDATION-PLAN Phase 1 control plane operational
