@@ -1,7 +1,8 @@
 ---
 taskcard_id: EMB-001
 title: Embedding and Retrieval Architecture Design
-status: proposed_pending_human_approval
+status: superseded
+superseded_by: AI-EMBEDDING-VECTOR-STORE-FOUNDATION
 created: 2026-05-08
 sprint: memory-sprint-format-understanding-llm-strategy
 visibility: internal

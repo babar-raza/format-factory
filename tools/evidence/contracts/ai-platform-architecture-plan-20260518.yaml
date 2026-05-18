@@ -1,86 +1,106 @@
 ---
-contract_id: FORMAT-FACTORY-AI-PLATFORM-FINAL-PLAN-HEALING-AND-IMPLEMENTATION-READINESS-001
-sprint_id: FORMAT-FACTORY-AI-PLATFORM-FINAL-PLAN-HEALING-AND-IMPLEMENTATION-READINESS-001
+contract_id: FORMAT-FACTORY-AI-PLATFORM-FINAL-DEEP-PLAN-HEALING-001
+sprint_id: FORMAT-FACTORY-AI-PLATFORM-FINAL-DEEP-PLAN-HEALING-001
 date: "2026-05-18"
-type: plan_healing_and_implementation_readiness
+type: plan_healing_deep_production_review
 status: complete
 verdict: AI_PLATFORM_PLAN_READY_FOR_IMPLEMENTATION_REVIEW
 
 description: >
-  Final AI platform architecture plan healing and implementation readiness.
-  Expanded risk register from 40 to 48. Created 10-report architecture package.
-  Normalized stale LLM-001/EMB-001 taskcards. Created healing taskcard.
-  Built implementation-readiness evidence. No AI implementation performed.
-  No endpoint calls. No vector DB created. No runtime source changed.
+  Deep production architecture review and final plan healing for the AI/LLM/Embedding
+  platform. Added 13 root causes, 17 rerun consistency breakers, preserve/redesign matrix,
+  17-component production architecture, control-plane contract model, model routing stress
+  analysis, retrieval/vector replay design, telemetry/Agent Metrics field mapping,
+  tradeoffs/limits, recovery model, and content-level validation. Risk register at 48.
+  LLM-001/EMB-001 frontmatter normalized. No AI implementation. No endpoint calls.
+  No vector DB. No runtime source changed.
 
 gates:
   gate_0_preflight:
     status: pass
-    evidence: reports/ai/ai-platform-final-plan-healing-20260518/preflight.md
-  gate_1_prior_bundle_audit:
+    evidence: reports/ai/ai-platform-final-deep-plan-healing-20260518/preflight.md
+  gate_1_current_plan_audit:
     status: pass
-    evidence: reports/ai/ai-platform-final-plan-healing-20260518/prior-bundle-audit.md
+    evidence: reports/ai/ai-platform-final-deep-plan-healing-20260518/current-plan-audit.md
   gate_2_live_artifact_inventory:
     status: pass
-    evidence: reports/ai/ai-platform-final-plan-healing-20260518/live-artifact-inventory.md
-  gate_3_architecture_package:
+    evidence: reports/ai/ai-platform-final-deep-plan-healing-20260518/live-artifact-inventory.md
+  gate_3_deep_production_review:
+    status: pass
+    evidence:
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/deep-production-architecture-review.md
+      - reports/ai/ai-platform-deep-review-20260518/symptoms-root-causes-structural-weaknesses.md
+      - reports/ai/ai-platform-deep-review-20260518/rerun-consistency-failure-analysis.md
+      - reports/ai/ai-platform-deep-review-20260518/preserve-vs-redesign-matrix.md
+  gate_4_report_package:
     status: pass
     report_count: 10
     directory: reports/ai/ai-platform-plan-20260518/
-  gate_4_risk_register_completion:
-    status: pass
-    evidence: reports/ai/ai-platform-final-plan-healing-20260518/risk-register-completion-report.md
-    risk_count: 48
-  gate_5_taskcard_normalization:
-    status: pass
-    evidence: reports/ai/ai-platform-final-plan-healing-20260518/taskcard-normalization-report.md
-    normalized:
-      - "LLM-001 → superseded (by AI-MODEL-DISCOVERY-AND-ROUTING)"
-      - "EMB-001 → superseded (by AI-EMBEDDING-VECTOR-STORE-FOUNDATION)"
-  gate_6_governance_memory_sync:
-    status: pass
-    evidence: reports/ai/ai-platform-final-plan-healing-20260518/governance-roadmap-memory-sync-report.md
-  gate_7_validation_and_recovery:
+  gate_5_production_solution:
     status: pass
     evidence:
-      - reports/ai/ai-platform-final-plan-healing-20260518/validation-matrix-review.md
-      - reports/ai/ai-platform-final-plan-healing-20260518/recovery-and-failure-handling.md
-  gate_8_content_validation:
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/production-solution-architecture.md
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/control-plane-contracts-and-state-model.md
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/model-routing-and-agentic-control-review.md
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/retrieval-vector-store-replay-design-review.md
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/telemetry-agent-metrics-design-review.md
+  gate_6_risk_and_tradeoffs:
     status: pass
-    evidence: reports/ai/ai-platform-final-plan-healing-20260518/validation-command-log.md
+    evidence:
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/risk-and-mitigation-deep-review.md
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/tradeoffs-and-limits.md
+    risk_count: 48
+  gate_7_taskcard_governance_sync:
+    status: pass
+    evidence: reports/ai/ai-platform-final-deep-plan-healing-20260518/taskcard-governance-memory-sync-report.md
+  gate_8_validation_and_recovery:
+    status: pass
+    evidence:
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/validation-command-log.md
+      - reports/ai/ai-platform-final-deep-plan-healing-20260518/recovery-and-failure-handling.md
+  gate_9_final_verdict:
+    status: pass
+    evidence: reports/ai/ai-platform-final-deep-plan-healing-20260518/final-verdict.md
 
 safety_verification:
   no_ai_implementation_code: true
   no_endpoint_calls: true
   no_vector_db_created: true
+  no_embeddings_created: true
   no_runtime_source_changed: true
+  no_src_python_changes: true
+  no_src_net_changes: true
+  no_package_release_changes: true
   only_planning_files_changed: true
   implementation_not_authorized: true
 
 new_files:
-  architecture_reports: 10
-  healing_reports: 8
-  evidence_contracts: 1
-  risk_register_additions: 8
-  healing_taskcard: 1
-  total_new: 28
+  deep_review_healing_reports: 15
+  deep_review_companion_reports: 4
+  total_new: 19
 
 modified_files:
-  risk_register: 1
-  taskcards_normalized: 2
-  master_plan: 1
-  memory: 1
-  total_modified: 5
+  plan_reports_updated: 2
+  taskcards_frontmatter_fixed: 2
+  taskcard_rewritten: 1
+  memory_updated: 1
+  evidence_contract: 1
+  total_modified: 7
 
-key_repairs:
-  - "Risk register expanded from 40 to 48 (RISK-AI-041 through RISK-AI-048)"
-  - "10-report architecture package created"
-  - "LLM-001 normalized to superseded"
-  - "EMB-001 normalized to superseded"
-  - "AI-PLATFORM-FINAL-PLAN-HEALING taskcard created and closed"
-  - "Validation matrix review with 7 layers mapped to 48 risks"
-  - "Recovery and failure handling plan with stop conditions"
-  - "Master plan Section 39.4 risk count updated to 48"
+key_deliverables:
+  - "13 root causes documented"
+  - "17 rerun consistency breakers with detection/prevention/evidence/regression"
+  - "15 preserve + 15 redesign items in matrix"
+  - "17 platform components fully specified"
+  - "Control-plane contract model with Pydantic field definitions"
+  - "Concrete Agent Metrics 17-field mapping with aggregation rules"
+  - "Artifact authority 12-state machine with transition prerequisites"
+  - "Model routing stress analysis (6 scenarios)"
+  - "Recovery and failure handling model"
+  - "Content-level validation (14 checks + 9 safety checks)"
+  - "LLM-001/EMB-001 frontmatter normalized to superseded"
+  - "Risk register verified at 48 risks"
+  - "Final verdict: AI_PLATFORM_PLAN_READY_FOR_IMPLEMENTATION_REVIEW"
 
-emergency_blocker_bundle: true
+emergency_blocker_bundle: false
 min_metadata_count: 10

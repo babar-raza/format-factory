@@ -1,7 +1,8 @@
 ---
 taskcard_id: LLM-001
 title: LLM Model Discovery and Endpoint Preflight for llm.professionalize.com
-status: proposed_pending_human_approval
+status: superseded
+superseded_by: AI-MODEL-DISCOVERY-AND-ROUTING
 created: 2026-05-08
 sprint: memory-sprint-format-understanding-llm-strategy
 visibility: internal

@@ -1,13 +1,14 @@
 # 42 — AI/LLM/Embedding Platform Plan Hardening (2026-05-18)
 
 **Sprint 1:** FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001 (commit 13ba55f)
-**Sprint 2:** FORMAT-FACTORY-AI-PLATFORM-FINAL-PLAN-HEALING-AND-IMPLEMENTATION-READINESS-001
+**Sprint 2:** FORMAT-FACTORY-AI-PLATFORM-FINAL-PLAN-HEALING-AND-IMPLEMENTATION-READINESS-001 (commit fcab643)
+**Sprint 3:** FORMAT-FACTORY-AI-PLATFORM-FINAL-DEEP-PLAN-HEALING-001
 **Date:** 2026-05-18
 **Type:** Plan hardening and memory synchronization only — no implementation performed.
 
 ## Summary
 
-The previous AI/LLM/Embedding plan was too immature for implementation. Two sprints on 2026-05-18 hardened the design into a production-grade, generic, segregated, reusable AI platform layer specification. 11 docs/ai/ files, 11 AI taskcards (10 plan_hardened + 1 healing), 48-item risk register, 10-report architecture package, LLM-001/EMB-001 normalized (superseded), governance updates, and master plan Section 39 created. Implementation not yet authorized.
+Three sprints on 2026-05-18 hardened the AI/LLM/Embedding platform plan from immature to production-ready. Sprint 3 added deep production architecture review: 13 root causes, 17 rerun consistency breakers, preserve/redesign matrix, 17-component production solution architecture, control-plane contract model, model routing stress analysis, retrieval/vector replay design, telemetry/Agent Metrics concrete field mapping, tradeoffs/limits, recovery model, and content-level validation. 11 docs/ai/ files, 17 AI taskcards, 48-risk register, 10-report architecture package, 15 deep review reports, 4 companion analysis reports. LLM-001/EMB-001 frontmatter normalized to superseded. Implementation not yet authorized.
 
 ## Corrected AI Platform Direction
 
@@ -43,7 +44,7 @@ The previous AI/LLM/Embedding plan was too immature for implementation. Two spri
 4. **Agent Metrics telemetry:** Canonical sink. Local JSONL is spool/replay/evidence only. Full policy: `docs/ai/ai-telemetry-and-agent-metrics-policy.md`.
 5. **Spec normalization mandatory:** AI consumes normalized artifacts only. See `docs/ai/ai-assisted-acquisition-pipeline.md`.
 6. **Test generation mandatory:** With full artifact lifecycle and reviewer gates. See taskcard AI-TEST-GENERATION-INTEGRATION.
-7. **Risk mitigation:** 40-item risk register with controls, validation tests, stop conditions. See `docs/ai/ai-risk-register.md`.
+7. **Risk mitigation:** 48-item risk register with controls, validation tests, stop conditions. See `docs/ai/ai-risk-register.md`.
 8. **Deferred features:** Formal review of 25 candidates with implement/defer/reject. See `docs/ai/deferred-ai-features-review.md`.
 9. **AI artifact authority lifecycle:** `ai_draft` → ... → `authoritative_after_gate`. No skip. See `docs/ai/ai-artifact-authority-lifecycle.md`.
 10. **Runtime AI-free guard:** Static analysis prevents AI imports in `src/`. See runtime guard in platform model.
@@ -108,6 +109,8 @@ Implementation requires:
 
 1. `docs/ai/ai-platform-operating-model.md` — start here
 2. `plans/master-plan.md` Section 39
-3. `docs/ai/ai-risk-register.md` — 40 risks with controls
+3. `docs/ai/ai-risk-register.md` — 48 risks with controls
 4. `docs/ai/deferred-ai-features-review.md` — what to build when
-5. Relevant taskcard for the specific phase being implemented
+5. `reports/ai/ai-platform-plan-20260518/final-execution-readiness-review.md` — implementation prerequisites
+6. `reports/ai/ai-platform-final-deep-plan-healing-20260518/` — deep production review (15 reports)
+7. Relevant taskcard for the specific phase being implemented

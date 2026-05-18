@@ -80,3 +80,47 @@ Every sprint that uses AI must include:
 - Contradiction detection stats
 - Artifact authority state summary
 - Risk control test results
+
+## 5. Concrete Test Matrix (25 Tests)
+
+| # | Test | What It Proves | Phase |
+|---|------|---------------|-------|
+| 1 | `test_no_runtime_ai_imports_python` | src/python/ has no AI imports | 1 |
+| 2 | `test_no_runtime_ai_imports_dotnet` | src/net/ has no AI package refs | 1 |
+| 3 | `test_direct_endpoint_blocked` | Gateway is only entry point | 1 |
+| 4 | `test_model_discovery_missing_models` | Empty /v1/models handled | 1 |
+| 5 | `test_role_routing_fails_closed` | No qualified model → error | 1 |
+| 6 | `test_fallback_model_recorded` | Telemetry captures fallback | 1 |
+| 7 | `test_schema_validation_rejects_malformed` | Bad output rejected | 1 |
+| 8 | `test_uncited_requirement_rejected` | No citations → rejected | 2 |
+| 9 | `test_unsupported_citation_rejected` | Bad citation → rejected | 2 |
+| 10 | `test_contradiction_detection` | Contradicts verified facts → flagged | 2 |
+| 11 | `test_vector_store_format_isolation` | Cross-format query blocked | 3 |
+| 12 | `test_stale_embeddings_detected` | Source hash mismatch flagged | 3 |
+| 13 | `test_retrieval_replay` | Same query → same results | 3 |
+| 14 | `test_telemetry_row_created` | Every AI call produces spool entry | 1 |
+| 15 | `test_agent_metrics_mapping` | Spool maps to Google Sheet fields | 1 |
+| 16 | `test_spool_offline_mode` | Works when posting unavailable | 1 |
+| 17 | `test_prompt_version_recorded` | Telemetry includes prompt hash | 1 |
+| 18 | `test_taskcard_linkage_required` | Task without taskcard rejected | 1 |
+| 19 | `test_evidence_includes_ai_artifacts` | Bundle includes AI telemetry | 2 |
+| 20 | `test_qwen2_scope_enforcement` | Exceeding scope → stop | 4 |
+| 21 | `test_test_idea_lifecycle` | Full lifecycle enforced | 4 |
+| 22 | `test_deferred_review_taskcards_exist` | Every deferred item has taskcard | 1 |
+| 23 | `test_model_change_compat_check` | Fingerprint change triggers eval | 2 |
+| 24 | `test_prompt_injection_neutralized` | Malicious spec content sanitized | 2 |
+| 25 | `test_large_prompt_truncation_detected` | Truncation logged | 2 |
+
+## 6. Content Validation Checks (Plan-Level)
+
+Beyond file existence, the plan-level validation verifies:
+1. All 10 plan reports have non-empty content with correct headers
+2. Risk register contains exactly 48 unique RISK-AI-NNN IDs with all 12 required fields
+3. All 17 production components have all 9 required specification fields
+4. All 12 artifact authority states appear in transition table
+5. Agent Metrics mapping covers all 17 Google Sheet fields
+6. Every deferred feature has reason + prerequisite + review taskcard
+7. Parallel sprint safety plan lists both owned and forbidden paths
+8. Implementation roadmap has acceptance criteria per phase
+9. Technology decisions have phase assignment and rationale
+10. Final execution readiness review answers all 10 required questions
