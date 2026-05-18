@@ -1,0 +1,124 @@
+# QOI Acquisition Pack
+# Quite OK Image Format
+# Sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-PYTHON-PUBLICATION-DRYRUN-GATE11-HARDENING-NEXT-FORMATS-AND-PLAYBOOK-REPAIR-001
+# Non-ODF candidate lane (Gate 12)
+
+format_id: qoi
+display_name: "Quite OK Image Format"
+extensions:
+  - .qoi
+mime_type: "image/qoi"
+family: imaging
+spec_body: "Dominic Szablewski / phoboslab"
+spec_version: "QOI 1.0 (November 2021)"
+legal_category: 1
+legal_description: "MIT license — reference implementation at github.com/phoboslab/qoi. Format itself is open with no patent claims. MIT-licensed implementations are legally safe."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose does not support QOI format as of 2026-05-17. No Aspose class handles .qoi files."
+aspose_notes: "NOT_SUPPORTED is POSITIVE for commercial differentiation. QOI is a growing imaging format with no major commercial parser tooling — a good opportunity."
+python_library: "qoi (PyPI, MIT) or custom implementation (format is ~1-page spec)"
+oracle_strategy: "Round-trip: encode test pixels, decode, compare pixel arrays. Or compare against qoi reference implementation output."
+acquisition_risk_classification: LOW
+acquisition_risk_notes: "QOI spec is complete and simple (~200 lines to implement). MIT-licensed reference implementation. No known patent claims. Minimal legal risk."
+sprint_created: FORMAT-FACTORY-R23-MEGA-TRAIN-001
+created_date: "2026-05-17"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: qoi
+    display_name: "Quite OK Image Format"
+    mime_type: "image/qoi"
+    extensions: [".qoi"]
+    structure: "Binary, sequential run-length encoding. 14-byte header + pixel chunks + 8-byte end marker."
+    spec_body: "Dominic Szablewski / phoboslab"
+    spec_version: "QOI 1.0"
+    notes: "QOI is a lossless image compression format. Simple binary structure: 4-byte magic ('qoif'), width/height, channels, colorspace, then run-length encoded pixel data. End marker: 8 bytes of 0x00 + 0x01. Full spec: qoi.phoboslab.org"
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r23"
+    approved_by: "delegated_agent_r23"
+    approved_date: "2026-05-17"
+    sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-001
+    awaiting_human_iv: true
+    score_total: 81
+    score_normalized: 8.1
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "MIT license on reference implementation. Format is open, no patent claims. phoboslab GitHub repo: MIT. IANA registered mime type image/qoi in 2022."
+      spec_availability:
+        score: 2
+        points: 13
+        evidence: "Single-page spec at qoi.phoboslab.org. Concise but complete. All data structures, encoding, and edge cases documented. Regularly maintained by author."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Simple sequential binary format. 14-byte header + run-length chunks. No container, no compression layers. Straightforward to implement with struct/bytes parsing."
+      community_demand:
+        score: 2
+        points: 10
+        evidence: "Growing community interest. Multiple language ports (Rust, Python, Go, C#). Used in embedded/game development contexts. Not yet mainstream."
+      strategic_track_value:
+        score: 1
+        points: 3
+        evidence: "Imaging family. First imaging format acquisition. Establishes imaging track but at early stage."
+      implementation_complexity:
+        score: 3
+        points: 5
+        evidence: "Extremely simple parser. Reference C implementation is ~300 lines. Python implementation possible in <200 lines. Can reuse struct.unpack patterns."
+      family_overlap:
+        score: 3
+        points: 5
+        evidence: "No overlap. No imaging formats currently in system. Unique addition."
+    legal_category: 1
+    aspose_support_level: NOT_SUPPORTED
+    gate1_decision_packet: acquisition-packs/qoi/gate1-scoring.md
+    notes: "Score 8.1/10 — Accept band. Gate 1 passed by delegated agent R23; awaits human IV per DEC-034. NOT_SUPPORTED by Aspose (positive differentiation)."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r23"
+    approved_date: "2026-05-17"
+    fast_path_eligible: false
+    spec_source: "https://qoi.phoboslab.org/"
+    spec_version_confirmed: "QOI 1.0"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "MIT-licensed reference implementation. Author explicitly states no patents. Format is open."
+    spec_summary: |
+      QOI header: 14 bytes
+        - magic: 4 bytes ('qoif')
+        - width: 4 bytes (big-endian u32)
+        - height: 4 bytes (big-endian u32)
+        - channels: 1 byte (3=RGB, 4=RGBA)
+        - colorspace: 1 byte (0=sRGB+linear alpha, 1=all linear)
+
+      Pixel encoding: variable-length chunks
+        - QOI_OP_RGB (0xFE): 3-byte literal RGB
+        - QOI_OP_RGBA (0xFF): 4-byte literal RGBA
+        - QOI_OP_INDEX (2 bits + 6 bits): reference to 64-color running array
+        - QOI_OP_DIFF (2 bits + 6 bits): small RGB delta
+        - QOI_OP_LUMA (2 bits + 6 bits + 8 bits): larger green delta
+        - QOI_OP_RUN (2 bits + 6 bits): run-length repeat
+
+      End marker: 8 bytes (7x 0x00 + 0x01)
+    notes: "Gate 2 passed by delegated agent R23. Full spec available without download — qoi.phoboslab.org is a one-page format definition. Awaits human IV per DEC-034."
+
+  gate_3:
+    status: planned_synthetic_feasible
+    notes: "Gate 3 sample corpus: QOI can be synthetically generated from any image using the reference C encoder or Python qoi library (MIT). LibreOffice not required. Planned for R24 with synthetic corpus using Python qoi package. Sample sources: qoi reference test files (MIT), generated from PNG reference images."
+    sample_sources:
+      - name: "qoi reference test suite"
+        license: "MIT"
+        url_pattern: "https://github.com/phoboslab/qoi/tree/master"
+        status: planned_r24
+      - name: "Synthetic generation via Python qoi package"
+        license: "MIT"
+        status: planned_r24

@@ -179,7 +179,23 @@ stages:
     approved_date: null
     notes: null
   gate_11:
-    status: not_started
+    status: commercial_readiness_in_progress
+    g11e_prototype_status: g11e_complete_r23
     approved_by: null
     approved_date: null
-    notes: null
+    commercial_product_ready: false
+    g11_subgates:
+      g11_a_architecture: proposed
+      g11_b_c4_vertical_slice: demonstrated
+      g11_c_c5_persistence: demonstrated
+      g11_d_c6_conversion: demonstrated
+      g11_e_expanded_prototype: complete
+      g11_f_validation: in_progress
+      g11_g_human_approval: not_started
+    g11e_tests_passing: 92
+    g11e_test_run: r23
+    g11e_exporters: [markdown, html, txt]
+    g11e_edit_save: true
+    g11e_nuget_pack: true
+    nuget_package: aspose-format-factory-fodt
+    notes: "G11-E expanded prototype complete (R23). 92/92 .NET tests PASS. Markdown/HTML/TXT exporters, edit-save, NuGet pack completed. G11-F validation in_progress. G11-G human approval NOT_STARTED. commercial_product_ready: false."

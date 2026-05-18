@@ -1,0 +1,70 @@
+---
+contract_id: FORMAT-FACTORY-R23-MEGA-TRAIN-PYTHON-PUBLICATION-DRYRUN-GATE11-HARDENING-NEXT-FORMATS-AND-PLAYBOOK-REPAIR-001
+date: "2026-05-17"
+min_metadata_count: 30
+verdict_keyword: R23_COMPLETE
+emergency_blocker_bundle: true
+require_clean_git: false
+
+required_repo_files:
+  # Train D: Playbook repair
+  - tests/playbook/test_playbook_schema.py
+  - reports/testing/r23-playbook-jsonschema-subprocess-repair-report-20260517.md
+
+  # Train A: Python FOSS publication packet
+  - release-manifests/python-foss/publication-packet/zst-review.md
+  - release-manifests/python-foss/publication-packet/fodp-review.md
+  - release-manifests/python-foss/publication-packet/fodg-review.md
+  - release-manifests/python-foss/publication-packet/gnumeric-review.md
+  - release-manifests/python-foss/publication-packet/abw-review.md
+  - release-manifests/python-foss/publication-packet/matrix-review.md
+  - release-manifests/python-foss/publication-packet/publication-blocked-checklist.md
+
+  # Train A: API consistency tests
+  - tests/python/test_cross_format_api_consistency.py
+  - tests/packaging/test_python_installed_wheels.py
+
+  # Train B: FODS G11-E exporters
+  - src/net/fods/FodsJsonExporter.cs
+  - src/net/fods/FodsHtmlExporter.cs
+
+  # Train B: FODS G11-E tests
+  - tests/net/fods/FodsJsonExporterTests.cs
+  - tests/net/fods/FodsHtmlExporterTests.cs
+  - tests/net/fods/FodsEditSaveTests.cs
+
+  # Train B: FODT G11-E exporters
+  - src/net/fodt/FodtMarkdownExporter.cs
+  - src/net/fodt/FodtHtmlExporter.cs
+
+  # Train B: FODT G11-E tests
+  - tests/net/fodt/FodtMarkdownExporterTests.cs
+  - tests/net/fodt/FodtHtmlExporterTests.cs
+  - tests/net/fodt/FodtEditSaveTests.cs
+
+  # Train B: G11-F validation report
+  - reports/governance/r23-g11f-validation-report-fods-fodt-20260517.md
+
+  # Train C: Acquisition lane packs
+  - acquisition-packs/ods/pack.yaml
+  - acquisition-packs/odt/pack.yaml
+  - acquisition-packs/qoi/pack.yaml
+
+  # Train C: Acquisition reports
+  - reports/planning/r23-ods-gate1-gate3-acquisition-report-20260517.md
+  - reports/planning/r23-odt-gate1-gate3-acquisition-report-20260517.md
+  - reports/planning/r23-non-odf-candidate-acceleration-report-20260517.md
+
+  # Registry (ODS/ODT/QOI added, G11-F status updated)
+  - registry/format-registry.yaml
+
+  # Docs
+  - docs/python-foss/format-support-matrix.md
+  - docs/commercial-gate11/r23-g11e-status-20260517.md
+
+  # IV and adversarial reports
+  - reports/governance/r23-cross-lane-iv-report-20260517.md
+  - reports/governance/r23-adversarial-scope-drift-review-20260517.md
+
+  # Evidence contract itself
+  - tools/evidence/contracts/r23-mega-train-python-publication-dryrun-gate11-hardening.yaml

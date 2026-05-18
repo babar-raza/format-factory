@@ -1,0 +1,107 @@
+# ODS Acquisition Pack
+# OpenDocument Spreadsheet (Container format)
+# Sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-PYTHON-PUBLICATION-DRYRUN-GATE11-HARDENING-NEXT-FORMATS-AND-PLAYBOOK-REPAIR-001
+
+format_id: ods
+display_name: "OpenDocument Spreadsheet"
+extensions:
+  - .ods
+mime_type: "application/vnd.oasis.opendocument.spreadsheet"
+family: cells
+spec_body: "OASIS Open Document Format TC"
+spec_version: "ODF 1.3 (ISO/IEC 26300-3:2021)"
+legal_category: 1
+legal_description: "OASIS royalty-free standard, ODF 1.3. Identical spec authority as FODS."
+aspose_supported: true
+aspose_support_level: SUPPORTED
+aspose_evidence: "Aspose.Cells supports ODS. Aspose.Words does not consume ODS (it is a spreadsheet format)."
+aspose_notes: "Aspose support means competition at commodity level. OSS FOSS Python track is viable for differentiation. ODS is the most-deployed ODF spreadsheet format (LibreOffice default since 2012)."
+python_library: "odfpy (Apache-2.0), openpyxl-adjacent; or custom zipfile+XML implementation"
+oracle_strategy: "Round-trip ZIP extraction + XML parse; cell value comparison with LibreOffice-generated reference files"
+acquisition_risk_classification: LOW
+acquisition_risk_notes: "ODF 1.3 spec already acquired for FODS. ODS uses same spec, ZIP container instead of flat XML. Minimal new spec risk. Known parseable structure."
+sprint_created: FORMAT-FACTORY-R23-MEGA-TRAIN-001
+created_date: "2026-05-17"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: ods
+    display_name: "OpenDocument Spreadsheet"
+    mime_type: "application/vnd.oasis.opendocument.spreadsheet"
+    extensions: [".ods"]
+    structure: "ZIP container with content.xml, styles.xml, meta.xml, mimetype"
+    spec_body: "OASIS Open Document Format TC"
+    spec_version: "ODF 1.3"
+    notes: "ODS is the standard container-based ODF spreadsheet. FODS is the flat-XML variant. Both use the same ODF schema."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r23"
+    approved_by: "delegated_agent_r23"
+    approved_date: "2026-05-17"
+    sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-001
+    awaiting_human_iv: true
+    score_total: 88
+    score_normalized: 8.8
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "OASIS ODF 1.3 — royalty-free standard. Same legal authority as FODS (already passed Gate 1 with Cat 1)."
+      spec_availability:
+        score: 3
+        points: 20
+        evidence: "ODF 1.3 Part 3 (content) + Part 2 (packages/containers). Full spec already in local spec cache from FODS acquisition."
+      parseable_structure:
+        score: 2
+        points: 10
+        evidence: "ZIP container format. Python zipfile + ElementTree sufficient. Moderate complexity (container vs. flat XML)."
+      community_demand:
+        score: 3
+        points: 15
+        evidence: "ODS is the default LibreOffice Calc format. High demand in enterprise/OSS interoperability contexts."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Adjacent to FODS (same ODF family, Cells product track). Meaningful expansion — container variant covers broader user base."
+      implementation_complexity:
+        score: 2
+        points: 3
+        evidence: "ZIP container adds complexity vs. FODS. Standard Python zipfile + ODF XML knowledge reusable."
+      family_overlap:
+        score: 2
+        points: 3
+        evidence: "Minor overlap with FODS — same family but distinct container structure, different MIME type, much wider deployment."
+    legal_category: 1
+    aspose_support_level: SUPPORTED
+    gate1_decision_packet: acquisition-packs/ods/gate1-scoring.md
+    notes: "Score 8.8/10 — Accept band. ODF family fast-path eligible for Gate 2 (spec already available). Gate 1 passed by delegated agent R23; awaits human IV per DEC-034."
+
+  gate_2:
+    status: passed_fast_path
+    approved_by: "delegated_agent_r23"
+    approved_date: "2026-05-17"
+    fast_path_eligible: true
+    fast_path_reason: "ODF 1.3 spec already acquired for FODS (same spec body, Part 3 content and Part 2 packages). No new spec retrieval needed."
+    spec_cache_path: ".local/spec-cache/fods/"
+    spec_version_confirmed: "ODF 1.3 Part 3 (ISO/IEC 26300-3:2021)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "OASIS RF policy explicitly grants royalty-free implementation rights. No patent search required per FODS Gate 2 precedent."
+    notes: "Fast-path approved. ODF 1.3 spec serves ODS, FODS, ODT, FODT equally. Gate 2 passed by delegated agent R23; awaits human IV."
+
+  gate_3:
+    status: planned_no_samples_this_sprint
+    notes: "Gate 3 sample corpus requires LibreOffice or equivalent ODS generator. LibreOffice not available in current sprint environment. Planned for R24. Sample sources identified: LibreOffice CI test fixtures (Apache-2.0), ODF TC test suite (OASIS public). Synthetic generation via Python odfpy library is also viable."
+    sample_sources:
+      - name: "LibreOffice test fixtures"
+        license: "Apache-2.0"
+        url_pattern: "https://github.com/LibreOffice/core/tree/master/sc/qa/unit/data"
+        status: planned_r24
+      - name: "odfpy synthetic generation"
+        license: "Apache-2.0"
+        status: planned_r24

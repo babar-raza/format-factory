@@ -1,7 +1,7 @@
 # Python FOSS Format Support Matrix
 
 **Status:** ALPHA FOSS PREVIEW â€” NOT PUBLISHED
-**Date:** 2026-05-17
+**Date:** 2026-05-17 (updated R23)
 **commercial_product_ready:** false
 **publication_authorized:** false
 
@@ -68,6 +68,23 @@ These Python FOSS packages are an **independent FOSS track**, separate from the 
 
 **Not published.** No PyPI packages. No GitHub releases.
 `publication_authorized: false` for all packages.
+
+
+## R23 Validation Results (Publication Dry-Run)
+
+All 5 Python FOSS packages validated in R23 sprint:
+
+| Format   | Wheel Build | Isolated Install | API Consistency | Version    |
+|----------|-------------|-----------------|-----------------|------------|
+| zst      | PASS        | PASS            | PASS (43/43)    | 0.1.0.dev0 |
+| fodp     | PASS        | PASS            | PASS (43/43)    | 0.1.0.dev0 |
+| fodg     | PASS        | PASS            | PASS (43/43)    | 0.1.0.dev0 |
+| gnumeric | PASS        | PASS            | PASS (43/43)    | 0.1.0.dev0 |
+| abw      | PASS        | PASS            | PASS (43/43)    | 0.1.0.dev0 |
+
+Tested by: tests/packaging/test_python_installed_wheels.py (25/25) and tests/python/test_cross_format_api_consistency.py (43/43).
+
+**PUBLICATION BLOCKED** — . See release-manifests/python-foss/publication-packet/.
 
 ## Commercial Readiness
 

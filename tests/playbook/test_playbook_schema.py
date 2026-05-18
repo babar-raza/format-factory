@@ -63,13 +63,33 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 def run_validator(*args, capture=True):
-    """Run validate_playbook.py and return (returncode, stdout, stderr)."""
+    """Run validate_playbook.py and return (returncode, stdout, stderr).
+
+    Subprocess PYTHONPATH propagation (R23 Gate 1 repair):
+    On Windows, user site-packages (e.g. jsonschema) may be in sys.path but NOT in the
+    PYTHONPATH environment variable. Without explicit propagation, the subprocess spawned
+    by subprocess.run() may not find packages that are accessible in the parent process,
+    causing jsonschema to be importable in the parent (pytest) process but not in the
+    child (validate_playbook.py) process — producing test failures rather than skips.
+
+    Fix: build a subprocess env that merges sys.path entries into PYTHONPATH so the
+    subprocess can find everything the parent can find. This makes the jsonschema engine
+    tests pass regardless of how pytest is invoked on this platform.
+    """
     cmd = [sys.executable, VALIDATOR] + list(args)
+    env = os.environ.copy()
+    existing_pp = env.get("PYTHONPATH", "")
+    # Add all non-empty, existing sys.path directories to PYTHONPATH.
+    extra = [p for p in sys.path if p and os.path.isdir(p)]
+    if extra:
+        merged = os.pathsep.join(dict.fromkeys(extra + ([existing_pp] if existing_pp else [])))
+        env["PYTHONPATH"] = merged
     result = subprocess.run(
         cmd,
         capture_output=capture,
         text=True,
         cwd=REPO_ROOT,
+        env=env,
     )
     return result.returncode, result.stdout, result.stderr
 

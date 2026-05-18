@@ -1,0 +1,6 @@
+# R23 Sprint Overview
+sprint_id: FORMAT-FACTORY-R23-MEGA-TRAIN-PYTHON-PUBLICATION-DRYRUN-GATE11-HARDENING-NEXT-FORMATS-AND-PLAYBOOK-REPAIR-001
+date: 2026-05-17
+status: R23_COMPLETE
+trains: 4 (A: Python FOSS, B: Gate 11 .NET, C: Acquisition, D: Playbook Repair)
+verdict: R23_COMPLETE
