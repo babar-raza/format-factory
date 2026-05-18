@@ -1,0 +1,58 @@
+---
+contract_id: FORMAT-FACTORY-R24-PARALLEL-CLOSURE-REPAIR-FORWARD-TRAIN-AND-AI-PLATFORM-PLAN-001
+date: "2026-05-18"
+min_metadata_count: 38
+verdict_keyword: R24_COMPLETE
+emergency_blocker_bundle: false
+require_clean_git: true
+
+required_repo_files:
+  # Lane A: R23 closure reconstruction
+  - reports/governance/r24-r23-closure-reconstruction-report-20260518.md
+
+  # Lane B: Memory/37 backfill
+  - memory/37-r20-productization-train-source-and-gate11-architecture-20260517.md
+  - reports/memory/r24-memory-continuity-and-r19-r20-backfill-report-20260518.md
+
+  # Lane C: Package artifact proof
+  - reports/packaging/r24-r23-package-artifact-proof-20260518.md
+
+  # Lane D: ODS/ODT/QOI Gate 3 sample corpora
+  - acquisition-packs/ods/pack.yaml
+  - acquisition-packs/odt/pack.yaml
+  - acquisition-packs/qoi/pack.yaml
+  - samples/by-format/ods/_corpus-manifest.yaml
+  - samples/by-format/odt/_corpus-manifest.yaml
+  - samples/by-format/qoi/_corpus-manifest.yaml
+  - reports/planning/r24-ods-gate3-sample-corpus-report-20260518.md
+  - reports/planning/r24-odt-gate3-sample-corpus-report-20260518.md
+  - reports/planning/r24-qoi-gate3-sample-and-gate4-planning-report-20260518.md
+
+  # Lane E: FODS/FODT G11-E hardening
+  - tests/net/fods/FodsMultiSheetHardeningTests.cs
+  - tests/net/fods/Fixtures/fods-multi-sheet.fods
+  - tests/net/fodt/FodtUnicodeHardeningTests.cs
+  - tests/net/fodt/Fixtures/fodt-unicode.fodt
+  - reports/implementation/r24-fods-fodt-g11e-hardening-report-20260518.md
+
+  # Lane G: Evidence contract hardening
+  - tests/evidence/test_final_bundle_closure_rules.py
+  - reports/governance/r24-evidence-contract-hardening-report-20260518.md
+
+  # Gate coordination
+  - reports/governance/r24-preflight-repo-state-and-lane-ownership-20260518.md
+  - reports/governance/r24-lane-ownership-and-overlap-control-20260518.md
+  - reports/governance/r24-r23-memory-evidence-repair-commit-report-20260518.md
+  - reports/testing/r24-r23-closure-validation-command-log-20260518.md
+  - reports/testing/r24-full-validation-command-log-20260518.md
+
+  # IV and adversarial reports
+  - reports/verification/r24-cross-lane-independent-verification-20260518.md
+  - reports/governance/r24-adversarial-scope-drift-review-20260518.md
+
+  # Sprint metadata
+  - reports/r24-sprint-metadata-20260518/sprint-overview.md
+  - reports/r24-sprint-metadata-20260518/validation-command-log.md
+
+  # Evidence contract itself
+  - tools/evidence/contracts/r24-parallel-closure-forward-train.yaml
