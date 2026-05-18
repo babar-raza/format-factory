@@ -1,0 +1,93 @@
+---
+contract_id: FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001
+sprint_id: FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001
+date: "2026-05-18"
+type: plan_hardening_and_memory_sync
+status: complete
+verdict: AI_PLAN_SYNC_COMPLETE
+
+description: >
+  Harden AI/LLM/Embedding platform plan and synchronize corrected design into
+  project memory, master plan, governance docs, taskcards, and planning artifacts.
+  No AI implementation performed. No endpoint calls. No vector DB created.
+  No runtime source changed.
+
+gates:
+  gate_0_preflight:
+    status: pass
+    evidence: reports/ai/ai-plan-hardening-preflight.md
+  gate_1_gap_analysis:
+    status: pass
+    evidence: reports/ai/ai-plan-gap-analysis.md
+  gate_2_core_ai_docs:
+    status: pass
+    file_count: 11
+    directory: docs/ai/
+  gate_3_governance_updates:
+    status: pass
+    files_updated:
+      - plans/master-plan.md
+      - ROADMAP.md
+      - GOVERNANCE.md
+      - AGENTS.md
+      - docs/specification-normalization.md
+      - docs/acquisition-workflow.md
+      - docs/format-expansion-roadmap.md
+      - docs/current-state-and-evidence-authority.md
+  gate_4_taskcards:
+    status: pass
+    file_count: 10
+    directory: taskcards/
+  gate_5_memory:
+    status: pass
+    files:
+      - memory/42-ai-llm-embedding-platform-plan-hardening-20260518.md
+      - memory/00-index.md
+  gate_6_validation:
+    status: pass
+    checks:
+      methodology_links: pass
+      current_state_consistency: pass
+  gate_7_evidence:
+    status: pass
+
+validation_commands:
+  - command: "python tools/governance/check_methodology_links.py"
+    result: pass
+  - command: "python tools/evidence/check_current_state_consistency.py"
+    result: pass
+
+safety_verification:
+  no_ai_implementation_code: true
+  no_endpoint_calls: true
+  no_vector_db_created: true
+  no_runtime_source_changed: true
+  only_planning_files_changed: true
+  implementation_not_authorized: true
+
+new_files:
+  docs_ai: 11
+  taskcards: 10
+  memory: 1
+  reports: 6
+  evidence_contracts: 1
+  total_new: 29
+
+modified_files:
+  governance_and_planning: 9
+  total_modified: 9
+
+key_decisions:
+  - "Three AI types (A: agentic, B: synthesis, C: embeddings) + mandatory control plane"
+  - "Qwen2 restricted to agentic_low_risk role only"
+  - "GPT-OSS default for synthesis with citation verification"
+  - "Format-segregated LanceDB vector stores, permanent, project-local"
+  - "Agent Metrics canonical telemetry sink"
+  - "Spec normalization mandatory for AI consumption"
+  - "Test generation mandatory with artifact lifecycle"
+  - "40-item risk register with controls and stop conditions"
+  - "25 technology features classified implement/defer/reject"
+  - "AI artifact authority lifecycle: no skip from ai_draft to authoritative"
+
+emergency_blocker_bundle: true  # R23 uncommitted work in tree; this sprint's commit (e8b005a) is clean
+min_metadata_count: 10

@@ -257,3 +257,5 @@ Do not authorize new format work until Conway R8 IV is complete.
 | taskcards/REP-003-non-xml-adaptability-backlog.md | Existing REP-003 taskcard |
 | reports/planning/format-expansion-roadmap-memory-sync-20260514.md | Planning report |
 | registry/format-registry.yaml | Current format gate status |
+| docs/ai/ai-assisted-acquisition-pipeline.md | AI platform integration with acquisition pipeline |
+| docs/ai/ai-platform-operating-model.md | AI platform operating model — AI assists format expansion |

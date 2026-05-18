@@ -270,3 +270,10 @@ docs/agent-execution-handoff-standard.md) and the CURRENT_STATE_CONSISTENCY chec
 
 FFSM planned location: tools/state/ (NOT YET CREATED).
 FFSM governing taskcard: to be created in a future sprint after GOV-006 authorization.
+
+### 8.4 AI Artifact Authority Integration
+
+AI-generated artifacts follow the authority lifecycle defined in `docs/ai/ai-artifact-authority-lifecycle.md`.
+AI outputs start at `ai_draft` (below Level 6) and progress through validation states. Only after reaching
+`authoritative_after_gate` (with human gate approval) do AI artifacts achieve Level 3-4 authority. The FFSM
+(when operational) will enforce AI artifact authority transitions. See `plans/master-plan.md` Section 39.

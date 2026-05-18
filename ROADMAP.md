@@ -196,8 +196,10 @@ WIP limit violations require project lead approval.
 | FODT compiled understanding package | Complete |
 | Playbook validation tool | Active, read-only |
 | Dry-run replay tools | Active, no apply mode |
-| LLM operational rollout | Backlog |
-| Embedding/retrieval architecture | Backlog |
+| LLM operational rollout | Plan hardened (2026-05-18); implementation Phase 1 pending authorization |
+| Embedding/retrieval architecture | Plan hardened (2026-05-18); implementation Phase 3 pending authorization |
+| AI platform control plane | Plan hardened (2026-05-18); Phase 1 pending authorization |
+| Agent Metrics telemetry integration | Plan hardened (2026-05-18); Phase 1 spool, Phase 5 full |
 | Non-XML adaptability architecture | Backlog |
 | Non-Aspose candidate registry | Backlog |
 | .NET C4-C6 vertical slice | Created for FODS + FODT; Gate 11 NOT approved; commercial_product_ready: false |
@@ -219,9 +221,11 @@ Format knowledge accumulated through gates 1-9 is compiled into per-format under
 
 FUL-001, FUL-002, and FUL-003 are complete for the current FODS/FODT track. FUL-004 and FUL-005 remain follow-up work.
 
-### Controlled LLM And Embedding Strategy
+### AI/LLM/Embedding Platform Layer
 
-Controlled use of `llm.professionalize.com` model families is planned for future governed work. LLMs may assist, but they do not approve gates, define legal status, or replace citations. Embeddings are retrieval tools, not truth.
+A generic, segregated, production-grade AI platform layer is planned. All AI usage (agentic, synthesis, embeddings) flows through one governed substrate with contracts, role-based model routing, validators, telemetry (Agent Metrics), and evidence integration. Plan hardened 2026-05-18; implementation not yet authorized. See `docs/ai/ai-platform-operating-model.md` and `plans/master-plan.md` Section 39.
+
+LLMs assist but do not approve gates, define legal status, or replace citations. Embeddings are retrieval tools, not truth. Spec normalization is mandatory input for AI consumption. AI test generation is mandatory with full artifact lifecycle.
 
 ### XML-First Focus And Non-XML Adaptability
 

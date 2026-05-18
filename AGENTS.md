@@ -783,3 +783,19 @@ path, current accepted state, scope, non-goals, safety rules, allowed files, val
 evidence contract requirements, and final response format. See `docs/assistant-supervision-methodology.md`
 Section 6 and `docs/project-execution-standards.md` Section 4 for the full prompt standard.
 Supervision methodology reference: `docs/assistant-supervision-methodology.md`.
+
+**AF16. AI Platform Layer Required.** All AI usage (agentic, LLM synthesis, embeddings) must flow
+through the governed AI platform layer defined in `docs/ai/ai-platform-operating-model.md`. Direct
+endpoint calls bypassing the platform layer are prohibited. Model selection is role-based via
+dynamic discovery, not hardcoded model names. Three AI usage types (A: agentic, B: synthesis,
+C: embeddings) plus mandatory control plane. Qwen2 restricted to `agentic_low_risk` role only
+under controls in `docs/ai/agentic-qwen2-control-policy.md`. GPT-OSS is default for synthesis
+with citation verification, contradiction detection, and evaluator regression per
+`docs/ai/gpt-oss-synthesis-control-policy.md`. Vector stores are format-segregated and project-local
+per `docs/ai/embedding-and-vector-store-policy.md`. Agent Metrics is canonical telemetry sink per
+`docs/ai/ai-telemetry-and-agent-metrics-policy.md`. AI artifacts follow authority lifecycle per
+`docs/ai/ai-artifact-authority-lifecycle.md` — no skip from ai_draft to authoritative. Spec
+normalization is mandatory input for AI consumption. Runtime product code (`src/`) must not import
+AI infrastructure — enforced by `tools/ai/validators/runtime_guard.py`. 40-item risk register:
+`docs/ai/ai-risk-register.md`. Full plan: `plans/master-plan.md` Section 39.
+See GOVERNANCE.md §26.14.

@@ -305,5 +305,7 @@ authorization via S-F2F-01 execution.
 - `docs/release-control.md` — artifact visibility and release manifest rules
 - `acquisition-packs/_template/` — templates for all acquisition pack artifacts
 - `registry/scoring/_scoring-model.md` — Gate 1 scoring criteria
+- `docs/ai/ai-assisted-acquisition-pipeline.md` — AI platform integration points per gate
+- `docs/ai/ai-platform-operating-model.md` — AI platform operating model (AI assists, not decides)
 
 **Note on Playbook Schema and Policy (S-F2F-01 Active — 2026-05-08):** The playbook schema layer is now established. schemas/playbook/acquisition-playbook.schema.json and schemas/playbook/review-queue.schema.json define the structure for future acquisition playbooks. docs/playbook-layer.md documents the policy. The existing acquisition workflow is UNCHANGED — these schemas are preparatory structures that will be used when actual playbooks are created in future sprints (S-F2F-05 or later). No acquisition-packs/ playbook.yaml files exist yet. No replay tools exist yet.

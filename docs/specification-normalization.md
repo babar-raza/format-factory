@@ -256,6 +256,9 @@ The Spec Navigation Layer is a set of four tools built on top of the normalized 
 - `docs/legal-and-licensing.md` — redistribution rules that limit normalized text commits
 - `docs/release-control.md` — visibility classification for normalized artifacts (evidence-only)
 - `docs/llm-endpoint-strategy.md` — rules about spec text in LLM prompts
+- `docs/ai/ai-assisted-acquisition-pipeline.md` — AI platform consumes normalized artifacts (mandatory input)
+- `docs/ai/ai-platform-operating-model.md` — AI platform requires spec normalization for all AI/embedding use
 - `AGENTS.md` — agent rules for using normalized artifacts
 - `taskcards/TC-0012-specification-normalization-layer.md` — implementation taskcard
+- `taskcards/AI-SPEC-NORMALIZATION-INTEGRATION.md` — AI platform normalization linkage taskcard
 - `tools/spec-normalize/` — normalization tooling

@@ -543,6 +543,20 @@ pass the same validation gates as human/agent work. LLM calls for repo-changing 
 in `.local/llm-logs/`. Embeddings and RAG are retrieval aids, not truth. Full policy: AGENTS.md §AF12
 and `docs/ai-usage-operating-model.md`.
 
+**26.14. AI Platform Layer Governance.** All AI usage (agentic, synthesis, embeddings) must flow
+through the governed AI platform layer defined in `docs/ai/ai-platform-operating-model.md`. Model
+selection is role-based via dynamic discovery, not hardcoded. Qwen2 is restricted to low-risk agentic
+work only under strict controls (`docs/ai/agentic-qwen2-control-policy.md`). GPT-OSS synthesis
+requires citation verification, contradiction detection, and evaluator regression
+(`docs/ai/gpt-oss-synthesis-control-policy.md`). Vector stores are format-segregated, permanent,
+project-local, and never authority (`docs/ai/embedding-and-vector-store-policy.md`). Agent Metrics
+is the canonical telemetry sink (`docs/ai/ai-telemetry-and-agent-metrics-policy.md`). AI artifacts
+follow the authority lifecycle: no skip from ai_draft to authoritative
+(`docs/ai/ai-artifact-authority-lifecycle.md`). Spec normalization is mandatory input for AI.
+Runtime product code (`src/`) must not import AI infrastructure. 40-item risk register:
+`docs/ai/ai-risk-register.md`. Plan: `plans/master-plan.md` Section 39. Implementation not yet
+authorized until plan reviewed. See AGENTS.md §AF16.
+
 **26.11. Generated Requirements Mandatory Before Implementation.** AI-generated requirements in
 `generated-requirements/{format}/` must be schema-validated, verifier-reviewed, and have at least
 one requirement marked `ACCEPTED_FOR_VERTICAL_SLICE` before any commercial implementation sprint

@@ -1744,5 +1744,105 @@ Full backlog: `memory/26-format-expansion-roadmap-and-non-aspose-backlog-2026051
 
 ---
 
-*End of plans/master-plan.md — version 2.56 — 2026-05-14 (Section 38 added by FORMAT-FACTORY-ROADMAP-MEMORY-SYNC-001)*
+## Section 39 — AI/LLM/Embedding Platform Layer
+
+*Added 2026-05-18 by FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001.*
+*Status: PLAN HARDENED — implementation not yet authorized.*
+
+### 39.1 Platform Overview
+
+The project will build a generic, segregated, reusable, production-grade AI/LLM/Embedding platform
+layer. All AI usage flows through one governed substrate with contracts, schemas, model discovery,
+role routing, validators, telemetry, task state, evidence, replay, and regression controls.
+
+Three AI usage types:
+- **Type A — Agentic reasoning/task execution:** Claude/Codex for high-risk; Qwen2 for low-risk only under strict controls.
+- **Type B — LLM transformation/synthesis:** GPT-OSS via llm.professionalize.com; citation-verified, contradiction-checked, eval-gated.
+- **Type C — Embeddings/retrieval:** Permanent, format-segregated, project-local vector stores; hash-invalidated; never authority.
+
+Plus a **mandatory control plane:** model discovery, role routing, task contracts, prompt registry, schema registry, validators, evaluators, telemetry (Agent Metrics), evidence integration, no-runtime-AI guards.
+
+### 39.2 Key Decisions
+
+- AI is accelerator, not authority (preserved from 26.10).
+- Model selection is role-based, not hardcoded. Dynamic discovery at llm.professionalize.com.
+- Qwen2 restricted to low-risk agentic only with firm controls (role contract, path scope, state machine, rollback).
+- GPT-OSS is default for synthesis with mandatory citation, source verification, and contradiction detection.
+- Vector stores: LanceDB (or equivalent), format-segregated, under `.local/ai/vector-stores/`.
+- Telemetry: Agent Metrics is canonical sink. Local JSONL is spool/replay/evidence only.
+- Spec normalization is mandatory input for all AI consumption.
+- AI test generation is mandatory with full artifact lifecycle.
+- AI artifact authority lifecycle: `ai_draft` → ... → `authoritative_after_gate`. No skip.
+- Runtime product code (`src/`) must not import AI infrastructure.
+
+### 39.3 Technology Stack
+
+| Component | Decision | Phase |
+|-----------|----------|-------|
+| LiteLLM | Foundation | 1 |
+| Pydantic v2 | Foundation | 1 |
+| Agent Metrics (local spool) | Foundation | 1 |
+| pytest golden evals | Foundation | 1 |
+| LlamaIndex | Next phase | 3 |
+| LanceDB | Next phase | 3 |
+| Agent Metrics (full posting) | Next phase | 5 |
+| LangGraph | Defer | 6+ |
+| ChromaDB/Qdrant/Weaviate | Reject | N/A |
+| Runtime AI | Reject | N/A |
+| AI gate approval | Reject | N/A |
+
+### 39.4 Risk Register
+
+40-item AI risk register in `docs/ai/ai-risk-register.md`. Covers model drift, hallucination, prompt injection, vector contamination, framework lock-in, secret leakage, runtime isolation, authority lifecycle bypass, and more. Each risk has severity, detection, prevention, mitigation, validation test, evidence artifact, and stop condition.
+
+### 39.5 Implementation Phases
+
+1. **Phase 1 — Control Plane Foundation:** Model discovery, role routing, task contracts, telemetry, runtime guard.
+2. **Phase 2 — Synthesis Pipeline:** GPT-OSS synthesis with citation verification, eval harness, test generation.
+3. **Phase 3 — Retrieval Foundation:** LlamaIndex, LanceDB, per-format embeddings, stale detection.
+4. **Phase 4 — Agentic Integration:** Qwen2 controlled runner, source generation gated on verified requirements.
+5. **Phase 5 — Telemetry and Analytics:** Agent Metrics full integration, replay database.
+6. **Phase 6 — Hardening:** Full eval suite, risk register validation, cross-format isolation tests.
+
+### 39.6 Authority Documents
+
+| Document | Purpose |
+|----------|---------|
+| `docs/ai/ai-platform-operating-model.md` | Comprehensive platform specification |
+| `docs/ai/model-routing-and-discovery-policy.md` | Model discovery and role routing |
+| `docs/ai/agentic-qwen2-control-policy.md` | Qwen2 agentic controls |
+| `docs/ai/gpt-oss-synthesis-control-policy.md` | GPT-OSS synthesis controls |
+| `docs/ai/embedding-and-vector-store-policy.md` | Embedding/vector store architecture |
+| `docs/ai/ai-telemetry-and-agent-metrics-policy.md` | Telemetry and Agent Metrics |
+| `docs/ai/ai-risk-register.md` | 40-item risk register |
+| `docs/ai/ai-artifact-authority-lifecycle.md` | Artifact state machine |
+| `docs/ai/ai-assisted-acquisition-pipeline.md` | Pipeline integration |
+| `docs/ai/ai-technology-decision-record.md` | Technology decisions |
+| `docs/ai/deferred-ai-features-review.md` | Deferred feature classification |
+
+### 39.7 Taskcards
+
+| Taskcard | Scope |
+|----------|-------|
+| AI-PLATFORM-FOUNDATION-PLAN | Phase 1 control plane |
+| AI-MODEL-DISCOVERY-AND-ROUTING | Model discovery and routing |
+| AI-AGENTIC-QWEN2-CONTROLS | Qwen2 agentic controls |
+| AI-GPT-OSS-SYNTHESIS-CONTROLS | GPT-OSS synthesis pipeline |
+| AI-EMBEDDING-VECTOR-STORE-FOUNDATION | Embedding/retrieval foundation |
+| AI-TELEMETRY-AGENT-METRICS-INTEGRATION | Telemetry integration |
+| AI-SPEC-NORMALIZATION-INTEGRATION | Spec normalization linkage |
+| AI-TEST-GENERATION-INTEGRATION | AI test generation |
+| AI-RISK-MITIGATION-MATRIX | Risk validation tests |
+| AI-FOUNDATION-IMPLEMENTATION-NEXT | Phase 1 implementation readiness |
+
+### 39.8 Implementation Not Yet Authorized
+
+This section documents the hardened plan only. Implementation requires:
+1. Human review and acceptance of the plan.
+2. Explicit authorization to begin Phase 1.
+3. No AI code, endpoints, vector DBs, or runtime changes until authorized.
+
+---
+
+*End of plans/master-plan.md — version 2.57 — 2026-05-18 (Section 39 added by FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*
