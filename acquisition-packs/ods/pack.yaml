@@ -102,8 +102,14 @@ stages:
     sample_count: 3
     invalid_count: 1
     generation_method: deterministic_synthetic_python_zipfile
-    awaiting_human_iv: true
-    notes: "3 valid ODS samples (minimal-spreadsheet, single-cell, numeric-row) + 1 invalid (truncated). Generated via Python stdlib zipfile. No third-party dependencies. Corpus manifest and provenance at samples/by-format/ods/. Gate 3 PASS delegated_agent_r24; awaits human IV per DEC-034."
+    awaiting_human_iv: false
+    gate_3_iv_status: verified
+    gate_3_iv_sprint: FORMAT-FACTORY-R25-AI-PHASE1-GATE4-FORWARD-TRAIN-AND-R24-METADATA-SYNC-001
+    gate_3_iv_date: "2026-05-18"
+    gate_4_readiness: ready_for_parser_planning
+    notes: "3 valid ODS samples (minimal-spreadsheet, single-cell, numeric-row) + 1 invalid (truncated). Generated via Python stdlib zipfile. No third-party dependencies. Corpus manifest and provenance at samples/by-format/ods/. Gate 3 PASS delegated_agent_r24; IV verified R25."
     corpus_manifest: samples/by-format/ods/_corpus-manifest.yaml
     provenance: samples/by-format/ods/_provenance.yaml
     report: reports/planning/r24-ods-gate3-sample-corpus-report-20260518.md
+    iv_report: reports/planning/r25-ods-iv-gate4-readiness-report-20260518.md
+    parser_notes: acquisition-packs/ods/parser-notes.md

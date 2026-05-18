@@ -119,8 +119,14 @@ stages:
     sample_count: 3
     invalid_count: 1
     generation_method: deterministic_synthetic_python_struct
-    awaiting_human_iv: true
-    notes: "3 valid QOI samples (1x1-red, 2x2-black, 4x1-gradient) + 1 invalid (wrong-magic). Generated via Python stdlib struct/bytes with no external dependencies. Tests QOI_OP_RGBA literal encoding and QOI_OP_RUN run-length encoding. Corpus manifest and provenance at samples/by-format/qoi/. Gate 3 PASS delegated_agent_r24; awaits human IV per DEC-034."
+    awaiting_human_iv: false
+    gate_3_iv_status: verified
+    gate_3_iv_sprint: FORMAT-FACTORY-R25-AI-PHASE1-GATE4-FORWARD-TRAIN-AND-R24-METADATA-SYNC-001
+    gate_3_iv_date: "2026-05-18"
+    gate_4_readiness: ready_for_parser_planning
+    notes: "3 valid QOI samples (1x1-red, 2x2-black, 4x1-gradient) + 1 invalid (wrong-magic). Generated via Python stdlib struct/bytes with no external dependencies. Corpus manifest and provenance at samples/by-format/qoi/. Gate 3 PASS delegated_agent_r24; IV verified R25."
     corpus_manifest: samples/by-format/qoi/_corpus-manifest.yaml
     provenance: samples/by-format/qoi/_provenance.yaml
     report: reports/planning/r24-qoi-gate3-sample-and-gate4-planning-report-20260518.md
+    iv_report: reports/planning/r25-qoi-iv-gate4-readiness-report-20260518.md
+    parser_notes: acquisition-packs/qoi/parser-notes.md

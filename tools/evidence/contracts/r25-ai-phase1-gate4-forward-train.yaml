@@ -1,0 +1,61 @@
+---
+contract_id: FORMAT-FACTORY-R25-AI-PHASE1-GATE4-FORWARD-TRAIN-AND-R24-METADATA-SYNC-001
+date: "2026-05-18"
+min_metadata_count: 40
+verdict_keyword: R25_COMPLETE
+emergency_blocker_bundle: false
+require_clean_git: true
+
+required_repo_files:
+  # Gate 0 / Preflight
+  - reports/r25/preflight-and-lane-ownership-20260518.md
+
+  # Lane A: R24 metadata sync repair
+  - reports/r25/r24-metadata-sync-and-evidence-hygiene-report.md
+
+  # Lane B/C: AI Phase 1 pre-resolved verification
+  - reports/r25/ai-phase1-verification-report.md
+
+  # Lane D: ODS/ODT/QOI Gate 3 IV + Gate 4 parser-notes
+  - acquisition-packs/ods/pack.yaml
+  - acquisition-packs/odt/pack.yaml
+  - acquisition-packs/qoi/pack.yaml
+  - acquisition-packs/ods/parser-notes.md
+  - acquisition-packs/odt/parser-notes.md
+  - acquisition-packs/qoi/parser-notes.md
+  - reports/planning/r25-ods-iv-gate4-readiness-report-20260518.md
+  - reports/planning/r25-odt-iv-gate4-readiness-report-20260518.md
+  - reports/planning/r25-qoi-iv-gate4-readiness-report-20260518.md
+
+  # Lane E: FODS/FODT G11-F hardening (malformed XML guard + heading detection)
+  - tests/net/fods/FodsG11fMalformedXmlGuardTests.cs
+  - tests/net/fodt/Fixtures/fodt-headings-and-list.fodt
+  - tests/net/fodt/FodtG11fHeadingAndGuardTests.cs
+  - reports/implementation/r25-fods-fodt-g11f-hardening-report-20260518.md
+
+  # Lane F: Python FOSS publication packet hardening
+  - reports/packaging/r25-python-foss-publication-packet-hardening-report-20260518.md
+
+  # Lane G: Memory/roadmap/registry integration
+  - memory/44-r25-ai-phase1-gate4-forward-train-20260518.md
+  - reports/r25/memory-roadmap-registry-integration-report.md
+
+  # Gate 8: Full validation
+  - reports/testing/r25-validation-command-log-20260518.md
+
+  # Gate 9/10: Safety + IV
+  - reports/verification/r25-safety-verification-report-20260518.md
+  - reports/verification/r25-cross-lane-independent-verification-20260518.md
+
+  # Gate 11: Adversarial review
+  - reports/governance/r25-adversarial-scope-drift-review-20260518.md
+
+  # Sprint metadata
+  - reports/r25-sprint-metadata-20260518/sprint-overview.md
+  - reports/r25-sprint-metadata-20260518/validation-command-log.md
+
+  # Final verdict
+  - reports/r25/final-verdict.md
+
+  # Evidence contract itself
+  - tools/evidence/contracts/r25-ai-phase1-gate4-forward-train.yaml
