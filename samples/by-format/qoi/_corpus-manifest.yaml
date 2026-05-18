@@ -1,0 +1,88 @@
+format_id: qoi
+corpus_version: "1.0"
+acquisition_sprint: FORMAT-FACTORY-R24-PARALLEL-CLOSURE-REPAIR-FORWARD-TRAIN-AND-AI-PLATFORM-PLAN-001
+acquisition_date: "2026-05-18"
+generation_method: deterministic_synthetic_python_struct
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/1x1-red.qoi
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 27
+    sha256: "sha256:455bc219da1db50619bf2af4a700284f9efa065bb6253dc0440928f54d312808"
+    category: minimal-valid
+    description: "1x1 RGBA image, single red pixel (255,0,0,255). Magic 'qoif', header 14 bytes, QOI_OP_RGBA chunk, 8-byte end marker."
+    magic_valid: true
+    width: 1
+    height: 1
+    channels: 4
+    colorspace: 0
+    pixel_count: 1
+    structural_test: PASS
+
+  - filename: valid/2x2-black.qoi
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 23
+    sha256: "sha256:421d23fd18d9d14d3069e75683c03232780e6f250e51f20300157291ae84d864"
+    category: run-length-encoding
+    description: "2x2 RGBA image, all black pixels (0,0,0,255). Tests QOI_OP_RUN run-length encoding for identical consecutive pixels."
+    magic_valid: true
+    width: 2
+    height: 2
+    channels: 4
+    colorspace: 0
+    pixel_count: 4
+    encoding_ops_used: [QOI_OP_RGBA, QOI_OP_RUN]
+    structural_test: PASS
+
+  - filename: valid/4x1-gradient.qoi
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 38
+    sha256: "sha256:2dcc40d3b5e3fdbff761c700813ce6eb06c46ce2d8ed1f6edd4cb7fbf5743469"
+    category: multi-pixel-gradient
+    description: "4x1 RGB image, 4 distinct greyscale pixels: (0,0,0), (85,85,85), (170,170,170), (255,255,255). Tests sequential literal pixel encoding."
+    magic_valid: true
+    width: 4
+    height: 1
+    channels: 3
+    colorspace: 0
+    pixel_count: 4
+    encoding_ops_used: [QOI_OP_RGBA]
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/wrong-magic.qoi
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 14
+    sha256: "sha256:99f0ca3001408cc57f683dc3c6250bd97e738aa0c793f0f0c68b7687997eb3f5"
+    category: invalid-magic
+    description: "File begins with 'NOPE' instead of 'qoif'. Tests magic byte validation in parser."
+    magic_valid: false
+    expected_error: true
+    error_type: InvalidMagic
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid
+    - run-length-encoding
+    - multi-pixel-gradient
+    - invalid-magic
+  gate_3_categories_met: true
+  awaiting_human_iv: true

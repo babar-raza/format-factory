@@ -1,0 +1,86 @@
+format_id: ods
+corpus_version: "1.0"
+acquisition_sprint: FORMAT-FACTORY-R24-PARALLEL-CLOSURE-REPAIR-FORWARD-TRAIN-AND-AI-PLATFORM-PLAN-001
+acquisition_date: "2026-05-18"
+generation_method: deterministic_synthetic_python_zipfile
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/minimal-spreadsheet.ods
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 1338
+    sha256: "sha256:a877eb36d60f266e6354e668750fc6554e5e97e6a0e463b320c9e61f22315cce"
+    category: minimal-valid-with-data
+    description: "1 sheet, 2x2 table: header row (Name/Value) + data row (Alpha/42). Mixed string and float cell types."
+    container_valid: true
+    mimetype_entry: "application/vnd.oasis.opendocument.spreadsheet"
+    has_content_xml: true
+    has_styles_xml: true
+    has_meta_xml: true
+    odf_version: "1.3"
+    structural_test: PASS
+
+  - filename: valid/single-cell.ods
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 1294
+    sha256: "sha256:a6475939695650a4a4b0b545491f2af1951a165669b7a19a501d905782f48d11"
+    category: minimal-trivial
+    description: "1 sheet, 1 cell containing string value 'A1'. Minimal non-empty spreadsheet."
+    container_valid: true
+    mimetype_entry: "application/vnd.oasis.opendocument.spreadsheet"
+    has_content_xml: true
+    has_styles_xml: true
+    has_meta_xml: true
+    odf_version: "1.3"
+    structural_test: PASS
+
+  - filename: valid/numeric-row.ods
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 1314
+    sha256: "sha256:030eb6daac67c1eb630a217404d7ead358a41d6c7cbd22623cef8f2aadcdb6f1"
+    category: numeric-data
+    description: "1 sheet, 1 row of 3 float cells (values 1, 2, 3). Tests numeric value-type parsing."
+    container_valid: true
+    mimetype_entry: "application/vnd.oasis.opendocument.spreadsheet"
+    has_content_xml: true
+    has_styles_xml: true
+    has_meta_xml: true
+    odf_version: "1.3"
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/truncated.ods
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 24
+    sha256: "sha256:ba7721c50cd5c24e032067abd08adf55e1215a208d33f9f5be0e532c7ddc2528"
+    category: invalid-truncated-zip
+    description: "ZIP local file header magic (PK\x03\x04) followed by 20 zero bytes. Truncated before central directory."
+    container_valid: false
+    expected_error: true
+    error_type: BadZipFile
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid-with-data
+    - minimal-trivial
+    - numeric-data
+    - invalid-truncated-zip
+  gate_3_categories_met: true
+  awaiting_human_iv: true

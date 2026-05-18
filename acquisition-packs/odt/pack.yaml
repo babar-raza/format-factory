@@ -95,13 +95,15 @@ stages:
     notes: "Fast-path approved. ODF 1.3 spec serves ODT, FODT, ODS, FODS equally. Gate 2 passed by delegated agent R23; awaits human IV."
 
   gate_3:
-    status: planned_no_samples_this_sprint
-    notes: "Gate 3 sample corpus requires LibreOffice or equivalent ODT generator. Not available in current sprint environment. Planned for R24. Sample sources identified: LibreOffice CI test fixtures (Apache-2.0), ODF TC test suite (OASIS public). Synthetic generation via Python odfpy library is also viable."
-    sample_sources:
-      - name: "LibreOffice test fixtures"
-        license: "Apache-2.0"
-        url_pattern: "https://github.com/LibreOffice/core/tree/master/sw/qa/unit/data"
-        status: planned_r24
-      - name: "odfpy synthetic generation"
-        license: "Apache-2.0"
-        status: planned_r24
+    status: pass
+    sprint: FORMAT-FACTORY-R24-PARALLEL-CLOSURE-REPAIR-FORWARD-TRAIN-AND-AI-PLATFORM-PLAN-001
+    date: "2026-05-18"
+    sample_corpus_path: samples/by-format/odt/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_zipfile
+    awaiting_human_iv: true
+    notes: "3 valid ODT samples (minimal-document, two-paragraphs, unicode-text) + 1 invalid (truncated). Generated via Python stdlib zipfile. No third-party dependencies. Corpus manifest and provenance at samples/by-format/odt/. Gate 3 PASS delegated_agent_r24; awaits human IV per DEC-034."
+    corpus_manifest: samples/by-format/odt/_corpus-manifest.yaml
+    provenance: samples/by-format/odt/_provenance.yaml
+    report: reports/planning/r24-odt-gate3-sample-corpus-report-20260518.md

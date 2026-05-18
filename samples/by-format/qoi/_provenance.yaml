@@ -1,0 +1,64 @@
+format_id: qoi
+provenance_version: "1.0"
+provenance_date: "2026-05-18"
+acquisition_sprint: FORMAT-FACTORY-R24-PARALLEL-CLOSURE-REPAIR-FORWARD-TRAIN-AND-AI-PLATFORM-PLAN-001
+commercial_product_ready: false
+
+# All QOI corpus samples are project-owned synthetic, generated via Python
+# standard library (struct + bytes) with no third-party dependencies.
+# QOI format is fully specified at qoi.phoboslab.org (MIT).
+# Generation script: .local/gen_samples.py (ephemeral, gitignored)
+# Encoding: 14-byte header + QOI_OP_RGBA (0xFF) literal chunks + QOI_OP_RUN (0xC0|run-1)
+# + 8-byte end marker (7x 0x00 + 0x01). All files are fully deterministic.
+
+- sample_id: valid/1x1-red.qoi
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (struct, bytes)"
+  generation_script: ".local/gen_samples.py"
+  generation_date: "2026-05-18"
+  input_content: "Programmatic: 1 pixel RGBA (255,0,0,255) — opaque red"
+  encoding_ops: "QOI_OP_RGBA (0xFF) literal"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:455bc219da1db50619bf2af4a700284f9efa065bb6253dc0440928f54d312808"
+  provenance_status: confirmed
+  magic_valid: true
+
+- sample_id: valid/2x2-black.qoi
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (struct, bytes)"
+  generation_script: ".local/gen_samples.py"
+  generation_date: "2026-05-18"
+  input_content: "Programmatic: 4 pixels all RGBA (0,0,0,255) — opaque black 2x2"
+  encoding_ops: "QOI_OP_RGBA (0xFF) first pixel + QOI_OP_RUN (0xC0|2) for 3 repeats"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:421d23fd18d9d14d3069e75683c03232780e6f250e51f20300157291ae84d864"
+  provenance_status: confirmed
+  magic_valid: true
+
+- sample_id: valid/4x1-gradient.qoi
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (struct, bytes)"
+  generation_script: ".local/gen_samples.py"
+  generation_date: "2026-05-18"
+  input_content: "Programmatic: 4 distinct pixels RGBA: (0,0,0,255), (85,85,85,255), (170,170,170,255), (255,255,255,255) — greyscale gradient"
+  encoding_ops: "4x QOI_OP_RGBA (0xFF) literal (no run-length, all pixels differ)"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:2dcc40d3b5e3fdbff761c700813ce6eb06c46ce2d8ed1f6edd4cb7fbf5743469"
+  provenance_status: confirmed
+  magic_valid: true
+
+- sample_id: invalid/wrong-magic.qoi
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_script: ".local/gen_samples.py"
+  generation_date: "2026-05-18"
+  input_content: "Bytes: b'NOPE' + 10 null bytes — invalid magic, not a QOI file"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:99f0ca3001408cc57f683dc3c6250bd97e738aa0c793f0f0c68b7687997eb3f5"
+  provenance_status: confirmed
+  magic_valid: false
+  expected_error: true

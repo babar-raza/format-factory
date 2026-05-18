@@ -1,0 +1,86 @@
+format_id: odt
+corpus_version: "1.0"
+acquisition_sprint: FORMAT-FACTORY-R24-PARALLEL-CLOSURE-REPAIR-FORWARD-TRAIN-AND-AI-PLATFORM-PLAN-001
+acquisition_date: "2026-05-18"
+generation_method: deterministic_synthetic_python_zipfile
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/minimal-document.odt
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 1212
+    sha256: "sha256:2e6206d5797e6aef8a336fc80fd534871c6871a0b7237154a48801a61fd912b1"
+    category: minimal-valid
+    description: "Single paragraph: 'Hello, world.' ASCII text only. Minimal valid ODT document."
+    container_valid: true
+    mimetype_entry: "application/vnd.oasis.opendocument.text"
+    has_content_xml: true
+    has_styles_xml: true
+    has_meta_xml: true
+    odf_version: "1.3"
+    structural_test: PASS
+
+  - filename: valid/two-paragraphs.odt
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 1224
+    sha256: "sha256:73d972c7c90eb6c5e62f912397d5236b534228d66ae3313fd56b36a46bc02563"
+    category: multi-paragraph
+    description: "Two text:p elements: 'First paragraph.' and 'Second paragraph.'. Tests multi-paragraph document structure."
+    container_valid: true
+    mimetype_entry: "application/vnd.oasis.opendocument.text"
+    has_content_xml: true
+    has_styles_xml: true
+    has_meta_xml: true
+    odf_version: "1.3"
+    structural_test: PASS
+
+  - filename: valid/unicode-text.odt
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 1227
+    sha256: "sha256:3449383456b912421d9fc05165c40ef690cec5b35ad42ff96193c6d2a4087870"
+    category: unicode-content
+    description: "Single paragraph with Unicode text: 'Cafe (U+00E9) Chinese characters (U+4E2D U+6587) French eleve (U+00E9 U+00E8)'. Tests UTF-8 encoding in ZIP+XML container."
+    container_valid: true
+    mimetype_entry: "application/vnd.oasis.opendocument.text"
+    has_content_xml: true
+    has_styles_xml: true
+    has_meta_xml: true
+    odf_version: "1.3"
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/truncated.odt
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 24
+    sha256: "sha256:ba7721c50cd5c24e032067abd08adf55e1215a208d33f9f5be0e532c7ddc2528"
+    category: invalid-truncated-zip
+    description: "ZIP local file header magic (PK\\x03\\x04) followed by 20 zero bytes. Truncated before central directory."
+    container_valid: false
+    expected_error: true
+    error_type: BadZipFile
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid
+    - multi-paragraph
+    - unicode-content
+    - invalid-truncated-zip
+  gate_3_categories_met: true
+  awaiting_human_iv: true
