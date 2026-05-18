@@ -67,4 +67,17 @@ Human authorizes EMB-001 after LLM-001 and FUL-001 are approved.
 
 ## Status
 
-proposed_pending_human_approval — no embeddings created in this memory sprint.
+superseded — scope absorbed into AI-EMBEDDING-VECTOR-STORE-FOUNDATION (2026-05-18).
+
+## Superseded By
+
+**AI-EMBEDDING-VECTOR-STORE-FOUNDATION** — The AI platform plan hardening sprint (FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001, 2026-05-18) created a comprehensive embedding/vector store taskcard that subsumes EMB-001's scope and adds: LanceDB integration, format-segregated namespaces, chunk manifests, stale-index detection, retrieval audit logging, dimension stability checks, and embedding model fingerprinting. The storage layout uses `.local/ai/vector-stores/{format}/` instead of the originally proposed `.local/embeddings/{format}/`.
+
+EMB-001's original scope (architecture document, embedding schema, retrieval API, invalidation policy) is fully covered by `docs/ai/embedding-and-vector-store-policy.md` and the AI-EMBEDDING-VECTOR-STORE-FOUNDATION taskcard.
+
+## State Transition Log
+
+| Date | From | To | Reason |
+|------|------|----|--------|
+| 2026-05-08 | created | proposed_pending_human_approval | Initial creation in memory sprint |
+| 2026-05-18 | proposed_pending_human_approval | superseded | Scope absorbed into AI-EMBEDDING-VECTOR-STORE-FOUNDATION |

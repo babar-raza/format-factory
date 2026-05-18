@@ -64,4 +64,17 @@ Human explicitly authorizes LLM-001 execution with LLM endpoint access confirmed
 
 ## Status
 
-proposed_pending_human_approval — no LLM calls made in this memory sprint.
+superseded — scope absorbed into AI-MODEL-DISCOVERY-AND-ROUTING (2026-05-18).
+
+## Superseded By
+
+**AI-MODEL-DISCOVERY-AND-ROUTING** — The AI platform plan hardening sprint (FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001, 2026-05-18) created a comprehensive model discovery and role-based routing taskcard that subsumes LLM-001's scope and adds: dynamic role-based routing, capability probing, fail-closed behavior, model fingerprinting, and fallback policy. The environment variable names have been standardized to GPT_OSS_API_KEY and GPT_OSS_ENDPOINT.
+
+LLM-001's original scope (preflight script, model enumeration, model-selection.yaml) is fully covered by AI-MODEL-DISCOVERY-AND-ROUTING plus the broader `tools/ai/control_plane/` architecture.
+
+## State Transition Log
+
+| Date | From | To | Reason |
+|------|------|----|--------|
+| 2026-05-08 | created | proposed_pending_human_approval | Initial creation in memory sprint |
+| 2026-05-18 | proposed_pending_human_approval | superseded | Scope absorbed into AI-MODEL-DISCOVERY-AND-ROUTING |

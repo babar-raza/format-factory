@@ -653,15 +653,143 @@ Comprehensive risk register for all AI/LLM/Embedding operations in Format Factor
 | **Owner/Taskcard** | AI-RISK-MITIGATION-MATRIX |
 | **Stop Condition** | N/A — continuous improvement |
 
+### RISK-AI-041: Qwen2 Produces Structurally Valid but Semantically Wrong Output
+
+| Field | Value |
+|-------|-------|
+| **Description** | Qwen2 agentic output passes schema validation but is semantically incorrect (e.g., misclassifies a format, wrong sorting order) |
+| **Affected Layer** | Agentic |
+| **Severity** | MEDIUM |
+| **Likelihood** | MEDIUM |
+| **Detection** | Spot-check against known-correct answers; semantic eval suite |
+| **Prevention** | Golden eval for each agentic task type; minimum accuracy threshold |
+| **Mitigation** | Reject output; escalate to GPT-OSS or human |
+| **Validation Test** | Provide known-answer task; verify output matches |
+| **Evidence Artifact** | Semantic accuracy test results |
+| **Owner/Taskcard** | AI-AGENTIC-QWEN2-CONTROLS |
+| **Stop Condition** | If semantic accuracy < 80%: stop Qwen2 for that task type |
+
+### RISK-AI-042: GPT-OSS Produces Plausible but Factually Wrong Requirements
+
+| Field | Value |
+|-------|-------|
+| **Description** | GPT-OSS synthesis generates requirements that sound correct and pass schema validation but do not match the actual spec content |
+| **Affected Layer** | Synthesis |
+| **Severity** | HIGH |
+| **Likelihood** | MEDIUM |
+| **Detection** | Source-support verifier; human spot-check of cited sections |
+| **Prevention** | Mandatory citation with source-support verification; contradiction detector |
+| **Mitigation** | Reject requirement; flag as plausible-hallucination; human review |
+| **Validation Test** | Compare generated requirements against manually extracted requirements |
+| **Evidence Artifact** | Requirement accuracy comparison report |
+| **Owner/Taskcard** | AI-GPT-OSS-SYNTHESIS-CONTROLS |
+| **Stop Condition** | If >15% of requirements fail source-support verification: stop and review prompt |
+
+### RISK-AI-043: Schema-Valid Output Contains Unsupported Claims
+
+| Field | Value |
+|-------|-------|
+| **Description** | AI output conforms to schema but includes claims not supported by any input source |
+| **Affected Layer** | Synthesis, Agentic |
+| **Severity** | MEDIUM |
+| **Likelihood** | MEDIUM |
+| **Detection** | Source-citation completeness check; unsupported-claim scanner |
+| **Prevention** | Every factual field in output schema requires citation; fields without citations flagged |
+| **Mitigation** | Strip unsupported claims; flag for human review |
+| **Validation Test** | Submit output with uncited claims; verify scanner detects them |
+| **Evidence Artifact** | Unsupported claim detection log |
+| **Owner/Taskcard** | AI-GPT-OSS-SYNTHESIS-CONTROLS |
+| **Stop Condition** | If >20% of claims unsupported: reject entire output |
+
+### RISK-AI-044: Contradiction with Existing Verified Facts Not Detected
+
+| Field | Value |
+|-------|-------|
+| **Description** | AI output contradicts facts already in verified-facts.yaml but contradiction detector misses it |
+| **Affected Layer** | Synthesis |
+| **Severity** | MEDIUM |
+| **Likelihood** | LOW-MEDIUM |
+| **Detection** | Manual cross-reference; contradiction detector regression tests |
+| **Prevention** | Contradiction detector tested against known-contradiction dataset |
+| **Mitigation** | Expand contradiction test set; add missed case; re-validate output |
+| **Validation Test** | Inject known contradictions; verify detection rate |
+| **Evidence Artifact** | Contradiction detection recall metrics |
+| **Owner/Taskcard** | AI-GPT-OSS-SYNTHESIS-CONTROLS |
+| **Stop Condition** | If contradiction detection recall < 90%: do not use contradiction_checked state |
+
+### RISK-AI-045: Global Vector Cache Pollution
+
+| Field | Value |
+|-------|-------|
+| **Description** | Shared .local directory or misconfigured path causes vector store data from one project/environment to leak into another |
+| **Affected Layer** | Retrieval |
+| **Severity** | MEDIUM |
+| **Likelihood** | LOW |
+| **Detection** | Vector store path validation; project-root anchoring check |
+| **Prevention** | Vector stores anchored to repo root; path validated on every access |
+| **Mitigation** | Rebuild contaminated store; enforce path validation |
+| **Validation Test** | Attempt to open vector store from different project root; verify rejection |
+| **Evidence Artifact** | Path validation test results |
+| **Owner/Taskcard** | AI-EMBEDDING-VECTOR-STORE-FOUNDATION |
+| **Stop Condition** | If cross-project data detected: delete and rebuild all stores |
+
+### RISK-AI-046: Local Telemetry/Spool File Corruption
+
+| Field | Value |
+|-------|-------|
+| **Description** | JSONL spool files become corrupted (partial writes, encoding issues); telemetry data lost |
+| **Affected Layer** | Telemetry |
+| **Severity** | MEDIUM |
+| **Likelihood** | LOW |
+| **Detection** | JSONL parse check on spool read; line count validation |
+| **Prevention** | Atomic writes (write to temp, rename); flush after each record |
+| **Mitigation** | Skip corrupt lines; log corruption warning; continue with remaining records |
+| **Validation Test** | Corrupt a spool file; verify graceful handling |
+| **Evidence Artifact** | Spool corruption handling test results |
+| **Owner/Taskcard** | AI-TELEMETRY-AGENT-METRICS-INTEGRATION |
+| **Stop Condition** | N/A — graceful degradation, not a stop condition |
+
+### RISK-AI-047: Deferred Feature Forgotten After Classification
+
+| Field | Value |
+|-------|-------|
+| **Description** | A feature classified as "defer" is never revisited because no review trigger fires |
+| **Affected Layer** | Control Plane |
+| **Severity** | MEDIUM |
+| **Likelihood** | MEDIUM |
+| **Detection** | Phase gate review checks deferred feature list |
+| **Prevention** | Each deferred feature has a review taskcard and target phase; phase gate includes deferred review |
+| **Mitigation** | Re-evaluate deferred features at each phase transition |
+| **Validation Test** | Phase gate checklist includes "review deferred features" item |
+| **Evidence Artifact** | Deferred feature review log per phase |
+| **Owner/Taskcard** | AI-FOUNDATION-IMPLEMENTATION-NEXT |
+| **Stop Condition** | N/A — administrative gap, not safety issue |
+
+### RISK-AI-048: Non-AI Sprint Accidentally Depends on AI Layer
+
+| Field | Value |
+|-------|-------|
+| **Description** | Acquisition or commercial sprint code starts importing from tools/ai/ before AI platform is stable |
+| **Affected Layer** | All |
+| **Severity** | HIGH |
+| **Likelihood** | LOW-MEDIUM |
+| **Detection** | Import scanning across tools/ excluding tools/ai/; dependency graph analysis |
+| **Prevention** | AI platform modules not importable from outside tools/ai/ until stable; import guard |
+| **Mitigation** | Remove dependency; refactor to avoid AI import |
+| **Validation Test** | Scan non-AI tools/ for tools/ai imports; verify zero hits |
+| **Evidence Artifact** | Cross-dependency scan results |
+| **Owner/Taskcard** | AI-PLATFORM-FOUNDATION-PLAN |
+| **Stop Condition** | If dependency detected: block until refactored |
+
 ## 3. Summary Statistics
 
 | Severity | Count |
 |----------|-------|
-| CRITICAL | 4 (RISK-AI-006, 018, 020, 029, 030) |
-| HIGH | 11 |
-| MEDIUM | 19 |
-| LOW | 6 |
-| **Total** | **40** |
+| CRITICAL | 5 (RISK-AI-006, 018, 020, 029, 030) |
+| HIGH | 12 (001, 002, 003, 007, 011, 019, 021, 022, 035, 038, 042, 048) |
+| MEDIUM | 22 |
+| LOW | 9 |
+| **Total** | **48** |
 
 ## 4. Cross-References
 

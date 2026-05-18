@@ -1793,7 +1793,7 @@ Plus a **mandatory control plane:** model discovery, role routing, task contract
 
 ### 39.4 Risk Register
 
-40-item AI risk register in `docs/ai/ai-risk-register.md`. Covers model drift, hallucination, prompt injection, vector contamination, framework lock-in, secret leakage, runtime isolation, authority lifecycle bypass, and more. Each risk has severity, detection, prevention, mitigation, validation test, evidence artifact, and stop condition.
+48-item AI risk register in `docs/ai/ai-risk-register.md`. Covers model drift, hallucination, prompt injection, vector contamination, framework lock-in, secret leakage, runtime isolation, authority lifecycle bypass, plausible-wrong requirements, unsupported claims, spool corruption, deferred-feature drift, and cross-sprint dependency. Each risk has severity, detection, prevention, mitigation, validation test, evidence artifact, and stop condition. Expanded from 40 to 48 in final plan healing sprint (2026-05-18).
 
 ### 39.5 Implementation Phases
 
