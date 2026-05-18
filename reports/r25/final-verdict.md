@@ -32,11 +32,11 @@
 
 ## Commit SHA
 
-(populated in post-commit refresh — see Gate 14)
+bee68b2
 
 ## Evidence Bundle
 
-(populated in post-commit refresh — see Gate 14)
+C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidence-bundles\r25-ai-phase1-gate4-forward-train-20260518.zip
 
 ## Key Outcomes
 
