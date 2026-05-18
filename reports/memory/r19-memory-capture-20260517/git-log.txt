@@ -1,3 +1,29 @@
+4824972 fix(evidence): set emergency_blocker_bundle and min_metadata_count for R19 memory contract
+ tools/evidence/contracts/r19-memory-capture-dedicated-001.yaml | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+ab1db72 chore(evidence): add R19 memory capture metadata and evidence bundle files
+ .../bundle-manifest.yaml                           |   10 +
+ .../consistency-check-result.txt                   |   11 +
+ .../memory/r19-memory-capture-20260517/git-log.txt |  559 +++++++++
+ .../git-status-after-commit.txt                    |   13 +
+ .../git-status-final.txt                           |   10 +
+ .../memory-file-spot-check.txt                     |   21 +
+ .../memory-index-diff.txt                          |   13 +
+ .../metadata-identity-report.md                    |    9 +
+ .../path-references-check.txt                      |   43 +
+ .../r19-acquisition-packs-state.txt                |   40 +
+ .../r19-commit-details.txt                         |   18 +
+ .../r19-deferred-items.txt                         |   29 +
+ .../r19-planning-reports-index.txt                 |   20 +
+ .../r19-policy-evid-summary.txt                    |   22 +
+ .../r19-registry-transitions.txt                   |   29 +
+ .../r19-samples-corpus.txt                         |   32 +
+ .../r19-taskcards-created.txt                      |   27 +
+ .../r19-test-baseline.txt                          |   16 +
+ .../r19-memory-capture-20260517/repo-tree.txt      | 1306 ++++++++++++++++++++
+ .../r19-memory-capture-20260517/sprint-overview.md |   37 +
+ .../tc-skill-prd-009-closure.txt                   |   18 +
+ 21 files changed, 2283 insertions(+)
 62f0fb3 docs(memory): backfill R19 acquisition train state (R19-MEMORY-CAPTURE-DEDICATED-001)
  memory/00-index.md                                 |   2 +
  ...9-high-throughput-acquisition-train-20260517.md | 224 +++++++++++++++++++++
@@ -531,29 +557,3 @@ db4bdd3 chore(acquisition): verify ZST Gate 2 closure evidence
 c48ea1e chore(memory): update memory/29 with R13A bundle validation result
  memory/29-r12-closure-and-r13a-zst-gate1-packet-20260515.md | 5 +++++
  1 file changed, 5 insertions(+)
-d9804da chore(contracts): set emergency_blocker_bundle for pre-existing untracked files
- .../contracts/r13a-r12-closure-and-zst-gate1-packet-swarm.yaml        | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-ebb5288 chore(acquisition): close R12 hygiene and prepare ZST Gate 1 packet
- README.md                                          |  22 +-
- ROADMAP.md                                         |  25 +--
- .../zst-gate1-decision-packet-20260515.md          | 228 +++++++++++++++++++++
- acquisition-packs/_template/pack.yaml              |   9 +
- ...2-closure-and-r13a-zst-gate1-packet-20260515.md |  74 +++++++
- plans/master-plan.md                               |   6 +-
- .../governance/r13a-adversarial-review-20260515.md | 175 ++++++++++++++++
- ...r13a-authority-normalization-report-20260515.md |  80 ++++++++
- .../r13a-no-scope-drift-report-20260515.md         |  82 ++++++++
- ...preflight-and-authority-read-report-20260515.md |  84 ++++++++
- ...ack-template-standardization-repair-20260515.md |  68 ++++++
- .../planning/r13a-r14-forward-roadmap-20260515.md  | 137 +++++++++++++
- ...3a-taskcard-state-management-report-20260515.md |  47 +++++
- .../zst-gate1-decision-packet-report-20260515.md   |  48 +++++
- ...zst-support-matrix-audit-simulation-20260515.md | 163 +++++++++++++++
- ...a-full-suite-timeout-or-pass-report-20260515.md |  91 ++++++++
- ...losure-contradiction-reconciliation-20260515.md | 173 ++++++++++++++++
- taskcards/R12-CLOSURE-VERIFICATION.md              |  40 ++++
- taskcards/R13A-AUTHORITY-NORMALIZATION.md          |  55 +++++
- taskcards/ZST-GATE1-DECISION-PACKET.md             |  61 ++++++
- ...13a-r12-closure-and-zst-gate1-packet-swarm.yaml |  97 +++++++++
- 21 files changed, 1739 insertions(+), 26 deletions(-)
