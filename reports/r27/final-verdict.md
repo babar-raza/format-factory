@@ -55,8 +55,8 @@
 
 ## Commits
 
-COMMIT_SHA: PENDING_COMMIT
-EVIDENCE_BUNDLE: PENDING_BUILD
+COMMIT_SHA: cb7e05c
+EVIDENCE_BUNDLE: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidence-bundles\r27-ai-platform-full-cycle-20260519.zip
 
 ## Invariants Held
 
