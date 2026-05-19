@@ -1302,10 +1302,26 @@ formats:
         notes: >
           Gate 2 fast-path: ODF 1.3 spec already in .local/spec-cache/fods/1.3/. R23 delegated.
       gate_3:
-        status: planned_r24
-        approved_by: null
-        approved_date: null
-        notes: "Gate 3 sample corpus planned for R24. Synthetic via LibreOffice or odfpy (MIT)."
+        status: pass
+        approved_by: "delegated_agent_r24"
+        approved_date: "2026-05-18"
+        sample_count: 3
+        invalid_count: 1
+        generation_method: deterministic_synthetic_python_zipfile
+        gate_3_iv_status: verified
+        gate_3_iv_sprint: R25
+        notes: "Gate 3 PASS (R24). 3 valid + 1 invalid. Python stdlib zipfile. IV verified R25."
+      gate_4:
+        status: prototype_complete
+        approved_by: "delegated_agent_r27"
+        approved_date: "2026-05-19"
+        source_path: src/python/ods/ods_parser.py
+        test_path: tests/python/ods/test_ods_parser.py
+        test_count: 9
+        test_result: "9/9 PASS"
+        commercial_product_ready: false
+        production_source_authorized: true
+        notes: "Gate 4 prototype complete (R27). ZIP+XML ODS parser. 9/9 tests PASS."
 
   - format_id: odt
     display_name: OpenDocument Text
@@ -1344,10 +1360,26 @@ formats:
         notes: >
           Gate 2 fast-path: ODF 1.3 spec already in .local/spec-cache/fods/1.3/. R23 delegated.
       gate_3:
-        status: planned_r24
-        approved_by: null
-        approved_date: null
-        notes: "Gate 3 sample corpus planned for R24. Synthetic via LibreOffice or odfpy (MIT)."
+        status: pass
+        approved_by: "delegated_agent_r24"
+        approved_date: "2026-05-18"
+        sample_count: 3
+        invalid_count: 1
+        generation_method: deterministic_synthetic_python_zipfile
+        gate_3_iv_status: verified
+        gate_3_iv_sprint: R25
+        notes: "Gate 3 PASS (R24). 3 valid + 1 invalid. Python stdlib zipfile. IV verified R25."
+      gate_4:
+        status: prototype_complete
+        approved_by: "delegated_agent_r27"
+        approved_date: "2026-05-19"
+        source_path: src/python/odt/odt_parser.py
+        test_path: tests/python/odt/test_odt_parser.py
+        test_count: 10
+        test_result: "10/10 PASS"
+        commercial_product_ready: false
+        production_source_authorized: true
+        notes: "Gate 4 prototype complete (R27). ZIP+XML ODT parser. 10/10 tests PASS."
 
   - format_id: qoi
     display_name: Quite OK Image Format
@@ -1388,10 +1420,102 @@ formats:
           Header: 14 bytes (magic qoif + width + height + channels + colorspace).
           End marker: 8 bytes. R23 delegated.
       gate_3:
-        status: planned_r24
-        approved_by: null
-        approved_date: null
-        notes: "Gate 3 samples planned for R24. MIT reference test suite + synthetic via Python qoi package."
+        status: pass
+        approved_by: "delegated_agent_r24"
+        approved_date: "2026-05-18"
+        sample_count: 3
+        invalid_count: 1
+        generation_method: deterministic_synthetic_python_struct
+        gate_3_iv_status: verified
+        gate_3_iv_sprint: R25
+        notes: "Gate 3 PASS (R24). 3 valid + 1 invalid. Python stdlib struct. IV verified R25."
+      gate_4:
+        status: prototype_complete
+        approved_by: "delegated_agent_r27"
+        approved_date: "2026-05-19"
+        source_path: src/python/qoi/qoi_parser.py
+        test_path: tests/python/qoi/test_qoi_parser.py
+        test_count: 10
+        test_result: "10/10 PASS"
+        commercial_product_ready: false
+        production_source_authorized: true
+        notes: "Gate 4 prototype complete (R27). Full 6-op QOI decoder. 10/10 tests PASS."
+
+  - format_id: xcf
+    display_name: "GIMP Native Image Format"
+    family: imaging
+    extensions:
+      - .xcf
+    mime_type: "image/x-xcf"
+    spec_body: "GIMP Development Team"
+    spec_version: "XCF v011 (GIMP 2.10+)"
+    legal_category: 2
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: MEDIUM
+    sprint_added: R27
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r27"
+        approved_date: "2026-05-19"
+        approval_method: delegated_agent_decision_r27
+        awaiting_human_iv: true
+        score_normalized: 7.8
+        band: Accept
+        notes: "XCF Gate 1 passed 7.8/10 (R27). GPLv3 source but format open. NOT_SUPPORTED by Aspose."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r27"
+        approved_date: "2026-05-19"
+        spec_source: "https://developer.gimp.org/core/xcf/"
+        notes: "Gate 2: GIMP developer wiki + source code. XCF v011. No patent claims. R27 delegated."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r27"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        generation_method: deterministic_synthetic_python_struct
+        awaiting_human_iv: true
+        notes: "Gate 3 PASS (R27). 3 valid + 1 invalid XCF samples. Python struct. Awaiting IV."
+
+  - format_id: zpaq
+    display_name: "ZPAQ Archive"
+    family: archive
+    extensions:
+      - .zpaq
+    mime_type: "application/x-zpaq"
+    spec_body: "Matt Mahoney"
+    spec_version: "ZPAQ Level 2 (v2.06, 2013)"
+    legal_category: 2
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: HIGH
+    sprint_added: R27
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r27"
+        approved_date: "2026-05-19"
+        approval_method: delegated_agent_decision_r27
+        awaiting_human_iv: true
+        score_normalized: 6.2
+        band: Review
+        notes: "ZPAQ Gate 1 passed 6.2/10 (R27, Review band). Public domain. ZPAQL VM complexity."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r27"
+        approved_date: "2026-05-19"
+        spec_source: "http://mattmahoney.net/dc/zpaq206.pdf"
+        notes: "Gate 2: Full PDF spec + public domain reference impl. No patent claims. R27 delegated."
+      gate_3:
+        status: blocked_sample_generation_requires_tool
+        notes: "Gate 3 BLOCKED (R27). ZPAQ requires embedded ZPAQL bytecode — cannot generate with Python struct alone."
 
 
 # ---

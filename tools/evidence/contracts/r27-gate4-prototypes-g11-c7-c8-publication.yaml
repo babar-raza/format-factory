@@ -1,0 +1,73 @@
+---
+contract_id: FORMAT-FACTORY-R27-GATE4-PROTOTYPES-G11-C7-C8-HARDENING-PUBLICATION-PACKET-AND-METADATA-SYNC-001
+date: "2026-05-19"
+min_metadata_count: 31
+verdict_keyword: R27_COMPLETE
+emergency_blocker_bundle: false
+require_clean_git: true
+
+required_repo_files:
+  # Gate 0 / Preflight
+  - reports/r27/preflight-and-lane-ownership-20260519.md
+
+  # Lane A: R26 metadata sync
+  - reports/r27/r26-metadata-sync-and-evidence-hygiene-report-20260519.md
+
+  # Lane B: Gate 4 authorization review
+  - reports/planning/r27-gate4-authorization-review-ods-odt-qoi-20260519.md
+
+  # Lane C: ODS Gate 4 prototype
+  - src/python/ods/__init__.py
+  - src/python/ods/ods_parser.py
+  - tests/python/ods/test_ods_parser.py
+  - reports/implementation/r27-ods-gate4-prototype-report-20260519.md
+
+  # Lane D: ODT Gate 4 prototype
+  - src/python/odt/__init__.py
+  - src/python/odt/odt_parser.py
+  - tests/python/odt/test_odt_parser.py
+  - reports/implementation/r27-odt-gate4-prototype-report-20260519.md
+
+  # Lane E: QOI Gate 4 prototype
+  - src/python/qoi/__init__.py
+  - src/python/qoi/qoi_parser.py
+  - tests/python/qoi/test_qoi_parser.py
+  - reports/implementation/r27-qoi-gate4-prototype-report-20260519.md
+
+  # Lane F: Cross-format harness
+  - tests/python/test_gate4_prototype_common.py
+  - reports/verification/r27-gate4-prototype-cross-format-harness-report-20260519.md
+
+  # Lane G: FODS C7/C8
+  - tests/net/fods/FodsC7C8RoundtripPreservationTests.cs
+  - reports/implementation/r27-fods-c7-c8-roundtrip-preservation-report-20260519.md
+
+  # Lane H: FODT C7/C8
+  - tests/net/fodt/FodtC7C8RoundtripPreservationTests.cs
+  - reports/implementation/r27-fodt-c7-c8-roundtrip-preservation-report-20260519.md
+
+  # Lane I: Publication blocker reduction
+  - reports/packaging/r27-python-foss-publication-blocker-reduction-report-20260519.md
+
+  # Lane J: New candidates
+  - acquisition-packs/xcf/pack.yaml
+  - acquisition-packs/zpaq/pack.yaml
+  - reports/planning/r27-new-format-candidate-expansion-report-20260519.md
+
+  # Lane K: Memory/registry
+  - memory/47-r27-gate4-prototypes-g11-c7-c8-publication-20260519.md
+  - registry/format-registry.yaml
+
+  # Pack.yaml updates
+  - acquisition-packs/ods/pack.yaml
+  - acquisition-packs/odt/pack.yaml
+  - acquisition-packs/qoi/pack.yaml
+
+  # Sprint metadata
+  - reports/r27-gate4-sprint-metadata-20260519/sprint-overview.md
+
+  # Final verdict
+  - reports/r27/final-verdict-gate4-prototypes-20260519.md
+
+  # Evidence contract itself
+  - tools/evidence/contracts/r27-gate4-prototypes-g11-c7-c8-publication.yaml

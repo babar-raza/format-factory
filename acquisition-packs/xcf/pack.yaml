@@ -1,0 +1,137 @@
+# XCF Acquisition Pack
+# GIMP Native Image Format
+# Sprint: R27 Lane J — New Candidate Expansion
+# Gate 1-3 for XCF format
+
+format_id: xcf
+display_name: "GIMP Native Image Format (XCF)"
+extensions:
+  - .xcf
+mime_type: "image/x-xcf"
+family: imaging
+spec_body: "GIMP Project (GNU)"
+spec_version: "XCF v011 (GIMP 2.10+)"
+legal_category: 2
+legal_description: "XCF format is defined by GIMP source code (GPLv3). The format itself is open and documented. GPLv3 applies to the GIMP source code, not to the format specification. Independent parser implementations are legally safe. No patent claims. Community-maintained format documentation at GIMP developer wiki."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose does not support XCF format as of 2026-05-19. No Aspose class handles .xcf files."
+aspose_notes: "NOT_SUPPORTED is POSITIVE for commercial differentiation. XCF is the native format for GIMP, the most widely used FOSS image editor."
+python_library: "Custom implementation using struct (binary header parsing). No PyPI library required — format is well-documented binary."
+oracle_strategy: "Round-trip: construct XCF with known pixel data, read back, compare layer pixel arrays and metadata."
+acquisition_risk_classification: LOW
+acquisition_risk_notes: "XCF binary header and structure are fully documented in GIMP developer docs. Format versions are stable. No encryption or DRM. GPLv3 on GIMP source does not restrict format parsing."
+sprint_created: R27
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: xcf
+    display_name: "GIMP Native Image Format (XCF)"
+    mime_type: "image/x-xcf"
+    extensions: [".xcf"]
+    structure: "Binary file. 14-byte header: 9-byte magic ('gimp xcf '), 4-byte version string ('v011'), NUL terminator. Followed by property list, then layer/channel offsets."
+    spec_body: "GIMP Project (GNU)"
+    spec_version: "XCF v011"
+    notes: "XCF stores layers, channels, paths, parasites (metadata), and full editing state. Binary format with documented structure. Magic bytes: 'gimp xcf ' (9 bytes). Version strings: 'file' (v0), 'v001'-'v011'. Property list uses type-ID + payload-length pairs."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r27"
+    approved_by: "delegated_agent_r27"
+    approved_date: "2026-05-19"
+    sprint: R27
+    awaiting_human_iv: true
+    score_total: 78
+    score_normalized: 7.8
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 2
+        points: 20
+        evidence: "Legal Category 2 — Permissive OSS. GIMP is GPLv3, but the XCF format itself is open. Independent parser implementations are legally safe. No patent claims on the format. Multiple independent XCF readers exist (ImageMagick, Python xcftools, etc.) without legal issues."
+      spec_availability:
+        score: 2
+        points: 13
+        evidence: "Format documented in GIMP developer wiki (developer.gimp.org/core/xcf/). GIMP source code (app/xcf/) is the authoritative reference. Documentation covers header, properties, layers, channels. Some edge cases require source code inspection."
+      parseable_structure:
+        score: 2
+        points: 10
+        evidence: "Binary format with clear header structure. 14-byte magic+version header is straightforward. Property list uses type-length-value encoding. Layer data can be complex (tiles, compression modes) but basic structure parsing is moderate complexity."
+      community_demand:
+        score: 2
+        points: 10
+        evidence: "GIMP is the most popular FOSS image editor. XCF files are common in design/publishing workflows. Moderate demand for programmatic XCF access (batch processing, CI pipelines, asset management)."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Imaging family. Second imaging format after QOI. Establishes deeper imaging track coverage. XCF is a layered editing format — distinct from QOI (simple raster)."
+      implementation_complexity:
+        score: 1
+        points: 2
+        evidence: "Moderate-to-high complexity. Full XCF support requires handling multiple compression modes (none, RLE, zlib), tile-based layer data, parasites, paths. Basic header/metadata parsing is simpler."
+      family_overlap:
+        score: 3
+        points: 5
+        evidence: "No overlap with existing formats. XCF is unique — native editing format with layers, channels, paths. No other layered image editing format in the system."
+    legal_category: 2
+    aspose_support_level: NOT_SUPPORTED
+    notes: "Score 78/100 (7.8/10) — Accept band. Gate 1 passed by delegated agent R27; awaits human IV per DEC-034. NOT_SUPPORTED by Aspose (positive differentiation)."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r27"
+    approved_date: "2026-05-19"
+    fast_path_eligible: false
+    spec_source: "https://developer.gimp.org/core/xcf/"
+    spec_version_confirmed: "XCF v011 (GIMP 2.10+)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "No patents on XCF format. GIMP is a GNU project. Format is community-defined, no standards body, no patent pool."
+    spec_summary: |
+      XCF file structure:
+        Header (14 bytes):
+          - magic: 9 bytes ('gimp xcf ' — note trailing space)
+          - version: 4 bytes ('file' for v0, 'v001' through 'v011')
+          - NUL: 1 byte (0x00)
+
+        Canvas properties:
+          - width: 4 bytes (big-endian uint32)
+          - height: 4 bytes (big-endian uint32)
+          - color_mode: 4 bytes (0=RGB, 1=Grayscale, 2=Indexed)
+
+        Property list:
+          - Sequence of (type: uint32, payload_length: uint32, payload: bytes)
+          - Terminated by PROP_END (type=0, length=0)
+          - Notable properties: PROP_COLORMAP (1), PROP_COMPRESSION (17),
+            PROP_RESOLUTION (19), PROP_PARASITES (21)
+
+        Layer/channel offsets:
+          - Layer offsets: sequence of uint32 (0-terminated)
+          - Channel offsets: sequence of uint32 (0-terminated)
+
+        Layers: each has name, properties, hierarchy (tiles), mask
+        Channels: each has name, properties, hierarchy
+
+        Compression modes: 0=none, 1=RLE, 2=zlib (v010+)
+        Tile size: 64x64 pixels
+
+      Authoritative source: GIMP source code app/xcf/xcf-load.c, xcf-save.c
+      Developer docs: https://developer.gimp.org/core/xcf/
+    notes: "Gate 2 passed by delegated agent R27. Spec is public via GIMP developer wiki + source code. Awaits human IV per DEC-034."
+
+  gate_3:
+    status: pass
+    sprint: R27
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/xcf/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_struct
+    awaiting_human_iv: true
+    notes: "3 valid XCF samples (1x1-red-rgb, 2x2-gray, 1x1-rgba) + 1 invalid (wrong-magic). Generated via Python stdlib struct/bytes. XCF binary header is well-documented: 'gimp xcf ' magic + version + canvas properties. No external dependencies."
+    corpus_manifest: samples/by-format/xcf/_corpus-manifest.yaml
+    provenance: samples/by-format/xcf/_provenance.yaml

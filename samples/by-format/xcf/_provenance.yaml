@@ -1,0 +1,65 @@
+format_id: xcf
+provenance_version: "1.0"
+provenance_date: "2026-05-19"
+acquisition_sprint: R27
+commercial_product_ready: false
+
+# All XCF corpus samples are project-owned synthetic, generated via Python
+# standard library (struct + bytes) with no third-party dependencies.
+# XCF format is documented at developer.gimp.org/core/xcf/ and in GIMP source.
+# Generation constructs: 14-byte header ('gimp xcf ' + version + NUL),
+# canvas properties (width, height, color_mode), property list with
+# PROP_COMPRESSION=0 (none) + PROP_END, single layer with hierarchy
+# containing one uncompressed tile of raw pixel data.
+
+- sample_id: valid/1x1-red-rgb.xcf
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (struct, bytes)"
+  generation_script: "inline Python in R27 sprint"
+  generation_date: "2026-05-19"
+  input_content: "Programmatic: 1 pixel RGB (255,0,0) — red"
+  encoding: "XCF v011, compression=none, 1 layer (RGB), 1 tile"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93"
+  provenance_status: confirmed
+  magic_valid: true
+
+- sample_id: valid/2x2-gray.xcf
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (struct, bytes)"
+  generation_script: "inline Python in R27 sprint"
+  generation_date: "2026-05-19"
+  input_content: "Programmatic: 4 pixels Grayscale (0, 85, 170, 255) — gradient"
+  encoding: "XCF v011, compression=none, 1 layer (Grayscale), 1 tile"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:8235deabec868a633a73f39370343e7ebaab3e281209a71df4afe556a41c8f47"
+  provenance_status: confirmed
+  magic_valid: true
+
+- sample_id: valid/1x1-rgba-blue.xcf
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (struct, bytes)"
+  generation_script: "inline Python in R27 sprint"
+  generation_date: "2026-05-19"
+  input_content: "Programmatic: 1 pixel RGBA (0,0,255,255) — opaque blue"
+  encoding: "XCF v011, compression=none, 1 layer (RGBA), 1 tile"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:eb54b996cebea08a762af9abf5fcc2a8606d863bd8761fc0ce04674a9a147b18"
+  provenance_status: confirmed
+  magic_valid: true
+
+- sample_id: invalid/wrong-magic.xcf
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_script: "inline Python in R27 sprint"
+  generation_date: "2026-05-19"
+  input_content: "Bytes: b'NOT XCF!' + 20 null bytes — invalid magic, not an XCF file"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:1a72f30193eba830dca64c78aa4a8ecb6c3d21994822f496ba9381b3f4c4bf99"
+  provenance_status: confirmed
+  magic_valid: false
+  expected_error: true

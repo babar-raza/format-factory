@@ -1,0 +1,54 @@
+# aspose-format-factory-gnumeric
+
+Python FOSS parser for the Gnumeric spreadsheet format.
+
+**Package:** `aspose-format-factory-gnumeric`
+**Version:** 0.1.0.dev0
+**Track:** python-foss
+**Capability Level:** alpha-foss-preview
+**License:** Apache-2.0
+**Spec:** Gnumeric XML (gzip-compressed, namespace http://www.gnumeric.org/v10.dtd)
+**Gate history:** Gates 1-7 PASSED (format-factory project)
+
+---
+
+## Quick Start
+
+```python
+from gnumeric import load, get_sheet_count, get_cell_count, extract_values, get_sheet_metadata
+
+# Load a Gnumeric document
+doc = load("path/to/spreadsheet.gnumeric")
+
+# Get the number of sheets
+count = get_sheet_count(doc)
+
+# Get total cell count
+cells = get_cell_count(doc)
+
+# Extract all cell values
+values = extract_values(doc)
+
+# Get metadata for a specific sheet
+meta = get_sheet_metadata(doc, sheet_index=0)
+```
+
+## Security Notes
+
+- Compressed file size capped at 64 MiB.
+- Uses `gzip` + `xml.etree.ElementTree` (stdlib) -- XXE-safe by default.
+- No external dependencies required.
+
+## Dependencies
+
+None (stdlib only).
+
+## Package Structure
+
+```
+src/python/gnumeric/
+    __init__.py              Public API exports
+    gnumeric_codec.py        Core Gnumeric parser (gzip + XML)
+    LICENSE                  Apache-2.0 license
+    README.md                This file
+```

@@ -1,0 +1,154 @@
+# ZPAQ Acquisition Pack
+# ZPAQ Archive Format
+# Sprint: R27 Lane J — New Candidate Expansion
+# Gate 1-3 for ZPAQ format
+
+format_id: zpaq
+display_name: "ZPAQ Archive Format"
+extensions:
+  - .zpaq
+mime_type: "application/x-zpaq"
+family: archive
+spec_body: "Matt Mahoney (public domain)"
+spec_version: "ZPAQ Level 2 (2013)"
+legal_category: 2
+legal_description: "ZPAQ specification and reference implementation are public domain (released by Matt Mahoney). No copyright restrictions, no patent claims. Format spec is freely available at mattmahoney.net. Multiple independent implementations exist."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose does not support ZPAQ format as of 2026-05-19. No Aspose class handles .zpaq files."
+aspose_notes: "NOT_SUPPORTED is POSITIVE for commercial differentiation. ZPAQ is a high-compression archival format with no major commercial tooling."
+python_library: "No pure-Python ZPAQ library available. Format requires embedded VM (ZPAQL bytecode interpreter). zpaq CLI tool is public domain C++."
+oracle_strategy: "Round-trip: create ZPAQ archive via zpaq CLI, extract, compare SHA-256 of original files. Requires zpaq binary."
+acquisition_risk_classification: MEDIUM
+acquisition_risk_notes: "ZPAQ format includes an embedded bytecode virtual machine (ZPAQL) for custom compression algorithms. This makes the format significantly more complex than standard archive formats. Implementation requires a bytecode interpreter. Risk is in complexity, not legal."
+sprint_created: R27
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: zpaq
+    display_name: "ZPAQ Archive Format"
+    mime_type: "application/x-zpaq"
+    extensions: [".zpaq"]
+    structure: "Binary archive. Sequence of blocks. Each block begins with 'zPQ' magic (plus level byte). Blocks contain segments with optional filename, comment, SHA-1 hash. Compression uses ZPAQL bytecode programs (embedded VM)."
+    spec_body: "Matt Mahoney (public domain)"
+    spec_version: "ZPAQ Level 2"
+    notes: "ZPAQ is a journaling archiver optimized for incremental backup with deduplication. Key feature: compression algorithm is stored in the archive as ZPAQL bytecode, making the format self-describing. This also makes parsing complex — a ZPAQL VM interpreter is required for decompression."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r27"
+    approved_by: "delegated_agent_r27"
+    approved_date: "2026-05-19"
+    sprint: R27
+    awaiting_human_iv: true
+    score_total: 62
+    score_normalized: 6.2
+    band: Review
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 2
+        points: 20
+        evidence: "Legal Category 2 — public domain. Matt Mahoney released both the spec and reference implementation into the public domain. No copyright restrictions. No patents. Explicitly unencumbered."
+      spec_availability:
+        score: 2
+        points: 13
+        evidence: "Full public specification at mattmahoney.net/dc/zpaq206.pdf. Covers block structure, segment headers, ZPAQL VM instruction set, context mixing. Maintained by author. Spec is complete but dense."
+      parseable_structure:
+        score: 1
+        points: 5
+        evidence: "Complex binary format. Block-level parsing (magic detection, header reading) is moderate. Full decompression requires implementing a ZPAQL bytecode interpreter (virtual machine). Tile-level complexity is high."
+      community_demand:
+        score: 1
+        points: 5
+        evidence: "Niche format. Used primarily by backup enthusiasts and data archivists who value maximum compression ratios. Not mainstream. Limited tooling ecosystem."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Archive family. Second archive format after ZST. Expands archive track with a deduplication-focused format. Distinct use case from ZST (streaming compression vs. journaling archive)."
+      implementation_complexity:
+        score: 1
+        points: 2
+        evidence: "High complexity. Requires ZPAQL bytecode VM interpreter for decompression. Reference implementation is ~3000 lines of C++. Context mixing and arithmetic coding add complexity. Header/metadata parsing alone is moderate."
+      family_overlap:
+        score: 2
+        points: 3
+        evidence: "Minor overlap with ZST (both in archive family). ZPAQ is fundamentally different — journaling, deduplication, embedded VM. Distinct use cases."
+    legal_category: 2
+    aspose_support_level: NOT_SUPPORTED
+    notes: "Score 62/100 (6.2/10) — Review band. Below Accept threshold of 7.0 but above Defer. High legal safety (public domain) offset by implementation complexity and niche demand. Gate 1 passed by delegated agent R27 with review-band notation; awaits human IV per DEC-034."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r27"
+    approved_date: "2026-05-19"
+    fast_path_eligible: false
+    spec_source: "http://mattmahoney.net/dc/zpaq206.pdf"
+    spec_version_confirmed: "ZPAQ Level 2 (version 2.06, 2013)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "Public domain. No patents. Author explicitly released all rights. Multiple independent implementations exist (zpaq, zpaqd, libzpaq) without legal issues."
+    spec_summary: |
+      ZPAQ archive structure:
+
+        Block header:
+          - magic: 'zPQ' (3 bytes, 0x7A 0x50 0x51)
+          - level: 1 byte (1 or 2)
+          - header_size: 2 bytes (little-endian, for level 1) or 4 bytes (for level 2)
+
+        Block contains:
+          - Compression model (ZPAQL bytecode)
+          - One or more segments
+
+        Segment structure:
+          - segment_type byte
+          - Optional filename (NUL-terminated)
+          - Optional comment (NUL-terminated)
+          - Compressed data
+          - Optional 20-byte SHA-1 hash of original data
+          - End marker (0xFF)
+
+        ZPAQL Virtual Machine:
+          - Stack-based bytecode interpreter
+          - 256 opcodes
+          - Used to define custom compression/decompression algorithms
+          - Context mixing with arithmetic coding
+          - Programs are stored in the archive — format is self-describing
+
+        Journaling:
+          - Archives support incremental updates (append-only)
+          - File deduplication via content hashing
+          - Transaction IDs for version tracking
+
+      Authoritative source: mattmahoney.net/dc/zpaq206.pdf
+      Reference implementation: mattmahoney.net/dc/zpaq.cpp (public domain)
+    notes: "Gate 2 passed by delegated agent R27. Full public spec available as PDF. Awaits human IV per DEC-034."
+
+  gate_3:
+    status: blocked_sample_generation_requires_tool
+    sprint: R27
+    date: "2026-05-19"
+    blocker: |
+      ZPAQ sample generation requires either:
+        1. The zpaq CLI tool (public domain C++ binary, not available in current environment)
+        2. A ZPAQL bytecode program embedded in the archive for decompression
+
+      Unlike simpler formats (QOI, XCF) where Python struct can construct valid samples,
+      ZPAQ archives contain ZPAQL bytecode programs that define the compression algorithm.
+      A valid ZPAQ file cannot be constructed with just header bytes — the compression
+      model bytecode must be correct and the compressed data must be decompressible by
+      that model.
+
+      Header-only samples (magic + block header without valid compressed data) could be
+      created for magic-byte validation testing, but would not constitute valid samples
+      for Gate 3 corpus requirements.
+
+      Resolution path:
+        A. Install zpaq CLI and generate samples via command-line compression
+        B. Port minimal ZPAQL context model from reference implementation
+        C. Use pre-existing public domain ZPAQ test files (with provenance)
+    awaiting_human_iv: true
+    notes: "Gate 3 blocked. ZPAQ requires embedded VM bytecode for valid archives — cannot generate with Python struct alone. Blocker documented. Awaits resolution strategy decision."

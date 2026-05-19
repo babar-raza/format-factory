@@ -115,13 +115,19 @@ stages:
     parser_notes: acquisition-packs/ods/parser-notes.md
 
   gate_4:
-    status: parser_plan_complete
-    sprint: R26
+    status: prototype_complete
+    sprint: R27
     date: "2026-05-19"
     parser_plan: reports/planning/r26-ods-gate4-parser-plan-20260519.md
     parser_class: OdsParser
     parser_method: "parse(path) -> OdsDocument"
     technology: "Python zipfile + xml.etree.ElementTree (stdlib, XXE-safe)"
-    production_source_authorized: false
+    source_path: src/python/ods/ods_parser.py
+    test_path: tests/python/ods/test_ods_parser.py
+    test_count: 9
+    test_result: "9/9 PASS"
+    authorization_status: delegated_technical_authorized
+    production_source_authorized: true
     commercial_product_ready: false
-    notes: "Gate 4 parser plan complete. PLANNING ONLY — no source code created. Awaits implementation authorization."
+    prototype_report: reports/implementation/r27-ods-gate4-prototype-report-20260519.md
+    notes: "Gate 4 prototype complete (R27). Minimal controlled prototype: ZIP container, mimetype, content.xml, sheet/row/cell parse. 9/9 tests PASS."

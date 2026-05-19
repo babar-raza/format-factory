@@ -1,0 +1,89 @@
+format_id: xcf
+corpus_version: "1.0"
+acquisition_sprint: R27
+acquisition_date: "2026-05-19"
+generation_method: deterministic_synthetic_python_struct
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/1x1-red-rgb.xcf
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 177
+    sha256: "sha256:5b1a1c0cc99b3b79109a6be79a10ee0a5721c5a23256ff4b1196665c66bc9d93"
+    category: minimal-valid-rgb
+    description: "1x1 RGB image, single red pixel (255,0,0). Magic 'gimp xcf ', version v011, no compression, one layer."
+    magic_valid: true
+    width: 1
+    height: 1
+    color_mode: 0
+    bpp: 3
+    layer_count: 1
+    compression: none
+    structural_test: PASS
+
+  - filename: valid/2x2-gray.xcf
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 178
+    sha256: "sha256:8235deabec868a633a73f39370343e7ebaab3e281209a71df4afe556a41c8f47"
+    category: grayscale-multi-pixel
+    description: "2x2 Grayscale image, 4 pixels: 0, 85, 170, 255. Tests grayscale color mode (mode=1). No compression."
+    magic_valid: true
+    width: 2
+    height: 2
+    color_mode: 1
+    bpp: 1
+    layer_count: 1
+    compression: none
+    structural_test: PASS
+
+  - filename: valid/1x1-rgba-blue.xcf
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 178
+    sha256: "sha256:eb54b996cebea08a762af9abf5fcc2a8606d863bd8761fc0ce04674a9a147b18"
+    category: minimal-valid-rgba
+    description: "1x1 RGBA image, single blue pixel (0,0,255,255). Tests RGBA layer type with alpha channel."
+    magic_valid: true
+    width: 1
+    height: 1
+    color_mode: 0
+    bpp: 4
+    layer_count: 1
+    compression: none
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/wrong-magic.xcf
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 28
+    sha256: "sha256:1a72f30193eba830dca64c78aa4a8ecb6c3d21994822f496ba9381b3f4c4bf99"
+    category: invalid-magic
+    description: "File begins with 'NOT XCF!' instead of 'gimp xcf '. Tests magic byte validation in parser."
+    magic_valid: false
+    expected_error: true
+    error_type: InvalidMagic
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid-rgb
+    - grayscale-multi-pixel
+    - minimal-valid-rgba
+    - invalid-magic
+  gate_3_categories_met: true
+  awaiting_human_iv: true
