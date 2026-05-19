@@ -55,8 +55,8 @@
 
 ## Commits
 
-COMMIT_SHA: cb7e05c
-EVIDENCE_BUNDLE: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidence-bundles\r27-ai-platform-full-cycle-20260519.zip
+COMMIT_SHA: cb7e05c (AI platform), da4bcde (metadata update)
+EVIDENCE_BUNDLE: BLOCKED_CONCURRENT_CHANGE — another agent has uncommitted work in working tree; bundle builder requires clean git
 
 ## Invariants Held
 
@@ -72,9 +72,13 @@ EVIDENCE_BUNDLE: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\
 ## Concurrent Change Handling
 
 - R26 (bcfe62e) was already committed at sprint start
-- No concurrent agent detected during execution
+- CONCURRENT AGENT DETECTED during commit phase: another agent created Gate 4 prototypes,
+  C7/C8 roundtrip tests, XCF/ZPAQ acquisition packs, Python FOSS publication reports,
+  and memory/47. These are NOT our files — they were not touched or overwritten.
 - All R26 Phase 2 work preserved and built upon
 - Two Phase 2 tests updated to reflect new strict fallback policy
+- Evidence bundle: BLOCKED — concurrent agent's untracked files cause dirty working tree.
+  Bundle must be rebuilt after concurrent agent commits their work.
 
 ## Blockers
 
@@ -82,3 +86,4 @@ EVIDENCE_BUNDLE: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\
 - LanceDB vector store: BLOCKED_MISSING_DEPENDENCY
 - Agent Metrics posting: BLOCKED_MISSING_ENV (AGENT_METRICS_ENDPOINT)
 - Qwen2 agentic live: BLOCKED_NO_MODEL
+- Evidence bundle: BLOCKED_CONCURRENT_CHANGE (another agent's uncommitted files in working tree)
