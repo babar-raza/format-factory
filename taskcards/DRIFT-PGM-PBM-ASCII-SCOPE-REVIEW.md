@@ -36,3 +36,14 @@ Low priority. Gate claims are honest for current scope.
 - PBM: implement P4 binary reader
 - Add binary test fixtures and corpus samples
 - Consider combining PGM/PBM/PPM into unified Netpbm library
+
+---
+
+## R33 Expert Review Outcome (2026-05-19)
+
+**Verdict:** CURRENT_GATE_SUPPORTED
+**Reviewed by:** R33 delegated expert review
+**Evidence-backed gate confirmed:** G7 for both PGM and PBM
+**Maturity class confirmed:** read_only_prototype for both
+**Action taken:** No correction needed. Gate claims are honest for ASCII scope. Binary support (P5/P4) must be added before advancing past G7.
+**Next step:** Add P5 (PGM) and P4 (PBM) binary readers before advancing to G8+.

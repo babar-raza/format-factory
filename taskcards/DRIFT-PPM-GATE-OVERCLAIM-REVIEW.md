@@ -37,3 +37,14 @@
 - Implement P6 binary reader (struct-based pixel parsing)
 - Add P6 test fixtures
 - Add P6 corpus samples
+
+---
+
+## R33 Expert Review Outcome (2026-05-19)
+
+**Verdict:** READ_ONLY_SCOPE_APPROVED
+**Reviewed by:** R33 delegated expert review
+**Evidence-backed gate confirmed:** G7 (fuzz/malformed testing complete for P3)
+**Maturity class confirmed:** read_only_prototype
+**Action taken:** G8 security pass is valid for P3 ASCII scope. No gate correction needed. Scope limitation (P6 binary missing) annotated in matrix. P6 binary support required before G10 advancement.
+**Next step:** Add P6 binary reader before claiming library maturity.

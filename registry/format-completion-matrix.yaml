@@ -102,7 +102,7 @@ formats:
     src_python_files: ["zst_codec.py", "__init__.py"]
     src_python_loc: 303
     src_net_exists: false
-    tests_python_count: 25
+    tests_python_count: 48
     tests_net_count: 0
     packaging_status: local_build_ready
     claimed_gate: "G10 (verified)"
@@ -120,9 +120,11 @@ formats:
     package_readiness: "Python FOSS local"
     commercial_readiness: "N/A (Python FOSS only)"
     overclaim_risk: none
-    strongest_evidence: "only Python format with write + round-trip"
-    weakest_area: "25 tests (adequate but lowest of production-track)"
-    recommended_action: "Stabilize; expand test suite; consider .NET track"
+    strongest_evidence: "48 tests, only Python format with write + round-trip"
+    weakest_area: "no .NET track"
+    recommended_action: "Stabilize; consider .NET track"
+    r33_deepening: "23 new edge-case and boundary tests (25->48)"
+    r33_deepening_date: "2026-05-19"
 
   - format_id: ods
     display_name: "OpenDocument Spreadsheet (ZIP)"
@@ -131,19 +133,19 @@ formats:
     prototype_location: null
     src_python_exists: true
     src_python_path: "src/python/ods/"
-    src_python_files: ["ods_parser.py", "__init__.py"]
-    src_python_loc: 303
+    src_python_files: ["ods_parser.py", "ods_csv_exporter.py", "__init__.py"]
+    src_python_loc: 450
     src_net_exists: false
-    tests_python_count: 61
+    tests_python_count: 86
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G8 (security review)"
     evidence_backed_gate: "G7-G8"
-    actual_maturity_class: read_only_library_foundation
-    parser_depth: "ZIP container, typed cells (float/date/bool/string), dataclass model"
+    actual_maturity_class: export_capable_library
+    parser_depth: "ZIP container, typed cells (float/date/bool/string), dataclass model + CSV export"
     read_support: true
     write_support: false
-    export_support: false
+    export_support: true  # R33: CSV exporter (RFC 4180, single sheet)
     roundtrip_support: false
     neutral_model_status: "dataclass (OdsDocument/OdsSheet/OdsRow/OdsCell)"
     security_guard_status: "64MB guard, ZIP entry limit (1000), decompressed size limit, column/row repeat caps"
@@ -152,9 +154,11 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "61 tests, typed cell parsing, ZIP container guards"
-    weakest_area: "no write, no export, no round-trip, no packaging"
-    recommended_action: "deepen: add write, neutral model formalization, export"
+    strongest_evidence: "86 tests, typed cell parsing, CSV export, ZIP container guards"
+    weakest_area: "no native ODS write, no round-trip, no packaging"
+    recommended_action: "deepen: add ODS write capability, then round-trip"
+    r33_deepening: "CSV exporter added (ods_csv_exporter.py, 25 tests)"
+    r33_deepening_date: "2026-05-19"
 
   - format_id: odt
     display_name: "OpenDocument Text (ZIP)"
@@ -195,20 +199,20 @@ formats:
     prototype_location: null
     src_python_exists: true
     src_python_path: "src/python/qoi/"
-    src_python_files: ["qoi_parser.py", "__init__.py"]
-    src_python_loc: 307
+    src_python_files: ["qoi_parser.py", "qoi_encoder.py", "__init__.py"]
+    src_python_loc: 480
     src_net_exists: false
-    tests_python_count: 62
+    tests_python_count: 87
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G8 (security review)"
     evidence_backed_gate: "G7-G8"
-    actual_maturity_class: read_only_library_foundation
-    parser_depth: "full pixel decode, all 6 chunk types, end marker validation"
+    actual_maturity_class: roundtrip_capable_library
+    parser_depth: "full pixel decode+encode, all 6 chunk types, end marker validation, round-trip verified"
     read_support: true
-    write_support: false
+    write_support: true  # R33: QOI encoder (greedy, all 6 chunk types)
     export_support: false
-    roundtrip_support: false
+    roundtrip_support: true  # R33: decode->encode->decode verified
     neutral_model_status: "dataclass (QoiImage)"
     security_guard_status: "64MB guard, 16384x16384 dim limit, pixel count guard, chunk truncation detection"
     corpus_quality: fair
@@ -216,9 +220,11 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "62 tests, complete pixel decoder for all chunk types"
-    weakest_area: "no write (encode), no image output/export"
-    recommended_action: "deepen: add QOI encoder, image export (PNG/raw), round-trip"
+    strongest_evidence: "87 tests, complete pixel codec with verified round-trip"
+    weakest_area: "no image export to other formats (PNG/raw)"
+    recommended_action: "add image export capability, expand corpus"
+    r33_deepening: "QOI encoder added (qoi_encoder.py, 25 tests) + parser RUN bug fixed"
+    r33_deepening_date: "2026-05-19"
 
   - format_id: dif
     display_name: "Data Interchange Format"
@@ -316,6 +322,8 @@ formats:
     strongest_evidence: "42 tests, solid header/property parsing"
     weakest_area: "explicitly cannot decode pixels or tiles — probe/inspector only"
     recommended_action: "reclassify as probe_only; G8 security pass is valid for what it parses but does not imply image processing capability"
+    r33_review_outcome: "DEEPENING_REQUIRED (MINOR) — G8 accepted for header scope, needs 8+ more tests"
+    r33_review_date: "2026-05-19"
 
   - format_id: ppm
     display_name: "Portable Pixmap (PPM)"
@@ -349,6 +357,8 @@ formats:
     strongest_evidence: "40 tests, complete P3 decode"
     weakest_area: "P6 binary not supported — most real PPM files are P6"
     recommended_action: "add P6 binary support before claiming library maturity"
+    r33_review_outcome: "READ_ONLY_SCOPE_APPROVED — G8 valid for P3, P6 needed before G10"
+    r33_review_date: "2026-05-19"
 
   - format_id: pgm
     display_name: "Portable Graymap (PGM)"
@@ -448,6 +458,8 @@ formats:
     strongest_evidence: "16 tests prove page counting works"
     weakest_area: "no neutral model, no write, no export, no round-trip — probe only"
     recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4; requires deepening before G5+ can be re-earned"
+    r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
+    r33_review_date: "2026-05-19"
 
   - format_id: fodg
     display_name: "Flat OpenDocument Graphics"
@@ -481,6 +493,8 @@ formats:
     strongest_evidence: "19 tests prove shape counting works"
     weakest_area: "no neutral model, no write, no export — probe only"
     recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
+    r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
+    r33_review_date: "2026-05-19"
 
   - format_id: gnumeric
     display_name: "Gnumeric Spreadsheet"
@@ -514,6 +528,8 @@ formats:
     strongest_evidence: "16 tests prove gzip+XML cell counting works"
     weakest_area: "no neutral model, no cell type detection, no write — probe only"
     recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
+    r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
+    r33_review_date: "2026-05-19"
 
   - format_id: abw
     display_name: "AbiWord Document"
@@ -547,6 +563,8 @@ formats:
     strongest_evidence: "17 tests prove paragraph extraction works"
     weakest_area: "smallest parser (141 LOC), no neutral model, no write — probe only"
     recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
+    r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
+    r33_review_date: "2026-05-19"
 
   - format_id: csv
     display_name: "Comma-Separated Values"

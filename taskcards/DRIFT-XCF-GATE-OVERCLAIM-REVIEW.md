@@ -39,3 +39,14 @@
 - Implement basic layer compositing
 - Add pixel-data tests
 - Or: accept header-only scope with explicit approval
+
+---
+
+## R33 Expert Review Outcome (2026-05-19)
+
+**Verdict:** DEEPENING_REQUIRED (MINOR)
+**Reviewed by:** R33 delegated expert review
+**Evidence-backed gate confirmed:** G5-G6 equivalent (header+layer scope)
+**Maturity class confirmed:** probe_only (header-inspector)
+**Action taken:** G8 security pass accepted as valid for header-parsing scope. No gate rollback. Need 8+ more tests to reach 50-test floor. Pixel decode is high-effort and optional — header-inspector scope is an acceptable product if explicitly approved.
+**Next step:** Add 8 more tests (property edge cases, malformed layer tables). Consider header-inspector product scope approval.

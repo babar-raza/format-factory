@@ -38,3 +38,14 @@ Same as DRIFT-FODP: human review of product scope.
 - Implement shape geometry/attribute extraction
 - Add 30+ tests
 - Implement export (SVG outline, shape summary)
+
+---
+
+## R33 Expert Review Outcome (2026-05-19)
+
+**Verdict:** GATE_CORRECTION_REQUIRED
+**Reviewed by:** R33 delegated expert review (source inspection + gate criteria comparison)
+**Evidence-backed gate confirmed:** G4 (prototype quality)
+**Maturity class confirmed:** probe_only
+**Action taken:** No pack.yaml gate rollback. evidence_backed_gate in matrix remains G4. Format classified as probe_only.
+**Next step:** Requires neutral model + write/export + 30 more tests before G5+.

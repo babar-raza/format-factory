@@ -217,6 +217,7 @@ def _decode_pixels(
                     pixels.append((r, g, b, a))
             idx_hash = _color_hash(r, g, b, a)
             index[idx_hash] = (r, g, b, a)
+            pos += 1
             continue  # Skip the append below — already added
         else:
             pos += 1

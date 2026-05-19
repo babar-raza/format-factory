@@ -52,3 +52,14 @@
 ## Tests Required Before Correction
 - N/A for recording the gap
 - If deepening: neutral model tests, content extraction tests, export tests
+
+---
+
+## R33 Expert Review Outcome (2026-05-19)
+
+**Verdict:** GATE_CORRECTION_REQUIRED
+**Reviewed by:** R33 delegated expert review (source inspection + gate criteria comparison)
+**Evidence-backed gate confirmed:** G4 (prototype quality)
+**Maturity class confirmed:** probe_only
+**Action taken:** No pack.yaml gate rollback (preserve history). evidence_backed_gate in matrix remains G4. Format stays in src/python/ but classified as probe_only.
+**Next step:** Requires neutral model + write/export + 30 more tests before G5+ can be re-earned. See DEEPEN-* taskcards for remediation path.
