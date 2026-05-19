@@ -34,7 +34,7 @@
 
 ## Commits
 
-COMMIT_SHA: PENDING
+COMMIT_SHA: 684c4a7
 EVIDENCE_BUNDLE: PENDING
 
 ## Invariants Held
