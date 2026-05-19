@@ -131,6 +131,10 @@ stages:
     status: blocked_sample_generation_requires_tool
     sprint: R27
     date: "2026-05-19"
+    r28_recovery_attempt: "2026-05-19"
+    r28_recovery_outcome: "STILL_BLOCKED — zpaq CLI not available (which/where returned not-found). No ZPAQ samples found in repo or system. Blocker packet produced."
+    r28_blocker_report: "reports/planning/r28-zpaq-gate3-recovery-or-blocker-report-20260519.md"
+    classification: GATE3_BLOCKED_REQUIRES_EXTERNAL_TOOL
     blocker: |
       ZPAQ sample generation requires either:
         1. The zpaq CLI tool (public domain C++ binary, not available in current environment)
@@ -146,9 +150,9 @@ stages:
       created for magic-byte validation testing, but would not constitute valid samples
       for Gate 3 corpus requirements.
 
-      Resolution path:
-        A. Install zpaq CLI and generate samples via command-line compression
-        B. Port minimal ZPAQL context model from reference implementation
-        C. Use pre-existing public domain ZPAQ test files (with provenance)
+      Resolution paths (ranked by recommendation):
+        A. [RECOMMENDED] Install zpaq CLI and generate samples via command-line compression
+        B. [FALLBACK] Source pre-existing public domain ZPAQ test files (with provenance)
+        C. [NOT RECOMMENDED] Port minimal ZPAQL context model from reference implementation
     awaiting_human_iv: true
-    notes: "Gate 3 blocked. ZPAQ requires embedded VM bytecode for valid archives — cannot generate with Python struct alone. Blocker documented. Awaits resolution strategy decision."
+    notes: "Gate 3 blocked since R27. R28 recovery attempted — zpaq CLI still not available. Strong blocker packet produced with 3 resolution paths, security analysis, and recommendation (Path A: install zpaq CLI). Awaits human decision on resolution strategy."

@@ -39,6 +39,52 @@ QOI_OP_RGB = 0xFE
 QOI_OP_RGBA = 0xFF
 
 
+UNSUPPORTED_FEATURES = frozenset({
+    "animation",
+    "multi_frame",
+    "metadata_embedding",
+    "icc_profiles",
+    "exif",
+    "encoding",
+    "streaming_decode",
+    "partial_decode",
+    "thumbnail_extraction",
+    "color_management",
+})
+
+SUPPORTED_FEATURES = frozenset({
+    "header_parse",
+    "full_pixel_decode",
+    "op_rgb",
+    "op_rgba",
+    "op_index",
+    "op_diff",
+    "op_luma",
+    "op_run",
+    "3_channel_mode",
+    "4_channel_mode",
+    "srgb_colorspace",
+    "linear_colorspace",
+    "end_marker_validation",
+    "size_guard",
+    "probe_without_decode",
+})
+
+
+def get_capabilities() -> dict[str, Any]:
+    """Return supported/unsupported feature declarations for QOI parser."""
+    return {
+        "format": "qoi",
+        "gate": 5,
+        "supported": sorted(SUPPORTED_FEATURES),
+        "unsupported": sorted(UNSUPPORTED_FEATURES),
+        "commercial_product_ready": False,
+        "max_file_size": MAX_FILE_SIZE,
+        "max_dimension": MAX_DIMENSION,
+        "max_pixels": MAX_PIXELS,
+    }
+
+
 class QoiError(Exception):
     """Base exception for QOI parser errors."""
 

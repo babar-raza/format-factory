@@ -1,0 +1,55 @@
+format_id: ppm
+provenance_version: "1.0"
+provenance_date: "2026-05-19"
+acquisition_sprint: FORMAT-FACTORY-R28-LANE-L-NEW-CANDIDATE-EXPANSION-001
+commercial_product_ready: false
+
+# All PPM corpus samples are project-owned synthetic, generated via Python
+# standard library (open/write) with no third-party dependencies.
+# All files are PPM P3 (ASCII) format — human-readable text.
+# All files are fully deterministic given the same generation code.
+
+- sample_id: valid/1x1-red.ppm
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_date: "2026-05-19"
+  input_content: "Hand-authored PPM P3: 1x1 red pixel (255 0 0)"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:c940efc28573af63c6ebbfeb23e69ded35c645b0dca6c4553d62aa1977912614"
+  provenance_status: confirmed
+  magic_valid: true
+
+- sample_id: valid/2x2-rgbw.ppm
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_date: "2026-05-19"
+  input_content: "Hand-authored PPM P3: 2x2 RGBW image (red, green, blue, white)"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:bf7be37ba40db548717727afdeb0e390c3f0d6a07541fd5c23d06952f15abfa1"
+  provenance_status: confirmed
+  magic_valid: true
+
+- sample_id: valid/3x1-gradient.ppm
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_date: "2026-05-19"
+  input_content: "Hand-authored PPM P3: 3x1 greyscale gradient (black, mid-grey, white)"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:6d2dcea6dacd0406e868160730c709ccc90e4ce452e715222c5e08d65b07563d"
+  provenance_status: confirmed
+  magic_valid: true
+
+- sample_id: invalid/wrong-magic.ppm
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_date: "2026-05-19"
+  input_content: "PPM-like file with magic 'P9' instead of P3/P6 — intentionally invalid"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:d79f40e0b8962f0ef263d5463010dc2b3fcba1a38eaa521500c0f4e3bff72c1e"
+  provenance_status: confirmed
+  magic_valid: false
+  expected_error: true

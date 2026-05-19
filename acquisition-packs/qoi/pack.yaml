@@ -148,3 +148,17 @@ stages:
     commercial_product_ready: false
     prototype_report: reports/implementation/r27-qoi-gate4-prototype-report-20260519.md
     notes: "Gate 4 prototype complete (R27). Full pixel decode (all 6 QOI ops), header probe, security guards. 10/10 tests PASS."
+
+  gate_5:
+    status: neutral_model_complete
+    sprint: R28
+    date: "2026-05-19"
+    supported_features: 15
+    unsupported_features: 10
+    new_tests: 17
+    test_result: "17/17 PASS (Gate 5) + 10/10 PASS (Gate 4)"
+    source_path: src/python/qoi/qoi_parser.py
+    test_path: tests/python/qoi/test_qoi_gate5_neutral_model.py
+    report: reports/implementation/r28-qoi-gate5-neutral-model-report-20260519.md
+    commercial_product_ready: false
+    notes: "Gate 5 neutral model complete. Explicit unsupported feature declarations (animation, encoding, ICC profiles, etc). Edge-case tests for 3-channel, linear colorspace, malformed headers."

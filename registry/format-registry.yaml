@@ -1322,6 +1322,16 @@ formats:
         commercial_product_ready: false
         production_source_authorized: true
         notes: "Gate 4 prototype complete (R27). ZIP+XML ODS parser. 9/9 tests PASS."
+      gate_5:
+        status: neutral_model_complete
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        supported_features: 12
+        unsupported_features: 17
+        new_tests: 17
+        test_result: "17/17 PASS"
+        commercial_product_ready: false
+        notes: "Gate 5 neutral model (R28). Explicit unsupported feature declarations. 17 edge-case tests PASS."
 
   - format_id: odt
     display_name: OpenDocument Text
@@ -1380,6 +1390,16 @@ formats:
         commercial_product_ready: false
         production_source_authorized: true
         notes: "Gate 4 prototype complete (R27). ZIP+XML ODT parser. 10/10 tests PASS."
+      gate_5:
+        status: neutral_model_complete
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        supported_features: 10
+        unsupported_features: 21
+        new_tests: 18
+        test_result: "18/18 PASS"
+        commercial_product_ready: false
+        notes: "Gate 5 neutral model (R28). Explicit unsupported feature declarations. 18 edge-case tests PASS."
 
   - format_id: qoi
     display_name: Quite OK Image Format
@@ -1440,6 +1460,16 @@ formats:
         commercial_product_ready: false
         production_source_authorized: true
         notes: "Gate 4 prototype complete (R27). Full 6-op QOI decoder. 10/10 tests PASS."
+      gate_5:
+        status: neutral_model_complete
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        supported_features: 15
+        unsupported_features: 10
+        new_tests: 17
+        test_result: "17/17 PASS"
+        commercial_product_ready: false
+        notes: "Gate 5 neutral model (R28). Explicit unsupported feature declarations. 17 edge-case tests PASS."
 
   - format_id: xcf
     display_name: "GIMP Native Image Format"
@@ -1481,6 +1511,17 @@ formats:
         generation_method: deterministic_synthetic_python_struct
         awaiting_human_iv: true
         notes: "Gate 3 PASS (R27). 3 valid + 1 invalid XCF samples. Python struct. Awaiting IV."
+      gate_4:
+        status: prototype_complete
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        source_path: src/python/xcf/xcf_parser.py
+        test_path: tests/python/xcf/test_xcf_parser.py
+        test_count: 17
+        test_result: "17/17 PASS"
+        commercial_product_ready: false
+        production_source_authorized: true
+        notes: "Gate 4 prototype complete (R28). Header+property+layer parse (no pixel decode). 17/17 tests PASS."
 
   - format_id: zpaq
     display_name: "ZPAQ Archive"
@@ -1515,7 +1556,89 @@ formats:
         notes: "Gate 2: Full PDF spec + public domain reference impl. No patent claims. R27 delegated."
       gate_3:
         status: blocked_sample_generation_requires_tool
-        notes: "Gate 3 BLOCKED (R27). ZPAQ requires embedded ZPAQL bytecode — cannot generate with Python struct alone."
+        notes: "Gate 3 BLOCKED (R27+R28). ZPAQ requires embedded ZPAQL bytecode — cannot generate with Python struct alone. R28 recovery attempted: zpaq CLI not available. Recommended: Path A (install zpaq CLI). See reports/planning/r28-zpaq-gate3-recovery-or-blocker-report-20260519.md."
+
+  - format_id: dif
+    display_name: "Data Interchange Format"
+    family: cells
+    extensions:
+      - .dif
+    mime_type: "text/x-dif"
+    spec_body: "Software Arts (Bob Frankston, 1981)"
+    spec_version: "DIF Technical Specification (1981, public domain)"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: MINIMAL
+    sprint_added: R28
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        approval_method: delegated_agent_decision_r28
+        awaiting_human_iv: true
+        score_normalized: 8.7
+        band: Accept
+        notes: "DIF Gate 1 passed 8.7/10 (R28). Public domain 1981. NOT_SUPPORTED by Aspose. Simple text format."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        spec_access: public
+        notes: "Gate 2: DIF spec publicly documented (Wikipedia, archived PDF). No patents. R28 delegated."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        generation_method: deterministic_synthetic_python_text
+        awaiting_human_iv: true
+        notes: "Gate 3 PASS (R28). 3 valid + 1 invalid DIF samples. Python open/write text. Awaiting IV."
+
+  - format_id: ppm
+    display_name: "Portable Pixmap (PPM / Netpbm)"
+    family: imaging
+    extensions:
+      - .ppm
+    mime_type: "image/x-portable-pixmap"
+    spec_body: "Jef Poskanzer (Netpbm project)"
+    spec_version: "Netpbm PPM specification (1988, public domain)"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: MINIMAL
+    sprint_added: R28
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        approval_method: delegated_agent_decision_r28
+        awaiting_human_iv: true
+        score_normalized: 9.1
+        band: Accept
+        notes: "PPM Gate 1 passed 9.1/10 (R28). Public domain. NOT_SUPPORTED by Aspose. Trivially simple format."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        spec_source: "https://netpbm.sourceforge.net/doc/ppm.html"
+        notes: "Gate 2: Single-page Netpbm spec. Public domain. No patents. R28 delegated."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r28"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        generation_method: deterministic_synthetic_python_text
+        awaiting_human_iv: true
+        notes: "Gate 3 PASS (R28). 3 valid P3 + 1 invalid PPM samples. Python open/write. Awaiting IV."
 
 
 # ---

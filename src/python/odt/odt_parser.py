@@ -34,6 +34,57 @@ NS = {
 }
 
 
+UNSUPPORTED_FEATURES = frozenset({
+    "tables",
+    "images",
+    "embedded_objects",
+    "footnotes",
+    "endnotes",
+    "annotations",
+    "tracked_changes",
+    "fields",
+    "bookmarks",
+    "cross_references",
+    "table_of_contents",
+    "indexes",
+    "text_frames",
+    "sections",
+    "master_pages",
+    "page_styles",
+    "character_styles",
+    "macros",
+    "protection",
+    "encryption",
+    "forms",
+})
+
+SUPPORTED_FEATURES = frozenset({
+    "paragraph_extraction",
+    "heading_extraction",
+    "heading_level_detection",
+    "list_item_extraction",
+    "text_style_name",
+    "element_order_preservation",
+    "container_validation",
+    "mimetype_verification",
+    "size_guard",
+    "probe_without_parse",
+})
+
+
+def get_capabilities() -> dict[str, Any]:
+    """Return supported/unsupported feature declarations for ODT parser."""
+    return {
+        "format": "odt",
+        "gate": 5,
+        "supported": sorted(SUPPORTED_FEATURES),
+        "unsupported": sorted(UNSUPPORTED_FEATURES),
+        "commercial_product_ready": False,
+        "max_file_size": MAX_FILE_SIZE,
+        "max_zip_entries": MAX_ZIP_ENTRIES,
+    }
+
+
 class OdtError(Exception):
     """Base exception for ODT parser errors."""
 

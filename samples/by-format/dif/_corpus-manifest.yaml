@@ -1,0 +1,79 @@
+format_id: dif
+corpus_version: "1.0"
+acquisition_sprint: FORMAT-FACTORY-R28-LANE-L-NEW-CANDIDATE-EXPANSION-001
+acquisition_date: "2026-05-19"
+generation_method: deterministic_synthetic_python_text
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/minimal-2x2.dif
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 187
+    sha256: "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8"
+    category: minimal-valid-with-data
+    description: "2x2 DIF file: header row (Name/Value) + data row (Alpha/42, Beta/99). Tests mixed string and numeric cells, TABLE/VECTORS/TUPLES/DATA structure."
+    table_name: "minimal"
+    vectors: 2
+    tuples: 2
+    cell_types_used: [string, numeric]
+    structural_test: PASS
+
+  - filename: valid/single-cell.dif
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 108
+    sha256: "sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49"
+    category: minimal-trivial
+    description: "1x1 DIF file: single numeric cell (value 42). Minimal non-empty DIF document."
+    table_name: "single-cell"
+    vectors: 1
+    tuples: 1
+    cell_types_used: [numeric]
+    structural_test: PASS
+
+  - filename: valid/numeric-row.dif
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 123
+    sha256: "sha256:81e8c7bc1409785df6e549d05054259ca0b1a6ecc8e59ca969ac8f138aaa891d"
+    category: numeric-data
+    description: "1x3 DIF file: single row with 3 numeric cells (1, 2, 3). Tests multi-column numeric parsing."
+    table_name: "numeric-row"
+    vectors: 3
+    tuples: 1
+    cell_types_used: [numeric]
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/missing-table-header.dif
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 47
+    sha256: "sha256:50199ec75fa176c69198832d27d3b194a302ffcde802445598d28ff72156d0e9"
+    category: invalid-missing-header
+    description: "DIF-like file with 'NOTABLE' instead of 'TABLE' as first section. Tests TABLE header validation."
+    expected_error: true
+    error_type: MissingTableHeader
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid-with-data
+    - minimal-trivial
+    - numeric-data
+    - invalid-missing-header
+  gate_3_categories_met: true
+  awaiting_human_iv: true

@@ -1,0 +1,109 @@
+# PPM Acquisition Pack
+# Portable Pixmap (Netpbm P3/P6 format)
+# Sprint: FORMAT-FACTORY-R28-LANE-L-NEW-CANDIDATE-EXPANSION-001
+
+format_id: ppm
+display_name: "Portable Pixmap (PPM / Netpbm)"
+extensions:
+  - .ppm
+mime_type: "image/x-portable-pixmap"
+family: imaging
+spec_body: "Jef Poskanzer (Netpbm project)"
+spec_version: "Netpbm PPM specification (1988, public domain)"
+legal_category: 1
+legal_description: "Public domain format. Netpbm specification is freely available, no patents, no licensing restrictions."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose.Imaging does not list PPM/PGM/PBM (Netpbm) in its supported formats. Not found in Aspose.Words, Aspose.Cells, or Aspose.Slides either."
+aspose_notes: "Not supported by Aspose. High differentiation value. PPM is the simplest raster image format — text-based (P3) or binary (P6), no compression, no headers beyond magic/width/height/maxval."
+python_library: "No library needed; trivially parseable with stdlib (open/read/split)"
+oracle_strategy: "Pixel-exact comparison; PPM P3 is human-readable text so oracle is trivial"
+acquisition_risk_classification: MINIMAL
+acquisition_risk_notes: "Public domain format from 1988. Trivially simple structure. No compression, no container, no encryption. Parsing is straightforward string/binary reading."
+sprint_created: FORMAT-FACTORY-R28-LANE-L-001
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: ppm
+    display_name: "Portable Pixmap (PPM / Netpbm)"
+    mime_type: "image/x-portable-pixmap"
+    extensions: [".ppm"]
+    structure: "Text-based (P3) or binary (P6) raster image. Header: magic number, width, height, maxval. Body: pixel RGB triplets."
+    spec_body: "Jef Poskanzer (Netpbm project)"
+    spec_version: "Netpbm PPM specification (1988)"
+    notes: "PPM is the color member of the Netpbm family (PBM=bitmap, PGM=greyscale, PPM=color). P3 is ASCII, P6 is binary. Universally supported by image tools. The simplest possible raster image format."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r28"
+    approved_by: "delegated_agent_r28"
+    approved_date: "2026-05-19"
+    sprint: FORMAT-FACTORY-R28-LANE-L-001
+    awaiting_human_iv: true
+    score_total: 91
+    score_normalized: 9.1
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "Public domain format (1988). No patents, no royalties, no licensing restrictions. Category 1 — cleanest possible legal status."
+      spec_availability:
+        score: 3
+        points: 20
+        evidence: "Full specification publicly available via Netpbm project documentation. Format is trivially simple — can be fully described in one page."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Trivially parseable. P3 (ASCII) is human-readable text: magic, width, height, maxval, then space-separated RGB values. No compression, no container, no escaping."
+      community_demand:
+        score: 2
+        points: 10
+        evidence: "PPM is a standard interchange format used by ImageMagick, GIMP, scientific imaging, and Unix pipelines. Not high consumer demand but essential in toolchains."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Not supported by Aspose — fills imaging gap. Demonstrates capability on simple raster formats. Gateway to PBM/PGM family."
+      implementation_complexity:
+        score: 3
+        points: 6
+        evidence: "Minimal complexity — no compression, no container, no metadata beyond header. Implementation is ~50 lines of Python."
+      family_overlap:
+        score: 2
+        points: 3
+        evidence: "No overlap with existing formats. New imaging family (Netpbm). Complements QOI and XCF."
+    legal_category: 1
+    aspose_support_level: NOT_SUPPORTED
+    notes: "Score 9.1/10 — Accept band. Excellent candidate: public domain, trivially simple, not supported by Aspose. Gate 1 passed by delegated agent R28; awaits human IV per DEC-034."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r28"
+    approved_date: "2026-05-19"
+    sprint: FORMAT-FACTORY-R28-LANE-L-001
+    awaiting_human_iv: true
+    fast_path_eligible: false
+    spec_url: "https://netpbm.sourceforge.net/doc/ppm.html"
+    spec_version_confirmed: "Netpbm PPM specification (1988, updated documentation)"
+    spec_access: public
+    spec_format: "HTML documentation (single page, complete)"
+    patent_search_required: false
+    patent_notes: "Public domain format. No patent encumbrances known or possible — the format predates modern software patents and has been freely used for 38 years."
+    notes: "Specification is a single-page HTML document at netpbm.sourceforge.net. Format is fully described: magic (P3/P6), whitespace-separated width/height/maxval, then pixel data. Gate 2 passed by delegated agent R28; awaits human IV."
+
+  gate_3:
+    status: pass
+    sprint: FORMAT-FACTORY-R28-LANE-L-001
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/ppm/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_text
+    awaiting_human_iv: true
+    notes: "3 valid PPM P3 samples (1x1-red, 2x2-rgbw, 3x1-gradient) + 1 invalid (wrong-magic P9). Generated via Python open/write — no dependencies. All P3 ASCII format. Corpus manifest and provenance at samples/by-format/ppm/."
+    corpus_manifest: samples/by-format/ppm/_corpus-manifest.yaml
+    provenance: samples/by-format/ppm/_provenance.yaml

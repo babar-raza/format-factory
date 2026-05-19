@@ -1,0 +1,51 @@
+format_id: dif
+provenance_version: "1.0"
+provenance_date: "2026-05-19"
+acquisition_sprint: FORMAT-FACTORY-R28-LANE-L-NEW-CANDIDATE-EXPANSION-001
+commercial_product_ready: false
+
+# All DIF corpus samples are project-owned synthetic, generated via Python
+# standard library (open/write) with no third-party dependencies.
+# DIF files use CRLF line endings per format convention.
+# All files are fully deterministic given the same generation code.
+
+- sample_id: valid/minimal-2x2.dif
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_date: "2026-05-19"
+  input_content: "Hand-authored DIF: 2x2 table with string headers (Name/Value) and mixed data (Alpha/42, Beta/99)"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:6760f1c94bf23218c3daa6eb5f0a7d10a5df4f94384bb2887907365ee7fe87f8"
+  provenance_status: confirmed
+
+- sample_id: valid/single-cell.dif
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_date: "2026-05-19"
+  input_content: "Hand-authored DIF: 1x1 single numeric cell (42)"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:d081f18da75652bafc6bf8e249758a7b6f7dbc10c827fa5c50a0266997109b49"
+  provenance_status: confirmed
+
+- sample_id: valid/numeric-row.dif
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_date: "2026-05-19"
+  input_content: "Hand-authored DIF: 1x3 numeric row (values 1, 2, 3)"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:81e8c7bc1409785df6e549d05054259ca0b1a6ecc8e59ca969ac8f138aaa891d"
+  provenance_status: confirmed
+
+- sample_id: invalid/missing-table-header.dif
+  source_type: project-owned-synthetic
+  generation_tool: "Python 3.13 stdlib (open/write)"
+  generation_date: "2026-05-19"
+  input_content: "DIF-like file with 'NOTABLE' instead of 'TABLE' — intentionally invalid header"
+  license: project-owned-synthetic
+  copyright: "format-factory project"
+  sha256: "sha256:50199ec75fa176c69198832d27d3b194a302ffcde802445598d28ff72156d0e9"
+  provenance_status: confirmed
+  expected_error: true

@@ -1,0 +1,86 @@
+format_id: ppm
+corpus_version: "1.0"
+acquisition_sprint: FORMAT-FACTORY-R28-LANE-L-NEW-CANDIDATE-EXPANSION-001
+acquisition_date: "2026-05-19"
+generation_method: deterministic_synthetic_python_text
+commercial_product_ready: false
+
+valid_samples:
+  - filename: valid/1x1-red.ppm
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 19
+    sha256: "sha256:c940efc28573af63c6ebbfeb23e69ded35c645b0dca6c4553d62aa1977912614"
+    category: minimal-valid
+    description: "1x1 PPM P3 image, single red pixel (255 0 0). Header: P3, 1 1, 255."
+    magic_valid: true
+    format_variant: P3
+    width: 1
+    height: 1
+    maxval: 255
+    pixel_count: 1
+    structural_test: PASS
+
+  - filename: valid/2x2-rgbw.ppm
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 47
+    sha256: "sha256:bf7be37ba40db548717727afdeb0e390c3f0d6a07541fd5c23d06952f15abfa1"
+    category: multi-pixel-color
+    description: "2x2 PPM P3 image with 4 distinct colors: red (255,0,0), green (0,255,0), blue (0,0,255), white (255,255,255). Tests multi-row, multi-column parsing."
+    magic_valid: true
+    format_variant: P3
+    width: 2
+    height: 2
+    maxval: 255
+    pixel_count: 4
+    structural_test: PASS
+
+  - filename: valid/3x1-gradient.ppm
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 41
+    sha256: "sha256:6d2dcea6dacd0406e868160730c709ccc90e4ce452e715222c5e08d65b07563d"
+    category: greyscale-gradient
+    description: "3x1 PPM P3 image with 3 greyscale pixels: black (0,0,0), mid-grey (128,128,128), white (255,255,255). Tests gradient/greyscale rendering in color format."
+    magic_valid: true
+    format_variant: P3
+    width: 3
+    height: 1
+    maxval: 255
+    pixel_count: 3
+    structural_test: PASS
+
+invalid_samples:
+  - filename: invalid/wrong-magic.ppm
+    source: project-owned-synthetic
+    source_url: "self-generated"
+    license: project-owned-synthetic
+    copyright: "format-factory project"
+    file_size_bytes: 19
+    sha256: "sha256:d79f40e0b8962f0ef263d5463010dc2b3fcba1a38eaa521500c0f4e3bff72c1e"
+    category: invalid-magic
+    description: "File begins with 'P9' instead of valid PPM magic (P3 or P6). Tests magic number validation in parser."
+    magic_valid: false
+    expected_error: true
+    error_type: InvalidMagic
+
+summary:
+  valid_count: 3
+  invalid_count: 1
+  total_count: 4
+  structural_pass_rate: "3/3"
+  error_detection_rate: "1/1"
+  categories_covered:
+    - minimal-valid
+    - multi-pixel-color
+    - greyscale-gradient
+    - invalid-magic
+  gate_3_categories_met: true
+  awaiting_human_iv: true

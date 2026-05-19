@@ -89,6 +89,106 @@ class TestQoiProbe:
         assert result["exists"] is False
 
 
+class TestQoiMalformedInput:
+    """Hardening tests for malformed / adversarial QOI input (R28 Lane F)."""
+
+    def test_empty_file(self, tmp_path):
+        """A zero-byte file must fail gracefully."""
+        f = tmp_path / "empty.qoi"
+        f.write_bytes(b"")
+        result = parse_qoi(str(f))
+        assert result["ok"] is False
+
+    def test_empty_file_strict(self, tmp_path):
+        import pytest
+        f = tmp_path / "empty.qoi"
+        f.write_bytes(b"")
+        with pytest.raises(Exception):
+            parse_qoi_strict(str(f))
+
+    def test_wrong_magic_bytes(self, tmp_path):
+        """File with wrong magic bytes must be rejected."""
+        import struct
+        f = tmp_path / "badmagic.qoi"
+        # 'PNG\x89' + valid dimensions + channels + colorspace + padding
+        data = b"PNG\x89" + struct.pack(">II", 1, 1) + bytes([4, 0]) + b"\x00" * 20
+        f.write_bytes(data)
+        result = parse_qoi(str(f))
+        assert result["ok"] is False
+        assert "magic" in result.get("error", "").lower() or "Magic" in result.get("error", "")
+
+    def test_truncated_header(self, tmp_path):
+        """File with only magic and partial header (10 bytes) must fail."""
+        f = tmp_path / "short.qoi"
+        f.write_bytes(b"qoif\x00\x00\x00\x01\x00\x00")  # 10 bytes, need 14
+        result = parse_qoi(str(f))
+        assert result["ok"] is False
+
+    def test_zero_width(self, tmp_path):
+        """Header claiming 0 width must be rejected."""
+        import struct
+        f = tmp_path / "zero-w.qoi"
+        data = b"qoif" + struct.pack(">II", 0, 1) + bytes([4, 0])
+        f.write_bytes(data)
+        result = parse_qoi(str(f))
+        assert result["ok"] is False
+
+    def test_zero_height(self, tmp_path):
+        """Header claiming 0 height must be rejected."""
+        import struct
+        f = tmp_path / "zero-h.qoi"
+        data = b"qoif" + struct.pack(">II", 1, 0) + bytes([4, 0])
+        f.write_bytes(data)
+        result = parse_qoi(str(f))
+        assert result["ok"] is False
+
+    def test_oversized_dimensions(self, tmp_path):
+        """Header claiming 65535x65535 dimensions must be rejected."""
+        import struct
+        from qoi.qoi_parser import QoiSizeError
+        f = tmp_path / "huge.qoi"
+        data = b"qoif" + struct.pack(">II", 65535, 65535) + bytes([4, 0])
+        f.write_bytes(data)
+        result = parse_qoi(str(f))
+        assert result["ok"] is False
+        assert "QoiSizeError" in result.get("error_type", "") or "exceed" in result.get("error", "").lower()
+
+    def test_invalid_channels(self, tmp_path):
+        """Header with channels=5 (only 3 or 4 valid) must be rejected."""
+        import struct
+        f = tmp_path / "bad-chan.qoi"
+        data = b"qoif" + struct.pack(">II", 1, 1) + bytes([5, 0])
+        f.write_bytes(data)
+        result = parse_qoi(str(f))
+        assert result["ok"] is False
+
+    def test_invalid_colorspace(self, tmp_path):
+        """Header with colorspace=2 (only 0 or 1 valid) must be rejected."""
+        import struct
+        f = tmp_path / "bad-cs.qoi"
+        data = b"qoif" + struct.pack(">II", 1, 1) + bytes([4, 2])
+        f.write_bytes(data)
+        result = parse_qoi(str(f))
+        assert result["ok"] is False
+
+    def test_truncated_pixel_data(self, tmp_path):
+        """Valid header but pixel data cut short (no end marker, no pixels)."""
+        import struct
+        f = tmp_path / "trunc-px.qoi"
+        # Valid header for 2x2 image but only header bytes, no pixel data
+        data = b"qoif" + struct.pack(">II", 2, 2) + bytes([4, 0])
+        f.write_bytes(data)
+        result = parse_qoi(str(f))
+        assert result["ok"] is False
+
+    def test_probe_short_file(self, tmp_path):
+        """probe_qoi on a 5-byte file must report valid_header=False."""
+        f = tmp_path / "tiny.qoi"
+        f.write_bytes(b"qoif\x00")
+        result = probe_qoi(str(f))
+        assert result["valid_header"] is False
+
+
 class TestQoiParserDict:
     """Tests for the dict-returning parse_qoi."""
 

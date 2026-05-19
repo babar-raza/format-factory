@@ -108,8 +108,8 @@ class TestGate4PackYamlConsistency:
         assert gate4["production_source_authorized"] is True
 
 
-class TestGate4PrototypeSafetyGuards:
-    """Verify no Gate 5+ claims exist."""
+class TestGate5SafetyGuards:
+    """Verify no Gate 6+ claims exist in pack.yaml (Gate 5 is now complete)."""
 
     def _load_pack(self, fmt: str) -> dict:
         pack_path = REPO_ROOT / GATE4_PROTOTYPES[fmt]["pack_yaml"]
@@ -117,17 +117,32 @@ class TestGate4PrototypeSafetyGuards:
             lines = [line for line in f if not line.strip().startswith("#")]
         return yaml.safe_load("\n".join(lines))
 
-    def test_no_gate5_ods(self):
+    def test_gate5_exists_ods(self):
         pack = self._load_pack("ods")
-        assert "gate_5" not in pack.get("stages", {})
+        assert "gate_5" in pack.get("stages", {})
+        assert pack["stages"]["gate_5"]["commercial_product_ready"] is False
 
-    def test_no_gate5_odt(self):
+    def test_gate5_exists_odt(self):
         pack = self._load_pack("odt")
-        assert "gate_5" not in pack.get("stages", {})
+        assert "gate_5" in pack.get("stages", {})
+        assert pack["stages"]["gate_5"]["commercial_product_ready"] is False
 
-    def test_no_gate5_qoi(self):
+    def test_gate5_exists_qoi(self):
         pack = self._load_pack("qoi")
-        assert "gate_5" not in pack.get("stages", {})
+        assert "gate_5" in pack.get("stages", {})
+        assert pack["stages"]["gate_5"]["commercial_product_ready"] is False
+
+    def test_no_gate6_ods(self):
+        pack = self._load_pack("ods")
+        assert "gate_6" not in pack.get("stages", {})
+
+    def test_no_gate6_odt(self):
+        pack = self._load_pack("odt")
+        assert "gate_6" not in pack.get("stages", {})
+
+    def test_no_gate6_qoi(self):
+        pack = self._load_pack("qoi")
+        assert "gate_6" not in pack.get("stages", {})
 
     def test_commercial_product_ready_false_ods(self):
         pack = self._load_pack("ods")

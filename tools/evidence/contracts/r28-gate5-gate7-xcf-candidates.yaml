@@ -1,0 +1,91 @@
+---
+contract_id: FORMAT-FACTORY-R28-GATE5-GATE7-ORACLE-FUZZ-XCF-ZPAQ-G11-C9-PUBLICATION-HARDENING-001
+date: "2026-05-19"
+min_metadata_count: 30
+verdict_keyword: R28_COMPLETE
+emergency_blocker_bundle: false
+require_clean_git: true
+
+required_repo_files:
+  # Gate 0 / Preflight
+  - reports/r28/preflight-and-lane-ownership-20260519.md
+
+  # Lane A: R27 metadata refresh
+  - reports/r28/r27-metadata-refresh-and-commit-consistency-report-20260519.md
+
+  # Lane B: ODS Gate 5
+  - src/python/ods/ods_parser.py
+  - tests/python/ods/test_ods_gate5_neutral_model.py
+  - reports/implementation/r28-ods-gate5-neutral-model-report-20260519.md
+
+  # Lane C: ODT Gate 5
+  - src/python/odt/odt_parser.py
+  - tests/python/odt/test_odt_gate5_neutral_model.py
+  - reports/implementation/r28-odt-gate5-neutral-model-report-20260519.md
+
+  # Lane D: QOI Gate 5
+  - src/python/qoi/qoi_parser.py
+  - tests/python/qoi/test_qoi_gate5_neutral_model.py
+  - reports/implementation/r28-qoi-gate5-neutral-model-report-20260519.md
+
+  # Lane E: Gate 6 oracle
+  - tests/python/ods/test_ods_gate6_oracle.py
+  - tests/python/odt/test_odt_gate6_oracle.py
+  - tests/python/qoi/test_qoi_gate6_oracle.py
+  - reports/planning/r28-gate6-oracle-planning-ods-odt-qoi-20260519.md
+
+  # Lane F: Gate 7 fuzz
+  - tests/python/ods/test_ods_gate7_fuzz_guard.py
+  - tests/python/odt/test_odt_gate7_fuzz_guard.py
+  - tests/python/qoi/test_qoi_gate7_fuzz_guard.py
+  - reports/planning/r28-gate7-fuzz-planning-ods-odt-qoi-20260519.md
+
+  # Lane G: XCF Gate 4
+  - src/python/xcf/__init__.py
+  - src/python/xcf/xcf_parser.py
+  - tests/python/xcf/test_xcf_parser.py
+  - reports/implementation/r28-xcf-gate4-prototype-report-20260519.md
+  - acquisition-packs/xcf/pack.yaml
+
+  # Lane H: ZPAQ Gate 3
+  - reports/planning/r28-zpaq-gate3-recovery-or-blocker-report-20260519.md
+  - acquisition-packs/zpaq/pack.yaml
+
+  # Lanes I/J: FODS/FODT C9
+  - tests/net/fods/FodsC9ExportConversionReadinessTests.cs
+  - tests/net/fodt/FodtC9ExportConversionReadinessTests.cs
+  - reports/implementation/r28-fods-fodt-c9-g11-gap-report-20260519.md
+
+  # Lane K: Publication hardening
+  - reports/packaging/r28-publication-hardening-report-20260519.md
+
+  # Lane L: New candidates
+  - acquisition-packs/dif/pack.yaml
+  - acquisition-packs/ppm/pack.yaml
+  - reports/planning/r28-new-candidate-expansion-report-20260519.md
+
+  # Lane M: Memory/registry
+  - memory/48-r28-gate5-gate7-xcf-candidates-20260519.md
+  - registry/format-registry.yaml
+
+  # Lane N: Verification
+  - reports/verification/r28-safety-verification-report-20260519.md
+  - reports/verification/r28-cross-lane-independent-verification-20260519.md
+  - reports/governance/r28-adversarial-scope-drift-review-20260519.md
+
+  # Pack.yaml updates
+  - acquisition-packs/ods/pack.yaml
+  - acquisition-packs/odt/pack.yaml
+  - acquisition-packs/qoi/pack.yaml
+
+  # Updated harness
+  - tests/python/test_gate4_prototype_common.py
+
+  # Sprint metadata
+  - reports/r28-gate5-sprint-metadata-20260519/sprint-overview.md
+
+  # Final verdict
+  - reports/r28/final-verdict-gate5-prototypes-20260519.md
+
+  # Evidence contract
+  - tools/evidence/contracts/r28-gate5-gate7-xcf-candidates.yaml

@@ -37,6 +37,57 @@ NS = {
 }
 
 
+UNSUPPORTED_FEATURES = frozenset({
+    "formulas",
+    "formula_evaluation",
+    "charts",
+    "pivot_tables",
+    "conditional_formatting",
+    "data_validation",
+    "macros",
+    "embedded_objects",
+    "images",
+    "named_ranges",
+    "cell_styles",
+    "merged_cells",
+    "filters",
+    "comments",
+    "protection",
+    "encryption",
+    "external_links",
+})
+
+SUPPORTED_FEATURES = frozenset({
+    "sheet_enumeration",
+    "cell_text_extraction",
+    "cell_value_type_detection",
+    "float_value_parsing",
+    "date_value_extraction",
+    "boolean_value_extraction",
+    "row_repeat_expansion",
+    "column_repeat_expansion",
+    "container_validation",
+    "mimetype_verification",
+    "size_guard",
+    "probe_without_parse",
+})
+
+
+def get_capabilities() -> dict[str, Any]:
+    """Return supported/unsupported feature declarations for ODS parser."""
+    return {
+        "format": "ods",
+        "gate": 5,
+        "supported": sorted(SUPPORTED_FEATURES),
+        "unsupported": sorted(UNSUPPORTED_FEATURES),
+        "commercial_product_ready": False,
+        "max_file_size": MAX_FILE_SIZE,
+        "max_zip_entries": MAX_ZIP_ENTRIES,
+        "max_columns": MAX_COLUMNS,
+        "max_rows": MAX_ROWS,
+    }
+
+
 class OdsError(Exception):
     """Base exception for ODS parser errors."""
 

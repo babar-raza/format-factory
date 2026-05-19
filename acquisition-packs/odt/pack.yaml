@@ -131,3 +131,17 @@ stages:
     commercial_product_ready: false
     prototype_report: reports/implementation/r27-odt-gate4-prototype-report-20260519.md
     notes: "Gate 4 prototype complete (R27). Minimal controlled prototype: ZIP container, mimetype, content.xml, paragraph/heading/list parse. 10/10 tests PASS."
+
+  gate_5:
+    status: neutral_model_complete
+    sprint: R28
+    date: "2026-05-19"
+    supported_features: 10
+    unsupported_features: 21
+    new_tests: 18
+    test_result: "18/18 PASS (Gate 5) + 10/10 PASS (Gate 4)"
+    source_path: src/python/odt/odt_parser.py
+    test_path: tests/python/odt/test_odt_gate5_neutral_model.py
+    report: reports/implementation/r28-odt-gate5-neutral-model-report-20260519.md
+    commercial_product_ready: false
+    notes: "Gate 5 neutral model complete. Explicit unsupported feature declarations (tables, images, macros, encryption, etc). Edge-case tests for empty doc, heading levels, mixed content."

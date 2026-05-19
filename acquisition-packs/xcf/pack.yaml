@@ -1,7 +1,7 @@
 # XCF Acquisition Pack
 # GIMP Native Image Format
-# Sprint: R27 Lane J — New Candidate Expansion
-# Gate 1-3 for XCF format
+# Sprint: R27 Lane J — New Candidate Expansion (Gates 1-3)
+# Sprint: R28 Lane G — Gate 4 Prototype
 
 format_id: xcf
 display_name: "GIMP Native Image Format (XCF)"
@@ -135,3 +135,35 @@ stages:
     notes: "3 valid XCF samples (1x1-red-rgb, 2x2-gray, 1x1-rgba) + 1 invalid (wrong-magic). Generated via Python stdlib struct/bytes. XCF binary header is well-documented: 'gimp xcf ' magic + version + canvas properties. No external dependencies."
     corpus_manifest: samples/by-format/xcf/_corpus-manifest.yaml
     provenance: samples/by-format/xcf/_provenance.yaml
+
+  gate_4:
+    status: prototype_complete
+    sprint: R28
+    date: "2026-05-19"
+    approved_by: "delegated_agent_r28"
+    awaiting_human_iv: true
+    implementation_authorized: true
+    commercial_product_ready: false
+    source_path: src/python/xcf/
+    test_path: tests/python/xcf/
+    test_count: 17
+    test_result: "17 passed, 0 failed"
+    parser_module: xcf.xcf_parser
+    public_api:
+      - "parse_xcf(file_path) -> dict"
+      - "parse_xcf_strict(file_path) -> XcfImage"
+      - "probe_xcf(file_path) -> dict"
+    dataclass: "XcfImage(width, height, image_type, version, num_layers, path)"
+    parse_scope:
+      - "Header: magic, version, NUL, width, height, image_type (26 bytes)"
+      - "Property list: TLV scan until PROP_END (type=0)"
+      - "Layer offset table: uint32 offsets until 0 sentinel"
+      - "Does NOT decode pixel/tile data"
+    security_guards:
+      max_file_size: "64 MiB"
+      magic_validation: "gimp xcf "
+      max_dimension: 262144
+      valid_image_types: [0, 1, 2]
+    dependencies: "Python stdlib only (struct, pathlib, os, dataclasses)"
+    report: reports/implementation/r28-xcf-gate4-prototype-report-20260519.md
+    notes: "Minimal Gate 4 controlled prototype. Parses header, property list, and layer offset table. No pixel/tile decoding. 17 tests pass. Awaits human IV per DEC-034."

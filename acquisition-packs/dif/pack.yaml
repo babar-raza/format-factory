@@ -1,0 +1,110 @@
+# DIF Acquisition Pack
+# Data Interchange Format (text-based spreadsheet)
+# Sprint: FORMAT-FACTORY-R28-LANE-L-NEW-CANDIDATE-EXPANSION-001
+
+format_id: dif
+display_name: "Data Interchange Format (DIF)"
+extensions:
+  - .dif
+mime_type: "text/x-dif"
+family: cells
+spec_body: "Software Arts (Bob Frankston, 1981)"
+spec_version: "DIF Technical Specification (1981, public domain)"
+legal_category: 1
+legal_description: "Public domain format created by Software Arts (VisiCalc creators) in 1981. No patents, no licensing. Specification is freely available."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose.Cells does not list DIF in its supported file formats. DIF is not found in any Aspose product documentation."
+aspose_notes: "Not supported by Aspose. DIF is a text-based spreadsheet interchange format — historically used to transfer data between VisiCalc, Lotus 1-2-3, and Excel. Still supported by Excel and LibreOffice for import."
+python_library: "No library needed; trivially parseable with stdlib (open/read/split). Text-based line-oriented format."
+oracle_strategy: "Cell value comparison; DIF is human-readable text so oracle is trivial row/column value extraction"
+acquisition_risk_classification: MINIMAL
+acquisition_risk_notes: "Public domain format from 1981. Simple line-oriented text structure. No compression, no container. Well-documented in multiple public sources."
+sprint_created: FORMAT-FACTORY-R28-LANE-L-001
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: dif
+    display_name: "Data Interchange Format (DIF)"
+    mime_type: "text/x-dif"
+    extensions: [".dif"]
+    structure: "Text-based line-oriented spreadsheet format. Sections: TABLE (version), VECTORS (columns), TUPLES (rows), DATA (cell values). Cell values are type,value pairs on two lines."
+    spec_body: "Software Arts (Bob Frankston)"
+    spec_version: "DIF Technical Specification (1981)"
+    notes: "DIF was one of the first spreadsheet interchange formats, created by the makers of VisiCalc. It remains readable by Excel and LibreOffice Calc. Pure text, no binary, no compression."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r28"
+    approved_by: "delegated_agent_r28"
+    approved_date: "2026-05-19"
+    sprint: FORMAT-FACTORY-R28-LANE-L-001
+    awaiting_human_iv: true
+    score_total: 87
+    score_normalized: 8.7
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "Public domain format (1981). Created by Software Arts. No patents, no royalties, no licensing. Category 1 — cleanest legal status."
+      spec_availability:
+        score: 3
+        points: 20
+        evidence: "DIF specification is publicly documented in multiple sources: original Software Arts documentation, Wotsit's Format collection, Wikipedia technical description. Fully public."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Line-oriented text format. Each cell is a type indicator (0=numeric, 1=string, -1=special) followed by value. Trivially parseable with readline/split."
+      community_demand:
+        score: 1
+        points: 5
+        evidence: "Legacy format. Low modern demand but still supported by Excel and LibreOffice for data interchange. Useful for legacy data migration."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Not supported by Aspose — fills cells track gap. Demonstrates capability on legacy text-based formats. Complements FODS/ODS in cells family."
+      implementation_complexity:
+        score: 3
+        points: 6
+        evidence: "Minimal complexity — text-only, line-oriented, no compression, no container. Implementation is ~80 lines of Python."
+      family_overlap:
+        score: 2
+        points: 4
+        evidence: "Same family as FODS/ODS (cells) but entirely different format structure (text lines vs. XML). No code reuse overlap."
+    legal_category: 1
+    aspose_support_level: NOT_SUPPORTED
+    notes: "Score 8.7/10 — Accept band. Strong candidate: public domain, simple text format, not supported by Aspose, fills cells track. Gate 1 passed by delegated agent R28; awaits human IV per DEC-034."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r28"
+    approved_date: "2026-05-19"
+    sprint: FORMAT-FACTORY-R28-LANE-L-001
+    awaiting_human_iv: true
+    fast_path_eligible: false
+    spec_url: "https://en.wikipedia.org/wiki/Data_Interchange_Format"
+    spec_secondary_url: "http://www.interglobalmedianetwork.com/Handouts/DIF.pdf"
+    spec_version_confirmed: "DIF Technical Specification (1981, Software Arts)"
+    spec_access: public
+    spec_format: "Multiple public sources: Wikipedia technical description, archived PDF specification, Wotsit's format reference"
+    patent_search_required: false
+    patent_notes: "Public domain format from 1981. Software Arts (now defunct) released specification freely. No patent encumbrances. Format predates software patent era."
+    notes: "DIF specification documented in multiple public sources. Core format: TABLE/VECTORS/TUPLES/DATA sections, line-oriented, two-line cell records. Gate 2 passed by delegated agent R28; awaits human IV."
+
+  gate_3:
+    status: pass
+    sprint: FORMAT-FACTORY-R28-LANE-L-001
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/dif/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_text
+    awaiting_human_iv: true
+    notes: "3 valid DIF samples (minimal-2x2, single-cell, numeric-row) + 1 invalid (missing-table-header). Generated via Python open/write with CRLF line endings (DIF convention). Corpus manifest and provenance at samples/by-format/dif/."
+    corpus_manifest: samples/by-format/dif/_corpus-manifest.yaml
+    provenance: samples/by-format/dif/_provenance.yaml
