@@ -121,20 +121,16 @@ class TestEvaluatorThresholdBoundary:
     """Evaluator threshold and boundary behavior."""
 
     def _make_result(self, **overrides) -> SynthesisResult:
-        defaults = dict(
-            task_id="test-eval",
-            model="fixture",
-            output_text="test output",
-            output_hash="abc123",
-            schema_valid=True,
-            citations=[],
-            citation_verified=False,
-            contradiction_check_status="no_contradictions",
-            authority_state="ai_draft",
-            errors=[],
-        )
-        defaults.update(overrides)
-        return SynthesisResult(**defaults)
+        r = SynthesisResult(task_id=overrides.pop("task_id", "test-eval"))
+        r.output_hash = "abc123"
+        r.schema_valid = True
+        r.citations = []
+        r.citation_verified = False
+        r.contradiction_check_status = "no_contradictions"
+        r.errors = []
+        for k, v in overrides.items():
+            setattr(r, k, v)
+        return r
 
     def test_all_checks_pass(self):
         r = self._make_result()
