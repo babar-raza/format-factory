@@ -1,0 +1,35 @@
+contract_id: "FORMAT-FACTORY-R32-TRUTH-MATRIX-GATE-QUALITY-AND-DRIFT-RECOVERY-001"
+sprint_id: "FORMAT-FACTORY-R32-TRUTH-MATRIX-GATE-QUALITY-AND-DRIFT-RECOVERY-001"
+created: "2026-05-19"
+contract_type: "evidence-bundle"
+
+description: |
+  R32 truth matrix, gate quality policy, and drift recovery controls.
+  Non-feature governance sprint. No source modifications.
+
+required_artifacts:
+  - registry/format-completion-matrix.yaml
+  - docs/format-completion-matrix.md
+  - docs/gate-quality-criteria.md
+  - docs/prototype-quarantine-policy.md
+  - docs/source-track-maturity-policy.md
+  - docs/format-feature-matrix-template.md
+  - reports/r32/preflight-and-lane-ownership.md
+  - reports/r32/truth-matrix-gate-quality-and-drift-recovery-report.md
+  - reports/r32/ai-wiring-reality-and-decision-report.md
+  - reports/r32/final-verdict.md
+  - memory/52-r32-truth-matrix-gate-quality-and-drift-recovery-20260519.md
+
+required_test_suites:
+  - tests/evidence/test_format_completion_matrix.py
+  - tests/evidence/test_gate_quality_claims.py
+  - tests/evidence/test_source_track_maturity.py
+
+min_metadata_count: 5
+require_clean_git: false
+emergency_blocker_bundle: false
+
+validation_commands:
+  - "python -m pytest tests/evidence/test_format_completion_matrix.py -q"
+  - "python -m pytest tests/evidence/test_gate_quality_claims.py -q"
+  - "python -m pytest tests/evidence/test_source_track_maturity.py -q"

@@ -1,0 +1,723 @@
+# Format Completion Matrix — format-factory
+#
+# Authoritative truth matrix for every tracked format.
+# Created: R32 (2026-05-19)
+# Purpose: Replace report-driven progress tracking with evidence-backed source maturity.
+#
+# This file is the canonical source for format maturity classification.
+# Gate states in pack.yaml remain unchanged; this matrix records evidence-backed assessment.
+#
+# Maturity classes:
+#   acquisition_only              — pack/samples exist, no source
+#   probe_only                    — parser reads header/metadata only, no feature extraction
+#   read_only_prototype           — parser reads some features, no model/write/export
+#   read_only_library_foundation  — parser reads with formal model, no write/export
+#   read_write_library_foundation — parser reads and writes, formal model
+#   export_capable_library        — read + export to other formats
+#   roundtrip_capable_library     — read + write + verified round-trip
+#   commercial_candidate          — meets C4+ capability with .NET implementation
+#   production_track_real         — full evidence chain, deep tests, ready for product use
+#   blocked                       — cannot proceed without external dependency
+#   stale_or_contaminated         — deferred or below threshold
+
+formats:
+
+  - format_id: fods
+    display_name: "Flat OpenDocument Spreadsheet"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: "prototypes/by-format/fods/"
+    src_python_exists: true
+    src_python_path: "src/python/fods/"
+    src_python_files: ["parser.py", "neutral_model.py", "constants.py", "exceptions.py", "__init__.py"]
+    src_python_loc: 715
+    src_net_exists: true
+    src_net_path: "src/net/fods/"
+    src_net_files: ["FodsDocument.cs", "FodsParser.cs", "FodsWriter.cs", "FodsCsvExporter.cs", "FodsHtmlExporter.cs", "FodsJsonExporter.cs", "Model/FodsSheet.cs", "Model/FodsRow.cs", "Model/FodsCell.cs"]
+    src_net_loc: 1286
+    tests_python_count: 70
+    tests_net_count: 160
+    packaging_status: local_build_ready
+    claimed_gate: "G11 (commercial_readiness_in_progress)"
+    evidence_backed_gate: "G10 (Python FOSS); G11-E (.NET prototype)"
+    actual_maturity_class: production_track_real
+    parser_depth: "streaming XML, neutral model (6 entities), defusedxml"
+    read_support: true
+    write_support: true  # .NET only
+    export_support: true  # .NET: CSV, HTML, JSON
+    roundtrip_support: true  # .NET: load-edit-save-reload verified
+    neutral_model_status: "formal (Workbook/Sheet/Row/Cell/Formula/Warning)"
+    security_guard_status: "defusedxml, 100MB guard, DTD prohibited (.NET)"
+    corpus_quality: good
+    spec_quality: good
+    package_readiness: "Python FOSS local; .NET NuGet local"
+    commercial_readiness: "C4-C6 prototype, NOT approved, commercial_product_ready: false"
+    overclaim_risk: none
+    strongest_evidence: ".NET 302-test round-trip suite + Python 70-test streaming parser"
+    weakest_area: "Python has no write/export; .NET model is Tier 0-1 only"
+    recommended_action: "Deepen .NET model to Tier 3+; add Python write capability"
+
+  - format_id: fodt
+    display_name: "Flat OpenDocument Text"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: "prototypes/by-format/fodt/"
+    src_python_exists: true
+    src_python_path: "src/python/fodt/"
+    src_python_files: ["parser.py", "neutral_model.py", "list_traversal.py", "constants.py", "exceptions.py", "__init__.py"]
+    src_python_loc: 761
+    src_net_exists: true
+    src_net_path: "src/net/fodt/"
+    src_net_files: ["FodtDocument.cs", "FodtParser.cs", "FodtWriter.cs", "FodtHtmlExporter.cs", "FodtTxtExporter.cs", "FodtMarkdownExporter.cs", "Model/FodtBody.cs", "Model/FodtParagraph.cs"]
+    src_net_loc: 1222
+    tests_python_count: 101
+    tests_net_count: 142
+    packaging_status: local_build_ready
+    claimed_gate: "G11 (commercial_readiness_in_progress)"
+    evidence_backed_gate: "G10 (Python FOSS); G11-E (.NET prototype)"
+    actual_maturity_class: production_track_real
+    parser_depth: "streaming XML, depth-tracking, list recursion, neutral model (7 entities)"
+    read_support: true
+    write_support: true  # .NET only
+    export_support: true  # .NET: HTML, TXT, Markdown
+    roundtrip_support: true  # .NET: load-edit-save-reload verified
+    neutral_model_status: "formal (Document/Block/List/ListItem/Table/TableRow/TableCell)"
+    security_guard_status: "defusedxml, 100MB guard, DTD prohibited (.NET)"
+    corpus_quality: good
+    spec_quality: good
+    package_readiness: "Python FOSS local; .NET NuGet local"
+    commercial_readiness: "C4-C6 prototype, NOT approved, commercial_product_ready: false"
+    overclaim_risk: none
+    strongest_evidence: ".NET 142-test round-trip suite + Python 101-test depth-tracking parser"
+    weakest_area: "Python has no write/export; .NET model is Tier 0-1 only"
+    recommended_action: "Deepen .NET model (inline formatting, tables); add Python write"
+
+  - format_id: zst
+    display_name: "Zstandard Compressed File"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: "prototypes/by-format/zst/"
+    src_python_exists: true
+    src_python_path: "src/python/zst/"
+    src_python_files: ["zst_codec.py", "__init__.py"]
+    src_python_loc: 303
+    src_net_exists: false
+    tests_python_count: 25
+    tests_net_count: 0
+    packaging_status: local_build_ready
+    claimed_gate: "G10 (verified)"
+    evidence_backed_gate: "G10"
+    actual_maturity_class: production_track_real
+    parser_depth: "full codec (compress+decompress), probe, streaming fallback"
+    read_support: true
+    write_support: true
+    export_support: false  # N/A for compression
+    roundtrip_support: true  # compress -> decompress verified
+    neutral_model_status: "metadata dict (probe_frame)"
+    security_guard_status: "256MiB decompression guard, 2GiB window guard, magic byte check"
+    corpus_quality: good
+    spec_quality: good
+    package_readiness: "Python FOSS local"
+    commercial_readiness: "N/A (Python FOSS only)"
+    overclaim_risk: none
+    strongest_evidence: "only Python format with write + round-trip"
+    weakest_area: "25 tests (adequate but lowest of production-track)"
+    recommended_action: "Stabilize; expand test suite; consider .NET track"
+
+  - format_id: ods
+    display_name: "OpenDocument Spreadsheet (ZIP)"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: true
+    src_python_path: "src/python/ods/"
+    src_python_files: ["ods_parser.py", "__init__.py"]
+    src_python_loc: 303
+    src_net_exists: false
+    tests_python_count: 61
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G8 (security review)"
+    evidence_backed_gate: "G7-G8"
+    actual_maturity_class: read_only_library_foundation
+    parser_depth: "ZIP container, typed cells (float/date/bool/string), dataclass model"
+    read_support: true
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dataclass (OdsDocument/OdsSheet/OdsRow/OdsCell)"
+    security_guard_status: "64MB guard, ZIP entry limit (1000), decompressed size limit, column/row repeat caps"
+    corpus_quality: good
+    spec_quality: fair
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "61 tests, typed cell parsing, ZIP container guards"
+    weakest_area: "no write, no export, no round-trip, no packaging"
+    recommended_action: "deepen: add write, neutral model formalization, export"
+
+  - format_id: odt
+    display_name: "OpenDocument Text (ZIP)"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: true
+    src_python_path: "src/python/odt/"
+    src_python_files: ["odt_parser.py", "__init__.py"]
+    src_python_loc: 250
+    src_net_exists: false
+    tests_python_count: 66
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G8 (security review)"
+    evidence_backed_gate: "G7-G8"
+    actual_maturity_class: read_only_prototype
+    parser_depth: "ZIP container, paragraphs/headings/list items, dataclass model"
+    read_support: true
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dataclass (OdtDocument/OdtParagraph/OdtHeading/OdtListItem)"
+    security_guard_status: "64MB guard, ZIP entry limit, decompressed size check"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "66 tests, ZIP container validation"
+    weakest_area: "shallow content extraction (no list nesting), no write/export"
+    recommended_action: "deepen: enrich content model, add write, formalize neutral model"
+
+  - format_id: qoi
+    display_name: "Quite OK Image Format"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: true
+    src_python_path: "src/python/qoi/"
+    src_python_files: ["qoi_parser.py", "__init__.py"]
+    src_python_loc: 307
+    src_net_exists: false
+    tests_python_count: 62
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G8 (security review)"
+    evidence_backed_gate: "G7-G8"
+    actual_maturity_class: read_only_library_foundation
+    parser_depth: "full pixel decode, all 6 chunk types, end marker validation"
+    read_support: true
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dataclass (QoiImage)"
+    security_guard_status: "64MB guard, 16384x16384 dim limit, pixel count guard, chunk truncation detection"
+    corpus_quality: fair
+    spec_quality: good
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "62 tests, complete pixel decoder for all chunk types"
+    weakest_area: "no write (encode), no image output/export"
+    recommended_action: "deepen: add QOI encoder, image export (PNG/raw), round-trip"
+
+  - format_id: dif
+    display_name: "Data Interchange Format"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: true
+    src_python_path: "src/python/dif/"
+    src_python_files: ["dif_parser.py", "__init__.py"]
+    src_python_loc: 303
+    src_net_exists: false
+    tests_python_count: 39
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G8 (security review)"
+    evidence_backed_gate: "G7-G8"
+    actual_maturity_class: read_only_prototype
+    parser_depth: "text triplet parsing, typed cells (numeric/string/bool/special)"
+    read_support: true
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dataclass (DifDocument/DifCell)"
+    security_guard_status: "64MB guard, row/col limits"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "39 tests, typed cell parsing with triplet structure"
+    weakest_area: "no write, 10 unsupported features"
+    recommended_action: "deepen: add DIF writer, reduce unsupported feature count"
+
+  - format_id: sylk
+    display_name: "Symbolic Link Spreadsheet"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: true
+    src_python_path: "src/python/sylk/"
+    src_python_files: ["sylk_parser.py", "__init__.py"]
+    src_python_loc: 241
+    src_net_exists: false
+    tests_python_count: 40
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G7"
+    evidence_backed_gate: "G7"
+    actual_maturity_class: read_only_prototype
+    parser_depth: "record-based, C/ID/E records, cell coordinates, typed values"
+    read_support: true
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dataclass (SylkDocument/SylkCell)"
+    security_guard_status: "64MB guard, row/col limits"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "40 tests, record parsing with coordinate handling"
+    weakest_area: "F/B/P record types unsupported, no write"
+    recommended_action: "deepen: add F/B/P records, SYLK writer"
+
+  - format_id: xcf
+    display_name: "GIMP Native Image Format"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: true
+    src_python_path: "src/python/xcf/"
+    src_python_files: ["xcf_parser.py", "__init__.py"]
+    src_python_loc: 271
+    src_net_exists: false
+    tests_python_count: 42
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G8 (security review)"
+    evidence_backed_gate: "G5-G6 equivalent (header+layer only)"
+    actual_maturity_class: probe_only
+    parser_depth: "header parse (26 bytes), property list, layer offset table. NO pixel/tile decode."
+    read_support: "partial (header/metadata only)"
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dataclass (XcfImage) with explicit unsupported declarations"
+    security_guard_status: "64MB guard, 262144 max dimension, property bounds, layer sentinel"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: moderate
+    overclaim_details: "G8 security review passed, but parser only reads header — not a usable image library"
+    strongest_evidence: "42 tests, solid header/property parsing"
+    weakest_area: "explicitly cannot decode pixels or tiles — probe/inspector only"
+    recommended_action: "reclassify as probe_only; G8 security pass is valid for what it parses but does not imply image processing capability"
+
+  - format_id: ppm
+    display_name: "Portable Pixmap (PPM)"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: true
+    src_python_path: "src/python/ppm/"
+    src_python_files: ["ppm_parser.py", "__init__.py"]
+    src_python_loc: 228
+    src_net_exists: false
+    tests_python_count: 40
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G8 (security review)"
+    evidence_backed_gate: "G7"
+    actual_maturity_class: read_only_prototype
+    parser_depth: "P3 ASCII full pixel decode only. P6 binary explicitly deferred."
+    read_support: "partial (ASCII P3 only)"
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dataclass (PpmImage)"
+    security_guard_status: "64MB guard, 65536 max dimension, maxval validation, per-pixel bounds"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: low
+    overclaim_details: "G8 security pass is valid for P3 parsing but binary P6 is the dominant real-world variant"
+    strongest_evidence: "40 tests, complete P3 decode"
+    weakest_area: "P6 binary not supported — most real PPM files are P6"
+    recommended_action: "add P6 binary support before claiming library maturity"
+
+  - format_id: pgm
+    display_name: "Portable Graymap (PGM)"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: true
+    src_python_path: "src/python/pgm/"
+    src_python_files: ["pgm_parser.py", "__init__.py"]
+    src_python_loc: 224
+    src_net_exists: false
+    tests_python_count: 40
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G7"
+    evidence_backed_gate: "G7"
+    actual_maturity_class: read_only_prototype
+    parser_depth: "P2 ASCII grayscale decode only. P5 binary deferred."
+    read_support: "partial (ASCII P2 only)"
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dataclass (PgmImage)"
+    security_guard_status: "64MB guard, 65536 max dimension, maxval validation"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: low
+    overclaim_details: "G7 is reasonable for ASCII variant; binary P5 needed for library status"
+    strongest_evidence: "40 tests, P2 decode"
+    weakest_area: "P5 binary not supported"
+    recommended_action: "add P5 binary support"
+
+  - format_id: pbm
+    display_name: "Portable Bitmap (PBM)"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: true
+    src_python_path: "src/python/pbm/"
+    src_python_files: ["pbm_parser.py", "__init__.py"]
+    src_python_loc: 215
+    src_net_exists: false
+    tests_python_count: 40
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G7"
+    evidence_backed_gate: "G7"
+    actual_maturity_class: read_only_prototype
+    parser_depth: "P1 ASCII bitmap decode only. P4 binary deferred."
+    read_support: "partial (ASCII P1 only)"
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dataclass (PbmImage)"
+    security_guard_status: "64MB guard, 65536 max dimension, pixel validation"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: low
+    overclaim_details: "G7 is reasonable for ASCII variant"
+    strongest_evidence: "40 tests, P1 decode"
+    weakest_area: "P4 binary not supported"
+    recommended_action: "add P4 binary support"
+
+  - format_id: fodp
+    display_name: "Flat OpenDocument Presentation"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: "prototypes/by-format/fodp/"
+    src_python_exists: true
+    src_python_path: "src/python/fodp/"
+    src_python_files: ["fodp_codec.py", "__init__.py"]
+    src_python_loc: 192
+    src_net_exists: false
+    tests_python_count: 16
+    tests_net_count: 0
+    packaging_status: local_build_ready
+    claimed_gate: "G10 (verified)"
+    evidence_backed_gate: "G4 (prototype quality)"
+    actual_maturity_class: probe_only
+    parser_depth: "shallow page/slide extractor — page_count, per-page name/text/shape_count"
+    read_support: "partial (page metadata only)"
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "plain dict (no schema)"
+    security_guard_status: "64MB guard"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: "local build exists but source is probe-quality"
+    commercial_readiness: "N/A"
+    overclaim_risk: high
+    overclaim_details: "G10 claimed but source is 192 LOC page counter with no model, no write, no export. Does not meet G10 product maturity expectations."
+    strongest_evidence: "16 tests prove page counting works"
+    weakest_area: "no neutral model, no write, no export, no round-trip — probe only"
+    recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4; requires deepening before G5+ can be re-earned"
+
+  - format_id: fodg
+    display_name: "Flat OpenDocument Graphics"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: "prototypes/by-format/fodg/"
+    src_python_exists: true
+    src_python_path: "src/python/fodg/"
+    src_python_files: ["fodg_codec.py", "__init__.py"]
+    src_python_loc: 217
+    src_net_exists: false
+    tests_python_count: 19
+    tests_net_count: 0
+    packaging_status: local_build_ready
+    claimed_gate: "G10 (verified)"
+    evidence_backed_gate: "G4 (prototype quality)"
+    actual_maturity_class: probe_only
+    parser_depth: "shallow shape counter — shape types, text extraction, per-page metadata"
+    read_support: "partial (shape metadata only)"
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "plain dict (no schema)"
+    security_guard_status: "64MB guard"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: "local build exists but source is probe-quality"
+    commercial_readiness: "N/A"
+    overclaim_risk: high
+    overclaim_details: "G10 claimed but source is 217 LOC shape counter with no model, no write, no export."
+    strongest_evidence: "19 tests prove shape counting works"
+    weakest_area: "no neutral model, no write, no export — probe only"
+    recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
+
+  - format_id: gnumeric
+    display_name: "Gnumeric Spreadsheet"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: "prototypes/by-format/gnumeric/"
+    src_python_exists: true
+    src_python_path: "src/python/gnumeric/"
+    src_python_files: ["gnumeric_codec.py", "__init__.py"]
+    src_python_loc: 170
+    src_net_exists: false
+    tests_python_count: 16
+    tests_net_count: 0
+    packaging_status: local_build_ready
+    claimed_gate: "G10 (verified)"
+    evidence_backed_gate: "G4 (prototype quality)"
+    actual_maturity_class: probe_only
+    parser_depth: "gzip+XML, shallow cell extraction — sheet names, cell_count, cell values"
+    read_support: "partial (cell values without type detection)"
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "plain dict (no schema)"
+    security_guard_status: "64MB guard, gzip magic check"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: "local build exists but source is probe-quality"
+    commercial_readiness: "N/A"
+    overclaim_risk: high
+    overclaim_details: "G10 claimed but source is 170 LOC cell counter with no model, no type detection, no write."
+    strongest_evidence: "16 tests prove gzip+XML cell counting works"
+    weakest_area: "no neutral model, no cell type detection, no write — probe only"
+    recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
+
+  - format_id: abw
+    display_name: "AbiWord Document"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: "prototypes/by-format/abw/"
+    src_python_exists: true
+    src_python_path: "src/python/abw/"
+    src_python_files: ["abw_codec.py", "__init__.py"]
+    src_python_loc: 141
+    src_net_exists: false
+    tests_python_count: 17
+    tests_net_count: 0
+    packaging_status: local_build_ready
+    claimed_gate: "G10 (verified)"
+    evidence_backed_gate: "G4 (prototype quality)"
+    actual_maturity_class: probe_only
+    parser_depth: "XML, paragraph text extraction, DOCTYPE stripping for XXE safety"
+    read_support: "partial (paragraph text only)"
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "plain dict (no schema)"
+    security_guard_status: "64MB guard, DOCTYPE strip"
+    corpus_quality: fair
+    spec_quality: fair
+    package_readiness: "local build exists but source is probe-quality"
+    commercial_readiness: "N/A"
+    overclaim_risk: high
+    overclaim_details: "G10 claimed but source is 141 LOC text extractor with no model, no write, no export."
+    strongest_evidence: "17 tests prove paragraph extraction works"
+    weakest_area: "smallest parser (141 LOC), no neutral model, no write — probe only"
+    recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
+
+  - format_id: csv
+    display_name: "Comma-Separated Values"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: false
+    src_net_exists: false
+    tests_python_count: 0
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G3"
+    evidence_backed_gate: "G3"
+    actual_maturity_class: acquisition_only
+    parser_depth: "N/A"
+    read_support: false
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "N/A"
+    security_guard_status: "N/A"
+    corpus_quality: "samples exist"
+    spec_quality: "RFC 4180"
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "acquisition pack and samples"
+    weakest_area: "no source"
+    recommended_action: "await gate quality policy before advancing"
+
+  - format_id: tsv
+    display_name: "Tab-Separated Values"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: false
+    src_net_exists: false
+    tests_python_count: 0
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G3"
+    evidence_backed_gate: "G3"
+    actual_maturity_class: acquisition_only
+    parser_depth: "N/A"
+    read_support: false
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "N/A"
+    security_guard_status: "N/A"
+    corpus_quality: "samples exist"
+    spec_quality: "IANA registration"
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "acquisition pack and samples"
+    weakest_area: "no source"
+    recommended_action: "await gate quality policy before advancing"
+
+  - format_id: xpm
+    display_name: "X PixMap"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: false
+    src_net_exists: false
+    tests_python_count: 0
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G3"
+    evidence_backed_gate: "G3"
+    actual_maturity_class: acquisition_only
+    parser_depth: "N/A"
+    read_support: false
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "N/A"
+    security_guard_status: "N/A"
+    corpus_quality: "samples exist"
+    spec_quality: "X11 spec"
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "acquisition pack and samples"
+    weakest_area: "no source"
+    recommended_action: "await gate quality policy before advancing"
+
+  - format_id: pam
+    display_name: "Portable Arbitrary Map"
+    acquisition_pack_exists: true
+    samples_exist: true
+    prototype_location: null
+    src_python_exists: false
+    src_net_exists: false
+    tests_python_count: 0
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G3"
+    evidence_backed_gate: "G3"
+    actual_maturity_class: acquisition_only
+    parser_depth: "N/A"
+    read_support: false
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "N/A"
+    security_guard_status: "N/A"
+    corpus_quality: "samples exist"
+    spec_quality: "Netpbm spec"
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "acquisition pack and samples"
+    weakest_area: "no source"
+    recommended_action: "await gate quality policy before advancing"
+
+  - format_id: zpaq
+    display_name: "ZPAQ Archive"
+    acquisition_pack_exists: true
+    samples_exist: false
+    prototype_location: null
+    src_python_exists: false
+    src_net_exists: false
+    tests_python_count: 0
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G3 BLOCKED"
+    evidence_backed_gate: "G2"
+    actual_maturity_class: blocked
+    parser_depth: "N/A"
+    read_support: false
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "N/A"
+    security_guard_status: "N/A"
+    corpus_quality: "no samples"
+    spec_quality: fair
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "spec available"
+    weakest_area: "ZPAQL VM complexity, requires zpaq CLI"
+    recommended_action: "remain blocked until CLI dependency resolved"
+
+  - format_id: ora
+    display_name: "OpenRaster"
+    acquisition_pack_exists: true
+    samples_exist: false
+    prototype_location: null
+    src_python_exists: false
+    src_net_exists: false
+    tests_python_count: 0
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "Deferred"
+    evidence_backed_gate: "G1 (scored 6.8/10 below 7.0 threshold)"
+    actual_maturity_class: stale_or_contaminated
+    parser_depth: "N/A"
+    read_support: false
+    write_support: false
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "N/A"
+    security_guard_status: "N/A"
+    corpus_quality: "none"
+    spec_quality: "limited"
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "scoring completed"
+    weakest_area: "below threshold"
+    recommended_action: "remain deferred"
