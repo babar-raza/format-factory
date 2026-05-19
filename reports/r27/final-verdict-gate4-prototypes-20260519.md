@@ -35,7 +35,7 @@
 ## Commits
 
 COMMIT_SHA: 684c4a7
-EVIDENCE_BUNDLE: PENDING
+EVIDENCE_BUNDLE: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidence-bundles\r27-gate4\bundle.zip
 
 ## Invariants Held
 
