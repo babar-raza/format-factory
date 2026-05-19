@@ -1,0 +1,198 @@
+---
+sprint_id: FORMAT-FACTORY-R27-AI-PLATFORM-FULL-GOVERNED-IMPLEMENTATION-CYCLE-001
+date: "2026-05-19"
+status: in_progress
+
+lanes:
+  lane_0:
+    lane_id: "0"
+    description: "Coordinator and self-management"
+    taskcards: []
+    status: in_progress
+    prerequisites: []
+    files_owned:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/
+    validation_commands: []
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/preflight-current-state.md
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-ownership-and-overlap-matrix.md
+      - reports/ai/r27-ai-platform-full-cycle-20260519/sprint-state.yaml
+    blockers: []
+    next_action: "coordinate lane execution"
+
+  lane_a:
+    lane_id: A
+    description: "Evidence and closure hygiene repair"
+    taskcards: []
+    status: pending
+    prerequisites: []
+    files_owned:
+      - tools/evidence/contracts/ai-platform-phase1-control-plane-foundation-20260518.yaml
+    validation_commands:
+      - "python -m pytest tests/evidence -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-a-evidence-contract-hygiene.md
+    blockers: []
+    next_action: "evaluate emergency_blocker_bundle flag"
+
+  lane_b:
+    lane_id: B
+    description: "Control-plane hardening"
+    taskcards:
+      - AI-MODEL-DISCOVERY-AND-ROUTING
+    status: pending
+    prerequisites: []
+    files_owned:
+      - tools/ai/control_plane/model_router.py
+    validation_commands:
+      - "python -m pytest tests/ai -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-b-control-plane-hardening.md
+    blockers: []
+    next_action: "implement strict fallback and role enforcement"
+
+  lane_c:
+    lane_id: C
+    description: "GPT-OSS synthesis controls"
+    taskcards:
+      - AI-GPT-OSS-SYNTHESIS-CONTROLS
+    status: pending
+    prerequisites: []
+    files_owned:
+      - tools/ai/synthesis/
+    validation_commands:
+      - "python -m pytest tests/ai -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-c-gpt-oss-synthesis-controls.md
+    blockers: []
+    next_action: "create synthesis runner and evaluator"
+
+  lane_d:
+    lane_id: D
+    description: "AI artifact authority lifecycle integration"
+    taskcards: []
+    status: pending
+    prerequisites: []
+    files_owned:
+      - tools/ai/validators/authority_lifecycle.py
+    validation_commands:
+      - "python -m pytest tests/ai -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-d-authority-lifecycle-integration.md
+    blockers: []
+    next_action: "add state records and transition evidence"
+
+  lane_e:
+    lane_id: E
+    description: "Spec normalization adapter"
+    taskcards:
+      - AI-SPEC-NORMALIZATION-INTEGRATION
+    status: pending
+    prerequisites: []
+    files_owned:
+      - tools/ai/normalization/
+    validation_commands:
+      - "python -m pytest tests/ai -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-e-spec-normalization-adapter.md
+    blockers: []
+    next_action: "create chunk loader with provenance tracking"
+
+  lane_f:
+    lane_id: F
+    description: "Embedding and vector-store foundation"
+    taskcards:
+      - AI-EMBEDDING-VECTOR-STORE-FOUNDATION
+    status: pending
+    prerequisites:
+      - lane_e
+    files_owned:
+      - tools/ai/retrieval/
+    validation_commands:
+      - "python -m pytest tests/ai -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-f-embedding-vector-store-foundation.md
+    blockers: []
+    next_action: "create retrieval interfaces with namespace isolation"
+
+  lane_g:
+    lane_id: G
+    description: "AI telemetry and Agent Metrics"
+    taskcards:
+      - AI-TELEMETRY-AGENT-METRICS-INTEGRATION
+      - AI-USAGE-LEDGER-AND-METRICS
+    status: pending
+    prerequisites: []
+    files_owned:
+      - tools/ai/telemetry/drain.py
+    validation_commands:
+      - "python -m pytest tests/ai -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-g-telemetry-agent-metrics.md
+    blockers: []
+    next_action: "implement drain module with dry-run mode"
+
+  lane_h:
+    lane_id: H
+    description: "AI test generation and evidence review"
+    taskcards:
+      - AI-TEST-GENERATION-INTEGRATION
+    status: pending
+    prerequisites: []
+    files_owned:
+      - tools/ai/test_generation/
+    validation_commands:
+      - "python -m pytest tests/ai -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-h-test-generation-and-evidence-review.md
+    blockers: []
+    next_action: "create proposal schema and reviewer"
+
+  lane_i:
+    lane_id: I
+    description: "Qwen2 low-risk agentic controls"
+    taskcards:
+      - AI-AGENTIC-QWEN2-CONTROLS
+    status: pending
+    prerequisites: []
+    files_owned:
+      - tools/ai/agentic/
+    validation_commands:
+      - "python -m pytest tests/ai -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-i-qwen2-low-risk-agentic-controls.md
+    blockers: []
+    next_action: "create scoped runner with path/operation allowlists"
+
+  lane_j:
+    lane_id: J
+    description: "Risk controls and validation gates"
+    taskcards:
+      - AI-RISK-MITIGATION-MATRIX
+      - AI-VALIDATION-GATES
+    status: pending
+    prerequisites: []
+    files_owned:
+      - tools/ai/validators/risk_controls.py
+    validation_commands:
+      - "python -m pytest tests/ai -q"
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-j-risk-controls-validation-gates.md
+    blockers: []
+    next_action: "map risks to controls"
+
+  lane_k:
+    lane_id: K
+    description: "Documentation, memory, taskcard sync"
+    taskcards: []
+    status: pending
+    prerequisites:
+      - all_implementation_lanes
+    files_owned:
+      - memory/46-r27-ai-platform-full-cycle-20260519.md
+      - docs/ai/
+    validation_commands: []
+    evidence_files:
+      - reports/ai/r27-ai-platform-full-cycle-20260519/lane-k-docs-memory-taskcards-sync.md
+    blockers: []
+    next_action: "update docs and taskcards after implementation"

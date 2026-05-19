@@ -63,7 +63,11 @@ class TestModelRouter:
     def test_fallback_logged(self):
         models = [ModelCapability(model_id="fallback-m")]
         router = ModelRouter(models)
+        # agentic_low_risk is a no-fallback role — must fail closed
         dec = router.select(ModelSelectionRequest(role=AIRole.agentic_low_risk))
-        assert dec.fallback_used is True
-        assert dec.fallback_model_id == "fallback-m"
-        assert dec.reason == "fallback_no_role_assignment"
+        assert dec.fail_closed is True
+        assert dec.fallback_used is False
+        # evidence_review still allows fallback
+        dec2 = router.select(ModelSelectionRequest(role=AIRole.evidence_review))
+        assert dec2.fallback_used is True
+        assert dec2.fallback_model_id == "fallback-m"

@@ -149,7 +149,11 @@ class TestModelDisappearanceAndReplacement:
     def test_fallback_logging_includes_model_id(self):
         models = [ModelCapability(model_id="generic-chat")]
         router = ModelRouter(models)
+        # security_analysis is a no-fallback role — must fail closed
         dec = router.select(ModelSelectionRequest(role=AIRole.security_analysis))
-        assert dec.fallback_used is True
-        assert dec.fallback_model_id == "generic-chat"
-        assert "fallback" in dec.reason
+        assert dec.fail_closed is True
+        assert dec.fallback_used is False
+        # summarization still allows fallback
+        dec2 = router.select(ModelSelectionRequest(role=AIRole.summarization))
+        assert dec2.fallback_used is True
+        assert dec2.fallback_model_id == "generic-chat"
