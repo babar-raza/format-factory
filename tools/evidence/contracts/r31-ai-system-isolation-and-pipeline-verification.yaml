@@ -1,0 +1,46 @@
+contract_id: FORMAT-FACTORY-R31-AI-SYSTEM-ISOLATION-AND-PIPELINE-VERIFICATION-MEGA-TRAIN-001
+sprint_id: FORMAT-FACTORY-R31-AI-SYSTEM-ISOLATION-AND-PIPELINE-VERIFICATION-MEGA-TRAIN-001
+run_number: R31
+created: "2026-05-19"
+purpose: AI system isolation and pipeline verification
+
+required_artifacts:
+  - reports/r31/sprint-state.yaml
+  - reports/r31/preflight-current-state.md
+  - reports/r31/lane-ownership-and-overlap-matrix.md
+  - reports/r31/r30-ai-truth-reconciliation.md
+  - reports/r31/ai-test-isolation-hardening.md
+  - reports/r31/control-plane-isolated-verification.md
+  - reports/r31/synthesis-evaluator-isolated-verification.md
+  - reports/r31/retrieval-normalization-isolated-verification.md
+  - reports/r31/requirements-authority-isolated-verification.md
+  - reports/r31/agentic-qwen2-isolated-verification.md
+  - reports/r31/telemetry-secret-isolated-verification.md
+  - reports/r31/pipeline-fixture-verification.md
+  - reports/r31/pipeline-live-gateway-verification.md
+  - reports/r31/pipeline-failure-injection-verification.md
+  - reports/r31/ai-pipeline-runner-standardization.md
+  - reports/r31/ai-docs-taskcards-status-repair.md
+  - reports/r31/ai-evidence-hygiene.md
+  - reports/r31/final-verdict.md
+  - reports/r31/pipeline-fixture-run/ai-pipeline-runner-output.json
+  - reports/verification/r31-independent-verification.md
+  - reports/governance/r31-adversarial-review.md
+  - tests/ai/test_r31_ai_system_verification.py
+  - tools/ai/run_ai_checks.py
+
+include_directories:
+  - reports/r31/
+  - reports/verification/
+  - reports/governance/
+  - tests/ai/
+  - tools/ai/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+
+min_metadata_count: 30
+require_clean_git: false
+emergency_blocker_bundle: false

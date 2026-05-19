@@ -1,0 +1,97 @@
+sprint_id: FORMAT-FACTORY-R31-AI-SYSTEM-ISOLATION-AND-PIPELINE-VERIFICATION-MEGA-TRAIN-001
+run_number: R31
+branch: main
+base_commit: e844a14
+status: complete
+started: "2026-05-19"
+completed: "2026-05-19"
+purpose: AI system isolation and pipeline verification
+scope: AI-only sprint — no general format expansion
+
+lanes:
+  lane_0:
+    name: Coordinator
+    status: complete
+    description: Sprint state, evidence contract, final bundle
+  lane_a:
+    name: R30 AI truth reconciliation
+    status: complete
+    description: All 10 R30 defects confirmed fixed, stale claims reconciled
+  lane_b:
+    name: AI test isolation hardening
+    status: complete
+    description: Fixed 2 clean-env failures (mock patch targets), 4 regression tests
+  lane_c:
+    name: Control-plane isolated verification
+    status: complete
+    description: 6 isolation tests + live discovery (7 models) + capability probe
+  lane_d:
+    name: Synthesis/evaluator isolated verification
+    status: complete
+    description: 20 tests covering runner, evaluator, citation verifier, contradiction detector
+  lane_e:
+    name: Retrieval/normalization isolated verification
+    status: complete
+    description: 9 tests covering namespace, provenance, freshness, path traversal
+  lane_f:
+    name: Requirements/authority lifecycle verification
+    status: complete
+    description: 11 tests covering generation, review, 12-state machine, terminal states
+  lane_g:
+    name: Agentic/Qwen2 isolated verification
+    status: complete
+    description: 5 tests covering path bypass, model restriction, output discard
+  lane_h:
+    name: Telemetry/secret isolation verification
+    status: complete
+    description: 11 tests covering spool, Agent Metrics mapping, secret redaction
+  lane_i:
+    name: Pipeline fixture-mode verification
+    status: complete
+    description: Full 10-step pipeline fixture run, determinism verified
+  lane_j:
+    name: Pipeline live-gateway verification
+    status: complete
+    description: Live discovery (7 models), capability probe (PROBE_OK), structured extraction
+  lane_k:
+    name: Pipeline failure-injection verification
+    status: complete
+    description: 15 failure cases all produce safe expected outcomes
+  lane_l:
+    name: AI pipeline CLI/runner standardization
+    status: complete
+    description: tools/ai/run_ai_checks.py with --fixture, --live-probe, --clean-env
+  lane_m:
+    name: AI docs/taskcards/status repair
+    status: complete
+    description: Stale claims reconciled, verification matrix created
+  lane_n:
+    name: Evidence bundle hygiene
+    status: complete
+    description: __pycache__ excluded, canonical report paths established
+  lane_o:
+    name: Full validation, IV, adversarial, evidence
+    status: complete
+    description: 449 AI tests + 1071 non-AI tests all pass, 30-question adversarial review
+
+test_results:
+  ai_with_env: 449 passed, 0 failed
+  ai_clean_env: 449 passed, 0 failed
+  non_ai: 1071 passed, 20 skipped, 0 failed
+  new_r31_tests: 91
+  live_probes: 3 (discovery, capability, extraction)
+
+preflight:
+  git_clean: true
+  untracked: reports/r31/ (stale prior session, overwritten)
+  branch: main
+  head: e844a14
+  python: "3.13.2"
+  litellm_installed: true (venv only)
+  pytest_installed: true (venv only)
+  env_vars:
+    GPT_OSS_ENDPOINT: set
+    GPT_OSS_API_KEY: set
+    AGENT_METRICS_ENDPOINT: set
+    AGENT_METRICS_TOKEN: set
+    AGENT_METRICS_API_KEY: not_set

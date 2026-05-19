@@ -88,7 +88,7 @@ class TestDiscoverModelsPhase2:
         }
         mock_response.raise_for_status = MagicMock()
 
-        with patch("tools.ai.control_plane.config.get_api_key", return_value="test"):
+        with patch("tools.ai.control_plane.model_discovery.get_api_key", return_value="test"):
             with patch("httpx.Client") as mock_client_cls:
                 mock_client = MagicMock()
                 mock_client.__enter__ = MagicMock(return_value=mock_client)
