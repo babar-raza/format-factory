@@ -4,9 +4,9 @@
 
 ## Sprint Identity
 - Sprint ID: FORMAT-FACTORY-R29-MAIN-TRACK-MEGA-TRAIN-GATE6-GATE8-XCF-DIF-PPM-G11-PUBLICATION-CANDIDATES-001
-- Commit SHA: 7cb1586
+- Commit SHA: 16a0a19
 - Branch: main
-- BUNDLE_VALIDATION: NOT_BUILT (prior R29 format-track sprint did not build a bundle; evidence covered by commit 7cb1586)
+- BUNDLE_VALIDATION: PASS (1916 entries, 20,888,757 bytes, 39 metadata)
 
 ## Scope
 16-lane mega-train sprint covering:
