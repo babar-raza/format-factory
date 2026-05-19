@@ -172,11 +172,54 @@ def run_isolation_checks() -> dict:
     return results
 
 
+def run_failure_injection_checks() -> dict:
+    """Run failure injection tests (import and execute)."""
+    results = {"mode": "failure_injection"}
+    try:
+        import subprocess
+        proc = subprocess.run(
+            [sys.executable, "-m", "pytest", "tests/ai", "-q", "-k", "failure_injection or FailureInjection"],
+            capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=120,
+        )
+        results["exit_code"] = proc.returncode
+        results["passed"] = proc.returncode == 0
+        results["output_tail"] = proc.stdout[-300:] if proc.stdout else ""
+    except Exception as e:
+        results["passed"] = False
+        results["error"] = str(e)
+    return results
+
+
+def run_fixture_pipeline_checks(format_id: str, sprint_id: str) -> dict:
+    """Run fixture pipeline with lexical retrieval."""
+    from tools.ai.pipeline.e2e_pilot import PilotConfig, run_pilot
+
+    config = PilotConfig(
+        format_id=format_id,
+        fixture_mode=True,
+        use_lexical_retrieval=True,
+        retrieval_query=f"{format_id} format specification requirements parsing",
+    )
+    pilot_result = run_pilot(config)
+    result = pilot_result.to_dict()
+    result["mode"] = "fixture_pipeline"
+    result["sprint_id"] = sprint_id
+    result["passed"] = pilot_result.all_stages_passed
+    return result
+
+
 def main():
     parser = argparse.ArgumentParser(description="AI Pipeline Runner")
-    parser.add_argument("--fixture", action="store_true", help="Run fixture pipeline")
+    parser.add_argument("--fixture", action="store_true", help="Run fixture checks")
+    parser.add_argument("--fixture-pipeline", action="store_true", help="Run fixture pipeline with lexical retrieval")
+    parser.add_argument("--isolation", action="store_true", help="Run isolation checks only")
     parser.add_argument("--live-probe", action="store_true", help="Run live probes")
+    parser.add_argument("--live-pipeline", action="store_true", help="Run live pipeline with citations")
+    parser.add_argument("--failure-injection", action="store_true", help="Run failure injection tests")
+    parser.add_argument("--all", action="store_true", help="Run all check modes")
     parser.add_argument("--no-live", action="store_true", help="Skip live probes")
+    parser.add_argument("--json", action="store_true", help="Output JSON only (no stderr)")
+    parser.add_argument("--fail-on-blocked-live", action="store_true", help="Exit 1 if live is blocked")
     parser.add_argument("--format", default="fods", help="Target format ID")
     parser.add_argument("--report-dir", default=None, help="Report output directory")
     parser.add_argument("--sprint-id", default="UNKNOWN", help="Sprint identifier")
@@ -189,22 +232,46 @@ def main():
                      "AGENT_METRICS_TOKEN", "AGENT_METRICS_API_KEY"]:
             os.environ.pop(var, None)
 
-    # Default: run fixture if no mode specified
-    if not args.fixture and not args.live_probe:
+    # --all enables everything
+    if args.all:
         args.fixture = True
+        args.fixture_pipeline = True
+        args.isolation = True
+        args.failure_injection = True
+        if not args.no_live:
+            args.live_probe = True
+            args.live_pipeline = True
+
+    # Default: run fixture + isolation if no mode specified
+    if not any([args.fixture, args.fixture_pipeline, args.isolation,
+                args.live_probe, args.live_pipeline, args.failure_injection]):
+        args.fixture = True
+        args.isolation = True
 
     all_results = {"timestamp": datetime.now(timezone.utc).isoformat(), "sprint_id": args.sprint_id}
 
-    # Always run isolation checks
-    all_results["isolation"] = run_isolation_checks()
+    if args.isolation or args.fixture or args.fixture_pipeline:
+        all_results["isolation"] = run_isolation_checks()
 
     if args.fixture:
         all_results["fixture"] = run_fixture_checks(args.format, args.sprint_id)
 
+    if args.fixture_pipeline:
+        all_results["fixture_pipeline"] = run_fixture_pipeline_checks(args.format, args.sprint_id)
+
+    if args.failure_injection:
+        all_results["failure_injection"] = run_failure_injection_checks()
+
+    live_blocked = False
     if args.live_probe and not args.no_live:
         all_results["live_probe"] = run_live_probe(args.sprint_id)
+        if all_results["live_probe"].get("status") == "blocked_no_env":
+            live_blocked = True
     elif args.live_probe and args.no_live:
         all_results["live_probe"] = {"status": "skipped_by_no_live_flag", "passed": True}
+
+    if args.live_pipeline and not args.no_live:
+        all_results["live_pipeline"] = {"status": "not_yet_implemented", "passed": False}
 
     # Overall pass
     passed = all(
@@ -223,9 +290,17 @@ def main():
         report_dir.mkdir(parents=True, exist_ok=True)
         report_path = report_dir / "ai-pipeline-runner-output.json"
         report_path.write_text(output, encoding="utf-8")
-        print(f"\nReport written to: {report_path}", file=sys.stderr)
+        if not args.json:
+            print(f"\nReport written to: {report_path}", file=sys.stderr)
 
-    return 0 if passed else 1
+    # Exit codes: 0=pass, 1=failure, 2=live blocked but allowed
+    if not passed:
+        return 1
+    if live_blocked and args.fail_on_blocked_live:
+        return 1
+    if live_blocked and not args.fail_on_blocked_live:
+        return 2
+    return 0
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@
 Implement and validate dynamic model discovery and role-based routing at llm.professionalize.com. Ensure fail-closed behavior, capability probing, model fingerprinting, and fallback policy.
 
 ## Status
-`phase1_discovery_implemented` — Model discovery, capability probe, and role-based routing implemented in Phase 1. 7 models discovered live. Sprint: FORMAT-FACTORY-AI-PLATFORM-PHASE1-CONTROL-PLANE-FOUNDATION-001 (2026-05-18).
+`live_verified` — Model discovery, capability probe, and role-based routing implemented in Phase 1. R31 governed live verification (caed52b): 7 models discovered, PROBE_OK on gpt-oss, structured extraction valid. R32 live pipeline (qwen3-next): discovery + probe + citation-verified synthesis. 506 AI tests pass. Router fail-closed behavior verified in R31+R32 failure injection.
 
 ## Prerequisites
 - AI-PLATFORM-FOUNDATION-PLAN Phase 1 control plane operational

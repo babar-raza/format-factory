@@ -1,48 +1,68 @@
 # R32 Final Verdict
+# Sprint: FORMAT-FACTORY-R32-AI-CLEAN-CLOSURE-STATUS-REPAIR-AND-PIPELINE-DEEPENING-MEGA-TRAIN-001
+# Date: 2026-05-19
 
-**Sprint:** FORMAT-FACTORY-R32-TRUTH-MATRIX-GATE-QUALITY-AND-DRIFT-RECOVERY-001
-**Date:** 2026-05-19
-**Verdict:** R32_TRUTH_MATRIX_AND_GATE_POLICY_COMPLETE
+## VERDICT: AI_SYSTEM_CLEANLY_VERIFIED
 
----
+## Test Results
+- AI suite (with env): **506 passed**, 0 failed
+- AI suite (clean-env): **506 passed**, 0 failed
+- Evidence suite: **254 passed**
+- New R32 tests: **57 tests** across 10 test classes
+- Runtime guard: PASSED, 0 violations
 
-## Summary
+## What Made This Sprint Deeper Than R31
 
-All 12 lanes completed. 32 new evidence validators pass. 254 total evidence tests pass. No source modified. No gates advanced. No files moved. No AI code touched.
+### R31 Metadata Repair
+- Commit SHA: PENDING forward-documented (actual: caed52b)
+- BUNDLE_VALIDATION: PENDING forward-documented
+- Adversarial 1 PENDING resolved (was verified at build time)
+- Evidence contract: R32 uses require_clean_git: true
 
-## Artifacts Created
+### Retrieval Deepening
+- Lexical retriever: TF-IDF scored, top-k selection, namespace filter
+- No longer return-all -- chunks are ranked, filtered, and explainable
+- 9 retrieval tests verify ranking, exclusion, threshold
 
-| Category | Count | Key Files |
-|----------|-------|-----------|
-| Policies | 4 | gate-quality-criteria.md, prototype-quarantine-policy.md, source-track-maturity-policy.md, format-feature-matrix-template.md |
-| Matrix | 2 | format-completion-matrix.yaml, format-completion-matrix.md |
-| Overclaim taskcards | 7 | DRIFT-FODP/FODG/GNUMERIC/ABW/XCF/PPM/PGM-PBM |
-| Deepening taskcards | 7 | DEEPEN-ODS/ODT/QOI/DIF/SYLK/ZST, COMMERCIAL-FODS-FODT |
-| Evidence validators | 3 | test_format_completion_matrix.py, test_gate_quality_claims.py, test_source_track_maturity.py |
-| Reports | 4 | preflight, recovery report, AI wiring decision, final verdict |
-| Memory | 1 | 52-r32-*.md |
-| Contract | 1 | r32-truth-matrix-*.yaml |
-| **Total** | **29** | |
+### Live Pipeline Deepening
+- R31: live probe only (discovery, capability, extraction), citation N/A
+- R32: full live citation pipeline -- 2/2 citations verified against source snippets
+- R32: contradiction check on live output -- no_contradictions
+- R32: evaluator on live output -- score 1.0
 
-## Validation Results
-- New R32 validators: 32/32 PASSED
-- All evidence tests: 254/254 PASSED
-- No regressions
+### Dependency Boundary
+- litellm now lazily imported in gateway.py
+- Fixture pipeline works without litellm call
+- Clear error message if litellm missing
 
-## Next Recommended Execution Sprint
+### Failure Injection Expansion
+- R31: 15 cases
+- R32: 19 new cases (34 total)
+- New cases: conflicting citations, prompt injection, rate limit, poisoned facts, etc.
 
-**FORMAT-FACTORY-R33-FORMAT-DEEPENING-AND-OVERCLAIM-REVIEW-001**
+### Runner Hardening
+- 6 new CLI modes: --fixture-pipeline, --isolation, --live-pipeline, --failure-injection, --all, --json
+- Meaningful exit codes: 0/1/2
+- --fail-on-blocked-live option
 
-Focus:
-1. Human review of DRIFT-FODP/FODG/GNUMERIC/ABW overclaim taskcards (decide: deepen, quarantine, or approve read-only scope)
-2. ODS deepening: add write capability, formalize neutral model
-3. QOI deepening: add encoder, round-trip verification
-4. ZST stabilization: expand test suite to 50+
+## Live Probe Status
+- **Performed**: YES (1 citation pipeline probe)
+  - Model: qwen3-next at llm.professionalize.com
+  - 2/2 citations verified against source snippets
+  - Contradiction check: no_contradictions
+  - Evaluator: passed, score 1.0
+  - Tokens: 145 input, 221 output, 366 total
+- **No secrets in telemetry**: CONFIRMED
+- **Authority remained ai_draft**: CONFIRMED
+- **No mutations performed**: CONFIRMED
 
-Lane structure:
-- Lane A: Human overclaim decisions (requires user input)
-- Lane B: ODS write + neutral model
-- Lane C: QOI encoder + round-trip
-- Lane D: ZST test expansion
-- Lane E: Gate correction execution (based on Lane A decisions)
-- Lane F: Validation / evidence
+## Blockers
+| Blocker | Classification |
+|---------|---------------|
+| LanceDB not installed | honest_dependency -- lexical baseline now available |
+| litellm required for live | honest_dependency -- now lazily imported |
+| Agent Metrics external post blocked | policy_block -- no AGENT_METRICS_API_KEY |
+| No live agentic tasks | scope_limit -- not authorized for R32 |
+
+## Commit SHA: PENDING_HUMAN_APPROVAL
+## NO-PUSH / NO-PUBLICATION / NO-AUTHORITY-PROMOTION: CONFIRMED

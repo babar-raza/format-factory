@@ -1,0 +1,48 @@
+contract_id: FORMAT-FACTORY-R32-AI-CLEAN-CLOSURE-STATUS-REPAIR-AND-PIPELINE-DEEPENING-MEGA-TRAIN-001
+sprint_id: FORMAT-FACTORY-R32-AI-CLEAN-CLOSURE-STATUS-REPAIR-AND-PIPELINE-DEEPENING-MEGA-TRAIN-001
+run_number: R32
+created: "2026-05-19"
+purpose: AI clean closure, status repair, and real pipeline deepening
+
+required_artifacts:
+  - reports/r32/sprint-state.yaml
+  - reports/r32/preflight-current-state.md
+  - reports/r32/lane-ownership-and-overlap-matrix.md
+  - reports/r32/r31-clean-closure-repair.md
+  - reports/r32/ai-evidence-closure-validator-hardening.md
+  - reports/r32/ai-verification-matrix-canonicalization.md
+  - reports/r32/ai-taskcard-truth-repair.md
+  - reports/r32/deterministic-retrieval-baseline.md
+  - reports/r32/pipeline-fixture-with-real-retrieval.md
+  - reports/r32/live-pipeline-with-citation-verification.md
+  - reports/r32/litellm-dependency-boundary.md
+  - reports/r32/live-telemetry-evidence-hardening.md
+  - reports/r32/expanded-ai-failure-injection.md
+  - reports/r32/ai-runner-production-hardening.md
+  - reports/r32/ai-docs-governance-memory-sync.md
+  - reports/r32/final-verdict.md
+  - reports/r32/pipeline-fixture-run/ai-pipeline-runner-output.json
+  - reports/verification/r32-independent-verification.md
+  - reports/governance/r32-adversarial-review.md
+  - tests/ai/test_r32_ai_deepening.py
+  - tools/ai/retrieval/lexical_retriever.py
+  - tools/ai/run_ai_checks.py
+  - docs/ai/ai-system-verification-matrix.md
+
+include_directories:
+  - reports/r32/
+  - reports/verification/
+  - reports/governance/
+  - tests/ai/
+  - tools/ai/
+  - docs/ai/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+
+min_metadata_count: 30
+require_clean_git: true
+emergency_blocker_bundle: false

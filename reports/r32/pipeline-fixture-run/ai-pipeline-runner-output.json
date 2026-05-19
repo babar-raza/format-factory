@@ -1,0 +1,98 @@
+{
+  "timestamp": "2026-05-19T15:45:37.570913+00:00",
+  "sprint_id": "R32",
+  "isolation": {
+    "mode": "isolation",
+    "checks": [
+      {
+        "name": "unconfigured_empty",
+        "passed": true
+      },
+      {
+        "name": "probe_blocked",
+        "passed": true
+      }
+    ],
+    "passed": true
+  },
+  "fixture_pipeline": {
+    "format_id": "fods",
+    "stage_results": {
+      "1_load_chunks": {
+        "passed": true,
+        "chunk_count": 3,
+        "errors": []
+      },
+      "2_retrieval": {
+        "passed": true,
+        "query": "fods format specification requirements parsing",
+        "query_hash": "03736a186f23e5cf",
+        "format_id": "fods",
+        "total_candidates": 3,
+        "returned": 3,
+        "top_k": 5,
+        "threshold": 0.01,
+        "excluded_count": 0,
+        "mode": "lexical",
+        "chunks": [
+          {
+            "chunk_hash": "2725aea2d2dea736",
+            "format_id": "fods",
+            "section": "Section 1",
+            "score": 0.05,
+            "matched_terms": [
+              "fods"
+            ],
+            "explanation": "matched 1/5 query terms"
+          },
+          {
+            "chunk_hash": "b6f3c15844fe12f9",
+            "format_id": "fods",
+            "section": "Section 2",
+            "score": 0.05,
+            "matched_terms": [
+              "fods"
+            ],
+            "explanation": "matched 1/5 query terms"
+          },
+          {
+            "chunk_hash": "dfd3744075c1ae74",
+            "format_id": "fods",
+            "section": "Section 3",
+            "score": 0.05,
+            "matched_terms": [
+              "fods"
+            ],
+            "explanation": "matched 1/5 query terms"
+          }
+        ]
+      },
+      "3_synthesis": {
+        "passed": true,
+        "authority_state": "ai_draft",
+        "error_count": 0,
+        "citation_count": 3
+      },
+      "4_evaluation": {
+        "task_id": "pilot-fods-synthesis",
+        "passed": true,
+        "checks": {
+          "schema_valid": true,
+          "errors_within_limit": true,
+          "citations_sufficient": true,
+          "output_hash_present": true
+        },
+        "failures": [],
+        "score": 1.0
+      }
+    },
+    "final_authority_state": "ai_draft",
+    "all_stages_passed": true,
+    "errors": [],
+    "timestamp": "2026-05-19T15:45:37.845934+00:00",
+    "mode": "fixture_pipeline",
+    "sprint_id": "R32",
+    "passed": true
+  },
+  "overall_passed": true
+}

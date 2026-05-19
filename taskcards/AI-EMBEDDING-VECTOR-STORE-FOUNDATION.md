@@ -4,7 +4,7 @@
 Implement embedding/retrieval foundation: LanceDB integration, format-segregated namespaces, chunk manifests, stale-index detection, retrieval audit logging, and embedding model fingerprinting.
 
 ## Status
-`implemented_blocked_dependency` — namespace_manager.py with format-segregated namespaces, stale-index detection, and cross-namespace rejection implemented in R27 (cb7e05c). Blocked on LanceDB dependency. 9 tests pass.
+`implemented_blocked_dependency_with_lexical_baseline` — namespace_manager.py with format-segregated namespaces, stale-index detection, and cross-namespace rejection implemented in R27 (cb7e05c). R32: lexical_retriever.py added — deterministic TF-IDF ranked retrieval with top-k, threshold, namespace filter, provenance validation, staleness rejection. Vector retrieval still blocked (LanceDB not installed). Lexical baseline used in R32 fixture pipeline. 506 AI tests pass.
 
 ## Prerequisites
 - AI-PLATFORM-FOUNDATION-PLAN Phase 1 operational

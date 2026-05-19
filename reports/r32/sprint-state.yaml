@@ -1,0 +1,95 @@
+sprint_id: FORMAT-FACTORY-R32-AI-CLEAN-CLOSURE-STATUS-REPAIR-AND-PIPELINE-DEEPENING-MEGA-TRAIN-001
+run_number: R32
+branch: main
+base_commit: caed52b
+status: complete
+started: "2026-05-19"
+completed: "2026-05-19"
+purpose: AI clean closure, status repair, and real pipeline deepening
+scope: AI-only sprint — no general format expansion
+
+lanes:
+  lane_0:
+    name: Coordinator
+    status: complete
+    description: Sprint state, evidence contract, final bundle, governance
+  lane_a:
+    name: R31 closure metadata repair
+    status: complete
+    description: Forward-documented R31 commit SHA, bundle validation, adversarial pending
+  lane_b:
+    name: Evidence validator hardening
+    status: complete
+    description: 5 tests preventing R31-style metadata drift
+  lane_c:
+    name: AI verification matrix
+    status: complete
+    description: docs/ai/ai-system-verification-matrix.md created as canonical doc
+  lane_d:
+    name: AI taskcard truth repair
+    status: complete
+    description: 5 taskcards updated with R31/R32 verified state
+  lane_e:
+    name: Deterministic retrieval baseline
+    status: complete
+    description: lexical_retriever.py with TF-IDF scoring, top-k, namespace filter
+  lane_f:
+    name: Pipeline fixture with real retrieval
+    status: complete
+    description: E2E pilot uses lexical retrieval, 5 tests
+  lane_g:
+    name: Live pipeline with citation verification
+    status: complete
+    description: qwen3-next live pipeline, 2/2 citations verified, evaluator score 1.0
+  lane_h:
+    name: litellm dependency boundary
+    status: complete
+    description: gateway.py lazy import, fixture pipeline works without litellm call
+  lane_i:
+    name: Telemetry evidence hardening
+    status: complete
+    description: Redacted telemetry for live probe, 5 tests, no secrets confirmed
+  lane_j:
+    name: Expanded failure injection
+    status: complete
+    description: 19 new failure injection tests (34 total with R31)
+  lane_k:
+    name: AI runner production hardening
+    status: complete
+    description: 6 new CLI modes, meaningful exit codes, 5 tests
+  lane_l:
+    name: AI docs and governance sync
+    status: complete
+    description: Verification matrix doc, taskcard updates, memory sync
+  lane_m:
+    name: Full validation
+    status: complete
+    description: 506 AI tests (env + clean-env), non-AI suites pass
+  lane_n:
+    name: Independent verification
+    status: complete
+    description: 12 IV challenge questions answered with evidence
+  lane_o:
+    name: Adversarial review and evidence
+    status: complete
+    description: 30 adversarial questions, evidence bundle built and validated
+
+test_results:
+  ai_with_env: 506 passed, 0 failed
+  ai_clean_env: 506 passed, 0 failed
+  new_r32_tests: 57
+  live_probes: 1 (citation pipeline with qwen3-next)
+
+preflight:
+  git_clean: false (concurrent session changes)
+  branch: main
+  head: caed52b
+  python: "3.13.2"
+  litellm_installed: true (venv only)
+  pytest_installed: true (venv only)
+  env_vars:
+    GPT_OSS_ENDPOINT: set
+    GPT_OSS_API_KEY: set
+    AGENT_METRICS_ENDPOINT: set
+    AGENT_METRICS_TOKEN: set
+    AGENT_METRICS_API_KEY: not_set

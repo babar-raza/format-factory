@@ -36,6 +36,9 @@ class PilotConfig:
     repo_root: Path = field(default_factory=lambda: Path("."))
     verified_facts_path: Path | None = None
     fixture_mode: bool = True
+    use_lexical_retrieval: bool = False
+    retrieval_query: str = ""
+    retrieval_top_k: int = 5
 
 
 @dataclass
@@ -102,14 +105,34 @@ def stage_1_load_chunks(config: PilotConfig) -> tuple[list[NormalizedChunk], lis
 def stage_2_retrieval(
     chunks: list[NormalizedChunk],
     query: str = "",
+    use_lexical: bool = False,
+    format_id: str = "",
+    top_k: int = 5,
 ) -> tuple[list[NormalizedChunk], dict[str, Any]]:
-    """Stage 2: Retrieve relevant chunks (fixture: return all)."""
-    # In fixture mode, just return all chunks as "retrieved"
+    """Stage 2: Retrieve relevant chunks.
+
+    If use_lexical=True, uses the deterministic lexical retriever with ranking.
+    Otherwise falls back to returning all chunks (legacy fixture mode).
+    """
+    if use_lexical and query and format_id:
+        from tools.ai.retrieval.lexical_retriever import retrieve
+        result = retrieve(
+            query=query,
+            chunks=chunks,
+            format_id=format_id,
+            top_k=top_k,
+        )
+        retrieved = [sc.chunk for sc in result.scored_chunks]
+        metadata = result.to_dict()
+        metadata["passed"] = result.has_results
+        return retrieved, metadata
+
+    # Legacy: return all chunks
     metadata = {
         "query": query or "default_pilot_query",
         "total_chunks": len(chunks),
         "retrieved": len(chunks),
-        "mode": "fixture",
+        "mode": "fixture_return_all",
     }
     return chunks, metadata
 
@@ -193,7 +216,13 @@ def run_pilot(config: PilotConfig | None = None) -> PilotResult:
         return result
 
     # Stage 2: Retrieval
-    retrieved, retrieval_meta = stage_2_retrieval(chunks)
+    retrieved, retrieval_meta = stage_2_retrieval(
+        chunks,
+        query=config.retrieval_query or f"{config.format_id} format specification requirements",
+        use_lexical=config.use_lexical_retrieval,
+        format_id=config.format_id,
+        top_k=config.retrieval_top_k,
+    )
     result.stage_results["2_retrieval"] = {
         "passed": len(retrieved) > 0,
         **retrieval_meta,

@@ -10,14 +10,25 @@ import hashlib
 from datetime import datetime, timezone
 from typing import Any
 
-import litellm
-
 from tools.ai.control_plane.config import AIConfig, get_api_key
 from tools.ai.schemas.models import AIUsageRecord, CallStatus
 
 
-# Suppress litellm's verbose logging
-litellm.suppress_debug_info = True
+def _get_litellm():
+    """Lazily import litellm only when needed for live calls.
+
+    Raises ImportError with a clear message if litellm is not installed.
+    """
+    try:
+        import litellm
+    except ImportError:
+        raise ImportError(
+            "litellm is required for live AI gateway calls. "
+            "Install it with: pip install litellm. "
+            "Non-live AI tests and fixture pipelines do not require litellm."
+        )
+    litellm.suppress_debug_info = True
+    return litellm
 
 
 def gateway_chat(
@@ -64,6 +75,7 @@ def gateway_chat(
         return {"content": "", "usage": {}}, record
 
     try:
+        litellm = _get_litellm()
         response = litellm.completion(
             model=f"openai/{model}",
             messages=messages,

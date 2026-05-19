@@ -41,7 +41,7 @@ class TestE2EPilot:
         chunks, _ = stage_1_load_chunks(config)
         retrieved, meta = stage_2_retrieval(chunks)
         assert len(retrieved) == len(chunks)
-        assert meta["mode"] == "fixture"
+        assert meta["mode"] == "fixture_return_all"
 
     def test_stage_3_synthesis_produces_valid(self):
         config = PilotConfig(format_id="fods", fixture_mode=True)
