@@ -183,3 +183,44 @@ stages:
     test_result: "9/9 PASS"
     commercial_product_ready: false
     notes: "Gate 7 fuzz guard tests. 9 deterministic malformed input guards: empty file, random bytes, wrong magic, truncated header, huge dimensions, truncated pixel data, dict API safety, all-zeros, missing end marker."
+
+  gate_8:
+    status: pass
+    sprint: R31
+    date: "2026-05-19"
+    approval_method: delegated_expert_agent_review_requested_by_babar
+    reviewer_role: delegated_expert_agent
+    approval_artifact: reports/r31/delegated-gate8-expert-review-20260519.md
+    security_report: reports/security/qoi.md
+    findings_critical: 0
+    findings_high: 0
+    findings_medium: 0
+    findings_low: 3
+    findings_informational: 1
+    all_low_mitigated: true
+    commercial_product_ready: false
+    notes: "Gate 8 delegated expert review. Binary struct.unpack parser. All bounds checked. No integer overflow (Python arbitrary precision). No timeout (informational)."
+
+  gate_9:
+    status: pass
+    sprint: R31
+    date: "2026-05-19"
+    product_family: imaging
+    python_foss_track: true
+    python_foss_package: format-factory-qoi
+    dotnet_commercial_track: false
+    dotnet_commercial_notes: "QOI not supported by Aspose. .NET commercial track future."
+    publication_authorized: false
+    commercial_product_ready: false
+    notes: "Gate 9 product mapping. QOI maps to Python FOSS imaging track. Package: format-factory-qoi. High differentiation — Aspose NOT_SUPPORTED."
+
+  gate_10:
+    status: local_release_candidate_ready
+    sprint: R31
+    date: "2026-05-19"
+    package_name: format-factory-qoi
+    package_version: "0.1.0.dev0"
+    track: python-foss
+    publication_authorized: false
+    commercial_product_ready: false
+    notes: "Gate 10 local package readiness. Parser at Gate 8+. Ready for local wheel/sdist. publication_authorized=false until G11 complete."

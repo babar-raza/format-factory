@@ -104,6 +104,10 @@ stages:
     invalid_count: 1
     generation_method: deterministic_synthetic_python_binary
     awaiting_human_iv: true
+    gate_3_iv_status: verified
+    gate_3_iv_sprint: R31
+    gate_3_iv_date: "2026-05-19"
+    gate_3_iv_notes: "IV verified: 3 valid + 1 invalid samples present, manifest confirmed, provenance present."
     notes: "3 valid PAM P7 samples (1x1-gray, 2x2-bw, 1x1-rgb) + 1 invalid (wrong-magic P9). Binary body. Generated via Python."
     corpus_manifest: samples/by-format/pam/_corpus-manifest.yaml
     provenance: samples/by-format/pam/_provenance.yaml

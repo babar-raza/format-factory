@@ -166,3 +166,44 @@ stages:
     test_result: "13/13 PASS"
     commercial_product_ready: false
     notes: "Gate 7 fuzz guard tests. 13 deterministic malformed input guards: not-a-zip, empty file, ZIP bomb, malformed XML, binary garbage, dict API safety, nested XML, path traversal, oversized column/row repeat, missing styles.xml, invalid namespace, double-encoded ZIP."
+
+  gate_8:
+    status: pass
+    sprint: R31
+    date: "2026-05-19"
+    approval_method: delegated_expert_agent_review_requested_by_babar
+    reviewer_role: delegated_expert_agent
+    approval_artifact: reports/r31/delegated-gate8-expert-review-20260519.md
+    security_report: reports/security/ods.md
+    findings_critical: 0
+    findings_high: 0
+    findings_medium: 0
+    findings_low: 4
+    findings_informational: 1
+    all_low_mitigated: true
+    commercial_product_ready: false
+    notes: "Gate 8 delegated expert review. ZIP+XML parser using stdlib only. All low-severity findings mitigated (path traversal, XXE, DoS, size). No timeout (informational, caller responsibility)."
+
+  gate_9:
+    status: pass
+    sprint: R31
+    date: "2026-05-19"
+    product_family: cells
+    python_foss_track: true
+    python_foss_package: format-factory-ods
+    dotnet_commercial_track: false
+    dotnet_commercial_notes: "ODS .NET support deferred — FODS .NET covers flat-XML cells. ODS container support future."
+    publication_authorized: false
+    commercial_product_ready: false
+    notes: "Gate 9 product mapping. ODS maps to Python FOSS cells track. Package: format-factory-ods."
+
+  gate_10:
+    status: local_release_candidate_ready
+    sprint: R31
+    date: "2026-05-19"
+    package_name: format-factory-ods
+    package_version: "0.1.0.dev0"
+    track: python-foss
+    publication_authorized: false
+    commercial_product_ready: false
+    notes: "Gate 10 local package readiness. Parser at Gate 8+. Ready for local wheel/sdist. publication_authorized=false until G11 complete."
