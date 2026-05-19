@@ -157,9 +157,29 @@ class ScopedRunner:
         if task_fn is not None:
             try:
                 output = task_fn(contract, self._repo_root)
-                # Validate output paths
-                for fpath in output.get("files_accessed", []):
-                    if not self.validate_path_access(fpath, contract.path_allowlist):
+                files_accessed = output.get("files_accessed", [])
+                # Enforce max_files
+                if len(files_accessed) > contract.max_files:
+                    result.violations.append({
+                        "type": "max_files_exceeded",
+                        "limit": str(contract.max_files),
+                        "actual": str(len(files_accessed)),
+                    })
+                    result.status = "scope_violation"
+                    result.discarded = True
+                    result.duration_ms = int((time.monotonic() - start) * 1000)
+                    return result
+                # Validate output paths (resolve to catch traversal)
+                resolved_allowlist = [
+                    str((self._repo_root / a).resolve()) for a in contract.path_allowlist
+                ]
+                for fpath in files_accessed:
+                    resolved = str(Path(fpath).resolve())
+                    if not self.validate_path_access(
+                        resolved, resolved_allowlist
+                    ) and not self.validate_path_access(
+                        fpath, contract.path_allowlist
+                    ):
                         result.violations.append({
                             "type": "forbidden_path",
                             "path": fpath,
@@ -169,7 +189,7 @@ class ScopedRunner:
                         result.duration_ms = int((time.monotonic() - start) * 1000)
                         return result
                 result.output = output.get("result", {})
-                result.files_accessed = output.get("files_accessed", [])
+                result.files_accessed = files_accessed
                 result.status = "success"
             except Exception as exc:
                 result.status = "error"

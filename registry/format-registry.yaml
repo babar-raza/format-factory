@@ -1817,6 +1817,27 @@ formats:
         sample_count: 3
         invalid_count: 1
         notes: "Gate 3 PASS (R29). 3 valid P2 + 1 invalid PGM samples."
+      gate_4:
+        status: pass
+        approved_date: "2026-05-19"
+        parser_path: src/python/pgm/pgm_parser.py
+        test_result: "10/10 PASS"
+        notes: "Gate 4 PASS (R30). P2 ASCII grayscale parser prototype."
+      gate_5:
+        status: pass
+        approved_date: "2026-05-19"
+        test_result: "9/9 PASS"
+        notes: "Gate 5 PASS (R30). Neutral model: 7 supported, 9 unsupported."
+      gate_6:
+        status: pass
+        approved_date: "2026-05-19"
+        test_result: "10/10 PASS"
+        notes: "Gate 6 PASS (R30). Pixel-exact oracle tests."
+      gate_7:
+        status: pass
+        approved_date: "2026-05-19"
+        test_result: "11/11 PASS"
+        notes: "Gate 7 PASS (R30). Fuzz guard — 10 malformed input classes."
 
   - format_id: pbm
     display_name: "Portable Bitmap (PBM / Netpbm)"
@@ -1853,6 +1874,27 @@ formats:
         sample_count: 3
         invalid_count: 1
         notes: "Gate 3 PASS (R29). 3 valid P1 + 1 invalid PBM samples."
+      gate_4:
+        status: pass
+        approved_date: "2026-05-19"
+        parser_path: src/python/pbm/pbm_parser.py
+        test_result: "10/10 PASS"
+        notes: "Gate 4 PASS (R30). P1 ASCII bitmap parser prototype."
+      gate_5:
+        status: pass
+        approved_date: "2026-05-19"
+        test_result: "9/9 PASS"
+        notes: "Gate 5 PASS (R30). Neutral model: 6 supported, 9 unsupported."
+      gate_6:
+        status: pass
+        approved_date: "2026-05-19"
+        test_result: "10/10 PASS"
+        notes: "Gate 6 PASS (R30). Pixel-exact oracle tests."
+      gate_7:
+        status: pass
+        approved_date: "2026-05-19"
+        test_result: "11/11 PASS"
+        notes: "Gate 7 PASS (R30). Fuzz guard — 10 malformed input classes + P4 binary rejection."
 
   - format_id: sylk
     display_name: "Symbolic Link (SYLK)"
@@ -1888,6 +1930,169 @@ formats:
         sample_count: 3
         invalid_count: 1
         notes: "Gate 3 PASS (R29). 3 valid + 1 invalid SYLK samples."
+      gate_4:
+        status: pass
+        approved_date: "2026-05-19"
+        parser_path: src/python/sylk/sylk_parser.py
+        test_result: "10/10 PASS"
+        notes: "Gate 4 PASS (R30). SYLK text spreadsheet parser prototype."
+      gate_5:
+        status: pass
+        approved_date: "2026-05-19"
+        test_result: "9/9 PASS"
+        notes: "Gate 5 PASS (R30). Neutral model: 8 supported, 10 unsupported."
+      gate_6:
+        status: pass
+        approved_date: "2026-05-19"
+        test_result: "10/10 PASS"
+        notes: "Gate 6 PASS (R30). Cell value oracle tests."
+      gate_7:
+        status: pass
+        approved_date: "2026-05-19"
+        test_result: "11/11 PASS"
+        notes: "Gate 7 PASS (R30). Fuzz guard — 10 malformed input classes."
+
+  - format_id: csv
+    display_name: "Comma-Separated Values (CSV)"
+    family: cells
+    extensions: [.csv]
+    mime_type: "text/csv"
+    spec_body: "IETF (RFC 4180)"
+    spec_version: "RFC 4180 (2005)"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: true
+    aspose_support_level: SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: MINIMAL
+    sprint_added: R30
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        score_normalized: 8.8
+        band: Accept
+        notes: "CSV Gate 1 passed 8.8/10 (R30). Universal tabular format, IETF RFC."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        notes: "Gate 2: RFC 4180 is definitive spec. Publicly available."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        notes: "Gate 3 PASS (R30). 3 valid + 1 invalid CSV samples."
+
+  - format_id: tsv
+    display_name: "Tab-Separated Values (TSV)"
+    family: cells
+    extensions: [.tsv, .tab]
+    mime_type: "text/tab-separated-values"
+    spec_body: "IANA"
+    spec_version: "IANA registration (1993)"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: true
+    aspose_support_level: SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: MINIMAL
+    sprint_added: R30
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        score_normalized: 8.2
+        band: Accept
+        notes: "TSV Gate 1 passed 8.2/10 (R30). Tab-delimited variant of CSV."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        fast_path: true
+        notes: "Gate 2: Fast-path from CSV. Same parsing with delimiter='\\t'."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        notes: "Gate 3 PASS (R30). 3 valid + 1 invalid TSV samples."
+
+  - format_id: xpm
+    display_name: "X PixMap (XPM)"
+    family: imaging
+    extensions: [.xpm]
+    mime_type: "image/x-xpixmap"
+    spec_body: "X Consortium / Arnaud Le Hors"
+    spec_version: "XPM3 (1991)"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: MINIMAL
+    sprint_added: R30
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        score_normalized: 8.0
+        band: Accept
+        notes: "XPM Gate 1 passed 8.0/10 (R30). Text-based image format, public domain."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        notes: "Gate 2: XPM3 spec publicly available from X Consortium."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        notes: "Gate 3 PASS (R30). 3 valid XPM3 + 1 invalid samples."
+
+  - format_id: pam
+    display_name: "Portable Arbitrary Map (PAM / Netpbm P7)"
+    family: imaging
+    extensions: [.pam]
+    mime_type: "image/x-portable-arbitrarymap"
+    spec_body: "Netpbm project"
+    spec_version: "Netpbm PAM specification (2000)"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: MINIMAL
+    sprint_added: R30
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        score_normalized: 8.6
+        band: Accept
+        notes: "PAM Gate 1 passed 8.6/10 (R30). Completes Netpbm family (PBM+PGM+PPM+PAM)."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        fast_path: true
+        notes: "Gate 2: Fast-path from PPM/PGM/PBM. Same Netpbm spec family."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r30"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        notes: "Gate 3 PASS (R30). 3 valid PAM P7 + 1 invalid samples."
 
 # ---
 # FORMAT ENTRY TEMPLATE (do not uncomment — use acquisition-packs/_template/)

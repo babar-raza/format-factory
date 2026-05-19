@@ -1,0 +1,224 @@
+"""
+pgm_parser.py — PGM (Portable Graymap) parser for format-factory-pgm.
+
+Public API:
+  parse_pgm(file_path)        — returns result dict (never raises)
+  parse_pgm_strict(file_path) — raises PgmError on failure
+  probe_pgm(file_path)        — returns header metadata without full parse
+
+Implements Gate 4 prototype + Gate 5 neutral model.
+Parses P2 (ASCII) PGM files: magic, width, height, maxval, grayscale pixels.
+Technology: Python stdlib only (open/read/split).
+
+License: Apache-2.0
+"""
+
+from __future__ import annotations
+
+import os
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+
+MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
+MAX_DIMENSION = 65536
+MAX_MAXVAL = 65535
+
+
+class PgmError(Exception):
+    """Base exception for PGM parser errors."""
+
+
+class PgmInvalidMagicError(PgmError):
+    """Raised when file does not start with P2 or P5."""
+
+
+class PgmInvalidHeaderError(PgmError):
+    """Raised when header fields are invalid."""
+
+
+class PgmSizeError(PgmError):
+    """Raised when file or image dimensions exceed limits."""
+
+
+class PgmDecodeError(PgmError):
+    """Raised when pixel data is malformed."""
+
+
+@dataclass
+class PgmImage:
+    width: int = 0
+    height: int = 0
+    maxval: int = 255
+    magic: str = "P2"
+    pixels: list[int] = field(default_factory=list)
+    path: str = ""
+
+
+def _strip_comments(text: str) -> str:
+    """Remove # comments from PGM text."""
+    lines = text.split("\n")
+    cleaned = []
+    for line in lines:
+        idx = line.find("#")
+        if idx >= 0:
+            line = line[:idx]
+        cleaned.append(line)
+    return "\n".join(cleaned)
+
+
+def parse_pgm_strict(file_path: str | Path) -> PgmImage:
+    """Parse a PGM file, raising PgmError on any problem."""
+    path = Path(file_path)
+    if not path.exists():
+        raise PgmError(f"File not found: {path}")
+
+    size = os.path.getsize(path)
+    if size > MAX_FILE_SIZE:
+        raise PgmSizeError(f"File size {size} exceeds limit of {MAX_FILE_SIZE}")
+
+    raw = path.read_text(encoding="ascii", errors="replace")
+    cleaned = _strip_comments(raw)
+    tokens = cleaned.split()
+
+    if not tokens:
+        raise PgmInvalidMagicError("Empty file")
+
+    magic = tokens[0]
+    if magic not in ("P2", "P5"):
+        raise PgmInvalidMagicError(f"Invalid magic: '{magic}', expected P2 or P5")
+
+    if magic == "P5":
+        raise PgmDecodeError("P5 (binary) format not yet supported — P2 ASCII only")
+
+    if len(tokens) < 4:
+        raise PgmInvalidHeaderError(
+            f"Incomplete header: need magic, width, height, maxval; got {len(tokens)} tokens"
+        )
+
+    try:
+        width = int(tokens[1])
+        height = int(tokens[2])
+        maxval = int(tokens[3])
+    except ValueError as exc:
+        raise PgmInvalidHeaderError(f"Invalid header values: {exc}")
+
+    if width <= 0 or height <= 0:
+        raise PgmInvalidHeaderError(f"Invalid dimensions: {width}x{height}")
+    if width > MAX_DIMENSION or height > MAX_DIMENSION:
+        raise PgmSizeError(
+            f"Dimensions {width}x{height} exceed limit of {MAX_DIMENSION}"
+        )
+    if maxval <= 0 or maxval > MAX_MAXVAL:
+        raise PgmInvalidHeaderError(f"Invalid maxval: {maxval}")
+
+    expected_pixels = width * height
+    pixel_tokens = tokens[4:]
+
+    if len(pixel_tokens) < expected_pixels:
+        raise PgmDecodeError(
+            f"Not enough pixel data: expected {expected_pixels} values, got {len(pixel_tokens)}"
+        )
+
+    pixels: list[int] = []
+    for i in range(expected_pixels):
+        try:
+            v = int(pixel_tokens[i])
+        except (ValueError, IndexError) as exc:
+            raise PgmDecodeError(f"Invalid pixel data at pixel {i}: {exc}")
+        if v < 0 or v > maxval:
+            raise PgmDecodeError(
+                f"Pixel {i} value {v} out of range [0,{maxval}]"
+            )
+        pixels.append(v)
+
+    return PgmImage(
+        width=width,
+        height=height,
+        maxval=maxval,
+        magic=magic,
+        pixels=pixels,
+        path=str(path),
+    )
+
+
+def parse_pgm(file_path: str | Path) -> dict[str, Any]:
+    """Parse a PGM file, returning a result dict (never raises)."""
+    try:
+        img = parse_pgm_strict(file_path)
+        return {
+            "ok": True,
+            "path": img.path,
+            "width": img.width,
+            "height": img.height,
+            "maxval": img.maxval,
+            "magic": img.magic,
+            "pixel_count": len(img.pixels),
+        }
+    except Exception as exc:
+        return {"ok": False, "error": str(exc), "error_type": type(exc).__name__}
+
+
+def probe_pgm(file_path: str | Path) -> dict[str, Any]:
+    """Probe a PGM file for header metadata without full parse."""
+    path = Path(file_path)
+    result: dict[str, Any] = {"path": str(path), "exists": path.exists()}
+    if not path.exists():
+        return result
+    try:
+        raw = path.read_bytes()[:1024].decode("ascii", errors="replace")
+        cleaned = _strip_comments(raw)
+        tokens = cleaned.split()
+        if not tokens or tokens[0] not in ("P2", "P5"):
+            result["valid_header"] = False
+            result["error"] = f"Invalid magic: {tokens[0] if tokens else 'empty'}"
+            return result
+        result["valid_header"] = True
+        result["magic"] = tokens[0]
+        if len(tokens) >= 4:
+            result["width"] = int(tokens[1])
+            result["height"] = int(tokens[2])
+            result["maxval"] = int(tokens[3])
+    except Exception as exc:
+        result["valid_header"] = False
+        result["error"] = str(exc)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Gate 5 — Neutral model: capability declaration
+# ---------------------------------------------------------------------------
+
+SUPPORTED_FEATURES: frozenset[str] = frozenset({
+    "p2_ascii_parse",
+    "grayscale_pixel_decode",
+    "comment_stripping",
+    "probe",
+    "dimension_extraction",
+    "maxval_validation",
+    "size_guard",
+})
+
+UNSUPPORTED_FEATURES: frozenset[str] = frozenset({
+    "p5_binary_parse",
+    "ppm_color",
+    "pbm_bitmap",
+    "pam_arbitrary_map",
+    "16bit_values",
+    "encoding_to_pgm",
+    "color_profiles",
+    "metadata_extraction",
+    "streaming_decode",
+})
+
+
+def get_capabilities() -> dict[str, Any]:
+    """Return a capability descriptor for the PGM parser (Gate 5 neutral model)."""
+    return {
+        "format": "pgm",
+        "gate": 5,
+        "supported": sorted(SUPPORTED_FEATURES),
+        "unsupported": sorted(UNSUPPORTED_FEATURES),
+        "commercial_product_ready": False,
+    }

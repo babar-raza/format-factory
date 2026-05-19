@@ -1,0 +1,110 @@
+# TSV Acquisition Pack
+# Tab-Separated Values
+# Sprint: FORMAT-FACTORY-R30-CLOSURE-REPAIR-GATE8-PRODUCTIZATION-GATE4-CANDIDATES-G11-PUBLICATION-MEGA-TRAIN-001
+
+format_id: tsv
+display_name: "Tab-Separated Values (TSV)"
+extensions:
+  - .tsv
+  - .tab
+mime_type: "text/tab-separated-values"
+family: cells
+spec_body: "IANA (registered media type)"
+spec_version: "IANA text/tab-separated-values (1993)"
+legal_category: 1
+legal_description: "IANA-registered media type. No specification body owns the format. Universally implemented, no licensing restrictions."
+aspose_supported: true
+aspose_support_level: SUPPORTED
+aspose_evidence: "Aspose.Cells supports TSV via CSV import with tab delimiter."
+aspose_notes: "Aspose handles TSV as CSV variant. Our parser targets pure Python stdlib."
+python_library: "Python stdlib csv module with delimiter='\\t'"
+oracle_strategy: "Cell value comparison; TSV is human-readable text"
+acquisition_risk_classification: MINIMAL
+acquisition_risk_notes: "IANA-registered format. Simpler than CSV (no quoting ambiguity). Zero risk."
+sprint_created: R30
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: tsv
+    display_name: "Tab-Separated Values (TSV)"
+    mime_type: "text/tab-separated-values"
+    extensions: [".tsv", ".tab"]
+    structure: "Text-based tabular format. Rows separated by CRLF/LF. Fields separated by tab character. No quoting convention in original spec."
+    spec_body: "IANA"
+    spec_version: "IANA text/tab-separated-values (1993)"
+    notes: "TSV is the tab-delimited variant of CSV. Simpler — no quoting rules needed since tabs rarely appear in data."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r30"
+    approved_by: "delegated_agent_r30"
+    approved_date: "2026-05-19"
+    sprint: R30
+    awaiting_human_iv: true
+    score_total: 82
+    score_normalized: 8.2
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "IANA-registered media type. No patents, no licensing."
+      spec_availability:
+        score: 2
+        points: 13
+        evidence: "IANA registration is the primary reference. No formal RFC but format is trivially simple."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Even simpler than CSV — tab delimiter, no quoting ambiguity."
+      community_demand:
+        score: 2
+        points: 10
+        evidence: "Widely used in bioinformatics, data science, and spreadsheet interchange."
+      strategic_track_value:
+        score: 1
+        points: 3
+        evidence: "Aspose handles TSV. Low differentiation but fills cells track alongside CSV."
+      implementation_complexity:
+        score: 3
+        points: 5
+        evidence: "Trivial — Python csv module with delimiter='\\t'."
+      family_overlap:
+        score: 2
+        points: 6
+        evidence: "Same cells family as CSV but distinct MIME type and use case."
+    legal_category: 1
+    aspose_support_level: SUPPORTED
+    notes: "Score 8.2/10 — Accept band. Tab-delimited complement to CSV. Gate 1 by delegated agent R30; awaits human IV."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r30"
+    approved_date: "2026-05-19"
+    sprint: R30
+    awaiting_human_iv: true
+    fast_path_eligible: true
+    fast_path_reason: "TSV is a delimiter variant of CSV. Same parsing infrastructure with delimiter='\\t'."
+    spec_url: "https://www.iana.org/assignments/media-types/text/tab-separated-values"
+    spec_version_confirmed: "IANA registration (1993)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "No patents. Format predates software patent era."
+    notes: "Fast-path from CSV. Same parsing infrastructure with different delimiter."
+
+  gate_3:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/tsv/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_text
+    awaiting_human_iv: true
+    notes: "3 valid TSV samples (minimal-2x2, single-cell, multi-column) + 1 invalid (binary-garbage). Generated via Python open/write."
+    corpus_manifest: samples/by-format/tsv/_corpus-manifest.yaml
+    provenance: samples/by-format/tsv/_provenance.yaml

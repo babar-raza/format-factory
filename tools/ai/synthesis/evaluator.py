@@ -93,10 +93,7 @@ def evaluate_synthesis(
     # Contradictions
     if criteria.require_no_contradictions:
         total_checks += 1
-        ok = result.contradiction_check_status in (
-            "no_contradictions",
-            "not_checked",
-        )
+        ok = result.contradiction_check_status == "no_contradictions"
         evaluation.checks["no_contradictions"] = ok
         if ok:
             passed_checks += 1

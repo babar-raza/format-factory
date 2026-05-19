@@ -81,6 +81,8 @@ def validate_requirement(req: GeneratedRequirement) -> list[str]:
         errors.append(f"invalid priority: {req.priority}")
     if req.verifier_status not in REQUIREMENT_SCHEMA["valid_verifier_statuses"]:
         errors.append(f"invalid verifier_status: {req.verifier_status}")
+    if req.authority_state not in REQUIREMENT_SCHEMA["valid_authority_states"]:
+        errors.append(f"invalid authority_state: {req.authority_state}")
     return errors
 
 
@@ -89,7 +91,16 @@ def review_requirement(
     accept: bool,
     reason: str = "",
 ) -> GeneratedRequirement:
-    """Apply verifier review to a requirement."""
+    """Apply verifier review to a requirement.
+
+    Only requirements in pending_review can be reviewed.
+    Rejected or already-accepted requirements cannot be re-reviewed.
+    """
+    if req.verifier_status != "pending_review":
+        raise ValueError(
+            f"Cannot review requirement in state '{req.verifier_status}'; "
+            f"only 'pending_review' requirements can be reviewed"
+        )
     req.verifier_status = "accepted" if accept else "rejected"
     req.verifier_reason = reason
     if accept:
@@ -130,8 +141,10 @@ def write_requirements_packet(
 ) -> Path:
     """Write a requirements packet as JSON."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    if not requirements:
+        raise ValueError("Cannot write empty requirements packet")
     data = {
-        "format": requirements[0].format_id if requirements else "unknown",
+        "format": requirements[0].format_id,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "authority_state": "ai_draft",
         "count": len(requirements),

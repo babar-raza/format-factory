@@ -107,3 +107,66 @@ stages:
     notes: "3 valid PGM P2 samples (1x1-white, 2x2-gradient, 3x1-ramp) + 1 invalid (wrong-magic P9). Generated via Python open/write."
     corpus_manifest: samples/by-format/pgm/_corpus-manifest.yaml
     provenance: samples/by-format/pgm/_provenance.yaml
+
+  gate_4:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    parser_path: src/python/pgm/pgm_parser.py
+    parser_language: python3
+    parser_type: prototype
+    api_functions:
+      - parse_pgm_strict
+      - parse_pgm
+      - probe_pgm
+    security_guards:
+      - MAX_FILE_SIZE: 67108864
+      - MAX_DIMENSION: 65536
+      - MAX_MAXVAL: 65535
+    test_path: tests/python/pgm/test_pgm_parser.py
+    test_count: 10
+    test_result: "10/10 PASS"
+    notes: "Gate 4 prototype parser. P2 ASCII grayscale. struct-free text parsing. Dict API never raises."
+
+  gate_5:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    neutral_model_location: src/python/pgm/pgm_parser.py
+    supported_features: 7
+    unsupported_features: 9
+    get_capabilities_function: get_capabilities
+    test_path: tests/python/pgm/test_pgm_gate5_neutral_model.py
+    test_count: 9
+    test_result: "9/9 PASS"
+    notes: "Neutral model with SUPPORTED_FEATURES/UNSUPPORTED_FEATURES frozensets. No overlap, sorted, frozenset type."
+
+  gate_6:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    oracle_strategy: pixel_exact_text_comparison
+    test_path: tests/python/pgm/test_pgm_gate6_oracle.py
+    test_count: 10
+    test_result: "10/10 PASS"
+    notes: "Deterministic expected-value oracles against 3 known samples + synthetic test images. Probe-parse consistency verified."
+
+  gate_7:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    fuzz_guard_test_path: tests/python/pgm/test_pgm_gate7_fuzz_guard.py
+    test_count: 11
+    test_result: "11/11 PASS"
+    malformed_inputs_tested:
+      - empty_file
+      - wrong_magic
+      - truncated_header
+      - huge_dimensions
+      - negative_dimensions
+      - zero_maxval
+      - truncated_pixel_data
+      - binary_garbage
+      - out_of_range_pixel
+      - non_numeric_pixel
+    notes: "Gate 7 fuzz guard. All malformed inputs produce correct error types. Dict API never raises."

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -80,6 +81,19 @@ class MissingEmbeddingModelError(Exception):
     pass
 
 
+_SAFE_FORMAT_ID_PATTERN = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$")
+
+
+def validate_format_id(format_id: str) -> None:
+    """Validate format_id is safe for filesystem use. Raises ValueError if not."""
+    if not format_id:
+        raise ValueError("format_id must not be empty")
+    if ".." in format_id or "/" in format_id or "\\" in format_id:
+        raise ValueError(f"format_id contains path traversal characters: {format_id!r}")
+    if not _SAFE_FORMAT_ID_PATTERN.match(format_id):
+        raise ValueError(f"format_id contains unsafe characters: {format_id!r}")
+
+
 class NamespaceManager:
     """Manages format-segregated vector store namespaces."""
 
@@ -89,6 +103,7 @@ class NamespaceManager:
         self._audit_log: list[RetrievalAuditEntry] = []
 
     def get_namespace_path(self, format_id: str) -> Path:
+        validate_format_id(format_id)
         return self._store_root / format_id
 
     def namespace_exists(self, format_id: str) -> bool:
@@ -142,11 +157,10 @@ class NamespaceManager:
         self,
         format_id: str,
         query_text: str,
-        authorized_cross_format: bool = False,
     ) -> list[dict[str, Any]]:
         """Query a format's vector store.
 
-        Cross-format queries are rejected unless explicitly authorized.
+        Cross-format queries are always forbidden (use reject_cross_namespace_query).
         This is a stub — real implementation requires LanceDB.
         """
         if not self.namespace_exists(format_id):

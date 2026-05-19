@@ -1,0 +1,109 @@
+# PAM Acquisition Pack
+# Portable Arbitrary Map (Netpbm P7 format)
+# Sprint: FORMAT-FACTORY-R30-CLOSURE-REPAIR-GATE8-PRODUCTIZATION-GATE4-CANDIDATES-G11-PUBLICATION-MEGA-TRAIN-001
+
+format_id: pam
+display_name: "Portable Arbitrary Map (PAM / Netpbm P7)"
+extensions:
+  - .pam
+mime_type: "image/x-portable-arbitrarymap"
+family: imaging
+spec_body: "Netpbm project (2000, public domain)"
+spec_version: "Netpbm PAM specification (2000)"
+legal_category: 1
+legal_description: "Public domain format. Netpbm specification is freely available, no patents, no licensing restrictions."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose does not support PAM/PBM/PGM/PPM (Netpbm) in any product."
+aspose_notes: "Not supported by Aspose. PAM is the most general Netpbm format — supports arbitrary depth and tuple types."
+python_library: "No library needed; binary header parsing with stdlib"
+oracle_strategy: "Pixel-exact comparison; header is text, body is binary"
+acquisition_risk_classification: MINIMAL
+acquisition_risk_notes: "Public domain format from 2000. Extends Netpbm family (PBM/PGM/PPM already acquired). Completes family coverage."
+sprint_created: R30
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: pam
+    display_name: "Portable Arbitrary Map (PAM / Netpbm P7)"
+    mime_type: "image/x-portable-arbitrarymap"
+    extensions: [".pam"]
+    structure: "Text header (P7 magic, WIDTH, HEIGHT, DEPTH, MAXVAL, TUPLTYPE, ENDHDR) followed by binary pixel data."
+    spec_body: "Netpbm project"
+    spec_version: "Netpbm PAM specification (2000)"
+    notes: "PAM (P7) is the generalized Netpbm format. Supports grayscale, RGB, RGBA, and arbitrary tuple types. Completes PBM/PGM/PPM family."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r30"
+    approved_by: "delegated_agent_r30"
+    approved_date: "2026-05-19"
+    sprint: R30
+    awaiting_human_iv: true
+    score_total: 86
+    score_normalized: 8.6
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "Public domain format. Same legal authority as PPM/PGM/PBM."
+      spec_availability:
+        score: 3
+        points: 20
+        evidence: "Full specification publicly available via Netpbm project."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Text header + binary body. Similar to PGM/PPM but with structured header fields."
+      community_demand:
+        score: 1
+        points: 5
+        evidence: "Modern Netpbm replacement for PBM/PGM/PPM. Used in image processing pipelines."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Completes Netpbm family (PBM+PGM+PPM+PAM). Not supported by Aspose."
+      implementation_complexity:
+        score: 3
+        points: 5
+        evidence: "Moderate — binary body requires careful parsing but header is text. Similar to PPM."
+      family_overlap:
+        score: 2
+        points: 4
+        evidence: "Same Netpbm family as PPM/PGM/PBM. High code reuse potential."
+    legal_category: 1
+    aspose_support_level: NOT_SUPPORTED
+    notes: "Score 8.6/10 — Accept band. Completes Netpbm family. Gate 1 by delegated agent R30; awaits human IV."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r30"
+    approved_date: "2026-05-19"
+    sprint: R30
+    awaiting_human_iv: true
+    fast_path_eligible: true
+    fast_path_reason: "Same Netpbm specification family as PPM/PGM/PBM."
+    spec_url: "https://netpbm.sourceforge.net/doc/pam.html"
+    spec_version_confirmed: "Netpbm PAM specification (2000)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "Public domain. No patents."
+    notes: "Fast-path from PPM/PGM/PBM. Completes Netpbm family coverage."
+
+  gate_3:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/pam/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_binary
+    awaiting_human_iv: true
+    notes: "3 valid PAM P7 samples (1x1-gray, 2x2-bw, 1x1-rgb) + 1 invalid (wrong-magic P9). Binary body. Generated via Python."
+    corpus_manifest: samples/by-format/pam/_corpus-manifest.yaml
+    provenance: samples/by-format/pam/_provenance.yaml

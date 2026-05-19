@@ -76,7 +76,7 @@ class ProposalReviewer:
         self._accepted: list[GeneratedTestProposal] = []
         self._rejected: list[tuple[GeneratedTestProposal, str]] = []
 
-    def review(self, proposal: TestProposal) -> tuple[bool, list[str]]:
+    def review(self, proposal: GeneratedTestProposal) -> tuple[bool, list[str]]:
         """Review a proposal. Returns (accepted, errors)."""
         errors = proposal.validate()
         if errors:
@@ -89,7 +89,7 @@ class ProposalReviewer:
         self._accepted.append(proposal)
         return True, []
 
-    def reject(self, proposal: TestProposal, reason: str) -> None:
+    def reject(self, proposal: GeneratedTestProposal, reason: str) -> None:
         """Explicitly reject a proposal."""
         proposal.authority_state = ArtifactAuthorityStateValue.rejected
         self._rejected.append((proposal, reason))

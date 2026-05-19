@@ -108,3 +108,66 @@ stages:
     notes: "3 valid SYLK samples (minimal-2x2, single-cell, numeric-row) + 1 invalid (missing-id-record). Generated via Python open/write."
     corpus_manifest: samples/by-format/sylk/_corpus-manifest.yaml
     provenance: samples/by-format/sylk/_provenance.yaml
+
+  gate_4:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    parser_path: src/python/sylk/sylk_parser.py
+    parser_language: python3
+    parser_type: prototype
+    api_functions:
+      - parse_sylk_strict
+      - parse_sylk
+      - probe_sylk
+    security_guards:
+      - MAX_FILE_SIZE: 67108864
+      - MAX_ROWS: 1048576
+      - MAX_COLUMNS: 16384
+    test_path: tests/python/sylk/test_sylk_parser.py
+    test_count: 10
+    test_result: "10/10 PASS"
+    notes: "Gate 4 prototype parser. Text-based spreadsheet. ID/C/E record parsing. Dict API never raises."
+
+  gate_5:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    neutral_model_location: src/python/sylk/sylk_parser.py
+    supported_features: 8
+    unsupported_features: 10
+    get_capabilities_function: get_capabilities
+    test_path: tests/python/sylk/test_sylk_gate5_neutral_model.py
+    test_count: 9
+    test_result: "9/9 PASS"
+    notes: "Neutral model with SUPPORTED_FEATURES/UNSUPPORTED_FEATURES frozensets. No overlap, sorted, frozenset type."
+
+  gate_6:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    oracle_strategy: cell_value_comparison
+    test_path: tests/python/sylk/test_sylk_gate6_oracle.py
+    test_count: 10
+    test_result: "10/10 PASS"
+    notes: "Deterministic expected-value oracles against 3 known samples + synthetic multi-row and mixed-type tests."
+
+  gate_7:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    fuzz_guard_test_path: tests/python/sylk/test_sylk_gate7_fuzz_guard.py
+    test_count: 11
+    test_result: "11/11 PASS"
+    malformed_inputs_tested:
+      - empty_file
+      - missing_id_record
+      - missing_end_record
+      - invalid_x_field
+      - invalid_y_field
+      - binary_garbage
+      - huge_column
+      - huge_row
+      - only_id_and_end
+      - id_only_no_end
+    notes: "Gate 7 fuzz guard. All malformed inputs produce correct error types. Dict API never raises."

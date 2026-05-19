@@ -1,0 +1,73 @@
+---
+contract_id: FORMAT-FACTORY-R30-MEGA-TRAIN-AI-DEFECT-CLOSURE-EVIDENCE-IDENTITY-FORMAT-PRODUCTIZATION-G11G-PUBLICATION-001
+date: "2026-05-19"
+min_metadata_count: 30
+verdict_keyword: R30_COMPLETE
+emergency_blocker_bundle: false
+require_clean_git: true
+
+required_repo_files:
+  # Lane 0: Coordinator
+  - reports/r30/sprint-state.yaml
+  - reports/r30/preflight-current-state.md
+
+  # Lane A: R29 identity normalization
+  - reports/r30/r29-identity-normalization.md
+
+  # Lane B: Evaluator defect closure
+  - reports/r30/ai-synthesis-evaluator-defect-closure.md
+  - tools/ai/synthesis/evaluator.py
+
+  # Lane C: Requirements lifecycle
+  - reports/r30/ai-requirements-lifecycle-hardening.md
+  - tools/ai/requirements/generator.py
+
+  # Lane D: Proposal type fix
+  - reports/r30/ai-test-generation-proposal-repair.md
+  - tools/ai/test_generation/proposal.py
+
+  # Lane E: Scoped runner
+  - reports/r30/qwen2-scoped-runner-enforcement.md
+  - tools/ai/agentic/scoped_runner.py
+
+  # Lane F: Retrieval namespace
+  - reports/r30/retrieval-namespace-path-safety.md
+  - tools/ai/retrieval/namespace_manager.py
+
+  # Lane G: Secret redaction
+  - reports/r30/telemetry-secret-redaction-hardening.md
+  - tools/ai/validators/secret_redaction.py
+
+  # Lane H: Schema validator
+  - reports/r30/schema-validator-coverage.md
+
+  # Lane I: Live-readiness
+  - reports/r30/ai-live-readiness-and-blockers.md
+
+  # Lane J: PGM/PBM/SYLK
+  - reports/r30/pgm-pbm-sylk-gate4-gate5-train.md
+  - src/python/pgm/pgm_parser.py
+  - src/python/pbm/pbm_parser.py
+  - src/python/sylk/sylk_parser.py
+
+  # Lane K: Gate 8 readiness
+  - reports/r30/gate8-productization-readiness.md
+
+  # Lane L: G11-G gap reduction
+  - reports/r30/fods-fodt-g11g-gap-reduction.md
+
+  # Lane M: Publication readiness
+  - reports/r30/python-foss-publication-readiness-refresh.md
+
+  # Lane N: Governance
+  - reports/r30/governance-taskcard-memory-registry-sync.md
+  - memory/51-r30-ai-defect-closure-evidence-identity-format-productization-20260519.md
+  - memory/00-index.md
+
+  # Lane O: IV and adversarial
+  - reports/verification/r30-independent-verification.md
+  - reports/governance/r30-adversarial-review.md
+  - tests/ai/test_r30_ai_defect_closure.py
+
+  # Evidence contract
+  - tools/evidence/contracts/r30-ai-defect-closure-evidence-identity-format-productization-g11g-publication.yaml

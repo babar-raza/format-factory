@@ -158,11 +158,14 @@ def stage_3_synthesis(
 
 def stage_4_evaluate(synthesis_result: SynthesisResult) -> dict[str, Any]:
     """Stage 4: Evaluate synthesis quality."""
+    # Only require contradiction check if one was actually performed
+    contradiction_was_checked = synthesis_result.contradiction_check_status != "not_checked"
     criteria = EvaluationCriteria(
         require_schema_valid=True,
         require_no_errors=True,
         require_citations=True,
         min_citation_count=1,
+        require_no_contradictions=contradiction_was_checked,
     )
     evaluation = evaluate_synthesis(synthesis_result, criteria)
     return evaluation.to_dict()

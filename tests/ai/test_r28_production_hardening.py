@@ -177,7 +177,7 @@ class TestEvaluator:
         r.errors = kwargs.get("errors", [])
         r.citation_verified = kwargs.get("citation_verified", False)
         r.citations = kwargs.get("citations", [])
-        r.contradiction_check_status = kwargs.get("contradiction_check_status", "not_checked")
+        r.contradiction_check_status = kwargs.get("contradiction_check_status", "no_contradictions")
         r.output_hash = kwargs.get("output_hash", "abc123")
         return r
 

@@ -1,0 +1,109 @@
+# XPM Acquisition Pack
+# X PixMap (XPM3) — text-based image format
+# Sprint: FORMAT-FACTORY-R30-CLOSURE-REPAIR-GATE8-PRODUCTIZATION-GATE4-CANDIDATES-G11-PUBLICATION-MEGA-TRAIN-001
+
+format_id: xpm
+display_name: "X PixMap (XPM)"
+extensions:
+  - .xpm
+mime_type: "image/x-xpixmap"
+family: imaging
+spec_body: "X Consortium / Arnaud Le Hors (1991, public domain)"
+spec_version: "XPM3 specification (1991)"
+legal_category: 1
+legal_description: "Public domain format. XPM specification is freely available. Used in X11/Unix ecosystem. No patents."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose does not support XPM in any product."
+aspose_notes: "Not supported by Aspose. X11/Unix-specific format — text-based C source code representing color-mapped images."
+python_library: "No library needed; text parsing with stdlib"
+oracle_strategy: "Pixel-exact comparison; XPM is human-readable text (C source format)"
+acquisition_risk_classification: MINIMAL
+acquisition_risk_notes: "Public domain format from 1991. Text-based C source code. Trivially parseable."
+sprint_created: R30
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: xpm
+    display_name: "X PixMap (XPM)"
+    mime_type: "image/x-xpixmap"
+    extensions: [".xpm"]
+    structure: "Text-based C source code. Header comment '/* XPM */', array declaration, values string (width height ncolors cpp), color entries, pixel rows."
+    spec_body: "X Consortium / Arnaud Le Hors"
+    spec_version: "XPM3 (1991)"
+    notes: "XPM3 is the current version. XPM1/XPM2 are obsolete. Format encodes images as C source code with color-mapped pixels."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r30"
+    approved_by: "delegated_agent_r30"
+    approved_date: "2026-05-19"
+    sprint: R30
+    awaiting_human_iv: true
+    score_total: 80
+    score_normalized: 8.0
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "Public domain format. X Consortium specification freely available."
+      spec_availability:
+        score: 2
+        points: 13
+        evidence: "XPM3 specification available online. Not a formal standards body spec but well-documented."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Text-based C source code. Regular structure — header, color table, pixel rows. Parseable with regex/string ops."
+      community_demand:
+        score: 1
+        points: 5
+        evidence: "Niche — primarily X11/Unix ecosystem. Icon files, cursor images."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Not supported by Aspose. Fills imaging track gap. Unique text-based image format."
+      implementation_complexity:
+        score: 3
+        points: 5
+        evidence: "Moderate — needs C source code parsing but fundamentally text-based with regular structure."
+      family_overlap:
+        score: 2
+        points: 5
+        evidence: "Same imaging family as PPM/PGM/PBM/QOI but completely different structure (C source code)."
+    legal_category: 1
+    aspose_support_level: NOT_SUPPORTED
+    notes: "Score 8.0/10 — Accept band. Text-based image format. Gate 1 by delegated agent R30; awaits human IV."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r30"
+    approved_date: "2026-05-19"
+    sprint: R30
+    awaiting_human_iv: true
+    fast_path_eligible: false
+    spec_url: "https://en.wikipedia.org/wiki/X_PixMap"
+    spec_secondary_url: "https://www.xfree86.org/current/xpm.pdf"
+    spec_version_confirmed: "XPM3 (1991, Arnaud Le Hors)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "Public domain. No patents."
+    notes: "XPM3 spec documented in multiple sources. Core: magic comment, C array, values string, color table, pixel rows."
+
+  gate_3:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/xpm/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_text
+    awaiting_human_iv: true
+    notes: "3 valid XPM3 samples (1x1-red, 2x2-checker, 3x1-rgb) + 1 invalid (no-magic). Generated via Python open/write."
+    corpus_manifest: samples/by-format/xpm/_corpus-manifest.yaml
+    provenance: samples/by-format/xpm/_provenance.yaml

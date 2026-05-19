@@ -1,0 +1,108 @@
+# CSV Acquisition Pack
+# Comma-Separated Values (RFC 4180)
+# Sprint: FORMAT-FACTORY-R30-CLOSURE-REPAIR-GATE8-PRODUCTIZATION-GATE4-CANDIDATES-G11-PUBLICATION-MEGA-TRAIN-001
+
+format_id: csv
+display_name: "Comma-Separated Values (CSV)"
+extensions:
+  - .csv
+mime_type: "text/csv"
+family: cells
+spec_body: "IETF (RFC 4180)"
+spec_version: "RFC 4180 (2005)"
+legal_category: 1
+legal_description: "IETF RFC — open standard, royalty-free. Universally implemented with no licensing restrictions."
+aspose_supported: true
+aspose_support_level: SUPPORTED
+aspose_evidence: "Aspose.Cells supports CSV import/export."
+aspose_notes: "Aspose supports CSV but our parser targets pure Python stdlib (csv module). Different implementation, no dependency."
+python_library: "Python stdlib csv module"
+oracle_strategy: "Cell value comparison; CSV is human-readable text"
+acquisition_risk_classification: MINIMAL
+acquisition_risk_notes: "IETF standard from 2005. Universally known. Python stdlib has csv module. Zero risk."
+sprint_created: R30
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: csv
+    display_name: "Comma-Separated Values (CSV)"
+    mime_type: "text/csv"
+    extensions: [".csv"]
+    structure: "Text-based tabular format. Rows separated by CRLF/LF. Fields separated by comma. Optional quoting with double quotes. Optional header row."
+    spec_body: "IETF"
+    spec_version: "RFC 4180 (2005)"
+    notes: "CSV is the most widely used tabular data interchange format. RFC 4180 formalizes the de facto standard."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r30"
+    approved_by: "delegated_agent_r30"
+    approved_date: "2026-05-19"
+    sprint: R30
+    awaiting_human_iv: true
+    score_total: 88
+    score_normalized: 8.8
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "IETF RFC 4180. Open standard, royalty-free."
+      spec_availability:
+        score: 3
+        points: 20
+        evidence: "RFC is publicly available. The format is trivial and universally documented."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Trivial text format. Python stdlib has csv module. Lines + commas + optional quotes."
+      community_demand:
+        score: 3
+        points: 15
+        evidence: "Most widely used tabular format in the world. Universal demand."
+      strategic_track_value:
+        score: 1
+        points: 3
+        evidence: "Aspose already supports CSV. Low strategic differentiation but fills cells track gap."
+      implementation_complexity:
+        score: 3
+        points: 5
+        evidence: "Trivial — Python stdlib csv module handles parsing."
+      family_overlap:
+        score: 0
+        points: 0
+        evidence: "Same cells family as FODS/DIF/SYLK but completely different format structure."
+    legal_category: 1
+    aspose_support_level: SUPPORTED
+    notes: "Score 8.8/10 — Accept band. Universal tabular format. Gate 1 by delegated agent R30; awaits human IV."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r30"
+    approved_date: "2026-05-19"
+    sprint: R30
+    awaiting_human_iv: true
+    fast_path_eligible: false
+    spec_url: "https://www.rfc-editor.org/rfc/rfc4180"
+    spec_version_confirmed: "RFC 4180 (October 2005)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "IETF RFC. No patents."
+    notes: "RFC 4180 is the definitive CSV spec. Format is trivial and universally implemented."
+
+  gate_3:
+    status: pass
+    sprint: R30
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/csv/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_text
+    awaiting_human_iv: true
+    notes: "3 valid CSV samples (minimal-2x2, single-cell, quoted-fields) + 1 invalid (unterminated-quote). Generated via Python open/write."
+    corpus_manifest: samples/by-format/csv/_corpus-manifest.yaml
+    provenance: samples/by-format/csv/_provenance.yaml
