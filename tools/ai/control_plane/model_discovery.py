@@ -6,13 +6,42 @@ model enumeration for custom OpenAI-compatible endpoints.
 
 from __future__ import annotations
 
+import hashlib
 from datetime import datetime, timezone
 from typing import Any
 
 import httpx
 
 from tools.ai.control_plane.config import AIConfig, get_api_key
-from tools.ai.schemas.models import ModelCapability, ModelFingerprint
+from tools.ai.schemas.models import AIRole, ModelCapability, ModelFingerprint
+
+
+def guess_model_family(model_id: str) -> str:
+    """Infer model family from model ID string. No hardcoded model names."""
+    mid = model_id.lower()
+    if "gpt" in mid:
+        return "gpt"
+    if "qwen" in mid:
+        return "qwen"
+    if "embed" in mid:
+        return "embedding"
+    if "llama" in mid:
+        return "llama"
+    if "mistral" in mid:
+        return "mistral"
+    return "unknown"
+
+
+def infer_role_candidates(model_id: str) -> list[AIRole]:
+    """Suggest role candidates based on model family. Not authoritative."""
+    family = guess_model_family(model_id)
+    if family == "gpt":
+        return [AIRole.structured_extraction, AIRole.evidence_review, AIRole.summarization]
+    if family == "qwen":
+        return [AIRole.agentic_low_risk]
+    if family == "embedding":
+        return [AIRole.embedding_retrieval]
+    return [AIRole.summarization]
 
 
 def discover_models(config: AIConfig) -> list[ModelCapability]:
@@ -55,6 +84,11 @@ def discover_models(config: AIConfig) -> list[ModelCapability]:
             supports_chat=True,
             supports_embedding="embed" in model_id.lower(),
             context_length=item.get("context_length"),
+            model_family_guess=guess_model_family(model_id),
+            role_candidates=infer_role_candidates(model_id),
+            endpoint_identity_hash=hashlib.sha256(
+                config.endpoint_identity.encode()
+            ).hexdigest()[:12],
         )
         models.append(mc)
 

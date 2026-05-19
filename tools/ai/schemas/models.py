@@ -77,8 +77,13 @@ class ModelCapability(BaseModel):
     supports_chat: bool = True
     supports_completion: bool = False
     supports_embedding: bool = False
+    supports_json_or_structured_output: bool = False
     context_length: Optional[int] = None
     roles: list[AIRole] = Field(default_factory=list)
+    model_family_guess: str = ""
+    role_candidates: list[AIRole] = Field(default_factory=list)
+    last_probe_status: str = ""
+    endpoint_identity_hash: str = ""
 
 
 class ModelFingerprint(BaseModel):
