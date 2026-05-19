@@ -1,0 +1,37 @@
+---
+sprint_id: FORMAT-FACTORY-R29-MEGA-TRAIN-STATE-CONSISTENCY-AI-FORMAT-COMMERCIAL-PUBLICATION-EVIDENCE-001
+date: "2026-05-19"
+type: mega_train
+status: in_progress
+head_at_start: d26395b
+prior_r29_commit: 7cb1586
+prior_r29_sprint_id: FORMAT-FACTORY-R29-MAIN-TRACK-MEGA-TRAIN-GATE6-GATE8-XCF-DIF-PPM-G11-PUBLICATION-CANDIDATES-001
+
+lanes:
+  lane_0: {status: in_progress, description: "Coordinator, state machine, anti-shrink control"}
+  lane_a: {status: in_progress, description: "R28 closure/state consistency repair"}
+  lane_b: {status: pending, description: "Evidence validator semantic hardening"}
+  lane_c: {status: pending, description: "R28 evidence bundle completeness repair"}
+  lane_d: {status: pending, description: "AI platform productionization"}
+  lane_e: {status: pending, description: "AI retrieval/vector/normalization hardening"}
+  lane_f: {status: pending, description: "AI telemetry and Agent Metrics drain"}
+  lane_g: {status: pending, description: "AI requirements into format pipeline"}
+  lane_h: {status: pending, description: "ODS/ODT/QOI Gate 6/7 verification (prior R29 did this)"}
+  lane_i: {status: pending, description: "XCF Gate 5/ZPAQ unblock"}
+  lane_j: {status: pending, description: "DIF/PPM/candidate reconciliation"}
+  lane_k: {status: pending, description: "FODS/FODT G11-G readiness gap reduction"}
+  lane_l: {status: pending, description: "Python FOSS publication packet hardening"}
+  lane_m: {status: pending, description: "Governance, memory, mega-train rule sync"}
+  lane_n: {status: pending, description: "Full validation"}
+  lane_o: {status: pending, description: "IV, adversarial review, evidence bundle"}
+
+invariants:
+  commercial_product_ready: false
+  g11g_status: NOT_STARTED
+  publication_authorized: false
+  no_push: true
+  no_pr: true
+
+known_defects:
+  r28_sprint_state: "reports/r28/sprint-state.yaml still shows status: in_progress, all lanes pending"
+  r29_prior_bundle: "Prior R29 final-verdict shows EVIDENCE_BUNDLE: PENDING"

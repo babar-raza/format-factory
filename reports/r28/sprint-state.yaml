@@ -2,23 +2,24 @@
 sprint_id: FORMAT-FACTORY-R28-FULL-THROTTLE-AI-FORMAT-COMMERCIAL-PUBLICATION-AND-EVIDENCE-TRAIN-001
 date: "2026-05-19"
 type: full_throttle_multi_train
-status: in_progress
+status: closed_verified
 head_at_start: 33d12c7
+commits: [2956213, 408fb27]
 
 lanes:
-  lane_a: {status: pending, description: "R27 closure and evidence repair"}
-  lane_b: {status: pending, description: "AI taskcard state repair"}
-  lane_c: {status: pending, description: "AI production hardening"}
-  lane_d: {status: pending, description: "AI end-to-end pilot"}
-  lane_e: {status: pending, description: "AI-generated requirements pipeline"}
-  lane_f: {status: pending, description: "ODS/ODT/QOI Gate 4 hardening"}
-  lane_g: {status: pending, description: "Next format train"}
-  lane_h: {status: pending, description: "FODS/FODT commercial C7/C8/C9 hardening"}
-  lane_i: {status: pending, description: "Python FOSS publication packet hardening"}
-  lane_j: {status: pending, description: "Evidence/bundle automation hardening"}
-  lane_k: {status: pending, description: "Full validation"}
-  lane_l: {status: pending, description: "Independent verification"}
-  lane_m: {status: pending, description: "Documentation/memory/registry sync"}
+  lane_a: {status: closed_verified, description: "R27 closure and evidence repair"}
+  lane_b: {status: closed_verified, description: "AI taskcard state repair — 7 taskcards corrected"}
+  lane_c: {status: closed_verified, description: "AI production hardening — citation_verifier, contradiction_detector, evaluator (39 tests)"}
+  lane_d: {status: closed_verified, description: "AI end-to-end pilot — 4-stage pipeline fixture mode (8 tests)"}
+  lane_e: {status: closed_verified, description: "AI-generated requirements pipeline — schema-validated with provenance (13 tests)"}
+  lane_f: {status: closed_verified, description: "ODS/ODT/QOI Gate 4 hardening — parser notes and readiness verified"}
+  lane_g: {status: closed_verified, description: "Next format train — DIF/PPM/XCF candidates advanced"}
+  lane_h: {status: closed_verified, description: "FODS/FODT commercial hardening — G11-F malformed XML guards (+16 .NET tests)"}
+  lane_i: {status: closed_verified, description: "Python FOSS publication — publication packet and readiness matrix"}
+  lane_j: {status: closed_verified, description: "Evidence/bundle automation hardening — PENDING detection, emergency blocker (7 tests)"}
+  lane_k: {status: closed_verified, description: "Full validation — all suites green"}
+  lane_l: {status: closed_verified, description: "Independent verification — IV: PASS, no defects"}
+  lane_m: {status: closed_verified, description: "Documentation/memory/registry sync"}
 
 invariants:
   commercial_product_ready: false
@@ -26,3 +27,8 @@ invariants:
   publication_authorized: false
   no_push: true
   no_pr: true
+
+repair_note: |
+  Original sprint-state.yaml was committed with status: in_progress and all lanes pending.
+  This was a closure defect — the sprint completed but sprint-state was not updated before commit.
+  Repaired in R29 (FORMAT-FACTORY-R29-MEGA-TRAIN-STATE-CONSISTENCY-AI-FORMAT-COMMERCIAL-PUBLICATION-EVIDENCE-001).
