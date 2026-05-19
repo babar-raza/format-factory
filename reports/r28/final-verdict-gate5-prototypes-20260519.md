@@ -36,8 +36,8 @@
 
 ## Commits
 
-COMMIT_SHA: PENDING
-EVIDENCE_BUNDLE: PENDING
+COMMIT_SHA: 1ecab67
+EVIDENCE_BUNDLE: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\bundles\r28-gate5-gate7-xcf-candidates.zip
 
 ## Invariants Held
 
