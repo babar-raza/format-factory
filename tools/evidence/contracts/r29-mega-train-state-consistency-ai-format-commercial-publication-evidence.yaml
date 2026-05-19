@@ -1,0 +1,60 @@
+---
+contract_id: FORMAT-FACTORY-R29-MEGA-TRAIN-STATE-CONSISTENCY-AI-FORMAT-COMMERCIAL-PUBLICATION-EVIDENCE-001
+date: "2026-05-19"
+min_metadata_count: 30
+verdict_keyword: R29_COMPLETE
+emergency_blocker_bundle: false
+require_clean_git: true
+
+required_repo_files:
+  # Lane 0: Coordinator
+  - reports/r29/sprint-state.yaml
+  - reports/r29/preflight-current-state.md
+
+  # Lane A: R28 closure repair
+  - reports/r29/r28-state-consistency-repair.md
+  - reports/r28/sprint-state.yaml
+
+  # Lane B: Evidence validator hardening
+  - tests/evidence/test_r29_sprint_state_consistency.py
+  - reports/r29/evidence-validator-semantic-hardening.md
+
+  # Lane C: R28 evidence completeness
+  - reports/r29/r28-evidence-completeness-repair.md
+
+  # Lane D: AI synthesis/evaluator productionization
+  - tests/ai/test_r29_synthesis_hardening.py
+  - reports/r29/ai-synthesis-evaluator-productionization.md
+
+  # Lane E/F: AI retrieval/telemetry hardening
+  - tests/ai/test_r29_retrieval_telemetry_hardening.py
+  - reports/r29/ai-retrieval-normalization-hardening.md
+  - reports/r29/ai-telemetry-agent-metrics-hardening.md
+
+  # Lane G: AI requirements pipeline
+  - reports/r29/ai-requirements-to-format-pipeline.md
+
+  # Lanes H-J: Format gate verification
+  - reports/r29/format-gate-verification-and-candidates.md
+
+  # Lane K: G11-G gap reduction
+  - reports/r29/fods-fodt-g11g-gap-reduction.md
+
+  # Lane L: Publication readiness
+  - reports/r29/python-foss-publication-readiness-refresh.md
+
+  # Lane M: Memory/governance sync
+  - reports/r29/mega-train-rule-and-memory-sync.md
+  - memory/50-r29-mega-train-state-consistency-ai-format-commercial-publication-evidence-20260519.md
+  - memory/00-index.md
+
+  # Prior R29 stale marker fixes
+  - reports/r29-mega-train-sprint-metadata-20260519/sprint-overview.md
+  - reports/r29/final-verdict-mega-train-20260519.md
+
+  # Lane O: IV and adversarial
+  - reports/verification/r29-independent-verification.md
+  - reports/governance/r29-adversarial-review.md
+
+  # Evidence contract
+  - tools/evidence/contracts/r29-mega-train-state-consistency-ai-format-commercial-publication-evidence.yaml
