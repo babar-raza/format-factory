@@ -84,7 +84,7 @@
 ## Commits
 
 COMMIT_SHA: 7cb1586
-EVIDENCE_BUNDLE: PENDING
+EVIDENCE_BUNDLE: NOT_BUILT (format-track sprint; evidence included in R29 mega-train bundle)
 
 ## Invariants Held
 
