@@ -108,3 +108,53 @@ stages:
     notes: "3 valid DIF samples (minimal-2x2, single-cell, numeric-row) + 1 invalid (missing-table-header). Generated via Python open/write with CRLF line endings (DIF convention). Corpus manifest and provenance at samples/by-format/dif/."
     corpus_manifest: samples/by-format/dif/_corpus-manifest.yaml
     provenance: samples/by-format/dif/_provenance.yaml
+
+  gate_4:
+    status: prototype_complete
+    sprint: R29
+    date: "2026-05-19"
+    parser_class: DifParser
+    parser_method: "parse_dif_strict(path) -> DifDocument"
+    technology: "Python stdlib only (open/read/split)"
+    source_path: src/python/dif/dif_parser.py
+    test_path: tests/python/dif/test_dif_parser.py
+    test_count: 10
+    test_result: "10/10 PASS"
+    authorization_status: delegated_technical_authorized
+    production_source_authorized: true
+    commercial_product_ready: false
+    notes: "Gate 4 prototype complete. Parses TABLE/VECTORS/TUPLES/DATA sections, numeric and string cells, BOT/EOD markers. probe_dif for header metadata. 10/10 tests PASS."
+
+  gate_5:
+    status: neutral_model_complete
+    sprint: R29
+    date: "2026-05-19"
+    supported_features: 8
+    unsupported_features: 10
+    test_path: tests/python/dif/test_dif_gate5_neutral_model.py
+    test_count: 9
+    test_result: "9/9 PASS"
+    source_path: src/python/dif/dif_parser.py
+    commercial_product_ready: false
+    notes: "Gate 5 neutral model complete. SUPPORTED: table_header_parse, vectors_tuples_count, numeric_cells, string_cells, bot_eod_markers, probe, title_extraction, size_guard. UNSUPPORTED: comments, special values, boolean/formula/date/time/currency cells, multi-table, encoding detection, CRLF normalization."
+
+  gate_6:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    oracle_strategy: deterministic_synthetic_known_values
+    test_path: tests/python/dif/test_dif_gate6_oracle.py
+    test_count: 10
+    test_result: "10/10 PASS"
+    commercial_product_ready: false
+    notes: "Gate 6 deterministic oracle tests. 10 tests: sample file oracles (minimal-2x2, single-cell, numeric-row), synthetic oracles (string cells, numeric cells, multi-row, empty data, dict API, title extraction, mixed types)."
+
+  gate_7:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    test_path: tests/python/dif/test_dif_gate7_fuzz_guard.py
+    test_count: 10
+    test_result: "10/10 PASS"
+    commercial_product_ready: false
+    notes: "Gate 7 fuzz guard tests. 10 deterministic malformed input guards: empty file, random text, missing TABLE, missing VECTORS, truncated header, dict API safety, binary garbage, invalid numeric pair, no EOD marker, extremely long string."

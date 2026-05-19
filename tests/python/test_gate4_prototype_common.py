@@ -132,17 +132,20 @@ class TestGate5SafetyGuards:
         assert "gate_5" in pack.get("stages", {})
         assert pack["stages"]["gate_5"]["commercial_product_ready"] is False
 
-    def test_no_gate6_ods(self):
+    def test_gate6_commercial_ready_false_ods(self):
         pack = self._load_pack("ods")
-        assert "gate_6" not in pack.get("stages", {})
+        assert "gate_6" in pack.get("stages", {})
+        assert pack["stages"]["gate_6"]["commercial_product_ready"] is False
 
-    def test_no_gate6_odt(self):
+    def test_gate6_commercial_ready_false_odt(self):
         pack = self._load_pack("odt")
-        assert "gate_6" not in pack.get("stages", {})
+        assert "gate_6" in pack.get("stages", {})
+        assert pack["stages"]["gate_6"]["commercial_product_ready"] is False
 
-    def test_no_gate6_qoi(self):
+    def test_gate6_commercial_ready_false_qoi(self):
         pack = self._load_pack("qoi")
-        assert "gate_6" not in pack.get("stages", {})
+        assert "gate_6" in pack.get("stages", {})
+        assert pack["stages"]["gate_6"]["commercial_product_ready"] is False
 
     def test_commercial_product_ready_false_ods(self):
         pack = self._load_pack("ods")

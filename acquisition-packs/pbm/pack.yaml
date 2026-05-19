@@ -1,0 +1,109 @@
+# PBM Acquisition Pack
+# Portable Bitmap (Netpbm P1/P4 format)
+# Sprint: FORMAT-FACTORY-R29-LANE-L-NEW-CANDIDATE-EXPANSION-001
+
+format_id: pbm
+display_name: "Portable Bitmap (PBM / Netpbm)"
+extensions:
+  - .pbm
+mime_type: "image/x-portable-bitmap"
+family: imaging
+spec_body: "Jef Poskanzer (Netpbm project)"
+spec_version: "Netpbm PBM specification (1988, public domain)"
+legal_category: 1
+legal_description: "Public domain format. Netpbm specification is freely available, no patents, no licensing restrictions."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose does not support PBM/PGM/PPM (Netpbm) in any product."
+aspose_notes: "Not supported by Aspose. Simplest Netpbm format — binary (black/white) images."
+python_library: "No library needed; trivially parseable with stdlib"
+oracle_strategy: "Pixel-exact comparison; PBM P1 is human-readable text (0s and 1s)"
+acquisition_risk_classification: MINIMAL
+acquisition_risk_notes: "Public domain format from 1988. Simplest possible image format — only 0 and 1 values."
+sprint_created: R29
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: pbm
+    display_name: "Portable Bitmap (PBM / Netpbm)"
+    mime_type: "image/x-portable-bitmap"
+    extensions: [".pbm"]
+    structure: "Text-based (P1) or binary (P4) bitmap. Header: magic, width, height. Body: 0/1 pixel values (no maxval)."
+    spec_body: "Jef Poskanzer (Netpbm project)"
+    spec_version: "Netpbm PBM specification (1988)"
+    notes: "PBM is the bitmap member of the Netpbm family. P1 is ASCII, P4 is binary. Simplest possible raster image — 1-bit black/white."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r29"
+    approved_by: "delegated_agent_r29"
+    approved_date: "2026-05-19"
+    sprint: R29
+    awaiting_human_iv: true
+    score_total: 87
+    score_normalized: 8.7
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "Public domain format (1988). Same legal authority as PPM/PGM."
+      spec_availability:
+        score: 3
+        points: 20
+        evidence: "Full specification publicly available via Netpbm project."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Simplest possible format — header + 0/1 values. No maxval field needed."
+      community_demand:
+        score: 1
+        points: 5
+        evidence: "Niche — used in fax, OCR, document scanning. Less common than PPM/PGM."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Completes Netpbm family coverage (PBM+PGM+PPM)."
+      implementation_complexity:
+        score: 3
+        points: 5
+        evidence: "Trivial — subset of PGM with no maxval and only 0/1 values."
+      family_overlap:
+        score: 3
+        points: 5
+        evidence: "Same Netpbm family as PPM/PGM but distinct use case (binary images)."
+    legal_category: 1
+    aspose_support_level: NOT_SUPPORTED
+    notes: "Score 8.7/10 — Accept band. Netpbm family fast-path. Gate 1 by delegated agent R29; awaits human IV."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r29"
+    approved_date: "2026-05-19"
+    sprint: R29
+    awaiting_human_iv: true
+    fast_path_eligible: true
+    fast_path_reason: "Same Netpbm specification family as PPM/PGM."
+    spec_url: "https://netpbm.sourceforge.net/doc/pbm.html"
+    spec_version_confirmed: "Netpbm PBM specification (1988)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "Public domain. No patents."
+    notes: "Fast-path from PPM/PGM. Same Netpbm spec family."
+
+  gate_3:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/pbm/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_text
+    awaiting_human_iv: true
+    notes: "3 valid PBM P1 samples (1x1-black, 2x2-checker, 3x2-pattern) + 1 invalid (wrong-magic P9). Generated via Python open/write."
+    corpus_manifest: samples/by-format/pbm/_corpus-manifest.yaml
+    provenance: samples/by-format/pbm/_provenance.yaml

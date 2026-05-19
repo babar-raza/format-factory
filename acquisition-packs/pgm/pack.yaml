@@ -1,0 +1,109 @@
+# PGM Acquisition Pack
+# Portable Graymap (Netpbm P2/P5 format)
+# Sprint: FORMAT-FACTORY-R29-LANE-L-NEW-CANDIDATE-EXPANSION-001
+
+format_id: pgm
+display_name: "Portable Graymap (PGM / Netpbm)"
+extensions:
+  - .pgm
+mime_type: "image/x-portable-graymap"
+family: imaging
+spec_body: "Jef Poskanzer (Netpbm project)"
+spec_version: "Netpbm PGM specification (1988, public domain)"
+legal_category: 1
+legal_description: "Public domain format. Netpbm specification is freely available, no patents, no licensing restrictions."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose does not support PGM/PBM/PPM (Netpbm) in any product."
+aspose_notes: "Not supported by Aspose. Same Netpbm family as PPM. Grayscale variant — simpler than PPM."
+python_library: "No library needed; trivially parseable with stdlib"
+oracle_strategy: "Pixel-exact comparison; PGM P2 is human-readable text"
+acquisition_risk_classification: MINIMAL
+acquisition_risk_notes: "Public domain format from 1988. Grayscale variant of Netpbm family. Even simpler than PPM."
+sprint_created: R29
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: pgm
+    display_name: "Portable Graymap (PGM / Netpbm)"
+    mime_type: "image/x-portable-graymap"
+    extensions: [".pgm"]
+    structure: "Text-based (P2) or binary (P5) grayscale image. Header: magic, width, height, maxval. Body: grayscale pixel values."
+    spec_body: "Jef Poskanzer (Netpbm project)"
+    spec_version: "Netpbm PGM specification (1988)"
+    notes: "PGM is the grayscale member of the Netpbm family (PBM=bitmap, PGM=greyscale, PPM=color). P2 is ASCII, P5 is binary."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r29"
+    approved_by: "delegated_agent_r29"
+    approved_date: "2026-05-19"
+    sprint: R29
+    awaiting_human_iv: true
+    score_total: 89
+    score_normalized: 8.9
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 3
+        points: 30
+        evidence: "Public domain format (1988). Same legal authority as PPM. No patents."
+      spec_availability:
+        score: 3
+        points: 20
+        evidence: "Full specification publicly available via Netpbm project. Same docs as PPM."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Simpler than PPM — single channel instead of three. P2 is human-readable text."
+      community_demand:
+        score: 2
+        points: 10
+        evidence: "Standard grayscale interchange format. Used in scientific imaging and image processing."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Extends Netpbm family coverage (PPM already acquired). Same parser infrastructure."
+      implementation_complexity:
+        score: 3
+        points: 5
+        evidence: "Trivial — subset of PPM. Single-channel instead of RGB."
+      family_overlap:
+        score: 1
+        points: 2
+        evidence: "Same Netpbm family as PPM. High code reuse potential but different MIME type and use case."
+    legal_category: 1
+    aspose_support_level: NOT_SUPPORTED
+    notes: "Score 8.9/10 — Accept band. Netpbm family fast-path from PPM. Gate 1 by delegated agent R29; awaits human IV."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r29"
+    approved_date: "2026-05-19"
+    sprint: R29
+    awaiting_human_iv: true
+    fast_path_eligible: true
+    fast_path_reason: "Same Netpbm specification as PPM. P2/P5 format fully documented in same spec page."
+    spec_url: "https://netpbm.sourceforge.net/doc/pgm.html"
+    spec_version_confirmed: "Netpbm PGM specification (1988)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "Public domain. No patents."
+    notes: "Fast-path from PPM. Same Netpbm spec family."
+
+  gate_3:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/pgm/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_text
+    awaiting_human_iv: true
+    notes: "3 valid PGM P2 samples (1x1-white, 2x2-gradient, 3x1-ramp) + 1 invalid (wrong-magic P9). Generated via Python open/write."
+    corpus_manifest: samples/by-format/pgm/_corpus-manifest.yaml
+    provenance: samples/by-format/pgm/_provenance.yaml

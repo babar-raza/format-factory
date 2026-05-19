@@ -145,3 +145,24 @@ stages:
     report: reports/implementation/r28-ods-gate5-neutral-model-report-20260519.md
     commercial_product_ready: false
     notes: "Gate 5 neutral model complete. Explicit unsupported feature declarations (formulas, macros, encryption, etc). Edge-case tests for empty sheets, multi-sheet, malformed containers."
+
+  gate_6:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    oracle_strategy: deterministic_synthetic_known_values
+    test_path: tests/python/ods/test_ods_gate6_oracle.py
+    test_count: 13
+    test_result: "13/13 PASS"
+    commercial_product_ready: false
+    notes: "Gate 6 deterministic oracle tests. 13 tests: sample file oracles (minimal-spreadsheet, single-cell, numeric-row), synthetic value-type oracles (date, boolean, float, percentage), repeat expansion (row, column), multi-sheet, empty sheet, mixed types."
+
+  gate_7:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    test_path: tests/python/ods/test_ods_gate7_fuzz_guard.py
+    test_count: 13
+    test_result: "13/13 PASS"
+    commercial_product_ready: false
+    notes: "Gate 7 fuzz guard tests. 13 deterministic malformed input guards: not-a-zip, empty file, ZIP bomb, malformed XML, binary garbage, dict API safety, nested XML, path traversal, oversized column/row repeat, missing styles.xml, invalid namespace, double-encoded ZIP."

@@ -1,0 +1,13 @@
+format_id: pbm
+sample_count: 3
+invalid_count: 1
+generation_method: deterministic_synthetic_python_text
+samples:
+  - path: valid/1x1-black.pbm
+    description: "1x1 black pixel, P1 ASCII"
+  - path: valid/2x2-checker.pbm
+    description: "2x2 checkerboard pattern, P1 ASCII"
+  - path: valid/3x2-pattern.pbm
+    description: "3x2 alternating pattern, P1 ASCII"
+  - path: invalid/wrong-magic.pbm
+    description: "Invalid: P9 magic (not P1 or P4)"

@@ -1332,6 +1332,22 @@ formats:
         test_result: "17/17 PASS"
         commercial_product_ready: false
         notes: "Gate 5 neutral model (R28). Explicit unsupported feature declarations. 17 edge-case tests PASS."
+      gate_6:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 13
+        test_result: "13/13 PASS"
+        commercial_product_ready: false
+        notes: "Gate 6 oracle (R29). 13 deterministic oracle tests."
+      gate_7:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 13
+        test_result: "13/13 PASS"
+        commercial_product_ready: false
+        notes: "Gate 7 fuzz guard (R29). 13 malformed input guard tests."
 
   - format_id: odt
     display_name: OpenDocument Text
@@ -1400,6 +1416,22 @@ formats:
         test_result: "18/18 PASS"
         commercial_product_ready: false
         notes: "Gate 5 neutral model (R28). Explicit unsupported feature declarations. 18 edge-case tests PASS."
+      gate_6:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 14
+        test_result: "14/14 PASS"
+        commercial_product_ready: false
+        notes: "Gate 6 oracle (R29). 14 deterministic oracle tests."
+      gate_7:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 14
+        test_result: "14/14 PASS"
+        commercial_product_ready: false
+        notes: "Gate 7 fuzz guard (R29). 14 malformed input guard tests."
 
   - format_id: qoi
     display_name: Quite OK Image Format
@@ -1470,6 +1502,22 @@ formats:
         test_result: "17/17 PASS"
         commercial_product_ready: false
         notes: "Gate 5 neutral model (R28). Explicit unsupported feature declarations. 17 edge-case tests PASS."
+      gate_6:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 15
+        test_result: "15/15 PASS"
+        commercial_product_ready: false
+        notes: "Gate 6 oracle (R29). 15 deterministic oracle tests."
+      gate_7:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 9
+        test_result: "9/9 PASS"
+        commercial_product_ready: false
+        notes: "Gate 7 fuzz guard (R29). 9 malformed input guard tests."
 
   - format_id: xcf
     display_name: "GIMP Native Image Format"
@@ -1522,6 +1570,30 @@ formats:
         commercial_product_ready: false
         production_source_authorized: true
         notes: "Gate 4 prototype complete (R28). Header+property+layer parse (no pixel decode). 17/17 tests PASS."
+      gate_5:
+        status: neutral_model_complete
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        supported_features: 8
+        unsupported_features: 12
+        commercial_product_ready: false
+        notes: "Gate 5 neutral model (R29). 8 supported + 12 unsupported features declared."
+      gate_6:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 13
+        test_result: "13/13 PASS"
+        commercial_product_ready: false
+        notes: "Gate 6 oracle (R29). 13 deterministic oracle tests."
+      gate_7:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 12
+        test_result: "12/12 PASS"
+        commercial_product_ready: false
+        notes: "Gate 7 fuzz guard (R29). 12 malformed input guard tests."
 
   - format_id: zpaq
     display_name: "ZPAQ Archive"
@@ -1598,6 +1670,41 @@ formats:
         generation_method: deterministic_synthetic_python_text
         awaiting_human_iv: true
         notes: "Gate 3 PASS (R28). 3 valid + 1 invalid DIF samples. Python open/write text. Awaiting IV."
+      gate_4:
+        status: prototype_complete
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        source_path: src/python/dif/dif_parser.py
+        test_count: 10
+        test_result: "10/10 PASS"
+        commercial_product_ready: false
+        notes: "Gate 4 prototype (R29). TABLE/VECTORS/TUPLES/DATA parser. 10/10 tests PASS."
+      gate_5:
+        status: neutral_model_complete
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        supported_features: 8
+        unsupported_features: 10
+        test_count: 9
+        test_result: "9/9 PASS"
+        commercial_product_ready: false
+        notes: "Gate 5 neutral model (R29). 8 supported + 10 unsupported features."
+      gate_6:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 10
+        test_result: "10/10 PASS"
+        commercial_product_ready: false
+        notes: "Gate 6 oracle (R29). 10 deterministic oracle tests."
+      gate_7:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 10
+        test_result: "10/10 PASS"
+        commercial_product_ready: false
+        notes: "Gate 7 fuzz guard (R29). 10 malformed input guard tests."
 
   - format_id: ppm
     display_name: "Portable Pixmap (PPM / Netpbm)"
@@ -1639,7 +1746,148 @@ formats:
         generation_method: deterministic_synthetic_python_text
         awaiting_human_iv: true
         notes: "Gate 3 PASS (R28). 3 valid P3 + 1 invalid PPM samples. Python open/write. Awaiting IV."
+      gate_4:
+        status: prototype_complete
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        source_path: src/python/ppm/ppm_parser.py
+        test_count: 10
+        test_result: "10/10 PASS"
+        commercial_product_ready: false
+        notes: "Gate 4 prototype (R29). P3 ASCII parser. 10/10 tests PASS."
+      gate_5:
+        status: neutral_model_complete
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        supported_features: 7
+        unsupported_features: 9
+        test_count: 9
+        test_result: "9/9 PASS"
+        commercial_product_ready: false
+        notes: "Gate 5 neutral model (R29). 7 supported + 9 unsupported features."
+      gate_6:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 10
+        test_result: "10/10 PASS"
+        commercial_product_ready: false
+        notes: "Gate 6 oracle (R29). 10 deterministic oracle tests."
+      gate_7:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        test_count: 11
+        test_result: "11/11 PASS"
+        commercial_product_ready: false
+        notes: "Gate 7 fuzz guard (R29). 11 malformed input guard tests."
 
+  - format_id: pgm
+    display_name: "Portable Graymap (PGM / Netpbm)"
+    family: imaging
+    extensions: [.pgm]
+    mime_type: "image/x-portable-graymap"
+    spec_body: "Jef Poskanzer (Netpbm project)"
+    spec_version: "Netpbm PGM specification (1988)"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: MINIMAL
+    sprint_added: R29
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        score_normalized: 8.9
+        band: Accept
+        notes: "PGM Gate 1 passed 8.9/10 (R29). Netpbm family fast-path from PPM."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        fast_path: true
+        notes: "Gate 2: Same Netpbm spec family as PPM. Fast-path."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        notes: "Gate 3 PASS (R29). 3 valid P2 + 1 invalid PGM samples."
+
+  - format_id: pbm
+    display_name: "Portable Bitmap (PBM / Netpbm)"
+    family: imaging
+    extensions: [.pbm]
+    mime_type: "image/x-portable-bitmap"
+    spec_body: "Jef Poskanzer (Netpbm project)"
+    spec_version: "Netpbm PBM specification (1988)"
+    legal_category: 1
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: MINIMAL
+    sprint_added: R29
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        score_normalized: 8.7
+        band: Accept
+        notes: "PBM Gate 1 passed 8.7/10 (R29). Netpbm family fast-path."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        fast_path: true
+        notes: "Gate 2: Same Netpbm spec family. Fast-path."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        notes: "Gate 3 PASS (R29). 3 valid P1 + 1 invalid PBM samples."
+
+  - format_id: sylk
+    display_name: "Symbolic Link (SYLK)"
+    family: cells
+    extensions: [.slk, .sylk]
+    mime_type: "application/x-sylk"
+    spec_body: "Microsoft (1986)"
+    spec_version: "SYLK Format (1986)"
+    legal_category: 2
+    commercial_product_ready: false
+    aspose_supported: false
+    aspose_support_level: NOT_SUPPORTED
+    acquisition_pack_created: true
+    acquisition_risk_classification: LOW
+    sprint_added: R29
+    gates:
+      gate_1:
+        status: passed
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        score_normalized: 8.2
+        band: Accept
+        notes: "SYLK Gate 1 passed 8.2/10 (R29). Text-based spreadsheet, publicly documented."
+      gate_2:
+        status: passed
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        notes: "Gate 2: SYLK spec publicly documented (MS KB, Wikipedia)."
+      gate_3:
+        status: pass
+        approved_by: "delegated_agent_r29"
+        approved_date: "2026-05-19"
+        sample_count: 3
+        invalid_count: 1
+        notes: "Gate 3 PASS (R29). 3 valid + 1 invalid SYLK samples."
 
 # ---
 # FORMAT ENTRY TEMPLATE (do not uncomment — use acquisition-packs/_template/)

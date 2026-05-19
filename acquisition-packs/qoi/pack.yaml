@@ -162,3 +162,24 @@ stages:
     report: reports/implementation/r28-qoi-gate5-neutral-model-report-20260519.md
     commercial_product_ready: false
     notes: "Gate 5 neutral model complete. Explicit unsupported feature declarations (animation, encoding, ICC profiles, etc). Edge-case tests for 3-channel, linear colorspace, malformed headers."
+
+  gate_6:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    oracle_strategy: deterministic_synthetic_known_values
+    test_path: tests/python/qoi/test_qoi_gate6_oracle.py
+    test_count: 15
+    test_result: "15/15 PASS"
+    commercial_product_ready: false
+    notes: "Gate 6 deterministic oracle tests. 15 tests: sample file oracles (1x1-red, 2x2-black, 4x1-gradient), synthetic op oracles (OP_RGB, OP_RGBA, OP_RUN, OP_INDEX, OP_DIFF, OP_LUMA), multi-row, RGBA varying alpha, mixed chunk stream, diff wrap-around, 2x2 RGB."
+
+  gate_7:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    test_path: tests/python/qoi/test_qoi_gate7_fuzz_guard.py
+    test_count: 9
+    test_result: "9/9 PASS"
+    commercial_product_ready: false
+    notes: "Gate 7 fuzz guard tests. 9 deterministic malformed input guards: empty file, random bytes, wrong magic, truncated header, huge dimensions, truncated pixel data, dict API safety, all-zeros, missing end marker."

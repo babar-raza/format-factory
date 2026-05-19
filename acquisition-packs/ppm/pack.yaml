@@ -107,3 +107,53 @@ stages:
     notes: "3 valid PPM P3 samples (1x1-red, 2x2-rgbw, 3x1-gradient) + 1 invalid (wrong-magic P9). Generated via Python open/write — no dependencies. All P3 ASCII format. Corpus manifest and provenance at samples/by-format/ppm/."
     corpus_manifest: samples/by-format/ppm/_corpus-manifest.yaml
     provenance: samples/by-format/ppm/_provenance.yaml
+
+  gate_4:
+    status: prototype_complete
+    sprint: R29
+    date: "2026-05-19"
+    parser_class: PpmParser
+    parser_method: "parse_ppm_strict(path) -> PpmImage"
+    technology: "Python stdlib only (open/read/split)"
+    source_path: src/python/ppm/ppm_parser.py
+    test_path: tests/python/ppm/test_ppm_parser.py
+    test_count: 10
+    test_result: "10/10 PASS"
+    authorization_status: delegated_technical_authorized
+    production_source_authorized: true
+    commercial_product_ready: false
+    notes: "Gate 4 prototype complete. Parses P3 (ASCII) PPM: magic, width, height, maxval, RGB pixel triplets. Comment stripping. probe_ppm for header metadata. 10/10 tests PASS."
+
+  gate_5:
+    status: neutral_model_complete
+    sprint: R29
+    date: "2026-05-19"
+    supported_features: 7
+    unsupported_features: 9
+    test_path: tests/python/ppm/test_ppm_gate5_neutral_model.py
+    test_count: 9
+    test_result: "9/9 PASS"
+    source_path: src/python/ppm/ppm_parser.py
+    commercial_product_ready: false
+    notes: "Gate 5 neutral model complete. SUPPORTED: p3_ascii_parse, rgb_pixel_decode, comment_stripping, probe, dimension_extraction, maxval_validation, size_guard. UNSUPPORTED: p6_binary, PGM, PBM, PAM, 16-bit, encoding, color profiles, metadata, streaming."
+
+  gate_6:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    oracle_strategy: deterministic_synthetic_known_values
+    test_path: tests/python/ppm/test_ppm_gate6_oracle.py
+    test_count: 10
+    test_result: "10/10 PASS"
+    commercial_product_ready: false
+    notes: "Gate 6 deterministic oracle tests. 10 tests: sample file oracles (1x1-red, 2x2-rgbw, 3x1-gradient), synthetic oracles (white pixel, uniform 2x2, 3x2 grid, low maxval, comment handling, dict API, probe-parse consistency)."
+
+  gate_7:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    test_path: tests/python/ppm/test_ppm_gate7_fuzz_guard.py
+    test_count: 11
+    test_result: "11/11 PASS"
+    commercial_product_ready: false
+    notes: "Gate 7 fuzz guard tests. 11 deterministic malformed input guards: empty file, wrong magic, truncated header, huge dimensions, negative dimensions, zero maxval, truncated pixel data, dict API safety, binary garbage, out-of-range pixel, non-numeric pixel data."

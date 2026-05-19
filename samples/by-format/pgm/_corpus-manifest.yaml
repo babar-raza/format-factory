@@ -1,0 +1,13 @@
+format_id: pgm
+sample_count: 3
+invalid_count: 1
+generation_method: deterministic_synthetic_python_text
+samples:
+  - path: valid/1x1-white.pgm
+    description: "1x1 white pixel, P2 ASCII, maxval 255"
+  - path: valid/2x2-gradient.pgm
+    description: "2x2 gradient (0, 85, 170, 255), P2 ASCII"
+  - path: valid/3x1-ramp.pgm
+    description: "3x1 grayscale ramp (0, 128, 255), P2 ASCII"
+  - path: invalid/wrong-magic.pgm
+    description: "Invalid: P9 magic (not P2 or P5)"

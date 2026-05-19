@@ -198,6 +198,53 @@ def parse_xcf(file_path: str | Path) -> dict[str, Any]:
         return {"ok": False, "error": str(exc), "error_type": type(exc).__name__}
 
 
+# ---------------------------------------------------------------------------
+# Gate 5 — Neutral model: capability declaration
+# ---------------------------------------------------------------------------
+
+SUPPORTED_FEATURES: frozenset[str] = frozenset({
+    "header_parse",
+    "property_list_parse",
+    "layer_offset_parse",
+    "probe",
+    "version_detection",
+    "image_type_detection",
+    "dimension_extraction",
+    "size_guard",
+})
+
+UNSUPPORTED_FEATURES: frozenset[str] = frozenset({
+    "pixel_decode",
+    "tile_decode",
+    "channel_data",
+    "layer_compositing",
+    "alpha_channel",
+    "color_profiles",
+    "text_layers",
+    "path_data",
+    "parasites",
+    "compression_decode",
+    "floating_selection",
+    "guides_grids",
+})
+
+
+def get_capabilities() -> dict[str, Any]:
+    """Return a capability descriptor for the XCF parser.
+
+    This is the Gate 5 neutral model: an honest declaration of what the
+    parser can and cannot do.  ``commercial_product_ready`` is always
+    ``False`` — only a human gate review may change that.
+    """
+    return {
+        "format": "xcf",
+        "gate": 5,
+        "supported": sorted(SUPPORTED_FEATURES),
+        "unsupported": sorted(UNSUPPORTED_FEATURES),
+        "commercial_product_ready": False,
+    }
+
+
 def probe_xcf(file_path: str | Path) -> dict[str, Any]:
     """Probe an XCF file for header metadata without full parse."""
     path = Path(file_path)

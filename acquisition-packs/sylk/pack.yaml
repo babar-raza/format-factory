@@ -1,0 +1,110 @@
+# SYLK Acquisition Pack
+# Symbolic Link (SLK) Format — text-based spreadsheet
+# Sprint: FORMAT-FACTORY-R29-LANE-L-NEW-CANDIDATE-EXPANSION-001
+
+format_id: sylk
+display_name: "Symbolic Link (SYLK)"
+extensions:
+  - .slk
+  - .sylk
+mime_type: "application/x-sylk"
+family: cells
+spec_body: "Microsoft (1986, public documentation)"
+spec_version: "SYLK Format (1986, publicly documented)"
+legal_category: 2
+legal_description: "Publicly documented format from 1986. Microsoft published the specification. Format is open and freely implementable. No known patents. Multiple independent implementations exist."
+aspose_supported: false
+aspose_support_level: NOT_SUPPORTED
+aspose_evidence: "Aspose.Cells does not list SYLK/SLK in its supported file formats."
+aspose_notes: "Not supported by Aspose. SYLK is a text-based spreadsheet interchange format — historically used between Multiplan, Excel, and other spreadsheet applications."
+python_library: "No library needed; text-based line-oriented format parseable with stdlib"
+oracle_strategy: "Cell value comparison; SYLK is human-readable text"
+acquisition_risk_classification: LOW
+acquisition_risk_notes: "Publicly documented format from 1986. Simple line-oriented text. No compression, no container. Well-documented in multiple public sources."
+sprint_created: R29
+created_date: "2026-05-19"
+commercial_product_ready: false
+
+stages:
+  identity:
+    status: confirmed
+    format_id: sylk
+    display_name: "Symbolic Link (SYLK)"
+    mime_type: "application/x-sylk"
+    extensions: [".slk", ".sylk"]
+    structure: "Text-based line-oriented spreadsheet format. Each line starts with a record type (ID, C, F, E). C records contain cell data with ;X;Y;K fields."
+    spec_body: "Microsoft"
+    spec_version: "SYLK Format (1986)"
+    notes: "SYLK was created by Microsoft for Multiplan. Still supported by Excel and LibreOffice. Pure text, semicolon-delimited fields."
+
+  gate_1:
+    status: passed
+    approval_method: "delegated_agent_decision_r29"
+    approved_by: "delegated_agent_r29"
+    approved_date: "2026-05-19"
+    sprint: R29
+    awaiting_human_iv: true
+    score_total: 82
+    score_normalized: 8.2
+    band: Accept
+    threshold: 7.0
+    scoring:
+      legal_safety:
+        score: 2
+        points: 20
+        evidence: "Category 2 — Permissive OSS/public documentation. Microsoft published the format spec in 1986. Multiple independent implementations (LibreOffice, Gnumeric) exist without legal issues."
+      spec_availability:
+        score: 2
+        points: 13
+        evidence: "Format documented in Microsoft KB articles and multiple public references. Not a formal standards body spec, but well-documented."
+      parseable_structure:
+        score: 3
+        points: 15
+        evidence: "Line-oriented text format. Each line is a record (ID, C, F, E). Semicolon-delimited fields. Trivially parseable."
+      community_demand:
+        score: 1
+        points: 5
+        evidence: "Legacy format. Still supported by Excel/LibreOffice for interchange but low modern demand."
+      strategic_track_value:
+        score: 2
+        points: 7
+        evidence: "Not supported by Aspose — fills cells track gap. Complements DIF in text-based spreadsheet family."
+      implementation_complexity:
+        score: 3
+        points: 6
+        evidence: "Minimal complexity — text-only, line-oriented. Similar to DIF in structure."
+      family_overlap:
+        score: 2
+        points: 4
+        evidence: "Same cells family as DIF/FODS/ODS but different format structure. No code overlap."
+    legal_category: 2
+    aspose_support_level: NOT_SUPPORTED
+    notes: "Score 8.2/10 — Accept band. Text-based spreadsheet, publicly documented, not supported by Aspose. Gate 1 by delegated agent R29; awaits human IV."
+
+  gate_2:
+    status: passed
+    approved_by: "delegated_agent_r29"
+    approved_date: "2026-05-19"
+    sprint: R29
+    awaiting_human_iv: true
+    fast_path_eligible: false
+    spec_url: "https://en.wikipedia.org/wiki/SYmbolic_LinK_(SYLK)"
+    spec_secondary_url: "https://learn.microsoft.com/en-us/openspecs/office_file_formats/"
+    spec_version_confirmed: "SYLK Format (1986, Microsoft)"
+    spec_access: public
+    patent_search_required: false
+    patent_notes: "Format predates software patent era. No known patents. Multiple independent implementations."
+    notes: "Spec documented in multiple public sources. Core: ID record, C records (cells with ;X;Y;K fields), F records (format), E record (end). Gate 2 by delegated agent R29; awaits human IV."
+
+  gate_3:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    sample_corpus_path: samples/by-format/sylk/
+    sample_count: 3
+    invalid_count: 1
+    generation_method: deterministic_synthetic_python_text
+    awaiting_human_iv: true
+    notes: "3 valid SYLK samples (minimal-2x2, single-cell, numeric-row) + 1 invalid (missing-id-record). Generated via Python open/write."
+    corpus_manifest: samples/by-format/sylk/_corpus-manifest.yaml
+    provenance: samples/by-format/sylk/_provenance.yaml

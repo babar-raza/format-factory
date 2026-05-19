@@ -1,0 +1,13 @@
+format_id: sylk
+sample_count: 3
+invalid_count: 1
+generation_method: deterministic_synthetic_python_text
+samples:
+  - path: valid/minimal-2x2.slk
+    description: "2x2 table with string and numeric cells"
+  - path: valid/single-cell.slk
+    description: "Single numeric cell (99)"
+  - path: valid/numeric-row.slk
+    description: "Row of 3 numeric cells (1, 2, 3)"
+  - path: invalid/missing-id-record.slk
+    description: "Invalid: missing ID record at start"

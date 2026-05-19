@@ -145,3 +145,24 @@ stages:
     report: reports/implementation/r28-odt-gate5-neutral-model-report-20260519.md
     commercial_product_ready: false
     notes: "Gate 5 neutral model complete. Explicit unsupported feature declarations (tables, images, macros, encryption, etc). Edge-case tests for empty doc, heading levels, mixed content."
+
+  gate_6:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    oracle_strategy: deterministic_synthetic_known_values
+    test_path: tests/python/odt/test_odt_gate6_oracle.py
+    test_count: 14
+    test_result: "14/14 PASS"
+    commercial_product_ready: false
+    notes: "Gate 6 deterministic oracle tests. 14 tests: sample file oracles (minimal-document, two-paragraphs, unicode-text), synthetic oracles (heading, list, multi-paragraph, heading-levels, nested-list, CJK/emoji/RTL, empty-doc, mixed-content, style-name, dict API)."
+
+  gate_7:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    test_path: tests/python/odt/test_odt_gate7_fuzz_guard.py
+    test_count: 14
+    test_result: "14/14 PASS"
+    commercial_product_ready: false
+    notes: "Gate 7 fuzz guard tests. 14 deterministic malformed input guards: not-a-zip, empty file, ZIP bomb, malformed XML, binary garbage, dict API safety, nested XML, path traversal, missing styles.xml, processing instructions, deeply nested ODF, invalid mimetype, null bytes, missing content.xml."

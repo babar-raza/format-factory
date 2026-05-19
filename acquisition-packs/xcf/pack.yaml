@@ -167,3 +167,34 @@ stages:
     dependencies: "Python stdlib only (struct, pathlib, os, dataclasses)"
     report: reports/implementation/r28-xcf-gate4-prototype-report-20260519.md
     notes: "Minimal Gate 4 controlled prototype. Parses header, property list, and layer offset table. No pixel/tile decoding. 17 tests pass. Awaits human IV per DEC-034."
+
+  gate_5:
+    status: neutral_model_complete
+    sprint: R29
+    date: "2026-05-19"
+    supported_features: 8
+    unsupported_features: 12
+    source_path: src/python/xcf/xcf_parser.py
+    commercial_product_ready: false
+    notes: "Gate 5 neutral model added to existing parser. SUPPORTED_FEATURES (8): header_parse, property_list_parse, layer_offset_parse, probe, version_detection, image_type_detection, dimension_extraction, size_guard. UNSUPPORTED_FEATURES (12): pixel_decode, tile_decode, channel_data, layer_compositing, alpha_channel, color_profiles, text_layers, path_data, parasites, compression_decode, floating_selection, guides_grids."
+
+  gate_6:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    oracle_strategy: deterministic_synthetic_known_values
+    test_path: tests/python/xcf/test_xcf_gate6_oracle.py
+    test_count: 13
+    test_result: "13/13 PASS"
+    commercial_product_ready: false
+    notes: "Gate 6 deterministic oracle tests. 13 tests: sample file oracles (1x1-red-rgb, 2x2-gray, 1x1-rgba), synthetic oracles (RGB/Grayscale/Indexed image types, multi-layer, single-layer, version detection, probe-parse consistency, dict API, capabilities, feature set disjoint)."
+
+  gate_7:
+    status: pass
+    sprint: R29
+    date: "2026-05-19"
+    test_path: tests/python/xcf/test_xcf_gate7_fuzz_guard.py
+    test_count: 12
+    test_result: "12/12 PASS"
+    commercial_product_ready: false
+    notes: "Gate 7 fuzz guard tests. 12 deterministic malformed input guards: empty file, random bytes, wrong magic, truncated header, huge dimensions, zero width, invalid image type, dict API safety, missing NUL terminator, truncated property list, all-zeros, binary garbage after header."
