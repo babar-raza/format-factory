@@ -1,0 +1,74 @@
+---
+contract_id: FORMAT-FACTORY-R28-FULL-THROTTLE-AI-FORMAT-COMMERCIAL-PUBLICATION-AND-EVIDENCE-TRAIN-001
+date: "2026-05-19"
+min_metadata_count: 30
+verdict_keyword: R28_COMPLETE
+emergency_blocker_bundle: false
+require_clean_git: true
+
+required_repo_files:
+  # Lane A: R27 closure repair
+  - reports/r28/r27-closure-repair-and-reconciliation.md
+  - reports/r28/preflight-current-state.md
+  - reports/r27/final-verdict.md
+
+  # Lane B: AI taskcard state repair
+  - reports/r28/ai-taskcard-state-repair.md
+  - taskcards/AI-GPT-OSS-SYNTHESIS-CONTROLS.md
+  - taskcards/AI-EMBEDDING-VECTOR-STORE-FOUNDATION.md
+  - taskcards/AI-SPEC-NORMALIZATION-INTEGRATION.md
+  - taskcards/AI-TEST-GENERATION-INTEGRATION.md
+  - taskcards/AI-AGENTIC-QWEN2-CONTROLS.md
+  - taskcards/AI-RISK-MITIGATION-MATRIX.md
+  - taskcards/AI-FOUNDATION-IMPLEMENTATION-NEXT.md
+
+  # Lane C: AI production hardening
+  - tools/ai/synthesis/citation_verifier.py
+  - tools/ai/synthesis/contradiction_detector.py
+  - tools/ai/synthesis/evaluator.py
+  - tests/ai/test_r28_production_hardening.py
+  - reports/r28/ai-production-hardening.md
+
+  # Lane D: AI E2E pilot
+  - tools/ai/pipeline/e2e_pilot.py
+  - tools/ai/pipeline/__init__.py
+  - tests/ai/test_r28_e2e_pilot.py
+  - reports/r28/ai-e2e-pilot.md
+
+  # Lane E: AI requirements pipeline
+  - tools/ai/requirements/generator.py
+  - tools/ai/requirements/__init__.py
+  - tests/ai/test_r28_requirements_pipeline.py
+  - reports/r28/ai-generated-requirements-pipeline.md
+
+  # Lane F: ODS/ODT/QOI Gate 4 hardening (from background agent in 1ecab67)
+  - reports/r28/ods-odt-qoi-gate4-hardening.md
+
+  # Lane G: Next format train (from background agent in 1ecab67)
+  - reports/r28/next-format-train.md
+
+  # Lane H: FODS/FODT commercial hardening (from background agent in 1ecab67)
+  - reports/r28/fods-fodt-commercial-hardening.md
+  - tests/net/fods/FodsG11fMalformedXmlGuardTests.cs
+  - tests/net/fodt/FodtG11fHeadingAndGuardTests.cs
+
+  # Lane I: Python FOSS publication
+  - reports/r28/python-foss-publication-packet-hardening.md
+
+  # Lane J: Evidence automation hardening
+  - tests/evidence/test_r28_evidence_automation.py
+  - reports/r28/evidence-automation-hardening.md
+
+  # Lane K: Full validation (test counts in verdict)
+  - reports/r28/sprint-state.yaml
+
+  # Lane L: Independent verification
+  - reports/verification/r28-independent-verification.md
+
+  # Lane M: Documentation, memory, registry sync
+  - memory/49-r28-ai-platform-hardening-e2e-requirements-20260519.md
+  - memory/00-index.md
+  - reports/r28/lane-ownership-and-overlap-matrix.md
+
+  # Evidence contract
+  - tools/evidence/contracts/r28-full-throttle-train.yaml

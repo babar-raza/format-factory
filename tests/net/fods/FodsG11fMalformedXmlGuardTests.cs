@@ -129,4 +129,114 @@ public class FodsG11fMalformedXmlGuardTests : IDisposable
         Assert.False(result.IsSuccess);
         Assert.NotEmpty(result.Errors);
     }
+
+    // -----------------------------------------------------------------------
+    // R28 Lane H: C9 Malformed-Input Resilience — FodsDocument.Load
+    // -----------------------------------------------------------------------
+
+    /// <summary>
+    /// C9-MAL-FODS-01: FodsDocument.Load rejects empty XML (valid XML, no ODF structure).
+    /// The file contains a minimal XML root element but no office:document or office:spreadsheet.
+    /// Document should either throw FodsDocumentException or load with zero sheets.
+    /// </summary>
+    [Fact]
+    public void Document_Load_EmptyXml_NoOdfStructure_ThrowsOrEmptySheets()
+    {
+        var path = WriteTemp("empty-xml.fods",
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>");
+        // FodsDocument.Load uses XDocument.Load which will succeed on valid XML,
+        // but the resulting document has no office:body/office:spreadsheet.
+        var doc = FodsDocument.Load(path);
+        // Must NOT crash; sheets list must be empty since there is no ODF structure.
+        Assert.Empty(doc.Sheets);
+    }
+
+    /// <summary>
+    /// C9-MAL-FODS-02: FodsDocument.Load handles valid ODF document missing office:spreadsheet.
+    /// The file has office:document and office:body but no office:spreadsheet child.
+    /// </summary>
+    [Fact]
+    public void Document_Load_MissingSpreadsheet_ReturnsEmptySheets()
+    {
+        const string xml =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<office:document" +
+            " xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.spreadsheet-flat-xml\"" +
+            " office:version=\"1.3\">" +
+            "<office:body>" +
+            "<!-- office:spreadsheet deliberately absent -->" +
+            "</office:body>" +
+            "</office:document>";
+        var path = WriteTemp("no-spreadsheet.fods", xml);
+
+        var doc = FodsDocument.Load(path);
+        // Must not crash; sheets must be empty because office:spreadsheet is absent.
+        Assert.Empty(doc.Sheets);
+        // MimeType should still be readable from the root element.
+        Assert.Equal("application/vnd.oasis.opendocument.spreadsheet-flat-xml", doc.MimeType);
+    }
+
+    /// <summary>
+    /// C9-MAL-FODS-03: FodsDocument.Load rejects truncated XML file with FodsDocumentException.
+    /// The file is cut off mid-tag, producing invalid XML.
+    /// </summary>
+    [Fact]
+    public void Document_Load_TruncatedFile_ThrowsFodsDocumentException()
+    {
+        var path = WriteTemp("truncated-doc.fods",
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<office:document xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.spreadsheet-flat-xml\">" +
+            "<office:body><office:spreadsheet><table:table table:name=\"Sheet1\"");
+        var ex = Assert.Throws<FodsDocumentException>(() => FodsDocument.Load(path));
+        Assert.Contains("XML parse error", ex.Message);
+    }
+
+    /// <summary>
+    /// C9-MAL-FODS-04: FodsParser.Parse handles valid ODF document missing office:spreadsheet gracefully.
+    /// Returns success with zero sheets and a warning.
+    /// </summary>
+    [Fact]
+    public void Parser_MissingSpreadsheet_ReturnsSuccessWithWarning()
+    {
+        const string xml =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<office:document" +
+            " xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.spreadsheet-flat-xml\"" +
+            " office:version=\"1.3\">" +
+            "<office:body>" +
+            "</office:body>" +
+            "</office:document>";
+        var path = WriteTemp("parser-no-spreadsheet.fods", xml);
+
+        var result = _parser.Parse(path);
+        Assert.True(result.IsSuccess);
+        Assert.Empty(result.Sheets);
+        Assert.NotEmpty(result.Warnings); // "No sheets found in document."
+    }
+
+    /// <summary>
+    /// C9-MAL-FODS-05: CSV exporter handles FODS with no sheets (exports empty CSV).
+    /// </summary>
+    [Fact]
+    public void CsvExporter_NoSheets_ExportsEmptyCsv()
+    {
+        const string xml =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<office:document" +
+            " xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.spreadsheet-flat-xml\"" +
+            " office:version=\"1.3\">" +
+            "<office:body><office:spreadsheet>" +
+            "</office:spreadsheet></office:body>" +
+            "</office:document>";
+        var fodsPath = WriteTemp("no-sheets.fods", xml);
+        var csvPath = Path.Combine(_tempDir, "no-sheets.csv");
+
+        var result = FodsCsvExporter.ExportFirstSheetToCsv(fodsPath, csvPath);
+        Assert.Equal("exported_empty_no_sheets", result.Status);
+        Assert.Equal(0, result.RowsExported);
+    }
 }

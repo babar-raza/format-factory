@@ -4,7 +4,7 @@
 Implement GPT-OSS synthesis pipeline with citation verification, contradiction detection, evaluator/regression suite, and full artifact authority lifecycle enforcement.
 
 ## Status
-`plan_hardened` — Implementation not yet authorized.
+`implemented_fixture_mode` — runner.py with citation verification, contradiction detection, and schema validation implemented in R27 (cb7e05c). Fixture mode only — GPT_OSS_ENDPOINT not configured. 11 tests pass.
 
 ## Prerequisites
 - AI-PLATFORM-FOUNDATION-PLAN Phase 1 control plane operational

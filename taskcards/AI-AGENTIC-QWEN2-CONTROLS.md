@@ -4,7 +4,7 @@
 Implement Qwen2 agentic controls: role contracts, path/operation allowlists, state-machine guard, scope monitor, output validation, rollback, and DEC-034 integration for authority-affecting outputs.
 
 ## Status
-`plan_hardened` — Implementation not yet authorized.
+`implemented_blocked_no_model` — scoped_runner.py with AgenticTaskContract, FORBIDDEN_OPERATIONS, path/operation allowlists, and model validation implemented in R27 (cb7e05c). Blocked on Qwen2 model availability. 9 tests pass.
 
 ## Prerequisites
 - AI-MODEL-DISCOVERY-AND-ROUTING operational (Qwen2 discovered and routable)

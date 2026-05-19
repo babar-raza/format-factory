@@ -56,7 +56,8 @@
 ## Commits
 
 COMMIT_SHA: cb7e05c (AI platform), da4bcde (metadata update)
-EVIDENCE_BUNDLE: BLOCKED_CONCURRENT_CHANGE — another agent has uncommitted work in working tree; bundle builder requires clean git
+EVIDENCE_BUNDLE: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidence-bundles\r27-ai-platform-full-cycle-20260519.zip
+BUNDLE_VALIDATION: PASS (rebuilt R28 Lane A — git clean after R27-Gate4 committed)
 
 ## Invariants Held
 
@@ -86,4 +87,4 @@ EVIDENCE_BUNDLE: BLOCKED_CONCURRENT_CHANGE — another agent has uncommitted wor
 - LanceDB vector store: BLOCKED_MISSING_DEPENDENCY
 - Agent Metrics posting: BLOCKED_MISSING_ENV (AGENT_METRICS_ENDPOINT)
 - Qwen2 agentic live: BLOCKED_NO_MODEL
-- Evidence bundle: BLOCKED_CONCURRENT_CHANGE (another agent's uncommitted files in working tree)
+- Evidence bundle: RESOLVED (rebuilt in R28 Lane A after concurrent agent committed)

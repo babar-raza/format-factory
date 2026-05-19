@@ -4,7 +4,7 @@
 Implement validation tests and controls for all 40 risks in the AI risk register. Every risk must have at least one automated validation test.
 
 ## Status
-`plan_hardened` — Implementation not yet authorized.
+`implemented_fixture_mode` — risk_controls.py with 6 executable risk checks implemented in R27 (cb7e05c). 7 tests pass.
 
 ## Prerequisites
 - AI-PLATFORM-FOUNDATION-PLAN Phase 1 operational

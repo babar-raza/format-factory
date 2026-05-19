@@ -4,7 +4,7 @@
 Integrate spec normalization with the AI platform so that all AI and embedding consumers receive normalized artifacts with full provenance, not raw untracked spec files.
 
 ## Status
-`plan_hardened` — Implementation not yet authorized.
+`implemented_fixture_mode` — adapter.py with NormalizedChunk, provenance tracking, chunk loader, and fail-closed NormalizationNotAvailable implemented in R27 (cb7e05c). 8 tests pass.
 
 ## Prerequisites
 - Spec normalization layer operational (`docs/specification-normalization.md`)

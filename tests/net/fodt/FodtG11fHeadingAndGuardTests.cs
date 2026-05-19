@@ -119,4 +119,118 @@ public class FodtG11fHeadingAndGuardTests : IDisposable
         // 1-byte guard should reject any file
         Assert.ThrowsAny<Exception>(() => FodtDocument.Load(path, maxFileSizeBytes: 1));
     }
+
+    // -----------------------------------------------------------------------
+    // R28 Lane H: C9 Malformed-Input Resilience — FodtDocument.Load
+    // -----------------------------------------------------------------------
+
+    /// <summary>
+    /// C9-MAL-FODT-01: FodtDocument.Load handles empty XML (valid XML, no ODF structure).
+    /// The file contains a minimal XML root element but no office:document.
+    /// Document should load without crash; Body should be null and Paragraphs empty.
+    /// </summary>
+    [Fact]
+    public void Document_Load_EmptyXml_NoOdfStructure_ReturnsNullBody()
+    {
+        var path = Path.Combine(_tempDir, "empty-xml.fodt");
+        File.WriteAllText(path, "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>");
+
+        var doc = FodtDocument.Load(path);
+        // Must NOT crash; body should be null since there is no office:body/office:text.
+        Assert.Null(doc.Body);
+        Assert.Empty(doc.Paragraphs);
+    }
+
+    /// <summary>
+    /// C9-MAL-FODT-02: FodtDocument.Load handles valid ODF document missing office:body.
+    /// The file has office:document root but no office:body child.
+    /// </summary>
+    [Fact]
+    public void Document_Load_MissingBody_ReturnsNullBody()
+    {
+        const string xml =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<office:document" +
+            " xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.text-flat-xml\"" +
+            " office:version=\"1.3\">" +
+            "<!-- office:body deliberately absent -->" +
+            "</office:document>";
+        var path = Path.Combine(_tempDir, "no-body.fodt");
+        File.WriteAllText(path, xml);
+
+        var doc = FodtDocument.Load(path);
+        // Must not crash; body absent means null Body and empty Paragraphs.
+        Assert.Null(doc.Body);
+        Assert.Empty(doc.Paragraphs);
+        // MimeType should still be readable from the root element.
+        Assert.Equal("application/vnd.oasis.opendocument.text-flat-xml", doc.MimeType);
+    }
+
+    /// <summary>
+    /// C9-MAL-FODT-03: FodtDocument.Load rejects truncated XML file with FodtDocumentException.
+    /// The file is cut off mid-tag, producing invalid XML.
+    /// </summary>
+    [Fact]
+    public void Document_Load_TruncatedFile_ThrowsFodtDocumentException()
+    {
+        var path = Path.Combine(_tempDir, "truncated-doc.fodt");
+        File.WriteAllText(path,
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<office:document xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.text-flat-xml\">" +
+            "<office:body><office:text><text:p");
+
+        var ex = Assert.Throws<FodtDocumentException>(() => FodtDocument.Load(path));
+        Assert.Contains("XML parse error", ex.Message);
+    }
+
+    /// <summary>
+    /// C9-MAL-FODT-04: FodtParser.Parse handles valid ODF document missing office:body gracefully.
+    /// Returns success with zero paragraphs.
+    /// </summary>
+    [Fact]
+    public void Parser_MissingBody_ReturnsSuccessWithZeroParagraphs()
+    {
+        const string xml =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<office:document" +
+            " xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.text-flat-xml\"" +
+            " office:version=\"1.3\">" +
+            "</office:document>";
+        var path = Path.Combine(_tempDir, "parser-no-body.fodt");
+        File.WriteAllText(path, xml);
+
+        var parser = new FodtParser();
+        var result = parser.Parse(path);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(0, result.ParagraphCount);
+        Assert.Equal(0, result.HeadingCount);
+    }
+
+    /// <summary>
+    /// C9-MAL-FODT-05: TXT exporter handles FODT with no paragraphs (exports empty file).
+    /// </summary>
+    [Fact]
+    public void TxtExporter_NoParagraphs_ExportsEmptyFile()
+    {
+        const string xml =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+            "<office:document" +
+            " xmlns:office=\"urn:oasis:names:tc:opendocument:xmlns:office:1.0\"" +
+            " xmlns:text=\"urn:oasis:names:tc:opendocument:xmlns:text:1.0\"" +
+            " office:mimetype=\"application/vnd.oasis.opendocument.text-flat-xml\"" +
+            " office:version=\"1.3\">" +
+            "<office:body><office:text>" +
+            "</office:text></office:body>" +
+            "</office:document>";
+        var fodtPath = Path.Combine(_tempDir, "no-paras.fodt");
+        File.WriteAllText(fodtPath, xml);
+        var txtPath = Path.Combine(_tempDir, "no-paras.txt");
+
+        var result = FodtTxtExporter.ExportTxt(fodtPath, txtPath);
+        Assert.Equal("exported_empty_no_paragraphs", result.Status);
+        Assert.Equal(0, result.ParagraphsExported);
+    }
 }

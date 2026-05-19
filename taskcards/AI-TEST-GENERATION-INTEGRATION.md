@@ -4,7 +4,7 @@
 Implement mandatory AI-assisted test generation as part of the AI platform. Test ideas are generated, filtered by deterministic reviewer, and accepted tests become normal pytest/.NET tests.
 
 ## Status
-`plan_hardened` — Implementation not yet authorized.
+`implemented_fixture_mode` — proposal.py with GeneratedTestProposal, ProposalReviewer, and EvidenceReviewHelper implemented in R27 (cb7e05c). 10 tests pass.
 
 ## Prerequisites
 - AI-GPT-OSS-SYNTHESIS-CONTROLS operational (synthesis pipeline available)
