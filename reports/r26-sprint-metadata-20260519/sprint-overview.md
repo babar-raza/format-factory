@@ -48,4 +48,4 @@ DOTNET_FODT_RESULT: 108/108 PASS
 - No push, no PR, no publication
 - Exact-path staging only
 
-BUNDLE_VALIDATION: PENDING
+BUNDLE_VALIDATION: PASS

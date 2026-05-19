@@ -34,8 +34,8 @@
 
 ## Commits
 
-COMMIT_SHA: PENDING_GATE_13
-EVIDENCE_BUNDLE: PENDING_GATE_14
+COMMIT_SHA: 7fabb9b
+EVIDENCE_BUNDLE: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidence-bundles\r26-ai-phase2-gate4-g11g-prep-20260519.zip
 
 ## Invariants Held
 
