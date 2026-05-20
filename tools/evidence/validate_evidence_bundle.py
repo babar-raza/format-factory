@@ -188,7 +188,25 @@ PENDING_MARKER_PATTERNS = [
     # R37: Placeholder stub metadata — prevents R36-style evidence-depth caveat
     # where metadata files contained only "placeholder: true" instead of real content.
     "placeholder: true",
+    # R38: Status-only stubs — files that contain only a status/result line
+    # without substantive evidence content (outcome, evidence-path, or analysis).
+    "status: pending",
+    "status: stub",
+    "result: PENDING",
 ]
+
+# R38: Minimum meaningful content threshold for metadata files.
+# Files below this byte count are likely stubs that passed count checks
+# but lack real evidence. Exemptions: git-status-final.txt and similar
+# system-generated files that are legitimately short.
+METADATA_MINIMUM_CONTENT_BYTES = 50
+
+# Files exempt from the minimum content depth check because they are
+# legitimately short (system-generated or fixed-format).
+METADATA_DEPTH_EXEMPT_FILES = frozenset({
+    "git-status-final.txt",
+    "git-status.txt",
+})
 
 # Current-state PENDING patterns — sprint-in-progress markers that must NOT appear
 # in committed repo files (master-plan.md, memory/09) in their final state.
@@ -299,6 +317,23 @@ def check_no_pending_reports(metadata_files_content):
     return hits
 
 
+def check_metadata_content_depth(metadata_files_content):
+    """Check that metadata files have minimum substantive content.
+
+    R38: Catches status-only stub files that pass pending-pattern checks
+    but lack real evidence (e.g., a 30-byte file with just 'status: pass').
+    Returns a list of (filename, reason) tuples for shallow files.
+    """
+    hits = []
+    for fname, content in metadata_files_content.items():
+        if fname in METADATA_DEPTH_EXEMPT_FILES:
+            continue
+        byte_count = len(content.encode("utf-8"))
+        if byte_count < METADATA_MINIMUM_CONTENT_BYTES:
+            hits.append((fname, f"only {byte_count} bytes (minimum {METADATA_MINIMUM_CONTENT_BYTES})"))
+    return hits
+
+
 def check_authoritative_test_result_present(metadata_files_content):
     """Check that at least one metadata file contains AUTHORITATIVE_TEST_RESULT.
 
@@ -406,7 +441,11 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         return False
 
     required_top_level = contract.get("required_top_level_folders", ["repo", "bundle-metadata"])
-    forbidden_patterns = contract.get("forbidden_paths", contract.get("forbidden_patterns", []))
+    forbidden_patterns = (
+        contract.get("forbidden_paths", [])
+        + contract.get("forbidden_patterns", [])
+        + contract.get("exclude_patterns", [])
+    )
     required_repo_files = contract.get("required_repo_files", [])
     required_metadata_files = contract.get("required_metadata_files", [])
     min_metadata_count = contract.get("min_metadata_count", 5)
@@ -616,6 +655,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             authoritative_test_hits = check_authoritative_test_result_present(metadata_files_content)
             for msg in authoritative_test_hits:
                 errors.append(msg)
+            depth_hits = check_metadata_content_depth(metadata_files_content)
+            for fname, reason in depth_hits:
+                errors.append(f"Shallow metadata file '{fname}': {reason}")
 
         identity_hits = check_metadata_identity(
             metadata_files_content,

@@ -33,6 +33,24 @@ from tools.ai.schemas.models import AITaskContract, ArtifactAuthorityStateValue
 from tools.ai.validators.authority_lifecycle import VALID_TRANSITIONS
 
 
+# Fixture verified facts for contradiction checking (R38)
+_FIXTURE_FACTS = {
+    "fods": [
+        {"id": "FODS-F1", "assertion": "FODS uses XML as its base format", "negation": "FODS does not use XML"},
+        {"id": "FODS-F2", "assertion": "FODS cell values use office:value-type", "negation": "FODS cells have no type system"},
+        {"id": "FODS-F3", "assertion": "FODS is a flat single-file format", "negation": "FODS requires multiple files"},
+    ],
+}
+
+
+def get_fixture_facts(format_id: str) -> list[dict[str, str]]:
+    """Return fixture verified facts for a format."""
+    return _FIXTURE_FACTS.get(format_id, [
+        {"id": f"{format_id.upper()}-F1", "assertion": f"{format_id.upper()} is a valid format",
+         "negation": f"{format_id.upper()} is not a valid format"},
+    ])
+
+
 # Contradiction policy modes
 CONTRADICTION_POLICIES = {
     "required": "Must check; fail if no facts available",
@@ -398,6 +416,10 @@ def run_pilot(config: PilotConfig | None = None) -> PilotResult:
     }
 
     eval_result = stage_4_evaluate(synthesis)
+    # Contradiction visibility (R38 Lane I)
+    eval_result["contradiction_policy"] = config.contradiction_policy
+    eval_result["contradiction_status"] = synthesis.contradiction_check_status
+    eval_result["contradiction_required"] = config.contradiction_policy == "required"
     result.stage_results["4_evaluation"] = eval_result
 
     result.final_authority_state = "ai_draft"

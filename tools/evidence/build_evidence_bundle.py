@@ -285,7 +285,11 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
     repo_root = Path(repo_root).resolve()
 
     required_top_level = contract.get("required_top_level_folders", ["repo", "bundle-metadata"])
-    forbidden_patterns = contract.get("forbidden_paths", contract.get("forbidden_patterns", []))
+    forbidden_patterns = (
+        contract.get("forbidden_paths", [])
+        + contract.get("forbidden_patterns", [])
+        + contract.get("exclude_patterns", [])
+    )
     required_repo_files = contract.get("required_repo_files", [])
     required_metadata_files = contract.get("required_metadata_files", [])
     min_metadata_count = contract.get("min_metadata_count", 5)

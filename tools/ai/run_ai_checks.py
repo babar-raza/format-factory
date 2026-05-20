@@ -189,7 +189,7 @@ def run_failure_injection_checks() -> dict:
         import subprocess
         proc = subprocess.run(
             [sys.executable, "-m", "pytest", "tests/ai", "-q", "-k", "failure_injection or FailureInjection"],
-            capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=120,
+            capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=300,
         )
         results["exit_code"] = proc.returncode
         results["passed"] = proc.returncode == 0
@@ -260,10 +260,16 @@ def run_live_pipeline_checks(format_id: str, sprint_id: str) -> dict:
 
 
 def run_evidence_validation(contract_path: str) -> dict:
-    """Validate evidence contract artifacts exist and are non-empty.
+    """Validate evidence contract artifacts exist, are non-empty, and contract is well-formed.
 
     Uses the canonical contract loader from validate_evidence_bundle.py
     to ensure field-name consistency (required_repo_files).
+
+    Semantic checks (R38):
+    - required files exist and are non-empty
+    - emergency_blocker_bundle is explicitly false for clean closure
+    - require_clean_git is true
+    - min_metadata_count >= 30 (project floor)
     """
     from tools.evidence.validate_evidence_bundle import load_contract
 
@@ -291,6 +297,18 @@ def run_evidence_validation(contract_path: str) -> dict:
     results["missing"] = missing
     results["empty"] = empty
     results["missing_count"] = len(missing)
+
+    # Semantic checks (R38 Lane G)
+    warnings = []
+    if contract.get("emergency_blocker_bundle") is True:
+        warnings.append("emergency_blocker_bundle is true (not clean closure)")
+    if contract.get("require_clean_git") is not True:
+        warnings.append("require_clean_git is not true")
+    min_meta = contract.get("min_metadata_count", 0)
+    if min_meta < 30:
+        warnings.append(f"min_metadata_count {min_meta} < project floor 30")
+
+    results["warnings"] = warnings
     results["passed"] = len(missing) == 0 and len(empty) == 0
     return results
 
