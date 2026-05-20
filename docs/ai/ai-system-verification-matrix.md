@@ -2,7 +2,7 @@
 
 ## Purpose
 Canonical reference for the verification status of every AI component.
-Updated each sprint. Created in R32, updated R33 with runner-executable columns, R35 with fail-closed and validator integration.
+Updated each sprint. Created in R32, updated R33 with runner-executable columns, R35 with fail-closed and validator integration, R38 with cache exclusion, semantic validation, and contradiction facts.
 
 ## Component Verification Status
 
@@ -54,15 +54,29 @@ Updated each sprint. Created in R32, updated R33 with runner-executable columns,
 - Live pipeline contradiction policy changed from `optional` to `required`
 - R33 AI contract emergency_blocker_bundle removed, min_metadata_count restored to 30
 
+## R38 New Components
+- **Bundle Cache Exclusion:** Builder and validator now read `exclude_patterns` from contracts (was silently ignoring them)
+- **Semantic Evidence Validation:** Runner validation checks emergency_blocker, require_clean_git, min_metadata_count
+- **Contradiction Facts Fixture:** FODS fixture facts for contradiction-required mode
+- **Contradiction Evaluation Visibility:** Evaluation output includes contradiction_policy, contradiction_status, contradiction_required
+- **Failure Injection Timeout:** Runner FI timeout increased from 120s to 300s (was causing false failures)
+
+## R38 Fixes
+- Bundle builder `forbidden_patterns` now includes `exclude_patterns` from contract (was ignoring them)
+- Bundle validator same fix applied
+- Runner failure-injection subprocess timeout 120s→300s
+
 ## Evidence Paths
 - R31 reports: reports/r31/
 - R32 reports: reports/r32/
 - R33 reports: reports/r33/
 - R35 reports: reports/ai/r35-clean-runner-closure-20260520/
+- R38 reports: reports/ai/r38-clean-closure-repair-20260520/
 - R31 tests: tests/ai/test_r31_ai_system_verification.py
 - R32 tests: tests/ai/test_r32_ai_deepening.py
 - R33 tests: tests/ai/test_r33_runner_pipeline_truth.py
 - R35 tests: tests/ai/test_r35_clean_runner_closure.py
+- R38 tests: tests/ai/test_r38_clean_closure_repair.py
 
 ## Legend
 - **Fixture Verified:** Component tested with synthetic data, no live calls

@@ -1,0 +1,38 @@
+contract_id: FORMAT-FACTORY-R38-AI-CLEAN-CLOSURE-REPAIR-RUNNER-STATUS-BUNDLE-HYGIENE-AND-INTEGRATION-MEGA-TRAIN-001
+sprint_id: FORMAT-FACTORY-R38-AI-CLEAN-CLOSURE-REPAIR-RUNNER-STATUS-BUNDLE-HYGIENE-AND-INTEGRATION-MEGA-TRAIN-001
+run_number: R38
+created: "2026-05-20"
+purpose: Repair runner closure defects, enforce bundle hygiene, harden evidence validation
+
+required_repo_files:
+  - reports/ai/r38-clean-closure-repair-20260520/preflight-current-state.md
+  - reports/ai/r38-clean-closure-repair-20260520/final-verdict.md
+  - reports/ai/r38-clean-closure-repair-20260520/pipeline-fixture-run/ai-pipeline-runner-output.json
+  - reports/verification/r38-independent-verification.md
+  - reports/governance/r38-adversarial-review.md
+  - tests/ai/test_r38_clean_closure_repair.py
+  - tools/ai/pipeline/e2e_pilot.py
+  - tools/ai/run_ai_checks.py
+  - tools/ai/telemetry/artifacts.py
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/validate_evidence_bundle.py
+  - docs/ai/ai-system-verification-matrix.md
+
+include_directories:
+  - reports/ai/r38-clean-closure-repair-20260520/
+  - reports/verification/
+  - reports/governance/
+  - tests/ai/
+  - tools/ai/
+  - tools/evidence/
+  - docs/ai/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+
+min_metadata_count: 30
+require_clean_git: true
+emergency_blocker_bundle: false
