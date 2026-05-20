@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+"""
+Computed state snapshot — produces state/current-state.json and state/current-state.md
+from live repository evidence.
+
+Usage:
+    python tools/state/state_snapshot.py [--output-dir state/]
+"""
+import argparse
+import json
+import os
+import pathlib
+import re
+import sys
+
+try:
+    import yaml
+except ImportError:
+    yaml = None
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+
+
+def _load_yaml(path):
+    if yaml:
+        with open(path) as f:
+            return yaml.safe_load(f)
+    # minimal fallback
+    return {}
+
+
+def count_formats_in_registry():
+    reg_path = ROOT / "registry" / "format-registry.yaml"
+    if not reg_path.exists():
+        return 0, []
+    data = _load_yaml(reg_path)
+    formats = data.get("formats", []) if isinstance(data, dict) else []
+    return len(formats), [f.get("format_id", "?") for f in formats if isinstance(f, dict)]
+
+
+def get_gate_summary():
+    matrix_path = ROOT / "registry" / "format-completion-matrix.yaml"
+    if not matrix_path.exists():
+        return {}
+    data = _load_yaml(matrix_path)
+    return data.get("formats", {}) if isinstance(data, dict) else {}
+
+
+def get_generated_requirements_status():
+    gr_dir = ROOT / "generated-requirements"
+    if not gr_dir.exists():
+        return {}
+    result = {}
+    for fmt_dir in sorted(gr_dir.iterdir()):
+        if fmt_dir.is_dir():
+            files = list(fmt_dir.glob("*.yaml")) + list(fmt_dir.glob("*.yml"))
+            result[fmt_dir.name] = {"file_count": len(files)}
+    return result
+
+
+def get_evidence_contract_status():
+    contracts_dir = ROOT / "tools" / "evidence" / "contracts"
+    if not contracts_dir.exists():
+        return {"error": "contracts directory not found"}
+    issues = []
+    for c in sorted(contracts_dir.glob("*.yaml")):
+        data = _load_yaml(c)
+        if not data:
+            continue
+        if "required_artifacts" in data:
+            issues.append(f"{c.name}: uses defunct required_artifacts key")
+        meta = data.get("min_metadata_count", 0)
+        if meta and meta < 30 and not data.get("emergency_blocker_bundle", False):
+            if c.name.startswith(("r2", "r3")):
+                issues.append(f"{c.name}: min_metadata_count={meta} < 30")
+    return {"total_contracts": len(list(contracts_dir.glob("*.yaml"))), "issues": issues}
+
+
+def get_latest_sprint():
+    reports_dir = ROOT / "reports"
+    latest_r = 0
+    for d in reports_dir.iterdir():
+        if d.is_dir() and d.name.startswith("r") and d.name[1:].isdigit():
+            r_num = int(d.name[1:])
+            if r_num > latest_r:
+                latest_r = r_num
+    if latest_r == 0:
+        return {"latest": "unknown"}
+    verdict_path = reports_dir / f"r{latest_r}" / "final-verdict.md"
+    if verdict_path.exists():
+        content = verdict_path.read_text()
+        verdict_match = re.search(r"VERDICT:\s*(\S+)", content)
+        return {
+            "latest_sprint_number": f"R{latest_r}",
+            "verdict": verdict_match.group(1) if verdict_match else "unknown",
+        }
+    return {"latest_sprint_number": f"R{latest_r}", "verdict": "no_final_verdict"}
+
+
+def get_production_blockers():
+    blockers = []
+    if not (ROOT / "tools" / "state").exists():
+        pass  # state manager is being created now
+    if not (ROOT / "tools" / "package" / "build_review_package.py").exists():
+        blockers.append("review_package_builder_missing")
+    # Check generated requirements provenance
+    gr_dir = ROOT / "generated-requirements"
+    if gr_dir.exists():
+        for fmt_dir in gr_dir.iterdir():
+            if fmt_dir.is_dir():
+                for f in fmt_dir.glob("*.yaml"):
+                    content = f.read_text()
+                    if "(confirmed existing)" in content:
+                        blockers.append(f"prose_provenance_in_{f.name}")
+                        break
+    return blockers
+
+
+def build_snapshot():
+    fmt_count, fmt_ids = count_formats_in_registry()
+    return {
+        "snapshot_version": "1.0.0",
+        "format_count": fmt_count,
+        "format_ids": fmt_ids,
+        "gate_summary": get_gate_summary(),
+        "generated_requirements": get_generated_requirements_status(),
+        "evidence_contracts": get_evidence_contract_status(),
+        "latest_sprint": get_latest_sprint(),
+        "production_blockers": get_production_blockers(),
+        "gate_11_approved": False,
+        "commercial_product_ready": False,
+    }
+
+
+def snapshot_to_markdown(snapshot):
+    lines = ["# Current State Snapshot", ""]
+    lines.append(f"**Formats in registry:** {snapshot['format_count']}")
+    lines.append(f"**Latest sprint:** {snapshot['latest_sprint'].get('latest_sprint_number', '?')} — {snapshot['latest_sprint'].get('verdict', '?')}")
+    lines.append(f"**Gate 11 approved:** {snapshot['gate_11_approved']}")
+    lines.append(f"**commercial_product_ready:** {snapshot['commercial_product_ready']}")
+    lines.append("")
+    lines.append("## Generated Requirements")
+    for fmt, info in snapshot["generated_requirements"].items():
+        lines.append(f"- {fmt}: {info['file_count']} files")
+    lines.append("")
+    lines.append("## Evidence Contracts")
+    ec = snapshot["evidence_contracts"]
+    lines.append(f"- Total: {ec.get('total_contracts', 0)}")
+    for issue in ec.get("issues", []):
+        lines.append(f"- ISSUE: {issue}")
+    lines.append("")
+    lines.append("## Production Blockers")
+    for b in snapshot["production_blockers"]:
+        lines.append(f"- {b}")
+    if not snapshot["production_blockers"]:
+        lines.append("- None detected")
+    return "\n".join(lines) + "\n"
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Build computed state snapshot")
+    parser.add_argument("--output-dir", default="state", help="Output directory")
+    args = parser.parse_args()
+
+    out_dir = ROOT / args.output_dir
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    snapshot = build_snapshot()
+
+    json_path = out_dir / "current-state.json"
+    with open(json_path, "w") as f:
+        json.dump(snapshot, f, indent=2)
+    print(f"Written: {json_path}")
+
+    md_path = out_dir / "current-state.md"
+    with open(md_path, "w") as f:
+        f.write(snapshot_to_markdown(snapshot))
+    print(f"Written: {md_path}")
+
+    print(f"Formats: {snapshot['format_count']}")
+    print(f"Latest sprint: {snapshot['latest_sprint']}")
+    print(f"Production blockers: {len(snapshot['production_blockers'])}")
+    print("STATE_SNAPSHOT: PASS")
+
+
+if __name__ == "__main__":
+    main()

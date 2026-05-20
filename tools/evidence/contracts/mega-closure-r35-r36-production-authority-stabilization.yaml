@@ -1,0 +1,60 @@
+contract_id: "FORMAT-FACTORY-MEGA-CLOSURE-R35-R36-AND-PRODUCTION-AUTHORITY-STABILIZATION-001"
+sprint_id: "FORMAT-FACTORY-MEGA-CLOSURE-R35-R36-AND-PRODUCTION-AUTHORITY-STABILIZATION-001"
+created: "2026-05-20"
+contract_type: "evidence-bundle"
+
+description: |
+  Mega-closure sprint: verify R35/R36 commits, create state snapshot manager,
+  create review package builder, production blocker inventory, requirements
+  provenance audit, evidence guard hardening, AI test isolation audit,
+  skill system format-generic audit, dependency portability check,
+  original-plan reconciliation, memory/governance sync.
+
+required_repo_files:
+  - reports/verification/r35-r36-independent-verification-20260520.md
+  - reports/audit/production-blocker-inventory-20260520.md
+  - reports/audit/generated-requirements-provenance-audit-20260520.md
+  - reports/audit/format-generic-skill-system-audit-20260520.md
+  - reports/ai/ai-test-isolation-and-requirements-phase2-readiness-20260520.md
+  - reports/testing/optional-dependency-portability-20260520.md
+  - reports/planning/original-plan-reconciliation-20260520.md
+  - reports/planning/format-generic-skill-system-hardening-plan-20260520.md
+  - reports/verification/mega-closure-independent-verification-20260520.md
+  - reports/governance/mega-closure-adversarial-review-20260520.md
+  - tools/state/state_snapshot.py
+  - tools/state/state_linter.py
+  - tools/package/build_review_package.py
+  - tests/state/test_state_snapshot.py
+  - tests/package/test_build_review_package.py
+  - tests/evidence/test_r37_evidence_depth_guards.py
+  - state/current-state.json
+  - state/current-state.md
+
+required_test_suites:
+  - tests/state/test_state_snapshot.py
+  - tests/package/test_build_review_package.py
+  - tests/evidence/test_r37_evidence_depth_guards.py
+
+min_metadata_count: 90
+require_clean_git: true
+emergency_blocker_bundle: false
+
+semantic_checks:
+  r35_independently_verified: true
+  r36_independently_verified: true
+  state_snapshot_operational: true
+  review_package_builder_operational: true
+  production_blocker_inventory_complete: true
+  requirements_provenance_audited: true
+  ai_test_isolation_verified: true
+  skill_system_audit_complete: true
+  dependency_portability_verified: true
+  plan_reconciliation_complete: true
+  gate_11_not_approved: true
+  commercial_product_ready_false: true
+  no_product_feature_work: true
+  no_package_publish: true
+  no_github_remote_mutation: true
+  no_push: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true
