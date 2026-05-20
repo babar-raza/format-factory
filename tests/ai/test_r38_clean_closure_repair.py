@@ -4,6 +4,7 @@ Sprint: FORMAT-FACTORY-R38-AI-CLEAN-CLOSURE-REPAIR-RUNNER-STATUS-BUNDLE-HYGIENE-
 """
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -15,6 +16,13 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+
+# Ensure subprocess invocations of run_ai_checks.py can find user site-packages
+# (needed when PYTHONPATH is not set in the shell environment).
+_USER_SITE = "C:/Users/prora/AppData/Roaming/Python/Python313/site-packages"
+_SUBPROCESS_ENV = dict(os.environ, PYTHONPATH=os.pathsep.join(
+    filter(None, [_USER_SITE, os.environ.get("PYTHONPATH", "")]))
+)
 
 
 # --- Lane A: R35 closure truth ---
@@ -42,6 +50,7 @@ class TestRunnerFIStatusContract:
             [sys.executable, "tools/ai/run_ai_checks.py", "--failure-injection", "--json",
              "--sprint-id", "R38-TEST"],
             capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=300,
+            env=_SUBPROCESS_ENV,
         )
         data = json.loads(proc.stdout)
         assert data["failure_injection"]["passed"] is True
@@ -50,6 +59,7 @@ class TestRunnerFIStatusContract:
         proc = subprocess.run(
             [sys.executable, "tools/ai/run_ai_checks.py", "--failure-injection", "--json"],
             capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=300,
+            env=_SUBPROCESS_ENV,
         )
         assert proc.returncode == 0
 
@@ -62,6 +72,7 @@ class TestRunnerExitCodes:
             [sys.executable, "tools/ai/run_ai_checks.py", "--fixture", "--json",
              "--sprint-id", "R38-EXIT"],
             capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=60,
+            env=_SUBPROCESS_ENV,
         )
         assert proc.returncode == 0
 
@@ -70,6 +81,7 @@ class TestRunnerExitCodes:
             [sys.executable, "tools/ai/run_ai_checks.py", "--all", "--no-live", "--json",
              "--sprint-id", "R38-EXIT"],
             capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=180,
+            env=_SUBPROCESS_ENV,
         )
         assert proc.returncode == 0
         data = json.loads(proc.stdout)
