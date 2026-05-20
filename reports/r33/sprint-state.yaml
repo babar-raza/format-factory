@@ -1,56 +1,54 @@
-sprint_id: FORMAT-FACTORY-R33-AI-RUNNER-EXECUTABLE-PIPELINE-REAL-SYNTHESIS-AND-TRUTH-RECONCILIATION-MEGA-TRAIN-001
+sprint_id: FORMAT-FACTORY-R33-DRIFT-RECOVERY-OVERCLAIM-REVIEW-DEEPENING-AND-CLOSURE-HYGIENE-001
 run_number: R33
 created: "2026-05-19"
-purpose: Make AI pipeline truly runner-executable with real synthesis wiring and truth reconciliation
+purpose: Drift recovery, overclaim expert review for 8 formats, ODS/QOI/ZST deepening, and R32 closure hygiene
 
 lanes:
   lane_0_coordinator:
     name: Sprint coordination and preflight
     status: completed
-  lane_a_reconciliation:
-    name: R32 truth reconciliation
+  lane_a_r32_closure:
+    name: R32 closure hygiene review
     status: completed
-  lane_b_live_pipeline:
-    name: Implement run_live_pipeline_checks
+  lane_b_overclaim_review:
+    name: Overclaim expert review (8 formats)
     status: completed
-  lane_c_all_mode:
-    name: Comprehensive --all mode
+  lane_c_drift_taskcards:
+    name: DRIFT taskcard updates with review outcomes
     status: completed
-  lane_d_synthesis_wiring:
-    name: Wire real gateway synthesis (fixture vs live)
+  lane_d_matrix_alignment:
+    name: Matrix alignment with review outcomes
     status: completed
-  lane_e_retrieval:
-    name: Diverse fixture corpus for meaningful retrieval
+  lane_e_ods_deepening:
+    name: ODS CSV exporter (RFC 4180)
     status: completed
-  lane_f_contradiction:
-    name: Explicit contradiction policy modes
+  lane_f_qoi_deepening:
+    name: QOI encoder + round-trip + parser bugfix
     status: completed
-  lane_g_evidence:
-    name: Real evidence validator integration
+  lane_g_zst_expansion:
+    name: ZST test suite expansion (25 to 48)
     status: completed
-  lane_h_commit_metadata:
-    name: Canonical commit metadata model
+  lane_h_commercial_gap:
+    name: FODS/FODT commercial gap analysis
     status: completed
-  lane_i_telemetry:
-    name: Durable redacted telemetry artifacts
+  lane_i_evidence:
+    name: R33 evidence validators and test suite
     status: completed
-  lane_j_gate_hooks:
-    name: Acquisition-gate dry-run hooks design
+  lane_j_policy:
+    name: Sprint depth policy creation
     status: completed
-  lane_k_matrix:
-    name: Verification matrix v2
+  lane_k_memory:
+    name: Memory and integration sync
     status: completed
-  lane_l_sync:
-    name: Taskcard/docs/memory sync
-    status: completed
-  lane_m_validation:
-    name: R33 tests and full validation
-    status: completed
-  lane_n_iv:
-    name: Independent verification and adversarial review
-    status: completed
-  lane_o_bundle:
-    name: Evidence bundle build and final verdict
+  lane_l_validation:
+    name: Full test validation and evidence bundle
     status: completed
 
-verdict: PENDING
+scope_contamination_note: |
+  REPAIRED by R34 (FORMAT-FACTORY-R34-R33-SCOPE-SEPARATION-CLOSURE-REPAIR-AND-RECOVERY-CONTINUATION-001).
+  Original sprint-state.yaml contained AI runner pipeline sprint ID and lanes from a
+  concurrent AI sprint (FORMAT-FACTORY-R33-AI-RUNNER-EXECUTABLE-PIPELINE-REAL-SYNTHESIS-AND-TRUTH-RECONCILIATION-MEGA-TRAIN-001).
+  AI artifacts moved to reports/ai/r33-runner-pipeline-truth-20260519/.
+  This file now correctly reflects the R33 drift recovery sprint.
+
+verdict: R33_DRIFT_RECOVERY_COMPLETE

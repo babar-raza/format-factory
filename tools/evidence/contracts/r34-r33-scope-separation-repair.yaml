@@ -1,0 +1,34 @@
+contract_id: "FORMAT-FACTORY-R34-R33-SCOPE-SEPARATION-CLOSURE-REPAIR-AND-RECOVERY-CONTINUATION-001"
+sprint_id: "FORMAT-FACTORY-R34-R33-SCOPE-SEPARATION-CLOSURE-REPAIR-AND-RECOVERY-CONTINUATION-001"
+created: "2026-05-20"
+contract_type: "evidence-bundle"
+commit_sha: PENDING
+
+description: |
+  R34 scope separation sprint. Repairs R33 report namespace contamination
+  by moving AI runner pipeline artifacts to reports/ai/, rewriting sprint-state.yaml,
+  and adding scope collision guard tests.
+
+required_artifacts:
+  - reports/r34/preflight-and-lane-ownership.md
+  - reports/r34/r33-scope-separation-audit.md
+  - reports/r34/r33-drift-recovery-metadata-repair-report.md
+  - reports/r34/r33-ai-artifact-separation-report.md
+  - reports/r34/r33-product-work-validation-report.md
+  - reports/r34/final-verdict.md
+  - reports/verification/r34-independent-verification.md
+  - reports/governance/r34-adversarial-review.md
+  - reports/r33/sprint-state.yaml
+  - reports/r33/final-verdict.md
+  - tools/evidence/contracts/r33-drift-recovery-overclaim-deepening.yaml
+  - tests/evidence/test_r34_scope_collision_guard.py
+  - reports/ai/r33-runner-pipeline-truth-20260519/preflight-current-state.md
+  - reports/ai/r33-runner-pipeline-truth-20260519/r32-truth-reconciliation.md
+  - reports/ai/r33-runner-pipeline-truth-20260519/lane-ownership-and-overlap-matrix.md
+
+required_test_suites:
+  - tests/evidence/test_r34_scope_collision_guard.py
+
+min_metadata_count: 20
+require_clean_git: true
+emergency_blocker_bundle: false

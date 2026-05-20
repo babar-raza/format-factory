@@ -70,4 +70,26 @@
 | DIF/PPM probe tests fail on Windows path | pre_existing — not R33 caused |
 | R28 PENDING detector on R32 verdict | pre_existing — R32 forward-documented content |
 
+## Scope Contamination Note (Added by R34)
+
+The original R33 commit (b99006c) included 6 report artifacts from a concurrent AI runner
+pipeline sprint under reports/r33/. These were:
+- reports/r33/preflight-current-state.md (AI runner baseline)
+- reports/r33/r32-truth-reconciliation.md (AI pipeline truth reconciliation)
+- reports/r33/lane-ownership-and-overlap-matrix.md (AI runner lanes)
+- reports/r33/live-telemetry/live-pipeline-output.json (AI telemetry)
+- reports/r33/live-telemetry/redacted-live-telemetry.json (AI telemetry)
+- reports/r33/pipeline-fixture-run/ai-pipeline-runner-output.json (AI pipeline output)
+
+Additionally, reports/r33/sprint-state.yaml contained the AI sprint ID instead of the
+drift recovery sprint ID.
+
+R34 repaired this by:
+1. Moving all AI report artifacts to reports/ai/r33-runner-pipeline-truth-20260519/
+2. Rewriting sprint-state.yaml to reflect the actual drift recovery lanes
+3. Adding this note to the final verdict
+
+The R33 drift recovery product work (ODS exporter, QOI encoder, ZST tests, overclaim
+review, DRIFT taskcards, matrix updates) was NOT affected by the contamination.
+
 ## NO-PUSH / NO-PUBLICATION / NO-AUTHORITY-PROMOTION: CONFIRMED

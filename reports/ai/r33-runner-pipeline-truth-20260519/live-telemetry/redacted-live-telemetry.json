@@ -1,0 +1,102 @@
+{
+  "format_id": "fods",
+  "stage_results": {
+    "1_load_chunks": {
+      "passed": true,
+      "chunk_count": 5,
+      "errors": []
+    },
+    "2_retrieval": {
+      "passed": true,
+      "query": "fods format specification requirements parsing",
+      "query_hash": "03736a186f23e5cf",
+      "format_id": "fods",
+      "total_candidates": 5,
+      "returned": 3,
+      "top_k": 5,
+      "threshold": 0.01,
+      "excluded_count": 2,
+      "mode": "lexical",
+      "chunks": [
+        {
+          "chunk_hash": "77ba097855ae4bf1",
+          "format_id": "fods",
+          "section": "Data Type Requirements",
+          "score": 0.0494,
+          "matched_terms": [
+            "fods",
+            "requirements",
+            "format",
+            "parsing",
+            "specification"
+          ],
+          "explanation": "matched 5/5 query terms"
+        },
+        {
+          "chunk_hash": "82bdf26542f4b084",
+          "format_id": "fods",
+          "section": "XML Structure and Format Specification",
+          "score": 0.036,
+          "matched_terms": [
+            "fods",
+            "requirements",
+            "format",
+            "parsing",
+            "specification"
+          ],
+          "explanation": "matched 5/5 query terms"
+        },
+        {
+          "chunk_hash": "be99c8dbd08d01ae",
+          "format_id": "fods",
+          "section": "Document Metadata",
+          "score": 0.0146,
+          "matched_terms": [
+            "fods",
+            "parsing"
+          ],
+          "explanation": "matched 2/5 query terms"
+        }
+      ]
+    },
+    "3_synthesis": {
+      "passed": true,
+      "authority_state": "ai_draft",
+      "error_count": 0,
+      "citation_count": 3,
+      "synthesis_mode": "live_gateway_synthesis",
+      "model": "qwen3-next",
+      "status": "success",
+      "input_tokens": 278,
+      "output_tokens": 1120,
+      "total_tokens": 1398,
+      "prompt_hash": "29b5647279ba4153",
+      "endpoint_identity": "llm.professionalize.com"
+    },
+    "4_evaluation": {
+      "task_id": "pilot-fods-synthesis",
+      "passed": true,
+      "checks": {
+        "schema_valid": true,
+        "errors_within_limit": true,
+        "citations_sufficient": true,
+        "output_hash_present": true
+      },
+      "failures": [],
+      "score": 1.0
+    }
+  },
+  "final_authority_state": "ai_draft",
+  "all_stages_passed": true,
+  "errors": [],
+  "timestamp": "2026-05-19T17:11:30.055091+00:00",
+  "mode": "live_pipeline",
+  "sprint_id": "R33-LIVE",
+  "passed": true,
+  "status": "success",
+  "secrets_in_output": false,
+  "_artifact_metadata": {
+    "written_at": "2026-05-19T17:12:10.055321+00:00",
+    "redaction_applied": true
+  }
+}
