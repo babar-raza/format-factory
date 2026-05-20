@@ -49,5 +49,5 @@
 | No live agentic tasks | scope_limit |
 | Stale metadata-dir content | documentation — builder doesn't validate sprint-overview |
 
-## Commit SHA: PENDING
+## Commit SHA: 196c72d
 ## NO-PUSH / NO-PUBLICATION / NO-AUTHORITY-PROMOTION: CONFIRMED
