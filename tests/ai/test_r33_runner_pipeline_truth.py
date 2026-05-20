@@ -135,12 +135,13 @@ class TestSynthesisWiring:
         result = run_pilot(PilotConfig(format_id="fods", fixture_mode=True))
         assert result.stage_results["3_synthesis"]["synthesis_mode"] == "fixture_synthesis"
 
-    def test_live_gateway_blocked_returns_fallback(self):
+    def test_live_gateway_blocked_fails_closed(self):
         config = PilotConfig(format_id="fods", fixture_mode=True, live_gateway=True)
         chunks, _ = stage_1_load_chunks(config)
         with patch.dict("os.environ", {}, clear=True):
             _, meta = stage_3_synthesis(chunks, config)
-        assert meta.get("fallback") == "fixture_synthesis"
+        assert meta.get("live_failed") is True
+        assert meta.get("synthesis_mode") == "blocked_live_synthesis"
 
     def test_live_config_synthesis_mode_label(self):
         assert PilotConfig(live_gateway=True).synthesis_mode == "live_gateway_synthesis"

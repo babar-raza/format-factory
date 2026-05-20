@@ -1,0 +1,50 @@
+contract_id: "FORMAT-FACTORY-R34-FINAL-AUTHORITY-NORMALIZATION-AND-R35-LABEL-REPAIR-001"
+sprint_id: "FORMAT-FACTORY-R34-FINAL-AUTHORITY-NORMALIZATION-AND-R35-LABEL-REPAIR-001"
+created: "2026-05-20"
+contract_type: "evidence-bundle"
+
+description: |
+  R34 final authority normalization sprint. Raises contract metadata floors,
+  validates R35 label legitimacy (R35 committed), documents ZST dependency
+  resolution, and produces final clean-closure authority proof.
+
+required_repo_files:
+  - reports/r34/final-verdict.md
+  - reports/r34/contract-schema-migration-report.md
+  - reports/r34/ai-runner-dirty-state-normalization-report.md
+  - reports/verification/r34-independent-verification.md
+  - reports/verification/r34-final-authority-normalization.md
+  - reports/governance/r34-adversarial-review.md
+  - reports/planning/r35-readiness-and-scope.md
+  - tests/evidence/test_r34_scope_collision_guard.py
+  - tests/evidence/test_contract_schema_migration.py
+  - tools/evidence/contracts/r34-r33-scope-separation-repair.yaml
+  - tools/evidence/contracts/r34-clean-closure-authority-pipeline-repair.yaml
+  - tools/evidence/contracts/r34-final-authority-normalization.yaml
+
+required_test_suites:
+  - tests/evidence/test_r34_scope_collision_guard.py
+  - tests/evidence/test_contract_schema_migration.py
+
+min_metadata_count: 45
+require_clean_git: true
+emergency_blocker_bundle: false
+
+semantic_checks:
+  r34_clean_closure_bundle_revalidated: true
+  old_r34_contract_floor_normalized_or_superseded: true
+  required_artifacts_absent_from_contracts: true
+  required_repo_files_nonzero: true
+  r35_label_leak_repaired: "NOT_NEEDED_R35_COMMITTED"
+  r35_not_executed: "R35_ALREADY_COMMITTED_AT_27ba09a"
+  zst_dependency_policy_portable_or_documented: true
+  final_authority_metadata_complete: true
+  r35_readiness_decision_created: true
+  gate11_not_approved: true
+  commercial_product_ready_false: true
+  no_product_feature_work: true
+  no_package_publish: true
+  no_github_remote_mutation: true
+  no_push: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true

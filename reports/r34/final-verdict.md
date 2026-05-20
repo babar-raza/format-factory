@@ -3,7 +3,17 @@
 **Sprint:** FORMAT-FACTORY-R34-CLEAN-CLOSURE-AUTHORITY-PIPELINE-REPAIR-SWARM-001
 **Date:** 2026-05-20
 
-## VERDICT: R34_CLEAN_CLOSURE_COMPLETE
+## VERDICT: R34_FINAL_AUTHORITY_NORMALIZED
+
+## Full Commit Set
+- 6be7e34: R33 scope separation + metadata repair
+- 4c90754: R34 evidence contract commit SHA update
+- 8fe020c: Contract schema migration (6 contracts)
+- 5df903e: AI runner pipeline committed
+- 4fda28b: R33 AI metadata floor lowered
+- f7981d3: Emergency blocker for R33 AI metadata
+- e41ceec: Clean closure (tests, reports, overclaim corrections)
+- (this commit): Final authority normalization (contract floors, metadata quality)
 
 ## What This Sprint Delivered
 
@@ -45,12 +55,20 @@
 - Working tree: CLEAN at HEAD
 - No emergency_blocker_bundle needed
 
-## Test Results
-- R33 product tests: 244 passed (ODS/QOI/ZST/overclaim)
-- R34 scope guard tests: 21 passed
-- R34 contract migration tests: 239 passed
-- Evidence suite: 538 passed, 2 pre-existing failures
-- Python suite: 836 passed, 2 pre-existing failures, 4 skipped
+### Phase 3: Final Authority Normalization (this commit)
+- Old R34 contract (r34-r33-scope-separation-repair.yaml): min_metadata_count raised from 20 to 30
+- Clean closure contract (r34-clean-closure-authority-pipeline-repair.yaml): min_metadata_count raised from 30 to 45
+- R35 label leak: NOT A DEFECT — R35 committed at 27ba09a, labels are legitimate
+- ZST dependency: RESOLVED — zstandard 0.25.0 installed, 57/57 tests pass
+- Final authority contract with min_metadata_count=45 and full semantic checks
+
+## Test Results (post-R36 baseline at d51d4a4)
+- ZST tests: 57 passed (zstandard 0.25.0 available)
+- R34 guard tests: 269 passed (21 scope + 248 contract migration)
+- Evidence suite: 566 passed, 1 pre-existing failure
+- Python suite: 875 passed, 2 pre-existing failures, 4 skipped
+- CURRENT_STATE_CONSISTENCY: PASS
+- METHODOLOGY_LINK_CHECK: PASS
 
 ## Safety Proof
 - No tools/ai/** modified or staged

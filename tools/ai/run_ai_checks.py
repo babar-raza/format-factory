@@ -9,15 +9,25 @@ Usage:
     python tools/ai/run_ai_checks.py --sprint-id R31
 
 Modes:
-    --fixture      Run deterministic fixture pipeline (default, always safe)
-    --live-probe   Run live gateway probes if env is configured
-    --no-live      Explicitly skip all live probes
+    --fixture           Run deterministic fixture pipeline (default, always safe)
+    --live-probe        Run live gateway probes if env is configured
+    --live-pipeline     Run live pipeline with real gateway synthesis
+    --no-live           Explicitly skip all live probes
+    --all               Run all check modes (combine with --no-live to skip live)
+    --validate-evidence Validate evidence contract YAML path
+
+Exit codes:
+    0  All requested checks passed
+    1  One or more checks failed
+    2  Live probes blocked (env not configured) but --fail-on-blocked-live not set
 
 Options:
     --format       Target format ID for format-specific checks (default: fods)
     --report-dir   Directory for reports (default: reports/current)
     --sprint-id    Sprint identifier for telemetry
     --clean-env    Clear AI env vars before running (isolation test)
+    --json         Output JSON only (suppress stderr)
+    --schema       Print runner output JSON schema and exit
 """
 
 from __future__ import annotations
@@ -230,7 +240,7 @@ def run_live_pipeline_checks(format_id: str, sprint_id: str) -> dict:
         use_lexical_retrieval=True,
         retrieval_query=f"{format_id} format specification requirements parsing",
         sprint_id=sprint_id,
-        contradiction_policy="optional",
+        contradiction_policy="required",
     )
     pilot_result = run_pilot(config)
     result = pilot_result.to_dict()
@@ -250,8 +260,12 @@ def run_live_pipeline_checks(format_id: str, sprint_id: str) -> dict:
 
 
 def run_evidence_validation(contract_path: str) -> dict:
-    """Validate evidence contract artifacts exist and are non-empty."""
-    import yaml
+    """Validate evidence contract artifacts exist and are non-empty.
+
+    Uses the canonical contract loader from validate_evidence_bundle.py
+    to ensure field-name consistency (required_repo_files).
+    """
+    from tools.evidence.validate_evidence_bundle import load_contract
 
     results = {"mode": "evidence_validation", "contract_path": contract_path}
 
@@ -261,10 +275,9 @@ def run_evidence_validation(contract_path: str) -> dict:
         results["error"] = f"Contract file not found: {contract_path}"
         return results
 
-    with open(contract_file) as f:
-        contract = yaml.safe_load(f) or {}
+    contract = load_contract(str(contract_file))
 
-    required = contract.get("required_artifacts", [])
+    required = contract.get("required_repo_files", [])
     missing = []
     empty = []
     for artifact in required:
@@ -299,7 +312,28 @@ def main():
     parser.add_argument("--sprint-id", default="UNKNOWN", help="Sprint identifier")
     parser.add_argument("--clean-env", action="store_true", help="Clear AI env vars")
     parser.add_argument("--validate-evidence", default=None, help="Validate evidence contract YAML path")
+    parser.add_argument("--schema", action="store_true", help="Print output JSON schema and exit")
     args = parser.parse_args()
+
+    if args.schema:
+        schema = {
+            "type": "object",
+            "properties": {
+                "timestamp": {"type": "string", "format": "date-time"},
+                "sprint_id": {"type": "string"},
+                "overall_passed": {"type": "boolean"},
+                "isolation": {"type": "object", "properties": {"mode": {}, "passed": {"type": "boolean"}}},
+                "fixture": {"type": "object", "properties": {"mode": {}, "passed": {"type": "boolean"}}},
+                "fixture_pipeline": {"type": "object", "properties": {"mode": {}, "passed": {"type": "boolean"}}},
+                "failure_injection": {"type": "object", "properties": {"mode": {}, "passed": {"type": "boolean"}}},
+                "live_probe": {"type": "object", "properties": {"mode": {}, "passed": {"type": "boolean"}}},
+                "live_pipeline": {"type": "object", "properties": {"mode": {}, "passed": {"type": "boolean"}}},
+                "evidence_validation": {"type": "object", "properties": {"mode": {}, "passed": {"type": "boolean"}}},
+            },
+            "required": ["timestamp", "sprint_id", "overall_passed"],
+        }
+        print(json.dumps(schema, indent=2))
+        return 0
 
     if args.clean_env:
         for var in ["GPT_OSS_ENDPOINT", "GPT_OSS_API_KEY", "PROFESSIONALIZE_API_KEY",

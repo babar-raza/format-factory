@@ -309,14 +309,15 @@ def stage_3_synthesis(
     )
 
     stage_meta: dict[str, Any] = {"synthesis_mode": config.synthesis_mode}
+    raw_output = ""
 
     if config.live_gateway:
         raw_output, telem = _build_live_output(chunks, config)
         if telem:
             stage_meta.update(telem)
         if not raw_output:
-            stage_meta["fallback"] = "fixture_synthesis"
-            raw_output = _build_fixture_output(chunks, config)
+            stage_meta["live_failed"] = True
+            stage_meta["synthesis_mode"] = "blocked_live_synthesis"
     else:
         raw_output = _build_fixture_output(chunks, config)
 
@@ -376,12 +377,23 @@ def run_pilot(config: PilotConfig | None = None) -> PilotResult:
     }
 
     synthesis, synth_meta = stage_3_synthesis(retrieved, config)
+
+    # Citation verification visibility (R35 Lane H)
+    cit_detail = {"citation_verified": synthesis.citation_verified}
+    if synthesis.citations:
+        source_snippets = {c.source_path: c.content for c in retrieved}
+        cit_report = verify_all_citations(synthesis.citations, source_texts=source_snippets)
+        cit_detail["citations_all_valid"] = cit_report.all_valid
+        cit_detail["citations_checked"] = len(cit_report.results)
+        cit_detail["citations_failed"] = sum(1 for r in cit_report.results if not r.valid)
+
     result.stage_results["3_synthesis"] = {
         "passed": synthesis.is_valid,
         "authority_state": synthesis.authority_state.value,
         "error_count": len(synthesis.errors),
         "citation_count": len(synthesis.citations),
         "synthesis_mode": synth_meta.get("synthesis_mode", "unknown"),
+        **cit_detail,
         **{k: v for k, v in synth_meta.items() if k != "synthesis_mode"},
     }
 
