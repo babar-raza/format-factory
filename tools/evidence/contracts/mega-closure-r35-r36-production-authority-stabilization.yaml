@@ -35,6 +35,28 @@ required_test_suites:
   - tests/package/test_build_review_package.py
   - tests/evidence/test_r37_evidence_depth_guards.py
 
+required_metadata_files:
+  - verdict.md
+  - final-state-summary.yaml
+  - validation-command-log.txt
+  - safety-proof.md
+  - deliverable-inventory.md
+  - lane-a-r35-r36-independent-verification.md
+  - lane-b-production-blocker-inventory.md
+  - lane-c-state-snapshot-manager.md
+  - lane-d-review-package-builder.md
+  - lane-e-generated-requirements-provenance.md
+  - lane-f-evidence-authority-guards.md
+  - lane-g-ai-test-isolation-audit.md
+  - lane-h-skill-system-format-generic-audit.md
+  - lane-i-optional-dependency-portability.md
+  - lane-j-original-plan-reconciliation.md
+  - lane-k-memory-and-governance-sync.md
+  - adversarial-review-summary.md
+  - independent-verification-summary.md
+  - production-blocker-summary.md
+  - evidence-contract-validation-report.md
+
 min_metadata_count: 90
 require_clean_git: true
 emergency_blocker_bundle: false
