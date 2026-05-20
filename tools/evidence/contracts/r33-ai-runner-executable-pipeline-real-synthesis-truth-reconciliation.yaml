@@ -1,0 +1,40 @@
+contract_id: FORMAT-FACTORY-R33-AI-RUNNER-EXECUTABLE-PIPELINE-REAL-SYNTHESIS-AND-TRUTH-RECONCILIATION-MEGA-TRAIN-001
+sprint_id: FORMAT-FACTORY-R33-AI-RUNNER-EXECUTABLE-PIPELINE-REAL-SYNTHESIS-AND-TRUTH-RECONCILIATION-MEGA-TRAIN-001
+run_number: R33
+created: "2026-05-19"
+purpose: Make AI pipeline runner-executable with real synthesis wiring and truth reconciliation
+
+required_artifacts:
+  - reports/ai/r33-runner-pipeline-truth-20260519/preflight-current-state.md
+  - reports/ai/r33-runner-pipeline-truth-20260519/lane-ownership-and-overlap-matrix.md
+  - reports/ai/r33-runner-pipeline-truth-20260519/r32-truth-reconciliation.md
+  - reports/ai/r33-runner-pipeline-truth-20260519/final-verdict-ai-runner-pipeline.md
+  - reports/ai/r33-runner-pipeline-truth-20260519/pipeline-fixture-run/ai-pipeline-runner-output.json
+  - reports/ai/r33-runner-pipeline-truth-20260519/live-telemetry/live-pipeline-output.json
+  - reports/ai/r33-runner-pipeline-truth-20260519/live-telemetry/redacted-live-telemetry.json
+  - reports/verification/r33-independent-verification.md
+  - reports/governance/r33-adversarial-review.md
+  - tests/ai/test_r33_runner_pipeline_truth.py
+  - tools/ai/pipeline/e2e_pilot.py
+  - tools/ai/run_ai_checks.py
+  - tools/ai/schemas/commit_metadata.py
+  - tools/ai/telemetry/artifacts.py
+  - docs/ai/ai-system-verification-matrix.md
+
+include_directories:
+  - reports/ai/r33-runner-pipeline-truth-20260519/
+  - reports/verification/
+  - reports/governance/
+  - tests/ai/
+  - tools/ai/
+  - docs/ai/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+
+min_metadata_count: 30
+require_clean_git: true
+emergency_blocker_bundle: false

@@ -199,6 +199,7 @@ def run_fixture_pipeline_checks(format_id: str, sprint_id: str) -> dict:
         fixture_mode=True,
         use_lexical_retrieval=True,
         retrieval_query=f"{format_id} format specification requirements parsing",
+        sprint_id=sprint_id,
     )
     pilot_result = run_pilot(config)
     result = pilot_result.to_dict()
@@ -206,6 +207,79 @@ def run_fixture_pipeline_checks(format_id: str, sprint_id: str) -> dict:
     result["sprint_id"] = sprint_id
     result["passed"] = pilot_result.all_stages_passed
     return result
+
+
+def run_live_pipeline_checks(format_id: str, sprint_id: str) -> dict:
+    """Run live pipeline: gateway synthesis with citation verification."""
+    from tools.ai.pipeline.e2e_pilot import PilotConfig, run_pilot
+    from tools.ai.control_plane.config import load_ai_config
+
+    cfg = load_ai_config()
+    if not cfg.is_configured:
+        return {
+            "mode": "live_pipeline",
+            "status": "blocked_missing_env",
+            "passed": False,
+            "sprint_id": sprint_id,
+        }
+
+    config = PilotConfig(
+        format_id=format_id,
+        fixture_mode=True,
+        live_gateway=True,
+        use_lexical_retrieval=True,
+        retrieval_query=f"{format_id} format specification requirements parsing",
+        sprint_id=sprint_id,
+        contradiction_policy="optional",
+    )
+    pilot_result = run_pilot(config)
+    result = pilot_result.to_dict()
+    result["mode"] = "live_pipeline"
+    result["sprint_id"] = sprint_id
+    result["passed"] = pilot_result.all_stages_passed
+    result["status"] = "success" if result["passed"] else "pipeline_failed"
+
+    dump = json.dumps(result, default=str)
+    if any(pat in dump for pat in ["sk-", "Bearer eyJ"]):
+        result["secrets_in_output"] = True
+        result["passed"] = False
+    else:
+        result["secrets_in_output"] = False
+
+    return result
+
+
+def run_evidence_validation(contract_path: str) -> dict:
+    """Validate evidence contract artifacts exist and are non-empty."""
+    import yaml
+
+    results = {"mode": "evidence_validation", "contract_path": contract_path}
+
+    contract_file = Path(contract_path)
+    if not contract_file.exists():
+        results["passed"] = False
+        results["error"] = f"Contract file not found: {contract_path}"
+        return results
+
+    with open(contract_file) as f:
+        contract = yaml.safe_load(f) or {}
+
+    required = contract.get("required_artifacts", [])
+    missing = []
+    empty = []
+    for artifact in required:
+        ap = REPO_ROOT / artifact
+        if not ap.exists():
+            missing.append(artifact)
+        elif ap.stat().st_size == 0:
+            empty.append(artifact)
+
+    results["required_count"] = len(required)
+    results["missing"] = missing
+    results["empty"] = empty
+    results["missing_count"] = len(missing)
+    results["passed"] = len(missing) == 0 and len(empty) == 0
+    return results
 
 
 def main():
@@ -224,6 +298,7 @@ def main():
     parser.add_argument("--report-dir", default=None, help="Report output directory")
     parser.add_argument("--sprint-id", default="UNKNOWN", help="Sprint identifier")
     parser.add_argument("--clean-env", action="store_true", help="Clear AI env vars")
+    parser.add_argument("--validate-evidence", default=None, help="Validate evidence contract YAML path")
     args = parser.parse_args()
 
     if args.clean_env:
@@ -271,7 +346,14 @@ def main():
         all_results["live_probe"] = {"status": "skipped_by_no_live_flag", "passed": True}
 
     if args.live_pipeline and not args.no_live:
-        all_results["live_pipeline"] = {"status": "not_yet_implemented", "passed": False}
+        all_results["live_pipeline"] = run_live_pipeline_checks(args.format, args.sprint_id)
+        if all_results["live_pipeline"].get("status") == "blocked_missing_env":
+            live_blocked = True
+    elif args.live_pipeline and args.no_live:
+        all_results["live_pipeline"] = {"status": "skipped_by_no_live_flag", "passed": True}
+
+    if args.validate_evidence:
+        all_results["evidence_validation"] = run_evidence_validation(args.validate_evidence)
 
     # Overall pass
     passed = all(

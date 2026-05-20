@@ -32,7 +32,7 @@ class TestE2EPilot:
     def test_stage_1_fixture_chunks(self):
         config = PilotConfig(format_id="fods", fixture_mode=True)
         chunks, errors = stage_1_load_chunks(config)
-        assert len(chunks) == 3
+        assert len(chunks) == 5
         assert not errors
         assert all(c.format_id == "fods" for c in chunks)
 
@@ -46,14 +46,15 @@ class TestE2EPilot:
     def test_stage_3_synthesis_produces_valid(self):
         config = PilotConfig(format_id="fods", fixture_mode=True)
         chunks, _ = stage_1_load_chunks(config)
-        result = stage_3_synthesis(chunks, config)
+        result, meta = stage_3_synthesis(chunks, config)
         assert result.is_valid
         assert result.authority_state.value == "ai_draft"
+        assert meta["synthesis_mode"] == "fixture_synthesis"
 
     def test_stage_4_evaluation_passes(self):
         config = PilotConfig(format_id="fods", fixture_mode=True)
         chunks, _ = stage_1_load_chunks(config)
-        synthesis = stage_3_synthesis(chunks, config)
+        synthesis, _ = stage_3_synthesis(chunks, config)
         eval_result = stage_4_evaluate(synthesis)
         assert eval_result["passed"]
 
