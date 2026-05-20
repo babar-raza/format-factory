@@ -282,6 +282,7 @@ class TestR38FullIntegration:
             [sys.executable, "tools/ai/run_ai_checks.py", "--all", "--no-live",
              "--json", "--sprint-id", "R38-FINAL"],
             capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=180,
+            env=_SUBPROCESS_ENV,
         )
         assert proc.returncode == 0
         data = json.loads(proc.stdout)
