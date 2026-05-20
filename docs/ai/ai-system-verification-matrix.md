@@ -2,7 +2,7 @@
 
 ## Purpose
 Canonical reference for the verification status of every AI component.
-Updated each sprint. Created in R32, updated R33 with runner-executable columns.
+Updated each sprint. Created in R32, updated R33 with runner-executable columns, R35 with fail-closed and validator integration.
 
 ## Component Verification Status
 
@@ -29,22 +29,40 @@ Updated each sprint. Created in R32, updated R33 with runner-executable columns.
 | Agent Metrics Drain | R31 | R31 | - | - | R31 | - | - | - | No AGENT_METRICS_API_KEY | - |
 | Secret Redaction | R31 | R31 | - | R32, R33 | R31, R32, R33 | - | R33 | - | - | - |
 | Runtime Guard (AI-free src/) | R31 | R31 | - | - | R31 | - | - | - | - | - |
-| CLI Runner (run_ai_checks.py) | R31, R32, R33 | R32, R33 | R32, R33 | R32, R33 | R32, R33 | R33 | R33 | - | - | - |
+| CLI Runner (run_ai_checks.py) | R31, R32, R33, R35 | R32, R33, R35 | R32, R33 | R32, R33 | R32, R33, R35 | R33, R35 | R33, R35 | - | - | - |
 | Commit Metadata Model | R33 | R33 | - | - | - | - | - | - | - | - |
-| Contradiction Policy | R33 | R33 | R33 | - | - | R33 | - | - | - | - |
-| Evidence Validator Integration | R33 | R33 | - | - | - | R33 | - | - | - | - |
+| Contradiction Policy | R33, R35 | R33, R35 | R33 | R35 | - | R33, R35 | R35 | - | - | - |
+| Evidence Validator Integration | R33, R35 | R33, R35 | - | - | R35 | R33, R35 | - | - | - | - |
+| Telemetry Minimization | R35 | R35 | - | - | - | - | R35 | - | - | - |
+| Runner JSON Schema | R35 | R35 | - | - | - | R35 | - | - | - | - |
+| Fail-Closed Live Pipeline | R35 | R35 | - | R35 | R35 | - | R35 | - | - | - |
+| Citation Visibility | R35 | R35 | R35 | - | - | R35 | - | - | - | - |
 
 ## R33 New Columns
 - **Runner Fixture:** Component exercised via `run_ai_checks.py --fixture-pipeline` (deterministic)
 - **Runner Live:** Component exercised via `run_ai_checks.py --live-pipeline` (real gateway)
 
+## R35 New Components
+- **Telemetry Minimization:** Content keys stripped before redaction to reduce artifact size
+- **Runner JSON Schema:** `--schema` flag outputs expected output shape
+- **Fail-Closed Live Pipeline:** Live gateway failure produces `blocked_live_synthesis` (no fixture fallback)
+- **Citation Visibility:** Pipeline output includes citation_verified, citations_all_valid, citations_checked, citations_failed
+
+## R35 Fixes
+- Evidence validation reads `required_repo_files` (was `required_artifacts` — silent zero-count bug)
+- Evidence validation uses canonical contract loader from validate_evidence_bundle.py
+- Live pipeline contradiction policy changed from `optional` to `required`
+- R33 AI contract emergency_blocker_bundle removed, min_metadata_count restored to 30
+
 ## Evidence Paths
 - R31 reports: reports/r31/
 - R32 reports: reports/r32/
 - R33 reports: reports/r33/
+- R35 reports: reports/ai/r35-clean-runner-closure-20260520/
 - R31 tests: tests/ai/test_r31_ai_system_verification.py
 - R32 tests: tests/ai/test_r32_ai_deepening.py
 - R33 tests: tests/ai/test_r33_runner_pipeline_truth.py
+- R35 tests: tests/ai/test_r35_clean_runner_closure.py
 
 ## Legend
 - **Fixture Verified:** Component tested with synthetic data, no live calls
