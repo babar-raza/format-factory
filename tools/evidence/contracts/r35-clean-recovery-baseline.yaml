@@ -1,0 +1,35 @@
+contract_id: "FORMAT-FACTORY-R35-CLEAN-RECOVERY-BASELINE-GATE-CORRECTIONS-DEEPENING-AND-PUBLICATION-READINESS-001"
+sprint_id: "FORMAT-FACTORY-R35-CLEAN-RECOVERY-BASELINE-GATE-CORRECTIONS-DEEPENING-AND-PUBLICATION-READINESS-001"
+created: "2026-05-20"
+contract_type: "evidence-bundle"
+
+description: |
+  R35 clean recovery baseline sprint. Gate corrections for 4 overclaimed probe-only formats,
+  scope finalization for 4 image formats, selective deepening (ODS/QOI/ZST), evidence guard
+  hardening, and R34 closure hygiene verification.
+
+required_repo_files:
+  - reports/r35/preflight-and-lane-ownership.md
+  - reports/r35/r34-closure-hygiene-and-baseline-report.md
+  - reports/r35/r33-product-work-revalidation-report.md
+  - reports/r35/probe-format-gate-correction-report.md
+  - reports/r35/fods-fodt-commercial-gap-closure-report.md
+  - reports/r35/adversarial-review.md
+  - tests/evidence/test_r35_evidence_guard_hardening.py
+  - memory/54-r35-clean-recovery-baseline-and-gate-corrections-20260520.md
+
+required_test_suites:
+  - tests/evidence/test_r35_evidence_guard_hardening.py
+  - tests/python/ods/test_ods_csv_exporter.py
+  - tests/python/qoi/test_qoi_encoder.py
+  - tests/python/zst/test_zst_r33_expansion.py
+
+min_metadata_count: 30
+require_clean_git: true
+emergency_blocker_bundle: false
+
+validation_commands:
+  - "python -m pytest tests/evidence/test_r35_evidence_guard_hardening.py -q"
+  - "python -m pytest tests/python/ods/test_ods_csv_exporter.py -q"
+  - "python -m pytest tests/python/qoi/test_qoi_encoder.py -q"
+  - "python -m pytest tests/python/zst/test_zst_r33_expansion.py -q"

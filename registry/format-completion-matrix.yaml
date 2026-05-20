@@ -102,7 +102,7 @@ formats:
     src_python_files: ["zst_codec.py", "__init__.py"]
     src_python_loc: 303
     src_net_exists: false
-    tests_python_count: 48
+    tests_python_count: 52
     tests_net_count: 0
     packaging_status: local_build_ready
     claimed_gate: "G10 (verified)"
@@ -120,11 +120,13 @@ formats:
     package_readiness: "Python FOSS local"
     commercial_readiness: "N/A (Python FOSS only)"
     overclaim_risk: none
-    strongest_evidence: "48 tests, only Python format with write + round-trip"
+    strongest_evidence: "52 tests, only Python format with write + round-trip"
     weakest_area: "no .NET track"
     recommended_action: "Stabilize; consider .NET track"
     r33_deepening: "23 new edge-case and boundary tests (25->48)"
     r33_deepening_date: "2026-05-19"
+    r35_deepening: "4 stabilization tests (48->52, target 50+ met)"
+    r35_deepening_date: "2026-05-20"
 
   - format_id: ods
     display_name: "OpenDocument Spreadsheet (ZIP)"
@@ -136,7 +138,7 @@ formats:
     src_python_files: ["ods_parser.py", "ods_csv_exporter.py", "__init__.py"]
     src_python_loc: 450
     src_net_exists: false
-    tests_python_count: 86
+    tests_python_count: 94
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G8 (security review)"
@@ -154,11 +156,13 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "86 tests, typed cell parsing, CSV export, ZIP container guards"
+    strongest_evidence: "94 tests, typed cell parsing, CSV export with Unicode/determinism hardening"
     weakest_area: "no native ODS write, no round-trip, no packaging"
     recommended_action: "deepen: add ODS write capability, then round-trip"
     r33_deepening: "CSV exporter added (ods_csv_exporter.py, 25 tests)"
     r33_deepening_date: "2026-05-19"
+    r35_deepening: "8 export hardening tests (determinism, Unicode, edge cases)"
+    r35_deepening_date: "2026-05-20"
 
   - format_id: odt
     display_name: "OpenDocument Text (ZIP)"
@@ -202,7 +206,7 @@ formats:
     src_python_files: ["qoi_parser.py", "qoi_encoder.py", "__init__.py"]
     src_python_loc: 480
     src_net_exists: false
-    tests_python_count: 87
+    tests_python_count: 95
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G8 (security review)"
@@ -220,11 +224,13 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "87 tests, complete pixel codec with verified round-trip"
+    strongest_evidence: "95 tests, complete pixel codec with verified round-trip + chunk boundary hardening"
     weakest_area: "no image export to other formats (PNG/raw)"
     recommended_action: "add image export capability, expand corpus"
     r33_deepening: "QOI encoder added (qoi_encoder.py, 25 tests) + parser RUN bug fixed"
     r33_deepening_date: "2026-05-19"
+    r35_deepening: "8 encoder hardening tests (run boundaries, alpha gradient, DIFF/LUMA edges)"
+    r35_deepening_date: "2026-05-20"
 
   - format_id: dif
     display_name: "Data Interchange Format"
@@ -324,6 +330,8 @@ formats:
     recommended_action: "reclassify as probe_only; G8 security pass is valid for what it parses but does not imply image processing capability"
     r33_review_outcome: "DEEPENING_REQUIRED (MINOR) — G8 accepted for header scope, needs 8+ more tests"
     r33_review_date: "2026-05-19"
+    r35_scope_finalization: "APPLIED — pack.yaml scope_finalization section, header_and_metadata_only scope documented"
+    r35_scope_finalization_date: "2026-05-20"
 
   - format_id: ppm
     display_name: "Portable Pixmap (PPM)"
@@ -359,6 +367,8 @@ formats:
     recommended_action: "add P6 binary support before claiming library maturity"
     r33_review_outcome: "READ_ONLY_SCOPE_APPROVED — G8 valid for P3, P6 needed before G10"
     r33_review_date: "2026-05-19"
+    r35_scope_finalization: "APPLIED — pack.yaml scope_finalization section, read_only_ascii_p3 scope documented"
+    r35_scope_finalization_date: "2026-05-20"
 
   - format_id: pgm
     display_name: "Portable Graymap (PGM)"
@@ -460,6 +470,8 @@ formats:
     recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4; requires deepening before G5+ can be re-earned"
     r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
     r33_review_date: "2026-05-19"
+    r35_gate_correction: "APPLIED — pack.yaml gate_correction section with previous_claimed_gate/evidence_backed_gate/maturity_class"
+    r35_gate_correction_date: "2026-05-20"
 
   - format_id: fodg
     display_name: "Flat OpenDocument Graphics"
@@ -495,6 +507,8 @@ formats:
     recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
     r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
     r33_review_date: "2026-05-19"
+    r35_gate_correction: "APPLIED — pack.yaml gate_correction section added"
+    r35_gate_correction_date: "2026-05-20"
 
   - format_id: gnumeric
     display_name: "Gnumeric Spreadsheet"
@@ -530,6 +544,8 @@ formats:
     recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
     r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
     r33_review_date: "2026-05-19"
+    r35_gate_correction: "APPLIED — pack.yaml gate_correction section added"
+    r35_gate_correction_date: "2026-05-20"
 
   - format_id: abw
     display_name: "AbiWord Document"
@@ -565,6 +581,8 @@ formats:
     recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
     r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
     r33_review_date: "2026-05-19"
+    r35_gate_correction: "APPLIED — pack.yaml gate_correction section added"
+    r35_gate_correction_date: "2026-05-20"
 
   - format_id: csv
     display_name: "Comma-Separated Values"
