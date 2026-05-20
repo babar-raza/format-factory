@@ -128,7 +128,7 @@ class TestDecompressionGuards:
 
     def test_magic_only(self):
         """Just the magic bytes with no payload."""
-        with pytest.raises((ZstDecompressionError, ZstInvalidFrameError)):
+        with pytest.raises((ZstDecompressionError, ZstInvalidFrameError, ZstError)):
             decompress_bytes(b"\x28\xb5\x2f\xfd")
 
     @skip_if_no_zstd

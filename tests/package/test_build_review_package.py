@@ -10,7 +10,7 @@ import pytest
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools" / "package"))
 
-from build_review_package import matches_exclusion, get_tracked_files, build_package
+from build_review_package import matches_exclusion, get_tracked_files, get_filesystem_files, build_package
 
 
 class TestExclusions:
@@ -72,3 +72,31 @@ class TestTrackedFiles:
         for f in files:
             assert not f.endswith(".env"), f"Secret file tracked: {f}"
             assert "credentials" not in f.lower() or "test" in f.lower(), f"Credentials file: {f}"
+
+
+class TestFilesystemFallback:
+    def test_filesystem_files_returns_list(self):
+        files = get_filesystem_files()
+        assert isinstance(files, list)
+        assert len(files) > 0
+
+    def test_filesystem_excludes_dot_dirs(self):
+        files = get_filesystem_files()
+        for f in files:
+            parts = f.split("/")
+            assert not any(p.startswith(".") and p != "." for p in parts[:-1]), \
+                f"Dot-directory file in filesystem walk: {f}"
+
+    def test_dry_run_reports_source_discovery_mode(self):
+        manifest = build_package("source-only", "/dev/null", dry_run=True)
+        assert "source_discovery_mode" in manifest
+        assert manifest["source_discovery_mode"] in ("git_ls_files", "filesystem_fallback")
+
+    def test_no_git_fallback_uses_filesystem(self):
+        """Verify filesystem fallback produces files and excludes dot-dirs."""
+        files = get_filesystem_files()
+        assert len(files) > 0
+        # Filesystem fallback should not include __pycache__ or dot-dir contents
+        for f in files:
+            parts = f.split("/")
+            assert "__pycache__" not in parts, f"__pycache__ in filesystem walk: {f}"

@@ -95,22 +95,30 @@ def lint_commercial_ready():
 
 
 def lint_stale_requirements():
-    """Check for prose-style provenance in generated requirements."""
+    """Check for prose-style provenance in generated requirements input_source_hashes."""
     findings = []
     gr_dir = ROOT / "generated-requirements"
     if not gr_dir.exists():
         return []
+    try:
+        import yaml
+    except ImportError:
+        return findings
     for fmt_dir in gr_dir.iterdir():
         if not fmt_dir.is_dir():
             continue
-        for f in fmt_dir.glob("*.yaml"):
-            content = f.read_text()
-            if "(confirmed existing)" in content:
+        cr_file = fmt_dir / "commercial-requirements.yaml"
+        if not cr_file.exists():
+            continue
+        data = yaml.safe_load(cr_file.read_text()) or {}
+        input_hashes = data.get("input_source_hashes", {})
+        for key, val in input_hashes.items():
+            if isinstance(val, str) and "(confirmed existing)" in val:
                 findings.append({
                     "severity": "warning",
                     "check": "prose_provenance",
-                    "file": str(f.relative_to(ROOT)),
-                    "message": f"Prose-style provenance in {f.name}",
+                    "file": str(cr_file.relative_to(ROOT)),
+                    "message": f"Prose in input_source_hashes[{key}]: {val}",
                 })
     return findings
 

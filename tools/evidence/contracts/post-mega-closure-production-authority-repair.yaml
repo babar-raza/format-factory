@@ -1,0 +1,69 @@
+contract_id: "FORMAT-FACTORY-POST-MEGA-CLOSURE-PRODUCTION-AUTHORITY-REPAIR-001"
+sprint_id: "FORMAT-FACTORY-POST-MEGA-CLOSURE-PRODUCTION-AUTHORITY-REPAIR-001"
+created: "2026-05-20"
+contract_type: "evidence-bundle"
+
+description: |
+  Post-mega-closure production authority repair. Fixes: requirements
+  provenance prose in paths, package builder no-git fallback, ZST
+  test exception policy, AI litellm importorskip, state snapshot
+  linter refinement. Production blockers: 0 after repair.
+
+required_repo_files:
+  - generated-requirements/fods/commercial-requirements.yaml
+  - generated-requirements/fodt/commercial-requirements.yaml
+  - tools/requirements/validate_generated_requirements.py
+  - tools/package/build_review_package.py
+  - tools/state/state_snapshot.py
+  - tools/state/state_linter.py
+  - tests/package/test_build_review_package.py
+  - tests/ai/test_r31_ai_system_verification.py
+  - tests/python/zst/test_zst_r33_expansion.py
+  - state/current-state.json
+  - state/current-state.md
+  - tools/evidence/contracts/post-mega-closure-production-authority-repair.yaml
+
+required_metadata_files:
+  - verdict.md
+  - final-state-summary.yaml
+  - validation-command-log.txt
+  - lane-a-finding-reproduction.md
+  - lane-b-requirements-provenance-repair.md
+  - lane-c-package-mode-repair.md
+  - lane-d-auto-proof-repair.md
+  - lane-e-ai-optional-dependency-repair.md
+  - lane-f-zst-dependency-repair.md
+  - lane-g-state-refresh.md
+  - lane-h-validation.md
+  - lane-i-memory-next-decision.md
+  - phase2-integration.md
+  - no-scope-drift-report.md
+
+required_test_suites:
+  - tests/package/test_build_review_package.py
+  - tests/state/test_state_snapshot.py
+  - tests/requirements/test_validate_generated_requirements.py
+
+min_metadata_count: 70
+require_clean_git: true
+emergency_blocker_bundle: false
+
+semantic_checks:
+  mega_closure_accepted_with_limitations: true
+  requirements_provenance_repaired: true
+  requirements_stale_check_no_bogus_missing_paths: true
+  package_builder_no_git_mode_repaired: true
+  package_tests_pass: true
+  auto_proof_tests_pass: true
+  ai_optional_dependency_tests_stable: true
+  zst_dependency_policy_repaired: true
+  state_snapshot_refreshed: true
+  validation_results_recorded: true
+  no_product_feature_work: true
+  gate11_not_approved: true
+  commercial_product_ready_false: true
+  no_package_publish: true
+  no_github_remote_mutation: true
+  no_push: true
+  no_stash_reset_restore_clean_used: true
+  no_broad_staging_used: true

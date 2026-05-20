@@ -70,9 +70,10 @@ class TestCleanEnvRegression(unittest.TestCase):
         """gateway.py imports litellm at top level — verify it's importable in test env."""
         try:
             import litellm
-            assert hasattr(litellm, "completion")
         except ImportError:
-            self.skipTest("litellm not installed — gateway tests will be skipped")
+            self.skipTest("litellm not installed — optional dependency, skip cleanly")
+            return
+        assert hasattr(litellm, "completion")
 
     def test_no_litellm_import_in_product_source(self):
         """Product source (src/python/, src/net/) must never import AI libraries."""

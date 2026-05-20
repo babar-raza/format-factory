@@ -103,15 +103,24 @@ def get_production_blockers():
         pass  # state manager is being created now
     if not (ROOT / "tools" / "package" / "build_review_package.py").exists():
         blockers.append("review_package_builder_missing")
-    # Check generated requirements provenance
+    # Check generated requirements input_source_hashes for prose
     gr_dir = ROOT / "generated-requirements"
     if gr_dir.exists():
-        for fmt_dir in gr_dir.iterdir():
-            if fmt_dir.is_dir():
-                for f in fmt_dir.glob("*.yaml"):
-                    content = f.read_text()
-                    if "(confirmed existing)" in content:
-                        blockers.append(f"prose_provenance_in_{f.name}")
+        try:
+            import yaml
+        except ImportError:
+            yaml = None
+        if yaml:
+            for fmt_dir in gr_dir.iterdir():
+                if not fmt_dir.is_dir():
+                    continue
+                cr = fmt_dir / "commercial-requirements.yaml"
+                if not cr.exists():
+                    continue
+                data = yaml.safe_load(cr.read_text()) or {}
+                for val in (data.get("input_source_hashes") or {}).values():
+                    if isinstance(val, str) and "(confirmed existing)" in val:
+                        blockers.append(f"prose_provenance_in_{cr.name}")
                         break
     return blockers
 

@@ -313,9 +313,12 @@ def check_stale_metadata(fmt: str, verbose: bool = False) -> dict:
     else:
         for source_key, source_path_str in input_hashes.items():
             if isinstance(source_path_str, str) and ("/" in source_path_str or "\\" in source_path_str):
-                candidate = REPO_ROOT / source_path_str
+                # Strip prose annotations like "(confirmed existing)" from path values
+                import re as _re
+                clean_path = _re.sub(r"\s*\(.*?\)\s*$", "", source_path_str).strip()
+                candidate = REPO_ROOT / clean_path
                 if not candidate.exists():
-                    warnings.append(f"  [stale/{fmt}] WARN: input source no longer exists: {source_path_str}")
+                    warnings.append(f"  [stale/{fmt}] WARN: input source no longer exists: {clean_path}")
 
     if verbose:
         if not errors and not warnings:

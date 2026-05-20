@@ -101,13 +101,36 @@ def get_tracked_files():
     return [f.strip() for f in result.stdout.splitlines() if f.strip()]
 
 
+def get_filesystem_files(root=None):
+    """Fallback file discovery when .git is absent."""
+    root = root or ROOT
+    files = []
+    for dirpath, dirnames, filenames in os.walk(root):
+        # Skip excluded directories in-place
+        dirnames[:] = [d for d in dirnames if not d.startswith('.') and d not in
+                       ('bin', 'obj', '__pycache__', 'node_modules', '.venv', 'venv')]
+        for fn in filenames:
+            full = pathlib.Path(dirpath) / fn
+            rel = full.relative_to(root).as_posix()
+            files.append(rel)
+    return files
+
+
 def build_package(mode, output_path, dry_run=False):
     exclusions = MODE_EXCLUSIONS.get(mode, DEFAULT_EXCLUSIONS)
-    tracked = get_tracked_files()
+
+    # Prefer git ls-files; fall back to filesystem walk
+    git_dir = ROOT / ".git"
+    if git_dir.exists():
+        source_discovery_mode = "git_ls_files"
+        all_files = get_tracked_files()
+    else:
+        source_discovery_mode = "filesystem_fallback"
+        all_files = get_filesystem_files()
 
     included = []
     excluded = []
-    for f in tracked:
+    for f in all_files:
         if matches_exclusion(f, exclusions):
             excluded.append(f)
         else:
@@ -116,6 +139,7 @@ def build_package(mode, output_path, dry_run=False):
     # Build manifest
     manifest = {
         "mode": mode,
+        "source_discovery_mode": source_discovery_mode,
         "included_count": len(included),
         "excluded_count": len(excluded),
         "exclusion_patterns": exclusions,
