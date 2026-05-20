@@ -59,5 +59,5 @@
 | Agent Metrics blocked | policy_block -- no AGENT_METRICS_API_KEY |
 | No live agentic tasks | scope_limit |
 
-## Commit SHA: PENDING
+## Commit SHA: 5df903e
 ## NO-PUSH / NO-PUBLICATION / NO-AUTHORITY-PROMOTION: CONFIRMED
