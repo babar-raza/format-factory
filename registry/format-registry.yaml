@@ -770,6 +770,20 @@ formats:
         approved_by: delegated_agent_r22
         approved_date: "2026-05-17"
         notes: "R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false. No PyPI publication."
+      gate_correction:
+        status: corrected
+        applied: true
+        correction_date: "2026-05-20"
+        correction_sprint: R36
+        previous_claimed_gate: "G10 (local_release_candidate_ready_verified)"
+        evidence_backed_gate: G4
+        maturity_class: probe_only
+        correction_reason: >
+          R33 overclaim expert review found format at probe_only maturity.
+          Shallow page/slide extractor (page_count, per-page name/text/shape_count).
+          No neutral model, no write/export, no round-trip.
+        correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
+        next_action: deepen_or_quarantine
       gate_11:
         status: not_started
         approved_by: null
@@ -904,6 +918,20 @@ formats:
         approved_by: delegated_agent_r22
         approved_date: "2026-05-17"
         notes: "R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false. No PyPI publication."
+      gate_correction:
+        status: corrected
+        applied: true
+        correction_date: "2026-05-20"
+        correction_sprint: R36
+        previous_claimed_gate: "G10 (local_release_candidate_ready_verified)"
+        evidence_backed_gate: G4
+        maturity_class: probe_only
+        correction_reason: >
+          R33 overclaim expert review found format at probe_only maturity.
+          Shallow shape counter (shape_count, per-shape tag/text).
+          No neutral model, no write/export, no round-trip.
+        correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
+        next_action: deepen_or_quarantine
       gate_11:
         status: not_started
         approved_by: null
@@ -1037,6 +1065,20 @@ formats:
         approved_by: delegated_agent_r22
         approved_date: "2026-05-17"
         notes: "R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false. No PyPI publication."
+      gate_correction:
+        status: corrected
+        applied: true
+        correction_date: "2026-05-20"
+        correction_sprint: R36
+        previous_claimed_gate: "G10 (local_release_candidate_ready_verified)"
+        evidence_backed_gate: G4
+        maturity_class: probe_only
+        correction_reason: >
+          R33 overclaim expert review found format at probe_only maturity.
+          Shallow cell counter (gzip+XML, cell_count).
+          No neutral model, no write/export, no round-trip.
+        correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
+        next_action: deepen_or_quarantine
       gate_11:
         status: not_started
         approved_by: null
@@ -1177,6 +1219,20 @@ formats:
         approved_by: delegated_agent_r22
         approved_date: "2026-05-17"
         notes: "R22: local wheel+sdist built and verified (5/5 packages, 0 errors). Import smoke tests pass. publish_authorized=false. No PyPI publication."
+      gate_correction:
+        status: corrected
+        applied: true
+        correction_date: "2026-05-20"
+        correction_sprint: R36
+        previous_claimed_gate: "G10 (local_release_candidate_ready_verified)"
+        evidence_backed_gate: G4
+        maturity_class: probe_only
+        correction_reason: >
+          R33 overclaim expert review found format at probe_only maturity.
+          Shallow paragraph extractor with DOCTYPE strip for XXE safety.
+          No neutral model, no write/export, no round-trip.
+        correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
+        next_action: deepen_or_quarantine
       gate_11:
         status: not_started
         approved_by: null
@@ -1682,6 +1738,16 @@ formats:
         publication_authorized: false
         commercial_product_ready: false
         notes: "Gate 10 local package readiness (R31)."
+      scope_finalization:
+        applied: true
+        finalization_date: "2026-05-20"
+        finalization_sprint: R36
+        scope: header_and_metadata_only
+        scope_description: >
+          XCF parser reads header, property list, and layer offset table.
+          Does NOT decode pixel/tile data. Metadata-inspector scope.
+        deepening_required: true
+        pixel_decode_status: not_implemented
 
   - format_id: zpaq
     display_name: "ZPAQ Archive"
@@ -1913,6 +1979,15 @@ formats:
         publication_authorized: false
         commercial_product_ready: false
         notes: "Gate 10 local package readiness (R31)."
+      scope_finalization:
+        applied: true
+        finalization_date: "2026-05-20"
+        finalization_sprint: R36
+        scope: read_only_ascii_p3
+        scope_description: >
+          PPM parser supports P3 ASCII format only.
+          Binary P6 variant is not implemented.
+        binary_p6_status: not_implemented
 
   - format_id: pgm
     display_name: "Portable Graymap (PGM / Netpbm)"
@@ -1977,6 +2052,15 @@ formats:
         approval_method: delegated_expert_agent_review_requested_by_babar
         commercial_product_ready: false
         notes: "Gate 8 security review (R31). Delegated expert approved. Netpbm P2 text parser."
+      scope_finalization:
+        applied: true
+        finalization_date: "2026-05-20"
+        finalization_sprint: R36
+        scope: read_only_ascii_p2
+        scope_description: >
+          PGM parser supports P2 ASCII format only.
+          Binary P5 variant is not implemented.
+        binary_p5_status: not_implemented
 
   - format_id: pbm
     display_name: "Portable Bitmap (PBM / Netpbm)"
@@ -2041,6 +2125,15 @@ formats:
         approval_method: delegated_expert_agent_review_requested_by_babar
         commercial_product_ready: false
         notes: "Gate 8 security review (R31). Delegated expert approved. Netpbm P1 text parser."
+      scope_finalization:
+        applied: true
+        finalization_date: "2026-05-20"
+        finalization_sprint: R36
+        scope: read_only_ascii_p1
+        scope_description: >
+          PBM parser supports P1 ASCII format only.
+          Binary P4 variant is not implemented.
+        binary_p4_status: not_implemented
 
   - format_id: sylk
     display_name: "Symbolic Link (SYLK)"

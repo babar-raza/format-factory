@@ -102,7 +102,7 @@ formats:
     src_python_files: ["zst_codec.py", "__init__.py"]
     src_python_loc: 303
     src_net_exists: false
-    tests_python_count: 52
+    tests_python_count: 57
     tests_net_count: 0
     packaging_status: local_build_ready
     claimed_gate: "G10 (verified)"
@@ -120,13 +120,15 @@ formats:
     package_readiness: "Python FOSS local"
     commercial_readiness: "N/A (Python FOSS only)"
     overclaim_risk: none
-    strongest_evidence: "52 tests, only Python format with write + round-trip"
+    strongest_evidence: "57 tests, only Python format with write + round-trip"
     weakest_area: "no .NET track"
     recommended_action: "Stabilize; consider .NET track"
     r33_deepening: "23 new edge-case and boundary tests (25->48)"
     r33_deepening_date: "2026-05-19"
     r35_deepening: "4 stabilization tests (48->52, target 50+ met)"
     r35_deepening_date: "2026-05-20"
+    r36_deepening: "5 validation edge-case tests (52->57)"
+    r36_deepening_date: "2026-05-20"
 
   - format_id: ods
     display_name: "OpenDocument Spreadsheet (ZIP)"
@@ -138,7 +140,7 @@ formats:
     src_python_files: ["ods_parser.py", "ods_csv_exporter.py", "__init__.py"]
     src_python_loc: 450
     src_net_exists: false
-    tests_python_count: 94
+    tests_python_count: 101
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G8 (security review)"
@@ -156,13 +158,15 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "94 tests, typed cell parsing, CSV export with Unicode/determinism hardening"
+    strongest_evidence: "101 tests, typed cell parsing, CSV export with multi-sheet/boundary hardening"
     weakest_area: "no native ODS write, no round-trip, no packaging"
     recommended_action: "deepen: add ODS write capability, then round-trip"
     r33_deepening: "CSV exporter added (ods_csv_exporter.py, 25 tests)"
     r33_deepening_date: "2026-05-19"
     r35_deepening: "8 export hardening tests (determinism, Unicode, edge cases)"
     r35_deepening_date: "2026-05-20"
+    r36_deepening: "7 edge-case tests (multi-sheet selection, empty doc, file export)"
+    r36_deepening_date: "2026-05-20"
 
   - format_id: odt
     display_name: "OpenDocument Text (ZIP)"
@@ -206,7 +210,7 @@ formats:
     src_python_files: ["qoi_parser.py", "qoi_encoder.py", "__init__.py"]
     src_python_loc: 480
     src_net_exists: false
-    tests_python_count: 95
+    tests_python_count: 102
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G8 (security review)"
@@ -224,13 +228,15 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "95 tests, complete pixel codec with verified round-trip + chunk boundary hardening"
+    strongest_evidence: "102 tests, complete pixel codec with round-trip + checkerboard/RGBA/file edge cases"
     weakest_area: "no image export to other formats (PNG/raw)"
     recommended_action: "add image export capability, expand corpus"
     r33_deepening: "QOI encoder added (qoi_encoder.py, 25 tests) + parser RUN bug fixed"
     r33_deepening_date: "2026-05-19"
     r35_deepening: "8 encoder hardening tests (run boundaries, alpha gradient, DIFF/LUMA edges)"
     r35_deepening_date: "2026-05-20"
+    r36_deepening: "7 round-trip edge-case tests (single pixel, 1x256, checkerboard, file round-trip)"
+    r36_deepening_date: "2026-05-20"
 
   - format_id: dif
     display_name: "Data Interchange Format"

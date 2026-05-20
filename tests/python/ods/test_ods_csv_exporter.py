@@ -359,3 +359,63 @@ class TestR35ExportHardening:
         doc = _make_doc([sheet])
         csv = export_ods_to_csv(doc)
         assert "1234567890.12" in csv
+
+
+class TestR36ExportEdgeCases:
+    """R36 deepening: multi-sheet selection and boundary conditions."""
+
+    def test_sheet_index_out_of_range_raises(self):
+        """Out-of-range sheet_index raises OdsCsvExportError."""
+        sheet = _make_sheet("S1", [[("a", "string", "a")]])
+        doc = _make_doc([sheet])
+        with pytest.raises(OdsCsvExportError):
+            export_ods_to_csv(doc, sheet_index=5)
+
+    def test_negative_sheet_index_raises(self):
+        """Negative sheet_index raises OdsCsvExportError."""
+        sheet = _make_sheet("S1", [[("a", "string", "a")]])
+        doc = _make_doc([sheet])
+        with pytest.raises(OdsCsvExportError):
+            export_ods_to_csv(doc, sheet_index=-1)
+
+    def test_empty_document_raises(self):
+        """Document with no sheets raises OdsCsvExportError."""
+        doc = _make_doc([])
+        with pytest.raises(OdsCsvExportError):
+            export_ods_to_csv(doc)
+
+    def test_multi_sheet_selects_correct_sheet(self):
+        """sheet_index=1 selects second sheet, not first."""
+        s1 = _make_sheet("First", [[("A", "string", "A")]])
+        s2 = _make_sheet("Second", [[("B", "string", "B")]])
+        doc = _make_doc([s1, s2])
+        csv = export_ods_to_csv(doc, sheet_index=1)
+        assert "B" in csv
+        assert "A" not in csv
+
+    def test_integer_float_renders_without_decimal(self):
+        """Float value 42.0 renders as '42' not '42.0'."""
+        sheet = _make_sheet("S", [[(42.0, "float", "42.0")]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert "42\r\n" in csv or csv.strip() == "42"
+
+    def test_none_cell_renders_as_empty(self):
+        """Cell with None value renders as empty field."""
+        sheet = _make_sheet("S", [[(None, "", "")]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert csv.strip() == ""
+
+    def test_file_export_creates_valid_file(self):
+        """export_ods_to_csv_file creates a readable CSV file."""
+        sheet = _make_sheet("S", [[("hello", "string", "hello")]])
+        doc = _make_doc([sheet])
+        with tempfile.NamedTemporaryFile(suffix=".csv", delete=False, mode="w") as f:
+            path = f.name
+        try:
+            export_ods_to_csv_file(doc, path)
+            content = Path(path).read_text(encoding="utf-8")
+            assert "hello" in content
+        finally:
+            Path(path).unlink(missing_ok=True)

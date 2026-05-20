@@ -268,3 +268,52 @@ class TestR35ZstStabilization:
         result = probe_frame(truncated)
         # Should not raise, may report invalid or partial
         assert isinstance(result, dict)
+
+
+class TestR36ZstValidationEdgeCases:
+    """R36 deepening: validate_file and probe edge cases."""
+
+    @skip_if_no_zstd
+    def test_validate_file_round_trip(self):
+        """validate_file succeeds on a file created by compress_bytes."""
+        data = b"hello world from R36 validation"
+        compressed = compress_bytes(data)
+        with tempfile.NamedTemporaryFile(suffix=".zst", delete=False) as f:
+            f.write(compressed)
+            path = f.name
+        try:
+            result = validate_file(path)
+            assert isinstance(result, dict)
+            assert result.get("exists") is True
+        finally:
+            Path(path).unlink(missing_ok=True)
+
+    @skip_if_no_zstd
+    def test_validate_file_nonexistent(self):
+        """validate_file handles nonexistent file path."""
+        result = validate_file("/nonexistent/path/test.zst")
+        assert isinstance(result, dict)
+        assert result.get("exists") is False or "error" in str(result).lower()
+
+    @skip_if_no_zstd
+    def test_probe_frame_non_zstd_data(self):
+        """probe_frame returns meaningful result for non-zstd data."""
+        result = probe_frame(b"this is not zstandard data at all")
+        assert isinstance(result, dict)
+
+    @skip_if_no_zstd
+    def test_roundtrip_binary_data(self):
+        """Round-trip all byte values 0x00-0xFF."""
+        data = bytes(range(256))
+        compressed = compress_bytes(data)
+        decompressed = decompress_bytes(compressed)
+        assert decompressed == data
+
+    @skip_if_no_zstd
+    def test_compress_level_range(self):
+        """Different compression levels all produce valid output."""
+        data = b"test data for level comparison" * 100
+        for level in [1, 3, 9]:
+            compressed = compress_bytes(data, level=level)
+            decompressed = decompress_bytes(compressed)
+            assert decompressed == data

@@ -382,3 +382,74 @@ class TestR35EncoderHardening:
         img = QoiImage(width=0, height=1, channels=3, colorspace=0, pixels=[])
         with pytest.raises((ValueError, Exception)):
             encode_qoi(img)
+
+
+class TestR36RoundTripEdgeCases:
+    """R36 deepening: round-trip encode-decode edge cases."""
+
+    def test_single_pixel_rgb(self):
+        """Single RGB pixel round-trips correctly."""
+        pixels = [(42, 128, 200, 255)]
+        img = _make_image(1, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+        assert decoded.width == 1 and decoded.height == 1
+
+    def test_single_pixel_rgba(self):
+        """Single RGBA pixel with partial alpha round-trips."""
+        pixels = [(42, 128, 200, 128)]
+        img = _make_image(1, 1, pixels, channels=4)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_1x256_column_image(self):
+        """Tall narrow image (1x256) round-trips correctly."""
+        pixels = [(i, 255 - i, i // 2, 255) for i in range(256)]
+        img = _make_image(1, 256, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+        assert decoded.height == 256
+
+    def test_256x1_row_image(self):
+        """Wide flat image (256x1) round-trips correctly."""
+        pixels = [(i, i, i, 255) for i in range(256)]
+        img = _make_image(256, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_all_same_rgba_uses_index_or_run(self):
+        """100 identical RGBA pixels should compress well via OP_RUN/OP_INDEX."""
+        pixels = [(50, 100, 150, 200)] * 100
+        img = _make_image(10, 10, pixels, channels=4)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+        # Should compress significantly (100 pixels, mostly OP_RUN)
+        assert len(encoded) < 100 * 4
+
+    def test_checkerboard_pattern(self):
+        """Alternating black/white checkerboard pattern round-trips."""
+        black = (0, 0, 0, 255)
+        white = (255, 255, 255, 255)
+        pixels = [black if (i + j) % 2 == 0 else white for j in range(8) for i in range(8)]
+        img = _make_image(8, 8, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_file_round_trip(self):
+        """encode_qoi_to_file produces a file that parse_qoi_strict can read back."""
+        pixels = [(10, 20, 30, 255), (40, 50, 60, 255), (70, 80, 90, 255), (100, 110, 120, 255)]
+        img = _make_image(2, 2, pixels)
+        with tempfile.NamedTemporaryFile(suffix=".qoi", delete=False) as f:
+            path = f.name
+        try:
+            encode_qoi_to_file(img, path)
+            decoded = parse_qoi_strict(path)
+            assert decoded.pixels == pixels
+        finally:
+            Path(path).unlink(missing_ok=True)

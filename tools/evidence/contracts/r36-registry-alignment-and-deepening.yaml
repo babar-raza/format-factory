@@ -1,0 +1,28 @@
+contract_id: "FORMAT-FACTORY-R36-REGISTRY-ALIGNMENT-DEEPENING-AND-RECOVERY-CONTINUATION-001"
+sprint_id: "FORMAT-FACTORY-R36-REGISTRY-ALIGNMENT-DEEPENING-AND-RECOVERY-CONTINUATION-001"
+created: "2026-05-20"
+contract_type: "evidence-bundle"
+
+description: |
+  R36 registry alignment sprint. Adds gate_correction and scope_finalization sections
+  to format-registry.yaml to close the gap left by R35 (which only corrected pack.yaml
+  and format-completion-matrix.yaml). 19 new deepening tests. 8 registry alignment guards.
+
+required_repo_files:
+  - reports/r36/preflight-and-lane-ownership.md
+  - reports/r36/final-verdict.md
+  - reports/r36/adversarial-review.md
+  - tests/evidence/test_r36_registry_alignment_guards.py
+  - memory/55-r36-registry-alignment-and-deepening-20260520.md
+  - registry/format-registry.yaml
+  - registry/format-completion-matrix.yaml
+
+required_test_suites:
+  - tests/evidence/test_r36_registry_alignment_guards.py
+  - tests/python/ods/test_ods_csv_exporter.py
+  - tests/python/qoi/test_qoi_encoder.py
+  - tests/python/zst/test_zst_r33_expansion.py
+
+min_metadata_count: 30
+require_clean_git: true
+emergency_blocker_bundle: false
