@@ -198,3 +198,18 @@ stages:
     publication_authorized: false
     commercial_product_ready: false
     notes: "Gate 10 local package readiness. Parser at Gate 8+. Ready for local wheel/sdist. publication_authorized=false until G11 complete."
+
+  scope_finalization:
+    applied: true
+    finalization_date: "2026-05-20"
+    finalization_sprint: R35
+    scope: read_only_ascii_p3
+    scope_description: >
+      PPM parser reads P3 (ASCII) format only. P6 (binary) not implemented.
+      Read-only — no write/export/round-trip.
+    r33_review_outcome: "READ_ONLY_SCOPE_APPROVED"
+    binary_p6_status: not_implemented
+    binary_p6_required_for: "G10 advancement beyond read-only ASCII scope"
+    notes: >
+      G8 security pass valid for P3 ASCII scope. Scope limitation annotated.
+      P6 binary support required before claiming library maturity or G10 advancement.

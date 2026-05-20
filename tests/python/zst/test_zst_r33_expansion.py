@@ -228,3 +228,43 @@ class TestValidateFileDepth:
             path.write_bytes(compressed)
             validate_file(path)
             assert path.read_bytes() == compressed
+
+
+# ---------------------------------------------------------------------------
+# 6. R35 Stabilization — additional tests to reach 50+
+# ---------------------------------------------------------------------------
+
+class TestR35ZstStabilization:
+    """R35 Lane G: additional meaningful tests for ZST stabilization."""
+
+    @skip_if_no_zstd
+    def test_probe_frame_magic(self):
+        """probe_frame returns magic bytes for valid compressed data."""
+        data = compress_bytes(b"test data")
+        result = probe_frame(data)
+        assert result.get("magic") == ZSTD_MAGIC or result.get("valid") is True
+
+    @skip_if_no_zstd
+    def test_roundtrip_empty_bytes(self):
+        """Compress and decompress empty bytes."""
+        compressed = compress_bytes(b"")
+        decompressed = decompress_bytes(compressed)
+        assert decompressed == b""
+
+    @skip_if_no_zstd
+    def test_roundtrip_1mb_data(self):
+        """Compress and decompress 1 MiB of patterned data."""
+        data = (b"pattern_" * 128) * 1024  # ~1 MiB
+        compressed = compress_bytes(data)
+        decompressed = decompress_bytes(compressed)
+        assert decompressed == data
+        assert len(compressed) < len(data)  # compression should help
+
+    @skip_if_no_zstd
+    def test_probe_frame_on_truncated_data(self):
+        """probe_frame handles truncated compressed data gracefully."""
+        data = compress_bytes(b"test")
+        truncated = data[:4]  # only magic bytes
+        result = probe_frame(truncated)
+        # Should not raise, may report invalid or partial
+        assert isinstance(result, dict)

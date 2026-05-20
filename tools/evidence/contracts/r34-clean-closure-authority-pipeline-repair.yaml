@@ -1,0 +1,35 @@
+contract_id: "FORMAT-FACTORY-R34-CLEAN-CLOSURE-AUTHORITY-PIPELINE-REPAIR-SWARM-001"
+sprint_id: "FORMAT-FACTORY-R34-CLEAN-CLOSURE-AUTHORITY-PIPELINE-REPAIR-SWARM-001"
+created: "2026-05-20"
+contract_type: "evidence-bundle"
+
+description: |
+  R34 clean closure sprint. Repairs evidence contract schema drift
+  (required_artifacts -> required_repo_files), adds contract migration guard
+  tests, classifies prior AI-runner dirty state as resolved, and verifies
+  product work preservation across R33/R34 scope separation.
+
+required_repo_files:
+  - reports/r34/preflight-and-lane-ownership.md
+  - reports/r34/r33-scope-separation-audit.md
+  - reports/r34/r33-drift-recovery-metadata-repair-report.md
+  - reports/r34/r33-ai-artifact-separation-report.md
+  - reports/r34/r33-product-work-validation-report.md
+  - reports/r34/final-verdict.md
+  - reports/r34/contract-schema-migration-report.md
+  - reports/r34/ai-runner-dirty-state-normalization-report.md
+  - reports/verification/r34-independent-verification.md
+  - reports/governance/r34-adversarial-review.md
+  - tests/evidence/test_r34_scope_collision_guard.py
+  - tests/evidence/test_contract_schema_migration.py
+  - tools/evidence/contracts/r33-drift-recovery-overclaim-deepening.yaml
+  - tools/evidence/contracts/r34-r33-scope-separation-repair.yaml
+  - tools/evidence/contracts/r34-clean-closure-authority-pipeline-repair.yaml
+
+required_test_suites:
+  - tests/evidence/test_r34_scope_collision_guard.py
+  - tests/evidence/test_contract_schema_migration.py
+
+min_metadata_count: 30
+require_clean_git: true
+emergency_blocker_bundle: false

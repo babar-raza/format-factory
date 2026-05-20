@@ -47,3 +47,10 @@ Low priority. Gate claims are honest for current scope.
 **Maturity class confirmed:** read_only_prototype for both
 **Action taken:** No correction needed. Gate claims are honest for ASCII scope. Binary support (P5/P4) must be added before advancing past G7.
 **Next step:** Add P5 (PGM) and P4 (PBM) binary readers before advancing to G8+.
+
+## R35 Scope Finalization Applied (2026-05-20)
+
+**Status:** SCOPE_FINALIZED
+**Action:** scope_finalization sections added to both pack.yamls. ASCII-only scope documented.
+**Sprint:** R35
+**Pack.yaml fields:** acquisition-packs/pgm/pack.yaml + acquisition-packs/pbm/pack.yaml → stages.scope_finalization

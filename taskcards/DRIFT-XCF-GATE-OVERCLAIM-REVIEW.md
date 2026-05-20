@@ -50,3 +50,10 @@
 **Maturity class confirmed:** probe_only (header-inspector)
 **Action taken:** G8 security pass accepted as valid for header-parsing scope. No gate rollback. Need 8+ more tests to reach 50-test floor. Pixel decode is high-effort and optional — header-inspector scope is an acceptable product if explicitly approved.
 **Next step:** Add 8 more tests (property edge cases, malformed layer tables). Consider header-inspector product scope approval.
+
+## R35 Scope Finalization Applied (2026-05-20)
+
+**Status:** SCOPE_FINALIZED
+**Action:** scope_finalization section added to pack.yaml. Header-inspector scope documented.
+**Sprint:** R35
+**Pack.yaml field:** acquisition-packs/xcf/pack.yaml → stages.scope_finalization

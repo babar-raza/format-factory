@@ -186,3 +186,14 @@ stages:
     all_low_mitigated: true
     commercial_product_ready: false
     notes: "Gate 8 delegated expert review. Text tokenization parser (Netpbm P1). Simplest image format. 0/1 pixel validation."
+
+  scope_finalization:
+    applied: true
+    finalization_date: "2026-05-20"
+    finalization_sprint: R35
+    scope: read_only_ascii_p1
+    scope_description: "PBM parser reads P1 (ASCII) format only. P4 (binary) not implemented. Read-only."
+    r33_review_outcome: "CURRENT_GATE_SUPPORTED"
+    binary_p4_status: not_implemented
+    binary_p4_required_for: "G9+ advancement beyond ASCII scope"
+    notes: "Gate claims honest for ASCII scope. Binary P4 support needed before advancing past G8."

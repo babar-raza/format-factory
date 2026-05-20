@@ -280,3 +280,82 @@ class TestCsvCapabilities:
         assert "single_sheet_export" in caps["features"]
         assert caps["max_rows"] > 0
         assert caps["max_cols"] > 0
+
+
+# ---------------------------------------------------------------------------
+# 9. R35 Export Hardening
+# ---------------------------------------------------------------------------
+
+class TestR35ExportHardening:
+    """R35 Lane E: deterministic output, Unicode, edge cases."""
+
+    def test_deterministic_output(self):
+        """Same input produces identical CSV on repeated calls."""
+        sheet = _make_sheet("S", [[("a", "string", "a"), ("b", "string", "b")]])
+        doc = _make_doc([sheet])
+        csv1 = export_ods_to_csv(doc)
+        csv2 = export_ods_to_csv(doc)
+        assert csv1 == csv2
+
+    def test_unicode_cell_values(self):
+        """Unicode characters export correctly."""
+        sheet = _make_sheet("S", [
+            [("café", "string", "café"), ("naïve", "string", "naïve")],
+            [("日本語", "string", "日本語"), ("中文", "string", "中文")],
+        ])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert "café" in csv
+        assert "日本語" in csv
+
+    def test_emoji_in_cell(self):
+        """Emoji characters survive export."""
+        sheet = _make_sheet("S", [[("hello 🌍", "string", "hello 🌍")]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert "🌍" in csv
+
+    def test_lf_line_ending(self):
+        """LF-only line ending when requested."""
+        sheet = _make_sheet("S", [
+            [("a", "string", "a")],
+            [("b", "string", "b")],
+        ])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc, line_ending="\n")
+        assert "\r\n" not in csv
+        assert csv == "a\nb\n"
+
+    def test_include_empty_rows_preserves_blanks(self):
+        """include_empty_rows=True preserves blank lines."""
+        sheet = OdsSheet(name="s1", rows=[
+            OdsRow(cells=[OdsCell(value="a", text="a", value_type="string")]),
+            OdsRow(cells=[]),
+            OdsRow(cells=[OdsCell(value="b", text="b", value_type="string")]),
+        ])
+        doc = OdsDocument(sheets=[sheet], path="")
+        csv_with = export_ods_to_csv(doc, include_empty_rows=True)
+        csv_without = export_ods_to_csv(doc, include_empty_rows=False)
+        assert csv_with.count("\r\n") == 3
+        assert csv_without.count("\r\n") == 2
+
+    def test_cr_in_field_is_quoted(self):
+        """Carriage return in field triggers RFC 4180 quoting."""
+        sheet = _make_sheet("S", [[("a\rb", "string", "a\rb")]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert csv.startswith('"')
+
+    def test_comma_and_quotes_combined(self):
+        """Field with both comma and quotes gets proper escaping."""
+        sheet = _make_sheet("S", [[('"a",b', "string", '"a",b')]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert '"""a"",b"' in csv
+
+    def test_large_float_precision(self):
+        """Large floats export without scientific notation issues."""
+        sheet = _make_sheet("S", [[(1234567890.12, "float", "1234567890.12")]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert "1234567890.12" in csv

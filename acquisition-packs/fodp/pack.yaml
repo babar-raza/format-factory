@@ -79,3 +79,23 @@ stages:
     notes: >
       Gate 3: 3 synthetic project-owned FODP samples created (minimal, basic, edge-case).
       Provenance: Apache-2.0, no external rights. R19 delegated.
+
+  gate_correction:
+    applied: true
+    correction_date: "2026-05-20"
+    correction_sprint: R35
+    previous_claimed_gate: "G10 (verified)"
+    evidence_backed_gate: G4
+    maturity_class: probe_only
+    correction_reason: >
+      R33 overclaim expert review found format at probe_only maturity.
+      Pack.yaml only records G1-G3. Matrix claimed G10 but prototype is a
+      shallow page/slide extractor (page_count, per-page name/text/shape_count).
+      No neutral model, no write/export, no round-trip. G4 prototype quality
+      is the highest evidence-backed gate.
+    correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
+    next_action: deepen_or_quarantine
+    notes: >
+      Historical gate claims preserved above. This correction does not delete
+      prior gate records. Format remains in src/python/fodp/ but classified as
+      probe_only until neutral model + write/export + 30 more tests earn G5+.

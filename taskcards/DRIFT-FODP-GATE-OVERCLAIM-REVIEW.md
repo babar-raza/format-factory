@@ -63,3 +63,10 @@
 **Maturity class confirmed:** probe_only
 **Action taken:** No pack.yaml gate rollback (preserve history). evidence_backed_gate in matrix remains G4. Format stays in src/python/ but classified as probe_only.
 **Next step:** Requires neutral model + write/export + 30 more tests before G5+ can be re-earned. See DEEPEN-* taskcards for remediation path.
+
+## R35 Gate Correction Applied (2026-05-20)
+
+**Status:** CORRECTED_CLOSED
+**Action:** gate_correction section added to pack.yaml with previous_claimed_gate, evidence_backed_gate, maturity_class, correction_reason.
+**Sprint:** R35
+**Pack.yaml field:** acquisition-packs/fodp/pack.yaml → stages.gate_correction

@@ -34,6 +34,16 @@ def _make_image(w: int, h: int, pixels: list, channels: int = 4, colorspace: int
     return QoiImage(width=w, height=h, channels=channels, colorspace=colorspace, pixels=pixels)
 
 
+def _decode_bytes(data: bytes) -> QoiImage:
+    """Decode QOI bytes via temp file (parse_qoi_strict takes a file path)."""
+    with tempfile.NamedTemporaryFile(suffix=".qoi", delete=False) as f:
+        f.write(data)
+        f.flush()
+        result = parse_qoi_strict(f.name)
+    Path(f.name).unlink(missing_ok=True)
+    return result
+
+
 # ---------------------------------------------------------------------------
 # 1. Header validation
 # ---------------------------------------------------------------------------
@@ -287,3 +297,88 @@ class TestEncoderCapabilities:
         assert "greedy_encoding" in caps["features"]
         assert "round_trip_with_decoder" in caps["features"]
         assert len(caps["chunk_types"]) == 6
+
+
+# ---------------------------------------------------------------------------
+# 8. R35 Encoder/Round-Trip Hardening
+# ---------------------------------------------------------------------------
+
+class TestR35EncoderHardening:
+    """R35 Lane F: additional edge cases for encoder robustness."""
+
+    def test_run_length_boundary_62(self):
+        """Run of exactly 62 (max single OP_RUN) encodes correctly."""
+        pixel = (100, 100, 100, 255)
+        pixels = [pixel] * 62
+        img = _make_image(62, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_run_length_boundary_63(self):
+        """Run of 63 pixels needs 2 RUN chunks (62 + 1)."""
+        pixel = (50, 50, 50, 255)
+        pixels = [pixel] * 63
+        img = _make_image(63, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_alternating_two_colors(self):
+        """Alternating colors should use INDEX lookups."""
+        a = (255, 0, 0, 255)
+        b = (0, 255, 0, 255)
+        pixels = [a, b] * 16
+        img = _make_image(32, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_alpha_gradient(self):
+        """Varying alpha values survive round-trip."""
+        pixels = [(128, 128, 128, a) for a in range(0, 256)]
+        img = _make_image(256, 1, pixels, channels=4)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_all_black_pixels(self):
+        """All-black image uses minimal encoding (initial color is black)."""
+        pixel = (0, 0, 0, 255)
+        pixels = [pixel] * 100
+        img = _make_image(100, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+        # Should be very compact — mostly RUN chunks
+        header_size = 14
+        end_marker_size = 8
+        payload = len(encoded) - header_size - end_marker_size
+        assert payload <= 4  # at most 2 RUN chunks for 100 pixels
+
+    def test_diff_boundary_values(self):
+        """Pixel differences at OP_DIFF boundaries (-2 to +1)."""
+        base = (128, 128, 128, 255)
+        diffed = (129, 127, 126, 255)  # dr=+1, dg=-1, db=-2
+        pixels = [base, diffed]
+        img = _make_image(2, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_luma_boundary_values(self):
+        """Pixel differences at OP_LUMA boundaries."""
+        base = (100, 100, 100, 255)
+        # dg=-20, dr_dg=-5, db_dg=+5 → within LUMA range
+        luma = (75, 80, 125, 255)
+        pixels = [base, luma]
+        img = _make_image(2, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_zero_dimension_rejected(self):
+        """Encoder rejects zero-dimension images."""
+        img = QoiImage(width=0, height=1, channels=3, colorspace=0, pixels=[])
+        with pytest.raises((ValueError, Exception)):
+            encode_qoi(img)

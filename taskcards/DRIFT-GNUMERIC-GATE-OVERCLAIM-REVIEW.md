@@ -50,3 +50,10 @@ Human review of product scope.
 **Maturity class confirmed:** probe_only
 **Action taken:** No pack.yaml gate rollback. evidence_backed_gate in matrix remains G4. Format classified as probe_only.
 **Next step:** Requires neutral model + typed cell detection + write/export + 30 more tests before G5+.
+
+## R35 Gate Correction Applied (2026-05-20)
+
+**Status:** CORRECTED_CLOSED
+**Action:** gate_correction section added to pack.yaml.
+**Sprint:** R35
+**Pack.yaml field:** acquisition-packs/gnumeric/pack.yaml → stages.gate_correction

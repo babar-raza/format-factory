@@ -85,3 +85,17 @@ stages:
     notes: >
       Gate 3: 3 synthetic project-owned ABW samples (minimal, basic, edge-case).
       Plain XML, AWML 1.0 root element. Apache-2.0. R19 delegated.
+
+  gate_correction:
+    applied: true
+    correction_date: "2026-05-20"
+    correction_sprint: R35
+    previous_claimed_gate: "G10 (verified)"
+    evidence_backed_gate: G4
+    maturity_class: probe_only
+    correction_reason: >
+      R33 overclaim expert review found format at probe_only maturity.
+      Shallow XML text/paragraph extractor with DOCTYPE strip for XXE safety.
+      No inline formatting, no neutral model, no write/export.
+    correction_artifact: reports/r33/overclaim-expert-review-outcomes.md
+    next_action: deepen_or_quarantine

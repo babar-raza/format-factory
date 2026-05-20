@@ -239,3 +239,22 @@ stages:
     publication_authorized: false
     commercial_product_ready: false
     notes: "Gate 10 local package readiness. Parser at Gate 8+ (metadata-only). Ready for local wheel/sdist. publication_authorized=false until G11 complete."
+
+  scope_finalization:
+    applied: true
+    finalization_date: "2026-05-20"
+    finalization_sprint: R35
+    scope: header_and_metadata_only
+    scope_description: >
+      XCF parser reads header, property list, and layer offset table.
+      Does NOT decode pixel/tile data. This is a metadata-inspector scope.
+      Acceptable as a product if explicitly approved for header-inspector-only release.
+    deepening_required: true
+    deepening_reason: "Need 8+ more tests (property edge cases, malformed layer tables) to reach 50-test floor"
+    r33_review_outcome: "DEEPENING_REQUIRED (MINOR)"
+    pixel_decode_status: not_implemented
+    pixel_decode_priority: low
+    notes: >
+      Gate claims G4-G10 are valid for header-inspector scope.
+      No gate rollback needed. Pixel decode is high-effort and optional.
+      G10 release candidacy conditional on explicit scope approval.
