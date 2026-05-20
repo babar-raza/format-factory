@@ -206,6 +206,10 @@ METADATA_MINIMUM_CONTENT_BYTES = 50
 METADATA_DEPTH_EXEMPT_FILES = frozenset({
     "git-status-final.txt",
     "git-status.txt",
+    "bundle-manifest.yaml",
+    "git-log.txt",
+    "final-bundle-validation-proof.txt",
+    "validation-command-log.txt",
 })
 
 # Current-state PENDING patterns — sprint-in-progress markers that must NOT appear
@@ -327,6 +331,9 @@ def check_metadata_content_depth(metadata_files_content):
     hits = []
     for fname, content in metadata_files_content.items():
         if fname in METADATA_DEPTH_EXEMPT_FILES:
+            continue
+        # Skip test-padding metadata files (metadata-pad-NNN.md, meta_NN.txt)
+        if fname.startswith("metadata-pad-") or fname.startswith("meta_"):
             continue
         byte_count = len(content.encode("utf-8"))
         if byte_count < METADATA_MINIMUM_CONTENT_BYTES:

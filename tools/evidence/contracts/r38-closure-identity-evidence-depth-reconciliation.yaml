@@ -1,0 +1,24 @@
+contract_id: FORMAT-FACTORY-R38-R37-CLOSURE-IDENTITY-EVIDENCE-DEPTH-AND-AUTHORITY-STATE-RECONCILIATION-001
+sprint_type: closure_repair
+date: "2026-05-20"
+require_clean_git: true
+min_metadata_count: 30
+emergency_blocker_bundle: false
+
+required_repo_files:
+  - reports/r38/preflight-and-lane-ownership.md
+  - reports/r38/r37-closure-identity-audit.md
+  - reports/r38/authority-state-scope-review.md
+  - reports/r38/final-verdict.md
+  - reports/r38/adversarial-review.md
+  - tests/evidence/test_r38_evidence_depth_hardening.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/build_evidence_bundle.py
+  - tools/evidence/contracts/r38-closure-identity-evidence-depth-reconciliation.yaml
+
+required_test_suites:
+  - tests/evidence/test_r38_evidence_depth_hardening.py
+  - tests/evidence/test_r37_evidence_depth_guards.py
+  - tests/python/ods/test_ods_csv_exporter.py
+  - tests/python/qoi/test_qoi_encoder.py
+  - tests/python/zst/test_zst_r33_expansion.py
