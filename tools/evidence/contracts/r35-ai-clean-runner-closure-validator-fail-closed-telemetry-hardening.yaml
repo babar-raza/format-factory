@@ -1,0 +1,35 @@
+contract_id: FORMAT-FACTORY-R35-AI-CLEAN-RUNNER-CLOSURE-VALIDATOR-FAIL-CLOSED-TELEMETRY-HARDENING-MEGA-TRAIN-001
+sprint_id: FORMAT-FACTORY-R35-AI-CLEAN-RUNNER-CLOSURE-VALIDATOR-FAIL-CLOSED-TELEMETRY-HARDENING-MEGA-TRAIN-001
+run_number: R35
+created: "2026-05-20"
+purpose: Make AI runner cleanly verifiable, fail-closed, and evidence-validatable
+
+required_repo_files:
+  - reports/ai/r35-clean-runner-closure-20260520/preflight-current-state.md
+  - reports/ai/r35-clean-runner-closure-20260520/lane-ownership-and-overlap-matrix.md
+  - reports/ai/r35-clean-runner-closure-20260520/final-verdict-ai-runner-closure.md
+  - reports/ai/r35-clean-runner-closure-20260520/pipeline-fixture-run/ai-pipeline-runner-output.json
+  - reports/verification/r35-independent-verification.md
+  - reports/governance/r35-adversarial-review.md
+  - tests/ai/test_r35_clean_runner_closure.py
+  - tools/ai/pipeline/e2e_pilot.py
+  - tools/ai/run_ai_checks.py
+  - tools/ai/telemetry/artifacts.py
+  - docs/ai/ai-system-verification-matrix.md
+
+include_directories:
+  - reports/ai/r35-clean-runner-closure-20260520/
+  - reports/verification/
+  - reports/governance/
+  - tests/ai/
+  - tools/ai/
+  - docs/ai/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+
+min_metadata_count: 30
+require_clean_git: true

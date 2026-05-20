@@ -1,0 +1,133 @@
+{
+  "timestamp": "2026-05-20T12:40:55.278330+00:00",
+  "sprint_id": "R35",
+  "isolation": {
+    "mode": "isolation",
+    "checks": [
+      {
+        "name": "unconfigured_empty",
+        "passed": true
+      },
+      {
+        "name": "probe_blocked",
+        "passed": true
+      }
+    ],
+    "passed": true
+  },
+  "fixture": {
+    "mode": "fixture",
+    "format_id": "fods",
+    "sprint_id": "R35",
+    "synthesis_valid": true,
+    "citation_verified": true,
+    "citations_all_valid": true,
+    "contradiction_status": "no_contradictions",
+    "evaluator_passed": true,
+    "evaluator_score": 1.0,
+    "requirements_count": 1,
+    "requirements_valid": true,
+    "authority_state": "ai_draft",
+    "passed": true
+  },
+  "fixture_pipeline": {
+    "format_id": "fods",
+    "stage_results": {
+      "1_load_chunks": {
+        "passed": true,
+        "chunk_count": 5,
+        "errors": []
+      },
+      "2_retrieval": {
+        "passed": true,
+        "query": "fods format specification requirements parsing",
+        "query_hash": "03736a186f23e5cf",
+        "format_id": "fods",
+        "total_candidates": 5,
+        "returned": 3,
+        "top_k": 5,
+        "threshold": 0.01,
+        "excluded_count": 2,
+        "mode": "lexical",
+        "chunks": [
+          {
+            "chunk_hash": "77ba097855ae4bf1",
+            "format_id": "fods",
+            "section": "Data Type Requirements",
+            "score": 0.0494,
+            "matched_terms": [
+              "specification",
+              "requirements",
+              "format",
+              "fods",
+              "parsing"
+            ],
+            "explanation": "matched 5/5 query terms"
+          },
+          {
+            "chunk_hash": "82bdf26542f4b084",
+            "format_id": "fods",
+            "section": "XML Structure and Format Specification",
+            "score": 0.036,
+            "matched_terms": [
+              "specification",
+              "requirements",
+              "format",
+              "fods",
+              "parsing"
+            ],
+            "explanation": "matched 5/5 query terms"
+          },
+          {
+            "chunk_hash": "be99c8dbd08d01ae",
+            "format_id": "fods",
+            "section": "Document Metadata",
+            "score": 0.0146,
+            "matched_terms": [
+              "fods",
+              "parsing"
+            ],
+            "explanation": "matched 2/5 query terms"
+          }
+        ]
+      },
+      "3_synthesis": {
+        "passed": true,
+        "authority_state": "ai_draft",
+        "error_count": 0,
+        "citation_count": 3,
+        "synthesis_mode": "fixture_synthesis",
+        "citation_verified": true,
+        "citations_all_valid": true,
+        "citations_checked": 3,
+        "citations_failed": 0
+      },
+      "4_evaluation": {
+        "task_id": "pilot-fods-synthesis",
+        "passed": true,
+        "checks": {
+          "schema_valid": true,
+          "errors_within_limit": true,
+          "citations_sufficient": true,
+          "output_hash_present": true
+        },
+        "failures": [],
+        "score": 1.0
+      }
+    },
+    "final_authority_state": "ai_draft",
+    "all_stages_passed": true,
+    "errors": [],
+    "timestamp": "2026-05-20T12:40:56.298922+00:00",
+    "mode": "fixture_pipeline",
+    "sprint_id": "R35",
+    "passed": true
+  },
+  "failure_injection": {
+    "mode": "failure_injection",
+    "exit_code": 0,
+    "passed": true,
+    "output_tail": ":\\Users\\prora\\AppData\\Roaming\\Python\\Python313\\site-packages\\litellm\\_service_logger.py:59: DeprecationWarning: There is no current event loop\n    loop = asyncio.get_event_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n34 passed, 554 deselected, 3 warnings in 11.31s\n"
+  },
+  "overall_passed": true
+}
