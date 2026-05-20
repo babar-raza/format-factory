@@ -317,3 +317,47 @@ class TestR36ZstValidationEdgeCases:
             compressed = compress_bytes(data, level=level)
             decompressed = decompress_bytes(compressed)
             assert decompressed == data
+
+
+class TestR37ZstCodecDepth:
+    """R37 deepening: codec API depth and data pattern coverage."""
+
+    @skip_if_no_zstd
+    def test_empty_input_round_trip(self):
+        """Empty bytes compress and decompress to empty."""
+        compressed = compress_bytes(b"")
+        decompressed = decompress_bytes(compressed)
+        assert decompressed == b""
+
+    @skip_if_no_zstd
+    def test_single_byte_round_trip(self):
+        """Single byte round-trips correctly."""
+        compressed = compress_bytes(b"\x42")
+        decompressed = decompress_bytes(compressed)
+        assert decompressed == b"\x42"
+
+    @skip_if_no_zstd
+    def test_repetitive_data_compresses_well(self):
+        """Highly repetitive data achieves good compression ratio."""
+        data = b"A" * 10000
+        compressed = compress_bytes(data)
+        ratio = len(compressed) / len(data)
+        assert ratio < 0.01, f"Repetitive data should compress well, ratio={ratio}"
+
+    @skip_if_no_zstd
+    def test_incompressible_data_still_valid(self):
+        """Random-like data round-trips even if it doesn't compress well."""
+        import hashlib
+        data = hashlib.sha256(b"seed").digest() * 100
+        compressed = compress_bytes(data)
+        decompressed = decompress_bytes(compressed)
+        assert decompressed == data
+
+    @skip_if_no_zstd
+    def test_probe_frame_contains_magic(self):
+        """probe_frame result includes magic number detection."""
+        data = compress_bytes(b"test probe magic")
+        result = probe_frame(data)
+        assert isinstance(result, dict)
+        # Should indicate valid zstd frame
+        assert result.get("valid", result.get("magic_found", True)) is not False

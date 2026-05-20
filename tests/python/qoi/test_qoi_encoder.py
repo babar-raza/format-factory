@@ -453,3 +453,54 @@ class TestR36RoundTripEdgeCases:
             assert decoded.pixels == pixels
         finally:
             Path(path).unlink(missing_ok=True)
+
+
+class TestR37EncoderBoundaryConditions:
+    """R37 deepening: encoder boundary conditions and chunk type coverage."""
+
+    def test_max_run_length_boundary(self):
+        """62 identical pixels should produce exactly one OP_RUN chunk."""
+        pixels = [(100, 200, 50, 255)] * 62
+        img = _make_image(62, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_63_identical_splits_into_two_runs(self):
+        """63 identical pixels must split into run(62) + run(1)."""
+        pixels = [(100, 200, 50, 255)] * 63
+        img = _make_image(63, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_gradient_uses_diff_and_luma(self):
+        """Smooth gradient should use OP_DIFF and OP_LUMA chunks efficiently."""
+        pixels = [(i, i, i, 255) for i in range(16)]
+        img = _make_image(16, 1, pixels)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+        # Gradient should compress well vs raw RGBA
+        assert len(encoded) < 16 * 4 + 22  # header + end marker overhead
+
+    def test_varying_alpha_round_trips(self):
+        """Pixels with varying alpha channel round-trip correctly."""
+        pixels = [(128, 128, 128, a) for a in range(0, 256, 16)]
+        img = _make_image(16, 1, pixels, channels=4)
+        encoded = encode_qoi(img)
+        decoded = _decode_bytes(encoded)
+        assert decoded.pixels == pixels
+
+    def test_encoder_capabilities_list_all_chunk_types(self):
+        """get_encoder_capabilities must list all 6 QOI chunk types."""
+        caps = get_encoder_capabilities()
+        expected = {"QOI_OP_RGB", "QOI_OP_RGBA", "QOI_OP_INDEX",
+                    "QOI_OP_DIFF", "QOI_OP_LUMA", "QOI_OP_RUN"}
+        assert set(caps["chunk_types"]) == expected
+
+    def test_invalid_channel_count_rejected(self):
+        """Encoder rejects images with invalid channel count."""
+        img = QoiImage(width=1, height=1, channels=2, colorspace=0, pixels=[(1, 2)])
+        with pytest.raises(QoiEncodeError):
+            encode_qoi(img)

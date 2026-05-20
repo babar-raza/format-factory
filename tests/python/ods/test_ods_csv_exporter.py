@@ -419,3 +419,55 @@ class TestR36ExportEdgeCases:
             assert "hello" in content
         finally:
             Path(path).unlink(missing_ok=True)
+
+
+# ---------------------------------------------------------------------------
+# 11. R37 RFC 4180 Compliance Deepening
+# ---------------------------------------------------------------------------
+
+class TestR37Rfc4180Compliance:
+    """R37 deepening: RFC 4180 compliance edge cases."""
+
+    def test_tab_character_not_quoted(self):
+        """Tab characters do not trigger quoting (only comma/quote/newline do)."""
+        sheet = _make_sheet("S", [[("a\tb", "string", "a\tb")]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert csv.strip() == "a\tb"
+
+    def test_semicolon_not_quoted(self):
+        """Semicolons do not trigger quoting in RFC 4180."""
+        sheet = _make_sheet("S", [[("a;b", "string", "a;b")]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert csv.strip() == "a;b"
+
+    def test_empty_string_cell_in_middle(self):
+        """Empty string cell between non-empty cells exports as empty field."""
+        sheet = _make_sheet("S", [
+            [("a", "string", "a"), ("", "string", ""), ("c", "string", "c")]
+        ])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert csv.strip() == "a,,c"
+
+    def test_newline_in_field_quoted(self):
+        """Newline in cell value triggers RFC 4180 quoting."""
+        sheet = _make_sheet("S", [[("line1\nline2", "string", "line1\nline2")]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert '"line1\nline2"' in csv
+
+    def test_only_quotes_in_field(self):
+        """Field containing only double-quotes is properly escaped."""
+        sheet = _make_sheet("S", [[('"', "string", '"')]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert '""""' in csv
+
+    def test_boolean_true_renders_as_text(self):
+        """Boolean True cell renders as string representation."""
+        sheet = _make_sheet("S", [[("true", "boolean", "true")]])
+        doc = _make_doc([sheet])
+        csv = export_ods_to_csv(doc)
+        assert "true" in csv

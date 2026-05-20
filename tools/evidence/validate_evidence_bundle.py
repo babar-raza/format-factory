@@ -185,6 +185,9 @@ PENDING_MARKER_PATTERNS = [
     # P-EVID-002: final bundles must not contain IN_PROGRESS gate status.
     "| IN PROGRESS |",
     "| IN_PROGRESS |",
+    # R37: Placeholder stub metadata — prevents R36-style evidence-depth caveat
+    # where metadata files contained only "placeholder: true" instead of real content.
+    "placeholder: true",
 ]
 
 # Current-state PENDING patterns — sprint-in-progress markers that must NOT appear

@@ -1,0 +1,35 @@
+contract_id: "FORMAT-FACTORY-R37-EVIDENCE-DEPTH-REPAIR-SELECTIVE-DEEPENING-AND-MATURITY-CLOSURE-001"
+sprint_id: "FORMAT-FACTORY-R37-EVIDENCE-DEPTH-REPAIR-SELECTIVE-DEEPENING-AND-MATURITY-CLOSURE-001"
+created: "2026-05-20"
+contract_type: "evidence-bundle"
+
+description: |
+  R37 evidence depth repair sprint. Supersedes R36 evidence-depth caveat
+  by adding placeholder detection to PENDING_MARKER_PATTERNS, creating
+  evidence depth guard tests, producing probe-format recovery decision
+  packets, and continuing selective deepening of ODS/QOI/ZST.
+
+required_repo_files:
+  - reports/r37/preflight-and-lane-ownership.md
+  - reports/r37/probe-format-recovery-decisions.md
+  - reports/r37/final-verdict.md
+  - reports/r37/adversarial-review.md
+  - tests/evidence/test_r37_evidence_depth_guards.py
+  - tests/python/ods/test_ods_csv_exporter.py
+  - tests/python/qoi/test_qoi_encoder.py
+  - tests/python/zst/test_zst_r33_expansion.py
+  - tools/evidence/validate_evidence_bundle.py
+  - registry/format-completion-matrix.yaml
+  - memory/56-r37-evidence-depth-repair-and-deepening-20260520.md
+  - tools/evidence/contracts/r37-evidence-depth-repair-selective-deepening.yaml
+
+required_test_suites:
+  - tests/evidence/test_r37_evidence_depth_guards.py
+  - tests/python/ods/test_ods_csv_exporter.py
+  - tests/python/qoi/test_qoi_encoder.py
+  - tests/python/zst/test_zst_r33_expansion.py
+  - tests/evidence/test_r36_registry_alignment_guards.py
+
+min_metadata_count: 30
+require_clean_git: true
+emergency_blocker_bundle: false
