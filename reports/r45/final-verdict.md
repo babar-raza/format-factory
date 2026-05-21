@@ -153,4 +153,6 @@ Pre-existing failures (tracked since R29):
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION: PENDING (bundle not yet built)
+BUNDLE_VALIDATION: PASS
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r45-bundle.zip
+Entries: 2273 | Size: 4,152,139 bytes | Metadata files: 32
