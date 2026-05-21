@@ -1,0 +1,78 @@
+contract_id: FORMAT-FACTORY-R40-R39-IV-AND-FIX-CLOSURE-PACKAGE-BUILD-PROOF-001
+sprint_id: FORMAT-FACTORY-R40-R39-IV-AND-FIX-CLOSURE-PACKAGE-BUILD-PROOF-001
+run_number: R40
+created: "2026-05-21"
+purpose: >
+  R40: Fix all 9 R39 independent-review findings. Prove actual package builds.
+  Fix gateway.py get_api_key binding. Fix ODS path traversal cross-platform test.
+  Move ZST magic check before dependency import. Fix no-Git mode test.
+  Build Python wheels + smoke test in clean venv. Build .NET NuGet + consumer smoke test.
+  Update package-matrix.yaml to include fods/fodt. Update fods/fodt __init__.py.
+
+required_repo_files:
+  - reports/r40/r39-independent-verification.md
+  - reports/r40/package-build-proof.md
+  - reports/r40/e2e-product-pipeline-proof-matrix.md
+  - reports/r40/final-verdict.md
+  - tools/ai/control_plane/gateway.py
+  - src/python/zst/zst_codec.py
+  - src/python/fods/__init__.py
+  - src/python/fodt/__init__.py
+  - packaging/python/package-matrix.yaml
+  - packaging/python/build-local-packages.py
+  - tests/python/ods/test_ods_gate7_fuzz_guard.py
+  - tests/package/test_build_review_package.py
+  - tests/evidence/test_python_package_matrix.py
+  - state/current-state.md
+  - state/current-state.json
+
+include_directories:
+  - reports/r40/
+  - tools/ai/control_plane/
+  - src/python/fods/
+  - src/python/fodt/
+  - src/python/zst/
+  - packaging/python/
+  - tests/python/ods/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - tests/python/zst/
+  - tests/package/
+  - tests/evidence/
+  - state/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+min_metadata_count: 30
+require_clean_git: false
+emergency_blocker_bundle: false
+
+authoritative_test_results:
+  python_fods: "181 passed, 4 skipped (R40)"
+  python_fodt: "181 passed, 4 skipped (R40)"
+  python_zst: "62 passed (R40)"
+  python_ods: "107 passed (R40 — path traversal fix verified)"
+  ai_suite: "617 passed (R40 — gateway binding fix verified)"
+  evidence_suite: "613 passed (R40)"
+  dotnet_fods: "157 passed (R40)"
+  dotnet_fodt: "145 passed (R40)"
+  package_suite: "19+ passed (R40 — no-Git mode fix verified)"
+  full_total: "2486 passed, 2 pre-existing failed (dif/ppm), 4 skipped (R40)"
+
+package_build_proof:
+  python_fods_wheel: "aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl (10696 bytes)"
+  python_fods_sdist: "aspose_format_factory_fods-0.1.0.dev0.tar.gz (9525 bytes)"
+  python_fodt_wheel: "aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl (12290 bytes)"
+  python_fodt_sdist: "aspose_format_factory_fodt-0.1.0.dev0.tar.gz (10589 bytes)"
+  dotnet_fods_nupkg: "FormatFactory.Fods.0.1.0-tier0.nupkg (13063 bytes, DLL 25600 bytes)"
+  dotnet_fodt_nupkg: "FormatFactory.Fodt.0.1.0-tier0.nupkg (12106 bytes, DLL 23552 bytes)"
+  python_smoke_test: "PASS — both installed in clean venv, __version__=0.1.0 confirmed"
+  dotnet_smoke_test: "PASS — FodsDocumentException + FodtDocumentException caught, SMOKE_OK"

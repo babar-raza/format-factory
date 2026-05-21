@@ -34,6 +34,8 @@ PACKAGE_DESCRIPTIONS = {
     "fodg": "Minimal FOSS Flat OpenDocument Graphics (.fodg) parser",
     "gnumeric": "Minimal FOSS Gnumeric spreadsheet (.gnumeric) parser",
     "abw": "Minimal FOSS AbiWord document (.abw) parser",
+    "fods": "Minimal FOSS Flat OpenDocument Spreadsheet (.fods) parser",
+    "fodt": "Minimal FOSS Flat OpenDocument Text (.fodt) parser",
 }
 
 PACKAGE_DEPS = {
@@ -42,6 +44,8 @@ PACKAGE_DEPS = {
     "fodg": "[]",
     "gnumeric": "[]",
     "abw": "[]",
+    "fods": "[]",
+    "fodt": "[]",
 }
 
 

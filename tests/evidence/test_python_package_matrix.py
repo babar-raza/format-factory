@@ -29,9 +29,11 @@ EXPECTED_PACKAGES = [
     "aspose-format-factory-fodg",
     "aspose-format-factory-gnumeric",
     "aspose-format-factory-abw",
+    "aspose-format-factory-fods",
+    "aspose-format-factory-fodt",
 ]
 
-EXPECTED_MODULES = ["zst", "fodp", "fodg", "gnumeric", "abw"]
+EXPECTED_MODULES = ["zst", "fodp", "fodg", "gnumeric", "abw", "fods", "fodt"]
 
 
 def test_package_matrix_file_exists():
@@ -52,7 +54,7 @@ def test_matrix_loads_as_yaml():
         matrix = yaml.safe_load(f)
     assert "packages" in matrix
     assert isinstance(matrix["packages"], list)
-    assert len(matrix["packages"]) == 5
+    assert len(matrix["packages"]) == 7
 
 
 @pytest.mark.skipif(not HAS_YAML, reason="PyYAML not available")

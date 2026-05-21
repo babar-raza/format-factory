@@ -90,6 +90,10 @@ class TestOdsFuzzGuards:
     def test_path_traversal_in_zip_entry(self):
         """ZIP entry with path traversal (../../) must not cause file-system escape."""
         import io
+        import os
+        import uuid
+        # Use a unique sentinel name — guaranteed not to pre-exist anywhere
+        sentinel_name = f"traversal-sentinel-{uuid.uuid4().hex}.txt"
         buf = io.BytesIO()
         with zipfile.ZipFile(buf, "w") as zf:
             zf.writestr("mimetype", "application/vnd.oasis.opendocument.spreadsheet")
@@ -104,18 +108,20 @@ class TestOdsFuzzGuards:
                 '</office:spreadsheet></office:body>'
                 '</office:document-content>'
             ))
-            # Malicious entry with path traversal
-            zf.writestr("../../etc/passwd", "root:x:0:0:root:/root:/bin/bash")
-        tmp = tempfile.NamedTemporaryFile(suffix=".ods", delete=False)
-        tmp.write(buf.getvalue())
-        tmp.close()
-        # Parser should still work (it only reads mimetype + content.xml)
-        # It must NOT extract or follow traversal paths
-        result = parse_ods(tmp.name)
-        assert isinstance(result, dict)
-        # Verify no file was written outside
-        import os
-        assert not os.path.exists(os.path.join(os.path.dirname(tmp.name), "..", "..", "etc", "passwd"))
+            # Malicious entry with path traversal pointing at sentinel
+            zf.writestr(f"../../{sentinel_name}", "traversal-payload")
+        with tempfile.TemporaryDirectory() as sandbox:
+            ods_path = os.path.join(sandbox, "test.ods")
+            with open(ods_path, "wb") as f:
+                f.write(buf.getvalue())
+            # Parser should still work (it only reads mimetype + content.xml)
+            # It must NOT extract or follow traversal paths
+            result = parse_ods(ods_path)
+            assert isinstance(result, dict)
+            # Verify no file was written outside sandbox (unique sentinel, cross-platform safe)
+            escaped_path = os.path.normpath(os.path.join(sandbox, "..", "..", sentinel_name))
+            assert not os.path.exists(escaped_path)
+            assert not os.path.exists(os.path.join(sandbox, sentinel_name))
 
     def test_oversized_column_repeat_guard(self):
         """Column repeat exceeding MAX_COLUMNS must be clamped, not OOM."""

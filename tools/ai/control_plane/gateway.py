@@ -10,7 +10,8 @@ import hashlib
 from datetime import datetime, timezone
 from typing import Any
 
-from tools.ai.control_plane.config import AIConfig, get_api_key
+import tools.ai.control_plane.config as _ai_config
+from tools.ai.control_plane.config import AIConfig
 from tools.ai.schemas.models import AIUsageRecord, CallStatus
 
 
@@ -68,7 +69,7 @@ def gateway_chat(
         record.error_class_redacted = "missing_endpoint_or_key"
         return {"content": "", "usage": {}}, record
 
-    api_key = get_api_key()
+    api_key = _ai_config.get_api_key()
     if not api_key:
         record.status = CallStatus.blocked_missing_env
         record.error_class_redacted = "missing_api_key"

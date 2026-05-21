@@ -93,7 +93,9 @@ def decompress_bytes(
         ZstDecompressionError: If decompression fails.
         ZstOutputLimitExceeded: If output would exceed max_output_size.
     """
-    zstandard = _get_zstandard()
+    # Validate inputs and magic bytes BEFORE importing optional zstandard
+    # so that wrong/truncated magic raises ZstInvalidFrameError even when
+    # the dependency is absent. This preserves cross-platform correctness.
     if not isinstance(data, (bytes, bytearray)):
         raise ZstError(f"data must be bytes, got {type(data).__name__}")
 
@@ -102,6 +104,8 @@ def decompress_bytes(
             f"Not a Zstandard frame — expected magic {ZSTD_MAGIC!r}, "
             f"got {data[:4]!r}"
         )
+
+    zstandard = _get_zstandard()
 
     limit = max_output_size if max_output_size is not None else DEFAULT_MAX_OUTPUT_BYTES
 

@@ -15,6 +15,9 @@ from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
 
 __version__ = PACKAGE_VERSION
+__track__ = "python-foss"
+__commercial_ready__ = False
+__capability_level__ = "alpha-foss-preview"
 
 __all__ = [
     "parse_fodt",
