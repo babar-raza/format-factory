@@ -188,6 +188,17 @@ stages:
     commercial_product_ready: false
     notes: "Gate 8 delegated expert review. Text tokenization parser (Netpbm P2). Same family as PPM. Per-pixel range validation."
 
+  gate_9:
+    status: pass
+    sprint: R44
+    date: "2026-05-21"
+    approval_method: delegated_agent_test_verification
+    approved_by: delegated_agent_r44
+    test_suite: tests/python/pgm/test_r43_gate9_deepening.py
+    test_result: "7/7 PASS"
+    commercial_product_ready: false
+    notes: "Gate 9 deep-dive capability verification. 7 tests: pixel_count invariant (w*h), magic=P2, maxval 1-65535, dimensions positive, field completeness contract ({ok,path,width,height,magic,pixel_count,maxval}), invalid samples return ok=False. R43 deepening tests verified in R44."
+
   scope_finalization:
     applied: true
     finalization_date: "2026-05-20"

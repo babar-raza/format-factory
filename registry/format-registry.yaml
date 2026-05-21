@@ -2052,6 +2052,15 @@ formats:
         approval_method: delegated_expert_agent_review_requested_by_babar
         commercial_product_ready: false
         notes: "Gate 8 security review (R31). Delegated expert approved. Netpbm P2 text parser."
+      gate_9:
+        status: pass
+        approved_by: "delegated_agent_r44"
+        approved_date: "2026-05-21"
+        product_family: imaging
+        python_foss_package: format-factory-pgm
+        commercial_product_ready: false
+        test_result: "7/7 PASS (R43 deepening: pixel_count=w*h, magic=P2, maxval range, field completeness, invalid samples)"
+        notes: "Gate 9 deep-dive capability verification (R43+R44). 7 structural invariant + field completeness tests. Python FOSS imaging track. Netpbm P2 ASCII."
       scope_finalization:
         applied: true
         finalization_date: "2026-05-20"
@@ -2125,6 +2134,15 @@ formats:
         approval_method: delegated_expert_agent_review_requested_by_babar
         commercial_product_ready: false
         notes: "Gate 8 security review (R31). Delegated expert approved. Netpbm P1 text parser."
+      gate_9:
+        status: pass
+        approved_by: "delegated_agent_r44"
+        approved_date: "2026-05-21"
+        product_family: imaging
+        python_foss_package: format-factory-pbm
+        commercial_product_ready: false
+        test_result: "6/6 PASS (R43 deepening: pixel_count=w*h, magic=P1, dimensions positive, field completeness, invalid samples)"
+        notes: "Gate 9 deep-dive capability verification (R43+R44). 6 structural invariant + field completeness tests. Python FOSS imaging track. Netpbm P1 ASCII."
       scope_finalization:
         applied: true
         finalization_date: "2026-05-20"
@@ -2197,6 +2215,15 @@ formats:
         approval_method: delegated_expert_agent_review_requested_by_babar
         commercial_product_ready: false
         notes: "Gate 8 security review (R31). Delegated expert approved. SYLK text parser."
+      gate_9:
+        status: pass
+        approved_by: "delegated_agent_r44"
+        approved_date: "2026-05-21"
+        product_family: cells
+        python_foss_package: format-factory-sylk
+        commercial_product_ready: false
+        test_result: "6/6 PASS (R43 deepening: cell_count, id_line starts with ID;, rows/cols non-negative, field completeness, invalid samples)"
+        notes: "Gate 9 deep-dive capability verification (R43+R44). 6 structural invariant + field completeness tests. Python FOSS cells track. SYLK text-based spreadsheet."
 
   - format_id: csv
     display_name: "Comma-Separated Values (CSV)"

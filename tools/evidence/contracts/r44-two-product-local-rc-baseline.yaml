@@ -1,0 +1,96 @@
+contract_id: FORMAT-FACTORY-R44-TWO-PRODUCT-LOCAL-RC-BASELINE-001
+sprint_id: FORMAT-FACTORY-R44-TWO-PRODUCT-LOCAL-RC-BASELINE-001
+run_number: R44
+created: "2026-05-21"
+purpose: >
+  R44: Two-product local RC baseline. Closes R43 partial gaps.
+  Lane 1A: R43 IV (AUTHORITY_PROOF_ACCEPTED_PRODUCT_PROOF_PARTIAL).
+  Lane 1B: Fix replay_extracted_bundle.py pycache defect (sys.dont_write_bytecode + exclusion filter).
+  Lane 1C: pytest-timeout portability confirmed (installed 2.3.1 in user site-packages).
+  MT2: Python FODS+FODT semantic smoke RC (7+8 tests, R43 blocks=0 regression closed).
+  MT3: .NET NuGet readme fix (PackageReadmeFile), FODS 157/157, FODT 145/145, no pack warnings.
+  MT3 G11-G: Approval packet prepared (awaiting Babar Raza written approval).
+  MT5: PGM/PBM/SYLK Gate 9 recorded in registry + pack.yaml (7+6+6 tests from R43).
+  AUTHORITATIVE_TEST_RESULT: 2100 passed.
+
+required_repo_files:
+  - reports/r44/final-verdict.md
+  - reports/r44/00-preflight.md
+  - reports/r44/r43-independent-verification.md
+  - reports/r44/package-proof/python/package-proof-summary.md
+  - reports/r44/package-proof/dotnet/package-proof-summary.md
+  - reports/r44/g11g-approval-packet.md
+  - tools/evidence/replay_extracted_bundle.py
+  - tests/evidence/test_r44_replay_pycache_fix.py
+  - tests/evidence/test_r44_timeout_portability.py
+  - tests/python/fods/test_r44_semantic_smoke.py
+  - tests/python/fodt/test_r44_semantic_smoke.py
+  - acquisition-packs/pgm/pack.yaml
+  - acquisition-packs/pbm/pack.yaml
+  - acquisition-packs/sylk/pack.yaml
+  - registry/format-registry.yaml
+  - state/current-state.md
+  - state/current-state.json
+
+include_directories:
+  - reports/r44/
+  - tools/evidence/
+  - tools/state/
+  - tests/evidence/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - tests/python/pgm/
+  - tests/python/pbm/
+  - tests/python/sylk/
+  - acquisition-packs/pgm/
+  - acquisition-packs/pbm/
+  - acquisition-packs/sylk/
+  - registry/
+  - state/
+  - memory/
+  - src/net/fods/
+  - src/net/fodt/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+min_metadata_count: 30
+require_clean_git: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r44-two-product-local-rc-baseline.yaml
+
+authoritative_test_results:
+  python_fods_semantic_smoke_r44: "7 passed (RC-level semantic contracts: format_id, sheets, formulas, types)"
+  python_fodt_semantic_smoke_r44: "8 passed (RC-level semantic contracts: headings, paragraphs, lists, tables; R43 blocks=0 regression closed)"
+  replay_pycache_fix_r44: "12 passed (dont_write_bytecode, _should_exclude, extracted_dir_to_zip pycache filter)"
+  timeout_portability_r44: "4 passed (pytest-timeout 2.3.1 confirmed, invocation documented)"
+  auto_proof_bundle: "9 passed (all pass)"
+  validator_hardening_r43: "16 passed (STATE_VERDICT_MISMATCH + verdict regex + PACKAGE_PROOF)"
+  state_snapshot_r43: "6 passed (TestVerdictRegexFormats)"
+  python_fods_deepening_r43: "21 passed (neutral model + formula + structure + type contracts)"
+  python_fodt_deepening_r43: "25 passed (table + list + block + field contracts)"
+  pgm_gate9_r43: "7 passed (R43 Gate 9 structural invariants + field completeness)"
+  pbm_gate9_r43: "6 passed (R43 Gate 9 structural invariants + field completeness)"
+  sylk_gate9_r43: "6 passed (R43 Gate 9 structural invariants + field completeness)"
+  python_state_evidence_requirements_packaging: "1789 passed, 2 pre-existing fail, 4 skip"
+  dotnet_fods: "157 passed, 0 failed (net10.0, R44)"
+  dotnet_fodt: "145 passed, 0 failed (net10.0, R44)"
+  full_total: "AUTHORITATIVE_TEST_RESULT: 2100 passed, 2 pre-existing fail, 4 skip"
+
+package_build_proof:
+  python_fods_wheel: "aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl (sha256=0d9e6826515d849052bcda7f8546515063e51ab93d23e7183715c96b45c26014)"
+  python_fodt_wheel: "aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl (sha256=513e84aaa5b29c90128d11d4c80f3ce2c451cc0d5d9c8801b044b7b49ca391a5)"
+  dotnet_fods_nupkg: "FormatFactory.Fods.0.1.0-tier0.nupkg (sha256=06c1dd9a12beeb9204f6f4b704ab27f311c6a84398de8a5649d9a66e3d1eb30c)"
+  dotnet_fodt_nupkg: "FormatFactory.Fodt.0.1.0-tier0.nupkg (sha256=72c556b73edf36f9a1f519802c4ec90600dbfcb9dfd8319b8dea0bee689c57cc)"
+  python_poc_smoke: "PASS — FODS 4/4 samples (sheets/cells/formulas/types), FODT 4/4 samples (blocks/headings/lists/tables)"
+  dotnet_poc_smoke: "PASS — FODS 157/157, FODT 145/145 (dotnet SDK 10.0.204)"
+  build_logs_location: "reports/r44/package-proof/python/ + reports/r44/package-proof/dotnet/"
+  dotnet_readme_fix: "PackageReadmeFile added to FormatFactory.Fods.csproj + FormatFactory.Fodt.csproj (no more missing readme warning)"
+  r43_sha_continuity: "Python SHA-256 unchanged from R43 (no source changes). .NET SHA differs due to README.md inclusion."

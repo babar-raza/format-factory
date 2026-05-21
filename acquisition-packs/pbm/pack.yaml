@@ -187,6 +187,17 @@ stages:
     commercial_product_ready: false
     notes: "Gate 8 delegated expert review. Text tokenization parser (Netpbm P1). Simplest image format. 0/1 pixel validation."
 
+  gate_9:
+    status: pass
+    sprint: R44
+    date: "2026-05-21"
+    approval_method: delegated_agent_test_verification
+    approved_by: delegated_agent_r44
+    test_suite: tests/python/pbm/test_r43_gate9_deepening.py
+    test_result: "6/6 PASS"
+    commercial_product_ready: false
+    notes: "Gate 9 deep-dive capability verification. 6 tests: pixel_count invariant (w*h), magic=P1, dimensions positive, 1x1 field completeness contract ({ok,path,width,height,magic,pixel_count}), all valid field completeness, invalid samples return ok=False. R43 deepening tests verified in R44."
+
   scope_finalization:
     applied: true
     finalization_date: "2026-05-20"

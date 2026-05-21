@@ -10,11 +10,16 @@
     <Authors>format-factory</Authors>
     <Description>FormatFactory.Fods: .NET commercial parser for Flat OpenDocument Spreadsheet (FODS). Tier 0 streaming implementation. Gate 11 commercial_readiness_in_progress; not release-ready.</Description>
     <PackageId>FormatFactory.Fods</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
 
   <!-- Gate 11 Tier 0 Note:
        Commercial-only .NET Tier 0 implementation.

@@ -30,10 +30,29 @@ import pathlib
 import sys
 import zipfile
 
+# Suppress .pyc bytecode generation during import to avoid __pycache__ directories
+# appearing inside the extracted repo/ tree when we later repack it.
+sys.dont_write_bytecode = True
+
 # Locate validate_evidence_bundle.py relative to this script
 _TOOLS_EVIDENCE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(_TOOLS_EVIDENCE))
 from validate_evidence_bundle import validate_bundle  # noqa: E402
+
+# Paths that must never appear in a repacked bundle (mirrors common contract exclude_patterns)
+_REPACK_EXCLUDE_SUFFIXES = (".pyc", ".pdb")
+_REPACK_EXCLUDE_PARTS = ("__pycache__", ".pytest_cache", ".mypy_cache")
+
+
+def _should_exclude(fpath: pathlib.Path) -> bool:
+    """Return True if this file should be excluded when repacking."""
+    parts = fpath.parts
+    for part in parts:
+        if part in _REPACK_EXCLUDE_PARTS:
+            return True
+    if fpath.suffix in _REPACK_EXCLUDE_SUFFIXES:
+        return True
+    return False
 
 
 def extracted_dir_to_zip(extracted_dir: pathlib.Path) -> io.BytesIO:
@@ -44,14 +63,22 @@ def extracted_dir_to_zip(extracted_dir: pathlib.Path) -> io.BytesIO:
         extracted_dir/bundle-metadata/...
 
     Returns an io.BytesIO containing the re-packed ZIP.
+    Excludes __pycache__, .pyc, .pytest_cache, and other bytecode artifacts
+    so the repacked ZIP passes the standard forbidden-file checks.
     """
     buf = io.BytesIO()
+    excluded_count = 0
     with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
         for fpath in sorted(extracted_dir.rglob("*")):
             if fpath.is_file():
+                if _should_exclude(fpath):
+                    excluded_count += 1
+                    continue
                 # zip path relative to extracted_dir
                 zip_name = fpath.relative_to(extracted_dir).as_posix()
                 zf.write(fpath, zip_name)
+    if excluded_count:
+        print(f"  (excluded {excluded_count} bytecode/cache files from repack)")
     buf.seek(0)
     return buf
 

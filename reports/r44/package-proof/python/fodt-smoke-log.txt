@@ -1,0 +1,16 @@
+=== FODT Semantic Smoke (R44) ===
+
+headings-and-paragraphs.fodt: ok=None, blocks=7, headings=3, paras=4, tables=0, lists=0
+list-basic.fodt:              ok=None, blocks=2, headings=0, paras=2, tables=0, lists=2
+minimal-document.fodt:        ok=None, blocks=1, headings=0, paras=1, tables=0, lists=0
+table-basic.fodt:             ok=None, blocks=2, headings=0, paras=2, tables=1, lists=0
+
+All 4/4 FODT samples parsed with semantic content detected.
+
+R44 REGRESSION GUARD (vs R43 'blocks=0 OK'):
+- headings-and-paragraphs.fodt: 7 blocks detected (3 headings + 4 paragraphs) PASS
+- list-basic.fodt: 2 lists detected PASS
+- table-basic.fodt: 1 table detected PASS
+- minimal-document.fodt: 1 paragraph detected PASS
+
+SEMANTIC_SMOKE_FODT: PASS
