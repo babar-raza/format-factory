@@ -154,4 +154,4 @@ Pre-existing failures (tracked since R29):
 
 ---
 
-BUNDLE_VALIDATION: PENDING
+BUNDLE_VALIDATION: PASS
