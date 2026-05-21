@@ -94,6 +94,6 @@ All artifacts in `.local/` (gitignored). Not pushed. Full SHA-256 in `package-ar
 
 ---
 
-## BUNDLE_VALIDATION: PENDING
+## Bundle Validation
 
-(Updated to PASS after bundle build in Train 8)
+BUNDLE_VALIDATION: PASS (evidence bundle built in Train 8; see .local/evidence-bundles/)
