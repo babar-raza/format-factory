@@ -60,6 +60,7 @@ require_contract_in_bundle: false
 require_manifest: false
 min_metadata_count: {min_meta}
 required_repo_files: []
+required_top_level_folders: ["bundle-metadata"]
 required_metadata_files:
   - final-bundle-validation-proof.txt
 forbidden_paths: []

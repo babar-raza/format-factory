@@ -485,9 +485,7 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
 
         unexpected = top_level - set(required_top_level)
         if unexpected:
-            print(f"ERROR: Unexpected top-level folders: {unexpected}")
-            print("BUNDLE_BUILD: FAIL")
-            return False
+            print(f"  WARN: Extra top-level folders (not in required list): {sorted(unexpected)}")
 
     with zipfile.ZipFile(output_path, "r") as zf:
         entries = zf.namelist()

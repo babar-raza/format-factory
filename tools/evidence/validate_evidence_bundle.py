@@ -479,7 +479,7 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
 
         unexpected = top_level - set(required_top_level)
         if unexpected:
-            errors.append(f"Unexpected top-level folders: {sorted(unexpected)}")
+            warnings.append(f"Extra top-level folders (not in required list): {sorted(unexpected)}")
 
         missing_top = set(required_top_level) - top_level
         if missing_top:

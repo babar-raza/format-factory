@@ -1,0 +1,67 @@
+contract_id: FORMAT-FACTORY-R41-HYGIENE-DEFECT-REPAIR-AND-POC-PROOF-001
+sprint_id: FORMAT-FACTORY-R41-HYGIENE-DEFECT-REPAIR-AND-POC-PROOF-001
+run_number: R41
+created: "2026-05-21"
+purpose: >
+  R41: Close 6 R40 hygiene defects. Fix BUNDLE_VALIDATION stale PENDING text.
+  Fix state_snapshot verdict bold-leak (** suffix). Fix test_auto_proof_bundle
+  no-Git extracted replay. Fix test_gateway_lazy_import two-path coverage.
+  Add evidence ZIP bloat governance (.gitignore + guard tests). Add SHA-256
+  hashes for all 6 package artifacts. Reconfirm 4-product POC pipeline green.
+
+required_repo_files:
+  - reports/r41/package-build-proof-with-hashes.md
+  - reports/r41/poc-pipeline-matrix.md
+  - reports/r41/final-verdict.md
+  - tools/state/state_snapshot.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/build_evidence_bundle.py
+  - tests/state/test_state_snapshot.py
+  - tests/evidence/test_r41_evidence_hygiene.py
+  - tests/evidence/test_auto_proof_bundle.py
+  - tests/ai/test_r32_ai_deepening.py
+  - state/current-state.md
+  - state/current-state.json
+
+include_directories:
+  - reports/r41/
+  - tools/state/
+  - tools/evidence/
+  - tests/state/
+  - tests/evidence/
+  - tests/ai/
+  - state/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+min_metadata_count: 30
+require_clean_git: false
+emergency_blocker_bundle: true
+
+authoritative_test_results:
+  python_fods: "181 passed, 4 skipped (R41)"
+  python_fodt: "181 passed, 4 skipped (R41)"
+  dotnet_fods: "157 passed (R41)"
+  dotnet_fodt: "145 passed (R41)"
+  state_suite: "14 passed (R41 — 3 new verdict-parsing guard tests)"
+  evidence_hygiene: "5 passed (R41 — new bloat+PENDING guard tests)"
+  auto_proof_bundle: "9 passed (R41 — no-Git extracted replay fix)"
+  full_total: "AUTHORITATIVE_TEST_RESULT: TBD after full suite run"
+
+package_build_proof:
+  python_fods_wheel: "aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl (10696 bytes, sha256=0d9e6826515d849052bcda7f8546515063e51ab93d23e7183715c96b45c26014)"
+  python_fods_sdist: "aspose_format_factory_fods-0.1.0.dev0.tar.gz (9525 bytes, sha256=2eac310d1844593d4e251de5eac8cf8d451407aa0f4790767d7cce4502a5f02c)"
+  python_fodt_wheel: "aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl (12290 bytes, sha256=513e84aaa5b29c90128d11d4c80f3ce2c451cc0d5d9c8801b044b7b49ca391a5)"
+  python_fodt_sdist: "aspose_format_factory_fodt-0.1.0.dev0.tar.gz (10589 bytes, sha256=be1083ee18edc93e2ec24ba4b04c78709573b8f9c4d3d83223705f0d816f3b62)"
+  dotnet_fods_nupkg: "FormatFactory.Fods.0.1.0-tier0.nupkg (13063 bytes, sha256=b10bbd4f2cbb219fd214d6c73aab0296408234dec4d06885b0254d3779bbc6de, DLL=25600 bytes)"
+  dotnet_fodt_nupkg: "FormatFactory.Fodt.0.1.0-tier0.nupkg (12106 bytes, sha256=2bdf2da57bae0a96f9b094e639c02bb8a9efa43ac8b63d93b5babc37d2eb3a89, DLL=23552 bytes)"
+  python_smoke_test: "PASS — 181 passed (fods), 181 passed (fodt)"
+  dotnet_smoke_test: "PASS — 157 passed (fods), 145 passed (fodt)"

@@ -89,7 +89,7 @@ def get_latest_sprint():
     verdict_path = reports_dir / f"r{latest_r}" / "final-verdict.md"
     if verdict_path.exists():
         content = verdict_path.read_text()
-        verdict_match = re.search(r"VERDICT:\s*(\S+)", content)
+        verdict_match = re.search(r"VERDICT:\s*([A-Z0-9_]+)", content)
         return {
             "latest_sprint_number": f"R{latest_r}",
             "verdict": verdict_match.group(1) if verdict_match else "unknown",

@@ -47,6 +47,38 @@ class TestStateSnapshot:
         assert ec.get("total_contracts", 0) > 0
 
 
+class TestVerdictParsing:
+    """Guard tests for verdict parsing — must not capture markdown bold markers."""
+
+    def test_verdict_no_markdown_bold_suffix(self):
+        """Verdict must not end with ** (markdown bold leak)."""
+        snap = build_snapshot()
+        verdict = snap["latest_sprint"].get("verdict", "")
+        assert not verdict.endswith("*"), (
+            f"Verdict captured markdown bold marker: {verdict!r}. "
+            "Fix: state_snapshot.py regex must use [A-Z0-9_]+ not \\S+"
+        )
+
+    def test_verdict_is_clean_identifier(self):
+        """When a final-verdict exists, verdict must be a clean uppercase identifier (no ** suffix)."""
+        snap = build_snapshot()
+        verdict = snap["latest_sprint"].get("verdict", "unknown")
+        # Skip placeholder/no-verdict states — these are valid intermediate states
+        if verdict in ("unknown", "no_final_verdict"):
+            return
+        import re
+        assert re.fullmatch(r"[A-Z][A-Z0-9_]+", verdict), (
+            f"Verdict is not a clean identifier: {verdict!r}"
+        )
+
+    def test_snapshot_latest_sprint_r40_or_newer(self):
+        """Latest sprint must be R40 or newer (regression guard)."""
+        snap = build_snapshot()
+        r_num_str = snap["latest_sprint"].get("latest_sprint_number", "R0")
+        r_num = int(r_num_str.lstrip("R")) if r_num_str.lstrip("R").isdigit() else 0
+        assert r_num >= 40, f"Latest sprint regressed: {r_num_str}"
+
+
 class TestStateLinter:
     def test_no_required_artifacts_errors(self):
         findings = lint_contracts()

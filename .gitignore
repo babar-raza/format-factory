@@ -108,8 +108,9 @@ desktop.ini
 # ============================================================
 # GENERATED EVIDENCE BUNDLES (local only, upload manually)
 # ============================================================
-# Evidence bundles live in .local/evidence-bundles/ which is
-# already excluded by .local/ above.
+# Evidence bundles live in evidence-bundles/ but must NOT be committed.
+# Large ZIP files cause repository bloat. Use .local/evidence-bundles/ for staging.
+evidence-bundles/*.zip
 
 # ============================================================
 # REPORTS EVIDENCE SUBFOLDER (if accidentally created)

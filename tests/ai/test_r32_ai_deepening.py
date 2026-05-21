@@ -384,12 +384,16 @@ class TestLitellmDependencyBoundary:
         assert result.final_authority_state == "ai_draft"
 
     def test_gateway_lazy_import_produces_clear_error(self):
-        """If litellm is missing, _get_litellm should raise ImportError with message."""
+        """_get_litellm returns module when available; raises ImportError with clear message when absent."""
+        import importlib.util
         from tools.ai.control_plane.gateway import _get_litellm
-        # We can't actually test missing litellm since it's installed,
-        # but we verify the function exists and returns the module when available
-        litellm_mod = _get_litellm()
-        assert hasattr(litellm_mod, "completion")
+        litellm_available = importlib.util.find_spec("litellm") is not None
+        if litellm_available:
+            litellm_mod = _get_litellm()
+            assert hasattr(litellm_mod, "completion")
+        else:
+            with pytest.raises(ImportError, match="litellm is required"):
+                _get_litellm()
 
     def test_blocked_config_does_not_call_litellm(self):
         """gateway_chat with unconfigured config should not invoke litellm."""

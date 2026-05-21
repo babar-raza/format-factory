@@ -55,36 +55,12 @@ No NuGet or PyPI publication — local builds only.
 
 All R39 independent-review findings resolved. All 4 product-track cells green. Package builds proved with artifacts and smoke tests. 3984 tests passing.
 
-BUNDLE_VALIDATION: PENDING
+BUNDLE_VALIDATION: PASS
 
-Evidence bundle blocked on clean git. All R40 changes are uncommitted (governance rule: no commit without explicit user request). Bundle can be built once human commits the sprint work.
+Evidence bundle built and validated at commit 9216e61.
 
-Ready-to-send commit sequence:
-```bash
-# 1. Stage all R40 changes
-git add packaging/python/build-local-packages.py \
-        packaging/python/package-matrix.yaml \
-        src/python/fods/__init__.py \
-        src/python/fodt/__init__.py \
-        src/python/zst/zst_codec.py \
-        state/current-state.json \
-        state/current-state.md \
-        tests/evidence/test_python_package_matrix.py \
-        tests/package/test_build_review_package.py \
-        tests/python/ods/test_ods_gate7_fuzz_guard.py \
-        tools/ai/control_plane/gateway.py \
-        tools/evidence/contracts/r40-r39-fix-closure-package-build-proof.yaml \
-        reports/r40/
-
-# 2. Commit
-git commit -m "fix(r40): close R39 IV findings — gateway binding, cross-platform tests, package builds"
-
-# 3. Build and validate bundle
-PYTHONPATH=. python tools/evidence/build_evidence_bundle.py \
-  --repo-root . \
-  --contract tools/evidence/contracts/r40-r39-fix-closure-package-build-proof.yaml \
-  --metadata-dir .local/r40-metadata/ \
-  --output evidence-bundles/
-PYTHONPATH=. python tools/evidence/validate_evidence_bundle.py \
-  --bundle evidence-bundles/r40-*.zip
-```
+Bundle: `evidence-bundles/r40-r39-fix-closure-package-build-proof.zip`
+SHA-256: `8b9510e8c98e83bf86bb5ae66ca06998f66dda0e143bcbe89fadd5ead8224deb`
+Size: 42,329,621 bytes
+Entries: validated by tools/evidence/validate_evidence_bundle.py
+Commit: 9216e61 (fix(r40): close R39 IV findings)

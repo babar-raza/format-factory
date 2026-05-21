@@ -1,0 +1,56 @@
+evidence_zip_manifest:
+  sprint: R42
+  purpose: >
+    Record SHA256 hashes of all evidence ZIPs before removing committed ZIPs from git tracking.
+    These ZIPs remain on disk (evidence-bundles/ dir, gitignored after R42 commit).
+    Future agents: DO NOT delete these files. Reference by SHA256 for chain-of-custody.
+
+  committed_zips:
+    - name: r20-productization-train-bundle.zip
+      path: evidence-bundles/r20-productization-train-bundle.zip
+      size_bytes: 2626630
+      sha256: 1438f77e7a67a2952d4f88b2dccf431ef1a6ea2b4971a59c81c10cf41c903f9e
+      git_action: removed_from_tracking_r42 (git rm --cached)
+      preserve_on_disk: true
+
+    - name: r21-foss-release-readiness-and-gate11-preexecution-swarm-20260517.zip
+      path: evidence-bundles/r21-foss-release-readiness-and-gate11-preexecution-swarm-20260517.zip
+      size_bytes: 5133526
+      sha256: f36753ec82bb05c85fee4a7928f01e5d3a349a89b605ebd1f31d690d58ba702c
+      git_action: removed_from_tracking_r42 (git rm --cached)
+      preserve_on_disk: true
+
+    - name: r22-full-throttle-release-candidate-and-gate11-prototype-train-20260517.zip
+      path: evidence-bundles/r22-full-throttle-release-candidate-and-gate11-prototype-train-20260517.zip
+      size_bytes: 10135988
+      sha256: 6ac9741ca50dd337fe5379c817aa322d98be6bc8f233aad9764f698dfd9a368b
+      git_action: removed_from_tracking_r42 (git rm --cached)
+      preserve_on_disk: true
+
+    - name: r39-drift-recovery-authority-normalization-two-product-delivery.zip
+      path: evidence-bundles/r39-drift-recovery-authority-normalization-two-product-delivery.zip
+      size_bytes: 21289734
+      sha256: 0f5e3da29fee779233ae279bba2b38aa008ef582f9268524a12e4347515e4c70
+      git_action: removed_from_tracking_r42 (git rm --cached)
+      preserve_on_disk: true
+
+  untracked_ignored_zips:
+    - name: r40-r39-fix-closure-package-build-proof.zip
+      path: evidence-bundles/r40-r39-fix-closure-package-build-proof.zip
+      size_bytes: 42329621
+      sha256: 8b9510e8c98e83bf86bb5ae66ca06998f66dda0e143bcbe89fadd5ead8224deb
+      git_action: already_untracked_ignored_by_gitignore
+      preserve_on_disk: true
+
+    - name: r41-hygiene-defect-repair-and-poc-proof.zip
+      path: .local/evidence-bundles/r41-hygiene-defect-repair-and-poc-proof.zip
+      size_bytes: 42322006
+      sha256: 78cb0b5c29905c9865976390cba7f7d89f73f807b99752b3d842ef1d76e0bc75
+      git_action: local_only_gitignored
+      preserve_on_disk: true
+
+  policy:
+    new_bundles_location: ".local/evidence-bundles/"
+    gitignore_pattern: "evidence-bundles/*.zip"
+    external_reference_only: true
+    commit_zips: false
