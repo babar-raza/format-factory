@@ -1,0 +1,83 @@
+contract_id: FORMAT-FACTORY-R46-ARTIFACT-CONTAINED-TWO-PRODUCT-RC-001
+sprint_id: FORMAT-FACTORY-R46-ARTIFACT-CONTAINED-TWO-PRODUCT-RC-001
+run_number: R46
+created: "2026-05-21"
+purpose: >
+  R46: Artifact-contained two-product RC baseline. Closes R45 overclaim gaps.
+  MT1: R45 IV (R45_RC_PROGRESS_ACCEPTED_ARTIFACT_AND_CONSUMER_REPLAY_PARTIAL). Validator
+       extended to catch PENDING in repo/reports/*/final-verdict.md.
+  MT2: Actual .whl/.nupkg artifacts in bundle-metadata/package-artifacts/.
+  MT3: Consumer proof replayable from bundled artifacts (not .local/).
+  MT4: Timeout warning fix (filterwarnings) + tools/testing/run_bounded_pytest.py.
+  MT5: Phase Audit 1 - specification ingestion audit (FODS, FODT, ZST, ODS).
+  MT6: FODS/FODT Python write/export capability deepening.
+
+require_clean_git: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r46-artifact-contained-two-product-rc.yaml
+require_manifest: true
+min_metadata_count: 30
+
+required_repo_files:
+  - reports/r46/final-verdict.md
+  - reports/r46/00-preflight.md
+  - reports/r46/r45-independent-verification.md
+  - reports/r46/lane-ownership.md
+  - reports/r46/risk-register.md
+  - reports/r46/work-ahead-policy.md
+  - reports/r46/phase-audit-roadmap.md
+  - reports/r46/phase-audit/phase-01-specification-ingestion.md
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_r46_validator_hardening.py
+  - tools/testing/run_bounded_pytest.py
+  - state/current-state.md
+  - state/current-state.json
+
+required_metadata_files:
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - r46-gaps-closure.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - consumer-proof-summary.txt
+
+include_directories:
+  - reports/r46/
+  - tools/evidence/
+  - tools/state/
+  - tools/testing/
+  - tests/evidence/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - src/net/fods/
+  - src/net/fodt/
+  - src/python/fods/
+  - src/python/fodt/
+  - registry/
+  - state/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+authoritative_test_results:
+  r46_validator_hardening: "14 passed (repo/reports pending check + R45 defect reproduction)"
+  r46_timeout_portability: "7 passed (run_bounded_pytest + filterwarnings)"
+  r46_consumer_proof: "8 passed (FODS + FODT consumer replayable from bundled artifacts)"
+  r46_capability_deepening: "TBD"
+  python_fods_fodt: "280 passed, 4 skipped (pre-existing)"
+  python_all_formats: "TBD"
+  dotnet_fods: "157 passed"
+  dotnet_fodt: "145 passed"
+  full_total: "AUTHORITATIVE_TEST_RESULT: TBD"

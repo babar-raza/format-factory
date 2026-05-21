@@ -306,6 +306,63 @@ def check_repo_current_state_pending(zf):
     return hits
 
 
+def check_repo_reports_pending(zf):
+    """R46: Scan repo/reports/<RUN>/final-verdict.md files for PENDING marker patterns.
+
+    The R45 post-mortem revealed that a bundle was shipped with
+    'BUNDLE_VALIDATION: PENDING' inside repo/reports/r45/final-verdict.md because
+    the bundle was built before the final-verdict was updated.  The existing
+    check_no_pending_reports() only scans bundle-metadata/ files; this function
+    closes the gap by also scanning every repo/reports/*/final-verdict.md entry.
+
+    To avoid false positives from historical references (e.g. "- BUNDLE_VALIDATION:
+    PENDING forward-documented" in R32), only lines that begin with the pattern
+    (optionally preceded by whitespace, but NOT by a list marker like "- ") are
+    treated as genuine status lines.
+
+    Returns a list of (zip_path, matched_pattern) tuples for any hits.
+    """
+    # Patterns checked as standalone status lines (not as markdown list references)
+    STATUS_LINE_PATTERNS = [
+        "BUNDLE_VALIDATION: PENDING",
+        "BUNDLE_VALIDATION: [PENDING]",
+        "TO BE UPDATED AFTER BUNDLE",
+        "PENDING — building evidence bundle",
+        "validation_status: PENDING",
+    ]
+
+    hits = []
+    all_entries = zf.namelist()
+    for entry in all_entries:
+        # Match repo/reports/<anything>/final-verdict.md (one subdirectory level)
+        if not entry.startswith("repo/reports/"):
+            continue
+        parts = entry.split("/")
+        # Expected: ["repo", "reports", "<run>", "final-verdict.md"]
+        if len(parts) != 4:
+            continue
+        if parts[3] != "final-verdict.md":
+            continue
+        try:
+            content = zf.read(entry).decode("utf-8", errors="replace")
+        except Exception:
+            continue
+        for line in content.splitlines():
+            stripped = line.strip()
+            # Skip lines that are markdown list items (start with "- " or "* ")
+            # These are documentation references, not live status lines.
+            if stripped.startswith("- ") or stripped.startswith("* ") or stripped.startswith("# "):
+                continue
+            for pattern in STATUS_LINE_PATTERNS:
+                if pattern in stripped:
+                    hits.append((entry, pattern))
+                    break  # one hit per file is enough
+            else:
+                continue
+            break  # already found a hit in this file
+    return hits
+
+
 def check_no_pending_reports(metadata_files_content):
     """Scan all metadata files for PENDING marker patterns.
 
@@ -843,6 +900,13 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
                     f"Sprint-in-progress PENDING marker in repo file '{repo_file}': {pattern!r} "
                     f"— see docs/current-state-and-evidence-authority.md"
                 )
+            repo_reports_pending_hits = check_repo_reports_pending(zf)
+            for zip_path, pattern in repo_reports_pending_hits:
+                errors.append(
+                    f"R46: PENDING marker in bundled final-verdict '{zip_path}': {pattern!r} "
+                    f"— bundle was built before final-verdict was updated. "
+                    f"Regenerate final-verdict.md before building bundle."
+                )
             closure_contradiction_hits = check_closure_contradictions(metadata_files_content)
             for msg in closure_contradiction_hits:
                 errors.append(msg)
@@ -896,10 +960,11 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         status_label = "PASS" if clean else ("FAIL" if clean is False else "MISSING")
         print(f"Git clean ({status_label}): {msg}")
     if no_pending:
-        total_pending = len(pending_hits) + len(repo_pending_hits)
+        total_pending = len(pending_hits) + len(repo_pending_hits) + len(repo_reports_pending_hits)
         pending_status = "PASS" if total_pending == 0 else "FAIL"
         print(f"No-PENDING check ({pending_status}): {len(pending_hits)} metadata PENDING + "
-              f"{len(repo_pending_hits)} repo current-state PENDING marker(s)")
+              f"{len(repo_pending_hits)} repo current-state PENDING + "
+              f"{len(repo_reports_pending_hits)} repo/reports final-verdict PENDING marker(s)")
         if closure_contradiction_hits:
             print(f"Closure-contradiction check (FAIL): {len(closure_contradiction_hits)} contradiction(s)")
         else:

@@ -1,0 +1,138 @@
+"""
+writer.py -- FODS serializer for format-factory-fods.
+
+Writes a neutral model workbook dict to a FODS (Flat OpenDocument Spreadsheet)
+XML file.
+
+Public API:
+  write_fods(workbook, file_path)  -- serialize workbook to FODS file
+  workbook_to_xml(workbook)        -- serialize workbook to XML string
+
+R46 MT6: Two-product capability deepening. Adds write/export path to FOSS package.
+
+Capability level: alpha-foss-preview (write subset — cells with text and
+numeric values only; formulas, styles, and merged cells are not generated).
+
+License: Apache-2.0
+Package: format-factory-fods v0.1.0
+"""
+
+from __future__ import annotations
+
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Any
+
+from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION
+from .exceptions import FodsInputError
+
+# ODF 1.3 namespace URIs
+_NS = {
+    "office": "urn:oasis:names:tc:opendocument:xmlns:office:1.0",
+    "table": "urn:oasis:names:tc:opendocument:xmlns:table:1.0",
+    "text": "urn:oasis:names:tc:opendocument:xmlns:text:1.0",
+    "number": "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0",
+    "of": "urn:oasis:names:tc:opendocument:xmlns:of:1.2",
+}
+
+_MIMETYPE = "application/vnd.oasis.opendocument.spreadsheet-flat-xml"
+
+# Register namespaces so ET uses the short prefixes
+for _prefix, _uri in _NS.items():
+    ET.register_namespace(_prefix, _uri)
+
+
+def _qn(ns_prefix: str, local: str) -> str:
+    return f"{{{_NS[ns_prefix]}}}{local}"
+
+
+def _write_cell(parent: ET.Element, cell: dict[str, Any]) -> None:
+    """Append a table:table-cell element for the given neutral model cell."""
+    value_type = cell.get("value_type", "string")
+    raw_value = cell.get("value")
+    text_content = cell.get("text_content", "")
+
+    cell_el = ET.SubElement(parent, _qn("table", "table-cell"))
+
+    if value_type == "float" and raw_value is not None:
+        cell_el.set(_qn("office", "value-type"), "float")
+        cell_el.set(_qn("office", "value"), str(raw_value))
+        text_p = ET.SubElement(cell_el, _qn("text", "p"))
+        text_p.text = str(raw_value)
+    elif value_type == "boolean" and raw_value is not None:
+        cell_el.set(_qn("office", "value-type"), "boolean")
+        cell_el.set(_qn("office", "boolean-value"), "true" if raw_value else "false")
+        text_p = ET.SubElement(cell_el, _qn("text", "p"))
+        text_p.text = text_content or ("true" if raw_value else "false")
+    else:
+        # Default: string
+        cell_el.set(_qn("office", "value-type"), "string")
+        display = text_content or (str(raw_value) if raw_value is not None else "")
+        if display:
+            cell_el.set(_qn("office", "string-value"), display)
+            text_p = ET.SubElement(cell_el, _qn("text", "p"))
+            text_p.text = display
+
+
+def _write_sheet(parent: ET.Element, sheet: dict[str, Any]) -> None:
+    """Append a table:table element for the given neutral model sheet."""
+    table_el = ET.SubElement(parent, _qn("table", "table"))
+    name = sheet.get("name", "Sheet1")
+    table_el.set(_qn("table", "name"), name)
+
+    rows = sheet.get("rows", [])
+    for row in rows:
+        row_el = ET.SubElement(table_el, _qn("table", "table-row"))
+        cells = row.get("cells", [])
+        for cell in cells:
+            _write_cell(row_el, cell)
+
+
+def workbook_to_xml(workbook: dict[str, Any]) -> str:
+    """Serialize a neutral model workbook dict to a FODS XML string.
+
+    Args:
+        workbook: dict following the fods neutral model schema.
+                  Required keys: sheets (list of sheet dicts).
+                  Optional keys: odf_version_attr.
+
+    Returns:
+        UTF-8 XML string (str) representing a valid FODS document.
+    """
+    if not isinstance(workbook, dict):
+        raise FodsInputError("workbook must be a dict")
+
+    sheets = workbook.get("sheets", [])
+    if not isinstance(sheets, list):
+        raise FodsInputError("workbook['sheets'] must be a list")
+
+    version = workbook.get("odf_version_attr", "1.3")
+
+    # Build root element
+    doc_el = ET.Element(_qn("office", "document"))
+    doc_el.set(_qn("office", "version"), version)
+    doc_el.set(_qn("office", "mimetype"), _MIMETYPE)
+
+    # office:body > office:spreadsheet
+    body_el = ET.SubElement(doc_el, _qn("office", "body"))
+    spreadsheet_el = ET.SubElement(body_el, _qn("office", "spreadsheet"))
+
+    for sheet in sheets:
+        _write_sheet(spreadsheet_el, sheet)
+
+    # Serialize
+    xml_declaration = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    body = ET.tostring(doc_el, encoding="unicode", xml_declaration=False)
+    return xml_declaration + body
+
+
+def write_fods(workbook: dict[str, Any], file_path: str | Path) -> None:
+    """Write a neutral model workbook dict to a FODS file.
+
+    Args:
+        workbook: dict following the fods neutral model schema.
+        file_path: destination path for the .fods file.
+    """
+    xml_content = workbook_to_xml(workbook)
+    path = Path(file_path)
+    path.write_text(xml_content, encoding="utf-8", newline="\n")
