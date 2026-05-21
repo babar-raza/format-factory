@@ -1,0 +1,81 @@
+contract_id: FORMAT-FACTORY-R43-AUTHORITY-PROOF-COMPLETE-001
+sprint_id: FORMAT-FACTORY-R43-AUTHORITY-PROOF-COMPLETE-001
+run_number: R43
+created: "2026-05-21"
+purpose: >
+  R43: Close 10 R42 authority/proof blockers. Fix state_snapshot verdict regex
+  (case-insensitive + bold markers). Add STATE_VERDICT_MISMATCH validator. Add
+  PACKAGE_PROOF_MISSING validator. Fix production_blockers reporting.
+  Python FODS+FODT build proof with raw logs. dotnet test+pack proof with logs.
+  replay_extracted_bundle.py no-Git replay. Confirm auto_proof_bundle 9/9 pass.
+  FODS 21 + FODT 25 deepening tests. PGM/PBM/SYLK Gate 9 deepening (19 tests).
+  16 validator hardening guard tests. AUTHORITATIVE_TEST_RESULT: 1967 passed.
+
+required_repo_files:
+  - reports/r43/final-verdict.md
+  - reports/r43/package-proof/python/package-proof-summary.md
+  - reports/r43/package-proof/dotnet/package-proof-summary.md
+  - tools/state/state_snapshot.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/replay_extracted_bundle.py
+  - tests/state/test_state_snapshot.py
+  - tests/evidence/test_r43_validator_hardening.py
+  - tests/python/fods/test_r43_deepening.py
+  - tests/python/fodt/test_r43_deepening.py
+  - tests/python/pgm/test_r43_gate9_deepening.py
+  - tests/python/pbm/test_r43_gate9_deepening.py
+  - tests/python/sylk/test_r43_gate9_deepening.py
+  - state/current-state.md
+  - state/current-state.json
+
+include_directories:
+  - reports/r43/
+  - tools/evidence/
+  - tools/state/
+  - tests/evidence/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - tests/python/pgm/
+  - tests/python/pbm/
+  - tests/python/sylk/
+  - state/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+min_metadata_count: 30
+require_clean_git: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r43-authority-proof-complete.yaml
+
+authoritative_test_results:
+  python_fods_deepening_r43: "21 passed (R43 neutral model + formula + structure + type contracts)"
+  python_fodt_deepening_r43: "25 passed (R43 table + list + block + field contracts)"
+  pgm_gate9_r43: "7 passed (R43 Gate 9 structural invariants + field completeness)"
+  pbm_gate9_r43: "6 passed (R43 Gate 9 structural invariants + field completeness)"
+  sylk_gate9_r43: "6 passed (R43 Gate 9 structural invariants + field completeness)"
+  validator_hardening_r43: "16 passed (STATE_VERDICT_MISMATCH + verdict regex + PACKAGE_PROOF)"
+  state_snapshot_r43: "6 passed (TestVerdictRegexFormats — all 4 markdown verdict formats)"
+  auto_proof_bundle: "9 passed (all pass with --timeout=30)"
+  dotnet_fods: "157 passed, 0 failed (R43)"
+  dotnet_fodt: "145 passed, 0 failed (R43)"
+  python_state_evidence_total: "1665 passed, 2 pre-existing fail, 4 skip"
+  full_total: "AUTHORITATIVE_TEST_RESULT: 1967 passed, 2 pre-existing fail, 4 skip"
+
+package_build_proof:
+  python_fods_wheel: "aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl (sha256=0d9e6826515d849052bcda7f8546515063e51ab93d23e7183715c96b45c26014)"
+  python_fodt_wheel: "aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl (sha256=513e84aaa5b29c90128d11d4c80f3ce2c451cc0d5d9c8801b044b7b49ca391a5)"
+  dotnet_fods_nupkg: "FormatFactory.Fods.0.1.0-tier0.nupkg (sha256=f7da8bcfddbc6f8badc0d54f0ffb9a9c60ec01eebef806907ea9fde58bb3ee0d)"
+  dotnet_fodt_nupkg: "FormatFactory.Fodt.0.1.0-tier0.nupkg (sha256=c6745109ca1b710115c1c81162e0b602495a772adc277ae2bc0e14b91eeb7754)"
+  python_poc_smoke: "PASS — FODS 4/4 samples, FODT 4/4 samples (build-venv + smoke-venv-r43, Python 3.13.2)"
+  dotnet_poc_smoke: "PASS — FODS 157/157, FODT 145/145 (dotnet SDK 10.0.204)"
+  build_logs_location: "reports/r43/package-proof/python/ + reports/r43/package-proof/dotnet/"
+  replay_validation: "REPLAY_VALIDATION: PASS (R42 bundle replayed via replay_extracted_bundle.py)"

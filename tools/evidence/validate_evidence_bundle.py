@@ -410,7 +410,7 @@ def check_closure_contradictions(metadata_files_content):
         for fname in ["final-verdict.md", "final-verdict.txt", "verdict.md"]:
             content = metadata_files_content.get(fname, "")
             if content:
-                m = re.search(r"VERDICT:\s*([A-Z][A-Z0-9_]+)", content)
+                m = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z][A-Z0-9_]+)", content, re.IGNORECASE)
                 if m:
                     verdict_val = m.group(1)
                     if (verdict_val.endswith("_COMPLETE")
@@ -424,6 +424,115 @@ def check_closure_contradictions(metadata_files_content):
                         )
                 break
 
+    return hits
+
+
+def check_package_proof_present(metadata_files_content, zf):
+    """R43: If verdict claims *_POC_READY, require package proof artifacts in bundle.
+
+    A bundle claiming POC readiness must contain at minimum one of:
+    - bundle-metadata/package-artifact-manifest.yaml
+    - repo/reports/r*/package-artifact-manifest.yaml
+    - repo/reports/r*/package-proof/ directory entries
+
+    Returns a list of error strings.
+    """
+    hits = []
+    verdict_val = None
+    for fname in ("final-verdict.md", "final-verdict.txt", "verdict.md"):
+        content = metadata_files_content.get(fname, "")
+        if content:
+            m = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z][A-Z0-9_]+)", content, re.IGNORECASE)
+            if m:
+                verdict_val = m.group(1)
+            break
+
+    if verdict_val is None:
+        return hits
+    if "POC_READY" not in verdict_val:
+        return hits
+
+    # Check for package proof in metadata or repo
+    all_entries = set(zf.namelist())
+    has_proof = (
+        "bundle-metadata/package-artifact-manifest.yaml" in all_entries
+        or "bundle-metadata/package-proof-summary.md" in all_entries
+        or any("package-artifact-manifest.yaml" in e for e in all_entries)
+        or any("package-proof" in e and not e.endswith("/") for e in all_entries)
+    )
+    if not has_proof:
+        hits.append(
+            f"PACKAGE_PROOF_MISSING: VERDICT is {verdict_val} (*_POC_READY) but no "
+            f"package-artifact-manifest.yaml or package-proof/ entries found in bundle. "
+            f"A POC_READY verdict requires package build proof (R43 Rule)."
+        )
+    return hits
+
+
+def check_state_verdict_agreement(metadata_files_content, zf):
+    """R43: Detect state/verdict disagreement.
+
+    If final-verdict.md (bundle-metadata) claims a *_COMPLETE or *_POC_READY verdict
+    but repo/state/current-state.md shows 'unknown' or 'no_final_verdict', the bundle
+    is internally inconsistent — the state file was not regenerated after final-verdict
+    was written.
+
+    Returns a list of error strings.
+    """
+    hits = []
+    verdict_val = None
+    for fname in ("final-verdict.md", "final-verdict.txt", "verdict.md"):
+        content = metadata_files_content.get(fname, "")
+        if content:
+            m = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z][A-Z0-9_]+)", content, re.IGNORECASE)
+            if m:
+                verdict_val = m.group(1)
+            break
+
+    if verdict_val is None:
+        return hits  # no verdict file present — nothing to check
+
+    is_positive_verdict = (
+        verdict_val.endswith("_COMPLETE")
+        or verdict_val.endswith("_READY")
+        or verdict_val.endswith("_PASS")
+        or "_COMPLETE_" in verdict_val
+        or "_READY_" in verdict_val
+    )
+    if not is_positive_verdict:
+        return hits  # only check positive verdicts
+
+    # Read repo/state/current-state.md from the bundle
+    state_content = ""
+    all_entries = set(zf.namelist())
+    for candidate in ("repo/state/current-state.md", "repo/state/current-state.json"):
+        if candidate in all_entries:
+            try:
+                state_content = zf.read(candidate).decode("utf-8", errors="replace")
+            except Exception:
+                pass
+            if state_content:
+                break
+
+    if not state_content:
+        return hits  # state file not in bundle — skip
+
+    # Check if state says unknown or no_final_verdict for the latest sprint
+    stale_indicators = [
+        "no_final_verdict",
+        "— unknown",
+        "— no_final_verdict",
+        ": unknown",
+        ": no_final_verdict",
+    ]
+    state_stale = any(ind in state_content for ind in stale_indicators)
+    if state_stale:
+        hits.append(
+            f"STATE_VERDICT_MISMATCH: final-verdict.md has VERDICT: {verdict_val} "
+            f"but state/current-state.md shows 'unknown' or 'no_final_verdict'. "
+            f"The state file was not regenerated after the final verdict was written. "
+            f"Run: python tools/state/state_snapshot.py (R43 fix: state_snapshot.py verdict regex)."
+        )
     return hits
 
 
@@ -690,7 +799,7 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             for fname in ["final-verdict.md", "final-verdict.txt", "verdict.md"]:
                 content = metadata_files_content.get(fname, "")
                 if content:
-                    m = re.search(r"VERDICT:\s*([A-Z][A-Z0-9_]+)", content)
+                    m = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z][A-Z0-9_]+)", content, re.IGNORECASE)
                     if m:
                         verdict_val = m.group(1)
                         is_genuine_emergency = (
@@ -722,6 +831,12 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
                 )
             closure_contradiction_hits = check_closure_contradictions(metadata_files_content)
             for msg in closure_contradiction_hits:
+                errors.append(msg)
+            state_verdict_hits = check_state_verdict_agreement(metadata_files_content, zf)
+            for msg in state_verdict_hits:
+                errors.append(msg)
+            package_proof_hits = check_package_proof_present(metadata_files_content, zf)
+            for msg in package_proof_hits:
                 errors.append(msg)
             authoritative_test_hits = check_authoritative_test_result_present(metadata_files_content)
             for msg in authoritative_test_hits:

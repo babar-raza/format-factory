@@ -89,7 +89,7 @@ def get_latest_sprint():
     verdict_path = reports_dir / f"r{latest_r}" / "final-verdict.md"
     if verdict_path.exists():
         content = verdict_path.read_text()
-        verdict_match = re.search(r"VERDICT:\s*([A-Z0-9_]+)", content)
+        verdict_match = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z0-9_]+)", content, re.IGNORECASE)
         return {
             "latest_sprint_number": f"R{latest_r}",
             "verdict": verdict_match.group(1) if verdict_match else "unknown",
@@ -103,6 +103,28 @@ def get_production_blockers():
         pass  # state manager is being created now
     if not (ROOT / "tools" / "package" / "build_review_package.py").exists():
         blockers.append("review_package_builder_missing")
+
+    # Authority/governance blockers — these are real and persistent
+    # G11-G requires Babar Raza written approval (not completed)
+    package_manifest = ROOT / "reports" / "r42" / "package-artifact-manifest.yaml"
+    if package_manifest.exists():
+        text = package_manifest.read_text()
+        if "gate_11: NOT_STARTED" in text or "G11-G" in text:
+            blockers.append("G11-G_NOT_STARTED: Gate 11 commercial approval requires Babar Raza written approval")
+
+    # Gate 8 security review packets awaiting human approval (ODS/ODT/QOI/XCF/DIF/PPM)
+    gate8_formats_path = ROOT / "reports" / "r42" / "next-format-ranking.md"
+    if gate8_formats_path.exists():
+        text = gate8_formats_path.read_text()
+        if "AWAITING_HUMAN_APPROVAL" in text:
+            blockers.append("GATE8_AWAITING_HUMAN_APPROVAL: ODS/ODT/QOI/XCF/DIF/PPM Gate 8 security review pending")
+
+    # Package proof gaps — check if package-artifact-manifest exists but artifacts are local-only
+    if package_manifest.exists():
+        text = package_manifest.read_text()
+        if "push_status: NOT_PUSHED" in text or "LOCAL_POC_READY" in text:
+            blockers.append("PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry")
+
     # Check generated requirements input_source_hashes for prose
     gr_dir = ROOT / "generated-requirements"
     if gr_dir.exists():

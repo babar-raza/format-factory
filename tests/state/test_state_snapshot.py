@@ -79,6 +79,52 @@ class TestVerdictParsing:
         assert r_num >= 40, f"Latest sprint regressed: {r_num_str}"
 
 
+class TestVerdictRegexFormats:
+    """R43: Guard tests covering all verdict markdown formats."""
+
+    def _extract_verdict(self, text):
+        import re
+        from state_snapshot import get_latest_sprint  # noqa: verify import
+        m = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z0-9_]+)", text, re.IGNORECASE)
+        return m.group(1) if m else None
+
+    def test_plain_uppercase_verdict(self):
+        assert self._extract_verdict("VERDICT: R43_COMPLETE") == "R43_COMPLETE"
+
+    def test_title_case_verdict(self):
+        assert self._extract_verdict("Verdict: R43_COMPLETE") == "R43_COMPLETE"
+
+    def test_bold_label_plain_value(self):
+        assert self._extract_verdict("**VERDICT:** R43_COMPLETE") == "R43_COMPLETE"
+
+    def test_bold_label_bold_value(self):
+        # R42 actual format: **Verdict:** **R42_HIGH_THROUGHPUT_POC_READY**
+        assert self._extract_verdict("**Verdict:** **R42_HIGH_THROUGHPUT_POC_READY**") == "R42_HIGH_THROUGHPUT_POC_READY"
+
+    def test_live_r42_verdict_resolves(self):
+        """R43 regression: live R42 final-verdict.md must return non-unknown verdict."""
+        import pathlib
+        snap_root = pathlib.Path(__file__).resolve().parents[2]
+        vpath = snap_root / "reports" / "r42" / "final-verdict.md"
+        if not vpath.exists():
+            return  # R42 report not present — skip
+        import re
+        content = vpath.read_text()
+        m = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z0-9_]+)", content, re.IGNORECASE)
+        assert m is not None, "No verdict found in reports/r42/final-verdict.md"
+        verdict = m.group(1)
+        assert verdict != "unknown", f"Verdict resolved to 'unknown'; actual: {verdict!r}"
+
+    def test_latest_sprint_not_unknown(self):
+        """R43 regression: get_latest_sprint() must not return verdict='unknown' when final-verdict.md is present."""
+        from state_snapshot import get_latest_sprint
+        result = get_latest_sprint()
+        verdict = result.get("verdict", "unknown")
+        assert verdict not in ("unknown",), (
+            f"state_snapshot verdict is 'unknown' — final-verdict.md exists but regex failed. Got: {verdict!r}"
+        )
+
+
 class TestStateLinter:
     def test_no_required_artifacts_errors(self):
         findings = lint_contracts()
