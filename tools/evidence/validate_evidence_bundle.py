@@ -388,6 +388,42 @@ def check_closure_contradictions(metadata_files_content):
             "CLOSURE_CONTRADICTION: final-bundle-validation-proof.txt says BUNDLE_VALIDATION: PASS "
             "but final-state-summary.yaml says result: FAIL — stale closure metadata must be repaired."
         )
+
+    # R42 check (Rule C-LOCAL-002): *_COMPLETE verdict + dirty git tree.
+    # A sprint must not claim final completion while git-status-final.txt shows
+    # uncommitted changes, unless the verdict is explicitly DIRTY_TREE_BLOCKED or SUPERSEDED.
+    git_status_dirty = False
+    for candidate in GIT_STATUS_CANDIDATE_FILES:
+        text = metadata_files_content.get(candidate, "")
+        if text:
+            dirty_indicators = [
+                "Changes not staged", "Changes to be committed",
+                "Untracked files", "modified:", "new file:", "deleted:",
+            ]
+            for indicator in dirty_indicators:
+                if indicator in text:
+                    git_status_dirty = True
+                    break
+            break
+
+    if git_status_dirty:
+        for fname in ["final-verdict.md", "final-verdict.txt", "verdict.md"]:
+            content = metadata_files_content.get(fname, "")
+            if content:
+                m = re.search(r"VERDICT:\s*([A-Z][A-Z0-9_]+)", content)
+                if m:
+                    verdict_val = m.group(1)
+                    if (verdict_val.endswith("_COMPLETE")
+                            and "DIRTY_TREE" not in verdict_val
+                            and "SUPERSEDED" not in verdict_val):
+                        hits.append(
+                            f"DIRTY_TREE_COMPLETE_CONTRADICTION: {fname} has VERDICT: {verdict_val} "
+                            "but git-status-final.txt shows uncommitted changes. "
+                            "A sprint must not claim *_COMPLETE with a dirty tree (Rule C-LOCAL-002). "
+                            "Use *_DIRTY_TREE_BLOCKED or *_PROGRESS_ACCEPTED_CLOSEOUT_SUPERSEDED."
+                        )
+                break
+
     return hits
 
 
@@ -646,6 +682,34 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         pending_hits = []
         repo_pending_hits = []
         closure_contradiction_hits = []
+        # R42 check (Rule C-LOCAL-003): emergency_blocker_bundle misuse.
+        # If emergency_blocker is true, the final verdict in metadata must signal
+        # a genuine emergency/blocked/failed state. A normal sprint using
+        # emergency_blocker_bundle to get around the metadata floor is misuse.
+        if emergency_blocker and no_pending:
+            for fname in ["final-verdict.md", "final-verdict.txt", "verdict.md"]:
+                content = metadata_files_content.get(fname, "")
+                if content:
+                    m = re.search(r"VERDICT:\s*([A-Z][A-Z0-9_]+)", content)
+                    if m:
+                        verdict_val = m.group(1)
+                        is_genuine_emergency = (
+                            "EMERGENCY" in verdict_val
+                            or "BLOCKED" in verdict_val
+                            or "SUPERSEDED" in verdict_val
+                            or "DIRTY_TREE" in verdict_val
+                            or "FAIL" in verdict_val
+                            or "PARTIAL" in verdict_val
+                        )
+                        if not is_genuine_emergency:
+                            warnings.append(
+                                f"EMERGENCY_BLOCKER_MISUSE: contract has emergency_blocker_bundle: true "
+                                f"but {fname} has VERDICT: {verdict_val} — "
+                                "emergency_blocker_bundle is for genuine blockers/failures, "
+                                "not normal sprint closure (Rule C-LOCAL-003)."
+                            )
+                    break
+
         if no_pending:
             pending_hits = check_no_pending_reports(metadata_files_content)
             for fname, pattern in pending_hits:

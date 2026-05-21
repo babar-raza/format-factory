@@ -33,15 +33,30 @@ class TestEvidenceBundleBloat:
         )
 
     def test_gitignore_excludes_evidence_zip_pattern(self):
-        """git check-ignore confirms evidence-bundles/*.zip is gitignored."""
-        result = subprocess.run(
-            ["git", "check-ignore", "-v", "evidence-bundles/test-dummy.zip"],
-            capture_output=True, text=True, cwd=str(REPO_ROOT),
-        )
-        assert result.returncode == 0, (
-            "evidence-bundles/test-dummy.zip should be gitignored but is not. "
-            "Add 'evidence-bundles/*.zip' to .gitignore."
-        )
+        """evidence-bundles/*.zip is gitignored.
+
+        Primary: uses git check-ignore when .git is available.
+        Fallback (no-Git extracted replay): reads .gitignore directly.
+        """
+        git_dir = REPO_ROOT / ".git"
+        if git_dir.exists():
+            result = subprocess.run(
+                ["git", "check-ignore", "-v", "evidence-bundles/test-dummy.zip"],
+                capture_output=True, text=True, cwd=str(REPO_ROOT),
+            )
+            assert result.returncode == 0, (
+                "evidence-bundles/test-dummy.zip should be gitignored but is not. "
+                "Add 'evidence-bundles/*.zip' to .gitignore."
+            )
+        else:
+            # No-Git extracted replay: verify .gitignore text directly.
+            gitignore = REPO_ROOT / ".gitignore"
+            assert gitignore.exists(), ".gitignore must be present in extracted bundle repo/"
+            content = gitignore.read_text(encoding="utf-8")
+            assert "evidence-bundles/*.zip" in content, (
+                ".gitignore must contain 'evidence-bundles/*.zip' "
+                "(verified via direct read — no .git available)"
+            )
 
 
 class TestFinalVerdictIntegrity:

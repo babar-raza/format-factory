@@ -1,0 +1,77 @@
+contract_id: FORMAT-FACTORY-R42-POC-RELEASE-CANDIDATES-EVIDENCE-REPAIR-AND-FORMAT-ADVANCE-001
+sprint_id: FORMAT-FACTORY-R42-POC-RELEASE-CANDIDATES-EVIDENCE-REPAIR-AND-FORMAT-ADVANCE-001
+run_number: R42
+created: "2026-05-21"
+purpose: >
+  R42: Supersede R41 (REAL_PROGRESS_BUT_NOT_CLEAN_CLOSURE). Commit R41 dirty tree
+  on clean tree. Governance repair (commit-governance-rule, C-LOCAL-001/002/003).
+  Evidence ZIP bloat repair (git rm --cached r20/r21/r22/r39). R41 IV with
+  SUPERSEDED verdict. Validator hardening (DIRTY_TREE_COMPLETE_CONTRADICTION,
+  EMERGENCY_BLOCKER_MISUSE — Rule C-LOCAL-002/003). No-Git replay fix
+  (test_gitignore fallback). Python POC smoke — FODS/FODT clean venv install
+  (4/4 samples each). .NET POC — FODS 157/157, FODT 145/145. Python deepening
+  19+19 new tests. Format ranking and next-format advancement docs.
+
+required_repo_files:
+  - reports/r42/00-preflight.md
+  - reports/r42/lane-ownership.md
+  - reports/r42/commit-governance-rule.md
+  - reports/r42/r41-independent-verification.md
+  - reports/r42/evidence-zip-manifest.yaml
+  - reports/r42/poc-product-matrix.md
+  - reports/r42/package-artifact-manifest.yaml
+  - reports/r42/next-format-ranking.md
+  - reports/r42/final-verdict.md
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/build_evidence_bundle.py
+  - tests/evidence/test_r42_validator_hardening.py
+  - tests/evidence/test_r41_evidence_hygiene.py
+  - tests/python/fods/test_r42_deepening.py
+  - tests/python/fodt/test_r42_deepening.py
+  - state/current-state.md
+  - state/current-state.json
+
+include_directories:
+  - reports/r42/
+  - tools/evidence/
+  - tools/state/
+  - tests/evidence/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - state/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+min_metadata_count: 30
+require_clean_git: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r42-poc-release-candidates-evidence-repair-and-format-advance.yaml
+
+authoritative_test_results:
+  python_fods_suite: "85 passed, 4 skipped (66 existing + 19 R42 deepening)"
+  python_fodt_suite: "134 passed (115 existing + 19 R42 deepening)"
+  dotnet_fods: "157 passed, 0 failed (R42)"
+  dotnet_fodt: "145 passed, 0 failed (R42)"
+  evidence_hygiene: "5 passed (R42)"
+  evidence_validator_hardening: "10 passed (R42 — new DIRTY_TREE + EMERGENCY_BLOCKER guard tests)"
+  auto_proof_bundle: "9 passed (R42)"
+  ai_no_live: "34 passed, 3 warnings (R42 sprint filter)"
+  state_snapshot: "STATE_SNAPSHOT: PASS (R42 = no_final_verdict)"
+  state_lint: "STATE_LINT: PASS (0 errors, 2 pre-existing warnings)"
+
+package_build_proof:
+  python_fods_wheel: "aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl (sha256=0d9e6826515d849052bcda7f8546515063e51ab93d23e7183715c96b45c26014)"
+  python_fodt_wheel: "aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl (sha256=513e84aaa5b29c90128d11d4c80f3ce2c451cc0d5d9c8801b044b7b49ca391a5)"
+  dotnet_fods_nupkg: "FormatFactory.Fods.0.1.0-tier0.nupkg (sha256=b91f43d31136b83d33635396368858df4f2f5aa8a27c202bf64977877356abbd)"
+  dotnet_fodt_nupkg: "FormatFactory.Fodt.0.1.0-tier0.nupkg (sha256=632bdc12175e80a5bab2283775c07edf003bedda204711b217e35e2a902f8a72)"
+  python_poc_smoke: "PASS — FODS 4/4 samples, FODT 4/4 samples (clean venv, Python 3.13.2)"
+  dotnet_poc_smoke: "PASS — FODS 157/157, FODT 145/145 (dotnet SDK 10.0.204)"

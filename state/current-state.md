@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R41 — R41_COMPLETE
+**Latest sprint:** R42 — no_final_verdict
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 

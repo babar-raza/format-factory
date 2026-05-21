@@ -1,0 +1,59 @@
+sprint: R42
+date: 2026-05-21
+note: >
+  All artifacts are in .local/ (gitignored). This manifest provides SHA-256
+  chain-of-custody so the files can be verified without being committed.
+
+artifacts:
+  - id: python-fods-wheel
+    type: python-wheel
+    filename: aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl
+    local_path: .local/package-builds/python-foss/aspose-format-factory-fods/dist/aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl
+    sha256: 0d9e6826515d849052bcda7f8546515063e51ab93d23e7183715c96b45c26014
+    version: 0.1.0.dev0
+    import_name: fods
+    track: python-foss
+    smoke_result: PASS
+    gates_passed: 1-10
+    gate_11: NOT_STARTED
+
+  - id: python-fodt-wheel
+    type: python-wheel
+    filename: aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl
+    local_path: .local/package-builds/python-foss/aspose-format-factory-fodt/dist/aspose_format_factory_fodt-0.1.0.dev0-py3-none-any.whl
+    sha256: 513e84aaa5b29c90128d11d4c80f3ce2c451cc0d5d9c8801b044b7b49ca391a5
+    version: 0.1.0.dev0
+    import_name: fodt
+    track: python-foss
+    smoke_result: PASS
+    gates_passed: 1-10
+    gate_11: NOT_STARTED
+
+  - id: dotnet-fods-nupkg
+    type: nuget-package
+    filename: FormatFactory.Fods.0.1.0-tier0.nupkg
+    local_path: .local/pack-output/FormatFactory.Fods.0.1.0-tier0.nupkg
+    sha256: b91f43d31136b83d33635396368858df4f2f5aa8a27c202bf64977877356abbd
+    version: 0.1.0-tier0
+    track: dotnet-commercial
+    test_count: 157
+    smoke_result: PASS
+    gates_passed: 1-10
+    gate_11: NOT_STARTED
+
+  - id: dotnet-fodt-nupkg
+    type: nuget-package
+    filename: FormatFactory.Fodt.0.1.0-tier0.nupkg
+    local_path: .local/pack-output/FormatFactory.Fodt.0.1.0-tier0.nupkg
+    sha256: 632bdc12175e80a5bab2283775c07edf003bedda204711b217e35e2a902f8a72
+    version: 0.1.0-tier0
+    track: dotnet-commercial
+    test_count: 145
+    smoke_result: PASS
+    gates_passed: 1-10
+    gate_11: NOT_STARTED
+
+poc_readiness: LOCAL_POC_READY_APPROVAL_PENDING
+commercial_product_ready: false
+gate_11_blocker: G11-G requires Babar Raza written approval (NOT_STARTED)
+push_status: NOT_PUSHED (local only, gitignored)
