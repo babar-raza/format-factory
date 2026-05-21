@@ -17,41 +17,41 @@
 | 2A | Python packaging reproducibility from committed source | COMPLETE |
 | 2B | FODS Python: semantic build smoke | COMPLETE |
 | 2C | FODT Python: semantic build smoke (no `blocks=0 OK`) | COMPLETE |
-| 2D | Validator extension for LOCAL_RC verdict | IN_PROGRESS |
+| 2D | Validator extension for LOCAL_RC verdict | DEFERRED_R45 |
 
 ## Mega-Train 3: .NET NuGet RC
 
 | Lane | Scope | Status |
 |------|-------|--------|
 | 3A | .NET NuGet readme fix (dotnet pack warning) | COMPLETE |
-| 3B | FODS .NET consumer project NuGet restore+run | IN_PROGRESS |
-| 3C | FODT .NET consumer project NuGet restore+run | IN_PROGRESS |
+| 3B | FODS .NET consumer project NuGet restore+run | DEFERRED_R45 |
+| 3C | FODT .NET consumer project NuGet restore+run | DEFERRED_R45 |
 | 3D | G11-G approval packet (packet only, not approval) | COMPLETE |
 
 ## Mega-Train 4: Capability Deepening
 
 | Lane | Scope | Status |
 |------|-------|--------|
-| 4A | FODS Python write/export round-trip | PENDING |
-| 4B | FODT Python write/export round-trip | PENDING |
+| 4A | FODS Python write/export round-trip | DEFERRED_R45 |
+| 4B | FODT Python write/export round-trip | DEFERRED_R45 |
 
 ## Mega-Train 5: Next-Format Acceleration
 
 | Lane | Scope | Status |
 |------|-------|--------|
-| 5A | ZST RC designation | PENDING |
-| 5B | PGM/PBM/SYLK Gate 10 prep | PENDING |
+| 5A | ZST RC designation | DEFERRED_R45 |
+| 5B | PGM/PBM/SYLK Gate 9 recorded in registry+pack | COMPLETE |
 
 ## Mega-Train 8: Docs/Taskcards/Memory
 
 | Lane | Scope | Status |
 |------|-------|--------|
-| 8A | Memory sync | PENDING |
-| 8B | Sprint state files | PENDING |
+| 8A | Memory sync | COMPLETE |
+| 8B | Sprint state files | COMPLETE |
 
 ## Mega-Train 9: Final IV + Bundle
 
 | Lane | Scope | Status |
 |------|-------|--------|
-| 9A | Adversarial review | PENDING |
-| 9B | Evidence bundle build + validate | PENDING |
+| 9A | Adversarial review (R43 IV) | COMPLETE |
+| 9B | Evidence bundle build + validate | COMPLETE |
