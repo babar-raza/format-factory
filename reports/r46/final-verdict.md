@@ -155,3 +155,5 @@ Pre-existing failures (tracked since R29):
 ---
 
 BUNDLE_VALIDATION: PASS
+Bundle: .local/r46-bundle.zip
+Entries: 2289 | Size: 4,179,208 bytes | Metadata files: 31
