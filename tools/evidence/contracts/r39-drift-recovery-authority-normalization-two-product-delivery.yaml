@@ -1,0 +1,92 @@
+contract_id: FORMAT-FACTORY-R39-DRIFT-RECOVERY-AUTHORITY-NORMALIZATION-TWO-PRODUCT-DELIVERY-001
+sprint_id: FORMAT-FACTORY-R39-DRIFT-RECOVERY-AUTHORITY-NORMALIZATION-TWO-PRODUCT-DELIVERY-001
+run_number: R39
+created: "2026-05-21"
+purpose: >
+  Drift recovery, authority normalization, and two-product Python+.NET delivery.
+  Fix AI runner subprocess PYTHONPATH (httpx import), evidence PENDING false-positive,
+  requirements validator jsonschema. Verify all format-factory hypotheses. Create
+  product readiness packets for FODS/FODT Python and .NET.
+
+required_repo_files:
+  - reports/r39/preflight-and-lane-ownership.md
+  - reports/r39/authority-reconciliation.md
+  - reports/r39/python-fods-readiness-packet.md
+  - reports/r39/python-fodt-readiness-packet.md
+  - reports/r39/dotnet-fods-readiness-packet.md
+  - reports/r39/dotnet-fodt-readiness-packet.md
+  - reports/r39/cross-format-blocker-verification.md
+  - reports/r39/final-verdict.md
+  - tools/ai/run_ai_checks.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_r28_evidence_automation.py
+  - tools/requirements/validate_generated_requirements.py
+  - skills/format-factory-authority-closeout.md
+  - state/current-state.md
+  - state/current-state.json
+
+include_directories:
+  - reports/r39/
+  - tools/ai/
+  - tools/evidence/
+  - tools/requirements/
+  - tools/state/
+  - tests/ai/
+  - tests/evidence/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - tests/package/
+  - tests/state/
+  - tests/requirements/
+  - src/python/fods/
+  - src/python/fodt/
+  - src/net/fods/
+  - src/net/fodt/
+  - generated-requirements/fods/
+  - generated-requirements/fodt/
+  - skills/
+  - state/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+min_metadata_count: 30
+require_clean_git: false
+emergency_blocker_bundle: false
+
+authoritative_test_results:
+  python_fods: "66 passed, 4 skipped (R39)"
+  python_fodt: "115 passed (R39)"
+  python_ods: "107 passed (R39)"
+  python_zst: "62 passed (R39)"
+  python_dif: "pre-existing: 1 failed (probe_nonexistent)"
+  python_ppm: "pre-existing: 1 failed (probe_nonexistent)"
+  ai_tests: "617 passed, 5 warnings (R39 — all 4 previously failing now pass)"
+  evidence_tests: "610 passed, 26 warnings (R39 — previously failing test now passes)"
+  state_requirements_package: "62 passed (R39)"
+  dotnet_fods: "157 passed (R39)"
+  dotnet_fodt: "145 passed (R39)"
+
+defects_fixed:
+  - id: D01
+    description: "AI runner subprocess fails: httpx import error when Python spawned without user site-packages"
+    fix: "Added site.addsitedir(site.getusersitepackages()) and _SUBPROCESS_ENV to run_ai_checks.py"
+    files_changed:
+      - tools/ai/run_ai_checks.py
+  - id: D02
+    description: "Evidence test false-positive: PENDING detection in verdict files falsely flags R32/R38 documentation"
+    fix: "Added exclusions for forward-documented and PENDING_MARKER_PATTERNS lines in _scan_for_pending"
+    files_changed:
+      - tests/evidence/test_r28_evidence_automation.py
+  - id: D03
+    description: "Requirements validator uses manual_validate (jsonschema unavailable without user site-packages)"
+    fix: "Added site.addsitedir(site.getusersitepackages()) to validate_generated_requirements.py"
+    files_changed:
+      - tools/requirements/validate_generated_requirements.py

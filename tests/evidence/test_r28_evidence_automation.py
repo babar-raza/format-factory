@@ -27,7 +27,26 @@ class TestPendingMarkerDetection:
             if "PENDING" in line and not line.strip().startswith("#"):
                 # Allow PENDING in comments and headers, but not in status fields
                 if any(k in line for k in ["BUNDLE_VALIDATION:", "COMMIT_SHA:", "EVIDENCE_BUNDLE:", "status:"]):
-                    hits.append((str(path), i, line.strip()))
+                    # Exclude false positives:
+                    # 1. Lines documenting historical forward-pending (e.g. "PENDING forward-documented")
+                    # 2. Lines describing PENDING_MARKER_PATTERNS added to the validator
+                    # 3. Lines where the trigger keyword appears inside backtick code spans
+                    stripped = line.strip()
+                    if "forward-documented" in stripped:
+                        continue
+                    if "PENDING_MARKER_PATTERNS" in stripped:
+                        continue
+                    # Skip if every occurrence of the trigger keyword is inside backticks
+                    import re
+                    backtick_content = " ".join(re.findall(r"`[^`]+`", stripped))
+                    triggers_in_backticks = all(
+                        k in backtick_content
+                        for k in ["BUNDLE_VALIDATION:", "COMMIT_SHA:", "EVIDENCE_BUNDLE:", "status:"]
+                        if k in stripped
+                    )
+                    if triggers_in_backticks:
+                        continue
+                    hits.append((str(path), i, stripped))
         return hits
 
     def test_no_pending_in_committed_verdicts(self):

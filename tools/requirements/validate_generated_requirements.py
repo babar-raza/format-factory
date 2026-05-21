@@ -19,6 +19,11 @@ import sys
 import argparse
 from pathlib import Path
 
+# Make user site-packages available so jsonschema resolves when this script
+# is invoked directly without a PYTHONPATH pointing to user packages.
+import site as _site
+_site.addsitedir(_site.getusersitepackages())
+
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SCHEMAS_DIR = REPO_ROOT / "schemas" / "generated-requirements"
 REQS_DIR = REPO_ROOT / "generated-requirements"

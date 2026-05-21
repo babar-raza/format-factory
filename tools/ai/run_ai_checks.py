@@ -43,6 +43,19 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
+# Make user site-packages available so optional deps (httpx, litellm, etc.)
+# resolve when this script is invoked as a subprocess without PYTHONPATH.
+import os as _os  # noqa: E402
+import site as _site  # noqa: E402
+_site.addsitedir(_site.getusersitepackages())
+
+# Build a subprocess environment that includes user site-packages in PYTHONPATH
+# so nested subprocess.run calls (e.g. pytest) also see these packages.
+_USER_SITE = _site.getusersitepackages()
+_SUBPROCESS_ENV = dict(_os.environ, PYTHONPATH=_os.pathsep.join(
+    filter(None, [str(REPO_ROOT), _USER_SITE, _os.environ.get("PYTHONPATH", "")]))
+)
+
 
 def run_fixture_checks(format_id: str, sprint_id: str) -> dict:
     """Run deterministic fixture pipeline checks."""
@@ -190,6 +203,7 @@ def run_failure_injection_checks() -> dict:
         proc = subprocess.run(
             [sys.executable, "-m", "pytest", "tests/ai", "-q", "-k", "failure_injection or FailureInjection"],
             capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=300,
+            env=_SUBPROCESS_ENV,
         )
         results["exit_code"] = proc.returncode
         results["passed"] = proc.returncode == 0
