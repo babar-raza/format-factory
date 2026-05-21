@@ -404,13 +404,13 @@
       "package_readiness": "none",
       "commercial_readiness": "N/A",
       "overclaim_risk": "moderate",
-      "overclaim_details": "G8 security review passed, but parser only reads header \u00e2\u20ac\u201d not a usable image library",
+      "overclaim_details": "G8 security review passed, but parser only reads header \u2014 not a usable image library",
       "strongest_evidence": "42 tests, solid header/property parsing",
-      "weakest_area": "explicitly cannot decode pixels or tiles \u00e2\u20ac\u201d probe/inspector only",
+      "weakest_area": "explicitly cannot decode pixels or tiles \u2014 probe/inspector only",
       "recommended_action": "reclassify as probe_only; G8 security pass is valid for what it parses but does not imply image processing capability",
-      "r33_review_outcome": "DEEPENING_REQUIRED (MINOR) \u00e2\u20ac\u201d G8 accepted for header scope, needs 8+ more tests",
+      "r33_review_outcome": "DEEPENING_REQUIRED (MINOR) \u2014 G8 accepted for header scope, needs 8+ more tests",
       "r33_review_date": "2026-05-19",
-      "r35_scope_finalization": "APPLIED \u00e2\u20ac\u201d pack.yaml scope_finalization section, header_and_metadata_only scope documented",
+      "r35_scope_finalization": "APPLIED \u2014 pack.yaml scope_finalization section, header_and_metadata_only scope documented",
       "r35_scope_finalization_date": "2026-05-20"
     },
     {
@@ -447,11 +447,11 @@
       "overclaim_risk": "low",
       "overclaim_details": "G8 security pass is valid for P3 parsing but binary P6 is the dominant real-world variant",
       "strongest_evidence": "40 tests, complete P3 decode",
-      "weakest_area": "P6 binary not supported \u00e2\u20ac\u201d most real PPM files are P6",
+      "weakest_area": "P6 binary not supported \u2014 most real PPM files are P6",
       "recommended_action": "add P6 binary support before claiming library maturity",
-      "r33_review_outcome": "READ_ONLY_SCOPE_APPROVED \u00e2\u20ac\u201d G8 valid for P3, P6 needed before G10",
+      "r33_review_outcome": "READ_ONLY_SCOPE_APPROVED \u2014 G8 valid for P3, P6 needed before G10",
       "r33_review_date": "2026-05-19",
-      "r35_scope_finalization": "APPLIED \u00e2\u20ac\u201d pack.yaml scope_finalization section, read_only_ascii_p3 scope documented",
+      "r35_scope_finalization": "APPLIED \u2014 pack.yaml scope_finalization section, read_only_ascii_p3 scope documented",
       "r35_scope_finalization_date": "2026-05-20"
     },
     {
@@ -548,7 +548,7 @@
       "claimed_gate": "G10 (verified)",
       "evidence_backed_gate": "G4 (prototype quality)",
       "actual_maturity_class": "probe_only",
-      "parser_depth": "shallow page/slide extractor \u00e2\u20ac\u201d page_count, per-page name/text/shape_count",
+      "parser_depth": "shallow page/slide extractor \u2014 page_count, per-page name/text/shape_count",
       "read_support": "partial (page metadata only)",
       "write_support": false,
       "export_support": false,
@@ -562,11 +562,11 @@
       "overclaim_risk": "high",
       "overclaim_details": "G10 claimed but source is 192 LOC page counter with no model, no write, no export. Does not meet G10 product maturity expectations.",
       "strongest_evidence": "16 tests prove page counting works",
-      "weakest_area": "no neutral model, no write, no export, no round-trip \u00e2\u20ac\u201d probe only",
+      "weakest_area": "no neutral model, no write, no export, no round-trip \u2014 probe only",
       "recommended_action": "DRIFT-REVIEW: reclassify evidence-backed gate to G4; requires deepening before G5+ can be re-earned",
-      "r33_review_outcome": "GATE_CORRECTION_REQUIRED \u00e2\u20ac\u201d confirmed probe_only, evidence-backed G4",
+      "r33_review_outcome": "GATE_CORRECTION_REQUIRED \u2014 confirmed probe_only, evidence-backed G4",
       "r33_review_date": "2026-05-19",
-      "r35_gate_correction": "APPLIED \u00e2\u20ac\u201d pack.yaml gate_correction section with previous_claimed_gate/evidence_backed_gate/maturity_class",
+      "r35_gate_correction": "APPLIED \u2014 pack.yaml gate_correction section with previous_claimed_gate/evidence_backed_gate/maturity_class",
       "r35_gate_correction_date": "2026-05-20"
     },
     {
@@ -589,7 +589,7 @@
       "claimed_gate": "G10 (verified)",
       "evidence_backed_gate": "G4 (prototype quality)",
       "actual_maturity_class": "probe_only",
-      "parser_depth": "shallow shape counter \u00e2\u20ac\u201d shape types, text extraction, per-page metadata",
+      "parser_depth": "shallow shape counter \u2014 shape types, text extraction, per-page metadata",
       "read_support": "partial (shape metadata only)",
       "write_support": false,
       "export_support": false,
@@ -603,11 +603,11 @@
       "overclaim_risk": "high",
       "overclaim_details": "G10 claimed but source is 217 LOC shape counter with no model, no write, no export.",
       "strongest_evidence": "19 tests prove shape counting works",
-      "weakest_area": "no neutral model, no write, no export \u00e2\u20ac\u201d probe only",
+      "weakest_area": "no neutral model, no write, no export \u2014 probe only",
       "recommended_action": "DRIFT-REVIEW: reclassify evidence-backed gate to G4",
-      "r33_review_outcome": "GATE_CORRECTION_REQUIRED \u00e2\u20ac\u201d confirmed probe_only, evidence-backed G4",
+      "r33_review_outcome": "GATE_CORRECTION_REQUIRED \u2014 confirmed probe_only, evidence-backed G4",
       "r33_review_date": "2026-05-19",
-      "r35_gate_correction": "APPLIED \u00e2\u20ac\u201d pack.yaml gate_correction section added",
+      "r35_gate_correction": "APPLIED \u2014 pack.yaml gate_correction section added",
       "r35_gate_correction_date": "2026-05-20"
     },
     {
@@ -630,7 +630,7 @@
       "claimed_gate": "G10 (verified)",
       "evidence_backed_gate": "G4 (prototype quality)",
       "actual_maturity_class": "probe_only",
-      "parser_depth": "gzip+XML, shallow cell extraction \u00e2\u20ac\u201d sheet names, cell_count, cell values",
+      "parser_depth": "gzip+XML, shallow cell extraction \u2014 sheet names, cell_count, cell values",
       "read_support": "partial (cell values without type detection)",
       "write_support": false,
       "export_support": false,
@@ -644,11 +644,11 @@
       "overclaim_risk": "high",
       "overclaim_details": "G10 claimed but source is 170 LOC cell counter with no model, no type detection, no write.",
       "strongest_evidence": "16 tests prove gzip+XML cell counting works",
-      "weakest_area": "no neutral model, no cell type detection, no write \u00e2\u20ac\u201d probe only",
+      "weakest_area": "no neutral model, no cell type detection, no write \u2014 probe only",
       "recommended_action": "DRIFT-REVIEW: reclassify evidence-backed gate to G4",
-      "r33_review_outcome": "GATE_CORRECTION_REQUIRED \u00e2\u20ac\u201d confirmed probe_only, evidence-backed G4",
+      "r33_review_outcome": "GATE_CORRECTION_REQUIRED \u2014 confirmed probe_only, evidence-backed G4",
       "r33_review_date": "2026-05-19",
-      "r35_gate_correction": "APPLIED \u00e2\u20ac\u201d pack.yaml gate_correction section added",
+      "r35_gate_correction": "APPLIED \u2014 pack.yaml gate_correction section added",
       "r35_gate_correction_date": "2026-05-20"
     },
     {
@@ -685,11 +685,11 @@
       "overclaim_risk": "high",
       "overclaim_details": "G10 claimed but source is 141 LOC text extractor with no model, no write, no export.",
       "strongest_evidence": "17 tests prove paragraph extraction works",
-      "weakest_area": "smallest parser (141 LOC), no neutral model, no write \u00e2\u20ac\u201d probe only",
+      "weakest_area": "smallest parser (141 LOC), no neutral model, no write \u2014 probe only",
       "recommended_action": "DRIFT-REVIEW: reclassify evidence-backed gate to G4",
-      "r33_review_outcome": "GATE_CORRECTION_REQUIRED \u00e2\u20ac\u201d confirmed probe_only, evidence-backed G4",
+      "r33_review_outcome": "GATE_CORRECTION_REQUIRED \u2014 confirmed probe_only, evidence-backed G4",
       "r33_review_date": "2026-05-19",
-      "r35_gate_correction": "APPLIED \u00e2\u20ac\u201d pack.yaml gate_correction section added",
+      "r35_gate_correction": "APPLIED \u2014 pack.yaml gate_correction section added",
       "r35_gate_correction_date": "2026-05-20"
     },
     {
@@ -882,15 +882,15 @@
     }
   },
   "evidence_contracts": {
-    "total_contracts": 134,
+    "total_contracts": 135,
     "issues": [
       "r27-ai-platform-full-cycle.yaml: min_metadata_count=10 < 30",
       "r32-truth-matrix-gate-quality-and-drift-recovery.yaml: min_metadata_count=5 < 30"
     ]
   },
   "latest_sprint": {
-    "latest_sprint_number": "R44",
-    "verdict": "R44_TWO_PRODUCT_LOCAL_RC_BASELINE_READY"
+    "latest_sprint_number": "R45",
+    "verdict": "R45_TWO_PRODUCT_LOCAL_RC_BASELINE_REPLAYABLE"
   },
   "production_blockers": [
     "G11-G_NOT_STARTED: Gate 11 commercial approval requires Babar Raza written approval",

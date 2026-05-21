@@ -428,15 +428,25 @@ def check_closure_contradictions(metadata_files_content):
 
 
 def check_package_proof_present(metadata_files_content, zf):
-    """R43: If verdict claims *_POC_READY, require package proof artifacts in bundle.
+    """R43/R45: If verdict claims *_POC_READY or *_LOCAL_RC* or *_BASELINE_READY*,
+    require package proof artifacts in bundle.
 
-    A bundle claiming POC readiness must contain at minimum one of:
+    A bundle claiming POC/RC readiness must contain at minimum one of:
     - bundle-metadata/package-artifact-manifest.yaml
     - repo/reports/r*/package-artifact-manifest.yaml
     - repo/reports/r*/package-proof/ directory entries
 
     Returns a list of error strings.
     """
+    # Verdict suffixes/substrings that require package proof
+    REQUIRES_PACKAGE_PROOF = (
+        "POC_READY",
+        "LOCAL_RC",
+        "BASELINE_READY",
+        "RELEASE_CANDIDATE",
+        "TWO_PRODUCT",
+    )
+
     hits = []
     verdict_val = None
     for fname in ("final-verdict.md", "final-verdict.txt", "verdict.md"):
@@ -449,7 +459,9 @@ def check_package_proof_present(metadata_files_content, zf):
 
     if verdict_val is None:
         return hits
-    if "POC_READY" not in verdict_val:
+
+    requires_proof = any(kw in verdict_val for kw in REQUIRES_PACKAGE_PROOF)
+    if not requires_proof:
         return hits
 
     # Check for package proof in metadata or repo
@@ -461,10 +473,12 @@ def check_package_proof_present(metadata_files_content, zf):
         or any("package-proof" in e and not e.endswith("/") for e in all_entries)
     )
     if not has_proof:
+        matched_kw = next(kw for kw in REQUIRES_PACKAGE_PROOF if kw in verdict_val)
         hits.append(
-            f"PACKAGE_PROOF_MISSING: VERDICT is {verdict_val} (*_POC_READY) but no "
+            f"PACKAGE_PROOF_MISSING: VERDICT is {verdict_val} (contains *_{matched_kw}*) but no "
             f"package-artifact-manifest.yaml or package-proof/ entries found in bundle. "
-            f"A POC_READY verdict requires package build proof (R43 Rule)."
+            f"POC_READY, LOCAL_RC, BASELINE_READY, RELEASE_CANDIDATE, and TWO_PRODUCT verdicts "
+            f"require package build proof (R43/R45 Rule)."
         )
     return hits
 

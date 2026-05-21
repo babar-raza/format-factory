@@ -23,7 +23,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 
 def _load_yaml(path):
     if yaml:
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             return yaml.safe_load(f)
     # minimal fallback
     return {}
@@ -88,7 +88,7 @@ def get_latest_sprint():
         return {"latest": "unknown"}
     verdict_path = reports_dir / f"r{latest_r}" / "final-verdict.md"
     if verdict_path.exists():
-        content = verdict_path.read_text()
+        content = verdict_path.read_text(encoding="utf-8")
         verdict_match = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z0-9_]+)", content, re.IGNORECASE)
         return {
             "latest_sprint_number": f"R{latest_r}",
@@ -166,7 +166,7 @@ def build_snapshot():
 def snapshot_to_markdown(snapshot):
     lines = ["# Current State Snapshot", ""]
     lines.append(f"**Formats in registry:** {snapshot['format_count']}")
-    lines.append(f"**Latest sprint:** {snapshot['latest_sprint'].get('latest_sprint_number', '?')} — {snapshot['latest_sprint'].get('verdict', '?')}")
+    lines.append(f"**Latest sprint:** {snapshot['latest_sprint'].get('latest_sprint_number', '?')} - {snapshot['latest_sprint'].get('verdict', '?')}")
     lines.append(f"**Gate 11 approved:** {snapshot['gate_11_approved']}")
     lines.append(f"**commercial_product_ready:** {snapshot['commercial_product_ready']}")
     lines.append("")
@@ -199,12 +199,12 @@ def main():
     snapshot = build_snapshot()
 
     json_path = out_dir / "current-state.json"
-    with open(json_path, "w") as f:
+    with open(json_path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(snapshot, f, indent=2)
     print(f"Written: {json_path}")
 
     md_path = out_dir / "current-state.md"
-    with open(md_path, "w") as f:
+    with open(md_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(snapshot_to_markdown(snapshot))
     print(f"Written: {md_path}")
 

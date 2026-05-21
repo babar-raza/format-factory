@@ -1,0 +1,74 @@
+contract_id: FORMAT-FACTORY-R45-TWO-PRODUCT-LOCAL-RC-REPLAYABLE-001
+sprint_id: FORMAT-FACTORY-R45-TWO-PRODUCT-LOCAL-RC-REPLAYABLE-001
+run_number: R45
+created: "2026-05-21"
+purpose: >
+  R45: Two-product local RC replayable baseline. Closes R44 overclaim gaps.
+  MT1: R44 IV (R44_PROGRESS_ACCEPTED_RC_OVERCLAIMED). UTF-8 state fix. Contract hardening.
+  MT2: pytest-timeout portability via conftest. Auto-proof bounded replay hardening.
+  MT3: Package artifacts materialized (.whl + .nupkg in metadata). Validator extended.
+  MT4: .NET FODS+FODT consumer project proof (local NuGet restore+run). G11-G packet rewrite.
+  State snapshot: require_clean_git: true (no more RC claims with dirty git tree).
+
+require_clean_git: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r45-two-product-local-rc-replayable.yaml
+require_manifest: false
+min_metadata_count: 30
+
+required_repo_files:
+  - reports/r45/final-verdict.md
+  - reports/r45/00-preflight.md
+  - reports/r45/r44-independent-verification.md
+  - reports/r45/lane-ownership.md
+  - reports/r45/risk-register.md
+  - reports/r45/work-ahead-policy.md
+  - tools/state/state_snapshot.py
+  - tests/state/test_r45_utf8_encoding.py
+  - tests/evidence/test_r45_timeout_portability.py
+  - tests/evidence/test_r45_consumer_proof.py
+  - state/current-state.md
+  - state/current-state.json
+
+include_directories:
+  - reports/r45/
+  - tools/evidence/
+  - tools/state/
+  - tests/evidence/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - acquisition-packs/pgm/
+  - acquisition-packs/pbm/
+  - acquisition-packs/sylk/
+  - registry/
+  - state/
+  - memory/
+  - src/net/fods/
+  - src/net/fodt/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+authoritative_test_results:
+  state_utf8_encoding_r45: "10 passed (ASCII safety, UTF-8 roundtrip, no 0x97, live file checks)"
+  state_snapshot_base: "20 passed (pre-existing state suite + R43 verdict regex)"
+  timeout_portability_r45: "6 passed (conftest-based timeout, env-independent)"
+  consumer_proof_r45: "6 passed (FODS .NET consumer, FODT .NET consumer)"
+  auto_proof_bundle: "9 passed"
+  replay_pycache_fix_r44: "12 passed"
+  python_fods_semantic_smoke_r44: "7 passed"
+  python_fodt_semantic_smoke_r44: "8 passed"
+  pgm_gate9_r43: "7 passed"
+  pbm_gate9_r43: "6 passed"
+  sylk_gate9_r43: "6 passed"
+  python_all_formats: "892 passed, 2 pre-existing fail, 4 skip"
+  dotnet_fods: "157 passed"
+  dotnet_fodt: "145 passed"
+  full_total: "AUTHORITATIVE_TEST_RESULT: 2150 passed, 2 pre-existing fail, 4 skip"
