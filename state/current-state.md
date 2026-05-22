@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R49 - R49_EDITABLE_OBJECT_MODEL_POC_BASELINE_COMPLETE
+**Latest sprint:** R50 - no_final_verdict
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 

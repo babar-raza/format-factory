@@ -1,0 +1,115 @@
+contract_id: FORMAT-FACTORY-R50-EVIDENCE-CLOSEOUT-REPAIR-AND-OBJECT-MODEL-HARDENING-001
+sprint_id: FORMAT-FACTORY-R50-EVIDENCE-CLOSEOUT-REPAIR-AND-OBJECT-MODEL-HARDENING-001
+run_number: R50
+created: "2026-05-22"
+purpose: >
+  R50: Evidence closeout repair + object model hardening.
+  MT1: R49 IV + validator hardening (proof placeholder, YAML sha256, command log freshness).
+  MT2: Artifact manifest repair (3/5 hashes corrected from actual bytes).
+  MT3: Preservation taskcards TC-0054 through TC-0060.
+  MT4: .NET POC replay from R50 artifacts.
+  MT5: AI acceleration pilot (first live call + Agent Metrics posting).
+  MT6: FODS Python CSV export (csv_exporter.py + 19 tests).
+  MT7: Phase Audit 3 correction + Phase Audit 4 kickoff.
+  MT10: Final adversarial validation + 2-pass bundle.
+
+require_clean_git: false
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r50-evidence-closeout-repair.yaml
+require_manifest: true
+min_metadata_count: 30
+
+required_repo_files:
+  - reports/r50/final-verdict.md
+  - reports/r50/00-preflight.md
+  - reports/r50/r49-independent-verification.md
+  - reports/r50/ai-usage-ledger.jsonl
+  - reports/r50/agent-metrics-posting-proof.md
+  - reports/r50/phase-audit/phase-03-r50-correction.md
+  - reports/r50/phase-audit/phase-04-kickoff.md
+  - tools/evidence/contracts/r50-evidence-closeout-repair.yaml
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_r50_validator_hardening.py
+  - tests/python/fods/test_r50_fods_csv_export.py
+  - src/python/fods/csv_exporter.py
+  - taskcards/TC-0054-formula-preservation-fods.md
+  - taskcards/TC-0055-style-metadata-fods.md
+  - taskcards/TC-0056-column-definitions-fods.md
+  - taskcards/TC-0057-inline-spans-fodt.md
+  - taskcards/TC-0058-table-preservation-fodt.md
+  - taskcards/TC-0059-list-preservation-fodt.md
+  - taskcards/TC-0060-paragraph-style-fodt.md
+  - state/current-state.md
+  - state/current-state.json
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - run-environment.txt
+  - risk-register-summary.txt
+  - r49-closeout-repair-summary.txt
+  - validator-hardening-summary.txt
+  - artifact-manifest-repair-summary.txt
+  - preservation-taskcards-summary.txt
+  - ai-acceleration-pilot-summary.txt
+  - fods-csv-export-summary.txt
+  - phase-audit-3-correction-summary.txt
+  - dotnet-poc-replay-summary.txt
+  - r50-scope-summary.txt
+  - lane-status-summary.txt
+  - state-linter-output.txt
+  - test-coverage-summary.txt
+
+include_directories:
+  - reports/r50/
+  - tools/evidence/
+  - tools/package/
+  - tools/state/
+  - tests/evidence/
+  - tests/invariants/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - src/net/fods/
+  - src/net/fodt/
+  - src/python/fods/
+  - src/python/fodt/
+  - src/python/zst/
+  - samples/by-format/fods/
+  - samples/by-format/fodt/
+  - docs/
+  - registry/
+  - state/
+  - memory/
+  - taskcards/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+authoritative_test_results:
+  r50_validator_hardening: "18 passed (Lane 1B: 7, Lane 1C: 6, Lane 1D: 5)"
+  r50_fods_csv_export: "19 passed"
+  r50_new_tests_total: "37 new tests"
+  python_full_suite: "4140 passed, 13 skipped, 4 pre-existing fail"
+  r50_scope_total: "AUTHORITATIVE_TEST_RESULT: 4140 passed, 13 skipped, 4 pre-existing fail"
+  dotnet_fods: "157 passed"
+  dotnet_fodt: "145 passed"
+  dotnet_object_model_poc_fods: "FODS_DOTNET_OBJECT_MODEL_EDIT_SAVE_RELOAD_PASS"
+  dotnet_object_model_poc_fodt: "FODT_DOTNET_OBJECT_MODEL_EDIT_SAVE_RELOAD_PASS"
+  live_ai_calls: "1 (object-model gap analysis, 274 tokens, PASS)"
+  agent_metrics_post: "PASS (R50 first sprint with confirmed posting)"
+  phase_audit_3_correction: "CONDITIONAL_PASS_WITH_REQUIREMENTS_GAPS (ODS/ODT)"
+  artifact_manifest_repair: "ARTIFACT_MANIFEST_R50: PASS (all 5 hashes verified)"

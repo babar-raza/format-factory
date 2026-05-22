@@ -395,12 +395,17 @@ def check_artifact_inventory(zf):
     errors = []
 
     # Extract claimed artifact filenames and their SHA-256 values from the manifest.
-    # Manifest format (text-based, not strict YAML):
-    #   "  - aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl"
-    #   "  SHA-256: <hash>"
-    # or:
-    #   "FODS wheel: aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl"
-    # We scan each line for a token ending with a known extension.
+    # Manifest formats supported (line-by-line scan, not strict YAML parser):
+    #   YAML list style (R49+):
+    #     "  - file: aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl"
+    #     "    sha256: <64-hex-hash>"
+    #   Text/markdown style (R46-R48):
+    #     "  - aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl"
+    #     "  SHA-256: <hash>"
+    #   Inline style:
+    #     "FODS wheel: aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl"
+    # We scan each line for a token ending with a known extension, then look for
+    # either "sha256: <hash>" (YAML) or "SHA-256: <hash>" (text) on subsequent lines.
 
     claimed_artifacts = []  # list of (filename, sha256_or_None)
     last_filename = None
@@ -413,8 +418,10 @@ def check_artifact_inventory(zf):
                     last_filename = token
                     claimed_artifacts.append((token, None))
                     break
-        # Find SHA-256 values on lines following artifact filenames
-        sha_match = re.search(r'SHA-256:\s*([0-9a-fA-F]{64})', stripped)
+        # Find SHA-256 values on lines following artifact filenames.
+        # Accepts both uppercase text format ("SHA-256: <hash>") and
+        # lowercase YAML format ("sha256: <hash>") — R50 fix for manifest parsing.
+        sha_match = re.search(r'(?:SHA-256|sha256):\s*([0-9a-fA-F]{64})', stripped)
         if sha_match and last_filename:
             sha256 = sha_match.group(1).lower()
             # Associate this SHA with the most recently seen filename (update last entry)
@@ -534,6 +541,7 @@ def check_authoritative_test_result_present(metadata_files_content):
 # written as a stub or in-progress placeholder and never updated with real evidence.
 # Checked against final-bundle-validation-proof.txt when --check-no-pending is active.
 PROOF_FILE_PLACEHOLDER_PATTERNS = [
+    # R48 original patterns
     "(updated after",
     "to be recorded",
     "STATUS: PASS 2 IN PROGRESS",
@@ -541,6 +549,13 @@ PROOF_FILE_PLACEHOLDER_PATTERNS = [
     "SHA-256: (updated",
     "SHA: (updated",
     "final SHA to be recorded",
+    # R50: additional patterns missed in R49 (stale computed-after placeholders)
+    "computed after pass 2 build",
+    "computed after pass 2",
+    "pass 2 sha to follow",
+    "entries: (computed",
+    "size: (computed",
+    "validation: (computed",
 ]
 
 
@@ -572,6 +587,49 @@ def check_proof_file_finality(metadata_files_content):
             )
             break  # one error per file is sufficient
     return hits
+
+
+COMMAND_LOG_STALE_PATTERNS = [
+    # State snapshot ran before final verdict was written — stale pre-final result.
+    # Pattern: "STATE_SNAPSHOT: PASS (R49 no_final_verdict)" etc.
+    "no_final_verdict",
+]
+
+COMMAND_LOG_CANDIDATE_FILES = [
+    "validation-command-log.txt",
+    "validation-command-log.md",
+    "command-log.txt",
+]
+
+
+def check_validation_command_log_freshness(metadata_files_content):
+    """R50 Lane 1D: Detect stale pre-final results in the validation command log.
+
+    The R49 closeout failure included 'STATE_SNAPSHOT: PASS (R49 no_final_verdict)'
+    in the validation command log — the state snapshot was run before the final verdict
+    was written, so the log captured a pre-final sprint state.
+
+    A valid final bundle must have a command log reflecting post-verdict state.
+    We detect the token 'no_final_verdict' which appears when state_snapshot.py
+    runs before the final verdict file exists.
+
+    Returns a list of error strings (empty if the check passes).
+    """
+    for candidate in COMMAND_LOG_CANDIDATE_FILES:
+        content = metadata_files_content.get(candidate, "")
+        if not content:
+            continue
+        lower = content.lower()
+        for pattern in COMMAND_LOG_STALE_PATTERNS:
+            if pattern.lower() in lower:
+                return [
+                    f"COMMAND_LOG_STALE_RESULT: '{candidate}' contains "
+                    f"pre-final state snapshot token {pattern!r}. "
+                    f"Re-run state_snapshot.py after writing the final verdict, "
+                    f"update the command log, and rebuild the bundle."
+                ]
+        return []  # File found, no stale patterns
+    return []  # No command log file present — not our job to require it here
 
 
 def check_closure_contradictions(metadata_files_content):
@@ -1083,6 +1141,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             proof_finality_hits = check_proof_file_finality(metadata_files_content)
             for msg in proof_finality_hits:
                 errors.append(msg)
+            command_log_hits = check_validation_command_log_freshness(metadata_files_content)
+            for msg in command_log_hits:
+                errors.append(msg)
             depth_hits = check_metadata_content_depth(metadata_files_content)
             for fname, reason in depth_hits:
                 errors.append(f"Shallow metadata file '{fname}': {reason}")
@@ -1142,6 +1203,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         proof_fin_status = "FAIL" if proof_finality_hits else "PASS"
         print(f"Proof-file finality check ({proof_fin_status}): "
               f"{'placeholder text found — R49 guard' if proof_finality_hits else 'no stale placeholders'}")
+        cmd_log_status = "FAIL" if command_log_hits else "PASS"
+        print(f"Command log freshness check ({cmd_log_status}): "
+              f"{'stale pre-final token found — R50 guard' if command_log_hits else 'no stale tokens'}")
     identity_status = "PASS"
     if 'identity_hits' in locals() and identity_hits:
         identity_status = "FAIL"
