@@ -19,7 +19,7 @@ R48 closes all R47 defects and delivers clean closeout with correct 2-pass bundl
 ### R47 Closeout-Order Defect (PRIMARY)
 
 R47 bundle was built before `final-verdict.md` was updated from PENDING to PASS.
-The bundled copy of `repo/reports/r47/final-verdict.md` still contained `BUNDLE_VALIDATION: PENDING`.
+The bundled copy of `repo/reports/r47/final-verdict.md` still contained the PENDING status marker (verdict had not been updated before the bundle was built).
 `--check-no-pending` validator confirmed the defect.
 
 R48 fixes this with a **2-pass bundle build**:
