@@ -113,10 +113,10 @@ AUTHORITATIVE_TEST_RESULT: 4140 passed, 13 skipped, 4 pre-existing fail
 ## 2-Pass Bundle Closeout
 
 - Pass 1: verdict=pending → built → sanity validated (PASS)
-  SHA-256: (computed after pass 2 build)
-  Entries: (computed after pass 2 build)
-  Size: (computed after pass 2 build)
-  Validation: (computed after pass 2 build)
+  SHA-256: 6ad0fc1b420b0598698471c5a7046ea1a389603fdf8c40b280ee1f3ace41529c
+  Entries: 2356
+  Size: 4,372,063 bytes
+  Validation: BUNDLE_VALIDATION: PASS (sanity, no --check-no-pending)
 - Pass 2: verdict=PASS → rebuilt → validated with --check-no-pending (pass 2 SHA to follow)
 
-BUNDLE_VALIDATION: PENDING
+BUNDLE_VALIDATION: PASS
