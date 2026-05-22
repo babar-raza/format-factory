@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R50 - no_final_verdict
+**Latest sprint:** R50 - R50_EVIDENCE_CLOSEOUT_REPAIR_AND_OBJECT_MODEL_HARDENING_COMPLETE
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
@@ -10,7 +10,7 @@
 - fodt: 6 files
 
 ## Evidence Contracts
-- Total: 139
+- Total: 140
 - ISSUE: r27-ai-platform-full-cycle.yaml: min_metadata_count=10 < 30
 - ISSUE: r32-truth-matrix-gate-quality-and-drift-recovery.yaml: min_metadata_count=5 < 30
 
@@ -18,3 +18,4 @@
 - G11-G_NOT_STARTED: Gate 11 commercial approval requires Babar Raza written approval
 - GATE8_AWAITING_HUMAN_APPROVAL: ODS/ODT/QOI/XCF/DIF/PPM Gate 8 security review pending
 - PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry
+- INV-004: reports/r50/final-verdict.md: claims COMPLETE but has standalone BUNDLE_VALIDATION: PENDING
