@@ -9,8 +9,16 @@ Public API:
 
 R46 MT6: Two-product capability deepening. Adds write/export path to FOSS package.
 
-Capability level: alpha-foss-preview (write subset — paragraphs with plain text
-content only; headings, lists, tables, and styles are not generated).
+R49 MT4/5: Object-model schema unification repair.
+  - Parser emits ``blocks`` key with [{type, text, heading_level}] items.
+  - Writer previously read ``paragraphs`` key only — produced empty XML for parser output.
+  - Fix: accept ``blocks`` as canonical; ``paragraphs`` accepted as legacy alias.
+  - Heading blocks (type='heading') serialized as ``text:h`` with ``text:outline-level``.
+  - Paragraph blocks (type='paragraph') serialized as ``text:p``.
+  - Legacy ``paragraphs`` list items serialized as ``text:p`` (backward compatible).
+
+Capability level: alpha-foss-preview (write subset — paragraphs and headings with plain
+text content only; lists, tables, and styles are not generated).
 
 License: Apache-2.0
 Package: format-factory-fodt v0.1.0
@@ -44,19 +52,42 @@ def _qn(ns_prefix: str, local: str) -> str:
     return f"{{{_NS[ns_prefix]}}}{local}"
 
 
-def _write_paragraph(parent: ET.Element, para: dict[str, Any]) -> None:
-    """Append a text:p element for the given neutral model paragraph."""
-    para_el = ET.SubElement(parent, _qn("text", "p"))
-    content = para.get("text_content", para.get("content", ""))
-    para_el.text = str(content) if content is not None else ""
+def _write_block(parent: ET.Element, block: dict[str, Any]) -> None:
+    """Append a text:p or text:h element for the given neutral model block.
+
+    Handles canonical ``blocks`` items (from parser output):
+      - type='paragraph' → text:p
+      - type='heading'   → text:h with text:outline-level attribute
+
+    Also handles legacy ``paragraphs`` list items (text_content/content keys).
+
+    R49: replaces _write_paragraph to support heading blocks from parser output.
+    """
+    block_type = block.get("type", "paragraph")
+    text = block.get("text", block.get("text_content", block.get("content", "")))
+    text = str(text) if text is not None else ""
+
+    if block_type == "heading":
+        el = ET.SubElement(parent, _qn("text", "h"))
+        level = block.get("heading_level") or 1
+        el.set(_qn("text", "outline-level"), str(level))
+        el.text = text
+    else:
+        # paragraph (default)
+        el = ET.SubElement(parent, _qn("text", "p"))
+        el.text = text
 
 
 def document_to_xml(document: dict[str, Any]) -> str:
     """Serialize a neutral model document dict to a FODT XML string.
 
+    Accepts both canonical ``blocks`` key (parser output) and legacy
+    ``paragraphs`` key. If ``blocks`` is present it takes precedence.
+
     Args:
         document: dict following the fodt neutral model schema.
-                  Required keys: paragraphs (list of paragraph dicts).
+                  Canonical key: ``blocks`` (list of block dicts with ``type``/``text``).
+                  Legacy key: ``paragraphs`` (list of paragraph dicts with ``text_content``).
                   Optional keys: odf_version_attr.
 
     Returns:
@@ -65,9 +96,12 @@ def document_to_xml(document: dict[str, Any]) -> str:
     if not isinstance(document, dict):
         raise FodtInputError("document must be a dict")
 
-    paragraphs = document.get("paragraphs", [])
-    if not isinstance(paragraphs, list):
-        raise FodtInputError("document['paragraphs'] must be a list")
+    # Accept blocks (canonical — matches parser output) or paragraphs (legacy alias)
+    blocks = document.get("blocks")
+    if blocks is None:
+        blocks = document.get("paragraphs", [])
+    if not isinstance(blocks, list):
+        raise FodtInputError("document['blocks'] (or 'paragraphs') must be a list")
 
     version = document.get("odf_version_attr", "1.3")
 
@@ -80,8 +114,8 @@ def document_to_xml(document: dict[str, Any]) -> str:
     body_el = ET.SubElement(doc_el, _qn("office", "body"))
     text_el = ET.SubElement(body_el, _qn("office", "text"))
 
-    for para in paragraphs:
-        _write_paragraph(text_el, para)
+    for block in blocks:
+        _write_block(text_el, block)
 
     # Serialize
     xml_declaration = '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -94,6 +128,7 @@ def write_fodt(document: dict[str, Any], file_path: str | Path) -> None:
 
     Args:
         document: dict following the fodt neutral model schema.
+                  Accepts both ``blocks`` (canonical) and ``paragraphs`` (legacy) keys.
         file_path: destination path for the .fodt file.
     """
     xml_content = document_to_xml(document)

@@ -530,6 +530,50 @@ def check_authoritative_test_result_present(metadata_files_content):
     ]
 
 
+# R49: Stale placeholder patterns in proof/closeout files. These indicate a file was
+# written as a stub or in-progress placeholder and never updated with real evidence.
+# Checked against final-bundle-validation-proof.txt when --check-no-pending is active.
+PROOF_FILE_PLACEHOLDER_PATTERNS = [
+    "(updated after",
+    "to be recorded",
+    "STATUS: PASS 2 IN PROGRESS",
+    "pass 2 in progress",
+    "SHA-256: (updated",
+    "SHA: (updated",
+    "final SHA to be recorded",
+]
+
+
+def check_proof_file_finality(metadata_files_content):
+    """R49: Check that final-bundle-validation-proof.txt contains no stale placeholders.
+
+    Detects the R48 caveat: proof file was written as a placeholder before the 2-pass
+    build was complete. Catches strings like '(updated after pass 2 build)',
+    'to be recorded', 'IN PROGRESS', etc.
+
+    Called when --check-no-pending is active.
+
+    Returns a list of error strings (empty if the check passes).
+    """
+    proof_content = metadata_files_content.get("final-bundle-validation-proof.txt", "")
+    if not proof_content:
+        # File absent: caught by required_metadata_files check — not our job here.
+        return []
+
+    hits = []
+    lower_content = proof_content.lower()
+    for pattern in PROOF_FILE_PLACEHOLDER_PATTERNS:
+        if pattern.lower() in lower_content:
+            hits.append(
+                f"PROOF_FILE_PLACEHOLDER: final-bundle-validation-proof.txt contains "
+                f"unresolved placeholder {pattern!r} — update proof file with actual "
+                f"bundle path, SHA-256, size, entries, and validation output before "
+                f"claiming clean closeout."
+            )
+            break  # one error per file is sufficient
+    return hits
+
+
 def check_closure_contradictions(metadata_files_content):
     """Detect obvious final closure contradictions in bundle metadata.
 
@@ -1036,6 +1080,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             authoritative_test_hits = check_authoritative_test_result_present(metadata_files_content)
             for msg in authoritative_test_hits:
                 errors.append(msg)
+            proof_finality_hits = check_proof_file_finality(metadata_files_content)
+            for msg in proof_finality_hits:
+                errors.append(msg)
             depth_hits = check_metadata_content_depth(metadata_files_content)
             for fname, reason in depth_hits:
                 errors.append(f"Shallow metadata file '{fname}': {reason}")
@@ -1092,6 +1139,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         auth_status = "FAIL" if authoritative_test_hits else "PASS"
         print(f"AUTHORITATIVE_TEST_RESULT check ({auth_status}): "
               f"{'missing — P-EVID-003 violation' if authoritative_test_hits else 'present in metadata'}")
+        proof_fin_status = "FAIL" if proof_finality_hits else "PASS"
+        print(f"Proof-file finality check ({proof_fin_status}): "
+              f"{'placeholder text found — R49 guard' if proof_finality_hits else 'no stale placeholders'}")
     identity_status = "PASS"
     if 'identity_hits' in locals() and identity_hits:
         identity_status = "FAIL"

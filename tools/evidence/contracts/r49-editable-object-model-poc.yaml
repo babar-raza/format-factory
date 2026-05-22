@@ -1,0 +1,125 @@
+contract_id: FORMAT-FACTORY-R49-EDITABLE-OBJECT-MODEL-POC-BASELINE-AND-STRATEGY-SYNC-001
+sprint_id: FORMAT-FACTORY-R49-EDITABLE-OBJECT-MODEL-POC-BASELINE-AND-STRATEGY-SYNC-001
+run_number: R49
+created: "2026-05-22"
+purpose: >
+  R49: Editable object-model POC baseline + strategy sync.
+  MT1: R48 IV + proof-file placeholder guard (validator hardening).
+  MT2: Memory/docs sync (object-model/edit/AI strategy).
+  MT3: AI acceleration plan + ledger (NO_LIVE_AI_CALLS).
+  MT4: FODS Python object-model POC (load/edit/save/reload/verify, 13 tests).
+  MT5: FODT Python writer fix (blocks key + headings) + object-model POC (12 tests).
+  MT6: FODS/FODT .NET object-model POC consumer proof (PASS).
+  MT7: Preservation matrix (FODS + FODT, Python streaming vs .NET DOM-backed).
+  MT8: Export-format acquisition ranking (Tier 1-4).
+  MT9: Phase Audit 3 expansion (ZST/ODS/ODT CONDITIONAL_PASS).
+  MT10: ZST Python local RC (wheel built + smoke test PASS).
+  MT11: Final adversarial validation + 2-pass bundle.
+
+require_clean_git: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r49-editable-object-model-poc.yaml
+require_manifest: true
+min_metadata_count: 30
+
+required_repo_files:
+  - reports/r49/final-verdict.md
+  - reports/r49/00-preflight.md
+  - reports/r49/r48-independent-verification.md
+  - reports/r49/lane-ownership.md
+  - reports/r49/ai-acceleration-plan.md
+  - reports/r49/ai-usage-ledger.jsonl
+  - reports/r49/agent-metrics-posting-proof.md
+  - reports/r49/dotnet-object-model-poc-proof.md
+  - reports/r49/preservation-matrix-fods.md
+  - reports/r49/preservation-matrix-fodt.md
+  - reports/r49/export-format-acquisition-ranking.md
+  - reports/r49/phase-audit/phase-03-expansion.md
+  - reports/r49/zst-python-local-rc.md
+  - tools/evidence/contracts/r49-editable-object-model-poc.yaml
+  - tests/python/fods/test_r49_object_model_poc.py
+  - tests/python/fodt/test_r49_object_model_poc.py
+  - tests/evidence/test_r49_validator_hardening.py
+  - src/python/fodt/writer.py
+  - tools/package/run_dotnet_object_model_poc.py
+  - docs/product-object-model-edit-save-export-strategy.md
+  - state/current-state.md
+  - state/current-state.json
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - consumer-proof-summary.txt
+  - r48-supersession-summary.txt
+  - fodt-writer-fix-summary.txt
+  - object-model-poc-summary.txt
+  - dotnet-object-model-poc-summary.txt
+  - preservation-matrix-summary.txt
+  - export-format-ranking-summary.txt
+  - phase-audit-3-expansion-summary.txt
+  - zst-python-local-rc-summary.txt
+  - ai-usage-ledger-summary.txt
+  - lane-status-summary.txt
+  - r49-gaps-closure.txt
+  - r49-scope-summary.txt
+  - state-linter-output.txt
+  - fods-wheel-smoke-test.txt
+  - fodt-wheel-smoke-test.txt
+  - zst-wheel-smoke-test.txt
+  - test-coverage-summary.txt
+  - validator-hardening-summary.txt
+  - run-environment.txt
+  - risk-register-summary.txt
+
+include_directories:
+  - reports/r49/
+  - tools/evidence/
+  - tools/package/
+  - tools/state/
+  - tests/evidence/
+  - tests/invariants/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - src/net/fods/
+  - src/net/fodt/
+  - src/python/fods/
+  - src/python/fodt/
+  - src/python/zst/
+  - samples/by-format/fods/
+  - samples/by-format/fodt/
+  - samples/by-format/zst/
+  - docs/
+  - registry/
+  - state/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+authoritative_test_results:
+  r49_fods_object_model_poc: "13 passed (TestFodsPythonObjectModelPOC + TestFodsPreservationProof)"
+  r49_fodt_object_model_poc: "12 passed (TestFodtWriterBlocksKeyFix + TestFodtPythonObjectModelPOC + TestFodtPreservationProof)"
+  r49_validator_hardening: "8 passed (TestProofFileFinality)"
+  python_fods_fodt: "383 passed, 4 skipped"
+  state_evidence_requirements_packaging_invariants: "922 passed, 2 pre-existing fail"
+  r49_scope_total: "AUTHORITATIVE_TEST_RESULT: 1305 passed, 4 skipped, 2 pre-existing fail"
+  dotnet_fods: "157 passed"
+  dotnet_fodt: "145 passed"
+  dotnet_object_model_poc_fods: "FODS_DOTNET_OBJECT_MODEL_EDIT_SAVE_RELOAD_PASS"
+  dotnet_object_model_poc_fodt: "FODT_DOTNET_OBJECT_MODEL_EDIT_SAVE_RELOAD_PASS"
+  zst_python_smoke: "ZST_PYTHON_LOCAL_RC: PASS"
+  phase_audit_3: "PHASE_AUDIT_3: EXPANSION_PASS_ZST_ODS_ODT"
