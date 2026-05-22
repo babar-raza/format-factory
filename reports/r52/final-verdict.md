@@ -20,7 +20,7 @@ R52 repaired the state/verdict contradiction introduced by R51's new `## Verdict
 
 ## Test Results
 
-AUTHORITATIVE_TEST_RESULT: 3681 passed (non-AI), 13 skipped, 4 pre-existing fail
+AUTHORITATIVE_TEST_RESULT: 3548 passed (non-AI), 13 skipped, 4 pre-existing fail
 
 Evidence suite: 827 passed, 0 failed (includes 35 new R52 tests)
 Note: AI test suite (fixture mode, ~617 tests) unchanged from R51; not re-run in R52.
@@ -36,6 +36,13 @@ Unchanged from R51:
 ## Verdict
 
 `R52_STATE_CONSISTENT_INSTALLED_ARTIFACT_BASELINE_CLEAN`
+
+## Bundle Proof
+
+Pass 1 SHA-256: `6d5444ac02541ad037aa057260bbb7393b7f2b46b06cc9babcf9f09f754113b2`
+Pass 1 Entries: 2380 | Size: 4,357,216 bytes
+
+Pass 2 SHA-256: `PENDING`
 
 ## BUNDLE_VALIDATION
 
