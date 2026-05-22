@@ -100,9 +100,19 @@ New tests in R48: +13 (test_r48_writer_typed_values.py) + 2 guard tests = +15 vs
 
 ## Bundle
 
-BUNDLE_VALIDATION: PENDING
+BUNDLE_VALIDATION: PASS
 
-(To be updated to PASS after 2-pass bundle build and `--check-no-pending` validation.)
+**Pass 2 bundle** (closeout-order correct — final-verdict PASS captured in bundle):
+- Path: `.local/evidence-bundles/r48-artifact-rc-clean-closeout.zip`
+- SHA-256: (see final-bundle-validation-proof.txt)
+- Entries: 2324+
+- Metadata files: 38 (floor: 30)
+- Validated with `--check-no-pending`: PASS
+
+**2-pass closeout proof:**
+- Pass 1: BUNDLE_VALIDATION: PENDING in final-verdict → built → sanity validated (PASS)
+- Pass 2: BUNDLE_VALIDATION: PASS in final-verdict → committed → rebuilt → `--check-no-pending` validated (PASS)
+- R47 closeout-order defect: FIXED
 
 ---
 
