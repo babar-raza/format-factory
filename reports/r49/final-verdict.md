@@ -100,7 +100,10 @@ AUTHORITATIVE_TEST_RESULT: 1305 passed, 4 skipped, 2 pre-existing fail
 
 ## 2-Pass Bundle Closeout
 
-- Pass 1: verdict=pending → built → sanity validated
-- Pass 2: verdict=PASS → rebuilt → validated with --check-no-pending (including R49 proof-file finality check)
+- Pass 1: verdict=pending → built → sanity validated (PASS)
+  SHA-256: 068f54a858dc73d00c1768a4393e8d4100a54c4f9d256c27c5ae9a560d750595
+- Pass 2: verdict=PASS → rebuilt → validated with --check-no-pending (PASS; R49 proof-file finality check included)
+  SHA-256: cef5921ef08ff8b62e2e2a7da4a065a5640b30f2977d142cd27ef28651cdd314
+  Entries: 2344, Size: 4,349,748 bytes, Metadata files: 38
 
 BUNDLE_VALIDATION: PASS
