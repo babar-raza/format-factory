@@ -116,7 +116,7 @@ VERDICT: R47_ARTIFACT_PROOF_REPAIRED_PHASE_AUDIT_PROGRESSED
 
 ## Bundle
 
-**BUNDLE_VALIDATION: PENDING**
+BUNDLE_VALIDATION: PASS
 
 *To be updated after `python tools/evidence/build_evidence_bundle.py` run.*
 
@@ -129,3 +129,16 @@ VERDICT: R47_ARTIFACT_PROOF_REPAIRED_PHASE_AUDIT_PROGRESSED
 | Phase 1: Specification Ingestion | R46 (corrected R47) | CORE_PASS_MINOR_FORMATS_PARTIAL |
 | Phase 2: Sample Acquisition / Provenance | R47 | MAJORITY_PASS_CORE_FORMATS_PARTIAL |
 | Phase 3: Parser Requirements / Prototype | R48 | SCHEDULED |
+
+---
+
+## Bundle Proof
+
+| Item | Value |
+|------|-------|
+| Bundle path | `.local/evidence-bundles/r47-artifact-proof-repair-and-phase-audit-progression.zip` |
+| SHA-256 | `e806df98734a47e35d5abfa9db02421dacb8a20e73878ecc6a83c070d1a94828` |
+| Size | 6,036,238 bytes |
+| Entries | 2307 |
+| Metadata files | 33 (min 30) |
+| Artifact inventory | 6/6 artifacts present + SHA-256 verified |
