@@ -42,7 +42,8 @@ Unchanged from R51:
 Pass 1 SHA-256: `6d5444ac02541ad037aa057260bbb7393b7f2b46b06cc9babcf9f09f754113b2`
 Pass 1 Entries: 2380 | Size: 4,357,216 bytes
 
-Pass 2 SHA-256: `PENDING`
+Pass 2 SHA-256: `3aa7b823e4bc457cfefa972adb9a05bb4ee22b0d039adc7da2b6155f7fdceaf1`
+Pass 2 Entries: 2380 | Size: 4,357,504 bytes
 
 ## BUNDLE_VALIDATION
 
