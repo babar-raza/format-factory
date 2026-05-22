@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R49 - no_final_verdict
+**Latest sprint:** R49 - R49_EDITABLE_OBJECT_MODEL_POC_BASELINE_COMPLETE
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
@@ -18,5 +18,3 @@
 - G11-G_NOT_STARTED: Gate 11 commercial approval requires Babar Raza written approval
 - GATE8_AWAITING_HUMAN_APPROVAL: ODS/ODT/QOI/XCF/DIF/PPM Gate 8 security review pending
 - PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry
-- INV-003: Contract: R49 (r49-editable-object-model-poc.yaml)
-- INV-003: MISSING: reports/r49/final-verdict.md

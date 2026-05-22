@@ -103,4 +103,4 @@ AUTHORITATIVE_TEST_RESULT: 1305 passed, 4 skipped, 2 pre-existing fail
 - Pass 1: verdict=pending → built → sanity validated
 - Pass 2: verdict=PASS → rebuilt → validated with --check-no-pending (including R49 proof-file finality check)
 
-BUNDLE_VALIDATION: PENDING
+BUNDLE_VALIDATION: PASS
