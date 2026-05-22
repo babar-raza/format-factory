@@ -104,7 +104,7 @@ BUNDLE_VALIDATION: PASS
 
 **Pass 2 bundle** (closeout-order correct — final-verdict PASS captured in bundle):
 - Path: `.local/evidence-bundles/r48-artifact-rc-clean-closeout.zip`
-- SHA-256: (see final-bundle-validation-proof.txt)
+- SHA-256: `d1eb61a4f425714271c150a2e6eba266094ffe64cd3ee6c5c11525d2d370c92e`
 - Entries: 2324+
 - Metadata files: 38 (floor: 30)
 - Validated with `--check-no-pending`: PASS
