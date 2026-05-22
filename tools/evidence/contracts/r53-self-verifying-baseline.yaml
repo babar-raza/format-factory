@@ -1,0 +1,59 @@
+sprint_id: FORMAT-FACTORY-R53-SELF-VERIFYING-BASELINE-001
+run_number: R53
+description: >
+  R53 self-verifying baseline sprint.
+  Corrects R52 overclaim, adopts sidecar proof protocol, implements FODS formula
+  preservation (TC-0054), creates first requirements matrix and gap ledger.
+
+require_clean_git: true
+min_metadata_count: 20
+
+required_repo_files:
+  - reports/r53/final-verdict.md
+  - reports/r53/00-preflight.md
+  - reports/r53/r52-independent-verification.md
+  - reports/r53/final-proof-sidecar-protocol.md
+  - reports/r53/installed-artifact-baseline-policy.md
+  - reports/r53/physical-invariant-report.md
+  - reports/r53/requirements-vs-actual-matrix.md
+  - reports/r53/requirements-vs-actual-matrix.json
+  - reports/r53/gap-ledger.md
+  - reports/r53/gap-ledger.json
+  - reports/r53/state-final-verdict-consistency.md
+  - reports/r53/object-model-preservation-progress.md
+  - reports/r53/export-dogfooding-status.md
+  - reports/r53/ai-gateway-direct-call-audit.md
+  - reports/r53/retrieval-embedding-truth.md
+  - reports/r53/ai-usage-telemetry-proof.md
+  - reports/r53/phase-audit-4-continuation.md
+  - reports/r53/phase-audit-5-plan.md
+  - reports/r53/lane-ownership.md
+  - reports/r53/risk-register.md
+  - reports/r53/work-ahead-policy.md
+  - tools/evidence/write_sidecar_proof.py
+  - tests/python/fods/test_r53_formula_preservation.py
+  - tests/evidence/test_r53_sidecar_proof.py
+  - memory/58-r53-self-verifying-baseline-20260522.md
+  - state/current-state.md
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - run-environment.txt
+  - r52-iv-summary.txt
+  - sidecar-proof-summary.txt
+  - formula-preservation-summary.txt
+  - installed-artifact-policy-summary.txt
+  - requirements-matrix-summary.txt
+  - phase-audit-status.txt
+  - deferred-work-r54.txt
+  - state-snapshot-output.txt
+  - invariants-output.txt
+  - ai-gateway-audit-output.txt
+  - package-artifact-manifest.yaml

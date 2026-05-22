@@ -62,6 +62,12 @@ def _write_cell(parent: ET.Element, cell: dict[str, Any]) -> None:
 
     cell_el = ET.SubElement(parent, _qn("table", "table-cell"))
 
+    # TC-0054: formula preservation — emit formula attribute verbatim if present.
+    # Parser captures table:formula as-is (IR-FODS-008); writer must round-trip it.
+    formula = cell.get("formula")
+    if formula is not None:
+        cell_el.set(_qn("table", "formula"), formula)
+
     if value_type == "float" and raw_value is not None:
         cell_el.set(_qn("office", "value-type"), "float")
         cell_el.set(_qn("office", "value"), str(raw_value))

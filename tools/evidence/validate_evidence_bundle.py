@@ -1510,6 +1510,73 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         return True
 
 
+def check_sidecar_proof(bundle_path: str, sidecar_path: str) -> "list[str]":
+    """R53 Lane 2B: Validate an external sidecar proof against the actual bundle bytes.
+
+    The sidecar JSON (written by tools/evidence/write_sidecar_proof.py) contains:
+      sha256, size_bytes, entry_count, validation_result
+
+    This function verifies that each field matches the actual bundle.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    import json as _json
+    errors: list[str] = []
+
+    try:
+        sidecar = _json.loads(Path(sidecar_path).read_text(encoding="utf-8"))
+    except Exception as exc:
+        errors.append(f"SIDECAR_PROOF: cannot read sidecar file {sidecar_path!r}: {exc}")
+        return errors
+
+    # Validate SHA
+    try:
+        actual_sha = hashlib.sha256(Path(bundle_path).read_bytes()).hexdigest()
+    except Exception as exc:
+        errors.append(f"SIDECAR_PROOF: cannot read bundle for SHA check: {exc}")
+        return errors
+
+    claimed_sha = sidecar.get("sha256", "")
+    if actual_sha.lower() != str(claimed_sha).lower():
+        errors.append(
+            f"SIDECAR_PROOF_SHA_MISMATCH: sidecar claims sha256={claimed_sha!r} "
+            f"but actual bundle SHA is {actual_sha!r}"
+        )
+
+    # Validate size
+    actual_size = Path(bundle_path).stat().st_size
+    claimed_size = sidecar.get("size_bytes")
+    if claimed_size is not None and int(claimed_size) != actual_size:
+        errors.append(
+            f"SIDECAR_PROOF_SIZE_MISMATCH: sidecar claims size_bytes={claimed_size} "
+            f"but actual bundle size is {actual_size}"
+        )
+
+    # Validate entry count
+    try:
+        with zipfile.ZipFile(bundle_path) as zf:
+            actual_entries = len(zf.namelist())
+    except Exception as exc:
+        errors.append(f"SIDECAR_PROOF: cannot open bundle for entry count: {exc}")
+        return errors
+
+    claimed_entries = sidecar.get("entry_count")
+    if claimed_entries is not None and int(claimed_entries) != actual_entries:
+        errors.append(
+            f"SIDECAR_PROOF_ENTRY_COUNT_MISMATCH: sidecar claims entry_count={claimed_entries} "
+            f"but actual bundle has {actual_entries} entries"
+        )
+
+    # Validate result field
+    validation_result = sidecar.get("validation_result", "")
+    if validation_result != "PASS":
+        errors.append(
+            f"SIDECAR_PROOF_RESULT_NOT_PASS: sidecar validation_result={validation_result!r} (expected 'PASS')"
+        )
+
+    return errors
+
+
 def main():
     parser = argparse.ArgumentParser(description="Validate evidence bundle against contract")
     parser.add_argument("--contract", required=True, help="Contract YAML path")
@@ -1519,6 +1586,9 @@ def main():
     parser.add_argument("--check-no-pending", action="store_true",
                         help="Fail if any metadata file contains PENDING marker patterns "
                              "(use as final validation after report files are updated)")
+    parser.add_argument("--sidecar-proof", default=None,
+                        help="Path to external sidecar proof JSON (write_sidecar_proof.py output). "
+                             "If provided, validates sidecar SHA/size/entries against actual bundle.")
     args = parser.parse_args()
 
     success = validate_bundle(
@@ -1527,6 +1597,26 @@ def main():
         strict_git=not args.no_strict_git,
         no_pending=args.check_no_pending,
     )
+
+    if args.sidecar_proof:
+        sidecar_errors = check_sidecar_proof(args.bundle, args.sidecar_proof)
+        if sidecar_errors:
+            print()
+            print("SIDECAR PROOF ERRORS:")
+            for e in sidecar_errors:
+                print(f"  - {e}")
+            print("SIDECAR_PROOF_VALIDATION: FAIL")
+            success = False
+        else:
+            sidecar_path = Path(args.sidecar_proof)
+            import json as _json
+            try:
+                sidecar = _json.loads(sidecar_path.read_text(encoding="utf-8"))
+                print(f"Sidecar proof check (PASS): SHA/size/entries match — {sidecar.get('sha256', '')[:16]}...")
+            except Exception:
+                pass
+            print("SIDECAR_PROOF_VALIDATION: PASS")
+
     sys.exit(0 if success else 1)
 
 
