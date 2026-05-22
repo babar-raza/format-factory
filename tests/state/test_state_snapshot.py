@@ -80,13 +80,24 @@ class TestVerdictParsing:
 
 
 class TestVerdictRegexFormats:
-    """R43: Guard tests covering all verdict markdown formats."""
+    """R43/R52: Guard tests covering all verdict markdown formats."""
 
     def _extract_verdict(self, text):
+        """Mirror logic of state_snapshot.get_latest_sprint() for unit testing."""
         import re
-        from state_snapshot import get_latest_sprint  # noqa: verify import
-        m = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z0-9_]+)", text, re.IGNORECASE)
-        return m.group(1) if m else None
+        verdict = None
+        # Format A/B: VERDICT: or Verdict: inline
+        m = re.search(r"(?:^|\n)\s*\*{0,2}(?:VERDICT|Verdict):\*{0,2}\s*\*{0,2}([A-Z][A-Z0-9_]+)\*{0,2}", text)
+        if m:
+            verdict = m.group(1)
+        # Format C: "## Verdict" heading + code-block value (R51+)
+        if not verdict:
+            m = re.search(r"##\s+Verdict\s*\n+\s*`([A-Z][A-Z0-9_]+)`", text)
+            if m:
+                verdict = m.group(1)
+        if verdict and not re.match(r"[A-Z][A-Z0-9_]{3,}", verdict):
+            verdict = None
+        return verdict
 
     def test_plain_uppercase_verdict(self):
         assert self._extract_verdict("VERDICT: R43_COMPLETE") == "R43_COMPLETE"
@@ -101,6 +112,22 @@ class TestVerdictRegexFormats:
         # R42 actual format: **Verdict:** **R42_HIGH_THROUGHPUT_POC_READY**
         assert self._extract_verdict("**Verdict:** **R42_HIGH_THROUGHPUT_POC_READY**") == "R42_HIGH_THROUGHPUT_POC_READY"
 
+    def test_code_block_verdict_r51_format(self):
+        """R52: R51 uses ## Verdict heading + backtick code-block value."""
+        text = "## Verdict\n\n`R51_INSTALLED_ARTIFACT_BASELINE_AND_AI_ACCELERATION_COMPLETE`\n"
+        assert self._extract_verdict(text) == "R51_INSTALLED_ARTIFACT_BASELINE_AND_AI_ACCELERATION_COMPLETE"
+
+    def test_code_block_verdict_with_extra_newlines(self):
+        """R52: code-block verdict with extra blank lines between heading and value."""
+        text = "## Verdict\n\n\n`R52_STATE_CONSISTENT_INSTALLED_ARTIFACT_BASELINE_CLEAN`\n"
+        assert self._extract_verdict(text) == "R52_STATE_CONSISTENT_INSTALLED_ARTIFACT_BASELINE_CLEAN"
+
+    def test_code_block_verdict_not_polluted(self):
+        """R52: bare text after ## Verdict (no backtick) must not be captured as code-block verdict."""
+        text = "## Verdict\n\nsome prose text\n"
+        # Should fall back to None (no VERDICT: inline either)
+        assert self._extract_verdict(text) is None
+
     def test_live_r42_verdict_resolves(self):
         """R43 regression: live R42 final-verdict.md must return non-unknown verdict."""
         import pathlib
@@ -108,15 +135,23 @@ class TestVerdictRegexFormats:
         vpath = snap_root / "reports" / "r42" / "final-verdict.md"
         if not vpath.exists():
             return  # R42 report not present — skip
-        import re
-        content = vpath.read_text()
-        m = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z0-9_]+)", content, re.IGNORECASE)
-        assert m is not None, "No verdict found in reports/r42/final-verdict.md"
-        verdict = m.group(1)
+        verdict = self._extract_verdict(vpath.read_text())
+        assert verdict is not None, "No verdict found in reports/r42/final-verdict.md"
         assert verdict != "unknown", f"Verdict resolved to 'unknown'; actual: {verdict!r}"
 
+    def test_live_r51_verdict_resolves(self):
+        """R52: live R51 final-verdict.md must return correct code-block verdict."""
+        import pathlib
+        snap_root = pathlib.Path(__file__).resolve().parents[2]
+        vpath = snap_root / "reports" / "r51" / "final-verdict.md"
+        if not vpath.exists():
+            return
+        verdict = self._extract_verdict(vpath.read_text())
+        assert verdict is not None, "No verdict found in reports/r51/final-verdict.md"
+        assert verdict.startswith("R51_"), f"R51 verdict must start with R51_: {verdict!r}"
+
     def test_latest_sprint_not_unknown(self):
-        """R43 regression: get_latest_sprint() must not return verdict='unknown' when final-verdict.md is present."""
+        """R43/R52: get_latest_sprint() must not return verdict='unknown' when final-verdict.md is present."""
         from state_snapshot import get_latest_sprint
         result = get_latest_sprint()
         verdict = result.get("verdict", "unknown")

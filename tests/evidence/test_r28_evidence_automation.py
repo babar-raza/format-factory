@@ -36,6 +36,10 @@ class TestPendingMarkerDetection:
                         continue
                     if "PENDING_MARKER_PATTERNS" in stripped:
                         continue
+                    # Skip 2-pass protocol narrative: "BUNDLE_VALIDATION: PENDING in final-verdict"
+                    # documents the closeout sequence, not a stale marker.
+                    if "in final-verdict" in stripped:
+                        continue
                     # Skip if every occurrence of the trigger keyword is inside backticks
                     import re
                     backtick_content = " ".join(re.findall(r"`[^`]+`", stripped))

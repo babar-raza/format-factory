@@ -1,0 +1,96 @@
+contract_id: FORMAT-FACTORY-R52-STATE-CONSISTENT-INSTALLED-ARTIFACT-BASELINE-CLEAN-001
+sprint_id: FORMAT-FACTORY-R52-STATE-CONSISTENT-INSTALLED-ARTIFACT-BASELINE-CLEAN-001
+run_number: R52
+created: "2026-05-22"
+purpose: >
+  R52: State/verdict contradiction repair + validator hardening.
+  Lane 1A/1B: state_snapshot.py Format C support (## Verdict + code-block).
+  Lane 1C: check_state_verdict_agreement() — bundle scan, INV-003 false-blocker, stale-state.
+  Lane 2A: check_proof_sha_consistency() — warn on SHA mismatch.
+  Lane 2B: COMMAND_LOG_STALE_PATTERNS extended (Pass 1/2 PENDING, to be completed).
+  Lane 2C: PENDING_SCAN_SKIP_FILES (git-log.txt exclusion).
+  Lane 2D/2E: build_evidence_bundle.py + check_proof_file_finality() auto-proof regression fixed.
+  Lane 3A-3E: 35 new guard tests; test_r28/test_r49 regressions fixed.
+
+require_clean_git: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r52-state-consistent-installed-artifact-baseline.yaml
+require_manifest: true
+min_metadata_count: 30
+
+required_repo_files:
+  - reports/r52/final-verdict.md
+  - reports/r52/00-preflight.md
+  - reports/r52/r51-independent-verification.md
+  - reports/r52/validator-hardening-summary.md
+  - reports/r52/lane-ownership.md
+  - reports/r52/work-ahead-policy.md
+  - reports/r52/risk-register.md
+  - tools/evidence/contracts/r52-state-consistent-installed-artifact-baseline.yaml
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/build_evidence_bundle.py
+  - tests/evidence/test_r52_validator_hardening.py
+  - tests/evidence/test_r51_validator_hardening.py
+  - tests/state/test_state_snapshot.py
+  - tests/evidence/test_r28_evidence_automation.py
+  - tests/evidence/test_r49_validator_hardening.py
+  - tests/evidence/test_auto_proof_bundle.py
+  - tools/state/state_snapshot.py
+  - state/current-state.md
+  - state/current-state.json
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - run-environment.txt
+  - r51-iv-summary.txt
+  - validator-hardening-summary.txt
+  - state-linter-output.txt
+  - test-coverage-summary.txt
+  - r52-scope-summary.txt
+  - lane-status-summary.txt
+  - guard-tests-summary.txt
+  - auto-proof-fix-summary.txt
+  - state-snapshot-fix-summary.txt
+  - pending-scan-fix-summary.txt
+  - command-log-patterns-summary.txt
+  - proof-sha-check-summary.txt
+  - state-verdict-agreement-summary.txt
+
+include_directories:
+  - reports/r52/
+  - tools/evidence/
+  - tools/state/
+  - tests/evidence/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - src/python/fods/
+  - src/python/fodt/
+  - state/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+authoritative_test_results:
+  r52_validator_hardening: "19 passed (Lane 1B: 5, Lane 2A: 4, Lane 2B: 6, Lane 1C: 4)"
+  r51_validator_hardening: "16 passed (Lane 1B: 8, Lane 1C: 5, Lane 1D: 3)"
+  state_snapshot_guard_tests: "24 passed"
+  auto_proof_bundle_tests: "9 passed (7 regressions fixed)"
+  evidence_suite_total: "827 passed, 0 failed"
+  python_full_suite: "3548 passed (non-AI), 13 skipped, 4 pre-existing fail"
+  r52_new_tests_total: "35 new tests (19 R52 + 16 R51 retroactive)"
+  r52_scope_total: "AUTHORITATIVE_TEST_RESULT: 3548 passed, 13 skipped, 4 pre-existing fail"

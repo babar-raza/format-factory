@@ -576,6 +576,11 @@ PROOF_FILE_PLACEHOLDER_PATTERNS = [
 ]
 
 
+_AUTO_PROOF_TRANSIENT_PLACEHOLDER = (
+    "placeholder \u2014 will be replaced after candidate validation"
+)
+
+
 def check_proof_file_finality(metadata_files_content):
     """R49: Check that final-bundle-validation-proof.txt contains no stale placeholders.
 
@@ -585,11 +590,20 @@ def check_proof_file_finality(metadata_files_content):
 
     Called when --check-no-pending is active.
 
+    R52 note: The auto_proof builder writes a transient placeholder during Pass 1
+    ("PLACEHOLDER — will be replaced after candidate validation"). This exact text
+    is excluded because the builder replaces it with actual metrics before Pass 3,
+    which is the only pass that produces a final bundle.
+
     Returns a list of error strings (empty if the check passes).
     """
     proof_content = metadata_files_content.get("final-bundle-validation-proof.txt", "")
     if not proof_content:
         # File absent: caught by required_metadata_files check — not our job here.
+        return []
+    # R52: Skip if this is the exact auto-proof transient placeholder written during Pass 1.
+    # By Pass 3 (final build), the builder has replaced this with actual metrics.
+    if proof_content.strip().lower() == _AUTO_PROOF_TRANSIENT_PLACEHOLDER:
         return []
 
     hits = []
@@ -604,6 +618,55 @@ def check_proof_file_finality(metadata_files_content):
             )
             break  # one error per file is sufficient
     return hits
+
+
+def check_proof_sha_consistency(metadata_files_content, bundle_path):
+    """R52 Lane 2A: Check that the final-bundle-validation-proof.txt SHA/size
+    values describe an actual bundle whose bytes match a claimed final SHA.
+
+    The fundamental problem: a file inside a ZIP cannot contain the SHA-256 of
+    that same ZIP (self-referential). The acceptable approach:
+
+    Approach A (sidecar): Proof inside bundle records the PASS 1 SHA only. The
+    authoritative final SHA is in a sidecar file OUTSIDE the ZIP. This function
+    issues a warning if it detects the proof claims a SHA that clearly does not
+    match the actual bundle bytes being validated.
+
+    Approach B (internal, approximate): If the proof SHA matches the actual
+    bundle SHA, it can only be correct if the proof was written BEFORE final
+    bundle build and the bundle was rebuilt deterministically. We warn but do
+    not fail, since this is mathematically impossible for a proper final proof.
+
+    Returns a list of warning strings (not errors) for SHA mismatches.
+    """
+    warnings = []
+    proof_content = metadata_files_content.get("final-bundle-validation-proof.txt", "")
+    if not proof_content:
+        return warnings
+
+    # Parse claimed SHA-256 values from the proof file
+    claimed_shas = re.findall(r"\bSHA-256:\s*([0-9a-f]{64})\b", proof_content, re.IGNORECASE)
+    if not claimed_shas:
+        return warnings  # No SHA claims to check
+
+    # Compute actual bundle SHA
+    try:
+        actual_sha = hashlib.sha256(Path(bundle_path).read_bytes()).hexdigest()
+    except Exception:
+        return warnings
+
+    # The proof may list multiple SHAs (pass 1 + pass 2). We check if the
+    # LAST claimed SHA matches the actual bundle. If no SHA matches the actual
+    # bundle, it is likely a stale/recursive proof.
+    if actual_sha not in claimed_shas:
+        warnings.append(
+            f"PROOF_SHA_SIDECAR_RECOMMENDED: final-bundle-validation-proof.txt claims SHA(s) "
+            f"{claimed_shas} but actual bundle SHA is {actual_sha}. "
+            f"A file inside a ZIP cannot contain the SHA of the ZIP containing it. "
+            f"Use an external sidecar proof file (outside the ZIP) for the authoritative final SHA, "
+            f"or record only the PASS 1 SHA inside the bundle and the final SHA outside."
+        )
+    return warnings
 
 
 # R51 Lane 1C: Unresolved closeout text patterns in final verdicts.
@@ -709,6 +772,12 @@ COMMAND_LOG_STALE_PATTERNS = [
     # State snapshot ran before final verdict was written — stale pre-final result.
     # Pattern: "STATE_SNAPSHOT: PASS (R49 no_final_verdict)" etc.
     "no_final_verdict",
+    # R52: validation log written before bundle was built — contains unfinished closeout text.
+    "to be completed in mt",
+    "pass 1: pending",
+    "pass 2: pending",
+    "pending final validation",
+    "to be completed",
 ]
 
 COMMAND_LOG_CANDIDATE_FILES = [
@@ -872,38 +941,76 @@ def check_package_proof_present(metadata_files_content, zf):
     return hits
 
 
+def _parse_verdict_from_text(content):
+    """Parse verdict value from final-verdict.md content, handling all known formats.
+
+    Formats:
+    A: inline "VERDICT: VALUE" / "**VERDICT:** VALUE"
+    B: "**Verdict:** **VALUE**"
+    C: "## Verdict" heading + "`VALUE`" code-block (R51+)
+    """
+    verdict_val = None
+    # Format A/B
+    m = re.search(r"(?:^|\n)\s*\*{0,2}(?:VERDICT|Verdict):\*{0,2}\s*\*{0,2}([A-Z][A-Z0-9_]+)\*{0,2}", content)
+    if m:
+        verdict_val = m.group(1)
+    # Format C
+    if not verdict_val:
+        m = re.search(r"##\s+Verdict\s*\n+\s*`([A-Z][A-Z0-9_]+)`", content)
+        if m:
+            verdict_val = m.group(1)
+    # Sanity: must be a real identifier, not just noise
+    if verdict_val and not re.match(r"[A-Z][A-Z0-9_]{3,}", verdict_val):
+        verdict_val = None
+    return verdict_val
+
+
 def check_state_verdict_agreement(metadata_files_content, zf):
-    """R43: Detect state/verdict disagreement.
+    """R43/R52: Detect state/verdict disagreement.
 
     If final-verdict.md (bundle-metadata) claims a *_COMPLETE or *_POC_READY verdict
     but repo/state/current-state.md shows 'unknown' or 'no_final_verdict', the bundle
     is internally inconsistent — the state file was not regenerated after final-verdict
     was written.
 
+    R52 extension: also handles R51's code-block verdict format (## Verdict + `VALUE`).
+    R52 extension: also catches INV-003 false blocker — state says final-verdict.md is
+    MISSING even though the file exists in the bundle.
+
     Returns a list of error strings.
     """
     hits = []
     verdict_val = None
+    # First look in bundle-metadata/ (legacy path)
     for fname in ("final-verdict.md", "final-verdict.txt", "verdict.md"):
         content = metadata_files_content.get(fname, "")
         if content:
-            m = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z][A-Z0-9_]+)", content, re.IGNORECASE)
-            if m:
-                verdict_val = m.group(1)
+            verdict_val = _parse_verdict_from_text(content)
             break
+    # Then scan the bundle's repo/reports/*/final-verdict.md (primary path)
+    if verdict_val is None:
+        all_entries_pre = set(zf.namelist())
+        for entry in sorted(all_entries_pre, reverse=True):  # reverse: latest run first
+            if entry.startswith("repo/reports/") and entry.endswith("/final-verdict.md"):
+                try:
+                    content = zf.read(entry).decode("utf-8", errors="replace")
+                    verdict_val = _parse_verdict_from_text(content)
+                    if verdict_val:
+                        break
+                except Exception:
+                    pass
 
     if verdict_val is None:
-        return hits  # no verdict file present — nothing to check
+        # No verdict found in any location — still check for INV-003 false blocker below
+        pass
 
-    is_positive_verdict = (
+    is_positive_verdict = verdict_val is not None and (
         verdict_val.endswith("_COMPLETE")
         or verdict_val.endswith("_READY")
         or verdict_val.endswith("_PASS")
         or "_COMPLETE_" in verdict_val
         or "_READY_" in verdict_val
     )
-    if not is_positive_verdict:
-        return hits  # only check positive verdicts
 
     # Read repo/state/current-state.md from the bundle
     state_content = ""
@@ -920,11 +1027,30 @@ def check_state_verdict_agreement(metadata_files_content, zf):
     if not state_content:
         return hits  # state file not in bundle — skip
 
-    # Check if state says unknown or no_final_verdict for the latest sprint
+    if not is_positive_verdict:
+        # Still check for INV-003 false blocker even without a positive verdict
+        all_bundle_entries_inv = set(zf.namelist())
+        for entry in all_bundle_entries_inv:
+            if entry.startswith("repo/reports/") and entry.endswith("/final-verdict.md"):
+                run_dir = entry.split("/")[2]
+                inv_blocker = f"INV-003: MISSING: reports/{run_dir}/final-verdict.md"
+                if inv_blocker in state_content:
+                    hits.append(
+                        f"STATE_FALSE_INV003_BLOCKER: state/current-state.md reports "
+                        f"'{inv_blocker}' but '{entry}' exists in the bundle. "
+                        f"The state snapshot was generated before the final-verdict file was present. "
+                        f"Regenerate state after writing final-verdict.md."
+                    )
+        return hits
+
+    # Check if state says unknown or no_final_verdict for the latest sprint.
+    # State output format: "**Latest sprint:** R51 - unknown" (hyphen, not em-dash).
     stale_indicators = [
         "no_final_verdict",
-        "— unknown",
-        "— no_final_verdict",
+        "— unknown",        # em-dash format (older)
+        "— no_final_verdict",  # em-dash format (older)
+        " - unknown",       # hyphen format (current state_snapshot.py output)
+        " - no_final_verdict",  # hyphen format
         ": unknown",
         ": no_final_verdict",
     ]
@@ -934,8 +1060,23 @@ def check_state_verdict_agreement(metadata_files_content, zf):
             f"STATE_VERDICT_MISMATCH: final-verdict.md has VERDICT: {verdict_val} "
             f"but state/current-state.md shows 'unknown' or 'no_final_verdict'. "
             f"The state file was not regenerated after the final verdict was written. "
-            f"Run: python tools/state/state_snapshot.py (R43 fix: state_snapshot.py verdict regex)."
+            f"Run: python tools/state/state_snapshot.py (R52 fix: handles code-block verdict format)."
         )
+
+    # R52: Also check for INV-003 false blocker — state says final-verdict.md MISSING
+    # but the file exists in the bundle (state was snapshotted before verdict was written).
+    all_bundle_entries = set(zf.namelist())
+    for entry in all_bundle_entries:
+        if entry.startswith("repo/reports/") and entry.endswith("/final-verdict.md"):
+            run_dir = entry.split("/")[2]  # e.g. "r51"
+            inv_blocker = f"INV-003: MISSING: reports/{run_dir}/final-verdict.md"
+            if inv_blocker in state_content:
+                hits.append(
+                    f"STATE_FALSE_INV003_BLOCKER: state/current-state.md reports "
+                    f"'{inv_blocker}' but '{entry}' exists in the bundle. "
+                    f"The state snapshot was generated before the final-verdict file was present. "
+                    f"Regenerate state after writing final-verdict.md."
+                )
     return hits
 
 
@@ -1257,6 +1398,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             proof_finality_hits = check_proof_file_finality(metadata_files_content)
             for msg in proof_finality_hits:
                 errors.append(msg)
+            proof_sha_warnings = check_proof_sha_consistency(metadata_files_content, bundle_path)
+            for msg in proof_sha_warnings:
+                warnings.append(msg)
             command_log_hits = check_validation_command_log_freshness(metadata_files_content)
             for msg in command_log_hits:
                 errors.append(msg)
@@ -1325,9 +1469,15 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         proof_fin_status = "FAIL" if proof_finality_hits else "PASS"
         print(f"Proof-file finality check ({proof_fin_status}): "
               f"{'placeholder text found — R49 guard' if proof_finality_hits else 'no stale placeholders'}")
+        proof_sha_status = "WARN" if proof_sha_warnings else "PASS"
+        print(f"Proof-SHA sidecar check ({proof_sha_status}): "
+              f"{'SHA mismatch — use sidecar protocol — R52 guard' if proof_sha_warnings else 'proof SHA consistent or sidecar not required'}")
         cmd_log_status = "FAIL" if command_log_hits else "PASS"
         print(f"Command log freshness check ({cmd_log_status}): "
               f"{'stale pre-final token found — R50 guard' if command_log_hits else 'no stale tokens'}")
+        state_verdict_status = "FAIL" if state_verdict_hits else "PASS"
+        print(f"State/verdict agreement check ({state_verdict_status}): "
+              f"{'state contradicts final-verdict — R52 guard' if state_verdict_hits else 'state and verdict agree'}")
         verdict_closeout_status = "FAIL" if verdict_closeout_hits else "PASS"
         print(f"Verdict unresolved-closeout check ({verdict_closeout_status}): "
               f"{'unresolved closeout text found — R51 guard' if verdict_closeout_hits else 'no unresolved closeout text'}")

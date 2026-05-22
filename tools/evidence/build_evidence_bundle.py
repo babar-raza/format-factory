@@ -632,7 +632,7 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
             f"Candidate bytes: {c_bytes:,}",
             f"Candidate metadata: {c_metadata}",
             "",
-            "Pass 2 pre-proof build in progress...",
+            "Pass 2 pre-proof build: computing bundle metrics",
             "",
         ]), encoding="utf-8")
         print(f"[AUTO-PROOF] Pass 1 proof written (candidate metrics).")

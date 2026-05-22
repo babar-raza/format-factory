@@ -100,10 +100,26 @@ def get_latest_sprint():
     verdict_path = reports_dir / f"r{latest_r}" / "final-verdict.md"
     if verdict_path.exists():
         content = verdict_path.read_text(encoding="utf-8")
-        verdict_match = re.search(r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}([A-Z0-9_]+)", content, re.IGNORECASE)
+        # Try multiple verdict formats used across R25-R51+:
+        # Format A: "## VERDICT: VALUE" or "**VERDICT: VALUE**" or "VERDICT: VALUE" inline
+        # Format B: "**Verdict:** VALUE" or "**Verdict:** **VALUE**"
+        # Format C: "## Verdict" heading followed by code-block "`VALUE`" on next line(s)
+        verdict = None
+        # Format A/B: VERDICT: or Verdict: followed by optional bold markers then value
+        m = re.search(r"(?:^|\n)\s*\*{0,2}(?:VERDICT|Verdict):\*{0,2}\s*\*{0,2}([A-Z][A-Z0-9_]+)\*{0,2}", content)
+        if m:
+            verdict = m.group(1)
+        # Format C: "## Verdict" heading + code-block value
+        if not verdict:
+            m = re.search(r"##\s+Verdict\s*\n+\s*`([A-Z][A-Z0-9_]+)`", content)
+            if m:
+                verdict = m.group(1)
+        # Reject values that are just markdown noise (only underscores/digits — not a real id)
+        if verdict and not re.match(r"[A-Z][A-Z0-9_]{3,}", verdict):
+            verdict = None
         return {
             "latest_sprint_number": f"R{latest_r}",
-            "verdict": verdict_match.group(1) if verdict_match else "unknown",
+            "verdict": verdict if verdict else "unknown",
         }
     return {"latest_sprint_number": f"R{latest_r}", "verdict": "no_final_verdict"}
 
