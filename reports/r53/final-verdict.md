@@ -50,13 +50,14 @@ R53 verdict does not claim installed-artifact baseline.
 
 ## Bundle Proof
 
-Pass 1 SHA-256: `PENDING`
+Pass 1 SHA-256: `3d1ca09b44f21d87e7dea99d8b42c7c8c1596c9e101faca14f274f7785a946ad`
+Pass 1 Entries: 2412 | Size: 4,399,532 bytes
 
 Pass 2 SHA-256: See external sidecar proof (.sha256-proof.json)
 
 ## BUNDLE_VALIDATION
 
-BUNDLE_VALIDATION: PENDING
+BUNDLE_VALIDATION: PASS
 
 ## Verdict
 
