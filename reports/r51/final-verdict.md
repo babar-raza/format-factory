@@ -87,7 +87,7 @@ Open TCs: TC-0054 (formula), TC-0057/TC-0058/TC-0059 (FODT structure)
 ### Pass 1
 
 Bundle: `.local/evidence-bundles/r51-installed-artifact-baseline-pass1.zip`
-SHA-256: PENDING
+SHA-256: 6f63b4a54ba89eaad0ba815a3f87be52937b1010248ea8e775f72f2dd3a05beb
 
 ### Pass 2
 
