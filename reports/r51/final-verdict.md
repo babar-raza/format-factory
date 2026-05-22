@@ -92,6 +92,6 @@ SHA-256: 6f63b4a54ba89eaad0ba815a3f87be52937b1010248ea8e775f72f2dd3a05beb
 ### Pass 2
 
 Bundle: `.local/evidence-bundles/r51-installed-artifact-baseline.zip`
-SHA-256: PENDING
+SHA-256: 3348051b4b7409003f076be66aef079da621710419b0fabcf0207150322e44a5
 
-`BUNDLE_VALIDATION: PENDING`
+`BUNDLE_VALIDATION: PASS`

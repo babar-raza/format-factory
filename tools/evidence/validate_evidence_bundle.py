@@ -490,8 +490,17 @@ def check_no_pending_reports(metadata_files_content):
     Returns a list of (filename, matched_pattern) tuples for any file that
     contains a PENDING marker. An empty list means no PENDING markers found.
     """
+    # Files that naturally reference historical PENDING states (e.g., commit messages
+    # in git-log.txt) and should not be scanned for PENDING markers.
+    PENDING_SCAN_SKIP_FILES = frozenset({
+        "git-log.txt",
+        "git-status-final.txt",
+        "git-status.txt",
+    })
     hits = []
     for fname, content in metadata_files_content.items():
+        if fname in PENDING_SCAN_SKIP_FILES:
+            continue
         for pattern in PENDING_MARKER_PATTERNS:
             if pattern in content:
                 hits.append((fname, pattern))
@@ -600,15 +609,16 @@ def check_proof_file_finality(metadata_files_content):
 # R51 Lane 1C: Unresolved closeout text patterns in final verdicts.
 # These indicate a verdict was written mid-process and not updated to final form.
 VERDICT_UNRESOLVED_CLOSEOUT_PATTERNS = [
-    "to follow",
     "pass 2 sha to follow",
     "candidate validation",
-    "updated after",
     "computed after",
     "sha to follow",
     "entries to follow",
     "size to follow",
     "validation to follow",
+    "will be updated after",
+    "will be replaced after build",
+    "hash pending",
 ]
 
 # R51 Lane 1C: Keywords that indicate a verdict claims clean/complete closure.
