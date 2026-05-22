@@ -47,8 +47,16 @@ def _qn(ns_prefix: str, local: str) -> str:
 
 
 def _write_cell(parent: ET.Element, cell: dict[str, Any]) -> None:
-    """Append a table:table-cell element for the given neutral model cell."""
-    value_type = cell.get("value_type", "string")
+    """Append a table:table-cell element for the given neutral model cell.
+
+    Accepts both canonical ``value_type`` (matching parser output) and legacy
+    ``type`` alias.  If both are present, ``value_type`` takes precedence.
+
+    R48: fixed schema mismatch — R47 hardening tests used ``type`` but writer
+    only read ``value_type``, causing float cells to silently serialize as string.
+    """
+    # Accept "type" as legacy alias; "value_type" is canonical (matches parser output)
+    value_type = cell.get("value_type") or cell.get("type") or "string"
     raw_value = cell.get("value")
     text_content = cell.get("text_content", "")
 

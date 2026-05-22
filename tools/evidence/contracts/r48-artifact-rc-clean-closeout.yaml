@@ -1,0 +1,110 @@
+contract_id: FORMAT-FACTORY-R48-ARTIFACT-RC-CLEAN-CLOSEOUT-AND-PHASE-AUDIT-COMPLETION-001
+sprint_id: FORMAT-FACTORY-R48-ARTIFACT-RC-CLEAN-CLOSEOUT-AND-PHASE-AUDIT-COMPLETION-001
+run_number: R48
+created: "2026-05-22"
+purpose: >
+  R48: Artifact RC clean closeout + phase audit completion.
+  Lane A: R47 IV + closeout-order defect repair (2-pass build process).
+  Lane B: State linter PASS (R27/R32 classified LEGACY_PRE_FLOOR_30).
+  Lane D: FODS writer semantic repair (type/value_type mismatch; 13 new tests).
+  Lane E-F: Python tests 1272 passed, 4 skipped.
+  Lane G: FODS wheel rebuilt with writer fix (new SHA).
+  Lane H: .NET consumer proof from bundled artifacts (FODS+FODT PASS).
+  Lane I: Phase Audit 2 COMPLETE (all 20 formats audited).
+  Lane J: Phase Audit 3 kickoff (FODS+FODT pilot; all 9 criteria PASS).
+  Lane K: FODS+FODT _provenance.yaml created.
+
+require_clean_git: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r48-artifact-rc-clean-closeout.yaml
+require_manifest: true
+min_metadata_count: 30
+
+required_repo_files:
+  - reports/r48/final-verdict.md
+  - reports/r48/00-preflight.md
+  - reports/r48/r47-independent-verification.md
+  - reports/r48/lane-ownership.md
+  - reports/r48/r27-r32-legacy-contract-classification.md
+  - reports/r48/phase-audit/phase-02-completion.md
+  - reports/r48/phase-audit/phase-03-parser-requirements-prototype-kickoff.md
+  - tools/evidence/contracts/r48-artifact-rc-clean-closeout.yaml
+  - tests/python/fods/test_r48_writer_typed_values.py
+  - src/python/fods/writer.py
+  - samples/by-format/fods/_provenance.yaml
+  - samples/by-format/fodt/_provenance.yaml
+  - state/current-state.md
+  - state/current-state.json
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - consumer-proof-summary.txt
+  - r47-supersession-summary.txt
+  - fods-writer-fix-summary.txt
+  - phase-audit-2-completion-summary.txt
+  - phase-audit-3-kickoff-summary.txt
+  - lane-status-summary.txt
+  - r48-gaps-closure.txt
+  - r48-scope-summary.txt
+  - state-linter-output.txt
+  - fods-wheel-smoke-test.txt
+  - fodt-wheel-smoke-test.txt
+  - test-coverage-summary.txt
+  - closeout-order-fix-proof.txt
+  - writer-hardening-summary.txt
+  - dotnet-consumer-proof-detail.txt
+  - risk-register-summary.txt
+  - phase-audit-2-format-matrix.txt
+  - phase-audit-3-criteria-matrix.txt
+  - run-environment.txt
+
+include_directories:
+  - reports/r48/
+  - tools/evidence/
+  - tools/package/
+  - tools/state/
+  - tests/evidence/
+  - tests/invariants/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - src/net/fods/
+  - src/net/fodt/
+  - src/python/fods/
+  - src/python/fodt/
+  - samples/by-format/fods/
+  - samples/by-format/fodt/
+  - registry/
+  - state/
+  - memory/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+authoritative_test_results:
+  r48_writer_typed_values: "13 passed (TestCanonicalValueType + TestLegacyTypeAlias + TestTypedValueRoundTrip)"
+  python_fods_fodt: "358 passed, 4 skipped"
+  state_evidence_requirements_packaging_invariants: "914 passed, 0 failed"
+  r48_scope_total: "AUTHORITATIVE_TEST_RESULT: 1272 passed, 4 skipped, 0 failed"
+  dotnet_fods: "157 passed (inherited from R46 baseline)"
+  dotnet_fodt: "145 passed (inherited from R46 baseline)"
+  consumer_proof_fods: "FODS_DOTNET_BUNDLED_NUPKG_CONSUMER_PASS"
+  consumer_proof_fodt: "FODT_DOTNET_BUNDLED_NUPKG_CONSUMER_PASS"
+  fods_wheel_smoke: "FODS_WHEEL_SMOKE: PASS (canonical + legacy alias)"
+  phase_audit_2: "PHASE_AUDIT_2: COMPLETE_ALL_FORMATS_PASS (20/20)"
+  phase_audit_3: "PHASE_AUDIT_3: PILOT_PASS_FODS_FODT (9/9 criteria)"
+  state_lint: "STATE_LINT: PASS (2 warnings: R27/R32 LEGACY_PRE_FLOOR_30)"

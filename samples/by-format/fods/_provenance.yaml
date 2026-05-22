@@ -1,0 +1,51 @@
+format_id: fods
+source_type: project-authored-xml
+sprint: FORMAT-FACTORY-R48-ARTIFACT-RC-CLEAN-CLOSEOUT-AND-PHASE-AUDIT-COMPLETION-001
+created_in_sprint: R8 (run026, commit 8871777)
+provenance_documented: "2026-05-22 (R48)"
+license: project-owned
+redistribution_allowed: true
+deterministic: true
+generation_method: >
+  Hand-authored ODF XML conforming to OASIS ODF 1.3 Part 3 (Flat Spreadsheet).
+  Files are plain XML with ODF namespace declarations. Author: format-factory team.
+  Files contain the project attribution header:
+  <!-- minimal-spreadsheet.fods / format-factory -->
+
+samples:
+  - filename: formula-basic.fods
+    sha256: 72b065415748db3e3c7796608f50b488db6d23b2439d2468baf88ea41b38db1e
+    size_bytes: 1973
+    description: "Single sheet with formula examples (SUM, arithmetic). Tests formula parsing."
+    tests:
+      - tests/python/fods/test_r30_fods_gate5_gate7.py
+      - tests/python/fods/test_r30_fods_c9_deepening.py
+
+  - filename: minimal-spreadsheet.fods
+    sha256: a790b18a811c47d634603ad0dd3e42c41c102a36c74b6349b46b9770a2825543
+    size_bytes: 1421
+    description: "Smallest valid FODS: one sheet, one cell, one value. Tests minimal parse."
+    tests:
+      - tests/python/fods/test_r11_gate4_prototype.py
+      - tests/python/fods/test_r30_fods_gate5_gate7.py
+
+  - filename: multi-sheet-basic.fods
+    sha256: 669b60befc7206a08578815e781ff72526c98d07be53f20e37f062b73b7dcc41
+    size_bytes: 2008
+    description: "Two-sheet workbook. Tests multi-sheet access and sheet naming."
+    tests:
+      - tests/python/fods/test_r30_fods_gate5_gate7.py
+
+  - filename: typed-values-basic.fods
+    sha256: c873322d69fa93ff64519a37a5f87f4efc9cd244a18488f03adc342524e51977
+    size_bytes: 2435
+    description: "Sheet with float, string, boolean, and date values. Tests typed-value parsing."
+    tests:
+      - tests/python/fods/test_r30_fods_gate5_gate7.py
+      - tests/python/fods/test_r48_writer_typed_values.py
+
+notes: >
+  FODS samples are project-authored XML created for format-factory test corpus.
+  Confirmed project-owned from git history (run026, commit 8871777).
+  Attribution headers present in file content.
+  No upstream/third-party samples.
