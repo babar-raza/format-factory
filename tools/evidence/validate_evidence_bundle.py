@@ -556,6 +556,14 @@ PROOF_FILE_PLACEHOLDER_PATTERNS = [
     "entries: (computed",
     "size: (computed",
     "validation: (computed",
+    # R51: patterns from R50 bundle proof placeholder (missed by R50 validator)
+    "PLACEHOLDER",
+    "will be replaced",
+    "candidate validation",
+    "IN PROGRESS",
+    "TBD",
+    "sha to follow",
+    "updated after",
 ]
 
 
@@ -587,6 +595,104 @@ def check_proof_file_finality(metadata_files_content):
             )
             break  # one error per file is sufficient
     return hits
+
+
+# R51 Lane 1C: Unresolved closeout text patterns in final verdicts.
+# These indicate a verdict was written mid-process and not updated to final form.
+VERDICT_UNRESOLVED_CLOSEOUT_PATTERNS = [
+    "to follow",
+    "pass 2 sha to follow",
+    "candidate validation",
+    "updated after",
+    "computed after",
+    "sha to follow",
+    "entries to follow",
+    "size to follow",
+    "validation to follow",
+]
+
+# R51 Lane 1C: Keywords that indicate a verdict claims clean/complete closure.
+VERDICT_CLEAN_CLOSURE_KEYWORDS = [
+    "COMPLETE",
+    "CLEAN",
+    "BASELINE",
+    "RC_",
+    "_RC",
+    "CLOSEOUT",
+    "POC_PROVEN",
+    "PASS",
+]
+
+
+def check_verdict_unresolved_closeout(zf):
+    """R51 Lane 1C: Detect unresolved closeout text inside bundled final verdicts.
+
+    Catches patterns like 'pass 2 SHA to follow', 'to follow', 'candidate validation'
+    that indicate a verdict was written before the 2-pass bundle was complete.
+
+    Returns a list of error strings (empty if check passes).
+    """
+    errors = []
+    for entry in zf.namelist():
+        if not entry.startswith("repo/reports/"):
+            continue
+        parts = entry.split("/")
+        if len(parts) != 4 or parts[3] != "final-verdict.md":
+            continue
+        try:
+            content = zf.read(entry).decode("utf-8", errors="replace")
+        except Exception:
+            continue
+        lower = content.lower()
+        for pattern in VERDICT_UNRESOLVED_CLOSEOUT_PATTERNS:
+            if pattern.lower() in lower:
+                errors.append(
+                    f"VERDICT_UNRESOLVED_CLOSEOUT: '{entry}' contains unresolved "
+                    f"closeout text {pattern!r} — final verdict must be written after "
+                    f"2-pass bundle is complete, not before."
+                )
+                break
+    return errors
+
+
+def check_contract_clean_git_strictness(contract, zf):
+    """R51 Lane 1D: Warn when a clean-complete contract uses require_clean_git: false.
+
+    Contracts whose verdict tokens include COMPLETE, BASELINE, RC, CLOSEOUT etc.
+    must use require_clean_git: true unless the verdict explicitly contains
+    DIRTY_TREE_BLOCKED or similar.
+
+    Returns a list of warning strings (empty if check passes).
+    """
+    require_clean_git = contract.get("require_clean_git", True)
+    if require_clean_git:
+        return []
+
+    # Look for a final verdict in the bundle to check its content
+    for entry in zf.namelist():
+        if not entry.startswith("repo/reports/"):
+            continue
+        parts = entry.split("/")
+        if len(parts) != 4 or parts[3] != "final-verdict.md":
+            continue
+        try:
+            content = zf.read(entry).decode("utf-8", errors="replace")
+        except Exception:
+            continue
+        # Check if verdict claims clean closure
+        upper = content.upper()
+        # Exempt verdicts that explicitly state DIRTY_TREE or BLOCKED
+        if "DIRTY_TREE" in upper or "EVIDENCE_CLOSEOUT_BLOCKED" in upper:
+            return []
+        for keyword in VERDICT_CLEAN_CLOSURE_KEYWORDS:
+            if keyword in upper:
+                return [
+                    f"CONTRACT_CLEAN_GIT_WEAK: contract has require_clean_git: false "
+                    f"but bundled verdict '{entry}' contains clean-closure keyword "
+                    f"'{keyword}'. Clean-completion contracts must use "
+                    f"require_clean_git: true."
+                ]
+    return []
 
 
 COMMAND_LOG_STALE_PATTERNS = [
@@ -1144,6 +1250,12 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             command_log_hits = check_validation_command_log_freshness(metadata_files_content)
             for msg in command_log_hits:
                 errors.append(msg)
+            verdict_closeout_hits = check_verdict_unresolved_closeout(zf)
+            for msg in verdict_closeout_hits:
+                errors.append(msg)
+            clean_git_warnings = check_contract_clean_git_strictness(contract, zf)
+            for msg in clean_git_warnings:
+                warnings.append(msg)
             depth_hits = check_metadata_content_depth(metadata_files_content)
             for fname, reason in depth_hits:
                 errors.append(f"Shallow metadata file '{fname}': {reason}")
@@ -1206,6 +1318,12 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         cmd_log_status = "FAIL" if command_log_hits else "PASS"
         print(f"Command log freshness check ({cmd_log_status}): "
               f"{'stale pre-final token found — R50 guard' if command_log_hits else 'no stale tokens'}")
+        verdict_closeout_status = "FAIL" if verdict_closeout_hits else "PASS"
+        print(f"Verdict unresolved-closeout check ({verdict_closeout_status}): "
+              f"{'unresolved closeout text found — R51 guard' if verdict_closeout_hits else 'no unresolved closeout text'}")
+        clean_git_strict_status = "WARN" if clean_git_warnings else "PASS"
+        print(f"Contract clean-git strictness ({clean_git_strict_status}): "
+              f"{'require_clean_git: false with clean verdict — R51 guard' if clean_git_warnings else 'clean-git policy OK'}")
     identity_status = "PASS"
     if 'identity_hits' in locals() and identity_hits:
         identity_status = "FAIL"

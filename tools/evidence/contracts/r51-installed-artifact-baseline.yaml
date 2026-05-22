@@ -1,0 +1,119 @@
+contract_id: FORMAT-FACTORY-R51-INSTALLED-ARTIFACT-BASELINE-AND-AI-ACCELERATION-001
+sprint_id: FORMAT-FACTORY-R51-INSTALLED-ARTIFACT-BASELINE-AND-AI-ACCELERATION-001
+run_number: R51
+created: "2026-05-22"
+purpose: >
+  R51: Installed artifact baseline + AI acceleration round 2.
+  MT1: R50 IV (FALSE: proof placeholder, FODS wheel missing csv_exporter, require_clean_git:false) + validator hardening (Lane 1B/1C/1D).
+  MT2: Rebuild all Python artifacts; add sdists; installed-wheel smoke tests.
+  MT3: FODS/FODT Python installed-wheel POC (edit/save/reload/CSV export).
+  MT4: .NET POC replay from R51 artifacts.
+  MT5: AI acceleration round 2 (formula preservation design, 548 tokens) + Agent Metrics.
+  MT6: Phase Audit 4 depth (FODS/FODT CONDITIONAL_PASS).
+  MT7: Export dogfooding (CSV proven; TXT deferred R52).
+  MT8: Required reports completeness (11 reports); risk register; lane ownership.
+  MT9: Final adversarial verification + 2-pass bundle.
+
+require_clean_git: true
+require_contract_in_bundle: true
+contract_repo_path: tools/evidence/contracts/r51-installed-artifact-baseline.yaml
+require_manifest: true
+min_metadata_count: 30
+
+required_repo_files:
+  - reports/r51/final-verdict.md
+  - reports/r51/00-preflight.md
+  - reports/r51/r50-independent-verification.md
+  - reports/r51/artifact-installed-package-integrity.md
+  - reports/r51/object-model-poc-hardening-summary.md
+  - reports/r51/ai-acceleration-pilot.md
+  - reports/r51/ai-usage-telemetry-proof.md
+  - reports/r51/llm-provider-summary.md
+  - reports/r51/artifact-manifest-integrity.md
+  - reports/r51/ai-usage-ledger.jsonl
+  - reports/r51/agent-metrics-posting-proof.md
+  - reports/r51/lane-ownership.md
+  - reports/r51/risk-register.md
+  - reports/r51/work-ahead-policy.md
+  - reports/r51/phase-audit/phase-04-r51-expansion.md
+  - tools/evidence/contracts/r51-installed-artifact-baseline.yaml
+  - tools/evidence/validate_evidence_bundle.py
+  - tests/evidence/test_r51_validator_hardening.py
+  - src/python/fods/csv_exporter.py
+  - state/current-state.md
+  - state/current-state.json
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - run-environment.txt
+  - risk-register-summary.txt
+  - r50-iv-summary.txt
+  - validator-hardening-summary.txt
+  - artifact-rebuild-summary.txt
+  - installed-wheel-smoke-summary.txt
+  - ai-acceleration-summary.txt
+  - phase-audit-4-summary.txt
+  - lane-status-summary.txt
+  - state-linter-output.txt
+  - test-coverage-summary.txt
+  - r51-scope-summary.txt
+  - dotnet-poc-replay-summary.txt
+
+include_directories:
+  - reports/r51/
+  - tools/evidence/
+  - tools/package/
+  - tools/state/
+  - tests/evidence/
+  - tests/invariants/
+  - tests/state/
+  - tests/python/fods/
+  - tests/python/fodt/
+  - src/net/fods/
+  - src/net/fodt/
+  - src/python/fods/
+  - src/python/fodt/
+  - src/python/zst/
+  - samples/by-format/fods/
+  - samples/by-format/fodt/
+  - docs/
+  - registry/
+  - state/
+  - memory/
+  - taskcards/
+
+exclude_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/.pytest_cache/**"
+  - "**/bin/**"
+  - "**/obj/**"
+  - "**/*.dll"
+  - "**/*.pdb"
+
+authoritative_test_results:
+  r51_validator_hardening: "16 passed (Lane 1B: 8, Lane 1C: 5, Lane 1D: 3)"
+  r51_new_tests_total: "16 new tests"
+  python_fods_fodt: "402 passed, 4 skipped"
+  evidence_invariants: "57 passed"
+  package_tests: "19 passed"
+  python_full_suite: "4140 passed, 13 skipped, 4 pre-existing fail"
+  r51_scope_total: "AUTHORITATIVE_TEST_RESULT: 4140 passed, 13 skipped, 4 pre-existing fail"
+  dotnet_fods: "157 passed"
+  dotnet_fodt: "145 passed"
+  dotnet_object_model_poc_fods: "FODS_DOTNET_OBJECT_MODEL_EDIT_SAVE_RELOAD_PASS"
+  dotnet_object_model_poc_fodt: "FODT_DOTNET_OBJECT_MODEL_EDIT_SAVE_RELOAD_PASS"
+  fods_installed_wheel_csv_export: "FODS_PYTHON_INSTALLED_WHEEL_CSV_EXPORT_PASS"
+  fods_installed_wheel_object_model: "FODS_PYTHON_INSTALLED_WHEEL_OBJECT_MODEL_EDIT_SAVE_RELOAD_CSV_PASS"
+  fodt_installed_wheel_object_model: "FODT_PYTHON_INSTALLED_WHEEL_OBJECT_MODEL_EDIT_SAVE_RELOAD_PASS"
+  live_ai_calls: "1 (formula preservation design, 548 tokens, PASS)"
+  agent_metrics_post: "PASS (R51 second sprint with confirmed posting)"
+  phase_audit_4: "CONDITIONAL_PASS_FODS_AND_FODT_WITH_PRESERVATION_GAPS"
