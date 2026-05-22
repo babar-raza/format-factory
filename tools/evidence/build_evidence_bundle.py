@@ -344,12 +344,16 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
         else:
             repo_files_to_include.append(f)
 
-    # Collect metadata files
+    # Collect metadata files (recursively — includes subdirectories like package-artifacts/)
+    # R47: R46 defect fix — previously used iterdir() which skipped subdirectories.
+    # Now uses rglob('*') with relative paths so bundle-metadata/package-artifacts/*.whl
+    # entries are correctly included in the ZIP.
     metadata_files = []
     if metadata_path and metadata_path.exists():
-        for mf in sorted(metadata_path.iterdir()):
+        for mf in sorted(metadata_path.rglob("*")):
             if mf.is_file():
-                metadata_files.append(mf.name)
+                rel = str(mf.relative_to(metadata_path)).replace("\\", "/")
+                metadata_files.append(rel)
 
     # Auto-generate git-log.txt, git-status-final.txt, repo-tree.txt before validation
     # so required_metadata_files checks can see them.

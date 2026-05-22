@@ -11,6 +11,7 @@ Exits non-zero on failure.
 
 import argparse
 import fnmatch
+import hashlib
 import re
 import sys
 import zipfile
@@ -361,6 +362,119 @@ def check_repo_reports_pending(zf):
                 continue
             break  # already found a hit in this file
     return hits
+
+
+def check_artifact_inventory(zf):
+    """R47: Verify that package-artifact-manifest.yaml claims match actual ZIP entries.
+
+    The R46 post-mortem revealed that build_evidence_bundle.py silently omitted
+    bundle-metadata/package-artifacts/ subdirectory files because the builder only
+    iterated top-level files. The validator passed because check_package_proof_present()
+    only checked for the manifest text file, not for actual artifact bytes.
+
+    This function closes that gap:
+    1. Parse bundle-metadata/package-artifact-manifest.yaml to find claimed artifact filenames.
+    2. For each claimed .whl / .tar.gz / .nupkg, verify the file exists in the ZIP.
+    3. If a SHA-256 is associated with the artifact, validate it against actual bytes.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    ARTIFACT_EXTENSIONS = (".whl", ".tar.gz", ".nupkg")
+    MANIFEST_ENTRY = "bundle-metadata/package-artifact-manifest.yaml"
+
+    all_entries = set(zf.namelist())
+
+    if MANIFEST_ENTRY not in all_entries:
+        return []  # No manifest — nothing to check (check_package_proof_present handles the missing-manifest case)
+
+    try:
+        manifest_text = zf.read(MANIFEST_ENTRY).decode("utf-8", errors="replace")
+    except Exception:
+        return ["ARTIFACT_INVENTORY: could not read package-artifact-manifest.yaml"]
+
+    errors = []
+
+    # Extract claimed artifact filenames and their SHA-256 values from the manifest.
+    # Manifest format (text-based, not strict YAML):
+    #   "  - aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl"
+    #   "  SHA-256: <hash>"
+    # or:
+    #   "FODS wheel: aspose_format_factory_fods-0.1.0.dev0-py3-none-any.whl"
+    # We scan each line for a token ending with a known extension.
+
+    claimed_artifacts = []  # list of (filename, sha256_or_None)
+    last_filename = None
+    for line in manifest_text.splitlines():
+        stripped = line.strip()
+        # Find artifact filenames in the line
+        for token in stripped.replace(",", " ").split():
+            for ext in ARTIFACT_EXTENSIONS:
+                if token.endswith(ext) and "/" not in token:
+                    last_filename = token
+                    claimed_artifacts.append((token, None))
+                    break
+        # Find SHA-256 values on lines following artifact filenames
+        sha_match = re.search(r'SHA-256:\s*([0-9a-fA-F]{64})', stripped)
+        if sha_match and last_filename:
+            sha256 = sha_match.group(1).lower()
+            # Associate this SHA with the most recently seen filename (update last entry)
+            for i in range(len(claimed_artifacts) - 1, -1, -1):
+                if claimed_artifacts[i][0] == last_filename:
+                    claimed_artifacts[i] = (last_filename, sha256)
+                    break
+
+    if not claimed_artifacts:
+        return []  # Manifest exists but names no artifacts — nothing to validate
+
+    # Deduplicate while preserving first SHA if multiple lines reference same file
+    seen = {}
+    deduped = []
+    for fname, sha in claimed_artifacts:
+        if fname not in seen:
+            seen[fname] = sha
+            deduped.append((fname, sha))
+        elif sha and not seen[fname]:
+            seen[fname] = sha
+            deduped = [(f, seen[f] if f == fname else s) for f, s in deduped]
+    claimed_artifacts = deduped
+
+    # Check each claimed artifact actually exists in the ZIP
+    # Accept under bundle-metadata/package-artifacts/<name> or bundle-metadata/<name>
+    for fname, expected_sha in claimed_artifacts:
+        candidate_paths = [
+            f"bundle-metadata/package-artifacts/{fname}",
+            f"bundle-metadata/{fname}",
+        ]
+        found_path = None
+        for cp in candidate_paths:
+            if cp in all_entries:
+                found_path = cp
+                break
+
+        if found_path is None:
+            errors.append(
+                f"ARTIFACT_INVENTORY: manifest claims '{fname}' but it is absent from bundle ZIP. "
+                f"Checked: {candidate_paths}. "
+                f"Root cause: build_evidence_bundle.py previously omitted subdirectory files. "
+                f"Fix: ensure artifacts are in --metadata-dir and builder includes subdirectories (R47 fix)."
+            )
+            continue
+
+        # Validate SHA-256 if manifest provides it
+        if expected_sha:
+            try:
+                artifact_bytes = zf.read(found_path)
+                actual_sha = hashlib.sha256(artifact_bytes).hexdigest()
+                if actual_sha != expected_sha:
+                    errors.append(
+                        f"ARTIFACT_SHA_MISMATCH: '{fname}' SHA-256 mismatch. "
+                        f"manifest={expected_sha} actual={actual_sha}. "
+                        f"Artifact may have been rebuilt since manifest was written."
+                    )
+            except Exception as e:
+                errors.append(f"ARTIFACT_INVENTORY: could not read '{found_path}' for SHA check: {e}")
+
+    return errors
 
 
 def check_no_pending_reports(metadata_files_content):
@@ -916,6 +1030,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             package_proof_hits = check_package_proof_present(metadata_files_content, zf)
             for msg in package_proof_hits:
                 errors.append(msg)
+            artifact_inventory_hits = check_artifact_inventory(zf)
+            for msg in artifact_inventory_hits:
+                errors.append(msg)
             authoritative_test_hits = check_authoritative_test_result_present(metadata_files_content)
             for msg in authoritative_test_hits:
                 errors.append(msg)
@@ -969,6 +1086,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             print(f"Closure-contradiction check (FAIL): {len(closure_contradiction_hits)} contradiction(s)")
         else:
             print("Closure-contradiction check (PASS): no proof/verdict/summary contradictions")
+        artifact_inv_status = "FAIL" if artifact_inventory_hits else "PASS"
+        print(f"Artifact inventory check ({artifact_inv_status}): "
+              f"{len(artifact_inventory_hits)} error(s)")
         auth_status = "FAIL" if authoritative_test_hits else "PASS"
         print(f"AUTHORITATIVE_TEST_RESULT check ({auth_status}): "
               f"{'missing — P-EVID-003 violation' if authoritative_test_hits else 'present in metadata'}")

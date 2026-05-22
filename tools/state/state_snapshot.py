@@ -20,6 +20,17 @@ except ImportError:
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 
+# Physical invariant layer — import from tools/evidence/
+try:
+    _EVIDENCE_DIR = str(pathlib.Path(__file__).resolve().parent.parent / "evidence")
+    if _EVIDENCE_DIR not in sys.path:
+        sys.path.insert(0, _EVIDENCE_DIR)
+    from check_repo_invariants import check_all_invariants as _check_all_invariants
+    _HAS_PHYSICAL_INVARIANTS = True
+except ImportError:
+    _HAS_PHYSICAL_INVARIANTS = False
+    _check_all_invariants = None
+
 
 def _load_yaml(path):
     if yaml:
@@ -144,6 +155,20 @@ def get_production_blockers():
                     if isinstance(val, str) and "(confirmed existing)" in val:
                         blockers.append(f"prose_provenance_in_{cr.name}")
                         break
+
+    # Physical invariant layer — validates registry claims against filesystem reality
+    if _HAS_PHYSICAL_INVARIANTS:
+        try:
+            inv_results = _check_all_invariants(ROOT)
+            for inv in inv_results:
+                if not inv["passed"]:
+                    for detail in inv.get("details", [inv["name"]]):
+                        blockers.append(f"{inv['id']}: {detail}")
+        except Exception as exc:  # pragma: no cover
+            blockers.append(f"physical_invariant_check_error: {exc}")
+    else:
+        blockers.append("check_repo_invariants_missing")
+
     return blockers
 
 

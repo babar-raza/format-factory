@@ -77,8 +77,17 @@ class TestFinalVerdictIntegrity:
         """No final-verdict.md with VERDICT: R*_COMPLETE may contain BUNDLE_VALIDATION: PENDING."""
         offenders = []
         for path, content in self._get_closed_sprint_verdicts():
-            has_complete = re.search(r"VERDICT:\s*R\d+_COMPLETE", content)
-            has_pending = "BUNDLE_VALIDATION: PENDING" in content
+            # Match any verdict line containing a *_COMPLETE marker in any markdown format
+            has_complete = re.search(
+                r"\*{0,2}VERDICT:\*{0,2}\s*\*{0,2}[A-Z0-9_]*_COMPLETE\b",
+                content, re.IGNORECASE,
+            )
+            # Anchored multiline match: only standalone status lines, not prose/list items.
+            # "BUNDLE_VALIDATION: PENDING forward-documented" does NOT match.
+            # "- BUNDLE_VALIDATION: PENDING ref" does NOT match (has leading dash).
+            has_pending = bool(re.search(
+                r"^BUNDLE_VALIDATION:\s*PENDING\s*$", content, re.MULTILINE,
+            ))
             if has_complete and has_pending:
                 offenders.append(str(path.relative_to(REPO_ROOT)))
         assert not offenders, (
