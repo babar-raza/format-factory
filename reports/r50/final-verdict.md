@@ -117,6 +117,10 @@ AUTHORITATIVE_TEST_RESULT: 4140 passed, 13 skipped, 4 pre-existing fail
   Entries: 2356
   Size: 4,372,063 bytes
   Validation: BUNDLE_VALIDATION: PASS (sanity, no --check-no-pending)
-- Pass 2: verdict=PASS → rebuilt → validated with --check-no-pending (pass 2 SHA to follow)
+- Pass 2: verdict=PASS → rebuilt → validated with --check-no-pending
+  SHA-256: 5a4d6e51c69a6d1c55407bf5b20ded41f168d681b77cbf0da97ccf4b7dfea5f9
+  Entries: 2356
+  Size: 4,371,900 bytes
+  Validation: BUNDLE_VALIDATION: PASS (all checks including Lane 1B/1C/1D guards)
 
 BUNDLE_VALIDATION: PASS
