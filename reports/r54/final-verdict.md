@@ -66,7 +66,8 @@ R54 verdict does not claim installed-artifact baseline.
 
 ## Bundle Proof
 
-Pass 1 SHA-256: (to be filled after Pass 1 build)
+Pass 1 SHA-256: `4934a38ed6bb1d340c4c2f7a4cbdf2674ea38144cd2296a526cb6182775a7acd`
+Pass 1 Entries: 2426 | Size: 4,434,933 bytes
 Pass 2 SHA-256: See external sidecar proof (.sha256-proof.json)
 
 ## BUNDLE_VALIDATION
