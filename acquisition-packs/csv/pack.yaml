@@ -121,3 +121,16 @@ stages:
     test_result: PASS
     parser_depth: "RFC 4180 inline parser (quoted fields, BOM strip, delimiter sniff)"
     notes: "Gate 4 prototype. Inline RFC 4180 state-machine parser. No stdlib csv import (avoids namespace collision with src/python/csv/ package). 19 tests all PASS."
+
+  gate_5:
+    status: pass
+    sprint: R56
+    date: "2026-05-23"
+    neutral_model_file: src/python/csv/csv_parser.py
+    test_file: tests/python/csv/test_r56_csv_gate5_neutral_model.py
+    test_count: 17
+    test_result: PASS
+    supported_features: [rfc4180_parse, delimiter_sniff, header_detection, utf8_bom_strip, probe, row_count, column_count, size_guard]
+    unsupported_features: [encoding_to_csv, streaming_decode, typed_cell_inference, formula_cells, multi_sheet, binary_csv, excel_dialect_quirks]
+    commercial_product_ready: false
+    notes: "Gate 5 neutral model. Canonical dict schema validated: format/path/row_count/column_count/headers/rows/has_header/delimiter. Capability descriptor with supported/unsupported features. 17 tests all PASS."

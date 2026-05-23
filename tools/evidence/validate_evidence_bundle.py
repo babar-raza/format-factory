@@ -1741,6 +1741,179 @@ def check_sidecar_proof(bundle_path: str, sidecar_path: str) -> "list[str]":
     return errors
 
 
+def check_embedded_sidecar_bundle_match(zf, bundle_path: str) -> "list[str]":
+    """R56 Train B: If bundle contains an embedded sidecar, it must match the bundle being validated.
+
+    An embedded sidecar is a .sha256-proof.json under bundle-metadata/.
+    If it refers to a different bundle file (different bundle_filename), it must be explicitly
+    marked as external_reference: true in the sidecar JSON.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    import json as _json
+    errors: list[str] = []
+    actual_bundle_filename = Path(bundle_path).name
+
+    sidecar_entries = [
+        e for e in zf.namelist()
+        if e.startswith("bundle-metadata/") and e.endswith(".sha256-proof.json")
+    ]
+    for entry in sidecar_entries:
+        try:
+            sidecar = _json.loads(zf.read(entry).decode("utf-8"))
+        except Exception as exc:
+            errors.append(f"EMBEDDED_SIDECAR_UNREADABLE: {entry!r}: {exc}")
+            continue
+
+        # If marked as external reference, skip the match check
+        if sidecar.get("external_reference", False):
+            continue
+
+        sidecar_bundle_filename = sidecar.get("bundle_filename", "")
+        if sidecar_bundle_filename and sidecar_bundle_filename != actual_bundle_filename:
+            errors.append(
+                f"EMBEDDED_SIDECAR_BUNDLE_MISMATCH: embedded sidecar {entry!r} references "
+                f"bundle_filename={sidecar_bundle_filename!r} but the bundle being validated is "
+                f"{actual_bundle_filename!r}. The embedded sidecar is for a different bundle. "
+                f"Either update the sidecar to match the final bundle or mark it as "
+                f"external_reference: true. (R56-IV-R55-003)"
+            )
+    return errors
+
+
+def check_nested_zips_allowed(zf, contract: dict) -> "list[str]":
+    """R56 Train B: Nested .zip files under bundle-metadata/ must be explicitly allowed by contract.
+
+    If the contract does not declare `allow_nested_bundle_zips: true`, any nested .zip files
+    under bundle-metadata/ cause a validation failure.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    errors: list[str] = []
+    if contract.get("allow_nested_bundle_zips", False):
+        return errors
+
+    nested_zips = [
+        e for e in zf.namelist()
+        if e.startswith("bundle-metadata/") and e.endswith(".zip")
+    ]
+    if nested_zips:
+        errors.append(
+            f"NESTED_ZIPS_NOT_ALLOWED: bundle-metadata/ contains nested .zip files: "
+            f"{nested_zips}. "
+            f"Nested ZIPs inflate bundle size and cause sidecar confusion. "
+            f"Add allow_nested_bundle_zips: true to the contract to explicitly permit this, "
+            f"or remove the nested ZIPs from the metadata directory before building. "
+            f"(R56-IV-R55-009)"
+        )
+    return errors
+
+
+def check_scoreboard_finality(zf, metadata_files_content: dict) -> "list[str]":
+    """R56 Train B: Scoreboard cannot remain IN_PROGRESS/PENDING when verdict says COMPLETE.
+
+    If the repo contains a multi-mega-train-scoreboard.md with status IN_PROGRESS or
+    trains showing PENDING, and the verdict claims a COMPLETE state, this is a contradiction.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    errors: list[str] = []
+
+    # Get verdict from metadata
+    verdict_content = ""
+    for fname in ("final-verdict.md", "final-verdict.txt"):
+        verdict_content = metadata_files_content.get(fname, "")
+        if verdict_content:
+            break
+    if not verdict_content:
+        # Try to find in repo
+        for entry in zf.namelist():
+            if entry.endswith("final-verdict.md"):
+                try:
+                    verdict_content = zf.read(entry).decode("utf-8", errors="replace")
+                except Exception:
+                    pass
+                break
+
+    COMPLETE_VERDICT_TOKENS = ["_COMPLETE", "_PASS", "_PHASE", "_VERIFIED"]
+    verdict_upper = verdict_content.upper() if verdict_content else ""
+    is_complete_claimed = any(t in verdict_upper for t in COMPLETE_VERDICT_TOKENS)
+
+    # Find scoreboard in repo
+    scoreboard_content = ""
+    for entry in zf.namelist():
+        if "multi-mega-train-scoreboard" in entry and entry.endswith(".md"):
+            try:
+                scoreboard_content = zf.read(entry).decode("utf-8", errors="replace")
+            except Exception:
+                pass
+            break
+
+    if not scoreboard_content or not is_complete_claimed:
+        return errors
+
+    scoreboard_upper = scoreboard_content.upper()
+    if "**STATUS:** IN_PROGRESS" in scoreboard_content or "Status:** IN_PROGRESS" in scoreboard_content:
+        errors.append(
+            "SCOREBOARD_NOT_FINALIZED: multi-mega-train-scoreboard.md has status IN_PROGRESS "
+            "but the final verdict claims COMPLETE/PASS. "
+            "The scoreboard must be updated to reflect actual train outcomes before final closure. "
+            "(R56-IV-R55-004)"
+        )
+    return errors
+
+
+def check_package_claim_policy_consistency(metadata_files_content: dict, contract: dict) -> "list[str]":
+    """R56 Train B: installed_artifact_policy: none cannot coexist with package RC language in verdict.
+
+    If the contract or manifest declares installed_artifact_policy: none, the final verdict
+    must not contain language claiming package RC completion, wheels built, or installed smoke PASS.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    errors: list[str] = []
+
+    # Determine effective policy
+    policy = contract.get("installed_artifact_policy", "none")
+    manifest_content = metadata_files_content.get("package-artifact-manifest.yaml", "")
+    if "installed_artifact_policy: none" in manifest_content or "r55_installed_artifact_policy: none" in manifest_content:
+        policy = "none"
+
+    if policy != "none":
+        return errors
+
+    # Check final verdict for package RC language
+    verdict_content = ""
+    for fname in ("final-verdict.md", "final-verdict.txt"):
+        verdict_content = metadata_files_content.get(fname, "")
+        if verdict_content:
+            break
+
+    PACKAGE_RC_TOKENS = [
+        "packages built",
+        "wheels built",
+        "installed smoke pass",
+        "package rc complete",
+        "7 packages built",
+        "wheel artifacts",
+        "installed wheel",
+        "clean venv",
+        "package smoke",
+    ]
+    verdict_lower = verdict_content.lower() if verdict_content else ""
+    found_tokens = [t for t in PACKAGE_RC_TOKENS if t in verdict_lower]
+
+    if found_tokens:
+        errors.append(
+            f"PACKAGE_CLAIM_POLICY_CONTRADICTION: installed_artifact_policy is 'none' "
+            f"(no artifacts built this sprint) but final verdict contains package RC language: "
+            f"{found_tokens}. "
+            f"Either remove the package RC language from the verdict, or change the policy to "
+            f"'external_ref' or 'self_contained' and supply actual artifacts. (R56-IV-R55-002)"
+        )
+    return errors
+
+
 def main():
     parser = argparse.ArgumentParser(description="Validate evidence bundle against contract")
     parser.add_argument("--contract", required=True, help="Contract YAML path")

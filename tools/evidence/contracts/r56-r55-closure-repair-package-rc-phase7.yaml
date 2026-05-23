@@ -1,0 +1,75 @@
+sprint_id: FORMAT-FACTORY-R56-R55-CLOSURE-REPAIR-PACKAGE-RC-PHASE7-PRODUCT-EXPANSION-MEGA-TRAIN-001
+contract_id: FORMAT-FACTORY-R56-R55-CLOSURE-REPAIR-PACKAGE-RC-PHASE7-PRODUCT-EXPANSION-MEGA-TRAIN-001
+run_number: R56
+description: >
+  R56 11-train mega-train sprint. Trains A-J + bundle Train K.
+  Train A: R55 IV (10 defects). Train B: validator hardening (4 new functions, 22 tests).
+  Train C: TC-0057 hyperlinks + TC-0059 nested lists CLOSED; 11 new tests; 259 FODT PASS.
+  Train D: 7-package Python RC self-contained; FODS+FODT smoke PASS; 23 new tests.
+  Train E: .NET 302/302 bounded verification.
+  Train F: CSV+TSV Gate 5; 34 new tests; pack.yaml updated.
+  Train G: fods.yaml+fodt.yaml created (IV-R55-006); Phase Audit 6 PASS; Phase Audit 7 CONDITIONAL_PASS.
+  Train H: Acquisition/spec-cache audit.
+  Train I: AI governance 617 tests.
+  Train J: memory+docs sync; taskcards TC-0057/TC-0059 updated.
+
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r56/multi-mega-train-scoreboard.md
+  - reports/r56/00-preflight.md
+  - reports/r56/r55-independent-verification.md
+  - reports/r56/r55-defect-ledger.md
+  - reports/r56/lane-ownership.md
+  - reports/r56/risk-register.md
+  - reports/r56/fods-fodt-preservation-truth-and-deepening.md
+  - reports/r56/package-rc-self-contained.md
+  - reports/r56/dotnet-commercial-readiness-dryrun.md
+  - reports/r56/next-format-advancement.md
+  - reports/r56/phase-audit-6-repair.md
+  - reports/r56/acquisition-spec-cache-sample-authority.md
+  - reports/r56/ai-telemetry-controlled-acceleration.md
+  - reports/r56/docs-taskcards-memory-sync.md
+  - tests/python/fodt/test_r56_fodt_hyperlinks_nested_lists.py
+  - tests/packaging/test_r56_package_rc.py
+  - tests/python/csv/test_r56_csv_gate5_neutral_model.py
+  - tests/python/tsv/test_r56_tsv_gate5_neutral_model.py
+  - tests/evidence/test_r56_final_bundle_sidecar_protocol.py
+  - tests/evidence/test_r56_scoreboard_finality.py
+  - tests/evidence/test_r56_package_claim_consistency.py
+  - tests/evidence/test_r56_release_manifest_references.py
+  - src/python/fodt/constants.py
+  - src/python/fodt/parser.py
+  - src/python/fodt/writer.py
+  - release-manifests/python-foss/fods.yaml
+  - release-manifests/python-foss/fodt.yaml
+  - release-manifests/python-foss/_matrix.yaml
+  - taskcards/TC-0057-inline-spans-fodt.md
+  - taskcards/TC-0059-list-preservation-fodt.md
+  - acquisition-packs/csv/pack.yaml
+  - acquisition-packs/tsv/pack.yaml
+  - memory/61-r56-sprint-summary-20260523.md
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - run-environment.txt
+  - r55-iv-summary.txt
+  - phase-audit-7-summary.txt
+  - csv-tsv-gate5-summary.txt
+  - package-rc-summary.txt
+  - ai-governance-summary.txt
+  - invariants-output.txt
+  - deferred-work-r57.txt
+  - state-snapshot-output.txt
+  - fodt-preservation-summary.txt
+  - validator-hardening-summary.txt
+  - package-artifact-manifest.yaml

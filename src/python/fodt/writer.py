@@ -56,6 +56,7 @@ _NS = {
     "style": "urn:oasis:names:tc:opendocument:xmlns:style:1.0",
     "fo": "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0",
     "table": "urn:oasis:names:tc:opendocument:xmlns:table:1.0",
+    "xlink": "http://www.w3.org/1999/xlink",
 }
 
 _MIMETYPE = "application/vnd.oasis.opendocument.text-flat-xml"
@@ -70,18 +71,26 @@ def _qn(ns_prefix: str, local: str) -> str:
 
 
 def _write_span(parent: ET.Element, run: "dict[str, Any]") -> None:
-    """Append a text:span (styled) or plain text node for one run dict.
+    """Append a text:span, text:a, or plain text node for one run dict.
 
+    If run["href"] is non-None, wraps the run text in a ``text:a`` element
+    with ``xlink:href`` and ``xlink:type="simple"`` attributes (R56 TC-0057 criterion 3).
     If run["style"] is non-None, wraps the run text in a ``text:span`` element
-    with a ``text:style-name`` attribute. Otherwise appends the text as a tail
-    on the last child or as ``parent.text`` if parent has no children yet.
+    with a ``text:style-name`` attribute.
+    Otherwise appends the text as a tail on the last child or as ``parent.text``.
 
-    R55 TC-0057: inline span preservation.
+    R55 TC-0057 (spans), R56 TC-0057 criterion 3 (hyperlinks).
     """
     run_text = str(run.get("text", "")) if run.get("text") is not None else ""
     style = run.get("style")
+    href = run.get("href")
 
-    if style:
+    if href:
+        a_el = ET.SubElement(parent, _qn("text", "a"))
+        a_el.set(_qn("xlink", "type"), "simple")
+        a_el.set(_qn("xlink", "href"), href)
+        a_el.text = run_text
+    elif style:
         span_el = ET.SubElement(parent, _qn("text", "span"))
         span_el.set(_qn("text", "style-name"), style)
         span_el.text = run_text
@@ -120,8 +129,8 @@ def _write_block(parent: ET.Element, block: dict[str, Any]) -> None:
         # paragraph (default)
         el = ET.SubElement(parent, _qn("text", "p"))
 
-    # If runs are available and at least one run has a style, emit spans
-    if runs and any(r.get("style") for r in runs):
+    # If runs are available and at least one run has a style or href, emit spans/links
+    if runs and any(r.get("style") or r.get("href") for r in runs):
         for run in runs:
             _write_span(el, run)
     else:
@@ -132,22 +141,60 @@ def _write_list(parent: ET.Element, lst: dict[str, Any]) -> None:
     """Append a text:list element for the given neutral model List dict.
 
     R54 TC-0059 (partial): emits text:list with text:list-item children.
-    Each item in lst["items"] has "text" and "level" keys.
+    R56 TC-0059 criterion 2: nested list hierarchy (level > 1) is now emitted
+    correctly as nested text:list elements inside text:list-item.
 
-    Known limitation: nested list hierarchy (level > 1) is flattened to a
-    single-level list in this implementation. Full nested list support requires
-    a list-nesting model in the neutral model (R55+).
+    Each item in lst["items"] has "text" and "level" keys (1-based level).
+    Items are assumed to be in document order. A level increase means nesting
+    deeper inside the most recent list-item; a level decrease means returning
+    to a parent list element.
 
-    The ordering of lists relative to blocks is not preserved because the
-    parser stores blocks and lists in separate sequences. Lists are emitted
-    after all blocks.
+    Algorithm: maintain a stack of open list elements indexed by level.
+    When the item level equals the current level, append to current list.
+    When the item level increases, open a new nested list inside the last item.
+    When the item level decreases, pop back to the correct parent level.
     """
-    list_el = ET.SubElement(parent, _qn("text", "list"))
     items = lst.get("items", [])
+    if not items:
+        ET.SubElement(parent, _qn("text", "list"))
+        return
+
+    # Stack: list of (level, list_element) pairs.
+    # The "list_el" on the stack is the text:list element we're currently appending to.
+    root_list_el = ET.SubElement(parent, _qn("text", "list"))
+    level_stack: list[tuple[int, ET.Element]] = [(1, root_list_el)]
+
     for item in items:
-        item_el = ET.SubElement(list_el, _qn("text", "list-item"))
+        item_level = item.get("level", 1)
+        item_text = str(item.get("text", "")) if item.get("text") is not None else ""
+
+        # Determine current top-of-stack level
+        current_level, current_list_el = level_stack[-1]
+
+        if item_level > current_level:
+            # Need to nest deeper: create a new text:list inside the last list-item
+            # The last item_el in current_list_el is where we nest
+            last_items = [ch for ch in current_list_el if ch.tag == _qn("text", "list-item")]
+            if last_items:
+                # Nest inside the last existing list-item
+                nesting_item_el = last_items[-1]
+            else:
+                # No existing item — create an empty item to nest under
+                nesting_item_el = ET.SubElement(current_list_el, _qn("text", "list-item"))
+            new_list_el = ET.SubElement(nesting_item_el, _qn("text", "list"))
+            level_stack.append((item_level, new_list_el))
+            current_list_el = new_list_el
+
+        elif item_level < current_level:
+            # Pop back to the appropriate parent level
+            while len(level_stack) > 1 and level_stack[-1][0] > item_level:
+                level_stack.pop()
+            _, current_list_el = level_stack[-1]
+
+        # Append item to current list
+        item_el = ET.SubElement(current_list_el, _qn("text", "list-item"))
         p_el = ET.SubElement(item_el, _qn("text", "p"))
-        p_el.text = str(item.get("text", "")) if item.get("text") is not None else ""
+        p_el.text = item_text
 
 
 def _write_table(parent: ET.Element, table: dict[str, Any]) -> None:

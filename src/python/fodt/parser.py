@@ -37,6 +37,7 @@ from .constants import (
     ATTR_STYLE_NAME,
     ATTR_TABLE_NAME,
     ATTR_VERSION,
+    ATTR_XLINK_HREF,
     EXPECTED_MIMETYPE,
     MAX_FILE_BYTES,
     NS_TEXT,
@@ -50,6 +51,7 @@ from .constants import (
     QN_TABLE_CELL,
     QN_TABLE_ROW,
     QN_TEXT,
+    QN_TEXT_A,
     QN_TEXT_H,
     QN_TEXT_P,
     QN_TEXT_SPAN,
@@ -243,15 +245,17 @@ def _collect_runs(elem: Any) -> "list[dict[str, Any]]":
     Returns a list of run dicts, each with:
       - "text": str  -- run text content
       - "style": str | None  -- text:style-name attribute (None for unstyled runs)
+      - "href": str | None  -- xlink:href for text:a hyperlink runs (R56 TC-0057)
 
     A "run" is either:
-      1. A text:span child with optional style-name (text and tail are separate runs)
-      2. A plain text segment at the element level (elem.text, or child.tail)
+      1. A text:span child with optional style-name
+      2. A text:a child with xlink:href (hyperlink) — R56 TC-0057 criterion 3
+      3. A plain text segment at the element level (elem.text, or child.tail)
 
     This is an additive field — the existing "text" key (concatenated plain text)
     remains for backward compatibility. The "runs" field enables span-aware writers.
 
-    R55 TC-0057: inline span preservation.
+    R55 TC-0057 (spans), R56 TC-0057 criterion 3 (hyperlinks).
     """
     runs: list = []
 
@@ -259,7 +263,7 @@ def _collect_runs(elem: Any) -> "list[dict[str, Any]]":
     if elem.text:
         text = elem.text
         if text:
-            runs.append({"text": text, "style": None})
+            runs.append({"text": text, "style": None, "href": None})
 
     for child in elem:
         if child.tag == QN_TEXT_SPAN:
@@ -267,10 +271,18 @@ def _collect_runs(elem: Any) -> "list[dict[str, Any]]":
             span_text = _collect_text(child)
             style = child.get(ATTR_STYLE_NAME)
             if span_text:
-                runs.append({"text": span_text, "style": style or None})
+                runs.append({"text": span_text, "style": style or None, "href": None})
+        elif child.tag == QN_TEXT_A:
+            # Hyperlink: capture href and display text (R56 TC-0057 criterion 3)
+            href = child.get(ATTR_XLINK_HREF) or ""
+            link_text = _collect_text(child)
+            if link_text or href:
+                runs.append({"text": link_text, "style": None, "href": href or None})
+        else:
+            pass  # other inline elements ignored (text-fields etc.)
         # Text after each child (tail belongs to the parent, not the child)
         if child.tail:
-            runs.append({"text": child.tail, "style": None})
+            runs.append({"text": child.tail, "style": None, "href": None})
 
     return runs
 

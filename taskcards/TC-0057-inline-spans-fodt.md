@@ -42,13 +42,16 @@ commercial track which has full DOM-backed write fidelity.
 
 ## Closure
 
-**Closed:** R55, 2026-05-23
-**Sprint:** FORMAT-FACTORY-R55-MULTI-MEGA-TRAIN-PRODUCT-RC-PHASE6-ACQUISITION-AI-VALIDATOR-001
+**Closed (criterion 1+2):** R55, 2026-05-23
+**Closed (criterion 3 hyperlinks):** R56, 2026-05-23
+**Sprint (spans):** FORMAT-FACTORY-R55-MULTI-MEGA-TRAIN-PRODUCT-RC-PHASE6-ACQUISITION-AI-VALIDATOR-001
+**Sprint (hyperlinks):** FORMAT-FACTORY-R56-R55-CLOSURE-REPAIR-PACKAGE-RC-PHASE7-PRODUCT-EXPANSION-MEGA-TRAIN-001
 **Evidence:**
-- `_collect_runs()` added to `src/python/fodt/parser.py` — captures text:span with style-name
-- `_write_span()` added to `src/python/fodt/writer.py` — emits text:span for styled runs
-- `_write_block()` updated — uses runs list when available
-- 9 tests in `tests/python/fodt/test_r55_fodt_spans_ordering.py` (5 span capture + 4 round-trip)
-- All tests pass. `text:span` with `text:style-name` preserved on round-trip.
-- Note: `text:a` hyperlink preservation deferred (not captured by run model yet; requires separate acceptance criterion extension).
+- `_collect_runs()` captures `text:span` with style-name (R55) and `text:a` with `xlink:href` (R56)
+- `_write_span()` emits `text:span` for styled runs AND `text:a` for hyperlink runs (R56)
+- `ATTR_XLINK_HREF`, `QN_TEXT_A`, `NS_XLINK` added to `src/python/fodt/constants.py` (R56)
+- 9 tests in `tests/python/fodt/test_r55_fodt_spans_ordering.py` (R55 spans)
+- 6 tests in `tests/python/fodt/test_r56_fodt_hyperlinks_nested_lists.py::TestHyperlinkPreservation` (R56)
+- All 259 FODT tests pass. Zero regressions.
+**IV-R55-007 corrective note:** R55 status was overclaimed; criterion 3 deferred. R56 fully closes.
 **Status:** CLOSED_VERIFIED

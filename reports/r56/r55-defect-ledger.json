@@ -1,0 +1,115 @@
+{
+  "ledger_version": "1.0",
+  "sprint": "FORMAT-FACTORY-R56-R55-CLOSURE-REPAIR-PACKAGE-RC-PHASE7-PRODUCT-EXPANSION-MEGA-TRAIN-001",
+  "date": "2026-05-23",
+  "r55_classification": "R55_BROAD_MULTI_TRAIN_PROGRESS_BUT_RC_CLOSURE_REJECTED",
+  "defects": [
+    {
+      "id": "IV-R55-001",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Package tests fail from extracted bundle",
+      "file": "tests/packaging/test_r55_package_rc.py",
+      "root_cause": ".local/package-builds is gitignored; 5 of 11 tests require it",
+      "r56_action": "Train D: rebuild wheels, include in bundle-metadata/package-artifacts/"
+    },
+    {
+      "id": "IV-R55-002",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Phase Audit 6 package claim vs. manifest contradiction",
+      "files": [
+        "reports/r55/phase-audit-6-rc-mapping.md",
+        "bundle-metadata/package-artifact-manifest.yaml"
+      ],
+      "root_cause": "Phase Audit 6 describes planned work (7 packages BUILT) that was not executed in R55",
+      "r56_action": "Train D: rebuild wheels; Train G: correct Phase Audit 6"
+    },
+    {
+      "id": "IV-R55-003",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Embedded sidecar is for r55-pass2.zip, not r55-pass2-final.zip",
+      "embedded_sidecar_file": "bundle-metadata/r55-pass2.sha256-proof.json",
+      "embedded_sidecar_bundle": "r55-pass2.zip",
+      "actual_final_bundle": "r55-pass2-final.zip",
+      "root_cause": "Pass 2 sidecar was created before r55-pass2-final.zip was built; final bundle rebuilt but sidecar not updated inside metadata dir",
+      "r56_action": "Train K: write top-level sidecar for R56 final bundle only"
+    },
+    {
+      "id": "IV-R55-004",
+      "severity": "HIGH",
+      "status": "OPEN",
+      "title": "Scoreboard permanently IN_PROGRESS with all trains PENDING",
+      "file": "reports/r55/multi-mega-train-scoreboard.md",
+      "root_cause": "Scoreboard created as planning template at sprint start and never updated with actual results",
+      "r56_action": "Train J: repair R55 scoreboard"
+    },
+    {
+      "id": "IV-R55-005",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "Final proof stale — wrong commit and wrong test count",
+      "file": "bundle-metadata/final-bundle-validation-proof.txt",
+      "proof_commit": "6ac82fb",
+      "final_commits": ["6ac82fb", "a269697", "20d3aba", "ac5b0be", "c8cf3dc"],
+      "proof_test_total": 2850,
+      "authoritative_test_total": 4411,
+      "root_cause": "Proof written before full test run completed; marked preliminary but never finalized",
+      "r56_action": "Train K: write accurate final proof for R56 bundle"
+    },
+    {
+      "id": "IV-R55-006",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "fods.yaml and fodt.yaml missing from release-manifests/python-foss/",
+      "referenced_by": "release-manifests/python-foss/_matrix.yaml",
+      "missing_files": [
+        "release-manifests/python-foss/fods.yaml",
+        "release-manifests/python-foss/fodt.yaml"
+      ],
+      "r56_action": "Train G: create both manifest files"
+    },
+    {
+      "id": "IV-R55-007",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "TC-0057 over-closed: hyperlink acceptance criterion not met",
+      "file": "taskcards/TC-0057-inline-spans-fodt.md",
+      "acceptance_criterion_violated": "3: Hyperlinks (text:a xlink:href) are preserved",
+      "closure_note": "text:a hyperlink preservation deferred",
+      "r56_action": "Train C: implement hyperlinks or amend/reopen TC-0057 criterion 3"
+    },
+    {
+      "id": "IV-R55-008",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "title": "TC-0059 over-closed: nested list hierarchy acceptance criterion not met",
+      "file": "taskcards/TC-0059-list-preservation-fodt.md",
+      "acceptance_criterion_violated": "2: <text:list>, <text:list-item> hierarchy is emitted correctly",
+      "closure_limitation": "nested list hierarchy (level > 1) still flattened",
+      "r56_action": "Train C: implement nested lists or amend/reopen TC-0059 criterion 2"
+    },
+    {
+      "id": "IV-R55-009",
+      "severity": "LOW",
+      "status": "OPEN",
+      "title": "Nested ZIPs inside final bundle without contract allowance",
+      "nested_files": [
+        "bundle-metadata/r55-pass1.zip",
+        "bundle-metadata/r55-pass2.zip"
+      ],
+      "root_cause": "Bundle output path was inside the metadata directory used for build inputs",
+      "r56_action": "Train K: never put output zip inside metadata dir; verify before build"
+    },
+    {
+      "id": "IV-R55-010",
+      "severity": "LOW",
+      "status": "OPEN",
+      "title": "memory/60 contradicts taskcards on TC-0058/TC-0059 closure",
+      "file": "memory/60-r55-sprint-summary-20260523.md",
+      "contradiction": "memory says TC-0058/0059 DEFERRED to R56; taskcards say CLOSED_VERIFIED",
+      "r56_action": "Train J: correct memory/60 to reflect partial-close with noted limitations"
+    }
+  ]
+}

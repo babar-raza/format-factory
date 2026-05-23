@@ -1,0 +1,101 @@
+---
+# Release Manifest — FODS (Flat OpenDocument Spreadsheet) Python FOSS Package
+# Sprint: FORMAT-FACTORY-R56-R55-CLOSURE-REPAIR-PACKAGE-RC-PHASE7-PRODUCT-EXPANSION-MEGA-TRAIN-001
+# Date: 2026-05-23
+# Corrects: IV-R55-006 (manifest file missing despite matrix reference)
+
+format_id: fods
+package_name: aspose-format-factory-fods
+module_import: fods
+version: 0.1.0.dev0
+source_path: src/python/fods/
+tests_path: tests/python/fods/
+examples_path: examples/python/fods/
+
+acquisition_gates_passed:
+  - gate: 1
+    status: passed
+    notes: "Format authorized — ODF 1.3 OASIS standard"
+  - gate: 2
+    status: passed
+    notes: "Spec cached — ODF 1.3 Part 3 schema spec (sha256: 92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066)"
+  - gate: 3
+    status: passed
+    notes: "Sample corpus acquired (valid + invalid samples)"
+  - gate: 4
+    status: passed
+    notes: "Parser prototype (streaming XML, defusedxml support)"
+  - gate: 5
+    status: passed
+    notes: "Neutral model: Sheet/Row/Cell with value_type, formula, is_covered"
+  - gate: 6
+    status: passed
+    notes: "Oracle plan: value-type comparison"
+  - gate: 7
+    status: passed
+    notes: "Security fuzz: XXE guard, 100 MiB size guard, malformed XML handling"
+  - gate: 8
+    status: passed
+    notes: "Security review: no critical/high findings"
+  - gate: 9
+    status: passed
+    notes: "OSS readiness: Apache-2.0, Python stdlib only"
+  - gate: 10
+    status: local_release_candidate_ready
+    notes: "Local wheel built and smoke-tested"
+
+unsupported_capabilities:
+  - Cell style/formatting preservation
+  - Conditional formatting
+  - Charts and embedded objects
+  - Named ranges
+  - Data validation
+  - Password-protected FODS
+  - Multi-level merged cells (partial: is_covered flag only)
+
+security_limits:
+  - MAX_FILE_BYTES: 100 MiB
+  - XXE protection via defusedxml (fallback: stdlib ElementTree)
+  - No macro execution (office:scripts detected, never run)
+  - Iterparse streaming: max one element held in memory at a time
+
+dependencies:
+  runtime: []
+  dev:
+    - pytest>=8.0
+    - defusedxml>=0.7  # optional but recommended
+
+license: Apache-2.0
+spec_license: OASIS ODF 1.3 (open standard)
+
+publication_status: not_published
+release_readiness:
+  source_ready: true
+  tests_ready: true
+  examples_ready: false
+  package_metadata_ready: true
+  docs_ready: false
+  publish_authorized: false
+
+key_capabilities:
+  - parse_fods() / parse_fods_strict() — never-raise / strict parse API
+  - write_fods() / document_to_xml() — round-trip write API
+  - CSV export via FodsCsvExporter (FODS → CSV)
+  - Formula preservation: table:formula attribute preserved verbatim (R53)
+  - Sheet/row/cell neutral model with value_type inference
+
+test_count: 211
+test_result: PASS
+sprint_history:
+  - R46: write_fods() added
+  - R47: artifact proof
+  - R48: value_type writer fix
+  - R53: formula preservation (TC-0054)
+
+blockers:
+  - publish_authorized=false — no PyPI publication without explicit release prompt
+  - examples/python/fods/ not yet created (examples_ready=false)
+  - Gate 11 not approved (g11_prototype_not_approved)
+
+commercial_product_ready: false
+capability_level: alpha-foss-preview

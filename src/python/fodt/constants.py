@@ -42,6 +42,7 @@ NS_OFFICE: str = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
 NS_TABLE: str  = "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
 NS_TEXT: str   = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
 NS_DRAW: str   = "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+NS_XLINK: str  = "http://www.w3.org/1999/xlink"
 
 # ---------------------------------------------------------------------------
 # Qualified element names (Clark notation: {uri}localname)
@@ -55,6 +56,7 @@ QN_SCRIPTS:     str = f"{{{NS_OFFICE}}}scripts"
 QN_TEXT_P:      str = f"{{{NS_TEXT}}}p"
 QN_TEXT_H:      str = f"{{{NS_TEXT}}}h"
 QN_TEXT_SPAN:   str = f"{{{NS_TEXT}}}span"
+QN_TEXT_A:      str = f"{{{NS_TEXT}}}a"
 QN_LIST:        str = f"{{{NS_TEXT}}}list"
 QN_LIST_ITEM:   str = f"{{{NS_TEXT}}}list-item"
 
@@ -74,6 +76,8 @@ ATTR_VERSION:        str = f"{{{NS_OFFICE}}}version"
 ATTR_OUTLINE_LEVEL:  str = f"{{{NS_TEXT}}}outline-level"
 ATTR_TABLE_NAME:     str = f"{{{NS_TABLE}}}name"
 ATTR_STYLE_NAME:     str = f"{{{NS_TEXT}}}style-name"
+ATTR_XLINK_HREF:     str = f"{{{NS_XLINK}}}href"
+ATTR_XLINK_TYPE:     str = f"{{{NS_XLINK}}}type"
 
 # ---------------------------------------------------------------------------
 # Text field namespace prefix -- detect text:* field elements (IR-FODT-009)
