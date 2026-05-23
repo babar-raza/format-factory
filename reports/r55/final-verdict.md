@@ -28,13 +28,13 @@ Train K (final bundle) in progress at time of writing.
 
 | Suite | Pass | Fail | Skipped |
 |-------|------|------|---------|
-| Python/Evidence/Packaging/Invariants | 2233 | 2* | 50 |
-| AI (fixture mode) | 617 | 0 | 0 |
-| **Total** | **2850** | **2*** | **50** |
+| Full test suite (tests/) | 4411 | 2* | 13 |
 
 *Both failures are pre-existing: `test_probe_nonexistent` for DIF and PPM
 fail because `C:\nonexistent` actually exists on this machine.
 These failures existed before R55 (verified via git stash) and are NOT regressions.
+
+**AUTHORITATIVE_TEST_RESULT: 4411 passed, 2 pre-existing fail, 13 skipped**
 
 ## New Tests Added in R55
 
