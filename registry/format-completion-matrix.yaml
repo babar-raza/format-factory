@@ -30,18 +30,18 @@ formats:
     src_python_exists: true
     src_python_path: "src/python/fods/"
     src_python_files: ["parser.py", "neutral_model.py", "constants.py", "exceptions.py", "__init__.py"]
-    src_python_loc: 715
+    src_python_loc: 793
     src_net_exists: true
     src_net_path: "src/net/fods/"
     src_net_files: ["FodsDocument.cs", "FodsParser.cs", "FodsWriter.cs", "FodsCsvExporter.cs", "FodsHtmlExporter.cs", "FodsJsonExporter.cs", "Model/FodsSheet.cs", "Model/FodsRow.cs", "Model/FodsCell.cs"]
     src_net_loc: 1286
-    tests_python_count: 70
-    tests_net_count: 160
+    tests_python_count: 211
+    tests_net_count: 157
     packaging_status: local_build_ready
     claimed_gate: "G11 (commercial_readiness_in_progress)"
     evidence_backed_gate: "G10 (Python FOSS); G11-E (.NET prototype)"
     actual_maturity_class: production_track_real
-    parser_depth: "streaming XML, neutral model (6 entities), defusedxml"
+    parser_depth: "streaming XML, neutral model (6 entities), defusedxml; R55: style/column-def round-trip, formula preservation"
     read_support: true
     write_support: true  # .NET only
     export_support: true  # .NET: CSV, HTML, JSON
@@ -65,18 +65,18 @@ formats:
     src_python_exists: true
     src_python_path: "src/python/fodt/"
     src_python_files: ["parser.py", "neutral_model.py", "list_traversal.py", "constants.py", "exceptions.py", "__init__.py"]
-    src_python_loc: 761
+    src_python_loc: 857
     src_net_exists: true
     src_net_path: "src/net/fodt/"
     src_net_files: ["FodtDocument.cs", "FodtParser.cs", "FodtWriter.cs", "FodtHtmlExporter.cs", "FodtTxtExporter.cs", "FodtMarkdownExporter.cs", "Model/FodtBody.cs", "Model/FodtParagraph.cs"]
     src_net_loc: 1222
-    tests_python_count: 101
-    tests_net_count: 142
+    tests_python_count: 248
+    tests_net_count: 145
     packaging_status: local_build_ready
     claimed_gate: "G11 (commercial_readiness_in_progress)"
     evidence_backed_gate: "G10 (Python FOSS); G11-E (.NET prototype)"
     actual_maturity_class: production_track_real
-    parser_depth: "streaming XML, depth-tracking, list recursion, neutral model (7 entities)"
+    parser_depth: "streaming XML, depth-tracking, list recursion, neutral model (8 entities); R55: inline spans, document ordering, list/table preservation"
     read_support: true
     write_support: true  # .NET only
     export_support: true  # .NET: HTML, TXT, Markdown
@@ -353,16 +353,16 @@ formats:
     src_python_exists: true
     src_python_path: "src/python/ppm/"
     src_python_files: ["ppm_parser.py", "__init__.py"]
-    src_python_loc: 228
+    src_python_loc: 322
     src_net_exists: false
-    tests_python_count: 40
+    tests_python_count: 49
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G8 (security review)"
     evidence_backed_gate: "G7"
     actual_maturity_class: read_only_prototype
-    parser_depth: "P3 ASCII full pixel decode only. P6 binary explicitly deferred."
-    read_support: "partial (ASCII P3 only)"
+    parser_depth: "P3 ASCII + P6 binary full pixel decode. R55 added P6 binary support."
+    read_support: "full (P3 ASCII + P6 binary)"
     write_support: false
     export_support: false
     roundtrip_support: false
@@ -372,11 +372,11 @@ formats:
     spec_quality: fair
     package_readiness: none
     commercial_readiness: "N/A"
-    overclaim_risk: low
-    overclaim_details: "G8 security pass is valid for P3 parsing but binary P6 is the dominant real-world variant"
-    strongest_evidence: "40 tests, complete P3 decode"
-    weakest_area: "P6 binary not supported — most real PPM files are P6"
-    recommended_action: "add P6 binary support before claiming library maturity"
+    overclaim_risk: none
+    overclaim_details: "P3 + P6 both supported as of R55"
+    strongest_evidence: "49 tests, P3 ASCII + P6 binary decode"
+    weakest_area: "No write/export; 16-bit samples (maxval>255) in read path only"
+    recommended_action: "add write/export support for library maturity"
     r33_review_outcome: "READ_ONLY_SCOPE_APPROVED — G8 valid for P3, P6 needed before G10"
     r33_review_date: "2026-05-19"
     r35_scope_finalization: "APPLIED — pack.yaml scope_finalization section, read_only_ascii_p3 scope documented"
@@ -390,16 +390,16 @@ formats:
     src_python_exists: true
     src_python_path: "src/python/pgm/"
     src_python_files: ["pgm_parser.py", "__init__.py"]
-    src_python_loc: 224
+    src_python_loc: 319
     src_net_exists: false
-    tests_python_count: 40
+    tests_python_count: 47
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G7"
     evidence_backed_gate: "G7"
     actual_maturity_class: read_only_prototype
-    parser_depth: "P2 ASCII grayscale decode only. P5 binary deferred."
-    read_support: "partial (ASCII P2 only)"
+    parser_depth: "P2 ASCII + P5 binary grayscale decode. R55 added P5 binary support."
+    read_support: "full (P2 ASCII + P5 binary)"
     write_support: false
     export_support: false
     roundtrip_support: false
@@ -409,11 +409,11 @@ formats:
     spec_quality: fair
     package_readiness: none
     commercial_readiness: "N/A"
-    overclaim_risk: low
-    overclaim_details: "G7 is reasonable for ASCII variant; binary P5 needed for library status"
-    strongest_evidence: "40 tests, P2 decode"
-    weakest_area: "P5 binary not supported"
-    recommended_action: "add P5 binary support"
+    overclaim_risk: none
+    overclaim_details: "P2 + P5 both supported as of R55"
+    strongest_evidence: "47 tests, P2 ASCII + P5 binary decode"
+    weakest_area: "No write/export"
+    recommended_action: "add write/export support for library maturity"
 
   - format_id: pbm
     display_name: "Portable Bitmap (PBM)"
@@ -423,16 +423,16 @@ formats:
     src_python_exists: true
     src_python_path: "src/python/pbm/"
     src_python_files: ["pbm_parser.py", "__init__.py"]
-    src_python_loc: 215
+    src_python_loc: 290
     src_net_exists: false
-    tests_python_count: 40
+    tests_python_count: 48
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G7"
     evidence_backed_gate: "G7"
     actual_maturity_class: read_only_prototype
-    parser_depth: "P1 ASCII bitmap decode only. P4 binary deferred."
-    read_support: "partial (ASCII P1 only)"
+    parser_depth: "P1 ASCII + P4 binary (packed-bits) bitmap decode. R55 added P4 binary support."
+    read_support: "full (P1 ASCII + P4 binary)"
     write_support: false
     export_support: false
     roundtrip_support: false
@@ -442,11 +442,11 @@ formats:
     spec_quality: fair
     package_readiness: none
     commercial_readiness: "N/A"
-    overclaim_risk: low
-    overclaim_details: "G7 is reasonable for ASCII variant"
-    strongest_evidence: "40 tests, P1 decode"
-    weakest_area: "P4 binary not supported"
-    recommended_action: "add P4 binary support"
+    overclaim_risk: none
+    overclaim_details: "P1 + P4 both supported as of R55"
+    strongest_evidence: "48 tests, P1 ASCII + P4 binary packed-bits decode"
+    weakest_area: "No write/export"
+    recommended_action: "add write/export support for library maturity"
 
   - format_id: fodp
     display_name: "Flat OpenDocument Presentation"
@@ -600,59 +600,63 @@ formats:
     display_name: "Comma-Separated Values"
     acquisition_pack_exists: true
     samples_exist: true
-    prototype_location: null
-    src_python_exists: false
+    prototype_location: "src/python/csv/csv_parser.py"
+    src_python_exists: true
+    src_python_loc: 213
     src_net_exists: false
-    tests_python_count: 0
+    tests_python_count: 19
     tests_net_count: 0
     packaging_status: none
-    claimed_gate: "G3"
-    evidence_backed_gate: "G3"
-    actual_maturity_class: acquisition_only
-    parser_depth: "N/A"
-    read_support: false
+    claimed_gate: "G4"
+    evidence_backed_gate: "G4"
+    actual_maturity_class: read_only_prototype
+    parser_depth: "RFC 4180 inline parser (quoted fields, BOM strip, delimiter sniff)"
+    read_support: "prototype (Gate 4)"
     write_support: false
     export_support: false
     roundtrip_support: false
-    neutral_model_status: "N/A"
-    security_guard_status: "N/A"
+    neutral_model_status: "Gate 5 declared"
+    security_guard_status: "size guard (64 MiB, 1M rows)"
     corpus_quality: "samples exist"
     spec_quality: "RFC 4180"
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "acquisition pack and samples"
-    weakest_area: "no source"
-    recommended_action: "await gate quality policy before advancing"
+    strongest_evidence: "19 tests pass; inline RFC 4180 parser"
+    weakest_area: "no packaging, no Gate 5 oracle"
+    recommended_action: "advance to Gate 5 oracle in next sprint"
+    sprint_last_updated: R55
 
   - format_id: tsv
     display_name: "Tab-Separated Values"
     acquisition_pack_exists: true
     samples_exist: true
-    prototype_location: null
-    src_python_exists: false
+    prototype_location: "src/python/tsv/tsv_parser.py"
+    src_python_exists: true
+    src_python_loc: 198
     src_net_exists: false
-    tests_python_count: 0
+    tests_python_count: 19
     tests_net_count: 0
     packaging_status: none
-    claimed_gate: "G3"
-    evidence_backed_gate: "G3"
-    actual_maturity_class: acquisition_only
-    parser_depth: "N/A"
-    read_support: false
+    claimed_gate: "G4"
+    evidence_backed_gate: "G4"
+    actual_maturity_class: read_only_prototype
+    parser_depth: "Tab-split line parser (BOM strip, header heuristic)"
+    read_support: "prototype (Gate 4)"
     write_support: false
     export_support: false
     roundtrip_support: false
-    neutral_model_status: "N/A"
-    security_guard_status: "N/A"
+    neutral_model_status: "Gate 5 declared"
+    security_guard_status: "size guard (64 MiB, 1M rows)"
     corpus_quality: "samples exist"
     spec_quality: "IANA registration"
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "acquisition pack and samples"
-    weakest_area: "no source"
-    recommended_action: "await gate quality policy before advancing"
+    strongest_evidence: "19 tests pass; simple tab-split parser"
+    weakest_area: "no packaging, no Gate 5 oracle"
+    recommended_action: "advance to Gate 5 oracle in next sprint"
+    sprint_last_updated: R55
 
   - format_id: xpm
     display_name: "X PixMap"

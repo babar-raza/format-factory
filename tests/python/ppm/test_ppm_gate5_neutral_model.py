@@ -50,5 +50,7 @@ class TestPpmGate5NeutralModel:
         assert "rgb_pixel_decode" in SUPPORTED_FEATURES
 
     def test_key_unsupported_features(self):
-        assert "p6_binary_parse" in UNSUPPORTED_FEATURES
+        # p6_binary_parse moved to SUPPORTED_FEATURES in R55 Train F
+        assert "p6_binary_parse" not in UNSUPPORTED_FEATURES
+        assert "p6_binary_parse" in SUPPORTED_FEATURES
         assert "pgm_grayscale" in UNSUPPORTED_FEATURES

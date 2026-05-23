@@ -8,8 +8,6 @@ Extends parser coverage beyond existing suites:
 - Formula preservation verification
 - Package metadata stability
 """
-import csv
-import io
 import pathlib
 
 import pytest
@@ -28,32 +26,31 @@ from fods import parse_fods, parse_fods_strict, FORMAT_ID, SPEC_VERSION, PACKAGE
 # Helper: CSV export from parsed workbook result
 # ---------------------------------------------------------------------------
 
-def export_sheet_to_csv(result: dict, sheet_index: int = 0) -> str:
-    """Export one sheet from a parse_fods_strict result to CSV text.
+def _csv_field(value: str) -> str:
+    if "," in value or "\n" in value or "\r" in value or '"' in value:
+        return '"' + value.replace('"', '""') + '"'
+    return value
 
-    This is a consumer-side capability demonstrating that the parse result
-    contains enough structured data for downstream CSV export.
-    """
+
+def export_sheet_to_csv(result: dict, sheet_index: int = 0) -> str:
+    """Export one sheet from a parse_fods_strict result to CSV text."""
     sheets = result.get("sheets", [])
     if not sheets or sheet_index >= len(sheets):
         return ""
     sheet = sheets[sheet_index]
     rows = sheet.get("rows", [])
-    buf = io.StringIO()
-    writer = csv.writer(buf)
+    lines = []
     for row in rows:
         cells = row.get("cells", [])
-        values = [c.get("value", "") for c in cells]
-        # Fill sparse cells: find max cell index
         if cells:
             max_idx = max(c.get("index", 0) for c in cells)
             dense = [""] * (max_idx + 1)
             for c in cells:
                 dense[c["index"]] = str(c.get("value", "")) if c.get("value") is not None else ""
-            writer.writerow(dense)
+            lines.append(",".join(_csv_field(v) for v in dense))
         else:
-            writer.writerow([])
-    return buf.getvalue()
+            lines.append("")
+    return "\n".join(lines) + ("\n" if lines else "")
 
 
 # ---------------------------------------------------------------------------
@@ -114,9 +111,8 @@ class TestCsvExport:
         sample = SAMPLES / "formula-basic.fods"
         result = parse_fods_strict(str(sample))
         csv_text = export_sheet_to_csv(result)
-        reader = csv.reader(io.StringIO(csv_text))
-        for row in reader:
-            for cell in row:
+        for line in csv_text.splitlines():
+            for cell in line.split(","):
                 assert isinstance(cell, str), f"CSV cells must be str, got {type(cell)}"
 
 

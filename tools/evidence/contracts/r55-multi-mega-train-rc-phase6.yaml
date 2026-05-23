@@ -1,0 +1,66 @@
+sprint_id: FORMAT-FACTORY-R55-MULTI-MEGA-TRAIN-PRODUCT-RC-PHASE6-ACQUISITION-AI-VALIDATOR-001
+contract_id: FORMAT-FACTORY-R55-MULTI-MEGA-TRAIN-PRODUCT-RC-PHASE6-ACQUISITION-AI-VALIDATOR-001
+run_number: R55
+description: >
+  R55 10-train multi-mega-train sprint. Trains A-J + bundle Train K.
+  Train A: validator INV-011..014. Train B: TC-0057 FODT inline spans.
+  Train C: TC-0055/TC-0056 FODS style+coldef. Train D: 7-package Python RC.
+  Train E: .NET 302/302 bounded verification. Train F: PGM/PBM/PPM binary decode.
+  Train G: Phase Audit 6. Train H: CSV/TSV Gate 4 parsers (inline, no stdlib csv).
+  Train I: AI governance 617 tests. Train J: memory+docs sync.
+
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: none
+
+required_repo_files:
+  - reports/r55/final-verdict.md
+  - reports/r55/00-preflight.md
+  - reports/r55/r54-independent-verification.md
+  - reports/r55/multi-mega-train-scoreboard.md
+  - reports/r55/lane-ownership.md
+  - reports/r55/risk-register.md
+  - reports/r55/work-ahead-policy.md
+  - reports/r55/dotnet-bounded-verification.md
+  - reports/r55/phase-audit-6-rc-mapping.md
+  - reports/r55/ai-usage-telemetry-proof.md
+  - tests/python/fods/test_r55_fods_style_coldef.py
+  - tests/python/pgm/test_r55_pgm_p5_binary.py
+  - tests/python/pbm/test_r55_pbm_p4_binary.py
+  - tests/python/ppm/test_r55_ppm_p6_binary.py
+  - tests/python/csv/test_r55_csv_parser.py
+  - tests/python/tsv/test_r55_tsv_parser.py
+  - tests/packaging/test_r55_package_rc.py
+  - tests/invariants/test_r55_validator_repair.py
+  - src/python/csv/csv_parser.py
+  - src/python/tsv/tsv_parser.py
+  - src/python/pgm/pgm_parser.py
+  - src/python/pbm/pbm_parser.py
+  - src/python/ppm/ppm_parser.py
+  - taskcards/TC-0055-style-metadata-fods.md
+  - taskcards/TC-0056-column-definitions-fods.md
+  - taskcards/TC-0057-inline-spans-fodt.md
+  - registry/format-completion-matrix.yaml
+  - memory/60-r55-sprint-summary-20260523.md
+  - state/current-state.md
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - run-environment.txt
+  - r54-iv-summary.txt
+  - phase-audit-6-summary.txt
+  - binary-format-advancement-summary.txt
+  - csv-tsv-gate4-summary.txt
+  - package-rc-summary.txt
+  - ai-governance-summary.txt
+  - invariants-output.txt
+  - deferred-work-r56.txt
+  - state-snapshot-output.txt
+  - dotnet-bounded-verification-summary.txt

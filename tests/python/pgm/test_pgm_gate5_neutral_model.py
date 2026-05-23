@@ -37,7 +37,9 @@ class TestPgmGate5NeutralModel:
         assert "probe" in SUPPORTED_FEATURES
 
     def test_key_unsupported_features(self):
-        assert "p5_binary_parse" in UNSUPPORTED_FEATURES
+        # p5_binary_parse moved to SUPPORTED_FEATURES in R55 Train F
+        assert "p5_binary_parse" not in UNSUPPORTED_FEATURES
+        assert "p5_binary_parse" in SUPPORTED_FEATURES
         assert "encoding_to_pgm" in UNSUPPORTED_FEATURES
 
     def test_features_are_frozensets(self):

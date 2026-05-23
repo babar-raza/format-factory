@@ -16,6 +16,8 @@ PACKAGES = [
     ("aspose-format-factory-fodg",     "aspose_format_factory_fodg"),
     ("aspose-format-factory-gnumeric", "aspose_format_factory_gnumeric"),
     ("aspose-format-factory-abw",      "aspose_format_factory_abw"),
+    ("aspose-format-factory-fods",     "aspose_format_factory_fods"),
+    ("aspose-format-factory-fodt",     "aspose_format_factory_fodt"),
 ]
 
 VERSION = "0.1.0.dev0"
@@ -60,7 +62,7 @@ def test_build_report_exists():
 
 
 def test_build_report_all_built():
-    """build-report.json must show all 5 packages with status='built' and no errors."""
+    """build-report.json must show all 7 packages with status='built' and no errors."""
     report_path = os.path.join(BUILD_DIR, "build-report.json")
     with open(report_path, encoding="utf-8") as f:
         entries = json.load(f)
@@ -68,7 +70,7 @@ def test_build_report_all_built():
     assert isinstance(entries, list), "build-report.json should be a list"
     built = [e for e in entries if e.get("status") == "built"]
     errors = [e for e in entries if e.get("error") is not None]
-    assert len(built) == 5, f"Expected 5 built entries, got {len(built)}"
+    assert len(built) == 7, f"Expected 7 built entries, got {len(built)}"
     assert len(errors) == 0, f"Expected 0 error entries, got {errors}"
 
 

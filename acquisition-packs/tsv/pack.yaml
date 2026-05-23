@@ -112,3 +112,14 @@ stages:
     notes: "3 valid TSV samples (minimal-2x2, single-cell, multi-column) + 1 invalid (binary-garbage). Generated via Python open/write."
     corpus_manifest: samples/by-format/tsv/_corpus-manifest.yaml
     provenance: samples/by-format/tsv/_provenance.yaml
+
+  gate_4:
+    status: pass
+    sprint: R55
+    date: "2026-05-23"
+    prototype_file: src/python/tsv/tsv_parser.py
+    test_file: tests/python/tsv/test_r55_tsv_parser.py
+    test_count: 19
+    test_result: PASS
+    parser_depth: "Tab-split line parser (BOM strip, header heuristic)"
+    notes: "Gate 4 prototype. Simple tab-split parser (line.split('\\t')). No stdlib csv import needed. 19 tests all PASS."

@@ -7,8 +7,10 @@ Public API:
   probe_pbm(file_path)        — returns header metadata without full parse
 
 Implements Gate 4 prototype + Gate 5 neutral model.
-Parses P1 (ASCII) PBM files: magic, width, height, bitmap pixels (1=black, 0=white).
+Parses P1 (ASCII) and P4 (binary) PBM files.
 Technology: Python stdlib only (open/read/split).
+
+R55 Train F: P4 binary decode added (TC-BINARY-PBM-001).
 
 License: Apache-2.0
 """
@@ -66,8 +68,79 @@ def _strip_comments(text: str) -> str:
     return "\n".join(cleaned)
 
 
+def _parse_netpbm_header_bytes(data: bytes, num_ints: int) -> tuple[list[int], int]:
+    """Parse ASCII Netpbm header from raw bytes, returning (values, data_offset)."""
+    i = 0
+    n = len(data)
+
+    def skip_ws_and_comments() -> None:
+        nonlocal i
+        while i < n:
+            b = data[i:i+1]
+            if b in (b' ', b'\t', b'\n', b'\r'):
+                i += 1
+            elif b == b'#':
+                while i < n and data[i:i+1] != b'\n':
+                    i += 1
+            else:
+                break
+
+    skip_ws_and_comments()
+    while i < n and data[i:i+1] not in (b' ', b'\t', b'\n', b'\r'):
+        i += 1
+
+    values: list[int] = []
+    for _ in range(num_ints):
+        skip_ws_and_comments()
+        start = i
+        while i < n and data[i:i+1] not in (b' ', b'\t', b'\n', b'\r'):
+            i += 1
+        if start == i:
+            raise ValueError("Unexpected end of header")
+        values.append(int(data[start:i]))
+
+    if i < n:
+        i += 1  # consume single whitespace delimiter before binary data
+
+    return values, i
+
+
+def _parse_p4_binary(path: Path, data: bytes) -> "PbmImage":
+    """Decode a P4 (binary packed-bits) PBM file."""
+    try:
+        (width, height), data_offset = _parse_netpbm_header_bytes(data, 2)
+    except (ValueError, IndexError) as exc:
+        raise PbmInvalidHeaderError(f"Invalid P4 header: {exc}")
+
+    if width <= 0 or height <= 0:
+        raise PbmInvalidHeaderError(f"Invalid dimensions: {width}x{height}")
+    if width > MAX_DIMENSION or height > MAX_DIMENSION:
+        raise PbmSizeError(f"Dimensions {width}x{height} exceed limit of {MAX_DIMENSION}")
+
+    row_bytes = (width + 7) // 8
+    expected_bytes = row_bytes * height
+    pixel_data = data[data_offset:]
+
+    if len(pixel_data) < expected_bytes:
+        raise PbmDecodeError(
+            f"Not enough binary pixel data: expected {expected_bytes} bytes, "
+            f"got {len(pixel_data)}"
+        )
+
+    pixels: list[int] = []
+    for row in range(height):
+        row_start = row * row_bytes
+        for col in range(width):
+            byte_idx = row_start + col // 8
+            bit_idx = 7 - (col % 8)
+            v = (pixel_data[byte_idx] >> bit_idx) & 1
+            pixels.append(v)
+
+    return PbmImage(width=width, height=height, magic="P4", pixels=pixels, path=str(path))
+
+
 def parse_pbm_strict(file_path: str | Path) -> PbmImage:
-    """Parse a PBM file, raising PbmError on any problem."""
+    """Parse a PBM (P1 ASCII or P4 binary) file, raising PbmError on any problem."""
     path = Path(file_path)
     if not path.exists():
         raise PbmError(f"File not found: {path}")
@@ -76,19 +149,21 @@ def parse_pbm_strict(file_path: str | Path) -> PbmImage:
     if size > MAX_FILE_SIZE:
         raise PbmSizeError(f"File size {size} exceeds limit of {MAX_FILE_SIZE}")
 
-    raw = path.read_text(encoding="ascii", errors="replace")
-    cleaned = _strip_comments(raw)
-    tokens = cleaned.split()
-
-    if not tokens:
+    data = path.read_bytes()
+    header_probe = data[:16].decode("ascii", errors="replace").split()
+    if not header_probe:
         raise PbmInvalidMagicError("Empty file")
-
-    magic = tokens[0]
+    magic = header_probe[0]
     if magic not in ("P1", "P4"):
         raise PbmInvalidMagicError(f"Invalid magic: '{magic}', expected P1 or P4")
 
     if magic == "P4":
-        raise PbmDecodeError("P4 (binary) format not yet supported — P1 ASCII only")
+        return _parse_p4_binary(path, data)
+
+    # P1 ASCII path
+    raw = data.decode("ascii", errors="replace")
+    cleaned = _strip_comments(raw)
+    tokens = cleaned.split()
 
     if len(tokens) < 3:
         raise PbmInvalidHeaderError(
@@ -184,6 +259,7 @@ def probe_pbm(file_path: str | Path) -> dict[str, Any]:
 
 SUPPORTED_FEATURES: frozenset[str] = frozenset({
     "p1_ascii_parse",
+    "p4_binary_parse",
     "bitmap_pixel_decode",
     "comment_stripping",
     "probe",
@@ -192,7 +268,6 @@ SUPPORTED_FEATURES: frozenset[str] = frozenset({
 })
 
 UNSUPPORTED_FEATURES: frozenset[str] = frozenset({
-    "p4_binary_parse",
     "ppm_color",
     "pgm_grayscale",
     "pam_arbitrary_map",

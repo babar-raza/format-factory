@@ -110,3 +110,14 @@ stages:
     notes: "3 valid CSV samples (minimal-2x2, single-cell, quoted-fields) + 1 invalid (unterminated-quote). Generated via Python open/write."
     corpus_manifest: samples/by-format/csv/_corpus-manifest.yaml
     provenance: samples/by-format/csv/_provenance.yaml
+
+  gate_4:
+    status: pass
+    sprint: R55
+    date: "2026-05-23"
+    prototype_file: src/python/csv/csv_parser.py
+    test_file: tests/python/csv/test_r55_csv_parser.py
+    test_count: 19
+    test_result: PASS
+    parser_depth: "RFC 4180 inline parser (quoted fields, BOM strip, delimiter sniff)"
+    notes: "Gate 4 prototype. Inline RFC 4180 state-machine parser. No stdlib csv import (avoids namespace collision with src/python/csv/ package). 19 tests all PASS."

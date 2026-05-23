@@ -7,8 +7,10 @@ Public API:
   probe_pgm(file_path)        — returns header metadata without full parse
 
 Implements Gate 4 prototype + Gate 5 neutral model.
-Parses P2 (ASCII) PGM files: magic, width, height, maxval, grayscale pixels.
+Parses P2 (ASCII) and P5 (binary) PGM files.
 Technology: Python stdlib only (open/read/split).
+
+R55 Train F: P5 binary decode added (TC-BINARY-PGM-001).
 
 License: Apache-2.0
 """
@@ -68,8 +70,98 @@ def _strip_comments(text: str) -> str:
     return "\n".join(cleaned)
 
 
+def _parse_netpbm_header_bytes(data: bytes, num_ints: int) -> tuple[list[int], int]:
+    """Parse ASCII Netpbm header from raw bytes, skipping comments.
+
+    Returns (values, data_offset) where data_offset is the byte position
+    immediately after the single whitespace delimiter following the last
+    header integer (i.e., where binary pixel data begins).
+    """
+    i = 0
+    n = len(data)
+
+    def skip_ws_and_comments() -> None:
+        nonlocal i
+        while i < n:
+            b = data[i:i+1]
+            if b in (b' ', b'\t', b'\n', b'\r'):
+                i += 1
+            elif b == b'#':
+                while i < n and data[i:i+1] != b'\n':
+                    i += 1
+            else:
+                break
+
+    # Skip past the magic word
+    skip_ws_and_comments()
+    while i < n and data[i:i+1] not in (b' ', b'\t', b'\n', b'\r'):
+        i += 1
+
+    # Read num_ints integer tokens
+    values: list[int] = []
+    for _ in range(num_ints):
+        skip_ws_and_comments()
+        start = i
+        while i < n and data[i:i+1] not in (b' ', b'\t', b'\n', b'\r'):
+            i += 1
+        if start == i:
+            raise ValueError("Unexpected end of header")
+        values.append(int(data[start:i]))
+
+    # Consume exactly one whitespace byte (the separator before binary data)
+    if i < n:
+        i += 1
+
+    return values, i
+
+
+def _parse_p5_binary(path: Path, data: bytes) -> "PgmImage":
+    """Decode a P5 (binary) PGM file from raw bytes."""
+    try:
+        (width, height, maxval), data_offset = _parse_netpbm_header_bytes(data, 3)
+    except (ValueError, IndexError) as exc:
+        raise PgmInvalidHeaderError(f"Invalid P5 header: {exc}")
+
+    if width <= 0 or height <= 0:
+        raise PgmInvalidHeaderError(f"Invalid dimensions: {width}x{height}")
+    if width > MAX_DIMENSION or height > MAX_DIMENSION:
+        raise PgmSizeError(f"Dimensions {width}x{height} exceed limit of {MAX_DIMENSION}")
+    if maxval <= 0 or maxval > MAX_MAXVAL:
+        raise PgmInvalidHeaderError(f"Invalid maxval: {maxval}")
+
+    bytes_per_sample = 2 if maxval > 255 else 1
+    expected_pixels = width * height
+    expected_bytes = expected_pixels * bytes_per_sample
+    pixel_data = data[data_offset:]
+
+    if len(pixel_data) < expected_bytes:
+        raise PgmDecodeError(
+            f"Not enough binary pixel data: expected {expected_bytes} bytes, "
+            f"got {len(pixel_data)}"
+        )
+
+    pixels: list[int] = []
+    if bytes_per_sample == 1:
+        for i in range(expected_pixels):
+            v = pixel_data[i]
+            if v > maxval:
+                raise PgmDecodeError(f"Pixel {i} value {v} out of range [0,{maxval}]")
+            pixels.append(v)
+    else:
+        for i in range(expected_pixels):
+            v = (pixel_data[i * 2] << 8) | pixel_data[i * 2 + 1]
+            if v > maxval:
+                raise PgmDecodeError(f"Pixel {i} value {v} out of range [0,{maxval}]")
+            pixels.append(v)
+
+    return PgmImage(
+        width=width, height=height, maxval=maxval,
+        magic="P5", pixels=pixels, path=str(path),
+    )
+
+
 def parse_pgm_strict(file_path: str | Path) -> PgmImage:
-    """Parse a PGM file, raising PgmError on any problem."""
+    """Parse a PGM (P2 ASCII or P5 binary) file, raising PgmError on any problem."""
     path = Path(file_path)
     if not path.exists():
         raise PgmError(f"File not found: {path}")
@@ -78,19 +170,22 @@ def parse_pgm_strict(file_path: str | Path) -> PgmImage:
     if size > MAX_FILE_SIZE:
         raise PgmSizeError(f"File size {size} exceeds limit of {MAX_FILE_SIZE}")
 
-    raw = path.read_text(encoding="ascii", errors="replace")
-    cleaned = _strip_comments(raw)
-    tokens = cleaned.split()
-
-    if not tokens:
+    # Detect magic from first bytes (works for both ASCII and binary)
+    data = path.read_bytes()
+    header_probe = data[:16].decode("ascii", errors="replace").split()
+    if not header_probe:
         raise PgmInvalidMagicError("Empty file")
-
-    magic = tokens[0]
+    magic = header_probe[0]
     if magic not in ("P2", "P5"):
         raise PgmInvalidMagicError(f"Invalid magic: '{magic}', expected P2 or P5")
 
     if magic == "P5":
-        raise PgmDecodeError("P5 (binary) format not yet supported — P2 ASCII only")
+        return _parse_p5_binary(path, data)
+
+    # P2 ASCII path
+    raw = data.decode("ascii", errors="replace")
+    cleaned = _strip_comments(raw)
+    tokens = cleaned.split()
 
     if len(tokens) < 4:
         raise PgmInvalidHeaderError(
@@ -192,6 +287,7 @@ def probe_pgm(file_path: str | Path) -> dict[str, Any]:
 
 SUPPORTED_FEATURES: frozenset[str] = frozenset({
     "p2_ascii_parse",
+    "p5_binary_parse",
     "grayscale_pixel_decode",
     "comment_stripping",
     "probe",
@@ -201,7 +297,6 @@ SUPPORTED_FEATURES: frozenset[str] = frozenset({
 })
 
 UNSUPPORTED_FEATURES: frozenset[str] = frozenset({
-    "p5_binary_parse",
     "ppm_color",
     "pbm_bitmap",
     "pam_arbitrary_map",

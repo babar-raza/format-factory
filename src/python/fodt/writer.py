@@ -21,13 +21,20 @@ R54 MT6 (TC-0059/TC-0058 partial advance):
   - List blocks from ``document["lists"]`` serialized as ``text:list``/``text:list-item``.
   - Table blocks from ``document["tables"]`` serialized as ``table:table``, ``table:table-row``,
     ``table:table-cell`` with ``text:p`` cell content.
-  - Known limitation: document ordering between blocks (paragraphs/headings) and lists/tables
-    is not preserved. Lists are emitted after all blocks; tables after all lists. Full ordering
-    requires parser refactor to merge all into a single document-order sequence (R55+).
-  - Inline span preservation (TC-0057) remains OPEN — spans are collapsed to plain text.
+
+R55 TC-0057 (inline span preservation):
+  - ``_write_span()`` helper emits ``text:span`` with ``text:style-name`` attribute.
+  - ``_write_block()`` now checks for ``runs`` field: if present and non-empty, emits
+    text:span wrappers for styled runs and plain text nodes for unstyled runs.
+    Falls back to plain ``el.text = text`` when no runs are recorded.
+
+R55 TC-0060 (document ordering):
+  - ``document_to_xml()`` now checks for ``content`` key (R55 parser output).
+  - When present, elements are emitted in document order using the ``content`` sequence.
+  - Falls back to the old blocks → lists → tables sequence for backward compatibility.
 
 Capability level: alpha-foss-preview (write subset — paragraphs, headings, lists (basic),
-tables (basic); inline styles and document ordering across element types not yet generated).
+tables (basic), inline spans with style preservation (R55)).
 
 License: Apache-2.0
 Package: format-factory-fodt v0.1.0
@@ -62,6 +69,32 @@ def _qn(ns_prefix: str, local: str) -> str:
     return f"{{{_NS[ns_prefix]}}}{local}"
 
 
+def _write_span(parent: ET.Element, run: "dict[str, Any]") -> None:
+    """Append a text:span (styled) or plain text node for one run dict.
+
+    If run["style"] is non-None, wraps the run text in a ``text:span`` element
+    with a ``text:style-name`` attribute. Otherwise appends the text as a tail
+    on the last child or as ``parent.text`` if parent has no children yet.
+
+    R55 TC-0057: inline span preservation.
+    """
+    run_text = str(run.get("text", "")) if run.get("text") is not None else ""
+    style = run.get("style")
+
+    if style:
+        span_el = ET.SubElement(parent, _qn("text", "span"))
+        span_el.set(_qn("text", "style-name"), style)
+        span_el.text = run_text
+    else:
+        # Plain text — attach as tail of last child, or as parent.text
+        children = list(parent)
+        if children:
+            last_child = children[-1]
+            last_child.tail = (last_child.tail or "") + run_text
+        else:
+            parent.text = (parent.text or "") + run_text
+
+
 def _write_block(parent: ET.Element, block: dict[str, Any]) -> None:
     """Append a text:p or text:h element for the given neutral model block.
 
@@ -72,19 +105,26 @@ def _write_block(parent: ET.Element, block: dict[str, Any]) -> None:
     Also handles legacy ``paragraphs`` list items (text_content/content keys).
 
     R49: replaces _write_paragraph to support heading blocks from parser output.
+    R55 TC-0057: if block has non-empty ``runs`` list, emit text:span for styled runs.
     """
     block_type = block.get("type", "paragraph")
     text = block.get("text", block.get("text_content", block.get("content", "")))
     text = str(text) if text is not None else ""
+    runs = block.get("runs")
 
     if block_type == "heading":
         el = ET.SubElement(parent, _qn("text", "h"))
         level = block.get("heading_level") or 1
         el.set(_qn("text", "outline-level"), str(level))
-        el.text = text
     else:
         # paragraph (default)
         el = ET.SubElement(parent, _qn("text", "p"))
+
+    # If runs are available and at least one run has a style, emit spans
+    if runs and any(r.get("style") for r in runs):
+        for run in runs:
+            _write_span(el, run)
+    else:
         el.text = text
 
 
@@ -179,17 +219,26 @@ def document_to_xml(document: dict[str, Any]) -> str:
     body_el = ET.SubElement(doc_el, _qn("office", "body"))
     text_el = ET.SubElement(body_el, _qn("office", "text"))
 
-    # 1. Emit blocks (paragraphs and headings)
-    for block in blocks:
-        _write_block(text_el, block)
-
-    # 2. Emit lists (R54 TC-0059 partial advance)
-    for lst in lists:
-        _write_list(text_el, lst)
-
-    # 3. Emit tables (R54 TC-0058 partial advance)
-    for table in tables:
-        _write_table(text_el, table)
+    # Emit in document order if content sequence is present (R55 TC-0060)
+    content = document.get("content")
+    if content is not None:
+        for item in content:
+            kind = item.get("kind")
+            data = item.get("data", {})
+            if kind == "block":
+                _write_block(text_el, data)
+            elif kind == "list":
+                _write_list(text_el, data)
+            elif kind == "table":
+                _write_table(text_el, data)
+    else:
+        # Legacy path: blocks → lists → tables (R54 and earlier)
+        for block in blocks:
+            _write_block(text_el, block)
+        for lst in lists:
+            _write_list(text_el, lst)
+        for table in tables:
+            _write_table(text_el, table)
 
     # Serialize
     xml_declaration = '<?xml version="1.0" encoding="UTF-8"?>\n'

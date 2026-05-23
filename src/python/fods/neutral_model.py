@@ -44,14 +44,21 @@ def build_workbook(
     warnings: list[dict[str, Any]],
     unsupported_features: list[str],
     parse_errors: list[dict[str, Any]],
+    auto_styles_elem: Any | None = None,
+    styles_elem: Any | None = None,
 ) -> dict[str, Any]:
     """Assemble the Workbook-level result dict matching the neutral model.
 
     Fields conform to the Workbook entity in schemas/neutral-model/fods/model.yaml.
     Additional fields (unsupported_features, parse_errors) extend the neutral
     model for product parser transparency.
+
+    R55 TC-0055: ``auto_styles_elem`` and ``styles_elem`` hold captured
+    ``office:automatic-styles`` and ``office:styles`` ET element objects.
+    The writer re-emits them verbatim for style round-trip preservation.
+    These fields are not JSON-serializable and are prefixed with ``_``.
     """
-    return {
+    wb: dict[str, Any] = {
         "format_id": FORMAT_ID,
         "spec_version": SPEC_VERSION,
         "odf_version_attr": odf_version_attr,
@@ -62,6 +69,11 @@ def build_workbook(
         "unsupported_features": sorted(unsupported_features),
         "parse_errors": parse_errors,
     }
+    if auto_styles_elem is not None:
+        wb["_auto_styles_elem"] = auto_styles_elem
+    if styles_elem is not None:
+        wb["_styles_elem"] = styles_elem
+    return wb
 
 
 # ---------------------------------------------------------------------------

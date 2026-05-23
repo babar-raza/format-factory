@@ -15,8 +15,6 @@ Covers:
 Sprint: FORMAT-FACTORY-R50-EVIDENCE-CLOSEOUT-REPAIR-AND-OBJECT-MODEL-HARDENING-001
 """
 
-import csv
-import io
 import sys
 import tempfile
 from pathlib import Path
@@ -58,8 +56,37 @@ def _make_sheet(name, rows_data):
 
 
 def _parse_csv(csv_string):
-    """Parse CSV string to list of lists."""
-    return list(csv.reader(io.StringIO(csv_string)))
+    """Parse RFC 4180 CSV string to list of rows (each row is list of fields)."""
+    rows, row, field = [], [], []
+    in_q = False
+    i, n = 0, len(csv_string)
+    while i < n:
+        c = csv_string[i]
+        if in_q:
+            if c == '"':
+                if i + 1 < n and csv_string[i + 1] == '"':
+                    field.append('"'); i += 2
+                else:
+                    in_q = False; i += 1
+            else:
+                field.append(c); i += 1
+        else:
+            if c == '"':
+                in_q = True; i += 1
+            elif c == ',':
+                row.append("".join(field)); field = []; i += 1
+            elif c == '\r':
+                row.append("".join(field)); rows.append(row); row = []; field = []
+                i += 1
+                if i < n and csv_string[i] == '\n':
+                    i += 1
+            elif c == '\n':
+                row.append("".join(field)); rows.append(row); row = []; field = []; i += 1
+            else:
+                field.append(c); i += 1
+    if field or row:
+        row.append("".join(field)); rows.append(row)
+    return rows
 
 
 # ---------------------------------------------------------------------------

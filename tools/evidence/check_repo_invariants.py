@@ -57,6 +57,29 @@ INVARIANTS:
              contain a "Closed" or "closure" section with a date or sprint
              reference.  Guards against taskcards being closed without evidence.
 
+    INV-011  state_snapshot_sprint_matches_latest_contract
+             The latest sprint number recorded in state/current-state.md must
+             be >= the run_number of the highest-numbered sprint contract.
+             Catches the defect where state_snapshot.py is not run after a
+             sprint completes (e.g. state shows R53 while contract is R54).
+
+    INV-012  completion_matrix_has_all_registry_formats
+             Every format_id in the registry must also appear in
+             registry/format-completion-matrix.yaml.  Prevents drift between
+             the registry and the format completion matrix.
+
+    INV-013  open_taskcards_have_target_sprint
+             Every taskcard file whose Status line is OPEN must contain a
+             "Sprint target:" field.  Prevents taskcards from floating without
+             sprint assignment.
+
+    INV-014  final_verdict_pass_sha_not_placeholder
+             If the latest sprint's final-verdict.md contains the string
+             "BUNDLE_VALIDATION: PASS", it must also contain a non-placeholder
+             Pass 1 SHA-256 line (not "TBD", "PENDING", or empty after the
+             colon).  Catches incomplete final verdicts that claim PASS but
+             have not recorded a real SHA.
+
 USAGE:
     python tools/evidence/check_repo_invariants.py [--repo-root PATH]
 
@@ -527,6 +550,204 @@ def check_inv010_closed_taskcards_have_evidence(root: Path) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# INV-011: state_snapshot_sprint_matches_latest_contract
+# ---------------------------------------------------------------------------
+
+def check_inv011_state_snapshot_sprint_current(root: Path) -> dict:
+    """state/current-state.md latest sprint number must be >= latest contract run_number."""
+    inv_id, name = "INV-011", "state_snapshot_sprint_matches_latest_contract"
+
+    # Parse state snapshot
+    state_path = root / "state" / "current-state.md"
+    if not state_path.exists():
+        return _result(inv_id, name, False, ["state/current-state.md not found"])
+
+    content = state_path.read_text(encoding="utf-8")
+    m = re.search(r"\*\*Latest sprint:\*\*\s*R(\d+)", content, re.IGNORECASE)
+    if not m:
+        return _result(inv_id, name, False,
+                       ["state/current-state.md: could not parse 'Latest sprint: R<N>'"])
+    state_rn = int(m.group(1))
+
+    # Parse latest contract run_number
+    contracts_dir = root / "tools" / "evidence" / "contracts"
+    if not contracts_dir.exists():
+        return _result(inv_id, name, True,
+                       ["tools/evidence/contracts/ not found — skipped"])
+
+    sprint_contracts = []
+    for cpath in sorted(contracts_dir.glob("*.yaml")):
+        try:
+            data = _load_yaml(cpath)
+        except Exception:
+            continue
+        rn_raw = data.get("run_number")
+        if rn_raw is None:
+            continue
+        rn = _parse_run_number(rn_raw)
+        if rn >= 0:
+            sprint_contracts.append(rn)
+
+    if not sprint_contracts:
+        return _result(inv_id, name, True,
+                       ["No sprint contracts found — skipped"])
+
+    max_contract_rn = max(sprint_contracts)
+    if state_rn < max_contract_rn:
+        return _result(inv_id, name, False,
+                       [f"state/current-state.md shows R{state_rn} "
+                        f"but latest contract is R{max_contract_rn}",
+                        "Run state_snapshot.py to update current-state.md"])
+    return _result(inv_id, name, True,
+                   [f"State snapshot R{state_rn} >= latest contract R{max_contract_rn}"])
+
+
+# ---------------------------------------------------------------------------
+# INV-012: completion_matrix_has_all_registry_formats
+# ---------------------------------------------------------------------------
+
+def check_inv012_completion_matrix_covers_registry(root: Path) -> dict:
+    """Every format_id in registry must appear in format-completion-matrix.yaml."""
+    inv_id, name = "INV-012", "completion_matrix_has_all_registry_formats"
+
+    reg_path = root / "registry" / "format-registry.yaml"
+    matrix_path = root / "registry" / "format-completion-matrix.yaml"
+
+    if not reg_path.exists():
+        return _result(inv_id, name, False, ["registry/format-registry.yaml not found"])
+    if not matrix_path.exists():
+        return _result(inv_id, name, False, ["registry/format-completion-matrix.yaml not found"])
+
+    reg = _load_yaml(reg_path)
+    formats = reg.get("formats", []) if isinstance(reg, dict) else []
+    registry_ids = {
+        fmt.get("format_id", "") for fmt in formats
+        if isinstance(fmt, dict) and fmt.get("format_id")
+    }
+
+    matrix = _load_yaml(matrix_path)
+    matrix_formats = matrix.get("formats", []) if isinstance(matrix, dict) else []
+    matrix_ids = {
+        fmt.get("format_id", "") for fmt in matrix_formats
+        if isinstance(fmt, dict) and fmt.get("format_id")
+    }
+
+    missing = sorted(registry_ids - matrix_ids)
+    if missing:
+        return _result(inv_id, name, False,
+                       [f"Format in registry but missing from completion matrix: {fid}"
+                        for fid in missing])
+    return _result(inv_id, name, True,
+                   [f"All {len(registry_ids)} registry formats are in completion matrix"])
+
+
+# ---------------------------------------------------------------------------
+# INV-013: open_taskcards_have_target_sprint
+# ---------------------------------------------------------------------------
+
+def check_inv013_open_taskcards_have_target_sprint(root: Path) -> dict:
+    """Every taskcard with Status: OPEN must contain a 'Sprint target:' field."""
+    inv_id, name = "INV-013", "open_taskcards_have_target_sprint"
+    taskcards_dir = root / "taskcards"
+    if not taskcards_dir.exists():
+        return _result(inv_id, name, True, ["taskcards/ not found — skipped"])
+
+    # Match "Status: OPEN" or "**Status:** OPEN" (markdown bold variant)
+    open_re = re.compile(r"^\*{0,2}Status[*:]+\s*\*{0,2}\s*OPEN\b", re.IGNORECASE | re.MULTILINE)
+    # Match "Sprint target: R55" or "**Sprint target:** R55"
+    target_re = re.compile(r"^\*{0,2}Sprint target[*:]+\s*\*{0,2}\s*\S", re.IGNORECASE | re.MULTILINE)
+
+    offenders = []
+    scanned = 0
+    for tc_file in sorted(taskcards_dir.glob("TC-*.md")):
+        content = tc_file.read_text(encoding="utf-8")
+        scanned += 1
+        if not open_re.search(content):
+            continue
+        if not target_re.search(content):
+            offenders.append(
+                f"taskcards/{tc_file.name}: Status=OPEN but no 'Sprint target:' field found"
+            )
+
+    if offenders:
+        return _result(inv_id, name, False, offenders)
+    return _result(inv_id, name, True,
+                   [f"Scanned {scanned} taskcard files — all OPEN cards have 'Sprint target:' set"])
+
+
+# ---------------------------------------------------------------------------
+# INV-014: final_verdict_pass_sha_not_placeholder
+# ---------------------------------------------------------------------------
+
+_SHA_PLACEHOLDER_PATTERNS = ["TBD", "PENDING", "xxx", "<sha", "00000000"]
+
+
+def check_inv014_final_verdict_sha_not_placeholder(root: Path) -> dict:
+    """If latest final-verdict has BUNDLE_VALIDATION: PASS, Pass 1 SHA must be a real hash."""
+    inv_id, name = "INV-014", "final_verdict_pass_sha_not_placeholder"
+    reports_dir = root / "reports"
+    if not reports_dir.exists():
+        return _result(inv_id, name, True, ["reports/ not found — skipped"])
+
+    # Find latest sprint with final-verdict.md
+    sprint_dirs = [
+        d for d in reports_dir.iterdir()
+        if d.is_dir() and re.match(r"^r(\d+)$", d.name)
+    ]
+    if not sprint_dirs:
+        return _result(inv_id, name, True, ["No sprint dirs found — skipped"])
+
+    sprint_dirs_sorted = sorted(
+        sprint_dirs, key=lambda d: int(re.match(r"^r(\d+)$", d.name).group(1))
+    )
+    latest_vf = None
+    latest_dir = None
+    for sd in reversed(sprint_dirs_sorted):
+        vf = sd / "final-verdict.md"
+        if vf.exists():
+            latest_vf = vf
+            latest_dir = sd
+            break
+
+    if latest_vf is None:
+        return _result(inv_id, name, True, ["No final-verdict.md found — skipped"])
+
+    content = latest_vf.read_text(encoding="utf-8")
+
+    # Only check if this verdict claims BUNDLE_VALIDATION: PASS
+    if not re.search(r"^BUNDLE_VALIDATION:\s*PASS\s*$", content, re.MULTILINE):
+        return _result(inv_id, name, True,
+                       [f"reports/{latest_dir.name}/final-verdict.md: "
+                        "no BUNDLE_VALIDATION: PASS — SHA check not applicable"])
+
+    # Require a Pass 1 SHA-256 line with a hex value
+    sha_match = re.search(
+        r"Pass 1 SHA-256[:`]\s*`?([0-9a-fA-F]+)`?", content
+    )
+    if not sha_match:
+        return _result(inv_id, name, False,
+                       [f"reports/{latest_dir.name}/final-verdict.md: "
+                        "claims BUNDLE_VALIDATION: PASS but no 'Pass 1 SHA-256' line found"])
+
+    sha_value = sha_match.group(1).strip()
+    for placeholder in _SHA_PLACEHOLDER_PATTERNS:
+        if placeholder.lower() in sha_value.lower():
+            return _result(inv_id, name, False,
+                           [f"reports/{latest_dir.name}/final-verdict.md: "
+                            f"Pass 1 SHA-256 contains placeholder: '{sha_value}'"])
+
+    # Check length: SHA-256 hex is 64 chars
+    if len(sha_value) < 40:
+        return _result(inv_id, name, False,
+                       [f"reports/{latest_dir.name}/final-verdict.md: "
+                        f"Pass 1 SHA-256 too short ({len(sha_value)} chars): '{sha_value}'"])
+
+    return _result(inv_id, name, True,
+                   [f"reports/{latest_dir.name}/final-verdict.md: "
+                    f"Pass 1 SHA-256 is a real hash ({len(sha_value)} chars)"])
+
+
+# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
@@ -548,6 +769,10 @@ def check_all_invariants(root: Path = None) -> list:
         check_inv008_contract_metadata_floor(root),
         check_inv009_fodt_writer_list_table(root),
         check_inv010_closed_taskcards_have_evidence(root),
+        check_inv011_state_snapshot_sprint_current(root),
+        check_inv012_completion_matrix_covers_registry(root),
+        check_inv013_open_taskcards_have_target_sprint(root),
+        check_inv014_final_verdict_sha_not_placeholder(root),
     ]
 
 

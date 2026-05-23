@@ -78,3 +78,33 @@ formats:
     package_metadata_ready: true
     docs_ready: true
     publish_authorized: false
+
+  - format_id: fods
+    manifest: release-manifests/python-foss/fods.yaml
+    gates_passed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    gate_8_status: passed_python_foss
+    gate_9_status: passed_oss_readiness
+    gate_10_status: local_release_candidate_ready
+    gate_11_status: g11_prototype_not_approved
+    source_ready: true
+    tests_ready: true
+    examples_ready: false
+    package_metadata_ready: true
+    docs_ready: false
+    publish_authorized: false
+    notes: "Added to manifest in R55. TC-0054/TC-0055/TC-0056 CLOSED. 211 tests PASS."
+
+  - format_id: fodt
+    manifest: release-manifests/python-foss/fodt.yaml
+    gates_passed: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    gate_8_status: passed_python_foss
+    gate_9_status: passed_oss_readiness
+    gate_10_status: local_release_candidate_ready
+    gate_11_status: g11_prototype_not_approved
+    source_ready: true
+    tests_ready: true
+    examples_ready: false
+    package_metadata_ready: true
+    docs_ready: false
+    publish_authorized: false
+    notes: "Added to manifest in R55. TC-0057/TC-0058/TC-0059/TC-0060 CLOSED. 248 tests PASS."

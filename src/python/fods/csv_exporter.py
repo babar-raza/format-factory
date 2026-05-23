@@ -16,14 +16,19 @@ Package: format-factory-fods v0.1.0
 
 from __future__ import annotations
 
-import csv
-import io
 from pathlib import Path
 from typing import Any
 
 
 MAX_EXPORT_ROWS = 1048576
 MAX_EXPORT_COLS = 16384
+
+
+def _rfc4180_field(value: str) -> str:
+    """Quote a CSV field per RFC 4180 if it contains comma, newline, or double-quote."""
+    if "," in value or "\n" in value or "\r" in value or '"' in value:
+        return '"' + value.replace('"', '""') + '"'
+    return value
 
 
 class FodsCsvExportError(Exception):
@@ -90,9 +95,7 @@ def export_fods_to_csv(
             f"Sheet has {len(rows)} rows, exceeding export limit {MAX_EXPORT_ROWS}"
         )
 
-    buf = io.StringIO(newline="")
-    writer = csv.writer(buf, lineterminator="\r\n")
-
+    lines: list[str] = []
     for row in rows:
         cells = row.get("cells", [])
         if len(cells) > MAX_EXPORT_COLS:
@@ -100,9 +103,9 @@ def export_fods_to_csv(
                 f"Row has {len(cells)} cells, exceeding export limit {MAX_EXPORT_COLS}"
             )
         row_values = [_cell_to_text(c) for c in cells]
-        writer.writerow(row_values)
+        lines.append(",".join(_rfc4180_field(v) for v in row_values))
 
-    return buf.getvalue()
+    return "\r\n".join(lines) + ("\r\n" if lines else "")
 
 
 def export_fods_to_csv_file(

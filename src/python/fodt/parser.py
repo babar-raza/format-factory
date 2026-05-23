@@ -34,6 +34,7 @@ except ImportError:
 from .constants import (
     ATTR_MIMETYPE,
     ATTR_OUTLINE_LEVEL,
+    ATTR_STYLE_NAME,
     ATTR_TABLE_NAME,
     ATTR_VERSION,
     EXPECTED_MIMETYPE,
@@ -132,6 +133,7 @@ def _parse_streaming(path: Path) -> "dict[str, Any]":
     blocks: list = []
     lists: list = []
     tables: list = []
+    content: list = []  # document-order unified sequence (R55 TC-0060)
 
     root_seen = False
     in_body = False
@@ -188,7 +190,7 @@ def _parse_streaming(path: Path) -> "dict[str, Any]":
                         if depth_in_text == 0:
                             # Direct child of office:text just completed
                             _handle_text_child(
-                                elem, tag, blocks, lists, tables,
+                                elem, tag, blocks, lists, tables, content,
                                 warnings, unsupported_features,
                             )
                             elem.clear()
@@ -217,6 +219,7 @@ def _parse_streaming(path: Path) -> "dict[str, Any]":
         blocks=blocks,
         lists=lists,
         tables=tables,
+        content=content,
         warnings=warnings,
         unsupported_features=list(unsupported_features),
         parse_errors=parse_errors,
@@ -231,6 +234,48 @@ def _parse_streaming(path: Path) -> "dict[str, Any]":
 
 
 # ---------------------------------------------------------------------------
+# Run extraction for inline span preservation (R55 TC-0057)
+# ---------------------------------------------------------------------------
+
+def _collect_runs(elem: Any) -> "list[dict[str, Any]]":
+    """Extract inline runs from a text:p or text:h element.
+
+    Returns a list of run dicts, each with:
+      - "text": str  -- run text content
+      - "style": str | None  -- text:style-name attribute (None for unstyled runs)
+
+    A "run" is either:
+      1. A text:span child with optional style-name (text and tail are separate runs)
+      2. A plain text segment at the element level (elem.text, or child.tail)
+
+    This is an additive field — the existing "text" key (concatenated plain text)
+    remains for backward compatibility. The "runs" field enables span-aware writers.
+
+    R55 TC-0057: inline span preservation.
+    """
+    runs: list = []
+
+    # Text before the first child
+    if elem.text:
+        text = elem.text
+        if text:
+            runs.append({"text": text, "style": None})
+
+    for child in elem:
+        if child.tag == QN_TEXT_SPAN:
+            # Gather all text inside the span (recursively)
+            span_text = _collect_text(child)
+            style = child.get(ATTR_STYLE_NAME)
+            if span_text:
+                runs.append({"text": span_text, "style": style or None})
+        # Text after each child (tail belongs to the parent, not the child)
+        if child.tail:
+            runs.append({"text": child.tail, "style": None})
+
+    return runs
+
+
+# ---------------------------------------------------------------------------
 # Direct-child-of-office:text dispatcher
 # ---------------------------------------------------------------------------
 
@@ -240,6 +285,7 @@ def _handle_text_child(
     blocks: list,
     lists: list,
     tables: list,
+    content: list,
     warnings: list,
     unsupported_features: set,
 ) -> None:
@@ -247,28 +293,37 @@ def _handle_text_child(
     if tag == QN_TEXT_P:
         # IR-FODT-005: paragraph
         text = _collect_text(elem).strip()
-        blocks.append({"type": "paragraph", "text": text, "heading_level": None})
+        runs = _collect_runs(elem)
+        block = {"type": "paragraph", "text": text, "heading_level": None, "runs": runs}
+        blocks.append(block)
+        content.append({"kind": "block", "data": block})
 
     elif tag == QN_TEXT_H:
         # IR-FODT-005, IR-FODT-010: heading with outline level
         text = _collect_text(elem).strip()
+        runs = _collect_runs(elem)
         level_str = elem.get(ATTR_OUTLINE_LEVEL, "1")
         try:
             heading_level = int(level_str)
         except (TypeError, ValueError):
             heading_level = 1
         heading_level = max(1, min(6, heading_level))
-        blocks.append({"type": "heading", "text": text, "heading_level": heading_level})
+        block = {"type": "heading", "text": text, "heading_level": heading_level, "runs": runs}
+        blocks.append(block)
+        content.append({"kind": "block", "data": block})
 
     elif tag == QN_LIST:
         # IR-FODT-006: list with iterative traversal (IR-FODT-003)
         items = collect_list_items(elem)
-        lists.append({"items": items})
+        lst = {"items": items}
+        lists.append(lst)
+        content.append({"kind": "list", "data": lst})
 
     elif tag == QN_TABLE:
         # IR-FODT-007: table within text context
         table_dict = _extract_table(elem)
         tables.append(table_dict)
+        content.append({"kind": "table", "data": table_dict})
 
     elif tag == QN_DRAW_FRAME or tag == QN_DRAW_IMAGE:
         # IR-FODT-008: embedded frame/image detection

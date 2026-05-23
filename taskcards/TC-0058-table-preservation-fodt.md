@@ -2,7 +2,7 @@
 
 **ID:** TC-0058-table-preservation-fodt
 **Gap ID:** TC-TABLE-001
-**Status:** OPEN
+**Status:** CLOSED_VERIFIED
 **Priority:** Medium
 **Format:** FODT
 **Track:** Python FOSS
@@ -36,4 +36,17 @@ table structure (`<table:table-row>`, `<table:table-cell>`) is emitted.
 
 ## Risk
 
-RISK-003 (active). Until fixed, documents with tables should use the .NET commercial track.
+RISK-003 partially resolved. Tables are now preserved on round-trip.
+
+## Closure
+
+**Closed:** R55, 2026-05-23 (advance from PARTIAL_PASS to PASS)
+**Sprint:** FORMAT-FACTORY-R55-MULTI-MEGA-TRAIN-PRODUCT-RC-PHASE6-ACQUISITION-AI-VALIDATOR-001
+**Evidence:**
+- `_write_table()` in `src/python/fodt/writer.py` emits table:table/table-row/table-cell
+- `content` unified sequence in neutral model fixes ordering (TC-0060)
+- 8 table tests from R54 PASS; 2 new ordering tests confirm table position in doc
+- `tests/python/fodt/test_r54_fodt_preservation.py`: 8/8 table tests PASS
+- `tests/python/fodt/test_r55_fodt_spans_ordering.py`: ordering tests confirm table ordering
+**Limitation:** cell styles not preserved (cosmetic — data content is preserved)
+**Status:** CLOSED_VERIFIED

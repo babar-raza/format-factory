@@ -2,7 +2,7 @@
 
 **ID:** TC-0056-column-definitions-fods
 **Gap ID:** TC-COLDEF-001
-**Status:** OPEN
+**Status:** CLOSED_VERIFIED
 **Priority:** Low
 **Format:** FODS
 **Track:** Python FOSS
@@ -36,3 +36,15 @@ width flag, and default cell style are lost. The output has no column definition
 
 Column definitions are tracked as LOW priority (cosmetic, not data-impacting).
 Python FOSS track focuses on data correctness; full layout fidelity is .NET commercial.
+
+## Closure
+
+**Closed:** R55, 2026-05-23
+**Sprint:** FORMAT-FACTORY-R55-MULTI-MEGA-TRAIN-PRODUCT-RC-PHASE6-ACQUISITION-AI-VALIDATOR-001
+**Evidence:**
+- `table:table-column` attributes captured per-sheet as `column_defs` list in `src/python/fods/parser.py`
+- Writer `_write_sheet()` emits `<table:table-column>` before row data via `col_el.set()`
+- Column definition elements appear before `table:table-row` (ODF ordering requirement met)
+- 6 tests in `tests/python/fods/test_r55_fods_style_coldef.py` (`TestColumnDefsCapture`)
+- All tests pass. `table:default-cell-style-name` and other attributes preserved on round-trip.
+**Status:** CLOSED_VERIFIED

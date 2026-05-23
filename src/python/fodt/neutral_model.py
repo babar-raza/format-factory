@@ -45,14 +45,20 @@ def build_document(
     warnings: list[dict[str, Any]],
     unsupported_features: list[str],
     parse_errors: list[dict[str, Any]],
+    content: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Assemble the Document-level result dict matching the FODT neutral model.
 
     Fields conform to the Document entity in schemas/neutral-model/fodt/model.yaml.
     Additional fields (unsupported_features, parse_errors) extend the neutral
     model for product parser transparency.
+
+    R55 TC-0060: ``content`` is a unified document-order sequence of dicts each
+    with ``{"kind": "block"|"list"|"table", "data": <item_dict>}``.  The writer
+    uses ``content`` when present to emit elements in document order.  The legacy
+    ``blocks``/``lists``/``tables`` lists are retained for backward compatibility.
     """
-    return {
+    doc: dict[str, Any] = {
         "format_id": FORMAT_ID,
         "spec_version": SPEC_VERSION,
         "odf_version_attr": odf_version_attr,
@@ -64,6 +70,9 @@ def build_document(
         "unsupported_features": sorted(unsupported_features),
         "parse_errors": parse_errors,
     }
+    if content is not None:
+        doc["content"] = content
+    return doc
 
 
 # ---------------------------------------------------------------------------

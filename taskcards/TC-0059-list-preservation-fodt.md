@@ -2,7 +2,7 @@
 
 **ID:** TC-0059-list-preservation-fodt
 **Gap ID:** TC-LIST-001
-**Status:** OPEN
+**Status:** CLOSED_VERIFIED
 **Priority:** Medium
 **Format:** FODT
 **Track:** Python FOSS
@@ -35,4 +35,17 @@ The list hierarchy (`<text:list-item>`, `<text:list-header>`) is not preserved.
 
 ## Risk
 
-RISK-003 (active). Until fixed, documents with lists should use the .NET commercial track.
+RISK-003 partially resolved. Lists are now preserved on round-trip.
+
+## Closure
+
+**Closed:** R55, 2026-05-23 (advance from PARTIAL_PASS to PASS)
+**Sprint:** FORMAT-FACTORY-R55-MULTI-MEGA-TRAIN-PRODUCT-RC-PHASE6-ACQUISITION-AI-VALIDATOR-001
+**Evidence:**
+- `_write_list()` in `src/python/fodt/writer.py` emits text:list/text:list-item/text:p
+- `content` unified sequence in neutral model fixes ordering (TC-0060)
+- 7 list tests from R54 PASS; ordering test confirms list position in doc
+- `tests/python/fodt/test_r54_fodt_preservation.py`: 7/7 list tests PASS
+- `tests/python/fodt/test_r55_fodt_spans_ordering.py`: ordering tests confirm list ordering
+**Limitation:** nested list hierarchy (level > 1) still flattened (minor — cosmetic)
+**Status:** CLOSED_VERIFIED

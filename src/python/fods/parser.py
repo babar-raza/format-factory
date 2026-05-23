@@ -44,6 +44,7 @@ from .constants import (
     EXPECTED_MIMETYPE,
     MAX_EXPAND_REPEAT,
     MAX_FILE_BYTES,
+    QN_AUTO_STYLES,
     QN_CELL,
     QN_COVERED,
     QN_DOCUMENT,
@@ -51,7 +52,9 @@ from .constants import (
     QN_ROW,
     QN_SCRIPTS,
     QN_SPREADSHEET,
+    QN_STYLES,
     QN_TABLE,
+    QN_TABLE_COL,
     QN_TEXT_P,
     QN_TEXT_SPAN,
     WARN_COVERED_CELL,
@@ -133,6 +136,9 @@ def _parse_streaming(path: Path) -> "dict[str, Any]":
     odf_version_attr: str = ""
     mimetype = None
     sheets: list = []
+    # TC-0055: style metadata capture (element references, not cleared)
+    auto_styles_elem = None
+    styles_elem = None
 
     root_seen = False
     in_spreadsheet = False
@@ -186,7 +192,18 @@ def _parse_streaming(path: Path) -> "dict[str, Any]":
                     }
 
             else:  # event == "end"
-                if tag == QN_ROW and current_sheet is not None:
+                # TC-0055: capture styles sections verbatim before spreadsheet
+                if tag == QN_AUTO_STYLES:
+                    auto_styles_elem = elem
+                elif tag == QN_STYLES:
+                    styles_elem = elem
+
+                # TC-0056: capture column definitions per sheet
+                elif tag == QN_TABLE_COL and current_sheet is not None:
+                    col_def = dict(elem.attrib)
+                    current_sheet.setdefault("column_defs", []).append(col_def)
+
+                elif tag == QN_ROW and current_sheet is not None:
                     # Process completed row
                     row_repeat = _safe_int(elem.get(ATTR_ROW_REPEAT, "1"), 1)
                     if row_repeat > MAX_EXPAND_REPEAT:
@@ -239,6 +256,8 @@ def _parse_streaming(path: Path) -> "dict[str, Any]":
         warnings=warnings,
         unsupported_features=list(unsupported_features),
         parse_errors=parse_errors,
+        auto_styles_elem=auto_styles_elem,
+        styles_elem=styles_elem,
     )
 
     # IR-FODS-018: validate neutral model before returning

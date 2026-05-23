@@ -14,8 +14,17 @@ R53 MT6 (TC-0054): Formula preservation — writer emits table:formula attribute
 verbatim when present in neutral model cell dict (key: ``formula``).  Cells
 with formula attributes retain their display value via office:value/text:p.
 
+R55 TC-0055 (style metadata): Writer re-emits ``office:automatic-styles`` and
+``office:styles`` sections when present as ``_auto_styles_elem`` / ``_styles_elem``
+in the workbook dict. Both sections are inserted before ``office:body``.
+
+R55 TC-0056 (column definitions): Writer emits ``table:table-column`` elements
+before row data when ``column_defs`` list is present in a sheet dict.  Each
+column def dict maps directly from captured attributes (verbatim round-trip).
+
 Capability level: alpha-foss-preview (write subset — cells with text, numeric
-values, and formulas (round-trip only); styles and merged cells are not generated).
+values, and formulas; style metadata (round-trip only); column definitions
+(round-trip only)).
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0
@@ -93,10 +102,20 @@ def _write_cell(parent: ET.Element, cell: dict[str, Any]) -> None:
 
 
 def _write_sheet(parent: ET.Element, sheet: dict[str, Any]) -> None:
-    """Append a table:table element for the given neutral model sheet."""
+    """Append a table:table element for the given neutral model sheet.
+
+    R55 TC-0056: emits ``table:table-column`` elements before row data when
+    ``column_defs`` list is present in the sheet dict.
+    """
     table_el = ET.SubElement(parent, _qn("table", "table"))
     name = sheet.get("name", "Sheet1")
     table_el.set(_qn("table", "name"), name)
+
+    # TC-0056: emit column definitions verbatim (round-trip)
+    for col_def in sheet.get("column_defs", []):
+        col_el = ET.SubElement(table_el, _qn("table", "table-column"))
+        for attr_key, attr_val in col_def.items():
+            col_el.set(attr_key, str(attr_val))
 
     rows = sheet.get("rows", [])
     for row in rows:
@@ -130,6 +149,14 @@ def workbook_to_xml(workbook: dict[str, Any]) -> str:
     doc_el = ET.Element(_qn("office", "document"))
     doc_el.set(_qn("office", "version"), version)
     doc_el.set(_qn("office", "mimetype"), _MIMETYPE)
+
+    # TC-0055: re-emit automatic-styles and styles before office:body
+    auto_styles_elem = workbook.get("_auto_styles_elem")
+    styles_elem = workbook.get("_styles_elem")
+    if auto_styles_elem is not None:
+        doc_el.append(auto_styles_elem)
+    if styles_elem is not None:
+        doc_el.append(styles_elem)
 
     # office:body > office:spreadsheet
     body_el = ET.SubElement(doc_el, _qn("office", "body"))

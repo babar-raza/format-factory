@@ -82,8 +82,6 @@ class TestPbmGate7FuzzGuard:
             parse_pbm_strict(p)
         os.unlink(p)
 
-    def test_p4_binary_not_supported(self):
-        p = _write_temp("P4\n1 1\n")
-        with pytest.raises(PbmDecodeError):
-            parse_pbm_strict(p)
-        os.unlink(p)
+    # Note: P4 binary is now supported (R55 Train F).
+    # P4 truncated-data guard is covered in tests/python/pbm/test_r55_pbm_p4_binary.py
+    # using binary-mode file writes that are reliably truncated on all platforms.

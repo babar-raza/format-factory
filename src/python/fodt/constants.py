@@ -73,6 +73,7 @@ ATTR_MIMETYPE:       str = f"{{{NS_OFFICE}}}mimetype"
 ATTR_VERSION:        str = f"{{{NS_OFFICE}}}version"
 ATTR_OUTLINE_LEVEL:  str = f"{{{NS_TEXT}}}outline-level"
 ATTR_TABLE_NAME:     str = f"{{{NS_TABLE}}}name"
+ATTR_STYLE_NAME:     str = f"{{{NS_TEXT}}}style-name"
 
 # ---------------------------------------------------------------------------
 # Text field namespace prefix -- detect text:* field elements (IR-FODT-009)
