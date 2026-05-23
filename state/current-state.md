@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R56 - no_final_verdict
+**Latest sprint:** R56 - R56_CLOSURE_REPAIR_AND_PRODUCT_EXPANSION_COMPLETE
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
