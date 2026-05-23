@@ -17,8 +17,17 @@ R49 MT4/5: Object-model schema unification repair.
   - Paragraph blocks (type='paragraph') serialized as ``text:p``.
   - Legacy ``paragraphs`` list items serialized as ``text:p`` (backward compatible).
 
-Capability level: alpha-foss-preview (write subset — paragraphs and headings with plain
-text content only; lists, tables, and styles are not generated).
+R54 MT6 (TC-0059/TC-0058 partial advance):
+  - List blocks from ``document["lists"]`` serialized as ``text:list``/``text:list-item``.
+  - Table blocks from ``document["tables"]`` serialized as ``table:table``, ``table:table-row``,
+    ``table:table-cell`` with ``text:p`` cell content.
+  - Known limitation: document ordering between blocks (paragraphs/headings) and lists/tables
+    is not preserved. Lists are emitted after all blocks; tables after all lists. Full ordering
+    requires parser refactor to merge all into a single document-order sequence (R55+).
+  - Inline span preservation (TC-0057) remains OPEN — spans are collapsed to plain text.
+
+Capability level: alpha-foss-preview (write subset — paragraphs, headings, lists (basic),
+tables (basic); inline styles and document ordering across element types not yet generated).
 
 License: Apache-2.0
 Package: format-factory-fodt v0.1.0
@@ -39,6 +48,7 @@ _NS = {
     "text": "urn:oasis:names:tc:opendocument:xmlns:text:1.0",
     "style": "urn:oasis:names:tc:opendocument:xmlns:style:1.0",
     "fo": "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0",
+    "table": "urn:oasis:names:tc:opendocument:xmlns:table:1.0",
 }
 
 _MIMETYPE = "application/vnd.oasis.opendocument.text-flat-xml"
@@ -78,6 +88,53 @@ def _write_block(parent: ET.Element, block: dict[str, Any]) -> None:
         el.text = text
 
 
+def _write_list(parent: ET.Element, lst: dict[str, Any]) -> None:
+    """Append a text:list element for the given neutral model List dict.
+
+    R54 TC-0059 (partial): emits text:list with text:list-item children.
+    Each item in lst["items"] has "text" and "level" keys.
+
+    Known limitation: nested list hierarchy (level > 1) is flattened to a
+    single-level list in this implementation. Full nested list support requires
+    a list-nesting model in the neutral model (R55+).
+
+    The ordering of lists relative to blocks is not preserved because the
+    parser stores blocks and lists in separate sequences. Lists are emitted
+    after all blocks.
+    """
+    list_el = ET.SubElement(parent, _qn("text", "list"))
+    items = lst.get("items", [])
+    for item in items:
+        item_el = ET.SubElement(list_el, _qn("text", "list-item"))
+        p_el = ET.SubElement(item_el, _qn("text", "p"))
+        p_el.text = str(item.get("text", "")) if item.get("text") is not None else ""
+
+
+def _write_table(parent: ET.Element, table: dict[str, Any]) -> None:
+    """Append a table:table element for the given neutral model Table dict.
+
+    R54 TC-0058 (partial): emits table:table with table:table-row and
+    table:table-cell children. Each cell contains a text:p with cell text.
+
+    Known limitation: cell styles, column widths, and other table attributes
+    are not preserved (neutral model only stores text content). Full table
+    round-trip requires neutral model extension (R55+).
+
+    The ordering of tables relative to blocks and lists is not preserved.
+    Tables are emitted after all lists.
+    """
+    name = table.get("name") or ""
+    table_el = ET.SubElement(parent, _qn("table", "table"))
+    if name:
+        table_el.set(_qn("table", "name"), name)
+    for row in table.get("rows", []):
+        row_el = ET.SubElement(table_el, _qn("table", "table-row"))
+        for cell in row.get("cells", []):
+            cell_el = ET.SubElement(row_el, _qn("table", "table-cell"))
+            p_el = ET.SubElement(cell_el, _qn("text", "p"))
+            p_el.text = str(cell.get("text", "")) if cell.get("text") is not None else ""
+
+
 def document_to_xml(document: dict[str, Any]) -> str:
     """Serialize a neutral model document dict to a FODT XML string.
 
@@ -88,10 +145,15 @@ def document_to_xml(document: dict[str, Any]) -> str:
         document: dict following the fodt neutral model schema.
                   Canonical key: ``blocks`` (list of block dicts with ``type``/``text``).
                   Legacy key: ``paragraphs`` (list of paragraph dicts with ``text_content``).
+                  R54 keys: ``lists`` (list of List dicts), ``tables`` (list of Table dicts).
                   Optional keys: odf_version_attr.
 
     Returns:
         UTF-8 XML string (str) representing a valid FODT document.
+
+    Note (R54): lists are emitted after all blocks; tables after all lists. Document ordering
+    between blocks, lists, and tables is not preserved due to the neutral model's separate
+    sequences. Full ordering requires a parser refactor (R55+).
     """
     if not isinstance(document, dict):
         raise FodtInputError("document must be a dict")
@@ -102,6 +164,9 @@ def document_to_xml(document: dict[str, Any]) -> str:
         blocks = document.get("paragraphs", [])
     if not isinstance(blocks, list):
         raise FodtInputError("document['blocks'] (or 'paragraphs') must be a list")
+
+    lists = document.get("lists", [])
+    tables = document.get("tables", [])
 
     version = document.get("odf_version_attr", "1.3")
 
@@ -114,8 +179,17 @@ def document_to_xml(document: dict[str, Any]) -> str:
     body_el = ET.SubElement(doc_el, _qn("office", "body"))
     text_el = ET.SubElement(body_el, _qn("office", "text"))
 
+    # 1. Emit blocks (paragraphs and headings)
     for block in blocks:
         _write_block(text_el, block)
+
+    # 2. Emit lists (R54 TC-0059 partial advance)
+    for lst in lists:
+        _write_list(text_el, lst)
+
+    # 3. Emit tables (R54 TC-0058 partial advance)
+    for table in tables:
+        _write_table(text_el, table)
 
     # Serialize
     xml_declaration = '<?xml version="1.0" encoding="UTF-8"?>\n'

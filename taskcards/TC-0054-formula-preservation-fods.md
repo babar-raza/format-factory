@@ -2,12 +2,22 @@
 
 **ID:** TC-0054-formula-preservation-fods
 **Gap ID:** TC-FORMULA-001
-**Status:** OPEN
+**Status:** CLOSED_VERIFIED
 **Priority:** Medium
 **Format:** FODS
 **Track:** Python FOSS
 **Sprint origin:** R49 (preservation matrix gap)
 **Sprint target:** R51 or later
+**Closed:** R53 (FORMAT-FACTORY-R53-SELF-VERIFYING-BASELINE-001, 2026-05-22)
+
+## Closure Evidence
+
+- **Fix:** `src/python/fods/writer.py` — `_write_cell()` emits `table:formula` attribute verbatim when `cell.get("formula")` is set (5-line fix, R53)
+- **Test file:** `tests/python/fods/test_r53_formula_preservation.py` — 7 tests, all PASS
+- **Test command:** `python -m pytest tests/python/fods/test_r53_formula_preservation.py -v`
+- **Result:** 7 passed, 0 failed
+- **Limitation:** Formula evaluation is intentionally out of scope; only the `table:formula` attribute is preserved verbatim for unmodified cells. If a cell value is explicitly changed via the object model, the formula is dropped (documented behavior, not a bug).
+- **RISK-002:** CLOSED by this TC.
 
 ## Gap Description
 

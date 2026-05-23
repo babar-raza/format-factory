@@ -33,6 +33,30 @@ INVARIANTS:
              *.dll, or *.pdb. In no-Git environments, returns passed=True with
              detail NO_GIT_REPO — archive hygiene was not proved.
 
+    INV-006  sidecar_proof_file_not_in_bundle_zip
+             The .sha256-proof.json sidecar file must NOT be tracked by git
+             (it is gitignored, stored in .local/). This invariant confirms the
+             sidecar-cannot-contain-own-SHA protocol is maintained.
+
+    INV-007  no_proof_file_placeholder_in_final_verdict
+             No final-verdict.md file may contain the placeholder phrase
+             "updated after" (which signals a stale proof placeholder was left
+             unfilled, triggering PROOF_FILE_PLACEHOLDER check in validator).
+
+    INV-008  contract_metadata_floor_readable
+             The latest sprint contract must be parseable and have a
+             min_metadata_count field >= 1.  Catches contracts where the floor
+             was accidentally omitted.
+
+    INV-009  fodt_writer_has_list_and_table_support
+             src/python/fodt/writer.py must define both _write_list and
+             _write_table functions (R54 TC-0058/TC-0059 partial advance).
+
+    INV-010  closed_taskcards_have_closure_evidence
+             Every taskcard file whose Status line is CLOSED_VERIFIED must
+             contain a "Closed" or "closure" section with a date or sprint
+             reference.  Guards against taskcards being closed without evidence.
+
 USAGE:
     python tools/evidence/check_repo_invariants.py [--repo-root PATH]
 
@@ -308,6 +332,201 @@ def check_inv005_no_compiled_artifacts_tracked(root: Path) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# INV-006: sidecar_proof_file_not_in_bundle_zip
+# ---------------------------------------------------------------------------
+
+def check_inv006_sidecar_not_tracked(root: Path) -> dict:
+    """The sidecar .sha256-proof.json must not be git-tracked (it lives in .local/ which is gitignored)."""
+    inv_id, name = "INV-006", "sidecar_proof_file_not_in_bundle_zip"
+    git_dir = root / ".git"
+    if not git_dir.exists():
+        return _result(inv_id, name, True,
+                       ["NO_GIT_REPO: cannot check git-tracked files — skipped"])
+
+    try:
+        result = subprocess.run(
+            ["git", "ls-files"],
+            capture_output=True, text=True, cwd=str(root), timeout=30,
+        )
+    except (subprocess.TimeoutExpired, FileNotFoundError) as exc:
+        return _result(inv_id, name, False, [f"git ls-files failed: {exc}"])
+
+    tracked = result.stdout.splitlines()
+    sidecar_tracked = [f for f in tracked if f.endswith(".sha256-proof.json")]
+    if sidecar_tracked:
+        return _result(inv_id, name, False,
+                       [f"Sidecar .sha256-proof.json is git-tracked (must be gitignored): {f}"
+                        for f in sidecar_tracked])
+    return _result(inv_id, name, True,
+                   ["No .sha256-proof.json files tracked by git — sidecar protocol maintained"])
+
+
+# ---------------------------------------------------------------------------
+# INV-007: no_proof_file_placeholder_in_final_verdict
+# ---------------------------------------------------------------------------
+
+_PLACEHOLDER_PATTERNS = ["updated after", "to be updated", "PENDING (to be"]
+
+
+def check_inv007_no_proof_placeholder(root: Path) -> dict:
+    """The latest sprint's final-verdict.md must not contain stale placeholder phrases.
+
+    Checks only the highest-numbered sprint to avoid false-positives in historical
+    files (some older sprints retain placeholder text as legitimate documentation).
+    """
+    inv_id, name = "INV-007", "no_proof_file_placeholder_in_final_verdict"
+    reports_dir = root / "reports"
+    if not reports_dir.exists():
+        return _result(inv_id, name, True, ["reports/ not found — skipped"])
+
+    # Find highest run number sprint dir with a final-verdict.md
+    sprint_dirs = [
+        d for d in reports_dir.iterdir()
+        if d.is_dir() and re.match(r"^r(\d+)$", d.name)
+    ]
+    if not sprint_dirs:
+        return _result(inv_id, name, True, ["No sprint dirs found in reports/ — skipped"])
+
+    sprint_dirs_sorted = sorted(sprint_dirs, key=lambda d: int(re.match(r"^r(\d+)$", d.name).group(1)))
+    # Walk from newest to oldest to find the one with a final-verdict.md
+    latest_vf = None
+    latest_dir = None
+    for sd in reversed(sprint_dirs_sorted):
+        vf = sd / "final-verdict.md"
+        if vf.exists():
+            latest_vf = vf
+            latest_dir = sd
+            break
+
+    if latest_vf is None:
+        return _result(inv_id, name, True, ["No final-verdict.md found in any sprint dir — skipped"])
+
+    content = latest_vf.read_text(encoding="utf-8")
+    for pattern in _PLACEHOLDER_PATTERNS:
+        if pattern.lower() in content.lower():
+            return _result(inv_id, name, False,
+                           [f"reports/{latest_dir.name}/final-verdict.md: "
+                            f"contains placeholder phrase '{pattern}'"])
+
+    return _result(inv_id, name, True,
+                   [f"reports/{latest_dir.name}/final-verdict.md: no placeholder phrases found"])
+
+
+# ---------------------------------------------------------------------------
+# INV-008: contract_metadata_floor_readable
+# ---------------------------------------------------------------------------
+
+def check_inv008_contract_metadata_floor(root: Path) -> dict:
+    """Latest sprint contract must be parseable and have min_metadata_count >= 1."""
+    inv_id, name = "INV-008", "contract_metadata_floor_readable"
+    contracts_dir = root / "tools" / "evidence" / "contracts"
+    if not contracts_dir.exists():
+        return _result(inv_id, name, False, ["tools/evidence/contracts/ not found"])
+
+    sprint_contracts = []
+    for cpath in sorted(contracts_dir.glob("*.yaml")):
+        try:
+            data = _load_yaml(cpath)
+        except Exception:
+            continue
+        rn_raw = data.get("run_number")
+        if rn_raw is None:
+            continue
+        rn = _parse_run_number(rn_raw)
+        if rn < 0:
+            continue
+        sprint_contracts.append((rn, cpath, data))
+
+    if not sprint_contracts:
+        return _result(inv_id, name, False, ["No sprint contracts with run_number found"])
+
+    max_rn = max(rn for rn, _, _ in sprint_contracts)
+    top = [(rn, cp, d) for rn, cp, d in sprint_contracts if rn == max_rn]
+    _, selected_path, selected = top[0]
+
+    floor = selected.get("min_metadata_count")
+    if floor is None:
+        return _result(inv_id, name, False,
+                       [f"{selected_path.name}: min_metadata_count field missing"])
+    try:
+        floor_int = int(floor)
+    except (TypeError, ValueError):
+        return _result(inv_id, name, False,
+                       [f"{selected_path.name}: min_metadata_count is not an integer: {floor!r}"])
+    if floor_int < 1:
+        return _result(inv_id, name, False,
+                       [f"{selected_path.name}: min_metadata_count={floor_int} < 1"])
+
+    return _result(inv_id, name, True,
+                   [f"R{max_rn} contract: min_metadata_count={floor_int} >= 1"])
+
+
+# ---------------------------------------------------------------------------
+# INV-009: fodt_writer_has_list_and_table_support
+# ---------------------------------------------------------------------------
+
+def check_inv009_fodt_writer_list_table(root: Path) -> dict:
+    """src/python/fodt/writer.py must define _write_list and _write_table."""
+    inv_id, name = "INV-009", "fodt_writer_has_list_and_table_support"
+    writer_path = root / "src" / "python" / "fodt" / "writer.py"
+    if not writer_path.exists():
+        return _result(inv_id, name, False,
+                       ["src/python/fodt/writer.py not found"])
+    content = writer_path.read_text(encoding="utf-8")
+    missing = []
+    for fn in ("_write_list", "_write_table"):
+        if f"def {fn}" not in content:
+            missing.append(f"MISSING function: {fn}")
+    if missing:
+        return _result(inv_id, name, False, missing)
+    return _result(inv_id, name, True,
+                   ["_write_list and _write_table defined in fodt/writer.py"])
+
+
+# ---------------------------------------------------------------------------
+# INV-010: closed_taskcards_have_closure_evidence
+# ---------------------------------------------------------------------------
+
+def check_inv010_closed_taskcards_have_evidence(root: Path) -> dict:
+    """Every taskcard with Status: CLOSED_VERIFIED must have a closure date or sprint ref."""
+    inv_id, name = "INV-010", "closed_taskcards_have_closure_evidence"
+    taskcards_dir = root / "taskcards"
+    if not taskcards_dir.exists():
+        return _result(inv_id, name, True, ["taskcards/ not found — skipped"])
+
+    closed_re = re.compile(r"^\*{0,2}Status\*{0,2}:\s*CLOSED_VERIFIED", re.IGNORECASE | re.MULTILINE)
+    # Evidence patterns that appear outside the Status line itself:
+    # - A "Closure" section header (## Closure, ### Closed)
+    # - close_date/closed_sprint fields
+    # - An R-number + year reference (e.g. R53, 2026-05-22)
+    evidence_re = re.compile(
+        r"(#+\s*(Closed|Closure)\b|close_date|closed_sprint|R\d+\s*,?\s*202\d)",
+        re.IGNORECASE,
+    )
+
+    offenders = []
+    scanned = 0
+    for tc_file in sorted(taskcards_dir.glob("TC-*.md")):
+        content = tc_file.read_text(encoding="utf-8")
+        scanned += 1
+        if not closed_re.search(content):
+            continue
+        # Strip the Status line before searching for evidence to avoid self-match on "CLOSED_VERIFIED"
+        body = re.sub(
+            r"^\*{0,2}Status\*{0,2}:[^\n]*\n?", "", content, flags=re.IGNORECASE | re.MULTILINE
+        )
+        if not evidence_re.search(body):
+            offenders.append(
+                f"taskcards/{tc_file.name}: Status=CLOSED_VERIFIED but no closure evidence found"
+            )
+
+    if offenders:
+        return _result(inv_id, name, False, offenders)
+    return _result(inv_id, name, True,
+                   [f"Scanned {scanned} taskcard files — all CLOSED_VERIFIED cards have evidence"])
+
+
+# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
@@ -324,6 +543,11 @@ def check_all_invariants(root: Path = None) -> list:
         check_inv003_latest_contract_satisfied(root),
         check_inv004_no_stale_pending_verdict(root),
         check_inv005_no_compiled_artifacts_tracked(root),
+        check_inv006_sidecar_not_tracked(root),
+        check_inv007_no_proof_placeholder(root),
+        check_inv008_contract_metadata_floor(root),
+        check_inv009_fodt_writer_list_table(root),
+        check_inv010_closed_taskcards_have_evidence(root),
     ]
 
 

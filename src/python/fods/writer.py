@@ -10,8 +10,12 @@ Public API:
 
 R46 MT6: Two-product capability deepening. Adds write/export path to FOSS package.
 
-Capability level: alpha-foss-preview (write subset — cells with text and
-numeric values only; formulas, styles, and merged cells are not generated).
+R53 MT6 (TC-0054): Formula preservation — writer emits table:formula attribute
+verbatim when present in neutral model cell dict (key: ``formula``).  Cells
+with formula attributes retain their display value via office:value/text:p.
+
+Capability level: alpha-foss-preview (write subset — cells with text, numeric
+values, and formulas (round-trip only); styles and merged cells are not generated).
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0

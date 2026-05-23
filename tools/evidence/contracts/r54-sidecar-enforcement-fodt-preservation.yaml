@@ -1,0 +1,55 @@
+sprint_id: FORMAT-FACTORY-R54-SIDECAR-ENFORCEMENT-FODT-PRESERVATION-PHASE5-MEGA-TRAIN-001
+contract_id: FORMAT-FACTORY-R54-SIDECAR-ENFORCEMENT-FODT-PRESERVATION-PHASE5-MEGA-TRAIN-001
+run_number: R54
+description: >
+  R54 sidecar enforcement + FODT preservation + Phase Audit 5 sprint.
+  Implements fail-closed sidecar enforcement, artifact policy (none/external_ref/self_contained),
+  FODT list+table preservation (TC-0058/TC-0059 partial), INV-006..010 invariants,
+  Phase Audit 4 truth repair (TC mislabeling), and Phase Audit 5 product mapping.
+
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: none
+
+required_repo_files:
+  - reports/r54/final-verdict.md
+  - reports/r54/00-preflight.md
+  - reports/r54/r53-independent-verification.md
+  - reports/r54/phase-audit-4-truth-repair.md
+  - reports/r54/phase-audit-5-product-mapping.md
+  - reports/r54/lane-ownership.md
+  - reports/r54/risk-register.md
+  - reports/r54/work-ahead-policy.md
+  - reports/r54/dotnet-bounded-verification.md
+  - reports/r54/package-artifact-policy.md
+  - reports/r54/ai-usage-telemetry-proof.md
+  - tests/evidence/test_r54_sidecar_required_enforcement.py
+  - tests/evidence/test_r54_artifact_policy.py
+  - tests/python/fodt/test_r54_fodt_preservation.py
+  - tests/invariants/test_r54_invariants.py
+  - src/python/fodt/writer.py
+  - taskcards/TC-0054-formula-preservation-fods.md
+  - memory/59-r54-sidecar-enforcement-fodt-preservation-20260523.md
+  - state/current-state.md
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - run-environment.txt
+  - r53-iv-summary.txt
+  - sidecar-enforcement-summary.txt
+  - artifact-policy-summary.txt
+  - fodt-preservation-summary.txt
+  - invariants-output.txt
+  - phase-audit-5-summary.txt
+  - deferred-work-r55.txt
+  - state-snapshot-output.txt
+  - package-artifact-manifest.yaml
+  - dotnet-bounded-verification-summary.txt
+  - ai-governance-summary.txt

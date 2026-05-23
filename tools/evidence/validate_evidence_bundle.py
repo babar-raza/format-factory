@@ -484,6 +484,77 @@ def check_artifact_inventory(zf):
     return errors
 
 
+def check_installed_artifact_policy(contract: dict, metadata_files_content: dict, zf, verdict_content: str = "") -> "list[str]":
+    """R54 Lane 3: Enforce installed_artifact_policy contract field.
+
+    Policy values:
+      none (default): verdict must not contain installed-artifact baseline tokens.
+      external_ref: manifest must include prior_bundle_sha256, prior_bundle_filename, and a verification statement.
+      self_contained: manifest must exist AND actual .whl/.tar.gz/.nupkg files in bundle-metadata/package-artifacts/.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    policy = contract.get("installed_artifact_policy", "none")
+    errors: list[str] = []
+
+    INSTALLED_BASELINE_TOKENS = [
+        "INSTALLED_ARTIFACT_BASELINE_CLEAN",
+        "INSTALLED_ARTIFACT_BASELINE",
+        "SELF_CONTAINED_ARTIFACT",
+    ]
+    verdict_upper = verdict_content.upper() if verdict_content else ""
+
+    if policy == "none":
+        # Verdict must not claim installed-artifact baseline
+        for token in INSTALLED_BASELINE_TOKENS:
+            if token in verdict_upper:
+                errors.append(
+                    f"ARTIFACT_POLICY_VIOLATION: installed_artifact_policy is 'none' but "
+                    f"verdict contains clean-baseline token {token!r}. "
+                    f"Use installed_artifact_policy: external_ref or self_contained if artifacts are claimed."
+                )
+                break
+
+    elif policy == "external_ref":
+        # Manifest must include prior SHA and prior filename
+        manifest_content = metadata_files_content.get("package-artifact-manifest.yaml", "")
+        if not manifest_content:
+            errors.append(
+                "ARTIFACT_POLICY_EXTERNAL_REF: installed_artifact_policy is 'external_ref' but "
+                "bundle-metadata/package-artifact-manifest.yaml is missing. "
+                "External ref policy requires a manifest with prior_bundle_sha256, "
+                "prior_bundle_filename, and a verification statement."
+            )
+        else:
+            # Check for keys (field: value format — comments with the key name don't count)
+            required_fields = ["prior_bundle_sha256", "prior_bundle_filename"]
+            missing = [f for f in required_fields if (f + ":") not in manifest_content]
+            if missing:
+                errors.append(
+                    f"ARTIFACT_POLICY_EXTERNAL_REF: manifest is missing required fields: {missing}. "
+                    f"A vague reference (e.g., 'see R51 manifest') is not sufficient. "
+                    f"Provide exact prior_bundle_sha256 and prior_bundle_filename."
+                )
+
+    elif policy == "self_contained":
+        # Actual artifact files must be in bundle
+        ARTIFACT_EXTENSIONS = (".whl", ".tar.gz", ".nupkg")
+        all_entries = set(zf.namelist())
+        artifact_entries = [
+            e for e in all_entries
+            if e.startswith("bundle-metadata/package-artifacts/")
+            and any(e.endswith(ext) for ext in ARTIFACT_EXTENSIONS)
+        ]
+        if not artifact_entries:
+            errors.append(
+                "ARTIFACT_POLICY_SELF_CONTAINED: installed_artifact_policy is 'self_contained' but "
+                "no .whl, .tar.gz, or .nupkg files found under bundle-metadata/package-artifacts/. "
+                "Self-contained policy requires actual artifact files in the bundle."
+            )
+
+    return errors
+
+
 def check_no_pending_reports(metadata_files_content):
     """Scan all metadata files for PENDING marker patterns.
 
@@ -1126,7 +1197,7 @@ def check_metadata_identity(metadata_files_content, require_identity=False):
     return []
 
 
-def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=False):
+def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=False, sidecar_path=None):
     """Validate a bundle zip against a contract."""
     contract = load_contract(contract_path)
     bundle_path = Path(bundle_path)
@@ -1155,6 +1226,11 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
 
     errors = []
     warnings = []
+
+    # R54 Lane 2: Fail-closed sidecar enforcement (before ZIP is opened)
+    sidecar_required_errors = check_sidecar_required(contract, sidecar_path)
+    for msg in sidecar_required_errors:
+        errors.append(msg)
 
     with zipfile.ZipFile(bundle_path, "r") as zf:
         entries = zf.namelist()
@@ -1399,8 +1475,12 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             for msg in proof_finality_hits:
                 errors.append(msg)
             proof_sha_warnings = check_proof_sha_consistency(metadata_files_content, bundle_path)
-            for msg in proof_sha_warnings:
-                warnings.append(msg)
+            # R54 Lane 2: Suppress SHA mismatch warning if a valid sidecar is provided.
+            # The sidecar is the authoritative final proof; internal SHA mismatch is expected.
+            sidecar_is_valid = sidecar_path and not check_sidecar_proof(bundle_path, sidecar_path)
+            if not sidecar_is_valid:
+                for msg in proof_sha_warnings:
+                    warnings.append(msg)
             command_log_hits = check_validation_command_log_freshness(metadata_files_content)
             for msg in command_log_hits:
                 errors.append(msg)
@@ -1413,6 +1493,18 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             depth_hits = check_metadata_content_depth(metadata_files_content)
             for fname, reason in depth_hits:
                 errors.append(f"Shallow metadata file '{fname}': {reason}")
+            # R54 Lane 3: Artifact policy enforcement
+            # Get verdict content for policy check
+            _verdict_for_policy = ""
+            for _vf in ("final-verdict.md", "final-verdict.txt", "verdict.md"):
+                _verdict_for_policy = metadata_files_content.get(_vf, "")
+                if _verdict_for_policy:
+                    break
+            artifact_policy_hits = check_installed_artifact_policy(
+                contract, metadata_files_content, zf, _verdict_for_policy
+            )
+            for msg in artifact_policy_hits:
+                errors.append(msg)
 
         identity_hits = check_metadata_identity(
             metadata_files_content,
@@ -1510,6 +1602,78 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         return True
 
 
+def check_sidecar_required(contract: dict, sidecar_path: "str | None", verdict_content: str = "") -> "list[str]":
+    """R54 Lane 2: Fail-closed sidecar enforcement.
+
+    If the contract specifies `sidecar_required: true` and --sidecar-proof is not
+    supplied, validation fails. Additionally, if the verdict claims a self-verifying
+    or clean-baseline state and no sidecar is provided, validation fails.
+
+    Contract fields:
+      sidecar_required: true/false
+      final_proof_policy: external_sidecar (implies required)
+
+    Verdict tokens that imply sidecar is required:
+      SELF_VERIFYING, BASELINE_CLEAN, SELF_CONTAINED, INSTALLED_ARTIFACT_BASELINE
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    errors: list[str] = []
+    sidecar_req = contract.get("sidecar_required", False)
+    final_proof_policy = contract.get("final_proof_policy", "")
+
+    if final_proof_policy == "external_sidecar":
+        sidecar_req = True
+
+    SIDECAR_REQUIRED_VERDICT_TOKENS = [
+        "SELF_VERIFYING",
+        "BASELINE_CLEAN",
+        "SELF_CONTAINED",
+        "INSTALLED_ARTIFACT_BASELINE",
+    ]
+    verdict_upper = verdict_content.upper() if verdict_content else ""
+    for token in SIDECAR_REQUIRED_VERDICT_TOKENS:
+        if token in verdict_upper:
+            sidecar_req = True
+            break
+
+    if sidecar_req and not sidecar_path:
+        errors.append(
+            "SIDECAR_REQUIRED: contract or verdict requires an external sidecar proof "
+            "(sidecar_required: true / final_proof_policy: external_sidecar / clean-baseline verdict) "
+            "but --sidecar-proof was not supplied. "
+            "Run write_sidecar_proof.py and re-validate with --sidecar-proof <path>."
+        )
+    return errors
+
+
+def check_sidecar_filename_match(sidecar_path: str, bundle_path: str) -> "list[str]":
+    """R54: Verify sidecar bundle_filename matches actual bundle filename.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    import json as _json
+    errors: list[str] = []
+    try:
+        sidecar = _json.loads(Path(sidecar_path).read_text(encoding="utf-8"))
+    except Exception as exc:
+        errors.append(f"SIDECAR_PROOF: cannot read sidecar for filename check: {exc}")
+        return errors
+
+    sidecar_bundle_filename = sidecar.get("bundle_filename", "")
+    actual_bundle_filename = Path(bundle_path).name
+    if sidecar_bundle_filename and sidecar_bundle_filename != actual_bundle_filename:
+        errors.append(
+            f"SIDECAR_BUNDLE_FILENAME_MISMATCH: sidecar bundle_filename={sidecar_bundle_filename!r} "
+            f"but actual bundle filename is {actual_bundle_filename!r}. "
+            f"Sidecar was written for a different bundle."
+        )
+
+    sidecar_run = sidecar.get("run_number", "")
+    contract_run = ""  # checked separately
+    return errors
+
+
 def check_sidecar_proof(bundle_path: str, sidecar_path: str) -> "list[str]":
     """R53 Lane 2B: Validate an external sidecar proof against the actual bundle bytes.
 
@@ -1596,10 +1760,12 @@ def main():
         args.bundle,
         strict_git=not args.no_strict_git,
         no_pending=args.check_no_pending,
+        sidecar_path=args.sidecar_proof,
     )
 
     if args.sidecar_proof:
         sidecar_errors = check_sidecar_proof(args.bundle, args.sidecar_proof)
+        sidecar_errors += check_sidecar_filename_match(args.sidecar_proof, args.bundle)
         if sidecar_errors:
             print()
             print("SIDECAR PROOF ERRORS:")
@@ -1608,10 +1774,10 @@ def main():
             print("SIDECAR_PROOF_VALIDATION: FAIL")
             success = False
         else:
-            sidecar_path = Path(args.sidecar_proof)
+            sidecar_path_obj = Path(args.sidecar_proof)
             import json as _json
             try:
-                sidecar = _json.loads(sidecar_path.read_text(encoding="utf-8"))
+                sidecar = _json.loads(sidecar_path_obj.read_text(encoding="utf-8"))
                 print(f"Sidecar proof check (PASS): SHA/size/entries match — {sidecar.get('sha256', '')[:16]}...")
             except Exception:
                 pass
