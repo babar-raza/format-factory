@@ -88,3 +88,10 @@ anywhere that does `import csv` would find our package instead of stdlib. Resolv
 `edb9b94759c133cda89f8508ccd76167ad42b00e45b307e3cb01f4f976590d9c`
 
 BUNDLE_VALIDATION: PASS (2455 entries, 4,489,396 bytes, 31 metadata)
+
+## Pass 2 SHA
+
+`ec7a4890465a43970567824198463b1711fb203d5a7ffb7521c6d4426ec6f8d0`
+
+BUNDLE_VALIDATION: PASS (2458 entries, 16,863,581 bytes, 34 metadata)
+Commit: ac5b0be (authoritative test count committed)
