@@ -366,3 +366,84 @@ def workbook_empty_rows(workbook: dict[str, Any]) -> dict[str, Any]:
         "total_empty_rows": total_empty,
         "per_sheet": per_sheet,
     }
+
+
+# ---------------------------------------------------------------------------
+# Workbook formula list (R61 — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_formula_list(workbook: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return a flat list of all formula cells in the workbook.
+
+    Each entry contains:
+      sheet_name: str          (name of the containing sheet)
+      sheet_index: int         (0-based sheet index)
+      row_index: int           (0-based row index)
+      col_index: int           (0-based column index within row)
+      formula: str             (formula expression, e.g. '=SUM(A1:A10)')
+      value: Any               (cached value if present, else None)
+
+    Useful for formula auditing, dependency analysis, and re-computation.
+    Added in R61 Train G as a product deepening capability.
+    """
+    results: list[dict[str, Any]] = []
+    for sheet in workbook.get("sheets", []):
+        sheet_name = sheet.get("name", "")
+        sheet_index = sheet.get("index", 0)
+        for row_idx, row in enumerate(sheet.get("rows", [])):
+            for col_idx, cell in enumerate(row.get("cells", [])):
+                formula = cell.get("formula")
+                if formula is not None:
+                    results.append({
+                        "sheet_name": sheet_name,
+                        "sheet_index": sheet_index,
+                        "row_index": row_idx,
+                        "col_index": col_idx,
+                        "formula": formula,
+                        "value": cell.get("value"),
+                    })
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Workbook cell range (R61 — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_cell_range(
+    workbook: dict[str, Any],
+    sheet_index: int = 0,
+    row_start: int = 0,
+    row_end: int | None = None,
+    col_start: int = 0,
+    col_end: int | None = None,
+) -> list[list[Any]]:
+    """Return a 2D list of cell values from a rectangular range in a sheet.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_index: 0-based index of the sheet to read.
+        row_start: First row to include (0-based, inclusive).
+        row_end: Last row to include (0-based, inclusive); None = last row.
+        col_start: First column to include (0-based, inclusive).
+        col_end: Last column to include (0-based, inclusive); None = last col.
+
+    Returns:
+        List of rows, each row is a list of cell values (None if empty).
+
+    Useful for slicing tabular data, exporting ranges to CSV, and
+    data pipeline integration.
+    Added in R61 Train G as a product deepening capability.
+    """
+    sheets = workbook.get("sheets", [])
+    if sheet_index >= len(sheets):
+        return []
+    sheet = sheets[sheet_index]
+    rows = sheet.get("rows", [])
+
+    row_slice = rows[row_start:None if row_end is None else row_end + 1]
+    result = []
+    for row in row_slice:
+        cells = row.get("cells", [])
+        col_slice = cells[col_start:None if col_end is None else col_end + 1]
+        result.append([cell.get("value") for cell in col_slice])
+    return result

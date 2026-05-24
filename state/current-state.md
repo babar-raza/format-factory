@@ -1,7 +1,8 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R60 - R60_SELF_VERIFYING_SIDECAR_PASS_CURRENT_HEAD_RC_CLOSURE_COMPLETE
+**Latest sprint:** R60 - R60_BROAD_PRODUCT_AND_ARTIFACT_PROGRESS_ACCEPTED_SELF_VERIFYING_CLOSURE_REJECTED
+**R61 in progress:** R61_CLEAN_DELIVERED_LOCAL_RC_SELF_VERIFYING_PHASE12_PASS (Train M pending)
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 

@@ -1,0 +1,87 @@
+sprint_id: FORMAT-FACTORY-R61-EXTRACTED-BUNDLE-REPLAY-DOTNET-SELF-CONTAINED-SOURCE-COMMIT-POLICY-PHASE12-MEGA-TRAIN-001
+contract_id: FORMAT-FACTORY-R61-EXTRACTED-BUNDLE-REPLAY-DOTNET-SELF-CONTAINED-SOURCE-COMMIT-POLICY-PHASE12-MEGA-TRAIN-001
+run_number: R61
+description: >
+  R61 14-train mega-train sprint. Repairs all 12 R60 defects (IV-R60-001..012).
+  Train 0: Preflight. Train A: R60 IV (12 defects confirmed).
+  Train B: External sidecar delivery repair (IV-R60-001..004).
+  Train C: Extracted-bundle packaging normalization (IV-R60-005/006).
+  Train D: artifact_source_commit/final_git_head policy (IV-R60-009/010).
+  Train E: Python wheel+sdist replay from extracted bundle (IV-R60-005/006/012).
+  Train F: .NET NuPkg self-contained bundle delivery (IV-R60-007/008).
+  Train G: FODS/FODT product deepening (workbook_formula_list, workbook_cell_range,
+           document_list_stats, document_reading_level).
+  Train H: CSV Gate 8 security adversarial (18 tests: formula injection + malformed + bounds + unicode).
+  Train I: Phase Audit 12 (RC reproducibility CONDITIONAL_PASS).
+  Train J: Acquisition/spec-cache advancement.
+  Train K: AI 617/617 PASS (fixture mode, same as R60 baseline).
+  Train L: Docs/memory/state sync.
+  Train M: Final adversarial IV + self-verifying bundle with external sidecar.
+
+require_clean_git: true
+sidecar_required: true
+final_proof_policy: external_sidecar
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r61/00-preflight.md
+  - reports/r61/lane-ownership.md
+  - reports/r61/risk-register.md
+  - reports/r61/work-ahead-policy.md
+  - reports/r61/r60-independent-verification.md
+  - reports/r61/r60-defect-ledger.md
+  - reports/r61/r60-defect-ledger.json
+  - reports/r61/external-sidecar-repair.md
+  - reports/r61/artifact-source-commit-policy.md
+  - reports/r61/format-advancement.md
+  - reports/r61/phase-audit-12-rc-reproducibility.md
+  - reports/r61/acquisition-spec-cache-advancement.md
+  - reports/r61/ai-telemetry-acceleration.md
+  - reports/r61/docs-memory-sync.md
+  - reports/r61/multi-mega-train-scoreboard.md
+  - reports/r61/final-verdict.md
+  - tests/evidence/test_r61_proof_file_not_placeholder.py
+  - tests/evidence/test_r61_sha_consistency_in_verdicts.py
+  - tests/evidence/test_r61_sidecar_delivery_protocol.py
+  - tests/packaging/test_r61_extracted_bundle_package_replay.py
+  - tests/packaging/test_r61_artifact_source_commit_policy.py
+  - tests/packaging/test_r61_wheel_sdist_replay.py
+  - tests/dotnet/test_r61_nupkg_self_contained.py
+  - tests/python/fods/test_r61_fods_deepening.py
+  - tests/python/fodt/test_r61_fodt_deepening.py
+  - tests/python/csv/test_r61_csv_gate8_security.py
+  - tools/evidence/contracts/r61-extracted-bundle-rc-sidecar.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - run-environment.txt
+  - r60-iv-summary.txt
+  - sidecar-delivery-summary.txt
+  - packaging-normalization-summary.txt
+  - dotnet-nupkg-summary.txt
+  - product-deepening-summary.txt
+  - format-advancement-summary.txt
+  - phase-audit-12-summary.txt
+  - ai-governance-summary.txt
+  - invariants-output.txt
+  - deferred-work-r62.txt
+  - state-snapshot-output.txt
+  - spec-cache-advancement-summary.txt
+  - adversarial-iv-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - r60-defect-closure-summary.txt
+  - installed-smoke-summary.txt
+  - installed-api-smoke-output.txt
+  - dotnet-consumer-proof-output.txt
+  - dotnet-nupkgs/FormatFactory.Fods.0.1.0-tier0.nupkg
+  - dotnet-nupkgs/FormatFactory.Fodt.0.1.0-tier0.nupkg

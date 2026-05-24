@@ -163,3 +163,18 @@ stages:
     strict_mode: "parse_csv_strict() raises CsvInputError for missing file"
     commercial_product_ready: false
     notes: "Gate 7 fuzz and security. 18 tests all PASS. Size/row guards verified as constants. Fault tolerance proven across 10 adversarial input scenarios. R59 Train H."
+
+  gate_8:
+    status: pass
+    sprint: R61
+    date: "2026-05-24"
+    test_file: tests/python/csv/test_r61_csv_gate8_security.py
+    test_count: 18
+    test_result: PASS
+    security_categories: [formula_injection, malformed_input, resource_bounds, unicode_edge_cases]
+    injection_cases: [equals_prefix, plus_prefix, at_sign, quoted_injection, nested_injection]
+    malformed_cases: [empty_input, null_bytes, very_long_line, unclosed_quote, only_delimiters, mixed_line_endings]
+    resource_cases: [many_columns_1000, many_rows_1000, deeply_quoted, probe_nonexistent]
+    unicode_cases: [bom, rtl_arabic, emoji]
+    commercial_product_ready: false
+    notes: "Gate 8 security adversarial regression. 18 tests all PASS. Formula injection verified stored as literal data. Malformed inputs handled without crash. R61 Train H."

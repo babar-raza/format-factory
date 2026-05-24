@@ -1,0 +1,119 @@
+{
+  "sprint_being_verified": "FORMAT-FACTORY-R60-CURRENT-HEAD-RC-ARTIFACTS-SIDECAR-CLOSURE-PHASE11-MEGA-TRAIN-001",
+  "iv_sprint": "FORMAT-FACTORY-R61-EXTRACTED-BUNDLE-REPLAY-DOTNET-SELF-CONTAINED-SOURCE-COMMIT-POLICY-PHASE12-MEGA-TRAIN-001",
+  "date": "2026-05-24",
+  "total_defects": 12,
+  "critical": 3,
+  "high": 6,
+  "medium": 3,
+  "defects": [
+    {
+      "id": "IV-R60-001",
+      "severity": "critical",
+      "category": "sidecar",
+      "description": "Sidecar not physically in bundle ZIP — local-only file, cannot validate offline",
+      "evidence": "python -c \"import zipfile; zf=zipfile.ZipFile('.local/r60-pass2-final.zip'); print([n for n in zf.namelist() if 'sha256-proof' in n])\" => []",
+      "repair_train": "Train B",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-002",
+      "severity": "critical",
+      "category": "sha",
+      "description": "BUNDLE_VALIDATION_PASS_2_SHA in final-verdict is interim SHA (d2ab8404) not true final SHA (f8b6f8ce)",
+      "evidence": "hashlib.sha256('.local/r60-pass2-final.zip') = f8b6f8ce... != d2ab8404... in final-verdict.md",
+      "repair_train": "Train B",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-003",
+      "severity": "high",
+      "category": "validation",
+      "description": "Validation without --sidecar-proof argument fails; sidecar_required: true in contract",
+      "evidence": "validate_evidence_bundle.py --bundle ... --contract ... --check-no-pending (no sidecar arg) => FAIL",
+      "repair_train": "Train B",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-004",
+      "severity": "high",
+      "category": "proof",
+      "description": "bundle-metadata/final-bundle-validation-proof.txt inside bundle contains PLACEHOLDER text",
+      "evidence": "zipfile.ZipFile('.local/r60-pass2-final.zip').read('bundle-metadata/final-bundle-validation-proof.txt') = b'PLACEHOLDER'",
+      "repair_train": "Train B",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-005",
+      "severity": "high",
+      "category": "packaging",
+      "description": "test_r60_artifact_source_commit.py: BUILD_DIR hardcodes .local/package-builds/python-foss",
+      "evidence": "tests/packaging/test_r60_artifact_source_commit.py line: BUILD_DIR = PROJECT_ROOT / '.local' / 'package-builds' / 'python-foss'",
+      "repair_train": "Train C",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-006",
+      "severity": "high",
+      "category": "packaging",
+      "description": "No test_r60_extracted_bundle_package_replay.py — R60 extracted-bundle replay not tested",
+      "evidence": "ls tests/packaging/ shows only r59_extracted_bundle_package_replay.py (not r60)",
+      "repair_train": "Train C",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-007",
+      "severity": "critical",
+      "category": "dotnet",
+      "description": ".nupkg files not physically included in bundle; paths reference .local/ directories",
+      "evidence": "python -c \"import zipfile; zf=zipfile.ZipFile('.local/r60-pass2-final.zip'); print([n for n in zf.namelist() if n.endswith('.nupkg')])\" => []",
+      "repair_train": "Train F",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-008",
+      "severity": "high",
+      "category": "dotnet",
+      "description": "dotnet-nupkg-manifest.yaml uses sha256_prefix (8-char) not full SHA-256 (64-char)",
+      "evidence": ".local/r60-metadata/dotnet-nupkg-manifest.yaml: sha256_prefix: '35712390' (8 chars)",
+      "repair_train": "Train F",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-009",
+      "severity": "high",
+      "category": "commit",
+      "description": "source-commit-proof.txt calls mega-train commit 61780e4 'R60 FINAL HEAD'; true final HEAD is 1171b4f",
+      "evidence": ".local/r60-metadata/source-commit-proof.txt: 'R60 FINAL HEAD: 61780e4cbd33100460ba872ded5b96c1feae2847'",
+      "repair_train": "Train D",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-010",
+      "severity": "medium",
+      "category": "reports",
+      "description": "Multiple R60 reports describe 61780e4 as 'final HEAD' — inaccurate",
+      "evidence": "source-commit-proof.txt, package-artifact-manifest.yaml source_commit field",
+      "repair_train": "Train D",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-011",
+      "severity": "medium",
+      "category": "policy",
+      "description": "No artifact_source_commit / final_git_head policy; validator does not enforce distinction",
+      "evidence": "No policy document or validator check found for commit identity separation",
+      "repair_train": "Train D",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R60-012",
+      "severity": "medium",
+      "category": "replay",
+      "description": "R60 extracted-bundle replay not proven end-to-end from clean extraction",
+      "evidence": "test_r59_extracted_bundle_package_replay.py only tests r59/r58 bundles; no r60 analog",
+      "repair_train": "Train E+M",
+      "status": "OPEN"
+    }
+  ]
+}

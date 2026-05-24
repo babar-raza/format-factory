@@ -62,25 +62,28 @@ class TestR60SourceCommit:
         )
 
     def test_r60_manifest_has_10_packages(self):
-        """Manifest must list 10 package entries."""
+        """Manifest must list 10 wheels + 10 sdists = 20 artifact entries."""
         text = MANIFEST_PATH.read_text(encoding="utf-8")
-        # Count package entries under wheels section
-        import re
-        pkg_entries = re.findall(r"- package: aspose-format-factory-", text)
-        assert len(pkg_entries) == 20, f"Expected 20 package entries (10 wheels + 10 sdists), got {len(pkg_entries)}"
+        # Manifest uses underscore naming (aspose_format_factory_<fmt>-...)
+        wheel_count = text.count("py3-none-any.whl")
+        sdist_count = text.count(".tar.gz")
+        assert wheel_count == 10, f"Expected 10 wheels, got {wheel_count}"
+        assert sdist_count == 10, f"Expected 10 sdists, got {sdist_count}"
 
     def test_r60_manifest_includes_fods_and_fodt(self):
         """R60 manifest must include fods and fodt packages."""
         text = MANIFEST_PATH.read_text(encoding="utf-8")
-        assert "aspose-format-factory-fods" in text
-        assert "aspose-format-factory-fodt" in text
+        # Manifest uses underscore naming (Python wheel convention)
+        assert "aspose_format_factory_fods" in text
+        assert "aspose_format_factory_fodt" in text
 
     def test_r60_manifest_includes_pgm_pbm_sylk(self):
         """R60 manifest must include pgm, pbm, sylk (Gate 10 packages from R59 Train H)."""
         text = MANIFEST_PATH.read_text(encoding="utf-8")
-        assert "aspose-format-factory-pgm" in text
-        assert "aspose-format-factory-pbm" in text
-        assert "aspose-format-factory-sylk" in text
+        # Manifest uses underscore naming (Python wheel convention)
+        assert "aspose_format_factory_pgm" in text
+        assert "aspose_format_factory_pbm" in text
+        assert "aspose_format_factory_sylk" in text
 
     def test_r60_fods_wheel_is_larger_than_r59(self):
         """R60 FODS wheel must be larger than R59 (new capabilities added in Train G)."""

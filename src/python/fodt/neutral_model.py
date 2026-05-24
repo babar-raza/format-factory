@@ -505,3 +505,106 @@ def document_text_content(document: dict[str, Any], separator: str = "\n") -> st
                         parts.append(text)
 
     return separator.join(parts)
+
+
+# ---------------------------------------------------------------------------
+# Document list stats (R61 — new capability)
+# ---------------------------------------------------------------------------
+
+def document_list_stats(document: dict[str, Any]) -> dict[str, Any]:
+    """Return statistics about lists in the document.
+
+    Returns a dict with:
+      list_count: int           (total number of lists)
+      total_items: int          (total list items across all lists)
+      max_depth: int            (maximum nesting depth found)
+      per_list: list[dict]      (per-list breakdown)
+        Each entry: {index, item_count, max_depth}
+
+    Useful for document structure analysis and TOC generation.
+    Added in R61 Train G as a product deepening capability.
+    """
+    lists = document.get("lists", [])
+    # Also check content list for embedded lists
+    content_lists = [
+        item.get("data", {}) for item in document.get("content", [])
+        if item.get("kind") == "list"
+    ]
+    all_lists = lists + content_lists
+
+    per_list = []
+    total_items = 0
+    overall_max_depth = 0
+
+    for idx, lst in enumerate(all_lists):
+        items = lst.get("items", [])
+        item_count = len(items)
+        max_depth = max((item.get("level", 1) for item in items), default=0)
+        total_items += item_count
+        overall_max_depth = max(overall_max_depth, max_depth)
+        per_list.append({
+            "index": idx,
+            "item_count": item_count,
+            "max_depth": max_depth,
+        })
+
+    return {
+        "list_count": len(all_lists),
+        "total_items": total_items,
+        "max_depth": overall_max_depth,
+        "per_list": per_list,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Document reading level (R61 — new capability)
+# ---------------------------------------------------------------------------
+
+def document_reading_level(document: dict[str, Any]) -> dict[str, Any]:
+    """Estimate reading level metrics for the document.
+
+    Returns a dict with:
+      avg_words_per_sentence: float   (approximate; uses period-split)
+      avg_chars_per_word: float       (across all words)
+      total_words: int
+      total_sentences: int            (approximate; period/!/? count)
+      estimated_grade_level: float    (Flesch-Kincaid grade approximation)
+
+    Note: This is an estimation based on character/word counts only.
+    It does not perform full syntactic analysis.
+    Added in R61 Train G as a product deepening capability.
+    """
+    text = document_text_content(document, separator=" ")
+    if not text:
+        return {
+            "avg_words_per_sentence": 0.0,
+            "avg_chars_per_word": 0.0,
+            "total_words": 0,
+            "total_sentences": 0,
+            "estimated_grade_level": 0.0,
+        }
+
+    words = [w for w in text.split() if w]
+    total_words = len(words)
+
+    # Approximate sentence count by terminal punctuation
+    import re
+    sentences = [s.strip() for s in re.split(r'[.!?]+', text) if s.strip()]
+    total_sentences = max(len(sentences), 1)
+
+    avg_words_per_sentence = total_words / total_sentences
+    avg_chars_per_word = (sum(len(w) for w in words) / total_words) if total_words > 0 else 0.0
+
+    # Flesch-Kincaid Grade Level approximation (simplified: no syllable count)
+    # FK_GL ≈ 0.39 * (words/sentences) + 11.8 * (syllables/words) - 15.59
+    # Simplified without syllable count:
+    estimated_grade_level = 0.39 * avg_words_per_sentence + 11.8 * avg_chars_per_word / 5.0 - 15.59
+    estimated_grade_level = max(0.0, round(estimated_grade_level, 2))
+
+    return {
+        "avg_words_per_sentence": round(avg_words_per_sentence, 2),
+        "avg_chars_per_word": round(avg_chars_per_word, 2),
+        "total_words": total_words,
+        "total_sentences": total_sentences,
+        "estimated_grade_level": estimated_grade_level,
+    }
