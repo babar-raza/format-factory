@@ -167,3 +167,59 @@ def _validate_row(row: dict[str, Any], expected_index: int, sheet_prefix: str) -
         violations.append(f"{prefix}.cells must be a list")
 
     return violations
+
+
+# ---------------------------------------------------------------------------
+# Workbook statistics (R57 — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_stats(workbook: dict[str, Any]) -> dict[str, Any]:
+    """Return cell-level statistics for a parsed FODS workbook.
+
+    Returns a dict with:
+      sheet_count: int
+      total_rows: int
+      total_cells: int     (all cells including empty)
+      non_empty_cells: int  (cells where value is not None)
+      formula_cells: int    (cells with a table:formula attribute)
+      per_sheet: list[dict] (per-sheet breakdown)
+
+    Added in R57 Train E as a new product capability.
+    Useful for format triage and content assessment pipelines.
+    """
+    stats: dict[str, Any] = {
+        "sheet_count": 0,
+        "total_rows": 0,
+        "total_cells": 0,
+        "non_empty_cells": 0,
+        "formula_cells": 0,
+        "per_sheet": [],
+    }
+    sheets = workbook.get("sheets", [])
+    stats["sheet_count"] = len(sheets)
+    for sheet in sheets:
+        rows = sheet.get("rows", [])
+        total_cells = sum(len(row.get("cells", [])) for row in rows)
+        non_empty = sum(
+            1 for row in rows
+            for cell in row.get("cells", [])
+            if cell.get("value") is not None
+        )
+        formula = sum(
+            1 for row in rows
+            for cell in row.get("cells", [])
+            if cell.get("formula") is not None
+        )
+        stats["total_rows"] += len(rows)
+        stats["total_cells"] += total_cells
+        stats["non_empty_cells"] += non_empty
+        stats["formula_cells"] += formula
+        stats["per_sheet"].append({
+            "name": sheet.get("name", ""),
+            "index": sheet.get("index", 0),
+            "row_count": len(rows),
+            "total_cells": total_cells,
+            "non_empty_cells": non_empty,
+            "formula_cells": formula,
+        })
+    return stats

@@ -45,13 +45,15 @@ acquisition_gates_passed:
     notes: "Local wheel built and smoke-tested"
 
 unsupported_capabilities:
-  - Cell style/formatting preservation
+  - Full visual style fidelity (colors, fonts, borders, column widths round-trip)
   - Conditional formatting
   - Charts and embedded objects
   - Named ranges
   - Data validation
   - Password-protected FODS
   - Multi-level merged cells (partial: is_covered flag only)
+  # Note: Raw style metadata XML (office:automatic-styles, office:styles) IS preserved
+  # verbatim on round-trip (TC-0055 CLOSED R55). Only visual fidelity is unsupported.
 
 security_limits:
   - MAX_FILE_BYTES: 100 MiB
@@ -82,7 +84,9 @@ key_capabilities:
   - write_fods() / document_to_xml() — round-trip write API
   - CSV export via FodsCsvExporter (FODS → CSV)
   - Formula preservation: table:formula attribute preserved verbatim (R53)
+  - Style metadata XML passthrough: office:automatic-styles + office:styles preserved verbatim on round-trip (R55 TC-0055)
   - Sheet/row/cell neutral model with value_type inference
+  - Column definition passthrough: table:table-column elements preserved (R55)
 
 test_count: 211
 test_result: PASS

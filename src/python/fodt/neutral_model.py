@@ -216,3 +216,99 @@ def _validate_table_row(row: dict[str, Any], table_idx: int, row_idx: int) -> li
             violations.append(f"{prefix}.Cell[{k}] missing required field: 'text'")
 
     return violations
+
+
+# ---------------------------------------------------------------------------
+# Document statistics (R57 — new capability)
+# ---------------------------------------------------------------------------
+
+def document_stats(document: dict[str, Any]) -> dict[str, Any]:
+    """Return content statistics for a parsed FODT document.
+
+    Returns a dict with:
+      block_count: int          (paragraphs + headings)
+      paragraph_count: int
+      heading_count: int
+      list_count: int           (top-level lists)
+      list_item_count: int      (all items including nested)
+      table_count: int
+      table_cell_count: int
+      total_text_length: int    (sum of text chars across all content)
+      hyperlink_count: int      (runs with href attribute)
+
+    Added in R57 Train E as a new product capability.
+    Useful for document triage and content extraction pipelines.
+    """
+    stats: dict[str, Any] = {
+        "block_count": 0,
+        "paragraph_count": 0,
+        "heading_count": 0,
+        "list_count": 0,
+        "list_item_count": 0,
+        "table_count": 0,
+        "table_cell_count": 0,
+        "total_text_length": 0,
+        "hyperlink_count": 0,
+    }
+
+    # Prefer content list (R55 TC-0060 document-order) if present
+    content = document.get("content", [])
+    blocks = document.get("blocks", [])
+    lists = document.get("lists", [])
+    tables = document.get("tables", [])
+
+    # If content list is present, count from it; otherwise use separate lists
+    if content:
+        seen_blocks: list[dict[str, Any]] = []
+        seen_lists: list[dict[str, Any]] = []
+        seen_tables: list[dict[str, Any]] = []
+        for item in content:
+            kind = item.get("kind", "")
+            data = item.get("data", {})
+            if kind == "block":
+                seen_blocks.append(data)
+            elif kind == "list":
+                seen_lists.append(data)
+            elif kind == "table":
+                seen_tables.append(data)
+        blocks = seen_blocks
+        lists = seen_lists
+        tables = seen_tables
+
+    # Count blocks
+    for block in blocks:
+        stats["block_count"] += 1
+        btype = block.get("type", "")
+        if btype == "paragraph":
+            stats["paragraph_count"] += 1
+        elif btype == "heading":
+            stats["heading_count"] += 1
+        # Text length from block runs
+        runs = block.get("runs", [])
+        for run in runs:
+            text = run.get("text", "") or ""
+            stats["total_text_length"] += len(text)
+            if run.get("href"):
+                stats["hyperlink_count"] += 1
+        # Fallback: text field
+        if not runs:
+            stats["total_text_length"] += len(block.get("text", "") or "")
+
+    # Count lists and items
+    stats["list_count"] = len(lists)
+    for lst in lists:
+        items = lst.get("items", [])
+        stats["list_item_count"] += len(items)
+        for item in items:
+            stats["total_text_length"] += len(item.get("text", "") or "")
+
+    # Count tables and cells
+    stats["table_count"] = len(tables)
+    for table in tables:
+        for row in table.get("rows", []):
+            cells = row.get("cells", [])
+            stats["table_cell_count"] += len(cells)
+            for cell in cells:
+                stats["total_text_length"] += len(cell.get("text", "") or "")
+
+    return stats

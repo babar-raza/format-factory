@@ -1,0 +1,108 @@
+{
+  "sprint_source": "R56",
+  "sprint_iv": "R57",
+  "iv_verdict": "R56_MULTI_MEGA_TRAIN_PRODUCT_PROGRESS_ACCEPTED_PACKAGE_RC_PARTIAL_CLOSURE_REJECTED",
+  "date": "2026-05-23",
+  "defects": [
+    {
+      "id": "IV-R56-001",
+      "severity": "BLOCKING",
+      "category": "evidence_protocol_gap",
+      "title": "No top-level sidecar proof for r56-pass2-final.zip",
+      "file_evidence": ".local/r56-pass2-final.zip.sha256-proof.json (gitignored, not committed)",
+      "r57_train": "L",
+      "r57_fix": "Store sidecar in reports/r57/ committed to repo; require top-level proof location",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R56-002",
+      "severity": "MAJOR",
+      "category": "contract_incompleteness",
+      "title": "Contract missing sidecar_required and final_proof_policy fields",
+      "file_evidence": "tools/evidence/contracts/r56-r55-closure-repair-package-rc-phase7.yaml",
+      "r57_train": "B",
+      "r57_fix": "Add sidecar_required: true and final_proof_policy: external_sidecar to R57 contract",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R56-003",
+      "severity": "MAJOR",
+      "category": "validator_gap",
+      "title": "BUNDLE_VALIDATION_PASS_2_SHA: PENDING not caught by check_repo_reports_pending",
+      "file_evidence": "tools/evidence/validate_evidence_bundle.py STATUS_LINE_PATTERNS (lines 327-333)",
+      "r57_train": "B",
+      "r57_fix": "Add BUNDLE_VALIDATION_PASS_2_SHA: PENDING and PASS_1_SHA: PENDING to STATUS_LINE_PATTERNS",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R56-004",
+      "severity": "MAJOR",
+      "category": "validator_gap",
+      "title": "PENDING_MARKER_PATTERNS also missing SHA-keyed PENDING marker",
+      "file_evidence": "tools/evidence/validate_evidence_bundle.py PENDING_MARKER_PATTERNS (lines 175-197)",
+      "r57_train": "B",
+      "r57_fix": "Add BUNDLE_VALIDATION_PASS_2_SHA: PENDING and PASS_1_SHA: PENDING to PENDING_MARKER_PATTERNS",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R56-005",
+      "severity": "MAJOR",
+      "category": "test_portability",
+      "title": "test_r56_package_rc.py uses hardcoded .local/r56-metadata path",
+      "file_evidence": "tests/packaging/test_r56_package_rc.py line 24: ARTIFACTS_DIR = PROJECT_ROOT / '.local' / 'r56-metadata' / 'package-artifacts'",
+      "r57_train": "C",
+      "r57_fix": "Create tools/packaging/find_bundle_artifacts.py; create test_r57_package_rc.py with discovery",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R56-006",
+      "severity": "MAJOR",
+      "category": "evidence_integrity",
+      "title": "package-artifact-manifest.yaml wheel_sha256 values are 32 chars (MD5 length)",
+      "file_evidence": ".local/r56-metadata/package-artifact-manifest.yaml line 12: wheel_sha256: 9c10377a748a5f0df9b6e0817a5249ff",
+      "r57_train": "D",
+      "r57_fix": "Recompute all 7 wheel SHA-256 values from actual .whl bytes; update manifest",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R56-007",
+      "severity": "MAJOR",
+      "category": "evidence_integrity",
+      "title": "Validator silently skips non-64-char SHA values in manifest",
+      "file_evidence": "tools/evidence/validate_evidence_bundle.py line 424: sha_match = re.search(r'(?:SHA-256|sha256):\\s*([0-9a-fA-F]{64})', stripped)",
+      "r57_train": "D",
+      "r57_fix": "Add explicit SHA length enforcement: warn/error if wheel_sha256 length != 64",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R56-008",
+      "severity": "MAJOR",
+      "category": "evidence_completeness",
+      "title": "final-bundle-validation-proof.txt missing bundle filename/SHA/size/entries/sidecar/exitcode",
+      "file_evidence": ".local/r56-metadata/final-bundle-validation-proof.txt (no filename, no SHA-256, no size, no entry_count, no sidecar_path, no exit_code)",
+      "r57_train": "L",
+      "r57_fix": "R57 proof must include all required self-verifying fields; test_r57_final_proof_completeness.py validates",
+      "status": "OPEN"
+    },
+    {
+      "id": "IV-R56-009",
+      "severity": "MINOR",
+      "category": "overclaim",
+      "title": "R56 Train F overstated format advancement for PPM/DIF/SYLK/PGM/PBM",
+      "file_evidence": "reports/r56/next-format-advancement.md Section 4: PPM/DIF/SYLK confirmed (no new work); PGM/PBM status only",
+      "r57_train": "F",
+      "r57_fix": "R57 Train F advances only with actual code + tests; no status-only confirmation counts",
+      "status": "DOCUMENTED"
+    },
+    {
+      "id": "IV-R56-010",
+      "severity": "MINOR",
+      "category": "release_manifest_accuracy",
+      "title": "fods.yaml unsupported_capabilities conflicts with TC-0055 (Cell style/formatting preservation)",
+      "file_evidence": "release-manifests/python-foss/fods.yaml line 48; taskcards/TC-0055-style-metadata-fods.md CLOSED_VERIFIED R55",
+      "r57_train": "E",
+      "r57_fix": "Split into visual fidelity (unsupported) vs XML passthrough (supported); update key_capabilities",
+      "status": "OPEN"
+    }
+  ]
+}

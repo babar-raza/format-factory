@@ -178,6 +178,11 @@ PENDING_MARKER_PATTERNS = [
     # Final validation proof placeholders — must not appear in closure bundles
     "BUNDLE_VALIDATION: PENDING",
     "BUNDLE_VALIDATION: [PENDING]",
+    # R57: SHA-keyed PENDING markers — final verdict must not contain these
+    # before the actual SHA is known. These appear when a verdict is written
+    # before the 2-pass bundle protocol completes. (IV-R56-003/004)
+    "BUNDLE_VALIDATION_PASS_2_SHA: PENDING",
+    "BUNDLE_VALIDATION_PASS_1_SHA: PENDING",
     "TO BE UPDATED AFTER BUNDLE",
     "PENDING — building evidence bundle",
     # Gate/sprint status markers — sprint must be COMPLETE before final bundle
@@ -327,6 +332,9 @@ def check_repo_reports_pending(zf):
     STATUS_LINE_PATTERNS = [
         "BUNDLE_VALIDATION: PENDING",
         "BUNDLE_VALIDATION: [PENDING]",
+        # R57: SHA-keyed PENDING markers in final verdict lines (IV-R56-003/004)
+        "BUNDLE_VALIDATION_PASS_2_SHA: PENDING",
+        "BUNDLE_VALIDATION_PASS_1_SHA: PENDING",
         "TO BE UPDATED AFTER BUNDLE",
         "PENDING — building evidence bundle",
         "validation_status: PENDING",
@@ -429,6 +437,23 @@ def check_artifact_inventory(zf):
                 if claimed_artifacts[i][0] == last_filename:
                     claimed_artifacts[i] = (last_filename, sha256)
                     break
+
+    # R57: Check for truncated (non-64-char) SHA values in manifest.
+    # wheel_sha256: values that are 32 chars are MD5 length — not SHA-256.
+    # These would be silently skipped by the 64-char regex above (IV-R56-007).
+    for line in manifest_text.splitlines():
+        stripped = line.strip()
+        # Match any sha256 key with a short hex value (not exactly 64 chars)
+        short_sha = re.search(r'(?:SHA-256|sha256|wheel_sha256):\s*([0-9a-fA-F]{16,63})\b', stripped)
+        if short_sha:
+            val = short_sha.group(1)
+            if len(val) != 64:
+                errors.append(
+                    f"ARTIFACT_SHA_TRUNCATED: manifest contains SHA value of length {len(val)} "
+                    f"(expected 64 for SHA-256): {val!r}. "
+                    f"This is likely an MD5 or truncated hash. Recompute using hashlib.sha256(). "
+                    f"(IV-R56-007 R57 guard)"
+                )
 
     if not claimed_artifacts:
         return []  # Manifest exists but names no artifacts — nothing to validate

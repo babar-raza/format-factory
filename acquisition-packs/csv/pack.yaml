@@ -134,3 +134,18 @@ stages:
     unsupported_features: [encoding_to_csv, streaming_decode, typed_cell_inference, formula_cells, multi_sheet, binary_csv, excel_dialect_quirks]
     commercial_product_ready: false
     notes: "Gate 5 neutral model. Canonical dict schema validated: format/path/row_count/column_count/headers/rows/has_header/delimiter. Capability descriptor with supported/unsupported features. 17 tests all PASS."
+
+  gate_6:
+    status: pass
+    sprint: R57
+    date: "2026-05-23"
+    test_file: tests/python/csv/test_csv_gate6_oracle.py
+    test_count: 26
+    test_result: PASS
+    oracle_strategy: "Deterministic oracle: committed corpus samples + synthetic CSV text. No external tool dependency."
+    corpus_samples_tested: [minimal-2x2.csv, quoted-fields.csv, single-cell.csv]
+    synthetic_cases: [tab_delimiter, semicolon_delimiter, quoted_newline, double_quote_escape, empty_fields, utf8_bom, large_row_count]
+    error_cases: [nonexistent_file, safe_parse_fallback, empty_file]
+    probe_cases: [exists_true, exists_false, first_line, size_bytes]
+    commercial_product_ready: false
+    notes: "Gate 6 oracle. 26 tests all PASS. Covers corpus samples, synthetic edge cases (embedded newlines, doubled-quote escape, BOM stripping), error handling, and probe_csv. Two tests document known heuristic behavior: header detection requires numeric data rows."
