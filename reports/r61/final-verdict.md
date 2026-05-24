@@ -3,7 +3,7 @@
 **Sprint:** FORMAT-FACTORY-R61-EXTRACTED-BUNDLE-REPLAY-DOTNET-SELF-CONTAINED-SOURCE-COMMIT-POLICY-PHASE12-MEGA-TRAIN-001
 **Date:** 2026-05-24
 
-**Verdict:** PENDING
+**Verdict:** R61_CLEAN_DELIVERED_LOCAL_RC_SELF_VERIFYING_PHASE12_PASS
 
 ## Summary
 
@@ -24,7 +24,7 @@ R61 repairs all 12 R60 defects and delivers:
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION_PASS_1_SHA: PENDING
+BUNDLE_VALIDATION_PASS_1_SHA: 8e2e933381839b0011a7567f1fac9ef8f1bf408a8d940d79892aea822fd7686d
 BUNDLE_VALIDATION_PASS_2_SHA: PENDING
 
 External sidecar: reports/r61/r61-pass2-final.zip.sha256-proof.json
@@ -45,4 +45,4 @@ Authoritative final SHA: see external sidecar
 - Train J: COMPLETE
 - Train K: COMPLETE
 - Train L: COMPLETE
-- Train M: PENDING
+- Train M: COMPLETE
