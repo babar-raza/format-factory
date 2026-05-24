@@ -57,7 +57,7 @@
 
 | IV Item | Description | Status |
 |---------|-------------|--------|
-| IV-R58-001 | Train M IN_PROGRESS in final-verdict | REPAIRED (Train B) |
+| IV-R58-001 | Train M was NOT_COMPLETE in final-verdict | REPAIRED (Train B) |
 | IV-R58-002 | Historical final-verdict scan bug | REPAIRED (Train B) |
 | IV-R58-003 | Bundle scoreboard reads wrong entry | REPAIRED (R58 hotfix, commit 22db514) |
 | IV-R58-004 | Missing sidecar auto-written | VERIFIED (Train M) |
