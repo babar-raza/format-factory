@@ -28,8 +28,8 @@ from pathlib import Path
 
 import pytest
 
-from src.python.fods.parser import parse_fods
-from src.python.fods.writer import write_fods, workbook_to_xml
+from fods.parser import parse_fods
+from fods.writer import write_fods, workbook_to_xml
 
 # Path to the existing formula fixture
 FIXTURES_DIR = Path(__file__).parent.parent.parent.parent / "samples" / "by-format" / "fods"

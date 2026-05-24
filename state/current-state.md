@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R59 - R59_CLEAN_RC_CLOSURE_PACKAGING_NORMALIZATION_PHASE10_COMPLETE
+**Latest sprint:** R60 - R60_SELF_VERIFYING_SIDECAR_PASS_CURRENT_HEAD_RC_CLOSURE_COMPLETE
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
@@ -10,7 +10,7 @@
 - fodt: 6 files
 
 ## Evidence Contracts
-- Total: 149
+- Total: 150
 - ISSUE: r27-ai-platform-full-cycle.yaml: min_metadata_count=10 < 30
 - ISSUE: r32-truth-matrix-gate-quality-and-drift-recovery.yaml: min_metadata_count=5 < 30
 

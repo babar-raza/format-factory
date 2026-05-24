@@ -1,0 +1,126 @@
+{
+  "sprint": "FORMAT-FACTORY-R60-CURRENT-HEAD-RC-ARTIFACTS-SIDECAR-CLOSURE-PHASE11-MEGA-TRAIN-001",
+  "date": "2026-05-24",
+  "prior_sprint": "R59",
+  "prior_sprint_reclassified_verdict": "R59_BROAD_PRODUCT_AND_PACKAGING_PROGRESS_ACCEPTED_RC_CLOSURE_REJECTED",
+  "defects": [
+    {
+      "id": "IV-R59-001",
+      "severity": "critical",
+      "category": "sidecar",
+      "description": "No external sidecar delivered with uploaded final ZIP",
+      "r60_train": "B",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-002",
+      "severity": "critical",
+      "category": "sidecar",
+      "description": "Contract sidecar_required: true not satisfied at upload time",
+      "r60_train": "B",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-003",
+      "severity": "high",
+      "category": "validation",
+      "description": "Bundle validation fails without sidecar (negative proof)",
+      "r60_train": "B+M",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-004",
+      "severity": "critical",
+      "category": "sha",
+      "description": "Uploaded ZIP SHA 669fc0b6... does not match final-verdict Pass 2 SHA 0a9bb470...",
+      "r60_train": "B+M",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-005",
+      "severity": "high",
+      "category": "packaging",
+      "description": "package-artifact-manifest.yaml source_commit is 7f17f439 (R58 era, not R59 final ba057fc)",
+      "r60_train": "C",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-006",
+      "severity": "medium",
+      "category": "packaging",
+      "description": "R59 final HEAD ba057fc has later commits than when packages were built",
+      "r60_train": "C",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-007",
+      "severity": "high",
+      "category": "smoke",
+      "description": "R59 APIs (workbook_type_distribution, find_sheet_by_name, document_heading_outline, document_text_content) not tested from installed wheel",
+      "r60_train": "D",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-008",
+      "severity": "high",
+      "category": "smoke",
+      "description": "Installed smoke only proves R57-era workbook_stats/document_stats, not R59 APIs",
+      "r60_train": "D",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-009",
+      "severity": "medium",
+      "category": "testing",
+      "description": "Package tests skip current-bundle checks (bundle not yet built at test time)",
+      "r60_train": "E",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-010",
+      "severity": "medium",
+      "category": "testing",
+      "description": "Full packaging suite fails from extracted bundle (hardcoded .local/package-builds path)",
+      "r60_train": "E",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-011",
+      "severity": "high",
+      "category": "dotnet",
+      "description": "NuGet local consumer proof describes steps but shows no actual restore/install/run command output",
+      "r60_train": "F",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-012",
+      "severity": "medium",
+      "category": "reports",
+      "description": "python-full-rc-artifacts.md says 7 wheels + 7 sdists, but package-artifact-manifest has 20 (10+10)",
+      "r60_train": "C",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-013",
+      "severity": "high",
+      "category": "packaging",
+      "description": "R59 product-deepening APIs (workbook_type_distribution etc.) added at d004237 but wheels built at 7f17f43 — APIs not in wheel binaries",
+      "r60_train": "C+D",
+      "status": "open"
+    },
+    {
+      "id": "IV-R59-014",
+      "severity": "medium",
+      "category": "reports",
+      "description": "Count inconsistency: python-full-rc-artifacts.md (7+7), phase-audit-10 (10+10), package-artifact-manifest (20) all differ",
+      "r60_train": "C",
+      "status": "open"
+    }
+  ],
+  "total_defects": 14,
+  "severity_summary": {
+    "critical": 3,
+    "high": 6,
+    "medium": 5
+  }
+}

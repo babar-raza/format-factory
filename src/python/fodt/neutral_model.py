@@ -353,6 +353,97 @@ def document_heading_outline(document: dict[str, Any]) -> list[dict[str, Any]]:
 # Document text content (R59 — new capability)
 # ---------------------------------------------------------------------------
 
+def document_word_count(document: dict[str, Any]) -> dict[str, Any]:
+    """Return approximate word count for the document.
+
+    Counts whitespace-separated tokens from all text content (blocks,
+    list items, table cells). Uses Python's str.split() which handles
+    multiple spaces and newlines correctly.
+
+    Returns a dict with:
+      total_words: int              (across all content)
+      block_words: int              (from paragraphs + headings)
+      list_words: int               (from list items)
+      table_words: int              (from table cells)
+
+    Useful for content analysis and document triage.
+    Added in R60 Train G as a product deepening capability.
+    """
+    block_words = 0
+    list_words = 0
+    table_words = 0
+
+    content = document.get("content", [])
+    if content:
+        for item in content:
+            kind = item.get("kind", "")
+            data = item.get("data", {})
+            if kind == "block":
+                runs = data.get("runs", [])
+                text = "".join(r.get("text", "") or "" for r in runs) if runs else (data.get("text", "") or "")
+                block_words += len(text.split())
+            elif kind == "list":
+                for entry in data.get("items", []):
+                    list_words += len((entry.get("text", "") or "").split())
+            elif kind == "table":
+                for row in data.get("rows", []):
+                    for cell in row.get("cells", []):
+                        table_words += len((cell.get("text", "") or "").split())
+    else:
+        for block in document.get("blocks", []):
+            runs = block.get("runs", [])
+            text = "".join(r.get("text", "") or "" for r in runs) if runs else (block.get("text", "") or "")
+            block_words += len(text.split())
+        for lst in document.get("lists", []):
+            for entry in lst.get("items", []):
+                list_words += len((entry.get("text", "") or "").split())
+        for table in document.get("tables", []):
+            for row in table.get("rows", []):
+                for cell in row.get("cells", []):
+                    table_words += len((cell.get("text", "") or "").split())
+
+    return {
+        "total_words": block_words + list_words + table_words,
+        "block_words": block_words,
+        "list_words": list_words,
+        "table_words": table_words,
+    }
+
+
+def document_table_summary(document: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return a compact summary of all tables in the document.
+
+    Each entry in the returned list is a dict with:
+      index: int            (0-based table index in document order)
+      row_count: int
+      column_count: int     (max columns across all rows)
+      cell_count: int       (total cells)
+
+    Respects content list (document-order) if present.
+
+    Useful for table triage and structural analysis.
+    Added in R60 Train G as a product deepening capability.
+    """
+    tables = []
+    content = document.get("content", [])
+    if content:
+        raw_tables = [item["data"] for item in content if item.get("kind") == "table"]
+    else:
+        raw_tables = document.get("tables", [])
+
+    for idx, table in enumerate(raw_tables):
+        rows = table.get("rows", [])
+        cell_count = sum(len(row.get("cells", [])) for row in rows)
+        col_count = max((len(row.get("cells", [])) for row in rows), default=0)
+        tables.append({
+            "index": idx,
+            "row_count": len(rows),
+            "column_count": col_count,
+            "cell_count": cell_count,
+        })
+    return tables
+
+
 def document_text_content(document: dict[str, Any], separator: str = "\n") -> str:
     """Return all text content from the document as a single string.
 

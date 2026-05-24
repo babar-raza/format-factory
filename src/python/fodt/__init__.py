@@ -19,7 +19,13 @@ R57/R58: document_stats() exposed in public API
 
 from .parser import parse_fodt, parse_fodt_strict
 from .writer import write_fodt, document_to_xml
-from .neutral_model import document_stats, document_heading_outline, document_text_content
+from .neutral_model import (
+    document_stats,
+    document_heading_outline,
+    document_text_content,
+    document_word_count,
+    document_table_summary,
+)
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
 
@@ -36,6 +42,8 @@ __all__ = [
     "document_stats",
     "document_heading_outline",
     "document_text_content",
+    "document_word_count",
+    "document_table_summary",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

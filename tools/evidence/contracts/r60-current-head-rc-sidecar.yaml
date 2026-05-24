@@ -1,0 +1,84 @@
+sprint_id: FORMAT-FACTORY-R60-CURRENT-HEAD-RC-ARTIFACTS-SIDECAR-CLOSURE-PHASE11-MEGA-TRAIN-001
+contract_id: FORMAT-FACTORY-R60-CURRENT-HEAD-RC-ARTIFACTS-SIDECAR-CLOSURE-PHASE11-MEGA-TRAIN-001
+run_number: R60
+description: >
+  R60 14-train mega-train sprint. Repairs 14 R59 defects (IV-R59-001..014).
+  Train 0: Preflight. Train A: R59 IV (14 defects).
+  Train B: External sidecar delivery (IV-R59-001..004).
+  Train C: 10 packages rebuilt from R60 HEAD (IV-R59-005/006/012/013/014).
+  Train D: Installed smoke proving R59/R60 APIs (IV-R59-007/008).
+  Train E: Packaging suite normalization (IV-R59-009/010).
+  Train F: .NET NuGet consumer restore/install/run (IV-R59-011).
+  Train G: FODS/FODT product deepening (2+ new capabilities each).
+  Train H: Non-FODS/FODT format advancement (TSV Gate 8, CSV Gate 8).
+  Train I: Phase Audit 11 (RC reproducibility and handoff readiness).
+  Train J: Acquisition/spec-cache advancement.
+  Train K: AI 617/617 PASS (fixture mode).
+  Train L: Docs/memory/state sync.
+  Train M: Final adversarial IV + self-verifying bundle with external sidecar.
+
+require_clean_git: true
+sidecar_required: true
+final_proof_policy: external_sidecar
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r60/00-preflight.md
+  - reports/r60/lane-ownership.md
+  - reports/r60/risk-register.md
+  - reports/r60/work-ahead-policy.md
+  - reports/r60/r59-independent-verification.md
+  - reports/r60/r59-defect-ledger.md
+  - reports/r60/r59-defect-ledger.json
+  - reports/r60/external-sidecar-delivery.md
+  - reports/r60/python-full-rc-artifacts.md
+  - reports/r60/installed-smoke-proof.md
+  - reports/r60/packaging-test-suite-normalization.md
+  - reports/r60/dotnet-nuget-local-consumer-proof.md
+  - reports/r60/fods-fodt-product-deepening.md
+  - reports/r60/non-fods-fodt-format-advancement.md
+  - reports/r60/phase-audit-11-rc-reproducibility.md
+  - reports/r60/acquisition-spec-cache-advancement.md
+  - reports/r60/ai-telemetry-acceleration.md
+  - reports/r60/docs-memory-sync.md
+  - reports/r60/multi-mega-train-scoreboard.md
+  - reports/r60/final-verdict.md
+  - tests/evidence/test_r60_sidecar_required_enforcement.py
+  - tests/evidence/test_r60_source_commit_matches_head.py
+  - tests/packaging/test_r60_artifact_source_commit.py
+  - tests/python/fods/test_r60_fods_deepening.py
+  - tests/python/fodt/test_r60_fodt_deepening.py
+  - tools/evidence/contracts/r60-current-head-rc-sidecar.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - run-environment.txt
+  - r59-iv-summary.txt
+  - sidecar-delivery-summary.txt
+  - python-rc-artifacts-summary.txt
+  - installed-smoke-summary.txt
+  - packaging-normalization-summary.txt
+  - dotnet-nupkg-summary.txt
+  - product-deepening-summary.txt
+  - format-advancement-summary.txt
+  - phase-audit-11-summary.txt
+  - ai-governance-summary.txt
+  - invariants-output.txt
+  - deferred-work-r61.txt
+  - state-snapshot-output.txt
+  - spec-cache-advancement-summary.txt
+  - adversarial-iv-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - r59-defect-closure-summary.txt
+  - installed-api-smoke-output.txt
+  - dotnet-consumer-proof-output.txt

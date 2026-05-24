@@ -285,3 +285,84 @@ def find_sheet_by_name(workbook: dict[str, Any], name: str) -> "dict[str, Any] |
         if sheet.get("name") == name:
             return sheet
     return None
+
+
+# ---------------------------------------------------------------------------
+# Workbook sheet summary (R60 — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_sheet_summary(workbook: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return a compact per-sheet summary of the workbook.
+
+    Each entry in the returned list is a dict with:
+      name: str
+      index: int
+      row_count: int
+      cell_count: int       (total cells including empty)
+      non_empty_count: int  (cells where value is not None)
+      formula_count: int    (cells with a formula attribute)
+
+    Useful for quick structural overview without iterating all data.
+    Added in R60 Train G as a product deepening capability.
+    """
+    summary = []
+    for sheet in workbook.get("sheets", []):
+        rows = sheet.get("rows", [])
+        cell_count = sum(len(row.get("cells", [])) for row in rows)
+        non_empty = sum(
+            1 for row in rows
+            for cell in row.get("cells", [])
+            if cell.get("value") is not None
+        )
+        formula = sum(
+            1 for row in rows
+            for cell in row.get("cells", [])
+            if cell.get("formula") is not None
+        )
+        summary.append({
+            "name": sheet.get("name", ""),
+            "index": sheet.get("index", 0),
+            "row_count": len(rows),
+            "cell_count": cell_count,
+            "non_empty_count": non_empty,
+            "formula_count": formula,
+        })
+    return summary
+
+
+# ---------------------------------------------------------------------------
+# Workbook empty rows (R60 — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_empty_rows(workbook: dict[str, Any]) -> dict[str, Any]:
+    """Return empty-row statistics for the workbook.
+
+    A row is "empty" if all its cells have value == None (or it has no cells).
+
+    Returns a dict with:
+      total_empty_rows: int           (across all sheets)
+      per_sheet: list[dict]           (per-sheet breakdown)
+        Each entry: {name, index, empty_row_count, total_row_count}
+
+    Useful for data quality assessment and sparse-data detection.
+    Added in R60 Train G as a product deepening capability.
+    """
+    total_empty = 0
+    per_sheet = []
+    for sheet in workbook.get("sheets", []):
+        rows = sheet.get("rows", [])
+        empty = sum(
+            1 for row in rows
+            if all(cell.get("value") is None for cell in row.get("cells", []))
+        )
+        total_empty += empty
+        per_sheet.append({
+            "name": sheet.get("name", ""),
+            "index": sheet.get("index", 0),
+            "empty_row_count": empty,
+            "total_row_count": len(rows),
+        })
+    return {
+        "total_empty_rows": total_empty,
+        "per_sheet": per_sheet,
+    }
