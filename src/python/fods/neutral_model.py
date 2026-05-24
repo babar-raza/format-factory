@@ -447,3 +447,60 @@ def workbook_cell_range(
         col_slice = cells[col_start:None if col_end is None else col_end + 1]
         result.append([cell.get("value") for cell in col_slice])
     return result
+
+
+# ---------------------------------------------------------------------------
+# Workbook merged cell summary (R62 — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_merged_cell_summary(workbook: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return a list of merged-cell annotations across all sheets.
+
+    Each entry contains:
+      sheet_name: str        — name of the containing sheet
+      sheet_index: int       — 0-based sheet index
+      row_index: int         — 0-based row index of the merged anchor cell
+      col_index: int         — 0-based column index of the merged anchor cell
+      merge_info: Any        — raw merge metadata from the cell (if present)
+
+    Detects cells that carry a 'merge' or 'span' attribute.
+    Returns an empty list if no merge annotations are found (most FODS files
+    do not use cell merging).
+    Added in R62 Train H as a product deepening capability (merged cell metadata).
+    """
+    results: list[dict[str, Any]] = []
+    for sheet_idx, sheet in enumerate(workbook.get("sheets", [])):
+        sheet_name = sheet.get("name", f"Sheet{sheet_idx + 1}")
+        for row_idx, row in enumerate(sheet.get("rows", [])):
+            for col_idx, cell in enumerate(row.get("cells", [])):
+                merge = cell.get("merge") or cell.get("span") or cell.get("table:number-columns-spanned")
+                if merge:
+                    results.append({
+                        "sheet_name": sheet_name,
+                        "sheet_index": sheet_idx,
+                        "row_index": row_idx,
+                        "col_index": col_idx,
+                        "merge_info": merge,
+                    })
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Workbook sheet order (R62 — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_sheet_order(workbook: dict[str, Any]) -> list[str]:
+    """Return the ordered list of sheet names as they appear in the workbook.
+
+    Useful for verifying that sheet order is preserved across parse/write cycles
+    and for building ordered navigation in document viewers.
+
+    Returns:
+        List of sheet name strings in parse order.
+        Returns empty list for empty workbooks.
+    Added in R62 Train H as a product deepening capability (sheet order preservation).
+    """
+    return [
+        sheet.get("name", f"Sheet{i + 1}")
+        for i, sheet in enumerate(workbook.get("sheets", []))
+    ]

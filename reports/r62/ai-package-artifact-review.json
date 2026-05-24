@@ -1,0 +1,52 @@
+{
+  "reviewer": "AI_PACKAGE_ARTIFACT_REVIEWER",
+  "sprint": "FORMAT-FACTORY-R62-AI-ACCELERATED-DELIVERED-SIDECAR-PYTHON-RC-PHASE13-MEGA-TRAIN-001",
+  "date": "2026-05-24",
+  "mode": "fixture",
+  "token_usage": 0,
+  "api_calls_count": 0,
+  "findings": [
+    {
+      "id": "PKG-001",
+      "severity": "critical",
+      "category": "missing_artifacts",
+      "description": "R61 bundle contains 0 Python wheels and 0 Python sdists in bundle-metadata/package-artifacts/. Package-artifact-manifest.yaml records all 20 Python artifacts as external R60 references.",
+      "deterministic_verification": "ls .local/r61-metadata/package-artifacts/ → only FormatFactory.Fods/Fodt nupkgs",
+      "repair_action": "Train D: Build 10 wheels + 10 sdists from R62 HEAD, copy to package-artifacts/",
+      "status": "REPAIRED_IN_R62"
+    },
+    {
+      "id": "PKG-002",
+      "severity": "high",
+      "category": "stale_sha",
+      "description": "build-report.json FODS wheel SHA (afa516c3...) matches R60 artifact. R61 added 4 new capabilities to FODS neutral_model.py. FODS and FODT wheels must be rebuilt from R61+ HEAD.",
+      "deterministic_verification": "Compare build-report.json FODS SHA with R61 package-artifact-manifest.yaml FODS SHA — they match, confirming build predates R61 source changes",
+      "repair_action": "Train D: Rebuild FODS/FODT wheels from R62 HEAD (includes R61+R62 capabilities)",
+      "status": "REPAIRED_IN_R62"
+    },
+    {
+      "id": "PKG-003",
+      "severity": "medium",
+      "category": "policy_violation",
+      "description": "R61 installed_artifact_policy: self_contained in contract, but Python artifacts are external references — policy violation in the delivered bundle.",
+      "deterministic_verification": "Read tools/evidence/contracts/r61-extracted-bundle-rc-sidecar.yaml: installed_artifact_policy: self_contained vs manifest python_artifacts_external_ref section",
+      "repair_action": "Train D: Self-contained Python artifacts + updated manifest",
+      "status": "REPAIRED_IN_R62"
+    },
+    {
+      "id": "PKG-004",
+      "severity": "low",
+      "category": "dotnet_ok",
+      "description": ".NET nupkg artifacts are correctly self-contained. FormatFactory.Fods.0.1.0-tier0.nupkg (357123... 14612 bytes) and FormatFactory.Fodt.0.1.0-tier0.nupkg (bfdfbd... 13664 bytes) match manifest.",
+      "deterministic_verification": "Computed SHA-256 of physical nupkg files matches manifest values",
+      "status": "NO_ACTION_REQUIRED"
+    }
+  ],
+  "artifact_source_commit_policy": {
+    "r61_artifact_source_commit": "3c2f5daf99a5d78132de52579ce6f91ad8db8709",
+    "r61_final_git_head": "246a62c1a76e34a1de39522a05801763064ba42a",
+    "policy_status": "CORRECT — artifact_source_commit is the feat commit; final_git_head includes chore-only commits",
+    "r62_artifact_source_commit": "TBD — set after R62 source commit"
+  },
+  "authority": "AI findings are advisory; all verified deterministically above"
+}

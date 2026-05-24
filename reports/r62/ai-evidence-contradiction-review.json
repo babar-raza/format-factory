@@ -1,0 +1,50 @@
+{
+  "reviewer": "AI_EVIDENCE_CONTRADICTION_REVIEWER",
+  "sprint": "FORMAT-FACTORY-R62-AI-ACCELERATED-DELIVERED-SIDECAR-PYTHON-RC-PHASE13-MEGA-TRAIN-001",
+  "date": "2026-05-24",
+  "mode": "fixture",
+  "token_usage": 0,
+  "api_calls_count": 0,
+  "contradictions_found": [
+    {
+      "id": "CONTRA-001",
+      "severity": "critical",
+      "source_a": "reports/r61/final-verdict.md: BUNDLE_VALIDATION_PASS_2_SHA: a81036889e...",
+      "source_b": "reports/r61/r61-pass2-final.zip.sha256-proof.json: sha256: 04a2b2cd8a...",
+      "description": "Internal proof in final-verdict.md claims Pass 2 SHA a81036889e... but the authoritative uploaded ZIP SHA is 04a2b2cd8a... The internal proof SHA predates the state-update commit.",
+      "deterministic_verification": "CONFIRMED by computing SHA-256 of .local/r61-pass2-final.zip",
+      "repair_action": "Use external sidecar protocol; internal proof records pre-final SHA only",
+      "status": "REPAIRED_IN_R62"
+    },
+    {
+      "id": "CONTRA-002",
+      "severity": "high",
+      "source_a": "reports/r61/final-verdict.md: Verdict R61_CLEAN_DELIVERED_LOCAL_RC_SELF_VERIFYING_PHASE12_PASS",
+      "source_b": "R62 IV findings: External sidecar not delivered; Python artifacts external R60 refs",
+      "description": "R61 claimed SELF_VERIFYING but the delivered artifact is not self-verifying (no sidecar, no Python wheels). CLEAN was overclaimed.",
+      "deterministic_verification": "CONFIRMED by inspection of .local/r61-metadata/package-artifact-manifest.yaml (python_artifacts_external_ref section)",
+      "repair_action": "Reclassify R61 to R61_SOURCE_AND_DOTNET_PROGRESS_ACCEPTED_SELF_VERIFYING_RC_REJECTED",
+      "status": "REPAIRED_IN_R62"
+    },
+    {
+      "id": "CONTRA-003",
+      "severity": "medium",
+      "source_a": "reports/r61/phase-audit-12-rc-reproducibility.md: CONDITIONAL_PASS",
+      "source_b": "R62 IV: Python RC not self-contained; installed-wheel proof absent",
+      "description": "Phase Audit 12 claimed CONDITIONAL_PASS but the conditions (Python self-contained) were not met in R61.",
+      "deterministic_verification": "CONFIRMED by absence of Python .whl files in bundle-metadata/package-artifacts/",
+      "repair_action": "Phase Audit 12 repaired in R62 Train J",
+      "status": "REPAIRED_IN_R62"
+    }
+  ],
+  "no_contradiction_areas": [
+    ".NET nupkg SHAs in manifest match physical files",
+    "artifact_source_commit equals final_git_head (R61 chore-only commits)",
+    "FODS/FODT R61 source capabilities tested and pass",
+    "CSV Gate 8 suite present and passing",
+    "State/verdict agreement (R61 label consistent)",
+    "Bundle entry count consistent (2639 entries in all builds)"
+  ],
+  "overall_result": "3 contradictions found, all repaired in R62",
+  "authority": "AI findings are advisory; all verified deterministically above"
+}

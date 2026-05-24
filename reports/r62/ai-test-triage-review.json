@@ -1,0 +1,55 @@
+{
+  "reviewer": "AI_TEST_FAILURE_TRIAGE_REVIEWER",
+  "sprint": "FORMAT-FACTORY-R62-AI-ACCELERATED-DELIVERED-SIDECAR-PYTHON-RC-PHASE13-MEGA-TRAIN-001",
+  "date": "2026-05-24",
+  "mode": "fixture",
+  "token_usage": 0,
+  "api_calls_count": 0,
+  "failure_clusters": {
+    "stale_run": {
+      "description": "Tests that failed because background task started before fix commits",
+      "examples": [
+        "test_r60_manifest_has_10_packages (pre-3c2f5da commit)",
+        "test_r60_manifest_includes_fods_and_fodt (pre-3c2f5da commit)",
+        "test_r60_manifest_includes_pgm_pbm_sylk (pre-3c2f5da commit)",
+        "test_auto_proof_bundle.py tests (pre-fix state)"
+      ],
+      "deterministic_verification": "Targeted .local/venv run shows 8/8 PASS for these tests on current HEAD",
+      "action": "NO_ACTION — all pass on current HEAD"
+    },
+    "wrong_venv": {
+      "description": "Tests run via .venv (repo root) instead of .local/venv; may pick up different state",
+      "examples": [
+        "Background tasks using .venv\\Lib\\site-packages\\pytest",
+        "Same 3 R60 manifest tests failing in .venv but passing in .local/venv"
+      ],
+      "deterministic_verification": ".local/venv targeted run: 8/8 PASS",
+      "action": "MEMORY_NOTE — always use .local/venv for authoritative runs"
+    },
+    "pre_existing": {
+      "description": "Known pre-existing failures on Windows paths",
+      "examples": [
+        "tests/python/dif/test_dif_parser.py::TestDifProbe::test_probe_nonexistent",
+        "tests/python/ppm/test_ppm_parser.py::TestPpmProbe::test_probe_nonexistent"
+      ],
+      "deterministic_verification": "Documented in final-verdict.md AUTHORITATIVE_TEST_RESULT",
+      "action": "TRACKED — 2 pre-existing failures, no repair needed in R62"
+    },
+    "current_regression": {
+      "description": "Failures that would be new regressions on current HEAD",
+      "examples": [],
+      "action": "NONE_FOUND — all targeted runs show clean state"
+    },
+    "blocker": {
+      "description": "Failures that block R62 closure",
+      "examples": [],
+      "action": "NONE_FOUND"
+    }
+  },
+  "authoritative_test_result": {
+    "source": "background task blur1d7ii (R61 new tests, correct .local/venv equivalent)",
+    "result": "869 passed, 4 skipped",
+    "full_suite_reference": "2825 passed (non-AI), 617 AI (fixture), 302 .NET xUnit"
+  },
+  "authority": "AI findings are advisory; all verified deterministically above"
+}

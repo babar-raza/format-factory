@@ -1,8 +1,8 @@
 ---
 # Release Manifest — FODT (Flat OpenDocument Text) Python FOSS Package
-# Sprint: FORMAT-FACTORY-R56-R55-CLOSURE-REPAIR-PACKAGE-RC-PHASE7-PRODUCT-EXPANSION-MEGA-TRAIN-001
-# Date: 2026-05-23
-# Corrects: IV-R55-006 (manifest file missing despite matrix reference)
+# Sprint: FORMAT-FACTORY-R62-AI-ACCELERATED-DELIVERED-SIDECAR-PYTHON-RC-PHASE13-MEGA-TRAIN-001
+# Date: 2026-05-24
+# R62 Train H: Added document_hyperlink_count() and document_footnote_count() capabilities
 
 format_id: fodt
 package_name: aspose-format-factory-fodt
@@ -48,7 +48,7 @@ unsupported_capabilities:
   - Cell/character style inheritance
   - Text field extraction (text:date, text:time, etc. — detected only)
   - Embedded frames/images (detected but not extracted)
-  - Footnotes and endnotes
+  - Footnote/endnote body extraction (detection and count via document_footnote_count; body text not extracted)
   - Track changes / revisions
   - Password-protected FODT
   - Table cell styles and column widths
@@ -85,8 +85,12 @@ key_capabilities:
   - Nested list hierarchy: level-stack algorithm (R56 TC-0059 criterion 2)
   - Table preservation: table:table/table:table-row/table:table-cell (R54 TC-0058)
   - Document ordering: content sequence preserves blocks/lists/tables order (R55 TC-0060)
+  - document_stats() — block/heading/list/table/hyperlink counts (R57)
+  - document_reading_level() — Flesch-Kincaid readability estimation (R57)
+  - document_hyperlink_count() — hyperlink count per block and total (R62)
+  - document_footnote_count() — footnote/endnote detection and count (R62)
 
-test_count: 259
+test_count: 283
 test_result: PASS
 sprint_history:
   - R46: write_fodt() added
@@ -95,6 +99,8 @@ sprint_history:
   - R54: list + table preservation (partial)
   - R55: inline spans + ordering (TC-0057/TC-0060)
   - R56: hyperlinks + nested list hierarchy (TC-0057 criterion 3, TC-0059 criterion 2)
+  - R57: document_stats() + document_reading_level() (Train E)
+  - R62: document_hyperlink_count() + document_footnote_count() (Train H)
 
 blockers:
   - publish_authorized=false — no PyPI publication without explicit release prompt

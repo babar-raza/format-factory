@@ -608,3 +608,68 @@ def document_reading_level(document: dict[str, Any]) -> dict[str, Any]:
         "total_sentences": total_sentences,
         "estimated_grade_level": estimated_grade_level,
     }
+
+
+# ---------------------------------------------------------------------------
+# Document hyperlink count (R62 — new capability)
+# ---------------------------------------------------------------------------
+
+def document_hyperlink_count(document: dict[str, Any]) -> dict[str, Any]:
+    """Count hyperlinks detected in the document.
+
+    Scans all block-level content for entries that carry a 'hyperlinks' list
+    (populated by the parser when it detects xlink:href attributes). Returns:
+      total: int             — total hyperlink count across all blocks
+      per_block: list[int]   — hyperlink count per top-level block (0 if none)
+
+    Added in R62 Train H as a product deepening capability
+    (hyperlink xlink:type preservation).
+    """
+    blocks = document.get("blocks", [])
+    per_block: list[int] = []
+    total = 0
+    for block in blocks:
+        links = block.get("hyperlinks", [])
+        count = len(links)
+        per_block.append(count)
+        total += count
+    return {"total": total, "per_block": per_block}
+
+
+# ---------------------------------------------------------------------------
+# Document footnote count (R62 — new capability)
+# ---------------------------------------------------------------------------
+
+def document_footnote_count(document: dict[str, Any]) -> dict[str, Any]:
+    """Detect and count footnote/endnote annotations in the document.
+
+    Scans blocks for 'footnotes' or 'endnotes' lists (populated by the parser
+    when it detects text:note elements). Returns:
+      footnotes: int         — total footnote count
+      endnotes: int          — total endnote count
+      total: int             — combined count
+      has_notes: bool        — True if any notes are present
+      note: str              — advisory message if notes detected
+
+    Added in R62 Train H as a product deepening capability
+    (footnote/endnote detection warning).
+    """
+    blocks = document.get("blocks", [])
+    footnotes = 0
+    endnotes = 0
+    for block in blocks:
+        footnotes += len(block.get("footnotes", []))
+        endnotes += len(block.get("endnotes", []))
+    total = footnotes + endnotes
+    result: dict[str, Any] = {
+        "footnotes": footnotes,
+        "endnotes": endnotes,
+        "total": total,
+        "has_notes": total > 0,
+    }
+    if total > 0:
+        result["note"] = (
+            f"Document contains {footnotes} footnote(s) and {endnotes} endnote(s). "
+            "Note content may not be fully preserved in text export."
+        )
+    return result

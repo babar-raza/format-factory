@@ -1,8 +1,8 @@
 ---
 # Release Manifest — FODS (Flat OpenDocument Spreadsheet) Python FOSS Package
-# Sprint: FORMAT-FACTORY-R56-R55-CLOSURE-REPAIR-PACKAGE-RC-PHASE7-PRODUCT-EXPANSION-MEGA-TRAIN-001
-# Date: 2026-05-23
-# Corrects: IV-R55-006 (manifest file missing despite matrix reference)
+# Sprint: FORMAT-FACTORY-R62-AI-ACCELERATED-DELIVERED-SIDECAR-PYTHON-RC-PHASE13-MEGA-TRAIN-001
+# Date: 2026-05-24
+# R62 Train H: Added workbook_merged_cell_summary() and workbook_sheet_order() capabilities
 
 format_id: fods
 package_name: aspose-format-factory-fods
@@ -51,7 +51,7 @@ unsupported_capabilities:
   - Named ranges
   - Data validation
   - Password-protected FODS
-  - Multi-level merged cells (partial: is_covered flag only)
+  - Multi-level merged cells (partial: is_covered flag only; merge metadata via workbook_merged_cell_summary)
   # Note: Raw style metadata XML (office:automatic-styles, office:styles) IS preserved
   # verbatim on round-trip (TC-0055 CLOSED R55). Only visual fidelity is unsupported.
 
@@ -87,14 +87,20 @@ key_capabilities:
   - Style metadata XML passthrough: office:automatic-styles + office:styles preserved verbatim on round-trip (R55 TC-0055)
   - Sheet/row/cell neutral model with value_type inference
   - Column definition passthrough: table:table-column elements preserved (R55)
+  - workbook_stats() — sheet/row/cell/formula counts with per-sheet breakdown (R57)
+  - workbook_cell_range() — bounding box (min/max row/col) per sheet (R57)
+  - workbook_merged_cell_summary() — merged cell detection across all sheets (R62)
+  - workbook_sheet_order() — ordered list of sheet names (R62)
 
-test_count: 211
+test_count: 233
 test_result: PASS
 sprint_history:
   - R46: write_fods() added
   - R47: artifact proof
   - R48: value_type writer fix
   - R53: formula preservation (TC-0054)
+  - R57: workbook_stats() + workbook_cell_range() (Train E)
+  - R62: workbook_merged_cell_summary() + workbook_sheet_order() (Train H)
 
 blockers:
   - publish_authorized=false — no PyPI publication without explicit release prompt

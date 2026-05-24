@@ -1,0 +1,78 @@
+sprint_id: FORMAT-FACTORY-R62-AI-ACCELERATED-DELIVERED-SIDECAR-PYTHON-RC-PHASE13-MEGA-TRAIN-001
+contract_id: FORMAT-FACTORY-R62-AI-ACCELERATED-DELIVERED-SIDECAR-PYTHON-RC-PHASE13-MEGA-TRAIN-001
+run_number: R62
+description: >
+  R62 14-train mega-train sprint. R61 closure repair + delivered sidecar + Python RC.
+  Train 0: R62 coordinator. Train A: R61 IV (defect ledger).
+  Train B: AI acceleration control plane (5 fixture-mode AI reviewers).
+  Train C: Delivered external sidecar enforcement tests.
+  Train D: Python wheel rebuild from R62 HEAD (10 wheels + 10 sdists, self-contained).
+  Train E: Installed-wheel smoke test + API proof.
+  Train F: Extracted-bundle replay report.
+  Train G: .NET NuGet replay proof.
+  Train H: FODS/FODT deepening (2+2 new capabilities, tests, release manifests).
+  Train I: 4 non-FODS/FODT format track advances.
+  Train J: Phase Audit 12 repair + Phase Audit 13 AI-assisted.
+  Train K: Acquisition/spec-cache/sample authority report.
+  Train L: Docs/memory/master-plan sync.
+  Train M: Final adversarial IV + self-verifying bundle + delivered external sidecar.
+
+require_clean_git: true
+sidecar_required: true
+final_proof_policy: external_sidecar
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r62/00-preflight.md
+  - reports/r62/lane-ownership.md
+  - reports/r62/risk-register.md
+  - reports/r62/work-ahead-policy.md
+  - reports/r62/r61-independent-verification.md
+  - reports/r62/r61-defect-ledger.md
+  - reports/r62/r61-defect-ledger.json
+  - reports/r62/ai-acceleration-plan.md
+  - reports/r62/ai-evidence-contradiction-review.json
+  - reports/r62/ai-package-artifact-review.json
+  - reports/r62/ai-test-triage-review.json
+  - reports/r62/ai-taskcard-registry-drift-review.json
+  - reports/r62/ai-sprint-compression-review.md
+  - reports/r62/ai-telemetry-controlled-acceleration.md
+  - reports/r62/multi-mega-train-scoreboard.md
+  - reports/r62/final-verdict.md
+  - tests/evidence/test_r62_delivered_external_sidecar_required.py
+  - tests/evidence/test_r62_final_response_sidecar_path_exists.py
+  - tests/evidence/test_r62_sidecar_not_inside_zip.py
+  - tests/python/fods/test_r62_fods_deepening.py
+  - tests/python/fodt/test_r62_fodt_deepening.py
+  - tools/evidence/contracts/r62-ai-accelerated-sidecar-python-rc.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - run-environment.txt
+  - r61-iv-summary.txt
+  - ai-acceleration-summary.txt
+  - delivered-sidecar-proof-summary.txt
+  - python-rc-artifacts-summary.txt
+  - installed-wheel-api-proof-summary.txt
+  - fods-fodt-deepening-summary.txt
+  - format-advancement-summary.txt
+  - phase-audit-13-summary.txt
+  - ai-governance-summary.txt
+  - invariants-output.txt
+  - deferred-work-r63.txt
+  - state-snapshot-output.txt
+  - spec-cache-authority-summary.txt
+  - validator-hardening-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-logs-summary.txt
+  - sidecar-delivery-verification.txt
+  - python-wheel-build-report.txt
+  - extraction-replay-summary.txt

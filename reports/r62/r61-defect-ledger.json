@@ -1,0 +1,79 @@
+{
+  "sprint": "FORMAT-FACTORY-R62-AI-ACCELERATED-DELIVERED-SIDECAR-PYTHON-RC-PHASE13-MEGA-TRAIN-001",
+  "date": "2026-05-24",
+  "r61_reclassified_verdict": "R61_SOURCE_AND_DOTNET_PROGRESS_ACCEPTED_SELF_VERIFYING_RC_REJECTED",
+  "defects": [
+    {
+      "id": "IV-R61-001",
+      "severity": "critical",
+      "category": "sidecar",
+      "description": "External sidecar not delivered with uploaded ZIP",
+      "repair_train": "Train C",
+      "status": "REPAIRED",
+      "repair_evidence": "tests/evidence/test_r62_delivered_external_sidecar_required.py"
+    },
+    {
+      "id": "IV-R61-002",
+      "severity": "critical",
+      "category": "sidecar",
+      "description": "Contract sidecar_required: true but no sidecar present in delivered artifact",
+      "repair_train": "Train C",
+      "status": "REPAIRED",
+      "repair_evidence": "tests/evidence/test_r62_sidecar_not_inside_zip.py"
+    },
+    {
+      "id": "IV-R61-003",
+      "severity": "critical",
+      "category": "validation",
+      "description": "Validation without sidecar fails — not self-verifying as delivered",
+      "repair_train": "Train C",
+      "status": "REPAIRED",
+      "repair_evidence": "missing-sidecar-negative-proof.txt in metadata"
+    },
+    {
+      "id": "IV-R61-004",
+      "severity": "high",
+      "category": "proof",
+      "description": "Internal proof SHA ≠ uploaded ZIP SHA; must use external sidecar protocol",
+      "repair_train": "Train C",
+      "status": "REPAIRED",
+      "repair_evidence": "tests/evidence/test_r62_final_response_sidecar_path_exists.py"
+    },
+    {
+      "id": "IV-R61-005",
+      "severity": "high",
+      "category": "packaging",
+      "description": "Python wheels and sdists absent from R61 bundle (0 Python artifacts)",
+      "repair_train": "Train D",
+      "status": "REPAIRED",
+      "repair_evidence": "bundle-metadata/package-artifacts/ now contains 20 Python artifacts"
+    },
+    {
+      "id": "IV-R61-006",
+      "severity": "medium",
+      "category": "packaging",
+      "description": "Python artifact manifest references external R60 bundle instead of self-contained",
+      "repair_train": "Train D",
+      "status": "REPAIRED",
+      "repair_evidence": "package-artifact-manifest.yaml updated to self_contained policy"
+    },
+    {
+      "id": "IV-R61-007",
+      "severity": "high",
+      "category": "installed",
+      "description": "R61 new Python APIs (workbook_formula_list, workbook_cell_range, document_list_stats, document_reading_level) not proven from installed wheels",
+      "repair_train": "Train E",
+      "status": "REPAIRED",
+      "repair_evidence": "reports/r62/installed-current-api-smoke.md"
+    },
+    {
+      "id": "IV-R61-008",
+      "severity": "medium",
+      "category": "ai",
+      "description": "AI was fixture/passive only in R61; no AI contradiction reviewer deployed",
+      "repair_train": "Train B",
+      "status": "REPAIRED",
+      "repair_evidence": "reports/r62/ai-evidence-contradiction-review.json"
+    }
+  ]
+}
