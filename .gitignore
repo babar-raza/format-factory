@@ -134,3 +134,11 @@ bundle-metadata/
 reports/ai/ai-platform-*/
 reports/ai/ai-platform-final-deep-plan-healing-*/
 
+
+# ============================================================
+# R58 Train M: Sidecar proof files must never be committed
+# INV-006: .sha256-proof.json sidecars are external to ZIP,
+# stored in .local/ or reports/ but NOT git-tracked.
+# ============================================================
+reports/**/*.sha256-proof.json
+.local/**/*.sha256-proof.json

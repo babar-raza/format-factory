@@ -1531,6 +1531,34 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             for msg in artifact_policy_hits:
                 errors.append(msg)
 
+            # R56 unwired checks — wired in R58 Train C
+            scoreboard_hits = check_scoreboard_finality(zf, metadata_files_content)
+            for msg in scoreboard_hits:
+                errors.append(msg)
+            embedded_sidecar_hits = check_embedded_sidecar_bundle_match(zf, str(bundle_path))
+            for msg in embedded_sidecar_hits:
+                errors.append(msg)
+            nested_zip_hits = check_nested_zips_allowed(zf, contract)
+            for msg in nested_zip_hits:
+                errors.append(msg)
+            package_claim_hits = check_package_claim_policy_consistency(metadata_files_content, contract)
+            for msg in package_claim_hits:
+                errors.append(msg)
+
+            # R58 Train C: new hardening checks
+            pycache_hits = check_pycache_in_bundle(zf)
+            for msg in pycache_hits:
+                errors.append(msg)
+            state_pending_hits = check_state_sprint_pending(zf)
+            for msg in state_pending_hits:
+                errors.append(msg)
+            repo_sidecar_hits = check_repo_sidecar_not_inside_zip(zf, str(bundle_path))
+            for msg in repo_sidecar_hits:
+                errors.append(msg)
+            scoreboard_lane_hits = check_scoreboard_lanes_in_progress(zf)
+            for msg in scoreboard_lane_hits:
+                errors.append(msg)
+
         identity_hits = check_metadata_identity(
             metadata_files_content,
             require_identity=require_metadata_identity,
@@ -1725,7 +1753,8 @@ def check_sidecar_proof(bundle_path: str, sidecar_path: str) -> "list[str]":
         errors.append(f"SIDECAR_PROOF: cannot read bundle for SHA check: {exc}")
         return errors
 
-    claimed_sha = sidecar.get("sha256", "")
+    # R58: backward-compat — accept bundle_sha256 if sha256 not present
+    claimed_sha = sidecar.get("sha256") or sidecar.get("bundle_sha256", "")
     if actual_sha.lower() != str(claimed_sha).lower():
         errors.append(
             f"SIDECAR_PROOF_SHA_MISMATCH: sidecar claims sha256={claimed_sha!r} "
@@ -1935,6 +1964,158 @@ def check_package_claim_policy_consistency(metadata_files_content: dict, contrac
             f"{found_tokens}. "
             f"Either remove the package RC language from the verdict, or change the policy to "
             f"'external_ref' or 'self_contained' and supply actual artifacts. (R56-IV-R55-002)"
+        )
+    return errors
+
+
+def check_pycache_in_bundle(zf) -> "list[str]":
+    """R58 Train C: Detect __pycache__ directories or .pyc files in the repo portion of the bundle.
+
+    These compiled artifacts are environment-specific, not version-controlled, and must
+    not appear in evidence bundles. Their presence indicates the bundle was built from an
+    unclean working tree or a non-standard include list.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    errors: list[str] = []
+    pycache_entries = [
+        e for e in zf.namelist()
+        if e.startswith("repo/") and ("__pycache__" in e or e.endswith(".pyc"))
+    ]
+    if pycache_entries:
+        sample = pycache_entries[:5]
+        errors.append(
+            f"BUNDLE_PYCACHE_PRESENT: bundle contains {len(pycache_entries)} __pycache__/__pyc file(s). "
+            f"Sample: {sample}. "
+            f"These compiled artifacts must not be in evidence bundles. "
+            f"Add __pycache__/ and *.pyc to forbidden_patterns in the contract, or clean build artifacts "
+            f"before bundling. (R58-IV-R57-012)"
+        )
+    return errors
+
+
+def check_state_sprint_pending(zf) -> "list[str]":
+    """R58 Train C: Detect if state/current-state.md latest sprint shows PENDING verdict.
+
+    A PENDING verdict in state/current-state.md means state_snapshot.py was run before
+    the sprint completed, leaving the bundle in an inconsistent state.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    errors: list[str] = []
+    state_content = ""
+    for candidate in ("repo/state/current-state.md", "repo/state/current-state.json"):
+        if candidate in zf.namelist():
+            try:
+                state_content = zf.read(candidate).decode("utf-8", errors="replace")
+            except Exception:
+                pass
+            if state_content:
+                break
+
+    if not state_content:
+        return errors
+
+    # Detect "Latest sprint: RXX - PENDING" pattern
+    if re.search(r"Latest sprint:.*PENDING", state_content, re.IGNORECASE):
+        errors.append(
+            "STATE_SPRINT_PENDING: state/current-state.md shows latest sprint with PENDING verdict. "
+            "Run state_snapshot.py AFTER writing the final verdict and before building the bundle. "
+            "(R58-IV-R57-004)"
+        )
+    # Detect JSON verdict: PENDING
+    if '"verdict": "PENDING"' in state_content or "'verdict': 'PENDING'" in state_content:
+        errors.append(
+            "STATE_SPRINT_PENDING: state/current-state.json shows verdict=PENDING. "
+            "Run state_snapshot.py after final verdict is complete. (R58-IV-R57-004)"
+        )
+    return errors
+
+
+def check_repo_sidecar_not_inside_zip(zf, bundle_path: str) -> "list[str]":
+    """R58 Train B: A sidecar proof file for the current bundle must not appear inside the ZIP.
+
+    The sidecar (*.sha256-proof.json) must live OUTSIDE the ZIP it proves. If the sidecar
+    is committed to the repo and the repo is bundled, the sidecar ends up inside the ZIP,
+    making it impossible to be the authoritative external proof of the final ZIP's SHA.
+
+    Also catches the case where a sidecar committed to reports/<run>/ has SHA matching
+    a prior build (not the final build), causing SHA mismatch.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    import json as _json
+    errors: list[str] = []
+    bundle_name = Path(bundle_path).name
+
+    # Find any .sha256-proof.json files in the repo portion of the bundle
+    sidecar_in_repo = [
+        e for e in zf.namelist()
+        if e.startswith("repo/") and e.endswith(".sha256-proof.json")
+    ]
+    for entry in sidecar_in_repo:
+        try:
+            sidecar = _json.loads(zf.read(entry).decode("utf-8", errors="replace"))
+        except Exception:
+            continue
+        sidecar_bundle_filename = sidecar.get("bundle_filename", "")
+        if sidecar_bundle_filename == bundle_name or bundle_name in sidecar_bundle_filename:
+            errors.append(
+                f"SIDECAR_INSIDE_ZIP: {entry!r} is a sidecar for this bundle ({bundle_name!r}) "
+                f"but it is committed to the repo and thus INSIDE the ZIP. "
+                f"A sidecar cannot prove its own containing ZIP's SHA. "
+                f"Do not commit the sidecar to the repo. Write it to .local/ (gitignored) only. "
+                f"(R58-IV-R57-002)"
+            )
+    return errors
+
+
+def check_scoreboard_lanes_in_progress(zf) -> "list[str]":
+    """R58 Train C: Detect IN_PROGRESS lanes in the multi-mega-train scoreboard.
+
+    Any lane remaining IN_PROGRESS when the bundle is built invalidates the closure claim.
+    The final-verdict.md must also not show IN_PROGRESS for any train.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    errors: list[str] = []
+
+    # Find scoreboard in repo
+    scoreboard_content = ""
+    verdict_content = ""
+    for entry in zf.namelist():
+        if "multi-mega-train-scoreboard" in entry and entry.endswith(".md"):
+            try:
+                scoreboard_content = zf.read(entry).decode("utf-8", errors="replace")
+            except Exception:
+                pass
+        if entry.startswith("repo/reports/") and entry.endswith("/final-verdict.md"):
+            try:
+                verdict_content = zf.read(entry).decode("utf-8", errors="replace")
+            except Exception:
+                pass
+
+    # Check scoreboard for IN_PROGRESS
+    if scoreboard_content and "IN_PROGRESS" in scoreboard_content:
+        errors.append(
+            "SCOREBOARD_LANE_IN_PROGRESS: multi-mega-train-scoreboard.md contains IN_PROGRESS lane(s). "
+            "All lanes must be COMPLETE or documented as deferred before final bundle closure. "
+            "(R58-IV-R57-006)"
+        )
+    # Check SCOREBOARD_STATUS line
+    if scoreboard_content and "SCOREBOARD_STATUS" in scoreboard_content:
+        if "IN_PROGRESS" in scoreboard_content.split("SCOREBOARD_STATUS")[-1][:200]:
+            if "SCOREBOARD_LANE_IN_PROGRESS" not in str(errors):
+                errors.append(
+                    "SCOREBOARD_STATUS_IN_PROGRESS: SCOREBOARD_STATUS line shows IN_PROGRESS. "
+                    "Update scoreboard before final bundle build. (R58-IV-R57-006)"
+                )
+    # Check final-verdict.md for IN_PROGRESS
+    if verdict_content and "IN_PROGRESS" in verdict_content:
+        errors.append(
+            "VERDICT_TRAIN_IN_PROGRESS: final-verdict.md contains IN_PROGRESS train(s). "
+            "Update final-verdict.md to reflect actual completion before building bundle. "
+            "(R58-IV-R57-006)"
         )
     return errors
 

@@ -1,0 +1,99 @@
+{
+  "sprint": "FORMAT-FACTORY-R58-TRUE-SELF-VERIFYING-RC-REBUILD-PHASE9-EXPANSION-MEGA-TRAIN-001",
+  "iv_date": "2026-05-24",
+  "subject_sprint": "R57",
+  "subject_sprint_id": "FORMAT-FACTORY-R57-SELF_VERIFYING-RC-REPLAY-PRODUCT-EXPANSION-PHASE8-MEGA-TRAIN-001",
+  "total_defects": 11,
+  "defects": [
+    {
+      "id": "IV-R57-001",
+      "category": "bundle_integrity",
+      "description": "Final ZIP SHA in final-verdict.md does not match actual bundle SHA",
+      "recorded_sha": "9b10186e128e7082888f4c50a4cb66be29b073749d69ace30fb02b55ba3ca238",
+      "actual_sha": "d8a1c0986fdb606ae9f4654d753188b1a3482234a746d35debdeb9a369f56e87",
+      "evidence": ".local/r57-pass2-final.zip SHA-256 computed directly",
+      "r58_repair": "Train M — new Pass-2 build with correct SHA recorded",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-002",
+      "category": "sidecar_protocol",
+      "description": "Sidecar committed to repo is included inside ZIP under repo/reports/r57/r57-pass2-final.zip.sha256-proof.json",
+      "evidence": "zipfile.ZipFile('.local/r57-pass2-final.zip').namelist() includes repo/reports/r57/r57-pass2-final.zip.sha256-proof.json",
+      "r58_repair": "Train B — sidecar must not be committed to repo; only written to .local/ (gitignored)",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-003",
+      "category": "sidecar_schema",
+      "description": "Sidecar uses bundle_sha256 field; validator expects sha256",
+      "evidence": "validate_evidence_bundle.py line 1728: sidecar.get('sha256', ''); sidecar file uses bundle_sha256",
+      "r58_repair": "Train B — canonical schema uses sha256; backward compat for bundle_sha256",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-004",
+      "category": "state_finality",
+      "description": "state/current-state.md shows verdict=PENDING for R57",
+      "evidence": "grep shows: Latest sprint: R57 - PENDING",
+      "r58_repair": "Train M — run state_snapshot.py after final verdict complete",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-005",
+      "category": "state_staleness",
+      "description": "INV-011 blocker text in state references R56 to R57 mismatch (stale)",
+      "evidence": "state/current-state.md: INV-011: state/current-state.md shows R56 but latest contract is R57",
+      "r58_repair": "Train M — run state_snapshot.py which will produce fresh R58 invariants",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-006",
+      "category": "scoreboard_finality",
+      "description": "Train L marked IN_PROGRESS in both final-verdict.md and scoreboard",
+      "evidence": "grep IN_PROGRESS reports/r57/final-verdict.md reports/r57/multi-mega-train-scoreboard.md",
+      "r58_repair": "Train M — R58 verdict and scoreboard will be complete before bundle",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-007",
+      "category": "package_replay",
+      "description": "find_artifact_dir does not check PROJECT_ROOT.parent/bundle-metadata; extracted bundle replay returns None",
+      "evidence": "Extraction simulation: find_artifact_dir returns None when called from extracted repo",
+      "r58_repair": "Train D — add PROJECT_ROOT.parent/bundle-metadata/package-artifacts check",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-008",
+      "category": "artifact_freshness",
+      "description": "Bundled wheels copied from R56, missing workbook_stats/document_stats",
+      "evidence": "workbook_stats not found in FODS wheel neutral_model.py",
+      "r58_repair": "Train E — rebuild wheels from HEAD after Train F exposes functions in public API",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-009",
+      "category": "public_api",
+      "description": "workbook_stats/document_stats not exported from package __init__.py",
+      "evidence": "grep shows no exports in src/python/fods/__init__.py or src/python/fodt/__init__.py",
+      "r58_repair": "Train F — add to __init__.py and __all__",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-010",
+      "category": "format_advancement",
+      "description": "Only CSV advanced as next-format track; four-track claim not met",
+      "evidence": "Scoreboard F: only CSV Gate 6; no TSV/PGM/PBM/DIF/SYLK code changes",
+      "r58_repair": "Train G — TSV Gate 6, PGM deepening, PBM deepening, DIF deepening",
+      "status": "REPAIR_PLANNED"
+    },
+    {
+      "id": "IV-R57-011",
+      "category": "validator_coverage",
+      "description": "Validator PASS despite PENDING state, IN_PROGRESS lanes, stale wheels, sidecar in zip",
+      "evidence": "BUNDLE_VALIDATION: PASS with multiple structural defects present",
+      "r58_repair": "Train C — add stale-state check, IN_PROGRESS scoreboard check, pycache check",
+      "status": "REPAIR_PLANNED"
+    }
+  ]
+}

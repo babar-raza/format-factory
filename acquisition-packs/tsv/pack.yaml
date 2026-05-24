@@ -136,3 +136,13 @@ stages:
     unsupported_features: [encoding_to_tsv, streaming_decode, typed_cell_inference, formula_cells, multi_sheet, escaped_tabs, quoted_fields_with_tabs]
     commercial_product_ready: false
     notes: "Gate 5 neutral model. Canonical dict schema validated: format/path/row_count/column_count/headers/rows/has_header/delimiter (tab). Capability descriptor with supported/unsupported. 17 tests all PASS."
+
+  gate_6:
+    status: pass
+    sprint: R58
+    date: "2026-05-24"
+    test_file: tests/python/tsv/test_r58_tsv_gate6_oracle.py
+    test_count: 21
+    test_result: PASS
+    oracle_strategy: "deterministic corpus samples + synthetic TSV strings; no external tool dependency"
+    notes: "Gate 6 oracle. Corpus samples verified (minimal-2x2, multi-column, single-cell). Synthetic: 3-col, numeric-as-string, empty fields, unicode, 50-row count. Error contract verified. 21 tests all PASS."

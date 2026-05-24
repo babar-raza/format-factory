@@ -1,0 +1,86 @@
+sprint_id: FORMAT-FACTORY-R58-TRUE-SELF-VERIFYING-RC-REBUILD-PHASE9-EXPANSION-MEGA-TRAIN-001
+contract_id: FORMAT-FACTORY-R58-TRUE-SELF-VERIFYING-RC-REBUILD-PHASE9-EXPANSION-MEGA-TRAIN-001
+run_number: R58
+description: >
+  R58 14-train mega-train sprint. True self-verifying RC rebuild + Phase 9 expansion.
+  Train A: R57 IV (11 defects). Train B: sidecar/proof protocol repair (IV-R57-001/002/008).
+  Train C: validator hardening — 4 new checks + 4 unwired checks wired (IV-R57-004/005/006/010).
+  Train D: extracted bundle parent-dir fix (IV-R57-007).
+  Train E: 7 wheels rebuilt from HEAD; INSTALLED_SMOKE PASS (IV-R57-009).
+  Train F: workbook_stats/document_stats in public API (IV-R57-009).
+  Train G: TSV Gate 6 + PGM/PBM/DIF deepening (IV-R57-011).
+  Train H: Phase Audit 8 repair + Phase Audit 9 publication dry-run governance.
+  Train I: .NET 302/302 PASS; NuGet local build.
+  Train J: PGM/PBM/DIF spec-caches created.
+  Train K: AI telemetry fixture-only 590/595 PASS.
+  Train L: State snapshot; INV-006 repair (R57 sidecar removed from git).
+  Train M: Final adversarial IV + self-verifying bundle with external sidecar.
+
+require_clean_git: true
+sidecar_required: true
+final_proof_policy: external_sidecar
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r58/00-preflight.md
+  - reports/r58/lane-ownership.md
+  - reports/r58/risk-register.md
+  - reports/r58/work-ahead-policy.md
+  - reports/r58/r57-independent-verification.md
+  - reports/r58/r57-defect-ledger.md
+  - reports/r58/r57-defect-ledger.json
+  - reports/r58/multi-mega-train-scoreboard.md
+  - reports/r58/final-verdict.md
+  - reports/r58/bundle-sidecar-proof-repair.md
+  - reports/r58/extracted-package-replay.md
+  - reports/r58/validator-hardening.md
+  - reports/r58/current-head-package-artifacts.md
+  - reports/r58/next-format-four-track-advancement.md
+  - reports/r58/phase-audit-8-repair.md
+  - reports/r58/phase-audit-9-publication-dryrun-governance.md
+  - reports/r58/dotnet-nuget-local-proof.md
+  - reports/r58/acquisition-spec-cache-sample-authority.md
+  - reports/r58/ai-telemetry-controlled-acceleration.md
+  - reports/r58/docs-taskcards-memory-sync.md
+  - tests/evidence/test_r58_external_sidecar_protocol.py
+  - tests/evidence/test_r58_sidecar_schema_canonical.py
+  - tests/evidence/test_r58_embedded_sidecar_rejected.py
+  - tests/evidence/test_r58_bundle_hygiene_no_pyc.py
+  - tests/evidence/test_r58_state_finality_strictness.py
+  - tests/evidence/test_r58_scoreboard_finality_strictness.py
+  - tests/packaging/test_r58_extracted_bundle_replay.py
+  - tests/python/fods/test_r58_fods_public_api.py
+  - tests/python/fodt/test_r58_fodt_public_api.py
+  - tests/python/tsv/test_r58_tsv_gate6_oracle.py
+  - tests/python/pgm/test_r58_pgm_deepening.py
+  - tests/python/pbm/test_r58_pbm_deepening.py
+  - tests/python/dif/test_r58_dif_deepening.py
+  - tools/evidence/contracts/r58-true-self-verifying-rc.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - final-bundle-validation-proof.txt
+  - blockers-status.txt
+  - python-tests-summary.txt
+  - dotnet-tests-summary.txt
+  - run-environment.txt
+  - r57-iv-summary.txt
+  - bundle-sidecar-proof-repair-summary.txt
+  - package-rc-replay-summary.txt
+  - validator-hardening-summary.txt
+  - product-deepening-summary.txt
+  - format-advancement-summary.txt
+  - phase-audit-8-summary.txt
+  - dotnet-logs-summary.txt
+  - ai-governance-summary.txt
+  - invariants-output.txt
+  - deferred-work-r59.txt
+  - state-snapshot-output.txt
+  - spec-cache-repair-summary.txt
+  - package-artifact-manifest.yaml
+  - metadata-identity-report.md
+  - package-artifacts-index.txt

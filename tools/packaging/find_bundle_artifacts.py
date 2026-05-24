@@ -45,6 +45,9 @@ def find_artifact_dir(run_number: str, project_root: "str | Path") -> "Path | No
     candidates = [
         root / ".local" / f"{run_lower}-metadata" / "package-artifacts",
         root / "bundle-metadata" / "package-artifacts",
+        # R58 IV-R57-007: extracted bundle layout is <root>/repo/ + <root>/bundle-metadata/
+        # When called from extracted <root>/repo as project_root, check the parent directory.
+        root.parent / "bundle-metadata" / "package-artifacts",
         root / "reports" / run_lower / "package-artifacts",
     ]
 
@@ -69,6 +72,8 @@ def find_manifest_path(run_number: str, project_root: "str | Path") -> "Path | N
     candidates = [
         root / ".local" / f"{run_lower}-metadata" / "package-artifact-manifest.yaml",
         root / "bundle-metadata" / "package-artifact-manifest.yaml",
+        # R58 IV-R57-007: extracted bundle parent-dir check
+        root.parent / "bundle-metadata" / "package-artifact-manifest.yaml",
         root / "reports" / run_lower / "package-artifact-manifest.yaml",
     ]
 
