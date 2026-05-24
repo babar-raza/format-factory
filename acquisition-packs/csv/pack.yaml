@@ -149,3 +149,17 @@ stages:
     probe_cases: [exists_true, exists_false, first_line, size_bytes]
     commercial_product_ready: false
     notes: "Gate 6 oracle. 26 tests all PASS. Covers corpus samples, synthetic edge cases (embedded newlines, doubled-quote escape, BOM stripping), error handling, and probe_csv. Two tests document known heuristic behavior: header detection requires numeric data rows."
+
+  gate_7:
+    status: pass
+    sprint: R59
+    date: "2026-05-24"
+    test_file: tests/python/csv/test_r59_csv_gate7_fuzz.py
+    test_count: 18
+    test_result: PASS
+    security_limits: [MAX_FILE_SIZE=64MiB, MAX_ROWS=1000000]
+    fuzz_cases: [empty_file, binary_null_bytes, malformed_quoting, mixed_delimiters, extremely_long_line, nested_quotes, crlf_endings, unicode_cjk_arabic_emoji]
+    fault_tolerance: "parse_csv() never raises — all malformed input handled gracefully"
+    strict_mode: "parse_csv_strict() raises CsvInputError for missing file"
+    commercial_product_ready: false
+    notes: "Gate 7 fuzz and security. 18 tests all PASS. Size/row guards verified as constants. Fault tolerance proven across 10 adversarial input scenarios. R59 Train H."

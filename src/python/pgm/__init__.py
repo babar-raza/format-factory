@@ -1,1 +1,44 @@
-# format-factory-pgm — PGM (Portable Graymap) parser
+"""
+format-factory-pgm — Python FOSS parser for PGM (Portable Graymap) format.
+
+Public API:
+    parse_pgm(file_path)        — returns result dict (never raises)
+    parse_pgm_strict(file_path) — raises PgmError subclasses on failure
+    probe_pgm(file_path)        — returns header metadata without full decode
+    get_capabilities()          — returns capability dict
+
+License: Apache-2.0
+Package: format-factory-pgm v0.1.0
+Gate history: Gates 1-9 PASSED; Gate 10 R59
+"""
+
+from .pgm_parser import (
+    parse_pgm,
+    parse_pgm_strict,
+    probe_pgm,
+    get_capabilities,
+    PgmError,
+    PgmInvalidMagicError,
+    PgmInvalidHeaderError,
+    PgmSizeError,
+    PgmDecodeError,
+    PgmImage,
+)
+
+__version__ = "0.1.0"
+__track__ = "python-foss"
+__commercial_ready__ = False
+__capability_level__ = "alpha-foss-preview"
+
+__all__ = [
+    "parse_pgm",
+    "parse_pgm_strict",
+    "probe_pgm",
+    "get_capabilities",
+    "PgmError",
+    "PgmInvalidMagicError",
+    "PgmInvalidHeaderError",
+    "PgmSizeError",
+    "PgmDecodeError",
+    "PgmImage",
+]

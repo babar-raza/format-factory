@@ -223,3 +223,65 @@ def workbook_stats(workbook: dict[str, Any]) -> dict[str, Any]:
             "formula_cells": formula,
         })
     return stats
+
+
+# ---------------------------------------------------------------------------
+# Workbook type distribution (R59 — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_type_distribution(workbook: dict[str, Any]) -> dict[str, Any]:
+    """Return a distribution of cell value_types across the workbook.
+
+    Counts how many cells have each value_type (float, int, string, boolean,
+    percentage, currency, date, time, and empty/None). Useful for schema
+    inference and format triage pipelines.
+
+    Returns a dict with:
+      by_type: dict[str, int]  — count per value_type label (empty = no value)
+      total_cells: int
+      per_sheet: list[dict]   — per-sheet breakdown with same by_type structure
+
+    Added in R59 Train G as a product deepening capability.
+    """
+    total_by_type: dict[str, int] = {}
+    total_cells = 0
+    per_sheet = []
+
+    for sheet in workbook.get("sheets", []):
+        sheet_by_type: dict[str, int] = {}
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                vtype = cell.get("value_type") or ("empty" if cell.get("value") is None else "unknown")
+                total_by_type[vtype] = total_by_type.get(vtype, 0) + 1
+                sheet_by_type[vtype] = sheet_by_type.get(vtype, 0) + 1
+                total_cells += 1
+        per_sheet.append({
+            "name": sheet.get("name", ""),
+            "index": sheet.get("index", 0),
+            "by_type": sheet_by_type,
+        })
+
+    return {
+        "by_type": total_by_type,
+        "total_cells": total_cells,
+        "per_sheet": per_sheet,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Find sheet by name (R59 — new capability)
+# ---------------------------------------------------------------------------
+
+def find_sheet_by_name(workbook: dict[str, Any], name: str) -> "dict[str, Any] | None":
+    """Return the first sheet dict whose name matches, or None.
+
+    Case-sensitive match. Useful for programmatic access to named sheets
+    without iterating manually. Returns the full sheet dict from the
+    neutral model (including rows and cells).
+
+    Added in R59 Train G as a product deepening capability.
+    """
+    for sheet in workbook.get("sheets", []):
+        if sheet.get("name") == name:
+            return sheet
+    return None

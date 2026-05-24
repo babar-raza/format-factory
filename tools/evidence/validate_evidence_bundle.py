@@ -669,6 +669,9 @@ PROOF_FILE_PLACEHOLDER_PATTERNS = [
     "TBD",
     "sha to follow",
     "updated after",
+    # R59 Train C: proof file must not claim PENDING validation result
+    "BUNDLE_VALIDATION: PENDING",
+    "validation: pending",
 ]
 
 
@@ -1555,7 +1558,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             repo_sidecar_hits = check_repo_sidecar_not_inside_zip(zf, str(bundle_path))
             for msg in repo_sidecar_hits:
                 errors.append(msg)
-            scoreboard_lane_hits = check_scoreboard_lanes_in_progress(zf)
+            # R59 Train B: pass run_number so validator targets only the current-run final-verdict
+            _run_number = contract.get("run_number", "")
+            scoreboard_lane_hits = check_scoreboard_lanes_in_progress(zf, run_number=_run_number)
             for msg in scoreboard_lane_hits:
                 errors.append(msg)
 
@@ -2072,30 +2077,57 @@ def check_repo_sidecar_not_inside_zip(zf, bundle_path: str) -> "list[str]":
     return errors
 
 
-def check_scoreboard_lanes_in_progress(zf) -> "list[str]":
-    """R58 Train C: Detect IN_PROGRESS lanes in the multi-mega-train scoreboard.
+def check_scoreboard_lanes_in_progress(zf, run_number: str = "") -> "list[str]":
+    """R58 Train C / R59 Train B: Detect IN_PROGRESS in current-run scoreboard and final-verdict.
+
+    R59 fix (IV-R58-006): use run_number to target ONLY the current-run final-verdict.
+    Without this guard, historical final-verdict files (e.g. skills-system-hardening/...) can
+    overwrite the current-run verdict content, causing the IN_PROGRESS check to miss defects.
 
     Any lane remaining IN_PROGRESS when the bundle is built invalidates the closure claim.
-    The final-verdict.md must also not show IN_PROGRESS for any train.
 
     Returns a list of error strings. Empty list means PASS.
     """
     errors: list[str] = []
 
-    # Find scoreboard in repo
+    # Determine the canonical path for the current-run final-verdict.
+    # run_number e.g. "R59" → look for repo/reports/r59/final-verdict.md
+    current_run_verdict_path = ""
+    if run_number:
+        run_lower = run_number.lower()
+        current_run_verdict_path = f"repo/reports/{run_lower}/final-verdict.md"
+
+    # Find scoreboard in repo — use LAST sorted entry (most recent sprint)
     scoreboard_content = ""
+    scoreboard_entries = sorted([
+        e for e in zf.namelist()
+        if "multi-mega-train-scoreboard" in e and e.endswith(".md")
+    ])
+    if scoreboard_entries:
+        try:
+            scoreboard_content = zf.read(scoreboard_entries[-1]).decode("utf-8", errors="replace")
+        except Exception:
+            pass
+
+    # Load current-run final-verdict using run_number (R59 fix IV-R58-006).
+    # If run_number is provided, load ONLY that specific file.
+    # If not provided, fall back to scanning all (legacy behaviour).
     verdict_content = ""
-    for entry in zf.namelist():
-        if "multi-mega-train-scoreboard" in entry and entry.endswith(".md"):
+    if current_run_verdict_path:
+        if current_run_verdict_path in zf.namelist():
             try:
-                scoreboard_content = zf.read(entry).decode("utf-8", errors="replace")
+                verdict_content = zf.read(current_run_verdict_path).decode("utf-8", errors="replace")
             except Exception:
                 pass
-        if entry.startswith("repo/reports/") and entry.endswith("/final-verdict.md"):
-            try:
-                verdict_content = zf.read(entry).decode("utf-8", errors="replace")
-            except Exception:
-                pass
+        # If not found, that itself is a problem but not this check's responsibility.
+    else:
+        # Legacy fallback: scan all final-verdicts; last in namelist wins (may be unreliable)
+        for entry in zf.namelist():
+            if entry.startswith("repo/reports/") and entry.endswith("/final-verdict.md"):
+                try:
+                    verdict_content = zf.read(entry).decode("utf-8", errors="replace")
+                except Exception:
+                    pass
 
     # Check scoreboard for IN_PROGRESS
     if scoreboard_content and "IN_PROGRESS" in scoreboard_content:
@@ -2112,12 +2144,25 @@ def check_scoreboard_lanes_in_progress(zf) -> "list[str]":
                     "SCOREBOARD_STATUS_IN_PROGRESS: SCOREBOARD_STATUS line shows IN_PROGRESS. "
                     "Update scoreboard before final bundle build. (R58-IV-R57-006)"
                 )
-    # Check final-verdict.md for IN_PROGRESS
-    if verdict_content and "IN_PROGRESS" in verdict_content:
+
+    # Check current-run final-verdict for IN_PROGRESS / PENDING / NOT_STARTED
+    INCOMPLETE_TOKENS = ["IN_PROGRESS", "NOT_STARTED", "BUNDLE_VALIDATION: PENDING"]
+    for token in INCOMPLETE_TOKENS:
+        if verdict_content and token in verdict_content:
+            errors.append(
+                f"VERDICT_TRAIN_INCOMPLETE: current-run final-verdict contains '{token}'. "
+                f"All trains must be COMPLETE and bundle validation resolved before final closure. "
+                f"(R59-IV-R58-003, R59-IV-R58-005, R59-IV-R58-006)"
+            )
+            break  # One error per verdict is sufficient
+
+    # Scoreboard vs verdict cross-check: scoreboard ALL_COMPLETE but verdict has incomplete trains
+    if (scoreboard_content and "SCOREBOARD_STATUS: ALL_COMPLETE" in scoreboard_content
+            and verdict_content and any(t in verdict_content for t in INCOMPLETE_TOKENS)):
         errors.append(
-            "VERDICT_TRAIN_IN_PROGRESS: final-verdict.md contains IN_PROGRESS train(s). "
-            "Update final-verdict.md to reflect actual completion before building bundle. "
-            "(R58-IV-R57-006)"
+            "SCOREBOARD_VERDICT_CONTRADICTION: scoreboard claims ALL_COMPLETE but current-run "
+            "final-verdict contains incomplete train markers. Both must agree. "
+            "(R59-IV-R58-004)"
         )
     return errors
 

@@ -1,0 +1,87 @@
+{
+  "sprint": "FORMAT-FACTORY-R59-CLEAN-RC-CLOSURE-PACKAGING-NORMALIZATION-PHASE10-PRODUCT-EXPANSION-MEGA-TRAIN-001",
+  "source_sprint": "R58",
+  "date": "2026-05-24",
+  "defects": [
+    {
+      "id": "IV-R58-003",
+      "title": "Train M IN_PROGRESS in final-verdict.md",
+      "severity": "CRITICAL",
+      "train": "B",
+      "status": "REPAIRED_R59",
+      "description": "reports/r58/final-verdict.md line 37 shows Train M as IN_PROGRESS. Sprint never marked final train complete."
+    },
+    {
+      "id": "IV-R58-004",
+      "title": "Scoreboard ALL_COMPLETE contradicts final-verdict IN_PROGRESS",
+      "severity": "CRITICAL",
+      "train": "B",
+      "status": "REPAIRED_R59",
+      "description": "multi-mega-train-scoreboard.md says ALL_COMPLETE but final-verdict.md says Train M IN_PROGRESS."
+    },
+    {
+      "id": "IV-R58-005",
+      "title": "Validator passed despite current-run IN_PROGRESS in final-verdict",
+      "severity": "CRITICAL",
+      "train": "B",
+      "status": "REPAIRED_R59",
+      "description": "BUNDLE_VALIDATION: PASS was issued even though repo/reports/r58/final-verdict.md contains IN_PROGRESS."
+    },
+    {
+      "id": "IV-R58-006",
+      "title": "Root cause: run_number guard missing in check_scoreboard_lanes_in_progress",
+      "severity": "CRITICAL",
+      "train": "B",
+      "status": "REPAIRED_R59",
+      "description": "Loop over all final-verdict.md files; skills-system-hardening/20260517/final-verdict.md (no IN_PROGRESS) overwrites r58 verdict. Fix: use contract run_number to find specific current-run final-verdict."
+    },
+    {
+      "id": "IV-R58-007",
+      "title": "Stale internal proof SHA in final-bundle-validation-proof.txt",
+      "severity": "HIGH",
+      "train": "C",
+      "status": "REPAIRED_R59",
+      "description": "Proof file SHA 676451... does not match actual bundle SHA d040a288... Proof was written after Pass 1 build, never updated."
+    },
+    {
+      "id": "IV-R58-008",
+      "title": "Real extraction tests skipped in test_r58_extracted_bundle_replay.py",
+      "severity": "HIGH",
+      "train": "D",
+      "status": "REPAIRED_R59",
+      "description": "test_r57_bundle_extraction_finds_artifacts and test_extracted_bundle_manifest_found skip when r57-pass2-final.zip absent. Do not prove current R58 bundle extraction."
+    },
+    {
+      "id": "IV-R58-009",
+      "title": "Full packaging suite fails from extracted bundle",
+      "severity": "HIGH",
+      "train": "D",
+      "status": "REPAIRED_R59",
+      "description": "Legacy tests hardcode .local/r55-metadata, .local/r56-metadata, .local/r57-metadata. All fail when run from extracted R58 bundle."
+    },
+    {
+      "id": "IV-R58-010",
+      "title": "No sdist artifacts built",
+      "severity": "HIGH",
+      "train": "E",
+      "status": "REPAIRED_R59",
+      "description": "R58 package-artifacts contains 7 .whl files only. No .tar.gz source distributions. Python RC claim requires both wheel and sdist per R59 policy."
+    },
+    {
+      "id": "IV-R58-011",
+      "title": ".nupkg files not integrated into package-artifact-manifest.yaml",
+      "severity": "MEDIUM",
+      "train": "F",
+      "status": "REPAIRED_R59",
+      "description": "Two .nupkg files exist in dotnet-nupkgs/ but are not listed in package-artifact-manifest.yaml with SHA-256."
+    },
+    {
+      "id": "IV-R58-012",
+      "title": ".NET raw logs and local consumer proof absent",
+      "severity": "MEDIUM",
+      "train": "F",
+      "status": "REPAIRED_R59",
+      "description": "dotnet-nuget-local-proof.md has summary counts only. No raw dotnet test/pack logs. No local consumer project restore proof."
+    }
+  ]
+}

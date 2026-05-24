@@ -198,6 +198,21 @@ stages:
     commercial_product_ready: false
     notes: "Gate 9 deep-dive capability verification. 6 tests: pixel_count invariant (w*h), magic=P1, dimensions positive, 1x1 field completeness contract ({ok,path,width,height,magic,pixel_count}), all valid field completeness, invalid samples return ok=False. R43 deepening tests verified in R44."
 
+  gate_10:
+    status: local_release_candidate_ready
+    sprint: R59
+    date: "2026-05-24"
+    package_name: aspose-format-factory-pbm
+    package_version: "0.1.0.dev0"
+    track: python-foss
+    wheel: aspose_format_factory_pbm-0.1.0.dev0-py3-none-any.whl
+    wheel_sha256: 18facbf43fddaeda48a35f2ced32a93e0578fa58490ae75211b65f65ec3cff41
+    sdist: aspose_format_factory_pbm-0.1.0.dev0.tar.gz
+    sdist_sha256: 65106d04b7c5af255f8381cda4050c3c557874a065c26e9208e8938d3633d35e
+    publication_authorized: false
+    commercial_product_ready: false
+    notes: "Gate 10 local RC. Wheel + sdist built from HEAD commit. Package matrix updated. __init__.py with proper public API + __version__. R59 Train H."
+
   scope_finalization:
     applied: true
     finalization_date: "2026-05-20"

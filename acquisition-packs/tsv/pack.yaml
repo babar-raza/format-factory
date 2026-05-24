@@ -146,3 +146,18 @@ stages:
     test_result: PASS
     oracle_strategy: "deterministic corpus samples + synthetic TSV strings; no external tool dependency"
     notes: "Gate 6 oracle. Corpus samples verified (minimal-2x2, multi-column, single-cell). Synthetic: 3-col, numeric-as-string, empty fields, unicode, 50-row count. Error contract verified. 21 tests all PASS."
+
+  gate_7:
+    status: pass
+    sprint: R59
+    date: "2026-05-24"
+    test_file: tests/python/tsv/test_r59_tsv_gate7_fuzz.py
+    test_count: 16
+    test_result: PASS
+    security_limits: [MAX_FILE_SIZE=64MiB, MAX_ROWS=1000000]
+    fuzz_cases: [empty_file, binary_null_bytes, extremely_long_line, crlf_endings, unicode_cjk_arabic_emoji, mixed_tab_newline, comma_only_content, 1000_row_stress]
+    fault_tolerance: "parse_tsv() never raises — all malformed input handled gracefully"
+    strict_mode: "parse_tsv_strict() raises TsvInputError for missing file"
+    tab_delimiter_proven: "Tab delimiter used unconditionally; comma-content treated as single column"
+    commercial_product_ready: false
+    notes: "Gate 7 fuzz and security. 16 tests all PASS. Companion to CSV Gate 7 (R59 Train H). Fault tolerance proven across 10 adversarial scenarios. R59 Train J."

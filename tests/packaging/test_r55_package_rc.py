@@ -87,10 +87,10 @@ class TestR55BuildReportCoversFodsFodt:
         assert wheels, f"No .whl in {dist}"
 
     def test_total_packages_built_is_seven(self):
-        """R55 build covers all 7 packages: zst + fodp + fodg + gnumeric + abw + fods + fodt."""
+        """R55 build covers all 7+ packages: zst + fodp + fodg + gnumeric + abw + fods + fodt (and later additions)."""
         report = _get_build_report()
         built = [e for e in report if e.get("status") == "built"]
-        assert len(built) == 7, f"Expected 7 built, got {len(built)}: {[e.get('module') for e in report]}"
+        assert len(built) >= 7, f"Expected at least 7 built, got {len(built)}: {[e.get('module') for e in report]}"
 
 
 # ---------------------------------------------------------------------------

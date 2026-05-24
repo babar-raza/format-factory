@@ -312,3 +312,105 @@ def document_stats(document: dict[str, Any]) -> dict[str, Any]:
                 stats["total_text_length"] += len(cell.get("text", "") or "")
 
     return stats
+
+
+# ---------------------------------------------------------------------------
+# Document heading outline (R59 — new capability)
+# ---------------------------------------------------------------------------
+
+def document_heading_outline(document: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return an ordered list of all headings in the document.
+
+    Each entry is: {"level": int, "text": str, "index": int}
+    where index is the position among all headings (0-based).
+
+    Respects content list (document-order) if present, otherwise uses
+    the blocks list. Only includes blocks with type == "heading".
+
+    Useful for table-of-contents generation and document navigation.
+    Added in R59 Train G as a product deepening capability.
+    """
+    outline: list[dict[str, Any]] = []
+    heading_index = 0
+
+    content = document.get("content", [])
+    if content:
+        blocks = [item["data"] for item in content if item.get("kind") == "block"]
+    else:
+        blocks = document.get("blocks", [])
+
+    for block in blocks:
+        if block.get("type") == "heading":
+            level = block.get("heading_level", 1)
+            text = block.get("text", "")
+            outline.append({"level": level, "text": text, "index": heading_index})
+            heading_index += 1
+
+    return outline
+
+
+# ---------------------------------------------------------------------------
+# Document text content (R59 — new capability)
+# ---------------------------------------------------------------------------
+
+def document_text_content(document: dict[str, Any], separator: str = "\n") -> str:
+    """Return all text content from the document as a single string.
+
+    Concatenates text from blocks (paragraphs + headings), list items,
+    and table cells in document order (uses content list if present).
+
+    Args:
+        document: Parsed FODT document dict.
+        separator: String inserted between content segments (default: newline).
+
+    Useful for full-text extraction and search indexing pipelines.
+    Added in R59 Train G as a product deepening capability.
+    """
+    parts: list[str] = []
+
+    content = document.get("content", [])
+    if content:
+        for item in content:
+            kind = item.get("kind", "")
+            data = item.get("data", {})
+            if kind == "block":
+                runs = data.get("runs", [])
+                if runs:
+                    parts.append("".join(r.get("text", "") or "" for r in runs))
+                else:
+                    text = data.get("text", "") or ""
+                    if text:
+                        parts.append(text)
+            elif kind == "list":
+                for item_entry in data.get("items", []):
+                    text = item_entry.get("text", "") or ""
+                    if text:
+                        parts.append(text)
+            elif kind == "table":
+                for row in data.get("rows", []):
+                    for cell in row.get("cells", []):
+                        text = cell.get("text", "") or ""
+                        if text:
+                            parts.append(text)
+    else:
+        for block in document.get("blocks", []):
+            runs = block.get("runs", [])
+            if runs:
+                parts.append("".join(r.get("text", "") or "" for r in runs))
+            else:
+                text = block.get("text", "") or ""
+                if text:
+                    parts.append(text)
+        for lst in document.get("lists", []):
+            for item_entry in lst.get("items", []):
+                text = item_entry.get("text", "") or ""
+                if text:
+                    parts.append(text)
+        for table in document.get("tables", []):
+            for row in table.get("rows", []):
+                for cell in row.get("cells", []):
+                    text = cell.get("text", "") or ""
+                    if text:
+                        parts.append(text)
+
+    return separator.join(parts)

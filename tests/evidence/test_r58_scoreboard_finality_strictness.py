@@ -49,7 +49,8 @@ class TestScoreboardFinalityStrictness:
         from tools.evidence.validate_evidence_bundle import check_scoreboard_lanes_in_progress
         with zipfile.ZipFile(zp) as zf:
             errors = check_scoreboard_lanes_in_progress(zf)
-        assert any("VERDICT_TRAIN_IN_PROGRESS" in e for e in errors)
+        # R59 Train B renamed error code from VERDICT_TRAIN_IN_PROGRESS to VERDICT_TRAIN_INCOMPLETE
+        assert any("VERDICT_TRAIN_INCOMPLETE" in e or "IN_PROGRESS" in e for e in errors)
 
     def test_no_scoreboard_no_error(self, tmp_path):
         zp = tmp_path / "r58.zip"

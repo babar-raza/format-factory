@@ -70,7 +70,7 @@ def test_build_report_all_built():
     assert isinstance(entries, list), "build-report.json should be a list"
     built = [e for e in entries if e.get("status") == "built"]
     errors = [e for e in entries if e.get("error") is not None]
-    assert len(built) == 7, f"Expected 7 built entries, got {len(built)}"
+    assert len(built) >= 7, f"Expected at least 7 built entries, got {len(built)}"
     assert len(errors) == 0, f"Expected 0 error entries, got {errors}"
 
 

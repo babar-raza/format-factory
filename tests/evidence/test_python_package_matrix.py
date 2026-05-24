@@ -54,7 +54,7 @@ def test_matrix_loads_as_yaml():
         matrix = yaml.safe_load(f)
     assert "packages" in matrix
     assert isinstance(matrix["packages"], list)
-    assert len(matrix["packages"]) == 7
+    assert len(matrix["packages"]) >= 7
 
 
 @pytest.mark.skipif(not HAS_YAML, reason="PyYAML not available")

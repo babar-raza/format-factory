@@ -17,7 +17,7 @@ R57/R58: workbook_stats() exposed in public API
 
 from .parser import parse_fods, parse_fods_strict
 from .writer import write_fods, workbook_to_xml
-from .neutral_model import workbook_stats
+from .neutral_model import workbook_stats, workbook_type_distribution, find_sheet_by_name
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
 
@@ -32,6 +32,8 @@ __all__ = [
     "write_fods",
     "workbook_to_xml",
     "workbook_stats",
+    "workbook_type_distribution",
+    "find_sheet_by_name",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",
