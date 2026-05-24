@@ -66,13 +66,13 @@ All 11 confirmed IV-R57 defects repaired:
 
 ## Bundle Validation (Pass 2)
 
-**BUNDLE_VALIDATION_PASS_2_SHA:** PENDING
-**BUNDLE_VALIDATION_PASS_2_SIZE:** PENDING
-**BUNDLE_VALIDATION_PASS_2_ENTRIES:** PENDING
+**BUNDLE_VALIDATION_PASS_2_SHA:** 074a5b5ce92e7148618487d27cb412ec6b53e76d7649ef36dc54c070ea6bd311
+**BUNDLE_VALIDATION_PASS_2_SIZE:** 4756355
+**BUNDLE_VALIDATION_PASS_2_ENTRIES:** 2554
 
 ---
 
 ## Evidence Bundle
 
-**BUNDLE_VALIDATION: PENDING**
-**Sidecar:** reports/r58/<bundle>.sha256-proof.json (external, not committed)
+**BUNDLE_VALIDATION: PASS**
+**Sidecar:** reports/r58/r58-pass2-final.zip.sha256-proof.json (external, not committed)

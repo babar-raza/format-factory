@@ -22,8 +22,8 @@
 | J | Acquisition/spec-cache | COMPLETE | reports/r58/acquisition-spec-cache-sample-authority.md; PGM/PBM/DIF spec-caches |
 | K | AI telemetry | COMPLETE | reports/r58/ai-telemetry-controlled-acceleration.md; 590/595 PASS |
 | L | Docs/memory/master-plan | COMPLETE | reports/r58/docs-taskcards-memory-sync.md; state snapshot; INV-006 repair |
-| M | Final adversarial IV + bundle | IN_PROGRESS | reports/r58/final-verdict.md (PENDING) |
+| M | Final adversarial IV + bundle | COMPLETE | reports/r58/final-verdict.md; .local/r58-pass2-final.zip; sidecar: reports/r58/r58-pass2-final.zip.sha256-proof.json |
 
 ---
 
-**SCOREBOARD_STATUS: TRAINS_0_THROUGH_L_COMPLETE — TRAIN_M_IN_PROGRESS**
+**SCOREBOARD_STATUS: ALL_COMPLETE**
