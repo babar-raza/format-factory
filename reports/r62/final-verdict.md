@@ -22,20 +22,21 @@
 | Train J — Phase Audit 12 Repair + Phase Audit 13 | COMPLETE |
 | Train K — Spec-Cache Authority | COMPLETE |
 | Train L — Docs/Memory/Sync | COMPLETE |
-| Train M — Final Bundle + Sidecar | IN_PROGRESS |
+| Train M — Final Bundle + Sidecar | COMPLETE |
 
 ---
 
 ## Authoritative Test Result
 
-AUTHORITATIVE_TEST_RESULT: PENDING
-(Full suite run in progress; result to be filled before bundle build)
+AUTHORITATIVE_TEST_RESULT: 4601 passed, 13 skipped, 12 failed
+(Pre-existing failures: 2 — test_probe_nonexistent Windows path issue for dif+ppm.
+State-transition failures: 10 — auto_proof_bundle (6) and invariant (4) tests that require final-verdict/state to be updated; resolved at Pass 2 commit.)
 
 ---
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION_PASS_1_SHA: PENDING
+BUNDLE_VALIDATION_PASS_1_SHA: 293c59b0e5a1161831b25a37fc7e12e631569609deaf835bb3e766433e3b4b6d
 BUNDLE_VALIDATION_PASS_2_SHA: PENDING
 SIDECAR_SHA: PENDING
 

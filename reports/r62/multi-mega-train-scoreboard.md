@@ -22,7 +22,7 @@
 | Train J | Phase Audit 12 Repair + 13 | COMPLETE | PA12 REPAIRED, PA13 PASS, 146 tests |
 | Train K | Spec-Cache Authority | COMPLETE | spec-cache-authority.md |
 | Train L | Docs/Memory/Sync | COMPLETE | MEMORY.md updated, metadata dir populated |
-| Train M | Final Bundle + Sidecar | IN_PROGRESS | (bundle build pending commit) |
+| Train M | Final Bundle + Sidecar | COMPLETE | Pass 1+2 built; sidecar generated; BUNDLE_VALIDATION: PASS |
 
 ---
 

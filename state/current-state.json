@@ -886,21 +886,22 @@
     }
   },
   "evidence_contracts": {
-    "total_contracts": 150,
+    "total_contracts": 152,
     "issues": [
       "r27-ai-platform-full-cycle.yaml: min_metadata_count=10 < 30",
       "r32-truth-matrix-gate-quality-and-drift-recovery.yaml: min_metadata_count=5 < 30"
     ]
   },
   "latest_sprint": {
-    "latest_sprint_number": "R61",
-    "verdict": "R61_CLEAN_DELIVERED_LOCAL_RC_SELF_VERIFYING_PHASE12_PASS",
-    "bundle_sha256": "a81036889e2536220f1d83226a7bfb51bfec2ed0fd683c947dfbe9cddaf27cac"
+    "latest_sprint_number": "R62",
+    "verdict": "PENDING_BUNDLE_VALIDATION"
   },
   "production_blockers": [
     "G11-G_NOT_STARTED: Gate 11 commercial approval requires Babar Raza written approval",
     "GATE8_AWAITING_HUMAN_APPROVAL: ODS/ODT/QOI/XCF/DIF/PPM Gate 8 security review pending",
-    "PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry"
+    "PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry",
+    "INV-011: state/current-state.md shows R61 but latest contract is R62",
+    "INV-011: Run state_snapshot.py to update current-state.md"
   ],
   "gate_11_approved": false,
   "commercial_product_ready": false
