@@ -886,20 +886,22 @@
     }
   },
   "evidence_contracts": {
-    "total_contracts": 146,
+    "total_contracts": 147,
     "issues": [
       "r27-ai-platform-full-cycle.yaml: min_metadata_count=10 < 30",
       "r32-truth-matrix-gate-quality-and-drift-recovery.yaml: min_metadata_count=5 < 30"
     ]
   },
   "latest_sprint": {
-    "latest_sprint_number": "R56",
-    "verdict": "R56_CLOSURE_REPAIR_AND_PRODUCT_EXPANSION_COMPLETE"
+    "latest_sprint_number": "R57",
+    "verdict": "PENDING"
   },
   "production_blockers": [
     "G11-G_NOT_STARTED: Gate 11 commercial approval requires Babar Raza written approval",
     "GATE8_AWAITING_HUMAN_APPROVAL: ODS/ODT/QOI/XCF/DIF/PPM Gate 8 security review pending",
-    "PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry"
+    "PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry",
+    "INV-011: state/current-state.md shows R56 but latest contract is R57",
+    "INV-011: Run state_snapshot.py to update current-state.md"
   ],
   "gate_11_approved": false,
   "commercial_product_ready": false
