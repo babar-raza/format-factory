@@ -24,7 +24,7 @@ R59 repaired 10 R58 IV defects and delivered:
 ## Bundle Validation
 
 BUNDLE_VALIDATION_PASS_1_SHA: c8029516ea7897b6ef7be02fec788529446376d1928b077cfa08d94b2e37f107
-BUNDLE_VALIDATION_PASS_2_SHA: PENDING
+BUNDLE_VALIDATION_PASS_2_SHA: 0a9bb47078cb5e119ca3f6ba3c5a43ca7c17c03b4a131b41f93d4a4bbdfdcb4a
 
 External sidecar: reports/r59/r59-pass2-final.zip.sha256-proof.json
 Authoritative final SHA: see external sidecar
