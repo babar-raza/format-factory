@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R62 - PENDING_BUNDLE_VALIDATION
+**Latest sprint:** R62 - R62_AI_ACCELERATED_DELIVERED_SIDECAR_PYTHON_RC_PHASE13_PASS
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
@@ -18,5 +18,4 @@
 - G11-G_NOT_STARTED: Gate 11 commercial approval requires Babar Raza written approval
 - GATE8_AWAITING_HUMAN_APPROVAL: ODS/ODT/QOI/XCF/DIF/PPM Gate 8 security review pending
 - PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry
-- INV-011: state/current-state.md shows R61 but latest contract is R62
-- INV-011: Run state_snapshot.py to update current-state.md
+- INV-007: reports/r62/final-verdict.md: contains placeholder phrase 'to be updated'
