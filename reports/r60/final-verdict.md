@@ -24,7 +24,7 @@ R60 repaired all 14 R59 IV defects and delivered:
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION_PASS_1_SHA: PENDING
+BUNDLE_VALIDATION_PASS_1_SHA: 6b403967b63fb86bd5951c0a02f917e45ea27cb30830b00371dda2f5adfb3887
 BUNDLE_VALIDATION_PASS_2_SHA: PENDING
 
 External sidecar: reports/r60/r60-pass2-final.zip.sha256-proof.json
