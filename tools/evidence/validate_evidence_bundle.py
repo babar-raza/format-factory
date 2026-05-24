@@ -1893,15 +1893,17 @@ def check_scoreboard_finality(zf, metadata_files_content: dict) -> "list[str]":
     verdict_upper = verdict_content.upper() if verdict_content else ""
     is_complete_claimed = any(t in verdict_upper for t in COMPLETE_VERDICT_TOKENS)
 
-    # Find scoreboard in repo
+    # Find scoreboard in repo — use LAST sorted entry (most recent sprint)
     scoreboard_content = ""
-    for entry in zf.namelist():
-        if "multi-mega-train-scoreboard" in entry and entry.endswith(".md"):
-            try:
-                scoreboard_content = zf.read(entry).decode("utf-8", errors="replace")
-            except Exception:
-                pass
-            break
+    scoreboard_entries = sorted([
+        e for e in zf.namelist()
+        if "multi-mega-train-scoreboard" in e and e.endswith(".md")
+    ])
+    if scoreboard_entries:
+        try:
+            scoreboard_content = zf.read(scoreboard_entries[-1]).decode("utf-8", errors="replace")
+        except Exception:
+            pass
 
     if not scoreboard_content or not is_complete_claimed:
         return errors
