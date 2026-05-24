@@ -25,7 +25,7 @@ R61 repairs all 12 R60 defects and delivers:
 ## Bundle Validation
 
 BUNDLE_VALIDATION_PASS_1_SHA: 8e2e933381839b0011a7567f1fac9ef8f1bf408a8d940d79892aea822fd7686d
-BUNDLE_VALIDATION_PASS_2_SHA: PENDING
+BUNDLE_VALIDATION_PASS_2_SHA: 3154502e9cee496d4e959d5834166066e10431eab0c170a5ed0a5c310863c747
 
 External sidecar: reports/r61/r61-pass2-final.zip.sha256-proof.json
 Authoritative final SHA: see external sidecar
