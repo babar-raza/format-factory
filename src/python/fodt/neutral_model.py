@@ -865,3 +865,108 @@ def document_text_field_warnings(document: dict[str, Any]) -> list[str]:
                 )
 
     return warnings
+
+
+# ---------------------------------------------------------------------------
+# Document footnote/endnote summary (R65 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def document_footnote_endnote_summary(document: dict[str, Any]) -> dict[str, Any]:
+    """Return a summary of footnotes, endnotes, and inline notes in the document.
+
+    Scans all blocks for 'footnotes', 'endnotes', and 'inline_notes' lists
+    (populated by the parser when it detects text:note elements with
+    note-class='footnote' or 'endnote'). Also counts inline note markers
+    found in block runs.
+
+    Returns:
+        footnote_count: int       — number of footnotes
+        endnote_count: int        — number of endnotes
+        inline_note_count: int    — number of inline note markers
+        total: int                — combined count of all notes
+        has_notes: bool           — True if any notes are present
+
+    Useful for academic/legal document analysis and note preservation auditing.
+    Added in R65 Train H as a product deepening capability (footnote/endnote summary).
+    """
+    footnote_count = 0
+    endnote_count = 0
+    inline_note_count = 0
+
+    for block in document.get("blocks", []):
+        footnote_count += len(block.get("footnotes", []))
+        endnote_count += len(block.get("endnotes", []))
+        inline_note_count += len(block.get("inline_notes", []))
+
+        # Also check runs for note markers
+        for run in block.get("runs", []):
+            note_class = run.get("note_class") or run.get("text:note-class")
+            if note_class == "footnote":
+                footnote_count += 1
+            elif note_class == "endnote":
+                endnote_count += 1
+            elif note_class == "inline":
+                inline_note_count += 1
+
+    total = footnote_count + endnote_count + inline_note_count
+    return {
+        "footnote_count": footnote_count,
+        "endnote_count": endnote_count,
+        "inline_note_count": inline_note_count,
+        "total": total,
+        "has_notes": total > 0,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Document image frame list (R65 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def document_image_frame_list(document: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return a list of image frames found in the document.
+
+    Scans all blocks, tables, and content items for 'frames' or 'images'
+    metadata (populated by the parser when it detects draw:frame / draw:image
+    elements). Each entry in the returned list contains:
+      frame_name: str         — the draw:name attribute (or empty)
+      anchor_type: str        — the text:anchor-type (e.g. 'paragraph', 'char')
+      image_href: str         — the xlink:href of the embedded image
+
+    Returns:
+        list[dict] — all image frames found. Empty list if none.
+
+    Useful for image inventory, asset extraction, and document media auditing.
+    Added in R65 Train H as a product deepening capability (image frame inventory).
+    """
+    results: list[dict[str, Any]] = []
+
+    def _scan_frames(frames: list) -> None:
+        for frame in frames:
+            if not isinstance(frame, dict):
+                continue
+            results.append({
+                "frame_name": frame.get("name", frame.get("draw:name", "")),
+                "anchor_type": frame.get("anchor_type", frame.get("text:anchor-type", "")),
+                "image_href": frame.get("image_href", frame.get("xlink:href", "")),
+            })
+
+    # Scan blocks
+    for block in document.get("blocks", []):
+        _scan_frames(block.get("frames", []))
+        _scan_frames(block.get("images", []))
+
+    # Scan content list (document-order)
+    for item in document.get("content", []):
+        data = item.get("data", {})
+        if isinstance(data, dict):
+            _scan_frames(data.get("frames", []))
+            _scan_frames(data.get("images", []))
+
+    # Scan tables (images can be inside table cells)
+    for table in document.get("tables", []):
+        for row in table.get("rows", []):
+            for cell in row.get("cells", []):
+                _scan_frames(cell.get("frames", []))
+                _scan_frames(cell.get("images", []))
+
+    return results

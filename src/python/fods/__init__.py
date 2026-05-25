@@ -17,6 +17,8 @@ Public API:
     workbook_sheet_order(wb)           -- ordered list of sheet names (R62)
     workbook_row_style_summary(wb)    -- row style attributes per sheet (R64)
     workbook_formula_edit_policy(wb)  -- formula edit/lock policy counts (R64)
+    workbook_named_range_list(wb)     -- list of defined named ranges (R65)
+    workbook_column_style_summary(wb) -- column style attributes per sheet (R65)
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0
@@ -44,6 +46,8 @@ from .neutral_model import (
     workbook_column_count,
     workbook_row_style_summary,
     workbook_formula_edit_policy,
+    workbook_named_range_list,
+    workbook_column_style_summary,
 )
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -71,6 +75,8 @@ __all__ = [
     "workbook_column_count",
     "workbook_row_style_summary",
     "workbook_formula_edit_policy",
+    "workbook_named_range_list",
+    "workbook_column_style_summary",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",

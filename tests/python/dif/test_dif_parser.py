@@ -78,7 +78,7 @@ class TestDifDictOutput:
         assert "row_count" in result
 
     def test_error_dict_has_expected_keys(self):
-        result = parse_dif("/nonexistent")
+        result = parse_dif("/nonexistent_path_that_does_not_exist_anywhere")
         assert result["ok"] is False
         assert "error" in result
 
@@ -92,5 +92,5 @@ class TestDifProbe:
         assert result["title"] == "minimal"
 
     def test_probe_nonexistent(self):
-        result = probe_dif("/nonexistent")
+        result = probe_dif("/nonexistent_path_that_does_not_exist_anywhere")
         assert result["exists"] is False

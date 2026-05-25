@@ -126,3 +126,33 @@ def csv_field_type_summary(rows: list) -> dict[str, int]:
                 except (ValueError, TypeError):
                     counts["text"] += 1
     return counts
+
+
+def csv_empty_row_count(rows: list) -> int:
+    """Return the count of rows where all fields are empty.
+
+    A field is considered empty if it is None or an empty/whitespace-only string.
+
+    Args:
+        rows: list of lists (each inner list is a row of field values).
+
+    Returns:
+        int — number of fully-empty rows. 0 if no rows or no empty rows.
+
+    Useful for data quality assessment and sparse-data detection in CSV files.
+    Added in R65 Train I (CSV format track advancement).
+    """
+    count = 0
+    for row in rows:
+        if not isinstance(row, (list, tuple)):
+            count += 1
+            continue
+        if not row:
+            count += 1
+            continue
+        if all(
+            field is None or (isinstance(field, str) and not field.strip())
+            for field in row
+        ):
+            count += 1
+    return count

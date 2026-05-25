@@ -247,7 +247,13 @@ def check_inv003_latest_contract_satisfied(root: Path) -> dict:
         return _result(inv_id, name, False,
                        [f"{selected_path.name}: required_repo_files is not a list"])
 
-    missing = [f for f in required if not (root / f).exists()]
+    # R65: Handle dict-format entries (e.g. {path: "reports/r64/..."}) alongside plain strings
+    def _resolve_path(entry):
+        if isinstance(entry, dict):
+            return entry.get("path", "")
+        return str(entry)
+
+    missing = [_resolve_path(f) for f in required if not (root / _resolve_path(f)).exists()]
     if missing:
         details = [f"Contract: R{max_rn} ({selected_path.name})"] + \
                   [f"MISSING: {f}" for f in missing]

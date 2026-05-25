@@ -1,0 +1,66 @@
+sprint_name: FORMAT-FACTORY-R65-DELIVERY-PACKAGE-RC-REPLAY-AI-LIVE-WORKAHEAD-MEGA-TRAIN-001
+run_number: R65
+date: 2026-05-25
+require_clean_git: true
+sidecar_required: true
+final_proof_policy: external_sidecar
+installed_artifact_policy: self_contained
+min_metadata_count: 30
+
+required_repo_files:
+  - reports/r65/final-verdict.md
+  - reports/r65/multi-mega-train-scoreboard.md
+  - reports/r65/work-ahead-scoreboard.md
+  - reports/r65/r64-independent-verification.md
+  - reports/r65/r64-defect-ledger.md
+  - reports/r65/delivery-package-proof.md
+  - reports/r65/sidecar-finality-test-hardening.md
+  - reports/r65/packaging-replay-normalization.md
+  - reports/r65/state-invariant-repair.md
+  - reports/r65/installed-public-api-proof.md
+  - reports/r65/ai-telemetry-controlled-acceleration.md
+  - reports/r65/fods-fodt-product-advancement.md
+  - reports/r65/non-fods-fodt-four-track-advancement.md
+  - reports/r65/phase-audit-16.md
+  - reports/r65/00-preflight.md
+  - reports/r65/lane-ownership.md
+  - reports/r65/work-ahead-policy.md
+  - reports/r65/risk-register.md
+  - tools/evidence/contracts/r65-delivery-package-rc-replay-ai-live-workahead.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - run-environment.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - delivery-package-validation-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - final-proof-placeholder-negative-proof.txt
+  - extracted-package-replay-summary.txt
+  - installed-public-api-smoke-summary.txt
+  - wheel-install-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - dotnet-local-consumer-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - phase-audit-16-summary.txt
+  - next-format-four-track-summary.txt
+  - workahead-summary.txt
+  - ai-telemetry-summary.txt
+  - validation-command-log.txt
+  - multi-mega-train-scoreboard-final.txt
+  - work-ahead-scoreboard-final.txt
+  - python-tests-summary.txt
+  - invariants-output.txt
+  - state-snapshot-output.txt
+  - blockers-status.txt
+
+forbidden_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/*.pyo"
+  - ".local/evidence-bundles/**"
+  - "**/.sha256-proof.json"

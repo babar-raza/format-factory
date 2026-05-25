@@ -160,3 +160,20 @@ def ppm_brightness_histogram(ppm_doc: dict, bins: int = 4) -> dict[str, int]:
         histogram[bin_labels[bin_index]] += 1
 
     return histogram
+
+
+def ppm_pixel_count(ppm_doc: dict[str, Any]) -> int:
+    """Return the total pixel count for a PPM image (width * height).
+
+    Args:
+        ppm_doc: Parsed PPM document dict (from parse_ppm()).
+
+    Returns:
+        int — total pixel count. 0 if width or height is missing/zero.
+
+    Useful for quick image size assessment without loading pixel data.
+    Added in R65 Train I (PPM format track advancement).
+    """
+    width = ppm_doc.get("width", 0)
+    height = ppm_doc.get("height", 0)
+    return width * height

@@ -120,3 +120,26 @@ def ods_sheet_name_list(ods_doc: dict) -> list[str]:
     """
     sheets = ods_doc.get("sheets", [])
     return [sheet.get("name", "") for sheet in sheets]
+
+
+def ods_formula_cell_count(ods_doc: dict[str, Any]) -> int:
+    """Return the count of cells containing formulas in the ODS document.
+
+    Scans all sheets for cells that carry a 'formula' attribute (non-None).
+
+    Args:
+        ods_doc: Parsed ODS document dict (from parse_ods()).
+
+    Returns:
+        int — number of formula cells across all sheets. 0 if none.
+
+    Useful for spreadsheet auditing and formula complexity assessment.
+    Added in R65 Train I (ODS format track advancement).
+    """
+    count = 0
+    for sheet in ods_doc.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell.get("formula") is not None:
+                    count += 1
+    return count

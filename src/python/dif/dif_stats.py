@@ -143,3 +143,27 @@ def dif_string_value_list(dif_doc: dict[str, Any]) -> list[str]:
             if cell_type in ("string", "text") and val is not None and val != "":
                 result.append(str(val))
     return result
+
+
+def dif_empty_row_count(dif_doc: dict[str, Any]) -> int:
+    """Return the count of rows where all cells are empty in a DIF document.
+
+    A cell is considered empty if its value is None or empty string "".
+
+    Args:
+        dif_doc: Parsed DIF document dict (from parse_dif()).
+
+    Returns:
+        int — number of fully-empty rows. 0 if no rows or no empty rows.
+
+    Useful for data quality assessment and sparse-data detection in DIF files.
+    Added in R65 Train I (DIF format track advancement).
+    """
+    count = 0
+    for row in dif_doc.get("rows", []):
+        if all(
+            cell.get("value") in (None, "")
+            for cell in row
+        ) if row else True:
+            count += 1
+    return count

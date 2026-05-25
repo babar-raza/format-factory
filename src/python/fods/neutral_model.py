@@ -680,3 +680,101 @@ def workbook_formula_edit_policy(workbook: dict[str, Any]) -> dict[str, Any]:
         "locked_formulas": locked,
         "policy": policy,
     }
+
+
+# ---------------------------------------------------------------------------
+# Workbook named range list (R65 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_named_range_list(workbook: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return a list of defined named ranges found in the workbook.
+
+    Scans for named ranges stored in the neutral model under
+    'named_ranges' (a list of dicts) or 'table:named-range' entries.
+    Each entry in the returned list contains:
+      name: str              — the defined name (e.g. 'SalesData')
+      cell_range: str        — the cell range expression (e.g. 'Sheet1.A1:C10')
+      base_cell: str | None  — the base cell address if specified
+
+    Returns:
+        list[dict] — all named ranges found. Empty list if none.
+
+    Useful for understanding workbook structure, formula dependency analysis,
+    and range-based data extraction.
+    Added in R65 Train H as a product deepening capability (named range inventory).
+    """
+    results: list[dict[str, Any]] = []
+
+    # Check explicit named_ranges list (parser may populate this)
+    for nr in workbook.get("named_ranges", []):
+        if isinstance(nr, dict):
+            results.append({
+                "name": nr.get("name", nr.get("table:name", "")),
+                "cell_range": nr.get("cell_range", nr.get("table:cell-range-address", "")),
+                "base_cell": nr.get("base_cell", nr.get("table:base-cell-address")),
+            })
+        elif isinstance(nr, str):
+            results.append({"name": nr, "cell_range": "", "base_cell": None})
+
+    # Also check for named ranges embedded in sheets (some parsers store them per-sheet)
+    for sheet in workbook.get("sheets", []):
+        for nr in sheet.get("named_ranges", []):
+            if isinstance(nr, dict):
+                results.append({
+                    "name": nr.get("name", nr.get("table:name", "")),
+                    "cell_range": nr.get("cell_range", nr.get("table:cell-range-address", "")),
+                    "base_cell": nr.get("base_cell", nr.get("table:base-cell-address")),
+                })
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Workbook column style summary (R65 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_column_style_summary(workbook: dict[str, Any]) -> dict[str, list[str]]:
+    """Return a dict mapping sheet names to lists of column style attributes.
+
+    Scans all columns in each sheet for a 'style' or 'table:style-name'
+    attribute. Columns are found in the sheet's 'columns' list (if the parser
+    populates it). If no columns metadata exists, examines the first row's
+    cells for column-level style hints.
+
+    Returns:
+        dict[str, list[str]] — {sheet_name: [style_name, ...]}
+        Sheets with no styled columns appear as empty lists.
+
+    Useful for understanding column-level formatting, width detection,
+    and style inventory across sheets.
+    Added in R65 Train H as a product deepening capability (column style metadata).
+    """
+    result: dict[str, list[str]] = {}
+    for sheet in workbook.get("sheets", []):
+        sheet_name = sheet.get("name", "")
+        styles: list[str] = []
+
+        # Primary: check explicit columns list
+        columns = sheet.get("columns", [])
+        for col in columns:
+            if isinstance(col, dict):
+                style = (
+                    col.get("style")
+                    or col.get("table:style-name")
+                    or col.get("style_name")
+                )
+                if style:
+                    styles.append(str(style))
+
+        # Fallback: check first row cells for column_style attribute
+        if not styles:
+            rows = sheet.get("rows", [])
+            if rows:
+                first_row = rows[0]
+                for cell in first_row.get("cells", []):
+                    col_style = cell.get("column_style") or cell.get("table:column-style")
+                    if col_style:
+                        styles.append(str(col_style))
+
+        result[sheet_name] = styles
+    return result

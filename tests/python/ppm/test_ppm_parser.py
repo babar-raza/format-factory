@@ -81,7 +81,7 @@ class TestPpmDictOutput:
         assert "pixel_count" in result
 
     def test_error_dict_has_expected_keys(self):
-        result = parse_ppm("/nonexistent")
+        result = parse_ppm("/nonexistent_path_that_does_not_exist_anywhere")
         assert result["ok"] is False
         assert "error" in result
 
@@ -97,5 +97,5 @@ class TestPpmProbe:
         assert result["magic"] == "P3"
 
     def test_probe_nonexistent(self):
-        result = probe_ppm("/nonexistent")
+        result = probe_ppm("/nonexistent_path_that_does_not_exist_anywhere")
         assert result["exists"] is False
