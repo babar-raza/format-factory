@@ -22,7 +22,7 @@
 | Train J | Phase Audit 13 Repair + 14 | COMPLETE | phase-audit-13-repair.md, phase-audit-14.md: PASS |
 | Train K | Acquisition/Spec-Cache Authority | COMPLETE | acquisition-spec-cache-sample-authority.md |
 | Train L | Docs/Memory/Sync | COMPLETE | docs-taskcards-memory-sync.md |
-| Train M | Final Bundle + Sidecar | COMPLETE | Pass 1: b860455...; Pass 2: in progress |
+| Train M | Final Bundle + Sidecar | COMPLETE | Pass 1: b860455...; Pass 2: 355482c...; BUNDLE_VALIDATION: PASS |
 
 ---
 
