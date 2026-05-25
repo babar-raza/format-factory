@@ -778,3 +778,125 @@ def workbook_column_style_summary(workbook: dict[str, Any]) -> dict[str, list[st
 
         result[sheet_name] = styles
     return result
+
+
+# ---------------------------------------------------------------------------
+# Workbook style family list (R66 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_style_family_list(workbook: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return a list of style families and their style counts from the workbook.
+
+    Scans the workbook for style metadata stored in '_auto_styles_elem' and
+    '_styles_elem' (ET elements captured by the parser) or in 'auto_styles'
+    and 'styles' dicts (if the parser populates them as plain dicts).
+
+    Each entry in the returned list contains:
+      family_name: str     -- the style:family attribute (e.g. 'table-cell', 'table')
+      style_count: int     -- number of styles in that family
+
+    Returns:
+        list[dict] -- style families found. Empty list if no style metadata.
+
+    Useful for style inventory, format complexity assessment, and style cleanup.
+    Added in R66 Train H as a product deepening capability (style family inventory).
+    """
+    family_counts: dict[str, int] = {}
+
+    # Check for plain-dict style metadata (parser may populate these)
+    for key in ("auto_styles", "styles", "_auto_styles", "_styles"):
+        styles_data = workbook.get(key)
+        if isinstance(styles_data, list):
+            for style in styles_data:
+                if isinstance(style, dict):
+                    family = style.get("family") or style.get("style:family") or "unknown"
+                    family_counts[family] = family_counts.get(family, 0) + 1
+        elif isinstance(styles_data, dict):
+            for family, items in styles_data.items():
+                if isinstance(items, list):
+                    family_counts[family] = family_counts.get(family, 0) + len(items)
+                elif isinstance(items, int):
+                    family_counts[family] = family_counts.get(family, 0) + items
+
+    # Check for ET element objects (not JSON-serializable, prefixed with _)
+    for elem_key in ("_auto_styles_elem", "_styles_elem"):
+        elem = workbook.get(elem_key)
+        if elem is not None and hasattr(elem, "iter"):
+            try:
+                ns = {"style": "urn:oasis:names:tc:opendocument:xmlns:style:1.0"}
+                for style_elem in elem.iter("{urn:oasis:names:tc:opendocument:xmlns:style:1.0}style"):
+                    family = style_elem.get("{urn:oasis:names:tc:opendocument:xmlns:style:1.0}family", "unknown")
+                    family_counts[family] = family_counts.get(family, 0) + 1
+            except Exception:
+                pass
+
+    return [
+        {"family_name": family, "style_count": count}
+        for family, count in sorted(family_counts.items())
+    ]
+
+
+# ---------------------------------------------------------------------------
+# Workbook data validation summary (R66 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_data_validation_summary(workbook: dict[str, Any]) -> dict[str, Any]:
+    """Return a summary of data validations found in the workbook.
+
+    Scans for data validation metadata stored in:
+    - 'data_validations' list at workbook level
+    - 'content-validations' or 'table:content-validations' element data
+    - per-cell 'validation' or 'table:content-validation-name' attributes
+
+    Returns:
+      validation_count: int              -- number of distinct validation rules
+      validated_cell_ranges: list[str]   -- cell range expressions that have validations
+
+    Useful for spreadsheet auditing and data integrity analysis.
+    Added in R66 Train H as a product deepening capability (data validation inventory).
+    """
+    validation_count = 0
+    validated_cell_ranges: list[str] = []
+
+    # Check explicit data_validations list
+    validations = workbook.get("data_validations", [])
+    if isinstance(validations, list):
+        for v in validations:
+            if isinstance(v, dict):
+                validation_count += 1
+                cell_range = (
+                    v.get("cell_range")
+                    or v.get("table:cell-range-address")
+                    or v.get("range")
+                    or ""
+                )
+                if cell_range:
+                    validated_cell_ranges.append(str(cell_range))
+
+    # Check content-validations at workbook level
+    for key in ("content_validations", "content-validations", "table:content-validations"):
+        cv = workbook.get(key)
+        if isinstance(cv, list):
+            for item in cv:
+                if isinstance(item, dict):
+                    validation_count += 1
+                    name = item.get("name") or item.get("table:name") or ""
+                    if name:
+                        validated_cell_ranges.append(str(name))
+
+    # Scan cells for validation attributes
+    for sheet in workbook.get("sheets", []):
+        sheet_name = sheet.get("name", "")
+        for row_idx, row in enumerate(sheet.get("rows", [])):
+            for col_idx, cell in enumerate(row.get("cells", [])):
+                val_name = (
+                    cell.get("validation")
+                    or cell.get("table:content-validation-name")
+                )
+                if val_name and str(val_name) not in validated_cell_ranges:
+                    validated_cell_ranges.append(str(val_name))
+
+    return {
+        "validation_count": validation_count,
+        "validated_cell_ranges": validated_cell_ranges,
+    }

@@ -19,6 +19,8 @@ Public API:
     workbook_formula_edit_policy(wb)  -- formula edit/lock policy counts (R64)
     workbook_named_range_list(wb)     -- list of defined named ranges (R65)
     workbook_column_style_summary(wb) -- column style attributes per sheet (R65)
+    workbook_style_family_list(wb)    -- style family inventory (R66)
+    workbook_data_validation_summary(wb) -- data validation summary (R66)
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0
@@ -48,6 +50,8 @@ from .neutral_model import (
     workbook_formula_edit_policy,
     workbook_named_range_list,
     workbook_column_style_summary,
+    workbook_style_family_list,
+    workbook_data_validation_summary,
 )
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -77,6 +81,8 @@ __all__ = [
     "workbook_formula_edit_policy",
     "workbook_named_range_list",
     "workbook_column_style_summary",
+    "workbook_style_family_list",
+    "workbook_data_validation_summary",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",

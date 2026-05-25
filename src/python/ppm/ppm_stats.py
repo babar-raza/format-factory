@@ -177,3 +177,48 @@ def ppm_pixel_count(ppm_doc: dict[str, Any]) -> int:
     width = ppm_doc.get("width", 0)
     height = ppm_doc.get("height", 0)
     return width * height
+
+
+def ppm_channel_histogram(ppm_doc: dict[str, Any]) -> dict[str, list[int]]:
+    """Return per-channel histograms for PPM image pixel data.
+
+    Computes a 256-bin histogram for each RGB channel (red, green, blue).
+    Each bin counts how many pixels have that channel value (0-255).
+    For images with maxval != 255, values are scaled to the 0-255 range.
+
+    Args:
+        ppm_doc: Parsed PPM document dict (must contain 'pixels' list).
+
+    Returns:
+        dict with keys 'red', 'green', 'blue', each mapping to a list
+        of 256 ints. Returns zeroed histograms if no pixel data.
+
+    Useful for color distribution analysis, exposure assessment, and
+    image quality metrics.
+    Added in R66 Train I (PPM format track advancement).
+    """
+    red = [0] * 256
+    green = [0] * 256
+    blue = [0] * 256
+
+    pixels = ppm_doc.get("pixels", [])
+    maxval = ppm_doc.get("maxval", 255)
+
+    for pixel in pixels:
+        if not isinstance(pixel, (list, tuple)) or len(pixel) < 3:
+            continue
+        r, g, b = pixel[0], pixel[1], pixel[2]
+        # Scale to 0-255 if maxval differs
+        if maxval != 255 and maxval > 0:
+            r = int(r * 255 / maxval)
+            g = int(g * 255 / maxval)
+            b = int(b * 255 / maxval)
+        # Clamp to valid range
+        r = max(0, min(255, r))
+        g = max(0, min(255, g))
+        b = max(0, min(255, b))
+        red[r] += 1
+        green[g] += 1
+        blue[b] += 1
+
+    return {"red": red, "green": green, "blue": blue}

@@ -970,3 +970,138 @@ def document_image_frame_list(document: dict[str, Any]) -> list[dict[str, Any]]:
                 _scan_frames(cell.get("images", []))
 
     return results
+
+
+# ---------------------------------------------------------------------------
+# Document section summary (R66 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def document_section_summary(document: dict[str, Any]) -> dict[str, Any]:
+    """Return a summary of text sections found in the document.
+
+    Scans blocks and content for section metadata. ODF documents may contain
+    text:section elements that define named document sections (used for
+    conditional content, linked sections, or write-protection).
+
+    Looks for:
+    - 'sections' list at document level
+    - 'section' or 'text:section-name' attributes on blocks
+    - content items with kind == 'section'
+
+    Returns:
+      section_count: int           -- number of distinct sections found
+      section_names: list[str]     -- names of sections in document order
+
+    Useful for document structure analysis and section-based content extraction.
+    Added in R66 Train H as a product deepening capability (section inventory).
+    """
+    section_names: list[str] = []
+    seen: set[str] = set()
+
+    # Check explicit sections list at document level
+    sections = document.get("sections", [])
+    if isinstance(sections, list):
+        for sec in sections:
+            if isinstance(sec, dict):
+                name = sec.get("name") or sec.get("text:name") or sec.get("text:section-name") or ""
+                if name and name not in seen:
+                    section_names.append(str(name))
+                    seen.add(name)
+            elif isinstance(sec, str) and sec not in seen:
+                section_names.append(sec)
+                seen.add(sec)
+
+    # Check content list for section items
+    for item in document.get("content", []):
+        if item.get("kind") == "section":
+            data = item.get("data", {})
+            name = data.get("name") or data.get("text:name") or "" if isinstance(data, dict) else ""
+            if name and name not in seen:
+                section_names.append(str(name))
+                seen.add(name)
+
+    # Scan blocks for section attributes
+    for block in document.get("blocks", []):
+        sec_name = (
+            block.get("section")
+            or block.get("text:section-name")
+            or block.get("section_name")
+        )
+        if sec_name and str(sec_name) not in seen:
+            section_names.append(str(sec_name))
+            seen.add(str(sec_name))
+
+    return {
+        "section_count": len(section_names),
+        "section_names": section_names,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Document change tracking summary (R66 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def document_change_tracking_summary(document: dict[str, Any]) -> dict[str, Any]:
+    """Return a summary of tracked changes found in the document.
+
+    ODF documents may contain text:tracked-changes elements that record
+    insertions, deletions, and format changes made by different authors.
+
+    Scans for:
+    - 'tracked_changes' list at document level
+    - 'changes' or 'text:tracked-changes' metadata
+    - per-block 'change_id' or 'text:change-start' attributes
+
+    Returns:
+      tracked_change_count: int     -- number of tracked change records
+      author_names: list[str]       -- unique author names found (in order)
+
+    Useful for document review, collaboration analysis, and change auditing.
+    Added in R66 Train H as a product deepening capability (change tracking summary).
+    """
+    change_count = 0
+    authors: list[str] = []
+    seen_authors: set[str] = set()
+
+    # Check explicit tracked_changes list
+    for key in ("tracked_changes", "changes", "text:tracked-changes"):
+        changes = document.get(key)
+        if isinstance(changes, list):
+            for change in changes:
+                if isinstance(change, dict):
+                    change_count += 1
+                    author = (
+                        change.get("author")
+                        or change.get("dc:creator")
+                        or change.get("creator")
+                        or ""
+                    )
+                    if author and str(author) not in seen_authors:
+                        authors.append(str(author))
+                        seen_authors.add(str(author))
+                elif isinstance(change, str):
+                    change_count += 1
+
+    # Scan blocks for change markers
+    for block in document.get("blocks", []):
+        change_id = (
+            block.get("change_id")
+            or block.get("text:change-start")
+            or block.get("text:change")
+        )
+        if change_id:
+            change_count += 1
+
+        # Check runs for change markers
+        for run in block.get("runs", []):
+            run_change = (
+                run.get("change_id")
+                or run.get("text:change-start")
+            )
+            if run_change:
+                change_count += 1
+
+    return {
+        "tracked_change_count": change_count,
+        "author_names": authors,
+    }

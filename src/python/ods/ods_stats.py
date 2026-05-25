@@ -143,3 +143,45 @@ def ods_formula_cell_count(ods_doc: dict[str, Any]) -> int:
                 if cell.get("formula") is not None:
                     count += 1
     return count
+
+
+def ods_data_validation_count(ods_doc: dict[str, Any]) -> int:
+    """Return the count of data validation rules in the ODS document.
+
+    Scans for data validation metadata stored in:
+    - 'data_validations' list at document level
+    - 'content_validations' or 'content-validations' lists
+    - per-cell 'validation' or 'table:content-validation-name' attributes
+
+    Args:
+        ods_doc: Parsed ODS document dict (from parse_ods()).
+
+    Returns:
+        int -- number of data validation rules found. 0 if none.
+
+    Useful for spreadsheet auditing and data integrity analysis.
+    Added in R66 Train I (ODS format track advancement).
+    """
+    count = 0
+
+    # Check explicit validation lists at document level
+    for key in ("data_validations", "content_validations", "content-validations"):
+        validations = ods_doc.get(key)
+        if isinstance(validations, list):
+            count += len(validations)
+
+    # If no explicit list found, scan cells for validation attributes
+    if count == 0:
+        seen: set[str] = set()
+        for sheet in ods_doc.get("sheets", []):
+            for row in sheet.get("rows", []):
+                for cell in row.get("cells", []):
+                    val_name = (
+                        cell.get("validation")
+                        or cell.get("table:content-validation-name")
+                    )
+                    if val_name and str(val_name) not in seen:
+                        seen.add(str(val_name))
+                        count += 1
+
+    return count

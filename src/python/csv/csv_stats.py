@@ -156,3 +156,31 @@ def csv_empty_row_count(rows: list) -> int:
         ):
             count += 1
     return count
+
+
+def csv_max_field_length(rows: list) -> int:
+    """Return the maximum field length (character count) across all rows.
+
+    Scans every field in every row and returns the length of the longest
+    field value (as a string). Useful for detecting oversized fields,
+    column width estimation, and data quality checks.
+
+    Args:
+        rows: list of lists (each inner list is a row of field values).
+
+    Returns:
+        int -- maximum field length in characters. 0 if no fields or empty rows.
+
+    Added in R66 Train I (CSV format track advancement).
+    """
+    max_len = 0
+    for row in rows:
+        if not isinstance(row, (list, tuple)):
+            continue
+        for field in row:
+            if field is None:
+                continue
+            field_len = len(str(field))
+            if field_len > max_len:
+                max_len = field_len
+    return max_len

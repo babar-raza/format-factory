@@ -19,6 +19,8 @@ Public API:
     document_text_field_warnings(document)     -- text field warnings (R64)
     document_footnote_endnote_summary(document) -- footnote/endnote/inline summary (R65)
     document_image_frame_list(document)         -- image frame inventory (R65)
+    document_section_summary(document)          -- section inventory (R66)
+    document_change_tracking_summary(document)  -- change tracking summary (R66)
 
 License: Apache-2.0
 Package: format-factory-fodt v0.1.0
@@ -48,6 +50,8 @@ from .neutral_model import (
     document_text_field_warnings,
     document_footnote_endnote_summary,
     document_image_frame_list,
+    document_section_summary,
+    document_change_tracking_summary,
 )
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -77,6 +81,8 @@ __all__ = [
     "document_text_field_warnings",
     "document_footnote_endnote_summary",
     "document_image_frame_list",
+    "document_section_summary",
+    "document_change_tracking_summary",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

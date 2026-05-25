@@ -167,3 +167,29 @@ def dif_empty_row_count(dif_doc: dict[str, Any]) -> int:
         ) if row else True:
             count += 1
     return count
+
+
+def dif_string_cell_count(dif_doc: dict[str, Any]) -> int:
+    """Return the count of string-type cells in the DIF document.
+
+    Scans all rows for cells with type 'string' or 'text' that have a
+    non-empty value. This is a simpler alternative to dif_string_value_list()
+    when only the count is needed.
+
+    Args:
+        dif_doc: Parsed DIF document dict (from parse_dif()).
+
+    Returns:
+        int -- number of string cells found. 0 if none.
+
+    Useful for content type assessment and format triage.
+    Added in R66 Train I (DIF format track advancement).
+    """
+    count = 0
+    for row in dif_doc.get("rows", []):
+        for cell in row:
+            cell_type = cell.get("type", "")
+            val = cell.get("value")
+            if cell_type in ("string", "text") and val is not None and val != "":
+                count += 1
+    return count

@@ -56,9 +56,17 @@ def find_artifact_dir(run_number: str, project_root: "str | Path") -> "Path | No
     candidates = []
 
     # R59 Train D: explicit override via environment variable
+    # R66 Train D: env-var override must match run number to prevent false positives
     env_override = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR", "")
     if env_override:
-        candidates.append(Path(env_override) / "package-artifacts")
+        env_path = Path(env_override)
+        sprint_id_file = env_path / "sprint-id.txt"
+        env_matches_run = True  # default allow if no sprint-id.txt
+        if sprint_id_file.is_file():
+            sprint_content = sprint_id_file.read_text(encoding="utf-8").lower()
+            env_matches_run = run_lower in sprint_content
+        if env_matches_run:
+            candidates.append(env_path / "package-artifacts")
 
     candidates += [
         root / ".local" / f"{run_lower}-metadata" / "package-artifacts",
@@ -93,9 +101,17 @@ def find_manifest_path(run_number: str, project_root: "str | Path") -> "Path | N
     candidates = []
 
     # R59 Train D: explicit override via environment variable
+    # R66 Train D: env-var override must match run number to prevent false positives
     env_override = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR", "")
     if env_override:
-        candidates.append(Path(env_override) / "package-artifact-manifest.yaml")
+        env_path = Path(env_override)
+        sprint_id_file = env_path / "sprint-id.txt"
+        env_matches_run = True  # default allow if no sprint-id.txt
+        if sprint_id_file.is_file():
+            sprint_content = sprint_id_file.read_text(encoding="utf-8").lower()
+            env_matches_run = run_lower in sprint_content
+        if env_matches_run:
+            candidates.append(env_path / "package-artifact-manifest.yaml")
 
     candidates += [
         root / ".local" / f"{run_lower}-metadata" / "package-artifact-manifest.yaml",

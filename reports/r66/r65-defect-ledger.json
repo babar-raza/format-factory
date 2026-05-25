@@ -1,0 +1,20 @@
+{
+  "sprint": "R65",
+  "verification_date": "2026-05-25",
+  "classification": "R65_DELIVERY_PACKAGE_PROTOCOL_ACCEPTED_RC_CLOSURE_REJECTED",
+  "defect_count": 10,
+  "rc_blocking": 8,
+  "informational": 2,
+  "defects": [
+    {"id": "IV-R65-001", "description": "Bundled state says R65_IN_PROGRESS", "severity": "RC-BLOCKING", "r66_train": "B"},
+    {"id": "IV-R65-002", "description": "Bundled metadata proofs contain placeholders", "severity": "RC-BLOCKING", "r66_train": "C"},
+    {"id": "IV-R65-003", "description": "Bundled invariants output stale R23 content", "severity": "RC-BLOCKING", "r66_train": "B"},
+    {"id": "IV-R65-004", "description": "Package artifact manifest truncated hashes", "severity": "RC-BLOCKING", "r66_train": "E"},
+    {"id": "IV-R65-005", "description": "Dotnet nupkg manifest lacks required fields", "severity": "RC-BLOCKING", "r66_train": "E"},
+    {"id": "IV-R65-006", "description": "Artifact discovery false positive in env-var mode", "severity": "RC-BLOCKING", "r66_train": "D"},
+    {"id": "IV-R65-007", "description": "Sidecar/delivery manifest git_head mismatch", "severity": "RC-BLOCKING", "r66_train": "B"},
+    {"id": "IV-R65-008", "description": "Delivered ZIP missing final state update", "severity": "RC-BLOCKING", "r66_train": "B"},
+    {"id": "IV-R65-009", "description": "Build ordering defect", "severity": "INFO", "r66_train": "B"},
+    {"id": "IV-R65-010", "description": "Tests validate local not bundled content", "severity": "INFO", "r66_train": "F"}
+  ]
+}
