@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R65 - R65_IN_PROGRESS
+**Latest sprint:** R65 - R65_CLEAN_DELIVERY_PACKAGE_LOCAL_RC_WITH_WORKAHEAD_PHASE16_PASS
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
