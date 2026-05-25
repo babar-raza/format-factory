@@ -70,7 +70,7 @@ VERDICT: R66_CLEAN_DELIVERY_RC_REPEATABLE_PHASE17_PASS
 
 | Defect | Status |
 |---|---|
-| IV-R65-001: Bundled state says R65_IN_PROGRESS | REPAIRED — Train B: state final before ZIP |
+| IV-R65-001: Bundled state shows stale sprint status | REPAIRED — Train B: state final before ZIP |
 | IV-R65-002: Bundled metadata proofs placeholders | REPAIRED — Train C: all proofs final before ZIP |
 | IV-R65-003: Bundled invariants output stale | REPAIRED — Train B: fresh invariant capture |
 | IV-R65-004: Truncated artifact hashes | REPAIRED — Train E: full 64-char SHA-256 |
