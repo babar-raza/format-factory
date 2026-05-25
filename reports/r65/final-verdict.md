@@ -45,7 +45,7 @@ AUTHORITATIVE_TEST_RESULT: R65 new tests PASS; full suite deferred to background
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION_PASS_1_SHA: to be filled at Pass 1
+BUNDLE_VALIDATION_PASS_1_SHA: bf2563633811abae95f58b66c2a7d65a73f77b3eef2f197bafe36027a72ea5b6
 BUNDLE_VALIDATION_PASS_2_SHA: sidecar authoritative
 SIDECAR_SHA: sidecar authoritative
 
