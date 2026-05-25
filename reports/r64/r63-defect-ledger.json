@@ -1,0 +1,121 @@
+{
+  "sprint": "FORMAT-FACTORY-R64-DELIVERED-SIDECAR-PACKAGING-REPLAY-AI-LIVE-REVIEW-WORKAHEAD-MEGA-TRAIN-001",
+  "date": "2026-05-25",
+  "prior_sprint": "FORMAT-FACTORY-R63-AI-ASSISTED-RC-CLOSURE-AND-WORKAHEAD-MULTI-SPRINT-MEGA-TRAIN-001",
+  "classification": "R63_BROAD_PRODUCT_AND_WORKAHEAD_PROGRESS_ACCEPTED_SELF_VERIFYING_RC_REJECTED",
+  "defects": [
+    {
+      "id": "IV-R63-001",
+      "title": "No external sidecar delivered with uploaded ZIP",
+      "severity": "CRITICAL",
+      "status": "TO_REPAIR",
+      "r64_train": "B, M",
+      "verification": "ls -la .local/r63-pass2-final.sha256-proof.json — file exists locally but not delivered"
+    },
+    {
+      "id": "IV-R63-002",
+      "title": "Validation without sidecar fails",
+      "severity": "CRITICAL",
+      "status": "TO_REPAIR",
+      "r64_train": "B, M",
+      "verification": "validate_evidence_bundle.py without --sidecar-proof → SIDECAR_REQUIRED → FAIL"
+    },
+    {
+      "id": "IV-R63-003",
+      "title": "final-bundle-validation-proof.txt has placeholder language",
+      "severity": "HIGH",
+      "status": "TO_REPAIR",
+      "r64_train": "B",
+      "verification": "grep 'to be' .local/r63-metadata/final-bundle-validation-proof.txt → 3 hits"
+    },
+    {
+      "id": "IV-R63-004",
+      "title": "Intermediate SHA committed before final rebuild",
+      "severity": "MEDIUM",
+      "status": "ACCEPTED",
+      "r64_train": "M",
+      "verification": "git log --oneline reports/r63/final-verdict.md → two SHA updates visible"
+    },
+    {
+      "id": "IV-R63-005",
+      "title": "Sidecar tests skip actual delivered-sidecar file checks",
+      "severity": "HIGH",
+      "status": "TO_REPAIR",
+      "r64_train": "B",
+      "verification": "11 of 37 sidecar tests skip when sidecar/verdict absent"
+    },
+    {
+      "id": "IV-R63-006",
+      "title": "Artifact discovery not run-aware for extracted bundles",
+      "severity": "HIGH",
+      "status": "TO_REPAIR",
+      "r64_train": "C",
+      "verification": "find_artifact_dir checks bundle-metadata/package-artifacts/ without run gating"
+    },
+    {
+      "id": "IV-R63-007",
+      "title": "Legacy packaging tests depend on .local/package-builds",
+      "severity": "MEDIUM",
+      "status": "TO_REPAIR",
+      "r64_train": "C",
+      "verification": "grep -r package-builds tests/packaging/"
+    },
+    {
+      "id": "IV-R63-008",
+      "title": "Packaging test needs extracted-bundle mode",
+      "severity": "MEDIUM",
+      "status": "TO_REPAIR",
+      "r64_train": "C",
+      "verification": "test_r63_package_rc.py skips all artifact tests when dir absent"
+    },
+    {
+      "id": "IV-R63-009",
+      "title": "AI reviewers all fixture-only (0 tokens, 0 calls)",
+      "severity": "LOW",
+      "status": "ACCEPTED",
+      "r64_train": "G",
+      "verification": "All 6 ai-*.json files show token_usage=0, api_calls_count=0, ai_not_live=true"
+    },
+    {
+      "id": "IV-R63-010",
+      "title": "Work-ahead report-heavy, lacks concrete code/tests",
+      "severity": "LOW",
+      "status": "TO_REPAIR",
+      "r64_train": "W1-W7",
+      "verification": "6 report files, 0 test scaffolds, 0 fixture manifests, 0 validator implementations"
+    },
+    {
+      "id": "IV-R63-011",
+      "title": "Real progress accepted",
+      "severity": "N/A",
+      "status": "ACCEPTED",
+      "r64_train": null,
+      "verification": "Clean bundle, 10+10+2 artifacts, FODS/FODT APIs, 4726 tests pass"
+    },
+    {
+      "id": "IV-R63-012",
+      "title": "Phase Audit 14 partial — sidecar/packaging not delivered",
+      "severity": "MEDIUM",
+      "status": "TO_REPAIR",
+      "r64_train": "J",
+      "verification": "PA14 PASS but sidecar not delivered and packaging replay not normalized"
+    },
+    {
+      "id": "IV-R63-013",
+      "title": "Scoreboard/proof metadata mismatch",
+      "severity": "LOW",
+      "status": "TO_REPAIR",
+      "r64_train": "M",
+      "verification": "Scoreboard shows Pass 2 SHA but proof file has placeholders"
+    }
+  ],
+  "summary": {
+    "total_defects": 12,
+    "critical": 2,
+    "high": 3,
+    "medium": 4,
+    "low": 3,
+    "to_repair": 9,
+    "accepted": 3
+  }
+}

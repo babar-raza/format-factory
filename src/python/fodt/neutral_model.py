@@ -747,3 +747,121 @@ def document_table_cell_count(document: dict[str, Any]) -> dict[str, Any]:
         "total_tables": len(tables),
         "per_table": per_table,
     }
+
+
+# ---------------------------------------------------------------------------
+# Document table cell span summary (R64 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def document_table_cell_span_summary(document: dict[str, Any]) -> dict[str, Any]:
+    """Return span statistics for table cells in the document.
+
+    Scans all table cells for colspan/rowspan attributes. A cell has colspan
+    if it carries 'table:number-columns-spanned' (or 'colspan') > 1.
+    A cell has rowspan if it carries 'table:number-rows-spanned' (or 'rowspan') > 1.
+
+    Returns:
+        total_cells: int           — total cells across all tables
+        cells_with_colspan: int    — cells with column span > 1
+        cells_with_rowspan: int    — cells with row span > 1
+
+    Useful for table structure analysis and merge-cell detection.
+    Added in R64 Train H as a product deepening capability (table cell span analysis).
+    """
+    tables = document.get("tables", [])
+    total_cells = 0
+    cells_with_colspan = 0
+    cells_with_rowspan = 0
+
+    for table in tables:
+        for row in table.get("rows", []):
+            for cell in row.get("cells", []):
+                total_cells += 1
+                colspan = (
+                    cell.get("table:number-columns-spanned")
+                    or cell.get("colspan")
+                    or 1
+                )
+                rowspan = (
+                    cell.get("table:number-rows-spanned")
+                    or cell.get("rowspan")
+                    or 1
+                )
+                try:
+                    if int(colspan) > 1:
+                        cells_with_colspan += 1
+                except (TypeError, ValueError):
+                    pass
+                try:
+                    if int(rowspan) > 1:
+                        cells_with_rowspan += 1
+                except (TypeError, ValueError):
+                    pass
+
+    return {
+        "total_cells": total_cells,
+        "cells_with_colspan": cells_with_colspan,
+        "cells_with_rowspan": cells_with_rowspan,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Document text field warnings (R64 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def document_text_field_warnings(document: dict[str, Any]) -> list[str]:
+    """Return warning strings for detected text field elements in the document.
+
+    Scans all blocks for 'fields' metadata (populated by the parser when it
+    detects text:placeholder, text:date, text:page-number, or similar ODF
+    text field elements). Each detected field type generates a warning.
+
+    Also scans block text content for common placeholder patterns like
+    '<text:placeholder>' or '<text:date>' if raw XML fragments are present.
+
+    Returns:
+        list[str] — warning strings, one per detected field type.
+        Empty list if no text fields are detected.
+
+    Useful for document auditing, template detection, and field replacement.
+    Added in R64 Train H as a product deepening capability (text field warnings).
+    """
+    warnings: list[str] = []
+    seen_types: set[str] = set()
+
+    field_type_labels = {
+        "placeholder": "text:placeholder",
+        "date": "text:date",
+        "page-number": "text:page-number",
+        "page-count": "text:page-count",
+        "time": "text:time",
+        "author": "text:author-name",
+        "title": "text:title",
+        "subject": "text:subject",
+    }
+
+    for block in document.get("blocks", []):
+        # Check explicit fields list (if parser populates it)
+        fields = block.get("fields", [])
+        for field in fields:
+            ftype = field.get("type", "") if isinstance(field, dict) else str(field)
+            if ftype and ftype not in seen_types:
+                seen_types.add(ftype)
+                label = field_type_labels.get(ftype, ftype)
+                warnings.append(
+                    f"Document contains {label} field(s). "
+                    "Field content may not be preserved in plain text export."
+                )
+
+        # Check runs for field markers
+        for run in block.get("runs", []):
+            field_type = run.get("field_type")
+            if field_type and field_type not in seen_types:
+                seen_types.add(field_type)
+                label = field_type_labels.get(field_type, field_type)
+                warnings.append(
+                    f"Document contains {label} field(s). "
+                    "Field content may not be preserved in plain text export."
+                )
+
+    return warnings

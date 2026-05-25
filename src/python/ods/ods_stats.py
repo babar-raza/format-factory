@@ -104,3 +104,19 @@ def ods_cell_type_distribution(ods_doc: dict) -> dict:
         "total_cells": total,
         "empty_fraction": round(empty_count / total, 4) if total > 0 else 0.0,
     }
+
+
+def ods_sheet_name_list(ods_doc: dict) -> list[str]:
+    """Return the list of sheet names from an ODS document dict.
+
+    Simple accessor that extracts sheet names in order. Differs from
+    sheet_name_order() by returning an empty list (not raising) when
+    the document has no sheets key at all.
+
+    Returns:
+        list[str] — ordered sheet names. Empty list if no sheets.
+
+    Added in R64 Train I (ODS format track advancement).
+    """
+    sheets = ods_doc.get("sheets", [])
+    return [sheet.get("name", "") for sheet in sheets]

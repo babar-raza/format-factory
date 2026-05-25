@@ -121,3 +121,25 @@ def dif_vector_density(dif_doc: dict) -> dict:
         "density": round(non_empty / total_tuples, 4) if total_tuples > 0 else 0.0,
         "avg_tuples_per_vector": round(total_tuples / total_vecs, 2) if total_vecs > 0 else 0.0,
     }
+
+
+def dif_string_value_list(dif_doc: dict[str, Any]) -> list[str]:
+    """Return all string cell values found in the DIF document.
+
+    Scans all rows for cells with type 'string' or 'text' and collects
+    their values into a flat list. Useful for text extraction and
+    content inventory of DIF files.
+
+    Returns:
+        list[str] — all string values in row-major order. Empty list if none.
+
+    Added in R64 Train I (DIF format track advancement).
+    """
+    result: list[str] = []
+    for row in dif_doc.get("rows", []):
+        for cell in row:
+            cell_type = cell.get("type", "")
+            val = cell.get("value")
+            if cell_type in ("string", "text") and val is not None and val != "":
+                result.append(str(val))
+    return result

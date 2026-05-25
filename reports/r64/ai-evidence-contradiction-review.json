@@ -1,0 +1,40 @@
+{
+  "reviewer": "AI_EVIDENCE_CONTRADICTION_REVIEWER",
+  "sprint": "FORMAT-FACTORY-R64-DELIVERED-SIDECAR-PACKAGING-REPLAY-AI-LIVE-REVIEW-WORKAHEAD-MEGA-TRAIN-001",
+  "date": "2026-05-25",
+  "mode": "fixture",
+  "ai_not_live": true,
+  "token_usage": 0,
+  "api_calls_count": 0,
+  "label": "AI_NOT_LIVE — fixture mode; no live API endpoint configured",
+  "contradictions_found": [
+    {
+      "id": "CONTRA-R64-001",
+      "severity": "critical",
+      "source_a": "R63 final-verdict: BUNDLE_VALIDATION_PASS_2_SHA: 355482ce...",
+      "source_b": "R63 final-bundle-validation-proof.txt: SHA-256: to be computed",
+      "description": "R63 final-verdict records the correct SHA but the proof metadata file inside the bundle still has placeholder language.",
+      "deterministic_verification": "grep 'to be' .local/r63-metadata/final-bundle-validation-proof.txt returns 3 hits",
+      "repair_action": "R64 Train B: final proof metadata has no placeholders",
+      "status": "REPAIRED_IN_R64"
+    },
+    {
+      "id": "CONTRA-R64-002",
+      "severity": "high",
+      "source_a": "R63 contract: sidecar_required: true",
+      "source_b": "R63 delivery: no external sidecar included",
+      "description": "Contract requires external sidecar but it was not delivered with the ZIP.",
+      "deterministic_verification": "validate_evidence_bundle.py without --sidecar-proof returns SIDECAR_REQUIRED error",
+      "repair_action": "R64 Train M: deliver both ZIP and sidecar",
+      "status": "REPAIRED_IN_R64"
+    }
+  ],
+  "no_contradiction_areas": [
+    "R63 Python artifacts: all 20 SHA-256 values match physical files",
+    "R63 .NET nupkgs: SHA-256 consistent across manifest and files",
+    "R63 installed APIs: FODS 11 + FODT 11 all import from wheel",
+    "R63 test count: 4726 passed matches AUTHORITATIVE_TEST_RESULT"
+  ],
+  "overall_result": "2 contradictions found and repaired in R64",
+  "authority": "AI findings are advisory; all verified deterministically"
+}

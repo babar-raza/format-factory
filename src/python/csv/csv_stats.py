@@ -93,3 +93,36 @@ def csv_row_length_distribution(csv_doc: dict) -> dict:
         "is_uniform": len(lengths) <= 1,
         "total_rows": len(rows),
     }
+
+
+def csv_field_type_summary(rows: list) -> dict[str, int]:
+    """Return counts of numeric, empty, and text fields across all rows.
+
+    Scans every field in every row and classifies it:
+      - 'numeric': the string representation can be parsed as int or float
+      - 'empty': the field is None or an empty/whitespace-only string
+      - 'text': everything else
+
+    Args:
+        rows: list of lists (each inner list is a row of field values).
+
+    Returns:
+        dict with keys 'numeric', 'empty', 'text' mapping to int counts.
+
+    Added in R64 Train I (CSV format track advancement).
+    """
+    counts: dict[str, int] = {"numeric": 0, "empty": 0, "text": 0}
+    for row in rows:
+        if not isinstance(row, (list, tuple)):
+            continue
+        for field in row:
+            if field is None or (isinstance(field, str) and not field.strip()):
+                counts["empty"] += 1
+            else:
+                s = str(field).strip()
+                try:
+                    float(s)
+                    counts["numeric"] += 1
+                except (ValueError, TypeError):
+                    counts["text"] += 1
+    return counts

@@ -1,0 +1,21 @@
+{
+  "reviewer": "AI_PACKAGING_REPLAY_REVIEWER",
+  "sprint": "FORMAT-FACTORY-R64-DELIVERED-SIDECAR-PACKAGING-REPLAY-AI-LIVE-REVIEW-WORKAHEAD-MEGA-TRAIN-001",
+  "date": "2026-05-25",
+  "mode": "fixture",
+  "ai_not_live": true,
+  "token_usage": 0,
+  "api_calls_count": 0,
+  "findings": [
+    {
+      "id": "PKG-001",
+      "severity": "medium",
+      "finding": "find_artifact_dir candidates 3-4 (bundle-metadata/) are not run-gated",
+      "cited_path": "tools/packaging/find_bundle_artifacts.py",
+      "verification_command": "python -c \"from tools.packaging.find_bundle_artifacts import find_artifact_dir; print(find_artifact_dir('r99999', '.'))\"",
+      "proposed_repair": "Currently returns None because bundle-metadata/ doesn't exist in source tree. For extracted bundles, use FORMAT_FACTORY_BUNDLE_METADATA_DIR env var.",
+      "risk_if_ignored": "False positive in extracted-bundle mode if bundle-metadata/ exists"
+    }
+  ],
+  "authority": "AI findings advisory; deterministic verification required"
+}

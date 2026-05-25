@@ -598,3 +598,85 @@ def workbook_column_count(workbook: dict[str, Any]) -> dict[str, Any]:
         "per_sheet": per_sheet,
         "total_sheets": len(per_sheet),
     }
+
+
+# ---------------------------------------------------------------------------
+# Workbook row style summary (R64 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_row_style_summary(workbook: dict[str, Any]) -> dict[str, list[str]]:
+    """Return a dict mapping sheet names to lists of row style attributes.
+
+    Scans all rows in each sheet for a 'style' or 'table:style-name' attribute.
+    If a row carries such an attribute, the style name string is appended to the
+    sheet's list. Rows without styles are omitted.
+
+    Returns:
+        dict[str, list[str]] — {sheet_name: [style_name, ...]}
+        Sheets with no styled rows appear as empty lists.
+
+    Useful for understanding row-level formatting, conditional formatting
+    detection, and style inventory across sheets.
+    Added in R64 Train H as a product deepening capability (row style metadata).
+    """
+    result: dict[str, list[str]] = {}
+    for sheet in workbook.get("sheets", []):
+        sheet_name = sheet.get("name", "")
+        styles: list[str] = []
+        for row in sheet.get("rows", []):
+            style = row.get("style") or row.get("table:style-name") or row.get("style_name")
+            if style:
+                styles.append(str(style))
+        result[sheet_name] = styles
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Workbook formula edit policy (R64 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_formula_edit_policy(workbook: dict[str, Any]) -> dict[str, Any]:
+    """Return formula edit policy statistics for the workbook.
+
+    Counts the total number of formula cells and classifies each as editable
+    or locked. In the current implementation, all formula cells are treated
+    as editable (no cell-protection metadata is parsed yet).
+
+    Returns:
+        total_formulas: int       — total formula cells across all sheets
+        editable_formulas: int    — formulas that are editable
+        locked_formulas: int      — formulas that are locked (currently always 0)
+        policy: str               — 'all_editable' or 'mixed' or 'all_locked' or 'no_formulas'
+
+    Useful for spreadsheet auditing and formula protection analysis.
+    Added in R64 Train H as a product deepening capability (formula edit policy).
+    """
+    total = 0
+    locked = 0
+
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                formula = cell.get("formula")
+                if formula is not None:
+                    total += 1
+                    # Future: check cell.get("protected") or cell.get("table:protected")
+                    if cell.get("protected") or cell.get("table:protected"):
+                        locked += 1
+
+    editable = total - locked
+    if total == 0:
+        policy = "no_formulas"
+    elif locked == 0:
+        policy = "all_editable"
+    elif editable == 0:
+        policy = "all_locked"
+    else:
+        policy = "mixed"
+
+    return {
+        "total_formulas": total,
+        "editable_formulas": editable,
+        "locked_formulas": locked,
+        "policy": policy,
+    }

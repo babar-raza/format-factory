@@ -116,3 +116,47 @@ def ppm_channel_stats(ppm_doc: dict) -> dict:
     if len(pixels) < ppm_doc.get("width", 0) * ppm_doc.get("height", 0):
         result["note"] = "Partial pixel sample (large image)"
     return result
+
+
+def ppm_brightness_histogram(ppm_doc: dict, bins: int = 4) -> dict[str, int]:
+    """Return a brightness histogram for PPM image pixel data.
+
+    Computes per-pixel brightness as the average of R, G, B channels,
+    then bins pixels into ``bins`` equal-width ranges from 0 to maxval.
+
+    Args:
+        ppm_doc: Parsed PPM document dict (must contain 'pixels' list).
+        bins: Number of histogram bins (default 4).
+
+    Returns:
+        dict mapping bin label strings (e.g. '0-63', '64-127') to pixel counts.
+        Empty dict if no pixel data.
+
+    Added in R64 Train I (PPM format track advancement).
+    """
+    pixels = ppm_doc.get("pixels", [])
+    maxval = ppm_doc.get("maxval", 255)
+    if not pixels or bins <= 0:
+        return {}
+
+    bin_width = (maxval + 1) / bins
+    histogram: dict[str, int] = {}
+
+    # Pre-compute bin labels
+    bin_labels: list[str] = []
+    for i in range(bins):
+        lo = int(i * bin_width)
+        hi = int((i + 1) * bin_width) - 1 if i < bins - 1 else maxval
+        bin_labels.append(f"{lo}-{hi}")
+        histogram[bin_labels[-1]] = 0
+
+    for pixel in pixels:
+        if not isinstance(pixel, (list, tuple)) or len(pixel) < 3:
+            continue
+        brightness = (pixel[0] + pixel[1] + pixel[2]) / 3.0
+        bin_index = int(brightness / bin_width)
+        if bin_index >= bins:
+            bin_index = bins - 1
+        histogram[bin_labels[bin_index]] += 1
+
+    return histogram

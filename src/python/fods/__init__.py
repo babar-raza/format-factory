@@ -15,6 +15,8 @@ Public API:
     workbook_cell_range(wb, ...)       -- 2D slice of cell values (R61)
     workbook_merged_cell_summary(wb)   -- merged-cell annotations (R62)
     workbook_sheet_order(wb)           -- ordered list of sheet names (R62)
+    workbook_row_style_summary(wb)    -- row style attributes per sheet (R64)
+    workbook_formula_edit_policy(wb)  -- formula edit/lock policy counts (R64)
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0
@@ -40,6 +42,8 @@ from .neutral_model import (
     workbook_sheet_order,
     workbook_numeric_summary,
     workbook_column_count,
+    workbook_row_style_summary,
+    workbook_formula_edit_policy,
 )
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -65,8 +69,8 @@ __all__ = [
     "workbook_sheet_order",
     "workbook_numeric_summary",
     "workbook_column_count",
-    "workbook_numeric_summary",
-    "workbook_column_count",
+    "workbook_row_style_summary",
+    "workbook_formula_edit_policy",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",

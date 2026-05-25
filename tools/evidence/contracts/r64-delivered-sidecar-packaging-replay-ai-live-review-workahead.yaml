@@ -1,0 +1,69 @@
+sprint_name: FORMAT-FACTORY-R64-DELIVERED-SIDECAR-PACKAGING-REPLAY-AI-LIVE-REVIEW-WORKAHEAD-MEGA-TRAIN-001
+run_number: R64
+date: 2026-05-25
+require_clean_git: true
+sidecar_required: true
+final_proof_policy: external_sidecar
+installed_artifact_policy: self_contained
+min_metadata_count: 30
+
+required_repo_files:
+  - path: reports/r64/final-verdict.md
+  - path: reports/r64/multi-mega-train-scoreboard.md
+  - path: reports/r64/r63-independent-verification.md
+  - path: reports/r64/r63-defect-ledger.md
+  - path: reports/r64/final-sidecar-delivery-proof.md
+  - path: reports/r64/packaging-replay-normalization.md
+  - path: reports/r64/installed-public-api-proof.md
+  - path: reports/r64/python-rc-artifact-proof.md
+  - path: reports/r64/dotnet-nuget-replay-proof.md
+  - path: reports/r64/ai-telemetry-controlled-acceleration.md
+  - path: reports/r64/fods-fodt-product-advancement.md
+  - path: reports/r64/non-fods-fodt-four-track-advancement.md
+  - path: reports/r64/phase-audit-14-repair.md
+  - path: reports/r64/phase-audit-15-independent-local-rc-replay.md
+  - path: reports/r64/00-preflight.md
+  - path: reports/r64/lane-ownership.md
+  - path: reports/r64/work-ahead-policy.md
+  - path: reports/r64/risk-register.md
+  - path: tools/evidence/contracts/r64-delivered-sidecar-packaging-replay-ai-live-review-workahead.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - git-log.txt
+  - git-status-final.txt
+  - run-environment.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - final-proof-placeholder-negative-proof.txt
+  - delivered-sidecar-path-exists-proof.txt
+  - ai-contradiction-review-summary.txt
+  - ai-sidecar-proof-review-summary.txt
+  - ai-packaging-replay-review-summary.txt
+  - installed-public-api-smoke-summary.txt
+  - extracted-package-replay-summary.txt
+  - wheel-install-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - dotnet-local-consumer-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - phase-audit-15-summary.txt
+  - next-format-four-track-summary.txt
+  - workahead-summary.txt
+  - acquisition-authority-summary.txt
+  - ai-telemetry-summary.txt
+  - validation-command-log.txt
+  - multi-mega-train-scoreboard-final.txt
+  - work-ahead-scoreboard-final.txt
+  - python-tests-summary.txt
+  - invariants-output.txt
+  - state-snapshot-output.txt
+
+forbidden_patterns:
+  - "**/__pycache__/**"
+  - "**/*.pyc"
+  - "**/*.pyo"
+  - ".local/evidence-bundles/**"
+  - "**/.sha256-proof.json"

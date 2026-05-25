@@ -15,6 +15,8 @@ Public API:
     document_reading_level(document)   -- estimated reading level metrics (R61)
     document_hyperlink_count(document) -- count hyperlinks in document (R62)
     document_footnote_count(document)  -- count footnotes/endnotes (R62)
+    document_table_cell_span_summary(document) -- colspan/rowspan stats (R64)
+    document_text_field_warnings(document)     -- text field warnings (R64)
 
 License: Apache-2.0
 Package: format-factory-fodt v0.1.0
@@ -40,6 +42,8 @@ from .neutral_model import (
     document_footnote_count,
     document_heading_level_distribution,
     document_table_cell_count,
+    document_table_cell_span_summary,
+    document_text_field_warnings,
 )
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -65,8 +69,8 @@ __all__ = [
     "document_footnote_count",
     "document_heading_level_distribution",
     "document_table_cell_count",
-    "document_heading_level_distribution",
-    "document_table_cell_count",
+    "document_table_cell_span_summary",
+    "document_text_field_warnings",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

@@ -1,0 +1,30 @@
+{
+  "reviewer": "AI_SIDECAR_PROOF_REVIEWER",
+  "sprint": "FORMAT-FACTORY-R64-DELIVERED-SIDECAR-PACKAGING-REPLAY-AI-LIVE-REVIEW-WORKAHEAD-MEGA-TRAIN-001",
+  "date": "2026-05-25",
+  "mode": "fixture",
+  "ai_not_live": true,
+  "token_usage": 0,
+  "api_calls_count": 0,
+  "findings": [
+    {
+      "id": "SIDE-001",
+      "severity": "critical",
+      "finding": "R63 sidecar file exists locally but was not delivered with uploaded ZIP",
+      "cited_path": ".local/r63-pass2-final.sha256-proof.json",
+      "verification_command": "ls -la .local/r63-pass2-final.sha256-proof.json",
+      "proposed_repair": "R64 Train M must deliver both ZIP and sidecar paths in final response",
+      "risk_if_ignored": "R64 will repeat R63 sidecar delivery failure"
+    },
+    {
+      "id": "SIDE-002",
+      "severity": "high",
+      "finding": "R63 proof file has placeholder language",
+      "cited_path": ".local/r63-metadata/final-bundle-validation-proof.txt",
+      "verification_command": "grep 'to be' .local/r63-metadata/final-bundle-validation-proof.txt",
+      "proposed_repair": "R64 proof file must be written after final validation with actual values",
+      "risk_if_ignored": "Validator check_no_pending will flag placeholders"
+    }
+  ],
+  "authority": "AI findings advisory; deterministic verification required"
+}
