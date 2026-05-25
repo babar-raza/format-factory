@@ -35,8 +35,8 @@ AUTHORITATIVE_TEST_RESULT: 4726 passed, 5 failed (3 state-transition resolved at
 ## Bundle Validation
 
 BUNDLE_VALIDATION_PASS_1_SHA: b860455302982f622b63cdecf96ab250f602388c09035471bcfd1938011c4692
-BUNDLE_VALIDATION_PASS_2_SHA: to be computed at Pass 2
-SIDECAR_SHA: to be computed after sidecar generation
+BUNDLE_VALIDATION_PASS_2_SHA: 1d4097069883e92889e474ea4cfedad1e715cc48ad50c124a19d4cadca8b7da2
+SIDECAR_SHA: 1d4097069883e92889e474ea4cfedad1e715cc48ad50c124a19d4cadca8b7da2
 
 ---
 
@@ -70,4 +70,4 @@ VERDICT: R63_AI_ASSISTED_RC_CLOSURE_AND_WORKAHEAD_PASS
 | IV-R62-009: AI reviewers missed defects | REPAIRED — AI_NOT_LIVE labeling + scope expansion |
 | IV-R62-010: AUTHORITATIVE_TEST_RESULT trigger phrase | REPAIRED — same fix as IV-R62-006 |
 | IV-R62-011: Installed-wheel proof overclaimed | REPAIRED — Train D + F: 11+11 proven |
-| IV-R62-012: Scoreboard IN_PROGRESS at bundle build | ACCEPTED — resolved in R62 session |
+| IV-R62-012: Scoreboard status at bundle build | ACCEPTED — resolved in R62 session |
