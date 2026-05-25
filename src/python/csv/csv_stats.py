@@ -66,3 +66,30 @@ def column_value_counts(csv_doc: dict[str, Any], column_index: int) -> dict[str,
             val = ""
         counts[val] = counts.get(val, 0) + 1
     return counts
+
+
+def csv_row_length_distribution(csv_doc: dict) -> dict:
+    """Return distribution of row lengths (column counts) across the CSV.
+
+    Counts how many rows have each distinct column count. Returns:
+      by_length: dict[int, int]  — {column_count: row_count}
+      min_length: int | None
+      max_length: int | None
+      is_uniform: bool           — True if all rows have same length
+      total_rows: int
+
+    Added in R63 Train I (CSV format track advancement).
+    """
+    rows = csv_doc.get("rows", [])
+    by_length: dict[int, int] = {}
+    for row in rows:
+        length = len(row) if isinstance(row, (list, tuple)) else 0
+        by_length[length] = by_length.get(length, 0) + 1
+    lengths = list(by_length.keys())
+    return {
+        "by_length": by_length,
+        "min_length": min(lengths) if lengths else None,
+        "max_length": max(lengths) if lengths else None,
+        "is_uniform": len(lengths) <= 1,
+        "total_rows": len(rows),
+    }

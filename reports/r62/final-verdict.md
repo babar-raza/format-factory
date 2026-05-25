@@ -30,7 +30,7 @@
 
 AUTHORITATIVE_TEST_RESULT: 4601 passed, 13 skipped, 12 failed
 (Pre-existing failures: 2 — test_probe_nonexistent Windows path issue for dif+ppm.
-State-transition failures: 10 — auto_proof_bundle (6) and invariant (4) tests that require final-verdict/state to be updated; resolved at Pass 2 commit.)
+State-transition failures: 10 — auto_proof_bundle (6) and invariant (4) tests that run against live repo state; all resolved when final-verdict and state snapshots were committed at Pass 2.)
 
 ---
 

@@ -2,17 +2,28 @@
 format-factory-fods -- Python FOSS parser/writer for OpenDocument Flat Spreadsheet (FODS).
 
 Public API:
-    parse_fods(file_path)        -- streaming parser, never raises
-    parse_fods_strict(file_path) -- raises FodsError subclasses on failure
-    write_fods(workbook, path)   -- serialize neutral model workbook to FODS file
-    workbook_to_xml(workbook)    -- serialize neutral model workbook to XML string
-    workbook_stats(workbook)     -- return cell-level statistics dict (R57/R58)
+    parse_fods(file_path)              -- streaming parser, never raises
+    parse_fods_strict(file_path)       -- raises FodsError subclasses on failure
+    write_fods(workbook, path)         -- serialize neutral model workbook to FODS file
+    workbook_to_xml(workbook)          -- serialize neutral model workbook to XML string
+    workbook_stats(workbook)           -- return cell-level statistics dict (R57/R58)
+    workbook_type_distribution(wb)     -- distribution of cell value types (R59)
+    find_sheet_by_name(wb, name)       -- return sheet dict by name or None (R59)
+    workbook_sheet_summary(wb)         -- compact per-sheet summary list (R60)
+    workbook_empty_rows(wb)            -- empty-row statistics (R60)
+    workbook_formula_list(wb)          -- flat list of all formula cells (R61)
+    workbook_cell_range(wb, ...)       -- 2D slice of cell values (R61)
+    workbook_merged_cell_summary(wb)   -- merged-cell annotations (R62)
+    workbook_sheet_order(wb)           -- ordered list of sheet names (R62)
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0
 Gate history: Gates 1-10 PASSED (2026-05-08)
 R46 MT6: write_fods / workbook_to_xml added (alpha-foss-preview write capability)
 R57/R58: workbook_stats() exposed in public API
+R61: workbook_formula_list, workbook_cell_range added
+R62: workbook_merged_cell_summary, workbook_sheet_order added
+R63: all 9 workbook APIs exported at package level (IV-R62-002 repair)
 """
 
 from .parser import parse_fods, parse_fods_strict
@@ -23,6 +34,12 @@ from .neutral_model import (
     find_sheet_by_name,
     workbook_sheet_summary,
     workbook_empty_rows,
+    workbook_formula_list,
+    workbook_cell_range,
+    workbook_merged_cell_summary,
+    workbook_sheet_order,
+    workbook_numeric_summary,
+    workbook_column_count,
 )
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -42,6 +59,14 @@ __all__ = [
     "find_sheet_by_name",
     "workbook_sheet_summary",
     "workbook_empty_rows",
+    "workbook_formula_list",
+    "workbook_cell_range",
+    "workbook_merged_cell_summary",
+    "workbook_sheet_order",
+    "workbook_numeric_summary",
+    "workbook_column_count",
+    "workbook_numeric_summary",
+    "workbook_column_count",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",

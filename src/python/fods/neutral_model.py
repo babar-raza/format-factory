@@ -504,3 +504,97 @@ def workbook_sheet_order(workbook: dict[str, Any]) -> list[str]:
         sheet.get("name", f"Sheet{i + 1}")
         for i, sheet in enumerate(workbook.get("sheets", []))
     ]
+
+
+# ---------------------------------------------------------------------------
+# Workbook numeric summary (R63 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_numeric_summary(workbook: dict[str, Any]) -> dict[str, Any]:
+    """Return per-sheet numeric statistics across all numeric cells.
+
+    Scans all cells with value_type 'float' or 'int' and computes per-sheet
+    and workbook-level statistics. Returns:
+      total_numeric_cells: int  — total count of numeric cells
+      per_sheet: list[dict]     — per-sheet stats with keys:
+        sheet_name: str
+        numeric_count: int
+        min_value: float | None
+        max_value: float | None
+        sum_value: float
+
+    Returns workbook-level aggregate in 'total_numeric_cells', 'global_min',
+    'global_max', 'global_sum'.
+    Added in R63 Train H as a product deepening capability (numeric range analysis).
+    """
+    per_sheet: list[dict[str, Any]] = []
+    all_values: list[float] = []
+
+    for sheet in workbook.get("sheets", []):
+        sheet_name = sheet.get("name", "")
+        values: list[float] = []
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                vtype = cell.get("value_type", "")
+                val = cell.get("value")
+                if vtype in ("float", "int") and val is not None:
+                    try:
+                        values.append(float(val))
+                    except (TypeError, ValueError):
+                        pass
+        per_sheet.append({
+            "sheet_name": sheet_name,
+            "numeric_count": len(values),
+            "min_value": min(values) if values else None,
+            "max_value": max(values) if values else None,
+            "sum_value": sum(values),
+        })
+        all_values.extend(values)
+
+    return {
+        "total_numeric_cells": len(all_values),
+        "global_min": min(all_values) if all_values else None,
+        "global_max": max(all_values) if all_values else None,
+        "global_sum": sum(all_values),
+        "per_sheet": per_sheet,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Workbook column width summary (R63 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def workbook_column_count(workbook: dict[str, Any]) -> dict[str, Any]:
+    """Return the maximum column width (non-empty cell count) per sheet.
+
+    Scans all rows to determine the widest row per sheet. This is useful for
+    understanding the actual used range without loading cell coordinates.
+
+    Returns:
+      per_sheet: list[dict] — per-sheet results with keys:
+        sheet_name: str
+        max_columns: int     — widest row (max number of non-None cells in any row)
+        row_count: int        — number of rows in the sheet
+      total_sheets: int
+
+    Added in R63 Train H as a product deepening capability (column count / used range).
+    """
+    per_sheet: list[dict[str, Any]] = []
+    for sheet in workbook.get("sheets", []):
+        sheet_name = sheet.get("name", "")
+        rows = sheet.get("rows", [])
+        max_cols = 0
+        for row in rows:
+            cells = row.get("cells", [])
+            non_empty = sum(1 for c in cells if c.get("value") is not None)
+            if non_empty > max_cols:
+                max_cols = non_empty
+        per_sheet.append({
+            "sheet_name": sheet_name,
+            "max_columns": max_cols,
+            "row_count": len(rows),
+        })
+    return {
+        "per_sheet": per_sheet,
+        "total_sheets": len(per_sheet),
+    }

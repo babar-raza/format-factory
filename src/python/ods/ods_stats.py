@@ -68,3 +68,39 @@ def sheet_name_order(ods_doc: dict[str, Any]) -> list[str]:
         sheet.get("name", f"Sheet{i + 1}")
         for i, sheet in enumerate(ods_doc.get("sheets", []))
     ]
+
+
+def ods_cell_type_distribution(ods_doc: dict) -> dict:
+    """Return distribution of cell value types across the ODS document.
+
+    Scans all cells and classifies each by whether it has text, a numeric
+    value, is empty, or carries other content. Returns:
+      by_type: dict[str, int]   — count per type label
+      total_cells: int
+      empty_fraction: float     — fraction of cells that are empty
+
+    Added in R63 Train I (ODS format track advancement).
+    """
+    by_type: dict[str, int] = {}
+    total = 0
+    for sheet in ods_doc.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                total += 1
+                val = cell.get("value")
+                text = cell.get("text") or ""
+                if val is None and not text.strip():
+                    label = "empty"
+                elif isinstance(val, (int, float)):
+                    label = "numeric"
+                elif text.strip():
+                    label = "text"
+                else:
+                    label = "other"
+                by_type[label] = by_type.get(label, 0) + 1
+    empty_count = by_type.get("empty", 0)
+    return {
+        "by_type": by_type,
+        "total_cells": total,
+        "empty_fraction": round(empty_count / total, 4) if total > 0 else 0.0,
+    }

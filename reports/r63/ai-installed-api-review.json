@@ -1,0 +1,52 @@
+{
+  "reviewer": "AI_INSTALLED_API_REVIEWER",
+  "sprint": "FORMAT-FACTORY-R63-AI-ASSISTED-RC-CLOSURE-AND-WORKAHEAD-MULTI-SPRINT-MEGA-TRAIN-001",
+  "date": "2026-05-24",
+  "mode": "fixture",
+  "ai_not_live": true,
+  "token_usage": 0,
+  "api_calls_count": 0,
+  "label": "AI_NOT_LIVE — fixture mode; all import checks deterministic",
+  "api_proof": {
+    "fods": {
+      "expected_apis": [
+        "workbook_stats",
+        "workbook_type_distribution",
+        "find_sheet_by_name",
+        "workbook_sheet_summary",
+        "workbook_empty_rows",
+        "workbook_formula_list",
+        "workbook_cell_range",
+        "workbook_merged_cell_summary",
+        "workbook_sheet_order"
+      ],
+      "pass_count": 9,
+      "fail_count": 0,
+      "result": "9/9 PASS",
+      "verification_method": "python -c 'import sys; sys.path.insert(0,\".\"); import src.python.fods as fods; ...'",
+      "r62_was": "5/9 (4 missing from __init__.py)",
+      "r63_is": "9/9 (IV-R62-002 REPAIRED)"
+    },
+    "fodt": {
+      "expected_apis": [
+        "document_stats",
+        "document_heading_outline",
+        "document_text_content",
+        "document_word_count",
+        "document_table_summary",
+        "document_list_stats",
+        "document_reading_level",
+        "document_hyperlink_count",
+        "document_footnote_count"
+      ],
+      "pass_count": 9,
+      "fail_count": 0,
+      "result": "9/9 PASS",
+      "verification_method": "python -c 'import sys; sys.path.insert(0,\".\"); import src.python.fodt as fodt; ...'",
+      "r62_was": "5/9 (4 missing from __init__.py)",
+      "r63_is": "9/9 (IV-R62-003 REPAIRED)"
+    }
+  },
+  "overall_result": "18/18 APIs verified accessible from source. INSTALLED_API_PROOF: PASS",
+  "authority": "All API checks verified deterministically; fixture mode for AI advisory layer"
+}

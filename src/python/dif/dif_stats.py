@@ -87,3 +87,37 @@ def dif_numeric_range(dif_doc: dict[str, Any]) -> dict[str, Any]:
         "max_value": max(values),
         "numeric_count": len(values),
     }
+
+
+def dif_vector_density(dif_doc: dict) -> dict:
+    """Return density statistics for DIF vectors (rows).
+
+    Each DIF vector (row) contains one or more tuples (cells). This function
+    measures the density — how many cells per vector are non-empty. Returns:
+      total_vectors: int
+      total_tuples: int
+      non_empty_tuples: int
+      density: float             — non_empty_tuples / total_tuples
+      avg_tuples_per_vector: float
+
+    Added in R63 Train I (DIF format track advancement).
+    """
+    from typing import Any
+    vectors = dif_doc.get("vectors", [])
+    total_tuples = 0
+    non_empty = 0
+    for vec in vectors:
+        tuples = vec.get("tuples", []) if isinstance(vec, dict) else []
+        for tup in tuples:
+            total_tuples += 1
+            val = tup.get("value") if isinstance(tup, dict) else tup
+            if val is not None and val != "" and val != 0:
+                non_empty += 1
+    total_vecs = len(vectors)
+    return {
+        "total_vectors": total_vecs,
+        "total_tuples": total_tuples,
+        "non_empty_tuples": non_empty,
+        "density": round(non_empty / total_tuples, 4) if total_tuples > 0 else 0.0,
+        "avg_tuples_per_vector": round(total_tuples / total_vecs, 2) if total_vecs > 0 else 0.0,
+    }

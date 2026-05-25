@@ -673,3 +673,77 @@ def document_footnote_count(document: dict[str, Any]) -> dict[str, Any]:
             "Note content may not be fully preserved in text export."
         )
     return result
+
+
+# ---------------------------------------------------------------------------
+# Document heading level distribution (R63 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def document_heading_level_distribution(document: dict[str, Any]) -> dict[str, Any]:
+    """Return the count of headings at each heading level (H1-H6).
+
+    Scans all blocks for heading type and groups by heading_level. Returns:
+      by_level: dict[int, int]   — {level: count} for levels 1-6
+      total_headings: int        — total heading count
+      deepest_level: int | None  — highest level number used (deepest nesting)
+      shallowest_level: int | None — lowest level number used (top level)
+
+    Useful for understanding document structure, validating heading hierarchy,
+    and generating table-of-contents previews.
+    Added in R63 Train H as a product deepening capability (heading level distribution).
+    """
+    by_level: dict[int, int] = {}
+    for block in document.get("blocks", []):
+        if block.get("type") == "heading":
+            level = block.get("heading_level")
+            if isinstance(level, int) and 1 <= level <= 6:
+                by_level[level] = by_level.get(level, 0) + 1
+
+    total = sum(by_level.values())
+    levels = list(by_level.keys())
+    return {
+        "by_level": by_level,
+        "total_headings": total,
+        "deepest_level": max(levels) if levels else None,
+        "shallowest_level": min(levels) if levels else None,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Document table cell count (R63 Train H — new capability)
+# ---------------------------------------------------------------------------
+
+def document_table_cell_count(document: dict[str, Any]) -> dict[str, Any]:
+    """Return total cell count across all tables in the document.
+
+    For each table, counts the total cells (rows * columns approximation using
+    actual cell objects). Returns:
+      total_cells: int        — sum of all cells across all tables
+      total_tables: int       — number of tables
+      per_table: list[dict]   — per-table stats with keys:
+        table_index: int
+        row_count: int
+        cell_count: int       — sum of cells in all rows of this table
+        avg_cells_per_row: float
+
+    Added in R63 Train H as a product deepening capability (table cell density analysis).
+    """
+    tables = document.get("tables", [])
+    per_table: list[dict[str, Any]] = []
+    total_cells = 0
+    for idx, table in enumerate(tables):
+        rows = table.get("rows", [])
+        row_count = len(rows)
+        cell_count = sum(len(row.get("cells", [])) for row in rows)
+        per_table.append({
+            "table_index": idx,
+            "row_count": row_count,
+            "cell_count": cell_count,
+            "avg_cells_per_row": round(cell_count / row_count, 2) if row_count > 0 else 0.0,
+        })
+        total_cells += cell_count
+    return {
+        "total_cells": total_cells,
+        "total_tables": len(tables),
+        "per_table": per_table,
+    }

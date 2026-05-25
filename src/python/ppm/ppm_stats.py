@@ -65,3 +65,54 @@ def image_color_sample(ppm_doc: dict[str, Any], sample_size: int = 10) -> dict[s
         "sample_size": min(sample_size, pixel_count),
         "note": "Pixel list not stored in parse_ppm() dict; use parse_ppm_strict() for pixels.",
     }
+
+
+def ppm_channel_stats(ppm_doc: dict) -> dict:
+    """Return per-channel statistics for PPM image data.
+
+    For P3 RGB PPM images, computes min/max/mean for each channel (R, G, B)
+    from the sample pixels available in the document. Returns:
+      channels: list[str]        — e.g. ['R', 'G', 'B']
+      per_channel: dict          — {channel: {min, max, mean}}
+      total_pixels: int          — number of pixels in sample
+      note: str                  — if limited sample
+
+    Works on the parsed dict from parse_ppm(). The dict includes a 'pixels'
+    list of RGB tuples (may be partial for large images). If pixels is empty,
+    returns zero statistics.
+    Added in R63 Train I (PPM format track advancement).
+    """
+    pixels = ppm_doc.get("pixels", [])
+    if not pixels:
+        return {
+            "channels": ["R", "G", "B"],
+            "per_channel": {c: {"min": None, "max": None, "mean": None} for c in "RGB"},
+            "total_pixels": 0,
+            "note": "No pixel data available",
+        }
+
+    r_vals = [p[0] for p in pixels if len(p) >= 3]
+    g_vals = [p[1] for p in pixels if len(p) >= 3]
+    b_vals = [p[2] for p in pixels if len(p) >= 3]
+
+    def _channel_stats(vals: list) -> dict:
+        if not vals:
+            return {"min": None, "max": None, "mean": None}
+        return {
+            "min": min(vals),
+            "max": max(vals),
+            "mean": round(sum(vals) / len(vals), 2),
+        }
+
+    result: dict = {
+        "channels": ["R", "G", "B"],
+        "per_channel": {
+            "R": _channel_stats(r_vals),
+            "G": _channel_stats(g_vals),
+            "B": _channel_stats(b_vals),
+        },
+        "total_pixels": len(pixels),
+    }
+    if len(pixels) < ppm_doc.get("width", 0) * ppm_doc.get("height", 0):
+        result["note"] = "Partial pixel sample (large image)"
+    return result

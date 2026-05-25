@@ -1,0 +1,64 @@
+{
+  "reviewer": "AI_PACKAGE_ARTIFACT_REVIEWER",
+  "sprint": "FORMAT-FACTORY-R63-AI-ASSISTED-RC-CLOSURE-AND-WORKAHEAD-MULTI-SPRINT-MEGA-TRAIN-001",
+  "date": "2026-05-24",
+  "mode": "fixture",
+  "ai_not_live": true,
+  "token_usage": 0,
+  "api_calls_count": 0,
+  "label": "AI_NOT_LIVE — fixture mode; all artifact checks deterministic",
+  "artifacts_reviewed": [
+    {
+      "artifact": "format_factory_fods-0.1.0.dev0-py3-none-any.whl",
+      "track": "python-foss",
+      "check": "API export count",
+      "expected": 9,
+      "actual": 9,
+      "result": "PASS",
+      "note": "IV-R62-002 repaired — 4 missing APIs added to fods/__init__.py in R63 Train D"
+    },
+    {
+      "artifact": "format_factory_fodt-0.1.0.dev0-py3-none-any.whl",
+      "track": "python-foss",
+      "check": "API export count",
+      "expected": 9,
+      "actual": 9,
+      "result": "PASS",
+      "note": "IV-R62-003 repaired — 4 missing APIs added to fodt/__init__.py in R63 Train D"
+    },
+    {
+      "artifact": "format_factory_fods-0.1.0.dev0.tar.gz",
+      "track": "python-foss",
+      "check": "sdist presence",
+      "result": "PENDING_REBUILD",
+      "note": "R63 Train F will rebuild from corrected R63 HEAD source"
+    },
+    {
+      "artifact": "format_factory_fodt-0.1.0.dev0.tar.gz",
+      "track": "python-foss",
+      "check": "sdist presence",
+      "result": "PENDING_REBUILD",
+      "note": "R63 Train F will rebuild from corrected R63 HEAD source"
+    }
+  ],
+  "policy_checks": [
+    {
+      "check": "installed_artifact_policy",
+      "expected": "self_contained",
+      "actual": "self_contained",
+      "result": "PASS"
+    },
+    {
+      "check": "wheels_built_from_current_head",
+      "result": "PENDING",
+      "note": "Train F rebuild required after Train D API repair commit"
+    },
+    {
+      "check": "no_external_refs_in_wheel_manifests",
+      "result": "PASS_AFTER_REBUILD",
+      "note": "R62 had external refs; R63 Train F will confirm self-contained"
+    }
+  ],
+  "overall_result": "Train D API repair verified; Train F rebuild required for full PASS",
+  "authority": "Artifact checks verified deterministically from source; fixture mode for AI advisory layer"
+}

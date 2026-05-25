@@ -1,0 +1,52 @@
+{
+  "reviewer": "AI_EVIDENCE_CONTRADICTION_REVIEWER",
+  "sprint": "FORMAT-FACTORY-R63-AI-ASSISTED-RC-CLOSURE-AND-WORKAHEAD-MULTI-SPRINT-MEGA-TRAIN-001",
+  "date": "2026-05-24",
+  "mode": "fixture",
+  "ai_not_live": true,
+  "token_usage": 0,
+  "api_calls_count": 0,
+  "label": "AI_NOT_LIVE — fixture mode; reviewer logic executed without live API calls",
+  "contradictions_found": [
+    {
+      "id": "CONTRA-001",
+      "severity": "critical",
+      "source_a": "reports/r62/final-verdict.md: BUNDLE_VALIDATION_PASS_2_SHA: 3d4f1ac0...",
+      "source_b": ".local/r62-pass2-final.zip: actual SHA d364678f...",
+      "description": "R62 final-verdict.md records an intermediate SHA (3d4f1ac0) from before the final pass2 rebuild. The sidecar is authoritative and records the correct SHA d364678f.",
+      "deterministic_verification": "CONFIRMED by computing SHA-256 of .local/r62-pass2-final.zip",
+      "repair_action": "Sidecar declared authoritative (IV-R62-007 accepted divergence); no change to final-verdict SHA required",
+      "status": "ACCEPTED_IN_R63"
+    },
+    {
+      "id": "CONTRA-002",
+      "severity": "high",
+      "source_a": "reports/r62/final-verdict.md: VERDICT: R62_AI_ACCELERATED_DELIVERED_SIDECAR_PYTHON_RC_PHASE13_PASS",
+      "source_b": "R63 IV: 3 CRITICAL defects confirmed — sidecar not committed, 4+4 APIs missing, installed-wheel overclaimed",
+      "description": "R62 claimed full PASS but sidecar not committed/delivered in ZIP, installed-wheel APIs missing from __init__.py, and packaging replay has no R62 test.",
+      "deterministic_verification": "CONFIRMED by IV-R62-001, IV-R62-002, IV-R62-003 (git ls-files + import test)",
+      "repair_action": "R62 reclassified to R62_BROAD_PRODUCT_AND_ARTIFACT_PROGRESS_ACCEPTED_SELF_VERIFYING_CLOSURE_REJECTED; R63 closes all defects",
+      "status": "REPAIRED_IN_R63"
+    },
+    {
+      "id": "CONTRA-003",
+      "severity": "medium",
+      "source_a": "reports/r62/ai-*.json: all token_usage=0, api_calls_count=0",
+      "source_b": "R62 scoreboard: Train B AI Acceleration COMPLETE (implied live AI review)",
+      "description": "R62 AI reviewers were fixture-only (no live calls). The COMPLETE label was accurate but omitted explicit AI_NOT_LIVE labeling, which could be misread as live AI catching defects.",
+      "deterministic_verification": "CONFIRMED by reading all R62 ai-*.json files",
+      "repair_action": "R63 AI reviewer files explicitly declare ai_not_live: true in all reviewer JSON; telemetry document updated",
+      "status": "REPAIRED_IN_R63"
+    }
+  ],
+  "no_contradiction_areas": [
+    "R62 .NET nupkg SHAs consistent across manifest and physical files",
+    "FODS/FODT deepening capabilities tested and pass in R62 (46 tests)",
+    "R62 new tests count (146) matches scoreboard claim",
+    "CSV/DIF/PPM/ODS stats capabilities exist in neutral_model.py",
+    "R62 Phase Audit 13 evidence present and consistent",
+    "Bundle entry count consistent (2692 entries)"
+  ],
+  "overall_result": "3 contradictions found; 1 accepted, 2 repaired in R63",
+  "authority": "AI findings are advisory; all verified deterministically above"
+}
