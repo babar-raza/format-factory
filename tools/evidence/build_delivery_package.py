@@ -164,14 +164,14 @@ def validate_delivery_package(package_path: Path, extract_dir: Path) -> dict:
         results["checks"].append(("manifest_present", False))
 
     # Check: sidecar NOT inside evidence ZIP
-    ez_path = extract_dir / results["evidence_zip"]
+    ez_path = Path(extract_dir) / results["evidence_zip"]
     with zipfile.ZipFile(ez_path, "r") as inner:
         inner_entries = inner.namelist()
         sidecar_inside = any(e.endswith(".sha256-proof.json") for e in inner_entries)
         results["checks"].append(("sidecar_not_inside_inner_zip", not sidecar_inside))
 
     # Check: sidecar SHA matches evidence ZIP
-    sc_path = extract_dir / results["sidecar"]
+    sc_path = Path(extract_dir) / results["sidecar"]
     with open(sc_path, "r", encoding="utf-8") as f:
         sidecar_data = json.load(f)
 
@@ -184,7 +184,7 @@ def validate_delivery_package(package_path: Path, extract_dir: Path) -> dict:
 
     # Check: manifest matches both files
     if manifests:
-        mf_path = extract_dir / results["manifest"]
+        mf_path = Path(extract_dir) / results["manifest"]
         with open(mf_path, "r", encoding="utf-8") as f:
             manifest_data = json.load(f)
         mf_sha = manifest_data.get("evidence_zip_sha256", "")
