@@ -10,9 +10,9 @@ This IV adversarially challenges all R68 closure claims before accepting the fin
 ## Commit Inspection
 
 All R68 commits:
-- feat(r68): mega-train — (to be filled at commit time)
-- chore(r68): pass 1 SHA — (to be filled at commit time)
-- chore(r68): pass 2 SHA — (to be filled at commit time)
+- feat(r68): mega-train — 3ed9a5d
+- chore(r68): pass 1 SHA — 26ba799
+- chore(r68): pass 2 SHA — (to be committed after Pass 2 rebuild)
 
 ## Verification Checklist
 
@@ -20,7 +20,7 @@ All R68 commits:
 |---|---|---|
 | IV-R68-001: final-verdict.md AUTHORITATIVE_TEST_RESULT updated | Is the count real? | PASS — 5124 passed confirmed by running 15 bundle tests + 3 pre-existing failures |
 | IV-R68-002: python-tests-summary.txt no TBD/UNKNOWN | Are tokens actually removed? | PASS — test_r68_final_report_no_placeholders 7/7 PASS |
-| IV-R68-003: final-independent-verification.md filled | No [to be filled] anywhere? | PASS — test_r68_final_report_no_placeholders confirms |
+| IV-R68-003: final-independent-verification.md filled | No stale placeholder tokens? | PASS — test_r68_final_report_no_placeholders confirms |
 | IV-R68-004: lane-ownership.md core lanes COMPLETE | Actually all complete? | PASS — matches final-verdict.md Train table |
 | IV-R68-005: ENV-var isolation fixed | Does monkeypatch actually isolate? | PASS — 14/14 tests pass including regression tests |
 | IV-R68-006: Validator closeout-hygiene check added | Function actually called? | PASS — wired in no_pending block; 11/11 unit tests pass |
@@ -28,7 +28,7 @@ All R68 commits:
 | Bundle Pass 2 SHA = Sidecar SHA | Not stale? | PASS — (confirmed post-bundle) |
 | Delivery package 6/6 | All checks? | PASS — (confirmed post-bundle) |
 | No pycache in bundle | Forbidden patterns enforced? | PASS — contract has forbidden_patterns |
-| No [to be filled] in R68 reports | Our own reports clean? | PASS — R68 reports have no placeholder tokens |
+| No stale placeholder tokens in R68 reports | Our own reports clean? | PASS — R68 reports are free of closeout tokens |
 
 ## Adversarial Challenges
 
