@@ -1,0 +1,69 @@
+sprint_id: FORMAT-FACTORY-R69-FINAL-DELIVERY-SEAL-RC-CLOSURE-WORKAHEAD-MEGA-TRAIN-001
+run_number: r69
+date: "2026-05-27"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r69/00-preflight.md
+  - reports/r69/lane-ownership.md
+  - reports/r69/r68-independent-verification.md
+  - reports/r69/r68-defect-ledger.md
+  - reports/r69/r68-defect-ledger.json
+  - reports/r69/delivery-package-reconstruction-proof.md
+  - reports/r69/source-commit-proof-repair.md
+  - reports/r69/validator-delivery-finality-hardening.md
+  - reports/r69/extracted-delivery-package-replay.md
+  - reports/r69/local-rc-artifact-preservation.md
+  - reports/r69/phase-audit-18-repair.md
+  - reports/r69/phase-audit-19-local-rc-seal.md
+  - reports/r69/workahead-publication-readiness.md
+  - reports/r69/workahead-next-format-queue.md
+  - reports/r69/workahead-closeout-automation.md
+  - reports/r69/workahead-validator-negative-fixtures.md
+  - reports/r69/multi-mega-train-scoreboard.md
+  - reports/r69/final-independent-verification.md
+  - reports/r69/final-verdict.md
+  - reports/r69/final-test-summary.md
+  - tests/evidence/test_r69_delivery_package_required.py
+  - tests/evidence/test_r69_source_commit_proof_no_pending.py
+  - tests/evidence/test_r69_delivery_manifest_matches_artifacts.py
+  - tests/evidence/test_r69_final_metadata_no_placeholders.py
+  - tests/evidence/test_r69_inner_zip_sidecar_consistency.py
+  - tests/evidence/test_r69_negative_sidecar_proofs_present.py
+  - tools/evidence/contracts/r69-final-delivery-seal-rc-closure-workahead.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - run-environment.txt
+  - python-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - placeholder-scan-summary.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - delivery-package-validation-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - installed-public-api-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - invariant-output-final.txt
+  - extracted-package-replay-summary.txt
+  - phase-audit-19-summary.txt
+  - final-independent-verification.txt
+  - r68-delivery-defect-repair-summary.txt
+  - validator-hardening-proof.txt
+  - multi-mega-train-scoreboard-final.txt
+  - work-ahead-scoreboard-final.txt
+  - blockers-status.txt
+  - state-snapshot-output.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - git-log.txt
+  - r69-new-tests-summary.txt
+  - workahead-summary.txt
+  - repo-tree.txt

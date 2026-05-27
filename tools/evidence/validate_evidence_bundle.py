@@ -199,6 +199,13 @@ PENDING_MARKER_PATTERNS = [
     "status: pending",
     "status: stub",
     "result: PENDING",
+    # R69: Source-commit proof pending markers (IV-R69-001) — source-commit-proof.txt
+    # must not contain PENDING_PASS2_SHA_COMMIT or PENDING_FINAL_COMMIT. These tokens
+    # indicate the proof was never updated with the actual final commit SHA after the
+    # pass-2 bundle was built and the final commit was created.
+    "PENDING_PASS2_SHA_COMMIT",
+    "PENDING_FINAL_COMMIT",
+    "PENDING_PASS2_COMMIT",
 ]
 
 # R38: Minimum meaningful content threshold for metadata files.
@@ -731,6 +738,66 @@ def check_closeout_hygiene_tokens(zf):
                 hits.append((entry, token))
                 break  # one hit per file
     return hits
+
+
+def check_source_commit_proof_no_pending(metadata_files_content):
+    """R69 Train D: Check that source-commit-proof.txt has no PENDING_PASS2_SHA_COMMIT.
+
+    Detects the IV-R69-001 defect class where source-commit-proof.txt was written
+    before the final pass-2 commit and never updated with the actual commit SHA.
+    The token PENDING_PASS2_SHA_COMMIT must be replaced with the real git commit SHA.
+
+    Also caught by check_no_pending_reports via PENDING_MARKER_PATTERNS, but this
+    dedicated function provides a clearer error message.
+
+    Returns a list of error strings (empty if the check passes).
+    """
+    SOURCE_COMMIT_TOKENS = [
+        "PENDING_PASS2_SHA_COMMIT",
+        "PENDING_FINAL_COMMIT",
+        "PENDING_PASS2_COMMIT",
+    ]
+    content = metadata_files_content.get("source-commit-proof.txt", "")
+    if not content:
+        return []  # File absent — not our check to fail
+    errors = []
+    for token in SOURCE_COMMIT_TOKENS:
+        if token in content:
+            errors.append(
+                f"R69: source-commit-proof.txt contains prohibited token {token!r}. "
+                f"Replace with actual final commit SHA (IV-R69-001 defect class). "
+                f"The source-commit-proof must be updated after the final git commit."
+            )
+    return errors
+
+
+def check_negative_sidecar_proofs_present(metadata_files_content):
+    """R69 Train D: Check that negative sidecar proof files are present and confirmed.
+
+    The missing-sidecar-negative-proof.txt and wrong-sidecar-negative-proof.txt
+    prove the sidecar protocol is fail-closed. Both must be present in metadata
+    and contain evidence of the expected failures.
+
+    Returns a list of warning strings (not hard errors — some legacy contracts
+    don't require these files, but R69+ sprints should include them).
+    """
+    warnings = []
+    for fname, expected_token in [
+        ("missing-sidecar-negative-proof.txt", "BUNDLE_VALIDATION: FAIL"),
+        ("wrong-sidecar-negative-proof.txt", "SIDECAR_PROOF_VALIDATION: FAIL"),
+    ]:
+        content = metadata_files_content.get(fname, "")
+        if not content:
+            warnings.append(
+                f"R69: {fname} not found in bundle metadata. "
+                f"Negative sidecar proofs are required to demonstrate fail-closed behavior."
+            )
+        elif expected_token not in content and "CONFIRMED" not in content:
+            warnings.append(
+                f"R69: {fname} is present but does not contain {expected_token!r} or CONFIRMED. "
+                f"The file may be a stub without actual negative proof."
+            )
+    return warnings
 
 
 def check_proof_file_finality(metadata_files_content):
@@ -1624,6 +1691,16 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
                     f"R68: Closeout-hygiene token {token!r} found in bundled file '{zip_path}' "
                     f"— report was not filled in before bundle build."
                 )
+
+            # R69 Train D: source-commit proof no pending markers (IV-R69-001)
+            source_proof_hits = check_source_commit_proof_no_pending(metadata_files_content)
+            for msg in source_proof_hits:
+                errors.append(msg)
+
+            # R69 Train D: negative sidecar proofs present check
+            neg_proof_warnings = check_negative_sidecar_proofs_present(metadata_files_content)
+            for msg in neg_proof_warnings:
+                warnings.append(msg)
 
         identity_hits = check_metadata_identity(
             metadata_files_content,

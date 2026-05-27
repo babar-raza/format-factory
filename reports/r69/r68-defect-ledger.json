@@ -1,0 +1,42 @@
+{
+  "sprint": "FORMAT-FACTORY-R69-FINAL-DELIVERY-SEAL-RC-CLOSURE-WORKAHEAD-MEGA-TRAIN-001",
+  "date": "2026-05-27",
+  "r68_classification": "MULTIPLE_CLOSEOUT_DEFECTS",
+  "defects": [
+    {
+      "id": "IV-R69-001",
+      "severity": "RC-BLOCKING",
+      "location": ".local/r68-metadata/source-commit-proof.txt",
+      "description": "PENDING_PASS2_SHA_COMMIT never replaced with actual final commit SHA b704712",
+      "repair_train": "Train C"
+    },
+    {
+      "id": "IV-R69-002",
+      "severity": "MEDIUM",
+      "location": ".local/r68-metadata/final-bundle-validation-proof.txt",
+      "description": "Stale Pass 2 SHA 10c57c6f recorded; actual final SHA 209017ee after bundle rebuild with false-positive fixes",
+      "repair_train": "Train B"
+    },
+    {
+      "id": "IV-R69-003",
+      "severity": "MEDIUM",
+      "location": ".local/r68-metadata/external-sidecar-proof-summary.txt",
+      "description": "Stale sidecar SHA 10c57c6f; actual sidecar SHA 209017ee",
+      "repair_train": "Train B"
+    },
+    {
+      "id": "IV-R69-004",
+      "severity": "MEDIUM",
+      "location": ".local/r68-metadata/delivery-package-validation-summary.txt",
+      "description": "Stale delivery SHA 921105e2 and inner ZIP SHA 10c57c6f; actual delivery SHA c6b53bd2",
+      "repair_train": "Train B"
+    },
+    {
+      "id": "IV-R69-005",
+      "severity": "PROCESS",
+      "location": "Human review artifact",
+      "description": "Inner evidence ZIP provided instead of delivery package to human reviewer; delivery package was correctly built on disk",
+      "repair_train": "Train B"
+    }
+  ]
+}
