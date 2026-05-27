@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R69 - PENDING
+**Latest sprint:** R69 - R69_DELIVERY_SEALED_RC_ACCEPTED_PUBLICATION_BLOCKED
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
