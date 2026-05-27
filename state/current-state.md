@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R67 - R67_CLEAN_LOCAL_RC_FINISH_LINE_PUBLICATION_BLOCKED
+**Latest sprint:** R68 - R68_CLEAN_LOCAL_RC_SEALED_PUBLICATION_BLOCKED
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 

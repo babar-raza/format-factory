@@ -679,6 +679,59 @@ _AUTO_PROOF_TRANSIENT_PLACEHOLDER = (
     "placeholder \u2014 will be replaced after candidate validation"
 )
 
+# R68 Train E: Closeout-hygiene tokens that must NOT appear in final reports.
+# These indicate incomplete closeout — the report was written as a template but
+# never filled in with actual results before bundle build.
+CLOSEOUT_HYGIENE_TOKENS = [
+    "[to be filled]",
+    "[to be filled at closeout]",
+    "[commit sha to be filled]",
+    "post-bundle authoritative count: tbd",
+    "unknown (3 —",   # unresolved unknown failures in python-tests-summary
+]
+
+# Final report filenames scanned for closeout-hygiene tokens.
+# These are repo files where incomplete templates cause silent close-out failure.
+CLOSEOUT_HYGIENE_REPORT_FILES = frozenset({
+    "final-independent-verification.md",
+    "python-tests-summary.txt",
+    "lane-ownership.md",
+    "final-verdict.md",
+})
+
+
+def check_closeout_hygiene_tokens(zf):
+    """R68 Train E: Scan final report files for incomplete-closeout tokens.
+
+    Detects the R67 defect class where reports were written as templates
+    (e.g. final-independent-verification.md with '[to be filled]') and never
+    updated before bundle build.
+
+    Scans:
+    - repo/reports/<run>/final-independent-verification.md
+    - bundle-metadata/python-tests-summary.txt
+    - repo/reports/<run>/lane-ownership.md
+    - repo/reports/<run>/final-verdict.md (supplements check_repo_reports_pending)
+
+    Returns a list of (zip_path, token) tuples for any hits.
+    """
+    hits = []
+    for entry in zf.namelist():
+        parts = entry.replace("\\", "/").split("/")
+        # Match either bundle-metadata/<file> or repo/reports/<run>/<file>
+        fname = parts[-1]
+        if fname not in CLOSEOUT_HYGIENE_REPORT_FILES:
+            continue
+        try:
+            content = zf.read(entry).decode("utf-8", errors="replace").lower()
+        except Exception:
+            continue
+        for token in CLOSEOUT_HYGIENE_TOKENS:
+            if token in content:
+                hits.append((entry, token))
+                break  # one hit per file
+    return hits
+
 
 def check_proof_file_finality(metadata_files_content):
     """R49: Check that final-bundle-validation-proof.txt contains no stale placeholders.
@@ -1563,6 +1616,14 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             scoreboard_lane_hits = check_scoreboard_lanes_in_progress(zf, run_number=_run_number)
             for msg in scoreboard_lane_hits:
                 errors.append(msg)
+
+            # R68 Train E: closeout-hygiene token scan
+            closeout_hits = check_closeout_hygiene_tokens(zf)
+            for zip_path, token in closeout_hits:
+                errors.append(
+                    f"R68: Closeout-hygiene token {token!r} found in bundled file '{zip_path}' "
+                    f"— report was not filled in before bundle build."
+                )
 
         identity_hits = check_metadata_identity(
             metadata_files_content,

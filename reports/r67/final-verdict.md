@@ -39,7 +39,7 @@
 
 ## Authoritative Test Result
 
-AUTHORITATIVE_TEST_RESULT: 5118 passed, 12 failed (3 pre-existing + 6 pending bundle + 3 unknown), 27 skipped
+AUTHORITATIVE_TEST_RESULT: 5124 passed, 3 failed (all pre-existing), 27 skipped (post-bundle; R68 Train B closeout)
 
 ---
 

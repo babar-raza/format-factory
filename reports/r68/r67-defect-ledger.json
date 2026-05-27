@@ -1,0 +1,58 @@
+{
+  "sprint": "FORMAT-FACTORY-R68-FINAL-CLOSEOUT-HYGIENE-LOCAL-RC-SEAL-MEGA-TRAIN-001",
+  "reviewed_sprint": "FORMAT-FACTORY-R67-CLEAN-LOCAL-RC-PACKAGE-REPLAY-FINALITY-WORKAHEAD-MEGA-TRAIN-001",
+  "date": "2026-05-27",
+  "total_defects": 6,
+  "rc_blocking": 5,
+  "informational": 1,
+  "defects": [
+    {
+      "id": "IV-R68-001",
+      "severity": "RC-BLOCKING",
+      "category": "closeout-hygiene",
+      "description": "AUTHORITATIVE_TEST_RESULT stale in final-verdict.md (pre-bundle snapshot; 6 pending-bundle + 3 unknown not resolved)",
+      "file": "reports/r67/final-verdict.md",
+      "repair_train": "B+C"
+    },
+    {
+      "id": "IV-R68-002",
+      "severity": "RC-BLOCKING",
+      "category": "closeout-hygiene",
+      "description": "python-tests-summary.txt contains TBD and UNKNOWN tokens",
+      "file": ".local/r67-metadata/python-tests-summary.txt",
+      "repair_train": "B"
+    },
+    {
+      "id": "IV-R68-003",
+      "severity": "RC-BLOCKING",
+      "category": "closeout-hygiene",
+      "description": "final-independent-verification.md has [to be filled] in every checklist row",
+      "file": "reports/r67/final-independent-verification.md",
+      "repair_train": "C"
+    },
+    {
+      "id": "IV-R68-004",
+      "severity": "RC-BLOCKING",
+      "category": "closeout-hygiene",
+      "description": "lane-ownership.md shows PENDING for trains E, F, J, K, L, W1-W5 which are actually complete",
+      "file": "reports/r67/lane-ownership.md",
+      "repair_train": "C"
+    },
+    {
+      "id": "IV-R68-005",
+      "severity": "RC-BLOCKING",
+      "category": "test-reliability",
+      "description": "FORMAT_FACTORY_BUNDLE_METADATA_DIR env-var leaks into synthetic bundle discovery tests",
+      "file": "tests/packaging/test_r67_extracted_current_bundle_discovery.py",
+      "repair_train": "D"
+    },
+    {
+      "id": "IV-R68-006",
+      "severity": "Informational",
+      "category": "validator-policy-gap",
+      "description": "Validator does not check for closeout-hygiene tokens ([to be filled], TBD, UNKNOWN) in final reports",
+      "file": "tools/evidence/validate_evidence_bundle.py",
+      "repair_train": "E"
+    }
+  ]
+}

@@ -2,6 +2,10 @@
 
 Proves that in extracted-bundle mode, the correct sprint's artifacts are
 discoverable, while nonexistent sprints return None.
+
+R68 Train D: added monkeypatch.delenv(FORMAT_FACTORY_BUNDLE_METADATA_DIR) to all
+synthetic-bundle tests so that a globally-set env var does not override the
+temporary extracted-bundle layout under test.
 """
 from __future__ import annotations
 
@@ -17,6 +21,8 @@ import pytest
 from find_bundle_artifacts import find_artifact_dir, find_manifest_path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+_ENV_VAR = "FORMAT_FACTORY_BUNDLE_METADATA_DIR"
 
 
 def _make_extracted_bundle(tmpdir: Path, sprint_label: str) -> tuple[Path, Path]:
@@ -40,33 +46,38 @@ def _make_extracted_bundle(tmpdir: Path, sprint_label: str) -> tuple[Path, Path]
 
 
 class TestCurrentBundleDiscovery:
-    def test_current_sprint_found_via_parent_bundle_metadata(self):
+    def test_current_sprint_found_via_parent_bundle_metadata(self, monkeypatch):
+        monkeypatch.delenv(_ENV_VAR, raising=False)
         with tempfile.TemporaryDirectory() as td:
             repo, art = _make_extracted_bundle(Path(td), "r67")
             result = find_artifact_dir("r67", repo)
             assert result == art
 
-    def test_nonexistent_sprint_not_found_via_parent_bundle_metadata(self):
+    def test_nonexistent_sprint_not_found_via_parent_bundle_metadata(self, monkeypatch):
+        monkeypatch.delenv(_ENV_VAR, raising=False)
         with tempfile.TemporaryDirectory() as td:
             repo, _ = _make_extracted_bundle(Path(td), "r67")
             result = find_artifact_dir("r99999", repo)
             assert result is None
 
-    def test_manifest_found_for_current_sprint(self):
+    def test_manifest_found_for_current_sprint(self, monkeypatch):
+        monkeypatch.delenv(_ENV_VAR, raising=False)
         with tempfile.TemporaryDirectory() as td:
             repo, _ = _make_extracted_bundle(Path(td), "r67")
             result = find_manifest_path("r67", repo)
             assert result is not None
             assert result.name == "package-artifact-manifest.yaml"
 
-    def test_manifest_not_found_for_nonexistent_sprint(self):
+    def test_manifest_not_found_for_nonexistent_sprint(self, monkeypatch):
+        monkeypatch.delenv(_ENV_VAR, raising=False)
         with tempfile.TemporaryDirectory() as td:
             repo, _ = _make_extracted_bundle(Path(td), "r67")
             result = find_manifest_path("r99999", repo)
             assert result is None
 
-    def test_multiple_sprints_only_match_own(self):
+    def test_multiple_sprints_only_match_own(self, monkeypatch):
         """R66 extracted bundle: r66 matches, r65 does not via extracted bundle-metadata."""
+        monkeypatch.delenv(_ENV_VAR, raising=False)
         with tempfile.TemporaryDirectory() as td:
             repo, art = _make_extracted_bundle(Path(td), "r66")
             assert find_artifact_dir("r66", repo) == art

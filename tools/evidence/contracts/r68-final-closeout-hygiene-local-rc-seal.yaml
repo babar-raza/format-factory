@@ -1,0 +1,60 @@
+sprint_id: FORMAT-FACTORY-R68-FINAL-CLOSEOUT-HYGIENE-LOCAL-RC-SEAL-MEGA-TRAIN-001
+run_number: r68
+date: "2026-05-27"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r68/00-preflight.md
+  - reports/r68/lane-ownership.md
+  - reports/r68/r67-independent-verification.md
+  - reports/r68/r67-defect-ledger.md
+  - reports/r68/r67-defect-ledger.json
+  - reports/r68/final-test-summary.md
+  - reports/r68/final-report-cleanup.md
+  - reports/r68/artifact-discovery-env-isolation.md
+  - reports/r68/validator-closeout-hygiene-hardening.md
+  - reports/r68/workahead-publication-gate-readiness.md
+  - reports/r68/workahead-next-format-readiness.md
+  - reports/r68/multi-mega-train-scoreboard.md
+  - reports/r68/final-independent-verification.md
+  - reports/r68/final-verdict.md
+  - tests/packaging/test_r68_artifact_discovery_env_isolation.py
+  - tests/evidence/test_r68_closeout_hygiene.py
+  - tests/evidence/test_r68_final_report_no_placeholders.py
+  - tools/evidence/contracts/r68-final-closeout-hygiene-local-rc-seal.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - run-environment.txt
+  - python-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - artifact-manifest-validation-summary.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - delivery-package-validation-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - r67-closeout-hygiene-repair-summary.txt
+  - env-isolation-repair-proof.txt
+  - validator-hardening-proof.txt
+  - installed-public-api-smoke-summary.txt
+  - wheel-install-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - invariant-output-final.txt
+  - invariants-output.txt
+  - final-state-ordering-proof.txt
+  - workahead-summary.txt
+  - multi-mega-train-scoreboard-final.txt
+  - blockers-status.txt
+  - state-snapshot-output.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - git-log.txt
+  - r68-new-tests-summary.txt
+  - phase-audit-status.txt

@@ -18,8 +18,8 @@ All shared files owned by coordinator:
 | B — Artifact discovery repair | Coordinator | COMPLETE |
 | C — Manifest finality | Coordinator | COMPLETE |
 | D — Validator hardening | Coordinator | COMPLETE |
-| E — Extracted delivery replay | Coordinator | PENDING |
-| F — Final delivery package rebuild | Coordinator | PENDING |
+| E — Extracted delivery replay | Coordinator | COMPLETE |
+| F — Final delivery package rebuild | Coordinator | COMPLETE |
 
 ## Safe Work-Ahead Lanes
 
@@ -27,12 +27,12 @@ All shared files owned by coordinator:
 |---|---|---|
 | G — Installed API preservation | Coordinator | COMPLETE |
 | H — FODS/FODT minimal advancement | Coordinator | COMPLETE |
-| I — 4-track advancement | Coordinator | PARTIAL |
-| J — Phase Audit 18 | Coordinator | PENDING |
-| K — AI adversarial review | Coordinator | PENDING |
-| L — Docs/memory sync | Coordinator | PENDING |
-| W1 — Fixture/sample readiness | Coordinator | PENDING |
-| W2 — Test scaffolds | Coordinator | PENDING |
-| W3 — Publication dry-run validators | Coordinator | PENDING |
-| W4 — Closeout pipeline | Coordinator | PENDING |
-| W5 — Validator negative library | Coordinator | PENDING |
+| I — 4-track advancement | Coordinator | COMPLETE |
+| J — Phase Audit 18 | Coordinator | COMPLETE |
+| K — AI adversarial review | Coordinator | COMPLETE |
+| L — Docs/memory sync | Coordinator | COMPLETE |
+| W1 — Fixture/sample readiness | Coordinator | COMPLETE |
+| W2 — Test scaffolds | Coordinator | COMPLETE |
+| W3 — Publication dry-run validators | Coordinator | COMPLETE |
+| W4 — Closeout pipeline | Coordinator | PARTIAL_DOCUMENTED |
+| W5 — Validator negative library | Coordinator | COMPLETE |
