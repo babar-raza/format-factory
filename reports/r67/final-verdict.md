@@ -39,16 +39,16 @@
 
 ## Authoritative Test Result
 
-AUTHORITATIVE_TEST_RESULT: [to be filled at closeout]
+AUTHORITATIVE_TEST_RESULT: 5118 passed, 12 failed (3 pre-existing + 6 pending bundle + 3 unknown), 27 skipped
 
 ---
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION_PASS_1_SHA: [to be filled at pass 1]
-BUNDLE_VALIDATION_PASS_2_SHA: [to be filled at pass 2]
+BUNDLE_VALIDATION_PASS_1_SHA: 232caa9f425bf4c86b1869baa78509440d9360c780eb8e0b3fc2f2be195c4ba1
+BUNDLE_VALIDATION_PASS_2_SHA: PENDING
 SIDECAR_SHA: [sidecar authoritative]
-DELIVERY_PACKAGE_SHA: [to be filled at delivery build]
+DELIVERY_PACKAGE_SHA: PENDING
 
 ---
 
