@@ -1,0 +1,57 @@
+sprint_id: FORMAT-FACTORY-R70-FINAL-METADATA-TRUTH-DELIVERY-TEST-SEAL-001
+run_number: r70
+date: "2026-05-27"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r70/r69-independent-verification.md
+  - reports/r70/r69-defect-ledger.md
+  - reports/r70/r69-defect-ledger.json
+  - reports/r70/final-verdict.md
+  - tests/evidence/test_r70_delivery_manifest_hash_truth.py
+  - tests/evidence/test_r70_final_verdict_hash_truth.py
+  - tests/evidence/test_r70_final_delivery_mode_no_required_skips.py
+  - tests/evidence/test_r70_manifest_git_head_truth.py
+  - tests/evidence/test_r70_final_iv_no_placeholders.py
+  - tests/evidence/test_r70_validator_rejects_stale_final_verdict_sha.py
+  - tests/evidence/test_r70_validator_rejects_wrong_sidecar_file_sha.py
+  - tests/evidence/test_r70_validator_rejects_final_iv_placeholders.py
+  - tests/evidence/test_r70_validator_rejects_pending_test_summary.py
+  - tests/evidence/test_r70_validator_rejects_stale_final_git_head.py
+  - tools/evidence/contracts/r70-final-metadata-truth-delivery-test-seal.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - run-environment.txt
+  - python-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - placeholder-scan-summary.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - delivery-package-validation-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - installed-public-api-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - invariant-output-final.txt
+  - extracted-package-replay-summary.txt
+  - r69-iv-repair-summary.txt
+  - r70-new-tests-summary.txt
+  - final-independent-verification.txt
+  - validator-hardening-proof.txt
+  - multi-mega-train-scoreboard-final.txt
+  - work-ahead-scoreboard-final.txt
+  - blockers-status.txt
+  - state-snapshot-output.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - git-log.txt
+  - workahead-summary.txt
+  - repo-tree.txt
+  - phase-audit-19-summary.txt

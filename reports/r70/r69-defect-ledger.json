@@ -1,0 +1,52 @@
+{
+  "sprint": "FORMAT-FACTORY-R70-FINAL-METADATA-TRUTH-DELIVERY-TEST-SEAL-001",
+  "date": "2026-05-27",
+  "r69_reclassified": "R69_DELIVERY_PACKAGE_STRUCTURALLY_VALID_BUT_LOCAL_RC_SEAL_REJECTED",
+  "defects": [
+    {
+      "id": "IV-R70-001",
+      "severity": "RC-blocking",
+      "file": ".local/r69-delivery-manifest.json",
+      "field": "sidecar_sha256",
+      "found": "3e02c171fe2c188d4331a885eb1abbfa4261e3475d87766c998bd913157fda22",
+      "correct": "6a08df047d0b841a62b3d995fa6aae40167873629c79dfa471f4e5ddb78a184e",
+      "explanation": "sidecar_sha256 must be SHA-256 of the sidecar JSON file itself, not the inner ZIP SHA"
+    },
+    {
+      "id": "IV-R70-002",
+      "severity": "RC-blocking",
+      "file": ".local/r69-metadata/final-independent-verification.txt",
+      "field": "inner ZIP SHA, sidecar SHA, delivery SHA",
+      "found": "to be filled after Pass 2 build",
+      "correct": "actual SHA values",
+      "explanation": "Three placeholder lines left unfilled"
+    },
+    {
+      "id": "IV-R70-003",
+      "severity": "metadata-hygiene",
+      "file": ".local/r69-metadata/python-tests-summary.txt",
+      "field": "POST_BUNDLE_AUTHORITATIVE",
+      "found": "PENDING (to be updated after R69 bundle build)",
+      "correct": "5172 passed, 10 failed (all pre-existing), 31 skipped",
+      "explanation": "Post-bundle test result was never filled in"
+    },
+    {
+      "id": "IV-R70-004",
+      "severity": "metadata-hygiene",
+      "file": ".local/r69-metadata/package-artifact-manifest.yaml",
+      "field": "final_git_head",
+      "found": "26ba79919400137164e48b00c6f51cde62e66c06",
+      "correct": "2f74eefb8df76250733e5e0fcc75aa4b6c9ee458",
+      "explanation": "final_git_head was set to R68 pass-1 commit, not R69 final commit"
+    },
+    {
+      "id": "IV-R70-005",
+      "severity": "metadata-hygiene",
+      "file": ".local/r69-metadata/source-commit-proof.txt",
+      "field": "R69 final commit",
+      "found": "e3ab74f",
+      "correct": "2f74eef",
+      "explanation": "source-commit-proof.txt was written before the delivery package SHA commit (2f74eef), so it recorded e3ab74f as the final commit"
+    }
+  ]
+}
