@@ -68,14 +68,23 @@ def find_artifact_dir(run_number: str, project_root: "str | Path") -> "Path | No
         if env_matches_run:
             candidates.append(env_path / "package-artifacts")
 
-    candidates += [
-        root / ".local" / f"{run_lower}-metadata" / "package-artifacts",
-        root / "bundle-metadata" / "package-artifacts",
-        # R58 IV-R57-007: extracted bundle layout is <root>/repo/ + <root>/bundle-metadata/
-        # When called from extracted <root>/repo as project_root, check the parent directory.
-        root.parent / "bundle-metadata" / "package-artifacts",
-        root / "reports" / run_lower / "package-artifacts",
-    ]
+    # .local/<run>-metadata/ is naturally run-specific (path embeds run number)
+    candidates.append(root / ".local" / f"{run_lower}-metadata" / "package-artifacts")
+
+    # R67 Train B: bundle-metadata/ fallback paths require sprint-id.txt match.
+    # Same pattern as env-var override (R66 Train D). Prevents false positives in
+    # extracted-bundle mode where bundle-metadata/ exists for a different sprint.
+    for bm_root in [root / "bundle-metadata", root.parent / "bundle-metadata"]:
+        sprint_id_file = bm_root / "sprint-id.txt"
+        bm_matches_run = True  # default allow if no sprint-id.txt (backward compat)
+        if sprint_id_file.is_file():
+            sprint_content = sprint_id_file.read_text(encoding="utf-8").lower()
+            bm_matches_run = run_lower in sprint_content
+        if bm_matches_run:
+            candidates.append(bm_root / "package-artifacts")
+
+    # reports/<run>/ is naturally run-specific (path embeds run number)
+    candidates.append(root / "reports" / run_lower / "package-artifacts")
 
     for candidate in candidates:
         if candidate.is_dir() and any(candidate.glob("*.whl")):
@@ -113,13 +122,21 @@ def find_manifest_path(run_number: str, project_root: "str | Path") -> "Path | N
         if env_matches_run:
             candidates.append(env_path / "package-artifact-manifest.yaml")
 
-    candidates += [
-        root / ".local" / f"{run_lower}-metadata" / "package-artifact-manifest.yaml",
-        root / "bundle-metadata" / "package-artifact-manifest.yaml",
-        # R58 IV-R57-007: extracted bundle parent-dir check
-        root.parent / "bundle-metadata" / "package-artifact-manifest.yaml",
-        root / "reports" / run_lower / "package-artifact-manifest.yaml",
-    ]
+    # .local/<run>-metadata/ is naturally run-specific
+    candidates.append(root / ".local" / f"{run_lower}-metadata" / "package-artifact-manifest.yaml")
+
+    # R67 Train B: bundle-metadata/ fallback paths require sprint-id.txt match.
+    for bm_root in [root / "bundle-metadata", root.parent / "bundle-metadata"]:
+        sprint_id_file = bm_root / "sprint-id.txt"
+        bm_matches_run = True  # default allow if no sprint-id.txt (backward compat)
+        if sprint_id_file.is_file():
+            sprint_content = sprint_id_file.read_text(encoding="utf-8").lower()
+            bm_matches_run = run_lower in sprint_content
+        if bm_matches_run:
+            candidates.append(bm_root / "package-artifact-manifest.yaml")
+
+    # reports/<run>/ is naturally run-specific
+    candidates.append(root / "reports" / run_lower / "package-artifact-manifest.yaml")
 
     for candidate in candidates:
         if candidate.is_file():

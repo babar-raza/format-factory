@@ -1,0 +1,46 @@
+{
+  "sprint": "FORMAT-FACTORY-R67-CLEAN-LOCAL-RC-PACKAGE-REPLAY-FINALITY-WORKAHEAD-MEGA-TRAIN-001",
+  "iv_source": "R66",
+  "date": "2026-05-27",
+  "defect_count": 3,
+  "rc_blocking_count": 2,
+  "informational_count": 1,
+  "defects": [
+    {
+      "id": "IV-R67-001",
+      "severity": "RC-BLOCKING",
+      "category": "artifact_discovery",
+      "description": "Artifact discovery false positive in extracted-bundle mode",
+      "file": "tools/packaging/find_bundle_artifacts.py",
+      "lines": "71-78",
+      "symptom": "find_artifact_dir('r99999') returns bundle-metadata/package-artifacts instead of None in extracted-bundle mode",
+      "root_cause": "bundle-metadata/ fallback paths lack sprint-id.txt check (R66 Train D fix only covered env-var override)",
+      "repair_train": "B",
+      "repair_action": "Add sprint-id.txt check to bundle-metadata/ fallback paths"
+    },
+    {
+      "id": "IV-R67-002",
+      "severity": "RC-BLOCKING",
+      "category": "manifest_finality",
+      "description": "PENDING_FINAL_COMMIT placeholder in package manifests",
+      "files": [
+        ".local/r66-metadata/package-artifact-manifest.yaml",
+        ".local/r66-metadata/dotnet-nupkg-manifest.yaml"
+      ],
+      "field": "final_git_head",
+      "expected_value": "1f92d31eeb449b93fdc6bf96e865d942374eb259",
+      "actual_value": "PENDING_FINAL_COMMIT",
+      "repair_train": "C",
+      "repair_action": "Backfill final_git_head with actual HEAD SHA in R67 manifests"
+    },
+    {
+      "id": "IV-R67-003",
+      "severity": "Informational",
+      "category": "validator_gap",
+      "description": "Validator does not fail on PENDING_FINAL_COMMIT token",
+      "file": "tools/evidence/validate_evidence_bundle.py",
+      "repair_train": "D",
+      "repair_action": "Add PENDING_FINAL_COMMIT to forbidden tokens check"
+    }
+  ]
+}
