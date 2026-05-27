@@ -12,7 +12,7 @@ This IV adversarially challenges all R68 closure claims before accepting the fin
 All R68 commits:
 - feat(r68): mega-train — 3ed9a5d
 - chore(r68): pass 1 SHA — 26ba799
-- chore(r68): pass 2 SHA — (to be committed after Pass 2 rebuild)
+- chore(r68): pass 2 SHA — f84dc0e (seal SHAs); final SHA commit = this commit
 
 ## Verification Checklist
 
