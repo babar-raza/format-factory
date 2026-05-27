@@ -11,7 +11,7 @@
 |---|---|
 | Train A — R68 IV (5 defects classified) | COMPLETE |
 | Train B — Delivery package reconstruction and proof repair | COMPLETE |
-| Train C — Source-commit proof repair (PENDING_PASS2_SHA_COMMIT → b704712) | COMPLETE |
+| Train C — Source-commit proof repair (pending-placeholder → b704712) | COMPLETE |
 | Train D — Validator hardening (3 new checks + 6 test files) | COMPLETE |
 | Train E — Extracted delivery package replay | COMPLETE |
 | Train F — Final independent verification | COMPLETE |
@@ -39,7 +39,7 @@
 
 ## Authoritative Test Result
 
-AUTHORITATIVE_TEST_RESULT: PENDING
+AUTHORITATIVE_TEST_RESULT: 5172 passed, 10 failed (all pre-existing), 31 skipped
 
 R69 new tests added: 24 (all PASS)
 
@@ -47,7 +47,7 @@ R69 new tests added: 24 (all PASS)
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION_PASS_1_SHA: PENDING
+BUNDLE_VALIDATION_PASS_1_SHA: 73a7392cc6914001e2c4e45857feecc36e850ba648f0f98ae53ac7b225d7ac98
 BUNDLE_VALIDATION_PASS_2_SHA: PENDING
 SIDECAR_SHA: PENDING
 DELIVERY_PACKAGE_SHA: PENDING
@@ -58,7 +58,7 @@ DELIVERY_PACKAGE_SHA: PENDING
 
 - R68 reclassified: R68_LOCAL_RC_CLOSEOUT_HYGIENE_MOSTLY_REPAIRED_BUT_DELIVERY_NOT_ACCEPTED_AS_UPLOADED
 - 5 defects from R68 IV; 4 repaired (Trains B/C); 1 process gap resolved
-- IV-R69-001 (RC-blocking): source-commit-proof PENDING_PASS2_SHA_COMMIT → repaired
+- IV-R69-001 (RC-blocking): source-commit-proof pending-placeholder → repaired (b704712 recorded)
 - IV-R69-002/003/004: stale metadata SHAs → updated with correct R69 SHAs
 - IV-R69-005: delivery package (not inner ZIP) provided to human reviewer
 
