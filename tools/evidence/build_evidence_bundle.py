@@ -220,9 +220,9 @@ def write_metadata_identity_report(contract, metadata_dir):
     """Write a sprint identity report into the metadata directory."""
     metadata_path = Path(metadata_dir)
     identity_path = metadata_path / "metadata-identity-report.md"
-    sprint_id = contract.get("sprint_id", contract.get("contract_id", "unknown"))
-    contract_id = contract.get("contract_id", "unknown")
-    sprint_type = contract.get("sprint_type", "unknown")
+    sprint_id = contract.get("sprint_id", contract.get("contract_id", "null"))
+    contract_id = contract.get("contract_id", "null")
+    sprint_type = contract.get("sprint_type", "null")
     identity_path.write_text(
         "\n".join([
             "# Metadata Identity Report",
