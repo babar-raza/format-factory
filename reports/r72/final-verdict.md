@@ -24,7 +24,7 @@
 
 ## Authoritative Test Result
 
-AUTHORITATIVE_TEST_RESULT: 5294 passed, 0 failed, 34 skipped
+AUTHORITATIVE_TEST_RESULT: 5933 passed, 0 failed, 28 skipped
 
 ---
 
