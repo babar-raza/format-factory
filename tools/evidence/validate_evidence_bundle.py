@@ -784,7 +784,7 @@ def check_inner_verdict_delivery_sha_authority(zf) -> "list[str]":
     package is built after the inner ZIP, so any attempt to record it inside creates
     a circular dependency (IV-R71-001, IV-R71-002).
 
-    Rules:
+    Rules (apply ONLY to the current sprint's final-verdict — not historical ones):
       - Inner final-verdict MUST NOT contain 'DELIVERY_PACKAGE_SHA: PENDING'
         (already caught by check_repo_reports_pending STATUS_LINE_PATTERNS, but
         this check adds a clearer error message).
@@ -794,17 +794,44 @@ def check_inner_verdict_delivery_sha_authority(zf) -> "list[str]":
         (semantic label delegating authority to the delivery manifest).
       - Inner final-verdict MAY omit 'DELIVERY_PACKAGE_SHA:' entirely.
 
+    Historical reports from prior sprints (e.g. repo/reports/r65/final-verdict.md) are
+    excluded — they legitimately contain concrete SHAs from when those sprints were delivered.
+
     Returns a list of error strings. Empty list means PASS.
     """
     import re
     errors = []
     all_entries = zf.namelist()
+
+    # Detect current sprint's run_number from bundle-metadata/sprint-id.txt
+    current_run = None
+    sprint_id_candidates = [
+        e for e in all_entries if e.endswith("sprint-id.txt")
+    ]
+    for candidate in sprint_id_candidates:
+        try:
+            sprint_id_content = zf.read(candidate).decode("utf-8", errors="replace").strip()
+            # Extract run number: "FORMAT-FACTORY-R71-..." -> "r71"
+            m = re.search(r"-R(\d+)-", sprint_id_content, re.IGNORECASE)
+            if m:
+                current_run = f"r{m.group(1).lower()}"
+                break
+        except Exception:
+            continue
+
     for entry in all_entries:
         if not entry.startswith("repo/reports/"):
             continue
         parts = entry.split("/")
         if len(parts) != 4 or parts[3] != "final-verdict.md":
             continue
+        sprint_dir = parts[2]  # e.g. "r71"
+
+        # Only enforce on the current sprint's final-verdict
+        # Historical reports are excluded — they have valid concrete SHAs from prior deliveries
+        if current_run and sprint_dir.lower() != current_run.lower():
+            continue
+
         try:
             content = zf.read(entry).decode("utf-8", errors="replace")
         except Exception:
