@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R70 - R70_DELIVERY_SEALED_RC_ACCEPTED_PUBLICATION_BLOCKED
+**Latest sprint:** R71 - R71_LOCAL_RC_SEALED_PUBLICATION_BLOCKED
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
@@ -10,7 +10,7 @@
 - fodt: 6 files
 
 ## Evidence Contracts
-- Total: 160
+- Total: 161
 - ISSUE: r27-ai-platform-full-cycle.yaml: min_metadata_count=10 < 30
 - ISSUE: r32-truth-matrix-gate-quality-and-drift-recovery.yaml: min_metadata_count=5 < 30
 

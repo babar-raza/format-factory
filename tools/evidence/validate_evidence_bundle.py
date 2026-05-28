@@ -206,6 +206,10 @@ PENDING_MARKER_PATTERNS = [
     "PENDING_PASS2_SHA_COMMIT",
     "PENDING_FINAL_COMMIT",
     "PENDING_PASS2_COMMIT",
+    # R71: Outer delivery package SHA must not appear as PENDING inside inner evidence ZIP.
+    # Inner ZIP cannot know the outer package SHA (outer is built after inner).
+    # Use: DELIVERY_PACKAGE_SHA: external_delivery_manifest_authoritative
+    "DELIVERY_PACKAGE_SHA: PENDING",
 ]
 
 # R38: Minimum meaningful content threshold for metadata files.
@@ -345,6 +349,8 @@ def check_repo_reports_pending(zf):
         "TO BE UPDATED AFTER BUNDLE",
         "PENDING — building evidence bundle",
         "validation_status: PENDING",
+        # R71: Outer delivery package SHA must not be PENDING inside inner evidence ZIP.
+        "DELIVERY_PACKAGE_SHA: PENDING",
     ]
 
     hits = []
@@ -768,6 +774,62 @@ def check_source_commit_proof_no_pending(metadata_files_content):
                 f"Replace with actual final commit SHA (IV-R69-001 defect class). "
                 f"The source-commit-proof must be updated after the final git commit."
             )
+    return errors
+
+
+def check_inner_verdict_delivery_sha_authority(zf) -> "list[str]":
+    """R71 Train B: Enforce layered proof authority for delivery package SHA.
+
+    The inner evidence ZIP cannot know the outer delivery package SHA — the outer
+    package is built after the inner ZIP, so any attempt to record it inside creates
+    a circular dependency (IV-R71-001, IV-R71-002).
+
+    Rules:
+      - Inner final-verdict MUST NOT contain 'DELIVERY_PACKAGE_SHA: PENDING'
+        (already caught by check_repo_reports_pending STATUS_LINE_PATTERNS, but
+        this check adds a clearer error message).
+      - Inner final-verdict MUST NOT contain 'DELIVERY_PACKAGE_SHA: <64-char hex>'
+        (a concrete outer package SHA inside the inner ZIP is always stale).
+      - Inner final-verdict MAY contain 'DELIVERY_PACKAGE_SHA: external_delivery_manifest_authoritative'
+        (semantic label delegating authority to the delivery manifest).
+      - Inner final-verdict MAY omit 'DELIVERY_PACKAGE_SHA:' entirely.
+
+    Returns a list of error strings. Empty list means PASS.
+    """
+    import re
+    errors = []
+    all_entries = zf.namelist()
+    for entry in all_entries:
+        if not entry.startswith("repo/reports/"):
+            continue
+        parts = entry.split("/")
+        if len(parts) != 4 or parts[3] != "final-verdict.md":
+            continue
+        try:
+            content = zf.read(entry).decode("utf-8", errors="replace")
+        except Exception:
+            continue
+        for line in content.splitlines():
+            stripped = line.strip()
+            if stripped.startswith("- ") or stripped.startswith("* ") or stripped.startswith("# "):
+                continue
+            if not stripped.startswith("DELIVERY_PACKAGE_SHA:"):
+                continue
+            # Line is a DELIVERY_PACKAGE_SHA status line — check value
+            value = stripped[len("DELIVERY_PACKAGE_SHA:"):].strip()
+            if value == "PENDING":
+                errors.append(
+                    f"R71: {entry} contains 'DELIVERY_PACKAGE_SHA: PENDING'. "
+                    f"Inner evidence ZIP cannot own the outer delivery package SHA. "
+                    f"Use: DELIVERY_PACKAGE_SHA: external_delivery_manifest_authoritative"
+                )
+            elif re.fullmatch(r"[0-9a-f]{64}", value):
+                errors.append(
+                    f"R71: {entry} contains a concrete outer delivery package SHA "
+                    f"({value[:16]}...) inside the inner evidence ZIP. "
+                    f"The outer package SHA cannot be known when the inner ZIP is built. "
+                    f"Use: DELIVERY_PACKAGE_SHA: external_delivery_manifest_authoritative"
+                )
     return errors
 
 
@@ -1702,6 +1764,11 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             for msg in neg_proof_warnings:
                 warnings.append(msg)
 
+            # R71 Train B: layered proof authority — inner verdict must not own outer delivery pkg SHA
+            delivery_sha_authority_hits = check_inner_verdict_delivery_sha_authority(zf)
+            for msg in delivery_sha_authority_hits:
+                errors.append(msg)
+
         identity_hits = check_metadata_identity(
             metadata_files_content,
             require_identity=require_metadata_identity,
@@ -1772,6 +1839,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         clean_git_strict_status = "WARN" if clean_git_warnings else "PASS"
         print(f"Contract clean-git strictness ({clean_git_strict_status}): "
               f"{'require_clean_git: false with clean verdict — R51 guard' if clean_git_warnings else 'clean-git policy OK'}")
+        delivery_sha_status = "FAIL" if delivery_sha_authority_hits else "PASS"
+        print(f"Layered proof authority check ({delivery_sha_status}): "
+              f"{'inner verdict must not own outer delivery pkg SHA — R71 guard' if delivery_sha_authority_hits else 'inner verdict correctly delegates outer pkg SHA'}")
     identity_status = "PASS"
     if 'identity_hits' in locals() and identity_hits:
         identity_status = "FAIL"

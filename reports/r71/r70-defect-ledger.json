@@ -1,0 +1,47 @@
+{
+  "sprint": "FORMAT-FACTORY-R71-PROOF-MODEL-RESET-LOCAL-RC-SEAL-AND-WORKAHEAD-001",
+  "date": "2026-05-27",
+  "r70_classified": "R70_DELIVERY_PACKAGE_VALID_BUT_PROOF_MODEL_WRONG",
+  "defects": [
+    {
+      "id": "IV-R71-001",
+      "severity": "RC-blocking",
+      "location": "inner ZIP: repo/reports/r70/final-verdict.md",
+      "found": "BUNDLE_VALIDATION_PASS_2_SHA: af7c9b76...",
+      "correct": "BUNDLE_VALIDATION_PASS_2_SHA: sidecar_authoritative (not a concrete SHA inside inner ZIP)",
+      "root_cause": "Bundle built from commit a5feedd before sidecar-correction commit 1d21384. Inner ZIP snapshot of final-verdict was stale."
+    },
+    {
+      "id": "IV-R71-002",
+      "severity": "RC-blocking",
+      "location": "inner ZIP: repo/reports/r70/final-verdict.md",
+      "found": "DELIVERY_PACKAGE_SHA: PENDING",
+      "correct": "DELIVERY_PACKAGE_SHA: external_delivery_manifest_authoritative",
+      "root_cause": "Outer delivery package is built after inner ZIP. Inner ZIP cannot contain the outer package SHA. Must use semantic label instead."
+    },
+    {
+      "id": "IV-R71-003",
+      "severity": "RC-blocking",
+      "location": "tests/evidence/test_r70_final_delivery_mode_*.py",
+      "found": "All 33 tests skip in extracted bundle context (no .local/)",
+      "correct": "Tests must accept DELIVERY_PACKAGE_UNDER_TEST env var and run against delivered package",
+      "root_cause": "Tests use .local/ path fallback; no mechanism to point them at an extracted delivery package."
+    },
+    {
+      "id": "IV-R71-004",
+      "severity": "hygiene",
+      "location": "bundle-metadata/package-artifact-manifest.yaml, dotnet-nupkg-manifest.yaml",
+      "found": "final_git_head refers to different commits in different manifests (R69 final, R68 pass-1, etc.)",
+      "correct": "Use explicit fields: inner_evidence_git_head, artifact_source_commit, artifact_manifest_commit, delivery_manifest_git_head",
+      "root_cause": "final_git_head is ambiguous and has been patched inconsistently across sprints."
+    },
+    {
+      "id": "IV-R71-005",
+      "severity": "hygiene",
+      "location": "tools/evidence/validate_evidence_bundle.py",
+      "found": "Validator accepts inner final verdict with DELIVERY_PACKAGE_SHA: PENDING or concrete outer SHA",
+      "correct": "Validator must enforce: inner final verdict may only reference outer delivery package as external_delivery_manifest_authoritative",
+      "root_cause": "No layered proof authority rules in validator."
+    }
+  ]
+}
