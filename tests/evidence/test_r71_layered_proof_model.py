@@ -32,6 +32,10 @@ def _make_bundle_with_verdict(verdict_content: str) -> zipfile.ZipFile:
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w") as zf:
         zf.writestr("repo/reports/r71/final-verdict.md", verdict_content)
+        zf.writestr(
+            "bundle-metadata/sprint-id.txt",
+            "FORMAT-FACTORY-R71-PROOF-MODEL-RESET-LOCAL-RC-SEAL-AND-WORKAHEAD-001\n",
+        )
     buf.seek(0)
     return zipfile.ZipFile(buf, "r")
 

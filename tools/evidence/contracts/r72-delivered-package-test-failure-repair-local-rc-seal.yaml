@@ -1,0 +1,59 @@
+sprint_id: FORMAT-FACTORY-R72-DELIVERED-PACKAGE-TEST-FAILURE-REPAIR-LOCAL-RC-SEAL-001
+run_number: r72
+date: "2026-05-28"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r72/r71-independent-verification.md
+  - reports/r72/r71-defect-ledger.md
+  - reports/r72/r71-defect-ledger.json
+  - reports/r72/failing-test-ledger.md
+  - reports/r72/failing-test-ledger.json
+  - reports/r72/final-verdict.md
+  - tests/evidence/test_r72_final_delivery_mode_requires_delivery_package.py
+  - tests/evidence/test_r72_final_delivery_mode_no_required_skips.py
+  - tests/evidence/test_r72_delivery_manifest_hash_truth.py
+  - tests/evidence/test_r72_sidecar_file_sha_vs_bundle_sha.py
+  - tests/evidence/test_r72_inner_zip_validates_from_delivery_package.py
+  - tests/evidence/test_r72_rejects_inner_zip_only_delivery.py
+  - tests/evidence/test_r72_rejects_pending_delivery_summary.py
+  - tests/evidence/test_r72_rejects_pending_python_test_summary.py
+  - tests/evidence/test_r72_requires_failing_test_ledger.py
+  - tests/evidence/test_r72_rejects_final_delivery_required_skips.py
+  - tools/evidence/contracts/r72-delivered-package-test-failure-repair-local-rc-seal.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - run-environment.txt
+  - python-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - placeholder-scan-summary.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - delivery-package-validation-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - installed-public-api-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - invariant-output-final.txt
+  - extracted-package-replay-summary.txt
+  - r71-iv-repair-summary.txt
+  - r72-new-tests-summary.txt
+  - final-independent-verification.txt
+  - validator-hardening-proof.txt
+  - multi-mega-train-scoreboard-final.txt
+  - work-ahead-scoreboard-final.txt
+  - blockers-status.txt
+  - state-snapshot-output.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - git-log.txt
+  - workahead-summary.txt
+  - repo-tree.txt
+  - failing-test-repair-summary.txt

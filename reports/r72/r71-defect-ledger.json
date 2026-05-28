@@ -1,0 +1,26 @@
+{
+  "sprint": "FORMAT-FACTORY-R72-DELIVERED-PACKAGE-TEST-FAILURE-REPAIR-LOCAL-RC-SEAL-001",
+  "date": "2026-05-28",
+  "iv_target": "R71",
+  "defects": [
+    {"id": "IV-R72-001", "severity": "RC-blocking", "category": "delivery", "r72_status": "FIXED_IN_R72",
+     "description": "Delivered artifact was inner evidence ZIP only; outer delivery package not uploaded"},
+    {"id": "IV-R72-002", "severity": "RC-blocking", "category": "metadata", "r72_status": "FIXED_IN_R72",
+     "description": "delivery-package-validation-summary.txt contains PENDING_PASS_2_SHA / PENDING_SIDECAR_SHA / PENDING_BUILD"},
+    {"id": "IV-R72-003", "severity": "RC-blocking", "category": "metadata", "r72_status": "FIXED_IN_R72",
+     "description": "external-sidecar-proof-summary.txt contains 'to be generated' and 'to be filled'"},
+    {"id": "IV-R72-004", "severity": "RC-blocking", "category": "metadata", "r72_status": "FIXED_IN_R72",
+     "description": "python-tests-summary.txt contains POST_BUNDLE_AUTHORITATIVE: PENDING"},
+    {"id": "IV-R72-005", "severity": "RC-blocking", "category": "tests", "r72_status": "FIXED_IN_R72",
+     "description": "R71 final-delivery tests: 41 required skips in extracted bundle replay"},
+    {"id": "IV-R72-006", "severity": "RC-blocking", "category": "tests", "r72_status": "FIXED_IN_R72",
+     "description": "Final verdict says '10 failed all pre-existing' without naming them or providing a ledger"},
+    {"id": "IV-R72-007", "severity": "RC-blocking", "category": "tests", "r72_status": "FIXED_IN_R72",
+     "description": "10 failing tests uninvestigated, unclassified, untaskcarded"},
+    {"id": "IV-R72-008", "severity": "RC-blocking", "category": "validator", "r72_status": "FIXED_IN_R72",
+     "description": "check_inner_verdict_delivery_sha_authority() scoping bug: current_run=None causes all verdicts to be checked"}
+  ],
+  "total_defects": 8,
+  "rc_blocking": 8,
+  "r71_classification": "R71_PROOF_MODEL_PROGRESS_ACCEPTED_DELIVERY_AND_TEST_CLOSURE_REJECTED"
+}

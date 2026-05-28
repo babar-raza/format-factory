@@ -829,7 +829,8 @@ def check_inner_verdict_delivery_sha_authority(zf) -> "list[str]":
 
         # Only enforce on the current sprint's final-verdict
         # Historical reports are excluded — they have valid concrete SHAs from prior deliveries
-        if current_run and sprint_dir.lower() != current_run.lower():
+        # If current_run is None (no sprint-id.txt found), skip all enforcement — cannot scope safely
+        if current_run is None or sprint_dir.lower() != current_run.lower():
             continue
 
         try:

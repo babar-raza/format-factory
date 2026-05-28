@@ -64,8 +64,9 @@ class TestNoPlaceholderMetadataProofs:
         for i, line in enumerate(lines):
             lower = line.lower().strip()
             if "pending" in lower:
-                # Allow PENDING in contexts like "PENDING_FINAL_COMMIT" or defect references
-                if "pending_final" in lower or "defect" in lower or "iv-r" in lower:
+                # Allow PENDING in contexts like "PENDING_FINAL_COMMIT", defect references,
+                # or CLI flag names like "--check-no-pending" (not a placeholder)
+                if "pending_final" in lower or "defect" in lower or "iv-r" in lower or "--check-no-pending" in lower:
                     continue
                 assert False, f"{filename} line {i+1} contains PENDING: {line.strip()}"
 
