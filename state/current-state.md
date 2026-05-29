@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R74 - R74_PRE_BUNDLE_SEAL
+**Latest sprint:** R74 - R74_CLEAN_CLOSURE_VALIDATOR_HARDENED_LOCAL_RC_SEALED_PUBLICATION_BLOCKED
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
