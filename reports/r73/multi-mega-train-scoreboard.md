@@ -17,10 +17,10 @@
 | Train J | Drift and overclaim correction audit | COMPLETE |
 | Train K | AI-assisted requirements and telemetry | COMPLETE |
 | Train L | Docs/taskcards/memory sync | COMPLETE |
-| Train M | Final adversarial IV + evidence bundle | IN_PROGRESS |
+| Train M | Final adversarial IV + evidence bundle | COMPLETE |
 
 Trains completed: 13
-Trains in progress: 1
+Trains in progress: 0
 Trains pending: 0
 
-SCOREBOARD: TRAINS_A_THROUGH_L_COMPLETE_M_IN_PROGRESS
+SCOREBOARD: ALL_13_TRAINS_COMPLETE
