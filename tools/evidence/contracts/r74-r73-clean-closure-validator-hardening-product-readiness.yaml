@@ -1,0 +1,68 @@
+sprint_id: FORMAT-FACTORY-R74-R73-CLEAN-CLOSURE-VALIDATOR-HARDENING-PRODUCT-READINESS-MEGA-TRAIN-001
+run_number: r74
+date: "2026-05-29"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r74/00-preflight.md
+  - reports/r74/lane-ownership.md
+  - reports/r74/risk-register.md
+  - reports/r74/r73-independent-verification.md
+  - reports/r74/r73-defect-ledger.md
+  - reports/r74/r73-defect-ledger.json
+  - reports/r74/evidence-validator-hardening.md
+  - reports/r74/zst-example-encoding-failure-repair.md
+  - reports/r74/final-delivery-package-build-order-repair.md
+  - reports/r74/product-advancement-verification.md
+  - reports/r74/python-package-install-replay.md
+  - reports/r74/dotnet-bounded-proof-and-parity.md
+  - reports/r74/gate8-gate11-readiness-hardening.md
+  - reports/r74/state-registry-memory-sync.md
+  - reports/r74/ai-telemetry-truth.md
+  - reports/r74/final-verdict.md
+  - tests/evidence/test_r74_rejects_pending_bundle_build_in_sidecar_summary.py
+  - tests/evidence/test_r74_rejects_validation_command_log_pending.py
+  - tests/evidence/test_r74_rejects_to_be_filled_placeholders.py
+  - tests/evidence/test_r74_rejects_stale_final_verdict_sha.py
+  - tests/evidence/test_r74_requires_real_negative_proof_logs.py
+  - tests/evidence/test_r74_current_run_placeholder_scope.py
+  - examples/python/zst/compress_decompress_file.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/contracts/r74-r73-clean-closure-validator-hardening-product-readiness.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - run-environment.txt
+  - python-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - placeholder-scan-summary.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - delivery-package-validation-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - inner-zip-only-negative-proof.txt
+  - stale-placeholder-negative-proof.txt
+  - stale-final-verdict-sha-negative-proof.txt
+  - installed-public-api-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - source-package-hygiene-summary.txt
+  - invariant-output-final.txt
+  - r74-new-tests-summary.txt
+  - final-independent-verification.txt
+  - multi-mega-train-scoreboard-final.txt
+  - blockers-status.txt
+  - state-snapshot-output.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - git-log.txt
+  - repo-tree.txt
+  - extracted-delivery-package-replay-summary.txt
+  - product-advancement-summary.txt
+  - ai-telemetry-summary.txt

@@ -1,0 +1,99 @@
+{
+  "sprint": "FORMAT-FACTORY-R74-R73-CLEAN-CLOSURE-VALIDATOR-HARDENING-PRODUCT-READINESS-MEGA-TRAIN-001",
+  "date": "2026-05-29",
+  "previous_sprint": "R73",
+  "r73_classification": "R73_DELIVERY_PACKAGE_CONVENTION_PROGRESS_ACCEPTED_SELF_INSPECTABLE_CLOSURE_REJECTED_PRODUCT_PROGRESS_PARTIAL",
+  "defects": [
+    {
+      "id": "IV-R74-001",
+      "severity": "RC-BLOCKING",
+      "category": "build_order_proof_integrity",
+      "description": "Stale SHA values inside inner evidence ZIP final-verdict.md",
+      "stale_pass2_sha": "e4784a0f19ea1a1b678019d18b638166cbf9e01801466aa6337b8befb65c38cb",
+      "correct_pass2_sha": "ffa23117339ec309161305cf91de8af3bece848db301f919c6b09051a45111a5",
+      "stale_sidecar_sha": "fdff3bb98a077729a69b1554dd754126f84893029ae6d6a37668605dedd80b97",
+      "correct_sidecar_sha": "12ecae49ff66109f32605d7883e331b01b93712f90613aa4365728533b688e5d",
+      "stale_delivery_sha": "4f2b29175a4da9f53739d2639d280eba4f989b4ad5b319b41b8f3d4f557520f3",
+      "correct_delivery_sha": "0733856fdc40c604e87bae1334d46641bf129efdd5f7a42f0232cd48e2022081",
+      "repair_train": "Train C + Train K",
+      "status": "REPAIRED_IN_R74"
+    },
+    {
+      "id": "IV-R74-002",
+      "severity": "RC-BLOCKING",
+      "category": "stale_metadata_placeholder",
+      "description": "PENDING_BUNDLE_BUILD in external-sidecar-proof-summary.txt",
+      "file": "external-sidecar-proof-summary.txt",
+      "stale_token": "PENDING_BUNDLE_BUILD",
+      "validator_gap": "PENDING_BUNDLE_BUILD not in PENDING_MARKER_PATTERNS",
+      "repair_train": "Train B + Train K",
+      "status": "REPAIRED_IN_R74"
+    },
+    {
+      "id": "IV-R74-003",
+      "severity": "RC-BLOCKING",
+      "category": "stale_metadata_placeholder",
+      "description": "full suite -> PENDING in validation-command-log.txt",
+      "file": "validation-command-log.txt",
+      "stale_token": "-> PENDING",
+      "validator_gap": "-> PENDING not in PENDING_MARKER_PATTERNS",
+      "repair_train": "Train B + Train K",
+      "status": "REPAIRED_IN_R74"
+    },
+    {
+      "id": "IV-R74-004",
+      "severity": "RC-BLOCKING",
+      "category": "stale_metadata_placeholder",
+      "description": "[to be filled after X build] placeholders in final-independent-verification.txt",
+      "file": "final-independent-verification.txt",
+      "stale_tokens": ["[to be filled after Pass 1 build]", "[to be filled after Pass 2 build]", "[to be filled after sidecar generation]"],
+      "validator_gap": "CLOSEOUT_HYGIENE_REPORT_FILES checks .md not .txt extension",
+      "repair_train": "Train B + Train K",
+      "status": "REPAIRED_IN_R74"
+    },
+    {
+      "id": "IV-R74-005",
+      "severity": "RC-BLOCKING",
+      "category": "validator_gap",
+      "description": "Validator passed despite stale placeholders IV-R74-002..004",
+      "repair_train": "Train B",
+      "status": "REPAIRED_IN_R74"
+    },
+    {
+      "id": "IV-R74-006",
+      "severity": "MODERATE",
+      "category": "negative_proof_stub",
+      "description": "missing-sidecar-negative-proof.txt lacks actual command/output/exit-code",
+      "repair_train": "Train K",
+      "status": "REPAIRED_IN_R74"
+    },
+    {
+      "id": "IV-R74-007",
+      "severity": "MODERATE",
+      "category": "negative_proof_stub",
+      "description": "wrong-sidecar-negative-proof.txt lacks actual command/output/exit-code",
+      "repair_train": "Train K",
+      "status": "REPAIRED_IN_R74"
+    },
+    {
+      "id": "IV-R74-008",
+      "severity": "RC-BLOCKING",
+      "category": "test_failure",
+      "description": "test_zst_example_runs_without_crash fails UnicodeEncodeError cp1252",
+      "file": "examples/python/zst/compress_decompress_file.py",
+      "repair_train": "Train D",
+      "status": "REPAIRED_IN_R74"
+    },
+    {
+      "id": "IV-R74-009",
+      "severity": "MODERATE",
+      "category": "state_drift",
+      "description": "INV-011 stale reference: current-state.md still says shows R72",
+      "repair_train": "Train I",
+      "status": "REPAIRED_IN_R74"
+    }
+  ],
+  "total_defects": 9,
+  "rc_blocking": 6,
+  "moderate": 3
+}

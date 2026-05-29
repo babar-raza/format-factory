@@ -177,8 +177,9 @@ def build_delivery_package(
         "git_head": git_head or sidecar_data.get("git_head", ""),
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "delivery_package_sha256_note": (
-            "The outer delivery package SHA cannot be self-referential inside the manifest "
-            "because the manifest is packaged before the outer ZIP is built. "
+            "The outer delivery package SHA cannot be included in the manifest because it "
+            "creates a circular dependency: the manifest is packaged inside the outer ZIP "
+            "before the outer ZIP is built. "
             "The outer package SHA is recorded in reports/{run}/final-verdict.md "
             "(DELIVERY_PACKAGE_RECORDED_SHA field) and in the standalone .sha256.txt file."
         ),

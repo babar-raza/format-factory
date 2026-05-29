@@ -38,11 +38,11 @@ print(f"compress_bytes: {len(original)} bytes input")
 
 try:
     compressed = zst.compress_bytes(original)
-    print(f"  → {len(compressed)} bytes compressed")
+    print(f"  -> {len(compressed)} bytes compressed")
 
     decompressed = zst.decompress_bytes(compressed)
     assert decompressed == original, "Round-trip mismatch!"
-    print(f"  → {len(decompressed)} bytes decompressed (round-trip OK)")
+    print(f"  -> {len(decompressed)} bytes decompressed (round-trip OK)")
 except zst.ZstError as e:
     print(f"  ZST not available: {e}")
     print("  Install zstandard: pip install zstandard")
@@ -67,9 +67,9 @@ if zst_files:
     print(f"validate_file: {sample.name}")
     try:
         valid = zst.validate_file(sample)
-        print(f"  → VALID: {valid}")
+        print(f"  -> VALID: {valid}")
     except zst.ZstError as e:
-        print(f"  → Error: {e}")
+        print(f"  -> Error: {e}")
 else:
     print("validate_file: SKIPPED (no .zst sample files found)")
     print(f"  Expected: {samples_dir}")

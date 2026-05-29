@@ -113,7 +113,9 @@ def test_manifest_has_delivery_package_sha_note():
     manifest = json.loads(manifest_bytes)
     note = manifest.get("delivery_package_sha256_note", "")
     assert note, "R73 manifest must have delivery_package_sha256_note field"
-    assert "circular" in note.lower(), f"Note must explain circular dependency. Got: {note[:100]}"
+    # Accept "circular" (R74+ builder) or "self-referential" (R73 builder — pre-fix wording)
+    has_explanation = "circular" in note.lower() or "self-referential" in note.lower()
+    assert has_explanation, f"Note must explain circular/self-referential dependency. Got: {note[:100]}"
 
 
 def test_manifest_version_1_1_for_r73():

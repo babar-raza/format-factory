@@ -210,6 +210,15 @@ PENDING_MARKER_PATTERNS = [
     # Inner ZIP cannot know the outer package SHA (outer is built after inner).
     # Use: DELIVERY_PACKAGE_SHA: external_delivery_manifest_authoritative
     "DELIVERY_PACKAGE_SHA: PENDING",
+    # R74: Sidecar proof summary must not contain PENDING_BUNDLE_BUILD — placeholder written
+    # before sidecar was generated and never updated with real sidecar values.
+    "PENDING_BUNDLE_BUILD",
+    # R74: Validation command log must not contain '-> PENDING' — full-suite result was
+    # recorded as a placeholder and never updated with the actual outcome.
+    "-> PENDING",
+    # R74: Additional stale-placeholder coverage for command log variants
+    "full suite -> PENDING",
+    "suite -> PENDING",
 ]
 
 # R38: Minimum meaningful content threshold for metadata files.
@@ -701,15 +710,26 @@ CLOSEOUT_HYGIENE_TOKENS = [
     "[commit sha to be filled]",
     "post-bundle authoritative count: tbd",
     "unknown (3 —",   # unresolved unknown failures in python-tests-summary
+    # R74: Catch deferred-fill placeholders in final-independent-verification.txt
+    # Pattern: [to be filled after Pass 1 build], [to be filled after Pass 2 build], etc.
+    "[to be filled after",
+    # R74: Catch other placeholder patterns found in R73 stale metadata
+    "to be generated after",
+    "pending_bundle_build",
 ]
 
 # Final report filenames scanned for closeout-hygiene tokens.
 # These are repo files where incomplete templates cause silent close-out failure.
 CLOSEOUT_HYGIENE_REPORT_FILES = frozenset({
     "final-independent-verification.md",
+    # R74: Also scan .txt variant — R73 used final-independent-verification.txt
+    "final-independent-verification.txt",
     "python-tests-summary.txt",
     "lane-ownership.md",
     "final-verdict.md",
+    # R74: Scan sidecar proof summary and command log for placeholder patterns
+    "external-sidecar-proof-summary.txt",
+    "validation-command-log.txt",
 })
 
 
@@ -744,6 +764,47 @@ def check_closeout_hygiene_tokens(zf):
                 hits.append((entry, token))
                 break  # one hit per file
     return hits
+
+
+def check_negative_proof_quality(metadata_files_content: dict) -> "list[str]":
+    """R74: Check that negative proof files contain actual command evidence.
+
+    missing-sidecar-negative-proof.txt and wrong-sidecar-negative-proof.txt must
+    contain real failing validation command output (not just test name references).
+    Required evidence markers:
+      - An actual command invocation (contains 'validate_evidence_bundle' or 'python')
+      - An actual failure marker ('FAIL' or 'exit code' or 'exit_code' or 'returncode')
+
+    Returns a list of warning strings (not errors — stubs are allowed with warning).
+    Warnings do not block BUNDLE_VALIDATION: PASS but are surfaced for human review.
+    """
+    warnings = []
+    NEGATIVE_PROOF_FILES = {
+        "missing-sidecar-negative-proof.txt": "missing-sidecar",
+        "wrong-sidecar-negative-proof.txt": "wrong-sidecar",
+        "inner-zip-only-negative-proof.txt": "inner-zip-only",
+    }
+    REQUIRED_EVIDENCE_MARKERS = [
+        "validate_evidence_bundle",
+        "exit code",
+        "exit_code",
+        "returncode",
+        "SIDECAR_PROOF_VALIDATION: FAIL",
+        "BUNDLE_VALIDATION: FAIL",
+    ]
+    for fname, label in NEGATIVE_PROOF_FILES.items():
+        content = metadata_files_content.get(fname, "")
+        if not content:
+            continue
+        has_evidence = any(marker.lower() in content.lower() for marker in REQUIRED_EVIDENCE_MARKERS)
+        if not has_evidence:
+            warnings.append(
+                f"R74: {fname} is present but does not contain actual command evidence "
+                f"(no validate_evidence_bundle invocation, exit code, or FAIL marker found). "
+                f"The file may be a stub without real negative proof. "
+                f"Run an actual failing validation and capture the output."
+            )
+    return warnings
 
 
 def check_source_commit_proof_no_pending(metadata_files_content):
@@ -1790,6 +1851,11 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             # R69 Train D: negative sidecar proofs present check
             neg_proof_warnings = check_negative_sidecar_proofs_present(metadata_files_content)
             for msg in neg_proof_warnings:
+                warnings.append(msg)
+
+            # R74: Negative proof quality check — proofs must contain actual command evidence
+            neg_quality_warnings = check_negative_proof_quality(metadata_files_content)
+            for msg in neg_quality_warnings:
                 warnings.append(msg)
 
             # R71 Train B: layered proof authority — inner verdict must not own outer delivery pkg SHA
