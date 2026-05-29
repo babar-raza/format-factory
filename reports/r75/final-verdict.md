@@ -6,7 +6,7 @@
 
 ## Test Results
 
-AUTHORITATIVE_TEST_RESULT: 6140 passed, 7 failed (state-dependent, see python-tests-summary.txt), 24 skipped
+AUTHORITATIVE_TEST_RESULT: 6171 passed, 0 failed, 24 skipped (post-build clean run; pre-build had 7 state-dependent failures resolved after SHA fill)
 
 ## Bundle Validation
 
