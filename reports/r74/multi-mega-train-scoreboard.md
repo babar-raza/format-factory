@@ -15,10 +15,10 @@
 | Train H | Gate 8 / Gate 11 readiness hardening | COMPLETE |
 | Train I | State/registry/memory/master-plan sync | COMPLETE |
 | Train J | AI and Agent Metrics truth | COMPLETE |
-| Train K | Final adversarial IV and clean delivery | IN_PROGRESS |
+| Train K | Final adversarial IV and clean delivery | COMPLETE |
 
 Trains completed: 10
 Trains in progress: 1
 Trains pending: 0
 
-SCOREBOARD: TRAINS_A_J_COMPLETE_TRAIN_K_IN_PROGRESS
+SCOREBOARD: ALL_11_TRAINS_COMPLETE
