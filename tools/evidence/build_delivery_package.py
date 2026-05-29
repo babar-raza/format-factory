@@ -14,6 +14,10 @@ Usage:
 
 R65 Sprint: FORMAT-FACTORY-R65-DELIVERY-PACKAGE-RC-REPLAY-AI-LIVE-WORKAHEAD-MEGA-TRAIN-001
 R73 Update: Added supervisor-readme.md to delivery package for inspectability.
+R75 Update: Added two-authority model artifacts:
+  - <run>-delivery-package.sha256.txt (standalone outer package SHA)
+  - <run>-final-artifact-authority.json (cross-layer SHA authority record)
+These are generated alongside the delivery package, NOT inside the inner ZIP.
 """
 from __future__ import annotations
 
@@ -225,11 +229,60 @@ def build_delivery_package(
     pkg_size = output.stat().st_size
     pkg_entry_count = 4  # inner ZIP + sidecar + manifest + readme
 
+    # R75: Generate standalone SHA file for the outer delivery package.
+    # This solves R74 defect D05: no standalone SHA file existed.
+    # Format: "<sha256>  <filename>" (sha256sum compatible)
+    sha_txt_path = output.parent / output.name.replace(".zip", ".sha256.txt")
+    with open(sha_txt_path, "w", encoding="utf-8") as f:
+        f.write(f"{pkg_sha}  {output.name}\n")
+
+    # R75: Generate final-artifact-authority.json — two-authority model.
+    # This solves R74 defect D06: no cross-layer SHA authority record existed.
+    # The inner ZIP cannot claim its own SHA (circular dependency), so this
+    # external file is the authoritative record of all layer SHAs.
+    authority_path = output.parent / output.name.replace(
+        "-delivery-package.zip", "-final-artifact-authority.json"
+    )
+    if authority_path == output:  # fallback if name didn't match pattern
+        authority_path = output.parent / (output.stem + "-final-artifact-authority.json")
+    authority = {
+        "schema_version": "1.0",
+        "sprint_id": run_id,
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "authority_model": "two_layer",
+        "source_evidence_authority": {
+            "inner_zip_filename": evidence_zip.name,
+            "inner_zip_sha256": evidence_sha,
+            "inner_zip_size_bytes": evidence_zip.stat().st_size,
+            "inner_zip_entry_count": entry_count,
+            "sidecar_filename": sidecar.name,
+            "sidecar_sha256": sidecar_sha,
+            "sidecar_validates_inner_zip": (sidecar_claimed_sha == evidence_sha),
+        },
+        "final_artifact_authority": {
+            "delivery_package_filename": output.name,
+            "delivery_package_sha256": pkg_sha,
+            "delivery_package_size_bytes": pkg_size,
+            "delivery_package_entry_count": pkg_entry_count,
+            "standalone_sha_file": sha_txt_path.name,
+        },
+        "cross_layer_validation": {
+            "all_sha_fields_non_circular": True,
+            "sidecar_proves_inner_zip": (sidecar_claimed_sha == evidence_sha),
+            "delivery_contains_inner_zip_and_sidecar": True,
+        },
+    }
+    with open(authority_path, "w", encoding="utf-8") as f:
+        json.dump(authority, f, indent=2)
+        f.write("\n")
+
     print(f"Delivery package built: {output}")
     print(f"  Evidence ZIP: {evidence_zip.name} ({evidence_sha[:16]}...)")
     print(f"  Sidecar: {sidecar.name} ({sidecar_sha[:16]}...)")
     print(f"  Manifest: {manifest_path.name}")
     print(f"  Supervisor readme: {readme_path.name}")
+    print(f"  Standalone SHA: {sha_txt_path.name}")
+    print(f"  Artifact authority: {authority_path.name}")
     print(f"  Package SHA-256: {pkg_sha}")
     print(f"  Package size: {pkg_size:,} bytes")
     print(f"  Package entries: {pkg_entry_count}")
@@ -240,6 +293,8 @@ def build_delivery_package(
     manifest["delivery_package_entry_count"] = pkg_entry_count
     manifest["manifest_path"] = str(manifest_path)
     manifest["supervisor_readme_path"] = str(readme_path)
+    manifest["standalone_sha_file_path"] = str(sha_txt_path)
+    manifest["artifact_authority_path"] = str(authority_path)
 
     return manifest
 

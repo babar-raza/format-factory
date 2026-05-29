@@ -21,6 +21,8 @@ Public API:
     workbook_column_style_summary(wb) -- column style attributes per sheet (R65)
     workbook_style_family_list(wb)    -- style family inventory (R66)
     workbook_data_validation_summary(wb) -- data validation summary (R66)
+    workbook_column_width_summary(wb) -- column width data per sheet (R75)
+    workbook_cell_type_matrix(wb)     -- cell type distribution per sheet (R75)
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0
@@ -52,6 +54,8 @@ from .neutral_model import (
     workbook_column_style_summary,
     workbook_style_family_list,
     workbook_data_validation_summary,
+    workbook_column_width_summary,
+    workbook_cell_type_matrix,
 )
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -83,6 +87,8 @@ __all__ = [
     "workbook_column_style_summary",
     "workbook_style_family_list",
     "workbook_data_validation_summary",
+    "workbook_column_width_summary",
+    "workbook_cell_type_matrix",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",

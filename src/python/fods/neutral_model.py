@@ -900,3 +900,100 @@ def workbook_data_validation_summary(workbook: dict[str, Any]) -> dict[str, Any]
         "validation_count": validation_count,
         "validated_cell_ranges": validated_cell_ranges,
     }
+
+
+def workbook_column_width_summary(workbook: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return column width information per sheet.
+
+    Scans each sheet's column definitions for explicit width attributes stored
+    under 'column_width', 'style:column-width', or 'width' keys. Columns
+    without explicit width are reported as None.
+
+    Returns a list of per-sheet dicts:
+      sheet_name: str                -- name of the sheet
+      column_count: int              -- total columns with explicit widths
+      widths: list[str | None]       -- width value per column (None if absent)
+
+    Useful for layout-sensitive spreadsheet processing and round-trip testing.
+    Added in R75 Train G as a product advancement capability.
+    """
+    result: list[dict[str, Any]] = []
+    for sheet in workbook.get("sheets", []):
+        sheet_name = sheet.get("name", "")
+        columns = sheet.get("columns", [])
+        widths: list[Any] = []
+        for col in columns:
+            if isinstance(col, dict):
+                width = (
+                    col.get("column_width")
+                    or col.get("style:column-width")
+                    or col.get("width")
+                )
+                widths.append(str(width) if width is not None else None)
+            else:
+                widths.append(None)
+        result.append({
+            "sheet_name": sheet_name,
+            "column_count": len([w for w in widths if w is not None]),
+            "widths": widths,
+        })
+    return result
+
+
+def workbook_cell_type_matrix(workbook: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return a per-sheet summary of cell value types.
+
+    For each sheet, counts cells by their value_type field:
+    - "float" / "percentage" / "currency" → numeric
+    - "string" / "text" → text
+    - "formula" (cells with a formula attribute) → formula
+    - "boolean" → boolean
+    - "date" / "time" → datetime
+    - None / missing → empty
+
+    Returns a list of per-sheet dicts:
+      sheet_name: str         -- name of the sheet
+      total_cells: int        -- total non-empty cells
+      by_type: dict[str, int] -- count per type label
+
+    Useful for data profiling and format migration analysis.
+    Added in R75 Train G as a product advancement capability.
+    """
+    result: list[dict[str, Any]] = []
+    for sheet in workbook.get("sheets", []):
+        sheet_name = sheet.get("name", "")
+        by_type: dict[str, int] = {}
+        total_cells = 0
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if not isinstance(cell, dict):
+                    continue
+                # Check for formula first
+                if cell.get("formula") or cell.get("table:formula"):
+                    label = "formula"
+                else:
+                    vtype = (
+                        cell.get("value_type")
+                        or cell.get("office:value-type")
+                        or "empty"
+                    )
+                    vtype = str(vtype).lower()
+                    if vtype in ("float", "percentage", "currency"):
+                        label = "numeric"
+                    elif vtype in ("string", "text"):
+                        label = "text"
+                    elif vtype in ("boolean",):
+                        label = "boolean"
+                    elif vtype in ("date", "time"):
+                        label = "datetime"
+                    else:
+                        label = "empty"
+                if label != "empty":
+                    total_cells += 1
+                by_type[label] = by_type.get(label, 0) + 1
+        result.append({
+            "sheet_name": sheet_name,
+            "total_cells": total_cells,
+            "by_type": by_type,
+        })
+    return result

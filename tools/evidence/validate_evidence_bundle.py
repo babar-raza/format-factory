@@ -219,6 +219,15 @@ PENDING_MARKER_PATTERNS = [
     # R74: Additional stale-placeholder coverage for command log variants
     "full suite -> PENDING",
     "suite -> PENDING",
+    # R75: TO_BE_FILLED_AFTER_BUNDLE_BUILD — R74 defect D01. final-independent-verification.txt
+    # used this token for SHA fields that were never filled before the bundle was built.
+    # The inner ZIP cannot record its own SHA (circular), but must NOT use placeholder text
+    # that signals the file was never completed. Use delegation label instead:
+    # "delegated_to_final_artifact_authority_json"
+    "TO_BE_FILLED_AFTER_BUNDLE_BUILD",
+    # R75: PASS_PENDING_BUNDLE_SHA — R74 defect D01. FINAL_IV line must not contain
+    # a pending-SHA placeholder. Use PASS_SEE_FINAL_ARTIFACT_AUTHORITY instead.
+    "PASS_PENDING_BUNDLE_SHA",
 ]
 
 # R38: Minimum meaningful content threshold for metadata files.
@@ -716,6 +725,10 @@ CLOSEOUT_HYGIENE_TOKENS = [
     # R74: Catch other placeholder patterns found in R73 stale metadata
     "to be generated after",
     "pending_bundle_build",
+    # R75: Catch TO_BE_FILLED_AFTER_BUNDLE_BUILD (lowercase for case-insensitive scan)
+    "to_be_filled_after_bundle_build",
+    # R75: Catch PASS_PENDING_BUNDLE_SHA (lowercase for case-insensitive scan)
+    "pass_pending_bundle_sha",
 ]
 
 # Final report filenames scanned for closeout-hygiene tokens.
@@ -988,6 +1001,63 @@ def check_proof_file_finality(metadata_files_content):
             )
             break  # one error per file is sufficient
     return hits
+
+
+def check_pass_number_drift(metadata_files_content, bundle_path):
+    """R75: Detect pass-number drift in final-bundle-validation-proof.txt.
+
+    R74 defect D02: The inner ZIP's final-bundle-validation-proof.txt claimed
+    'Bundle: r74-pass4-final.zip' while the actual bundle being validated was
+    r74-pass5-final.zip. The validator only issued a SHA mismatch WARNING
+    rather than an ERROR for this condition.
+
+    This check specifically detects when the pass number claimed in the proof
+    file differs from the actual bundle's pass number. This is always an error:
+    it means the proof file was written for an earlier pass and not updated.
+
+    Note: SHA mismatch alone is expected (inner ZIP can't contain its own SHA),
+    but the FILENAME must match the pass number of the actual bundle.
+
+    Returns a list of error strings (empty if no drift detected or no proof file).
+    Called when --check-no-pending is active.
+    """
+    import re
+    proof_content = metadata_files_content.get("final-bundle-validation-proof.txt", "")
+    if not proof_content:
+        return []
+
+    # Extract claimed bundle filename from proof file
+    # Pattern: "Bundle: r74-pass4-final.zip" or "bundle: r74-pass4-final.zip"
+    claimed_match = re.search(r"(?i)^bundle:\s*(\S+\.zip)", proof_content, re.MULTILINE)
+    if not claimed_match:
+        return []  # No bundle filename in proof — older format, skip
+
+    claimed_filename = claimed_match.group(1).strip()
+
+    # Extract pass number from claimed filename (e.g. "r74-pass4-final.zip" → "4")
+    claimed_pass_match = re.search(r"-pass(\d+)-", claimed_filename)
+    if not claimed_pass_match:
+        return []  # No pass number in claimed filename, skip
+
+    claimed_pass = int(claimed_pass_match.group(1))
+
+    # Extract pass number from actual bundle filename
+    actual_name = Path(bundle_path).name
+    actual_pass_match = re.search(r"-pass(\d+)-", actual_name)
+    if not actual_pass_match:
+        return []  # No pass number in actual bundle name, skip
+
+    actual_pass = int(actual_pass_match.group(1))
+
+    if claimed_pass != actual_pass:
+        return [
+            f"PASS_NUMBER_DRIFT: final-bundle-validation-proof.txt claims "
+            f"'Bundle: {claimed_filename}' (pass {claimed_pass}) but actual bundle "
+            f"is '{actual_name}' (pass {actual_pass}). The proof file was written "
+            f"during pass {claimed_pass} and not updated when pass {actual_pass} was "
+            f"built. Update proof file to reference the correct pass-number bundle."
+        ]
+    return []
 
 
 def check_proof_sha_consistency(metadata_files_content, bundle_path):
@@ -1773,6 +1843,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
             proof_finality_hits = check_proof_file_finality(metadata_files_content)
             for msg in proof_finality_hits:
                 errors.append(msg)
+            pass_drift_hits = check_pass_number_drift(metadata_files_content, bundle_path)
+            for msg in pass_drift_hits:
+                errors.append(msg)
             proof_sha_warnings = check_proof_sha_consistency(metadata_files_content, bundle_path)
             # R54 Lane 2: Suppress SHA mismatch warning if a valid sidecar is provided.
             # The sidecar is the authoritative final proof; internal SHA mismatch is expected.
@@ -1918,6 +1991,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
         proof_fin_status = "FAIL" if proof_finality_hits else "PASS"
         print(f"Proof-file finality check ({proof_fin_status}): "
               f"{'placeholder text found — R49 guard' if proof_finality_hits else 'no stale placeholders'}")
+        pass_drift_status = "FAIL" if pass_drift_hits else "PASS"
+        print(f"Pass-number drift check ({pass_drift_status}): "
+              f"{'proof file references wrong pass number — R75 guard' if pass_drift_hits else 'proof file pass number matches actual bundle'}")
         proof_sha_status = "WARN" if proof_sha_warnings else "PASS"
         print(f"Proof-SHA sidecar check ({proof_sha_status}): "
               f"{'SHA mismatch — use sidecar protocol — R52 guard' if proof_sha_warnings else 'proof SHA consistent or sidecar not required'}")

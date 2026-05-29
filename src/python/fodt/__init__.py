@@ -21,6 +21,8 @@ Public API:
     document_image_frame_list(document)         -- image frame inventory (R65)
     document_section_summary(document)          -- section inventory (R66)
     document_change_tracking_summary(document)  -- change tracking summary (R66)
+    document_paragraph_style_distribution(doc)  -- paragraph style counts (R75)
+    document_language_list(document)            -- language codes in document (R75)
 
 License: Apache-2.0
 Package: format-factory-fodt v0.1.0
@@ -52,6 +54,8 @@ from .neutral_model import (
     document_image_frame_list,
     document_section_summary,
     document_change_tracking_summary,
+    document_paragraph_style_distribution,
+    document_language_list,
 )
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -83,6 +87,8 @@ __all__ = [
     "document_image_frame_list",
     "document_section_summary",
     "document_change_tracking_summary",
+    "document_paragraph_style_distribution",
+    "document_language_list",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

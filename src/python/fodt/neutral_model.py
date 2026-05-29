@@ -1105,3 +1105,92 @@ def document_change_tracking_summary(document: dict[str, Any]) -> dict[str, Any]
         "tracked_change_count": change_count,
         "author_names": authors,
     }
+
+
+def document_paragraph_style_distribution(document: dict[str, Any]) -> dict[str, Any]:
+    """Return a distribution of paragraph styles used in the document.
+
+    Scans all blocks/paragraphs in document['blocks'] for their 'style_name'
+    or 'text:style-name' attribute and tallies counts per style name.
+
+    Returns:
+      style_count: int                     -- number of distinct style names seen
+      distribution: dict[str, int]         -- count per style name
+      heading_styles: list[str]            -- style names that appear to be heading styles
+        (style name starts with "Heading" or "heading" or contains "h[1-9]" pattern)
+
+    Useful for document structure analysis and style migration.
+    Added in R75 Train G as a product advancement capability.
+    """
+    import re as _re
+    distribution: dict[str, int] = {}
+    for block in document.get("blocks", []):
+        if not isinstance(block, dict):
+            continue
+        style = (
+            block.get("style_name")
+            or block.get("text:style-name")
+            or block.get("style")
+            or "Default"
+        )
+        style = str(style)
+        distribution[style] = distribution.get(style, 0) + 1
+
+    heading_pattern = _re.compile(r"(?i)^heading|^h[1-9]$|heading[-_ ][1-9]")
+    heading_styles = [s for s in distribution if heading_pattern.search(s)]
+
+    return {
+        "style_count": len(distribution),
+        "distribution": distribution,
+        "heading_styles": heading_styles,
+    }
+
+
+def document_language_list(document: dict[str, Any]) -> list[str]:
+    """Return all language codes used in the document.
+
+    Scans blocks and runs for 'language', 'fo:language', 'xml:lang', or
+    'lang' attributes and returns a deduplicated, sorted list of language
+    codes found (e.g. ["de", "en", "fr"]).
+
+    Empty strings and None values are excluded. Language codes are
+    lowercased and deduplicated.
+
+    Returns a list of language code strings (may be empty if no language
+    attributes are present in the document).
+
+    Added in R75 Train G as a product advancement capability.
+    """
+    seen: set[str] = set()
+    codes: list[str] = []
+
+    def _collect_lang(obj: dict[str, Any]) -> None:
+        for key in ("language", "fo:language", "xml:lang", "lang"):
+            val = obj.get(key)
+            if val and isinstance(val, str):
+                code = val.strip().lower()
+                if code and code not in seen:
+                    seen.add(code)
+                    codes.append(code)
+
+    meta = document.get("meta", {})
+    if isinstance(meta, dict):
+        _collect_lang(meta)
+
+    for key in ("default_language", "document_language"):
+        val = document.get(key)
+        if val and isinstance(val, str):
+            code = val.strip().lower()
+            if code and code not in seen:
+                seen.add(code)
+                codes.append(code)
+
+    for block in document.get("blocks", []):
+        if not isinstance(block, dict):
+            continue
+        _collect_lang(block)
+        for run in block.get("runs", []):
+            if isinstance(run, dict):
+                _collect_lang(run)
+
+    return sorted(codes)

@@ -1,0 +1,85 @@
+{
+  "sprint_id": "FORMAT-FACTORY-R74-R73-CLEAN-CLOSURE-VALIDATOR-HARDENING-PRODUCT-READINESS-MEGA-TRAIN-001",
+  "ledger_date": "2026-05-29",
+  "reclassification": "R74_VALIDATOR_AND_DELIVERY_PROGRESS_ACCEPTED_SELF_INSPECTABLE_RC_REJECTED_BUILD_ORDER_STILL_BROKEN",
+  "defects": [
+    {
+      "id": "D01",
+      "severity": "RC-BLOCKING",
+      "category": "unresolved_placeholders",
+      "file": "bundle-metadata/final-independent-verification.txt",
+      "pattern": "TO_BE_FILLED_AFTER_BUNDLE_BUILD",
+      "description": "SHA fields used TO_BE_FILLED_AFTER_BUNDLE_BUILD instead of delegation labels",
+      "r75_fix": "Validator catches pattern; metadata uses delegated_to_final_artifact_authority_json"
+    },
+    {
+      "id": "D02",
+      "severity": "RC-BLOCKING",
+      "category": "pass_number_drift",
+      "file": "bundle-metadata/final-bundle-validation-proof.txt",
+      "claimed_bundle": "r74-pass4-final.zip",
+      "actual_bundle": "r74-pass5-final.zip",
+      "description": "Proof file references pass4 but actual delivery is pass5",
+      "r75_fix": "New check_pass_number_drift() in validator"
+    },
+    {
+      "id": "D03",
+      "severity": "RC-BLOCKING",
+      "category": "stale_sha",
+      "file": "bundle-metadata/delivery-package-validation-summary.txt",
+      "claimed_sha": "755faa81c0972fc1331f55410b0bce78f8066d50c7a3f05325d77ae0dc8da94e",
+      "actual_sha": "b55f5a1bb3eb1ff62caa93cfe804af2d2202b2bde87a039d4a838b18fed078f5",
+      "description": "Delivery validation summary references pass4 delivery SHA",
+      "r75_fix": "Two-authority model uses delegation label in inner ZIP metadata"
+    },
+    {
+      "id": "D04",
+      "severity": "RC-BLOCKING",
+      "category": "stale_sha",
+      "file": "bundle-metadata/external-sidecar-proof-summary.txt",
+      "claimed_sidecar_sha": "22902f76ca51833d98370514d1857467ee32dc4fea1f4d7375a7b0eb29bb976d",
+      "actual_sidecar_sha": "c888730de63114f212054c8ad55de6d529b9cc24a77edb9dddd23ff31111fb20",
+      "description": "Sidecar summary references pass4 sidecar SHA",
+      "r75_fix": "Two-authority model uses delegation label"
+    },
+    {
+      "id": "D05",
+      "severity": "RC-BLOCKING",
+      "category": "missing_artifact",
+      "expected": "r74-delivery-package.sha256.txt",
+      "description": "No standalone SHA file for outer delivery package",
+      "r75_fix": "build_delivery_package.py generates .sha256.txt"
+    },
+    {
+      "id": "D06",
+      "severity": "RC-BLOCKING",
+      "category": "missing_artifact",
+      "expected": "r74-final-artifact-authority.json",
+      "description": "No cross-layer SHA authority JSON",
+      "r75_fix": "build_delivery_package.py generates final-artifact-authority.json"
+    },
+    {
+      "id": "D07",
+      "severity": "VALIDATOR-GAP",
+      "category": "missing_pattern",
+      "pattern": "TO_BE_FILLED_AFTER_BUNDLE_BUILD",
+      "description": "PENDING_MARKER_PATTERNS did not include this token",
+      "r75_fix": "Added to PENDING_MARKER_PATTERNS and CLOSEOUT_HYGIENE_TOKENS"
+    },
+    {
+      "id": "D08",
+      "severity": "VALIDATOR-GAP",
+      "category": "missing_pattern",
+      "pattern": "PASS_PENDING_BUNDLE_SHA",
+      "description": "Neither pattern list included this token",
+      "r75_fix": "Added to PENDING_MARKER_PATTERNS and CLOSEOUT_HYGIENE_TOKENS"
+    },
+    {
+      "id": "D09",
+      "severity": "VALIDATOR-GAP",
+      "category": "missing_check",
+      "description": "Pass-number drift only triggered WARNING not ERROR",
+      "r75_fix": "New check_pass_number_drift() returns ERROR"
+    }
+  ]
+}

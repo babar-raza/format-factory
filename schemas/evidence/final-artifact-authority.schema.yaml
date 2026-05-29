@@ -1,0 +1,144 @@
+# Final Artifact Authority Schema
+# Version: 1.0
+# Sprint: FORMAT-FACTORY-R75-FINAL-ARTIFACT-AUTHORITY-REPAIR-RC-SEAL-PRODUCT-ADVANCEMENT-MEGA-TRAIN-001
+#
+# This schema describes the two-layer artifact authority model introduced in R75.
+#
+# DESIGN RATIONALE
+# ================
+# The inner evidence ZIP cannot record its own SHA (circular dependency).
+# A file inside a ZIP is hashed AFTER the ZIP is built — you can't put the
+# ZIP's SHA inside itself before it's built.
+#
+# The solution is a two-layer model:
+#
+# Layer 1 — Source Evidence Authority (inner ZIP + committed repo):
+#   - Knows: source code, tests, packages, test results
+#   - Does NOT claim: outer delivery package SHA (circular), inner ZIP SHA (circular)
+#   - Records: pass-1 SHA (pre-existing), delegation note pointing to authority JSON
+#
+# Layer 2 — Final Artifact Authority (this file, generated AFTER all ZIPs built):
+#   - Knows: inner ZIP SHA (computed after ZIP built), sidecar SHA, outer delivery SHA
+#   - Generated: after build_delivery_package.py completes
+#   - Location: alongside delivery package (NOT inside inner ZIP)
+#
+# WHY THIS SOLVES THE PROBLEM
+# ===========================
+# The inner ZIP no longer claims SHAs it cannot know.
+# The final-artifact-authority.json is the authoritative cross-layer SHA record.
+# A supervisor validates: inner ZIP → sidecar → delivery package → this JSON.
+
+title: FinalArtifactAuthority
+type: object
+required:
+  - schema_version
+  - sprint_id
+  - generated_at_utc
+  - authority_model
+  - source_evidence_authority
+  - final_artifact_authority
+  - cross_layer_validation
+
+properties:
+  schema_version:
+    type: string
+    description: "Schema version, currently '1.0'"
+    enum: ["1.0"]
+
+  sprint_id:
+    type: string
+    description: "Sprint identifier, e.g. FORMAT-FACTORY-R75-..."
+
+  generated_at_utc:
+    type: string
+    description: "ISO 8601 UTC timestamp when this file was generated"
+
+  authority_model:
+    type: string
+    description: "Authority model name"
+    enum: ["two_layer"]
+
+  source_evidence_authority:
+    type: object
+    description: "Layer 1: Inner evidence ZIP (source truth)"
+    required:
+      - inner_zip_filename
+      - inner_zip_sha256
+      - inner_zip_size_bytes
+      - inner_zip_entry_count
+      - sidecar_filename
+      - sidecar_sha256
+      - sidecar_validates_inner_zip
+    properties:
+      inner_zip_filename:
+        type: string
+        description: "Filename of inner evidence ZIP (e.g. r75-pass2-final.zip)"
+      inner_zip_sha256:
+        type: string
+        description: "SHA-256 of inner evidence ZIP (64 hex chars)"
+        pattern: "^[0-9a-f]{64}$"
+      inner_zip_size_bytes:
+        type: integer
+        description: "Size of inner evidence ZIP in bytes"
+      inner_zip_entry_count:
+        type: integer
+        description: "Number of entries in inner evidence ZIP"
+      sidecar_filename:
+        type: string
+        description: "Filename of sidecar proof JSON (e.g. r75-pass2-final.sha256-proof.json)"
+      sidecar_sha256:
+        type: string
+        description: "SHA-256 of sidecar file (64 hex chars)"
+        pattern: "^[0-9a-f]{64}$"
+      sidecar_validates_inner_zip:
+        type: boolean
+        description: "True if sidecar SHA matches inner ZIP SHA"
+
+  final_artifact_authority:
+    type: object
+    description: "Layer 2: Outer delivery package (final artifact truth)"
+    required:
+      - delivery_package_filename
+      - delivery_package_sha256
+      - delivery_package_size_bytes
+      - delivery_package_entry_count
+      - standalone_sha_file
+    properties:
+      delivery_package_filename:
+        type: string
+        description: "Filename of outer delivery package ZIP (e.g. r75-delivery-package.zip)"
+      delivery_package_sha256:
+        type: string
+        description: "SHA-256 of outer delivery package (64 hex chars)"
+        pattern: "^[0-9a-f]{64}$"
+      delivery_package_size_bytes:
+        type: integer
+        description: "Size of outer delivery package in bytes"
+      delivery_package_entry_count:
+        type: integer
+        description: "Number of entries in outer delivery package"
+      standalone_sha_file:
+        type: string
+        description: "Filename of standalone .sha256.txt file for outer package"
+
+  cross_layer_validation:
+    type: object
+    description: "Cross-layer SHA consistency validation"
+    required:
+      - all_sha_fields_non_circular
+      - sidecar_proves_inner_zip
+      - delivery_contains_inner_zip_and_sidecar
+    properties:
+      all_sha_fields_non_circular:
+        type: boolean
+        description: "True if no SHA field contains a self-referential circular value"
+      sidecar_proves_inner_zip:
+        type: boolean
+        description: "True if sidecar.sha256 == inner_zip_sha256"
+      delivery_contains_inner_zip_and_sidecar:
+        type: boolean
+        description: "True if delivery package contains inner ZIP and sidecar as entries"
+
+  notes:
+    type: string
+    description: "Optional notes about this artifact authority record"
