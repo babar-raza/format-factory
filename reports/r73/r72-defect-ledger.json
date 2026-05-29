@@ -1,0 +1,68 @@
+{
+  "sprint": "FORMAT-FACTORY-R73-DELIVERY-PACKAGE-TRUTH-PRODUCT-ADVANCEMENT-GATE-READINESS-MEGA-TRAIN-001",
+  "date": "2026-05-29",
+  "source_sprint": "R72",
+  "defects": [
+    {
+      "id": "IV-R73-001",
+      "category": "Delivery",
+      "location": "R72 final response",
+      "description": "Final response cited inner ZIP path as upload target; outer delivery package not cited as primary artifact",
+      "severity": "RC-blocking",
+      "r73_status": "FIXED_IN_R73",
+      "r73_train": "Train B"
+    },
+    {
+      "id": "IV-R73-002",
+      "category": "Delivery",
+      "location": "Delivery package structure",
+      "description": "No supervisor-readme.md in delivery package explaining delivery structure and SHA model",
+      "severity": "Moderate",
+      "r73_status": "FIXED_IN_R73",
+      "r73_train": "Train B"
+    },
+    {
+      "id": "IV-R73-003",
+      "category": "Delivery",
+      "location": ".local/r72-delivery-manifest.json",
+      "description": "Delivery manifest missing delivery_package_sha256, delivery_package_size_bytes, delivery_package_entry_count — documented as circular dependency constraint",
+      "severity": "Moderate",
+      "r73_status": "DOCUMENTED_DESIGN_CONSTRAINT",
+      "r73_train": "Train B"
+    },
+    {
+      "id": "IV-R73-004",
+      "category": "Product",
+      "location": "FODS/FODT source",
+      "description": "No FODS/FODT product advancement in R72 (by design)",
+      "severity": "Tracking",
+      "r73_status": "FIXED_IN_R73",
+      "r73_train": "Train D"
+    },
+    {
+      "id": "IV-R73-005",
+      "category": "Gate",
+      "location": "Gate 8 formats (ODS/ODT/QOI/XCF/DIF/PPM)",
+      "description": "Gate 8 security review packets not prepared",
+      "severity": "Tracking",
+      "r73_status": "FIXED_IN_R73",
+      "r73_train": "Train H"
+    },
+    {
+      "id": "IV-R73-006",
+      "category": "Gate",
+      "location": "Gate 11 (FODS/FODT)",
+      "description": "Gate 11 approval packet not prepared",
+      "severity": "Tracking",
+      "r73_status": "FIXED_IN_R73",
+      "r73_train": "Train I"
+    }
+  ],
+  "summary": {
+    "total": 6,
+    "rc_blocking": 1,
+    "moderate": 2,
+    "tracking": 3,
+    "all_addressed_in_r73": true
+  }
+}

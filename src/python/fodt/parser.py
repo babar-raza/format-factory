@@ -35,7 +35,9 @@ from .constants import (
     ATTR_MIMETYPE,
     ATTR_OUTLINE_LEVEL,
     ATTR_STYLE_NAME,
+    ATTR_TABLE_COL_SPAN,
     ATTR_TABLE_NAME,
+    ATTR_TABLE_ROW_SPAN,
     ATTR_VERSION,
     ATTR_XLINK_HREF,
     EXPECTED_MIMETYPE,
@@ -53,10 +55,12 @@ from .constants import (
     QN_TEXT,
     QN_TEXT_A,
     QN_TEXT_H,
+    QN_TEXT_NOTE,
     QN_TEXT_P,
     QN_TEXT_SPAN,
     TEXT_FIELD_LOCAL_NAMES,
     WARN_MISSING_MIMETYPE,
+    WARN_NOTE_ELEMENT,
     WARN_UNEXPECTED_MIMETYPE,
     WARN_UNSUPPORTED_ELEMENT,
 )
@@ -346,6 +350,17 @@ def _handle_text_child(
             "embedded objects not supported in Tier 0-2",
         ))
 
+    elif tag == QN_TEXT_NOTE:
+        # R73 Train D: footnote/endnote detection (text:note element)
+        # note-class attribute is "footnote" or "endnote" per ODF 1.3
+        note_class = elem.get(f"{{{NS_TEXT}}}note-class", "note")
+        unsupported_features.add("footnote-endnote")
+        warnings.append(make_warning(
+            WARN_NOTE_ELEMENT,
+            f"text:note ({note_class}) detected: footnotes/endnotes are captured "
+            "as unsupported_features but note body is not preserved in neutral model",
+        ))
+
     else:
         # IR-FODT-009: text field detection (text:date, text:time, etc.)
         local = _get_local_name(tag)
@@ -374,7 +389,15 @@ def _extract_table(table_elem: Any) -> "dict[str, Any]":
             for p in cell_elem:
                 if p.tag == QN_TEXT_P:
                     cell_text_parts.append(_collect_text(p).strip())
-            cells.append({"text": " ".join(cell_text_parts)})
+            cell_dict: "dict[str, Any]" = {"text": " ".join(cell_text_parts)}
+            # R73 Train D: table cell span preservation (ODF 1.3 section 9.1.4)
+            col_span = _safe_int_fodt(cell_elem.get(ATTR_TABLE_COL_SPAN, "1"), 1)
+            row_span = _safe_int_fodt(cell_elem.get(ATTR_TABLE_ROW_SPAN, "1"), 1)
+            if col_span > 1:
+                cell_dict["col_span"] = col_span
+            if row_span > 1:
+                cell_dict["row_span"] = row_span
+            cells.append(cell_dict)
         if cells:
             rows.append({"cells": cells})
 
@@ -390,3 +413,13 @@ def _get_local_name(clark_tag: str) -> str:
     if "}" in clark_tag:
         return clark_tag.split("}", 1)[1]
     return clark_tag
+
+
+def _safe_int_fodt(value: "str | None", default: int) -> int:
+    """Safely parse an integer attribute value, returning default on failure."""
+    if value is None:
+        return default
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default

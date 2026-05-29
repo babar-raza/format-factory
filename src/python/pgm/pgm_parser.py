@@ -282,6 +282,51 @@ def probe_pgm(file_path: str | Path) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
+# R73 Train G: image pixel statistics API
+# ---------------------------------------------------------------------------
+
+def image_pixel_stats(file_path: str | Path) -> dict[str, Any]:
+    """Return pixel-level statistics for a PGM image.
+
+    Returns a dict with:
+      ok: bool
+      min_value: int  — minimum pixel value found
+      max_value: int  — maximum pixel value found
+      mean_approx: float  — approximate mean pixel value
+      total_pixels: int
+      maxval: int, width: int, height: int, magic: str
+    """
+    try:
+        img = parse_pgm_strict(file_path)
+        total = len(img.pixels)
+        if total == 0:
+            return {
+                "ok": True,
+                "min_value": 0,
+                "max_value": 0,
+                "mean_approx": 0.0,
+                "total_pixels": 0,
+                "maxval": img.maxval,
+                "width": img.width,
+                "height": img.height,
+                "magic": img.magic,
+            }
+        return {
+            "ok": True,
+            "min_value": min(img.pixels),
+            "max_value": max(img.pixels),
+            "mean_approx": round(sum(img.pixels) / total, 4),
+            "total_pixels": total,
+            "maxval": img.maxval,
+            "width": img.width,
+            "height": img.height,
+            "magic": img.magic,
+        }
+    except Exception as exc:
+        return {"ok": False, "error": str(exc), "error_type": type(exc).__name__}
+
+
+# ---------------------------------------------------------------------------
 # Gate 5 — Neutral model: capability declaration
 # ---------------------------------------------------------------------------
 

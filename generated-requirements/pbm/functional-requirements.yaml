@@ -1,0 +1,68 @@
+# PBM Functional Requirements
+# Generated: R73 Train K (fixture mode — no live AI call)
+# Source: src/python/pbm/pbm_parser.py analysis
+# Schema version: format-factory-generated-requirements v1.0
+# lifecycle_stage: ai_draft
+
+schema_version: "1.0"
+format_id: pbm
+artifact_id: pbm-functional-requirements
+generated_at: "2026-05-29"
+generator: claude-sonnet-4-6
+pipeline: AI-GENERATED-FORMAT-REQUIREMENTS-PIPELINE
+pipeline_mode: fixture
+
+requirements:
+
+  - id: PBM-REQ-001
+    title: Parse P1 ASCII PBM
+    description: >
+      parse_pbm_strict() must parse P1 ASCII PBM files, decoding pixel data
+      as a list of 0/1 integers. Width * height must equal pixel count.
+    lifecycle_stage: ai_draft
+    priority: P1
+    source: src/python/pbm/pbm_parser.py
+    test_reference: tests/python/pbm/test_pbm_parser.py
+
+  - id: PBM-REQ-002
+    title: Parse P4 Binary PBM
+    description: >
+      parse_pbm_strict() must parse P4 binary PBM files. Binary pixels are
+      packed 8-per-byte. Output pixels must be 0 or 1 integers.
+    lifecycle_stage: ai_draft
+    priority: P1
+    source: src/python/pbm/pbm_parser.py
+    test_reference: tests/python/pbm/test_r55_pbm_p4_binary.py
+
+  - id: PBM-REQ-003
+    title: File size guard
+    description: >
+      Files exceeding MAX_FILE_SIZE (64 MiB) must raise PbmSizeError.
+      This prevents memory exhaustion from adversarial inputs.
+    lifecycle_stage: ai_draft
+    priority: P1
+    source: src/python/pbm/pbm_parser.py
+    acceptance_criteria:
+      - PbmSizeError raised for files > 64 MiB
+      - Guard applied before parsing begins
+
+  - id: PBM-REQ-004
+    title: image_pixel_stats() API
+    description: >
+      image_pixel_stats(file_path) returns pixel statistics without exposing
+      exceptions. Includes black_count, white_count, total_pixels, black_density.
+      Returns ok=False dict on any failure.
+    lifecycle_stage: ai_draft
+    priority: P2
+    source: src/python/pbm/pbm_parser.py
+    test_reference: tests/python/pbm/test_r73_pbm_advancement.py
+    note: "R73 Train G addition. Future: normalize to image_stats() across Netpbm family."
+
+  - id: PBM-REQ-005
+    title: Comment stripping
+    description: >
+      P1 ASCII PBM files may contain # comments. These must be stripped
+      before header and pixel parsing.
+    lifecycle_stage: ai_draft
+    priority: P2
+    source: src/python/pbm/pbm_parser.py

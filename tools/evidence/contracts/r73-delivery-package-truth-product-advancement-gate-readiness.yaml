@@ -1,0 +1,70 @@
+sprint_id: FORMAT-FACTORY-R73-DELIVERY-PACKAGE-TRUTH-PRODUCT-ADVANCEMENT-GATE-READINESS-MEGA-TRAIN-001
+run_number: r73
+date: "2026-05-29"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r73/r72-independent-verification.md
+  - reports/r73/r72-defect-ledger.md
+  - reports/r73/r72-defect-ledger.json
+  - reports/r73/r72-delivery-package-truth-audit.md
+  - reports/r73/fods-fodt-product-advancement.md
+  - reports/r73/dotnet-commercial-readiness-bounded-proof.md
+  - reports/r73/python-package-release-readiness.md
+  - reports/r73/next-format-advancement.md
+  - reports/r73/gate8-security-readiness-packets.md
+  - reports/r73/gate11-approval-readiness-packet.md
+  - reports/r73/drift-overclaim-audit.md
+  - reports/r73/ai-requirements-telemetry.md
+  - reports/r73/docs-taskcards-memory-sync.md
+  - reports/r73/final-verdict.md
+  - tests/evidence/test_r73_delivery_package_contains_inner_zip_sidecar_manifest.py
+  - tests/evidence/test_r73_delivery_manifest_hash_truth.py
+  - tests/evidence/test_r73_rejects_inner_zip_only_delivery.py
+  - tests/evidence/test_r73_rejects_missing_physical_sidecar.py
+  - tests/evidence/test_r73_final_delivery_no_required_skips.py
+  - tests/python/fods/test_r73_fods_merged_cell_span.py
+  - tests/python/fodt/test_r73_fodt_note_and_cell_span.py
+  - tests/python/pbm/test_r73_pbm_advancement.py
+  - tests/python/pgm/test_r73_pgm_advancement.py
+  - tests/python/sylk/test_r73_sylk_advancement.py
+  - tests/python/zst/test_r73_zst_advancement.py
+  - tests/python/dif/test_r73_dif_advancement.py
+  - tests/net/fods/FodsR73MergedCellParityTest.cs
+  - tools/evidence/contracts/r73-delivery-package-truth-product-advancement-gate-readiness.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - run-environment.txt
+  - python-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - placeholder-scan-summary.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - delivery-package-validation-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - installed-public-api-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - invariant-output-final.txt
+  - r72-iv-repair-summary.txt
+  - r73-new-tests-summary.txt
+  - final-independent-verification.txt
+  - multi-mega-train-scoreboard-final.txt
+  - blockers-status.txt
+  - state-snapshot-output.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - git-log.txt
+  - repo-tree.txt
+  - package-install-smoke-summary.txt
+  - source-package-hygiene-summary.txt
+  - next-format-advancement-summary.txt
+  - product-advancement-summary.txt
+  - delivery-package-convention-summary.txt

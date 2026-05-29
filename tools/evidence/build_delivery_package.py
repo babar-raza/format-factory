@@ -2,8 +2,8 @@
 build_delivery_package.py — Build a transfer-safe delivery package.
 
 The delivery package wraps an evidence ZIP + its external sidecar + a manifest
-into a single outer ZIP for convenient transfer. The sidecar remains external
-to the evidence ZIP it proves.
++ a supervisor-readme into a single outer ZIP for convenient transfer.
+The sidecar remains external to the evidence ZIP it proves.
 
 Usage:
     python tools/evidence/build_delivery_package.py \
@@ -13,6 +13,7 @@ Usage:
         --output .local/r65-delivery-package.zip
 
 R65 Sprint: FORMAT-FACTORY-R65-DELIVERY-PACKAGE-RC-REPLAY-AI-LIVE-WORKAHEAD-MEGA-TRAIN-001
+R73 Update: Added supervisor-readme.md to delivery package for inspectability.
 """
 from __future__ import annotations
 
@@ -31,6 +32,95 @@ def _sha256(path: Path) -> str:
         for chunk in iter(lambda: f.read(8192), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def _generate_supervisor_readme(
+    run_id: str,
+    evidence_zip_name: str,
+    evidence_zip_sha: str,
+    sidecar_name: str,
+    sidecar_file_sha: str,
+    sidecar_claimed_bundle_sha: str,
+    manifest_name: str,
+    validation_command: str,
+) -> str:
+    """Generate supervisor-readme.md content explaining the delivery structure."""
+    return f"""# Supervisor Inspection Readme — {run_id} Delivery Package
+
+## UPLOAD THIS FILE (the outer delivery package ZIP)
+
+**DO NOT upload the inner evidence ZIP directly.**
+The file to upload to the supervisor is: the outer delivery package ZIP itself.
+This file contains everything the supervisor needs to verify the sprint evidence.
+
+---
+
+## Delivery Package Contents
+
+| File | Role |
+|---|---|
+| {evidence_zip_name} | Inner evidence ZIP — the full sprint evidence bundle |
+| {sidecar_name} | Sidecar proof JSON — proves the inner ZIP SHA |
+| {manifest_name} | Delivery manifest — records all SHAs and validation commands |
+| (this file) | Supervisor inspection readme |
+
+---
+
+## Layered SHA Model
+
+The delivery package uses a layered SHA model. There are THREE different SHA values:
+
+### Layer 1: Inner Evidence ZIP SHA
+- SHA-256: {evidence_zip_sha}
+- This is the SHA of `{evidence_zip_name}` (the inner evidence bundle)
+- Recorded in: `{manifest_name}` (evidence_zip_sha256 field)
+- Recorded in: `{sidecar_name}` (sha256 field)
+- Recorded in: reports/{run_id.lower()}/final-verdict.md (BUNDLE_VALIDATION_PASS_2_SHA field)
+
+### Layer 2: Sidecar File SHA
+- SHA-256: {sidecar_file_sha}
+- This is the SHA of `{sidecar_name}` (the sidecar proof JSON file)
+- Recorded in: `{manifest_name}` (sidecar_sha256 field)
+- Recorded in: reports/{run_id.lower()}/final-verdict.md (SIDECAR_SHA field)
+- NOTE: This is the SHA of the sidecar FILE, not the inner ZIP SHA
+
+### Layer 3: Outer Delivery Package SHA
+- SHA-256: (computed after building — see final-verdict.md DELIVERY_PACKAGE_RECORDED_SHA)
+- This is the SHA of the outer delivery package ZIP you are reading
+- Recorded in: reports/{run_id.lower()}/final-verdict.md (DELIVERY_PACKAGE_RECORDED_SHA field)
+- NOTE: The outer delivery package SHA cannot appear inside the manifest because the manifest
+  is packaged inside the outer ZIP before the outer ZIP exists (circular dependency).
+  The outer SHA is recorded in the final-verdict.md and in a standalone .sha256.txt file.
+
+### Why the Sidecar Is NOT Inside the Inner ZIP
+The sidecar `{sidecar_name}` proves the inner ZIP `{evidence_zip_name}` from outside it.
+If the sidecar were inside the inner ZIP, it would be part of what it is proving (circular).
+The sidecar is a companion file — it travels alongside the inner ZIP, not inside it.
+
+---
+
+## How to Verify This Delivery Package
+
+1. Compute SHA-256 of `{evidence_zip_name}` — must match {evidence_zip_sha[:16]}...
+2. Compute SHA-256 of `{sidecar_name}` — must match {sidecar_file_sha[:16]}...
+3. Open `{sidecar_name}` and check that `sha256` field = {sidecar_claimed_bundle_sha[:16]}...
+4. Confirm that sidecar sha256 == inner ZIP SHA (step 1 == step 3 sha256 field)
+5. Run: {validation_command}
+
+All five checks must pass.
+
+---
+
+## What the Supervisor SHA Mismatch Means
+
+If you computed the SHA of the outer delivery package and compared it to
+BUNDLE_VALIDATION_PASS_2_SHA in final-verdict.md — they WILL be different.
+That is expected. They are different files:
+- BUNDLE_VALIDATION_PASS_2_SHA = SHA of the inner evidence ZIP
+- Outer delivery package SHA = SHA of the outer ZIP containing the inner ZIP + sidecar + manifest
+
+This is not a corruption or tampering. It is correct layered-proof behavior.
+"""
 
 
 def build_delivery_package(
@@ -55,62 +145,100 @@ def build_delivery_package(
 
     evidence_sha = _sha256(evidence_zip)
     sidecar_sha = _sha256(sidecar)
+    sidecar_claimed_sha = sidecar_data.get("sha256", "")
 
     with zipfile.ZipFile(evidence_zip, "r") as zf:
         entry_count = len(zf.namelist())
 
+    # Derive run_id from evidence zip name (e.g. "r73-pass2-final.zip" -> "r73")
+    stem = evidence_zip.stem  # e.g. "r73-pass2-final"
+    run_id = stem.split("-")[0].upper()  # "R73"
+
+    validation_cmd = (
+        f"python tools/evidence/validate_evidence_bundle.py "
+        f"--bundle {evidence_zip.name} "
+        f"--contract {contract_path} "
+        f"--check-no-pending "
+        f"--sidecar-proof {sidecar.name}"
+    )
+
     manifest = {
-        "delivery_package_version": "1.0",
+        "delivery_package_version": "1.1",
         "evidence_zip_filename": evidence_zip.name,
         "evidence_zip_sha256": evidence_sha,
         "evidence_zip_size_bytes": evidence_zip.stat().st_size,
         "evidence_zip_entry_count": entry_count,
         "sidecar_filename": sidecar.name,
         "sidecar_sha256": sidecar_sha,
+        "sidecar_claimed_bundle_sha256": sidecar_claimed_sha,
         "contract_path": contract_path,
-        "validation_command": (
-            f"python tools/evidence/validate_evidence_bundle.py "
-            f"--bundle {evidence_zip.name} "
-            f"--contract {contract_path} "
-            f"--check-no-pending "
-            f"--sidecar-proof {sidecar.name}"
-        ),
+        "validation_command": validation_cmd,
         "validation_result": sidecar_data.get("validation_result", "UNKNOWN"),
         "git_head": git_head or sidecar_data.get("git_head", ""),
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "delivery_package_sha256_note": (
+            "The outer delivery package SHA cannot be self-referential inside the manifest "
+            "because the manifest is packaged before the outer ZIP is built. "
+            "The outer package SHA is recorded in reports/{run}/final-verdict.md "
+            "(DELIVERY_PACKAGE_RECORDED_SHA field) and in the standalone .sha256.txt file."
+        ),
     }
 
     # Write manifest alongside output
     manifest_path = output.parent / output.name.replace(".zip", "-manifest.json").replace(
         "delivery-package", "delivery"
     )
-    # Normalize: ensure name is r65-delivery-manifest.json style
+    # Normalize: ensure name is r73-delivery-manifest.json style
     if "manifest" not in manifest_path.name:
         manifest_path = output.parent / (output.stem + "-manifest.json")
 
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2)
 
+    # Generate supervisor-readme
+    readme_name = output.name.replace("-delivery-package.zip", "-supervisor-inspection-readme.md")
+    if readme_name == output.name:
+        readme_name = output.stem + "-supervisor-inspection-readme.md"
+    readme_path = output.parent / readme_name
+    readme_content = _generate_supervisor_readme(
+        run_id=run_id,
+        evidence_zip_name=evidence_zip.name,
+        evidence_zip_sha=evidence_sha,
+        sidecar_name=sidecar.name,
+        sidecar_file_sha=sidecar_sha,
+        sidecar_claimed_bundle_sha=sidecar_claimed_sha,
+        manifest_name=manifest_path.name,
+        validation_command=validation_cmd,
+    )
+    with open(readme_path, "w", encoding="utf-8") as f:
+        f.write(readme_content)
+
     # Build outer ZIP
     with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as outer:
         outer.write(evidence_zip, evidence_zip.name)
         outer.write(sidecar, sidecar.name)
         outer.write(manifest_path, manifest_path.name)
+        outer.write(readme_path, readme_path.name)
 
     pkg_sha = _sha256(output)
     pkg_size = output.stat().st_size
+    pkg_entry_count = 4  # inner ZIP + sidecar + manifest + readme
 
     print(f"Delivery package built: {output}")
     print(f"  Evidence ZIP: {evidence_zip.name} ({evidence_sha[:16]}...)")
     print(f"  Sidecar: {sidecar.name} ({sidecar_sha[:16]}...)")
     print(f"  Manifest: {manifest_path.name}")
+    print(f"  Supervisor readme: {readme_path.name}")
     print(f"  Package SHA-256: {pkg_sha}")
     print(f"  Package size: {pkg_size:,} bytes")
+    print(f"  Package entries: {pkg_entry_count}")
     print(f"DELIVERY_PACKAGE_BUILD: PASS")
 
     manifest["delivery_package_sha256"] = pkg_sha
     manifest["delivery_package_size_bytes"] = pkg_size
+    manifest["delivery_package_entry_count"] = pkg_entry_count
     manifest["manifest_path"] = str(manifest_path)
+    manifest["supervisor_readme_path"] = str(readme_path)
 
     return manifest
 

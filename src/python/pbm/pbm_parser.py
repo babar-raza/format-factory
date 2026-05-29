@@ -254,6 +254,40 @@ def probe_pbm(file_path: str | Path) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
+# R73 Train G: image pixel statistics API
+# ---------------------------------------------------------------------------
+
+def image_pixel_stats(file_path: str | Path) -> dict[str, Any]:
+    """Return pixel-level statistics for a PBM image.
+
+    Returns a dict with:
+      ok: bool
+      black_count: int  — pixels with value 1 (black in PBM convention)
+      white_count: int  — pixels with value 0 (white in PBM convention)
+      total_pixels: int
+      black_density: float  — fraction of black pixels (0.0..1.0)
+      width: int, height: int, magic: str
+    """
+    try:
+        img = parse_pbm_strict(file_path)
+        black = sum(1 for p in img.pixels if p == 1)
+        white = sum(1 for p in img.pixels if p == 0)
+        total = len(img.pixels)
+        return {
+            "ok": True,
+            "black_count": black,
+            "white_count": white,
+            "total_pixels": total,
+            "black_density": round(black / total, 6) if total > 0 else 0.0,
+            "width": img.width,
+            "height": img.height,
+            "magic": img.magic,
+        }
+    except Exception as exc:
+        return {"ok": False, "error": str(exc), "error_type": type(exc).__name__}
+
+
+# ---------------------------------------------------------------------------
 # Gate 5 — Neutral model: capability declaration
 # ---------------------------------------------------------------------------
 

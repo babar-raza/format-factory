@@ -31,10 +31,12 @@ except ImportError:
 from .constants import (
     ATTR_BOOL_VALUE,
     ATTR_COL_REPEAT,
+    ATTR_COL_SPAN,
     ATTR_DATE_VALUE,
     ATTR_FORMULA,
     ATTR_MIMETYPE,
     ATTR_ROW_REPEAT,
+    ATTR_ROW_SPAN,
     ATTR_STRING_VALUE,
     ATTR_TIME_VALUE,
     ATTR_VALUE,
@@ -58,6 +60,7 @@ from .constants import (
     QN_TEXT_P,
     QN_TEXT_SPAN,
     WARN_COVERED_CELL,
+    WARN_FORMULA_CELL,
     WARN_LARGE_REPEAT,
     WARN_MISSING_MIMETYPE,
     WARN_UNEXPECTED_MIMETYPE,
@@ -331,16 +334,39 @@ def _process_row_elem(
 
         value_type = child.get(ATTR_VALUE_TYPE)
         formula = child.get(ATTR_FORMULA)  # IR-FODS-008: capture, don't eval
+
+        # R73 Train D: merged-cell span metadata preservation (ODF 1.3 section 9.1.4)
+        # table:number-columns-spanned / table:number-rows-spanned
+        # Default 1 per ODF spec. Only non-trivial spans (>1) are reported.
+        col_span = _safe_int(child.get(ATTR_COL_SPAN, "1"), 1)
+        row_span = _safe_int(child.get(ATTR_ROW_SPAN, "1"), 1)
+
+        # R73 Train D: emit WARN_FORMULA_CELL when formula present (IR-FODS-008 transparency)
+        if formula is not None:
+            unsupported_features.add("formula")
+            warnings.append(make_warning(
+                WARN_FORMULA_CELL,
+                f"Formula at row {row_idx} col {col_idx}: "
+                "formula expression captured but not evaluated (IR-FODS-008)",
+                source=f"row={row_idx},col={col_idx}",
+            ))
+
         value = _extract_value(child, value_type, warnings, row_idx, col_idx)
 
-        for _ in range(col_repeat):
-            cells.append({
+        for rep in range(col_repeat):
+            cell: "dict[str, Any]" = {
                 "index": col_idx,
                 "value_type": value_type,
                 "value": value,
                 "formula": formula,
                 "is_covered": is_covered,
-            })
+            }
+            # Only add span fields when non-trivial (>1) to keep output compact
+            if col_span > 1:
+                cell["col_span"] = col_span
+            if row_span > 1:
+                cell["row_span"] = row_span
+            cells.append(cell)
             col_idx += 1
 
     return {"index": row_idx, "cells": cells}

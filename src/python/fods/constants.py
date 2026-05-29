@@ -85,6 +85,9 @@ ATTR_TABLE_NAME:    str = f"{{{NS_TABLE}}}name"
 ATTR_COL_REPEAT:    str = f"{{{NS_TABLE}}}number-columns-repeated"
 ATTR_ROW_REPEAT:    str = f"{{{NS_TABLE}}}number-rows-repeated"
 ATTR_FORMULA:       str = f"{{{NS_TABLE}}}formula"
+# R73 Train D: merged-cell span metadata (ODF 1.3 section 9.1.4)
+ATTR_COL_SPAN:      str = f"{{{NS_TABLE}}}number-columns-spanned"
+ATTR_ROW_SPAN:      str = f"{{{NS_TABLE}}}number-rows-spanned"
 
 # ---------------------------------------------------------------------------
 # Warning codes (neutral model Warning entity -- Gate 5)
@@ -97,3 +100,5 @@ WARN_COVERED_CELL:           str = "COVERED_CELL"
 WARN_UNSUPPORTED_ELEMENT:    str = "UNSUPPORTED_ELEMENT"
 WARN_LARGE_REPEAT:           str = "LARGE_REPEAT"
 WARN_UNKNOWN:                str = "UNKNOWN"
+# R73 Train D: deterministic formula presence warning (IR-FODS-008 transparency)
+WARN_FORMULA_CELL:           str = "FORMULA_CELL"

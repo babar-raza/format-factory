@@ -66,6 +66,8 @@ QN_TABLE_CELL:  str = f"{{{NS_TABLE}}}table-cell"
 
 QN_DRAW_FRAME:  str = f"{{{NS_DRAW}}}frame"
 QN_DRAW_IMAGE:  str = f"{{{NS_DRAW}}}image"
+# R73 Train D: footnote/endnote element detection
+QN_TEXT_NOTE:   str = f"{{{NS_TEXT}}}note"
 
 # ---------------------------------------------------------------------------
 # Qualified attribute names
@@ -78,6 +80,9 @@ ATTR_TABLE_NAME:     str = f"{{{NS_TABLE}}}name"
 ATTR_STYLE_NAME:     str = f"{{{NS_TEXT}}}style-name"
 ATTR_XLINK_HREF:     str = f"{{{NS_XLINK}}}href"
 ATTR_XLINK_TYPE:     str = f"{{{NS_XLINK}}}type"
+# R73 Train D: table cell span attributes (ODF 1.3 section 9.1.4)
+ATTR_TABLE_COL_SPAN: str = f"{{{NS_TABLE}}}number-columns-spanned"
+ATTR_TABLE_ROW_SPAN: str = f"{{{NS_TABLE}}}number-rows-spanned"
 
 # ---------------------------------------------------------------------------
 # Text field namespace prefix -- detect text:* field elements (IR-FODT-009)
@@ -98,3 +103,5 @@ WARN_MISSING_MIMETYPE:       str = "MISSING_MIMETYPE"
 WARN_UNEXPECTED_MIMETYPE:    str = "UNEXPECTED_MIMETYPE"
 WARN_UNSUPPORTED_ELEMENT:    str = "UNSUPPORTED_ELEMENT"
 WARN_UNKNOWN:                str = "UNKNOWN"
+# R73 Train D: footnote/endnote detection warning (new deterministic code)
+WARN_NOTE_ELEMENT:           str = "NOTE_ELEMENT"
