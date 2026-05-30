@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R76 - R76_IN_PROGRESS (FORMAT-FACTORY-R76-PARALLEL-FINISH-LINE-ARTIFACT-AUTHORITY-PRODUCT-DEEPENING-GATE-READINESS-MEGA-TRAIN-001)
+**Latest sprint:** R77 - R77_TRUE_CLEAN_REVIEW_PACKAGE_RC_SEALED_PUBLICATION_BLOCKED (FORMAT-FACTORY-R77-TRUE-CLEAN-REVIEW-PACKAGE-PACKAGE-ARTIFACTS-STATE-CLOSURE-PRODUCT-DEEPENING-MEGA-TRAIN-001)
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
@@ -20,5 +20,5 @@
 - GATE8_AWAITING_HUMAN_APPROVAL: ODS/ODT/QOI/XCF/DIF/PPM Gate 8 security review pending
 - PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry
 
-## FODS Exported APIs: 25 (R76 added workbook_set_cell_value, workbook_warnings_for_unsupported_edit)
-## FODT Exported APIs: 25 (R76 added document_set_block_text, document_warnings_for_unsupported_edit)
+## FODS Exported APIs: 28 (R77 added workbook_add_sheet, workbook_rename_sheet, workbook_remove_sheet)
+## FODT Exported APIs: 28 (R77 added document_append_paragraph, document_remove_paragraph, document_paragraph_count)
