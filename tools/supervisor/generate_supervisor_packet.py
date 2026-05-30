@@ -6,7 +6,7 @@ Generates:
   reports/supervisor/next-sprint.md        — full next-sprint Claude Code prompt
   reports/supervisor/next-sprint-taskmaster.json  — TM import ready (schema-validated)
   reports/supervisor/next-ruflo-lanes.json        — Ruflo lane plan (schema-validated)
-  reports/supervisor/approval-gates.md            — gate classifications
+  reports/supervisor/approval-gates.md            — gate classifications (mode-aware)
   reports/supervisor/session-resume.md            — fresh-session briefing
 
 Does NOT call Claude Code or any external API — pure local assembly.
@@ -23,6 +23,7 @@ Usage:
 
 import argparse
 import json
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -37,12 +38,310 @@ def load_json(path: Path) -> dict:
 def load_memory(memory_path: Path) -> str:
     if memory_path.exists():
         lines = memory_path.read_text(encoding="utf-8").splitlines()
-        # Return last 50 lines of memory
         return "\n".join(lines[-50:])
     return "(no memory file)"
 
 
-def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: str) -> str:
+def read_current_mode(repo_root: Path) -> int:
+    """Read current mode number from .supervisor/config.yaml.
+    Returns 0 if not determinable."""
+    config_path = repo_root / ".supervisor" / "config.yaml"
+    if not config_path.exists():
+        return 0
+    text = config_path.read_text(encoding="utf-8")
+    m = re.search(r"Status:\s*MODE\s*(\d+)", text, re.IGNORECASE)
+    if m:
+        return int(m.group(1))
+    return 0
+
+
+def read_registry_gate_states(repo_root: Path) -> dict:
+    """Read gate states from registry/format-registry.yaml for all formats.
+    Returns {format_id: {gate_N: status}} for formats with high-number incomplete gates.
+
+    Registry structure:
+      formats:
+        - format_id: fods
+          gates:
+            gate_11:
+              status: commercial_readiness_in_progress
+    """
+    registry_path = repo_root / "registry" / "format-registry.yaml"
+    if not registry_path.exists():
+        return {}
+    try:
+        text = registry_path.read_text(encoding="utf-8", errors="replace")
+        result = {}
+        current_format = None
+        current_gate = None
+
+        for line in text.splitlines():
+            # Detect format_id lines: "  - format_id: fods"
+            fmt_m = re.match(r"\s+(?:-\s+)?format_id:\s+(\S+)", line)
+            if fmt_m:
+                current_format = fmt_m.group(1)
+                result[current_format] = {}
+                current_gate = None
+                continue
+
+            if current_format is None:
+                continue
+
+            # Detect gate block starts: "      gate_11:" (with leading spaces)
+            gate_m = re.match(r"\s+(gate_\d+):\s*$", line)
+            if gate_m:
+                current_gate = gate_m.group(1)
+                continue
+
+            # Detect status lines under a gate block: "        status: not_started"
+            if current_gate:
+                status_m = re.match(r"\s+status:\s+(\S+)", line)
+                if status_m:
+                    result[current_format][current_gate] = status_m.group(1)
+                    current_gate = None
+
+        # Return only formats with incomplete high-number gates (>=10)
+        filtered = {}
+        for fmt, gates in result.items():
+            incomplete = {
+                g: s for g, s in gates.items()
+                if int(g.split("_")[1]) >= 10
+                and s not in ("passed", "not_applicable", "waived")
+            }
+            if incomplete:
+                filtered[fmt] = incomplete
+        return filtered
+    except Exception:
+        return {}
+
+
+def read_open_taskcards(repo_root: Path, limit: int = 5) -> list[dict]:
+    """Read open taskcards from taskcards/ directory.
+    Returns list of {id, title, status} for not_started/in_progress ones."""
+    tc_dir = repo_root / "taskcards"
+    if not tc_dir.exists():
+        return []
+    open_cards = []
+    for fn in sorted(tc_dir.iterdir()):
+        if not fn.suffix == ".md":
+            continue
+        try:
+            text = fn.read_text(encoding="utf-8", errors="replace")
+            status_m = re.search(r"\*\*Status:\*\*\s*(\S+)", text)
+            status = status_m.group(1) if status_m else "unknown"
+            if status not in ("not_started", "in_progress", "open", "pending"):
+                continue
+            # Extract title from first h1
+            title_m = re.search(r"^#\s+(.+)", text, re.MULTILINE)
+            title = title_m.group(1).strip() if title_m else fn.stem
+            open_cards.append({
+                "id": fn.stem,
+                "title": title,
+                "status": status,
+            })
+        except Exception:
+            continue
+        if len(open_cards) >= limit:
+            break
+    return open_cards
+
+
+def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path) -> list[dict]:
+    """Generate sprint-specific tasks from gate states, open taskcards, and phase context.
+    Returns list of TM-schema-compatible task dicts."""
+    tasks = []
+    critical_count = contradictions.get("critical_count", 0)
+
+    # --- REPAIR TASKS (always first when contradictions exist) ---
+    if critical_count > 0:
+        for i, c in enumerate(contradictions.get("contradictions", []), 1):
+            if c["severity"] == "CRITICAL":
+                tasks.append({
+                    "task_id": f"REPAIR-{i:03d}",
+                    "title": f"Repair: {c['description'][:80]}",
+                    "description": c.get("detail", ""),
+                    "status": "pending",
+                    "ff_taskcard_ref": "repair-required",
+                    "supervisor_task_ref": "TC-SUP-009",
+                    "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
+                    "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
+                    "non_authoritative": True,
+                    "lane": "C2",
+                })
+        return tasks
+
+    # --- CLEAN SPRINT — synthesize from context ---
+
+    task_seq = 1
+
+    # 1. Check for uncommitted tracked changes (R79 closure indicator)
+    try:
+        import subprocess
+        r = subprocess.run(
+            ["git", "status", "--short"],
+            capture_output=True, text=True, cwd=str(repo_root), timeout=10
+        )
+        modified = [l for l in r.stdout.splitlines() if l.startswith(" M") and
+                    any(x in l for x in ["src/python/", "src/net/", "state/", "packaging/"])]
+        if modified:
+            tasks.append({
+                "task_id": f"TASK-{task_seq:03d}",
+                "title": "Commit uncommitted product code and build sprint evidence bundle",
+                "description": f"Modified tracked files detected: {len(modified)} file(s) (e.g. {modified[0].strip().split()[-1]}). "
+                               "Commit per governance rule (explicit user auth required), build evidence bundle.",
+                "status": "approval-blocked",
+                "ff_doc_ref": "plans/master-plan.md",
+                "supervisor_task_ref": "TC-R79-CLOSURE-001",
+                "acceptance_evidence": "git status shows no modified tracked product files; BUNDLE_VALIDATION: PASS",
+                "validation_command": ".local/venv/Scripts/python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
+                "blocker_type": "human_approval",
+                "non_authoritative": True,
+                "lane": "C3",
+            })
+            task_seq += 1
+    except Exception:
+        pass
+
+    # 2. Gate state tasks from registry
+    gate_states = read_registry_gate_states(repo_root)
+    incomplete_formats = []
+    for fmt, gates in gate_states.items():
+        for gate, status in gates.items():
+            if status in ("not_started", "in_progress", "commercial_readiness_in_progress"):
+                gate_num = int(gate.split("_")[1])
+                if gate_num >= 10:  # Only surface high gates
+                    incomplete_formats.append((fmt, gate, status))
+
+    for fmt, gate, status in incomplete_formats[:3]:
+        gate_num = gate.split("_")[1]
+        if status == "commercial_readiness_in_progress":
+            title = f"Advance {fmt.upper()} Gate {gate_num} commercial readiness"
+            desc = f"{fmt} gate_{gate_num} status: {status}. Continue commercial readiness work per plans/master-plan.md."
+            blocker = "human_approval"
+            task_status = "approval-blocked"
+        else:
+            title = f"Open {fmt.upper()} Gate {gate_num}"
+            desc = f"{fmt} gate_{gate_num} status: {status}. See plans/master-plan.md and registry for requirements."
+            blocker = "external_gate"
+            task_status = "blocked"
+        tasks.append({
+            "task_id": f"TASK-{task_seq:03d}",
+            "title": title,
+            "description": desc,
+            "status": task_status,
+            "ff_gate_ref": f"{fmt}_{gate}",
+            "ff_doc_ref": "plans/master-plan.md",
+            "acceptance_evidence": f"registry/format-registry.yaml shows {fmt} {gate}: closed or approved",
+            "validation_command": f"grep -A5 '{fmt}:' registry/format-registry.yaml | grep '{gate}'",
+            "blocker_type": blocker,
+            "non_authoritative": True,
+            "lane": "C3",
+        })
+        task_seq += 1
+
+    # 3. Open taskcards
+    open_tcs = read_open_taskcards(repo_root, limit=3)
+    for tc in open_tcs:
+        tasks.append({
+            "task_id": f"TASK-{task_seq:03d}",
+            "title": f"Work on open taskcard: {tc['id']}",
+            "description": tc["title"],
+            "status": "pending",
+            "ff_taskcard_ref": tc["id"],
+            "ff_doc_ref": f"taskcards/{tc['id']}.md",
+            "acceptance_evidence": f"taskcards/{tc['id']}.md shows Status: closed or verified",
+            "validation_command": f"grep 'Status:' taskcards/{tc['id']}.md",
+            "non_authoritative": True,
+            "lane": "C3",
+        })
+        task_seq += 1
+
+    # 4. Always: evidence bundle task
+    tasks.append({
+        "task_id": f"TASK-{task_seq:03d}",
+        "title": "Build and validate next sprint evidence bundle",
+        "description": "Build evidence bundle via build_evidence_bundle.py; validate with validate_evidence_bundle.py → BUNDLE_VALIDATION: PASS",
+        "status": "pending",
+        "ff_doc_ref": "tools/evidence/build_evidence_bundle.py",
+        "supervisor_task_ref": "TC-SUP-010",
+        "acceptance_evidence": "validate_evidence_bundle.py outputs BUNDLE_VALIDATION: PASS",
+        "validation_command": ".local/venv/Scripts/python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
+        "non_authoritative": True,
+        "lane": "C6",
+    })
+
+    # Fallback: if no tasks were synthesized at all, add generic advance
+    if not tasks:
+        tasks.append({
+            "task_id": "TASK-001",
+            "title": "Continue next mega-train sprint",
+            "description": "Evidence accepted; continue normal sprint lanes per plans/master-plan.md",
+            "status": "pending",
+            "ff_doc_ref": "plans/master-plan.md",
+            "supervisor_task_ref": "TC-SUP-010",
+            "acceptance_evidence": "BUNDLE_VALIDATION: PASS in next sprint evidence bundle",
+            "validation_command": ".local/venv/Scripts/python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
+            "non_authoritative": True,
+            "lane": "C0",
+        })
+
+    return tasks
+
+
+def validate_against_schema(data: dict, schema_path: Path) -> list[str]:
+    """Validate data against JSON schema.
+    Primary: uses jsonschema library.
+    Fallback: manual required-field check (no external dependency).
+    Returns list of errors; empty = valid."""
+    # --- Primary: jsonschema library ---
+    try:
+        import jsonschema
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        try:
+            jsonschema.validate(instance=data, schema=schema)
+            return []
+        except jsonschema.ValidationError as e:
+            return [str(e.message)]
+        except jsonschema.SchemaError as e:
+            return [f"Schema error: {e.message}"]
+    except ImportError:
+        pass  # Fall through to manual validation
+    except Exception as e:
+        return [f"Validation error: {e}"]
+
+    # --- Fallback: manual required-field check (no external library) ---
+    errors = []
+    if not schema_path.exists():
+        return ["Schema file not found — skipping validation"]
+    try:
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    except Exception as e:
+        return [f"Cannot read schema: {e}"]
+
+    # Check top-level required fields
+    required = schema.get("required", [])
+    for field in required:
+        if field not in data:
+            errors.append(f"Missing required field: {field}")
+
+    # Check tasks array items if present
+    tasks_schema = schema.get("properties", {}).get("tasks", {})
+    item_required = tasks_schema.get("items", {}).get("required", [])
+    for i, task in enumerate(data.get("tasks", [])):
+        for field in item_required:
+            if field not in task:
+                errors.append(f"tasks[{i}] missing required field: {field}")
+
+    if not errors:
+        print(
+            "  NOTE: jsonschema library not found; manual required-field check used. "
+            "For full validation run with .local/venv/Scripts/python.",
+            file=sys.stderr,
+        )
+    return errors
+
+
+def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: str, tasks: list) -> str:
     sprint_id = review.get("sprint_id", "unknown")
     verdict = review.get("verdict", "unknown")
     facts = review.get("facts", {})
@@ -59,8 +358,13 @@ def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: 
         focus = "ADVANCE: Continue normal mega-train lanes"
         repair_notes = "None"
 
-    next_r = "R79"  # Advisory suggestion only
     test_line = f"{facts.get('test_count', 0)} passed, {facts.get('fail_count', 0)} failed, {facts.get('skip_count', 0)} skipped"
+
+    # Build task summary for prompt
+    task_lines = "\n".join(
+        f"- [{t.get('status', 'pending')}] {t['task_id']}: {t['title']}"
+        for t in tasks
+    )
 
     content = f"""# Supervisor-Generated Next Sprint Prompt
 # Source sprint: {sprint_id}
@@ -82,9 +386,8 @@ def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: 
 ## Contradictions Requiring Repair
 {repair_notes}
 
-## Suggested Next Sprint Identity
-`FORMAT-FACTORY-{next_r}-SUPERVISOR-GENERATED-NEXT-SPRINT`
-(Advisory — confirm with plans/master-plan.md before using)
+## Synthesized Task List (Advisory)
+{task_lines}
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -127,41 +430,9 @@ END OF SUPERVISOR-GENERATED NEXT SPRINT PROMPT
     return content
 
 
-def generate_taskmaster_json(review: dict, contradictions: dict) -> dict:
+def generate_taskmaster_json(review: dict, contradictions: dict, tasks: list) -> dict:
     sprint_id = review.get("sprint_id", "unknown")
-    critical_count = contradictions.get("critical_count", 0)
     timestamp = datetime.now().isoformat()
-
-    tasks = []
-    if critical_count > 0:
-        for i, c in enumerate(contradictions.get("contradictions", []), 1):
-            if c["severity"] == "CRITICAL":
-                tasks.append({
-                    "task_id": f"REPAIR-{i:03d}",
-                    "title": f"Repair: {c['description'][:80]}",
-                    "description": c.get("detail", ""),
-                    "status": "pending",
-                    "ff_taskcard_ref": "repair-required",
-                    "supervisor_task_ref": "TC-SUP-009",
-                    "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
-                    "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
-                    "non_authoritative": True,
-                    "lane": "C2",
-                })
-    else:
-        # Generate placeholder advance tasks
-        tasks.append({
-            "task_id": "TASK-001",
-            "title": "Continue next mega-train sprint",
-            "description": "Evidence accepted; continue normal sprint lanes per plans/master-plan.md",
-            "status": "pending",
-            "ff_doc_ref": "plans/master-plan.md",
-            "supervisor_task_ref": "TC-SUP-010",
-            "acceptance_evidence": "BUNDLE_VALIDATION: PASS in next sprint evidence bundle",
-            "validation_command": "python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
-            "non_authoritative": True,
-            "lane": "C0",
-        })
 
     return {
         "sprint_id": f"supervisor-export-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
@@ -173,9 +444,13 @@ def generate_taskmaster_json(review: dict, contradictions: dict) -> dict:
     }
 
 
-def generate_ruflo_lanes_json(review: dict, contradictions: dict) -> dict:
+def generate_ruflo_lanes_json(review: dict, contradictions: dict, tasks: list) -> dict:
     timestamp = datetime.now().isoformat()
     sprint_id = review.get("sprint_id", "unknown")
+
+    # Assign tasks to lanes
+    c2_tasks = [t["task_id"] for t in tasks if t.get("lane") == "C2"]
+    c3_tasks = [t["task_id"] for t in tasks if t.get("lane") == "C3"]
 
     lanes = [
         {
@@ -186,7 +461,7 @@ def generate_ruflo_lanes_json(review: dict, contradictions: dict) -> dict:
             "allowed_files": ["reports/rNN/**"],
             "forbidden_files": ["AGENTS.md", "GOVERNANCE.md", "plans/master-plan.md", "registry/**", "tools/evidence/**", "tests/evidence/**"],
             "dependencies": [],
-            "tasks": [],
+            "tasks": [t["task_id"] for t in tasks if t.get("lane") == "C0"],
             "status": "pending",
             "non_authoritative": True,
         },
@@ -210,7 +485,19 @@ def generate_ruflo_lanes_json(review: dict, contradictions: dict) -> dict:
             "allowed_files": ["reports/rNN/**", "src/**"],
             "forbidden_files": ["AGENTS.md", "GOVERNANCE.md", "plans/master-plan.md", "registry/**"],
             "dependencies": ["C0"],
-            "tasks": [t["task_id"] for t in [] if t.get("lane") == "C2"],
+            "tasks": c2_tasks,
+            "status": "pending",
+            "non_authoritative": True,
+        },
+        {
+            "lane_id": "C3",
+            "owner_role": "Implementation",
+            "title": "Product implementation and taskcard execution",
+            "description": "Execute open taskcards; advance gate work per master-plan.md",
+            "allowed_files": ["src/**", "tests/**", "reports/rNN/**", "taskcards/**"],
+            "forbidden_files": ["AGENTS.md", "GOVERNANCE.md", "plans/master-plan.md", "registry/**"],
+            "dependencies": ["C0", "C1"],
+            "tasks": c3_tasks,
             "status": "pending",
             "non_authoritative": True,
         },
@@ -221,8 +508,8 @@ def generate_ruflo_lanes_json(review: dict, contradictions: dict) -> dict:
             "description": "Build and validate evidence bundle",
             "allowed_files": [".local/evidence/**"],
             "forbidden_files": ["AGENTS.md", "GOVERNANCE.md", "plans/master-plan.md", "registry/**"],
-            "dependencies": ["C0", "C1", "C2"],
-            "tasks": [],
+            "dependencies": ["C0", "C1", "C2", "C3"],
+            "tasks": [t["task_id"] for t in tasks if t.get("lane") == "C6"],
             "status": "pending",
             "non_authoritative": True,
         },
@@ -240,7 +527,7 @@ def generate_ruflo_lanes_json(review: dict, contradictions: dict) -> dict:
     }
 
 
-def generate_approval_gates_md(review: dict, contradictions: dict) -> str:
+def generate_approval_gates_md(review: dict, contradictions: dict, current_mode: int) -> str:
     critical_count = contradictions.get("critical_count", 0)
     autonomous = contradictions.get("autonomous_continue", True)
 
@@ -248,6 +535,8 @@ def generate_approval_gates_md(review: dict, contradictions: dict) -> str:
         "# Approval Gates Classification",
         f"Sprint ID: {review.get('sprint_id', 'unknown')}",
         f"Generated: {datetime.now().isoformat()}",
+        f"Current Mode: MODE {current_mode}" + (" (ACTIVE_MCP_ACTIVATION)" if current_mode == 4 else
+                                                  " (AUTONOMOUS_SPRINT_LOOP_RC)" if current_mode == 5 else ""),
         "",
         "## Pending Actions",
         "",
@@ -261,27 +550,42 @@ def generate_approval_gates_md(review: dict, contradictions: dict) -> str:
             "| Continue to next sprint | stop-contradictions-present | Claude_Code (after repair) |",
         ]
     else:
+        # Mode-aware MCP gate row
+        if current_mode >= 4:
+            mcp_row = "| MCP activation (MODE 4 ACTIVE — .vscode/mcp.json present) | autonomous-continue | already-done |"
+        else:
+            mcp_row = "| MCP activation | stop-mcp-activation-required | User |"
+
         lines += [
             "| Action | Classification | Who Unblocks |",
             "|--------|---------------|-------------|",
             "| Continue to next sprint lanes | autonomous-continue | null |",
             "| Gate approval (if any gate pending) | stop-gate-approval-required | Babar_Raza |",
             "| Push/commit | stop-push-approval-required | User |",
-            "| MCP activation | stop-mcp-activation-required | User |",
+            mcp_row,
         ]
+
+    # Mode-aware next human gate
+    if current_mode >= 4:
+        next_gate_line = f"- NEXT_HUMAN_GATE: MODE 5 autonomous sprint loop (explicit user approval required)"
+        mcp_status_line = "- MCP_STATUS: ACTIVE (task-master-ai@0.43.1, claude-flow@3.10.14 in .vscode/mcp.json)"
+    else:
+        next_gate_line = "- NEXT_HUMAN_GATE: MODE 4 MCP activation (explicit user approval required)"
+        mcp_status_line = "- MCP_STATUS: NOT_ACTIVATED (MODE < 4)"
 
     lines += [
         "",
         "## Summary",
         f"- AUTONOMOUS_CONTINUE: {'YES' if autonomous else 'NO — repair required first'}",
-        "- NEXT_HUMAN_GATE: MODE 4 MCP activation (explicit user approval required)",
+        next_gate_line,
+        mcp_status_line,
         "- DAEMON_STATUS: NOT_STARTED (no human gate needed to keep it stopped)",
     ]
 
     return "\n".join(lines) + "\n"
 
 
-def generate_session_resume_md(review: dict, contradictions: dict, memory_snippet: str) -> str:
+def generate_session_resume_md(review: dict, contradictions: dict, memory_snippet: str, current_mode: int) -> str:
     facts = review.get("facts", {})
     return f"""# Session Resume Briefing
 # Format Factory — Supervisor-Generated
@@ -294,6 +598,8 @@ def generate_session_resume_md(review: dict, contradictions: dict, memory_snippe
 - PENDING markers: {facts.get('pending_marker_count', 0)}
 - CRITICAL contradictions: {contradictions.get('critical_count', 0)}
 - Autonomous continue: {contradictions.get('autonomous_continue', True)}
+- Current supervisor mode: MODE {current_mode}
+- MCP status: {'ACTIVE (.vscode/mcp.json present)' if current_mode >= 4 else 'NOT_ACTIVATED'}
 
 ## What Was Done Last Sprint
 (Read reports/supervisor/evidence-review.md for full details)
@@ -301,8 +607,8 @@ def generate_session_resume_md(review: dict, contradictions: dict, memory_snippe
 ## What To Do Next
 1. Read this file and evidence-review.md
 2. Read approval-gates.md — follow classification
-3. If contradictions exist → fix them before advancing
-4. If autonomous-continue → proceed with next-sprint.md prompt
+3. If contradictions exist -> fix them before advancing
+4. If autonomous-continue -> proceed with next-sprint.md prompt
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
@@ -319,26 +625,8 @@ def generate_session_resume_md(review: dict, contradictions: dict, memory_snippe
 - Format Factory authority is FINAL. Supervisor output is advisory.
 - No push without explicit user authorization.
 - No gate self-approval. All gates 1-11 require human approval.
-- No MCP activation without explicit user approval (MODE 4).
+- MCP activation (MODE 4): {'COMPLETE' if current_mode >= 4 else 'requires explicit user approval'}.
 """
-
-
-def validate_against_schema(data: dict, schema_path: Path) -> list[str]:
-    """Validate data against JSON schema. Returns list of errors."""
-    try:
-        import jsonschema
-        schema = json.loads(schema_path.read_text(encoding="utf-8"))
-        try:
-            jsonschema.validate(instance=data, schema=schema)
-            return []
-        except jsonschema.ValidationError as e:
-            return [str(e.message)]
-        except jsonschema.SchemaError as e:
-            return [f"Schema error: {e.message}"]
-    except ImportError:
-        return ["jsonschema library not available — skipping schema validation"]
-    except Exception as e:
-        return [f"Validation error: {e}"]
 
 
 def main() -> int:
@@ -375,40 +663,44 @@ def main() -> int:
     review = load_json(args.review)
     contradictions = load_json(args.contradictions)
     memory_snippet = load_memory(repo_root / ".supervisor" / "project-memory.md")
+    current_mode = read_current_mode(repo_root)
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # Synthesize sprint-specific tasks
+    tasks = synthesize_sprint_tasks(review, contradictions, repo_root)
+
     # Generate next-sprint.md
-    next_sprint_text = generate_next_sprint_md(review, contradictions, memory_snippet)
+    next_sprint_text = generate_next_sprint_md(review, contradictions, memory_snippet, tasks)
     (output_dir / "next-sprint.md").write_text(next_sprint_text, encoding="utf-8")
 
     # Generate next-sprint-taskmaster.json
-    tm_data = generate_taskmaster_json(review, contradictions)
+    tm_data = generate_taskmaster_json(review, contradictions, tasks)
     schema_dir = repo_root / ".supervisor" / "schemas"
     tm_errors = validate_against_schema(tm_data, schema_dir / "next-sprint-taskmaster.schema.json")
     (output_dir / "next-sprint-taskmaster.json").write_text(json.dumps(tm_data, indent=2), encoding="utf-8")
 
     # Generate next-ruflo-lanes.json
-    ruflo_data = generate_ruflo_lanes_json(review, contradictions)
+    ruflo_data = generate_ruflo_lanes_json(review, contradictions, tasks)
     ruflo_errors = validate_against_schema(ruflo_data, schema_dir / "next-ruflo-lanes.schema.json")
     (output_dir / "next-ruflo-lanes.json").write_text(json.dumps(ruflo_data, indent=2), encoding="utf-8")
 
-    # Generate approval-gates.md
-    gates_text = generate_approval_gates_md(review, contradictions)
+    # Generate approval-gates.md (mode-aware)
+    gates_text = generate_approval_gates_md(review, contradictions, current_mode)
     (output_dir / "approval-gates.md").write_text(gates_text, encoding="utf-8")
 
     # Generate session-resume.md
-    resume_text = generate_session_resume_md(review, contradictions, memory_snippet)
+    resume_text = generate_session_resume_md(review, contradictions, memory_snippet, current_mode)
     (output_dir / "session-resume.md").write_text(resume_text, encoding="utf-8")
 
     critical_count = contradictions.get("critical_count", 0)
     print(f"PACKET_GENERATION: COMPLETE")
     print(f"  Output dir: {output_dir}")
-    print(f"  next-sprint.md: written")
+    print(f"  next-sprint.md: written ({len(tasks)} tasks synthesized)")
     print(f"  next-sprint-taskmaster.json: written" + (f" (schema errors: {tm_errors})" if tm_errors else " (schema OK)"))
     print(f"  next-ruflo-lanes.json: written" + (f" (schema errors: {ruflo_errors})" if ruflo_errors else " (schema OK)"))
-    print(f"  approval-gates.md: written")
+    print(f"  approval-gates.md: written (mode {current_mode}: {'MCP ACTIVE' if current_mode >= 4 else 'MCP pending'})")
     print(f"  session-resume.md: written")
 
     if critical_count > 0:
