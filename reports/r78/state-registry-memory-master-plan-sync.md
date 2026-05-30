@@ -8,22 +8,22 @@
 
 ### state/current-state.md
 
-Update after R78 verdict is sealed:
-- Latest sprint: R78 - R78_VERDICT
+Updated to R78 verdict:
+- Latest sprint: R78 - R78_FODS_PRODUCT_SLICE_COMPLETE_ZST_LOCAL_RC_READY_PUBLICATION_BLOCKED
 - API counts: FODS 28 (unchanged), FODT 28 (unchanged)
-- Production blockers: add README.md gap + .NET test gap
+- Production blockers: README.md gap + .NET test gap + Gate 11 G11-G not_started
 
 ### state/current-state.json
 
-Update after R78 verdict is sealed:
+Updated to R78 verdict:
 - latest_sprint.latest_sprint_number: "R78"
-- latest_sprint.verdict: "R78_VERDICT"
+- latest_sprint.verdict: "R78_FODS_PRODUCT_SLICE_COMPLETE_ZST_LOCAL_RC_READY_PUBLICATION_BLOCKED"
 
 ### plans/master-plan.md
 
-Update after R78 verdict is sealed:
+Updated:
 - Last updated: 2026-05-30 (R78)
-- R78 summary in current phase section
+- R78 summary added in current phase section
 
 ## Registry Consistency
 
@@ -57,6 +57,6 @@ Per project convention: state files are updated AFTER final validation and
 bundle build are complete. Do NOT update state files before the full test
 suite confirms the final pass count.
 
-STATE_SYNC: PENDING (will be done after full test suite + bundle build)
+STATE_SYNC: COMPLETE (state updated to R78, verdict sealed)
 REGISTRY_SYNC: NOT_REQUIRED (no new formats)
-MEMORY_SYNC: PENDING (will be done after state is sealed)
+MEMORY_SYNC: COMPLETE (memory updated with R78 status, FODT gap, verdict)
