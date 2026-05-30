@@ -11,7 +11,7 @@ prior_verdict: R76_REVIEW_PACKAGE_MODEL_ACCEPTED_PRODUCT_PROGRESS_ACCEPTED_CLEAN
 
 ## Test Results
 
-AUTHORITATIVE_TEST_RESULT: 6327 passed, 0 failed, 24 skipped
+AUTHORITATIVE_TEST_RESULT: 6329 passed, 0 failed, 24 skipped
 R77_NEW_TESTS: 63 (37 validator hardening + 21 FODS sheet mgmt + 20 FODT paragraph mgmt)
 PRIOR_BASELINE: 6264 passed (R76)
 
