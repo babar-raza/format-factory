@@ -1,0 +1,114 @@
+{
+  "sprint_id": "FORMAT-FACTORY-R76-PARALLEL-FINISH-LINE-ARTIFACT-AUTHORITY-PRODUCT-DEEPENING-GATE-READINESS-MEGA-TRAIN-001",
+  "source_sprint": "R75",
+  "date": "2026-05-30",
+  "supervisor_confirmed_sha_values": {
+    "outer_delivery_package_sha256": "4a964b806291f47a0c9c87f09fb5527405cc6d9960928860451ff85077a9c9e4",
+    "inner_zip_sha256": "d125db5843d0bf927b05bfa6d889c8387af1d46672acf0aae26c95d5dc7a6d36",
+    "sidecar_sha256": "66398c36c6e3db38005ea37cf21469de3952affbef0e25e52ce0f58a0b1304cb",
+    "sha_values_match_local": true
+  },
+  "defects": [
+    {
+      "id": "IV-R75-D01",
+      "description": "r75-final-artifact-authority.json not included in uploaded package",
+      "classification": "PACKAGING_INSPECTABILITY_DEFECT",
+      "local_file_exists": true,
+      "local_path": ".local/r75-final-artifact-authority.json",
+      "in_delivery_package": false,
+      "r76_fix": "build_supervisor_review_package.py — wraps all authority files into one upload",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D02",
+      "description": "r75-delivery-package.sha256.txt not included in uploaded package",
+      "classification": "PACKAGING_INSPECTABILITY_DEFECT",
+      "local_file_exists": true,
+      "local_path": ".local/r75-delivery-package.sha256.txt",
+      "in_delivery_package": false,
+      "r76_fix": "build_supervisor_review_package.py — wraps all authority files into one upload",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D03",
+      "description": "Test result contradiction: final-verdict claims 6171 passed but python-tests-summary records 6140 passed, 7 failed as AUTHORITATIVE_TEST_RESULT",
+      "classification": "TEST_RESULT_CONTRADICTION",
+      "claimed_pass_count": 6171,
+      "recorded_authoritative_count": "6140 passed, 7 failed",
+      "correct_post_fix_count": "6147 passed, 0 failed (7 state-dependent resolved)",
+      "r76_fix": "Run clean post-build test suite; include raw log in package",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D04",
+      "description": "final-artifact-authority-summary.txt has stale SHAs from Pass 1 build",
+      "classification": "STALE_SHA_IN_METADATA",
+      "stale_inner_zip_sha": "fd5f5333cbfd0c5c9e94a543c93f031570947ef2416238b0d983b02c12797035",
+      "stale_sidecar_sha": "ace7933e41f7548a646c78c6a814b7f9b74fe306ea91196ba0b732a8a6c938e0",
+      "actual_inner_zip_sha": "d125db5843d0bf927b05bfa6d889c8387af1d46672acf0aae26c95d5dc7a6d36",
+      "actual_sidecar_sha": "66398c36c6e3db38005ea37cf21469de3952affbef0e25e52ce0f58a0b1304cb",
+      "r76_fix": "Auto-generate summary from final-artifact-authority.json after delivery build",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D05",
+      "description": "final-bundle-validation-proof.txt records Pass 1 SHA 0384aece... not Pass 2 SHA d125db58...",
+      "classification": "STALE_PASS_NUMBER_IN_PROOF",
+      "recorded_sha": "0384aece8ee6cfc7944aa7c5c0bc2103511eca7e678f69df041f206ad7426aa9",
+      "actual_final_sha": "d125db5843d0bf927b05bfa6d889c8387af1d46672acf0aae26c95d5dc7a6d36",
+      "r76_fix": "Auto-generate proof file from final build pass",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D06",
+      "description": "delivery-package-validation-summary.txt says 'This summary will be updated after delivery package build'",
+      "classification": "PLACEHOLDER_NOT_FILLED",
+      "sha_fields_value": "delegated_to_final_artifact_authority_json",
+      "r76_fix": "Auto-populate with actual SHA values after delivery build",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D07",
+      "description": "state-snapshot-output.txt inside bundle shows R75_IN_PROGRESS",
+      "classification": "STATE_SNAPSHOT_STALE",
+      "captured_status": "R75 sprint: IN_PROGRESS (Train K)",
+      "repo_current_state_correct": true,
+      "r76_fix": "Regenerate state snapshot AFTER sprint closure; include in final bundle",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D08",
+      "description": "state/current-state.json shows latest_sprint R74 not R75",
+      "classification": "STATE_JSON_STALE",
+      "json_latest_sprint_number": "R74",
+      "r76_fix": "Regenerate state/current-state.json after R75 closure",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D09",
+      "description": "plans/master-plan.md header Last updated: 2026-05-22 (R47) — 28 sprints stale",
+      "classification": "MASTER_PLAN_STALE",
+      "master_plan_version": "2.64 (R47)",
+      "current_sprint": "R76",
+      "r76_fix": "Update master plan header version, Last updated, Current status, last_completed_sprint",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D10",
+      "description": ".NET test proof shows R74_INHERITED_PASS_306 rather than fresh R75/R76 run",
+      "classification": "INHERITED_PROOF",
+      "r76_fix": "Run fresh dotnet test in R76",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    },
+    {
+      "id": "IV-R75-D11",
+      "description": "AI/telemetry fixture-mode tests inherited from R74 without fresh R75 execution",
+      "classification": "INHERITED_PROOF",
+      "r76_fix": "Run fresh AI fixture tests in R76",
+      "status": "CONFIRMED_CARRIED_TO_R76"
+    }
+  ],
+  "defect_count": 11,
+  "carried_to_r76": 11,
+  "confirmed_repaired_in_r75": 0
+}

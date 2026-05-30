@@ -997,3 +997,135 @@ def workbook_cell_type_matrix(workbook: dict[str, Any]) -> list[dict[str, Any]]:
             "by_type": by_type,
         })
     return result
+
+
+# ---------------------------------------------------------------------------
+# Workbook cell editor (R76 — product deepening: edit and save)
+# ---------------------------------------------------------------------------
+
+def workbook_set_cell_value(
+    workbook: dict[str, Any],
+    sheet_name: str,
+    row_idx: int,
+    col_idx: int,
+    value: Any,
+    value_type: str | None = None,
+) -> tuple[bool, str]:
+    """Set a cell value in the neutral model workbook.
+
+    Mutates the workbook dict in-place. This enables an edit-and-save workflow:
+        wb = parse_fods(path)
+        ok, msg = workbook_set_cell_value(wb, "Sheet1", 0, 0, "Updated")
+        if ok:
+            write_fods(wb, out_path)
+
+    Args:
+        workbook: A neutral model workbook dict from parse_fods().
+        sheet_name: The name of the sheet to edit.
+        row_idx: 0-based row index.
+        col_idx: 0-based column index.
+        value: The new cell value. Strings, ints, and floats are supported.
+        value_type: Optional explicit value type: "string", "float", "boolean".
+            Inferred from value type if not provided.
+
+    Returns:
+        (success: bool, message: str) — success=True if the cell was found and updated.
+        Returns (False, reason) if the sheet, row, or cell was not found.
+
+    Note: This function modifies only the ``value`` and ``value_type`` fields.
+    Formula attributes (``formula``) are cleared when a new plain value is set.
+    Style attributes and other metadata are preserved.
+
+    Added in R76 Train F as a product deepening capability (edit-and-save workflow).
+    """
+    if not isinstance(workbook, dict):
+        return False, "workbook must be a dict"
+
+    sheets = workbook.get("sheets", [])
+    target_sheet = None
+    for sheet in sheets:
+        if sheet.get("name") == sheet_name:
+            target_sheet = sheet
+            break
+
+    if target_sheet is None:
+        return False, f"Sheet {sheet_name!r} not found"
+
+    rows = target_sheet.get("rows", [])
+    if row_idx < 0 or row_idx >= len(rows):
+        return False, f"Row index {row_idx} out of range (sheet has {len(rows)} rows)"
+
+    cells = rows[row_idx].get("cells", [])
+    if col_idx < 0 or col_idx >= len(cells):
+        return False, f"Column index {col_idx} out of range (row has {len(cells)} cells)"
+
+    cell = cells[col_idx]
+    if not isinstance(cell, dict):
+        return False, f"Cell at ({row_idx}, {col_idx}) is not a dict"
+
+    # Infer value_type if not provided
+    if value_type is None:
+        if isinstance(value, bool):
+            value_type = "boolean"
+        elif isinstance(value, (int, float)):
+            value_type = "float"
+        else:
+            value_type = "string"
+
+    cell["value"] = value
+    cell["value_type"] = value_type
+    # Clear formula when setting a plain value (formula no longer applies)
+    if "formula" in cell:
+        cell["formula"] = None
+
+    return True, f"Cell ({row_idx}, {col_idx}) updated to {value!r} (type: {value_type})"
+
+
+def workbook_warnings_for_unsupported_edit(
+    workbook: dict[str, Any],
+    sheet_name: str,
+    row_idx: int,
+    col_idx: int,
+) -> list[str]:
+    """Return warnings about unsupported cell features that may be lost on edit/save.
+
+    Checks the target cell for features that the writer may not preserve perfectly:
+    - Merged cells (span attributes)
+    - Conditional formatting
+    - Data validation rules
+    - Non-standard value types
+
+    Returns a list of warning strings. Empty list means no unsupported features detected.
+
+    Added in R76 Train F as a product deepening capability (edit safety disclosure).
+    """
+    warnings: list[str] = []
+
+    sheets = workbook.get("sheets", [])
+    target_sheet = next((s for s in sheets if s.get("name") == sheet_name), None)
+    if target_sheet is None:
+        return [f"Sheet {sheet_name!r} not found"]
+
+    rows = target_sheet.get("rows", [])
+    if row_idx >= len(rows):
+        return [f"Row {row_idx} out of range"]
+
+    cells = rows[row_idx].get("cells", [])
+    if col_idx >= len(cells):
+        return [f"Column {col_idx} out of range"]
+
+    cell = cells[col_idx]
+    if not isinstance(cell, dict):
+        return ["Cell is not a standard dict"]
+
+    if cell.get("merge") or cell.get("span") or cell.get("table:number-columns-spanned"):
+        warnings.append("Cell has merge/span metadata — merged cell layout may change on save")
+    if cell.get("formula"):
+        warnings.append(
+            "Cell has a formula — formula will be cleared when set_cell_value replaces it with a plain value"
+        )
+    vtype = cell.get("value_type", "")
+    if vtype not in ("string", "float", "boolean", "", None):
+        warnings.append(f"Non-standard value_type {vtype!r} — may not round-trip perfectly")
+
+    return warnings

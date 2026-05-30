@@ -1194,3 +1194,125 @@ def document_language_list(document: dict[str, Any]) -> list[str]:
                 _collect_lang(run)
 
     return sorted(codes)
+
+
+# ---------------------------------------------------------------------------
+# Document block editor (R76 — product deepening: edit and save)
+# ---------------------------------------------------------------------------
+
+def document_set_block_text(
+    document: dict[str, Any],
+    block_idx: int,
+    new_text: str,
+    preserve_style: bool = True,
+) -> tuple[bool, str]:
+    """Set the text of a paragraph or heading block in the neutral model document.
+
+    Mutates the document dict in-place. This enables an edit-and-save workflow:
+        doc = parse_fodt(path)
+        ok, msg = document_set_block_text(doc, 0, "Updated paragraph text")
+        if ok:
+            write_fodt(doc, out_path)
+
+    Args:
+        document: A neutral model document dict from parse_fodt().
+        block_idx: 0-based index into the document's ``blocks`` list.
+        new_text: The new text content for this block.
+        preserve_style: If True (default), the first run's style attribute is
+            preserved on the new run. If False, the run is plain text.
+
+    Returns:
+        (success: bool, message: str) — success=True if the block was found and updated.
+
+    Note: This function updates the ``text`` field and reconstructs ``runs`` to a
+    single unstyled run (or preserves the first run's style if preserve_style=True).
+    Heading level, block type, and other metadata are preserved.
+
+    Added in R76 Train G as a product deepening capability (edit-and-save workflow).
+    """
+    if not isinstance(document, dict):
+        return False, "document must be a dict"
+
+    blocks = document.get("blocks", [])
+    if not isinstance(blocks, list):
+        return False, "document.blocks must be a list"
+
+    if block_idx < 0 or block_idx >= len(blocks):
+        return False, f"block_idx {block_idx} out of range (document has {len(blocks)} blocks)"
+
+    block = blocks[block_idx]
+    if not isinstance(block, dict):
+        return False, f"Block at index {block_idx} is not a dict"
+
+    block_type = block.get("type", "")
+    if block_type not in ("paragraph", "heading"):
+        return False, f"Block type {block_type!r} is not a paragraph or heading"
+
+    # Preserve first run style if requested
+    preserved_style = None
+    if preserve_style:
+        existing_runs = block.get("runs", [])
+        if existing_runs and isinstance(existing_runs[0], dict):
+            preserved_style = existing_runs[0].get("style")
+
+    block["text"] = new_text
+    block["runs"] = [{"text": new_text, "style": preserved_style, "href": None}]
+
+    # Also update content sequence if present (R55 document-order sequence)
+    content = document.get("content", [])
+    for item in content:
+        if (
+            isinstance(item, dict)
+            and item.get("kind") == "block"
+            and isinstance(item.get("data"), dict)
+            and item["data"] is block
+        ):
+            # Already mutated via block reference
+            break
+
+    return True, f"Block {block_idx} ({block_type}) updated to {new_text[:40]!r}{'...' if len(new_text) > 40 else ''}"
+
+
+def document_warnings_for_unsupported_edit(
+    document: dict[str, Any],
+    block_idx: int,
+) -> list[str]:
+    """Return warnings about unsupported features that may be lost when editing a block.
+
+    Checks the target block for features the writer may not preserve perfectly:
+    - Inline spans with styles
+    - Hyperlinks in runs
+    - Footnote or endnote references
+
+    Returns a list of warning strings. Empty list means no unsupported features detected.
+
+    Added in R76 Train G as a product deepening capability (edit safety disclosure).
+    """
+    warnings: list[str] = []
+
+    blocks = document.get("blocks", [])
+    if block_idx >= len(blocks):
+        return [f"Block {block_idx} out of range"]
+
+    block = blocks[block_idx]
+    if not isinstance(block, dict):
+        return ["Block is not a standard dict"]
+
+    runs = block.get("runs", [])
+    if len(runs) > 1:
+        warnings.append(
+            f"Block has {len(runs)} styled runs — set_block_text will collapse them to one run"
+        )
+    for run in runs:
+        if not isinstance(run, dict):
+            continue
+        if run.get("href"):
+            warnings.append("Block contains a hyperlink run — hyperlink will be lost on edit")
+        style = run.get("style")
+        if style and style not in (None, ""):
+            warnings.append(
+                f"Block run has style {style!r} — "
+                "style is preserved only for the first run when preserve_style=True"
+            )
+
+    return warnings

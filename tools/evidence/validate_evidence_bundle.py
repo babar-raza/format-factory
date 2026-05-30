@@ -228,6 +228,11 @@ PENDING_MARKER_PATTERNS = [
     # R75: PASS_PENDING_BUNDLE_SHA — R74 defect D01. FINAL_IV line must not contain
     # a pending-SHA placeholder. Use PASS_SEE_FINAL_ARTIFACT_AUTHORITY instead.
     "PASS_PENDING_BUNDLE_SHA",
+    # R76: Delivery summary placeholder — delivery-package-validation-summary.txt was
+    # written with a "will be updated" promise and never actually updated after build.
+    # R75 defect IV-R75-D06: this exact phrase appeared in the bundled summary.
+    "will be updated after delivery package build",
+    "This summary will be updated",
 ]
 
 # R38: Minimum meaningful content threshold for metadata files.
@@ -673,6 +678,38 @@ def check_authoritative_test_result_present(metadata_files_content):
     ]
 
 
+def check_authoritative_test_result_non_green(metadata_files_content: dict) -> "list[str]":
+    """Check that the AUTHORITATIVE_TEST_RESULT line in metadata does not record failures.
+
+    R76: R75 defect IV-R75-D03 — the bundled python-tests-summary.txt recorded
+    AUTHORITATIVE_TEST_RESULT: 6140 passed, 7 failed, which means a clean RC
+    cannot be claimed. This check fails if any metadata file's AUTHORITATIVE_TEST_RESULT
+    line shows a non-zero failed count.
+
+    Only runs when --check-no-pending is active.
+    Returns a list of error strings (empty if the check passes).
+    """
+    import re
+
+    errors = []
+    for filename, content in metadata_files_content.items():
+        # Find AUTHORITATIVE_TEST_RESULT lines
+        for line in content.splitlines():
+            if "AUTHORITATIVE_TEST_RESULT" not in line:
+                continue
+            # Parse patterns like "N passed, M failed, K skipped"
+            failed_match = re.search(r"(\d+)\s+failed", line)
+            if failed_match:
+                failed_count = int(failed_match.group(1))
+                if failed_count > 0:
+                    errors.append(
+                        f"R76-NON-GREEN-RESULT: {filename} records {failed_count} failed tests "
+                        f"in AUTHORITATIVE_TEST_RESULT. Clean RC requires 0 failures. "
+                        f"Line: {line.strip()!r}"
+                    )
+    return errors
+
+
 # R49: Stale placeholder patterns in proof/closeout files. These indicate a file was
 # written as a stub or in-progress placeholder and never updated with real evidence.
 # Checked against final-bundle-validation-proof.txt when --check-no-pending is active.
@@ -729,6 +766,10 @@ CLOSEOUT_HYGIENE_TOKENS = [
     "to_be_filled_after_bundle_build",
     # R75: Catch PASS_PENDING_BUNDLE_SHA (lowercase for case-insensitive scan)
     "pass_pending_bundle_sha",
+    # R76: Catch "will be updated after delivery package build" — R75 defect IV-R75-D06.
+    # delivery-package-validation-summary.txt was never updated with actual SHA values.
+    "will be updated after delivery package build",
+    "this summary will be updated",
 ]
 
 # Final report filenames scanned for closeout-hygiene tokens.
@@ -1839,6 +1880,9 @@ def validate_bundle(contract_path, bundle_path, strict_git=True, no_pending=Fals
                 errors.append(msg)
             authoritative_test_hits = check_authoritative_test_result_present(metadata_files_content)
             for msg in authoritative_test_hits:
+                errors.append(msg)
+            non_green_hits = check_authoritative_test_result_non_green(metadata_files_content)
+            for msg in non_green_hits:
                 errors.append(msg)
             proof_finality_hits = check_proof_file_finality(metadata_files_content)
             for msg in proof_finality_hits:

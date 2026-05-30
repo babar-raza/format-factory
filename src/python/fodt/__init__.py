@@ -23,6 +23,8 @@ Public API:
     document_change_tracking_summary(document)  -- change tracking summary (R66)
     document_paragraph_style_distribution(doc)  -- paragraph style counts (R75)
     document_language_list(document)            -- language codes in document (R75)
+    document_set_block_text(doc, idx, text)     -- edit a paragraph/heading block (R76)
+    document_warnings_for_unsupported_edit(doc, idx) -- edit safety warnings (R76)
 
 License: Apache-2.0
 Package: format-factory-fodt v0.1.0
@@ -56,6 +58,8 @@ from .neutral_model import (
     document_change_tracking_summary,
     document_paragraph_style_distribution,
     document_language_list,
+    document_set_block_text,
+    document_warnings_for_unsupported_edit,
 )
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -89,6 +93,8 @@ __all__ = [
     "document_change_tracking_summary",
     "document_paragraph_style_distribution",
     "document_language_list",
+    "document_set_block_text",
+    "document_warnings_for_unsupported_edit",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

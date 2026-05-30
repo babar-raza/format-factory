@@ -23,6 +23,8 @@ Public API:
     workbook_data_validation_summary(wb) -- data validation summary (R66)
     workbook_column_width_summary(wb) -- column width data per sheet (R75)
     workbook_cell_type_matrix(wb)     -- cell type distribution per sheet (R75)
+    workbook_set_cell_value(wb, sheet, row, col, value) -- edit a cell value (R76)
+    workbook_warnings_for_unsupported_edit(wb, sheet, row, col) -- edit safety warnings (R76)
 
 License: Apache-2.0
 Package: format-factory-fods v0.1.0
@@ -56,6 +58,8 @@ from .neutral_model import (
     workbook_data_validation_summary,
     workbook_column_width_summary,
     workbook_cell_type_matrix,
+    workbook_set_cell_value,
+    workbook_warnings_for_unsupported_edit,
 )
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -89,6 +93,8 @@ __all__ = [
     "workbook_data_validation_summary",
     "workbook_column_width_summary",
     "workbook_cell_type_matrix",
+    "workbook_set_cell_value",
+    "workbook_warnings_for_unsupported_edit",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",

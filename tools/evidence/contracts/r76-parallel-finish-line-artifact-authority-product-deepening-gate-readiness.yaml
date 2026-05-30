@@ -1,0 +1,73 @@
+sprint_id: FORMAT-FACTORY-R76-PARALLEL-FINISH-LINE-ARTIFACT-AUTHORITY-PRODUCT-DEEPENING-GATE-READINESS-MEGA-TRAIN-001
+run_number: r76
+date: "2026-05-30"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: self_contained
+
+required_repo_files:
+  - reports/r76/00-preflight.md
+  - reports/r76/lane-ownership.md
+  - reports/r76/multi-mega-train-scoreboard.md
+  - reports/r76/r75-defect-ledger.md
+  - reports/r76/r75-defect-ledger.json
+  - reports/r76/r75-independent-verification.md
+  - reports/r76/supervisor-review-package-model.md
+  - reports/r76/artifact-authority-validator-hardening.md
+  - reports/r76/fods-python-product-deepening.md
+  - reports/r76/fodt-python-product-deepening.md
+  - reports/r76/netpbm-family-advancement.md
+  - reports/r76/sylk-dif-advancement.md
+  - reports/r76/gate8-readiness-advancement.md
+  - reports/r76/shallow-track-drift-correction.md
+  - reports/r76/final-verdict.md
+  - tests/evidence/test_r76_validator_hardening.py
+  - tests/python/pbm/test_r76_netpbm_family.py
+  - tests/python/fods/test_r76_fods_edit_save.py
+  - tests/python/fodt/test_r76_fodt_edit_save.py
+  - tests/python/sylk/test_r76_sylk_advancement.py
+  - tests/python/dif/test_r76_dif_advancement.py
+  - tests/python/ods/test_r76_gate8_readiness.py
+  - tests/python/fodp/test_r76_fodp_advancement.py
+  - tests/python/abw/test_r76_abw_advancement.py
+  - tools/evidence/build_supervisor_review_package.py
+  - tools/evidence/validate_evidence_bundle.py
+  - tools/evidence/contracts/r76-parallel-finish-line-artifact-authority-product-deepening-gate-readiness.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - run-environment.txt
+  - python-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - placeholder-scan-summary.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - delivery-package-validation-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - inner-zip-only-negative-proof.txt
+  - stale-placeholder-negative-proof.txt
+  - stale-final-verdict-sha-negative-proof.txt
+  - pass-number-drift-negative-proof.txt
+  - will-be-updated-negative-proof.txt
+  - non-green-test-result-negative-proof.txt
+  - installed-public-api-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - source-package-hygiene-summary.txt
+  - invariant-output-final.txt
+  - r76-new-tests-summary.txt
+  - final-independent-verification.txt
+  - multi-mega-train-scoreboard-final.txt
+  - blockers-status.txt
+  - state-snapshot-output.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - git-log.txt
+  - repo-tree.txt
+  - supervisor-review-package-validation-summary.txt
+  - product-advancement-summary.txt
+  - r75-defects-repair-verification.txt
