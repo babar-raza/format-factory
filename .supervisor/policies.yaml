@@ -1,0 +1,143 @@
+# Local Supervisor Control Plane — Governance Policies
+# Format Factory — Dual Orchestration
+# These policies enforce Format Factory governance within the supervisor layer.
+
+# ============================================================
+# AUTHORITY POLICIES
+# ============================================================
+
+authority:
+  # Format Factory repo is final authority — supervisor is advisory only
+  supervisor_overrides_registry: false
+  supervisor_overrides_master_plan: false
+  supervisor_overrides_taskcards: false
+  supervisor_overrides_evidence: false
+  supervisor_may_write_to:
+    - reports/supervisor/
+    - .supervisor/project-memory.md
+    - .supervisor/state/
+
+  # Forbidden writes
+  supervisor_must_not_write_to:
+    - AGENTS.md
+    - GOVERNANCE.md
+    - plans/master-plan.md
+    - registry/format-registry.yaml
+    - tools/evidence/
+    - tests/evidence/
+
+# ============================================================
+# NO-DRIFT STATE CONTRACT
+# ============================================================
+
+no_drift:
+  # Task Master "done" status does NOT imply Format Factory gate closed
+  task_master_done_implies_gate_closed: false
+
+  # Ruflo lane "complete" does NOT imply evidence accepted
+  ruflo_complete_implies_evidence_accepted: false
+
+  # Supervisor verdict is advisory — only validated evidence is accepted
+  supervisor_verdict_is_authoritative: false
+
+  # If TM marks task done but evidence fails → TM reverts to evidence-blocked
+  tm_done_plus_evidence_fail_action: revert_to_evidence_blocked
+
+  # Ruflo memory contradicting FF registry → marked stale, ignored
+  ruflo_memory_contradicts_registry_action: mark_stale_ignore
+
+  # Supervisor next-sprint.md = input to next sprint, NOT authority
+  next_sprint_md_is_authority: false
+  next_sprint_md_is_sprint_input: true
+
+# ============================================================
+# CONTRADICTION DETECTION POLICIES
+# ============================================================
+
+contradiction_detection:
+  # Severity levels: CRITICAL (stops autonomous loop), WARNING (logged), INFO (advisory)
+
+  critical_conditions:
+    - tests_failed_when_contract_requires_pass
+    - pending_markers_in_final_state
+    - gate_claimed_closed_without_evidence
+    - evidence_bundle_sha_mismatch
+
+  warning_conditions:
+    - sprint_id_mismatch_between_contract_and_bundle
+    - stale_sha_in_verdict
+    - missing_taskcard_reference_in_export
+
+  info_conditions:
+    - timestamp_only_differences_in_replay
+
+  zero_contradictions_output: "No contradictions detected."
+  critical_action: stop_autonomous_loop_report_to_human
+  warning_action: log_and_continue
+
+# ============================================================
+# APPROVAL GATE CLASSIFICATION
+# ============================================================
+
+approval_gate_classifier:
+  outcomes:
+    autonomous_continue:
+      condition: "Tests pass, evidence valid, no CRITICAL contradictions"
+      action: "Proceed to next mode without human intervention"
+      who_unblocks: null
+
+    local_repair_loop:
+      condition: "Minor/WARNING contradictions detected"
+      action: "Run repair lanes, then re-evaluate"
+      who_unblocks: Claude_Code
+
+    stop_credentials_missing:
+      condition: "Required credentials not available"
+      action: "Report to user; wait for credential provision"
+      who_unblocks: User
+
+    stop_push_approval_required:
+      condition: "Push or merge required"
+      action: "Report; wait for user authorization"
+      who_unblocks: User
+
+    stop_gate_approval_required:
+      condition: "Format Factory gate approval needed"
+      action: "Report; wait for Babar Raza"
+      who_unblocks: Babar_Raza
+
+    stop_governance_conflict:
+      condition: "Governance conflict not resolvable locally"
+      action: "Report; wait for user"
+      who_unblocks: User
+
+    stop_paid_api_not_available:
+      condition: "Component requires paid OpenAI API"
+      action: "Report; skip component; use local alternative"
+      who_unblocks: User
+
+    stop_destructive_action:
+      condition: "Destructive operation required"
+      action: "Report; wait for explicit user approval"
+      who_unblocks: User
+
+# ============================================================
+# MEMORY SYNC POLICIES
+# ============================================================
+
+memory_sync:
+  # Only append to project-memory.md — never overwrite history
+  append_only: true
+
+  # Mark entries stale if sprint_id is more than 3 sprints behind
+  stale_threshold_sprints: 3
+
+  # Idempotent: same sprint_id + bundle_hash = no duplicate entry
+  idempotent: true
+
+  # Forbidden targets
+  must_not_write_to:
+    - AGENTS.md
+    - GOVERNANCE.md
+    - plans/master-plan.md
+    - registry/format-registry.yaml

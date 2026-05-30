@@ -1,0 +1,57 @@
+# Local Supervisor Control Plane — Configuration
+# Format Factory — dual-orchestration-supervisor-e2e-20260530-165603
+# Status: MODE 4 ACTIVE_MCP_ACTIVATION
+# Authorized: Explicit human approval received 2026-05-30
+# MCP servers: task-master-ai@0.43.1, claude-flow@3.10.14 registered in .vscode/mcp.json
+
+supervisor:
+  version: "1.0.0"
+  sprint_id: dual-orchestration-supervisor-e2e-20260530-165603
+  repo_root: "."
+  report_dir: reports/supervisor
+  state_dir: .supervisor/state
+  prompts_dir: .supervisor/prompts
+  schemas_dir: .supervisor/schemas
+
+evidence:
+  search_paths:
+    - .local/evidence
+    - evidence-bundles
+    - reports
+  bundle_pattern: "**/*.zip"
+  sprint_id_file: bundle-metadata/sprint-id.txt
+  final_verdict_pattern: "**/final-verdict.md"
+
+# Authority model
+authority:
+  layer_1: registry/format-registry.yaml
+  layer_2: plans/master-plan.md
+  layer_3: taskcards/
+  layer_4: .local/evidence/
+  supervisor_is_authoritative: false
+  supervisor_is_advisory: true
+
+# No-paid-API and no-web-automation policy
+policy:
+  paid_api_allowed: false
+  openai_api_allowed: false
+  chatgpt_web_automation_allowed: false
+  ruflo_daemon_allowed_in_modes: [4, 5]
+  mcp_activation_allowed_in_modes: [4, 5]
+  commit_requires_explicit_user_auth: true
+  push_requires_explicit_user_auth: true
+
+# Approval gate classification
+approval_gates:
+  autonomous_continue:
+    - tests_pass_evidence_valid_no_contradictions
+  local_repair_loop:
+    - minor_contradictions_detected
+  stop_human_required:
+    - credentials_missing
+    - push_approval_needed
+    - gate_approval_needed
+    - governance_conflict
+    - paid_api_required
+    - destructive_action_required
+    - mcp_activation_required

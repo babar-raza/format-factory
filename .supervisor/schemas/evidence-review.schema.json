@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EvidenceReview",
+  "description": "Schema for supervisor evidence review output — Format Factory dual-orchestration",
+  "type": "object",
+  "required": ["sprint_id", "timestamp", "verdict", "bundle_path", "facts"],
+  "additionalProperties": false,
+  "properties": {
+    "sprint_id": {
+      "type": "string",
+      "description": "Sprint identity string from bundle-metadata/sprint-id.txt"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO 8601 timestamp of this review run"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "ACCEPTED",
+        "ACCEPTED_WITH_WARNINGS",
+        "PARTIAL",
+        "REJECTED",
+        "BLOCKED_NO_BUNDLE",
+        "BLOCKED_MALFORMED_ZIP",
+        "BLOCKED_MISSING_FINAL_VERDICT",
+        "BLOCKED_CRITICAL_CONTRADICTION"
+      ],
+      "description": "Evidence review outcome"
+    },
+    "bundle_path": {
+      "type": "string",
+      "description": "Absolute path to the evidence ZIP bundle"
+    },
+    "facts": {
+      "type": "object",
+      "required": ["test_count", "fail_count", "skip_count", "git_head", "gate_states"],
+      "additionalProperties": false,
+      "properties": {
+        "test_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of tests reported"
+        },
+        "fail_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of failed tests"
+        },
+        "skip_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of skipped tests"
+        },
+        "git_head": {
+          "type": "string",
+          "description": "Git HEAD SHA from bundle metadata, or 'unknown'"
+        },
+        "gate_states": {
+          "type": "object",
+          "description": "Map of format → gate_number → state extracted from bundle",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        },
+        "final_verdict_text": {
+          "type": "string",
+          "description": "Raw text of final-verdict.md from bundle (first 2000 chars)"
+        },
+        "pending_marker_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of PENDING markers found in final-verdict.md"
+        },
+        "bundle_entry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of files inside the ZIP"
+        }
+      }
+    },
+    "contradictions": {
+      "type": "array",
+      "description": "List of detected contradictions",
+      "items": {
+        "type": "object",
+        "required": ["severity", "description"],
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["CRITICAL", "WARNING", "INFO"]
+          },
+          "description": { "type": "string" },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "limitation_notes": {
+      "type": "array",
+      "description": "Notes about limitations (e.g. no real bundle found, validator incompatible)",
+      "items": { "type": "string" }
+    },
+    "validator_invoked": {
+      "type": "boolean",
+      "description": "Whether tools/evidence/validate_evidence_bundle.py was successfully invoked"
+    },
+    "validator_output": {
+      "type": "string",
+      "description": "Stdout from validate_evidence_bundle.py, or empty if not invoked"
+    },
+    "bundle_validation_pass": {
+      "type": "boolean",
+      "description": "Whether BUNDLE_VALIDATION: PASS was found in validator output"
+    },
+    "exit_code": {
+      "type": "integer",
+      "description": "Exit code from validate_evidence_bundle.py subprocess"
+    },
+    "status": {
+      "type": "string",
+      "description": "Human-readable summary status of the evidence review"
+    }
+  },
+  "examples": [
+    {
+      "sprint_id": "FORMAT-FACTORY-R77-EXAMPLE",
+      "timestamp": "2026-05-30T16:56:03",
+      "verdict": "ACCEPTED",
+      "bundle_path": "/path/to/r77.zip",
+      "facts": {
+        "test_count": 6329,
+        "fail_count": 0,
+        "skip_count": 24,
+        "git_head": "4e126c2",
+        "gate_states": {
+          "fods": { "gate_10": "local_release_candidate_ready" },
+          "fodt": { "gate_10": "local_release_candidate_ready" }
+        },
+        "final_verdict_text": "VERDICT: R77_TRUE_CLEAN_REVIEW_PACKAGE_RC_SEALED_PUBLICATION_BLOCKED",
+        "pending_marker_count": 0,
+        "bundle_entry_count": 6329
+      },
+      "contradictions": [],
+      "limitation_notes": [],
+      "validator_invoked": true,
+      "validator_output": "BUNDLE_VALIDATION: PASS"
+    }
+  ]
+}

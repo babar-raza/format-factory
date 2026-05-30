@@ -1,0 +1,73 @@
+sprint_id: FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530
+run_number: r80
+date: "2026-05-30"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: false
+emergency_blocker_bundle: true
+min_metadata_count: 5
+installed_artifact_policy: none
+
+required_repo_files:
+  # Lane 0 — Preflight
+  - reports/r80/preflight.md
+  - reports/r80/dirty-tree-classification.md
+  - reports/r80/lane-ownership-matrix.md
+  - reports/r80/execution-board.md
+  # Lane 1 — Defect Repair
+  - reports/r80/lane1-known-defect-repair.md
+  - reports/r80/bundle-authority-repair.md
+  - reports/r80/runtime-output-inclusion-proof.md
+  - reports/r80/replay-self-containment-proof.md
+  # Lane 2 — Product Advancement
+  - reports/r80/lane2-product-system-advancement.md
+  - reports/r80/product-advancement-test-log.txt
+  # Lane 3 — Validator Hardening
+  - reports/r80/lane3-validator-hardening.md
+  - reports/r80/validator-test-log.txt
+  - tools/supervisor/validate_supervisor_evidence_bundle.py
+  - tests/supervisor/test_validate_supervisor_evidence_bundle.py
+  # Lane 4 — State/Doc Sync
+  - reports/r80/lane4-state-doc-sync.md
+  - reports/r80/taskcard-sync.md
+  - reports/r80/memory-sync.md
+  # Lane 5 — Independent Verification
+  - reports/r80/lane5-independent-verification.md
+  - reports/r80/fresh-extract-validation.md
+  - reports/r80/adversarial-review.md
+  - reports/r80/final-verdict.md
+  # Contract self-inclusion
+  - tools/evidence/contracts/r80-repair-plus-advancement-supervisor-evidence-product-system-hardening.yaml
+  # Supervisor runtime outputs (D-SUP-02 repair — these must be in the bundle)
+  - reports/supervisor/evidence-review.json
+  - reports/supervisor/evidence-review.md
+  - reports/supervisor/contradictions.md
+  - reports/supervisor/next-sprint.md
+  - reports/supervisor/next-sprint-taskmaster.json
+  - reports/supervisor/next-ruflo-lanes.json
+  - reports/supervisor/approval-gates.md
+  - reports/supervisor/session-resume.md
+  # Supervisor implementation (carried forward from dual-orchestration sprint)
+  - tools/supervisor/supervisor_loop.py
+  - tools/supervisor/discover_latest_evidence.py
+  - tools/supervisor/validate_evidence_for_supervisor.py
+  - tools/supervisor/compare_goal_to_evidence.py
+  - tools/supervisor/generate_supervisor_packet.py
+  - tools/supervisor/sync_local_memory.py
+  - tools/taskmaster/validate_taskmaster_bridge.py
+  - tools/taskmaster/validate_dual_orchestration_bridge.py
+  - tests/taskmaster/test_validate_taskmaster_bridge.py
+  - tests/taskmaster/test_validate_dual_orchestration_bridge.py
+  # R79 product advancement proof (tests that pass)
+  - tests/packaging/test_r79_installed_fods_workflow.py
+  - tests/packaging/test_r79_package_source_sync.py
+
+acceptance_criteria:
+  - "reports/r80/final-verdict.md contains REPAIR_PLUS_ADVANCEMENT_ACCEPTED_MODE4_APPROVAL_BLOCKED"
+  - "Lane 1: D-SUP-01 repaired (contract file self-included in R80 bundle)"
+  - "Lane 1: D-SUP-02 repaired (reports/supervisor/ in R80 bundle)"
+  - "Lane 1: D-SUP-03 repaired (final verdict uses delegation label or post-build SHA)"
+  - "Lane 1: D-SUP-04 repaired (replay fixture included or clearly documented)"
+  - "Lane 2: R79 tests pass (27 packaging tests)"
+  - "Lane 3: validate_supervisor_evidence_bundle.py created and tests pass"
+  - "MODE 4 MCP activation still blocked (no .vscode/mcp.json)"

@@ -143,3 +143,30 @@ reports/ai/ai-platform-final-deep-plan-healing-*/
 reports/**/*.sha256-proof.json
 .local/**/*.sha256-proof.json
 docs/_audit/
+
+# ============================================================
+# LOCAL SUPERVISOR CONTROL PLANE — runtime state (gitignored)
+# Tracked files: .supervisor/config.yaml, policies.yaml,
+#   project-memory.md, sprint-loop.md, prompts/, schemas/
+# Gitignored state (runtime only):
+# ============================================================
+.supervisor/state/
+
+# ============================================================
+# TASK MASTER AI — local config/secrets/state
+# ============================================================
+.vscode/mcp.json
+.env.taskmaster
+.taskmaster/.env
+.taskmaster/config.local.json
+
+# ============================================================
+# RUFLO (claude-flow) — local config/state/secrets
+# ============================================================
+.env.ruflo
+.ruflo/.env
+.ruflo/config.local.json
+.ruflo/state/
+.ruflo/logs/
+.swarm/
+.local/ruflo/

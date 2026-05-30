@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SupervisorVerdict",
+  "description": "Schema for supervisor verdict output — Format Factory dual-orchestration",
+  "type": "object",
+  "required": ["sprint_id", "timestamp", "verdict", "modes_completed"],
+  "additionalProperties": false,
+  "properties": {
+    "sprint_id": {
+      "type": "string",
+      "description": "Sprint identity"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO 8601 timestamp"
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "SUPERVISOR_E2E_ACCEPTED_MODE3_DRYRUN_READY_MCP_APPROVAL_BLOCKED",
+        "SUPERVISOR_E2E_ACCEPTED_WITH_LIMITATIONS",
+        "SUPERVISOR_E2E_BLOCKED_NO_REAL_EVIDENCE_BUNDLE",
+        "SUPERVISOR_E2E_BLOCKED_BY_REPO_CONFLICT",
+        "SUPERVISOR_E2E_BLOCKED_BY_VALIDATION",
+        "SUPERVISOR_E2E_REJECTED_UNSAFE_STATE",
+        "SUPERVISOR_FOUNDATION_COMPLETE_READY_FOR_REPLAY",
+        "SUPERVISOR_REPLAY_COMPLETE_READY_FOR_TM_RUFLO_DRYRUN",
+        "PLAN_HEALED_READY_FOR_SINGLE_GO_EXECUTION_HANDOFF",
+        "DUAL_ORCHESTRATION_SUPERVISOR_FOUNDATION_COMPLETE_READY_FOR_TM_RUFLO_DRY_RUN"
+      ],
+      "description": "Supervisor verdict — advisory only, not Format Factory authority"
+    },
+    "modes_completed": {
+      "type": "array",
+      "description": "List of modes completed in this sprint",
+      "items": {
+        "type": "string",
+        "enum": ["MODE_0", "MODE_1", "MODE_2", "MODE_3", "MODE_4", "MODE_5"]
+      }
+    },
+    "supervisor_scripts_implemented": {
+      "type": "boolean",
+      "description": "Whether all 6 supervisor scripts are fully implemented"
+    },
+    "schemas_valid": {
+      "type": "boolean",
+      "description": "Whether all 4 JSON schemas validate"
+    },
+    "prompts_created": {
+      "type": "boolean",
+      "description": "Whether all 5 prompt templates exist"
+    },
+    "supervisor_run_on_latest_result": {
+      "type": "string",
+      "enum": ["pass", "fail", "blocked_no_bundle", "not_run"],
+      "description": "Result of supervisor_loop.py run-on-latest"
+    },
+    "replay_idempotence_result": {
+      "type": "string",
+      "enum": ["pass", "fail", "blocked", "not_run"],
+      "description": "Result of idempotence replay test"
+    },
+    "taskmaster_dry_run_result": {
+      "type": "string",
+      "enum": ["pass", "fail", "blocked", "schema_validated_only", "not_run"],
+      "description": "Result of Task Master dry run"
+    },
+    "ruflo_dry_run_result": {
+      "type": "string",
+      "enum": ["pass", "fail", "blocked", "schema_validated_only", "not_run"],
+      "description": "Result of Ruflo dry run"
+    },
+    "mcp_activation": {
+      "type": "string",
+      "description": "MCP activation status",
+      "const": "NOT_PERFORMED_REQUIRES_EXPLICIT_HUMAN_APPROVAL"
+    },
+    "daemon_status": {
+      "type": "string",
+      "description": "Ruflo daemon status"
+    },
+    "secrets_scan": {
+      "type": "string",
+      "enum": ["clean", "fail", "not_run"],
+      "description": "Result of secrets scan"
+    },
+    "forbidden_files_touched": {
+      "type": "boolean",
+      "description": "Whether any forbidden files were modified (must be false)"
+    },
+    "r78_conflict": {
+      "type": "boolean",
+      "description": "Whether R78 untracked files were affected (must be false)"
+    },
+    "test_results": {
+      "type": "object",
+      "description": "Test execution results",
+      "properties": {
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "skipped": { "type": "integer", "minimum": 0 },
+        "errors": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "evidence_bundle_path": {
+      "type": "string",
+      "description": "Absolute Windows path to the evidence bundle"
+    },
+    "next_mode_recommendation": {
+      "type": "string",
+      "description": "Recommended next mode and any conditions"
+    }
+  },
+  "examples": [
+    {
+      "sprint_id": "dual-orchestration-supervisor-e2e-20260530-165603",
+      "timestamp": "2026-05-30T16:56:03",
+      "verdict": "SUPERVISOR_E2E_ACCEPTED_MODE3_DRYRUN_READY_MCP_APPROVAL_BLOCKED",
+      "modes_completed": ["MODE_1", "MODE_2", "MODE_3"],
+      "supervisor_scripts_implemented": true,
+      "schemas_valid": true,
+      "prompts_created": true,
+      "supervisor_run_on_latest_result": "blocked_no_bundle",
+      "replay_idempotence_result": "pass",
+      "taskmaster_dry_run_result": "schema_validated_only",
+      "ruflo_dry_run_result": "schema_validated_only",
+      "mcp_activation": "NOT_PERFORMED_REQUIRES_EXPLICIT_HUMAN_APPROVAL",
+      "daemon_status": "NOT_STARTED",
+      "secrets_scan": "clean",
+      "forbidden_files_touched": false,
+      "r78_conflict": false,
+      "test_results": { "passed": 20, "failed": 0, "skipped": 0, "errors": 0 },
+      "evidence_bundle_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\evidence\\dual-orchestration-supervisor-e2e-20260530-165603.zip",
+      "next_mode_recommendation": "MODE 4 — ACTIVE_MCP_ACTIVATION — requires explicit human approval"
+    }
+  ]
+}

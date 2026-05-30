@@ -1,0 +1,78 @@
+sprint_id: dual-orchestration-supervisor-e2e-20260530-165603
+run_number: dual-orchestration-supervisor-e2e
+date: "2026-05-30"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: false
+emergency_blocker_bundle: true
+min_metadata_count: 5
+installed_artifact_policy: none
+
+required_repo_files:
+  - reports/dual-orchestration-supervisor-e2e/preflight.md
+  - reports/dual-orchestration-supervisor-e2e/git-status-before.txt
+  - reports/dual-orchestration-supervisor-e2e/tool-availability.txt
+  - reports/dual-orchestration-supervisor-e2e/governance-discovery.md
+  - reports/dual-orchestration-supervisor-e2e/plan-anchor.md
+  - reports/dual-orchestration-supervisor-e2e/execution-board.md
+  - reports/dual-orchestration-supervisor-e2e/file-ownership-matrix.md
+  - reports/dual-orchestration-supervisor-e2e/stop-gate-log.md
+  - reports/dual-orchestration-supervisor-e2e/supervisor-replay.md
+  - reports/dual-orchestration-supervisor-e2e/taskmaster-dry-run.md
+  - reports/dual-orchestration-supervisor-e2e/ruflo-dry-run.md
+  - reports/dual-orchestration-supervisor-e2e/mode3-activation-readiness.md
+  - reports/dual-orchestration-supervisor-e2e/security-scan.md
+  - reports/dual-orchestration-supervisor-e2e/adversarial-review.md
+  - reports/dual-orchestration-supervisor-e2e/final-verdict.md
+  - .supervisor/config.yaml
+  - .supervisor/policies.yaml
+  - .supervisor/project-memory.md
+  - .supervisor/sprint-loop.md
+  - .supervisor/prompts/evidence-review.md
+  - .supervisor/prompts/adversarial-review.md
+  - .supervisor/prompts/next-sprint-generator.md
+  - .supervisor/prompts/approval-gate-classifier.md
+  - .supervisor/prompts/memory-sync.md
+  - .supervisor/schemas/evidence-review.schema.json
+  - .supervisor/schemas/next-sprint-taskmaster.schema.json
+  - .supervisor/schemas/next-ruflo-lanes.schema.json
+  - .supervisor/schemas/supervisor-verdict.schema.json
+  - tools/supervisor/supervisor_loop.py
+  - tools/supervisor/discover_latest_evidence.py
+  - tools/supervisor/validate_evidence_for_supervisor.py
+  - tools/supervisor/compare_goal_to_evidence.py
+  - tools/supervisor/generate_supervisor_packet.py
+  - tools/supervisor/sync_local_memory.py
+  - tools/taskmaster/validate_taskmaster_bridge.py
+  - tools/taskmaster/validate_dual_orchestration_bridge.py
+  - tests/taskmaster/test_validate_taskmaster_bridge.py
+  - tests/taskmaster/test_validate_dual_orchestration_bridge.py
+  - docs/automation/local-supervisor-control-plane.md
+  - docs/automation/human-handoff-retirement-requirements.md
+  - docs/automation/phase-model-amendment.md
+  - docs/taskmaster/taskmaster-supervisor-integration.md
+  - docs/taskmaster/taskmaster-to-format-factory-taskcard-bridge.md
+  - docs/taskmaster/taskmaster-format-factory-operating-profile.md
+  - docs/taskmaster/taskmaster-mcp-tool-surface.md
+  - docs/taskmaster/dual-orchestration-kpi-model.md
+  - docs/taskmaster/taskmaster-session-recovery.md
+  - docs/taskmaster/taskmaster-no-drift-state-contract.md
+  - docs/ai/ruflo-supervisor-integration.md
+  - docs/ai/ruflo-format-factory-operating-profile.md
+  - docs/ai/ruflo-mcp-tool-surface.md
+  - docs/ai/ruflo-lane-coordination-model.md
+  - docs/ai/ruflo-process-hygiene.md
+  - docs/ai/dual-orchestration-architecture.md
+  - reports/dual-orchestration-supervisor-e2e/supervisor-verdict.json
+
+acceptance_criteria:
+  - "reports/dual-orchestration-supervisor-e2e/final-verdict.md contains SUPERVISOR_E2E_ACCEPTED_MODE3_DRYRUN_READY_MCP_APPROVAL_BLOCKED"
+  - "27 tests pass in tests/taskmaster/"
+  - "6 supervisor scripts compile clean"
+  - "4 JSON schemas valid"
+  - "supervisor_loop.py run-on-latest exits 0"
+  - "No-drift contract: 0 violations"
+  - "Security scan: CLEAN"
+  - "No .vscode/mcp.json, no .taskmaster/, no .ruflo/, no .swarm/"
+  - "No secrets in tracked files"
+  - "Governance files untouched"

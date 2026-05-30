@@ -1,0 +1,23 @@
+{
+  "_comment": "TEMPLATE: Provider API key MCP server configuration for Dual Orchestration",
+  "_usage": "Copy relevant sections to .vscode/mcp.json and remove _comment/_usage fields",
+  "_security": ".vscode/mcp.json is gitignored — do NOT commit it with real tokens",
+  "servers": {
+    "task-master-ai": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "task-master-ai@0.43.1"],
+      "env": {
+        "ANTHROPIC_API_KEY": "your-key-here"
+      }
+    },
+    "claude-flow": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "claude-flow@3.10.14", "mcp", "start"],
+      "env": {
+        "ANTHROPIC_API_KEY": "your-key-here"
+      }
+    }
+  }
+}
