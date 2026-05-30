@@ -10,7 +10,7 @@ AUTHORITATIVE_TEST_RESULT: 6264 passed, 0 failed, 24 skipped
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION_PASS_1_SHA: delegated_to_final_artifact_authority_json
+BUNDLE_VALIDATION_PASS_1_SHA: 67854403abad78dac684c065f2078f1bb1f4f2c73d66a8588613a264cf15cf92
 BUNDLE_VALIDATION_PASS_2_SHA: delegated_to_final_artifact_authority_json
 SIDECAR_SHA: delegated_to_final_artifact_authority_json
 DELIVERY_PACKAGE_RECORDED_SHA: delegated_to_final_artifact_authority_json
