@@ -1,0 +1,94 @@
+sprint_id: FORMAT-FACTORY-R78-TRUE-STATE-AND-FIRST-PRODUCT-FINISH-REPRODUCIBILITY-MEGA-TRAIN-001
+run_number: r78
+date: "2026-05-30"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 30
+installed_artifact_policy: none
+
+required_repo_files:
+  - reports/r78/00-preflight.md
+  - reports/r78/lane-ownership.md
+  - reports/r78/parallel-execution-map.md
+  - reports/r78/risk-register.md
+  - reports/r78/multi-mega-train-scoreboard.md
+  - reports/r78/r77-independent-verification.md
+  - reports/r78/r77-defect-ledger.md
+  - reports/r78/r77-defect-ledger.json
+  - reports/r78/true-product-state-assessment.md
+  - reports/r78/fods-reproducibility-proof.md
+  - reports/r78/reproducibility-gap-ledger.md
+  - reports/r78/fods-product-completion-matrix.md
+  - reports/r78/fods-end-to-end-product-workflow.md
+  - reports/r78/fods-package-finalization-local-only.md
+  - reports/r78/fodt-product-completion-matrix.md
+  - reports/r78/fodt-end-to-end-product-workflow.md
+  - reports/r78/zst-local-foss-rc-proof.md
+  - reports/r78/probe-package-overclaim-correction.md
+  - reports/r78/netpbm-product-family-decision.md
+  - reports/r78/sylk-dif-product-decision.md
+  - reports/r78/dotnet-test-discovery-and-commercial-readiness.md
+  - reports/r78/gate11-product-truth-approval-packet.md
+  - reports/r78/examples-docs-minimum-product-baseline.md
+  - reports/r78/publication-readiness-no-publish.md
+  - reports/r78/ai-assisted-product-gap-extraction.md
+  - reports/r78/final-review-package-replay.md
+  - reports/r78/state-registry-memory-master-plan-sync.md
+  - reports/r78/final-adversarial-independent-verification.md
+  - reports/r78/final-verdict.md
+  - tests/evidence/test_r78_state_validators.py
+  - tests/python/fods/test_r78_fods_end_to_end_workflow.py
+  - tests/python/fodt/test_r78_fodt_end_to_end_workflow.py
+  - examples/python/fods/edit_save_export_fods.py
+  - examples/python/fodt/edit_save_export_fodt.py
+  - tools/repro/reproduce_format.py
+  - tools/evidence/contracts/r78-true-state-and-first-product-finish-reproducibility.yaml
+
+required_metadata_files:
+  - sprint-id.txt
+  - run-environment.txt
+  - python-tests-summary.txt
+  - package-artifact-manifest.yaml
+  - dotnet-nupkg-manifest.yaml
+  - source-commit-proof.txt
+  - placeholder-scan-summary.txt
+  - final-bundle-validation-proof.txt
+  - external-sidecar-proof-summary.txt
+  - delivery-package-validation-summary.txt
+  - missing-sidecar-negative-proof.txt
+  - wrong-sidecar-negative-proof.txt
+  - inner-zip-only-negative-proof.txt
+  - stale-placeholder-negative-proof.txt
+  - stale-final-verdict-sha-negative-proof.txt
+  - pass-number-drift-negative-proof.txt
+  - will-be-updated-negative-proof.txt
+  - non-green-test-result-negative-proof.txt
+  - installed-public-api-smoke-summary.txt
+  - package-install-smoke-summary.txt
+  - sdist-smoke-summary.txt
+  - source-package-hygiene-summary.txt
+  - invariant-output-final.txt
+  - r78-new-tests-summary.txt
+  - final-independent-verification.txt
+  - multi-mega-train-scoreboard-final.txt
+  - blockers-status.txt
+  - state-snapshot-output.txt
+  - git-status-final.txt
+  - validation-command-log.txt
+  - git-log.txt
+  - repo-tree.txt
+  - supervisor-review-package-validation-summary.txt
+  - product-advancement-summary.txt
+  - r77-defects-repair-verification.txt
+  - dotnet-raw-log-summary.txt
+  - ai-telemetry-summary.txt
+  - gate8-readiness-summary.txt
+  - gate11-readiness-summary.txt
+  - publication-readiness-summary.txt
+  - next-format-summary.txt
+  - master-plan-sync-summary.txt
+  - final-artifact-authority-summary.txt
+  - fods-reproducibility-summary.txt
+  - fodt-structural-gap-summary.txt
+  - netpbm-sylk-dif-decision-summary.txt
