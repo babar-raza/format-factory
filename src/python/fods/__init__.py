@@ -60,6 +60,9 @@ from .neutral_model import (
     workbook_cell_type_matrix,
     workbook_set_cell_value,
     workbook_warnings_for_unsupported_edit,
+    workbook_add_sheet,
+    workbook_rename_sheet,
+    workbook_remove_sheet,
 )
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -95,6 +98,9 @@ __all__ = [
     "workbook_cell_type_matrix",
     "workbook_set_cell_value",
     "workbook_warnings_for_unsupported_edit",
+    "workbook_add_sheet",
+    "workbook_rename_sheet",
+    "workbook_remove_sheet",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",

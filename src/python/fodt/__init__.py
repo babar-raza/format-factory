@@ -60,6 +60,9 @@ from .neutral_model import (
     document_language_list,
     document_set_block_text,
     document_warnings_for_unsupported_edit,
+    document_append_paragraph,
+    document_remove_paragraph,
+    document_paragraph_count,
 )
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -95,6 +98,9 @@ __all__ = [
     "document_language_list",
     "document_set_block_text",
     "document_warnings_for_unsupported_edit",
+    "document_append_paragraph",
+    "document_remove_paragraph",
+    "document_paragraph_count",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

@@ -1,0 +1,30 @@
+{
+  "sprint_id": "FORMAT-FACTORY-R77-TRUE-CLEAN-REVIEW-PACKAGE-PACKAGE-ARTIFACTS-STATE-CLOSURE-PRODUCT-DEEPENING-MEGA-TRAIN-001",
+  "date": "2026-05-30",
+  "source": "supervisor-classification-plus-local-artifact-verification",
+  "r76_review_package_sha": "131475803ea220b12a7a8e74444c14d559fdf5cd79d5c7c125b1c640e2a452ea",
+  "r76_inner_zip_sha": "1a6ea0ff80dc5c5290a0e77f09ef8fd057794c9d1c57336efd2af28c238a6428",
+  "r76_delivery_sha": "a7f9b4649ba77f29f40f4b11baa45f48969c1e452278044d171ab7ccd5f71614",
+  "sha_match_supervisor": true,
+  "defects": [
+    {"id": "D76-01", "description": "state/current-state.md says R76_IN_PROGRESS", "severity": "RC_BLOCKING", "r77_action": "REPAIRED", "train": "B"},
+    {"id": "D76-02", "description": "state/current-state.json verdict=R76_IN_PROGRESS", "severity": "RC_BLOCKING", "r77_action": "REPAIRED", "train": "B"},
+    {"id": "D76-03", "description": "plans/master-plan.md says R76 IN_PROGRESS", "severity": "RC_BLOCKING", "r77_action": "REPAIRED", "train": "B"},
+    {"id": "D76-04", "description": "bundle-metadata says pass1 but packaged file is pass2", "severity": "RC_BLOCKING", "r77_action": "REPAIRED", "train": "C"},
+    {"id": "D76-05", "description": "0 physical .whl/.tar.gz/.nupkg in review package", "severity": "RC_BLOCKING", "r77_action": "REPAIRED", "train": "F"},
+    {"id": "D76-06", "description": "Negative proof files lack raw command evidence", "severity": "MAJOR", "r77_action": "REPAIRED", "train": "D"},
+    {"id": "D76-07", "description": "Missing package-install-smoke-summary.txt", "severity": "MAJOR", "r77_action": "REPAIRED", "train": "G"},
+    {"id": "D76-08", "description": "Missing dotnet-raw-log-summary.txt", "severity": "MAJOR", "r77_action": "REPAIRED", "train": "K"},
+    {"id": "D76-09", "description": "Missing gate8-readiness-summary.txt", "severity": "MAJOR", "r77_action": "REPAIRED", "train": "P"},
+    {"id": "D76-10", "description": "Missing gate11-readiness-summary.txt", "severity": "MAJOR", "r77_action": "REPAIRED", "train": "R"},
+    {"id": "D76-11", "description": "Missing next-format-summary.txt", "severity": "MODERATE", "r77_action": "REPAIRED", "train": "V"},
+    {"id": "D76-12", "description": "Missing master-plan-sync-summary.txt", "severity": "MODERATE", "r77_action": "REPAIRED", "train": "V"},
+    {"id": "D76-13", "description": "Missing final-artifact-authority-summary.txt", "severity": "MODERATE", "r77_action": "REPAIRED", "train": "C"},
+    {"id": "D76-18", "description": "Validator passed despite IN_PROGRESS state", "severity": "MAJOR", "r77_action": "REPAIRED", "train": "E"},
+    {"id": "D76-19", "description": "package-artifact-manifest.yaml lacks physical paths + full SHA", "severity": "MAJOR", "r77_action": "REPAIRED", "train": "F"}
+  ],
+  "total_defects": 19,
+  "rc_blocking": 5,
+  "major": 8,
+  "moderate": 6
+}

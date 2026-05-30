@@ -1129,3 +1129,117 @@ def workbook_warnings_for_unsupported_edit(
         warnings.append(f"Non-standard value_type {vtype!r} — may not round-trip perfectly")
 
     return warnings
+
+
+# ---------------------------------------------------------------------------
+# R77 Train I — Sheet management APIs
+# ---------------------------------------------------------------------------
+
+
+def workbook_add_sheet(
+    workbook: dict[str, Any],
+    sheet_name: str,
+    position: int | None = None,
+) -> tuple[bool, str]:
+    """Add a new empty sheet to the workbook.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_name: Name for the new sheet.
+        position: 0-based insert position. None means append.
+
+    Returns:
+        (success, message) tuple.
+
+    Added in R77 Train I as a sheet-management product capability.
+    """
+    if not sheet_name or not sheet_name.strip():
+        return False, "Sheet name must not be empty"
+
+    sheets = workbook.get("sheets", [])
+    existing_names = [s.get("name", "") for s in sheets]
+    if sheet_name in existing_names:
+        return False, f"Sheet {sheet_name!r} already exists"
+
+    new_sheet: dict[str, Any] = {
+        "name": sheet_name,
+        "rows": [],
+        "auto_updatable": False,
+    }
+
+    if position is None or position >= len(sheets):
+        sheets.append(new_sheet)
+    else:
+        sheets.insert(max(0, position), new_sheet)
+
+    workbook["sheets"] = sheets
+    return True, f"Sheet {sheet_name!r} added at position {position if position is not None else len(sheets) - 1}"
+
+
+def workbook_rename_sheet(
+    workbook: dict[str, Any],
+    old_name: str,
+    new_name: str,
+) -> tuple[bool, str]:
+    """Rename an existing sheet.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        old_name: Current sheet name.
+        new_name: Desired new sheet name.
+
+    Returns:
+        (success, message) tuple.
+
+    Added in R77 Train I as a sheet-management product capability.
+    """
+    if not new_name or not new_name.strip():
+        return False, "New sheet name must not be empty"
+
+    sheets = workbook.get("sheets", [])
+    existing_names = [s.get("name", "") for s in sheets]
+
+    if old_name not in existing_names:
+        return False, f"Sheet {old_name!r} not found"
+    if new_name in existing_names and new_name != old_name:
+        return False, f"Sheet {new_name!r} already exists"
+
+    for sheet in sheets:
+        if sheet.get("name") == old_name:
+            sheet["name"] = new_name
+            return True, f"Sheet renamed from {old_name!r} to {new_name!r}"
+
+    return False, "Unexpected: sheet not found during rename"
+
+
+def workbook_remove_sheet(
+    workbook: dict[str, Any],
+    sheet_name: str,
+) -> tuple[bool, str]:
+    """Remove a sheet from the workbook.
+
+    This is a destructive operation. If the workbook has only one sheet,
+    the removal is rejected to avoid an invalid empty workbook.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_name: Name of the sheet to remove.
+
+    Returns:
+        (success, message) tuple.
+
+    Added in R77 Train I as a sheet-management product capability.
+    """
+    sheets = workbook.get("sheets", [])
+
+    if len(sheets) <= 1:
+        return False, "Cannot remove the only sheet in a workbook"
+
+    before = len(sheets)
+    workbook["sheets"] = [s for s in sheets if s.get("name") != sheet_name]
+    after = len(workbook["sheets"])
+
+    if before == after:
+        return False, f"Sheet {sheet_name!r} not found"
+
+    return True, f"Sheet {sheet_name!r} removed ({before} → {after} sheets)"

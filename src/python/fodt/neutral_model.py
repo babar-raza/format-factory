@@ -1316,3 +1316,102 @@ def document_warnings_for_unsupported_edit(
             )
 
     return warnings
+
+
+# ---------------------------------------------------------------------------
+# R77 Train J — Paragraph management APIs
+# ---------------------------------------------------------------------------
+
+
+def document_append_paragraph(
+    document: dict[str, Any],
+    text: str,
+    style: str | None = None,
+) -> tuple[bool, str]:
+    """Append a new paragraph to the document body.
+
+    Args:
+        document: Parsed FODT document dict.
+        text: Plain text content for the new paragraph.
+        style: Optional paragraph style name (e.g. "Heading 1", "Text Body").
+
+    Returns:
+        (success, message) tuple.
+
+    Added in R77 Train J as a paragraph-management product capability.
+    """
+    if text is None:
+        return False, "Text must not be None"
+
+    body = document.get("body", {})
+    blocks = body.get("blocks", [])
+
+    new_block: dict[str, Any] = {
+        "type": "paragraph",
+        "runs": [{"text": text}],
+        "auto_updatable": False,
+    }
+    if style:
+        new_block["style"] = style
+
+    blocks.append(new_block)
+    body["blocks"] = blocks
+    document["body"] = body
+
+    idx = len(blocks) - 1
+    style_note = f" (style={style!r})" if style else ""
+    return True, f"Paragraph appended at index {idx}{style_note}"
+
+
+def document_remove_paragraph(
+    document: dict[str, Any],
+    block_idx: int,
+) -> tuple[bool, str]:
+    """Remove a paragraph (block) at the given index from the document body.
+
+    Only paragraph-type blocks may be removed. Headings, tables, and other
+    structural blocks are protected and will return an error with a warning.
+
+    Args:
+        document: Parsed FODT document dict.
+        block_idx: 0-based index of the block to remove.
+
+    Returns:
+        (success, message) tuple.
+
+    Added in R77 Train J as a paragraph-management product capability.
+    """
+    body = document.get("body", {})
+    blocks = body.get("blocks", [])
+
+    if block_idx < 0 or block_idx >= len(blocks):
+        return False, f"Block index {block_idx} out of range (0–{len(blocks) - 1})"
+
+    target = blocks[block_idx]
+    block_type = target.get("type", "paragraph")
+    if block_type in ("table", "list"):
+        return False, (
+            f"Block {block_idx} is type {block_type!r} — "
+            "only paragraph blocks may be removed via this API"
+        )
+
+    removed_preview = ""
+    runs = target.get("runs", [])
+    if runs:
+        removed_preview = runs[0].get("text", "")[:40]
+
+    body["blocks"] = [b for i, b in enumerate(blocks) if i != block_idx]
+    document["body"] = body
+
+    return True, f"Block {block_idx} removed (was: {removed_preview!r})"
+
+
+def document_paragraph_count(
+    document: dict[str, Any],
+) -> int:
+    """Return the count of paragraph-type blocks in the document body.
+
+    Added in R77 Train J as a convenience utility for edit workflow verification.
+    """
+    blocks = document.get("body", {}).get("blocks", [])
+    return sum(1 for b in blocks if b.get("type", "paragraph") == "paragraph")
