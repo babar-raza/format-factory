@@ -99,7 +99,7 @@ R77_RC_BLOCKING_REPAIRED: 2/2
 ## Final Validation
 
 AUTHORITATIVE_TEST_RESULT: 6381 passed, 0 failed, 24 skipped
-BUNDLE_VALIDATION_PASS_1_SHA: unfilled (to be filled after bundle build)
+BUNDLE_VALIDATION_PASS_1_SHA: 7a1ac07ac8fc7017e48c93fbe7e21a0db9488ce96127a26248565a24d6823065
 BUNDLE_VALIDATION_PASS_2_SHA: delegated_to_final_artifact_authority_json
 SIDECAR_SHA: delegated_to_final_artifact_authority_json
 DELIVERY_PACKAGE_SHA: delegated_to_final_artifact_authority_json
