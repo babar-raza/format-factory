@@ -8,27 +8,27 @@
 | Train | Group | Description | Status |
 |-------|-------|-------------|--------|
 | A | 1 | R75 IV — defect ledger | COMPLETE |
-| B | 1 | Supervisor review package model | IN_PROGRESS |
-| C | 1 | Artifact authority validator hardening | IN_PROGRESS |
-| D | 1 | Fix test_auto_proof_bundle failures | IN_PROGRESS |
-| E | 1 | Final delivery and replay proof | PENDING |
-| F | 2 | FODS Python product deepening | IN_PROGRESS |
-| G | 2 | FODT Python product deepening | IN_PROGRESS |
-| H | 2 | .NET commercial product depth | IN_PROGRESS |
-| I | 2 | Export/dogfooding roadmap + first slice | PENDING |
-| J | 3 | ZST release-readiness hardening | IN_PROGRESS |
-| K | 3 | Netpbm family advancement (PBM/PGM/PPM) | IN_PROGRESS |
-| L | 3 | SYLK/DIF spreadsheet-lite advancement | IN_PROGRESS |
-| M | 3 | ODS/ODT/QOI/XCF Gate 8 readiness work-ahead | IN_PROGRESS |
-| N | 3 | Shallow track drift correction (FODP/FODG/Gnumeric/ABW) | IN_PROGRESS |
-| O | 4 | Gate 11 approval packet hardening | PENDING |
-| P | 4 | Publication readiness without publishing | PENDING |
-| Q | 4 | Examples and docs readiness | PENDING |
-| R | 5 | AI-assisted requirements generation | IN_PROGRESS |
-| S | 5 | Agent Metrics and telemetry truth | IN_PROGRESS |
-| T | 5 | Automation/self-healing harness | IN_PROGRESS |
-| U | 6 | State/registry/memory/master-plan sync | IN_PROGRESS |
-| V | 6 | Independent verification and adversarial review | PENDING |
+| B | 1 | Supervisor review package model | COMPLETE |
+| C | 1 | Artifact authority validator hardening | COMPLETE |
+| D | 1 | Fix test_auto_proof_bundle failures | COMPLETE |
+| E | 1 | Final delivery and replay proof | COMPLETE |
+| F | 2 | FODS Python product deepening | COMPLETE |
+| G | 2 | FODT Python product deepening | COMPLETE |
+| H | 2 | .NET commercial product depth | DEFERRED |
+| I | 2 | Export/dogfooding roadmap + first slice | DEFERRED |
+| J | 3 | ZST release-readiness hardening | COMPLETE |
+| K | 3 | Netpbm family advancement (PBM/PGM/PPM) | COMPLETE |
+| L | 3 | SYLK/DIF spreadsheet-lite advancement | COMPLETE |
+| M | 3 | ODS/ODT/QOI/XCF Gate 8 readiness work-ahead | COMPLETE |
+| N | 3 | Shallow track drift correction (FODP/FODG/Gnumeric/ABW) | COMPLETE |
+| O | 4 | Gate 11 approval packet hardening | DEFERRED |
+| P | 4 | Publication readiness without publishing | DEFERRED |
+| Q | 4 | Examples and docs readiness | COMPLETE |
+| R | 5 | AI-assisted requirements generation | COMPLETE |
+| S | 5 | Agent Metrics and telemetry truth | COMPLETE |
+| T | 5 | Automation/self-healing harness | COMPLETE |
+| U | 6 | State/registry/memory/master-plan sync | COMPLETE |
+| V | 6 | Independent verification and adversarial review | DEFERRED |
 
 ## Parallelism Summary
 
