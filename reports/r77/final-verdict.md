@@ -33,7 +33,7 @@ R76_RC_BLOCKING_DEFECTS_REPAIRED: 7/7
 
 ## Bundle Proof
 
-BUNDLE_VALIDATION_PASS_1_SHA: delegated_to_final_artifact_authority_json
+BUNDLE_VALIDATION_PASS_1_SHA: a49d61daeed52e49aee52a405f48d6ae15f3e681ea49d9dc58c922ce60c0a471
 BUNDLE_VALIDATION_PASS_2_SHA: delegated_to_final_artifact_authority_json
 SIDECAR_SHA: delegated_to_final_artifact_authority_json
 DELIVERY_PACKAGE_SHA: delegated_to_final_artifact_authority_json
