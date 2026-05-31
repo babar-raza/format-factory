@@ -1,6 +1,6 @@
 # Supervisor-Generated Next Sprint Prompt
 # Source sprint: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
-# Generated: 2026-05-31T20:09:07.329190
+# Generated: 2026-05-31T20:11:06.917234
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -60,16 +60,6 @@ None
 ## Project Memory Context
 ```
 
-## Entry: FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530
-- timestamp: 2026-05-30T19:52:10.954828
-- verdict: ACCEPTED
-- test_count: 65
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidence\r80-repair-plus-advancement-supervisor-evidence-product-system-hardening-20260530.zip
-- pending_marker_count: 0
-- bundle_entry_count: 3159
-
 ## Entry: FORMAT-FACTORY-R79-PACKAGE-SOURCE-SYNC-FIRST-REAL-FODS-PRODUCT-RC-ZST-DEPENDENCY-REPLAY-MEGA-TRAIN-001 [STALE]
 - timestamp: 2026-05-31T10:53:52.946007
 - verdict: ACCEPTED
@@ -109,6 +99,16 @@ None
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-supervisor-review-package.zip
 - pending_marker_count: 1
 - bundle_entry_count: 9
+
+## Entry: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
+- timestamp: 2026-05-31T20:09:07.506275
+- verdict: ACCEPTED
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3430
 ```
 
 ---

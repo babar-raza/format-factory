@@ -1,13 +1,13 @@
 # Evidence Review — Supervisor
 Sprint ID: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
-Timestamp: 2026-05-31T20:09:06.233353
+Timestamp: 2026-05-31T20:11:05.624715
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass2.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass3-final.zip
 
 ## Facts
 - Tests: 65 passed, 0 failed, 0 skipped
 - Git HEAD: unknown
-- Bundle entries: 3430
+- Bundle entries: 3450
 - PENDING markers: 0
 
 ## Gate States
@@ -22,16 +22,16 @@ None
 EVIDENCE BUNDLE VALIDATION REPORT
 ============================================================
 Contract: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\evidence\contracts\r84-broad-closure-raw-logs-final-authority.yaml
-Bundle: c:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass2.zip
-Bundle size: 5,851,410 bytes
-Total entries: 3430
+Bundle: c:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass3-final.zip
+Bundle size: 6,085,739 bytes
+Total entries: 3450
 Top-level folders: ['bundle-metadata', 'repo']
 Repo files: 3391
-Metadata files: 39
+Metadata files: 59
 Required repo files: 46 (missing: 0)
 Required metadata files: 0 (missing: 0)
 Min metadata required: 36
-RUN_CONTRACT_METADATA_FLOOR (PASS): 39/30
+RUN_CONTRACT_METADATA_FLOOR (PASS): 59/30
 Forbidden hits: 0
 Git clean (PASS): git-status-final.txt shows clean working tree
 Metadata identity check (PASS)
