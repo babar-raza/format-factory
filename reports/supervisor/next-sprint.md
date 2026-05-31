@@ -1,6 +1,6 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: unknown
-# Generated: 2026-05-31T14:45:06.300781
+# Source sprint: ** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
+# Generated: 2026-05-31T14:47:05.715715
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -10,17 +10,17 @@
 REPAIR: Address CRITICAL contradictions before advancing
 
 ## Prior Sprint Summary
-- Sprint ID: unknown
-- Evidence verdict: BLOCKED_MISSING_FINAL_VERDICT
+- Sprint ID: ** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
+- Evidence verdict: ACCEPTED
 - Tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: False
 
 ## Contradictions Requiring Repair
-- [CRITICAL] No final-verdict.md found in evidence bundle
-- [WARNING] Sprint ID not found in evidence bundle
+- [CRITICAL] PENDING markers found in final-verdict.md: 1 occurrences
+- [WARNING] Sprint ID mismatch: evidence='** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001' vs contract='FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001'
 
 ## Synthesized Task List (Advisory)
-- [pending] REPAIR-001: Repair: No final-verdict.md found in evidence bundle
+- [pending] REPAIR-001: Repair: PENDING markers found in final-verdict.md: 1 occurrences
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
