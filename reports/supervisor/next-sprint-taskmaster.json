@@ -1,96 +1,21 @@
 {
-  "sprint_id": "supervisor-export-20260531-105519",
-  "timestamp": "2026-05-31T10:55:19.244037",
+  "sprint_id": "supervisor-export-20260531-131331",
+  "timestamp": "2026-05-31T13:13:31.184959",
   "verdict": "ACCEPTED",
-  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\evidence\\r80-repair-plus-advancement-supervisor-evidence-product-system-hardening-20260530.zip",
+  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r82-supervisor-review-package.zip",
   "tasks": [
     {
-      "task_id": "TASK-001",
-      "title": "Advance FODS Gate 11 commercial readiness",
-      "description": "fods gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
-      "status": "approval-blocked",
-      "ff_gate_ref": "fods_gate_11",
-      "ff_doc_ref": "plans/master-plan.md",
-      "acceptance_evidence": "registry/format-registry.yaml shows fods gate_11: closed or approved",
-      "validation_command": "grep -A5 'fods:' registry/format-registry.yaml | grep 'gate_11'",
-      "blocker_type": "human_approval",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-002",
-      "title": "Advance FODT Gate 11 commercial readiness",
-      "description": "fodt gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
-      "status": "approval-blocked",
-      "ff_gate_ref": "fodt_gate_11",
-      "ff_doc_ref": "plans/master-plan.md",
-      "acceptance_evidence": "registry/format-registry.yaml shows fodt gate_11: closed or approved",
-      "validation_command": "grep -A5 'fodt:' registry/format-registry.yaml | grep 'gate_11'",
-      "blocker_type": "human_approval",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-003",
-      "title": "Open ZST Gate 11",
-      "description": "zst gate_11 status: not_started. See plans/master-plan.md and registry for requirements.",
-      "status": "blocked",
-      "ff_gate_ref": "zst_gate_11",
-      "ff_doc_ref": "plans/master-plan.md",
-      "acceptance_evidence": "registry/format-registry.yaml shows zst gate_11: closed or approved",
-      "validation_command": "grep -A5 'zst:' registry/format-registry.yaml | grep 'gate_11'",
-      "blocker_type": "external_gate",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-004",
-      "title": "Work on open taskcard: ABW-GATE4-001-parser-prototype",
-      "description": "ABW-GATE4-001 \u2014 ABW Gate 4 Parser Prototype",
+      "task_id": "REPAIR-001",
+      "title": "Repair: PENDING markers found in final-verdict.md: 2 occurrences",
+      "description": "PENDING tokens indicate incomplete sprint state \u2014 not RC-ready",
       "status": "pending",
-      "ff_taskcard_ref": "ABW-GATE4-001-parser-prototype",
-      "ff_doc_ref": "taskcards/ABW-GATE4-001-parser-prototype.md",
-      "acceptance_evidence": "taskcards/ABW-GATE4-001-parser-prototype.md shows Status: closed or verified",
-      "validation_command": "grep 'Status:' taskcards/ABW-GATE4-001-parser-prototype.md",
+      "ff_taskcard_ref": "repair-required",
+      "supervisor_task_ref": "TC-SUP-009",
+      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
+      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
       "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-005",
-      "title": "Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS",
-      "description": "Taskcard: AI-USAGE-LEDGER-AND-METRICS",
-      "status": "pending",
-      "ff_taskcard_ref": "AI-USAGE-LEDGER-AND-METRICS",
-      "ff_doc_ref": "taskcards/AI-USAGE-LEDGER-AND-METRICS.md",
-      "acceptance_evidence": "taskcards/AI-USAGE-LEDGER-AND-METRICS.md shows Status: closed or verified",
-      "validation_command": "grep 'Status:' taskcards/AI-USAGE-LEDGER-AND-METRICS.md",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-006",
-      "title": "Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT",
-      "description": "EVIDENCE-HYGIENE-ENFORCEMENT \u2014 Evidence Tooling Test Enhancement",
-      "status": "pending",
-      "ff_taskcard_ref": "EVIDENCE-HYGIENE-ENFORCEMENT",
-      "ff_doc_ref": "taskcards/EVIDENCE-HYGIENE-ENFORCEMENT.md",
-      "acceptance_evidence": "taskcards/EVIDENCE-HYGIENE-ENFORCEMENT.md shows Status: closed or verified",
-      "validation_command": "grep 'Status:' taskcards/EVIDENCE-HYGIENE-ENFORCEMENT.md",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-007",
-      "title": "Build and validate next sprint evidence bundle",
-      "description": "Build evidence bundle via build_evidence_bundle.py; validate with validate_evidence_bundle.py \u2192 BUNDLE_VALIDATION: PASS",
-      "status": "pending",
-      "ff_doc_ref": "tools/evidence/build_evidence_bundle.py",
-      "supervisor_task_ref": "TC-SUP-010",
-      "acceptance_evidence": "validate_evidence_bundle.py outputs BUNDLE_VALIDATION: PASS",
-      "validation_command": ".local/venv/Scripts/python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
-      "non_authoritative": true,
-      "lane": "C6"
+      "lane": "C2"
     }
   ],
-  "notes": "Generated from evidence review of sprint FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530"
+  "notes": "Generated from evidence review of sprint FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001"
 }

@@ -25,7 +25,7 @@ from pathlib import Path
 
 
 SEARCH_PATHS = [
-    ".local/evidence",
+    ".local",           # all subdirs — agents may drop bundles anywhere under .local/
     "evidence-bundles",
     "reports",
 ]

@@ -1,31 +1,25 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530
-# Generated: 2026-05-31T10:55:19.239118
+# Source sprint: FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001
+# Generated: 2026-05-31T13:13:31.179931
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-ADVANCE: Continue normal mega-train lanes
+REPAIR: Address CRITICAL contradictions before advancing
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530
+- Sprint ID: FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001
 - Evidence verdict: ACCEPTED
-- Tests: 65 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Tests: 73 passed, 0 failed, 0 skipped
+- Autonomous continue: False
 
 ## Contradictions Requiring Repair
-None
+- [CRITICAL] PENDING markers found in final-verdict.md: 2 occurrences
 
 ## Synthesized Task List (Advisory)
-- [approval-blocked] TASK-001: Advance FODS Gate 11 commercial readiness
-- [approval-blocked] TASK-002: Advance FODT Gate 11 commercial readiness
-- [blocked] TASK-003: Open ZST Gate 11
-- [pending] TASK-004: Work on open taskcard: ABW-GATE4-001-parser-prototype
-- [pending] TASK-005: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
-- [pending] TASK-006: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
-- [pending] TASK-007: Build and validate next sprint evidence bundle
+- [pending] REPAIR-001: Repair: PENDING markers found in final-verdict.md: 2 occurrences
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.

@@ -30,9 +30,9 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 STATE_FILE = REPO_ROOT / ".supervisor" / "state" / "watcher.json"
 
-# Default watch dirs — searched in order; first that exists is used
-DEFAULT_WATCH_DIRS = [
-    REPO_ROOT / ".local" / "evidence",
+# Default watch roots — each is scanned recursively for *.zip
+DEFAULT_WATCH_ROOTS = [
+    REPO_ROOT / ".local",           # all subdirs — agents may drop bundles anywhere
     REPO_ROOT / "evidence-bundles",
 ]
 
@@ -63,11 +63,12 @@ def save_state(state: dict) -> None:
     STATE_FILE.write_text(json.dumps(existing, indent=2), encoding="utf-8")
 
 
-def find_bundles(watch_dir: Path) -> list[Path]:
-    """Return all *.zip files in watch_dir sorted by mtime descending."""
-    if not watch_dir.is_dir():
-        return []
-    bundles = list(watch_dir.glob("*.zip"))
+def find_bundles(watch_roots: list[Path]) -> list[Path]:
+    """Return all *.zip files under watch_roots (recursive) sorted by mtime descending."""
+    bundles = []
+    for root in watch_roots:
+        if root.is_dir():
+            bundles.extend(root.glob("**/*.zip"))
     bundles.sort(key=lambda p: p.stat().st_mtime, reverse=True)
     return bundles
 
@@ -105,16 +106,16 @@ def trigger_pipeline(bundle_path: Path, log_file=None) -> int:
     return result.returncode
 
 
-def check_once(watch_dir: Path, log_file=None) -> bool:
+def check_once(watch_roots: list[Path], log_file=None) -> bool:
     """
-    Check watch_dir for a bundle newer than the last processed one.
+    Check watch_roots (recursively) for a bundle newer than the last processed one.
     Returns True if a new bundle was found and processed, False otherwise.
     """
     state = load_state()
     last_processed_mtime = state.get("last_processed_mtime", 0.0)
     last_processed_path = state.get("last_processed_path", "")
 
-    bundles = find_bundles(watch_dir)
+    bundles = find_bundles(watch_roots)
     if not bundles:
         return False
 
@@ -164,14 +165,11 @@ def check_once(watch_dir: Path, log_file=None) -> bool:
     return True
 
 
-def resolve_watch_dir(explicit: Path | None) -> Path:
+def resolve_watch_roots(explicit: Path | None) -> list[Path]:
+    """Return list of roots to scan. If --watch-dir given, use it alone; else use defaults."""
     if explicit:
-        return explicit.resolve()
-    for candidate in DEFAULT_WATCH_DIRS:
-        if candidate.exists():
-            return candidate
-    # Return first default even if it doesn't exist — we'll create it
-    return DEFAULT_WATCH_DIRS[0]
+        return [explicit.resolve()]
+    return DEFAULT_WATCH_ROOTS
 
 
 def main() -> int:
@@ -182,7 +180,7 @@ def main() -> int:
         "--watch-dir",
         type=Path,
         default=None,
-        help=f"Directory to watch for *.zip bundles (default: {DEFAULT_WATCH_DIRS[0]})",
+        help=f"Root directory to scan recursively for *.zip bundles (default: {DEFAULT_WATCH_ROOTS[0]})",
     )
     parser.add_argument(
         "--interval",
@@ -203,13 +201,15 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    watch_dir = resolve_watch_dir(args.watch_dir)
-    watch_dir.mkdir(parents=True, exist_ok=True)
+    watch_roots = resolve_watch_roots(args.watch_dir)
+    for root in watch_roots:
+        root.mkdir(parents=True, exist_ok=True)
 
     log_file = str(args.log_file) if args.log_file else None
 
     log(f"WATCHER STARTED", log_file)
-    log(f"  Watch dir:    {watch_dir}", log_file)
+    for root in watch_roots:
+        log(f"  Watch root:   {root} (recursive)", log_file)
     log(f"  Poll interval: {args.interval}s", log_file)
     log(f"  State file:   {STATE_FILE}", log_file)
     if log_file:
@@ -223,7 +223,7 @@ def main() -> int:
         log("  Last processed: (none — first run)", log_file)
 
     if args.once:
-        found = check_once(watch_dir, log_file)
+        found = check_once(watch_roots, log_file)
         log(f"WATCHER: --once mode complete ({'new bundle processed' if found else 'no new bundle'})", log_file)
         return 0
 
@@ -244,7 +244,7 @@ def main() -> int:
 
     while _running[0]:
         try:
-            check_once(watch_dir, log_file)
+            check_once(watch_roots, log_file)
         except Exception as e:
             log(f"ERROR during poll: {e}", log_file)
 
