@@ -17,7 +17,7 @@ Python: 6634 passed, 19 isolation-only failures (csv-shadow — known/documented
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION_PASS_1_SHA: TBD
+BUNDLE_VALIDATION_PASS_1_SHA: a5334c371ca2dca6831ec4ac69d6e4ee196d7442e17fa514bc7669ee8e8962e4
 BUNDLE_VALIDATION_PASS_2_SHA: TBD
 SIDECAR_SHA: TBD
 DELIVERY_PACKAGE_SHA: TBD
