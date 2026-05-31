@@ -23,7 +23,7 @@ All 19 trains complete (A through S).
 ## Bundle Validation
 
 ```
-BUNDLE_VALIDATION_PASS_1_SHA: delegated_to_final_artifact_authority_json
+BUNDLE_VALIDATION_PASS_1_SHA: a907c7e5026fcccfa58896c2553f0926f28cb3f679b3fe5c81d7cc4119e06b20
 BUNDLE_VALIDATION_PASS_2_SHA: delegated_to_final_artifact_authority_json
 SIDECAR_SHA: delegated_to_final_artifact_authority_json
 DELIVERY_PACKAGE_SHA: external_delivery_manifest_authoritative
