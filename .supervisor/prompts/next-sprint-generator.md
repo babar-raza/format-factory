@@ -45,6 +45,58 @@ Timestamp: [INSERT_TIMESTAMP]
 [INSERT_PROJECT_MEMORY_RECENT]
 ```
 
+## PRODUCT-FACTORY DIRECTION (MANDATORY — R85+)
+
+Format Factory is a repeatable product factory. Evidence is support infrastructure, not the goal.
+Sprint success = product POC progress + evidence validating that progress.
+
+**The generated next-sprint MUST include these product-factory lanes:**
+
+### Required Product Lanes (include all that are not external-gate-blocked)
+
+1. **Commercial .NET product advancement lane:**
+   - FODS: load/edit/save/export progress or dogfooding improvement
+   - FODT: load/edit/save/export progress or dogfooding improvement
+   - Netpbm (.NET): first slice or deepening if already started
+   - If all are Gate-11-blocked: document exact blocker; pick deepening or export lane
+
+2. **Reduced/FOSS product advancement lane:**
+   - ZST: dependency proof or example improvement
+   - Netpbm Python: PBM/PGM/PPM improvement or PBM→PGM dogfood
+   - SYLK: example, docs, or installed workflow improvement
+   - At least ONE of these must advance each sprint unless all are truly blocked
+
+3. **Dogfooding export lane:**
+   - At least one export path must use a Format Factory-produced library
+   - Map: FODS→CSV (FF csv_exporter), FODT→TXT (FF document_to_text), SYLK→CSV (FF sylk_to_csv)
+   - If .NET dogfooding gap exists: create one bridge export test
+
+4. **Package/install proof lane:**
+   - Physical package artifacts must be built and included
+   - Installed workflow test must run from extracted package
+   - No package test may skip because artifact is missing
+
+5. **POC matrix update lane:**
+   - product-capability-matrix/poc-targets.yaml must be updated
+   - Each product's status must be truthful (not overclaimed)
+
+6. **State/memory sync lane:**
+   - state/current-state.md/.json updated after validation
+   - .supervisor/project-memory.md entry appended
+   - plans/master-plan.md updated if phase changes
+
+7. **Final supervisor loop trigger:**
+   - Last instruction MUST be: `python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle>`
+   - Verify generated next-sprint.md keeps product-factory direction
+   - If next-sprint.md lacks product lanes → repair this template and rerun
+
+### What makes a sprint INSUFFICIENT (classify as partial, not success)
+- Only evidence was closed; no product POC progress
+- Dogfooding map not updated
+- POC matrix not updated
+- Supervisor loop not run on final bundle
+- Generated next-sprint.md has no product lanes
+
 ## Generation Instructions
 
 1. **Determine next sprint focus:**
@@ -52,18 +104,21 @@ Timestamp: [INSERT_TIMESTAMP]
    - If tests failed → repair sprint
    - If gate approval pending → document blocker, pick adjacent safe lanes
    - If evidence accepted → advance to next safe mega-train lanes
+   - **ALWAYS include product-factory lanes regardless of gate status**
 
 2. **Generate next sprint prompt:**
    Format: Full mega-train sprint prompt following Format Factory mega-train conventions.
    Must include:
    - Sprint identity (suggest next R-number)
-   - Problem statement / goal
+   - Problem statement / goal (MUST mention product POC, not just evidence)
    - Mandatory evidence rules (must produce ZIP bundle, validate_evidence_bundle.py must pass)
    - Non-negotiable constraints (no push, no commit without user auth, no gate self-approval)
    - Lane manifest (at least 8 independent lanes including coordinator, implementation, validation, adversarial)
+   - **Product-factory lanes (required — see above)**
    - Acceptance criteria per lane
    - Evidence bundle requirements
    - Final response format
+   - **Final supervisor loop trigger instruction**
 
 3. **Generate Task Master export:**
    Must conform to next-sprint-taskmaster.schema.json.

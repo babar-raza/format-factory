@@ -26,6 +26,10 @@ from .pbm_parser import (
     PbmDecodeError,
     PbmImage,
 )
+from .pbm_to_pgm import (
+    convert_pbm_to_pgm,
+    pbm_pixels_to_pgm_pixels,
+)
 
 __version__ = "0.1.0"
 __track__ = "python-foss"
@@ -45,4 +49,6 @@ __all__ = [
     "PbmSizeError",
     "PbmDecodeError",
     "PbmImage",
+    "convert_pbm_to_pgm",
+    "pbm_pixels_to_pgm_pixels",
 ]

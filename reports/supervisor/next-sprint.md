@@ -1,28 +1,31 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: unknown
-# Generated: 2026-05-31T20:13:07.241615
+# Source sprint: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
+# Generated: 2026-05-31T22:49:21.309579
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-REPAIR: Address CRITICAL contradictions before advancing
+ADVANCE: Continue normal mega-train lanes
 
 ## Prior Sprint Summary
-- Sprint ID: unknown
-- Evidence verdict: BLOCKED_MISSING_FINAL_VERDICT
-- Tests: 6634 passed, 19 failed, 34 skipped
-- Autonomous continue: False
+- Sprint ID: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
+- Evidence verdict: ACCEPTED
+- Tests: 65 passed, 0 failed, 0 skipped
+- Autonomous continue: True
 
 ## Contradictions Requiring Repair
-- [CRITICAL] No final-verdict.md found in evidence bundle
-- [CRITICAL] Tests failed: 19 failures detected in evidence bundle
-- [WARNING] Sprint ID not found in evidence bundle
+None
 
 ## Synthesized Task List (Advisory)
-- [pending] REPAIR-001: Repair: No final-verdict.md found in evidence bundle
-- [pending] REPAIR-002: Repair: Tests failed: 19 failures detected in evidence bundle
+- [approval-blocked] TASK-001: Advance FODS Gate 11 commercial readiness
+- [approval-blocked] TASK-002: Advance FODT Gate 11 commercial readiness
+- [blocked] TASK-003: Open ZST Gate 11
+- [pending] TASK-004: Work on open taskcard: ABW-GATE4-001-parser-prototype
+- [pending] TASK-005: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
+- [pending] TASK-006: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
+- [pending] TASK-007: Build and validate next sprint evidence bundle
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -56,24 +59,6 @@ REPAIR: Address CRITICAL contradictions before advancing
 
 ## Project Memory Context
 ```
-
-## Entry: FORMAT-FACTORY-R79-PACKAGE-SOURCE-SYNC-FIRST-REAL-FODS-PRODUCT-RC-ZST-DEPENDENCY-REPLAY-MEGA-TRAIN-001 [STALE]
-- timestamp: 2026-05-31T10:53:52.946007
-- verdict: ACCEPTED
-- test_count: 65
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r79-pass2.zip
-- pending_marker_count: 0
-- bundle_entry_count: 3300
-
-## Entry: FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001
-- timestamp: 2026-05-31T13:13:31.382196
-- verdict: ACCEPTED
-- test_count: 73
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r82-supervisor-review-package.zip
 - pending_marker_count: 2
 - bundle_entry_count: 81
 
@@ -106,6 +91,24 @@ REPAIR: Address CRITICAL contradictions before advancing
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass2.zip
 - pending_marker_count: 0
 - bundle_entry_count: 3430
+
+## Entry: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
+- timestamp: 2026-05-31
+- sprint_type: DIRECTION_CORRECTION + PRODUCT_FACTORY_POC
+- direction_corrected: true
+- product_factory_primary_goal: true
+- evidence_role: SUPPORT_INFRASTRUCTURE_NOT_FINISH_LINE
+- commercial_net_poc_targets: FODS, FODT, Netpbm
+- foss_reduced_poc_targets: ZST, PBM+PGM+PPM, SYLK
+- supervisor_loop_used: true
+- mcp_activation: NOT_PERFORMED
+- ruflo_daemon: NOT_STARTED
+- commercial_product_ready: false
+- gate_11_approved: false
+- gate_8_approved: false
+- poc_matrix_path: product-capability-matrix/poc-targets.yaml
+- dogfood_export_strategy: docs/export/dogfood-export-strategy.md
+- next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
 ```
 
 ---

@@ -141,3 +141,66 @@ memory_sync:
     - GOVERNANCE.md
     - plans/master-plan.md
     - registry/format-registry.yaml
+
+# ============================================================
+# PRODUCT-FACTORY DIRECTION POLICIES (R85+)
+# ============================================================
+
+product_factory:
+  # Core direction: evidence is support, product is goal
+  product_factory_direction_required: true
+  evidence_supports_product_not_finish_line: true
+
+  # POC targets required
+  poc_targets_required: true
+  commercial_net_products_required: 3
+  foss_reduced_products_required: 3
+  poc_matrix_file: product-capability-matrix/poc-targets.yaml
+
+  # Product claims must be backed by installed-package proof
+  installed_package_proof_required_for_package_claims: true
+  same_format_save_required_for_product_claims: true
+  editable_object_model_required_for_product_claims: true
+
+  # Export/dogfooding
+  dogfood_export_required: true
+  dogfood_export_strategy_file: docs/export/dogfood-export-strategy.md
+
+  # Sprint success classification
+  sprint_with_evidence_only_no_product_progress: PARTIAL_NOT_SUCCESS
+
+  # Required lanes in supervisor-generated next-sprint.md
+  required_next_sprint_lanes:
+    - commercial_product_advancement
+    - foss_reduced_product_advancement
+    - dogfooding_export
+    - package_install_proof
+    - poc_matrix_update
+    - state_memory_sync
+    - supervisor_loop_trigger
+
+  # Supervisor loop must be run on final bundle each sprint
+  supervisor_loop_required_after_bundle: true
+  supervisor_loop_command: "python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle>"
+
+# ============================================================
+# PRODUCT-FACTORY APPROVAL GATE ADDITIONS (R85+)
+# ============================================================
+
+product_factory_gates:
+  stop_commercial_approval_required:
+    condition: "Gate 11 G11-G approval required for commercial product release"
+    who_unblocks: Babar_Raza
+
+  stop_publication_approval_required:
+    condition: "PyPI/NuGet/GitHub release publication required"
+    who_unblocks: Babar_Raza
+
+  stop_mcp_activation_required:
+    condition: "MCP server activation required (Task Master, Ruflo daemon)"
+    who_unblocks: Babar_Raza
+
+  autonomous_product_deepening_continue:
+    condition: "Product POC deepening work (load/edit/save/export/dogfood) with no gate approval needed"
+    action: "Proceed autonomously"
+    who_unblocks: null

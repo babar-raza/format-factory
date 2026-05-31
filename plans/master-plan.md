@@ -1844,5 +1844,102 @@ This section documents the hardened plan only. Implementation requires:
 
 ---
 
-*End of plans/master-plan.md — version 2.57 — 2026-05-18 (Section 39 added by FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001)*
+---
+
+## Section 40 — Product-Factory POC Direction (R85+)
+
+**Added:** FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001 (2026-05-31)
+**Authority:** This section records the accepted strategic product-factory direction. It overrides any prior framing in which evidence closure alone constituted sprint success.
+
+### 40.1 Mission Restatement
+
+Format Factory is a **repeatable product factory**.
+
+The system must be able to:
+1. Take a format with specifications/acquisition evidence
+2. Produce a professional library
+3. Expose a real object/document model
+4. Support load, edit, save, and export
+5. Dogfood export through Format Factory's own produced libraries
+
+Evidence (bundles, SHA chains, validators, contracts) is **support infrastructure** for proving the product works.
+Evidence is **not** the product and evidence closure is **not** sprint success by itself.
+
+Sprint success = real product-factory POC progress + evidence validating that progress.
+
+### 40.2 POC Targets (R85 accepted)
+
+#### Commercial .NET Products (3 targets)
+
+| # | Format | Classification | Current Status |
+|---|--------|---------------|----------------|
+| 1 | FODS | POC_TARGET_CONFIRMED | Load/edit/save/export all pass; G11-G NOT_STARTED |
+| 2 | FODT | POC_TARGET_CONFIRMED | Load/edit/save/export all pass; G11-G NOT_STARTED |
+| 3 | Netpbm (.NET) | POC_TARGET_CONFIRMED | R85 first slice (new); family-based dogfooding |
+
+Rationale for Netpbm as third .NET target:
+- Python PBM/PGM/PPM packages at Gate 10 RC; three FF libraries exist
+- Simple text/binary format; .NET load/edit/save trivially implementable
+- Natural dogfooding: PBM→PGM→PPM export using Format Factory libraries
+- QOI: HOLD for future (Python Gate 7 exists; .NET complexity higher)
+
+#### Reduced/FOSS Python Products (3 targets)
+
+| # | Format | Classification | Current Status |
+|---|--------|---------------|----------------|
+| 1 | ZST | POC_TARGET_CONFIRMED | compress/decompress/probe; Gate 10 RC |
+| 2 | PBM+PGM+PPM | POC_TARGET_CONFIRMED | parse+write for PBM+PGM; PPM parse only; R85 adds PBM→PGM dogfood |
+| 3 | SYLK | POC_TARGET_CONFIRMED | parse+sylk_to_csv; R84 complete; read+export-only scope |
+
+DIF: HOLD (overlaps SYLK; defer until SYLK POC complete)
+
+### 40.3 Product Success Criteria
+
+A product qualifies as POC_COMPLETE when, from an installed package:
+1. Load a file from disk
+2. Inspect the object model (sheets/cells, paragraphs, pixels, rows)
+3. Make a meaningful edit (set cell value, append paragraph, flip pixel value)
+4. Save to the same format
+5. Reload and verify the edit survived
+6. Export to at least one other format using Format Factory's own libraries where available
+
+### 40.4 Dogfooding Requirement
+
+All export paths must record:
+- `dogfood_status: IMPLEMENTED | GAP_DOGFOOD_EXTERNAL | NOT_YET`
+- `target_ff_library:` the Format Factory library to close the gap
+
+External shortcuts (raw string writing, stdlib-only) are documented as `GAP_DOGFOOD_EXTERNAL`, not hidden.
+
+### 40.5 Local Supervisor Loop (mandatory from R85+)
+
+After every evidence bundle build, the executor must run:
+```
+python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle-path>
+```
+
+Generated next-sprint.md must include product-factory lanes:
+- product advancement lanes (at least one commercial + one FOSS)
+- dogfooding export lanes
+- reproducibility lanes
+- POC matrix update
+- state/memory sync
+- final supervisor loop trigger
+
+If generated next-sprint.md lacks these → repair .supervisor/prompts/next-sprint-generator.md and rerun.
+
+Only escalate to human if true external gate: Gate 8/11 approval, push, credentials, MCP activation.
+
+### 40.6 No-Drift Anchors
+
+- TM task "done" ≠ Format Factory gate closed
+- Ruflo lane "complete" ≠ evidence accepted
+- Supervisor next-sprint.md = sprint INPUT, not authority
+- POC matrix (product-capability-matrix/poc-targets.yaml) = reference snapshot, not finalized product status
+- commercial_product_ready: false until Gate 11 G11-G approved by Babar Raza
+- gate_11_approved: false until explicit written approval from Babar Raza
+
+---
+
+*End of plans/master-plan.md — version 2.65 — 2026-05-31 (Section 40 added by FORMAT-FACTORY-R85-POC-DIRECTION)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

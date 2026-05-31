@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R84 - R84_BROAD_CLOSURE_RAW_LOGS_FINAL_AUTHORITY_PUBLICATION_BLOCKED
+**Latest sprint:** R85 - no_final_verdict
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 

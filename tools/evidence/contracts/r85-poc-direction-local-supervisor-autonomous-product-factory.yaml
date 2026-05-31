@@ -1,0 +1,99 @@
+# R85 Evidence Contract
+# FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
+
+sprint_id: "FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001"
+sprint_number: "R85"
+sprint_date: "2026-05-31"
+
+# Artifact policy: none — packages are local-only, not embedded in ZIP
+installed_artifact_policy: none
+
+# Sidecar proof: required
+sidecar_required: true
+final_proof_policy: external_sidecar
+
+# Git hygiene
+require_clean_git: true
+
+# Minimum metadata files
+min_metadata_count: 30
+
+# Required repo files (all must exist at bundle build time)
+required_repo_files:
+  # Preflight + planning
+  - reports/r85/00-preflight.md
+  - reports/r85/multi-mega-train-scoreboard.md
+  - reports/r85/lane-ownership.md
+  - reports/r85/parallel-execution-map.md
+  - reports/r85/risk-register.md
+
+  # Direction correction (Trains A-B)
+  - reports/r85/current-direction-correction.md
+  - reports/r85/local-memory-sync.md
+  - reports/r85/poc-target-matrix.md
+
+  # Supervisor adoption (Trains C-F)
+  - reports/r85/local-supervisor-plan-verification.md
+  - reports/r85/supervisor-loop-smoke.md
+  - reports/r85/product-direction-supervisor-policy.md
+  - reports/r85/approval-gate-classifier-product-update.md
+  - reports/r85/taskmaster-ruflo-product-alignment.md
+
+  # Reproducibility + playbooks (Trains G-H)
+  - reports/r85/fods-reproducible-product-path.md
+  - reports/r85/reproducibility-gap-ledger.md
+  - reports/r85/format-family-repeatability-templates.md
+
+  # Product audits (Trains I-J)
+  - reports/r85/fods-commercial-dotnet-product-slice.md
+  - reports/r85/fodt-commercial-dotnet-product-slice.md
+
+  # New .NET product (Train K)
+  - reports/r85/third-commercial-product-selection.md
+  - reports/r85/third-commercial-product-first-slice.md
+
+  # FOSS products (Trains L-N)
+  - reports/r85/zst-reduced-foss-product-finish.md
+  - reports/r85/netpbm-reduced-foss-product.md
+  - reports/r85/sylk-or-dif-reduced-foss-product.md
+
+  # Dogfood exports (Trains O-P)
+  - reports/r85/dogfood-export-map.md
+  - reports/r85/first-dogfooded-export-slice.md
+
+  # Package proof (Train Q)
+  - reports/r85/package-build-proof.md
+
+  # Examples + gaps (Trains R-S)
+  - reports/r85/examples-docs-baseline.md
+  - reports/r85/poc-gap-extraction.md
+
+  # Final IV (Train V)
+  - reports/r85/final-adversarial-iv.md
+
+  # Final verdict
+  - reports/r85/final-verdict.md
+
+  # Contract self-reference (INV-003)
+  - tools/evidence/contracts/r85-poc-direction-local-supervisor-autonomous-product-factory.yaml
+
+  # Product capability matrices
+  - product-capability-matrix/poc-targets.yaml
+
+  # New source files (R85)
+  - src/net/netpbm/FormatFactory.Netpbm.csproj
+  - src/python/pbm/pbm_to_pgm.py
+
+  # New supervisor artifacts
+  - .supervisor/prompts/poc-gap-extractor.md
+  - .supervisor/fixtures/r85-poc-gap-extraction.yaml
+  - docs/export/dogfood-export-strategy.md
+  - docs/format-family-playbooks/xml-office-like.md
+  - docs/format-family-playbooks/simple-binary-image.md
+
+  # Memory sync
+  - memory/27-r85-product-factory-direction.md
+
+  # State
+  - state/current-state.json
+  - plans/master-plan.md

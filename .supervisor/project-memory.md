@@ -98,3 +98,21 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass2.zip
 - pending_marker_count: 0
 - bundle_entry_count: 3430
+
+## Entry: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
+- timestamp: 2026-05-31
+- sprint_type: DIRECTION_CORRECTION + PRODUCT_FACTORY_POC
+- direction_corrected: true
+- product_factory_primary_goal: true
+- evidence_role: SUPPORT_INFRASTRUCTURE_NOT_FINISH_LINE
+- commercial_net_poc_targets: FODS, FODT, Netpbm
+- foss_reduced_poc_targets: ZST, PBM+PGM+PPM, SYLK
+- supervisor_loop_used: true
+- mcp_activation: NOT_PERFORMED
+- ruflo_daemon: NOT_STARTED
+- commercial_product_ready: false
+- gate_11_approved: false
+- gate_8_approved: false
+- poc_matrix_path: product-capability-matrix/poc-targets.yaml
+- dogfood_export_strategy: docs/export/dogfood-export-strategy.md
+- next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
