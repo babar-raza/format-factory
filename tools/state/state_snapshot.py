@@ -114,6 +114,11 @@ def get_latest_sprint():
             m = re.search(r"##\s+Verdict\s*\n+\s*`([A-Z][A-Z0-9_]+)`", content)
             if m:
                 verdict = m.group(1)
+        # Format D: "## Verdict" heading + plain-text value on next non-empty line
+        if not verdict:
+            m = re.search(r"##\s+Verdict\s*\n+\s*([A-Z][A-Z0-9_]{3,})\s*(?:\n|$)", content)
+            if m:
+                verdict = m.group(1)
         # Reject values that are just markdown noise (only underscores/digits — not a real id)
         if verdict and not re.match(r"[A-Z][A-Z0-9_]{3,}", verdict):
             verdict = None
