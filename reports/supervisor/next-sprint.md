@@ -1,25 +1,31 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001
-# Generated: 2026-05-31T13:13:31.179931
+# Source sprint: FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
+# Generated: 2026-05-31T14:37:06.981004
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-REPAIR: Address CRITICAL contradictions before advancing
+ADVANCE: Continue normal mega-train lanes
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001
+- Sprint ID: FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
 - Evidence verdict: ACCEPTED
-- Tests: 73 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Tests: 161 passed, 0 failed, 0 skipped
+- Autonomous continue: True
 
 ## Contradictions Requiring Repair
-- [CRITICAL] PENDING markers found in final-verdict.md: 2 occurrences
+None
 
 ## Synthesized Task List (Advisory)
-- [pending] REPAIR-001: Repair: PENDING markers found in final-verdict.md: 2 occurrences
+- [approval-blocked] TASK-001: Advance FODS Gate 11 commercial readiness
+- [approval-blocked] TASK-002: Advance FODT Gate 11 commercial readiness
+- [blocked] TASK-003: Open ZST Gate 11
+- [pending] TASK-004: Work on open taskcard: ABW-GATE4-001-parser-prototype
+- [pending] TASK-005: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
+- [pending] TASK-006: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
+- [pending] TASK-007: Build and validate next sprint evidence bundle
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -53,16 +59,6 @@ REPAIR: Address CRITICAL contradictions before advancing
 
 ## Project Memory Context
 ```
-- supervisor_status: IMPLEMENTED
-- current_product_phase: Phase 3 — FODS/FODT Gates 1-10 PASSED; G11-G NOT_STARTED
-- r78_status: R78_FODS_PRODUCT_SLICE_COMPLETE_ZST_LOCAL_RC_READY_PUBLICATION_BLOCKED
-- r78_head: 9b4e9e38a254b24ccb558e2b9dcb21d5f59c3506
-- no_real_evidence_bundle: true (no .zip found in .local/evidence/)
-- supervisor_scripts: 6 implemented
-- schemas: 4 validated
-- prompts: 5 written
-- tm_bridge_validators: 2 implemented
-- tm_bridge_tests: 2 files
 - docs_created: 19 documents
 - mcp_activation: NOT_PERFORMED (MODE 4 requires explicit human approval)
 - ruflo_daemon: NOT_STARTED
@@ -103,6 +99,16 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r79-pass2.zip
 - pending_marker_count: 0
 - bundle_entry_count: 3300
+
+## Entry: FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001
+- timestamp: 2026-05-31T13:13:31.382196
+- verdict: ACCEPTED
+- test_count: 73
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r82-supervisor-review-package.zip
+- pending_marker_count: 2
+- bundle_entry_count: 81
 ```
 
 ---
