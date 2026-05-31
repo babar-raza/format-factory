@@ -1,8 +1,17 @@
 # Contradiction Detection Report
-Sprint ID: FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
-Timestamp: 2026-05-31T14:43:05.680015
-Overall: CLEAN
-Autonomous continue: True
-Critical: 0 | Warning: 0
+Sprint ID: unknown
+Timestamp: 2026-05-31T14:45:06.119482
+Overall: CRITICAL_CONTRADICTIONS
+Autonomous continue: False
+Critical: 1 | Warning: 1
 
-No contradictions detected.
+## Contradictions
+
+### [CRITICAL] 1. No final-verdict.md found in evidence bundle
+Detail: Evidence bundles must contain a final-verdict.md
+
+### [WARNING] 2. Sprint ID not found in evidence bundle
+Detail: Cannot verify sprint identity match with contract
+
+## CRITICAL: Autonomous loop stopped.
+CRITICAL contradictions require human review before continuing.
