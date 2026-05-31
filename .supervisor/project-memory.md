@@ -39,7 +39,7 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - pending_marker_count: 0
 - bundle_entry_count: 2201
 
-## Entry: FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530
+## Entry: FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530 [STALE]
 - timestamp: 2026-05-30T19:52:10.954828
 - verdict: ACCEPTED
 - test_count: 65
@@ -88,3 +88,13 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-supervisor-review-package.zip
 - pending_marker_count: 1
 - bundle_entry_count: 9
+
+## Entry: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
+- timestamp: 2026-05-31T20:09:07.506275
+- verdict: ACCEPTED
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3430
