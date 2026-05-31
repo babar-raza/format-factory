@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-05-31T14:47:05.736516
+# Generated: 2026-05-31T20:09:07.349340
 
 ## Quick State
-- Last sprint: ** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
+- Last sprint: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
 - Evidence verdict: ACCEPTED
-- Tests: 0 passed / 0 failed
-- PENDING markers: 1
-- CRITICAL contradictions: 1
-- Autonomous continue: False
+- Tests: 65 passed / 0 failed
+- PENDING markers: 0
+- CRITICAL contradictions: 0
+- Autonomous continue: True
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -23,22 +23,12 @@
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-supervisor-review-package.zip
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass2.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-
-## Entry: ** FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001
-- timestamp: 2026-05-30T17:21:58.683779
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\evidence-bundles\r40-r39-fix-closure-package-build-proof.zip
-- pending_marker_count: 0
-- bundle_entry_count: 2201
 
 ## Entry: FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530
 - timestamp: 2026-05-30T19:52:10.954828
@@ -79,6 +69,16 @@
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass1.zip
 - pending_marker_count: 0
 - bundle_entry_count: 3380
+
+## Entry: ** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
+- timestamp: 2026-05-31T14:47:05.888050
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-supervisor-review-package.zip
+- pending_marker_count: 1
+- bundle_entry_count: 9
 ```
 
 ## IMPORTANT REMINDERS

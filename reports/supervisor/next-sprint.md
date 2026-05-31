@@ -1,26 +1,31 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: ** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
-# Generated: 2026-05-31T14:47:05.715715
+# Source sprint: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
+# Generated: 2026-05-31T20:09:07.329190
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-REPAIR: Address CRITICAL contradictions before advancing
+ADVANCE: Continue normal mega-train lanes
 
 ## Prior Sprint Summary
-- Sprint ID: ** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
+- Sprint ID: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
 - Evidence verdict: ACCEPTED
-- Tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Tests: 65 passed, 0 failed, 0 skipped
+- Autonomous continue: True
 
 ## Contradictions Requiring Repair
-- [CRITICAL] PENDING markers found in final-verdict.md: 1 occurrences
-- [WARNING] Sprint ID mismatch: evidence='** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001' vs contract='FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001'
+None
 
 ## Synthesized Task List (Advisory)
-- [pending] REPAIR-001: Repair: PENDING markers found in final-verdict.md: 1 occurrences
+- [approval-blocked] TASK-001: Advance FODS Gate 11 commercial readiness
+- [approval-blocked] TASK-002: Advance FODT Gate 11 commercial readiness
+- [blocked] TASK-003: Open ZST Gate 11
+- [pending] TASK-004: Work on open taskcard: ABW-GATE4-001-parser-prototype
+- [pending] TASK-005: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
+- [pending] TASK-006: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
+- [pending] TASK-007: Build and validate next sprint evidence bundle
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -54,16 +59,6 @@ REPAIR: Address CRITICAL contradictions before advancing
 
 ## Project Memory Context
 ```
-
-## Entry: ** FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001
-- timestamp: 2026-05-30T17:21:58.683779
-- verdict: ACCEPTED
-- test_count: 0
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\evidence-bundles\r40-r39-fix-closure-package-build-proof.zip
-- pending_marker_count: 0
-- bundle_entry_count: 2201
 
 ## Entry: FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530
 - timestamp: 2026-05-30T19:52:10.954828
@@ -104,6 +99,16 @@ REPAIR: Address CRITICAL contradictions before advancing
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass1.zip
 - pending_marker_count: 0
 - bundle_entry_count: 3380
+
+## Entry: ** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
+- timestamp: 2026-05-31T14:47:05.888050
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-supervisor-review-package.zip
+- pending_marker_count: 1
+- bundle_entry_count: 9
 ```
 
 ---
