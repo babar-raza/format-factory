@@ -1,6 +1,6 @@
 # Supervisor-Generated Next Sprint Prompt
 # Source sprint: FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
-# Generated: 2026-05-31T14:39:06.713164
+# Generated: 2026-05-31T14:43:06.434438
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
