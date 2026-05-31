@@ -24,11 +24,11 @@ All 19 trains complete (A through S).
 
 ```
 BUNDLE_VALIDATION_PASS_1_SHA: a907c7e5026fcccfa58896c2553f0926f28cb3f679b3fe5c81d7cc4119e06b20
-BUNDLE_VALIDATION_PASS_2_SHA: delegated_to_final_artifact_authority_json
-SIDECAR_SHA: delegated_to_final_artifact_authority_json
+BUNDLE_VALIDATION_PASS_2_SHA: a16e84a5b4e4f433229125a80efb192535f2e79a62365ce3ed1cecc4c793ee8f
+SIDECAR_SHA: ad58aff39c147bcee3865fa298f4558bc58504eeebf1943091134def9c0a10c1
 DELIVERY_PACKAGE_SHA: external_delivery_manifest_authoritative
-BUNDLE_VALIDATION: delegated_to_final_artifact_authority_json
-SIDECAR_PROOF_VALIDATION: delegated_to_final_artifact_authority_json
+BUNDLE_VALIDATION: PASS
+SIDECAR_PROOF_VALIDATION: PASS
 ```
 
 ## Key Achievements
