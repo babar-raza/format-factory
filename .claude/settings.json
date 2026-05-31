@@ -94,7 +94,9 @@
       "Write(tests/python/fodt/**)",
       "Write(tests/evidence/**)",
       "Write(tools/evidence/contracts/**)",
-      "Write(tools/repro/**)"
+      "Write(tools/repro/**)",
+      "Bash(python3 -c \"import jsonschema\")",
+      "Bash(.local/venv/Scripts/python -c \"import jsonschema; print\\(''jsonschema:'', jsonschema.__version__\\)\")"
     ],
     "deny": [
       "Write(.env)",
