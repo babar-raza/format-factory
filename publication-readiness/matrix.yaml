@@ -1,0 +1,45 @@
+# Publication Readiness Matrix
+# Format Factory R83
+
+sprint: R83
+date: 2026-05-31
+publish_authorized: false
+
+formats:
+  fods_python_foss:
+    pypi_ready: false
+    blocking_gates: [G11-G]
+    commercial_product_ready: false
+    capability_level: alpha-foss-preview
+    reason_not_published: G11-G human approval not started
+
+  fodt_python_foss:
+    pypi_ready: false
+    blocking_gates: [G11-G]
+    commercial_product_ready: false
+    capability_level: alpha-foss-preview
+    reason_not_published: G11-G human approval not started
+
+  zst_python_foss:
+    pypi_ready: false
+    blocking_gates: [G11-G]
+    commercial_product_ready: false
+    capability_level: alpha-foss-preview
+    reason_not_published: G11-G not started, dependency mode classification
+
+  fods_dotnet:
+    nuget_ready: false
+    blocking_gates: [G11-G]
+    commercial_product_ready: false
+    reason_not_published: G11-G not started
+
+  fodt_dotnet:
+    nuget_ready: false
+    blocking_gates: [G11-G]
+    commercial_product_ready: false
+    reason_not_published: G11-G not started
+
+summary:
+  all_publication_blocked: true
+  primary_blocker: G11-G NOT_STARTED (human approval required)
+  secondary_blocker: commercial_product_ready false for all formats

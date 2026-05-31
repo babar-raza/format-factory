@@ -1,0 +1,37 @@
+# Examples and Docs Readiness Summary
+# Format Factory R83
+
+sprint: R83
+date: 2026-05-31
+
+python_foss:
+  fods:
+    examples:
+      - examples/python/fods/edit_save_export_fods.py  # source-import version (pre-R83)
+      - examples/python/fods/edit_save_export_fods_installed.py  # installed-wheel version (R83)
+    docs:
+      - docs/python-foss/  # existing docs
+    status: READY_FOR_ALPHA_RELEASE
+
+  fodt:
+    examples:
+      - examples/python/fodt/edit_save_fodt_installed.py  # installed-wheel version (R83)
+    docs:
+      - docs/python-foss/  # existing docs
+    status: READY_FOR_ALPHA_RELEASE
+
+  zst:
+    examples: []
+    docs: []
+    status: NEEDS_INSTALLED_EXAMPLE
+
+docstring_coverage:
+  fods: partial (public API functions have docstrings)
+  fodt: partial
+  zst: partial
+
+api_reference:
+  fods: api-inventory-fods.txt
+  fodt: api-inventory-fodt.txt
+
+publication_readiness: NOT_READY (G11-G not started)

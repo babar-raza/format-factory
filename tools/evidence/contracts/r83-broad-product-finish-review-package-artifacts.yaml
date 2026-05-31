@@ -1,0 +1,97 @@
+# R83 Evidence Contract
+# FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
+
+sprint_id: "FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001"
+sprint_number: "R83"
+sprint_date: "2026-05-31"
+
+# Artifact policy: self_contained — physical package artifacts must be in supervisor review package
+# D82-01 fix: supervisor review package (not inner bundle) is the primary artifact
+installed_artifact_policy: self_contained
+
+# Sidecar proof: required (fail-closed policy, R54+)
+# D82-10 fix: sidecar must be physically inside review package
+sidecar_required: true
+final_proof_policy: external_sidecar
+
+# Git hygiene
+require_clean_git: true
+
+# Minimum metadata files (R83 adds 4 new required files)
+min_metadata_count: 34
+
+# Required repo files (all must exist at bundle build time)
+required_repo_files:
+  # Train A: R82 IV and defect ledger
+  - reports/r83/00-preflight.md
+  - reports/r83/r82-independent-verification.md
+  - reports/r83/r82-defect-ledger.md
+  - reports/r83/r82-defect-ledger.json
+  # Wave 0: Planning
+  - reports/r83/multi-mega-train-scoreboard.md
+  - reports/r83/lane-ownership.md
+  - reports/r83/broad-sprint-scope-map.md
+  - reports/r83/risk-register.md
+  - reports/r83/parallel-execution-map.md
+  - reports/r83/true-current-system-state.md
+  # Train B: Supervisor review package repair
+  - reports/r83/supervisor-review-package-builder-repair.md
+  # Train C: Metadata closure repair
+  - reports/r83/final-metadata-closure-repair.md
+  # Train D: Validator fail-closed
+  - reports/r83/validator-fail-closed-r82-regressions.md
+  # Train E: FODS installed workflow
+  - reports/r83/fods-installed-real-sample-product-workflow.md
+  # Train F: FODS feature deepening
+  - reports/r83/fods-feature-deepening.md
+  # Train G: FODS product completion
+  - reports/r83/fods-product-completion-decision.md
+  # Train H: FODT installed workflow
+  - reports/r83/fodt-installed-real-sample-workflow.md
+  # Train I: FODT feature deepening
+  - reports/r83/fodt-feature-deepening.md
+  # Train J: ZST dependency policy
+  - reports/r83/zst-dependency-replay-and-package-policy.md
+  # Train K: .NET parity
+  - reports/r83/dotnet-parity-product-depth.md
+  # Train L: Commercial gap ledger
+  - reports/r83/commercial-product-gap-ledger.md
+  # Train M: Netpbm advancement
+  - reports/r83/netpbm-family-advancement.md
+  # Train N: SYLK/DIF advancement
+  - reports/r83/sylk-dif-spreadsheet-lite-advancement.md
+  # Train O: Gate 8 readiness
+  - reports/r83/gate8-technical-readiness-workahead.md
+  # Train P: Probe truth
+  - reports/r83/probe-package-truth-enforcement.md
+  # Train Q: Examples/docs
+  - reports/r83/installed-package-examples-docs.md
+  # Train R: Publication readiness
+  - reports/r83/publication-readiness-no-publish.md
+  # Train S: AI gap extraction
+  - reports/r83/ai-assisted-broad-gap-extraction.md
+  - reports/r83/ai-verifier-promotion-ledger.md
+  # Train T: Reproducibility/closeout
+  - reports/r83/reproducibility-closeout-automation.md
+  # Train U: State sync
+  - reports/r83/state-registry-memory-master-plan-sync.md
+  # Train V: Final adversarial IV
+  - reports/r83/final-adversarial-independent-verification.md
+  # Final verdict
+  - reports/r83/final-verdict.md
+  # Contract self-reference (INV-003)
+  - tools/evidence/contracts/r83-broad-product-finish-review-package-artifacts.yaml
+  # Product capability matrices
+  - product-capability-matrix/fods.yaml
+  - product-capability-matrix/fodt.yaml
+  - product-capability-matrix/dotnet-fods-fodt.yaml
+  # Gate/publication readiness
+  - gate-readiness/gate8-matrix.yaml
+  - publication-readiness/matrix.yaml
+  - examples-docs-readiness/summary.yaml
+  # Installed examples
+  - examples/python/fods/edit_save_export_fods_installed.py
+  - examples/python/fodt/edit_save_fodt_installed.py
+  # State
+  - state/current-state.json
+  - plans/master-plan.md

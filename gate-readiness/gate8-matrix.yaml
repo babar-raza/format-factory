@@ -1,0 +1,60 @@
+# Gate 8 Technical Readiness Matrix
+# Format Factory R83
+
+sprint: R83
+date: 2026-05-31
+
+formats:
+  - format: FODS
+    gate_8_status: PASSED (R61 CSV, R60 TSV)
+    security_packet: complete
+    oracle_tests: complete
+    notes: Gate 8 fully complete for FODS
+
+  - format: FODT
+    gate_8_status: PASSED (R61 CSV, R60 TSV)
+    security_packet: complete
+    oracle_tests: complete
+    notes: Gate 8 fully complete for FODT
+
+  - format: ZST
+    gate_8_status: G5_WAIVED
+    notes: ZST Gate 5 waived; Gate 8 not applicable in standard sequence
+
+  - format: ODS
+    gate_8_status: READY (packets prepared R29)
+    notes: Gate 8 security packet ready; awaiting Gate 8 execution
+
+  - format: ODT
+    gate_8_status: READY (packets prepared R29)
+    notes: Gate 8 security packet ready; awaiting Gate 8 execution
+
+  - format: QOI
+    gate_8_status: READY (packets prepared R29)
+    notes: Gate 8 security packet ready
+
+  - format: XCF
+    gate_8_status: READY (R29)
+    notes: Gate 8 security packet ready
+
+  - format: DIF
+    gate_8_status: NOT_STARTED
+    notes: Must reach Gate 8 from Gate 7
+
+  - format: PGM
+    gate_8_status: NOT_STARTED
+    notes: PGM at Gate 10 (Gate 8 was passed in R59)
+
+  - format: PBM
+    gate_8_status: NOT_STARTED
+    notes: PBM at Gate 10 (Gate 8 was passed in R59)
+
+  - format: SYLK
+    gate_8_status: NOT_STARTED
+    notes: SYLK at Gate 10 (Gate 8 was passed in R59)
+
+gate_8_readiness_summary:
+  fods_fodt: COMPLETE
+  ready_not_started: ODS, ODT, QOI, XCF
+  not_applicable: ZST
+  future: DIF

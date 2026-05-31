@@ -1,0 +1,76 @@
+# FODS Python FOSS — Product Capability Matrix
+# Format Factory R83
+
+format: FODS
+track: python-foss
+version: 0.1.0.dev0
+sprint: R83
+capability_level: alpha-foss-preview
+commercial_product_ready: false
+gate_status: G11-F in_progress, G11-G not_started
+
+## Public API (28 exported functions)
+
+parse_load:
+  - parse_fods(data: bytes | Path | str) -> dict  # COMPLETE
+  - workbook_sheet_names(wb: dict) -> list[str]  # COMPLETE
+  - workbook_row_values(wb, sheet_name, row_idx) -> list  # COMPLETE
+  - workbook_col_values(wb, sheet_name, col_idx) -> list  # COMPLETE — R77
+  - workbook_stats(wb) -> dict  # COMPLETE
+  - workbook_sheet_order(wb) -> list[str]  # COMPLETE
+  - workbook_sheet_summary(wb) -> list[dict]  # COMPLETE
+
+edit:
+  - workbook_edit_cell(wb, sheet, row, col, value) -> dict  # COMPLETE
+  - workbook_set_cell_value(wb, sheet, row, col, value) -> tuple[bool, str]  # COMPLETE
+  - workbook_warnings_for_unsupported_edit(wb, sheet, row, col) -> list[str]  # COMPLETE
+  - workbook_add_sheet(wb, name) -> dict  # COMPLETE — R77
+  - workbook_rename_sheet(wb, old_name, new_name) -> dict  # COMPLETE — R77
+  - workbook_remove_sheet(wb, name) -> dict  # COMPLETE — R77
+
+write:
+  - write_fods(wb: dict) -> bytes  # COMPLETE
+
+export:
+  - workbook_to_csv(wb, sheet_name) -> str  # COMPLETE — R83 confirmed
+
+## Feature Gaps (Known, Not Defects at alpha-foss level)
+
+formula_evaluation: NOT_SUPPORTED
+  - Formula cells are preserved as-is in parse/write
+  - Editing formula cells triggers FORMULA_CELL_EDIT warning
+
+merged_cells: PARTIAL
+  - Merged cell boundaries preserved in parse/write
+  - Editing boundary cells triggers MERGED_CELL_BOUNDARY warning
+
+column_widths: NOT_PRESERVED
+  - Column width metadata dropped in write round-trip
+  - Known gap: documented
+
+cell_styles: NOT_PRESERVED
+  - Style references dropped in write round-trip
+  - Known gap: documented
+
+## Warning Code Taxonomy
+
+FORMULA_CELL_EDIT: editing a cell that had a formula expression
+MERGED_CELL_BOUNDARY: editing at merged range boundary
+AUTO_UPDATE_FORMULA: sheet has auto_updatable=True
+STYLE_REFERENCE: cell has style references that may be lost
+
+## Test Coverage
+
+gate_1_through_10: PASSED (R78)
+gate_11_g11a_through_e: COMPLETE
+gate_11_g11f: in_progress (hardening)
+gate_11_g11g: NOT_STARTED (human approval required)
+installed_wheel_test_count: 13 (R82)
+
+## Publication Blockers
+
+1. G11-G NOT_STARTED — human approval (Babar Raza) required
+2. commercial_product_ready: false
+3. No PyPI publication authorized
+
+## CAPABILITY_MATRIX: FODS_ALPHA_FOSS_PREVIEW

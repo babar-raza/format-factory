@@ -1,0 +1,54 @@
+# FODT Python FOSS — Product Capability Matrix
+# Format Factory R83
+
+format: FODT
+track: python-foss
+version: 0.1.0.dev0
+sprint: R83
+capability_level: alpha-foss-preview
+commercial_product_ready: false
+gate_status: G11-F in_progress, G11-G not_started
+
+## Public API (28 exported functions)
+
+parse_load:
+  - parse_fodt(data: bytes | Path | str) -> dict  # COMPLETE
+  - document_headings(doc: dict) -> list  # COMPLETE
+  - document_body_text(doc: dict) -> str  # COMPLETE
+  - document_stats(doc: dict) -> dict  # COMPLETE
+  - document_paragraph_count(doc: dict) -> int  # COMPLETE — GAP-FODT-STRUCT-001 repaired R79
+
+edit:
+  - document_set_heading(doc, idx, text) -> dict  # COMPLETE
+  - document_append_paragraph(doc, text) -> dict  # COMPLETE — GAP-FODT-STRUCT-001 repaired R79
+  - document_remove_paragraph(doc, idx) -> dict  # COMPLETE — GAP-FODT-STRUCT-001 repaired R79
+
+write:
+  - write_fodt(doc: dict) -> bytes  # COMPLETE
+
+## Feature Notes
+
+paragraph_roundtrip:
+  - parse_fodt -> document_append_paragraph -> write_fodt -> parse_fodt preserves paragraph
+  - Verified from installed wheel in R82/R83
+
+struct_fix:
+  - GAP-FODT-STRUCT-001 RESOLVED in R79
+  - Root doc["blocks"] used (not doc["body"]["blocks"])
+  - Parser populates BOTH doc["blocks"] AND doc["content"] with same dict objects
+
+## Test Coverage
+
+gate_1_through_10: PASSED (R78)
+gate_11_g11a_through_e: COMPLETE
+gate_11_g11f: in_progress
+gate_11_g11g: NOT_STARTED (human approval required)
+installed_wheel_test_count: 8 (R82 structural proof)
+
+## Publication Blockers
+
+1. G11-G NOT_STARTED — human approval required
+2. commercial_product_ready: false
+3. No PyPI publication authorized
+
+## CAPABILITY_MATRIX: FODT_ALPHA_FOSS_PREVIEW

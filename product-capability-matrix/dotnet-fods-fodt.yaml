@@ -1,0 +1,55 @@
+# .NET FODS/FODT — Product Capability Matrix
+# Format Factory R83
+
+track: dotnet-commercial
+sprint: R83
+commercial_product_ready: false
+gate_status: G11-G not_started
+
+## FODS .NET
+
+format: FODS
+namespace: FormatFactory.Fods
+class: FodsDocument
+version_ref: R82
+
+operations:
+  - Load(path) -> FodsDocument  # COMPLETE
+  - Save(path) -> void  # COMPLETE
+  - GetSheetNames() -> string[]  # COMPLETE
+  - GetCellValue(sheet, row, col) -> string  # COMPLETE
+  - SetCellValue(sheet, row, col, value) -> void  # COMPLETE
+
+test_count: 161
+test_result: PASSED (R82)
+
+## FODT .NET
+
+format: FODT
+namespace: FormatFactory.Fodt
+class: FodtDocument
+version_ref: R82
+
+operations:
+  - Load(path) -> FodtDocument  # COMPLETE
+  - Save(path) -> void  # COMPLETE
+  - GetHeadings() -> string[]  # COMPLETE
+  - AppendParagraph(text) -> void  # COMPLETE
+
+test_count: 145
+test_result: PASSED (R82)
+
+## Combined Test Status (R82)
+
+fods_tests: 161 passed, 0 failed
+fodt_tests: 145 passed, 0 failed
+total: 306 passed, 0 failed
+
+## Publication Blockers
+
+1. G11-G NOT_STARTED — human approval required
+2. commercial_product_ready: false
+3. No NuGet publication authorized
+4. DEC-033: .NET FOSS packaging deferred
+
+## CAPABILITY_MATRIX: DOTNET_FODS_FODT_COMMERCIAL_ALPHA
