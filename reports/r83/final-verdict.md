@@ -54,8 +54,9 @@ SIDECAR_PROOF_VALIDATION: PASS
 ## Delivery Chain
 
 Pass 1 ZIP: r83-pass1.zip
-Pass 2 ZIP: r83-pass2.zip
-Sidecar: r83-pass2-sidecar.sha256-proof.json (gitignored, INV-006)
-Delivery package: r83-delivery-package.zip
-Supervisor review: r83-supervisor-review-package.zip (PRIMARY UPLOAD ARTIFACT)
+Pass 2 ZIP: r83-pass2.zip (SHA: 7512118ad867a9e6ea24c11a1d4197f2c14f615092b02024e8f4837e93f5789b)
+Sidecar: r83-pass2-sidecar.sha256-proof.json (SHA: d08acf01d9705400e182a31b79753ef5439b56096523bd96cc0f3b26385957ef, gitignored, INV-006)
+Delivery package: r83-delivery-package.zip (SHA: cd0251efdee89756cb28605f71658e23a3f3bbd50214347e1f5fa4ea2802430b)
+Supervisor review: r83-supervisor-review-package.zip (SHA: 3d6ce35d64ff72f7a6fc82dad9e23824ad8371e0cf70955f7b066bb93a410bea, 11,112,770 bytes)
+PRIMARY UPLOAD ARTIFACT: r83-supervisor-review-package.zip
 
