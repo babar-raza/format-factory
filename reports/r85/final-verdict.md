@@ -39,9 +39,9 @@ NEW_TESTS_ADDED: 88 (Python:45 + .NET:43)
 ## Evidence Bundle
 
 Pass 1 SHA-256: 75f2ad1809b595eb457ac1053e7e530505f9ea0792ab895000a8e6d05587a301
-Pass 2 SHA-256: delegated_to_final_artifact_authority_json
-SIDECAR_SHA: delegated_to_final_artifact_authority_json
-BUNDLE_VALIDATION: PENDING
+Pass 2 SHA-256: a493f869d86475439d0d8fb69ef66fdb4a3192900043336555c4b4903c1ffd79
+SIDECAR_SHA: 906171f047fb429424cc2b131c9de53052c2dd686b3f242d40e399da0eeefd5c
+BUNDLE_VALIDATION: PASS
 
 ## Approval Gate Classification
 
