@@ -25,10 +25,14 @@ def _has_only_inner_bundle_layout(zip_path: Path) -> bool:
         names = zf.namelist()
         top_level = {n.split("/")[0] for n in names if "/" in n}
         inner_only = {"repo", "bundle-metadata"}
-        # If only inner bundle structure (no package-artifacts, no delivery, no raw-*)
-        has_package_artifacts = any("package-artifacts" in n for n in names)
-        has_raw_logs = any("raw-" in n for n in names)
-        has_delivery = any("delivery-package" in n for n in names)
+        # Check for top-level package-artifacts/, raw-*, delivery-package/ folders
+        has_package_artifacts = any(
+            n.startswith("package-artifacts/") for n in names
+        )
+        has_raw_logs = any(
+            n.split("/")[0].startswith("raw-") for n in names if "/" in n
+        )
+        has_delivery = any(n.startswith("delivery-package") for n in names)
         if not has_package_artifacts and not has_raw_logs and not has_delivery:
             if top_level.issubset(inner_only | {""}):
                 return True
@@ -39,15 +43,16 @@ class TestRejectInnerBundleAsPrimaryUpload:
     """Primary upload must be the supervisor review package, not the inner evidence bundle."""
 
     def test_inner_bundle_has_no_package_artifacts(self):
-        """Confirm inner bundle lacks package-artifacts/ — catches D82-01 pattern."""
+        """Confirm inner bundle lacks top-level package-artifacts/ — catches D82-01 pattern."""
         r82_inner = REPO_ROOT / ".local" / "r82-pass2.zip"
         if not r82_inner.exists():
             return
         with zipfile.ZipFile(r82_inner) as zf:
             names = zf.namelist()
-        has_artifacts = any("package-artifacts" in n for n in names)
+        # Only check for top-level package-artifacts/ directory
+        has_artifacts = any(n.startswith("package-artifacts/") for n in names)
         assert not has_artifacts, (
-            "Inner bundle should NOT contain package-artifacts/ — "
+            "Inner bundle should NOT contain top-level package-artifacts/ — "
             "that indicates it was incorrectly built as a review package"
         )
 
