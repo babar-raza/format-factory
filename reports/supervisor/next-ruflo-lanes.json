@@ -1,0 +1,131 @@
+{
+  "sprint_id": "supervisor-export-20260530-212846",
+  "timestamp": "2026-05-30T21:28:46.125226",
+  "verdict": "ACCEPTED",
+  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\evidence\\r80-repair-plus-advancement-supervisor-evidence-product-system-hardening-20260530.zip",
+  "coordinator_lane": "C0",
+  "lanes": [
+    {
+      "lane_id": "C0",
+      "owner_role": "Coordinator",
+      "title": "Sprint coordination and integration",
+      "description": "Tracks all lanes; owns file ownership matrix; stops on emergency conditions",
+      "allowed_files": [
+        "reports/rNN/**"
+      ],
+      "forbidden_files": [
+        "AGENTS.md",
+        "GOVERNANCE.md",
+        "plans/master-plan.md",
+        "registry/**",
+        "tools/evidence/**",
+        "tests/evidence/**"
+      ],
+      "dependencies": [],
+      "tasks": [],
+      "status": "pending",
+      "non_authoritative": true
+    },
+    {
+      "lane_id": "C1",
+      "owner_role": "Governance",
+      "title": "Governance discovery",
+      "description": "Read-only access to governance files; produces preflight report",
+      "allowed_files": [
+        "reports/rNN/00-preflight.md"
+      ],
+      "forbidden_files": [
+        "AGENTS.md",
+        "GOVERNANCE.md",
+        "plans/master-plan.md"
+      ],
+      "dependencies": [],
+      "tasks": [],
+      "status": "pending",
+      "non_authoritative": true
+    },
+    {
+      "lane_id": "C2",
+      "owner_role": "Repair",
+      "title": "Contradiction repair",
+      "description": "Address any open CRITICAL contradictions from prior sprint",
+      "allowed_files": [
+        "reports/rNN/**",
+        "src/**"
+      ],
+      "forbidden_files": [
+        "AGENTS.md",
+        "GOVERNANCE.md",
+        "plans/master-plan.md",
+        "registry/**"
+      ],
+      "dependencies": [
+        "C0"
+      ],
+      "tasks": [],
+      "status": "pending",
+      "non_authoritative": true
+    },
+    {
+      "lane_id": "C3",
+      "owner_role": "Implementation",
+      "title": "Product implementation and taskcard execution",
+      "description": "Execute open taskcards; advance gate work per master-plan.md",
+      "allowed_files": [
+        "src/**",
+        "tests/**",
+        "reports/rNN/**",
+        "taskcards/**"
+      ],
+      "forbidden_files": [
+        "AGENTS.md",
+        "GOVERNANCE.md",
+        "plans/master-plan.md",
+        "registry/**"
+      ],
+      "dependencies": [
+        "C0",
+        "C1"
+      ],
+      "tasks": [
+        "TASK-001",
+        "TASK-002",
+        "TASK-003",
+        "TASK-004",
+        "TASK-005",
+        "TASK-006",
+        "TASK-007"
+      ],
+      "status": "pending",
+      "non_authoritative": true
+    },
+    {
+      "lane_id": "C6",
+      "owner_role": "Evidence",
+      "title": "Evidence bundle",
+      "description": "Build and validate evidence bundle",
+      "allowed_files": [
+        ".local/evidence/**"
+      ],
+      "forbidden_files": [
+        "AGENTS.md",
+        "GOVERNANCE.md",
+        "plans/master-plan.md",
+        "registry/**"
+      ],
+      "dependencies": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "tasks": [
+        "TASK-008"
+      ],
+      "status": "pending",
+      "non_authoritative": true
+    }
+  ],
+  "overlap_check_passed": true,
+  "notes": "Generated from evidence review of sprint FORMAT-FACTORY-R80-REPAIR-PLUS-ADVANCEMENT-SUPERVISOR-EVIDENCE-PRODUCT-SYSTEM-HARDENING-20260530"
+}

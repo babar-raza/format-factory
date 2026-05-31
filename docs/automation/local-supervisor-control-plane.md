@@ -143,6 +143,31 @@ See `tools/taskmaster/validate_dual_orchestration_bridge.py` for enforcement:
 | Paid API required | stop-paid-api-not-available |
 | Destructive action required | stop-destructive-action |
 
+## generate_supervisor_packet.py — Key Features
+
+See [docs/automation/supervisor-packet-generation.md](supervisor-packet-generation.md) for the
+full reference. Summary of the three production-grade capabilities:
+
+### JSON Schema Validation with Fallback
+`validate_against_schema()` uses the `jsonschema` library when available (full Draft-7 validation).
+When `jsonschema` is absent (system `python3`), it falls back to a manual required-field check
+against the schema file's `required` arrays, and emits an advisory to stderr. Returns `[]` when
+all required fields are present; errors do not block output generation.
+
+### Sprint-Specific Task Synthesis
+`synthesize_sprint_tasks()` generates contextual TM tasks by reading three live sources:
+1. `git status --short` — uncommitted tracked product files → `approval-blocked` commit task
+2. `registry/format-registry.yaml` — incomplete gates >= 10 → gate-specific blocked tasks
+3. `taskcards/*.md` — open taskcards (not_started/in_progress) → pending implementation tasks
+
+The registry parser handles the YAML list-item syntax (`  - format_id: fods`) with
+`(?:-\s+)?` in the regex. Up to 8 contextual tasks are synthesized per run.
+
+### Mode-Aware Approval Gates
+`generate_approval_gates_md()` reads the current MODE from `.supervisor/config.yaml`.
+At MODE >= 4 (MCP activation complete), the MCP row changes from `stop-mcp-activation-required`
+to `autonomous-continue / already-done`, and `NEXT_HUMAN_GATE` advances to MODE 5.
+
 ## Safety Constraints
 
 - No real API keys in any tracked file

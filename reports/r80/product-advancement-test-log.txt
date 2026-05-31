@@ -1,0 +1,35 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0
+configfile: pytest.ini
+
+tests/packaging/test_r79_installed_fods_workflow.py::TestFodsInstalledWheelImport::test_import_fods_not_aspose_name PASSED
+tests/packaging/test_r79_installed_fods_workflow.py::TestFodsInstalledWheelImport::test_wrong_namespace_fails PASSED
+tests/packaging/test_r79_installed_fods_workflow.py::TestFodsInstalledWheelImport::test_version_from_installed_wheel PASSED
+tests/packaging/test_r79_installed_fods_workflow.py::TestFodsInstalledWheelImport::test_track_from_installed_wheel PASSED
+tests/packaging/test_r79_installed_fods_workflow.py::TestFodsInstalledWheelApiPresence::test_r77_sheet_apis_in_installed_wheel PASSED
+tests/packaging/test_r79_installed_fods_workflow.py::TestFodsInstalledWheelApiPresence::test_installed_api_count_at_least_28 PASSED
+tests/packaging/test_r79_installed_fods_workflow.py::TestFodsInstalledWheelWorkflow::test_parse_fods_from_installed_wheel PASSED
+tests/packaging/test_r79_installed_fods_workflow.py::TestFodsInstalledWheelWorkflow::test_workbook_sheet_management_from_installed_wheel PASSED
+tests/packaging/test_r79_package_source_sync.py::TestPackageVersionSync::test_fods_package_version_is_dev0 PASSED
+tests/packaging/test_r79_package_source_sync.py::TestPackageVersionSync::test_fodt_package_version_is_dev0 PASSED
+tests/packaging/test_r79_package_source_sync.py::TestPackageVersionSync::test_fods_dunder_version_is_dev0 PASSED
+tests/packaging/test_r79_package_source_sync.py::TestPackageVersionSync::test_fodt_dunder_version_is_dev0 PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodsR77ApiPresence::test_workbook_add_sheet_exported PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodsR77ApiPresence::test_workbook_rename_sheet_exported PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodsR77ApiPresence::test_workbook_remove_sheet_exported PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodsR77ApiPresence::test_workbook_set_cell_value_exported PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodsR77ApiPresence::test_fods_api_count_at_least_28 PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtR77ApiPresence::test_document_append_paragraph_exported PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtR77ApiPresence::test_document_remove_paragraph_exported PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtR77ApiPresence::test_document_paragraph_count_exported PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtR77ApiPresence::test_fodt_api_count_at_least_28 PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtStructuralGapRepaired::test_append_paragraph_writes_to_root_blocks PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtStructuralGapRepaired::test_append_paragraph_does_not_write_to_body_blocks PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtStructuralGapRepaired::test_paragraph_count_reads_from_root_blocks PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtStructuralGapRepaired::test_paragraph_count_ignores_body_blocks PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtStructuralGapRepaired::test_remove_paragraph_modifies_root_blocks PASSED
+tests/packaging/test_r79_package_source_sync.py::TestFodtStructuralGapRepaired::test_append_then_roundtrip_preserves_paragraph PASSED
+tests/python/fodt/test_r77_fodt_paragraph_management.py (20 tests) ALL PASSED
+tests/python/fodt/test_r78_fodt_end_to_end_workflow.py (18 tests) ALL PASSED
+
+======================= 65 passed in 133.11s (0:02:13) ========================

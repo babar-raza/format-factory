@@ -18,7 +18,7 @@ Package: format-factory-fodt v0.1.0
 
 FORMAT_ID: str = "fodt"
 SPEC_VERSION: str = "ODF 1.3"
-PACKAGE_VERSION: str = "0.1.0"
+PACKAGE_VERSION: str = "0.1.0.dev0"
 
 # ---------------------------------------------------------------------------
 # MIME type (IR-FODT-001 -- FFODT-002)

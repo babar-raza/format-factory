@@ -1343,8 +1343,9 @@ def document_append_paragraph(
     if text is None:
         return False, "Text must not be None"
 
-    body = document.get("body", {})
-    blocks = body.get("blocks", [])
+    # R79 Train G: fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"].
+    # Also maintain doc["content"] (authoritative write sequence used by write_fodt).
+    blocks = document.get("blocks", [])
 
     new_block: dict[str, Any] = {
         "type": "paragraph",
@@ -1355,8 +1356,12 @@ def document_append_paragraph(
         new_block["style"] = style
 
     blocks.append(new_block)
-    body["blocks"] = blocks
-    document["body"] = body
+    document["blocks"] = blocks
+
+    # Keep content sequence in sync (write_fodt uses content when present)
+    content = document.get("content")
+    if content is not None:
+        content.append({"kind": "block", "data": new_block})
 
     idx = len(blocks) - 1
     style_note = f" (style={style!r})" if style else ""
@@ -1381,8 +1386,9 @@ def document_remove_paragraph(
 
     Added in R77 Train J as a paragraph-management product capability.
     """
-    body = document.get("body", {})
-    blocks = body.get("blocks", [])
+    # R79 Train G: fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"].
+    # Also maintain doc["content"] (authoritative write sequence used by write_fodt).
+    blocks = document.get("blocks", [])
 
     if block_idx < 0 or block_idx >= len(blocks):
         return False, f"Block index {block_idx} out of range (0–{len(blocks) - 1})"
@@ -1400,8 +1406,15 @@ def document_remove_paragraph(
     if runs:
         removed_preview = runs[0].get("text", "")[:40]
 
-    body["blocks"] = [b for i, b in enumerate(blocks) if i != block_idx]
-    document["body"] = body
+    document["blocks"] = [b for i, b in enumerate(blocks) if i != block_idx]
+
+    # Remove from content sequence (by object identity, since parser shares objects)
+    content = document.get("content")
+    if content is not None:
+        document["content"] = [
+            item for item in content
+            if not (item.get("kind") == "block" and item.get("data") is target)
+        ]
 
     return True, f"Block {block_idx} removed (was: {removed_preview!r})"
 
@@ -1413,5 +1426,6 @@ def document_paragraph_count(
 
     Added in R77 Train J as a convenience utility for edit workflow verification.
     """
-    blocks = document.get("body", {}).get("blocks", [])
+    # R79 Train G: fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"]
+    blocks = document.get("blocks", [])
     return sum(1 for b in blocks if b.get("type", "paragraph") == "paragraph")

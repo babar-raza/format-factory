@@ -13,6 +13,9 @@ Tests the complete FODT product usage pattern from a consumer perspective:
 
 These tests validate the full FODT product workflow is functional
 and discoverable, not just individual API correctness.
+
+R79 Train G: updated fixtures to use root-level doc["blocks"]
+(GAP-FODT-STRUCT-001 repaired).
 """
 import sys
 import tempfile
@@ -45,44 +48,42 @@ FODT_SAMPLE = REPO_ROOT / "samples" / "by-format" / "fodt" / "minimal-document.f
 
 
 def _build_document_with_content() -> dict:
-    """Build a document with multiple blocks for workflow testing."""
+    """Build a document with multiple blocks for workflow testing (root-level blocks per parser)."""
     return {
-        "body": {
-            "blocks": [
-                {
-                    "type": "heading",
-                    "level": 1,
-                    "text": "Introduction",
-                    "runs": [{"text": "Introduction"}],
-                    "auto_updatable": False,
-                },
-                {
-                    "type": "paragraph",
-                    "text": "This is the first paragraph of the document.",
-                    "runs": [{"text": "This is the first paragraph of the document."}],
-                    "auto_updatable": False,
-                },
-                {
-                    "type": "paragraph",
-                    "text": "Second paragraph with more detail.",
-                    "runs": [{"text": "Second paragraph with more detail."}],
-                    "auto_updatable": False,
-                },
-                {
-                    "type": "heading",
-                    "level": 2,
-                    "text": "Details",
-                    "runs": [{"text": "Details"}],
-                    "auto_updatable": False,
-                },
-                {
-                    "type": "paragraph",
-                    "text": "Final content paragraph.",
-                    "runs": [{"text": "Final content paragraph."}],
-                    "auto_updatable": False,
-                },
-            ]
-        }
+        "blocks": [
+            {
+                "type": "heading",
+                "level": 1,
+                "text": "Introduction",
+                "runs": [{"text": "Introduction"}],
+                "auto_updatable": False,
+            },
+            {
+                "type": "paragraph",
+                "text": "This is the first paragraph of the document.",
+                "runs": [{"text": "This is the first paragraph of the document."}],
+                "auto_updatable": False,
+            },
+            {
+                "type": "paragraph",
+                "text": "Second paragraph with more detail.",
+                "runs": [{"text": "Second paragraph with more detail."}],
+                "auto_updatable": False,
+            },
+            {
+                "type": "heading",
+                "level": 2,
+                "text": "Details",
+                "runs": [{"text": "Details"}],
+                "auto_updatable": False,
+            },
+            {
+                "type": "paragraph",
+                "text": "Final content paragraph.",
+                "runs": [{"text": "Final content paragraph."}],
+                "auto_updatable": False,
+            },
+        ]
     }
 
 
@@ -127,7 +128,7 @@ class TestFodtEditAndSave:
 
     def test_set_block_text_and_round_trip(self):
         doc = parse_fodt(FODT_SAMPLE)
-        blocks = doc.get("blocks") or doc.get("body", {}).get("blocks", [])
+        blocks = doc.get("blocks", [])
         if not blocks:
             pytest.skip("No blocks in sample")
         ok, msg = document_set_block_text(doc, 0, "R78_EDITED_TEXT")
@@ -136,7 +137,7 @@ class TestFodtEditAndSave:
             out = Path(tf.name)
         write_fodt(doc, out)
         doc2 = parse_fodt(out)
-        blocks2 = doc2.get("blocks") or doc2.get("body", {}).get("blocks", [])
+        blocks2 = doc2.get("blocks", [])
         val = blocks2[0].get("text") or (blocks2[0].get("runs") or [{}])[0].get("text", "")
         assert val == "R78_EDITED_TEXT", f"Round-trip mismatch: {val!r}"
         out.unlink(missing_ok=True)
@@ -149,7 +150,7 @@ class TestFodtEditAndSave:
 
     def test_edit_warnings_returns_list(self):
         doc = parse_fodt(FODT_SAMPLE)
-        blocks = doc.get("blocks") or doc.get("body", {}).get("blocks", [])
+        blocks = doc.get("blocks", [])
         if not blocks:
             pytest.skip("No blocks in sample")
         warnings = document_warnings_for_unsupported_edit(doc, 0)
@@ -171,7 +172,7 @@ class TestFodtParagraphManagementWorkflow:
         assert ok, f"append failed: {msg}"
         assert document_paragraph_count(doc) == initial_count + 1
         # Verify it's at the end
-        blocks = doc["body"]["blocks"]
+        blocks = doc["blocks"]
         last_block = blocks[-1]
         assert last_block["runs"][0]["text"] == "Appended conclusion."
         # Remove the appended paragraph
@@ -184,16 +185,15 @@ class TestFodtParagraphManagementWorkflow:
         ok, _ = document_append_paragraph(doc, "New section content.")
         assert ok
         # Headings still present
-        blocks = doc["body"]["blocks"]
+        blocks = doc["blocks"]
         headings = [b for b in blocks if b.get("type") == "heading"]
         assert len(headings) == 2, "Original headings preserved"
 
     def test_append_increases_paragraph_count(self):
-        # document_append_paragraph writes to doc["body"]["blocks"];
-        # write_fodt serializes doc["blocks"] (root level) — known structural gap.
-        # This test verifies the paragraph management APIs work correctly together.
+        # After R79 GAP fix: document_append_paragraph writes to doc["blocks"] (root level),
+        # which is the same location write_fodt reads from. Roundtrip now works correctly.
         doc = parse_fodt(FODT_SAMPLE)
-        count_before = document_paragraph_count(doc)  # 0 for freshly parsed doc (body.blocks empty)
+        count_before = document_paragraph_count(doc)
         ok, _ = document_append_paragraph(doc, "R78 workflow appended paragraph.")
         assert ok
         count_after = document_paragraph_count(doc)
@@ -216,10 +216,9 @@ class TestFodtParagraphManagementWorkflow:
 class TestFodtAnalysisOnParsedContent:
     """Analysis APIs work correctly on parsed FODT documents.
 
-    NOTE: document_text_content / document_heading_outline read from doc["blocks"]
-    (root level), while document_append_paragraph / document_paragraph_count
-    use doc["body"]["blocks"]. These are separate document sections.
-    Tests here use parsed docs (which have root-level blocks populated).
+    All analysis APIs (document_text_content, document_heading_outline, etc.) and
+    paragraph management APIs (document_append_paragraph, document_paragraph_count)
+    use the same root-level doc["blocks"] after R79 GAP-FODT-STRUCT-001 repair.
     """
 
     def test_text_content_returns_non_empty_string_from_parsed_doc(self):
@@ -267,11 +266,11 @@ class TestFodtCompleteProductWorkflow:
         assert isinstance(text, str)
 
         # Step 3: Edit (if blocks available)
-        blocks = doc.get("blocks") or doc.get("body", {}).get("blocks", [])
+        blocks = doc.get("blocks", [])
         if blocks:
             document_set_block_text(doc, 0, "R78 Complete Workflow Test")
 
-        # Step 4: Append
+        # Step 4: Append (R79: now writes to root doc["blocks"], same as write_fodt reads from)
         document_append_paragraph(doc, "R78 workflow complete.")
 
         # Step 5: Write
@@ -282,9 +281,6 @@ class TestFodtCompleteProductWorkflow:
         assert out.stat().st_size > 0
 
         # Step 6: Re-parse (round-trip)
-        # NOTE: document_append_paragraph writes to doc["body"]["blocks"] (paragraph mgmt section).
-        # write_fodt serializes from doc["blocks"] (root level). This is a known structural gap.
-        # The round-trip verifies write succeeded and file is re-parseable.
         doc2 = parse_fodt(out)
         text2 = document_text_content(doc2)
         assert isinstance(text2, str), "Re-parsed document produces text content"

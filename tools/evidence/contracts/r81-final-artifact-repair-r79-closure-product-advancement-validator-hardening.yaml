@@ -1,0 +1,77 @@
+sprint_id: FORMAT-FACTORY-R81-FINAL-ARTIFACT-REPAIR-R79-CLOSURE-PRODUCT-ADVANCEMENT-VALIDATOR-HARDENING-20260530
+run_number: r81
+date: "2026-05-30"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: false
+emergency_blocker_bundle: true
+min_metadata_count: 5
+installed_artifact_policy: none
+
+required_repo_files:
+  # Contract self-inclusion (D-SUP-01 fix carried forward)
+  - tools/evidence/contracts/r81-final-artifact-repair-r79-closure-product-advancement-validator-hardening.yaml
+  # Lane 0 — Preflight
+  - reports/r81/preflight.md
+  - reports/r81/dirty-tree-classification.md
+  - reports/r81/lane-ownership-matrix.md
+  - reports/r81/execution-board.md
+  # Lane 1 — R80 Defect Repair
+  - reports/r81/lane1-r80-final-artifact-repair.md
+  - reports/r81/sidecar-proof-validation-log.txt
+  - reports/r81/authoritative-test-result.md
+  - reports/r81/fresh-extract-r80-repair-proof.md
+  # Lane 2 — Product Advancement
+  - reports/r81/lane2-product-system-advancement.md
+  - reports/r81/product-system-test-log.txt
+  # Lane 3 — Validator Hardening
+  - reports/r81/lane3-validator-hardening.md
+  - reports/r81/validator-test-log.txt
+  - tools/supervisor/validate_supervisor_evidence_bundle.py
+  - tests/supervisor/test_validate_supervisor_evidence_bundle.py
+  # Lane 4 — State/Doc Sync
+  - reports/r81/lane4-state-doc-sync.md
+  - reports/r81/taskcard-sync.md
+  - reports/r81/memory-sync.md
+  # Lane 5 — Independent Verification
+  - reports/r81/lane5-independent-verification.md
+  - reports/r81/fresh-extract-validation.md
+  - reports/r81/adversarial-review.md
+  - reports/r81/final-verdict.md
+  # R80 sidecar proof (included inside bundle so reviewer can validate R80 without external file)
+  - reports/r81/r80-sidecar-proof.json
+  # Supervisor runtime outputs (carried forward — D-SUP-02 fix)
+  - reports/supervisor/evidence-review.json
+  - reports/supervisor/evidence-review.md
+  - reports/supervisor/contradictions.md
+  - reports/supervisor/next-sprint.md
+  - reports/supervisor/next-sprint-taskmaster.json
+  - reports/supervisor/next-ruflo-lanes.json
+  - reports/supervisor/approval-gates.md
+  - reports/supervisor/session-resume.md
+  # Supervisor implementation
+  - tools/supervisor/supervisor_loop.py
+  - tools/supervisor/discover_latest_evidence.py
+  - tools/supervisor/validate_evidence_for_supervisor.py
+  - tools/supervisor/compare_goal_to_evidence.py
+  - tools/supervisor/generate_supervisor_packet.py
+  - tools/supervisor/sync_local_memory.py
+  - tools/taskmaster/validate_taskmaster_bridge.py
+  - tools/taskmaster/validate_dual_orchestration_bridge.py
+  - tests/taskmaster/test_validate_taskmaster_bridge.py
+  - tests/taskmaster/test_validate_dual_orchestration_bridge.py
+  # R79 product tests
+  - tests/packaging/test_r79_installed_fods_workflow.py
+  - tests/packaging/test_r79_package_source_sync.py
+
+acceptance_criteria:
+  - "reports/r81/final-verdict.md contains R81_REPAIR_PLUS_ADVANCEMENT_ACCEPTED_MODE4_APPROVAL_BLOCKED"
+  - "Lane 1: AUTHORITATIVE_TEST_RESULT present in bundle metadata"
+  - "Lane 1: sidecar-proof-validation-log.txt present with SIDECAR_PROOF_VALIDATION: PASS"
+  - "Lane 1: No [to be filled] in reports/r81/lane5-independent-verification.md"
+  - "Lane 1: No [to be filled] in reports/r81/fresh-extract-validation.md"
+  - "Lane 1: R79 installed-wheel test claim corrected"
+  - "Lane 2: Product advancement evidence present"
+  - "Lane 3: Validator hardening prevents recurrence of R80 defects"
+  - "Lane 5: BUNDLE_VALIDATION: PASS with sidecar"
+  - "MODE 4 MCP activation still blocked (no .vscode/mcp.json)"

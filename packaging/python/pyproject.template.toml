@@ -42,6 +42,10 @@ dependencies = {{DEPENDENCIES}}
 [tool.hatch.build.targets.wheel]
 packages = ["src/python/{{MODULE_NAME}}"]
 
+[tool.hatch.build.targets.sdist]
+# R79 Train B: exclude prior-sprint dist directories accumulated in build dir (D78-05)
+exclude = ["dist/", "dist-r*/"]
+
 # IMPORTANT: Do NOT publish to PyPI without explicit authorization.
 # publication_authorized: false
 # commercial_product_ready: false

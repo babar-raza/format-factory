@@ -18,7 +18,7 @@ Package: format-factory-fods v0.1.0
 
 FORMAT_ID: str = "fods"
 SPEC_VERSION: str = "ODF 1.3"
-PACKAGE_VERSION: str = "0.1.0"
+PACKAGE_VERSION: str = "0.1.0.dev0"
 
 # ---------------------------------------------------------------------------
 # MIME type (IR-FODS-001, IR-FODS-002 -- FFODS-002)

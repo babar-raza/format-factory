@@ -5,6 +5,9 @@ R77 Train J — FODT paragraph management product depth:
 - document_append_paragraph
 - document_remove_paragraph
 - document_paragraph_count
+
+R79 Train G: updated fixtures to use root-level doc["blocks"]
+(GAP-FODT-STRUCT-001 repaired — APIs now consistent with parser/writer).
 """
 import sys
 from pathlib import Path
@@ -20,64 +23,62 @@ from src.python.fodt import (
 
 
 def _minimal_document(block_texts: list[str]) -> dict:
-    """Build a minimal document dict with paragraph blocks."""
+    """Build a minimal document dict with paragraph blocks (root-level blocks per parser)."""
     return {
-        "body": {
-            "blocks": [
-                {"type": "paragraph", "runs": [{"text": t}], "auto_updatable": False}
-                for t in block_texts
-            ]
-        }
+        "blocks": [
+            {"type": "paragraph", "runs": [{"text": t}], "auto_updatable": False}
+            for t in block_texts
+        ]
     }
 
 
 class TestDocumentAppendParagraph:
     def test_append_to_empty_document(self):
-        doc = {"body": {"blocks": []}}
+        doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, "Hello world")
         assert ok
-        assert len(doc["body"]["blocks"]) == 1
-        assert doc["body"]["blocks"][0]["runs"][0]["text"] == "Hello world"
+        assert len(doc["blocks"]) == 1
+        assert doc["blocks"][0]["runs"][0]["text"] == "Hello world"
 
     def test_append_adds_to_end(self):
         doc = _minimal_document(["First"])
         ok, msg = document_append_paragraph(doc, "Second")
         assert ok
-        assert doc["body"]["blocks"][-1]["runs"][0]["text"] == "Second"
+        assert doc["blocks"][-1]["runs"][0]["text"] == "Second"
 
     def test_append_with_style(self):
-        doc = {"body": {"blocks": []}}
+        doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, "Title", style="Heading 1")
         assert ok
-        assert doc["body"]["blocks"][0].get("style") == "Heading 1"
+        assert doc["blocks"][0].get("style") == "Heading 1"
 
     def test_append_without_style_has_no_style_key_or_none(self):
-        doc = {"body": {"blocks": []}}
+        doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, "Plain")
         assert ok
-        block = doc["body"]["blocks"][0]
+        block = doc["blocks"][0]
         assert block.get("style") is None
 
     def test_append_none_text_fails(self):
-        doc = {"body": {"blocks": []}}
+        doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, None)
         assert not ok
 
     def test_append_multiple_paragraphs(self):
-        doc = {"body": {"blocks": []}}
+        doc = {"blocks": []}
         for i in range(5):
             document_append_paragraph(doc, f"Para {i}")
-        assert len(doc["body"]["blocks"]) == 5
+        assert len(doc["blocks"]) == 5
 
     def test_append_empty_string_succeeds(self):
-        doc = {"body": {"blocks": []}}
+        doc = {"blocks": []}
         ok, msg = document_append_paragraph(doc, "")
         assert ok
 
     def test_append_sets_auto_updatable_false(self):
-        doc = {"body": {"blocks": []}}
+        doc = {"blocks": []}
         document_append_paragraph(doc, "Test")
-        block = doc["body"]["blocks"][0]
+        block = doc["blocks"][0]
         assert block.get("auto_updatable") is False
 
 
@@ -86,19 +87,19 @@ class TestDocumentRemoveParagraph:
         doc = _minimal_document(["Solo"])
         ok, msg = document_remove_paragraph(doc, 0)
         assert ok
-        assert len(doc["body"]["blocks"]) == 0
+        assert len(doc["blocks"]) == 0
 
     def test_remove_first_paragraph(self):
         doc = _minimal_document(["A", "B", "C"])
         ok, _ = document_remove_paragraph(doc, 0)
         assert ok
-        assert doc["body"]["blocks"][0]["runs"][0]["text"] == "B"
+        assert doc["blocks"][0]["runs"][0]["text"] == "B"
 
     def test_remove_last_paragraph(self):
         doc = _minimal_document(["A", "B"])
         ok, _ = document_remove_paragraph(doc, 1)
         assert ok
-        assert len(doc["body"]["blocks"]) == 1
+        assert len(doc["blocks"]) == 1
 
     def test_remove_out_of_range_index_fails(self):
         doc = _minimal_document(["Only"])
@@ -113,11 +114,9 @@ class TestDocumentRemoveParagraph:
 
     def test_remove_table_block_fails(self):
         doc = {
-            "body": {
-                "blocks": [
-                    {"type": "table", "rows": []},
-                ]
-            }
+            "blocks": [
+                {"type": "table", "rows": []},
+            ]
         }
         ok, msg = document_remove_paragraph(doc, 0)
         assert not ok
@@ -132,18 +131,16 @@ class TestDocumentRemoveParagraph:
 
 class TestDocumentParagraphCount:
     def test_count_zero_for_empty_document(self):
-        doc = {"body": {"blocks": []}}
+        doc = {"blocks": []}
         assert document_paragraph_count(doc) == 0
 
     def test_count_paragraphs_only(self):
         doc = {
-            "body": {
-                "blocks": [
-                    {"type": "paragraph", "runs": [{"text": "A"}]},
-                    {"type": "table", "rows": []},
-                    {"type": "paragraph", "runs": [{"text": "B"}]},
-                ]
-            }
+            "blocks": [
+                {"type": "paragraph", "runs": [{"text": "A"}]},
+                {"type": "table", "rows": []},
+                {"type": "paragraph", "runs": [{"text": "B"}]},
+            ]
         }
         assert document_paragraph_count(doc) == 2
 

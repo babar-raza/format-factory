@@ -1,0 +1,25 @@
+Tool Availability Report — dual-orchestration-supervisor-e2e-20260530-165603
+
+Python: 3.13.2 (system)
+.local/venv/Scripts/python: 3.13.2 (AVAILABLE — authoritative)
+Node.js: v24.13.1
+npm: 11.8.0
+npx: 11.8.0
+Claude Code: 2.1.62 (from prior exploration)
+claude mcp list: not run (MCP list check deferred to security scan)
+
+ruflo/claude-flow: confirmed v3.10.13 via bxhl99r6k background task
+  CLI command: claude-flow (NOT ruflo)
+  MCP subcommands: start/stop/status/health/restart/tools/toggle/exec/logs
+  Init subcommands: wizard/check/skills/hooks/upgrade
+  Safe init flags: --minimal --only-claude --no-global
+  FORBIDDEN flags: --codex (creates AGENTS.md), --start-all (starts daemon), --with-embeddings, --all-agents
+
+task-master-ai: version via npm show only (--help/--version start MCP server)
+  npm show task-master-ai version: to be run in MODE 3
+  TM default mode: core (7 tools)
+
+jsonschema Python library: to be verified
+pytest: to be verified
+yaml: to be verified
+zipfile: stdlib (always available)

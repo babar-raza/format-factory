@@ -1,0 +1,15 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0
+configfile: pytest.ini
+
+tests/supervisor/test_validate_supervisor_evidence_bundle.py::test_good_bundle_passes PASSED
+tests/supervisor/test_validate_supervisor_evidence_bundle.py::test_missing_contract_fails PASSED
+tests/supervisor/test_validate_supervisor_evidence_bundle.py::test_stale_sha_warns PASSED
+tests/supervisor/test_validate_supervisor_evidence_bundle.py::test_delegation_label_passes_sha_check PASSED
+tests/supervisor/test_validate_supervisor_evidence_bundle.py::test_missing_supervisor_reports_fails PASSED
+tests/supervisor/test_validate_supervisor_evidence_bundle.py::test_missing_replay_fixture_fails PASSED
+tests/supervisor/test_validate_supervisor_evidence_bundle.py::test_false_bundle_validation_claim_warns PASSED
+tests/supervisor/test_validate_supervisor_evidence_bundle.py::test_pending_in_verdict_fails PASSED
+tests/supervisor/test_validate_supervisor_evidence_bundle.py::test_bundle_not_found PASSED
+
+============================== 9 passed in 0.67s ==============================

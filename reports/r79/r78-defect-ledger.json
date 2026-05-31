@@ -1,0 +1,167 @@
+{
+  "sprint_id": "FORMAT-FACTORY-R79-PACKAGE-SOURCE-SYNC-FIRST-REAL-FODS-PRODUCT-RC-ZST-DEPENDENCY-REPLAY-MEGA-TRAIN-001",
+  "date": "2026-05-30",
+  "source_sprint": "R78",
+  "defects": [
+    {
+      "id": "D78-01",
+      "title": "FODS wheel missing R77 sheet management APIs",
+      "category": "Package",
+      "severity": "CRITICAL",
+      "train": "B",
+      "fix_type": "Rebuild wheel from current source",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-02",
+      "title": "FODT wheel missing R77 paragraph management APIs",
+      "category": "Package",
+      "severity": "CRITICAL",
+      "train": "B,G",
+      "fix_type": "Rebuild wheel + fix structural gap",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-03",
+      "title": "FODS package smoke uses repo imports (src.python.fods)",
+      "category": "Evidence",
+      "severity": "HIGH",
+      "train": "D",
+      "fix_type": "New installed-wheel smoke test",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-04",
+      "title": "Module version mismatch: source 0.1.0 vs wheel 0.1.0.dev0",
+      "category": "Package",
+      "severity": "HIGH",
+      "train": "B",
+      "fix_type": "Fix PACKAGE_VERSION in constants.py, rebuild",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-05",
+      "title": "SDist includes old dist-r43..r47 artifacts from build dir",
+      "category": "Package",
+      "severity": "MEDIUM",
+      "train": "B",
+      "fix_type": "Add sdist excludes in pyproject.template.toml",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-06",
+      "title": "Installed-API smoke test uses repo imports",
+      "category": "Evidence",
+      "severity": "HIGH",
+      "train": "D",
+      "fix_type": "Write proper installed-wheel test",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-07",
+      "title": "Reproducibility proof uses wrong import namespace (aspose_format_factory_fods)",
+      "category": "Evidence",
+      "severity": "HIGH",
+      "train": "D",
+      "fix_type": "Fix import namespace in proof test",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-08",
+      "title": "Final IV has CLAIMS_VERIFIED 14/15 and unfilled marker",
+      "category": "Closeout",
+      "severity": "MEDIUM",
+      "train": "N",
+      "fix_type": "Fix stale wording in R79 IV files",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-09",
+      "title": "Supervisor review references R77 filenames and artifact names",
+      "category": "Closeout",
+      "severity": "MEDIUM",
+      "train": "N",
+      "fix_type": "Fix R77 naming in R79 supervisor summary",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-10",
+      "title": "Placeholder scan scans R77/R76 report files, not current sprint",
+      "category": "Closeout",
+      "severity": "MEDIUM",
+      "train": "N",
+      "fix_type": "Fix placeholder scan scope in R79 metadata",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-11",
+      "title": "State INV-011 appears in production blockers as stale entry",
+      "category": "State",
+      "severity": "LOW",
+      "train": "Q",
+      "fix_type": "Fix at end of R79 after state_snapshot.py run",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-12",
+      "title": "ZST no-network install fails (zstandard dep not bundled)",
+      "category": "Package",
+      "severity": "MEDIUM",
+      "train": "H",
+      "fix_type": "Classify as ZST_LOCAL_RC_DEPENDENCY_RESOLUTION_REQUIRED",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-13",
+      "title": "FODT structural gap: paragraph APIs write to doc[body][blocks], writer reads doc[blocks]",
+      "category": "Core",
+      "severity": "CRITICAL",
+      "train": "G",
+      "fix_type": "Fix paragraph management APIs to use root-level doc[blocks]",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-14",
+      "title": ".NET has no test project files (untested prototype)",
+      "category": ".NET",
+      "severity": "MEDIUM",
+      "train": "I",
+      "fix_type": "Create FodsTests.csproj and FodtTests.csproj",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-15",
+      "title": "FODS installed wheel API count wrong (missing R77 APIs)",
+      "category": "Evidence",
+      "severity": "HIGH",
+      "train": "B,D",
+      "fix_type": "Rebuild wheel and re-verify API count",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-16",
+      "title": "FODT installed wheel API count wrong (missing R77 APIs)",
+      "category": "Evidence",
+      "severity": "HIGH",
+      "train": "B,D",
+      "fix_type": "Rebuild wheel and re-verify API count",
+      "status": "PENDING"
+    },
+    {
+      "id": "D78-17",
+      "title": "Package track claim unverified on installed wheel (only source-level check)",
+      "category": "Evidence",
+      "severity": "LOW",
+      "train": "L",
+      "fix_type": "Probe __track__ on installed wheel",
+      "status": "PENDING"
+    }
+  ],
+  "total_defects": 17,
+  "by_severity": {
+    "CRITICAL": 3,
+    "HIGH": 7,
+    "MEDIUM": 5,
+    "LOW": 2
+  }
+}
