@@ -1,0 +1,23 @@
+{
+  "sprint_id": "FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001",
+  "prior_sprint": "r79",
+  "defects": [
+    {"id": "D79-01", "severity": "CRITICAL", "category": "artifact", "description": "Wrong artifact uploaded — inner bundle not supervisor review package", "fix_train": "Q", "status": "IN_PROGRESS"},
+    {"id": "D79-02", "severity": "CRITICAL", "category": "artifact", "description": "Physical package artifacts absent", "fix_train": "D", "status": "IN_PROGRESS"},
+    {"id": "D79-03", "severity": "CRITICAL", "category": "manifest", "description": "Package manifest SHA prefixes only (8 chars)", "fix_train": "D", "status": "IN_PROGRESS"},
+    {"id": "D79-04", "severity": "CRITICAL", "category": "contract", "description": "installed_artifact_policy: none unacceptable", "fix_train": "R82_contract", "status": "IN_PROGRESS"},
+    {"id": "D79-05", "severity": "CRITICAL", "category": "tests", "description": "Installed-wheel tests skip instead of fail", "fix_train": "E", "status": "IN_PROGRESS"},
+    {"id": "D79-06", "severity": "HIGH", "category": "hygiene", "description": "88 pycache/pyc files in evidence bundle", "fix_train": "G", "status": "IN_PROGRESS"},
+    {"id": "D79-07", "severity": "HIGH", "category": "tooling", "description": "reproduce_format.py wrong import namespaces", "fix_train": "F", "status": "IN_PROGRESS"},
+    {"id": "D79-08", "severity": "HIGH", "category": "artifact", "description": "Review package claim without physical artifacts", "fix_train": "D_Q", "status": "IN_PROGRESS"},
+    {"id": "D79-09", "severity": "MEDIUM", "category": "authority", "description": "R80/R81 reports contaminate R79 bundle", "fix_train": "A", "status": "IN_PROGRESS"},
+    {"id": "D79-10", "severity": "MEDIUM", "category": "authority", "description": "State shows R81 deferred", "fix_train": "C", "status": "IN_PROGRESS"},
+    {"id": "D79-11", "severity": "MEDIUM", "category": "authority", "description": "State JSON R81 deferred", "fix_train": "C", "status": "IN_PROGRESS"},
+    {"id": "D79-12", "severity": "MEDIUM", "category": "authority", "description": "Sprint-state mismatch", "fix_train": "C", "status": "IN_PROGRESS"},
+    {"id": "D79-13", "severity": "MEDIUM", "category": "authority", "description": "R81 final-verdict is stub", "fix_train": "A", "status": "IN_PROGRESS"},
+    {"id": "D79-14", "severity": "MEDIUM", "category": "authority", "description": "R81 authoritative-test-result NOT_STARTED", "fix_train": "A", "status": "IN_PROGRESS"},
+    {"id": "D79-15", "severity": "MEDIUM", "category": "authority", "description": "R80/R81 classification absent", "fix_train": "A", "status": "IN_PROGRESS"},
+    {"id": "D79-16", "severity": "LOW", "category": "test", "description": "ZST 9 failures (dependency missing, expected)", "fix_train": "K", "status": "CLASSIFIED"},
+    {"id": "D79-17", "severity": "LOW", "category": "claim", "description": "No finalized format — overclaim risk", "fix_train": "B_I", "status": "IN_PROGRESS"}
+  ]
+}

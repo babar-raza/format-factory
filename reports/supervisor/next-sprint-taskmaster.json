@@ -1,24 +1,11 @@
 {
-  "sprint_id": "supervisor-export-20260530-212845",
-  "timestamp": "2026-05-30T21:28:45.901479",
+  "sprint_id": "supervisor-export-20260531-105519",
+  "timestamp": "2026-05-31T10:55:19.244037",
   "verdict": "ACCEPTED",
   "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\evidence\\r80-repair-plus-advancement-supervisor-evidence-product-system-hardening-20260530.zip",
   "tasks": [
     {
       "task_id": "TASK-001",
-      "title": "Commit uncommitted product code and build sprint evidence bundle",
-      "description": "Modified tracked files detected: 6 file(s) (e.g. packaging/python/pyproject.template.toml). Commit per governance rule (explicit user auth required), build evidence bundle.",
-      "status": "approval-blocked",
-      "ff_doc_ref": "plans/master-plan.md",
-      "supervisor_task_ref": "TC-R79-CLOSURE-001",
-      "acceptance_evidence": "git status shows no modified tracked product files; BUNDLE_VALIDATION: PASS",
-      "validation_command": ".local/venv/Scripts/python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
-      "blocker_type": "human_approval",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-002",
       "title": "Advance FODS Gate 11 commercial readiness",
       "description": "fods gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
       "status": "approval-blocked",
@@ -31,7 +18,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-003",
+      "task_id": "TASK-002",
       "title": "Advance FODT Gate 11 commercial readiness",
       "description": "fodt gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
       "status": "approval-blocked",
@@ -44,7 +31,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-004",
+      "task_id": "TASK-003",
       "title": "Open ZST Gate 11",
       "description": "zst gate_11 status: not_started. See plans/master-plan.md and registry for requirements.",
       "status": "blocked",
@@ -57,7 +44,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-005",
+      "task_id": "TASK-004",
       "title": "Work on open taskcard: ABW-GATE4-001-parser-prototype",
       "description": "ABW-GATE4-001 \u2014 ABW Gate 4 Parser Prototype",
       "status": "pending",
@@ -69,7 +56,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-006",
+      "task_id": "TASK-005",
       "title": "Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS",
       "description": "Taskcard: AI-USAGE-LEDGER-AND-METRICS",
       "status": "pending",
@@ -81,7 +68,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-007",
+      "task_id": "TASK-006",
       "title": "Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT",
       "description": "EVIDENCE-HYGIENE-ENFORCEMENT \u2014 Evidence Tooling Test Enhancement",
       "status": "pending",
@@ -93,7 +80,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-008",
+      "task_id": "TASK-007",
       "title": "Build and validate next sprint evidence bundle",
       "description": "Build evidence bundle via build_evidence_bundle.py; validate with validate_evidence_bundle.py \u2192 BUNDLE_VALIDATION: PASS",
       "status": "pending",

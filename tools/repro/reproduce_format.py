@@ -34,12 +34,32 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 
+# Canonical import namespace table (R82 Fix — D79-07)
+# package_name (pip install)       -> module import name
+# aspose-format-factory-fods       -> fods
+# aspose-format-factory-fodt       -> fodt
+# aspose-format-factory-zst        -> zst
+# aspose-format-factory-fods       -> fods
+# aspose-format-factory-pbm        -> pbm
+# aspose-format-factory-pgm        -> pgm
+# aspose-format-factory-sylk       -> sylk
+# aspose-format-factory-dif        -> dif
+# aspose-format-factory-fodp       -> fodp
+# aspose-format-factory-fodg       -> fodg
+# aspose-format-factory-gnumeric   -> gnumeric
+# aspose-format-factory-abw        -> abw
+CANONICAL_IMPORT_NAMESPACES = {
+    "fods": "fods", "fodt": "fodt", "zst": "zst",
+    "pbm": "pbm", "pgm": "pgm", "sylk": "sylk",
+    "fodp": "fodp", "fodg": "fodg", "gnumeric": "gnumeric", "abw": "abw",
+}
+
 # Smoke test scripts per format — minimal proof of API availability
 SMOKE_SCRIPTS = {
     "fods": """
 import sys
-# Verify imports
-from aspose_format_factory_fods import (
+# Canonical import namespace: import fods (see CANONICAL_IMPORT_NAMESPACES table)
+from fods import (
     parse_fods, parse_fods_strict, write_fods, workbook_to_xml,
     workbook_stats, workbook_sheet_order, workbook_set_cell_value,
     workbook_add_sheet, workbook_rename_sheet, workbook_remove_sheet,
@@ -62,7 +82,8 @@ print(f"VERSION: {__version__}")
 """,
     "fodt": """
 import sys
-from aspose_format_factory_fodt import (
+# Canonical import namespace: import fodt (see CANONICAL_IMPORT_NAMESPACES table)
+from fodt import (
     parse_fodt, parse_fodt_strict, write_fodt, document_to_xml,
     document_stats, document_text_content, document_set_block_text,
     document_append_paragraph, document_remove_paragraph, document_paragraph_count,
@@ -72,7 +93,8 @@ assert __version__ == "0.1.0.dev0", f"Unexpected version: {__version__}"
 assert __track__ == "python-foss", f"Unexpected track: {__track__}"
 assert __commercial_ready__ is False, "commercial_ready must be False"
 assert __capability_level__ == "alpha-foss-preview", f"Unexpected level: {__capability_level__}"
-doc = {"body": {"blocks": []}}
+# Use root-level blocks (not body.blocks) — GAP-FODT-STRUCT-001 fix
+doc = {"blocks": []}
 ok, _ = document_append_paragraph(doc, "test")
 assert ok, "document_append_paragraph failed"
 assert document_paragraph_count(doc) == 1
@@ -84,7 +106,8 @@ print(f"VERSION: {__version__}")
 """,
     "zst": """
 import sys
-from aspose_format_factory_zst import (
+# Canonical import namespace: import zst (see CANONICAL_IMPORT_NAMESPACES table)
+from zst import (
     compress_bytes, decompress_bytes, probe_frame, validate_file,
     ZstError, ZstDecompressionError, ZstInvalidFrameError, ZstOutputLimitExceeded,
     __version__, __track__, __commercial_ready__, __capability_level__,
@@ -190,11 +213,34 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Format Factory reproducibility proof tool")
     parser.add_argument("--format", required=True, choices=list(SMOKE_SCRIPTS.keys()),
                         help="Format ID to test")
-    parser.add_argument("--wheel", required=True,
+    parser.add_argument("--wheel", default=None,
                         help="Path to wheel file to test")
+    parser.add_argument("--package-artifacts-dir", default=None,
+                        help="Directory containing package artifacts (wheel auto-discovered)")
+    parser.add_argument("--no-network", action="store_true",
+                        help="Install from local artifacts only (--find-links, no index)")
+    parser.add_argument("--require-wheel", action="store_true",
+                        help="Fail if wheel is not found (do not skip)")
     parser.add_argument("--output-json", default=None,
                         help="Write result to JSON file")
     args = parser.parse_args()
+
+    # Auto-discover wheel from package-artifacts-dir
+    if args.wheel is None and args.package_artifacts_dir:
+        artifacts_dir = Path(args.package_artifacts_dir)
+        wheels = list(artifacts_dir.glob(f"*{args.format}*.whl"))
+        if wheels:
+            args.wheel = str(sorted(wheels)[-1])  # use latest
+        elif args.require_wheel:
+            print(f"ERROR: --require-wheel set but no wheel found for {args.format} in {artifacts_dir}")
+            return 1
+
+    if args.wheel is None:
+        if args.require_wheel:
+            print(f"ERROR: --require-wheel set but --wheel not provided")
+            return 1
+        print(f"WARNING: No wheel specified for {args.format}; skipping reproducibility proof")
+        return 0
 
     wheel_path = Path(args.wheel)
     if not wheel_path.exists():

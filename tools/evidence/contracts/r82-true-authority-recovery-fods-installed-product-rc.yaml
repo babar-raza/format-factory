@@ -1,0 +1,45 @@
+# R82 Evidence Contract
+# FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001
+
+sprint_id: "FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001"
+sprint_number: "R82"
+sprint_date: "2026-05-31"
+
+# Artifact policy: self_contained — this sprint produces and includes physical package artifacts
+# D79-08 fix: R79 incorrectly used 'none'; package-readiness sprints must use self_contained
+installed_artifact_policy: self_contained
+
+# Sidecar proof: required (fail-closed policy, R54+)
+sidecar_required: true
+final_proof_policy: external_sidecar
+
+# Git hygiene
+require_clean_git: true
+
+# Minimum metadata files
+min_metadata_count: 30
+
+# Required repo files (all must exist at bundle build time)
+required_repo_files:
+  - reports/r82/00-preflight.md
+  - reports/r82/lane-ownership.md
+  - reports/r82/risk-register.md
+  - reports/r82/parallel-execution-map.md
+  - reports/r82/r79-defect-ledger.md
+  - reports/r82/r79-defect-ledger.json
+  - reports/r82/r79-r80-r81-authority-investigation.md
+  - reports/r82/multi-mega-train-scoreboard.md
+  - reports/r82/true-current-system-state.md
+  - reports/r82/state-master-plan-normalization.md
+  - reports/r82/reproducibility-tool-repair.md
+  - reports/r82/fods-installed-wheel-product-workflow.md
+  - reports/r82/fods-product-completion-decision.md
+  - reports/r82/fodt-installed-wheel-structural-proof.md
+  - reports/r82/zst-dependency-mode-proof.md
+  - reports/r82/dotnet-fresh-test-proof.md
+  - reports/r82/gate11-product-truth-packet.md
+  - reports/r82/probe-next-format-truth.md
+  - reports/r82/work-ahead-advancement.md
+  - reports/r82/ai-gap-extraction-fixture.md
+  - reports/r82/final-verdict.md
+  - tools/evidence/contracts/r82-true-authority-recovery-fods-installed-product-rc.yaml

@@ -48,3 +48,13 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidence\r80-repair-plus-advancement-supervisor-evidence-product-system-hardening-20260530.zip
 - pending_marker_count: 0
 - bundle_entry_count: 3159
+
+## Entry: FORMAT-FACTORY-R79-PACKAGE-SOURCE-SYNC-FIRST-REAL-FODS-PRODUCT-RC-ZST-DEPENDENCY-REPLAY-MEGA-TRAIN-001
+- timestamp: 2026-05-31T10:53:52.946007
+- verdict: ACCEPTED
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r79-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3300
