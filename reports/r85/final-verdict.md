@@ -38,7 +38,7 @@ NEW_TESTS_ADDED: 88 (Python:45 + .NET:43)
 
 ## Evidence Bundle
 
-Pass 1 SHA-256: delegated_to_final_artifact_authority_json
+Pass 1 SHA-256: 75f2ad1809b595eb457ac1053e7e530505f9ea0792ab895000a8e6d05587a301
 Pass 2 SHA-256: delegated_to_final_artifact_authority_json
 SIDECAR_SHA: delegated_to_final_artifact_authority_json
 BUNDLE_VALIDATION: PENDING
