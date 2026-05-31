@@ -18,8 +18,8 @@ UPLOAD PRIMARY ARTIFACT: r83-supervisor-review-package.zip
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION: PENDING
-Pass 1 SHA-256: PENDING
+BUNDLE_VALIDATION: PASS
+Pass 1 SHA-256: 4eb7e7a92b4f130e721713fb3dc23872971ffc112b1ae27588f4a7b80c817986
 Pass 2 SHA-256: delegated_to_final_artifact_authority_json
 Sidecar SHA-256: delegated_to_final_artifact_authority_json
 SIDECAR_PROOF_VALIDATION: PENDING
