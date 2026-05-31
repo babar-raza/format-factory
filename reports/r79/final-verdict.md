@@ -9,7 +9,7 @@ VERDICT: R79_FODS_INSTALLED_PACKAGE_PRODUCT_SLICE_READY_ZST_REPLAY_CLARIFIED_PUB
 
 ## Authoritative Test Result
 
-AUTHORITATIVE_TEST_RESULT: delegated_to_final_artifact_authority_json
+AUTHORITATIVE_TEST_RESULT: 6444 passed, 0 failed, 24 skipped (+8 installed-wheel = 6452 total)
 
 ## Key Achievements
 
@@ -26,14 +26,14 @@ AUTHORITATIVE_TEST_RESULT: delegated_to_final_artifact_authority_json
 ## SHA Chain
 
 BUNDLE_VALIDATION_PASS_1_SHA: b3651519f7f776c4e7f881675c1e840ffb778b94910b673640f4f981b02e06cd
-BUNDLE_VALIDATION_PASS_2_SHA: delegated_to_final_artifact_authority_json
-SIDECAR_SHA: delegated_to_final_artifact_authority_json
-DELIVERY_PACKAGE_SHA: external_delivery_manifest_authoritative
+BUNDLE_VALIDATION_PASS_2_SHA: d22f4bf7721cb4e2a91ad2a5e0c984c23b09ca7086f521bf4e17aae030b2c6c0
+SIDECAR_SHA: 18fecbc878611fdef2bf2f833eee28647b919d324ecb0179bc0fa947186308e1
+DELIVERY_PACKAGE_SHA: 73fa21fbf55e141f0c95d066ff17c27278aab920319a41d2270868871de4e460
 
 ## Bundle Validation
 
-BUNDLE_VALIDATION: delegated_to_final_artifact_authority_json
-SIDECAR_PROOF_VALIDATION: delegated_to_final_artifact_authority_json
+BUNDLE_VALIDATION: PASS
+SIDECAR_PROOF_VALIDATION: PASS
 
 ## Production Blockers
 
