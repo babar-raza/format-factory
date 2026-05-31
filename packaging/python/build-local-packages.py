@@ -162,7 +162,7 @@ def main():
         r = build_package(module, name)
         results.append(r)
         status = r["status"]
-        print(f"  → {status}")
+        print(f"  -> {status}")
         if r.get("artifacts"):
             for a in r["artifacts"]:
                 print(f"    {a['file']} ({a['size_bytes']} bytes, sha256={a['sha256'][:16]}...)")
