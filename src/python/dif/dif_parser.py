@@ -15,6 +15,8 @@ License: Apache-2.0
 
 from __future__ import annotations
 
+import csv
+import io
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -301,3 +303,45 @@ def get_capabilities() -> dict[str, Any]:
         "unsupported": sorted(UNSUPPORTED_FEATURES),
         "commercial_product_ready": False,
     }
+
+
+# ---------------------------------------------------------------------------
+# R84 Train N: DIF CSV export
+# ---------------------------------------------------------------------------
+
+def dif_to_csv(file_path: str | Path) -> str:
+    """Export a DIF file as CSV text (RFC 4180 CRLF line endings).
+
+    Each DIF tuple (row) becomes one CSV row. Cell values are serialized
+    as strings; None becomes an empty field.
+
+    Returns:
+        CSV string with CRLF line endings (RFC 4180).
+
+    Raises:
+        DifError subclasses on parse failure.
+
+    Added in R84 Train N.
+    """
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return ""
+
+    buf = io.StringIO()
+    writer = csv.writer(buf, lineterminator="\r\n")
+    for row in doc.rows:
+        csv_row = []
+        for cell in row:
+            if cell.value is None:
+                csv_row.append("")
+            elif cell.value_type == "numeric":
+                # Format integers without trailing .0 when possible
+                val = cell.value
+                if isinstance(val, float) and val == int(val):
+                    csv_row.append(str(int(val)))
+                else:
+                    csv_row.append(str(val))
+            else:
+                csv_row.append(str(cell.value))
+        writer.writerow(csv_row)
+    return buf.getvalue()

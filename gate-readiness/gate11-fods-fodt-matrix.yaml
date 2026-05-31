@@ -1,0 +1,60 @@
+# Gate 11 FODS/FODT Status Matrix
+# Sprint: FORMAT-FACTORY-R84
+# Date: 2026-05-31
+
+sprint: R84
+gate: 11
+gate_11_approved: false
+approval_authority: Babar Raza (human approval required for G11-G)
+
+fods:
+  sub_gates:
+    G11-A:
+      status: complete
+      description: Prototype architecture review
+    G11-B:
+      status: complete
+      description: API surface finalized (30 exported APIs)
+    G11-C:
+      status: complete
+      description: Error handling coverage
+    G11-D:
+      status: complete
+      description: Documentation complete
+    G11-E:
+      status: complete
+      description: All exporters present (write_fods, workbook_to_csv)
+    G11-F:
+      status: in_progress
+      description: Hardening tests; not all edge cases covered
+    G11-G:
+      status: not_started
+      description: Human approval required; not yet requested
+  commercial_product_ready: false
+  publication_authorized: false
+
+fodt:
+  sub_gates:
+    G11-A:
+      status: complete
+      description: Prototype architecture review
+    G11-B:
+      status: complete
+      description: API surface finalized (30+ exported APIs)
+    G11-C:
+      status: complete
+      description: Error handling coverage
+    G11-D:
+      status: complete
+      description: Documentation complete
+    G11-E:
+      status: complete
+      description: All exporters present (write_fodt, document_to_text)
+    G11-F:
+      status: in_progress
+      description: Hardening tests; heading/list guard added
+    G11-G:
+      status: not_started
+      description: Human approval required; not yet requested
+  commercial_product_ready: false
+  publication_authorized: false

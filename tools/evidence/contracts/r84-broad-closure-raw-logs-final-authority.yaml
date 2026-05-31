@@ -1,0 +1,98 @@
+# R84 Evidence Contract
+# FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
+
+sprint_id: "FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001"
+sprint_number: "R84"
+sprint_date: "2026-05-31"
+
+# Artifact policy: self_contained — physical package artifacts must be in supervisor review package at top level
+installed_artifact_policy: self_contained
+
+# Sidecar proof: required
+sidecar_required: true
+final_proof_policy: external_sidecar
+
+# Git hygiene
+require_clean_git: true
+
+# Minimum metadata files (R84 adds raw log entries and authority proofs)
+min_metadata_count: 36
+
+# Required repo files (all must exist at bundle build time)
+required_repo_files:
+  # Train A: R83 IV and defect ledger
+  - reports/r84/00-preflight.md
+  - reports/r84/r83-independent-verification.md
+  - reports/r84/r83-defect-ledger.md
+  - reports/r84/r83-defect-ledger.json
+  # Wave 0: Planning
+  - reports/r84/multi-mega-train-scoreboard.md
+  - reports/r84/lane-ownership.md
+  - reports/r84/broad-sprint-scope-map.md
+  - reports/r84/risk-register.md
+  - reports/r84/parallel-execution-map.md
+  - reports/r84/true-current-system-state.md
+  # Train B: Top-level review package self-containment
+  - reports/r84/top-level-review-package-self-containment.md
+  # Train C: Final metadata closure
+  - reports/r84/final-metadata-closure.md
+  # Train D: Raw proof log inclusion
+  - reports/r84/raw-proof-log-inclusion.md
+  # Train E: Validator fail-closed
+  - reports/r84/validator-fail-closed-r83-regressions.md
+  # Train F: FODS installed proof
+  - reports/r84/fods-installed-alpha-product-proof.md
+  # Train G: FODS feature advancement
+  - reports/r84/fods-feature-advancement.md
+  # Train H: FODT installed proof
+  - reports/r84/fodt-installed-product-proof.md
+  # Train I: FODT feature advancement
+  - reports/r84/fodt-feature-advancement.md
+  # Train J: ZST dependency policy
+  - reports/r84/zst-dependency-policy-resolution.md
+  # Train K: Fresh .NET proof
+  - reports/r84/dotnet-fresh-proof.md
+  # Train L: .NET parity advancement
+  - reports/r84/dotnet-parity-advancement.md
+  # Train M: Netpbm advancement
+  - reports/r84/netpbm-family-real-advancement.md
+  # Train N: SYLK/DIF advancement
+  - reports/r84/sylk-dif-real-advancement.md
+  # Train O: Probe truth
+  - reports/r84/probe-package-truth-and-advancement.md
+  # Train P: Gate 8 readiness
+  - reports/r84/gate8-readiness-truth.md
+  # Train Q: Gate 11 truth packet
+  - reports/r84/gate11-product-truth-packet.md
+  # Train R: Examples/docs
+  - reports/r84/examples-docs-installed-package-readiness.md
+  # Train S: Publication readiness
+  - reports/r84/publication-readiness-no-publish.md
+  # Train T: AI gap extraction
+  - reports/r84/ai-assisted-broad-gap-extraction.md
+  - reports/r84/ai-verifier-promotion-ledger.md
+  # Train U: Closeout automation
+  - reports/r84/closeout-automation-supervisor-loop-integration.md
+  # Train V: State sync
+  - reports/r84/state-registry-memory-master-plan-sync.md
+  # Train W: Final adversarial IV
+  - reports/r84/final-adversarial-independent-verification.md
+  # Final verdict
+  - reports/r84/final-verdict.md
+  # Contract self-reference (INV-003)
+  - tools/evidence/contracts/r84-broad-closure-raw-logs-final-authority.yaml
+  # Product capability matrices
+  - product-capability-matrix/fods.yaml
+  - product-capability-matrix/fodt.yaml
+  - product-capability-matrix/dotnet-fods-fodt.yaml
+  - product-capability-matrix/netpbm.yaml
+  # Gate/publication readiness
+  - gate-readiness/gate8-matrix.yaml
+  - gate-readiness/gate11-fods-fodt-matrix.yaml
+  - publication-readiness/matrix.yaml
+  - examples-docs-readiness/summary.yaml
+  # ZST dependency classification
+  - dependency-artifacts/README.md
+  # State
+  - state/current-state.json
+  - plans/master-plan.md

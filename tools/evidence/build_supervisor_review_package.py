@@ -104,6 +104,7 @@ def build_supervisor_review_package(
     supervisor_readme: Path,
     final_response_summary: Path | None,
     output: Path,
+    extra_top_level_dirs: list[tuple[str, Path]] | None = None,
 ) -> dict:
     """Build the supervisor review package.
 
@@ -212,15 +213,27 @@ def build_supervisor_review_package(
         "size_bytes": review_manifest_path.stat().st_size,
     }
 
-    # Build the review package ZIP
+    # Build the review package ZIP (includes flat files + optional top-level directories)
+    extra_dir_entry_count = 0
     with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as zf:
         for fp in files_to_include:
             zf.write(fp, fp.name)
         zf.write(review_manifest_path, review_manifest_path.name)
+        # Add extra top-level directories for self-containment
+        if extra_top_level_dirs:
+            for dir_name, dir_path in extra_top_level_dirs:
+                if dir_path.is_dir():
+                    for item in sorted(dir_path.rglob("*")):
+                        if item.is_file():
+                            rel = item.relative_to(dir_path)
+                            arc_name = f"{dir_name}/{rel.as_posix()}"
+                            zf.write(item, arc_name)
+                            extra_dir_entry_count += 1
+                    print(f"  Added top-level dir: {dir_name}/ ({sum(1 for _ in dir_path.rglob('*') if _.is_file())} files)")
 
     review_pkg_sha = _sha256(output)
     review_pkg_size = output.stat().st_size
-    entry_count = len(included_files)
+    entry_count = len(included_files) + extra_dir_entry_count
 
     # Generate standalone SHA file for the review package
     review_sha_path = output.parent / output.name.replace(".zip", ".sha256.txt")
@@ -260,10 +273,28 @@ def main():
     parser.add_argument("--supervisor-readme", required=True, help="Supervisor inspection readme")
     parser.add_argument("--final-response-summary", default="", help="Final response summary MD")
     parser.add_argument("--output", required=True, help="Output review package ZIP path")
+    parser.add_argument(
+        "--extra-top-level-dirs",
+        default="",
+        help=(
+            "Comma-separated name:path pairs of directories to include at top level. "
+            "Example: 'package-artifacts:.local/r84-package-artifacts,raw-test-logs:.local/r84-raw-logs'"
+        ),
+    )
 
     args = parser.parse_args()
 
     final_response = Path(args.final_response_summary) if args.final_response_summary else None
+
+    # Parse extra top-level dirs
+    extra_dirs: list[tuple[str, Path]] | None = None
+    if args.extra_top_level_dirs:
+        extra_dirs = []
+        for entry in args.extra_top_level_dirs.split(","):
+            entry = entry.strip()
+            if ":" in entry:
+                name, path_str = entry.split(":", 1)
+                extra_dirs.append((name.strip(), Path(path_str.strip())))
 
     build_supervisor_review_package(
         delivery_package=Path(args.delivery_package),
@@ -275,6 +306,7 @@ def main():
         supervisor_readme=Path(args.supervisor_readme),
         final_response_summary=final_response,
         output=Path(args.output),
+        extra_top_level_dirs=extra_dirs,
     )
 
 

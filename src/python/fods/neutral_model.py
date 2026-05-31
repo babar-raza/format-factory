@@ -1242,4 +1242,105 @@ def workbook_remove_sheet(
     if before == after:
         return False, f"Sheet {sheet_name!r} not found"
 
-    return True, f"Sheet {sheet_name!r} removed ({before} → {after} sheets)"
+    return True, f"Sheet {sheet_name!r} removed ({before} -> {after} sheets)"
+
+
+def workbook_to_csv(
+    workbook: dict[str, Any],
+    sheet_name: str | None = None,
+) -> str:
+    """Export a workbook sheet as CSV text.
+
+    If sheet_name is None, exports the first sheet. Returns the CSV as a
+    plain string with CRLF line endings per RFC 4180.
+
+    Cells are quoted if they contain commas, double-quotes, or newlines.
+    Numeric and string values are both supported. Formula tokens are exported
+    as empty strings (formula evaluation is unsupported in this track).
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_name: Name of the sheet to export, or None for the first sheet.
+
+    Returns:
+        CSV text string.
+
+    Added in R84 Train G as FODS product feature advancement.
+    """
+    import io
+    import csv as _csv
+
+    sheets = workbook.get("sheets", [])
+    if not sheets:
+        return ""
+
+    target = None
+    if sheet_name is None:
+        target = sheets[0]
+    else:
+        for s in sheets:
+            if s.get("name") == sheet_name:
+                target = s
+                break
+        if target is None:
+            return ""
+
+    rows = target.get("rows", [])
+    buf = io.StringIO()
+    writer = _csv.writer(buf, lineterminator="\r\n")
+    for row in rows:
+        cells = row.get("cells", [])
+        csv_row = []
+        for cell in cells:
+            v = cell.get("value")
+            if v is None:
+                csv_row.append("")
+            else:
+                csv_row.append(str(v))
+        writer.writerow(csv_row)
+    return buf.getvalue()
+
+
+def workbook_get_cell_value(
+    workbook: dict[str, Any],
+    sheet_name: str,
+    row_index: int,
+    col_index: int,
+) -> Any:
+    """Return the value of a cell at (row_index, col_index) in the named sheet.
+
+    Indices are 0-based. Returns None if the sheet, row, or cell does not
+    exist or is out of range.
+
+    This is the read-side complement of workbook_set_cell_value and is
+    primarily useful for roundtrip verification in installed-package workflows.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_name: Name of the sheet.
+        row_index: 0-based row index.
+        col_index: 0-based column index within the row.
+
+    Returns:
+        Cell value (str, float, int, bool) or None.
+
+    Added in R84 Train G as FODS product feature advancement.
+    """
+    sheets = workbook.get("sheets", [])
+    target = None
+    for s in sheets:
+        if s.get("name") == sheet_name:
+            target = s
+            break
+    if target is None:
+        return None
+
+    rows = target.get("rows", [])
+    if row_index < 0 or row_index >= len(rows):
+        return None
+
+    cells = rows[row_index].get("cells", [])
+    if col_index < 0 or col_index >= len(cells):
+        return None
+
+    return cells[col_index].get("value")

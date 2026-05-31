@@ -63,6 +63,8 @@ from .neutral_model import (
     document_append_paragraph,
     document_remove_paragraph,
     document_paragraph_count,
+    document_to_text,
+    document_get_paragraph_text,
 )
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -101,6 +103,8 @@ __all__ = [
     "document_append_paragraph",
     "document_remove_paragraph",
     "document_paragraph_count",
+    "document_to_text",
+    "document_get_paragraph_text",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

@@ -1429,3 +1429,72 @@ def document_paragraph_count(
     # R79 Train G: fix GAP-FODT-STRUCT-001 — use root-level doc["blocks"]
     blocks = document.get("blocks", [])
     return sum(1 for b in blocks if b.get("type", "paragraph") == "paragraph")
+
+
+def document_to_text(
+    document: dict[str, Any],
+) -> str:
+    """Export document as plain text.
+
+    Returns all paragraph and heading text joined by newlines. Tables are
+    rendered as tab-delimited rows. Lists are rendered with a leading dash.
+    This is the plain-text complement to document_to_xml() and is useful
+    for quick content inspection and export workflows.
+
+    Args:
+        document: Parsed FODT document dict.
+
+    Returns:
+        Plain text string with one block per line.
+
+    Added in R84 Train I as FODT product feature advancement.
+    """
+    lines = []
+    blocks = document.get("blocks", [])
+    for block in blocks:
+        btype = block.get("type", "paragraph")
+        text = block.get("text", "")
+        if btype == "heading":
+            level = block.get("level", 1)
+            prefix = "#" * level + " "
+            lines.append(prefix + text)
+        elif btype == "table":
+            rows = block.get("rows", [])
+            for row in rows:
+                cells = row.get("cells", [])
+                lines.append("\t".join(c.get("text", "") for c in cells))
+        elif btype == "list":
+            items = block.get("items", [])
+            for item in items:
+                lines.append("- " + item.get("text", ""))
+        else:
+            lines.append(text)
+    return "\n".join(lines)
+
+
+def document_get_paragraph_text(
+    document: dict[str, Any],
+    paragraph_index: int,
+) -> str | None:
+    """Return the text of a specific paragraph block by index.
+
+    Counts only paragraph-type blocks (not headings, tables, or lists).
+    Returns None if the index is out of range.
+
+    This is the read-side complement of document_set_block_text for paragraph
+    blocks and is useful for roundtrip verification in installed-package workflows.
+
+    Args:
+        document: Parsed FODT document dict.
+        paragraph_index: 0-based index among paragraph-type blocks only.
+
+    Returns:
+        Paragraph text string, or None if not found.
+
+    Added in R84 Train I as FODT product feature advancement.
+    """
+    blocks = document.get("blocks", [])
+    paragraphs = [b for b in blocks if b.get("type", "paragraph") == "paragraph"]
+    if paragraph_index < 0 or paragraph_index >= len(paragraphs):
+        return None
+    return paragraphs[paragraph_index].get("text", "")

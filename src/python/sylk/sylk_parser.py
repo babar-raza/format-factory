@@ -15,6 +15,8 @@ License: Apache-2.0
 
 from __future__ import annotations
 
+import csv
+import io
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -239,3 +241,45 @@ def get_capabilities() -> dict[str, Any]:
         "unsupported": sorted(UNSUPPORTED_FEATURES),
         "commercial_product_ready": False,
     }
+
+
+# ---------------------------------------------------------------------------
+# R84 Train N: SYLK CSV export
+# ---------------------------------------------------------------------------
+
+def sylk_to_csv(file_path: str | Path) -> str:
+    """Export a SYLK file as CSV text (RFC 4180 CRLF line endings).
+
+    Builds a 2D grid from the cell coordinates (1-based row/col), then
+    serializes every row as a CSV line. Empty cells produce empty fields.
+
+    Returns:
+        CSV string with CRLF line endings (RFC 4180).
+
+    Raises:
+        SylkError subclasses on parse failure.
+
+    Added in R84 Train N.
+    """
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return ""
+
+    # Build a grid: row_idx (0-based) -> col_idx (0-based) -> value
+    grid: dict[int, dict[int, Any]] = {}
+    for cell in doc.cells:
+        r = cell.row - 1  # convert 1-based to 0-based
+        c = cell.col - 1
+        if r not in grid:
+            grid[r] = {}
+        grid[r][c] = cell.value if cell.value is not None else ""
+
+    max_row = doc.rows
+    max_col = doc.cols
+    buf = io.StringIO()
+    writer = csv.writer(buf, lineterminator="\r\n")
+    for r in range(max_row):
+        row_data = grid.get(r, {})
+        row = [row_data.get(c, "") for c in range(max_col)]
+        writer.writerow(row)
+    return buf.getvalue()

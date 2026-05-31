@@ -322,3 +322,55 @@ def get_capabilities() -> dict[str, Any]:
         "unsupported": sorted(UNSUPPORTED_FEATURES),
         "commercial_product_ready": False,
     }
+
+
+def write_pbm(
+    pixels: list[int],
+    width: int,
+    height: int,
+    file_path: str | Path,
+    *,
+    comment: str = "",
+) -> None:
+    """Write a PBM P1 (ASCII portable bitmap) file.
+
+    Pixels must be a flat list of 0/1 integer values in row-major order.
+    The list length must equal width * height. Values other than 0 or 1 are
+    clamped: 0 stays 0, any non-zero becomes 1.
+
+    This is a write-side complement to parse_pbm for roundtrip verification.
+    Only P1 (ASCII) format is produced; P4 (binary) is unsupported in this track.
+
+    Args:
+        pixels: Flat row-major list of 0/1 pixel values.
+        width: Image width in pixels.
+        height: Image height in pixels.
+        file_path: Destination file path.
+        comment: Optional comment line to include in the header (no newlines).
+
+    Raises:
+        ValueError: If pixels length does not match width * height.
+        PbmSizeError: If dimensions exceed MAX_DIMENSION.
+
+    Added in R84 Train M as Netpbm write/roundtrip product advancement.
+    """
+    if width > MAX_DIMENSION or height > MAX_DIMENSION:
+        raise PbmSizeError(f"Dimension {width}x{height} exceeds limit {MAX_DIMENSION}")
+    if len(pixels) != width * height:
+        raise ValueError(
+            f"pixels length {len(pixels)} does not match width*height {width * height}"
+        )
+
+    out_path = Path(file_path)
+    lines = ["P1"]
+    if comment:
+        safe_comment = comment.replace("\n", " ").replace("\r", " ")
+        lines.append(f"# {safe_comment}")
+    lines.append(f"{width} {height}")
+    for row_idx in range(height):
+        row_start = row_idx * width
+        row_pixels = pixels[row_start : row_start + width]
+        row_str = " ".join("1" if p else "0" for p in row_pixels)
+        lines.append(row_str)
+
+    out_path.write_text("\n".join(lines) + "\n", encoding="ascii")
