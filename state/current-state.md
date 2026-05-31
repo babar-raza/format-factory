@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R81 - R81_DEFERRED_NOT_YET_EXECUTED
+**Latest sprint:** R82 - R82_FODS_FODT_INSTALLED_PRODUCT_RC_PROVEN_PUBLICATION_BLOCKED
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
@@ -11,7 +11,7 @@
 - pbm: 2 files
 
 ## Evidence Contracts
-- Total: 172
+- Total: 173
 - ISSUE: r27-ai-platform-full-cycle.yaml: min_metadata_count=10 < 30
 - ISSUE: r32-truth-matrix-gate-quality-and-drift-recovery.yaml: min_metadata_count=5 < 30
 
@@ -19,3 +19,4 @@
 - G11-G_NOT_STARTED: Gate 11 commercial approval requires Babar Raza written approval
 - GATE8_AWAITING_HUMAN_APPROVAL: ODS/ODT/QOI/XCF/DIF/PPM Gate 8 security review pending
 - PACKAGE_NOT_PUSHED: All POC artifacts are local-only, not pushed to registry
+- INV-014: reports/r82/final-verdict.md: claims BUNDLE_VALIDATION: PASS but no 'Pass 1 SHA-256' line found
