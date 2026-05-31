@@ -1,6 +1,6 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-05-31T14:37:07.007238
+# Generated: 2026-05-31T14:39:06.734559
 
 ## Quick State
 - Last sprint: FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
@@ -23,22 +23,12 @@
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass1.zip
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass2.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- docs_created: 19 documents
-- mcp_activation: NOT_PERFORMED (MODE 4 requires explicit human approval)
-- ruflo_daemon: NOT_STARTED
-- taskmaster_init: NOT_RUN
-- vscode_mcp_json: ABSENT
-- r78_conflict: NONE
-- next_action: MODE 4 MCP activation requires explicit human approval
-
-## Stale Threshold
-Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 
 ## Entry: ** FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001
 - timestamp: 2026-05-30T17:21:58.683779
@@ -60,7 +50,7 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - pending_marker_count: 0
 - bundle_entry_count: 3159
 
-## Entry: FORMAT-FACTORY-R79-PACKAGE-SOURCE-SYNC-FIRST-REAL-FODS-PRODUCT-RC-ZST-DEPENDENCY-REPLAY-MEGA-TRAIN-001
+## Entry: FORMAT-FACTORY-R79-PACKAGE-SOURCE-SYNC-FIRST-REAL-FODS-PRODUCT-RC-ZST-DEPENDENCY-REPLAY-MEGA-TRAIN-001 [STALE]
 - timestamp: 2026-05-31T10:53:52.946007
 - verdict: ACCEPTED
 - test_count: 65
@@ -79,6 +69,16 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r82-supervisor-review-package.zip
 - pending_marker_count: 2
 - bundle_entry_count: 81
+
+## Entry: FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
+- timestamp: 2026-05-31T14:37:07.182547
+- verdict: ACCEPTED
+- test_count: 161
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass1.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3380
 ```
 
 ## IMPORTANT REMINDERS

@@ -1,8 +1,8 @@
 # Evidence Review — Supervisor
 Sprint ID: FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
-Timestamp: 2026-05-31T14:37:05.709388
+Timestamp: 2026-05-31T14:39:05.477875
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass1.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass2.zip
 
 ## Facts
 - Tests: 161 passed, 0 failed, 0 skipped
@@ -22,8 +22,8 @@ None
 EVIDENCE BUNDLE VALIDATION REPORT
 ============================================================
 Contract: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\evidence\contracts\r83-broad-product-finish-review-package-artifacts.yaml
-Bundle: c:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass1.zip
-Bundle size: 5,794,728 bytes
+Bundle: c:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass2.zip
+Bundle size: 5,794,220 bytes
 Total entries: 3380
 Top-level folders: ['bundle-metadata', 'repo']
 Repo files: 3342

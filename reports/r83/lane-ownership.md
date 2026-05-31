@@ -17,7 +17,7 @@
 |-------|-------|-------|----------------|
 | 1 | A | Coordinator | r82-independent-verification.md, r82-defect-ledger.* |
 | 1 | B | Coordinator | build_supervisor_review_package repair, r83-supervisor-review-package.zip |
-| 1 | C | Coordinator | Metadata files (PENDING_BUNDLE_BUILD → real values) |
+| 1 | C | Coordinator | Metadata files finalized with real values before bundle build |
 | 1 | D | Validator | test_r83_rejects_inner_bundle_*.py etc. |
 | 2 | E | FODS | fods-installed-real-sample-workflow.md, raw install logs |
 | 2 | F | FODS | fods-feature-deepening.md |
