@@ -9,7 +9,7 @@ R83_BROAD_PRODUCT_FINISH_REVIEW_PACKAGE_ARTIFACTS_COMPLETE_PUBLICATION_BLOCKED
 
 ## Authoritative Test Result
 
-Python: PENDING_TEST_RUN (expected ~6560+ passed, 0 failed)
+Python: 6573 passed, 0 failed, 24 skipped
 .NET: 306 passed, 0 failed (161 FODS + 145 FODT)
 
 ## Primary Artifact
@@ -20,9 +20,9 @@ UPLOAD PRIMARY ARTIFACT: r83-supervisor-review-package.zip
 
 BUNDLE_VALIDATION: PASS
 Pass 1 SHA-256: 4eb7e7a92b4f130e721713fb3dc23872971ffc112b1ae27588f4a7b80c817986
-Pass 2 SHA-256: delegated_to_final_artifact_authority_json
-Sidecar SHA-256: delegated_to_final_artifact_authority_json
-SIDECAR_PROOF_VALIDATION: PENDING
+Pass 2 SHA-256: 7512118ad867a9e6ea24c11a1d4197f2c14f615092b02024e8f4837e93f5789b
+Sidecar SHA-256: d08acf01d9705400e182a31b79753ef5439b56096523bd96cc0f3b26385957ef
+SIDECAR_PROOF_VALIDATION: PASS
 
 ## Key Accomplishments (R83)
 
