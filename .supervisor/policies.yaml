@@ -183,6 +183,75 @@ product_factory:
   supervisor_loop_required_after_bundle: true
   supervisor_loop_command: "python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle>"
 
+  # Canonical loop command (declaration-driven, replaces run-on-latest for same-worktree)
+  supervisor_canonical_loop_command: "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration <declaration>"
+
+# ============================================================
+# DECLARATION PROTOCOL (added by supervisor-evidence-directory sprint)
+# ============================================================
+
+declaration_protocol:
+  # Canonical evidence unit is a directory, not a ZIP
+  canonical_evidence_unit: directory
+  evidence_root_pattern: ".local/evidences/<run_id>/"
+  declaration_file: "evidence-declaration.yaml"
+  manifest_file: "evidence-manifest.yaml"
+
+  # ZIP is optional — only for export/archive/external transfer
+  zip_required: false
+  zip_optional_uses:
+    - external_upload_or_transfer
+    - archival
+    - delivery_package_inspection
+    - cross_machine_transfer
+
+  # Watcher/discover/latest-ZIP are legacy convenience
+  watcher_required: false
+  discover_latest_required: false
+  run_on_latest_is_legacy: true
+
+  # Declaration must exist before supervisor inspects
+  declaration_must_precede_inspection: true
+
+  # Supervisor inspects declared paths in the worktree
+  same_worktree_inspection: true
+
+# ============================================================
+# AUTONOMOUS CONTINUATION POLICY (added by supervisor-evidence-directory sprint)
+# ============================================================
+
+autonomous_continuation:
+  # Critical rework blocks autonomous continuation
+  critical_grades:
+    - OVERCLAIMED
+    - REJECTED
+
+  # Non-critical rework does not block
+  non_critical_grades:
+    - REWORK_REQUIRED
+    - ACCEPTED_WITH_WARNINGS
+
+  # Decision rule
+  autonomous_continue_rule: "critical_rework_count == 0"
+
+  # Exit codes
+  exit_code_success: 0
+  exit_code_invalid_declaration: 1
+  exit_code_critical_rework: 3
+  exit_code_error: 9
+
+  # External gates do not block autonomous continuation
+  external_gates_block_autonomous: false
+
+  # Hard prohibitions (never autonomous)
+  hard_prohibitions:
+    - git_push
+    - package_publication
+    - gate_8_approval
+    - gate_11_approval
+    - mcp_activation_beyond_mode_3
+    - destructive_git_operations
+
 # ============================================================
 # PRODUCT-FACTORY APPROVAL GATE ADDITIONS (R85+)
 # ============================================================

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Supervisor Review",
+  "description": "Complete supervisor review of a declared evidence directory.",
+  "type": "object",
+  "required": ["run_id", "sprint_id", "timestamp", "declaration_path", "overall_verdict", "item_grades", "autonomous_continue"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "sprint_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "declaration_path": { "type": "string" },
+    "evidence_root": { "type": "string" },
+    "overall_verdict": { "type": "string" },
+    "item_grades": { "type": "array", "items": { "$ref": "item-grade.schema.json" } },
+    "accepted_items": { "type": "array", "items": { "type": "string" } },
+    "rework_items": { "type": "array", "items": { "type": "string" } },
+    "rejected_items": { "type": "array", "items": { "type": "string" } },
+    "overclaimed_items": { "type": "array", "items": { "type": "string" } },
+    "forward_work_items": { "type": "array", "items": { "type": "object" } },
+    "autonomous_continue": { "type": "boolean" },
+    "stop_reason": { "type": "string" },
+    "cycle_number": { "type": "integer" },
+    "critical_rework_count": { "type": "integer" }
+  },
+  "additionalProperties": false
+}

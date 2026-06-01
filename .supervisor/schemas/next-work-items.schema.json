@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Next Work Items",
+  "description": "Work items for the next worker sprint, including rework and forward product-factory work.",
+  "type": "object",
+  "required": ["run_id", "sprint_id", "items"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "sprint_id": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item_id", "title", "lane", "priority", "source"],
+        "properties": {
+          "item_id": { "type": "string" },
+          "title": { "type": "string" },
+          "lane": { "type": "string", "enum": ["rework", "system-healing", "product-advancement", "evidence-hardening", "state-sync", "verification"] },
+          "priority": { "type": "integer", "minimum": 1, "maximum": 10 },
+          "description": { "type": "string" },
+          "acceptance_criteria": { "type": "string" },
+          "verification_command": { "type": "string" },
+          "evidence_expected": { "type": "string" },
+          "source": { "type": "string", "enum": ["rework-from-prior", "master-plan", "taskcard", "system-defect", "product-factory", "supervisor-policy"] }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence Declaration",
+  "description": "Worker declaration of evidence produced in a sprint. Canonical input to the declaration-driven supervisor loop.",
+  "type": "object",
+  "required": [
+    "run_id", "sprint_id", "evidence_root",
+    "start_time", "end_time",
+    "git_head_start", "git_head_end", "git_status_final",
+    "declared_scope",
+    "planned_work_items", "completed_work_items", "incomplete_work_items",
+    "changed_files", "tests_run", "test_results",
+    "evidence_artifacts", "reports_created",
+    "worker_self_verdict", "worker_self_grade",
+    "next_recommended_work"
+  ],
+  "properties": {
+    "run_id": { "type": "string", "description": "Unique run identifier" },
+    "sprint_id": { "type": "string", "description": "Sprint identifier" },
+    "evidence_root": { "type": "string", "description": "Path to evidence directory relative to repo root, e.g. .local/evidences/<run_id>/" },
+    "start_time": { "type": "string", "format": "date-time" },
+    "end_time": { "type": "string", "format": "date-time" },
+    "git_head_start": { "type": "string" },
+    "git_head_end": { "type": "string" },
+    "git_status_final": { "type": "string", "description": "Output of git status --short at end of work" },
+    "declared_scope": { "type": "string", "description": "What this sprint aimed to accomplish" },
+    "planned_work_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item_id", "title", "status"],
+        "properties": {
+          "item_id": { "type": "string" },
+          "title": { "type": "string" },
+          "status": { "type": "string", "enum": ["completed", "partial", "not_started", "blocked_external_gate"] },
+          "evidence_paths": { "type": "array", "items": { "type": "string" } },
+          "tests_supporting": { "type": "array", "items": { "type": "string" } },
+          "acceptance_criteria": { "type": "string" },
+          "gate_ref": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "completed_work_items": { "type": "array", "items": { "type": "string" } },
+    "incomplete_work_items": { "type": "array", "items": { "type": "string" } },
+    "changed_files": { "type": "array", "items": { "type": "string" } },
+    "tests_run": { "type": "integer", "minimum": 0 },
+    "test_results": {
+      "type": "object",
+      "properties": {
+        "passed": { "type": "integer" },
+        "failed": { "type": "integer" },
+        "skipped": { "type": "integer" },
+        "errors": { "type": "integer" }
+      }
+    },
+    "evidence_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "type"],
+        "properties": {
+          "path": { "type": "string" },
+          "type": { "type": "string" },
+          "description": { "type": "string" },
+          "related_work_items": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "reports_created": { "type": "array", "items": { "type": "string" } },
+    "worker_self_verdict": { "type": "string" },
+    "worker_self_grade": { "type": "string", "enum": ["PASS", "PARTIAL", "FAIL", "BLOCKED"] },
+    "next_recommended_work": { "type": "array", "items": { "type": "string" } },
+    "zip_export_path": { "type": "string" },
+    "delivery_package_path": { "type": "string" },
+    "sidecar_path": { "type": "string" },
+    "package_artifacts": { "type": "array", "items": { "type": "string" } },
+    "taskcards_updated": { "type": "array", "items": { "type": "string" } },
+    "state_files_updated": { "type": "array", "items": { "type": "string" } },
+    "memory_files_updated": { "type": "array", "items": { "type": "string" } },
+    "known_limitations": { "type": "array", "items": { "type": "string" } },
+    "external_gates": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

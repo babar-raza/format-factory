@@ -1,0 +1,191 @@
+sprint_id: FORMAT-FACTORY-SUPERVISOR-EVIDENCE-DIRECTORY-EXECUTION-SPEC-AND-CONTROLLED-IMPLEMENTATION-001
+generated_at: "2026-06-01T15:00:00"
+
+taskcards:
+  - item_id: TC-SUP-DIR-001
+    title: "Preflight and context reconciliation"
+    lane: C0-preflight
+    status: accepted
+    evidence_paths:
+      - reports/supervisor-evidence-directory-spec/00-preflight.md
+      - reports/supervisor-evidence-directory-spec/git-status-before.txt
+    tests_supporting: []
+    acceptance_criteria: "Preflight report exists with repo context inventory"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-002
+    title: "Plan normalization (ZIP-first to directory-first)"
+    lane: C1-plan-healing
+    status: accepted
+    evidence_paths:
+      - tools/supervisor/supervisor_loop.py
+    tests_supporting:
+      - tests/supervisor/test_evidence_declaration.py::test_watcher_not_required
+      - tests/supervisor/test_evidence_declaration.py::test_declaration_does_not_require_zip
+    acceptance_criteria: "supervisor_loop.py docstring marks watcher/ZIP as legacy, new commands added"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-003
+    title: "Evidence declaration schema"
+    lane: C2-schemas
+    status: accepted
+    evidence_paths:
+      - .supervisor/schemas/evidence-declaration.schema.json
+    tests_supporting:
+      - tests/supervisor/test_evidence_declaration.py::test_valid_directory_declaration_passes
+      - tests/supervisor/test_evidence_declaration.py::test_declaration_does_not_require_zip
+      - tests/supervisor/test_evidence_declaration.py::test_missing_evidence_root_fails
+    acceptance_criteria: "Schema exists with all required fields, tests pass"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-004
+    title: "Evidence manifest schema"
+    lane: C2-schemas
+    status: accepted
+    evidence_paths:
+      - .supervisor/schemas/evidence-manifest.schema.json
+    tests_supporting:
+      - tests/supervisor/test_evidence_declaration.py::test_evidence_manifest_structure
+    acceptance_criteria: "Schema exists with required fields"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-005
+    title: "Declared evidence validator"
+    lane: C3-tools
+    status: accepted
+    evidence_paths:
+      - tools/supervisor/evidence_declaration.py
+    tests_supporting:
+      - tests/supervisor/test_evidence_declaration.py::test_valid_directory_declaration_passes
+      - tests/supervisor/test_evidence_declaration.py::test_missing_evidence_root_fails
+      - tests/supervisor/test_evidence_declaration.py::test_missing_artifact_fails
+    acceptance_criteria: "Validator validates schema and checks path existence"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-006
+    title: "Declared evidence inspector"
+    lane: C3-tools
+    status: accepted
+    evidence_paths:
+      - tools/supervisor/inspect_declared_evidence.py
+    tests_supporting:
+      - tests/supervisor/test_evidence_declaration.py::test_valid_directory_declaration_passes
+    acceptance_criteria: "Inspector walks declared paths and reports item evidence presence"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-007
+    title: "Item-level grading engine"
+    lane: C3-tools
+    status: accepted
+    evidence_paths:
+      - tools/supervisor/grade_declared_work.py
+    tests_supporting:
+      - tests/supervisor/test_evidence_declaration.py::test_no_item_accepted_without_evidence
+      - tests/supervisor/test_evidence_declaration.py::test_complete_without_evidence_is_overclaimed
+      - tests/supervisor/test_evidence_declaration.py::test_failed_test_creates_rework
+      - tests/supervisor/test_evidence_declaration.py::test_external_gate_blocked
+      - tests/supervisor/test_evidence_declaration.py::test_autonomous_false_on_critical_rework
+      - tests/supervisor/test_evidence_declaration.py::test_status_only_advancement_is_overclaimed
+    acceptance_criteria: "8 grade levels implemented, OVERCLAIMED for no-evidence claims"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-008
+    title: "Next-worker prompt generator"
+    lane: C3-tools
+    status: accepted
+    evidence_paths:
+      - tools/supervisor/generate_next_worker_prompt.py
+    tests_supporting:
+      - tests/supervisor/test_evidence_declaration.py::test_prompt_includes_read_before_execution
+      - tests/supervisor/test_evidence_declaration.py::test_prompt_includes_rework_lane
+      - tests/supervisor/test_evidence_declaration.py::test_prompt_includes_product_advancement
+      - tests/supervisor/test_evidence_declaration.py::test_prompt_includes_evidence_declaration_requirements
+    acceptance_criteria: "Prompt includes all 8 required sections"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-009
+    title: "Autonomous cycle orchestrator"
+    lane: C3-tools
+    status: accepted
+    evidence_paths:
+      - tools/supervisor/autonomous_cycle.py
+    tests_supporting:
+      - tests/supervisor/test_evidence_declaration.py::test_watcher_not_required
+    acceptance_criteria: "Full cycle: validate -> inspect -> grade -> plan-next -> manifest"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-010
+    title: "R85 quality regression repair"
+    lane: C4-regression-repair
+    status: rework
+    evidence_paths: []
+    tests_supporting: []
+    acceptance_criteria: "Fix verdict logic in validate_evidence_for_supervisor.py"
+    supervisor_grade: REWORK_REQUIRED
+    notes: "Deferred from initial sprint. Non-blocking for canonical declaration-driven path."
+
+  - item_id: TC-SUP-DIR-011
+    title: "Product-factory forward-work policy"
+    lane: C5-policy
+    status: accepted
+    evidence_paths:
+      - tools/supervisor/generate_next_worker_prompt.py
+    tests_supporting:
+      - tests/supervisor/test_evidence_declaration.py::test_prompt_includes_product_advancement
+    acceptance_criteria: "Product-factory targets embedded in prompt generator"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-012
+    title: "Memory and state sync enhancements"
+    lane: C6-state-sync
+    status: rework
+    evidence_paths: []
+    tests_supporting: []
+    acceptance_criteria: "sync_local_memory.py enhanced with bundle_validation_pass"
+    supervisor_grade: REWORK_REQUIRED
+    notes: "Deferred from initial sprint. Non-blocking for canonical declaration-driven path."
+
+  - item_id: TC-SUP-DIR-013
+    title: "Tests and regression coverage"
+    lane: C7-tests
+    status: accepted
+    evidence_paths:
+      - tests/supervisor/test_evidence_declaration.py
+      - .local/evidences/supervisor-evidence-directory-sprint-20260601/test-results.txt
+    tests_supporting: []
+    acceptance_criteria: "21 tests pass covering all required scenarios"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-014
+    title: "Demo run with declared evidence directory"
+    lane: C8-demo
+    status: accepted
+    evidence_paths:
+      - .local/evidences/synthetic-declaration-smoke-20260601/evidence-declaration.yaml
+      - .local/supervisor/reviews/synthetic-declaration-smoke-20260601/supervisor-review.md
+      - .local/supervisor/reviews/synthetic-declaration-smoke-20260601/combined-next-worker-prompt.md
+      - .local/supervisor/reviews/synthetic-declaration-smoke-20260601/supervisor-cycle-manifest.yaml
+    tests_supporting: []
+    acceptance_criteria: "Demo graded 3 items correctly: 1 ACCEPTED, 1 OVERCLAIMED, 1 BLOCKED"
+    supervisor_grade: ACCEPTED
+
+  - item_id: TC-SUP-DIR-015
+    title: "Final evidence directory and self-declaration"
+    lane: C9-evidence
+    status: accepted
+    evidence_paths:
+      - .local/evidences/supervisor-evidence-directory-sprint-20260601/evidence-declaration.yaml
+      - .local/evidences/supervisor-evidence-directory-sprint-20260601/evidence-manifest.yaml
+      - .local/evidences/supervisor-evidence-directory-sprint-20260601/final-verdict.md
+      - .local/evidences/supervisor-evidence-directory-sprint-20260601/test-results.txt
+    tests_supporting: []
+    acceptance_criteria: "Self-referential evidence directory with declaration and verdict"
+    supervisor_grade: ACCEPTED
+
+summary:
+  total: 15
+  accepted: 13
+  rework: 2
+  rejected: 0
+  blocked: 0
+  not_attempted: 0

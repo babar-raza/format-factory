@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Supervisor Cycle Manifest",
+  "description": "Manifest of a complete supervisor review cycle.",
+  "type": "object",
+  "required": ["cycle_id", "run_id", "sprint_id", "timestamp", "declaration_path", "autonomous_continue", "exit_code"],
+  "properties": {
+    "cycle_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "sprint_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "declaration_path": { "type": "string" },
+    "review_path": { "type": "string" },
+    "next_prompt_path": { "type": "string" },
+    "item_grades_path": { "type": "string" },
+    "next_work_items_path": { "type": "string" },
+    "memory_synced": { "type": "boolean" },
+    "autonomous_continue": { "type": "boolean" },
+    "stop_reason": { "type": "string" },
+    "exit_code": { "type": "integer" },
+    "accepted_count": { "type": "integer" },
+    "rework_count": { "type": "integer" },
+    "rejected_count": { "type": "integer" },
+    "overclaimed_count": { "type": "integer" },
+    "blocked_count": { "type": "integer" }
+  },
+  "additionalProperties": false
+}

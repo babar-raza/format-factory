@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence Manifest",
+  "description": "Manifest of all artifacts inside an evidence directory.",
+  "type": "object",
+  "required": ["run_id", "evidence_root", "artifacts"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "evidence_root": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "type"],
+        "properties": {
+          "path": { "type": "string" },
+          "type": { "type": "string", "enum": ["declaration", "manifest", "verdict", "report", "test-log", "validation-log", "proof", "code", "config", "data", "other"] },
+          "required": { "type": "boolean", "default": false },
+          "description": { "type": "string" },
+          "sha256": { "type": "string" },
+          "size_bytes": { "type": "integer" },
+          "produced_by": { "type": "string" },
+          "related_work_item_ids": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

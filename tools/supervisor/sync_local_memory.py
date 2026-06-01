@@ -95,7 +95,12 @@ def format_entry(review: dict, additional_facts: dict | None = None) -> str:
         f"- bundle_path: {review.get('bundle_path', 'unknown')}",
         f"- pending_marker_count: {facts.get('pending_marker_count', 0)}",
         f"- bundle_entry_count: {facts.get('bundle_entry_count', 0)}",
+        f"- bundle_validation_pass: {facts.get('bundle_validation_pass', 'unknown')}",
     ]
+
+    validator_error_summary = facts.get("validator_error_summary", "")
+    if validator_error_summary:
+        lines.append(f"- validator_error_summary: {validator_error_summary[:200]}")
 
     gate_states = facts.get("gate_states", {})
     if gate_states:
@@ -164,6 +169,24 @@ def write_sync_report(result: dict, output_dir: Path) -> None:
     (output_dir / "memory-sync-report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def compute_test_delta(review: dict, memory_path: Path) -> dict:
+    """Compute test count delta from the previous entry in memory."""
+    additional = {}
+    current_count = review.get("facts", {}).get("test_count", 0)
+    if not current_count or not memory_path.exists():
+        return additional
+
+    memory_text = memory_path.read_text(encoding="utf-8")
+    # Find the most recent test_count entry
+    prev_counts = re.findall(r"- test_count:\s*(\d+)", memory_text)
+    if prev_counts:
+        prev_count = int(prev_counts[-1])
+        delta = current_count - prev_count
+        additional["test_delta"] = f"{delta:+d}" if delta != 0 else "0"
+        additional["test_delta_from"] = str(prev_count)
+    return additional
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Sync sprint facts to .supervisor/project-memory.md"
@@ -203,7 +226,9 @@ def main() -> int:
         print("WARNING: No evidence review data found. Using empty review.", file=sys.stderr)
         review = {"sprint_id": "unknown", "verdict": "unknown", "facts": {}}
 
-    result = sync(review, memory_path)
+    # Compute test delta from previous entry if possible
+    additional_facts = compute_test_delta(review, memory_path)
+    result = sync(review, memory_path, additional_facts)
     write_sync_report(result, args.output_dir)
 
     print(f"MEMORY_SYNC: {result['action'].upper()}")

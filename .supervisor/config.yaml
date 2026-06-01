@@ -16,11 +16,18 @@ supervisor:
 evidence:
   search_paths:
     - .local/evidence
+    - .local/evidences
     - evidence-bundles
     - reports
   bundle_pattern: "**/*.zip"
   sprint_id_file: bundle-metadata/sprint-id.txt
   final_verdict_pattern: "**/final-verdict.md"
+
+  # Declaration-driven evidence directory settings
+  declaration_dir: .local/evidences
+  review_dir: .local/supervisor/reviews
+  declaration_file: evidence-declaration.yaml
+  manifest_file: evidence-manifest.yaml
 
 # Authority model
 authority:
