@@ -44,9 +44,26 @@ def load_declaration(path: Path) -> dict:
     return yaml.safe_load(text) or {}
 
 
+def _validate_jsonschema(decl: dict) -> list[str]:
+    """Validate against JSON schema if jsonschema library is available."""
+    schema_path = SCHEMA_DIR / "evidence-declaration.schema.json"
+    if not schema_path.exists():
+        return []
+    try:
+        import jsonschema
+        import json as _json
+        schema = _json.loads(schema_path.read_text(encoding="utf-8"))
+        jsonschema.validate(decl, schema)
+        return []
+    except ImportError:
+        return []  # graceful degradation
+    except Exception as e:
+        return [f"JSON schema validation: {e}"]
+
+
 def validate_schema(decl: dict) -> list[str]:
-    """Validate declaration against required fields. Returns list of errors."""
-    errors = []
+    """Validate declaration against required fields and JSON schema. Returns list of errors."""
+    errors = _validate_jsonschema(decl)
     for field in REQUIRED_FIELDS:
         if field not in decl:
             errors.append(f"Missing required field: {field}")
