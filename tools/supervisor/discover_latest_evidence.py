@@ -214,6 +214,9 @@ def write_markdown(result: dict, output_dir: Path) -> None:
 
 
 def main() -> int:
+    print("WARNING: discover_latest_evidence.py is legacy. "
+          "Use 'supervisor_loop.py autonomous-cycle --declaration <path>' instead.",
+          file=sys.stderr)
     parser = argparse.ArgumentParser(description="Discover latest Format Factory evidence bundle")
     parser.add_argument("--path", type=Path, help="Explicit bundle path (skip search)")
     parser.add_argument("--json", action="store_true", help="Output JSON to stdout")
