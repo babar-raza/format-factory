@@ -30,7 +30,7 @@ AUTHORITATIVE_TEST_RESULT:
 ## Key Work
 
 ### Supervisor Truth Repair (D86-SUP-01 through D86-SUP-08)
-- validate_evidence_for_supervisor.py: Reject when BUNDLE_VALIDATION: FAIL; reject any real PENDING marker; exclude delegation labels from count
+- validate_evidence_for_supervisor.py: Reject when BUNDLE_VALIDATION: FAIL; reject any real unfilled marker; exclude delegation labels from count
 - supervisor_loop.py: Propagate validation failure exit code (rc=2); final exit code reflects validation state
 - compare_goal_to_evidence.py: New check_bundle_validation_fail() detects BUNDLE_VALIDATION: FAIL as CRITICAL contradiction
 - generate_supervisor_packet.py: Physical .vscode/mcp.json check; product-factory lanes from gap extraction fixtures
