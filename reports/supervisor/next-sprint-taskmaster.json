@@ -1,11 +1,24 @@
 {
-  "sprint_id": "supervisor-export-20260601-194448",
-  "timestamp": "2026-06-01T19:44:48.251523",
-  "verdict": "ACCEPTED",
+  "sprint_id": "supervisor-export-20260601-204806",
+  "timestamp": "2026-06-01T20:48:06.776551",
+  "verdict": "ACCEPTED_WITH_REWORK",
   "source_bundle": ".local/evidences/r88-declaration-closeout-e2e-proof",
   "tasks": [
     {
-      "task_id": "TASK-001",
+      "task_id": "REPAIR-001",
+      "title": "Repair: Tests failed: 30 failures detected",
+      "description": "All tests must pass per Format Factory policy",
+      "status": "pending",
+      "ff_taskcard_ref": "repair-required",
+      "supervisor_task_ref": "TC-SUP-009",
+      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
+      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
+      "non_authoritative": true,
+      "lane": "C2",
+      "priority": "critical"
+    },
+    {
+      "task_id": "TASK-002",
       "title": "Advance FODS Gate 11 commercial readiness",
       "description": "fods gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
       "status": "approval-blocked",
@@ -18,7 +31,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-002",
+      "task_id": "TASK-003",
       "title": "Advance FODT Gate 11 commercial readiness",
       "description": "fodt gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
       "status": "approval-blocked",
@@ -31,7 +44,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-003",
+      "task_id": "TASK-004",
       "title": "Open ZST Gate 11",
       "description": "zst gate_11 status: not_started. See plans/master-plan.md and registry for requirements.",
       "status": "blocked",
@@ -44,7 +57,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-004",
+      "task_id": "TASK-005",
       "title": "Work on open taskcard: ABW-GATE4-001-parser-prototype",
       "description": "ABW-GATE4-001 \u2014 ABW Gate 4 Parser Prototype",
       "status": "pending",
@@ -56,7 +69,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-005",
+      "task_id": "TASK-006",
       "title": "Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS",
       "description": "Taskcard: AI-USAGE-LEDGER-AND-METRICS",
       "status": "pending",
@@ -68,7 +81,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-006",
+      "task_id": "TASK-007",
       "title": "Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT",
       "description": "EVIDENCE-HYGIENE-ENFORCEMENT \u2014 Evidence Tooling Test Enhancement",
       "status": "pending",
@@ -80,7 +93,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-007",
+      "task_id": "TASK-008",
       "title": "Product deepening: GAP-CAP-001 \u2014 PPM load/parse (P3/P6)",
       "description": "Product: netpbm-commercial-dotnet. NetpbmParser handles P3/P6 tokens; no dedicated PPM-only tests yet",
       "status": "pending",
@@ -92,7 +105,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-008",
+      "task_id": "TASK-009",
       "title": "Product deepening: GAP-CAP-003 \u2014 FODS\u2192CSV export",
       "description": "Product: fods-commercial-dotnet. No FodsCsvExporter; FODS\u2192CSV is a natural export for spreadsheet format",
       "status": "pending",
@@ -104,7 +117,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-009",
+      "task_id": "TASK-010",
       "title": "Product deepening: GAP-DOGFOOD-DIF-CSV-001 \u2014 GAP-DOGFOOD-DIF-CSV-001",
       "description": "Product: dif. DIF\u2192CSV on HOLD until SYLK POC complete",
       "status": "pending",
@@ -116,7 +129,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-010",
+      "task_id": "TASK-011",
       "title": "Product deepening: GAP-DOC-001 \u2014 No standalone .NET Netpbm example (examples/net/netpbm/ dire",
       "description": "Product: unknown. ",
       "status": "pending",
@@ -128,7 +141,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-011",
+      "task_id": "TASK-012",
       "title": "Product deepening: GAP-DOC-002 \u2014 No FODS\u2192CSV example (capability not yet implemented)",
       "description": "Product: unknown. ",
       "status": "pending",
@@ -140,7 +153,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-012",
+      "task_id": "TASK-013",
       "title": "Build and validate next sprint evidence bundle",
       "description": "Build evidence bundle via build_evidence_bundle.py; validate with validate_evidence_bundle.py \u2192 BUNDLE_VALIDATION: PASS",
       "status": "pending",

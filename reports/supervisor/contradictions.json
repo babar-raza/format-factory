@@ -1,9 +1,15 @@
 {
   "sprint_id": "FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001",
-  "timestamp": "2026-06-01T19:44:47.167760",
-  "overall": "CLEAN",
-  "critical_count": 0,
+  "timestamp": "2026-06-01T20:48:05.789637",
+  "overall": "CRITICAL_CONTRADICTIONS",
+  "critical_count": 1,
   "warning_count": 0,
-  "autonomous_continue": true,
-  "contradictions": []
+  "autonomous_continue": false,
+  "contradictions": [
+    {
+      "severity": "CRITICAL",
+      "description": "Tests failed: 30 failures detected",
+      "detail": "All tests must pass per Format Factory policy"
+    }
+  ]
 }

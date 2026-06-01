@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-01T19:44:48.483183
+# Generated: 2026-06-01T20:48:07.001965
 
 ## Quick State
 - Last sprint: FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
-- Evidence verdict: ACCEPTED
-- Tests: 2809 passed / 0 failed
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 6783 passed / 30 failed
 - PENDING markers: 0
-- CRITICAL contradictions: 0
-- Autonomous continue: True
+- CRITICAL contradictions: 1
+- Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -29,19 +29,6 @@
 
 ## Project Memory (recent)
 ```
-- timestamp: 2026-05-31
-- sprint_type: DIRECTION_CORRECTION + PRODUCT_FACTORY_POC
-- direction_corrected: true
-- product_factory_primary_goal: true
-- evidence_role: SUPPORT_INFRASTRUCTURE_NOT_FINISH_LINE
-- commercial_net_poc_targets: FODS, FODT, Netpbm
-- foss_reduced_poc_targets: ZST, PBM+PGM+PPM, SYLK
-- supervisor_loop_used: true
-- mcp_activation: NOT_PERFORMED
-- ruflo_daemon: NOT_STARTED
-- commercial_product_ready: false
-- gate_11_approved: false
-- gate_8_approved: false
 - poc_matrix_path: product-capability-matrix/poc-targets.yaml
 - dogfood_export_strategy: docs/export/dogfood-export-strategy.md
 - next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
@@ -79,6 +66,19 @@ EVIDENCE BUNDLE VALIDATION REPORT
 Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: -104
 - test_delta_from: 169
+
+## Entry: FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+- timestamp: 2026-06-01T20:47:07.615679
+- verdict: ACCEPTED
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r88-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3574
+- bundle_validation_pass: True
+- test_delta: 0
+- test_delta_from: 65
 ```
 
 ## IMPORTANT REMINDERS

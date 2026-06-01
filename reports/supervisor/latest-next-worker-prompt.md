@@ -1,5 +1,5 @@
 # FORMAT-FACTORY-R89-MEGA-TRAIN-001
-# Generated: 2026-06-01T19:44:47.621648
+# Generated: 2026-06-01T20:48:06.229790
 # Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -25,15 +25,15 @@ Read these files before writing any code:
 
 - Sprint ID: FORMAT-FACTORY-R89-MEGA-TRAIN-001
 - Prior sprint: FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
-- Prior verdict: ACCEPTED
+- Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Autonomous continue: False
 
 ---
 
 ## Sprint Goal
 
-**Goal:** Advance product POC: FODS .NET: FODS→CSV export; FODT .NET Product Deepening; Netpbm .NET: PPM load/parse (P3/P6); Netpbm .NET: Binary format write (P4/P5/P6). Build evidence declaration and run supervisor autonomous-cycle.
+**Goal:** Repair 5 item(s) flagged by supervisor review. Advance product POC: FODS .NET: FODS→CSV export; FODT .NET Product Deepening; Netpbm .NET: PPM load/parse (P3/P6); Netpbm .NET: Binary format write (P4/P5/P6). Build evidence declaration and run supervisor autonomous-cycle.
 
 ---
 
@@ -56,18 +56,23 @@ Read these files before writing any code:
 | Train | Group | Title |
 |-------|-------|-------|
 | A | G1 | Governance Preflight |
-| B | G3 | FODS .NET: FODS→CSV export |
-| C | G3 | FODT .NET Product Deepening |
-| D | G3 | Netpbm .NET: PPM load/parse (P3/P6) |
-| E | G3 | Netpbm .NET: Binary format write (P4/P5/P6) |
-| F | G4 | ZST Python Improvement |
-| G | G4 | Netpbm Python: Write Ppm |
-| H | G4 | SYLK Python: Write Sylk |
-| I | G5 | Dogfood: fodt -> txt |
-| J | G5 | Dogfood: fodt -> html |
-| K | G6 | Package Build + Install Proof |
-| L | G7 | State + Memory + POC Matrix Sync |
-| M | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| B | G2 | Rework: Autonomous-Cycle End-to-End Proof |
+| C | G2 | Rework: FODS .NET Product Deepening (ExportAllSheetsToCsv) |
+| D | G2 | Rework: FODT .NET Product Deepening (GetPlainText, WordCount) |
+| E | G2 | Rework: Netpbm .NET Product Deepening (FlipVertical, Invert) |
+| F | G2 | Rework: Supervisor Pipeline Quality |
+| G | G3 | FODS .NET: FODS→CSV export |
+| H | G3 | FODT .NET Product Deepening |
+| I | G3 | Netpbm .NET: PPM load/parse (P3/P6) |
+| J | G3 | Netpbm .NET: Binary format write (P4/P5/P6) |
+| K | G4 | ZST Python Improvement |
+| L | G4 | Netpbm Python: Write Ppm |
+| M | G4 | SYLK Python: Write Sylk |
+| N | G5 | Dogfood: fodt -> txt |
+| O | G5 | Dogfood: fodt -> html |
+| P | G6 | Package Build + Install Proof |
+| Q | G7 | State + Memory + POC Matrix Sync |
+| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -85,9 +90,69 @@ Read all governance files. Verify no policy violations from prior sprint. Confir
 **Files:**
 - `reports/<run_id>/00-preflight.md`
 
+## Group G2: Rework / Repair
+
+### Train B: Rework: Autonomous-Cycle End-to-End Proof
+
+Tests failed. Fix test failures before acceptance.
+
+**Acceptance Criteria:**
+- Evidence for TRAIN-E passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `reports/r88/autonomous-cycle-end-to-end-proof.md`
+
+### Train C: Rework: FODS .NET Product Deepening (ExportAllSheetsToCsv)
+
+Tests failed. Fix test failures before acceptance.
+
+**Acceptance Criteria:**
+- Evidence for TRAIN-H passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `reports/r88/fods-dotnet-product-deepening.md`
+- `src/net/fods/FodsCsvExporter.cs`
+
+### Train D: Rework: FODT .NET Product Deepening (GetPlainText, WordCount)
+
+Tests failed. Fix test failures before acceptance.
+
+**Acceptance Criteria:**
+- Evidence for TRAIN-I passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `reports/r88/fodt-dotnet-product-deepening.md`
+- `src/net/fodt/FodtDocument.cs`
+
+### Train E: Rework: Netpbm .NET Product Deepening (FlipVertical, Invert)
+
+Tests failed. Fix test failures before acceptance.
+
+**Acceptance Criteria:**
+- Evidence for TRAIN-J passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `reports/r88/netpbm-dotnet-product-deepening.md`
+- `src/net/netpbm/Model/NetpbmImage.cs`
+
+### Train F: Rework: Supervisor Pipeline Quality
+
+Tests failed. Fix test failures before acceptance.
+
+**Acceptance Criteria:**
+- Evidence for TRAIN-R passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `reports/r88/supervisor-quality-verification.md`
+
 ## Group G3: Commercial .NET Product
 
-### Train B: FODS .NET: FODS→CSV export
+### Train G: FODS .NET: FODS→CSV export
 
 No FodsCsvExporter; FODS→CSV is a natural export for spreadsheet format. Status: NOT_IMPLEMENTED.
 
@@ -104,7 +169,7 @@ No FodsCsvExporter; FODS→CSV is a natural export for spreadsheet format. Statu
 dotnet test tests/net/fods/ --verbosity quiet
 ```
 
-### Train C: FODT .NET Product Deepening
+### Train H: FODT .NET Product Deepening
 
 Continue FODT commercial .NET product advancement. Gate 11 G11-G approval (external gate; human required)
 
@@ -121,7 +186,7 @@ Continue FODT commercial .NET product advancement. Gate 11 G11-G approval (exter
 dotnet test tests/net/fodt/ --verbosity quiet
 ```
 
-### Train D: Netpbm .NET: PPM load/parse (P3/P6)
+### Train I: Netpbm .NET: PPM load/parse (P3/P6)
 
 NetpbmParser handles P3/P6 tokens; no dedicated PPM-only tests yet. Status: PARTIAL.
 
@@ -138,7 +203,7 @@ NetpbmParser handles P3/P6 tokens; no dedicated PPM-only tests yet. Status: PART
 dotnet test tests/net/netpbm/ --verbosity quiet
 ```
 
-### Train E: Netpbm .NET: Binary format write (P4/P5/P6)
+### Train J: Netpbm .NET: Binary format write (P4/P5/P6)
 
 NetpbmWriter only writes ASCII (P1/P2/P3); binary write not implemented. Status: NOT_IMPLEMENTED.
 
@@ -157,7 +222,7 @@ dotnet test tests/net/netpbm/ --verbosity quiet
 
 ## Group G4: FOSS / Reduced Product
 
-### Train F: ZST Python Improvement
+### Train K: ZST Python Improvement
 
 Continue ZST FOSS product. Document dependency mode; verify installed workflow from review package
 
@@ -173,7 +238,7 @@ Continue ZST FOSS product. Document dependency mode; verify installed workflow f
 python -m pytest tests/python/zst/ -x -q
 ```
 
-### Train G: Netpbm Python: Write Ppm
+### Train L: Netpbm Python: Write Ppm
 
 Implement write_ppm for Netpbm. R85 Train M: implement PBM→PGM dogfood export + test
 
@@ -190,7 +255,7 @@ Implement write_ppm for Netpbm. R85 Train M: implement PBM→PGM dogfood export 
 python -m pytest tests/python/netpbm/ -x -q
 ```
 
-### Train H: SYLK Python: Write Sylk
+### Train M: SYLK Python: Write Sylk
 
 Implement write_sylk for SYLK. Document read+export-only scope; add installed example; update docs
 
@@ -209,7 +274,7 @@ python -m pytest tests/python/sylk/ -x -q
 
 ## Group G5: Dogfood Exports
 
-### Train I: Dogfood: fodt -> txt
+### Train N: Dogfood: fodt -> txt
 
 No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().
 
@@ -217,7 +282,7 @@ No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET libra
 - Export test passes using FF library
 - Dogfood status updated in poc-targets.yaml
 
-### Train J: Dogfood: fodt -> html
+### Train O: Dogfood: fodt -> html
 
 No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET library.
 
@@ -227,7 +292,7 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 
 ## Group G6: Package / Install Proof
 
-### Train K: Package Build + Install Proof
+### Train P: Package Build + Install Proof
 
 Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel.
 
@@ -246,7 +311,7 @@ python -m pytest tests/evidence/ -x -q
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train L: State + Memory + POC Matrix Sync
+### Train Q: State + Memory + POC Matrix Sync
 
 Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
@@ -262,7 +327,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train M: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
 
 Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated.
 

@@ -1,36 +1,37 @@
 # Supervisor-Generated Next Sprint Prompt
 # Source sprint: FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
-# Generated: 2026-06-01T19:44:48.245511
+# Generated: 2026-06-01T20:48:06.772123
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-ADVANCE: Continue normal mega-train lanes
+REPAIR: Address CRITICAL contradictions before advancing
 
 ## Prior Sprint Summary
 - Sprint ID: FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
-- Evidence verdict: ACCEPTED
-- Tests: 2809 passed, 0 failed, 11 skipped
-- Autonomous continue: True
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 6783 passed, 30 failed, 26 skipped
+- Autonomous continue: False
 
 ## Contradictions Requiring Repair
-None
+- [CRITICAL] Tests failed: 30 failures detected
 
 ## Synthesized Task List (Advisory)
-- [approval-blocked] TASK-001: Advance FODS Gate 11 commercial readiness
-- [approval-blocked] TASK-002: Advance FODT Gate 11 commercial readiness
-- [blocked] TASK-003: Open ZST Gate 11
-- [pending] TASK-004: Work on open taskcard: ABW-GATE4-001-parser-prototype
-- [pending] TASK-005: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
-- [pending] TASK-006: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
-- [pending] TASK-007: Product deepening: GAP-CAP-001 — PPM load/parse (P3/P6)
-- [pending] TASK-008: Product deepening: GAP-CAP-003 — FODS→CSV export
-- [pending] TASK-009: Product deepening: GAP-DOGFOOD-DIF-CSV-001 — GAP-DOGFOOD-DIF-CSV-001
-- [pending] TASK-010: Product deepening: GAP-DOC-001 — No standalone .NET Netpbm example (examples/net/netpbm/ dire
-- [pending] TASK-011: Product deepening: GAP-DOC-002 — No FODS→CSV example (capability not yet implemented)
-- [pending] TASK-012: Build and validate next sprint evidence bundle
+- [pending] REPAIR-001: Repair: Tests failed: 30 failures detected
+- [approval-blocked] TASK-002: Advance FODS Gate 11 commercial readiness
+- [approval-blocked] TASK-003: Advance FODT Gate 11 commercial readiness
+- [blocked] TASK-004: Open ZST Gate 11
+- [pending] TASK-005: Work on open taskcard: ABW-GATE4-001-parser-prototype
+- [pending] TASK-006: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
+- [pending] TASK-007: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
+- [pending] TASK-008: Product deepening: GAP-CAP-001 — PPM load/parse (P3/P6)
+- [pending] TASK-009: Product deepening: GAP-CAP-003 — FODS→CSV export
+- [pending] TASK-010: Product deepening: GAP-DOGFOOD-DIF-CSV-001 — GAP-DOGFOOD-DIF-CSV-001
+- [pending] TASK-011: Product deepening: GAP-DOC-001 — No standalone .NET Netpbm example (examples/net/netpbm/ dire
+- [pending] TASK-012: Product deepening: GAP-DOC-002 — No FODS→CSV example (capability not yet implemented)
+- [pending] TASK-013: Build and validate next sprint evidence bundle
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -64,19 +65,6 @@ None
 
 ## Project Memory Context
 ```
-- timestamp: 2026-05-31
-- sprint_type: DIRECTION_CORRECTION + PRODUCT_FACTORY_POC
-- direction_corrected: true
-- product_factory_primary_goal: true
-- evidence_role: SUPPORT_INFRASTRUCTURE_NOT_FINISH_LINE
-- commercial_net_poc_targets: FODS, FODT, Netpbm
-- foss_reduced_poc_targets: ZST, PBM+PGM+PPM, SYLK
-- supervisor_loop_used: true
-- mcp_activation: NOT_PERFORMED
-- ruflo_daemon: NOT_STARTED
-- commercial_product_ready: false
-- gate_11_approved: false
-- gate_8_approved: false
 - poc_matrix_path: product-capability-matrix/poc-targets.yaml
 - dogfood_export_strategy: docs/export/dogfood-export-strategy.md
 - next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
@@ -114,6 +102,19 @@ EVIDENCE BUNDLE VALIDATION REPORT
 Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: -104
 - test_delta_from: 169
+
+## Entry: FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+- timestamp: 2026-06-01T20:47:07.615679
+- verdict: ACCEPTED
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r88-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3574
+- bundle_validation_pass: True
+- test_delta: 0
+- test_delta_from: 65
 ```
 
 ---
