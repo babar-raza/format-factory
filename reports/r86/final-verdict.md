@@ -46,7 +46,7 @@ AUTHORITATIVE_TEST_RESULT:
 
 ## Evidence Bundle
 
-BUNDLE_VALIDATION_PASS_1_SHA: PENDING
+BUNDLE_VALIDATION_PASS_1_SHA: 9116e83685bf58aa73f4cefeb5c1273c72f7b87f08a5c48adcfe16f1f64b76e7
 BUNDLE_VALIDATION_PASS_2_SHA: delegated_to_final_artifact_authority_json
 SIDECAR_SHA: delegated_to_final_artifact_authority_json
 DELIVERY_PACKAGE_SHA: delegated_to_final_artifact_authority_json
