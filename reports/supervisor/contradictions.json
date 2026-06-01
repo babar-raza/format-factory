@@ -1,15 +1,25 @@
 {
-  "sprint_id": "FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001",
-  "timestamp": "2026-06-01T20:48:05.789637",
+  "sprint_id": "unknown",
+  "timestamp": "2026-06-01T20:49:05.725737",
   "overall": "CRITICAL_CONTRADICTIONS",
-  "critical_count": 1,
-  "warning_count": 0,
+  "critical_count": 2,
+  "warning_count": 1,
   "autonomous_continue": false,
   "contradictions": [
     {
       "severity": "CRITICAL",
-      "description": "Tests failed: 30 failures detected",
-      "detail": "All tests must pass per Format Factory policy"
+      "description": "No final-verdict.md found in evidence bundle",
+      "detail": "Evidence bundles must contain a final-verdict.md"
+    },
+    {
+      "severity": "CRITICAL",
+      "description": "BUNDLE_VALIDATION: FAIL \u2014 evidence bundle did not pass validation",
+      "detail": "Existing validator (validate_evidence_bundle.py) reported BUNDLE_VALIDATION: FAIL. Sidecar proof is required but was not supplied."
+    },
+    {
+      "severity": "WARNING",
+      "description": "Sprint ID not found in evidence bundle",
+      "detail": "Cannot verify sprint identity match with contract"
     }
   ]
 }

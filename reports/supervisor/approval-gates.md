@@ -1,13 +1,13 @@
 # Approval Gates Classification
-Sprint ID: FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
-Generated: 2026-06-01T20:48:06.997258
+Sprint ID: unknown
+Generated: 2026-06-01T20:49:06.546983
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions
 
 | Action | Classification | Who Unblocks |
 |--------|---------------|-------------|
-| Repair 1 CRITICAL contradictions | local-repair-loop | Claude_Code |
+| Repair 2 CRITICAL contradictions | local-repair-loop | Claude_Code |
 | Continue to next sprint | stop-contradictions-present | Claude_Code (after repair) |
 
 ## Summary

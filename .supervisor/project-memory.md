@@ -89,7 +89,7 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - pending_marker_count: 1
 - bundle_entry_count: 9
 
-## Entry: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
+## Entry: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001 [STALE]
 - timestamp: 2026-05-31T20:09:07.506275
 - verdict: ACCEPTED
 - test_count: 65
@@ -150,3 +150,16 @@ EVIDENCE BUNDLE VALIDATION REPORT
 Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: -104
 - test_delta_from: 169
+
+## Entry: FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+- timestamp: 2026-06-01T20:47:07.615679
+- verdict: ACCEPTED
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r88-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3574
+- bundle_validation_pass: True
+- test_delta: 0
+- test_delta_from: 65
