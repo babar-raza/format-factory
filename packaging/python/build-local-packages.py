@@ -36,6 +36,10 @@ PACKAGE_DESCRIPTIONS = {
     "abw": "Minimal FOSS AbiWord document (.abw) parser",
     "fods": "Minimal FOSS Flat OpenDocument Spreadsheet (.fods) parser",
     "fodt": "Minimal FOSS Flat OpenDocument Text (.fodt) parser",
+    "pgm": "Minimal FOSS Portable Graymap (.pgm) parser",
+    "pbm": "Minimal FOSS Portable Bitmap (.pbm) parser",
+    "ppm": "Minimal FOSS Portable Pixmap (.ppm) parser",
+    "sylk": "Minimal FOSS Symbolic Link (.sylk) parser",
 }
 
 PACKAGE_DEPS = {
@@ -46,6 +50,10 @@ PACKAGE_DEPS = {
     "abw": "[]",
     "fods": "[]",
     "fodt": "[]",
+    "pgm": "[]",
+    "pbm": "[]",
+    "ppm": "[]",
+    "sylk": "[]",
 }
 
 
@@ -149,7 +157,7 @@ def main():
         print("PyYAML not available — using hardcoded package list")
         packages = [
             {"module_import": m, "package_name": f"aspose-format-factory-{m}"}
-            for m in ["zst", "fodp", "fodg", "gnumeric", "abw"]
+            for m in ["zst", "fodp", "fodg", "gnumeric", "abw", "fods", "fodt", "pgm", "pbm", "ppm", "sylk"]
         ]
 
     BUILD_DIR.mkdir(parents=True, exist_ok=True)
