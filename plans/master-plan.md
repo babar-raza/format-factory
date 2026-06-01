@@ -1941,6 +1941,8 @@ Only escalate to human if true external gate: Gate 8/11 approval, push, credenti
 
 Legacy command (`run-on-latest`) still works but prints a deprecation warning. The declaration-driven pipeline is the canonical production path.
 
+If `AUTONOMOUS_CONTINUE: YES` and `.local/supervisor/continuation-signal.json` indicates `autonomous_continue: true` with `iteration < max_iterations`, the executor (Claude Code) MUST automatically read `reports/supervisor/next-sprint.md` and begin the next sprint without waiting for human input. This is the MODE 5 autonomous sprint loop. The loop terminates on any hard stop (push/commit, Gate 8/11, credentials), max iterations reached (default 5), or `AUTONOMOUS_CONTINUE: NO`.
+
 ### 40.6 No-Drift Anchors
 
 - TM task "done" ≠ Format Factory gate closed
@@ -2004,7 +2006,32 @@ Pipeline validated against real R86 sprint data:
 - 6 R87 supervisor truth
 - 9 bundle validator
 
+### 41.6 Continuous Autonomous Loop Protocol (MODE 5)
+
+The autonomous loop is driven by the AI agent (Claude Code), not a Python daemon. The supervisor pipeline produces the inputs; the agent reads them and acts.
+
+**Signal file:** `.local/supervisor/continuation-signal.json`
+- Written by `autonomous_cycle.py` step 8 after each cycle
+- Read by the agent (per CLAUDE.md "Autonomous Continuation" section) to decide whether to continue
+- Contains: `autonomous_continue`, `iteration`, `max_iterations`, `hard_stops_detected`
+
+**Loop sequence:**
+1. Agent executes sprint work (from `next-sprint.md` or human prompt)
+2. Agent writes `evidence-declaration.yaml`
+3. Agent runs autonomous-cycle
+4. `autonomous_cycle.py` grades work, generates `next-sprint.md`, writes `continuation-signal.json`
+5. Agent reads signal → if continue: go to step 1 with new `next-sprint.md`
+
+**Termination conditions:**
+- `AUTONOMOUS_CONTINUE: NO` (critical rework — OVERCLAIMED or REJECTED items)
+- `iteration >= max_iterations` (default 5, configurable in `policies.yaml`)
+- Hard stop: push/commit needed, Gate 8/11 approval, credentials, destructive ops
+- No forward progress for 2 consecutive sprints (same rework items)
+- Zero ACCEPTED items in a sprint
+
+**Commit policy:** The agent accumulates uncommitted working tree changes across iterations. Commits only happen when the loop terminates and the human authorizes. The iteration counter resets to 0 on human intervention.
+
 ---
 
-*End of plans/master-plan.md — version 2.66 — 2026-06-01 (Section 41 added: declaration-driven pipeline production integration)*
+*End of plans/master-plan.md — version 2.67 — 2026-06-01 (Section 41.6 added: continuous autonomous loop protocol MODE 5)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

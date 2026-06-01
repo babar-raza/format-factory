@@ -1,7 +1,7 @@
 # Current State Snapshot
 
 **Formats in registry:** 22
-**Latest sprint:** R87 — FORMAT-FACTORY-R87-CLEAN-SUPERVISOR-CLOSEOUT-REVIEW-PACKAGE-POC-PRODUCT-FACTORY-DEEPENING-MEGA-TRAIN-001
+**Latest sprint:** R88 — FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
 **Gate 11 approved:** False
 **commercial_product_ready:** False
 
@@ -11,8 +11,8 @@
 - pbm: 2 files
 
 ## Evidence Contracts
-- Total: 176
-- Latest: r87-clean-supervisor-closeout-review-package-poc-product-factory-deepening.yaml
+- Total: 177
+- Latest: r88-declaration-driven-autonomous-closeout-poc-product-deepening.yaml
 
 ## Production Blockers
 - G11-G_NOT_STARTED: Gate 11 commercial approval requires Babar Raza written approval

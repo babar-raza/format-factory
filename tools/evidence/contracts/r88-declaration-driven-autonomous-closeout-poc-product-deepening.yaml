@@ -1,0 +1,46 @@
+# R88 Evidence Contract
+# FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+
+sprint_id: "FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001"
+sprint_number: "R88"
+sprint_date: "2026-06-01"
+
+installed_artifact_policy: wheel_and_sdist
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 35
+
+required_repo_files:
+  # R87 IV and declaration closeout repair (Trains A-E)
+  - reports/r88/r87-independent-verification.md
+  - reports/r88/r87-defect-ledger.json
+  - reports/r88/multi-mega-train-scoreboard.md
+  - reports/r88/claude-closeout-instruction-repair.md
+  - reports/r88/autonomous-cycle-end-to-end-proof.md
+
+  # Supervisor truth (Trains F-G)
+  - reports/r88/authoritative-test-result-cleanup.md
+
+  # .NET product deepening (Trains H-J)
+  - tests/net/fods/FodsR88MultiSheetCsvTests.cs
+  - tests/net/fodt/FodtR88TextAnalysisTests.cs
+  - tests/net/netpbm/NetpbmR88TransformTests.cs
+
+  # Closeout instruction repairs
+  - CLAUDE.md
+
+  # Source changes
+  - src/net/fods/FodsCsvExporter.cs
+  - src/net/fodt/FodtDocument.cs
+  - src/net/netpbm/Model/NetpbmImage.cs
+  - tools/supervisor/autonomous_cycle.py
+  - tools/supervisor/generate_next_worker_prompt.py
+
+  # State
+  - state/current-state.json
+  - state/current-state.md
+  - plans/master-plan.md
+
+  # Contract self-reference
+  - tools/evidence/contracts/r88-declaration-driven-autonomous-closeout-poc-product-deepening.yaml

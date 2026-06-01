@@ -182,6 +182,52 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     except Exception as e:
         print(f"  WARNING: Bridge step failed: {e}")
 
+    # Step 8: Write continuation signal for autonomous loop (MODE 5)
+    print("\n=== STEP 8: WRITE CONTINUATION SIGNAL ===")
+    try:
+        signal_dir = repo_root / ".local" / "supervisor"
+        signal_dir.mkdir(parents=True, exist_ok=True)
+        signal_path = signal_dir / "continuation-signal.json"
+
+        # Read existing signal to preserve iteration count
+        existing_iteration = 0
+        if signal_path.exists():
+            try:
+                existing = json.loads(signal_path.read_text(encoding="utf-8"))
+                existing_iteration = existing.get("iteration", 0)
+            except Exception:
+                pass
+
+        # Load max_iterations from policies
+        max_iterations = 5
+        policies_path = repo_root / ".supervisor" / "policies.yaml"
+        if policies_path.exists():
+            try:
+                policies = yaml.safe_load(policies_path.read_text(encoding="utf-8"))
+                max_iterations = policies.get("autonomous_continuation", {}).get("max_iterations", 5)
+            except Exception:
+                pass
+
+        hard_stops = []
+        if manifest.get("exit_code") == 3:
+            hard_stops.append("critical_rework_blocks_continuation")
+
+        signal = {
+            "autonomous_continue": manifest["autonomous_continue"] and not hard_stops,
+            "iteration": existing_iteration,
+            "max_iterations": max_iterations,
+            "next_sprint_path": "reports/supervisor/next-sprint.md",
+            "stop_reason": hard_stops[0] if hard_stops else None,
+            "generated_at": timestamp,
+            "source_sprint_id": sprint_id,
+            "hard_stops_detected": hard_stops,
+        }
+        signal_path.write_text(json.dumps(signal, indent=2), encoding="utf-8")
+        print(f"  Signal: {signal_path} (continue={signal['autonomous_continue']}, "
+              f"iter={existing_iteration}/{max_iterations})")
+    except Exception as e:
+        print(f"  WARNING: Continuation signal failed: {e}")
+
     return manifest
 
 

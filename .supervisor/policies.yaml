@@ -243,6 +243,11 @@ autonomous_continuation:
   # External gates do not block autonomous continuation
   external_gates_block_autonomous: false
 
+  # Continuous loop settings (MODE 5+)
+  max_iterations: 5
+  no_progress_max_consecutive: 2
+  iteration_reset_on_human_intervention: true
+
   # Hard prohibitions (never autonomous)
   hard_prohibitions:
     - git_push

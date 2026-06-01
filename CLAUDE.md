@@ -42,6 +42,35 @@ After completing sprint work, you MUST:
 
 Do NOT use the legacy `run-on-latest --bundle` command. It is deprecated.
 
+## Autonomous Continuation (when authorized)
+
+After Sprint Closeout step 3 (checking exit code), if ALL of these are true:
+1. autonomous-cycle exit code was 0
+2. `reports/supervisor/approval-gates.md` contains `AUTONOMOUS_CONTINUE: YES`
+3. `.local/supervisor/continuation-signal.json` exists with `"autonomous_continue": true`
+4. `iteration` < `max_iterations` in the signal file
+5. No hard stop detected (push/commit needed, Gate 8/11 approval, credentials)
+
+Then IMMEDIATELY:
+1. Read `reports/supervisor/next-sprint.md`
+2. Increment `iteration` in `.local/supervisor/continuation-signal.json`
+3. Begin executing the next sprint — treat `next-sprint.md` as your sprint prompt
+4. At the end, write a new `evidence-declaration.yaml` and run autonomous-cycle again
+5. Repeat from the check above
+
+If ANY condition is false, STOP and report the termination reason to the user.
+
+### Hard Stops (never autonomous)
+- Git push or commit (requires explicit user authorization)
+- Gate 8 or Gate 11 approval
+- Package publication
+- MCP activation changes
+- Destructive git operations
+
+### Max Iterations
+Default: 5 sprints per autonomous loop. After max iterations, STOP and present summary.
+Configurable in `.supervisor/policies.yaml` under `autonomous_continuation.max_iterations`.
+
 ## Governance (always applies)
 
 - Read `AGENTS.md` before taking any action.
