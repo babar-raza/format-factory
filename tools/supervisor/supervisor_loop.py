@@ -216,8 +216,10 @@ def cmd_memory_sync(args) -> int:
 
 def cmd_run_on_latest(args) -> int:
     """Full pipeline: discover → review → next → export → memory-sync."""
+    print("WARNING: run-on-latest is legacy. Use 'autonomous-cycle --declaration <path>' instead.",
+          file=sys.stderr)
     print("=" * 60)
-    print("SUPERVISOR LOOP: RUN-ON-LATEST")
+    print("SUPERVISOR LOOP: RUN-ON-LATEST (LEGACY)")
     print(f"Started: {datetime.now().isoformat()}")
     print("=" * 60)
 
@@ -354,10 +356,24 @@ def cmd_plan_next(args) -> int:
 
 
 def cmd_autonomous_cycle(args) -> int:
-    """Full declaration-driven autonomous supervisor cycle (canonical command)."""
+    """Full declaration-driven autonomous supervisor cycle (canonical command).
+
+    After the cycle completes, calls generate_supervisor_packet.py to produce
+    session-resume.md, approval-gates.md, and next-sprint.md from the bridged
+    evidence-review.json + contradictions.json.
+    """
     print("=== SUPERVISOR: AUTONOMOUS-CYCLE ===")
     extra = ["--declaration", str(args.declaration), "--repo-root", str(REPO_ROOT)]
-    return run_script("autonomous_cycle.py", extra, REPO_ROOT).returncode
+    rc = run_script("autonomous_cycle.py", extra, REPO_ROOT).returncode
+
+    # Bridge: generate session-resume/approval-gates/next-sprint from bridged JSON
+    if rc in (0, 3):
+        print("\n=== SUPERVISOR: GENERATING SESSION-RESUME + APPROVAL-GATES + NEXT-SPRINT ===")
+        next_rc = cmd_next(args)
+        if next_rc != 0:
+            print(f"  WARNING: Packet generation returned {next_rc}", file=sys.stderr)
+
+    return rc
 
 
 def cmd_create_sample_declaration(args) -> int:
