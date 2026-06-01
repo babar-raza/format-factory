@@ -225,6 +225,15 @@ def invoke_existing_validator(bundle_path: Path, repo_root: Path, sprint_id: str
         "--bundle", str(bundle_path),
         "--no-strict-git",
     ]
+    # Auto-discover sidecar proof file alongside bundle
+    sidecar_candidates = [
+        bundle_path.with_suffix(".sha256-proof.json"),
+        bundle_path.parent / (bundle_path.stem + ".sha256-proof.json"),
+    ]
+    for sc in sidecar_candidates:
+        if sc.exists():
+            cmd.extend(["--sidecar-proof", str(sc)])
+            break
     try:
         result = subprocess.run(
             cmd,
