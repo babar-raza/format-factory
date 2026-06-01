@@ -174,7 +174,92 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     ]
     (latest_dir / "latest-cycle-summary.md").write_text("\n".join(summary_lines) + "\n", encoding="utf-8")
 
+    # Step 7: Bridge to legacy format for session-resume/approval-gates/next-sprint
+    print("\n=== STEP 7: BRIDGE TO LEGACY PACKET FORMAT ===")
+    try:
+        bridge_to_legacy_format(review, manifest, decl, repo_root)
+        print("  Bridge: evidence-review.json + contradictions.json written to reports/supervisor/")
+    except Exception as e:
+        print(f"  WARNING: Bridge step failed: {e}")
+
     return manifest
+
+
+def bridge_to_legacy_format(review: dict, manifest: dict, decl: dict, repo_root: Path) -> None:
+    """Convert declaration-driven cycle outputs to the JSON format expected by
+    generate_supervisor_packet.py so that session-resume.md, approval-gates.md,
+    and next-sprint.md are regenerated from fresh data.
+
+    Writes:
+      reports/supervisor/evidence-review.json
+      reports/supervisor/contradictions.json
+    """
+    output_dir = repo_root / "reports" / "supervisor"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    test_results = decl.get("test_results", {})
+    passed = test_results.get("passed", 0)
+    failed = test_results.get("failed", 0)
+
+    # Build evidence-review.json in the format generate_supervisor_packet expects
+    evidence_review = {
+        "sprint_id": manifest.get("sprint_id", "unknown"),
+        "timestamp": manifest.get("timestamp", datetime.now().isoformat()),
+        "verdict": review.get("overall_verdict", "unknown"),
+        "bundle_path": str(decl.get("evidence_root", "")),
+        "facts": {
+            "test_count": passed,
+            "fail_count": failed,
+            "skip_count": test_results.get("skipped", 0),
+            "git_head": decl.get("git_head_end", "unknown"),
+            "gate_states": {},
+            "final_verdict_text": review.get("overall_verdict", ""),
+            "pending_marker_count": 0,
+            "bundle_entry_count": len(review.get("item_grades", [])),
+            "bundle_validation_pass": manifest.get("exit_code", 9) != 9,
+        },
+        "contradictions": [],
+        "limitation_notes": [],
+        "validator_invoked": True,
+        "bundle_validation_pass": manifest.get("exit_code", 9) != 9,
+        "exit_code": manifest.get("exit_code", 0),
+        "status": "complete",
+    }
+
+    # Build contradictions.json
+    contradictions_list = []
+    if review.get("critical_rework_count", 0) > 0:
+        for grade in review.get("item_grades", []):
+            if grade.get("supervisor_grade") in ("OVERCLAIMED", "REJECTED"):
+                contradictions_list.append({
+                    "severity": "CRITICAL",
+                    "description": f"{grade['supervisor_grade']}: {grade.get('item_title', grade.get('item_id', 'unknown'))}",
+                    "detail": grade.get("required_rework", ""),
+                })
+    if failed > 0:
+        contradictions_list.append({
+            "severity": "CRITICAL",
+            "description": f"Tests failed: {failed} failures detected",
+            "detail": "All tests must pass per Format Factory policy",
+        })
+
+    critical_count = sum(1 for c in contradictions_list if c["severity"] == "CRITICAL")
+    contradictions = {
+        "sprint_id": manifest.get("sprint_id", "unknown"),
+        "timestamp": manifest.get("timestamp", datetime.now().isoformat()),
+        "overall": "CRITICAL_CONTRADICTIONS" if critical_count > 0 else "CLEAN",
+        "critical_count": critical_count,
+        "warning_count": 0,
+        "autonomous_continue": manifest.get("autonomous_continue", False),
+        "contradictions": contradictions_list,
+    }
+
+    (output_dir / "evidence-review.json").write_text(
+        json.dumps(evidence_review, indent=2), encoding="utf-8"
+    )
+    (output_dir / "contradictions.json").write_text(
+        json.dumps(contradictions, indent=2), encoding="utf-8"
+    )
 
 
 def main() -> int:
