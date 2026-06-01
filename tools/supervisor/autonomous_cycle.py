@@ -99,7 +99,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
 
     # Step 4: Generate next worker prompt
     print("\n=== STEP 4: GENERATE NEXT WORKER PROMPT ===")
-    prompt = generate_prompt(review)
+    prompt = generate_prompt(review, repo_root=repo_root)
     prompt_path = review_dir / "combined-next-worker-prompt.md"
     prompt_path.write_text(prompt, encoding="utf-8")
 

@@ -1,21 +1,35 @@
-# Supervisor Review: r86-real-sprint-validation
-Sprint: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
-Timestamp: 2026-06-01T17:13:11.475852
+# Supervisor Review: r88-declaration-closeout-e2e-proof
+Sprint: FORMAT-FACTORY-R88-DECLARATION-DRIVEN-AUTONOMOUS-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+Timestamp: 2026-06-01T19:10:38.975381
 Overall Verdict: ACCEPTED
 Autonomous Continue: True
 
 ## Summary
-- Accepted: 7
+- Accepted: 21
 - Rework: 0
 - Rejected: 0
 - Overclaimed: 0
 - Critical Rework: 0
 
 ## Item Grades
-- **R86-SUP-TRUTH** (Supervisor truth repair (D86-SUP-01 through D86-SUP-08)): ACCEPTED
-- **R86-NETPBM-BINARY** (.NET Netpbm binary write support (P4/P5/P6)): ACCEPTED
-- **R86-FODS-HARDENING** (FODS exporter edge-case hardening): ACCEPTED
-- **R86-FODT-HARDENING** (FODT exporter edge-case hardening): ACCEPTED
-- **R86-PPM-WRITE** (Python write_ppm (P3 ASCII)): ACCEPTED
-- **R86-PBM-PPM-DOGFOOD** (PBM to PPM dogfood export using FF write_ppm): ACCEPTED
-- **R86-PPM-PACKAGE** (PPM added to package matrix): ACCEPTED
+- **TRAIN-A** (R87 Independent Verification): ACCEPTED
+- **TRAIN-B** (CLAUDE.md Closeout Instruction Repair): ACCEPTED
+- **TRAIN-C** (Next-Sprint Generator Closeout Policy Repair): ACCEPTED
+- **TRAIN-D** (Master Plan Section 40.5 Repair): ACCEPTED
+- **TRAIN-E** (Autonomous-Cycle End-to-End Proof): ACCEPTED
+- **TRAIN-F** (Authoritative Test Result Cleanup): ACCEPTED
+- **TRAIN-G** (Scoreboard Finality Repair): ACCEPTED
+- **TRAIN-H** (FODS .NET Product Deepening (ExportAllSheetsToCsv)): ACCEPTED
+- **TRAIN-I** (FODT .NET Product Deepening (GetPlainText, WordCount)): ACCEPTED
+- **TRAIN-J** (Netpbm .NET Product Deepening (FlipVertical, Invert)): ACCEPTED
+- **TRAIN-K** (ZST FOSS Verification): ACCEPTED
+- **TRAIN-L** (Python Netpbm FOSS Verification): ACCEPTED
+- **TRAIN-M** (SYLK/DIF FOSS Verification): ACCEPTED
+- **TRAIN-N** (Dogfood Export Verification): ACCEPTED
+- **TRAIN-O** (Dogfood Enforcement Tests): ACCEPTED
+- **TRAIN-P** (Package Artifact Verification): ACCEPTED
+- **TRAIN-Q** (Examples/Docs Usability): ACCEPTED
+- **TRAIN-R** (Supervisor Pipeline Quality): ACCEPTED
+- **TRAIN-S** (Task Master and Ruflo Exports): ACCEPTED
+- **TRAIN-T** (State/Registry/Memory Sync): ACCEPTED
+- **TRAIN-U** (Final Adversarial IV): ACCEPTED

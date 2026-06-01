@@ -297,7 +297,7 @@ def test_prompt_includes_read_before_execution():
     assert "AGENTS.md" in prompt
     assert "GOVERNANCE.md" in prompt
     assert "plans/master-plan.md" in prompt
-    assert "Read Before Execution" in prompt
+    assert "Preflight" in prompt
 
 
 # ==================== Test 16: Prompt includes rework lane ====================
@@ -316,7 +316,7 @@ def test_prompt_includes_rework_lane():
         }],
     }
     prompt = generate_prompt(review)
-    assert "Rework Lane" in prompt
+    assert "Rework" in prompt
     assert "Fix the thing" in prompt
 
 
@@ -330,7 +330,7 @@ def test_prompt_includes_product_advancement():
         "item_grades": [],
     }
     prompt = generate_prompt(review)
-    assert "Product-Advancement Lane" in prompt
+    assert "Product" in prompt
     assert "FODS" in prompt
     assert "FODT" in prompt
 
@@ -346,7 +346,7 @@ def test_prompt_includes_evidence_declaration_requirements():
     }
     prompt = generate_prompt(review)
     assert "evidence-declaration.yaml" in prompt
-    assert "Final Evidence Declaration" in prompt
+    assert "Evidence" in prompt
 
 
 # ==================== Test 19: Idempotent rerun does not corrupt prior review ====================

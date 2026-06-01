@@ -155,6 +155,71 @@ public sealed class NetpbmImage
         }
     }
 
+    /// <summary>
+    /// Flip the image vertically (mirror top-bottom) in place.
+    /// R88 Train J: vertical transform API.
+    /// </summary>
+    public void FlipVertical()
+    {
+        if (Format == NetpbmFormat.PPM_P3 || Format == NetpbmFormat.PPM_P6)
+        {
+            for (int top = 0, bot = Height - 1; top < bot; top++, bot--)
+            {
+                for (int col = 0; col < Width; col++)
+                {
+                    int ti = top * Width + col;
+                    int bi = bot * Width + col;
+                    (RedChannel![ti], RedChannel[bi]) = (RedChannel[bi], RedChannel[ti]);
+                    (GreenChannel![ti], GreenChannel[bi]) = (GreenChannel[bi], GreenChannel[ti]);
+                    (BlueChannel![ti], BlueChannel[bi]) = (BlueChannel[bi], BlueChannel[ti]);
+                }
+            }
+        }
+        else
+        {
+            for (int top = 0, bot = Height - 1; top < bot; top++, bot--)
+            {
+                for (int col = 0; col < Width; col++)
+                {
+                    int ti = top * Width + col;
+                    int bi = bot * Width + col;
+                    (Pixels[ti], Pixels[bi]) = (Pixels[bi], Pixels[ti]);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Invert all pixel values in place.
+    /// PBM: 0↔1. PGM: v → MaxValue - v. PPM: each channel inverted.
+    /// R88 Train J: invert transform API.
+    /// </summary>
+    public void Invert()
+    {
+        if (Format == NetpbmFormat.PPM_P3 || Format == NetpbmFormat.PPM_P6)
+        {
+            byte max = (byte)MaxValue;
+            int len = Width * Height;
+            for (int i = 0; i < len; i++)
+            {
+                RedChannel![i] = (byte)(max - RedChannel[i]);
+                GreenChannel![i] = (byte)(max - GreenChannel[i]);
+                BlueChannel![i] = (byte)(max - BlueChannel[i]);
+            }
+        }
+        else if (Format == NetpbmFormat.PBM_P1 || Format == NetpbmFormat.PBM_P4)
+        {
+            for (int i = 0; i < Pixels.Length; i++)
+                Pixels[i] = (byte)(1 - Pixels[i]);
+        }
+        else
+        {
+            byte max = (byte)MaxValue;
+            for (int i = 0; i < Pixels.Length; i++)
+                Pixels[i] = (byte)(max - Pixels[i]);
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Image statistics
     // -------------------------------------------------------------------------

@@ -85,8 +85,15 @@ Sprint success = product POC progress + evidence validating that progress.
    - .supervisor/project-memory.md entry appended
    - plans/master-plan.md updated if phase changes
 
-7. **Final supervisor loop trigger:**
-   - Last instruction MUST be: `python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle>`
+7. **Evidence declaration + supervisor loop trigger:**
+   - Worker MUST write `.local/evidences/<run_id>/evidence-declaration.yaml` at sprint end
+   - Last instruction MUST be:
+     ```
+     python tools/supervisor/supervisor_loop.py autonomous-cycle \
+       --declaration .local/evidences/<run_id>/evidence-declaration.yaml
+     ```
+   - This replaces the legacy `run-on-latest --bundle` command
+   - The declaration must list all work items with status, evidence paths, and test references
    - Verify generated next-sprint.md keeps product-factory direction
    - If next-sprint.md lacks product lanes → repair this template and rerun
 
@@ -94,7 +101,8 @@ Sprint success = product POC progress + evidence validating that progress.
 - Only evidence was closed; no product POC progress
 - Dogfooding map not updated
 - POC matrix not updated
-- Supervisor loop not run on final bundle
+- No evidence-declaration.yaml written at sprint end
+- Supervisor autonomous-cycle not run on evidence declaration
 - Generated next-sprint.md has no product lanes
 
 ## Generation Instructions
@@ -111,7 +119,7 @@ Sprint success = product POC progress + evidence validating that progress.
    Must include:
    - Sprint identity (suggest next R-number)
    - Problem statement / goal (MUST mention product POC, not just evidence)
-   - Mandatory evidence rules (must produce ZIP bundle, validate_evidence_bundle.py must pass)
+   - Mandatory evidence rules (must write evidence-declaration.yaml, run autonomous-cycle; ZIP optional for export only)
    - Non-negotiable constraints (no push, no commit without user auth, no gate self-approval)
    - Lane manifest (at least 8 independent lanes including coordinator, implementation, validation, adversarial)
    - **Product-factory lanes (required — see above)**

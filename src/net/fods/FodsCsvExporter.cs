@@ -155,6 +155,75 @@ public static class FodsCsvExporter
         return result;
     }
 
+    /// <summary>
+    /// Load <paramref name="fodsPath"/> and export ALL sheets to individual CSV files
+    /// in <paramref name="outputDirPath"/>, named {SheetName}.csv.
+    /// R88 Train H: multi-sheet CSV export.
+    /// </summary>
+    /// <param name="fodsPath">Path to the .fods source file.</param>
+    /// <param name="outputDirPath">Directory where per-sheet CSV files are written.</param>
+    /// <param name="maxFileSizeBytes">File-size guard for the FODS input (default 50 MB).</param>
+    /// <returns>List of export results, one per sheet.</returns>
+    public static List<FodsCsvExportResult> ExportAllSheetsToCsv(
+        string fodsPath,
+        string outputDirPath,
+        long maxFileSizeBytes = 50L * 1024 * 1024)
+    {
+        if (string.IsNullOrWhiteSpace(fodsPath))
+            throw new FodsCsvExportException("fodsPath must not be null or empty.");
+        if (string.IsNullOrWhiteSpace(outputDirPath))
+            throw new FodsCsvExportException("outputDirPath must not be null or empty.");
+
+        FodsDocument doc;
+        try
+        {
+            doc = FodsDocument.Load(fodsPath, maxFileSizeBytes);
+        }
+        catch (FodsDocumentException ex)
+        {
+            throw new FodsCsvExportException($"Failed to load FODS: {ex.Message}", ex);
+        }
+
+        Directory.CreateDirectory(outputDirPath);
+        var results = new List<FodsCsvExportResult>();
+        var usedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var sheet in doc.Sheets)
+        {
+            // Sanitize sheet name for filesystem
+            var safeName = SanitizeFileName(sheet.Name);
+            if (string.IsNullOrEmpty(safeName)) safeName = $"sheet_{results.Count + 1}";
+
+            // Handle duplicate names
+            var baseName = safeName;
+            int suffix = 2;
+            while (!usedNames.Add(safeName))
+            {
+                safeName = $"{baseName}_{suffix}";
+                suffix++;
+            }
+
+            var csvPath = Path.Combine(outputDirPath, safeName + ".csv");
+            var result = ExportSheetToCsv(sheet, fodsPath, csvPath);
+            results.Add(result);
+        }
+
+        return results;
+    }
+
+    /// <summary>Sanitize a string for use as a filename.</summary>
+    private static string SanitizeFileName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return string.Empty;
+        var invalid = Path.GetInvalidFileNameChars();
+        var sb = new StringBuilder(name.Length);
+        foreach (var c in name)
+        {
+            sb.Append(Array.IndexOf(invalid, c) >= 0 ? '_' : c);
+        }
+        return sb.ToString().Trim();
+    }
+
     // -------------------------------------------------------------------------
     // CSV escaping (RFC 4180 compatible)
     // -------------------------------------------------------------------------

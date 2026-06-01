@@ -141,6 +141,37 @@ public sealed class FodtDocument
     public IReadOnlyList<FodtParagraph> Paragraphs =>
         Body?.Paragraphs ?? Array.Empty<FodtParagraph>();
 
+    /// <summary>
+    /// Get the plain text content of the document (all paragraphs joined by newlines).
+    /// R88 Train I: text analysis API.
+    /// </summary>
+    public string GetPlainText()
+    {
+        var paras = Paragraphs;
+        if (paras.Count == 0) return string.Empty;
+        var sb = new System.Text.StringBuilder();
+        for (int i = 0; i < paras.Count; i++)
+        {
+            if (i > 0) sb.Append('\n');
+            sb.Append(paras[i].Text ?? string.Empty);
+        }
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Count words in the document (whitespace-delimited tokens across all paragraphs).
+    /// R88 Train I: text analysis API.
+    /// </summary>
+    public int WordCount
+    {
+        get
+        {
+            var text = GetPlainText();
+            if (string.IsNullOrWhiteSpace(text)) return 0;
+            return text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
+        }
+    }
+
     /// <summary>ODF MIME type from office:document/@office:mimetype, or null if absent.</summary>
     public string? MimeType =>
         _doc.Root?.Attribute(NsOffice + "mimetype")?.Value;
