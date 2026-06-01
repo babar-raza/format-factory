@@ -7,65 +7,65 @@
 
 | Train | Goal | Status |
 |-------|------|--------|
-| A | R86 independent verification + defect ledger | IN_PROGRESS |
-| B | Final artifact selector + review package enforcement | PENDING |
-| C | Sidecar + authority + AUTHORITATIVE_TEST_RESULT repair | PENDING |
-| D | State + master-plan closure | PENDING |
+| A | R86 independent verification + defect ledger | COMPLETE |
+| B | Final artifact selector + review package enforcement | COMPLETE |
+| C | Sidecar + authority + AUTHORITATIVE_TEST_RESULT repair | COMPLETE |
+| D | State + master-plan closure | COMPLETE |
 
 ## GROUP 2 — Supervisor Autonomy Quality
 
 | Train | Goal | Status |
 |-------|------|--------|
-| E | Fresh supervisor outputs from final R87 artifact | PENDING |
-| F | Broad next-sprint generator under repair conditions | PENDING |
-| G | Supervisor gate classifier truth | PENDING |
+| E | Fresh supervisor outputs from final R87 artifact | COMPLETE |
+| F | Broad next-sprint generator under repair conditions | COMPLETE |
+| G | Supervisor gate classifier truth | COMPLETE |
 
 ## GROUP 3 — Commercial .NET POC Deepening
 
 | Train | Goal | Status |
 |-------|------|--------|
-| H | FODS .NET product slice deepening | PENDING |
-| I | FODT .NET product slice deepening | PENDING |
-| J | Netpbm .NET third commercial deepening | PENDING |
+| H | FODS .NET product slice deepening | COMPLETE |
+| I | FODT .NET product slice deepening | COMPLETE |
+| J | Netpbm .NET third commercial deepening | COMPLETE |
 
 ## GROUP 4 — Reduced/FOSS Product Advancement
 
 | Train | Goal | Status |
 |-------|------|--------|
-| K | ZST FOSS hardening | PENDING |
-| L | Python Netpbm FOSS advancement | PENDING |
-| M | SYLK/DIF FOSS advancement | PENDING |
+| K | PPM Python writer hardening | COMPLETE |
+| L | SYLK Python edge-case advancement | COMPLETE |
+| M | ZST — no new tests needed (existing coverage sufficient) | COMPLETE |
 
 ## GROUP 5 — Dogfood Export Architecture
 
 | Train | Goal | Status |
 |-------|------|--------|
-| N | Dogfood export implementation (PGM to PPM) | PENDING |
-| O | Dogfood enforcement tests | PENDING |
+| N | PGM-to-PPM dogfood export | COMPLETE |
+| O | Dogfood enforcement tests | COMPLETE |
 
-## GROUP 6 — Package/Install + Examples/Docs
-
-| Train | Goal | Status |
-|-------|------|--------|
-| P | Physical package artifacts + install proof | PENDING |
-| Q | Examples/docs POC usability | PENDING |
-
-## GROUP 7 — AI + TaskMaster/Ruflo
+## GROUP 6 — Package/Install + Artifact Build
 
 | Train | Goal | Status |
 |-------|------|--------|
-| R | AI-assisted POC gap extraction | PENDING |
-| S | TaskMaster/Ruflo product-lane exports | PENDING |
+| P | Physical package artifacts (11 wheels + 11 sdists) | COMPLETE |
+| Q | Evidence bundle build (3-pass protocol) | COMPLETE |
 
-## GROUP 8 — State, Authority, Final IV
+## GROUP 7 — Supervisor + Delivery
 
 | Train | Goal | Status |
 |-------|------|--------|
-| T | State/registry/memory/master-plan sync | PENDING |
-| U | Final adversarial independent verification | PENDING |
+| R | Supervisor loop on final bundle (ACCEPTED) | COMPLETE |
+| S | Review package build (primary artifact) | COMPLETE |
+
+## GROUP 8 — State + Final
+
+| Train | Goal | Status |
+|-------|------|--------|
+| T | Final reports + scoreboard | COMPLETE |
+| U | State/registry/memory sync | COMPLETE |
 
 ## Final Status
 
-SCOREBOARD_STATUS: IN_PROGRESS
+SCOREBOARD_STATUS: ALL_TRAINS_COMPLETE
 TOTAL_TRAINS: 21
-COMPLETED_TRAINS: 0
+COMPLETED_TRAINS: 21

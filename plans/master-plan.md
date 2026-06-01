@@ -1911,12 +1911,21 @@ All export paths must record:
 
 External shortcuts (raw string writing, stdlib-only) are documented as `GAP_DOGFOOD_EXTERNAL`, not hidden.
 
-### 40.5 Local Supervisor Loop (mandatory from R85+)
+### 40.5 Local Supervisor Loop (mandatory from R87+)
 
-After every evidence bundle build, the executor must run:
+After every sprint, the executor must write an `evidence-declaration.yaml` and run:
 ```
-python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle-path>
+python tools/supervisor/supervisor_loop.py autonomous-cycle \
+  --declaration .local/evidences/<run_id>/evidence-declaration.yaml
 ```
+
+This replaces the legacy `run-on-latest --bundle` command. The autonomous-cycle:
+1. Validates the declaration (schema + path checks)
+2. Inspects declared evidence directory (per-item evidence presence)
+3. Generates/validates evidence manifest (SHA-256 artifact inventory)
+4. Grades each work item (8 levels: ACCEPTED through OVERCLAIMED)
+5. Generates next-worker prompt (rework + forward product-factory work)
+6. Bridges output to legacy packet generator (session-resume.md, approval-gates.md, next-sprint.md)
 
 Generated next-sprint.md must include product-factory lanes:
 - product advancement lanes (at least one commercial + one FOSS)
@@ -1930,6 +1939,8 @@ If generated next-sprint.md lacks these → repair .supervisor/prompts/next-spri
 
 Only escalate to human if true external gate: Gate 8/11 approval, push, credentials, MCP activation.
 
+Legacy command (`run-on-latest`) still works but prints a deprecation warning. The declaration-driven pipeline is the canonical production path.
+
 ### 40.6 No-Drift Anchors
 
 - TM task "done" ≠ Format Factory gate closed
@@ -1941,5 +1952,59 @@ Only escalate to human if true external gate: Gate 8/11 approval, push, credenti
 
 ---
 
-*End of plans/master-plan.md — version 2.65 — 2026-05-31 (Section 40 added by FORMAT-FACTORY-R85-POC-DIRECTION)*
+## Section 41 — Declaration-Driven Supervisor Pipeline (R87+)
+
+**Added:** 2026-06-01 (Declaration-driven pipeline production integration sprint)
+**Authority:** This section records the production integration of the declaration-driven supervisor pipeline, replacing the ZIP/watcher model as the canonical execution path.
+
+### 41.1 Architecture
+
+The supervisor pipeline has two layers:
+1. **Canonical (declaration-driven):** Worker writes `evidence-declaration.yaml` → supervisor inspects declared directory → grades each work item → generates next prompt → bridges to legacy packet generator
+2. **Legacy (ZIP/watcher):** `discover_latest_evidence.py` → `validate_evidence_for_supervisor.py` → `generate_supervisor_packet.py`. Still functional but deprecated.
+
+Tools:
+- `tools/supervisor/evidence_declaration.py` — validates declaration YAML
+- `tools/supervisor/inspect_declared_evidence.py` — walks declared paths
+- `tools/supervisor/evidence_manifest.py` — SHA-256 artifact manifest
+- `tools/supervisor/grade_declared_work.py` — 8-level item grading
+- `tools/supervisor/generate_next_worker_prompt.py` — rework + forward work prompt
+- `tools/supervisor/autonomous_cycle.py` — full cycle orchestrator with bridge
+
+### 41.2 Bridge Adapter
+
+`autonomous_cycle.py::bridge_to_legacy_format()` converts cycle outputs to `evidence-review.json` + `contradictions.json` in the format expected by `generate_supervisor_packet.py`. After the cycle, `supervisor_loop.py::cmd_autonomous_cycle()` calls `cmd_next()` to produce `session-resume.md`, `approval-gates.md`, and `next-sprint.md`.
+
+### 41.3 Grading Model
+
+| Grade | Meaning | Blocks Autonomous? |
+|-------|---------|-------------------|
+| ACCEPTED | Evidence found, tests pass | No |
+| ACCEPTED_WITH_WARNINGS | Evidence found, minor issues | No |
+| REWORK_REQUIRED | Evidence incomplete | No |
+| NOT_ATTEMPTED | Not started | No |
+| NOT_IN_SCOPE | Explicitly out of scope | No |
+| BLOCKED_EXTERNAL_GATE | Requires human gate | No |
+| OVERCLAIMED | Declared complete, no evidence | **Yes** |
+| REJECTED | Evidence contradicts claim | **Yes** |
+
+### 41.4 Evidence (R86 real-sprint validation)
+
+Pipeline validated against real R86 sprint data:
+- 7 work items graded → all ACCEPTED → exit 0
+- session-resume.md regenerated with R86 sprint ID, 2840 tests, AUTONOMOUS_CONTINUE: YES
+- approval-gates.md shows correct MODE 4 status
+
+### 41.5 Test Coverage
+
+84 supervisor tests across 5 files:
+- 28 declaration-driven (core + manifest)
+- 28 R85 product-factory policy
+- 13 R86 supervisor truth repair
+- 6 R87 supervisor truth
+- 9 bundle validator
+
+---
+
+*End of plans/master-plan.md — version 2.66 — 2026-06-01 (Section 41 added: declaration-driven pipeline production integration)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

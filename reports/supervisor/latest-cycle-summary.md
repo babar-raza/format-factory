@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: supervisor-evidence-directory-sprint-20260601
-Sprint: FORMAT-FACTORY-SUPERVISOR-EVIDENCE-DIRECTORY-EXECUTION-SPEC-AND-CONTROLLED-IMPLEMENTATION-001
-Timestamp: 2026-06-01T15:07:08.746317
+Run: r86-real-sprint-validation
+Sprint: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
+Timestamp: 2026-06-01T17:13:11.344532
 Verdict: ACCEPTED
 Autonomous Continue: True
-Accepted: 15
+Accepted: 7
 Rework: 0
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\supervisor-evidence-directory-sprint-20260601\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\supervisor-evidence-directory-sprint-20260601\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r86-real-sprint-validation\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r86-real-sprint-validation\combined-next-worker-prompt.md

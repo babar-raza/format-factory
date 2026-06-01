@@ -1,29 +1,21 @@
-# Supervisor Review: supervisor-evidence-directory-sprint-20260601
-Sprint: FORMAT-FACTORY-SUPERVISOR-EVIDENCE-DIRECTORY-EXECUTION-SPEC-AND-CONTROLLED-IMPLEMENTATION-001
-Timestamp: 2026-06-01T15:07:08.776280
+# Supervisor Review: r86-real-sprint-validation
+Sprint: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
+Timestamp: 2026-06-01T17:13:11.475852
 Overall Verdict: ACCEPTED
 Autonomous Continue: True
 
 ## Summary
-- Accepted: 15
+- Accepted: 7
 - Rework: 0
 - Rejected: 0
 - Overclaimed: 0
 - Critical Rework: 0
 
 ## Item Grades
-- **TC-SUP-DIR-001** (Preflight and context reconciliation): ACCEPTED
-- **TC-SUP-DIR-003** (Evidence declaration schema): ACCEPTED
-- **TC-SUP-DIR-004** (Evidence manifest schema): ACCEPTED
-- **TC-SUP-DIR-005** (Declared evidence validator): ACCEPTED
-- **TC-SUP-DIR-006** (Declared evidence inspector): ACCEPTED
-- **TC-SUP-DIR-007** (Item-level grading engine): ACCEPTED
-- **TC-SUP-DIR-008** (Next-worker prompt generator): ACCEPTED
-- **TC-SUP-DIR-009** (Autonomous cycle orchestrator): ACCEPTED
-- **TC-SUP-DIR-013** (Tests and regression coverage): ACCEPTED
-- **TC-SUP-DIR-014** (Demo run with declared evidence directory): ACCEPTED
-- **TC-SUP-DIR-011** (Product-factory forward-work policy): ACCEPTED
-- **TC-SUP-DIR-002** (Plan normalization (ZIP-first to directory-first)): ACCEPTED
-- **TC-SUP-DIR-010** (R85 quality regression repair): ACCEPTED
-- **TC-SUP-DIR-012** (Memory and state sync enhancements): ACCEPTED
-- **TC-SUP-DIR-015** (Final evidence directory and self-declaration): ACCEPTED
+- **R86-SUP-TRUTH** (Supervisor truth repair (D86-SUP-01 through D86-SUP-08)): ACCEPTED
+- **R86-NETPBM-BINARY** (.NET Netpbm binary write support (P4/P5/P6)): ACCEPTED
+- **R86-FODS-HARDENING** (FODS exporter edge-case hardening): ACCEPTED
+- **R86-FODT-HARDENING** (FODT exporter edge-case hardening): ACCEPTED
+- **R86-PPM-WRITE** (Python write_ppm (P3 ASCII)): ACCEPTED
+- **R86-PBM-PPM-DOGFOOD** (PBM to PPM dogfood export using FF write_ppm): ACCEPTED
+- **R86-PPM-PACKAGE** (PPM added to package matrix): ACCEPTED

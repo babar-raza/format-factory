@@ -1,13 +1,13 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-01T17:11:06.763336
+# Generated: 2026-06-01T17:19:05.168287
 
 ## Quick State
-- Last sprint: FORMAT-FACTORY-R87-CLEAN-SUPERVISOR-CLOSEOUT-REVIEW-PACKAGE-POC-PRODUCT-FACTORY-DEEPENING-MEGA-TRAIN-001
-- Evidence verdict: REJECTED_BUNDLE_VALIDATION_FAIL
-- Tests: 65 passed / 0 failed
+- Last sprint: unknown
+- Evidence verdict: BLOCKED_MISSING_FINAL_VERDICT
+- Tests: 0 passed / 0 failed
 - PENDING markers: 0
-- CRITICAL contradictions: 1
+- CRITICAL contradictions: 2
 - Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
@@ -23,29 +23,12 @@
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r87-pass1.zip
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r87-supervisor-review-package.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-supervisor-review-package.zip
-- pending_marker_count: 1
-- bundle_entry_count: 9
-
-## Entry: FORMAT-FACTORY-R84-BROAD-CLOSURE-RAW-LOGS-FINAL-AUTHORITY-FODS-FODT-ZST-NEXTFORMAT-ADVANCEMENT-MEGA-TRAIN-001
-- timestamp: 2026-05-31T20:09:07.506275
-- verdict: ACCEPTED
-- test_count: 65
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r84-pass2.zip
-- pending_marker_count: 0
-- bundle_entry_count: 3430
-
-## Entry: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
 - timestamp: 2026-05-31
 - sprint_type: DIRECTION_CORRECTION + PRODUCT_FACTORY_POC
 - direction_corrected: true
@@ -79,6 +62,23 @@ EVIDENCE BUNDLE VALIDATION REPORT
 Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: +104
 - test_delta_from: 65
+
+## Entry: FORMAT-FACTORY-R87-CLEAN-SUPERVISOR-CLOSEOUT-REVIEW-PACKAGE-POC-PRODUCT-FACTORY-DEEPENING-MEGA-TRAIN-001
+- timestamp: 2026-06-01T17:11:06.955469
+- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r87-pass1.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3549
+- bundle_validation_pass: False
+- validator_error_summary: ============================================================
+EVIDENCE BUNDLE VALIDATION REPORT
+============================================================
+Contract: C:\Users\prora\OneDrive\Documents\
+- test_delta: -104
+- test_delta_from: 169
 ```
 
 ## IMPORTANT REMINDERS
