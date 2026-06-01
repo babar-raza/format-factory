@@ -7,6 +7,8 @@ CANONICAL commands (declaration-driven evidence directory):
   grade-declared        — grade declared work items
   plan-next             — generate next worker prompt from review
   autonomous-cycle      — full declaration-driven cycle
+  generate-manifest     — generate evidence-manifest.yaml from declaration
+  validate-manifest     — validate existing evidence-manifest.yaml
   create-sample-declaration — create template declaration
   list-unreviewed-declarations — find unreviewed declarations
 
@@ -366,6 +368,27 @@ def cmd_create_sample_declaration(args) -> int:
     return run_script("evidence_declaration.py", extra, REPO_ROOT).returncode
 
 
+def cmd_generate_manifest(args) -> int:
+    """Generate evidence-manifest.yaml from a declaration (canonical command)."""
+    print("=== SUPERVISOR: GENERATE-MANIFEST ===")
+    extra = ["generate", "--declaration", str(args.declaration)]
+    if hasattr(args, "out") and args.out:
+        extra += ["--out", str(args.out)]
+    extra += ["--repo-root", str(REPO_ROOT)]
+    return run_script("evidence_manifest.py", extra, REPO_ROOT).returncode
+
+
+def cmd_validate_manifest(args) -> int:
+    """Validate an existing evidence-manifest.yaml (canonical command)."""
+    print("=== SUPERVISOR: VALIDATE-MANIFEST ===")
+    manifest_path = args.declaration.parent / "evidence-manifest.yaml" if args.declaration else args.out
+    if not manifest_path or not manifest_path.exists():
+        print("ERROR: Provide --declaration (manifest inferred) or --out pointing to manifest.", file=sys.stderr)
+        return 1
+    extra = ["validate", "--manifest", str(manifest_path), "--repo-root", str(REPO_ROOT)]
+    return run_script("evidence_manifest.py", extra, REPO_ROOT).returncode
+
+
 def cmd_list_unreviewed(args) -> int:
     """List evidence declarations that have not been reviewed yet."""
     print("=== SUPERVISOR: LIST-UNREVIEWED-DECLARATIONS ===")
@@ -398,6 +421,7 @@ def cmd_list_unreviewed(args) -> int:
 CANONICAL_COMMANDS = [
     "validate-declaration", "inspect-declared", "grade-declared",
     "plan-next", "autonomous-cycle",
+    "generate-manifest", "validate-manifest",
     "create-sample-declaration", "list-unreviewed-declarations",
 ]
 
@@ -444,6 +468,8 @@ def main() -> int:
         "grade-declared": cmd_grade_declared,
         "plan-next": cmd_plan_next,
         "autonomous-cycle": cmd_autonomous_cycle,
+        "generate-manifest": cmd_generate_manifest,
+        "validate-manifest": cmd_validate_manifest,
         "create-sample-declaration": cmd_create_sample_declaration,
         "list-unreviewed-declarations": cmd_list_unreviewed,
         # Legacy ZIP/watcher commands
@@ -456,7 +482,7 @@ def main() -> int:
     }
 
     # Warn about declaration requirement for canonical commands
-    if args.command in ("validate-declaration", "inspect-declared", "grade-declared", "autonomous-cycle"):
+    if args.command in ("validate-declaration", "inspect-declared", "grade-declared", "autonomous-cycle", "generate-manifest"):
         if not args.declaration:
             print(f"ERROR: --declaration is required for {args.command}", file=sys.stderr)
             return 1

@@ -1,25 +1,28 @@
 {
-  "sprint_id": "FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001",
-  "timestamp": "2026-06-01T15:12:09.483437",
-  "verdict": "ACCEPTED",
-  "bundle_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r86-pass2.zip",
+  "sprint_id": "unknown",
+  "timestamp": "2026-06-01T15:25:05.719274",
+  "verdict": "BLOCKED_MISSING_FINAL_VERDICT",
+  "bundle_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r86-supervisor-review-package.zip",
   "facts": {
-    "test_count": 169,
+    "test_count": 0,
     "fail_count": 0,
     "skip_count": 0,
     "git_head": "unknown",
     "gate_states": {},
-    "final_verdict_text": "# AI Plan Hardening \u2014 Final Verdict\r\n\r\n**Sprint:** FORMAT-FACTORY-AI-LLM-EMBEDDING-PLAN-MEMORY-SYNC-001\r\n**Date:** 2026-05-18\r\n\r\n## VERDICT: AI_PLAN_SYNC_COMPLETE\r\n\r\n## Evidence\r\n\r\n### Files Changed\r\n- 11 new docs in docs/ai/\r\n- 10 new taskcards\r\n- 1 new memory file + index update\r\n- 6 new reports in reports/ai/\r\n- 1 evidence contract\r\n- 9 existing files updated (master plan, roadmap, governance, agents, 5 docs)\r\n- **Total: 38 files created/modified**\r\n\r\n### Key Decisions Synchronized\r\n1. Qwen2 control model \u2014 low-risk agentic only with firm controls\r\n2. GPT-OSS synthesis control model \u2014 citation-verified, contradiction-checked, eval-gated\r\n3. Embedding/vector permanence \u2014 format-segregated LanceDB, project-local, hash-invalidated\r\n4. Agent Metrics telemetry \u2014 canonical sink; JSONL is spool/evidence only\r\n5. Mandatory spec normalization \u2014 AI consumes normalized artifacts only\r\n6. Mandatory test generation \u2014 with artifact lifecycle and reviewer gates\r\n7. Risk mitigation matrix \u2014 40 items with controls, tests, stop conditions\r\n8. Deferred feature review \u2014 25 items classified implement/defer/reject\r\n\r\n### Validation\r\n| Check | Result |\r\n|-------|--------|\r\n| Methodology links checker | PASS |\r\n| Current state consistency checker | PASS |\r\n| No AI implementation code | VERIFIED |\r\n| No endpoint calls added | VERIFIED |\r\n| No vector DB created | VERIFIED |\r\n| No runtime source changed | VERIFIED |\r\n| Only planning/memory/governance/taskcard/report/evidence files changed | VERIFIED |\r\n\r\n### Safety Confirmation\r\n- No AI implementation was performed\r\n- No endpoint calls were added\r\n- No vector DB was created\r\n- No runtime source was changed\r\n- Implementation not authorized until plan is reviewed by human authority\r\n- Next step is human review of the synced plan and evidence bundle\r\n",
+    "final_verdict_text": "",
     "pending_marker_count": 0,
-    "bundle_entry_count": 3526,
-    "bundle_validation_pass": true,
-    "validator_error_summary": ""
+    "bundle_entry_count": 8,
+    "bundle_validation_pass": false,
+    "validator_error_summary": "============================================================\nEVIDENCE BUNDLE VALIDATION REPORT\n============================================================\nContract: C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\evidence\\contracts\\r86-supervisor-truth-poc-product-factory-deepening.yaml\nBundle: c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r86-supervisor-review-package.zip\nBundle size: 11,005,037 bytes\nTotal entries: 8\nTop-level folders: ['r86-delivery-final-artif"
   },
   "contradictions": [],
-  "limitation_notes": [],
+  "limitation_notes": [
+    "No final-verdict.md found in bundle",
+    "No test log found in bundle \u2014 test counts unavailable"
+  ],
   "validator_invoked": true,
-  "validator_output": "============================================================\nEVIDENCE BUNDLE VALIDATION REPORT\n============================================================\nContract: C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\evidence\\contracts\\r86-supervisor-truth-poc-product-factory-deepening.yaml\nBundle: .local\\r86-pass2.zip\nBundle size: 5,981,933 bytes\nTotal entries: 3526\nTop-level folders: ['bundle-metadata', 'repo']\nRepo files: 3490\nMetadata files: 36\nRequired repo files: 19 (missing: 0)\nRequired metadata files: 0 (missing: 0)\nMin metadata required: 30\nRUN_CONTRACT_METADATA_FLOOR (PASS): 36/30\nForbidden hits: 0\nGit clean (PASS): git-status-final.txt shows clean working tree\nMetadata identity check (PASS)\n\nAll checks passed.\n\nBUNDLE_VALIDATION: PASS\nSidecar proof check (PASS): SHA/size/entries match \u2014 7068680bf2950ef7...\nSIDECAR_PROOF_VALIDATION: PASS\n",
-  "bundle_validation_pass": true,
+  "validator_output": "============================================================\nEVIDENCE BUNDLE VALIDATION REPORT\n============================================================\nContract: C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\evidence\\contracts\\r86-supervisor-truth-poc-product-factory-deepening.yaml\nBundle: c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r86-supervisor-review-package.zip\nBundle size: 11,005,037 bytes\nTotal entries: 8\nTop-level folders: ['r86-delivery-final-artifact-authority.json', 'r86-delivery-manifest.json', 'r86-delivery-supervisor-inspection-readme.md', 'r86-delivery.sha256.txt', 'r86-delivery.zip', 'r86-pass2.sha256-proof.json', 'r86-pass2.zip', 'r86-review-package-manifest.json']\nRepo files: 0\nMetadata files: 0\nRequired repo files: 19 (missing: 19)\nRequired metadata files: 0 (missing: 0)\nMin metadata required: 30\nRUN_CONTRACT_METADATA_FLOOR (FAIL): 0/30\nForbidden hits: 0\nGit clean (MISSING): No git status file found in bundle metadata (checked: git-status-final.txt or git-status.txt)\nMetadata identity check (PASS)\n\nWARNINGS:\n  - Extra top-level folders (not in required list): ['r86-delivery-final-artifact-authority.json', 'r86-delivery-manifest.json', 'r86-delivery-supervisor-inspection-readme.md', 'r86-delivery.sha256.txt', 'r86-delivery.zip', 'r86-pass2.sha256-proof.json', 'r86-pass2.zip', 'r86-review-package-manifest.json']\n\nERRORS:\n  - SIDECAR_REQUIRED: contract or verdict requires an external sidecar proof (sidecar_required: true / final_proof_policy: external_sidecar / clean-baseline verdict) but --sidecar-proof was not supplied. Run write_sidecar_proof.py and re-validate with --sidecar-proof <path>.\n  - Missing required top-level folders: ['bundle-metadata', 'repo']\n  - Missing required repo files (19): ['reports/r86/r85-independent-verification.md', 'tests/supervisor/test_r86_supervisor_truth_repair.py', 'tests/net/netpbm/NetpbmBinaryWriteTests.cs', 'tests/net/fods/FodsR86ExporterHardeningTests.cs', 'tests/net/fodt/FodtR86ExporterHardeningTests.cs', 'tests/python/ppm/test_r86_ppm_write.py', 'src/python/pbm/pbm_to_ppm.py', 'tests/python/pbm/test_r86_pbm_to_ppm_dogfood.py', 'reports/r86/final-verdict.md', 'reports/r86/multi-mega-train-scoreboard.md']\n  - Metadata count 0 < minimum 30\n  - RUN_CONTRACT_METADATA_FLOOR: FAIL \u2014 metadata count 0 < absolute floor 30. Ensure sprint produces sufficient metadata files. Only emergency_blocker_bundle: true may bypass this floor.\n  - Git cleanliness check FAILED: No git status file found in bundle metadata (checked: git-status-final.txt or git-status.txt)\n\nBUNDLE_VALIDATION: FAIL\n",
+  "bundle_validation_pass": false,
   "exit_code": 0,
   "status": "complete"
 }

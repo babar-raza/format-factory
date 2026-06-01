@@ -17,6 +17,7 @@ from evidence_declaration import validate_declaration, validate_schema, validate
 from inspect_declared_evidence import inspect_declaration, inspect_item
 from grade_declared_work import grade_item, grade_all
 from generate_next_worker_prompt import generate_prompt, generate_next_work_items
+from evidence_manifest import generate_from_declaration, validate_manifest, sha256_file, infer_type, write_manifest
 
 
 def _make_declaration(tmp_path, **overrides):
@@ -396,3 +397,99 @@ def test_status_only_advancement_is_overclaimed():
     }
     grade = grade_item(item_inspection, {"passed": 0, "failed": 0})
     assert grade["supervisor_grade"] == "OVERCLAIMED"
+
+
+# ==================== Test 23: Manifest generation from declaration ====================
+def test_manifest_generate_from_declaration(tmp_path):
+    """Generate a manifest from a declaration and verify structure."""
+    decl, decl_path, evidence_dir, evidence_file = _make_declaration(tmp_path)
+    manifest = generate_from_declaration(decl_path, tmp_path)
+    assert manifest["run_id"] == "test-run"
+    assert len(manifest["artifacts"]) > 0
+    # Every artifact should have path, type, sha256, size_bytes
+    for art in manifest["artifacts"]:
+        assert "path" in art
+        assert "type" in art
+        assert "sha256" in art and len(art["sha256"]) == 64
+        assert "size_bytes" in art and art["size_bytes"] > 0
+
+
+# ==================== Test 24: Manifest SHA-256 matches file content ====================
+def test_manifest_sha256_matches(tmp_path):
+    """Verify sha256 in generated manifest matches actual file hash."""
+    decl, decl_path, evidence_dir, evidence_file = _make_declaration(tmp_path)
+    manifest = generate_from_declaration(decl_path, tmp_path)
+    for art in manifest["artifacts"]:
+        full_path = tmp_path / art["path"]
+        if full_path.exists():
+            assert art["sha256"] == sha256_file(full_path)
+
+
+# ==================== Test 25: Manifest validation passes on fresh generate ====================
+def test_manifest_validate_after_generate(tmp_path):
+    """Generate, write, then validate — should pass."""
+    decl, decl_path, evidence_dir, evidence_file = _make_declaration(tmp_path)
+    manifest = generate_from_declaration(decl_path, tmp_path)
+    manifest_path = evidence_dir / "evidence-manifest.yaml"
+    write_manifest(manifest, manifest_path)
+    result = validate_manifest(manifest_path, tmp_path)
+    assert result["valid"], f"Validation errors: {result['errors']}"
+    assert result["checked"] > 0
+    assert result["mismatches"] == 0
+
+
+# ==================== Test 26: Manifest validation detects missing file ====================
+def test_manifest_validate_detects_missing_file(tmp_path):
+    """Manifest referencing a deleted file should fail validation."""
+    decl, decl_path, evidence_dir, evidence_file = _make_declaration(tmp_path)
+    manifest = generate_from_declaration(decl_path, tmp_path)
+    # Inject a fake artifact that doesn't exist
+    manifest["artifacts"].append({
+        "path": ".local/evidences/test-run/ghost-file.txt",
+        "type": "report",
+        "sha256": "0" * 64,
+        "size_bytes": 100,
+    })
+    manifest_path = evidence_dir / "evidence-manifest.yaml"
+    write_manifest(manifest, manifest_path)
+    result = validate_manifest(manifest_path, tmp_path)
+    assert not result["valid"]
+    assert result["missing"] >= 1
+
+
+# ==================== Test 27: Manifest validation detects SHA mismatch ====================
+def test_manifest_validate_detects_sha_mismatch(tmp_path):
+    """Manifest with wrong SHA-256 should fail validation."""
+    decl, decl_path, evidence_dir, evidence_file = _make_declaration(tmp_path)
+    manifest = generate_from_declaration(decl_path, tmp_path)
+    # Corrupt the SHA of the first artifact
+    if manifest["artifacts"]:
+        manifest["artifacts"][0]["sha256"] = "bad" + "0" * 61
+    manifest_path = evidence_dir / "evidence-manifest.yaml"
+    write_manifest(manifest, manifest_path)
+    result = validate_manifest(manifest_path, tmp_path)
+    assert not result["valid"]
+    assert result["mismatches"] >= 1
+
+
+# ==================== Test 28: Type inference from filename ====================
+def test_infer_type_from_filename():
+    """Verify type inference for known filenames and extensions."""
+    assert infer_type("evidence-declaration.yaml") == "declaration"
+    assert infer_type("evidence-manifest.yaml") == "manifest"
+    assert infer_type("final-verdict.md") == "verdict"
+    assert infer_type("test-results.txt") == "test-log"
+    assert infer_type("some-report.md") == "report"
+    assert infer_type("script.py") == "code"
+    assert infer_type("data.json") == "data"
+    assert infer_type("random.bin") == "other"
+
+
+# ==================== Test 29: Manifest missing evidence_root raises ====================
+def test_manifest_generate_missing_root_raises(tmp_path):
+    """Declaration with nonexistent evidence_root should raise."""
+    decl, decl_path, evidence_dir, _ = _make_declaration(
+        tmp_path, evidence_root=".local/evidences/nonexistent/"
+    )
+    with pytest.raises(FileNotFoundError):
+        generate_from_declaration(decl_path, tmp_path)

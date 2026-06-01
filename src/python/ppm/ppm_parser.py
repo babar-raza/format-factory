@@ -354,6 +354,8 @@ def write_ppm(
 
     Added in R86 Train K as Netpbm write/roundtrip product advancement.
     """
+    if width < 1 or height < 1:
+        raise ValueError(f"Dimensions must be positive: got {width}x{height}")
     if width > MAX_DIMENSION or height > MAX_DIMENSION:
         raise PpmSizeError(f"Dimension {width}x{height} exceeds limit {MAX_DIMENSION}")
     if not (1 <= maxval <= MAX_MAXVAL):
@@ -362,6 +364,13 @@ def write_ppm(
         raise ValueError(
             f"pixels length {len(pixels)} does not match width*height {width * height}"
         )
+
+    # Validate pixel channel values are within [0, maxval]
+    for i, (r, g, b) in enumerate(pixels):
+        if r < 0 or r > maxval or g < 0 or g > maxval or b < 0 or b > maxval:
+            raise ValueError(
+                f"Pixel {i} channel value out of range [0, {maxval}]: ({r}, {g}, {b})"
+            )
 
     out_path = Path(file_path)
     lines = ["P3"]

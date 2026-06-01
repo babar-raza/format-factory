@@ -1,9 +1,25 @@
 {
-  "sprint_id": "FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001",
-  "timestamp": "2026-06-01T15:12:10.039661",
-  "overall": "CLEAN",
-  "critical_count": 0,
-  "warning_count": 0,
-  "autonomous_continue": true,
-  "contradictions": []
+  "sprint_id": "unknown",
+  "timestamp": "2026-06-01T15:25:06.176909",
+  "overall": "CRITICAL_CONTRADICTIONS",
+  "critical_count": 2,
+  "warning_count": 1,
+  "autonomous_continue": false,
+  "contradictions": [
+    {
+      "severity": "CRITICAL",
+      "description": "No final-verdict.md found in evidence bundle",
+      "detail": "Evidence bundles must contain a final-verdict.md"
+    },
+    {
+      "severity": "CRITICAL",
+      "description": "BUNDLE_VALIDATION: FAIL \u2014 evidence bundle did not pass validation",
+      "detail": "Existing validator (validate_evidence_bundle.py) reported BUNDLE_VALIDATION: FAIL. Sidecar proof is required but was not supplied."
+    },
+    {
+      "severity": "WARNING",
+      "description": "Sprint ID not found in evidence bundle",
+      "detail": "Cannot verify sprint identity match with contract"
+    }
+  ]
 }

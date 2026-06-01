@@ -1,0 +1,50 @@
+# R87 Evidence Contract
+# FORMAT-FACTORY-R87-CLEAN-SUPERVISOR-CLOSEOUT-REVIEW-PACKAGE-POC-PRODUCT-FACTORY-DEEPENING-MEGA-TRAIN-001
+
+sprint_id: "FORMAT-FACTORY-R87-CLEAN-SUPERVISOR-CLOSEOUT-REVIEW-PACKAGE-POC-PRODUCT-FACTORY-DEEPENING-MEGA-TRAIN-001"
+sprint_number: "R87"
+sprint_date: "2026-06-01"
+
+installed_artifact_policy: wheel_and_sdist
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 35
+
+required_repo_files:
+  # R86 IV and closeout repair (Trains A-D)
+  - reports/r87/r86-independent-verification.md
+  - reports/r87/r86-defect-ledger.md
+  - reports/r87/multi-mega-train-scoreboard.md
+  - reports/r87/final-verdict.md
+
+  # Supervisor truth (Trains E-G)
+  - tests/supervisor/test_r87_supervisor_truth.py
+
+  # .NET product deepening (Trains H-J)
+  - tests/net/fods/FodsR87ProductDeepening.cs
+  - tests/net/fodt/FodtR87ProductDeepening.cs
+  - tests/net/netpbm/NetpbmR87ProductDeepening.cs
+
+  # FOSS (Trains K-M)
+  - tests/python/ppm/test_r87_ppm_hardening.py
+
+  # Dogfood (Trains N-O)
+  - tests/python/pgm/test_r87_pgm_to_ppm_dogfood.py
+
+  # Evidence tests (Trains B-C)
+  - tests/evidence/test_r87_review_package.py
+
+  # Contract self-reference
+  - tools/evidence/contracts/r87-clean-supervisor-closeout-review-package-poc-product-factory-deepening.yaml
+
+  # Source changes
+  - src/net/netpbm/NetpbmWriter.cs
+  - src/python/ppm/ppm_parser.py
+  - tools/supervisor/validate_evidence_for_supervisor.py
+  - tools/supervisor/generate_supervisor_packet.py
+
+  # State
+  - state/current-state.json
+  - state/current-state.md
+  - plans/master-plan.md

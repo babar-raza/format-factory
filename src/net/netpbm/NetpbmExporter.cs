@@ -92,4 +92,87 @@ public static class NetpbmExporter
 
         return ppm;
     }
+
+    /// <summary>
+    /// Convert a PGM (grayscale) image to PPM (color) by replicating the gray value
+    /// into R, G, B channels.
+    ///
+    /// Dogfood path: uses Format Factory NetpbmImage model exclusively.
+    /// R87 Train J / Train N: PGM → PPM dogfood export.
+    /// </summary>
+    public static NetpbmImage PgmToPpm(NetpbmImage pgm, int maxValue = 0)
+    {
+        if (pgm.Format is not (NetpbmFormat.PGM_P2 or NetpbmFormat.PGM_P5))
+            throw new ArgumentException("Input must be PGM format.", nameof(pgm));
+        if (pgm.Pixels == null || pgm.Pixels.Length == 0)
+            throw new NetpbmException("PGM image has no pixel data.");
+
+        int mv = maxValue > 0 ? maxValue : pgm.MaxValue;
+        long count = (long)pgm.Width * pgm.Height;
+
+        var ppm = new NetpbmImage
+        {
+            Format = NetpbmFormat.PPM_P3,
+            Width = pgm.Width,
+            Height = pgm.Height,
+            MaxValue = mv,
+            RedChannel = new byte[count],
+            GreenChannel = new byte[count],
+            BlueChannel = new byte[count]
+        };
+
+        for (long i = 0; i < count && i < pgm.Pixels.Length; i++)
+        {
+            byte v = pgm.Pixels[i];
+            ppm.RedChannel[i] = v;
+            ppm.GreenChannel[i] = v;
+            ppm.BlueChannel[i] = v;
+        }
+
+        foreach (var comment in pgm.Comments)
+            ppm.Comments.Add(comment);
+        ppm.Comments.Add("Converted from PGM by FormatFactory.Netpbm — dogfood export");
+
+        return ppm;
+    }
+
+    /// <summary>
+    /// Convert a PPM (color) image to PGM (grayscale) using luminance formula:
+    /// gray = 0.299*R + 0.587*G + 0.114*B (standard BT.601 weights, integer approximation).
+    ///
+    /// Dogfood path: uses Format Factory NetpbmImage model exclusively.
+    /// R87 Train J: PPM → PGM grayscale export.
+    /// </summary>
+    public static NetpbmImage PpmToPgm(NetpbmImage ppm, int maxValue = 0)
+    {
+        if (ppm.Format is not (NetpbmFormat.PPM_P3 or NetpbmFormat.PPM_P6))
+            throw new ArgumentException("Input must be PPM format.", nameof(ppm));
+        if (ppm.RedChannel == null || ppm.GreenChannel == null || ppm.BlueChannel == null)
+            throw new NetpbmException("PPM image is missing color channels.");
+
+        int mv = maxValue > 0 ? maxValue : ppm.MaxValue;
+        long count = (long)ppm.Width * ppm.Height;
+
+        var pgm = new NetpbmImage
+        {
+            Format = NetpbmFormat.PGM_P2,
+            Width = ppm.Width,
+            Height = ppm.Height,
+            MaxValue = mv,
+            Pixels = new byte[count]
+        };
+
+        for (long i = 0; i < count; i++)
+        {
+            // BT.601 luminance: Y = 0.299R + 0.587G + 0.114B
+            int gray = (299 * ppm.RedChannel[i] + 587 * ppm.GreenChannel[i] + 114 * ppm.BlueChannel[i]) / 1000;
+            pgm.Pixels[i] = (byte)Math.Min(gray, mv);
+        }
+
+        foreach (var comment in ppm.Comments)
+            pgm.Comments.Add(comment);
+        pgm.Comments.Add("Converted from PPM by FormatFactory.Netpbm — dogfood grayscale export");
+
+        return pgm;
+    }
 }

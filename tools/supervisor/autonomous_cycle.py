@@ -29,6 +29,7 @@ from evidence_declaration import validate_declaration, load_declaration
 from inspect_declared_evidence import inspect_declaration
 from grade_declared_work import grade_all, write_outputs
 from generate_next_worker_prompt import generate_prompt, generate_next_work_items
+from evidence_manifest import generate_from_declaration, validate_manifest, write_manifest
 
 
 def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
@@ -57,6 +58,25 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     item_count = len(inspection.get("item_inspections", []))
     artifact_count = len(inspection.get("artifact_inspections", []))
     print(f"  Inspected: {item_count} work items, {artifact_count} artifacts")
+
+    # Step 2b: Generate/validate evidence manifest
+    print("\n=== STEP 2b: EVIDENCE MANIFEST ===")
+    try:
+        evidence_manifest = generate_from_declaration(declaration_path, repo_root)
+        evidence_manifest_path = (repo_root / decl["evidence_root"]) / "evidence-manifest.yaml"
+        if evidence_manifest_path.exists():
+            # Validate existing manifest
+            val_result = validate_manifest(evidence_manifest_path, repo_root)
+            print(f"  Existing manifest: {'VALID' if val_result['valid'] else 'INVALID'} ({val_result['checked']} artifacts checked)")
+            if not val_result["valid"]:
+                for err in val_result["errors"][:5]:
+                    print(f"    {err}")
+        else:
+            # Write generated manifest
+            write_manifest(evidence_manifest, evidence_manifest_path)
+            print(f"  Generated: {evidence_manifest_path} ({len(evidence_manifest['artifacts'])} artifacts)")
+    except Exception as e:
+        print(f"  WARNING: Manifest step skipped: {e}")
 
     # Step 3: Grade work items
     print("\n=== STEP 3: GRADE WORK ITEMS ===")

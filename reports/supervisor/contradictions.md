@@ -1,8 +1,20 @@
 # Contradiction Detection Report
-Sprint ID: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
-Timestamp: 2026-06-01T15:12:10.039661
-Overall: CLEAN
-Autonomous continue: True
-Critical: 0 | Warning: 0
+Sprint ID: unknown
+Timestamp: 2026-06-01T15:25:06.176909
+Overall: CRITICAL_CONTRADICTIONS
+Autonomous continue: False
+Critical: 2 | Warning: 1
 
-No contradictions detected.
+## Contradictions
+
+### [CRITICAL] 1. No final-verdict.md found in evidence bundle
+Detail: Evidence bundles must contain a final-verdict.md
+
+### [CRITICAL] 2. BUNDLE_VALIDATION: FAIL — evidence bundle did not pass validation
+Detail: Existing validator (validate_evidence_bundle.py) reported BUNDLE_VALIDATION: FAIL. Sidecar proof is required but was not supplied.
+
+### [WARNING] 3. Sprint ID not found in evidence bundle
+Detail: Cannot verify sprint identity match with contract
+
+## CRITICAL: Autonomous loop stopped.
+CRITICAL contradictions require human review before continuing.

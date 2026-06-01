@@ -1,36 +1,28 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
-# Generated: 2026-06-01T15:12:10.428053
+# Source sprint: unknown
+# Generated: 2026-06-01T15:25:06.341416
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-ADVANCE: Continue normal mega-train lanes
+REPAIR: Address CRITICAL contradictions before advancing
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
-- Evidence verdict: ACCEPTED
-- Tests: 169 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Sprint ID: unknown
+- Evidence verdict: BLOCKED_MISSING_FINAL_VERDICT
+- Tests: 0 passed, 0 failed, 0 skipped
+- Autonomous continue: False
 
 ## Contradictions Requiring Repair
-None
+- [CRITICAL] No final-verdict.md found in evidence bundle
+- [CRITICAL] BUNDLE_VALIDATION: FAIL — evidence bundle did not pass validation
+- [WARNING] Sprint ID not found in evidence bundle
 
 ## Synthesized Task List (Advisory)
-- [approval-blocked] TASK-001: Advance FODS Gate 11 commercial readiness
-- [approval-blocked] TASK-002: Advance FODT Gate 11 commercial readiness
-- [blocked] TASK-003: Open ZST Gate 11
-- [pending] TASK-004: Work on open taskcard: ABW-GATE4-001-parser-prototype
-- [pending] TASK-005: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
-- [pending] TASK-006: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
-- [pending] TASK-007: Product deepening: GAP-CAP-001 — PPM load/parse (P3/P6)
-- [pending] TASK-008: Product deepening: GAP-CAP-003 — FODS→CSV export
-- [pending] TASK-009: Product deepening: GAP-DOGFOOD-DIF-CSV-001 — GAP-DOGFOOD-DIF-CSV-001
-- [pending] TASK-010: Product deepening: GAP-DOC-001 — No standalone .NET Netpbm example (examples/net/netpbm/ dire
-- [pending] TASK-011: Product deepening: GAP-DOC-002 — No FODS→CSV example (capability not yet implemented)
-- [pending] TASK-012: Build and validate next sprint evidence bundle
+- [pending] REPAIR-001: Repair: No final-verdict.md found in evidence bundle
+- [pending] REPAIR-002: Repair: BUNDLE_VALIDATION: FAIL — evidence bundle did not pass validation
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.

@@ -121,6 +121,40 @@ public sealed class NetpbmImage
         BlueChannel![idx] = b;
     }
 
+    /// <summary>
+    /// Flip the image horizontally (mirror left-right) in place.
+    /// R87 Train J: simple transform API.
+    /// </summary>
+    public void FlipHorizontal()
+    {
+        if (Format == NetpbmFormat.PPM_P3 || Format == NetpbmFormat.PPM_P6)
+        {
+            for (int row = 0; row < Height; row++)
+            {
+                for (int left = 0, right = Width - 1; left < right; left++, right--)
+                {
+                    int li = row * Width + left;
+                    int ri = row * Width + right;
+                    (RedChannel![li], RedChannel[ri]) = (RedChannel[ri], RedChannel[li]);
+                    (GreenChannel![li], GreenChannel[ri]) = (GreenChannel[ri], GreenChannel[li]);
+                    (BlueChannel![li], BlueChannel[ri]) = (BlueChannel[ri], BlueChannel[li]);
+                }
+            }
+        }
+        else
+        {
+            for (int row = 0; row < Height; row++)
+            {
+                for (int left = 0, right = Width - 1; left < right; left++, right--)
+                {
+                    int li = row * Width + left;
+                    int ri = row * Width + right;
+                    (Pixels[li], Pixels[ri]) = (Pixels[ri], Pixels[li]);
+                }
+            }
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Image statistics
     // -------------------------------------------------------------------------

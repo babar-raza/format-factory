@@ -167,12 +167,15 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path)
                     "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
                     "non_authoritative": True,
                     "lane": "C2",
+                    "priority": "critical",
                 })
-        return tasks
+        # D87-R86-11 FIX: Do NOT return early — continue to add safe product lanes
+        # even when repair is needed. Repair tasks are first, but product-factory
+        # work-ahead lanes still get generated below.
 
-    # --- CLEAN SPRINT — synthesize from context ---
+    # --- SYNTHESIZE FROM CONTEXT (always, regardless of repair status) ---
 
-    task_seq = 1
+    task_seq = len(tasks) + 1
 
     # 1. Check for uncommitted tracked changes (R79 closure indicator)
     try:

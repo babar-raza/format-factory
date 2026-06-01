@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-01T15:12:10.452531
+# Generated: 2026-06-01T15:25:06.362442
 
 ## Quick State
-- Last sprint: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
-- Evidence verdict: ACCEPTED
-- Tests: 169 passed / 0 failed
+- Last sprint: unknown
+- Evidence verdict: BLOCKED_MISSING_FINAL_VERDICT
+- Tests: 0 passed / 0 failed
 - PENDING markers: 0
-- CRITICAL contradictions: 0
-- Autonomous continue: True
+- CRITICAL contradictions: 2
+- Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -23,7 +23,7 @@
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-pass2.zip
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-supervisor-review-package.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
