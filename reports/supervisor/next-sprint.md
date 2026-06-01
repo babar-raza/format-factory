@@ -1,6 +1,6 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
-# Generated: 2026-05-31T23:27:54.398493
+# Source sprint: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
+# Generated: 2026-06-01T15:12:10.428053
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -10,9 +10,9 @@
 ADVANCE: Continue normal mega-train lanes
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
+- Sprint ID: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
 - Evidence verdict: ACCEPTED
-- Tests: 349 passed, 0 failed, 0 skipped
+- Tests: 169 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
 ## Contradictions Requiring Repair
@@ -25,7 +25,12 @@ None
 - [pending] TASK-004: Work on open taskcard: ABW-GATE4-001-parser-prototype
 - [pending] TASK-005: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
 - [pending] TASK-006: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
-- [pending] TASK-007: Build and validate next sprint evidence bundle
+- [pending] TASK-007: Product deepening: GAP-CAP-001 — PPM load/parse (P3/P6)
+- [pending] TASK-008: Product deepening: GAP-CAP-003 — FODS→CSV export
+- [pending] TASK-009: Product deepening: GAP-DOGFOOD-DIF-CSV-001 — GAP-DOGFOOD-DIF-CSV-001
+- [pending] TASK-010: Product deepening: GAP-DOC-001 — No standalone .NET Netpbm example (examples/net/netpbm/ dire
+- [pending] TASK-011: Product deepening: GAP-DOC-002 — No FODS→CSV example (capability not yet implemented)
+- [pending] TASK-012: Build and validate next sprint evidence bundle
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -59,23 +64,6 @@ None
 
 ## Project Memory Context
 ```
-- pending_marker_count: 2
-- bundle_entry_count: 81
-
-## Entry: FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
-- timestamp: 2026-05-31T14:37:07.182547
-- verdict: ACCEPTED
-- test_count: 161
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass1.zip
-- pending_marker_count: 0
-- bundle_entry_count: 3380
-
-## Entry: ** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
-- timestamp: 2026-05-31T14:47:05.888050
-- verdict: ACCEPTED
-- test_count: 0
 - fail_count: 0
 - git_head: unknown
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-supervisor-review-package.zip
@@ -109,6 +97,23 @@ None
 - poc_matrix_path: product-capability-matrix/poc-targets.yaml
 - dogfood_export_strategy: docs/export/dogfood-export-strategy.md
 - next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
+
+## Entry: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
+- timestamp: 2026-06-01T15:11:05.235301
+- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
+- test_count: 169
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3526
+- bundle_validation_pass: False
+- validator_error_summary: ============================================================
+EVIDENCE BUNDLE VALIDATION REPORT
+============================================================
+Contract: C:\Users\prora\OneDrive\Documents\
+- test_delta: +104
+- test_delta_from: 65
 ```
 
 ---

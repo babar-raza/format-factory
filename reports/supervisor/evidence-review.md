@@ -1,13 +1,13 @@
 # Evidence Review — Supervisor
-Sprint ID: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
-Timestamp: 2026-05-31T23:27:53.355345
+Sprint ID: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
+Timestamp: 2026-06-01T15:12:09.483437
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r85-pass2-final.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-pass2.zip
 
 ## Facts
-- Tests: 349 passed, 0 failed, 0 skipped
+- Tests: 169 passed, 0 failed, 0 skipped
 - Git HEAD: unknown
-- Bundle entries: 3482
+- Bundle entries: 3526
 - PENDING markers: 0
 
 ## Gate States
@@ -21,24 +21,25 @@ None
 ============================================================
 EVIDENCE BUNDLE VALIDATION REPORT
 ============================================================
-Contract: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\evidence\contracts\r85-poc-direction-local-supervisor-autonomous-product-factory.yaml
-Bundle: .local\r85-pass2-final.zip
-Bundle size: 5,927,822 bytes
-Total entries: 3482
+Contract: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\evidence\contracts\r86-supervisor-truth-poc-product-factory-deepening.yaml
+Bundle: .local\r86-pass2.zip
+Bundle size: 5,981,933 bytes
+Total entries: 3526
 Top-level folders: ['bundle-metadata', 'repo']
-Repo files: 3448
-Metadata files: 34
-Required repo files: 42 (missing: 0)
+Repo files: 3490
+Metadata files: 36
+Required repo files: 19 (missing: 0)
 Required metadata files: 0 (missing: 0)
 Min metadata required: 30
-RUN_CONTRACT_METADATA_FLOOR (PASS): 34/30
+RUN_CONTRACT_METADATA_FLOOR (PASS): 36/30
 Forbidden hits: 0
 Git clean (PASS): git-status-final.txt shows clean working tree
 Metadata identity check (PASS)
 
-ERRORS:
-  - SIDECAR_REQUIRED: contract or verdict requires an external sidecar proof (sidecar_required: true / final_proof_policy: external_sidecar / clean-baseline verdict) but --sidecar-proof was not supplied. Run write_sidecar_proof.py and re-validate with --sidecar-proof <path>.
+All checks passed.
 
-BUNDLE_VALIDATION: FAIL
+BUNDLE_VALIDATION: PASS
+Sidecar proof check (PASS): SHA/size/entries match — 7068680bf2950ef7...
+SIDECAR_PROOF_VALIDATION: PASS
 
 ```

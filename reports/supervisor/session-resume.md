@@ -1,11 +1,11 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-05-31T23:27:54.424509
+# Generated: 2026-06-01T15:12:10.452531
 
 ## Quick State
-- Last sprint: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
+- Last sprint: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
 - Evidence verdict: ACCEPTED
-- Tests: 349 passed / 0 failed
+- Tests: 169 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -23,29 +23,12 @@
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r85-pass2-final.zip
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-pass2.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- pending_marker_count: 2
-- bundle_entry_count: 81
-
-## Entry: FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
-- timestamp: 2026-05-31T14:37:07.182547
-- verdict: ACCEPTED
-- test_count: 161
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-pass1.zip
-- pending_marker_count: 0
-- bundle_entry_count: 3380
-
-## Entry: ** FORMAT-FACTORY-R83-BROAD-PRODUCT-FINISH-REVIEW-PACKAGE-ARTIFACTS-FODS-FODT-NEXTFORMATS-AUTHORITY-MEGA-TRAIN-001
-- timestamp: 2026-05-31T14:47:05.888050
-- verdict: ACCEPTED
-- test_count: 0
 - fail_count: 0
 - git_head: unknown
 - bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r83-supervisor-review-package.zip
@@ -79,6 +62,23 @@
 - poc_matrix_path: product-capability-matrix/poc-targets.yaml
 - dogfood_export_strategy: docs/export/dogfood-export-strategy.md
 - next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
+
+## Entry: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
+- timestamp: 2026-06-01T15:11:05.235301
+- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
+- test_count: 169
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3526
+- bundle_validation_pass: False
+- validator_error_summary: ============================================================
+EVIDENCE BUNDLE VALIDATION REPORT
+============================================================
+Contract: C:\Users\prora\OneDrive\Documents\
+- test_delta: +104
+- test_delta_from: 65
 ```
 
 ## IMPORTANT REMINDERS

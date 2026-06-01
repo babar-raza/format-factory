@@ -1,8 +1,8 @@
 {
-  "sprint_id": "supervisor-export-20260531-232754",
-  "timestamp": "2026-05-31T23:27:54.405754",
+  "sprint_id": "supervisor-export-20260601-151210",
+  "timestamp": "2026-06-01T15:12:10.433652",
   "verdict": "ACCEPTED",
-  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r85-pass2-final.zip",
+  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r86-pass2.zip",
   "tasks": [
     {
       "task_id": "TASK-001",
@@ -81,6 +81,66 @@
     },
     {
       "task_id": "TASK-007",
+      "title": "Product deepening: GAP-CAP-001 \u2014 PPM load/parse (P3/P6)",
+      "description": "Product: netpbm-commercial-dotnet. NetpbmParser handles P3/P6 tokens; no dedicated PPM-only tests yet",
+      "status": "pending",
+      "ff_doc_ref": ".supervisor\\fixtures\\r85-poc-gap-extraction.yaml",
+      "supervisor_task_ref": "GAP-CAP-001",
+      "acceptance_evidence": "New tests pass for GAP-CAP-001; capability implemented or documented",
+      "validation_command": "pytest tests/ -x -q",
+      "non_authoritative": true,
+      "lane": "C3"
+    },
+    {
+      "task_id": "TASK-008",
+      "title": "Product deepening: GAP-CAP-003 \u2014 FODS\u2192CSV export",
+      "description": "Product: fods-commercial-dotnet. No FodsCsvExporter; FODS\u2192CSV is a natural export for spreadsheet format",
+      "status": "pending",
+      "ff_doc_ref": ".supervisor\\fixtures\\r85-poc-gap-extraction.yaml",
+      "supervisor_task_ref": "GAP-CAP-003",
+      "acceptance_evidence": "New tests pass for GAP-CAP-003; capability implemented or documented",
+      "validation_command": "pytest tests/ -x -q",
+      "non_authoritative": true,
+      "lane": "C3"
+    },
+    {
+      "task_id": "TASK-009",
+      "title": "Product deepening: GAP-DOGFOOD-DIF-CSV-001 \u2014 GAP-DOGFOOD-DIF-CSV-001",
+      "description": "Product: dif. DIF\u2192CSV on HOLD until SYLK POC complete",
+      "status": "pending",
+      "ff_doc_ref": ".supervisor\\fixtures\\r85-poc-gap-extraction.yaml",
+      "supervisor_task_ref": "GAP-DOGFOOD-DIF-CSV-001",
+      "acceptance_evidence": "New tests pass for GAP-DOGFOOD-DIF-CSV-001; capability implemented or documented",
+      "validation_command": "pytest tests/ -x -q",
+      "non_authoritative": true,
+      "lane": "C3"
+    },
+    {
+      "task_id": "TASK-010",
+      "title": "Product deepening: GAP-DOC-001 \u2014 No standalone .NET Netpbm example (examples/net/netpbm/ dire",
+      "description": "Product: unknown. ",
+      "status": "pending",
+      "ff_doc_ref": ".supervisor\\fixtures\\r85-poc-gap-extraction.yaml",
+      "supervisor_task_ref": "GAP-DOC-001",
+      "acceptance_evidence": "New tests pass for GAP-DOC-001; capability implemented or documented",
+      "validation_command": "pytest tests/ -x -q",
+      "non_authoritative": true,
+      "lane": "C3"
+    },
+    {
+      "task_id": "TASK-011",
+      "title": "Product deepening: GAP-DOC-002 \u2014 No FODS\u2192CSV example (capability not yet implemented)",
+      "description": "Product: unknown. ",
+      "status": "pending",
+      "ff_doc_ref": ".supervisor\\fixtures\\r85-poc-gap-extraction.yaml",
+      "supervisor_task_ref": "GAP-DOC-002",
+      "acceptance_evidence": "New tests pass for GAP-DOC-002; capability implemented or documented",
+      "validation_command": "pytest tests/ -x -q",
+      "non_authoritative": true,
+      "lane": "C3"
+    },
+    {
+      "task_id": "TASK-012",
       "title": "Build and validate next sprint evidence bundle",
       "description": "Build evidence bundle via build_evidence_bundle.py; validate with validate_evidence_bundle.py \u2192 BUNDLE_VALIDATION: PASS",
       "status": "pending",
@@ -92,5 +152,5 @@
       "lane": "C6"
     }
   ],
-  "notes": "Generated from evidence review of sprint FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001"
+  "notes": "Generated from evidence review of sprint FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001"
 }

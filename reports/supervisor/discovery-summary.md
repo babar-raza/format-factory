@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-05-31T23:27:53.068608
+Timestamp: 2026-06-01T15:12:09.243009
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r85-pass2-final.zip
-Sprint ID: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
-Entry count: 3482
-Bundle mtime: 2026-05-31T23:26:46.298908
-Bundle size: 5927822 bytes
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-pass2.zip
+Sprint ID: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
+Entry count: 3526
+Bundle mtime: 2026-06-01T15:10:39.926296
+Bundle size: 5981933 bytes

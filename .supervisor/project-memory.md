@@ -59,7 +59,7 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - pending_marker_count: 0
 - bundle_entry_count: 3300
 
-## Entry: FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001
+## Entry: FORMAT-FACTORY-R82-TRUE-AUTHORITY-RECOVERY-FODS-INSTALLED-PRODUCT-RC-PACKAGE-ARTIFACTS-REPRODUCIBILITY-MEGA-TRAIN-001 [STALE]
 - timestamp: 2026-05-31T13:13:31.382196
 - verdict: ACCEPTED
 - test_count: 73
@@ -116,3 +116,20 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - poc_matrix_path: product-capability-matrix/poc-targets.yaml
 - dogfood_export_strategy: docs/export/dogfood-export-strategy.md
 - next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
+
+## Entry: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
+- timestamp: 2026-06-01T15:11:05.235301
+- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
+- test_count: 169
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3526
+- bundle_validation_pass: False
+- validator_error_summary: ============================================================
+EVIDENCE BUNDLE VALIDATION REPORT
+============================================================
+Contract: C:\Users\prora\OneDrive\Documents\
+- test_delta: +104
+- test_delta_from: 65
