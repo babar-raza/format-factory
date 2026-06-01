@@ -202,6 +202,24 @@ def check_no_bundle(review: dict, contradictions: list) -> None:
         })
 
 
+def check_bundle_validation_fail(review: dict, contradictions: list) -> None:
+    """Check if the existing validator reported BUNDLE_VALIDATION: FAIL."""
+    if not review.get("validator_invoked", False):
+        return
+    if not review.get("bundle_validation_pass", True):
+        validator_output = review.get("validator_output", "")
+        # Check for specific error types
+        sidecar_error = "SIDECAR_REQUIRED" in validator_output
+        detail = "Existing validator (validate_evidence_bundle.py) reported BUNDLE_VALIDATION: FAIL."
+        if sidecar_error:
+            detail += " Sidecar proof is required but was not supplied."
+        contradictions.append({
+            "severity": "CRITICAL",
+            "description": "BUNDLE_VALIDATION: FAIL — evidence bundle did not pass validation",
+            "detail": detail,
+        })
+
+
 def compare(review: dict, contract: dict, repo_root: Path) -> dict:
     """Run all contradiction checks. Returns structured result."""
     timestamp = datetime.now().isoformat()
@@ -209,6 +227,7 @@ def compare(review: dict, contract: dict, repo_root: Path) -> dict:
 
     check_no_bundle(review, contradictions)
     check_missing_final_verdict(review, contradictions)
+    check_bundle_validation_fail(review, contradictions)
     check_tests_failed(review, contract, contradictions)
     check_pending_markers(review, contradictions)
     check_stale_sha(review, contradictions)

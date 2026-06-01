@@ -256,7 +256,56 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path)
         })
         task_seq += 1
 
-    # 4. Always: evidence bundle task
+    # 4. Product-factory lanes from POC gap extraction fixtures
+    gap_fixtures = list((repo_root / ".supervisor" / "fixtures").glob("*-poc-gap-extraction.yaml")) if (repo_root / ".supervisor" / "fixtures").exists() else []
+    if gap_fixtures:
+        # Use the most recent fixture
+        latest_fixture = max(gap_fixtures, key=lambda p: p.stat().st_mtime)
+        try:
+            import yaml
+            gap_data = yaml.safe_load(latest_fixture.read_text(encoding="utf-8"))
+        except (ImportError, Exception):
+            gap_data = {}
+
+        report = gap_data.get("poc_gap_report", {})
+        # Extract R-next targets from summary
+        r_next_targets = report.get("summary", {}).get("r86_targets", [])
+        if not r_next_targets:
+            # Fall back: collect all gaps with suggested_sprint matching next sprint number
+            for gap_list_key in ("capability_gaps", "dogfood_gaps", "documentation_gaps"):
+                for gap in report.get(gap_list_key, []):
+                    gap_id = gap.get("id", "")
+                    suggested = gap.get("suggested_sprint", "").upper()
+                    # Accept any gap not on HOLD
+                    if suggested not in ("HOLD", ""):
+                        r_next_targets.append(gap_id)
+
+        all_gaps = {}
+        for gap_list_key in ("capability_gaps", "dogfood_gaps", "test_gaps", "documentation_gaps"):
+            for gap in report.get(gap_list_key, []):
+                all_gaps[gap.get("id", "")] = gap
+
+        for gap_id in r_next_targets[:5]:
+            gap = all_gaps.get(gap_id, {})
+            if not gap:
+                continue
+            product = gap.get("product", gap.get("format", "unknown"))
+            capability = gap.get("capability", gap.get("description", gap_id))
+            tasks.append({
+                "task_id": f"TASK-{task_seq:03d}",
+                "title": f"Product deepening: {gap_id} — {capability[:60]}",
+                "description": f"Product: {product}. {gap.get('note', '')}",
+                "status": "pending",
+                "ff_doc_ref": str(latest_fixture.relative_to(repo_root)),
+                "supervisor_task_ref": gap_id,
+                "acceptance_evidence": f"New tests pass for {gap_id}; capability implemented or documented",
+                "validation_command": "pytest tests/ -x -q",
+                "non_authoritative": True,
+                "lane": "C3",
+            })
+            task_seq += 1
+
+    # 5. Always: evidence bundle task
     tasks.append({
         "task_id": f"TASK-{task_seq:03d}",
         "title": "Build and validate next sprint evidence bundle",
@@ -527,7 +576,7 @@ def generate_ruflo_lanes_json(review: dict, contradictions: dict, tasks: list) -
     }
 
 
-def generate_approval_gates_md(review: dict, contradictions: dict, current_mode: int) -> str:
+def generate_approval_gates_md(review: dict, contradictions: dict, current_mode: int, repo_root: Path = None) -> str:
     critical_count = contradictions.get("critical_count", 0)
     autonomous = contradictions.get("autonomous_continue", True)
 
@@ -542,6 +591,12 @@ def generate_approval_gates_md(review: dict, contradictions: dict, current_mode:
         "",
     ]
 
+    # D86-SUP-06 fix: Physical check for .vscode/mcp.json
+    mcp_physically_present = False
+    if repo_root:
+        mcp_json_path = repo_root / ".vscode" / "mcp.json"
+        mcp_physically_present = mcp_json_path.exists()
+
     if critical_count > 0:
         lines += [
             "| Action | Classification | Who Unblocks |",
@@ -550,9 +605,10 @@ def generate_approval_gates_md(review: dict, contradictions: dict, current_mode:
             "| Continue to next sprint | stop-contradictions-present | Claude_Code (after repair) |",
         ]
     else:
-        # Mode-aware MCP gate row
-        if current_mode >= 4:
-            mcp_row = "| MCP activation (MODE 4 ACTIVE — .vscode/mcp.json present) | autonomous-continue | already-done |"
+        if current_mode >= 4 and mcp_physically_present:
+            mcp_row = "| MCP activation (MODE 4 ACTIVE — .vscode/mcp.json verified present) | autonomous-continue | already-done |"
+        elif current_mode >= 4 and not mcp_physically_present:
+            mcp_row = "| MCP activation (MODE 4 claimed but .vscode/mcp.json MISSING) | stop-mcp-file-missing | User |"
         else:
             mcp_row = "| MCP activation | stop-mcp-activation-required | User |"
 
@@ -565,10 +621,13 @@ def generate_approval_gates_md(review: dict, contradictions: dict, current_mode:
             mcp_row,
         ]
 
-    # Mode-aware next human gate
-    if current_mode >= 4:
-        next_gate_line = f"- NEXT_HUMAN_GATE: MODE 5 autonomous sprint loop (explicit user approval required)"
-        mcp_status_line = "- MCP_STATUS: ACTIVE (task-master-ai@0.43.1, claude-flow@3.10.14 in .vscode/mcp.json)"
+    # D86-SUP-06 fix: Physical check for MCP status line
+    if current_mode >= 4 and mcp_physically_present:
+        next_gate_line = "- NEXT_HUMAN_GATE: MODE 5 autonomous sprint loop (explicit user approval required)"
+        mcp_status_line = "- MCP_STATUS: ACTIVE (.vscode/mcp.json verified present)"
+    elif current_mode >= 4 and not mcp_physically_present:
+        next_gate_line = "- NEXT_HUMAN_GATE: MODE 4 MCP file missing (restore .vscode/mcp.json)"
+        mcp_status_line = "- MCP_STATUS: CLAIMED_BUT_MISSING (.vscode/mcp.json not found on disk)"
     else:
         next_gate_line = "- NEXT_HUMAN_GATE: MODE 4 MCP activation (explicit user approval required)"
         mcp_status_line = "- MCP_STATUS: NOT_ACTIVATED (MODE < 4)"
@@ -687,7 +746,7 @@ def main() -> int:
     (output_dir / "next-ruflo-lanes.json").write_text(json.dumps(ruflo_data, indent=2), encoding="utf-8")
 
     # Generate approval-gates.md (mode-aware)
-    gates_text = generate_approval_gates_md(review, contradictions, current_mode)
+    gates_text = generate_approval_gates_md(review, contradictions, current_mode, repo_root)
     (output_dir / "approval-gates.md").write_text(gates_text, encoding="utf-8")
 
     # Generate session-resume.md

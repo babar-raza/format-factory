@@ -304,7 +304,6 @@ UNSUPPORTED_FEATURES: frozenset[str] = frozenset({
     "pbm_bitmap",
     "pam_arbitrary_map",
     "16bit_values",
-    "encoding_to_ppm",
     "color_profiles",
     "metadata_extraction",
     "streaming_decode",
@@ -320,3 +319,61 @@ def get_capabilities() -> dict[str, Any]:
         "unsupported": sorted(UNSUPPORTED_FEATURES),
         "commercial_product_ready": False,
     }
+
+
+# ---------------------------------------------------------------------------
+# write_ppm — PPM P3 ASCII writer (R86 Train K)
+# ---------------------------------------------------------------------------
+
+def write_ppm(
+    pixels: list[tuple[int, int, int]],
+    width: int,
+    height: int,
+    maxval: int,
+    file_path: str | Path,
+    *,
+    comment: str = "",
+) -> None:
+    """Write a PPM P3 (ASCII portable pixmap) file.
+
+    Pixels must be a flat list of (R, G, B) tuples in row-major order.
+    The list length must equal width * height.
+    Each channel value must be in range [0, maxval].
+
+    Args:
+        pixels: Flat row-major list of (R, G, B) tuples.
+        width: Image width in pixels.
+        height: Image height in pixels.
+        maxval: Maximum channel value (1-65535).
+        file_path: Destination file path.
+        comment: Optional comment line to include in the header.
+
+    Raises:
+        ValueError: If pixel count mismatch, maxval out of range, or bad tuple.
+        PpmSizeError: If dimensions exceed MAX_DIMENSION.
+
+    Added in R86 Train K as Netpbm write/roundtrip product advancement.
+    """
+    if width > MAX_DIMENSION or height > MAX_DIMENSION:
+        raise PpmSizeError(f"Dimension {width}x{height} exceeds limit {MAX_DIMENSION}")
+    if not (1 <= maxval <= MAX_MAXVAL):
+        raise ValueError(f"maxval {maxval} must be in range 1-{MAX_MAXVAL}")
+    if len(pixels) != width * height:
+        raise ValueError(
+            f"pixels length {len(pixels)} does not match width*height {width * height}"
+        )
+
+    out_path = Path(file_path)
+    lines = ["P3"]
+    if comment:
+        safe_comment = comment.replace("\n", " ").replace("\r", " ")
+        lines.append(f"# {safe_comment}")
+    lines.append(f"{width} {height}")
+    lines.append(str(maxval))
+    for row_idx in range(height):
+        row_start = row_idx * width
+        row_pixels = pixels[row_start : row_start + width]
+        row_str = " ".join(f"{r} {g} {b}" for r, g, b in row_pixels)
+        lines.append(row_str)
+
+    out_path.write_text("\n".join(lines) + "\n", encoding="ascii")

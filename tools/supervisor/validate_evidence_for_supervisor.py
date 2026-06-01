@@ -57,6 +57,10 @@ PENDING_MARKERS = [
     "TODO",
     "PLACEHOLDER",
     "TBD",
+]
+
+# Delegation labels are intentional per R75 two-authority model — NOT pending markers
+DELEGATION_LABELS = [
     "delegated_to_final_artifact_authority_json",
 ]
 
@@ -107,10 +111,14 @@ def extract_git_head(text: str) -> str:
 
 
 def count_pending_markers(text: str) -> int:
-    """Count PENDING-style markers in text."""
+    """Count PENDING-style markers in text, excluding delegation labels."""
     count = 0
-    for marker in PENDING_MARKERS:
-        count += text.count(marker)
+    for line in text.splitlines():
+        # Skip lines that contain delegation labels (intentional per R75)
+        if any(dl in line for dl in DELEGATION_LABELS):
+            continue
+        for marker in PENDING_MARKERS:
+            count += line.count(marker)
     return count
 
 
@@ -322,9 +330,21 @@ def validate(bundle_path: Path, repo_root: Path) -> dict:
 
     # Determine overall verdict
     fail_count = test_counts.get("fail_count", 0)
+    bundle_validation_pass = existing_validator_result.get("bundle_validation_pass", False)
+    validator_invoked = existing_validator_result.get("invoked", False)
+    validator_output = existing_validator_result.get("output", "")
+    sidecar_required_error = "SIDECAR_REQUIRED" in validator_output
+
     if not verdict_text:
         overall_verdict = "BLOCKED_MISSING_FINAL_VERDICT"
-    elif pending_count > 0 and pending_count > 3:  # small pending count may be false positives
+    elif validator_invoked and not bundle_validation_pass:
+        # D86-SUP-01 fix: If the existing validator was invoked and reported FAIL, reject
+        overall_verdict = "REJECTED_BUNDLE_VALIDATION_FAIL"
+    elif sidecar_required_error:
+        # D86-SUP-01 fix: Sidecar required but missing — reject
+        overall_verdict = "REJECTED_SIDECAR_REQUIRED"
+    elif pending_count > 0:
+        # D86-SUP-02 fix: Any real PENDING marker (after excluding delegation labels) is a reject
         overall_verdict = "REJECTED"
     elif fail_count > 0:
         overall_verdict = "ACCEPTED_WITH_WARNINGS"
@@ -355,6 +375,10 @@ def validate(bundle_path: Path, repo_root: Path) -> dict:
             "final_verdict_text": verdict_text[:2000] if verdict_text else "",
             "pending_marker_count": pending_count,
             "bundle_entry_count": entry_count,
+            "bundle_validation_pass": bundle_validation_pass,
+            "validator_error_summary": (
+                validator_output[:500] if validator_invoked and not bundle_validation_pass else ""
+            ),
         },
         "contradictions": [],
         "limitation_notes": limitation_notes,

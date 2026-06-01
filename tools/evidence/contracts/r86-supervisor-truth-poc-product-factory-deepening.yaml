@@ -1,0 +1,50 @@
+# R86 Evidence Contract
+# FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
+
+sprint_id: "FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001"
+sprint_number: "R86"
+sprint_date: "2026-06-01"
+
+installed_artifact_policy: none
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+min_metadata_count: 30
+
+required_repo_files:
+  # R85 IV and supervisor truth (Trains A-D)
+  - reports/r86/r85-independent-verification.md
+  - tests/supervisor/test_r86_supervisor_truth_repair.py
+
+  # Product deepening (Trains G-I)
+  - tests/net/netpbm/NetpbmBinaryWriteTests.cs
+  - tests/net/fods/FodsR86ExporterHardeningTests.cs
+  - tests/net/fodt/FodtR86ExporterHardeningTests.cs
+
+  # FOSS (Train K)
+  - tests/python/ppm/test_r86_ppm_write.py
+
+  # Dogfood (Trains M-N)
+  - src/python/pbm/pbm_to_ppm.py
+  - tests/python/pbm/test_r86_pbm_to_ppm_dogfood.py
+
+  # Final verdict
+  - reports/r86/final-verdict.md
+
+  # Scoreboard
+  - reports/r86/multi-mega-train-scoreboard.md
+
+  # Contract self-reference
+  - tools/evidence/contracts/r86-supervisor-truth-poc-product-factory-deepening.yaml
+
+  # Source changes
+  - src/net/netpbm/NetpbmWriter.cs
+  - src/python/ppm/ppm_parser.py
+  - tools/supervisor/validate_evidence_for_supervisor.py
+  - tools/supervisor/supervisor_loop.py
+  - tools/supervisor/compare_goal_to_evidence.py
+  - tools/supervisor/generate_supervisor_packet.py
+
+  # State
+  - state/current-state.json
+  - plans/master-plan.md

@@ -1,30 +1,29 @@
 """
 supervisor_loop.py — Format Factory Local Supervisor Control Plane
-Orchestrates all supervisor sub-scripts in sequence.
 
-Sub-commands:
-  discover          — find latest evidence bundle
-  review            — validate bundle and extract facts
-  next              — generate next-sprint artifacts
-  run-on-latest     — full pipeline: discover → review → next → memory-sync
-  export-taskmaster — export next-sprint-taskmaster.json
-  export-ruflo      — export next-ruflo-lanes.json
+CANONICAL commands (declaration-driven evidence directory):
+  validate-declaration  — validate evidence-declaration.yaml
+  inspect-declared      — inspect declared evidence directory
+  grade-declared        — grade declared work items
+  plan-next             — generate next worker prompt from review
+  autonomous-cycle      — full declaration-driven cycle
+  create-sample-declaration — create template declaration
+  list-unreviewed-declarations — find unreviewed declarations
+
+LEGACY commands (ZIP/watcher-based, convenience only):
+  discover          — find latest evidence bundle (legacy)
+  review            — validate bundle and extract facts (legacy)
+  next              — generate next-sprint artifacts (legacy)
+  run-on-latest     — full legacy pipeline (legacy)
+  export-taskmaster — export next-sprint-taskmaster.json (legacy)
+  export-ruflo      — export next-ruflo-lanes.json (legacy)
 
 Exit codes:
   0 — success
-  1 — no bundle found
-  2 — validation failed / malformed bundle
-  3 — critical contradiction (autonomous loop stopped)
+  1 — no bundle/declaration found
+  2 — validation failed
+  3 — critical rework/contradiction
   9 — unexpected error
-
-Usage:
-  python tools/supervisor/supervisor_loop.py discover
-  python tools/supervisor/supervisor_loop.py review --bundle path/to/bundle.zip
-  python tools/supervisor/supervisor_loop.py next --bundle path/to/bundle.zip
-  python tools/supervisor/supervisor_loop.py run-on-latest
-  python tools/supervisor/supervisor_loop.py run-on-latest --bundle path/to/explicit.zip
-  python tools/supervisor/supervisor_loop.py export-taskmaster
-  python tools/supervisor/supervisor_loop.py export-ruflo
 """
 
 import argparse
@@ -251,9 +250,10 @@ def cmd_run_on_latest(args) -> int:
         cmd_memory_sync(args)
         save_run_state({"final_exit_code": 3, "run_end": datetime.now().isoformat()})
         return 3
-    if rc not in (0, 2):
-        # Partial failures allowed — continue
-        pass
+    # D86-SUP-03 fix: Track validation failure — rc=2 means bundle validation failed
+    review_rc = rc
+    if rc == 2:
+        print("\nWARNING: Evidence validation failed (rc=2) — continuing to generate next-sprint for repair guidance")
 
     # Step 3: Generate next-sprint artifacts
     print()
@@ -263,8 +263,14 @@ def cmd_run_on_latest(args) -> int:
     print()
     cmd_memory_sync(args)
 
-    # Final state
-    final_rc = rc_next if rc_next != 0 else 0
+    # D86-SUP-04 fix: Final exit code incorporates validation state
+    # If validation failed (rc=2), propagate that as the final exit code
+    if review_rc == 2:
+        final_rc = 2
+    elif rc_next != 0:
+        final_rc = rc_next
+    else:
+        final_rc = 0
     save_run_state({
         "final_exit_code": final_rc,
         "run_end": datetime.now().isoformat(),
@@ -302,16 +308,118 @@ def cmd_export_ruflo(args) -> int:
     return 1
 
 
+def cmd_validate_declaration(args) -> int:
+    """Validate an evidence-declaration.yaml (canonical command)."""
+    print("=== SUPERVISOR: VALIDATE-DECLARATION ===")
+    extra = ["--declaration", str(args.declaration), "--repo-root", str(REPO_ROOT)]
+    if args.json:
+        extra.append("--json")
+    return run_script("evidence_declaration.py", extra, REPO_ROOT).returncode
+
+
+def cmd_inspect_declared(args) -> int:
+    """Inspect declared evidence directory (canonical command)."""
+    print("=== SUPERVISOR: INSPECT-DECLARED ===")
+    output = args.output_dir / "inspection.json"
+    extra = ["--declaration", str(args.declaration), "--repo-root", str(REPO_ROOT), "--output", str(output)]
+    return run_script("inspect_declared_evidence.py", extra, REPO_ROOT).returncode
+
+
+def cmd_grade_declared(args) -> int:
+    """Grade declared work items (canonical command)."""
+    print("=== SUPERVISOR: GRADE-DECLARED ===")
+    inspection_path = args.output_dir / "inspection.json"
+    if not inspection_path.exists():
+        print("ERROR: Run inspect-declared first.", file=sys.stderr)
+        return 1
+    extra = [
+        "--inspection", str(inspection_path),
+        "--declaration", str(args.declaration),
+        "--output-dir", str(args.output_dir),
+    ]
+    return run_script("grade_declared_work.py", extra, REPO_ROOT).returncode
+
+
+def cmd_plan_next(args) -> int:
+    """Generate next worker prompt from review (canonical command)."""
+    print("=== SUPERVISOR: PLAN-NEXT ===")
+    review_path = args.review if hasattr(args, "review") and args.review else args.output_dir / "supervisor-review.json"
+    if not review_path.exists():
+        print("ERROR: Run grade-declared first (need supervisor-review.json).", file=sys.stderr)
+        return 1
+    extra = ["--review", str(review_path), "--output-dir", str(args.output_dir)]
+    return run_script("generate_next_worker_prompt.py", extra, REPO_ROOT).returncode
+
+
+def cmd_autonomous_cycle(args) -> int:
+    """Full declaration-driven autonomous supervisor cycle (canonical command)."""
+    print("=== SUPERVISOR: AUTONOMOUS-CYCLE ===")
+    extra = ["--declaration", str(args.declaration), "--repo-root", str(REPO_ROOT)]
+    return run_script("autonomous_cycle.py", extra, REPO_ROOT).returncode
+
+
+def cmd_create_sample_declaration(args) -> int:
+    """Create a sample evidence-declaration.yaml template."""
+    print("=== SUPERVISOR: CREATE-SAMPLE-DECLARATION ===")
+    out_path = args.out if hasattr(args, "out") and args.out else Path(".local/evidences/sample/evidence-declaration.yaml")
+    extra = ["--create-sample", str(out_path)]
+    return run_script("evidence_declaration.py", extra, REPO_ROOT).returncode
+
+
+def cmd_list_unreviewed(args) -> int:
+    """List evidence declarations that have not been reviewed yet."""
+    print("=== SUPERVISOR: LIST-UNREVIEWED-DECLARATIONS ===")
+    evidences_dir = REPO_ROOT / ".local" / "evidences"
+    if not evidences_dir.is_dir():
+        print("No .local/evidences/ directory found.")
+        return 0
+
+    reviewed = set()
+    reviews_dir = REPO_ROOT / ".local" / "supervisor" / "reviews"
+    if reviews_dir.is_dir():
+        for rd in reviews_dir.iterdir():
+            if rd.is_dir():
+                reviewed.add(rd.name)
+
+    count = 0
+    for d in sorted(evidences_dir.iterdir()):
+        if d.is_dir():
+            decl = d / "evidence-declaration.yaml"
+            if decl.exists():
+                status = "REVIEWED" if d.name in reviewed else "UNREVIEWED"
+                if status == "UNREVIEWED":
+                    count += 1
+                print(f"  [{status}] {decl}")
+
+    print(f"\nTotal unreviewed: {count}")
+    return 0
+
+
+CANONICAL_COMMANDS = [
+    "validate-declaration", "inspect-declared", "grade-declared",
+    "plan-next", "autonomous-cycle",
+    "create-sample-declaration", "list-unreviewed-declarations",
+]
+
+LEGACY_COMMANDS = [
+    "discover", "review", "next", "run-on-latest",
+    "export-taskmaster", "export-ruflo",
+]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Format Factory Local Supervisor Control Plane — Orchestrator"
+        description="Format Factory Local Supervisor Control Plane"
     )
     parser.add_argument(
         "command",
-        choices=["discover", "review", "next", "run-on-latest", "export-taskmaster", "export-ruflo"],
+        choices=CANONICAL_COMMANDS + LEGACY_COMMANDS,
         help="Sub-command to run",
     )
-    parser.add_argument("--bundle", type=Path, help="Explicit evidence bundle path")
+    parser.add_argument("--bundle", type=Path, help="Evidence bundle path (legacy)")
+    parser.add_argument("--declaration", type=Path, help="Evidence declaration path (canonical)")
+    parser.add_argument("--review", type=Path, help="Review JSON path for plan-next")
+    parser.add_argument("--out", type=Path, help="Output path for create-sample-declaration")
     parser.add_argument(
         "--output-dir",
         type=Path,
@@ -330,6 +438,15 @@ def main() -> int:
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     command_map = {
+        # Canonical declaration-driven commands
+        "validate-declaration": cmd_validate_declaration,
+        "inspect-declared": cmd_inspect_declared,
+        "grade-declared": cmd_grade_declared,
+        "plan-next": cmd_plan_next,
+        "autonomous-cycle": cmd_autonomous_cycle,
+        "create-sample-declaration": cmd_create_sample_declaration,
+        "list-unreviewed-declarations": cmd_list_unreviewed,
+        # Legacy ZIP/watcher commands
         "discover": cmd_discover,
         "review": cmd_review,
         "next": cmd_next,
@@ -337,6 +454,12 @@ def main() -> int:
         "export-taskmaster": cmd_export_taskmaster,
         "export-ruflo": cmd_export_ruflo,
     }
+
+    # Warn about declaration requirement for canonical commands
+    if args.command in ("validate-declaration", "inspect-declared", "grade-declared", "autonomous-cycle"):
+        if not args.declaration:
+            print(f"ERROR: --declaration is required for {args.command}", file=sys.stderr)
+            return 1
 
     try:
         return command_map[args.command](args)
