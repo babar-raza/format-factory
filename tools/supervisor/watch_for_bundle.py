@@ -173,6 +173,9 @@ def resolve_watch_roots(explicit: Path | None) -> list[Path]:
 
 
 def main() -> int:
+    print("WARNING: watch_for_bundle.py is legacy. "
+          "Use 'supervisor_loop.py autonomous-cycle --declaration <path>' instead.",
+          file=sys.stderr)
     parser = argparse.ArgumentParser(
         description="Watch for new Format Factory evidence bundles and trigger supervisor pipeline"
     )
