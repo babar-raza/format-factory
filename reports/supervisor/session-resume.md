@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-02T08:43:07.200027
+# Generated: 2026-06-02T08:46:17.573213
 
 ## Quick State
 - Last sprint: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
-- Evidence verdict: REJECTED_BUNDLE_VALIDATION_FAIL
-- Tests: 65 passed / 0 failed
+- Evidence verdict: ACCEPTED
+- Tests: 2455 passed / 0 failed
 - PENDING markers: 0
-- CRITICAL contradictions: 1
-- Autonomous continue: False
+- CRITICAL contradictions: 0
+- Autonomous continue: True
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -23,29 +23,12 @@
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-pass2.zip
+- Last evidence bundle: .local/evidences/r89-authoritative-test-baseline
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- poc_matrix_path: product-capability-matrix/poc-targets.yaml
-- dogfood_export_strategy: docs/export/dogfood-export-strategy.md
-- next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
-
-## Entry: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
-- timestamp: 2026-06-01T15:11:05.235301
-- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
-- test_count: 169
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-pass2.zip
-- pending_marker_count: 0
-- bundle_entry_count: 3526
-- bundle_validation_pass: False
-- validator_error_summary: ============================================================
-EVIDENCE BUNDLE VALIDATION REPORT
-============================================================
 Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: +104
 - test_delta_from: 65
@@ -77,6 +60,23 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - pending_marker_count: 0
 - bundle_entry_count: 3574
 - bundle_validation_pass: True
+- test_delta: 0
+- test_delta_from: 65
+
+## Entry: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+- timestamp: 2026-06-02T08:43:07.409018
+- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3627
+- bundle_validation_pass: False
+- validator_error_summary: ============================================================
+EVIDENCE BUNDLE VALIDATION REPORT
+============================================================
+Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: 0
 - test_delta_from: 65
 ```

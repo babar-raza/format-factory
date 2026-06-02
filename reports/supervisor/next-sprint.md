@@ -1,37 +1,36 @@
 # Supervisor-Generated Next Sprint Prompt
 # Source sprint: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
-# Generated: 2026-06-02T08:43:07.166060
+# Generated: 2026-06-02T08:46:17.329338
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-REPAIR: Address CRITICAL contradictions before advancing
+ADVANCE: Continue normal mega-train lanes
 
 ## Prior Sprint Summary
 - Sprint ID: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
-- Evidence verdict: REJECTED_BUNDLE_VALIDATION_FAIL
-- Tests: 65 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Evidence verdict: ACCEPTED
+- Tests: 2455 passed, 0 failed, 11 skipped
+- Autonomous continue: True
 
 ## Contradictions Requiring Repair
-- [CRITICAL] BUNDLE_VALIDATION: FAIL — evidence bundle did not pass validation
+None
 
 ## Synthesized Task List (Advisory)
-- [pending] REPAIR-001: Repair: BUNDLE_VALIDATION: FAIL — evidence bundle did not pass validation
-- [approval-blocked] TASK-002: Advance FODS Gate 11 commercial readiness
-- [approval-blocked] TASK-003: Advance FODT Gate 11 commercial readiness
-- [blocked] TASK-004: Open ZST Gate 11
-- [pending] TASK-005: Work on open taskcard: ABW-GATE4-001-parser-prototype
-- [pending] TASK-006: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
-- [pending] TASK-007: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
-- [pending] TASK-008: Product deepening: GAP-CAP-001 — PPM load/parse (P3/P6)
-- [pending] TASK-009: Product deepening: GAP-CAP-003 — FODS→CSV export
-- [pending] TASK-010: Product deepening: GAP-DOGFOOD-DIF-CSV-001 — GAP-DOGFOOD-DIF-CSV-001
-- [pending] TASK-011: Product deepening: GAP-DOC-001 — .NET Netpbm example
-- [pending] TASK-012: Product deepening: GAP-DOC-002 — FODS→CSV example
-- [pending] TASK-013: Build and validate next sprint evidence bundle
+- [approval-blocked] TASK-001: Advance FODS Gate 11 commercial readiness
+- [approval-blocked] TASK-002: Advance FODT Gate 11 commercial readiness
+- [blocked] TASK-003: Open ZST Gate 11
+- [pending] TASK-004: Work on open taskcard: ABW-GATE4-001-parser-prototype
+- [pending] TASK-005: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
+- [pending] TASK-006: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
+- [pending] TASK-007: Product deepening: GAP-CAP-001 — PPM load/parse (P3/P6)
+- [pending] TASK-008: Product deepening: GAP-CAP-003 — FODS→CSV export
+- [pending] TASK-009: Product deepening: GAP-DOGFOOD-DIF-CSV-001 — GAP-DOGFOOD-DIF-CSV-001
+- [pending] TASK-010: Product deepening: GAP-DOC-001 — .NET Netpbm example
+- [pending] TASK-011: Product deepening: GAP-DOC-002 — FODS→CSV example
+- [pending] TASK-012: Build and validate next sprint evidence bundle
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
@@ -65,23 +64,6 @@ REPAIR: Address CRITICAL contradictions before advancing
 
 ## Project Memory Context
 ```
-- poc_matrix_path: product-capability-matrix/poc-targets.yaml
-- dogfood_export_strategy: docs/export/dogfood-export-strategy.md
-- next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
-
-## Entry: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
-- timestamp: 2026-06-01T15:11:05.235301
-- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
-- test_count: 169
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r86-pass2.zip
-- pending_marker_count: 0
-- bundle_entry_count: 3526
-- bundle_validation_pass: False
-- validator_error_summary: ============================================================
-EVIDENCE BUNDLE VALIDATION REPORT
-============================================================
 Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: +104
 - test_delta_from: 65
@@ -113,6 +95,23 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - pending_marker_count: 0
 - bundle_entry_count: 3574
 - bundle_validation_pass: True
+- test_delta: 0
+- test_delta_from: 65
+
+## Entry: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+- timestamp: 2026-06-02T08:43:07.409018
+- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3627
+- bundle_validation_pass: False
+- validator_error_summary: ============================================================
+EVIDENCE BUNDLE VALIDATION REPORT
+============================================================
+Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: 0
 - test_delta_from: 65
 ```
