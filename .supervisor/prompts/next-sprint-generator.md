@@ -97,6 +97,14 @@ Sprint success = product POC progress + evidence validating that progress.
    - Verify generated next-sprint.md keeps product-factory direction
    - If next-sprint.md lacks product lanes → repair this template and rerun
 
+8. **Governed product acceleration lane:**
+   - Read `.local/supervisor/selected-product-gaps.json`
+   - Read `.supervisor/skill-registry.yaml`
+   - Do NOT permit direct ad-hoc `src/` edits
+   - Require a governed skill or generated execution handoff for each selected product gap
+   - Require every `src/` edit to be recorded in `reports/r90/product-code-change-ledger.json`
+   - Run `python tools/supervisor/validate_product_code_ledger.py --ledger reports/r90/product-code-change-ledger.json`
+
 ### What makes a sprint INSUFFICIENT (classify as partial, not success)
 - Only evidence was closed; no product POC progress
 - Dogfooding map not updated
@@ -104,6 +112,7 @@ Sprint success = product POC progress + evidence validating that progress.
 - No evidence-declaration.yaml written at sprint end
 - Supervisor autonomous-cycle not run on evidence declaration
 - Generated next-sprint.md has no product lanes
+- Product code was edited ad-hoc without a selected gap, governed skill or handoff, and ledger entry
 
 ## Generation Instructions
 
@@ -123,6 +132,7 @@ Sprint success = product POC progress + evidence validating that progress.
    - Non-negotiable constraints (no push, no commit without user auth, no gate self-approval)
    - Lane manifest (at least 8 independent lanes including coordinator, implementation, validation, adversarial)
    - **Product-factory lanes (required — see above)**
+   - **Governed product acceleration rules: selected-product-gaps.json, skill registry, no ad-hoc src edits, product-code ledger**
    - Acceptance criteria per lane
    - Evidence bundle requirements
    - Final response format
@@ -135,11 +145,13 @@ Sprint success = product POC progress + evidence validating that progress.
    - acceptance_evidence
    - validation_command
    - supervisor_task_ref
+   - Product target in the description where product work applies
    Tasks with status "done" do NOT imply gate closed.
 
 4. **Generate Ruflo lane export:**
    Must conform to next-ruflo-lanes.schema.json.
    Each lane must have allowed_files and forbidden_files.
+   Each product lane description must include its product objective.
    non_authoritative: true for all lanes.
    Ruflo lane completion does NOT imply evidence accepted.
 

@@ -2,7 +2,7 @@
 
 Sprint: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
 Date: 2026-05-31
-Version: 1.0
+Version: 1.1
 
 ## Definition
 
@@ -68,6 +68,9 @@ See: reports/r85/dogfood-export-map.md for the authoritative per-format matrix.
 ### Netpbm (PBM/PGM/PPM)
 
 - Python PBM→PGM: `IMPLEMENTED` — pbm_to_pgm.py uses FF write_pgm from pgm library
+- Python PBM→PPM: `IMPLEMENTED` — pbm_to_ppm.py uses FF write_ppm from ppm library
+- Python PGM→PPM: `IMPLEMENTED` — pgm_to_ppm.py uses FF write_ppm from ppm library
+- Python PPM→PGM: `IMPLEMENTED` — ppm_to_pgm.py uses FF write_pgm from pgm library
 - .NET PBM→PGM: `IMPLEMENTED` — NetpbmExporter.PbmToPgm uses NetpbmWriter (FF)
 - .NET PBM→PPM: `IMPLEMENTED` — NetpbmExporter.PbmToPpm uses NetpbmWriter (FF)
 

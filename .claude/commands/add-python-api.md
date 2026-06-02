@@ -1,0 +1,64 @@
+---
+version: "1.0"
+last-updated: "2026-06-02"
+phase-available: "3+"
+gate-required: "Explicit product implementation authorization for the named format"
+generated_by: codex
+visibility: generated
+---
+
+# /add-python-api
+
+Add or extend one bounded Python FOSS product API. This command controls implementation
+shape but does not authorize source edits without an explicit handoff.
+
+## Required Inputs
+
+- `format_id`
+- `api_name` and user-visible behavior
+- exact source paths and exact test paths
+- ledger entry path supplied by the execution handoff
+- focused `pytest` command
+- evidence output directory for the active sprint
+
+## Steps
+
+1. Read `AGENTS.md`, `plans/master-plan.md`, `.supervisor/skill-registry.yaml`, and
+   `product-capability-matrix/poc-targets.yaml`.
+2. Confirm the active sprint prompt names `/add-python-api`, the format, and every writable path.
+3. Confirm the Python FOSS track is already authorized for the named format. Do not create a new format
+   package or infer authorization from a matrix target.
+4. Confirm the product-code ledger and its validator exist and pass before touching source. If either
+   is missing, stop with `BLOCKED_GOVERNED_LEDGER_NOT_INSTALLED`.
+5. Inspect existing module conventions, exports, and tests. Keep the change limited to the named API.
+6. Add or modify only the exact authorized files under `src/python/<format_id>/` and the exact
+   authorized test files under `tests/python/<format_id>/`.
+7. Add focused tests for normal behavior, one boundary case, and one invalid-input case when applicable.
+8. Write the required ledger record in the exact authorized ledger path. Record skill ID, format,
+   paths changed, API behavior, tests run, and whether an export path was affected.
+9. Run the ledger validator, the focused `pytest` command, and any format-specific validation named
+   by the handoff.
+10. Report changed files and validation results. Do not commit, push, publish, change gates, or alter
+    release authorization.
+
+## Stop Conditions
+
+- The ledger or validator is missing.
+- Writable paths are not exact or exceed the handoff.
+- The request creates a new package, changes a gate, or changes publication state.
+- A dogfood export is introduced without using `/add-dogfood-export`.
+- Focused validation fails.
+
+## Output Format
+
+Report `skill_id`, format, API, changed files, ledger record path, commands run, pass/fail results,
+and any stop condition. Do not overclaim package readiness from focused API tests.
+
+## Validation
+
+The command is complete only when ledger validation and the focused Python tests pass.
+
+## Changelog
+
+- 1.0 (2026-06-02): Initial R90 governed minimum viable command.
+

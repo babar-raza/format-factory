@@ -6,7 +6,7 @@
 # commercial_product_ready remains false for all entries until Gate 11 G11-G approved.
 
 poc_matrix_version: "1.0"
-last_updated: "2026-06-01"
+last_updated: "2026-06-02"
 sprint: "R90"
 
 # ============================================================
@@ -163,13 +163,15 @@ commercial_net_products:
       parse_pgm: PASS
       write_pgm: PASS
       parse_ppm: PASS
-      write_ppm: NOT_IMPLEMENTED
-      pbm_to_pgm_dogfood: R85_TARGET
+      write_ppm: PASS
+      pbm_to_pgm_dogfood: PASS
 
     dogfood_status:
-      pbm_to_pgm_python: R85_TARGET
-      pbm_to_ppm_python: NOT_YET
-      dotnet_family_export: NOT_YET
+      pbm_to_pgm_python: IMPLEMENTED
+      pbm_to_ppm_python: IMPLEMENTED
+      pgm_to_ppm_python: IMPLEMENTED
+      ppm_to_pgm_python: IMPLEMENTED
+      dotnet_family_export: IMPLEMENTED
       target_ff_library: "format-factory-pgm (write_pgm) for PBM→PGM export"
 
     tests:
@@ -241,12 +243,15 @@ foss_reduced_products:
       write_pgm: PASS
       pixel_stats_pgm: PASS
       parse_ppm: PASS
-      write_ppm: NOT_IMPLEMENTED
+      write_ppm: PASS
       pixel_stats_ppm: PASS
       pbm_to_pgm_dogfood: PASS
 
     dogfood_status:
       pbm_to_pgm: IMPLEMENTED
+      pbm_to_ppm: IMPLEMENTED
+      pgm_to_ppm: IMPLEMENTED
+      ppm_to_pgm: IMPLEMENTED
       target_ff_library: "format-factory-pgm write_pgm"
       notes: "Convert PBM 1-bit image to PGM grayscale using FF pgm writer"
 
@@ -254,9 +259,9 @@ foss_reduced_products:
       python: tests/python/pbm/ + tests/python/pgm/ + tests/python/ppm/
 
     blockers:
-      - "PPM writer not implemented (out of scope for R85)"
+      - "Installed-package proof for the expanded Netpbm export family remains to be refreshed"
 
-    next_action: "R85 Train M: implement PBM→PGM dogfood export + test"
+    next_action: "Refresh installed-package proof for PBM/PGM/PPM write and dogfood exports"
 
   - format: SYLK
     classification: POC_TARGET_CONFIRMED

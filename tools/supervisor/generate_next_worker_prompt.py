@@ -27,6 +27,9 @@ SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 
 TEMPLATE_PATH = REPO_ROOT / ".supervisor" / "prompts" / "mega-train-template.md"
+SELECTED_PRODUCT_GAPS_PATH = ".local/supervisor/selected-product-gaps.json"
+SKILL_REGISTRY_PATH = ".supervisor/skill-registry.yaml"
+PRODUCT_CODE_LEDGER_PATH = "reports/r90/product-code-change-ledger.json"
 
 READ_BEFORE_EXECUTION = [
     "AGENTS.md",
@@ -36,6 +39,8 @@ READ_BEFORE_EXECUTION = [
     "reports/supervisor/session-resume.md",
     "reports/supervisor/latest-review.md",
     ".supervisor/policies.yaml",
+    SKILL_REGISTRY_PATH,
+    SELECTED_PRODUCT_GAPS_PATH,
     "product-capability-matrix/poc-targets.yaml",
     "CLAUDE.md",
 ]
@@ -130,7 +135,9 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
         "group": "G1",
         "title": "Governance Preflight",
         "description": "Read all governance files. Verify no policy violations from prior sprint. "
-                       "Confirm MCP status, supervisor mode, and gate states.",
+                       "Confirm MCP status, supervisor mode, and gate states. Load "
+                       f"`{SELECTED_PRODUCT_GAPS_PATH}` and `{SKILL_REGISTRY_PATH}` before "
+                       "selecting product work.",
         "acceptance_criteria": [
             "All preflight files read",
             "No policy violations detected",
@@ -189,6 +196,7 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
                     "files_touched": [
                         f"src/net/{fmt.lower()}/",
                         f"tests/net/{fmt.lower()}/",
+                        PRODUCT_CODE_LEDGER_PATH,
                     ],
                     "verification_command": f"dotnet test tests/net/{fmt.lower()}/ --verbosity quiet",
                 })
@@ -206,6 +214,7 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
                 "files_touched": [
                     f"src/net/{fmt.lower()}/",
                     f"tests/net/{fmt.lower()}/",
+                    PRODUCT_CODE_LEDGER_PATH,
                 ],
                 "verification_command": f"dotnet test tests/net/{fmt.lower()}/ --verbosity quiet",
             })
@@ -235,6 +244,7 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
                 "files_touched": [
                     f"src/python/{fmt.lower()}/",
                     f"tests/python/{fmt.lower()}/",
+                    PRODUCT_CODE_LEDGER_PATH,
                 ],
                 "verification_command": f"python -m pytest tests/python/{fmt.lower()}/ -x -q",
             })
@@ -250,6 +260,7 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
                 "files_touched": [
                     f"src/python/{fmt.lower()}/",
                     f"tests/python/{fmt.lower()}/",
+                    PRODUCT_CODE_LEDGER_PATH,
                 ],
                 "verification_command": f"python -m pytest tests/python/{fmt.lower()}/ -x -q",
             })
@@ -297,7 +308,8 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
         "group": "G6",
         "title": "Package Build + Install Proof",
         "description": "Rebuild wheels/sdists for any changed packages. "
-                       "Run installed-workflow smoke test from extracted wheel.",
+                       "Run installed-workflow smoke test from extracted wheel. Treat missing "
+                       "artifacts as failures, not skips.",
         "acceptance_criteria": [
             "All changed packages rebuilt",
             "Installed import test passes",
@@ -333,7 +345,8 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
         "group": "G8",
         "title": "Evidence Declaration + Supervisor Autonomous-Cycle",
         "description": "Write evidence-declaration.yaml listing ALL work items. "
-                       "Run autonomous-cycle. Verify session-resume.md is regenerated.",
+                       "Run autonomous-cycle. Verify session-resume.md is regenerated. Validate "
+                       f"`{PRODUCT_CODE_LEDGER_PATH}` for any governed product source edit.",
         "acceptance_criteria": [
             "evidence-declaration.yaml written with all work items",
             "autonomous-cycle exits 0 or 3",
@@ -512,6 +525,8 @@ def _build_fallback_prompt(review, trains, sprint_goal, test_line,
     lines.append("- No MCP activation unless MODE 4 already authorized.")
     lines.append("- No destructive git operations.")
     lines.append("- No PENDING markers in final state files.")
+    lines.append(f"- No ad-hoc `src/` edits: use `{SKILL_REGISTRY_PATH}` or a generated execution handoff.")
+    lines.append(f"- Any `src/` edit requires an entry in `{PRODUCT_CODE_LEDGER_PATH}`.")
     lines.append("")
 
     lines.append("## Final Validation Sequence")
@@ -570,6 +585,11 @@ def generate_next_work_items(review: dict) -> dict:
             "evidence_expected": "Test results, code changes",
             "source": "product-factory",
         })
+        items[-1]["description"] = (
+            f"Product target: {fmt} commercial .NET. {items[-1]['description']}. "
+            f"Select work from {SELECTED_PRODUCT_GAPS_PATH}; use {SKILL_REGISTRY_PATH}; "
+            f"record any src edit in {PRODUCT_CODE_LEDGER_PATH}."
+        )
         priority += 1
 
     for product in poc_targets.get("foss_reduced_products", []):
@@ -585,6 +605,11 @@ def generate_next_work_items(review: dict) -> dict:
             "evidence_expected": "Test results",
             "source": "product-factory",
         })
+        items[-1]["description"] = (
+            f"Product target: {fmt} FOSS Python. {items[-1]['description']}. "
+            f"Select work from {SELECTED_PRODUCT_GAPS_PATH}; use {SKILL_REGISTRY_PATH}; "
+            f"record any src edit in {PRODUCT_CODE_LEDGER_PATH}."
+        )
         priority += 1
 
     return {

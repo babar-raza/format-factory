@@ -1,0 +1,62 @@
+{
+  "ledger_version": "1.0",
+  "sprint": "R90",
+  "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
+  "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
+  "entries": [
+    {
+      "entry_id": "R90-BACKFILL-R89-FODS-CSV-001",
+      "classification": "BACKFILLED_PRE_GOVERNANCE",
+      "origin_commit": "a2b8618bf82d364cecc2009bd536b7378f391140",
+      "product": "FODS .NET",
+      "capability_refs": ["commercial_net_products.FODS.dotnet_status.export_csv_in_memory"],
+      "api_symbols": ["ExportSheetToCsvString"],
+      "source_files": [{"path": "src/net/fods/FodsCsvExporter.cs", "state": "present", "sha256": "e2d83148a7475043e89f97b3bb5f6f69910559cf93d9420165e3e09e46abbd59"}]
+    },
+    {
+      "entry_id": "R90-BACKFILL-R89-FODS-DOCUMENT-001",
+      "classification": "BACKFILLED_PRE_GOVERNANCE",
+      "origin_commit": "a2b8618bf82d364cecc2009bd536b7378f391140",
+      "product": "FODS .NET",
+      "capability_refs": ["commercial_net_products.FODS.dotnet_status.inspect_object_model"],
+      "api_symbols": ["SheetCount", "GetSheetByName", "GetCellValue", "GetCellValue(FodsSheet,int,int)"],
+      "source_files": [{"path": "src/net/fods/FodsDocument.cs", "state": "present", "sha256": "23d3afee41bce8d15b9ac1659c4a7e0fe2a773fd2c8bdb84f99df85327e527c7"}]
+    },
+    {
+      "entry_id": "R90-BACKFILL-R89-FODT-DOCUMENT-001",
+      "classification": "BACKFILLED_PRE_GOVERNANCE",
+      "origin_commit": "a2b8618bf82d364cecc2009bd536b7378f391140",
+      "product": "FODT .NET",
+      "capability_refs": ["commercial_net_products.FODT.dotnet_status.text_search", "commercial_net_products.FODT.dotnet_status.char_count", "commercial_net_products.FODT.dotnet_status.edit_paragraphs"],
+      "api_symbols": ["CharCount", "SearchText", "ReplaceText", "ParagraphCount"],
+      "source_files": [{"path": "src/net/fodt/FodtDocument.cs", "state": "present", "sha256": "f914139fb51ac4d53a2f2e0d88713a58b046400185c5ba3f979c74c234885933"}]
+    },
+    {
+      "entry_id": "R90-BACKFILL-R89-NETPBM-IMAGE-001",
+      "classification": "BACKFILLED_PRE_GOVERNANCE",
+      "origin_commit": "a2b8618bf82d364cecc2009bd536b7378f391140",
+      "product": "Netpbm .NET",
+      "capability_refs": ["commercial_net_products.Netpbm.dotnet_status.get_channel_stats", "commercial_net_products.Netpbm.dotnet_status.rotate_90cw", "commercial_net_products.Netpbm.dotnet_status.crop"],
+      "api_symbols": ["GetChannelStats", "Rotate90Cw", "Crop"],
+      "source_files": [{"path": "src/net/netpbm/Model/NetpbmImage.cs", "state": "present", "sha256": "0b338c66eaf44e508778be24c0fcaf7c8a9f621165504aecd710f913dcb6c27e"}]
+    },
+    {
+      "entry_id": "R90-GOVERNED-PYTHON-NETPBM-PPM-TO-PGM-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001",
+      "skill": "add-dogfood-export",
+      "product": "Netpbm Python FOSS",
+      "capability_refs": ["foss_reduced_products.Netpbm.dogfood_status.ppm_to_pgm"],
+      "api_symbols": ["convert_ppm_to_pgm", "ppm_pixels_to_pgm_pixels"],
+      "target_ff_library": "pgm.pgm_parser.write_pgm",
+      "source_files": [
+        {"path": "src/python/ppm/ppm_to_pgm.py", "state": "present", "sha256": "b07dc8c0fbc32ffcdefea7cc1d3b99b0c04b4a491392db3a90ed4da0543f86f4"},
+        {"path": "src/python/ppm/__init__.py", "state": "present", "sha256": "62e5ccca4d0573afc1c86c86ca4e6bf936b19e1b0d436f528f5111f22ab3f9bb"}
+      ],
+      "test_files": ["tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py"],
+      "validation_command": ".local/venv/Scripts/python.exe -m pytest tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py -q --tb=short",
+      "result": "5 passed",
+      "rollback": "Remove ppm_to_pgm.py, remove the two __init__.py exports, remove the R90 test file, and remove this ledger entry."
+    }
+  ]
+}

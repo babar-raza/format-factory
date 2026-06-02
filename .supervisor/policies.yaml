@@ -181,10 +181,18 @@ product_factory:
 
   # Supervisor loop must be run on final bundle each sprint
   supervisor_loop_required_after_bundle: true
-  supervisor_loop_command: "python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle>"
+  supervisor_loop_command: "LEGACY_ONLY: python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle>"
 
   # Canonical loop command (declaration-driven, replaces run-on-latest for same-worktree)
   supervisor_canonical_loop_command: "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration <declaration>"
+
+  # R90 Product Factory Acceleration Layer
+  skill_registry_file: .supervisor/skill-registry.yaml
+  selected_product_gaps_file: .local/supervisor/selected-product-gaps.json
+  product_code_ledger_file: reports/r90/product-code-change-ledger.json
+  src_edit_rule: "No direct ad-hoc src edits. Use a governed skill or generated execution handoff."
+  src_change_ledger_validation_required: true
+  capability_progress_detection_required: true
 
 # ============================================================
 # DECLARATION PROTOCOL (added by supervisor-evidence-directory sprint)
@@ -246,6 +254,16 @@ autonomous_continuation:
   # Continuous loop settings (MODE 5+)
   max_iterations: 5
   no_progress_max_consecutive: 2
+  no_progress_dimensions:
+    - load
+    - edit
+    - save
+    - export
+    - dogfood
+    - package_install
+    - examples_docs
+    - tests
+    - capability_matrix_status
   iteration_reset_on_human_intervention: true
 
   # Hard prohibitions (never autonomous)

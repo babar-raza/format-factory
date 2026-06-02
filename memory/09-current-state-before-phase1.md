@@ -13,7 +13,12 @@ notes: Place this folder at repo root as /memory. These files are for agent cont
 
 This file captures current state context, but it is not the authority. FODS Gates 1-10 are passed and FODS Phase 4 Python source has been created under `src/python/fods/`. FODT Gates 1-9 are passed; Gate 10 is planning_verified, and TC-0052 Python source implementation is pending human review. Evidence metadata, bundle validation, and current-state consistency remain governed by `plans/master-plan.md`, `registry/format-registry.yaml`, and evidence bundle metadata.
 
-**Last updated:** 2026-05-11 documentation status sync. Authority remains `plans/master-plan.md` and `registry/format-registry.yaml`.
+**Last updated:** 2026-06-02 R90 acceleration sync. Authority remains `plans/master-plan.md` and `registry/format-registry.yaml`.
+
+> R90 sync note, 2026-06-02: FODS and FODT Gates 1-10 remain passed and Gate 11 remains
+> `commercial_readiness_in_progress`, not approved. R90 added the governed Product Factory
+> Acceleration Layer and Python Netpbm PPM-to-PGM dogfood export. No publication, Gate 8 approval,
+> Gate 11 approval, or `commercial_product_ready=true` occurred. Older paragraphs remain historical.
 
 ## Current status
 

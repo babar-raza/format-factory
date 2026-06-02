@@ -2033,5 +2033,30 @@ The autonomous loop is driven by the AI agent (Claude Code), not a Python daemon
 
 ---
 
-*End of plans/master-plan.md — version 2.67 — 2026-06-01 (Section 41.6 added: continuous autonomous loop protocol MODE 5)*
+## Section 42 — Product Factory Acceleration Layer (R90)
+
+**Added:** 2026-06-02
+**Sprint:** FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
+
+R90 adds a governed acceleration layer for product POC work:
+
+1. `.supervisor/skill-registry.yaml` defines bounded product-change skills.
+2. `tools/supervisor/select_poc_gaps.py` ranks capability-matrix gaps.
+3. `.local/supervisor/selected-product-gaps.json` stores local selected work.
+4. `reports/r90/product-code-change-ledger.json` records pre-governance backfills and governed source edits.
+5. `tools/supervisor/validate_product_code_ledger.py` rejects unledgered `src/*` changes.
+6. `tools/supervisor/detect_product_progress.py` detects two consecutive no-progress intervals.
+7. Generated next-sprint prompts reference selected gaps, skill registry, ledger validation,
+   dogfood export, package/install proof, and declaration-driven autonomous closeout.
+
+R90 audited R89 FODS, FODT, and Netpbm .NET APIs as present with tests and backfilled them as
+`BACKFILLED_PRE_GOVERNANCE`. R90 then used `/add-dogfood-export` to add Python Netpbm PPM-to-PGM
+conversion through `pgm.pgm_parser.write_pgm`.
+
+No Gate 8 approval, Gate 11 approval, publication, push, commit, or commercial readiness claim is
+authorized by this section.
+
+---
+
+*End of plans/master-plan.md — version 2.68 — 2026-06-02 (Section 42 added: Product Factory Acceleration Layer)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

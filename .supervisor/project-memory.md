@@ -115,7 +115,7 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - gate_8_approved: false
 - poc_matrix_path: product-capability-matrix/poc-targets.yaml
 - dogfood_export_strategy: docs/export/dogfood-export-strategy.md
-- next_action: Run supervisor_loop.py run-on-latest after evidence bundle built
+- legacy_next_action: STALE_LEGACY_ONLY — Run supervisor_loop.py run-on-latest after evidence bundle built
 
 ## Entry: FORMAT-FACTORY-R86-SUPERVISOR-TRUTH-POC-PRODUCT-FACTORY-DEEPENING-NETPBM-FODS-FODT-FOSS-DOGFOOD-MEGA-TRAIN-001
 - timestamp: 2026-06-01T15:11:05.235301
@@ -180,3 +180,14 @@ EVIDENCE BUNDLE VALIDATION REPORT
 Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: 0
 - test_delta_from: 65
+
+## Entry: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
+- timestamp: 2026-06-02
+- status: IN_PROGRESS
+- canonical_closeout: python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/<run_id>/evidence-declaration.yaml
+- legacy_run_on_latest: LEGACY_ONLY
+- source_audit: R89 FODS, FODT, and Netpbm APIs remain present with tests
+- acceleration_layer: IN_PROGRESS
+- commercial_product_ready: false
+- gate_11_approved: false
+- publication_authorized: false

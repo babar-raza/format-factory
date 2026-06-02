@@ -1,0 +1,114 @@
+---
+version: "1.0"
+last_updated: "2026-06-02"
+generated_by: codex
+visibility: generated
+sprint: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
+
+# Governed Skill Registry
+#
+# This registry defines reusable execution contracts. It does not authorize a
+# product edit by itself. A worker still needs an explicit sprint prompt or a
+# generated execution handoff naming the selected skill and exact paths.
+
+registry_id: r90-governed-skills-minimum-viable-set
+registry_status: active_fail_closed
+authority:
+  master_plan: plans/master-plan.md
+  poc_matrix: product-capability-matrix/poc-targets.yaml
+  dogfood_strategy: docs/export/dogfood-export-strategy.md
+  command_registry_reference: .claude/commands/_readme.md
+
+global_controls:
+  source_edits_require_explicit_handoff: true
+  exact_path_scope_required: true
+  gate_changes_allowed: false
+  commercial_product_ready_changes_allowed: false
+  publication_changes_allowed: false
+  commit_allowed: false
+  push_allowed: false
+  product_code_ledger_required_before_source_edit: true
+  product_code_ledger_status: installed
+  product_code_ledger_validator_status: installed
+  required_stop_conditions:
+    - product_code_ledger_or_validator_missing
+    - exact_allowed_paths_missing
+    - source_path_outside_explicit_handoff
+    - gate_or_release_state_change_requested
+    - undocumented_dogfood_external_write
+    - required_validation_fails
+
+skills:
+  - skill_id: add-dotnet-api
+    command: /add-dotnet-api
+    command_file: .claude/commands/add-dotnet-api.md
+    status: active
+    purpose: Add or extend one bounded commercial .NET product API with focused tests and evidence.
+    product_track: commercial_dotnet
+    required_handoff_fields:
+      - format_id
+      - api_name
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+      - focused_test_command
+    mandatory_validations:
+      - product_code_ledger_validator
+      - focused_dotnet_tests
+      - no_gate_or_release_state_change
+
+  - skill_id: add-python-api
+    command: /add-python-api
+    command_file: .claude/commands/add-python-api.md
+    status: active
+    purpose: Add or extend one bounded Python FOSS product API with focused tests and evidence.
+    product_track: foss_python
+    required_handoff_fields:
+      - format_id
+      - api_name
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+      - focused_test_command
+    mandatory_validations:
+      - product_code_ledger_validator
+      - focused_python_tests
+      - no_gate_or_release_state_change
+
+  - skill_id: add-dogfood-export
+    command: /add-dogfood-export
+    command_file: .claude/commands/add-dogfood-export.md
+    status: active
+    purpose: Add one bounded export path whose write backend is another Format Factory library.
+    product_track: cross_product_export
+    required_handoff_fields:
+      - source_format_id
+      - target_format_id
+      - export_name
+      - target_ff_library
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+      - focused_test_command
+    mandatory_validations:
+      - product_code_ledger_validator
+      - dogfood_backend_is_format_factory_library
+      - external_export_dependency_scan
+      - focused_export_tests
+
+  - skill_id: update-capability-matrix
+    command: /update-capability-matrix
+    command_file: .claude/commands/update-capability-matrix.md
+    status: active
+    purpose: Reconcile proven product capability results into the POC target matrix without changing gate authority.
+    product_track: shared_reference_snapshot
+    required_handoff_fields:
+      - matrix_entry
+      - evidence_paths
+      - focused_validation_commands
+      - claimed_status_changes
+    mandatory_validations:
+      - evidence_paths_exist
+      - claimed_statuses_match_test_evidence
+      - commercial_product_ready_remains_false
+      - gate_11_approved_remains_false

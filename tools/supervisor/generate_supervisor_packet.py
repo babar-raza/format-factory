@@ -28,11 +28,22 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+SELECTED_PRODUCT_GAPS_PATH = ".local/supervisor/selected-product-gaps.json"
+SKILL_REGISTRY_PATH = ".supervisor/skill-registry.yaml"
+PRODUCT_CODE_LEDGER_PATH = "reports/r90/product-code-change-ledger.json"
+
 
 def load_json(path: Path) -> dict:
     if path and path.exists():
         return json.loads(path.read_text(encoding="utf-8"))
     return {}
+
+
+def load_selected_product_gaps(repo_root: Path) -> list[dict]:
+    """Load bounded product work selected by the governed R90 selector."""
+    payload = load_json(repo_root / SELECTED_PRODUCT_GAPS_PATH)
+    gaps = payload.get("selected_gaps", [])
+    return gaps if isinstance(gaps, list) else []
 
 
 def load_memory(memory_path: Path) -> str:
@@ -167,7 +178,6 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path)
                     "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
                     "non_authoritative": True,
                     "lane": "C2",
-                    "priority": "critical",
                 })
         # D87-R86-11 FIX: Do NOT return early — continue to add safe product lanes
         # even when repair is needed. Repair tasks are first, but product-factory
@@ -176,6 +186,23 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path)
     # --- SYNTHESIZE FROM CONTEXT (always, regardless of repair status) ---
 
     task_seq = len(tasks) + 1
+
+    # 0. Governed acceleration preflight (R90+)
+    tasks.append({
+        "task_id": f"TASK-{task_seq:03d}",
+        "title": "Select governed product gaps and validate the product-code ledger",
+        "description": f"Load {SELECTED_PRODUCT_GAPS_PATH} and {SKILL_REGISTRY_PATH}. "
+                       "No direct ad-hoc src edits are permitted. Any generated execution "
+                       f"handoff that edits src must update {PRODUCT_CODE_LEDGER_PATH}.",
+        "status": "pending",
+        "ff_doc_ref": "docs/product-factory/product-factory-acceleration-layer.md",
+        "supervisor_task_ref": "R90-ACCELERATION-PREFLIGHT",
+        "acceptance_evidence": f"{PRODUCT_CODE_LEDGER_PATH} validates and selected product gaps map to governed skills or explicit handoffs",
+        "validation_command": f"python tools/supervisor/validate_product_code_ledger.py --ledger {PRODUCT_CODE_LEDGER_PATH}",
+        "non_authoritative": True,
+        "lane": "C3",
+    })
+    task_seq += 1
 
     # 1. Check for uncommitted tracked changes (R79 closure indicator)
     try:
@@ -259,9 +286,35 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path)
         })
         task_seq += 1
 
-    # 4. Product-factory lanes from POC gap extraction fixtures
+    # 4. Product-factory lanes from governed selected gaps, with legacy fixture fallback
+    selected_gaps = [
+        gap for gap in load_selected_product_gaps(repo_root)
+        if not gap.get("external_gate")
+    ]
+    for gap in selected_gaps[:5]:
+        gap_id = gap.get("gap_id", "selected-gap")
+        product = gap.get("format", "unknown")
+        capability = gap.get("capability_path", gap_id)
+        skill = gap.get("governed_skill") or "generated execution handoff"
+        lane = "C4" if "dogfood" in capability.lower() else "C3"
+        tasks.append({
+            "task_id": f"TASK-{task_seq:03d}",
+            "title": f"Product deepening: {gap_id} — {capability[:60]}",
+            "description": f"Product target: {product}. Product objective: {capability}. "
+                           f"Use {skill} from {SKILL_REGISTRY_PATH}; ledger any src edit in "
+                           f"{PRODUCT_CODE_LEDGER_PATH}.",
+            "status": "pending",
+            "ff_doc_ref": SELECTED_PRODUCT_GAPS_PATH,
+            "supervisor_task_ref": gap_id,
+            "acceptance_evidence": f"New tests pass for {gap_id}; capability implemented or documented",
+            "validation_command": "pytest tests/ -x -q",
+            "non_authoritative": True,
+            "lane": lane,
+        })
+        task_seq += 1
+
     gap_fixtures = list((repo_root / ".supervisor" / "fixtures").glob("*-poc-gap-extraction.yaml")) if (repo_root / ".supervisor" / "fixtures").exists() else []
-    if gap_fixtures:
+    if not selected_gaps and gap_fixtures:
         # Use the most recent fixture
         latest_fixture = max(gap_fixtures, key=lambda p: p.stat().st_mtime)
         try:
@@ -297,7 +350,9 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path)
             tasks.append({
                 "task_id": f"TASK-{task_seq:03d}",
                 "title": f"Product deepening: {gap_id} — {capability[:60]}",
-                "description": f"Product: {product}. {gap.get('note', '')}",
+                "description": f"Product target: {product}. Product objective: {capability}. "
+                               f"{gap.get('note', '')} Select from {SELECTED_PRODUCT_GAPS_PATH}; "
+                               f"use {SKILL_REGISTRY_PATH}; ledger any src edit in {PRODUCT_CODE_LEDGER_PATH}.",
                 "status": "pending",
                 "ff_doc_ref": str(latest_fixture.relative_to(repo_root)),
                 "supervisor_task_ref": gap_id,
@@ -308,16 +363,48 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path)
             })
             task_seq += 1
 
-    # 5. Always: evidence bundle task
+    # 5. Always: dogfood and package/install product-proof lanes
     tasks.append({
         "task_id": f"TASK-{task_seq:03d}",
-        "title": "Build and validate next sprint evidence bundle",
-        "description": "Build evidence bundle via build_evidence_bundle.py; validate with validate_evidence_bundle.py → BUNDLE_VALIDATION: PASS",
+        "title": "Advance one dogfood export path using a Format Factory library",
+        "description": f"Product objective: close or verify a selected dogfood export from {SELECTED_PRODUCT_GAPS_PATH}. "
+                       "Use a Format Factory-produced library and record truthful status.",
         "status": "pending",
-        "ff_doc_ref": "tools/evidence/build_evidence_bundle.py",
+        "ff_doc_ref": "docs/export/dogfood-export-strategy.md",
+        "supervisor_task_ref": "R90-DOGFOOD-LANE",
+        "acceptance_evidence": "Dogfood test proves the Format Factory library path and matrix status is truthful",
+        "validation_command": "pytest tests/ -x -q",
+        "non_authoritative": True,
+        "lane": "C4",
+    })
+    task_seq += 1
+
+    tasks.append({
+        "task_id": f"TASK-{task_seq:03d}",
+        "title": "Build package artifacts and run installed-workflow proof",
+        "description": "Product objective: prove changed product packages from physical artifacts. "
+                       "A missing artifact is a failure, not a skipped package test.",
+        "status": "pending",
+        "ff_doc_ref": "plans/master-plan.md",
+        "supervisor_task_ref": "R90-PACKAGE-INSTALL-LANE",
+        "acceptance_evidence": "Physical package artifacts exist and installed-workflow tests pass from extracted packages",
+        "validation_command": "pytest tests/evidence/ -x -q",
+        "non_authoritative": True,
+        "lane": "C5",
+    })
+    task_seq += 1
+
+    # 6. Always: evidence declaration and autonomous-cycle task
+    tasks.append({
+        "task_id": f"TASK-{task_seq:03d}",
+        "title": "Write evidence declaration and run supervisor autonomous-cycle",
+        "description": "Write .local/evidences/<run_id>/evidence-declaration.yaml for all work items, "
+                       "then run the declaration-driven supervisor autonomous-cycle. ZIP export is optional.",
+        "status": "pending",
+        "ff_doc_ref": "tools/supervisor/supervisor_loop.py",
         "supervisor_task_ref": "TC-SUP-010",
-        "acceptance_evidence": "validate_evidence_bundle.py outputs BUNDLE_VALIDATION: PASS",
-        "validation_command": ".local/venv/Scripts/python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
+        "acceptance_evidence": "evidence-declaration.yaml exists and autonomous-cycle regenerates the supervisor packet",
+        "validation_command": "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/<run_id>/evidence-declaration.yaml",
         "non_authoritative": True,
         "lane": "C6",
     })
@@ -447,13 +534,16 @@ def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: 
 3. No gate self-approval.
 4. No active .vscode/mcp.json without MODE 4 approval.
 5. No Task Master / Ruflo init without MODE 3+ authorization.
-6. Evidence bundle (ZIP) must be produced and validated with BUNDLE_VALIDATION: PASS.
+6. Load `{SELECTED_PRODUCT_GAPS_PATH}` and `{SKILL_REGISTRY_PATH}` before product work.
 7. All gate closures require human approval (gates 1-11).
 8. Format Factory authority is final — supervisor is advisory only.
+9. No direct ad-hoc `src/` edits. Use a governed skill or generated execution handoff.
+10. Every `src/` edit requires an entry in `{PRODUCT_CODE_LEDGER_PATH}`.
 
 ## Evidence Requirements for Next Sprint
-- Evidence bundle built via tools/evidence/build_evidence_bundle.py
-- Validated via tools/evidence/validate_evidence_bundle.py → BUNDLE_VALIDATION: PASS
+- Write `.local/evidences/<run_id>/evidence-declaration.yaml`
+- Run `python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/<run_id>/evidence-declaration.yaml`
+- ZIP bundle export is optional for archive or external transfer
 - Final verdict must contain: VERDICT: <enum>
 - All SHAs must be filled (no PENDING markers in final state)
 - Tests: 0 failures required
@@ -462,10 +552,10 @@ def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: 
 - Lane C0: Coordinator — integration, manifest authority, stop-gate monitoring
 - Lane C1: Governance discovery — read AGENTS.md, GOVERNANCE.md, master-plan state
 - Lane C2: Repair lanes — address any open contradictions from prior sprint
-- Lane C3: Implementation — per open taskcards
-- Lane C4: Validation — pytest, py_compile, schema validation
-- Lane C5: Negative/fuzz — negative test coverage
-- Lane C6: Evidence — bundle build + validation
+- Lane C3: Governed implementation — selected gaps, skill registry, product-code ledger
+- Lane C4: Dogfood export — use a Format Factory-produced library
+- Lane C5: Package/install proof — build physical artifacts and run installed workflows
+- Lane C6: Evidence — declaration + autonomous-cycle
 - Lane C7: Adversarial — challenge all claims before finalizing
 
 ## Acceptance Criteria Per Lane
@@ -503,6 +593,8 @@ def generate_ruflo_lanes_json(review: dict, contradictions: dict, tasks: list) -
     # Assign tasks to lanes
     c2_tasks = [t["task_id"] for t in tasks if t.get("lane") == "C2"]
     c3_tasks = [t["task_id"] for t in tasks if t.get("lane") == "C3"]
+    c4_tasks = [t["task_id"] for t in tasks if t.get("lane") == "C4"]
+    c5_tasks = [t["task_id"] for t in tasks if t.get("lane") == "C5"]
 
     lanes = [
         {
@@ -545,8 +637,8 @@ def generate_ruflo_lanes_json(review: dict, contradictions: dict, tasks: list) -
             "lane_id": "C3",
             "owner_role": "Implementation",
             "title": "Product implementation and taskcard execution",
-            "description": "Execute open taskcards; advance gate work per master-plan.md",
-            "allowed_files": ["src/**", "tests/**", "reports/rNN/**", "taskcards/**"],
+            "description": f"Product objective: execute selected work from {SELECTED_PRODUCT_GAPS_PATH} through {SKILL_REGISTRY_PATH}; no ad-hoc src edits; update {PRODUCT_CODE_LEDGER_PATH}",
+            "allowed_files": ["src/**", "tests/**", "reports/rNN/**", "taskcards/**", PRODUCT_CODE_LEDGER_PATH],
             "forbidden_files": ["AGENTS.md", "GOVERNANCE.md", "plans/master-plan.md", "registry/**"],
             "dependencies": ["C0", "C1"],
             "tasks": c3_tasks,
@@ -554,13 +646,37 @@ def generate_ruflo_lanes_json(review: dict, contradictions: dict, tasks: list) -
             "non_authoritative": True,
         },
         {
+            "lane_id": "C4",
+            "owner_role": "Dogfood",
+            "title": "Dogfood export advancement",
+            "description": f"Product objective: close or verify one selected dogfood export from {SELECTED_PRODUCT_GAPS_PATH} using a Format Factory-produced library",
+            "allowed_files": ["src/**", "tests/**", "reports/rNN/**", PRODUCT_CODE_LEDGER_PATH],
+            "forbidden_files": ["AGENTS.md", "GOVERNANCE.md", "plans/master-plan.md", "registry/**"],
+            "dependencies": ["C0", "C1", "C3"],
+            "tasks": c4_tasks,
+            "status": "pending",
+            "non_authoritative": True,
+        },
+        {
+            "lane_id": "C5",
+            "owner_role": "PackageInstall",
+            "title": "Package and installed-workflow proof",
+            "description": "Product objective: prove changed packages from physical artifacts; missing artifacts fail the lane",
+            "allowed_files": ["packaging/**", "tests/**", "reports/rNN/**"],
+            "forbidden_files": ["AGENTS.md", "GOVERNANCE.md", "plans/master-plan.md", "registry/**"],
+            "dependencies": ["C0", "C1", "C3", "C4"],
+            "tasks": c5_tasks,
+            "status": "pending",
+            "non_authoritative": True,
+        },
+        {
             "lane_id": "C6",
             "owner_role": "Evidence",
             "title": "Evidence bundle",
-            "description": "Build and validate evidence bundle",
+            "description": "Write the evidence declaration and run supervisor autonomous-cycle",
             "allowed_files": [".local/evidence/**"],
             "forbidden_files": ["AGENTS.md", "GOVERNANCE.md", "plans/master-plan.md", "registry/**"],
-            "dependencies": ["C0", "C1", "C2", "C3"],
+            "dependencies": ["C0", "C1", "C2", "C3", "C4", "C5"],
             "tasks": [t["task_id"] for t in tasks if t.get("lane") == "C6"],
             "status": "pending",
             "non_authoritative": True,

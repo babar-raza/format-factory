@@ -1,14 +1,14 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-02T08:46:17.573213
+# Generated: 2026-06-02T13:38:06.398686
 
 ## Quick State
-- Last sprint: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+- Last sprint: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
 - Evidence verdict: ACCEPTED
-- Tests: 2455 passed / 0 failed
+- Tests: 6835 passed / 12 failed
 - PENDING markers: 0
-- CRITICAL contradictions: 0
-- Autonomous continue: True
+- CRITICAL contradictions: 1
+- Autonomous continue: False
 - Current supervisor mode: MODE 4
 - MCP status: ACTIVE (.vscode/mcp.json present)
 
@@ -23,23 +23,12 @@
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/r89-authoritative-test-baseline
+- Last evidence bundle: .local/evidences/r90/
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-Contract: C:\Users\prora\OneDrive\Documents\
-- test_delta: +104
-- test_delta_from: 65
-
-## Entry: FORMAT-FACTORY-R87-CLEAN-SUPERVISOR-CLOSEOUT-REVIEW-PACKAGE-POC-PRODUCT-FACTORY-DEEPENING-MEGA-TRAIN-001
-- timestamp: 2026-06-01T17:11:06.955469
-- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
-- test_count: 65
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r87-pass1.zip
 - pending_marker_count: 0
 - bundle_entry_count: 3549
 - bundle_validation_pass: False
@@ -79,6 +68,17 @@ EVIDENCE BUNDLE VALIDATION REPORT
 Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: 0
 - test_delta_from: 65
+
+## Entry: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
+- timestamp: 2026-06-02
+- status: IN_PROGRESS
+- canonical_closeout: python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/<run_id>/evidence-declaration.yaml
+- legacy_run_on_latest: LEGACY_ONLY
+- source_audit: R89 FODS, FODT, and Netpbm APIs remain present with tests
+- acceleration_layer: IN_PROGRESS
+- commercial_product_ready: false
+- gate_11_approved: false
+- publication_authorized: false
 ```
 
 ## IMPORTANT REMINDERS

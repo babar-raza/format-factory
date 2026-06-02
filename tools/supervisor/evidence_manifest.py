@@ -106,6 +106,9 @@ def generate_from_declaration(declaration_path: Path, repo_root: Path) -> dict:
     for file_path in sorted(root_path.rglob("*")):
         if not file_path.is_file():
             continue
+        # A manifest cannot contain a stable hash of itself after rewrite.
+        if file_path.name == "evidence-manifest.yaml":
+            continue
         rel_path = str(file_path.relative_to(repo_root)).replace("\\", "/")
 
         # Use declaration metadata if available

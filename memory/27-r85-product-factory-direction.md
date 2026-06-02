@@ -70,10 +70,22 @@ Every export records:
 
 The local supervisor loop replaces manual ChatGPT upload/review/next-prompt handoff.
 After every sprint evidence bundle:
-1. `python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle>`
+1. `LEGACY_ONLY: python tools/supervisor/supervisor_loop.py run-on-latest --bundle <bundle>`
 2. Verify generated next-sprint.md keeps product-factory direction
 3. If next-sprint.md lacks product lanes → repair prompt template and rerun
 4. Only escalate to human if true external gate (Gate 8/11, push, credentials)
+
+### R90 Supersession
+
+The canonical closeout command is now:
+
+```text
+python tools/supervisor/supervisor_loop.py autonomous-cycle \
+  --declaration .local/evidences/<run_id>/evidence-declaration.yaml
+```
+
+Write `evidence-declaration.yaml` before running the cycle. Do not use the legacy ZIP command for
+new sprint closeout.
 
 ---
 

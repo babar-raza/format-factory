@@ -26,6 +26,7 @@ from .ppm_parser import (
     PpmDecodeError,
     PpmImage,
 )
+from .ppm_to_pgm import convert_ppm_to_pgm, ppm_pixels_to_pgm_pixels
 
 __version__ = "0.1.0"
 __track__ = "python-foss"
@@ -44,4 +45,6 @@ __all__ = [
     "PpmSizeError",
     "PpmDecodeError",
     "PpmImage",
+    "convert_ppm_to_pgm",
+    "ppm_pixels_to_pgm_pixels",
 ]

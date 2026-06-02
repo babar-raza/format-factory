@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-02T08:45:04.135383
+Timestamp: 2026-06-02T08:47:04.542408
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-pass2.zip
-Sprint ID: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
-Entry count: 3627
-Bundle mtime: 2026-06-02T08:45:00.558940
-Bundle size: 6095954 bytes
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-supervisor-review-package.zip
+Sprint ID: unknown
+Entry count: 8
+Bundle mtime: 2026-06-02T08:45:29.149199
+Bundle size: 11211890 bytes

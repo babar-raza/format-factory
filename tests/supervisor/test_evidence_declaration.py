@@ -438,6 +438,21 @@ def test_manifest_validate_after_generate(tmp_path):
     assert result["mismatches"] == 0
 
 
+def test_manifest_regenerate_excludes_prior_manifest_self_reference(tmp_path):
+    """Regenerating a manifest must not hash the manifest that it rewrites."""
+    decl, decl_path, evidence_dir, _ = _make_declaration(tmp_path)
+    manifest_path = evidence_dir / "evidence-manifest.yaml"
+    write_manifest(generate_from_declaration(decl_path, tmp_path), manifest_path)
+
+    regenerated = generate_from_declaration(decl_path, tmp_path)
+    assert all(art["path"] != str(manifest_path.relative_to(tmp_path)).replace("\\", "/")
+               for art in regenerated["artifacts"])
+
+    write_manifest(regenerated, manifest_path)
+    result = validate_manifest(manifest_path, tmp_path)
+    assert result["valid"], f"Validation errors: {result['errors']}"
+
+
 # ==================== Test 26: Manifest validation detects missing file ====================
 def test_manifest_validate_detects_missing_file(tmp_path):
     """Manifest referencing a deleted file should fail validation."""

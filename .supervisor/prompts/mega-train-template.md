@@ -41,6 +41,17 @@
 
 ---
 
+## Governed Product Acceleration Rules
+
+1. Load `.local/supervisor/selected-product-gaps.json` before choosing product work.
+2. Resolve each selected product gap through `.supervisor/skill-registry.yaml`.
+3. No direct ad-hoc `src/` edits are permitted. Use a governed skill or generated execution handoff.
+4. Every `src/` edit MUST be recorded in `reports/r90/product-code-change-ledger.json`.
+5. Run `python tools/supervisor/validate_product_code_ledger.py --ledger reports/r90/product-code-change-ledger.json` after product-code changes.
+6. Include at least one dogfood export lane and one package/install proof lane.
+
+---
+
 ## Train Manifest
 
 {train_manifest_table}
@@ -64,6 +75,8 @@
 - No deletion of existing test files.
 - No PENDING markers in final state files.
 - No overclaiming: if evidence is missing, declare status honestly.
+- No direct ad-hoc `src/` edits outside the governed skill registry or generated handoff.
+- No product-code change without a product-code ledger entry.
 
 ---
 

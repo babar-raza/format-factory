@@ -2,7 +2,7 @@
 
 **Document type:** Fresh Chat Orientation Guide
 **Created:** 2026-05-08 (memory-planning-methodology-and-agent-handoff sprint)
-**Last updated:** 2026-05-11 (documentation status sync)
+**Last updated:** 2026-06-02 (R90 Product Factory Acceleration Layer sync)
 **Visibility:** internal
 **Purpose:** Allow the human to open a fresh chat window and continue format-factory work without needing the full original conversation history.
 
@@ -26,6 +26,13 @@ The pipeline has three streams:
 ---
 
 ## 2. Current Strategic Direction
+
+### R90 Product Factory Acceleration
+
+R90 added `.supervisor/skill-registry.yaml`, POC gap selection, skill-or-handoff routing,
+product-code ledger validation, capability-progress detection, and declaration-driven next-sprint
+acceleration. New product source edits must use a governed skill or generated handoff and must update
+the ledger. Gate 11 and publication remain unapproved.
 
 ### XML-First Focus
 

@@ -1,6 +1,6 @@
-# FORMAT-FACTORY-R90-MEGA-TRAIN-001
-# Generated: 2026-06-02T08:46:16.784260
-# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+# FORMAT-FACTORY-R91-MEGA-TRAIN-001
+# Generated: 2026-06-02T13:38:05.507432
+# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
 # ADVISORY ONLY -- not a Format Factory authority document
 
 ---
@@ -16,18 +16,20 @@ Read these files before writing any code:
 5. `reports/supervisor/session-resume.md`
 6. `reports/supervisor/latest-review.md`
 7. `.supervisor/policies.yaml`
-8. `product-capability-matrix/poc-targets.yaml`
-9. `CLAUDE.md`
+8. `.supervisor/skill-registry.yaml`
+9. `.local/supervisor/selected-product-gaps.json`
+10. `product-capability-matrix/poc-targets.yaml`
+11. `CLAUDE.md`
 
 ---
 
 ## Sprint Identity
 
-- Sprint ID: FORMAT-FACTORY-R90-MEGA-TRAIN-001
-- Prior sprint: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+- Sprint ID: FORMAT-FACTORY-R91-MEGA-TRAIN-001
+- Prior sprint: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
 - Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Autonomous continue: False
 
 ---
 
@@ -51,6 +53,17 @@ Read these files before writing any code:
 
 ---
 
+## Governed Product Acceleration Rules
+
+1. Load `.local/supervisor/selected-product-gaps.json` before choosing product work.
+2. Resolve each selected product gap through `.supervisor/skill-registry.yaml`.
+3. No direct ad-hoc `src/` edits are permitted. Use a governed skill or generated execution handoff.
+4. Every `src/` edit MUST be recorded in `reports/r90/product-code-change-ledger.json`.
+5. Run `python tools/supervisor/validate_product_code_ledger.py --ledger reports/r90/product-code-change-ledger.json` after product-code changes.
+6. Include at least one dogfood export lane and one package/install proof lane.
+
+---
+
 ## Train Manifest
 
 | Train | Group | Title |
@@ -60,7 +73,7 @@ Read these files before writing any code:
 | C | G3 | FODT .NET Product Deepening |
 | D | G3 | Netpbm .NET Product Deepening |
 | E | G4 | ZST Python Improvement |
-| F | G4 | Netpbm Python: Write Ppm |
+| F | G4 | Netpbm Python Improvement |
 | G | G4 | SYLK Python: Write Sylk |
 | H | G5 | Dogfood: fodt -> txt |
 | I | G5 | Dogfood: fodt -> html |
@@ -74,7 +87,7 @@ Read these files before writing any code:
 
 ### Train A: Governance Preflight
 
-Read all governance files. Verify no policy violations from prior sprint. Confirm MCP status, supervisor mode, and gate states.
+Read all governance files. Verify no policy violations from prior sprint. Confirm MCP status, supervisor mode, and gate states. Load `.local/supervisor/selected-product-gaps.json` and `.supervisor/skill-registry.yaml` before selecting product work.
 
 **Acceptance Criteria:**
 - All preflight files read
@@ -97,6 +110,7 @@ Continue FODS commercial .NET product advancement. Gate 11 G11-G approval (exter
 **Files:**
 - `src/net/fods/`
 - `tests/net/fods/`
+- `reports/r90/product-code-change-ledger.json`
 
 **Verification:**
 ```bash
@@ -114,6 +128,7 @@ Continue FODT commercial .NET product advancement. Gate 11 G11-G approval (exter
 **Files:**
 - `src/net/fodt/`
 - `tests/net/fodt/`
+- `reports/r90/product-code-change-ledger.json`
 
 **Verification:**
 ```bash
@@ -131,6 +146,7 @@ Continue Netpbm commercial .NET product advancement. Gate 11 G11-G approval (ext
 **Files:**
 - `src/net/netpbm/`
 - `tests/net/netpbm/`
+- `reports/r90/product-code-change-ledger.json`
 
 **Verification:**
 ```bash
@@ -149,23 +165,24 @@ Continue ZST FOSS product. Document dependency mode; verify installed workflow f
 **Files:**
 - `src/python/zst/`
 - `tests/python/zst/`
+- `reports/r90/product-code-change-ledger.json`
 
 **Verification:**
 ```bash
 python -m pytest tests/python/zst/ -x -q
 ```
 
-### Train F: Netpbm Python: Write Ppm
+### Train F: Netpbm Python Improvement
 
-Implement write_ppm for Netpbm. R85 Train M: implement PBM→PGM dogfood export + test
+Continue Netpbm FOSS product. Refresh installed-package proof for PBM/PGM/PPM write and dogfood exports
 
 **Acceptance Criteria:**
-- write_ppm tests pass
-- python_status.write_ppm updated to PASS in poc-targets.yaml
+- Netpbm Python test count maintained or increased
 
 **Files:**
 - `src/python/netpbm/`
 - `tests/python/netpbm/`
+- `reports/r90/product-code-change-ledger.json`
 
 **Verification:**
 ```bash
@@ -183,6 +200,7 @@ Implement write_sylk for SYLK. Document read+export-only scope; add installed ex
 **Files:**
 - `src/python/sylk/`
 - `tests/python/sylk/`
+- `reports/r90/product-code-change-ledger.json`
 
 **Verification:**
 ```bash
@@ -211,7 +229,7 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 
 ### Train J: Package Build + Install Proof
 
-Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel.
+Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
 
 **Acceptance Criteria:**
 - All changed packages rebuilt
@@ -246,7 +264,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ### Train L: Evidence Declaration + Supervisor Autonomous-Cycle
 
-Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated.
+Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
 **Acceptance Criteria:**
 - evidence-declaration.yaml written with all work items
@@ -279,6 +297,8 @@ python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local
 - No deletion of existing test files.
 - No PENDING markers in final state files.
 - No overclaiming: if evidence is missing, declare status honestly.
+- No direct ad-hoc `src/` edits outside the governed skill registry or generated handoff.
+- No product-code change without a product-code ledger entry.
 
 ---
 

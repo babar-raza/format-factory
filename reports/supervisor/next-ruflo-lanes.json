@@ -1,8 +1,8 @@
 {
-  "sprint_id": "supervisor-export-20260602-084617",
-  "timestamp": "2026-06-02T08:46:17.559226",
+  "sprint_id": "supervisor-export-20260602-133806",
+  "timestamp": "2026-06-02T13:38:06.380331",
   "verdict": "ACCEPTED",
-  "source_bundle": ".local/evidences/r89-authoritative-test-baseline",
+  "source_bundle": ".local/evidences/r90/",
   "coordinator_lane": "C0",
   "lanes": [
     {
@@ -62,7 +62,9 @@
       "dependencies": [
         "C0"
       ],
-      "tasks": [],
+      "tasks": [
+        "REPAIR-001"
+      ],
       "status": "pending",
       "non_authoritative": true
     },
@@ -70,12 +72,13 @@
       "lane_id": "C3",
       "owner_role": "Implementation",
       "title": "Product implementation and taskcard execution",
-      "description": "Execute open taskcards; advance gate work per master-plan.md",
+      "description": "Product objective: execute selected work from .local/supervisor/selected-product-gaps.json through .supervisor/skill-registry.yaml; no ad-hoc src edits; update reports/r90/product-code-change-ledger.json",
       "allowed_files": [
         "src/**",
         "tests/**",
         "reports/rNN/**",
-        "taskcards/**"
+        "taskcards/**",
+        "reports/r90/product-code-change-ledger.json"
       ],
       "forbidden_files": [
         "AGENTS.md",
@@ -88,7 +91,6 @@
         "C1"
       ],
       "tasks": [
-        "TASK-001",
         "TASK-002",
         "TASK-003",
         "TASK-004",
@@ -97,8 +99,67 @@
         "TASK-007",
         "TASK-008",
         "TASK-009",
+        "TASK-014"
+      ],
+      "status": "pending",
+      "non_authoritative": true
+    },
+    {
+      "lane_id": "C4",
+      "owner_role": "Dogfood",
+      "title": "Dogfood export advancement",
+      "description": "Product objective: close or verify one selected dogfood export from .local/supervisor/selected-product-gaps.json using a Format Factory-produced library",
+      "allowed_files": [
+        "src/**",
+        "tests/**",
+        "reports/rNN/**",
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "forbidden_files": [
+        "AGENTS.md",
+        "GOVERNANCE.md",
+        "plans/master-plan.md",
+        "registry/**"
+      ],
+      "dependencies": [
+        "C0",
+        "C1",
+        "C3"
+      ],
+      "tasks": [
         "TASK-010",
-        "TASK-011"
+        "TASK-011",
+        "TASK-012",
+        "TASK-013",
+        "TASK-015"
+      ],
+      "status": "pending",
+      "non_authoritative": true
+    },
+    {
+      "lane_id": "C5",
+      "owner_role": "PackageInstall",
+      "title": "Package and installed-workflow proof",
+      "description": "Product objective: prove changed packages from physical artifacts; missing artifacts fail the lane",
+      "allowed_files": [
+        "packaging/**",
+        "tests/**",
+        "reports/rNN/**"
+      ],
+      "forbidden_files": [
+        "AGENTS.md",
+        "GOVERNANCE.md",
+        "plans/master-plan.md",
+        "registry/**"
+      ],
+      "dependencies": [
+        "C0",
+        "C1",
+        "C3",
+        "C4"
+      ],
+      "tasks": [
+        "TASK-016"
       ],
       "status": "pending",
       "non_authoritative": true
@@ -107,7 +168,7 @@
       "lane_id": "C6",
       "owner_role": "Evidence",
       "title": "Evidence bundle",
-      "description": "Build and validate evidence bundle",
+      "description": "Write the evidence declaration and run supervisor autonomous-cycle",
       "allowed_files": [
         ".local/evidence/**"
       ],
@@ -121,15 +182,17 @@
         "C0",
         "C1",
         "C2",
-        "C3"
+        "C3",
+        "C4",
+        "C5"
       ],
       "tasks": [
-        "TASK-012"
+        "TASK-017"
       ],
       "status": "pending",
       "non_authoritative": true
     }
   ],
   "overlap_check_passed": true,
-  "notes": "Generated from evidence review of sprint FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001"
+  "notes": "Generated from evidence review of sprint FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001"
 }
