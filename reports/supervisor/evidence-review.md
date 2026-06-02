@@ -1,8 +1,8 @@
 # Evidence Review — Supervisor
 Sprint ID: unknown
-Timestamp: 2026-06-02T08:47:04.692631
+Timestamp: 2026-06-02T14:25:11.945813
 Verdict: BLOCKED_MISSING_FINAL_VERDICT
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-supervisor-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r90-supervisor-review-package.zip
 
 ## Facts
 - Tests: 0 passed, 0 failed, 0 skipped
@@ -22,11 +22,11 @@ Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-super
 ============================================================
 EVIDENCE BUNDLE VALIDATION REPORT
 ============================================================
-Contract: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\evidence\contracts\r89-authoritative-test-baseline-declaration-closeout-poc-product-deepening.yaml
-Bundle: c:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-supervisor-review-package.zip
-Bundle size: 11,211,890 bytes
+Contract: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\evidence\contracts\r90-mainstream-poc-product-acceleration-governed-skills-supervisor-repair.yaml
+Bundle: c:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r90-supervisor-review-package.zip
+Bundle size: 11,319,014 bytes
 Total entries: 8
-Top-level folders: ['r89-delivery-final-artifact-authority.json', 'r89-delivery-manifest.json', 'r89-delivery-supervisor-inspection-readme.md', 'r89-delivery.sha256.txt', 'r89-delivery.zip', 'r89-pass2.sha256-proof.json', 'r89-pass2.zip', 'r89-review-package-manifest.json']
+Top-level folders: ['r90-delivery-final-artifact-authority.json', 'r90-delivery-manifest.json', 'r90-delivery-supervisor-inspection-readme.md', 'r90-delivery.sha256.txt', 'r90-delivery.zip', 'r90-pass2.sha256-proof.json', 'r90-pass2.zip', 'r90-review-package-manifest.json']
 Repo files: 0
 Metadata files: 0
 Required repo files: 19 (missing: 19)
@@ -38,10 +38,10 @@ Git clean (MISSING): No git status file found in bundle metadata (checked: git-s
 Metadata identity check (PASS)
 
 WARNINGS:
-  - Extra top-level folders (not in required list): ['r89-delivery-final-artifact-authority.json', 'r89-delivery-manifest.json', 'r89-delivery-supervisor-inspection-readme.md', 'r89-delivery.sha256.txt', 'r89-delivery.zip', 'r89-pass2.sha256-proof.json', 'r89-pass2.zip', 'r89-review-package-manifest.json']
+  - Extra top-level folders (not in required list): ['r90-delivery-final-artifact-authority.json', 'r90-delivery-manifest.json', 'r90-delivery-supervisor-inspection-readme.md', 'r90-delivery.sha256.txt', 'r90-delivery.zip', 'r90-pass2.sha256-proof.json', 'r90-pass2.zip', 'r90-review-package-manifest.json']
 
 ERRORS:
   - SIDECAR_REQUIRED: contract or verdict requires an external sidecar proof (sidecar_required: true / final_proof_policy: external_sidecar / clean-baseline verdict) but --sidecar-proof was not supplied. Run write_sidecar_proof.py and re-validate with --sidecar-proof <path>.
   - Missing required top-level folders: ['bundle-metadata', 'repo']
-  - Missing required repo files (19): ['reports/r89/00-preflight.md', 'reports/r89/r88-independent-verification.md', 'reports/r89/r88-defect-ledger.json', 'reports/r89/multi-mega-train-scoreboard.md', 'reports/r89/final-verdict.md',
+  - Missing required repo files (19): ['reports/r90/00-preflight.md', 'reports/r90/r89-independent-verification.md', 'reports/r90/r89-product-source-audit.md', 'reports/r90/multi-mega-train-scoreboard.md', 'reports/r90/final-verdict.m
 ```
