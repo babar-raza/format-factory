@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -174,6 +175,59 @@ public sealed class FodsDocument
         foreach (var sheet in sheets)
             names.Add(sheet.Name);
         return names.AsReadOnly();
+    }
+
+    /// <summary>
+    /// Return the column headers from the first row of the first sheet.
+    /// Assumes that row 0 contains header labels. Returns an empty list if the
+    /// document has no sheets or the first row is empty.
+    /// R93 Train K: column header extraction.
+    /// </summary>
+    public IReadOnlyList<string> GetColumnHeaders()
+    {
+        var sheets = Sheets;
+        if (sheets.Count == 0) return Array.Empty<string>();
+        return GetColumnHeaders(sheets[0]);
+    }
+
+    /// <summary>
+    /// Return the column headers from the first row of the named sheet.
+    /// Returns an empty list if the sheet is not found or its first row is empty.
+    /// R93 Train K: column header extraction (named sheet overload).
+    /// </summary>
+    public IReadOnlyList<string> GetColumnHeaders(string sheetName)
+    {
+        var sheet = GetSheetByName(sheetName);
+        if (sheet == null) return Array.Empty<string>();
+        return GetColumnHeaders(sheet);
+    }
+
+    /// <summary>
+    /// Return the column headers from the first row of <paramref name="sheet"/>.
+    /// Returns an empty list if the first row is empty.
+    /// R93 Train K.
+    /// </summary>
+    public static IReadOnlyList<string> GetColumnHeaders(FodsSheet sheet)
+    {
+        var tableEl = sheet.Element;
+        var nsTable = XNamespace.Get("urn:oasis:names:tc:opendocument:xmlns:table:1.0");
+        var nsText  = XNamespace.Get("urn:oasis:names:tc:opendocument:xmlns:text:1.0");
+
+        var firstRow = tableEl.Elements(nsTable + "table-row").FirstOrDefault();
+        if (firstRow == null) return Array.Empty<string>();
+
+        var headers = new List<string>();
+        foreach (var cell in firstRow.Elements(nsTable + "table-cell"))
+        {
+            var textParagraph = cell.Element(nsText + "p");
+            headers.Add(textParagraph?.Value ?? string.Empty);
+        }
+
+        // Remove trailing empty headers
+        while (headers.Count > 0 && headers[^1] == string.Empty)
+            headers.RemoveAt(headers.Count - 1);
+
+        return headers.AsReadOnly();
     }
 
     /// <summary>

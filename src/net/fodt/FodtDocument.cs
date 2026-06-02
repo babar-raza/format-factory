@@ -308,6 +308,20 @@ public sealed class FodtDocument
         return result.AsReadOnly();
     }
 
+    /// <summary>
+    /// Return the text content of all paragraphs in document order.
+    /// Each element corresponds to one paragraph's full text content.
+    /// Returns an empty list if the document has no paragraphs.
+    /// R93 Train L: bulk paragraph text extraction for diff/verification.
+    /// </summary>
+    public IReadOnlyList<string> GetParagraphTexts()
+    {
+        var result = new List<string>();
+        foreach (var para in Paragraphs)
+            result.Add(para.Text ?? string.Empty);
+        return result.AsReadOnly();
+    }
+
     /// <summary>ODF MIME type from office:document/@office:mimetype, or null if absent.</summary>
     public string? MimeType =>
         _doc.Root?.Attribute(NsOffice + "mimetype")?.Value;

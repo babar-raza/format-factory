@@ -260,6 +260,174 @@
           "sha256": "e21c2037284b57adba4a9c4e7bdda2ed137664fc626b1ed435d628de39e02ab6"
         }
       ]
+    },
+    {
+      "entry_id": "R93-GOVERNED-DOTNET-FODS-GETCOLUMNHEADERS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R93",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.inspect_object_model"
+      ],
+      "api_symbols": [
+        "GetColumnHeaders",
+        "GetColumnHeaders(string)",
+        "GetColumnHeaders(FodsSheet)"
+      ],
+      "api_behavior": "Returns IReadOnlyList<string> of column header labels from the first row of the first/named/specified sheet. Trailing empty headers are trimmed.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR93GetColumnHeadersTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "0344ba62e203e12882c02c07e69713c07ba159b5ed11cd70891c8d3275356539"
+        }
+      ]
+    },
+    {
+      "entry_id": "R93-GOVERNED-DOTNET-FODT-GETPARAGRAPHTEXTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R93",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.inspect_object_model"
+      ],
+      "api_symbols": [
+        "GetParagraphTexts"
+      ],
+      "api_behavior": "Returns IReadOnlyList<string> of all paragraph text values in document order. Null Text is coerced to empty string.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR93GetParagraphTextsTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "3b3aa2689509214781267036dc0d3ad0b734497e3cbc004fc5fbc69c55a821d1"
+        }
+      ]
+    },
+    {
+      "entry_id": "R93-GOVERNED-DOTNET-NETPBM-COPYREGION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R93",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.edit_pixels"
+      ],
+      "api_symbols": [
+        "CopyRegion"
+      ],
+      "api_behavior": "Copies a rectangular region from a same-format source image into this image. Region dimensions are clamped to available bounds. Guards: null source, format mismatch, negative coordinates, zero dimensions.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR93CopyRegionTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "40c4f4807e2d194bc5b47894c5555c4ecd76ce1b37bc204eaa5fd8306c803f65"
+        }
+      ]
+    },
+    {
+      "entry_id": "R93-GOVERNED-PYTHON-ZST-ROUNDTRIP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R93",
+      "skill": "add-python-object-model-feature",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ZST.status.compress_decompress_roundtrip"
+      ],
+      "api_symbols": [
+        "compress_bytes",
+        "decompress_bytes"
+      ],
+      "api_behavior": "No src change — new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/zst/test_r93_zst_roundtrip.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+        }
+      ]
+    },
+    {
+      "entry_id": "R93-GOVERNED-PYTHON-NETPBM-PPM-PGM-WORKFLOW-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R93",
+      "skill": "verify-dogfood-path",
+      "product": "Netpbm Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.dogfood_status.ppm_to_pgm"
+      ],
+      "api_symbols": [
+        "convert_ppm_to_pgm",
+        "ppm_pixels_to_pgm_pixels"
+      ],
+      "api_behavior": "No src change — workflow verification tests only. Verifies end-to-end PPM→PGM conversion using FF libraries exclusively, with luminance weighting validation.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_to_pgm.py",
+          "state": "present",
+          "sha256": "b07dc8c0fbc32ffcdefea7cc1d3b99b0c04b4a491392db3a90ed4da0543f86f4"
+        }
+      ]
+    },
+    {
+      "entry_id": "R93-GOVERNED-PYTHON-SYLK-WRITE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R93",
+      "skill": "add-python-object-model-feature",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.SYLK.status.write_sylk"
+      ],
+      "api_symbols": [
+        "write_sylk"
+      ],
+      "api_behavior": "Serializes SylkDocument to a SYLK file. Writes ID header, one C record per non-None cell (strings quoted, numerics plain), E footer. Raises SylkError on write failure.",
+      "changed_files": [
+        "src/python/sylk/sylk_parser.py"
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r93_sylk_write_roundtrip.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "f2705bd7124d299a948540690da8f4eb1f6a4a7a6befceefb8277846d3fa0e38"
+        }
+      ]
     }
   ]
 }

@@ -438,6 +438,65 @@ public sealed class NetpbmImage
         }
     }
 
+    /// <summary>
+    /// Copy a rectangular region from <paramref name="source"/> into this image at
+    /// (<paramref name="destTop"/>, <paramref name="destLeft"/>).
+    /// Both images must have the same format. Region dimensions are clamped to the
+    /// smaller of source and destination available bounds.
+    /// R93 Train M: region copy for image compositing.
+    /// </summary>
+    /// <param name="source">Source image to copy from.</param>
+    /// <param name="srcTop">Top row of the source region (zero-based).</param>
+    /// <param name="srcLeft">Left column of the source region (zero-based).</param>
+    /// <param name="regionHeight">Number of rows to copy.</param>
+    /// <param name="regionWidth">Number of columns to copy.</param>
+    /// <param name="destTop">Top row in this image to paste to (zero-based).</param>
+    /// <param name="destLeft">Left column in this image to paste to (zero-based).</param>
+    public void CopyRegion(NetpbmImage source, int srcTop, int srcLeft,
+        int regionHeight, int regionWidth, int destTop, int destLeft)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+        if (source.Format != Format)
+            throw new ArgumentException("Source and destination formats must match.", nameof(source));
+        if (srcTop < 0 || srcLeft < 0 || regionHeight <= 0 || regionWidth <= 0 || destTop < 0 || destLeft < 0)
+            throw new ArgumentOutOfRangeException("Region dimensions must be positive and coordinates non-negative.");
+
+        // Clamp to available bounds
+        int availSrcH = source.Height - srcTop;
+        int availSrcW = source.Width - srcLeft;
+        int availDstH = Height - destTop;
+        int availDstW = Width - destLeft;
+        int copyH = Math.Min(regionHeight, Math.Min(availSrcH, availDstH));
+        int copyW = Math.Min(regionWidth, Math.Min(availSrcW, availDstW));
+
+        if (copyH <= 0 || copyW <= 0) return; // Nothing to copy after clamping
+
+        if (Format == NetpbmFormat.PPM_P3 || Format == NetpbmFormat.PPM_P6)
+        {
+            for (int row = 0; row < copyH; row++)
+            {
+                int srcRowBase = (srcTop + row) * source.Width + srcLeft;
+                int dstRowBase = (destTop + row) * Width + destLeft;
+                for (int col = 0; col < copyW; col++)
+                {
+                    RedChannel![dstRowBase + col] = source.RedChannel![srcRowBase + col];
+                    GreenChannel![dstRowBase + col] = source.GreenChannel![srcRowBase + col];
+                    BlueChannel![dstRowBase + col] = source.BlueChannel![srcRowBase + col];
+                }
+            }
+        }
+        else
+        {
+            for (int row = 0; row < copyH; row++)
+            {
+                int srcRowBase = (srcTop + row) * source.Width + srcLeft;
+                int dstRowBase = (destTop + row) * Width + destLeft;
+                for (int col = 0; col < copyW; col++)
+                    Pixels[dstRowBase + col] = source.Pixels[srcRowBase + col];
+            }
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------

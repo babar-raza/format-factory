@@ -1,23 +1,28 @@
 {
-  "sprint_id": "FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001",
-  "timestamp": "2026-06-02T16:10:47.288040",
-  "verdict": "ACCEPTED",
-  "bundle_path": ".local/evidences/r92",
+  "sprint_id": "unknown",
+  "timestamp": "2026-06-02T19:21:04.298418",
+  "verdict": "BLOCKED_MISSING_FINAL_VERDICT",
+  "bundle_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\r93\\declaration-review-package.zip",
   "facts": {
-    "test_count": 5179,
+    "test_count": 0,
     "fail_count": 0,
-    "skip_count": 11,
-    "git_head": "be0bc9af781942d20b99f20efe0ac474c2045ec2",
+    "skip_count": 0,
+    "git_head": "unknown",
     "gate_states": {},
-    "final_verdict_text": "ACCEPTED",
+    "final_verdict_text": "",
     "pending_marker_count": 0,
-    "bundle_entry_count": 15,
-    "bundle_validation_pass": true
+    "bundle_entry_count": 13,
+    "bundle_validation_pass": false,
+    "validator_error_summary": "============================================================\nEVIDENCE BUNDLE VALIDATION REPORT\n============================================================\nContract: C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\evidence\\contracts\\r90-mainstream-poc-product-acceleration-governed-skills-supervisor-repair.yaml\nBundle: c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\r93\\declaration-review-package.zip\nBundle size: 22,254 bytes\nTotal entries: 13\nTop-l"
   },
   "contradictions": [],
-  "limitation_notes": [],
+  "limitation_notes": [
+    "No final-verdict.md found in bundle",
+    "No test log found in bundle \u2014 test counts unavailable"
+  ],
   "validator_invoked": true,
-  "bundle_validation_pass": true,
+  "validator_output": "============================================================\nEVIDENCE BUNDLE VALIDATION REPORT\n============================================================\nContract: C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\evidence\\contracts\\r90-mainstream-poc-product-acceleration-governed-skills-supervisor-repair.yaml\nBundle: c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\r93\\declaration-review-package.zip\nBundle size: 22,254 bytes\nTotal entries: 13\nTop-level folders: ['evidence', 'package-manifest.json', 'r91-review', 'state', 'supervisor']\nRepo files: 0\nMetadata files: 0\nRequired repo files: 19 (missing: 19)\nRequired metadata files: 0 (missing: 0)\nMin metadata required: 35\nRUN_CONTRACT_METADATA_FLOOR (FAIL): 0/30\nForbidden hits: 0\nGit clean (MISSING): No git status file found in bundle metadata (checked: git-status-final.txt or git-status.txt)\nMetadata identity check (PASS)\n\nWARNINGS:\n  - Extra top-level folders (not in required list): ['evidence', 'package-manifest.json', 'r91-review', 'state', 'supervisor']\n\nERRORS:\n  - SIDECAR_REQUIRED: contract or verdict requires an external sidecar proof (sidecar_required: true / final_proof_policy: external_sidecar / clean-baseline verdict) but --sidecar-proof was not supplied. Run write_sidecar_proof.py and re-validate with --sidecar-proof <path>.\n  - Missing required top-level folders: ['bundle-metadata', 'repo']\n  - Missing required repo files (19): ['reports/r90/00-preflight.md', 'reports/r90/r89-independent-verification.md', 'reports/r90/r89-product-source-audit.md', 'reports/r90/multi-mega-train-scoreboard.md', 'reports/r90/final-verdict.md', 'reports/r90/final-adversarial-independent-verification.md', 'reports/r90/product-factory-acceleration-gap-analysis.md', 'reports/r90/governed-dogfood-export.md', 'reports/r90/product-code-change-ledger.json', 'reports/r90/product-code-change-ledger.md']\n  - Metadata count 0 < minimum 35\n  - RUN_CONTRACT_METADATA_FLOOR: FAIL \u2014 metadata count 0 < absolute floor 30. Ensure sprint produces sufficient metadata files. Only emergency_blocker_bundle: true may bypass this floor.\n  - Git cleanliness check FAILED: No git status file found in bundle metadata (checked: git-status-final.txt or git-status.txt)\n\nBUNDLE_VALIDATION: FAIL\n",
+  "bundle_validation_pass": false,
   "exit_code": 0,
   "status": "complete"
 }

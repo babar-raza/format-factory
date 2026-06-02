@@ -1,12 +1,11 @@
-- item_id: WI-A
-  item_title: R91 Work Item Grades
+- item_id: R93-A-PREFLIGHT
+  item_title: Preflight + R92 state verification
   declared_status: completed
   supervisor_grade: ACCEPTED
   evidence_found: true
   evidence_paths:
-  - reports/r92/r91-work-item-grades.md
-  - reports/r92/r91-work-item-grades.json
-  - reports/r92/r91-declaration-review.md
+  - reports/r93/00-preflight.md
+  - reports/r93/r92-declaration-review-package-verification.md
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -16,13 +15,16 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-- item_id: WI-B
-  item_title: Declaration Evidence Materializer
+- item_id: R93-B-CONTEXT-PACK
+  item_title: Build context-pack tool (build_context_pack.py)
   declared_status: completed
   supervisor_grade: ACCEPTED
   evidence_found: true
   evidence_paths:
-  - tools/supervisor/materialize_declared_evidence.py
+  - tools/supervisor/build_context_pack.py
+  - .supervisor/context-pack.yaml
+  - reports/supervisor/context-pack.md
+  - reports/r93/context-pack-implementation.md
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -32,14 +34,31 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-- item_id: WI-C
-  item_title: Declaration Review Package Builder
+- item_id: R93-C-ENRICH-REVIEW
+  item_title: Fix generate_supervisor_packet.py to enrich stale review from context-pack
   declared_status: completed
   supervisor_grade: ACCEPTED
   evidence_found: true
   evidence_paths:
-  - tools/supervisor/build_declaration_review_package.py
-  - reports/r92/declaration-review-package-builder.md
+  - tools/supervisor/generate_supervisor_packet.py
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - 'Acceptance criteria verified: unknown'
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-D-DEEP-GRADING
+  item_title: Deep work-item grading (inspect test file content + acceptance criteria)
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - tools/supervisor/inspect_declared_evidence.py
+  - tools/supervisor/grade_declared_work.py
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -49,17 +68,14 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-- item_id: WI-D
-  item_title: Declaration Schema and Supervisor Flow Documentation
+- item_id: R93-E-R92-DEFECT-LEDGER
+  item_title: R92 defect ledger (D92-01..08)
   declared_status: completed
   supervisor_grade: ACCEPTED
   evidence_found: true
   evidence_paths:
-  - reports/r92/declaration-schema-hardening.md
-  - reports/r92/work-item-grading-enforcement.md
-  - reports/r92/rework-plus-new-work-generator.md
-  - reports/r92/continuation-signal-partial-verification.md
-  - reports/r92/supervisor-context-pack.md
+  - reports/r93/r92-defect-ledger.md
+  - reports/r93/r92-defect-ledger.json
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -69,13 +85,14 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-- item_id: WI-E
-  item_title: Skill Usage Enforcement
+- item_id: R93-F-SUPERVISOR-LOOP-D92-01
+  item_title: "Fix autonomous-cycle loop (D92-01 prevention \u2014 context-pack rebuild)"
   declared_status: completed
   supervisor_grade: ACCEPTED
   evidence_found: true
   evidence_paths:
-  - reports/r92/skill-usage-enforcement.md
+  - tools/supervisor/supervisor_loop.py
+  - reports/r93/supervisor-loop-correctness.md
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -85,16 +102,36 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-- item_id: WI-J
-  item_title: Governed Skill Expansion (3 New Skills)
+- item_id: R93-G-ACCELERATION-LAYER
+  item_title: Acceleration layer adoption check
   declared_status: completed
   supervisor_grade: ACCEPTED
   evidence_found: true
   evidence_paths:
-  - .claude/commands/add-dotnet-object-model-feature.md
-  - .claude/commands/add-roundtrip-test.md
-  - .claude/commands/add-installed-package-example.md
-  - reports/r92/governed-skill-expansion.md
+  - reports/r93/acceleration-layer-adoption.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - 'Acceptance criteria verified: PASS'
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-H-SKILL-EXPANSION
+  item_title: Governed skill expansion (6 new skills)
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - .claude/commands/add-python-object-model-feature.md
+  - .claude/commands/add-same-format-writer-feature.md
+  - .claude/commands/promote-gap-to-taskcard.md
+  - .claude/commands/generate-execution-handoff.md
+  - .claude/commands/verify-dogfood-path.md
+  - .claude/commands/package-install-proof.md
+  - reports/r93/skill-expansion.md
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
@@ -104,161 +141,184 @@
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-- item_id: WI-K
-  item_title: Skill-Driven Execution Proof (FODS GetSheetNames)
+- item_id: R93-I-LEDGER-ENFORCEMENT
+  item_title: Ledger enforcement verification
   declared_status: completed
   supervisor_grade: ACCEPTED
   evidence_found: true
   evidence_paths:
-  - reports/r92/skill-driven-execution-proof.md
-  tests_supporting:
-  - tests/net/fods/FodsR92GetSheetNamesTests.cs
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Tests declared
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: WI-L
-  item_title: FODS .NET GetSheetNames API + 8 tests
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - src/net/fods/FodsDocument.cs
-  - tests/net/fods/FodsR92GetSheetNamesTests.cs
-  - reports/r92/fods-dotnet-governed-product-work.md
-  tests_supporting:
-  - tests/net/fods/FodsR92GetSheetNamesTests.cs
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Tests declared
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: WI-M
-  item_title: FODT .NET GetHeadingParagraphs API + 8 tests
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - src/net/fodt/FodtDocument.cs
-  - tests/net/fodt/FodtR92GetHeadingParagraphsTests.cs
-  - reports/r92/fodt-dotnet-governed-product-work.md
-  tests_supporting:
-  - tests/net/fodt/FodtR92GetHeadingParagraphsTests.cs
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Tests declared
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: WI-N
-  item_title: Netpbm .NET FillRegion API + 8 tests
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - src/net/netpbm/Model/NetpbmImage.cs
-  - tests/net/netpbm/NetpbmR92FillRegionTests.cs
-  - reports/r92/netpbm-dotnet-governed-product-work.md
-  tests_supporting:
-  - tests/net/netpbm/NetpbmR92FillRegionTests.cs
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Tests declared
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: WI-O
-  item_title: FOSS Reduced Status
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - reports/r92/foss-reduced-status.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: WI-P
-  item_title: Dogfood Export Status
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - reports/r92/dogfood-export-status.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: WI-Q
-  item_title: Package/Install Proof
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - reports/r92/package-install-proof.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: WI-R
-  item_title: State Sync (poc-targets.yaml, project-memory.md)
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - product-capability-matrix/poc-targets.yaml
-  - .supervisor/project-memory.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: WI-S
-  item_title: Product Code Ledger Valid
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
+  - reports/r93/ledger-enforcement.md
   - reports/r90/product-code-change-ledger.json
   tests_supporting: []
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
+  - 'Acceptance criteria verified: PASS'
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-J-GAP-SELECTION
+  item_title: POC gap selection for Trains K-P
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - reports/r93/poc-gap-selection.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-K-FODS-GETCOLUMNHEADERS
+  item_title: FODS .NET GetColumnHeaders API (3 overloads)
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - src/net/fods/FodsDocument.cs
+  - tests/net/fods/FodsR93GetColumnHeadersTests.cs
+  tests_supporting:
+  - tests/net/fods/FodsR93GetColumnHeadersTests.cs
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (1 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-L-FODT-GETPARAGRAPHTEXTS
+  item_title: FODT .NET GetParagraphTexts API
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - src/net/fodt/FodtDocument.cs
+  - tests/net/fodt/FodtR93GetParagraphTextsTests.cs
+  tests_supporting:
+  - tests/net/fodt/FodtR93GetParagraphTextsTests.cs
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (1 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-M-NETPBM-COPYREGION
+  item_title: Netpbm .NET CopyRegion API
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - src/net/netpbm/Model/NetpbmImage.cs
+  - tests/net/netpbm/NetpbmR93CopyRegionTests.cs
+  tests_supporting:
+  - tests/net/netpbm/NetpbmR93CopyRegionTests.cs
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (1 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-N-ZST-ROUNDTRIP
+  item_title: ZST Python compress/decompress round-trip tests
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - tests/python/zst/test_r93_zst_roundtrip.py
+  tests_supporting:
+  - tests/python/zst/test_r93_zst_roundtrip.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (1 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-O-PPM-PGM-WORKFLOW
+  item_title: "Python Netpbm PPM\u2192PGM installed workflow verification"
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py
+  tests_supporting:
+  - tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (1 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-P-SYLK-WRITE
+  item_title: SYLK Python write_sylk capability + round-trip tests
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - src/python/sylk/sylk_parser.py
+  - tests/python/sylk/test_r93_sylk_write_roundtrip.py
+  tests_supporting:
+  - tests/python/sylk/test_r93_sylk_write_roundtrip.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (1 files)
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-Q-MCP-STATUS
+  item_title: MCP status classification (5-state enum)
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - tools/supervisor/check_mcp_status.py
+  - reports/supervisor/mcp-status.json
+  - reports/supervisor/mcp-status.md
+  - reports/r93/mcp-setup-verification.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: R93-R-STATE-SYNC
+  item_title: State/registry/poc-targets/memory sync
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - product-capability-matrix/poc-targets.yaml
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - 'Acceptance criteria verified: PASS'
   acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false

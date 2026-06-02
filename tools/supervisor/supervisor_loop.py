@@ -361,12 +361,36 @@ def cmd_autonomous_cycle(args) -> int:
     After the cycle completes, calls generate_supervisor_packet.py to produce
     session-resume.md, approval-gates.md, and next-sprint.md from the bridged
     evidence-review.json + contradictions.json.
+
+    D92-01 fix: This command is DECLARATION-MODE ONLY. It does NOT call
+    validate_evidence_for_supervisor.py (legacy bundle-validator). The legacy
+    bundle-validator validated declaration-review-package.zip as a bundle and
+    overwrote the correctly-bridged evidence-review.json. This is prevented here
+    by explicitly calling autonomous_cycle.py then generate_supervisor_packet.py —
+    never cmd_review() which calls the legacy bundle-validator.
+
+    Also: rebuild context-pack before generating the packet, so enrichment in
+    generate_supervisor_packet.py has fresh data.
     """
     print("=== SUPERVISOR: AUTONOMOUS-CYCLE ===")
     extra = ["--declaration", str(args.declaration), "--repo-root", str(REPO_ROOT)]
     rc = run_script("autonomous_cycle.py", extra, REPO_ROOT).returncode
 
+    # D92-01 fix: Rebuild context-pack BEFORE generating packet so enrichment is current
+    print("\n=== SUPERVISOR: REBUILDING CONTEXT-PACK ===")
+    cp_script = SCRIPT_DIR / "build_context_pack.py"
+    if cp_script.exists():
+        cp_extra = ["--repo-root", str(REPO_ROOT), "--output-dir", str(args.output_dir)]
+        cp_rc = run_script("build_context_pack.py", cp_extra, REPO_ROOT).returncode
+        if cp_rc != 0:
+            print(f"  WARNING: Context-pack rebuild returned {cp_rc}", file=sys.stderr)
+    else:
+        print("  INFO: build_context_pack.py not found — skipping context-pack rebuild")
+
     # Bridge: generate session-resume/approval-gates/next-sprint from bridged JSON
+    # NOTE: autonomous-cycle writes evidence-review.json via bridge_to_legacy_format
+    # inside autonomous_cycle.py. Do NOT call cmd_review() here — it would run the
+    # legacy bundle-validator and overwrite evidence-review.json. (D92-01 fix)
     if rc in (0, 3):
         print("\n=== SUPERVISOR: GENERATING SESSION-RESUME + APPROVAL-GATES + NEXT-SPRINT ===")
         next_rc = cmd_next(args)

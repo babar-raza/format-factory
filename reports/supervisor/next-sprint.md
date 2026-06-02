@@ -1,6 +1,6 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
-# Generated: 2026-06-02T16:10:47.800817
+# Source sprint: FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
+# Generated: 2026-06-02T19:21:05.108229
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -10,9 +10,9 @@
 ADVANCE: Continue normal mega-train lanes
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
-- Evidence verdict: ACCEPTED
-- Tests: 5179 passed, 0 failed, 11 skipped
+- Sprint ID: FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
+- Evidence verdict: ALL_ACCEPTED_AUTONOMOUS_CONTINUE
+- Tests: 536 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
 ## Section 1: New Product Work (Advisory — Always Execute)

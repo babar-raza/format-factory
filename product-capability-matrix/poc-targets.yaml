@@ -7,7 +7,7 @@
 
 poc_matrix_version: "1.0"
 last_updated: "2026-06-02"
-sprint: "R92"
+sprint: "R93"
 
 # ============================================================
 # COMMERCIAL .NET PRODUCTS (3 targets)
@@ -41,7 +41,8 @@ commercial_net_products:
       export_json: PASS
       round_trip_edit: PASS
       enumerate_sheets: PASS
-      dotnet_tests: 207
+      get_column_headers: PASS
+      dotnet_tests: 215
 
     python_foss_status:
       parse: PASS
@@ -97,7 +98,8 @@ commercial_net_products:
       char_count: PASS
       save_to_file: PASS
       enumerate_headings: PASS
-      dotnet_tests: 193
+      get_paragraph_texts: PASS
+      dotnet_tests: 201
 
     python_foss_status:
       parse: PASS
@@ -161,7 +163,8 @@ commercial_net_products:
       binary_write_p4p5p6: PASS
       set_pixel_color: PASS
       fill_region: PASS
-      dotnet_tests: 112
+      copy_region: PASS
+      dotnet_tests: 120
 
     python_foss_status:
       parse_pbm: PASS
@@ -280,7 +283,7 @@ foss_reduced_products:
     python_status:
       parse_sylk: PASS
       sylk_to_csv: PASS
-      write_sylk: NOT_IMPLEMENTED
+      write_sylk: PASS
       installed_workflow: PARTIAL
 
     dogfood_status:

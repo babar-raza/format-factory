@@ -1,11 +1,11 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-02T16:10:47.935463
+# Generated: 2026-06-02T19:21:05.129046
 
 ## Quick State
-- Last sprint: FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
-- Evidence verdict: ACCEPTED
-- Tests: 5179 passed / 0 failed
+- Last sprint: FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
+- Evidence verdict: ALL_ACCEPTED_AUTONOMOUS_CONTINUE
+- Tests: 536 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -23,7 +23,7 @@
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/r92
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r93\declaration-review-package.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 

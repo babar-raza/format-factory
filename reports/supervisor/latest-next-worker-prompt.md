@@ -1,6 +1,6 @@
-# FORMAT-FACTORY-R93-MEGA-TRAIN-001
-# Generated: 2026-06-02T16:10:47.524850
-# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
+# FORMAT-FACTORY-R94-MEGA-TRAIN-001
+# Generated: 2026-06-02T19:19:16.677683
+# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
 # ADVISORY ONLY -- not a Format Factory authority document
 
 ---
@@ -25,8 +25,8 @@ Read these files before writing any code:
 
 ## Sprint Identity
 
-- Sprint ID: FORMAT-FACTORY-R93-MEGA-TRAIN-001
-- Prior sprint: FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
+- Sprint ID: FORMAT-FACTORY-R94-MEGA-TRAIN-001
+- Prior sprint: FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
 - Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
@@ -74,7 +74,7 @@ Read these files before writing any code:
 | D | G3 | Netpbm .NET Product Deepening |
 | E | G4 | ZST Python Improvement |
 | F | G4 | Netpbm Python Improvement |
-| G | G4 | SYLK Python: Write Sylk |
+| G | G4 | SYLK Python: Installed Workflow |
 | H | G5 | Dogfood: fodt -> txt |
 | I | G5 | Dogfood: fodt -> html |
 | J | G6 | Package Build + Install Proof |
@@ -189,13 +189,13 @@ Continue Netpbm FOSS product. Refresh installed-package proof for PBM/PGM/PPM wr
 python -m pytest tests/python/netpbm/ -x -q
 ```
 
-### Train G: SYLK Python: Write Sylk
+### Train G: SYLK Python: Installed Workflow
 
-Implement write_sylk for SYLK. Document read+export-only scope; add installed example; update docs
+Implement installed_workflow for SYLK. Document read+export-only scope; add installed example; update docs
 
 **Acceptance Criteria:**
-- write_sylk tests pass
-- python_status.write_sylk updated to PASS in poc-targets.yaml
+- installed_workflow tests pass
+- python_status.installed_workflow updated to PASS in poc-targets.yaml
 
 **Files:**
 - `src/python/sylk/`

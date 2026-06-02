@@ -1,0 +1,81 @@
+{
+  "sprint": "R93",
+  "generated_by": "r93-worker",
+  "train": "A",
+  "source_sprint": "R92",
+  "defects": [
+    {
+      "id": "D92-01",
+      "severity": "HIGH",
+      "category": "supervisor_pipeline",
+      "description": "evidence-review.json overwritten by legacy bundle-validator after successful autonomous-cycle",
+      "affected_file": "reports/supervisor/evidence-review.json",
+      "resolution": "Train F — add declaration-mode check to supervisor_loop.py autonomous-cycle"
+    },
+    {
+      "id": "D92-02",
+      "severity": "HIGH",
+      "category": "supervisor_packet_generator",
+      "description": "next-sprint.md generated with sprint_id: unknown and tests: 0/0",
+      "affected_file": "reports/supervisor/next-sprint.md",
+      "resolution": "Train C — fix generate_supervisor_packet.py to use declaration inputs"
+    },
+    {
+      "id": "D92-03",
+      "severity": "MEDIUM",
+      "category": "grading",
+      "description": "Work-item grading only checks path existence, not content or test passage",
+      "affected_file": "tools/supervisor/grade_declared_work.py",
+      "resolution": "Train D — enhance grading logic"
+    },
+    {
+      "id": "D92-04",
+      "severity": "MEDIUM",
+      "category": "infrastructure_gap",
+      "description": "No context-pack in review package (.supervisor/context-pack.yaml missing)",
+      "affected_file": ".supervisor/context-pack.yaml",
+      "resolution": "Train B — create build_context_pack.py and context-pack.yaml"
+    },
+    {
+      "id": "D92-05",
+      "severity": "LOW",
+      "category": "supervisor_packet",
+      "description": "MCP status unverified (file presence only)",
+      "affected_file": "reports/supervisor/approval-gates.md",
+      "resolution": "Train E — create check_mcp_status.py"
+    },
+    {
+      "id": "D92-06",
+      "severity": "LOW",
+      "category": "ledger_metadata",
+      "description": "product-code-change-ledger.json sprint field says R90",
+      "affected_file": "reports/r90/product-code-change-ledger.json",
+      "resolution": "WONTFIX — ledger path is authoritative, sprint is creation sprint"
+    },
+    {
+      "id": "D92-07",
+      "severity": "LOW",
+      "category": "declaration_accuracy",
+      "description": "git_status_final says uncommitted but work was committed at e283822",
+      "affected_file": ".local/evidences/r92/evidence-declaration.yaml",
+      "resolution": "EXPECTED_BEHAVIOR — declarations written pre-commit"
+    },
+    {
+      "id": "D92-08",
+      "severity": "MEDIUM",
+      "category": "governance",
+      "description": "Acceleration layer not enforced automatically — no git diff scan for ungoverned src changes",
+      "affected_file": "tools/supervisor/validate_product_code_ledger.py",
+      "resolution": "Train I — add git diff scanning to ledger validator"
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "high": 2,
+    "medium": 3,
+    "low": 3,
+    "resolved_in_r93": 6,
+    "wontfix": 1,
+    "expected_behavior": 1
+  }
+}

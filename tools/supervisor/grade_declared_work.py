@@ -113,10 +113,36 @@ def grade_item(item_inspection: dict, test_results: dict) -> dict:
             grade["can_autonomously_repair"] = True
             grade["next_prompt_instruction"] = f"REWORK: Fix failing tests for {item_id}."
         else:
-            grade["supervisor_grade"] = "ACCEPTED"
-            grade["acceptance_criteria_met"] = ["Evidence found", "No missing paths"]
-            if has_tests:
-                grade["acceptance_criteria_met"].append("Tests declared")
+            # D92-03 fix: Deep verification — check evidence content, not just existence
+            criteria_met = ["Evidence found", "No missing paths"]
+            criteria_failed = []
+
+            # Check test files contain actual test methods
+            tests_with_content = item_inspection.get("tests_with_content", [])
+            tests_empty_or_stub = item_inspection.get("tests_empty_or_stub", [])
+            if tests_empty_or_stub:
+                criteria_failed.append(f"Test files appear empty/stub: {tests_empty_or_stub}")
+            elif has_tests and tests_with_content:
+                criteria_met.append(f"Test content verified ({len(tests_with_content)} files)")
+            elif has_tests:
+                criteria_met.append("Tests declared (content check not run)")
+
+            # Check acceptance criteria patterns in evidence
+            criteria_verified = item_inspection.get("acceptance_criteria_verified", False)
+            criteria_pattern = item_inspection.get("acceptance_criteria_pattern", "")
+            if criteria_pattern and criteria_verified:
+                criteria_met.append(f"Acceptance criteria verified: {criteria_pattern[:60]}")
+            elif criteria_pattern and not criteria_verified:
+                criteria_failed.append(f"Acceptance criteria pattern not found: {criteria_pattern[:60]}")
+
+            if criteria_failed:
+                grade["supervisor_grade"] = "ACCEPTED_WITH_WARNINGS"
+                grade["acceptance_criteria_met"] = criteria_met
+                grade["acceptance_criteria_failed"] = criteria_failed
+                grade["next_prompt_instruction"] = f"Item accepted with warnings: {'; '.join(criteria_failed)}"
+            else:
+                grade["supervisor_grade"] = "ACCEPTED"
+                grade["acceptance_criteria_met"] = criteria_met
 
     return grade
 

@@ -247,6 +247,45 @@ def get_capabilities() -> dict[str, Any]:
 # R84 Train N: SYLK CSV export
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# R93 Train P: SYLK write capability
+# ---------------------------------------------------------------------------
+
+def write_sylk(doc: SylkDocument, file_path: str | Path) -> None:
+    """Write a SylkDocument to a SYLK file.
+
+    Writes an ID header, one C record per non-empty cell, and an E footer.
+    String values are quoted; numeric values are written as-is.
+    Rows and columns are 1-based (as required by the SYLK spec).
+
+    Args:
+        doc: A SylkDocument to serialize.
+        file_path: Destination file path.
+
+    Raises:
+        SylkError: If file_path is invalid or write fails.
+
+    Added in R93 Train P.
+    """
+    path = Path(file_path)
+    lines: list[str] = ["ID;P"]
+    for cell in doc.cells:
+        if cell.value is None:
+            continue
+        x = cell.col
+        y = cell.row
+        if cell.value_type == "string":
+            k = f'"{cell.value}"'
+        else:
+            k = str(cell.value)
+        lines.append(f"C;X{x};Y{y};K{k}")
+    lines.append("E")
+    try:
+        path.write_text("\r\n".join(lines) + "\r\n", encoding="ascii")
+    except Exception as exc:
+        raise SylkError(f"Failed to write SYLK file: {exc}") from exc
+
+
 def sylk_to_csv(file_path: str | Path) -> str:
     """Export a SYLK file as CSV text (RFC 4180 CRLF line endings).
 
