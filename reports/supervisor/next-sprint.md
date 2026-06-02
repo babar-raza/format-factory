@@ -1,25 +1,25 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-R90-AUTONOMOUS-CONTINUATION-PPM-TESTS-EXAMPLES-POC-MATRIX-UPDATE-001
-# Generated: 2026-06-01T22:20:31.907062
+# Source sprint: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+# Generated: 2026-06-02T08:43:07.166060
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-ADVANCE: Continue normal mega-train lanes
+REPAIR: Address CRITICAL contradictions before advancing
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-R90-AUTONOMOUS-CONTINUATION-PPM-TESTS-EXAMPLES-POC-MATRIX-UPDATE-001
-- Evidence verdict: ACCEPTED
-- Tests: 3000 passed, 0 failed, 11 skipped
-- Autonomous continue: True
+- Sprint ID: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+- Evidence verdict: REJECTED_BUNDLE_VALIDATION_FAIL
+- Tests: 65 passed, 0 failed, 0 skipped
+- Autonomous continue: False
 
 ## Contradictions Requiring Repair
-None
+- [CRITICAL] BUNDLE_VALIDATION: FAIL — evidence bundle did not pass validation
 
 ## Synthesized Task List (Advisory)
-- [approval-blocked] TASK-001: Commit uncommitted product code and build sprint evidence bundle
+- [pending] REPAIR-001: Repair: BUNDLE_VALIDATION: FAIL — evidence bundle did not pass validation
 - [approval-blocked] TASK-002: Advance FODS Gate 11 commercial readiness
 - [approval-blocked] TASK-003: Advance FODT Gate 11 commercial readiness
 - [blocked] TASK-004: Open ZST Gate 11
@@ -29,8 +29,8 @@ None
 - [pending] TASK-008: Product deepening: GAP-CAP-001 — PPM load/parse (P3/P6)
 - [pending] TASK-009: Product deepening: GAP-CAP-003 — FODS→CSV export
 - [pending] TASK-010: Product deepening: GAP-DOGFOOD-DIF-CSV-001 — GAP-DOGFOOD-DIF-CSV-001
-- [pending] TASK-011: Product deepening: GAP-DOC-001 — No standalone .NET Netpbm example (examples/net/netpbm/ dire
-- [pending] TASK-012: Product deepening: GAP-DOC-002 — No FODS→CSV example (capability not yet implemented)
+- [pending] TASK-011: Product deepening: GAP-DOC-001 — .NET Netpbm example
+- [pending] TASK-012: Product deepening: GAP-DOC-002 — FODS→CSV example
 - [pending] TASK-013: Build and validate next sprint evidence bundle
 
 ## Non-Negotiable Rules (always apply)

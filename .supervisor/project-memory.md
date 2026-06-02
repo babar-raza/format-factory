@@ -99,7 +99,7 @@ Entries older than 3 sprints are marked [STALE]. None stale at initialization.
 - pending_marker_count: 0
 - bundle_entry_count: 3430
 
-## Entry: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
+## Entry: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001 [STALE]
 - timestamp: 2026-05-31
 - sprint_type: DIRECTION_CORRECTION + PRODUCT_FACTORY_POC
 - direction_corrected: true
@@ -161,5 +161,22 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - pending_marker_count: 0
 - bundle_entry_count: 3574
 - bundle_validation_pass: True
+- test_delta: 0
+- test_delta_from: 65
+
+## Entry: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+- timestamp: 2026-06-02T08:43:07.409018
+- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
+- test_count: 65
+- fail_count: 0
+- git_head: unknown
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-pass2.zip
+- pending_marker_count: 0
+- bundle_entry_count: 3627
+- bundle_validation_pass: False
+- validator_error_summary: ============================================================
+EVIDENCE BUNDLE VALIDATION REPORT
+============================================================
+Contract: C:\Users\prora\OneDrive\Documents\
 - test_delta: 0
 - test_delta_from: 65

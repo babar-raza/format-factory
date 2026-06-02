@@ -1,45 +1,46 @@
 # Evidence Review — Supervisor
-Sprint ID: unknown
-Timestamp: 2026-06-01T20:51:05.801957
-Verdict: BLOCKED_MISSING_FINAL_VERDICT
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r88-supervisor-review-package.zip
+Sprint ID: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+Timestamp: 2026-06-02T08:43:05.684140
+Verdict: REJECTED_BUNDLE_VALIDATION_FAIL
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-pass2.zip
 
 ## Facts
-- Tests: 0 passed, 0 failed, 0 skipped
+- Tests: 65 passed, 0 failed, 0 skipped
 - Git HEAD: unknown
-- Bundle entries: 18
+- Bundle entries: 3627
 - PENDING markers: 0
 
 ## Gate States
 (none extracted)
 
 ## Limitation Notes
-- No final-verdict.md found in bundle
-- No test log found in bundle — test counts unavailable
+None
 
 ## Existing Validator Output
 ```
 ============================================================
 EVIDENCE BUNDLE VALIDATION REPORT
 ============================================================
-Contract: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\evidence\contracts\r88-declaration-driven-autonomous-closeout-poc-product-deepening.yaml
-Bundle: c:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r88-supervisor-review-package.zip
-Bundle size: 11,141,318 bytes
-Total entries: 18
-Top-level folders: ['dogfood-export', 'examples-docs-readiness', 'gate-readiness', 'product-capability-matrix', 'publication-readiness', 'r88-delivery-final-artifact-authority.json', 'r88-delivery-manifest.json', 'r88-delivery-supervisor-inspection-readme.md', 'r88-delivery.sha256.txt', 'r88-delivery.zip', 'r88-pass2.sha256-proof.json', 'r88-pass2.zip', 'r88-review-package-manifest.json', 'raw-dotnet-logs', 'raw-negative-proof-logs', 'raw-package-install-logs', 'raw-test-logs']
-Repo files: 0
-Metadata files: 0
-Required repo files: 19 (missing: 19)
+Contract: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\evidence\contracts\r89-authoritative-test-baseline-declaration-closeout-poc-product-deepening.yaml
+Bundle: c:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-pass2.zip
+Bundle size: 6,095,216 bytes
+Total entries: 3627
+Top-level folders: ['bundle-metadata', 'repo']
+Repo files: 3591
+Metadata files: 36
+Required repo files: 19 (missing: 0)
 Required metadata files: 0 (missing: 0)
 Min metadata required: 35
-RUN_CONTRACT_METADATA_FLOOR (FAIL): 0/30
+RUN_CONTRACT_METADATA_FLOOR (PASS): 36/30
 Forbidden hits: 0
-Git clean (MISSING): No git status file found in bundle metadata (checked: git-status-final.txt or git-status.txt)
-Metadata identity check (PASS)
-
-WARNINGS:
-  - Extra top-level folders (not in required list): ['dogfood-export', 'examples-docs-readiness', 'gate-readiness', 'product-capability-matrix', 'publication-readiness', 'r88-delivery-final-artifact-authority.json', 'r88-delivery-manifest.json', 'r88-delivery-supervisor-inspection-readme.md', 'r88-delivery.sha256.txt', 'r88-delivery.zip', 'r88-pass2.sha256-proof.json', 'r88-pass2.zip', 'r88-review-package-manifest.json', 'raw-dotnet-logs', 'raw-negative-proof-logs', 'raw-package-install-logs', 'raw-test-logs']
+Git clean (PASS): git-status-final.txt shows clean working tree
+Metadata identity check (FAIL)
 
 ERRORS:
-  - SIDECAR_REQUIRED: contract or verdict requires an external sidecar proof (sidecar_required: true / final_proof_policy: external_sidecar / clean-baseline verdict) but 
+  - METADATA_IDENTITY: mixed primary sprint/contract identities found: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001, r89-authoritative-test-baseline-declaration-closeout-poc-product-deepening
+
+BUNDLE_VALIDATION: FAIL
+Sidecar proof check (PASS): SHA/size/entries match — e4c7bec764a094ad...
+SIDECAR_PROOF_VALIDATION: PASS
+
 ```
