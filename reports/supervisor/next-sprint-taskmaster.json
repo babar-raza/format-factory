@@ -1,6 +1,6 @@
 {
-  "sprint_id": "supervisor-export-20260602-133806",
-  "timestamp": "2026-06-02T13:38:06.129127",
+  "sprint_id": "supervisor-export-20260602-140246",
+  "timestamp": "2026-06-02T14:02:46.520578",
   "verdict": "ACCEPTED",
   "source_bundle": ".local/evidences/r90/",
   "tasks": [
@@ -30,19 +30,6 @@
     },
     {
       "task_id": "TASK-003",
-      "title": "Commit uncommitted product code and build sprint evidence bundle",
-      "description": "Modified tracked files detected: 3 file(s) (e.g. src/python/ppm/__init__.py). Commit per governance rule (explicit user auth required), build evidence bundle.",
-      "status": "approval-blocked",
-      "ff_doc_ref": "plans/master-plan.md",
-      "supervisor_task_ref": "TC-R79-CLOSURE-001",
-      "acceptance_evidence": "git status shows no modified tracked product files; BUNDLE_VALIDATION: PASS",
-      "validation_command": ".local/venv/Scripts/python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
-      "blocker_type": "human_approval",
-      "non_authoritative": true,
-      "lane": "C3"
-    },
-    {
-      "task_id": "TASK-004",
       "title": "Advance FODS Gate 11 commercial readiness",
       "description": "fods gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
       "status": "approval-blocked",
@@ -55,7 +42,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-005",
+      "task_id": "TASK-004",
       "title": "Advance FODT Gate 11 commercial readiness",
       "description": "fodt gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
       "status": "approval-blocked",
@@ -68,7 +55,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-006",
+      "task_id": "TASK-005",
       "title": "Open ZST Gate 11",
       "description": "zst gate_11 status: not_started. See plans/master-plan.md and registry for requirements.",
       "status": "blocked",
@@ -81,7 +68,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-007",
+      "task_id": "TASK-006",
       "title": "Work on open taskcard: ABW-GATE4-001-parser-prototype",
       "description": "ABW-GATE4-001 \u2014 ABW Gate 4 Parser Prototype",
       "status": "pending",
@@ -93,7 +80,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-008",
+      "task_id": "TASK-007",
       "title": "Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS",
       "description": "Taskcard: AI-USAGE-LEDGER-AND-METRICS",
       "status": "pending",
@@ -105,7 +92,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-009",
+      "task_id": "TASK-008",
       "title": "Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT",
       "description": "EVIDENCE-HYGIENE-ENFORCEMENT \u2014 Evidence Tooling Test Enhancement",
       "status": "pending",
@@ -117,7 +104,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-010",
+      "task_id": "TASK-009",
       "title": "Product deepening: commercial-net-fods-dogfood-status-fods-to-csv-dotnet \u2014 dogfood_status.fods_to_csv_dotnet",
       "description": "Product target: FODS. Product objective: dogfood_status.fods_to_csv_dotnet. Use governed-dogfood-export from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
       "status": "pending",
@@ -129,7 +116,7 @@
       "lane": "C4"
     },
     {
-      "task_id": "TASK-011",
+      "task_id": "TASK-010",
       "title": "Product deepening: commercial-net-fods-dogfood-status-fods-to-html-dotnet \u2014 dogfood_status.fods_to_html_dotnet",
       "description": "Product target: FODS. Product objective: dogfood_status.fods_to_html_dotnet. Use governed-dogfood-export from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
       "status": "pending",
@@ -141,7 +128,7 @@
       "lane": "C4"
     },
     {
-      "task_id": "TASK-012",
+      "task_id": "TASK-011",
       "title": "Product deepening: commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet \u2014 dogfood_status.fodt_to_markdown_dotnet",
       "description": "Product target: FODT. Product objective: dogfood_status.fodt_to_markdown_dotnet. Use governed-dogfood-export from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
       "status": "pending",
@@ -153,7 +140,7 @@
       "lane": "C4"
     },
     {
-      "task_id": "TASK-013",
+      "task_id": "TASK-012",
       "title": "Product deepening: commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet \u2014 dogfood_status.fodt_to_txt_dotnet",
       "description": "Product target: FODT. Product objective: dogfood_status.fodt_to_txt_dotnet. Use governed-dogfood-export from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
       "status": "pending",
@@ -165,7 +152,7 @@
       "lane": "C4"
     },
     {
-      "task_id": "TASK-014",
+      "task_id": "TASK-013",
       "title": "Product deepening: foss-reduced-sylk-python-status-write-sylk \u2014 python_status.write_sylk",
       "description": "Product target: SYLK. Product objective: python_status.write_sylk. Use generated execution handoff from .supervisor/skill-registry.yaml; ledger any src edit in reports/r90/product-code-change-ledger.json.",
       "status": "pending",
@@ -177,7 +164,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-015",
+      "task_id": "TASK-014",
       "title": "Advance one dogfood export path using a Format Factory library",
       "description": "Product objective: close or verify a selected dogfood export from .local/supervisor/selected-product-gaps.json. Use a Format Factory-produced library and record truthful status.",
       "status": "pending",
@@ -189,7 +176,7 @@
       "lane": "C4"
     },
     {
-      "task_id": "TASK-016",
+      "task_id": "TASK-015",
       "title": "Build package artifacts and run installed-workflow proof",
       "description": "Product objective: prove changed product packages from physical artifacts. A missing artifact is a failure, not a skipped package test.",
       "status": "pending",
@@ -201,7 +188,7 @@
       "lane": "C5"
     },
     {
-      "task_id": "TASK-017",
+      "task_id": "TASK-016",
       "title": "Write evidence declaration and run supervisor autonomous-cycle",
       "description": "Write .local/evidences/<run_id>/evidence-declaration.yaml for all work items, then run the declaration-driven supervisor autonomous-cycle. ZIP export is optional.",
       "status": "pending",

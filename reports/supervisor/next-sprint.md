@@ -1,6 +1,6 @@
 # Supervisor-Generated Next Sprint Prompt
 # Source sprint: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
-# Generated: 2026-06-02T13:38:06.123478
+# Generated: 2026-06-02T14:02:46.515687
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -21,21 +21,20 @@ REPAIR: Address CRITICAL contradictions before advancing
 ## Synthesized Task List (Advisory)
 - [pending] REPAIR-001: Repair: Tests failed: 12 failures detected
 - [pending] TASK-002: Select governed product gaps and validate the product-code ledger
-- [approval-blocked] TASK-003: Commit uncommitted product code and build sprint evidence bundle
-- [approval-blocked] TASK-004: Advance FODS Gate 11 commercial readiness
-- [approval-blocked] TASK-005: Advance FODT Gate 11 commercial readiness
-- [blocked] TASK-006: Open ZST Gate 11
-- [pending] TASK-007: Work on open taskcard: ABW-GATE4-001-parser-prototype
-- [pending] TASK-008: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
-- [pending] TASK-009: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
-- [pending] TASK-010: Product deepening: commercial-net-fods-dogfood-status-fods-to-csv-dotnet — dogfood_status.fods_to_csv_dotnet
-- [pending] TASK-011: Product deepening: commercial-net-fods-dogfood-status-fods-to-html-dotnet — dogfood_status.fods_to_html_dotnet
-- [pending] TASK-012: Product deepening: commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet — dogfood_status.fodt_to_markdown_dotnet
-- [pending] TASK-013: Product deepening: commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet — dogfood_status.fodt_to_txt_dotnet
-- [pending] TASK-014: Product deepening: foss-reduced-sylk-python-status-write-sylk — python_status.write_sylk
-- [pending] TASK-015: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-016: Build package artifacts and run installed-workflow proof
-- [pending] TASK-017: Write evidence declaration and run supervisor autonomous-cycle
+- [approval-blocked] TASK-003: Advance FODS Gate 11 commercial readiness
+- [approval-blocked] TASK-004: Advance FODT Gate 11 commercial readiness
+- [blocked] TASK-005: Open ZST Gate 11
+- [pending] TASK-006: Work on open taskcard: ABW-GATE4-001-parser-prototype
+- [pending] TASK-007: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
+- [pending] TASK-008: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
+- [pending] TASK-009: Product deepening: commercial-net-fods-dogfood-status-fods-to-csv-dotnet — dogfood_status.fods_to_csv_dotnet
+- [pending] TASK-010: Product deepening: commercial-net-fods-dogfood-status-fods-to-html-dotnet — dogfood_status.fods_to_html_dotnet
+- [pending] TASK-011: Product deepening: commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet — dogfood_status.fodt_to_markdown_dotnet
+- [pending] TASK-012: Product deepening: commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet — dogfood_status.fodt_to_txt_dotnet
+- [pending] TASK-013: Product deepening: foss-reduced-sylk-python-status-write-sylk — python_status.write_sylk
+- [pending] TASK-014: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-015: Build package artifacts and run installed-workflow proof
+- [pending] TASK-016: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.
