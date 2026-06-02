@@ -6,8 +6,8 @@
 # commercial_product_ready remains false for all entries until Gate 11 G11-G approved.
 
 poc_matrix_version: "1.0"
-last_updated: "2026-05-31"
-sprint: "R85"
+last_updated: "2026-06-01"
+sprint: "R90"
 
 # ============================================================
 # COMMERCIAL .NET PRODUCTS (3 targets)
@@ -35,9 +35,11 @@ commercial_net_products:
       save_same_format: PASS
       reload_and_verify: PASS
       export_csv: PASS
+      export_csv_multi_sheet: PASS
+      export_csv_in_memory: PASS
       export_html: PASS
       export_json: PASS
-      dotnet_tests: 161
+      dotnet_tests: 191
 
     python_foss_status:
       parse: PASS
@@ -58,7 +60,7 @@ commercial_net_products:
 
     examples:
       python: examples/python/fods/edit_save_export_fods.py
-      dotnet: "(via .NET test fixtures)"
+      dotnet: examples/net/fods/ExportCsvExample.cs
 
     tests:
       python: tests/python/fods/
@@ -89,7 +91,9 @@ commercial_net_products:
       export_txt: PASS
       export_markdown: PASS
       export_html: PASS
-      dotnet_tests: 145
+      text_search: PASS
+      char_count: PASS
+      dotnet_tests: 176
 
     python_foss_status:
       parse: PASS
@@ -134,14 +138,24 @@ commercial_net_products:
     commercial_product_ready: false
 
     dotnet_status:
-      load_pbm: R85_TARGET
-      load_pgm: R85_TARGET
-      load_ppm: R85_TARGET
-      inspect_image_model: R85_TARGET
-      edit_pixels: R85_TARGET
-      save_same_format: R85_TARGET
-      export_pbm_to_pgm: R85_TARGET
-      dotnet_tests: R85_TARGET
+      load_pbm: PASS
+      load_pgm: PASS
+      load_ppm: PASS
+      inspect_image_model: PASS
+      edit_pixels: PASS
+      save_same_format: PASS
+      export_pbm_to_pgm: PASS
+      export_pbm_to_ppm: PASS
+      export_pgm_to_ppm: PASS
+      export_ppm_to_pgm: PASS
+      flip_horizontal: PASS
+      flip_vertical: PASS
+      invert: PASS
+      rotate_90cw: PASS
+      crop: PASS
+      get_channel_stats: PASS
+      binary_write_p4p5p6: PASS
+      dotnet_tests: 94
 
     python_foss_status:
       parse_pbm: PASS
@@ -162,11 +176,13 @@ commercial_net_products:
       python: tests/python/pbm/ + tests/python/pgm/ + tests/python/ppm/
       dotnet: "tests/net/netpbm/ (R85 new)"
 
-    blockers:
-      - ".NET Netpbm: not yet implemented (R85 first slice)"
-      - "PPM writer: not yet implemented"
+    examples:
+      dotnet: examples/net/netpbm/LoadEditSaveExample.cs
 
-    next_action: "R85: Implement .NET Netpbm first slice (load/inspect/edit/save PBM); implement PBM→PGM Python dogfood"
+    blockers:
+      - "Gate 11 G11-G: requires Babar Raza written approval"
+
+    next_action: "Gate 11 G11-G approval (external gate; human required)"
 
 # ============================================================
 # REDUCED/FOSS PYTHON PRODUCTS (3 targets)
@@ -227,10 +243,10 @@ foss_reduced_products:
       parse_ppm: PASS
       write_ppm: NOT_IMPLEMENTED
       pixel_stats_ppm: PASS
-      pbm_to_pgm_dogfood: R85_TARGET
+      pbm_to_pgm_dogfood: PASS
 
     dogfood_status:
-      pbm_to_pgm: R85_TARGET
+      pbm_to_pgm: IMPLEMENTED
       target_ff_library: "format-factory-pgm write_pgm"
       notes: "Convert PBM 1-bit image to PGM grayscale using FF pgm writer"
 

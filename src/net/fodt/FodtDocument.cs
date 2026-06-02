@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -171,6 +172,117 @@ public sealed class FodtDocument
             return text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
         }
     }
+
+    /// <summary>
+    /// Count characters in the document (excluding leading/trailing whitespace per paragraph).
+    /// R89 Train I: text statistics API.
+    /// </summary>
+    public int CharCount
+    {
+        get
+        {
+            int count = 0;
+            foreach (var para in Paragraphs)
+            {
+                var text = para.Text;
+                if (!string.IsNullOrEmpty(text))
+                    count += text.Length;
+            }
+            return count;
+        }
+    }
+
+    /// <summary>
+    /// Search for all occurrences of a substring in the document text.
+    /// Returns a list of (paragraphIndex, positionInParagraph) tuples.
+    /// R89 Train I: text search API.
+    /// </summary>
+    public List<(int ParagraphIndex, int Position)> SearchText(string query, StringComparison comparison = StringComparison.Ordinal)
+    {
+        if (string.IsNullOrEmpty(query))
+            throw new ArgumentException("Search query must not be null or empty.", nameof(query));
+
+        var results = new List<(int, int)>();
+        var paras = Paragraphs;
+        for (int i = 0; i < paras.Count; i++)
+        {
+            var text = paras[i].Text;
+            if (string.IsNullOrEmpty(text)) continue;
+
+            int pos = 0;
+            while ((pos = text.IndexOf(query, pos, comparison)) >= 0)
+            {
+                results.Add((i, pos));
+                pos += query.Length;
+            }
+        }
+        return results;
+    }
+
+    /// <summary>
+    /// Replace all occurrences of a substring in paragraph text nodes.
+    /// Returns the total number of replacements made.
+    /// R92 Train C: text manipulation API.
+    /// </summary>
+    public int ReplaceText(string oldText, string newText, StringComparison comparison = StringComparison.Ordinal)
+    {
+        if (string.IsNullOrEmpty(oldText))
+            throw new ArgumentException("oldText must not be null or empty.", nameof(oldText));
+        ArgumentNullException.ThrowIfNull(newText);
+
+        int totalReplacements = 0;
+        var body = Body;
+        if (body is null) return 0;
+
+        foreach (var para in body.Paragraphs)
+        {
+            var element = para.Element;
+            foreach (var textNode in element.DescendantNodes().OfType<XText>().ToList())
+            {
+                var original = textNode.Value;
+                int count = 0;
+                int pos = 0;
+                while ((pos = original.IndexOf(oldText, pos, comparison)) >= 0)
+                {
+                    count++;
+                    pos += oldText.Length;
+                }
+                if (count > 0)
+                {
+                    // Simple replacement — works for Ordinal comparison
+                    var replaced = original;
+                    if (comparison == StringComparison.Ordinal)
+                        replaced = original.Replace(oldText, newText);
+                    else
+                        replaced = ReplaceWithComparison(original, oldText, newText, comparison);
+                    textNode.Value = replaced;
+                    totalReplacements += count;
+                }
+            }
+        }
+        return totalReplacements;
+    }
+
+    private static string ReplaceWithComparison(string source, string oldValue, string newValue, StringComparison comparison)
+    {
+        var sb = new System.Text.StringBuilder();
+        int pos = 0;
+        int idx;
+        while ((idx = source.IndexOf(oldValue, pos, comparison)) >= 0)
+        {
+            sb.Append(source, pos, idx - pos);
+            sb.Append(newValue);
+            pos = idx + oldValue.Length;
+        }
+        sb.Append(source, pos, source.Length - pos);
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// Number of paragraphs in the document.
+    /// R92 Train C: convenience property.
+    /// </summary>
+    public int ParagraphCount => Paragraphs.Count;
 
     /// <summary>ODF MIME type from office:document/@office:mimetype, or null if absent.</summary>
     public string? MimeType =>

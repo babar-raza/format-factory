@@ -1,0 +1,31 @@
+contract_id: r89-authoritative-test-baseline-declaration-closeout-poc-product-deepening
+sprint_id: FORMAT-FACTORY-R89-AUTHORITATIVE-TEST-BASELINE-DECLARATION-CLOSEOUT-POC-PRODUCT-DEEPENING-MEGA-TRAIN-001
+date: "2026-06-02"
+sidecar_required: true
+final_proof_policy: external_sidecar
+require_clean_git: true
+emergency_blocker_bundle: false
+min_metadata_count: 35
+commercial_product_ready: false
+installed_artifact_policy: wheel_and_sdist
+
+required_repo_files:
+  - reports/r89/00-preflight.md
+  - reports/r89/r88-independent-verification.md
+  - reports/r89/r88-defect-ledger.json
+  - reports/r89/multi-mega-train-scoreboard.md
+  - reports/r89/final-verdict.md
+  - reports/r89/train-e-csv-shadow-fix.md
+  - reports/r89/train-hij-dotnet-product-deepening.md
+  - reports/r89/train-fg-test-policy.md
+  - tests/python/test_r89_csv_shadow_fix.py
+  - tests/python/conftest.py
+  - tests/net/fods/FodsR89InMemoryCsvTests.cs
+  - tests/net/fodt/FodtR89TextSearchTests.cs
+  - tests/net/netpbm/NetpbmR89ProductDeepeningTests.cs
+  - src/net/fods/FodsDocument.cs
+  - src/net/fods/FodsCsvExporter.cs
+  - src/net/fodt/FodtDocument.cs
+  - src/net/netpbm/Model/NetpbmImage.cs
+  - state/current-state.md
+  - state/current-state.json

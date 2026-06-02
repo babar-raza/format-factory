@@ -1,37 +1,24 @@
 {
-  "sprint_id": "supervisor-export-20260601-204906",
-  "timestamp": "2026-06-01T20:49:06.528519",
-  "verdict": "BLOCKED_MISSING_FINAL_VERDICT",
-  "source_bundle": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r88-delivery.zip",
+  "sprint_id": "supervisor-export-20260601-222031",
+  "timestamp": "2026-06-01T22:20:31.912874",
+  "verdict": "ACCEPTED",
+  "source_bundle": ".local/evidences/r90-autonomous-continuation",
   "tasks": [
     {
-      "task_id": "REPAIR-001",
-      "title": "Repair: No final-verdict.md found in evidence bundle",
-      "description": "Evidence bundles must contain a final-verdict.md",
-      "status": "pending",
-      "ff_taskcard_ref": "repair-required",
-      "supervisor_task_ref": "TC-SUP-009",
-      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
-      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
+      "task_id": "TASK-001",
+      "title": "Commit uncommitted product code and build sprint evidence bundle",
+      "description": "Modified tracked files detected: 3 file(s) (e.g. src/net/fods/FodsCsvExporter.cs). Commit per governance rule (explicit user auth required), build evidence bundle.",
+      "status": "approval-blocked",
+      "ff_doc_ref": "plans/master-plan.md",
+      "supervisor_task_ref": "TC-R79-CLOSURE-001",
+      "acceptance_evidence": "git status shows no modified tracked product files; BUNDLE_VALIDATION: PASS",
+      "validation_command": ".local/venv/Scripts/python tools/evidence/validate_evidence_bundle.py --contract <contract> --bundle <bundle>",
+      "blocker_type": "human_approval",
       "non_authoritative": true,
-      "lane": "C2",
-      "priority": "critical"
+      "lane": "C3"
     },
     {
-      "task_id": "REPAIR-002",
-      "title": "Repair: BUNDLE_VALIDATION: FAIL \u2014 evidence bundle did not pass validation",
-      "description": "Existing validator (validate_evidence_bundle.py) reported BUNDLE_VALIDATION: FAIL. Sidecar proof is required but was not supplied.",
-      "status": "pending",
-      "ff_taskcard_ref": "repair-required",
-      "supervisor_task_ref": "TC-SUP-009",
-      "acceptance_evidence": "contradictions.md shows 0 CRITICAL contradictions",
-      "validation_command": "python tools/supervisor/compare_goal_to_evidence.py --review reports/supervisor/evidence-review.json",
-      "non_authoritative": true,
-      "lane": "C2",
-      "priority": "critical"
-    },
-    {
-      "task_id": "TASK-003",
+      "task_id": "TASK-002",
       "title": "Advance FODS Gate 11 commercial readiness",
       "description": "fods gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
       "status": "approval-blocked",
@@ -44,7 +31,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-004",
+      "task_id": "TASK-003",
       "title": "Advance FODT Gate 11 commercial readiness",
       "description": "fodt gate_11 status: commercial_readiness_in_progress. Continue commercial readiness work per plans/master-plan.md.",
       "status": "approval-blocked",
@@ -57,7 +44,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-005",
+      "task_id": "TASK-004",
       "title": "Open ZST Gate 11",
       "description": "zst gate_11 status: not_started. See plans/master-plan.md and registry for requirements.",
       "status": "blocked",
@@ -70,7 +57,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-006",
+      "task_id": "TASK-005",
       "title": "Work on open taskcard: ABW-GATE4-001-parser-prototype",
       "description": "ABW-GATE4-001 \u2014 ABW Gate 4 Parser Prototype",
       "status": "pending",
@@ -82,7 +69,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-007",
+      "task_id": "TASK-006",
       "title": "Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS",
       "description": "Taskcard: AI-USAGE-LEDGER-AND-METRICS",
       "status": "pending",
@@ -94,7 +81,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-008",
+      "task_id": "TASK-007",
       "title": "Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT",
       "description": "EVIDENCE-HYGIENE-ENFORCEMENT \u2014 Evidence Tooling Test Enhancement",
       "status": "pending",
@@ -106,7 +93,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-009",
+      "task_id": "TASK-008",
       "title": "Product deepening: GAP-CAP-001 \u2014 PPM load/parse (P3/P6)",
       "description": "Product: netpbm-commercial-dotnet. NetpbmParser handles P3/P6 tokens; no dedicated PPM-only tests yet",
       "status": "pending",
@@ -118,7 +105,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-010",
+      "task_id": "TASK-009",
       "title": "Product deepening: GAP-CAP-003 \u2014 FODS\u2192CSV export",
       "description": "Product: fods-commercial-dotnet. No FodsCsvExporter; FODS\u2192CSV is a natural export for spreadsheet format",
       "status": "pending",
@@ -130,7 +117,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-011",
+      "task_id": "TASK-010",
       "title": "Product deepening: GAP-DOGFOOD-DIF-CSV-001 \u2014 GAP-DOGFOOD-DIF-CSV-001",
       "description": "Product: dif. DIF\u2192CSV on HOLD until SYLK POC complete",
       "status": "pending",
@@ -142,7 +129,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-012",
+      "task_id": "TASK-011",
       "title": "Product deepening: GAP-DOC-001 \u2014 No standalone .NET Netpbm example (examples/net/netpbm/ dire",
       "description": "Product: unknown. ",
       "status": "pending",
@@ -154,7 +141,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-013",
+      "task_id": "TASK-012",
       "title": "Product deepening: GAP-DOC-002 \u2014 No FODS\u2192CSV example (capability not yet implemented)",
       "description": "Product: unknown. ",
       "status": "pending",
@@ -166,7 +153,7 @@
       "lane": "C3"
     },
     {
-      "task_id": "TASK-014",
+      "task_id": "TASK-013",
       "title": "Build and validate next sprint evidence bundle",
       "description": "Build evidence bundle via build_evidence_bundle.py; validate with validate_evidence_bundle.py \u2192 BUNDLE_VALIDATION: PASS",
       "status": "pending",
@@ -178,5 +165,5 @@
       "lane": "C6"
     }
   ],
-  "notes": "Generated from evidence review of sprint unknown"
+  "notes": "Generated from evidence review of sprint FORMAT-FACTORY-R90-AUTONOMOUS-CONTINUATION-PPM-TESTS-EXAMPLES-POC-MATRIX-UPDATE-001"
 }

@@ -242,6 +242,147 @@ public sealed class NetpbmImage
         return ((double)sum / Pixels.Length, min, max);
     }
 
+    /// <summary>
+    /// Compute per-channel pixel statistics for PPM.
+    /// Returns (R, G, B) where each is (Mean, Min, Max).
+    /// R89 Train H: PPM statistics API.
+    /// </summary>
+    public ((double Mean, int Min, int Max) R, (double Mean, int Min, int Max) G, (double Mean, int Min, int Max) B) GetChannelStats()
+    {
+        if (Format != NetpbmFormat.PPM_P3 && Format != NetpbmFormat.PPM_P6)
+            throw new InvalidOperationException("Use GetStats for PBM/PGM.");
+        int len = Width * Height;
+        if (len == 0)
+            return ((0, 0, 0), (0, 0, 0), (0, 0, 0));
+
+        static (double Mean, int Min, int Max) ComputeStats(byte[] ch, int count)
+        {
+            long sum = 0;
+            int min = ch[0], max = ch[0];
+            for (int i = 0; i < count; i++)
+            {
+                sum += ch[i];
+                if (ch[i] < min) min = ch[i];
+                if (ch[i] > max) max = ch[i];
+            }
+            return ((double)sum / count, min, max);
+        }
+
+        return (
+            ComputeStats(RedChannel!, len),
+            ComputeStats(GreenChannel!, len),
+            ComputeStats(BlueChannel!, len)
+        );
+    }
+
+    /// <summary>
+    /// Rotate the image 90° clockwise. Returns a NEW image (dimensions swap).
+    /// R89 Train H: rotation transform.
+    /// </summary>
+    public NetpbmImage Rotate90Cw()
+    {
+        var result = new NetpbmImage
+        {
+            Format = Format,
+            Width = Height,
+            Height = Width,
+            MaxValue = MaxValue,
+            SourcePath = SourcePath
+        };
+        result.Comments.AddRange(Comments);
+
+        int newW = result.Width;
+        int newH = result.Height;
+
+        if (Format == NetpbmFormat.PPM_P3 || Format == NetpbmFormat.PPM_P6)
+        {
+            int len = newW * newH;
+            result.RedChannel = new byte[len];
+            result.GreenChannel = new byte[len];
+            result.BlueChannel = new byte[len];
+            result.Pixels = Array.Empty<byte>();
+
+            for (int r = 0; r < Height; r++)
+            {
+                for (int c = 0; c < Width; c++)
+                {
+                    int srcIdx = r * Width + c;
+                    int dstRow = c;
+                    int dstCol = Height - 1 - r;
+                    int dstIdx = dstRow * newW + dstCol;
+                    result.RedChannel[dstIdx] = RedChannel![srcIdx];
+                    result.GreenChannel[dstIdx] = GreenChannel![srcIdx];
+                    result.BlueChannel[dstIdx] = BlueChannel![srcIdx];
+                }
+            }
+        }
+        else
+        {
+            result.Pixels = new byte[newW * newH];
+            for (int r = 0; r < Height; r++)
+            {
+                for (int c = 0; c < Width; c++)
+                {
+                    int dstRow = c;
+                    int dstCol = Height - 1 - r;
+                    result.Pixels[dstRow * newW + dstCol] = Pixels[r * Width + c];
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Extract a rectangular sub-region. Returns a NEW image.
+    /// R89 Train H: crop API.
+    /// </summary>
+    public NetpbmImage Crop(int top, int left, int cropHeight, int cropWidth)
+    {
+        if (top < 0 || left < 0 || cropHeight <= 0 || cropWidth <= 0)
+            throw new ArgumentOutOfRangeException("Crop dimensions must be positive.");
+        if (top + cropHeight > Height || left + cropWidth > Width)
+            throw new ArgumentOutOfRangeException("Crop region exceeds image bounds.");
+
+        var result = new NetpbmImage
+        {
+            Format = Format,
+            Width = cropWidth,
+            Height = cropHeight,
+            MaxValue = MaxValue,
+            SourcePath = SourcePath
+        };
+        result.Comments.AddRange(Comments);
+
+        if (Format == NetpbmFormat.PPM_P3 || Format == NetpbmFormat.PPM_P6)
+        {
+            int len = cropWidth * cropHeight;
+            result.RedChannel = new byte[len];
+            result.GreenChannel = new byte[len];
+            result.BlueChannel = new byte[len];
+            result.Pixels = Array.Empty<byte>();
+
+            for (int r = 0; r < cropHeight; r++)
+            {
+                int srcBase = (top + r) * Width + left;
+                int dstBase = r * cropWidth;
+                Array.Copy(RedChannel!, srcBase, result.RedChannel, dstBase, cropWidth);
+                Array.Copy(GreenChannel!, srcBase, result.GreenChannel, dstBase, cropWidth);
+                Array.Copy(BlueChannel!, srcBase, result.BlueChannel, dstBase, cropWidth);
+            }
+        }
+        else
+        {
+            result.Pixels = new byte[cropWidth * cropHeight];
+            for (int r = 0; r < cropHeight; r++)
+            {
+                Array.Copy(Pixels, (top + r) * Width + left, result.Pixels, r * cropWidth, cropWidth);
+            }
+        }
+
+        return result;
+    }
+
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------

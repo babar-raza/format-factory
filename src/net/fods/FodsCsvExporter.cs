@@ -211,6 +211,29 @@ public static class FodsCsvExporter
         return results;
     }
 
+    /// <summary>
+    /// Export a single <see cref="FodsSheet"/> to a CSV string (no file I/O).
+    /// R89 Train I: in-memory CSV export.
+    /// </summary>
+    public static string ExportSheetToCsvString(FodsSheet sheet)
+    {
+        ArgumentNullException.ThrowIfNull(sheet);
+
+        var sb = new StringBuilder();
+        foreach (var row in sheet.Rows)
+        {
+            var fields = new List<string>(row.Cells.Count);
+            foreach (var cell in row.Cells)
+            {
+                var rawValue = cell.IsCovered ? null : cell.Value;
+                fields.Add(EscapeCsvField(rawValue));
+            }
+            sb.Append(string.Join(",", fields));
+            sb.Append('\n');
+        }
+        return sb.ToString();
+    }
+
     /// <summary>Sanitize a string for use as a filename.</summary>
     private static string SanitizeFileName(string name)
     {

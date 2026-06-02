@@ -144,6 +144,52 @@ public sealed class FodsDocument
     }
 
     /// <summary>
+    /// Number of sheets in the document.
+    /// R92 Train B: convenience property.
+    /// </summary>
+    public int SheetCount => Sheets.Count;
+
+    /// <summary>
+    /// Get a sheet by name (case-sensitive). Returns null if not found.
+    /// R92 Train B: named sheet access.
+    /// </summary>
+    public FodsSheet? GetSheetByName(string name)
+    {
+        foreach (var sheet in Sheets)
+        {
+            if (sheet.Name == name) return sheet;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Get a cell value by zero-based row and column indices from the first sheet.
+    /// Returns null if indices are out of range or cell is empty/covered.
+    /// R92 Train B: cell-level access.
+    /// </summary>
+    public string? GetCellValue(int row, int col)
+    {
+        var sheets = Sheets;
+        if (sheets.Count == 0) return null;
+        return GetCellValue(sheets[0], row, col);
+    }
+
+    /// <summary>
+    /// Get a cell value by zero-based row and column indices from a specific sheet.
+    /// Returns null if indices are out of range or cell is empty/covered.
+    /// R92 Train B: cell-level access.
+    /// </summary>
+    public static string? GetCellValue(FodsSheet sheet, int row, int col)
+    {
+        ArgumentNullException.ThrowIfNull(sheet);
+        if (row < 0 || row >= sheet.Rows.Count) return null;
+        var r = sheet.Rows[row];
+        if (col < 0 || col >= r.Cells.Count) return null;
+        var cell = r.Cells[col];
+        return cell.IsCovered ? null : cell.Value;
+    }
+
+    /// <summary>
     /// ODF MIME type from office:document/@office:mimetype, or null if absent.
     /// </summary>
     public string? MimeType =>

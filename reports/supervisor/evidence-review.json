@@ -1,28 +1,23 @@
 {
-  "sprint_id": "unknown",
-  "timestamp": "2026-06-01T20:49:05.077240",
-  "verdict": "BLOCKED_MISSING_FINAL_VERDICT",
-  "bundle_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r88-delivery.zip",
+  "sprint_id": "FORMAT-FACTORY-R91-GAP-CLOSURE-VERIFICATION-AUTONOMOUS-CONTINUATION-002",
+  "timestamp": "2026-06-01T22:27:34.891728",
+  "verdict": "ACCEPTED",
+  "bundle_path": ".local/evidences/r91-gap-closure-verification",
   "facts": {
-    "test_count": 0,
+    "test_count": 3000,
     "fail_count": 0,
-    "skip_count": 0,
-    "git_head": "unknown",
+    "skip_count": 11,
+    "git_head": "946c033",
     "gate_states": {},
-    "final_verdict_text": "",
+    "final_verdict_text": "ACCEPTED",
     "pending_marker_count": 0,
-    "bundle_entry_count": 4,
-    "bundle_validation_pass": false,
-    "validator_error_summary": "============================================================\nEVIDENCE BUNDLE VALIDATION REPORT\n============================================================\nContract: C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\evidence\\contracts\\r88-declaration-driven-autonomous-closeout-poc-product-deepening.yaml\nBundle: c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r88-delivery.zip\nBundle size: 5,567,314 bytes\nTotal entries: 4\nTop-level folders: ['r88-delivery-manifest.json',"
+    "bundle_entry_count": 3,
+    "bundle_validation_pass": true
   },
   "contradictions": [],
-  "limitation_notes": [
-    "No final-verdict.md found in bundle",
-    "No test log found in bundle \u2014 test counts unavailable"
-  ],
+  "limitation_notes": [],
   "validator_invoked": true,
-  "validator_output": "============================================================\nEVIDENCE BUNDLE VALIDATION REPORT\n============================================================\nContract: C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\evidence\\contracts\\r88-declaration-driven-autonomous-closeout-poc-product-deepening.yaml\nBundle: c:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\r88-delivery.zip\nBundle size: 5,567,314 bytes\nTotal entries: 4\nTop-level folders: ['r88-delivery-manifest.json', 'r88-delivery-supervisor-inspection-readme.md', 'r88-pass2.sha256-proof.json', 'r88-pass2.zip']\nRepo files: 0\nMetadata files: 0\nRequired repo files: 19 (missing: 19)\nRequired metadata files: 0 (missing: 0)\nMin metadata required: 35\nRUN_CONTRACT_METADATA_FLOOR (FAIL): 0/30\nForbidden hits: 0\nGit clean (MISSING): No git status file found in bundle metadata (checked: git-status-final.txt or git-status.txt)\nMetadata identity check (PASS)\n\nWARNINGS:\n  - Extra top-level folders (not in required list): ['r88-delivery-manifest.json', 'r88-delivery-supervisor-inspection-readme.md', 'r88-pass2.sha256-proof.json', 'r88-pass2.zip']\n\nERRORS:\n  - SIDECAR_REQUIRED: contract or verdict requires an external sidecar proof (sidecar_required: true / final_proof_policy: external_sidecar / clean-baseline verdict) but --sidecar-proof was not supplied. Run write_sidecar_proof.py and re-validate with --sidecar-proof <path>.\n  - Missing required top-level folders: ['bundle-metadata', 'repo']\n  - Missing required repo files (19): ['reports/r88/r87-independent-verification.md', 'reports/r88/r87-defect-ledger.json', 'reports/r88/multi-mega-train-scoreboard.md', 'reports/r88/claude-closeout-instruction-repair.md', 'reports/r88/autonomous-cycle-end-to-end-proof.md', 'reports/r88/authoritative-test-result-cleanup.md', 'tests/net/fods/FodsR88MultiSheetCsvTests.cs', 'tests/net/fodt/FodtR88TextAnalysisTests.cs', 'tests/net/netpbm/NetpbmR88TransformTests.cs', 'CLAUDE.md']\n  - Metadata count 0 < minimum 35\n  - RUN_CONTRACT_METADATA_FLOOR: FAIL \u2014 metadata count 0 < absolute floor 30. Ensure sprint produces sufficient metadata files. Only emergency_blocker_bundle: true may bypass this floor.\n  - Git cleanliness check FAILED: No git status file found in bundle metadata (checked: git-status-final.txt or git-status.txt)\n\nBUNDLE_VALIDATION: FAIL\n",
-  "bundle_validation_pass": false,
+  "bundle_validation_pass": true,
   "exit_code": 0,
   "status": "complete"
 }

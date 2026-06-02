@@ -22,33 +22,33 @@ poc_gap_report:
       product: netpbm-commercial-dotnet
       track: dotnet
       capability: PPM load/parse (P3/P6)
-      current_status: PARTIAL
-      note: NetpbmParser handles P3/P6 tokens; no dedicated PPM-only tests yet
-      suggested_sprint: R86
+      current_status: CLOSED
+      note: "R90: 10 dedicated PPM P3/P6 tests added (parse, edit, write, export)"
+      closed_sprint: R90
 
     - id: GAP-CAP-002
       product: netpbm-commercial-dotnet
       track: dotnet
       capability: Binary format write (P4/P5/P6)
-      current_status: NOT_IMPLEMENTED
-      note: NetpbmWriter only writes ASCII (P1/P2/P3); binary write not implemented
-      suggested_sprint: R87
+      current_status: CLOSED
+      note: "R86: ToBinaryBytes + WriteBinaryPbm/Pgm/Ppm added; 10 binary write tests"
+      closed_sprint: R86
 
     - id: GAP-CAP-003
       product: fods-commercial-dotnet
       track: dotnet
       capability: FODS→CSV export
-      current_status: NOT_IMPLEMENTED
-      note: No FodsCsvExporter; FODS→CSV is a natural export for spreadsheet format
-      suggested_sprint: R86
+      current_status: CLOSED
+      note: "R88: ExportAllSheetsToCsv added; R89: ExportSheetToCsvString added; 14 tests"
+      closed_sprint: R89
 
     - id: GAP-CAP-004
       product: netpbm-reduced-foss-python
       track: python
       capability: PGM→PPM upscale export
-      current_status: NOT_IMPLEMENTED
-      note: PGM→PPM (grayscale to color) would complete the Netpbm export chain
-      suggested_sprint: R87
+      current_status: CLOSED
+      note: "R87: pgm_to_ppm.py implemented + 11 tests; R90: .NET PgmToPpm + PpmToPgm with tests"
+      closed_sprint: R91
 
     - id: GAP-CAP-005
       product: sylk-reduced-foss-python
@@ -96,13 +96,16 @@ poc_gap_report:
 
   test_gaps:
     - id: GAP-TEST-001
-      description: No Python tests for SYLK→CSV CRLF line ending (5 failing tests in full suite — csv module shadowing)
-      note: Known isolation issue — csv module shadow from src/python/csv/; tests pass in isolation
-      severity: known_isolation_issue
+      description: "CSV module shadowing in full suite"
+      current_status: CLOSED
+      note: "R89: Removed tests/python/csv/__init__.py + pinned stdlib csv in conftest.py; 0 shadow failures"
+      closed_sprint: R89
 
     - id: GAP-TEST-002
-      description: No .NET tests for binary Netpbm write (P4/P5/P6) — NetpbmWriter only has ASCII
-      severity: medium
+      description: ".NET binary Netpbm write tests"
+      current_status: CLOSED
+      note: "R86: NetpbmBinaryWriteTests.cs — ToBinaryBytes + WriteBinaryPbm/Pgm/Ppm"
+      closed_sprint: R86
 
     - id: GAP-TEST-003
       description: No integration test for PBM→PPM Python export (only .NET has this)
@@ -110,12 +113,16 @@ poc_gap_report:
 
   documentation_gaps:
     - id: GAP-DOC-001
-      description: No standalone .NET Netpbm example (examples/net/netpbm/ directory empty)
-      suggested_sprint: R86
+      description: ".NET Netpbm example"
+      current_status: CLOSED
+      note: "R90: examples/net/netpbm/LoadEditSaveExample.cs created"
+      closed_sprint: R90
 
     - id: GAP-DOC-002
-      description: No FODS→CSV example (capability not yet implemented)
-      suggested_sprint: R86
+      description: "FODS→CSV example"
+      current_status: CLOSED
+      note: "R90: examples/net/fods/ExportCsvExample.cs created"
+      closed_sprint: R90
 
     - id: GAP-DOC-003
       description: No PGM examples (examples/python/pgm/ exists but no example files)
