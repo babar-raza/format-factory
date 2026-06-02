@@ -1,6 +1,6 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001
-# Generated: 2026-06-02T15:15:01.908982
+# Source sprint: FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
+# Generated: 2026-06-02T16:10:47.800817
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -10,9 +10,9 @@
 ADVANCE: Continue normal mega-train lanes
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001
+- Sprint ID: FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
 - Evidence verdict: ACCEPTED
-- Tests: 5162 passed, 0 failed, 18 skipped
+- Tests: 5179 passed, 0 failed, 11 skipped
 - Autonomous continue: True
 
 ## Section 1: New Product Work (Advisory — Always Execute)
@@ -74,28 +74,6 @@ None
 
 ## Project Memory Context
 ```
-- timestamp: 2026-06-02T08:43:07.409018
-- verdict: REJECTED_BUNDLE_VALIDATION_FAIL
-- test_count: 65
-- fail_count: 0
-- git_head: unknown
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\r89-pass2.zip
-- pending_marker_count: 0
-- bundle_entry_count: 3627
-- bundle_validation_pass: False
-- validator_error_summary: ============================================================
-EVIDENCE BUNDLE VALIDATION REPORT
-============================================================
-Contract: C:\Users\prora\OneDrive\Documents\
-- test_delta: 0
-- test_delta_from: 65
-
-## Entry: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
-- timestamp: 2026-06-02
-- status: COMPLETE
-- verdict: R90_MAINSTREAM_PRODUCT_ACCELERATION_ACTIVE_GOVERNED_POC_PROGRESS_PASS
-- source_audit: R89 FODS, FODT, and Netpbm APIs remain present with tests
-- acceleration_layer: COMPLETE
 - governed_src_change: src/python/ppm/ppm_to_pgm.py (new, /add-dogfood-export skill)
 - new_tests: 5 (test_r90_ppm_to_pgm_dogfood.py)
 - commercial_product_ready: false
@@ -121,6 +99,28 @@ Contract: C:\Users\prora\OneDrive\Documents\
   - autonomous_cycle.py: true_with_rework continuation mode + grade output copy
   - policies.yaml: rework_continues_safe_lanes + inherited_failure_isolation
   - generate_supervisor_packet.py: product-first next-sprint sections
+- commercial_product_ready: false
+- gate_11_approved: false
+- publication_authorized: false
+
+## Entry: FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
+- timestamp: 2026-06-02
+- status: COMPLETE
+- verdict: R92_DECLARATION_MATERIALIZER_SKILL_EXPANSION_POC_DEEPENED_PUBLICATION_BLOCKED
+- declaration_materializer: tools/supervisor/materialize_declared_evidence.py (Train B)
+- review_package_builder: tools/supervisor/build_declaration_review_package.py (Train C)
+- r91_work_item_grades: 12/12 ACCEPTED (Train A)
+- new_skills: add-dotnet-object-model-feature, add-roundtrip-test, add-installed-package-example (Train J)
+- governed_src_changes:
+  - src/net/fods/FodsDocument.cs (GetSheetNames API, R92-GOVERNED-DOTNET-FODS-GETSHEETNAMES-001)
+  - src/net/fodt/FodtDocument.cs (GetHeadingParagraphs API, R92-GOVERNED-DOTNET-FODT-GETHEADINGPARAGRAPHS-001)
+  - src/net/netpbm/Model/NetpbmImage.cs (FillRegion API, R92-GOVERNED-DOTNET-NETPBM-FILLREGION-001)
+- dotnet_fods_tests: 207 (199 baseline + 8 new GetSheetNames)
+- dotnet_fodt_tests: 193 (184 baseline + 8 new GetHeadingParagraphs + 1 other)
+- dotnet_netpbm_tests: 112 (104 baseline + 8 new FillRegion)
+- dotnet_total: 512
+- python_tests: 2467 (tests/python/) or 2570 (including supervisor/evidence)
+- product_ledger_entries: 5 governed changes (3 R92 + 2 R91 + prior backfills)
 - commercial_product_ready: false
 - gate_11_approved: false
 - publication_authorized: false

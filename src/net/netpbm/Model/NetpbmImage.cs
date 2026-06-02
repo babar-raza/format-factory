@@ -384,6 +384,61 @@ public sealed class NetpbmImage
     }
 
     // -------------------------------------------------------------------------
+    // Region operations
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Fill a rectangular region with a uniform value (PBM/PGM) or color (PPM).
+    /// For PBM, value must be 0 or 1. For PPM, all three channel values are used.
+    /// R92 Train N: region fill API for image editing workflows.
+    /// </summary>
+    /// <param name="top">Top row (inclusive).</param>
+    /// <param name="left">Left column (inclusive).</param>
+    /// <param name="regionHeight">Number of rows to fill.</param>
+    /// <param name="regionWidth">Number of columns to fill.</param>
+    /// <param name="value">Fill value for PBM/PGM (ignored for PPM).</param>
+    /// <param name="r">Red channel fill value (PPM only).</param>
+    /// <param name="g">Green channel fill value (PPM only).</param>
+    /// <param name="b">Blue channel fill value (PPM only).</param>
+    public void FillRegion(int top, int left, int regionHeight, int regionWidth,
+        byte value = 0, byte r = 0, byte g = 0, byte b = 0)
+    {
+        if (top < 0 || left < 0 || regionHeight <= 0 || regionWidth <= 0)
+            throw new ArgumentOutOfRangeException("Region dimensions must be positive.");
+        if (top + regionHeight > Height || left + regionWidth > Width)
+            throw new ArgumentOutOfRangeException("Fill region exceeds image bounds.");
+
+        if (Format == NetpbmFormat.PBM_P1 || Format == NetpbmFormat.PBM_P4)
+        {
+            if (value != 0 && value != 1)
+                throw new ArgumentOutOfRangeException(nameof(value), "PBM pixels must be 0 or 1.");
+        }
+
+        if (Format == NetpbmFormat.PPM_P3 || Format == NetpbmFormat.PPM_P6)
+        {
+            for (int row = top; row < top + regionHeight; row++)
+            {
+                int rowBase = row * Width + left;
+                for (int col = 0; col < regionWidth; col++)
+                {
+                    RedChannel![rowBase + col] = r;
+                    GreenChannel![rowBase + col] = g;
+                    BlueChannel![rowBase + col] = b;
+                }
+            }
+        }
+        else
+        {
+            for (int row = top; row < top + regionHeight; row++)
+            {
+                int rowBase = row * Width + left;
+                for (int col = 0; col < regionWidth; col++)
+                    Pixels[rowBase + col] = value;
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 

@@ -1,0 +1,27 @@
+{
+  "review_sprint": "R92",
+  "reviewed_declaration": ".local/evidences/r91/evidence-declaration.yaml",
+  "reviewed_sprint": "FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001",
+  "reviewer": "R92-Train-A",
+  "review_timestamp": "2026-06-02T16:00:00Z",
+  "overall_verdict": "ACCEPTED",
+  "items_accepted": 12,
+  "items_rework": 0,
+  "items_overclaimed": 0,
+  "items_insufficient_evidence": 0,
+  "manifest_note": "Sparse manifest — only declaration file listed. All claims verified via committed repo.",
+  "grades": [
+    {"item_id": "WI-A", "grade": "ACCEPTED", "note": "reports/r91/autonomous-supervisor-flow-gap-analysis.md present in committed repo"},
+    {"item_id": "WI-B", "grade": "ACCEPTED", "note": "12 inherited failures confirmed repaired; 0 failures in Python test suite"},
+    {"item_id": "WI-C", "grade": "ACCEPTED", "note": "autonomous_cycle.py modified; true_with_rework mode present"},
+    {"item_id": "WI-D", "grade": "ACCEPTED", "note": "policies.yaml has rework_continues_safe_lanes: true"},
+    {"item_id": "WI-E", "grade": "ACCEPTED", "note": "generate_supervisor_packet.py updated; product-first sections confirmed"},
+    {"item_id": "WI-F", "grade": "ACCEPTED", "note": "FodsDocument.cs SetCellValue present; FodsR91SetCellValueTests.cs 8 tests"},
+    {"item_id": "WI-G", "grade": "ACCEPTED", "note": "FodtDocument.cs SaveToFile present; FodtR91SaveToFileTests.cs 8 tests"},
+    {"item_id": "WI-H", "grade": "ACCEPTED", "note": "NetpbmR91SetPixelColorTests.cs 10 tests present"},
+    {"item_id": "WI-I", "grade": "ACCEPTED", "note": "test_r91_sylk_csv_hardening.py 7 tests present"},
+    {"item_id": "WI-J", "grade": "ACCEPTED", "note": "product-code-change-ledger.json has R91-GOVERNED-DOTNET-FODS-SETCELLVALUE-001 and R91-GOVERNED-DOTNET-FODT-SAVETOFILE-001"},
+    {"item_id": "WI-K", "grade": "ACCEPTED", "note": "poc-targets.yaml: FODS dotnet_tests=199, FODT dotnet_tests=184 (save_to_file=PASS), Netpbm dotnet_tests=104 (set_pixel_color=PASS)"},
+    {"item_id": "WI-L", "grade": "ACCEPTED", "note": ".supervisor/project-memory.md R91 entry present"}
+  ]
+}

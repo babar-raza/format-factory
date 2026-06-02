@@ -292,6 +292,22 @@ public sealed class FodtDocument
     /// </summary>
     public int ParagraphCount => Paragraphs.Count;
 
+    /// <summary>
+    /// Return all heading paragraphs (text:h elements) in document order.
+    /// Returns an empty list if the document has no headings.
+    /// R92 Train M: heading enumeration for document structure analysis.
+    /// </summary>
+    public IReadOnlyList<FodtParagraph> GetHeadingParagraphs()
+    {
+        var result = new List<FodtParagraph>();
+        foreach (var para in Paragraphs)
+        {
+            if (para.IsHeading)
+                result.Add(para);
+        }
+        return result.AsReadOnly();
+    }
+
     /// <summary>ODF MIME type from office:document/@office:mimetype, or null if absent.</summary>
     public string? MimeType =>
         _doc.Root?.Attribute(NsOffice + "mimetype")?.Value;

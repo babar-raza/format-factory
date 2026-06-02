@@ -215,3 +215,25 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - commercial_product_ready: false
 - gate_11_approved: false
 - publication_authorized: false
+
+## Entry: FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
+- timestamp: 2026-06-02
+- status: COMPLETE
+- verdict: R92_DECLARATION_MATERIALIZER_SKILL_EXPANSION_POC_DEEPENED_PUBLICATION_BLOCKED
+- declaration_materializer: tools/supervisor/materialize_declared_evidence.py (Train B)
+- review_package_builder: tools/supervisor/build_declaration_review_package.py (Train C)
+- r91_work_item_grades: 12/12 ACCEPTED (Train A)
+- new_skills: add-dotnet-object-model-feature, add-roundtrip-test, add-installed-package-example (Train J)
+- governed_src_changes:
+  - src/net/fods/FodsDocument.cs (GetSheetNames API, R92-GOVERNED-DOTNET-FODS-GETSHEETNAMES-001)
+  - src/net/fodt/FodtDocument.cs (GetHeadingParagraphs API, R92-GOVERNED-DOTNET-FODT-GETHEADINGPARAGRAPHS-001)
+  - src/net/netpbm/Model/NetpbmImage.cs (FillRegion API, R92-GOVERNED-DOTNET-NETPBM-FILLREGION-001)
+- dotnet_fods_tests: 207 (199 baseline + 8 new GetSheetNames)
+- dotnet_fodt_tests: 193 (184 baseline + 8 new GetHeadingParagraphs + 1 other)
+- dotnet_netpbm_tests: 112 (104 baseline + 8 new FillRegion)
+- dotnet_total: 512
+- python_tests: 2467 (tests/python/) or 2570 (including supervisor/evidence)
+- product_ledger_entries: 5 governed changes (3 R92 + 2 R91 + prior backfills)
+- commercial_product_ready: false
+- gate_11_approved: false
+- publication_authorized: false

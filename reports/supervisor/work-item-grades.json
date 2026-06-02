@@ -1,13 +1,14 @@
 [
   {
     "item_id": "WI-A",
-    "item_title": "Supervisor flow gap analysis and repair plan",
+    "item_title": "R91 Work Item Grades",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/r91/autonomous-supervisor-flow-gap-analysis.md",
-      "reports/r91/plan-healing-before-execution.md"
+      "reports/r92/r91-work-item-grades.md",
+      "reports/r92/r91-work-item-grades.json",
+      "reports/r92/r91-declaration-review.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -22,23 +23,18 @@
   },
   {
     "item_id": "WI-B",
-    "item_title": "Repair 12 inherited pre-existing test failures",
+    "item_title": "Declaration Evidence Materializer",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/r91/r90-defect-ledger.md",
-      "reports/r91/r90-defect-ledger.json"
+      "tools/supervisor/materialize_declared_evidence.py"
     ],
-    "tests_supporting": [
-      "tests/evidence/test_r84_review_package_top_level_artifacts.py",
-      "tests/packaging/test_r60_artifact_source_commit.py"
-    ],
+    "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths",
-      "Tests declared"
+      "No missing paths"
     ],
     "acceptance_criteria_failed": [],
     "required_rework": "",
@@ -47,13 +43,13 @@
   },
   {
     "item_id": "WI-C",
-    "item_title": "autonomous_cycle.py: true_with_rework continuation mode + grade output copy",
+    "item_title": "Declaration Review Package Builder",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/r91/continuation-signal-stop-logic-repair.md",
-      "tools/supervisor/autonomous_cycle.py"
+      "tools/supervisor/build_declaration_review_package.py",
+      "reports/r92/declaration-review-package-builder.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -68,13 +64,16 @@
   },
   {
     "item_id": "WI-D",
-    "item_title": "policies.yaml: rework_continues_safe_lanes + inherited_failure_isolation",
+    "item_title": "Declaration Schema and Supervisor Flow Documentation",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED",
     "evidence_found": true,
     "evidence_paths": [
-      ".supervisor/policies.yaml",
-      "reports/r91/continuation-signal-stop-logic-repair.md"
+      "reports/r92/declaration-schema-hardening.md",
+      "reports/r92/work-item-grading-enforcement.md",
+      "reports/r92/rework-plus-new-work-generator.md",
+      "reports/r92/continuation-signal-partial-verification.md",
+      "reports/r92/supervisor-context-pack.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -89,13 +88,12 @@
   },
   {
     "item_id": "WI-E",
-    "item_title": "generate_supervisor_packet.py: product-first next-sprint sections",
+    "item_title": "Skill Usage Enforcement",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/r91/rework-plus-new-work-generation.md",
-      "tools/supervisor/generate_supervisor_packet.py"
+      "reports/r92/skill-usage-enforcement.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -109,107 +107,16 @@
     "next_prompt_instruction": ""
   },
   {
-    "item_id": "WI-F",
-    "item_title": "FODS .NET SetCellValue API + tests",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/net/fods/FodsDocument.cs",
-      "tests/net/fods/FodsR91SetCellValueTests.cs"
-    ],
-    "tests_supporting": [
-      "tests/net/fods/FodsR91SetCellValueTests.cs"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Tests declared"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": ""
-  },
-  {
-    "item_id": "WI-G",
-    "item_title": "FODT .NET SaveToFile API + tests",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/net/fodt/FodtDocument.cs",
-      "tests/net/fodt/FodtR91SaveToFileTests.cs"
-    ],
-    "tests_supporting": [
-      "tests/net/fodt/FodtR91SaveToFileTests.cs"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Tests declared"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": ""
-  },
-  {
-    "item_id": "WI-H",
-    "item_title": "Netpbm .NET SetPixelColor tests (API pre-existing)",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tests/net/netpbm/NetpbmR91SetPixelColorTests.cs"
-    ],
-    "tests_supporting": [
-      "tests/net/netpbm/NetpbmR91SetPixelColorTests.cs"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Tests declared"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": ""
-  },
-  {
-    "item_id": "WI-I",
-    "item_title": "SYLK CSV hardening tests",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tests/python/sylk/test_r91_sylk_csv_hardening.py"
-    ],
-    "tests_supporting": [
-      "tests/python/sylk/test_r91_sylk_csv_hardening.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Tests declared"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": ""
-  },
-  {
     "item_id": "WI-J",
-    "item_title": "Product-code ledger updated with R91 governed src changes",
+    "item_title": "Governed Skill Expansion (3 New Skills)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/r90/product-code-change-ledger.json"
+      ".claude/commands/add-dotnet-object-model-feature.md",
+      ".claude/commands/add-roundtrip-test.md",
+      ".claude/commands/add-installed-package-example.md",
+      "reports/r92/governed-skill-expansion.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -224,12 +131,110 @@
   },
   {
     "item_id": "WI-K",
-    "item_title": "poc-targets.yaml updated with R91 test counts and new capabilities",
+    "item_title": "Skill-Driven Execution Proof (FODS GetSheetNames)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED",
     "evidence_found": true,
     "evidence_paths": [
-      "product-capability-matrix/poc-targets.yaml"
+      "reports/r92/skill-driven-execution-proof.md"
+    ],
+    "tests_supporting": [
+      "tests/net/fods/FodsR92GetSheetNamesTests.cs"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Tests declared"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": ""
+  },
+  {
+    "item_id": "WI-L",
+    "item_title": "FODS .NET GetSheetNames API + 8 tests",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/net/fods/FodsDocument.cs",
+      "tests/net/fods/FodsR92GetSheetNamesTests.cs",
+      "reports/r92/fods-dotnet-governed-product-work.md"
+    ],
+    "tests_supporting": [
+      "tests/net/fods/FodsR92GetSheetNamesTests.cs"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Tests declared"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": ""
+  },
+  {
+    "item_id": "WI-M",
+    "item_title": "FODT .NET GetHeadingParagraphs API + 8 tests",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/net/fodt/FodtDocument.cs",
+      "tests/net/fodt/FodtR92GetHeadingParagraphsTests.cs",
+      "reports/r92/fodt-dotnet-governed-product-work.md"
+    ],
+    "tests_supporting": [
+      "tests/net/fodt/FodtR92GetHeadingParagraphsTests.cs"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Tests declared"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": ""
+  },
+  {
+    "item_id": "WI-N",
+    "item_title": "Netpbm .NET FillRegion API + 8 tests",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/net/netpbm/Model/NetpbmImage.cs",
+      "tests/net/netpbm/NetpbmR92FillRegionTests.cs",
+      "reports/r92/netpbm-dotnet-governed-product-work.md"
+    ],
+    "tests_supporting": [
+      "tests/net/netpbm/NetpbmR92FillRegionTests.cs"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Tests declared"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": ""
+  },
+  {
+    "item_id": "WI-O",
+    "item_title": "FOSS Reduced Status",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/r92/foss-reduced-status.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -243,13 +248,74 @@
     "next_prompt_instruction": ""
   },
   {
-    "item_id": "WI-L",
-    "item_title": "project-memory.md and CLAUDE.md memory updated with R91 state",
+    "item_id": "WI-P",
+    "item_title": "Dogfood Export Status",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED",
     "evidence_found": true,
     "evidence_paths": [
+      "reports/r92/dogfood-export-status.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": ""
+  },
+  {
+    "item_id": "WI-Q",
+    "item_title": "Package/Install Proof",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/r92/package-install-proof.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": ""
+  },
+  {
+    "item_id": "WI-R",
+    "item_title": "State Sync (poc-targets.yaml, project-memory.md)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "product-capability-matrix/poc-targets.yaml",
       ".supervisor/project-memory.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": ""
+  },
+  {
+    "item_id": "WI-S",
+    "item_title": "Product Code Ledger Valid",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/r90/product-code-change-ledger.json"
     ],
     "tests_supporting": [],
     "tests_missing": [],

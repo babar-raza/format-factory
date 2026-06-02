@@ -151,7 +151,7 @@ public sealed class FodsDocument
 
     /// <summary>
     /// Get a sheet by name (case-sensitive). Returns null if not found.
-    /// R92 Train B: named sheet access.
+    /// R89 Train B: named sheet access.
     /// </summary>
     public FodsSheet? GetSheetByName(string name)
     {
@@ -160,6 +160,20 @@ public sealed class FodsDocument
             if (sheet.Name == name) return sheet;
         }
         return null;
+    }
+
+    /// <summary>
+    /// Return the names of all sheets in document order.
+    /// Returns an empty list if the document has no sheets.
+    /// R92 Train L: sheet name enumeration.
+    /// </summary>
+    public IReadOnlyList<string> GetSheetNames()
+    {
+        var sheets = Sheets;
+        var names = new List<string>(sheets.Count);
+        foreach (var sheet in sheets)
+            names.Add(sheet.Name);
+        return names.AsReadOnly();
     }
 
     /// <summary>

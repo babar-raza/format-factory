@@ -9,36 +9,88 @@
       "classification": "BACKFILLED_PRE_GOVERNANCE",
       "origin_commit": "a2b8618bf82d364cecc2009bd536b7378f391140",
       "product": "FODS .NET",
-      "capability_refs": ["commercial_net_products.FODS.dotnet_status.export_csv_in_memory"],
-      "api_symbols": ["ExportSheetToCsvString"],
-      "source_files": [{"path": "src/net/fods/FodsCsvExporter.cs", "state": "present", "sha256": "e2d83148a7475043e89f97b3bb5f6f69910559cf93d9420165e3e09e46abbd59"}]
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_csv_in_memory"
+      ],
+      "api_symbols": [
+        "ExportSheetToCsvString"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsCsvExporter.cs",
+          "state": "present",
+          "sha256": "e2d83148a7475043e89f97b3bb5f6f69910559cf93d9420165e3e09e46abbd59"
+        }
+      ]
     },
     {
       "entry_id": "R90-BACKFILL-R89-FODS-DOCUMENT-001",
       "classification": "BACKFILLED_PRE_GOVERNANCE",
       "origin_commit": "a2b8618bf82d364cecc2009bd536b7378f391140",
       "product": "FODS .NET",
-      "capability_refs": ["commercial_net_products.FODS.dotnet_status.inspect_object_model"],
-      "api_symbols": ["SheetCount", "GetSheetByName", "GetCellValue", "GetCellValue(FodsSheet,int,int)"],
-      "source_files": [{"path": "src/net/fods/FodsDocument.cs", "state": "present", "sha256": "23d3afee41bce8d15b9ac1659c4a7e0fe2a773fd2c8bdb84f99df85327e527c7"}]
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.inspect_object_model"
+      ],
+      "api_symbols": [
+        "SheetCount",
+        "GetSheetByName",
+        "GetCellValue",
+        "GetCellValue(FodsSheet,int,int)"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "23d3afee41bce8d15b9ac1659c4a7e0fe2a773fd2c8bdb84f99df85327e527c7"
+        }
+      ]
     },
     {
       "entry_id": "R90-BACKFILL-R89-FODT-DOCUMENT-001",
       "classification": "BACKFILLED_PRE_GOVERNANCE",
       "origin_commit": "a2b8618bf82d364cecc2009bd536b7378f391140",
       "product": "FODT .NET",
-      "capability_refs": ["commercial_net_products.FODT.dotnet_status.text_search", "commercial_net_products.FODT.dotnet_status.char_count", "commercial_net_products.FODT.dotnet_status.edit_paragraphs"],
-      "api_symbols": ["CharCount", "SearchText", "ReplaceText", "ParagraphCount"],
-      "source_files": [{"path": "src/net/fodt/FodtDocument.cs", "state": "present", "sha256": "f914139fb51ac4d53a2f2e0d88713a58b046400185c5ba3f979c74c234885933"}]
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.text_search",
+        "commercial_net_products.FODT.dotnet_status.char_count",
+        "commercial_net_products.FODT.dotnet_status.edit_paragraphs"
+      ],
+      "api_symbols": [
+        "CharCount",
+        "SearchText",
+        "ReplaceText",
+        "ParagraphCount"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "f914139fb51ac4d53a2f2e0d88713a58b046400185c5ba3f979c74c234885933"
+        }
+      ]
     },
     {
       "entry_id": "R90-BACKFILL-R89-NETPBM-IMAGE-001",
       "classification": "BACKFILLED_PRE_GOVERNANCE",
       "origin_commit": "a2b8618bf82d364cecc2009bd536b7378f391140",
       "product": "Netpbm .NET",
-      "capability_refs": ["commercial_net_products.Netpbm.dotnet_status.get_channel_stats", "commercial_net_products.Netpbm.dotnet_status.rotate_90cw", "commercial_net_products.Netpbm.dotnet_status.crop"],
-      "api_symbols": ["GetChannelStats", "Rotate90Cw", "Crop"],
-      "source_files": [{"path": "src/net/netpbm/Model/NetpbmImage.cs", "state": "present", "sha256": "0b338c66eaf44e508778be24c0fcaf7c8a9f621165504aecd710f913dcb6c27e"}]
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.get_channel_stats",
+        "commercial_net_products.Netpbm.dotnet_status.rotate_90cw",
+        "commercial_net_products.Netpbm.dotnet_status.crop"
+      ],
+      "api_symbols": [
+        "GetChannelStats",
+        "Rotate90Cw",
+        "Crop"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "0b338c66eaf44e508778be24c0fcaf7c8a9f621165504aecd710f913dcb6c27e"
+        }
+      ]
     },
     {
       "entry_id": "R90-GOVERNED-PYTHON-NETPBM-PPM-TO-PGM-001",
@@ -46,14 +98,29 @@
       "sprint_id": "FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001",
       "skill": "add-dogfood-export",
       "product": "Netpbm Python FOSS",
-      "capability_refs": ["foss_reduced_products.Netpbm.dogfood_status.ppm_to_pgm"],
-      "api_symbols": ["convert_ppm_to_pgm", "ppm_pixels_to_pgm_pixels"],
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.dogfood_status.ppm_to_pgm"
+      ],
+      "api_symbols": [
+        "convert_ppm_to_pgm",
+        "ppm_pixels_to_pgm_pixels"
+      ],
       "target_ff_library": "pgm.pgm_parser.write_pgm",
       "source_files": [
-        {"path": "src/python/ppm/ppm_to_pgm.py", "state": "present", "sha256": "b07dc8c0fbc32ffcdefea7cc1d3b99b0c04b4a491392db3a90ed4da0543f86f4"},
-        {"path": "src/python/ppm/__init__.py", "state": "present", "sha256": "62e5ccca4d0573afc1c86c86ca4e6bf936b19e1b0d436f528f5111f22ab3f9bb"}
+        {
+          "path": "src/python/ppm/ppm_to_pgm.py",
+          "state": "present",
+          "sha256": "b07dc8c0fbc32ffcdefea7cc1d3b99b0c04b4a491392db3a90ed4da0543f86f4"
+        },
+        {
+          "path": "src/python/ppm/__init__.py",
+          "state": "present",
+          "sha256": "62e5ccca4d0573afc1c86c86ca4e6bf936b19e1b0d436f528f5111f22ab3f9bb"
+        }
       ],
-      "test_files": ["tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py"],
+      "test_files": [
+        "tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py"
+      ],
       "validation_command": ".local/venv/Scripts/python.exe -m pytest tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py -q --tb=short",
       "result": "5 passed",
       "rollback": "Remove ppm_to_pgm.py, remove the two __init__.py exports, remove the R90 test file, and remove this ledger entry."
@@ -64,10 +131,22 @@
       "sprint_id": "FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001",
       "skill": "add-dotnet-api",
       "product": "FODS .NET",
-      "capability_refs": ["commercial_net_products.FODS.dotnet_status.round_trip_edit"],
-      "api_symbols": ["SetCellValue"],
-      "source_files": [{"path": "src/net/fods/FodsDocument.cs", "state": "present", "sha256": "290cbb50eaed38c248c6f2ef2e7795258c78173dfe59874833fb24029cbe9557"}],
-      "test_files": ["tests/net/fods/FodsR91SetCellValueTests.cs"],
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.round_trip_edit"
+      ],
+      "api_symbols": [
+        "SetCellValue"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "290cbb50eaed38c248c6f2ef2e7795258c78173dfe59874833fb24029cbe9557"
+        }
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR91SetCellValueTests.cs"
+      ],
       "validation_command": "dotnet test tests/net/fods/FormatFactory.Fods.Tests.csproj --verbosity quiet",
       "result": "8 new tests pass",
       "rollback": "Remove SetCellValue overloads from FodsDocument.cs, remove FodsR91SetCellValueTests.cs, remove this ledger entry."
@@ -78,13 +157,109 @@
       "sprint_id": "FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001",
       "skill": "add-dotnet-api",
       "product": "FODT .NET",
-      "capability_refs": ["commercial_net_products.FODT.dotnet_status.save_to_file"],
-      "api_symbols": ["SaveToFile"],
-      "source_files": [{"path": "src/net/fodt/FodtDocument.cs", "state": "present", "sha256": "88e721ec0f58bbfa9f98beed5d4754177b1efe59d958bc2926de04c7e9ed5404"}],
-      "test_files": ["tests/net/fodt/FodtR91SaveToFileTests.cs"],
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.save_to_file"
+      ],
+      "api_symbols": [
+        "SaveToFile"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "88e721ec0f58bbfa9f98beed5d4754177b1efe59d958bc2926de04c7e9ed5404"
+        }
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR91SaveToFileTests.cs"
+      ],
       "validation_command": "dotnet test tests/net/fodt/FormatFactory.Fodt.Tests.csproj --verbosity quiet",
       "result": "8 new tests pass",
       "rollback": "Remove SaveToFile from FodtDocument.cs, remove FodtR91SaveToFileTests.cs, remove this ledger entry."
+    },
+    {
+      "entry_id": "R92-GOVERNED-DOTNET-FODS-GETSHEETNAMES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R92",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.inspect_object_model"
+      ],
+      "api_symbols": [
+        "GetSheetNames"
+      ],
+      "api_behavior": "Returns IReadOnlyList<string> of all sheet names in document order. Empty list if no sheets.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR92GetSheetNamesTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "5a62125b1c7a94a59b823a3adfb3706e7948f762b55119c155849a87371a7d0d"
+        }
+      ]
+    },
+    {
+      "entry_id": "R92-GOVERNED-DOTNET-FODT-GETHEADINGPARAGRAPHS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R92",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.inspect_object_model"
+      ],
+      "api_symbols": [
+        "GetHeadingParagraphs"
+      ],
+      "api_behavior": "Returns IReadOnlyList<FodtParagraph> of all heading paragraphs (text:h elements) in document order. Empty list if no headings.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR92GetHeadingParagraphsTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "96892fbd20c6ebf5c61f483d852cce226ee89a5fdabd79b5e189604acd90eb84"
+        }
+      ]
+    },
+    {
+      "entry_id": "R92-GOVERNED-DOTNET-NETPBM-FILLREGION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R92",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.edit_pixels"
+      ],
+      "api_symbols": [
+        "FillRegion"
+      ],
+      "api_behavior": "Fills a rectangular region with uniform value (PBM/PGM) or color (PPM). Guards: bounds check, PBM value must be 0 or 1.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR92FillRegionTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "e21c2037284b57adba4a9c4e7bdda2ed137664fc626b1ed435d628de39e02ab6"
+        }
+      ]
     }
   ]
 }
