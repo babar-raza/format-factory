@@ -165,7 +165,7 @@ public sealed class FodsDocument
     /// <summary>
     /// Get a cell value by zero-based row and column indices from the first sheet.
     /// Returns null if indices are out of range or cell is empty/covered.
-    /// R92 Train B: cell-level access.
+    /// R89 Train B: cell-level access.
     /// </summary>
     public string? GetCellValue(int row, int col)
     {
@@ -177,7 +177,7 @@ public sealed class FodsDocument
     /// <summary>
     /// Get a cell value by zero-based row and column indices from a specific sheet.
     /// Returns null if indices are out of range or cell is empty/covered.
-    /// R92 Train B: cell-level access.
+    /// R89 Train B: cell-level access.
     /// </summary>
     public static string? GetCellValue(FodsSheet sheet, int row, int col)
     {
@@ -187,6 +187,40 @@ public sealed class FodsDocument
         if (col < 0 || col >= r.Cells.Count) return null;
         var cell = r.Cells[col];
         return cell.IsCovered ? null : cell.Value;
+    }
+
+    /// <summary>
+    /// Set a cell value by zero-based row and column indices on the first sheet.
+    /// The row and column must exist within the sheet's existing DOM structure.
+    /// Throws <see cref="ArgumentOutOfRangeException"/> if indices are out of range.
+    /// R91 Train G: round-trip edit support.
+    /// </summary>
+    public void SetCellValue(int row, int col, string value)
+    {
+        var sheets = Sheets;
+        if (sheets.Count == 0)
+            throw new ArgumentOutOfRangeException(nameof(row), "Document has no sheets.");
+        SetCellValue(sheets[0], row, col, value);
+    }
+
+    /// <summary>
+    /// Set a cell value by zero-based row and column indices on a specific sheet.
+    /// The row and column must exist within the sheet's existing DOM structure.
+    /// Throws <see cref="ArgumentOutOfRangeException"/> if indices are out of range.
+    /// R91 Train G: round-trip edit support.
+    /// </summary>
+    public static void SetCellValue(FodsSheet sheet, int row, int col, string value)
+    {
+        ArgumentNullException.ThrowIfNull(sheet);
+        ArgumentNullException.ThrowIfNull(value);
+        if (row < 0 || row >= sheet.Rows.Count)
+            throw new ArgumentOutOfRangeException(nameof(row),
+                $"Row {row} is out of range (sheet has {sheet.Rows.Count} rows).");
+        var r = sheet.Rows[row];
+        if (col < 0 || col >= r.Cells.Count)
+            throw new ArgumentOutOfRangeException(nameof(col),
+                $"Column {col} is out of range (row has {r.Cells.Count} cells).");
+        r.Cells[col].SetText(value);
     }
 
     /// <summary>

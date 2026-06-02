@@ -1,0 +1,211 @@
+- item_id: WI-A
+  item_title: Supervisor flow gap analysis and repair plan
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - reports/r91/autonomous-supervisor-flow-gap-analysis.md
+  - reports/r91/plan-healing-before-execution.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-B
+  item_title: Repair 12 inherited pre-existing test failures
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - reports/r91/r90-defect-ledger.md
+  - reports/r91/r90-defect-ledger.json
+  tests_supporting:
+  - tests/evidence/test_r84_review_package_top_level_artifacts.py
+  - tests/packaging/test_r60_artifact_source_commit.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Tests declared
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-C
+  item_title: 'autonomous_cycle.py: true_with_rework continuation mode + grade output
+    copy'
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - reports/r91/continuation-signal-stop-logic-repair.md
+  - tools/supervisor/autonomous_cycle.py
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-D
+  item_title: 'policies.yaml: rework_continues_safe_lanes + inherited_failure_isolation'
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - .supervisor/policies.yaml
+  - reports/r91/continuation-signal-stop-logic-repair.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-E
+  item_title: 'generate_supervisor_packet.py: product-first next-sprint sections'
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - reports/r91/rework-plus-new-work-generation.md
+  - tools/supervisor/generate_supervisor_packet.py
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-F
+  item_title: FODS .NET SetCellValue API + tests
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - src/net/fods/FodsDocument.cs
+  - tests/net/fods/FodsR91SetCellValueTests.cs
+  tests_supporting:
+  - tests/net/fods/FodsR91SetCellValueTests.cs
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Tests declared
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-G
+  item_title: FODT .NET SaveToFile API + tests
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - src/net/fodt/FodtDocument.cs
+  - tests/net/fodt/FodtR91SaveToFileTests.cs
+  tests_supporting:
+  - tests/net/fodt/FodtR91SaveToFileTests.cs
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Tests declared
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-H
+  item_title: Netpbm .NET SetPixelColor tests (API pre-existing)
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - tests/net/netpbm/NetpbmR91SetPixelColorTests.cs
+  tests_supporting:
+  - tests/net/netpbm/NetpbmR91SetPixelColorTests.cs
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Tests declared
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-I
+  item_title: SYLK CSV hardening tests
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - tests/python/sylk/test_r91_sylk_csv_hardening.py
+  tests_supporting:
+  - tests/python/sylk/test_r91_sylk_csv_hardening.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Tests declared
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-J
+  item_title: Product-code ledger updated with R91 governed src changes
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - reports/r90/product-code-change-ledger.json
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-K
+  item_title: poc-targets.yaml updated with R91 test counts and new capabilities
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - product-capability-matrix/poc-targets.yaml
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: WI-L
+  item_title: project-memory.md and CLAUDE.md memory updated with R91 state
+  declared_status: completed
+  supervisor_grade: ACCEPTED
+  evidence_found: true
+  evidence_paths:
+  - .supervisor/project-memory.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''

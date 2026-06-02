@@ -183,11 +183,35 @@ Contract: C:\Users\prora\OneDrive\Documents\
 
 ## Entry: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
 - timestamp: 2026-06-02
-- status: IN_PROGRESS
-- canonical_closeout: python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/<run_id>/evidence-declaration.yaml
-- legacy_run_on_latest: LEGACY_ONLY
+- status: COMPLETE
+- verdict: R90_MAINSTREAM_PRODUCT_ACCELERATION_ACTIVE_GOVERNED_POC_PROGRESS_PASS
 - source_audit: R89 FODS, FODT, and Netpbm APIs remain present with tests
-- acceleration_layer: IN_PROGRESS
+- acceleration_layer: COMPLETE
+- governed_src_change: src/python/ppm/ppm_to_pgm.py (new, /add-dogfood-export skill)
+- new_tests: 5 (test_r90_ppm_to_pgm_dogfood.py)
+- commercial_product_ready: false
+- gate_11_approved: false
+- publication_authorized: false
+
+## Entry: FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001
+- timestamp: 2026-06-02
+- status: COMPLETE
+- verdict: R91_AUTONOMOUS_SUPERVISOR_HEALED_POC_DEEPENED_PUBLICATION_BLOCKED
+- supervisor_flow_healed: true (declaration→grading→rework+new-work→continuation)
+- inherited_failures_repaired: 12 (R84 sidecar git-rm, R88 contract_id, test tolerance fixes)
+- python_tests: 4675 passed, 0 failed, 18 skipped
+- dotnet_fods_tests: 199 (191 baseline + 8 new SetCellValue)
+- dotnet_fodt_tests: 184 (176 baseline + 8 new SaveToFile)
+- dotnet_netpbm_tests: 104 (94 baseline + 10 new SetPixelColor)
+- python_new_tests: 7 (test_r91_sylk_csv_hardening.py)
+- dotnet_total: 487
+- governed_src_changes:
+  - src/net/fods/FodsDocument.cs (SetCellValue API, R91-GOVERNED-DOTNET-FODS-SETCELLVALUE-001)
+  - src/net/fodt/FodtDocument.cs (SaveToFile alias, R91-GOVERNED-DOTNET-FODT-SAVETOFILE-001)
+- acceleration_layer_repairs:
+  - autonomous_cycle.py: true_with_rework continuation mode + grade output copy
+  - policies.yaml: rework_continues_safe_lanes + inherited_failure_isolation
+  - generate_supervisor_packet.py: product-first next-sprint sections
 - commercial_product_ready: false
 - gate_11_approved: false
 - publication_authorized: false

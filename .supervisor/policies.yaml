@@ -251,6 +251,27 @@ autonomous_continuation:
   # External gates do not block autonomous continuation
   external_gates_block_autonomous: false
 
+  # R91: rework lanes continue safe lanes; inherited failures don't stop continuation
+  rework_continues_safe_lanes: true
+  inherited_failure_isolation: true
+  stop_conditions:
+    - external_gate
+    - credentials
+    - git_push_or_publication
+    - destructive_action
+    - test_baseline_failure_blocking_product_truth
+    - no_progress_threshold_exceeded
+    - max_iterations
+
+  # Continuation signal modes (R91+):
+  #   true            — all accepted, pure new-work sprint
+  #   true_with_rework — rework items but safe lanes continue
+  #   false           — hard stop
+  continuation_signal_modes:
+    - true
+    - true_with_rework
+    - false
+
   # Continuous loop settings (MODE 5+)
   max_iterations: 5
   no_progress_max_consecutive: 2

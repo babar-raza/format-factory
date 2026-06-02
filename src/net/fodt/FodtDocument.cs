@@ -114,6 +114,14 @@ public sealed class FodtDocument
         FodtWriter.Save(_doc, filePath);
     }
 
+    /// <summary>
+    /// Save this document to the specified file path.
+    /// Alias for <see cref="Save(string)"/> — provides explicit round-trip API name.
+    /// R91 Train H: same-format save after edit demonstration.
+    /// </summary>
+    /// <param name="path">Absolute or relative path to write.</param>
+    public void SaveToFile(string path) => Save(path);
+
     // -------------------------------------------------------------------------
     // Document model: Body and Paragraphs
     // -------------------------------------------------------------------------

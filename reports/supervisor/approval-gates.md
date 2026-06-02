@@ -1,17 +1,19 @@
 # Approval Gates Classification
-Sprint ID: unknown
-Generated: 2026-06-02T14:25:13.642602
+Sprint ID: FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001
+Generated: 2026-06-02T15:15:01.931415
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions
 
 | Action | Classification | Who Unblocks |
 |--------|---------------|-------------|
-| Repair 2 CRITICAL contradictions | local-repair-loop | Claude_Code |
-| Continue to next sprint | stop-contradictions-present | Claude_Code (after repair) |
+| Continue to next sprint lanes | autonomous-continue | null |
+| Gate approval (if any gate pending) | stop-gate-approval-required | Babar_Raza |
+| Push/commit | stop-push-approval-required | User |
+| MCP activation (MODE 4 ACTIVE — .vscode/mcp.json verified present) | autonomous-continue | already-done |
 
 ## Summary
-- AUTONOMOUS_CONTINUE: NO — repair required first
+- AUTONOMOUS_CONTINUE: YES
 - NEXT_HUMAN_GATE: MODE 5 autonomous sprint loop (explicit user approval required)
 - MCP_STATUS: ACTIVE (.vscode/mcp.json verified present)
 - DAEMON_STATUS: NOT_STARTED (no human gate needed to keep it stopped)

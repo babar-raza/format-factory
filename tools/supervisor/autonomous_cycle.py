@@ -150,6 +150,8 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     copies = [
         ("supervisor-review.md", "latest-review.md"),
         ("combined-next-worker-prompt.md", "latest-next-worker-prompt.md"),
+        ("item-grades.json", "work-item-grades.json"),
+        ("item-grades.yaml", "work-item-grades.yaml"),
     ]
     for src_name, dst_name in copies:
         src = review_dir / src_name
@@ -157,6 +159,34 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         if src.exists():
             shutil.copy2(str(src), str(dst))
             print(f"  Copied: {dst}")
+
+    # Write human-readable work-item-grades.md to reports/supervisor/
+    grades = review.get("item_grades", [])
+    if grades:
+        wg_lines = [
+            "# Work Item Grades",
+            f"Sprint: {sprint_id}",
+            f"Generated: {timestamp}",
+            f"Global Status: {review.get('overall_verdict', 'UNKNOWN')}",
+            "",
+            "| Item ID | Grade | Rework Required |",
+            "|---------|-------|-----------------|",
+        ]
+        for g in grades:
+            rework = (g.get("required_rework") or "")[:80]
+            wg_lines.append(
+                f"| {g['item_id']} | {g['supervisor_grade']} | {rework} |"
+            )
+        wg_lines += [
+            "",
+            "## Summary",
+            f"- Accepted: {len(review['accepted_items'])}",
+            f"- Rework: {len(review['rework_items'])}",
+            f"- Overclaimed: {len(review['overclaimed_items'])}",
+            f"- Autonomous Continue: {review['autonomous_continue']}",
+        ]
+        (latest_dir / "work-item-grades.md").write_text("\n".join(wg_lines) + "\n", encoding="utf-8")
+        print(f"  Written: {latest_dir / 'work-item-grades.md'}")
 
     # Write latest cycle summary
     summary_lines = [
@@ -212,12 +242,27 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         if manifest.get("exit_code") == 3:
             hard_stops.append("critical_rework_blocks_continuation")
 
+        # Determine continuation mode:
+        #   true            — all items accepted, pure new-work sprint
+        #   true_with_rework — rework items exist but safe lanes can continue
+        #   false           — hard stop (overclaim/reject/external gate)
+        rework_items = review.get("rework_items", [])
+        overclaimed = review.get("overclaimed_items", [])
+        if hard_stops or overclaimed:
+            auto_continue_value = False
+        elif rework_items and not overclaimed:
+            auto_continue_value = "true_with_rework"
+        else:
+            auto_continue_value = bool(manifest.get("autonomous_continue", False))
+
         signal = {
-            "autonomous_continue": manifest["autonomous_continue"] and not hard_stops,
+            "autonomous_continue": auto_continue_value,
             "iteration": existing_iteration,
             "max_iterations": max_iterations,
             "next_sprint_path": "reports/supervisor/next-sprint.md",
             "stop_reason": hard_stops[0] if hard_stops else None,
+            "rework_items": rework_items,
+            "safe_lanes_available": not bool(hard_stops),
             "generated_at": timestamp,
             "source_sprint_id": sprint_id,
             "hard_stops_detected": hard_stops,

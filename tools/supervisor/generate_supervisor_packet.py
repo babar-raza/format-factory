@@ -488,7 +488,7 @@ def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: 
     autonomous = contradictions.get("autonomous_continue", True)
 
     if critical_count > 0:
-        focus = "REPAIR: Address CRITICAL contradictions before advancing"
+        focus = "PRODUCT + REPAIR: Advance product POC AND address CRITICAL contradictions"
         repair_notes = "\n".join(
             f"- [{c['severity']}] {c['description']}"
             for c in contradictions.get("contradictions", [])
@@ -499,11 +499,19 @@ def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: 
 
     test_line = f"{facts.get('test_count', 0)} passed, {facts.get('fail_count', 0)} failed, {facts.get('skip_count', 0)} skipped"
 
-    # Build task summary for prompt
-    task_lines = "\n".join(
+    # Split tasks: product/new-work first, repair/rework second
+    repair_tasks = [t for t in tasks if t.get("task_id", "").startswith("REPAIR-")]
+    product_tasks = [t for t in tasks if not t.get("task_id", "").startswith("REPAIR-")]
+
+    product_task_lines = "\n".join(
         f"- [{t.get('status', 'pending')}] {t['task_id']}: {t['title']}"
-        for t in tasks
-    )
+        for t in product_tasks
+    ) or "(no product tasks generated)"
+
+    repair_task_lines = "\n".join(
+        f"- [{t.get('status', 'pending')}] {t['task_id']}: {t['title']}"
+        for t in repair_tasks
+    ) or "None"
 
     content = f"""# Supervisor-Generated Next Sprint Prompt
 # Source sprint: {sprint_id}
@@ -522,11 +530,14 @@ def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: 
 - Tests: {test_line}
 - Autonomous continue: {autonomous}
 
-## Contradictions Requiring Repair
-{repair_notes}
+## Section 1: New Product Work (Advisory — Always Execute)
+{product_task_lines}
 
-## Synthesized Task List (Advisory)
-{task_lines}
+## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
+{repair_task_lines}
+
+## Contradictions Context
+{repair_notes}
 
 ## Non-Negotiable Rules (always apply)
 1. No push without explicit user authorization.

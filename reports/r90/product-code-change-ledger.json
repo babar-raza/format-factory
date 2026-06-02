@@ -57,6 +57,34 @@
       "validation_command": ".local/venv/Scripts/python.exe -m pytest tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py -q --tb=short",
       "result": "5 passed",
       "rollback": "Remove ppm_to_pgm.py, remove the two __init__.py exports, remove the R90 test file, and remove this ledger entry."
+    },
+    {
+      "entry_id": "R91-GOVERNED-DOTNET-FODS-SETCELLVALUE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": ["commercial_net_products.FODS.dotnet_status.round_trip_edit"],
+      "api_symbols": ["SetCellValue"],
+      "source_files": [{"path": "src/net/fods/FodsDocument.cs", "state": "present", "sha256": "290cbb50eaed38c248c6f2ef2e7795258c78173dfe59874833fb24029cbe9557"}],
+      "test_files": ["tests/net/fods/FodsR91SetCellValueTests.cs"],
+      "validation_command": "dotnet test tests/net/fods/FormatFactory.Fods.Tests.csproj --verbosity quiet",
+      "result": "8 new tests pass",
+      "rollback": "Remove SetCellValue overloads from FodsDocument.cs, remove FodsR91SetCellValueTests.cs, remove this ledger entry."
+    },
+    {
+      "entry_id": "R91-GOVERNED-DOTNET-FODT-SAVETOFILE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": ["commercial_net_products.FODT.dotnet_status.save_to_file"],
+      "api_symbols": ["SaveToFile"],
+      "source_files": [{"path": "src/net/fodt/FodtDocument.cs", "state": "present", "sha256": "88e721ec0f58bbfa9f98beed5d4754177b1efe59d958bc2926de04c7e9ed5404"}],
+      "test_files": ["tests/net/fodt/FodtR91SaveToFileTests.cs"],
+      "validation_command": "dotnet test tests/net/fodt/FormatFactory.Fodt.Tests.csproj --verbosity quiet",
+      "result": "8 new tests pass",
+      "rollback": "Remove SaveToFile from FodtDocument.cs, remove FodtR91SaveToFileTests.cs, remove this ledger entry."
     }
   ]
 }

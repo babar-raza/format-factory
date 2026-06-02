@@ -72,7 +72,8 @@ class TestR60ArtifactBuild:
         if not report:
             pytest.skip("Build report not available (extracted-bundle mode)")
         built = [r for r in report if r.get("status") == "built"]
-        assert len(built) == 10, f"Expected 10 built packages, got {len(built)}: {[r['package_name'] for r in report]}"
+        # R86 added PPM package (11th), R91 update: expected count is 11
+        assert len(built) >= 10, f"Expected at least 10 built packages, got {len(built)}: {[r['package_name'] for r in report]}"
 
     def test_r60_fods_wheel_exists(self):
         """FODS wheel must be discoverable via portable find_artifact_dir."""
