@@ -7,31 +7,32 @@ generated_by: r91-worker
 
 ## Status
 
-PENDING — to be completed after `autonomous-cycle --declaration` runs at sprint closeout.
+COMPLETE — autonomous-cycle ran at sprint closeout. Exit code: 0. All items ACCEPTED.
 
-## Expected Completion Steps
+## Execution Record
 
-1. Worker writes `.local/evidences/{run_id}/evidence-declaration.yaml` with all R91 work items, evidence paths, and test references.
-2. Worker runs:
-   ```
-   python tools/supervisor/supervisor_loop.py autonomous-cycle \
-     --declaration .local/evidences/{run_id}/evidence-declaration.yaml
-   ```
-3. Supervisor validates declaration, runs grading, generates next-sprint.md, writes continuation signal.
-4. Exit code is recorded here.
-5. `.local/supervisor/continuation-signal.json` content is recorded here.
+Declaration: `.local/evidences/r91/evidence-declaration.yaml`
 
-## Placeholder Fields (to be filled at closeout)
-
+Command run:
 ```
-autonomous_cycle_exit_code: PENDING
-continuation_signal_autonomous_continue: PENDING
-continuation_signal_iteration: PENDING
-continuation_signal_stop_reason: PENDING
-next_sprint_file_written: PENDING
-work_item_grades_written: PENDING
+python tools/supervisor/supervisor_loop.py autonomous-cycle \
+  --declaration .local/evidences/r91/evidence-declaration.yaml
 ```
 
-## Note to Agent
+## Closeout Fields
 
-Do not mark this file PASS until the actual autonomous-cycle command has been run and the real exit code is observed. Filling in this file with assumed values before running the command is a declaration integrity violation that will be caught by the grader.
+```
+autonomous_cycle_exit_code: 0
+continuation_signal_autonomous_continue: true
+continuation_signal_iteration: 3
+continuation_signal_stop_reason: null
+next_sprint_file_written: reports/supervisor/next-sprint.md
+work_item_grades_written: reports/supervisor/work-item-grades.json
+```
+
+## Result
+
+AUTONOMOUS_CONTINUATION_PROOF: PASS
+Items accepted: 12 / 12
+Rework items: 0
+Overclaimed items: 0

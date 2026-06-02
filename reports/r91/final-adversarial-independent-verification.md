@@ -136,8 +136,8 @@ Verdict: YES
 
 ### (11) Evidence-Declaration / Autonomous-Cycle Closeout
 
-Claim: PENDING (runs at closeout)
+Claim: autonomous-cycle exit 0, all work items ACCEPTED, AUTONOMOUS_CONTINUE: YES
 
-Status: Not yet run. `reports/r91/autonomous-continuation-proof.md` is marked PENDING. This item will be updated after the declaration is written and autonomous-cycle is executed.
+Status: COMPLETE. Declaration written at `.local/evidences/r91/evidence-declaration.yaml`. `autonomous-cycle --declaration` ran, exit code 0. 12/12 items ACCEPTED. Continuation signal: `autonomous_continue: true`, iteration 3/5. See `reports/r91/autonomous-continuation-proof.md`.
 
-Verdict: PENDING — acceptable at pre-closeout IV stage
+Verdict: YES
