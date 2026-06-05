@@ -21,6 +21,13 @@
     <None Include="README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
 
+  <!-- Sprint FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001 -->
+  <!-- FODT exporters now delegate to standalone FF target writer libraries -->
+  <ItemGroup>
+    <ProjectReference Include="../txt/FormatFactory.Txt.csproj" />
+    <ProjectReference Include="../markdown/FormatFactory.Markdown.csproj" />
+  </ItemGroup>
+
   <!-- Gate 11 Tier 0 Note:
        Commercial-only .NET Tier 0 implementation.
        DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only.

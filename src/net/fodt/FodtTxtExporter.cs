@@ -2,6 +2,9 @@
 // DEC-033 Option B: .NET Commercial Only
 // Gate 11 status: g11e_prototype_complete — G11-G NOT approved
 // Sprint: FORMAT-FACTORY-R22-FULL-THROTTLE-RELEASE-CANDIDATE-AND-GATE11-PROTOTYPE-TRAIN-001
+// Refactored: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
+// dogfood_status: IMPLEMENTED — delegates TXT serialization to FormatFactory.Txt.TxtWriter
+// target_ff_library: FormatFactory.Txt.TxtWriter
 //
 // PROTOTYPE STATUS: design_complete_in_progress
 // This is a G11-E conversion/export prototype only.
@@ -12,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using FormatFactory.Txt;
 
 namespace FormatFactory.Fodt;
 
@@ -99,30 +103,23 @@ public static class FodtTxtExporter
         var paragraphs = doc.Paragraphs;
         if (paragraphs.Count == 0)
         {
-            // Write empty file
-            File.WriteAllText(txtPath, string.Empty, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            // Delegate to FormatFactory.Txt.TxtWriter for empty document (dogfood path)
+            TxtWriter.WriteLinesToFile(new List<string?>(), txtPath);
             result.ParagraphsExported = 0;
             result.Status = "exported_empty_no_paragraphs";
             result.Warnings.Add("Source FODT has no paragraphs in the body.");
             return result;
         }
 
-        // Build output: each paragraph on its own line
-        var lines = new List<string>(paragraphs.Count);
+        // Build lines from FODT paragraphs — FodtParagraph.Text concatenates all text nodes
+        var lines = new List<string?>(paragraphs.Count);
         foreach (var para in paragraphs)
-        {
-            // FodtParagraph.Text already concatenates all descendant text nodes
             lines.Add(para.Text);
-        }
-
-        // Join with LF (no trailing newline on last line — let caller decide)
-        var content = string.Join("\n", lines);
-        // Normalize any \r\n to \n for consistent output
-        content = content.Replace("\r\n", "\n").Replace("\r", "\n");
 
         try
         {
-            File.WriteAllText(txtPath, content, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            // Delegate serialization to FormatFactory.Txt.TxtWriter (dogfood path)
+            TxtWriter.WriteLinesToFile(lines, txtPath);
         }
         catch (IOException ex)
         {

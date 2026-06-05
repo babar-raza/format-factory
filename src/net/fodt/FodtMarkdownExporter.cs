@@ -2,6 +2,9 @@
 // DEC-033 Option B: .NET Commercial Only
 // Gate 11 status: g11e_prototype_complete — G11-G NOT approved
 // Sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-001
+// Refactored: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
+// dogfood_status: IMPLEMENTED — delegates Markdown serialization to FormatFactory.Markdown.MarkdownWriter
+// target_ff_library: FormatFactory.Markdown.MarkdownWriter
 //
 // PROTOTYPE STATUS: design_complete_in_progress
 // commercial_product_ready: false
@@ -11,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using FormatFactory.Markdown;
 
 namespace FormatFactory.Fodt;
 
@@ -97,24 +101,20 @@ public static class FodtMarkdownExporter
 
         if (paragraphs.Count == 0)
         {
-            File.WriteAllText(mdPath, string.Empty,
-                new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            // Delegate to FormatFactory.Markdown.MarkdownWriter for empty document (dogfood path)
+            MarkdownWriter.WriteLinesToFile(new List<string?>(), mdPath);
             result.Status = "exported_empty_no_paragraphs";
             result.Warnings.Add("Source FODT has no paragraphs in the body.");
             return result;
         }
 
-        var lines = new List<string>(paragraphs.Count);
-
+        // Build Markdown lines by delegating formatting to FormatFactory.Markdown.MarkdownWriter
+        var lines = new List<string?>(paragraphs.Count);
         foreach (var para in paragraphs)
         {
             if (para.IsHeading)
             {
-                int level = para.OutlineLevel;
-                if (level < 1) level = 1;
-                if (level > 6) level = 6;
-                string prefix = new string('#', level);
-                lines.Add($"{prefix} {para.Text}");
+                lines.Add(MarkdownWriter.WriteHeading(para.Text, para.OutlineLevel));
                 headingCount++;
             }
             else
@@ -124,13 +124,10 @@ public static class FodtMarkdownExporter
             }
         }
 
-        var content = string.Join("\n", lines);
-        content = content.Replace("\r\n", "\n").Replace("\r", "\n");
-
         try
         {
-            File.WriteAllText(mdPath, content,
-                new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            // Delegate file output to FormatFactory.Markdown.MarkdownWriter (dogfood path)
+            MarkdownWriter.WriteLinesToFile(lines, mdPath);
         }
         catch (IOException ex)
         {
@@ -152,14 +149,16 @@ public static class FodtMarkdownExporter
     /// Format a single paragraph as a Markdown line.
     /// Headings use ATX format (# to ######); paragraphs are returned as-is.
     /// </summary>
+    /// <summary>
+    /// Delegates to <see cref="MarkdownWriter.WriteHeading"/> for headings,
+    /// returns plain text for paragraphs. Kept for API compatibility.
+    /// </summary>
     public static string FormatParagraphAsMarkdown(FodtParagraph para)
     {
         ArgumentNullException.ThrowIfNull(para);
         if (!para.IsHeading) return para.Text;
-        int level = para.OutlineLevel;
-        if (level < 1) level = 1;
-        if (level > 6) level = 6;
-        return $"{new string('#', level)} {para.Text}";
+        // Delegate heading formatting to FormatFactory.Markdown.MarkdownWriter (dogfood path)
+        return MarkdownWriter.WriteHeading(para.Text, para.OutlineLevel);
     }
 }
 
