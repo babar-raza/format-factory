@@ -47,8 +47,15 @@ def sha256_file(path: Path) -> str:
 
 
 def git_diff_file(repo_root: Path, rel_path: str) -> str:
-    """Get git diff for a specific file (HEAD vs working tree or HEAD vs staged)."""
+    """Get git diff for a specific file.
+
+    Checks in order:
+    1. Working tree changes (HEAD vs working tree)
+    2. Staged changes (HEAD vs index)
+    3. Last committed change (HEAD~1 vs HEAD) — captures real diffs for already-committed files
+    """
     try:
+        # 1. Working tree diff
         result = subprocess.run(
             ["git", "diff", "HEAD", "--", rel_path],
             cwd=str(repo_root),
@@ -58,7 +65,8 @@ def git_diff_file(repo_root: Path, rel_path: str) -> str:
         )
         if result.stdout.strip():
             return result.stdout
-        # Try staged diff
+
+        # 2. Staged diff
         result2 = subprocess.run(
             ["git", "diff", "--cached", "HEAD", "--", rel_path],
             cwd=str(repo_root),
@@ -66,7 +74,34 @@ def git_diff_file(repo_root: Path, rel_path: str) -> str:
             text=True,
             timeout=30,
         )
-        return result2.stdout or ""
+        if result2.stdout.strip():
+            return result2.stdout
+
+        # 3. Last committed diff (R94 fix: capture real diffs for committed files)
+        result3 = subprocess.run(
+            ["git", "log", "-1", "-p", "--", rel_path],
+            cwd=str(repo_root),
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if result3.stdout.strip():
+            return result3.stdout
+
+        # 4. R108: Untracked file — produce full-content diff
+        full_path = repo_root / rel_path
+        if full_path.exists():
+            result4 = subprocess.run(
+                ["git", "diff", "--no-index", "/dev/null", rel_path],
+                cwd=str(repo_root),
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            if result4.stdout.strip():
+                return f"# NEW_FILE (untracked)\n{result4.stdout}"
+
+        return ""
     except Exception as e:
         return f"# git diff failed: {e}\n"
 
@@ -153,16 +188,15 @@ def materialize(declaration_path: Path, repo_root: Path, out_dir: Path) -> dict:
         else:
             missing.append(result)
 
-    # --- Capture git diffs for src/* changes ---
-    src_changes = [cf for cf in changed_files if cf.startswith("src/")]
+    # --- Capture git diffs for ALL declared changed files (R104: not just src/*) ---
     diffs = []
-    for src_path in src_changes:
+    for src_path in changed_files:
         diff = git_diff_file(repo_root, src_path)
         git_log = git_show_file(repo_root, src_path)
         diffs.append({
             "path": src_path,
             "last_commit": git_log,
-            "diff": diff or "(working tree clean — file committed)",
+            "diff": diff or "(no diff available — file is committed clean with no recent changes)",
         })
 
     # Write diffs patch file
@@ -173,7 +207,7 @@ def materialize(declaration_path: Path, repo_root: Path, out_dir: Path) -> dict:
         patch_content += d["diff"] + "\n"
 
     patch_path = out_dir / "source-change-diffs.patch"
-    patch_path.write_text(patch_content or "# No src/* diffs (all committed clean)\n", encoding="utf-8")
+    patch_path.write_text(patch_content or "# No diffs (all committed clean)\n", encoding="utf-8")
 
     # --- Load ledger snapshot ---
     ledger_path = repo_root / "reports" / "r90" / "product-code-change-ledger.json"
@@ -240,7 +274,7 @@ def materialize(declaration_path: Path, repo_root: Path, out_dir: Path) -> dict:
         "evidence_root": evidence_root,
         "artifacts_verified": len(verified),
         "artifacts_missing": len(missing),
-        "src_changes_captured": len(src_changes),
+        "src_changes_captured": len(diffs),
         "test_results": test_results,
         "verified_artifacts": verified,
         "missing_artifacts": missing,
@@ -283,7 +317,7 @@ def materialize(declaration_path: Path, repo_root: Path, out_dir: Path) -> dict:
         "",
         f"- Artifacts verified: {len(verified)}",
         f"- Artifacts missing: {len(missing)}",
-        f"- Source changes captured: {len(src_changes)}",
+        f"- Source changes captured: {len(diffs)}",
         "",
         "## Work Item Grades",
         "",

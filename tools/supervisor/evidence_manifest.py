@@ -131,6 +131,27 @@ def generate_from_declaration(declaration_path: Path, repo_root: Path) -> dict:
 
         artifacts.append(entry)
 
+    # R103: Also include declared evidence_artifacts that live outside evidence_root
+    seen_paths = {a["path"] for a in artifacts}
+    for art in decl.get("evidence_artifacts", []):
+        rel = art.get("path", "")
+        if not rel or rel in seen_paths:
+            continue
+        full = repo_root / rel
+        if not full.exists() or not full.is_file():
+            continue
+        entry = {
+            "path": rel.replace("\\", "/"),
+            "type": art.get("type", infer_type(full.name)),
+            "sha256": sha256_file(full),
+            "size_bytes": full.stat().st_size,
+        }
+        desc = art.get("description", "")
+        if desc:
+            entry["description"] = desc
+        artifacts.append(entry)
+        seen_paths.add(rel)
+
     manifest = {
         "run_id": run_id,
         "evidence_root": evidence_root,

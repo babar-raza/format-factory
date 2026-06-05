@@ -1,0 +1,9 @@
+{
+  "fixture_name": "sylk_missing_dogfood",
+  "description": "SYLK claim has impl+tests but dogfood_required=true and no dogfood artifact",
+  "expected_overall_verdict": "COVERAGE_BLOCKED",
+  "expected_overclaim": false,
+  "expected_stale": false,
+  "expected_validator_errors": 0,
+  "notes": "Coverage blocked: missing DogfoodProof (dogfood_required=true, no dogfooded_by edge). Gap queue should list this as BLOCK_MISSING_DOGFOOD with dogfood_unlock_score bonus."
+}

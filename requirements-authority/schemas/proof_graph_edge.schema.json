@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "proof_graph_edge.schema.json",
+  "title": "ProofGraphEdge",
+  "description": "An edge in the Canonical Capability Proof Graph",
+  "type": "object",
+  "required": ["edge_id", "edge_type", "source_node_id", "target_node_id", "recorded_at"],
+  "properties": {
+    "edge_id": {"type": "string", "minLength": 1},
+    "edge_type": {
+      "type": "string",
+      "enum": [
+        "derives_from", "claims_support_for", "implemented_by", "tested_by",
+        "exemplified_by", "dogfooded_by", "evidenced_by", "limited_by",
+        "blocked_by", "supersedes", "invalidates", "proposed_by",
+        "accepted_by", "syncs_to", "consumed_by", "stale_due_to",
+        "narrows", "broadens", "conflicts_with"
+      ]
+    },
+    "source_node_id": {"type": "string", "minLength": 1},
+    "target_node_id": {"type": "string", "minLength": 1},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "metadata": {"type": "object"}
+  },
+  "additionalProperties": false
+}

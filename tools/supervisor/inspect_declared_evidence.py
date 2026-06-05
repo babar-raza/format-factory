@@ -20,6 +20,86 @@ import yaml
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 
+# R107: Lazy import for transcript validation enrichment
+_validate_transcript_fn = None
+
+
+def _get_validate_transcript():
+    """Lazily import validate_transcript to avoid circular imports."""
+    global _validate_transcript_fn
+    if _validate_transcript_fn is None:
+        try:
+            prev_path = list(sys.path)
+            if str(SCRIPT_DIR) not in sys.path:
+                sys.path.insert(0, str(SCRIPT_DIR))
+            from validate_skill_transcript import validate_transcript
+            _validate_transcript_fn = validate_transcript
+        except ImportError:
+            _validate_transcript_fn = False  # Mark as unavailable
+    return _validate_transcript_fn if _validate_transcript_fn is not False else None
+
+
+def _is_transcript_json(data: dict) -> bool:
+    """Check if a parsed JSON dict looks like a skill invocation transcript."""
+    transcript_fields = {"invocation_id", "skill_id", "mode", "result"}
+    return transcript_fields.issubset(set(data.keys()))
+
+
+def check_transcript_in_evidence(evidence_paths: list, repo_root: Path) -> dict | None:
+    """R107: Detect and validate transcript JSON files in evidence_paths.
+
+    Returns a dict with validation results if any transcript found, else None.
+    """
+    validator = _get_validate_transcript()
+    if validator is None:
+        return None
+
+    transcripts_found = []
+    transcripts_valid = []
+    transcripts_invalid = []
+
+    for p in evidence_paths:
+        if not p.endswith(".json"):
+            continue
+        full = repo_root / p
+        if not full.exists():
+            continue
+        try:
+            data = json.loads(full.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if not isinstance(data, dict) or not _is_transcript_json(data):
+            continue
+
+        # This is a transcript — validate it
+        transcripts_found.append(p)
+        result = validator(data)
+        if result["valid"]:
+            transcripts_valid.append({
+                "path": p,
+                "skill_id": result.get("skill_id", ""),
+                "mode": result.get("mode", ""),
+                "result": result.get("result", ""),
+            })
+        else:
+            transcripts_invalid.append({
+                "path": p,
+                "errors": result.get("errors", []),
+                "warnings": result.get("warnings", []),
+            })
+
+    if not transcripts_found:
+        return None
+
+    return {
+        "transcripts_found": len(transcripts_found),
+        "transcripts_valid": len(transcripts_valid),
+        "transcripts_invalid": len(transcripts_invalid),
+        "valid_transcripts": transcripts_valid,
+        "invalid_transcripts": transcripts_invalid,
+        "all_valid": len(transcripts_invalid) == 0,
+    }
+
 
 def load_yaml(path: Path) -> dict:
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
@@ -68,7 +148,8 @@ def inspect_item(item: dict, repo_root: Path) -> dict:
     item_id = item.get("item_id", "unknown")
     status = item.get("status", "not_started")
     evidence_paths = item.get("evidence_paths", [])
-    tests = item.get("tests_supporting", [])
+    # R103: Accept both schema field name and common alias
+    tests = item.get("tests_supporting", []) or item.get("test_references", [])
     acceptance_criteria = item.get("acceptance_criteria", "")
 
     found_paths = []
@@ -84,10 +165,26 @@ def inspect_item(item: dict, repo_root: Path) -> dict:
     has_tests = len(tests) > 0
 
     # D92-03 deep grading: check test file content
+    # R98 fix: Distinguish actual file paths from summary strings.
+    # A test entry is a file path if it contains a path separator or ends with
+    # a known test file extension (.py, .cs). Otherwise it is a summary string
+    # and should NOT be treated as a missing/empty test file.
     tests_with_content = []
     tests_empty_or_stub = []
+    test_summaries = []
     for t in tests:
-        full_t = repo_root / t
+        is_file_path = (
+            "/" in t or "\\" in t or
+            t.endswith(".py") or t.endswith(".cs") or
+            t.startswith("tests/") or t.startswith("tests\\")
+        )
+        if not is_file_path:
+            # This is a summary string like "8 new tests, all passed"
+            test_summaries.append(t)
+            continue
+        # R105: Strip pytest node ID suffix (::test_function) to get the file path
+        file_part = t.split("::")[0] if "::" in t else t
+        full_t = repo_root / file_part
         check = check_test_file_content(full_t)
         if check["has_content"]:
             tests_with_content.append(t)
@@ -121,6 +218,25 @@ def inspect_item(item: dict, repo_root: Path) -> dict:
                     except Exception:
                         pass
 
+    # R98 fix: If only summary strings were provided in tests_supporting,
+    # check evidence_paths for test files and verify their content instead.
+    if not tests_with_content and not tests_empty_or_stub and test_summaries:
+        for fp in found_paths:
+            fp_path = repo_root / fp
+            is_test = (
+                fp.startswith("tests/") or fp.startswith("tests\\") or
+                "test" in fp.lower()
+            ) and (fp.endswith(".py") or fp.endswith(".cs"))
+            if is_test:
+                check = check_test_file_content(fp_path)
+                if check["has_content"]:
+                    tests_with_content.append(fp)
+                else:
+                    tests_empty_or_stub.append(fp)
+
+    # R107: Transcript enrichment — detect and validate transcript JSON in evidence
+    transcript_validation = check_transcript_in_evidence(found_paths, repo_root)
+
     return {
         "item_id": item_id,
         "declared_status": status,
@@ -133,8 +249,11 @@ def inspect_item(item: dict, repo_root: Path) -> dict:
         # D92-03: deep content checks
         "tests_with_content": tests_with_content,
         "tests_empty_or_stub": tests_empty_or_stub,
+        "test_summaries": test_summaries,
         "acceptance_criteria_verified": criteria_verified,
         "acceptance_criteria_pattern": criteria_pattern,
+        # R107: Transcript validation enrichment
+        "transcript_validation": transcript_validation,
     }
 
 

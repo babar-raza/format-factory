@@ -221,17 +221,26 @@ def check_bundle_validation_fail(review: dict, contradictions: list) -> None:
 
 
 def compare(review: dict, contract: dict, repo_root: Path) -> dict:
-    """Run all contradiction checks. Returns structured result."""
+    """Run all contradiction checks. Returns structured result.
+
+    R102: Declaration-sourced reviews skip legacy bundle checks
+    (final-verdict.md, sidecar, bundle-validation) because declaration-review
+    packages don't contain those legacy artifacts.
+    """
     timestamp = datetime.now().isoformat()
     contradictions = []
+    is_declaration_sourced = review.get("_declaration_sourced", False)
 
     check_no_bundle(review, contradictions)
-    check_missing_final_verdict(review, contradictions)
-    check_bundle_validation_fail(review, contradictions)
+    # R102: Skip legacy bundle checks for declaration-sourced reviews
+    if not is_declaration_sourced:
+        check_missing_final_verdict(review, contradictions)
+        check_bundle_validation_fail(review, contradictions)
     check_tests_failed(review, contract, contradictions)
     check_pending_markers(review, contradictions)
     check_stale_sha(review, contradictions)
-    check_sprint_id_mismatch(review, contract, contradictions)
+    if not is_declaration_sourced:
+        check_sprint_id_mismatch(review, contract, contradictions)
     check_gate_overclaim(review, contradictions)
 
     critical_count = sum(1 for c in contradictions if c["severity"] == "CRITICAL")

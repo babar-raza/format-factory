@@ -1,0 +1,9 @@
+{
+  "fixture_name": "fodt_export_not_save_overclaim",
+  "description": "FODT claim uses operation=save but direction=export_only — pattern 2 overclaim",
+  "expected_overall_verdict": "COVERAGE_CLEAN",
+  "expected_overclaim": true,
+  "expected_stale": false,
+  "expected_validator_errors": 0,
+  "notes": "Pattern 2: save claimed, export_only direction. OverclaimDetector should flag downgrade_status remediation. Coverage evaluator sees accepted_for_poc with impl+tests+evidence so overall is CLEAN, but overclaim is flagged."
+}

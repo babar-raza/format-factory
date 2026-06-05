@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mainstream_gap_queue.schema.json",
+  "title": "MainstreamGapQueue",
+  "type": "object",
+  "required": ["queue_generated_at", "source_graph_hash", "queue_entries"],
+  "properties": {
+    "queue_generated_at": {"type": "string"},
+    "source_graph_hash": {"type": "string"},
+    "queue_entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "gap_id", "target_product", "format_id", "claim_id",
+          "missing_proof_type", "next_action", "expected_files",
+          "expected_tests", "expected_dogfood", "recommended_lane",
+          "validation_command", "estimated_unlock", "dependencies",
+          "stop_conditions", "priority_score"
+        ],
+        "properties": {
+          "gap_id": {"type": "string"},
+          "target_product": {"type": "string"},
+          "format_id": {"type": "string"},
+          "claim_id": {"type": "string"},
+          "missing_proof_type": {"type": "string"},
+          "next_action": {"type": "string"},
+          "expected_files": {"type": "array", "items": {"type": "string"}},
+          "expected_tests": {"type": "array", "items": {"type": "string"}},
+          "expected_dogfood": {"type": ["string", "null"]},
+          "recommended_lane": {"type": "string"},
+          "validation_command": {"type": "string"},
+          "estimated_unlock": {"type": "array", "items": {"type": "string"}},
+          "dependencies": {"type": "array", "items": {"type": "string"}},
+          "stop_conditions": {"type": "array", "items": {"type": "string"}},
+          "priority_score": {"type": "number"}
+        }
+      }
+    }
+  }
+}

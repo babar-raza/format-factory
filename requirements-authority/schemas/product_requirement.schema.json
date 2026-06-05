@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "product_requirement.schema.json",
+  "title": "ProductRequirement",
+  "type": "object",
+  "required": ["node_id", "node_type", "description", "recorded_at"],
+  "properties": {
+    "node_id": {"type": "string"},
+    "node_type": {"type": "string", "const": "ProductRequirement"},
+    "description": {"type": "string"},
+    "status": {
+      "type": "string",
+      "enum": [
+        "candidate","source_linked","verification_pending",
+        "accepted","accepted_with_caveat","empirical_only","policy_exception",
+        "stale","rejected","superseded"
+      ]
+    },
+    "format_id": {"type": "string"},
+    "source_type": {"type": "string", "enum": ["spec","empirical","policy"]},
+    "source_ref": {"type": "string"},
+    "ai_draft": {"type": "boolean", "default": false},
+    "recorded_at": {"type": "string"}
+  }
+}

@@ -30,6 +30,103 @@ from inspect_declared_evidence import inspect_declaration
 from grade_declared_work import grade_all, write_outputs
 from generate_next_worker_prompt import generate_prompt, generate_next_work_items
 from evidence_manifest import generate_from_declaration, validate_manifest, write_manifest
+from materialize_declared_evidence import materialize as materialize_evidence
+from build_context_pack import build_context_pack, generate_md as generate_context_md
+from anti_skip_checker import run_all_checks as run_anti_skip_checks
+
+
+def classify_continuation_state(
+    auto_continue_value, at_max_iterations: bool, hard_stops: list,
+    overclaimed: list, rework_items: list, review: dict,
+    policies_path: Path, anti_skip_result: dict | None = None,
+    dirty_state_classified: bool = True,
+    required_artifacts_present: bool = True,
+    product_output_floor_met: bool = True,
+) -> str:
+    """Classify the continuation state using a proper state machine.
+
+    States (R112 — extended with YES_WITH_LIMITATIONS):
+      YES                              — all accepted, anti-skip clean, pure new-work sprint
+      YES_WITH_LIMITATIONS             — accepted but anti-skip has low-severity notes (R112)
+      YES_WITH_REWORK                  — rework items but safe lanes continue
+      NO_MAX_ITERATIONS                — iteration limit reached
+      NO_EXTERNAL_GATE                 — blocked by gate approval / credentials / push
+      NO_BROKEN_BASELINE               — critical rework blocks continuation
+      NO_UNSAFE_SOURCE_STATE           — overclaimed items present
+      NO_NO_PROGRESS                   — consecutive sprints with no product gap closure
+      NO_POLICY_BLOCK                  — policy explicitly blocks continuation
+      NO_GENERIC_NEXT_PROMPT           — generated prompt is generic, not stream-specific
+      NO_LEGACY_REVIEW_CONTRADICTION   — legacy review disagrees with declaration cycle
+      NO_STALE_GAPS                    — selected-product-gaps.json is stale
+      NO_MISSING_EVIDENCE_MANIFEST     — evidence manifest missing or invalid
+      NO_WRONG_STREAM_CONTEXT          — context pack/evidence-review references wrong stream
+      NO_MISSING_RAW_LOGS_FOR_VERIFIED_CLAIMS — ACCEPTED_VERIFIED but no raw logs packaged
+      NO_PROMPT_QUALITY_FAILURE              — prompt quality validation failed (R108)
+      NO_UNCLASSIFIED_DIRTY_STATE       — dirty git state without dirty_state_classification
+      NO_MISSING_REQUIRED_ARTIFACTS     — declared required artifacts not found on disk
+      NO_PRODUCT_OUTPUT_FLOOR           — Mainstream breadth < floor, no blocker removed
+    """
+    # Check for policy block
+    if policies_path and policies_path.exists():
+        try:
+            policies = yaml.safe_load(policies_path.read_text(encoding="utf-8"))
+            ac_policy = policies.get("autonomous_continuation", {})
+            if ac_policy.get("force_stop", False):
+                return "NO_POLICY_BLOCK"
+        except Exception:
+            pass
+
+    # Priority-ordered classification
+    if overclaimed:
+        return "NO_UNSAFE_SOURCE_STATE"
+
+    # Product-first traffic controller states (R113)
+    if not dirty_state_classified:
+        return "NO_UNCLASSIFIED_DIRTY_STATE"
+    if not required_artifacts_present:
+        return "NO_MISSING_REQUIRED_ARTIFACTS"
+    if not product_output_floor_met:
+        return "NO_PRODUCT_OUTPUT_FLOOR"
+
+    if at_max_iterations:
+        return "NO_MAX_ITERATIONS"
+
+    # R102: Check for specific hard stop types
+    for hs in hard_stops:
+        if hs == "max_iterations_reached":
+            continue
+        if hs == "generic_next_prompt":
+            return "NO_GENERIC_NEXT_PROMPT"
+        if hs == "legacy_review_contradiction":
+            return "NO_LEGACY_REVIEW_CONTRADICTION"
+        if hs == "stale_gaps":
+            return "NO_STALE_GAPS"
+        if hs == "missing_evidence_manifest":
+            return "NO_MISSING_EVIDENCE_MANIFEST"
+        if hs == "wrong_stream_context":
+            return "NO_WRONG_STREAM_CONTEXT"
+        if hs == "missing_raw_logs_for_verified_claims":
+            return "NO_MISSING_RAW_LOGS_FOR_VERIFIED_CLAIMS"
+        if hs == "prompt_quality_failure":
+            return "NO_PROMPT_QUALITY_FAILURE"
+
+    non_iter_hard_stops = [h for h in hard_stops if h != "max_iterations_reached"]
+    if non_iter_hard_stops:
+        return "NO_BROKEN_BASELINE"
+
+    if auto_continue_value == "true_with_rework":
+        return "YES_WITH_REWORK"
+
+    if auto_continue_value:
+        # R112: Check anti-skip for low-severity limitations
+        if anti_skip_result and not anti_skip_result.get("all_pass", True):
+            # Has violations but not blocked/downgraded — low-severity only
+            impact = anti_skip_result.get("impact", {})
+            if not impact.get("block") and not impact.get("downgrade"):
+                return "YES_WITH_LIMITATIONS"
+        return "YES"
+
+    return "NO_EXTERNAL_GATE"
 
 
 def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
@@ -78,6 +175,33 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     except Exception as e:
         print(f"  WARNING: Manifest step skipped: {e}")
 
+    # Step 2c: Materialize declared evidence (R99 fix: D99-MODEL-01)
+    print("\n=== STEP 2c: MATERIALIZE DECLARED EVIDENCE ===")
+    try:
+        mat_dir = repo_root / ".local" / "supervisor" / "materialized" / run_id
+        mat_result = materialize_evidence(declaration_path, repo_root, mat_dir)
+        print(f"  Verified: {mat_result['artifacts_verified']}, Missing: {mat_result['artifacts_missing']}")
+    except Exception as e:
+        print(f"  WARNING: Materialization skipped: {e}")
+
+    # Step 2d: Adoption compliance validation (R111: consumed by cycle)
+    print("\n=== STEP 2d: ADOPTION COMPLIANCE VALIDATION ===")
+    review_dir = repo_root / ".local" / "supervisor" / "reviews" / run_id
+    review_dir.mkdir(parents=True, exist_ok=True)
+    adoption_result = None
+    try:
+        from validate_adoption_compliance import validate_adoption
+        adoption_result = validate_adoption(decl)
+        (review_dir / "adoption-compliance-result.json").write_text(
+            json.dumps(adoption_result, indent=2), encoding="utf-8"
+        )
+        print(f"  Adoption compliance: {'PASS' if adoption_result['compliant'] else 'FAIL'} "
+              f"({adoption_result['non_exempt_items']} non-exempt, "
+              f"{adoption_result['items_with_transcript']} with transcript, "
+              f"{adoption_result['items_with_skill_id']} with skill_id)")
+    except Exception as e:
+        print(f"  WARNING: Adoption compliance check skipped: {e}")
+
     # Step 3: Grade work items
     print("\n=== STEP 3: GRADE WORK ITEMS ===")
     review = grade_all(inspection, decl)
@@ -88,6 +212,18 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     print(f"  Overclaimed: {len(review['overclaimed_items'])}")
     print(f"  Autonomous Continue: {review['autonomous_continue']}")
 
+    # R111: Attach adoption compliance result to review for downstream consumption
+    if adoption_result is not None:
+        review["adoption_compliance"] = adoption_result
+        if not adoption_result["compliant"]:
+            # Adoption non-compliance downgrades clean ACCEPTED to ACCEPTED_WITH_REWORK
+            if review["overall_verdict"] == "ACCEPTED":
+                review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
+                review["stop_reason"] = (
+                    review.get("stop_reason", "") +
+                    f" Adoption compliance FAIL: {adoption_result['summary']}"
+                ).strip()
+
     # Write review outputs
     review_dir = repo_root / ".local" / "supervisor" / "reviews" / run_id
     write_outputs(review, review_dir)
@@ -97,13 +233,101 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         json.dumps(inspection, indent=2), encoding="utf-8"
     )
 
-    # Step 4: Generate next worker prompt
+    # Step 3b: Post-grading anti-skip checks (R107: hard gates with severity)
+    print("\n=== STEP 3b: ANTI-SKIP QUALITY CHECKS ===")
+    anti_skip_impact = None
+    anti_skip_result = None
+    try:
+        from validate_package_identity import _extract_stream_from_sprint
+        from anti_skip_checker import classify_violation_impact
+        evidence_root = repo_root / decl.get("evidence_root", "")
+        target_stream = _extract_stream_from_sprint(sprint_id)
+        sample_outputs_dir = evidence_root / "sample-outputs"
+
+        # Load gaps if available
+        gaps_data = None
+        gaps_path = evidence_root / f"selected-gaps-{run_id}.json"
+        if gaps_path.exists():
+            try:
+                gaps_data = json.loads(gaps_path.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+
+        # Load generated prompt if available
+        prompt_text = ""
+        prompt_path = review_dir / "combined-next-worker-prompt.md"
+        if prompt_path.exists():
+            prompt_text = prompt_path.read_text(encoding="utf-8")
+
+        # R111: Load global next-sprint.md for stream-output authority check
+        global_next_sprint_text = ""
+        global_ns_path = repo_root / "reports" / "supervisor" / "next-sprint.md"
+        if global_ns_path.exists():
+            try:
+                global_next_sprint_text = global_ns_path.read_text(encoding="utf-8")
+            except Exception:
+                pass
+
+        anti_skip_result = run_anti_skip_checks(
+            prompt_text=prompt_text,
+            gaps_data=gaps_data,
+            expected_sprint=sprint_id,
+            evidence_root=evidence_root,
+            declaration=decl,
+            grades=review.get("item_grades", []),
+            target_stream=target_stream,
+            repo_root=repo_root,
+            sample_outputs_dir=sample_outputs_dir if sample_outputs_dir.exists() else None,
+            next_sprint_text=global_next_sprint_text,
+        )
+        # Write anti-skip results
+        (review_dir / "anti-skip-check-result.json").write_text(
+            json.dumps(anti_skip_result, indent=2), encoding="utf-8"
+        )
+        anti_skip_impact = anti_skip_result.get("impact", {})
+        print(f"  Anti-skip: {anti_skip_result['total_checks']} checks, "
+              f"{anti_skip_result['violations']} violations")
+        if anti_skip_impact:
+            if anti_skip_impact.get("block"):
+                print(f"  HARD GATE BLOCK: {anti_skip_impact['block_items']}")
+            if anti_skip_impact.get("downgrade"):
+                print(f"  DOWNGRADE: {anti_skip_impact['downgrade_items']}")
+            if anti_skip_impact.get("caveats"):
+                print(f"  CAVEATS: {anti_skip_impact['caveats']}")
+        if anti_skip_result["violations"] > 0:
+            for check in anti_skip_result["checks"]:
+                if check.get("is_violation"):
+                    sev = check.get("severity", "medium")
+                    print(f"    [{sev.upper()}] {check['check']} — {check.get('recommendation', '')[:100]}")
+
+        # R107: Apply hard gate enforcement to review
+        if anti_skip_impact and anti_skip_impact.get("block"):
+            review["autonomous_continue"] = False
+            review["stop_reason"] = f"Anti-skip critical block: {anti_skip_impact['block_items']}"
+            review["critical_rework_count"] = max(review["critical_rework_count"], 1)
+            print(f"  >>> CONTINUATION BLOCKED by anti-skip critical violations")
+        elif anti_skip_impact and anti_skip_impact.get("downgrade"):
+            # High-severity violations downgrade the overall verdict
+            if review["overall_verdict"] == "ACCEPTED":
+                review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
+            review["anti_skip_downgrade_reasons"] = anti_skip_impact["downgrade_items"]
+            print(f"  >>> VERDICT DOWNGRADED by anti-skip high-severity violations")
+
+    except Exception as e:
+        print(f"  WARNING: Anti-skip checks skipped: {e}")
+
+    # Step 4: Generate next worker prompt (R108: stream-specific)
     print("\n=== STEP 4: GENERATE NEXT WORKER PROMPT ===")
-    prompt = generate_prompt(review, repo_root=repo_root)
+    try:
+        from validate_package_identity import _extract_stream_from_sprint
+        detected_stream = _extract_stream_from_sprint(sprint_id)
+    except Exception:
+        detected_stream = "mainstream"
+    prompt = generate_prompt(review, repo_root=repo_root, stream=detected_stream)
     prompt_path = review_dir / "combined-next-worker-prompt.md"
     prompt_path.write_text(prompt, encoding="utf-8")
 
-    next_work = generate_next_work_items(review)
+    next_work = generate_next_work_items(review, stream=detected_stream)
     work_path = review_dir / "next-work-items.yaml"
     work_path.write_text(
         yaml.dump(next_work, default_flow_style=False, sort_keys=False), encoding="utf-8"
@@ -112,7 +336,59 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         json.dumps(next_work, indent=2), encoding="utf-8"
     )
     print(f"  Prompt: {prompt_path}")
-    print(f"  Next work: {len(next_work['items'])} items")
+
+    # Step 4b: Prompt quality validation (R108: moved after prompt generation)
+    print("\n=== STEP 4b: PROMPT QUALITY VALIDATION ===")
+    try:
+        from validate_prompt_quality import validate_prompt_quality
+        target_stream = detected_stream
+        if prompt_path.exists():
+            prompt_text = prompt_path.read_text(encoding="utf-8")
+            has_repairs = len(review.get("rework_items", [])) > 0
+            pq_result = validate_prompt_quality(
+                prompt_text, target_stream,
+                has_repairs=has_repairs, has_advancement=True,
+            )
+            (review_dir / "prompt-quality-result.json").write_text(
+                json.dumps(pq_result, indent=2), encoding="utf-8"
+            )
+            if pq_result["valid"]:
+                print(f"  Prompt quality: PASS ({pq_result['passed']}/{pq_result['total_checks']} checks)")
+            else:
+                failed_checks = [c["check"] for c in pq_result["checks"] if not c["pass"]]
+                print(f"  Prompt quality: FAIL ({pq_result['failed']} failures: {failed_checks})")
+                # R108: All prompt quality failures affect continuation
+                critical_prompt_failures = {
+                    "stream_identity", "no_wrong_stream", "not_generic", "advancement_lane"
+                }
+                if critical_prompt_failures & set(failed_checks):
+                    review["autonomous_continue"] = False
+                    review["stop_reason"] = f"Prompt quality gate: {failed_checks}"
+                    review["prompt_quality_failure"] = True
+                    print(f"  >>> CONTINUATION BLOCKED by prompt quality failures")
+        else:
+            print(f"  No prompt file to validate")
+    except Exception as e:
+        print(f"  WARNING: Prompt quality check skipped: {e}")
+    print(f"  Next work: {len(next_work['items'])} items (stream={detected_stream})")
+
+    # Step 4b: Validate next-work-items stream correctness (R108)
+    try:
+        from validate_prompt_quality import validate_next_work_items
+        nwi_result = validate_next_work_items(next_work, detected_stream)
+        (review_dir / "next-work-items-quality.json").write_text(
+            json.dumps(nwi_result, indent=2), encoding="utf-8"
+        )
+        if nwi_result["valid"]:
+            print(f"  Next-work-items quality: PASS ({nwi_result['passed']}/{nwi_result['total_checks']})")
+        else:
+            failed = [c["check"] for c in nwi_result["checks"] if not c["pass"]]
+            print(f"  Next-work-items quality: FAIL ({failed})")
+            if "no_wrong_stream_items" in failed or "stream_field_match" in failed:
+                review["autonomous_continue"] = False
+                review["stop_reason"] = f"Next-work-items stream violation: {failed}"
+    except Exception as e:
+        print(f"  WARNING: Next-work-items validation skipped: {e}")
 
     # Step 5: Write cycle manifest
     print("\n=== STEP 5: WRITE CYCLE MANIFEST ===")
@@ -159,6 +435,41 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         if src.exists():
             shutil.copy2(str(src), str(dst))
             print(f"  Copied: {dst}")
+
+    # R108: Also copy to per-stream state directory
+    stream_dir = repo_root / "reports" / "supervisor-streams" / detected_stream
+    stream_dir.mkdir(parents=True, exist_ok=True)
+    for src_name, dst_name in copies:
+        src = review_dir / src_name
+        dst = stream_dir / dst_name
+        if src.exists():
+            shutil.copy2(str(src), str(dst))
+    print(f"  Stream dir: {stream_dir}")
+
+    # R112: Write stream-local authority map
+    authority_map = {
+        "stream": detected_stream,
+        "run_id": run_id,
+        "sprint_id": sprint_id,
+        "timestamp": timestamp,
+        "stream_local_dir": str(stream_dir),
+        "global_dir": str(latest_dir),
+        "authority": "STREAM_LOCAL",
+        "global_status": "ADVISORY_REFERENCE",
+        "stream_local_files": {
+            "evidence_review": str(stream_dir / "evidence-review.json"),
+            "contradictions": str(stream_dir / "contradictions.json"),
+            "next_prompt": str(stream_dir / "latest-next-worker-prompt.md"),
+            "work_item_grades": str(stream_dir / "work-item-grades.json"),
+            "continuation_signal": str(
+                repo_root / ".local" / "supervisor" / "streams" / detected_stream / "continuation-signal.json"
+            ),
+        },
+    }
+    (stream_dir / "authority-map.json").write_text(
+        json.dumps(authority_map, indent=2), encoding="utf-8"
+    )
+    print(f"  Authority map: {stream_dir / 'authority-map.json'}")
 
     # Write human-readable work-item-grades.md to reports/supervisor/
     grades = review.get("item_grades", [])
@@ -212,6 +523,32 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     except Exception as e:
         print(f"  WARNING: Bridge step failed: {e}")
 
+    # Step 7b: Regenerate legacy markdown files (R99 fix: D99-STALE-01)
+    # R101: Pass detected stream so next-sprint.md is stream-specific
+    print("\n=== STEP 7b: REGENERATE LEGACY MARKDOWN ===")
+    try:
+        from generate_supervisor_packet import generate_packet, detect_stream_from_sprint_id
+        detected_stream = detect_stream_from_sprint_id(sprint_id)
+        generate_packet(repo_root, stream=detected_stream)
+        print(f"  Regenerated: session-resume.md, approval-gates.md, next-sprint.md (stream={detected_stream})")
+    except Exception as e:
+        print(f"  WARNING: Legacy markdown regeneration failed: {e}")
+
+    # Step 7c: Rebuild context pack (R99 fix: D99-STALE-02)
+    print("\n=== STEP 7c: REBUILD CONTEXT PACK ===")
+    try:
+        pack = build_context_pack(repo_root)
+        context_yaml_path = repo_root / ".supervisor" / "context-pack.yaml"
+        context_yaml_path.write_text(
+            yaml.dump(pack, default_flow_style=False, sort_keys=False),
+            encoding="utf-8"
+        )
+        context_md_path = repo_root / "reports" / "supervisor" / "context-pack.md"
+        context_md_path.write_text(generate_context_md(pack), encoding="utf-8")
+        print(f"  Context pack rebuilt: {context_yaml_path}")
+    except Exception as e:
+        print(f"  WARNING: Context pack rebuild failed: {e}")
+
     # Step 8: Write continuation signal for autonomous loop (MODE 5)
     print("\n=== STEP 8: WRITE CONTINUATION SIGNAL ===")
     try:
@@ -248,12 +585,40 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         #   false           — hard stop (overclaim/reject/external gate)
         rework_items = review.get("rework_items", [])
         overclaimed = review.get("overclaimed_items", [])
+
+        # R98 fix: Check iteration >= max_iterations before allowing continuation
+        at_max_iterations = existing_iteration >= max_iterations
+        if at_max_iterations:
+            hard_stops.append("max_iterations_reached")
+
+        # R107 Lane G: Check evidence quality — stop on quality regression
+        eqs = review.get("evidence_quality_score", 1.0)
+        if eqs == 0.0 and len(review.get("accepted_items", [])) > 0:
+            hard_stops.append("evidence_quality_zero")
+
+        # R107 Lane G: Check anti-skip critical blocks
+        if anti_skip_impact and anti_skip_impact.get("block"):
+            hard_stops.append("anti_skip_critical_block")
+
+        # R108: Prompt quality failure blocks continuation
+        if review.get("prompt_quality_failure"):
+            hard_stops.append("prompt_quality_failure")
+
         if hard_stops or overclaimed:
             auto_continue_value = False
         elif rework_items and not overclaimed:
             auto_continue_value = "true_with_rework"
         else:
             auto_continue_value = bool(manifest.get("autonomous_continue", False))
+
+        # R99: Full continuation state classification (D99-CONT-01)
+        # R112: Pass anti_skip_result for YES_WITH_LIMITATIONS detection
+        continuation_state = classify_continuation_state(
+            auto_continue_value, at_max_iterations, hard_stops,
+            overclaimed, rework_items, review, policies_path,
+            anti_skip_result=anti_skip_result,
+            # New params use default True — backward compatible (R113 product-first)
+        )
 
         signal = {
             "autonomous_continue": auto_continue_value,
@@ -266,10 +631,19 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             "generated_at": timestamp,
             "source_sprint_id": sprint_id,
             "hard_stops_detected": hard_stops,
+            "continuation_state": continuation_state,
         }
         signal_path.write_text(json.dumps(signal, indent=2), encoding="utf-8")
         print(f"  Signal: {signal_path} (continue={signal['autonomous_continue']}, "
               f"iter={existing_iteration}/{max_iterations})")
+
+        # R109: Also write stream-local continuation signal
+        stream_signal_dir = signal_dir / "streams" / detected_stream
+        stream_signal_dir.mkdir(parents=True, exist_ok=True)
+        stream_signal = {**signal, "stream": detected_stream}
+        stream_signal_path = stream_signal_dir / "continuation-signal.json"
+        stream_signal_path.write_text(json.dumps(stream_signal, indent=2), encoding="utf-8")
+        print(f"  Stream signal: {stream_signal_path}")
     except Exception as e:
         print(f"  WARNING: Continuation signal failed: {e}")
 
@@ -293,7 +667,11 @@ def bridge_to_legacy_format(review: dict, manifest: dict, decl: dict, repo_root:
     failed = test_results.get("failed", 0)
 
     # Build evidence-review.json in the format generate_supervisor_packet expects
+    # R102: Mark as declaration-sourced so legacy checks (final-verdict.md,
+    # sidecar, R90 contract) are skipped by compare_goal_to_evidence.py
     evidence_review = {
+        "_declaration_sourced": True,
+        "_source_cycle": "autonomous_cycle.py::bridge_to_legacy_format",
         "sprint_id": manifest.get("sprint_id", "unknown"),
         "timestamp": manifest.get("timestamp", datetime.now().isoformat()),
         "verdict": review.get("overall_verdict", "unknown"),
@@ -315,6 +693,9 @@ def bridge_to_legacy_format(review: dict, manifest: dict, decl: dict, repo_root:
         "bundle_validation_pass": manifest.get("exit_code", 9) != 9,
         "exit_code": manifest.get("exit_code", 0),
         "status": "complete",
+        "evidence_quality_score": review.get("evidence_quality_score", 0.0),
+        "verified_item_count": review.get("verified_item_count", 0),
+        "evidence_quality_breakdown": review.get("evidence_quality_breakdown", {}),
     }
 
     # Build contradictions.json
@@ -351,6 +732,21 @@ def bridge_to_legacy_format(review: dict, manifest: dict, decl: dict, repo_root:
     (output_dir / "contradictions.json").write_text(
         json.dumps(contradictions, indent=2), encoding="utf-8"
     )
+
+    # R109: Also write stream-local evidence-review and contradictions
+    try:
+        from validate_package_identity import _extract_stream_from_sprint
+        stream = _extract_stream_from_sprint(manifest.get("sprint_id", ""))
+        stream_dir = repo_root / "reports" / "supervisor-streams" / stream
+        stream_dir.mkdir(parents=True, exist_ok=True)
+        (stream_dir / "evidence-review.json").write_text(
+            json.dumps(evidence_review, indent=2), encoding="utf-8"
+        )
+        (stream_dir / "contradictions.json").write_text(
+            json.dumps(contradictions, indent=2), encoding="utf-8"
+        )
+    except Exception:
+        pass
 
 
 def main() -> int:

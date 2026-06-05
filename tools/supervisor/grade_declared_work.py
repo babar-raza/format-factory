@@ -1,16 +1,20 @@
 """
-grade_declared_work.py — Item-Level Grading Engine
+grade_declared_work.py — Item-Level Grading Engine (v2)
 Grades each declared work item based on inspection results.
 
-Grade levels:
-  ACCEPTED — evidence found, criteria met, tests passed
-  ACCEPTED_WITH_WARNINGS — core evidence exists, minor limitation
+Grade levels (v2 — typed grades):
+  ACCEPTED_VERIFIED — evidence found, tests verified, criteria confirmed
+  ACCEPTED_WITH_LIMITATIONS — core evidence exists, minor limitation documented
+  ACCEPTED — legacy shorthand for ACCEPTED_VERIFIED (backwards compat)
+  ACCEPTED_WITH_WARNINGS — core evidence exists, minor warning
   REWORK_REQUIRED — missing evidence, failed test, incomplete
   REJECTED — contradicted by evidence, unsafe shortcut, fabricated proof
   BLOCKED_EXTERNAL_GATE — requires true external gate (credentials, push, Gate 8/11)
   NOT_ATTEMPTED — work item not attempted
   NOT_IN_SCOPE — not required and no claim made
   OVERCLAIMED — declared complete but evidence missing or shallow
+  INSUFFICIENT_EVIDENCE — declared complete but evidence weak/missing
+  DEFERRED_WITH_REASON — explicitly deferred with documented reason
 
 Exit codes:
   0 — grading complete, no critical rework
@@ -76,6 +80,12 @@ def grade_item(item_inspection: dict, test_results: dict) -> dict:
         grade["next_prompt_instruction"] = "This item was not attempted. Include in next sprint if still needed."
         return grade
 
+    # Deferred with documented reason (R99 fix: D99-GRADE-01)
+    if declared_status == "deferred":
+        grade["supervisor_grade"] = "DEFERRED_WITH_REASON"
+        grade["next_prompt_instruction"] = "Item explicitly deferred. Carry forward if reason resolved."
+        return grade
+
     # Declared complete but no evidence = OVERCLAIMED
     if declared_status == "completed" and not has_evidence:
         grade["supervisor_grade"] = "OVERCLAIMED"
@@ -135,14 +145,34 @@ def grade_item(item_inspection: dict, test_results: dict) -> dict:
             elif criteria_pattern and not criteria_verified:
                 criteria_failed.append(f"Acceptance criteria pattern not found: {criteria_pattern[:60]}")
 
+            # R104: ACCEPTED_VERIFIED requires at least one concrete proof dimension
+            # (test content verified, or acceptance criteria verified, or valid transcript, or explicit no-test rationale)
+            # R108: transcript_validation.all_valid is a concrete proof dimension
+            transcript_validation = item_inspection.get("transcript_validation")
+            has_valid_transcript = bool(
+                transcript_validation and transcript_validation.get("all_valid")
+            )
+            has_concrete_proof = bool(tests_with_content) or criteria_verified or has_valid_transcript
+            if has_valid_transcript and not bool(tests_with_content) and not criteria_verified:
+                criteria_met.append("Transcript validation: all transcripts valid")
+            if not has_concrete_proof and not criteria_failed:
+                # No failures but also no concrete proof — document as limitation
+                criteria_met.append("No concrete test/criteria proof (path-only acceptance)")
+
             if criteria_failed:
-                grade["supervisor_grade"] = "ACCEPTED_WITH_WARNINGS"
+                grade["supervisor_grade"] = "ACCEPTED_WITH_LIMITATIONS"
                 grade["acceptance_criteria_met"] = criteria_met
                 grade["acceptance_criteria_failed"] = criteria_failed
-                grade["next_prompt_instruction"] = f"Item accepted with warnings: {'; '.join(criteria_failed)}"
-            else:
-                grade["supervisor_grade"] = "ACCEPTED"
+                grade["next_prompt_instruction"] = f"Item accepted with limitations: {'; '.join(criteria_failed)}"
+            elif has_concrete_proof:
+                grade["supervisor_grade"] = "ACCEPTED_VERIFIED"
                 grade["acceptance_criteria_met"] = criteria_met
+            else:
+                # R104: Path-only evidence without concrete proof
+                grade["supervisor_grade"] = "ACCEPTED_WITH_LIMITATIONS"
+                grade["acceptance_criteria_met"] = criteria_met
+                grade["acceptance_criteria_failed"] = ["No raw proof, test content, or acceptance criteria verified"]
+                grade["next_prompt_instruction"] = f"Item accepted with limitations: path-only evidence for {item_id}"
 
     return grade
 
@@ -163,7 +193,8 @@ def grade_all(inspection: dict, declaration: dict) -> dict:
         g["item_title"] = decl_item.get("title", g["item_id"])
         grades.append(g)
 
-    accepted = [g["item_id"] for g in grades if g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_WITH_WARNINGS")]
+    accepted_grades = ("ACCEPTED", "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS")
+    accepted = [g["item_id"] for g in grades if g["supervisor_grade"] in accepted_grades]
     rework = [g["item_id"] for g in grades if g["supervisor_grade"] in ("REWORK_REQUIRED", "OVERCLAIMED")]
     rejected = [g["item_id"] for g in grades if g["supervisor_grade"] == "REJECTED"]
     overclaimed = [g["item_id"] for g in grades if g["supervisor_grade"] == "OVERCLAIMED"]
@@ -182,8 +213,34 @@ def grade_all(inspection: dict, declaration: dict) -> dict:
         overall_verdict = "REJECTED"
     elif overclaimed or any(g["supervisor_grade"] == "REWORK_REQUIRED" for g in grades):
         overall_verdict = "ACCEPTED_WITH_REWORK"
-    elif all(g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_WITH_WARNINGS", "NOT_IN_SCOPE", "BLOCKED_EXTERNAL_GATE") for g in grades):
+    elif all(g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS", "NOT_IN_SCOPE", "BLOCKED_EXTERNAL_GATE") for g in grades):
         overall_verdict = "ACCEPTED"
+
+    # R106: Evidence quality score — ratio of ACCEPTED_VERIFIED to total accepted
+    verified_count = sum(1 for g in grades if g["supervisor_grade"] == "ACCEPTED_VERIFIED")
+    accepted_count = len(accepted)
+    evidence_quality_score = round(verified_count / accepted_count, 2) if accepted_count > 0 else 0.0
+
+    # R108: Multi-dimensional evidence quality breakdown
+    has_raw_logs = bool(inspection.get("raw_log_found"))
+    has_sample_outputs = bool(inspection.get("sample_outputs_found"))
+    items_with_tests = sum(1 for g in grades if g.get("tests_supporting"))
+    evidence_quality_breakdown = {
+        "verified_ratio": evidence_quality_score,
+        "has_raw_logs": has_raw_logs,
+        "has_sample_outputs": has_sample_outputs,
+        "items_with_tests": items_with_tests,
+        "total_accepted": accepted_count,
+    }
+
+    # R107 Lane C: Evidence quality enforcement — path-only sprints cannot be clean ACCEPTED
+    # If all items are ACCEPTED_WITH_LIMITATIONS (score = 0.0) and there are items,
+    # the overall verdict cannot be ACCEPTED — it stays ACCEPTED but with a quality caveat
+    if evidence_quality_score == 0.0 and accepted_count > 0 and verified_count == 0:
+        if overall_verdict == "ACCEPTED":
+            overall_verdict = "ACCEPTED_WITH_REWORK"
+            if not stop_reason:
+                stop_reason = "Evidence quality: 0% verified (all path-only). Include test paths in evidence_paths."
 
     return {
         "run_id": inspection.get("run_id", "unknown"),
@@ -202,6 +259,9 @@ def grade_all(inspection: dict, declaration: dict) -> dict:
         "stop_reason": stop_reason,
         "cycle_number": 1,
         "critical_rework_count": critical_rework,
+        "evidence_quality_score": evidence_quality_score,
+        "verified_item_count": verified_count,
+        "evidence_quality_breakdown": evidence_quality_breakdown,
     }
 
 
@@ -222,7 +282,7 @@ def write_outputs(review: dict, output_dir: Path) -> None:
     )
 
     # Accepted items
-    accepted = [g for g in review["item_grades"] if g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_WITH_WARNINGS")]
+    accepted = [g for g in review["item_grades"] if g["supervisor_grade"] in ("ACCEPTED", "ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "ACCEPTED_WITH_WARNINGS")]
     (output_dir / "accepted-items.yaml").write_text(
         yaml.dump(accepted, default_flow_style=False, sort_keys=False), encoding="utf-8"
     )

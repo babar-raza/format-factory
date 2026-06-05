@@ -81,13 +81,21 @@ def build_package(declaration_path: Path, repo_root: Path, out_dir: Path) -> dic
     materialized_dir = repo_root / ".local" / "supervisor" / "materialized" / run_id
     evidence_root = repo_root / ".local" / "evidences" / run_id
 
+    # R108: Also check declaration's evidence_root for manifest (autonomous_cycle writes there)
+    decl_evidence_root = repo_root / decl.get("evidence_root", "") if decl.get("evidence_root") else None
+
     zip_path = out_dir / f"declaration-review-package.zip"
     missing = []
 
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
         # --- Core declaration files ---
         add_file_to_zip(zf, declaration_path, "evidence/evidence-declaration.yaml", missing)
+        # R108: Try manifest from .local/evidences/{run_id}/ first, then declaration evidence_root
         manifest_path = evidence_root / "evidence-manifest.yaml"
+        if not manifest_path.exists() and decl_evidence_root:
+            alt_manifest = decl_evidence_root / "evidence-manifest.yaml"
+            if alt_manifest.exists():
+                manifest_path = alt_manifest
         add_file_to_zip(zf, manifest_path, "evidence/evidence-manifest.yaml", missing)
 
         # --- Materialized evidence ---
@@ -100,30 +108,162 @@ def build_package(declaration_path: Path, repo_root: Path, out_dir: Path) -> dic
         patch = materialized_dir / "source-change-diffs.patch"
         add_file_to_zip(zf, patch, "materialized/source-change-diffs.patch", missing)
 
-        # --- Supervisor outputs ---
+        # --- R105: Stream-scoped supervisor outputs ---
+        # Files from the run_id's own review directory go under supervisor/
+        # (these are stream-correct because they were generated for this run)
+        review_run_dir = repo_root / ".local" / "supervisor" / "reviews" / run_id
         for fname in [
             "work-item-grades.json",
             "work-item-grades.md",
             "work-item-grades.yaml",
+            "supervisor-review.md",
+            "supervisor-review.json",
+            "combined-next-worker-prompt.md",
+            "supervisor-cycle-manifest.yaml",
+        ]:
+            src = review_run_dir / fname
+            if src.exists():
+                add_file_to_zip(zf, src, f"supervisor/{fname}", [])
+            else:
+                # Fallback to global reports/supervisor/ for grades/prompts
+                fallback = repo_root / "reports" / "supervisor" / fname
+                if fallback.exists():
+                    add_file_to_zip(zf, fallback, f"supervisor/{fname}", [])
+
+        # Materialized evidence review (stream-specific if available)
+        mat_review = repo_root / "reports" / "supervisor" / "materialized-evidence-review.md"
+        add_file_to_zip(zf, mat_review, "supervisor/materialized-evidence-review.md", missing)
+
+        # --- R105: Global state goes under global-state/ (explicitly cross-stream) ---
+        # These files reflect whichever stream ran the autonomous-cycle last,
+        # NOT necessarily this declaration's stream.
+        for fname in [
+            "latest-cycle-summary.md",
+            "evidence-review.md",
+            "contradictions.md",
             "session-resume.md",
             "next-sprint.md",
-            "materialized-evidence-review.md",
+            "approval-gates.md",
+            "context-pack.md",
+            "mcp-status.md",
+            "mcp-status.json",
         ]:
             src = repo_root / "reports" / "supervisor" / fname
-            add_file_to_zip(zf, src, f"supervisor/{fname}", missing)
+            add_file_to_zip(zf, src, f"global-state/supervisor/{fname}", [])
 
         # --- Product-code ledger snapshot ---
         ledger = repo_root / "reports" / "r90" / "product-code-change-ledger.json"
-        add_file_to_zip(zf, ledger, "state/product-code-change-ledger.json", missing)
+        add_file_to_zip(zf, ledger, "global-state/product-code-change-ledger.json", missing)
 
         # --- POC matrix snapshot ---
         poc = repo_root / "product-capability-matrix" / "poc-targets.yaml"
-        add_file_to_zip(zf, poc, "state/poc-targets.yaml", missing)
+        add_file_to_zip(zf, poc, "global-state/poc-targets.yaml", missing)
 
         # --- R92 work-item grades for r91 review ---
         for fname in ["r91-work-item-grades.json", "r91-work-item-grades.md"]:
             src = repo_root / "reports" / "r92" / fname
-            add_file_to_zip(zf, src, f"r91-review/{fname}", missing)
+            add_file_to_zip(zf, src, f"historical/{fname}", [])
+
+        # --- Context pack (global, may reference any stream) ---
+        context_yaml = repo_root / ".supervisor" / "context-pack.yaml"
+        add_file_to_zip(zf, context_yaml, "global-state/context-pack.yaml", [])
+
+        # --- MCP proof ---
+        mcp_json = repo_root / ".vscode" / "mcp.json"
+        add_file_to_zip(zf, mcp_json, "global-state/mcp.json", [])
+
+        # --- Selected product gaps (global, may be stale/wrong-stream) ---
+        gaps_json = repo_root / ".local" / "supervisor" / "selected-product-gaps.json"
+        add_file_to_zip(zf, gaps_json, "global-state/selected-product-gaps.json", [])
+
+        # --- Continuation signal ---
+        cont_signal = repo_root / ".local" / "supervisor" / "continuation-signal.json"
+        add_file_to_zip(zf, cont_signal, "global-state/continuation-signal.json", [])
+
+        # --- R104: Walk declaration evidence_root directory recursively ---
+        seen_arcnames = set()
+        decl_evidence_root = decl.get("evidence_root", "")
+        if decl_evidence_root:
+            ev_dir = repo_root / decl_evidence_root
+            if ev_dir.is_dir():
+                for ev_file in sorted(ev_dir.rglob("*")):
+                    if ev_file.is_file():
+                        rel = ev_file.relative_to(repo_root)
+                        arcname = f"sprint-evidence/{rel.as_posix()}"
+                        if arcname not in seen_arcnames:
+                            zf.write(ev_file, arcname)
+                            seen_arcnames.add(arcname)
+
+        # --- R104: Include evidence_artifacts from declaration ---
+        for art in decl.get("evidence_artifacts", []):
+            art_path = art.get("path", "")
+            if not art_path:
+                continue
+            src = repo_root / art_path
+            if not src.exists() or not src.is_file():
+                continue
+            arcname = f"sprint-evidence/{art_path}"
+            if arcname not in seen_arcnames:
+                zf.write(src, arcname)
+                seen_arcnames.add(arcname)
+
+        # --- R104: Include work item evidence_paths ---
+        for item in decl.get("planned_work_items", []):
+            for ep in item.get("evidence_paths", []):
+                src = repo_root / ep
+                if src.exists() and src.is_file():
+                    arcname = f"sprint-evidence/{ep}"
+                    if arcname not in seen_arcnames:
+                        zf.write(src, arcname)
+                        seen_arcnames.add(arcname)
+
+        # --- Review-directory artifacts (grades, prompts, inspection) ---
+        review_out = repo_root / ".local" / "supervisor" / "reviews" / run_id
+        if review_out.is_dir():
+            for review_file in sorted(review_out.iterdir()):
+                if review_file.is_file() and review_file.name != "declaration-review-package.zip":
+                    arcname = f"review/{review_file.name}"
+                    if arcname not in seen_arcnames:
+                        zf.write(review_file, arcname)
+                        seen_arcnames.add(arcname)
+
+        # --- R104: Include declared changed files (tools/tests/supervisor) ---
+        for cf in decl.get("changed_files", []):
+            src = repo_root / cf
+            if src.exists() and src.is_file():
+                arcname = f"changed-files/{cf}"
+                if arcname not in seen_arcnames:
+                    zf.write(src, arcname)
+                    seen_arcnames.add(arcname)
+
+        # --- R104: Stream identity validation ---
+        stream_warnings = []
+        try:
+            # Detect stream from sprint_id
+            import re
+            sid = sprint_id.upper()
+            m = re.match(r"FORMAT-FACTORY-(SUPERVISOR|ACCELERATION|SKILLS|MAINSTREAM)-R\d+", sid)
+            detected_stream = m.group(1).lower() if m else "mainstream"
+
+            # Check state files for wrong-stream references
+            for check_name, check_path in [
+                ("context-pack.yaml", repo_root / ".supervisor" / "context-pack.yaml"),
+                ("evidence-review.md", repo_root / "reports" / "supervisor" / "evidence-review.md"),
+                ("contradictions.md", repo_root / "reports" / "supervisor" / "contradictions.md"),
+            ]:
+                if check_path.exists():
+                    content = check_path.read_text(encoding="utf-8", errors="replace")[:2000]
+                    # Check if content references a different stream's sprint
+                    for other_stream in ["SUPERVISOR", "ACCELERATION", "SKILLS", "MAINSTREAM"]:
+                        if other_stream.lower() == detected_stream:
+                            continue
+                        pattern = f"FORMAT-FACTORY-{other_stream}-R\\d+"
+                        if re.search(pattern, content, re.IGNORECASE):
+                            stream_warnings.append(
+                                f"{check_name} references {other_stream} stream (current: {detected_stream})"
+                            )
+        except Exception:
+            pass
 
         # --- Package manifest ---
         pkg_manifest = {
@@ -133,6 +273,8 @@ def build_package(declaration_path: Path, repo_root: Path, out_dir: Path) -> dic
             "zip_path": str(zip_path),
             "artifacts_missing": missing,
             "artifacts_missing_count": len(missing),
+            "stream_identity_warnings": stream_warnings,
+            "declared_changed_files_count": len(decl.get("changed_files", [])),
         }
         zf.writestr(
             "package-manifest.json",

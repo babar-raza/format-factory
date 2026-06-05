@@ -18,6 +18,9 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 DEFAULT_LEDGER = REPO_ROOT / "reports" / "r90" / "product-code-change-ledger.json"
 VALID_CLASSIFICATIONS = {"BACKFILLED_PRE_GOVERNANCE", "GOVERNED_PRODUCT_CHANGE"}
+VALID_SOURCE_STATES = {"present", "deleted"}
+# Sprints after R90 must not use BACKFILLED_PRE_GOVERNANCE
+GOVERNANCE_START_SPRINT = "R90"
 
 
 def load_ledger(path: Path) -> dict:
@@ -99,8 +102,23 @@ def validate_ledger(ledger: dict, repo_root: Path, base_ref: str | None = None) 
             errors.append(f"duplicate entry_id: {entry_id}")
         else:
             seen_ids.add(entry_id)
-        if entry.get("classification") not in VALID_CLASSIFICATIONS:
+        classification = entry.get("classification")
+        if classification not in VALID_CLASSIFICATIONS:
             errors.append(f"{entry_id or index}: invalid classification")
+        # Reject new BACKFILLED entries for post-governance sprints
+        if classification == "BACKFILLED_PRE_GOVERNANCE":
+            sprint = entry.get("sprint") or entry.get("sprint_id", "")
+            # Extract sprint number from e.g. "R94" or full sprint ID
+            sprint_upper = str(sprint).upper()
+            for token in sprint_upper.replace("-", " ").split():
+                if token.startswith("R") and token[1:].isdigit():
+                    sprint_num = int(token[1:])
+                    if sprint_num >= 90:
+                        errors.append(
+                            f"{entry_id or index}: BACKFILLED_PRE_GOVERNANCE "
+                            f"cannot be used for sprint {token} (post-governance)"
+                        )
+                    break
         if not entry.get("capability_refs"):
             errors.append(f"{entry_id or index}: capability_refs must not be empty")
         if not entry.get("api_symbols"):
@@ -114,8 +132,8 @@ def validate_ledger(ledger: dict, repo_root: Path, base_ref: str | None = None) 
             if not _is_src_path(path):
                 errors.append(f"{entry_id or index}: invalid src path: {path}")
             state = source.get("state", "present")
-            if state not in {"present", "deleted"}:
-                errors.append(f"{entry_id or index}: invalid source state for {path}: {state}")
+            if state not in VALID_SOURCE_STATES:
+                errors.append(f"{entry_id or index}: invalid source state for {path}: {state} (must be one of {sorted(VALID_SOURCE_STATES)})")
             if state == "present" and not source.get("sha256"):
                 errors.append(f"{entry_id or index}: missing sha256 for {path}")
 

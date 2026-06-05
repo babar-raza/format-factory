@@ -1,0 +1,9 @@
+{
+  "fixture_name": "dif_empirical_only_caveated",
+  "description": "DIF claim backed by empirical-only requirement, accepted_with_limitations + UnsupportedFeature",
+  "expected_overall_verdict": "COVERAGE_CLEAN",
+  "expected_overclaim": false,
+  "expected_stale": false,
+  "expected_validator_errors": 0,
+  "notes": "accepted_with_limitations is valid when UnsupportedFeature is linked (Invariant 4 satisfied). Empirical_only requirement status is accepted. Pattern 8 may warn but not error. Coverage verdict: CLEAN (ACCEPTED_WITH_LIMITATIONS counts as PASS)."
+}

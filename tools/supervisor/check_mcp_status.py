@@ -46,10 +46,40 @@ def read_current_mode(repo_root: Path) -> int:
 
 
 def check_mcp_status(repo_root: Path) -> dict:
-    """Check and classify MCP status."""
+    """Check and classify MCP status.
+
+    Classifications (R99 — complete set):
+      MCP_DISABLED          — MODE < 4 (not yet authorized)
+      MCP_CONFIG_MISSING    — MODE >= 4 but .vscode/mcp.json not found
+      MCP_CONFIG_PRESENT_NOT_ACTIVE — .vscode/mcp.json present, MODE < 4
+      MCP_CONFIG_PRESENT_MODE4_ACTIVE — .vscode/mcp.json present + MODE 4+
+      MCP_MISCONFIGURED     — .vscode/mcp.json present but malformed
+      MCP_BLOCKED_POLICY    — policies.yaml explicitly blocks MCP (R99: D99-MCP-01)
+    """
     mcp_path = repo_root / ".vscode" / "mcp.json"
     mode = read_current_mode(repo_root)
     timestamp = datetime.now().isoformat()
+
+    # R99: Check for policy block (D99-MCP-01)
+    policies_path = repo_root / ".supervisor" / "policies.yaml"
+    if policies_path.exists():
+        try:
+            import yaml
+            policies = yaml.safe_load(policies_path.read_text(encoding="utf-8"))
+            hard_prohibitions = policies.get("autonomous_continuation", {}).get("hard_prohibitions", [])
+            if "mcp_activation_beyond_mode_3" in hard_prohibitions and mode < 4:
+                return {
+                    "classification": "MCP_BLOCKED_POLICY",
+                    "file_present": mcp_path.exists(),
+                    "file_path": str(mcp_path),
+                    "mode": mode,
+                    "server_count": 0,
+                    "servers": [],
+                    "description": f"MODE {mode} — MCP blocked by policy (hard_prohibitions includes mcp_activation_beyond_mode_3)",
+                    "timestamp": timestamp,
+                }
+        except Exception:
+            pass
 
     # Case 1: MODE < 4, file might not exist
     if not mcp_path.exists():

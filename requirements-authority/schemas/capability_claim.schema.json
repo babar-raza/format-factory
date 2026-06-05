@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capability_claim.schema.json",
+  "title": "CapabilityClaim",
+  "type": "object",
+  "required": ["node_id", "node_type", "product_id", "format_id", "operation", "recorded_at"],
+  "properties": {
+    "node_id": {"type": "string"},
+    "node_type": {"type": "string", "const": "CapabilityClaim"},
+    "product_id": {"type": "string"},
+    "format_id": {"type": "string"},
+    "operation": {
+      "type": "string",
+      "enum": ["load","parse","inspect","edit","save","write","export",
+               "import","roundtrip","validate","package","dogfood"]
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["read_only","write_only","read_write","export_only","import_only","transform"]
+    },
+    "fidelity": {
+      "type": "string",
+      "enum": ["structure_only","content_only","metadata_only","formatting_partial",
+               "formatting_preserved","lossless","lossy","declared_limited"]
+    },
+    "variant": {"type": "string", "default": "any"},
+    "object_model_scope": {"type": "string"},
+    "io_scope": {"type": "string"},
+    "error_scope": {"type": "string"},
+    "performance_scope": {"type": "string"},
+    "platform_scope": {"type": "string"},
+    "poc_scope": {"type": "string", "enum": ["required","stretch","not_applicable"]},
+    "status": {
+      "type": "string",
+      "enum": [
+        "candidate","requirement_linked","implementation_present","tests_present",
+        "examples_present","dogfood_present","coverage_validated",
+        "accepted_for_poc","accepted_with_limitations",
+        "stale","rejected","blocked","superseded"
+      ]
+    },
+    "ai_draft": {"type": "boolean", "default": false},
+    "dogfood_required": {"type": "boolean", "default": false},
+    "recorded_at": {"type": "string"}
+  }
+}

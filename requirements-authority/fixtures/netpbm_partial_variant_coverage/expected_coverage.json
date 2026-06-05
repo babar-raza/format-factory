@@ -1,0 +1,9 @@
+{
+  "fixture_name": "netpbm_partial_variant_coverage",
+  "description": "Netpbm claim covers all variants but only P1/P4 tested — pattern 4 overclaim",
+  "expected_overall_verdict": "COVERAGE_CLEAN",
+  "expected_overclaim": true,
+  "expected_stale": false,
+  "expected_validator_errors": 0,
+  "notes": "Claim has req+impl+tests so coverage evaluator gives CLEAN (proof is sufficient at TESTED level). Pattern 4 overclaim is still detected: all variants claimed but only [P1,P4] tested. Remediation: narrow_claim to variant-specific claims."
+}

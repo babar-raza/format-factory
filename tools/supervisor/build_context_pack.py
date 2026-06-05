@@ -155,9 +155,9 @@ def read_skill_registry(repo_root: Path) -> dict:
     return {
         "total_skills": len(skills),
         "active_skills": len(active),
-        "skill_ids": [s.get("id", "?") for s in active],
-        "source_edits_require_handoff": registry.get("source_edits_require_explicit_handoff", True),
-        "ledger_required": registry.get("product_code_ledger_required_before_source_edit", True),
+        "skill_ids": [s.get("skill_id", "?") for s in active],
+        "source_edits_require_handoff": registry.get("global_controls", {}).get("source_edits_require_explicit_handoff", True),
+        "ledger_required": registry.get("global_controls", {}).get("product_code_ledger_required_before_source_edit", True),
     }
 
 

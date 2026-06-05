@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "proof_graph_node.schema.json",
+  "title": "ProofGraphNode",
+  "description": "A node in the Canonical Capability Proof Graph",
+  "type": "object",
+  "required": ["node_id", "node_type", "recorded_at"],
+  "properties": {
+    "node_id": {"type": "string", "minLength": 1},
+    "node_type": {
+      "type": "string",
+      "enum": [
+        "ProductRequirement", "CapabilityClaim", "ImplementationArtifact",
+        "TestArtifact", "ExampleArtifact", "DogfoodArtifact", "EvidencePackage",
+        "UnsupportedFeature", "EmpiricalEvidence", "SpecRequirementRef",
+        "ProductPolicyDecision", "ContextPackRef", "CoverageRecord",
+        "CapabilityDelta", "PocTargetField", "StreamHandoff",
+        "UsageRecord", "StalenessEvent"
+      ]
+    },
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "ai_draft": {"type": "boolean", "default": false},
+    "status": {
+      "type": "string",
+      "enum": [
+        "candidate", "source_linked", "verification_pending",
+        "accepted", "accepted_with_caveat", "empirical_only", "policy_exception",
+        "stale", "rejected", "superseded",
+        "requirement_linked", "implementation_present", "tests_present",
+        "examples_present", "dogfood_present", "coverage_validated",
+        "accepted_for_poc", "accepted_with_limitations", "blocked",
+        "proposed", "schema_validated", "evidence_imported",
+        "coverage_computed", "needs_rework",
+        "not_checked", "clean", "partial_with_known_limitations",
+        "blocked_missing_requirement", "blocked_missing_implementation",
+        "blocked_missing_test", "blocked_missing_example",
+        "blocked_missing_dogfood", "blocked_stale_requirement",
+        "blocked_overclaim", "blocked_missing_evidence",
+        "requires_policy_decision"
+      ]
+    },
+    "format_id": {"type": "string"},
+    "product_id": {"type": "string"},
+    "operation": {
+      "type": "string",
+      "enum": ["load","parse","inspect","edit","save","write","export",
+               "import","roundtrip","validate","package","dogfood"]
+    },
+    "direction": {
+      "type": "string",
+      "enum": ["read_only","write_only","read_write","export_only","import_only","transform"]
+    },
+    "fidelity": {
+      "type": "string",
+      "enum": ["structure_only","content_only","metadata_only","formatting_partial",
+               "formatting_preserved","lossless","lossy","declared_limited"]
+    },
+    "variant": {"type": "string"},
+    "poc_scope": {"type": "string", "enum": ["required","stretch","not_applicable"]},
+    "dogfood_required": {"type": "boolean"},
+    "description": {"type": "string"},
+    "artifact_path": {"type": "string"},
+    "checksum": {"type": "string"},
+    "last_modified": {"type": "string"},
+    "last_passed_at": {"type": ["string", "null"]},
+    "produced_at": {"type": "string"},
+    "validator_used": {"type": "string"},
+    "materialized": {"type": "boolean"},
+    "severity": {"type": "string", "enum": ["blocking", "non_blocking"]},
+    "feature_name": {"type": "string"},
+    "decision_id": {"type": ["string", "null"]},
+    "import_status": {
+      "type": "string",
+      "enum": ["imported_candidate", "import_conflict", "verified"]
+    },
+    "missing_proof_types": {"type": "array", "items": {"type": "string"}},
+    "stale_reason": {"type": "string"},
+    "source_graph_hash": {"type": "string"}
+  },
+  "additionalProperties": true
+}

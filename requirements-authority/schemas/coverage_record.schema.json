@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "coverage_record.schema.json",
+  "title": "CoverageRecord",
+  "type": "object",
+  "required": ["record_id", "claim_id", "coverage_status", "evaluated_at"],
+  "properties": {
+    "record_id": {"type": "string"},
+    "claim_id": {"type": "string"},
+    "coverage_status": {
+      "type": "string",
+      "enum": [
+        "not_checked", "clean", "partial_with_known_limitations",
+        "blocked_missing_requirement", "blocked_missing_implementation",
+        "blocked_missing_test", "blocked_missing_example",
+        "blocked_missing_dogfood", "blocked_stale_requirement",
+        "blocked_overclaim", "blocked_missing_evidence",
+        "requires_policy_decision"
+      ]
+    },
+    "missing_proof_types": {"type": "array", "items": {"type": "string"}},
+    "overclaim_detected": {"type": "boolean"},
+    "overclaim_pattern": {"type": ["integer", "null"]},
+    "recommended_remediation": {"type": ["string", "null"]},
+    "stale_events_present": {"type": "boolean"},
+    "stale_event_ids": {"type": "array", "items": {"type": "string"}},
+    "coverage_verdict": {
+      "type": "string",
+      "enum": [
+        "COVERAGE_CLEAN", "COVERAGE_PARTIAL_WITH_LIMITATIONS",
+        "COVERAGE_BLOCKED_MISSING_REQUIREMENT",
+        "COVERAGE_BLOCKED_MISSING_IMPLEMENTATION",
+        "COVERAGE_BLOCKED_MISSING_TEST",
+        "COVERAGE_BLOCKED_MISSING_DOGFOOD",
+        "COVERAGE_BLOCKED_STALE",
+        "COVERAGE_BLOCKED_OVERCLAIM",
+        "COVERAGE_BLOCKED_MISSING_EVIDENCE",
+        "COVERAGE_BLOCKED_POLICY_REQUIRED"
+      ]
+    },
+    "evaluated_at": {"type": "string"},
+    "source_graph_hash": {"type": "string"}
+  }
+}
