@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Governed Skill Registry",
+  "description": "Schema for .supervisor/skill-registry.yaml — validates that every skill entry has required fields for governed execution.",
+  "type": "object",
+  "required": ["registry_id", "registry_status", "global_controls", "skills"],
+  "properties": {
+    "version": { "type": "string" },
+    "last_updated": { "type": "string" },
+    "registry_id": { "type": "string" },
+    "registry_status": {
+      "type": "string",
+      "enum": ["active_fail_closed", "active_fail_open", "disabled"]
+    },
+    "authority": {
+      "type": "object",
+      "properties": {
+        "master_plan": { "type": "string" },
+        "poc_matrix": { "type": "string" },
+        "dogfood_strategy": { "type": "string" },
+        "command_registry_reference": { "type": "string" }
+      }
+    },
+    "global_controls": {
+      "type": "object",
+      "required": [
+        "source_edits_require_explicit_handoff",
+        "exact_path_scope_required",
+        "product_code_ledger_required_before_source_edit"
+      ],
+      "properties": {
+        "source_edits_require_explicit_handoff": { "type": "boolean" },
+        "exact_path_scope_required": { "type": "boolean" },
+        "gate_changes_allowed": { "type": "boolean" },
+        "commercial_product_ready_changes_allowed": { "type": "boolean" },
+        "publication_changes_allowed": { "type": "boolean" },
+        "commit_allowed": { "type": "boolean" },
+        "push_allowed": { "type": "boolean" },
+        "product_code_ledger_required_before_source_edit": { "type": "boolean" },
+        "product_code_ledger_status": { "type": "string" },
+        "product_code_ledger_validator_status": { "type": "string" },
+        "skill_invocation_transcript_required": { "type": "boolean" },
+        "required_stop_conditions": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/skill_entry"
+      },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "skill_entry": {
+      "type": "object",
+      "required": [
+        "skill_id",
+        "command",
+        "command_file",
+        "status",
+        "purpose",
+        "product_track",
+        "required_handoff_fields",
+        "mandatory_validations"
+      ],
+      "properties": {
+        "skill_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique skill identifier matching the command name"
+        },
+        "command": {
+          "type": "string",
+          "pattern": "^/",
+          "description": "Slash command name (must start with /)"
+        },
+        "command_file": {
+          "type": "string",
+          "pattern": "\\.md$",
+          "description": "Path to the command markdown file"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "draft", "deprecated", "disabled"]
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Clear description of what the skill does"
+        },
+        "product_track": {
+          "type": "string",
+          "enum": [
+            "commercial_dotnet",
+            "foss_python",
+            "cross_product_export",
+            "cross_product",
+            "shared_reference_snapshot",
+            "testing",
+            "developer_experience",
+            "planning",
+            "packaging"
+          ]
+        },
+        "required_handoff_fields": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Fields that must be provided in the execution handoff"
+        },
+        "mandatory_validations": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Validations that must pass before the skill is considered complete"
+        }
+      }
+    }
+  }
+}

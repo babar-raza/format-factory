@@ -1,6 +1,6 @@
 ---
-version: "1.1"
-last-updated: "2026-05-17"
+version: "1.2"
+last-updated: "2026-06-03"
 phase-available: "all"
 gate-required: null
 created-by: memory-planning-methodology-and-agent-handoff sprint
@@ -68,6 +68,55 @@ If git commit is denied by Claude Code permissions, the sprint output is complet
 Human must run the printed commit command to finalize. This is expected — `git commit` is intentionally
 permission-restricted in this project's settings.json.
 
+## Usage
+
+```
+/memory-sprint
+```
+
+## Allowed Paths
+
+- `memory/` (create/update memory files and index)
+- `plans/master-plan.md` (additive updates only)
+- `AGENTS.md` (additive updates only)
+- `GOVERNANCE.md` (additive updates only)
+- `taskcards/` (create proposed taskcards)
+- `tools/evidence/contracts/` (create evidence contract)
+
+## Forbidden Paths
+
+- `src/**` (no product source edits)
+- `registry/format-registry.yaml` (gate authority)
+- `tests/**` (no test changes)
+
+## Constraints
+
+- No main sprint gate status may change
+- No product source may be created
+- No embeddings or vector DB may be created
+- Stage only MEMORY_SPRINT_ALLOWED files
+
+## Rollback
+
+1. Remove new memory file(s) from `memory/`
+2. Revert changes to `memory/00-index.md`
+3. Revert additive changes to `plans/master-plan.md`, `AGENTS.md`, `GOVERNANCE.md`
+4. Remove taskcards created in `taskcards/`
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, memory_files_created, decisions_captured, evidence_bundle_path, verdict.
+
+## Sample Invocation
+
+```
+/memory-sprint
+# Inputs:
+#   decisions: ["DEC-034: ZST dependency resolution", "DEC-035: Netpbm API scope"]
+#   backlog_items: ["TC-ZST-DEP-001"]
+```
+
 ## Changelog
 
 - 1.0 (2026-05-08): Initial version. Created in memory-planning-methodology-and-agent-handoff sprint.
@@ -75,3 +124,4 @@ permission-restricted in this project's settings.json.
   fallback. Fix Output Format item 6 from "Commit hash." (impossible without permission) to conditional
   form. Add Validation note explaining expected permission-denied behavior. Add NOTE in Step 12 explaining
   55-file floor vs. 30-file project floor. Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001.
+- 1.2 (2026-06-03): Added usage, allowed/forbidden paths, constraints, rollback, transcript, sample invocation (Skills R102).

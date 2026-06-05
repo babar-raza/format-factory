@@ -1,35 +1,35 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-02T19:19:16.862123
+# Generated: 2026-06-05T14:23:02.100417
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | e283822 |
+| Git HEAD | 3a86a05 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
-| Latest sprint | R93 |
-| Sprint ID | FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-... |
-| Autonomous continue | True |
-| Iteration | 3/5 |
+| Latest sprint | R125 |
+| Sprint ID | FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001... |
+| Autonomous continue | False |
+| Iteration | 12/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
-| Active skills | 4 |
-| Ledger entries | 16 total (12 governed) |
+| Active skills | 24 |
+| Ledger entries | 129 total (125 governed) |
 
 ## .NET Test Counts (POC Matrix)
 
 | Format | Tests | Gate 11 |
 |--------|-------|---------|
-| FODS | 215 | NOT_STARTED |
-| FODT | 201 | NOT_STARTED |
-| Netpbm | 120 | unknown |
-| **Total** | **536** | — |
+| FODS | 547 | NOT_STARTED |
+| FODT | 520 | NOT_STARTED |
+| Netpbm | 423 | unknown |
+| **Total** | **1490** | — |
 
 ## Skill Registry
 
-Skills: ?, ?, ?, ?
+Skills: add-dotnet-api, add-python-api, add-dogfood-export, update-capability-matrix, add-dotnet-object-model-feature, add-python-object-model-feature, add-same-format-writer-feature, add-roundtrip-test, add-installed-package-example, promote-gap-to-taskcard, generate-execution-handoff, verify-dogfood-path, package-install-proof, materialize-declaration-review, record-lane-execution, build-context-pack, select-poc-gap, validate-product-code-ledger, validate-skill-transcript, evidence-review-next-prompt, execution-handoff, export-plan-context, memory-sprint, plan-hardening
 
 ## Governance
 

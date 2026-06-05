@@ -1,3 +1,12 @@
+---
+version: "1.1"
+last-updated: "2026-06-03"
+phase-available: "3+"
+gate-required: null
+generated_by: claude
+visibility: generated
+---
+
 # /promote-gap-to-taskcard
 
 Promote a POC capability gap to a formal taskcard in `taskcards/`.
@@ -46,8 +55,46 @@ Promote a POC capability gap to a formal taskcard in `taskcards/`.
 <Context, constraints, dependencies>
 ```
 
+## Evidence Required
+
+- Taskcard file path
+- Gap ID promoted
+- Skill reference in taskcard
+- Acceptance criteria count
+
 ## Constraints
 
 - Taskcard ID must be unique
 - Status must be `open`, `in_progress`, or `closed`
 - Acceptance criteria must be testable (not vague)
+
+## Allowed Paths
+
+- `taskcards/` (taskcard creation)
+- `.supervisor/fixtures/` (gap fixture registration)
+
+## Forbidden Paths
+
+- `src/**` (no source edits)
+- `registry/format-registry.yaml` (gate authority)
+- `plans/master-plan.md` (operational authority)
+
+## Rollback
+
+1. Remove the taskcard file from `taskcards/`
+2. Remove the fixture registration if added
+
+## Validation
+
+Complete when: taskcard is well-formed YAML/MD, has testable acceptance criteria, and references a valid skill.
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, gap_id, taskcard_path, taskcard_id, verdict.
+
+## Changelog
+
+- 1.0 (2026-06-02): Initial version
+- 1.1 (2026-06-03): Added frontmatter, allowed/forbidden paths, rollback, changelog (Skills R99)
+- 1.2 (2026-06-03): Added validation, transcript requirement (Skills R101).

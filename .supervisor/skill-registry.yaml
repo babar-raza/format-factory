@@ -1,9 +1,9 @@
 ---
-version: "1.0"
+version: "2.0"
 last_updated: "2026-06-02"
-generated_by: codex
+generated_by: claude
 visibility: generated
-sprint: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-SUPERVISOR-REPAIR-MEGA-TRAIN-001
+sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
 
 # Governed Skill Registry
 #
@@ -11,7 +11,7 @@ sprint: FORMAT-FACTORY-R90-MAINSTREAM-POC-PRODUCT-ACCELERATION-GOVERNED-SKILLS-S
 # product edit by itself. A worker still needs an explicit sprint prompt or a
 # generated execution handoff naming the selected skill and exact paths.
 
-registry_id: r90-governed-skills-minimum-viable-set
+registry_id: r98-governed-skills-expanded
 registry_status: active_fail_closed
 authority:
   master_plan: plans/master-plan.md
@@ -30,6 +30,7 @@ global_controls:
   product_code_ledger_required_before_source_edit: true
   product_code_ledger_status: installed
   product_code_ledger_validator_status: installed
+  skill_invocation_transcript_required: true
   required_stop_conditions:
     - product_code_ledger_or_validator_missing
     - exact_allowed_paths_missing
@@ -39,6 +40,10 @@ global_controls:
     - required_validation_fails
 
 skills:
+  # ============================================================
+  # CORE PRODUCT SKILLS (R90 original)
+  # ============================================================
+
   - skill_id: add-dotnet-api
     command: /add-dotnet-api
     command_file: .claude/commands/add-dotnet-api.md
@@ -112,3 +117,288 @@ skills:
       - claimed_statuses_match_test_evidence
       - commercial_product_ready_remains_false
       - gate_11_approved_remains_false
+
+  # ============================================================
+  # EXPANDED SKILLS (R93+, registered R98)
+  # ============================================================
+
+  - skill_id: add-dotnet-object-model-feature
+    command: /add-dotnet-object-model-feature
+    command_file: .claude/commands/add-dotnet-object-model-feature.md
+    status: active
+    purpose: Add a feature to a .NET object model (property, method, conversion).
+    product_track: commercial_dotnet
+    required_handoff_fields:
+      - format_id
+      - feature_name
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+    mandatory_validations:
+      - product_code_ledger_validator
+      - focused_dotnet_tests
+
+  - skill_id: add-python-object-model-feature
+    command: /add-python-object-model-feature
+    command_file: .claude/commands/add-python-object-model-feature.md
+    status: active
+    purpose: Add a feature to a Python object model (method, conversion, property).
+    product_track: foss_python
+    required_handoff_fields:
+      - format_id
+      - feature_name
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+    mandatory_validations:
+      - product_code_ledger_validator
+      - focused_python_tests
+
+  - skill_id: add-same-format-writer-feature
+    command: /add-same-format-writer-feature
+    command_file: .claude/commands/add-same-format-writer-feature.md
+    status: active
+    purpose: Add same-format save/write capability after editing.
+    product_track: cross_product
+    required_handoff_fields:
+      - format_id
+      - writer_scope
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+    mandatory_validations:
+      - product_code_ledger_validator
+      - roundtrip_test_pass
+
+  - skill_id: add-roundtrip-test
+    command: /add-roundtrip-test
+    command_file: .claude/commands/add-roundtrip-test.md
+    status: active
+    purpose: Add a parse-edit-write-reparse roundtrip test.
+    product_track: testing
+    required_handoff_fields:
+      - format_id
+      - roundtrip_scope
+      - exact_test_paths
+    mandatory_validations:
+      - focused_tests_pass
+
+  - skill_id: add-installed-package-example
+    command: /add-installed-package-example
+    command_file: .claude/commands/add-installed-package-example.md
+    status: active
+    purpose: Add an example that uses an installed package (not PYTHONPATH).
+    product_track: developer_experience
+    required_handoff_fields:
+      - format_id
+      - example_scope
+      - example_path
+    mandatory_validations:
+      - example_runs_without_error
+
+  - skill_id: promote-gap-to-taskcard
+    command: /promote-gap-to-taskcard
+    command_file: .claude/commands/promote-gap-to-taskcard.md
+    status: active
+    purpose: Promote a product gap from the POC matrix to a formal taskcard.
+    product_track: planning
+    required_handoff_fields:
+      - gap_id
+      - taskcard_path
+    mandatory_validations:
+      - taskcard_valid_yaml
+
+  - skill_id: generate-execution-handoff
+    command: /generate-execution-handoff
+    command_file: .claude/commands/generate-execution-handoff.md
+    status: active
+    purpose: Generate a structured execution handoff for a governed skill.
+    product_track: planning
+    required_handoff_fields:
+      - skill_id
+      - target_format
+      - scope
+    mandatory_validations:
+      - handoff_yaml_valid
+
+  - skill_id: verify-dogfood-path
+    command: /verify-dogfood-path
+    command_file: .claude/commands/verify-dogfood-path.md
+    status: active
+    purpose: Verify that an export path uses only Format Factory libraries.
+    product_track: cross_product_export
+    required_handoff_fields:
+      - export_name
+      - source_format
+      - target_format
+      - exact_test_paths
+    mandatory_validations:
+      - product_code_ledger_validator
+      - no_external_imaging_backends
+      - focused_export_tests
+
+  - skill_id: package-install-proof
+    command: /package-install-proof
+    command_file: .claude/commands/package-install-proof.md
+    status: active
+    purpose: Prove that a package installs and imports correctly from wheel.
+    product_track: packaging
+    required_handoff_fields:
+      - format_id
+      - package_name
+    mandatory_validations:
+      - wheel_builds
+      - import_succeeds
+
+  # ============================================================
+  # SUPERVISOR/GOVERNANCE SKILLS (R100 registered, R104 promoted)
+  # Command files created in Skills R104 for promoted skills.
+  # ============================================================
+
+  - skill_id: materialize-declaration-review
+    command: /materialize-declaration-review
+    command_file: .claude/commands/materialize-declaration-review.md
+    status: active
+    purpose: Build a declaration review package ZIP from an evidence declaration YAML for supervisor grading.
+    product_track: planning
+    required_handoff_fields:
+      - declaration_path
+    mandatory_validations:
+      - declaration_yaml_valid
+      - zip_builds_successfully
+
+  - skill_id: record-lane-execution
+    command: /record-lane-execution
+    command_file: .claude/commands/record-lane-execution.md
+    status: active
+    purpose: Record the execution of a sprint lane into the lane execution ledger for multi-lane coordination and evidence tracking.
+    product_track: planning
+    required_handoff_fields:
+      - lane_id
+      - sprint_id
+    mandatory_validations:
+      - lane_id_unique
+
+  - skill_id: build-context-pack
+    command: /build-context-pack
+    command_file: .claude/commands/build-context-pack.md
+    status: active
+    purpose: Build a machine-readable context pack YAML summarizing current project state for session bootstrap.
+    product_track: planning
+    required_handoff_fields:
+      - output_path
+    mandatory_validations:
+      - context_pack_yaml_valid
+
+  - skill_id: check-mcp-status
+    command: /check-mcp-status
+    command_file: .claude/commands/check-mcp-status.md
+    status: deferred
+    deferred_reason: "No command file exists. MCP status is checked ad-hoc during preflight. Promote when automated MCP health monitoring is needed."
+    purpose: Check and classify the MCP server connection status using a 5-state model.
+    product_track: planning
+    required_handoff_fields:
+      - mcp_server_name
+    mandatory_validations:
+      - status_classified
+
+  - skill_id: select-poc-gap
+    command: /select-poc-gap
+    command_file: .claude/commands/select-poc-gap.md
+    status: active
+    purpose: Select the next product gap from the POC matrix for sprint execution based on priority and readiness.
+    product_track: planning
+    required_handoff_fields:
+      - matrix_path
+    mandatory_validations:
+      - gap_exists_in_matrix
+
+  # ============================================================
+  # VALIDATION SKILLS (R101 registered, R104 promoted to active)
+  # ============================================================
+
+  - skill_id: validate-product-code-ledger
+    command: /validate-product-code-ledger
+    command_file: .claude/commands/validate-product-code-ledger.md
+    status: active
+    purpose: Run the product-code change ledger validator and report pass/fail results for sprint evidence.
+    product_track: planning
+    required_handoff_fields:
+      - ledger_path
+    mandatory_validations:
+      - ledger_json_valid
+      - validator_exit_zero
+
+  - skill_id: validate-skill-transcript
+    command: /validate-skill-transcript
+    command_file: .claude/commands/validate-skill-transcript.md
+    status: active
+    purpose: Validate a skill invocation transcript against the registry schema and report pass/fail.
+    product_track: planning
+    required_handoff_fields:
+      - transcript_path
+    mandatory_validations:
+      - transcript_json_valid
+      - skill_id_registered
+
+  # ============================================================
+  # GOVERNANCE/REVIEW SKILLS (R105 registered, R106 orphans resolved)
+  # ============================================================
+
+  - skill_id: evidence-review-next-prompt
+    command: /evidence-review-next-prompt
+    command_file: .claude/commands/evidence-review-next-prompt.md
+    status: active
+    purpose: Review evidence bundle and produce the next execution prompt.
+    product_track: planning
+    required_handoff_fields:
+      - evidence_bundle_path
+    mandatory_validations:
+      - bundle_exists
+      - next_prompt_generated
+
+  - skill_id: execution-handoff
+    command: /execution-handoff
+    command_file: .claude/commands/execution-handoff.md
+    status: active
+    purpose: Convert a hardened plan into a single-go autonomous execution prompt with internal gates.
+    product_track: planning
+    required_handoff_fields:
+      - plan_path
+    mandatory_validations:
+      - plan_hardening_score_met
+      - handoff_prompt_generated
+
+  - skill_id: export-plan-context
+    command: /export-plan-context
+    command_file: .claude/commands/export-plan-context.md
+    status: active
+    purpose: Bundle long-term plan context files into a zip for LLM sharing.
+    product_track: planning
+    required_handoff_fields:
+      - output_path
+    mandatory_validations:
+      - context_zip_created
+
+  - skill_id: memory-sprint
+    command: /memory-sprint
+    command_file: .claude/commands/memory-sprint.md
+    status: active
+    purpose: Capture strategic decisions and architecture notes into durable memory artifacts.
+    product_track: planning
+    required_handoff_fields:
+      - memory_topic
+    mandatory_validations:
+      - memory_file_created
+      - index_updated
+
+  - skill_id: plan-hardening
+    command: /plan-hardening
+    command_file: .claude/commands/plan-hardening.md
+    status: active
+    purpose: Review, challenge, and harden a draft plan against repo truth before execution.
+    product_track: planning
+    required_handoff_fields:
+      - plan_path
+    mandatory_validations:
+      - hardening_score_reported

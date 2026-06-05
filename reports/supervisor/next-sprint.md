@@ -1,37 +1,60 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
-# Generated: 2026-06-02T19:21:05.108229
+# Source sprint: FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
+# Stream: mainstream
+# Generated: 2026-06-05T14:25:04.583707
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
 ---
 
 ## Sprint Focus
-ADVANCE: Continue normal mega-train lanes
+ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
-- Evidence verdict: ALL_ACCEPTED_AUTONOMOUS_CONTINUE
-- Tests: 536 passed, 0 failed, 0 skipped
+- Sprint ID: FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
+- Evidence verdict: ACCEPTED
+- Tests: 1532 passed, 0 failed, 0 skipped
 - Autonomous continue: True
+
+## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
+
+Labels [approval-blocked] and [blocked] are NEVER sufficient to stop the autonomous train.
+Before treating any task as blocked, run: python tools/supervisor/stop_reason_adjudicator.py "<signal>"
+
+Permanent false stops (NEVER stop for these):
+- [approval-blocked] tasks -> reclassify via stop_reason_adjudicator.reclassify_task_label()
+- [blocked] tasks -> reclassify; only TRUE_EXTERNAL_GATE/UNSAFE_WORKSPACE stop
+- mode_5_approval_pending -> RUFLO_FALLBACK_LOCAL_CONTINUE
+- evidence_quality_zero -> LOCAL_REPAIR_CONTINUE
+- Gate 11 PREPARATION -> agent-owned (preparation is never a stop)
+- anti_skip_critical_block with empty rework_items -> false positive, continue
+
+TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
+- git commit/push/merge execution (requires explicit user authorization)
+- Gate 8/11 approval EXECUTION (Babar Raza, not preparation)
+- NuGet/PyPI publication execution
+- Credentials unavailable with no fallback
 
 ## Section 1: New Product Work (Advisory — Always Execute)
 - [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [approval-blocked] TASK-002: Commit uncommitted product code and build sprint evidence bundle
-- [approval-blocked] TASK-003: Advance FODS Gate 11 commercial readiness
-- [approval-blocked] TASK-004: Advance FODT Gate 11 commercial readiness
-- [blocked] TASK-005: Open ZST Gate 11
-- [pending] TASK-006: Work on open taskcard: ABW-GATE4-001-parser-prototype
-- [pending] TASK-007: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
-- [pending] TASK-008: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
-- [pending] TASK-009: Product deepening: commercial-net-fods-dogfood-status-fods-to-csv-dotnet — dogfood_status.fods_to_csv_dotnet
-- [pending] TASK-010: Product deepening: commercial-net-fods-dogfood-status-fods-to-html-dotnet — dogfood_status.fods_to_html_dotnet
-- [pending] TASK-011: Product deepening: commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet — dogfood_status.fodt_to_markdown_dotnet
-- [pending] TASK-012: Product deepening: commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet — dogfood_status.fodt_to_txt_dotnet
-- [pending] TASK-013: Product deepening: foss-reduced-sylk-python-status-write-sylk — python_status.write_sylk
-- [pending] TASK-014: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-015: Build package artifacts and run installed-workflow proof
-- [pending] TASK-016: Write evidence declaration and run supervisor autonomous-cycle
+- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
+- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
+- [agent-owned] TASK-004: Prepare FODS Gate 11 readiness packet and commercial checklist
+- [external-gate] TASK-005: Submit FODS Gate 11 for Babar Raza approval (after packet ready — human required)
+- [agent-owned] TASK-006: Prepare FODT Gate 11 readiness packet and commercial checklist
+- [external-gate] TASK-007: Submit FODT Gate 11 for Babar Raza approval (after packet ready — human required)
+- [pending] TASK-008: Continue ZST implementation toward Gate 11 readiness criteria
+- [pending] TASK-009: Work on open taskcard: ABW-GATE4-001-parser-prototype
+- [pending] TASK-010: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
+- [pending] TASK-011: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
+- [pending] TASK-012: Product deepening: GAP-CAP-001 — PPM load/parse (P3/P6)
+- [pending] TASK-013: Product deepening: GAP-CAP-003 — FODS→CSV export
+- [pending] TASK-014: Product deepening: GAP-DOGFOOD-DIF-CSV-001 — GAP-DOGFOOD-DIF-CSV-001
+- [pending] TASK-015: Product deepening: GAP-DOC-001 — .NET Netpbm example
+- [pending] TASK-016: Product deepening: GAP-DOC-002 — FODS→CSV example
+- [pending] TASK-017: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-018: Build package artifacts and run installed-workflow proof
+- [pending] TASK-019: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
 None
@@ -55,8 +78,6 @@ None
 - Write `.local/evidences/<run_id>/evidence-declaration.yaml`
 - Run `python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/<run_id>/evidence-declaration.yaml`
 - ZIP bundle export is optional for archive or external transfer
-- Final verdict must contain: VERDICT: <enum>
-- All SHAs must be filled (no PENDING markers in final state)
 - Tests: 0 failures required
 
 ## Suggested Lane Manifest (Advisory)
@@ -69,61 +90,58 @@ None
 - Lane C6: Evidence — declaration + autonomous-cycle
 - Lane C7: Adversarial — challenge all claims before finalizing
 
-## Acceptance Criteria Per Lane
-(Fill from open taskcards in taskcards/ directory)
-
 ## Project Memory Context
 ```
-- governed_src_change: src/python/ppm/ppm_to_pgm.py (new, /add-dogfood-export skill)
-- new_tests: 5 (test_r90_ppm_to_pgm_dogfood.py)
-- commercial_product_ready: false
-- gate_11_approved: false
-- publication_authorized: false
+- test_delta: -260
+- test_delta_from: 1838
 
-## Entry: FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001
-- timestamp: 2026-06-02
-- status: COMPLETE
-- verdict: R91_AUTONOMOUS_SUPERVISOR_HEALED_POC_DEEPENED_PUBLICATION_BLOCKED
-- supervisor_flow_healed: true (declaration→grading→rework+new-work→continuation)
-- inherited_failures_repaired: 12 (R84 sidecar git-rm, R88 contract_id, test tolerance fixes)
-- python_tests: 4675 passed, 0 failed, 18 skipped
-- dotnet_fods_tests: 199 (191 baseline + 8 new SetCellValue)
-- dotnet_fodt_tests: 184 (176 baseline + 8 new SaveToFile)
-- dotnet_netpbm_tests: 104 (94 baseline + 10 new SetPixelColor)
-- python_new_tests: 7 (test_r91_sylk_csv_hardening.py)
-- dotnet_total: 487
-- governed_src_changes:
-  - src/net/fods/FodsDocument.cs (SetCellValue API, R91-GOVERNED-DOTNET-FODS-SETCELLVALUE-001)
-  - src/net/fodt/FodtDocument.cs (SaveToFile alias, R91-GOVERNED-DOTNET-FODT-SAVETOFILE-001)
-- acceleration_layer_repairs:
-  - autonomous_cycle.py: true_with_rework continuation mode + grade output copy
-  - policies.yaml: rework_continues_safe_lanes + inherited_failure_isolation
-  - generate_supervisor_packet.py: product-first next-sprint sections
-- commercial_product_ready: false
-- gate_11_approved: false
-- publication_authorized: false
+## Entry: FORMAT-FACTORY-SYLK-BLOCKER-REPAIR-AND-GATE11-PREP-R121-001
+- timestamp: 2026-06-05T14:01:05.295574
+- verdict: ACCEPTED
+- test_count: 263
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sylk-blocker-repair-gate11-prep-r121\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 57
+- bundle_validation_pass: True
+- test_delta: -1315
+- test_delta_from: 1578
 
-## Entry: FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001
-- timestamp: 2026-06-02
-- status: COMPLETE
-- verdict: R92_DECLARATION_MATERIALIZER_SKILL_EXPANSION_POC_DEEPENED_PUBLICATION_BLOCKED
-- declaration_materializer: tools/supervisor/materialize_declared_evidence.py (Train B)
-- review_package_builder: tools/supervisor/build_declaration_review_package.py (Train C)
-- r91_work_item_grades: 12/12 ACCEPTED (Train A)
-- new_skills: add-dotnet-object-model-feature, add-roundtrip-test, add-installed-package-example (Train J)
-- governed_src_changes:
-  - src/net/fods/FodsDocument.cs (GetSheetNames API, R92-GOVERNED-DOTNET-FODS-GETSHEETNAMES-001)
-  - src/net/fodt/FodtDocument.cs (GetHeadingParagraphs API, R92-GOVERNED-DOTNET-FODT-GETHEADINGPARAGRAPHS-001)
-  - src/net/netpbm/Model/NetpbmImage.cs (FillRegion API, R92-GOVERNED-DOTNET-NETPBM-FILLREGION-001)
-- dotnet_fods_tests: 207 (199 baseline + 8 new GetSheetNames)
-- dotnet_fodt_tests: 193 (184 baseline + 8 new GetHeadingParagraphs + 1 other)
-- dotnet_netpbm_tests: 112 (104 baseline + 8 new FillRegion)
-- dotnet_total: 512
-- python_tests: 2467 (tests/python/) or 2570 (including supervisor/evidence)
-- product_ledger_entries: 5 governed changes (3 R92 + 2 R91 + prior backfills)
-- commercial_product_ready: false
-- gate_11_approved: false
-- publication_authorized: false
+## Entry: FORMAT-FACTORY-NETPBM-ZST-GAP-CLOSURE-R122-001
+- timestamp: 2026-06-05T14:09:04.938511
+- verdict: ACCEPTED
+- test_count: 844
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\netpbm-zst-gap-closure-r122\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 56
+- bundle_validation_pass: True
+- test_delta: +581
+- test_delta_from: 263
+
+## Entry: FORMAT-FACTORY-GATE11-PREP-AND-LEDGER-REPAIR-R123-001
+- timestamp: 2026-06-05T14:17:04.714365
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gate11-prep-commit-manifest-r123\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+
+## Entry: FORMAT-FACTORY-PACKAGE-INSTALL-PROOF-R124-001
+- timestamp: 2026-06-05T14:21:04.879414
+- verdict: ACCEPTED
+- test_count: 0
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\package-install-proof-r124\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 55
+- bundle_validation_pass: True
 ```
 
 ---

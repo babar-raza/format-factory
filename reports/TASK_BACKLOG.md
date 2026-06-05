@@ -1,6 +1,33 @@
 # Task Backlog — Declaration-Driven Pipeline Production Integration
 
-Generated: 2026-06-01
+Updated: 2026-06-05 — DOTNET-DOGFOOD-ARCHITECTURE-GAP sprint appended below
+
+## DOTNET-DOGFOOD-ARCHITECTURE-GAP Sprint (2026-06-05)
+
+| ID | Scope | Status | Impacted Paths | Risk |
+|----|-------|--------|----------------|------|
+| TC-COORD-001 | lane-ownership.md | PENDING | reports/dotnet-dogfood-architecture-gap/ | LOW |
+| TC-COORD-002 | file-ownership-map.json | PENDING | reports/dotnet-dogfood-architecture-gap/ | LOW |
+| TC-COORD-003 | overlap-check.md | PENDING | reports/dotnet-dogfood-architecture-gap/ | LOW |
+| TC-COORD-004 | risk-register.md | PENDING | reports/dotnet-dogfood-architecture-gap/ | LOW |
+| TC-COORD-005 | issue-001-investigation-plan.md | PENDING | reports/dotnet-dogfood-architecture-gap/ | LOW |
+| TC-COORD-006 | scoreboard.md | PENDING | reports/dotnet-dogfood-architecture-gap/ | LOW |
+| TC-LANE-A | Selected-gap evidence review | PENDING | .local/supervisor/ | LOW |
+| TC-LANE-B | Writer library existence audit | PENDING | src/net/ (read-only) | LOW |
+| TC-LANE-C | Stop-condition audit | PENDING | .claude/commands/ (read-only) | LOW |
+| TC-LANE-D | ADR — architecture decision record | PENDING | reports/dotnet-dogfood-architecture-gap/ | LOW |
+| TC-LANE-E | Product readiness impact | PENDING | poc-targets.yaml (read-only) | LOW |
+| TC-LANE-F | Selected-gap reroute (select_poc_gaps.py) | PENDING | tools/supervisor/select_poc_gaps.py | MEDIUM |
+| TC-LANE-G | Prompt guardrails + next-sprint.md patch | PENDING | reports/supervisor/next-sprint.md | MEDIUM |
+| TC-LANE-H | Future writer library decision package | PENDING | reports/dotnet-dogfood-architecture-gap/ | LOW |
+| TC-LANE-I | Regression tests (12) | PENDING | tests/supervisor/ | MEDIUM |
+| TC-LANE-J | Taskcards + state sync | PENDING | reports/dotnet-dogfood-architecture-gap/ | LOW |
+| TC-LANE-K | Adversarial IV | PENDING | All outputs | MEDIUM |
+| TC-EVIDENCE | Declaration + manifest + autonomous cycle | PENDING | .local/evidences/ | MEDIUM |
+
+---
+
+# Prior Sprint Backlog (2026-06-01)
 
 ## Workstreams
 
@@ -30,3 +57,19 @@ Generated: 2026-06-01
 | ID | Scope | Files | Acceptance | Risk | Tests |
 |----|-------|-------|------------|------|-------|
 | T-PLAN-01 | Amend Section 40.5 + add Section 41 | plans/master-plan.md | Section 41 exists; 40.5 references autonomous-cycle | Very low | Visual check |
+
+---
+
+## README-REFRESH-PLAN Sprint (2026-06-05)
+Sprint ID: FORMAT-FACTORY-ROOT-README-REFRESH-PLAN-001
+
+| ID | Scope | Status | Impacted Paths | Risk |
+|----|-------|--------|----------------|------|
+| TC-README-PLAN-001 | Review current README.md gaps | PENDING | reports/readme-refresh-plan/current-readme-review.md | LOW |
+| TC-README-PLAN-002 | Map repo state to architecture | PENDING | reports/readme-refresh-plan/repo-state-map.md + .json | LOW |
+| TC-README-PLAN-003 | Create README target outline | PENDING | reports/readme-refresh-plan/readme-target-outline.md | LOW |
+| TC-README-PLAN-004 | Draft README content plan | PENDING | reports/readme-refresh-plan/readme-content-plan.md | LOW |
+| TC-README-PLAN-005 | README update patch plan | PENDING | reports/readme-refresh-plan/readme-update-patch-plan.md | LOW |
+| TC-README-PLAN-006 | Final execution prompt | PENDING | reports/readme-refresh-plan/final-single-go-readme-update-prompt.md | LOW |
+| TC-README-PLAN-007 | Validation + git status | PENDING | reports/readme-refresh-plan/validation-results.md + final-git-status.txt | LOW |
+| TC-README-PLAN-008 | Evidence declaration + review package | PENDING | .local/evidences/readme-refresh-plan/ | LOW |

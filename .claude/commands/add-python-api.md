@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-06-02"
+version: "1.2"
+last-updated: "2026-06-03"
 phase-available: "3+"
 gate-required: "Explicit product implementation authorization for the named format"
 generated_by: codex
@@ -41,6 +41,19 @@ shape but does not authorize source edits without an explicit handoff.
 10. Report changed files and validation results. Do not commit, push, publish, change gates, or alter
     release authorization.
 
+## Allowed Paths
+
+- `src/python/<format_id>/` (source)
+- `tests/python/<format_id>/` (tests)
+- `reports/r90/product-code-change-ledger.json`
+
+## Forbidden Paths
+
+- `src/net/**` (wrong track)
+- `registry/format-registry.yaml` (gate authority)
+- `plans/master-plan.md` (operational authority)
+- `product-capability-matrix/poc-targets.yaml` (use /update-capability-matrix)
+
 ## Stop Conditions
 
 - The ledger or validator is missing.
@@ -58,7 +71,32 @@ and any stop condition. Do not overclaim package readiness from focused API test
 
 The command is complete only when ledger validation and the focused Python tests pass.
 
+## Rollback
+
+1. Revert source changes in `src/python/<format_id>/`
+2. Remove test file `tests/python/<format_id>/test_r<N>_<api_name>.py`
+3. Remove the ledger entry from `reports/r90/product-code-change-ledger.json`
+4. Re-run `python tools/supervisor/validate_product_code_ledger.py` to confirm PASS
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, format_id, api_name, changed_files, test_results, ledger_entry_id, verdict.
+
+## Sample Invocation
+
+```
+/add-python-api
+# Inputs provided by execution handoff:
+#   format_id: sylk
+#   api_name: write_sylk
+#   exact_source_paths: [src/python/sylk/sylk_writer.py]
+#   exact_test_paths: [tests/python/sylk/test_r93_sylk_write.py]
+#   ledger_entry_path: reports/r90/product-code-change-ledger.json
+#   focused_test_command: python -m pytest tests/python/sylk/test_r93_sylk_write.py -v
+```
+
 ## Changelog
 
 - 1.0 (2026-06-02): Initial R90 governed minimum viable command.
-
+- 1.2 (2026-06-03): Added allowed/forbidden paths, rollback, transcript requirement, sample invocation (Skills R101).

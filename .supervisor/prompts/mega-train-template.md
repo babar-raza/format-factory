@@ -1,6 +1,7 @@
 # FORMAT-FACTORY-{sprint_id}-MEGA-TRAIN-001
 # Generated: {timestamp}
 # Source: Supervisor autonomous-cycle review of {prior_sprint_id}
+# Stream: {stream_identity}
 # ADVISORY ONLY -- not a Format Factory authority document
 
 ---

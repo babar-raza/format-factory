@@ -47,6 +47,40 @@ with the expected change preserved.
 - Focused test fails
 - Round-trip test does not actually verify the reloaded value
 
-## Output
+## Evidence Required
 
-Report test file, test name, edit operation, pass result.
+- Test file path
+- Test count and pass result
+- Edit operation verified in reloaded model
+
+## Validation
+
+Complete only when the focused round-trip test passes and the reloaded value matches.
+
+## Rollback
+
+1. Remove the test file
+2. If any ledger entry was added, remove it
+3. Re-run focused test command to confirm no regressions
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, format_id, language, edit_operation, test_file, test_results, verdict.
+
+## Sample Invocation
+
+```
+/add-roundtrip-test
+# Inputs:
+#   format_id: fods
+#   language: dotnet
+#   edit_operation: SetCellValue
+#   exact_test_paths: [tests/net/fods/FodsR98SaveAfterEditTests.cs]
+#   focused_test_command: dotnet test tests/net/fods/ --filter "FodsR98SaveAfterEdit"
+```
+
+## Changelog
+
+- 1.0 (2026-06-02): Initial R92 governed command.
+- 1.2 (2026-06-03): Added evidence, validation, rollback, transcript, sample invocation, changelog (Skills R101).

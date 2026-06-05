@@ -1,6 +1,6 @@
 ---
-version: "1.1"
-last-updated: "2026-05-17"
+version: "1.2"
+last-updated: "2026-06-03"
 phase-available: "all"
 gate-required: null
 created-by: memory-planning-methodology-and-agent-handoff sprint
@@ -58,7 +58,53 @@ Review a provided evidence bundle, challenge the prior sprint claims, and produc
 The next prompt must reference the reviewed bundle as its primary evidence input.
 The next prompt must include any defects found as repair steps at the start.
 
+## Usage
+
+```
+/evidence-review-next-prompt
+```
+
+## Allowed Paths
+
+- `reports/supervisor/` (read/write review outputs)
+- `memory/` (read index and memory files)
+- `plans/master-plan.md` (read only)
+- `docs/` (read planning methodology and handoff standard)
+- `tools/evidence/` (run validators)
+
+## Forbidden Paths
+
+- `src/**` (no source edits)
+- `registry/format-registry.yaml` (gate authority)
+- `tests/**` (no test changes)
+
+## Constraints
+
+- Do not create repo files outside allowed paths
+- Do not commit or push
+- Do not change any gate status
+
+## Rollback
+
+1. Remove any files created in `reports/supervisor/`
+2. No source or test changes to revert
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, bundle_path, claim_count, confirmed_count, disputed_count, verdict.
+
+## Sample Invocation
+
+```
+/evidence-review-next-prompt
+# Inputs:
+#   bundle_path: .local/bundles/r93-bundle.zip
+#   contract: tools/evidence/contracts/r93-context-pack.yaml
+```
+
 ## Changelog
 
 - 1.0 (2026-05-08): Initial version. Created in memory-planning-methodology-and-agent-handoff sprint.
 - 1.1 (2026-05-17): Add Step 0 dependency preflight. Replace hardcoded memory/09 reference in Step 1 with dynamic most-recent-memory lookup. Add contract selection guidance to Step 6 (was `--contract <contract>` placeholder with no guidance; 93+ contracts exist in directory). Sprint: FORMAT-FACTORY-SKILLS-PRD-HARDENING-001.
+- 1.2 (2026-06-03): Added allowed/forbidden paths, constraints, rollback, transcript, sample invocation (Skills R102).

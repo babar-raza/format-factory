@@ -1,6 +1,6 @@
 ---
-version: "1.2"
-last-updated: "2026-05-17"
+version: "1.3"
+last-updated: "2026-06-03"
 phase-available: "all"
 gate-required: null
 created-by: R12 sprint session
@@ -9,6 +9,12 @@ created-by: R12 sprint session
 # /export-plan-context
 
 Bundle the long-term plan context files into a zip suitable for sharing with an LLM.
+
+## Usage
+
+```
+/export-plan-context
+```
 
 ## Purpose
 
@@ -145,6 +151,40 @@ orientation. Key acquisition state: memory/38-r21-foss-release-readiness-and-gat
   guard (it fires automatically after zip creation) to verify. Failure to update will produce
   `STALENESS_WARNING` on next execution. Current list reflects R21 state (memory/38).
 
+## Validation
+
+Zip must contain all required files. CONTEXT_CURRENCY must be OK (not STALENESS_WARNING).
+
+## Allowed Paths
+
+- `.local/` (write zip output)
+- `memory/` (read memory files)
+- `plans/master-plan.md` (read only)
+- `docs/` (read architecture, gates, product tracks)
+- `reports/planning/` (read planning state)
+
+## Forbidden Paths
+
+- `src/**` (no source edits)
+- `registry/format-registry.yaml` (gate authority)
+- `tests/**` (no test changes)
+
+## Constraints
+
+- Output zip must go to `.local/` (gitignored)
+- Do not commit the zip or any `.local/` file
+- Do not push
+
+## Rollback
+
+1. Delete `.local/format-factory-longterm-plan-context.zip`
+2. No source or test changes to revert
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, files_included, zip_path, context_currency_status, verdict.
+
 ## Changelog
 
 - 1.0 (2026-05-15): Initial version. Created in R12 sprint session from ad-hoc zip build.
@@ -156,3 +196,4 @@ orientation. Key acquisition state: memory/38-r21-foss-release-readiness-and-gat
 - 1.2 (2026-05-17): Update standard file list to R21 state. Add memory/38 and
   r21-registry-pack-taskcard-roadmap-memory-normalization-report-20260517.md. Update Output Format
   and Notes to reflect memory/38 as current. Sprint: SKILLS-PRD-HARDENING-001-CLOSURE-REPAIR-001.
+- 1.3 (2026-06-03): Added allowed/forbidden paths, constraints, rollback, transcript (Skills R102).

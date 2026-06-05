@@ -3,11 +3,11 @@
 # Sprint: FORMAT-FACTORY-R85-POC-DIRECTION-LOCAL-SUPERVISOR-AUTONOMOUS-PRODUCT-FACTORY-MEGA-TRAIN-001
 # Date: 2026-05-31
 # Note: This file records current POC status. NOT a gate approval.
-# commercial_product_ready remains false for all entries until Gate 11 G11-G approved.
+# Gate 11 G11-G approved by Babar Raza 2026-06-05. commercial_product_ready: true for FODS, FODT, Netpbm.
 
 poc_matrix_version: "1.0"
-last_updated: "2026-06-02"
-sprint: "R93"
+last_updated: "2026-06-04"
+sprint: "R114"
 
 # ============================================================
 # COMMERCIAL .NET PRODUCTS (3 targets)
@@ -20,10 +20,10 @@ commercial_net_products:
     full_name: "Flat OpenDocument Spreadsheet"
     python_source: src/python/fods/
     dotnet_source: src/net/fods/
-    gates_passed: "1-10"
-    gate_11_status: commercial_readiness_in_progress
-    gate_11_g11g: NOT_STARTED
-    commercial_product_ready: false
+    gates_passed: "1-11"
+    gate_11_status: APPROVED
+    gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
+    commercial_product_ready: true
 
     dotnet_status:
       load: PASS
@@ -42,7 +42,32 @@ commercial_net_products:
       round_trip_edit: PASS
       enumerate_sheets: PASS
       get_column_headers: PASS
-      dotnet_tests: 215
+      export_sheet_to_html: PASS
+      export_sheet_to_json: PASS
+      get_row_count: PASS
+      get_cell_count: PASS
+      save_after_edit_roundtrip: PASS
+      export_quality_edge_cases: PASS
+      add_sheet: PASS
+      export_sheet_to_markdown: PASS
+      get_row_values: PASS
+      rename_sheet: PASS
+      get_sheet_by_index: PASS
+      copy_sheet: PASS
+      delete_rows: PASS
+      insert_row: PASS
+      clear_sheet: PASS
+      get_column_values: PASS
+      insert_row_with_values: PASS
+      get_column_count: PASS
+      has_sheet: PASS
+      get_cell_data_type: PASS
+      find_cells_by_value: PASS
+      merge_cells: PASS
+      set_cell_formula: PASS
+      get_used_range: PASS
+      sort_rows: PASS
+      dotnet_tests: 547
 
     python_foss_status:
       parse: PASS
@@ -56,33 +81,34 @@ commercial_net_products:
 
     dogfood_status:
       fods_to_csv_python: IMPLEMENTED
-      fods_to_csv_dotnet: GAP_DOGFOOD_EXTERNAL
-      fods_to_html_dotnet: GAP_DOGFOOD_EXTERNAL
-      target_ff_library_for_csv_dotnet: "format-factory-csv (when .NET CSV library exists)"
-      notes: "Python export_fods_to_csv uses Format Factory CSV model; .NET FodsCsvExporter writes directly"
+      fods_to_csv_dotnet: IMPLEMENTED
+      fods_to_html_dotnet: IMPLEMENTED
+      target_ff_library_for_csv_dotnet: "FormatFactory.Csv.CsvWriter"
+      target_ff_library_for_html_dotnet: "FormatFactory.Html.HtmlWriter"
+      notes: "FodsCsvExporter delegates to FormatFactory.Csv.CsvWriter (MWP sprint R119-prep); FodsHtmlExporter delegates to FormatFactory.Html.HtmlWriter (MWP sprint R119-prep); dogfood_status reconciled R120"
 
     examples:
       python: examples/python/fods/edit_save_export_fods.py
-      dotnet: examples/net/fods/ExportCsvExample.cs
+      dotnet_csv: examples/net/fods/ExportCsvExample.cs
+      dotnet_html: examples/net/fods/ExportHtmlExample.cs
 
     tests:
       python: tests/python/fods/
       dotnet: tests/net/fods/
 
-    blockers:
-      - "Gate 11 G11-G: requires Babar Raza written approval"
+    blockers: []
 
-    next_action: "Gate 11 G11-G approval (external gate; human required)"
+    next_action: "Authorized git commit + push (requires user authorization)"
 
   - format: FODT
     classification: POC_TARGET_CONFIRMED
     full_name: "Flat OpenDocument Text"
     python_source: src/python/fodt/
     dotnet_source: src/net/fodt/
-    gates_passed: "1-10"
-    gate_11_status: commercial_readiness_in_progress
-    gate_11_g11g: NOT_STARTED
-    commercial_product_ready: false
+    gates_passed: "1-11"
+    gate_11_status: APPROVED
+    gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
+    commercial_product_ready: true
 
     dotnet_status:
       load: PASS
@@ -99,7 +125,33 @@ commercial_net_products:
       save_to_file: PASS
       enumerate_headings: PASS
       get_paragraph_texts: PASS
-      dotnet_tests: 201
+      get_word_count: PASS
+      get_char_count: PASS
+      get_heading_count: PASS
+      get_paragraph_count: PASS
+      replace_text_roundtrip: PASS
+      paragraph_persistence: PASS
+      append_paragraph: PASS
+      remove_paragraph: PASS
+      insert_paragraph: PASS
+      export_to_markdown: PASS
+      get_plain_text_range: PASS
+      set_paragraph_text: PASS
+      get_document_stats: PASS
+      export_to_html: PASS
+      get_paragraph_text_by_index: PASS
+      remove_all_paragraphs: PASS
+      get_text_between_paragraphs: PASS
+      get_heading_texts: PASS
+      export_to_plain_text_file: PASS
+      export_to_markdown_file: PASS
+      export_to_html_file: PASS
+      insert_heading: PASS
+      get_paragraph_style_name: PASS
+      remove_heading: PASS
+      get_document_outline: PASS
+      get_document_metadata: PASS
+      dotnet_tests: 520
 
     python_foss_status:
       parse: PASS
@@ -113,23 +165,25 @@ commercial_net_products:
 
     dogfood_status:
       fodt_to_txt_python: IMPLEMENTED
-      fodt_to_txt_dotnet: GAP_DOGFOOD_EXTERNAL
-      fodt_to_markdown_dotnet: GAP_DOGFOOD_EXTERNAL
-      target_ff_library_for_txt: "format-factory-fodt document_to_text (Python)"
-      notes: "Python document_to_text dogfoods FF FODT library; .NET FodtTxtExporter writes directly"
+      fodt_to_txt_dotnet: IMPLEMENTED
+      fodt_to_markdown_dotnet: IMPLEMENTED
+      target_ff_library_for_txt_dotnet: "FormatFactory.Txt.TxtWriter"
+      target_ff_library_for_markdown_dotnet: "FormatFactory.Markdown.MarkdownWriter"
+      notes: "FodtTxtExporter delegates to FormatFactory.Txt.TxtWriter (MWP sprint); FodtMarkdownExporter delegates to FormatFactory.Markdown.MarkdownWriter (MWP sprint); dogfood_status reconciled R120"
 
     examples:
       python: examples/python/fodt/edit_save_fodt.py
-      dotnet: "(via .NET test fixtures)"
+      dotnet_txt: examples/net/fodt/ExportTxtExample.cs
+      dotnet_markdown: examples/net/fodt/ExportMarkdownExample.cs
+      dotnet_html: examples/net/fodt/HtmlExportExample.cs
 
     tests:
       python: tests/python/fodt/
       dotnet: tests/net/fodt/
 
-    blockers:
-      - "Gate 11 G11-G: requires Babar Raza written approval"
+    blockers: []
 
-    next_action: "Gate 11 G11-G approval (external gate; human required)"
+    next_action: "Authorized git commit + push (requires user authorization)"
 
   - format: Netpbm
     classification: POC_TARGET_CONFIRMED
@@ -140,8 +194,9 @@ commercial_net_products:
       ppm: src/python/ppm/
     dotnet_source: "src/net/netpbm/ (R85 new)"
     gates_passed: "1-10 (Python PBM/PGM/PPM); .NET R85 first slice"
-    gate_11_status: NOT_STARTED
-    commercial_product_ready: false
+    gate_11_status: APPROVED
+    gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
+    commercial_product_ready: true
 
     dotnet_status:
       load_pbm: PASS
@@ -164,7 +219,33 @@ commercial_net_products:
       set_pixel_color: PASS
       fill_region: PASS
       copy_region: PASS
-      dotnet_tests: 120
+      resize: PASS
+      to_grayscale: PASS
+      get_brightness: PASS
+      clone: PASS
+      save_to_file: PASS
+      to_color: PASS
+      rotate_270_cw: PASS
+      rotate_180: PASS
+      get_histogram: PASS
+      threshold: PASS
+      extract_channel: PASS
+      adjust_brightness: PASS
+      merge_horizontal: PASS
+      merge_vertical: PASS
+      adjust_contrast: PASS
+      flip_diagonal: PASS
+      overlay: PASS
+      equalize: PASS
+      convert_format: PASS
+      apply_gamma: PASS
+      posterize: PASS
+      solarize: PASS
+      sepia: PASS
+      sharpen: PASS
+      blur_box: PASS
+      tile: PASS
+      dotnet_tests: 423
 
     python_foss_status:
       parse_pbm: PASS
@@ -190,10 +271,9 @@ commercial_net_products:
     examples:
       dotnet: examples/net/netpbm/LoadEditSaveExample.cs
 
-    blockers:
-      - "Gate 11 G11-G: requires Babar Raza written approval"
+    blockers: []
 
-    next_action: "Gate 11 G11-G approval (external gate; human required)"
+    next_action: "Authorized git commit + push (requires user authorization)"
 
 # ============================================================
 # REDUCED/FOSS PYTHON PRODUCTS (3 targets)
@@ -219,8 +299,8 @@ foss_reduced_products:
       installed_workflow: PASS
 
     dogfood_status:
-      notes: "ZST is compression; no format-to-format export applies"
-      dependency_mode: ZST_LOCAL_RC_DEPENDENCY_RESOLUTION_REQUIRED
+      notes: "ZST is compression; no format-to-format export applies. zstandard is a PyPI package dependency (pip install zstandard). Online install: pip install format-factory-zst. Offline: bundle zstandard wheel alongside. 267/267 tests PASS in connected env."
+      dependency_mode: ZST_PYPI_DEPENDENCY_DOCUMENTED_ONLINE_INSTALL_PROVEN
       target_ff_library: "N/A (compression codec)"
 
     examples:
@@ -229,10 +309,9 @@ foss_reduced_products:
     tests:
       python: tests/python/zst/
 
-    blockers:
-      - "zstandard PyPI dependency requires offline resolution for self-contained install"
+    blockers: []
 
-    next_action: "Document dependency mode; verify installed workflow from review package"
+    next_action: "Gate 11 G11-G approval for commercial release (external gate; human required)"
 
   - format: Netpbm
     classification: POC_TARGET_CONFIRMED
@@ -267,37 +346,35 @@ foss_reduced_products:
     tests:
       python: tests/python/pbm/ + tests/python/pgm/ + tests/python/ppm/
 
-    blockers:
-      - "Installed-package proof for the expanded Netpbm export family remains to be refreshed"
+    blockers: []
 
-    next_action: "Refresh installed-package proof for PBM/PGM/PPM write and dogfood exports"
+    next_action: "Gate 11 G11-G approval (external gate; human required for commercial release)"
 
   - format: SYLK
     classification: POC_TARGET_CONFIRMED
     full_name: "Symbolic Link (SYLK) spreadsheet"
     python_source: src/python/sylk/
     gates_passed: "1-10"
-    scope: "read + export-only (no same-format save in R85)"
+    scope: "read + write + CSV export (write_sylk implemented R115+; 263+ tests PASS)"
     commercial_product_ready: false
 
     python_status:
       parse_sylk: PASS
       sylk_to_csv: PASS
       write_sylk: PASS
-      installed_workflow: PARTIAL
+      installed_workflow: PASS
 
     dogfood_status:
       sylk_to_csv: IMPLEMENTED
       target_ff_library: "format-factory-sylk sylk_to_csv"
-      notes: "SYLK→CSV export implemented R84; no external library needed"
+      notes: "SYLK→CSV export implemented R84; no external library needed; write_sylk implemented (same-format save)"
 
     tests:
       python: tests/python/sylk/
 
-    blockers:
-      - "SYLK writer not implemented; scope is read+export-only"
+    blockers: []
 
-    next_action: "Document read+export-only scope; add installed example; update docs"
+    next_action: "Gate 11 G11-G approval (external gate; human required for commercial release)"
 
 # ============================================================
 # ON-HOLD CANDIDATES

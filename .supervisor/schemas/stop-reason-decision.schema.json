@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stop Reason Decision",
+  "description": "Output schema for the Stop Reason Adjudicator. Every potential train stop must produce a decision with these fields.",
+  "type": "object",
+  "required": [
+    "input_signal",
+    "normalized_signal",
+    "decision",
+    "terminal",
+    "blocks_implementation",
+    "blocks_poc_candidate",
+    "blocks_release",
+    "agent_can_handle",
+    "human_required",
+    "allowed_next_action",
+    "reason",
+    "evidence_refs",
+    "remediation"
+  ],
+  "properties": {
+    "input_signal": {
+      "type": "string",
+      "description": "Raw signal string that was adjudicated"
+    },
+    "normalized_signal": {
+      "type": "string",
+      "description": "Normalized signal category",
+      "enum": [
+        "SUPERVISOR_VERDICT",
+        "HUMAN_GATE",
+        "RELEASE_GATE",
+        "IMPLEMENTATION_GATE",
+        "EVIDENCE_QUALITY",
+        "PROMPT_QUALITY",
+        "MAX_ITERATION",
+        "RUNTIME_LIMIT",
+        "WORKSPACE_SAFETY",
+        "PRODUCT_GAP",
+        "GATE_11",
+        "GATE_8",
+        "MCP_MODE",
+        "RUFLO_MODE",
+        "PUSH_COMMIT",
+        "PUBLICATION",
+        "CREDENTIAL",
+        "DESTRUCTIVE_OPERATION",
+        "BUSINESS_DECISION",
+        "UNKNOWN"
+      ]
+    },
+    "decision": {
+      "type": "string",
+      "description": "Adjudicated decision",
+      "enum": [
+        "CONTINUE_NEXT_ITERATION",
+        "LOCAL_REPAIR_CONTINUE",
+        "AGENT_OWNED_REVIEW_CONTINUE",
+        "AGENT_OWNED_RECOMMENDATION_CONTINUE",
+        "RELEASE_APPROVAL_PENDING_NOT_IMPLEMENTATION_BLOCKER",
+        "CHECKPOINT_ROLLOVER_CONTINUE",
+        "RUFLO_FALLBACK_LOCAL_CONTINUE",
+        "POC_READY_CANDIDATE",
+        "TRUE_EXTERNAL_GATE",
+        "UNSAFE_WORKSPACE",
+        "RUNTIME_LIMIT_CONTINUATION_REQUIRED",
+        "STATE_CONTRADICTION_REPAIR_REQUIRED"
+      ]
+    },
+    "terminal": {
+      "type": "boolean",
+      "description": "Whether this decision stops the implementation train"
+    },
+    "blocks_implementation": {
+      "type": "boolean",
+      "description": "Whether this blocks local implementation work"
+    },
+    "blocks_poc_candidate": {
+      "type": "boolean",
+      "description": "Whether this blocks POC candidate classification"
+    },
+    "blocks_release": {
+      "type": "boolean",
+      "description": "Whether this blocks commercial release"
+    },
+    "agent_can_handle": {
+      "type": "boolean",
+      "description": "Whether the agent can act on this decision without human"
+    },
+    "human_required": {
+      "type": "boolean",
+      "description": "Whether human action is required"
+    },
+    "allowed_next_action": {
+      "type": "string",
+      "description": "What the agent is allowed to do next"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Reason for the decision"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Optional evidence file paths supporting this decision"
+    },
+    "remediation": {
+      "type": "string",
+      "description": "How to repair or unblock if needed"
+    }
+  }
+}

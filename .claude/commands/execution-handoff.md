@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-05-08"
+version: "1.1"
+last-updated: "2026-06-03"
 phase-available: "all"
 gate-required: null
 created-by: memory-planning-methodology-and-agent-handoff sprint
@@ -44,6 +44,51 @@ A complete execution handoff prompt ready to paste, including:
 
 The execution prompt must contain all 20 components from docs/planning-methodology.md Section 6 (Prompt Anatomy).
 
+## Usage
+
+```
+/execution-handoff
+```
+
+## Allowed Paths
+
+- `reports/supervisor/` (write handoff outputs)
+- `plans/master-plan.md` (read only)
+- `docs/` (read handoff standard, planning methodology, prompt templates)
+- `memory/` (read for context)
+
+## Forbidden Paths
+
+- `src/**` (no source edits)
+- `registry/format-registry.yaml` (gate authority)
+- `tests/**` (no test changes)
+
+## Constraints
+
+- Do not execute the plan — only produce the handoff prompt
+- Do not create repo files outside allowed paths
+- Do not commit or push
+
+## Rollback
+
+1. Remove the generated handoff prompt file if created
+2. No source or test changes to revert
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, plan_path, handoff_score, verdict.
+
+## Sample Invocation
+
+```
+/execution-handoff
+# Inputs:
+#   plan_path: reports/planning/r94-sprint-plan.md
+#   hardening_score: 20/22
+```
+
 ## Changelog
 
 - 1.0 (2026-05-08): Initial version. Created in memory-planning-methodology-and-agent-handoff sprint.
+- 1.1 (2026-06-03): Added allowed/forbidden paths, constraints, rollback, transcript, sample invocation (Skills R102).

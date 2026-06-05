@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProofBackedPocGate",
+  "description": "Output schema for proof_backed_poc_gate.evaluate_poc_readiness()",
+  "type": "object",
+  "required": ["poc_ready", "release_approval_pending", "commercial_targets", "foss_targets", "foss_pass_count", "decision", "terminal_state"],
+  "properties": {
+    "poc_ready": {
+      "type": "boolean",
+      "description": "True only when all commercial targets and minimum FOSS targets have proof-backed evidence"
+    },
+    "release_approval_pending": {
+      "type": "boolean",
+      "description": "True if Gate 11 G11-G approval from Babar Raza is still required"
+    },
+    "commercial_targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["format", "passed", "failures"],
+        "properties": {
+          "format": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "failures": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "commercial_all_pass": { "type": "boolean" },
+    "commercial_failures": { "type": "array" },
+    "foss_targets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["format", "passed", "failures"],
+        "properties": {
+          "format": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "failures": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "foss_pass_count": {
+      "type": "integer",
+      "description": "Number of FOSS targets that pass proof checks (minimum 3 required)"
+    },
+    "foss_minimum_required": { "type": "integer" },
+    "proof_failures": { "type": "array" },
+    "missing_logs": { "type": "array", "items": { "type": "string" } },
+    "missing_proof_records": { "type": "array", "items": { "type": "string" } },
+    "missing_examples": { "type": "array", "items": { "type": "string" } },
+    "stale_claims": { "type": "array", "items": { "type": "string" } },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+        "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED",
+        "POC_NOT_READY_CONTINUE",
+        "HOST_INVOCATION_LAYER_MISSING",
+        "MAINSTREAM_POC_UNSAFE_WORKSPACE",
+        "MAINSTREAM_POC_BLOCKED_EXTERNAL_GATE"
+      ]
+    },
+    "terminal_state": { "type": "string" },
+    "evaluated_at": { "type": "string" }
+  }
+}

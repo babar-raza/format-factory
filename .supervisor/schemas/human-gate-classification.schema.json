@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Human Gate Classification",
+  "description": "Schema for classifying items labeled as requiring human action in next-sprint outputs.",
+  "type": "object",
+  "required": [
+    "original_label",
+    "new_label",
+    "is_false_stop",
+    "agent_can_execute",
+    "adjudication"
+  ],
+  "properties": {
+    "original_label": {
+      "type": "string",
+      "description": "The label from the next-sprint prompt (e.g., 'approval-blocked', 'blocked')"
+    },
+    "new_label": {
+      "type": "string",
+      "description": "Corrected label",
+      "enum": [
+        "agent-owned",
+        "external-gate",
+        "release-approval-pending",
+        "unsafe-stop"
+      ]
+    },
+    "is_false_stop": {
+      "type": "boolean",
+      "description": "Whether the original label was a false stop"
+    },
+    "agent_can_execute": {
+      "type": "boolean",
+      "description": "Whether the agent can execute this task (even if human approval needed for release)"
+    },
+    "adjudication": {
+      "$ref": "stop-reason-decision.schema.json",
+      "description": "Full Stop Reason Adjudicator output for this signal"
+    }
+  }
+}

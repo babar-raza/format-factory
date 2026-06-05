@@ -45,6 +45,39 @@ were installed from PyPI/NuGet (no PYTHONPATH or project reference needed).
 - Example uses internal imports that bypass installed-package behavior
 - Example does not run (syntax error or missing sample file)
 
-## Output
+## Evidence Required
 
-Report example file path, capability shown, and whether smoke test passes.
+- Example file path
+- Capability shown
+- Smoke test result: PASS | FAIL | SKIP
+
+## Validation
+
+Complete when the example runs without error using only the installed package's public API.
+
+## Rollback
+
+1. Remove the example file from `examples/python/<format_id>/` or `examples/net/<format_id>/`
+2. Remove the smoke test if created
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, format_id, example_name, example_path, smoke_test_result, verdict.
+
+## Sample Invocation
+
+```
+/add-installed-package-example
+# Inputs:
+#   format_id: fods
+#   language: python
+#   example_name: fods_workbook_to_csv
+#   capability_shown: Parse FODS workbook and export to CSV
+#   example_path: examples/python/fods/workbook_to_csv_example.py
+```
+
+## Changelog
+
+- 1.0 (2026-06-02): Initial R92 governed command.
+- 1.2 (2026-06-03): Added evidence, validation, rollback, transcript, sample invocation, changelog (Skills R101).

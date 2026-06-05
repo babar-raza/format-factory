@@ -1,6 +1,6 @@
 ---
-version: "1.0"
-last-updated: "2026-06-02"
+version: "1.2"
+last-updated: "2026-06-03"
 phase-available: "3+"
 gate-required: null
 generated_by: codex
@@ -34,6 +34,16 @@ is a reference snapshot. It must not be used to grant gate approval or release a
 7. Validate YAML parsing and inspect the diff for unrelated changes.
 8. Report each old value, new value, and evidence path. Do not commit or push.
 
+## Allowed Paths
+
+- `product-capability-matrix/poc-targets.yaml` (matrix update)
+
+## Forbidden Paths
+
+- `registry/format-registry.yaml` (gate authority)
+- `plans/master-plan.md` (operational authority)
+- `src/**` (no source edits — use governed skill)
+
 ## Stop Conditions
 
 - Evidence is missing, stale, or contradicts the requested status.
@@ -51,7 +61,28 @@ authority flags.
 The edited YAML must parse, the diff must be entry-scoped, and every status transition must cite
 local proof.
 
+## Rollback
+
+1. Revert `product-capability-matrix/poc-targets.yaml` to prior state (git checkout)
+2. Verify YAML still parses
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, matrix_entry, field_transitions, evidence_paths, verdict.
+
+## Sample Invocation
+
+```
+/update-capability-matrix
+# Inputs:
+#   matrix_entry: commercial-net-fods
+#   claimed_status_changes: [dotnet_tests: 215->273, added: get_column_headers]
+#   evidence_paths: [tests/net/fods/FodsR93GetColumnHeadersTests.cs]
+#   focused_validation_commands: [dotnet test tests/net/fods/ --filter "FodsR93"]
+```
+
 ## Changelog
 
 - 1.0 (2026-06-02): Initial R90 governed minimum viable command.
-
+- 1.2 (2026-06-03): Added allowed/forbidden paths, rollback, transcript requirement, sample invocation (Skills R101).

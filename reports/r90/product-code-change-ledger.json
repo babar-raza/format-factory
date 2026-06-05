@@ -1,6 +1,7 @@
 {
-  "ledger_version": "1.0",
-  "sprint": "R90",
+  "ledger_version": "2.0",
+  "created_at_sprint": "R90",
+  "latest_sprint": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -360,7 +361,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change — new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
+      "api_behavior": "No src change \u2014 new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r93_zst_roundtrip.py"
@@ -387,7 +388,7 @@
         "convert_ppm_to_pgm",
         "ppm_pixels_to_pgm_pixels"
       ],
-      "api_behavior": "No src change — workflow verification tests only. Verifies end-to-end PPM→PGM conversion using FF libraries exclusively, with luminance weighting validation.",
+      "api_behavior": "No src change \u2014 workflow verification tests only. Verifies end-to-end PPM\u2192PGM conversion using FF libraries exclusively, with luminance weighting validation.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py"
@@ -428,6 +429,3305 @@
           "sha256": "f2705bd7124d299a948540690da8f4eb1f6a4a7a6befceefb8277846d3fa0e38"
         }
       ]
+    },
+    {
+      "entry_id": "R94-GOVERNED-DOTNET-FODS-EXPORTSHEETTOHTML-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R94",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.fods_to_html_dotnet"
+      ],
+      "api_symbols": [
+        "ExportSheetToHtml",
+        "ExportSheetToHtml(string)",
+        "ExportSheetToHtml(FodsSheet)"
+      ],
+      "api_behavior": "Exports a sheet as an HTML table string. Rows become tr elements, cells become td elements. Cell text is HTML-escaped. Three overloads: first-sheet, by-name, by-sheet-object.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR94ExportSheetToHtmlTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "96ba139640be62e595b87079a6567ec3aa9340e396ebeed9f39ef875b0e80a11"
+        }
+      ]
+    },
+    {
+      "entry_id": "R94-GOVERNED-DOTNET-FODT-GETWORDCOUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R94",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.text_analysis"
+      ],
+      "api_symbols": [
+        "GetWordCount"
+      ],
+      "api_behavior": "Returns total word count of the document. Words are non-whitespace sequences. Empty paragraphs contribute zero. Headings included.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR94GetWordCountTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "f96d1a5e49b7bbce722ffada6787327f49bc45f36c536215212ede4fe426fe20"
+        }
+      ]
+    },
+    {
+      "entry_id": "R94-GOVERNED-DOTNET-NETPBM-RESIZE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R94",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.resize"
+      ],
+      "api_symbols": [
+        "Resize"
+      ],
+      "api_behavior": "Creates a new image resized to specified dimensions using nearest-neighbor interpolation. Preserves format and MaxValue. Both dimensions must be positive.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR94ResizeTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "6a8d297ce944dfd44c97c59780e2e53616d16b386517ec82d9dcdaefef6a8ad5"
+        }
+      ]
+    },
+    {
+      "entry_id": "R94-GOVERNED-PYTHON-ZST-STREAMING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R94",
+      "skill": "add-python-object-model-feature",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ZST.status.streaming_compress_decompress"
+      ],
+      "api_symbols": [
+        "compress_bytes",
+        "decompress_bytes"
+      ],
+      "api_behavior": "No src change \u2014 streaming pattern tests only. Verifies large payload, incompressible data, sequential compressions, all byte values.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/zst/test_r94_zst_streaming.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+        }
+      ]
+    },
+    {
+      "entry_id": "R94-GOVERNED-PYTHON-NETPBM-GRAYSCALE-CONVERSION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R94",
+      "skill": "verify-dogfood-path",
+      "product": "Netpbm Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.dogfood_status.ppm_to_pgm"
+      ],
+      "api_symbols": [
+        "ppm_pixels_to_pgm_pixels",
+        "convert_ppm_to_pgm"
+      ],
+      "api_behavior": "No src change \u2014 grayscale conversion edge case tests. Verifies luminance weighting, pure-color behavior, empty input, file round-trip.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_to_pgm.py",
+          "state": "present",
+          "sha256": "b07dc8c0fbc32ffcdefea7cc1d3b99b0c04b4a491392db3a90ed4da0543f86f4"
+        }
+      ]
+    },
+    {
+      "entry_id": "R94-GOVERNED-PYTHON-SYLK-WRITE-EDGECASES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R94",
+      "skill": "add-python-object-model-feature",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.SYLK.status.write_sylk"
+      ],
+      "api_symbols": [
+        "write_sylk"
+      ],
+      "api_behavior": "Bug fix: write_sylk now uses write_bytes to prevent double-CR on Windows. Edge case tests: empty doc, None values, large grid, float precision, roundtrip parse verification.",
+      "changed_files": [
+        "src/python/sylk/sylk_parser.py"
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r94_sylk_write_edge_cases.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "6e7a6e3dd680fc163f1a7d4a668ad2a7165a3951878ab3128690ba60ae61b14c"
+        }
+      ]
+    },
+    {
+      "entry_id": "R95-GOVERNED-DOTNET-FODS-EXPORTSHEETTOJSON-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R95",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_json"
+      ],
+      "api_symbols": [
+        "ExportSheetToJson",
+        "ExportSheetToJson(string)",
+        "ExportSheetToJson(FodsSheet)"
+      ],
+      "api_behavior": "Exports a sheet as a JSON array of row objects. First row is treated as headers (keys); subsequent rows become objects. Three overloads: first-sheet, by-name, by-sheet-object.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR95ExportSheetToJsonTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "82c8242217ea9a6359591e841ec814c128359563ccc1d429c37a4e435860f0eb"
+        }
+      ]
+    },
+    {
+      "entry_id": "R95-GOVERNED-DOTNET-FODT-GETCHARCOUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R95",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.char_count"
+      ],
+      "api_symbols": [
+        "GetCharCount"
+      ],
+      "api_behavior": "Returns total character count of all paragraphs including headings. Empty paragraphs contribute zero. Complement to GetWordCount.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR95GetCharCountTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "2a910f4d2faf3694654f073cd913b1d83d6015103852cc125d99202dd9319646"
+        }
+      ]
+    },
+    {
+      "entry_id": "R95-GOVERNED-DOTNET-NETPBM-TOGRAYSCALE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R95",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.to_grayscale"
+      ],
+      "api_symbols": [
+        "ToGrayscale"
+      ],
+      "api_behavior": "Converts PPM color image to PGM grayscale using ITU-R BT.601 luminance weights (0.299R + 0.587G + 0.114B). Throws for non-PPM input.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR95ToGrayscaleTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "bcec830e65cdf0a5099e9db0d93a7b3b094f57999b0560373bf1558a1a4c7512"
+        }
+      ]
+    },
+    {
+      "entry_id": "R95-GOVERNED-PYTHON-ZST-LEVEL-VARIATIONS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R95",
+      "skill": "add-python-object-model-feature",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ZST.status.compress_decompress_levels"
+      ],
+      "api_symbols": [
+        "compress_bytes",
+        "decompress_bytes"
+      ],
+      "api_behavior": "No src change \u2014 compression level variation tests. Verifies level 1, level 19, binary data, empty bytes, size comparison.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/zst/test_r95_zst_level_variations.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+        }
+      ]
+    },
+    {
+      "entry_id": "R95-GOVERNED-PYTHON-PPM-PIXEL-STATS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R95",
+      "skill": "verify-dogfood-path",
+      "product": "Netpbm Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.python_status.write_ppm"
+      ],
+      "api_symbols": [
+        "parse_ppm",
+        "write_ppm"
+      ],
+      "api_behavior": "No src change \u2014 pixel statistics and roundtrip integrity tests. Verifies parse structure, write-read roundtrip, single pixel, max/zero values.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/ppm/test_r95_ppm_pixel_stats.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "b07dc8c0fbc32ffcdefea7cc1d3b99b0c04b4a491392db3a90ed4da0543f86f4"
+        }
+      ]
+    },
+    {
+      "entry_id": "R95-GOVERNED-PYTHON-SYLK-ROUNDTRIP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R95",
+      "skill": "add-python-object-model-feature",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.SYLK.status.write_sylk"
+      ],
+      "api_symbols": [
+        "write_sylk",
+        "parse_sylk"
+      ],
+      "api_behavior": "No src change \u2014 roundtrip hardening tests. Verifies CRLF line endings, header/footer preservation, mixed types, float precision, large grid.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/sylk/test_r95_sylk_roundtrip_hardening.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "6e7a6e3dd680fc163f1a7d4a668ad2a7165a3951878ab3128690ba60ae61b14c"
+        }
+      ]
+    },
+    {
+      "entry_id": "R96-GOVERNED-DOTNET-FODS-GETROWCOUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R96",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_row_count"
+      ],
+      "api_symbols": [
+        "GetRowCount",
+        "GetRowCount(string)"
+      ],
+      "api_behavior": "Returns the number of rows in a sheet. Two overloads: first-sheet default and named sheet.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR96GetRowCountTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "b35f0c122f15a4edea7a32ad1a5584dbd8d39a46a6d4aee5d4b8a1b380fab637"
+        }
+      ]
+    },
+    {
+      "entry_id": "R96-GOVERNED-DOTNET-FODT-GETHEADINGCOUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R96",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_heading_count"
+      ],
+      "api_symbols": [
+        "GetHeadingCount"
+      ],
+      "api_behavior": "Returns the total number of headings in the document. Quick count without materializing the heading list.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR96GetHeadingCountTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "ced8f77d1d2b5d638840eac112f526a3a9bc0a8ae6e2dee0e700be48e044f197"
+        }
+      ]
+    },
+    {
+      "entry_id": "R96-GOVERNED-DOTNET-NETPBM-GETBRIGHTNESS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R96",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.get_brightness"
+      ],
+      "api_symbols": [
+        "GetBrightness"
+      ],
+      "api_behavior": "Computes average brightness as [0.0, 1.0]. PBM/PGM: mean pixel / MaxValue. PPM: mean luminance / MaxValue using ITU-R BT.601.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR96GetBrightnessTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "a93cace60f2a39d83fde2e01b5bab2bcc1d49eb80e6101cc43c546c68425ec65"
+        }
+      ]
+    },
+    {
+      "entry_id": "R96-GOVERNED-PYTHON-ZST-ERROR-HANDLING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R96",
+      "skill": "add-python-object-model-feature",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ZST.status.error_handling"
+      ],
+      "api_symbols": [
+        "compress_bytes",
+        "decompress_bytes"
+      ],
+      "api_behavior": "No src change \u2014 error handling tests. Invalid data, empty input, corrupt magic, boundary conditions.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/zst/test_r96_zst_error_handling.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+        }
+      ]
+    },
+    {
+      "entry_id": "R96-GOVERNED-PYTHON-PGM-WRITE-READ-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R96",
+      "skill": "verify-dogfood-path",
+      "product": "PGM Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.python_status.write_pgm"
+      ],
+      "api_symbols": [
+        "write_pgm",
+        "parse_pgm"
+      ],
+      "api_behavior": "No src change \u2014 write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, zero/max values.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/pgm/test_r96_pgm_write_read.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "b07dc8c0fbc32ffcdefea7cc1d3b99b0c04b4a491392db3a90ed4da0543f86f4"
+        }
+      ]
+    },
+    {
+      "entry_id": "R96-GOVERNED-PYTHON-FODS-WORKBOOK-OPS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R96",
+      "skill": "add-python-object-model-feature",
+      "product": "FODS Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.FODS.python_status.parse"
+      ],
+      "api_symbols": [
+        "parse_fods"
+      ],
+      "api_behavior": "No src change \u2014 workbook operations hardening tests. Parse structure, multi-sheet, error handling, consistency.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/fods/test_r96_fods_workbook_operations.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/fods/parser.py",
+          "state": "present",
+          "sha256": "10b7b34f4446c6000e8324b9835cf387b93c40f22a8e34f18730e8d42365cb12"
+        }
+      ]
+    },
+    {
+      "entry_id": "R97-GOVERNED-DOTNET-FODS-GETCELLCOUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R97",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_cell_count"
+      ],
+      "api_symbols": [
+        "GetCellCount"
+      ],
+      "api_behavior": "Returns total cell count across all rows in the first sheet.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR97GetCellCountTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "b18786d4088959f15bbb45eb7263e893817557892a79c9b2a9adca8dd3600a6c"
+        }
+      ]
+    },
+    {
+      "entry_id": "R97-GOVERNED-DOTNET-FODT-GETPARAGRAPHCOUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R97",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_paragraph_count"
+      ],
+      "api_symbols": [
+        "GetParagraphCount"
+      ],
+      "api_behavior": "Returns total paragraph count. Alias for Paragraphs.Count property.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR97GetParagraphCountTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "a5eb036b1b1761e7a4e39a3285d0a75010c62048e74c592a4f91d8d32c4338c6"
+        }
+      ]
+    },
+    {
+      "entry_id": "R97-GOVERNED-DOTNET-NETPBM-CLONE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R97",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.clone"
+      ],
+      "api_symbols": [
+        "Clone"
+      ],
+      "api_behavior": "Deep copy of image including all pixel arrays, comments, and metadata.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR97CloneTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "41dddccfceb7a418ca459e304e0bb092c04bb56959a66a26c470c1cdf7b2a033"
+        }
+      ]
+    },
+    {
+      "entry_id": "R97-GOVERNED-PYTHON-PBM-WRITE-READ-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R97",
+      "skill": "verify-dogfood-path",
+      "product": "Netpbm Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.python_status.write_pbm"
+      ],
+      "api_symbols": [
+        "write_pbm",
+        "parse_pbm"
+      ],
+      "api_behavior": "No src change \u2014 PBM write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, all-white/all-black.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/pbm/test_r97_pbm_write_read.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "present",
+          "sha256": "8067440a06a04040ab2f78d2106475980a18b255bea4a6573a7870e2bbaf5f35"
+        }
+      ]
+    },
+    {
+      "entry_id": "R97-GOVERNED-PYTHON-FODT-DOC-OPS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R97",
+      "skill": "add-python-object-model-feature",
+      "product": "FODT Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.FODT.python_status.parse"
+      ],
+      "api_symbols": [
+        "parse_fodt"
+      ],
+      "api_behavior": "No src change \u2014 FODT document operations hardening. Parse structure, format, paragraphs, consistency, error handling.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/fodt/test_r97_fodt_document_operations.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/fodt/parser.py",
+          "state": "present",
+          "sha256": "fd176c40344a4a878d9a94492f68b1ffff66000dc1cc7ebb976ff08a61d2955e"
+        }
+      ]
+    },
+    {
+      "entry_id": "R97-GOVERNED-PYTHON-DIF-PARSE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R97",
+      "skill": "add-python-object-model-feature",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "on_hold.DIF.python_status.parse"
+      ],
+      "api_symbols": [
+        "parse_dif"
+      ],
+      "api_behavior": "No src change \u2014 DIF parse hardening tests. Structure, edge cases, error handling, consistency.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/dif/test_r97_dif_parse_hardening.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "83ea1113784adaaf932d323f9fcc7727f44ce3900d7ba4166a8a4e8957c44d0a"
+        }
+      ]
+    },
+    {
+      "entry_id": "R98-GOVERNED-DOTNET-FODS-SAVE-AFTER-EDIT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R98",
+      "skill": "add-same-format-writer-feature",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.save_after_edit_roundtrip"
+      ],
+      "api_symbols": [
+        "SetCellValue",
+        "Save"
+      ],
+      "api_behavior": "SetCellValue + Save roundtrip: edit cell, save to FODS, reload, verify edit persists. CSV/HTML/JSON export after edit verified.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fods/FodsR98SaveAfterEditTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "b18786d4088959f15bbb45eb7263e893817557892a79c9b2a9adca8dd3600a6c"
+        }
+      ]
+    },
+    {
+      "entry_id": "R98-GOVERNED-DOTNET-FODT-REPLACETEXT-ROUNDTRIP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R98",
+      "skill": "add-same-format-writer-feature",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.replace_text_roundtrip"
+      ],
+      "api_symbols": [
+        "ReplaceText",
+        "SaveToFile"
+      ],
+      "api_behavior": "ReplaceText + SaveToFile roundtrip: replace text, save to FODT, reload, verify replacement persists. Paragraph/heading count preserved.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fodt/FodtR98ReplaceTextRoundtripTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "a5eb036b1b1761e7a4e39a3285d0a75010c62048e74c592a4f91d8d32c4338c6"
+        }
+      ]
+    },
+    {
+      "entry_id": "R98-GOVERNED-DOTNET-NETPBM-SAVETOFILE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R98",
+      "skill": "add-same-format-writer-feature",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.save_to_file"
+      ],
+      "api_symbols": [
+        "SaveToFile"
+      ],
+      "api_behavior": "New SaveToFile method on NetpbmImage. Delegates to NetpbmWriter.Write. Supports all 6 formats (P1-P6). Edit-then-save persistence verified.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR98SaveToFileTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "7a0e1ca9aee6c4f281667bce7da2c25bc39ed107d465c11bd0cb9d90b7f185d4"
+        }
+      ]
+    },
+    {
+      "entry_id": "R98-GOVERNED-PYTHON-ZST-FILE-ROUNDTRIP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R98",
+      "skill": "add-roundtrip-test",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.validate"
+      ],
+      "api_symbols": [
+        "compress_bytes",
+        "decompress_bytes",
+        "validate_file",
+        "probe_frame"
+      ],
+      "api_behavior": "File-level roundtrip: compress, write to file, validate_file, read back, decompress, compare. All compression levels tested.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/zst/test_r98_zst_file_roundtrip.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+        }
+      ]
+    },
+    {
+      "entry_id": "R98-GOVERNED-PYTHON-PPM-PIXEL-EDIT-ROUNDTRIP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R98",
+      "skill": "add-roundtrip-test",
+      "product": "PPM Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.python_status.write_ppm"
+      ],
+      "api_symbols": [
+        "write_ppm",
+        "parse_ppm_strict"
+      ],
+      "api_behavior": "Pixel edit + write_ppm roundtrip: modify pixel list, write PPM, parse back, verify edits persist. Covers black/white/single-pixel/low-maxval.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/ppm/test_r98_ppm_pixel_edit_roundtrip.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "b6646d36df3bb8d8fb1fdb649872ff0da6a5d02e36c114db53db8446e816c7dd"
+        }
+      ]
+    },
+    {
+      "entry_id": "R98-GOVERNED-PYTHON-SYLK-ROUNDTRIP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R98",
+      "skill": "add-roundtrip-test",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.SYLK.python_status.write_sylk"
+      ],
+      "api_symbols": [
+        "write_sylk",
+        "parse_sylk_strict",
+        "sylk_to_csv"
+      ],
+      "api_behavior": "Write + parse roundtrip: create doc, write SYLK, parse back, verify cells. Edit cell then write verified. CSV export after write verified.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/sylk/test_r98_sylk_roundtrip.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "6e7a6e3dd680fc163f1a7d4a668ad2a7165a3951878ab3128690ba60ae61b14c"
+        }
+      ]
+    },
+    {
+      "entry_id": "R99-GOVERNED-DOTNET-NETPBM-TOCOLOR-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R99",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.to_color"
+      ],
+      "api_symbols": [
+        "ToColor"
+      ],
+      "api_behavior": "Converts PGM grayscale image to PPM color by replicating gray values to R=G=B channels. Throws for non-PGM input. Output format is PPM_P6.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR99ToColorTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "c42c99ad0adaf5e7a1c886a9d85207a7b57141667e6a19312b2a0781d5ffae5e"
+        }
+      ]
+    },
+    {
+      "entry_id": "R99-GOVERNED-DOTNET-FODS-EXPORT-QUALITY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R99",
+      "skill": "add-roundtrip-test",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_quality_edge_cases"
+      ],
+      "api_symbols": [
+        "ExportSheetToHtml",
+        "ExportSheetToJson",
+        "ExportFirstSheetToCsv"
+      ],
+      "api_behavior": "No src change \u2014 export quality edge case tests. CSV quoting, HTML structure, JSON validity, in-memory/file parity, by-name overloads.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fods/FodsR99ExportQualityTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "457893fcf9d955c437e97c5ae4c5399deb5619be535490a987df496a37512cd5"
+        }
+      ]
+    },
+    {
+      "entry_id": "R99-GOVERNED-DOTNET-FODT-PARAGRAPH-PERSISTENCE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R99",
+      "skill": "add-roundtrip-test",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.paragraph_persistence"
+      ],
+      "api_symbols": [
+        "ReplaceText",
+        "SaveToFile",
+        "GetWordCount",
+        "GetCharCount",
+        "GetParagraphTexts",
+        "SearchText"
+      ],
+      "api_behavior": "No src change \u2014 paragraph persistence tests. Multiple ReplaceText all persist, word/char counts, heading/paragraph text preservation after save/reload.",
+      "changed_files": [],
+      "test_files": [
+        "tests/net/fodt/FodtR99ParagraphPersistenceTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "e00c43018bcc93674959d8dde722fe3ecb7d0f552206867c291f30df964a501a"
+        }
+      ]
+    },
+    {
+      "entry_id": "R99-GOVERNED-PYTHON-ZST-STREAMING-WORKFLOW-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R99",
+      "skill": "add-roundtrip-test",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.streaming"
+      ],
+      "api_symbols": [
+        "compress_bytes",
+        "decompress_bytes",
+        "validate_file"
+      ],
+      "api_behavior": "No src change \u2014 streaming workflow tests. Large payload, output limit, multiple files, UTF-8, high entropy, truncated file, zero-length, compression level.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/zst/test_r99_zst_streaming_workflow.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+        }
+      ]
+    },
+    {
+      "entry_id": "R99-GOVERNED-PYTHON-NETPBM-PPM-PGM-CONVERSION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R99",
+      "skill": "verify-dogfood-path",
+      "product": "Netpbm Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.dogfood_status.pgm_to_ppm"
+      ],
+      "api_symbols": [
+        "parse_pgm_strict",
+        "write_ppm",
+        "parse_ppm_strict",
+        "write_pgm"
+      ],
+      "api_behavior": "No src change \u2014 PPM/PGM cross-format conversion tests. Grayscale conversion, color expansion, roundtrip, dimension preservation, maxval roundtrip.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/ppm/test_r99_ppm_pgm_conversion.py"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "b6646d36df3bb8d8fb1fdb649872ff0da6a5d02e36c114db53db8446e816c7dd"
+        }
+      ]
+    },
+    {
+      "entry_id": "R99-GOVERNED-PYTHON-SYLK-INSTALLED-WORKFLOW-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R99",
+      "skill": "add-roundtrip-test",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.SYLK.python_status.installed_workflow"
+      ],
+      "api_symbols": [
+        "get_capabilities",
+        "write_sylk",
+        "parse_sylk",
+        "parse_sylk_strict",
+        "probe_sylk",
+        "sylk_to_csv"
+      ],
+      "api_behavior": "No src change \u2014 full installed workflow tests. Create/write/parse/export, probe valid/invalid, dict mode, CSV headers, numeric values, empty cells.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/sylk/test_r99_sylk_installed_workflow.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "6e7a6e3dd680fc163f1a7d4a668ad2a7165a3951878ab3128690ba60ae61b14c"
+        }
+      ]
+    },
+    {
+      "entry_id": "R100-GOVERNED-DOTNET-FODS-ADDSHEET-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R100",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.add_sheet"
+      ],
+      "api_symbols": [
+        "AddSheet"
+      ],
+      "api_behavior": "New AddSheet(string name) method on FodsDocument. Creates new table element in spreadsheet body. Validates name non-empty, non-duplicate. Returns FodsSheet. Persists after Save/Load.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR100AddSheetTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "457893fcf9d955c437e97c5ae4c5399deb5619be535490a987df496a37512cd5"
+        }
+      ]
+    },
+    {
+      "entry_id": "R100-GOVERNED-DOTNET-FODT-APPENDPARAGRAPH-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R100",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.append_paragraph"
+      ],
+      "api_symbols": [
+        "AppendParagraph"
+      ],
+      "api_behavior": "New AppendParagraph(string text) method on FodtDocument. Creates new text:p element in text body. Returns FodtParagraph. Persists after Save/Load. Integrates with WordCount/CharCount/SearchText.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR100AppendParagraphTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "e00c43018bcc93674959d8dde722fe3ecb7d0f552206867c291f30df964a501a"
+        }
+      ]
+    },
+    {
+      "entry_id": "R100-GOVERNED-DOTNET-NETPBM-ROTATE270-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R100",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.rotate_270_cw"
+      ],
+      "api_symbols": [
+        "Rotate270Cw"
+      ],
+      "api_behavior": "New Rotate270Cw() method on NetpbmImage. Pure array index remapping: (r,c) -> (Width-1-c, r). Swaps Width/Height. Supports PBM/PGM (Pixels) and PPM (RedChannel/GreenChannel/BlueChannel). 4x = identity.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR100Rotate270Tests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "c42c99ad0adaf5e7a1c886a9d85207a7b57141667e6a19312b2a0781d5ffae5e"
+        }
+      ]
+    },
+    {
+      "entry_id": "R100-GOVERNED-PYTHON-ZST-PROBE-WORKFLOW-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R100",
+      "skill": "add-roundtrip-test",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.validate"
+      ],
+      "api_symbols": [
+        "validate_file",
+        "compress_bytes",
+        "decompress_bytes",
+        "ZSTD_MAGIC",
+        "ZstError",
+        "ZstInvalidFrameError"
+      ],
+      "api_behavior": "No src change \u2014 deep probe/validate workflow tests. Valid/nonexistent/corrupt file validation, magic bytes, binary roundtrip, empty input, deterministic compression.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/zst/test_r100_zst_probe_workflow.py"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "UNCHANGED_FROM_R93"
+        }
+      ]
+    },
+    {
+      "entry_id": "R100-GOVERNED-PYTHON-NETPBM-CHAIN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R100",
+      "skill": "verify-dogfood-path",
+      "product": "Netpbm Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.dogfood_status.pbm_to_ppm",
+        "foss_reduced_products.Netpbm.dogfood_status.ppm_to_pgm"
+      ],
+      "api_symbols": [
+        "write_pbm",
+        "parse_pbm_strict",
+        "write_ppm",
+        "parse_ppm_strict",
+        "write_pgm",
+        "parse_pgm_strict"
+      ],
+      "api_behavior": "No src change \u2014 full PBM->PPM->PGM chain tests. Pixel mapping, dimension preservation, grayscale conversion, color expansion, all-black/all-white chains.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/ppm/test_r100_pbm_ppm_pgm_chain.py"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "present",
+          "sha256": "UNCHANGED_FROM_R93"
+        },
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "UNCHANGED_FROM_R93"
+        },
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "UNCHANGED_FROM_R93"
+        }
+      ]
+    },
+    {
+      "entry_id": "R100-GOVERNED-PYTHON-SYLK-CSV-MALFORMED-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R100",
+      "skill": "add-roundtrip-test",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.SYLK.python_status.sylk_to_csv"
+      ],
+      "api_symbols": [
+        "sylk_to_csv",
+        "write_sylk",
+        "parse_sylk",
+        "parse_sylk_strict",
+        "probe_sylk",
+        "SylkDocument",
+        "SylkCell"
+      ],
+      "api_behavior": "No src change \u2014 CSV export hardening + malformed input tests. Commas in values, empty cells, multirow, large grid, random bytes, empty file, special characters.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/sylk/test_r100_sylk_csv_malformed.py"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "6e7a6e3dd680fc163f1a7d4a668ad2a7165a3951878ab3128690ba60ae61b14c"
+        }
+      ]
+    },
+    {
+      "entry_id": "R101-GOVERNED-DOTNET-FODS-EXPORTSHEETTOMARKDOWN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R101",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_sheet_to_markdown"
+      ],
+      "api_symbols": [
+        "ExportSheetToMarkdown",
+        "MdEscape"
+      ],
+      "api_behavior": "Export a sheet as a Markdown table. First row = headers, separator line, data rows. Pipe characters escaped. 3 overloads: default first sheet, named sheet, static with FodsSheet.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "d63ffadcf1042f4729edd28563d2799208a4dca07e9f3d48d8fae1f22867a511"
+        }
+      ]
+    },
+    {
+      "entry_id": "R101-GOVERNED-DOTNET-FODT-REMOVEPARAGRAPH-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R101",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.remove_paragraph",
+        "commercial_net_products.FODT.dotnet_status.export_to_markdown"
+      ],
+      "api_symbols": [
+        "RemoveParagraph",
+        "ExportToMarkdown"
+      ],
+      "api_behavior": "RemoveParagraph removes paragraph at zero-based index from DOM. ExportToMarkdown converts all paragraphs/headings to Markdown (headings get # prefix with outline level).",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR101RemoveParagraphTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "5c8024fa78cc473bf4a2ffce8349fc51bc3dff5a84113c563ef6dc90c7c69569"
+        }
+      ]
+    },
+    {
+      "entry_id": "R101-GOVERNED-DOTNET-NETPBM-GETHISTOGRAM-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R101",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.get_histogram"
+      ],
+      "api_symbols": [
+        "GetHistogram"
+      ],
+      "api_behavior": "Compute pixel intensity histogram. PBM returns int[2], PGM returns int[MaxValue+1], PPM returns luminance histogram using BT.601 weights.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR101GetHistogramTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "ef76460c5480af4156a9b22925e36792dfeaddea3a1ae0ff9bab4cbc98271fad"
+        }
+      ]
+    },
+    {
+      "entry_id": "R102-GOVERNED-DOTNET-FODS-GETROWVALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R102",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_row_values"
+      ],
+      "api_symbols": [
+        "GetRowValues"
+      ],
+      "api_behavior": "Return all cell values from a row as IReadOnlyList<string?>. 3 overloads: first sheet, named sheet, static with FodsSheet. Null for covered cells.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR102GetRowValuesTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "7921c04d2180eec4d35b6bf7e0e7aae0a6beb7c0127aa90d82044ba39bacd454"
+        }
+      ]
+    },
+    {
+      "entry_id": "R102-GOVERNED-DOTNET-FODT-INSERTPARAGRAPH-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R102",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.insert_paragraph"
+      ],
+      "api_symbols": [
+        "InsertParagraph"
+      ],
+      "api_behavior": "Insert a paragraph at a specific index. Shifts existing paragraphs down. Index == ParagraphCount delegates to AppendParagraph. Bounds validated.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR102InsertParagraphTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "d68fa3a92fd69f76ef9b796ac9cdcb6f1d109a1af432329198e252b5d82f5b70"
+        }
+      ]
+    },
+    {
+      "entry_id": "R102-GOVERNED-DOTNET-NETPBM-THRESHOLD-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R102",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.threshold"
+      ],
+      "api_symbols": [
+        "Threshold"
+      ],
+      "api_behavior": "Convert PGM/PPM to 1-bit PBM by thresholding. PGM uses direct comparison, PPM uses BT.601 luminance. Returns PBM_P1 format.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR102ThresholdTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "c1eb98316e91e2cba0d27fddbc1b942f6bb79c54e84e014099178db906994b8b"
+        }
+      ]
+    },
+    {
+      "entry_id": "R103-GOVERNED-DOTNET-FODS-RENAMESHEET-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R103",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.rename_sheet"
+      ],
+      "api_symbols": [
+        "RenameSheet"
+      ],
+      "api_behavior": "Rename a sheet by old name to new name. Validates old exists and new doesn't already exist. Persists through save/reload.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR103RenameSheetTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "dacd2ecde09520204e5b3eac8e03942c47be217f0bdf709772842280af83473f"
+        }
+      ]
+    },
+    {
+      "entry_id": "R103-GOVERNED-DOTNET-FODT-GETPLAINTEXTRANGE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R103",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "FODT .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_plain_text_range"
+      ],
+      "api_symbols": [
+        "GetPlainTextRange"
+      ],
+      "api_behavior": "Extract plain text from a range of paragraphs [start, end). Returns newline-joined text. Bounds validated.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR103GetPlainTextRangeTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "212e6a3664c8067cc2127906d922dabf14fc45faf4387463852dd9180e655fb1"
+        }
+      ]
+    },
+    {
+      "entry_id": "R103-GOVERNED-DOTNET-NETPBM-EXTRACTCHANNEL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R103",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.extract_channel"
+      ],
+      "api_symbols": [
+        "ExtractChannel"
+      ],
+      "api_behavior": "Extract R/G/B channel from PPM as PGM grayscale. Channel 0=Red, 1=Green, 2=Blue. Returns independent copy.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR103ExtractChannelTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "43b75ad9b7b493d4dbde8ec64ec016c34b83390579559587027295bd20e0a1c7"
+        }
+      ]
+    },
+    {
+      "entry_id": "MAINSTREAM-R101-GOVERNED-DOTNET-FODS-REMOVESHEET-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r101",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.remove_sheet"
+      ],
+      "api_symbols": [
+        "RemoveSheet"
+      ],
+      "api_behavior": "Remove a sheet by name. Throws InvalidOperationException if not found, ArgumentException for null/empty. Completes sheet management trio (Add/Remove/Rename).",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR101RemoveSheetTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "dacd2ecde09520204e5b3eac8e03942c47be217f0bdf709772842280af83473f"
+        }
+      ]
+    },
+    {
+      "entry_id": "MAINSTREAM-R101-GOVERNED-DOTNET-NETPBM-ROTATE180-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r101",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "Netpbm .NET Commercial",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.rotate_180"
+      ],
+      "api_symbols": [
+        "Rotate180"
+      ],
+      "api_behavior": "Rotate image 180 degrees by reversing pixel array. Handles PBM/PGM (Pixels) and PPM (RedChannel/GreenChannel/BlueChannel). Dimensions unchanged. Returns new image.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR101Rotate180Tests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "43b75ad9b7b493d4dbde8ec64ec016c34b83390579559587027295bd20e0a1c7"
+        }
+      ]
+    },
+    {
+      "entry_id": "R104-GOVERNED-DOTNET-FODS-GETSHEETBYINDEX-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r104",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_sheet_by_index"
+      ],
+      "api_symbols": [
+        "GetSheetByIndex"
+      ],
+      "api_behavior": "Returns a FodsSheet by zero-based index, or null if out of range.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR104GetSheetByIndexTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "9b1d463d4c9d94af8a9be5cfcd8bf3e33015c62d4ae9e04e22bf9f9bc70858ea"
+        }
+      ]
+    },
+    {
+      "entry_id": "R104-GOVERNED-DOTNET-FODS-COPYSHEET-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r104",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.copy_sheet"
+      ],
+      "api_symbols": [
+        "CopySheet"
+      ],
+      "api_behavior": "Deep clones a sheet by name and adds it with a new name. Throws on source not found or duplicate name.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR104CopySheetTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "9b1d463d4c9d94af8a9be5cfcd8bf3e33015c62d4ae9e04e22bf9f9bc70858ea"
+        }
+      ]
+    },
+    {
+      "entry_id": "R104-GOVERNED-DOTNET-FODT-SETPARAGRAPHTEXT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r104",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.set_paragraph_text"
+      ],
+      "api_symbols": [
+        "SetParagraphText"
+      ],
+      "api_behavior": "Sets the text content of a paragraph by index. Throws ArgumentOutOfRangeException for invalid index.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR104SetParagraphTextTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "f6aada57c551f50d3b39f7dc932b10bc000123168bfb5c70875ad87c14c00d4d"
+        }
+      ]
+    },
+    {
+      "entry_id": "R104-GOVERNED-DOTNET-FODT-GETDOCUMENTSTATS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r104",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_document_stats"
+      ],
+      "api_symbols": [
+        "GetDocumentStats"
+      ],
+      "api_behavior": "Returns (WordCount, CharCount, ParagraphCount, HeadingCount) tuple in a single pass.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR104GetDocumentStatsTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "f6aada57c551f50d3b39f7dc932b10bc000123168bfb5c70875ad87c14c00d4d"
+        }
+      ]
+    },
+    {
+      "entry_id": "R104-GOVERNED-DOTNET-NETPBM-ADJUSTBRIGHTNESS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r104",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.adjust_brightness"
+      ],
+      "api_symbols": [
+        "AdjustBrightness"
+      ],
+      "api_behavior": "Adds delta to all pixel/channel values, clamping to [0, MaxValue]. No-op for PBM. Returns new image.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR104AdjustBrightnessTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "acbb5ec9e7a884cca48efcc8b3734f20de1fe59a758ab37d44977ee9dd0614dd"
+        }
+      ]
+    },
+    {
+      "entry_id": "R104-GOVERNED-DOTNET-NETPBM-MERGEHORIZONTAL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r104",
+      "skill": "add-dotnet-object-model-feature",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.merge_horizontal"
+      ],
+      "api_symbols": [
+        "MergeHorizontal"
+      ],
+      "api_behavior": "Merges another image to the right. Requires same Height and Format. Returns new wider image.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR104MergeHorizontalTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "acbb5ec9e7a884cca48efcc8b3734f20de1fe59a758ab37d44977ee9dd0614dd"
+        }
+      ]
+    },
+    {
+      "entry_id": "R105-GOVERNED-DOTNET-FODS-DELETEROWS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r105",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.delete_rows"
+      ],
+      "api_symbols": [
+        "DeleteRows"
+      ],
+      "api_behavior": "Removes count rows starting at startRow from the named sheet. Validates sheet exists and range is in bounds.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR105DeleteRowsTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "e237724656ea593c0aa8b6d0eb4baa63685d903d9b3c54fa8c21a3148acd1087"
+        }
+      ]
+    },
+    {
+      "entry_id": "R105-GOVERNED-DOTNET-FODS-INSERTROW-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r105",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.insert_row"
+      ],
+      "api_symbols": [
+        "InsertRow"
+      ],
+      "api_behavior": "Inserts an empty row at the given index in the named sheet.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR105InsertRowTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "e237724656ea593c0aa8b6d0eb4baa63685d903d9b3c54fa8c21a3148acd1087"
+        }
+      ]
+    },
+    {
+      "entry_id": "R105-GOVERNED-DOTNET-FODT-EXPORTTOHTML-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r105",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_to_html"
+      ],
+      "api_symbols": [
+        "ExportToHtml"
+      ],
+      "api_behavior": "Generates a complete HTML document with headings (h1-h6) and paragraphs (p). Uses HtmlEncode for XSS safety.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR105ExportToHtmlTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "77f6fee67221e72f028bd362b278b2a07fbc06b8dbc1605a7fdf6d0e266ce48b"
+        }
+      ]
+    },
+    {
+      "entry_id": "R105-GOVERNED-DOTNET-FODT-GETPARAGRAPHTEXT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r105",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_paragraph_text_by_index"
+      ],
+      "api_symbols": [
+        "GetParagraphText"
+      ],
+      "api_behavior": "Returns the text of a paragraph by zero-based index. Returns null if out of range.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR105GetParagraphTextTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "77f6fee67221e72f028bd362b278b2a07fbc06b8dbc1605a7fdf6d0e266ce48b"
+        }
+      ]
+    },
+    {
+      "entry_id": "R105-GOVERNED-DOTNET-NETPBM-MERGEVERTICAL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r105",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.merge_vertical"
+      ],
+      "api_symbols": [
+        "MergeVertical"
+      ],
+      "api_behavior": "Merges two images vertically (this on top, other on bottom). Width and Format must match.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR105MergeVerticalTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "496797949b615f1124b01aeb27c17689ae977e9b3e7e7726ffdb67c9451f8baa"
+        }
+      ]
+    },
+    {
+      "entry_id": "R105-GOVERNED-DOTNET-NETPBM-ADJUSTCONTRAST-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r105",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.adjust_contrast"
+      ],
+      "api_symbols": [
+        "AdjustContrast"
+      ],
+      "api_behavior": "Scales pixel values around midpoint by given factor. Clamps to [0, MaxValue]. No-op for PBM.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR105AdjustContrastTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "496797949b615f1124b01aeb27c17689ae977e9b3e7e7726ffdb67c9451f8baa"
+        }
+      ]
+    },
+    {
+      "entry_id": "R106-GOVERNED-DOTNET-FODS-CLEARSHEET-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r106",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.clear_sheet"
+      ],
+      "api_symbols": [
+        "ClearSheet"
+      ],
+      "api_behavior": "Remove all rows from named sheet, leaving it empty.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR106ClearSheetTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "efdce289780691819aaf2e9e22d3c2aca2c1982f300fcd746cd59d4d05c890bd"
+        }
+      ]
+    },
+    {
+      "entry_id": "R106-GOVERNED-DOTNET-FODS-GETCOLUMNVALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r106",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_column_values"
+      ],
+      "api_symbols": [
+        "GetColumnValues"
+      ],
+      "api_behavior": "Return all cell values from specified column across all rows.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR106GetColumnValuesTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "efdce289780691819aaf2e9e22d3c2aca2c1982f300fcd746cd59d4d05c890bd"
+        }
+      ]
+    },
+    {
+      "entry_id": "R106-GOVERNED-DOTNET-FODT-REMOVEALLPARAGRAPHS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r106",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.remove_all_paragraphs"
+      ],
+      "api_symbols": [
+        "RemoveAllParagraphs"
+      ],
+      "api_behavior": "Remove all paragraphs and headings from the document body.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR106RemoveAllParagraphsTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "985aef9f96f48738cf095fe9ab64f5e96a3dde3c025cba60ecf24945f348aa26"
+        }
+      ]
+    },
+    {
+      "entry_id": "R106-GOVERNED-DOTNET-FODT-GETTEXTBETWEEN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r106",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_text_between_paragraphs"
+      ],
+      "api_symbols": [
+        "GetTextBetweenParagraphs"
+      ],
+      "api_behavior": "Extract concatenated text of paragraphs from start to end index.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR106GetTextBetweenTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "985aef9f96f48738cf095fe9ab64f5e96a3dde3c025cba60ecf24945f348aa26"
+        }
+      ]
+    },
+    {
+      "entry_id": "R106-GOVERNED-DOTNET-NETPBM-FLIPDIAGONAL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r106",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.flip_diagonal"
+      ],
+      "api_symbols": [
+        "FlipDiagonal"
+      ],
+      "api_behavior": "Transpose image: swap rows and columns (pixel at (r,c) moves to (c,r)).",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR106FlipDiagonalTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "4d36d30dcd40d65ad7f7a5cde92b91feabf9d03cef0aec13e673d7e6c0e930f7"
+        }
+      ]
+    },
+    {
+      "entry_id": "R106-GOVERNED-DOTNET-NETPBM-OVERLAY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r106",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.overlay"
+      ],
+      "api_symbols": [
+        "Overlay"
+      ],
+      "api_behavior": "Composite overlay image on top of base at given offset. Returns new image.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR106OverlayTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "4d36d30dcd40d65ad7f7a5cde92b91feabf9d03cef0aec13e673d7e6c0e930f7"
+        }
+      ]
+    },
+    {
+      "entry_id": "R107-GOVERNED-DOTNET-FODS-EXPORTSHEETTOCSV-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r107",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.export_sheet_to_csv"
+      ],
+      "api_symbols": [
+        "ExportSheetToCsv"
+      ],
+      "api_behavior": "Export a named sheet as RFC 4180 CSV. Commas quoted, double-quotes doubled. 3 overloads.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR107ExportSheetToCsvTests.cs",
+        "tests/net/fods/FodsR107DogfoodCsvExportTests.cs"
+      ],
+      "test_count": 14,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "c77c9eab3d233ce21987834b034ff796599da5c0d3c6cc76d3d1a60ef69b6a43"
+        }
+      ]
+    },
+    {
+      "entry_id": "R107-GOVERNED-DOTNET-FODS-INSERTROWWITHVALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r107",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.insert_row_with_values"
+      ],
+      "api_symbols": [
+        "InsertRowWithValues"
+      ],
+      "api_behavior": "Insert a row at index with cell values. Null values produce empty cells.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR107InsertRowWithValuesTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "c77c9eab3d233ce21987834b034ff796599da5c0d3c6cc76d3d1a60ef69b6a43"
+        }
+      ]
+    },
+    {
+      "entry_id": "R107-GOVERNED-DOTNET-FODT-GETHEADINGTEXTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r107",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_heading_texts"
+      ],
+      "api_symbols": [
+        "GetHeadingTexts"
+      ],
+      "api_behavior": "Return text of heading-only paragraphs (text:h elements).",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR107GetHeadingTextsTests.cs",
+        "tests/net/fodt/FodtR107DogfoodPlainTextExportTests.cs"
+      ],
+      "test_count": 14,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "e338eda28f05754ce5736e3eae867ba64b0bebc5ae631dc25716aea865d9027f"
+        }
+      ]
+    },
+    {
+      "entry_id": "R107-GOVERNED-DOTNET-FODT-EXPORTTOPLAINTEXTFILE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r107",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_to_plain_text_file"
+      ],
+      "api_symbols": [
+        "ExportToPlainTextFile"
+      ],
+      "api_behavior": "Export document plain text to file via File.WriteAllText.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR107ExportToPlainTextFileTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "e338eda28f05754ce5736e3eae867ba64b0bebc5ae631dc25716aea865d9027f"
+        }
+      ]
+    },
+    {
+      "entry_id": "R107-GOVERNED-DOTNET-NETPBM-EQUALIZE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r107",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.equalize"
+      ],
+      "api_symbols": [
+        "Equalize"
+      ],
+      "api_behavior": "Histogram equalization for PGM. PPM converts to grayscale first, PBM returns clone.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR107EqualizeTests.cs",
+        "tests/net/netpbm/NetpbmR107DogfoodEqualizeOverlayTests.cs"
+      ],
+      "test_count": 14,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "978e037bafc0d597cdaba3810928d893e993fdbb2953efb1380f8accb2d2f764"
+        }
+      ]
+    },
+    {
+      "entry_id": "R107-GOVERNED-DOTNET-NETPBM-CONVERTFORMAT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r107",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.convert_format"
+      ],
+      "api_symbols": [
+        "ConvertFormat"
+      ],
+      "api_behavior": "Convert ASCII<->binary within same type family (P1<->P4, P2<->P5, P3<->P6).",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR107ConvertFormatTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "978e037bafc0d597cdaba3810928d893e993fdbb2953efb1380f8accb2d2f764"
+        }
+      ]
+    },
+    {
+      "entry_id": "R108-GOVERNED-DOTNET-FODS-GETCOLUMNCOUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r108",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_column_count"
+      ],
+      "api_symbols": [
+        "GetColumnCount"
+      ],
+      "api_behavior": "Return max column count across rows in a sheet. Two overloads (named + default).",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR108GetColumnCountTests.cs",
+        "tests/net/fods/FodsR108DogfoodSaveEditRoundtripTests.cs"
+      ],
+      "test_count": 12,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "a34fd878c41c9da244141d2aa25c6ea04360d6e8ac648244a8d7b2dce1a4723b"
+        }
+      ]
+    },
+    {
+      "entry_id": "R108-GOVERNED-DOTNET-FODT-EXPORTTOMARKDOWNFILE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r108",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_to_markdown_file"
+      ],
+      "api_symbols": [
+        "ExportToMarkdownFile"
+      ],
+      "api_behavior": "Export document as Markdown to file via File.WriteAllText.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR108ExportToMarkdownFileTests.cs",
+        "tests/net/fodt/FodtR108DogfoodMarkdownExportTests.cs"
+      ],
+      "test_count": 12,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "cbd0f6c40fa32d9ca4ddff7939c122c429a9d3075b8291cc6b667be761d6c9fb"
+        }
+      ]
+    },
+    {
+      "entry_id": "R108-GOVERNED-DOTNET-NETPBM-APPLYGAMMA-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r108",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.apply_gamma"
+      ],
+      "api_symbols": [
+        "ApplyGamma"
+      ],
+      "api_behavior": "Apply gamma correction. Gamma < 1 brightens, > 1 darkens. PBM returns clone, PPM applies to all channels.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR108ApplyGammaTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "af782955c46aaa92bce95b194b863b5a2ad6a5a7be30f272452502bc8b28a6ff"
+        }
+      ]
+    },
+    {
+      "entry_id": "R109-GOVERNED-DOTNET-FODS-HASSHEET-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r109",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.has_sheet"
+      ],
+      "api_symbols": [
+        "HasSheet"
+      ],
+      "api_behavior": "Check whether a sheet with the given name exists. Returns true if found, false otherwise. Null/empty/whitespace returns false.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR109HasSheetTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "8d2027865ef5876c0dbd7acf6b3de2b49a242c649058bd18aeec3e22d7072a30"
+        }
+      ]
+    },
+    {
+      "entry_id": "R109-GOVERNED-DOTNET-FODT-EXPORTTOHTMLFILE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r109",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.export_to_html_file"
+      ],
+      "api_symbols": [
+        "ExportToHtmlFile"
+      ],
+      "api_behavior": "Export document body to an HTML file on disk. Creates or overwrites file. Throws ArgumentException on null/empty path.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR109ExportToHtmlFileTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "f1517b171f5b6a3f5c69868ef0dd024dd207c6f365824512c8bdac62f176eba6"
+        }
+      ]
+    },
+    {
+      "entry_id": "R109-GOVERNED-DOTNET-NETPBM-POSTERIZE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r109",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.posterize"
+      ],
+      "api_symbols": [
+        "Posterize"
+      ],
+      "api_behavior": "Posterize image by quantizing pixel values to N levels. Levels must be >= 2. PBM returns clone. PPM applies to all channels. Returns new image.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR109PosterizeTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "99f60913e9adc0c677b8c253ba6b9df1074e918532aadfbaeef9aa2a9b44deb7"
+        }
+      ]
+    },
+    {
+      "entry_id": "R110-GOVERNED-DOTNET-FODS-GETCELLDATATYPE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r110",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_cell_data_type"
+      ],
+      "api_symbols": [
+        "GetCellDataType"
+      ],
+      "api_behavior": "Return the ODF value-type attribute of a cell (e.g. string, float, date). Returns null if not present or out of range.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR110GetCellDataTypeTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "606e5c19bbfab92037964a5ebd75b7bc8f790b83ac42780776814ff8387ed889"
+        }
+      ]
+    },
+    {
+      "entry_id": "R110-GOVERNED-DOTNET-FODS-FINDCELLSBYVALUE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r110",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.find_cells_by_value"
+      ],
+      "api_symbols": [
+        "FindCellsByValue"
+      ],
+      "api_behavior": "Search all cells in a sheet for exact text match. Returns list of (Row, Col) tuples. Case-sensitive ordinal comparison.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR110FindCellsByValueTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "606e5c19bbfab92037964a5ebd75b7bc8f790b83ac42780776814ff8387ed889"
+        }
+      ]
+    },
+    {
+      "entry_id": "R110-GOVERNED-DOTNET-FODT-INSERTHEADING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r110",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.insert_heading"
+      ],
+      "api_symbols": [
+        "InsertHeading"
+      ],
+      "api_behavior": "Insert a new heading (text:h element) at a given index with specified outline level (1-6). Creates heading element distinct from paragraph.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR110InsertHeadingTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "870e7a738f66a6f162b076377cf3c05f754e8883b7cdf1c8257cf41d3fe4a9e4"
+        }
+      ]
+    },
+    {
+      "entry_id": "R110-GOVERNED-DOTNET-FODT-GETPARAGRAPHSTYLENAME-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r110",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_paragraph_style_name"
+      ],
+      "api_symbols": [
+        "GetParagraphStyleName"
+      ],
+      "api_behavior": "Return the text:style-name attribute of a paragraph at a given index. Returns null if not present or out of range.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR110GetParagraphStyleNameTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "870e7a738f66a6f162b076377cf3c05f754e8883b7cdf1c8257cf41d3fe4a9e4"
+        }
+      ]
+    },
+    {
+      "entry_id": "R110-GOVERNED-DOTNET-NETPBM-SOLARIZE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r110",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.solarize"
+      ],
+      "api_symbols": [
+        "Solarize"
+      ],
+      "api_behavior": "Create a solarized copy of the image. Pixels above threshold are inverted. PBM returns clone. PPM applies per-channel.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR110SolarizeTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "323497ab7377d0797cfdb88988f9ed0113c6d16fb77b751a9e2676ecaf3869ba"
+        }
+      ]
+    },
+    {
+      "entry_id": "R110-GOVERNED-DOTNET-NETPBM-SEPIA-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r110",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.sepia"
+      ],
+      "api_symbols": [
+        "Sepia"
+      ],
+      "api_behavior": "Create a sepia-toned copy of the image. PPM: converts to luminance then tints (R*1.0, G*0.8, B*0.6). PBM/PGM: returns clone.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR110SepiaTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "323497ab7377d0797cfdb88988f9ed0113c6d16fb77b751a9e2676ecaf3869ba"
+        }
+      ]
+    },
+    {
+      "entry_id": "R111-GOVERNED-DOTNET-FODS-MERGECELLS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r111",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.merge_cells"
+      ],
+      "api_symbols": [
+        "MergeCells"
+      ],
+      "api_behavior": "Merge rectangular range of cells using table:number-columns-spanned/rows-spanned. Replaces covered cells with covered-table-cell.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR111MergeCellsTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "0b4a2890c3ecb83006472500ff012556018bf26383493c8aa8165de72f0dcbd4"
+        }
+      ]
+    },
+    {
+      "entry_id": "R111-GOVERNED-DOTNET-FODS-SETCELLFORMULA-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r111",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.set_cell_formula"
+      ],
+      "api_symbols": [
+        "SetCellFormula",
+        "GetCellFormula"
+      ],
+      "api_behavior": "Set/get table:formula attribute on cell element. Survives save-reload roundtrip.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR111SetCellFormulaTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "0b4a2890c3ecb83006472500ff012556018bf26383493c8aa8165de72f0dcbd4"
+        }
+      ]
+    },
+    {
+      "entry_id": "R111-GOVERNED-DOTNET-FODT-REMOVEHEADING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r111",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.remove_heading"
+      ],
+      "api_symbols": [
+        "RemoveHeading"
+      ],
+      "api_behavior": "Remove heading element by paragraph index. Throws if not a heading or index out of range.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR111RemoveHeadingTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "df142bb0800e1e98b3d6674eb09788958c282964060d954e93be436f69ed9064"
+        }
+      ]
+    },
+    {
+      "entry_id": "R111-GOVERNED-DOTNET-FODT-GETDOCUMENTOUTLINE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r111",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_document_outline"
+      ],
+      "api_symbols": [
+        "GetDocumentOutline"
+      ],
+      "api_behavior": "Return heading hierarchy as list of (Level, Text) tuples for TOC generation.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR111GetDocumentOutlineTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "df142bb0800e1e98b3d6674eb09788958c282964060d954e93be436f69ed9064"
+        }
+      ]
+    },
+    {
+      "entry_id": "R111-GOVERNED-DOTNET-NETPBM-SHARPEN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r111",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.sharpen"
+      ],
+      "api_symbols": [
+        "Sharpen"
+      ],
+      "api_behavior": "Apply 3x3 unsharp-mask kernel to PGM/PPM. PBM returns clone.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR111SharpenTests.cs"
+      ],
+      "test_count": 8,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "6d1b16be0907f0628fa3ea5bc8ad8abc171fc80ffb966022a9a40bf11b084ba9"
+        }
+      ]
+    },
+    {
+      "entry_id": "R111-GOVERNED-DOTNET-NETPBM-BLURBOX-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r111",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.blur_box"
+      ],
+      "api_symbols": [
+        "BlurBox"
+      ],
+      "api_behavior": "Apply NxN box blur to PGM/PPM. PBM returns clone. Kernel = (2*radius+1)^2.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR111BlurBoxTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "6d1b16be0907f0628fa3ea5bc8ad8abc171fc80ffb966022a9a40bf11b084ba9"
+        }
+      ]
+    },
+    {
+      "entry_id": "R112-GOVERNED-DOTNET-FODS-GETUSEDRANGE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r112",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_used_range"
+      ],
+      "api_symbols": [
+        "GetUsedRange",
+        "GetUsedRange(string)",
+        "GetUsedRange(FodsSheet)"
+      ],
+      "api_behavior": "Return bounding range of non-empty cells as (MinRow, MinCol, MaxRow, MaxCol). Scans all cells. Returns null if sheet is empty. Three overloads: first-sheet, by-name, by-sheet-object (static).",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR112GetUsedRangeTests.cs"
+      ],
+      "test_count": 10,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "154081d7679c227c65832d6624aaeadbafe08922a21c4d30288c0cfe29e4a998"
+        }
+      ]
+    },
+    {
+      "entry_id": "R113-GOVERNED-DOTNET-FODS-SORTROWS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r113",
+      "skill": "add-dotnet-api",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.sort_rows"
+      ],
+      "api_symbols": [
+        "SortRows"
+      ],
+      "api_behavior": "Sort rows in a named sheet by a specified column index. Supports ascending/descending, numeric-aware comparison. Validates sheet name and column index.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR113SortRowsTests.cs",
+        "tests/net/fods/FodsR113InsertRowDepthTests.cs",
+        "tests/net/fods/FodsR113JsonDogfoodTests.cs"
+      ],
+      "test_count": 20,
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "ea10753de81dc1d5f14099994d1860aa772e7a3bf551ff57b4ad8250d3460a83"
+        }
+      ]
+    },
+    {
+      "entry_id": "R113-GOVERNED-DOTNET-FODT-GETDOCUMENTMETADATA-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r113",
+      "skill": "add-dotnet-api",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_document_metadata"
+      ],
+      "api_symbols": [
+        "GetDocumentMetadata"
+      ],
+      "api_behavior": "Extract ODF metadata (title, creator, date, description, subject, language, creation-date, editing-cycles, generator, initial-creator) as IReadOnlyDictionary<string,string>. Returns empty dict if no metadata element.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR113GetDocumentMetadataTests.cs",
+        "tests/net/fodt/FodtR113ExportTxtDepthTests.cs",
+        "tests/net/fodt/FodtR113TxtDogfoodTests.cs"
+      ],
+      "test_count": 18,
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "ad30e0e19586b443166c424aeb9e2b40a1219eb85e970a1caf09fd0a3b64fc5c"
+        }
+      ]
+    },
+    {
+      "entry_id": "R113-GOVERNED-DOTNET-NETPBM-TILE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-r113",
+      "skill": "add-dotnet-api",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.tile"
+      ],
+      "api_symbols": [
+        "Tile"
+      ],
+      "api_behavior": "Create a tiled image by repeating the source image tilesX * tilesY times. Supports PPM/PGM/PBM formats. Validates tile counts >= 1.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR113TileTests.cs",
+        "tests/net/netpbm/NetpbmR113CropSaveDepthTests.cs",
+        "tests/net/netpbm/NetpbmR113TileSaveDogfoodTests.cs"
+      ],
+      "test_count": 20,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "3e0aea93ffa39c5c3da1716ba7347eb5cf84a569e12fae48b275d775fd966956"
+        }
+      ]
+    },
+    {
+      "entry_id": "R114-NETPBM-PIPELINE-001",
+      "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R114-PRODUCT-EXECUTION-DIRTY-STATE-COMMIT-AND-BREADTH-SPRINT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.netpbm_image_pipeline_dotnet"
+      ],
+      "api_symbols": [
+        "Pipeline"
+      ],
+      "api_behavior": "Apply a sequence of transformation functions to an image, threading the result of each step into the next. Returns the final transformed image. Empty pipeline returns original. Null steps or null step element throws ArgumentNullException.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs"
+      ],
+      "test_count": 9,
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "4c84c20baf484122f67df49a6ba4a613a4203ae09bcf87cbcb218439ad908cf5"
+        }
+      ]
+    },
+    {
+      "entry_id": "R116-FODS-GET-COLUMN-AGGREGATES",
+      "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dotnet_status.get_column_aggregates"
+      ],
+      "api_symbols": [
+        "GetColumnAggregates"
+      ],
+      "api_behavior": "Compute Min, Max, Sum, Count for a numeric column in a named FODS sheet. Header row (index 0) is always skipped. Returns (0,0,0,0) for missing sheet or empty column. Throws ArgumentException for null/empty sheetName.",
+      "changed_files": [
+        "src/net/fods/FodsDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR116ColumnAggregatesTests.cs"
+      ],
+      "test_count": 8,
+      "validation_command": "dotnet test tests/net/fods/FormatFactory.Fods.Tests.csproj --filter FullyQualifiedName~FodsR116",
+      "validation_result": "8/8 PASS",
+      "rollback": "Remove GetColumnAggregates method from FodsDocument.cs",
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsDocument.cs",
+          "state": "present",
+          "sha256": "fb4291004b8983a0d8ae502c485ae1882a54eb336bf615f1ddc1a9d5ddc202f1"
+        }
+      ],
+      "skill_id": "add-dotnet-object-model-feature",
+      "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/fods-r116-tests.log"
+    },
+    {
+      "entry_id": "R116-FODT-GET-WORD-FREQUENCY",
+      "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dotnet_status.get_word_frequency"
+      ],
+      "api_symbols": [
+        "GetWordFrequency"
+      ],
+      "api_behavior": "Count word frequency across all paragraphs (including headings). Case-insensitive. Strips punctuation via Regex.Split on whitespace and punctuation characters. Supports optional minLength filter. Returns IReadOnlyDictionary<string,int>.",
+      "changed_files": [
+        "src/net/fodt/FodtDocument.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR116WordFrequencyTests.cs"
+      ],
+      "test_count": 8,
+      "validation_command": "dotnet test tests/net/fodt/FormatFactory.Fodt.Tests.csproj --filter FullyQualifiedName~FodtR116",
+      "validation_result": "8/8 PASS",
+      "rollback": "Remove GetWordFrequency method from FodtDocument.cs",
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtDocument.cs",
+          "state": "present",
+          "sha256": "452b58004bc5cdec20f324b62c5e7b38ca35a232683120789d64038de9a5271f"
+        }
+      ],
+      "skill_id": "add-dotnet-object-model-feature",
+      "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/fodt-r116-tests.log"
+    },
+    {
+      "entry_id": "R116-NETPBM-DRAW-LINE",
+      "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status.draw_line"
+      ],
+      "api_symbols": [
+        "DrawLine"
+      ],
+      "api_behavior": "Draw a line using Bresenham's line algorithm on PGM images (P2/P5 only). Clips silently at image boundaries (no exception for out-of-bounds). Throws InvalidOperationException on non-PGM images.",
+      "changed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs"
+      ],
+      "test_files": [
+        "tests/net/netpbm/NetpbmR116DrawLineTests.cs"
+      ],
+      "test_count": 8,
+      "validation_command": "dotnet test tests/net/netpbm/FormatFactory.Netpbm.Tests.csproj --filter FullyQualifiedName~NetpbmR116",
+      "validation_result": "8/8 PASS",
+      "rollback": "Remove DrawLine method from NetpbmImage.cs",
+      "source_files": [
+        {
+          "path": "src/net/netpbm/Model/NetpbmImage.cs",
+          "state": "present",
+          "sha256": "7f191ed0c4d6e54d892e9d8f57080f155fb7be2716448e5cd6ff467da436701d"
+        }
+      ],
+      "skill_id": "add-dotnet-object-model-feature",
+      "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/netpbm-r116-tests.log"
+    },
+    {
+      "entry_id": "R116-DIF-PROBE-CSV-PIPELINE",
+      "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "on_hold.DIF.probe_dif",
+        "on_hold.DIF.dif_to_csv",
+        "on_hold.DIF.parse_dif_strict"
+      ],
+      "api_symbols": [
+        "probe_dif",
+        "dif_to_csv",
+        "parse_dif_strict"
+      ],
+      "api_behavior": "probe_dif: returns dict with valid_header/exists/title. dif_to_csv: converts DIF to CSV string. parse_dif_strict: returns DifDocument or raises on invalid. Test-only coverage \u2014 no src/ change.",
+      "changed_files": [],
+      "test_files": [
+        "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
+      ],
+      "test_count": 12,
+      "validation_command": ".local/venv/Scripts/python -m pytest tests/python/dif/test_r116_dif_probe_csv_pipeline.py -v",
+      "validation_result": "12/12 PASS",
+      "rollback": "N/A (test-only)",
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "246831bd38ce90fb8a0f8d9251280ebe2582f38fc917532f28264a46f24116f3"
+        }
+      ],
+      "skill_id": "add-python-api",
+      "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/dif-r116-tests.log"
+    },
+    {
+      "entry_id": "R117-DIF-WRITE-DIF-ROUNDTRIP",
+      "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "on_hold.DIF.write_dif"
+      ],
+      "api_symbols": [
+        "write_dif"
+      ],
+      "api_behavior": "Serialize a DifDocument to DIF format. Supports numeric, string, boolean, and special cells. CRLF line endings. Roundtrip-verified: write then parse_dif_strict recovers original data.",
+      "changed_files": [
+        "src/python/dif/dif_parser.py"
+      ],
+      "test_files": [
+        "tests/python/dif/test_r117_dif_write_roundtrip.py"
+      ],
+      "test_count": 10,
+      "validation_command": ".local/venv/Scripts/python -m pytest tests/python/dif/test_r117_dif_write_roundtrip.py -v",
+      "validation_result": "10/10 PASS",
+      "rollback": "Remove write_dif function from dif_parser.py",
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "246831bd38ce90fb8a0f8d9251280ebe2582f38fc917532f28264a46f24116f3"
+        }
+      ],
+      "skill_id": "add-python-object-model-feature",
+      "raw_log": "reports/unified-authority-integrated-poc-train/iterations/iteration-004/raw-logs/dif-r117-tests.log"
+    },
+    {
+      "entry_id": "MWP-CSV-WRITER-LIBRARY",
+      "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FormatFactory.Csv .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dogfood_status.fods_to_csv_dotnet"
+      ],
+      "api_symbols": [
+        "CsvWriter.WriteRows",
+        "CsvWriter.WriteRowsToFile",
+        "CsvWriter.EscapeField"
+      ],
+      "api_behavior": "Standalone .NET CSV target writer library. WriteRows: RFC4180 CSV string (LF). WriteRowsToFile: UTF-8 no-BOM. EscapeField: wraps in quotes when field contains comma, quote, or newline.",
+      "changed_files": [
+        "src/net/csv/CsvWriter.cs",
+        "src/net/csv/FormatFactory.Csv.csproj"
+      ],
+      "test_files": [
+        "tests/net/csv/CsvWriterTests.cs"
+      ],
+      "test_count": 15,
+      "validation_command": "dotnet test tests/net/csv/FormatFactory.Csv.Tests.csproj -v quiet",
+      "validation_result": "15/15 PASS",
+      "rollback": "Remove src/net/csv/ and restore FodsCsvExporter.cs inline serialization",
+      "source_files": [
+        {
+          "path": "src/net/csv/CsvWriter.cs",
+          "state": "present",
+          "sha256": "3ba05f7c6ba4c373f0075a086db4b3110c5f1fcbdf3e5740751ec75df4f35092"
+        },
+        {
+          "path": "src/net/csv/FormatFactory.Csv.csproj",
+          "state": "present",
+          "sha256": "a27781f20f0feac0b16e6ec86dc77a2402138fc7ca32668d294601287a6d37b2"
+        }
+      ],
+      "skill_id": "add-same-format-writer-feature",
+      "raw_log": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/writer-tests.log"
+    },
+    {
+      "entry_id": "MWP-HTML-WRITER-LIBRARY",
+      "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FormatFactory.Html .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dogfood_status.fods_to_html_dotnet"
+      ],
+      "api_symbols": [
+        "HtmlWriter.WriteTable",
+        "HtmlWriter.WriteTableToFile",
+        "HtmlWriter.EscapeHtml"
+      ],
+      "api_behavior": "Standalone .NET HTML target writer library. WriteTable: HTML5 table string. WriteTableToFile: full HTML5 document, UTF-8 no-BOM. EscapeHtml: delegates to WebUtility.HtmlEncode.",
+      "changed_files": [
+        "src/net/html/HtmlWriter.cs",
+        "src/net/html/FormatFactory.Html.csproj"
+      ],
+      "test_files": [
+        "tests/net/html/HtmlWriterTests.cs"
+      ],
+      "test_count": 12,
+      "validation_command": "dotnet test tests/net/html/FormatFactory.Html.Tests.csproj -v quiet",
+      "validation_result": "12/12 PASS",
+      "rollback": "Remove src/net/html/ and restore FodsHtmlExporter.cs inline serialization",
+      "source_files": [
+        {
+          "path": "src/net/html/HtmlWriter.cs",
+          "state": "present",
+          "sha256": "25f566b0b6569b8af2c7c30199d9fced74184f4662aa64bb780dd5274e31a370"
+        },
+        {
+          "path": "src/net/html/FormatFactory.Html.csproj",
+          "state": "present",
+          "sha256": "8addf61e0061be92fc18354f48cb9e5340128aa19883ad3283e9634664738e7c"
+        }
+      ],
+      "skill_id": "add-same-format-writer-feature",
+      "raw_log": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/writer-tests.log"
+    },
+    {
+      "entry_id": "MWP-TXT-WRITER-LIBRARY",
+      "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FormatFactory.Txt .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dogfood_status.fodt_to_txt_dotnet"
+      ],
+      "api_symbols": [
+        "TxtWriter.WriteLines",
+        "TxtWriter.WriteLinesToFile"
+      ],
+      "api_behavior": "Standalone .NET TXT target writer library. WriteLines: joins with LF, normalises CRLF. WriteLinesToFile: UTF-8 no-BOM.",
+      "changed_files": [
+        "src/net/txt/TxtWriter.cs",
+        "src/net/txt/FormatFactory.Txt.csproj"
+      ],
+      "test_files": [
+        "tests/net/txt/TxtWriterTests.cs"
+      ],
+      "test_count": 8,
+      "validation_command": "dotnet test tests/net/txt/FormatFactory.Txt.Tests.csproj -v quiet",
+      "validation_result": "8/8 PASS",
+      "rollback": "Remove src/net/txt/ and restore FodtTxtExporter.cs inline serialization",
+      "source_files": [
+        {
+          "path": "src/net/txt/TxtWriter.cs",
+          "state": "present",
+          "sha256": "822057f4069e2f049c80daa47798d03a909460bda6f5cb917c85d9135f4ae31e"
+        },
+        {
+          "path": "src/net/txt/FormatFactory.Txt.csproj",
+          "state": "present",
+          "sha256": "1fe8058a520ef7ab931da068e97d84265df48b87a7d765aa35f84df494b7f6ad"
+        }
+      ],
+      "skill_id": "add-same-format-writer-feature",
+      "raw_log": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/writer-tests.log"
+    },
+    {
+      "entry_id": "MWP-MARKDOWN-WRITER-LIBRARY",
+      "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FormatFactory.Markdown .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dogfood_status.fodt_to_markdown_dotnet"
+      ],
+      "api_symbols": [
+        "MarkdownWriter.WriteHeading",
+        "MarkdownWriter.WriteParagraphs",
+        "MarkdownWriter.WriteLinesToFile"
+      ],
+      "api_behavior": "Standalone .NET Markdown target writer library. WriteHeading: ATX-style, clamps [1,6]. WriteParagraphs: blank-line-separated. WriteLinesToFile: UTF-8 no-BOM.",
+      "changed_files": [
+        "src/net/markdown/MarkdownWriter.cs",
+        "src/net/markdown/FormatFactory.Markdown.csproj"
+      ],
+      "test_files": [
+        "tests/net/markdown/MarkdownWriterTests.cs"
+      ],
+      "test_count": 11,
+      "validation_command": "dotnet test tests/net/markdown/FormatFactory.Markdown.Tests.csproj -v quiet",
+      "validation_result": "11/11 PASS",
+      "rollback": "Remove src/net/markdown/ and restore FodtMarkdownExporter.cs inline serialization",
+      "source_files": [
+        {
+          "path": "src/net/markdown/MarkdownWriter.cs",
+          "state": "present",
+          "sha256": "0bdf47acc5bff20939aa05a45b2e055779cd045a31d5805bd7a747607e9471a8"
+        },
+        {
+          "path": "src/net/markdown/FormatFactory.Markdown.csproj",
+          "state": "present",
+          "sha256": "3ce5c347de8b7e372976872bb68a49d1d9f2698eec762668efb3d9993048d1c0"
+        }
+      ],
+      "skill_id": "add-same-format-writer-feature",
+      "raw_log": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/writer-tests.log"
+    },
+    {
+      "entry_id": "MWP-FODS-CSV-DOGFOOD-REFACTOR",
+      "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dogfood_status.fods_to_csv_dotnet"
+      ],
+      "api_symbols": [
+        "FodsCsvExporter.ExportSheetToCsv",
+        "FodsCsvExporter.ExportSheetToCsvString",
+        "FodsCsvExporter.EscapeCsvField"
+      ],
+      "api_behavior": "FodsCsvExporter delegates CSV serialization to FormatFactory.Csv.CsvWriter. dogfood_status: GAP_DOGFOOD_EXTERNAL -> IMPLEMENTED. Zero regressions in 547 FODS tests.",
+      "changed_files": [
+        "src/net/fods/FodsCsvExporter.cs",
+        "src/net/fods/FormatFactory.Fods.csproj"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR104DogfoodCsvExportTests.cs"
+      ],
+      "test_count": 547,
+      "validation_command": "dotnet test tests/net/fods/FormatFactory.Fods.Tests.csproj -v quiet",
+      "validation_result": "547/547 PASS",
+      "rollback": "Revert FodsCsvExporter.cs to inline CSV, remove ProjectReference to FormatFactory.Csv",
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsCsvExporter.cs",
+          "state": "present",
+          "sha256": "3d1c294eca93495221c9bd81545f922e4c7ef3066c7b063e6a6e0d9ef8fbf703"
+        },
+        {
+          "path": "src/net/fods/FormatFactory.Fods.csproj",
+          "state": "present",
+          "sha256": "32dd10dc4740d40687c3ac939da47d52e44def0b82f60b892204979f242b6803"
+        }
+      ],
+      "skill_id": "add-dogfood-export",
+      "raw_log": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/product-dogfood-tests.log"
+    },
+    {
+      "entry_id": "MWP-FODS-HTML-DOGFOOD-REFACTOR",
+      "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FODS .NET",
+      "capability_refs": [
+        "commercial_net_products.FODS.dogfood_status.fods_to_html_dotnet"
+      ],
+      "api_symbols": [
+        "FodsHtmlExporter.ExportToHtml",
+        "FodsHtmlExporter.HtmlEscape"
+      ],
+      "api_behavior": "FodsHtmlExporter delegates HTML table serialization to FormatFactory.Html.HtmlWriter. dogfood_status: GAP_DOGFOOD_EXTERNAL -> IMPLEMENTED. Zero regressions.",
+      "changed_files": [
+        "src/net/fods/FodsHtmlExporter.cs"
+      ],
+      "test_files": [
+        "tests/net/fods/FodsR94ExportSheetToHtmlTests.cs"
+      ],
+      "test_count": 547,
+      "validation_command": "dotnet test tests/net/fods/FormatFactory.Fods.Tests.csproj -v quiet",
+      "validation_result": "547/547 PASS",
+      "rollback": "Revert FodsHtmlExporter.cs to inline HTML, remove ProjectReference to FormatFactory.Html",
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsHtmlExporter.cs",
+          "state": "present",
+          "sha256": "1098a6b3356e00fc24300346fc634c31cb31b4aa4b94520ddd82776304f02ec4"
+        }
+      ],
+      "skill_id": "add-dogfood-export",
+      "raw_log": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/product-dogfood-tests.log"
+    },
+    {
+      "entry_id": "MWP-FODT-TXT-DOGFOOD-REFACTOR",
+      "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dogfood_status.fodt_to_txt_dotnet"
+      ],
+      "api_symbols": [
+        "FodtTxtExporter.ExportTxt",
+        "FodtTxtExporter.ExportToTxt"
+      ],
+      "api_behavior": "FodtTxtExporter delegates plaintext output to FormatFactory.Txt.TxtWriter. dogfood_status: GAP_DOGFOOD_EXTERNAL -> IMPLEMENTED. Zero regressions in 520 FODT tests.",
+      "changed_files": [
+        "src/net/fodt/FodtTxtExporter.cs",
+        "src/net/fodt/FormatFactory.Fodt.csproj"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR107DogfoodPlainTextExportTests.cs"
+      ],
+      "test_count": 520,
+      "validation_command": "dotnet test tests/net/fodt/FormatFactory.Fodt.Tests.csproj -v quiet",
+      "validation_result": "520/520 PASS",
+      "rollback": "Revert FodtTxtExporter.cs to inline TXT, remove ProjectReference to FormatFactory.Txt",
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtTxtExporter.cs",
+          "state": "present",
+          "sha256": "77230854787da1d2367a5ab132d43946354ad3cb686e474470d5a43e4692db37"
+        },
+        {
+          "path": "src/net/fodt/FormatFactory.Fodt.csproj",
+          "state": "present",
+          "sha256": "622e7a52e9eadd92af50619f1007778dd0be65fccb059d2f830cf38476d901dd"
+        }
+      ],
+      "skill_id": "add-dogfood-export",
+      "raw_log": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/product-dogfood-tests.log"
+    },
+    {
+      "entry_id": "MWP-FODT-MARKDOWN-DOGFOOD-REFACTOR",
+      "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FODT .NET",
+      "capability_refs": [
+        "commercial_net_products.FODT.dogfood_status.fodt_to_markdown_dotnet"
+      ],
+      "api_symbols": [
+        "FodtMarkdownExporter.ExportToMarkdown",
+        "FodtMarkdownExporter.FormatParagraphAsMarkdown"
+      ],
+      "api_behavior": "FodtMarkdownExporter delegates heading formatting and file output to FormatFactory.Markdown.MarkdownWriter. dogfood_status: GAP_DOGFOOD_EXTERNAL -> IMPLEMENTED. Zero regressions.",
+      "changed_files": [
+        "src/net/fodt/FodtMarkdownExporter.cs"
+      ],
+      "test_files": [
+        "tests/net/fodt/FodtR108DogfoodMarkdownExportTests.cs"
+      ],
+      "test_count": 520,
+      "validation_command": "dotnet test tests/net/fodt/FormatFactory.Fodt.Tests.csproj -v quiet",
+      "validation_result": "520/520 PASS",
+      "rollback": "Revert FodtMarkdownExporter.cs to inline Markdown, remove ProjectReference to FormatFactory.Markdown",
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtMarkdownExporter.cs",
+          "state": "present",
+          "sha256": "6d7969b8d4ff693dece79eba7837730a21344207fec9f0cea84174b25a8bcfd1"
+        }
+      ],
+      "skill_id": "add-dogfood-export",
+      "raw_log": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/product-dogfood-tests.log"
     }
   ]
 }

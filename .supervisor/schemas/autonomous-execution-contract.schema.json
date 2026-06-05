@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "autonomous-execution-contract.schema.json",
+  "title": "Autonomous Execution Contract",
+  "description": "Schema for validating autonomous execution contract compliance",
+  "type": "object",
+  "required": ["valid_terminal_states", "invalid_terminal_states", "proof_requirements", "host_invocation_requirements", "adoption_compliance_requirements"],
+  "properties": {
+    "valid_terminal_states": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 6,
+      "description": "Exhaustive list of valid terminal states"
+    },
+    "invalid_terminal_states": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 15,
+      "description": "States that must never cause a stop"
+    },
+    "proof_requirements": {
+      "type": "object",
+      "required": ["source", "tests", "raw_logs", "examples", "proof_record"],
+      "properties": {
+        "source": {"type": "boolean"},
+        "tests": {"type": "boolean"},
+        "raw_logs": {"type": "boolean"},
+        "examples": {"type": "boolean"},
+        "proof_record": {"type": "boolean"},
+        "requires_proof_graph_projection": {"type": "boolean"}
+      }
+    },
+    "host_invocation_requirements": {
+      "type": "object",
+      "required": ["detect_cli", "dry_run", "safety_check", "live_noop"],
+      "properties": {
+        "detect_cli": {"type": "boolean"},
+        "dry_run": {"type": "boolean"},
+        "safety_check": {"type": "boolean"},
+        "live_noop": {"type": "boolean"}
+      }
+    },
+    "adoption_compliance_requirements": {
+      "type": "object",
+      "required": ["result_classifications", "cannot_pass_zero_transcripts_zero_skills"],
+      "properties": {
+        "result_classifications": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 5
+        },
+        "cannot_pass_zero_transcripts_zero_skills": {"type": "boolean"}
+      }
+    }
+  }
+}

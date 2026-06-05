@@ -35,6 +35,7 @@
           "status": { "type": "string", "enum": ["completed", "partial", "not_started", "blocked_external_gate"] },
           "evidence_paths": { "type": "array", "items": { "type": "string" } },
           "tests_supporting": { "type": "array", "items": { "type": "string" } },
+          "test_references": { "type": "array", "items": { "type": "string" } },
           "acceptance_criteria": { "type": "string" },
           "gate_ref": { "type": "string" },
           "notes": { "type": "string" }
@@ -79,7 +80,8 @@
     "state_files_updated": { "type": "array", "items": { "type": "string" } },
     "memory_files_updated": { "type": "array", "items": { "type": "string" } },
     "known_limitations": { "type": "array", "items": { "type": "string" } },
-    "external_gates": { "type": "array", "items": { "type": "string" } }
+    "external_gates": { "type": "array", "items": { "type": "string" } },
+    "dirty_state_classification": { "type": "string", "description": "Classification of dirty git state (e.g. DIRTY_SUPERVISOR_WORK_IN_PROGRESS)" }
   },
   "additionalProperties": false
 }

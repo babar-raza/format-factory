@@ -2058,5 +2058,172 @@ authorized by this section.
 
 ---
 
-*End of plans/master-plan.md — version 2.68 — 2026-06-02 (Section 42 added: Product Factory Acceleration Layer)*
+## Section 43 — Product-First POC Operating Model (2026-06-03)
+
+**Added:** 2026-06-03
+**Sprint:** FORMAT-FACTORY-PRODUCT-FIRST-LOCAL-MEMORY-MASTER-PLAN-AND-PROMPT-TEMPLATE-SYNC-001
+**Authority:** Strategic correction — machinery serves POC, not itself.
+
+### 43.1 POC Goal
+
+| Track | Products | Scope |
+|---|---|---|
+| Commercial .NET | FODS .NET, FODT .NET, Netpbm .NET | Load/read, editable object model, same-format save, export/conversion, dogfood, tests, examples, package proof, capability matrix |
+| Reduced/FOSS | ZST, Python Netpbm (PBM/PGM/PPM), SYLK/DIF | Honest capability matrix, real parser/writer/export/package/example proof, reproducible tests, installed/source proof |
+
+### 43.2 Product-Output Floor
+
+No machinery lane may declare clean success unless it either:
+1. Removes a blocker for Mainstream product work.
+2. Prevents a false PASS or false STOP that affects product velocity.
+3. Creates a reusable accelerator that Mainstream can consume.
+4. Reduces human handoff.
+5. Improves product throughput, safety, or repeatability.
+
+### 43.3 Lane Definitions
+
+**Mainstream Product:** Product output engine. Must produce real capability breadth across commercial and FOSS products. Cannot pass with evidence repair alone.
+
+**Acceleration (two sub-lanes):**
+- **Acceleration-A:** Governance acceleration / anti-skip / prompt-quality / evidence-quality safety harness.
+- **Acceleration-B:** AI product acceleration / LLM / embeddings / retrieval / spec understanding / source-pattern mining / code-generation handoffs / test generation / product gap ranking.
+- Acceleration must prove it makes Mainstream faster, safer, or less blocked.
+
+**Skills / Governed Execution:** Reusable execution skills, handoffs, transcripts, receiver fixtures, validation. Must make product source changes faster and safer. Must not produce proof in isolation only.
+
+**Supervisor / Autonomous Continuation:** Autonomous traffic controller. Decides what continues, what stops, what downgrades. Must prevent false PASS and false STOP, route blockers, protect product throughput. Not merely an evidence auditor.
+
+### 43.4 Cross-Stream Dependency Model
+
+- Mainstream consumes Skills (for governed product changes) and Acceleration-B (for AI-assisted code generation).
+- Skills consumes Supervisor (for autonomous continuation decisions) and Acceleration-A (for safety harness).
+- Supervisor consumes Acceleration-A outputs (anti-skip, prompt-quality).
+- Acceleration-B consumes Mainstream product state (to know what to accelerate).
+- No circular dependency: Mainstream never waits for machinery unless machinery is removing a product blocker.
+
+### 43.5 Machinery Success Criteria
+
+Each machinery lane must answer at sprint closeout:
+1. What product blocker did this remove?
+2. What product throughput did this improve?
+3. What false PASS or false STOP did this prevent?
+4. If none of the above: why was this sprint necessary?
+
+### 43.6 Next-Sprint Planning Rules
+
+1. Every sprint prompt must state its product-first purpose.
+2. Mainstream sprints must have a hard PASS quota for product output breadth.
+3. Machinery sprints must state which product blocker they address.
+4. No sprint may pass on evidence repair alone.
+5. Cross-stream dependencies must be declared at sprint start.
+
+### 43.7 Latest Stream State (2026-06-03)
+
+| Stream | Latest Reviewed | Summary |
+|---|---|---|
+| Mainstream | R112 | FODS progress accepted, product breadth weak. R113 must force breadth across FODS, FODT, Netpbm, FOSS. |
+| Acceleration | R111 | Governance progress, must restore AI acceleration, fix anti-skip contradictions. |
+| Skills | R112 | Strong milestone. Next: full live cycle, stream convergence, MCP readiness. |
+| Supervisor | R109 | Useful, not fully autonomous. Next: ledger, sample outputs, replay closure. |
+
+No Gate 8 approval, Gate 11 approval, publication, push, commit, or commercial readiness claim is authorized by this section.
+
+---
+
+---
+
+## Section 44: Independent Authority/Support Layer Strategy and Latest Sprint State
+
+**Added:** 2026-06-04 (memory sync — FORMAT-FACTORY-LOCAL-MEMORY-GOVERNANCE-SYNC-20260604-001)
+
+### 44.1 Independent Layer Strategy
+
+**Core principle:** Anything that repeatedly influences product decisions must become an independent, verifiable authority/support layer.
+
+A layer is justified only if it produces artifacts another stream can consume and independently verify. Avoid reports-only layers, prompt-only layers, evidence-polishing loops, AI summary stores without authority rules, and dashboards without enforcement.
+
+**Evidence proves work. Evidence is not the product.**
+
+See: `docs/governance/independent-authority-layers.md`
+
+### 44.2 Specification Authority Layer
+
+The layer must solve the hard problem of making huge file-format specs reliably usable by agents and LLMs without whole-spec prompt stuffing, ad-hoc browsing, memory-only claims, or random snippets.
+
+**Status:** PLAN_NEEDS_REPAIR (plan `ticklish-dancing-lobster(1).md` reviewed 2026-06-04)
+**Repair prompt ID:** `FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-PRODUCTION-HEALING-PLAN-REPAIR-001`
+**Pilot formats:** ZST, Netpbm, DIF (minimum); Gnumeric, FODS/FODT/ODF (Phase 2)
+
+Required: 11 subsystems (SpecSourceRegistry → SpecGovernanceRuntime), 13 lifecycle states, deterministic context packs, usage ledger, four-stream enforcement, anti-bypass rules.
+
+See: `docs/governance/specification-authority-layer.md`, `memory/67-local-memory-governance-sync-20260604.md` Sections 2–3.
+
+### 44.3 Requirement & Capability Authority Layer
+
+Accountability bridge between specification/source requirements and product readiness. Answers: "Can we honestly claim this capability is supported, and what proves it?"
+
+**Status:** Plan `delegated-roaming-whistle.md` reviewed as too shallow. PLAN_NEEDS_REPAIR.
+**Healing prompt ID:** `FORMAT-FACTORY-REQUIREMENT-CAPABILITY-AUTHORITY-LAYER-PRODUCTION-BLOCKER-HEALING-001`
+
+Required: Canonical Capability Proof Graph (18 node types, 19 edge types, 8 invariants), claim-scope decomposition (12 dimensions), proof sufficiency model (10 levels), deterministic evaluation runtime, Mainstream gap queue, Supervisor verdict packet.
+
+Does NOT replace existing systems. Wraps them with proof logic. Direct `poc-targets.yaml` mutation is NOT allowed without proposed sync delta.
+
+See: `docs/governance/requirement-capability-authority-layer.md`, `memory/67-local-memory-governance-sync-20260604.md` Section 4.
+
+### 44.4 Hardening Sequence Before Mainstream
+
+**User decision (2026-06-04):** Mainstream waits until Supervisor + Skills + Acceleration each have independent hardening proof.
+
+**Order:**
+1. Skills hardening IV (`FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001`)
+2. Supervisor hardening IV (`FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001`)
+3. Acceleration hardening / IV
+4. Mainstream implementation
+
+**Reason:** Supervisor's cross-stream status depends on Skills packets. Skills hardening first lets Supervisor classify latest Skills output instead of SKILLS_MISSING_PACKET.
+
+See: `docs/prompt-templates/supervisor-hardening-iv-template.md`, `docs/prompt-templates/skills-hardening-iv-template.md`
+
+### 44.5 Evidence Handling Principle
+
+Do not waste time correcting evidence packaging/metadata unless it blocks execution or important proof. Focus on implementation, product progress, moving project in the right direction.
+
+Future reviews must: report evidence caveats honestly + continue safe forward work + NOT make non-blocking evidence caveats the sprint goal.
+
+Evidence repair is justified ONLY when required to: prove important work, prevent false claims, fix missing materialized proof, or unblock independent verification.
+
+Every sprint prompt must still require: evidence bundle/review package, absolute path, SHA-256.
+
+See: `docs/governance/evidence-handling-principles.md`
+
+### 44.6 Latest Stream State (2026-06-04)
+
+| Stream | Latest Bundle | SHA-256 (short) | Verdict | Next |
+|---|---|---|---|---|
+| Supervisor | bundle 69 (99 entries) | 6b0b6b95... | ACCEPTED (non-blocking caveats) | Hardening IV |
+| Skills | bundle 70 (162 entries) | 35cda024... | ACCEPTED (non-blocking caveats) | Hardening IV |
+| Acceleration | — | — | Needs hardening IV | Hardening IV before Mainstream |
+| Mainstream | — | — | DEFERRED | Wait for all 3 hardening proofs |
+
+**Supervisor work completed:** product_velocity_scorer.py, ai_supervisor_advisor.py, external_tool_governance.py, autonomous_cycle.py (modified), stream routing packets, 53 tests.
+**Skills work completed:** FODS CSV packet (GAP-FODS-DOGFOOD-CSV-DOTNET-001), 6 reusable templates, 10 receiver fixtures, 72 tests.
+**Mainstream next target:** FODS + FODT + Netpbm (when unblocked). Netpbm must be retained; SVG must NOT replace it.
+
+### 44.7 Declaration-Driven Closeout (MANDATORY)
+
+All future sprints must use:
+```
+python tools/supervisor/autonomous_cycle.py --declaration <evidence-declaration.yaml>
+python tools/supervisor/build_declaration_review_package.py --declaration <evidence-declaration.yaml>
+```
+
+Do NOT use the legacy `supervisor_loop` style or generic bundle commands.
+Preferred Python: `.local/venv/Scripts/python`. Fallback: `python`.
+
+No Gate 8 approval, Gate 11 approval, publication, push, commit, or commercial readiness claim is authorized by this section.
+
+---
+
+*End of plans/master-plan.md — version 2.70 — 2026-06-04 (Section 44 added: Independent Authority/Support Layer Strategy and Latest Sprint State)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

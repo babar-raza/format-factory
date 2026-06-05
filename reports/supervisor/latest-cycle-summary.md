@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: r93
-Sprint: FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
-Timestamp: 2026-06-02T19:19:16.537765
-Verdict: ACCEPTED
+Run: final-iv-session-summary-r125
+Sprint: FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
+Timestamp: 2026-06-05T14:22:59.579851
+Verdict: ACCEPTED_WITH_REWORK
 Autonomous Continue: True
-Accepted: 18
+Accepted: 2
 Rework: 0
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r93\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r93\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\final-iv-session-summary-r125\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\final-iv-session-summary-r125\combined-next-worker-prompt.md

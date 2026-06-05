@@ -45,8 +45,8 @@
           },
           "status": {
             "type": "string",
-            "enum": ["pending", "in-progress", "done", "blocked", "evidence-blocked", "approval-blocked"],
-            "description": "Task status — must not be used to imply FF gate closure"
+            "enum": ["pending", "in-progress", "done", "blocked", "evidence-blocked", "approval-blocked", "agent-owned", "external-gate"],
+            "description": "Task status — must not be used to imply FF gate closure. agent-owned=autonomous prep, external-gate=requires human authorization."
           },
           "ff_taskcard_ref": {
             "type": "string",

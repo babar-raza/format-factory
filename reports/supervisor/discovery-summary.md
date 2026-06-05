@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-02T19:21:04.208587
+Timestamp: 2026-06-05T14:25:03.784689
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\r93\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\final-iv-session-summary-r125\declaration-review-package.zip
 Sprint ID: unknown
-Entry count: 13
-Bundle mtime: 2026-06-02T19:19:43.653049
-Bundle size: 22254 bytes
+Entry count: 59
+Bundle mtime: 2026-06-05T14:23:10.779214
+Bundle size: 76789 bytes

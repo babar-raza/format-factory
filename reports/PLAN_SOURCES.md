@@ -1,6 +1,18 @@
 # Plan Sources — Declaration-Driven Pipeline Production Integration
 
-Generated: 2026-06-01
+Generated: 2026-06-05 (updated for DOTNET-DOGFOOD-ARCHITECTURE-GAP sprint)
+
+## Current Sprint (2026-06-05)
+
+- **PrimaryPlanSource:** `C:\Users\prora\.claude\plans\reactive-sniffing-plum.md`
+- **Sprint:** FORMAT-FACTORY-DOTNET-DOGFOOD-ARCHITECTURE-GAP-INVESTIGATION-AND-PLANNING-001
+- **Type:** Chat-derived + hardened (v2) — investigative/planning, no product source edits
+- **Substantiality:** SUBSTANTIAL (9 phases, 11 lanes, 31 outputs, 12 tests, autonomous cycle)
+- **ResolutionStrategy:** Chat is SUBSTANTIAL → executing primary plan directly
+
+---
+
+# Prior Sprint (2026-06-01)
 
 ## ChatExtractedSteps
 1. Implement bridge adapter in `autonomous_cycle.py` (writes `evidence-review.json` + `contradictions.json`)
@@ -47,3 +59,29 @@ Generated: 2026-06-01
 - PrimaryPlanSource: `C:\Users\prora\.claude\plans\graceful-percolating-parrot.md` (chat-derived plan from this session)
 - SecondarySources: `plans/master-plan.md` Section 40 (product-factory direction)
 - MissingCandidates: none
+
+---
+
+# Sprint: FORMAT-FACTORY-ROOT-README-REFRESH-PLAN-001 (2026-06-05)
+
+## PrimaryPlanSource
+C:\Users\prora\.claude\plans\optimized-greeting-reef.md
+
+## ChatExtractedSteps
+1. Run preflight (git status, log, branch)
+2. Read README.md, state/current-state.md, session-resume.md, approval-gates.md
+3. Read all 13 docs/governance/ files
+4. Read all 15 docs/prompt-templates/ files
+5. Confirm src/net/, src/python/, tests/, examples/ structure
+6. Create reports/readme-refresh-plan/ outputs (TC-001 through TC-008)
+7. Build evidence declaration + review package ZIP
+
+## SubstantialityCheck: SUBSTANTIAL (8 taskcards, acceptance criteria, evidence commands)
+
+## ResolutionStrategy: Chat plan is SUBSTANTIAL → executing primary plan from disk
+
+## SecondarySources
+- state/current-state.md
+- reports/supervisor/session-resume.md
+- docs/governance/*.md
+- product-capability-matrix/poc-targets.yaml

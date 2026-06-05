@@ -1,323 +1,43 @@
-- item_id: R93-A-PREFLIGHT
-  item_title: Preflight + R92 state verification
+- item_id: TC-R125-A01
+  item_title: "Final adversarial IV \u2014 live test verification"
   declared_status: completed
-  supervisor_grade: ACCEPTED
+  supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - reports/r93/00-preflight.md
-  - reports/r93/r92-declaration-review-package-verification.md
-  tests_supporting: []
+  - reports/r125-final-iv/fods-test-run.log
+  - reports/r125-final-iv/fodt-test-run.log
+  - reports/r125-final-iv/netpbm-test-run.log
+  - reports/r125-final-iv/final-adversarial-iv.md
+  tests_supporting:
+  - tests/net/fods/FodsR107ExportSheetToCsvTests.cs
+  - tests/net/fodt/FodtR108ExportToMarkdownFileTests.cs
+  - tests/net/netpbm/NetpbmR98SaveToFileTests.cs
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-B-CONTEXT-PACK
-  item_title: Build context-pack tool (build_context_pack.py)
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - tools/supervisor/build_context_pack.py
-  - .supervisor/context-pack.yaml
-  - reports/supervisor/context-pack.md
-  - reports/r93/context-pack-implementation.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-C-ENRICH-REVIEW
-  item_title: Fix generate_supervisor_packet.py to enrich stale review from context-pack
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - tools/supervisor/generate_supervisor_packet.py
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Acceptance criteria verified: unknown'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-D-DEEP-GRADING
-  item_title: Deep work-item grading (inspect test file content + acceptance criteria)
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - tools/supervisor/inspect_declared_evidence.py
-  - tools/supervisor/grade_declared_work.py
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-E-R92-DEFECT-LEDGER
-  item_title: R92 defect ledger (D92-01..08)
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - reports/r93/r92-defect-ledger.md
-  - reports/r93/r92-defect-ledger.json
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-F-SUPERVISOR-LOOP-D92-01
-  item_title: "Fix autonomous-cycle loop (D92-01 prevention \u2014 context-pack rebuild)"
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - tools/supervisor/supervisor_loop.py
-  - reports/r93/supervisor-loop-correctness.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-G-ACCELERATION-LAYER
-  item_title: Acceleration layer adoption check
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - reports/r93/acceleration-layer-adoption.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
+  - Test content verified (3 files)
   - 'Acceptance criteria verified: PASS'
   acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-- item_id: R93-H-SKILL-EXPANSION
-  item_title: Governed skill expansion (6 new skills)
+- item_id: TC-R125-B01
+  item_title: "Session milestone summary \u2014 autonomous train iteration 12/12"
   declared_status: completed
-  supervisor_grade: ACCEPTED
+  supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - .claude/commands/add-python-object-model-feature.md
-  - .claude/commands/add-same-format-writer-feature.md
-  - .claude/commands/promote-gap-to-taskcard.md
-  - .claude/commands/generate-execution-handoff.md
-  - .claude/commands/verify-dogfood-path.md
-  - .claude/commands/package-install-proof.md
-  - reports/r93/skill-expansion.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-I-LEDGER-ENFORCEMENT
-  item_title: Ledger enforcement verification
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - reports/r93/ledger-enforcement.md
-  - reports/r90/product-code-change-ledger.json
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Acceptance criteria verified: PASS'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-J-GAP-SELECTION
-  item_title: POC gap selection for Trains K-P
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - reports/r93/poc-gap-selection.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-K-FODS-GETCOLUMNHEADERS
-  item_title: FODS .NET GetColumnHeaders API (3 overloads)
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - src/net/fods/FodsDocument.cs
-  - tests/net/fods/FodsR93GetColumnHeadersTests.cs
+  - reports/r125-final-iv/final-adversarial-iv.md
   tests_supporting:
-  - tests/net/fods/FodsR93GetColumnHeadersTests.cs
+  - tests/net/fods/FodsR107ExportSheetToCsvTests.cs
+  - tests/python/sylk/test_r99_sylk_installed_workflow.py
+  - tests/python/zst/test_r101_zst_installed_smoke.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-L-FODT-GETPARAGRAPHTEXTS
-  item_title: FODT .NET GetParagraphTexts API
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - src/net/fodt/FodtDocument.cs
-  - tests/net/fodt/FodtR93GetParagraphTextsTests.cs
-  tests_supporting:
-  - tests/net/fodt/FodtR93GetParagraphTextsTests.cs
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-M-NETPBM-COPYREGION
-  item_title: Netpbm .NET CopyRegion API
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - src/net/netpbm/Model/NetpbmImage.cs
-  - tests/net/netpbm/NetpbmR93CopyRegionTests.cs
-  tests_supporting:
-  - tests/net/netpbm/NetpbmR93CopyRegionTests.cs
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-N-ZST-ROUNDTRIP
-  item_title: ZST Python compress/decompress round-trip tests
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - tests/python/zst/test_r93_zst_roundtrip.py
-  tests_supporting:
-  - tests/python/zst/test_r93_zst_roundtrip.py
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-O-PPM-PGM-WORKFLOW
-  item_title: "Python Netpbm PPM\u2192PGM installed workflow verification"
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py
-  tests_supporting:
-  - tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-P-SYLK-WRITE
-  item_title: SYLK Python write_sylk capability + round-trip tests
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - src/python/sylk/sylk_parser.py
-  - tests/python/sylk/test_r93_sylk_write_roundtrip.py
-  tests_supporting:
-  - tests/python/sylk/test_r93_sylk_write_roundtrip.py
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-Q-MCP-STATUS
-  item_title: MCP status classification (5-state enum)
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - tools/supervisor/check_mcp_status.py
-  - reports/supervisor/mcp-status.json
-  - reports/supervisor/mcp-status.md
-  - reports/r93/mcp-setup-verification.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-- item_id: R93-R-STATE-SYNC
-  item_title: State/registry/poc-targets/memory sync
-  declared_status: completed
-  supervisor_grade: ACCEPTED
-  evidence_found: true
-  evidence_paths:
-  - product-capability-matrix/poc-targets.yaml
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
+  - Test content verified (3 files)
   - 'Acceptance criteria verified: PASS'
   acceptance_criteria_failed: []
   required_rework: ''

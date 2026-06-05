@@ -1,6 +1,7 @@
-# FORMAT-FACTORY-R94-MEGA-TRAIN-001
-# Generated: 2026-06-02T19:19:16.677683
-# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
+# FORMAT-FACTORY-R126-MEGA-TRAIN-001
+# Generated: 2026-06-05T14:23:01.499767
+# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
+# Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
 ---
@@ -25,9 +26,9 @@ Read these files before writing any code:
 
 ## Sprint Identity
 
-- Sprint ID: FORMAT-FACTORY-R94-MEGA-TRAIN-001
-- Prior sprint: FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001
-- Prior verdict: ACCEPTED
+- Sprint ID: FORMAT-FACTORY-R126-MEGA-TRAIN-001
+- Prior sprint: FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
+- Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
@@ -74,7 +75,7 @@ Read these files before writing any code:
 | D | G3 | Netpbm .NET Product Deepening |
 | E | G4 | ZST Python Improvement |
 | F | G4 | Netpbm Python Improvement |
-| G | G4 | SYLK Python: Installed Workflow |
+| G | G4 | SYLK Python Improvement |
 | H | G5 | Dogfood: fodt -> txt |
 | I | G5 | Dogfood: fodt -> html |
 | J | G6 | Package Build + Install Proof |
@@ -157,7 +158,7 @@ dotnet test tests/net/netpbm/ --verbosity quiet
 
 ### Train E: ZST Python Improvement
 
-Continue ZST FOSS product. Document dependency mode; verify installed workflow from review package
+Continue ZST FOSS product. Gate 11 G11-G approval for commercial release (external gate; human required)
 
 **Acceptance Criteria:**
 - ZST Python test count maintained or increased
@@ -174,7 +175,7 @@ python -m pytest tests/python/zst/ -x -q
 
 ### Train F: Netpbm Python Improvement
 
-Continue Netpbm FOSS product. Refresh installed-package proof for PBM/PGM/PPM write and dogfood exports
+Continue Netpbm FOSS product. Gate 11 G11-G approval (external gate; human required for commercial release)
 
 **Acceptance Criteria:**
 - Netpbm Python test count maintained or increased
@@ -189,13 +190,12 @@ Continue Netpbm FOSS product. Refresh installed-package proof for PBM/PGM/PPM wr
 python -m pytest tests/python/netpbm/ -x -q
 ```
 
-### Train G: SYLK Python: Installed Workflow
+### Train G: SYLK Python Improvement
 
-Implement installed_workflow for SYLK. Document read+export-only scope; add installed example; update docs
+Continue SYLK FOSS product. Gate 11 G11-G approval (external gate; human required for commercial release)
 
 **Acceptance Criteria:**
-- installed_workflow tests pass
-- python_status.installed_workflow updated to PASS in poc-targets.yaml
+- SYLK Python test count maintained or increased
 
 **Files:**
 - `src/python/sylk/`

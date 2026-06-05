@@ -60,3 +60,33 @@ Report skill_id, format, feature, model class, changed files, ledger record, com
 ## Validation
 
 Complete only when ledger validation and focused dotnet tests pass.
+
+## Rollback
+
+1. Revert the feature addition from `src/net/<format_id>/`
+2. Remove test file `tests/net/<format_id>/<format_id>R<sprint>*Tests.cs`
+3. Remove the ledger entry from `reports/r90/product-code-change-ledger.json`
+4. Re-run `python tools/supervisor/validate_product_code_ledger.py` to confirm PASS
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, format_id, feature_name, model_class, changed_files, test_results, ledger_entry_id, verdict.
+
+## Sample Invocation
+
+```
+/add-dotnet-object-model-feature
+# Inputs provided by execution handoff:
+#   format_id: netpbm
+#   feature_name: ExtractChannel
+#   model_class: NetpbmImage
+#   exact_source_paths: [src/net/netpbm/Model/NetpbmImage.cs]
+#   exact_test_paths: [tests/net/netpbm/NetpbmR103ExtractChannelTests.cs]
+#   ledger_entry_path: reports/r90/product-code-change-ledger.json
+```
+
+## Changelog
+
+- 1.0 (2026-06-02): Initial R92 governed command.
+- 1.2 (2026-06-03): Added rollback, transcript requirement, sample invocation, changelog (Skills R101).
