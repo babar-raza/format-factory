@@ -2,6 +2,9 @@
 // DEC-033 Option B: .NET Commercial Only
 // Gate 11 status: g11e_prototype_complete — G11-G NOT approved
 // Sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-001
+// Refactored: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
+// dogfood_status: IMPLEMENTED — delegates HTML serialization to FormatFactory.Html.HtmlWriter
+// target_ff_library: FormatFactory.Html.HtmlWriter
 //
 // PROTOTYPE STATUS: design_complete_in_progress
 // commercial_product_ready: false
@@ -12,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using FormatFactory.Html;
 
 namespace FormatFactory.Fods;
 
@@ -95,64 +99,65 @@ public static class FodsHtmlExporter
         var sheets = doc.Sheets;
         result.SheetsExported = sheets.Count;
 
-        var sb = new StringBuilder();
-        sb.AppendLine("<!DOCTYPE html>");
-        sb.AppendLine("<html lang=\"en\">");
-        sb.AppendLine("<head>");
-        sb.AppendLine("  <meta charset=\"UTF-8\">");
-        sb.AppendLine("  <meta name=\"generator\" content=\"FormatFactory.Fods G11-E prototype (not production)\">");
-        sb.AppendLine("  <title>FODS Export</title>");
-        sb.AppendLine("</head>");
-        sb.AppendLine("<body>");
-        sb.AppendLine("<!-- G11-E prototype: commercial_product_ready=false -->");
-
         int totalRows = 0;
 
         if (sheets.Count == 0)
         {
-            sb.AppendLine("<p><em>No sheets found in document.</em></p>");
+            // Delegate to HtmlWriter for empty document (dogfood path)
+            HtmlWriter.WriteTableToFile(new List<IEnumerable<string?>>(), htmlPath,
+                title: "FODS Export (empty)");
             result.Status = "exported_empty_no_sheets";
         }
         else
         {
+            // Build full HTML with per-sheet tables via HtmlWriter (dogfood path)
+            var sb = new StringBuilder();
+            sb.AppendLine("<!DOCTYPE html>");
+            sb.AppendLine("<html lang=\"en\">");
+            sb.AppendLine("<head>");
+            sb.AppendLine("  <meta charset=\"UTF-8\">");
+            sb.AppendLine("  <meta name=\"generator\" content=\"FormatFactory.Fods G11-E prototype (not production)\">");
+            sb.AppendLine("  <title>FODS Export</title>");
+            sb.AppendLine("</head>");
+            sb.AppendLine("<body>");
+            sb.AppendLine("<!-- G11-E prototype: commercial_product_ready=false -->");
+
             foreach (var sheet in sheets)
             {
-                var escapedSheetName = WebUtility.HtmlEncode(sheet.Name);
+                var escapedSheetName = HtmlWriter.EscapeHtml(sheet.Name);
                 sb.AppendLine($"  <h2>{escapedSheetName}</h2>");
-                sb.AppendLine("  <table border=\"1\" cellpadding=\"4\" cellspacing=\"0\">");
 
+                // Build rows as IEnumerable<IEnumerable<string?>> for HtmlWriter
+                var htmlRows = new List<IEnumerable<string?>>(sheet.Rows.Count);
                 foreach (var row in sheet.Rows)
                 {
-                    sb.AppendLine("    <tr>");
+                    var cells = new List<string?>(row.Cells.Count);
                     foreach (var cell in row.Cells)
-                    {
-                        var rawVal = cell.IsCovered ? null : cell.Value;
-                        var cellText = rawVal is null ? "" : WebUtility.HtmlEncode(rawVal);
-                        sb.AppendLine($"      <td>{cellText}</td>");
-                    }
-                    sb.AppendLine("    </tr>");
+                        cells.Add(cell.IsCovered ? null : cell.Value);
+                    htmlRows.Add(cells);
                     totalRows++;
                 }
-
-                sb.AppendLine("  </table>");
+                // Delegate table serialization to FormatFactory.Html.HtmlWriter
+                sb.Append(HtmlWriter.WriteTable(htmlRows));
             }
+
+            sb.AppendLine("</body>");
+            sb.AppendLine("</html>");
+
+            try
+            {
+                var content = sb.ToString().Replace("\r\n", "\n");
+                File.WriteAllText(htmlPath, content, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            }
+            catch (IOException ex)
+            {
+                throw new FodsHtmlExportException($"Failed to write HTML to '{htmlPath}': {ex.Message}", ex);
+            }
+
             result.Status = "exported";
         }
 
-        sb.AppendLine("</body>");
-        sb.AppendLine("</html>");
-
         result.TotalRowsExported = totalRows;
-
-        try
-        {
-            var content = sb.ToString().Replace("\r\n", "\n");
-            File.WriteAllText(htmlPath, content, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
-        }
-        catch (IOException ex)
-        {
-            throw new FodsHtmlExportException($"Failed to write HTML to '{htmlPath}': {ex.Message}", ex);
-        }
 
         return result;
     }
@@ -163,10 +168,10 @@ public static class FodsHtmlExporter
 
     /// <summary>
     /// HTML-escape a single string value.
-    /// Wrapper around WebUtility.HtmlEncode for testability.
+    /// Delegates to <see cref="HtmlWriter.EscapeHtml"/> (FormatFactory.Html target writer library).
+    /// Kept for API compatibility.
     /// </summary>
-    public static string HtmlEscape(string? value) =>
-        value is null ? string.Empty : WebUtility.HtmlEncode(value);
+    public static string HtmlEscape(string? value) => HtmlWriter.EscapeHtml(value);
 }
 
 // -------------------------------------------------------------------------

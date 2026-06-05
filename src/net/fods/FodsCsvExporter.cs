@@ -2,6 +2,9 @@
 // DEC-033 Option B: .NET Commercial Only
 // Gate 11 status: g11e_prototype_complete — G11-G NOT approved
 // Sprint: FORMAT-FACTORY-R22-FULL-THROTTLE-RELEASE-CANDIDATE-AND-GATE11-PROTOTYPE-TRAIN-001
+// Refactored: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
+// dogfood_status: IMPLEMENTED — delegates CSV serialization to FormatFactory.Csv.CsvWriter
+// target_ff_library: FormatFactory.Csv.CsvWriter
 //
 // PROTOTYPE STATUS: design_complete_in_progress
 // This is a G11-E conversion/export prototype only.
@@ -12,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using FormatFactory.Csv;
 
 namespace FormatFactory.Fods;
 
@@ -118,23 +122,22 @@ public static class FodsCsvExporter
             Status     = "unknown",
         };
 
-        var sb = new StringBuilder();
+        // Build rows as IEnumerable<IEnumerable<string?>> for CsvWriter delegation
         var rows = sheet.Rows;
         int maxCols = 0;
 
+        var csvRows = new List<IEnumerable<string?>>(rows.Count);
         foreach (var row in rows)
         {
             var cells = row.Cells;
             if (cells.Count > maxCols) maxCols = cells.Count;
-
-            var fields = new List<string>(cells.Count);
+            var fields = new List<string?>(cells.Count);
             foreach (var cell in cells)
             {
                 // Covered cells (merged) contribute an empty field
-                var rawValue = cell.IsCovered ? null : cell.Value;
-                fields.Add(EscapeCsvField(rawValue));
+                fields.Add(cell.IsCovered ? null : cell.Value);
             }
-            sb.AppendLine(string.Join(",", fields));
+            csvRows.Add(fields);
         }
 
         result.RowsExported = rows.Count;
@@ -142,9 +145,8 @@ public static class FodsCsvExporter
 
         try
         {
-            // UTF-8 without BOM, LF line endings (normalize \r\n → \n)
-            var content = sb.ToString().Replace("\r\n", "\n");
-            File.WriteAllText(csvPath, content, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
+            // Delegate serialization to FormatFactory.Csv.CsvWriter (dogfood path)
+            CsvWriter.WriteRowsToFile(csvRows, csvPath);
             result.Status = "exported";
         }
         catch (IOException ex)
@@ -219,19 +221,16 @@ public static class FodsCsvExporter
     {
         ArgumentNullException.ThrowIfNull(sheet);
 
-        var sb = new StringBuilder();
+        var csvRows = new List<IEnumerable<string?>>(sheet.Rows.Count);
         foreach (var row in sheet.Rows)
         {
-            var fields = new List<string>(row.Cells.Count);
+            var fields = new List<string?>(row.Cells.Count);
             foreach (var cell in row.Cells)
-            {
-                var rawValue = cell.IsCovered ? null : cell.Value;
-                fields.Add(EscapeCsvField(rawValue));
-            }
-            sb.Append(string.Join(",", fields));
-            sb.Append('\n');
+                fields.Add(cell.IsCovered ? null : cell.Value);
+            csvRows.Add(fields);
         }
-        return sb.ToString();
+        // Delegate to FormatFactory.Csv.CsvWriter (dogfood path)
+        return CsvWriter.WriteRows(csvRows);
     }
 
     /// <summary>Sanitize a string for use as a filename.</summary>
@@ -252,26 +251,11 @@ public static class FodsCsvExporter
     // -------------------------------------------------------------------------
 
     /// <summary>
-    /// Escape a single CSV field value per RFC 4180:
-    /// - null/empty → empty string (no quotes)
-    /// - Contains comma, double-quote, or newline → wrap in double-quotes
-    /// - Embedded double-quotes → doubled ("")
+    /// Escape a single CSV field value per RFC 4180.
+    /// Delegates to <see cref="CsvWriter.EscapeField"/> (FormatFactory.Csv target writer library).
+    /// Kept for API compatibility.
     /// </summary>
-    public static string EscapeCsvField(string? value)
-    {
-        if (value is null) return string.Empty;
-        if (value.Length == 0) return string.Empty;
-
-        bool needsQuoting = value.Contains(',') ||
-                            value.Contains('"') ||
-                            value.Contains('\n') ||
-                            value.Contains('\r');
-
-        if (!needsQuoting) return value;
-
-        // Escape embedded double-quotes by doubling them
-        return "\"" + value.Replace("\"", "\"\"") + "\"";
-    }
+    public static string EscapeCsvField(string? value) => CsvWriter.EscapeField(value);
 }
 
 // -------------------------------------------------------------------------
