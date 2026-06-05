@@ -281,7 +281,7 @@ def write_sylk(doc: SylkDocument, file_path: str | Path) -> None:
         lines.append(f"C;X{x};Y{y};K{k}")
     lines.append("E")
     try:
-        path.write_text("\r\n".join(lines) + "\r\n", encoding="ascii")
+        path.write_bytes(("\r\n".join(lines) + "\r\n").encode("ascii"))
     except Exception as exc:
         raise SylkError(f"Failed to write SYLK file: {exc}") from exc
 

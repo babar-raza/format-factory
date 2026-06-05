@@ -266,6 +266,78 @@ def probe_dif(file_path: str | Path) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
+# R117 — write_dif: serialize DifDocument back to DIF format
+# ---------------------------------------------------------------------------
+
+
+def write_dif(doc: DifDocument, file_path: str | Path) -> None:
+    """Write a DifDocument to a DIF-format file.
+
+    Produces a valid DIF file that can be parsed back by parse_dif_strict.
+
+    DIF structure:
+        TABLE / 0,<version> / "<title>"
+        VECTORS / 0,<num_cols> / ""
+        TUPLES / 0,<num_rows> / ""
+        DATA / 0,0 / ""
+        For each row: -1,0/BOT then cells then final -1,0/EOD
+
+    Args:
+        doc: DifDocument to serialize.
+        file_path: Destination file path.
+
+    Added in R117.
+    """
+    path = Path(file_path)
+    lines: list[str] = []
+
+    # Determine actual column count from rows if doc.vectors == 0
+    vectors = doc.vectors
+    if vectors == 0 and doc.rows:
+        vectors = max((len(r) for r in doc.rows), default=0)
+
+    tuples = doc.tuples
+    if tuples == 0:
+        tuples = len(doc.rows)
+
+    # Header triplets
+    title = doc.title or ""
+    lines += ["TABLE", "0,1", f'"{title}"']
+    lines += ["VECTORS", f"0,{vectors}", '""']
+    lines += ["TUPLES", f"0,{tuples}", '""']
+    lines += ["DATA", "0,0", '""']
+
+    # Data rows
+    for row in doc.rows:
+        lines += ["-1,0", "BOT"]
+        for cell in row:
+            if cell.value_type == "numeric":
+                val = cell.value
+                if isinstance(val, float) and val == int(val):
+                    numeric_str = str(int(val))
+                else:
+                    numeric_str = str(val) if val is not None else "0"
+                lines += [f"0,{numeric_str}", "V"]
+            elif cell.value_type in ("string", "unknown"):
+                str_val = str(cell.value) if cell.value is not None else ""
+                str_val = str_val.replace('"', '""')
+                lines += [f"1,0", f'"{str_val}"']
+            elif cell.value_type == "boolean":
+                val_str = "TRUE" if cell.value else "FALSE"
+                lines += ["-1,0", val_str]
+            else:
+                # special / None
+                val_str = "NA" if cell.value is None else str(cell.value)
+                lines += ["-1,0", val_str]
+
+    lines += ["-1,0", "EOD"]
+
+    # Use newline="" to suppress platform CRLF double-translation on Windows
+    with path.open("w", encoding="utf-8", newline="") as fh:
+        fh.write("\r\n".join(lines) + "\r\n")
+
+
+# ---------------------------------------------------------------------------
 # Gate 5 — Neutral model: capability declaration
 # ---------------------------------------------------------------------------
 
