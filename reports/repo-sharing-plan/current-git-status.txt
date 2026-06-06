@@ -1,0 +1,132 @@
+ M .claude/commands/add-dogfood-export.md
+ M .claude/commands/add-dotnet-api.md
+ M .claude/commands/add-dotnet-object-model-feature.md
+ M .claude/commands/add-installed-package-example.md
+ M .claude/commands/add-python-api.md
+ M .claude/commands/add-python-object-model-feature.md
+ M .claude/commands/add-roundtrip-test.md
+ M .claude/commands/add-same-format-writer-feature.md
+ M .claude/commands/evidence-review-next-prompt.md
+ M .claude/commands/execution-handoff.md
+ M .claude/commands/export-plan-context.md
+ M .claude/commands/generate-execution-handoff.md
+ M .claude/commands/memory-sprint.md
+ M .claude/commands/package-install-proof.md
+ M .claude/commands/plan-hardening.md
+ M .claude/commands/promote-gap-to-taskcard.md
+ M .claude/commands/update-capability-matrix.md
+ M .claude/commands/verify-dogfood-path.md
+ M .gitignore
+ M .supervisor/context-pack.yaml
+ M .supervisor/policies.yaml
+ M .supervisor/project-memory.md
+ M .supervisor/prompts/mega-train-template.md
+ M .supervisor/schemas/evidence-declaration.schema.json
+ M .supervisor/skill-registry.yaml
+ M plans/master-plan.md
+ M product-capability-matrix/poc-targets.yaml
+ M reports/r90/product-code-change-ledger.json
+ M reports/supervisor/approval-gates.md
+ M reports/supervisor/context-pack.md
+ M reports/supervisor/contradictions.json
+ M reports/supervisor/contradictions.md
+ M reports/supervisor/discovery-summary.md
+ M reports/supervisor/evidence-review.json
+ M reports/supervisor/evidence-review.md
+ M reports/supervisor/latest-cycle-summary.md
+ M reports/supervisor/latest-next-worker-prompt.md
+ M reports/supervisor/latest-review.md
+ M reports/supervisor/materialized-evidence-review.md
+ M reports/supervisor/mcp-status.json
+ M reports/supervisor/mcp-status.md
+ M reports/supervisor/memory-sync-report.md
+ M reports/supervisor/next-ruflo-lanes.json
+ M reports/supervisor/next-sprint-taskmaster.json
+ M reports/supervisor/next-sprint.md
+ M reports/supervisor/product-gap-selection.md
+ M reports/supervisor/session-resume.md
+ M reports/supervisor/work-item-grades.json
+ M reports/supervisor/work-item-grades.md
+ M reports/supervisor/work-item-grades.yaml
+ M src/net/fods/FodsDocument.cs
+ M src/net/fodt/FodtDocument.cs
+ M src/net/netpbm/Model/NetpbmImage.cs
+ M src/python/sylk/sylk_parser.py
+ M state/current-state.md
+ M tools/supervisor/autonomous_cycle.py
+ M tools/supervisor/build_context_pack.py
+ M tools/supervisor/build_declaration_review_package.py
+ M tools/supervisor/check_mcp_status.py
+ M tools/supervisor/choose_skill_or_handoff.py
+ M tools/supervisor/compare_goal_to_evidence.py
+ M tools/supervisor/detect_product_progress.py
+ M tools/supervisor/evidence_manifest.py
+ M tools/supervisor/generate_next_worker_prompt.py
+ M tools/supervisor/generate_supervisor_packet.py
+ M tools/supervisor/grade_declared_work.py
+ M tools/supervisor/inspect_declared_evidence.py
+ M tools/supervisor/materialize_declared_evidence.py
+ M tools/supervisor/select_poc_gaps.py
+ M tools/supervisor/validate_evidence_for_supervisor.py
+ M tools/supervisor/validate_product_code_ledger.py
+?? .claude/commands/build-context-pack.md
+?? .claude/commands/materialize-declaration-review.md
+?? .claude/commands/record-lane-execution.md
+?? .claude/commands/select-poc-gap.md
+?? .claude/commands/validate-product-code-ledger.md
+?? .claude/commands/validate-skill-transcript.md
+?? .supervisor/schemas/skill-registry.schema.json
+?? docs/governance/
+?? docs/prompt-templates/
+?? examples/dotnet/
+?? examples/net/fods/ClearSheetExample.cs
+?? examples/net/fods/CopySheetExample.cs
+?? examples/net/fods/RowManipulationExample.cs
+?? examples/net/fodt/
+?? examples/net/netpbm/FlipOverlayExample.cs
+?? examples/net/netpbm/MergeBrightnessExample.cs
+?? examples/net/netpbm/MergeContrastExample.cs
+?? examples/net/netpbm/PixelEditSaveExample.cs
+?? examples/python/ppm/
+?? examples/python/sylk/
+?? examples/python/zst/validate_compressed_file.py
+?? memory/66-product-first-poc-reset-20260603.md
+?? memory/67-local-memory-governance-sync-20260604.md
+?? plans/healing/
+?? tests/net/fods/FodsR100AddSheetTests.cs
+[... 276 test files total — see untracked-file-inventory.txt for full list ...]
+?? tools/supervisor/ai_evidence_critic.py
+?? tools/supervisor/ai_implementation_designer.py
+?? tools/supervisor/ai_learning_loop.py
+?? tools/supervisor/ai_product_brain.py
+?? tools/supervisor/ai_sprint_manager.py
+?? tools/supervisor/ai_supervisor_advisor.py
+?? tools/supervisor/anti_skip_checker.py
+?? tools/supervisor/capture_raw_logs.py
+?? tools/supervisor/check_cross_stream_consumption.py
+?? tools/supervisor/external_tool_governance.py
+?? tools/supervisor/generate_execution_handoff.py
+?? tools/supervisor/generate_sample_outputs.py
+?? tools/supervisor/generate_sprint_learning.py
+?? tools/supervisor/generate_stream_gaps.py
+?? tools/supervisor/generate_stream_routing_packet.py
+?? tools/supervisor/lane_execution_ledger.py
+?? tools/supervisor/mainstream_acceleration_packet.py
+?? tools/supervisor/materialize_and_review.py
+?? tools/supervisor/next_best_action.py
+?? tools/supervisor/package_install_proof.py
+?? tools/supervisor/product_velocity_scorer.py
+?? tools/supervisor/record_lane_execution.py
+?? tools/supervisor/source_pattern_miner.py
+?? tools/supervisor/stream_forecaster.py
+?? tools/supervisor/stream_prompt_generator.py
+?? tools/supervisor/test_plan_generator.py
+?? tools/supervisor/validate_adoption_compliance.py
+?? tools/supervisor/validate_claude_commands.py
+?? tools/supervisor/validate_package_identity.py
+?? tools/supervisor/validate_prompt_quality.py
+?? tools/supervisor/validate_skill_registry.py
+?? tools/supervisor/validate_skill_transcript.py
+
+NOTE: reports/repo-sharing-plan/ does NOT appear in ?? list because /reports is gitignored.
+This is the critical bug documented in preflight.md and current-ignore-rules.md.

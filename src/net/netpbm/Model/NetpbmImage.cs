@@ -52,8 +52,11 @@ public sealed class NetpbmImage
     public byte[] Pixels { get; set; } = Array.Empty<byte>();
 
     // For PPM only
+    /// <summary>Red channel pixel data (PPM only). Null for PBM/PGM images.</summary>
     public byte[]? RedChannel { get; set; }
+    /// <summary>Green channel pixel data (PPM only). Null for PBM/PGM images.</summary>
     public byte[]? GreenChannel { get; set; }
+    /// <summary>Blue channel pixel data (PPM only). Null for PBM/PGM images.</summary>
     public byte[]? BlueChannel { get; set; }
 
     /// <summary>Comments from the original file header.</summary>
@@ -1896,10 +1899,16 @@ public sealed class NetpbmImage
 /// <summary>Netpbm format variants.</summary>
 public enum NetpbmFormat
 {
-    PBM_P1,  // ASCII bitmap
-    PBM_P4,  // Binary bitmap
-    PGM_P2,  // ASCII grayscale
-    PGM_P5,  // Binary grayscale
-    PPM_P3,  // ASCII color
-    PPM_P6   // Binary color
+    /// <summary>PBM ASCII bitmap (magic P1).</summary>
+    PBM_P1,
+    /// <summary>PBM binary bitmap (magic P4).</summary>
+    PBM_P4,
+    /// <summary>PGM ASCII grayscale (magic P2).</summary>
+    PGM_P2,
+    /// <summary>PGM binary grayscale (magic P5).</summary>
+    PGM_P5,
+    /// <summary>PPM ASCII color (magic P3).</summary>
+    PPM_P3,
+    /// <summary>PPM binary color (magic P6).</summary>
+    PPM_P6
 }

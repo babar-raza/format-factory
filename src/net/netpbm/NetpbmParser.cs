@@ -22,8 +22,11 @@ namespace FormatFactory.Netpbm;
 /// </summary>
 public static class NetpbmParser
 {
+    /// <summary>Default maximum file size in bytes (64 MB).</summary>
     public const long DefaultMaxFileSizeBytes = 64L * 1024 * 1024;
+    /// <summary>Default maximum image dimension (width or height) in pixels (65536).</summary>
     public const int DefaultMaxDimension = 65536;
+    /// <summary>Default maximum total pixel count (1 billion).</summary>
     public const long DefaultMaxPixels = 1_000_000_000L;
 
     /// <summary>

@@ -1,27 +1,48 @@
 [
   {
-    "item_id": "TC-R125-A01",
-    "item_title": "Final adversarial IV \u2014 live test verification",
+    "item_id": "L0-PREFLIGHT",
+    "item_title": "Coordinator preflight \u2014 directory structure, baseline, taskcard registry",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/product-first-acquisition-train/00-preflight.md",
+      "reports/product-first-acquisition-train/taskcards/taskcard-registry.json",
+      "reports/product-first-acquisition-train/touched-files-ledger.jsonl"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for L0-PREFLIGHT"
+  },
+  {
+    "item_id": "TC-ABW-HTML",
+    "item_title": "Add export_to_html() to ABW Python codec",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_VERIFIED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/r125-final-iv/fods-test-run.log",
-      "reports/r125-final-iv/fodt-test-run.log",
-      "reports/r125-final-iv/netpbm-test-run.log",
-      "reports/r125-final-iv/final-adversarial-iv.md"
+      "src/python/abw/abw_codec.py",
+      "src/python/abw/__init__.py",
+      "reports/product-first-acquisition-train/source/TC-ABW-HTML/test-result.json"
     ],
     "tests_supporting": [
-      "tests/net/fods/FodsR107ExportSheetToCsvTests.cs",
-      "tests/net/fodt/FodtR108ExportToMarkdownFileTests.cs",
-      "tests/net/netpbm/NetpbmR98SaveToFileTests.cs"
+      "tests/python/abw/test_r120_abw_html_and_metadata.py"
     ],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (3 files)",
-      "Acceptance criteria verified: PASS"
+      "Test content verified (1 files)"
     ],
     "acceptance_criteria_failed": [],
     "required_rework": "",
@@ -29,29 +50,103 @@
     "next_prompt_instruction": ""
   },
   {
-    "item_id": "TC-R125-B01",
-    "item_title": "Session milestone summary \u2014 autonomous train iteration 12/12",
+    "item_id": "TC-ABW-META",
+    "item_title": "Add get_metadata() to ABW Python codec",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_VERIFIED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/r125-final-iv/final-adversarial-iv.md"
+      "src/python/abw/abw_codec.py",
+      "reports/product-first-acquisition-train/source/TC-ABW-META/test-result.json"
     ],
     "tests_supporting": [
-      "tests/net/fods/FodsR107ExportSheetToCsvTests.cs",
-      "tests/python/sylk/test_r99_sylk_installed_workflow.py",
-      "tests/python/zst/test_r101_zst_installed_smoke.py"
+      "tests/python/abw/test_r120_abw_html_and_metadata.py"
     ],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (3 files)",
-      "Acceptance criteria verified: PASS"
+      "Test content verified (1 files)"
     ],
     "acceptance_criteria_failed": [],
     "required_rework": "",
     "can_autonomously_repair": false,
     "next_prompt_instruction": ""
+  },
+  {
+    "item_id": "TC-GNM-JSON",
+    "item_title": "Add export_to_json() to Gnumeric Python codec",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "src/python/gnumeric/gnumeric_codec.py",
+      "src/python/gnumeric/__init__.py",
+      "reports/product-first-acquisition-train/source/TC-GNM-JSON/test-result.json"
+    ],
+    "tests_supporting": [
+      "tests/python/gnumeric/test_r120_gnumeric_json_export.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": ""
+  },
+  {
+    "item_id": "L4-USABLE-OUTPUTS",
+    "item_title": "Produce usable outputs and example scripts for all 3 new features",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/product-first-acquisition-train/usable-outputs/output-index.json",
+      "reports/product-first-acquisition-train/usable-outputs/sample-meeting-notes.html",
+      "reports/product-first-acquisition-train/usable-outputs/sample-sales-report.json",
+      "examples/python/abw/html_metadata_export_example.py",
+      "examples/python/gnumeric/json_export_example.py"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for L4-USABLE-OUTPUTS"
+  },
+  {
+    "item_id": "L5-CAPABILITY",
+    "item_title": "Record proposed capability delta \u2014 3 new PASS entries",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/product-first-acquisition-train/capability/capability-before.json",
+      "reports/product-first-acquisition-train/capability/capability-after-proposed.json"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for L5-CAPABILITY"
   }
 ]

@@ -1,0 +1,155 @@
+# Untracked File Inventory — FORMAT-FACTORY-REPO-SHARING-GITIGNORE-REMOTE-REFRESH-PLAN-001
+# Generated: 2026-06-04
+# Total untracked files: 375
+# NOTE: reports/ shows 0 untracked files because /reports is gitignored (BUG — see current-ignore-rules.md)
+
+## Summary by top-level directory
+  276  tests/
+   42  docs/
+   32  tools/
+   17  examples/
+    6  .claude/
+    2  memory/
+    1  plans/
+    1  .supervisor/
+
+## Detailed untracked file list
+
+### .claude/commands/ (6 new command files)
+.claude/commands/build-context-pack.md
+.claude/commands/materialize-declaration-review.md
+.claude/commands/record-lane-execution.md
+.claude/commands/select-poc-gap.md
+.claude/commands/validate-product-code-ledger.md
+.claude/commands/validate-skill-transcript.md
+
+### .supervisor/schemas/ (1 new schema)
+.supervisor/schemas/skill-registry.schema.json
+
+### docs/ (42 files across 2 directories)
+docs/governance/  (governance documents)
+docs/prompt-templates/  (prompt templates)
+
+### examples/ (17 files)
+examples/dotnet/  (directory)
+examples/net/fods/ClearSheetExample.cs
+examples/net/fods/CopySheetExample.cs
+examples/net/fods/RowManipulationExample.cs
+examples/net/fodt/  (directory)
+examples/net/netpbm/FlipOverlayExample.cs
+examples/net/netpbm/MergeBrightnessExample.cs
+examples/net/netpbm/MergeContrastExample.cs
+examples/net/netpbm/PixelEditSaveExample.cs
+examples/python/ppm/  (directory)
+examples/python/sylk/  (directory)
+examples/python/zst/validate_compressed_file.py
+
+### memory/ (2 new memory files)
+memory/66-product-first-poc-reset-20260603.md
+memory/67-local-memory-governance-sync-20260604.md
+
+### plans/ (1 new directory)
+plans/healing/  (directory)
+
+### tests/net/fods/ (20 new FODS .NET tests)
+tests/net/fods/FodsR100AddSheetTests.cs
+tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs
+tests/net/fods/FodsR101RemoveSheetTests.cs
+tests/net/fods/FodsR102GetRowValuesTests.cs
+tests/net/fods/FodsR103RenameSheetTests.cs
+tests/net/fods/FodsR104CopySheetTests.cs
+tests/net/fods/FodsR104DogfoodCsvExportTests.cs
+tests/net/fods/FodsR104GetSheetByIndexTests.cs
+tests/net/fods/FodsR105DeleteRowsTests.cs
+tests/net/fods/FodsR105DogfoodRowOpsTests.cs
+tests/net/fods/FodsR105InsertRowTests.cs
+tests/net/fods/FodsR106ClearSheetTests.cs
+tests/net/fods/FodsR106DogfoodSaveRoundtripTests.cs
+tests/net/fods/FodsR106GetColumnValuesTests.cs
+tests/net/fods/FodsR107DogfoodCsvExportTests.cs
+tests/net/fods/FodsR107ExportSheetToCsvTests.cs
+tests/net/fods/FodsR107InsertRowWithValuesTests.cs
+tests/net/fods/FodsR108DogfoodSaveEditRoundtripTests.cs
+tests/net/fods/FodsR108GetColumnCountTests.cs
+tests/net/fods/FodsR109DogfoodHasSheetRoundtripTests.cs
+tests/net/fods/FodsR109HasSheetTests.cs
+tests/net/fods/FodsR110DogfoodCsvExportTests.cs
+tests/net/fods/FodsR110FindCellsByValueTests.cs
+tests/net/fods/FodsR110GetCellDataTypeTests.cs
+tests/net/fods/FodsR111DogfoodSaveRoundtripTests.cs
+tests/net/fods/FodsR111MergeCellsTests.cs
+tests/net/fods/FodsR111SetCellFormulaTests.cs
+tests/net/fods/FodsR112CsvExportDogfoodTests.cs
+tests/net/fods/FodsR112GetUsedRangeTests.cs
+tests/net/fods/FodsR112SaveRoundtripDepthTests.cs
+tests/net/fods/FodsR113InsertRowDepthTests.cs
+tests/net/fods/FodsR113JsonDogfoodTests.cs
+tests/net/fods/FodsR113SortRowsTests.cs
+tests/net/fods/FodsR94ExportSheetToHtmlTests.cs
+tests/net/fods/FodsR95ExportSheetToJsonTests.cs
+tests/net/fods/FodsR96GetRowCountTests.cs
+tests/net/fods/FodsR97GetCellCountTests.cs
+tests/net/fods/FodsR98SaveAfterEditTests.cs
+tests/net/fods/FodsR99ExportQualityTests.cs
+
+### tests/net/fodt/ (20 new FODT .NET tests)
+tests/net/fodt/FodtR100AppendParagraphTests.cs
+[... 20 files FodtR94 through FodtR113 ...]
+
+### tests/net/netpbm/ (20 new Netpbm .NET tests)
+tests/net/netpbm/NetpbmR94ResizeTests.cs
+[... 20 files NetpbmR94 through NetpbmR113 ...]
+
+### tests/python/ (172 new Python tests)
+tests/python/dif/  (5 test files)
+tests/python/fods/ (1 test file)
+tests/python/fodt/ (1 test file)
+tests/python/pbm/  (8 test files)
+tests/python/pgm/  (3 test files)
+tests/python/ppm/  (15 test files)
+tests/python/supervisor/ (directory)
+tests/python/sylk/ (19 test files)
+tests/python/zst/  (19 test files)
+
+### tests/supervisor/ (30+ new supervisor tests)
+tests/supervisor/acceleration/  (directory)
+tests/supervisor/test_continuation_state_integration.py
+tests/supervisor/test_cross_stream_consumption.py
+tests/supervisor/test_external_tool_governance_integration.py
+tests/supervisor/test_r100_bridge_legacy.py
+[... 30+ test files ...]
+tests/supervisor/test_validate_skill_transcript.py
+
+### tools/supervisor/ (32 new supervisor tools)
+tools/supervisor/ai_evidence_critic.py
+tools/supervisor/ai_implementation_designer.py
+tools/supervisor/ai_learning_loop.py
+tools/supervisor/ai_product_brain.py
+tools/supervisor/ai_sprint_manager.py
+tools/supervisor/ai_supervisor_advisor.py
+tools/supervisor/anti_skip_checker.py
+tools/supervisor/capture_raw_logs.py
+tools/supervisor/check_cross_stream_consumption.py
+tools/supervisor/external_tool_governance.py
+tools/supervisor/generate_execution_handoff.py
+tools/supervisor/generate_sample_outputs.py
+tools/supervisor/generate_sprint_learning.py
+tools/supervisor/generate_stream_gaps.py
+tools/supervisor/generate_stream_routing_packet.py
+tools/supervisor/lane_execution_ledger.py
+tools/supervisor/mainstream_acceleration_packet.py
+tools/supervisor/materialize_and_review.py
+tools/supervisor/next_best_action.py
+tools/supervisor/package_install_proof.py
+tools/supervisor/product_velocity_scorer.py
+tools/supervisor/record_lane_execution.py
+tools/supervisor/source_pattern_miner.py
+tools/supervisor/stream_forecaster.py
+tools/supervisor/stream_prompt_generator.py
+tools/supervisor/test_plan_generator.py
+tools/supervisor/validate_adoption_compliance.py
+tools/supervisor/validate_claude_commands.py
+tools/supervisor/validate_package_identity.py
+tools/supervisor/validate_prompt_quality.py
+tools/supervisor/validate_skill_registry.py
+tools/supervisor/validate_skill_transcript.py

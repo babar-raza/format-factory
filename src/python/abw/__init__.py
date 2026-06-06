@@ -15,6 +15,12 @@ from .abw_codec import (
     get_section_count,
     get_paragraph_count,
     extract_text,
+    create_abw,
+    write_abw,
+    probe_abw,
+    export_to_txt,
+    export_to_html,
+    get_metadata,
 )
 
 __all__ = [
@@ -24,6 +30,12 @@ __all__ = [
     "get_section_count",
     "get_paragraph_count",
     "extract_text",
+    "create_abw",
+    "write_abw",
+    "probe_abw",
+    "export_to_txt",
+    "export_to_html",
+    "get_metadata",
 ]
 
 __version__ = "0.1.0.dev0"

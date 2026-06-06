@@ -66,6 +66,12 @@ SELECTED_PRODUCT_GAPS_PATH = ".local/supervisor/selected-product-gaps.json"
 SKILL_REGISTRY_PATH = ".supervisor/skill-registry.yaml"
 PRODUCT_CODE_LEDGER_PATH = "reports/r90/product-code-change-ledger.json"
 
+# Python Netpbm is split into three packages (pbm/pgm/ppm) — no src/python/netpbm/ exists.
+# This override maps the poc-targets format name to actual Python src/test directories.
+PYTHON_PACKAGE_DIR_OVERRIDE: dict[str, list[str]] = {
+    "netpbm": ["pbm", "pgm", "ppm"],
+}
+
 READ_BEFORE_EXECUTION = [
     "AGENTS.md",
     "GOVERNANCE.md",
@@ -272,6 +278,15 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
         next_action = product.get("next_action", "")
         python_status = product.get("python_status", {})
 
+        # Resolve actual Python package directories (some formats split across multiple packages)
+        fmt_key = fmt.lower()
+        python_dirs = PYTHON_PACKAGE_DIR_OVERRIDE.get(fmt_key, [fmt_key])
+        src_files = [f"src/python/{d}/" for d in python_dirs]
+        test_files = [f"tests/python/{d}/" for d in python_dirs]
+        # Use first dir for verification command (pytest can accept multiple paths)
+        verify_dirs = " ".join(f"tests/python/{d}/" for d in python_dirs)
+        verify_cmd = f"python -m pytest {verify_dirs} -x -q"
+
         # Find NOT_IMPLEMENTED capabilities
         not_impl = [k for k, v in python_status.items()
                     if isinstance(v, str) and v in ("NOT_IMPLEMENTED", "PARTIAL")]
@@ -287,12 +302,8 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
                     f"{cap} tests pass",
                     f"python_status.{cap} updated to PASS in poc-targets.yaml",
                 ],
-                "files_touched": [
-                    f"src/python/{fmt.lower()}/",
-                    f"tests/python/{fmt.lower()}/",
-                    PRODUCT_CODE_LEDGER_PATH,
-                ],
-                "verification_command": f"python -m pytest tests/python/{fmt.lower()}/ -x -q",
+                "files_touched": src_files + test_files + [PRODUCT_CODE_LEDGER_PATH],
+                "verification_command": verify_cmd,
             })
         else:
             trains.append({
@@ -303,12 +314,8 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
                 "acceptance_criteria": [
                     f"{fmt} Python test count maintained or increased",
                 ],
-                "files_touched": [
-                    f"src/python/{fmt.lower()}/",
-                    f"tests/python/{fmt.lower()}/",
-                    PRODUCT_CODE_LEDGER_PATH,
-                ],
-                "verification_command": f"python -m pytest tests/python/{fmt.lower()}/ -x -q",
+                "files_touched": src_files + test_files + [PRODUCT_CODE_LEDGER_PATH],
+                "verification_command": verify_cmd,
             })
 
     # --- G5: Dogfood export trains ---
@@ -679,6 +686,36 @@ STREAM_FORWARD_WORK = {
 }
 
 
+# R-NMPC: Patterns that always require external human authorization — never agent-executable
+_EXTERNAL_GATE_PATTERNS = [
+    "git commit",
+    "git push",
+    "commit + push",
+    "commit and push",
+    "authorized git",
+    "gate 11",
+    "gate 8",
+    "g11-g",
+    "g8-g",
+    "publication",
+    "publish to nuget",
+    "nuget publish",
+    "human required for commercial",
+    "commercial release",
+    "requires user authorization",
+    "requires explicit user authorization",
+    "requires human authorization",
+]
+
+
+def _next_action_requires_external_gate(next_action: str) -> bool:
+    """Return True if next_action text indicates an external gate (commit/push/Gate/publication)."""
+    if not next_action:
+        return False
+    lower = next_action.lower()
+    return any(p in lower for p in _EXTERNAL_GATE_PATTERNS)
+
+
 def _make_task_adjudication_fields(task_label: str, task_title: str, context: dict | None = None) -> dict:
     """Add stop-reason-adjudicator fields to a generated task.
 
@@ -687,20 +724,30 @@ def _make_task_adjudication_fields(task_label: str, task_title: str, context: di
     allowed_next_action. This prevents future agents from treating agent-owned
     work as blocked.
     """
-    try:
-        sys.path.insert(0, str(SCRIPT_DIR))
-        from stop_reason_adjudicator import reclassify_task_label, StopDecision
-        classification = reclassify_task_label(task_label, task_title, context)
-        decision = classification["adjudication"]["decision"]
-        agent_can_execute = classification["agent_can_execute"]
-        new_label = classification["new_label"]
-        reason = classification["adjudication"]["reason"]
-    except Exception:
-        # If adjudicator unavailable, default to agent-owned (safest non-blocking default)
-        decision = "CONTINUE_NEXT_ITERATION"
-        agent_can_execute = True
-        new_label = "agent-owned"
-        reason = "Adjudicator unavailable — defaulting to agent-owned"
+    # If the caller has already determined this is an external gate (via
+    # _next_action_requires_external_gate), honour that directly instead of
+    # letting the adjudicator re-derive signal from the generic task title.
+    label_normalized = task_label.lower().strip().lstrip("[").rstrip("]")
+    if label_normalized == "external-gate":
+        decision = "TRUE_EXTERNAL_GATE"
+        agent_can_execute = False
+        new_label = "external-gate"
+        reason = "next_action text contains commit/push/Gate/publication wording"
+    else:
+        try:
+            sys.path.insert(0, str(SCRIPT_DIR))
+            from stop_reason_adjudicator import reclassify_task_label, StopDecision
+            classification = reclassify_task_label(task_label, task_title, context)
+            decision = classification["adjudication"]["decision"]
+            agent_can_execute = classification["agent_can_execute"]
+            new_label = classification["new_label"]
+            reason = classification["adjudication"]["reason"]
+        except Exception:
+            # If adjudicator unavailable, default to agent-owned (safest non-blocking default)
+            decision = "CONTINUE_NEXT_ITERATION"
+            agent_can_execute = True
+            new_label = "agent-owned"
+            reason = "Adjudicator unavailable — defaulting to agent-owned"
 
     return {
         "owner_classification": new_label,
@@ -757,7 +804,8 @@ def generate_next_work_items(review: dict, stream: str = None) -> dict:
         for product in poc_targets.get("commercial_net_products", []):
             fmt = product.get("format", "unknown")
             title = f"Advance {fmt} commercial .NET product"
-            adj = _make_task_adjudication_fields("[agent-owned]", title)
+            _net_label = "[external-gate]" if _next_action_requires_external_gate(product.get("next_action", "")) else "[agent-owned]"
+            adj = _make_task_adjudication_fields(_net_label, title)
             desc = (
                 f"Product target: {fmt} commercial .NET. "
                 f"{product.get('next_action', f'Continue {fmt} product deepening')}. "
@@ -781,7 +829,8 @@ def generate_next_work_items(review: dict, stream: str = None) -> dict:
         for product in poc_targets.get("foss_reduced_products", []):
             fmt = product.get("format", "unknown")
             title = f"Advance {fmt} FOSS product"
-            adj = _make_task_adjudication_fields("[agent-owned]", title)
+            _foss_label = "[external-gate]" if _next_action_requires_external_gate(product.get("next_action", "")) else "[agent-owned]"
+            adj = _make_task_adjudication_fields(_foss_label, title)
             desc = (
                 f"Product target: {fmt} FOSS Python. "
                 f"{product.get('next_action', f'Continue {fmt} FOSS work')}. "

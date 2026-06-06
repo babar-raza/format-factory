@@ -588,8 +588,31 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
 
         # R98 fix: Check iteration >= max_iterations before allowing continuation
         at_max_iterations = existing_iteration >= max_iterations
+        rollover_note = None
         if at_max_iterations:
-            hard_stops.append("max_iterations_reached")
+            # R5: CHECKPOINT_ROLLOVER — per stop_reason_adjudicator Rule 6, max_iterations
+            # is NOT terminal when no other hard stops exist. The agent can handle by resetting
+            # the iteration counter (governed rollover, not manual reset required).
+            # Check whether any OTHER hard stops exist before deciding to rollover vs stop.
+            non_iter_hard_stops_early = [
+                h for h in hard_stops if h != "max_iterations_reached"
+            ]
+            overclaimed_or_rework_blocks = bool(
+                manifest.get("exit_code") == 3 or
+                review.get("overclaimed_items")
+            )
+            if not non_iter_hard_stops_early and not overclaimed_or_rework_blocks:
+                # Governed rollover: reset iteration to 0 and continue
+                rollover_note = {
+                    "rollover_from_iteration": existing_iteration,
+                    "rollover_at_max": max_iterations,
+                    "rollover_rule": "CHECKPOINT_ROLLOVER_CONTINUE (stop_reason_adjudicator Rule 6)",
+                    "rollover_action": "iteration reset to 0 — new autonomous batch starting",
+                }
+                existing_iteration = 0
+                at_max_iterations = False
+            else:
+                hard_stops.append("max_iterations_reached")
 
         # R107 Lane G: Check evidence quality — stop on quality regression
         eqs = review.get("evidence_quality_score", 1.0)
@@ -633,6 +656,8 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             "hard_stops_detected": hard_stops,
             "continuation_state": continuation_state,
         }
+        if rollover_note:
+            signal["checkpoint_rollover"] = rollover_note
         signal_path.write_text(json.dumps(signal, indent=2), encoding="utf-8")
         print(f"  Signal: {signal_path} (continue={signal['autonomous_continue']}, "
               f"iter={existing_iteration}/{max_iterations})")
@@ -644,6 +669,31 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         stream_signal_path = stream_signal_dir / "continuation-signal.json"
         stream_signal_path.write_text(json.dumps(stream_signal, indent=2), encoding="utf-8")
         print(f"  Stream signal: {stream_signal_path}")
+
+        # R-NMPC: Wire evidence_continuation to produce machine-readable continuation.
+        # Without this, autonomous_continue=true points only to advisory Markdown
+        # (next-sprint.md), which continuation_router.py rejects, causing the user
+        # to manually paste prompts. We always call this when autonomous_continue is
+        # truthy so next-action.json + active-continuation.json are fresh.
+        if auto_continue_value:
+            try:
+                from evidence_continuation import (
+                    apply_post_closeout_continuation,
+                    repair_global_continuation_signal,
+                    seed_post_closeout_queue_item,
+                )
+                post_result = apply_post_closeout_continuation(
+                    sprint_id=sprint_id,
+                    run_id=getattr(manifest, "get", lambda k, d=None: d)("run_id"),
+                    cycle_index=existing_iteration,
+                )
+                repair_result = repair_global_continuation_signal(sprint_id=sprint_id)
+                seed_result = seed_post_closeout_queue_item(sprint_id=sprint_id)
+                print(f"  Machine continuation: {post_result.get('next_action_path')}")
+                print(f"  Signal repair: {repair_result.get('status')}")
+                print(f"  Queue seed: {seed_result.get('status')}")
+            except Exception as ec_err:
+                print(f"  WARNING: evidence_continuation bridge failed: {ec_err}")
     except Exception as e:
         print(f"  WARNING: Continuation signal failed: {e}")
 

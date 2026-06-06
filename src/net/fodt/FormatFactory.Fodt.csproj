@@ -8,7 +8,8 @@
     <RootNamespace>FormatFactory.Fodt</RootNamespace>
     <Version>0.1.0-tier0</Version>
     <Authors>format-factory</Authors>
-    <Description>FormatFactory.Fodt: .NET commercial parser for Flat OpenDocument Text (FODT). Tier 0 streaming implementation. Gate 11 commercial_readiness_in_progress; not release-ready.</Description>
+    <Description>FormatFactory.Fodt: .NET commercial library for Flat OpenDocument Text (FODT). Parse, write, and export to HTML/Markdown/TXT. Gate 11 approved 2026-06-05.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>FormatFactory.Fodt</PackageId>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Nullable>enable</Nullable>
@@ -28,12 +29,11 @@
     <ProjectReference Include="../markdown/FormatFactory.Markdown.csproj" />
   </ItemGroup>
 
-  <!-- Gate 11 Tier 0 Note:
+  <!-- Gate 11 Note:
        Commercial-only .NET Tier 0 implementation.
        DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only.
        Target: net10.0 LTS (SDK 10.0.204, installed 2026-05-13).
-       Status: Tier 0 streaming parser, not release-ready.
-       Gate 11 has NOT been approved.
+       Gate 11 approved by Babar Raza 2026-06-05.
        See: acquisition-packs/fodt/gate11-packaging-plan.md
   -->
 

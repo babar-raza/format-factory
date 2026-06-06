@@ -1,0 +1,46 @@
+{
+  "sprint_id": "FORMAT-FACTORY-REPO-SHARING-GITIGNORE-REMOTE-REFRESH-PLAN-001",
+  "generated_at": "2026-06-04",
+  "total_tracked_files": 3761,
+  "total_untracked_files": 375,
+  "remote": "https://github.com/babar-raza/format-factory.git",
+  "branch": "main",
+  "critical_bugs": [
+    {
+      "id": "BUG-001",
+      "severity": "CRITICAL",
+      "file": ".gitignore",
+      "lines": [173, 174],
+      "pattern": "/reports",
+      "effect": "Gitignores entire reports/ directory for new additions",
+      "confirmed_by": "git check-ignore -v reports/repo-sharing-plan/ → .gitignore:174:/reports",
+      "fix": "Remove both /reports lines (173 and 174) from .gitignore"
+    }
+  ],
+  "paths": [
+    {"path": "src/", "exists": true, "tracked_files": 97, "untracked_files": 0, "classification": "A", "purpose": "Product source code — Python and .NET parsers/converters", "gitignored": false},
+    {"path": "tests/", "exists": true, "tracked_files": 596, "untracked_files": 276, "classification": "A", "purpose": "Test suites for all formats", "gitignored": false},
+    {"path": "examples/", "exists": true, "tracked_files": 19, "untracked_files": 17, "classification": "A", "purpose": "Usage examples", "gitignored": false},
+    {"path": "docs/", "exists": true, "tracked_files": 116, "untracked_files": 42, "classification": "A", "purpose": "Documentation, governance, prompt templates", "gitignored": false},
+    {"path": "plans/", "exists": true, "tracked_files": 4, "untracked_files": 1, "classification": "A", "purpose": "Sprint master plan", "gitignored": false},
+    {"path": "state/", "exists": true, "tracked_files": 4, "untracked_files": 0, "classification": "A", "purpose": "Project state snapshots", "gitignored": false},
+    {"path": "registry/", "exists": true, "tracked_files": 5, "untracked_files": 0, "classification": "A", "purpose": "Format registry — gate authority", "gitignored": false},
+    {"path": "product-capability-matrix/", "exists": true, "tracked_files": 5, "untracked_files": 0, "classification": "A", "purpose": "POC target capability matrix", "gitignored": false},
+    {"path": "tools/", "exists": true, "tracked_files": 351, "untracked_files": 32, "classification": "A", "purpose": "Supervisor pipeline, evidence tools, validators", "gitignored": false},
+    {"path": "taskcards/", "exists": true, "tracked_files": 185, "untracked_files": 0, "classification": "A", "purpose": "Sprint task definitions", "gitignored": false},
+    {"path": "acquisition-packs/", "exists": true, "tracked_files": 165, "untracked_files": 0, "classification": "A", "purpose": "Format acquisition specifications", "gitignored": false},
+    {"path": "memory/", "exists": true, "tracked_files": 71, "untracked_files": 2, "classification": "A", "purpose": "Sprint knowledge base", "gitignored": false},
+    {"path": "schemas/", "exists": true, "tracked_files": 34, "untracked_files": 0, "classification": "A", "purpose": "Validation schemas", "gitignored": false},
+    {"path": "samples/", "exists": true, "tracked_files": 126, "untracked_files": 0, "classification": "A", "purpose": "Sample format files used by tests", "gitignored": false},
+    {"path": ".supervisor/", "exists": true, "tracked_files": 24, "untracked_files": 1, "classification": "A", "purpose": "Supervisor config, schemas, prompts", "gitignored": false, "note": ".supervisor/state/ is correctly gitignored"},
+    {"path": ".claude/", "exists": true, "tracked_files": 20, "untracked_files": 6, "classification": "A", "purpose": "Claude Code session config and commands", "gitignored": false},
+    {"path": "reports/supervisor/", "exists": true, "tracked_files_approx": 21, "untracked_files": 0, "classification": "A", "purpose": "Live sprint state", "gitignored": false, "note": "Sanitize product-gap-selection.md before push"},
+    {"path": "reports/r*/", "exists": true, "tracked_files_approx": 1846, "untracked_files": 0, "classification": "C", "purpose": "Historical sprint evidence", "gitignored": false, "note": "Keep as-is; do not force-add more"},
+    {"path": "reports/repo-sharing-plan/", "exists": true, "tracked_files": 0, "untracked_files": 0, "classification": "A", "purpose": "This planning run output", "gitignored": true, "note": "BUG: gitignored by /reports. Fix .gitignore first."},
+    {"path": ".local/", "exists": true, "tracked_files": 0, "untracked_files": 0, "classification": "B", "purpose": "Evidence, packages, venvs (957 MB)", "gitignored": true},
+    {"path": ".vs/", "exists": false, "tracked_files": 0, "untracked_files": 0, "classification": "B", "purpose": "Visual Studio IDE state", "gitignored": true},
+    {"path": ".supervisor/state/", "exists": true, "tracked_files": 0, "untracked_files": 0, "classification": "B", "purpose": "Supervisor runtime state", "gitignored": true},
+    {"path": ".vscode/", "exists": true, "tracked_files": 2, "untracked_files": 0, "classification": "D", "purpose": "VSCode config — only .example.json files tracked", "gitignored": false, "note": "mcp.json is correctly gitignored"},
+    {"path": "reports/supervisor/product-gap-selection.md", "exists": true, "tracked_files": 1, "classification": "D", "purpose": "Supervisor gap selection report", "gitignored": false, "note": "Contains C:/Users/prora/... absolute path — sanitize before push"}
+  ]
+}

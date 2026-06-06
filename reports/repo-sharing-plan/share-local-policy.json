@@ -1,0 +1,69 @@
+{
+  "sprint_id": "FORMAT-FACTORY-REPO-SHARING-GITIGNORE-REMOTE-REFRESH-PLAN-001",
+  "generated_at": "2026-06-04",
+  "legend": {
+    "A": "SHARE_IN_REMOTE",
+    "B": "LOCAL_ONLY",
+    "C": "ARCHIVE_NOT_REMOTE",
+    "D": "CONDITIONAL_SHARE",
+    "E": "MUST_NOT_SHARE"
+  },
+  "pre_push_blockers": [
+    {
+      "id": "BLOCKER-001",
+      "severity": "CRITICAL",
+      "description": "Fix .gitignore: remove both /reports lines (173 and 174)",
+      "file": ".gitignore",
+      "action": "Remove lines 173-174 (both contain /reports)"
+    },
+    {
+      "id": "BLOCKER-002",
+      "severity": "REQUIRED",
+      "description": "Sanitize absolute path in product-gap-selection.md",
+      "file": "reports/supervisor/product-gap-selection.md",
+      "action": "Replace C:/Users/prora/OneDrive/Documents/GitHub/format-factory/ with ./ on line 1"
+    }
+  ],
+  "policies": [
+    {"path": "src/", "class": "A", "git_state": "tracked_modified", "action": "commit_modified"},
+    {"path": "tests/", "class": "A", "git_state": "tracked_plus_276_untracked", "action": "git_add_then_commit"},
+    {"path": "examples/", "class": "A", "git_state": "tracked_plus_17_untracked", "action": "git_add_then_commit"},
+    {"path": "docs/", "class": "A", "git_state": "tracked_plus_42_untracked", "action": "git_add_then_commit"},
+    {"path": "plans/", "class": "A", "git_state": "tracked_plus_1_untracked", "action": "git_add_then_commit"},
+    {"path": "state/", "class": "A", "git_state": "tracked_modified", "action": "commit_modified"},
+    {"path": "registry/", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "product-capability-matrix/", "class": "A", "git_state": "tracked_modified", "action": "commit_modified"},
+    {"path": "tools/", "class": "A", "git_state": "tracked_modified_plus_32_untracked", "action": "git_add_then_commit"},
+    {"path": "taskcards/", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "acquisition-packs/", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "memory/", "class": "A", "git_state": "tracked_plus_2_untracked", "action": "git_add_then_commit"},
+    {"path": "schemas/", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "samples/", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "prototypes/", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "generated-requirements/", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "release-manifests/", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "templates/", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": ".supervisor/", "class": "A", "git_state": "tracked_modified_plus_1_untracked", "action": "git_add_then_commit"},
+    {"path": ".claude/", "class": "A", "git_state": "tracked_modified_plus_6_untracked", "action": "git_add_then_commit"},
+    {"path": "reports/supervisor/", "class": "A", "git_state": "tracked_modified_bug_blocks_new", "action": "fix_gitignore_first_then_commit", "note": "Sanitize product-gap-selection.md before committing"},
+    {"path": "reports/repo-sharing-plan/", "class": "A", "git_state": "untracked_bug_blocked", "action": "fix_gitignore_first_then_git_add"},
+    {"path": ".gitignore", "class": "A", "git_state": "tracked_modified", "action": "apply_proposed_patch_then_commit"},
+    {"path": ".env.example", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "CLAUDE.md", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": "AGENTS.md", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": ".vscode/*.example.json", "class": "A", "git_state": "tracked_clean", "action": "none"},
+    {"path": ".local/", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": ".venv/ venv/ env/", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": "bin/ obj/", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": "TestResults/", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": "__pycache__/ *.pyc", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": ".pytest_cache/", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": ".vs/", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": ".supervisor/state/", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": ".ruflo/ .swarm/", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": ".vscode/mcp.json", "class": "B", "git_state": "gitignored", "action": "none"},
+    {"path": ".env .env.*", "class": "E", "git_state": "gitignored", "action": "none"},
+    {"path": "reports/r*/", "class": "C", "git_state": "tracked_some_modified", "action": "commit_modified_only_do_not_force_add_new"},
+    {"path": "reports/supervisor/product-gap-selection.md", "class": "D", "git_state": "tracked_modified", "action": "sanitize_line_1_then_commit", "issue": "Contains C:/Users/prora/... absolute path"}
+  ]
+}

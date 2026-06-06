@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -48,6 +49,7 @@ HOST_INVOCATION_LAYER_MISSING = "HOST_INVOCATION_LAYER_MISSING"
 HOST_INVOCATION_DEFERRED = "HOST_INVOCATION_DEFERRED"
 HOST_INVOCATION_REFUSED = "HOST_INVOCATION_REFUSED"
 HOST_INVOCATION_PACKET_ONLY = "CONTINUATION_PACKET_ONLY"
+HOST_INVOCATION_BLOCKED_NESTED = "HOST_RUNNER_LIVE_INVOCATION_BLOCKED_BY_CLAUDECODE"
 
 # Hard-stop keywords: if next sprint contains these, refuse invocation
 HARD_STOP_KEYWORDS = [
@@ -68,6 +70,50 @@ CLAUDE_CLI_CANDIDATES = [
     "/usr/local/bin/claude",
     "/usr/bin/claude",
 ]
+
+
+# ─────────────────────────────────────────────────────────────
+# Nested session detection
+# ─────────────────────────────────────────────────────────────
+
+NESTED_SESSION_ENV_VAR = "CLAUDECODE"
+_EXTERNAL_TERMINAL_COMMAND = (
+    'unset CLAUDECODE && claude --print -p '
+    '"Respond with exactly: HOST_RUNNER_NOOP_OK. Do not modify files. Do not run commands."'
+)
+
+
+def detect_nested_session() -> dict:
+    """Check if we are running inside a Claude Code nested session.
+
+    When CLAUDECODE is set, the Claude CLI will refuse to be invoked
+    (to prevent nested sessions from crashing all active sessions).
+
+    Returns:
+        {
+          "nested": bool,
+          "env_var": str | None,
+          "wiring_instructions": str | None,
+          "external_terminal_command": str,
+        }
+    """
+    claudecode_val = os.environ.get(NESTED_SESSION_ENV_VAR)
+    nested = claudecode_val is not None and claudecode_val != ""
+    wiring = None
+    if nested:
+        wiring = (
+            f"CLAUDECODE={claudecode_val!r} is set — nested Claude Code session detected. "
+            "The Claude CLI will refuse invocation to protect running sessions. "
+            "To prove live invocation, run from an EXTERNAL terminal (not inside Claude Code):\n"
+            f"  {_EXTERNAL_TERMINAL_COMMAND}\n"
+            "Or unset CLAUDECODE in your shell before running this host runner."
+        )
+    return {
+        "nested": nested,
+        "env_var": claudecode_val,
+        "wiring_instructions": wiring,
+        "external_terminal_command": _EXTERNAL_TERMINAL_COMMAND,
+    }
 
 
 # ─────────────────────────────────────────────────────────────
@@ -379,6 +425,23 @@ def run_host_runner(
     # 2. Detect CLI
     cli_detection = detect_claude_cli()
     _append_log(log_path, {"event": "cli_detection", "result": cli_detection})
+
+    # 2b. Detect nested session (CLAUDECODE env var blocks invocation)
+    nested_detection = detect_nested_session()
+    _append_log(log_path, {"event": "nested_session_detection", "result": nested_detection})
+    if nested_detection["nested"]:
+        result = {
+            "classification": HOST_INVOCATION_BLOCKED_NESTED,
+            "reason": nested_detection["wiring_instructions"],
+            "nested_session": True,
+            "claudecode_env": nested_detection["env_var"],
+            "wiring_instructions": nested_detection["wiring_instructions"],
+            "external_terminal_command": nested_detection["external_terminal_command"],
+            "cli_detection": cli_detection,
+            "manual_invocation_required": True,
+        }
+        _write_state(output_dir, result)
+        return result
 
     # 3. Check if terminal — no invocation needed
     if _is_terminal_state(train_state):

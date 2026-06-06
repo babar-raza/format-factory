@@ -16,6 +16,11 @@ from .gnumeric_codec import (
     get_cell_count,
     extract_values,
     get_sheet_metadata,
+    export_to_csv,
+    export_to_json,
+    probe_gnumeric,
+    create_gnumeric,
+    write_gnumeric,
 )
 
 __all__ = [
@@ -26,6 +31,11 @@ __all__ = [
     "get_cell_count",
     "extract_values",
     "get_sheet_metadata",
+    "export_to_csv",
+    "export_to_json",
+    "probe_gnumeric",
+    "create_gnumeric",
+    "write_gnumeric",
 ]
 
 __version__ = "0.1.0.dev0"

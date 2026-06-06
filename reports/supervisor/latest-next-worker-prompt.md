@@ -1,6 +1,6 @@
-# FORMAT-FACTORY-R126-MEGA-TRAIN-001
-# Generated: 2026-06-05T14:23:01.499767
-# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
+# FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
+# Generated: 2026-06-06T20:24:32.227884
+# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -26,9 +26,9 @@ Read these files before writing any code:
 
 ## Sprint Identity
 
-- Sprint ID: FORMAT-FACTORY-R126-MEGA-TRAIN-001
-- Prior sprint: FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
-- Prior verdict: ACCEPTED_WITH_REWORK
+- Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
+- Prior sprint: FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
+- Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
@@ -102,7 +102,7 @@ Read all governance files. Verify no policy violations from prior sprint. Confir
 
 ### Train B: FODS .NET Product Deepening
 
-Continue FODS commercial .NET product advancement. Gate 11 G11-G approval (external gate; human required)
+Continue FODS commercial .NET product advancement. Authorized git commit + push (requires user authorization)
 
 **Acceptance Criteria:**
 - FODS .NET test count increased or new API proven
@@ -120,7 +120,7 @@ dotnet test tests/net/fods/ --verbosity quiet
 
 ### Train C: FODT .NET Product Deepening
 
-Continue FODT commercial .NET product advancement. Gate 11 G11-G approval (external gate; human required)
+Continue FODT commercial .NET product advancement. Authorized git commit + push (requires user authorization)
 
 **Acceptance Criteria:**
 - FODT .NET test count increased or new API proven
@@ -138,7 +138,7 @@ dotnet test tests/net/fodt/ --verbosity quiet
 
 ### Train D: Netpbm .NET Product Deepening
 
-Continue Netpbm commercial .NET product advancement. Gate 11 G11-G approval (external gate; human required)
+Continue Netpbm commercial .NET product advancement. Authorized git commit + push (requires user authorization)
 
 **Acceptance Criteria:**
 - Netpbm .NET test count increased or new API proven
@@ -181,13 +181,17 @@ Continue Netpbm FOSS product. Gate 11 G11-G approval (external gate; human requi
 - Netpbm Python test count maintained or increased
 
 **Files:**
-- `src/python/netpbm/`
-- `tests/python/netpbm/`
+- `src/python/pbm/`
+- `src/python/pgm/`
+- `src/python/ppm/`
+- `tests/python/pbm/`
+- `tests/python/pgm/`
+- `tests/python/ppm/`
 - `reports/r90/product-code-change-ledger.json`
 
 **Verification:**
 ```bash
-python -m pytest tests/python/netpbm/ -x -q
+python -m pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ -x -q
 ```
 
 ### Train G: SYLK Python Improvement

@@ -1,15 +1,7 @@
-// FormatFactory.Fods -- Commercial .NET FODS → CSV Exporter (G11-E Prototype)
+// FormatFactory.Fods -- Commercial .NET FODS to CSV Exporter
 // DEC-033 Option B: .NET Commercial Only
-// Gate 11 status: g11e_prototype_complete — G11-G NOT approved
-// Sprint: FORMAT-FACTORY-R22-FULL-THROTTLE-RELEASE-CANDIDATE-AND-GATE11-PROTOTYPE-TRAIN-001
-// Refactored: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
-// dogfood_status: IMPLEMENTED — delegates CSV serialization to FormatFactory.Csv.CsvWriter
-// target_ff_library: FormatFactory.Csv.CsvWriter
-//
-// PROTOTYPE STATUS: design_complete_in_progress
-// This is a G11-E conversion/export prototype only.
-// commercial_product_ready: false
-// Do NOT package or publish.
+// Delegates CSV serialization to FormatFactory.Csv.CsvWriter
+// Gate 11 approved 2026-06-05.
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +12,7 @@ using FormatFactory.Csv;
 namespace FormatFactory.Fods;
 
 /// <summary>
-/// G11-E Prototype: Exports a FODS spreadsheet to CSV (comma-separated values).
+/// Exports a FODS spreadsheet to CSV (comma-separated values).
 ///
 /// Scope:
 ///   - Exports the FIRST sheet of a FODS document.
@@ -40,8 +32,7 @@ namespace FormatFactory.Fods;
 /// ODF basis:
 ///   §9.4.2 table:table, §9.4.4 table:table-row, §9.4.5 table:table-cell, §6.1.1 text:p
 ///
-/// Gate 11 status: g11e_prototype_complete — NOT release-ready. G11-G not approved.
-/// commercial_product_ready: false
+/// Gate 11 approved 2026-06-05.
 /// </summary>
 public static class FodsCsvExporter
 {

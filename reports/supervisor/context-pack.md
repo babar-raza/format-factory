@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-05T14:23:02.100417
+# Generated: 2026-06-06T20:24:32.893355
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 3a86a05 |
+| Git HEAD | f76d845 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
-| Latest sprint | R125 |
-| Sprint ID | FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001... |
-| Autonomous continue | False |
-| Iteration | 12/12 |
+| Latest sprint | unknown |
+| Sprint ID | FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-00... |
+| Autonomous continue | True |
+| Iteration | 0/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 24 |
 | Ledger entries | 129 total (125 governed) |
@@ -22,9 +22,9 @@
 
 | Format | Tests | Gate 11 |
 |--------|-------|---------|
-| FODS | 547 | NOT_STARTED |
-| FODT | 520 | NOT_STARTED |
-| Netpbm | 423 | unknown |
+| FODS | 547 | APPROVED_BY_BABAR_RAZA_2026_06_05 |
+| FODT | 520 | APPROVED_BY_BABAR_RAZA_2026_06_05 |
+| Netpbm | 423 | APPROVED_BY_BABAR_RAZA_2026_06_05 |
 | **Total** | **1490** | — |
 
 ## Skill Registry

@@ -8,18 +8,23 @@
     <RootNamespace>FormatFactory.Netpbm</RootNamespace>
     <Version>0.1.0-r85-poc</Version>
     <Authors>format-factory</Authors>
-    <Description>FormatFactory.Netpbm: .NET commercial parser/writer for Netpbm image family (PBM/PGM/PPM). R85 first slice. Gate 11 NOT_STARTED; not release-ready.</Description>
+    <Description>FormatFactory.Netpbm: .NET commercial library for Netpbm image family (PBM/PGM/PPM). Parse, write, and convert between Netpbm formats. Gate 11 approved 2026-06-05.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>FormatFactory.Netpbm</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
   <!-- Gate 11 Note:
-       Gate 11: NOT_STARTED
-       R85 first slice: parse + edit + save + export (PBM→PGM dogfood)
-       commercial_product_ready: false
+       Gate 11 approved by Babar Raza 2026-06-05.
+       R85 first slice: parse + edit + save + export (PBM→PGM dogfood).
        DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only.
   -->
 

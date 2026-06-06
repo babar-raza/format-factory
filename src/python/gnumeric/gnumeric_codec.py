@@ -86,9 +86,207 @@ def get_sheet_metadata(source: str | bytes | Path) -> list[dict[str, Any]]:
     return load(source).get("sheets", [])
 
 
+def export_to_csv(
+    source: str | bytes | Path,
+    sheet_index: int = 0,
+    delimiter: str = ",",
+) -> str:
+    """Export a Gnumeric sheet to CSV string.
+
+    Cells are placed at their declared Row/Col positions.  Empty positions
+    are rendered as empty fields.
+
+    Args:
+        source:      Path to .gnumeric file or raw bytes.
+        sheet_index: Zero-based sheet index to export (default 0).
+        delimiter:   CSV delimiter character (default ',').
+
+    Returns:
+        CSV string (rows separated by CRLF per RFC 4180).
+
+    Raises:
+        GnumericError: If sheet_index is out of range.
+        GnumericParseError: If source cannot be parsed.
+    """
+    model = load(source)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return ""
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        raise GnumericError(
+            f"sheet_index {sheet_index} out of range (0–{len(sheets) - 1})"
+        )
+    sheet = sheets[sheet_index]
+    grid = sheet.get("cell_grid", {})
+    if not grid:
+        return ""
+
+    max_row = max(r for r, _ in grid)
+    max_col = max(c for _, c in grid)
+
+    lines = []
+    for row in range(max_row + 1):
+        fields = [_csv_field(grid.get((row, col), ""), delimiter) for col in range(max_col + 1)]
+        lines.append(delimiter.join(fields))
+    return "\r\n".join(lines) + "\r\n"
+
+
+def export_to_json(source: str | bytes | Path) -> str:
+    """Export a Gnumeric workbook to a JSON string.
+
+    Produces a JSON array — one object per sheet — where each object has:
+      ``name`` (str): sheet name.
+      ``rows`` (list[list[str]]): grid of cell values, row-major order.
+        Empty trailing cells in a row are included if other rows are wider.
+        Rows with no data are represented as lists of empty strings.
+
+    Args:
+        source: Path to .gnumeric file or raw gzipped bytes.
+
+    Returns:
+        JSON string (UTF-8 safe, ASCII-escaped).
+
+    Raises:
+        GnumericParseError: If source cannot be parsed.
+        GnumericError: For other load errors.
+    """
+    import json as _json
+
+    model = load(source)
+    sheets_out = []
+    for sheet in model.get("sheets", []):
+        grid: dict[tuple[int, int], str] = sheet.get("cell_grid", {})
+        if grid:
+            max_row = max(r for r, _ in grid)
+            max_col = max(c for _, c in grid)
+        else:
+            max_row = -1
+            max_col = -1
+        rows: list[list[str]] = []
+        for row in range(max_row + 1):
+            rows.append([grid.get((row, col), "") for col in range(max_col + 1)])
+        sheets_out.append({"name": sheet.get("name", ""), "rows": rows})
+    return _json.dumps(sheets_out, ensure_ascii=True, indent=2)
+
+
+def probe_gnumeric(source) -> bool:
+    """Probe whether source is a valid Gnumeric document.
+
+    Checks gzip magic bytes then decompresses the header to verify
+    the Gnumeric XML namespace without full parsing.
+    Does not raise on malformed input — returns False instead.
+
+    Args:
+        source: Path to a file or bytes to probe.
+
+    Returns:
+        True if source appears to be a Gnumeric document, False otherwise.
+    """
+    try:
+        raw = _read_source(source)
+        if raw[:2] != GZIP_MAGIC:
+            return False
+        header = gzip.decompress(raw[:8192])
+        snippet = header[:2048].decode("utf-8", errors="replace")
+        return GNM_NS in snippet
+    except Exception:
+        return False
+
+
+def create_gnumeric(sheets: list[dict]) -> dict[str, Any]:
+    """Create a minimal Gnumeric workbook model from a list of sheet dicts.
+
+    Args:
+        sheets: List of sheet dicts, each with optional:
+                  'name' (str) — sheet name (default 'Sheet<n>').
+                  'rows' (list[list[str]]) — row-major cell data.
+
+    Returns:
+        Workbook model dict compatible with write_gnumeric() and load().
+    """
+    built = []
+    for i, sheet in enumerate(sheets):
+        name = sheet.get("name", f"Sheet{i + 1}")
+        rows = sheet.get("rows", [])
+        grid: dict[tuple[int, int], str] = {}
+        cell_values: list[str] = []
+        for r, row in enumerate(rows):
+            for c, val in enumerate(row):
+                v = str(val) if val is not None else ""
+                grid[(r, c)] = v
+                if v:
+                    cell_values.append(v)
+        built.append({
+            "name": name,
+            "cell_count": len(grid),
+            "cell_values": cell_values,
+            "cell_grid": grid,
+        })
+    total = sum(s["cell_count"] for s in built)
+    return {
+        "is_gnumeric": True,
+        "sheet_count": len(built),
+        "sheets": built,
+        "cell_count": total,
+    }
+
+
+def write_gnumeric(model: dict[str, Any], dest: str | Path) -> None:
+    """Serialize a Gnumeric workbook model to a .gnumeric file.
+
+    Writes a gzip-compressed Gnumeric XML file.
+
+    Args:
+        model: Workbook model dict as returned by load() or create_gnumeric().
+        dest:  Destination file path.
+
+    Raises:
+        GnumericError: If model is invalid or dest cannot be written.
+    """
+    if not isinstance(model, dict) or not model.get("is_gnumeric"):
+        raise GnumericError("model must be a valid Gnumeric dict (is_gnumeric=True)")
+
+    dest = Path(dest)
+    ns = GNM_NS
+
+    root = ET.Element(f"{{{ns}}}Workbook")
+    sheets_el = ET.SubElement(root, f"{{{ns}}}Sheets")
+
+    for sheet_data in model.get("sheets", []):
+        sheet_el = ET.SubElement(sheets_el, f"{{{ns}}}Sheet")
+        name_el = ET.SubElement(sheet_el, f"{{{ns}}}Name")
+        name_el.text = sheet_data.get("name", "Sheet1")
+        cells_el = ET.SubElement(sheet_el, f"{{{ns}}}Cells")
+        grid = sheet_data.get("cell_grid", {})
+        for (row, col), value in sorted(grid.items()):
+            if value:
+                cell_el = ET.SubElement(cells_el, f"{{{ns}}}Cell")
+                cell_el.set("Row", str(row))
+                cell_el.set("Col", str(col))
+                val_el = ET.SubElement(cell_el, f"{{{ns}}}Value")
+                val_el.text = value
+
+    xml_str = ET.tostring(root, encoding="unicode", xml_declaration=False)
+    content = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_str
+    xml_bytes = content.encode("utf-8")
+    compressed = gzip.compress(xml_bytes)
+
+    try:
+        dest.write_bytes(compressed)
+    except OSError as exc:
+        raise GnumericError(f"Cannot write {dest}: {exc}") from exc
+
+
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
+
+def _csv_field(value: str, delimiter: str = ",") -> str:
+    """Quote a CSV field if it contains the delimiter, a quote, or a newline."""
+    if delimiter in value or '"' in value or "\n" in value or "\r" in value:
+        return '"' + value.replace('"', '""') + '"'
+    return value
 
 def _read_source(source: str | bytes | Path) -> bytes:
     if isinstance(source, Path):
@@ -158,13 +356,22 @@ def _extract_sheets(root: ET.Element) -> list[dict[str, Any]]:
         name = name_el.text if name_el is not None and name_el.text else ""
         cells = list(sheet.iter(f"{{{GNM_NS}}}Cell"))
         cell_values = []
+        cell_grid: dict[tuple[int, int], str] = {}
         for cell in cells:
             val_el = cell.find(f"{{{GNM_NS}}}Value")
-            if val_el is not None and val_el.text:
-                cell_values.append(val_el.text.strip())
+            value = val_el.text.strip() if val_el is not None and val_el.text else ""
+            if value:
+                cell_values.append(value)
+            try:
+                row = int(cell.get("Row", 0))
+                col = int(cell.get("Col", 0))
+                cell_grid[(row, col)] = value
+            except (ValueError, TypeError):
+                pass
         sheets.append({
             "name": name,
             "cell_count": len(cells),
             "cell_values": cell_values,
+            "cell_grid": cell_grid,
         })
     return sheets

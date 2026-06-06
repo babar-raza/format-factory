@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
+# Source sprint: FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
 # Stream: mainstream
-# Generated: 2026-06-05T14:25:04.583707
+# Generated: 2026-06-06T20:25:05.004273
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +11,9 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
+- Sprint ID: FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
 - Evidence verdict: ACCEPTED
-- Tests: 1532 passed, 0 failed, 0 skipped
+- Tests: 1490 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -92,55 +92,55 @@ None
 
 ## Project Memory Context
 ```
-- test_delta: -260
-- test_delta_from: 1838
+- test_delta: +46
+- test_delta_from: 92
 
-## Entry: FORMAT-FACTORY-SYLK-BLOCKER-REPAIR-AND-GATE11-PREP-R121-001
-- timestamp: 2026-06-05T14:01:05.295574
+## Entry: FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001
+- timestamp: 2026-06-06T17:55:05.133371
 - verdict: ACCEPTED
-- test_count: 263
+- test_count: 44
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sylk-blocker-repair-gate11-prep-r121\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\h6-product-source-pilot\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 57
+- bundle_entry_count: 106
 - bundle_validation_pass: True
-- test_delta: -1315
-- test_delta_from: 1578
+- test_delta: -94
+- test_delta_from: 138
 
-## Entry: FORMAT-FACTORY-NETPBM-ZST-GAP-CLOSURE-R122-001
-- timestamp: 2026-06-05T14:09:04.938511
+## Entry: FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001
+- timestamp: 2026-06-06T18:53:07.105192
 - verdict: ACCEPTED
-- test_count: 844
+- test_count: 54
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\netpbm-zst-gap-closure-r122\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\autonomous-acquisition-mega-train\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 56
+- bundle_entry_count: 75
 - bundle_validation_pass: True
-- test_delta: +581
-- test_delta_from: 263
+- test_delta: +10
+- test_delta_from: 44
 
-## Entry: FORMAT-FACTORY-GATE11-PREP-AND-LEDGER-REPAIR-R123-001
-- timestamp: 2026-06-05T14:17:04.714365
+## Entry: FORMAT-FACTORY-AUTONOMY-NO-MANUAL-PROMPT-CHAIN-REPAIR-001
+- timestamp: 2026-06-06T19:31:05.046807
 - verdict: ACCEPTED
 - test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\gate11-prep-commit-manifest-r123\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\no-manual-chain-repair\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 60
+- bundle_entry_count: 79
 - bundle_validation_pass: True
 
-## Entry: FORMAT-FACTORY-PACKAGE-INSTALL-PROOF-R124-001
-- timestamp: 2026-06-05T14:21:04.879414
+## Entry: FORMAT-FACTORY-NO-MANUAL-PROMPT-CHAIN-FINAL-ACCEPTANCE-001
+- timestamp: 2026-06-06T19:59:04.855069
 - verdict: ACCEPTED
 - test_count: 0
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\package-install-proof-r124\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\no-manual-chain-final-acceptance\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 55
+- bundle_entry_count: 58
 - bundle_validation_pass: True
 ```
 

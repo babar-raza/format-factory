@@ -74,6 +74,166 @@ def extract_text(source: str | bytes | Path) -> list[str]:
     return [p for p in model.get("paragraphs", []) if p]
 
 
+def create_abw(paragraphs: list[str]) -> dict[str, Any]:
+    """Create a minimal ABW document model from a list of paragraph strings.
+
+    Args:
+        paragraphs: List of paragraph text strings (may be empty).
+
+    Returns:
+        Document model dict compatible with write_abw().
+    """
+    return {
+        "is_abw": True,
+        "section_count": 1,
+        "paragraph_count": len(paragraphs),
+        "paragraphs": list(paragraphs),
+    }
+
+
+def write_abw(model: dict[str, Any], dest: str | Path) -> None:
+    """Serialize an ABW document model to an .abw file.
+
+    Writes a well-formed AWML 1.0 XML file.  The DOCTYPE declaration is
+    intentionally omitted (the DTD server at abisource.com is unreachable).
+
+    Args:
+        model: Document model dict as returned by load() or create_abw().
+        dest:  Destination file path.
+
+    Raises:
+        AbwError: If model is invalid or dest cannot be written.
+    """
+    if not isinstance(model, dict) or not model.get("is_abw"):
+        raise AbwError("model must be a valid ABW document dict (is_abw=True)")
+
+    dest = Path(dest)
+    paragraphs = model.get("paragraphs", [])
+
+    root = ET.Element(
+        ABW_ROOT_TAG,
+        attrib={
+            "template": "false",
+            "styles": "unlocked",
+            "version": "1.0",
+            "fileformat": "1.0",
+        },
+    )
+    section = ET.SubElement(root, "section")
+    for text in paragraphs:
+        p = ET.SubElement(section, "p")
+        p.text = str(text)
+
+    xml_str = ET.tostring(root, encoding="unicode", xml_declaration=False)
+    content = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_str + "\n"
+
+    try:
+        dest.write_text(content, encoding="utf-8")
+    except OSError as exc:
+        raise AbwError(f"Cannot write {dest}: {exc}") from exc
+
+
+def export_to_txt(source: str | bytes | Path) -> str:
+    """Export an ABW document to plain text.
+
+    Extracts all paragraph texts and joins them with newlines.
+
+    Args:
+        source: Path to .abw file, bytes, or XML string.
+
+    Returns:
+        Plain text string with paragraphs joined by newlines.
+
+    Raises:
+        AbwParseError: If source cannot be parsed.
+        AbwError: For other load errors.
+    """
+    model = load(source)
+    paragraphs = model.get("paragraphs", [])
+    return "\n".join(paragraphs)
+
+
+def export_to_html(source: str | bytes | Path) -> str:
+    """Export an ABW document to a minimal HTML string.
+
+    Wraps each paragraph in an HTML ``<p>`` element.  Returns a complete
+    ``<html><body>`` document suitable for display or downstream processing.
+    Special characters (<, >, &, ") are escaped.
+
+    Args:
+        source: Path to .abw file, bytes, or XML string.
+
+    Returns:
+        HTML string with one ``<p>`` per paragraph.
+
+    Raises:
+        AbwParseError: If source cannot be parsed.
+        AbwError: For other load errors.
+    """
+    _HTML_ESCAPE = str.maketrans({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})
+    model = load(source)
+    paragraphs = model.get("paragraphs", [])
+    lines = ["<!DOCTYPE html>", "<html>", "<body>"]
+    for para in paragraphs:
+        lines.append(f"<p>{para.translate(_HTML_ESCAPE)}</p>")
+    lines += ["</body>", "</html>"]
+    return "\n".join(lines)
+
+
+def get_metadata(source: str | bytes | Path) -> dict[str, Any]:
+    """Extract document metadata from an ABW file.
+
+    Reads ``<meta>`` elements inside the ``<metadata>`` block (if present).
+    Common keys include ``dc.title``, ``dc.creator``, ``dc.description``,
+    and ``abiword.date_last_changed``.
+
+    Returns an empty dict when no metadata block is present (e.g. documents
+    created by :func:`create_abw`).
+
+    Args:
+        source: Path to .abw file, bytes, or XML string.
+
+    Returns:
+        Dict mapping meta key strings to value strings.
+
+    Raises:
+        AbwParseError: If source cannot be parsed.
+        AbwError: For other load errors.
+    """
+    xml_bytes = _read_source(source)
+    clean = _strip_doctype(xml_bytes)
+    root = _parse_xml(clean)
+    meta: dict[str, str] = {}
+    for meta_block in root.iter("metadata"):
+        for m in meta_block:
+            key = m.get("key") or m.tag
+            value = m.get("value") or (m.text or "")
+            if key:
+                meta[key] = value
+    return meta
+
+
+def probe_abw(source) -> bool:
+    """Probe whether source is a valid ABW (AbiWord) document.
+
+    Checks for the abiword root element without full parsing.
+    Does not raise on malformed input - returns False instead.
+
+    Args:
+        source: Path to a file, bytes, or XML string to probe.
+
+    Returns:
+        True if source appears to be an ABW document, False otherwise.
+    """
+    try:
+        raw = _read_source(source)
+        snippet = raw[:4096].decode("utf-8", errors="replace")
+        snippet_stripped = _strip_doctype(snippet.encode())
+        # ABW files start with optional XML declaration, then <abiword ...>
+        return "<abiword" in snippet_stripped
+    except Exception:
+        return False
+
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------

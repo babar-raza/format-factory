@@ -1,13 +1,13 @@
 # Evidence Review — Supervisor
-Sprint ID: FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
-Timestamp: 2026-06-05T14:25:03.921109
+Sprint ID: FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
+Timestamp: 2026-06-06T20:25:04.367649
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\final-iv-session-summary-r125\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-first-acquisition-train\declaration-review-package.zip
 
 ## Facts
-- Tests: 1532 passed, 0 failed, 0 skipped
+- Tests: 0 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 59
+- Bundle entries: 80
 - PENDING markers: 0
 
 ## Gate States

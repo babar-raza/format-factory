@@ -1,23 +1,27 @@
 # Materialized Evidence Review
-# Run ID: final-iv-session-summary-r125
-# Sprint: FORMAT-FACTORY-FINAL-IV-SESSION-SUMMARY-R125-001
-# Generated: 2026-06-05T14:22:59.704381
+# Run ID: product-first-acquisition-train
+# Sprint: FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
+# Generated: 2026-06-06T20:24:29.312386
 
 ## Materialization Summary
 
-- Artifacts verified: 5
+- Artifacts verified: 22
 - Artifacts missing: 0
-- Source changes captured: 4
+- Source changes captured: 8
 
 ## Work Item Grades
 
 | Item | Grade | Note |
 |------|-------|------|
-| TC-R125-A01 | ACCEPTED | All 4 evidence path(s) verified |
-| TC-R125-B01 | ACCEPTED | All 1 evidence path(s) verified |
+| L0-PREFLIGHT | ACCEPTED | All 3 evidence path(s) verified |
+| TC-ABW-HTML | ACCEPTED | All 3 evidence path(s) verified |
+| TC-ABW-META | ACCEPTED | All 2 evidence path(s) verified |
+| TC-GNM-JSON | ACCEPTED | All 3 evidence path(s) verified |
+| L4-USABLE-OUTPUTS | ACCEPTED | All 5 evidence path(s) verified |
+| L5-CAPABILITY | ACCEPTED | All 2 evidence path(s) verified |
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\final-iv-session-summary-r125\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\product-first-acquisition-train\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\final-iv-session-summary-r125\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\product-first-acquisition-train\source-change-diffs.patch

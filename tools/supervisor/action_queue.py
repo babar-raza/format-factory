@@ -1,0 +1,239 @@
+"""
+Format Factory — Action Queue
+Sprint: FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001
+
+Durable JSONL queue for the autonomous orchestrator.
+Replaces advisory next-sprint.md as execution source.
+
+Queue file: .local/supervisor/action-queue.jsonl
+Each line is a JSON action queue item.
+"""
+from __future__ import annotations
+
+import json
+import sys
+import uuid
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, Iterator, List, Optional
+
+_here = Path(__file__).resolve().parent
+_repo_root = _here.parent.parent
+
+QUEUE_PATH = _repo_root / ".local" / "supervisor" / "action-queue.jsonl"
+QUEUE_LOCK_PATH = _repo_root / ".local" / "supervisor" / "action-queue.lock"
+
+# Item statuses
+STATUS_PENDING = "pending"
+STATUS_RUNNING = "running"
+STATUS_DONE = "done"
+STATUS_FAILED = "failed"
+STATUS_BLOCKED = "blocked"
+
+# Streams
+STREAM_AUTONOMY = "autonomy"
+STREAM_PRODUCT = "product"
+STREAM_EVIDENCE = "evidence"
+STREAM_SETUP = "setup"
+
+FORBIDDEN_IN_QUEUE = {
+    "GIT_PUSH", "GIT_COMMIT", "GIT_RESET", "GIT_CLEAN", "GIT_STASH",
+    "GATE_8_APPROVAL", "GATE_11_APPROVAL", "PACKAGE_PUBLISH",
+    "MCP_ACTIVATE", "MUTATE_POC_TARGETS",
+}
+
+
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _load_queue() -> List[Dict[str, Any]]:
+    if not QUEUE_PATH.exists():
+        return []
+    items = []
+    for line in QUEUE_PATH.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line:
+            try:
+                items.append(json.loads(line))
+            except json.JSONDecodeError:
+                pass
+    return items
+
+
+def _save_queue(items: List[Dict[str, Any]]) -> None:
+    QUEUE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    QUEUE_PATH.write_text(
+        "\n".join(json.dumps(item) for item in items) + "\n",
+        encoding="utf-8",
+    )
+
+
+def make_queue_item(
+    action_type: str,
+    stream: str = STREAM_AUTONOMY,
+    priority: int = 5,
+    preferred_backend: str = "LOCAL_DETERMINISTIC",
+    target: Optional[str] = None,
+    result_path: Optional[str] = None,
+    allowed_write_roots: Optional[List[str]] = None,
+    external_gate: bool = False,
+    sprint_id: Optional[str] = None,
+    objective: Optional[str] = None,
+    **kwargs: Any,
+) -> Dict[str, Any]:
+    action_id = f"q-{uuid.uuid4().hex[:8]}"
+    item = {
+        "action_id": action_id,
+        "stream": stream,
+        "priority": priority,
+        "action_type": action_type,
+        "preferred_backend": preferred_backend,
+        "fallback_backends": [],
+        "allowed_write_roots": allowed_write_roots or ["reports/autonomous-system-acceptance", ".local/supervisor"],
+        "external_gate": external_gate,
+        "status": STATUS_PENDING,
+        "objective": objective or f"{action_type} via queue",
+        "queued_at": _now_iso(),
+        "started_at": None,
+        "completed_at": None,
+        "result_path": result_path,
+        "error": None,
+        "sprint_id": sprint_id,
+    }
+    if target:
+        item["target"] = target
+    item.update(kwargs)
+    return item
+
+
+def enqueue(item: Dict[str, Any]) -> str:
+    """Add item to queue. Returns action_id. Raises ValueError for forbidden types."""
+    if item.get("action_type") in FORBIDDEN_IN_QUEUE:
+        raise ValueError(f"Forbidden action type in queue: {item['action_type']}")
+    # Assign action_id if not present
+    if "action_id" not in item:
+        item = dict(item)
+        item["action_id"] = str(uuid.uuid4())[:8]
+    if "status" not in item:
+        item["status"] = STATUS_PENDING
+    if "queued_at" not in item:
+        item["queued_at"] = _now_iso()
+    if item.get("external_gate") and item.get("action_type") not in FORBIDDEN_IN_QUEUE:
+        item["status"] = STATUS_BLOCKED  # External gate items are pre-blocked
+    items = _load_queue()
+    items.append(item)
+    _save_queue(items)
+    return item["action_id"]
+
+
+def dequeue_next() -> Optional[Dict[str, Any]]:
+    """Get highest-priority pending item. Marks it as running."""
+    items = _load_queue()
+    pending = [i for i in items if i.get("status") == STATUS_PENDING
+               and not i.get("external_gate", False)]
+    if not pending:
+        return None
+    # Sort by priority (lower = higher priority) then queued_at
+    pending.sort(key=lambda i: (i.get("priority", 5), i.get("queued_at", "")))
+    chosen = pending[0]
+    # Mark as running
+    for item in items:
+        if item.get("action_id") == chosen["action_id"]:
+            item["status"] = STATUS_RUNNING
+            item["started_at"] = _now_iso()
+            break
+    _save_queue(items)
+    return chosen
+
+
+def mark_done(action_id: str, result_path: Optional[str] = None) -> None:
+    items = _load_queue()
+    for item in items:
+        if item.get("action_id") == action_id:
+            item["status"] = STATUS_DONE
+            item["completed_at"] = _now_iso()
+            if result_path:
+                item["result_path"] = result_path
+            break
+    _save_queue(items)
+
+
+def mark_failed(action_id: str, error: str) -> None:
+    items = _load_queue()
+    for item in items:
+        if item.get("action_id") == action_id:
+            item["status"] = STATUS_FAILED
+            item["completed_at"] = _now_iso()
+            item["error"] = error
+            break
+    _save_queue(items)
+
+
+def mark_blocked(action_id: str, reason: str) -> None:
+    items = _load_queue()
+    for item in items:
+        if item.get("action_id") == action_id:
+            item["status"] = STATUS_BLOCKED
+            item["error"] = reason
+            break
+    _save_queue(items)
+
+
+def get_queue_stats() -> Dict[str, int]:
+    items = _load_queue()
+    stats: Dict[str, int] = {STATUS_PENDING: 0, STATUS_RUNNING: 0,
+                              STATUS_DONE: 0, STATUS_FAILED: 0, STATUS_BLOCKED: 0}
+    for item in items:
+        s = item.get("status", STATUS_PENDING)
+        stats[s] = stats.get(s, 0) + 1
+    stats["total"] = len(items)
+    return stats
+
+
+def iter_queue() -> Iterator[Dict[str, Any]]:
+    for item in _load_queue():
+        yield item
+
+
+def clear_queue() -> None:
+    if QUEUE_PATH.exists():
+        QUEUE_PATH.write_text("", encoding="utf-8")
+
+
+def seed_autonomy_queue(sprint_id: str) -> List[str]:
+    """Seed the queue with default autonomy actions if it's empty."""
+    items = _load_queue()
+    if any(i.get("status") == STATUS_PENDING for i in items):
+        return []  # Already has pending items
+
+    defaults = [
+        make_queue_item(
+            "RUN_JSON_VALIDATION",
+            stream=STREAM_AUTONOMY, priority=1,
+            target=".local/supervisor/active-continuation.json",
+            result_path="reports/autonomous-system-acceptance/queue/cycle-q01-result.json",
+            objective="Validate active-continuation.json (queue seed cycle 1)",
+            sprint_id=sprint_id,
+        ),
+        make_queue_item(
+            "RUN_MD_NONEMPTY_CHECK",
+            stream=STREAM_AUTONOMY, priority=2,
+            target="reports/autonomous-system-acceptance/00-preflight.md",
+            result_path="reports/autonomous-system-acceptance/queue/cycle-q02-result.json",
+            objective="Validate 00-preflight.md non-empty (queue seed cycle 2)",
+            sprint_id=sprint_id,
+        ),
+        make_queue_item(
+            "RUN_JSON_VALIDATION",
+            stream=STREAM_AUTONOMY, priority=3,
+            target="reports/autonomous-system-acceptance/current-gap-analysis.json",
+            result_path="reports/autonomous-system-acceptance/queue/cycle-q03-result.json",
+            objective="Validate current-gap-analysis.json (queue seed cycle 3)",
+            sprint_id=sprint_id,
+        ),
+    ]
+    ids = []
+    for item in defaults:
+        ids.append(enqueue(item))
+    return ids

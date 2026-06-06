@@ -1,0 +1,133 @@
+# Tracked File Inventory — FORMAT-FACTORY-REPO-SHARING-GITIGNORE-REMOTE-REFRESH-PLAN-001
+# Generated: 2026-06-04
+# Total tracked files: 3761
+
+## Summary by top-level directory
+  1867  reports/
+   596  tests/
+   351  tools/
+   185  taskcards/
+   165  acquisition-packs/
+   126  samples/
+   116  docs/
+    97  src/
+    71  memory/
+    34  schemas/
+    24  .supervisor/
+    20  .claude/
+    19  examples/
+    17  prototypes/
+    17  generated-requirements/
+    15  release-manifests/
+     5  templates/
+     5  registry/
+     5  product-capability-matrix/
+     4  plans/
+     4  state/ (approx)
+     2  root files (AGENTS.md, CLAUDE.md, .gitignore, .env.example, etc.)
+
+## Key tracked files (representative sample)
+
+### Root
+AGENTS.md
+CLAUDE.md
+.gitignore
+.env.example
+
+### .claude/
+.claude/commands/_readme.md
+.claude/commands/add-dogfood-export.md
+.claude/commands/add-dotnet-api.md
+.claude/commands/add-dotnet-object-model-feature.md
+.claude/commands/add-installed-package-example.md
+.claude/commands/add-python-api.md
+.claude/commands/add-python-object-model-feature.md
+.claude/commands/add-roundtrip-test.md
+.claude/commands/add-same-format-writer-feature.md
+.claude/commands/evidence-review-next-prompt.md
+.claude/commands/execution-handoff.md
+.claude/commands/export-plan-context.md
+.claude/commands/generate-execution-handoff.md
+.claude/commands/memory-sprint.md
+.claude/commands/package-install-proof.md
+.claude/commands/plan-hardening.md
+.claude/commands/promote-gap-to-taskcard.md
+.claude/commands/update-capability-matrix.md
+.claude/commands/verify-dogfood-path.md
+.claude/settings.json
+.vscode/mcp.dual-orchestration.claude-code-oauth.example.json
+.vscode/mcp.dual-orchestration.provider-key.example.json
+
+### .supervisor/
+.supervisor/config.yaml
+.supervisor/context-pack.yaml
+.supervisor/fixtures/r85-poc-gap-extraction.yaml
+.supervisor/policies.yaml
+.supervisor/project-memory.md
+.supervisor/prompts/adversarial-review.md
+.supervisor/prompts/approval-gate-classifier.md
+.supervisor/prompts/evidence-review.md
+.supervisor/prompts/mega-train-template.md
+.supervisor/prompts/memory-sync.md
+.supervisor/prompts/next-sprint-generator.md
+.supervisor/prompts/poc-gap-extractor.md
+.supervisor/schemas/evidence-declaration.schema.json
+.supervisor/schemas/evidence-manifest.schema.json
+.supervisor/schemas/evidence-review.schema.json
+.supervisor/schemas/item-grade.schema.json
+.supervisor/schemas/next-ruflo-lanes.schema.json
+.supervisor/schemas/next-sprint-taskmaster.schema.json
+.supervisor/schemas/next-work-items.schema.json
+.supervisor/schemas/supervisor-cycle-manifest.schema.json
+.supervisor/schemas/supervisor-review.schema.json
+.supervisor/schemas/supervisor-verdict.schema.json
+.supervisor/skill-registry.yaml
+.supervisor/sprint-loop.md
+
+### src/
+src/net/fods/ (C# FODS spreadsheet parser)
+src/net/fodt/ (C# FODT document parser)
+src/net/netpbm/ (C# Netpbm image parser)
+src/python/dif/ (Python DIF parser)
+src/python/fods/ (Python FODS parser)
+src/python/fodt/ (Python FODT parser)
+src/python/gnumeric/ (Python Gnumeric parser)
+src/python/pbm/ (Python PBM parser)
+src/python/pgm/ (Python PGM parser)
+src/python/ppm/ (Python PPM parser)
+src/python/sylk/ (Python SYLK parser)
+src/python/zst/ (Python ZST compression)
+
+### tests/ (tracked — pre-R94 vintage)
+tests/python/dif/test_r94-r96_*.py (older DIF tests)
+tests/python/fods/test_r94-r95_*.py (older FODS tests)
+tests/python/fodt/test_r94-r96_*.py (older FODT tests)
+tests/python/pbm/test_r94-r96_*.py (older PBM tests)
+[... 596 total tracked test files ...]
+
+### reports/supervisor/ (live sprint state — all tracked)
+reports/supervisor/session-resume.md
+reports/supervisor/approval-gates.md
+reports/supervisor/next-sprint.md
+reports/supervisor/contradictions.json
+reports/supervisor/contradictions.md
+reports/supervisor/evidence-review.json
+reports/supervisor/evidence-review.md
+reports/supervisor/latest-cycle-summary.md
+reports/supervisor/latest-review.md
+reports/supervisor/mcp-status.json
+reports/supervisor/mcp-status.md
+reports/supervisor/memory-sync-report.md
+reports/supervisor/next-ruflo-lanes.json
+reports/supervisor/next-sprint-taskmaster.json
+reports/supervisor/product-gap-selection.md  ← CONTAINS ABSOLUTE PATH
+reports/supervisor/work-item-grades.json
+reports/supervisor/work-item-grades.md
+reports/supervisor/work-item-grades.yaml
+[... plus context-pack.md, discovery-summary.md, etc. ...]
+
+### tools/
+tools/supervisor/ (supervisor pipeline scripts — ~30 tracked, 32 untracked)
+tools/evidence/ (evidence bundle builder, validator)
+tools/repro/ (reproducibility tool)
+tools/taskmaster/ (task master bridge validators)
