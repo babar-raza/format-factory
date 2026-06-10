@@ -9,6 +9,7 @@ dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
     "pytest-timeout>=2.0",
+    "pyyaml>=6.0",
     "ruff>=0.4",
     "bandit>=1.7",
 ]
@@ -17,6 +18,15 @@ dev = [
 addopts = "--import-mode=importlib"
 testpaths = ["tests"]
 timeout = 120
+markers = [
+    "layer0: Structural - health check, import smoke",
+    "layer1: Focused - single-format unit tests",
+    "layer2: Family - related format group tests",
+    "layer3: Integration - supervisor, governance, evidence",
+    "layer4: Golden - roundtrip, cross-format, export",
+    "layer5: Broad - all python + supervisor + evidence",
+    "layer6: Full - entire test suite",
+]
 filterwarnings = [
     "ignore::DeprecationWarning",
     "ignore:Unknown config option.*timeout:pytest.PytestConfigWarning",

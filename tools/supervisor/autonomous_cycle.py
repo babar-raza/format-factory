@@ -261,7 +261,8 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         print(f"  Stubs detected: {len(sv_stubs)}")
         for g in sv_downgrades:
             deficiencies = g["semantic_verification"].get("deficiencies", [])
-            print(f"    [{g['item_id']}] {'; '.join(deficiencies[:2])}")
+            safe_deficiencies = [d.encode("ascii", "replace").decode() for d in deficiencies[:2]]
+            print(f"    [{g['item_id']}] {'; '.join(safe_deficiencies)}")
 
     # R111: Attach adoption compliance result to review for downstream consumption
     if adoption_result is not None:
