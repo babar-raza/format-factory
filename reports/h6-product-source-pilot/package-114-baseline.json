@@ -1,0 +1,31 @@
+{
+  "package_id": 114,
+  "sprint_id": "FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001",
+  "prior_package_id": 113,
+  "prior_package_sha256": "c8823920925e6d6f4022cddef4c04e6d821f41effd34d0b5f50ae424988229ee",
+  "prior_sprint_id": "FORMAT-FACTORY-H6-AUTONOMOUS-PRODUCT-QUEUE-CONSUMPTION-001",
+  "prior_verdict": "COMPLETE_QUEUE_DRIVEN_H6_MULTI_ACTION_PROVEN",
+  "prior_tests_pass": 138,
+  "prior_tests_fail": 0,
+  "git_head": "f76d845bd3b1d61d53619fadd0f5a34a1832c8d1",
+  "caveats": [
+    "queue_count_inconsistency: IV says 4 consumed, queue-consumption-result lists 3",
+    "null_action_type_in_queue: c31d2171 has action_type=null",
+    "poc_targets_gap_ids_all_null: product-capability-matrix/poc-targets.yaml has no agent-owned gaps",
+    "missing_sample_outputs: anti-skip caveat (non-blocking)"
+  ],
+  "baseline_queue_state": {
+    "done": ["h6q-product-001", "h6-q-001", "h6-q-002", "h6-q-003"],
+    "pending": ["h6-q-004", "h6-q-005"],
+    "corrupt": ["c31d2171 (action_type=null)"]
+  },
+  "selected_product_task": {
+    "task_id": "h8-probe-abw-001",
+    "description": "Add probe_abw() format-detection function to src/python/abw/abw_codec.py",
+    "target_file": "src/python/abw/abw_codec.py",
+    "also_updates": "src/python/abw/__init__.py",
+    "bounded": true,
+    "reversible": true,
+    "new_external_deps": false
+  }
+}

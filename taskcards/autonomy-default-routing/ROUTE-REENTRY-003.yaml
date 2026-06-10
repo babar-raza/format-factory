@@ -1,0 +1,20 @@
+taskcard_id: ROUTE-REENTRY-003
+title: "Current-run fail-closed enforcement"
+status: IN_PROGRESS
+owner_lane: supervisor
+allowed_files:
+  - "tools/supervisor/autonomy_route_decider.py"
+  - "tools/supervisor/action_queue.py"
+forbidden_files:
+  - "src/python/"
+  - "src/net/"
+dependencies:
+  - "ROUTE-REENTRY-001"
+gates: []
+evidence_paths:
+  - ".local/evidences/route-aware-product-reentry-20260610-001030-e382e5f/"
+tests:
+  - "tests/supervisor/test_autonomy_route_decider.py"
+  - "tests/supervisor/test_autonomy_machinery_bypass_prevention.py"
+rollback_notes: "Revert changes to allowed_files only"
+closeout_criteria: "Current-run actions without task_category fail closed unless legacy/backfill non-source-mutating"

@@ -27,6 +27,12 @@ MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
 MAX_DIMENSION = 65536
 MAX_MAXVAL = 65535
 
+# Magic number constants (Netpbm spec — FACT-PGM-001, FACT-PGM-002)
+# FACT-PGM-001: "PGM ASCII format starts with magic 'P2' followed by whitespace"
+# FACT-PGM-002: "PGM binary format starts with magic 'P5' followed by whitespace"
+PGM_MAGIC_ASCII = "P2"   # FACT-PGM-001
+PGM_MAGIC_BINARY = "P5"  # FACT-PGM-002
+
 
 class PgmError(Exception):
     """Base exception for PGM parser errors."""
@@ -416,3 +422,168 @@ def write_pgm(
         lines.append(row_str)
 
     out_path.write_text("\n".join(lines) + "\n", encoding="ascii")
+
+
+def pixel_count(file_path: str | Path) -> int:
+    """Return the total pixel count (width * height) of a PGM image."""
+    img = parse_pgm_strict(file_path)
+    return img.width * img.height
+
+
+def average_gray(file_path: str | Path) -> float:
+    """Return the average gray value of a PGM image."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(img.pixels) / len(img.pixels)
+
+
+def count_above_threshold(file_path: str | Path, threshold: int) -> int:
+    """Return the count of pixels with value strictly above the threshold."""
+    img = parse_pgm_strict(file_path)
+    return sum(1 for p in img.pixels if p > threshold)
+
+
+def min_max_gray(file_path: str | Path) -> tuple[int, int]:
+    """Return (min, max) gray values in a PGM image."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return (0, 0)
+    return (min(img.pixels), max(img.pixels))
+
+
+def flip_horizontal(file_path: str | Path, dest_path: str | Path) -> dict[str, Any]:
+    """Flip a PGM image horizontally (mirror left-right) and write the result."""
+    img = parse_pgm_strict(file_path)
+    flipped: list[int] = []
+    for row in range(img.height):
+        row_start = row * img.width
+        row_pixels = img.pixels[row_start:row_start + img.width]
+        flipped.extend(reversed(row_pixels))
+    write_pgm(flipped, img.width, img.height, img.maxval, dest_path)
+    return {"ok": True, "width": img.width, "height": img.height, "pixel_count": len(flipped)}
+
+
+def get_dimensions(file_path: str | Path) -> tuple[int, int]:
+    """Return (width, height) of a PGM image without full pixel decode.
+
+    Parses only the header. Useful for quick dimension checks.
+
+    Args:
+        file_path: Path to a P2 or P5 PGM file.
+
+    Returns:
+        Tuple (width, height).
+
+    Raises:
+        PgmError: If the file cannot be parsed or does not exist.
+    """
+    img = parse_pgm_strict(file_path)
+    return (img.width, img.height)
+
+
+def normalize(file_path: str | Path, dest_path: str | Path, new_maxval: int = 255) -> dict[str, Any]:
+    """Normalize a PGM image to a new maxval range and write the result.
+
+    Reads a PGM file, rescales all pixel values proportionally to
+    [0, new_maxval], and writes the result as P2 ASCII to dest_path.
+
+    Args:
+        file_path: Source PGM file path.
+        dest_path: Destination PGM file path.
+        new_maxval: Target maximum value (default 255).
+
+    Returns:
+        Dict with keys: ok, width, height, old_maxval, new_maxval, pixel_count.
+
+    Raises:
+        PgmError: If the source file cannot be parsed.
+        ValueError: If new_maxval is out of range.
+    """
+    if not (1 <= new_maxval <= MAX_MAXVAL):
+        raise ValueError(f"new_maxval {new_maxval} must be in range 1-{MAX_MAXVAL}")
+    img = parse_pgm_strict(file_path)
+    old_maxval = img.maxval
+    if old_maxval == new_maxval:
+        normalized = list(img.pixels)
+    else:
+        normalized = [round(p * new_maxval / old_maxval) for p in img.pixels]
+    write_pgm(normalized, img.width, img.height, new_maxval, dest_path)
+    return {
+        "ok": True,
+        "width": img.width,
+        "height": img.height,
+        "old_maxval": old_maxval,
+        "new_maxval": new_maxval,
+        "pixel_count": len(normalized),
+    }
+
+
+def histogram(file_path: str | Path) -> dict[str, Any]:
+    """Compute a pixel value histogram for a PGM image.
+
+    Returns a dict mapping each pixel value (0..maxval) that appears
+    to its count.
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Dict with keys: ok, width, height, maxval, histogram (dict[int,int]),
+        unique_values (int).
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    hist: dict[int, int] = {}
+    for p in img.pixels:
+        hist[p] = hist.get(p, 0) + 1
+    return {
+        "ok": True,
+        "width": img.width,
+        "height": img.height,
+        "maxval": img.maxval,
+        "histogram": hist,
+        "unique_values": len(hist),
+    }
+
+
+def threshold(file_path: str | Path, dest_path: str | Path,
+              value: int) -> dict[str, Any]:
+    """Apply a binary threshold to a PGM image, producing a PBM-like result.
+
+    Pixels >= value become 1 (black), pixels < value become 0 (white).
+    Output is written as a PGM with maxval=1.
+
+    Args:
+        file_path: Source PGM file path.
+        dest_path: Destination PGM file path.
+        value: Threshold value (0..maxval).
+
+    Returns:
+        Dict with keys: ok, width, height, threshold, above_count, below_count.
+
+    Raises:
+        PgmError: If the source file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    above = 0
+    below = 0
+    result_pixels: list[int] = []
+    for p in img.pixels:
+        if p >= value:
+            result_pixels.append(1)
+            above += 1
+        else:
+            result_pixels.append(0)
+            below += 1
+    write_pgm(result_pixels, img.width, img.height, 1, dest_path)
+    return {
+        "ok": True,
+        "width": img.width,
+        "height": img.height,
+        "threshold": value,
+        "above_count": above,
+        "below_count": below,
+    }

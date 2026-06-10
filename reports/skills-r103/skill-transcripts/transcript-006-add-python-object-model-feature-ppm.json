@@ -1,0 +1,44 @@
+{
+  "invocation_id": "SKILLS-R103-INV-006",
+  "skill_id": "add-python-object-model-feature",
+  "command_path": ".claude/commands/add-python-object-model-feature.md",
+  "mode": "dry-run",
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R94",
+  "stream": "skills",
+  "timestamp": "2026-06-03T15:00:00Z",
+  "inputs": {
+    "format_id": "ppm",
+    "feature_name": "grayscale_conversion"
+  },
+  "allowed_files": [
+    "src/python/ppm/ppm_to_pgm.py",
+    "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
+  ],
+  "forbidden_files": [
+    "registry/format-registry.yaml",
+    "plans/master-plan.md"
+  ],
+  "actual_files_read": [
+    "src/python/ppm/ppm_to_pgm.py",
+    "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
+  ],
+  "actual_files_changed": [
+    "src/python/ppm/ppm_to_pgm.py",
+    "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
+  ],
+  "validation_commands": [],
+  "raw_log_paths": [],
+  "tests_added": [
+    "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
+  ],
+  "tests_run": [
+    "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
+  ],
+  "ledger_entry_id": "R94-GOVERNED-PPM-GRAYSCALE_CONVERSION-001",
+  "evidence_paths": [
+    "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
+  ],
+  "result": "PASS",
+  "limitations": [],
+  "rollback_plan": "Revert source changes and remove test files"
+}

@@ -1,0 +1,92 @@
+{
+  "anti_bypass_demo_count": 8,
+  "all_pass": true,
+  "demos": [
+    {
+      "demo_id": "ANTI-BYPASS-001",
+      "description": "Unregistered skill_id 'BACKFILLED_PRE_GOVERNANCE' rejected",
+      "expected": "FAIL (skill_id not in registry)",
+      "actual_valid": false,
+      "actual_errors": [
+        "skill_id 'BACKFILLED_PRE_GOVERNANCE' not found in registry"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-002",
+      "description": "Fabricated skill_id 'add-magic-feature' rejected",
+      "expected": "FAIL (skill_id not in registry)",
+      "actual_valid": false,
+      "actual_errors": [
+        "skill_id 'add-magic-feature' not found in registry"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-003",
+      "description": "Invalid mode 'yolo' rejected",
+      "expected": "FAIL (invalid mode)",
+      "actual_valid": false,
+      "actual_errors": [
+        "invalid mode: yolo (must be one of ['anti-bypass-demo', 'dry-run', 'live'])"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-004",
+      "description": "Invalid result 'MAYBE' rejected",
+      "expected": "FAIL (invalid result)",
+      "actual_valid": false,
+      "actual_errors": [
+        "invalid result: MAYBE (must be one of ['FAIL', 'PASS'])"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-005",
+      "description": "File changed outside allowed paths rejected",
+      "expected": "FAIL (files outside allowed)",
+      "actual_valid": false,
+      "actual_errors": [
+        "files changed outside allowed paths: ['registry/format-registry.yaml']"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-006",
+      "description": "Missing required fields rejected (only skill_id provided)",
+      "expected": "FAIL (missing required fields)",
+      "actual_valid": false,
+      "actual_errors": [
+        "missing required fields: ['actual_files_changed', 'allowed_files', 'inputs', 'invocation_id', 'mode', 'result', 'tests_run']"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-007",
+      "description": "Live src-editing without ledger_entry_id rejected",
+      "expected": "FAIL (requires ledger_entry_id)",
+      "actual_valid": false,
+      "actual_errors": [
+        "live invocation of src-editing skill 'add-dotnet-object-model-feature' (track: commercial_dotnet) requires ledger_entry_id"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-008",
+      "description": "Command file missing required sections rejected",
+      "expected": "FAIL (missing sections)",
+      "actual_valid": false,
+      "actual_errors": [
+        "Missing section: Required inputs or usage section",
+        "Missing section: Step-by-step execution flow",
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section",
+        "Missing section: Stop conditions or constraints",
+        "Missing section: Evidence or output format section",
+        "Command file too short (3 lines, min 10)"
+      ],
+      "pass": true
+    }
+  ]
+}

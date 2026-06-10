@@ -1,0 +1,35 @@
+taskcard_id: LFI-B-001
+title: "Architecture and Pattern Mapping"
+lane: B
+owner_role: architect
+status: READY_FOR_EXECUTION
+allowed_paths:
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/repo-inventory.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/comparative-architecture-map.md"
+forbidden_paths:
+  - "src/python/"
+  - "src/net/"
+  - "registry/"
+  - "tools/supervisor/"
+inputs:
+  - "C:/Users/prora/OneDrive/Documents/GitHub/apidev/"
+  - "C:/Users/prora/OneDrive/Documents/GitHub/refdev/"
+  - "C:/Users/prora/OneDrive/Documents/GitHub/specdev/"
+  - "tools/supervisor/product_source_executor.py"
+  - "tools/supervisor/product_feature_factory.py"
+  - "tools/supervisor/action_queue.py"
+  - "tools/supervisor/authority_conveyor.py"
+outputs:
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/repo-inventory.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/comparative-architecture-map.md"
+file_ownership:
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/repo-inventory.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/comparative-architecture-map.md"
+verification_commands:
+  - "test -f .local/evidences/ff-libforge-integration-exec-20260610-133949/repo-inventory.md"
+  - "test -f .local/evidences/ff-libforge-integration-exec-20260610-133949/comparative-architecture-map.md"
+evidence_files:
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/repo-inventory.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/comparative-architecture-map.md"
+rollback: "Delete repo-inventory.md and comparative-architecture-map.md from evidence dir"
+closeout_criteria: "Both artifacts exist, each mapping claim traceable to source file + line"

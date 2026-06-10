@@ -1,0 +1,11 @@
+[
+  {"defect_id": "D98-LOOP-01", "severity": "CONFIRMED_BUG", "title": "continuation-signal 5/5 with autonomous_continue=true", "root_cause": "autonomous_cycle.py never checks iteration >= max_iterations", "fixed_in": "R98 Train B", "fix_file": "tools/supervisor/autonomous_cycle.py"},
+  {"defect_id": "D98-GRADE-01", "severity": "CONFIRMED_BUG", "title": "Grader treats summary strings as file paths", "root_cause": "inspect_declared_evidence.py passes all tests_supporting entries to check_test_file_content", "fixed_in": "R98 Train F", "fix_file": "tools/supervisor/inspect_declared_evidence.py"},
+  {"defect_id": "D98-SKILL-01", "severity": "CONFIRMED_BUG", "title": "Skill registry only lists 4 of 13+ skills", "root_cause": "R93 created skills but did not update skill-registry.yaml", "fixed_in": "R98 Train J", "fix_file": ".supervisor/skill-registry.yaml"},
+  {"defect_id": "D98-PROOF-01", "severity": "WEAK_PROOF", "title": "No lane execution ledger", "root_cause": "No parallelism instrumentation exists", "fixed_in": "R98 Train D (documented)", "fix_file": "reports/r98/lane-execution-ledger.json"},
+  {"defect_id": "D98-PROOF-02", "severity": "WEAK_PROOF", "title": "No raw test logs captured", "root_cause": "Evidence declarations only report counts", "fixed_in": "R98 Train G (documented)", "fix_file": "N/A"},
+  {"defect_id": "D98-PROOF-03", "severity": "WEAK_PROOF", "title": "No skill invocation transcripts", "root_cause": "No transcript infrastructure exists", "fixed_in": "R98 Train I (requirement documented)", "fix_file": "N/A"},
+  {"defect_id": "D98-PROOF-04", "severity": "ACCEPTED_WITH_LIMITATION", "title": "Repeated git head across R94-R97", "root_cause": "No commits during autonomous loop (correct per CLAUDE.md)", "fixed_in": "N/A — expected behavior", "fix_file": "N/A"},
+  {"defect_id": "D98-PROOF-05", "severity": "ACCEPTED_WITH_LIMITATION", "title": "30-minute self-reported windows", "root_cause": "No instrumented timing", "fixed_in": "N/A — acceptable approximation", "fix_file": "N/A"},
+  {"defect_id": "D98-PROOF-06", "severity": "ACCEPTED_PROGRESS", "title": "Exact 24-test increments", "root_cause": "Sprint template produces 3x8 .NET + 3x8 Python = 48 new tests", "fixed_in": "N/A — structurally correct", "fix_file": "N/A"}
+]

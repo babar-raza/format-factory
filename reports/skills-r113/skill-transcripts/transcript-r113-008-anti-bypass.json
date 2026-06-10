@@ -1,0 +1,19 @@
+{
+  "invocation_id": "r113-008-anti-bypass",
+  "skill_id": "add-python-api",
+  "mode": "anti-bypass-demo",
+  "timestamp": "2026-06-03T23:35:00Z",
+  "inputs": {
+    "format_id": "fods",
+    "api_name": "forbidden_api",
+    "exact_source_paths": ["src/python/fods/fods_workbook.py"],
+    "exact_test_paths": ["tests/python/fods/test_forbidden.py"],
+    "ledger_entry_path": "reports/r-test/ledger.json",
+    "focused_test_command": "pytest tests/python/fods/test_forbidden.py"
+  },
+  "allowed_files": ["src/python/fods/"],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "result": "PASS",
+  "notes": "Anti-bypass demonstration: skill invoked but no actual source changes made (dry-run). Proves transcript captures even non-productive invocations."
+}

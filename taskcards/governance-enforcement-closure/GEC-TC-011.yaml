@@ -1,0 +1,33 @@
+id: GEC-TC-011
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Controlled source-governance fixture pilot"
+status: completed
+lane: lane_k_source_pilot
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  Sprint 4 must demonstrate that the governance layer can validate a complete
+  source-governance evidence chain (taskcard + execution_method + idempotency_key +
+  before/after fingerprint + source_diff_paths + validation log) for a controlled
+  fixture-only source file (not touching any real product source).
+scope:
+  - Create tests/fixtures/governance-enforcement-pilots/source-governance-fixture/ with
+    fixture source file and complete evidence chain
+  - Validate the chain passes all governance validators
+  - Create source-governance-pilot.md report
+out_of_scope:
+  - Modifying any real product source files
+files_to_create:
+  - tests/fixtures/source-governance-pilot/fixture_source.py
+  - tests/fixtures/source-governance-pilot/fixture-evidence.yaml
+  - reports/repeatability-governance-closure-rnext/source-governance-pilot.md
+acceptance_criteria:
+  - Fixture evidence chain validates PASS against governance validators
+  - Report confirms complete evidence chain coverage
+  - No real product source files touched
+dependencies: [GEC-TC-001, GEC-TC-005]
+handoff_to_autonomy_sprint: false

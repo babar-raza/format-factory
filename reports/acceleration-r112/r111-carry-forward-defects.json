@@ -1,0 +1,30 @@
+[
+  {
+    "id": "D111-SAMPLE-01",
+    "title": "Sample-output detection ignores manifest/declaration artifacts",
+    "severity": "low",
+    "status": "RESOLVED_R112",
+    "resolution": "detect_missing_sample_outputs now checks declaration.evidence_artifacts and evidence-manifest.yaml for type: sample_output"
+  },
+  {
+    "id": "D111-WSNS-01",
+    "title": "Wrong-stream next-sprint lacks source tracing",
+    "severity": "medium",
+    "status": "RESOLVED_R112",
+    "resolution": "detect_wrong_stream_next_sprint now includes path_read, source_kind, is_blocking fields"
+  },
+  {
+    "id": "D111-CONT-01",
+    "title": "Continuation state YES despite active anti-skip violations",
+    "severity": "medium",
+    "status": "RESOLVED_R112",
+    "resolution": "classify_continuation_state returns YES_WITH_LIMITATIONS when anti-skip has non-blocking violations"
+  },
+  {
+    "id": "D111-CONS-01",
+    "title": "Anti-skip all_pass=false contradicts final IV all-pass claim",
+    "severity": "medium",
+    "status": "RESOLVED_R112",
+    "resolution": "R112 final IV explicitly reports anti-skip state; quotas classify violations as blocking vs non-blocking"
+  }
+]

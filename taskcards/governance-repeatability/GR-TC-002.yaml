@@ -1,0 +1,37 @@
+id: GR-TC-002
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+generated_at: "2026-06-08"
+title: "Create execution-method taxonomy"
+status: ready_to_execute
+lane: governance_contracts
+item_type: GOVERNANCE_DOC
+problem: >
+  No taxonomy defines how product source mutations were performed.
+  All execution methods are treated identically by the supervisor.
+scope:
+  - Create docs/governance/execution-method-taxonomy.md with 11 classifications
+  - Create schemas/governance/execution-method-taxonomy.schema.json
+out_of_scope:
+  - Implementing validators
+  - Changing evidence declarations
+files_to_create:
+  - docs/governance/execution-method-taxonomy.md
+  - schemas/governance/execution-method-taxonomy.schema.json
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+acceptance_criteria:
+  - Both files exist
+  - 11 execution methods defined in taxonomy
+  - JSON schema is syntactically valid
+  - MANUAL_UNGOVERNED and UNKNOWN marked as forbidden for closing taskcards
+  - QUEUE_DECLARED_EXECUTION marked DEPRECATED
+adaptation_note: >
+  JSON schema uses repo conventions: $schema, $id, version, generated_by, generated_at.
+  Markdown uses # Title / # Subtitle comment header, not YAML frontmatter.
+verification:
+  - "python -c \"import json; json.load(open('schemas/governance/execution-method-taxonomy.schema.json'))\""
+  - "check file exists: docs/governance/execution-method-taxonomy.md"
+rollback: delete created files (no source changes)
+dependencies: []
+handoff_to_autonomy_sprint: false

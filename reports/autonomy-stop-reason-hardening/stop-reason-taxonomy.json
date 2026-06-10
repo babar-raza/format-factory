@@ -1,0 +1,45 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PERMANENT-AUTONOMY-STOP-REASON-HARDENING-001",
+  "adjudicator_path": "tools/supervisor/stop_reason_adjudicator.py",
+  "schema_path": ".supervisor/schemas/stop-reason-decision.schema.json",
+  "never_terminal": [
+    "supervisor_accepted",
+    "accepted_with_rework",
+    "evidence_package_built",
+    "review_package_created",
+    "max_iterations_reached",
+    "mode_5_approval_pending",
+    "ruflo_unavailable",
+    "claude_flow_unavailable",
+    "evidence_quality_zero_repairable",
+    "prompt_quality_failure",
+    "missing_sample_outputs",
+    "wrong_stream_next_sprint",
+    "dif_reconsideration",
+    "sylk_promotion",
+    "zst_promotion",
+    "poc_targets_proposed_delta",
+    "dogfood_gap_pending",
+    "gate_11_pending_poc_not_ready",
+    "gate_8_pending_poc_not_ready",
+    "dirty_git_state_classified"
+  ],
+  "true_external_gates": [
+    "git_push_required",
+    "git_commit_required",
+    "git_merge_required",
+    "publication_required",
+    "nuget_publish_required",
+    "pypi_publish_required",
+    "credentials_required_no_fallback",
+    "destructive_cleanup_no_alternative",
+    "gate_11_approval_execution",
+    "gate_8_approval_execution",
+    "external_mcp_daemon_activation_required"
+  ],
+  "release_approval_pending": [
+    "gate_11_pending_poc_ready",
+    "gate_8_pending_poc_ready",
+    "commercial_release_approval_poc_ready"
+  ]
+}

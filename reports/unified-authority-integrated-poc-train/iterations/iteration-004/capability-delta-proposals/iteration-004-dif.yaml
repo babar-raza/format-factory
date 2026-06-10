@@ -1,0 +1,25 @@
+proposed_only: true
+not_applied_to_poc_targets: true
+iteration: 4
+sprint_id: "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001"
+generated_at: "2026-06-05T00:00:00Z"
+
+capabilities:
+  - capability: "write_dif"
+    operation: "Add"
+    description: "Serialize a DifDocument to a valid DIF-format file. Supports numeric cells, string cells, boolean cells, special values. Uses CRLF line endings. Roundtrip-verified: parse_dif_strict(write_dif(doc)) == doc."
+    api_symbol: "write_dif(doc: DifDocument, file_path: str | Path) -> None"
+    product: "DIF Python FOSS"
+    proof_level: "VERIFIED"
+    source_files:
+      - "src/python/dif/dif_parser.py"
+    test_files:
+      - "tests/python/dif/test_r117_dif_write_roundtrip.py"
+    tests_passed: 10
+    tests_failed: 0
+    raw_log: "reports/unified-authority-integrated-poc-train/iterations/iteration-004/raw-logs/dif-r117-tests.log"
+    sample_output: "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/dif/write-roundtrip-report.json"
+    source_diff: "reports/unified-authority-integrated-poc-train/iterations/iteration-004/source-diffs/iteration-004-dif.diff"
+    proposed_poc_target_update:
+      note: "DIF now has write_dif + roundtrip. Propose reconsider_when condition met for DIF on_hold entry."
+    rationale: "10/10 tests pass. Full write+probe+parse_strict+csv pipeline confirmed (test_dogfood_pipeline_full)."

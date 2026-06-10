@@ -1,0 +1,53 @@
+{
+  "run_id": "expert-review-followup",
+  "sprint_id": "FORMAT-FACTORY-EXPERT-REVIEW-FOLLOWUP-REPAIR-PLUS-ADVANCEMENT-001",
+  "lanes": [
+    {
+      "lane_id": "AUTHORITY_AUDIT_LANE",
+      "work_item_id": "WI-ERF-AUTH-001",
+      "status": "CLOSED_VERIFIED",
+      "files_touched": [],
+      "validation": "Gate 11 approved in commit f76d845 by Babar Raza — LEGITIMATE"
+    },
+    {
+      "lane_id": "PYTHON_FOSS_PACKAGING_LANE",
+      "work_item_id": "WI-ERF-PY-PKG-001",
+      "status": "CLOSED_VERIFIED",
+      "files_touched": [
+        "src/python/zst/pyproject.toml",
+        "src/python/sylk/pyproject.toml",
+        "src/python/dif/pyproject.toml",
+        "src/python/pbm/pyproject.toml",
+        "src/python/pgm/pyproject.toml",
+        "src/python/ppm/pyproject.toml",
+        "src/python/fods/pyproject.toml",
+        "src/python/fodt/pyproject.toml"
+      ],
+      "validation": "All 10 packages pip-installable; 2402 Python tests pass"
+    },
+    {
+      "lane_id": "DOTNET_PACKAGING_LANE",
+      "work_item_id": "WI-ERF-NET-PKG-001",
+      "status": "CLOSED_VERIFIED",
+      "files_touched": [
+        "src/net/netpbm/README.md",
+        "src/net/netpbm/FormatFactory.Netpbm.csproj"
+      ],
+      "validation": "dotnet build FormatFactory.Netpbm.csproj exit 0"
+    },
+    {
+      "lane_id": "DOTNET_PACK_LANE",
+      "work_item_id": "WI-ERF-NET-PKG-002",
+      "status": "CLOSED_VERIFIED",
+      "files_touched": [],
+      "validation": "3 .nupkg files produced: FODS 30446b, FODT 25854b, Netpbm 24596b"
+    },
+    {
+      "lane_id": "SAMPLE_OUTPUT_LANE",
+      "work_item_id": "WI-ERF-SAMPLES-001",
+      "status": "CLOSED_VERIFIED",
+      "files_touched": [],
+      "validation": "4 sample outputs: sample.abw, gnumeric-export.csv, sample-4x4.ppm, sample.zst"
+    }
+  ]
+}

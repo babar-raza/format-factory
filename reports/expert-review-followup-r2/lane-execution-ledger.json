@@ -1,0 +1,45 @@
+{
+  "run_id": "expert-review-followup-r2",
+  "sprint_id": "FORMAT-FACTORY-EXPERT-REVIEW-FOLLOWUP-QUALITY-AND-PACKAGING-HARDENING-002",
+  "lanes": [
+    {
+      "lane_id": "LANE_2_AUTHORITY",
+      "work_item_id": "WI-R2-AUTHORITY-001",
+      "status": "CLOSED_VERIFIED",
+      "files_touched": [
+        "reports/expert-review-followup-r2/authority/gate11-approval-git-log.txt",
+        "reports/expert-review-followup-r2/authority/gate11-approval-diff.patch",
+        "reports/expert-review-followup-r2/authority/gate11-approval-proof.md"
+      ],
+      "validation": "Gate 11 commit f76d845 author=Babar Raza confirmed via git show — LEGITIMATE"
+    },
+    {
+      "lane_id": "LANE_1_MANIFEST_AUDIT",
+      "work_item_id": "WI-R2-CONTRACT-001",
+      "status": "CLOSED_VERIFIED",
+      "files_touched": [
+        "reports/expert-review-followup-r2/evidence-contract/manifest-vs-package-audit.md"
+      ],
+      "validation": "ZIP enumerated: 82 entries; raw-logs/lane-ledger confirmed absent from prior ZIP; root cause documented"
+    },
+    {
+      "lane_id": "LANE_3_PYTHON_PACKAGING",
+      "work_item_id": "WI-R2-PYTHON-PKG-001",
+      "status": "CLOSED_VERIFIED",
+      "files_touched": [
+        "reports/expert-review-followup-r2/python-packaging/packaging-quality-matrix.json"
+      ],
+      "validation": "All 10 packages import OK via venv Python; 913 tests pass (69 ABW+Gnumeric + 844 ZST+Netpbm)"
+    },
+    {
+      "lane_id": "LANE_4_DOTNET",
+      "work_item_id": "WI-R2-DOTNET-001",
+      "status": "CLOSED_VERIFIED",
+      "files_touched": [
+        "reports/expert-review-followup-r2/dotnet/nupkg-inspection-report.json",
+        "reports/expert-review-followup-r2/dotnet/package-artifacts/FormatFactory.Netpbm.0.1.0-r85-poc.nupkg"
+      ],
+      "validation": "Netpbm nupkg rebuilt: README.md now present in nupkg (was absent in prior build). FODS/FODT nupkgs verified complete."
+    }
+  ]
+}

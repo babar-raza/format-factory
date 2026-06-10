@@ -1,0 +1,69 @@
+[
+  {
+    "tc_id": "TC-DOTNET-CSV-WRITER-001",
+    "title": "Create format-factory-csv .NET writer library",
+    "status": "OPEN",
+    "priority": "HIGH",
+    "description": "Build standalone FormatFactory.Csv library (CsvWriter.WriteRows, WriteToFile, EscapeField). Extract logic from FodsCsvExporter.cs. Refactor FodsCsvExporter to consume it. This unblocks fods_to_csv_dotnet ONLY.",
+    "blocked_gaps": ["commercial-net-fods-dogfood-status-fods-to-csv-dotnet"],
+    "does_not_unblock": ["commercial-net-fods-dogfood-status-fods-to-html-dotnet"],
+    "decision_required": "Human approval — see reports/dotnet-dogfood-architecture-gap/future-sprint-options.md Option 1",
+    "candidate_sprint": "CREATE-DOTNET-CSV-WRITER-001",
+    "evidence": "reports/dotnet-dogfood-architecture-gap/dotnet-csv-writer-mwp-outline.md"
+  },
+  {
+    "tc_id": "TC-DOTNET-HTML-WRITER-001",
+    "title": "Create format-factory-html .NET writer library",
+    "status": "OPEN",
+    "priority": "MEDIUM",
+    "description": "Build standalone FormatFactory.Html library (HtmlWriter.WriteTable). Unblocks fods_to_html_dotnet ONLY. Independent of CSV writer.",
+    "blocked_gaps": ["commercial-net-fods-dogfood-status-fods-to-html-dotnet"],
+    "decision_required": "Human approval — see reports/dotnet-dogfood-architecture-gap/future-sprint-options.md Option 2",
+    "candidate_sprint": "CREATE-DOTNET-HTML-WRITER-001",
+    "evidence": "reports/dotnet-dogfood-architecture-gap/dotnet-target-writer-library-decision-package.md"
+  },
+  {
+    "tc_id": "TC-DOTNET-MARKDOWN-WRITER-001",
+    "title": "Create format-factory-markdown .NET writer library",
+    "status": "OPEN",
+    "priority": "MEDIUM",
+    "description": "Build standalone FormatFactory.Markdown library. Unblocks fodt_to_markdown_dotnet ONLY.",
+    "blocked_gaps": ["commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet"],
+    "decision_required": "Human approval",
+    "candidate_sprint": "CREATE-DOTNET-MARKDOWN-WRITER-001",
+    "evidence": "reports/dotnet-dogfood-architecture-gap/dotnet-target-writer-library-decision-package.md"
+  },
+  {
+    "tc_id": "TC-DOTNET-TXT-WRITER-001",
+    "title": "Create format-factory-txt .NET writer library",
+    "status": "OPEN",
+    "priority": "MEDIUM",
+    "description": "Build standalone FormatFactory.Txt library. Unblocks fodt_to_txt_dotnet ONLY.",
+    "blocked_gaps": ["commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet"],
+    "decision_required": "Human approval",
+    "candidate_sprint": "CREATE-DOTNET-TXT-WRITER-001",
+    "evidence": "reports/dotnet-dogfood-architecture-gap/dotnet-target-writer-library-decision-package.md"
+  },
+  {
+    "tc_id": "TC-DOTNET-GAP-RECLASS-001",
+    "title": "Reclassify four blocked gaps as ARCHITECTURE_BLOCKED in select_poc_gaps.py",
+    "status": "IMPLEMENTED",
+    "priority": "HIGH",
+    "description": "GAP_DOGFOOD_EXTERNAL_ARCHITECTURE_BLOCKED added to GAP_STATUSES, score=40. BLOCKED_GAP_IDS frozenset. Reclassification guard added. py_compile PASS, 26 tests pass.",
+    "blocked_gaps": [],
+    "decision_required": "None — implemented this sprint",
+    "candidate_sprint": null,
+    "evidence": "reports/dotnet-dogfood-architecture-gap/selected-gap-reroute-rules.md"
+  },
+  {
+    "tc_id": "TC-DOTNET-GUARDRAIL-001",
+    "title": "Add prompt generator guardrail for blocked dogfood gaps",
+    "status": "IMPLEMENTED",
+    "priority": "HIGH",
+    "description": "BLOCKED_ARCHITECTURE_GAPS frozenset added to generate_next_worker_prompt.py. Actionable dogfood list comprehension guards against blocked gaps. py_compile PASS. next-sprint.md TASK-009..012 patched.",
+    "blocked_gaps": [],
+    "decision_required": "None — implemented this sprint",
+    "candidate_sprint": null,
+    "evidence": "reports/dotnet-dogfood-architecture-gap/prompt-handoff-guardrails.md"
+  }
+]

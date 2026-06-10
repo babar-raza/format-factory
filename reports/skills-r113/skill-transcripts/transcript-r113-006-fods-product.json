@@ -1,0 +1,18 @@
+{
+  "invocation_id": "r113-006-fods-product",
+  "skill_id": "add-dotnet-api",
+  "mode": "dry-run",
+  "timestamp": "2026-06-03T23:25:00Z",
+  "inputs": {
+    "format_id": "fods",
+    "api_name": "ExportSheetToHtml",
+    "exact_source_paths": ["src/net/fods/FodsDocument.cs"],
+    "exact_test_paths": ["tests/net/fods/FodsR94ExportSheetToHtmlTests.cs"],
+    "ledger_entry_path": "reports/r94/product-code-change-ledger.json",
+    "focused_test_command": "dotnet test --filter FodsR94"
+  },
+  "allowed_files": ["src/net/fods/", "tests/net/fods/"],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "result": "PASS"
+}

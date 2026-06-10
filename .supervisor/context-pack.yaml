@@ -1,39 +1,42 @@
 schema_version: '1.0'
-generated_at: '2026-06-06T20:24:32.893355'
+generated_at: '2026-06-10T13:43:49.727257'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: f76d845
+  head: e382e5f
   status:
-    modified_count: 37
-    untracked_count: 220
+    modified_count: 98
+    untracked_count: 507
     staged_count: 1
-    total_changed: 258
+    total_changed: 607
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
+  sprint_id: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-10-001
   run_id: unknown
-  autonomous_continue: true
-  iteration: 0
+  autonomous_continue: false
+  iteration: 10
   max_iterations: 12
-  hard_stops: []
-  rework_items: []
+  hard_stops:
+  - evidence_quality_zero
+  rework_items:
+  - W0-PREFLIGHT
+  - W2-CANDIDATES
 poc_matrix:
-  sprint: R114
-  last_updated: '2026-06-04'
+  sprint: capability-layer-closeout-rnext
+  last_updated: '2026-06-09'
   commercial_net_products:
     FODS:
       dotnet_tests: 547
       gate_11_status: APPROVED_BY_BABAR_RAZA_2026_06_05
-      commercial_ready: true
+      commercial_ready: false
     FODT:
       dotnet_tests: 520
       gate_11_status: APPROVED_BY_BABAR_RAZA_2026_06_05
-      commercial_ready: true
+      commercial_ready: false
     Netpbm:
       dotnet_tests: 423
       gate_11_status: APPROVED_BY_BABAR_RAZA_2026_06_05
-      commercial_ready: true
+      commercial_ready: false
   foss_python_products: {}
 skill_registry:
   total_skills: 25
@@ -66,8 +69,8 @@ skill_registry:
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 129
-  governed_changes: 125
+  total_entries: 282
+  governed_changes: 277
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json
 mcp_status:

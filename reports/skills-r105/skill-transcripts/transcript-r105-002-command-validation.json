@@ -1,0 +1,22 @@
+{
+  "invocation_id": "R105-DRY-002-COMMAND-VALIDATION",
+  "skill_id": "validate-skill-transcript",
+  "mode": "dry-run",
+  "inputs": {
+    "transcript_path": "reports/skills-r105/validator-results/command-validation-r105.json"
+  },
+  "allowed_files": [
+    "tools/supervisor/validate_claude_commands.py",
+    ".supervisor/skill-registry.yaml",
+    ".claude/commands/",
+    "reports/skills-r105/validator-results/command-validation-r105.json"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [
+    "pytest tests/python/supervisor/test_r104_promoted_skill_commands.py -v"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T17:00:00Z",
+  "notes": "Dry-run: validated 23 command files. 23/23 pass. 19 active skills confirmed."
+}

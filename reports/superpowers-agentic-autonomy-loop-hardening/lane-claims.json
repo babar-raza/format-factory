@@ -1,0 +1,92 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMY-LOOP-HARDENING-AFTER-H4-001",
+  "generated": "2026-06-06",
+  "lanes": [
+    {
+      "lane_id": "L0",
+      "title": "Coordinator Preflight + Package-109 Baseline Audit",
+      "owner": "Coordinator",
+      "owned_paths": [
+        "reports/superpowers-agentic-autonomy-loop-hardening/00-preflight.md",
+        "reports/superpowers-agentic-autonomy-loop-hardening/lane-claims.json",
+        "reports/superpowers-agentic-autonomy-loop-hardening/execution-state.json",
+        "reports/superpowers-agentic-autonomy-loop-hardening/package-109-audit.json"
+      ],
+      "forbidden_write": ["src/", "tests/", "tools/supervisor/", "registry/", "AGENTS.md", "GOVERNANCE.md"],
+      "shared_read": [".local/supervisor/continuation-signal.json", "reports/superpowers-agentic-autonomy/"]
+    },
+    {
+      "lane_id": "L1",
+      "title": "Continuation Generator Repair",
+      "owner": "Lane 1",
+      "owned_paths": ["reports/superpowers-agentic-autonomy-loop-hardening/continuation-repair/"],
+      "forbidden_write": ["src/", "tools/supervisor/", "registry/"],
+      "shared_read": [".local/supervisor/", "reports/supervisor/"]
+    },
+    {
+      "lane_id": "L2",
+      "title": "Next-Action Loop Hardening + 3-Cycle H4_PLUS Proof",
+      "owner": "Lane 2",
+      "owned_paths": ["reports/superpowers-agentic-autonomy-loop-hardening/loop-hardening/"],
+      "forbidden_write": ["src/", "tools/supervisor/", "registry/"],
+      "shared_read": ["reports/superpowers-agentic-autonomy/two-cycle-proof/"]
+    },
+    {
+      "lane_id": "L3",
+      "title": "Adoption + Anti-Skip Contradiction Repair",
+      "owner": "Lane 3",
+      "owned_paths": ["reports/superpowers-agentic-autonomy-loop-hardening/adoption-repair/"],
+      "forbidden_write": ["src/", "tools/supervisor/", "registry/"],
+      "shared_read": [".local/supervisor/reviews/superpowers-agentic-autonomy/"]
+    },
+    {
+      "lane_id": "L4",
+      "title": "H5 Agentic Backend Pilot",
+      "owner": "Lane 4",
+      "owned_paths": ["reports/superpowers-agentic-autonomy-loop-hardening/h5-pilot/"],
+      "forbidden_write": ["src/", "tools/supervisor/", "registry/"],
+      "shared_read": ["tools/llm/endpoints.yaml", "tools/supervisor/backends/llm_api_backend.py"]
+    },
+    {
+      "lane_id": "L5",
+      "title": "H6 External Host Readiness",
+      "owner": "Lane 5",
+      "owned_paths": ["reports/superpowers-agentic-autonomy-loop-hardening/h6-readiness/"],
+      "forbidden_write": ["src/", "tools/supervisor/", "registry/"],
+      "shared_read": ["tools/supervisor/autonomous_host_daemon.py"]
+    },
+    {
+      "lane_id": "L6",
+      "title": "Ecosystem Setup Roadmap",
+      "owner": "Lane 6",
+      "owned_paths": ["reports/superpowers-agentic-autonomy-loop-hardening/ecosystem-roadmap/"],
+      "forbidden_write": ["src/", "tools/supervisor/", "registry/"],
+      "shared_read": ["tools/supervisor/backends/", "tools/supervisor/llm_backend_config.py"]
+    },
+    {
+      "lane_id": "L7",
+      "title": "Test Execution",
+      "owner": "Lane 7",
+      "owned_paths": ["reports/superpowers-agentic-autonomy-loop-hardening/test-logs/"],
+      "forbidden_write": ["src/", "tools/supervisor/", "registry/"],
+      "shared_read": ["tests/supervisor/"]
+    },
+    {
+      "lane_id": "L8",
+      "title": "Independent Verification",
+      "owner": "Lane 8",
+      "owned_paths": ["reports/superpowers-agentic-autonomy-loop-hardening/iv/"],
+      "forbidden_write": ["src/", "tools/supervisor/", "registry/"],
+      "shared_read": ["reports/superpowers-agentic-autonomy-loop-hardening/"]
+    },
+    {
+      "lane_id": "LE",
+      "title": "Evidence Package",
+      "owner": "Lane E",
+      "owned_paths": [".local/evidences/superpowers-agentic-autonomy-loop-hardening/"],
+      "forbidden_write": ["src/", "tools/supervisor/", "registry/"],
+      "shared_read": ["reports/superpowers-agentic-autonomy-loop-hardening/"]
+    }
+  ],
+  "overlap_violations": []
+}

@@ -1,0 +1,40 @@
+{
+  "valid": true,
+  "total_checks": 4,
+  "matches": 3,
+  "violations": 0,
+  "unverifiable": 1,
+  "violation_details": [],
+  "checks": [
+    {
+      "file": "evidence/evidence-declaration.yaml",
+      "check": "run_id",
+      "expected": "acceleration-r105",
+      "actual": "acceleration-r105",
+      "status": "MATCH"
+    },
+    {
+      "file": "evidence/evidence-declaration.yaml",
+      "check": "sprint_id",
+      "expected": "FORMAT-FACTORY-ACCELERATION-R105-PACKAGE-IDENTITY-SELF-CONTAINMENT-AND-ACCELERATION-ADVANCEMENT-001",
+      "actual": "FORMAT-FACTORY-ACCELERATION-R105-PACKAGE-IDENTITY-SELF-CONTAINMENT-AND-ACCELERATION-ADVANCEMENT-001",
+      "status": "MATCH"
+    },
+    {
+      "file": "review/supervisor-review.json",
+      "check": "stream_identity",
+      "expected_stream": "acceleration",
+      "detected_sprint": null,
+      "detected_stream": "mainstream",
+      "status": "UNVERIFIABLE"
+    },
+    {
+      "file": "review/supervisor-review.md",
+      "check": "stream_identity",
+      "expected_stream": "acceleration",
+      "detected_sprint": "FORMAT-FACTORY-ACCELERATION-R105-PACKAGE-IDENTITY-SELF-CONTAINMENT-AND-ACCELERATION-ADVANCEMENT-001",
+      "detected_stream": "acceleration",
+      "status": "MATCH"
+    }
+  ]
+}

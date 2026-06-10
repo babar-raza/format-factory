@@ -1,0 +1,92 @@
+{
+  "stream": "mainstream",
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R113-ACTUAL-PRODUCT-BREADTH-PROMPT-QUALITY-BLOCKER-CLOSURE-AND-DIRTY-STATE-CAMPAIGN-001",
+  "routing_packet_generated": "2026-06-04T13:00:00.000000Z",
+  "generated_by": "generate_stream_routing_packet.py",
+  "stream_decision": "CONTINUE_WITH_LIMITATIONS",
+  "mainstream_classification": "PARTIAL_FEW_FAMILIES",
+  "product_velocity": {
+    "poc_help_score": 2,
+    "product_breadth_score": 2,
+    "product_throughput_delta": 0,
+    "mainstream_blocker_removed": false,
+    "reusable_accelerator_consumed": false,
+    "ai_acceleration_consumed": false,
+    "governed_execution_consumed": false,
+    "false_pass_prevented": true,
+    "false_stop_prevented": true,
+    "human_handoff_reduced": false,
+    "machinery_overhead_score": 0,
+    "semantic_drift_risk": "medium"
+  },
+  "product_output_floor_met": true,
+  "target_families_needed": 1,
+  "actionable_gaps": [
+    {
+      "gap_id": "commercial-net-fods-dogfood-status-fods-to-csv-dotnet",
+      "format": "FODS",
+      "track": "commercial_net",
+      "priority_score": 125,
+      "skill": "governed-dogfood-export"
+    },
+    {
+      "gap_id": "commercial-net-fods-dogfood-status-fods-to-html-dotnet",
+      "format": "FODS",
+      "track": "commercial_net",
+      "priority_score": 125,
+      "skill": "governed-dogfood-export"
+    },
+    {
+      "gap_id": "commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet",
+      "format": "FODT",
+      "track": "commercial_net",
+      "priority_score": 125,
+      "skill": "governed-dogfood-export"
+    },
+    {
+      "gap_id": "commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet",
+      "format": "FODT",
+      "track": "commercial_net",
+      "priority_score": 125,
+      "skill": "governed-dogfood-export"
+    },
+    {
+      "gap_id": "foss-reduced-sylk-python-status-installed-workflow",
+      "format": "SYLK",
+      "track": "foss_reduced",
+      "priority_score": 110,
+      "skill": "governed-installed-workflow-verification"
+    },
+    {
+      "gap_id": "foss-reduced-netpbm-blockers-1",
+      "format": "Netpbm",
+      "track": "foss_reduced",
+      "priority_score": 90,
+      "skill": "governed-dogfood-export"
+    },
+    {
+      "gap_id": "foss-reduced-sylk-blockers-1",
+      "format": "SYLK",
+      "track": "foss_reduced",
+      "priority_score": 90,
+      "skill": "governed-dogfood-export"
+    },
+    {
+      "gap_id": "foss-reduced-zst-blockers-1",
+      "format": "ZST",
+      "track": "foss_reduced",
+      "priority_score": 90,
+      "skill": "governed-dependency-resolution-review"
+    }
+  ],
+  "formats_targeted": ["FODS", "FODT", "SYLK", "Netpbm", "ZST"],
+  "next_sprint_recommendation": "FODS+FODT dogfood exports (priority 125 each) + Netpbm FOSS proof. Target 3+ families to achieve CLEAN_PASS.",
+  "cross_stream_status": {
+    "skills_consumed": false,
+    "skills_missing_packet": true,
+    "acceleration_consumed": false,
+    "acceleration_missing_packet": true
+  },
+  "external_tool_mode": "ruflo_detected_not_active",
+  "deterministic_supervisor_retains_authority": true
+}

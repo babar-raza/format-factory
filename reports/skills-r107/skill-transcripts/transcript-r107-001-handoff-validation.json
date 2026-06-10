@@ -1,0 +1,28 @@
+{
+  "invocation_id": "R107-DRY-001-PBM-GET-PIXEL-HANDOFF",
+  "skill_id": "add-python-api",
+  "mode": "dry-run",
+  "inputs": {
+    "format_id": "pbm",
+    "api_name": "get_pixel",
+    "exact_source_paths": [
+      "src/python/pbm/pbm_parser.py"
+    ],
+    "exact_test_paths": [
+      "tests/python/pbm/test_r107_pbm_get_pixel.py"
+    ],
+    "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+    "focused_test_command": "pytest tests/python/pbm/test_r107_pbm_get_pixel.py -v"
+  },
+  "allowed_files": [
+    "src/python/pbm/pbm_parser.py",
+    "tests/python/pbm/test_r107_pbm_get_pixel.py",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T22:00:00Z",
+  "notes": "Dry-run: validated handoff-004-python-api-roundtrip.yaml structure. Skill add-python-api is registered and active in skill-registry.yaml with product_track foss_python. All required_handoff_fields (format_id, api_name, exact_source_paths, exact_test_paths, ledger_entry_path, focused_test_command) present in inputs. No files changed in dry-run mode. Ledger entry would be required for live execution."
+}

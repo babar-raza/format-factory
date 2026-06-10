@@ -1,0 +1,34 @@
+id: GRH-TC-008
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Run 6 controlled governance pilots (Lane H)"
+status: completed
+lane: governance_pilots
+item_type: GOVERNANCE_DOC
+problem: >
+  Governance validators need to be exercised against real fixture declarations
+  to verify they produce correct PASS/FAIL/WARN results across different scenarios.
+scope:
+  - Create 6 fixture evidence declarations in tests/supervisor/fixtures/governance-pilots/
+  - Run all 10 validators against each fixture
+  - Document results in reports/repeatability-governance-hardening-rnext/pilot-results.md
+pilots:
+  - pilot-001: Well-formed BACKFILLED_LEGACY_EXECUTION item (expect PASS)
+  - pilot-002: MANUAL_UNGOVERNED item claiming product source (expect FAIL)
+  - pilot-003: QUEUE_DECLARED_EXECUTION (deprecated) item (expect FAIL)
+  - pilot-004: MANUAL_GOVERNED_BY_SKILL item with transcript (expect PASS)
+  - pilot-005: Item with REPLAYABLE claim but no replay_recipe_path (expect FAIL)
+  - pilot-006: Forbidden state jump DISCOVERED → GOVERNANCE_ACCEPTED (expect FAIL)
+files_to_create:
+  - tests/supervisor/fixtures/governance-pilots/pilot-001-backfill-good.yaml
+  - tests/supervisor/fixtures/governance-pilots/pilot-002-ungoverned-bad.yaml
+  - tests/supervisor/fixtures/governance-pilots/pilot-003-queue-declared-bad.yaml
+  - tests/supervisor/fixtures/governance-pilots/pilot-004-governed-skill-good.yaml
+  - tests/supervisor/fixtures/governance-pilots/pilot-005-replayable-missing-recipe.yaml
+  - tests/supervisor/fixtures/governance-pilots/pilot-006-bad-state-jump.yaml
+  - reports/repeatability-governance-hardening-rnext/pilot-results.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-005, GRH-TC-006]
+handoff_to_autonomy_sprint: false

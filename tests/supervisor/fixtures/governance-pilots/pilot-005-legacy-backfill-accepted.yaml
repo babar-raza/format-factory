@@ -1,0 +1,22 @@
+# Governance Pilot 005: Properly formed legacy backfill item — all validators should PASS
+# Expected result: PASS (all validators)
+# Pilot type: positive — correctly formed legacy backfill
+pilot_id: "PILOT-005"
+description: "Properly formed legacy backfill item with sidecar and idempotency key"
+expected_result: "PASS"
+declaration:
+  run_id: pilot-005-legacy-backfill-accepted
+  planned_work_items:
+    - item_id: "PILOT-005-TC-006"
+      item_type: "LEGACY_BACKFILL_METADATA"
+      format_id: "gnumeric"
+      function_name: "set_cell_value"
+      status: "completed"
+      execution_method: "BACKFILLED_LEGACY_EXECUTION"
+      claim_classification: "LEGACY_BACKFILLED"
+      exception_classification: "legacy_backfill"
+      idempotency_key: "aff66c999800c221ffe346134519aae0b838cde1ec9cc66fbcc7b578ed81fbf9"
+      sidecar_attribution_path: ".local/attribution/gnumeric/gnumeric_codec.py.attribution.yaml"
+      legacy_backfill_status: "BACKFILLED"
+      state_machine_start: "EVIDENCE_LOCATED"
+      state_machine_target: "BACKFILLED_LEGACY_ACCEPTED"

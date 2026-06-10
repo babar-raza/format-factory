@@ -1,0 +1,32 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "validated_at": "2026-06-04T12:00:00Z",
+  "handoff_path": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+  "overall_result": "PASS",
+  "fields": {
+    "handoff_id": "PRESENT",
+    "skill_id": "add-dotnet-api",
+    "format_id": "fods",
+    "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+    "mode": "dry-run",
+    "exact_source_paths": ["src/net/fods/FodsDocument.cs", "src/net/fods/FodsWorkbook.cs"],
+    "exact_test_paths": ["tests/net/fods/FodsR114ExportToCsvTests.cs"],
+    "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+    "focused_test_command": "dotnet test tests/net/fods/ --filter FodsR114ExportToCsvTests",
+    "allowed_files": "PRESENT — 3 narrow files",
+    "forbidden_files": "PRESENT — src/python/*, registry, plans, poc-targets, .vscode/mcp.json",
+    "rollback_note": "PRESENT",
+    "enforcement_tier": "FAIL_CLOSED"
+  },
+  "independent_consumability": {
+    "tells_mainstream_gap_to_work_on": true,
+    "tells_mainstream_allowed_files": true,
+    "tells_mainstream_forbidden_files": true,
+    "tells_mainstream_expected_tests": true,
+    "tells_mainstream_expected_source_diff": true,
+    "tells_mainstream_transcript_fields": true,
+    "tells_mainstream_rollback_procedure": true,
+    "no_human_explanation_needed": true
+  },
+  "verdict": "HANDOFF_INDEPENDENTLY_CONSUMABLE"
+}

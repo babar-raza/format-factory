@@ -1,0 +1,95 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "generated_date": "2026-06-04",
+  "deliverables": [
+    {
+      "id": "D1",
+      "name": "FODS dogfood-csv Mainstream packet",
+      "mainstream_gap_accelerated": "fods_to_csv_dotnet GAP_DOGFOOD_EXTERNAL",
+      "packet_path": "reports/acceleration-product-first/mainstream-consumption-packets/fods-dogfood_status-fods_to_csv_dotnet.json",
+      "directly_consumable": true,
+      "reusable": true,
+      "product_track": "commercial_net",
+      "notes": "Includes implementation design, test strategy, source patterns, allowed/forbidden files, 7 governance rules"
+    },
+    {
+      "id": "D2",
+      "name": "FODT dogfood-markdown Mainstream packet",
+      "mainstream_gap_accelerated": "fodt_to_markdown_dotnet GAP_DOGFOOD_EXTERNAL",
+      "packet_path": "reports/acceleration-product-first/mainstream-consumption-packets/fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+      "directly_consumable": true,
+      "reusable": true,
+      "product_track": "commercial_net",
+      "notes": "Includes FODT-specific allowed files, dogfood strategy, risk review"
+    },
+    {
+      "id": "D3",
+      "name": "Netpbm flip-diagonal Mainstream packet",
+      "mainstream_gap_accelerated": "netpbm_flip_diagonal .NET gap",
+      "packet_path": "reports/acceleration-product-first/mainstream-consumption-packets/netpbm-dotnet_status-netpbm_flip_diagonal.json",
+      "directly_consumable": true,
+      "reusable": true,
+      "product_track": "commercial_net",
+      "notes": "First available Netpbm .NET gap; includes image processing test strategy"
+    },
+    {
+      "id": "D4",
+      "name": "SYLK CSV export Mainstream packet (FOSS)",
+      "mainstream_gap_accelerated": "write_sylk Python FOSS",
+      "packet_path": "reports/acceleration-product-first/mainstream-consumption-packets/sylk-python_status-write_sylk.json",
+      "directly_consumable": true,
+      "reusable": false,
+      "product_track": "foss_reduced",
+      "notes": "SYLK selected over DIF/ZST; write_sylk exists from R93; CSV export gap documented"
+    },
+    {
+      "id": "D5",
+      "name": "AI Product Brain capability graph",
+      "mainstream_gap_accelerated": "Sprint planning for all 6 POC products",
+      "packet_path": "reports/acceleration-product-first/ai-product-brain/product-capability-graph.json",
+      "directly_consumable": false,
+      "reusable": true,
+      "product_track": "all",
+      "notes": "Observes full product portfolio; produces gap rankings and over-investment analysis"
+    },
+    {
+      "id": "D6",
+      "name": "AI Sprint Manager 3-pass management structure",
+      "mainstream_gap_accelerated": "All streams — prevents stuck lanes and machinery drift",
+      "packet_path": "reports/acceleration-product-first/ai-management-passes/",
+      "directly_consumable": false,
+      "reusable": true,
+      "product_track": "all",
+      "notes": "Pre/mid/final passes; skipped in agentic_low_risk unavailable mode — correct behavior"
+    },
+    {
+      "id": "D7",
+      "name": "External tool governance model",
+      "mainstream_gap_accelerated": "Prevents uncontrolled tool activation in future sprints",
+      "packet_path": "reports/acceleration-plan-repair/",
+      "directly_consumable": false,
+      "reusable": true,
+      "product_track": "all",
+      "notes": "Risk register, boundary docs, activation gates for Ruflo/Superpowers/GhidraMCP"
+    },
+    {
+      "id": "D8",
+      "name": "8 AI cognitive tools",
+      "mainstream_gap_accelerated": "Acceleration cognitive layer for all future sprints",
+      "packet_path": "tools/supervisor/ai_*.py + source_pattern_miner.py + test_plan_generator.py + mainstream_acceleration_packet.py",
+      "directly_consumable": false,
+      "reusable": true,
+      "product_track": "all",
+      "notes": "58 tests all passing; gateway-integrated; fixture fallback where appropriate"
+    }
+  ],
+  "pass_criteria": {
+    "directly_consumable_count": 4,
+    "reusable_count": 6,
+    "threshold_consumable": 1,
+    "threshold_reusable": 2,
+    "result": "MEETS_CRITERIA"
+  },
+  "authority_state": "ai_draft",
+  "non_authoritative": true
+}

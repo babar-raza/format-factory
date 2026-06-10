@@ -1,0 +1,275 @@
+skills:
+- command: /add-dotnet-api
+  command_file: .claude/commands/add-dotnet-api.md
+  mandatory_validations:
+  - product_code_ledger_validator
+  - focused_dotnet_tests
+  - no_gate_or_release_state_change
+  product_track: commercial_dotnet
+  purpose: Add or extend one bounded commercial .NET product API with focused tests
+    and evidence.
+  required_handoff_fields:
+  - format_id
+  - api_name
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  - focused_test_command
+  skill_id: add-dotnet-api
+  status: active
+- command: /add-python-api
+  command_file: .claude/commands/add-python-api.md
+  mandatory_validations:
+  - product_code_ledger_validator
+  - focused_python_tests
+  - no_gate_or_release_state_change
+  product_track: foss_python
+  purpose: Add or extend one bounded Python FOSS product API with focused tests and
+    evidence.
+  required_handoff_fields:
+  - format_id
+  - api_name
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  - focused_test_command
+  skill_id: add-python-api
+  status: active
+- command: /add-dogfood-export
+  command_file: .claude/commands/add-dogfood-export.md
+  mandatory_validations:
+  - product_code_ledger_validator
+  - dogfood_backend_is_format_factory_library
+  - external_export_dependency_scan
+  - focused_export_tests
+  product_track: cross_product_export
+  purpose: Add one bounded export path whose write backend is another Format Factory
+    library.
+  required_handoff_fields:
+  - source_format_id
+  - target_format_id
+  - export_name
+  - target_ff_library
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  - focused_test_command
+  skill_id: add-dogfood-export
+  status: active
+- command: /update-capability-matrix
+  command_file: .claude/commands/update-capability-matrix.md
+  mandatory_validations:
+  - evidence_paths_exist
+  - claimed_statuses_match_test_evidence
+  - commercial_product_ready_remains_false
+  - gate_11_approved_remains_false
+  product_track: shared_reference_snapshot
+  purpose: Reconcile proven product capability results into the POC target matrix
+    without changing gate authority.
+  required_handoff_fields:
+  - matrix_entry
+  - evidence_paths
+  - focused_validation_commands
+  - claimed_status_changes
+  skill_id: update-capability-matrix
+  status: active
+- command: /add-dotnet-object-model-feature
+  command_file: .claude/commands/add-dotnet-object-model-feature.md
+  mandatory_validations:
+  - product_code_ledger_validator
+  - focused_dotnet_tests
+  product_track: commercial_dotnet
+  purpose: Add a feature to a .NET object model (property, method, conversion).
+  required_handoff_fields:
+  - format_id
+  - feature_name
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  skill_id: add-dotnet-object-model-feature
+  status: active
+- command: /add-python-object-model-feature
+  command_file: .claude/commands/add-python-object-model-feature.md
+  mandatory_validations:
+  - product_code_ledger_validator
+  - focused_python_tests
+  product_track: foss_python
+  purpose: Add a feature to a Python object model (method, conversion, property).
+  required_handoff_fields:
+  - format_id
+  - feature_name
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  skill_id: add-python-object-model-feature
+  status: active
+- command: /add-same-format-writer-feature
+  command_file: .claude/commands/add-same-format-writer-feature.md
+  mandatory_validations:
+  - product_code_ledger_validator
+  - roundtrip_test_pass
+  product_track: cross_product
+  purpose: Add same-format save/write capability after editing.
+  required_handoff_fields:
+  - format_id
+  - writer_scope
+  - exact_source_paths
+  - exact_test_paths
+  - ledger_entry_path
+  skill_id: add-same-format-writer-feature
+  status: active
+- command: /add-roundtrip-test
+  command_file: .claude/commands/add-roundtrip-test.md
+  mandatory_validations:
+  - focused_tests_pass
+  product_track: testing
+  purpose: Add a parse-edit-write-reparse roundtrip test.
+  required_handoff_fields:
+  - format_id
+  - roundtrip_scope
+  - exact_test_paths
+  skill_id: add-roundtrip-test
+  status: active
+- command: /add-installed-package-example
+  command_file: .claude/commands/add-installed-package-example.md
+  mandatory_validations:
+  - example_runs_without_error
+  product_track: developer_experience
+  purpose: Add an example that uses an installed package (not PYTHONPATH).
+  required_handoff_fields:
+  - format_id
+  - example_scope
+  - example_path
+  skill_id: add-installed-package-example
+  status: active
+- command: /promote-gap-to-taskcard
+  command_file: .claude/commands/promote-gap-to-taskcard.md
+  mandatory_validations:
+  - taskcard_valid_yaml
+  product_track: planning
+  purpose: Promote a product gap from the POC matrix to a formal taskcard.
+  required_handoff_fields:
+  - gap_id
+  - taskcard_path
+  skill_id: promote-gap-to-taskcard
+  status: active
+- command: /generate-execution-handoff
+  command_file: .claude/commands/generate-execution-handoff.md
+  mandatory_validations:
+  - handoff_yaml_valid
+  product_track: planning
+  purpose: Generate a structured execution handoff for a governed skill.
+  required_handoff_fields:
+  - skill_id
+  - target_format
+  - scope
+  skill_id: generate-execution-handoff
+  status: active
+- command: /verify-dogfood-path
+  command_file: .claude/commands/verify-dogfood-path.md
+  mandatory_validations:
+  - product_code_ledger_validator
+  - no_external_imaging_backends
+  - focused_export_tests
+  product_track: cross_product_export
+  purpose: Verify that an export path uses only Format Factory libraries.
+  required_handoff_fields:
+  - export_name
+  - source_format
+  - target_format
+  - exact_test_paths
+  skill_id: verify-dogfood-path
+  status: active
+- command: /package-install-proof
+  command_file: .claude/commands/package-install-proof.md
+  mandatory_validations:
+  - wheel_builds
+  - import_succeeds
+  product_track: packaging
+  purpose: Prove that a package installs and imports correctly from wheel.
+  required_handoff_fields:
+  - format_id
+  - package_name
+  skill_id: package-install-proof
+  status: active
+- command: /materialize-declaration-review
+  command_file: .claude/commands/materialize-declaration-review.md
+  mandatory_validations:
+  - declaration_yaml_valid
+  - zip_builds_successfully
+  product_track: planning
+  purpose: Build a declaration review package ZIP from an evidence declaration YAML
+    for supervisor grading.
+  required_handoff_fields:
+  - declaration_path
+  skill_id: materialize-declaration-review
+  status: draft
+- command: /record-lane-execution
+  command_file: .claude/commands/record-lane-execution.md
+  mandatory_validations:
+  - lane_id_unique
+  product_track: planning
+  purpose: Record the execution of a sprint lane into supervisor tracking files for
+    multi-lane coordination.
+  required_handoff_fields:
+  - lane_id
+  - sprint_id
+  skill_id: record-lane-execution
+  status: draft
+- command: /build-context-pack
+  command_file: .claude/commands/build-context-pack.md
+  mandatory_validations:
+  - context_pack_yaml_valid
+  product_track: planning
+  purpose: Build a machine-readable context pack YAML summarizing current project
+    state for session bootstrap.
+  required_handoff_fields:
+  - output_path
+  skill_id: build-context-pack
+  status: draft
+- command: /check-mcp-status
+  command_file: .claude/commands/check-mcp-status.md
+  mandatory_validations:
+  - status_classified
+  product_track: planning
+  purpose: Check and classify the MCP server connection status using a 5-state model.
+  required_handoff_fields:
+  - mcp_server_name
+  skill_id: check-mcp-status
+  status: draft
+- command: /select-poc-gap
+  command_file: .claude/commands/select-poc-gap.md
+  mandatory_validations:
+  - gap_exists_in_matrix
+  product_track: planning
+  purpose: Select the next product gap from the POC matrix for sprint execution based
+    on priority and readiness.
+  required_handoff_fields:
+  - matrix_path
+  skill_id: select-poc-gap
+  status: draft
+- command: /validate-product-code-ledger
+  command_file: .claude/commands/validate-product-code-ledger.md
+  mandatory_validations:
+  - ledger_json_valid
+  - validator_exit_zero
+  product_track: planning
+  purpose: Run the product-code change ledger validator and report pass/fail results
+    for sprint evidence.
+  required_handoff_fields:
+  - ledger_path
+  skill_id: validate-product-code-ledger
+  status: draft
+- command: /validate-skill-transcript
+  command_file: .claude/commands/validate-skill-transcript.md
+  mandatory_validations:
+  - transcript_json_valid
+  - skill_id_registered
+  product_track: planning
+  purpose: Validate a skill invocation transcript against the registry schema and
+    report pass/fail.
+  required_handoff_fields:
+  - transcript_path
+  skill_id: validate-skill-transcript
+  status: draft
+snapshot_timestamp: '2026-06-03T15:00:00Z'

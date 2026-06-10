@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-06-04T07:07:30.389465+00:00",
+  "mainstream_sprint": "FORMAT-FACTORY-MAINSTREAM-R113-ACTUAL-PRODUCT-BREADTH-PROMPT-QUALITY-BLOCKER-CLOSURE-AND-DIRTY-STATE-CAMPAIGN-001",
+  "skills_sprint": "FORMAT-FACTORY-SKILLS-R113-FULL-LIVE-CYCLE-STREAM-CONVERGENCE-CROSS-STREAM-DEPENDENCY-AND-MCP-READINESS-CAMPAIGN-001",
+  "acceleration_sprint": "FORMAT-FACTORY-SKILLS-R113-FULL-LIVE-CYCLE-STREAM-CONVERGENCE-CROSS-STREAM-DEPENDENCY-AND-MCP-READINESS-CAMPAIGN-001",
+  "skills": {
+    "status": "not_consumed",
+    "skills_overhead_score": 2,
+    "skills_breadth_score": 0,
+    "mainstream_consumption_declared": "n/a",
+    "flags": [
+      "SKILLS_NO_PRODUCT_OUTPUT",
+      "SKILLS_MISSING_PACKET",
+      "MAINSTREAM_NOT_CONSUMING_SKILLS"
+    ],
+    "verdict": "SKILLS_CONSUMPTION_GAP",
+    "action_required": true,
+    "recommended_action": "Skills must produce governed transcripts AND Mainstream must declare governed_execution_consumed=true"
+  },
+  "acceleration": {
+    "status": "not_consumed",
+    "acceleration_breadth_score": 1,
+    "acceleration_ai_output_status": "no_ai",
+    "mainstream_consumption_declared": "n/a",
+    "flags": [
+      "ACCELERATION_NO_AI_OUTPUT",
+      "MAINSTREAM_NOT_CONSUMING_ACCELERATION"
+    ],
+    "verdict": "ACCELERATION_CONSUMPTION_GAP",
+    "action_required": true,
+    "recommended_action": "Acceleration must produce ai_draft outputs AND Mainstream must declare reusable_accelerator_consumed=true"
+  },
+  "overall_verdict": "CROSS_STREAM_CONSUMPTION_GAPS_DETECTED",
+  "all_flags": [
+    "SKILLS_NO_PRODUCT_OUTPUT",
+    "SKILLS_MISSING_PACKET",
+    "MAINSTREAM_NOT_CONSUMING_SKILLS",
+    "ACCELERATION_NO_AI_OUTPUT",
+    "MAINSTREAM_NOT_CONSUMING_ACCELERATION"
+  ]
+}

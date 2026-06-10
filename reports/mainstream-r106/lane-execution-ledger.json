@@ -1,0 +1,101 @@
+{
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R106-POC-PRODUCT-PROOF-AND-PACKAGED-EVIDENCE-CAMPAIGN-001",
+  "generated_at": "2026-06-03T00:00:00Z",
+  "lanes": [
+    {
+      "lane_id": "W0-RECONCILIATION",
+      "title": "Wave 0: R105 Reconciliation",
+      "status": "COMPLETE",
+      "items": [
+        {"id": "W0-01", "title": "R105 reconciliation report", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\mainstream-r106\\r105-reconciliation.md"},
+        {"id": "W0-02", "title": "R105 claim classification", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\mainstream-r106\\r105-claim-classification.json"},
+        {"id": "W0-03", "title": "R105 skill transcripts", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\mainstream-r106\\skill-transcripts\\"},
+        {"id": "W0-04", "title": "R105+R106 source diffs", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\mainstream-r106\\source-diffs\\"},
+        {"id": "W0-05", "title": "Context-pack contamination check", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\mainstream-r106\\context-pack-contamination-check.md"},
+        {"id": "W0-06", "title": "Preflight baseline", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\mainstream-r106\\00-preflight.md"}
+      ]
+    },
+    {
+      "lane_id": "W1-GAP-SELECTION",
+      "title": "Wave 1: Fresh Mainstream Gap Selection",
+      "status": "COMPLETE",
+      "items": [
+        {"id": "W1-01", "title": "Selected mainstream gaps R106", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\mainstream-r106\\selected-mainstream-gaps-r106.json"}
+      ]
+    },
+    {
+      "lane_id": "W2-COMMERCIAL-DOTNET",
+      "title": "Wave 2: Commercial .NET APIs (6 APIs, 50 tests)",
+      "status": "COMPLETE",
+      "items": [
+        {"id": "W2-01", "title": "FODS ClearSheet", "status": "COMPLETE", "tests": 8, "skill": "/add-dotnet-api"},
+        {"id": "W2-02", "title": "FODS GetColumnValues", "status": "COMPLETE", "tests": 8, "skill": "/add-dotnet-api"},
+        {"id": "W2-03", "title": "FODT RemoveAllParagraphs", "status": "COMPLETE", "tests": 8, "skill": "/add-dotnet-api"},
+        {"id": "W2-04", "title": "FODT GetTextBetweenParagraphs", "status": "COMPLETE", "tests": 8, "skill": "/add-dotnet-api"},
+        {"id": "W2-05", "title": "Netpbm FlipDiagonal", "status": "COMPLETE", "tests": 8, "skill": "/add-dotnet-api"},
+        {"id": "W2-06", "title": "Netpbm Overlay", "status": "COMPLETE", "tests": 10, "skill": "/add-dotnet-api"}
+      ]
+    },
+    {
+      "lane_id": "W3-FOSS-PYTHON",
+      "title": "Wave 3: FOSS Python Tests (46 tests)",
+      "status": "COMPLETE",
+      "items": [
+        {"id": "W3-01", "title": "ZST streaming proof", "status": "COMPLETE", "tests": 9},
+        {"id": "W3-02", "title": "PBM write roundtrip", "status": "COMPLETE", "tests": 10},
+        {"id": "W3-03", "title": "PGM strict errors", "status": "COMPLETE", "tests": 9},
+        {"id": "W3-04", "title": "PPM write maxval", "status": "COMPLETE", "tests": 9},
+        {"id": "W3-05", "title": "SYLK write roundtrip", "status": "COMPLETE", "tests": 9}
+      ]
+    },
+    {
+      "lane_id": "W4-DOGFOOD",
+      "title": "Wave 4: Dogfood Tests (18 tests)",
+      "status": "COMPLETE",
+      "items": [
+        {"id": "W4-01", "title": "FODS dogfood save roundtrip", "status": "COMPLETE", "tests": 6},
+        {"id": "W4-02", "title": "FODT dogfood save roundtrip", "status": "COMPLETE", "tests": 6},
+        {"id": "W4-03", "title": "Netpbm dogfood crop+overlay", "status": "COMPLETE", "tests": 6}
+      ]
+    },
+    {
+      "lane_id": "W5-USABILITY",
+      "title": "Wave 5: Usability Examples (3 examples)",
+      "status": "COMPLETE",
+      "items": [
+        {"id": "W5-01", "title": "FODS ClearSheet example", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\examples\\net\\fods\\ClearSheetExample.cs"},
+        {"id": "W5-02", "title": "FODT TextRange example", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\examples\\net\\fodt\\TextRangeExample.cs"},
+        {"id": "W5-03", "title": "Netpbm FlipOverlay example", "status": "COMPLETE", "artifact": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\examples\\net\\netpbm\\FlipOverlayExample.cs"}
+      ]
+    },
+    {
+      "lane_id": "W6-EVIDENCE",
+      "title": "Wave 6: Evidence Closeout",
+      "status": "COMPLETE",
+      "items": [
+        {"id": "W6-01", "title": "Raw test logs", "status": "COMPLETE"},
+        {"id": "W6-02", "title": "Source diffs", "status": "COMPLETE"},
+        {"id": "W6-03", "title": "R106 skill transcripts", "status": "COMPLETE"},
+        {"id": "W6-04", "title": "POC matrix updated", "status": "COMPLETE"},
+        {"id": "W6-05", "title": "Product-code ledger updated", "status": "COMPLETE"},
+        {"id": "W6-06", "title": "Lane execution ledger", "status": "COMPLETE"},
+        {"id": "W6-07", "title": "Evidence declaration", "status": "COMPLETE"},
+        {"id": "W6-08", "title": "Autonomous cycle", "status": "COMPLETE"},
+        {"id": "W6-09", "title": "Review package", "status": "COMPLETE"}
+      ]
+    }
+  ],
+  "totals": {
+    "new_tests": 114,
+    "new_dotnet_apis": 6,
+    "new_foss_test_files": 5,
+    "new_dogfood_test_files": 3,
+    "new_examples": 3,
+    "python_tests_final": 2903,
+    "fods_tests_final": 375,
+    "fodt_tests_final": 363,
+    "netpbm_tests_final": 291,
+    "dotnet_total_final": 1029,
+    "grand_total_final": 3932
+  }
+}

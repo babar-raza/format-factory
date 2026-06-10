@@ -1,0 +1,47 @@
+{
+  "git_head": "3a86a05295cb4b82ed40a3408b0612a90f93643c",
+  "branch": "main",
+  "sprint_id": "FORMAT-FACTORY-FINAL-POC-AUTHORITY-AUDIT-AND-GATE11-READINESS-001",
+  "classification": "SPRINT_WORK_IN_PROGRESS_AUTHORIZED",
+  "categories": {
+    "PRE_EXISTING_SUPERVISOR_WIP": [
+      ".supervisor/context-pack.yaml",
+      ".supervisor/policies.yaml",
+      ".supervisor/project-memory.md",
+      ".supervisor/prompts/mega-train-template.md",
+      ".supervisor/schemas/evidence-declaration.schema.json",
+      ".supervisor/schemas/next-sprint-taskmaster.schema.json",
+      ".supervisor/skill-registry.yaml",
+      "plans/master-plan.md",
+      "reports/supervisor/*"
+    ],
+    "PRE_EXISTING_PRODUCT_WIP": [
+      "src/net/fods/FodsDocument.cs",
+      "src/net/fodt/FodtDocument.cs",
+      "src/net/netpbm/Model/NetpbmImage.cs",
+      "src/python/sylk/sylk_parser.py",
+      "product-capability-matrix/poc-targets.yaml"
+    ],
+    "PRE_EXISTING_HOST_AUTONOMY_WIP": [
+      "tools/supervisor/autonomous_train_executor.py",
+      "tools/supervisor/generate_supervisor_packet.py",
+      "tools/supervisor/autonomous_cycle.py",
+      "tools/supervisor/build_context_pack.py"
+    ],
+    "PRE_EXISTING_CLAUDE_COMMANDS": [
+      ".claude/commands/*.md",
+      ".claude/settings.json"
+    ],
+    "ALLOWED_THIS_SPRINT_DIRTY_STATE": [
+      "reports/final-poc-authority-audit/**",
+      "tools/supervisor/proof_backed_poc_gate.py",
+      "tools/supervisor/autonomous_host_runner.py",
+      "tests/supervisor/test_proof_backed_poc_gate.py",
+      "tests/supervisor/test_autonomous_host_runner.py",
+      "tests/supervisor/test_autonomous_train_executor.py",
+      ".local/evidences/final-poc-authority-audit/**"
+    ]
+  },
+  "unsafe_dirty_state": false,
+  "requires_stop": false
+}

@@ -1,0 +1,30 @@
+{
+  "sample_type": "continuation_decision_comparison",
+  "generated_at": "2026-06-04T10:40:00.000000",
+  "yes_example": {
+    "inputs": {
+      "auto_continue_value": true,
+      "at_max_iterations": false,
+      "hard_stops": [],
+      "overclaimed": [],
+      "rework_items": [],
+      "dirty_state_classified": true,
+      "required_artifacts_present": true,
+      "product_output_floor_met": true
+    },
+    "result": "YES"
+  },
+  "no_product_output_floor_example": {
+    "inputs": {
+      "auto_continue_value": true,
+      "at_max_iterations": false,
+      "hard_stops": [],
+      "overclaimed": [],
+      "rework_items": [],
+      "dirty_state_classified": true,
+      "required_artifacts_present": true,
+      "product_output_floor_met": false
+    },
+    "result": "NO_PRODUCT_OUTPUT_FLOOR"
+  }
+}

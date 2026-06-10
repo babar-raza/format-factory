@@ -1,0 +1,19 @@
+# Pilot: TCA-FULL-013 — Synthetic fixture quarantine pilot
+# A declaration that attempts to use the quarantined synthetic fixture as authority.
+# Expected: REJECTED — no valid spec_fact_refs, quarantined artifact cannot be authority
+pilot_id: pilot-synthetic-fixture
+sprint_id: SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001
+run_id: spec-authority-full-pilot-healing-20260608-e382e5f
+expected_result: REJECTED_AS_EXPECTED
+
+planned_work_items:
+  - item_id: WI-PILOT-SYNTH-001
+    item_type: REQUIREMENT
+    title: "Requirement claiming authority from synthetic fixture"
+    status: completed
+    # Deliberately: spec_fact_refs referencing what would be the quarantined synthetic req file
+    # No valid FACT-xxx IDs — synthetic files are not FACT-xxx authorities
+    notes: "Authority source: .local/spec-artifacts/FODS-SPEC-001-requirements-synthetic-DO-NOT-USE.json"
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    acceptance_criteria: "MUST BE REJECTED — no spec_fact_refs and no valid exception_classification; synthetic fixture cannot be authority"

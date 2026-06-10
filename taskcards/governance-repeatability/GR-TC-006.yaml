@@ -1,0 +1,63 @@
+id: GR-TC-006
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+generated_at: "2026-06-08"
+title: "Apply legacy backfill to 4 autonomous-execution-spine functions"
+status: ready_to_execute
+lane: legacy_backfill
+item_type: LEGACY_BACKFILL_METADATA
+problem: >
+  set_cell_value, get_headers, get_paragraph, export_to_csv have no execution markers,
+  no skill transcripts, no diff artifacts. MEMORY.md falsely implies queue dispatch.
+scope:
+  - "SIDECAR-FIRST: Create 4 sidecar attribution YAML files (always)"
+  - "SOURCE COMMENTS OPTIONAL: Add FORMAT_FACTORY_EXECUTION comment to source ONLY IF:
+    all 3 conditions are met: (a) no linter/formatter conflict detected,
+    (b) no test failures on comment-only edit, (c) coordinator approves"
+  - Correct .supervisor/project-memory.md autonomous-execution-spine entry
+  - "If external MEMORY.md exists at discovered path, correct it too (optional)"
+  - "Update .local/evidences/autonomous-execution-spine/evidence-declaration.yaml
+    to ADD fields only (do NOT change existing fields, do NOT change test results)"
+preconditions:
+  - GR-TC-004 complete (idempotency key formula available)
+  - Read source files before any edit to confirm exact line numbers
+out_of_scope:
+  - Changing any function logic
+  - Creating replay recipes
+  - Upgrading LEGACY_BACKFILLED to REPLAYABLE
+files_to_create_always:
+  - .local/attribution/gnumeric/gnumeric_codec.py.attribution.yaml
+  - .local/attribution/tsv/tsv_parser.py.attribution.yaml
+  - .local/attribution/abw/abw_codec.py.attribution.yaml
+  - .local/attribution/ndjson/ndjson_codec.py.attribution.yaml
+files_to_update_always:
+  - ".local/evidences/autonomous-execution-spine/evidence-declaration.yaml (add fields only)"
+  - ".supervisor/project-memory.md (correct autonomous-execution-spine claim only)"
+files_to_update_conditional:
+  - "src/python/gnumeric/gnumeric_codec.py (comment only, conditional)"
+  - "src/python/tsv/tsv_parser.py (comment only, conditional)"
+  - "src/python/abw/abw_codec.py (comment only, conditional)"
+  - "src/python/ndjson/ndjson_codec.py (comment only, conditional)"
+state_machine_start: EVIDENCE_LOCATED
+state_machine_target: BACKFILLED_LEGACY_ACCEPTED
+acceptance_criteria:
+  - 4 sidecar files exist with execution_method=BACKFILLED_LEGACY_EXECUTION
+  - .supervisor/project-memory.md no longer implies 6 product-source queue dispatches
+  - evidence-declaration.yaml work items have execution_method field
+  - All 44 original tests still pass (verify with focused run)
+  - No function logic changed
+rollback_compliant_with_AGENTS_AE2:
+  - "Sidecar files: delete the created files (no git restore needed)"
+  - "Source comments (if added): remove the single comment line; record in adaptation-log.md"
+  - "evidence-declaration.yaml: the added fields can be removed by editing (no git restore)"
+  - "project-memory.md: revert the text edit (no git restore)"
+  - "DO NOT use git checkout, git reset, git restore, git clean"
+  - "If uncertain: record the touched file list and consult coordinator before any revert"
+verification:
+  - "focused_pytest: discover and run test command for the 4 functions"
+  - "file_exists: 4 sidecar YAML files"
+  - "yaml_valid: 4 sidecar files parse without error"
+  - "no_logic_change: git diff src/python/ must show ONLY comment lines if source was touched"
+dependencies:
+  - GR-TC-004
+handoff_to_autonomy_sprint: false

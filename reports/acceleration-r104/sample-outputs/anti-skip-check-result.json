@@ -1,0 +1,63 @@
+{
+  "total_checks": 7,
+  "violations": 0,
+  "all_pass": true,
+  "checks": [
+    {
+      "check": "generic_prompt",
+      "is_violation": false,
+      "generic_markers_found": [],
+      "stream_markers_found": [
+        "acceleration",
+        "supervisor"
+      ],
+      "recommendation": "Prompt has adequate stream-specific content."
+    },
+    {
+      "check": "stale_gaps",
+      "is_violation": false,
+      "expected_sprint": "R104",
+      "actual_sprint": "R104",
+      "recommendation": "Selected gaps sprint matches expected."
+    },
+    {
+      "check": "missing_raw_logs",
+      "is_violation": false,
+      "logs_found": [
+        "reports\\acceleration-r104\\raw-test-log.txt"
+      ],
+      "recommendation": "Found 1 raw log file(s)."
+    },
+    {
+      "check": "missing_evidence_manifest",
+      "is_violation": false,
+      "manifests_found": [
+        "reports\\acceleration-r104\\evidence-manifest.yaml"
+      ],
+      "recommendation": "Found 1 evidence manifest(s)."
+    },
+    {
+      "check": "missing_lane_ledger",
+      "is_violation": false,
+      "ledgers_found": [
+        "reports\\acceleration-r104\\sample-outputs\\dry-run-ledger.json"
+      ],
+      "recommendation": "Found 1 ledger file(s)."
+    },
+    {
+      "check": "cross_stream_prompt_contamination",
+      "is_violation": false,
+      "target_stream": "acceleration",
+      "forbidden_refs_found": [],
+      "product_markers_found": [],
+      "recommendation": "Prompt for acceleration has clean stream boundaries."
+    },
+    {
+      "check": "missing_sample_outputs",
+      "is_violation": false,
+      "outputs_found": 10,
+      "min_required": 1,
+      "recommendation": "Found 10 sample output file(s)."
+    }
+  ]
+}

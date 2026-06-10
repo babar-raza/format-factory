@@ -1,0 +1,33 @@
+handoff_id: SKILLS-R102-HANDOFF-002
+skill_id: add-dotnet-object-model-feature
+format_id: netpbm
+feature_name: ExtractChannel
+target_sprint: R103
+stream: skills
+
+inputs:
+  format_id: netpbm
+  feature_name: ExtractChannel
+  model_class: NetpbmImage
+  exact_source_paths:
+    - src/net/netpbm/Model/NetpbmImage.cs
+  exact_test_paths:
+    - tests/net/netpbm/NetpbmR103ExtractChannelTests.cs
+  ledger_entry_path: reports/r90/product-code-change-ledger.json
+
+preconditions:
+  - NetpbmImage.cs exists with pixel access API
+  - PPM (P6) images have RGB channels available
+  - Ledger validator PASS for current HEAD
+
+acceptance_criteria:
+  - ExtractChannel(channelIndex) returns grayscale NetpbmImage for one RGB channel
+  - 8+ tests covering: R/G/B extraction, out-of-range channel error, P5 grayscale passthrough, result dimensions match
+  - Ledger entry added with SHA-256
+  - dotnet test passes focused filter
+
+forbidden_paths:
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+
+rollback_plan: Revert NetpbmImage.cs changes and remove test file

@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "routes": [
+    {"route_id": "weak_product_breadth", "trigger": "families_touched < 3 OR source_diffs < 3", "action": "DOWNGRADE_TO_PARTIAL_FEW_FAMILIES", "target_stream": "mainstream"},
+    {"route_id": "prompt_quality_false_positive", "trigger": "prompt_quality_failure AND real_product_work_present", "action": "ROUTE_BLOCKER", "target_stream": "supervisor"},
+    {"route_id": "sample_output_false_negative", "trigger": "sample_output_missing AND evidence_present", "action": "FLAG_FOR_REPAIR", "target_stream": "supervisor"},
+    {"route_id": "missing_governed_transcript", "trigger": "governed_transcripts == 0 AND skills_sprint", "action": "PARTIAL_NO_GOVERNED_TRANSCRIPTS", "target_stream": "mainstream"},
+    {"route_id": "ai_output_authority_violation", "trigger": "authority_state != ai_draft", "action": "BLOCK_AI_OUTPUT", "target_stream": "supervisor"},
+    {"route_id": "ai_not_consumed_by_mainstream", "trigger": "acceleration_output_produced AND NOT acceleration_output_consumed", "action": "FLAG_CONSUMPTION_GAP", "target_stream": "supervisor"},
+    {"route_id": "governed_execution_not_consumed", "trigger": "governed_execution_declared AND NOT governed_execution_consumed", "action": "NO_UNCLASSIFIED_DIRTY_STATE", "target_stream": "supervisor"},
+    {"route_id": "machinery_overhead_high", "trigger": "machinery_overhead_score >= 2", "action": "YES_WITH_LIMITATIONS", "target_stream": "supervisor"},
+    {"route_id": "product_velocity_negative", "trigger": "product_throughput_delta < 0", "action": "DRIFT_MEDIUM", "target_stream": "supervisor"},
+    {"route_id": "stale_global_state", "trigger": "global_state_age > 2_sprints", "action": "NO_STALE_GAPS", "target_stream": "supervisor"},
+    {"route_id": "unclassified_dirty_state", "trigger": "dirty_state_classified == False", "action": "NO_UNCLASSIFIED_DIRTY_STATE", "target_stream": "supervisor"},
+    {"route_id": "stream_local_authority_issue", "trigger": "stream_local_verdict != global_verdict AND stream_local_verdict is AUTHORITATIVE", "action": "USE_STREAM_LOCAL", "target_stream": "supervisor"},
+    {"route_id": "external_gate", "trigger": "gate_8_or_11_needed OR push_needed OR credentials_needed", "action": "NO_EXTERNAL_GATE", "target_stream": "human"}
+  ]
+}

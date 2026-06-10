@@ -1,0 +1,37 @@
+{
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "gaps_unblocked": 4,
+  "gaps_remaining_blocked": 0,
+  "writer_libraries_added": [
+    {"library": "FormatFactory.Csv", "tests": 15, "path": "src/net/csv/"},
+    {"library": "FormatFactory.Html", "tests": 12, "path": "src/net/html/"},
+    {"library": "FormatFactory.Txt", "tests": 8, "path": "src/net/txt/"},
+    {"library": "FormatFactory.Markdown", "tests": 11, "path": "src/net/markdown/"}
+  ],
+  "exporters_refactored": [
+    {"exporter": "FodsCsvExporter", "product": "FODS .NET", "delegates_to": "FormatFactory.Csv.CsvWriter", "prior_status": "GAP_DOGFOOD_EXTERNAL", "new_status": "IMPLEMENTED"},
+    {"exporter": "FodsHtmlExporter", "product": "FODS .NET", "delegates_to": "FormatFactory.Html.HtmlWriter", "prior_status": "GAP_DOGFOOD_EXTERNAL", "new_status": "IMPLEMENTED"},
+    {"exporter": "FodtTxtExporter", "product": "FODT .NET", "delegates_to": "FormatFactory.Txt.TxtWriter", "prior_status": "GAP_DOGFOOD_EXTERNAL", "new_status": "IMPLEMENTED"},
+    {"exporter": "FodtMarkdownExporter", "product": "FODT .NET", "delegates_to": "FormatFactory.Markdown.MarkdownWriter", "prior_status": "GAP_DOGFOOD_EXTERNAL", "new_status": "IMPLEMENTED"}
+  ],
+  "test_deltas": {
+    "csv_writer_new": 15,
+    "html_writer_new": 12,
+    "txt_writer_new": 8,
+    "markdown_writer_new": 11,
+    "routing_tests_new": 11,
+    "fods_product_total": 547,
+    "fodt_product_total": 520,
+    "fods_regressions": 0,
+    "fodt_regressions": 0,
+    "total_new_tests": 57
+  },
+  "dynamic_unblocking": {
+    "method": "detect_target_writer_status(repo_root)",
+    "seed_gaps": 4,
+    "currently_blocked": 0,
+    "mechanism": "filesystem probe — gap unblocked when writer source file exists on disk"
+  },
+  "blocked_gap_ids_after_sprint": []
+}

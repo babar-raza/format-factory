@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AutonomyRouteDecision",
+  "description": "A governed route decision for a task in the Format Factory autonomy pipeline.",
+  "type": "object",
+  "required": [
+    "task_id", "task_category", "task_summary", "proposed_route", "final_route",
+    "risk_level", "decision_status", "autonomous_allowed", "acceleration_allowed",
+    "product_source_mutation_allowed", "machinery_mutation_allowed",
+    "human_approval_required", "blocked", "required_evidence", "required_tests",
+    "allowed_paths", "forbidden_paths", "reason", "timestamp", "decision_actor",
+    "schema_version"
+  ],
+  "properties": {
+    "task_id": { "type": "string", "minLength": 1 },
+    "task_category": {
+      "type": "string",
+      "enum": [
+        "PRODUCT_IMPLEMENTATION", "PRODUCT_TESTING",
+        "PRODUCT_CAPABILITY_EXPANSION", "PRODUCT_EXPORT_OR_DOGFOOD",
+        "SPEC_AUTHORITY_MACHINERY", "REQUIREMENT_CAPABILITY_MACHINERY",
+        "ACTION_QUEUE_MACHINERY", "AUTONOMY_ORCHESTRATOR_MACHINERY",
+        "SUPERVISOR_VERDICT_MACHINERY", "VALIDATOR_OR_EVIDENCE_MACHINERY",
+        "PROMPT_GENERATION_MACHINERY", "GOVERNED_SKILL_OR_GENERATOR_MACHINERY",
+        "UNKNOWN_OR_AMBIGUOUS"
+      ]
+    },
+    "task_summary": { "type": "string", "minLength": 1 },
+    "proposed_route": { "type": "string" },
+    "final_route": {
+      "type": "string",
+      "enum": [
+        "AUTONOMOUS_ACCELERATED_DEFAULT",
+        "AGENT_GOVERNED_ROUTE_DECISION_REQUIRED",
+        "GOVERNED_DIRECT_EXECUTION",
+        "HUMAN_APPROVAL_REQUIRED",
+        "BLOCKED_UNSAFE_OR_UNCLASSIFIED"
+      ]
+    },
+    "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH"] },
+    "decision_status": { "type": "string", "enum": ["DECIDED", "PENDING", "BLOCKED"] },
+    "autonomous_allowed": { "type": "boolean" },
+    "acceleration_allowed": { "type": "boolean" },
+    "product_source_mutation_allowed": { "type": "boolean" },
+    "machinery_mutation_allowed": { "type": "boolean" },
+    "human_approval_required": { "type": "boolean" },
+    "blocked": { "type": "boolean" },
+    "required_evidence": { "type": "array", "items": { "type": "string" } },
+    "required_tests": { "type": "array", "items": { "type": "string" } },
+    "allowed_paths": { "type": "array", "items": { "type": "string" } },
+    "forbidden_paths": { "type": "array", "items": { "type": "string" } },
+    "reason": { "type": "string" },
+    "timestamp": { "type": "string" },
+    "decision_actor": { "type": "string" },
+    "schema_version": { "type": "string" }
+  },
+  "additionalProperties": true
+}

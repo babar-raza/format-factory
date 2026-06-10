@@ -1,0 +1,47 @@
+bypass_entry_id: BYP-GNUMERIC-001
+format_id: gnumeric
+sprint_id: SPEC-AUTHORITY-LAYER-STOP-THE-BLEEDING-001
+created_at: 2026-06-07
+updated_at: 2026-06-07
+created_by: independent_agent_verifier
+correction_sprint: SPEC-AUTHORITY-LAYER-STOP-THE-BLEEDING-REPAIR-AND-ENFORCEMENT-001
+
+exception_classification: schema_authority_available
+exception_rationale: >
+  The Gnumeric file format (.gnumeric) is a gzip-compressed XML format. While there is no
+  formal specification body (no OASIS, ISO, or IETF RFC), the format has a publicly accessible
+  XSD schema (gnumeric.xsd) maintained by the GNOME project:
+    - Primary source: https://gitlab.gnome.org/GNOME/gnumeric/-/raw/master/gnumeric.xsd
+    - Retrieval status: RETRIEVED_VIA_WEBFETCH (confirmed in spec-index.yaml)
+    - Source type: xsd_schema
+    - Schema version documented: covers Gnumeric 1.2.2 through 1.12.21
+  Because an XSD schema authority is available and has been retrieved, the correct
+  exception_classification is schema_authority_available (not no_public_spec_available).
+  no_public_spec_available is reserved for formats where NO authority document
+  (spec, RFC, XSD, DTD, or schema) is publicly accessible.
+
+correction_note: >
+  Corrected from no_public_spec_available to schema_authority_available by
+  SPEC-AUTHORITY-LAYER-STOP-THE-BLEEDING-REPAIR-AND-ENFORCEMENT-001 (2026-06-07).
+  DEF-007: Gnumeric has XSD schema authority at gnumeric.xsd — must use
+  schema_authority_available, not no_public_spec_available.
+
+scope: metadata_only
+non_goals:
+  - new_product_implementation
+  - new_test_files
+  - src_changes
+  - modifying_gnumeric_codec_py
+
+authority_references:
+  - .local/spec-cache/gnumeric/v10/spec-index.yaml
+  - primary_source_url: https://gitlab.gnome.org/GNOME/gnumeric/-/raw/master/gnumeric.xsd
+
+follow_up_required: true
+follow_up_note: >
+  Future sprint should extract facts from gnumeric.xsd, verify them as independent_agent_verifier,
+  and register them as spec_fact_refs for Gnumeric work items. Until then, schema_authority_available
+  allows investigation and schema-backed product work with authority debt recorded.
+
+validation:
+  - grep -q "schema_authority_available" bypass-ledger/gnumeric-bypass.yaml && echo PASS

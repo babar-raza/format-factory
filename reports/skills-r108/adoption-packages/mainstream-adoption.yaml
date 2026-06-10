@@ -1,0 +1,39 @@
+stream: mainstream
+adoption_version: "R108-001"
+timestamp: "2026-06-03T21:00:00Z"
+
+enforcement_gates:
+  - gate_id: ADOPT-M-01
+    name: "Skill registry lookup before src edit"
+    description: "Before editing src/python/ or src/net/, worker must identify the governing skill_id from .supervisor/skill-registry.yaml"
+    enforcement: "Worker must include skill_id in evidence declaration work item"
+    validator: "validate_adoption_compliance.py checks has_skill_id"
+    status: active
+
+  - gate_id: ADOPT-M-02
+    name: "Transcript generation for product work"
+    description: "Product work items should generate a skill transcript JSON"
+    enforcement: "Transcript JSON placed in skill-transcripts/ under evidence_root"
+    validator: "validate_skill_transcript.py validates transcript schema"
+    status: active
+
+  - gate_id: ADOPT-M-03
+    name: "Ledger entry for src-editing tracks"
+    description: "Work items on foss_python or commercial_dotnet tracks require ledger_entry_id"
+    enforcement: "validate_adoption_compliance.py checks has_ledger_entry for src-editing tracks"
+    validator: "validate_adoption_compliance.py"
+    status: active
+
+integration_points:
+  - tool: "validate_adoption_compliance.py"
+    when: "At sprint closeout, before autonomous-cycle"
+    action: "Run validate_adoption() on evidence declaration"
+  - tool: "validate_skill_transcript.py"
+    when: "At sprint closeout, for each transcript JSON"
+    action: "Run validate_transcript() on each JSON file"
+
+checklist:
+  - "[ ] Identify skill_id for each product work item"
+  - "[ ] Generate transcript JSON for product work"
+  - "[ ] Include ledger_entry_id for src-editing items"
+  - "[ ] Run validate_adoption_compliance.py before closeout"

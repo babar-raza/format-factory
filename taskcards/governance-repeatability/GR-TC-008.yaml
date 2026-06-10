@@ -1,0 +1,36 @@
+id: GR-TC-008
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+generated_at: "2026-06-08"
+title: "Create validator hardening plan"
+status: ready_to_execute
+lane: validator_planning
+item_type: GOVERNANCE_DOC
+problem: >
+  Anti-skip checker and spec-fact-refs validator do not check execution_method,
+  source diffs, or idempotency keys. 10 validators are needed but not yet built.
+scope:
+  - Create reports/repeatability-governance-plan-healing/validator-hardening-plan.md
+  - Plan 10 validators with exact inputs, outputs, fail/warn conditions, exemptions
+  - "Note: queue_item_id is NOT the only proof of governance"
+out_of_scope:
+  - Implementing validators in Python this sprint
+  - Modifying anti_skip_checker.py
+files_to_create:
+  - reports/repeatability-governance-plan-healing/validator-hardening-plan.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+acceptance_criteria:
+  - 10 validators defined with all required fields
+  - Explicit note: queue_item_id is not sufficient proof alone
+  - execution_method_required_validator present
+  - source_diff_required_validator present
+verification:
+  - "check file exists: reports/repeatability-governance-plan-healing/validator-hardening-plan.md"
+rollback: delete file
+dependencies:
+  - GR-TC-002
+  - GR-TC-003
+  - GR-TC-004
+  - GR-TC-005
+handoff_to_autonomy_sprint: false

@@ -1,0 +1,37 @@
+{
+  "sprint": "FORMAT-FACTORY-SUPERVISOR-R107-RAW-LOG-CAPTURE-STREAM-STATE-ISOLATION-CONTINUATION-GATING-CAMPAIGN-001",
+  "prior_sprint": "FORMAT-FACTORY-SUPERVISOR-R106-STREAM-CLEAN-CYCLE-ENFORCEMENT-RAW-LOGS-AND-STRICT-GRADING-001",
+  "carry_forward_defects": [
+    {
+      "id": "D107-RAW-01",
+      "source": "R106 anti-skip: missing_raw_logs",
+      "severity": "medium",
+      "description": "No raw test logs captured. R106 deferred raw log capture as architectural subprocess redirect.",
+      "r107_resolution": "Wave 1: Implement capture_test_logs() in autonomous_cycle.py or standalone helper",
+      "acceptance": "raw-logs/ directory contains at least one .log file with pytest output"
+    },
+    {
+      "id": "D107-LED-01",
+      "source": "R106 anti-skip: missing_lane_ledger",
+      "severity": "low",
+      "description": "No lane execution ledger found in evidence root.",
+      "r107_resolution": "Wave 2: Define ledger schema, generate ledger entries, integrate with anti-skip",
+      "acceptance": "lane-execution-ledger.yaml exists with at least 1 lane entry"
+    },
+    {
+      "id": "D107-SAM-01",
+      "source": "R106 anti-skip: missing_sample_outputs",
+      "severity": "low",
+      "description": "Zero sample outputs in evidence root.",
+      "r107_resolution": "Wave 3: Generate 5 sample outputs (grades, continuation, prompt, wrong-stream, replay)",
+      "acceptance": "sample-outputs/ directory contains 5+ files"
+    }
+  ],
+  "r106_anti_skip_summary": {
+    "total_checks": 10,
+    "violations": 3,
+    "block": false,
+    "downgrade": false,
+    "continuation_was_correct": true
+  }
+}

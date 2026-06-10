@@ -1,0 +1,102 @@
+{
+  "anti_bypass_demo_count": 9,
+  "all_pass": true,
+  "demos": [
+    {
+      "demo_id": "ANTI-BYPASS-001",
+      "description": "Unregistered skill_id rejected",
+      "expected_fail": true,
+      "actual_valid": false,
+      "errors": [
+        "skill_id 'BACKFILLED_PRE_GOVERNANCE' not found in registry"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-002",
+      "description": "Fabricated skill_id rejected",
+      "expected_fail": true,
+      "actual_valid": false,
+      "errors": [
+        "skill_id 'add-magic-feature' not found in registry"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-003",
+      "description": "Invalid mode rejected",
+      "expected_fail": true,
+      "actual_valid": false,
+      "errors": [
+        "invalid mode: yolo (must be one of ['anti-bypass-demo', 'dry-run', 'live'])"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-004",
+      "description": "File outside allowed paths rejected",
+      "expected_fail": true,
+      "actual_valid": false,
+      "errors": [
+        "files changed outside allowed paths: ['registry/format-registry.yaml']"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-005",
+      "description": "Missing required fields rejected",
+      "expected_fail": true,
+      "actual_valid": false,
+      "errors": [
+        "missing required fields: ['actual_files_changed', 'allowed_files', 'inputs', 'invocation_id', 'mode', 'result', 'tests_run']"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-006",
+      "description": "Live src-editing without ledger rejected",
+      "expected_fail": true,
+      "actual_valid": false,
+      "errors": [
+        "live invocation of src-editing skill 'add-dotnet-object-model-feature' (track: commercial_dotnet) requires ledger_entry_id"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-007",
+      "description": "Command missing required sections rejected",
+      "expected_fail": true,
+      "actual_valid": false,
+      "errors": [
+        "Missing section: Required inputs or usage section",
+        "Missing section: Step-by-step execution flow",
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section",
+        "Missing section: Stop conditions or constraints",
+        "Missing section: Evidence or output format section",
+        "Command file too short (3 lines, min 10)"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-008",
+      "description": "BACKFILLED_PRE_GOVERNANCE for current sprint rejected",
+      "expected_fail": true,
+      "actual_valid": false,
+      "errors": [
+        "skill_id 'BACKFILLED_PRE_GOVERNANCE' not found in registry"
+      ],
+      "pass": true
+    },
+    {
+      "demo_id": "ANTI-BYPASS-009",
+      "description": "Invalid result (ACCEPTED_VERIFIED as transcript result) rejected",
+      "expected_fail": true,
+      "actual_valid": false,
+      "errors": [
+        "invalid result: ACCEPTED_VERIFIED (must be one of ['FAIL', 'PASS'])"
+      ],
+      "pass": true
+    }
+  ]
+}

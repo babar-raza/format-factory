@@ -1,0 +1,1240 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "schema_version": "1.0",
+  "taskcards": [
+    {
+      "id": "TC-HEAL-001",
+      "title": "Create plan review document",
+      "lane": "HEAL",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [],
+      "allowed_paths": [
+        "reports/skills-plan-repair/00-review-response.md"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import os; f=open('reports/skills-plan-repair/00-review-response.md').read(); assert len(f)>600; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-HEAL-002",
+      "title": "Create gap analysis document",
+      "lane": "HEAL",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [],
+      "allowed_paths": [
+        "reports/skills-plan-repair/gap-analysis.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-plan-repair/gap-analysis.md').read(); assert f.count('gap-') >= 10; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-HEAL-003",
+      "title": "Create execution-readiness-repair document",
+      "lane": "HEAL",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-HEAL-001",
+        "TC-HEAL-002"
+      ],
+      "allowed_paths": [
+        "reports/skills-plan-repair/execution-readiness-repair.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-plan-repair/execution-readiness-repair.md').read(); assert 'READY_FOR_SINGLE_GO_EXECUTION' in f; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-HEAL-004",
+      "title": "Create final single-go execution prompt",
+      "lane": "HEAL",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-HEAL-003"
+      ],
+      "allowed_paths": [
+        "reports/skills-plan-repair/final-single-go-execution-prompt.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import os; f=open('reports/skills-plan-repair/final-single-go-execution-prompt.md').read(); assert len(f)>5000; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-HEAL-005",
+      "title": "Create healing final IV",
+      "lane": "HEAL",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-HEAL-003",
+        "TC-HEAL-004"
+      ],
+      "allowed_paths": [
+        "reports/skills-plan-repair/final-adversarial-independent-verification.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-plan-repair/final-adversarial-independent-verification.md').read(); print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W0-COORD",
+      "title": "Coordinator: git snapshot, path ownership, overlap check",
+      "lane": "LANE-0",
+      "owner": "Coordinator",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [],
+      "allowed_paths": [
+        "reports/skills-product-first/lane-ownership.md",
+        "reports/skills-product-first/file-ownership-map.json",
+        "reports/skills-product-first/overlap-check.md",
+        "reports/skills-product-first/coordinator-integration-log.md"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; m=json.load(open('reports/skills-product-first/file-ownership-map.json')); print(len(m['files']),'files mapped')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W0-001",
+      "title": "Create current state review",
+      "lane": "W0",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-COORD"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/00-current-state-review.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/00-current-state-review.md').read(); assert len(f)>400; assert '358' in f; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W0-002",
+      "title": "Answer 7 replan questions",
+      "lane": "W0",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-COORD"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/skills-lane-replan.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/skills-lane-replan.md').read(); assert f.count('Q') >= 7; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W0-003",
+      "title": "Create Mainstream consumption plan",
+      "lane": "W0",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-COORD"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/mainstream-consumption-plan.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/mainstream-consumption-plan.md').read(); assert 'consumption-packet' in f and 'handoff' in f; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W0-004",
+      "title": "Create live-cycle plan",
+      "lane": "W0",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-COORD"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/live-cycle-plan.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/live-cycle-plan.md').read(); assert 'dry-run' in f; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W0-005",
+      "title": "Create skill template index",
+      "lane": "W0",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-COORD"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/skill-template-index.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/skill-template-index.md').read(); assert f.count('add-dotnet-api') >= 1; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W0-006",
+      "title": "Create initial lane execution ledger",
+      "lane": "W0",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-COORD"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/lane-execution-ledger.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; d=json.load(open('reports/skills-product-first/lane-execution-ledger.json')); assert len(d['lanes']) >= 9; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W0-007",
+      "title": "Create initial taskcard-state.json",
+      "lane": "LANE-0",
+      "owner": "Coordinator",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-COORD"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/taskcard-state.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; s=json.load(open('reports/skills-product-first/taskcard-state.json')); entries=s['taskcards']; assert len(entries)>=43; print(len(entries),'taskcards OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W1-001",
+      "title": "Create tiered governed source-change contract YAML",
+      "lane": "W1",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/governed-source-change-contract.yaml"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import yaml; c=yaml.safe_load(open('reports/skills-product-first/governed-source-change-contract.yaml')); tiers=c.get('enforcement_tiers',[]); assert len(tiers)==5, f'got {len(tiers)}'; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W1-002",
+      "title": "Create contract companion markdown",
+      "lane": "W1",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/governed-source-change-contract.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/governed-source-change-contract.md').read(); assert len(f)>600; assert 'How to continue' in f; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W2-001",
+      "title": "Generate dry-run handoff YAML",
+      "lane": "W2",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001",
+        "TC-W0-004"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import yaml; h=yaml.safe_load(open('reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml')); assert h['mode']=='dry-run'; assert h['skill_id']=='add-dotnet-api'; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W2-002",
+      "title": "Produce dry-run skill transcript",
+      "lane": "W2",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W2-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/skill-transcripts/transcript-spf-001-add-dotnet-api-near-live.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python tools/supervisor/validate_skill_transcript.py reports/skills-product-first/skill-transcripts/transcript-spf-001-add-dotnet-api-near-live.json",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W2-003",
+      "title": "Run adoption compliance check",
+      "lane": "W2",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W2-002"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/validator-results/adoption-compliance-w2.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; r=json.load(open('reports/skills-product-first/validator-results/adoption-compliance-w2.json')); assert r.get('compliant') in (True,'PASS'); print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W2-004",
+      "title": "Produce live-cycle-proof.json",
+      "lane": "W2",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W2-001",
+        "TC-W2-002",
+        "TC-W2-003"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/live-cycle-proof.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; p=json.load(open('reports/skills-product-first/live-cycle-proof.json')); assert len(p['steps'])==7; assert p['overall_result']=='PASS'; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W3-001",
+      "title": "Create add-dotnet-api handoff template",
+      "lane": "W3",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"t=open('docs/prompt-templates/skills/add-dotnet-api-handoff-template.md').read(); assert 'Role' in t and 'Skill ID' in t and len(t)>1000; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W3-002",
+      "title": "Create add-python-api handoff template",
+      "lane": "W3",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "docs/prompt-templates/skills/add-python-api-handoff-template.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"t=open('docs/prompt-templates/skills/add-python-api-handoff-template.md').read(); assert 'Role' in t and 'Skill ID' in t and len(t)>1000; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W3-003",
+      "title": "Create add-dogfood-export handoff template",
+      "lane": "W3",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "docs/prompt-templates/skills/add-export-handoff-template.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"t=open('docs/prompt-templates/skills/add-export-handoff-template.md').read(); assert 'Role' in t and len(t)>1000; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W3-004",
+      "title": "Create add-dogfood-pipeline template",
+      "lane": "W3",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "docs/prompt-templates/skills/add-dogfood-pipeline-template.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"t=open('docs/prompt-templates/skills/add-dogfood-pipeline-template.md').read(); assert 'Role' in t and len(t)>1000; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W3-005",
+      "title": "Create add-roundtrip-test template",
+      "lane": "W3",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "docs/prompt-templates/skills/add-roundtrip-test-template.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"t=open('docs/prompt-templates/skills/add-roundtrip-test-template.md').read(); assert 'Role' in t and len(t)>1000; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W3-006",
+      "title": "Create update-capability-matrix template",
+      "lane": "W3",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "docs/prompt-templates/skills/update-capability-matrix-template.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"t=open('docs/prompt-templates/skills/update-capability-matrix-template.md').read(); assert 'Role' in t and len(t)>1000; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W4-001",
+      "title": "Evaluate all 10 check-mcp-status promotion criteria",
+      "lane": "W4",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/mcp-readiness/readiness-gate.json"
+      ],
+      "forbidden_paths": [
+        "src/*",
+        ".vscode/mcp.json"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; g=json.load(open('reports/skills-product-first/mcp-readiness/readiness-gate.json')); assert len(g['criteria'])==10; assert g['overall_decision'] in ('PROMOTE','KEEP_DEFERRED'); print(g['overall_decision'])\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W4-002",
+      "title": "Create check-mcp-status command file (PROMOTE path only)",
+      "lane": "W4",
+      "owner": "Skills agent",
+      "status": "CLOSED_SKIPPED_WITH_REASON",
+      "dependencies": [
+        "TC-W4-001"
+      ],
+      "allowed_paths": [
+        ".claude/commands/check-mcp-status.md",
+        "reports/skills-product-first/mcp-readiness/taskcard-TC-MCP-READINESS-001.md"
+      ],
+      "forbidden_paths": [
+        "src/*",
+        ".supervisor/skill-registry.yaml"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import os; f='.claude/commands/check-mcp-status.md'; d='reports/skills-product-first/mcp-readiness/taskcard-TC-MCP-READINESS-001.md'; assert os.path.exists(f) or os.path.exists(d); print('OK')\"",
+      "closeout_status": "CLOSED_SKIPPED_WITH_REASON",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W4-003",
+      "title": "Conditionally update skill registry with SHA backup + rollback gate",
+      "lane": "W4",
+      "owner": "Skills agent",
+      "status": "CLOSED_SKIPPED_WITH_REASON",
+      "dependencies": [
+        "TC-W4-002"
+      ],
+      "allowed_paths": [
+        ".supervisor/skill-registry.yaml",
+        "reports/skills-product-first/registry-backup/"
+      ],
+      "forbidden_paths": [
+        "src/*",
+        ".supervisor/policies.yaml"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; r=json.load(open('reports/skills-product-first/registry-backup/registry-promotion-result.json')); assert r['decision'] in ('PROMOTED','ROLLED_BACK','SKIPPED_KEEP_DEFERRED'); print(r['decision'])\"",
+      "closeout_status": "CLOSED_SKIPPED_WITH_REASON",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-001",
+      "title": "Create compliant fixture (must PASS)",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-product-compliant.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-product-compliant.json')); required=['skill_id','format_id','transcript_path','focused_test_raw_log_path','source_diff_path','allowed_files','forbidden_files','rollback_note','ledger_entry_path']; missing=[k for k in required if k not in f]; assert not missing, missing; print('PASS')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-002",
+      "title": "Create missing-transcript FAILING fixture",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_EXPECTED_FAILURE",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-missing-transcript-FAILING.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-missing-transcript-FAILING.json')); assert 'transcript_path' not in f; print('EXPECTED_FAIL_FIXTURE_OK')\"",
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-003",
+      "title": "Create missing-raw-log FAILING fixture",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_EXPECTED_FAILURE",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-missing-raw-log-FAILING.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-missing-raw-log-FAILING.json')); assert 'focused_test_raw_log_path' not in f; print('EXPECTED_FAIL_FIXTURE_OK')\"",
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-004",
+      "title": "Create missing-source-diff FAILING fixture",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_EXPECTED_FAILURE",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-missing-source-diff-FAILING.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-missing-source-diff-FAILING.json')); assert 'source_diff_path' not in f; print('EXPECTED_FAIL_FIXTURE_OK')\"",
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-005",
+      "title": "Create missing-allowed-files FAILING fixture",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_EXPECTED_FAILURE",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-missing-allowed-files-FAILING.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-missing-allowed-files-FAILING.json')); assert 'allowed_files' not in f; print('EXPECTED_FAIL_FIXTURE_OK')\"",
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-006",
+      "title": "Create missing-forbidden-files FAILING fixture",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_EXPECTED_FAILURE",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-missing-forbidden-files-FAILING.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-missing-forbidden-files-FAILING.json')); assert 'forbidden_files' not in f; print('EXPECTED_FAIL_FIXTURE_OK')\"",
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-007",
+      "title": "Create missing-rollback-note FAILING fixture",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_EXPECTED_FAILURE",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-missing-rollback-note-FAILING.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-missing-rollback-note-FAILING.json')); assert 'rollback_note' not in f; print('EXPECTED_FAIL_FIXTURE_OK')\"",
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-008",
+      "title": "Create stale-skill-id FAILING fixture",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_EXPECTED_FAILURE",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-stale-skill-id-FAILING.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-stale-skill-id-FAILING.json')); assert f.get('skill_id')=='nonexistent-skill-xyz'; print('EXPECTED_FAIL_FIXTURE_OK')\"",
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-009",
+      "title": "Create invalid-transcript-hash FAILING fixture",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_EXPECTED_FAILURE",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-invalid-transcript-hash-FAILING.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-invalid-transcript-hash-FAILING.json')); assert f.get('transcript_hash')=='000000'; print('EXPECTED_FAIL_FIXTURE_OK')\"",
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-010",
+      "title": "Create downgrade warning fixture",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/receiver-fixtures/mainstream-no-capability-matrix-update-WARNING.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; f=json.load(open('reports/skills-product-first/receiver-fixtures/mainstream-no-capability-matrix-update-WARNING.json')); assert 'capability_matrix_update' not in f; print('WARNING_FIXTURE_OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W5-011",
+      "title": "Capture all 10 fixture validation results",
+      "lane": "W5",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W5-001",
+        "TC-W5-002",
+        "TC-W5-003",
+        "TC-W5-004",
+        "TC-W5-005",
+        "TC-W5-006",
+        "TC-W5-007",
+        "TC-W5-008",
+        "TC-W5-009",
+        "TC-W5-010"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/validator-results/fixture-validation-results.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; r=json.load(open('reports/skills-product-first/validator-results/fixture-validation-results.json')); assert len(r['results'])==10; assert all(e['match'] for e in r['results']); print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W6-001",
+      "title": "Create Mainstream consumption packet JSON",
+      "lane": "W6",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W2-001",
+        "TC-W1-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/mainstream-consumption-packet.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; p=json.load(open('reports/skills-product-first/mainstream-consumption-packet.json')); required=['packet_version','selected_product_gap','recommended_skill','allowed_files','forbidden_files','acceptance_criteria','downgrade_rules','auto_repair_guidance']; missing=[k for k in required if k not in p]; assert not missing, missing; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W6-002",
+      "title": "Create consumption packet markdown",
+      "lane": "W6",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W6-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/mainstream-consumption-packet.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/mainstream-consumption-packet.md').read(); assert len(f)>500; assert 'autonomous' in f; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W6-003",
+      "title": "Create Mainstream cross-stream handoff",
+      "lane": "W6",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W6-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/handoff-to-mainstream.md",
+        "reports/skills-product-first/handoff-to-mainstream.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json, os; j=json.load(open('reports/skills-product-first/handoff-to-mainstream.json')); assert 'skill_id' in j and 'enforcement_tier' in j; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W6-004",
+      "title": "Create Supervisor cross-stream handoff",
+      "lane": "W6",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W6-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/handoff-to-supervisor.md",
+        "reports/skills-product-first/handoff-to-supervisor.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; j=json.load(open('reports/skills-product-first/handoff-to-supervisor.json')); assert 'grading_rubric' in j; assert len(j['grading_rubric'])==5; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W6-005",
+      "title": "Create Acceleration cross-stream handoff",
+      "lane": "W6",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W6-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/handoff-to-acceleration.md",
+        "reports/skills-product-first/handoff-to-acceleration.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; j=json.load(open('reports/skills-product-first/handoff-to-acceleration.json')); assert 'false_positive_prevention_rules' in j; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W7-001",
+      "title": "Run MCP status check and write readiness report",
+      "lane": "W7",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W4-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/mcp-readiness.md"
+      ],
+      "forbidden_paths": [
+        "src/*",
+        ".vscode/mcp.json"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/mcp-readiness.md').read(); assert 'MCP_CONFIG_PRESENT_MODE4_ACTIVE' in f; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W7-002",
+      "title": "Create tool readiness JSON",
+      "lane": "W7",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W4-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/tool-readiness.json"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; t=json.load(open('reports/skills-product-first/tool-readiness.json')); assert len(t['skills'])>=24; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W8-001",
+      "title": "Create ~60-test suite for all sprint artifacts",
+      "lane": "W8",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-001",
+        "TC-W1-001",
+        "TC-W2-001",
+        "TC-W3-001",
+        "TC-W5-011",
+        "TC-W6-001",
+        "TC-W7-001",
+        "TC-W10-001"
+      ],
+      "allowed_paths": [
+        "tests/supervisor/test_skills_product_first_spf.py"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -m pytest tests/supervisor/test_skills_product_first_spf.py -v 2>&1 | tail -5",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W9-001",
+      "title": "Create evidence declaration",
+      "lane": "W9",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W8-001"
+      ],
+      "allowed_paths": [
+        ".local/evidences/skills-product-first/evidence-declaration.yaml"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import yaml; d=yaml.safe_load(open('.local/evidences/skills-product-first/evidence-declaration.yaml')); assert 'work_items' in d; assert 'PENDING' not in str(d); print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W9-002",
+      "title": "Create evidence manifest",
+      "lane": "W9",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W9-001"
+      ],
+      "allowed_paths": [
+        ".local/evidences/skills-product-first/evidence-manifest.yaml"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import yaml; m=yaml.safe_load(open('.local/evidences/skills-product-first/evidence-manifest.yaml')); print(len(m['artifacts']),'artifacts')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W9-003",
+      "title": "Run autonomous cycle",
+      "lane": "W9",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W9-001",
+        "TC-W9-002",
+        "TC-W8-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/raw-logs/autonomous-cycle-run.log"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python tools/supervisor/autonomous_cycle.py --declaration .local/evidences/skills-product-first/evidence-declaration.yaml",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W9-004",
+      "title": "Build declaration review package",
+      "lane": "W9",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W9-003"
+      ],
+      "allowed_paths": [
+        ".local/supervisor/reviews/skills-product-first/declaration-review-package.zip"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import zipfile; z=zipfile.ZipFile('.local/supervisor/reviews/skills-product-first/declaration-review-package.zip'); print('ENTRIES:', len(z.namelist()))\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W9-005",
+      "title": "Coordinator final integration check",
+      "lane": "LANE-0",
+      "owner": "Coordinator",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W9-004"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/coordinator-integration-log.md"
+      ],
+      "forbidden_paths": [
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/coordinator-integration-log.md').read(); assert 'INTEGRATION COMPLETE' in f; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W10-001",
+      "title": "Evaluate Superpowers Marketplace",
+      "lane": "W10",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W0-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/external-skills-intake.md",
+        "reports/skills-product-first/superpowers-marketplace-evaluation.json"
+      ],
+      "forbidden_paths": [
+        ".claude-plugin/*",
+        "src/*",
+        ".vscode/mcp.json"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; e=json.load(open('reports/skills-product-first/superpowers-marketplace-evaluation.json')); assert len(e['plugins'])==4; assert e['overall_decision']=='NO_INSTALL_THIS_SPRINT'; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W10-002",
+      "title": "Create local skill normalization map",
+      "lane": "W10",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W10-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/local-skill-normalization-map.json"
+      ],
+      "forbidden_paths": [
+        ".supervisor/skill-registry.yaml",
+        "src/*",
+        ".claude-plugin/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; m=json.load(open('reports/skills-product-first/local-skill-normalization-map.json')); assert len(m['skills'])>=5; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W10-003",
+      "title": "Create external skill wrapper template",
+      "lane": "W10",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W10-001"
+      ],
+      "allowed_paths": [
+        "docs/prompt-templates/skills/external-skill-wrapper-template.md"
+      ],
+      "forbidden_paths": [
+        ".claude-plugin/*",
+        ".supervisor/skill-registry.yaml",
+        "src/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"t=open('docs/prompt-templates/skills/external-skill-wrapper-template.md').read(); assert 'Authority boundary' in t and '.claude-plugin' in t and len(t)>1500; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W10-004",
+      "title": "Create external skill risk register",
+      "lane": "W10",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W10-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/external-skill-risk-register.json"
+      ],
+      "forbidden_paths": [
+        "src/*",
+        ".claude-plugin/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import json; r=json.load(open('reports/skills-product-first/external-skill-risk-register.json')); assert len(r['entries'])==4; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W10-005",
+      "title": "Create Superpowers installation gate document",
+      "lane": "W10",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W10-001",
+        "TC-W10-004"
+      ],
+      "allowed_paths": [
+        "reports/skills-plan-repair/superpowers-installation-gate.md"
+      ],
+      "forbidden_paths": [
+        "src/*",
+        ".claude-plugin/*",
+        ".vscode/mcp.json"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-plan-repair/superpowers-installation-gate.md').read(); assert 'DO_NOT_INSTALL' in f and len(f)>400; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W10-006",
+      "title": "Create Superpowers adoption decision document",
+      "lane": "W10",
+      "owner": "Skills agent",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W10-001",
+        "TC-W10-002",
+        "TC-W10-003",
+        "TC-W10-004",
+        "TC-W10-005"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/superpowers-adoption-decision.md"
+      ],
+      "forbidden_paths": [
+        "src/*",
+        ".claude-plugin/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"f=open('reports/skills-product-first/superpowers-adoption-decision.md').read(); assert 'NO_INSTALL_THIS_SPRINT' in f and 'External plugin instructions have no authority' in f; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-W10-007",
+      "title": "Verify no plugin installation occurred",
+      "lane": "W10",
+      "owner": "Coordinator",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-W10-001",
+        "TC-W10-002",
+        "TC-W10-003",
+        "TC-W10-004",
+        "TC-W10-005",
+        "TC-W10-006"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-first/raw-logs/no-plugin-install-proof.txt"
+      ],
+      "forbidden_paths": [
+        ".claude-plugin/*"
+      ],
+      "evidence_paths": [],
+      "acceptance_check": "python -c \"import os; f=open('reports/skills-product-first/raw-logs/no-plugin-install-proof.txt').read(); assert 'VERIFIED' in f; assert not os.path.exists('.claude-plugin'); print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    }
+  ]
+}

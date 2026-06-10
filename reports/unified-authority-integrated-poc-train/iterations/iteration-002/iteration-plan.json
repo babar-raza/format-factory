@@ -1,0 +1,49 @@
+{
+  "iteration": 2,
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "generated_at": "2026-06-04T20:40:00Z",
+  "selected_gaps": [
+    {"gap_id": "fods:r115:csv_file_export", "target_id": "fods", "priority": "HIGH", "type": "commercial"},
+    {"gap_id": "fodt:r115:outline_json", "target_id": "fodt", "priority": "HIGH", "type": "commercial"},
+    {"gap_id": "netpbm:r115:dogfood_pipeline", "target_id": "netpbm-net", "priority": "HIGH", "type": "commercial"},
+    {"gap_id": "sylk:r115:write_roundtrip", "target_id": "sylk", "priority": "MEDIUM", "type": "foss"},
+    {"gap_id": "zst:r115:file_roundtrip", "target_id": "zst", "priority": "MEDIUM", "type": "foss"}
+  ],
+  "lanes": [
+    {
+      "lane_id": "lane-001-fods-r115",
+      "gap": "fods:r115:csv_file_export",
+      "allowed_files": ["src/net/fods/**", "tests/net/fods/**", "examples/net/fods/**"],
+      "planned_capabilities": ["ExportSheetToCsvFile", "FilterRows"],
+      "planned_tests": ["FodsR115ExportCsvFileTests.cs", "FodsR115FilterRowsTests.cs"]
+    },
+    {
+      "lane_id": "lane-002-fodt-r115",
+      "gap": "fodt:r115:outline_json",
+      "allowed_files": ["src/net/fodt/**", "tests/net/fodt/**", "examples/net/fodt/**"],
+      "planned_capabilities": ["ExportToOutlineJson", "FindParagraphsByStyle"],
+      "planned_tests": ["FodtR115ExportOutlineJsonTests.cs"]
+    },
+    {
+      "lane_id": "lane-003-netpbm-r115",
+      "gap": "netpbm:r115:dogfood_pipeline",
+      "allowed_files": ["src/net/netpbm/**", "tests/net/netpbm/**", "examples/net/netpbm/**"],
+      "planned_capabilities": ["DrawRectangle", "GetBrightness"],
+      "planned_tests": ["NetpbmR115DrawTests.cs"]
+    },
+    {
+      "lane_id": "lane-004-sylk-r115",
+      "gap": "sylk:r115:write_roundtrip",
+      "allowed_files": ["src/python/sylk/**", "tests/python/sylk/**", "examples/python/sylk/**"],
+      "planned_capabilities": ["write_sylk_roundtrip", "sylk_to_csv_edge_cases"],
+      "planned_tests": ["test_r115_sylk_write_roundtrip.py"]
+    },
+    {
+      "lane_id": "lane-005-zst-r115",
+      "gap": "zst:r115:file_roundtrip",
+      "allowed_files": ["src/python/zst/**", "tests/python/zst/**", "examples/python/zst/**"],
+      "planned_capabilities": ["compress_file", "decompress_file", "roundtrip_file"],
+      "planned_tests": ["test_r115_zst_file_roundtrip.py"]
+    }
+  ]
+}

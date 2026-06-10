@@ -1,0 +1,16 @@
+{
+  "transcript_id": "transcript:iter003-netpbm-r116",
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "iteration": 3,
+  "lane_id": "lane-014-netpbm-r116",
+  "format": "netpbm",
+  "track": "commercial_net",
+  "capability_added": ["DrawLine"],
+  "source_files_modified": ["src/net/netpbm/Model/NetpbmImage.cs"],
+  "test_files_added": ["tests/net/netpbm/NetpbmR116DrawLineTests.cs"],
+  "tests_run": 8,
+  "tests_passed": 8,
+  "tests_failed": 0,
+  "skill_verdict": "LANE_COMPLETE",
+  "notes": "DrawLine(x0,y0,x1,y1,fill) uses Bresenham algorithm on PGM images. Clips to bounds. Throws InvalidOperationException for PPM. 8 tests pass including DrawRectangle+DrawLine dogfood pipeline."
+}

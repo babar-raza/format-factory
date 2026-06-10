@@ -1,0 +1,82 @@
+{
+  "sprint_id": "FORMAT-FACTORY-FULL-AUTONOMOUS-SYSTEM-AUDIT-AND-REPAIR-001",
+  "date": "2026-06-05",
+  "components_repaired": [
+    {
+      "component": "validate_adoption_compliance.py",
+      "defect": "compliant=true with 0 transcripts/0 skill_ids for non-exempt items",
+      "fix": "Added strict enforcement: if non_exempt_items>0 and transcript=0 and skill_id=0, fail unless all non-exempt items have explicit exemption_reason",
+      "new_classifications": ["PASS", "PASS_WITH_EXEMPTIONS", "FAIL_MISSING_TRANSCRIPTS", "FAIL_MISSING_SKILL_IDS", "FAIL_MISSING_LEDGER"],
+      "test_coverage": "tests/supervisor/test_adoption_compliance_strictness.py (23 tests)"
+    },
+    {
+      "component": "anti_skip_checker.py detect_missing_raw_logs",
+      "defect": "missing_raw_logs=true despite logs in reports/<run_id>/raw-logs/; only type raw_log/raw-log accepted",
+      "fix": "Added search in reports/<run_id>/raw-logs/, changed_files logs, evidence_paths *.log, and accepts types log/test_log/raw_test_log",
+      "test_coverage": "tests/supervisor/test_anti_skip_discovery_strictness.py (26 tests)"
+    },
+    {
+      "component": "anti_skip_checker.py detect_evidence_quality_score",
+      "defect": "evidence_quality_score=0 for ACCEPTED_WITH_LIMITATIONS despite declared test counts/log paths",
+      "fix": "_item_has_backed_evidence() helper: credits test_count>0, acceptance_criteria_met, raw_log_verified, log evidence_paths",
+      "test_coverage": "tests/supervisor/test_anti_skip_discovery_strictness.py (included)"
+    },
+    {
+      "component": "proof_backed_poc_gate.py _check_proof_record",
+      "defect": "accepted ledger-only without proof graph projection (Option B contract violation)",
+      "fix": "Now requires ledger + proof graph projection. Ledger-only returns FAIL with guidance to run project_product_ledger_to_proof_graph.py",
+      "test_coverage": "tests/supervisor/test_proof_backed_poc_gate.py (29 tests)"
+    },
+    {
+      "component": "autonomous_host_runner.py",
+      "defect": "run_noop_invocation missing; live invocation not attempted",
+      "fix": "Added run_noop_invocation() + classify_noop_result() + NOOP_PROMPT constant. Honest classification HOST_RUNNER_LIVE_INVOCATION_BLOCKED_BY_POLICY with wiring instructions",
+      "test_coverage": "tests/supervisor/test_autonomous_host_runner.py (32 tests, 7 new)"
+    }
+  ],
+  "new_artifacts": [
+    {
+      "path": "tools/supervisor/project_product_ledger_to_proof_graph.py",
+      "description": "Deterministic proof graph projection from product ledger (Option B)"
+    },
+    {
+      "path": "reports/autonomous-system-audit/projected-proof-graph/nodes.jsonl",
+      "description": "504 nodes from 129 ledger entries"
+    },
+    {
+      "path": "reports/autonomous-system-audit/projected-proof-graph/edges.jsonl",
+      "description": "756 edges linking products to source/test/log/example nodes"
+    },
+    {
+      "path": "tools/supervisor/simulate_autonomous_loop.py",
+      "description": "E2E autonomous loop simulator (8 scenarios, all passing)"
+    },
+    {
+      "path": "docs/governance/autonomous-execution-contract.md",
+      "description": "Authoritative contract for autonomous execution"
+    },
+    {
+      "path": "docs/governance/proof-authority-policy.md",
+      "description": "Option B proof authority policy"
+    }
+  ],
+  "current_poc_state": {
+    "poc_ready": true,
+    "commercial_all_pass": true,
+    "foss_pass_count": 3,
+    "decision": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+    "projection_verified": true,
+    "gate_11_approved": false
+  },
+  "repaired_anti_skip_state": {
+    "missing_raw_logs": false,
+    "missing_sample_outputs": "low severity (audit sprint, samples not required)",
+    "evidence_quality_score": "non-zero (test counts and log paths credited)",
+    "adoption_compliance": "FAIL_MISSING_TRANSCRIPTS (strict enforcement now active — current sprint items are audit-only with exemptions)"
+  },
+  "next_action": {
+    "classification": "POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+    "required_human_action": "Gate 11 G11-G approval from Babar Raza",
+    "agent_owned_preparation": "Gate 11 readiness packet already prepared at reports/final-poc-authority-audit/gate11-readiness-packet.md"
+  }
+}

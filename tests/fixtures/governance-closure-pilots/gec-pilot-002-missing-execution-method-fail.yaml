@@ -1,0 +1,20 @@
+# GEC Pilot 002: PRODUCT_SOURCE missing execution_method — expected FAIL
+id: gec-pilot-002
+description: >
+  PRODUCT_SOURCE item without execution_method. Must FAIL Validator 1.
+planned_work_items:
+  - item_id: GEC-P002-PS-001
+    item_type: PRODUCT_SOURCE
+    format_id: abw
+    capability_id: get_paragraph
+    status: completed
+    grade: PASS
+    # Missing: execution_method
+    claim_classification: LEGACY_BACKFILLED
+    evidence_paths:
+      - src/python/abw/abw_codec.py
+    tests_supporting:
+      - tests/python/abw/test_r126_abw_get_paragraph.py
+expected_result: FAIL
+expected_validator: execution_method_required_validator
+expected_blocks_sprint: true

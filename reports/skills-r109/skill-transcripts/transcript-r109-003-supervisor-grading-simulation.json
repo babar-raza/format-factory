@@ -1,0 +1,21 @@
+{
+  "invocation_id": "r109-sim-003-supervisor-grading",
+  "skill_id": "evidence-review-next-prompt",
+  "mode": "dry-run",
+  "inputs": {
+    "declaration_path": ".local/evidences/skills-r109/evidence-declaration.yaml",
+    "grading_engine": "tools/supervisor/grade_declared_work.py",
+    "transcript_boost_enabled": true
+  },
+  "allowed_files": [
+    "reports/supervisor/work-item-grades.json",
+    "reports/supervisor/work-item-grades.md",
+    "reports/supervisor/latest-review.md"
+  ],
+  "actual_files_changed": [],
+  "tests_run": ["tests/python/supervisor/test_r108_transcript_grade_boost.py"],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T22:25:00Z",
+  "notes": "Supervisor grading simulation: transcript-aware grade_item with R108 boost active."
+}

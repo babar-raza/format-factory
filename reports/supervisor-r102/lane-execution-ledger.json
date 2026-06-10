@@ -1,0 +1,79 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-R102-STREAM-AWARE-REVIEW-AND-CONTINUATION-HARDENING-CAMPAIGN-001",
+  "stream": "supervisor",
+  "lanes": [
+    {
+      "lane": "WAVE-0",
+      "title": "Legacy review root cause analysis",
+      "status": "COMPLETE",
+      "artifacts": ["reports/supervisor-r102/legacy-review-root-cause.md"]
+    },
+    {
+      "lane": "WAVE-1",
+      "title": "Declaration-review evidence model fix",
+      "status": "COMPLETE",
+      "files_changed": [
+        "tools/supervisor/validate_evidence_for_supervisor.py",
+        "tools/supervisor/compare_goal_to_evidence.py",
+        "tools/supervisor/autonomous_cycle.py"
+      ],
+      "tests": "tests/supervisor/test_r102_legacy_review_fix.py (12 tests)"
+    },
+    {
+      "lane": "WAVE-2",
+      "title": "Deep grading verification",
+      "status": "COMPLETE",
+      "tests": "tests/supervisor/test_r101_anti_skip_grading.py (15 tests, from R101)"
+    },
+    {
+      "lane": "WAVE-3",
+      "title": "Stream-specific prompt quality",
+      "status": "COMPLETE",
+      "files_changed": ["tools/supervisor/generate_supervisor_packet.py"],
+      "tests": "tests/supervisor/test_r102_stream_prompt_quality.py (11 tests)"
+    },
+    {
+      "lane": "WAVE-4",
+      "title": "Continuation policy (4 new states)",
+      "status": "COMPLETE",
+      "files_changed": ["tools/supervisor/autonomous_cycle.py"],
+      "tests": "tests/supervisor/test_r102_continuation_states.py (9 tests)"
+    },
+    {
+      "lane": "WAVE-5",
+      "title": "Replay 3 packages with accurate classification",
+      "status": "COMPLETE",
+      "tests": "tests/supervisor/test_r102_replay_packages.py (18 tests)"
+    },
+    {
+      "lane": "WAVE-6",
+      "title": "Reports and evidence self-containment",
+      "status": "COMPLETE",
+      "artifacts": [
+        "reports/supervisor-r102/00-preflight.md",
+        "reports/supervisor-r102/r101-reconciliation.md",
+        "reports/supervisor-r102/stream-generation-quality-plan.md",
+        "reports/supervisor-r102/deep-grading-plan.md",
+        "reports/supervisor-r102/quota-tracker.md",
+        "reports/supervisor-r102/lane-execution-ledger.json",
+        "reports/supervisor-r102/generated-next-prompts/"
+      ]
+    },
+    {
+      "lane": "WAVE-7",
+      "title": "Final IV and forecast",
+      "status": "COMPLETE",
+      "artifacts": [
+        "reports/supervisor-r102/final-adversarial-independent-verification.md",
+        "reports/supervisor-r102/three-sprint-forecast.md",
+        "reports/supervisor-r102/next-supervisor-agent-prompt.md"
+      ]
+    }
+  ],
+  "test_summary": {
+    "new_tests": 50,
+    "total_supervisor_passed": 582,
+    "total_supervisor_failed": 2,
+    "pre_existing_failures": ["test_repo_ledger_backfills_r89_apis_and_validates", "test_real_ledger_passes"]
+  }
+}

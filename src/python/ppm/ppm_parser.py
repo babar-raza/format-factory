@@ -27,6 +27,12 @@ MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
 MAX_DIMENSION = 65536
 MAX_MAXVAL = 65535
 
+# Magic number constants (Netpbm spec — FACT-PPM-001, FACT-PPM-002)
+# FACT-PPM-001: "PPM ASCII format starts with magic 'P3' followed by whitespace"
+# FACT-PPM-002: "PPM binary format starts with magic 'P6' followed by whitespace"
+PPM_MAGIC_ASCII = "P3"   # FACT-PPM-001
+PPM_MAGIC_BINARY = "P6"  # FACT-PPM-002
+
 
 class PpmError(Exception):
     """Base exception for PPM parser errors."""
@@ -386,3 +392,187 @@ def write_ppm(
         lines.append(row_str)
 
     out_path.write_text("\n".join(lines) + "\n", encoding="ascii")
+
+
+def get_dimensions(file_path: str | Path) -> tuple[int, int]:
+    """Return (width, height) of a PPM image without full pixel decode.
+
+    Parses only the header. Useful for quick dimension checks.
+
+    Args:
+        file_path: Path to a P3 or P6 PPM file.
+
+    Returns:
+        Tuple (width, height).
+
+    Raises:
+        PpmError: If the file cannot be parsed or does not exist.
+    """
+    img = parse_ppm_strict(file_path)
+    return (img.width, img.height)
+
+
+def to_grayscale(file_path: str | Path, dest_path: str | Path) -> dict[str, Any]:
+    """Convert a PPM color image to a PGM grayscale image.
+
+    Uses luminance formula: gray = round(0.299*R + 0.587*G + 0.114*B).
+    Writes a P2 ASCII PGM file to dest_path.
+
+    Args:
+        file_path: Source PPM file path.
+        dest_path: Destination PGM file path.
+
+    Returns:
+        Dict with keys: ok, width, height, maxval, pixel_count.
+
+    Raises:
+        PpmError: If the source file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    gray_pixels: list[int] = []
+    for r, g, b in img.pixels:
+        gray = round(0.299 * r + 0.587 * g + 0.114 * b)
+        gray = min(gray, img.maxval)
+        gray_pixels.append(gray)
+
+    # Write as PGM
+    out_path = Path(dest_path)
+    lines = ["P2"]
+    lines.append(f"{img.width} {img.height}")
+    lines.append(str(img.maxval))
+    for row_idx in range(img.height):
+        row_start = row_idx * img.width
+        row_pixels = gray_pixels[row_start: row_start + img.width]
+        lines.append(" ".join(str(p) for p in row_pixels))
+    out_path.write_text("\n".join(lines) + "\n", encoding="ascii")
+
+    return {
+        "ok": True,
+        "width": img.width,
+        "height": img.height,
+        "maxval": img.maxval,
+        "pixel_count": len(gray_pixels),
+    }
+
+
+def pixel_count(file_path: str | Path) -> int:
+    """Return the total pixel count (width * height) of a PPM image."""
+    img = parse_ppm_strict(file_path)
+    return img.width * img.height
+
+
+def average_color(file_path: str | Path) -> tuple[float, float, float]:
+    """Return the average (R, G, B) color of a PPM image as floats."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return (0.0, 0.0, 0.0)
+    n = len(img.pixels)
+    r_sum = sum(p[0] for p in img.pixels)
+    g_sum = sum(p[1] for p in img.pixels)
+    b_sum = sum(p[2] for p in img.pixels)
+    return (r_sum / n, g_sum / n, b_sum / n)
+
+
+def brightness(file_path: str | Path, dest_path: str | Path,
+               delta: int) -> dict[str, Any]:
+    """Adjust brightness of a PPM image by adding delta to all channels.
+
+    Values are clamped to [0, maxval].
+
+    Args:
+        file_path: Source PPM file path.
+        dest_path: Destination PPM file path.
+        delta: Brightness adjustment (-maxval to +maxval).
+
+    Returns:
+        Dict with keys: ok, width, height, delta, clamped_count.
+
+    Raises:
+        PpmError: If the source file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    adjusted: list[tuple[int, int, int]] = []
+    clamped = 0
+    for r, g, b in img.pixels:
+        nr = r + delta
+        ng = g + delta
+        nb = b + delta
+        if nr < 0 or nr > img.maxval or ng < 0 or ng > img.maxval or nb < 0 or nb > img.maxval:
+            clamped += 1
+        nr = max(0, min(img.maxval, nr))
+        ng = max(0, min(img.maxval, ng))
+        nb = max(0, min(img.maxval, nb))
+        adjusted.append((nr, ng, nb))
+    write_ppm(adjusted, img.width, img.height, img.maxval, dest_path)
+    return {
+        "ok": True,
+        "width": img.width,
+        "height": img.height,
+        "delta": delta,
+        "clamped_count": clamped,
+    }
+
+
+def crop(file_path: str | Path, dest_path: str | Path,
+         x: int, y: int, w: int, h: int) -> dict[str, Any]:
+    """Crop a rectangular region from a PPM image and write it.
+
+    Args:
+        file_path: Source PPM file path.
+        dest_path: Destination PPM file path.
+        x: Left column of crop region (0-based).
+        y: Top row of crop region (0-based).
+        w: Width of crop region.
+        h: Height of crop region.
+
+    Returns:
+        Dict with keys: ok, width, height, pixel_count.
+
+    Raises:
+        PpmError: If source cannot be parsed.
+        ValueError: If crop region is out of bounds.
+    """
+    img = parse_ppm_strict(file_path)
+    if x < 0 or y < 0 or w <= 0 or h <= 0:
+        raise ValueError(f"Invalid crop region: x={x}, y={y}, w={w}, h={h}")
+    if x + w > img.width or y + h > img.height:
+        raise ValueError(
+            f"Crop region ({x},{y},{w},{h}) exceeds image bounds ({img.width}x{img.height})"
+        )
+    cropped: list[tuple[int, int, int]] = []
+    for row in range(y, y + h):
+        for col in range(x, x + w):
+            cropped.append(img.pixels[row * img.width + col])
+    write_ppm(cropped, w, h, img.maxval, dest_path)
+    return {"ok": True, "width": w, "height": h, "pixel_count": len(cropped)}
+
+
+def flip_horizontal(file_path: str | Path, dest_path: str | Path) -> dict[str, Any]:
+    """Flip a PPM image horizontally (mirror left-right) and write the result."""
+    img = parse_ppm_strict(file_path)
+    flipped: list[tuple[int, int, int]] = []
+    for row in range(img.height):
+        row_start = row * img.width
+        row_pixels = img.pixels[row_start:row_start + img.width]
+        flipped.extend(reversed(row_pixels))
+    write_ppm(flipped, img.width, img.height, img.maxval, dest_path)
+    return {"ok": True, "width": img.width, "height": img.height, "pixel_count": len(flipped)}
+
+
+def invert(file_path: str | Path, dest_path: str | Path) -> dict[str, Any]:
+    """Invert all pixel colors in a PPM image and write the result."""
+    img = parse_ppm_strict(file_path)
+    inverted = [(img.maxval - r, img.maxval - g, img.maxval - b) for r, g, b in img.pixels]
+    write_ppm(inverted, img.width, img.height, img.maxval, dest_path)
+    return {"ok": True, "width": img.width, "height": img.height, "pixel_count": len(inverted)}
+
+
+def flip_vertical(file_path: str | Path, dest_path: str | Path) -> dict[str, Any]:
+    """Flip a PPM image vertically (mirror top-bottom) and write the result."""
+    img = parse_ppm_strict(file_path)
+    flipped: list[tuple[int, int, int]] = []
+    for row in range(img.height - 1, -1, -1):
+        row_start = row * img.width
+        flipped.extend(img.pixels[row_start:row_start + img.width])
+    write_ppm(flipped, img.width, img.height, img.maxval, dest_path)
+    return {"ok": True, "width": img.width, "height": img.height, "pixel_count": len(flipped)}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "product-mutation-taskcard-state-machine.schema.json",
+  "title": "Format Factory Product Mutation Taskcard State Machine",
+  "version": "1.0",
+  "generated_by": "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001",
+  "generated_at": "2026-06-08",
+  "definitions": {
+    "taskcard_state": {
+      "type": "string",
+      "enum": [
+        "DISCOVERED",
+        "EVIDENCE_LOCATED",
+        "EXECUTION_CLASSIFIED",
+        "CONTRACT_REQUIRED",
+        "CONTRACTED",
+        "IDEMPOTENCY_KEY_ASSIGNED",
+        "MUTATION_BOUNDED",
+        "MUTATION_EXECUTED",
+        "DIFF_CAPTURED",
+        "VALIDATED",
+        "REPLAY_RECIPE_RECORDED",
+        "REPLAY_TESTED",
+        "GOVERNANCE_ACCEPTED",
+        "BACKFILLED_LEGACY_ACCEPTED",
+        "REJECTED_UNGOVERNED",
+        "BLOCKED_INSUFFICIENT_EVIDENCE"
+      ]
+    },
+    "close_eligible_states": {
+      "const": [
+        "VALIDATED",
+        "REPLAY_RECIPE_RECORDED",
+        "REPLAY_TESTED",
+        "GOVERNANCE_ACCEPTED",
+        "BACKFILLED_LEGACY_ACCEPTED"
+      ]
+    },
+    "forbidden_jumps": [
+      {"from": "DISCOVERED", "to": "GOVERNANCE_ACCEPTED"},
+      {"from": "DISCOVERED", "to": "BACKFILLED_LEGACY_ACCEPTED"},
+      {"from": "DISCOVERED", "to": "VALIDATED"},
+      {"from": "EXECUTION_CLASSIFIED", "to": "GOVERNANCE_ACCEPTED"}
+    ]
+  }
+}

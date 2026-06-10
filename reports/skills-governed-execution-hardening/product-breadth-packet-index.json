@@ -1,0 +1,59 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "generated_at": "2026-06-04T12:00:00Z",
+  "description": "Governed packet index for 3 product families — FODS (full), FODT (shell), Netpbm (shell)",
+  "packets": [
+    {
+      "family": "FODS",
+      "track": "commercial_net",
+      "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+      "capability": "dogfood_status.fods_to_csv_dotnet",
+      "packet_type": "FULL",
+      "packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "handoff_path": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+      "template_path": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+      "recommended_skill": "add-dotnet-api",
+      "status": "READY_FOR_MAINSTREAM",
+      "limitations": []
+    },
+    {
+      "family": "FODT",
+      "track": "commercial_net",
+      "gap_id": "GAP-FODT-DOGFOOD-MD-DOTNET-001",
+      "capability": "dogfood_status.fodt_to_markdown_dotnet",
+      "packet_type": "SHELL",
+      "packet_path": "reports/skills-governed-execution-hardening/fodt-packet-shell.json",
+      "handoff_path": null,
+      "template_path": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+      "recommended_skill": "add-dotnet-api",
+      "status": "SHELL_READY — NEEDS_MAINSTREAM_DISCOVERY",
+      "limitations": [
+        "FODT exact source path needs confirmation from Mainstream",
+        "Test file name needs sprint-specific numbering",
+        "Handoff not yet generated (dry-run not run)"
+      ]
+    },
+    {
+      "family": "Netpbm",
+      "track": "commercial_net",
+      "gap_id": "GAP-NETPBM-DOGFOOD-PACKAGE-DOTNET-001",
+      "capability": "dogfood_status.netpbm_image_pipeline_dotnet",
+      "packet_type": "SHELL",
+      "packet_path": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+      "handoff_path": null,
+      "template_path": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+      "recommended_skill": "add-dotnet-api",
+      "status": "SHELL_READY — NEEDS_MAINSTREAM_DISCOVERY",
+      "limitations": [
+        "Netpbm exact method to implement needs Mainstream selection",
+        "Test file name needs sprint-specific numbering",
+        "Handoff not yet generated (dry-run not run)"
+      ]
+    }
+  ],
+  "families_covered": ["FODS", "FODT", "Netpbm"],
+  "full_packets": 1,
+  "shell_packets": 2,
+  "total_packets": 3,
+  "breadth_requirement_met": true
+}

@@ -1,0 +1,24 @@
+id: PFGI-TC-003
+version: "1.0"
+generated_by: FORMAT-FACTORY-PRODUCT-FIRST-GOVERNED-SOURCE-IMPLEMENTATION-001
+generated_at: "2026-06-09"
+title: "Implement text_stats in abw_codec.py"
+status: closed
+lane: abw_implementation
+item_type: PRODUCT_SOURCE
+format_id: abw
+capability_id: text_stats
+function_name: text_stats
+source_file: src/python/abw/abw_codec.py
+execution_method: AGENT_GOVERNED_DIRECT_EXECUTION
+claim_classification: GOVERNED_BUT_NOT_REPLAYED
+idempotency_key: dccee3ccbb0b816812baaa43930a298729c24fbad552eec09f21873a74a12a3b
+state_machine_start: EVIDENCE_LOCATED
+state_machine_target: GOVERNANCE_ACCEPTED
+test_file: tests/python/abw/test_pfgi_abw_text_stats.py
+tests_added: 8
+acceptance_criteria:
+  - Function returns dict with paragraph_count, word_count, char_count, avg_words_per_paragraph
+  - 8 tests pass including empty doc, multi-paragraph, TypeError for non-dict
+verification:
+  - pytest tests/python/abw/test_pfgi_abw_text_stats.py -v

@@ -1,0 +1,43 @@
+{
+  "sprint_id": "FORMAT-FACTORY-CAPABILITY-LAYER-FULL-HARDENING-001",
+  "run_id": "capability-layer-full-hardening",
+  "generated_at": "2026-06-08",
+  "total_contradictions": 3,
+  "resolved_contradictions": 3,
+  "open_contradictions": 0,
+  "contradictions": [
+    {
+      "contradiction_id": "CON-FH-001",
+      "type": "stale_data",
+      "description": "selected-product-gaps.json had run_id=null and generated_at=2026-06-05, pointing to prior sprint state.",
+      "conflicting_sources": [
+        ".local/supervisor/selected-product-gaps.json (run_id=null)",
+        "Current sprint: capability-layer-full-hardening"
+      ],
+      "status": "RESOLVED",
+      "resolution": "Refreshed selected-product-gaps.json with run_id=capability-layer-full-hardening and current timestamp."
+    },
+    {
+      "contradiction_id": "CON-FH-002",
+      "type": "unsafe_wording",
+      "description": "poc-targets.yaml contained 3 instances of next_action='Authorized git commit + push (requires user authorization)' which violates the no-push governance rule.",
+      "conflicting_sources": [
+        "product-capability-matrix/poc-targets.yaml (3 unsafe next_action entries)",
+        "CLAUDE.md governance rules (no push/commit without explicit authorization)"
+      ],
+      "status": "RESOLVED",
+      "resolution": "Replaced all 3 instances with 'Gate 11 G11-G commercial release approval (requires human authorization — Babar Raza)' using replace_all=True."
+    },
+    {
+      "contradiction_id": "CON-FH-003",
+      "type": "missing_exports",
+      "description": "8 functions existed in src/python/tsv/tsv_parser.py but were not exported from src/python/tsv/__init__.py: get_column, write_tsv_strict, get_row, validate_headers, count_rows, to_csv, deduplicate_rows, get_row_by_key.",
+      "conflicting_sources": [
+        "src/python/tsv/tsv_parser.py (8 public functions defined)",
+        "src/python/tsv/__init__.py (8 functions missing from exports)"
+      ],
+      "status": "RESOLVED",
+      "resolution": "Added all 8 functions to __init__.py imports and __all__. Added poc-targets.yaml entries. Added ledger entry FULL-HARDENING-TSV-FEATURE-EXPANSION-001. Added 32 new tests (all pass)."
+    }
+  ]
+}

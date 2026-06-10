@@ -1,0 +1,103 @@
+# Specification Authority Fallback Attachment
+# Authority: tools/specification-authority-layer/ (28/28 tests pass, iteration 1)
+# Purpose: Attach spec context to every POC readiness claim per closure criteria.
+# Type: FALLBACK (local empirical + public spec references)
+# Note: Full spec vault ingest deferred (fetch_on_register); this is the deferred_local_fixture fallback.
+
+generated_at: "2026-06-05T00:00:00Z"
+attachment_type: "spec_authority_fallback"
+spec_authority_layer: "tools/specification-authority-layer/"
+spec_authority_tests_pass: 28
+
+format_spec_attachments:
+  - format_id: "FODS"
+    product: "FODS .NET Commercial"
+    spec_title: "ODF Spreadsheet Specification (Flat XML)"
+    spec_type: "odf_standard"
+    spec_reference: "OASIS OpenDocument Format (ODF) v1.3 — Part 3: Packages, Part 4: Recalculated Formula (ISO/IEC 26300-1:2015)"
+    public_url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-packages/OpenDocument-v1.3-os-part3-packages.html"
+    fallback_basis: "Empirical analysis of .fods files (XML structure); tests against OASIS ODF 1.2/1.3 samples"
+    readiness_claims_covered:
+      - "dotnet_status: all PASS (load, inspect_object_model, edit_cells, add_sheet, save_same_format, export_csv, export_html, export_json)"
+      - "python_foss_status: all PASS"
+      - "dogfood_status: fods_to_csv_python IMPLEMENTED"
+    poc_scope_note: "Format Factory uses FODS (flat XML) subset — no OLE compound document; XML-only parsing"
+    attachment_verdict: "SPEC_FALLBACK_ATTACHED"
+
+  - format_id: "FODT"
+    product: "FODT .NET Commercial"
+    spec_title: "ODF Text Document Specification (Flat XML)"
+    spec_type: "odf_standard"
+    spec_reference: "OASIS OpenDocument Format (ODF) v1.3 — Part 3: Packages (ISO/IEC 26300-1:2015)"
+    public_url: "https://docs.oasis-open.org/office/OpenDocument/v1.3/os/part3-packages/"
+    fallback_basis: "Empirical analysis of .fodt files (XML structure); public ODF spec text elements"
+    readiness_claims_covered:
+      - "dotnet_status: all PASS (load, edit_paragraphs, edit_headings, save_same_format, export_txt, export_markdown, export_html)"
+      - "python_foss_status: all PASS"
+    attachment_verdict: "SPEC_FALLBACK_ATTACHED"
+
+  - format_id: "Netpbm"
+    product: "Netpbm .NET Commercial + Python FOSS"
+    spec_title: "Netpbm Image Formats (PBM/PGM/PPM)"
+    spec_type: "public_domain_spec"
+    spec_reference: "Netpbm manual (public domain) — pbm, pgm, ppm format definitions"
+    public_url: "http://netpbm.sourceforge.net/doc/pbm.html"
+    fallback_basis: "Public domain spec. Binary P4/P5/P6 and ASCII P1/P2/P3 documented in netpbm sourceforge manual"
+    readiness_claims_covered:
+      - "dotnet_status: all PASS (load PBM/PGM/PPM, inspect, edit, save, export, transform operations)"
+      - "python_foss_status: all PASS (parse_pbm, write_pbm, parse_pgm, write_pgm, parse_ppm, write_ppm)"
+    attachment_verdict: "SPEC_FALLBACK_ATTACHED"
+
+  - format_id: "ZST"
+    product: "ZST Python FOSS"
+    spec_title: "Zstandard Compression Format"
+    spec_type: "rfc"
+    spec_reference: "RFC 8478 — Zstandard Compression and the application/zstd Media Type"
+    public_url: "https://www.rfc-editor.org/rfc/rfc8478"
+    fallback_basis: "RFC 8478 defines the Zstandard frame format, block types, content sizes"
+    readiness_claims_covered:
+      - "python_status: all PASS (compress_bytes, decompress_bytes, compress_file, decompress_file, probe, validate, installed_workflow)"
+    attachment_verdict: "SPEC_FALLBACK_ATTACHED"
+
+  - format_id: "Python_Netpbm"
+    product: "Netpbm Python FOSS (PBM/PGM/PPM)"
+    spec_title: "Netpbm Image Formats (PBM/PGM/PPM) — Python"
+    spec_type: "public_domain_spec"
+    spec_reference: "Same as Netpbm .NET above — public domain netpbm manual"
+    public_url: "http://netpbm.sourceforge.net/doc/pbm.html"
+    fallback_basis: "Same as Netpbm.NET — public domain spec"
+    readiness_claims_covered:
+      - "python_status: all PASS including pbm_to_pgm_dogfood"
+    attachment_verdict: "SPEC_FALLBACK_ATTACHED"
+
+  - format_id: "SYLK"
+    product: "SYLK Python FOSS"
+    spec_title: "SYLK (Symbolic Link) Spreadsheet Format"
+    spec_type: "format_documentation"
+    spec_reference: "Microsoft SYLK format documentation — ID;P,N,E,C,F,G record types; B,C,D,E,F,SS,SD record structure"
+    public_url: "https://support.microsoft.com/en-us/office/microsoft-sylk-slk-file-format-68f3f1a8-1ae6-4e13-9b9a-9d84e2f6b4b3"
+    fallback_basis: "Empirical analysis of SYLK files + Microsoft public format documentation"
+    readiness_claims_covered:
+      - "python_status: parse_sylk PASS, write_sylk PASS, sylk_to_csv PASS, installed_workflow PASS"
+    attachment_verdict: "SPEC_FALLBACK_ATTACHED"
+
+  - format_id: "DIF"
+    product: "DIF Python FOSS (IN_PROGRESS)"
+    spec_title: "Data Interchange Format (DIF)"
+    spec_type: "format_documentation"
+    spec_reference: "DIF format description — originally from VisiCalc. TABLE/VECTORS/TUPLES/DATA header structure with BOT/EOD markers."
+    public_url: "https://en.wikipedia.org/wiki/Data_Interchange_Format"
+    fallback_basis: "Empirical analysis of .dif files + historical VisiCalc DIF documentation"
+    readiness_claims_covered:
+      - "parse_dif PASS, probe_dif PASS, dif_to_csv PASS, parse_dif_strict PASS, write_dif PASS (R117)"
+    attachment_verdict: "SPEC_FALLBACK_ATTACHED_PARTIAL"
+    limitation: "DIF still ON_HOLD in poc-targets.yaml; write_dif added in R117 but poc_targets reconsider not yet authorized"
+
+attachment_summary:
+  formats_with_spec_attached: 6
+  formats_verified: ["FODS", "FODT", "Netpbm", "ZST", "Python_Netpbm", "SYLK"]
+  formats_partial: ["DIF"]
+  attachment_type: "deferred_local_fixture_fallback"
+  spec_authority_layer_validated: true
+  spec_authority_tests: "28/28 PASS"
+  verdict: "SPEC_CONTEXT_ATTACHED_VIA_FALLBACK"

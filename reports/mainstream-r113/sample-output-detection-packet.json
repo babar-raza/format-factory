@@ -1,0 +1,57 @@
+{
+  "packet_type": "sample_output_detection_fixture",
+  "sprint": "mainstream-r113",
+  "target_stream": "acceleration",
+  "defect_id": "D112-ASLP-02",
+  "check_name": "missing_sample_outputs",
+  "current_behavior": "Reports 0 sample outputs, check VIOLATION",
+  "expected_behavior": "Reports 5+ sample outputs, check PASS",
+  "search_paths_to_add": [
+    "reports/<run_id>/sample-outputs/",
+    "evidence_artifacts where type=sample",
+    "reports_created matching */sample-outputs/*"
+  ],
+  "existing_samples": [
+    {
+      "path": "reports/mainstream-r112/sample-outputs/sample-product-proof-matrix.json",
+      "type": "sample",
+      "size_bytes": 1345
+    },
+    {
+      "path": "reports/mainstream-r112/sample-outputs/sample-source-ledger-entry.json",
+      "type": "sample",
+      "size_bytes": 1109
+    },
+    {
+      "path": "reports/mainstream-r112/sample-outputs/sample-mainstream-next-prompt.md",
+      "type": "sample",
+      "size_bytes": 1682
+    },
+    {
+      "path": "reports/mainstream-r112/sample-outputs/sample-prompt-quality-classification.json",
+      "type": "sample",
+      "size_bytes": 1379
+    },
+    {
+      "path": "reports/mainstream-r112/sample-outputs/sample-dogfood-proof.json",
+      "type": "sample",
+      "size_bytes": 822
+    }
+  ],
+  "test_cases": [
+    {
+      "scenario": "Samples in reports/<run_id>/sample-outputs/",
+      "expected": "PASS",
+      "sample_count": 5
+    },
+    {
+      "scenario": "Samples in evidence_artifacts with type=sample",
+      "expected": "PASS",
+      "sample_count": 5
+    },
+    {
+      "scenario": "No samples anywhere",
+      "expected": "VIOLATION"
+    }
+  ]
+}

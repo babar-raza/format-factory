@@ -1,0 +1,23 @@
+target: netpbm-net
+iteration: 1
+authority_status: proposed_only
+note: not applied to poc-targets.yaml
+proposed_capabilities:
+  - capability: MedianFilter
+    operation: add
+    proof_type: test_verified
+    source_files: [src/net/netpbm/Model/NetpbmImage.cs]
+    test_files: [tests/net/netpbm/NetpbmR114MedianFilterTests.cs]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/netpbm-r114-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-netpbm.json
+    sample_output: null
+    notes: Noise-reduction median filter; supports PGM (Pixels) and PPM (R/G/B channels)
+  - capability: Create
+    operation: add
+    proof_type: test_verified
+    source_files: [src/net/netpbm/Model/NetpbmImage.cs]
+    test_files: [tests/net/netpbm/NetpbmR114CreateCanvasTests.cs]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/netpbm-r114-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-netpbm.json
+    sample_output: null
+    notes: Blank canvas factory; supports PGM and PPM; fill parameter optional

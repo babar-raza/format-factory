@@ -1,0 +1,33 @@
+{
+  "proof_type": "live-cycle-execution",
+  "sprint": "skills-r113",
+  "timestamp": "2026-06-03T23:40:00Z",
+  "declaration_path": ".local/evidences/skills-r113/evidence-declaration.yaml",
+  "execution_mode": "live",
+  "description": "Full live autonomous cycle execution on Skills R113 declaration through all 15 step markers",
+  "steps_completed": {
+    "step1_validate": {"status": "VALID", "run_id": "skills-r113"},
+    "step2_inspect": {"status": "COMPLETE", "items": 9, "artifacts": 15},
+    "step2b_manifest": {"status": "GENERATED"},
+    "step2c_materialize": {"status": "VERIFIED"},
+    "step2d_adoption": {"status": "PASS", "compliant": true},
+    "step3_grade": {"status": "ACCEPTED", "accepted": 9, "rework": 0, "overclaimed": 0},
+    "step3b_anti_skip": {"status": "COMPLETE"},
+    "step4_prompt": {"status": "GENERATED", "stream": "skills"},
+    "step4b_prompt_quality": {"status": "COMPLETE"},
+    "step5_manifest": {"status": "WRITTEN"},
+    "step6_copy_latest": {"status": "COPIED", "authority_map": true},
+    "step7_bridge": {"status": "BRIDGED"},
+    "step7b_markdown": {"status": "REGENERATED"},
+    "step7c_context_pack": {"status": "REBUILT"},
+    "step8_continuation": {"status": "YES", "iteration": 7, "max": 12}
+  },
+  "exit_code": 0,
+  "autonomous_continue": true,
+  "continuation_state": "YES",
+  "review_dir": ".local/supervisor/reviews/skills-r113/",
+  "stream_authority_map": "reports/supervisor-streams/skills/authority-map.json",
+  "stream_continuation_signal": ".local/supervisor/streams/skills/continuation-signal.json",
+  "safety_classification": "SAFE_LIVE_EXECUTION",
+  "rollback_required": false
+}

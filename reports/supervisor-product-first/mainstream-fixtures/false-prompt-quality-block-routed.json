@@ -1,0 +1,13 @@
+{
+  "fixture_id": "false-prompt-quality-block-routed",
+  "description": "Prompt quality failure with real product work present — should route to Supervisor, not STOP",
+  "input": {
+    "prompt_quality_failure": true,
+    "real_product_work_present": true,
+    "families_touched": 2,
+    "source_diffs": 2
+  },
+  "expected_routing": "ROUTE_BLOCKER",
+  "expected_continuation": "NOT_STOPPED",
+  "notes": "This is a false positive block — Supervisor routes it, Mainstream continues"
+}

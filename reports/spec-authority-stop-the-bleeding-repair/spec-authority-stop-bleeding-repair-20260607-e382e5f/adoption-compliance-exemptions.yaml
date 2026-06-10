@@ -1,0 +1,53 @@
+run_id: spec-authority-stop-bleeding-repair-20260607-e382e5f
+sprint_id: SPEC-AUTHORITY-LAYER-STOP-THE-BLEEDING-REPAIR-AND-ENFORCEMENT-001
+created_at: 2026-06-07
+
+exemptions:
+  - item_id: WI-TCA-R001
+    reason: governance_only
+    detail: >
+      TCA-R001 is a supervisor tooling change (wiring enforcement into evidence_declaration.py,
+      grade_declared_work.py, inspect_declared_evidence.py). No product code skill applies.
+      Skill transcripts are not required for supervisor pipeline wiring.
+    exemption_type: no_applicable_skill
+
+  - item_id: WI-TCA-R002
+    reason: governance_only
+    detail: >
+      TCA-R002 adds enforcement tests for the spec_fact_refs gate. Tests for supervisor
+      tooling governance do not fall under product capability skills.
+    exemption_type: no_applicable_skill
+
+  - item_id: WI-TCA-R003
+    reason: governance_only
+    detail: >
+      TCA-R003 wires grading logic to enforcement results in grade_declared_work.py.
+      Supervisor grading tooling is governance, not a product skill.
+    exemption_type: no_applicable_skill
+
+  - item_id: WI-TCA-R004
+    reason: governance_only
+    detail: >
+      TCA-R004 hardens the product task selector with an authority gate check.
+      This is supervisor pipeline hardening, not a product capability skill.
+    exemption_type: no_applicable_skill
+
+  - item_id: WI-TCA-R005
+    reason: governance_only
+    detail: >
+      TCA-R005 corrects bypass ledger YAML metadata. No product code. No skill required.
+    exemption_type: no_applicable_skill
+
+  - item_id: WI-TCA-R006
+    reason: governance_only
+    detail: >
+      TCA-R006 produces anti-skip evidence artifacts (lane ledger, raw logs, exemptions).
+      These are compliance artifacts, not product capability changes.
+    exemption_type: no_applicable_skill
+
+  - item_id: WI-TCA-R007
+    reason: governance_only
+    detail: >
+      TCA-R007 repairs next-sprint contamination (generate_supervisor_packet.py update).
+      Supervisor packet generation is pipeline governance, not a product skill.
+    exemption_type: no_applicable_skill

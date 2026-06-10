@@ -1,0 +1,65 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-INTEGRATION-001",
+  "generated_at": "2026-06-04T13:00:00.000000Z",
+  "handoff_type": "mainstream_next_sprint",
+  "source_stream": "mainstream",
+  "target_stream": "mainstream",
+  "current_state": {
+    "last_sprint": "FORMAT-FACTORY-MAINSTREAM-R113-ACTUAL-PRODUCT-BREADTH-PROMPT-QUALITY-BLOCKER-CLOSURE-AND-DIRTY-STATE-CAMPAIGN-001",
+    "decision": "CONTINUE_WITH_LIMITATIONS",
+    "mainstream_classification": "PARTIAL_FEW_FAMILIES",
+    "product_breadth_score": 2,
+    "families_needed_for_clean_pass": 1,
+    "families_targeted_this_sprint": ["FODS", "FODT"]
+  },
+  "next_sprint_targets": {
+    "primary_family": "Netpbm",
+    "secondary_families": ["FODS", "FODT"],
+    "format_gaps": [
+      {
+        "format": "FODS",
+        "track": "commercial_net",
+        "gaps": ["fods_to_csv_dotnet", "fods_to_html_dotnet"],
+        "skill": "governed-dogfood-export",
+        "priority": 125
+      },
+      {
+        "format": "FODT",
+        "track": "commercial_net",
+        "gaps": ["fodt_to_markdown_dotnet", "fodt_to_txt_dotnet"],
+        "skill": "governed-dogfood-export",
+        "priority": 125
+      },
+      {
+        "format": "Netpbm",
+        "track": "foss_reduced",
+        "gaps": ["netpbm_foss_proof_refresh"],
+        "skill": "governed-dogfood-export",
+        "priority": 90
+      }
+    ]
+  },
+  "clean_pass_requirements": {
+    "families_touched": {"current": 2, "required": 3, "gap": 1},
+    "source_diffs": {"current": 2, "required": 3, "gap": 1},
+    "governed_transcripts": {"current": 0, "required": 3, "gap": 3},
+    "raw_logs": {"current": 0, "required": 3, "gap": 3},
+    "capability_matrix_deltas": {"current": 0, "required": 3, "gap": 3}
+  },
+  "cross_stream_requirements": {
+    "skills_consumption": {
+      "required": true,
+      "current_status": "SKILLS_MISSING_PACKET",
+      "action": "Skills must produce governed transcripts; Mainstream must declare governed_execution_consumed=true"
+    },
+    "acceleration_consumption": {
+      "required": false,
+      "current_status": "not_consumed",
+      "action": "Optional but contributes to poc_help_score"
+    }
+  },
+  "supervisor_routing_decision": "CONTINUE_WITH_LIMITATIONS",
+  "autonomous_continue": true,
+  "stop_condition_triggered": false,
+  "product_families_in_handoff": ["FODS", "FODT", "Netpbm"]
+}

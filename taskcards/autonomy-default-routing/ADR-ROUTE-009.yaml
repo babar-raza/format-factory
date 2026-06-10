@@ -1,0 +1,34 @@
+id: ADR-ROUTE-009
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Governance Validator 11 — route_decision_required"
+status: completed
+lane: validator_prompt_safety
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-005, ADR-ROUTE-006]
+gates:
+  - "run_all_governance_validators() returns 11 validators"
+  - "Validator 11 result key is route_decision_required_validator"
+  - "Validator 11 is WARN-only (blocks_sprint: False)"
+  - "existing governance tests pass"
+allowed_files:
+  - "tools/supervisor/governance_validators.py"
+forbidden_files:
+  - "src/"
+  - "tools/supervisor/action_queue.py"
+  - "tools/supervisor/autonomous_cycle.py"
+acceptance_criteria:
+  - "Validator 11 added and wired into run_all_governance_validators()"
+  - "GOVERNANCE_DOC items exempt"
+  - "Legacy backfill items get WARN not FAIL"
+  - "WARN-only, non-blocking"
+tests:
+  - "tests/supervisor/test_autonomy_routing_integration.py::TestGovernanceValidatorIntegration"
+  - "tests/supervisor/test_governance_validators.py"
+evidence:
+  - "tools/supervisor/governance_validators.py"
+rollback: "Remove Validator 11 call from run_all_governance_validators()"
+closeout_criteria: "11 validators in result, regression tests pass"

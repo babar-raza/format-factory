@@ -1,0 +1,33 @@
+id: ADR-ROUTE-005
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Route Decider Module"
+status: completed
+lane: router_core
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-006]
+gates:
+  - "decide_route() returns BLOCKED for UNKNOWN_OR_AMBIGUOUS"
+  - "decide_route() returns AUTONOMOUS_ACCELERATED_DEFAULT for qualified PRODUCT_IMPLEMENTATION"
+allowed_files:
+  - "tools/supervisor/autonomy_route_decider.py"
+forbidden_files:
+  - "src/"
+  - "tools/supervisor/action_queue.py"
+  - "tools/supervisor/autonomous_cycle.py"
+acceptance_criteria:
+  - "classify_task_category() works for all categories"
+  - "decide_route() fail-closed for unknown/ambiguous"
+  - "validate_route_decision() checks all fields"
+  - "check_machinery_mutation_allowed() validates disk decisions"
+  - "check_prompt_for_unsafe_instructions() skips advisory sections"
+  - "quarantine_unsafe_prompt() writes to quarantine dir"
+tests:
+  - "tests/supervisor/test_autonomy_route_decider.py"
+evidence:
+  - "tools/supervisor/autonomy_route_decider.py"
+rollback: "rm tools/supervisor/autonomy_route_decider.py"
+closeout_criteria: "10+ tests pass, fail-closed behavior proven"

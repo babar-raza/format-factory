@@ -133,7 +133,12 @@ def test_report_md_type_not_discovered_as_sample_output(tmp_path):
     sample_file = tmp_path / "reports" / "run" / "sample-outputs" / "sample.csv"
     _write_sample(sample_file)
 
+    # Must include a PRODUCT_SOURCE item so GRE-TC-003 exemption does not fire,
+    # which would return is_violation=False without checking artifact types.
     declaration = {
+        "planned_work_items": [
+            {"item_id": "WI-001", "title": "Implement feature", "item_type": "PRODUCT_SOURCE"},
+        ],
         "evidence_artifacts": [
             {"path": str(sample_file), "type": "report_md"}  # wrong type
         ]

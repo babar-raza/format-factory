@@ -1,0 +1,71 @@
+{
+  "sprint": "FORMAT-FACTORY-SUPERVISOR-R110-STREAM-LOCAL-REPLAY-LEDGER-SAMPLE-OUTPUTS-AND-YES-WITH-LIMITATIONS-CLOSURE-001",
+  "generated_at": "2026-06-03T22:35:00",
+  "replayed_packages": [
+    {
+      "stream": "supervisor",
+      "package": "supervisor-r109",
+      "status": "REPLAYED_CURRENT_STREAM",
+      "stream_local_files": {
+        "evidence_review": "reports/supervisor-streams/supervisor/evidence-review.json",
+        "contradictions": "reports/supervisor-streams/supervisor/contradictions.json",
+        "latest_review": "reports/supervisor-streams/supervisor/latest-review.md",
+        "latest_next_prompt": "reports/supervisor-streams/supervisor/latest-next-worker-prompt.md",
+        "work_item_grades": "reports/supervisor-streams/supervisor/work-item-grades.json",
+        "authority_map": "reports/supervisor-streams/supervisor/authority-map.json"
+      },
+      "stream_local_continuation": ".local/supervisor/streams/supervisor/continuation-signal.json",
+      "verdict": "ACCEPTED_STREAM_LOCAL_AUTHORITY_COMPLETE"
+    },
+    {
+      "stream": "mainstream",
+      "package": "mainstream-r112",
+      "status": "REPLAYED_DIFFERENT_STREAM",
+      "stream_local_files": {
+        "evidence_review": "reports/supervisor-streams/mainstream/evidence-review.json",
+        "contradictions": "reports/supervisor-streams/mainstream/contradictions.json",
+        "latest_review": "reports/supervisor-streams/mainstream/latest-review.md",
+        "latest_next_prompt": "reports/supervisor-streams/mainstream/latest-next-worker-prompt.md",
+        "work_item_grades": "reports/supervisor-streams/mainstream/work-item-grades.json",
+        "authority_map": "reports/supervisor-streams/mainstream/authority-map.json"
+      },
+      "verdict": "ACCEPTED_STREAM_LOCAL_AUTHORITY_COMPLETE"
+    },
+    {
+      "stream": "skills",
+      "package": "skills-r112",
+      "status": "REPLAYED_DIFFERENT_STREAM",
+      "stream_local_files": {
+        "evidence_review": "reports/supervisor-streams/skills/evidence-review.json",
+        "contradictions": "reports/supervisor-streams/skills/contradictions.json",
+        "latest_review": "reports/supervisor-streams/skills/latest-review.md",
+        "latest_next_prompt": "reports/supervisor-streams/skills/latest-next-worker-prompt.md",
+        "work_item_grades": "reports/supervisor-streams/skills/work-item-grades.json",
+        "authority_map": "reports/supervisor-streams/skills/authority-map.json"
+      },
+      "verdict": "ACCEPTED_STREAM_LOCAL_AUTHORITY_COMPLETE"
+    },
+    {
+      "stream": "acceleration",
+      "package": "acceleration-r112",
+      "status": "REPLAYED_DIFFERENT_STREAM",
+      "stream_local_files": {
+        "evidence_review": "reports/supervisor-streams/acceleration/evidence-review.json",
+        "contradictions": "reports/supervisor-streams/acceleration/contradictions.json",
+        "latest_review": "reports/supervisor-streams/acceleration/latest-review.md",
+        "latest_next_prompt": "reports/supervisor-streams/acceleration/latest-next-worker-prompt.md",
+        "work_item_grades": "reports/supervisor-streams/acceleration/work-item-grades.json",
+        "authority_map": "reports/supervisor-streams/acceleration/authority-map.json"
+      },
+      "verdict": "ACCEPTED_STREAM_LOCAL_AUTHORITY_COMPLETE"
+    }
+  ],
+  "summary": {
+    "total_replayed": 4,
+    "current_stream": 1,
+    "other_streams": 3,
+    "all_have_stream_local": true,
+    "all_have_authority_map": true,
+    "global_is_reference_only": true
+  }
+}

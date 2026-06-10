@@ -1,0 +1,120 @@
+ M .supervisor/context-pack.yaml
+ M .supervisor/project-memory.md
+ M .supervisor/state/current-run.json
+ M .supervisor/state/watcher.json
+ M reports/supervisor/approval-gates.md
+ M reports/supervisor/context-pack.md
+ M reports/supervisor/contradictions.json
+ M reports/supervisor/contradictions.md
+ M reports/supervisor/discovery-summary.md
+ M reports/supervisor/evidence-review.json
+ M reports/supervisor/evidence-review.md
+ M reports/supervisor/latest-cycle-summary.md
+ M reports/supervisor/latest-next-worker-prompt.md
+ M reports/supervisor/latest-review.md
+ M reports/supervisor/materialized-evidence-review.md
+ M reports/supervisor/memory-sync-report.md
+ M reports/supervisor/next-ruflo-lanes.json
+ M reports/supervisor/next-sprint-taskmaster.json
+ M reports/supervisor/next-sprint.md
+ M reports/supervisor/session-resume.md
+ M reports/supervisor/work-item-grades.json
+ M reports/supervisor/work-item-grades.md
+ M reports/supervisor/work-item-grades.yaml
+ M src/net/fods/FodsCsvExporter.cs
+ M src/net/fods/FormatFactory.Fods.csproj
+ M src/net/fodt/FormatFactory.Fodt.csproj
+ M src/net/netpbm/FormatFactory.Netpbm.csproj
+ M src/net/netpbm/Model/NetpbmImage.cs
+ M src/net/netpbm/NetpbmException.cs
+ M src/net/netpbm/NetpbmParser.cs
+ M src/python/abw/__init__.py
+ M src/python/abw/abw_codec.py
+ M src/python/gnumeric/__init__.py
+ M src/python/gnumeric/gnumeric_codec.py
+ M tools/supervisor/autonomous_cycle.py
+ M tools/supervisor/autonomous_host_runner.py
+ M tools/supervisor/generate_next_worker_prompt.py
+?? .vscode/tasks.json
+?? evidence-stub.json
+?? examples/python/abw/create_document_example.py
+?? examples/python/abw/html_metadata_export_example.py
+?? examples/python/abw/sample_meeting_notes.abw
+?? examples/python/gnumeric/export_csv_example.py
+?? examples/python/gnumeric/json_export_example.py
+?? examples/python/gnumeric/sample_sales_report.gnumeric
+?? scripts/
+?? src/net/netpbm/README.md
+?? src/python/abw/pyproject.toml
+?? src/python/dif/pyproject.toml
+?? src/python/fods/pyproject.toml
+?? src/python/fodt/pyproject.toml
+?? src/python/gnumeric/pyproject.toml
+?? src/python/pbm/pyproject.toml
+?? src/python/pgm/pyproject.toml
+?? src/python/ppm/pyproject.toml
+?? src/python/sylk/pyproject.toml
+?? src/python/zst/pyproject.toml
+?? tests/python/abw/test_r117_abw_write_roundtrip.py
+?? tests/python/abw/test_r118_probe_abw.py
+?? tests/python/abw/test_r119_abw_export_to_txt.py
+?? tests/python/abw/test_r120_abw_html_and_metadata.py
+?? tests/python/gnumeric/test_r117_gnumeric_csv_export.py
+?? tests/python/gnumeric/test_r119_gnumeric_probe_create_write.py
+?? tests/python/gnumeric/test_r120_gnumeric_json_export.py
+?? tests/supervisor/test_action_queue.py
+?? tests/supervisor/test_action_queue_primary_source.py
+?? tests/supervisor/test_adoption_compliance_consistency.py
+?? tests/supervisor/test_anti_skip_raw_logs.py
+?? tests/supervisor/test_autonomous_execution_healing.py
+?? tests/supervisor/test_autonomous_host_daemon.py
+?? tests/supervisor/test_autonomous_orchestrator.py
+?? tests/supervisor/test_backend_selector.py
+?? tests/supervisor/test_commit_push_external_gate.py
+?? tests/supervisor/test_continuation_router.py
+?? tests/supervisor/test_continuation_signal_contract.py
+?? tests/supervisor/test_continuation_state.py
+?? tests/supervisor/test_ecosystem_authority_boundaries.py
+?? tests/supervisor/test_evidence_continuation.py
+?? tests/supervisor/test_execution_backends.py
+?? tests/supervisor/test_external_host_bootstrap.py
+?? tests/supervisor/test_external_host_loop.py
+?? tests/supervisor/test_false_autonomy_claims.py
+?? tests/supervisor/test_global_continuation_machine_readable.py
+?? tests/supervisor/test_h6_external_host_activation.py
+?? tests/supervisor/test_llm_api_backend.py
+?? tests/supervisor/test_llm_api_backend_execution.py
+?? tests/supervisor/test_mcp_superpowers_backend.py
+?? tests/supervisor/test_next_action_generator.py
+?? tests/supervisor/test_next_action_runner.py
+?? tests/supervisor/test_next_work_items_safety.py
+?? tests/supervisor/test_no_prompt_only_continuation.py
+?? tests/supervisor/test_orchestrator_lifetime.py
+?? tests/supervisor/test_orchestrator_queue_consumption.py
+?? tests/supervisor/test_orchestrator_resume.py
+?? tests/supervisor/test_post_closeout_continuation_applied.py
+?? tests/supervisor/test_post_closeout_queue_replenishment.py
+?? tests/supervisor/test_product_pilot_guard.py
+?? tests/supervisor/test_product_safe_queue_item.py
+?? tests/supervisor/test_product_source_action_guard.py
+?? tests/supervisor/test_queue_consumption_accounting.py
+?? tests/supervisor/test_r3_prompt_path_validator.py
+?? tests/supervisor/test_superpowers_backend.py
+?? tests/supervisor/test_unsafe_next_work_items_quarantine.py
+?? tools/supervisor/action_queue.py
+?? tools/supervisor/autonomous_host_daemon.py
+?? tools/supervisor/autonomous_orchestrator.py
+?? tools/supervisor/backend_selector.py
+?? tools/supervisor/backends/
+?? tools/supervisor/continuation_router.py
+?? tools/supervisor/continuation_state.py
+?? tools/supervisor/evidence_continuation.py
+?? tools/supervisor/execution_backend.py
+?? tools/supervisor/external_host_loop.py
+?? tools/supervisor/llm_backend_config.py
+?? tools/supervisor/next_action_generator.py
+?? tools/supervisor/next_action_runner.py
+?? tools/supervisor/next_action_schema.py
+?? tools/supervisor/orchestrator_lifetime.py
+?? tools/supervisor/product_action_guard.py
+?? tools/supervisor/product_task_selector.py

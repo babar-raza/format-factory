@@ -1,0 +1,57 @@
+handoff_id: handoff-fods-api-merge_sheets
+generated_at: '2026-06-03T03:53:40.536188+00:00'
+sprint_id: R101
+purpose: Implement api.merge_sheets for fods (commercial_net)
+gap_id: commercial_net-fods-api-merge-sheets
+format: fods
+product_track: commercial_net
+source_track: commercial_dotnet
+capability_path: api.merge_sheets
+work_type: product_source_change
+decision: GOVERNED_HANDOFF_REQUIRED
+allowed_files:
+- src/net/fods/
+- tests/net/fods/
+forbidden_files:
+- src/python/
+- tools/supervisor/
+implementation_steps:
+- 1. Read existing source in src/net/fods/
+- 2. Implement api.merge_sheets capability
+- 3. Add tests in tests/net/fods/
+- "4. Run full test suite \u2014 no regressions"
+- 5. Update product-code-change-ledger.json
+- 6. Update poc-targets.yaml capability status
+tests_required:
+- New unit tests in tests/net/fods/
+- Existing test suite must pass with no regressions
+raw_logs:
+- .local/supervisor/raw-logs/handoff-fods-api-merge_sheets.log
+product_code_ledger: reports/r90/product-code-change-ledger.json
+rollback: git checkout -- src/net/fods/ tests/net/fods/
+evidence_outputs: &id001
+- reports/r101/handoff-fods-api-merge_sheets.md
+- .local/evidences/R101/evidence-declaration.yaml
+evidence_declaration_entries:
+- item_id: R101-fods-api-merge_sheets
+  title: fods api.merge_sheets implementation
+  status: completed
+  evidence_paths: *id001
+ledger_requirements:
+- Record lane start via record_lane_execution.py start
+- Record lane close with files_changed and test counts
+capability_matrix_update:
+  file: product-capability-matrix/poc-targets.yaml
+  path: api.merge_sheets
+  expected_transition: NOT_IMPLEMENTED -> DONE or PARTIAL
+stop_conditions:
+- Test suite fails
+- Files modified outside allowed_files
+- Gate or release state change needed
+- Scope exceeds single capability
+safety_gates:
+- No src/* changes outside allowed paths
+- All new tests must pass before closing
+- Update poc-targets.yaml capability status
+- Write lane execution ledger entry
+- No git push or commit without human approval

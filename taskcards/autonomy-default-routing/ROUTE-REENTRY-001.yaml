@@ -1,0 +1,15 @@
+taskcard_id: ROUTE-REENTRY-001
+title: "Preflight and prior-sprint verification"
+status: COMPLETED
+owner_lane: supervisor
+allowed_files:
+  - ".local/evidences/*/current-state-preflight.md"
+forbidden_files:
+  - "src/"
+dependencies: []
+gates: []
+evidence_paths:
+  - ".local/evidences/route-aware-product-reentry-20260610-001030-e382e5f/"
+tests: []
+rollback_notes: "Revert changes to allowed_files only"
+closeout_criteria: "Preflight document written with all 9 limitations verified"

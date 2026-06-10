@@ -1,0 +1,84 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-ECOSYSTEM-PLAN-FINAL-REPAIR-001",
+  "generated": "2026-06-06",
+  "tools": [
+    {
+      "tool": "Superpowers plugin",
+      "classification": "AGENT_CAN_PREPARE_ONLY",
+      "status": "SUPERPOWERS_LOCAL_PLUGIN_NOT_FOUND",
+      "reasoning": "Governance intake (docs/governance/superpowers-skill-intake.md) required before install; agent cannot self-approve; .claude/plugins/ absent",
+      "who_provides": "Babar Raza (governance approval) then agent can install",
+      "autonomous_this_sprint": false
+    },
+    {
+      "tool": "OpenSpec CLI",
+      "classification": "AGENT_CAN_PREPARE_ONLY",
+      "status": "NOT_FOUND",
+      "runtime_check": "npx --no-install openspec --version → NOT_FOUND",
+      "reasoning": "npm install -g openspec allowed if governance permits; not in scope this sprint",
+      "install_command": "npm install -g openspec",
+      "who_provides": "Agent (with user authorization for sprint scope change)",
+      "autonomous_this_sprint": false
+    },
+    {
+      "tool": "Task Master (MCP)",
+      "classification": "CONFIG_PRESENT",
+      "status": "L1_CONFIG_PRESENT",
+      "mcp_status_layers": {
+        "L1_config_present": true,
+        "L2_daemon_running": "UNKNOWN",
+        "L3_tool_callable": "UNKNOWN",
+        "L4_api_key_configured": "ABSENT (TASK_MASTER_API_KEY not set)",
+        "L5_ready": false
+      },
+      "reasoning": "Config in .vscode/mcp.json; daemon running status unverifiable from inside session; API key absent",
+      "who_provides": "User (TASK_MASTER_API_KEY credential); daemon start (user action or MCP activation gate)",
+      "autonomous_this_sprint": false
+    },
+    {
+      "tool": "Cognee (memory/RAG)",
+      "classification": "SETUP_REQUIRED_BUT_NOT_THIS_SPRINT",
+      "status": "NOT_FOUND",
+      "runtime_check": "import cognee → ModuleNotFoundError",
+      "install_command": "pip install cognee",
+      "reasoning": "Not installed; install allowed in future execution sprint; not needed for plan repair sprint",
+      "autonomous_this_sprint": false
+    },
+    {
+      "tool": "Skill Seekers",
+      "classification": "SETUP_REQUIRED_BUT_NOT_THIS_SPRINT",
+      "status": "NOT_FOUND",
+      "runtime_check": "import skill_seekers → ModuleNotFoundError",
+      "reasoning": "Not installed; install allowed in future execution sprint",
+      "autonomous_this_sprint": false
+    },
+    {
+      "tool": "llm.professionalize.com endpoint",
+      "classification": "TRUE_EXTERNAL_CREDENTIAL_REQUIRED",
+      "status": "CONFIG_PRESENT_CREDENTIAL_PRESENT",
+      "who_provides": "User (PROFESSIONALIZE_API_KEY — already present in environment)",
+      "notes": "Config in tools/llm/endpoints.yaml; PROFESSIONALIZE_API_KEY PRESENT; endpoint callable if HTTP reachable"
+    },
+    {
+      "tool": "Local Ollama",
+      "classification": "AGENT_CAN_DO_WITH_EXISTING_CONFIG_IF_RUNNING",
+      "status": "CONFIG_PRESENT_DAEMON_UNKNOWN",
+      "notes": "Config in endpoints.yaml; discovery=true; no auth required; agent cannot probe localhost from inside session",
+      "who_provides": "User (start Ollama if not running)"
+    },
+    {
+      "tool": "Local LM Studio",
+      "classification": "AGENT_CAN_DO_WITH_EXISTING_CONFIG_IF_RUNNING",
+      "status": "CONFIG_PRESENT_DAEMON_UNKNOWN",
+      "notes": "Config in endpoints.yaml; discovery=true; no auth required",
+      "who_provides": "User (start LM Studio if not running)"
+    },
+    {
+      "tool": "Claude (Anthropic native)",
+      "classification": "BLOCKED_BY_CREDENTIALS",
+      "status": "CONFIG_PRESENT_CREDENTIAL_ABSENT",
+      "notes": "Config in endpoints.yaml priority=0; ANTHROPIC_API_KEY ABSENT in current shell",
+      "who_provides": "User (set ANTHROPIC_API_KEY in environment)"
+    }
+  ]
+}

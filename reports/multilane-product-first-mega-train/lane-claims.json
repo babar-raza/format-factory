@@ -1,0 +1,50 @@
+{
+  "sprint_id": "FORMAT-FACTORY-STANDING-MULTI-LANE-PRODUCT-FIRST-MEGA-TRAIN-001",
+  "lanes": {
+    "Lane-0-Coordinator": {
+      "owned": ["reports/multilane-product-first-mega-train/"],
+      "forbidden": ["src/net/", "registry/", "AGENTS.md", "GOVERNANCE.md"],
+      "shared": []
+    },
+    "Lane-2-Product": {
+      "owned": [
+        "src/python/tsv/",
+        "src/python/abw/",
+        "tests/python/tsv/",
+        "tests/python/abw/"
+      ],
+      "forbidden": ["src/net/", "poc-targets.yaml"],
+      "shared": []
+    },
+    "Lane-6-Feature-Coverage": {
+      "owned": ["playbooks/format-factory/"],
+      "forbidden": ["src/net/"],
+      "shared": []
+    },
+    "Lane-7-Repeatability": {
+      "owned": ["reports/multilane-product-first-mega-train/repeatability/"],
+      "forbidden": ["src/net/"],
+      "shared": []
+    },
+    "Lane-8-New-Formats": {
+      "owned": [
+        "src/python/fodg/",
+        "src/python/ndjson/",
+        "tests/python/fodg/",
+        "tests/python/ndjson/"
+      ],
+      "forbidden": ["src/net/", "poc-targets.yaml"],
+      "shared": []
+    },
+    "Lane-9-Tests": {
+      "owned": ["reports/multilane-product-first-mega-train/test-logs/"],
+      "forbidden": [],
+      "shared": []
+    },
+    "Lane-10-Evidence": {
+      "owned": [".local/evidences/multilane-product-first-mega-train/"],
+      "forbidden": [],
+      "shared": []
+    }
+  }
+}

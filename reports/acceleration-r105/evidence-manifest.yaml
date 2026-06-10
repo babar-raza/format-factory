@@ -1,0 +1,45 @@
+---
+sprint_id: FORMAT-FACTORY-ACCELERATION-R105-PACKAGE-IDENTITY-SELF-CONTAINMENT-AND-ACCELERATION-ADVANCEMENT-001
+run_id: acceleration-r105
+generated_at: "2026-06-03T18:00:00Z"
+
+reports:
+  - reports/acceleration-r105/00-preflight.md
+  - reports/acceleration-r105/lane-ownership.md
+  - reports/acceleration-r105/parallel-execution-map.md
+  - reports/acceleration-r105/risk-register.md
+  - reports/acceleration-r105/scoreboard.md
+  - reports/acceleration-r105/package-identity-repair.md
+  - reports/acceleration-r105/package-identity-validator.md
+  - reports/acceleration-r105/fresh-selected-gaps.md
+  - reports/acceleration-r105/dirty-state-and-self-containment.md
+  - reports/acceleration-r105/acceleration-advancement.md
+  - reports/acceleration-r105/stream-prompt-quality.md
+  - reports/acceleration-r105/package-pilot.md
+  - reports/acceleration-r105/final-adversarial-independent-verification.md
+
+sample_outputs:
+  - reports/acceleration-r105/sample-outputs/anti-skip-check-result.json
+  - reports/acceleration-r105/sample-outputs/package-validation-result.json
+  - reports/acceleration-r105/sample-outputs/dry-run-ledger.json
+  - reports/acceleration-r105/selected-gaps-acceleration-r105.json
+
+generated_prompts:
+  - reports/acceleration-r105/generated-stream-prompts/next-acceleration-prompt.md
+  - reports/acceleration-r105/generated-stream-prompts/next-mainstream-prompt.md
+  - reports/acceleration-r105/generated-stream-prompts/next-skills-prompt.md
+  - reports/acceleration-r105/generated-stream-prompts/next-supervisor-prompt.md
+
+raw_logs:
+  - reports/acceleration-r105/raw-test-log.txt
+
+changed_tools:
+  - tools/supervisor/build_declaration_review_package.py
+  - tools/supervisor/anti_skip_checker.py
+  - tools/supervisor/validate_package_identity.py
+  - tools/supervisor/validate_prompt_quality.py
+
+changed_tests:
+  - tests/supervisor/acceleration/test_package_identity_validator.py
+  - tests/supervisor/acceleration/test_anti_skip_checker.py
+  - tests/supervisor/acceleration/test_prompt_quality_validator.py

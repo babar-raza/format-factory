@@ -1,0 +1,30 @@
+{
+  "taskcard_id": "ABW-PILOT-R117-001",
+  "format": "ABW",
+  "sprint_id": "FORMAT-FACTORY-HOST-PROOFED-AUTONOMOUS-FORMAT-PILOT-001",
+  "capability_added": ["write_abw", "create_abw"],
+  "source_file": "src/python/abw/abw_codec.py",
+  "test_file": "tests/python/abw/test_r117_abw_write_roundtrip.py",
+  "example_file": "examples/python/abw/create_document_example.py",
+  "tests_added": 15,
+  "tests_passing": 15,
+  "proof": {
+    "roundtrip_verified": true,
+    "unicode_verified": true,
+    "empty_doc_verified": true,
+    "error_handling_verified": true
+  },
+  "sample_output": "reports/host-proofed-format-pilot/raw-logs/abw-example-output.log",
+  "capability_delta": "ABW FOSS write capability added: create_abw(paragraphs) + write_abw(model, dest). Roundtrip: create → write → load verified.",
+  "ledger_entry_required": true,
+  "ledger_entry_proposed": {
+    "work_item_id": "ABW-R117-WRITE-ROUNDTRIP",
+    "product": "ABW Python FOSS",
+    "sprint": "FORMAT-FACTORY-HOST-PROOFED-AUTONOMOUS-FORMAT-PILOT-001",
+    "type": "GOVERNED_PRODUCT_CHANGE",
+    "source_files": ["src/python/abw/abw_codec.py"],
+    "test_files": ["tests/python/abw/test_r117_abw_write_roundtrip.py"],
+    "capabilities_added": ["write_abw", "create_abw"],
+    "tests_added": 15
+  }
+}

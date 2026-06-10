@@ -88,10 +88,56 @@ def run_action(
             "proof_level": None,
         }
 
-    # Step 2: Check for advisory-only (no result_path means generated but not dispatchable)
+    # Step 2: Route decision enforcement (fail-closed for machinery)
+    try:
+        from tools.supervisor.autonomy_route_decider import check_action_route_allowed
+        route_allowed, route_reason = check_action_route_allowed(action)
+        if not route_allowed:
+            return {
+                "status": "BLOCKED",
+                "block_reason": f"Route decision enforcement: {route_reason}",
+                "action_id": action.get("action_id"),
+                "action_type": action.get("action_type"),
+                "proof_level": None,
+            }
+    except ImportError:
+        # Fail closed: if route decider cannot be imported, block current-run actions
+        action_type = action.get("action_type", "")
+        cat = action.get("task_category", "")
+        is_legacy = action.get("legacy_backfill", False)
+        is_source_mutating = action_type in (
+            "IMPLEMENT_SMALL_PRODUCT_FEATURE", "PRODUCT_SOURCE_PATCH_BOUNDED",
+        )
+        if is_source_mutating and not is_legacy:
+            return {
+                "status": "BLOCKED",
+                "block_reason": "Route decider import failed — source-mutating action blocked (fail-closed)",
+                "action_id": action.get("action_id"),
+                "action_type": action_type,
+                "proof_level": None,
+            }
+        if cat and not is_legacy:
+            return {
+                "status": "BLOCKED",
+                "block_reason": "Route decider import failed — categorized action blocked (fail-closed)",
+                "action_id": action.get("action_id"),
+                "action_type": action_type,
+                "proof_level": None,
+            }
+        if not is_legacy:
+            return {
+                "status": "BLOCKED",
+                "block_reason": "Route decider import failed — uncategorized non-legacy action blocked (fail-closed)",
+                "action_id": action.get("action_id"),
+                "action_type": action_type,
+                "proof_level": None,
+            }
+        # Legacy-only: allow with warning for backward compat
+
+    # Step 3: Check for advisory-only (no result_path means generated but not dispatchable)
     result_path = action.get("result_path")
 
-    # Step 3: Select backend
+    # Step 4: Select backend
     backends = _build_default_backends()
     backend, trace = select_backend(action, backends)
 

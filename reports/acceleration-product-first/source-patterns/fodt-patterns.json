@@ -1,0 +1,39 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "format_id": "fodt",
+  "query": "export csv dogfood",
+  "corpus_empty": false,
+  "chunks_found": 21,
+  "top_k_returned": 5,
+  "lexical_patterns": [
+    {
+      "id": "src\\net\\fodt\\FodtTxtExporter.cs",
+      "score": 0.01037,
+      "excerpt": "// FormatFactory.Fodt -- Commercial .NET FODT \u2192 TXT Exporter (G11-E Prototype)\n// DEC-033 Option B: .NET Commercial Only\n// Gate 11 status: g11e_prototype_complete \u2014 G11-G NOT approved\n// Sprint: FORMAT-FACTORY-R22-FULL-THROTTLE-RELEASE-CANDIDATE-AND-GATE11-PROTOTYPE-TRAIN-001\n//\n// PROTOTYPE STATUS"
+    },
+    {
+      "id": "src\\net\\fodt\\FodtHtmlExporter.cs",
+      "score": 0.00578,
+      "excerpt": "// FormatFactory.Fodt -- Commercial .NET FODT \u2192 HTML Exporter (G11-E Expanded Prototype)\n// DEC-033 Option B: .NET Commercial Only\n// Gate 11 status: g11e_prototype_complete \u2014 G11-G NOT approved\n// Sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-001\n//\n// PROTOTYPE STATUS: design_complete_in_progress\n// comme"
+    },
+    {
+      "id": "src\\net\\fodt\\FodtMarkdownExporter.cs",
+      "score": 0.004573,
+      "excerpt": "// FormatFactory.Fodt -- Commercial .NET FODT \u2192 Markdown Exporter (G11-E Expanded Prototype)\n// DEC-033 Option B: .NET Commercial Only\n// Gate 11 status: g11e_prototype_complete \u2014 G11-G NOT approved\n// Sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-001\n//\n// PROTOTYPE STATUS: design_complete_in_progress\n// c"
+    },
+    {
+      "id": "src\\net\\fodt\\FodtDocument.cs",
+      "score": 0.003577,
+      "excerpt": "// FormatFactory.Fodt -- Commercial .NET FODT Document (DOM-backed)\n// DEC-033 Option B: .NET Commercial Only\n// Gate 11 status: commercial_readiness_in_progress (NOT approved)\n\nusing System;\nusing System.Collections.Generic;\nusing System.IO;\nusing System.Linq;\nusing System.Xml;\nusing System.Xml.Lin"
+    },
+    {
+      "id": "src\\python\\fodt\\neutral_model.py",
+      "score": 0.000822,
+      "excerpt": "\"\"\"\nneutral_model.py -- Neutral model builder and validator for format-factory-fodt.\n\nBuilds and validates the 7-entity FODT neutral model output:\n  Document -> Block (paragraph|heading) | List (-> ListItem) | Table (-> TableRow -> TableCell)\n  plus Warning (in warnings list)\n\nGate 5 neutral model: "
+    }
+  ],
+  "ai_pattern_summary": "[fixture_error] ModuleNotFoundError: No module named 'tools'",
+  "authority_state": "ai_draft",
+  "non_authoritative": true,
+  "timestamp": "2026-06-04T07:09:12.739518+00:00"
+}

@@ -1,0 +1,265 @@
+{
+  "packet_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRI-LANE-RECONCILIATION-001",
+  "generated_at": "2026-06-04T11:25:00Z",
+  "packet_type": "mainstream_readiness",
+  "authority_state": "advisory",
+  "non_authoritative": true,
+  "requires_deterministic_validation": true,
+
+  "source_lanes": {
+    "supervisor": {
+      "sprint": "supervisor-traffic-controller-hardening-iv",
+      "verdict": "SUPERVISOR_HARDENED_WITH_LIMITATIONS",
+      "key_outputs": [
+        "reports/supervisor-traffic-controller-hardening/hardened-mainstream-handoff.json",
+        "reports/supervisor-traffic-controller-hardening/cross-stream-current-status.json"
+      ]
+    },
+    "skills": {
+      "sprint": "skills-governed-execution-hardening",
+      "verdict": "SKILLS_CONSUMABLE_WITH_LIMITATIONS",
+      "key_outputs": [
+        "reports/skills-product-first/mainstream-consumption-packet.json",
+        "reports/skills-governed-execution-hardening/skills-consumption-readiness.json"
+      ]
+    },
+    "acceleration": {
+      "sprint": "acceleration-product-first",
+      "verdict": "ACCELERATION_PACKETS_AVAILABLE_HARDENING_INCOMPLETE",
+      "key_outputs": [
+        "reports/acceleration-product-first/mainstream-consumption-packets/"
+      ]
+    }
+  },
+
+  "product_output_floor": {
+    "minimum_families": 3,
+    "minimum_source_diffs": 3,
+    "minimum_governed_transcripts": 3,
+    "minimum_raw_logs": 3,
+    "minimum_capability_matrix_deltas": 3
+  },
+
+  "stop_conditions": [
+    "git push without human authorization",
+    "Gate 8 or Gate 11 approval without human",
+    "product source edit outside allowed_files",
+    "capability_matrix direct write (only proposed deltas allowed)",
+    "AI output declared authoritative without deterministic validation"
+  ],
+
+  "continue_conditions": [
+    "autonomous-cycle exit 0",
+    "approval-gates.md AUTONOMOUS_CONTINUE: YES",
+    "no hard stops",
+    "test pass count unchanged or improved"
+  ],
+
+  "selected_capabilities": [
+    {
+      "family": "FODS",
+      "format": "fods",
+      "product_track": "commercial_net",
+      "capability": "dogfood_status.fods_to_csv_dotnet",
+      "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+      "priority": 1,
+      "readiness": "READY_FOR_EXECUTION",
+      "skills_handoff": {
+        "packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+        "skill": "add-dotnet-api",
+        "handoff_path": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+        "packet_type": "full"
+      },
+      "acceleration_advisory": {
+        "packet_path": "reports/acceleration-product-first/mainstream-consumption-packets/fods-dogfood_status-fods_to_csv_dotnet.json",
+        "authority_state": "ai_draft",
+        "use_for": "implementation pattern reference only"
+      },
+      "supervisor_routing": {
+        "source_file": "src/net/fods/FodsDocument.cs",
+        "git_status": "M",
+        "family_active": true,
+        "svg_replacement_rejected": false
+      },
+      "allowed_files": [
+        "src/net/fods/FodsDocument.cs",
+        "src/net/fods/FodsWorkbook.cs",
+        "tests/net/fods/FodsR114ExportToCsvTests.cs"
+      ],
+      "forbidden_files": [
+        "src/python/*",
+        "registry/format-registry.yaml",
+        "plans/master-plan.md",
+        "product-capability-matrix/poc-targets.yaml"
+      ],
+      "expected_tests": "tests/net/fods/FodsR114ExportToCsvTests.cs with 8+ test methods",
+      "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-fods-csv-{id}.json",
+      "proposed_delta": "product-capability-matrix/poc-targets.yaml: fods.dogfood_status.fods_to_csv_dotnet → IMPLEMENTED",
+      "evidence_expectations": [
+        "8+ passing tests in FodsR114ExportToCsvTests",
+        "raw test log",
+        "governed transcript validated by validate_skill_transcript.py",
+        "capability delta proposed (not direct write)"
+      ]
+    },
+    {
+      "family": "FODT",
+      "format": "fodt",
+      "product_track": "commercial_net",
+      "capability": "dogfood_status.fodt_to_markdown_dotnet",
+      "gap_id": "GAP-FODT-DOGFOOD-MARKDOWN-DOTNET-001",
+      "priority": 2,
+      "readiness": "READY_FOR_EXECUTION_WITH_DISCOVERY",
+      "skills_handoff": {
+        "shell_path": "reports/skills-governed-execution-hardening/fodt-packet-shell.json",
+        "packet_type": "shell",
+        "note": "Mainstream must select specific method; Skills generates full handoff from shell"
+      },
+      "acceleration_advisory": {
+        "packet_path": "reports/acceleration-product-first/mainstream-consumption-packets/fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+        "authority_state": "ai_draft",
+        "use_for": "method selection guidance only"
+      },
+      "supervisor_routing": {
+        "source_file": "src/net/fodt/FodtDocument.cs",
+        "git_status": "M",
+        "family_active": true
+      },
+      "allowed_files": [
+        "src/net/fodt/FodtDocument.cs",
+        "tests/net/fodt/"
+      ],
+      "forbidden_files": [
+        "src/python/*",
+        "registry/format-registry.yaml",
+        "plans/master-plan.md",
+        "product-capability-matrix/poc-targets.yaml"
+      ],
+      "expected_tests": "tests/net/fodt/FodtR114ExportToMarkdownTests.cs with 8+ test methods",
+      "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-fodt-markdown-{id}.json",
+      "proposed_delta": "product-capability-matrix/poc-targets.yaml: fodt.dogfood_status.fodt_to_markdown_dotnet → IMPLEMENTED",
+      "evidence_expectations": [
+        "8+ passing tests",
+        "raw test log",
+        "governed transcript validated",
+        "capability delta proposed"
+      ]
+    },
+    {
+      "family": "Netpbm",
+      "format": "netpbm",
+      "product_track": "commercial_net",
+      "capability": "dotnet_status.netpbm_proof_dogfood",
+      "gap_id": "GAP-NETPBM-DOTNET-PROOF-001",
+      "priority": 3,
+      "readiness": "READY_FOR_EXECUTION_WITH_DISCOVERY",
+      "skills_handoff": {
+        "shell_path": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+        "packet_type": "shell",
+        "note": "Mainstream selects specific Netpbm capability; Skills generates handoff from shell"
+      },
+      "acceleration_advisory": {
+        "packet_path": "reports/acceleration-product-first/mainstream-consumption-packets/netpbm-dotnet_status-netpbm_flip_diagonal.json",
+        "authority_state": "ai_draft",
+        "use_for": "capability selection reference only"
+      },
+      "supervisor_routing": {
+        "source_file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "git_status": "M",
+        "family_active": true,
+        "svg_replacement_rejected": true,
+        "note": "SVG cannot replace Netpbm — format class mismatch (vector vs raster)"
+      },
+      "allowed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs",
+        "tests/net/netpbm/"
+      ],
+      "forbidden_files": [
+        "src/python/*",
+        "registry/format-registry.yaml",
+        "plans/master-plan.md",
+        "product-capability-matrix/poc-targets.yaml"
+      ],
+      "expected_tests": "tests/net/netpbm/NetpbmR114[Feature]Tests.cs with 8+ test methods",
+      "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-netpbm-{id}.json",
+      "proposed_delta": "product-capability-matrix/poc-targets.yaml: netpbm.dotnet_status.{capability} → IMPLEMENTED",
+      "evidence_expectations": [
+        "8+ passing tests",
+        "raw test log",
+        "governed transcript validated",
+        "capability delta proposed"
+      ]
+    }
+  ],
+
+  "optional_capabilities": [
+    {
+      "family": "SYLK",
+      "format": "sylk",
+      "product_track": "python_oss",
+      "capability": "python_status.write_sylk",
+      "readiness": "ACCELERATION_ONLY_ADVISORY",
+      "note": "No Skills packet — Mainstream may use acceleration advisory only"
+    },
+    {
+      "family": "ZST",
+      "format": "zst",
+      "product_track": "python_oss",
+      "readiness": "NO_TRI_LANE_PACKET",
+      "note": "No current tri-lane packet — deprioritized"
+    },
+    {
+      "family": "DIF",
+      "format": "dif",
+      "product_track": "python_oss",
+      "readiness": "NO_TRI_LANE_PACKET",
+      "note": "No current tri-lane packet — deprioritized"
+    }
+  ],
+
+  "authority_boundaries": {
+    "supervisor": "Stream-control authority — routing decisions, continuation states, cross-stream status",
+    "skills": "Governed execution authority — handoff templates, transcript validation, dry-run contracts",
+    "acceleration": "Advisory only — ai_draft outputs, require deterministic validation before use as evidence",
+    "mainstream": "Product implementation authority — source changes, tests, dogfood, capability delta proposals"
+  },
+
+  "evidence_quality_contract": {
+    "target_score": "0.5+ (6+ ACCEPTED_VERIFIED items)",
+    "required_for_clean_pass": {
+      "families_touched": 3,
+      "source_diffs": 3,
+      "governed_transcripts": 3,
+      "raw_logs": 3,
+      "capability_matrix_deltas": 3
+    },
+    "current_mainstream_status": {
+      "families_touched": 4,
+      "source_diffs": 4,
+      "governed_transcripts": 2,
+      "missing_for_clean_pass": ["1 more governed_transcript", "1 more capability_matrix_delta"]
+    }
+  },
+
+  "cross_stream_consumption": {
+    "skills_consumption_required": {
+      "flag": "governed_execution_consumed",
+      "trigger": "Mainstream executes Skills handoff AND transcript validates",
+      "current_status": "SKILLS_CONSUMABLE_NOT_YET_CONSUMED"
+    },
+    "acceleration_consumption_required": {
+      "flag": "reusable_accelerator_consumed",
+      "trigger": "Mainstream uses acceleration advisory design AND produces passing tests",
+      "current_status": "ACCELERATION_CONSUMABLE_PARTIAL"
+    }
+  },
+
+  "overall_verdict": "MAINSTREAM_READY_FOR_IMPLEMENTATION_WITH_LIMITATIONS",
+  "limitations": [
+    "Skills breadth finalization incomplete — FODT/Netpbm need discovery before full handoffs",
+    "Acceleration hardening not independently verified",
+    "Mainstream governed_execution_consumed not yet declared",
+    "Mainstream reusable_accelerator_consumed not yet declared"
+  ]
+}

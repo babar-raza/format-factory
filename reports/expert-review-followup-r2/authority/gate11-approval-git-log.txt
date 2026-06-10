@@ -1,0 +1,25 @@
+commit f76d845bd3b1d61d53619fadd0f5a34a1832c8d1
+Author:     Babar Raza <babar.raza@aspose.com>
+AuthorDate: Fri Jun 5 14:35:38 2026 +0500
+Commit:     Babar Raza <babar.raza@aspose.com>
+CommitDate: Fri Jun 5 14:35:38 2026 +0500
+
+    chore(governance): Gate 11 approval, capability matrix, ledger, supervisor reports, schemas, docs
+    
+    - poc-targets.yaml: Gate 11 G11-G approved (FODS/FODT/Netpbm commercial_product_ready=true)
+    - product-code-change-ledger.json: R116-DIF entry fixed (GOVERNED_PRODUCT_CHANGE, source_files added), 129 entries PASS
+    - .supervisor/schemas: 5 new schemas (human-gate-classification, proof-backed-poc-gate, skill-registry, stop-reason-decision, autonomous-execution-contract)
+    - .supervisor/skill-registry.yaml, policies.yaml, context-pack.yaml: updated for R93+ sprints
+    - .claude/commands: 5 new commands + 13 updated
+    - docs/governance: 20 policy docs; docs/prompt-templates: 28 templates
+    - reports/supervisor: session-resume, approval-gates, next-sprint, work-item-grades updated
+    - plans/master-plan.md, state/current-state.md, memory/ updated
+    - examples/dotnet/: 3 .csx usage examples (FODS/FODT/Netpbm)
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+ .claude/commands/add-dogfood-export.md             |   44 +-
+ .claude/commands/add-dotnet-api.md                 |   45 +-
+ .../commands/add-dotnet-object-model-feature.md    |   30 +
+ .claude/commands/add-installed-package-example.md  |   37 +-
+ .claude/commands/add-python-api.md                 |   44 +-

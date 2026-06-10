@@ -1,0 +1,44 @@
+id: ADR-ROUTE-018
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Supervisor Cycle and Evidence Bundle Validation"
+status: completed
+lane: evidence_state
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies:
+  - ADR-ROUTE-002
+  - ADR-ROUTE-003
+  - ADR-ROUTE-004
+  - ADR-ROUTE-005
+  - ADR-ROUTE-006
+  - ADR-ROUTE-007
+  - ADR-ROUTE-008
+  - ADR-ROUTE-009
+  - ADR-ROUTE-010
+  - ADR-ROUTE-011
+  - ADR-ROUTE-012
+  - ADR-ROUTE-013
+  - ADR-ROUTE-014
+gates:
+  - "autonomous-cycle exits 0"
+  - "review package ZIP created"
+  - "ZIP SHA-256 recorded"
+allowed_files:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/"
+  - ".local/supervisor/reviews/autonomy-default-routing-impl-20260609/"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "autonomous-cycle exit 0"
+  - "13/13 ACCEPTED"
+  - "Review package ZIP created"
+  - "SHA-256 documented"
+tests: []
+evidence:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/evidence-declaration.yaml"
+  - ".local/supervisor/reviews/autonomy-default-routing-impl-20260609/declaration-review-package.zip"
+rollback: "N/A — evidence-only"
+closeout_criteria: "ZIP exists, SHA-256 reported, absolute path documented"

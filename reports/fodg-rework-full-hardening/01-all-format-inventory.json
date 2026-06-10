@@ -1,0 +1,186 @@
+{
+  "report_id": "FRFH-FORMAT-001",
+  "sprint": "fodg-rework-full-hardening",
+  "date": "2026-06-09",
+  "git_head": "e382e5fd8e65bc146c0821602cb8fb1ecfab982c",
+  "formats": {
+    "abw": {
+      "source_path": "src/python/abw/abw_codec.py",
+      "init_path": "src/python/abw/__init__.py",
+      "test_dir": "tests/python/abw",
+      "test_files": 32,
+      "track": "foss_python",
+      "status": "active",
+      "key_functions": ["load", "create_abw", "write_abw", "probe_abw", "export_to_txt", "export_to_html", "export_to_json", "export_to_csv", "export_to_markdown", "get_paragraph", "edit_paragraph", "search_paragraph", "merge_abw", "word_frequency", "truncate_paragraphs", "get_unique_words", "append_paragraph", "split_paragraphs", "get_char_count", "join_paragraphs", "replace_in_paragraphs", "get_paragraph_at", "paragraph_lengths", "reverse_paragraphs", "word_wrap", "has_paragraph", "first_paragraph", "last_paragraph", "count_words", "paragraph_at"],
+      "function_count": 30,
+      "gates_passed": "1-7"
+    },
+    "gnumeric": {
+      "source_path": "src/python/gnumeric/gnumeric_codec.py",
+      "init_path": "src/python/gnumeric/__init__.py",
+      "test_dir": "tests/python/gnumeric",
+      "test_files": 28,
+      "track": "foss_python",
+      "status": "active",
+      "key_functions": ["load", "create_gnumeric", "write_gnumeric", "probe_gnumeric", "export_to_csv", "export_to_json", "get_cell_value", "set_cell_value", "get_sheet_names", "get_row", "get_column", "delete_sheet", "rename_sheet", "add_sheet", "get_sheet_by_name", "copy_sheet", "clear_cell", "get_row_count", "get_column_count", "read_cell", "count_nonempty_cells", "get_sheet_index", "sum_column", "fill_column", "sum_row", "get_all_values", "clear_sheet", "get_sheet_as_rows", "fill_row", "sheet_names", "row_count"],
+      "function_count": 31,
+      "gates_passed": "1-7"
+    },
+    "tsv": {
+      "source_path": "src/python/tsv/tsv_parser.py",
+      "init_path": "src/python/tsv/__init__.py",
+      "test_dir": "tests/python/tsv",
+      "test_files": 33,
+      "track": "foss_python",
+      "status": "active",
+      "key_functions": ["load_tsv", "write_tsv", "get_headers", "get_column", "get_row", "validate_headers", "count_rows", "to_csv", "deduplicate_rows", "get_row_by_key", "add_column", "rename_column", "drop_column", "sort_rows", "sample_rows", "sum_column", "merge_tsv", "min_column", "get_column_values", "max_column", "column_count", "filter_rows", "roundtrip", "append_row"],
+      "function_count": 24,
+      "gates_passed": "1-7"
+    },
+    "ndjson": {
+      "source_path": "src/python/ndjson/ndjson_codec.py",
+      "init_path": "src/python/ndjson/__init__.py",
+      "test_dir": "tests/python/ndjson",
+      "test_files": 28,
+      "track": "foss_python",
+      "status": "active",
+      "key_functions": ["load_ndjson", "write_ndjson", "count_records", "export_to_csv", "group_by", "merge_ndjson", "pluck", "tail", "validate_schema", "deduplicate", "head", "to_jsonl_str", "distinct_values", "pick", "sort_by", "aggregate", "count_by", "max_value", "min_value", "zip_records", "average_value", "rename_field", "sum_field", "sort_records"],
+      "function_count": 24,
+      "gates_passed": "1-7"
+    },
+    "toml": {
+      "source_path": "src/python/toml/toml_codec.py",
+      "init_path": "src/python/toml/__init__.py",
+      "test_dir": "tests/python/toml",
+      "test_files": 3,
+      "track": "foss_python",
+      "status": "limited",
+      "notes": "Basic codec only, limited test coverage",
+      "gates_passed": "1-3 (estimated)"
+    },
+    "fodg": {
+      "source_path": "src/python/fodg/fodg_codec.py",
+      "init_path": "src/python/fodg/__init__.py",
+      "test_dir": "tests/python/fodg",
+      "test_files": 23,
+      "track": "foss_python",
+      "status": "active",
+      "key_functions": ["load", "create_fodg", "write_fodg", "probe_fodg", "export_to_txt", "export_to_csv", "export_to_json", "get_shapes", "get_text_shapes", "get_page_by_name", "add_page", "remove_page", "rename_page", "get_all_text", "count_shapes", "get_page_index", "duplicate_page", "clear_page", "swap_pages", "page_names", "has_page", "roundtrip"],
+      "function_count": 22,
+      "gates_passed": "1-7",
+      "test_results": {"passed": 187, "failed": 1, "known_failures": 1}
+    },
+    "fods": {
+      "source_path": "src/python/fods/",
+      "test_dir": "tests/python/fods",
+      "test_files": 36,
+      "track": "commercial_python",
+      "status": "active",
+      "notes": "Multi-file implementation: parser.py, writer.py, neutral_model.py, csv_exporter.py, constants.py",
+      "gates_passed": "1-6 (P6 per authority matrix)"
+    },
+    "fodt": {
+      "source_path": "src/python/fodt/",
+      "test_dir": "tests/python/fodt",
+      "test_files": 36,
+      "track": "commercial_python",
+      "status": "active",
+      "notes": "Multi-file with parser, neutral model, etc.",
+      "gates_passed": "1-5 (estimated)"
+    },
+    "fodp": {
+      "source_path": "src/python/fodp/fodp_codec.py",
+      "test_dir": "tests/python/fodp",
+      "test_files": 3,
+      "track": "foss_python",
+      "status": "limited",
+      "notes": "Basic codec, minimal tests"
+    },
+    "zst": {
+      "source_path": "src/python/zst/zst_codec.py",
+      "test_dir": "tests/python/zst",
+      "test_files": 25,
+      "track": "foss_python",
+      "status": "active",
+      "gates_passed": "1-5 (P4 confirmed per spec-authority-conveyor)"
+    },
+    "sylk": {
+      "source_path": "src/python/sylk/sylk_parser.py",
+      "test_dir": "tests/python/sylk",
+      "test_files": 31,
+      "track": "foss_python",
+      "status": "active"
+    },
+    "dif": {
+      "source_path": "src/python/dif/dif_parser.py",
+      "test_dir": "tests/python/dif",
+      "test_files": 21,
+      "track": "foss_python",
+      "status": "active"
+    },
+    "csv": {
+      "source_path": "src/python/csv/csv_parser.py",
+      "test_dir": "tests/python/csv",
+      "test_files": 11,
+      "track": "foss_python",
+      "status": "limited",
+      "notes": "Beware: csv module shadowing if PYTHONPATH=src/python used"
+    },
+    "ods": {
+      "source_path": "src/python/ods/",
+      "test_dir": "tests/python/ods",
+      "test_files": 13,
+      "track": "commercial_python",
+      "status": "limited"
+    },
+    "odt": {
+      "source_path": "src/python/odt/odt_parser.py",
+      "test_dir": "tests/python/odt",
+      "test_files": 5,
+      "track": "commercial_python",
+      "status": "limited"
+    },
+    "pbm": {
+      "source_path": "src/python/pbm/pbm_parser.py",
+      "test_dir": "tests/python/pbm",
+      "test_files": 20,
+      "track": "foss_python",
+      "status": "active"
+    },
+    "pgm": {
+      "source_path": "src/python/pgm/pgm_parser.py",
+      "test_dir": "tests/python/pgm",
+      "test_files": 14,
+      "track": "foss_python",
+      "status": "active"
+    },
+    "ppm": {
+      "source_path": "src/python/ppm/ppm_parser.py",
+      "test_dir": "tests/python/ppm",
+      "test_files": 30,
+      "track": "foss_python",
+      "status": "active"
+    },
+    "qoi": {
+      "source_path": "src/python/qoi/",
+      "test_dir": "tests/python/qoi",
+      "test_files": 6,
+      "track": "foss_python",
+      "status": "limited"
+    },
+    "xcf": {
+      "source_path": "src/python/xcf/xcf_parser.py",
+      "test_dir": "tests/python/xcf",
+      "test_files": 4,
+      "track": "foss_python",
+      "status": "limited"
+    }
+  },
+  "summary": {
+    "total_formats": 20,
+    "active_foss_python": ["abw", "gnumeric", "tsv", "ndjson", "fodg", "zst", "sylk", "dif", "pbm", "pgm", "ppm"],
+    "active_commercial_python": ["fods", "fodt", "ods"],
+    "limited_coverage": ["toml", "fodp", "csv", "odt", "qoi", "xcf"],
+    "highest_test_coverage": "abw (32), gnumeric (28), ndjson (28), tsv (33), fodg (23)"
+  }
+}

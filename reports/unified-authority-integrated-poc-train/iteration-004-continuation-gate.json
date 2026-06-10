@@ -1,0 +1,48 @@
+{
+  "gate_id": "iteration-004-continuation-gate",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "train_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "iteration": 4,
+  "supervisor_verdict": "ACCEPTED",
+  "supervisor_verdict_classification": "NON_TERMINAL_ACCEPTED_CONTINUE",
+  "supervisor_verdict_rationale": "Supervisor ACCEPTED alone is never terminal. Controller invariant: only POC_READY, EXTERNAL_GATE, UNSAFE_WORKSPACE, RUNTIME_LIMIT are terminal.",
+  "gate_11_classification": "FUTURE_RELEASE_COMMERCIAL_APPROVAL_NOT_IMPLEMENTATION_BLOCKER",
+  "gate_11_rationale": "Gate 11 G11-G is written release approval from Babar Raza. It does not block implementation or proof work. It becomes relevant only after all closure criteria are met.",
+  "missing_artifacts_classification": "LOCAL_REPAIR_CONTINUE",
+  "missing_artifacts": ["raw_logs (partial)", "lane_ledger_iteration_003", "sample_outputs", "capability_deltas_iteration_003"],
+  "missing_artifacts_rationale": "Anti-skip caveats are advisory. Missing raw logs / lane ledger / sample outputs are LOCAL_REPAIR_CONTINUE, not terminal.",
+  "poc_ready": false,
+  "poc_ready_rationale": "Commercial: FODS PASS, FODT PASS, Netpbm PASS per poc-targets. FOSS: ZST PASS (python_status all PASS), Python_Netpbm PASS, SYLK PASS (write_sylk PASS). DIF ON_HOLD (blocked: write_dif not implemented). Closure criteria requires transcripts, sample outputs, source diffs, capability deltas — partially missing. Iteration 004 must close remaining proof gaps and advance DIF/FOSS closure.",
+  "commercial_targets": {
+    "FODS": "PASS",
+    "FODT": "PASS",
+    "Netpbm": "PASS"
+  },
+  "foss_targets": {
+    "ZST": "PASS",
+    "Python_Netpbm": "PASS",
+    "SYLK": "PASS",
+    "DIF": "IN_PROGRESS",
+    "Gnumeric": "NOT_STARTED"
+  },
+  "foss_pass_count": 3,
+  "foss_minimum_required": 3,
+  "foss_minimum_met": true,
+  "proof_gaps_remaining": [
+    "sample_outputs_iteration_003_required",
+    "capability_deltas_iteration_003_required",
+    "lane_ledger_iteration_003_entries_required",
+    "dif_write_dif_not_implemented",
+    "proof_graph_gap_queue_missing",
+    "product_code_ledger_r116_entries_missing"
+  ],
+  "decision": "CONTINUE_NEXT_ITERATION",
+  "next_gaps": [
+    {"rank": 1, "target": "FODS", "gap": "export_csv_file_dogfood_proof", "priority": "commercial_closure"},
+    {"rank": 2, "target": "FODT", "gap": "export_markdown_dogfood_proof", "priority": "commercial_closure"},
+    {"rank": 3, "target": "FODT", "gap": "export_txt_dogfood_proof", "priority": "commercial_closure"},
+    {"rank": 4, "target": "Netpbm", "gap": "save_pipeline_create_transform_save_readback", "priority": "commercial_closure"},
+    {"rank": 5, "target": "DIF", "gap": "write_dif_roundtrip_csv", "priority": "foss_closure"},
+    {"rank": 6, "target": "SYLK", "gap": "installed_workflow_roundtrip_deepen", "priority": "foss_closure"}
+  ]
+}

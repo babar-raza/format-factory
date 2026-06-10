@@ -1,0 +1,14 @@
+{
+  "sprint_id": "FORMAT-FACTORY-HOST-PROOFED-AUTONOMOUS-FORMAT-PILOT-001",
+  "created_at": "2026-06-05",
+  "exemption_type": "AUDIT_PHASE_SAMPLE_OUTPUT_EXEMPTION",
+  "phases_exempted": ["Phase 0 (preflight)", "Phase 1 (host proof)", "Phase 2 (audit rework)"],
+  "reason": "Phases 0-2 are infrastructure/audit/investigation work with no product output. Sample outputs are not applicable to supervisor tooling repairs, host invocation classification, or governance doc creation.",
+  "product_pilot_phases": ["Phase 4 (ABW write_abw)", "Phase 4 (Gnumeric export_to_csv)"],
+  "product_sample_outputs_required": true,
+  "product_sample_outputs_planned": [
+    "examples/python/abw/create_abw_example.py or sample output",
+    "examples/python/gnumeric/export_csv_example.py or sample output"
+  ],
+  "anti_skip_disposition": "missing_sample_outputs: EXEMPTED for audit phases; REQUIRED for Phase 4 product work"
+}

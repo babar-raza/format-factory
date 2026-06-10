@@ -1,0 +1,28 @@
+id: GEC-TC-012
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Final IV: evidence declaration, autonomous-cycle, bundle"
+status: completed
+lane: lane_l_final_iv
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  Sprint 4 must close with a complete evidence declaration, successful autonomous-cycle run,
+  and declaration review package ZIP with absolute path reported to the user.
+scope:
+  - Write .local/evidences/governance-enforcement-closure-rnext/evidence-declaration.yaml
+  - Run python tools/supervisor/supervisor_loop.py autonomous-cycle
+  - Build declaration review package ZIP
+  - Print absolute ZIP path and SHA-256
+files_to_create:
+  - .local/evidences/governance-enforcement-closure-rnext/evidence-declaration.yaml
+acceptance_criteria:
+  - evidence-declaration.yaml validates without SCHEMA_ERROR
+  - autonomous-cycle exits 0 or 3 (3 is acceptable with rework notes)
+  - ZIP file created at .local/supervisor/reviews/governance-enforcement-closure-rnext/
+  - Absolute ZIP path printed to user
+dependencies: [GEC-TC-001 through GEC-TC-011]
+handoff_to_autonomy_sprint: false

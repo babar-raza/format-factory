@@ -1,0 +1,200 @@
+sprint_id: "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-R2-VERIFIED-ROUTING-CYCLE-ENFORCEMENT-AND-CROSS-STREAM-CONSUMPTION-001"
+generated_at: "2026-06-04T08:00:00Z"
+r2_mission: "Fix 6 anti-skip violations from R1; advance traffic controller into operational routing"
+
+lanes:
+  - lane_id: "LANE-COORD"
+    title: "R2 Coordinator preflight — lane ownership, overlap check, scoreboard"
+    owner: "coordinator"
+    status: "completed"
+    command: "[manual] Create preflight docs, lane-ownership.md, overlap-check.md, scoreboard.md"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/00-preflight.md"
+      - "reports/supervisor-product-traffic-controller-r2/lane-ownership.md"
+      - "reports/supervisor-product-traffic-controller-r2/overlap-check.md"
+      - "reports/supervisor-product-traffic-controller-r2/scoreboard.md"
+    decision: "GO — all 6 violations documented; required tools present"
+    local_verdict: "ACCEPTED_VERIFIED"
+
+  - lane_id: "LANE-A"
+    title: "Preflight re-validation — prior package review and work-item regrading"
+    owner: "supervisor-lane"
+    status: "completed"
+    command: "[manual] Read prior review package, regrade all 11 R1 items, document violations"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/prior-package-review.md"
+      - "reports/supervisor-product-traffic-controller-r2/prior-work-item-regrading.json"
+      - "reports/supervisor-product-traffic-controller-r2/evidence-quality-upgrade.json"
+      - "reports/supervisor-product-traffic-controller-r2/contradiction-register.json"
+    decision: "11 items regraded; 3 upgradeable to ACCEPTED_VERIFIED; 8 remain ACCEPTED_WITH_LIMITATIONS"
+    local_verdict: "ACCEPTED_VERIFIED"
+
+  - lane_id: "LANE-B"
+    title: "Raw log capture — 53 targeted tests + full supervisor suite"
+    owner: "supervisor-lane"
+    status: "completed"
+    command: ".local/venv/Scripts/python -m pytest tests/supervisor/test_supervisor_product_traffic_controller_integration.py tests/supervisor/test_cross_stream_consumption.py tests/supervisor/test_continuation_state_integration.py tests/supervisor/test_external_tool_governance_integration.py -v"
+    exit_code: 0
+    log_path: "reports/supervisor-product-traffic-controller-r2/raw-logs/raw-test-all-targeted.txt"
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/raw-logs/raw-test-integration.txt"
+      - "reports/supervisor-product-traffic-controller-r2/raw-logs/raw-test-cross-stream.txt"
+      - "reports/supervisor-product-traffic-controller-r2/raw-logs/raw-test-continuation.txt"
+      - "reports/supervisor-product-traffic-controller-r2/raw-logs/raw-test-ext-governance.txt"
+      - "reports/supervisor-product-traffic-controller-r2/raw-logs/raw-test-all-targeted.txt"
+      - "reports/supervisor-product-traffic-controller-r2/raw-logs/raw-test-full-supervisor-suite.txt"
+      - "reports/supervisor-product-traffic-controller-r2/raw-log-proof.md"
+    decision: "53/53 targeted tests PASSED; full suite 1253/1253 + 12 inherited failures (pre-existing)"
+    local_verdict: "ACCEPTED_VERIFIED"
+
+  - lane_id: "LANE-C"
+    title: "Lane execution ledger and sample output proof"
+    owner: "coordinator"
+    status: "completed"
+    command: "[manual] Run generate_stream_routing_packet.py + check_cross_stream_consumption.py; write ledger"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/sample-outputs/product_velocity_score.json"
+      - "reports/supervisor-product-traffic-controller-r2/sample-outputs/product_velocity_summary.md"
+      - "reports/supervisor-product-traffic-controller-r2/sample-outputs/stream_decision.json"
+      - "reports/supervisor-product-traffic-controller-r2/sample-outputs/false_pass_false_stop_assessment.json"
+      - "reports/supervisor-product-traffic-controller-r2/sample-outputs/cross-stream-consumption-status.json"
+      - "reports/supervisor-product-traffic-controller-r2/lane-execution-ledger.yaml"
+    decision: "CLI tools proven with exit_code=0; SKILLS_MISSING_PACKET detected; sample outputs written"
+    local_verdict: "ACCEPTED_VERIFIED"
+    cli_runs:
+      - command: ".local/venv/Scripts/python tools/supervisor/generate_stream_routing_packet.py --stream mainstream --replay-results .local/supervisor/reviews/mainstream-r113/replay-results.json --gaps reports/supervisor-streams/mainstream/routing-packet.json --output-dir reports/supervisor-product-traffic-controller-r2/sample-outputs"
+        exit_code: 0
+        output_decision: "CONTINUE_WITH_LIMITATIONS, PARTIAL_FEW_FAMILIES, breadth=2"
+      - command: ".local/venv/Scripts/python tools/supervisor/check_cross_stream_consumption.py --replay-results reports/supervisor-product-traffic-controller-r2/sample-outputs/replay-for-consumption.json --output-dir reports/supervisor-product-traffic-controller-r2/sample-outputs"
+        exit_code: 0
+        output_decision: "SKILLS_MISSING_PACKET detected; CROSS_STREAM_CONSUMPTION_GAPS_DETECTED"
+
+  - lane_id: "LANE-D"
+    title: "Dirty state classification"
+    owner: "supervisor-lane"
+    status: "completed"
+    command: "[manual] Classify git dirty state; produce dirty-state-classification.md + .json + validator result"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/dirty-state-classification.md"
+      - "reports/supervisor-product-traffic-controller-r2/dirty-state-classification.json"
+      - "reports/supervisor-product-traffic-controller-r2/dirty-state-validator-result.json"
+    decision: "DIRTY_UNTRACKED_AND_MODIFIED_SUPERVISOR_EVIDENCE_ONLY — no product source in dirty state"
+    local_verdict: "ACCEPTED_VERIFIED"
+
+  - lane_id: "LANE-E"
+    title: "Continuation signal reconciliation"
+    owner: "supervisor-lane"
+    status: "completed"
+    command: "[manual] Document continuation precedence rules; create continuation-consistency.md + matrix JSON"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/continuation-consistency.md"
+      - "reports/supervisor-product-traffic-controller-r2/continuation-decision-matrix.json"
+    decision: "evidence_quality_zero=true forces YES_WITH_LIMITATIONS; autonomous_continue=false takes precedence"
+    local_verdict: "ACCEPTED_VERIFIED"
+
+  - lane_id: "LANE-F"
+    title: "Routing packet hardening — fresh packets for all 4 streams"
+    owner: "supervisor-lane"
+    status: "completed"
+    command: "[manual] Harden generate_stream_routing_packet.py; regenerate all 4 stream routing packets"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-streams/mainstream/routing-packet.json"
+      - "reports/supervisor-streams/skills/routing-packet.json"
+      - "reports/supervisor-streams/acceleration/routing-packet.json"
+      - "reports/supervisor-streams/supervisor/routing-packet.json"
+      - "reports/supervisor-product-traffic-controller-r2/routing-packet-hardening.md"
+    decision: "All 4 stream routing packets regenerated; latest-routing-packet.json synced"
+    local_verdict: "ACCEPTED_WITH_LIMITATIONS"
+
+  - lane_id: "LANE-G"
+    title: "Cross-stream contracts — skills and acceleration to mainstream"
+    owner: "supervisor-lane"
+    status: "completed"
+    command: "[manual] Create skills-to-mainstream-contract.json + acceleration-to-mainstream-contract.json + enforcement docs"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/skills-to-mainstream-contract.json"
+      - "reports/supervisor-product-traffic-controller-r2/acceleration-to-mainstream-contract.json"
+      - "reports/supervisor-product-traffic-controller-r2/cross-stream-consumption-enforcement.md"
+    decision: "Contracts define required outputs from Skills/Acceleration before Mainstream can claim consumed"
+    local_verdict: "ACCEPTED_WITH_LIMITATIONS"
+
+  - lane_id: "LANE-H"
+    title: "Mainstream handoff upgrade — clean-pass floors, stop conditions"
+    owner: "supervisor-lane"
+    status: "completed"
+    command: "[manual] Upgrade mainstream-next-sprint-handoff with CLEAN_PASS floors and explicit stop conditions"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/mainstream-next-sprint-handoff.md"
+      - "reports/supervisor-product-traffic-controller-r2/mainstream-next-sprint-handoff.json"
+    decision: "CLEAN_PASS requirements: 3+ families (FODS+FODT+Netpbm), source_diffs≥3, transcripts≥3"
+    local_verdict: "ACCEPTED_WITH_LIMITATIONS"
+
+  - lane_id: "LANE-I"
+    title: "Next supervisor prompt generation — 8 required lanes"
+    owner: "supervisor-lane"
+    status: "completed"
+    command: "[manual] Generate next supervisor sprint prompt with 8 lanes; validate prompt quality"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/generated-next-supervisor-prompt.md"
+      - "reports/supervisor-product-traffic-controller-r2/prompt-quality-result.json"
+    decision: "Prompt quality PASS; 8 lanes defined; cross-stream consumption checks included"
+    local_verdict: "ACCEPTED_WITH_LIMITATIONS"
+
+  - lane_id: "LANE-J"
+    title: "State and taskcard memory sync"
+    owner: "coordinator"
+    status: "completed"
+    command: "[manual] Sync state/current-state.md; update reports/supervisor/next-sprint.md to target supervisor stream"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/state-taskcard-memory-sync.md"
+    decision: "next-sprint.md updated to target supervisor stream (fixes wrong_stream_next_sprint violation)"
+    local_verdict: "ACCEPTED_WITH_LIMITATIONS"
+
+  - lane_id: "LANE-K"
+    title: "Final adversarial independent verification"
+    owner: "coordinator"
+    status: "completed"
+    command: "[manual] Verify all 6 violations resolved; run final targeted tests; check evidence quality"
+    exit_code: 0
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/final-adversarial-independent-verification.md"
+    decision: "All 6 violations verified resolved; evidence_quality_score=0.27; verified_item_count=3"
+    local_verdict: "ACCEPTED_VERIFIED"
+
+  - lane_id: "TEST-EXECUTION"
+    title: "Final targeted test run proof (53/53)"
+    owner: "supervisor-lane"
+    status: "completed"
+    command: ".local/venv/Scripts/python -m pytest tests/supervisor/test_supervisor_product_traffic_controller_integration.py tests/supervisor/test_cross_stream_consumption.py tests/supervisor/test_continuation_state_integration.py tests/supervisor/test_external_tool_governance_integration.py -v"
+    exit_code: 0
+    log_path: "reports/supervisor-product-traffic-controller-r2/raw-logs/raw-test-all-targeted.txt"
+    artifacts:
+      - "reports/supervisor-product-traffic-controller-r2/raw-logs/raw-test-all-targeted.txt"
+    decision: "53/53 PASSED — integration (17) + cross-stream (9) + continuation (11) + ext-governance (16)"
+    local_verdict: "ACCEPTED_VERIFIED"
+
+summary:
+  total_lanes: 13
+  completed: 13
+  partial: 0
+  failed: 0
+  skipped: 0
+  violations_fixed:
+    - "missing_raw_logs: FIXED — 6 raw log files captured in LANE-B"
+    - "missing_lane_ledger: FIXED — this file (lane-execution-ledger.yaml)"
+    - "missing_sample_outputs: FIXED — 5 sample output files in LANE-C"
+    - "dirty_git_state: FIXED — classified in LANE-D; has_classification added to declaration"
+    - "wrong_stream_next_sprint: FIXED — next-sprint.md updated to supervisor stream in LANE-J"
+    - "continuation_discrepancy: FIXED — continuation-consistency.md + matrix in LANE-E"
+  r2_evidence_quality_estimate: 0.27
+  r2_verified_item_count: 3

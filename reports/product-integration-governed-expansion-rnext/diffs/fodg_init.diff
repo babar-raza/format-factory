@@ -1,0 +1,62 @@
+diff --git a/src/python/fodg/__init__.py b/src/python/fodg/__init__.py
+index 8545e76..752e616 100644
+--- a/src/python/fodg/__init__.py
++++ b/src/python/fodg/__init__.py
+@@ -16,6 +16,28 @@ from .fodg_codec import (
+     get_shape_count,
+     extract_text,
+     get_page_metadata,
++    create_fodg,
++    write_fodg,
++    get_shapes,
++    get_page_by_name,
++    add_page,
++    get_text_shapes,
++    remove_page,
++    rename_page,
++    get_all_text,
++    count_shapes,
++    export_to_json,
++    duplicate_page,
++    get_page_index,
++    clear_page,
++    swap_pages,
++    page_names,
++    has_page,
++    probe_fodg,
++    export_to_txt,
++    export_to_csv,
++    roundtrip,
++    find_text,
+ )
+ 
+ __all__ = [
+@@ -26,6 +48,28 @@ __all__ = [
+     "get_shape_count",
+     "extract_text",
+     "get_page_metadata",
++    "create_fodg",
++    "write_fodg",
++    "get_shapes",
++    "get_page_by_name",
++    "add_page",
++    "get_text_shapes",
++    "remove_page",
++    "rename_page",
++    "get_all_text",
++    "count_shapes",
++    "export_to_json",
++    "duplicate_page",
++    "get_page_index",
++    "clear_page",
++    "swap_pages",
++    "page_names",
++    "has_page",
++    "probe_fodg",
++    "export_to_txt",
++    "export_to_csv",
++    "roundtrip",
++    "find_text",
+ ]
+ 
+ __version__ = "0.1.0.dev0"

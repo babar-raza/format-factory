@@ -1,0 +1,50 @@
+[
+  {
+    "package": "FormatFactory.Fods",
+    "type": "dotnet_commercial",
+    "csproj": "src/net/fods/FormatFactory.Fods.csproj",
+    "gaps": [
+      {"field": "GenerateDocumentationFile", "current": "false (missing)", "required": "true", "severity": "HIGH", "impact": "No XML IntelliSense docs in NuGet package"},
+      {"field": "Description", "current": "Gate 11 commercial_readiness_in_progress; not release-ready", "required": "Post-Gate-11 accurate description", "severity": "HIGH", "impact": "Misleads NuGet consumers"},
+      {"field": "Version", "current": "0.1.0-tier0", "required": "Release version after Gate 11", "severity": "MEDIUM", "impact": "Pre-release version string retained"},
+      {"field": "PackageReadmeFile", "current": "README.md (present)", "required": "README.md (present)", "severity": "NONE", "impact": "OK"}
+    ]
+  },
+  {
+    "package": "FormatFactory.Fodt",
+    "type": "dotnet_commercial",
+    "csproj": "src/net/fodt/FormatFactory.Fodt.csproj",
+    "gaps": [
+      {"field": "GenerateDocumentationFile", "current": "false (missing)", "required": "true", "severity": "HIGH", "impact": "No XML IntelliSense docs"},
+      {"field": "Description", "current": "Gate 11 commercial_readiness_in_progress; not release-ready", "required": "Post-Gate-11 accurate description", "severity": "HIGH", "impact": "Misleads consumers"},
+      {"field": "PackageReadmeFile", "current": "README.md (present)", "required": "README.md (present)", "severity": "NONE", "impact": "OK"}
+    ]
+  },
+  {
+    "package": "FormatFactory.Netpbm",
+    "type": "dotnet_commercial",
+    "csproj": "src/net/netpbm/FormatFactory.Netpbm.csproj",
+    "gaps": [
+      {"field": "GenerateDocumentationFile", "current": "false (missing)", "required": "true", "severity": "HIGH", "impact": "No XML IntelliSense docs"},
+      {"field": "Description", "current": "Gate 11 NOT_STARTED; not release-ready", "required": "Post-Gate-11 accurate description", "severity": "HIGH", "impact": "Misleads consumers — Gate 11 IS approved"},
+      {"field": "PackageReadmeFile", "current": "missing", "required": "README.md Pack=true", "severity": "MEDIUM", "impact": "No readme in NuGet package"},
+      {"field": "Version", "current": "0.1.0-r85-poc", "required": "Release version", "severity": "MEDIUM", "impact": "POC version tag retained"}
+    ]
+  },
+  {
+    "package": "FormatFactory.Csv",
+    "type": "dotnet_internal_library",
+    "gaps": [
+      {"field": "GenerateDocumentationFile", "current": "false", "required": "true for distribution", "severity": "MEDIUM"},
+      {"field": "PackageReadmeFile", "current": "missing", "required": "README.md", "severity": "LOW"}
+    ]
+  },
+  {
+    "package": "python_all_packages",
+    "type": "python_foss",
+    "gaps": [
+      {"field": "pyproject.toml", "current": "MISSING for ALL packages", "required": "pyproject.toml per package", "severity": "CRITICAL", "impact": "Cannot pip install any Python FOSS package. Users must set PYTHONPATH manually."},
+      {"field": "version_in_init", "current": "Most have __version__, but fods_py and fodt_py do not", "required": "__version__ in __init__.py", "severity": "LOW"}
+    ]
+  }
+]

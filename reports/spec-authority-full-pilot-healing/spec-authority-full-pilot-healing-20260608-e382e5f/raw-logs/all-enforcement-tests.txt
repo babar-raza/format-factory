@@ -1,0 +1,54 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 44 items
+
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_product_source_no_refs_no_exception_is_rejected PASSED [  2%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_product_source_empty_refs_no_exception_is_rejected PASSED [  4%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_product_source_invalid_fact_id_format_is_rejected PASSED [  6%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_invalid_exception_classification_is_rejected PASSED [  9%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_test_item_no_refs_no_exception_is_rejected PASSED [ 11%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_release_gate_no_refs_no_exception_is_rejected PASSED [ 13%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_legacy_backfill_cannot_claim_readiness PASSED [ 15%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_no_public_spec_available_cannot_claim_release_gate PASSED [ 18%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_fallback_authority_without_rationale_is_rejected PASSED [ 20%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_declaration_with_blocking_violation_is_non_compliant PASSED [ 22%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_product_source_with_valid_refs_is_accepted PASSED [ 25%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_product_source_with_investigation_only_is_accepted PASSED [ 27%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_product_source_with_legacy_backfill_is_accepted_as_debt PASSED [ 29%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_non_blocking_type_always_passes PASSED [ 31%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_schema_authority_available_on_readiness_is_accepted PASSED [ 34%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_fallback_authority_approved_with_rationale_is_accepted PASSED [ 36%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_requirement_with_valid_refs_is_accepted PASSED [ 38%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_declaration_all_compliant_passes PASSED [ 40%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingItemTypes::test_all_required_blocking_types_present PASSED [ 43%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingItemTypes::test_valid_exception_classifications_complete PASSED [ 45%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_blocked_missing_spec_format_is_not_actionable PASSED [ 47%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_all_blocked_states_prevent_task_selection PASSED [ 50%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_allowed_format_can_still_be_actionable PASSED [ 52%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_get_format_authority_status_returns_blocked_for_unknown_format PASSED [ 54%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_unknown_format_not_actionable PASSED [ 56%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_blocked_states_set_is_complete PASSED [ 59%]
+tests/supervisor/test_full_pilot_verification.py::TestNegativePilots::test_pilot_002_missing_refs_no_exception_rejected PASSED [ 61%]
+tests/supervisor/test_full_pilot_verification.py::TestNegativePilots::test_pilot_007_ai_only_no_exception_rejected PASSED [ 63%]
+tests/supervisor/test_full_pilot_verification.py::TestNegativePilots::test_pilot_007_invalid_exception_ai_generated_review_rejected PASSED [ 65%]
+tests/supervisor/test_full_pilot_verification.py::TestNegativePilots::test_pilot_013_synthetic_fixture_without_valid_refs_rejected PASSED [ 68%]
+tests/supervisor/test_full_pilot_verification.py::TestNegativePilots::test_pilot_004_legacy_backfill_cannot_claim_readiness PASSED [ 70%]
+tests/supervisor/test_full_pilot_verification.py::TestNegativePilots::test_pilot_004_no_public_spec_cannot_claim_release_gate PASSED [ 72%]
+tests/supervisor/test_full_pilot_verification.py::TestNegativePilots::test_pilot_006_malformed_fact_id_rejected PASSED [ 75%]
+tests/supervisor/test_full_pilot_verification.py::TestPositivePilots::test_pilot_003_valid_fact_ref_accepted PASSED [ 77%]
+tests/supervisor/test_full_pilot_verification.py::TestPositivePilots::test_pilot_004_legacy_backfill_on_product_source_accepted_as_debt PASSED [ 79%]
+tests/supervisor/test_full_pilot_verification.py::TestPositivePilots::test_pilot_005_investigation_only_on_product_source_accepted PASSED [ 81%]
+tests/supervisor/test_full_pilot_verification.py::TestPositivePilots::test_pilot_011_gnumeric_schema_authority_accepted_for_product_source PASSED [ 84%]
+tests/supervisor/test_full_pilot_verification.py::TestPositivePilots::test_pilot_010_fods_full_declaration_accepted PASSED [ 86%]
+tests/supervisor/test_full_pilot_verification.py::TestFactIdFormatValidation::test_malformed_no_prefix_rejected PASSED [ 88%]
+tests/supervisor/test_full_pilot_verification.py::TestFactIdFormatValidation::test_syntactically_valid_format_passes_format_check PASSED [ 90%]
+tests/supervisor/test_full_pilot_verification.py::TestSelectorUnknownFormatBlocked::test_unknown_format_returns_blocked_unknown_authority PASSED [ 93%]
+tests/supervisor/test_full_pilot_verification.py::TestSelectorUnknownFormatBlocked::test_unknown_format_candidate_not_actionable PASSED [ 95%]
+tests/supervisor/test_full_pilot_verification.py::TestSelectorUnknownFormatBlocked::test_all_blocked_states_including_unknown_prevent_selection PASSED [ 97%]
+tests/supervisor/test_full_pilot_verification.py::TestContinuationSafety::test_advisory_prompt_not_executable PASSED [100%]
+
+============================= 44 passed in 1.24s ==============================

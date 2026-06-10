@@ -269,3 +269,73 @@ def probe_xcf(file_path: str | Path) -> dict[str, Any]:
         result["valid_header"] = False
         result["error"] = str(exc)
     return result
+
+
+def xcf_layer_count(file_path: str | Path) -> int:
+    """Return the number of layers in an XCF file."""
+    img = parse_xcf_strict(file_path)
+    return img.num_layers
+
+
+def xcf_image_dimensions(file_path: str | Path) -> dict[str, int]:
+    """Return width and height of an XCF image as a dict."""
+    img = parse_xcf_strict(file_path)
+    return {"width": img.width, "height": img.height}
+
+
+def xcf_version(file_path: str | Path) -> str:
+    """Return the XCF version string (e.g., 'v011', 'file').
+
+    Args:
+        file_path: Path to XCF file.
+
+    Returns:
+        Version string from the XCF header.
+
+    Raises:
+        XcfError subclasses on parse failure.
+    """
+    img = parse_xcf_strict(file_path)
+    return img.version
+
+
+def xcf_image_type_name(file_path: str | Path) -> str:
+    """Return the human-readable image type name (RGB, Grayscale, or Indexed).
+
+    Args:
+        file_path: Path to XCF file.
+
+    Returns:
+        Image type name string.
+
+    Raises:
+        XcfError subclasses on parse failure.
+    """
+    img = parse_xcf_strict(file_path)
+    return IMAGE_TYPE_NAMES.get(img.image_type, "Unknown")
+
+
+def xcf_pixel_count(file_path: str | Path) -> int:
+    """Return the total pixel count (width * height) of an XCF image."""
+    img = parse_xcf_strict(file_path)
+    return img.width * img.height
+
+
+def xcf_file_size(file_path: str | Path) -> int:
+    """Return the file size in bytes of an XCF file."""
+    path = Path(file_path)
+    if not path.exists():
+        raise XcfError(f"File not found: {path}")
+    return os.path.getsize(path)
+
+
+def xcf_is_rgb(file_path: str | Path) -> bool:
+    """Return True if the XCF image type is RGB (type 0)."""
+    img = parse_xcf_strict(file_path)
+    return img.image_type == 0
+
+
+def xcf_is_grayscale(file_path: str | Path) -> bool:
+    """Return True if the XCF image type is Grayscale (type 1)."""
+    img = parse_xcf_strict(file_path)
+    return img.image_type == 1

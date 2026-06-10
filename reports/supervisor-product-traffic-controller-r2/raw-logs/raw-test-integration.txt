@@ -1,0 +1,27 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 17 items
+
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestStreamRoutingPacketGenerator::test_run_mainstream_produces_outputs PASSED [  5%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestStreamRoutingPacketGenerator::test_mainstream_partial_classification PASSED [ 11%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestStreamRoutingPacketGenerator::test_stream_decision_parses_as_json PASSED [ 17%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestStreamRoutingPacketGenerator::test_false_pass_detection PASSED [ 23%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestVelocityScorer::test_12_dimensions_present PASSED [ 29%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestVelocityScorer::test_mainstream_partial_few_families PASSED [ 35%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestVelocityScorer::test_mainstream_clean_pass PASSED [ 41%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestCrossStreamConsumptionBridge::test_skills_missing_packet_in_real_replay PASSED [ 47%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestCrossStreamConsumptionBridge::test_consumption_ok_when_consumed PASSED [ 52%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestContinuationStateTrafficController::test_no_product_floor_routes_correctly PASSED [ 58%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestContinuationStateTrafficController::test_missing_artifacts_routes_correctly PASSED [ 64%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestContinuationStateTrafficController::test_dirty_unclassified_routes_correctly PASSED [ 70%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestExternalToolGovernanceIntegration::test_governance_verdict_has_required_fields PASSED [ 76%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestExternalToolGovernanceIntegration::test_ruflo_cannot_close_taskcards PASSED [ 82%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestExternalToolGovernanceIntegration::test_runtime_status_json_parses PASSED [ 88%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestExternalToolGovernanceIntegration::test_stream_routing_not_impacted_by_external_tools PASSED [ 94%]
+tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestExternalToolGovernanceIntegration::test_mainstream_routing_packet_has_6_plus_gaps PASSED [100%]
+
+============================= 17 passed in 1.08s ==============================

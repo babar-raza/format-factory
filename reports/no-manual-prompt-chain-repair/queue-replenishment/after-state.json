@@ -1,0 +1,23 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMY-NO-MANUAL-PROMPT-CHAIN-REPAIR-001",
+  "lane": "L3",
+  "after_fix": {
+    "seed_post_closeout_queue_item": {
+      "behavior": "Detects exhausted queue; seeds QUEUE_HEALTH_CHECK item with external_gate=False, preferred_backend=LOCAL_DETERMINISTIC, post_closeout=True",
+      "result_when_exhausted": "SEEDED — 1 new pending item available for next autonomous cycle",
+      "result_when_pending_exists": "ALREADY_HAS_PENDING — no duplicate seeding"
+    },
+    "apply_post_closeout_continuation": {
+      "behavior": "Writes next-action.json (machine-readable) and active-continuation.json (advisory_prompt_executable=False, autonomous_continue=True)",
+      "result": "POST_CLOSEOUT_CONTINUATION_READY — orchestrator can proceed without manual prompt paste"
+    },
+    "active_continuation_key_fields": {
+      "advisory_prompt_executable": false,
+      "autonomous_continue": true,
+      "sprint_id": "<current sprint>",
+      "generated_by": "evidence_continuation.py"
+    }
+  },
+  "tests_result": "26/26 PASS",
+  "tests_file": "tests/supervisor/test_post_closeout_queue_replenishment.py"
+}

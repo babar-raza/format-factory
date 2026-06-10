@@ -1,0 +1,13 @@
+[
+  {
+    "defect_id": "D109-PROMPT-01",
+    "source": "R109 prompt-quality-result.json",
+    "severity": "high",
+    "description": "Generated acceleration prompt contains no advancement terms — only governance/state/evidence boilerplate",
+    "root_cause": "generate_next_worker_prompt.py STREAM_GROUPS filter removes all advancement trains; STREAM_FORWARD_WORK only used for NWI, not prompt text",
+    "fix_applied_in": "R110",
+    "fix_description": "Inject STREAM_FORWARD_WORK as G2-group trains after stream filtering; add advancement terms to sprint goal",
+    "verification": "test_r110_prompt_quality_advancement_lane.py — 22 tests, all pass",
+    "status": "RESOLVED"
+  }
+]

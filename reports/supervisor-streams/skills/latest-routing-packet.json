@@ -1,0 +1,36 @@
+{
+  "stream": "skills",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-R113-FULL-LIVE-CYCLE-STREAM-CONVERGENCE-CROSS-STREAM-DEPENDENCY-AND-MCP-READINESS-CAMPAIGN-001",
+  "routing_packet_generated": "2026-06-04T13:00:00.000000Z",
+  "generated_by": "generate_stream_routing_packet.py",
+  "stream_decision": "CONTINUE",
+  "mainstream_classification": null,
+  "product_velocity": {
+    "poc_help_score": 1,
+    "product_breadth_score": 0,
+    "product_throughput_delta": 0,
+    "mainstream_blocker_removed": false,
+    "reusable_accelerator_consumed": false,
+    "ai_acceleration_consumed": false,
+    "governed_execution_consumed": false,
+    "false_pass_prevented": false,
+    "false_stop_prevented": false,
+    "human_handoff_reduced": false,
+    "machinery_overhead_score": 2,
+    "semantic_drift_risk": "medium"
+  },
+  "product_output_floor_met": false,
+  "stream_state": "FALLBACK_LOCAL_COORDINATOR",
+  "stream_report_dir": "reports/supervisor-streams/skills/",
+  "stream_report_present": false,
+  "flag": "SKILLS_MISSING_PACKET",
+  "flag_detail": "Skills stream has machinery_overhead_score=2 and is not consumed by Mainstream. Skills governed transcripts must be produced AND consumed by Mainstream to count.",
+  "next_sprint_recommendation": "Produce governed transcripts for FODS/FODT Skills runs. Ensure Mainstream explicitly declares governed_execution_consumed=true.",
+  "actionable_gaps": [],
+  "cross_stream_status": {
+    "mainstream_consumed": false,
+    "mainstream_missing_packet": false
+  },
+  "external_tool_mode": "ruflo_absent",
+  "deterministic_supervisor_retains_authority": true
+}

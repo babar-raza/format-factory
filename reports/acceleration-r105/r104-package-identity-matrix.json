@@ -1,0 +1,563 @@
+{
+  "audit_id": "R105-TRAIN-A-PACKAGE-IDENTITY-AUDIT",
+  "target_package": ".local/supervisor/reviews/acceleration-r104/declaration-review-package.zip",
+  "target_run_id": "acceleration-r104",
+  "target_sprint_id": "FORMAT-FACTORY-ACCELERATION-R104-PACKAGED-ADOPTION-AND-STREAM-PROMPT-CORRECTION-CAMPAIGN-001",
+  "expected_stream": "acceleration",
+  "total_entries": 68,
+  "audit_timestamp": "2026-06-03T00:00:00Z",
+  "summary": {
+    "MATCH": 47,
+    "WRONG_STREAM": 13,
+    "UNVERIFIABLE": 4,
+    "STALE": 3,
+    "HISTORICAL_OK": 1
+  },
+  "root_cause": "The package builder (build_declaration_review_package.py) copies global supervisor state from reports/supervisor/* and .supervisor/context-pack.yaml. These global files reflect whichever stream last ran autonomous-cycle. In this case, skills-r103 overwrote them after acceleration-r104 ran, so the packaged supervisor state belongs to skills-r103 (not acceleration-r104). The review/ subfolder and sprint-evidence/ subfolder are stream-correct because they are written per-run to .local/supervisor/reviews/<run_id>/.",
+  "artifacts": [
+    {
+      "zip_path": "evidence/evidence-declaration.yaml",
+      "detected_sprint": "FORMAT-FACTORY-ACCELERATION-R104-PACKAGED-ADOPTION-AND-STREAM-PROMPT-CORRECTION-CAMPAIGN-001",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Correct: copied from .local/evidences/acceleration-r104/"
+    },
+    {
+      "zip_path": "evidence/evidence-manifest.yaml",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Correct: evidence_root = reports/acceleration-r104"
+    },
+    {
+      "zip_path": "package-manifest.json",
+      "detected_sprint": "FORMAT-FACTORY-ACCELERATION-R104-PACKAGED-ADOPTION-AND-STREAM-PROMPT-CORRECTION-CAMPAIGN-001",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Correct: run_id = acceleration-r104"
+    },
+    {
+      "zip_path": "review/supervisor-review.json",
+      "detected_sprint": "FORMAT-FACTORY-ACCELERATION-R104-PACKAGED-ADOPTION-AND-STREAM-PROMPT-CORRECTION-CAMPAIGN-001",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Correct: from .local/supervisor/reviews/acceleration-r104/"
+    },
+    {
+      "zip_path": "review/supervisor-review.md",
+      "detected_sprint": "FORMAT-FACTORY-ACCELERATION-R104-PACKAGED-ADOPTION-AND-STREAM-PROMPT-CORRECTION-CAMPAIGN-001",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Correct: run_id = acceleration-r104"
+    },
+    {
+      "zip_path": "review/supervisor-cycle-manifest.yaml",
+      "detected_sprint": "FORMAT-FACTORY-ACCELERATION-R104-PACKAGED-ADOPTION-AND-STREAM-PROMPT-CORRECTION-CAMPAIGN-001",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Correct: from per-run review folder"
+    },
+    {
+      "zip_path": "review/accepted-items.yaml",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output"
+    },
+    {
+      "zip_path": "review/combined-next-worker-prompt.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output"
+    },
+    {
+      "zip_path": "review/inspection.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output"
+    },
+    {
+      "zip_path": "review/item-grades.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output"
+    },
+    {
+      "zip_path": "review/item-grades.yaml",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output"
+    },
+    {
+      "zip_path": "review/next-work-items.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output"
+    },
+    {
+      "zip_path": "review/next-work-items.yaml",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output"
+    },
+    {
+      "zip_path": "review/overclaimed-items.yaml",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output (empty)"
+    },
+    {
+      "zip_path": "review/rejected-items.yaml",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output (empty)"
+    },
+    {
+      "zip_path": "review/rework-items.yaml",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run review output (empty)"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/00-preflight.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/evidence-manifest.yaml",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/final-adversarial-independent-verification.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/generated-stream-prompts/next-acceleration-prompt.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/generated-stream-prompts/next-mainstream-prompt.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/generated-stream-prompts/next-skills-prompt.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/generated-stream-prompts/next-supervisor-prompt.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/package-self-containment.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/quota-tracker.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/r103-claim-classification.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/r103-reconciliation.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/raw-test-log.txt",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Raw test log from acceleration sprint"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/anti-skip-check-result.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/dry-run-ledger.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/dry-run-results.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/fresh-stream-gaps.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/next-best-actions.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/selected-gaps-acceleration-r104.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/selected-gaps-mainstream-r104.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/selected-gaps-skills-r104.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/selected-gaps-supervisor-r104.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/sample-outputs/stream-forecasts.json",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/reports/acceleration-r104/three-sprint-forecast.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Walked from evidence_root"
+    },
+    {
+      "zip_path": "sprint-evidence/tools/supervisor/build_declaration_review_package.py",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Changed file declared in evidence"
+    },
+    {
+      "zip_path": "sprint-evidence/tests/supervisor/acceleration/test_package_self_containment.py",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "New test declared in evidence"
+    },
+    {
+      "zip_path": "sprint-evidence/tools/supervisor/anti_skip_checker.py",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Changed file declared in evidence"
+    },
+    {
+      "zip_path": "sprint-evidence/tests/supervisor/acceleration/test_anti_skip_checker.py",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Changed file declared in evidence"
+    },
+    {
+      "zip_path": "supervisor/latest-cycle-summary.md",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Run = skills-r103; should be acceleration-r104. Copied from global reports/supervisor/latest-cycle-summary.md which was overwritten by skills-r103 after acceleration-r104 ran."
+    },
+    {
+      "zip_path": "supervisor/evidence-review.md",
+      "detected_sprint": "FORMAT-FACTORY-SUPERVISOR-R103-CROSS-STREAM-CONTAMINATION-AND-DEEP-GRADING-CAMPAIGN-001",
+      "detected_stream": "supervisor",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Sprint ID = supervisor-r103; should reference acceleration-r104. Copied from global reports/supervisor/evidence-review.md."
+    },
+    {
+      "zip_path": "supervisor/contradictions.md",
+      "detected_sprint": "FORMAT-FACTORY-SUPERVISOR-R103-CROSS-STREAM-CONTAMINATION-AND-DEEP-GRADING-CAMPAIGN-001",
+      "detected_stream": "supervisor",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Sprint ID = supervisor-r103. Same root cause as evidence-review.md."
+    },
+    {
+      "zip_path": "supervisor/session-resume.md",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Last sprint listed = skills-r103. Global state overwritten."
+    },
+    {
+      "zip_path": "supervisor/approval-gates.md",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Sprint ID = skills-r103."
+    },
+    {
+      "zip_path": "supervisor/next-sprint.md",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Source sprint = skills-r103; stream label says 'mainstream' but source is skills."
+    },
+    {
+      "zip_path": "supervisor/work-item-grades.json",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Grades W0-R102-RECONCILIATION..W8-STRATEGY are from skills-r103, not acceleration-r104 items."
+    },
+    {
+      "zip_path": "supervisor/work-item-grades.md",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Same as work-item-grades.json."
+    },
+    {
+      "zip_path": "supervisor/work-item-grades.yaml",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Same as work-item-grades.json."
+    },
+    {
+      "zip_path": "supervisor/materialized-evidence-review.md",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Run ID = skills-r103."
+    },
+    {
+      "zip_path": "supervisor/supervisor-cycle-manifest.yaml",
+      "detected_sprint": "FORMAT-FACTORY-ACCELERATION-R104-PACKAGED-ADOPTION-AND-STREAM-PROMPT-CORRECTION-CAMPAIGN-001",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Correct: This file was written by the acceleration-r104 cycle and happened to be the last writer to the global path."
+    },
+    {
+      "zip_path": "supervisor/mcp-status.md",
+      "detected_sprint": "n/a (no sprint ID in content)",
+      "detected_stream": "unverifiable",
+      "expected_stream": "acceleration",
+      "status": "UNVERIFIABLE",
+      "note": "MCP status is global state, not stream-specific. Content is accurate regardless of which stream wrote it."
+    },
+    {
+      "zip_path": "supervisor/mcp-status.json",
+      "detected_sprint": "n/a",
+      "detected_stream": "unverifiable",
+      "expected_stream": "acceleration",
+      "status": "UNVERIFIABLE",
+      "note": "MCP status is global state. Not stream-specific."
+    },
+    {
+      "zip_path": "state/context-pack.yaml",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: latest_sprint.sprint_id = skills-r103; run_id = R103. Copied from global .supervisor/context-pack.yaml."
+    },
+    {
+      "zip_path": "state/context-pack.md",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: Latest sprint = R103 (skills). Same root cause."
+    },
+    {
+      "zip_path": "state/continuation-signal.json",
+      "detected_sprint": "FORMAT-FACTORY-SKILLS-R103-SELF-CONTAINED-SKILL-ADOPTION-AND-STREAM-ISOLATION-CAMPAIGN-001",
+      "detected_stream": "skills",
+      "expected_stream": "acceleration",
+      "status": "WRONG_STREAM",
+      "note": "CONTAMINATED: source_sprint_id = skills-r103. Iteration 7/12 is the skills loop counter, not acceleration."
+    },
+    {
+      "zip_path": "state/mcp.json",
+      "detected_sprint": "n/a",
+      "detected_stream": "unverifiable",
+      "expected_stream": "acceleration",
+      "status": "UNVERIFIABLE",
+      "note": "Static MCP server config. Not stream-specific."
+    },
+    {
+      "zip_path": "state/product-code-change-ledger.json",
+      "detected_sprint": "mainstream-r106",
+      "detected_stream": "mainstream",
+      "expected_stream": "acceleration",
+      "status": "STALE",
+      "note": "Ledger latest_sprint = mainstream-r106. This is a shared global artifact; its presence is informational but it does not belong to the acceleration stream."
+    },
+    {
+      "zip_path": "state/poc-targets.yaml",
+      "detected_sprint": "R106",
+      "detected_stream": "unverifiable",
+      "expected_stream": "acceleration",
+      "status": "UNVERIFIABLE",
+      "note": "Global POC matrix shared across streams. Sprint R106 reflects last mainstream updater."
+    },
+    {
+      "zip_path": "state/selected-product-gaps.json",
+      "detected_sprint": "R98",
+      "detected_stream": "unverifiable",
+      "expected_stream": "acceleration",
+      "status": "STALE",
+      "note": "Generated at R98 (pre-stream era). Not stream-scoped. Contains gaps for mainstream stream."
+    },
+    {
+      "zip_path": "r91-review/r91-work-item-grades.json",
+      "detected_sprint": "R92",
+      "detected_stream": "mainstream (pre-stream era)",
+      "expected_stream": "acceleration",
+      "status": "HISTORICAL_OK",
+      "note": "Historical R91 review from pre-stream era. Included for continuity. Not contamination."
+    },
+    {
+      "zip_path": "r91-review/r91-work-item-grades.md",
+      "detected_sprint": "R92",
+      "detected_stream": "mainstream (pre-stream era)",
+      "expected_stream": "acceleration",
+      "status": "STALE",
+      "note": "Historical R91 review. Same as JSON counterpart."
+    },
+    {
+      "zip_path": "materialized/materialized-evidence-manifest.yaml",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run materialization output"
+    },
+    {
+      "zip_path": "materialized/missing-evidence-report.md",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run materialization output"
+    },
+    {
+      "zip_path": "materialized/source-change-diffs.patch",
+      "detected_sprint": "acceleration-r104",
+      "detected_stream": "acceleration",
+      "expected_stream": "acceleration",
+      "status": "MATCH",
+      "note": "Per-run materialization output (empty, as expected for uncommitted changes)"
+    }
+  ]
+}

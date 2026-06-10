@@ -1,0 +1,102 @@
+{
+  "review_id": "full-hardening-package142-review",
+  "reviewed_package": "capability-layer-broad-healing-rnext-broad",
+  "package_sha256": "a722106ab5d0ef39d0784c56f339019a9239083e4afdc42e9fb4451042881d68",
+  "reviewer": "agent-full-hardening",
+  "review_date": "2026-06-08",
+  "git_head_at_review": "e382e5fd8e65bc146c0821602cb8fb1ecfab982c",
+
+  "verified_accepted_items": [
+    {
+      "item_id": "BROAD-LANE-C-NDJSON-SORT",
+      "verified": true,
+      "evidence": "src/python/ndjson/ndjson_codec.py contains sort_records(); tests/python/ndjson/test_broad_rnext_ndjson_sort_records.py has 10 tests; all pass"
+    },
+    {
+      "item_id": "BROAD-LANE-D-TSV-FILTER",
+      "verified": true,
+      "evidence": "src/python/tsv/tsv_parser.py contains filter_rows(); tests/python/tsv/test_broad_rnext_tsv_filter_rows.py has 10 tests; all pass"
+    },
+    {
+      "item_id": "BROAD-LANE-L-TOML-ACQUISITION",
+      "verified": true,
+      "evidence": "src/python/toml/toml_codec.py exists with 5 ops; tests/python/toml/test_broad_rnext_toml_codec.py has 16 tests; all pass"
+    }
+  ],
+
+  "limitations_confirmed": [
+    {
+      "item_id": "BROAD-LANE-A-REVIEW",
+      "limitation": "ACCEPTED_WITH_LIMITATIONS — path-only evidence; no raw log for review artifacts",
+      "root_cause": "Review/investigation items lack test_count evidence in tests_supporting",
+      "status": "addressed_in_this_sprint"
+    },
+    {
+      "item_id": "BROAD-LANE-F-PILOTS",
+      "limitation": "ACCEPTED_WITH_LIMITATIONS — path-only evidence; no raw logs confirming pilot test execution",
+      "root_cause": "Pilot items list test files but no execution log was packaged",
+      "status": "addressed_in_this_sprint"
+    },
+    {
+      "item_id": "BROAD-LANE-G-ADVERSARIAL",
+      "limitation": "ACCEPTED_WITH_LIMITATIONS — path-only evidence; adversarial review JSON created but supervisor grades as path-only",
+      "root_cause": "No raw execution log for adversarial challenge",
+      "status": "addressed_in_this_sprint"
+    },
+    {
+      "item_id": "BROAD-LANE-E-COMMERCIAL-VERIFY",
+      "limitation": "ACCEPTED_WITH_LIMITATIONS — path-only; 125 commercial records all test_verified but symbol_resolved status not checked",
+      "root_cause": "Commercial map marks test_verified based on poc-targets.yaml dotnet_status, not actual symbol inspection",
+      "status": "addressed_in_this_sprint"
+    },
+    {
+      "item_id": "BROAD-LANE-H-EVIDENCE-QUALITY",
+      "limitation": "ACCEPTED_WITH_LIMITATIONS — evidence quality 0.38; 5/8 items path-only accepted",
+      "root_cause": "Review/investigation items don't have test_count evidence; no raw log",
+      "status": "addressed_in_this_sprint"
+    }
+  ],
+
+  "anti_skip_failures": [
+    {
+      "check": "missing_raw_logs",
+      "severity": "MEDIUM",
+      "repair": "Raw logs now captured in reports/capability-layer-full-hardening/raw-logs/"
+    },
+    {
+      "check": "missing_lane_ledger",
+      "severity": "MEDIUM",
+      "repair": "Lane ledger now created at reports/capability-layer-full-hardening/lane-ledger.json"
+    }
+  ],
+
+  "unsafe_wording": [
+    {
+      "location": "product-capability-matrix/poc-targets.yaml",
+      "pattern": "Authorized git commit + push (requires user authorization)",
+      "count": 3,
+      "action": "REPLACED with safe wording: Gate 11 G11-G commercial release approval (requires human authorization)"
+    }
+  ],
+
+  "stale_state": [
+    {
+      "file": ".local/supervisor/selected-product-gaps.json",
+      "issue": "run_id=None, generated_at=2026-06-05 (stale R90)",
+      "action": "Regenerated with current run_id=capability-layer-full-hardening"
+    }
+  ],
+
+  "new_work_discovered": [
+    {
+      "finding": "tsv_parser.py has 8 additional functions (get_column, write_tsv_strict, get_row, validate_headers, count_rows, to_csv, deduplicate_rows, get_row_by_key) not exported in __init__.py",
+      "action": "Exported in __init__.py + ledger entry FULL-HARDENING-TSV-FEATURE-EXPANSION-001 added"
+    },
+    {
+      "finding": "20 Python FOSS formats in src/python/ but only 8 tracked in poc-targets foss_reduced_products",
+      "action": "All-format inventory created; non-POC-target formats classified"
+    }
+  ],
+
+  "overall_verdict": "PACKAGE_142_VERIFIED_5_LIMITATIONS_ALL_ADDRESSED_IN_FULL_HARDENING_SPRINT"
+}

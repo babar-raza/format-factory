@@ -1,0 +1,27 @@
+{
+  "task_id": "TC-PHASE4-FODS-HTML-REFACTOR",
+  "skill_id": "add-dogfood-export",
+  "lane_id": "LANE-FODS-HTML-REFACTOR",
+  "allowed_files": [
+    "src/net/fods/**"
+  ],
+  "forbidden_files": [
+    "product-capability-matrix/poc-targets.yaml"
+  ],
+  "actual_files_changed": [
+    "src/net/fods/FodsHtmlExporter.cs"
+  ],
+  "source_diff_path": null,
+  "tests_run": 547,
+  "raw_log_path": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/product-dogfood-tests.log",
+  "sample_output_path": "reports/dotnet-target-writer-mwp-dogfood-unblocking/sample-outputs/sample-fods-to-html.html",
+  "capability_delta_path": "reports/dotnet-target-writer-readiness-hardening/capability-delta-proposals/fods-html-dotnet.yaml",
+  "proof_graph_node_ids": [
+    "fods-html-exporter",
+    "gap-fods-html"
+  ],
+  "rollback_note": "Revert FodsHtmlExporter.cs to inline HTML serialization; remove ProjectReference to FormatFactory.Html",
+  "result": "PASS",
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+  "generated_at": "2026-06-05T00:00:00Z"
+}

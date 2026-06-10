@@ -1,0 +1,60 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-INVESTIGATE-AND-HEAL-001",
+  "mode": "SINGLE_GO_INVESTIGATE_AND_HEAL",
+  "current_state": "COMPLETE",
+  "previous_state": "FINAL_IV",
+  "active_taskcard_id": null,
+  "active_lane": null,
+  "active_problem_id": null,
+  "taskcards_total": 13,
+  "taskcards_closed_verified": 13,
+  "taskcards_blocked_external": 0,
+  "taskcards_remaining": 0,
+  "problems_found": [
+    "PROB-PK01", "PROB-PK02", "PROB-PK03", "PROB-PK04", "PROB-PK05",
+    "PROB-SRC01", "PROB-PY01", "PROB-PY02", "PROB-AUTO01"
+  ],
+  "problems_confirmed": [
+    "PROB-PK01", "PROB-PK02", "PROB-PK03", "PROB-PK04", "PROB-PK05",
+    "PROB-SRC01", "PROB-PY01", "PROB-AUTO01"
+  ],
+  "problems_fixable_now": [
+    "PROB-PK01", "PROB-PK02", "PROB-PK03", "PROB-PK04",
+    "PROB-SRC01", "PROB-PY01"
+  ],
+  "problems_blocked_external": ["PROB-PK05", "PROB-AUTO01"],
+  "fixes_applied": ["PROB-PK01", "PROB-PK02", "PROB-PK03", "PROB-PK04", "PROB-SRC01", "PROB-PY01"],
+  "fixes_verified": ["PROB-PK01", "PROB-PK02", "PROB-PK03", "PROB-PK04", "PROB-SRC01", "PROB-PY01"],
+  "remaining_critical_high": [],
+  "matrices_updated": [
+    "dotnet-commercial-review-matrix.json",
+    "python-foss-review-matrix.json",
+    "packaging-distribution-matrix.json",
+    "security-robustness-matrix.json",
+    "host-autonomy-review-matrix.json",
+    "layer-review-matrix.json",
+    "src-format-matrix.json"
+  ],
+  "validation_commands_run": [
+    "dotnet build src/net/fods/FormatFactory.Fods.csproj --configuration Release (exit 0)",
+    "dotnet build src/net/fodt/FormatFactory.Fodt.csproj --configuration Release (exit 0)",
+    "dotnet build src/net/netpbm/FormatFactory.Netpbm.csproj --configuration Release (exit 0)",
+    "pip install -e src/python/abw/ (exit 0, import abw ok)",
+    "pip install -e src/python/gnumeric/ (exit 0, import gnumeric ok)"
+  ],
+  "last_validation_result": "ALL_PASS",
+  "evidence_bundle_built": true,
+  "evidence_bundle_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\expert-manual-system-review\\declaration-review-package.zip",
+  "evidence_bundle_sha256": "cf104646f3f903ce7bb1681fa8c44a8c33c0a261734704022cd952e1b1a65fc4",
+  "output_floor_met": true,
+  "output_floor_condition": "PILOT_FIX_VERIFIED — 6 problems fixed+verified (5 HIGH/CRITICAL + 1 MEDIUM); 2 problems blocked external",
+  "terminal": true,
+  "terminal_reason": "All 8 terminal gate conditions passed — see terminal-gate-checklist.json",
+  "next_action": "User review. Continuation recommended for PROB-PY01 remaining 8 packages + PROB-PK05 (Netpbm README with user authorization).",
+  "last_updated": "2026-06-05T00:19:30Z",
+  "workspace_classification": "DIRTY_EXPECTED_FROM_PRIOR_SPRINT",
+  "git_branch": "main",
+  "python_version": "3.13.2",
+  "venv_path": ".local/venv/Scripts/python.exe",
+  "shell_detected": "GitBash"
+}

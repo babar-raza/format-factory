@@ -1,0 +1,31 @@
+id: ADR-ROUTE-011
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Product-Default Autonomy Pilot Fixtures"
+status: completed
+lane: pilot_test
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-005, ADR-ROUTE-006]
+gates:
+  - "pilot-001 produces AUTONOMOUS_ACCELERATED_DEFAULT"
+  - "pilot-003 produces AUTONOMOUS_ACCELERATED_DEFAULT"
+  - "both have autonomous_allowed=True"
+allowed_files:
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-001-product-impl-autonomous.yaml"
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-003-product-testing-autonomous.yaml"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "2 product pilot fixtures exist"
+  - "Both route to AUTONOMOUS_ACCELERATED_DEFAULT"
+tests:
+  - "tests/supervisor/test_autonomy_routing_pilot_fixtures.py::TestPilotFixtures::test_pilot_001_product_impl_autonomous"
+  - "tests/supervisor/test_autonomy_routing_pilot_fixtures.py::TestPilotFixtures::test_pilot_003_product_testing_autonomous"
+evidence:
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-001-product-impl-autonomous.yaml"
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-003-product-testing-autonomous.yaml"
+rollback: "rm tests/fixtures/autonomy-routing-pilots/route-pilot-001* route-pilot-003*"
+closeout_criteria: "2 product pilot fixtures exist and test passes"

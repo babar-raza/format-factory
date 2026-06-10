@@ -1,0 +1,26 @@
+id: ADR-ROUTE-019
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Adversarial Review and Repair Loop"
+status: completed
+lane: coordinator
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-013]
+gates:
+  - "adversarial review answers all 10+ questions"
+  - "at least one repair loop run"
+allowed_files:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/adversarial-review.md"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "All adversarial questions answered with evidence"
+  - "Repair loop documented"
+tests: []
+evidence:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/adversarial-review.md"
+rollback: "Delete adversarial review doc"
+closeout_criteria: "adversarial-review.md written, repair loop log written"

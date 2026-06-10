@@ -1,0 +1,20 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "ndjson",
+  "api_name": "merge_ndjson,group_by,sum_field,rename_field",
+  "sprint_run_id": "mainstream-product-deepening-rnext3",
+  "changed_files": [
+    "src/python/ndjson/__init__.py",
+    "tests/python/ndjson/test_mdr3_ndjson_exports.py"
+  ],
+  "test_results": {
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "ledger_entry_id": "MDR3-NDJSON-EXPORTS-001",
+  "ledger_validator": "PASS",
+  "verdict": "PASS",
+  "notes": "merge_ndjson, group_by, sum_field, rename_field all implemented in ndjson_codec.py. Exported via __init__.py. 20/20 tests pass (5 per function)."
+}

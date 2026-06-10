@@ -1,0 +1,33 @@
+handoff_id: HO-R109-SUPERVISOR-001
+type: supervisor-grading
+title: "Supervisor Grading Adoption — Supervisor Handoff"
+stream_from: skills
+stream_to: supervisor
+skill_id: evidence-review-next-prompt
+timestamp: "2026-06-03T22:10:00Z"
+
+description: |
+  Supervisor cycle must use transcript-aware grading.
+  grade_item() treats transcript_validation.all_valid=True as concrete proof.
+  Path-only evidence without transcript or tests yields ACCEPTED_WITH_LIMITATIONS.
+  All-path-only sprints yield ACCEPTED_WITH_REWORK (quality downgrade).
+
+required_inputs:
+  grading_engine: tools/supervisor/grade_declared_work.py
+  inspector: tools/supervisor/inspect_declared_evidence.py
+  transcript_validator: tools/supervisor/validate_skill_transcript.py
+  adoption_package: reports/skills-r108/adoption-packages/supervisor-adoption.yaml
+
+validation_command: |
+  python -m pytest tests/python/supervisor/test_r108_transcript_grade_boost.py -v
+
+expected_evidence:
+  - grade_item_with_transcript: "ACCEPTED_VERIFIED when transcript_validation.all_valid=True"
+  - grade_item_without_transcript: "ACCEPTED_WITH_LIMITATIONS when no concrete proof"
+  - quality_enforcement: "evidence_quality_score=0.0 yields ACCEPTED_WITH_REWORK"
+
+adoption_gates_enforced:
+  - ADOPT-S-01  # inspector transcript enrichment
+  - ADOPT-S-02  # transcript-grade boost
+  - ADOPT-S-03  # anti-skip raw-log detection
+  - ADOPT-S-04  # evidence-manifest path resolution

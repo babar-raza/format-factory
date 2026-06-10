@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001",
+  "lanes": [
+    {
+      "lane_id": "L0",
+      "name": "Coordinator Preflight",
+      "owner": "Coordinator",
+      "owned_paths": ["reports/autonomous-system-acceptance/"],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/", "AGENTS.md", "GOVERNANCE.md"],
+      "shared_files": ["reports/autonomous-system-acceptance/lane-claims.json"]
+    },
+    {
+      "lane_id": "L1",
+      "name": "Process Lifetime Model",
+      "owner": "Lane 1",
+      "owned_paths": ["tools/supervisor/orchestrator_lifetime.py", "reports/autonomous-system-acceptance/lifetime/"],
+      "forbidden_paths": ["src/"],
+      "shared_files": []
+    },
+    {
+      "lane_id": "L2",
+      "name": "Host Bootstrap",
+      "owner": "Lane 2",
+      "owned_paths": ["scripts/", "reports/autonomous-system-acceptance/host/"],
+      "forbidden_paths": ["src/", "tools/supervisor/"],
+      "shared_files": []
+    },
+    {
+      "lane_id": "L3",
+      "name": "Action Queue",
+      "owner": "Lane 3",
+      "owned_paths": ["tools/supervisor/action_queue.py", "reports/autonomous-system-acceptance/queue/"],
+      "forbidden_paths": ["src/"],
+      "shared_files": [".local/supervisor/action-queue.jsonl"]
+    },
+    {
+      "lane_id": "L4",
+      "name": "Product Pilot Guard",
+      "owner": "Lane 4",
+      "owned_paths": ["tools/supervisor/product_action_guard.py", "reports/autonomous-system-acceptance/product-pilot/"],
+      "forbidden_paths": ["src/", "poc-targets.yaml"],
+      "shared_files": []
+    },
+    {
+      "lane_id": "L5",
+      "name": "H5 LLM Decision",
+      "owner": "Lane 5",
+      "owned_paths": ["reports/autonomous-system-acceptance/h5/"],
+      "forbidden_paths": ["src/"],
+      "shared_files": []
+    },
+    {
+      "lane_id": "L6",
+      "name": "Evidence Continuation",
+      "owner": "Lane 6",
+      "owned_paths": ["tools/supervisor/evidence_continuation.py", "reports/autonomous-system-acceptance/evidence-continuation/"],
+      "forbidden_paths": ["src/"],
+      "shared_files": [".local/supervisor/continuation-signal.json"]
+    },
+    {
+      "lane_id": "L7",
+      "name": "Test Execution",
+      "owner": "Lane 7",
+      "owned_paths": ["tests/supervisor/", "reports/autonomous-system-acceptance/test-logs/"],
+      "forbidden_paths": ["src/"],
+      "shared_files": []
+    },
+    {
+      "lane_id": "L8",
+      "name": "Independent Verification",
+      "owner": "Lane 8",
+      "owned_paths": ["reports/autonomous-system-acceptance/iv/"],
+      "forbidden_paths": ["src/"],
+      "shared_files": []
+    },
+    {
+      "lane_id": "LE",
+      "name": "Evidence Package",
+      "owner": "Lane E",
+      "owned_paths": [".local/evidences/autonomous-system-acceptance/", ".local/supervisor/reviews/autonomous-system-acceptance/"],
+      "forbidden_paths": ["src/"],
+      "shared_files": []
+    }
+  ]
+}

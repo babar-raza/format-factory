@@ -1,0 +1,118 @@
+{
+  "graph_id": "PROOF-GRAPH-AUTHORITY-EDGES-001",
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-FULL-HARDENING-BACKFILL-AND-PILOT-MEGA-TRAIN-001",
+  "generated_at": "2026-06-08T17:45:00Z",
+  "description": "Validated authority chain edges for all P6 facts. These edges represent the verified proof path from spec source to code to tests to evidence.",
+  "validation_rules": [
+    "P6 requires: spec_source->fact->code->test->evidence (all edges present)",
+    "P5 requires: spec_source->fact->code->test (no evidence edge required)",
+    "Synthetic fixtures cannot satisfy spec_source edges",
+    "AI-only authority cannot satisfy validated_by requirement"
+  ],
+  "edges": [
+    {
+      "edge_id": "EDGE-FODS-001-SOURCE",
+      "from_node": "SOURCE-FODS-ODF13",
+      "to_node": "FACT-FODS-001",
+      "edge_type": "spec_extract",
+      "verified": true,
+      "validated_by": "independent_agent_verifier",
+      "sha256_anchored": true
+    },
+    {
+      "edge_id": "EDGE-FODS-001-CODE-QN",
+      "from_node": "FACT-FODS-001",
+      "to_node": "CODE-FODS-QN_DOCUMENT",
+      "edge_type": "cited_in_code",
+      "file": "src/python/fods/constants.py",
+      "symbol": "QN_DOCUMENT",
+      "synthetic": false
+    },
+    {
+      "edge_id": "EDGE-FODS-001-CODE-MIME",
+      "from_node": "FACT-FODS-001",
+      "to_node": "CODE-FODS-ATTR_MIMETYPE",
+      "edge_type": "cited_in_code",
+      "file": "src/python/fods/constants.py",
+      "symbol": "ATTR_MIMETYPE",
+      "synthetic": false
+    },
+    {
+      "edge_id": "EDGE-FODS-001-TEST",
+      "from_node": "FACT-FODS-001",
+      "to_node": "TEST-FODS-R125",
+      "edge_type": "tested_by",
+      "file": "tests/python/fods/test_r125_fact_traceability.py",
+      "test_count": 6,
+      "all_pass": true,
+      "synthetic": false
+    },
+    {
+      "edge_id": "EDGE-FODS-001-EVIDENCE",
+      "from_node": "TEST-FODS-R125",
+      "to_node": "EVIDENCE-FODS-P6",
+      "edge_type": "produces_evidence",
+      "result": "PASS",
+      "proof_graph_ref": "reports/authority-conveyor-20260608/fods-p6-proof-graph.yaml"
+    },
+    {
+      "edge_id": "EDGE-ZST-001-SOURCE",
+      "from_node": "SOURCE-ZST-RFC8878",
+      "to_node": "FACT-ZST-001",
+      "edge_type": "spec_extract",
+      "verified": true,
+      "validated_by": "deterministic_spec_text_search",
+      "sha256_anchored": true
+    },
+    {
+      "edge_id": "EDGE-ZST-002-SOURCE",
+      "from_node": "SOURCE-ZST-RFC8878",
+      "to_node": "FACT-ZST-002",
+      "edge_type": "spec_extract",
+      "verified": true,
+      "validated_by": "deterministic_spec_text_search",
+      "sha256_anchored": true
+    },
+    {
+      "edge_id": "EDGE-ZST-001-CODE",
+      "from_node": "FACT-ZST-001",
+      "to_node": "CODE-ZST-MAGIC",
+      "edge_type": "cited_in_code",
+      "file": "src/python/zst/zst_codec.py",
+      "symbol": "ZSTD_MAGIC",
+      "synthetic": false
+    },
+    {
+      "edge_id": "EDGE-ZST-001-TEST",
+      "from_node": "FACT-ZST-001",
+      "to_node": "TEST-ZST-R127",
+      "edge_type": "tested_by",
+      "file": "tests/python/zst/test_r127_zst_fact_traceability.py",
+      "test_count": 8,
+      "all_pass": true,
+      "synthetic": false
+    },
+    {
+      "edge_id": "EDGE-ZST-002-TEST",
+      "from_node": "FACT-ZST-002",
+      "to_node": "TEST-ZST-R127",
+      "edge_type": "tested_by",
+      "file": "tests/python/zst/test_r127_zst_fact_traceability.py",
+      "test_count": 3,
+      "all_pass": true,
+      "synthetic": false
+    },
+    {
+      "edge_id": "EDGE-ZST-EVIDENCE",
+      "from_node": "TEST-ZST-R127",
+      "to_node": "EVIDENCE-ZST-P6",
+      "edge_type": "produces_evidence",
+      "result": "PASS",
+      "proof_graph_ref": "reports/authority-conveyor-20260608/zst-p6-proof-graph.yaml"
+    }
+  ],
+  "p6_formats_with_complete_chains": ["fods", "zst"],
+  "synthetic_edges_found": 0,
+  "ai_only_edges_found": 0,
+  "integrity_check": "PASS"
+}

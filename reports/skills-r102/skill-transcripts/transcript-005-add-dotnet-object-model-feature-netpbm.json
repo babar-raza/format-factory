@@ -1,0 +1,44 @@
+{
+  "invocation_id": "SKILLS-R102-INV-005",
+  "skill_id": "add-dotnet-object-model-feature",
+  "command_path": ".claude/commands/add-dotnet-object-model-feature.md",
+  "mode": "dry-run",
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R103",
+  "stream": "skills",
+  "timestamp": "2026-06-03T14:00:00Z",
+  "inputs": {
+    "format_id": "netpbm",
+    "feature_name": "ExtractChannel"
+  },
+  "allowed_files": [
+    "src/net/netpbm/Model/NetpbmImage.cs",
+    "tests/net/netpbm/NetpbmR103ExtractChannelTests.cs"
+  ],
+  "forbidden_files": [
+    "registry/format-registry.yaml",
+    "plans/master-plan.md"
+  ],
+  "actual_files_read": [
+    "src/net/netpbm/Model/NetpbmImage.cs",
+    "tests/net/netpbm/NetpbmR103ExtractChannelTests.cs"
+  ],
+  "actual_files_changed": [
+    "src/net/netpbm/Model/NetpbmImage.cs",
+    "tests/net/netpbm/NetpbmR103ExtractChannelTests.cs"
+  ],
+  "validation_commands": [],
+  "raw_log_paths": [],
+  "tests_added": [
+    "tests/net/netpbm/NetpbmR103ExtractChannelTests.cs"
+  ],
+  "tests_run": [
+    "tests/net/netpbm/NetpbmR103ExtractChannelTests.cs"
+  ],
+  "ledger_entry_id": "R103-GOVERNED-NETPBM-EXTRACTCHANNEL-001",
+  "evidence_paths": [
+    "tests/net/netpbm/NetpbmR103ExtractChannelTests.cs"
+  ],
+  "result": "PASS",
+  "limitations": [],
+  "rollback_plan": "Revert source changes and remove test files"
+}

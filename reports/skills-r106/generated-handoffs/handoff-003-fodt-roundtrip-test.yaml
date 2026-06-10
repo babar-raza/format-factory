@@ -1,0 +1,60 @@
+---
+handoff_id: R106-HANDOFF-003
+skill_id: add-roundtrip-test
+target_format: fodt
+scope: parse-edit-write-reparse roundtrip for FODT paragraph append
+generated_by: skills-r106
+target_stream: testing
+
+inputs:
+  format_id: fodt
+  roundtrip_scope: |
+    Parse a FODT document, append a paragraph via document_append_paragraph,
+    write via write_fodt, reparse the output, and verify the appended paragraph
+    is present with correct text. Covers the GAP-FODT-STRUCT-001 repair path
+    (root doc["blocks"] + doc["content"] sync).
+  exact_test_paths:
+    - tests/python/fodt/test_r106_fodt_roundtrip.py
+
+exact_source_paths:
+  - src/python/fodt/parser.py
+  - src/python/fodt/writer.py
+  - src/python/fodt/neutral_model.py
+
+exact_test_paths:
+  - tests/python/fodt/test_r106_fodt_roundtrip.py
+
+focused_test_command: "pytest tests/python/fodt/test_r106_fodt_roundtrip.py -v"
+
+prerequisites:
+  - FODT parser produces neutral model with doc["blocks"] and doc["content"] in sync
+  - write_fodt round-trips the neutral model back to valid FODT XML
+  - document_append_paragraph updates both doc["blocks"] and doc["content"]
+  - GAP-FODT-STRUCT-001 must be resolved (confirmed resolved in R79)
+
+stream_boundary: |
+  This handoff is for the testing product_track. No source edits are required.
+  The skill only creates or modifies test files. No ledger entry is needed.
+
+allowed_files:
+  - tests/python/fodt/test_r106_fodt_roundtrip.py
+
+description: |
+  Add a focused roundtrip test for FODT: parse a minimal FODT document,
+  append a paragraph, write it back via write_fodt, reparse the output,
+  and assert the appended paragraph survives the roundtrip. This exercises
+  the full parse-edit-write-reparse cycle that was repaired in R79
+  (GAP-FODT-STRUCT-001). At least 8 test cases covering:
+  1. Basic append roundtrip (single paragraph)
+  2. Append multiple paragraphs roundtrip
+  3. Roundtrip preserves existing paragraphs
+  4. Roundtrip with special characters in text
+  5. Roundtrip with empty paragraph
+  6. Paragraph count consistency after roundtrip
+  7. Roundtrip idempotency (write-reparse-write produces same output)
+  8. Roundtrip after remove_paragraph
+
+transcript_requirement:
+  mode: dry-run
+  ledger_entry_id: null
+  result_expected: PASS

@@ -1,0 +1,105 @@
+{
+  "items": [
+    {
+      "action_id": "h6q-product-001",
+      "stream": "product",
+      "priority": 0,
+      "action_type": "PRODUCT_GAP_CLASSIFICATION_READONLY",
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "allowed_write_roots": [
+        "reports/h6-queue-product-loop/product-pilot/",
+        "reports/h6-queue-product-loop/",
+        ".local/supervisor"
+      ],
+      "forbidden_actions": [
+        "GIT_COMMIT",
+        "GIT_PUSH",
+        "GATE_APPROVAL",
+        "PRODUCT_SOURCE_MUTATION"
+      ],
+      "external_gate": false,
+      "status": "done",
+      "objective": "Read-only product gap classification \u2014 classify poc-targets.yaml gaps",
+      "result_path": "reports/h6-queue-product-loop/product-pilot/product-gap-classification.json",
+      "evidence_required": [
+        "reports/h6-queue-product-loop/product-pilot/product-gap-classification.json"
+      ],
+      "queued_at": "2026-06-06T16:35:00+00:00",
+      "sprint_id": "FORMAT-FACTORY-H6-AUTONOMOUS-PRODUCT-QUEUE-CONSUMPTION-001",
+      "started_at": "2026-06-06T11:36:20.707363+00:00",
+      "completed_at": "2026-06-06T11:36:20.751992+00:00"
+    },
+    {
+      "action_id": "h6-q-001",
+      "action_type": "RUN_JSON_VALIDATION",
+      "target_path": "reports/h6-external-host-activation/current-state-audit.json",
+      "description": "Validate H6 sprint baseline audit JSON",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "done",
+      "priority": 1,
+      "queued_at": "2026-06-06T11:00:31.433194+00:00",
+      "stream": "autonomy",
+      "started_at": "2026-06-06T11:36:20.764505+00:00",
+      "completed_at": "2026-06-06T11:36:20.791258+00:00",
+      "result_path": "reports/autonomous-orchestrator/queue-run/queue-item-h6-q-001-result.json"
+    },
+    {
+      "action_id": "h6-q-002",
+      "action_type": "RUN_MD_NONEMPTY_CHECK",
+      "target_path": "reports/h6-external-host-activation/00-preflight.md",
+      "description": "Verify H6 sprint preflight document is non-empty",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "done",
+      "priority": 2,
+      "queued_at": "2026-06-06T11:00:31.433217+00:00",
+      "stream": "autonomy",
+      "started_at": "2026-06-06T11:36:01.355697+00:00",
+      "completed_at": "2026-06-06T11:36:01.390734+00:00",
+      "result_path": "reports/autonomous-orchestrator/queue-run/queue-item-h6-q-002-result.json"
+    },
+    {
+      "action_id": "h6-q-003",
+      "action_type": "RUN_JSON_VALIDATION",
+      "target_path": ".local/supervisor/active-continuation.json",
+      "description": "Validate active-continuation.json after repair",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "done",
+      "priority": 3,
+      "queued_at": "2026-06-06T11:00:31.433221+00:00",
+      "stream": "autonomy",
+      "started_at": "2026-06-06T11:36:20.799110+00:00",
+      "completed_at": "2026-06-06T11:36:20.822625+00:00",
+      "result_path": "reports/autonomous-orchestrator/queue-run/queue-item-h6-q-003-result.json"
+    },
+    {
+      "action_id": "h6-q-004",
+      "action_type": "RUN_JSON_VALIDATION",
+      "target_path": "reports/h6-external-host-activation/lane-claims.json",
+      "description": "Validate H6 lane claims JSON",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "pending",
+      "priority": 4,
+      "queued_at": "2026-06-06T11:00:31.433223+00:00",
+      "stream": "autonomy"
+    },
+    {
+      "action_id": "h6-q-005",
+      "action_type": "RUN_JSON_VALIDATION",
+      "target_path": ".local/supervisor/next-action.json",
+      "description": "Validate next-action.json after evidence_continuation repair",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "pending",
+      "priority": 5,
+      "queued_at": "2026-06-06T11:00:31.433225+00:00",
+      "stream": "autonomy"
+    }
+  ],
+  "count": 6,
+  "done_count": 4,
+  "pending_count": 2
+}

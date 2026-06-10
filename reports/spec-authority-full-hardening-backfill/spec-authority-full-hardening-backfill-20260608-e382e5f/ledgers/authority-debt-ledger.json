@@ -1,0 +1,107 @@
+{
+  "ledger_id": "AUTHORITY-DEBT-LEDGER-001",
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-FULL-HARDENING-BACKFILL-AND-PILOT-MEGA-TRAIN-001",
+  "run_id": "spec-authority-full-hardening-backfill-20260608-e382e5f",
+  "generated_at": "2026-06-08T17:50:00Z",
+  "debt_entries": [
+    {
+      "format_id": "fodt",
+      "current_level": "P2",
+      "target_level": "P3",
+      "debt_type": "CANDIDATE_FACTS_UNVERIFIED",
+      "candidate_fact_ids": ["FACT-FODT-001-CANDIDATE"],
+      "action_required": "Run deterministic text search on ODF 1.3 PDF for FODT mimetype string",
+      "spec_available": true,
+      "spec_path": ".local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf",
+      "safe_autonomous": true
+    },
+    {
+      "format_id": "csv",
+      "current_level": "P3",
+      "target_level": "P4",
+      "debt_type": "CANDIDATE_FACTS_UNVERIFIED",
+      "candidate_fact_ids": ["FACT-CSV-001", "FACT-CSV-002"],
+      "action_required": "Cache RFC 4180 text; run deterministic search to verify facts",
+      "spec_available": false,
+      "safe_autonomous": false,
+      "blocker": "RFC 4180 spec text not locally cached"
+    },
+    {
+      "format_id": "pbm",
+      "current_level": "P3",
+      "target_level": "P4",
+      "debt_type": "CANDIDATE_FACTS_UNVERIFIED",
+      "candidate_fact_ids": ["FACT-PBM-001", "FACT-PBM-002"],
+      "action_required": "Cache Netpbm pbm.html; verify magic number facts",
+      "spec_available": false,
+      "safe_autonomous": false,
+      "blocker": "Netpbm pbm.html not locally cached"
+    },
+    {
+      "format_id": "pgm",
+      "current_level": "P3",
+      "target_level": "P4",
+      "debt_type": "CANDIDATE_FACTS_UNVERIFIED",
+      "candidate_fact_ids": ["FACT-PGM-001", "FACT-PGM-002"],
+      "action_required": "Cache Netpbm pgm.html; verify magic number facts",
+      "spec_available": false,
+      "safe_autonomous": false,
+      "blocker": "Netpbm pgm.html not locally cached"
+    },
+    {
+      "format_id": "ppm",
+      "current_level": "P3",
+      "target_level": "P4",
+      "debt_type": "CANDIDATE_FACTS_UNVERIFIED",
+      "candidate_fact_ids": ["FACT-PPM-001", "FACT-PPM-002"],
+      "action_required": "Cache Netpbm ppm.html; verify magic number facts",
+      "spec_available": false,
+      "safe_autonomous": false,
+      "blocker": "Netpbm ppm.html not locally cached"
+    },
+    {
+      "format_id": "gnumeric",
+      "current_level": "P1",
+      "target_level": "P1",
+      "debt_type": "SCHEMA_ONLY_NO_FORMAL_SPEC",
+      "action_required": "No advancement path without formal spec",
+      "spec_available": false,
+      "safe_autonomous": false,
+      "blocker": "No public formal spec; schema_authority_available exception only"
+    },
+    {
+      "format_id": "abw",
+      "current_level": "P1",
+      "target_level": "P1",
+      "debt_type": "NO_PUBLIC_SPEC",
+      "action_required": "No advancement path without formal spec",
+      "spec_available": false,
+      "safe_autonomous": false,
+      "blocker": "No public formal spec for AWM/AWML"
+    },
+    {
+      "format_id": "netpbm",
+      "current_level": "P0",
+      "target_level": "P1",
+      "debt_type": "NO_UNIFIED_SPEC_CACHE",
+      "action_required": "Create unified netpbm spec-index.yaml referencing individual pbm/pgm/ppm entries",
+      "spec_available": false,
+      "safe_autonomous": true,
+      "note": "Individual pbm/pgm/ppm entries exist at P3; netpbm top-level could be P3 if unified"
+    },
+    {
+      "format_id": "html",
+      "current_level": "P0",
+      "target_level": "P2",
+      "debt_type": "NO_SPEC_CACHE",
+      "action_required": "Cache W3C HTML Living Standard or WHATWG spec",
+      "spec_available": false,
+      "safe_autonomous": false,
+      "blocker": "W3C/WHATWG spec not cached; requires acquisition authorization"
+    }
+  ],
+  "total_debt_entries": 9,
+  "immediately_actionable": ["fodt"],
+  "requires_spec_acquisition": ["csv", "pbm", "pgm", "ppm", "html"],
+  "no_advancement_path": ["gnumeric", "abw", "sylk", "tsv", "dif", "markdown", "txt"]
+}

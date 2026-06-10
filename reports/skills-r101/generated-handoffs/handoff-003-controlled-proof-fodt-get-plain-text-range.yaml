@@ -1,0 +1,46 @@
+---
+handoff_id: SKILLS-R101-HANDOFF-003
+skill_id: add-dotnet-object-model-feature
+format_id: fodt
+feature_name: GetPlainTextRange
+sprint: FORMAT-FACTORY-MAINSTREAM-R103
+generated_by: /generate-execution-handoff (controlled-proof)
+timestamp: "2026-06-03T12:00:00Z"
+mode: controlled-proof
+
+target:
+  source_paths:
+    - src/net/fodt/FodtDocument.cs
+  test_paths:
+    - tests/net/fodt/FodtR103GetPlainTextRangeTests.cs
+  ledger_entry_path: reports/r90/product-code-change-ledger.json
+
+pre_change_state:
+  source_sha256: "212e6a3664c8067cc2127906d922dabf14fc45faf4387463852dd9180e655fb1"
+  api_existed: false
+
+acceptance_criteria:
+  - GetPlainTextRange(0, ParagraphCount) matches GetPlainText()
+  - GetPlainTextRange(0, 0) returns empty string
+  - Negative start throws ArgumentOutOfRangeException
+  - End beyond count throws ArgumentOutOfRangeException
+  - 8 focused tests pass, 0 fail
+
+focused_test_command: dotnet test tests/net/fodt/ --filter "FodtR103GetPlainTextRange"
+
+execution_result:
+  tests_run: 8
+  tests_passed: 8
+  tests_failed: 0
+  ledger_entry_id: R103-GOVERNED-DOTNET-FODT-GETPLAINTEXTRANGE-001
+  post_change_sha256: "post-execution-sha-to-be-filled"
+
+stop_conditions:
+  - Ledger or validator missing
+  - Paths exceed this handoff
+
+verdict: CONTROLLED_PROOF_PASS
+notes: |
+  This handoff was executed as a controlled proof during Skills R101.
+  The feature was implemented, tested, and the ledger was updated.
+  8/8 tests pass. No gate or release state changed.

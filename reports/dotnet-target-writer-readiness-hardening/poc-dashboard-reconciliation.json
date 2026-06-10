@@ -1,0 +1,52 @@
+{
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "reconciliation_verdict": "ALL_FOUR_GAPS_CLOSED_PROOF_CHAIN_COMPLETE",
+  "prior_dashboard_state": {
+    "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+    "gaps_unblocked": 4,
+    "gaps_remaining_blocked": 0,
+    "dynamic_unblocking_mechanism": "filesystem probe (source file only — v4)",
+    "readiness_mechanism": "source_exists only"
+  },
+  "current_dashboard_state": {
+    "gaps_unblocked": 4,
+    "gaps_remaining_blocked": 0,
+    "dynamic_unblocking_mechanism": "proof-backed readiness (v5) — 5 conditions required",
+    "readiness_mechanism": "source + project + tests + raw_log_passes + sample_output"
+  },
+  "reconciliation_changes": [
+    {
+      "change": "v4 → v5 readiness detection",
+      "file": "tools/supervisor/select_poc_gaps.py",
+      "impact": "Stronger proof requirements; gaps remain UNBLOCKED because all 5 conditions are met"
+    },
+    {
+      "change": "Anti-skip artifact type documentation",
+      "file": "tests/supervisor/test_anti_skip_evidence_discovery.py",
+      "impact": "Root cause documented; future sprints must use type=raw_log and type=sample_output"
+    },
+    {
+      "change": "Lane execution ledger added",
+      "file": "reports/dotnet-target-writer-readiness-hardening/lane-execution-ledger.json",
+      "impact": "Anti-skip missing_lane_ledger defect resolved"
+    },
+    {
+      "change": "Skill transcripts added (9 files)",
+      "file": "reports/dotnet-target-writer-readiness-hardening/skill-transcripts/*.json",
+      "impact": "Anti-skip transcript requirements satisfied"
+    },
+    {
+      "change": "Capability delta proposals created",
+      "file": "reports/dotnet-target-writer-readiness-hardening/capability-delta-proposals/*.yaml",
+      "impact": "Formal proposals ready for human review and poc-targets.yaml application"
+    }
+  ],
+  "poc_targets_mutation_status": "PROPOSAL_ONLY_NO_MUTATION",
+  "writer_libraries": [
+    {"name": "FormatFactory.Csv", "path": "src/net/csv/", "tests": 15, "status": "READY"},
+    {"name": "FormatFactory.Html", "path": "src/net/html/", "tests": 12, "status": "READY"},
+    {"name": "FormatFactory.Txt", "path": "src/net/txt/", "tests": 8, "status": "READY"},
+    {"name": "FormatFactory.Markdown", "path": "src/net/markdown/", "tests": 11, "status": "READY"}
+  ]
+}

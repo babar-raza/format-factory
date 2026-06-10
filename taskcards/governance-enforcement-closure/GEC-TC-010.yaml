@@ -1,0 +1,29 @@
+id: GEC-TC-010
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Product-source safety audit: classify all dirty product files"
+status: completed
+lane: lane_j_safety_audit
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  Several product source files appear in git status (modified). These must be
+  audited to confirm: (a) no unauthorized changes were made this sprint,
+  (b) all changes are pre-existing from prior sprints, (c) no PRODUCT_SOURCE
+  work was performed without proper governance in Sprint 4.
+scope:
+  - Run git diff for all modified product files
+  - Classify each file: pre_existing_dirty / modified_this_sprint_governed /
+    modified_this_sprint_unauthorized
+  - Create product-source-safety-audit.md with classification table
+files_to_create:
+  - reports/repeatability-governance-closure-rnext/product-source-safety-audit.md
+acceptance_criteria:
+  - All dirty product files classified
+  - Zero files classified as modified_this_sprint_unauthorized
+  - Audit confirms no unauthorized PRODUCT_SOURCE changes in Sprint 4
+dependencies: []
+handoff_to_autonomy_sprint: false

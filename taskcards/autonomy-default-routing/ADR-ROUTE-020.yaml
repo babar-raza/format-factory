@@ -1,0 +1,30 @@
+id: ADR-ROUTE-020
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Final Single-Go Execution Handoff"
+status: completed
+lane: coordinator
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-018, ADR-ROUTE-019]
+gates:
+  - "handoff doc lists all 20 taskcards with completion status"
+  - "evidence ZIP path + SHA-256"
+  - "final git status"
+  - "verdict PLAN_REPAIRED_READY_FOR_SINGLE_GO_EXECUTION"
+allowed_files:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/final-single-go-execution-handoff.md"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "All 20 taskcards listed with status"
+  - "Evidence ZIP absolute path"
+  - "SHA-256 hash"
+  - "Final git status captured"
+tests: []
+evidence:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/final-single-go-execution-handoff.md"
+rollback: "Delete handoff doc"
+closeout_criteria: "handoff doc written, all acceptance criteria met"

@@ -1,0 +1,138 @@
+sprint_id: FORMAT-FACTORY-AUTONOMY-NEXT-LEVEL-BROAD-MEGA-SPRINT-001
+run_id: autonomy-next-level-mega-sprint-001-20260608-e382e5f
+generated_at: "2026-06-08T21:00:00Z"
+
+lanes:
+  - lane_id: L0
+    title: "Coordinator, evidence baseline, direction correction"
+    status: in_progress
+    carry_forward: []
+    priority: 0
+    output_files:
+      - reports/autonomy-next-level-mega-sprint-001/00-baseline-review.md
+      - reports/autonomy-next-level-mega-sprint-001/lane-matrix.yaml
+      - reports/autonomy-next-level-mega-sprint-001/carry-forward-map.yaml
+
+  - lane_id: L1
+    title: "Autonomy maturity dashboard"
+    status: pending
+    carry_forward: ["autonomy_maturity_dashboard"]
+    priority: 3
+    output_files:
+      - reports/autonomy-next-level-mega-sprint-001/autonomy-maturity-dashboard.json
+      - reports/autonomy-next-level-mega-sprint-001/autonomy-maturity-dashboard.md
+
+  - lane_id: L2
+    title: "Queue-backed product source mutation pilots"
+    status: pending
+    carry_forward: ["queue_backed_product_source_mutation_pilot", "product_source_implementation_pilots"]
+    priority: 1
+    output_files:
+      - .local/supervisor/action-queue.jsonl (new items appended)
+      - reports/autonomy-next-level-mega-sprint-001/queue-backed-mutations/*.json
+
+  - lane_id: L3
+    title: "Continuation state repair for product queue"
+    status: pending
+    carry_forward: ["continuation_state_repair_for_product_queue"]
+    priority: 5
+    output_files:
+      - .local/supervisor/continuation-signal.json
+      - .local/supervisor/next-action.json
+
+  - lane_id: L4
+    title: "Capability-gap-to-queue bridge automation"
+    status: pending
+    carry_forward: ["capability_gap_to_queue_bridge_automation"]
+    priority: 2
+    output_files:
+      - reports/autonomy-next-level-mega-sprint-001/capability-gap-to-queue.json
+
+  - lane_id: L5
+    title: "Capability-to-code automation"
+    status: pending
+    carry_forward: ["capability_to_code_automation"]
+    priority: 4
+    output_files:
+      - tools/supervisor/capability_to_code_generator.py
+
+  - lane_id: L6
+    title: "Qwen3/llm.professionalize integration"
+    status: pending
+    carry_forward: ["qwen3_llm_professionalize_integration"]
+    priority: 6
+    notes: "Dry-run/mock acceptable if live gateway unavailable"
+    output_files:
+      - reports/autonomy-next-level-mega-sprint-001/ai-gateway-audit.md
+
+  - lane_id: L7
+    title: "Product source implementation pilots"
+    status: pending
+    carry_forward: ["product_source_implementation_pilots"]
+    priority: 1
+    output_files:
+      - src/python/*/new functions
+      - tests/python/*/new tests
+
+  - lane_id: L8
+    title: "New format acquisition pipeline"
+    status: pending
+    carry_forward: ["new_format_acquisition_pipeline"]
+    priority: 7
+    output_files:
+      - reports/autonomy-next-level-mega-sprint-001/new-format-acquisition-packet.md
+
+  - lane_id: L9
+    title: "Evidence, adoption, lane ledger, anti-skip repair"
+    status: pending
+    carry_forward: []
+    priority: 1
+    recurring_defects:
+      - FAIL_MISSING_TRANSCRIPTS
+      - missing_lane_ledger
+      - missing_sample_outputs
+      - evidence_quality_zero
+      - dirty_state_misclassified
+    output_files:
+      - reports/autonomy-next-level-mega-sprint-001/lane-execution-ledger.json
+
+  - lane_id: L10
+    title: "Product-code ledger and capability matrix reconciliation"
+    status: pending
+    carry_forward: []
+    priority: 1
+    functions_to_backfill: 20
+    output_files:
+      - reports/r90/product-code-change-ledger.json (appended)
+
+  - lane_id: L11
+    title: "Stop-reason and wrong-stream state repair"
+    status: pending
+    carry_forward: []
+    priority: 2
+    output_files:
+      - tests/supervisor/test_stop_reason_stream_repair.py
+
+  - lane_id: L12
+    title: "Bounded repair loop pilot"
+    status: pending
+    carry_forward: []
+    priority: 6
+    output_files:
+      - reports/autonomy-next-level-mega-sprint-001/bounded-repair-proof.json
+
+  - lane_id: L13
+    title: "Package/import/dogfood proof"
+    status: pending
+    carry_forward: []
+    priority: 4
+    output_files:
+      - reports/autonomy-next-level-mega-sprint-001/import-proof.log
+
+  - lane_id: L14
+    title: "Final autonomous closeout and continuation"
+    status: pending
+    carry_forward: []
+    priority: 8
+    output_files:
+      - .local/evidences/autonomy-next-level-mega-sprint-001-20260608-e382e5f/evidence-declaration.yaml

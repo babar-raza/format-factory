@@ -1,0 +1,116 @@
+{
+  "skill_id": "update-capability-matrix",
+  "skill_version": "1.2",
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-PRODUCT-DEEPENING-DOGFOOD-GAP-RESOLUTION-001",
+  "invoked_at": "2026-06-04",
+  "authority_state": "ai_draft",
+
+  "matrix_entry": [
+    "commercial-net-fods",
+    "commercial-net-fodt",
+    "commercial-net-netpbm",
+    "foss-reduced-sylk"
+  ],
+
+  "field_transitions": {
+    "metadata": {
+      "last_updated": {"old": "2026-06-03", "new": "2026-06-04"},
+      "sprint": {"old": "R106", "new": "R114"}
+    },
+    "FODS.dotnet_status": {
+      "insert_row_with_values": {"old": null, "new": "PASS"},
+      "get_column_count": {"old": null, "new": "PASS"},
+      "has_sheet": {"old": null, "new": "PASS"},
+      "get_cell_data_type": {"old": null, "new": "PASS"},
+      "find_cells_by_value": {"old": null, "new": "PASS"},
+      "merge_cells": {"old": null, "new": "PASS"},
+      "set_cell_formula": {"old": null, "new": "PASS"},
+      "get_used_range": {"old": null, "new": "PASS"},
+      "sort_rows": {"old": null, "new": "PASS"},
+      "dotnet_tests": {"old": 375, "new": 507}
+    },
+    "FODT.dotnet_status": {
+      "get_heading_texts": {"old": null, "new": "PASS"},
+      "export_to_plain_text_file": {"old": null, "new": "PASS"},
+      "export_to_markdown_file": {"old": null, "new": "PASS"},
+      "export_to_html_file": {"old": null, "new": "PASS"},
+      "insert_heading": {"old": null, "new": "PASS"},
+      "get_paragraph_style_name": {"old": null, "new": "PASS"},
+      "remove_heading": {"old": null, "new": "PASS"},
+      "get_document_outline": {"old": null, "new": "PASS"},
+      "get_document_metadata": {"old": null, "new": "PASS"},
+      "dotnet_tests": {"old": 363, "new": 493}
+    },
+    "Netpbm.dotnet_status": {
+      "equalize": {"old": null, "new": "PASS"},
+      "convert_format": {"old": null, "new": "PASS"},
+      "apply_gamma": {"old": null, "new": "PASS"},
+      "posterize": {"old": null, "new": "PASS"},
+      "solarize": {"old": null, "new": "PASS"},
+      "sepia": {"old": null, "new": "PASS"},
+      "sharpen": {"old": null, "new": "PASS"},
+      "blur_box": {"old": null, "new": "PASS"},
+      "tile": {"old": null, "new": "PASS"},
+      "dotnet_tests": {"old": 291, "new": 423}
+    },
+    "SYLK.python_status": {
+      "installed_workflow": {"old": "PARTIAL", "new": "PASS"}
+    }
+  },
+
+  "preserved_authority_flags": {
+    "commercial_product_ready": false,
+    "gate_11_approved": false,
+    "publication_authorized": false,
+    "FODS.dogfood_status.fods_to_csv_dotnet": "GAP_DOGFOOD_EXTERNAL",
+    "FODS.dogfood_status.fods_to_html_dotnet": "GAP_DOGFOOD_EXTERNAL",
+    "FODT.dogfood_status.fodt_to_txt_dotnet": "GAP_DOGFOOD_EXTERNAL",
+    "FODT.dogfood_status.fodt_to_markdown_dotnet": "GAP_DOGFOOD_EXTERNAL"
+  },
+
+  "evidence_paths": [
+    "tests/net/fods/FodsR107InsertRowWithValuesTests.cs",
+    "tests/net/fods/FodsR108GetColumnCountTests.cs",
+    "tests/net/fods/FodsR109HasSheetTests.cs",
+    "tests/net/fods/FodsR110GetCellDataTypeTests.cs",
+    "tests/net/fods/FodsR110FindCellsByValueTests.cs",
+    "tests/net/fods/FodsR111MergeCellsTests.cs",
+    "tests/net/fods/FodsR111SetCellFormulaTests.cs",
+    "tests/net/fods/FodsR112GetUsedRangeTests.cs",
+    "tests/net/fods/FodsR113SortRowsTests.cs",
+    "tests/net/fodt/FodtR107GetHeadingTextsTests.cs",
+    "tests/net/fodt/FodtR107ExportToPlainTextFileTests.cs",
+    "tests/net/fodt/FodtR108ExportToMarkdownFileTests.cs",
+    "tests/net/fodt/FodtR109ExportToHtmlFileTests.cs",
+    "tests/net/fodt/FodtR110InsertHeadingTests.cs",
+    "tests/net/fodt/FodtR110GetParagraphStyleNameTests.cs",
+    "tests/net/fodt/FodtR111RemoveHeadingTests.cs",
+    "tests/net/fodt/FodtR111GetDocumentOutlineTests.cs",
+    "tests/net/fodt/FodtR113GetDocumentMetadataTests.cs",
+    "tests/net/netpbm/NetpbmR107EqualizeTests.cs",
+    "tests/net/netpbm/NetpbmR107ConvertFormatTests.cs",
+    "tests/net/netpbm/NetpbmR108ApplyGammaTests.cs",
+    "tests/net/netpbm/NetpbmR109PosterizeTests.cs",
+    "tests/net/netpbm/NetpbmR110SolarizeTests.cs",
+    "tests/net/netpbm/NetpbmR110SepiaTests.cs",
+    "tests/net/netpbm/NetpbmR111SharpenTests.cs",
+    "tests/net/netpbm/NetpbmR111BlurBoxTests.cs",
+    "tests/net/netpbm/NetpbmR113TileTests.cs",
+    "tests/python/sylk/ (252 passed, 9 skipped)"
+  ],
+
+  "focused_validation_results": {
+    "dotnet test tests/net/fods/": "Passed: 507, Failed: 0",
+    "dotnet test tests/net/fodt/": "Passed: 493, Failed: 0",
+    "dotnet test tests/net/netpbm/": "Passed: 423, Failed: 0",
+    "pytest tests/python/sylk/": "252 passed, 9 skipped"
+  },
+
+  "yaml_parse_validation": "PASS",
+  "diff_scope": "entry-scoped (no gate/release/authority fields changed)",
+  "poc_targets_sha256_before_edit": "f57d501eaaed4d5148e1f4973908cc7370e66c7c9ebdcc97585b9321c6bc119c",
+  "poc_targets_sha256_note": "SHA changed by design — this skill is authorized to update poc-targets.yaml only",
+
+  "verdict": "PASS",
+  "notes": "27 evidence test files confirmed present. All authority flags preserved. GAP_DOGFOOD_EXTERNAL entries untouched. YAML parses. Diff is entry-scoped. No commit or push."
+}

@@ -1,0 +1,33 @@
+id: GRE-TC-001
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Raw log capture — git status, JSON/YAML parse, test runs (Lane A)"
+status: completed
+lane: raw_log_capture
+item_type: GOVERNANCE_DOC
+problem: >
+  Sprint 2 had no raw log evidence. Every claim was based on in-memory outputs.
+  Raw logs are required for honest evidence grading.
+scope:
+  - Capture git-status-start.log
+  - Capture JSON schema parse verification logs
+  - Capture all test run logs for governance tests
+  - Capture supervisor validation log
+  - Capture autonomous-cycle log
+files_created:
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/git-status-start.log
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/json-parse.log
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/yaml-parse.log
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/governance-validator-tests.log
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/pipeline-wiring-tests.log
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/anti-skip-tests.log
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/adoption-compliance-tests.log
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/state-machine-tests.log
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/pilot-tests.log
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/supervisor-validation.log
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+dependencies: []
+handoff_to_autonomy_sprint: false

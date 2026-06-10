@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001",
+  "generated_at": "2026-06-06T00:00:00Z",
+  "h5_status": "H5_PROVEN",
+  "h5_description": "Non-deterministic LLM backend dispatched via runner; response received and validated.",
+  "proof_path": "reports/autonomous-system-acceptance/h5/h5-proof-result.json",
+  "endpoint_id": "professionalize",
+  "endpoint_url": "https://llm.professionalize.com/v1",
+  "model": "recommended",
+  "credential_env": "PROFESSIONALIZE_API_KEY",
+  "credential_status": "PRESENT",
+  "call_result": {"status": "OK", "backend": "LLM_API", "proof_level": "H5"},
+  "bugs_fixed_during_proof": [
+    "endpoint_selection: was picking Ollama (priority=1, no auth) over professionalize (priority=2) — fixed to prefer credentialed endpoints",
+    "response_truncation: was truncating full response body at 500 chars before JSON parse — fixed to truncate only content field after parse",
+    "model_name: was using gpt-3.5-turbo (not available) — fixed to use 'recommended' from endpoint"
+  ],
+  "h5_verdict": "H5_PROVEN_NON_DETERMINISTIC_BACKEND_DISPATCHED_RESPONSE_RECEIVED"
+}

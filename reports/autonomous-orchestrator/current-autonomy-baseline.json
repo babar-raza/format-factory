@@ -1,0 +1,40 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001",
+  "generated": "2026-06-06",
+  "prior_package": "superpowers-agentic-autonomy-loop-hardening",
+  "prior_sha256": "a98d88d7e06774247a2aca278819755cb80e27a49a1dfd12f4376cdcf462e7fd",
+  "h_level_achieved": "H4_PLUS",
+  "h_level_target": "RESTARTABLE_ORCHESTRATOR",
+  "proven": {
+    "bounded_runner_dispatch": true,
+    "local_deterministic_backend": true,
+    "four_sequential_cycles": true,
+    "state_advancement_between_cycles": true,
+    "anti_false_autonomy_validators": true
+  },
+  "not_proven": {
+    "persistent_autonomous_process": false,
+    "executable_continuation_state": false,
+    "restartable_orchestrator": false,
+    "next_action_auto_generation": false,
+    "h5_agentic_backend": false,
+    "h6_external_host_execution": false
+  },
+  "current_continuation_failure": {
+    "continuation_signal_path": ".local/supervisor/continuation-signal.json",
+    "next_sprint_points_to": "reports/supervisor/next-sprint.md",
+    "advisory_md_executable": false,
+    "product_routing": "reports/supervisor/next-sprint.md routes to RNEXT-MEGA-TRAIN product sprint",
+    "no_executable_next_action_after_closeout": true,
+    "process_stops_after_evidence_closeout": true
+  },
+  "orchestrator_files_needed": [
+    "tools/supervisor/continuation_state.py",
+    "tools/supervisor/continuation_router.py",
+    "tools/supervisor/autonomous_orchestrator.py",
+    "tools/supervisor/next_action_generator.py",
+    ".local/supervisor/active-continuation.json",
+    ".local/supervisor/next-action.json",
+    ".local/supervisor/orchestrator-state.json"
+  ]
+}

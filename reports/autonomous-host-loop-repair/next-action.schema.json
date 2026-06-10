@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "next-action.json schema v2",
+  "description": "Contract for external_host_loop.py. Schema v2 adds nonce + success_contract for strict validation.",
+  "type": "object",
+  "required": [
+    "schema_version", "action_id", "nonce", "action_type", "mode",
+    "prompt_path", "allowed_write_roots", "forbidden_actions",
+    "expected_output_files", "success_marker", "success_contract",
+    "max_runtime_seconds"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "enum": [2] },
+    "action_id": { "type": "string" },
+    "nonce": { "type": "string", "minLength": 8, "description": "Random UUID — must appear in child stdout JSON and proof file" },
+    "action_type": {
+      "type": "string",
+      "enum": ["CLAUDE_CODE_SMOKE", "CLAUDE_CODE_ITERATION", "CLAUDE_PRINT_PROMPT"]
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["LIVE_NOOP_OR_SMOKE", "LIVE_ITERATION"]
+    },
+    "prompt_path": { "type": "string", "description": "Relative path from repo root to prompt file" },
+    "allowed_write_roots": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths child agent is allowed to write to"
+    },
+    "forbidden_actions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "expected_output_files": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Files the CHILD AGENT must create. Host runner verifies but never creates these."
+    },
+    "success_marker": { "type": "string" },
+    "success_contract": {
+      "type": "object",
+      "required": ["stdout_mode", "required_nonce_match", "child_must_write_expected_file", "parent_may_create_proof_file"],
+      "properties": {
+        "stdout_mode": { "type": "string", "enum": ["STRICT_JSON"], "description": "Child stdout must be valid JSON" },
+        "required_nonce_match": { "type": "boolean", "const": true },
+        "child_must_write_expected_file": { "type": "boolean", "const": true },
+        "parent_may_create_proof_file": { "type": "boolean", "const": false }
+      }
+    },
+    "max_runtime_seconds": { "type": "integer", "minimum": 10, "maximum": 600 }
+  }
+}

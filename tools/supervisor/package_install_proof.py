@@ -42,6 +42,11 @@ PYTHON_PRODUCTS = {
     "dif": {"package": "format-factory-dif", "import": "dif"},
     "zst": {"package": "format-factory-zst", "import": "zst"},
     "qoi": {"package": "format-factory-qoi", "import": "qoi"},
+    "abw": {"package": "format-factory-abw", "import": "abw"},
+    "gnumeric": {"package": "format-factory-gnumeric", "import": "gnumeric"},
+    "ndjson": {"package": "format-factory-ndjson", "import": "ndjson"},
+    "fodg": {"package": "format-factory-fodg", "import": "fodg"},
+    "tsv": {"package": "format-factory-tsv", "import": "tsv"},
 }
 
 

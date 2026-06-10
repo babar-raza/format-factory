@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-PLAN-REPAIR-FOR-SINGLE-GO-EXECUTION-001",
+  "run_id": "spec-authority-plan-repair-20260607-e382e5f",
+  "generated_at": "2026-06-07",
+  "failure_modes": [
+    {
+      "id": "FM-001",
+      "description": "JSON validation fail (any JSON file in run_dir)",
+      "stop_or_continue": "continue",
+      "state_transition": "VALIDATING -> VALIDATION_FAILED",
+      "rollback_action": "Fix JSON syntax; revalidate with python -m json.tool",
+      "evidence_to_preserve": "Save invalid JSON + error message to raw-logs/json-errors.txt",
+      "verdict": "PLAN_NEEDS_REPAIR"
+    },
+    {
+      "id": "FM-002",
+      "description": "Taskcard validator fails (validate_repaired_plan.py exits 1)",
+      "stop_or_continue": "continue",
+      "state_transition": "VALIDATING -> VALIDATION_FAILED",
+      "rollback_action": "Fix failing check; rerun validator",
+      "evidence_to_preserve": "Save validator output to raw-logs/validate-repaired-plan.txt",
+      "verdict": "PLAN_NEEDS_REPAIR"
+    },
+    {
+      "id": "FM-003",
+      "description": "State machine validation fails (state count != 32)",
+      "stop_or_continue": "continue",
+      "state_transition": "VALIDATING -> VALIDATION_FAILED",
+      "rollback_action": "Recount states; fix state_count declaration; regenerate JSON",
+      "evidence_to_preserve": "Save error to raw-logs/statemachine-error.txt",
+      "verdict": "PLAN_NEEDS_REPAIR"
+    },
+    {
+      "id": "FM-004",
+      "description": "Missing evidence input (investigation bundle not found)",
+      "stop_or_continue": "stop",
+      "state_transition": "BLOCKED_BY_MISSING_EVIDENCE",
+      "rollback_action": "Record missing path; continue with other taskcards if evidence is non-blocking",
+      "evidence_to_preserve": "Save discovery log to raw-logs/preflight.txt",
+      "verdict": "PLAN_REPAIR_BLOCKED"
+    },
+    {
+      "id": "FM-005",
+      "description": "Stale evidence (investigation findings may be outdated)",
+      "stop_or_continue": "continue_with_caveat",
+      "state_transition": "TRIAGED -> ROOT_CAUSE_CONFIRMED with STALE_EVIDENCE caveat",
+      "rollback_action": "Mark finding 'STALE_EVIDENCE' in evidence-import-review.md; proceed with best available",
+      "evidence_to_preserve": "Record stale status in evidence-import-review.md",
+      "verdict": "continue"
+    },
+    {
+      "id": "FM-006",
+      "description": "Dirty working tree with unexpected state",
+      "stop_or_continue": "stop_and_record",
+      "state_transition": "N/A",
+      "rollback_action": "git status output; record in raw-logs/git-status.txt; do not clean",
+      "evidence_to_preserve": "raw-logs/git-status.txt",
+      "verdict": "record_and_investigate"
+    },
+    {
+      "id": "FM-007",
+      "description": "Lane file ownership conflict",
+      "stop_or_continue": "continue",
+      "state_transition": "L-COORD arbitrates",
+      "rollback_action": "Assign exclusive ownership to one lane; record conflict in raw-logs/lane-conflicts.txt",
+      "evidence_to_preserve": "raw-logs/lane-conflicts.txt",
+      "verdict": "continue"
+    },
+    {
+      "id": "FM-008",
+      "description": "Tests unavailable (pytest environment broken)",
+      "stop_or_continue": "continue",
+      "state_transition": "N/A",
+      "rollback_action": "Record unavailability in verification-gates.json; plan-repair sprint does not require live test runs",
+      "evidence_to_preserve": "Note in raw-logs/test-unavailability.txt",
+      "verdict": "continue"
+    },
+    {
+      "id": "FM-009",
+      "description": "CI unavailable locally",
+      "stop_or_continue": "continue",
+      "state_transition": "N/A",
+      "rollback_action": "Mark all gates ci_available=false; all verification is local",
+      "evidence_to_preserve": "N/A — already documented in verification-gates.json",
+      "verdict": "continue"
+    },
+    {
+      "id": "FM-010",
+      "description": "Plan contradiction found late in sprint",
+      "stop_or_continue": "continue",
+      "state_transition": "ROOT_CAUSE_CONFIRMED -> READY_FOR_DESIGN",
+      "rollback_action": "Apply minimal repair; update required-plan-repairs.md; rerun validator",
+      "evidence_to_preserve": "Record contradiction in raw-logs/contradictions.txt",
+      "verdict": "continue"
+    },
+    {
+      "id": "FM-011",
+      "description": "Unsafe prompt generated in single-go-execution-prompt.md",
+      "stop_or_continue": "do_not_include",
+      "state_transition": "N/A",
+      "rollback_action": "Revise prompt; remove unsafe instruction; re-review with adversarial check",
+      "evidence_to_preserve": "Save unsafe version to raw-logs/unsafe-prompt-draft.txt (for reference only)",
+      "verdict": "PLAN_NEEDS_REPAIR"
+    },
+    {
+      "id": "FM-012",
+      "description": "Evidence bundle incomplete (missing required files)",
+      "stop_or_continue": "continue",
+      "state_transition": "N/A",
+      "rollback_action": "Identify missing files; create them; rebuild SHA256-MANIFEST.txt",
+      "evidence_to_preserve": "Save partial file list to raw-logs/bundle-incomplete.txt",
+      "verdict": "PLAN_NEEDS_REPAIR"
+    }
+  ]
+}

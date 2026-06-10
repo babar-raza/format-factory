@@ -1,0 +1,17 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-REVIEW-R3-EVIDENCE-TRUST-AND-PRODUCT-QUALITY-001",
+  "evaluated_at": "2026-06-05T23:30:00Z",
+  "conditions": [
+    {"condition": "output_floor_met", "result": true, "note": "All lanes completed; real product improvement (19→0 CS1591) + 10 wheels + 3 nupkgs + 2402 tests"},
+    {"condition": "evidence_bundle_will_be_built", "result": true, "note": "Declaration written; autonomous_cycle will be run before final response"},
+    {"condition": "no_forbidden_actions", "result": true, "note": "No commit, push, Gate approval, git reset/clean/stash, MCP activation, poc-targets mutation"},
+    {"condition": "source_changes_tested", "result": true, "note": "Netpbm XML doc changes tested: 465 .NET tests pass, 0 CS1591 warnings"},
+    {"condition": "validator_tests_pass", "result": "PARTIAL", "note": "test_r3_prompt_path_validator.py: 3 pass, 2 fail — the 2 failures correctly detect the stale latest-next-worker-prompt.md which will be fixed when autonomous_cycle regenerates it"},
+    {"condition": "all_taskcards_closed_or_blocked", "result": "IN_PROGRESS", "note": "IV taskcards (TC-R3-IV-*) will close when evidence bundle is built"},
+    {"condition": "final_git_status_captured", "result": true, "note": "reports/expert-review-r3/final-git-status.txt written"},
+    {"condition": "coordinator_files_written", "result": true, "note": "taskcard-registry.json, execution-state.json, coordinator/ files written"}
+  ],
+  "all_conditions_met": false,
+  "blocking_condition": "evidence_bundle_not_yet_built",
+  "note": "terminal=true will be set after autonomous_cycle exits 0"
+}

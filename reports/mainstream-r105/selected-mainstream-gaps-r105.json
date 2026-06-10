@@ -1,0 +1,133 @@
+{
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R105-POC-COMPLETION-AND-PROOF-CAMPAIGN-001",
+  "generated_at": "2026-06-03T14:00:00Z",
+  "source_poc_matrix_sha256": "cf4ccb01d1ce261ad85068239b0e83263f9472a1adab01dbb7cea2ca199dc61d",
+  "source_skill_registry_sha256": "2952debca984434a50784776f1318fee98f02b916ee32185b0d5b264c4c3d60b",
+  "stale_gap_replaced": "R98 selected gaps REPLACED — this is fresh R105 selection",
+
+  "commercial_gaps_ranked": [
+    {
+      "rank": 1,
+      "product": "FODS .NET",
+      "gap": "DeleteRows — remove rows from a sheet by index range",
+      "skill": "add-dotnet-api",
+      "category": "object_model_deepening",
+      "value": "HIGH — real spreadsheet editing requires row management"
+    },
+    {
+      "rank": 2,
+      "product": "FODS .NET",
+      "gap": "GetSheetRowCount — return row count for named sheet",
+      "skill": "add-dotnet-api",
+      "category": "query_helper",
+      "value": "MEDIUM — needed for iteration and bounds checking"
+    },
+    {
+      "rank": 3,
+      "product": "FODT .NET",
+      "gap": "FindText — search for text and return paragraph indices",
+      "skill": "add-dotnet-api",
+      "category": "query_helper",
+      "value": "HIGH — text search is core document operation"
+    },
+    {
+      "rank": 4,
+      "product": "FODT .NET",
+      "gap": "ExportToHtml — export document body to HTML string",
+      "skill": "add-dotnet-api",
+      "category": "export_deepening",
+      "value": "HIGH — export to HTML is critical for dogfood"
+    },
+    {
+      "rank": 5,
+      "product": "Netpbm .NET",
+      "gap": "MergeVertical — stack images vertically",
+      "skill": "add-dotnet-object-model-feature",
+      "category": "object_model_deepening",
+      "value": "HIGH — complements MergeHorizontal for compositing"
+    },
+    {
+      "rank": 6,
+      "product": "Netpbm .NET",
+      "gap": "AdjustContrast — scale pixel values around midpoint",
+      "skill": "add-dotnet-object-model-feature",
+      "category": "object_model_deepening",
+      "value": "MEDIUM — complements AdjustBrightness for image processing"
+    }
+  ],
+
+  "foss_gaps_ranked": [
+    {
+      "rank": 1,
+      "product": "ZST Python",
+      "gap": "Multi-frame file handling and concatenation tests",
+      "skill": "add-roundtrip-test",
+      "value": "MEDIUM"
+    },
+    {
+      "rank": 2,
+      "product": "ZST Python",
+      "gap": "File-based compress/decompress workflow hardening",
+      "skill": "add-roundtrip-test",
+      "value": "MEDIUM"
+    },
+    {
+      "rank": 3,
+      "product": "Python PBM",
+      "gap": "P1/P4 parse edge case hardening (malformed headers, truncated data)",
+      "skill": "add-roundtrip-test",
+      "value": "MEDIUM"
+    },
+    {
+      "rank": 4,
+      "product": "Python PGM",
+      "gap": "PGM write roundtrip with maxval variation and comment preservation",
+      "skill": "add-roundtrip-test",
+      "value": "MEDIUM"
+    },
+    {
+      "rank": 5,
+      "product": "SYLK Python",
+      "gap": "SYLK parse malformed input diagnostics and error recovery",
+      "skill": "add-roundtrip-test",
+      "value": "MEDIUM"
+    },
+    {
+      "rank": 6,
+      "product": "Python PPM",
+      "gap": "PPM color statistics and channel extraction hardening",
+      "skill": "add-roundtrip-test",
+      "value": "LOW"
+    }
+  ],
+
+  "dogfood_export_gaps": [
+    {
+      "gap": "FODS → CSV full pipeline dogfood proof with new CopySheet/GetSheetByIndex",
+      "status": "PARTIAL — R104 had dogfood tests but no raw log proof"
+    },
+    {
+      "gap": "FODT → HTML export dogfood (ExportToHtml new in R105)",
+      "status": "GAP — no FODT→HTML dogfood exists"
+    },
+    {
+      "gap": "Netpbm .NET MergeVertical + save pipeline",
+      "status": "GAP — MergeVertical new in R105"
+    }
+  ],
+
+  "package_usability_gaps": [
+    {
+      "gap": "FODS .NET DeleteRows example",
+      "type": "example"
+    },
+    {
+      "gap": "FODT .NET FindText + ExportToHtml example",
+      "type": "example"
+    },
+    {
+      "gap": "Netpbm .NET vertical merge + contrast example",
+      "type": "example"
+    }
+  ]
+}

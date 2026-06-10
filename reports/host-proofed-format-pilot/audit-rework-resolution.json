@@ -1,0 +1,36 @@
+{
+  "sprint_id": "FORMAT-FACTORY-HOST-PROOFED-AUTONOMOUS-FORMAT-PILOT-001",
+  "created_at": "2026-06-05",
+  "source_sprint": "FORMAT-FACTORY-FULL-AUTONOMOUS-SYSTEM-AUDIT-AND-REPAIR-001",
+
+  "rework_items": [
+    {
+      "issue": "missing_lane_ledger",
+      "severity": "MEDIUM",
+      "resolution": "RESOLVED",
+      "artifact": "reports/host-proofed-format-pilot/lane-execution-ledger.json",
+      "notes": "Lane execution ledger created for this sprint with 4 lanes"
+    },
+    {
+      "issue": "missing_sample_outputs",
+      "severity": "LOW",
+      "resolution": "EXEMPTED",
+      "artifact": "reports/host-proofed-format-pilot/sample-output-exemption.json",
+      "notes": "Audit phases 0-2 are infrastructure work, no product sample output needed. Product phases 4+ will produce sample outputs."
+    },
+    {
+      "issue": "FAIL_MISSING_TRANSCRIPTS",
+      "severity": "COMPLIANCE",
+      "resolution": "RESOLVED_WITH_EXEMPTIONS",
+      "artifact": "reports/host-proofed-format-pilot/skill-transcripts/audit-rework-resolution.json",
+      "notes": "All 9 prior audit items are non-source-changing supervisor/tooling/governance work. Exempted with explicit exemption_reason per adoption compliance policy. Transcript provided covering all items collectively."
+    }
+  ],
+
+  "adoption_compliance_target": "PASS_WITH_EXEMPTIONS",
+  "lane_ledger_target": "PRESENT",
+  "sample_output_target": "EXEMPTED_AUDIT_PHASES",
+
+  "gate_b_status": "RESOLVED",
+  "notes": "All 3 rework items from bundle 101 resolved: lane ledger created, sample outputs exempted, transcripts provided with exemption_reason for all non-source-changing items."
+}

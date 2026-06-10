@@ -2,6 +2,7 @@
 // DEC-033 Option B: .NET Commercial Only
 // Delegates CSV serialization to FormatFactory.Csv.CsvWriter
 // Gate 11 approved 2026-06-05.
+// dogfood_status: IMPLEMENTED — delegates CSV serialization to FormatFactory.Csv.CsvWriter
 
 using System;
 using System.Collections.Generic;

@@ -1,0 +1,48 @@
+handoff_id: HO-R112-SUP-LIVE-001
+type: supervisor-grading-live-proof
+title: "Supervisor Cycle Grading — Live Proof v3 (R112)"
+stream_from: skills
+stream_to: supervisor
+skill_id: evidence-review-next-prompt
+version: "3.0"
+timestamp: "2026-06-04T01:10:00Z"
+
+description: |
+  Near-live execution of supervisor grading handoff.
+  Proves end-to-end: handoff -> transcript -> validation -> adoption -> grading -> continuation.
+
+required_inputs:
+  evidence_bundle_path: ".local/evidences/skills-r112/evidence-declaration.yaml"
+
+validation_command: |
+  python tools/supervisor/validate_skill_transcript.py reports/skills-r112/skill-transcripts/transcript-r112-001-live-supervisor-grading.json
+
+expected_evidence:
+  transcript_json: "reports/skills-r112/skill-transcripts/transcript-r112-001-live-supervisor-grading.json"
+  live_handoff_proof: "reports/skills-r112/live-handoff-proof.json"
+  adoption_compliance: ".local/supervisor/reviews/skills-r112/adoption-compliance-result.json"
+
+transcript_requirement:
+  mode: "dry-run"
+  required_fields: ["invocation_id", "skill_id", "mode", "inputs", "allowed_files", "actual_files_changed", "tests_run", "result"]
+  skill_id_must_match: "evidence-review-next-prompt"
+  result_must_be: "PASS"
+
+raw_log_requirement:
+  format: "supervisor cycle log or pytest output"
+  minimum_lines: 10
+  must_contain: ["passed", "test"]
+
+pass_criteria:
+  - "Transcript validates via validate_skill_transcript.py"
+  - "Adoption compliance Step 2d PASS"
+  - "Grading result is ACCEPTED or ACCEPTED_VERIFIED"
+  - "Continuation decision is YES or YES_WITH_LIMITATIONS"
+
+fail_conditions:
+  - "Missing transcript"
+  - "Transcript validation fails"
+  - "Adoption compliance FAIL"
+  - "Prompt quality failure"
+
+adoption_gates_enforced: [ADOPT-S-01, ADOPT-CYCLE-01]

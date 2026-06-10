@@ -1,0 +1,213 @@
+{
+  "generated_at": "2026-06-05T05:59:55.817955+00:00",
+  "overall_verdict": "BLOCKED_MISSING_REQUIRED_TARGET",
+  "netpbm_retained": true,
+  "svg_replacement_rejected": true,
+  "targets": [
+    {
+      "target_id": "dif",
+      "verdict": "BLOCKED_MISSING_PROOF",
+      "required_capabilities": [
+        "parse",
+        "export"
+      ],
+      "proven_capabilities": [
+        "inspect",
+        "parse"
+      ],
+      "missing_capabilities": [
+        "export"
+      ],
+      "is_stretch_target": false,
+      "override_notes": [
+        "DIF may substitute SYLK only if coverage validates faster. Verify: compare estimated_unlock times in gap queue."
+      ],
+      "metadata": {
+        "claim_count": 2,
+        "has_stale": false,
+        "has_overclaim": false,
+        "has_limitations": true
+      },
+      "computed_at": "2026-06-05T05:59:55.817999+00:00"
+    },
+    {
+      "target_id": "fods",
+      "verdict": "BLOCKED_MISSING_PROOF",
+      "required_capabilities": [
+        "parse",
+        "inspect",
+        "edit",
+        "export",
+        "dogfood"
+      ],
+      "proven_capabilities": [
+        "edit",
+        "load",
+        "save"
+      ],
+      "missing_capabilities": [
+        "parse",
+        "inspect",
+        "export",
+        "dogfood"
+      ],
+      "is_stretch_target": false,
+      "override_notes": [],
+      "metadata": {
+        "claim_count": 5,
+        "has_stale": false,
+        "has_overclaim": false,
+        "has_limitations": false
+      },
+      "computed_at": "2026-06-05T05:59:55.818010+00:00"
+    },
+    {
+      "target_id": "fodt",
+      "verdict": "BLOCKED_MISSING_PROOF",
+      "required_capabilities": [
+        "parse",
+        "inspect",
+        "edit",
+        "export",
+        "dogfood"
+      ],
+      "proven_capabilities": [
+        "edit",
+        "load",
+        "save"
+      ],
+      "missing_capabilities": [
+        "parse",
+        "inspect",
+        "export",
+        "dogfood"
+      ],
+      "is_stretch_target": false,
+      "override_notes": [],
+      "metadata": {
+        "claim_count": 5,
+        "has_stale": false,
+        "has_overclaim": false,
+        "has_limitations": false
+      },
+      "computed_at": "2026-06-05T05:59:55.818018+00:00"
+    },
+    {
+      "target_id": "gnumeric",
+      "verdict": "NOT_STARTED",
+      "required_capabilities": [
+        "parse",
+        "inspect"
+      ],
+      "proven_capabilities": [],
+      "missing_capabilities": [
+        "parse",
+        "inspect"
+      ],
+      "is_stretch_target": true,
+      "override_notes": [
+        "No CapabilityClaim nodes found for target 'gnumeric'"
+      ],
+      "metadata": {},
+      "computed_at": "2026-06-05T05:59:55.818025+00:00"
+    },
+    {
+      "target_id": "netpbm-net",
+      "verdict": "BLOCKED_MISSING_PROOF",
+      "required_capabilities": [
+        "load",
+        "inspect",
+        "edit",
+        "save",
+        "dogfood"
+      ],
+      "proven_capabilities": [
+        "edit",
+        "inspect",
+        "load",
+        "save"
+      ],
+      "missing_capabilities": [
+        "dogfood"
+      ],
+      "is_stretch_target": false,
+      "override_notes": [
+        "Netpbm must be retained. This target cannot be removed or replaced."
+      ],
+      "metadata": {
+        "claim_count": 4,
+        "has_stale": false,
+        "has_overclaim": false,
+        "has_limitations": false
+      },
+      "computed_at": "2026-06-05T05:59:55.818032+00:00"
+    },
+    {
+      "target_id": "netpbm-py",
+      "verdict": "NOT_STARTED",
+      "required_capabilities": [
+        "load",
+        "inspect",
+        "edit",
+        "save"
+      ],
+      "proven_capabilities": [],
+      "missing_capabilities": [
+        "load",
+        "inspect",
+        "edit",
+        "save"
+      ],
+      "is_stretch_target": false,
+      "override_notes": [
+        "No CapabilityClaim nodes found for target 'netpbm-py'"
+      ],
+      "metadata": {},
+      "computed_at": "2026-06-05T05:59:55.818038+00:00"
+    },
+    {
+      "target_id": "sylk",
+      "verdict": "NOT_STARTED",
+      "required_capabilities": [
+        "parse",
+        "export"
+      ],
+      "proven_capabilities": [],
+      "missing_capabilities": [
+        "parse",
+        "export"
+      ],
+      "is_stretch_target": false,
+      "override_notes": [
+        "No CapabilityClaim nodes found for target 'sylk'"
+      ],
+      "metadata": {},
+      "computed_at": "2026-06-05T05:59:55.818043+00:00"
+    },
+    {
+      "target_id": "zst",
+      "verdict": "BLOCKED_STALE",
+      "required_capabilities": [
+        "package",
+        "roundtrip"
+      ],
+      "proven_capabilities": [
+        "compress",
+        "decompress",
+        "roundtrip"
+      ],
+      "missing_capabilities": [
+        "package"
+      ],
+      "is_stretch_target": false,
+      "override_notes": [],
+      "metadata": {
+        "claim_count": 4,
+        "has_stale": true,
+        "has_overclaim": false,
+        "has_limitations": false
+      },
+      "computed_at": "2026-06-05T05:59:55.818060+00:00"
+    }
+  ]
+}

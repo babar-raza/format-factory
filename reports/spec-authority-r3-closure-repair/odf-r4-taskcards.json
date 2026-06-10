@@ -1,0 +1,167 @@
+[
+  {
+    "id": "TC-R4-000",
+    "title": "R4 coordinator preflight — ODF source acquisition and license check",
+    "status": "READY",
+    "lane": "0",
+    "dependencies": [],
+    "input_files": [
+      "reports/spec-authority-r3-closure-repair/odf-r4-depth-plan.md",
+      "reports/spec-authority-real-pilot-r3/rca-input-snapshot-manifest.json"
+    ],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r4/00-preflight.md",
+      "reports/spec-authority-real-pilot-r4/lane-ownership.md",
+      "reports/spec-authority-real-pilot-r4/file-ownership-map.json",
+      "reports/spec-authority-real-pilot-r4/taskcard-state.json"
+    ],
+    "acceptance_check": "ODF 1.3 source URLs confirmed accessible; license_status field set; git state clean from R3C",
+    "risk": "LOW",
+    "estimated_tests": 0
+  },
+  {
+    "id": "TC-R4-001",
+    "title": "ODF Part 1 text acquisition — download and extract §1–§12",
+    "status": "READY",
+    "lane": "A",
+    "dependencies": ["TC-R4-000"],
+    "input_files": [
+      "https://docs.oasis-open.org/office/OpenDocument/v1.3/os/OpenDocument-v1.3-os-part1-introduction.odt (or equivalent text source)"
+    ],
+    "output_files": [
+      ".local/evidences/spec-authority-real-pilot-r4/odf-raw/odf-part1-text.txt"
+    ],
+    "acceptance_check": "odf-part1-text.txt exists; len > 100,000 chars; §8 table content present",
+    "risk": "MEDIUM — PDF extraction quality",
+    "estimated_tests": 3
+  },
+  {
+    "id": "TC-R4-002",
+    "title": "ODF Part 4 (OpenFormula) text acquisition — download and extract §1–§10",
+    "status": "READY",
+    "lane": "A",
+    "dependencies": ["TC-R4-000"],
+    "input_files": [
+      "https://docs.oasis-open.org/office/OpenDocument/v1.3/os/ (Part 4 formula spec)"
+    ],
+    "output_files": [
+      ".local/evidences/spec-authority-real-pilot-r4/odf-raw/odf-part4-formula-text.txt"
+    ],
+    "acceptance_check": "odf-part4-formula-text.txt exists; len > 50,000 chars; SUM/IF functions section present",
+    "risk": "LOW",
+    "estimated_tests": 2
+  },
+  {
+    "id": "TC-R4-003",
+    "title": "FODS full context pack — chunk Part 1 + Part 4, extract requirements",
+    "status": "READY",
+    "lane": "B",
+    "dependencies": ["TC-R4-001", "TC-R4-002"],
+    "input_files": [
+      ".local/evidences/spec-authority-real-pilot-r4/odf-raw/odf-part1-text.txt",
+      ".local/evidences/spec-authority-real-pilot-r4/odf-raw/odf-part4-formula-text.txt"
+    ],
+    "output_files": [
+      ".local/evidences/spec-authority-real-pilot-r4/fods-context-pack.json",
+      ".local/evidences/spec-authority-real-pilot-r4/fods-chunks/",
+      "reports/spec-authority-real-pilot-r4/fods-context-pack-report.md"
+    ],
+    "acceptance_check": "fods-context-pack.json: requirements_count >= 50; deterministic=True; authority_status=ACCEPTED_SPEC (if license confirmed) or ACCEPTED_WITH_CAVEAT",
+    "risk": "MEDIUM",
+    "estimated_tests": 10
+  },
+  {
+    "id": "TC-R4-004",
+    "title": "FODT full context pack — chunk Part 1 §1–§12, extract requirements",
+    "status": "READY",
+    "lane": "B",
+    "dependencies": ["TC-R4-001"],
+    "input_files": [
+      ".local/evidences/spec-authority-real-pilot-r4/odf-raw/odf-part1-text.txt"
+    ],
+    "output_files": [
+      ".local/evidences/spec-authority-real-pilot-r4/fodt-context-pack.json",
+      ".local/evidences/spec-authority-real-pilot-r4/fodt-chunks/",
+      "reports/spec-authority-real-pilot-r4/fodt-context-pack-report.md"
+    ],
+    "acceptance_check": "fodt-context-pack.json: requirements_count >= 40; deterministic=True; §7 text paragraphs requirements present",
+    "risk": "MEDIUM",
+    "estimated_tests": 10
+  },
+  {
+    "id": "TC-R4-005",
+    "title": "License confirmation — OASIS ODF 1.3 RF patent pledge",
+    "status": "READY",
+    "lane": "C",
+    "dependencies": ["TC-R4-000"],
+    "input_files": [
+      "docs/governance/ai-authority-boundary.md"
+    ],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r4/license-confirmation.md"
+    ],
+    "acceptance_check": "license-confirmation.md: patent_pledge_status=CONFIRMED_RF or PENDING_LEGAL_REVIEW; FODS/FODT authority_status decision recorded",
+    "risk": "HIGH — blocks ACCEPTED_SPEC promotion",
+    "estimated_tests": 5
+  },
+  {
+    "id": "TC-R4-006",
+    "title": "RCAL wiring — extend R3 RCA packet with R4 full-spec data",
+    "status": "READY",
+    "lane": "C",
+    "dependencies": ["TC-R4-003", "TC-R4-004"],
+    "input_files": [
+      "reports/spec-authority-r3-closure-repair/rca-r2-input-packet.json",
+      ".local/evidences/spec-authority-real-pilot-r4/fods-context-pack.json",
+      ".local/evidences/spec-authority-real-pilot-r4/fodt-context-pack.json"
+    ],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r4/rca-r4-input-packet.json"
+    ],
+    "acceptance_check": "rca-r4-input-packet.json: fods.requirements_count >= 50; fodt.requirements_count >= 40; extends R3 packet without overwriting",
+    "risk": "LOW",
+    "estimated_tests": 5
+  },
+  {
+    "id": "TC-R4-007",
+    "title": "R4 tests — 30 new tests across FODS full ingest, FODT full ingest, license, RCAL",
+    "status": "READY",
+    "lane": "D",
+    "dependencies": ["TC-R4-003", "TC-R4-004", "TC-R4-005", "TC-R4-006"],
+    "input_files": [
+      ".local/evidences/spec-authority-real-pilot-r4/fods-context-pack.json",
+      ".local/evidences/spec-authority-real-pilot-r4/fodt-context-pack.json",
+      "reports/spec-authority-real-pilot-r4/rca-r4-input-packet.json",
+      "reports/spec-authority-real-pilot-r4/license-confirmation.md"
+    ],
+    "output_files": [
+      "tests/spec_authority/test_real_pilot_r4_fods.py",
+      "tests/spec_authority/test_real_pilot_r4_fodt.py",
+      "tests/spec_authority/test_real_pilot_r4_license.py",
+      "tests/spec_authority/test_real_pilot_r4_rcal.py",
+      "reports/spec-authority-real-pilot-r4/test-run-report.md",
+      "reports/spec-authority-real-pilot-r4/raw-logs/spec-authority-r4-tests.log"
+    ],
+    "acceptance_check": "30 new tests; 110/110 total (30 R4 + 80 R3 regression); all pass",
+    "risk": "LOW",
+    "estimated_tests": 30
+  },
+  {
+    "id": "TC-R4-008",
+    "title": "R4 evidence closeout — autonomous-cycle + review package + no placeholders",
+    "status": "READY",
+    "lane": "E",
+    "dependencies": ["TC-R4-007"],
+    "input_files": [
+      "all R4 output files"
+    ],
+    "output_files": [
+      ".local/evidences/spec-authority-real-pilot-r4/evidence-declaration.yaml",
+      ".local/evidences/spec-authority-real-pilot-r4/evidence-manifest.yaml",
+      "reports/spec-authority-real-pilot-r4/review-package-proof.md"
+    ],
+    "acceptance_check": "autonomous-cycle exit=0; SHA-256 real 64-char hex; no placeholders; all R4 items ACCEPTED_VERIFIED",
+    "risk": "LOW",
+    "estimated_tests": 0
+  }
+]

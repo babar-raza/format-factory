@@ -1,0 +1,24 @@
+id: PFGI-TC-002
+version: "1.0"
+generated_by: FORMAT-FACTORY-PRODUCT-FIRST-GOVERNED-SOURCE-IMPLEMENTATION-001
+generated_at: "2026-06-09"
+title: "Implement get_row_values in gnumeric_codec.py"
+status: closed
+lane: gnumeric_implementation
+item_type: PRODUCT_SOURCE
+format_id: gnumeric
+capability_id: get_row_values
+function_name: get_row_values
+source_file: src/python/gnumeric/gnumeric_codec.py
+execution_method: AGENT_GOVERNED_DIRECT_EXECUTION
+claim_classification: GOVERNED_BUT_NOT_REPLAYED
+idempotency_key: 5af6cdf9727c036f5707097c30b82f6beec55bbeffc0757779d8b6e38027a01c
+state_machine_start: EVIDENCE_LOCATED
+state_machine_target: GOVERNANCE_ACCEPTED
+test_file: tests/python/gnumeric/test_pfgi_gnumeric_get_row_values.py
+tests_added: 8
+acceptance_criteria:
+  - Function exists with source marker
+  - 8 tests pass including sparse fill, out-of-range IndexError, empty row returns []
+verification:
+  - pytest tests/python/gnumeric/test_pfgi_gnumeric_get_row_values.py -v

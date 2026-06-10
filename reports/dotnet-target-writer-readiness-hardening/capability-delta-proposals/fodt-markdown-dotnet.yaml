@@ -1,0 +1,55 @@
+---
+# Capability Delta Proposal — FODT .NET → Markdown Export
+# Sprint: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
+# Hardening: FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001
+# Generated: 2026-06-05
+
+gap_id: commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet
+product: FormatFactory.Fodt (.NET)
+target_format: Markdown
+prior_status: GAP_DOGFOOD_EXTERNAL
+proposed_status: IMPLEMENTED
+
+export_target_support_policy:
+  condition_1_standalone_writer_library: true
+  condition_1_evidence: src/net/markdown/MarkdownWriter.cs + src/net/markdown/FormatFactory.Markdown.csproj
+  condition_2_writer_registered: true
+  condition_2_evidence: FormatFactory.Markdown — standalone library, registerable
+  condition_3_exporter_delegates_to_writer: true
+  condition_3_evidence: src/net/fodt/FodtMarkdownExporter.cs — calls MarkdownWriter.WriteParagraphs()
+  condition_4_tests_prove_invocation: true
+  condition_4_evidence: tests/net/fodt/FodtR108DogfoodMarkdownExportTests.cs (520/520 FODT tests PASS)
+  condition_5_dogfood_output_artifacts: true
+  condition_5_evidence: reports/dotnet-target-writer-mwp-dogfood-unblocking/sample-outputs/sample-fodt-to-markdown.md
+  all_five_met: true
+
+writer_library_proof:
+  library_name: FormatFactory.Markdown
+  source_file: src/net/markdown/MarkdownWriter.cs
+  project_file: src/net/markdown/FormatFactory.Markdown.csproj
+  test_project_file: tests/net/markdown/FormatFactory.Markdown.Tests.csproj
+  tests_run: 11
+  tests_passed: 11
+  raw_log_path: reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/writer-tests.log
+
+exporter_refactor_proof:
+  exporter_file: src/net/fodt/FodtMarkdownExporter.cs
+  project_file: src/net/fodt/FormatFactory.Fodt.csproj
+  delegation_method: MarkdownWriter.WriteParagraphs()
+  inline_serialization_removed: true
+  fodt_total_tests: 520
+  fodt_regressions: 0
+
+dogfood_output_proof:
+  sample_output_path: reports/dotnet-target-writer-mwp-dogfood-unblocking/sample-outputs/sample-fodt-to-markdown.md
+  sample_output_type: Markdown
+  sample_valid: true
+
+skill_transcript_path: reports/dotnet-target-writer-readiness-hardening/skill-transcripts/fodt-markdown-dogfood-refactor.json
+ledger_entry_id: MWP-FODT-MARKDOWN-DOGFOOD-REFACTOR
+proof_graph_node_id: fodt-markdown-exporter
+
+caveats:
+  - This delta requires human review before poc-targets.yaml mutation
+  - No direct poc-targets.yaml change — this is a proposal only
+  - Gate 11 approval required for commercial_product_ready=true

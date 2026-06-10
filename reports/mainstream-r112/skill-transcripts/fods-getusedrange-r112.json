@@ -1,0 +1,19 @@
+{
+  "skill_id": "add-dotnet-api",
+  "format_id": "fods",
+  "api_name": "GetUsedRange",
+  "sprint": "mainstream-r112",
+  "changed_files": ["src/net/fods/FodsDocument.cs"],
+  "test_files": ["tests/net/fods/FodsR112GetUsedRangeTests.cs"],
+  "test_results": {
+    "command": "dotnet test tests/net/fods/ --filter FodsR112GetUsedRange",
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ledger_entry_id": "R112-GOVERNED-DOTNET-FODS-GETUSEDRANGE-001",
+  "api_symbols": ["GetUsedRange", "GetUsedRange(string)", "GetUsedRange(FodsSheet)"],
+  "api_behavior": "Return bounding range of non-empty cells as (MinRow, MinCol, MaxRow, MaxCol). Scans all cells. Returns null if sheet is empty. Three overloads: first-sheet, by-name, by-sheet-object (static).",
+  "source_sha256": "154081d7679c227c65832d6624aaeadbafe08922a21c4d30288c0cfe29e4a998",
+  "verdict": "PASS"
+}

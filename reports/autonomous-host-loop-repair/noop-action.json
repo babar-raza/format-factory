@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "action_id": "HOST_NOOP_REPAIR_001",
+  "action_type": "CLAUDE_PRINT_PROMPT",
+  "mode": "LIVE_NOOP_OR_SMOKE",
+  "prompt_path": "reports/autonomous-host-loop-repair/noop-prompt.md",
+  "allowed_write_roots": [],
+  "forbidden_actions": [
+    "git commit",
+    "git push",
+    "publish",
+    "Gate approval"
+  ],
+  "expected_output_files": [],
+  "success_marker": "HOST_RUNNER_NOOP_OK",
+  "max_runtime_seconds": 60,
+  "note": "Schema v1 strict NOOP — stdout must equal exactly HOST_RUNNER_NOOP_OK"
+}

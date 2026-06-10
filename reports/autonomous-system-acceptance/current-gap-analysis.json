@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001",
+  "generated_at": "2026-06-06T00:00:00Z",
+  "product_state": {
+    "fods": {"gate_11_status": "APPROVED", "commercial_product_ready": true, "autonomous_gaps": 0},
+    "fodt": {"gate_11_status": "APPROVED", "commercial_product_ready": true, "autonomous_gaps": 0},
+    "netpbm": {"gate_11_status": "APPROVED", "commercial_product_ready": true, "autonomous_gaps": 0},
+    "total_autonomous_product_gaps": 0,
+    "total_external_gate_items": 6
+  },
+  "autonomy_gaps": [
+    {
+      "gap_id": "GAP-SYS-001",
+      "description": "Durable action queue not yet proven to drive orchestrator cycles",
+      "status": "IN_PROGRESS",
+      "owner": "Lane 3",
+      "resolution": "action_queue.py implemented; proof run pending"
+    },
+    {
+      "gap_id": "GAP-SYS-002",
+      "description": "Post-evidence-closeout continuation produces advisory Markdown, not executable next-action",
+      "status": "IN_PROGRESS",
+      "owner": "Lane 6",
+      "resolution": "evidence_continuation.py being implemented"
+    },
+    {
+      "gap_id": "GAP-SYS-003",
+      "description": "Product-safe pilot through orchestrator not yet proven",
+      "status": "IN_PROGRESS",
+      "owner": "Lane 4",
+      "resolution": "product_action_guard.py + orchestrator pilot run pending"
+    },
+    {
+      "gap_id": "GAP-SYS-004",
+      "description": "H5 non-deterministic backend (LLM) not yet dispatched through runner",
+      "status": "CREDENTIAL_PRESENT_DISPATCH_PENDING",
+      "owner": "Lane 5",
+      "resolution": "PROFESSIONALIZE_API_KEY PRESENT; bounded call pending"
+    },
+    {
+      "gap_id": "GAP-SYS-005",
+      "description": "H6 external host not yet started (requires CLAUDECODE='' environment)",
+      "status": "SCRIPTS_READY_EXTERNAL_START_REQUIRED",
+      "owner": "Lane 2",
+      "resolution": "Scripts written (Sprint 4); requires one-time external PowerShell start"
+    }
+  ],
+  "external_gate_items": [
+    {"item": "Git commit authorization", "gate": "USER_AUTHORIZATION"},
+    {"item": "Git push authorization", "gate": "USER_AUTHORIZATION"},
+    {"item": "Gate 11 approval (FODS commercial)", "gate": "GATE_11_APPROVED"},
+    {"item": "Gate 11 approval (FODT commercial)", "gate": "GATE_11_APPROVED"},
+    {"item": "Gate 11 approval (Netpbm commercial)", "gate": "GATE_11_APPROVED"},
+    {"item": "Package publication", "gate": "USER_AUTHORIZATION"}
+  ]
+}

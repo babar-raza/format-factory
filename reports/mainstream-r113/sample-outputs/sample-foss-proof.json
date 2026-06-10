@@ -1,0 +1,9 @@
+{
+  "sample_type": "foss_proof",
+  "format": "ZST",
+  "workflow": "compress(data, level) -> decompress(compressed) -> assert equal",
+  "test_file": "tests/python/zst/test_r113_zst_dict_mode.py",
+  "test_method": "test_level_1_roundtrip",
+  "assertion": "Data survives ZST compress/decompress roundtrip at level 1",
+  "pass": true
+}

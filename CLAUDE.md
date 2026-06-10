@@ -60,6 +60,14 @@ Then IMMEDIATELY:
 
 If ANY condition is false, STOP and report the termination reason to the user.
 
+### Cross-Window Recovery
+If this window is new (context was exhausted, window crashed, or user opened a fresh session):
+- The state files (`session-resume.md`, `approval-gates.md`, `next-sprint.md`) contain everything
+  you need. You do NOT need memory of prior conversations.
+- `session-resume.md` reflects the last COMPLETED sprint — read it and continue from there.
+- Any in-progress work from a crashed sprint remains in the working tree.
+- See `docs/automation/autonomous-supervision-replication-guide.md` for the full architecture.
+
 ### Hard Stops (never autonomous)
 - Git push or commit (requires explicit user authorization)
 - Gate 8 or Gate 11 approval

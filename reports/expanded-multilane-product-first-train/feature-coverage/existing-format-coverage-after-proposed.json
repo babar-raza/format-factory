@@ -1,0 +1,28 @@
+{
+  "sprint": "FORMAT-FACTORY-EXPANDED-STANDING-MULTI-LANE-PRODUCT-FIRST-MEGA-TRAIN-001",
+  "formats": {
+    "abw": {
+      "functions": ["probe", "load", "extract_text", "edit_paragraph", "create", "write", "export_to_txt", "export_to_html", "export_to_json", "export_to_csv", "get_metadata"],
+      "new_this_sprint": ["export_to_csv"],
+      "test_files": ["tests/python/abw/test_r123_abw_csv_export.py"]
+    },
+    "gnumeric": {
+      "functions": ["probe", "load", "get_sheet_count", "get_cell_count", "extract_values", "get_sheet_metadata", "get_cell_value", "export_to_csv", "export_to_json", "create", "write"],
+      "new_this_sprint": ["get_cell_value"],
+      "test_files": ["tests/python/gnumeric/test_r123_gnumeric_cell_accessor.py"]
+    },
+    "ndjson": {
+      "functions": ["probe", "load", "write", "append_record", "filter_records", "get_record_count"],
+      "new_this_sprint": ["append_record", "filter_records"],
+      "test_files": ["tests/python/ndjson/test_r123_ndjson_append_filter.py"]
+    },
+    "tsv": {
+      "functions": ["parse_tsv", "parse_tsv_strict", "probe_tsv", "write_tsv"],
+      "new_this_sprint": []
+    },
+    "fodg": {
+      "functions": ["probe_fodg"],
+      "new_this_sprint": []
+    }
+  }
+}

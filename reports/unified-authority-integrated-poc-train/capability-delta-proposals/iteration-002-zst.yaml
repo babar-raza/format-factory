@@ -1,0 +1,19 @@
+delta_id: "delta:iter002-zst-r115"
+sprint_id: "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001"
+iteration: 2
+format: zst
+track: foss_python
+proposed_at: "2026-06-04T21:00:00Z"
+
+additions:
+  - capability: zst_file_roundtrip_depth
+    description: "compress_bytes -> write to file -> read -> decompress_bytes roundtrip for text, binary, empty, large repetitive, level-1/3/9/19 data"
+    tests: ["tests/python/zst/test_r115_zst_file_roundtrip.py::TestZstFileRoundtrip"]
+    status: VERIFIED
+
+  - capability: probe_and_validate_workflow
+    description: "probe_frame detects valid/invalid frames; validate_file returns valid dict; dogfood: compress -> write -> probe -> validate -> decompress"
+    tests: ["tests/python/zst/test_r115_zst_file_roundtrip.py::TestZstProbeWorkflow"]
+    status: VERIFIED
+
+verdict: DELTA_ACCEPTED

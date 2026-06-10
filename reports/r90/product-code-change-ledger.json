@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+  "latest_sprint": "mainstream-product-deepening-rnext21",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -20,7 +20,7 @@
         {
           "path": "src/net/fods/FodsCsvExporter.cs",
           "state": "present",
-          "sha256": "e2d83148a7475043e89f97b3bb5f6f69910559cf93d9420165e3e09e46abbd59"
+          "sha256": "6538897111c832ee0814eec7610e04a005016db9d1751c42c5558a871388421d"
         }
       ]
     },
@@ -89,7 +89,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "0b338c66eaf44e508778be24c0fcaf7c8a9f621165504aecd710f913dcb6c27e"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -258,7 +258,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "e21c2037284b57adba4a9c4e7bdda2ed137664fc626b1ed435d628de39e02ab6"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -344,7 +344,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "40c4f4807e2d194bc5b47894c5555c4ecd76ce1b37bc204eaa5fd8306c803f65"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -361,7 +361,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u2014 new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
+      "api_behavior": "No src change â€” new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r93_zst_roundtrip.py"
@@ -371,7 +371,7 @@
         {
           "path": "src/python/zst/zst_codec.py",
           "state": "present",
-          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+          "sha256": "467ebd044ff69d0684b5f308d3ce62a8d5c2c639c8f1963a9489b4b13ccfdc54"
         }
       ]
     },
@@ -388,7 +388,7 @@
         "convert_ppm_to_pgm",
         "ppm_pixels_to_pgm_pixels"
       ],
-      "api_behavior": "No src change \u2014 workflow verification tests only. Verifies end-to-end PPM\u2192PGM conversion using FF libraries exclusively, with luminance weighting validation.",
+      "api_behavior": "No src change â€” workflow verification tests only. Verifies end-to-end PPMâ†’PGM conversion using FF libraries exclusively, with luminance weighting validation.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py"
@@ -512,7 +512,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "6a8d297ce944dfd44c97c59780e2e53616d16b386517ec82d9dcdaefef6a8ad5"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -529,7 +529,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u2014 streaming pattern tests only. Verifies large payload, incompressible data, sequential compressions, all byte values.",
+      "api_behavior": "No src change â€” streaming pattern tests only. Verifies large payload, incompressible data, sequential compressions, all byte values.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r94_zst_streaming.py"
@@ -539,7 +539,7 @@
         {
           "path": "src/python/zst/zst_codec.py",
           "state": "present",
-          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+          "sha256": "467ebd044ff69d0684b5f308d3ce62a8d5c2c639c8f1963a9489b4b13ccfdc54"
         }
       ]
     },
@@ -556,7 +556,7 @@
         "ppm_pixels_to_pgm_pixels",
         "convert_ppm_to_pgm"
       ],
-      "api_behavior": "No src change \u2014 grayscale conversion edge case tests. Verifies luminance weighting, pure-color behavior, empty input, file round-trip.",
+      "api_behavior": "No src change â€” grayscale conversion edge case tests. Verifies luminance weighting, pure-color behavior, empty input, file round-trip.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
@@ -680,7 +680,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "bcec830e65cdf0a5099e9db0d93a7b3b094f57999b0560373bf1558a1a4c7512"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -697,7 +697,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u2014 compression level variation tests. Verifies level 1, level 19, binary data, empty bytes, size comparison.",
+      "api_behavior": "No src change â€” compression level variation tests. Verifies level 1, level 19, binary data, empty bytes, size comparison.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r95_zst_level_variations.py"
@@ -707,7 +707,7 @@
         {
           "path": "src/python/zst/zst_codec.py",
           "state": "present",
-          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+          "sha256": "467ebd044ff69d0684b5f308d3ce62a8d5c2c639c8f1963a9489b4b13ccfdc54"
         }
       ]
     },
@@ -724,7 +724,7 @@
         "parse_ppm",
         "write_ppm"
       ],
-      "api_behavior": "No src change \u2014 pixel statistics and roundtrip integrity tests. Verifies parse structure, write-read roundtrip, single pixel, max/zero values.",
+      "api_behavior": "No src change â€” pixel statistics and roundtrip integrity tests. Verifies parse structure, write-read roundtrip, single pixel, max/zero values.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r95_ppm_pixel_stats.py"
@@ -751,7 +751,7 @@
         "write_sylk",
         "parse_sylk"
       ],
-      "api_behavior": "No src change \u2014 roundtrip hardening tests. Verifies CRLF line endings, header/footer preservation, mixed types, float precision, large grid.",
+      "api_behavior": "No src change â€” roundtrip hardening tests. Verifies CRLF line endings, header/footer preservation, mixed types, float precision, large grid.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r95_sylk_roundtrip_hardening.py"
@@ -846,7 +846,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "a93cace60f2a39d83fde2e01b5bab2bcc1d49eb80e6101cc43c546c68425ec65"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -863,7 +863,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u2014 error handling tests. Invalid data, empty input, corrupt magic, boundary conditions.",
+      "api_behavior": "No src change â€” error handling tests. Invalid data, empty input, corrupt magic, boundary conditions.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r96_zst_error_handling.py"
@@ -873,7 +873,7 @@
         {
           "path": "src/python/zst/zst_codec.py",
           "state": "present",
-          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+          "sha256": "467ebd044ff69d0684b5f308d3ce62a8d5c2c639c8f1963a9489b4b13ccfdc54"
         }
       ]
     },
@@ -890,7 +890,7 @@
         "write_pgm",
         "parse_pgm"
       ],
-      "api_behavior": "No src change \u2014 write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, zero/max values.",
+      "api_behavior": "No src change â€” write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, zero/max values.",
       "changed_files": [],
       "test_files": [
         "tests/python/pgm/test_r96_pgm_write_read.py"
@@ -916,7 +916,7 @@
       "api_symbols": [
         "parse_fods"
       ],
-      "api_behavior": "No src change \u2014 workbook operations hardening tests. Parse structure, multi-sheet, error handling, consistency.",
+      "api_behavior": "No src change â€” workbook operations hardening tests. Parse structure, multi-sheet, error handling, consistency.",
       "changed_files": [],
       "test_files": [
         "tests/python/fods/test_r96_fods_workbook_operations.py"
@@ -1010,7 +1010,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "41dddccfceb7a418ca459e304e0bb092c04bb56959a66a26c470c1cdf7b2a033"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -1027,7 +1027,7 @@
         "write_pbm",
         "parse_pbm"
       ],
-      "api_behavior": "No src change \u2014 PBM write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, all-white/all-black.",
+      "api_behavior": "No src change â€” PBM write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, all-white/all-black.",
       "changed_files": [],
       "test_files": [
         "tests/python/pbm/test_r97_pbm_write_read.py"
@@ -1053,7 +1053,7 @@
       "api_symbols": [
         "parse_fodt"
       ],
-      "api_behavior": "No src change \u2014 FODT document operations hardening. Parse structure, format, paragraphs, consistency, error handling.",
+      "api_behavior": "No src change â€” FODT document operations hardening. Parse structure, format, paragraphs, consistency, error handling.",
       "changed_files": [],
       "test_files": [
         "tests/python/fodt/test_r97_fodt_document_operations.py"
@@ -1079,7 +1079,7 @@
       "api_symbols": [
         "parse_dif"
       ],
-      "api_behavior": "No src change \u2014 DIF parse hardening tests. Structure, edge cases, error handling, consistency.",
+      "api_behavior": "No src change â€” DIF parse hardening tests. Structure, edge cases, error handling, consistency.",
       "changed_files": [],
       "test_files": [
         "tests/python/dif/test_r97_dif_parse_hardening.py"
@@ -1171,7 +1171,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "7a0e1ca9aee6c4f281667bce7da2c25bc39ed107d465c11bd0cb9d90b7f185d4"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -1200,7 +1200,7 @@
         {
           "path": "src/python/zst/zst_codec.py",
           "state": "present",
-          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+          "sha256": "467ebd044ff69d0684b5f308d3ce62a8d5c2c639c8f1963a9489b4b13ccfdc54"
         }
       ]
     },
@@ -1283,7 +1283,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "c42c99ad0adaf5e7a1c886a9d85207a7b57141667e6a19312b2a0781d5ffae5e"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -1301,7 +1301,7 @@
         "ExportSheetToJson",
         "ExportFirstSheetToCsv"
       ],
-      "api_behavior": "No src change \u2014 export quality edge case tests. CSV quoting, HTML structure, JSON validity, in-memory/file parity, by-name overloads.",
+      "api_behavior": "No src change â€” export quality edge case tests. CSV quoting, HTML structure, JSON validity, in-memory/file parity, by-name overloads.",
       "changed_files": [],
       "test_files": [
         "tests/net/fods/FodsR99ExportQualityTests.cs"
@@ -1332,7 +1332,7 @@
         "GetParagraphTexts",
         "SearchText"
       ],
-      "api_behavior": "No src change \u2014 paragraph persistence tests. Multiple ReplaceText all persist, word/char counts, heading/paragraph text preservation after save/reload.",
+      "api_behavior": "No src change â€” paragraph persistence tests. Multiple ReplaceText all persist, word/char counts, heading/paragraph text preservation after save/reload.",
       "changed_files": [],
       "test_files": [
         "tests/net/fodt/FodtR99ParagraphPersistenceTests.cs"
@@ -1360,7 +1360,7 @@
         "decompress_bytes",
         "validate_file"
       ],
-      "api_behavior": "No src change \u2014 streaming workflow tests. Large payload, output limit, multiple files, UTF-8, high entropy, truncated file, zero-length, compression level.",
+      "api_behavior": "No src change â€” streaming workflow tests. Large payload, output limit, multiple files, UTF-8, high entropy, truncated file, zero-length, compression level.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r99_zst_streaming_workflow.py"
@@ -1370,7 +1370,7 @@
         {
           "path": "src/python/zst/zst_codec.py",
           "state": "present",
-          "sha256": "a61138c44b5fae9a20e5fc9fcddc438cdc88b39ca5a5dcc36472fc5d6524c7f2"
+          "sha256": "467ebd044ff69d0684b5f308d3ce62a8d5c2c639c8f1963a9489b4b13ccfdc54"
         }
       ]
     },
@@ -1389,7 +1389,7 @@
         "parse_ppm_strict",
         "write_pgm"
       ],
-      "api_behavior": "No src change \u2014 PPM/PGM cross-format conversion tests. Grayscale conversion, color expansion, roundtrip, dimension preservation, maxval roundtrip.",
+      "api_behavior": "No src change â€” PPM/PGM cross-format conversion tests. Grayscale conversion, color expansion, roundtrip, dimension preservation, maxval roundtrip.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r99_ppm_pgm_conversion.py"
@@ -1420,7 +1420,7 @@
         "probe_sylk",
         "sylk_to_csv"
       ],
-      "api_behavior": "No src change \u2014 full installed workflow tests. Create/write/parse/export, probe valid/invalid, dict mode, CSV headers, numeric values, empty cells.",
+      "api_behavior": "No src change â€” full installed workflow tests. Create/write/parse/export, probe valid/invalid, dict mode, CSV headers, numeric values, empty cells.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r99_sylk_installed_workflow.py"
@@ -1514,7 +1514,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "c42c99ad0adaf5e7a1c886a9d85207a7b57141667e6a19312b2a0781d5ffae5e"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -1535,7 +1535,7 @@
         "ZstError",
         "ZstInvalidFrameError"
       ],
-      "api_behavior": "No src change \u2014 deep probe/validate workflow tests. Valid/nonexistent/corrupt file validation, magic bytes, binary roundtrip, empty input, deterministic compression.",
+      "api_behavior": "No src change â€” deep probe/validate workflow tests. Valid/nonexistent/corrupt file validation, magic bytes, binary roundtrip, empty input, deterministic compression.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r100_zst_probe_workflow.py"
@@ -1545,7 +1545,7 @@
         {
           "path": "src/python/zst/zst_codec.py",
           "state": "present",
-          "sha256": "UNCHANGED_FROM_R93"
+          "sha256": "467ebd044ff69d0684b5f308d3ce62a8d5c2c639c8f1963a9489b4b13ccfdc54"
         }
       ]
     },
@@ -1567,7 +1567,7 @@
         "write_pgm",
         "parse_pgm_strict"
       ],
-      "api_behavior": "No src change \u2014 full PBM->PPM->PGM chain tests. Pixel mapping, dimension preservation, grayscale conversion, color expansion, all-black/all-white chains.",
+      "api_behavior": "No src change â€” full PBM->PPM->PGM chain tests. Pixel mapping, dimension preservation, grayscale conversion, color expansion, all-black/all-white chains.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r100_pbm_ppm_pgm_chain.py"
@@ -1609,7 +1609,7 @@
         "SylkDocument",
         "SylkCell"
       ],
-      "api_behavior": "No src change \u2014 CSV export hardening + malformed input tests. Commas in values, empty cells, multirow, large grid, random bytes, empty file, special characters.",
+      "api_behavior": "No src change â€” CSV export hardening + malformed input tests. Commas in values, empty cells, multirow, large grid, random bytes, empty file, special characters.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r100_sylk_csv_malformed.py"
@@ -1706,7 +1706,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "ef76460c5480af4156a9b22925e36792dfeaddea3a1ae0ff9bab4cbc98271fad"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -1790,7 +1790,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "c1eb98316e91e2cba0d27fddbc1b942f6bb79c54e84e014099178db906994b8b"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -1874,7 +1874,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "43b75ad9b7b493d4dbde8ec64ec016c34b83390579559587027295bd20e0a1c7"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -1930,7 +1930,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "43b75ad9b7b493d4dbde8ec64ec016c34b83390579559587027295bd20e0a1c7"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2070,7 +2070,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "acbb5ec9e7a884cca48efcc8b3734f20de1fe59a758ab37d44977ee9dd0614dd"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2098,7 +2098,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "acbb5ec9e7a884cca48efcc8b3734f20de1fe59a758ab37d44977ee9dd0614dd"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2238,7 +2238,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "496797949b615f1124b01aeb27c17689ae977e9b3e7e7726ffdb67c9451f8baa"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2266,7 +2266,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "496797949b615f1124b01aeb27c17689ae977e9b3e7e7726ffdb67c9451f8baa"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2406,7 +2406,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "4d36d30dcd40d65ad7f7a5cde92b91feabf9d03cef0aec13e673d7e6c0e930f7"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2434,7 +2434,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "4d36d30dcd40d65ad7f7a5cde92b91feabf9d03cef0aec13e673d7e6c0e930f7"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2577,7 +2577,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "978e037bafc0d597cdaba3810928d893e993fdbb2953efb1380f8accb2d2f764"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2605,7 +2605,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "978e037bafc0d597cdaba3810928d893e993fdbb2953efb1380f8accb2d2f764"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2691,7 +2691,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "af782955c46aaa92bce95b194b863b5a2ad6a5a7be30f272452502bc8b28a6ff"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2775,7 +2775,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "99f60913e9adc0c677b8c253ba6b9df1074e918532aadfbaeef9aa2a9b44deb7"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2915,7 +2915,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "323497ab7377d0797cfdb88988f9ed0113c6d16fb77b751a9e2676ecaf3869ba"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -2943,7 +2943,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "323497ab7377d0797cfdb88988f9ed0113c6d16fb77b751a9e2676ecaf3869ba"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -3084,7 +3084,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "6d1b16be0907f0628fa3ea5bc8ad8abc171fc80ffb966022a9a40bf11b084ba9"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -3112,7 +3112,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "6d1b16be0907f0628fa3ea5bc8ad8abc171fc80ffb966022a9a40bf11b084ba9"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -3232,7 +3232,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "3e0aea93ffa39c5c3da1716ba7347eb5cf84a569e12fae48b275d775fd966956"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -3259,7 +3259,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "4c84c20baf484122f67df49a6ba4a613a4203ae09bcf87cbcb218439ad908cf5"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ]
     },
@@ -3353,7 +3353,7 @@
         {
           "path": "src/net/netpbm/Model/NetpbmImage.cs",
           "state": "present",
-          "sha256": "7f191ed0c4d6e54d892e9d8f57080f155fb7be2716448e5cd6ff467da436701d"
+          "sha256": "b556e008b806f50c6b8a635ea532b48c5cfcd5fd7028998b1e098bf44696c311"
         }
       ],
       "skill_id": "add-dotnet-object-model-feature",
@@ -3374,7 +3374,7 @@
         "dif_to_csv",
         "parse_dif_strict"
       ],
-      "api_behavior": "probe_dif: returns dict with valid_header/exists/title. dif_to_csv: converts DIF to CSV string. parse_dif_strict: returns DifDocument or raises on invalid. Test-only coverage \u2014 no src/ change.",
+      "api_behavior": "probe_dif: returns dict with valid_header/exists/title. dif_to_csv: converts DIF to CSV string. parse_dif_strict: returns DifDocument or raises on invalid. Test-only coverage â€” no src/ change.",
       "changed_files": [],
       "test_files": [
         "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
@@ -3613,12 +3613,12 @@
         {
           "path": "src/net/fods/FodsCsvExporter.cs",
           "state": "present",
-          "sha256": "3d1c294eca93495221c9bd81545f922e4c7ef3066c7b063e6a6e0d9ef8fbf703"
+          "sha256": "c52bb1b7185b0d52b9e03ce00f4e9485a7f6e91445680cc8b00752861540e172"
         },
         {
           "path": "src/net/fods/FormatFactory.Fods.csproj",
           "state": "present",
-          "sha256": "32dd10dc4740d40687c3ac939da47d52e44def0b82f60b892204979f242b6803"
+          "sha256": "698ef9dec8d32176f81e32e12f193167bddbe27a29b81a232594e3809b816f4e"
         }
       ],
       "skill_id": "add-dogfood-export",
@@ -3690,7 +3690,7 @@
         {
           "path": "src/net/fodt/FormatFactory.Fodt.csproj",
           "state": "present",
-          "sha256": "622e7a52e9eadd92af50619f1007778dd0be65fccb059d2f830cf38476d901dd"
+          "sha256": "406b96d2d8f2fa182970f73359ee5905e1b2c35a51ff8bc450de2868d2532d12"
         }
       ],
       "skill_id": "add-dogfood-export",
@@ -3728,6 +3728,4027 @@
       ],
       "skill_id": "add-dogfood-export",
       "raw_log": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/product-dogfood-tests.log"
+    },
+    {
+      "entry_id": "S11-ABW-FIRST-PARAGRAPH",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "ABW Python FOSS",
+      "api_symbols": [
+        "first_paragraph"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "5d2fb2b3ab8fd790b54878bd4725d8e493c8e7650bd8b0c4082ac739ee7711df"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.ABW.python_status.get_paragraph"
+      ]
+    },
+    {
+      "entry_id": "S11-ABW-LAST-PARAGRAPH",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "ABW Python FOSS",
+      "api_symbols": [
+        "last_paragraph"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "5d2fb2b3ab8fd790b54878bd4725d8e493c8e7650bd8b0c4082ac739ee7711df"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.ABW.python_status.get_paragraph"
+      ]
+    },
+    {
+      "entry_id": "S11-GNUMERIC-GET-SHEET-AS-ROWS",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "Gnumeric Python FOSS",
+      "api_symbols": [
+        "get_sheet_as_rows"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "state": "present",
+          "sha256": "9c1122c5c5d21ab4da13546ea333a9cd46c0b7004c397f7c748e4feda16caaf7"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.Gnumeric.python_status.get_cell_value"
+      ]
+    },
+    {
+      "entry_id": "S11-GNUMERIC-FILL-ROW",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "Gnumeric Python FOSS",
+      "api_symbols": [
+        "fill_row"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "state": "present",
+          "sha256": "9c1122c5c5d21ab4da13546ea333a9cd46c0b7004c397f7c748e4feda16caaf7"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.Gnumeric.python_status.set_cell_value"
+      ]
+    },
+    {
+      "entry_id": "S11-TSV-GET-COLUMN-VALUES",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "TSV Python FOSS",
+      "api_symbols": [
+        "get_column_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "0195527f1d35ca56f922eadbc64a386934fbebdb36793d807eae6c97f0a9e251"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.TSV.python_status.get_headers"
+      ]
+    },
+    {
+      "entry_id": "S11-TSV-MAX-COLUMN-TSV",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "TSV Python FOSS",
+      "api_symbols": [
+        "max_column_tsv"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "0195527f1d35ca56f922eadbc64a386934fbebdb36793d807eae6c97f0a9e251"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.TSV.python_status.get_headers"
+      ]
+    },
+    {
+      "entry_id": "S11-NDJSON-RENAME-FIELD",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "NDJSON Python FOSS",
+      "api_symbols": [
+        "rename_field"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "6b2e6678b8c6da4cb7c9455951a6a94f748913dc3b93a8d2b6c80a6679b7f5ab"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.NDJSON.python_status.filter_records"
+      ]
+    },
+    {
+      "entry_id": "S11-NDJSON-AVERAGE-VALUE",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "NDJSON Python FOSS",
+      "api_symbols": [
+        "average_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "6b2e6678b8c6da4cb7c9455951a6a94f748913dc3b93a8d2b6c80a6679b7f5ab"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.NDJSON.python_status.filter_records"
+      ]
+    },
+    {
+      "entry_id": "S11-FODG-PAGE-NAMES",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "FODG Python FOSS",
+      "api_symbols": [
+        "page_names"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "state": "present",
+          "sha256": "bfec2fff7e4dac067a404e6e05eebb499faf09b83b35352d27da8eadbe408de9"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.FODG.python_status.probe_fodg"
+      ]
+    },
+    {
+      "entry_id": "S11-FODG-HAS-PAGE",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R150",
+      "product": "FODG Python FOSS",
+      "api_symbols": [
+        "has_page"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "state": "present",
+          "sha256": "bfec2fff7e4dac067a404e6e05eebb499faf09b83b35352d27da8eadbe408de9"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.FODG.python_status.probe_fodg"
+      ]
+    },
+    {
+      "entry_id": "S12-ABW-COUNT-WORDS",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "ABW Python FOSS",
+      "api_symbols": [
+        "count_words"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "5d2fb2b3ab8fd790b54878bd4725d8e493c8e7650bd8b0c4082ac739ee7711df"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.ABW.python_status.get_paragraph"
+      ]
+    },
+    {
+      "entry_id": "S12-ABW-PARAGRAPH-AT",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "ABW Python FOSS",
+      "api_symbols": [
+        "paragraph_at"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "5d2fb2b3ab8fd790b54878bd4725d8e493c8e7650bd8b0c4082ac739ee7711df"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.ABW.python_status.get_paragraph"
+      ]
+    },
+    {
+      "entry_id": "S12-GNUMERIC-SHEET-NAMES",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "Gnumeric Python FOSS",
+      "api_symbols": [
+        "sheet_names"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "state": "present",
+          "sha256": "9c1122c5c5d21ab4da13546ea333a9cd46c0b7004c397f7c748e4feda16caaf7"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.Gnumeric.python_status.get_sheet_names"
+      ]
+    },
+    {
+      "entry_id": "S12-GNUMERIC-ROW-COUNT",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "Gnumeric Python FOSS",
+      "api_symbols": [
+        "row_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "state": "present",
+          "sha256": "9c1122c5c5d21ab4da13546ea333a9cd46c0b7004c397f7c748e4feda16caaf7"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.Gnumeric.python_status.get_cell_value"
+      ]
+    },
+    {
+      "entry_id": "S12-TSV-COLUMN-COUNT",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "TSV Python FOSS",
+      "api_symbols": [
+        "column_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "0195527f1d35ca56f922eadbc64a386934fbebdb36793d807eae6c97f0a9e251"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.TSV.python_status.get_headers"
+      ]
+    },
+    {
+      "entry_id": "S12-TSV-FILTER-ROWS",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "TSV Python FOSS",
+      "api_symbols": [
+        "filter_rows"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "0195527f1d35ca56f922eadbc64a386934fbebdb36793d807eae6c97f0a9e251"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.TSV.python_status.get_headers"
+      ]
+    },
+    {
+      "entry_id": "S12-NDJSON-HEAD",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "NDJSON Python FOSS",
+      "api_symbols": [
+        "head"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "6b2e6678b8c6da4cb7c9455951a6a94f748913dc3b93a8d2b6c80a6679b7f5ab"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.NDJSON.python_status.filter_records"
+      ]
+    },
+    {
+      "entry_id": "S12-NDJSON-SUM-FIELD",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "NDJSON Python FOSS",
+      "api_symbols": [
+        "sum_field"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "6b2e6678b8c6da4cb7c9455951a6a94f748913dc3b93a8d2b6c80a6679b7f5ab"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.NDJSON.python_status.filter_records"
+      ]
+    },
+    {
+      "entry_id": "S12-FODG-RENAME-PAGE",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "FODG Python FOSS",
+      "api_symbols": [
+        "rename_page"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "state": "present",
+          "sha256": "bfec2fff7e4dac067a404e6e05eebb499faf09b83b35352d27da8eadbe408de9"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.FODG.python_status.probe_fodg"
+      ]
+    },
+    {
+      "entry_id": "S12-FODG-ADD-PAGE",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R152",
+      "product": "FODG Python FOSS",
+      "api_symbols": [
+        "add_page"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "state": "present",
+          "sha256": "bfec2fff7e4dac067a404e6e05eebb499faf09b83b35352d27da8eadbe408de9"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.FODG.python_status.probe_fodg"
+      ]
+    },
+    {
+      "entry_id": "PYPROJECT-PBM-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "PBM Python FOSS",
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pyproject.toml",
+          "state": "present",
+          "sha256": "a1b42ffc3920c187215d6bf6aad6fd569508ee942c3e3299cbb81907f05fd6cd"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.python_status.package_installable"
+      ]
+    },
+    {
+      "entry_id": "PYPROJECT-PGM-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "PGM Python FOSS",
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pyproject.toml",
+          "state": "present",
+          "sha256": "df986b86c31a05aaf57353010f22fe032e3046e8f7db37cf59a8756c333b49a3"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.python_status.package_installable"
+      ]
+    },
+    {
+      "entry_id": "PYPROJECT-PPM-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "PPM Python FOSS",
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/pyproject.toml",
+          "state": "present",
+          "sha256": "0c3e7429f35573e57a801589e4b9f92a15e68b24e5f8ab53e66e35ab02b1f16e"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.Netpbm.python_status.package_installable"
+      ]
+    },
+    {
+      "entry_id": "PYPROJECT-SYLK-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "SYLK Python FOSS",
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/pyproject.toml",
+          "state": "present",
+          "sha256": "04a8847b87f1795feb30ea58ad9f60ad550da90ddb7669ee3b335f4eec2bcf4d"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.SYLK.python_status.write_sylk"
+      ]
+    },
+    {
+      "entry_id": "PYPROJECT-ZST-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "ZST Python FOSS",
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/pyproject.toml",
+          "state": "present",
+          "sha256": "c9c3dbfdacef8b491da3ae679aae9fd027a1c80c501cbd1164aec50d201e1b9c"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.compress"
+      ]
+    },
+    {
+      "entry_id": "TOML-CODEC-INIT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "TOML Python FOSS",
+      "api_symbols": [
+        "toml_package_init"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "present",
+          "sha256": "45f4b16cb1d89798dfde2c12be0fda22c36a269f3a2d941c967da748e35226e1"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.TOML.python_status.probe_toml"
+      ]
+    },
+    {
+      "entry_id": "TOML-CODEC-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "TOML Python FOSS",
+      "api_symbols": [
+        "load_toml",
+        "probe_toml"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "ded5a4a76e2963b5dfe8fc89e3f5756b4606048cd6ec76ab13d14aa6823a061c"
+        }
+      ],
+      "capability_refs": [
+        "foss_reduced_products.TOML.python_status.probe_toml"
+      ]
+    },
+    {
+      "entry_id": "NETPBM-CSPROJ-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R115",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status"
+      ],
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/netpbm/FormatFactory.Netpbm.csproj",
+          "state": "present",
+          "sha256": "28a18a633f9be93f1ecca31ec53c997f1bba9568bb189832b27e6683c80bf353"
+        }
+      ]
+    },
+    {
+      "entry_id": "NETPBM-EXCEPTION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R115",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status"
+      ],
+      "api_symbols": [
+        "NetpbmException"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/netpbm/NetpbmException.cs",
+          "state": "present",
+          "sha256": "156e5e4396d69f88374b6ca14c695840ad3bb8c87788c4af0041b4d10d1ee624"
+        }
+      ]
+    },
+    {
+      "entry_id": "NETPBM-PARSER-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R115",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status"
+      ],
+      "api_symbols": [
+        "NetpbmParser"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/netpbm/NetpbmParser.cs",
+          "state": "present",
+          "sha256": "95ccd5e136c3bc4169db6b6c09a4f76839e147bfb7817cd92202b067fa079f03"
+        }
+      ]
+    },
+    {
+      "entry_id": "NETPBM-README-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R115",
+      "product": "Netpbm .NET",
+      "capability_refs": [
+        "commercial_net_products.Netpbm.dotnet_status"
+      ],
+      "api_symbols": [
+        "documentation"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/netpbm/README.md",
+          "state": "present",
+          "sha256": "8f685bb6e9f793b8905cf0d0f83e430a4fe6a318030b9728b682e9bdfd8d5352"
+        }
+      ]
+    },
+    {
+      "entry_id": "ABW-INIT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R117",
+      "product": "ABW Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ABW.python_status"
+      ],
+      "api_symbols": [
+        "abw_package_init"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/__init__.py",
+          "state": "present",
+          "sha256": "daae362d99254c5e6c61a710d05b91f6987465c30bcaff2c1ab015572839589a"
+        }
+      ]
+    },
+    {
+      "entry_id": "ABW-PYPROJECT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "ABW Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ABW.python_status.package_installable"
+      ],
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/pyproject.toml",
+          "state": "present",
+          "sha256": "95760ee72723811dab04889022d4371ba211d1a703e43a760cdacf74ad40be9f"
+        }
+      ]
+    },
+    {
+      "entry_id": "DIF-PYPROJECT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.DIF.python_status.write_dif"
+      ],
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/pyproject.toml",
+          "state": "present",
+          "sha256": "9eb63b33b3c9aa019fd5e4006f8e588e46472cbdd1ae90a2182b53b13c6f801e"
+        }
+      ]
+    },
+    {
+      "entry_id": "FODS-CONSTANTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R125",
+      "product": "FODS Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.FODS.python_status"
+      ],
+      "api_symbols": [
+        "FODS constants"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fods/constants.py",
+          "state": "present",
+          "sha256": "50bb3cd9aa1d71ffe7ff883ef34adfcbf0d6740a62f24b476d5ea87ea235fc3a"
+        }
+      ]
+    },
+    {
+      "entry_id": "FODS-PYPROJECT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "FODS Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.FODS.python_status"
+      ],
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fods/pyproject.toml",
+          "state": "present",
+          "sha256": "ee07cf6b226dd3585e1933f9aa3f95f4f0c8c67b75218a45b2b12cc2f4a61c38"
+        }
+      ]
+    },
+    {
+      "entry_id": "FODT-PYPROJECT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "FODT Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.FODT.python_status"
+      ],
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodt/pyproject.toml",
+          "state": "present",
+          "sha256": "d6bf7254dc050ac7cb04bbce7ddb1c1f623cf18596bca37148da6eeed50ab112"
+        }
+      ]
+    },
+    {
+      "entry_id": "GNUMERIC-INIT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R117",
+      "product": "Gnumeric Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Gnumeric.python_status"
+      ],
+      "api_symbols": [
+        "gnumeric_package_init"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/__init__.py",
+          "state": "present",
+          "sha256": "c76a0f2aa63cba450f8d856951862cd724d235567c7474df10c2c10930bb9bad"
+        }
+      ]
+    },
+    {
+      "entry_id": "GNUMERIC-PYPROJECT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R124",
+      "product": "Gnumeric Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Gnumeric.python_status.package_installable"
+      ],
+      "api_symbols": [
+        "package_metadata"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/pyproject.toml",
+          "state": "present",
+          "sha256": "c29021c1f18db8cbdd758ed7041c1bdd62235d7f24a3b7db2482947e710e0d8c"
+        }
+      ]
+    },
+    {
+      "entry_id": "NDJSON-INIT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R126",
+      "product": "NDJSON Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.NDJSON.python_status"
+      ],
+      "api_symbols": [
+        "ndjson_package_init"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "state": "present",
+          "sha256": "ddce2372736302666682d52bad557ff820410f07d587582f9b58bc22f597b330"
+        }
+      ]
+    },
+    {
+      "entry_id": "TSV-INIT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "R126",
+      "product": "TSV Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.TSV.python_status.get_headers"
+      ],
+      "api_symbols": [
+        "tsv_package_init"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/__init__.py",
+          "state": "present",
+          "sha256": "a8e3c6e6d2aeb1ca3939cbd9c5dc285f704a3686e95f1039c57dcdf54319c9ba"
+        }
+      ]
+    },
+    {
+      "entry_id": "MEGA-RNEXT-ABW-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-AUTONOMY-NEXT-LEVEL-BROAD-MEGA-SPRINT-001",
+      "product": "ABW Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.ABW.python_status"
+      ],
+      "api_symbols": [
+        "search_paragraph",
+        "get_word_count",
+        "search_replace_paragraph",
+        "get_paragraph",
+        "export_to_json",
+        "edit_paragraph",
+        "export_to_csv",
+        "merge_abw",
+        "word_frequency",
+        "truncate_paragraphs",
+        "get_unique_words",
+        "append_paragraph",
+        "split_paragraphs",
+        "get_char_count",
+        "join_paragraphs",
+        "replace_in_paragraphs",
+        "export_to_markdown",
+        "get_paragraph_at",
+        "paragraph_lengths",
+        "reverse_paragraphs",
+        "word_wrap",
+        "has_paragraph",
+        "first_paragraph",
+        "last_paragraph",
+        "count_words",
+        "paragraph_at"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/__init__.py",
+          "state": "present",
+          "sha256": "728db71e09dcb3e0792ee2d28beebf1ef6041c87a79722393766c85e1dd99523"
+        },
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "2a65befd2676f74f5683d93795fbdc5002d7a80805d9cef1b21e4064e0cb6c52"
+        }
+      ]
+    },
+    {
+      "entry_id": "MEGA-RNEXT-FODG-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-AUTONOMY-NEXT-LEVEL-BROAD-MEGA-SPRINT-001",
+      "product": "FODG Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.FODG.python_status"
+      ],
+      "api_symbols": [
+        "create_fodg",
+        "write_fodg",
+        "get_shapes",
+        "get_page_by_name",
+        "add_page",
+        "get_text_shapes",
+        "remove_page",
+        "rename_page",
+        "get_all_text",
+        "count_shapes",
+        "export_to_json",
+        "duplicate_page",
+        "get_page_index",
+        "clear_page",
+        "swap_pages",
+        "page_names",
+        "has_page",
+        "probe_fodg",
+        "export_to_txt",
+        "export_to_csv",
+        "roundtrip"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/__init__.py",
+          "state": "present",
+          "sha256": "03922c93ab50d4cfae6e46e2e0511ac8b03e4fb88784a070a26f45c83f4e781d"
+        },
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "state": "present",
+          "sha256": "aff88db6e39b1de57c0cd03b6dc769288d9126b4d0b26a55ebd7caab57ec9b1b"
+        }
+      ]
+    },
+    {
+      "entry_id": "MEGA-RNEXT-GNUMERIC-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-AUTONOMY-NEXT-LEVEL-BROAD-MEGA-SPRINT-001",
+      "product": "Gnumeric Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.Gnumeric.python_status"
+      ],
+      "api_symbols": [
+        "get_cell_value",
+        "set_cell_value",
+        "get_sheet_names",
+        "get_row",
+        "get_column",
+        "delete_sheet",
+        "rename_sheet",
+        "add_sheet",
+        "get_sheet_by_name",
+        "copy_sheet",
+        "clear_cell",
+        "get_row_count",
+        "get_column_count",
+        "read_cell",
+        "count_nonempty_cells",
+        "get_sheet_index",
+        "sum_column",
+        "fill_column",
+        "sum_row",
+        "get_all_values",
+        "clear_sheet",
+        "get_sheet_as_rows",
+        "fill_row",
+        "sheet_names",
+        "row_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/__init__.py",
+          "state": "present",
+          "sha256": "8cc6ed9158b184b3ac0b0b664f725d6cbae841ad14c16e17c8de15ee4360aed5"
+        },
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "state": "present",
+          "sha256": "f63771bf8933d061224fdb8592f14d821a82ee51b53a54827af3673668e6503b"
+        }
+      ]
+    },
+    {
+      "entry_id": "MEGA-RNEXT-NDJSON-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-AUTONOMY-NEXT-LEVEL-BROAD-MEGA-SPRINT-001",
+      "product": "NDJSON Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.NDJSON.python_status"
+      ],
+      "api_symbols": [
+        "head",
+        "sum_field",
+        "min_value",
+        "max_value",
+        "count_by",
+        "zip_records",
+        "aggregate",
+        "sort_by",
+        "pick",
+        "distinct_values",
+        "group_by",
+        "merge_ndjson",
+        "deduplicate",
+        "tail",
+        "pluck",
+        "to_jsonl_str",
+        "export_to_csv",
+        "rename_field",
+        "average_value",
+        "filter_rows",
+        "validate_schema"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "a5ee3aa5c009b2a78d66b415b782a868fcf3d6a0b4a8363050e3dbd4af09459a"
+        }
+      ]
+    },
+    {
+      "entry_id": "MEGA-RNEXT-TSV-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "FORMAT-FACTORY-AUTONOMY-NEXT-LEVEL-BROAD-MEGA-SPRINT-001",
+      "product": "TSV Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.TSV.python_status"
+      ],
+      "api_symbols": [
+        "get_headers",
+        "get_row",
+        "get_column",
+        "write_tsv_strict",
+        "get_row_by_key",
+        "validate_headers",
+        "count_rows",
+        "to_csv",
+        "deduplicate_rows",
+        "add_column",
+        "rename_column",
+        "sort_rows",
+        "drop_column",
+        "sample_rows",
+        "sum_column",
+        "merge_tsv",
+        "min_column",
+        "get_column_values",
+        "max_column",
+        "column_count",
+        "filter_rows",
+        "append_row"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/__init__.py",
+          "state": "present",
+          "sha256": "bb9c24f30186c4e649ea049f7ccb4debb40e3d00cccd5a60fc257ba5b1eb44ff"
+        },
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "141b0dc6fc2ef7d2d286977fe0ae0b57c6da9764a097a16bfa02d35eb241ebbd"
+        }
+      ]
+    },
+    {
+      "entry_id": "FRFH-TOML-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "fodg-rework-full-hardening",
+      "skill": "add-python-object-model-feature",
+      "product": "TOML Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.TOML.python_status.get_value",
+        "foss_reduced_products.TOML.python_status.merge_toml",
+        "foss_reduced_products.TOML.python_status.to_json_str"
+      ],
+      "api_symbols": [
+        "get_value",
+        "merge_toml",
+        "to_json_str"
+      ],
+      "api_behavior": "get_value: retrieve a value from TOML by dotted key path; merge_toml: deep-merge two TOML dicts with source_b winning conflicts; to_json_str: export TOML data as sorted JSON string",
+      "changed_files": [
+        "src/python/toml/toml_codec.py",
+        "src/python/toml/__init__.py"
+      ],
+      "test_files": [
+        "tests/python/toml/test_frfh_toml_get_value_merge_json.py"
+      ],
+      "test_count": 14,
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "1dd6290d0c09b6a8bdbc64a510d3727825949f2e69830ce6e74da97fd490799c"
+        },
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "present",
+          "sha256": "f9ad6ce9d67ef70134e469827e3ed2e6c7510963e487c18334decedcf7a6cd7d"
+        }
+      ]
+    },
+    {
+      "entry_id": "NEXT-LEVEL-FODS-FIND-CELLS-001",
+      "sprint_id": "FORMAT-FACTORY-AUTONOMY-NEXT-LEVEL-BROAD-MEGA-SPRINT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FODS Python",
+      "capability_refs": [
+        "foss_reduced_products.FODS.python_status.workbook_find_cells"
+      ],
+      "api_symbols": [
+        "workbook_find_cells"
+      ],
+      "api_behavior": "workbook_find_cells: search all cells across all sheets for a matching value; returns list of match dicts with sheet_name, row_index, col_index, value. Aligned with FACT-FODS-001 (ODF 1.3 spreadsheet content model).",
+      "changed_files": [
+        "src/python/fods/__init__.py",
+        "src/python/fods/neutral_model.py"
+      ],
+      "test_files": [
+        "tests/python/fods/"
+      ],
+      "test_count": 1,
+      "source_files": [
+        {
+          "path": "src/python/fods/__init__.py",
+          "state": "present",
+          "sha256": "b6f5c36d2dd4c2e1e4e2d49d58decfa12a64cad335f0baad19b47b90e493a368"
+        },
+        {
+          "path": "src/python/fods/neutral_model.py",
+          "state": "present",
+          "sha256": "04ab4e48d669c465554524a4432c2503d12e4cff20bd62d903cad1003d11fb84"
+        }
+      ]
+    },
+    {
+      "entry_id": "NEXT-LEVEL-FODT-SEARCH-TEXT-001",
+      "sprint_id": "FORMAT-FACTORY-AUTONOMY-NEXT-LEVEL-BROAD-MEGA-SPRINT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "FODT Python",
+      "capability_refs": [
+        "foss_reduced_products.FODT.python_status.document_search_text"
+      ],
+      "api_symbols": [
+        "document_search_text"
+      ],
+      "api_behavior": "document_search_text: search all paragraph and heading blocks in a FODT document for a query string; returns list of match dicts with block_index, block_type, text, match_count. Aligned with FACT-FODT-001 (ODF 1.3 text content model).",
+      "changed_files": [
+        "src/python/fodt/__init__.py",
+        "src/python/fodt/neutral_model.py"
+      ],
+      "test_files": [
+        "tests/python/fodt/"
+      ],
+      "test_count": 1,
+      "source_files": [
+        {
+          "path": "src/python/fodt/__init__.py",
+          "state": "present",
+          "sha256": "57944fdb755f4fc0f8c680bda4b2042c6792a547d288ed35337603641d71610b"
+        },
+        {
+          "path": "src/python/fodt/neutral_model.py",
+          "state": "present",
+          "sha256": "fc39b99f2068bb3d999a1fb46543959c8e7731b48dc39887a0ed119ebda07a78"
+        }
+      ]
+    },
+    {
+      "entry_id": "NEXT-LEVEL-ZST-FILE-OPS-001",
+      "sprint_id": "FORMAT-FACTORY-AUTONOMY-NEXT-LEVEL-BROAD-MEGA-SPRINT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "product": "ZST Python",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.compress_file",
+        "foss_reduced_products.ZST.python_status.decompress_file"
+      ],
+      "api_symbols": [
+        "compress_file",
+        "decompress_file"
+      ],
+      "api_behavior": "compress_file: compress a file on disk to a .zst archive (RFC 8878 FACT-ZST-001); decompress_file: decompress a .zst file to disk. Both return status dicts with success, paths, and sizes.",
+      "changed_files": [
+        "src/python/zst/__init__.py",
+        "src/python/zst/zst_codec.py"
+      ],
+      "test_files": [
+        "tests/python/zst/"
+      ],
+      "test_count": 1,
+      "source_files": [
+        {
+          "path": "src/python/zst/__init__.py",
+          "state": "present",
+          "sha256": "94ed39895e33c0a16efccb1e5cb297bebe9a7fb41d84079d07a10a85da096957"
+        },
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "a666c704acad2f388730500aee67e58ff6625246a45c3aa875ef79d10c3eebed"
+        }
+      ]
+    },
+    {
+      "entry_id": "PPR-TOML-SET-VALUE-LIST-SECTIONS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-PRODUCT-PROGRESS-RNEXT-001",
+      "product": "TOML Python FOSS",
+      "capability_refs": [
+        "foss_python_products.TOML.set_value",
+        "foss_python_products.TOML.list_sections"
+      ],
+      "api_symbols": [
+        "set_value",
+        "list_sections"
+      ],
+      "test_files": [
+        "tests/python/toml/test_ppr_toml_set_value_list_sections.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "4950430380b50975b9833d0a8e3a65043952c2f590bb14aca18393c6d78c4d5a"
+        },
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "present",
+          "sha256": "4f1080881c71b4f719c2733e959aefac48437aff4e54e54909b9db545078d451"
+        }
+      ]
+    },
+    {
+      "entry_id": "PPR-SYLK-GET-CELL-ROW-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-PRODUCT-PROGRESS-RNEXT-001",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "foss_python_products.SYLK.get_cell_value",
+        "foss_python_products.SYLK.get_row_values"
+      ],
+      "api_symbols": [
+        "get_cell_value",
+        "get_row_values"
+      ],
+      "test_files": [
+        "tests/python/sylk/test_ppr_sylk_cell_row_access.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "bdc81129ab679614303fe1bd86f133d8d2ebcb9e3af8354947011299a4865d9d"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "9798d7b2c04a9bde846932879eba10e50b563876e981a08a566b322d5f8709df"
+        }
+      ]
+    },
+    {
+      "entry_id": "PPR-NDJSON-WRITE-CSV-FIELD-STATS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-PRODUCT-PROGRESS-RNEXT-001",
+      "product": "NDJSON Python FOSS",
+      "capability_refs": [
+        "foss_python_products.NDJSON.write_csv",
+        "foss_python_products.NDJSON.field_stats"
+      ],
+      "api_symbols": [
+        "write_csv",
+        "field_stats"
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_ppr_ndjson_write_csv_field_stats.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "476ff61527365357eb08aaf687680a0d9ccc0af6788e4d36709b082ab0201fce"
+        },
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "state": "present",
+          "sha256": "9a1b008d1a3865c137b6b4539dd78dee66ad75582edc252837f7d644a7d09a4c"
+        }
+      ]
+    },
+    {
+      "entry_id": "LEDGER-SYNC-ABW-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext2",
+      "note": "Hash-sync: cumulative changes from autonomy-acceleration sprints 1-12 (split_paragraphs, append_paragraph, unique_words, truncate_paragraphs, word_frequency, merge_abw, char_count, join_paragraphs, replace_in_paragraphs, export_to_markdown, word_wrap, has_paragraph, reverse_paragraphs, paragraph_lengths, first_paragraph, last_paragraph, count_words, paragraph_at)",
+      "product": "ABW Python FOSS",
+      "capability_refs": [
+        "foss_python_products.ABW.split_paragraphs",
+        "foss_python_products.ABW.first_paragraph",
+        "foss_python_products.ABW.last_paragraph"
+      ],
+      "api_symbols": [
+        "split_paragraphs",
+        "append_paragraph",
+        "get_unique_words",
+        "truncate_paragraphs",
+        "word_frequency",
+        "merge_abw",
+        "get_char_count",
+        "join_paragraphs",
+        "replace_in_paragraphs",
+        "export_to_markdown",
+        "word_wrap",
+        "has_paragraph",
+        "reverse_paragraphs",
+        "paragraph_lengths",
+        "first_paragraph",
+        "last_paragraph",
+        "count_words",
+        "paragraph_at"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "505ca2425fd15e515874bc4ef230ae518c57aab8695b35f22aaff9fa9ceac8b3"
+        }
+      ]
+    },
+    {
+      "entry_id": "LEDGER-SYNC-FODG-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext2",
+      "note": "Hash-sync: cumulative changes from autonomy-acceleration sprints + capability-layer sprint (remove_page, rename_page, get_all_text, count_shapes, export_to_json, clear_page, swap_pages, get_page_index, duplicate_page, get_page_count, has_page, page_names, add_page, rename_page, create_fodg, write_fodg, export_to_txt)",
+      "product": "FODG Python FOSS",
+      "capability_refs": [
+        "foss_python_products.FODG.remove_page",
+        "foss_python_products.FODG.create_fodg",
+        "foss_python_products.FODG.has_page"
+      ],
+      "api_symbols": [
+        "remove_page",
+        "rename_page",
+        "get_all_text",
+        "count_shapes",
+        "export_to_json",
+        "clear_page",
+        "swap_pages",
+        "get_page_index",
+        "duplicate_page",
+        "get_page_count",
+        "has_page",
+        "page_names",
+        "add_page",
+        "create_fodg",
+        "write_fodg",
+        "export_to_txt"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "state": "present",
+          "sha256": "e39442ec4a6533a6c102cf416a254216e90afee2468f7a396a1f9f48b1d0303b"
+        }
+      ]
+    },
+    {
+      "entry_id": "LEDGER-SYNC-GNUMERIC-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext2",
+      "note": "Hash-sync: cumulative changes from autonomy-acceleration sprints (read_cell, column_count, deduplicate_rows... get_sheet_by_name, add_sheet, copy_sheet, clear_cell, get_row_count, sum_column, get_sheet_index, fill_column, sum_row, get_all_values, clear_sheet, get_sheet_as_rows, fill_row, sheet_names, row_count)",
+      "product": "Gnumeric Python FOSS",
+      "capability_refs": [
+        "foss_python_products.Gnumeric.get_sheet_by_name",
+        "foss_python_products.Gnumeric.clear_cell",
+        "foss_python_products.Gnumeric.sheet_names"
+      ],
+      "api_symbols": [
+        "read_cell",
+        "get_column_count",
+        "get_sheet_by_name",
+        "add_sheet",
+        "copy_sheet",
+        "clear_cell",
+        "get_row_count",
+        "sum_column",
+        "get_sheet_index",
+        "fill_column",
+        "sum_row",
+        "get_all_values",
+        "clear_sheet",
+        "get_sheet_as_rows",
+        "fill_row",
+        "sheet_names",
+        "row_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "state": "present",
+          "sha256": "d462f96cdce45fd8d6129028bdb883ff99f14dd1553533c78adb9a73e85f6fce"
+        }
+      ]
+    },
+    {
+      "entry_id": "LEDGER-SYNC-TSV-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext2",
+      "note": "Hash-sync: cumulative changes from autonomy-acceleration sprints (deduplicate_rows, get_row_by_key, add_column, rename_column, sort_rows, drop_column, sample_rows, sum_column, merge_tsv, min_column, get_column_values, max_column, column_count, filter_rows)",
+      "product": "TSV Python FOSS",
+      "capability_refs": [
+        "foss_python_products.TSV.deduplicate_rows",
+        "foss_python_products.TSV.sum_column",
+        "foss_python_products.TSV.column_count"
+      ],
+      "api_symbols": [
+        "deduplicate_rows",
+        "get_row_by_key",
+        "add_column",
+        "rename_column",
+        "sort_rows",
+        "drop_column",
+        "sample_rows",
+        "sum_column",
+        "merge_tsv",
+        "min_column",
+        "get_column_values",
+        "max_column",
+        "column_count",
+        "filter_rows"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "d24a9780dfcd6afbf611b73fa6d33f9e23b1b5a6e05a1316caa6df0bcf4d3d07"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR-TOML-DELETE-KEY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext2",
+      "product": "TOML Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.TOML.delete_key"
+      ],
+      "api_symbols": [
+        "delete_key"
+      ],
+      "test_files": [
+        "tests/python/toml/test_mdr_toml_delete_key.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "6e5a8245d4f50af244875e2c4cb4bb5e4439ddc8cf8b48a8f7eb5153ccd377c4"
+        },
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "present",
+          "sha256": "a3e1ec796a90f5fc1324c80d03fe7bce85c613f582f0b42ed90679434ad02d19"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR-SYLK-GET-COLUMN-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext2",
+      "product": "SYLK Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.SYLK.get_column_values"
+      ],
+      "api_symbols": [
+        "get_column_values"
+      ],
+      "test_files": [
+        "tests/python/sylk/test_mdr_sylk_get_column_values.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "52bc8a61dd752c272f61239b60f7a5aab5d831a5f54f3a59cc688150a46819d1"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "989fb468f33b310a1902b2a013c6a66c86547fc9d8e94ca4faab14703356d584"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR3-ABW-TEXT-STATS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext3",
+      "product": "ABW Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.ABW.text_stats"
+      ],
+      "api_symbols": [
+        "text_stats"
+      ],
+      "test_files": [
+        "tests/python/abw/test_mdr3_abw_text_stats.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/__init__.py",
+          "state": "present",
+          "sha256": "7839650e2c323f193f1aece5e74f6a88441f8d6d8d80d1030716ba049e23ad6c"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR3-NDJSON-EXPORTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext3",
+      "product": "NDJSON Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.NDJSON.merge_ndjson",
+        "foss_python_products.NDJSON.group_by",
+        "foss_python_products.NDJSON.sum_field",
+        "foss_python_products.NDJSON.rename_field"
+      ],
+      "api_symbols": [
+        "merge_ndjson",
+        "group_by",
+        "sum_field",
+        "rename_field"
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_mdr3_ndjson_exports.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "state": "present",
+          "sha256": "7e21c51d1dd46aba3564d11cae5a7eb91f3a56af5638cc0b3c16f3e3c37cf7a8"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR4-NDJSON-BATCH2-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext4",
+      "product": "NDJSON Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.NDJSON.tail",
+        "foss_python_products.NDJSON.pick",
+        "foss_python_products.NDJSON.average_value",
+        "foss_python_products.NDJSON.count_by",
+        "foss_python_products.NDJSON.distinct_values"
+      ],
+      "api_symbols": [
+        "tail",
+        "pick",
+        "average_value",
+        "count_by",
+        "distinct_values"
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_mdr4_ndjson_batch2.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "state": "present",
+          "sha256": "588e53b2ddb6b7a5fb07e12f6d21da36412dbe89ea15546b37c667b412f3f664"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR5-NDJSON-BATCH3-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext5",
+      "product": "NDJSON Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.NDJSON.to_jsonl_str",
+        "foss_python_products.NDJSON.pluck",
+        "foss_python_products.NDJSON.min_value",
+        "foss_python_products.NDJSON.max_value",
+        "foss_python_products.NDJSON.deduplicate"
+      ],
+      "api_symbols": [
+        "to_jsonl_str",
+        "pluck",
+        "min_value",
+        "max_value",
+        "deduplicate"
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_mdr5_ndjson_batch3.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "state": "present",
+          "sha256": "374a6dd85bf148ad8b085206bb12d02f3f226f07b184fe17d20b75eba4ae17ed"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR6-NDJSON-BATCH4-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext6",
+      "product": "NDJSON Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.NDJSON.count_records",
+        "foss_python_products.NDJSON.zip_records",
+        "foss_python_products.NDJSON.sort_by",
+        "foss_python_products.NDJSON.aggregate"
+      ],
+      "api_symbols": [
+        "count_records",
+        "zip_records",
+        "sort_by",
+        "aggregate"
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_mdr6_ndjson_batch4.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "state": "present",
+          "sha256": "4af6260e3d58da72fa476d8bf81b6dc56b5058798c88a5a8d906c19a0febc528"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR6-TSV-AVERAGE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext6",
+      "product": "TSV Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.TSV.average_column_tsv"
+      ],
+      "api_symbols": [
+        "average_column_tsv"
+      ],
+      "test_files": [
+        "tests/python/tsv/test_mdr6_tsv_average_column.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/__init__.py",
+          "state": "present",
+          "sha256": "cdc29f1a1fd4fb72706bbc08e8535e98cd5f2e42dd7c626e85e02c57d5ab8f1a"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR7-GNUMERIC-ROW-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext7",
+      "product": "Gnumeric Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.Gnumeric.get_row_values"
+      ],
+      "api_symbols": [
+        "get_row_values"
+      ],
+      "test_files": [
+        "tests/python/gnumeric/test_mdr7_gnumeric_get_row_values.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/__init__.py",
+          "state": "present",
+          "sha256": "e9e58176528eb1382064da832f5ee2bfe3bacdf256436e6e3fdfd7eddde0e3ce"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR7-SYLK-WRITE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext7",
+      "product": "SYLK Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.SYLK.write_sylk"
+      ],
+      "api_symbols": [
+        "write_sylk"
+      ],
+      "test_files": [
+        "tests/python/sylk/test_mdr7_sylk_write.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "eb7332e1e50885c63148e47afa4998407ebd953e85b53bf72e14d52892b47a0b"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR7-DIF-WRITE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext7",
+      "product": "DIF Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.DIF.write_dif"
+      ],
+      "api_symbols": [
+        "write_dif"
+      ],
+      "test_files": [
+        "tests/python/dif/test_mdr7_dif_write.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "ddbee5ed5fd4494c4f1eda7b5f063f732ad7c237915f3717d460c25fc49deb4c"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR8-NDJSON-HEAD-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext8",
+      "product": "NDJSON Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.NDJSON.head"
+      ],
+      "api_symbols": [
+        "head"
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_mdr8_ndjson_head.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "state": "present",
+          "sha256": "90bb0e90ea40939d7ce5a87ed30c5888b5fa3e8287e0f1d608cf93dc03b5b93c"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR9-CSV-EXPORTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext9",
+      "product": "CSV Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.CSV.parse_csv",
+        "foss_python_products.CSV.parse_csv_strict",
+        "foss_python_products.CSV.probe_csv",
+        "foss_python_products.CSV.get_capabilities",
+        "foss_python_products.CSV.table_stats",
+        "foss_python_products.CSV.column_value_counts"
+      ],
+      "api_symbols": [
+        "parse_csv",
+        "parse_csv_strict",
+        "probe_csv",
+        "get_capabilities",
+        "table_stats",
+        "column_value_counts"
+      ],
+      "test_files": [
+        "tests/python/csv/test_mdr9_csv_exports.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/csv/__init__.py",
+          "state": "present",
+          "sha256": "09582985e7ad6373c9ff40c3fdf7b3cfbaee00d83b757aceebcfd7b7f5ba32ec"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR9-DIF-STATS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext9",
+      "product": "DIF Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.DIF.dif_stats",
+        "foss_python_products.DIF.dif_numeric_range",
+        "foss_python_products.DIF.dif_vector_density",
+        "foss_python_products.DIF.dif_string_value_list",
+        "foss_python_products.DIF.dif_empty_row_count",
+        "foss_python_products.DIF.dif_string_cell_count"
+      ],
+      "api_symbols": [
+        "dif_stats",
+        "dif_numeric_range",
+        "dif_vector_density",
+        "dif_string_value_list",
+        "dif_empty_row_count",
+        "dif_string_cell_count"
+      ],
+      "test_files": [
+        "tests/python/dif/test_mdr9_dif_stats.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "0a6c9e241b3bd08fc801beff33c58f7ca7fd4baf3604464fbe87768b6d3852a9"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR10-ODS-EXPORTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext10",
+      "product": "ODS Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.ODS.parse_ods",
+        "foss_python_products.ODS.parse_ods_strict",
+        "foss_python_products.ODS.probe_ods",
+        "foss_python_products.ODS.get_capabilities",
+        "foss_python_products.ODS.spreadsheet_stats",
+        "foss_python_products.ODS.ods_sheet_name_list"
+      ],
+      "api_symbols": [
+        "parse_ods",
+        "parse_ods_strict",
+        "probe_ods",
+        "get_capabilities",
+        "spreadsheet_stats",
+        "ods_sheet_name_list"
+      ],
+      "test_files": [
+        "tests/python/ods/test_mdr10_ods_exports.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "dfae752680515e42be9ddc94bd8090308247184f9b3e70002e418ade8a26f964"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR10-ODT-EXPORTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext10",
+      "product": "ODT Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.ODT.parse_odt",
+        "foss_python_products.ODT.parse_odt_strict",
+        "foss_python_products.ODT.probe_odt",
+        "foss_python_products.ODT.get_capabilities"
+      ],
+      "api_symbols": [
+        "parse_odt",
+        "parse_odt_strict",
+        "probe_odt",
+        "get_capabilities"
+      ],
+      "test_files": [
+        "tests/python/odt/test_mdr10_odt_exports.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/odt/__init__.py",
+          "state": "present",
+          "sha256": "7cb2f7e14a910ca671aca731d0de25bc8890da6ce3ef287a343b889635eb4e02"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR10-QOI-EXPORTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext10",
+      "product": "QOI Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.QOI.parse_qoi",
+        "foss_python_products.QOI.parse_qoi_strict",
+        "foss_python_products.QOI.probe_qoi",
+        "foss_python_products.QOI.get_capabilities",
+        "foss_python_products.QOI.encode_qoi",
+        "foss_python_products.QOI.get_encoder_capabilities"
+      ],
+      "api_symbols": [
+        "parse_qoi",
+        "parse_qoi_strict",
+        "probe_qoi",
+        "get_capabilities",
+        "encode_qoi",
+        "encode_qoi_to_file",
+        "get_encoder_capabilities"
+      ],
+      "test_files": [
+        "tests/python/qoi/test_mdr10_qoi_exports.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/qoi/__init__.py",
+          "state": "present",
+          "sha256": "75a473706fa5febaeba52c291df10e9f60a52c0283d4a7fdbea16da4ac52efc3"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR11-XCF-EXPORTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext11",
+      "product": "XCF Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.XCF.parse_xcf",
+        "foss_python_products.XCF.parse_xcf_strict",
+        "foss_python_products.XCF.probe_xcf",
+        "foss_python_products.XCF.get_capabilities"
+      ],
+      "api_symbols": [
+        "parse_xcf",
+        "parse_xcf_strict",
+        "probe_xcf",
+        "get_capabilities"
+      ],
+      "test_files": [
+        "tests/python/xcf/test_mdr11_xcf_exports.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/__init__.py",
+          "state": "present",
+          "sha256": "b03450f1c45ec83872e595fd95621109a687d46f5d266f698c316b9b5be7b350"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR11-ODS-STATS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext11",
+      "product": "ODS Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.ODS.ods_cell_type_distribution",
+        "foss_python_products.ODS.ods_formula_cell_count",
+        "foss_python_products.ODS.sheet_name_order"
+      ],
+      "api_symbols": [
+        "ods_cell_type_distribution",
+        "ods_formula_cell_count",
+        "sheet_name_order"
+      ],
+      "test_files": [
+        "tests/python/ods/test_mdr11_ods_stats.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "96792f5ea6ef35db6232323104504ca8ac177c1f74ed8a8e3ddc47d9da8b44b1"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR11-CSV-STATS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "mainstream-product-deepening-rnext11",
+      "product": "CSV Python FOSS",
+      "skill_id": "add-python-api",
+      "capability_refs": [
+        "foss_python_products.CSV.csv_row_length_distribution",
+        "foss_python_products.CSV.csv_field_type_summary",
+        "foss_python_products.CSV.csv_empty_row_count",
+        "foss_python_products.CSV.csv_max_field_length"
+      ],
+      "api_symbols": [
+        "csv_row_length_distribution",
+        "csv_field_type_summary",
+        "csv_empty_row_count",
+        "csv_max_field_length"
+      ],
+      "test_files": [
+        "tests/python/csv/test_mdr11_csv_stats.py"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/csv/__init__.py",
+          "state": "present",
+          "sha256": "27e236026c6b5186a3c843bc3e3b3b0e03eb8c34c7348decde2e617b12da8713"
+        }
+      ]
+    },
+    {
+      "entry_id": "MDR12-ZST-FRAME-INFO-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext12",
+      "product": "ZST Python FOSS",
+      "api_symbols": [
+        "get_frame_info",
+        "estimate_ratio"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "1a6f105c5a215b0391a7dc9851f54a3e0f9be30bf064b781e7f73be55b1d8eb2"
+        }
+      ],
+      "test_files": [
+        "tests/python/zst/test_r154_zst_frame_info.py"
+      ],
+      "test_count": 14,
+      "capability_refs": [
+        "ZST Python FOSS.get_frame_info"
+      ]
+    },
+    {
+      "entry_id": "MDR12-TOML-SECTION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext12",
+      "product": "TOML Python FOSS",
+      "api_symbols": [
+        "get_section_keys",
+        "has_key",
+        "count_keys"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "c3b4e65a0c4baa0481d0c9b54f55319a9d4dc5b4dd270936dbc59d0fc4603a05"
+        }
+      ],
+      "test_files": [
+        "tests/python/toml/test_r154_toml_section_keys.py"
+      ],
+      "test_count": 16,
+      "capability_refs": [
+        "TOML Python FOSS.get_section_keys"
+      ]
+    },
+    {
+      "entry_id": "MDR12-PBM-DIM-INVERT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext12",
+      "product": "PBM Python FOSS",
+      "api_symbols": [
+        "get_dimensions",
+        "invert"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "present",
+          "sha256": "5ce93465dc5cd9d20d8dec180ad73e3ab9959cb4d34d33d497237758e98219fe"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r154_pbm_dimensions_invert.py"
+      ],
+      "test_count": 10,
+      "capability_refs": [
+        "PBM Python FOSS.get_dimensions"
+      ]
+    },
+    {
+      "entry_id": "MDR12-PGM-DIM-NORM-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext12",
+      "product": "PGM Python FOSS",
+      "api_symbols": [
+        "get_dimensions",
+        "normalize"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "e3638bfb8d2d01b4bff09c7432448096670607faa93c45dc1c5a53702c6cf110"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r154_pgm_dimensions_normalize.py"
+      ],
+      "test_count": 11,
+      "capability_refs": [
+        "PGM Python FOSS.get_dimensions"
+      ]
+    },
+    {
+      "entry_id": "MDR12-PPM-DIM-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext12",
+      "product": "PPM Python FOSS",
+      "api_symbols": [
+        "get_dimensions"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "61aca9b0039abd303682e5277108f08a924547179c0e8408ff11ee7f72866051"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r154_ppm_dimensions.py"
+      ],
+      "test_count": 7,
+      "capability_refs": [
+        "PPM Python FOSS.get_dimensions"
+      ]
+    },
+    {
+      "entry_id": "MDR13-ZST-BATCH-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext13",
+      "product": "ZST Python FOSS",
+      "api_symbols": [
+        "batch_compress"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "1a6f105c5a215b0391a7dc9851f54a3e0f9be30bf064b781e7f73be55b1d8eb2"
+        }
+      ],
+      "test_files": [
+        "tests/python/zst/test_r155_zst_batch_compress.py"
+      ],
+      "test_count": 7,
+      "capability_refs": [
+        "ZST Python FOSS.batch_compress"
+      ]
+    },
+    {
+      "entry_id": "MDR13-TOML-FLATTEN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext13",
+      "product": "TOML Python FOSS",
+      "api_symbols": [
+        "flatten",
+        "to_env"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "c3b4e65a0c4baa0481d0c9b54f55319a9d4dc5b4dd270936dbc59d0fc4603a05"
+        }
+      ],
+      "test_files": [
+        "tests/python/toml/test_r155_toml_flatten_env.py"
+      ],
+      "test_count": 12,
+      "capability_refs": [
+        "TOML Python FOSS.flatten"
+      ]
+    },
+    {
+      "entry_id": "MDR13-PBM-CROP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext13",
+      "product": "PBM Python FOSS",
+      "api_symbols": [
+        "crop"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "present",
+          "sha256": "5ce93465dc5cd9d20d8dec180ad73e3ab9959cb4d34d33d497237758e98219fe"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r155_pbm_crop.py"
+      ],
+      "test_count": 7,
+      "capability_refs": [
+        "PBM Python FOSS.crop"
+      ]
+    },
+    {
+      "entry_id": "MDR13-PGM-HIST-THRESH-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext13",
+      "product": "PGM Python FOSS",
+      "api_symbols": [
+        "histogram",
+        "threshold"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "e3638bfb8d2d01b4bff09c7432448096670607faa93c45dc1c5a53702c6cf110"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r155_pgm_histogram_threshold.py"
+      ],
+      "test_count": 11,
+      "capability_refs": [
+        "PGM Python FOSS.histogram"
+      ]
+    },
+    {
+      "entry_id": "MDR13-PPM-GRAY-BRIGHT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "mainstream-product-deepening-rnext13",
+      "product": "PPM Python FOSS",
+      "api_symbols": [
+        "to_grayscale",
+        "brightness"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "61aca9b0039abd303682e5277108f08a924547179c0e8408ff11ee7f72866051"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r155_ppm_grayscale_brightness.py"
+      ],
+      "test_count": 13,
+      "capability_refs": [
+        "PPM Python FOSS.to_grayscale"
+      ]
+    },
+    {
+      "entry_id": "PIGE-TSV-MEDIAN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "product-integration-governed-expansion-rnext",
+      "product": "TSV Python FOSS",
+      "api_symbols": [
+        "median_column_tsv"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "6a277366547560a6dad4ac5ec2634dda817bdb3cf9e3387a129ffe0b0c22b657"
+        },
+        {
+          "path": "src/python/tsv/__init__.py",
+          "state": "present",
+          "sha256": "13fce80c6115b6df3f9acc58bde734168ad49f7f2882de175303c363e7ab281f"
+        }
+      ],
+      "test_files": [
+        "tests/python/tsv/test_pige_tsv_median_std.py"
+      ],
+      "test_count": 8,
+      "capability_refs": [
+        "TSV Python FOSS.median_column_tsv"
+      ]
+    },
+    {
+      "entry_id": "PIGE-TSV-STD-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "product-integration-governed-expansion-rnext",
+      "product": "TSV Python FOSS",
+      "api_symbols": [
+        "std_column_tsv"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "6a277366547560a6dad4ac5ec2634dda817bdb3cf9e3387a129ffe0b0c22b657"
+        },
+        {
+          "path": "src/python/tsv/__init__.py",
+          "state": "present",
+          "sha256": "13fce80c6115b6df3f9acc58bde734168ad49f7f2882de175303c363e7ab281f"
+        }
+      ],
+      "test_files": [
+        "tests/python/tsv/test_pige_tsv_median_std.py"
+      ],
+      "test_count": 8,
+      "capability_refs": [
+        "TSV Python FOSS.std_column_tsv"
+      ]
+    },
+    {
+      "entry_id": "PIGE-GNUMERIC-COLVALS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "product-integration-governed-expansion-rnext",
+      "product": "Gnumeric Python FOSS",
+      "api_symbols": [
+        "get_column_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "state": "present",
+          "sha256": "a400f2409bfef465fb9c4bc3e0ea2f2c87d402169fc8aab406860f0a6926b163"
+        },
+        {
+          "path": "src/python/gnumeric/__init__.py",
+          "state": "present",
+          "sha256": "7a9927a467d025e2b92d1dc9b883243a19f52eff4a2f78deab717cbab31e5646"
+        }
+      ],
+      "test_files": [
+        "tests/python/gnumeric/test_pige_gnumeric_get_column_values.py"
+      ],
+      "test_count": 8,
+      "capability_refs": [
+        "Gnumeric Python FOSS.get_column_values"
+      ]
+    },
+    {
+      "entry_id": "PIGE-ABW-PLAINTEXT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "product-integration-governed-expansion-rnext",
+      "product": "ABW Python FOSS",
+      "api_symbols": [
+        "export_to_plain_text"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "33efb33931e4bf68c446ef5e922b0ee1c86b94d7aeeecc1695ebed84241def09"
+        },
+        {
+          "path": "src/python/abw/__init__.py",
+          "state": "present",
+          "sha256": "1b54df19052c5278ea333c6fcc332617fd63fc34d66e41e3b51dfd3c85566743"
+        }
+      ],
+      "test_files": [
+        "tests/python/abw/test_pige_abw_export_plain_text.py"
+      ],
+      "test_count": 8,
+      "capability_refs": [
+        "ABW Python FOSS.export_to_plain_text"
+      ]
+    },
+    {
+      "entry_id": "PIGE-FODG-FINDTEXT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "product-integration-governed-expansion-rnext",
+      "product": "FODG Python FOSS",
+      "api_symbols": [
+        "find_text"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "state": "present",
+          "sha256": "cdb67989e4b71e9e8e140f38b2fd36aa6d01da7c9168437059928897ca97514f"
+        },
+        {
+          "path": "src/python/fodg/__init__.py",
+          "state": "present",
+          "sha256": "14aa71ee56301b8704052331f9c7311183296d4a99e52b53545957807ef5e6de"
+        }
+      ],
+      "test_files": [
+        "tests/python/fodg/test_pige_fodg_find_text.py"
+      ],
+      "test_count": 9,
+      "capability_refs": [
+        "FODG Python FOSS.find_text"
+      ]
+    },
+    {
+      "entry_id": "PIGE-TSV-AVGCOL-PKG-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "product-integration-governed-expansion-rnext",
+      "product": "TSV Python FOSS",
+      "api_symbols": [
+        "average_column_tsv"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/__init__.py",
+          "state": "present",
+          "sha256": "13fce80c6115b6df3f9acc58bde734168ad49f7f2882de175303c363e7ab281f"
+        }
+      ],
+      "test_files": [
+        "tests/python/test_pige_public_api_smoke.py"
+      ],
+      "test_count": 1,
+      "capability_refs": [
+        "TSV Python FOSS.average_column_tsv"
+      ]
+    },
+    {
+      "entry_id": "PIGE-GNUMERIC-ROWVALS-PKG-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "product-integration-governed-expansion-rnext",
+      "product": "Gnumeric Python FOSS",
+      "api_symbols": [
+        "get_row_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/__init__.py",
+          "state": "present",
+          "sha256": "7a9927a467d025e2b92d1dc9b883243a19f52eff4a2f78deab717cbab31e5646"
+        }
+      ],
+      "test_files": [
+        "tests/python/test_pige_public_api_smoke.py"
+      ],
+      "test_count": 1,
+      "capability_refs": [
+        "Gnumeric Python FOSS.get_row_values"
+      ]
+    },
+    {
+      "entry_id": "PIGE-ABW-TEXTSTATS-PKG-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "product-integration-governed-expansion-rnext",
+      "product": "ABW Python FOSS",
+      "api_symbols": [
+        "text_stats"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/__init__.py",
+          "state": "present",
+          "sha256": "1b54df19052c5278ea333c6fcc332617fd63fc34d66e41e3b51dfd3c85566743"
+        }
+      ],
+      "test_files": [
+        "tests/python/test_pige_public_api_smoke.py"
+      ],
+      "test_count": 1,
+      "capability_refs": [
+        "ABW Python FOSS.text_stats"
+      ]
+    },
+    {
+      "entry_id": "PIGE-FODG-PAGECOUNT-PKG-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint": "product-integration-governed-expansion-rnext",
+      "product": "FODG Python FOSS",
+      "api_symbols": [
+        "get_page_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/__init__.py",
+          "state": "present",
+          "sha256": "14aa71ee56301b8704052331f9c7311183296d4a99e52b53545957807ef5e6de"
+        }
+      ],
+      "test_files": [
+        "tests/python/test_pige_public_api_smoke.py"
+      ],
+      "test_count": 1,
+      "capability_refs": [
+        "FODG Python FOSS.get_page_count"
+      ]
+    },
+    {
+      "entry_id": "PFF-DIF-TEST-FIX-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "product-fix-forward-rnext",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "dif_vector_density",
+        "dif_string_value_list"
+      ],
+      "api_symbols": [
+        "dif_vector_density",
+        "dif_string_value_list"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "68e0f2daa4f243b855561c0dad8b5ed397865c45def7e8a7ce10d4c65462048e"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r63_dif_advancement.py",
+        "tests/python/dif/test_r64_dif_advancement.py"
+      ],
+      "test_count": 2,
+      "description": "Fixed module/function name shadowing in DIF tests â€” import dif_stats function directly from module path instead of package namespace"
+    },
+    {
+      "entry_id": "PFF-XCF-HELPERS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "product-fix-forward-rnext",
+      "product": "XCF Python FOSS",
+      "capability_refs": [
+        "xcf_layer_count",
+        "xcf_image_dimensions"
+      ],
+      "api_symbols": [
+        "xcf_layer_count",
+        "xcf_image_dimensions"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "state": "present",
+          "sha256": "8b84a3f6221de252552758db4a79225f5d6f229da69ac2f823e41911cb5e3bbf"
+        },
+        {
+          "path": "src/python/xcf/__init__.py",
+          "state": "present",
+          "sha256": "144b845cb82db3400c86509289334d40aa6725a296e3192e7b9641a8db24a79e"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_pff_xcf_helpers.py"
+      ],
+      "test_count": 9,
+      "description": "Added xcf_layer_count() and xcf_image_dimensions() inspection helpers to XCF parser"
+    },
+    {
+      "entry_id": "PFF-ODS-EXPORT-FIX-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "product-fix-forward-rnext",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "ods_data_validation_count"
+      ],
+      "api_symbols": [
+        "ods_data_validation_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "413cd06648971763376658a79cb552ed232ccee4b4fc474ae95e4b78bff12e1f"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_pff_ods_data_validation.py"
+      ],
+      "test_count": 5,
+      "description": "Exported ods_data_validation_count from ods package __init__.py â€” function already existed in ods_stats.py but was missing from public API"
+    },
+    {
+      "entry_id": "RNEXT14-DIF-GET-CELL-VALUE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext14",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "get_cell_value"
+      ],
+      "api_symbols": [
+        "get_cell_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "68e0f2daa4f243b855561c0dad8b5ed397865c45def7e8a7ce10d4c65462048e"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "28ad6da4ef304434f34ef4739721aa7a75869fa4823cb14d831df57ff1e4ff99"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r156_dif_cell_accessors.py"
+      ],
+      "test_count": 7,
+      "description": "DIF get_cell_value â€” accessor for cell value at (row, col) 0-based indices"
+    },
+    {
+      "entry_id": "RNEXT14-DIF-SET-CELL-VALUE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext14",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "set_cell_value"
+      ],
+      "api_symbols": [
+        "set_cell_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "68e0f2daa4f243b855561c0dad8b5ed397865c45def7e8a7ce10d4c65462048e"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "28ad6da4ef304434f34ef4739721aa7a75869fa4823cb14d831df57ff1e4ff99"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r156_dif_cell_accessors.py"
+      ],
+      "test_count": 6,
+      "description": "DIF set_cell_value â€” mutation: modify cell value and write updated document"
+    },
+    {
+      "entry_id": "RNEXT14-DIF-GET-ROW-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext14",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "get_row_values"
+      ],
+      "api_symbols": [
+        "get_row_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "68e0f2daa4f243b855561c0dad8b5ed397865c45def7e8a7ce10d4c65462048e"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "28ad6da4ef304434f34ef4739721aa7a75869fa4823cb14d831df57ff1e4ff99"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r156_dif_cell_accessors.py"
+      ],
+      "test_count": 6,
+      "description": "DIF get_row_values â€” accessor returning all cell values for a row"
+    },
+    {
+      "entry_id": "RNEXT14-SYLK-GET-ROW-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext14",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "get_row_count"
+      ],
+      "api_symbols": [
+        "get_row_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "74927a7beacc86c48b1664eba70a5f008ed0813baf2e05996dfd4443f52de498"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "9d3f96731a5dccbc8fb15324da9db84b98b5808eb2fd3f4daac4247141f0424e"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
+      ],
+      "test_count": 5,
+      "description": "SYLK get_row_count â€” accessor returning maximum row index"
+    },
+    {
+      "entry_id": "RNEXT14-SYLK-GET-COLUMN-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext14",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "get_column_count"
+      ],
+      "api_symbols": [
+        "get_column_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "74927a7beacc86c48b1664eba70a5f008ed0813baf2e05996dfd4443f52de498"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "9d3f96731a5dccbc8fb15324da9db84b98b5808eb2fd3f4daac4247141f0424e"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
+      ],
+      "test_count": 4,
+      "description": "SYLK get_column_count â€” accessor returning maximum column index"
+    },
+    {
+      "entry_id": "RNEXT14-SYLK-SET-CELL-VALUE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext14",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "set_cell_value"
+      ],
+      "api_symbols": [
+        "set_cell_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "74927a7beacc86c48b1664eba70a5f008ed0813baf2e05996dfd4443f52de498"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "9d3f96731a5dccbc8fb15324da9db84b98b5808eb2fd3f4daac4247141f0424e"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
+      ],
+      "test_count": 9,
+      "description": "SYLK set_cell_value â€” mutation: modify or add cell value and write updated document"
+    },
+    {
+      "entry_id": "RNEXT15-ODS-GET-CELL-VALUE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext15",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "get_cell_value"
+      ],
+      "api_symbols": [
+        "get_cell_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "b4bf018f47e6ac2e4de3cd8d790df48c54d8cdb09b5b6762e395be135e255ad9"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "413cd06648971763376658a79cb552ed232ccee4b4fc474ae95e4b78bff12e1f"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r156_ods_accessors.py"
+      ],
+      "test_count": 9,
+      "description": "ODS get_cell_value â€” accessor for cell value at (sheet_index, row, col) 0-based indices"
+    },
+    {
+      "entry_id": "RNEXT15-ODS-GET-SHEET-NAMES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext15",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "get_sheet_names"
+      ],
+      "api_symbols": [
+        "get_sheet_names"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "b4bf018f47e6ac2e4de3cd8d790df48c54d8cdb09b5b6762e395be135e255ad9"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "413cd06648971763376658a79cb552ed232ccee4b4fc474ae95e4b78bff12e1f"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r156_ods_accessors.py"
+      ],
+      "test_count": 3,
+      "description": "ODS get_sheet_names â€” accessor returning list of sheet names"
+    },
+    {
+      "entry_id": "RNEXT15-ODS-GET-ROW-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext15",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "get_row_count"
+      ],
+      "api_symbols": [
+        "get_row_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "b4bf018f47e6ac2e4de3cd8d790df48c54d8cdb09b5b6762e395be135e255ad9"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "413cd06648971763376658a79cb552ed232ccee4b4fc474ae95e4b78bff12e1f"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r156_ods_accessors.py"
+      ],
+      "test_count": 5,
+      "description": "ODS get_row_count â€” accessor returning number of non-empty rows in a sheet"
+    },
+    {
+      "entry_id": "RNEXT15-XCF-VERSION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext15",
+      "product": "XCF Python FOSS",
+      "capability_refs": [
+        "xcf_version"
+      ],
+      "api_symbols": [
+        "xcf_version"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "state": "present",
+          "sha256": "8b84a3f6221de252552758db4a79225f5d6f229da69ac2f823e41911cb5e3bbf"
+        },
+        {
+          "path": "src/python/xcf/__init__.py",
+          "state": "present",
+          "sha256": "144b845cb82db3400c86509289334d40aa6725a296e3192e7b9641a8db24a79e"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_r156_xcf_helpers.py"
+      ],
+      "test_count": 5,
+      "description": "XCF xcf_version â€” accessor returning version string from XCF header"
+    },
+    {
+      "entry_id": "RNEXT15-XCF-IMAGE-TYPE-NAME-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext15",
+      "product": "XCF Python FOSS",
+      "capability_refs": [
+        "xcf_image_type_name"
+      ],
+      "api_symbols": [
+        "xcf_image_type_name"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "state": "present",
+          "sha256": "8b84a3f6221de252552758db4a79225f5d6f229da69ac2f823e41911cb5e3bbf"
+        },
+        {
+          "path": "src/python/xcf/__init__.py",
+          "state": "present",
+          "sha256": "144b845cb82db3400c86509289334d40aa6725a296e3192e7b9641a8db24a79e"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_r156_xcf_helpers.py"
+      ],
+      "test_count": 4,
+      "description": "XCF xcf_image_type_name â€” accessor returning human-readable image type name"
+    },
+    {
+      "entry_id": "RNEXT15-DIF-GET-COLUMN-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext15",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "get_column_values"
+      ],
+      "api_symbols": [
+        "get_column_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "68e0f2daa4f243b855561c0dad8b5ed397865c45def7e8a7ce10d4c65462048e"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "28ad6da4ef304434f34ef4739721aa7a75869fa4823cb14d831df57ff1e4ff99"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r156_dif_column_values.py"
+      ],
+      "test_count": 7,
+      "description": "DIF get_column_values â€” accessor returning all values for a column across rows"
+    },
+    {
+      "entry_id": "RNEXT16-DIF-GET-TITLE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext16",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "get_title"
+      ],
+      "api_symbols": [
+        "get_title"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "68e0f2daa4f243b855561c0dad8b5ed397865c45def7e8a7ce10d4c65462048e"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "28ad6da4ef304434f34ef4739721aa7a75869fa4823cb14d831df57ff1e4ff99"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r157_dif_metadata_accessors.py"
+      ],
+      "test_count": 4,
+      "description": "DIF get_title â€” accessor returning document title from TABLE header"
+    },
+    {
+      "entry_id": "RNEXT16-DIF-GET-ROW-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext16",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "get_row_count"
+      ],
+      "api_symbols": [
+        "get_row_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "68e0f2daa4f243b855561c0dad8b5ed397865c45def7e8a7ce10d4c65462048e"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "28ad6da4ef304434f34ef4739721aa7a75869fa4823cb14d831df57ff1e4ff99"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r157_dif_metadata_accessors.py"
+      ],
+      "test_count": 4,
+      "description": "DIF get_row_count â€” accessor returning number of data rows"
+    },
+    {
+      "entry_id": "RNEXT16-DIF-GET-COLUMN-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext16",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "get_column_count"
+      ],
+      "api_symbols": [
+        "get_column_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "68e0f2daa4f243b855561c0dad8b5ed397865c45def7e8a7ce10d4c65462048e"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "28ad6da4ef304434f34ef4739721aa7a75869fa4823cb14d831df57ff1e4ff99"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r157_dif_metadata_accessors.py"
+      ],
+      "test_count": 4,
+      "description": "DIF get_column_count â€” accessor returning VECTORS count (number of columns)"
+    },
+    {
+      "entry_id": "RNEXT16-SYLK-GET-CELL-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext16",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "get_cell_count"
+      ],
+      "api_symbols": [
+        "get_cell_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "74927a7beacc86c48b1664eba70a5f008ed0813baf2e05996dfd4443f52de498"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "9d3f96731a5dccbc8fb15324da9db84b98b5808eb2fd3f4daac4247141f0424e"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r157_sylk_cell_count.py"
+      ],
+      "test_count": 8,
+      "description": "SYLK get_cell_count â€” accessor returning count of non-None valued cells"
+    },
+    {
+      "entry_id": "RNEXT16-ODS-GET-COLUMN-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext16",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "get_column_count"
+      ],
+      "api_symbols": [
+        "get_column_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "b4bf018f47e6ac2e4de3cd8d790df48c54d8cdb09b5b6762e395be135e255ad9"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "413cd06648971763376658a79cb552ed232ccee4b4fc474ae95e4b78bff12e1f"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r157_ods_column_row.py"
+      ],
+      "test_count": 5,
+      "description": "ODS get_column_count â€” accessor returning max column count in a sheet"
+    },
+    {
+      "entry_id": "RNEXT16-ODS-GET-ROW-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext16",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "get_row_values"
+      ],
+      "api_symbols": [
+        "get_row_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "b4bf018f47e6ac2e4de3cd8d790df48c54d8cdb09b5b6762e395be135e255ad9"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "413cd06648971763376658a79cb552ed232ccee4b4fc474ae95e4b78bff12e1f"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r157_ods_column_row.py"
+      ],
+      "test_count": 8,
+      "description": "ODS get_row_values â€” accessor returning all cell values for a given row"
+    },
+    {
+      "entry_id": "RNEXT17-XCF-PIXEL-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext17",
+      "product": "XCF Python FOSS",
+      "capability_refs": [
+        "xcf_pixel_count"
+      ],
+      "api_symbols": [
+        "xcf_pixel_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "state": "present",
+          "sha256": "457024529554dc719be3f8371bef3efc83ba73f732e73f657a29fc292adeb2a9"
+        },
+        {
+          "path": "src/python/xcf/__init__.py",
+          "state": "present",
+          "sha256": "c18100db05f62063dd3739ac61158dff645d79e87aadf21863b8da77f990c928"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_r157_xcf_pixel_file.py"
+      ],
+      "test_count": 4,
+      "description": "XCF xcf_pixel_count â€” accessor returning width * height"
+    },
+    {
+      "entry_id": "RNEXT17-XCF-FILE-SIZE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext17",
+      "product": "XCF Python FOSS",
+      "capability_refs": [
+        "xcf_file_size"
+      ],
+      "api_symbols": [
+        "xcf_file_size"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "state": "present",
+          "sha256": "457024529554dc719be3f8371bef3efc83ba73f732e73f657a29fc292adeb2a9"
+        },
+        {
+          "path": "src/python/xcf/__init__.py",
+          "state": "present",
+          "sha256": "c18100db05f62063dd3739ac61158dff645d79e87aadf21863b8da77f990c928"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_r157_xcf_pixel_file.py"
+      ],
+      "test_count": 5,
+      "description": "XCF xcf_file_size â€” accessor returning file size in bytes"
+    },
+    {
+      "entry_id": "RNEXT17-PPM-PIXEL-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext17",
+      "product": "PPM Python FOSS",
+      "capability_refs": [
+        "pixel_count"
+      ],
+      "api_symbols": [
+        "pixel_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "d9d11018f520a32fa1380c0517d92d7b6bfb26fd0411c98a549278fc0474b652"
+        },
+        {
+          "path": "src/python/ppm/__init__.py",
+          "state": "present",
+          "sha256": "f5a724be68667ba83c16331e919f8883d82112a756ce0e1c37026ed72d352b61"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r157_ppm_accessors.py"
+      ],
+      "test_count": 5,
+      "description": "PPM pixel_count â€” accessor returning total pixel count (width * height)"
+    },
+    {
+      "entry_id": "RNEXT17-PPM-AVERAGE-COLOR-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext17",
+      "product": "PPM Python FOSS",
+      "capability_refs": [
+        "average_color"
+      ],
+      "api_symbols": [
+        "average_color"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "d9d11018f520a32fa1380c0517d92d7b6bfb26fd0411c98a549278fc0474b652"
+        },
+        {
+          "path": "src/python/ppm/__init__.py",
+          "state": "present",
+          "sha256": "f5a724be68667ba83c16331e919f8883d82112a756ce0e1c37026ed72d352b61"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r157_ppm_accessors.py"
+      ],
+      "test_count": 5,
+      "description": "PPM average_color â€” accessor returning average (R, G, B) tuple"
+    },
+    {
+      "entry_id": "RNEXT17-PBM-PIXEL-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext17",
+      "product": "PBM Python FOSS",
+      "capability_refs": [
+        "pixel_count"
+      ],
+      "api_symbols": [
+        "pixel_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "present",
+          "sha256": "668c67272e4084c5ef64d6f33b3eb0e8505f1fa4c07ae990ff9f443212167090"
+        },
+        {
+          "path": "src/python/pbm/__init__.py",
+          "state": "present",
+          "sha256": "e9fc3a5cc20a26b71f5f9c70d5405c3978e1761ab8353e6fb07b70c6938cc315"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r157_pbm_accessors.py"
+      ],
+      "test_count": 5,
+      "description": "PBM pixel_count â€” accessor returning total pixel count (width * height)"
+    },
+    {
+      "entry_id": "RNEXT17-PBM-COUNT-BLACK-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext17",
+      "product": "PBM Python FOSS",
+      "capability_refs": [
+        "count_black"
+      ],
+      "api_symbols": [
+        "count_black"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "present",
+          "sha256": "668c67272e4084c5ef64d6f33b3eb0e8505f1fa4c07ae990ff9f443212167090"
+        },
+        {
+          "path": "src/python/pbm/__init__.py",
+          "state": "present",
+          "sha256": "e9fc3a5cc20a26b71f5f9c70d5405c3978e1761ab8353e6fb07b70c6938cc315"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r157_pbm_accessors.py"
+      ],
+      "test_count": 6,
+      "description": "PBM count_black â€” accessor returning count of black (value=1) pixels"
+    },
+    {
+      "entry_id": "RNEXT18-PGM-PIXEL-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext18",
+      "product": "PGM Python FOSS",
+      "capability_refs": [
+        "pixel_count"
+      ],
+      "api_symbols": [
+        "pixel_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "d1a4729ce2c2dd2887cecde17d9707c2f2e20a918ce15c29981e7d999a984b2b"
+        },
+        {
+          "path": "src/python/pgm/__init__.py",
+          "state": "present",
+          "sha256": "8a8b40b8f0a4d1717dee96546edd28126dbc5c064632652c0ab8971e10540243"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r158_pgm_accessors.py"
+      ],
+      "test_count": 5,
+      "description": "PGM pixel_count â€” accessor returning total pixel count (width * height)"
+    },
+    {
+      "entry_id": "RNEXT18-PGM-AVERAGE-GRAY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext18",
+      "product": "PGM Python FOSS",
+      "capability_refs": [
+        "average_gray"
+      ],
+      "api_symbols": [
+        "average_gray"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "d1a4729ce2c2dd2887cecde17d9707c2f2e20a918ce15c29981e7d999a984b2b"
+        },
+        {
+          "path": "src/python/pgm/__init__.py",
+          "state": "present",
+          "sha256": "8a8b40b8f0a4d1717dee96546edd28126dbc5c064632652c0ab8971e10540243"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r158_pgm_accessors.py"
+      ],
+      "test_count": 5,
+      "description": "PGM average_gray â€” accessor returning mean gray value"
+    },
+    {
+      "entry_id": "RNEXT18-PPM-CROP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext18",
+      "product": "PPM Python FOSS",
+      "capability_refs": [
+        "crop"
+      ],
+      "api_symbols": [
+        "crop"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "d9d11018f520a32fa1380c0517d92d7b6bfb26fd0411c98a549278fc0474b652"
+        },
+        {
+          "path": "src/python/ppm/__init__.py",
+          "state": "present",
+          "sha256": "f5a724be68667ba83c16331e919f8883d82112a756ce0e1c37026ed72d352b61"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r158_ppm_crop.py"
+      ],
+      "test_count": 6,
+      "description": "PPM crop â€” crop a rectangular region from a PPM image"
+    },
+    {
+      "entry_id": "RNEXT18-ODS-COUNT-SHEETS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext18",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "count_sheets"
+      ],
+      "api_symbols": [
+        "count_sheets"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "e02ea5595805a5f168e2b43be9b8c32395bbd1064c94d79bb2877082be47a62d"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "b4ca5a8d9bf8c2b051c7edb13c79a8f2af61eaca44667ed080c328c38a854ef1"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r158_ods_count_sheets.py"
+      ],
+      "test_count": 4,
+      "description": "ODS count_sheets â€” accessor returning number of sheets"
+    },
+    {
+      "entry_id": "RNEXT18-DIF-GET-ALL-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext18",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "get_all_values"
+      ],
+      "api_symbols": [
+        "get_all_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "8f8e2b7cc27cfeb3e88c4b9bd4ce897d33339d63f49d497e8ff72a0d4b4a937e"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "fe2ea6723edf109562d0a4ebe0100cc6710a5c2ca3a69e54093d587b18e87ce6"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r158_dif_all_values.py"
+      ],
+      "test_count": 6,
+      "description": "DIF get_all_values â€” accessor returning flat list of all cell values"
+    },
+    {
+      "entry_id": "RNEXT18-SYLK-GET-ALL-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext18",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "get_all_values"
+      ],
+      "api_symbols": [
+        "get_all_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "0e05ea01dc440e101d40871cb4377c5012b7c52263287dae76f2b74e1f74bfd9"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "db596413d9846c8fcea41ab451a3b3b9e2f0e1eaaf1ce223d23f73d3c413428e"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r158_sylk_all_values.py"
+      ],
+      "test_count": 6,
+      "description": "SYLK get_all_values â€” accessor returning flat list of all cell values"
+    },
+    {
+      "entry_id": "RNEXT19-PGM-COUNT-ABOVE-THRESHOLD-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext19",
+      "product": "PGM Python FOSS",
+      "capability_refs": [
+        "count_above_threshold"
+      ],
+      "api_symbols": [
+        "count_above_threshold"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "d1a4729ce2c2dd2887cecde17d9707c2f2e20a918ce15c29981e7d999a984b2b"
+        },
+        {
+          "path": "src/python/pgm/__init__.py",
+          "state": "present",
+          "sha256": "8a8b40b8f0a4d1717dee96546edd28126dbc5c064632652c0ab8971e10540243"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r159_pgm_threshold_minmax.py"
+      ],
+      "test_count": 5,
+      "description": "PGM count_above_threshold â€” count pixels with value strictly above threshold"
+    },
+    {
+      "entry_id": "RNEXT19-PGM-MIN-MAX-GRAY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext19",
+      "product": "PGM Python FOSS",
+      "capability_refs": [
+        "min_max_gray"
+      ],
+      "api_symbols": [
+        "min_max_gray"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "d1a4729ce2c2dd2887cecde17d9707c2f2e20a918ce15c29981e7d999a984b2b"
+        },
+        {
+          "path": "src/python/pgm/__init__.py",
+          "state": "present",
+          "sha256": "8a8b40b8f0a4d1717dee96546edd28126dbc5c064632652c0ab8971e10540243"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r159_pgm_threshold_minmax.py"
+      ],
+      "test_count": 5,
+      "description": "PGM min_max_gray â€” return (min, max) gray values in image"
+    },
+    {
+      "entry_id": "RNEXT19-PBM-FLIP-HORIZONTAL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext19",
+      "product": "PBM Python FOSS",
+      "capability_refs": [
+        "flip_horizontal"
+      ],
+      "api_symbols": [
+        "flip_horizontal"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "present",
+          "sha256": "668c67272e4084c5ef64d6f33b3eb0e8505f1fa4c07ae990ff9f443212167090"
+        },
+        {
+          "path": "src/python/pbm/__init__.py",
+          "state": "present",
+          "sha256": "e9fc3a5cc20a26b71f5f9c70d5405c3978e1761ab8353e6fb07b70c6938cc315"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r159_pbm_flip.py"
+      ],
+      "test_count": 5,
+      "description": "PBM flip_horizontal â€” mirror PBM image left-right and write result"
+    },
+    {
+      "entry_id": "RNEXT19-PPM-FLIP-HORIZONTAL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext19",
+      "product": "PPM Python FOSS",
+      "capability_refs": [
+        "flip_horizontal"
+      ],
+      "api_symbols": [
+        "flip_horizontal"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "d9d11018f520a32fa1380c0517d92d7b6bfb26fd0411c98a549278fc0474b652"
+        },
+        {
+          "path": "src/python/ppm/__init__.py",
+          "state": "present",
+          "sha256": "f5a724be68667ba83c16331e919f8883d82112a756ce0e1c37026ed72d352b61"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r159_ppm_flip.py"
+      ],
+      "test_count": 5,
+      "description": "PPM flip_horizontal â€” mirror PPM image left-right and write result"
+    },
+    {
+      "entry_id": "RNEXT19-XCF-IS-RGB-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext19",
+      "product": "XCF Python FOSS",
+      "capability_refs": [
+        "xcf_is_rgb"
+      ],
+      "api_symbols": [
+        "xcf_is_rgb"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "state": "present",
+          "sha256": "457024529554dc719be3f8371bef3efc83ba73f732e73f657a29fc292adeb2a9"
+        },
+        {
+          "path": "src/python/xcf/__init__.py",
+          "state": "present",
+          "sha256": "c18100db05f62063dd3739ac61158dff645d79e87aadf21863b8da77f990c928"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_r159_xcf_is_rgb.py"
+      ],
+      "test_count": 4,
+      "description": "XCF xcf_is_rgb â€” check if XCF image type is RGB (type 0)"
+    },
+    {
+      "entry_id": "RNEXT19-ODS-GET-ALL-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext19",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "get_all_values"
+      ],
+      "api_symbols": [
+        "get_all_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "e02ea5595805a5f168e2b43be9b8c32395bbd1064c94d79bb2877082be47a62d"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "b4ca5a8d9bf8c2b051c7edb13c79a8f2af61eaca44667ed080c328c38a854ef1"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r159_ods_all_values.py"
+      ],
+      "test_count": 6,
+      "description": "ODS get_all_values â€” flat list of all cell values in a sheet"
+    },
+    {
+      "entry_id": "PKG-TSV-PYPROJECT-001",
+      "timestamp": "2026-06-10T02:00:00Z",
+      "product": "tsv",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "description": "Add pyproject.toml for TSV packaging",
+      "api_symbols": [
+        "pyproject.toml"
+      ],
+      "capability_refs": [
+        "tsv_packaging"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/pyproject.toml",
+          "state": "present",
+          "sha256": "208533312471e24e43f6e8cc356f5a2864aea1270e6e3202c5cb1c2e39e3763c"
+        }
+      ]
+    },
+    {
+      "entry_id": "PKG-NDJSON-PYPROJECT-001",
+      "timestamp": "2026-06-10T02:00:00Z",
+      "product": "ndjson",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "description": "Add pyproject.toml for NDJSON packaging",
+      "api_symbols": [
+        "pyproject.toml"
+      ],
+      "capability_refs": [
+        "ndjson_packaging"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/pyproject.toml",
+          "state": "present",
+          "sha256": "7ce10cc02c87f042697aadc5909c56459676477c7d74d3b2af8a952b956b5eff"
+        }
+      ]
+    },
+    {
+      "entry_id": "PKG-FODG-PYPROJECT-001",
+      "timestamp": "2026-06-10T02:00:00Z",
+      "product": "fodg",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "description": "Add pyproject.toml for FODG packaging",
+      "api_symbols": [
+        "pyproject.toml"
+      ],
+      "capability_refs": [
+        "fodg_packaging"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/pyproject.toml",
+          "state": "present",
+          "sha256": "8ba944b01feb102fac66ae6f48e3a314b2e4f7b9301a4c1da5f940eff02bcede"
+        }
+      ]
+    },
+    {
+      "entry_id": "ODS-WRITER-EXPANSION-001",
+      "timestamp": "2026-06-10T02:00:00Z",
+      "product": "ods",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "description": "Add set_cell_value, add_sheet, remove_sheet, rename_sheet to ODS writer",
+      "api_symbols": [
+        "set_cell_value",
+        "add_sheet",
+        "remove_sheet",
+        "rename_sheet"
+      ],
+      "capability_refs": [
+        "ods_cell_edit",
+        "ods_sheet_management"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_writer.py",
+          "state": "present",
+          "sha256": "0c8b38e3f84bafb39328e5c44c6804cadaa52aa5daf963fffe9ae2ae3850f66a"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "present",
+          "sha256": "b4ca5a8d9bf8c2b051c7edb13c79a8f2af61eaca44667ed080c328c38a854ef1"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT20-DIF-MIN-COLUMN-VALUE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext20",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "min_column_value"
+      ],
+      "api_symbols": [
+        "min_column_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "c66df09702fdc28b6af83fcc0338f7e9a39a6c4bb42bbdeb9018f16d017cffad"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "b8b81e36ad3f75a75f150d2783b060bd7f623d03c57b58f47f5a03537c526b65"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r160_dif_min_max_column.py"
+      ],
+      "test_count": 5,
+      "description": "DIF min_column_value — minimum numeric value in a column"
+    },
+    {
+      "entry_id": "RNEXT20-DIF-MAX-COLUMN-VALUE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext20",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "max_column_value"
+      ],
+      "api_symbols": [
+        "max_column_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "c66df09702fdc28b6af83fcc0338f7e9a39a6c4bb42bbdeb9018f16d017cffad"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "b8b81e36ad3f75a75f150d2783b060bd7f623d03c57b58f47f5a03537c526b65"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r160_dif_min_max_column.py"
+      ],
+      "test_count": 5,
+      "description": "DIF max_column_value — maximum numeric value in a column"
+    },
+    {
+      "entry_id": "RNEXT20-DIF-TOTAL-CELL-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext20",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "total_cell_count"
+      ],
+      "api_symbols": [
+        "total_cell_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "c66df09702fdc28b6af83fcc0338f7e9a39a6c4bb42bbdeb9018f16d017cffad"
+        },
+        {
+          "path": "src/python/dif/__init__.py",
+          "state": "present",
+          "sha256": "b8b81e36ad3f75a75f150d2783b060bd7f623d03c57b58f47f5a03537c526b65"
+        }
+      ],
+      "test_files": [],
+      "test_count": 0,
+      "description": "DIF total_cell_count — total number of cells across all rows"
+    },
+    {
+      "entry_id": "RNEXT20-SYLK-COUNT-NONEMPTY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext20",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "count_nonempty_cells"
+      ],
+      "api_symbols": [
+        "count_nonempty_cells"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "b68465d5e4cf833f85a671bc340d449612dbbfeba97e3a36865d36c6bcfd4b01"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "2cb1294f873d9cef03cbf76f26cc1087c1bec10e42f59acc52049975fc147b17"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r160_sylk_nonempty_sum.py"
+      ],
+      "test_count": 5,
+      "description": "SYLK count_nonempty_cells — count non-empty cells in document"
+    },
+    {
+      "entry_id": "RNEXT20-SYLK-SUM-COLUMN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext20",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "sum_column"
+      ],
+      "api_symbols": [
+        "sum_column"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "b68465d5e4cf833f85a671bc340d449612dbbfeba97e3a36865d36c6bcfd4b01"
+        },
+        {
+          "path": "src/python/sylk/__init__.py",
+          "state": "present",
+          "sha256": "2cb1294f873d9cef03cbf76f26cc1087c1bec10e42f59acc52049975fc147b17"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r160_sylk_nonempty_sum.py"
+      ],
+      "test_count": 5,
+      "description": "SYLK sum_column — sum numeric values in a column"
+    },
+    {
+      "entry_id": "RNEXT20-TOML-DIFF-KEYS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext20",
+      "product": "TOML Python FOSS",
+      "capability_refs": [
+        "diff_keys"
+      ],
+      "api_symbols": [
+        "diff_keys"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "fb430ff3396d9a76822b809d47f4edbfba7780865538f730738218ed82d6324a"
+        },
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "present",
+          "sha256": "2eeabe8716ab78dd981d0624dd4d49ef8197ef4320964ef682f8be02a3b1a4c3"
+        }
+      ],
+      "test_files": [
+        "tests/python/toml/test_r160_toml_diff_rename.py"
+      ],
+      "test_count": 6,
+      "description": "TOML diff_keys — top-level keys in A but not in B"
+    },
+    {
+      "entry_id": "RNEXT20-TOML-RENAME-KEY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext20",
+      "product": "TOML Python FOSS",
+      "capability_refs": [
+        "rename_key"
+      ],
+      "api_symbols": [
+        "rename_key"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "fb430ff3396d9a76822b809d47f4edbfba7780865538f730738218ed82d6324a"
+        },
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "present",
+          "sha256": "2eeabe8716ab78dd981d0624dd4d49ef8197ef4320964ef682f8be02a3b1a4c3"
+        }
+      ],
+      "test_files": [
+        "tests/python/toml/test_r160_toml_diff_rename.py"
+      ],
+      "test_count": 5,
+      "description": "TOML rename_key — rename a top-level key in data dict"
+    },
+    {
+      "entry_id": "HSR-SYLK-TEST-FIX-001",
+      "classification": "GOVERNED_TEST_FIX",
+      "origin_sprint": "hardening-sprint-rnext",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "add_row",
+        "delete_row"
+      ],
+      "api_symbols": [
+        "add_row",
+        "delete_row"
+      ],
+      "source_files": [],
+      "test_files": [
+        "tests/python/sylk/test_r159_sylk_row_ops.py"
+      ],
+      "test_count": 6,
+      "description": "Fixed import pattern in test_r159_sylk_row_ops.py — changed from sys.path short import to src.python.sylk full dotted path to prevent cross-test import pollution"
+    },
+    {
+      "entry_id": "RNEXT21-ODS-GET-CELL-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext21",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "get_cell_count"
+      ],
+      "api_symbols": [
+        "get_cell_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "modified",
+          "sha256": "d0be6a83a7e04a894f9689f38ce539ce03087b7ae0d853dda327afb1806dee02"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "state": "modified",
+          "sha256": "488ee31d7643aaec8f91d0dad7c7254c2326cb239776d8b7d81f5df3a1506540"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r161_ods_cell_count.py"
+      ],
+      "test_count": 6,
+      "description": "ODS get_cell_count - total cell count in a sheet"
+    },
+    {
+      "entry_id": "RNEXT21-XCF-IS-GRAYSCALE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext21",
+      "product": "XCF Python FOSS",
+      "capability_refs": [
+        "xcf_is_grayscale"
+      ],
+      "api_symbols": [
+        "xcf_is_grayscale"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "state": "modified",
+          "sha256": "7b7323fdaabfa56e941261821f3c8103b6347c0d558c8c72cf0513ed538c75e2"
+        },
+        {
+          "path": "src/python/xcf/__init__.py",
+          "state": "modified",
+          "sha256": "e371eeb3206f61909e2c3b8658843807aa99de4ab2db4654ae61f1ac9ce0aff9"
+        }
+      ],
+      "test_files": [
+        "tests/python/xcf/test_r161_xcf_is_grayscale.py"
+      ],
+      "test_count": 4,
+      "description": "XCF xcf_is_grayscale - check if image type is grayscale"
+    },
+    {
+      "entry_id": "RNEXT21-PGM-FLIP-HORIZONTAL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext21",
+      "product": "PGM Python FOSS",
+      "capability_refs": [
+        "flip_horizontal"
+      ],
+      "api_symbols": [
+        "flip_horizontal"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "modified",
+          "sha256": "331236f618c24cac2ab29ffc9fbd3e738a3e1cfe0b65e2974daf3e1f7b4a2b2c"
+        },
+        {
+          "path": "src/python/pgm/__init__.py",
+          "state": "modified",
+          "sha256": "720d29e2c158c3f165ddfc6131a344f9307cde85a5b48ee02d05106a5e749f05"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r161_pgm_flip.py"
+      ],
+      "test_count": 5,
+      "description": "PGM flip_horizontal - mirror PGM image left-right"
+    },
+    {
+      "entry_id": "RNEXT21-PBM-COUNT-WHITE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext21",
+      "product": "PBM Python FOSS",
+      "capability_refs": [
+        "count_white"
+      ],
+      "api_symbols": [
+        "count_white"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "modified",
+          "sha256": "70a86b51cbcd24e58bffe5698e4cf9911f611d98382efc3c4c3ded1acd664157"
+        },
+        {
+          "path": "src/python/pbm/__init__.py",
+          "state": "modified",
+          "sha256": "0e9e7a23b9236bc03afcbaa86817a38ea71d267bb2dd8d4d6aef85c25dee3f5e"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r161_pbm_count_white.py"
+      ],
+      "test_count": 5,
+      "description": "PBM count_white - count white pixels (value=0)"
+    },
+    {
+      "entry_id": "RNEXT21-PPM-INVERT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext21",
+      "product": "PPM Python FOSS",
+      "capability_refs": [
+        "invert"
+      ],
+      "api_symbols": [
+        "invert"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "modified",
+          "sha256": "f640b4a05b515bb544762eb93918f28e97c3be04663d327483fec9d17f31cebe"
+        },
+        {
+          "path": "src/python/ppm/__init__.py",
+          "state": "modified",
+          "sha256": "9dc747a1fd2bfcb4ddd922fe926c7f4e7db2c9b7993c60652d6cee0a92bf9d6b"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r161_ppm_invert_flipv.py"
+      ],
+      "test_count": 5,
+      "description": "PPM invert - invert all pixel colors"
+    },
+    {
+      "entry_id": "RNEXT21-PPM-FLIP-VERTICAL-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "mainstream-product-deepening-rnext21",
+      "product": "PPM Python FOSS",
+      "capability_refs": [
+        "flip_vertical"
+      ],
+      "api_symbols": [
+        "flip_vertical"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "modified",
+          "sha256": "f640b4a05b515bb544762eb93918f28e97c3be04663d327483fec9d17f31cebe"
+        },
+        {
+          "path": "src/python/ppm/__init__.py",
+          "state": "modified",
+          "sha256": "9dc747a1fd2bfcb4ddd922fe926c7f4e7db2c9b7993c60652d6cee0a92bf9d6b"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r161_ppm_invert_flipv.py"
+      ],
+      "test_count": 5,
+      "description": "PPM flip_vertical - mirror PPM image top-bottom"
     }
   ]
 }

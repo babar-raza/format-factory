@@ -1,0 +1,1349 @@
+# Format Factory — Plan Hardening Sprint Taskcards
+# Sprint: Plan Hardening 2026-06-09
+# Total: 45 taskcards across 9 groups (A-I)
+# Initial READY: 38 | Initial BLOCKED: 7
+
+# ─── Group A — Authority and State Truth ───
+
+- id: TC-A1
+  title: "Resolve Gate 11 context-pack vs registry contradiction"
+  weakness_ids: [W7, W9, W12]
+  stream: authority
+  lane: 3
+  owner_role: authority-state-agent
+  state: READY
+  priority: 1
+  risk_level: critical
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["registry/*", "src/*", "AGENTS.md", ".supervisor/context-pack.yaml"]
+  required_inputs:
+    - "registry/format-registry.yaml"
+    - ".supervisor/context-pack.yaml"
+    - "AGENTS.md"
+    - "docs/gates.md"
+    - "plans/master-plan.md"
+  required_repo_evidence:
+    - "registry/format-registry.yaml must contain gate_11 section for FODS and FODT"
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: ["verbatim text from registry must match report"]
+  required_outputs: ["reports/system-maturity/plan-hardening-20260609/authority-state-contradiction-report.md"]
+  acceptance_criteria:
+    - "Registry gate_11 fields quoted verbatim"
+    - "Context-pack gate_11 fields quoted verbatim"
+    - "Contradiction identified with authoritative resolution"
+    - "No modification to registry or context-pack"
+  independent_verification_required: true
+  rollback_plan: "Delete report file"
+  stop_conditions: ["Registry file cannot be read"]
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["authority-state-contradiction-report.md"]
+  final_state_reason: null
+
+- id: TC-A2
+  title: "Specify generated-output authority cross-check validator"
+  weakness_ids: [W9, W12]
+  stream: authority
+  lane: 3
+  owner_role: authority-state-agent
+  state: READY
+  priority: 2
+  risk_level: medium
+  task_type: report
+  dependencies: [TC-A1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["registry/*", "src/*", "tools/*"]
+  required_inputs: ["TC-A1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Validator specification in authority-state-contradiction-report.md"]
+  acceptance_criteria: ["Validator behavior defined: inputs, outputs, pass/fail criteria"]
+  independent_verification_required: true
+  rollback_plan: "Delete report section"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Validator spec in report"]
+  final_state_reason: null
+
+- id: TC-A3
+  title: "Normalize continuation-signal/context-pack/next-sprint authority rules"
+  weakness_ids: [W12]
+  stream: authority
+  lane: 3
+  owner_role: authority-state-agent
+  state: READY
+  priority: 2
+  risk_level: medium
+  task_type: report
+  dependencies: [TC-A1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["registry/*", "src/*", ".supervisor/*", ".local/*"]
+  required_inputs:
+    - ".local/supervisor/continuation-signal.json"
+    - ".supervisor/context-pack.yaml"
+    - "reports/supervisor/next-sprint.md"
+    - "reports/supervisor/session-resume.md"
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Authority rules in state-machine-governance.yaml authority_hierarchy section"]
+  acceptance_criteria: ["Each generated file classified as authoritative or advisory"]
+  independent_verification_required: true
+  rollback_plan: "N/A - report only"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Authority hierarchy in state-machine-governance.yaml"]
+  final_state_reason: null
+
+- id: TC-A4
+  title: "Create advisory-vs-authoritative source map"
+  weakness_ids: [W9, W12]
+  stream: authority
+  lane: 3
+  owner_role: authority-state-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: report
+  dependencies: [TC-A1, TC-A3]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["registry/*", "src/*"]
+  required_inputs: ["TC-A1 and TC-A3 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Source map table in authority-state-contradiction-report.md"]
+  acceptance_criteria: ["Every generated state file mapped to authoritative/advisory classification"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Source map table"]
+  final_state_reason: null
+
+# ─── Group B — Commercial Readiness ───
+
+- id: TC-B1
+  title: "Verify .NET FODS actual capability tier from source"
+  weakness_ids: [W1, W7]
+  stream: commercial
+  lane: 4
+  owner_role: commercial-product-architect
+  state: READY
+  priority: 2
+  risk_level: medium
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "registry/*"]
+  required_inputs: ["src/net/fods/*.cs"]
+  required_repo_evidence: ["src/net/fods/ directory with .cs files"]
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: ["LOC counts match actual files"]
+  required_outputs: ["reports/system-maturity/plan-hardening-20260609/commercial-readiness-verification.md"]
+  acceptance_criteria:
+    - "Every .cs file listed with LOC and key classes"
+    - "Each implemented operation documented"
+    - "Tier assessment with evidence"
+    - "Gap to Tier 2+ identified"
+  independent_verification_required: true
+  rollback_plan: "Delete report"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["commercial-readiness-verification.md FODS section"]
+  final_state_reason: null
+
+- id: TC-B2
+  title: "Verify .NET FODT actual capability tier from source"
+  weakness_ids: [W1, W7]
+  stream: commercial
+  lane: 4
+  owner_role: commercial-product-architect
+  state: READY
+  priority: 2
+  risk_level: medium
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "registry/*"]
+  required_inputs: ["src/net/fodt/*.cs"]
+  required_repo_evidence: ["src/net/fodt/ directory with .cs files"]
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["FODT section in commercial-readiness-verification.md"]
+  acceptance_criteria:
+    - "Every .cs file listed with LOC"
+    - "Tier assessment with evidence"
+  independent_verification_required: true
+  rollback_plan: "Delete report"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["commercial-readiness-verification.md FODT section"]
+  final_state_reason: null
+
+- id: TC-B3
+  title: "Define minimum C7 load-edit-save-export path"
+  weakness_ids: [W1, W7]
+  stream: commercial
+  lane: 4
+  owner_role: commercial-product-architect
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: report
+  dependencies: [TC-B1, TC-B2]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "registry/*"]
+  required_inputs: ["TC-B1 and TC-B2 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["C7 path section in commercial-readiness-verification.md"]
+  acceptance_criteria: ["Minimum operations defined for first commercial target"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["C7 path definition"]
+  final_state_reason: null
+
+- id: TC-B4
+  title: "Prepare Gate 11-G approval packet template"
+  weakness_ids: [W7, W11]
+  stream: commercial
+  lane: 4
+  owner_role: commercial-product-architect
+  state: BLOCKED
+  priority: 2
+  risk_level: high
+  task_type: report
+  dependencies: [TC-A1, TC-B1, TC-B2]
+  blocked_by: [TC-A1]
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["registry/*", "src/*"]
+  required_inputs: ["TC-A1 contradiction resolved", "TC-B1/B2 tier assessment"]
+  required_repo_evidence: ["registry gate_11 contradiction documented and resolved"]
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Gate 11-G packet template"]
+  acceptance_criteria:
+    - "Packet template lists all Gate 11 criteria from docs/gates.md"
+    - "Current evidence mapped to each criterion"
+    - "Agent-preparable items separated from true human gate"
+  independent_verification_required: true
+  rollback_plan: "N/A - template only"
+  stop_conditions: ["TC-A1 not closed"]
+  human_gate_classification: agent_preparable
+  agent_preparable_human_gate_work: "Capability checklist, test evidence, security review summary, NuGet readiness, export coverage proof"
+  closeout_evidence: ["Gate 11-G packet template"]
+  final_state_reason: "BLOCKED: TC-A1 must close first to ensure contradiction is resolved before preparing approval packet"
+
+- id: TC-B5
+  title: "Identify agent-preparable vs true Babar gate work"
+  weakness_ids: [W7, W11]
+  stream: commercial
+  lane: 4
+  owner_role: commercial-product-architect
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: report
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["registry/*"]
+  required_inputs: ["docs/gates.md", "AGENTS.md"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Agent vs human gate section in commercial-readiness-verification.md"]
+  acceptance_criteria: ["Every Gate 11 criterion classified as agent-preparable or true-human-gate"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Classification table"]
+  final_state_reason: null
+
+# ─── Group C — Queue-Backed Autonomy ───
+
+- id: TC-C1
+  title: "Verify queue/executor/packager integration state"
+  weakness_ids: [W2, W14, W15]
+  stream: autonomy
+  lane: 5
+  owner_role: autonomy-architecture-agent
+  state: READY
+  priority: 2
+  risk_level: medium
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "tools/*", ".local/supervisor/action-queue.jsonl"]
+  required_inputs:
+    - "tools/supervisor/product_source_executor.py"
+    - "tools/supervisor/action_queue.py"
+    - "tools/supervisor/autonomous_task_generator.py"
+    - "tools/supervisor/product_feature_factory.py"
+    - "tools/supervisor/bounded_repair_engine.py"
+    - "tools/supervisor/evidence_auto_packager.py"
+    - ".local/supervisor/action-queue.jsonl"
+    - ".local/supervisor/lane-execution-ledger.json"
+    - "schemas/queue/queue-item-v2.schema.json"
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["reports/system-maturity/plan-hardening-20260609/queue-autonomy-gap-verification.md"]
+  acceptance_criteria:
+    - "Each component listed with implemented functions"
+    - "Integration gaps between components identified"
+    - "Lane ledger state documented"
+    - "Queue items inventoried"
+  independent_verification_required: true
+  rollback_plan: "Delete report"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["queue-autonomy-gap-verification.md"]
+  final_state_reason: null
+
+- id: TC-C2
+  title: "Design safe PRODUCT_SOURCE_PATCH_BOUNDED pilot"
+  weakness_ids: [W2, W15]
+  stream: autonomy
+  lane: 5
+  owner_role: autonomy-architecture-agent
+  state: READY
+  priority: 3
+  risk_level: medium
+  task_type: report
+  dependencies: [TC-C1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "tools/*"]
+  required_inputs: ["TC-C1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Pilot design section in queue-autonomy-gap-verification.md"]
+  acceptance_criteria:
+    - "Specific queue item selected with justification"
+    - "Allowed paths, diff budget, rollback plan specified"
+    - "Test commands specified"
+    - "Evidence requirements specified"
+    - "Explicit BLOCKED status for execution with exact unblock criteria"
+  independent_verification_required: false
+  rollback_plan: "N/A - design only"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Pilot design specification"]
+  final_state_reason: null
+
+- id: TC-C3
+  title: "Execute autonomy pilot"
+  weakness_ids: [W2, W15]
+  stream: autonomy
+  lane: 5
+  owner_role: autonomy-architecture-agent
+  state: BLOCKED
+  priority: 3
+  risk_level: high
+  task_type: pilot
+  dependencies: [TC-C2]
+  blocked_by: [TC-C2]
+  allowed_paths: ["defined by TC-C2 pilot design"]
+  forbidden_paths: ["registry/*", "AGENTS.md", ".supervisor/*"]
+  required_inputs: ["TC-C2 pilot design"]
+  required_repo_evidence: ["Queue item validated against schema"]
+  required_runtime_evidence: ["Executor log", "Test results", "Lane ledger entry"]
+  required_tests: ["Tests specified in pilot design"]
+  required_validators: ["Path enforcement check", "Diff budget check"]
+  required_outputs: ["Lane ledger entry", "Evidence declaration"]
+  acceptance_criteria: ["Full queue->patch->test->ledger->evidence cycle completes"]
+  independent_verification_required: true
+  rollback_plan: "git checkout -- <modified files>"
+  stop_conditions: ["Test failure", "Path violation", "Diff budget exceeded"]
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Execution log", "Test results", "Ledger entry"]
+  final_state_reason: "BLOCKED: Requires TC-C2 pilot design to be CLOSED first"
+
+- id: TC-C4
+  title: "Validate queue->source->tests->ledger->evidence cycle"
+  weakness_ids: [W2, W14, W15]
+  stream: autonomy
+  lane: 5
+  owner_role: autonomy-architecture-agent
+  state: BLOCKED
+  priority: 3
+  risk_level: high
+  task_type: validation
+  dependencies: [TC-C3]
+  blocked_by: [TC-C3]
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-C3 execution evidence"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: ["Each loop segment traced"]
+  required_outputs: ["Validation section in queue-autonomy-gap-verification.md"]
+  acceptance_criteria: ["All loop segments verified with evidence"]
+  independent_verification_required: true
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Validation report"]
+  final_state_reason: "BLOCKED: Requires TC-C3 pilot execution"
+
+- id: TC-C5
+  title: "Replay pilot for idempotency proof"
+  weakness_ids: [W14]
+  stream: autonomy
+  lane: 5
+  owner_role: autonomy-architecture-agent
+  state: BLOCKED
+  priority: 4
+  risk_level: high
+  task_type: pilot
+  dependencies: [TC-C4]
+  blocked_by: [TC-C4]
+  allowed_paths: ["defined by TC-C2 pilot design"]
+  forbidden_paths: ["registry/*"]
+  required_inputs: ["TC-C4 validated evidence"]
+  required_repo_evidence: []
+  required_runtime_evidence: ["Second execution log", "Comparison with first"]
+  required_tests: ["Same tests as TC-C3"]
+  required_validators: ["Output hash comparison"]
+  required_outputs: ["Idempotency proof in queue-autonomy-gap-verification.md"]
+  acceptance_criteria: ["Same input produces same output (function signature, test results)"]
+  independent_verification_required: true
+  rollback_plan: "git checkout"
+  stop_conditions: ["Different output on replay"]
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Replay comparison"]
+  final_state_reason: "BLOCKED: Requires TC-C4 validation"
+
+# ─── Group D — Product Depth and Portfolio ───
+
+- id: TC-D1
+  title: "Build format maturity matrix from repo truth"
+  weakness_ids: [W3, W10]
+  stream: product
+  lane: 6
+  owner_role: python-product-maturity-agent
+  state: READY
+  priority: 2
+  risk_level: low
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "registry/*"]
+  required_inputs: ["src/python/*/", "tests/python/*/"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["reports/system-maturity/plan-hardening-20260609/product-portfolio-maturity-matrix.md"]
+  acceptance_criteria:
+    - "Every Python format listed with function count, test count, write capability"
+    - "Every .NET format listed with LOC and test count"
+    - "Authority level included"
+    - "Maturity classification for each format"
+  independent_verification_required: true
+  rollback_plan: "Delete report"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["product-portfolio-maturity-matrix.md"]
+  final_state_reason: null
+
+- id: TC-D2
+  title: "Select 3 priority Python formats for deepening"
+  weakness_ids: [W3, W8]
+  stream: product
+  lane: 6
+  owner_role: python-product-maturity-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: report
+  dependencies: [TC-D1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-D1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Priority selection section in product-portfolio-maturity-matrix.md"]
+  acceptance_criteria: ["3 formats selected with justification based on maturity data"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Selection with rationale"]
+  final_state_reason: null
+
+- id: TC-D3
+  title: "Define publishable FOSS criteria"
+  weakness_ids: [W8]
+  stream: product
+  lane: 6
+  owner_role: python-product-maturity-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: report
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: []
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["FOSS criteria section in product-portfolio-maturity-matrix.md"]
+  acceptance_criteria: ["Criteria list: read, write, export, roundtrip, install-test, metadata, version, docs"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Criteria definition"]
+  final_state_reason: null
+
+- id: TC-D4
+  title: "Create product-first sprint policy"
+  weakness_ids: [W10]
+  stream: product
+  lane: 6
+  owner_role: python-product-maturity-agent
+  state: READY
+  priority: 4
+  risk_level: low
+  task_type: governance
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "registry/*", ".supervisor/*"]
+  required_inputs: []
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Product-first policy section in product-portfolio-maturity-matrix.md"]
+  acceptance_criteria: ["Measurable product-progress ratio defined (>=60% PRODUCT_SOURCE/TEST items)"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Policy definition"]
+  final_state_reason: null
+
+- id: TC-D5
+  title: "Classify shallow formats: pause/deepen/defer"
+  weakness_ids: [W3]
+  stream: product
+  lane: 6
+  owner_role: python-product-maturity-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: report
+  dependencies: [TC-D1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-D1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Shallow format classification in product-portfolio-maturity-matrix.md"]
+  acceptance_criteria: ["Each shallow format classified with rationale"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Classification table"]
+  final_state_reason: null
+
+# ─── Group E — Evidence Automation ───
+
+- id: TC-E1
+  title: "Verify evidence_auto_packager actual derived fields"
+  weakness_ids: [W6, W13]
+  stream: evidence
+  lane: 7
+  owner_role: evidence-systems-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["tools/*", "src/*"]
+  required_inputs: ["tools/supervisor/evidence_auto_packager.py"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["reports/system-maturity/plan-hardening-20260609/evidence-automation-verification.md"]
+  acceptance_criteria: ["Every field classified as auto-generated or manual"]
+  independent_verification_required: false
+  rollback_plan: "Delete report"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["evidence-automation-verification.md"]
+  final_state_reason: null
+
+- id: TC-E2
+  title: "Identify automatable manual evidence fields"
+  weakness_ids: [W6]
+  stream: evidence
+  lane: 7
+  owner_role: evidence-systems-agent
+  state: READY
+  priority: 4
+  risk_level: low
+  task_type: report
+  dependencies: [TC-E1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["tools/*"]
+  required_inputs: ["TC-E1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Automation candidates section in evidence-automation-verification.md"]
+  acceptance_criteria: ["Each manual field assessed for automation feasibility"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Automation candidates list"]
+  final_state_reason: null
+
+- id: TC-E3
+  title: "Specify lane-execution-ledger requirement"
+  weakness_ids: [W6, W13]
+  stream: evidence
+  lane: 7
+  owner_role: evidence-systems-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: governance
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["tools/*", ".local/*"]
+  required_inputs: [".local/supervisor/lane-execution-ledger.json"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Ledger requirement section in evidence-automation-verification.md"]
+  acceptance_criteria: ["Required ledger fields defined", "Current ledger state documented"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Ledger requirement specification"]
+  final_state_reason: null
+
+- id: TC-E4
+  title: "Specify ACCEPTED_VERIFIED path-only evidence blocker"
+  weakness_ids: [W13]
+  stream: evidence
+  lane: 7
+  owner_role: evidence-systems-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: governance
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["tools/*"]
+  required_inputs: ["tools/supervisor/grade_declared_work.py"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Path-only blocker spec in evidence-automation-verification.md"]
+  acceptance_criteria: ["Rule defined: ACCEPTED_VERIFIED requires non-path evidence"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Blocker specification"]
+  final_state_reason: null
+
+- id: TC-E5
+  title: "Review anti-skip checks for raw logs/sample outputs"
+  weakness_ids: [W13]
+  stream: evidence
+  lane: 7
+  owner_role: evidence-systems-agent
+  state: READY
+  priority: 4
+  risk_level: low
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["tools/*"]
+  required_inputs: ["tools/supervisor/anti_skip_checker.py"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Anti-skip review section in evidence-automation-verification.md"]
+  acceptance_criteria: ["Detector #3 and #9 behavior documented"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Detector review"]
+  final_state_reason: null
+
+# ─── Group F — Git State and Recovery ───
+
+- id: TC-F1
+  title: "Classify all modified and untracked files"
+  weakness_ids: [W4]
+  stream: git
+  lane: 8
+  owner_role: repo-hygiene-agent
+  state: READY
+  priority: 1
+  risk_level: medium
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "registry/*", ".git/*"]
+  required_inputs: []
+  required_repo_evidence: []
+  required_runtime_evidence: ["git status --short", "git diff --stat HEAD"]
+  required_tests: []
+  required_validators: []
+  required_outputs: ["reports/system-maturity/plan-hardening-20260609/git-state-classification.md"]
+  acceptance_criteria:
+    - "Every modified file classified by category"
+    - "Untracked files grouped and risk-assessed"
+    - "No destructive git commands run"
+  independent_verification_required: true
+  rollback_plan: "N/A - read only"
+  stop_conditions: ["Any git write command attempted"]
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["git-state-classification.md"]
+  final_state_reason: null
+
+- id: TC-F2
+  title: "Separate files by domain category"
+  weakness_ids: [W4]
+  stream: git
+  lane: 8
+  owner_role: repo-hygiene-agent
+  state: READY
+  priority: 2
+  risk_level: low
+  task_type: report
+  dependencies: [TC-F1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-F1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Category breakdown in git-state-classification.md"]
+  acceptance_criteria: ["Source/tests/governance/evidence/generated/stale categories populated"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Category table"]
+  final_state_reason: null
+
+- id: TC-F3
+  title: "Produce checkpoint recommendation (no commit)"
+  weakness_ids: [W4]
+  stream: git
+  lane: 8
+  owner_role: repo-hygiene-agent
+  state: READY
+  priority: 2
+  risk_level: low
+  task_type: report
+  dependencies: [TC-F1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", ".git/*"]
+  required_inputs: ["TC-F1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Checkpoint recommendation in git-state-classification.md"]
+  acceptance_criteria: ["Commit grouping strategy defined", "No actual commit executed"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: ["Any git commit attempted"]
+  human_gate_classification: agent_preparable
+  agent_preparable_human_gate_work: "Checkpoint plan with file groupings ready for user to execute"
+  closeout_evidence: ["Checkpoint recommendation"]
+  final_state_reason: null
+
+- id: TC-F4
+  title: "Produce rollback and recovery plan"
+  weakness_ids: [W4]
+  stream: git
+  lane: 8
+  owner_role: repo-hygiene-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: report
+  dependencies: [TC-F1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-F1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Rollback plan in git-state-classification.md"]
+  acceptance_criteria: ["Recovery commands documented for each file category"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Rollback plan"]
+  final_state_reason: null
+
+- id: TC-F5
+  title: "Identify files requiring taskcards before retention"
+  weakness_ids: [W4]
+  stream: git
+  lane: 8
+  owner_role: repo-hygiene-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: report
+  dependencies: [TC-F1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-F1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Taskcard-required files section in git-state-classification.md"]
+  acceptance_criteria: ["Untracked source/tool files flagged with required taskcard IDs"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Flagged file list"]
+  final_state_reason: null
+
+# ─── Group G — Test Integrity ───
+
+- id: TC-G1
+  title: "Explain historical test-count changes"
+  weakness_ids: [W5]
+  stream: test
+  lane: 9
+  owner_role: test-quality-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "tests/*"]
+  required_inputs: ["MEMORY.md test count entries", "tests/python/ directory listing"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["reports/system-maturity/plan-hardening-20260609/test-integrity-verification.md"]
+  acceptance_criteria: ["Recent sprint test counts documented", "Trend direction established"]
+  independent_verification_required: false
+  rollback_plan: "Delete report"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["test-integrity-verification.md"]
+  final_state_reason: null
+
+- id: TC-G2
+  title: "Create test-count and coverage drift audit"
+  weakness_ids: [W5]
+  stream: test
+  lane: 9
+  owner_role: test-quality-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: report
+  dependencies: [TC-G1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["tests/*"]
+  required_inputs: ["TC-G1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Coverage audit in test-integrity-verification.md"]
+  acceptance_criteria: ["777 test files counted by directory"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Coverage audit"]
+  final_state_reason: null
+
+- id: TC-G3
+  title: "Identify import-only vs output-producing tests"
+  weakness_ids: [W5]
+  stream: test
+  lane: 9
+  owner_role: test-quality-agent
+  state: READY
+  priority: 4
+  risk_level: low
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["tests/*"]
+  required_inputs: ["Sample test files from 5 formats"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Test quality section in test-integrity-verification.md"]
+  acceptance_criteria: ["5 formats spot-checked", "Import-only vs output-producing ratio estimated"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Quality assessment"]
+  final_state_reason: null
+
+- id: TC-G4
+  title: "Define minimum per-format test-depth thresholds"
+  weakness_ids: [W5]
+  stream: test
+  lane: 9
+  owner_role: test-quality-agent
+  state: READY
+  priority: 4
+  risk_level: low
+  task_type: governance
+  dependencies: [TC-G2]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["tests/*"]
+  required_inputs: ["TC-G2 coverage data"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Threshold table in test-integrity-verification.md"]
+  acceptance_criteria: ["Deep >=20, Medium >=10, Shallow >=5 files defined"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Threshold table"]
+  final_state_reason: null
+
+- id: TC-G5
+  title: "Propose test deletion/reorganization validator"
+  weakness_ids: [W5]
+  stream: test
+  lane: 9
+  owner_role: test-quality-agent
+  state: READY
+  priority: 5
+  risk_level: low
+  task_type: report
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["tests/*", "tools/*"]
+  required_inputs: []
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Validator proposal in test-integrity-verification.md"]
+  acceptance_criteria: ["Validator behavior specified"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Validator proposal"]
+  final_state_reason: null
+
+# ─── Group H — Release Readiness ───
+
+- id: TC-H1
+  title: "Verify Python package structure and built artifacts"
+  weakness_ids: [W8]
+  stream: release
+  lane: 6
+  owner_role: release-readiness-agent
+  state: READY
+  priority: 4
+  risk_level: low
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["src/python/*/pyproject.toml if present", ".local/package-builds/"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Python package section in commercial-readiness-verification.md or next-execution-prompt.md"]
+  acceptance_criteria: ["Package artifacts inventoried", "Missing packaging identified"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Package inventory"]
+  final_state_reason: null
+
+- id: TC-H2
+  title: "Verify .NET package structure and local NuGet artifacts"
+  weakness_ids: [W1, W8]
+  stream: release
+  lane: 6
+  owner_role: release-readiness-agent
+  state: READY
+  priority: 4
+  risk_level: low
+  task_type: investigation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: [".local/pack-output/", "src/net/*/*.csproj"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: [".NET package section in commercial-readiness-verification.md"]
+  acceptance_criteria: ["NuGet artifacts listed", "Version and status documented"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["NuGet inventory"]
+  final_state_reason: null
+
+- id: TC-H3
+  title: "Define PyPI readiness checklist"
+  weakness_ids: [W8]
+  stream: release
+  lane: 6
+  owner_role: release-readiness-agent
+  state: READY
+  priority: 4
+  risk_level: low
+  task_type: report
+  dependencies: [TC-H1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-H1 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["PyPI checklist in next-execution-prompt.md or commercial-readiness-verification.md"]
+  acceptance_criteria: ["Complete checklist with current status for each item"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: agent_preparable
+  agent_preparable_human_gate_work: "Checklist prepared; human provides PyPI credentials and final approval"
+  closeout_evidence: ["PyPI checklist"]
+  final_state_reason: null
+
+- id: TC-H4
+  title: "Define NuGet readiness checklist"
+  weakness_ids: [W1, W8]
+  stream: release
+  lane: 6
+  owner_role: release-readiness-agent
+  state: READY
+  priority: 4
+  risk_level: low
+  task_type: report
+  dependencies: [TC-H2]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-H2 outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["NuGet checklist in commercial-readiness-verification.md"]
+  acceptance_criteria: ["Complete checklist with current status"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: agent_preparable
+  agent_preparable_human_gate_work: "Checklist prepared; human provides NuGet API key and Gate 11 approval"
+  closeout_evidence: ["NuGet checklist"]
+  final_state_reason: null
+
+- id: TC-H5
+  title: "Publication gate: BLOCKED until install proof + approval + credentials"
+  weakness_ids: [W8]
+  stream: release
+  lane: 6
+  owner_role: release-readiness-agent
+  state: BLOCKED
+  priority: 5
+  risk_level: critical
+  task_type: governance
+  dependencies: [TC-H1, TC-H2, TC-H3, TC-H4]
+  blocked_by: [TC-H3, TC-H4]
+  allowed_paths: []
+  forbidden_paths: ["*"]
+  required_inputs: ["Install proof", "Gate 11-G approval", "Publication credentials"]
+  required_repo_evidence: ["Gate 11-G approval in registry"]
+  required_runtime_evidence: ["Install test in clean environment"]
+  required_tests: ["Package install test", "API smoke test"]
+  required_validators: ["Gate 11 approved in registry", "Credentials available"]
+  required_outputs: []
+  acceptance_criteria: ["Package published and install-verified"]
+  independent_verification_required: true
+  rollback_plan: "Yank published package"
+  stop_conditions: ["Gate 11 not approved", "No credentials", "Install test fails"]
+  human_gate_classification: true_human_gate
+  agent_preparable_human_gate_work: "Full readiness checklist and install proof; human provides credentials and final publication command"
+  closeout_evidence: ["Published package URL", "Install test log"]
+  final_state_reason: "BLOCKED: Gate 11 not approved, no publication credentials, no install proof"
+
+# ─── Group I — Independent Verification ───
+
+- id: TC-I1
+  title: "Independently verify plan-hardening outputs"
+  weakness_ids: [W1, W2, W3, W4, W5, W6, W7, W8, W9, W10, W11, W12, W13, W14, W15]
+  stream: verification
+  lane: 10
+  owner_role: independent-verification-agent
+  state: READY
+  priority: 2
+  risk_level: low
+  task_type: validation
+  dependencies: []
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*", "registry/*"]
+  required_inputs: ["All Stage 1 and Stage 2 output files"]
+  required_repo_evidence: ["18 output files exist"]
+  required_runtime_evidence: ["YAML validation of .yaml files"]
+  required_tests: []
+  required_validators: ["File existence check", "YAML parse check", "Internal consistency check"]
+  required_outputs: ["reports/system-maturity/plan-hardening-20260609/independent-verification-report.md"]
+  acceptance_criteria: ["All 18 files verified", "No internal contradictions", "YAML files parse cleanly"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["independent-verification-report.md"]
+  final_state_reason: null
+
+- id: TC-I2
+  title: "Independently verify authority-state fixes"
+  weakness_ids: [W7, W9, W12]
+  stream: verification
+  lane: 10
+  owner_role: independent-verification-agent
+  state: READY
+  priority: 2
+  risk_level: medium
+  task_type: validation
+  dependencies: [TC-A1]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["registry/*"]
+  required_inputs: ["TC-A1 outputs", "registry/format-registry.yaml"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: ["Verbatim text from registry matches report quotation"]
+  required_outputs: ["Authority verification section in independent-verification-report.md"]
+  acceptance_criteria: ["Registry text verified verbatim against report claims"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Verification section"]
+  final_state_reason: null
+
+- id: TC-I3
+  title: "Independently verify autonomy pilot if executed"
+  weakness_ids: [W2, W15]
+  stream: verification
+  lane: 10
+  owner_role: independent-verification-agent
+  state: BLOCKED
+  priority: 3
+  risk_level: high
+  task_type: validation
+  dependencies: [TC-C3, TC-C4]
+  blocked_by: [TC-C3]
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-C3 and TC-C4 execution evidence"]
+  required_repo_evidence: ["Lane ledger entry for pilot"]
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: ["Each loop segment traced independently"]
+  required_outputs: ["Autonomy pilot IV in independent-verification-report.md"]
+  acceptance_criteria: ["Full loop verified by different verification lane"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["IV section"]
+  final_state_reason: "BLOCKED: TC-C3 autonomy pilot not executed in this sprint"
+
+- id: TC-I4
+  title: "Independently verify commercial verification"
+  weakness_ids: [W1, W7]
+  stream: verification
+  lane: 10
+  owner_role: independent-verification-agent
+  state: READY
+  priority: 3
+  risk_level: low
+  task_type: validation
+  dependencies: [TC-B1, TC-B2]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["src/*"]
+  required_inputs: ["TC-B1 and TC-B2 outputs", "src/net/fods/", "src/net/fodt/"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: ["LOC counts spot-checked against actual files"]
+  required_outputs: ["Commercial IV section in independent-verification-report.md"]
+  acceptance_criteria: ["Tier assessments match actual source capabilities"]
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Commercial IV section"]
+  final_state_reason: null
+
+- id: TC-I5
+  title: "Produce final go/no-go recommendation"
+  weakness_ids: [W1, W2, W3, W4, W5, W6, W7, W8, W9, W10, W11, W12, W13, W14, W15]
+  stream: verification
+  lane: 10
+  owner_role: independent-verification-agent
+  state: READY
+  priority: 1
+  risk_level: medium
+  task_type: report
+  dependencies: [TC-I1, TC-I2, TC-I4]
+  blocked_by: []
+  allowed_paths: ["reports/system-maturity/plan-hardening-20260609/*"]
+  forbidden_paths: ["registry/*", "src/*"]
+  required_inputs: ["All IV outputs"]
+  required_repo_evidence: []
+  required_runtime_evidence: []
+  required_tests: []
+  required_validators: []
+  required_outputs: ["Go/no-go section in independent-verification-report.md"]
+  acceptance_criteria:
+    - "System readiness assessed for: product sprint, autonomy pilot, commercial gate prep"
+    - "Each assessment backed by evidence from this sprint"
+    - "Remaining blockers explicitly listed"
+  independent_verification_required: false
+  rollback_plan: "N/A"
+  stop_conditions: []
+  human_gate_classification: none
+  agent_preparable_human_gate_work: null
+  closeout_evidence: ["Go/no-go recommendation"]
+  final_state_reason: null

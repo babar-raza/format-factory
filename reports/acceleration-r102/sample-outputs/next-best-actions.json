@@ -1,0 +1,105 @@
+{
+  "mainstream": [
+    {
+      "action_type": "implement_capability",
+      "priority": 135,
+      "target": "commercial-net-fods-dogfood-status-fods-to-csv-dotnet",
+      "capability_path": "dogfood_status.fods_to_csv_dotnet",
+      "format": "FODS",
+      "decision": "GOVERNED_SKILL_REQUIRED",
+      "rationale": "FODS dogfood_status.fods_to_csv_dotnet is GAP_DOGFOOD_EXTERNAL"
+    },
+    {
+      "action_type": "implement_capability",
+      "priority": 135,
+      "target": "commercial-net-fods-dogfood-status-fods-to-html-dotnet",
+      "capability_path": "dogfood_status.fods_to_html_dotnet",
+      "format": "FODS",
+      "decision": "GOVERNED_SKILL_REQUIRED",
+      "rationale": "FODS dogfood_status.fods_to_html_dotnet is GAP_DOGFOOD_EXTERNAL"
+    },
+    {
+      "action_type": "implement_capability",
+      "priority": 135,
+      "target": "commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet",
+      "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+      "format": "FODT",
+      "decision": "GOVERNED_SKILL_REQUIRED",
+      "rationale": "FODT dogfood_status.fodt_to_markdown_dotnet is GAP_DOGFOOD_EXTERNAL"
+    },
+    {
+      "action_type": "implement_capability",
+      "priority": 135,
+      "target": "commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet",
+      "capability_path": "dogfood_status.fodt_to_txt_dotnet",
+      "format": "FODT",
+      "decision": "GOVERNED_SKILL_REQUIRED",
+      "rationale": "FODT dogfood_status.fodt_to_txt_dotnet is GAP_DOGFOOD_EXTERNAL"
+    },
+    {
+      "action_type": "implement_capability",
+      "priority": 105,
+      "target": "foss-reduced-sylk-blockers-1",
+      "capability_path": "blockers.1",
+      "format": "SYLK",
+      "decision": "GOVERNED_SKILL_REQUIRED",
+      "rationale": "SYLK blockers.1 is BLOCKED"
+    }
+  ],
+  "acceleration": [
+    {
+      "action_type": "expand_skill_registry",
+      "priority": 30,
+      "target": "skill_registry",
+      "rationale": "Check for unregistered tools that should become governed skills."
+    }
+  ],
+  "skills": [],
+  "supervisor": [
+    {
+      "action_type": "implement_capability",
+      "priority": 70,
+      "target": "commercial-net-fods-blockers-1",
+      "capability_path": "blockers.1",
+      "format": "FODS",
+      "decision": "EXTERNAL_GATE_ESCALATION",
+      "rationale": "FODS blockers.1 is BLOCKED"
+    },
+    {
+      "action_type": "implement_capability",
+      "priority": 70,
+      "target": "commercial-net-fodt-blockers-1",
+      "capability_path": "blockers.1",
+      "format": "FODT",
+      "decision": "EXTERNAL_GATE_ESCALATION",
+      "rationale": "FODT blockers.1 is BLOCKED"
+    },
+    {
+      "action_type": "implement_capability",
+      "priority": 70,
+      "target": "commercial-net-netpbm-blockers-1",
+      "capability_path": "blockers.1",
+      "format": "Netpbm",
+      "decision": "EXTERNAL_GATE_ESCALATION",
+      "rationale": "Netpbm blockers.1 is BLOCKED"
+    },
+    {
+      "action_type": "implement_capability",
+      "priority": 30,
+      "target": "commercial-net-fods-gate-11-g11g",
+      "capability_path": "gate_11_g11g",
+      "format": "FODS",
+      "decision": "EXTERNAL_GATE_ESCALATION",
+      "rationale": "FODS gate_11_g11g is NOT_STARTED"
+    },
+    {
+      "action_type": "implement_capability",
+      "priority": 30,
+      "target": "commercial-net-fodt-gate-11-g11g",
+      "capability_path": "gate_11_g11g",
+      "format": "FODT",
+      "decision": "EXTERNAL_GATE_ESCALATION",
+      "rationale": "FODT gate_11_g11g is NOT_STARTED"
+    }
+  ]
+}

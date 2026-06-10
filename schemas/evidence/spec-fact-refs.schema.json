@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "spec-fact-refs.schema.json",
+  "title": "Spec Fact References — Enforcement Schema",
+  "description": "Defines spec_fact_refs enforcement rules for evidence declaration work items. spec_fact_refs is BLOCKING (mandatory hard gate) for all new PRODUCT_SOURCE, TEST, REQUIREMENT, READINESS, and RELEASE_GATE work items. An item may be exempt only if exception_classification is explicitly set.",
+  "version": "1.0",
+  "generated_by": "SPEC-AUTHORITY-LAYER-STOP-THE-BLEEDING-001",
+  "generated_at": "2026-06-07",
+
+  "definitions": {
+    "exception_classification": {
+      "type": "string",
+      "enum": [
+        "investigation_only",
+        "sample_only_non_product",
+        "legacy_backfill",
+        "fallback_authority_approved",
+        "no_public_spec_available",
+        "schema_authority_available"
+      ],
+      "description": "Explicit exception classification. Required when spec_fact_refs is empty for a product work item. No silent bypass — all exceptions must be declared. schema_authority_available: use when XSD/DTD schema is the primary authority source (e.g. Gnumeric). Distinct from no_public_spec_available (no authority document at all)."
+    },
+
+    "spec_fact_ref": {
+      "type": "string",
+      "pattern": "^FACT-[A-Z]+-[0-9]+$",
+      "description": "Reference to a verified spec fact. Format: FACT-<FORMAT>-<NUMBER>, e.g. FACT-FODS-001"
+    },
+
+    "spec_fact_refs_field": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/spec_fact_ref" },
+      "description": "Array of verified spec fact IDs that back this work item. Must be populated for product work items OR exception_classification must be set."
+    },
+
+    "enforcement_rule": {
+      "blocking_item_types": [
+        "PRODUCT_SOURCE",
+        "TEST",
+        "REQUIREMENT",
+        "READINESS",
+        "RELEASE_GATE"
+      ],
+      "enforcement_mode": "BLOCKING",
+      "description": "For item_type in blocking_item_types: if spec_fact_refs is empty AND exception_classification is absent, the declaration is INVALID and must be rejected. This is not a warning. This is a hard gate.",
+      "migration_note": "Items created before 2026-06-07 may use exception_classification=legacy_backfill during a 2-sprint grace period."
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "spec_fact_refs": {
+      "$ref": "#/definitions/spec_fact_refs_field"
+    },
+    "exception_classification": {
+      "$ref": "#/definitions/exception_classification"
+    }
+  },
+
+  "examples": [
+    {
+      "item_id": "WI-FODS-001",
+      "item_type": "PRODUCT_SOURCE",
+      "spec_fact_refs": ["FACT-FODS-001", "FACT-FODS-002"],
+      "exception_classification": null,
+      "comment": "PASS: spec_fact_refs populated"
+    },
+    {
+      "item_id": "WI-GNUMERIC-001",
+      "item_type": "PRODUCT_SOURCE",
+      "spec_fact_refs": [],
+      "exception_classification": "no_public_spec_available",
+      "comment": "PASS: explicit exception for format without public spec"
+    },
+    {
+      "item_id": "WI-AUDIT-001",
+      "item_type": "INVESTIGATION",
+      "spec_fact_refs": [],
+      "exception_classification": "investigation_only",
+      "comment": "PASS: investigation item exempt"
+    },
+    {
+      "item_id": "WI-FODS-BAD-001",
+      "item_type": "PRODUCT_SOURCE",
+      "spec_fact_refs": [],
+      "exception_classification": null,
+      "comment": "FAIL: spec_fact_refs empty, no exception_classification — BLOCKED"
+    }
+  ]
+}

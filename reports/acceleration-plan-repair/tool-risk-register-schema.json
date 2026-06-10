@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExternalToolRiskRegister",
+  "type": "object",
+  "required": ["schema_version", "sprint_id", "entries"],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "sprint_id": {"type": "string"},
+    "authority_state": {"type": "string", "enum": ["ai_draft"]},
+    "non_authoritative": {"type": "boolean", "const": true},
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "tool_name", "source_url", "owner_stream", "default_status",
+          "installation_scope", "workspace_mutation_risk", "secret_risk",
+          "external_network_risk", "license_compliance_risk", "data_exposure_risk",
+          "authority_confusion_risk", "allowed_modes", "forbidden_modes",
+          "approval_required", "validation_required", "rollback_plan", "final_decision"
+        ],
+        "properties": {
+          "tool_name": {"type": "string"},
+          "source_url": {"type": "string"},
+          "owner_stream": {"type": "string"},
+          "default_status": {
+            "type": "string",
+            "enum": [
+              "disabled",
+              "audit_only",
+              "optional",
+              "allowed_if_supervisor_approved",
+              "disabled_pending_supervisor_approval"
+            ]
+          },
+          "installation_scope": {"type": "string"},
+          "workspace_mutation_risk": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"]
+          },
+          "secret_risk": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"]
+          },
+          "external_network_risk": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"]
+          },
+          "license_compliance_risk": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"]
+          },
+          "data_exposure_risk": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"]
+          },
+          "authority_confusion_risk": {
+            "type": "string",
+            "enum": ["none", "low", "medium", "high", "critical"]
+          },
+          "allowed_modes": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "forbidden_modes": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "approval_required": {"type": "boolean"},
+          "validation_required": {"type": "boolean"},
+          "rollback_plan": {"type": "string"},
+          "final_decision": {"type": "string"}
+        }
+      }
+    }
+  }
+}

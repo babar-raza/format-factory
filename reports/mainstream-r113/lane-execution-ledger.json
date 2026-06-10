@@ -1,0 +1,94 @@
+{
+  "sprint": "mainstream-r113",
+  "lanes": [
+    {
+      "lane": "W0-PREFLIGHT",
+      "status": "COMPLETE",
+      "deliverables": ["reports/mainstream-r113/00-preflight.md"]
+    },
+    {
+      "lane": "W1-R112-RECONCILIATION",
+      "status": "COMPLETE",
+      "deliverables": ["reports/mainstream-r113/r112-reconciliation.md"]
+    },
+    {
+      "lane": "W2-PROMPT-QUALITY-BLOCKER",
+      "status": "COMPLETE",
+      "deliverables": ["reports/mainstream-r113/prompt-quality-blocker-packet.md", "reports/mainstream-r113/prompt-quality-blocker-packet.json"]
+    },
+    {
+      "lane": "W3-SAMPLE-OUTPUT-DETECTION",
+      "status": "COMPLETE",
+      "deliverables": ["reports/mainstream-r113/sample-output-detection-packet.md", "reports/mainstream-r113/sample-output-detection-packet.json"]
+    },
+    {
+      "lane": "W4-DIRTY-STATE",
+      "status": "COMPLETE",
+      "deliverables": ["reports/mainstream-r113/dirty-state-classification.json"]
+    },
+    {
+      "lane": "W5-GAP-SELECTION",
+      "status": "COMPLETE",
+      "deliverables": ["reports/mainstream-r113/selected-mainstream-gaps-r113.json", "reports/mainstream-r113/product-breadth-strategy.md"]
+    },
+    {
+      "lane": "W6-COMMERCIAL-NET",
+      "status": "COMPLETE",
+      "new_tests": 58,
+      "deliverables": [
+        "tests/net/fods/FodsR113SortRowsTests.cs (8 tests)",
+        "tests/net/fods/FodsR113InsertRowDepthTests.cs (6 tests)",
+        "tests/net/fods/FodsR113JsonDogfoodTests.cs (6 tests)",
+        "tests/net/fodt/FodtR113GetDocumentMetadataTests.cs (6 tests)",
+        "tests/net/fodt/FodtR113ExportTxtDepthTests.cs (6 tests)",
+        "tests/net/fodt/FodtR113TxtDogfoodTests.cs (6 tests)",
+        "tests/net/netpbm/NetpbmR113TileTests.cs (8 tests)",
+        "tests/net/netpbm/NetpbmR113CropSaveDepthTests.cs (6 tests)",
+        "tests/net/netpbm/NetpbmR113TileSaveDogfoodTests.cs (6 tests)"
+      ],
+      "source_changes": [
+        "src/net/fods/FodsDocument.cs (SortRows)",
+        "src/net/fodt/FodtDocument.cs (GetDocumentMetadata, NsMeta, NsDc)",
+        "src/net/netpbm/Model/NetpbmImage.cs (Tile)"
+      ]
+    },
+    {
+      "lane": "W7-FOSS",
+      "status": "COMPLETE",
+      "new_tests": 32,
+      "deliverables": [
+        "tests/python/zst/test_r113_zst_dict_mode.py (8 tests)",
+        "tests/python/ppm/test_r113_ppm_grayscale_roundtrip.py (8 tests)",
+        "tests/python/sylk/test_r113_sylk_csv_export.py (8 tests)",
+        "tests/python/dif/test_r113_dif_parse_hardening.py (8 tests)"
+      ]
+    },
+    {
+      "lane": "W8-DOGFOOD",
+      "status": "COMPLETE",
+      "deliverables": [
+        "tests/net/fods/FodsR113JsonDogfoodTests.cs (shared with W6)",
+        "tests/net/fodt/FodtR113TxtDogfoodTests.cs (shared with W6)",
+        "tests/net/netpbm/NetpbmR113TileSaveDogfoodTests.cs (shared with W6)"
+      ]
+    },
+    {
+      "lane": "W9-CLOSEOUT",
+      "status": "COMPLETE",
+      "deliverables": [
+        "reports/mainstream-r113/source-diffs/fods-sortrows.diff",
+        "reports/mainstream-r113/source-diffs/fodt-getdocumentmetadata.diff",
+        "reports/mainstream-r113/source-diffs/netpbm-tile.diff",
+        "reports/mainstream-r113/skill-transcripts/fods-sortrows.json",
+        "reports/mainstream-r113/skill-transcripts/fodt-getdocumentmetadata.json",
+        "reports/mainstream-r113/skill-transcripts/netpbm-tile.json",
+        "reports/mainstream-r113/sample-outputs/",
+        "reports/mainstream-r113/quota-tracker.md",
+        "reports/mainstream-r113/product-capability-delta.md",
+        "reports/mainstream-r113/lane-execution-ledger.json",
+        "reports/mainstream-r113/final-adversarial-iv.md",
+        "reports/mainstream-r113/raw-logs/"
+      ]
+    }
+  ]
+}

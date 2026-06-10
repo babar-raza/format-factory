@@ -773,3 +773,65 @@ formats:
     strongest_evidence: "scoring completed"
     weakest_area: "below threshold"
     recommended_action: "remain deferred"
+
+  - format_id: ndjson
+    display_name: "Newline-Delimited JSON"
+    acquisition_pack_exists: false
+    samples_exist: true
+    prototype_location: "src/python/ndjson/ndjson_codec.py"
+    src_python_exists: true
+    src_python_loc: 815
+    src_net_exists: false
+    tests_python_count: 233
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G4"
+    evidence_backed_gate: "G4"
+    actual_maturity_class: roundtrip_capable_library
+    parser_depth: "Line-by-line JSON record parser with filter/sort/group/aggregate"
+    read_support: true
+    write_support: true
+    export_support: true
+    roundtrip_support: true
+    neutral_model_status: "list of dicts model"
+    security_guard_status: "size guard"
+    corpus_quality: "samples exist"
+    spec_quality: "informal (ndjson.org)"
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "233 tests pass; roundtrip verified; export_to_csv working"
+    weakest_area: "no public formal spec; no .NET implementation"
+    recommended_action: "advance to Gate 5 oracle; add formal spec authority"
+    sprint_last_updated: R152
+
+  - format_id: toml
+    display_name: "Tom's Obvious Minimal Language"
+    acquisition_pack_exists: false
+    samples_exist: true
+    prototype_location: "src/python/toml/toml_codec.py"
+    src_python_exists: true
+    src_python_loc: 290
+    src_net_exists: false
+    tests_python_count: 30
+    tests_net_count: 0
+    packaging_status: none
+    claimed_gate: "G4"
+    evidence_backed_gate: "G4"
+    actual_maturity_class: read_write_library_foundation
+    parser_depth: "tomllib-based reader with dict model"
+    read_support: true
+    write_support: true
+    export_support: false
+    roundtrip_support: false
+    neutral_model_status: "dict model"
+    security_guard_status: "size guard"
+    corpus_quality: "samples exist"
+    spec_quality: "official spec (toml.io)"
+    package_readiness: none
+    commercial_readiness: "N/A"
+    overclaim_risk: none
+    strongest_evidence: "30 tests pass; tomllib stdlib in Python 3.11+"
+    weakest_area: "no roundtrip; no .NET implementation"
+    recommended_action: "add roundtrip and export support in next sprint"
+    sprint_last_updated: R152

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-R2-...",
+  "source_sprint": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-INTEGRATION-001",
+  "regraded_items": [
+    {"item_id": "TC-COORD-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_WITH_LIMITATIONS", "reason": "Coordinator docs present; path-only acceptable for planning/doc items"},
+    {"item_id": "TC-DIAG-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_WITH_LIMITATIONS", "reason": "Diagnosis docs present; path-only acceptable"},
+    {"item_id": "TC-WIRE-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_VERIFIED", "reason": "CLI run proven in lane ledger with exit_code=0 and output artifacts"},
+    {"item_id": "TC-ROUTE-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_WITH_LIMITATIONS", "reason": "JSON routing packets present and parse-validated"},
+    {"item_id": "TC-CONS-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_VERIFIED", "reason": "CLI run proven in lane ledger with SKILLS_MISSING_PACKET detection confirmed"},
+    {"item_id": "TC-CONT-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_WITH_LIMITATIONS", "reason": "Examples JSON present; continuation tests verified by raw log"},
+    {"item_id": "TC-EXT-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_WITH_LIMITATIONS", "reason": "External tool status JSON present; governance verdict verified"},
+    {"item_id": "TC-HANDOFF-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_WITH_LIMITATIONS", "reason": "Handoff docs present; content validated"},
+    {"item_id": "TC-TEST-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_VERIFIED", "reason": "Raw logs prove 53/53 pass (5 log files captured in R2)"},
+    {"item_id": "TC-SYNC-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_WITH_LIMITATIONS", "reason": "latest-routing-packet.json files present for all 4 streams"},
+    {"item_id": "TC-CLOSE-001", "r1_grade": "ACCEPTED_WITH_LIMITATIONS", "r2_grade": "ACCEPTED_WITH_LIMITATIONS", "reason": "autonomous-cycle exit 0 confirmed; review package SHA present"}
+  ],
+  "r2_verified_count": 3,
+  "r2_limitations_count": 8,
+  "r2_evidence_quality_estimate": 0.27
+}

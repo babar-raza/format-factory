@@ -1,0 +1,81 @@
+{
+  "implementation_root": "tools/specification-authority-layer/",
+  "test_root": "tests/specification-authority-layer/",
+  "subsystems": {
+    "SpecSourceRegistry": {
+      "module": "tools/specification-authority-layer/spec_source_registry.py",
+      "key_functions": ["register_source", "load_registry", "get_source", "validate_citation", "is_source_registered"],
+      "storage": ".local/spec-source-registry/sources.jsonl",
+      "status": "PRESENT"
+    },
+    "SpecVault": {
+      "module": "tools/specification-authority-layer/spec_vault_ingest.py",
+      "key_functions": ["ingest_local_file", "ingest_text_fixture", "get_snapshot_meta", "verify_snapshot_integrity"],
+      "storage": ".local/spec-vault/{source_id}/",
+      "status": "PRESENT"
+    },
+    "SpecParser": {
+      "module": "tools/specification-authority-layer/spec_parser.py",
+      "key_functions": ["parse_spec", "parse_spec_from_text"],
+      "supported_formats": ["markdown", "plain_text"],
+      "status": "PRESENT"
+    },
+    "SpecNormalizer": {
+      "module": "tools/specification-authority-layer/spec_normalizer.py",
+      "key_functions": ["normalize_spec", "load_normalized_artifact"],
+      "storage": ".local/spec-artifacts/{source_id}-normalized.json",
+      "status": "PRESENT"
+    },
+    "SpecIndexer": {
+      "module": "tools/specification-authority-layer/spec_indexer.py",
+      "key_functions": ["build_index", "search_index", "load_index"],
+      "storage": ".local/spec-artifacts/{source_id}-index.json",
+      "status": "PRESENT"
+    },
+    "SpecDigestor": {
+      "module": "tools/specification-authority-layer/spec_digestor.py",
+      "key_functions": ["compute_digest", "check_staleness", "load_digest"],
+      "storage": ".local/spec-artifacts/{source_id}-digest.json",
+      "status": "PRESENT"
+    },
+    "RequirementExtractor": {
+      "module": "tools/specification-authority-layer/requirement_extractor.py",
+      "key_functions": ["extract_requirements", "load_requirements"],
+      "storage": ".local/spec-artifacts/{source_id}-requirements.json",
+      "method": "RFC-2119 keyword scan (MUST, SHALL, SHOULD, MAY, REQUIRED, OPTIONAL)",
+      "status": "PRESENT"
+    },
+    "SpecVerifier": {
+      "module": "tools/specification-authority-layer/spec_verifier.py",
+      "key_functions": ["verify_requirements", "check_anti_bypass"],
+      "anti_bypass": "Rejects no-source_id, unregistered source, raw_ai_summary_only",
+      "status": "PRESENT"
+    },
+    "RequirementGraph": {
+      "module": "tools/specification-authority-layer/requirement_graph.py",
+      "key_functions": ["build_requirement_graph", "load_requirement_graph"],
+      "storage": ".local/spec-artifacts/{source_id}-req-graph.json",
+      "node_types": ["SpecSource", "SpecRequirementRef", "ProductRequirement"],
+      "edge_types": ["derived_from", "sourced_from", "verified_by"],
+      "status": "PRESENT"
+    },
+    "ContextPackBuilder": {
+      "module": "tools/specification-authority-layer/context_pack_builder.py",
+      "key_functions": ["build_context_pack", "verify_context_pack", "load_context_pack"],
+      "determinism": "manifest.sha256 computed from sorted(source_id:sha256:sections_count)",
+      "status": "PRESENT"
+    },
+    "SpecGovernanceRuntime": {
+      "module": "tools/specification-authority-layer/spec_governance_runtime.py",
+      "key_functions": ["check_citation_allowed", "check_context_pack_use_allowed", "check_memory_only_claim", "load_usage_ledger"],
+      "usage_ledger": ".local/spec-usage-ledger/ledger.jsonl",
+      "status": "PRESENT"
+    }
+  },
+  "missing_subsystems": [],
+  "alternate_paths_checked": [
+    "tools/specification_authority/ — NOT FOUND",
+    "tools/spec_authority/ — NOT FOUND"
+  ],
+  "pilot_execution_path": "CONFIRMED: tools/specification-authority-layer/ with deferred_local_fixture ingest"
+}

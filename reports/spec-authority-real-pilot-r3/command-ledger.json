@@ -1,0 +1,59 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-REAL-PILOT-R3-CLOSURE-HARDENING-AND-ODF-DEPTH-001",
+  "generated_at": "2026-06-05",
+  "commands": [
+    {
+      "lane": "A",
+      "step": "preflight-git-state",
+      "command": "git status --short && git branch --show-current && git log --oneline -3",
+      "exit_code": 0,
+      "artifact": "reports/spec-authority-real-pilot-r3/00-preflight.md"
+    },
+    {
+      "lane": "A",
+      "step": "r2-evidence-read",
+      "command": "cat .local/evidences/spec-authority-real-pilot-r2/evidence-declaration.yaml",
+      "exit_code": 0,
+      "artifact": "reports/spec-authority-real-pilot-r3/r2-caveat-register.md"
+    },
+    {
+      "lane": "A",
+      "step": "r2-contradiction-register",
+      "command": "python -c 'import json; print(json.dumps([...], indent=2))'",
+      "exit_code": 0,
+      "artifact": "reports/spec-authority-real-pilot-r3/r2-contradiction-register.json"
+    },
+    {
+      "lane": "E",
+      "step": "r3-odf-driver",
+      "command": ".local/venv/Scripts/python reports/spec-authority-real-pilot-r3/_r3_odf_driver.py",
+      "exit_code": 0,
+      "artifact": ".local/evidences/spec-authority-real-pilot-r3/pilot-results-r3.json",
+      "stdout_excerpt": "FODT CP: CP-FODT-ce25cfe79029, sha=ce25cfe79029..., verify=True; FODT deterministic: True"
+    },
+    {
+      "lane": "G",
+      "step": "test-run",
+      "command": ".local/venv/Scripts/python -m pytest tests/spec_authority/ -v 2>&1",
+      "exit_code": null,
+      "artifact": "reports/spec-authority-real-pilot-r3/raw-logs/spec-authority-r3-tests.log",
+      "note": "Pending — will execute in Lane G"
+    },
+    {
+      "lane": "H",
+      "step": "autonomous-cycle",
+      "command": ".local/venv/Scripts/python tools/supervisor/autonomous_cycle.py --declaration .local/evidences/spec-authority-real-pilot-r3/evidence-declaration.yaml",
+      "exit_code": null,
+      "artifact": "reports/supervisor/",
+      "note": "Pending — will execute in Lane H"
+    },
+    {
+      "lane": "H",
+      "step": "review-package-build",
+      "command": ".local/venv/Scripts/python tools/supervisor/build_declaration_review_package.py --declaration .local/evidences/spec-authority-real-pilot-r3/evidence-declaration.yaml",
+      "exit_code": null,
+      "artifact": ".local/supervisor/reviews/spec-authority-real-pilot-r3/declaration-review-package.zip",
+      "note": "Pending — will execute in Lane H"
+    }
+  ]
+}

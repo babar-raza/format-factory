@@ -1,0 +1,27 @@
+proposed_only: true
+not_applied_to_poc_targets: true
+iteration: 3
+sprint_id: "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001"
+generated_at: "2026-06-05T00:00:00Z"
+
+capabilities:
+  - capability: "DrawLine"
+    operation: "Add"
+    description: "Draw a line using Bresenham's algorithm on PGM images (P2/P5 format). PGM-only constraint enforced."
+    api_symbol: "DrawLine(int x0, int y0, int x1, int y1, byte fill)"
+    product: "Netpbm .NET"
+    proof_level: "VERIFIED"
+    source_files:
+      - "src/net/netpbm/Model/NetpbmImage.cs"
+    test_files:
+      - "tests/net/netpbm/NetpbmR116DrawLineTests.cs"
+    tests_passed: 8
+    tests_failed: 0
+    raw_log: "reports/unified-authority-integrated-poc-train/raw-logs/netpbm-r116-tests.log"
+    transcript: "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-003-netpbm.json"
+    sample_output: "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-003/netpbm/draw-line-output.txt"
+    source_diff: "reports/unified-authority-integrated-poc-train/source-diffs/iteration-003-netpbm.diff"
+    proposed_poc_target_update:
+      path: "commercial_net_products.Netpbm.dotnet_status.draw_line"
+      value: "PASS"
+    rationale: "8/8 tests pass. Horizontal/vertical/diagonal/single-point. Out-of-bounds safe. Throws on color image."

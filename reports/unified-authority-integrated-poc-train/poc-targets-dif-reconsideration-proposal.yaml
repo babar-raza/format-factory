@@ -1,0 +1,44 @@
+proposal_id: DIF-RECONSIDER-2026-06-05
+prepared_by: autonomous_poc_controller (agent)
+prepared_for: human_review_only
+authority: proposed_only_not_applied_to_poc_targets
+date: "2026-06-05"
+
+target: DIF
+current_status_in_poc_targets: ON_HOLD
+reconsider_when_condition: "SYLK POC complete"
+condition_met: true
+condition_evidence: "SYLK status=PASS per train-state.json and poc-readiness-dashboard.json"
+
+proposed_promotion:
+  from: ON_HOLD
+  to: ACTIVE_PARTIAL_PASS
+  rationale: >
+    The reconsider_when condition (SYLK POC complete) has been satisfied.
+    DIF write_dif has been implemented (src/python/dif/dif_parser.py).
+    DIF roundtrip is verified (10/10 tests in test_r117_dif_write_roundtrip.py).
+    DIF probe/csv pipeline is verified (12/12 tests in test_r116_dif_probe_csv_pipeline.py).
+    DIF total tests: 178+.
+    DIF status: PARTIAL_PASS (installed_workflow_proof and poc_targets_reconsider_decision pending).
+
+blocking_impact_if_not_promoted: NONE
+  # FOSS minimum (3) already met with ZST + Python_Netpbm + SYLK.
+  # DIF promotion is advisory/bonus. Not required for POC closure.
+
+agent_recommendation: PROMOTE_TO_ACTIVE_PARTIAL_PASS
+agent_recommendation_rationale: >
+  reconsider_when condition is met. DIF has meaningful capability (parse + probe + csv + write_dif).
+  PARTIAL_PASS is accurate. Keeping ON_HOLD while condition is met is misleading.
+  Promotion does not claim commercial_product_ready or gate approval.
+
+mutation_performed: false
+  # This is a PROPOSAL ONLY.
+  # poc-targets.yaml has NOT been mutated.
+  # Human authorization required before any mutation to poc-targets.yaml.
+
+required_human_action: >
+  If Babar Raza agrees, authorize the agent to update poc-targets.yaml DIF entry:
+  - status: ON_HOLD → ACTIVE
+  - python_foss_status: partial_pass
+  - note: write_dif implemented; installed_workflow pending
+  No action required to maintain current POC-ready status.

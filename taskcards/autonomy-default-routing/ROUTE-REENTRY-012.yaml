@@ -1,0 +1,15 @@
+taskcard_id: ROUTE-REENTRY-012
+title: "Supervisor cycle and evidence bundle closeout"
+status: IN_PROGRESS
+owner_lane: supervisor
+allowed_files:
+  - ".local/evidences/"
+forbidden_files:
+  - "src/"
+dependencies: []
+gates: []
+evidence_paths:
+  - ".local/evidences/route-aware-product-reentry-20260610-001030-e382e5f/"
+tests: []
+rollback_notes: "Revert changes to allowed_files only"
+closeout_criteria: "Evidence declaration written, autonomous-cycle run, review package built"

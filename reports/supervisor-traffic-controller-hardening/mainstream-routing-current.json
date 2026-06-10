@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-06-04T09:30:00Z",
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001",
+  "source": "mainstream_replay_r113_plus_git_status",
+  "mainstream_sprint": "FORMAT-FACTORY-MAINSTREAM-R113",
+  "routing_packet": {
+    "stream": "mainstream",
+    "families_touched": 4,
+    "source_diffs": 4,
+    "governed_transcripts": 2,
+    "raw_logs": 3,
+    "capability_matrix_deltas": 2,
+    "repair_items": 0,
+    "product_items": 4,
+    "poc_help_score": 2,
+    "product_breadth_score": 2,
+    "machinery_overhead_score": 0,
+    "false_pass_risk": "low",
+    "false_stop_risk": "low",
+    "skills_consumption": "not_consumed",
+    "acceleration_consumption": "not_consumed",
+    "ai_output_status": "no_ai",
+    "external_tool_mode": "ruflo_detected_not_active",
+    "external_tool_output_used": false,
+    "external_tool_authority_violation": false
+  },
+  "active_families": [
+    {
+      "family": "FODS",
+      "language": "dotnet",
+      "source_file": "src/net/fods/FodsDocument.cs",
+      "git_status": "M",
+      "confirmed_active": true
+    },
+    {
+      "family": "FODT",
+      "language": "dotnet",
+      "source_file": "src/net/fodt/FodtDocument.cs",
+      "git_status": "M",
+      "confirmed_active": true
+    },
+    {
+      "family": "Netpbm",
+      "language": "dotnet",
+      "source_file": "src/net/netpbm/Model/NetpbmImage.cs",
+      "git_status": "M",
+      "confirmed_active": true
+    },
+    {
+      "family": "SYLK",
+      "language": "python",
+      "source_file": "src/python/sylk/sylk_parser.py",
+      "git_status": "M",
+      "confirmed_active": true
+    }
+  ],
+  "rejected_replacements": [
+    {
+      "proposed": "SVG",
+      "replaces": "Netpbm",
+      "rejection_reason": "format_class_mismatch_vector_vs_raster",
+      "verdict": "SVG_REPLACEMENT_REJECTED_NETPBM_RETAINED"
+    }
+  ],
+  "clean_pass_assessment": {
+    "families_touched_check": {"required": 3, "actual": 4, "pass": true},
+    "source_diffs_check": {"required": 3, "actual": 4, "pass": true},
+    "governed_transcripts_check": {"required": 3, "actual": 2, "pass": false},
+    "raw_logs_check": {"required": 3, "actual": 3, "pass": true},
+    "capability_matrix_deltas_check": {"required": 3, "actual": 2, "pass": false},
+    "overall": "PARTIAL_GOVERNED_TRANSCRIPTS_NEEDED",
+    "clean_pass_achievable": true,
+    "missing": ["governed_transcripts (need 1 more)", "capability_matrix_deltas (need 1 more)"]
+  },
+  "continuation_decision": "CONTINUE_WITH_LIMITATIONS",
+  "next_action": "Mainstream must produce 3+ governed transcripts in next sprint"
+}

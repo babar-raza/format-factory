@@ -1,0 +1,57 @@
+{
+  "proof_type": "near-live-v3-handoff",
+  "sprint": "skills-r112",
+  "timestamp": "2026-06-04T01:10:00Z",
+  "handoff_file": "reports/skills-r111/generated-handoffs/handoff-supervisor-cycle-grading-v3.yaml",
+  "handoff_version": "3.0",
+  "execution_mode": "dry-run-near-live",
+  "description": "Near-live execution of supervisor-cycle-grading v3 handoff through the full adoption-compliance-integrated autonomous cycle path",
+  "steps": [
+    "1. Load handoff-supervisor-cycle-grading-v3.yaml",
+    "2. Extract required_inputs (evidence_bundle_path)",
+    "3. Execute evidence-review-next-prompt skill in dry-run mode",
+    "4. Generate transcript JSON with all required fields",
+    "5. Validate transcript via validate_skill_transcript.py (PASS)",
+    "6. Run adoption compliance via validate_adoption_compliance.py (PASS)",
+    "7. Grade work item via grade_declared_work.grade_item() (ACCEPTED_VERIFIED)",
+    "8. Classify continuation state (YES)"
+  ],
+  "transcript": {
+    "invocation_id": "r112-live-001-supervisor-grading",
+    "skill_id": "evidence-review-next-prompt",
+    "mode": "dry-run",
+    "timestamp": "2026-06-04T01:10:00Z",
+    "inputs": {
+      "evidence_bundle_path": ".local/evidences/skills-r112/evidence-declaration.yaml"
+    },
+    "allowed_files": [".local/supervisor/reviews/skills-r112/"],
+    "actual_files_changed": [],
+    "tests_run": ["test_r112_live_handoff_stream_isolation.py"],
+    "result": "PASS"
+  },
+  "transcript_validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": [],
+    "skill_id": "evidence-review-next-prompt",
+    "mode": "dry-run"
+  },
+  "adoption_compliance": {
+    "compliant": true,
+    "non_exempt_items": 1,
+    "items_with_transcript": 1,
+    "items_with_skill_id": 1
+  },
+  "grading_result": {
+    "overall_verdict": "ACCEPTED",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "reason": "Transcript validation all_valid=True + adoption compliance PASS"
+  },
+  "continuation_decision": {
+    "autonomous_continue": true,
+    "state": "YES",
+    "anti_skip_all_pass": true
+  },
+  "safety_classification": "SAFE_DRY_RUN",
+  "rollback_required": false
+}

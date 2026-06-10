@@ -1,8 +1,43 @@
-# Plan Sources — Declaration-Driven Pipeline Production Integration
+# Plan Sources — Format Factory Sprint Plans
 
-Generated: 2026-06-05 (updated for DOTNET-DOGFOOD-ARCHITECTURE-GAP sprint)
+Updated: 2026-06-10
 
-## Current Sprint (2026-06-05)
+## Current Sprint (2026-06-10)
+
+- **Sprint:** FORMAT-FACTORY-ROUTE-AWARE-PRODUCT-REENTRY-HARDENING-001
+- **PrimaryPlanSource:** Chat-derived + audit-hardened (orchestrator protocol)
+- **Type:** Routing infrastructure hardening + E2E product pilot
+- **Substantiality:** SUBSTANTIAL (7 taskcards, 4 code changes, 3 test files, evidence bundle)
+- **ResolutionStrategy:** Chat plan is SUBSTANTIAL with audit-verified gaps → executing directly
+
+### ChatExtractedSteps
+1. Wire `enrich_work_item_with_route()` into `autonomous_task_generator.py` output pipeline
+2. Fix ImportError pass-through gap in `next_action_runner.py` line 127
+3. Create E2E routed product mutation pilot (DIF cell_count via routing layer)
+4. Add regression tests for route persistence + fail-closed enforcement
+5. Run full test suite + verify route decisions persisted on disk
+6. Evidence declaration + autonomous-cycle + review package
+
+### ChatExtractedGapsAndFixes
+| Gap | Fix |
+|-----|-----|
+| Generated items lack task_category (circular enforcement) | Wire enrich_work_item_with_route into task generator output |
+| ImportError allows non-source-mutating uncategorized through | Block ALL non-legacy actions when route decider unavailable |
+| Only 1 route decision on disk (no proof of pipeline use) | E2E pilot persists decisions + verifies on disk |
+| Validator 11 never triggered on real sprint data | Pilot sprint includes PRODUCT_SOURCE items with route_decision_id |
+| 99 tests but no E2E flow test | Add integration test that generates → enriches → persists → validates |
+
+### ChatMentionedFiles
+- `tools/supervisor/autonomy_route_decider.py` (565 lines, enrich_work_item_with_route)
+- `tools/supervisor/autonomous_task_generator.py` (task candidate generation)
+- `tools/supervisor/next_action_runner.py` (236 lines, route enforcement)
+- `tools/supervisor/governance_validators.py` (1016 lines, validator 11)
+- `tools/supervisor/autonomy_route_ledger.py` (65 lines, JSONL ledger)
+- `.local/supervisor/route-decisions/` (1 file exists)
+
+---
+
+## Prior Sprint (2026-06-05, DOTNET-DOGFOOD-ARCHITECTURE-GAP)
 
 - **PrimaryPlanSource:** `C:\Users\prora\.claude\plans\reactive-sniffing-plum.md`
 - **Sprint:** FORMAT-FACTORY-DOTNET-DOGFOOD-ARCHITECTURE-GAP-INVESTIGATION-AND-PLANNING-001

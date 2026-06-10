@@ -1,0 +1,303 @@
+[
+  {
+    "id": "TC-SAL-000",
+    "title": "Lane 0 — Coordinator preflight: lane ownership, file ownership, overlap check, taskcard-state",
+    "lane": "0",
+    "owner": "Coordinator",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": [],
+    "allowed_paths": ["reports/specification-authority-layer-production-healing/"],
+    "forbidden_paths": ["src/net/", "src/python/", "tests/net/", "tests/python/"],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing/00-preflight.md",
+      "reports/specification-authority-layer-production-healing/current-git-status.txt",
+      "reports/specification-authority-layer-production-healing/lane-ownership.md",
+      "reports/specification-authority-layer-production-healing/file-ownership-map.json",
+      "reports/specification-authority-layer-production-healing/overlap-check.md",
+      "reports/specification-authority-layer-production-healing/taskcard-state.json",
+      "reports/specification-authority-layer-production-healing/coordinator-integration-log.md"
+    ],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/overlap-check.md"],
+    "acceptance_check": "file-ownership-map.json parses; overlap-check.md ends NO_OVERLAPS_DETECTED; all taskcards status=READY at init",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-001",
+    "title": "Lane A — Production blocker review and 00-review.md",
+    "lane": "A",
+    "owner": "Architecture agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-000"],
+    "allowed_paths": ["reports/specification-authority-layer-production-healing/"],
+    "forbidden_paths": ["src/net/", "src/python/"],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing/00-review.md",
+      "reports/specification-authority-layer-production-healing/production-blocker-review.md"
+    ],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/00-review.md"],
+    "acceptance_check": "00-review.md ends ARCHITECTURE_REVIEW_COMPLETE; 10 blockers documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-002",
+    "title": "Lane A — Symptoms, root causes, structural weaknesses",
+    "lane": "A",
+    "owner": "Architecture agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-001"],
+    "output_files": ["reports/specification-authority-layer-production-healing/symptoms-root-causes.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/symptoms-root-causes.md"],
+    "acceptance_check": "File exists with H1; at least 5 root causes documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-003",
+    "title": "Lane A — Preserve vs redesign matrix",
+    "lane": "A",
+    "owner": "Architecture agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-001"],
+    "output_files": ["reports/specification-authority-layer-production-healing/preserve-vs-redesign-matrix.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/preserve-vs-redesign-matrix.md"],
+    "acceptance_check": "File exists; matrix covers all 11 subsystems",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-004",
+    "title": "Lane A — Production architecture redesign (11 subsystems)",
+    "lane": "A",
+    "owner": "Architecture agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-003"],
+    "output_files": ["reports/specification-authority-layer-production-healing/production-architecture-redesign.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/production-architecture-redesign.md"],
+    "acceptance_check": "All 11 subsystems defined; pipeline order documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-005",
+    "title": "Lane B — Spec data lifecycle model (13 states A–M)",
+    "lane": "B",
+    "owner": "Design agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-004"],
+    "output_files": ["reports/specification-authority-layer-production-healing/spec-data-lifecycle-model.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/spec-data-lifecycle-model.md"],
+    "acceptance_check": "All 13 lifecycle states defined; state machine transitions documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-006",
+    "title": "Lane B — Multi-resolution context model",
+    "lane": "B",
+    "owner": "Design agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-004"],
+    "output_files": ["reports/specification-authority-layer-production-healing/multi-resolution-context-model.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/multi-resolution-context-model.md"],
+    "acceptance_check": "8 resolution levels defined; context compression strategy documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-007",
+    "title": "Lane B — Deterministic context-pack contract",
+    "lane": "B",
+    "owner": "Design agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-005", "TC-SAL-006"],
+    "output_files": ["reports/specification-authority-layer-production-healing/deterministic-context-pack-contract.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/deterministic-context-pack-contract.md"],
+    "acceptance_check": "Determinism contract defined; manifest.sha256 stability proven",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-008",
+    "title": "Lane B — Requirement authority lifecycle",
+    "lane": "B",
+    "owner": "Design agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-005"],
+    "output_files": ["reports/specification-authority-layer-production-healing/requirement-authority-lifecycle.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/requirement-authority-lifecycle.md"],
+    "acceptance_check": "Requirement lifecycle from candidate to verified documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-009",
+    "title": "Lane B — Staleness, refresh, and invalidation model",
+    "lane": "B",
+    "owner": "Design agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-005", "TC-SAL-007"],
+    "output_files": ["reports/specification-authority-layer-production-healing/staleness-refresh-invalidation-model.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/staleness-refresh-invalidation-model.md"],
+    "acceptance_check": "Staleness propagation chain documented; refresh trigger conditions defined",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-010",
+    "title": "Lane B — Spec usage ledger production model",
+    "lane": "B",
+    "owner": "Design agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-007"],
+    "output_files": ["reports/specification-authority-layer-production-healing/spec-usage-ledger-production-model.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/spec-usage-ledger-production-model.md"],
+    "acceptance_check": "Append-only ledger schema defined; retention and correction patterns documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-011",
+    "title": "Lane B — Four-stream enforcement model",
+    "lane": "B",
+    "owner": "Design agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-008"],
+    "output_files": ["reports/specification-authority-layer-production-healing/four-stream-enforcement-model.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/four-stream-enforcement-model.md"],
+    "acceptance_check": "All 4 streams defined; handoff gates and enforcement rules documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-012",
+    "title": "Lane B — Regression control suite (9 categories, 42+ tests)",
+    "lane": "B",
+    "owner": "Design agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-007", "TC-SAL-009", "TC-SAL-011"],
+    "output_files": ["reports/specification-authority-layer-production-healing/regression-control-suite.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/regression-control-suite.md"],
+    "acceptance_check": "9 categories A–I; at least 42 test cases defined",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-013",
+    "title": "Lane B — Tool implementations (13 tools)",
+    "lane": "B",
+    "owner": "Design agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-004"],
+    "output_files": ["reports/specification-authority-layer-production-healing/tool-implementations.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/tool-implementations.md"],
+    "acceptance_check": "All 13 tools defined with purpose, inputs, outputs, validation, error handling",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-014",
+    "title": "Lane C — Pilot: ZST full lifecycle",
+    "lane": "C",
+    "owner": "Execution agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-013"],
+    "output_files": ["reports/specification-authority-layer-production-healing/pilot-zst.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/pilot-zst.md"],
+    "acceptance_check": "All 13 pilot deliverables for ZST documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-015",
+    "title": "Lane C — Pilot: Netpbm full lifecycle",
+    "lane": "C",
+    "owner": "Execution agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-013"],
+    "output_files": ["reports/specification-authority-layer-production-healing/pilot-netpbm.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/pilot-netpbm.md"],
+    "acceptance_check": "All 13 pilot deliverables for Netpbm documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-016",
+    "title": "Lane C — Pilot: DIF full lifecycle",
+    "lane": "C",
+    "owner": "Execution agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-013"],
+    "output_files": ["reports/specification-authority-layer-production-healing/pilot-dif.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/pilot-dif.md"],
+    "acceptance_check": "All 13 pilot deliverables for DIF documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-017",
+    "title": "Lane C — Extended prep: Gnumeric + FODS/FODT",
+    "lane": "C",
+    "owner": "Execution agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-013"],
+    "output_files": ["reports/specification-authority-layer-production-healing/pilot-extended-prep.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/pilot-extended-prep.md"],
+    "acceptance_check": "Source registration + fetch-plan for Gnumeric and FODS/FODT",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-018",
+    "title": "Lane C — Tradeoffs, risks, and limits",
+    "lane": "C",
+    "owner": "Execution agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-014", "TC-SAL-015", "TC-SAL-016"],
+    "output_files": ["reports/specification-authority-layer-production-healing/tradeoffs-risks-limits.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/tradeoffs-risks-limits.md"],
+    "acceptance_check": "Tradeoffs, risks, and open items documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-019",
+    "title": "Lane C — Final single-go MWP execution prompt (24 required keywords)",
+    "lane": "C",
+    "owner": "Execution agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-012", "TC-SAL-013", "TC-SAL-017", "TC-SAL-018"],
+    "output_files": ["reports/specification-authority-layer-production-healing/final-execution-prompt.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/final-execution-prompt.md"],
+    "acceptance_check": "24 required keywords present; no forbidden strings",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-020",
+    "title": "Lane C — Final adversarial independent verification",
+    "lane": "C",
+    "owner": "Execution agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-019"],
+    "output_files": ["reports/specification-authority-layer-production-healing/final-adversarial-independent-verification.md"],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/final-adversarial-independent-verification.md"],
+    "acceptance_check": "12 questions answered; all PASS or documented limitation",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-021",
+    "title": "Lane C — Validation results + final git status",
+    "lane": "C",
+    "owner": "Execution agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-020"],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing/validation-results.md",
+      "reports/specification-authority-layer-production-healing/final-git-status.txt"
+    ],
+    "evidence_paths": ["reports/specification-authority-layer-production-healing/validation-results.md"],
+    "acceptance_check": "V01–V12 + V-BAN all PASS or documented; no forbidden changes",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-SAL-022",
+    "title": "Lane 0 — Evidence closeout: declaration, manifest, autonomous-cycle, review package",
+    "lane": "0",
+    "owner": "Evidence agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-SAL-021"],
+    "output_files": [
+      ".local/evidences/specification-authority-layer-production-healing/evidence-declaration.yaml",
+      ".local/evidences/specification-authority-layer-production-healing/evidence-manifest.yaml",
+      "reports/specification-authority-layer-production-healing/review-package-proof.md"
+    ],
+    "evidence_paths": [
+      ".local/evidences/specification-authority-layer-production-healing/evidence-declaration.yaml",
+      "reports/specification-authority-layer-production-healing/review-package-proof.md"
+    ],
+    "acceptance_check": "All 6 closure gate items PASS; autonomous-cycle exit=0; ZIP created with SHA-256",
+    "blocker_reason": ""
+  }
+]

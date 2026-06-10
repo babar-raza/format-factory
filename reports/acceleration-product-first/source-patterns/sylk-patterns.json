@@ -1,0 +1,19 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "format_id": "sylk",
+  "query": "export csv dogfood",
+  "corpus_empty": false,
+  "chunks_found": 2,
+  "top_k_returned": 1,
+  "lexical_patterns": [
+    {
+      "id": "src\\python\\sylk\\sylk_parser.py",
+      "score": 0.007583,
+      "excerpt": "\"\"\"\nsylk_parser.py \u2014 SYLK (Symbolic Link) parser for format-factory-sylk.\n\nPublic API:\n  parse_sylk(file_path)        \u2014 returns result dict (never raises)\n  parse_sylk_strict(file_path) \u2014 raises SylkError on failure\n  probe_sylk(file_path)        \u2014 returns header metadata without full parse\n\nImpleme"
+    }
+  ],
+  "ai_pattern_summary": "[fixture_error] ModuleNotFoundError: No module named 'tools'",
+  "authority_state": "ai_draft",
+  "non_authoritative": true,
+  "timestamp": "2026-06-04T07:09:13.269807+00:00"
+}

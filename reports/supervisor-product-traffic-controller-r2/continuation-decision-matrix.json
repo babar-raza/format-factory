@@ -1,0 +1,84 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-R2-VERIFIED-ROUTING-CYCLE-ENFORCEMENT-AND-CROSS-STREAM-CONSUMPTION-001",
+  "generated_at": "2026-06-04T08:00:00Z",
+  "precedence_rules": [
+    {
+      "priority": 1,
+      "rule": "hard_stop_detected",
+      "condition": "git push, Gate 8/11, credentials, MCP activation required",
+      "continuation_state": "NO_HARD_STOP",
+      "autonomous_continue": false
+    },
+    {
+      "priority": 2,
+      "rule": "overclaimed_items",
+      "condition": "any planned work item has REJECTED or OVERCLAIMED grade",
+      "continuation_state": "NO_UNSAFE_SOURCE_STATE",
+      "autonomous_continue": false
+    },
+    {
+      "priority": 3,
+      "rule": "dirty_state_unclassified",
+      "condition": "dirty_state_classified=false in declaration",
+      "continuation_state": "NO_UNCLASSIFIED_DIRTY_STATE",
+      "autonomous_continue": false
+    },
+    {
+      "priority": 4,
+      "rule": "required_artifacts_missing",
+      "condition": "required_artifacts_present=false",
+      "continuation_state": "NO_MISSING_REQUIRED_ARTIFACTS",
+      "autonomous_continue": false
+    },
+    {
+      "priority": 5,
+      "rule": "product_output_floor_not_met",
+      "condition": "product_output_floor_met=false (no product breadth)",
+      "continuation_state": "NO_PRODUCT_OUTPUT_FLOOR",
+      "autonomous_continue": false
+    },
+    {
+      "priority": 6,
+      "rule": "evidence_quality_zero",
+      "condition": "evidence_quality_score=0.0 (all path-only items)",
+      "continuation_state": "YES_WITH_LIMITATIONS",
+      "autonomous_continue": true,
+      "note": "evidence_quality_zero does NOT block continuation — it downgrades to YES_WITH_LIMITATIONS"
+    },
+    {
+      "priority": 7,
+      "rule": "max_iterations_reached",
+      "condition": "iteration >= max_iterations in continuation-signal.json",
+      "continuation_state": "NO_MAX_ITERATIONS",
+      "autonomous_continue": false
+    },
+    {
+      "priority": 8,
+      "rule": "autonomous_continue_false",
+      "condition": "autonomous_continue=false in continuation-signal.json",
+      "continuation_state": "NO_AUTONOMOUS_CONTINUE_FALSE",
+      "autonomous_continue": false
+    },
+    {
+      "priority": 9,
+      "rule": "rework_required",
+      "condition": "rework_items non-empty in review",
+      "continuation_state": "YES_WITH_LIMITATIONS",
+      "autonomous_continue": true,
+      "note": "rework items downgrade but don't block if no hard stops"
+    },
+    {
+      "priority": 10,
+      "rule": "clean_pass",
+      "condition": "all items ACCEPTED_VERIFIED, no violations",
+      "continuation_state": "YES",
+      "autonomous_continue": true
+    }
+  ],
+  "r2_resolution": {
+    "continuation_discrepancy_r1": "R1 had continuation_state=YES_WITH_LIMITATIONS but evidence_quality_score=0.0. This was correct behavior — evidence_quality_zero downgrades to YES_WITH_LIMITATIONS but does not block. The discrepancy was a misclassification of R1 behavior, not a real contradiction.",
+    "r2_expected_continuation_state": "YES_WITH_LIMITATIONS",
+    "r2_autonomous_continue": true,
+    "r2_evidence_quality_score": 0.27
+  }
+}

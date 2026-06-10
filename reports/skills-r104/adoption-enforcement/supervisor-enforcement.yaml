@@ -1,0 +1,90 @@
+---
+# Supervisor Stream — Skill Adoption Enforcement Package
+# Skills R104: FORMAT-FACTORY-SKILLS-R104-ADOPTION-ENFORCEMENT-AND-CROSS-STREAM-GOVERNED-EXECUTION-CAMPAIGN-001
+#
+# This file defines how the Supervisor grading pipeline integrates
+# skill transcript validation into its work-item grading workflow.
+
+package_id: supervisor-enforcement-r104
+stream: supervisor
+version: "1.0"
+effective_from: skills-r104
+
+# ============================================================
+# RULE 1: Transcript validation in grading pipeline
+# ============================================================
+transcript_grading:
+  description: >
+    When grading a work item that declares a skill_id, the supervisor
+    MUST check for a valid transcript at the declared evidence path.
+  enforcement: required
+  integration_point: tools/supervisor/grade_declared_work.py
+  validation_tool: tools/supervisor/validate_skill_transcript.py
+  grading_rules:
+    - condition: "work_item has skill_id AND no transcript at evidence_path"
+      grade: OVERCLAIMED
+      reason: "Skill-related work item missing transcript"
+    - condition: "transcript exists but fails validation"
+      grade: OVERCLAIMED
+      reason: "Invalid transcript (schema or registry check failed)"
+    - condition: "transcript valid but result=FAIL"
+      grade: PARTIAL
+      reason: "Skill executed but reported FAIL result"
+    - condition: "transcript valid and result=PASS"
+      grade: ACCEPTED
+      reason: "Skill execution verified by transcript"
+
+# ============================================================
+# RULE 2: Command file validation in pre-sprint checks
+# ============================================================
+command_validation:
+  description: >
+    Before starting a sprint, the supervisor SHOULD validate all active
+    command files to detect regressions.
+  enforcement: recommended
+  validation_tool: tools/supervisor/validate_claude_commands.py
+  pre_sprint_check: true
+  failure_action: warn_in_evidence_review
+
+# ============================================================
+# RULE 3: Registry consistency check
+# ============================================================
+registry_consistency:
+  description: >
+    The supervisor SHOULD check that all active skills have existing
+    command files and that no orphan commands exist.
+  enforcement: recommended
+  registry_path: .supervisor/skill-registry.yaml
+  commands_dir: .claude/commands/
+  cross_reference: true
+
+# ============================================================
+# RULE 4: Evidence declaration skill_id field
+# ============================================================
+declaration_skill_field:
+  description: >
+    Work items in evidence declarations MAY include a skill_id field.
+    When present, the supervisor MUST validate the transcript.
+  enforcement: optional_field_with_mandatory_validation
+  schema_addition:
+    field: skill_id
+    type: string
+    required: false
+    validation_trigger: "if present, validate transcript"
+
+# ============================================================
+# INTEGRATION CHECKLIST
+# ============================================================
+integration_checklist:
+  - step: "Add skill_id awareness to grade_declared_work.py"
+    status: not_started
+    priority: high
+  - step: "Add transcript validation call in grading loop"
+    status: not_started
+    priority: high
+  - step: "Add command validation to pre-sprint pipeline"
+    status: not_started
+    priority: medium
+  - step: "Add registry cross-reference to evidence review"
+    status: not_started
+    priority: low

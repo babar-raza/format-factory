@@ -1,0 +1,20 @@
+{
+  "action_id": "alh-cycle-004",
+  "action_type": "RUN_MD_NONEMPTY_CHECK",
+  "objective": "Validate continuation-generator-analysis.md is non-empty — cycle 4, chained from cycle 3 via next_on_success",
+  "preferred_backend": "LOCAL_DETERMINISTIC",
+  "fallback_backends": [],
+  "target": "reports/superpowers-agentic-autonomy-loop-hardening/continuation-repair/continuation-generator-analysis.md",
+  "result_path": "reports/superpowers-agentic-autonomy-loop-hardening/loop-hardening/cycle-004-result.json",
+  "allowed_write_roots": ["reports/superpowers-agentic-autonomy-loop-hardening"],
+  "evidence_required": true,
+  "previous_cycle_result": "reports/superpowers-agentic-autonomy-loop-hardening/loop-hardening/cycle-003-result.json",
+  "cycle_number": 4,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMY-LOOP-HARDENING-AFTER-H4-001",
+  "success_conditions": [
+    "target .md file is non-empty",
+    "result_path written by runner",
+    "backend_used=LOCAL_DETERMINISTIC",
+    "4 cumulative cycles across sprints 2+3 = H4_PLUS proven"
+  ]
+}

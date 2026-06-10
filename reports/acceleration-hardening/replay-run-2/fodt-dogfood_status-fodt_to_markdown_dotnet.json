@@ -1,0 +1,84 @@
+{
+  "packet_version": "1.1.0",
+  "stream": "acceleration",
+  "sprint_id": "replay-test",
+  "format": "fodt",
+  "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+  "product_track": "commercial_net",
+  "selected_gap": "dogfood_status.fodt_to_markdown_dotnet",
+  "source_patterns_path": "reports\\acceleration-product-first\\source-patterns\\fodt-patterns.json",
+  "implementation_design_path": "reports\\acceleration-product-first\\ai-implementation-designs\\fodt-design.md",
+  "test_plan_path": "reports\\acceleration-product-first\\test-plans\\fodt-dogfood-markdown-test-plan.json",
+  "test_plan_exists": true,
+  "ai_rationale": "[fixture] No model for rationale. Gap: dogfood_status.fodt_to_markdown_dotnet.",
+  "allowed_files": [
+    "src/net/fodt/FodtDocument.cs",
+    "tests/net/fodt/",
+    "examples/net/fodt/"
+  ],
+  "forbidden_files": [
+    "src/python/fodt/",
+    "registry/",
+    "product-capability-matrix/"
+  ],
+  "governance_rules": [
+    "No product capability matrix update from AI draft alone \u2014 requires test evidence.",
+    "No authority file modification from AI output without human gate.",
+    "Implementation design is advisory \u2014 Mainstream worker decides final implementation.",
+    "Test plan is advisory \u2014 Mainstream worker selects and adapts tests.",
+    "Source patterns are read-only observations \u2014 no src/ modification by Acceleration.",
+    "All AI outputs must carry authority_state: ai_draft until human evaluation.",
+    "External tool context is optional and non-blocking for packet consumption."
+  ],
+  "downgrade_rules": [
+    "If test plan references API not confirmed in source, downgrade to ai_draft.",
+    "If implementation design references capability not in poc-targets.yaml, downgrade to ai_draft.",
+    "If source patterns are empty (corpus_empty=true), note limited evidence.",
+    "If AI calls used fixture mode, label outputs live_ai_used: false.",
+    "If ai_rationale contains fixture_error, set runtime_status=degraded and directly_consumable=False.",
+    "If test_plan_path is null, set test_plan_exists=False and add stale_or_error_flags entry."
+  ],
+  "required_mainstream_validation": [
+    "Run all tests referenced in test_plan before using packet as implementation basis.",
+    "Verify allowed_files are correct for this format's product track.",
+    "Confirm capability_path exists in poc-targets.yaml before starting implementation.",
+    "Review implementation_design_path content as advisory input only.",
+    "Do not update poc-targets.yaml from packet alone \u2014 requires test evidence."
+  ],
+  "runtime_status": "ok",
+  "directly_consumable": true,
+  "stale_or_error_flags": [],
+  "skills_handoff_compatibility": {
+    "compatible": true,
+    "skills_can_use_packet": true,
+    "skills_normalization_required": true,
+    "authority_state": "ai_draft",
+    "note": "Skills stream may use packet data as advisory input; normalization required before registry entry."
+  },
+  "supervisor_routing_compatibility": {
+    "compatible": true,
+    "supervisor_verdict": "ACCELERATION_CONSUMABLE",
+    "authority_state": "ai_draft",
+    "note": "Supervisor can route this packet to Mainstream as advisory input. Mainstream must validate all claims."
+  },
+  "capability_matrix_update_hint": {
+    "note": "Do not update poc-targets.yaml from AI draft alone. Run tests first.",
+    "authority_state": "ai_draft"
+  },
+  "external_tool_context": {
+    "ruflo_context_available": false,
+    "ruflo_mode": "absent",
+    "superpowers_skill_pattern_available": false,
+    "superpowers_relevant_skills": [],
+    "ghidra_mcp_applicable": false,
+    "ghidra_mcp_activation_required": false,
+    "external_tool_recommendations": [],
+    "external_tool_activation_required_for_packet": false,
+    "authority_state": "ai_draft",
+    "non_authoritative": true
+  },
+  "authority_state": "ai_draft",
+  "non_authoritative": true,
+  "requires_validation": true,
+  "timestamp": "2026-06-04T08:39:38.143033+00:00"
+}

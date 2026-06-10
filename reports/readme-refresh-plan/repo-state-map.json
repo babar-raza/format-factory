@@ -1,0 +1,158 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ROOT-README-REFRESH-PLAN-001",
+  "generated": "2026-06-05",
+  "verification_method": "glob + file reads + agent exploration",
+
+  "source_net_products": ["fods", "fodt", "netpbm"],
+  "source_net_writer_libs": ["csv", "html", "txt", "markdown"],
+  "source_python": [
+    "fods", "fodt", "pbm", "pgm", "ppm", "sylk", "zst", "dif",
+    "abw", "csv", "ods", "odt", "fodg", "fodp", "gnumeric", "qoi", "tsv", "xcf"
+  ],
+
+  "tests_net": ["fods", "fodt", "netpbm"],
+  "tests_net_counts": {
+    "fods": "116+",
+    "fodt": "115+",
+    "netpbm": "48+"
+  },
+  "tests_python_dirs": [
+    "fods", "fodt", "pbm", "pgm", "ppm", "sylk", "zst", "dif",
+    "abw", "csv", "ods", "odt", "fodg", "fodp", "gnumeric", "qoi", "tsv", "xcf",
+    "supervisor"
+  ],
+
+  "examples_net": ["fods", "fodt", "netpbm"],
+  "examples_dotnet": ["fods", "fodt", "netpbm"],
+  "examples_python": [
+    "fods", "fodt", "pbm", "ppm", "sylk", "zst", "abw", "fodp", "fodg", "gnumeric"
+  ],
+
+  "poc_commercial_net": [
+    {
+      "format": "FODS",
+      "gate_status": "Gates 1-10 PASSED; Gate 11 NOT_STARTED",
+      "source": "src/net/fods/",
+      "tests": "tests/net/fods/ (116+)",
+      "confirmed": true
+    },
+    {
+      "format": "FODT",
+      "gate_status": "Gates 1-10 PASSED; Gate 11 NOT_STARTED",
+      "source": "src/net/fodt/",
+      "tests": "tests/net/fodt/ (115+)",
+      "confirmed": true
+    },
+    {
+      "format": "Netpbm",
+      "gate_status": "POC active",
+      "source": "src/net/netpbm/",
+      "tests": "tests/net/netpbm/ (48+)",
+      "confirmed": true
+    }
+  ],
+
+  "poc_foss_python": [
+    {
+      "format": "ZST",
+      "poc_status": "production_track_real, POC active",
+      "source": "src/python/zst/",
+      "tests": "tests/python/zst/ (20+)",
+      "confirmed": true
+    },
+    {
+      "format": "Python Netpbm (PBM/PGM/PPM)",
+      "poc_status": "production_track_real, POC active",
+      "source": "src/python/pbm/, pgm/, ppm/",
+      "tests": "tests/python/pbm/, pgm/, ppm/",
+      "confirmed": true
+    },
+    {
+      "format": "SYLK",
+      "poc_status": "POC active",
+      "source": "src/python/sylk/",
+      "tests": "tests/python/sylk/ (16+)",
+      "confirmed": true
+    }
+  ],
+
+  "poc_on_hold": ["QOI", "DIF"],
+
+  "governance_docs_count": 13,
+  "governance_docs_path": "docs/governance/",
+  "prompt_templates_count": 15,
+  "prompt_templates_path": "docs/prompt-templates/",
+  "supervisor_tools_count": 39,
+  "supervisor_tools_path": "tools/supervisor/",
+  "skill_registry_total": 25,
+  "skill_registry_active": 24,
+  "skill_command_files": 30,
+  "skill_command_path": ".claude/commands/",
+
+  "stream_state": {
+    "mainstream": {
+      "latest": "R113",
+      "state": "ACCEPTED; product breadth weak"
+    },
+    "acceleration": {
+      "latest": "R111",
+      "state": "ACCEPTED; AI acceleration being restored"
+    },
+    "skills": {
+      "latest": "R113",
+      "state": "ACCEPTED; strong milestone"
+    },
+    "supervisor": {
+      "latest": "R110",
+      "state": "ACCEPTED; real stream-local authority"
+    },
+    "last_accepted_sprint": "R118 (FORMAT-FACTORY-UNIFIED-POC-AUTHORITY-RECONCILIATION-R118-001)"
+  },
+
+  "git": {
+    "branch": "main",
+    "head_commit": "3a86a05",
+    "head_sprint": "R93",
+    "head_date": "2026-06-02",
+    "latest_sprint_in_tree": "R118",
+    "modified_tracked": 85,
+    "untracked": 351,
+    "worktree": "DIRTY_EXPECTED"
+  },
+
+  "supervisor_state": {
+    "mode": "MODE 4",
+    "mcp_status": "ACTIVE",
+    "autonomous_continue": true,
+    "gate_11_approved": false,
+    "commercial_product_ready": false,
+    "critical_contradictions": 0
+  },
+
+  "readme_assessment": {
+    "last_substantively_updated": "pre-R93 (before 2026-06-02)",
+    "current_line_count": 160,
+    "stale_sections": [
+      "Products table (missing Netpbm .NET)",
+      "Project Status (100 sprints stale, references R18)",
+      "Six format families (SVG listed, Netpbm not, misleading scope)",
+      "Repository structure (missing 6+ directories)",
+      "Agent methodology (stale doc references)"
+    ],
+    "missing_sections": [
+      "Product-First POC direction",
+      "Four-Stream Operating Model",
+      "Netpbm .NET as third commercial product",
+      "FOSS targets: ZST, Python Netpbm, SYLK",
+      "AI authority boundary",
+      "External tools: Ruflo, Superpowers, GhidraMCP",
+      "Autonomous supervisor + continuation",
+      "Skill registry",
+      "Product-code ledger",
+      "How agents onboard (session-resume.md, CLAUDE.md)",
+      "Evidence packages and review packages",
+      "Current supervisor pipeline commands"
+    ],
+    "recommended_strategy": "FULL_REPLACEMENT"
+  }
+}

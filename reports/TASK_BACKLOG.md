@@ -1,6 +1,22 @@
-# Task Backlog — Declaration-Driven Pipeline Production Integration
+# Task Backlog — Format Factory Sprint Plans
 
-Updated: 2026-06-05 — DOTNET-DOGFOOD-ARCHITECTURE-GAP sprint appended below
+Updated: 2026-06-10
+
+## ROUTE-AWARE-PRODUCT-REENTRY-HARDENING Sprint (2026-06-10)
+Sprint ID: FORMAT-FACTORY-ROUTE-AWARE-PRODUCT-REENTRY-HARDENING-001
+Run ID: route-aware-product-reentry-hardening
+
+| ID | Scope | Status | Impacted Paths | Risk |
+|----|-------|--------|----------------|------|
+| RRH-TC-001 | Wire enrich_work_item_with_route into task generator output | PENDING | tools/supervisor/autonomous_task_generator.py | MEDIUM |
+| RRH-TC-002 | Fix ImportError pass-through gap (line 127) | PENDING | tools/supervisor/next_action_runner.py | LOW |
+| RRH-TC-003 | E2E routed product mutation pilot (DIF cell_count) | PENDING | src/python/dif/dif_parser.py, tests/python/dif/ | MEDIUM |
+| RRH-TC-004 | Route persistence regression tests | PENDING | tests/supervisor/test_route_persistence_e2e.py | MEDIUM |
+| RRH-TC-005 | Fail-closed enforcement regression tests | PENDING | tests/supervisor/test_route_persistence_e2e.py | LOW |
+| RRH-TC-006 | Full test suite verification | PENDING | All test files | LOW |
+| RRH-TC-007 | Evidence declaration + autonomous-cycle + review package | PENDING | .local/evidences/ | LOW |
+
+---
 
 ## DOTNET-DOGFOOD-ARCHITECTURE-GAP Sprint (2026-06-05)
 

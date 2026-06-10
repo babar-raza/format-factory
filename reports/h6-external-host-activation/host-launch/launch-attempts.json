@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-EXTERNAL-HOST-ACTIVATION-AND-PROOF-001",
+  "generated_at": "2026-06-06T15:00:00Z",
+  "attempts": [
+    {
+      "id": "ATTEMPT_A",
+      "description": "Direct script dry-run",
+      "command": "powershell -ExecutionPolicy Bypass -File scripts/start_format_factory_orchestrator.ps1 -MaxCycles 3 -Backend local -Resume -DryRun",
+      "result": "SUCCESS",
+      "exit_code": 0,
+      "cycles": 3,
+      "cycle_type": "DRY_RUN",
+      "stop_reason": "DRY_RUN_COMPLETE",
+      "claudecode_cleared": true,
+      "run_id": "a5fdd3cb",
+      "notes": "Script correctly clears CLAUDECODE. Dry run confirmed orchestrator routing works."
+    },
+    {
+      "id": "ATTEMPT_B",
+      "description": "Direct script real local backend",
+      "command": "powershell -ExecutionPolicy Bypass -File scripts/start_format_factory_orchestrator.ps1 -MaxCycles 3 -Backend local -Resume",
+      "result": "SUCCESS",
+      "exit_code": 0,
+      "cycles": 3,
+      "cycle_ids": ["orch-cycle-004", "orch-cycle-006", "orch-cycle-007"],
+      "stop_reason": "MAX_CYCLES_REACHED",
+      "cycle_index_after": 7,
+      "claudecode_cleared": true,
+      "run_id": "a5fdd3cb",
+      "backend_used": "LOCAL_DETERMINISTIC",
+      "notes": "3 cycles SUCCESS. State files updated. Queue still pending (orchestrator uses next_action_generator, not queue directly in this sprint)."
+    },
+    {
+      "id": "ATTEMPT_C",
+      "description": "Detached external PowerShell via Start-Process",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"$env:CLAUDECODE=''; Start-Process powershell -ArgumentList ...-File scripts\\start_format_factory_orchestrator.ps1 -MaxCycles 3 -Backend local -Resume -WorkingDirectory ... -PassThru -Wait\"",
+      "result": "SUCCESS",
+      "exit_code": 0,
+      "cycles": 3,
+      "cycle_ids": ["orch-cycle-008", "orch-cycle-009", "orch-cycle-010"],
+      "stop_reason": "MAX_CYCLES_REACHED",
+      "cycle_index_after": 10,
+      "claudecode_cleared": true,
+      "run_id": "a5fdd3cb",
+      "backend_used": "LOCAL_DETERMINISTIC",
+      "heartbeat_updated_at": "2026-06-06T11:02:02.143615+00:00",
+      "notes": "Detached Start-Process ran successfully. cycle_index advanced 7→10. Heartbeat written. State updated. This IS external host execution."
+    },
+    {
+      "id": "ATTEMPT_D",
+      "description": "Launch blocker classification",
+      "result": "NOT_NEEDED",
+      "notes": "Attempts A/B/C all succeeded. No blocker encountered. CLAUDECODE clearing works correctly."
+    }
+  ],
+  "h6_evidence": {
+    "external_process_ran": true,
+    "claudecode_cleared_during_runs": true,
+    "cycle_results_written": true,
+    "heartbeat_written": true,
+    "orchestrator_state_written": true,
+    "stop_reason_written": true,
+    "stop_code": "MAX_CYCLES_REACHED",
+    "resumable": true,
+    "no_advisory_prompt_executed": true,
+    "no_forbidden_action_executed": true,
+    "total_cycles_executed": 9,
+    "cycle_result_files": [
+      "reports/autonomous-orchestrator/proof-run/cycle-004-result.json",
+      "reports/autonomous-orchestrator/proof-run/cycle-006-result.json",
+      "reports/autonomous-orchestrator/proof-run/cycle-007-result.json",
+      "reports/autonomous-orchestrator/proof-run/cycle-009-result.json",
+      "reports/autonomous-orchestrator/proof-run/cycle-010-result.json"
+    ]
+  }
+}

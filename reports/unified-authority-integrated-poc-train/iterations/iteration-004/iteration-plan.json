@@ -1,0 +1,40 @@
+{
+  "iteration": 4,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "planned_at": "2026-06-05T00:00:00Z",
+  "selected_from_gap_queue": "reports/unified-authority-integrated-poc-train/proof-graph/iteration-003/gap-queue.json",
+  "lanes": [
+    {
+      "lane_id": "lane-017-dif-r117",
+      "target": "DIF",
+      "gap": "write_dif_roundtrip",
+      "type": "foss_closure",
+      "priority": 1,
+      "rationale": "write_dif not implemented — highest priority FOSS closure gap"
+    },
+    {
+      "lane_id": "lane-018-fods-csv-dogfood",
+      "target": "FODS",
+      "gap": "csv_export_file_dogfood_sample",
+      "type": "commercial_closure_proof",
+      "priority": 2,
+      "rationale": "Produce physical CSV sample output for ExportSheetToCsvFile dogfood proof"
+    },
+    {
+      "lane_id": "lane-019-fodt-markdown-dogfood",
+      "target": "FODT",
+      "gap": "markdown_export_file_dogfood_sample",
+      "type": "commercial_closure_proof",
+      "priority": 3,
+      "rationale": "Produce physical Markdown sample output for ExportToMarkdownFile dogfood proof"
+    },
+    {
+      "lane_id": "lane-020-netpbm-save-pipeline",
+      "target": "Netpbm",
+      "gap": "save_pipeline_create_transform_save_readback",
+      "type": "commercial_closure_proof",
+      "priority": 4,
+      "rationale": "End-to-end PGM create->transform->save->readback pipeline sample"
+    }
+  ]
+}

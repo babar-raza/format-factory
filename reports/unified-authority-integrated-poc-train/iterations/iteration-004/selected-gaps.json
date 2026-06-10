@@ -1,0 +1,15 @@
+{
+  "iteration": 4,
+  "generated_at": "2026-06-05T00:00:00Z",
+  "source": "reports/unified-authority-integrated-poc-train/proof-graph/iteration-003/gap-queue.json",
+  "selected": [
+    {"rank": 1, "target": "DIF", "gap": "write_dif_roundtrip", "type": "foss_closure", "selected": true},
+    {"rank": 2, "target": "FODS", "gap": "csv_export_file_dogfood", "type": "commercial_proof", "selected": true},
+    {"rank": 3, "target": "FODT", "gap": "markdown_export_file_dogfood", "type": "commercial_proof", "selected": true},
+    {"rank": 4, "target": "Netpbm", "gap": "save_pipeline_proof", "type": "commercial_proof", "selected": true}
+  ],
+  "not_selected": [
+    {"target": "FODT", "gap": "txt_export_file_dogfood", "reason": "markdown selected first; txt deferred to iter 5 if needed"},
+    {"target": "DIF", "gap": "gnumeric_read_proof", "reason": "not in active POC targets"}
+  ]
+}

@@ -1,0 +1,19 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 9 items
+
+tests/supervisor/test_cross_stream_consumption.py::TestSkillsConsumption::test_skills_missing_packet_detected PASSED [ 11%]
+tests/supervisor/test_cross_stream_consumption.py::TestSkillsConsumption::test_skills_no_product_output_flag PASSED [ 22%]
+tests/supervisor/test_cross_stream_consumption.py::TestSkillsConsumption::test_skills_consumed_no_gap PASSED [ 33%]
+tests/supervisor/test_cross_stream_consumption.py::TestSkillsConsumption::test_skills_verdict_gap PASSED [ 44%]
+tests/supervisor/test_cross_stream_consumption.py::TestSkillsConsumption::test_skills_verdict_ok PASSED [ 55%]
+tests/supervisor/test_cross_stream_consumption.py::TestAccelerationConsumption::test_acceleration_no_ai_output_flag PASSED [ 66%]
+tests/supervisor/test_cross_stream_consumption.py::TestAccelerationConsumption::test_acceleration_not_consumed_flag PASSED [ 77%]
+tests/supervisor/test_cross_stream_consumption.py::TestAccelerationConsumption::test_acceleration_consumed_no_gap PASSED [ 88%]
+tests/supervisor/test_cross_stream_consumption.py::TestCrossStreamConsumptionIntegration::test_replay_file_detects_gaps PASSED [100%]
+
+============================== 9 passed in 0.72s ==============================

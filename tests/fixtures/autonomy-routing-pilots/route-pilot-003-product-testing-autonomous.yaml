@@ -1,0 +1,14 @@
+id: route-pilot-003
+title: "Product testing task — should route to AUTONOMOUS_ACCELERATED_DEFAULT"
+task_id: "PILOT-003-PRODUCT-TESTING"
+task_summary: "Run targeted pytest for TSV parser functions"
+action_type: "RUN_TARGETED_PYTEST"
+task_category: "PRODUCT_TESTING"
+risk_level: "LOW"
+hints:
+  required_tests: ["tests/python/tsv/test_tsv_parser.py"]
+  required_evidence: ["evidence/product-testing-pilot-003.json"]
+  allowed_paths: ["tests/python/tsv/"]
+expected_route: "AUTONOMOUS_ACCELERATED_DEFAULT"
+expected_autonomous_allowed: true
+expected_blocked: false

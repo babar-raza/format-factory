@@ -1,0 +1,46 @@
+bypass_entry_id: BYP-ABW-001
+format_id: abw
+sprint_id: SPEC-AUTHORITY-LAYER-STOP-THE-BLEEDING-001
+created_at: 2026-06-07
+updated_at: 2026-06-07
+created_by: independent_agent_verifier
+review_note: >
+  Classification confirmed correct as no_public_spec_available.
+  Unlike Gnumeric (which has an XSD), ABW has no retrievable schema or spec
+  (abisource.com returns BLOCKED_SERVER_DOWN per spec-index.yaml retrieval_status).
+  No schema authority document is accessible. no_public_spec_available is correct.
+  Reviewed by: SPEC-AUTHORITY-LAYER-STOP-THE-BLEEDING-REPAIR-AND-ENFORCEMENT-001 (2026-06-07)
+
+exception_classification: no_public_spec_available
+exception_rationale: >
+  The AbiWord Markup Language (AWML / ABW) format has no publicly accessible canonical
+  specification document. The primary authority document was the AbiWord DTD at
+  http://www.abisource.com/awml.dtd, but:
+    1. abisource.com is unreachable (returns ECONNREFUSED — confirmed 2026-05-16).
+    2. The DTD could not be retrieved or cached.
+    3. The format is documented as "very much out-of-date" relative to current AbiWord.
+    4. There is no OASIS, ISO, or IETF spec for ABW.
+    5. Secondary sources (wiki.mobileread.com, AbiWord source code) provide format
+       understanding but are not normative specification documents.
+  Therefore, spec_fact_refs cannot be populated for ABW work items, and
+  exception_classification: no_public_spec_available is declared explicitly.
+
+scope: metadata_only
+non_goals:
+  - new_product_implementation
+  - new_test_files
+  - src_changes
+  - modifying_abw_codec_py
+
+authority_references:
+  - .local/spec-cache/abw/awml-1.0/spec-index.yaml
+  - (retrieval_status: BLOCKED_SERVER_DOWN — DTD not cached)
+
+follow_up_required: true
+follow_up_note: >
+  If abisource.com becomes accessible or an archived copy of the DTD is found,
+  retrieve and cache it under .local/spec-cache/abw/ and upgrade exception to
+  a spec_fact_refs-backed entry. Until then, no_public_spec_available stands.
+
+validation:
+  - grep -q "no_public_spec_available" bypass-ledger/abw-bypass.yaml && echo PASS

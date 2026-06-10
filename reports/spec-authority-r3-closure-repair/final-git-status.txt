@@ -1,0 +1,37 @@
+FINAL GIT STATUS — FORMAT-FACTORY-SPEC-AUTHORITY-R3-CLOSURE-REPAIR-AND-R4-ODF-PREPARATION-001
+Generated: 2026-06-05
+
+BRANCH: main
+
+RECENT COMMITS:
+3a86a05 feat(r93): context-pack, D92 defect repair, governed acceleration — FODS/FODT/Netpbm/.NET + ZST/PPM/SYLK FOSS
+e283822 feat(r92): declaration materializer, skill expansion, POC deepening
+be0bc9a chore(r91): fill autonomous-continuation-proof and final-adversarial-IV with actual closeout results
+
+R3C PILOT SPRINT NEW FILES (untracked, allowed):
+?? reports/spec-authority-r3-closure-repair/   (all R3C pilot reports)
+?? tests/spec_authority/test_r3c_closure.py   (R3C closure verification tests)
+?? .local/evidences/spec-authority-r3-closure-repair/  (R3C evidence files)
+
+R3 PILOT FILES (untracked, from prior R3 sprint):
+?? reports/spec-authority-real-pilot-r3/   (R3 pilot reports — all valid)
+?? tests/spec_authority/test_real_pilot_r3.py   (R3 regression tests — 80/80 passing)
+?? .local/evidences/spec-authority-real-pilot-r3/  (R3 evidence files — ACCEPTED)
+
+PRE-EXISTING UNCOMMITTED CHANGES (from prior sprints — NOT from R3C):
+M src/net/fods/FodsDocument.cs             (R93 sprint)
+M src/net/fodt/FodtDocument.cs             (R93 sprint)
+M src/net/netpbm/Model/NetpbmImage.cs      (R93 sprint)
+M src/python/dif/dif_parser.py             (prior sprint)
+M src/python/sylk/sylk_parser.py           (R93 sprint)
+M product-capability-matrix/poc-targets.yaml (R93 sprint)
+
+FORBIDDEN PATH CHECK (R3C sprint):
+  src/net/**:                 Changes pre-exist from R93 — 0 new changes by R3C
+  src/python/**:              Changes pre-exist from prior sprints — 0 new changes by R3C
+  tests/net/**:               0 changes by R3C sprint
+  tests/python/**:            0 changes by R3C sprint
+  product-capability-matrix/: Change pre-exists from R93 — 0 new changes by R3C
+  registry/**:                0 changes by R3C sprint
+
+VERDICT: NO_R3C_SPRINT_FORBIDDEN_PATH_CHANGES

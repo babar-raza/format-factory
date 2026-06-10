@@ -1,0 +1,30 @@
+---
+handoff_id: SKILLS-R101-HANDOFF-001
+skill_id: add-dotnet-object-model-feature
+format_id: fods
+feature_name: RenameSheet
+sprint: FORMAT-FACTORY-MAINSTREAM-R103
+generated_by: /generate-execution-handoff (dry-run)
+timestamp: "2026-06-03T12:00:00Z"
+
+target:
+  source_paths:
+    - src/net/fods/FodsDocument.cs
+  test_paths:
+    - tests/net/fods/FodsR103RenameSheetTests.cs
+  ledger_entry_path: reports/r90/product-code-change-ledger.json
+
+acceptance_criteria:
+  - RenameSheet changes sheet name in XML
+  - Duplicate name throws InvalidOperationException
+  - Non-existent sheet throws KeyNotFoundException
+  - 8 focused tests pass
+
+focused_test_command: dotnet test tests/net/fods/ --filter "FodsR103RenameSheet"
+
+stop_conditions:
+  - Ledger or validator missing
+  - Paths exceed this handoff
+  - Feature implies gate change
+
+verdict: HANDOFF_GENERATED

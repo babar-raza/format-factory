@@ -1,0 +1,40 @@
+{
+  "total_checks": 4,
+  "violations": 3,
+  "all_pass": false,
+  "checks": [
+    {
+      "check": "generic_prompt",
+      "is_violation": true,
+      "generic_markers_found": [
+        "continue with next sprint",
+        "proceed with remaining work"
+      ],
+      "stream_markers_found": [],
+      "recommendation": "Prompt is too generic. Add stream-specific boundaries, quotas, and forecasts."
+    },
+    {
+      "check": "stale_gaps",
+      "is_violation": true,
+      "expected_sprint": "R102",
+      "actual_sprint": "R101",
+      "recommendation": "Selected gaps are stale (expected R102, got R101). Re-run gap selection."
+    },
+    {
+      "check": "missing_raw_logs",
+      "is_violation": false,
+      "logs_found": [
+        "reports\\acceleration-r101\\raw-test-log.txt"
+      ],
+      "recommendation": "Found 1 raw log file(s)."
+    },
+    {
+      "check": "path_only_acceptance",
+      "is_violation": true,
+      "path_only_items": [
+        "A1"
+      ],
+      "recommendation": "1 items accepted without test content verification: ['A1']"
+    }
+  ]
+}

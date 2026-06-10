@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-06-04T22:30:00Z",
+  "authority": "plans/master-plan.md Section 40 + product-capability-matrix/poc-targets.yaml",
+  "required_commercial": ["FODS", "FODT", "Netpbm"],
+  "required_foss_minimum": 3,
+  "foss_candidates": ["ZST", "Python_Netpbm", "SYLK", "DIF", "Gnumeric"],
+  "closure_conditions": {
+    "all_commercial_pass": true,
+    "foss_minimum_pass": 3,
+    "spec_context_or_fallback_attached": true,
+    "req_authority_proof_graph_non_empty": true,
+    "no_ai_draft_as_proof": true,
+    "no_evidence_package_only_as_truth": true,
+    "no_direct_poc_targets_mutation": true,
+    "no_registry_mutation": true,
+    "tests_pass": true,
+    "sample_outputs_exist_where_required": true,
+    "transcripts_exist": true,
+    "source_diffs_exist": true,
+    "capability_deltas_proposed": true
+  },
+  "non_terminal_conditions": [
+    "supervisor_accepted_alone",
+    "one_iteration_complete",
+    "max_iterations_reached",
+    "evidence_package_created",
+    "evidence_quality_zero",
+    "prompt_quality_failure",
+    "missing_sample_outputs",
+    "one_lane_blocked"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "timestamp": "2026-06-04T08:02:00.158690+00:00",
+  "mainstream_sprint": "FORMAT-FACTORY-MAINSTREAM-R113",
+  "skills_sprint": "unknown",
+  "acceleration_sprint": "unknown",
+  "skills": {
+    "status": "not_consumed",
+    "skills_overhead_score": 0,
+    "skills_breadth_score": 0,
+    "mainstream_consumption_declared": "not_consumed",
+    "packet_on_disk": true,
+    "packet_paths": [
+      "reports\\skills-product-first\\mainstream-consumption-packet.json",
+      "reports\\skills-product-first\\handoff-to-mainstream.json"
+    ],
+    "coverage_scope": "dogfood_status.fods_to_csv_dotnet",
+    "flags": [
+      "MAINSTREAM_NOT_CONSUMING_SKILLS"
+    ],
+    "verdict": "SKILLS_CONSUMABLE_NOT_YET_CONSUMED",
+    "action_required": true,
+    "recommended_action": "Skills packet present on disk. Mainstream must declare governed_execution_consumed=true"
+  },
+  "acceleration": {
+    "status": "not_consumed",
+    "acceleration_breadth_score": 0,
+    "acceleration_ai_output_status": "no_ai",
+    "mainstream_consumption_declared": "not_consumed",
+    "packets_on_disk": true,
+    "valid_packet_count": 5,
+    "packet_paths": [
+      "reports\\acceleration-product-first\\mainstream-consumption-packets\\fods-dogfood_status-fods_to_csv_dotnet.json",
+      "reports\\acceleration-product-first\\mainstream-consumption-packets\\fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+      "reports\\acceleration-product-first\\mainstream-consumption-packets\\netpbm-dotnet_status-netpbm_flip_diagonal.json",
+      "reports\\acceleration-product-first\\mainstream-consumption-packets\\packet-selection-rationale.json",
+      "reports\\acceleration-product-first\\mainstream-consumption-packets\\sylk-python_status-write_sylk.json"
+    ],
+    "flags": [
+      "MAINSTREAM_NOT_CONSUMING_ACCELERATION"
+    ],
+    "verdict": "ACCELERATION_CONSUMABLE_PARTIAL",
+    "action_required": true,
+    "recommended_action": "Acceleration has 5 packets on disk. Mainstream must declare reusable_accelerator_consumed=true",
+    "ai_authority_note": "All Acceleration outputs are ai_draft \u2014 non-authoritative. Requires deterministic validation."
+  },
+  "overall_verdict": "CROSS_STREAM_CONSUMPTION_GAPS_DETECTED",
+  "all_flags": [
+    "MAINSTREAM_NOT_CONSUMING_SKILLS",
+    "MAINSTREAM_NOT_CONSUMING_ACCELERATION"
+  ]
+}

@@ -1,0 +1,23 @@
+id: GRH-TC-014
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Manifest consistency diagnostic and repair test"
+status: completed
+lane: manifest_repair
+item_type: GOVERNANCE_DOC
+problem: >
+  The evidence-manifest.yaml artifact count (17) does not match the materialized
+  manifest count (32) or the changed_files count (33). A test must verify
+  these counts agree after the fix.
+scope:
+  - Identify all artifact types counted by each manifest generator
+  - Write test verifying evidence-manifest entries >= declared evidence_artifacts
+  - Document expected counts vs actual counts
+files_to_create:
+  - tests/supervisor/test_manifest_consistency.py
+  - reports/repeatability-governance-hardening-rnext/manifest-consistency-repair.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-002]
+handoff_to_autonomy_sprint: false

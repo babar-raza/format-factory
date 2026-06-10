@@ -1,0 +1,24 @@
+{
+  "sample_type": "dogfood-proof",
+  "sprint": "mainstream-r112",
+  "description": "Shows dogfood export proof structure for FODS formula save roundtrip",
+  "example_proof": {
+    "pipeline": "FODS formula save roundtrip",
+    "source_format": "FODS",
+    "target_format": "FODS (same-format save)",
+    "steps": [
+      "Load FODS document",
+      "SetCellFormula(sheet, row, col, '=SUM(A1:A3)')",
+      "Save to temp path",
+      "Reload from temp path",
+      "GetCellFormula(sheet, row, col) == '=SUM(A1:A3)'"
+    ],
+    "test_file": "tests/net/fods/FodsR111DogfoodSaveRoundtripTests.cs",
+    "test_count": 4,
+    "result": "PASS",
+    "ff_libraries_used": [
+      "FormatFactory.Fods (FodsDocument.Load, Save, SetCellFormula, GetCellFormula)"
+    ],
+    "external_dependencies": "none"
+  }
+}

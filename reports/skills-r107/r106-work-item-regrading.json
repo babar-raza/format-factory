@@ -1,0 +1,90 @@
+[
+  {
+    "item_id": "W0-PREFLIGHT",
+    "r106_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r107_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Path-only evidence (7 markdown reports). No tests. All 7 evidence files exist on disk. Standard scaffolding — preflight is process overhead, not verifiable product work. Acceptance criteria ('Preflight report produced. Python interpreter verified. Baseline tests pass.') is self-asserted, not independently testable.",
+    "carry_forward": false,
+    "next_action": "Do not repeat — standard preflight. R107 preflight is its own item."
+  },
+  {
+    "item_id": "W1-R105-REGRADING",
+    "r106_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r107_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Regrading JSON and markdown produced (11 R105 items classified: 2 VERIFIED, 9 WITH_LIMITATIONS). Both files exist on disk. No tests validate the regrading logic, JSON schema, or classification correctness. Evidence is path-only artifacts.",
+    "carry_forward": false,
+    "next_action": "Do not repeat — R105 regrading is complete. R107 regrading of R106 is this document."
+  },
+  {
+    "item_id": "W2-TRANSCRIPT-INTEGRATION",
+    "r106_grade": "ACCEPTED_VERIFIED",
+    "r107_regrade": "ACCEPTED_VERIFIED",
+    "reason": "19 test methods confirmed in test_r106_transcript_grade_integration.py. Tests cover: grade_item() with transcript-enriched inspections (6 tests), transcript validation outcome mapping (7 tests), grade_all pipeline (3 tests), decision matrix integrity (3 tests). Tests exercise actual grade_item() and grade_all() functions from grade_declared_work.py and validate_transcript() from validate_skill_transcript.py. Test file exists, contains substantive assertions, and maps directly to acceptance criteria ('19 integration tests pass. grade_item() behavior confirmed.').",
+    "carry_forward": false,
+    "next_action": "Integration is proven. Future work: wire transcript validation into the live grading pipeline path."
+  },
+  {
+    "item_id": "W3-REGISTRY-MATURITY",
+    "r106_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r107_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Evidence reports exist (skill-registry-maturity.md, orphan-command-resolution.md). Tests_supporting references test_r106_command_validator_hardening.py, which is the SAME file used by W6. The shared tests validate the command validator tool (section coverage, cross-reference, orphan detection) — they do NOT directly assert registry maturity outcomes ('23 active, 0 orphan, 2 deferred'). No dedicated test verifies the acceptance criteria counts. The test file is evidence for W6, not W3.",
+    "carry_forward": true,
+    "next_action": "Add dedicated registry state assertion tests (e.g., parse skill-registry.yaml and assert active/orphan/deferred counts)."
+  },
+  {
+    "item_id": "W4-HANDOFF-PROOF",
+    "r106_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r107_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "All 3 evidence files exist: governed-handoff-proof.md, handoff-003-fodt-roundtrip-test.yaml, transcript-r106-001-handoff-validation.json. No tests declared or present. Acceptance criteria ('1 new handoff. 1 dry-run transcript validates. 3 total handoffs.') is self-asserted via artifacts. No test validates handoff YAML schema, transcript content, or handoff count.",
+    "carry_forward": true,
+    "next_action": "Add handoff schema validation tests. Execute at least 1 LIVE handoff through Mainstream."
+  },
+  {
+    "item_id": "W5-ADOPTION-ENFORCEMENT",
+    "r106_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r107_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "All 4 evidence files exist: cross-stream-adoption-enforcement.md plus 3 adoption checklists (mainstream, supervisor, acceleration). No tests declared or present. Acceptance criteria ('3 updated checklists with enforcement gates and validator integration points') is path-only. Checklists are prose documents without machine-readable enforcement gates.",
+    "carry_forward": true,
+    "next_action": "Convert at least the Mainstream checklist into an enforceable gate (e.g., validate_adoption_compliance.py with tests)."
+  },
+  {
+    "item_id": "W6-COMMAND-VALIDATOR",
+    "r106_grade": "ACCEPTED_VERIFIED",
+    "r107_regrade": "ACCEPTED_VERIFIED",
+    "reason": "19 test methods confirmed in test_r106_command_validator_hardening.py. Tests cover: section coverage (4 tests), negative command file validation (4 tests), registry cross-reference (3 tests), transcript validator hardening (6 tests), full command validation integration (2 tests). Tests exercise actual validate_command_file(), validate_all(), cross_reference_registry(), validate_transcript(), and validate_directory() functions. Test file exists, contains substantive assertions with real function imports. Acceptance criteria ('19 new validator tests. Deferred status accepted. All commands pass.') is directly verified.",
+    "carry_forward": false,
+    "next_action": "Validator is proven. Maintain test count as regression baseline."
+  },
+  {
+    "item_id": "W7-STREAM-STATE",
+    "r106_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r107_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Evidence file exists (stream-state-classification.md). No tests declared or present. Acceptance criteria ('Global state classified. Skills uses isolated evidence under reports/skills-r106/.') is self-asserted prose. Stream-state classification is documentation, not a tested or enforceable mechanism.",
+    "carry_forward": false,
+    "next_action": "Do not repeat as standalone item — stream isolation should be an infrastructure property, not a per-sprint classification."
+  },
+  {
+    "item_id": "W8-NEXT-PROMPT",
+    "r106_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r107_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Evidence file exists (generated-next-skills-prompt.md). No tests declared or present. Prompt generation is process overhead — the test is whether the next sprint (R107) can execute from it. Acceptance criteria ('R107 next Skills prompt generated with carry-forward items') is path-only.",
+    "carry_forward": false,
+    "next_action": "Do not repeat — R107 prompt was consumed to produce R107 sprint."
+  },
+  {
+    "item_id": "W9-FINAL-IV",
+    "r106_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r107_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Evidence file exists (final-adversarial-independent-verification.md). No tests declared or present. Acceptance criteria ('13-point verification checklist. 13/13 passed. No prohibited actions.') is self-asserted in a markdown document. The IV is a sprint-level quality gate but has no independent verification of its own claims.",
+    "carry_forward": false,
+    "next_action": "Do not repeat — IV is sprint-specific. R107 will have its own IV."
+  },
+  {
+    "item_id": "W10-EVIDENCE-CLOSEOUT",
+    "r106_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r107_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Evidence file exists (.local/evidences/skills-r106/evidence-declaration.yaml). No tests declared or present. Acceptance criteria ('Declaration written. Autonomous-cycle run.') is self-referential — the declaration is the evidence for itself. Standard closeout overhead.",
+    "carry_forward": false,
+    "next_action": "Do not repeat — closeout is sprint-specific process."
+  }
+]

@@ -1,0 +1,80 @@
+{
+  "pilots": [
+    {
+      "pilot_id": "PILOT-001",
+      "name": "P6 positive pilot (FODS)",
+      "format": "fods",
+      "authority_level": "P6",
+      "readiness_allowed": true,
+      "product_expansion_allowed": true,
+      "expected": "P6_accepted",
+      "result": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-002",
+      "name": "P6 positive pilot (ZST)",
+      "format": "zst",
+      "authority_level": "P6",
+      "readiness_allowed": true,
+      "product_expansion_allowed": true,
+      "expected": "P6_accepted",
+      "result": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-003",
+      "name": "P3 candidate fact pilot (CSV)",
+      "format": "csv",
+      "authority_level": "P3",
+      "readiness_allowed": false,
+      "expected": "readiness_blocked",
+      "result": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-004",
+      "name": "P2 spec cached pilot (FODT)",
+      "format": "fodt",
+      "authority_level": "P2",
+      "readiness_allowed": false,
+      "expected": "readiness_blocked",
+      "result": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-005",
+      "name": "P1 schema fallback pilot (Gnumeric)",
+      "format": "gnumeric",
+      "authority_level": "P1",
+      "readiness_allowed": false,
+      "expected": "P1_debt_only",
+      "result": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-006",
+      "name": "P1 no-public-spec pilot (ABW)",
+      "format": "abw",
+      "authority_level": "P1",
+      "readiness_allowed": false,
+      "expected": "P1_debt_only",
+      "result": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-007",
+      "name": "P0 no-source pilot (HTML)",
+      "format": "html",
+      "authority_level": "P0",
+      "readiness_allowed": false,
+      "expected": "P0_source_acquisition_task",
+      "result": "PASS"
+    },
+    {
+      "pilot_id": "PILOT-008",
+      "name": "Unknown format pilot",
+      "format": "completely_unknown_format_xyz123",
+      "authority_level": "P0",
+      "readiness_allowed": false,
+      "expected": "BLOCKED_UNKNOWN_AUTHORITY",
+      "result": "PASS"
+    }
+  ],
+  "passed": 8,
+  "bypasses": []
+}

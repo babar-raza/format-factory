@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # For trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: pip install build twine
+
+      - name: Determine format from tag
+        id: format
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          # Tags should be like "fods-v0.1.0" or "v0.1.0"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Build package
+        run: python -m build
+        # NOTE: Per-format releases will use:
+        #   python -m build src/python/$FORMAT/
+        # For now, builds the root dev package as a placeholder.
+        # Actual per-format release requires Gate 11 approval.
+
+      - name: Publish to PyPI
+        run: twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+
+      # Safety note: This workflow must NOT run for formats
+      # without Gate 11 approval. Tag creation is the manual gate.
+      # Verify in registry/format-registry.yaml before tagging.

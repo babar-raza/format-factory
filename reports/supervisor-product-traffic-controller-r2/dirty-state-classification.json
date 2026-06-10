@@ -1,0 +1,116 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-R2-VERIFIED-ROUTING-CYCLE-ENFORCEMENT-AND-CROSS-STREAM-CONSUMPTION-001",
+  "classification_timestamp": "2026-06-04T08:00:00Z",
+  "has_classification": true,
+  "overall_classification": "DIRTY_INHERITED_PRIOR_SPRINT_PLUS_R2_EVIDENCE",
+  "dirty_state_verdict": "DIRTY_UNTRACKED_AND_MODIFIED_SUPERVISOR_EVIDENCE_ONLY_PLUS_INHERITED_PRODUCT_SOURCE",
+  "product_source_dirty_this_sprint": false,
+  "note": "Product source files (src/net/, src/python/) are modified but are from R93 sprint, not this R2 sprint. R2 creates no product source changes.",
+  "categories": {
+    "current_sprint_files": {
+      "description": "New untracked files created by this R2 sprint",
+      "status": "untracked_new",
+      "paths": [
+        "reports/supervisor-product-traffic-controller-r2/00-preflight.md",
+        "reports/supervisor-product-traffic-controller-r2/lane-ownership.md",
+        "reports/supervisor-product-traffic-controller-r2/overlap-check.md",
+        "reports/supervisor-product-traffic-controller-r2/scoreboard.md",
+        "reports/supervisor-product-traffic-controller-r2/prior-package-review.md",
+        "reports/supervisor-product-traffic-controller-r2/prior-work-item-regrading.json",
+        "reports/supervisor-product-traffic-controller-r2/evidence-quality-upgrade.json",
+        "reports/supervisor-product-traffic-controller-r2/contradiction-register.json",
+        "reports/supervisor-product-traffic-controller-r2/raw-log-proof.md",
+        "reports/supervisor-product-traffic-controller-r2/raw-logs/",
+        "reports/supervisor-product-traffic-controller-r2/sample-outputs/",
+        "reports/supervisor-product-traffic-controller-r2/lane-execution-ledger.yaml"
+      ],
+      "approved": true,
+      "classification": "SPRINT_EVIDENCE_FILES_EXPECTED"
+    },
+    "product_source_dirty_files": {
+      "description": "Product source files modified — from R93 sprint, not R2",
+      "status": "modified_inherited",
+      "paths": [
+        "src/net/fods/FodsDocument.cs",
+        "src/net/fodt/FodtDocument.cs",
+        "src/net/netpbm/Model/NetpbmImage.cs",
+        "src/python/sylk/sylk_parser.py"
+      ],
+      "approved": true,
+      "classification": "INHERITED_FROM_R93_NOT_THIS_SPRINT",
+      "this_sprint_modified": false,
+      "prior_sprint": "FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001"
+    },
+    "supervisor_tool_dirty_files": {
+      "description": "Supervisor tools — modified (R93) or untracked (new tools)",
+      "status": "mixed_modified_and_untracked",
+      "paths": [
+        "tools/supervisor/autonomous_cycle.py",
+        "tools/supervisor/build_context_pack.py",
+        "tools/supervisor/build_declaration_review_package.py",
+        "tools/supervisor/check_mcp_status.py",
+        "tools/supervisor/check_cross_stream_consumption.py",
+        "tools/supervisor/external_tool_governance.py",
+        "tools/supervisor/generate_stream_routing_packet.py",
+        "tools/supervisor/product_velocity_scorer.py",
+        "tools/supervisor/ai_supervisor_advisor.py",
+        "tools/supervisor/anti_skip_checker.py",
+        "tools/supervisor/lane_execution_ledger.py"
+      ],
+      "approved": true,
+      "classification": "SUPERVISOR_TOOLING_EXPECTED"
+    },
+    "generated_evidence_files": {
+      "description": "Reports and supervisor outputs from prior sprints",
+      "status": "modified_generated",
+      "paths": [
+        "reports/supervisor/",
+        "reports/r90/",
+        "state/current-state.md"
+      ],
+      "approved": true,
+      "classification": "GENERATED_SUPERVISOR_EVIDENCE_EXPECTED"
+    },
+    "infrastructure_files": {
+      "description": "Planning, governance, capability tracking files",
+      "status": "modified_inherited",
+      "paths": [
+        ".claude/commands/",
+        ".supervisor/",
+        "plans/master-plan.md",
+        "product-capability-matrix/poc-targets.yaml",
+        ".gitignore"
+      ],
+      "approved": true,
+      "classification": "GOVERNANCE_PLANNING_EXPECTED"
+    },
+    "test_files_untracked": {
+      "description": "New test files from various sprints not yet committed",
+      "status": "untracked_new",
+      "paths": [
+        "tests/supervisor/test_continuation_state_integration.py",
+        "tests/supervisor/test_cross_stream_consumption.py",
+        "tests/supervisor/test_external_tool_governance_integration.py",
+        "tests/supervisor/test_supervisor_product_traffic_controller_integration.py",
+        "tests/net/fods/",
+        "tests/net/fodt/",
+        "tests/net/netpbm/",
+        "tests/python/"
+      ],
+      "approved": true,
+      "classification": "TEST_FILES_EXPECTED"
+    }
+  },
+  "path_guard": {
+    "r2_sprint_modified_product_source": false,
+    "src_net_changed_this_sprint": false,
+    "src_python_changed_this_sprint": false,
+    "registry_changed": false,
+    "master_plan_changed_this_sprint": false,
+    "git_push_executed": false,
+    "git_commit_executed": false,
+    "gate_8_approved": false,
+    "gate_11_approved": false,
+    "verdict": "PATH_GUARD_PASS"
+  }
+}

@@ -1,0 +1,104 @@
+[
+  {
+    "lane": "A",
+    "title": "R107 reconciliation + preflight",
+    "status": "completed",
+    "start": "2026-06-03T20:00:00Z",
+    "end": "2026-06-03T20:10:00Z",
+    "outputs": ["reports/skills-r108/00-preflight.md"]
+  },
+  {
+    "lane": "B",
+    "title": "Evidence-manifest path repair",
+    "status": "completed",
+    "start": "2026-06-03T20:10:00Z",
+    "end": "2026-06-03T20:25:00Z",
+    "outputs": [
+      "tools/supervisor/build_declaration_review_package.py",
+      "tests/python/supervisor/test_r108_manifest_path_repair.py"
+    ]
+  },
+  {
+    "lane": "C",
+    "title": "Anti-skip raw-log detection repair",
+    "status": "completed",
+    "start": "2026-06-03T20:10:00Z",
+    "end": "2026-06-03T20:25:00Z",
+    "outputs": [
+      "tools/supervisor/anti_skip_checker.py",
+      "tests/python/supervisor/test_r108_antiskip_rawlog_repair.py"
+    ]
+  },
+  {
+    "lane": "D",
+    "title": "Transcript-grade pipeline boost",
+    "status": "completed",
+    "start": "2026-06-03T20:10:00Z",
+    "end": "2026-06-03T20:30:00Z",
+    "outputs": [
+      "tools/supervisor/grade_declared_work.py",
+      "tests/python/supervisor/test_r108_transcript_grade_boost.py"
+    ]
+  },
+  {
+    "lane": "E",
+    "title": "Adoption compliance validator",
+    "status": "completed",
+    "start": "2026-06-03T20:10:00Z",
+    "end": "2026-06-03T20:30:00Z",
+    "outputs": [
+      "tools/supervisor/validate_adoption_compliance.py",
+      "tests/python/supervisor/test_r108_adoption_compliance.py"
+    ]
+  },
+  {
+    "lane": "F",
+    "title": "Live/simulation proof + transcripts",
+    "status": "completed",
+    "start": "2026-06-03T20:30:00Z",
+    "end": "2026-06-03T20:45:00Z",
+    "outputs": [
+      "reports/skills-r108/skill-transcripts/transcript-r108-001-fods-rename-sheet-simulation.json",
+      "reports/skills-r108/skill-transcripts/transcript-r108-002-netpbm-extract-channel-simulation.json",
+      "reports/skills-r108/skill-transcripts/transcript-r108-003-fodt-roundtrip-simulation.json"
+    ]
+  },
+  {
+    "lane": "G",
+    "title": "Cross-stream adoption packages",
+    "status": "completed",
+    "start": "2026-06-03T20:45:00Z",
+    "end": "2026-06-03T20:55:00Z",
+    "outputs": [
+      "reports/skills-r108/adoption-packages/mainstream-adoption.yaml",
+      "reports/skills-r108/adoption-packages/supervisor-adoption.yaml",
+      "reports/skills-r108/adoption-packages/acceleration-adoption.yaml"
+    ]
+  },
+  {
+    "lane": "H",
+    "title": "Stream-specific output tagging + sample outputs",
+    "status": "completed",
+    "start": "2026-06-03T20:55:00Z",
+    "end": "2026-06-03T21:10:00Z",
+    "outputs": [
+      "tests/python/supervisor/test_r108_stream_output_tagging.py",
+      "reports/skills-r108/sample-outputs/sample-work-item-grades.json",
+      "reports/skills-r108/sample-outputs/sample-next-sprint.md",
+      "reports/skills-r108/sample-outputs/sample-continuation-signal.json",
+      "reports/skills-r108/sample-outputs/sample-approval-gates.md",
+      "reports/skills-r108/sample-outputs/sample-session-resume.md"
+    ]
+  },
+  {
+    "lane": "I",
+    "title": "Final IV, evidence closeout",
+    "status": "completed",
+    "start": "2026-06-03T21:10:00Z",
+    "end": "2026-06-03T21:30:00Z",
+    "outputs": [
+      "reports/skills-r108/final-adversarial-independent-verification.md",
+      ".local/evidences/skills-r108/evidence-declaration.yaml"
+    ]
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-REAL-PILOT-R1-001",
+  "assessment_date": "2026-06-05",
+  "subsystems": [
+    {"name": "SpecSourceRegistry",    "status": "PRESENT", "pilot_executed": true,  "result": "4 sources registered; citation anti-bypass verified"},
+    {"name": "SpecVault",             "status": "PRESENT", "pilot_executed": true,  "result": "4 fixtures ingested; INTEGRITY_OK for all"},
+    {"name": "SpecParser",            "status": "PRESENT", "pilot_executed": true,  "result": "4 specs parsed; method=markdown; 5-6 sections each"},
+    {"name": "SpecNormalizer",        "status": "PRESENT", "pilot_executed": true,  "result": "4 normalized artifacts written"},
+    {"name": "SpecIndexer",           "status": "PRESENT", "pilot_executed": true,  "result": "64-92 terms per source; search('magic frame') returns 4 hits"},
+    {"name": "SpecDigestor",          "status": "PRESENT", "pilot_executed": true,  "result": "4 content digests computed; stable across reruns"},
+    {"name": "RequirementExtractor",  "status": "PRESENT", "pilot_executed": true,  "result": "46 total candidate requirements extracted"},
+    {"name": "SpecVerifier",          "status": "PRESENT", "pilot_executed": true,  "result": "46/46 VERIFIED; 0 rejected; 0 anti-bypass violations"},
+    {"name": "RequirementGraph",      "status": "PRESENT", "pilot_executed": true,  "result": "4 graphs built; ZST=18 nodes/17 edges"},
+    {"name": "ContextPackBuilder",    "status": "PRESENT", "pilot_executed": true,  "result": "3 context packs; deterministic manifest.sha256 PASS x3"},
+    {"name": "SpecGovernanceRuntime", "status": "PRESENT", "pilot_executed": true,  "result": "All 4 governance checks pass; usage ledger written"}
+  ],
+  "pilot_formats": {
+    "zst":    {"subsystems_exercised": 11, "result": "PASS"},
+    "netpbm": {"subsystems_exercised": 11, "result": "PASS"},
+    "dif":    {"subsystems_exercised": 11, "result": "PASS"},
+    "fods":   {"subsystems_exercised": 7,  "result": "PARTIAL (vault+parse+normalize+index+digest+extract+verify only; no context pack — stretch)"}
+  },
+  "missing_subsystems": 0,
+  "all_pilot_paths_executable": true
+}

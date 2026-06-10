@@ -1,0 +1,23 @@
+# GEC Pilot 005: BACKFILLED_LEGACY_EXECUTION with sidecar — expected PASS (legacy only)
+id: gec-pilot-005
+description: >
+  PRODUCT_SOURCE with BACKFILLED_LEGACY_EXECUTION, LEGACY_BACKFILLED claim,
+  valid idempotency_key, and sidecar attribution file. Should PASS all validators.
+planned_work_items:
+  - item_id: GEC-P005-PS-001
+    item_type: PRODUCT_SOURCE
+    format_id: gnumeric
+    capability_id: set_cell_value
+    status: completed
+    grade: PASS
+    execution_method: BACKFILLED_LEGACY_EXECUTION
+    claim_classification: LEGACY_BACKFILLED
+    exception_classification: legacy_backfill
+    idempotency_key: aff66c999800c221ffe346134519aae0b838cde1ec9cc66fbcc7b578ed81fbf9
+    evidence_paths:
+      - .local/attribution/gnumeric/gnumeric_codec.py.attribution.yaml
+      - src/python/gnumeric/gnumeric_codec.py
+    tests_supporting:
+      - tests/python/gnumeric/test_r126_gnumeric_set_cell.py
+expected_result: PASS
+expected_blocks_sprint: false

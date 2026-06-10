@@ -1,0 +1,90 @@
+[
+  {
+    "item_id": "W0-PREFLIGHT",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Path-only evidence (5 markdown reports). No tests. Standard scaffolding — preflight is process overhead, not verifiable product work.",
+    "carry_forward": false,
+    "next_action": "Do not repeat — standard preflight. R106 preflight is its own item."
+  },
+  {
+    "item_id": "W1-R104-REGRADING",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Regrading JSON produced (8 items classified: 4 VERIFIED, 4 WITH_LIMITATIONS) but no tests validate the regrading logic or JSON schema. Evidence is path-only markdown + JSON artifact.",
+    "carry_forward": false,
+    "next_action": "Do not repeat — R104 regrading is complete. R106 regrading of R105 is this document."
+  },
+  {
+    "item_id": "W2-STREAM-STATE",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Stream contamination classified in machine-readable JSON (6 files: 5 WRONG_STREAM_PRIMARY, 1 STALE_PRIMARY). Analysis is sound. However, no tests validate the classification logic, and the contamination itself was NOT remediated — only documented. The test_wrong_stream_context_pack_detectable test in W3's test file is a documentation test, not a remediation test.",
+    "carry_forward": true,
+    "next_action": "R106 should address stream-state isolation at the infrastructure level or formally accept it as a known limitation with a tracking item."
+  },
+  {
+    "item_id": "W3-TRANSCRIPT-ENFORCEMENT",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_VERIFIED",
+    "reason": "13 new tests in test_r105_transcript_grading.py, all passing. Tests cover 7 transcript-to-grade states (valid PASS, missing, invalid, FAIL, anti-bypass FAIL, LIVE without ledger, LIVE with ledger, files outside allowed, decision matrix completeness, all modes, all results, directory validation). Machine-readable transcript-grade-matrix.json produced. Raw test log confirms 63/63 pass.",
+    "carry_forward": true,
+    "next_action": "R106 must wire transcript validation into grade_declared_work.py — the decision matrix is tested but NOT yet integrated into the grading pipeline."
+  },
+  {
+    "item_id": "W4-REGISTRY-HARDENING",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_VERIFIED",
+    "reason": "Validator tests from R104 (test_r104_promoted_skill_commands.py: 21 tests) and R102 (test_validate_claude_commands.py: 12 tests) all pass. Command validation JSON confirms 23/23 commands valid with 12/12 sections each. 19 active skills, 1 orphan registered (evidence-review-next-prompt). 4 orphans documented with deferral reasons. Registry state is auditable.",
+    "carry_forward": true,
+    "next_action": "R106 should convert 2 more orphan commands and promote 2 draft skills (record-lane-execution, check-mcp-status)."
+  },
+  {
+    "item_id": "W5-LIVE-HANDOFF",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "2 LIVE-ready handoff YAMLs produced (FODS RenameSheet, Netpbm ExtractChannel). 2 dry-run transcripts validate (transcript-validation-r105.json: 2/2 PASS). However, no tests validate handoff YAML schema or content. The transcripts both use skill_id 'validate-skill-transcript' — they validate the validator, not the handoff skills themselves. No actual LIVE execution occurred.",
+    "carry_forward": true,
+    "next_action": "R106 or Mainstream must execute at least 1 LIVE handoff and produce a LIVE transcript with ledger entry."
+  },
+  {
+    "item_id": "W6-ADOPTION-ENFORCEMENT",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "3 adoption checklists produced (Mainstream, Supervisor, Acceleration). Content is actionable prose. No tests validate checklist completeness, schema, or enforcement integration. Checklists are not machine-readable and have no enforcement mechanism — they are recommendations, not gates.",
+    "carry_forward": true,
+    "next_action": "R106 should convert at least the Mainstream checklist into an enforceable gate (e.g., skill_id requirement in declarations)."
+  },
+  {
+    "item_id": "W7-PACKAGE-CONTAINMENT",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Two markdown reports (package-self-containment.md, weak-proof-reduction.md) document improvement from 1 to 4+ machine-readable JSONs and from 50 to 63 tests. The improvement is real and verifiable by counting artifacts. However, no tests validate the self-containment claims themselves. The weak-proof reduction is a meta-analysis report, not a tested artifact.",
+    "carry_forward": false,
+    "next_action": "Do not repeat as standalone item — package self-containment should be an acceptance criterion on all future work items, not a separate item."
+  },
+  {
+    "item_id": "W8-NEXT-PROMPT",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Single markdown file (generated-next-skills-prompt.md) produced. No tests. Prompt generation is inherently non-testable in isolation — the test is whether R106 can execute from it. Dirty git state caveat applies (git_status_final: dirty, 268 files).",
+    "carry_forward": false,
+    "next_action": "Do not repeat — R106 prompt is generated by R106's own closeout. The R105 prompt was consumed to produce R106."
+  },
+  {
+    "item_id": "W9-FINAL-IV",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "13-point verification checklist, 12/12 passed, 1 pending closeout. The IV is path-only evidence (single markdown). No tests validate the IV checklist itself. Item 13 (evidence declaration + manifest) was marked PENDING at time of writing, creating a self-referential gap. The IV correctly identifies risks (transcript enforcement not wired, no LIVE transcripts, 4 orphans remaining).",
+    "carry_forward": false,
+    "next_action": "Do not repeat — IV is sprint-specific. R106 will have its own IV."
+  },
+  {
+    "item_id": "W10-EVIDENCE-MANIFEST",
+    "r105_grade": "ACCEPTED",
+    "r106_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Manifest lists 55 artifacts, 0 missing. All artifacts verified to exist on disk. However, no tests validate manifest schema or completeness. The manifest is a YAML file that was likely generated, not independently verified. Dirty git state means manifest reflects uncommitted state.",
+    "carry_forward": false,
+    "next_action": "Do not repeat as standalone item — manifest generation should be automated as part of closeout tooling."
+  }
+]

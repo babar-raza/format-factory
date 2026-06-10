@@ -1,0 +1,55 @@
+handoff_id: handoff-fods-dogfood_status-fods_to_csv_dotnet
+generated_at: '2026-06-03T08:05:18.352097+00:00'
+sprint_id: R103
+purpose: Implement dogfood_status.fods_to_csv_dotnet for fods (commercial_net)
+gap_id: commercial-net-fods-dogfood-status-fods-to-csv-dotnet
+format: fods
+product_track: commercial_net
+source_track: commercial_dotnet
+capability_path: dogfood_status.fods_to_csv_dotnet
+work_type: dogfood_export
+decision: GOVERNED_SKILL_REQUIRED
+allowed_files:
+- src/net/fods/
+- tests/net/fods/
+forbidden_files:
+- src/python/
+- tools/supervisor/
+implementation_steps:
+- 1. Implement export in src/net/fods/
+- 2. Add export tests in tests/net/fods/
+- 3. Verify output against fixture
+- 4. Update dogfood_status in poc-targets.yaml
+tests_required:
+- End-to-end export test with fixture file
+- Output diff against reference
+raw_logs:
+- .local/supervisor/raw-logs/handoff-fods-dogfood_status-fods_to_csv_dotnet.log
+product_code_ledger: reports/r90/product-code-change-ledger.json
+rollback: git checkout -- src/net/fods/ tests/net/fods/
+evidence_outputs: &id001
+- reports/r103/handoff-fods-dogfood_status-fods_to_csv_dotnet.md
+- .local/evidences/R103/evidence-declaration.yaml
+evidence_declaration_entries:
+- item_id: R103-fods-dogfood_status-fods_to_csv_dotnet
+  title: fods dogfood_status.fods_to_csv_dotnet implementation
+  status: completed
+  evidence_paths: *id001
+ledger_requirements:
+- Record lane start via record_lane_execution.py start
+- Record lane close with files_changed and test counts
+capability_matrix_update:
+  file: product-capability-matrix/poc-targets.yaml
+  path: dogfood_status.fods_to_csv_dotnet
+  expected_transition: GAP_DOGFOOD_EXTERNAL -> DONE or PARTIAL
+stop_conditions:
+- Test suite fails
+- Files modified outside allowed_files
+- Gate or release state change needed
+- Scope exceeds single capability
+safety_gates:
+- No src/* changes outside allowed paths
+- All new tests must pass before closing
+- Update poc-targets.yaml capability status
+- Write lane execution ledger entry
+- No git push or commit without human approval

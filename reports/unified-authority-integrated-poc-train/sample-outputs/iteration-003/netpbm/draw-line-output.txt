@@ -1,0 +1,52 @@
+Sample output: DrawLine on PGM image
+API: NetpbmImage.DrawLine(int x0, int y0, int x1, int y1, byte fill)
+Test class: NetpbmR116DrawLineTests
+
+Scenario: DrawLine_Horizontal_SetsPixels
+  Image: 10x10 PGM P2 (all zeros)
+  DrawLine(0, 5, 9, 5, fill=255)
+  Expected: pixels at y=5, x=0..9 set to 255
+  Result: PASS
+
+Scenario: DrawLine_Vertical_SetsPixels
+  Image: 10x10 PGM P2
+  DrawLine(5, 0, 5, 9, fill=200)
+  Expected: pixels at x=5, y=0..9 set to 200
+  Result: PASS
+
+Scenario: DrawLine_Diagonal_SetsEndpoints
+  Image: 10x10 PGM P2
+  DrawLine(0, 0, 9, 9, fill=128)
+  Expected: (0,0) and (9,9) set to 128 (Bresenham diagonal)
+  Result: PASS
+
+Scenario: DrawLine_SinglePoint_SetsOnePixel
+  Image: 10x10 PGM P2
+  DrawLine(3, 4, 3, 4, fill=100)
+  Expected: pixel at (3,4) = 100
+  Result: PASS
+
+Scenario: DrawLine_OutOfBounds_DoesNotThrow
+  Image: 5x5 PGM P2
+  DrawLine(-2, -2, 10, 10, fill=128)
+  Expected: no exception; in-bounds pixels set
+  Result: PASS
+
+Scenario: DrawLine_ThrowsOnColorImage
+  Image: 10x10 PPM P3
+  DrawLine(0,0,1,1, fill=128)
+  Expected: InvalidOperationException
+  Result: PASS
+
+Scenario: DrawLine_DogfoodPipeline_DrawAndBrightnessMap
+  Image: 20x20 PGM P2
+  DrawLine(0,0,19,19,255) then DrawLine(0,19,19,0,255)
+  GetBrightness() > 0 confirmed
+  Result: PASS
+
+Scenario: DrawRectangleThenLine_Pipeline
+  Image: 20x20 PGM P2
+  DrawRectangle(2,2,17,17,200) then DrawLine(2,2,17,17,255)
+  Result: PASS
+
+Test verdict: 8/8 PASSED

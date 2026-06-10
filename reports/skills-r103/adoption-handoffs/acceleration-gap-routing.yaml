@@ -1,0 +1,21 @@
+adoption_handoff_id: SKILLS-R103-ADOPT-ACCELERATION-001
+target_stream: acceleration
+integration_type: gap_routing
+description: "Acceleration stream routes product gaps to skills stream via promote-gap-to-taskcard and generate-execution-handoff"
+routing_pipeline:
+  - step: identify_gap
+    source: "selected-product-gaps.json or poc-targets.yaml"
+    output: "gap_id with format_id and feature_name"
+  - step: promote_to_taskcard
+    skill_id: promote-gap-to-taskcard
+    output: "taskcards/TC-{FORMAT}-{FEATURE}-{NNN}.md"
+  - step: generate_handoff
+    skill_id: generate-execution-handoff
+    output: "reports/skills-r<N>/generated-handoffs/handoff-{NNN}-{format}-{feature}.md"
+  - step: queue_for_execution
+    consumer: "mainstream sprint via skill_id routing"
+skill_map:
+  commercial_dotnet: add-dotnet-object-model-feature
+  foss_python: add-python-object-model-feature
+  cross_product_export: add-dogfood-export
+  governance: update-capability-matrix

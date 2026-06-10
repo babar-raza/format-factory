@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001",
+  "generated_at": "2026-06-06T00:00:00Z",
+  "queue_proof": {
+    "status": "PROVEN",
+    "seeded_ids": ["q-1428ba0e", "q-ba461ae1", "q-54d3c34c"],
+    "seed_count": 3,
+    "orchestrator_run_id": "be289d4a",
+    "cycles_completed": 3,
+    "all_cycles_success": true,
+    "queue_path": ".local/supervisor/action-queue.jsonl",
+    "queue_persists_on_disk": true
+  },
+  "forbidden_types_verified": [
+    "GIT_PUSH", "GIT_COMMIT", "GATE_8_APPROVAL", "GATE_11_APPROVAL",
+    "PACKAGE_PUBLISH", "MCP_ACTIVATE", "MUTATE_POC_TARGETS"
+  ],
+  "verdict": "DURABLE_ACTION_QUEUE_DRIVES_ORCHESTRATOR_PROVEN"
+}

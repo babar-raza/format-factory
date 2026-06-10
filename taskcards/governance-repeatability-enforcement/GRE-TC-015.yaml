@@ -1,0 +1,26 @@
+id: GRE-TC-015
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "State ledger, evidence declaration, autonomous-cycle, bundle (Lane M)"
+status: completed
+lane: final_iv
+item_type: GOVERNANCE_DOC
+problem: >
+  Final sprint closeout: write state ledger, write evidence declaration,
+  run autonomous-cycle validation, build and report review package ZIP.
+scope:
+  - Write state-ledger.jsonl (15 GRE-TC rows)
+  - Write evidence-declaration.yaml
+  - Run supervisor validate-declaration
+  - Run autonomous-cycle
+  - Build declaration-review-package.zip
+  - Report absolute ZIP path to user
+files_created:
+  - reports/repeatability-governance-enforcement-rnext/state-ledger.jsonl
+  - .local/evidences/governance-repeatability-enforcement-rnext/evidence-declaration.yaml
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+dependencies: [GRE-TC-001, GRE-TC-002, GRE-TC-003, GRE-TC-004, GRE-TC-005, GRE-TC-006, GRE-TC-007, GRE-TC-008, GRE-TC-009, GRE-TC-010, GRE-TC-011, GRE-TC-012, GRE-TC-013, GRE-TC-014]
+handoff_to_autonomy_sprint: false

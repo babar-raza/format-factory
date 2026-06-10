@@ -1,0 +1,57 @@
+{
+  "iteration": 3,
+  "generated_at": "2026-06-05T00:00:00Z",
+  "graph_hash": "0caa18fb0455986f21c4b1850cce4d37acfac1a61789d2bd059b134ac095e1cf",
+  "closed_gaps": [
+    {"gap_id": "fods_r116_column_aggregates", "status": "CLOSED", "proof_node": "fods-r116-col-agg"},
+    {"gap_id": "fodt_r116_word_frequency", "status": "CLOSED", "proof_node": "fodt-r116-word-freq"},
+    {"gap_id": "netpbm_r116_draw_line", "status": "CLOSED", "proof_node": "netpbm-r116-draw-line"},
+    {"gap_id": "dif_r116_probe_csv", "status": "CLOSED", "proof_node": "dif-r116-probe"},
+    {"gap_id": "dif_r116_to_csv", "status": "CLOSED", "proof_node": "dif-r116-to-csv"},
+    {"gap_id": "dif_r116_parse_strict", "status": "CLOSED", "proof_node": "dif-r116-strict"},
+    {"gap_id": "autonomous_poc_controller", "status": "CLOSED", "proof_node": "controller-core"}
+  ],
+  "open_gaps": [
+    {
+      "gap_id": "dif_write_dif_roundtrip",
+      "target": "DIF",
+      "priority": "HIGH",
+      "rationale": "write_dif not implemented; blocks DIF FOSS closure",
+      "suggested_iteration": 4
+    },
+    {
+      "gap_id": "fods_csv_export_file_dogfood",
+      "target": "FODS",
+      "priority": "HIGH",
+      "rationale": "ExportSheetToCsvFile dogfood sample output missing",
+      "suggested_iteration": 4
+    },
+    {
+      "gap_id": "fodt_markdown_export_dogfood",
+      "target": "FODT",
+      "priority": "HIGH",
+      "rationale": "ExportToMarkdownFile dogfood sample output missing",
+      "suggested_iteration": 4
+    },
+    {
+      "gap_id": "fodt_txt_export_dogfood",
+      "target": "FODT",
+      "priority": "MEDIUM",
+      "rationale": "ExportToPlainTextFile dogfood sample output missing",
+      "suggested_iteration": 4
+    },
+    {
+      "gap_id": "netpbm_save_pipeline_proof",
+      "target": "Netpbm",
+      "priority": "MEDIUM",
+      "rationale": "Create → transform → save → readback pipeline end-to-end proof",
+      "suggested_iteration": 4
+    }
+  ],
+  "next_iteration_recommended_gaps": [
+    "dif_write_dif_roundtrip",
+    "fods_csv_export_file_dogfood",
+    "fodt_markdown_export_dogfood",
+    "netpbm_save_pipeline_proof"
+  ]
+}

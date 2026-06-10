@@ -26,8 +26,8 @@ ACTIVE_CONTINUATION_PATH = _repo_root / ".local" / "supervisor" / "active-contin
 
 # Post-closeout next action defaults
 # R-NMPC: Use approval-gates.md — always written by autonomous-cycle, always non-empty
-DEFAULT_POST_CLOSEOUT_ACTION_TYPE = "RUN_MD_NONEMPTY_CHECK"
-DEFAULT_POST_CLOSEOUT_TARGET = "reports/supervisor/approval-gates.md"
+DEFAULT_POST_CLOSEOUT_ACTION_TYPE = "QUEUE_HEALTH_CHECK"
+DEFAULT_POST_CLOSEOUT_TARGET = ".local/supervisor/continuation-signal.json"
 
 ACTION_QUEUE_PATH = _repo_root / ".local" / "supervisor" / "action-queue.jsonl"
 
@@ -279,12 +279,12 @@ def seed_post_closeout_queue_item(
             "seeded": False,
         }
 
-    # Seed a safe RUN_MD_NONEMPTY_CHECK item (LOCAL_DETERMINISTIC backend supports this)
+    # Seed a safe QUEUE_HEALTH_CHECK item (LOCAL_DETERMINISTIC backend supports this)
     ts = _dt.now(_tz.utc).isoformat()
     action_id = f"post-closeout-{str(uuid.uuid4())[:8]}"
     item = {
         "action_id": action_id,
-        "action_type": "RUN_MD_NONEMPTY_CHECK",
+        "action_type": "QUEUE_HEALTH_CHECK",
         "target": "reports/supervisor/approval-gates.md",
         "target_path": "reports/supervisor/approval-gates.md",
         "description": f"Post-closeout health check: verify approval-gates.md is non-empty (sprint={sprint_id})",

@@ -1,0 +1,50 @@
+{
+  "skill_id": "update-capability-matrix",
+  "sprint_id": "FORMAT-FACTORY-DOGFOOD-MATRIX-RECONCILIATION-R120-001",
+  "invocation_timestamp": "2026-06-05T14:00:00Z",
+  "matrix_entry": "commercial_net_products.FODS",
+  "field_transitions": [
+    {
+      "field": "dogfood_status.fods_to_csv_dotnet",
+      "old_value": "GAP_DOGFOOD_EXTERNAL",
+      "new_value": "IMPLEMENTED",
+      "evidence": "src/net/fods/FodsCsvExporter.cs line 149: CsvWriter.WriteRowsToFile (FormatFactory.Csv delegation)"
+    },
+    {
+      "field": "dogfood_status.fods_to_html_dotnet",
+      "old_value": "GAP_DOGFOOD_EXTERNAL",
+      "new_value": "IMPLEMENTED",
+      "evidence": "src/net/fods/FodsHtmlExporter.cs line 141: HtmlWriter.WriteTable (FormatFactory.Html delegation)"
+    },
+    {
+      "field": "dogfood_status.target_ff_library_for_csv_dotnet",
+      "old_value": "format-factory-csv (when .NET CSV library exists)",
+      "new_value": "FormatFactory.Csv.CsvWriter",
+      "evidence": "src/net/csv/CsvWriter.cs exists; src/net/csv/FormatFactory.Csv.csproj exists"
+    },
+    {
+      "field": "dogfood_status.target_ff_library_for_html_dotnet",
+      "old_value": "(absent)",
+      "new_value": "FormatFactory.Html.HtmlWriter",
+      "evidence": "src/net/html/HtmlWriter.cs exists; src/net/html/FormatFactory.Html.csproj exists"
+    },
+    {
+      "field": "dotnet_status.dotnet_tests",
+      "old_value": 507,
+      "new_value": 547,
+      "evidence": "dotnet test tests/net/fods/FormatFactory.Fods.Tests.csproj -v quiet: 547/547 PASS"
+    }
+  ],
+  "evidence_paths": [
+    "src/net/fods/FodsCsvExporter.cs",
+    "src/net/fods/FodsHtmlExporter.cs",
+    "reports/r90/product-code-change-ledger.json (MWP-FODS-CSV-DOGFOOD-REFACTOR, MWP-FODS-HTML-DOGFOOD-REFACTOR)"
+  ],
+  "validation_command": "dotnet test tests/net/fods/FormatFactory.Fods.Tests.csproj -v quiet",
+  "validation_result": "547/547 PASS",
+  "authority_flags_unchanged": {
+    "commercial_product_ready": false,
+    "gate_11_g11g": "NOT_STARTED"
+  },
+  "verdict": "PASS"
+}

@@ -1,0 +1,96 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-REVIEW-R3-EVIDENCE-TRUST-AND-PRODUCT-QUALITY-001",
+  "shell_detected": "GitBash",
+  "ledger": [
+    {
+      "command_id": "CMD-R3-001",
+      "description": "Netpbm build before CS1591 fix",
+      "resolved": "dotnet build src/net/netpbm/FormatFactory.Netpbm.csproj",
+      "exit_code": 0,
+      "result": "PASS",
+      "cs1591_warnings": 19,
+      "log_path": "reports/expert-review-r3/raw-logs/dotnet-netpbm-build.log"
+    },
+    {
+      "command_id": "CMD-R3-002",
+      "description": "Netpbm build after CS1591 XML doc fixes",
+      "resolved": "dotnet build src/net/netpbm/FormatFactory.Netpbm.csproj",
+      "exit_code": 0,
+      "result": "PASS",
+      "cs1591_warnings": 0,
+      "log_path": "reports/expert-review-r3/raw-logs/dotnet-netpbm-build.log"
+    },
+    {
+      "command_id": "CMD-R3-003",
+      "description": "Netpbm .NET tests after XML doc changes",
+      "resolved": "dotnet test tests/net/netpbm/",
+      "exit_code": 0,
+      "result": "PASS",
+      "passed": 465,
+      "failed": 0,
+      "log_path": "reports/expert-review-r3/raw-logs/dotnet-netpbm-tests.log"
+    },
+    {
+      "command_id": "CMD-R3-004",
+      "description": "Python ZST/SYLK/DIF tests",
+      "resolved": "pytest tests/python/zst/ tests/python/sylk/ tests/python/dif/",
+      "exit_code": 0,
+      "result": "PASS",
+      "passed": 718,
+      "skipped": 19,
+      "failed": 0,
+      "log_path": "reports/expert-review-r3/raw-logs/python-tests-zst-sylk-dif.log"
+    },
+    {
+      "command_id": "CMD-R3-005",
+      "description": "Python PBM/PGM/PPM/FODS/FODT/ABW/Gnumeric tests",
+      "resolved": "pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ tests/python/fods/ tests/python/fodt/ tests/python/abw/ tests/python/gnumeric/",
+      "exit_code": 0,
+      "result": "PASS",
+      "passed": 1684,
+      "skipped": 20,
+      "failed": 0,
+      "log_path": "reports/expert-review-r3/raw-logs/python-tests-remaining.log"
+    },
+    {
+      "command_id": "CMD-R3-006",
+      "description": "Validator tests (prompt path + quality score + package-104 audit)",
+      "resolved": "pytest tests/supervisor/test_r3_prompt_path_validator.py -v",
+      "exit_code": 1,
+      "result": "PARTIAL",
+      "passed": 3,
+      "failed": 2,
+      "notes": "2 failures correctly detect stale latest-next-worker-prompt.md with src/python/netpbm references. These failures are intentional (TDD regression against known defect) and will pass after R3 autonomous_cycle regenerates the prompt.",
+      "log_path": "reports/expert-review-r3/raw-logs/validator-tests.log"
+    },
+    {
+      "command_id": "CMD-R3-007",
+      "description": "Pack FODS nupkg",
+      "resolved": "dotnet pack src/net/fods/FormatFactory.Fods.csproj --no-build -o reports/expert-review-r3/dotnet/package-artifacts/",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command_id": "CMD-R3-008",
+      "description": "Pack FODT nupkg",
+      "resolved": "dotnet pack src/net/fodt/FormatFactory.Fodt.csproj --no-build -o reports/expert-review-r3/dotnet/package-artifacts/",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command_id": "CMD-R3-009",
+      "description": "Build and pack Netpbm nupkg (includes XML doc improvements)",
+      "resolved": "dotnet pack src/net/netpbm/FormatFactory.Netpbm.csproj -o reports/expert-review-r3/dotnet/package-artifacts/",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command_id": "CMD-R3-010",
+      "description": "Build wheels for all 10 Python packages",
+      "resolved": "pip wheel src/python/<pkg>/ -w reports/expert-review-r3/python/wheels/<pkg>/ --no-deps -q (x10)",
+      "exit_code": 0,
+      "result": "PASS",
+      "wheels_built": 10
+    }
+  ]
+}

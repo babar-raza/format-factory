@@ -1,0 +1,48 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "generated_at": "2026-06-04T12:00:00Z",
+  "status": "SKILLS_CONSUMABLE_WITH_LIMITATIONS",
+  "reason": "FODS full packet ready; FODT and Netpbm packet shells require Mainstream discovery before live execution",
+  "supported_families": ["FODS", "FODT", "Netpbm"],
+  "full_packets": [
+    {
+      "family": "FODS",
+      "packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "handoff_path": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+      "template_path": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+      "validation_command": "python tools/supervisor/validate_skill_transcript.py <transcript>",
+      "status": "READY_FOR_MAINSTREAM"
+    }
+  ],
+  "shell_packets": [
+    {
+      "family": "FODT",
+      "shell_path": "reports/skills-governed-execution-hardening/fodt-packet-shell.json",
+      "template_path": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+      "status": "SHELL_READY — NEEDS_MAINSTREAM_DISCOVERY"
+    },
+    {
+      "family": "Netpbm",
+      "shell_path": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+      "template_path": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+      "status": "SHELL_READY — NEEDS_MAINSTREAM_DISCOVERY"
+    }
+  ],
+  "limitations": [
+    "FODT and Netpbm shells need Mainstream to select specific method before Skills generates dry-run handoff",
+    "MCP check-mcp-status skill remains deferred (not blocking product consumption)",
+    "Capability matrix updates are proposed deltas, not direct authority mutations"
+  ],
+  "validation_commands": [
+    "python tools/supervisor/validate_skill_transcript.py <transcript_path>",
+    "python -c \"import json; json.load(open('reports/skills-product-first/mainstream-consumption-packet.json'))\""
+  ],
+  "expected_mainstream_declarations": [
+    "Run: python tools/supervisor/autonomous_cycle.py --declaration .local/evidences/{sprint_id}/evidence-declaration.yaml",
+    "Tests: dotnet test tests/net/fods/ --filter FodsR114ExportToCsvTests"
+  ],
+  "governed_execution_consumed_flag_guidance": "Set governed_execution_consumed=true in routing packet when Mainstream successfully executes using the Skills-generated handoff and transcript validates",
+  "transcript_validation_command": "python tools/supervisor/validate_skill_transcript.py reports/{sprint}/skill-transcripts/{transcript_id}.json",
+  "no_authority_mutation_rule": "No direct writes to product-capability-matrix/poc-targets.yaml, registry/format-registry.yaml, plans/master-plan.md, or .supervisor/policies.yaml. All updates are proposed deltas.",
+  "supervisor_classifies_as": "SKILLS_CONSUMABLE_WITH_LIMITATIONS — not missing"
+}

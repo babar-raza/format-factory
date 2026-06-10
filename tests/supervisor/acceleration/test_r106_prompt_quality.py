@@ -42,7 +42,7 @@ def test_prompt_without_structure_fails():
 
 
 def test_prompt_quality_total_checks_r106():
-    """R106 prompt quality has 7 checks (6 original + 1 structure)."""
+    """R106 prompt quality has 8 checks (6 original + 1 structure + 1 unsafe-wording GEC-TC-005)."""
     prompt = (
         "# Acceleration Sprint\n"
         "## Lane A: Tool improvements\n"
@@ -53,8 +53,8 @@ def test_prompt_quality_total_checks_r106():
         "Write evidence-declaration.yaml and run autonomous-cycle.\n"
     )
     result = validate_prompt_quality(prompt, "acceleration", has_repairs=True, has_advancement=True)
-    # Should have: not_generic, stream_identity, repair_lane, advancement_lane, evidence_requirement, no_wrong_stream, prompt_structure
-    assert result["total_checks"] == 7
+    # Should have: not_generic, stream_identity, repair_lane, advancement_lane, evidence_requirement, no_wrong_stream, prompt_structure, no_unsafe_commit_push_wording (GEC-TC-005), no_unauthorized_mutation_instructions (V11/Check 9)
+    assert result["total_checks"] == 9
 
 
 def test_prompt_quality_r106_prompts():

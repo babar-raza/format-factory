@@ -1,0 +1,53 @@
+{
+  "sprint_id": "FORMAT-FACTORY-CAPABILITY-LAYER-FULL-HARDENING-001",
+  "run_id": "capability-layer-full-hardening",
+  "generated_at": "2026-06-08",
+  "total_limitations": 5,
+  "limitations": [
+    {
+      "limitation_id": "LIM-FH-001",
+      "source": "package142-independent-review",
+      "category": "evidence_quality",
+      "description": "Package 142 had evidence_quality_score=0.38 (threshold 0.80). Tests_supporting entries lacked test_count fields.",
+      "status": "REPAIRED",
+      "repair": "This sprint raises evidence quality by including tests_supporting with specific file refs and test counts for all declared work items.",
+      "affects_scope": "prior_sprint_only"
+    },
+    {
+      "limitation_id": "LIM-FH-002",
+      "source": "package142-independent-review",
+      "category": "raw_logs",
+      "description": "Package 142 anti-skip checker flagged missing_raw_logs. No captured test output logs were declared.",
+      "status": "REPAIRED",
+      "repair": "This sprint captures raw logs: focused-tests.log (529 pass), broader-regression.log (4347 pass), supervisor-tests.log (3028 pass).",
+      "affects_scope": "prior_sprint_only"
+    },
+    {
+      "limitation_id": "LIM-FH-003",
+      "source": "package142-independent-review",
+      "category": "lane_ledger",
+      "description": "Package 142 anti-skip checker flagged missing_lane_ledger. No lane execution ledger was declared.",
+      "status": "REPAIRED",
+      "repair": "This sprint creates lane-ledger.json with 12 lanes documented.",
+      "affects_scope": "prior_sprint_only"
+    },
+    {
+      "limitation_id": "LIM-FH-004",
+      "source": "adversarial-review",
+      "category": "gap_ledger_completeness",
+      "description": "Gap ledger total_gaps=0 only for 8 tracked POC formats. 12 untracked Python FOSS formats (ZST, SYLK, DIF, PBM, PGM, PPM, QOI, XCF, TOML, add_column, rename_column, etc.) have no gap entries in poc-targets.yaml.",
+      "status": "DOCUMENTED",
+      "repair": "Limitation documented. Tracked capabilities are complete. Untracked formats are not blockers for current POC scope.",
+      "affects_scope": "ongoing_architecture"
+    },
+    {
+      "limitation_id": "LIM-FH-005",
+      "source": "all-format-inventory",
+      "category": "capability_map_coverage",
+      "description": "FOSS capability map has 300 records covering 20 Python formats. 12 of these formats have no gap entries in poc-targets.yaml (they are beyond current POC scope). Commercial map covers 3 .NET formats only.",
+      "status": "DOCUMENTED",
+      "repair": "All 27 formats inventoried. Maps generated for all known formats. Gap ledger scope is limited to current POC targets by design.",
+      "affects_scope": "architecture_boundary"
+    }
+  ]
+}

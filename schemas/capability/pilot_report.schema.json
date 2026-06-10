@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/capability/pilot_report.schema.json",
+  "title": "PilotReport",
+  "description": "A structured pilot report for one format in the capability layer sprint.",
+  "type": "object",
+  "required": [
+    "pilot_id",
+    "format",
+    "product_type",
+    "pilot_type",
+    "authority_inputs",
+    "source_files_inspected",
+    "tests_inspected",
+    "final_verdict"
+  ],
+  "properties": {
+    "pilot_id": {"type": "string", "description": "e.g. C-001, F-002, E-001"},
+    "format": {"type": "string"},
+    "product_type": {
+      "type": "string",
+      "enum": ["commercial", "foss_reduced", "candidate"]
+    },
+    "pilot_type": {
+      "type": "string",
+      "enum": ["commercial", "foss_reduced", "expansion", "acquisition"]
+    },
+    "authority_inputs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Authority sources used for this pilot"
+    },
+    "source_files_inspected": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "tests_inspected": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "examples_inspected": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "packages_inspected": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "generated_capability_records_count": {"type": "integer"},
+    "generated_gap_entries": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "taskcards_created_or_updated": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "validator_result": {
+      "type": "object",
+      "properties": {
+        "exit_code": {"type": "integer"},
+        "summary": {"type": "string"},
+        "violations": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "test_result": {
+      "type": "object",
+      "properties": {
+        "pass_count": {"type": "integer"},
+        "fail_count": {"type": "integer"},
+        "log_path": {"type": "string"}
+      }
+    },
+    "manual_agent_verification_result": {
+      "type": "object",
+      "properties": {
+        "artifacts_opened": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "key_findings": {"type": "string"},
+        "pass_fail": {"type": "string", "enum": ["PASS", "PASS_WITH_LIMITATIONS", "FAIL"]}
+      }
+    },
+    "contradictions_found": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "repairs_performed": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "final_verdict": {
+      "type": "string",
+      "enum": [
+        "PASS_VERIFIED",
+        "PASS_WITH_LIMITATIONS",
+        "FAIL_REPAIRABLE",
+        "FAIL_BLOCKED",
+        "NOT_ENOUGH_AUTHORITY_DATA"
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": false
+}

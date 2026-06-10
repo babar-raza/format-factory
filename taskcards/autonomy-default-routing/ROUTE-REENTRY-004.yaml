@@ -1,0 +1,17 @@
+taskcard_id: ROUTE-REENTRY-004
+title: "next_action_runner import-failure fail-closed repair"
+status: IN_PROGRESS
+owner_lane: supervisor
+allowed_files:
+  - "tools/supervisor/next_action_runner.py"
+forbidden_files:
+  - "src/"
+dependencies:
+  - "ROUTE-REENTRY-003"
+gates: []
+evidence_paths:
+  - ".local/evidences/route-aware-product-reentry-20260610-001030-e382e5f/"
+tests:
+  - "tests/supervisor/test_autonomy_routing_integration.py"
+rollback_notes: "Revert changes to allowed_files only"
+closeout_criteria: "ImportError in route decider causes BLOCKED status, not pass-through"

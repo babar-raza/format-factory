@@ -1,0 +1,14 @@
+{
+  "action_id": "spa-cycle-002",
+  "action_type": "RUN_MD_NONEMPTY_CHECK",
+  "objective": "Verify 00-preflight.md is non-empty — H4 runner proof cycle 2 (state advanced from cycle-001)",
+  "preferred_backend": "LOCAL_DETERMINISTIC",
+  "fallback_backends": [],
+  "target": "reports/superpowers-agentic-autonomy/00-preflight.md",
+  "result_path": "reports/superpowers-agentic-autonomy/two-cycle-proof/cycle-002-result.json",
+  "allowed_write_roots": ["reports/superpowers-agentic-autonomy/two-cycle-proof/"],
+  "prior_cycle": "spa-cycle-001",
+  "state_advanced_from": "reports/superpowers-agentic-autonomy/two-cycle-proof/cycle-001-result.json",
+  "evidence_required": true,
+  "success_conditions": ["target is non-empty MD", "result_path written by runner", "proof_level=H3 cumulative→H4"]
+}

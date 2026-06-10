@@ -1,0 +1,51 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-GOVERNANCE-CLOSURE-REPEATABILITY-AND-BACKFILL-001",
+  "run_id": "spec-authority-governance-closure-backfill-20260608-e382e5f",
+  "generated_at": "2026-06-09T07:39:32.622929Z",
+  "governance_validation": {
+    "all_pass": true,
+    "blocks_sprint": false,
+    "fail_count": 0,
+    "warn_count": 0,
+    "pass_count": 10,
+    "validators": [
+      {
+        "execution_method_required_validator": "PASS"
+      },
+      {
+        "source_diff_required_validator": "PASS"
+      },
+      {
+        "idempotency_key_required_validator": "PASS"
+      },
+      {
+        "replay_recipe_required_validator": "PASS"
+      },
+      {
+        "claim_classification_validator": "PASS"
+      },
+      {
+        "legacy_backfill_validator": "PASS"
+      },
+      {
+        "manual_ungoverned_rejection_validator": "PASS"
+      },
+      {
+        "governed_direct_execution_validator": "PASS"
+      },
+      {
+        "source_marker_or_sidecar_attribution_validator": "PASS"
+      },
+      {
+        "taskcard_state_transition_validator": "PASS"
+      }
+    ]
+  },
+  "adoption_compliance": {
+    "compliant": true,
+    "classification": "PASS_WITH_EXEMPTIONS",
+    "strict_fail": false,
+    "non_exempt_items": 10,
+    "items_with_explicit_exemption": 10
+  }
+}

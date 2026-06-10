@@ -1,0 +1,119 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-INTEGRATION-001",
+  "generated_at": "2026-06-04T13:00:00.000000Z",
+  "scenarios": [
+    {
+      "scenario_id": 1,
+      "description": "Normal continuation — all defaults, auto_continue=True",
+      "inputs": {
+        "auto_continue_value": true,
+        "at_max_iterations": false,
+        "hard_stops": [],
+        "overclaimed": [],
+        "rework_items": [],
+        "dirty_state_classified": true,
+        "required_artifacts_present": true,
+        "product_output_floor_met": true
+      },
+      "expected_state": "YES",
+      "verified": true
+    },
+    {
+      "scenario_id": 2,
+      "description": "Max iterations reached",
+      "inputs": {
+        "auto_continue_value": true,
+        "at_max_iterations": true,
+        "hard_stops": [],
+        "overclaimed": [],
+        "rework_items": [],
+        "dirty_state_classified": true,
+        "required_artifacts_present": true,
+        "product_output_floor_met": true
+      },
+      "expected_state": "YES_MAX_ITER",
+      "verified": true
+    },
+    {
+      "scenario_id": 3,
+      "description": "Overclaimed items — unsafe source state",
+      "inputs": {
+        "auto_continue_value": true,
+        "at_max_iterations": false,
+        "hard_stops": [],
+        "overclaimed": ["TC-IMPL-001"],
+        "rework_items": [],
+        "dirty_state_classified": true,
+        "required_artifacts_present": true,
+        "product_output_floor_met": true
+      },
+      "expected_state": "NO_UNSAFE_SOURCE_STATE",
+      "verified": true
+    },
+    {
+      "scenario_id": 4,
+      "description": "Dirty state not classified",
+      "inputs": {
+        "auto_continue_value": true,
+        "at_max_iterations": false,
+        "hard_stops": [],
+        "overclaimed": [],
+        "rework_items": [],
+        "dirty_state_classified": false,
+        "required_artifacts_present": true,
+        "product_output_floor_met": true
+      },
+      "expected_state": "NO_UNCLASSIFIED_DIRTY_STATE",
+      "verified": true
+    },
+    {
+      "scenario_id": 5,
+      "description": "Required artifacts missing from disk",
+      "inputs": {
+        "auto_continue_value": true,
+        "at_max_iterations": false,
+        "hard_stops": [],
+        "overclaimed": [],
+        "rework_items": [],
+        "dirty_state_classified": true,
+        "required_artifacts_present": false,
+        "product_output_floor_met": true
+      },
+      "expected_state": "NO_MISSING_REQUIRED_ARTIFACTS",
+      "verified": true
+    },
+    {
+      "scenario_id": 6,
+      "description": "Product output floor not met (Mainstream breadth < 1)",
+      "inputs": {
+        "auto_continue_value": true,
+        "at_max_iterations": false,
+        "hard_stops": [],
+        "overclaimed": [],
+        "rework_items": [],
+        "dirty_state_classified": true,
+        "required_artifacts_present": true,
+        "product_output_floor_met": false
+      },
+      "expected_state": "NO_PRODUCT_OUTPUT_FLOOR",
+      "verified": true
+    },
+    {
+      "scenario_id": 7,
+      "description": "Floor not met AND max iterations — floor priority wins",
+      "inputs": {
+        "auto_continue_value": true,
+        "at_max_iterations": true,
+        "hard_stops": [],
+        "overclaimed": [],
+        "rework_items": [],
+        "dirty_state_classified": true,
+        "required_artifacts_present": true,
+        "product_output_floor_met": false
+      },
+      "expected_state": "NO_PRODUCT_OUTPUT_FLOOR",
+      "priority_note": "NO_PRODUCT_OUTPUT_FLOOR (priority 5) fires before YES_MAX_ITER (priority 6)",
+      "verified": true
+    }
+  ]
+}

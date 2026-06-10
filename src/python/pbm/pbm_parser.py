@@ -26,6 +26,12 @@ from typing import Any
 MAX_FILE_SIZE = 64 * 1024 * 1024  # 64 MiB
 MAX_DIMENSION = 65536
 
+# Magic number constants (Netpbm spec — FACT-PBM-001, FACT-PBM-002)
+# FACT-PBM-001: "PBM ASCII format starts with magic 'P1' followed by whitespace"
+# FACT-PBM-002: "PBM binary format starts with magic 'P4' followed by whitespace"
+PBM_MAGIC_ASCII = "P1"   # FACT-PBM-001
+PBM_MAGIC_BINARY = "P4"  # FACT-PBM-002
+
 
 class PbmError(Exception):
     """Base exception for PBM parser errors."""
@@ -374,3 +380,114 @@ def write_pbm(
         lines.append(row_str)
 
     out_path.write_text("\n".join(lines) + "\n", encoding="ascii")
+
+
+def pixel_count(file_path: str | Path) -> int:
+    """Return the total pixel count (width * height) of a PBM image."""
+    img = parse_pbm_strict(file_path)
+    return img.width * img.height
+
+
+def count_black(file_path: str | Path) -> int:
+    """Return the count of black pixels (value=1) in a PBM image."""
+    img = parse_pbm_strict(file_path)
+    return sum(1 for p in img.pixels if p == 1)
+
+
+def flip_horizontal(file_path: str | Path, dest_path: str | Path) -> dict[str, Any]:
+    """Flip a PBM image horizontally (mirror left-right) and write the result."""
+    img = parse_pbm_strict(file_path)
+    flipped: list[int] = []
+    for row in range(img.height):
+        row_start = row * img.width
+        row_pixels = img.pixels[row_start:row_start + img.width]
+        flipped.extend(reversed(row_pixels))
+    write_pbm(flipped, img.width, img.height, dest_path)
+    return {"ok": True, "width": img.width, "height": img.height, "pixel_count": len(flipped)}
+
+
+def get_dimensions(file_path: str | Path) -> tuple[int, int]:
+    """Return (width, height) of a PBM image without full pixel decode.
+
+    Parses only the header. Useful for quick dimension checks.
+
+    Args:
+        file_path: Path to a P1 or P4 PBM file.
+
+    Returns:
+        Tuple (width, height).
+
+    Raises:
+        PbmError: If the file cannot be parsed or does not exist.
+    """
+    img = parse_pbm_strict(file_path)
+    return (img.width, img.height)
+
+
+def invert(file_path: str | Path, dest_path: str | Path) -> dict[str, Any]:
+    """Invert a PBM image (swap 0↔1) and write the result.
+
+    Reads a PBM file, flips all pixel values, and writes the result
+    as a P1 ASCII PBM file to dest_path.
+
+    Args:
+        file_path: Source PBM file path.
+        dest_path: Destination PBM file path.
+
+    Returns:
+        Dict with keys: ok, width, height, pixel_count.
+
+    Raises:
+        PbmError: If the source file cannot be parsed.
+    """
+    img = parse_pbm_strict(file_path)
+    inverted = [1 - p for p in img.pixels]
+    write_pbm(inverted, img.width, img.height, dest_path)
+    return {
+        "ok": True,
+        "width": img.width,
+        "height": img.height,
+        "pixel_count": len(inverted),
+    }
+
+
+def crop(file_path: str | Path, dest_path: str | Path,
+         x: int, y: int, w: int, h: int) -> dict[str, Any]:
+    """Crop a rectangular region from a PBM image and write it.
+
+    Extracts pixels from (x, y) with size (w, h) and writes as P1 PBM.
+
+    Args:
+        file_path: Source PBM file path.
+        dest_path: Destination PBM file path.
+        x: Left column of crop region (0-based).
+        y: Top row of crop region (0-based).
+        w: Width of crop region.
+        h: Height of crop region.
+
+    Returns:
+        Dict with keys: ok, width, height, pixel_count.
+
+    Raises:
+        PbmError: If source cannot be parsed.
+        ValueError: If crop region is out of bounds.
+    """
+    img = parse_pbm_strict(file_path)
+    if x < 0 or y < 0 or w <= 0 or h <= 0:
+        raise ValueError(f"Invalid crop region: x={x}, y={y}, w={w}, h={h}")
+    if x + w > img.width or y + h > img.height:
+        raise ValueError(
+            f"Crop region ({x},{y},{w},{h}) exceeds image bounds ({img.width}x{img.height})"
+        )
+    cropped: list[int] = []
+    for row in range(y, y + h):
+        for col in range(x, x + w):
+            cropped.append(img.pixels[row * img.width + col])
+    write_pbm(cropped, w, h, dest_path)
+    return {"ok": True, "width": w, "height": h, "pixel_count": len(cropped)}
+
+
+def count_white(file_path: str | Path) -> int:
+    """Return the count of white pixels (value=0) in a PBM image."""
+    img = parse_pbm_strict(file_path)
+    return sum(1 for p in img.pixels if p == 0)

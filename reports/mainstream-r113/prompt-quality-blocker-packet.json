@@ -1,0 +1,59 @@
+{
+  "packet_type": "prompt_quality_false_positive_fixture",
+  "sprint": "mainstream-r113",
+  "target_stream": "supervisor",
+  "defect_id": "D112-PQFP-01",
+  "check_name": "no_wrong_stream",
+  "current_behavior": "FAIL on any tools/supervisor/ substring",
+  "expected_behavior": "PASS when only governance commands are referenced",
+  "governance_allowlist": [
+    "tools/supervisor/autonomous_cycle.py",
+    "tools/supervisor/validate_product_code_ledger.py",
+    "tools/supervisor/build_declaration_review_package.py",
+    ".local/supervisor/selected-product-gaps.json",
+    ".local/supervisor/continuation-signal.json",
+    ".local/supervisor/streams/"
+  ],
+  "forbidden_patterns": [
+    {"pattern": "tools/supervisor/*.py", "context": "as implementation target or deliverable"},
+    {"pattern": "tools/supervisor/", "context": "in Train/Lane title describing supervisor work"},
+    {"pattern": "supervisor tool internal", "context": "classes, functions, bugs in supervisor code"}
+  ],
+  "test_cases": [
+    {
+      "input": "python tools/supervisor/autonomous_cycle.py --declaration .local/evidences/mainstream-r113/evidence-declaration.yaml",
+      "expected": "PASS",
+      "reason": "Governance command per CLAUDE.md"
+    },
+    {
+      "input": "python tools/supervisor/validate_product_code_ledger.py",
+      "expected": "PASS",
+      "reason": "Mandatory ledger validation"
+    },
+    {
+      "input": ".local/venv/Scripts/python tools/supervisor/build_declaration_review_package.py --declaration <path>",
+      "expected": "PASS",
+      "reason": "Mandatory review package per MEMORY.md"
+    },
+    {
+      "input": "Fix bug in tools/supervisor/inspect_declared_evidence.py line 223",
+      "expected": "FAIL",
+      "reason": "Implementation target in Supervisor stream"
+    },
+    {
+      "input": "Train B: Repair tools/supervisor/validate_evidence_for_supervisor.py",
+      "expected": "FAIL",
+      "reason": "Supervisor tool as deliverable"
+    },
+    {
+      "input": "py_compile tools/supervisor/autonomous_cycle.py",
+      "expected": "FAIL",
+      "reason": "Unnecessary compile check of supervisor tool"
+    }
+  ],
+  "evidence_chain": [
+    "reports/mainstream-r112/prompt-quality-classification.json",
+    "reports/mainstream-r112/prompt-quality-failure-analysis.md",
+    ".local/supervisor/reviews/mainstream-r112/prompt-quality-result.json"
+  ]
+}

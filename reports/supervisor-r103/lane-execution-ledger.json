@@ -1,0 +1,93 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-R103-CROSS-STREAM-CONTAMINATION-AND-DEEP-GRADING-CAMPAIGN-001",
+  "stream": "supervisor",
+  "lanes": [
+    {
+      "lane": "WAVE-0",
+      "title": "R102 reconciliation",
+      "status": "COMPLETE",
+      "artifacts": [
+        "reports/supervisor-r103/00-preflight.md",
+        "reports/supervisor-r103/r102-reconciliation.md",
+        "reports/supervisor-r103/r102-claim-classification.json"
+      ]
+    },
+    {
+      "lane": "WAVE-1",
+      "title": "Cross-stream contamination repair",
+      "status": "COMPLETE",
+      "files_changed": [
+        "tools/supervisor/inspect_declared_evidence.py",
+        "tools/supervisor/evidence_manifest.py",
+        "tools/supervisor/autonomous_cycle.py"
+      ],
+      "artifacts": ["reports/supervisor-r103/cross-stream-contamination-root-cause.md", "reports/supervisor-r103/cross-stream-contamination-repair.md"]
+    },
+    {
+      "lane": "WAVE-2",
+      "title": "Deep grading v3",
+      "status": "COMPLETE",
+      "files_changed": ["tools/supervisor/inspect_declared_evidence.py"],
+      "artifacts": ["reports/supervisor-r103/deep-grading-plan.md"]
+    },
+    {
+      "lane": "WAVE-3",
+      "title": "Package self-containment",
+      "status": "COMPLETE",
+      "files_changed": [
+        "tools/supervisor/build_declaration_review_package.py",
+        "tools/supervisor/evidence_manifest.py"
+      ],
+      "artifacts": [
+        "reports/supervisor-r103/package-self-containment-plan.md",
+        "reports/supervisor-r103/review-package-self-containment-v3.md"
+      ]
+    },
+    {
+      "lane": "WAVE-4",
+      "title": "Replay 4 packages",
+      "status": "COMPLETE",
+      "tests": "tests/supervisor/test_r103_cross_stream_and_grading.py (32 tests)",
+      "artifacts": [
+        "reports/supervisor-r103/replay-plan.md",
+        "reports/supervisor-r103/replay-results.md"
+      ]
+    },
+    {
+      "lane": "WAVE-5",
+      "title": "Continuation policy hardening",
+      "status": "COMPLETE",
+      "files_changed": ["tools/supervisor/autonomous_cycle.py"],
+      "artifacts": ["reports/supervisor-r103/continuation-policy-hardening.md"]
+    },
+    {
+      "lane": "WAVE-6",
+      "title": "Stream-specific prompt generation",
+      "status": "COMPLETE",
+      "artifacts": [
+        "reports/supervisor-r103/generated-next-prompts/mainstream-next.md",
+        "reports/supervisor-r103/generated-next-prompts/acceleration-next.md",
+        "reports/supervisor-r103/generated-next-prompts/skills-next.md",
+        "reports/supervisor-r103/generated-next-prompts/supervisor-next.md"
+      ]
+    },
+    {
+      "lane": "WAVE-7",
+      "title": "Final IV, forecast, closeout",
+      "status": "COMPLETE",
+      "artifacts": [
+        "reports/supervisor-r103/final-adversarial-independent-verification.md",
+        "reports/supervisor-r103/three-sprint-forecast.md",
+        "reports/supervisor-r103/next-supervisor-agent-prompt.md",
+        "reports/supervisor-r103/quota-tracker.md",
+        "reports/supervisor-r103/lane-execution-ledger.json"
+      ]
+    }
+  ],
+  "test_summary": {
+    "new_tests": 32,
+    "total_supervisor_passed": 614,
+    "total_supervisor_failed": 2,
+    "pre_existing_failures": ["test_repo_ledger_backfills_r89_apis_and_validates", "test_real_ledger_passes"]
+  }
+}

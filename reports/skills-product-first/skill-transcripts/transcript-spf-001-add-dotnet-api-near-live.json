@@ -1,0 +1,32 @@
+{
+  "invocation_id": "spf-001-add-dotnet-api-near-live-20260604",
+  "skill_id": "add-dotnet-api",
+  "mode": "dry-run",
+  "inputs": {
+    "handoff_id": "handoff-spf-001-add-dotnet-api",
+    "format_id": "fods",
+    "api_name": "ExportToCsv",
+    "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+    "exact_source_paths": [
+      "src/net/fods/FodsDocument.cs",
+      "src/net/fods/FodsWorkbook.cs"
+    ],
+    "exact_test_paths": [
+      "tests/net/fods/FodsR114ExportToCsvTests.cs"
+    ],
+    "focused_test_command": "dotnet test tests/net/fods/ --filter FodsR114ExportToCsvTests",
+    "enforcement_tier": "FAIL_CLOSED",
+    "execution_plan": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml"
+  },
+  "allowed_files": [
+    "src/net/fods/FodsDocument.cs",
+    "src/net/fods/FodsWorkbook.cs",
+    "tests/net/fods/FodsR114ExportToCsvTests.cs"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "result": "PASS",
+  "timestamp": "2026-06-04T00:00:00Z",
+  "ledger_entry_id": null,
+  "dry_run_note": "Dry-run mode: source files listed but not modified. No tests run. Pipeline proof only. Mainstream executes the live version using mainstream-consumption-packet.json."
+}

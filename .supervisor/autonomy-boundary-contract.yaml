@@ -1,0 +1,141 @@
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+contract_type: "AUTONOMY_BOUNDARY"
+sprint_id: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+
+# ---------------------------------------------------------------------------
+# What this sprint DOES do
+# ---------------------------------------------------------------------------
+this_sprint_scope:
+  - Fix 3 contradictions from Sprint 1 governance review
+  - Implement 10 governance validators in governance_validators.py
+  - Enforce 15-state taskcard state machine (validator only)
+  - Verify 4 legacy backfill sidecars and create GR-REPLAY-001..004 taskcards
+  - Run 6 controlled governance validator pilot tests
+  - Create raw logs, sample-output-policy, safety audit, prompt quality report
+  - Document autonomy boundary (this file)
+  - Write Sprint 2 evidence declaration and run autonomous-cycle
+
+# ---------------------------------------------------------------------------
+# What this sprint does NOT do (hard boundary)
+# ---------------------------------------------------------------------------
+this_sprint_does_not:
+  - Implement new product source functions
+  - Improve autonomous execution level
+  - Build or modify queue dispatch infrastructure
+  - Call external LLMs or AI APIs
+  - Implement replay recipes for backfilled functions (GR-REPLAY handoff)
+  - Enforce validators inside supervisor_loop.py (plan only)
+  - Commit or push code
+  - Approve Gate 8 or Gate 11
+  - Activate or deactivate MCP servers
+
+# ---------------------------------------------------------------------------
+# Deferred items (HANDOFF_TO_AUTONOMY_SPRINT)
+# ---------------------------------------------------------------------------
+deferred_to_autonomy_sprint:
+  - item: "GR-REPLAY-001"
+    title: "Write replay recipe for set_cell_value (gnumeric)"
+    reason: "Requires autonomous execution proof — outside governance sprint scope"
+    prerequisite: "GR-TC-006 complete (sidecar exists)"
+
+  - item: "GR-REPLAY-002"
+    title: "Write replay recipe for get_headers (tsv)"
+    reason: "Requires autonomous execution proof"
+    prerequisite: "GR-TC-006 complete (sidecar exists)"
+
+  - item: "GR-REPLAY-003"
+    title: "Write replay recipe for get_paragraph (abw)"
+    reason: "Requires autonomous execution proof"
+    prerequisite: "GR-TC-006 complete (sidecar exists)"
+
+  - item: "GR-REPLAY-004"
+    title: "Write replay recipe for export_to_csv (ndjson)"
+    reason: "Requires autonomous execution proof; ndjson_codec.py is untracked in git"
+    prerequisite: "GR-TC-006 complete (sidecar exists)"
+
+  - item: "VALIDATOR-ENFORCEMENT"
+    title: "Wire governance_validators.py into supervisor_loop.py autonomous-cycle"
+    reason: "Requires supervisor_loop.py modification — separate sprint"
+    prerequisite: "All 10 validators passing in isolation (complete)"
+
+  - item: "TC-004"
+    title: "Queue-backed source mutation pilot"
+    reason: "Requires autonomy infrastructure improvements"
+    prerequisite: "governance contracts accepted"
+
+  - item: "TC-011"
+    title: "Qwen3 / llm.professionalize integration contract"
+    reason: "External LLM integration — requires dedicated sprint"
+    prerequisite: "governance boundary documented (complete)"
+
+# ---------------------------------------------------------------------------
+# Prerequisites the autonomy sprint must satisfy before Level 3+ claims
+# ---------------------------------------------------------------------------
+level_3_prerequisites:
+  - name: "execution_method_required"
+    description: "All dispatched queue items must carry execution_method=QUEUE_DISPATCHED_EXECUTION"
+    validator: "governance_validators.validate_execution_method_required"
+    status: "NOT_YET_ENFORCED_IN_PIPELINE"
+
+  - name: "source_diff_required"
+    description: "All mutations must have source_diff_path in execution result JSON"
+    validator: "governance_validators.validate_source_diff_required"
+    status: "NOT_YET_ENFORCED_IN_PIPELINE"
+
+  - name: "idempotency_key_required"
+    description: "All mutations must have idempotency_key and source marker or sidecar"
+    validator: "governance_validators.validate_idempotency_key_required"
+    status: "NOT_YET_ENFORCED_IN_PIPELINE"
+
+  - name: "no_false_cycle_counts"
+    description: ".supervisor/project-memory.md must not contain false cycle count claims"
+    validator: "manual_review"
+    status: "CORRECTED_IN_SPRINT_1"
+
+  - name: "no_manual_ungoverned_as_autonomous"
+    description: "No MANUAL_UNGOVERNED or UNKNOWN_EXECUTION_METHOD work declared autonomous"
+    validator: "governance_validators.validate_manual_ungoverned_rejection"
+    status: "NOT_YET_ENFORCED_IN_PIPELINE"
+
+# ---------------------------------------------------------------------------
+# Governance contracts available for autonomy sprint consumption
+# ---------------------------------------------------------------------------
+governance_contracts_produced:
+  - path: "docs/governance/execution-method-taxonomy.md"
+    sprint: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+    status: "ACCEPTED"
+
+  - path: "docs/governance/repeatability-contract.md"
+    sprint: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+    status: "ACCEPTED"
+
+  - path: "docs/governance/idempotency-contract.md"
+    sprint: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+    status: "ACCEPTED"
+
+  - path: "schemas/governance/product-mutation-evidence.schema.json"
+    sprint: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+    status: "ACCEPTED"
+
+  - path: "docs/governance/product-mutation-taskcard-state-machine.md"
+    sprint: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+    status: "ACCEPTED"
+
+  - path: "tools/supervisor/governance_validators.py"
+    sprint: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+    status: "IMPLEMENTED_NOT_YET_WIRED"
+    note: "10 validators tested in isolation; not yet called from supervisor_loop.py"
+
+# ---------------------------------------------------------------------------
+# Current autonomy level assessment
+# ---------------------------------------------------------------------------
+autonomy_level:
+  current: 2
+  current_description: "Governed direct execution; 4 backfilled functions with sidecars"
+  blockers_for_level_3:
+    - "Validators not yet wired into supervisor_loop.py"
+    - "GR-REPLAY recipes not written (functions are LEGACY_BACKFILLED, not REPLAYABLE)"
+    - "Queue dispatch not proven for product functions (BACKFILLED_LEGACY_EXECUTION)"
+  sprint_contribution: "Governance infrastructure only; does not advance autonomy level"

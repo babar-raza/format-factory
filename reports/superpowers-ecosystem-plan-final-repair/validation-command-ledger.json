@@ -1,0 +1,19 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-ECOSYSTEM-PLAN-FINAL-REPAIR-001",
+  "commands": [
+    {"step": 1, "purpose": "Verify autonomous-cycle subcommand", "command": "python tools/supervisor/supervisor_loop.py --help", "expected": "autonomous-cycle in output"},
+    {"step": 2, "purpose": "Verify --declaration arg", "command": "python tools/supervisor/build_declaration_review_package.py --help", "expected": "--declaration in output"},
+    {"step": 3, "purpose": "Verify MCP config", "command": "cat .vscode/mcp.json", "expected": "task-master-ai entry present"},
+    {"step": 4, "purpose": "Verify policies", "command": "python -c \"import yaml; d=yaml.safe_load(open('.supervisor/policies.yaml')); print('OK')\"", "expected": "OK"},
+    {"step": 5, "purpose": "Verify endpoints", "command": "python -c \"import yaml; d=yaml.safe_load(open('tools/llm/endpoints.yaml')); print(len(d['endpoints']), 'endpoints')\"", "expected": "5 endpoints"},
+    {"step": 6, "purpose": "Check .claude/commands/ absent", "command": "python -c \"import pathlib; p=pathlib.Path('.claude/commands'); print('EXISTS' if p.exists() else 'ABSENT')\"", "expected": "ABSENT"},
+    {"step": 7, "purpose": "Check cognee importable", "command": "python -c \"import cognee; print(cognee.__version__)\" 2>&1 || echo NOT_FOUND", "expected": "version or NOT_FOUND"},
+    {"step": 8, "purpose": "Check openspec CLI (no-install)", "command": "npx --no-install openspec --version 2>&1 || echo NOT_FOUND", "expected": "version or NOT_FOUND"},
+    {"step": 9, "purpose": "Check ANTHROPIC_API_KEY presence", "command": "python -c \"import os; print('PRESENT' if os.environ.get('ANTHROPIC_API_KEY') else 'ABSENT')\"", "expected": "PRESENT or ABSENT"},
+    {"step": 10, "purpose": "Check PROFESSIONALIZE_API_KEY presence", "command": "python -c \"import os; print('PRESENT' if os.environ.get('PROFESSIONALIZE_API_KEY') else 'ABSENT')\"", "expected": "PRESENT or ABSENT"},
+    {"step": 11, "purpose": "Check TASK_MASTER_API_KEY presence", "command": "python -c \"import os; print('PRESENT' if os.environ.get('TASK_MASTER_API_KEY') else 'ABSENT')\"", "expected": "PRESENT or ABSENT"},
+    {"step": 12, "purpose": "Check skill_seekers importable", "command": "python -c \"import skill_seekers\" 2>&1 || echo NOT_FOUND", "expected": "version or NOT_FOUND"},
+    {"step": 13, "purpose": "Run autonomous-cycle (TC-FR-011)", "command": "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/superpowers-ecosystem-plan-final-repair/evidence-declaration.yaml", "expected": "exit 0"},
+    {"step": 14, "purpose": "Build review package (TC-FR-011)", "command": "python tools/supervisor/build_declaration_review_package.py --declaration .local/evidences/superpowers-ecosystem-plan-final-repair/evidence-declaration.yaml", "expected": "ZIP created"}
+  ]
+}

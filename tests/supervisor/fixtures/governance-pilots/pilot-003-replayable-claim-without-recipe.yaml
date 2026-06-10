@@ -1,0 +1,17 @@
+# Governance Pilot 003: PRODUCT_SOURCE claims REPLAYABLE but no replay_recipe_path
+# Expected result: FAIL (replay_recipe_required_validator)
+# Pilot type: negative — overclaiming repeatability
+pilot_id: "PILOT-003"
+description: "PRODUCT_SOURCE claims REPLAYABLE_NOT_YET_REPLAYED without replay_recipe_path"
+expected_validator: "replay_recipe_required_validator"
+expected_result: "FAIL"
+declaration:
+  run_id: pilot-003-replayable-no-recipe
+  planned_work_items:
+    - item_id: "PILOT-003-TC-001"
+      item_type: "PRODUCT_SOURCE"
+      format_id: "abw"
+      status: "completed"
+      execution_method: "MANUAL_GOVERNED_BY_SKILL"
+      claim_classification: "REPLAYABLE_NOT_YET_REPLAYED"
+      # No replay_recipe_path — validator should FAIL this

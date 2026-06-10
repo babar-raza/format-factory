@@ -1,0 +1,15 @@
+# Governance Pilot 001: PRODUCT_SOURCE item missing execution_method
+# Expected result: FAIL (execution_method_required_validator)
+# Pilot type: negative — missing required field
+pilot_id: "PILOT-001"
+description: "PRODUCT_SOURCE with no execution_method field"
+expected_validator: "execution_method_required_validator"
+expected_result: "FAIL"
+declaration:
+  run_id: pilot-001-exec-method-missing
+  planned_work_items:
+    - item_id: "PILOT-001-TC-001"
+      item_type: "PRODUCT_SOURCE"
+      format_id: "gnumeric"
+      status: "completed"
+      # NOTE: no execution_method field — this should trigger FAIL

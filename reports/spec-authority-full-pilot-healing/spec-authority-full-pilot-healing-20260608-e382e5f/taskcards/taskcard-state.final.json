@@ -1,0 +1,26 @@
+{
+  "sprint_id": "SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001",
+  "run_id": "spec-authority-full-pilot-healing-20260608-e382e5f",
+  "generated_at": "2026-06-08T05:00:00Z",
+  "taskcards": [
+    {"taskcard_id": "TCA-FULL-001", "title": "Import prior package findings", "state": "CLOSED_VERIFIED", "pilot_result": "N/A", "notes": "current-state-review.md written"},
+    {"taskcard_id": "TCA-FULL-002", "title": "Negative missing spec_fact_refs rejection pilot", "state": "CLOSED_VERIFIED", "pilot_result": "REJECTED_AS_EXPECTED", "notes": "compliant=false, grade_impact=reject, exit 1"},
+    {"taskcard_id": "TCA-FULL-003", "title": "Positive spec-backed declaration acceptance pilot", "state": "CLOSED_VERIFIED", "pilot_result": "ACCEPTED_AS_EXPECTED", "notes": "compliant=true, grade_impact=none, exit 0"},
+    {"taskcard_id": "TCA-FULL-004", "title": "Legacy backfill cannot claim readiness pilot", "state": "CLOSED_VERIFIED", "pilot_result": "PART_A_ACCEPTED_DEBT__PART_B_REJECTED", "notes": "PRODUCT_SOURCE+legacy_backfill → debt; READINESS+legacy_backfill → rejected"},
+    {"taskcard_id": "TCA-FULL-005", "title": "Investigation/sample exceptions cannot hide product changes", "state": "CLOSED_WITH_LIMITATIONS", "pilot_result": "ACCEPTED_NO_PRODUCT_CLAIM", "notes": "investigation_only accepted as valid exception; cannot prove product authority via exception alone; governance trust required"},
+    {"taskcard_id": "TCA-FULL-006", "title": "Invalid fact ID rejection pilot", "state": "CLOSED_WITH_LIMITATIONS", "pilot_result": "PARTIAL", "notes": "Format-only check: no-prefix rejected; FACT-DOES-NOT-EXIST passes format check (DEBT-004)"},
+    {"taskcard_id": "TCA-FULL-007", "title": "AI-only authority rejection pilot", "state": "CLOSED_VERIFIED", "pilot_result": "REJECTED_AS_EXPECTED", "notes": "No exception → rejected; ai_generated_review invalid exception → rejected"},
+    {"taskcard_id": "TCA-FULL-008", "title": "Product task selector blocked-format pilot", "state": "CLOSED_VERIFIED", "pilot_result": "REPAIRED_AND_VERIFIED", "notes": "Fixed YAML key bug; unknown formats now BLOCKED_UNKNOWN_AUTHORITY; 6 tests pass"},
+    {"taskcard_id": "TCA-FULL-009", "title": "Next-action and continuation safety pilot", "state": "CLOSED_VERIFIED", "pilot_result": "SAFE", "notes": "advisory_prompt_executable=false; continuation is advisory-only"},
+    {"taskcard_id": "TCA-FULL-010", "title": "FODS positive authority-chain pilot", "state": "CLOSED_VERIFIED", "pilot_result": "P4_CHAIN_DOCUMENTED", "notes": "FACT-FODS-001 verified; spec→fact→declaration chain proven; P4 (code/tests not yet citing fact)"},
+    {"taskcard_id": "TCA-FULL-011", "title": "Gnumeric schema-authority pilot", "state": "CLOSED_WITH_LIMITATIONS", "pilot_result": "P1_SCHEMA_ONLY", "notes": "XSD exists (metadata only); no verified facts; schema_authority_available permits readiness (DEBT-005)"},
+    {"taskcard_id": "TCA-FULL-012", "title": "ABW no-public-spec downgrade pilot", "state": "CLOSED_VERIFIED", "pilot_result": "P0_NO_SPEC_CONFIRMED", "notes": "no_public_spec_available confirmed; readiness/release blocked; all code is backfill"},
+    {"taskcard_id": "TCA-FULL-013", "title": "Synthetic fixture quarantine pilot", "state": "CLOSED_VERIFIED", "pilot_result": "REJECTED_AS_EXPECTED", "notes": "REQUIREMENT without valid refs → rejected; quarantine confirmed"},
+    {"taskcard_id": "TCA-FULL-014", "title": "Anti-skip and sample-output closure", "state": "CLOSED_VERIFIED", "pilot_result": "8_SAMPLES_CREATED", "notes": "8 sample outputs in both report and evidence_root directories"},
+    {"taskcard_id": "TCA-FULL-015", "title": "Adoption compliance and transcript/exemption closure", "state": "CLOSED_VERIFIED", "pilot_result": "PASS", "notes": "15 work items with exemption_reason; PASS"},
+    {"taskcard_id": "TCA-FULL-016", "title": "Evidence declaration and supervisor cycle full pilot", "state": "CLOSED_VERIFIED", "pilot_result": "EXIT_0_15/15_ACCEPTED", "notes": "autonomous-cycle exit 0; Autonomous Continue: True"},
+    {"taskcard_id": "TCA-FULL-017", "title": "Authority debt and bypass ledger update", "state": "CLOSED_VERIFIED", "pilot_result": "LEDGER_WRITTEN", "notes": "authority-debt-ledger.md with FODS/Gnumeric/ABW proof levels"},
+    {"taskcard_id": "TCA-FULL-018", "title": "Adversarial review", "state": "CLOSED_VERIFIED", "pilot_result": "NO_UNDISCLOSED_BYPASSES", "notes": "DEBT-004 and DEBT-005 documented; no critical undisclosed bypasses"},
+    {"taskcard_id": "TCA-FULL-019", "title": "Final evidence bundle", "state": "RUNNING", "pilot_result": "IN_PROGRESS", "notes": "Being built now"}
+  ]
+}

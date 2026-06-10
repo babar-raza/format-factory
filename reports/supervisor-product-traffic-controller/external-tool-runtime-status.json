@@ -1,0 +1,45 @@
+{
+  "detection_timestamp": "2026-06-04T13:00:00.000000Z",
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-INTEGRATION-001",
+  "claude_flow_ruflo": {
+    "detected": true,
+    "mode": "DETECTED_NOT_CONFIGURED",
+    "mcp_registered": true,
+    "mcp_server_name": "claude-flow",
+    "mcp_command": "npx -y claude-flow@3.10.14 mcp start",
+    "state_directory_present": false,
+    "hooks_detected": false,
+    "daemon_detected": false,
+    "workspace_mutations": [],
+    "auto_install_risk": true,
+    "invoked_this_sprint": false,
+    "verdict": "RUFLO_DETECTED_NOT_CONFIGURED_APPROVAL_REQUIRED_FOR_INVOCATION"
+  },
+  "task_master_ai": {
+    "detected": true,
+    "mode": "DETECTED_NOT_CONFIGURED",
+    "mcp_registered": true,
+    "mcp_server_name": "task-master-ai",
+    "mcp_command": "npx -y task-master-ai@0.43.1",
+    "auto_install_risk": true,
+    "invoked_this_sprint": false,
+    "verdict": "TASKMASTER_DETECTED_NOT_CONFIGURED_APPROVAL_REQUIRED_FOR_INVOCATION"
+  },
+  "superpowers": {
+    "detected": false,
+    "installed_plugins": [],
+    "sessionstart_injection_detected": false,
+    "invoked_this_sprint": false,
+    "verdict": "SUPERPOWERS_NOT_INSTALLED_EVALUATE_ONLY"
+  },
+  "ghidra_mcp": {
+    "detected": false,
+    "mcp_registered": false,
+    "invoked_this_sprint": false,
+    "verdict": "GHIDRA_MCP_DISABLED_DEFAULT"
+  },
+  "overall_verdict": "EXTERNAL_TOOLS_GOVERNED_LOCAL_COORDINATOR_ACTIVE",
+  "continuation_impact": "none - all external tools non-active",
+  "deterministic_supervisor_retains_authority": true,
+  "no_invocations_this_sprint": true
+}

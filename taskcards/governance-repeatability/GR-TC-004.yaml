@@ -1,0 +1,33 @@
+id: GR-TC-004
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+generated_at: "2026-06-08"
+title: "Create idempotency contract"
+status: ready_to_execute
+lane: governance_contracts
+item_type: GOVERNANCE_DOC
+problem: >
+  No idempotency key formula or no-op detection rules exist.
+  Re-running any mutation would duplicate code.
+  AGENTS.md prohibits unsafe rollback -- contract must define safe alternatives.
+scope:
+  - Create docs/governance/idempotency-contract.md
+  - Define key formula, marker format (Python and C#), sidecar format, no-op rules
+  - Define compliant rollback: before-state fingerprint + reverse patch (no git checkout --)
+out_of_scope:
+  - Implementing idempotency in product_action_guard.py
+files_to_create:
+  - docs/governance/idempotency-contract.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+acceptance_criteria:
+  - File exists with key formula, marker formats, sidecar format
+  - Rollback section cites AGENTS.md AE2 compliance
+  - No unsafe git commands in rollback section
+  - Conflict behavior defined
+verification:
+  - "check file exists: docs/governance/idempotency-contract.md"
+rollback: delete file
+dependencies:
+  - GR-TC-002
+handoff_to_autonomy_sprint: false

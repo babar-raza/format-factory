@@ -1,0 +1,56 @@
+{
+  "sprint": "FORMAT-FACTORY-SUPERVISOR-R109-STREAM-LOCAL-AUTHORITY-ROUTING-AND-GLOBAL-STATE-ISOLATION-CAMPAIGN-001",
+  "generated_at": "2026-06-03T20:35:00",
+  "replayed_packages": [
+    {
+      "stream": "supervisor",
+      "package": "supervisor-r108-strict",
+      "status": "REPLAYED_CURRENT_STREAM",
+      "stream_local_files": {
+        "evidence_review": "reports/supervisor-streams/supervisor/evidence-review.json",
+        "contradictions": "reports/supervisor-streams/supervisor/contradictions.json",
+        "continuation_signal": ".local/supervisor/streams/supervisor/continuation-signal.json",
+        "latest_review": "reports/supervisor-streams/supervisor/latest-review.md"
+      },
+      "verdict": "ACCEPTED_STREAM_LOCAL_AUTHORITY_ESTABLISHED"
+    },
+    {
+      "stream": "mainstream",
+      "package": "mainstream-r111",
+      "status": "REPLAYED_DIFFERENT_STREAM",
+      "stream_local_files": {
+        "evidence_review": "reports/supervisor-streams/mainstream/evidence-review.json",
+        "contradictions": "reports/supervisor-streams/mainstream/contradictions.json",
+        "continuation_signal": ".local/supervisor/streams/mainstream/continuation-signal.json",
+        "latest_review": "reports/supervisor-streams/mainstream/latest-review.md"
+      },
+      "verdict": "ACCEPTED_STREAM_LOCAL_AUTHORITY_ESTABLISHED"
+    },
+    {
+      "stream": "skills",
+      "package": "skills-r110",
+      "status": "REPLAYED_DIFFERENT_STREAM",
+      "stream_local_files": {
+        "evidence_review": "reports/supervisor-streams/skills/evidence-review.json",
+        "latest_review": "reports/supervisor-streams/skills/latest-review.md"
+      },
+      "verdict": "ACCEPTED_PARTIAL_STREAM_LOCAL"
+    },
+    {
+      "stream": "acceleration",
+      "package": "acceleration-r108",
+      "status": "REPLAYED_DIFFERENT_STREAM",
+      "stream_local_files": {
+        "evidence_review": "reports/supervisor-streams/acceleration/evidence-review.json",
+        "latest_review": "reports/supervisor-streams/acceleration/latest-review.md"
+      },
+      "verdict": "ACCEPTED_PARTIAL_STREAM_LOCAL"
+    }
+  ],
+  "summary": {
+    "total_replayed": 4,
+    "current_stream": 1,
+    "other_streams": 3,
+    "all_have_stream_local": true
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R107-PRODUCT-DEPTH-AND-EVIDENCE-GOVERNANCE-CAMPAIGN-001",
+  "source_files_changed": [
+    {"path": "src/net/fods/FodsDocument.cs", "apis_added": ["ExportSheetToCsv", "InsertRowWithValues"]},
+    {"path": "src/net/fodt/FodtDocument.cs", "apis_added": ["GetHeadingTexts", "ExportToPlainTextFile"]},
+    {"path": "src/net/netpbm/Model/NetpbmImage.cs", "apis_added": ["Equalize", "ConvertFormat", "IsPbm", "IsPgm", "IsPpm"]}
+  ],
+  "test_files_created": [
+    "tests/net/fods/FodsR107ExportSheetToCsvTests.cs",
+    "tests/net/fods/FodsR107InsertRowWithValuesTests.cs",
+    "tests/net/fods/FodsR107DogfoodCsvExportTests.cs",
+    "tests/net/fodt/FodtR107GetHeadingTextsTests.cs",
+    "tests/net/fodt/FodtR107ExportToPlainTextFileTests.cs",
+    "tests/net/fodt/FodtR107DogfoodPlainTextExportTests.cs",
+    "tests/net/netpbm/NetpbmR107EqualizeTests.cs",
+    "tests/net/netpbm/NetpbmR107ConvertFormatTests.cs",
+    "tests/net/netpbm/NetpbmR107DogfoodEqualizeOverlayTests.cs",
+    "tests/python/zst/test_r107_zst_dependency_isolation.py",
+    "tests/python/pbm/test_r107_pbm_binary_roundtrip.py",
+    "tests/python/ppm/test_r107_ppm_pgm_conversion.py",
+    "tests/python/sylk/test_r107_sylk_csv_export.py",
+    "tests/python/dif/test_r107_dif_roundtrip_proof.py",
+    "tests/python/sylk/test_r107_sylk_dogfood_csv_pipeline.py"
+  ],
+  "example_files_created": [
+    "examples/dotnet/fods/export_sheet_to_csv.csx",
+    "examples/dotnet/fodt/export_to_plain_text.csx",
+    "examples/dotnet/netpbm/equalize_and_convert.csx",
+    "examples/python/sylk/sylk_csv_pipeline.py"
+  ],
+  "report_files_created": [
+    "reports/mainstream-r107/00-preflight.md",
+    "reports/mainstream-r107/r106-reconciliation.md",
+    "reports/mainstream-r107/r106-claim-classification.json",
+    "reports/mainstream-r107/r106-evidence-governance-repair.md",
+    "reports/mainstream-r107/context-pack-contamination-check.md",
+    "reports/mainstream-r107/stale-gap-state-check.md",
+    "reports/mainstream-r107/selected-mainstream-gaps-r107.json",
+    "reports/mainstream-r107/deep-product-strategy.md",
+    "reports/mainstream-r107/lane-execution-ledger.json",
+    "reports/mainstream-r107/raw-test-log-index.md",
+    "reports/mainstream-r107/product-capability-delta.md",
+    "reports/mainstream-r107/source-change-ledger-delta.json",
+    "reports/mainstream-r107/quota-tracker.md",
+    "reports/mainstream-r107/final-adversarial-independent-verification.md",
+    "reports/mainstream-r107/three-sprint-forecast.md",
+    "reports/mainstream-r107/next-mainstream-agent-prompt.md"
+  ]
+}

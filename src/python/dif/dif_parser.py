@@ -381,6 +381,246 @@ def get_capabilities() -> dict[str, Any]:
 # R84 Train N: DIF CSV export
 # ---------------------------------------------------------------------------
 
+def get_cell_value(file_path: str | Path, row: int, col: int) -> Any:
+    """Return the value at (row, col) in a DIF file (0-based indices).
+
+    Returns None if the cell is empty or the coordinates are out of range.
+
+    Args:
+        file_path: Path to DIF file.
+        row:       0-based row index.
+        col:       0-based column index.
+
+    Returns:
+        Cell value (numeric, str, bool, or None for empty/missing).
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    if row < 0 or row >= len(doc.rows):
+        return None
+    r = doc.rows[row]
+    if col < 0 or col >= len(r):
+        return None
+    return r[col].value
+
+
+def set_cell_value(
+    file_path: str | Path,
+    dest_path: str | Path,
+    row: int,
+    col: int,
+    value: Any,
+    value_type: str = "string",
+) -> dict[str, Any]:
+    """Set a cell value in a DIF file and write the result.
+
+    Parses the source file, modifies the cell at (row, col) (0-based),
+    and writes the updated document to dest_path.
+
+    Args:
+        file_path:  Source DIF file path.
+        dest_path:  Destination file path for the modified document.
+        row:        0-based row index.
+        col:        0-based column index.
+        value:      New cell value.
+        value_type: One of "numeric", "string", "boolean", "special".
+
+    Returns:
+        Dict with ok, row, col, old_value, new_value keys.
+
+    Raises:
+        DifError on parse failure or invalid coordinates.
+    """
+    doc = parse_dif_strict(file_path)
+    if row < 0 or row >= len(doc.rows):
+        raise DifError(f"Row {row} out of range (0..{len(doc.rows) - 1})")
+    r = doc.rows[row]
+    if col < 0 or col >= len(r):
+        raise DifError(f"Col {col} out of range (0..{len(r) - 1})")
+    old_value = r[col].value
+    r[col] = DifCell(value=value, value_type=value_type)
+    write_dif(doc, dest_path)
+    return {
+        "ok": True,
+        "row": row,
+        "col": col,
+        "old_value": old_value,
+        "new_value": value,
+    }
+
+
+def get_row_values(file_path: str | Path, row: int) -> list[Any]:
+    """Return all cell values for a given row (0-based) as a list.
+
+    Args:
+        file_path: Path to DIF file.
+        row:       0-based row index.
+
+    Returns:
+        List of cell values. Returns empty list if row is out of range.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    if row < 0 or row >= len(doc.rows):
+        return []
+    return [cell.value for cell in doc.rows[row]]
+
+
+def get_title(file_path: str | Path) -> str:
+    """Return the TABLE title from a DIF file.
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Title string (may be empty if no title set).
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    return doc.title
+
+
+def get_row_count(file_path: str | Path) -> int:
+    """Return the number of data rows in a DIF file.
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Integer row count.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    return len(doc.rows)
+
+
+def get_column_count(file_path: str | Path) -> int:
+    """Return the number of columns (vectors) declared in a DIF file.
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Integer column count from the VECTORS header.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    return doc.vectors
+
+
+def get_column_values(file_path: str | Path, col: int) -> list[Any]:
+    """Return all cell values for a given column (0-based) as a list.
+
+    Args:
+        file_path: Path to DIF file.
+        col:       0-based column index.
+
+    Returns:
+        List of cell values from each row at the given column.
+        Returns empty list if column is out of range for all rows.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    result: list[Any] = []
+    for row in doc.rows:
+        if col < 0 or col >= len(row):
+            result.append(None)
+        else:
+            result.append(row[col].value)
+    return result
+
+
+def count_nonempty_cells(file_path: str | Path) -> int:
+    """Count non-empty cells in a DIF file.
+
+    A cell is non-empty if its value is not None and not an empty string.
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Count of non-empty cells.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    count = 0
+    for row in doc.rows:
+        for cell in row:
+            if cell.value is not None and cell.value != "":
+                count += 1
+    return count
+
+
+def total_cell_count(file_path: str | Path) -> int:
+    """Return the total number of cells in a DIF file (all rows, all columns).
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Total cell count across all rows.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    return sum(len(row) for row in doc.rows)
+
+
+def get_all_values(file_path: str | Path) -> list[Any]:
+    """Return a flat list of all cell values in a DIF file, row by row."""
+    doc = parse_dif_strict(file_path)
+    result: list[Any] = []
+    for row in doc.rows:
+        for cell in row:
+            result.append(cell.value)
+    return result
+
+
+def min_column_value(file_path: str | Path, col: int) -> Any:
+    """Return the minimum numeric value in a column (0-based).
+
+    Non-numeric values are ignored. Returns None if no numeric values found.
+    """
+    doc = parse_dif_strict(file_path)
+    values = []
+    for row in doc.rows:
+        if 0 <= col < len(row):
+            v = row[col].value
+            if isinstance(v, (int, float)):
+                values.append(v)
+    return min(values) if values else None
+
+
+def max_column_value(file_path: str | Path, col: int) -> Any:
+    """Return the maximum numeric value in a column (0-based).
+
+    Non-numeric values are ignored. Returns None if no numeric values found.
+    """
+    doc = parse_dif_strict(file_path)
+    values = []
+    for row in doc.rows:
+        if 0 <= col < len(row):
+            v = row[col].value
+            if isinstance(v, (int, float)):
+                values.append(v)
+    return max(values) if values else None
+
+
 def dif_to_csv(file_path: str | Path) -> str:
     """Export a DIF file as CSV text (RFC 4180 CRLF line endings).
 
@@ -417,3 +657,44 @@ def dif_to_csv(file_path: str | Path) -> str:
                 csv_row.append(str(cell.value))
         writer.writerow(csv_row)
     return buf.getvalue()
+
+
+def add_row(doc: DifDocument, values: list[Any]) -> dict[str, Any]:
+    """Append a row of values to a DifDocument (in-memory).
+
+    Args:
+        doc: DifDocument to modify.
+        values: List of cell values for the new row.
+
+    Returns:
+        Result dict with success, row_index, cell_count.
+    """
+    cells = []
+    for val in values:
+        if isinstance(val, (int, float)):
+            cells.append(DifCell(value=val, value_type="numeric"))
+        else:
+            cells.append(DifCell(value=val, value_type="string"))
+    doc.rows.append(cells)
+    doc.tuples = len(doc.rows)
+    if len(values) > doc.vectors:
+        doc.vectors = len(values)
+    return {"success": True, "row_index": len(doc.rows), "cell_count": len(values)}
+
+
+def delete_row(doc: DifDocument, row: int) -> dict[str, Any]:
+    """Delete a row (1-based) from a DifDocument (in-memory).
+
+    Args:
+        doc: DifDocument to modify.
+        row: 1-based row index to delete.
+
+    Returns:
+        Result dict with success, deleted_count.
+    """
+    idx = row - 1
+    if idx < 0 or idx >= len(doc.rows):
+        return {"success": False, "deleted_count": 0, "error": f"Row {row} out of range"}
+    deleted = doc.rows.pop(idx)
+    doc.tuples = len(doc.rows)
+    return {"success": True, "deleted_count": len(deleted)}

@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-06-05",
+  "cli_validator": "tools/requirements_authority/validate_requirements_authority.py",
+  "pilot_driver": "reports/requirement-capability-real-pilot-r1/_rca_pilot_driver.py",
+  "modules": {
+    "models": "tools/requirements_authority/models.py",
+    "graph_store": "tools/requirements_authority/graph_store.py",
+    "validators": "tools/requirements_authority/validators.py",
+    "coverage_evaluator": "tools/requirements_authority/coverage_evaluator.py",
+    "overclaim_detector": "tools/requirements_authority/overclaim_detector.py",
+    "staleness_invalidator": "tools/requirements_authority/staleness_invalidator.py",
+    "poc_readiness": "tools/requirements_authority/poc_readiness.py",
+    "mainstream_gap_queue": "tools/requirements_authority/mainstream_gap_queue.py",
+    "supervisor_verdict_packet": "tools/requirements_authority/supervisor_verdict_packet.py",
+    "poc_targets_sync_proposal": "tools/requirements_authority/poc_targets_sync_proposal.py",
+    "run_replay_fixtures": "tools/requirements_authority/run_replay_fixtures.py",
+    "import_existing_state": "tools/requirements_authority/import_existing_state.py",
+    "capability_delta": "tools/requirements_authority/capability_delta.py"
+  },
+  "test_files": [
+    "tests/supervisor/test_r100_graph_store.py",
+    "tests/supervisor/test_r100_validators.py",
+    "tests/supervisor/test_r100_coverage_evaluator.py",
+    "tests/supervisor/test_r100_overclaim_and_staleness.py"
+  ]
+}

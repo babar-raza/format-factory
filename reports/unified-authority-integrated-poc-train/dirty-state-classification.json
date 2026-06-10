@@ -1,0 +1,51 @@
+{
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "overall_unsafe_dirty_state": false,
+  "classifications": {
+    "PRE_EXISTING_PRODUCT_WIP": [
+      "src/net/fods/FodsDocument.cs",
+      "src/net/fodt/FodtDocument.cs",
+      "src/net/netpbm/Model/NetpbmImage.cs",
+      "src/python/sylk/sylk_parser.py"
+    ],
+    "PRE_EXISTING_SUPERVISOR_WIP": [
+      "tools/supervisor/*.py",
+      "reports/supervisor/*",
+      ".supervisor/*",
+      ".claude/commands/*",
+      ".claude/settings.json",
+      ".gitignore",
+      "plans/master-plan.md",
+      "state/current-state.md",
+      "product-capability-matrix/poc-targets.yaml"
+    ],
+    "PRE_EXISTING_AUTHORITY_WIP": [
+      "tools/requirements_authority/**",
+      "requirements-authority/**"
+    ],
+    "OTHER_RUNNING_SPRINT_DIRTY_STATE": [
+      "tests/net/fods/FodsR*.cs",
+      "tests/net/fodt/FodtR*.cs",
+      "tests/net/netpbm/NetpbmR*.cs",
+      "tests/python/**",
+      "examples/net/**",
+      "examples/python/**"
+    ],
+    "ALLOWED_THIS_SPRINT_DIRTY_STATE": [
+      "reports/unified-authority-integrated-poc-train/**",
+      "tools/specification-authority-layer/**",
+      "tests/specification-authority-layer/**",
+      ".local/evidences/unified-authority-integrated-poc-train/**"
+    ],
+    "UNSAFE_DIRTY_STATE_REQUIRES_STOP": []
+  },
+  "pre_existing_source_changes": {
+    "fods_cs": "PRE_EXISTING_PRODUCT_WIP",
+    "fodt_cs": "PRE_EXISTING_PRODUCT_WIP",
+    "netpbm_cs": "PRE_EXISTING_PRODUCT_WIP",
+    "sylk_py": "PRE_EXISTING_PRODUCT_WIP",
+    "carry_forward": true,
+    "note": "These files were modified by prior sprints R94-R113. This sprint may extend them further."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "sprint_id": "mainstream-r106",
+  "source_changes": [
+    {
+      "file": "src/net/fods/FodsDocument.cs",
+      "apis_added": ["ClearSheet", "GetColumnValues"],
+      "sha256": "efdce289780691819aaf2e9e22d3c2aca2c1982f300fcd746cd59d4d05c890bd",
+      "skill": "/add-dotnet-api",
+      "diff": "reports/mainstream-r106/source-diffs/fods-document-r106.diff"
+    },
+    {
+      "file": "src/net/fodt/FodtDocument.cs",
+      "apis_added": ["RemoveAllParagraphs", "GetTextBetweenParagraphs"],
+      "sha256": "985aef9f96f48738cf095fe9ab64f5e96a3dde3c025cba60ecf24945f348aa26",
+      "skill": "/add-dotnet-api",
+      "diff": "reports/mainstream-r106/source-diffs/fodt-document-r106.diff"
+    },
+    {
+      "file": "src/net/netpbm/Model/NetpbmImage.cs",
+      "apis_added": ["FlipDiagonal", "Overlay"],
+      "sha256": "4d36d30dcd40d65ad7f7a5cde92b91feabf9d03cef0aec13e673d7e6c0e930f7",
+      "skill": "/add-dotnet-api",
+      "diff": "reports/mainstream-r106/source-diffs/netpbm-image-r106.diff"
+    }
+  ],
+  "test_files_added": [
+    "tests/net/fods/FodsR106ClearSheetTests.cs",
+    "tests/net/fods/FodsR106GetColumnValuesTests.cs",
+    "tests/net/fods/FodsR106DogfoodSaveRoundtripTests.cs",
+    "tests/net/fodt/FodtR106RemoveAllParagraphsTests.cs",
+    "tests/net/fodt/FodtR106GetTextBetweenTests.cs",
+    "tests/net/fodt/FodtR106DogfoodSaveRoundtripTests.cs",
+    "tests/net/netpbm/NetpbmR106FlipDiagonalTests.cs",
+    "tests/net/netpbm/NetpbmR106OverlayTests.cs",
+    "tests/net/netpbm/NetpbmR106DogfoodCropOverlayTests.cs",
+    "tests/python/zst/test_r106_zst_streaming_proof.py",
+    "tests/python/pbm/test_r106_pbm_write_roundtrip.py",
+    "tests/python/pgm/test_r106_pgm_strict_errors.py",
+    "tests/python/ppm/test_r106_ppm_write_maxval.py",
+    "tests/python/sylk/test_r106_sylk_write_roundtrip.py"
+  ],
+  "examples_added": [
+    "examples/net/fods/ClearSheetExample.cs",
+    "examples/net/fodt/TextRangeExample.cs",
+    "examples/net/netpbm/FlipOverlayExample.cs"
+  ]
+}

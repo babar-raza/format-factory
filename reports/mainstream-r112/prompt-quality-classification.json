@@ -1,0 +1,78 @@
+{
+  "sprint": "mainstream-r112",
+  "analysis_date": "2026-06-03",
+  "source_prompt": ".local/supervisor/reviews/mainstream-r111/combined-next-worker-prompt.md",
+  "source_check": ".local/supervisor/reviews/mainstream-r111/prompt-quality-result.json",
+  "failed_check": "no_wrong_stream",
+  "verdict": "FALSE_POSITIVE",
+  "references": [
+    {
+      "line": 48,
+      "path": "tools/supervisor/supervisor_loop.py",
+      "context": "python tools/supervisor/supervisor_loop.py autonomous-cycle",
+      "classification": "ALLOWED_GOVERNANCE_COMMAND",
+      "rationale": "Mandatory evidence submission per CLAUDE.md"
+    },
+    {
+      "line": 63,
+      "path": "tools/supervisor/validate_product_code_ledger.py",
+      "context": "python tools/supervisor/validate_product_code_ledger.py --ledger ...",
+      "classification": "ALLOWED_GOVERNANCE_COMMAND",
+      "rationale": "Mandatory product-code ledger validation"
+    },
+    {
+      "line": 91,
+      "path": ".local/supervisor/selected-product-gaps.json",
+      "context": "Load before choosing product work",
+      "classification": "ALLOWED_GOVERNANCE_DATA",
+      "rationale": "Gap selection data consumed by Mainstream, not modified"
+    },
+    {
+      "line": 314,
+      "path": "tools/supervisor/autonomous_cycle.py",
+      "context": "py_compile tools/supervisor/autonomous_cycle.py",
+      "classification": "UNNECESSARY_REFERENCE",
+      "rationale": "Compile check of supervisor tools not needed in Mainstream prompt"
+    },
+    {
+      "line": 315,
+      "path": "tools/supervisor/supervisor_loop.py",
+      "context": "py_compile tools/supervisor/supervisor_loop.py",
+      "classification": "UNNECESSARY_REFERENCE",
+      "rationale": "Compile check of supervisor tools not needed in Mainstream prompt"
+    },
+    {
+      "line": 316,
+      "path": "tools/supervisor/generate_supervisor_packet.py",
+      "context": "py_compile tools/supervisor/generate_supervisor_packet.py",
+      "classification": "UNNECESSARY_REFERENCE",
+      "rationale": "Compile check of supervisor tools not needed in Mainstream prompt"
+    },
+    {
+      "line": 325,
+      "path": "tools/supervisor/supervisor_loop.py",
+      "context": "python tools/supervisor/supervisor_loop.py autonomous-cycle",
+      "classification": "ALLOWED_GOVERNANCE_COMMAND",
+      "rationale": "Mandatory evidence submission (duplicate of line 48)"
+    }
+  ],
+  "summary": {
+    "allowed_governance_command": 4,
+    "allowed_governance_data": 1,
+    "unnecessary_reference": 3,
+    "wrong_stream_implementation": 0
+  },
+  "corrected_rule": {
+    "allowlist": [
+      "tools/supervisor/supervisor_loop.py autonomous-cycle",
+      "tools/supervisor/validate_product_code_ledger.py",
+      ".local/supervisor/selected-product-gaps.json",
+      "tools/supervisor/build_declaration_review_package.py"
+    ],
+    "forbidden_patterns": [
+      "tools/supervisor/*.py as implementation target",
+      "tools/supervisor/ in Train/Lane title as deliverable",
+      "supervisor tool internal references (classes, functions, bugs)"
+    ]
+  }
+}

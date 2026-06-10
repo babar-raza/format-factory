@@ -1,0 +1,45 @@
+{
+  "sample_output_type": "GetWordFrequency_dogfood",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "api": "FodtDocument.GetWordFrequency(int minLength = 1)",
+  "test_class": "FodtR116WordFrequencyTests",
+  "scenarios": [
+    {
+      "scenario": "Count words in 'Hello world hello'",
+      "paragraphs": ["Hello world hello"],
+      "result": {"hello": 2, "world": 1},
+      "test": "GetWordFrequency_CountsWords"
+    },
+    {
+      "scenario": "Case insensitive — 'Hello HELLO hello'",
+      "paragraphs": ["Hello HELLO hello"],
+      "result": {"hello": 3},
+      "test": "GetWordFrequency_CaseInsensitive"
+    },
+    {
+      "scenario": "MinLength=4 filters out short words",
+      "paragraphs": ["the cat sat on the mat"],
+      "min_length": 4,
+      "result": {},
+      "test": "GetWordFrequency_MinLengthFilter"
+    },
+    {
+      "scenario": "Punctuation stripped — 'Hello, world! Hello.'",
+      "paragraphs": ["Hello, world! Hello."],
+      "result": {"hello": 2, "world": 1},
+      "test": "GetWordFrequency_PunctuationStripped"
+    },
+    {
+      "scenario": "Multiple paragraphs aggregated",
+      "paragraphs": ["Hello world", "Hello again"],
+      "result": {"hello": 2, "world": 1, "again": 1},
+      "test": "GetWordFrequency_MultipleParagraphs_Aggregated"
+    },
+    {
+      "scenario": "Dogfood pipeline: load doc, get freq, verify top word",
+      "top_word": "hello",
+      "test": "GetWordFrequency_DogfoodPipeline"
+    }
+  ],
+  "test_verdict": "8/8 PASSED"
+}

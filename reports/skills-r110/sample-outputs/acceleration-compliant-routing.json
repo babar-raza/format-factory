@@ -1,0 +1,28 @@
+{
+  "sample_type": "acceleration-compliant-routing",
+  "description": "A compliant Acceleration POC gap routed through skill registry",
+  "work_item": {
+    "item_id": "W1-POC-FODS-EXPORT",
+    "title": "FODS export POC gap",
+    "skill_id": "add-dotnet-api",
+    "evidence_paths": [
+      "reports/r98/poc-fods-export.md",
+      "reports/r98/skill-transcripts/transcript-poc-fods.json"
+    ],
+    "status": "completed"
+  },
+  "adoption_result": {
+    "compliant": true,
+    "checks": {
+      "has_skill_id": true,
+      "has_transcript": true,
+      "has_ledger_entry": "n/a"
+    }
+  },
+  "routing": {
+    "gap_source": "poc-targets.yaml#fods-export",
+    "skill_id": "add-dotnet-api",
+    "handoff_yaml": "reports/skills-r109/generated-handoffs/handoff-mainstream-fods-rename-sheet.yaml",
+    "transcript_expected": true
+  }
+}

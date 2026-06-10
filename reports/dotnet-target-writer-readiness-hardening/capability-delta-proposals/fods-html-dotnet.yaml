@@ -1,0 +1,56 @@
+---
+# Capability Delta Proposal — FODS .NET → HTML Export
+# Sprint: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
+# Hardening: FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001
+# Generated: 2026-06-05
+
+gap_id: commercial-net-fods-dogfood-status-fods-to-html-dotnet
+product: FormatFactory.Fods (.NET)
+target_format: HTML
+prior_status: GAP_DOGFOOD_EXTERNAL
+proposed_status: IMPLEMENTED
+
+export_target_support_policy:
+  condition_1_standalone_writer_library: true
+  condition_1_evidence: src/net/html/HtmlWriter.cs + src/net/html/FormatFactory.Html.csproj
+  condition_2_writer_registered: true
+  condition_2_evidence: FormatFactory.Html — standalone library, registerable
+  condition_3_exporter_delegates_to_writer: true
+  condition_3_evidence: src/net/fods/FodsHtmlExporter.cs — calls HtmlWriter.WriteTable()
+  condition_4_tests_prove_invocation: true
+  condition_4_evidence: tests/net/fods/FodsR94ExportSheetToHtmlTests.cs (547/547 FODS tests PASS)
+  condition_5_dogfood_output_artifacts: true
+  condition_5_evidence: reports/dotnet-target-writer-mwp-dogfood-unblocking/sample-outputs/sample-fods-to-html.html
+  all_five_met: true
+
+writer_library_proof:
+  library_name: FormatFactory.Html
+  source_file: src/net/html/HtmlWriter.cs
+  project_file: src/net/html/FormatFactory.Html.csproj
+  test_project_file: tests/net/html/FormatFactory.Html.Tests.csproj
+  tests_run: 12
+  tests_passed: 12
+  raw_log_path: reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/writer-tests.log
+
+exporter_refactor_proof:
+  exporter_file: src/net/fods/FodsHtmlExporter.cs
+  project_file: src/net/fods/FormatFactory.Fods.csproj
+  delegation_method: HtmlWriter.WriteTable()
+  inline_serialization_removed: true
+  fods_total_tests: 547
+  fods_regressions: 0
+
+dogfood_output_proof:
+  sample_output_path: reports/dotnet-target-writer-mwp-dogfood-unblocking/sample-outputs/sample-fods-to-html.html
+  sample_output_type: HTML
+  sample_valid: true
+
+skill_transcript_path: reports/dotnet-target-writer-readiness-hardening/skill-transcripts/fods-html-dogfood-refactor.json
+ledger_entry_id: MWP-FODS-HTML-DOGFOOD-REFACTOR
+proof_graph_node_id: fods-html-exporter
+
+caveats:
+  - This delta requires human review before poc-targets.yaml mutation
+  - No direct poc-targets.yaml change — this is a proposal only
+  - Gate 11 approval required for commercial_product_ready=true
+  - FormatFactory.Html is separate from FormatFactory.Csv — CSV writer does NOT unblock this gap

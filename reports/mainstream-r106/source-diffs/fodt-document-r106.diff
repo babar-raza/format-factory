@@ -1,0 +1,313 @@
+diff --git a/src/net/fodt/FodtDocument.cs b/src/net/fodt/FodtDocument.cs
+index 791af68..2ea5232 100644
+--- a/src/net/fodt/FodtDocument.cs
++++ b/src/net/fodt/FodtDocument.cs
+@@ -167,6 +167,32 @@ public sealed class FodtDocument
+         return sb.ToString();
+     }
+ 
++    /// <summary>
++    /// Return the plain text content of paragraphs in the range [startIndex, endIndex).
++    /// Paragraphs are joined by newlines. Both indices are zero-based.
++    /// Throws <see cref="ArgumentOutOfRangeException"/> if indices are invalid.
++    /// R103 Train B: section extraction for document splitting.
++    /// </summary>
++    public string GetPlainTextRange(int startIndex, int endIndex)
++    {
++        var paras = Paragraphs;
++        if (startIndex < 0)
++            throw new ArgumentOutOfRangeException(nameof(startIndex), "Start index must be non-negative.");
++        if (endIndex > paras.Count)
++            throw new ArgumentOutOfRangeException(nameof(endIndex),
++                $"End index {endIndex} exceeds paragraph count {paras.Count}.");
++        if (startIndex >= endIndex)
++            return string.Empty;
++
++        var sb = new System.Text.StringBuilder();
++        for (int i = startIndex; i < endIndex; i++)
++        {
++            if (i > startIndex) sb.Append('\n');
++            sb.Append(paras[i].Text ?? string.Empty);
++        }
++        return sb.ToString();
++    }
++
+     /// <summary>
+     /// Count words in the document (whitespace-delimited tokens across all paragraphs).
+     /// R88 Train I: text analysis API.
+@@ -322,6 +348,275 @@ public sealed class FodtDocument
+         return result.AsReadOnly();
+     }
+ 
++    /// <summary>
++    /// Return the total word count of the document.
++    /// Words are sequences of non-whitespace characters separated by whitespace.
++    /// Empty paragraphs contribute zero words. Headings are included.
++    /// R94 Train N: text analysis for document inspection.
++    /// </summary>
++    public int GetWordCount()
++    {
++        int count = 0;
++        foreach (var para in Paragraphs)
++        {
++            var text = para.Text;
++            if (string.IsNullOrWhiteSpace(text)) continue;
++            var words = text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
++            count += words.Length;
++        }
++        return count;
++    }
++
++    /// <summary>
++    /// Return the total character count of the document (all paragraphs including headings).
++    /// Only counts non-whitespace and visible characters; whitespace is included.
++    /// Empty paragraphs contribute zero characters.
++    /// R95 Train M: text analysis complement to GetWordCount.
++    /// </summary>
++    public int GetCharCount()
++    {
++        int count = 0;
++        foreach (var para in Paragraphs)
++        {
++            var text = para.Text;
++            if (text != null)
++                count += text.Length;
++        }
++        return count;
++    }
++
++    /// <summary>
++    /// Return the total number of headings (text:h elements) in the document.
++    /// Complements GetHeadingParagraphs() for quick count without materializing the list.
++    /// R96 Train M: document structure inspection.
++    /// </summary>
++    public int GetHeadingCount()
++    {
++        int count = 0;
++        foreach (var para in Paragraphs)
++        {
++            if (para.IsHeading)
++                count++;
++        }
++        return count;
++    }
++
++    /// <summary>
++    /// Return the total number of paragraphs (including headings) in the document.
++    /// Convenience alias for Paragraphs.Count without materializing the full list reference.
++    /// R97 Train M: document structure metric.
++    /// </summary>
++    public int GetParagraphCount() => Paragraphs.Count;
++
++    /// <summary>
++    /// Append a new paragraph with the given text to the end of the document body.
++    /// The paragraph is created as a text:p element under office:body/office:text.
++    /// Returns the created paragraph. Throws if the document has no body.
++    /// R100 Train C: paragraph mutation API.
++    /// </summary>
++    public FodtParagraph AppendParagraph(string text)
++    {
++        var body = _doc.Root?.Element(NsOffice + "body");
++        var textElement = body?.Element(NsOffice + "text");
++        if (textElement is null)
++            throw new InvalidOperationException("Document has no text body.");
++
++        var para = new XElement(NsText + "p", text ?? string.Empty);
++        textElement.Add(para);
++        return new FodtParagraph(para);
++    }
++
++    /// <summary>
++    /// Insert a new paragraph with the given text at the specified zero-based index.
++    /// Shifts existing paragraphs at and after the index down by one.
++    /// Throws <see cref="ArgumentOutOfRangeException"/> if the index is invalid.
++    /// Index == ParagraphCount is allowed (same as AppendParagraph).
++    /// R102 Train B: paragraph insertion for document editing.
++    /// </summary>
++    public FodtParagraph InsertParagraph(int index, string text)
++    {
++        var paras = Paragraphs;
++        if (index < 0 || index > paras.Count)
++            throw new ArgumentOutOfRangeException(nameof(index),
++                $"Paragraph index {index} is out of range (document has {paras.Count} paragraphs, insert range 0..{paras.Count}).");
++
++        if (index == paras.Count)
++            return AppendParagraph(text);
++
++        var newPara = new XElement(NsText + "p", text ?? string.Empty);
++        paras[index].Element.AddBeforeSelf(newPara);
++        return new FodtParagraph(newPara);
++    }
++
++    /// <summary>
++    /// Remove the paragraph at the given zero-based index from the document body.
++    /// Throws <see cref="ArgumentOutOfRangeException"/> if the index is invalid.
++    /// R101 Train B: paragraph removal for document editing roundtrip.
++    /// </summary>
++    public void RemoveParagraph(int index)
++    {
++        var paras = Paragraphs;
++        if (index < 0 || index >= paras.Count)
++            throw new ArgumentOutOfRangeException(nameof(index),
++                $"Paragraph index {index} is out of range (document has {paras.Count} paragraphs).");
++        paras[index].Element.Remove();
++    }
++
++    /// <summary>
++    /// Set the text content of the paragraph at the given index.
++    /// Replaces all existing text nodes in the paragraph element.
++    /// Throws <see cref="ArgumentOutOfRangeException"/> if the index is invalid.
++    /// R104 Wave 1: in-place paragraph text editing (preserves element identity).
++    /// </summary>
++    public void SetParagraphText(int index, string text)
++    {
++        var paras = Paragraphs;
++        if (index < 0 || index >= paras.Count)
++            throw new ArgumentOutOfRangeException(nameof(index),
++                $"Paragraph index {index} is out of range (document has {paras.Count} paragraphs).");
++
++        var element = paras[index].Element;
++        // Remove all existing text content but preserve non-text children if any
++        foreach (var textNode in element.DescendantNodes().OfType<XText>().ToList())
++            textNode.Remove();
++        // If element has no children, just set value directly
++        if (!element.HasElements)
++            element.Value = text ?? string.Empty;
++        else
++            element.Add(new XText(text ?? string.Empty));
++    }
++
++    /// <summary>
++    /// Return combined document statistics as a tuple.
++    /// (WordCount, CharCount, ParagraphCount, HeadingCount)
++    /// R104 Wave 1: bulk statistics for document analysis.
++    /// </summary>
++    public (int WordCount, int CharCount, int ParagraphCount, int HeadingCount) GetDocumentStats()
++    {
++        int words = 0, chars = 0, headings = 0;
++        var paras = Paragraphs;
++        foreach (var para in paras)
++        {
++            var text = para.Text;
++            if (!string.IsNullOrEmpty(text))
++            {
++                chars += text.Length;
++                if (!string.IsNullOrWhiteSpace(text))
++                    words += text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
++            }
++            if (para.IsHeading) headings++;
++        }
++        return (words, chars, paras.Count, headings);
++    }
++
++    /// <summary>
++    /// Export the entire document as a Markdown string.
++    /// Headings become # lines (level derived from text:outline-level attribute, default 1).
++    /// Paragraphs become plain text lines separated by blank lines.
++    /// R101 Train B: Markdown export for documentation pipeline.
++    /// </summary>
++    public string ExportToMarkdown()
++    {
++        var sb = new System.Text.StringBuilder();
++        bool first = true;
++        foreach (var para in Paragraphs)
++        {
++            if (!first) sb.AppendLine();
++            first = false;
++
++            if (para.IsHeading)
++            {
++                int level = para.OutlineLevel;
++                if (level < 1) level = 1;
++                if (level > 6) level = 6;
++                sb.Append(new string('#', level));
++                sb.Append(' ');
++                sb.AppendLine(para.Text ?? string.Empty);
++            }
++            else
++            {
++                sb.AppendLine(para.Text ?? string.Empty);
++            }
++        }
++        return sb.ToString();
++    }
++
++    /// <summary>
++    /// Export the document body to an HTML string.
++    /// Headings become h1..h6 elements, paragraphs become p elements.
++    /// R105 Wave 2: HTML export for web pipeline and dogfood.
++    /// </summary>
++    public string ExportToHtml()
++    {
++        var sb = new System.Text.StringBuilder();
++        sb.AppendLine("<!DOCTYPE html>");
++        sb.AppendLine("<html><body>");
++        foreach (var para in Paragraphs)
++        {
++            var text = System.Net.WebUtility.HtmlEncode(para.Text ?? string.Empty);
++            if (para.IsHeading)
++            {
++                int level = para.OutlineLevel;
++                if (level < 1) level = 1;
++                if (level > 6) level = 6;
++                sb.AppendLine($"<h{level}>{text}</h{level}>");
++            }
++            else
++            {
++                sb.AppendLine($"<p>{text}</p>");
++            }
++        }
++        sb.AppendLine("</body></html>");
++        return sb.ToString();
++    }
++
++    /// <summary>
++    /// Get the text content of a single paragraph by zero-based index.
++    /// Returns null if the index is out of range.
++    /// R105 Wave 2: single paragraph text access for efficient lookups.
++    /// </summary>
++    public string? GetParagraphText(int index)
++    {
++        var paras = Paragraphs;
++        if (index < 0 || index >= paras.Count) return null;
++        return paras[index].Text;
++    }
++
++    /// <summary>
++    /// Remove all paragraphs and headings from the document body.
++    /// After this call ParagraphCount will be 0.
++    /// R106 Wave 2: document clearing for editing workflows.
++    /// </summary>
++    public void RemoveAllParagraphs()
++    {
++        var paras = Paragraphs;
++        var toRemove = new List<XElement>(paras.Count);
++        foreach (var p in paras)
++            toRemove.Add(p.Element);
++        foreach (var el in toRemove)
++            el.Remove();
++    }
++
++    /// <summary>
++    /// Extract the concatenated text of paragraphs from startIndex (inclusive) to endIndex (exclusive).
++    /// Returns paragraphs separated by newlines.
++    /// Returns null if either index is out of range or start >= end.
++    /// R106 Wave 2: text range extraction for document analysis.
++    /// </summary>
++    public string? GetTextBetweenParagraphs(int startIndex, int endIndex)
++    {
++        var paras = Paragraphs;
++        if (startIndex < 0 || endIndex > paras.Count || startIndex >= endIndex)
++            return null;
++        var sb = new System.Text.StringBuilder();
++        for (int i = startIndex; i < endIndex; i++)
++        {
++            if (i > startIndex) sb.Append('\n');
++            sb.Append(paras[i].Text ?? string.Empty);
++        }
++        return sb.ToString();
++    }
++
+     /// <summary>ODF MIME type from office:document/@office:mimetype, or null if absent.</summary>
+     public string? MimeType =>
+         _doc.Root?.Attribute(NsOffice + "mimetype")?.Value;

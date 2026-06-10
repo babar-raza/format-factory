@@ -1,0 +1,41 @@
+{
+  "sample_type": "product-proof-matrix",
+  "sprint": "mainstream-r112",
+  "generated_at": "2026-06-03",
+  "description": "Shows current product proof status across all commercial .NET targets",
+  "matrix": {
+    "FODS": {
+      "total_apis": 30,
+      "tested_apis": 30,
+      "dotnet_tests": 463,
+      "latest_apis_added": ["MergeCells", "SetCellFormula", "GetCellFormula"],
+      "latest_sprint": "mainstream-r111",
+      "gate_11_status": "NOT_STARTED",
+      "commercial_product_ready": false
+    },
+    "FODT": {
+      "total_apis": 28,
+      "tested_apis": 28,
+      "dotnet_tests": 451,
+      "latest_apis_added": ["RemoveHeading", "GetDocumentOutline"],
+      "latest_sprint": "mainstream-r111",
+      "gate_11_status": "NOT_STARTED",
+      "commercial_product_ready": false
+    },
+    "Netpbm": {
+      "total_apis": 32,
+      "tested_apis": 32,
+      "dotnet_tests": 379,
+      "latest_apis_added": ["Sharpen", "BlurBox"],
+      "latest_sprint": "mainstream-r111",
+      "gate_11_status": "NOT_STARTED",
+      "commercial_product_ready": false
+    }
+  },
+  "foss": {
+    "ZST": {"python_tests": "PASS", "installed_workflow": "PASS"},
+    "Netpbm_Python": {"python_tests": "PASS", "dogfood_exports": 4},
+    "SYLK": {"python_tests": "PASS", "write_sylk": "PASS"}
+  },
+  "total_tests": 4540
+}

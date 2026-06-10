@@ -1,0 +1,182 @@
+{
+  "sprint": "FORMAT-FACTORY-SPEC-AUTHORITY-FULL-HARDENING-BACKFILL-AND-PILOT-MEGA-TRAIN-001",
+  "run_id": "spec-authority-full-hardening-backfill-20260608-e382e5f",
+  "generated_at": "2026-06-08T17:50:00Z",
+  "changelog_from_v3": "FODT: P0 -> P2 (ODF 1.3 spec-cache entry created via reuse of fods spec). All other formats unchanged.",
+  "summary": {
+    "total_formats": 16,
+    "p6_count": 2,
+    "p5_count": 0,
+    "p4_count": 0,
+    "p3_count": 4,
+    "p2_count": 1,
+    "p1_count": 7,
+    "p0_count": 2,
+    "readiness_ready": [
+      "fods",
+      "zst"
+    ],
+    "product_expansion_ready": [
+      "fods",
+      "zst"
+    ]
+  },
+  "formats": [
+    {
+      "format_id": "fods",
+      "authority_level": "P6",
+      "authority_level_int": 6,
+      "readiness_allowed": true,
+      "product_expansion_allowed": true,
+      "blockers": []
+    },
+    {
+      "format_id": "zst",
+      "authority_level": "P6",
+      "authority_level_int": 6,
+      "readiness_allowed": true,
+      "product_expansion_allowed": true,
+      "blockers": []
+    },
+    {
+      "format_id": "csv",
+      "authority_level": "P3",
+      "authority_level_int": 3,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "unverified_facts: 2 candidate facts \u2014 run verification"
+      ]
+    },
+    {
+      "format_id": "pbm",
+      "authority_level": "P3",
+      "authority_level_int": 3,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "unverified_facts: 2 candidate facts \u2014 run verification"
+      ]
+    },
+    {
+      "format_id": "pgm",
+      "authority_level": "P3",
+      "authority_level_int": 3,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "unverified_facts: 2 candidate facts \u2014 run verification"
+      ]
+    },
+    {
+      "format_id": "ppm",
+      "authority_level": "P3",
+      "authority_level_int": 3,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "unverified_facts: 2 candidate facts \u2014 run verification"
+      ]
+    },
+    {
+      "format_id": "fodt",
+      "authority_level": "P2",
+      "authority_level_int": 2,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "no_facts: spec cached but no facts extracted for fodt"
+      ]
+    },
+    {
+      "format_id": "gnumeric",
+      "authority_level": "P1",
+      "authority_level_int": 1,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "schema_only: gnumeric authority is schema metadata (debt-only classification)"
+      ]
+    },
+    {
+      "format_id": "abw",
+      "authority_level": "P1",
+      "authority_level_int": 1,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "no_public_spec_available: abw has no accessible formal spec"
+      ]
+    },
+    {
+      "format_id": "sylk",
+      "authority_level": "P1",
+      "authority_level_int": 1,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "no_public_spec_available: sylk has no accessible formal spec"
+      ]
+    },
+    {
+      "format_id": "tsv",
+      "authority_level": "P1",
+      "authority_level_int": 1,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "no_public_spec_available: tsv has no accessible formal spec"
+      ]
+    },
+    {
+      "format_id": "dif",
+      "authority_level": "P1",
+      "authority_level_int": 1,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "no_public_spec_available: dif has no accessible formal spec"
+      ]
+    },
+    {
+      "format_id": "markdown",
+      "authority_level": "P1",
+      "authority_level_int": 1,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "no_public_spec_available: markdown has no accessible formal spec"
+      ]
+    },
+    {
+      "format_id": "netpbm",
+      "authority_level": "P0",
+      "authority_level_int": 0,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "no_spec: no spec-cache entry found for netpbm"
+      ]
+    },
+    {
+      "format_id": "html",
+      "authority_level": "P0",
+      "authority_level_int": 0,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "no_spec: no spec-cache entry found for html"
+      ]
+    },
+    {
+      "format_id": "txt",
+      "authority_level": "P1",
+      "authority_level_int": 1,
+      "readiness_allowed": false,
+      "product_expansion_allowed": false,
+      "blockers": [
+        "no_public_spec_available: txt has no accessible formal spec"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "sample_type": "transcript-grade-boost",
+  "description": "Demonstrates transcript validation boosting grade from LIMITATIONS to VERIFIED",
+  "with_transcript": {
+    "transcript_validation": {"all_valid": true, "transcripts_found": 1, "transcripts_valid": 1},
+    "grade": "ACCEPTED_VERIFIED"
+  },
+  "without_transcript": {
+    "transcript_validation": null,
+    "grade": "ACCEPTED_WITH_LIMITATIONS"
+  },
+  "explanation": "Valid transcript is a concrete proof dimension in grade_item() alongside test content and criteria verification"
+}

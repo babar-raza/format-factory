@@ -1,0 +1,413 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "taskcards": [
+    {
+      "id": "TC-BRDTH-0-001",
+      "title": "Coordinator preflight \u00e2\u20ac\u201d git snapshot, path ownership, overlap check",
+      "lane": "Lane0",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*",
+        "plans/master-plan.md",
+        "product-capability-matrix/poc-targets.yaml"
+      ],
+      "acceptance_check": "python -c \"import json; m=json.load(open('reports/skills-product-breadth-finalization/file-ownership-map.json')); print(len(m['ownership']),'files mapped')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-A-001",
+      "title": "Current skills packet review \u00e2\u20ac\u201d read all 3 hardening sprint packets",
+      "lane": "LaneA",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-0-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/current-skills-packet-review.md"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import os; assert os.path.getsize('reports/skills-product-breadth-finalization/current-skills-packet-review.md') > 400; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-A-002",
+      "title": "Packet gap analysis \u00e2\u20ac\u201d identify what shells lack vs full packets",
+      "lane": "LaneA",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-A-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/packet-gap-analysis.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; g=json.load(open('reports/skills-product-breadth-finalization/packet-gap-analysis.json')); assert 'gaps' in g; print(len(g['gaps']),'gaps')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-A-003",
+      "title": "Non-blocking evidence caveats",
+      "lane": "LaneA",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-A-002"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/non-blocking-evidence-caveats.md"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import os; assert os.path.exists('reports/skills-product-breadth-finalization/non-blocking-evidence-caveats.md'); print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-A-004",
+      "title": "Blocking integration gaps (if any)",
+      "lane": "LaneA",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-A-002"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/blocking-integration-gaps.md"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import os; assert os.path.exists('reports/skills-product-breadth-finalization/blocking-integration-gaps.md'); print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-B-001",
+      "title": "FODT Markdown full governed packet JSON",
+      "lane": "LaneB",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-A-002"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/fodt-markdown-packet.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; p=json.load(open('reports/skills-product-breadth-finalization/fodt-markdown-packet.json')); assert p.get('packet_type')=='FULL'; assert 'allowed_files' in p; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-B-002",
+      "title": "FODT TXT full governed packet JSON",
+      "lane": "LaneB",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-A-002"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/fodt-txt-packet.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; p=json.load(open('reports/skills-product-breadth-finalization/fodt-txt-packet.json')); assert p.get('packet_type')=='FULL'; assert 'allowed_files' in p; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-B-003",
+      "title": "FODT Markdown governed handoff YAML",
+      "lane": "LaneB",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-B-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/fodt-markdown-handoff.yaml"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import yaml; h=yaml.safe_load(open('reports/skills-product-breadth-finalization/fodt-markdown-handoff.yaml')); assert h.get('mode')=='live'; assert 'rollback_note' in h; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-B-004",
+      "title": "FODT TXT governed handoff YAML",
+      "lane": "LaneB",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-B-002"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/fodt-txt-handoff.yaml"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import yaml; h=yaml.safe_load(open('reports/skills-product-breadth-finalization/fodt-txt-handoff.yaml')); assert h.get('mode')=='live'; assert 'rollback_note' in h; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-C-001",
+      "title": "Netpbm proof packet JSON",
+      "lane": "LaneC",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-A-002"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/netpbm-proof-packet.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; p=json.load(open('reports/skills-product-breadth-finalization/netpbm-proof-packet.json')); assert p.get('packet_type')=='FULL'; assert 'allowed_files' in p; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-C-002",
+      "title": "Netpbm proof handoff YAML",
+      "lane": "LaneC",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-C-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/netpbm-proof-handoff.yaml"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import yaml; h=yaml.safe_load(open('reports/skills-product-breadth-finalization/netpbm-proof-handoff.yaml')); assert h.get('mode')=='live'; assert 'rollback_note' in h; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-D-001",
+      "title": "Skills-Acceleration compatibility markdown",
+      "lane": "LaneD",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-B-001",
+        "TC-BRDTH-C-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/skills-acceleration-compatibility.md"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import os; assert os.path.getsize('reports/skills-product-breadth-finalization/skills-acceleration-compatibility.md') > 300; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-D-002",
+      "title": "Skills-Acceleration field map JSON",
+      "lane": "LaneD",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-D-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/skills-acceleration-field-map.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; m=json.load(open('reports/skills-product-breadth-finalization/skills-acceleration-field-map.json')); assert 'field_mappings' in m; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-D-003",
+      "title": "Skills-Supervisor field map JSON",
+      "lane": "LaneD",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-D-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/skills-supervisor-field-map.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; m=json.load(open('reports/skills-product-breadth-finalization/skills-supervisor-field-map.json')); assert 'field_mappings' in m; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-E-001",
+      "title": "Skills Integration Contract JSON",
+      "lane": "LaneE",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-D-002",
+        "TC-BRDTH-D-003",
+        "TC-BRDTH-B-001",
+        "TC-BRDTH-C-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/skills-integration-contract.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; c=json.load(open('reports/skills-product-breadth-finalization/skills-integration-contract.json')); assert 'fodt' in c.get('packets',{}); assert 'netpbm' in c.get('packets',{}); print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-E-002",
+      "title": "Skills Integration Contract markdown",
+      "lane": "LaneE",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-E-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/skills-integration-contract.md"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import os; assert os.path.getsize('reports/skills-product-breadth-finalization/skills-integration-contract.md') > 400; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-E-003",
+      "title": "Handoff to Supervisor JSON",
+      "lane": "LaneE",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-E-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/handoff-to-supervisor.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; h=json.load(open('reports/skills-product-breadth-finalization/handoff-to-supervisor.json')); assert 'grading_guidance' in h; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-E-004",
+      "title": "Handoff to Acceleration JSON",
+      "lane": "LaneE",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-E-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/handoff-to-acceleration.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; h=json.load(open('reports/skills-product-breadth-finalization/handoff-to-acceleration.json')); assert 'packets' in h; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-E-005",
+      "title": "Handoff to Mainstream JSON",
+      "lane": "LaneE",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-E-001"
+      ],
+      "allowed_paths": [
+        "reports/skills-product-breadth-finalization/handoff-to-mainstream.json"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python -c \"import json; h=json.load(open('reports/skills-product-breadth-finalization/handoff-to-mainstream.json')); assert 'consumption_order' in h; print('OK')\"",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-F-001",
+      "title": "Test suite \u00e2\u20ac\u201d 15 test categories covering all sprint artifacts",
+      "lane": "LaneF",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-E-001",
+        "TC-BRDTH-E-003",
+        "TC-BRDTH-E-004",
+        "TC-BRDTH-E-005"
+      ],
+      "allowed_paths": [
+        "tests/supervisor/test_skills_product_breadth_finalization.py"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": ".local/venv/Scripts/python -m pytest tests/supervisor/test_skills_product_breadth_finalization.py -v",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-BRDTH-F-002",
+      "title": "Evidence declaration, manifest, autonomous cycle, review package",
+      "lane": "LaneF",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [
+        "TC-BRDTH-F-001"
+      ],
+      "allowed_paths": [
+        ".local/evidences/skills-product-breadth-finalization/",
+        "reports/skills-product-breadth-finalization/raw-logs/"
+      ],
+      "forbidden_paths": [
+        "src/net/*",
+        "src/python/*"
+      ],
+      "acceptance_check": "python tools/supervisor/autonomous_cycle.py --declaration .local/evidences/skills-product-breadth-finalization/evidence-declaration.yaml",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null
+    }
+  ]
+}

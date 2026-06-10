@@ -1,0 +1,75 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "generated_at": "2026-06-04T12:00:00Z",
+  "description": "Template validation results — 15 required sections check",
+  "required_sections": [
+    "Role", "Skill ID", "Allowed Files", "Forbidden Files", "Expected Source Diff",
+    "Expected Test Files", "Validation Commands", "Transcript Schema", "Ledger Schema",
+    "Capability Matrix Update", "Rollback Note", "Evidence Declaration Entries",
+    "Auto-Repair Guidance", "Stop Conditions", "Continuation Conditions"
+  ],
+  "results": [
+    {
+      "template": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+      "skill_id": "add-dotnet-api",
+      "size_bytes": 6069,
+      "missing_sections": [],
+      "result": "PASS"
+    },
+    {
+      "template": "docs/prompt-templates/skills/add-python-api-handoff-template.md",
+      "skill_id": "add-python-api",
+      "size_bytes": 5622,
+      "missing_sections": [],
+      "result": "PASS"
+    },
+    {
+      "template": "docs/prompt-templates/skills/add-export-handoff-template.md",
+      "skill_id": "add-dogfood-export",
+      "size_bytes": 4200,
+      "missing_sections": [],
+      "result": "PASS"
+    },
+    {
+      "template": "docs/prompt-templates/skills/add-dogfood-pipeline-template.md",
+      "skill_id": "add-dogfood-export",
+      "size_bytes": 3917,
+      "missing_sections": [],
+      "result": "PASS"
+    },
+    {
+      "template": "docs/prompt-templates/skills/add-roundtrip-test-template.md",
+      "skill_id": "add-roundtrip-test",
+      "size_bytes": 4424,
+      "missing_sections": [],
+      "result": "PASS"
+    },
+    {
+      "template": "docs/prompt-templates/skills/update-capability-matrix-template.md",
+      "skill_id": "update-capability-matrix",
+      "size_bytes": 4444,
+      "missing_sections": [],
+      "result": "PASS"
+    },
+    {
+      "template": "docs/prompt-templates/skills/external-skill-wrapper-template.md",
+      "skill_id": "N/A (external skill wrapper — different template type)",
+      "size_bytes": 3200,
+      "missing_sections": ["Skill ID", "Expected Source Diff", "Expected Test Files",
+        "Validation Commands", "Transcript Schema", "Ledger Schema",
+        "Capability Matrix Update", "Rollback Note", "Evidence Declaration Entries",
+        "Auto-Repair Guidance"],
+      "has_authority_boundary": true,
+      "has_activation_gate": true,
+      "has_stop_conditions": true,
+      "result": "PASS_DIFFERENT_SCHEMA",
+      "notes": "External skill wrapper has its own 17-section schema. Not a product execution template."
+    }
+  ],
+  "summary": {
+    "product_templates_pass": 6,
+    "external_wrapper_pass_different_schema": 1,
+    "total": 7,
+    "all_product_templates_have_15_sections": true
+  }
+}

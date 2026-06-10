@@ -1,0 +1,37 @@
+{
+  "skill_id": "authority-gate-validation",
+  "sprint_id": "FORMAT-FACTORY-BROAD-AUTHORITY-PRODUCT-AUTONOMY-AND-HEALING-MEGA-TRAIN-001",
+  "invocation_timestamp": "2026-06-08T17:00:00Z",
+  "format_id": "zst",
+  "action": "advance_p5_to_p6",
+  "inputs": {
+    "proof_graph_source": "reports/broad-mega-train/broad-mega-train-20260608-e382e5f/sample-outputs/zst-p6-proof-graph.yaml",
+    "proof_graph_stored_to": "reports/authority-conveyor-20260608/zst-p6-proof-graph.yaml",
+    "verified_fact_ids": ["FACT-ZST-001", "FACT-ZST-002"],
+    "code_citation_file": "src/python/zst/zst_codec.py",
+    "test_citation_file": "tests/python/zst/test_r127_zst_fact_traceability.py"
+  },
+  "validation_command": "python -c \"import sys; sys.path.insert(0,'tools/supervisor'); from authority_gate_validation import validate_format_authority; r=validate_format_authority('zst'); print(r['authority_level'])\"",
+  "validation_result": "P6",
+  "field_transitions": [
+    {
+      "field": "zst.authority_level",
+      "old_value": "P5",
+      "new_value": "P6",
+      "evidence": "reports/authority-conveyor-20260608/zst-p6-proof-graph.yaml detected by _check_proof_graph()"
+    },
+    {
+      "field": "zst.proof_graph",
+      "old_value": null,
+      "new_value": "reports/authority-conveyor-20260608/zst-p6-proof-graph.yaml",
+      "evidence": "File created this sprint; proof_path_complete=true"
+    }
+  ],
+  "evidence_paths": [
+    "reports/authority-conveyor-20260608/zst-p6-proof-graph.yaml",
+    "src/python/zst/zst_codec.py",
+    "tests/python/zst/test_r127_zst_fact_traceability.py",
+    "reports/spec-authority-conveyor-acc-20260608/format-authority-matrix-v2.yaml"
+  ],
+  "verdict": "PASS"
+}

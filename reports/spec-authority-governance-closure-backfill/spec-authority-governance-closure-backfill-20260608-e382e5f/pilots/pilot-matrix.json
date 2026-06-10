@@ -1,0 +1,192 @@
+{
+  "run_id": "spec-authority-governance-closure-backfill-20260608-e382e5f",
+  "pilots": [
+    {
+      "pilot_id": "P001",
+      "description": "P6 FODS positive \u2014 readiness_allowed",
+      "format": "fods",
+      "expected_level": "P6",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "result": {
+        "authority_level_int": 6,
+        "readiness_allowed": true
+      },
+      "verdict": "PASS",
+      "live_verified": {
+        "authority_level_int": 6,
+        "readiness_allowed": true
+      },
+      "live_match": true
+    },
+    {
+      "pilot_id": "P002",
+      "description": "P6 ZST positive \u2014 readiness_allowed",
+      "format": "zst",
+      "expected_level": "P6",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "result": {
+        "authority_level_int": 6,
+        "readiness_allowed": true
+      },
+      "verdict": "PASS",
+      "live_verified": {
+        "authority_level_int": 6,
+        "readiness_allowed": true
+      },
+      "live_match": true
+    },
+    {
+      "pilot_id": "P003",
+      "description": "P4 FODT positive \u2014 readiness_allowed",
+      "format": "fodt",
+      "expected_level": "P4",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "result": {
+        "authority_level_int": 4,
+        "readiness_allowed": true
+      },
+      "verdict": "PASS",
+      "live_verified": {
+        "authority_level_int": 4,
+        "readiness_allowed": true
+      },
+      "live_match": true
+    },
+    {
+      "pilot_id": "P004",
+      "description": "P4 PBM positive \u2014 readiness_allowed after magic number verification",
+      "format": "pbm",
+      "expected_level": "P4",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "result": {
+        "authority_level_int": 4,
+        "readiness_allowed": true
+      },
+      "verdict": "PASS",
+      "live_verified": {
+        "authority_level_int": 4,
+        "readiness_allowed": true
+      },
+      "live_match": true
+    },
+    {
+      "pilot_id": "P005",
+      "description": "P4 PGM positive \u2014 readiness_allowed after magic number verification",
+      "format": "pgm",
+      "expected_level": "P4",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "result": {
+        "authority_level_int": 4,
+        "readiness_allowed": true
+      },
+      "verdict": "PASS",
+      "live_verified": {
+        "authority_level_int": 4,
+        "readiness_allowed": true
+      },
+      "live_match": true
+    },
+    {
+      "pilot_id": "P006",
+      "description": "P4 PPM positive \u2014 readiness_allowed after this sprint promotion",
+      "format": "ppm",
+      "expected_level": "P4",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "result": {
+        "authority_level_int": 4,
+        "readiness_allowed": true
+      },
+      "verdict": "PASS",
+      "live_verified": {
+        "authority_level_int": 4,
+        "readiness_allowed": true
+      },
+      "live_match": true
+    },
+    {
+      "pilot_id": "P007",
+      "description": "P3 CSV blocked from readiness",
+      "format": "csv",
+      "expected_level": "P3",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "0000000000000000000000000000000000000000000000000000000000000000",
+      "result": {
+        "authority_level_int": 3,
+        "readiness_allowed": false
+      },
+      "verdict": "PASS",
+      "notes": "readiness_allowed=False confirmed \u2014 P3 blocked from product expansion",
+      "live_verified": {
+        "authority_level_int": 3,
+        "readiness_allowed": false
+      },
+      "live_match": true
+    },
+    {
+      "pilot_id": "P008",
+      "description": "P1 Gnumeric schema-only \u2014 NOT readiness_allowed",
+      "format": "gnumeric",
+      "expected_level": "P1",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "1111111111111111111111111111111111111111111111111111111111111111",
+      "result": {
+        "authority_level_int": 1,
+        "readiness_allowed": false
+      },
+      "verdict": "PASS",
+      "notes": "P1 schema-authority debt-only; no product expansion allowed",
+      "live_verified": {
+        "authority_level_int": 1,
+        "readiness_allowed": false
+      },
+      "live_match": true
+    },
+    {
+      "pilot_id": "P009",
+      "description": "P0 HTML blocked \u2014 no spec cache",
+      "format": "html",
+      "expected_level": "P0",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "2222222222222222222222222222222222222222222222222222222222222222",
+      "result": {
+        "authority_level_int": 0,
+        "readiness_allowed": false
+      },
+      "verdict": "PASS",
+      "notes": "P0 \u2014 no spec cache, no product expansion",
+      "live_verified": {
+        "authority_level_int": 0,
+        "readiness_allowed": false
+      },
+      "live_match": true
+    },
+    {
+      "pilot_id": "P010",
+      "description": "Unknown format completely blocked",
+      "format": "completely_unknown_xyz",
+      "expected_level": "P0",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "3333333333333333333333333333333333333333333333333333333333333333",
+      "result": {
+        "authority_level_int": 0,
+        "readiness_allowed": false
+      },
+      "verdict": "PASS",
+      "notes": "Unknown formats always return P0 \u2014 safe fallback",
+      "live_verified": {
+        "authority_level_int": 0,
+        "readiness_allowed": false
+      },
+      "live_match": true
+    }
+  ],
+  "all_pass": true,
+  "total": 10,
+  "passed": 10
+}

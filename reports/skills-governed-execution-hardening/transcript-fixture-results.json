@@ -1,0 +1,112 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "generated_at": "2026-06-04T12:00:00Z",
+  "description": "Negative and positive fixture tests for validate_skill_transcript.py",
+  "results": [
+    {
+      "fixture_id": "TRANS-POS-001",
+      "description": "Compliant live transcript — all required fields",
+      "expected_result": "PASS",
+      "actual_result": "PASS",
+      "match": true,
+      "notes": "All REQUIRED_FIELDS present, mode=live, result=PASS"
+    },
+    {
+      "fixture_id": "TRANS-NEG-001",
+      "description": "Missing invocation_id",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Validator catches missing invocation_id"
+    },
+    {
+      "fixture_id": "TRANS-NEG-002",
+      "description": "Missing skill_id",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Validator catches missing skill_id"
+    },
+    {
+      "fixture_id": "TRANS-NEG-003",
+      "description": "Missing allowed_files",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Validator catches missing allowed_files"
+    },
+    {
+      "fixture_id": "TRANS-NEG-004",
+      "description": "actual_files_changed contains file outside allowed_files",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Validator catches path outside allowed list"
+    },
+    {
+      "fixture_id": "TRANS-NEG-005",
+      "description": "actual_files_changed contains forbidden file (src/python/*)",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Validator catches forbidden path mutation"
+    },
+    {
+      "fixture_id": "TRANS-NEG-006",
+      "description": "tests_run missing",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Validator catches missing tests_run"
+    },
+    {
+      "fixture_id": "TRANS-NEG-007",
+      "description": "result field missing",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Validator catches missing result"
+    },
+    {
+      "fixture_id": "TRANS-NEG-008",
+      "description": "timestamp missing",
+      "expected_result": "WARNING",
+      "actual_result": "WARNING",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Validator warns on missing timestamp (non-fatal)"
+    },
+    {
+      "fixture_id": "TRANS-NEG-009",
+      "description": "Transcript claims PASS without actual_files_changed (live mode — suspicious)",
+      "expected_result": "WARNING",
+      "actual_result": "WARNING",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Live mode with empty actual_files_changed gets warning, not hard fail"
+    },
+    {
+      "fixture_id": "TRANS-NEG-010",
+      "description": "Mode is invalid value (not dry-run or live)",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "match": true,
+      "closeout_status": "CLOSED_EXPECTED_FAILURE",
+      "notes": "Validator catches invalid mode value"
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "all_match": true,
+    "positive_fixtures": 1,
+    "negative_fixtures": 10,
+    "expected_failures_closed_correctly": 10
+  }
+}

@@ -1,0 +1,33 @@
+# Pilot: TCA-FULL-007 — AI-only authority rejection pilot
+# Strategy: AI-only authority is not an explicit exception_classification.
+# A declaration with no spec_fact_refs, no exception_classification, but
+# claiming authority from "AI/LLM output" cannot sneak through because:
+# (a) if no exception_classification: REJECTED (hard gate)
+# (b) if exception_classification=investigation_only: accepted but NOT as product authority
+# This pilot verifies that "AI-only" cannot claim product authority in any valid path.
+pilot_id: pilot-ai-only-authority
+sprint_id: SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001
+run_id: spec-authority-full-pilot-healing-20260608-e382e5f
+expected_result: REJECTED_AS_EXPECTED
+
+planned_work_items:
+  - item_id: WI-PILOT-AIONLY-001
+    item_type: PRODUCT_SOURCE
+    title: "Product source claiming authority from AI/LLM output (no exception)"
+    status: completed
+    # No spec_fact_refs, no exception_classification
+    # A comment field cannot make AI output into authority
+    notes: "Authority source: AI-generated code analysis (NOT a valid exception_classification)"
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    acceptance_criteria: "MUST BE REJECTED — no spec_fact_refs, no valid exception_classification"
+
+  - item_id: WI-PILOT-AIONLY-002
+    item_type: RELEASE_GATE
+    title: "Release gate claimed with invalid exception 'ai_generated_review'"
+    status: completed
+    exception_classification: ai_generated_review
+    exception_rationale: "AI reviewed the code and approved."
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    acceptance_criteria: "MUST BE REJECTED — 'ai_generated_review' is not a valid exception_classification"

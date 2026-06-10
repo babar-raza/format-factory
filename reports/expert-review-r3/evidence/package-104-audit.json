@@ -1,0 +1,84 @@
+{
+  "audit_sprint": "FORMAT-FACTORY-EXPERT-REVIEW-R3-EVIDENCE-TRUST-AND-PRODUCT-QUALITY-001",
+  "audited_package": "declaration-review-package(104)",
+  "package_path": ".local/supervisor/reviews/expert-review-followup-r2/declaration-review-package.zip",
+  "package_sha256": "70165eaf44038af2774b251b19490f2ae46864482f98ecc218ee48cb3caf7194",
+  "zip_entry_count": 69,
+  "findings": [
+    {
+      "finding_id": "F-104-01",
+      "severity": "MEDIUM",
+      "category": "taskcard_state_missing",
+      "description": "taskcard-registry.json and taskcard-state.json not present in package.",
+      "in_zip": false,
+      "fix_in_r3": "Added reports/expert-review-r3/taskcards/taskcard-registry.json + taskcard-state.json"
+    },
+    {
+      "finding_id": "F-104-02",
+      "severity": "MEDIUM",
+      "category": "execution_state_missing",
+      "description": "execution-state.json not present in package.",
+      "in_zip": false,
+      "fix_in_r3": "Added reports/expert-review-r3/execution-state.json to declaration evidence_artifacts"
+    },
+    {
+      "finding_id": "F-104-03",
+      "severity": "MEDIUM",
+      "category": "terminal_gate_missing",
+      "description": "terminal-gate-checklist.json not present in package.",
+      "in_zip": false,
+      "fix_in_r3": "Added reports/expert-review-r3/terminal-gate-checklist.json"
+    },
+    {
+      "finding_id": "F-104-04",
+      "severity": "LOW",
+      "category": "final_git_status_missing",
+      "description": "final-git-status.txt not present in package.",
+      "in_zip": false,
+      "fix_in_r3": "Added reports/expert-review-r3/final-git-status.txt"
+    },
+    {
+      "finding_id": "F-104-05",
+      "severity": "LOW",
+      "category": "evidence_quality_closeout_missing",
+      "description": "evidence-quality-closeout.json not present in package.",
+      "in_zip": false,
+      "fix_in_r3": "Added reports/expert-review-r3/evidence/evidence-quality-closeout.json"
+    },
+    {
+      "finding_id": "F-104-06",
+      "severity": "MEDIUM",
+      "category": "evidence_quality_score_discrepancy",
+      "description": "supervisor evidence_quality_score=0.25 while anti-skip reports 1.0. Root cause: supervisor score = items_with_tests_supporting / total_items = 1/4. Only WI-R2-PYTHON-PKG-001 had tests_supporting populated.",
+      "in_zip": true,
+      "fix_in_r3": "All R3 work items with available tests now have tests_supporting populated"
+    },
+    {
+      "finding_id": "F-104-07",
+      "severity": "LOW",
+      "category": "fods_fodt_nupkg_absent",
+      "description": "nupkg-inspection-report.json references FODS/FODT nupkgs but they were not included in the ZIP.",
+      "in_zip": false,
+      "fix_in_r3": "All 3 nupkg artifacts included in R3 evidence declaration"
+    },
+    {
+      "finding_id": "F-104-08",
+      "severity": "LOW",
+      "category": "generated_prompt_bad_path",
+      "description": "Generated combined-next-worker-prompt.md contains src/python/netpbm/ and tests/python/netpbm/ which do not exist. Netpbm Python uses pbm/pgm/ppm packages.",
+      "in_zip": true,
+      "fix_in_r3": "Documented in LANE_6 prompt audit; corrected references in next-work-items"
+    },
+    {
+      "finding_id": "F-104-09",
+      "severity": "LOW",
+      "category": "test_count_provenance",
+      "description": "evidence declaration tests_run=913 but packaged python-tests.log (from prior sprint) shows 2402 passed. This is not a lie — the log is from expert-review-followup sprint. But it creates confusion.",
+      "in_zip": true,
+      "fix_in_r3": "Current sprint logs now in reports/expert-review-r3/raw-logs/ clearly labeled by sprint"
+    }
+  ],
+  "findings_count": 9,
+  "fixed_in_r3": 9,
+  "still_open": 0
+}

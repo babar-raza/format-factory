@@ -1,0 +1,30 @@
+id: GEC-TC-003
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Capture all raw log artifacts for evidence traceability"
+status: completed
+lane: lane_c_raw_logs
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  Sprint 3 had incomplete raw-log coverage (only 5 of 16 required logs captured).
+  Sprint 4 must capture all raw logs for each lane before declaring complete.
+scope:
+  - Capture git-status-start.log, governance-validator-tests.log, pipeline-wiring-tests.log
+  - Capture anti-skip-tests.log, state-machine-tests.log, pilot-tests.log
+  - Capture adoption-compliance-tests.log, json-parse.log, yaml-parse.log
+  - Capture closure-pilot-tests.log, lane-ledger-tests.log, anti-skip-regression-tests.log
+  - Capture git-status-checkpoint.log
+files_to_create:
+  - reports/repeatability-governance-closure-rnext/raw-logs/closure-pilot-tests.log
+  - reports/repeatability-governance-closure-rnext/raw-logs/lane-ledger-tests.log
+  - reports/repeatability-governance-closure-rnext/raw-logs/anti-skip-regression-tests.log
+  - reports/repeatability-governance-closure-rnext/raw-logs/git-status-checkpoint.log
+acceptance_criteria:
+  - All log files exist in raw-logs/
+  - Every code path modified this sprint has at least one test log
+dependencies: [GEC-TC-002, GEC-TC-008]
+handoff_to_autonomy_sprint: false

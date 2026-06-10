@@ -1,0 +1,71 @@
+{
+  "report": "stream-state-isolation",
+  "stream": "skills",
+  "target_sprint": "R105",
+  "generated_at": "2026-06-03",
+  "analysis_train": "B",
+  "files": [
+    {
+      "path": ".supervisor/context-pack.yaml",
+      "expected_stream": "skills",
+      "actual_stream": "acceleration",
+      "actual_sprint_id": "FORMAT-FACTORY-ACCELERATION-R105-PACKAGE-IDENTITY-SELF-CONTAINMENT-AND-ACCELERATION-ADVANCEMENT-001",
+      "classification": "WRONG_STREAM_PRIMARY",
+      "remediation": "Generate skills-specific context pack at reports/skills-r105/context-pack.yaml"
+    },
+    {
+      "path": "reports/supervisor/session-resume.md",
+      "expected_stream": "skills",
+      "actual_stream": "mainstream",
+      "actual_sprint_id": "FORMAT-FACTORY-MAINSTREAM-R107-PRODUCT-DEPTH-AND-EVIDENCE-GOVERNANCE-CAMPAIGN-001",
+      "classification": "WRONG_STREAM_PRIMARY",
+      "remediation": "Generate skills session resume at reports/skills-r105/session-resume.md"
+    },
+    {
+      "path": "reports/supervisor/evidence-review.md",
+      "expected_stream": "skills",
+      "actual_stream": "mainstream",
+      "actual_sprint_id": "FORMAT-FACTORY-MAINSTREAM-R107-PRODUCT-DEPTH-AND-EVIDENCE-GOVERNANCE-CAMPAIGN-001",
+      "classification": "WRONG_STREAM_PRIMARY",
+      "remediation": "Generate skills evidence review at reports/skills-r105/evidence-review.md"
+    },
+    {
+      "path": "reports/supervisor/contradictions.md",
+      "expected_stream": "skills",
+      "actual_stream": "mainstream",
+      "actual_sprint_id": "FORMAT-FACTORY-MAINSTREAM-R107-PRODUCT-DEPTH-AND-EVIDENCE-GOVERNANCE-CAMPAIGN-001",
+      "classification": "WRONG_STREAM_PRIMARY",
+      "remediation": "Generate skills contradictions report at reports/skills-r105/contradictions.md"
+    },
+    {
+      "path": "reports/supervisor/next-sprint.md",
+      "expected_stream": "skills",
+      "actual_stream": "mainstream",
+      "actual_sprint_id": "FORMAT-FACTORY-MAINSTREAM-R107-PRODUCT-DEPTH-AND-EVIDENCE-GOVERNANCE-CAMPAIGN-001",
+      "classification": "WRONG_STREAM_PRIMARY",
+      "remediation": "Generate skills next prompt at reports/skills-r105/generated-next-skills-prompt.md"
+    },
+    {
+      "path": ".local/supervisor/selected-product-gaps.json",
+      "expected_stream": "current",
+      "actual_stream": "stale_r98",
+      "actual_sprint_id": "R98",
+      "classification": "STALE_PRIMARY",
+      "remediation": "Refresh product gaps for R105 or label as HISTORICAL_CONTEXT"
+    }
+  ],
+  "summary": {
+    "skills_primary_count": 0,
+    "wrong_stream_count": 5,
+    "stale_count": 1,
+    "global_context_count": 0,
+    "total_files_analyzed": 6,
+    "pass_rate": "0/6"
+  },
+  "mitigation": {
+    "skills_primary_path": "reports/skills-r105/",
+    "global_state_subdir": "global-state/",
+    "global_state_label": "non-authoritative",
+    "wrong_stream_policy": "exclude from skills primary evidence"
+  }
+}

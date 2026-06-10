@@ -1,0 +1,232 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-INTEGRATION-001",
+  "generated_at": "2026-06-04T12:00:00.000000",
+  "taskcards": [
+    {
+      "id": "TC-COORD-001",
+      "title": "Coordinator preflight — baseline state, file ownership, taskcard-state",
+      "lane": "coordinator",
+      "owner": "coordinator",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": [],
+      "allowed_paths": ["reports/supervisor-product-traffic-controller/"],
+      "forbidden_paths": ["src/net/**", "src/python/**", "registry/**"],
+      "evidence_paths": [
+        "reports/supervisor-product-traffic-controller/00-preflight.md",
+        "reports/supervisor-product-traffic-controller/current-git-status.txt",
+        "reports/supervisor-product-traffic-controller/taskcard-state.json",
+        "reports/supervisor-product-traffic-controller/file-ownership-map.json",
+        "reports/supervisor-product-traffic-controller/overlap-check.md",
+        "reports/supervisor-product-traffic-controller/lane-ownership.md",
+        "reports/supervisor-product-traffic-controller/coordinator-integration-log.md"
+      ],
+      "acceptance_check": "taskcard-state.json parses; file-ownership-map parses; OVERLAP_FREE",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete reports/supervisor-product-traffic-controller/ (new directory)"
+    },
+    {
+      "id": "TC-DIAG-001",
+      "title": "Decision-path diagnosis — classify prior sprint issues",
+      "lane": "A",
+      "owner": "supervisor-lane",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-COORD-001"],
+      "allowed_paths": ["reports/supervisor-product-traffic-controller/"],
+      "forbidden_paths": ["src/**", "tools/**", "tests/**"],
+      "evidence_paths": [
+        "reports/supervisor-product-traffic-controller/decision-path-diagnosis.md",
+        "reports/supervisor-product-traffic-controller/prior-sprint-substantive-review.md",
+        "reports/supervisor-product-traffic-controller/non-blocking-evidence-caveats.md"
+      ],
+      "acceptance_check": "All known issues classified; IMPLEMENTATION_BLOCKERs have planned fixes",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete files (new)"
+    },
+    {
+      "id": "TC-WIRE-001",
+      "title": "Wire product_velocity_scorer — generate_stream_routing_packet.py",
+      "lane": "B",
+      "owner": "supervisor-lane",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-COORD-001"],
+      "allowed_paths": ["tools/supervisor/", "tests/supervisor/", "reports/supervisor-product-traffic-controller/"],
+      "forbidden_paths": ["src/**", "registry/**"],
+      "evidence_paths": [
+        "tools/supervisor/generate_stream_routing_packet.py",
+        "reports/supervisor-product-traffic-controller/product_velocity_score.json",
+        "reports/supervisor-product-traffic-controller/product_velocity_summary.md",
+        "reports/supervisor-product-traffic-controller/stream_decision.json",
+        "reports/supervisor-product-traffic-controller/false_pass_false_stop_assessment.json"
+      ],
+      "acceptance_check": "CLI runs; outputs parse as JSON/Markdown; Mainstream PARTIAL (not CLEAN_PASS)",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete tools/supervisor/generate_stream_routing_packet.py (new)"
+    },
+    {
+      "id": "TC-ROUTE-001",
+      "title": "Stream-local routing packets — all 4 streams",
+      "lane": "C",
+      "owner": "supervisor-lane",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-WIRE-001"],
+      "allowed_paths": ["reports/supervisor-streams/**", "reports/supervisor-product-traffic-controller/"],
+      "forbidden_paths": ["src/**", "registry/**"],
+      "evidence_paths": [
+        "reports/supervisor-product-traffic-controller/stream-local-routing-model.md",
+        "reports/supervisor-streams/mainstream/routing-packet.json",
+        "reports/supervisor-streams/mainstream/routing-packet.md",
+        "reports/supervisor-streams/acceleration/routing-packet.json",
+        "reports/supervisor-streams/skills/routing-packet.json",
+        "reports/supervisor-streams/supervisor/routing-packet.json"
+      ],
+      "acceptance_check": "All routing packets parse; Mainstream packet is product-specific with 6+ gaps",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete routing-packet.json files (new in stream dirs)"
+    },
+    {
+      "id": "TC-CONS-001",
+      "title": "Cross-stream consumption bridge — Skills/Acceleration status",
+      "lane": "D",
+      "owner": "supervisor-lane",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-COORD-001"],
+      "allowed_paths": ["tools/supervisor/", "tests/supervisor/", "reports/supervisor-product-traffic-controller/"],
+      "forbidden_paths": ["src/**", "registry/**"],
+      "evidence_paths": [
+        "tools/supervisor/check_cross_stream_consumption.py",
+        "reports/supervisor-product-traffic-controller/skills-consumption-bridge.md",
+        "reports/supervisor-product-traffic-controller/acceleration-consumption-bridge.md",
+        "reports/supervisor-product-traffic-controller/cross-stream-consumption-status.json",
+        "tests/supervisor/test_cross_stream_consumption.py"
+      ],
+      "acceptance_check": "Consumption status JSON parses; tests pass; SKILLS_MISSING_PACKET detected",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete new files"
+    },
+    {
+      "id": "TC-CONT-001",
+      "title": "Continuation-state integration — 7 scenarios tested",
+      "lane": "E",
+      "owner": "supervisor-lane",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-COORD-001"],
+      "allowed_paths": ["reports/supervisor-product-traffic-controller/", "tests/supervisor/"],
+      "forbidden_paths": ["src/**"],
+      "evidence_paths": [
+        "reports/supervisor-product-traffic-controller/continuation-state-integration.md",
+        "reports/supervisor-product-traffic-controller/continuation-decision-examples.json",
+        "tests/supervisor/test_continuation_state_integration.py"
+      ],
+      "acceptance_check": "7 scenarios pass; priority ordering verified; no regression",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete new test file (new)"
+    },
+    {
+      "id": "TC-EXT-001",
+      "title": "External-tool governance integration — runtime status + decision impact",
+      "lane": "F",
+      "owner": "supervisor-lane",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-COORD-001"],
+      "allowed_paths": ["reports/supervisor-product-traffic-controller/", "tests/supervisor/"],
+      "forbidden_paths": ["src/**", ".vscode/mcp.json"],
+      "evidence_paths": [
+        "reports/supervisor-product-traffic-controller/external-tool-runtime-status.json",
+        "reports/supervisor-product-traffic-controller/external-tool-runtime-status.md",
+        "reports/supervisor-product-traffic-controller/external-tool-decision-impact.json",
+        "tests/supervisor/test_external_tool_governance_integration.py"
+      ],
+      "acceptance_check": "Runtime status JSON parses; no tool invoked; fallback documented; tests pass",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete new files"
+    },
+    {
+      "id": "TC-HANDOFF-001",
+      "title": "Mainstream next sprint generator — product-specific handoff",
+      "lane": "G",
+      "owner": "supervisor-lane",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-ROUTE-001", "TC-CONS-001"],
+      "allowed_paths": ["reports/supervisor-product-traffic-controller/"],
+      "forbidden_paths": ["src/**", "registry/**"],
+      "evidence_paths": [
+        "reports/supervisor-product-traffic-controller/mainstream-next-sprint-handoff.md",
+        "reports/supervisor-product-traffic-controller/mainstream-next-sprint-handoff.json",
+        "reports/supervisor-product-traffic-controller/mainstream-gap-priority-table.md",
+        "reports/supervisor-product-traffic-controller/mainstream-stop-conditions.md"
+      ],
+      "acceptance_check": "Handoff covers 3+ product families; product-specific; not generic",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete new files"
+    },
+    {
+      "id": "TC-TEST-001",
+      "title": "Tests and regression controls — all targeted tests pass",
+      "lane": "H",
+      "owner": "supervisor-lane",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-WIRE-001", "TC-CONS-001", "TC-CONT-001", "TC-EXT-001"],
+      "allowed_paths": ["tests/supervisor/"],
+      "forbidden_paths": ["src/**", "tests/net/**", "tests/python/**"],
+      "evidence_paths": [
+        "tests/supervisor/test_supervisor_product_traffic_controller_integration.py",
+        "tests/supervisor/test_cross_stream_consumption.py",
+        "tests/supervisor/test_continuation_state_integration.py",
+        "tests/supervisor/test_external_tool_governance_integration.py"
+      ],
+      "acceptance_check": "All targeted tests pass; no product source regressions",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete new test files"
+    },
+    {
+      "id": "TC-SYNC-001",
+      "title": "State/output sync — latest-routing-packet.json for all streams",
+      "lane": "I",
+      "owner": "supervisor-lane",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-ROUTE-001"],
+      "allowed_paths": ["reports/supervisor-streams/**", "reports/supervisor-product-traffic-controller/"],
+      "forbidden_paths": ["src/**", "registry/**"],
+      "evidence_paths": [
+        "reports/supervisor-streams/supervisor/latest-routing-packet.json",
+        "reports/supervisor-streams/mainstream/latest-routing-packet.json",
+        "reports/supervisor-streams/acceleration/latest-routing-packet.json",
+        "reports/supervisor-streams/skills/latest-routing-packet.json",
+        "reports/supervisor-product-traffic-controller/final-routing-summary.md",
+        "reports/supervisor-product-traffic-controller/final-git-status.txt"
+      ],
+      "acceptance_check": "All latest-routing-packet files exist and parse",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete new files"
+    },
+    {
+      "id": "TC-CLOSE-001",
+      "title": "Evidence closeout — declaration, manifest, review package",
+      "lane": "J",
+      "owner": "coordinator",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-TEST-001", "TC-SYNC-001"],
+      "allowed_paths": [".local/evidences/supervisor-product-traffic-controller/", ".local/supervisor/reviews/supervisor-product-traffic-controller/"],
+      "forbidden_paths": ["src/**"],
+      "evidence_paths": [
+        ".local/evidences/supervisor-product-traffic-controller/evidence-declaration.yaml",
+        ".local/evidences/supervisor-product-traffic-controller/evidence-manifest.yaml",
+        "reports/supervisor-product-traffic-controller/review-package-proof.md"
+      ],
+      "acceptance_check": "autonomous-cycle exits 0; review package built with SHA-256",
+      "closeout_status": "CLOSED_VERIFIED",
+      "blocker_reason": null,
+      "rollback_plan": "Delete .local/evidences/supervisor-product-traffic-controller/"
+    }
+  ]
+}

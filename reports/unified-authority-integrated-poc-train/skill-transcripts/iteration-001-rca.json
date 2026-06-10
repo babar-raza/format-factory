@@ -1,0 +1,24 @@
+{
+  "transcript_id": "tr:iteration-001-rca",
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "iteration": 1,
+  "lane_id": "lane-002-rca-mwp",
+  "skill_used": "supervisor-infrastructure",
+  "target_format": "requirement-capability-authority",
+  "target_track": "supervisor",
+  "capabilities_verified": [
+    {"name": "proof_graph_18_nodes", "type": "invariant", "proof_type": "test_verified"},
+    {"name": "proof_graph_19_edges", "type": "invariant", "proof_type": "test_verified"},
+    {"name": "gap_queue_generation", "type": "function", "proof_type": "test_verified"},
+    {"name": "supervisor_verdict_packet", "type": "function", "proof_type": "test_verified"}
+  ],
+  "source_files_changed": ["tests/supervisor/test_requirement_capability_authority_layer.py"],
+  "test_files_added": ["tests/supervisor/test_requirement_capability_authority_layer.py"],
+  "tests_run": 37,
+  "tests_passed": 37,
+  "tests_failed": 0,
+  "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/rca-fabric-tests.log",
+  "ai_draft_used": false,
+  "status": "ACCEPTED",
+  "notes": "Phase 3: RCA MWP verified — 7/7 critical invariants, 37/37 tests pass"
+}

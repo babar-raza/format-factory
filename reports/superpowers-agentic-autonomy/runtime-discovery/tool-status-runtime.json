@@ -1,0 +1,27 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001",
+  "generated": "2026-06-06",
+  "tools": [
+    {"tool": "supervisor_loop.py autonomous-cycle", "status": "VERIFIED_NOW", "evidence": "subcommand in --help"},
+    {"tool": "build_declaration_review_package.py --declaration", "status": "VERIFIED_NOW", "evidence": "--declaration in --help"},
+    {"tool": "anti_skip_checker.py", "status": "VERIFIED_NOW", "evidence": "file exists, --help works"},
+    {"tool": "validate_adoption_compliance.py", "status": "VERIFIED_NOW", "evidence": "file exists"},
+    {"tool": ".vscode/mcp.json task-master-ai", "status": "CONFIG_PRESENT", "mcp_l1": true, "mcp_l2": "UNKNOWN", "mcp_l3": "UNKNOWN", "mcp_l4": false, "mcp_l5": false, "notes": "TASK_MASTER_API_KEY ABSENT"},
+    {"tool": ".vscode/mcp.json claude-flow", "status": "CONFIG_PRESENT", "mcp_l1": true, "mcp_l2": "UNKNOWN"},
+    {"tool": ".supervisor/policies.yaml", "status": "VERIFIED_NOW"},
+    {"tool": "tools/llm/endpoints.yaml", "status": "CONFIG_PRESENT", "endpoint_count": 6, "notes": "PROFESSIONALIZE_API_KEY PRESENT; ANTHROPIC_API_KEY ABSENT; OPENAI_API_KEY PRESENT"},
+    {"tool": ".claude/commands/", "status": "INSTALLED_NOT_CONFIGURED", "file_count": 25, "notes": "SESSION_SKILL_TOOL available via Skill tool; NOT Superpowers plugin; NOT callable from external host"},
+    {"tool": ".claude/plugins/", "status": "NOT_FOUND", "notes": "SUPERPOWERS_LOCAL_PLUGIN_NOT_FOUND"},
+    {"tool": "docs/governance/superpowers-skill-intake.md", "status": "VERIFIED_NOW"},
+    {"tool": "ANTHROPIC_API_KEY", "status": "ABSENT"},
+    {"tool": "PROFESSIONALIZE_API_KEY", "status": "PRESENT"},
+    {"tool": "TASK_MASTER_API_KEY", "status": "ABSENT"},
+    {"tool": "OPENAI_API_KEY", "status": "PRESENT"},
+    {"tool": "cognee", "status": "NOT_FOUND", "install_cmd": "pip install cognee"},
+    {"tool": "skill_seekers", "status": "NOT_FOUND"},
+    {"tool": "openspec", "status": "NOT_FOUND", "install_cmd": "npm install -g openspec"},
+    {"tool": "gh CLI", "status": "CALLABLE_READ_ONLY", "notes": "Authenticated as babar-raza via GH_TOKEN"},
+    {"tool": "local-ollama", "status": "NOT_CHECKABLE", "notes": "Cannot probe localhost from inside session"},
+    {"tool": "local-lm-studio", "status": "NOT_CHECKABLE", "notes": "Cannot probe localhost from inside session"}
+  ]
+}

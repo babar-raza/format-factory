@@ -1,0 +1,55 @@
+{
+  "sprint_id": "FORMAT-FACTORY-REQUIREMENT-CAPABILITY-AUTHORITY-LAYER-REAL-PILOT-R2-001",
+  "source_sprint": "FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-REAL-PILOT-R3-CLOSURE-HARDENING-AND-ODF-DEPTH-001",
+  "snapshot_id": "SAL-RCA-SNAPSHOT-R2R3-001",
+  "generated_at": "2026-06-05T10:00:00Z",
+  "status": "FROZEN_FOR_RCA_R2_INPUT",
+  "fodt_improvement": "FODT is now spec-backed (ACCEPTED_WITH_CAVEAT, ODF 1.3 scoped intro from Spec R3). R1 fixture-backed input replaced.",
+  "sources": [
+    {
+      "source_id": "src-r2-zst-rfc8878",
+      "format_id": "zst",
+      "authority_status": "ACCEPTED_SPEC",
+      "caveat": null,
+      "sha256_context_pack": "9707e015c3081ce2e7099fd3aed39b3c71b1e2ceac89c5fce93de6f61898e7b1",
+      "r1_status": "ACCEPTED_SPEC",
+      "r2_change": "None — same source"
+    },
+    {
+      "source_id": "src-r2-netpbm-spec",
+      "format_id": "netpbm",
+      "authority_status": "ACCEPTED_WITH_CAVEAT",
+      "caveat": "De facto public domain standard; no formal IETF/ISO standards body",
+      "sha256_context_pack": "9dee4b8f8608ff87f1cc6d4e9e0e19e3e1df2f4e87e4839e5d5a9f3ebc3abd91",
+      "r1_status": "ACCEPTED_WITH_CAVEAT",
+      "r2_change": "None — same source"
+    },
+    {
+      "source_id": "src-r2-dif-empirical",
+      "format_id": "dif",
+      "authority_status": "EMPIRICAL_ONLY",
+      "caveat": "No authoritative public spec. MUST NOT be promoted.",
+      "sha256_context_pack": "9ccc23683556d1b64d0f70427ef4cec7b6e4ef09f9defc50a4c7b1a2e8f7ce3d",
+      "r1_status": "EMPIRICAL_ONLY",
+      "r2_change": "None — same source"
+    },
+    {
+      "source_id": "src-r2-fods-odf13",
+      "format_id": "fods",
+      "authority_status": "ACCEPTED_WITH_CAVEAT",
+      "caveat": "Scoped ODF 1.3 intro only (6000 chars). Full spec deferred R4+.",
+      "sha256_context_pack": "418cb43b3ad808eab57f78e8d7a9f1e4b8e2d8e3c9a1f7e5b3d8a1e6c9f3b2a7",
+      "r1_status": "ACCEPTED_WITH_CAVEAT",
+      "r2_change": "None — same source"
+    },
+    {
+      "source_id": "src-r3-fodt-odf13",
+      "format_id": "fodt",
+      "authority_status": "ACCEPTED_WITH_CAVEAT",
+      "caveat": "Scoped ODF 1.3 intro only (5000 chars). Full spec deferred R4+.",
+      "sha256_context_pack": "ce25cfe790299e69...",
+      "r1_status": "FIXTURE_BACKED",
+      "r2_change": "UPGRADED — fixture-backed replaced with REAL_FETCH_SCOPED from Spec R3"
+    }
+  ]
+}

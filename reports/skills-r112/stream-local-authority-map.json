@@ -1,0 +1,23 @@
+{
+  "stream": "skills",
+  "run_id": "skills-r112",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-R112-LIVE-HANDOFF-STREAM-LOCAL-CYCLE-ISOLATION-AND-YES-WITH-LIMITATIONS-CAMPAIGN-001",
+  "authority": "STREAM_LOCAL",
+  "global_status": "ADVISORY_REFERENCE",
+  "description": "Skills stream canonical outputs are stream-local. Global reports/supervisor/ files are advisory references only, subject to last-writer-wins from other streams.",
+  "stream_local_paths": {
+    "evidence_review": "reports/supervisor-streams/skills/evidence-review.json",
+    "contradictions": "reports/supervisor-streams/skills/contradictions.json",
+    "next_prompt": "reports/supervisor-streams/skills/latest-next-worker-prompt.md",
+    "work_item_grades": "reports/supervisor-streams/skills/work-item-grades.json",
+    "continuation_signal": ".local/supervisor/streams/skills/continuation-signal.json",
+    "authority_map": "reports/supervisor-streams/skills/authority-map.json"
+  },
+  "global_paths_advisory": {
+    "evidence_review": "reports/supervisor/evidence-review.json",
+    "contradictions": "reports/supervisor/contradictions.json",
+    "next_sprint": "reports/supervisor/next-sprint.md",
+    "session_resume": "reports/supervisor/session-resume.md"
+  },
+  "notes": "R112 adds authority-map.json generation to autonomous_cycle.py Step 6. Stream-local files are authoritative for Skills decisions. Global files may be overwritten by any stream."
+}

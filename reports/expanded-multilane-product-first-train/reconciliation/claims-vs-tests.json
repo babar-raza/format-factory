@@ -1,0 +1,14 @@
+{
+  "sprint": "FORMAT-FACTORY-EXPANDED-STANDING-MULTI-LANE-PRODUCT-FIRST-MEGA-TRAIN-001",
+  "claims_verified": [
+    {"claim": "ABW export_to_csv()", "test_file": "tests/python/abw/test_r123_abw_csv_export.py", "tests": 15, "status": "VERIFIED"},
+    {"claim": "NDJSON append_record()", "test_file": "tests/python/ndjson/test_r123_ndjson_append_filter.py", "tests": 10, "status": "VERIFIED"},
+    {"claim": "NDJSON filter_records()", "test_file": "tests/python/ndjson/test_r123_ndjson_append_filter.py", "tests": 9, "status": "VERIFIED"},
+    {"claim": "Gnumeric get_cell_value()", "test_file": "tests/python/gnumeric/test_r123_gnumeric_cell_accessor.py", "tests": 13, "status": "VERIFIED"},
+    {"claim": "abw.__all__ includes export_to_csv", "test_file": "tests/python/abw/test_r123_abw_csv_export.py::TestExportToCsv::test_in_all", "status": "VERIFIED"},
+    {"claim": "gnumeric.__all__ includes get_cell_value", "test_file": "tests/python/gnumeric/test_r123_gnumeric_cell_accessor.py::TestGetCellValue::test_in_all", "status": "VERIFIED"},
+    {"claim": "ndjson.__all__ includes append_record and filter_records", "test_file": "tests/python/ndjson/test_r123_ndjson_append_filter.py::TestFilterRecords::test_in_all", "status": "VERIFIED"}
+  ],
+  "gaps": [],
+  "verdict": "NO_GAPS"
+}

@@ -1,0 +1,94 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-FULL-HARDENING-BACKFILL-AND-PILOT-MEGA-TRAIN-001",
+  "run_id": "spec-authority-full-hardening-backfill-20260608-e382e5f",
+  "lanes": [
+    {
+      "lane_id": "L0",
+      "name": "Coordinator",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/taskcards/", "reports/spec-authority-full-hardening-backfill/*/lanes/"],
+      "forbidden_paths": ["src/", ".local/spec-cache/"],
+      "exclusive_write": ["taskcards/taskcard-state.*.json", "lanes/lane-ownership-map.*", "lanes/lane-execution-ledger.jsonl"]
+    },
+    {
+      "lane_id": "L1",
+      "name": "Evidence and Anti-skip",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/sample-outputs/", "reports/spec-authority-full-hardening-backfill/*/raw-logs/", "tools/supervisor/anti_skip_checker.py"],
+      "forbidden_paths": ["src/", ".local/spec-cache/"],
+      "exclusive_write": ["lanes/lane1-evidence-anti-skip-report.md", "raw-logs/anti-skip-result.json"]
+    },
+    {
+      "lane_id": "L2",
+      "name": "Proof Graph and Ledger",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/ledgers/", "reports/authority-conveyor-20260608/"],
+      "forbidden_paths": ["src/", "tools/supervisor/authority_gate_validation.py"],
+      "exclusive_write": ["ledgers/product-authority-ledger.json", "ledgers/proof-graph-authority-edges.json", "lanes/lane2-proof-graph-ledger-report.md"]
+    },
+    {
+      "lane_id": "L3",
+      "name": "Format Authority Backfill",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/matrices/", "reports/spec-authority-full-hardening-backfill/*/lanes/format-backfill/", ".local/spec-cache/"],
+      "forbidden_paths": ["src/"],
+      "exclusive_write": ["matrices/format-authority-matrix-v4.*", "ledgers/authority-debt-ledger.json"]
+    },
+    {
+      "lane_id": "L4",
+      "name": "Pilot Matrix",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/pilots/"],
+      "forbidden_paths": ["src/"],
+      "exclusive_write": ["pilots/pilot-matrix.*"]
+    },
+    {
+      "lane_id": "L5",
+      "name": "Product-Safe Advancement",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/lanes/lane5-*", "src/python/fods/", "src/python/zst/"],
+      "forbidden_paths": ["src/python/gnumeric/", "src/python/abw/", "src/python/sylk/", "src/python/tsv/", "src/python/dif/"],
+      "exclusive_write": ["lanes/lane5-product-safe-advancement.md"]
+    },
+    {
+      "lane_id": "L6",
+      "name": "Repeatability and Skills",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/skill-transcripts/"],
+      "forbidden_paths": ["src/"],
+      "exclusive_write": ["adoption-repeatability-matrix.*", "skills-backlog.md"]
+    },
+    {
+      "lane_id": "L7",
+      "name": "Autonomy and Continuation",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/lanes/"],
+      "forbidden_paths": [".local/supervisor/action-queue.jsonl"],
+      "exclusive_write": ["continuation-safety-audit.md", "next-action-authority-routing.json", "next-broad-sprint-prompt.md"]
+    },
+    {
+      "lane_id": "L8",
+      "name": "CI and Tests",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/raw-logs/", "tests/supervisor/", "tests/python/"],
+      "forbidden_paths": ["src/"],
+      "exclusive_write": ["raw-logs/targeted-tests.txt", "raw-logs/full-suite-or-classification.txt", "test-summary.md", "full-suite-failure-classification.md"]
+    },
+    {
+      "lane_id": "L9",
+      "name": "Reconciliation",
+      "owner": "primary_agent",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/lanes/"],
+      "forbidden_paths": ["src/"],
+      "exclusive_write": ["reconciliation-report.md", "contradiction-ledger.json"]
+    },
+    {
+      "lane_id": "L10",
+      "name": "Adversarial Review",
+      "owner": "independent_review_pass",
+      "allowed_paths": ["reports/spec-authority-full-hardening-backfill/*/lanes/"],
+      "forbidden_paths": ["src/"],
+      "exclusive_write": ["adversarial-review.md"]
+    }
+  ]
+}

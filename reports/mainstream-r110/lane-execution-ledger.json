@@ -1,0 +1,34 @@
+{
+  "ledger_version": "1.0",
+  "sprint": "mainstream-r110",
+  "created_at": "2026-06-03",
+  "lanes": [
+    {"lane": "Wave 0", "title": "R109 Rework Reconciliation", "status": "completed", "outputs": ["r109-reconciliation.md", "r109-rework-closure-plan.md", "dirty-state-classification.md", "r109-claim-classification.json"]},
+    {"lane": "Wave 1", "title": "Evidence-Quality Proof Matrix", "status": "completed", "outputs": ["evidence-quality-proof-matrix.json", "evidence-quality-proof-matrix.md"]},
+    {"lane": "Wave 2", "title": "Lane-Execution-Ledger + Sample Outputs", "status": "completed", "outputs": ["lane-execution-ledger.json", "sample-outputs/sample-product-proof-matrix.json", "sample-outputs/sample-source-ledger-entry.json", "sample-outputs/sample-mainstream-next-prompt.md"]},
+    {"lane": "Wave 3", "title": "Fresh Mainstream Gap Selection", "status": "completed", "outputs": ["selected-mainstream-gaps-r110.json"]},
+    {"lane": "Wave 4A", "title": "FODS GetCellDataType API", "status": "completed", "depth_class": "helper", "tests": 8, "ledger": "R110-GOVERNED-DOTNET-FODS-GETCELLDATATYPE-001", "transcript": "skill-transcripts/r110-fods-getcelldatatype.md"},
+    {"lane": "Wave 4B", "title": "FODS FindCellsByValue API", "status": "completed", "depth_class": "search_depth", "tests": 8, "ledger": "R110-GOVERNED-DOTNET-FODS-FINDCELLSBYVALUE-001", "transcript": "skill-transcripts/r110-fods-findcellsbyvalue.md"},
+    {"lane": "Wave 4C", "title": "FODT InsertHeading API", "status": "completed", "depth_class": "object_model_depth", "tests": 10, "ledger": "R110-GOVERNED-DOTNET-FODT-INSERTHEADING-001", "transcript": "skill-transcripts/r110-fodt-insertheading.md"},
+    {"lane": "Wave 4D", "title": "FODT GetParagraphStyleName API", "status": "completed", "depth_class": "helper", "tests": 8, "ledger": "R110-GOVERNED-DOTNET-FODT-GETPARAGRAPHSTYLENAME-001", "transcript": "skill-transcripts/r110-fodt-getparagraphstylename.md"},
+    {"lane": "Wave 4E", "title": "Netpbm Solarize API", "status": "completed", "depth_class": "image_processing_depth", "tests": 8, "ledger": "R110-GOVERNED-DOTNET-NETPBM-SOLARIZE-001", "transcript": "skill-transcripts/r110-netpbm-solarize.md"},
+    {"lane": "Wave 4F", "title": "Netpbm Sepia API", "status": "completed", "depth_class": "image_processing_depth", "tests": 10, "ledger": "R110-GOVERNED-DOTNET-NETPBM-SEPIA-001", "transcript": "skill-transcripts/r110-netpbm-sepia.md"},
+    {"lane": "Wave 5A", "title": "ZST Multi-frame Workflow", "status": "completed", "depth_class": "workflow", "tests": 8},
+    {"lane": "Wave 5B", "title": "PPM Grayscale Workflow", "status": "completed", "depth_class": "workflow", "tests": 8},
+    {"lane": "Wave 5C", "title": "SYLK Parse Edge-Cases", "status": "completed", "depth_class": "roundtrip", "tests": 8},
+    {"lane": "Wave 5D", "title": "PBM Write-Read Roundtrip", "status": "completed", "depth_class": "roundtrip", "tests": 8},
+    {"lane": "Wave 6A", "title": "FODS CSV Export Dogfood", "status": "completed", "tests": 4},
+    {"lane": "Wave 6B", "title": "FODT Markdown Export Dogfood", "status": "completed", "tests": 4},
+    {"lane": "Wave 6C", "title": "Netpbm Posterize-Save Dogfood", "status": "completed", "tests": 4}
+  ],
+  "totals": {
+    "completed": 17,
+    "pending": 0,
+    "new_dotnet_tests": 64,
+    "new_python_tests": 32,
+    "new_tests_total": 96,
+    "governed_api_count": 6,
+    "foss_deliverables": 4,
+    "dogfood_pipelines": 3
+  }
+}

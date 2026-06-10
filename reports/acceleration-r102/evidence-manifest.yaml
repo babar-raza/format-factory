@@ -1,0 +1,47 @@
+---
+sprint_id: acceleration-r102
+evidence_root: reports/acceleration-r102
+
+reports:
+  - reports/acceleration-r102/00-preflight.md
+  - reports/acceleration-r102/r101-review.md
+  - reports/acceleration-r102/adoption-failure-analysis.md
+  - reports/acceleration-r102/automation-adoption-map.md
+  - reports/acceleration-r102/three-sprint-forecast-by-stream.md
+  - reports/acceleration-r102/quota-tracker.md
+  - reports/acceleration-r102/final-adversarial-independent-verification.md
+  - reports/acceleration-r102/evidence-manifest.yaml
+
+sample_outputs:
+  - reports/acceleration-r102/sample-outputs/next-best-actions.json
+  - reports/acceleration-r102/sample-outputs/stream-forecasts.json
+  - reports/acceleration-r102/sample-outputs/anti-skip-check-result.json
+  - reports/acceleration-r102/sample-outputs/dry-run-results.json
+  - reports/acceleration-r102/sample-outputs/dry-run-ledger.json
+
+generated_handoffs:
+  - reports/acceleration-r102/generated-handoffs/handoff-mainstream.yaml
+  - reports/acceleration-r102/generated-handoffs/handoff-acceleration.yaml
+  - reports/acceleration-r102/generated-handoffs/handoff-skills.yaml
+  - reports/acceleration-r102/generated-handoffs/handoff-supervisor.yaml
+
+generated_stream_prompts:
+  - reports/acceleration-r102/generated-stream-prompts/next-mainstream-prompt.md
+  - reports/acceleration-r102/generated-stream-prompts/next-acceleration-prompt.md
+  - reports/acceleration-r102/generated-stream-prompts/next-skills-prompt.md
+  - reports/acceleration-r102/generated-stream-prompts/next-supervisor-prompt.md
+
+raw_logs:
+  - reports/acceleration-r102/raw-test-log.txt
+
+new_tools:
+  - tools/supervisor/next_best_action.py
+  - tools/supervisor/stream_forecaster.py
+  - tools/supervisor/anti_skip_checker.py
+  - tools/supervisor/stream_prompt_generator.py
+
+test_files:
+  - tests/supervisor/acceleration/test_next_best_action.py
+  - tests/supervisor/acceleration/test_stream_forecaster.py
+  - tests/supervisor/acceleration/test_anti_skip_checker.py
+  - tests/supervisor/acceleration/test_stream_prompt_generator.py

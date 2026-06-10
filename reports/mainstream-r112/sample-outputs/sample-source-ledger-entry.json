@@ -1,0 +1,33 @@
+{
+  "sample_type": "source-ledger-entry",
+  "sprint": "mainstream-r112",
+  "description": "Example of a governed product-code ledger entry from R111",
+  "example_entry": {
+    "entry_id": "R111-GOVERNED-DOTNET-FODS-MERGECELLS-001",
+    "classification": "GOVERNED_PRODUCT_CHANGE",
+    "sprint": "mainstream-r111",
+    "skill": "add-dotnet-api",
+    "product": "FODS .NET",
+    "capability_refs": [
+      "commercial_net_products.FODS.dotnet_status.merge_cells"
+    ],
+    "api_symbols": [
+      "MergeCells"
+    ],
+    "api_behavior": "Merge cells in a rectangular region. Sets number-columns-spanned and number-rows-spanned on anchor cell, replaces spanned cells with covered-table-cell elements.",
+    "changed_files": [
+      "src/net/fods/FodsDocument.cs"
+    ],
+    "test_files": [
+      "tests/net/fods/FodsR111MergeCellsTests.cs"
+    ],
+    "test_count": 8,
+    "source_files": [
+      {
+        "path": "src/net/fods/FodsDocument.cs",
+        "state": "present",
+        "sha256": "0b4a2890c3ecb83006472500ff012556018bf26383493c8aa8165de72f0dcbd4"
+      }
+    ]
+  }
+}

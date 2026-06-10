@@ -1,0 +1,17 @@
+{
+  "sample_type": "cycle-adoption-failing",
+  "description": "A Skills declaration that fails adoption compliance — missing ledger for src-editing track",
+  "work_item": {
+    "item_id": "W1-FODS-FAILING",
+    "title": "FODS implementation without ledger",
+    "product_track": "commercial_dotnet",
+    "evidence_paths": ["reports/r-test/evidence.md"],
+    "status": "completed"
+  },
+  "adoption_result": {
+    "compliant": false,
+    "failure_explanation": "src-editing track 'commercial_dotnet' requires ledger_entry_id"
+  },
+  "cycle_step": "2d",
+  "cycle_effect": "adoption_compliance FAIL, ACCEPTED downgraded to ACCEPTED_WITH_REWORK"
+}

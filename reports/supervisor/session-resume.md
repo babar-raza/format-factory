@@ -1,11 +1,11 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-06T20:25:05.029773
+# Generated: 2026-06-10T13:43:49.710877
 
 ## Quick State
-- Last sprint: FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
-- Evidence verdict: ACCEPTED
-- Tests: 1490 passed / 0 failed
+- Last sprint: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-10-001
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 55 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -23,62 +23,62 @@
 5. Read plans/master-plan.md for current phase state (AUTHORITY)
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-first-acquisition-train\declaration-review-package.zip
+- Last evidence bundle: .local/evidences/autonomy-acceleration-sprint10-20260608-e382e5f
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- test_delta: +46
-- test_delta_from: 92
-
-## Entry: FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001
-- timestamp: 2026-06-06T17:55:05.133371
+- timestamp: 2026-06-10T08:41:23.974503
 - verdict: ACCEPTED
-- test_count: 44
+- test_count: 245
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\h6-product-source-pilot\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-rnext28\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 106
+- bundle_entry_count: 54
 - bundle_validation_pass: True
-- test_delta: -94
-- test_delta_from: 138
+- test_delta: +69
+- test_delta_from: 176
 
-## Entry: FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001
-- timestamp: 2026-06-06T18:53:07.105192
+## Entry: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT29-001
+- timestamp: 2026-06-10T08:47:07.650867
 - verdict: ACCEPTED
-- test_count: 54
+- test_count: 258
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\autonomous-acquisition-mega-train\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-rnext29\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 75
+- bundle_entry_count: 60
 - bundle_validation_pass: True
-- test_delta: +10
-- test_delta_from: 44
+- test_delta: +13
+- test_delta_from: 245
 
-## Entry: FORMAT-FACTORY-AUTONOMY-NO-MANUAL-PROMPT-CHAIN-REPAIR-001
-- timestamp: 2026-06-06T19:31:05.046807
+## Entry: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT30-001
+- timestamp: 2026-06-10T08:53:07.658609
 - verdict: ACCEPTED
-- test_count: 0
+- test_count: 303
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\no-manual-chain-repair\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-rnext30\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 79
+- bundle_entry_count: 56
 - bundle_validation_pass: True
+- test_delta: +45
+- test_delta_from: 258
 
-## Entry: FORMAT-FACTORY-NO-MANUAL-PROMPT-CHAIN-FINAL-ACCEPTANCE-001
-- timestamp: 2026-06-06T19:59:04.855069
+## Entry: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT31-001
+- timestamp: 2026-06-10T08:57:06.410306
 - verdict: ACCEPTED
-- test_count: 0
+- test_count: 391
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\no-manual-chain-final-acceptance\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-rnext31\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 58
+- bundle_entry_count: 56
 - bundle_validation_pass: True
+- test_delta: +88
+- test_delta_from: 303
 ```
 
 ## IMPORTANT REMINDERS

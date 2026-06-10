@@ -1,0 +1,13 @@
+{
+  "invocation_id": "r113-001-live-cycle-execution",
+  "skill_id": "evidence-review-next-prompt",
+  "mode": "live",
+  "timestamp": "2026-06-03T23:00:00Z",
+  "inputs": {
+    "evidence_bundle_path": ".local/evidences/skills-r113/evidence-declaration.yaml"
+  },
+  "allowed_files": [".local/supervisor/reviews/skills-r113/", "reports/supervisor/", "reports/supervisor-streams/skills/"],
+  "actual_files_changed": [".local/supervisor/reviews/skills-r113/supervisor-review.json", "reports/supervisor-streams/skills/authority-map.json"],
+  "tests_run": ["tests/python/supervisor/test_r113_live_cycle_convergence.py"],
+  "result": "PASS"
+}

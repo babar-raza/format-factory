@@ -1,0 +1,59 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "gap_id": "netpbm-export",
+  "template_proposals": [
+    {
+      "proposal_id": "netpbm-export-happy_path",
+      "gap_id": "netpbm-export",
+      "test_type": "happy_path",
+      "description": "Verify netpbm-export completes successfully with valid input.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "netpbm-export-roundtrip",
+      "gap_id": "netpbm-export",
+      "test_type": "roundtrip",
+      "description": "Verify netpbm-export produces output that round-trips back to equivalent input.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "netpbm-export-edge_empty",
+      "gap_id": "netpbm-export",
+      "test_type": "edge_empty",
+      "description": "Verify netpbm-export handles empty/minimal input without exception.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "netpbm-export-edge_large",
+      "gap_id": "netpbm-export",
+      "test_type": "edge_large",
+      "description": "Verify netpbm-export handles large/complex input within resource limits.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "netpbm-export-error_invalid_input",
+      "gap_id": "netpbm-export",
+      "test_type": "error_invalid_input",
+      "description": "Verify netpbm-export raises appropriate error on invalid input.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "netpbm-export-dogfood_export",
+      "gap_id": "netpbm-export",
+      "test_type": "dogfood_export",
+      "description": "Verify netpbm-export output is usable by a downstream Format Factory tool.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    }
+  ],
+  "ai_enhanced_proposals": [],
+  "total_proposals": 6,
+  "authority_state": "ai_draft",
+  "non_authoritative": true,
+  "timestamp": "2026-06-04T07:09:42.332421+00:00"
+}

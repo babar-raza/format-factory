@@ -1,0 +1,48 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001",
+  "lane": "L7",
+  "formats_updated": [
+    {
+      "format": "Gnumeric",
+      "package": "src/python/gnumeric",
+      "capabilities_added": [
+        {
+          "name": "probe_gnumeric",
+          "type": "FORMAT_DETECTION",
+          "signature": "probe_gnumeric(source) -> bool",
+          "description": "Returns True if source is a valid gzip-compressed Gnumeric XML document"
+        },
+        {
+          "name": "create_gnumeric",
+          "type": "DOCUMENT_CREATION",
+          "signature": "create_gnumeric(sheets: list[dict]) -> dict",
+          "description": "Builds a Gnumeric workbook model from a list of sheet dicts"
+        },
+        {
+          "name": "write_gnumeric",
+          "type": "DOCUMENT_WRITE",
+          "signature": "write_gnumeric(model: dict, dest: str | Path) -> None",
+          "description": "Serializes a Gnumeric model to a gzip-compressed .gnumeric file"
+        }
+      ],
+      "exports_updated": true,
+      "init_updated": true
+    },
+    {
+      "format": "ABW",
+      "package": "src/python/abw",
+      "capabilities_added": [
+        {
+          "name": "export_to_txt",
+          "type": "PLAIN_TEXT_EXPORT",
+          "signature": "export_to_txt(source: str | bytes | Path) -> str",
+          "description": "Extracts all paragraph text from an ABW document as a newline-joined plain text string"
+        }
+      ],
+      "exports_updated": true,
+      "init_updated": true
+    }
+  ],
+  "no_new_external_deps": true,
+  "no_poc_targets_mutated": true
+}

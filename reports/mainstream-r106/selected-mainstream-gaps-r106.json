@@ -1,0 +1,104 @@
+{
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R106-POC-PRODUCT-PROOF-AND-PACKAGED-EVIDENCE-CAMPAIGN-001",
+  "generated_at": "2026-06-03T14:15:00Z",
+  "source_poc_matrix_sha256": "25d8dfb7fbadffd4a35f25ffdefbc67a93884b80d67a57ce9874747ea66c08c1",
+  "source_skill_registry_sha256": "5784384be7d6d08c1a4d52bbeaeea650abf408da328be4aa9e644d84d8d03887",
+  "stale_r98_gaps_active": false,
+  "stream": "mainstream",
+  "commercial_gaps": [
+    {
+      "format": "FODS",
+      "gap": "ClearSheet — remove all rows from a sheet",
+      "skill": "add-dotnet-api",
+      "priority": "HIGH"
+    },
+    {
+      "format": "FODS",
+      "gap": "GetColumnValues — extract all values from a specific column",
+      "skill": "add-dotnet-api",
+      "priority": "MEDIUM"
+    },
+    {
+      "format": "FODT",
+      "gap": "FindText — search for text across all paragraphs, return index",
+      "skill": "add-dotnet-api",
+      "priority": "HIGH"
+    },
+    {
+      "format": "FODT",
+      "gap": "ReplaceAllText — find and replace text in all paragraphs",
+      "skill": "add-dotnet-api",
+      "priority": "HIGH"
+    },
+    {
+      "format": "Netpbm",
+      "gap": "FlipDiagonal — transpose image (swap rows/cols)",
+      "skill": "add-dotnet-api",
+      "priority": "MEDIUM"
+    },
+    {
+      "format": "Netpbm",
+      "gap": "Overlay — composite one image on top of another at offset",
+      "skill": "add-dotnet-api",
+      "priority": "MEDIUM"
+    }
+  ],
+  "foss_gaps": [
+    {
+      "format": "ZST",
+      "gap": "Streaming compress/decompress with chunk API",
+      "type": "test_hardening"
+    },
+    {
+      "format": "PBM",
+      "gap": "P4 binary write roundtrip proof",
+      "type": "test_hardening"
+    },
+    {
+      "format": "PGM",
+      "gap": "Strict parse error diagnostics",
+      "type": "test_hardening"
+    },
+    {
+      "format": "PPM",
+      "gap": "Write roundtrip with maxval variation",
+      "type": "test_hardening"
+    },
+    {
+      "format": "SYLK",
+      "gap": "Write roundtrip with multi-cell grids",
+      "type": "test_hardening"
+    }
+  ],
+  "dogfood_gaps": [
+    {
+      "pipeline": "FODS SaveAfterEdit roundtrip",
+      "type": "dogfood_test"
+    },
+    {
+      "pipeline": "FODT SaveAfterEdit roundtrip",
+      "type": "dogfood_test"
+    },
+    {
+      "pipeline": "Netpbm Crop+Save pipeline",
+      "type": "dogfood_test"
+    }
+  ],
+  "usability_gaps": [
+    {
+      "format": "FODS",
+      "gap": "ClearSheet example",
+      "type": "example"
+    },
+    {
+      "format": "FODT",
+      "gap": "FindReplace example",
+      "type": "example"
+    },
+    {
+      "format": "Netpbm",
+      "gap": "FlipDiagonal example",
+      "type": "example"
+    }
+  ]
+}

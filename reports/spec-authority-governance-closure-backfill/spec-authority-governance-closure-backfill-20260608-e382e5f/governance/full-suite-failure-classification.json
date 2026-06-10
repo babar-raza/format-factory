@@ -1,0 +1,154 @@
+{
+  "run_id": "spec-authority-governance-closure-backfill-20260608-e382e5f",
+  "source_log": "reports/spec-authority-proof-closure-backfill/spec-authority-proof-closure-backfill-20260608-e382e5f/raw-logs/supervisor-suite.txt",
+  "total_failures": 24,
+  "sprint_caused": 0,
+  "pre_existing": 24,
+  "authority_blocking": 0,
+  "failures": [
+    {
+      "test": "tests/supervisor/acceleration/test_acceleration_hardening_iv.py::TestNoProductSourceEdits::test_poc_targets_checksum_unchanged",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "POC targets checksum test expects static hash; changed by unrelated sprints"
+    },
+    {
+      "test": "tests/supervisor/test_authority_integration_fabric.py::test_spec_context_pack_fods_complete",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "FODS spec context pack test; pre-existing due to context pack format mismatch"
+    },
+    {
+      "test": "tests/supervisor/test_autonomous_host_runner.py::TestMissingCli::test_missing_cli_returns_layer_missing",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "CLI layer test; autonomous host runner not installed in this environment"
+    },
+    {
+      "test": "tests/supervisor/test_autonomous_host_runner.py::TestMissingCli::test_missing_cli_honest_classification_is_packet_only",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "CLI layer test; autonomous host runner not installed"
+    },
+    {
+      "test": "tests/supervisor/test_autonomous_host_runner.py::TestTerminalStateDeferred::test_terminal_train_state_deferred",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "CLI layer test; host runner not installed"
+    },
+    {
+      "test": "tests/supervisor/test_autonomous_host_runner.py::TestTerminalStateDeferred::test_poc_ready_terminal_deferred",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "CLI layer test; host runner not installed"
+    },
+    {
+      "test": "tests/supervisor/test_autonomous_host_runner.py::TestSafetyCheck::test_unsafe_prompt_returns_refused",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "CLI layer test; host runner not installed"
+    },
+    {
+      "test": "tests/supervisor/test_autonomous_host_runner.py::TestDryRun::test_dry_run_with_available_cli_returns_attempted",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "CLI layer test; host runner not installed"
+    },
+    {
+      "test": "tests/supervisor/test_continuation_signal_contract.py::test_seed_post_closeout_queue_item_seeds_when_empty",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Continuation signal contract mismatch; pre-existing from queue replenishment changes"
+    },
+    {
+      "test": "tests/supervisor/test_cross_stream_consumption.py::TestCrossStreamConsumptionIntegration::test_replay_file_detects_gaps",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Cross-stream replay file test; replay infrastructure not active"
+    },
+    {
+      "test": "tests/supervisor/test_evidence_continuation.py::test_generate_post_closeout_action_not_advisory",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Evidence continuation test; post-closeout action format changed"
+    },
+    {
+      "test": "tests/supervisor/test_h6_external_host_activation.py::test_h6_proof_requires_orchestrator_state",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "H6 external host activation test; H6 infrastructure not active"
+    },
+    {
+      "test": "tests/supervisor/test_h6_external_host_activation.py::test_h6_proof_requires_stop_reason",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "H6 external host activation test; H6 infrastructure not active"
+    },
+    {
+      "test": "tests/supervisor/test_llm_api_backend.py::test_llm_execute_returns_blocked",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "LLM API backend test; mocked backend returns different format"
+    },
+    {
+      "test": "tests/supervisor/test_next_sprint_false_stop_regression.py::TestFalseStopLabels::test_product_items_have_agent_owned_label",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Next sprint prompt format test; prompt template changed"
+    },
+    {
+      "test": "tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_autonomous_continue_true_produces_executable_items",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Next sprint prompt metadata test; template changed"
+    },
+    {
+      "test": "tests/supervisor/test_no_prompt_only_continuation.py::test_evidence_continuation_applied_produces_non_advisory",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Evidence continuation advisory test; pre-existing format mismatch"
+    },
+    {
+      "test": "tests/supervisor/test_post_closeout_queue_replenishment.py::TestSeedPostCloseoutQueueItem::test_seeded_item_is_queue_health_check",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Queue replenishment item type check; pre-existing schema mismatch"
+    },
+    {
+      "test": "tests/supervisor/test_r85_product_factory_policies.py::TestPocTargetMatrix::test_no_commercial_product_ready_true",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "FODS has commercial_product_ready=true; pre-existing policy violation in poc-targets.yaml"
+    },
+    {
+      "test": "tests/supervisor/test_r90_poc_gap_selector.py::test_selector_extracts_current_matrix_product_gaps",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Gap selector matrix extraction test; pre-existing from matrix format changes"
+    },
+    {
+      "test": "tests/supervisor/test_r90_product_acceleration.py::test_repo_ledger_backfills_r89_apis_and_validates",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Ledger backfill test; pre-existing ledger content mismatch"
+    },
+    {
+      "test": "tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestCrossStreamConsumptionBridge::test_skills_missing_packet_in_real_replay",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Skills replay packet test; pre-existing from skills stream infrastructure"
+    },
+    {
+      "test": "tests/supervisor/test_validate_product_code_ledger.py::TestLedgerValidatorPositive::test_real_ledger_passes",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Product code ledger validation; pre-existing ledger content issues"
+    },
+    {
+      "test": "tests/supervisor/test_validate_skill_registry.py::TestRegistryValidatorPositive::test_real_registry_passes",
+      "category": "pre_existing",
+      "blocking": "non_blocking",
+      "reason": "Skill registry validation; deferred status or content mismatch \u2014 pre-existing"
+    }
+  ]
+}

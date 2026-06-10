@@ -1,0 +1,28 @@
+id: GEC-TC-006
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Harden package manifest with richer count fields"
+status: completed
+lane: lane_f_package_manifest
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  Sprint 3 package manifest had only basic fields (run_id, sprint_id, artifacts_missing).
+  Reviewers could not verify evidence coverage without counting files manually.
+scope:
+  - Add 8 new fields to package-manifest.json in build_declaration_review_package.py:
+    declared_evidence_artifacts_count, unique_changed_files_count, package_changed_files_count,
+    materialized_verified_count, raw_logs_declared_count, raw_logs_packaged_count,
+    lane_ledger_present, state_ledger_present
+  - Add stream_identity_warnings field
+files_modified:
+  - tools/supervisor/build_declaration_review_package.py
+acceptance_criteria:
+  - package-manifest.json has 16+ fields
+  - lane_ledger_present correctly reports True when ledger file found
+  - raw_logs_declared_count and raw_logs_packaged_count populated
+dependencies: []
+handoff_to_autonomy_sprint: false

@@ -1,0 +1,15 @@
+{
+  "sprint_id": "acceleration-r103",
+  "classification_date": "2026-06-03",
+  "claims": [
+    {"category": "tools", "count": 5, "classification": "VERIFIED_SELF_CONTAINED", "reason": "All 5 tools exist on disk and are importable"},
+    {"category": "test_files", "count": 2, "classification": "VERIFIED_SELF_CONTAINED", "reason": "test_generate_stream_gaps.py (17) + test_anti_skip_checker.py (30) exist and pass"},
+    {"category": "tests_passing", "count": 226, "classification": "VERIFIED_SELF_CONTAINED", "reason": "226 passed in 1.60s"},
+    {"category": "reports", "count": 7, "classification": "VERIFIED_LOCAL_ONLY", "reason": "Exist on disk but NOT in review package ZIP"},
+    {"category": "sample_outputs", "count": 6, "classification": "VERIFIED_LOCAL_ONLY", "reason": "Exist in sample-outputs/ but NOT in ZIP"},
+    {"category": "stream_prompts", "count": 4, "classification": "VERIFIED_LOCAL_ONLY", "reason": "Exist in generated-stream-prompts/ but NOT in ZIP"},
+    {"category": "raw_test_log", "count": 1, "classification": "VERIFIED_LOCAL_ONLY", "reason": "236 lines, exists on disk, NOT in ZIP"},
+    {"category": "evidence_manifest", "count": 1, "classification": "VERIFIED_SELF_CONTAINED", "reason": "In .local/evidences/ AND in reports/"},
+    {"category": "review_package", "count": 1, "classification": "DECLARED_NOT_PACKAGED", "reason": "ZIP has 28 entries, all supervisor/state, 0 sprint-specific"}
+  ]
+}

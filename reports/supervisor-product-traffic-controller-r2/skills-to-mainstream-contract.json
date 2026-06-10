@@ -1,0 +1,58 @@
+{
+  "contract_id": "SKILLS-TO-MAINSTREAM-CONTRACT-R2",
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-R2-VERIFIED-ROUTING-CYCLE-ENFORCEMENT-AND-CROSS-STREAM-CONSUMPTION-001",
+  "generated_at": "2026-06-04T08:00:00Z",
+  "current_status": "SKILLS_CONSUMPTION_GAP",
+  "skills_stream_requirements": {
+    "must_produce": [
+      {
+        "artifact": "governed_transcripts",
+        "description": "At least 1 governed execution transcript for a mainstream format family",
+        "minimum": 1,
+        "current": 0,
+        "gap": "MISSING"
+      },
+      {
+        "artifact": "receiver_fixtures",
+        "description": "At least 1 validated receiver fixture for mainstream consumption",
+        "minimum": 1,
+        "current": 0,
+        "gap": "MISSING"
+      },
+      {
+        "artifact": "handoff_packet",
+        "description": "Skills-to-Mainstream handoff with governed_execution_consumed=true signal",
+        "minimum": 1,
+        "current": 0,
+        "gap": "MISSING"
+      }
+    ],
+    "flags_detected": [
+      "SKILLS_NO_PRODUCT_OUTPUT",
+      "SKILLS_MISSING_PACKET",
+      "MAINSTREAM_NOT_CONSUMING_SKILLS"
+    ]
+  },
+  "mainstream_stream_requirements": {
+    "must_declare": [
+      {
+        "field": "governed_execution_consumed",
+        "value": true,
+        "description": "Mainstream must declare it consumed a governed Skills execution"
+      },
+      {
+        "field": "skills_consumption",
+        "value": "consumed",
+        "description": "Mainstream replay must show skills_consumption=consumed"
+      }
+    ]
+  },
+  "contract_enforcement": {
+    "check_tool": "tools/supervisor/check_cross_stream_consumption.py",
+    "verdict_when_gap": "SKILLS_CONSUMPTION_GAP",
+    "verdict_when_ok": "SKILLS_CONSUMPTION_OK",
+    "blocks_clean_pass": true,
+    "blocks_continuation": false
+  },
+  "resolution_path": "Skills stream must produce governed transcripts for FODS or FODT; Mainstream sprint must then declare governed_execution_consumed=true in replay results."
+}

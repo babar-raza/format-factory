@@ -1,0 +1,78 @@
+{
+  "contract_id": "SKILLS-INTEGRATION-CONTRACT-BREADTH-V1",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "version": "1.1",
+  "repaired_at": "2026-06-04T16:00:00Z",
+  "repair_applied": true,
+  "repair_summary": "TC-B-001/B-002/B-003: Both FODT handoffs had wrong signatures and mode. fodt_markdown status updated to ALREADY_IMPLEMENTED (R112). fodt_txt method name corrected ExportToTxt->ExportTxt, status ALREADY_IMPLEMENTED (R113). Test targets updated to R112/R113 dogfood tests.",
+  "status": "READY_FOR_TRI_LANE_CONSUMPTION",
+  "consumers": ["Supervisor", "Acceleration", "Mainstream"],
+  "authority_source": "Skills lane (this contract)",
+  "description": "Tri-lane integration contract providing full governed handoffs for FODT (Markdown + TXT) and Netpbm Pipeline capabilities. FODS is already READY_FOR_MAINSTREAM from the hardening sprint and is not re-packaged here.",
+  "packets": {
+    "fodt_markdown": {
+      "gap_id": "GAP-FODT-DOGFOOD-MD-DOTNET-001",
+      "capability": "dogfood_status.fodt_to_markdown_dotnet",
+      "packet_type": "FULL",
+      "packet_path": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "handoff_path": "reports/skills-product-breadth-finalization/fodt-markdown-handoff.yaml",
+      "status": "READY_FOR_MAINSTREAM",
+      "source_files": ["src/net/fodt/FodtDocument.cs", "src/net/fodt/FodtMarkdownExporter.cs"],
+      "test_target": "tests/net/fodt/FodtR112MarkdownExportDogfoodTests.cs",
+      "existing_tests": 8,
+      "enforcement_tier": "FAIL_CLOSED",
+      "repair_note": "Capability implemented at R112. Test target corrected. Method: doc.ExportToMarkdown() instance method, not void ExportToMarkdown(string outputPath)."
+    },
+    "fodt_txt": {
+      "gap_id": "GAP-FODT-DOGFOOD-TXT-DOTNET-001",
+      "capability": "dogfood_status.fodt_to_txt_dotnet",
+      "packet_type": "FULL",
+      "packet_path": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+      "handoff_path": "reports/skills-product-breadth-finalization/fodt-txt-handoff.yaml",
+      "status": "READY_FOR_MAINSTREAM",
+      "source_files": ["src/net/fodt/FodtDocument.cs", "src/net/fodt/FodtTxtExporter.cs"],
+      "test_target": "tests/net/fodt/FodtR113TxtDogfoodTests.cs",
+      "existing_tests": 6,
+      "enforcement_tier": "FAIL_CLOSED",
+      "repair_note": "Capability implemented at R113. Test target corrected. Method name: ExportTxt (not ExportToTxt). Instance: doc.GetPlainText(), doc.ExportToPlainTextFile(). Static: FodtTxtExporter.ExportTxt()."
+    },
+    "netpbm": {
+      "gap_id": "GAP-NETPBM-DOGFOOD-PIPELINE-DOTNET-001",
+      "capability": "dotnet_status.netpbm_image_pipeline_dotnet",
+      "packet_type": "FULL",
+      "packet_path": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "handoff_path": "reports/skills-product-breadth-finalization/netpbm-proof-handoff.yaml",
+      "status": "READY_FOR_MAINSTREAM",
+      "source_files": ["src/net/netpbm/Model/NetpbmImage.cs"],
+      "test_target": "tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs",
+      "expected_new_tests": 8,
+      "enforcement_tier": "FAIL_CLOSED",
+      "note": "Corrects stale Acceleration ai_draft (flip_diagonal at R106 already done). Pipeline is the R114 capability."
+    }
+  },
+  "fods_reference": {
+    "status": "READY_FOR_MAINSTREAM (from hardening sprint — not re-packaged)",
+    "packet_path": "reports/skills-governed-execution-hardening/fods-csv-packet-hardening.md",
+    "hardening_validation": "reports/skills-governed-execution-hardening/fods-csv-packet-validation.json"
+  },
+  "schema_compatibility": {
+    "acceleration_field_map": "reports/skills-product-breadth-finalization/skills-acceleration-field-map.json",
+    "supervisor_field_map": "reports/skills-product-breadth-finalization/skills-supervisor-field-map.json",
+    "compatibility_notes": "reports/skills-product-breadth-finalization/skills-acceleration-compatibility.md"
+  },
+  "lane_handoffs": {
+    "supervisor": "reports/skills-product-breadth-finalization/handoff-to-supervisor.json",
+    "acceleration": "reports/skills-product-breadth-finalization/handoff-to-acceleration.json",
+    "mainstream": "reports/skills-product-breadth-finalization/handoff-to-mainstream.json"
+  },
+  "consumption_rules": {
+    "mainstream": "Read handoff YAML for target capability. Execute add-dotnet-api skill with mode=live. Validate transcript. Run tests. Add ledger entry.",
+    "supervisor": "Grade Mainstream evidence declaration against Skills acceptance_criteria. Use supervisor field map for grading rubric.",
+    "acceleration": "Use Skills packets as authoritative source. Acceleration ai_draft packets are superseded for all three capabilities."
+  },
+  "no_product_source_changes_in_this_sprint": true,
+  "no_plugin_install": true,
+  "no_mcp_registration": true,
+  "no_commit_push": true
+}

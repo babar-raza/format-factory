@@ -1,0 +1,103 @@
+{
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R101-DEEP-PRODUCT-POC-COMMERCIAL-FOSS-DOGFOOD-PACKAGE-MEGA-TRAIN-001",
+  "generated_at": "2026-06-03T14:00:00Z",
+  "lanes": [
+    {
+      "lane_id": "R101-TRAIN-A",
+      "title": "Product truth reconciliation + gap selection",
+      "status": "completed",
+      "deliverables": ["reports/mainstream-r101/00-preflight.md", "reports/mainstream-r101/selected-mainstream-gaps.json", "reports/mainstream-r101/context-pack-contamination-check.md"]
+    },
+    {
+      "lane_id": "R101-TRAIN-B",
+      "title": "FODS .NET RemoveSheet",
+      "status": "completed",
+      "skill": "add-dotnet-api",
+      "deliverables": ["src/net/fods/FodsDocument.cs (RemoveSheet method)", "tests/net/fods/FodsR101RemoveSheetTests.cs (10 tests)"]
+    },
+    {
+      "lane_id": "R101-TRAIN-C",
+      "title": "FODT .NET InsertParagraph tests",
+      "status": "completed",
+      "skill": "add-dotnet-api",
+      "deliverables": ["tests/net/fodt/FodtR101InsertParagraphTests.cs (10 tests)"],
+      "notes": "InsertParagraph method existed from acceleration sprint; tests were missing"
+    },
+    {
+      "lane_id": "R101-TRAIN-D",
+      "title": "Netpbm .NET Rotate180",
+      "status": "completed",
+      "skill": "add-dotnet-object-model-feature",
+      "deliverables": ["src/net/netpbm/Model/NetpbmImage.cs (Rotate180 method)", "tests/net/netpbm/NetpbmR101Rotate180Tests.cs (10 tests)"]
+    },
+    {
+      "lane_id": "R101-TRAIN-E",
+      "title": "ZST installed package smoke",
+      "status": "completed",
+      "skill": "add-roundtrip-test",
+      "deliverables": ["tests/python/zst/test_r101_zst_installed_smoke.py (10 tests)"]
+    },
+    {
+      "lane_id": "R101-TRAIN-F",
+      "title": "Netpbm Python installed chain workflow",
+      "status": "completed",
+      "skill": "verify-dogfood-path",
+      "deliverables": ["tests/python/ppm/test_r101_netpbm_installed_chain.py (8 tests)"]
+    },
+    {
+      "lane_id": "R101-TRAIN-G",
+      "title": "SYLK strict parse edge cases",
+      "status": "completed",
+      "skill": "add-roundtrip-test",
+      "deliverables": ["tests/python/sylk/test_r101_sylk_strict_edge.py (9 tests)"],
+      "findings": "Unicode values raise SylkError (ASCII-only writer); semicolons in values write but may confuse parser"
+    },
+    {
+      "lane_id": "R101-TRAIN-H",
+      "title": "Dogfood: FODS CSV edit→export roundtrip",
+      "status": "completed",
+      "deliverables": ["reports/mainstream-r101/dogfood-proof-fods-csv-roundtrip.md"]
+    },
+    {
+      "lane_id": "R101-TRAIN-I",
+      "title": "Dogfood: Netpbm PGM→PPM export roundtrip",
+      "status": "completed",
+      "deliverables": ["reports/mainstream-r101/dogfood-proof-netpbm-export-roundtrip.md"]
+    },
+    {
+      "lane_id": "R101-TRAIN-J",
+      "title": "Usability: SYLK installed example",
+      "status": "completed",
+      "skill": "add-installed-package-example",
+      "deliverables": ["examples/python/sylk/write_export_sylk.py"]
+    },
+    {
+      "lane_id": "R101-TRAIN-K",
+      "title": "Usability: Netpbm .NET pixel edit + save example",
+      "status": "completed",
+      "skill": "add-installed-package-example",
+      "deliverables": ["examples/net/netpbm/PixelEditSaveExample.cs"]
+    }
+  ],
+  "test_results": {
+    "python_passed": 2687,
+    "python_skipped": 13,
+    "dotnet_fods": 307,
+    "dotnet_fodt": 293,
+    "dotnet_netpbm": 216,
+    "dotnet_total": 816,
+    "grand_total": 3503,
+    "new_tests_r101": 57,
+    "new_tests_detail": "FODS 10 + FODT 10 + Netpbm 10 + ZST 10 + PPM/chain 8 + SYLK 9"
+  },
+  "quota_check": {
+    "commercial_net_deliverables": 3,
+    "commercial_net_formats": ["FODS (RemoveSheet)", "FODT (InsertParagraph tests)", "Netpbm (Rotate180)"],
+    "commercial_save_export": true,
+    "foss_deliverables": 3,
+    "foss_formats": ["ZST (installed smoke)", "Netpbm (installed chain)", "SYLK (strict edge)"],
+    "dogfood_deliverables": 2,
+    "usability_deliverables": 2,
+    "all_quotas_met": true
+  }
+}

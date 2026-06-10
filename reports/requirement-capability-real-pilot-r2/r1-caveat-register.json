@@ -1,0 +1,70 @@
+{
+  "sprint_id": "FORMAT-FACTORY-REQUIREMENT-CAPABILITY-AUTHORITY-LAYER-REAL-PILOT-R2-001",
+  "source_sprint": "FORMAT-FACTORY-REQUIREMENT-CAPABILITY-AUTHORITY-LAYER-REAL-PILOT-R1-001",
+  "generated_at": "2026-06-05T10:00:00Z",
+  "caveats": [
+    {
+      "id": "CAV-R1-001",
+      "description": "evidence_quality_score = 0.12 — 7/8 items path-only ACCEPTED_WITH_LIMITATIONS",
+      "severity": "high",
+      "classification": "r2_must_fix",
+      "r2_action": "Add test_references to work items; ensure sample outputs; capture logs to proper paths"
+    },
+    {
+      "id": "CAV-R1-002",
+      "description": "anti-skip: missing_raw_logs (MEDIUM) — no raw test logs found at expected location",
+      "severity": "medium",
+      "classification": "r2_must_fix",
+      "r2_action": "Capture pytest output to .local/evidences/requirement-capability-real-pilot-r2/raw-logs/"
+    },
+    {
+      "id": "CAV-R1-003",
+      "description": "anti-skip: missing_sample_outputs (LOW) — 0 sample output artifacts",
+      "severity": "low",
+      "classification": "r2_must_fix",
+      "r2_action": "Produce sample-outputs/ directory with at least one JSON sample artifact"
+    },
+    {
+      "id": "CAV-R1-004",
+      "description": "review-package-proof.md not verified as packaged",
+      "severity": "medium",
+      "classification": "r2_should_improve",
+      "r2_action": "Generate review-package-proof.md with actual SHA-256 before building package"
+    },
+    {
+      "id": "CAV-R1-005",
+      "description": "final-git-status.txt not packaged",
+      "severity": "medium",
+      "classification": "r2_should_improve",
+      "r2_action": "Run git status --short at closeout and write final-git-status.txt"
+    },
+    {
+      "id": "CAV-R1-006",
+      "description": "Gap queue routes FODS/FODT blocked exports to Mainstream-Dogfood with generic action",
+      "severity": "high",
+      "classification": "downstream_blocker",
+      "r2_action": "Fix mainstream_gap_queue.py: detect architecture_blocked_missing_target_writer metadata; route to Target-Writer-Architecture lane"
+    },
+    {
+      "id": "CAV-R1-007",
+      "description": "FODT used fixture-backed spec input in R1 (no Spec Authority coverage)",
+      "severity": "medium",
+      "classification": "r2_should_improve",
+      "r2_action": "Consume Spec R3 frozen FODT snapshot (ACCEPTED_WITH_CAVEAT, ODF 1.3 scoped)"
+    },
+    {
+      "id": "CAV-R1-008",
+      "description": "All non-test work items lack test_references field in evidence declaration",
+      "severity": "medium",
+      "classification": "r2_must_fix",
+      "r2_action": "Add test_references arrays to evidence declaration work items where applicable"
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "r2_must_fix": 4,
+    "r2_should_improve": 3,
+    "downstream_blocker": 1,
+    "acceptable_limitation": 0
+  }
+}

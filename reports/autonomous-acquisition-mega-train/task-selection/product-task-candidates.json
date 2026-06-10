@@ -1,0 +1,107 @@
+[
+  {
+    "task_id": "h8-probe-abw-001",
+    "format": "ABW",
+    "action": "add_function",
+    "target_file": "src/python/abw/abw_codec.py",
+    "also_modifies": [
+      "src/python/abw/__init__.py"
+    ],
+    "function_name": "probe_abw",
+    "description": "Add probe_abw(source) format-detection function: returns True if source appears to be a valid ABW/AbiWord XML document",
+    "capability_added": "FORMAT_DETECTION",
+    "bounded": true,
+    "reversible": true,
+    "new_external_deps": false,
+    "gate_required": null,
+    "classification": "AGENT_OWNED_SAFE",
+    "rationale": "ABW codec (Sprint 7 pilot) has load/create/write but no probe/detect. probe_abw() reads the first bytes and checks for '<abiword' root element. Pure stdlib, ~20 lines, non-structural addition.",
+    "target_exists": true,
+    "already_implemented": true,
+    "actionable": false
+  },
+  {
+    "task_id": "h8-probe-gnumeric-001",
+    "format": "Gnumeric",
+    "action": "add_function",
+    "target_file": "src/python/gnumeric/gnumeric_codec.py",
+    "also_modifies": [
+      "src/python/gnumeric/__init__.py"
+    ],
+    "function_name": "probe_gnumeric",
+    "description": "Add probe_gnumeric(source) format-detection function: returns True if source appears to be a valid gzip-compressed Gnumeric XML document",
+    "capability_added": "FORMAT_DETECTION",
+    "bounded": true,
+    "reversible": true,
+    "new_external_deps": false,
+    "gate_required": null,
+    "classification": "AGENT_OWNED_SAFE",
+    "rationale": "Gnumeric codec has load/export_to_csv but no probe/detect. probe_gnumeric() checks gzip magic bytes + decompresses header to check for Gnumeric namespace. Pure stdlib, ~15 lines.",
+    "target_exists": true,
+    "already_implemented": true,
+    "actionable": false
+  },
+  {
+    "task_id": "h9-gnumeric-create-001",
+    "format": "Gnumeric",
+    "action": "add_function",
+    "target_file": "src/python/gnumeric/gnumeric_codec.py",
+    "also_modifies": [
+      "src/python/gnumeric/__init__.py"
+    ],
+    "function_name": "create_gnumeric",
+    "description": "Add create_gnumeric(sheets) document-builder: builds a Gnumeric workbook model from a list of sheet dicts",
+    "capability_added": "DOCUMENT_CREATION",
+    "bounded": true,
+    "reversible": true,
+    "new_external_deps": false,
+    "gate_required": null,
+    "classification": "AGENT_OWNED_SAFE",
+    "rationale": "Gnumeric codec has load/export_to_csv but no create/write. create_gnumeric() builds an in-memory model dict from row-major sheet data. Pure stdlib, ~25 lines, non-structural addition.",
+    "target_exists": true,
+    "already_implemented": true,
+    "actionable": false
+  },
+  {
+    "task_id": "h9-gnumeric-write-001",
+    "format": "Gnumeric",
+    "action": "add_function",
+    "target_file": "src/python/gnumeric/gnumeric_codec.py",
+    "also_modifies": [
+      "src/python/gnumeric/__init__.py"
+    ],
+    "function_name": "write_gnumeric",
+    "description": "Add write_gnumeric(model, dest) serializer: writes a gzip-compressed Gnumeric XML file from a model dict",
+    "capability_added": "DOCUMENT_WRITE",
+    "bounded": true,
+    "reversible": true,
+    "new_external_deps": false,
+    "gate_required": null,
+    "classification": "AGENT_OWNED_SAFE",
+    "rationale": "Gnumeric codec has no write path. write_gnumeric() serializes the model dict to gzip-compressed Gnumeric XML. Pure stdlib (gzip + ET), ~35 lines.",
+    "target_exists": true,
+    "already_implemented": true,
+    "actionable": false
+  },
+  {
+    "task_id": "h9-abw-txt-export-001",
+    "format": "ABW",
+    "action": "add_function",
+    "target_file": "src/python/abw/abw_codec.py",
+    "also_modifies": [
+      "src/python/abw/__init__.py"
+    ],
+    "function_name": "export_to_txt",
+    "description": "Add export_to_txt(source) text-export: extracts all paragraph text from an ABW document as a plain-text string",
+    "capability_added": "PLAIN_TEXT_EXPORT",
+    "bounded": true,
+    "reversible": true,
+    "new_external_deps": false,
+    "gate_required": null,
+    "classification": "AGENT_OWNED_SAFE",
+    "rationale": "ABW codec has load/create/write/probe but no plain-text export. export_to_txt() calls load() and joins paragraphs with newlines. Pure stdlib, ~10 lines.",
+    "target_exists": true,
+    "already_implemented": true,
+    "actionable": false
+  }
+]

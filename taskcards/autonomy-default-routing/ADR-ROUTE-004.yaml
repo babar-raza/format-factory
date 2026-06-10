@@ -1,0 +1,26 @@
+id: ADR-ROUTE-004
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Product Mutation Route Evidence Schema"
+status: completed
+lane: policy_schema
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-003]
+gates:
+  - "schema validates sample mutation evidence"
+allowed_files:
+  - "schemas/evidence/product-mutation-route-evidence.schema.json"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "Schema links mutations to route decisions"
+  - "Required fields: mutation_id, task_id, route_decision_id"
+tests:
+  - "tests/supervisor/test_autonomy_routing_integration.py::TestRouteDecisionSchemaValidation::test_product_mutation_evidence_schema_exists"
+evidence:
+  - "schemas/evidence/product-mutation-route-evidence.schema.json"
+rollback: "rm schemas/evidence/product-mutation-route-evidence.schema.json"
+closeout_criteria: "schema file created, validates sample JSON"

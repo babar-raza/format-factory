@@ -1,0 +1,16 @@
+adoption_handoff_id: SKILLS-R103-ADOPT-MAINSTREAM-001
+target_stream: mainstream
+integration_type: skill_routing
+description: "Mainstream sprint prompts reference skill_id to route feature implementation through governed skill pipeline"
+mechanism:
+  - sprint_prompt_names_skill_id: "e.g., skill_id: add-dotnet-object-model-feature"
+  - agent_looks_up_registry: ".supervisor/skill-registry.yaml"
+  - agent_reads_command_file: ".claude/commands/{skill_id}.md"
+  - agent_consumes_handoff: "reports/skills-r<N>/generated-handoffs/"
+  - agent_produces_transcript: "reports/skills-r<N>/skill-transcripts/"
+  - supervisor_validates_transcript: "tools/supervisor/validate_skill_transcript.py"
+example_task:
+  description: "Add RenameSheet to FODS .NET product"
+  skill_id: add-dotnet-object-model-feature
+  handoff_ref: reports/skills-r103/generated-handoffs/handoff-001-fods-renamesheet.md
+  expected_transcript: reports/skills-r104/skill-transcripts/transcript-xxx-add-dotnet-object-model-feature-fods.json

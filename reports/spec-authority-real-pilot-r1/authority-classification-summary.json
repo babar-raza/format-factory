@@ -1,0 +1,32 @@
+{
+  "pilot_id": "spec-authority-real-pilot-r1",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "total_requirements": 46,
+  "by_authority_status": {
+    "ACCEPTED_SPEC": {
+      "count": 12,
+      "sources": ["src-zst-rfc8878"],
+      "rationale": "Sourced from RFC 8878 (IETF) — formal standards body publication. Requirements may be used as authoritative spec evidence."
+    },
+    "ACCEPTED_WITH_CAVEAT": {
+      "count": 24,
+      "sources": ["src-netpbm-spec", "src-fods-odf"],
+      "rationale": "Netpbm: public domain spec without formal standards body. FODS: ODF standard but license confirmation pending. Requirements usable with caveat annotation."
+    },
+    "EMPIRICAL_ONLY": {
+      "count": 10,
+      "sources": ["src-dif-empirical"],
+      "rationale": "DIF has no authoritative public specification. Requirements derived from empirical observation of existing DIF files. MUST NOT be treated as authoritative spec evidence. Capability claims against DIF must be proven via behavioral testing only."
+    }
+  },
+  "downgrade_rules": [
+    "EMPIRICAL_ONLY requirements may NEVER be promoted to ACCEPTED_SPEC without a verified external spec source",
+    "ACCEPTED_WITH_CAVEAT requirements require caveat annotation in capability claims",
+    "All anti-bypass rules still apply regardless of authority_status"
+  ],
+  "pilot_caveats": [
+    "All sources are fixture-based (deferred_local_fixture). Real RFC 8878 text fetch deferred to Pilot R2.",
+    "FODS/ODF license confirmation (OASIS ODF standard) pending — remains ACCEPTED_WITH_CAVEAT.",
+    "Netpbm public_domain_spec caveat: no formal standards body, no versioned release."
+  ]
+}

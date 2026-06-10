@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "action_id": "HOST_SMOKE_REPAIR_001",
+  "nonce": "bb832ba8-97e2-43b9-acb6-5ab50ffc094c",
+  "action_type": "CLAUDE_CODE_SMOKE",
+  "mode": "LIVE_NOOP_OR_SMOKE",
+  "prompt_path": "reports/autonomous-host-loop-repair/safe-smoke-prompt.md",
+  "allowed_write_roots": [
+    "reports/autonomous-host-loop-repair/smoke/"
+  ],
+  "forbidden_actions": [
+    "git commit",
+    "git push",
+    "publish",
+    "Gate approval",
+    "poc-targets mutation",
+    "src mutation",
+    "tests mutation"
+  ],
+  "expected_output_files": [
+    "reports/autonomous-host-loop-repair/smoke/host-created-proof.md"
+  ],
+  "success_marker": "HOST_CYCLE_SMOKE_OK",
+  "success_contract": {
+    "stdout_mode": "STRICT_JSON",
+    "required_nonce_match": true,
+    "child_must_write_expected_file": true,
+    "parent_may_create_proof_file": false
+  },
+  "max_runtime_seconds": 120,
+  "note": "Schema v2 — strict JSON required. Child agent must write proof file independently. Parent verifies only."
+}

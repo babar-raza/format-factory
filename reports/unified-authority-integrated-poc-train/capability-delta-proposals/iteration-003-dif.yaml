@@ -1,0 +1,58 @@
+proposed_only: true
+not_applied_to_poc_targets: true
+iteration: 3
+sprint_id: "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001"
+generated_at: "2026-06-05T00:00:00Z"
+
+capabilities:
+  - capability: "probe_dif"
+    operation: "Deepen"
+    description: "Probe DIF file: returns dict with valid_header, exists, title, vector_count."
+    api_symbol: "probe_dif(path) -> dict"
+    product: "DIF Python FOSS"
+    proof_level: "VERIFIED"
+    source_files: []
+    test_files:
+      - "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
+    tests_passed: 5
+    tests_failed: 0
+
+  - capability: "dif_to_csv"
+    operation: "Verify"
+    description: "Convert DIF document to CSV string."
+    api_symbol: "dif_to_csv(path) -> str"
+    product: "DIF Python FOSS"
+    proof_level: "VERIFIED"
+    source_files: []
+    test_files:
+      - "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
+    tests_passed: 3
+    tests_failed: 0
+
+  - capability: "parse_dif_strict"
+    operation: "Verify"
+    description: "Strict DIF parser with error on malformed input."
+    api_symbol: "parse_dif_strict(path) -> DifDocument"
+    product: "DIF Python FOSS"
+    proof_level: "VERIFIED"
+    source_files: []
+    test_files:
+      - "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
+    tests_passed: 3
+    tests_failed: 0
+
+  - capability: "write_dif"
+    operation: "Add"
+    description: "Write DIF document to file — NOT YET IMPLEMENTED"
+    status: "MISSING"
+    blocker_reason: "write_dif not present in src/python/dif/dif_parser.py. Target for iteration 4."
+    proposed_poc_target_update:
+      path: "on_hold.DIF"
+      note: "DIF still on_hold pending write_dif implementation"
+
+raw_log: "reports/unified-authority-integrated-poc-train/raw-logs/dif-r116-tests.log"
+transcript: "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-003-dif.json"
+source_diff: "reports/unified-authority-integrated-poc-train/source-diffs/iteration-003-dif.diff"
+sample_output: "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-003/dif/dif-csv-pipeline.txt"
+total_tests_passed: 12
+total_tests_failed: 0

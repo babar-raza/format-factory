@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProductMutationRouteEvidence",
+  "description": "Links a product source mutation to its authorizing route decision.",
+  "type": "object",
+  "required": [
+    "mutation_id", "task_id", "route_decision_id", "authorized_route",
+    "allowed_paths_used", "forbidden_paths_checked", "tests_proving_mutation"
+  ],
+  "properties": {
+    "mutation_id": { "type": "string" },
+    "task_id": { "type": "string" },
+    "route_decision_id": { "type": "string" },
+    "authorized_route": { "type": "string" },
+    "allowed_paths_used": { "type": "array", "items": { "type": "string" } },
+    "forbidden_paths_checked": { "type": "array", "items": { "type": "string" } },
+    "tests_proving_mutation": { "type": "array", "items": { "type": "string" } },
+    "supervisor_verdict_accepted": { "type": "boolean" },
+    "run_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}

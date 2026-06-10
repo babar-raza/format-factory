@@ -1,0 +1,28 @@
+id: GRE-TC-003
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Fix anti-skip sample-output false violation for governance sprints (Lane C)"
+status: completed
+lane: anti_skip_repair
+item_type: GOVERNANCE_DOC
+problem: >
+  Sprint 2 autonomous-cycle showed 1 LOW violation: missing_sample_outputs.
+  Governance sprints have no PRODUCT_SOURCE work items, so sample outputs are
+  not applicable. The anti-skip checker incorrectly fired on all sprint types.
+scope:
+  - Add _GOVERNANCE_ITEM_TYPES, _GOVERNANCE_EXCEPTION_CLASSES, _DRY_RUN_CLASSIFICATIONS
+  - Add _is_governance_only_sprint() helper
+  - Add _has_product_source_items() helper
+  - Add early-return exemption in detect_missing_sample_outputs()
+  - Write 16 tests in test_anti_skip_sample_output_exemption.py
+files_modified:
+  - tools/supervisor/anti_skip_checker.py
+files_created:
+  - tests/supervisor/test_anti_skip_sample_output_exemption.py
+  - reports/repeatability-governance-enforcement-rnext/anti-skip-sample-output-repair.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+dependencies: []
+handoff_to_autonomy_sprint: false

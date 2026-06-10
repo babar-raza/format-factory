@@ -1,0 +1,53 @@
+handoff_id: handoff-tools-tools-quota_tracker
+generated_at: '2026-06-03T08:05:18.352177+00:00'
+sprint_id: R103
+purpose: Implement tools.quota_tracker for tools (acceleration)
+gap_id: ''
+format: tools
+product_track: acceleration
+source_track: unknown
+capability_path: tools.quota_tracker
+work_type: supervisor_tooling
+decision: GOVERNED_HANDOFF_REQUIRED
+allowed_files:
+- src/python/tools/
+- tests/python/tools/
+forbidden_files:
+- src/net/
+- tools/supervisor/
+implementation_steps:
+- 1. Implement changes in src/python/tools/
+- 2. Add tests
+- 3. Verify
+tests_required:
+- At least one test in tests/python/tools/
+raw_logs:
+- .local/supervisor/raw-logs/handoff-tools-tools-quota_tracker.log
+product_code_ledger: reports/r90/product-code-change-ledger.json
+rollback: git checkout -- src/python/tools/ tests/python/tools/
+evidence_outputs: &id001
+- reports/r103/handoff-tools-tools-quota_tracker.md
+- .local/evidences/R103/evidence-declaration.yaml
+evidence_declaration_entries:
+- item_id: R103-tools-tools-quota_tracker
+  title: tools tools.quota_tracker implementation
+  status: completed
+  evidence_paths: *id001
+ledger_requirements:
+- Record lane start via record_lane_execution.py start
+- Record lane close with files_changed and test counts
+capability_matrix_update:
+  file: product-capability-matrix/poc-targets.yaml
+  path: tools.quota_tracker
+  expected_transition: NOT_IMPLEMENTED -> DONE or PARTIAL
+stop_conditions:
+- Test suite fails
+- Files modified outside allowed_files
+- Gate or release state change needed
+- Scope exceeds single capability
+safety_gates:
+- No src/* changes outside allowed paths
+- All new tests must pass before closing
+- Update poc-targets.yaml capability status
+- Write lane execution ledger entry
+- No git push or commit without human approval

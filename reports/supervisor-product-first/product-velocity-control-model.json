@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-FIRST-TRAFFIC-CONTROLLER-REPLAN-AND-STREAM-LOCAL-CLOSURE-001",
+  "dimensions": {
+    "poc_help_score": {"type": "int", "range": "0-3", "description": "How much sprint helps current POC"},
+    "product_breadth_score": {"type": "int", "range": "0-3", "description": "Number of format families with source changes"},
+    "product_throughput_delta": {"type": "int", "description": "Test count delta vs prior sprint"},
+    "mainstream_blocker_removed": {"type": "bool", "description": "Was a Mainstream blocker resolved?"},
+    "reusable_accelerator_consumed": {"type": "bool", "description": "Did Mainstream consume Acceleration output?"},
+    "ai_acceleration_consumed": {"type": "bool", "description": "Was AI output consumed by Mainstream?"},
+    "governed_execution_consumed": {"type": "bool", "description": "Were Skills governed transcripts used?"},
+    "false_pass_prevented": {"type": "bool", "description": "Was an erroneous PASS blocked?"},
+    "false_stop_prevented": {"type": "bool", "description": "Was an erroneous STOP blocked?"},
+    "human_handoff_reduced": {"type": "bool", "description": "Did Skills reduce human handoff?"},
+    "machinery_overhead_score": {"type": "int", "range": "0-3", "description": "Supervisor machinery overhead"},
+    "semantic_drift_risk": {"type": "str", "values": ["low", "medium", "high"], "description": "Drift risk level"}
+  },
+  "no_clean_pass_machinery_rule": {
+    "condition": "machinery_overhead_score >= 2 AND none of (false_pass_prevented, false_stop_prevented, mainstream_blocker_removed, reusable_accelerator_consumed)",
+    "result": "PARTIAL_HELPER_ONLY"
+  },
+  "product_output_floor": {
+    "condition": "(product_breadth_score >= 1 OR mainstream_blocker_removed) AND machinery_overhead_score < 3",
+    "result": "floor_met"
+  }
+}

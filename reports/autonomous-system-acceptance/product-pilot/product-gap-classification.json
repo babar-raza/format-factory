@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001",
+  "generated_at": "2026-06-06T00:00:00Z",
+  "status": "CLASSIFIED",
+  "total_targets": 6,
+  "autonomous_gaps": [],
+  "autonomous_gaps_count": 0,
+  "external_gate_gaps": [
+    {"id": "fods_to_csv_dotnet", "gate_11_status": "APPROVED", "note": "Needs publish/push"},
+    {"id": "fodt_to_csv_dotnet", "gate_11_status": "APPROVED", "note": "Needs publish/push"},
+    {"id": "netpbm_foss_python", "gate_11_status": "APPROVED", "note": "Needs publish/push"},
+    {"id": "zst_foss_python", "gate_11_status": "APPROVED", "note": "Needs publish/push"},
+    {"id": "sylk_foss_python", "gate_11_status": "APPROVED", "note": "Needs publish/push"},
+    {"id": "dif_foss_python", "gate_11_status": "APPROVED", "note": "Needs publish/push"}
+  ],
+  "external_gate_count": 6,
+  "commercial_ready": [
+    {"id": "fods_to_csv_dotnet", "gate_11_status": "APPROVED"},
+    {"id": "fodt_to_csv_dotnet", "gate_11_status": "APPROVED"},
+    {"id": "netpbm_foss_python", "gate_11_status": "APPROVED"}
+  ],
+  "commercial_ready_count": 3,
+  "pilot_verdict": "PRODUCT_GAPS_ALL_CLASSIFIED_NO_AUTONOMOUS_WORK_REMAINING",
+  "pilot_actions_generated": [
+    {
+      "action_type": "RUN_JSON_VALIDATION",
+      "target_path": "reports/autonomous-system-acceptance/current-gap-analysis.json",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC"
+    },
+    {
+      "action_type": "CLASSIFY_PRODUCT_GAPS",
+      "target_path": "poc-targets.yaml",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC"
+    }
+  ],
+  "product_source_mutation": false,
+  "note": "All 6 product targets have gate_11_status=APPROVED. 0 autonomous product gaps remain. No src/ mutations performed."
+}

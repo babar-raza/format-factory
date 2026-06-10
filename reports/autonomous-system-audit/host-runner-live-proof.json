@@ -1,0 +1,42 @@
+{
+  "sprint_id": "FORMAT-FACTORY-FULL-AUTONOMOUS-SYSTEM-AUDIT-AND-REPAIR-001",
+  "date": "2026-06-05",
+  "cli_detection": {
+    "available": true,
+    "path": "C:\\Users\\prora\\AppData\\Roaming\\npm\\claude.CMD",
+    "version": "2.1.62 (Claude Code)",
+    "invocable": true,
+    "reason": "Claude CLI found on PATH"
+  },
+  "dry_run_result": "PASS",
+  "dry_run_safe_prompt": "Respond with exactly: HOST_RUNNER_NOOP_OK. Do not modify files. Do not run commands.",
+  "dry_run_safety_check": "PASS (no hard-stop keywords)",
+  "live_noop_attempted": true,
+  "live_noop_result": {
+    "success": false,
+    "output": "Error: Claude Code cannot be launched inside another Claude Code session.\nNested sessions share runtime resources and will crash all active sessions.\nTo bypass this check, unset the CLAUDECODE environment variable.",
+    "noop_confirmed": false,
+    "returncode": 1,
+    "classification": "HOST_RUNNER_LIVE_INVOCATION_BLOCKED_BY_POLICY"
+  },
+  "final_classification": "HOST_RUNNER_LIVE_INVOCATION_BLOCKED_BY_POLICY",
+  "proven": false,
+  "blocker_reason": "CLAUDECODE env var prevents nested Claude Code invocation. This is a runtime environment constraint, not a tooling defect.",
+  "wiring_instructions": [
+    "Open a terminal OUTSIDE of Claude Code",
+    "cd to repo root: C:/Users/prora/OneDrive/Documents/GitHub/format-factory",
+    "Run: unset CLAUDECODE && claude --print -p 'Respond with exactly: HOST_RUNNER_NOOP_OK. Do not modify files. Do not run commands.'",
+    "Verify output contains HOST_RUNNER_NOOP_OK",
+    "git status should show no changes after invocation"
+  ],
+  "unblock_action": "Unset CLAUDECODE env var or run from external terminal",
+  "contract_compliance": "HONEST_CLASSIFICATION_DOCUMENTED",
+  "notes": [
+    "CLI is available and invocable — version 2.1.62 confirmed",
+    "Dry-run safety check passes (no hard-stop keywords in safe prompt)",
+    "Live invocation blocked only by nested-session runtime protection",
+    "Tool is functionally correct — classified honestly per contract",
+    "One-time human action (run from external terminal) proves invocation",
+    "autonomous-execution-contract.md allows this honest classification"
+  ]
+}

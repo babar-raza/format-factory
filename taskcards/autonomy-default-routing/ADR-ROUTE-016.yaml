@@ -1,0 +1,26 @@
+id: ADR-ROUTE-016
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Rollback/Recovery/Quarantine Plan"
+status: completed
+lane: coordinator
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-001]
+gates:
+  - "doc covers all modified files and their revert commands"
+allowed_files:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/rollback-and-recovery-plan.md"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "All modified files listed with revert commands"
+  - "All new files listed with delete commands"
+  - "Quarantine procedure documented"
+tests: []
+evidence:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/rollback-and-recovery-plan.md"
+rollback: "Delete rollback doc"
+closeout_criteria: "doc written, all revert commands verified"

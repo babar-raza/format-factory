@@ -1,0 +1,50 @@
+{
+  "sprint_id": "FORMAT-FACTORY-HOST-PROOFED-AUTONOMOUS-FORMAT-PILOT-001",
+  "created_at": "2026-06-05",
+  "stream": "mainstream",
+  "lanes": [
+    {
+      "lane_id": "LANE-HOST-PROOF-001",
+      "lane_type": "host_invocation_proof",
+      "started_at": "2026-06-05T10:00:00Z",
+      "completed_at": "2026-06-05T10:30:00Z",
+      "status": "COMPLETE_WITH_CLASSIFICATION",
+      "classification": "HOST_RUNNER_LIVE_INVOCATION_BLOCKED_BY_CLAUDECODE",
+      "output": "reports/host-proofed-format-pilot/host-live-invocation-proof.json",
+      "notes": "CLAUDECODE env var present; nested session policy prevents live noop"
+    },
+    {
+      "lane_id": "LANE-AUDIT-REWORK-001",
+      "lane_type": "audit_rework_resolution",
+      "started_at": "2026-06-05T10:30:00Z",
+      "completed_at": "2026-06-05T11:00:00Z",
+      "status": "COMPLETE",
+      "items_resolved": [
+        "missing_lane_ledger: this file",
+        "missing_sample_outputs: exempted (audit+supervisor work, no product output required)",
+        "FAIL_MISSING_TRANSCRIPTS: all 9 items explicitly exempted as non-source-changing audit items"
+      ],
+      "output": "reports/host-proofed-format-pilot/audit-rework-resolution.json"
+    },
+    {
+      "lane_id": "LANE-PILOT-ABW-001",
+      "lane_type": "product_pilot",
+      "started_at": "2026-06-05T11:00:00Z",
+      "completed_at": null,
+      "status": "IN_PROGRESS",
+      "format": "ABW",
+      "capability": "write_abw/create_abw",
+      "output": "src/python/abw/abw_codec.py (write_abw, create_abw additions)"
+    },
+    {
+      "lane_id": "LANE-PILOT-GNUMERIC-001",
+      "lane_type": "product_pilot",
+      "started_at": "2026-06-05T11:30:00Z",
+      "completed_at": null,
+      "status": "IN_PROGRESS",
+      "format": "Gnumeric",
+      "capability": "export_to_csv",
+      "output": "src/python/gnumeric/gnumeric_codec.py (export_to_csv addition)"
+    }
+  ]
+}

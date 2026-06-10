@@ -1,0 +1,62 @@
+# Format Factory — Normalized Taskcard Schema
+# Sprint: Plan Hardening 2026-06-09
+# Authority: This schema governs all taskcards in this sprint.
+
+schema_version: "1.0"
+schema_id: plan-hardening-taskcard-v1
+
+required_fields:
+  - id            # TC-{group}-{number}, e.g. TC-A1
+  - title         # Human-readable task description
+  - weakness_ids  # [W1..W15] from the system review
+  - stream        # authority | commercial | autonomy | product | evidence | git | test | release | verification
+  - lane          # Execution lane 1-10
+  - owner_role    # Role responsible for execution
+  - state         # Current state per state-machine-governance.yaml
+  - priority      # 1 (highest) to 5 (lowest)
+  - risk_level    # low | medium | high | critical
+  - task_type     # investigation | report | source_change | validation | pilot | governance
+  - dependencies  # [TC-XX-NN, ...] tasks that must CLOSE before this can start
+  - blocked_by    # [TC-XX-NN, ...] tasks that currently prevent READY state
+  - allowed_paths # Glob patterns for files this taskcard may read/write
+  - forbidden_paths # Glob patterns this taskcard must NOT modify
+  - required_inputs # Files that must be read before execution
+  - required_repo_evidence # Files that must exist in repo for execution
+  - required_runtime_evidence # Commands to run and logs to capture
+  - required_tests # Test commands that must pass
+  - required_validators # Validation checks that must pass
+  - required_outputs # Files that must be created by this taskcard
+  - acceptance_criteria # Measurable conditions for VALIDATED state
+  - independent_verification_required # boolean
+  - rollback_plan # How to undo changes if needed
+  - stop_conditions # Conditions that halt execution immediately
+  - human_gate_classification # none | agent_preparable | true_human_gate
+  - agent_preparable_human_gate_work # What agent can pre-build for human review
+  - closeout_evidence # Artifacts proving task completion
+  - final_state_reason # Why taskcard ended in its final state
+
+field_constraints:
+  state:
+    enum: [PROPOSED, TRIAGED, BLOCKED, READY, IN_PROGRESS, IMPLEMENTED, VALIDATED, REWORK, INDEPENDENTLY_VERIFIED, CLOSED, REJECTED, DEFERRED]
+  priority:
+    min: 1
+    max: 5
+  risk_level:
+    enum: [low, medium, high, critical]
+  task_type:
+    enum: [investigation, report, source_change, validation, pilot, governance]
+  human_gate_classification:
+    enum: [none, agent_preparable, true_human_gate]
+  stream:
+    enum: [authority, commercial, autonomy, product, evidence, git, test, release, verification]
+
+source_change_constraints:
+  description: "Source-changing taskcards have additional requirements that must be met before READY state"
+  required_before_ready:
+    - allowed_paths must be explicit (no wildcards on src/ root)
+    - forbidden_paths must include registry/, AGENTS.md, .supervisor/
+    - diff_budget must be specified (max lines of change)
+    - rollback_plan must be explicit (not 'TBD')
+    - spec_fact_basis must be specified for product source
+    - required_tests must be non-empty
+    - independent_verification_required must be true

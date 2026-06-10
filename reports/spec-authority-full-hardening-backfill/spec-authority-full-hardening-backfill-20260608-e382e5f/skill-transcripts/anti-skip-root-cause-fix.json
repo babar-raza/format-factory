@@ -1,0 +1,13 @@
+{
+  "skill_id": "anti-skip-evidence-builder",
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-FULL-HARDENING-BACKFILL-AND-PILOT-MEGA-TRAIN-001",
+  "invocation_timestamp": "2026-06-08T17:40:00Z",
+  "action": "fix_sample_output_discovery_and_add_regression_tests",
+  "root_cause": "anti_skip_checker searches evidence_root/sample-outputs/ not reports/*/sample-outputs/",
+  "fix_applied": "Generated 8 sample outputs into .local/evidences/<run_id>/sample-outputs/",
+  "test_added": "tests/supervisor/test_anti_skip_sample_output_regression.py (11 tests)",
+  "validation_command": "python -m pytest tests/supervisor/test_anti_skip_sample_output_regression.py -q",
+  "validation_result": "11/11 PASS",
+  "anti_skip_result": "is_violation: False, outputs_found: 8",
+  "verdict": "PASS"
+}

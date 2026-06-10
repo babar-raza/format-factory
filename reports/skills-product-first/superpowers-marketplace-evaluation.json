@@ -1,0 +1,94 @@
+{
+  "source": "https://github.com/obra/superpowers-marketplace",
+  "evaluated_at": "2026-06-04T00:00:00Z",
+  "generated_by": "TC-W10-001",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "plugins": [
+    {
+      "name": "superpowers",
+      "display_name": "Superpowers Core",
+      "session_start_injection": true,
+      "mcp_server": false,
+      "install_required": true,
+      "skill_count": "20+",
+      "slash_command_count": 3,
+      "relevance_to_format_factory": "TDD, debugging, planning patterns (brainstorm, write-plan, execute-plan)",
+      "useful_patterns": [
+        "TDD workflow pattern",
+        "brainstorm/write-plan/execute-plan command structure",
+        "debugging step-by-step pattern"
+      ],
+      "risks": [
+        "SessionStart injection auto-injects context before every session — conflicts with AGENTS.md",
+        "Slash command namespace collision (/brainstorm, /write-plan, /execute-plan) with existing commands",
+        "20+ skills installed globally — potential for unreviewed context pollution"
+      ],
+      "local_equivalent_exists": false,
+      "recommended_status": "EVALUATE_PATTERNS_ONLY",
+      "rationale": "Useful TDD and planning patterns but SessionStart injection is incompatible with Format Factory governed session model. Extract patterns as local reference templates only."
+    },
+    {
+      "name": "superpowers-developing-for-claude-code",
+      "display_name": "Developing for Claude Code",
+      "session_start_injection": "unreviewed",
+      "mcp_server": false,
+      "install_required": true,
+      "skill_count": 2,
+      "doc_count": "42+",
+      "relevance_to_format_factory": "Plugin/MCP/skills development reference patterns",
+      "useful_patterns": [
+        "working-with-claude-code skill patterns",
+        "plugin development conventions",
+        "MCP server integration patterns"
+      ],
+      "risks": [
+        "Self-update mechanism unreviewed — may modify workspace autonomously",
+        "42+ doc files installed — large context cost",
+        "Plugin dev patterns may suggest overriding local conventions"
+      ],
+      "local_equivalent_exists": true,
+      "recommended_status": "EVALUATE_PATTERNS_ONLY",
+      "rationale": "Plugin/MCP dev patterns are useful as reference but local equivalents exist in .supervisor/ and docs/. Self-update mechanism requires review before any install."
+    },
+    {
+      "name": "elements-of-style",
+      "display_name": "Elements of Style",
+      "session_start_injection": false,
+      "mcp_server": false,
+      "install_required": true,
+      "skill_count": 1,
+      "relevance_to_format_factory": "Documentation quality improvement",
+      "useful_patterns": [
+        "writing-clearly-and-concisely skill"
+      ],
+      "risks": [
+        "12k-token context cost per session for the reference text",
+        "Low relevance to POC product goals"
+      ],
+      "local_equivalent_exists": false,
+      "recommended_status": "DEFER",
+      "rationale": "Low priority for POC. 12k-token context cost is significant. Defer to a dedicated docs quality sprint."
+    },
+    {
+      "name": "private-journal-mcp",
+      "display_name": "Private Journal MCP",
+      "session_start_injection": false,
+      "mcp_server": true,
+      "install_required": true,
+      "skill_count": 0,
+      "relevance_to_format_factory": "None — personal journaling utility",
+      "useful_patterns": [],
+      "risks": [
+        "MCP server requires Supervisor approval before activation",
+        "Memory policy absent — no declared data retention policy",
+        "Local AI embeddings unreviewed",
+        "Installs and modifies .vscode/mcp.json which is a forbidden path"
+      ],
+      "local_equivalent_exists": false,
+      "recommended_status": "REJECT",
+      "rationale": "MCP server activation requires explicit Supervisor approval per .supervisor/policies.yaml. Memory policy absent. No relevance to Format Factory POC. Rejected."
+    }
+  ],
+  "overall_decision": "NO_INSTALL_THIS_SPRINT",
+  "summary": "All 4 Superpowers Marketplace plugins evaluated. No plugins installed this sprint. Superpowers Core and Developing-for-Claude-Code evaluated for pattern extraction only. Elements of Style deferred. Private Journal MCP rejected. External plugin instructions have no authority over Format Factory governance."
+}

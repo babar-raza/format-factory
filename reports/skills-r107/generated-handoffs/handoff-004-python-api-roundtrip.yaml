@@ -1,0 +1,65 @@
+---
+handoff_id: R107-HANDOFF-004
+skill_id: add-python-api
+format_id: pbm
+api_name: get_pixel
+mode: dry-run
+generated_by: skills-r107
+target_stream: foss_python
+
+inputs:
+  format_id: pbm
+  api_name: get_pixel
+  exact_source_paths:
+    - src/python/pbm/pbm_parser.py
+  exact_test_paths:
+    - tests/python/pbm/test_r107_pbm_get_pixel.py
+  ledger_entry_path: reports/r90/product-code-change-ledger.json
+  focused_test_command: "pytest tests/python/pbm/test_r107_pbm_get_pixel.py -v"
+
+exact_source_paths:
+  - src/python/pbm/pbm_parser.py
+
+exact_test_paths:
+  - tests/python/pbm/test_r107_pbm_get_pixel.py
+
+focused_test_command: "pytest tests/python/pbm/test_r107_pbm_get_pixel.py -v"
+
+prerequisites:
+  - PBM parser produces PbmImage with pixel data accessible via result dict
+  - write_pbm can produce valid PBM files for roundtrip testing
+  - PBM format supports both P1 (ASCII) and P4 (binary) variants
+  - No external dependencies beyond stdlib and existing pbm_parser.py
+
+stream_boundary: |
+  This handoff targets the foss_python product track via the add-python-api skill.
+  It adds a bounded get_pixel(x, y) method to the PbmImage class that returns
+  the pixel value at the given coordinates. This is a non-destructive read-only
+  API that does not modify the image. A ledger entry is required for source edits.
+
+allowed_files:
+  - src/python/pbm/pbm_parser.py
+  - tests/python/pbm/test_r107_pbm_get_pixel.py
+  - reports/r90/product-code-change-ledger.json
+
+description: |
+  Add a get_pixel(x, y) method to the PbmImage class in pbm_parser.py that
+  returns the pixel value (0 or 1) at the given coordinates. The method should:
+  1. Validate x is in range [0, width)
+  2. Validate y is in range [0, height)
+  3. Return the pixel value from the decoded pixel data
+  4. Raise ValueError for out-of-bounds coordinates
+  Tests: at least 8 focused tests covering:
+  1. get_pixel at (0, 0) on a known 1-pixel image
+  2. get_pixel at corners of a multi-pixel image
+  3. get_pixel returns 0 for white pixel
+  4. get_pixel returns 1 for black pixel
+  5. get_pixel with negative x raises ValueError
+  6. get_pixel with x >= width raises ValueError
+  7. get_pixel with negative y raises ValueError
+  8. get_pixel with y >= height raises ValueError
+
+transcript_requirement:
+  mode: dry-run
+  ledger_entry_id: null
+  result_expected: PASS

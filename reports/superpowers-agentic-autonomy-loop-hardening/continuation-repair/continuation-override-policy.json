@@ -1,0 +1,30 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMY-LOOP-HARDENING-AFTER-H4-001",
+  "generated": "2026-06-06",
+  "policy_id": "CONTINUATION-OVERRIDE-001",
+  "problem": "supervisor next-sprint.md routes to product work after autonomy sprint; stale routing failure",
+  "generated_next_sprint": {
+    "path": "reports/supervisor/next-sprint.md",
+    "generated_sprint_id": "FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001",
+    "stream": "mainstream",
+    "focus": "Product deepening — .NET commercial + Python FOSS + dogfood + packaging",
+    "status": "OVERRIDDEN_BY_HUMAN_SUBMISSION"
+  },
+  "active_sprint": {
+    "sprint_id": "FORMAT-FACTORY-AUTONOMY-LOOP-HARDENING-AFTER-H4-001",
+    "source": "human_operator_submission",
+    "priority": "HIGHEST"
+  },
+  "override_valid": true,
+  "override_authority": "human_operator_explicit_submission",
+  "future_fix_recommended": {
+    "field_to_add": "autonomy_sprint_override_path",
+    "target_file": ".local/supervisor/continuation-signal.json",
+    "description": "Point to next autonomy sprint brief so continuation loop reads it before next-sprint.md"
+  },
+  "priority_order": [
+    "human_operator_submitted_sprint_brief",
+    "continuation_signal_autonomy_override_path",
+    "reports/supervisor/next-sprint.md"
+  ]
+}

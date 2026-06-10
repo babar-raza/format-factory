@@ -1,0 +1,28 @@
+id: ADR-ROUTE-014
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Route Ledger and Evidence Integration"
+status: completed
+lane: evidence_state
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-005, ADR-ROUTE-006]
+gates:
+  - "ledger appends and reads correctly"
+  - "summary counts are accurate"
+allowed_files:
+  - "tools/supervisor/autonomy_route_ledger.py"
+forbidden_files:
+  - "src/"
+  - "tools/supervisor/autonomous_cycle.py"
+acceptance_criteria:
+  - "JSONL ledger append and read work"
+  - "Summary counts by route and category are correct"
+tests:
+  - "tests/supervisor/test_autonomy_routing_integration.py::TestRouteLedger"
+evidence:
+  - "tools/supervisor/autonomy_route_ledger.py"
+rollback: "rm tools/supervisor/autonomy_route_ledger.py"
+closeout_criteria: "test passes, ledger JSONL format verified"

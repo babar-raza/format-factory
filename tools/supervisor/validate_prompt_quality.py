@@ -133,6 +133,36 @@ def validate_prompt_quality(
         "detail": f"Prompt has {section_hits} structural markers" + ("" if has_structure else " (need 2+)"),
     })
 
+    # Check 8 (GEC-TC-005): No unsafe commit/push authorization wording
+    _UNSAFE_PROMPT_PATTERNS = [
+        "authorized git commit + push",
+        "authorized git commit+push",
+        "commit + push (requires",
+        "commit and push to remote",
+    ]
+    unsafe_found = [p for p in _UNSAFE_PROMPT_PATTERNS if p in lower]
+    no_unsafe_wording = len(unsafe_found) == 0
+    checks.append({
+        "check": "no_unsafe_commit_push_wording",
+        "pass": no_unsafe_wording,
+        "unsafe_patterns_found": unsafe_found,
+        "detail": (
+            "No unsafe commit/push authorization wording found"
+            if no_unsafe_wording
+            else f"UNSAFE wording in prompt: {unsafe_found} — remove or replace with safe alternatives"
+        ),
+    })
+
+    # Check 9: No executable unauthorized mutation instructions
+    from tools.supervisor.autonomy_route_decider import check_prompt_for_unsafe_instructions
+    check9 = check_prompt_for_unsafe_instructions(prompt_text)
+    checks.append({
+        "check": check9["check"],
+        "pass": check9["pass"],
+        "detail": check9["detail"],
+        "violations": check9.get("violations", []),
+    })
+
     all_pass = all(c["pass"] for c in checks)
     return {
         "valid": all_pass,

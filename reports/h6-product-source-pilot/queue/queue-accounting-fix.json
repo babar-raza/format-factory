@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001",
+  "generated_at": "2026-06-06",
+  "inconsistency_found": true,
+  "description": "Sprint 7 IV reported 4 items consumed; queue-consumption-result.json listed 3 items",
+  "root_cause": "h6-q-002 (RUN_MD_NONEMPTY_CHECK) was consumed in cycle 2 of the orchestrator run but was omitted from the queue-consumption-result.json snapshot. The action-queue.jsonl status=done is authoritative; the consumption result JSON was written only for 3 of the 4 consumed items.",
+  "authoritative_source": "action-queue.jsonl",
+  "action_queue_done_items": [
+    "h6q-product-001",
+    "h6-q-001",
+    "h6-q-002",
+    "h6-q-003"
+  ],
+  "consumption_result_listed": [
+    "h6q-product-001",
+    "h6-q-001",
+    "h6-q-003"
+  ],
+  "missing_from_result": "h6-q-002 (RUN_MD_NONEMPTY_CHECK, target=reports/h6-external-host-activation/00-preflight.md)",
+  "correct_consumed_count": 4,
+  "iv_verdict_stands": true,
+  "iv_verdict_reasoning": "IV-04 checked queue-after.json done_count=4 which is correct. The queue-consumption-result.json was incomplete but the queue state was authoritative."
+}

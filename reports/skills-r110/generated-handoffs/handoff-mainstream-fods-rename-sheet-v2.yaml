@@ -1,0 +1,56 @@
+handoff_id: HO-R110-MAINSTREAM-001
+type: mainstream-product
+title: "FODS RenameSheet — Mainstream Product Handoff (Hardened)"
+stream_from: skills
+stream_to: mainstream
+skill_id: add-dotnet-api
+version: "2.0"
+timestamp: "2026-06-03T23:00:00Z"
+
+description: |
+  Mainstream worker must implement FODS RenameSheet API.
+  This handoff enforces full adoption compliance.
+
+required_inputs:
+  format_id: fods
+  api_name: RenameSheet
+  exact_source_paths: ["src/net/fods/FodsDocument.cs"]
+  exact_test_paths: ["tests/net/fods/FodsRenameSheetTests.cs"]
+  focused_test_command: "dotnet test --filter FodsRenameSheet"
+  ledger_entry_path: "reports/r-next/product-code-change-ledger.json"
+
+validation_command: |
+  python tools/supervisor/validate_skill_transcript.py reports/r-next/skill-transcripts/transcript-fods-rename.json
+
+expected_evidence:
+  transcript_json: "reports/r-next/skill-transcripts/transcript-fods-rename.json"
+  ledger_entry: "reports/r-next/product-code-change-ledger.json"
+  raw_test_log: "reports/r-next/raw-logs/test-fods-rename.log"
+  source_diff: "reports/r-next/source-diffs/fods-rename.patch"
+
+transcript_requirement:
+  mode: "live"
+  required_fields: ["invocation_id", "skill_id", "mode", "inputs", "allowed_files", "actual_files_changed", "tests_run", "result"]
+  skill_id_must_match: "add-dotnet-api"
+  result_must_be: "PASS"
+
+raw_log_requirement:
+  format: "pytest or dotnet test output"
+  minimum_lines: 10
+  must_contain: ["passed", "test"]
+
+pass_criteria:
+  - "Transcript validates via validate_skill_transcript.py"
+  - "All declared tests pass"
+  - "Ledger entry exists with matching source hash"
+  - "Raw test log captured"
+  - "No files changed outside allowed_files"
+
+fail_conditions:
+  - "Missing transcript JSON"
+  - "Missing ledger_entry_id for commercial_dotnet track"
+  - "Tests fail"
+  - "Files changed outside allowed scope"
+  - "Transcript mode is not 'live'"
+
+adoption_gates_enforced: [ADOPT-M-01, ADOPT-M-02, ADOPT-M-03]

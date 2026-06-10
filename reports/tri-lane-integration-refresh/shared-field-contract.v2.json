@@ -1,0 +1,106 @@
+{
+  "contract_version": "2.0",
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "purpose": "Shared field contract between Supervisor, Skills, Acceleration, and Mainstream",
+  "supersedes": "reports/supervisor-tri-lane-reconciliation/shared-field-contract.json",
+
+  "shared_fields": [
+    {
+      "field": "sprint_id",
+      "supervisor": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+      "skills": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+      "acceleration": "FORMAT-FACTORY-ACCELERATION-HARDENING-IV-AND-CONSUMPTION-CONTRACT-001",
+      "mainstream": "TO_BE_ASSIGNED",
+      "validation_status": "PASS"
+    },
+    {
+      "field": "authority_state",
+      "supervisor": "routing_authority",
+      "skills": "governed_execution_authority",
+      "acceleration": "ai_draft",
+      "mainstream": "product_implementation_authority",
+      "validation_status": "PASS"
+    },
+    {
+      "field": "non_authoritative",
+      "supervisor": false,
+      "skills": false,
+      "acceleration": true,
+      "mainstream": false,
+      "validation_status": "PASS"
+    },
+    {
+      "field": "FODS.skills_packet_type",
+      "value": "FULL",
+      "source": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "validation_status": "PASS"
+    },
+    {
+      "field": "FODT_Markdown.skills_packet_type",
+      "value": "FULL",
+      "source": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "validation_status": "PASS"
+    },
+    {
+      "field": "FODT_TXT.skills_packet_type",
+      "value": "FULL",
+      "source": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+      "validation_status": "PASS_NEW_IN_V2"
+    },
+    {
+      "field": "Netpbm.skills_packet_type",
+      "value": "FULL",
+      "source": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "validation_status": "PASS_UPGRADED_FROM_SHELL"
+    },
+    {
+      "field": "acceleration.hardening_index_used",
+      "value": true,
+      "source": "reports/acceleration-hardening/mainstream-packet-index.json",
+      "validation_status": "PASS"
+    },
+    {
+      "field": "capability_delta.proposed_only",
+      "value": true,
+      "validation_status": "PASS"
+    },
+    {
+      "field": "Netpbm.svg_replacement_rejected",
+      "value": true,
+      "validation_status": "PASS"
+    }
+  ],
+
+  "stale_fields_patched": [
+    {
+      "field": "FODT.skills_packet_type",
+      "old_value": "shell",
+      "old_source": "reports/skills-governed-execution-hardening/fodt-packet-shell.json",
+      "new_value": "FULL",
+      "new_source": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "patch_applied_by": "tri_lane_integration.py v2 resolver"
+    },
+    {
+      "field": "Netpbm.skills_packet_type",
+      "old_value": "shell",
+      "old_source": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+      "new_value": "FULL",
+      "new_source": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "patch_applied_by": "tri_lane_integration.py v2 resolver"
+    },
+    {
+      "field": "acceleration.source",
+      "old_value": "reports/acceleration-product-first/mainstream-consumption-packets",
+      "new_value": "reports/acceleration-hardening/mainstream-packet-index.json",
+      "patch_applied_by": "tri_lane_integration.py v2 resolver"
+    }
+  ],
+
+  "overall_validation": "PASS_WITH_MINOR_LIMITATIONS",
+  "pass_count": 10,
+  "limitation_count": 1,
+  "limitations": [
+    "FODT TXT has no Acceleration advisory packet — optional missing allowed per sprint spec"
+  ]
+}

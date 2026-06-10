@@ -1,0 +1,35 @@
+{
+  "ledger_version": "1.0",
+  "sprint": "mainstream-r111",
+  "created_at": "2026-06-03",
+  "lanes": [
+    {"lane": "Wave 0", "title": "R110 Reconciliation", "status": "completed", "outputs": ["r110-reconciliation.md", "r110-claim-classification.json", "r110-continuation-stop-analysis.md"]},
+    {"lane": "Wave 1", "title": "R110 Regrading Bridge", "status": "completed", "outputs": ["r110-regrading-bridge.json", "r110-regrading-bridge.md"]},
+    {"lane": "Wave 2", "title": "Anti-Skip False-Negative Analysis", "status": "completed", "outputs": ["r110-anti-skip-false-negative-analysis.md"]},
+    {"lane": "Wave 3", "title": "Supervisor/Acceleration Handoff", "status": "completed", "outputs": ["supervisor-evidence-consumption-handoff.md", "supervisor-evidence-consumption-handoff.json", "acceleration-anti-skip-path-resolution-handoff.md"]},
+    {"lane": "Wave 4", "title": "Fresh Mainstream Gap Selection", "status": "completed", "outputs": ["selected-mainstream-gaps-r111.json", "product-depth-strategy.md"]},
+    {"lane": "Wave 5A", "title": "FODS MergeCells API", "status": "completed", "depth_class": "object_model_depth", "tests": 8, "ledger": "R111-GOVERNED-DOTNET-FODS-MERGECELLS-001", "transcript": "skill-transcripts/r111-fods-mergecells.md"},
+    {"lane": "Wave 5B", "title": "FODS SetCellFormula API", "status": "completed", "depth_class": "object_model_depth", "tests": 10, "ledger": "R111-GOVERNED-DOTNET-FODS-SETCELLFORMULA-001", "transcript": "skill-transcripts/r111-fods-setcellformula.md"},
+    {"lane": "Wave 5C", "title": "FODT RemoveHeading API", "status": "completed", "depth_class": "object_model_depth", "tests": 8, "ledger": "R111-GOVERNED-DOTNET-FODT-REMOVEHEADING-001", "transcript": "skill-transcripts/r111-fodt-removeheading.md"},
+    {"lane": "Wave 5D", "title": "FODT GetDocumentOutline API", "status": "completed", "depth_class": "object_model_depth", "tests": 8, "ledger": "R111-GOVERNED-DOTNET-FODT-GETDOCUMENTOUTLINE-001", "transcript": "skill-transcripts/r111-fodt-getdocumentoutline.md"},
+    {"lane": "Wave 5E", "title": "Netpbm Sharpen API", "status": "completed", "depth_class": "image_processing_depth", "tests": 8, "ledger": "R111-GOVERNED-DOTNET-NETPBM-SHARPEN-001", "transcript": "skill-transcripts/r111-netpbm-sharpen.md"},
+    {"lane": "Wave 5F", "title": "Netpbm BlurBox API", "status": "completed", "depth_class": "image_processing_depth", "tests": 10, "ledger": "R111-GOVERNED-DOTNET-NETPBM-BLURBOX-001", "transcript": "skill-transcripts/r111-netpbm-blurbox.md"},
+    {"lane": "Wave 6A", "title": "ZST Dictionary Workflow", "status": "completed", "depth_class": "workflow", "tests": 8},
+    {"lane": "Wave 6B", "title": "PPM Pixel-Transform Roundtrip", "status": "completed", "depth_class": "roundtrip", "tests": 8},
+    {"lane": "Wave 6C", "title": "SYLK Write Roundtrip", "status": "completed", "depth_class": "roundtrip", "tests": 8},
+    {"lane": "Wave 6D", "title": "DIF CSV Export Hardening", "status": "completed", "depth_class": "roundtrip", "tests": 8},
+    {"lane": "Wave 7A", "title": "FODS Save Roundtrip Dogfood", "status": "completed", "tests": 4},
+    {"lane": "Wave 7B", "title": "FODT Outline Export Dogfood", "status": "completed", "tests": 4},
+    {"lane": "Wave 7C", "title": "Netpbm Sharpen-Save Dogfood", "status": "completed", "tests": 4}
+  ],
+  "totals": {
+    "completed": 18,
+    "pending": 0,
+    "new_dotnet_tests": 76,
+    "new_python_tests": 32,
+    "new_tests_total": 108,
+    "governed_api_count": 6,
+    "foss_deliverables": 4,
+    "dogfood_pipelines": 3
+  }
+}

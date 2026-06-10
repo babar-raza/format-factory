@@ -1,0 +1,27 @@
+proposed_only: true
+not_applied_to_poc_targets: true
+iteration: 3
+sprint_id: "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001"
+generated_at: "2026-06-05T00:00:00Z"
+
+capabilities:
+  - capability: "GetWordFrequency"
+    operation: "Add"
+    description: "Count word frequency across all paragraphs, case-insensitive, with optional minimum word length filter. Strips punctuation via regex split."
+    api_symbol: "GetWordFrequency(int minLength = 1) -> IReadOnlyDictionary<string, int>"
+    product: "FODT .NET"
+    proof_level: "VERIFIED"
+    source_files:
+      - "src/net/fodt/FodtDocument.cs"
+    test_files:
+      - "tests/net/fodt/FodtR116WordFrequencyTests.cs"
+    tests_passed: 8
+    tests_failed: 0
+    raw_log: "reports/unified-authority-integrated-poc-train/raw-logs/fodt-r116-tests.log"
+    transcript: "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-003-fodt.json"
+    sample_output: "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-003/fodt/word-frequency-report.json"
+    source_diff: "reports/unified-authority-integrated-poc-train/source-diffs/iteration-003-fodt.diff"
+    proposed_poc_target_update:
+      path: "commercial_net_products.FODT.dotnet_status.get_word_frequency"
+      value: "PASS"
+    rationale: "8/8 tests pass. Case-insensitive, punctuation stripped, multi-paragraph aggregated, dogfood confirmed."

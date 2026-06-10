@@ -1,0 +1,29 @@
+id: GRE-TC-005
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Adoption compliance exemption for governance item types (Lane E)"
+status: completed
+lane: adoption_compliance
+item_type: GOVERNANCE_DOC
+problem: >
+  Sprint 2 adoption compliance produced a false FAIL (CONTR-003) for governance
+  item types. GOVERNANCE_DOC, GOVERNANCE_SCHEMA, GOVERNANCE_POLICY, GOVERNANCE_TASKCARD,
+  and LEGACY_BACKFILL_METADATA items do not require skill_id in the same way
+  as PRODUCT_SOURCE items.
+scope:
+  - Add _GOVERNANCE_EXEMPT_ITEM_TYPES constant in validate_adoption_compliance.py
+  - Add _has_explicit_exemption() helper function
+  - Governance items with investigation_only or legacy_backfill exception_classification
+    are exempt from adoption compliance FAIL
+  - Write 17 tests in test_adoption_compliance_governance_exempt.py
+files_modified:
+  - tools/supervisor/validate_adoption_compliance.py
+files_created:
+  - tests/supervisor/test_adoption_compliance_governance_exempt.py
+  - reports/repeatability-governance-enforcement-rnext/adoption-compliance-pipeline-report.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+dependencies: []
+handoff_to_autonomy_sprint: false

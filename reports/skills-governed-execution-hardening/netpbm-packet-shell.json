@@ -1,0 +1,55 @@
+{
+  "packet_version": "1.0-shell",
+  "packet_type": "SHELL",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "generated_at": "2026-06-04T12:00:00Z",
+  "family": "Netpbm",
+  "track": "commercial_net",
+  "gap_id": "GAP-NETPBM-DOGFOOD-PACKAGE-DOTNET-001",
+  "capability": "dogfood_status.netpbm_image_pipeline_dotnet",
+  "recommended_skill": "add-dotnet-api",
+  "status": "SHELL — NEEDS_MAINSTREAM_DISCOVERY",
+  "allowed_files_pattern": [
+    "src/net/netpbm/Model/NetpbmImage.cs",
+    "tests/net/netpbm/NetpbmR{N}{FeatureName}Tests.cs",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "forbidden_files": [
+    "src/python/*",
+    "src/net/fods/*",
+    "src/net/fodt/*",
+    "registry/format-registry.yaml",
+    "plans/master-plan.md",
+    "product-capability-matrix/poc-targets.yaml",
+    ".vscode/mcp.json",
+    ".supervisor/policies.yaml",
+    "reports/supervisor/approval-gates.md",
+    ".claude-plugin/*"
+  ],
+  "expected_tests": "tests/net/netpbm/NetpbmR{N}{FeatureName}Tests.cs with 8+ test methods",
+  "expected_source_diff": "One new method in NetpbmImage.cs",
+  "expected_raw_logs": "reports/{sprint}/raw-logs/test-netpbm-{feature}.log",
+  "expected_ledger_entry": "reports/r90/product-code-change-ledger.json entry with change_type=add_api",
+  "proposed_capability_delta": {
+    "field": "netpbm.dogfood_status.netpbm_image_pipeline_dotnet",
+    "proposed_value": "IMPLEMENTED",
+    "authority_update_required": false,
+    "note": "Proposed delta only — Supervisor or human approves separately"
+  },
+  "required_transcript_fields": [
+    "invocation_id", "skill_id", "mode", "inputs", "allowed_files",
+    "actual_files_changed", "tests_run", "result", "timestamp"
+  ],
+  "acceptance_criteria": [
+    "validate_skill_transcript.py exits 0",
+    "8+ tests pass",
+    "source diff shows exactly one new public method",
+    "ledger entry added"
+  ],
+  "limitations": [
+    "NEEDS_MAINSTREAM_DISCOVERY: exact Netpbm method (Crop, Overlay, Gamma, etc.) to be selected by Mainstream",
+    "NEEDS_MAINSTREAM_DISCOVERY: sprint test number ({N}) needs assignment",
+    "Handoff not yet generated — Skills must run dry-run before Mainstream consumes"
+  ],
+  "enforcement_tier": "FAIL_CLOSED"
+}

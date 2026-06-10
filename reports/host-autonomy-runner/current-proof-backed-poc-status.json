@@ -1,0 +1,465 @@
+{
+  "poc_ready": true,
+  "release_approval_pending": true,
+  "commercial_targets": [
+    {
+      "format": "FODS",
+      "passed": true,
+      "required_checks": {
+        "source_exists": true,
+        "tests_exist": true,
+        "raw_log_exists": true,
+        "examples_exist": true,
+        "proof_record_exists": true,
+        "no_ai_draft_only": true
+      },
+      "failures": [],
+      "details": {
+        "source": {
+          "pass": true,
+          "found": [
+            "src\\net\\fods\\FodsCsvExporter.cs",
+            "src\\net\\fods\\FodsDocument.cs",
+            "src\\net\\fods\\FodsHtmlExporter.cs"
+          ],
+          "missing": [],
+          "reason": "Source files found"
+        },
+        "tests": {
+          "pass": true,
+          "found_count": 2,
+          "missing": [],
+          "reason": "2 test files found"
+        },
+        "raw_log": {
+          "pass": true,
+          "found": [
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\fods-r114-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\fods-r116-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\rca-fabric-tests.log"
+          ],
+          "reason": "Raw log found: reports\\unified-authority-integrated-poc-train\\raw-logs\\fods-r114-tests.log"
+        },
+        "examples": {
+          "pass": true,
+          "found": [
+            "examples\\net\\fods\\ClearSheetExample.cs",
+            "examples\\net\\fods\\CopySheetExample.cs"
+          ],
+          "missing": [],
+          "reason": "Examples found"
+        },
+        "proof_record": {
+          "pass": true,
+          "source": "product-code-change-ledger.json",
+          "count": 38,
+          "reason": "Found 38 ledger entries for FODS"
+        },
+        "draft_check": {
+          "pass": true,
+          "ai_draft_files": [],
+          "warning": null,
+          "reason": "No ai_draft-only proof detected"
+        }
+      }
+    },
+    {
+      "format": "FODT",
+      "passed": true,
+      "required_checks": {
+        "source_exists": true,
+        "tests_exist": true,
+        "raw_log_exists": true,
+        "examples_exist": true,
+        "proof_record_exists": true,
+        "no_ai_draft_only": true
+      },
+      "failures": [],
+      "details": {
+        "source": {
+          "pass": true,
+          "found": [
+            "src\\net\\fodt\\FodtDocument.cs",
+            "src\\net\\fodt\\FodtHtmlExporter.cs",
+            "src\\net\\fodt\\FodtMarkdownExporter.cs"
+          ],
+          "missing": [],
+          "reason": "Source files found"
+        },
+        "tests": {
+          "pass": true,
+          "found_count": 2,
+          "missing": [],
+          "reason": "2 test files found"
+        },
+        "raw_log": {
+          "pass": true,
+          "found": [
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\fodt-r114-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\fodt-r116-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\rca-fabric-tests.log"
+          ],
+          "reason": "Raw log found: reports\\unified-authority-integrated-poc-train\\raw-logs\\fodt-r114-tests.log"
+        },
+        "examples": {
+          "pass": true,
+          "found": [
+            "examples\\net\\fodt\\DocumentStatsExample.cs",
+            "examples\\net\\fodt\\HtmlExportExample.cs"
+          ],
+          "missing": [],
+          "reason": "Examples found"
+        },
+        "proof_record": {
+          "pass": true,
+          "source": "product-code-change-ledger.json",
+          "count": 35,
+          "reason": "Found 35 ledger entries for FODT"
+        },
+        "draft_check": {
+          "pass": true,
+          "ai_draft_files": [],
+          "warning": null,
+          "reason": "No ai_draft-only proof detected"
+        }
+      }
+    },
+    {
+      "format": "Netpbm",
+      "passed": true,
+      "required_checks": {
+        "source_exists": true,
+        "tests_exist": true,
+        "raw_log_exists": true,
+        "examples_exist": true,
+        "proof_record_exists": true,
+        "no_ai_draft_only": true
+      },
+      "failures": [],
+      "details": {
+        "source": {
+          "pass": true,
+          "found": [
+            "src\\net\\netpbm\\NetpbmException.cs",
+            "src\\net\\netpbm\\NetpbmExporter.cs",
+            "src\\net\\netpbm\\NetpbmParser.cs"
+          ],
+          "missing": [],
+          "reason": "Source files found"
+        },
+        "tests": {
+          "pass": true,
+          "found_count": 2,
+          "missing": [],
+          "reason": "2 test files found"
+        },
+        "raw_log": {
+          "pass": true,
+          "found": [
+            "reports\\mainstream-r114\\netpbm-installed-proof.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\netpbm-r114-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\netpbm-r116-tests.log"
+          ],
+          "reason": "Raw log found: reports\\mainstream-r114\\netpbm-installed-proof.log"
+        },
+        "examples": {
+          "pass": true,
+          "found": [
+            "examples\\net\\netpbm\\FlipOverlayExample.cs",
+            "examples\\net\\netpbm\\LoadEditSaveExample.cs"
+          ],
+          "missing": [],
+          "reason": "Examples found"
+        },
+        "proof_record": {
+          "pass": true,
+          "source": "product-code-change-ledger.json",
+          "count": 40,
+          "reason": "Found 40 ledger entries for Netpbm"
+        },
+        "draft_check": {
+          "pass": true,
+          "ai_draft_files": [],
+          "warning": null,
+          "reason": "No ai_draft-only proof detected"
+        }
+      }
+    }
+  ],
+  "commercial_all_pass": true,
+  "commercial_failures": [],
+  "foss_targets": [
+    {
+      "format": "ZST",
+      "passed": true,
+      "required_checks": {
+        "source_exists": true,
+        "tests_exist": true,
+        "raw_log_exists": true,
+        "examples_exist": true,
+        "proof_record_exists": true,
+        "no_ai_draft_only": true
+      },
+      "failures": [],
+      "details": {
+        "source": {
+          "pass": true,
+          "found": [
+            "src\\python\\zst\\zst_codec.py",
+            "src\\python\\zst\\__init__.py"
+          ],
+          "missing": [],
+          "reason": "Source files found"
+        },
+        "tests": {
+          "pass": true,
+          "found_count": 2,
+          "missing": [],
+          "reason": "2 test files found"
+        },
+        "raw_log": {
+          "pass": true,
+          "found": [
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\rca-fabric-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\spec-authority-tests.log",
+            "reports\\spec-authority-real-pilot-r3\\raw-logs\\spec-authority-r3-tests.log"
+          ],
+          "reason": "Raw log found: reports\\unified-authority-integrated-poc-train\\raw-logs\\rca-fabric-tests.log"
+        },
+        "examples": {
+          "pass": true,
+          "found": [
+            "examples\\python\\zst\\compress_decompress_file.py",
+            "examples\\python\\zst\\README.md"
+          ],
+          "missing": [],
+          "reason": "Examples found"
+        },
+        "proof_record": {
+          "pass": true,
+          "source": "product-code-change-ledger.json",
+          "count": 7,
+          "reason": "Found 7 ledger entries for ZST"
+        },
+        "draft_check": {
+          "pass": true,
+          "ai_draft_files": [],
+          "warning": null,
+          "reason": "No ai_draft-only proof detected"
+        }
+      }
+    },
+    {
+      "format": "Netpbm-Python",
+      "passed": false,
+      "required_checks": {
+        "source_exists": true,
+        "tests_exist": true,
+        "raw_log_exists": true,
+        "examples_exist": true,
+        "proof_record_exists": false,
+        "no_ai_draft_only": true
+      },
+      "failures": [
+        "proof_record_exists"
+      ],
+      "details": {
+        "source": {
+          "pass": true,
+          "found": [
+            "src\\python\\pbm\\pbm_parser.py",
+            "src\\python\\pbm\\pbm_to_pgm.py",
+            "src\\python\\pbm\\pbm_to_ppm.py"
+          ],
+          "missing": [],
+          "reason": "Source files found"
+        },
+        "tests": {
+          "pass": true,
+          "found_count": 6,
+          "missing": [],
+          "reason": "6 test files found"
+        },
+        "raw_log": {
+          "pass": true,
+          "found": [
+            "reports\\mainstream-r114\\netpbm-installed-proof.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\netpbm-r114-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\netpbm-r116-tests.log"
+          ],
+          "reason": "Raw log found: reports\\mainstream-r114\\netpbm-installed-proof.log"
+        },
+        "examples": {
+          "pass": true,
+          "found": [
+            "examples\\python\\ppm\\pgm_to_ppm_example.py"
+          ],
+          "missing": [],
+          "reason": "Examples found"
+        },
+        "proof_record": {
+          "pass": false,
+          "source": null,
+          "reason": "No proof record found for Netpbm-Python (no ledger entry, no proof graph node)"
+        },
+        "draft_check": {
+          "pass": true,
+          "ai_draft_files": [],
+          "warning": null,
+          "reason": "No ai_draft-only proof detected"
+        }
+      }
+    },
+    {
+      "format": "SYLK",
+      "passed": true,
+      "required_checks": {
+        "source_exists": true,
+        "tests_exist": true,
+        "raw_log_exists": true,
+        "examples_exist": true,
+        "proof_record_exists": true,
+        "no_ai_draft_only": true
+      },
+      "failures": [],
+      "details": {
+        "source": {
+          "pass": true,
+          "found": [
+            "src\\python\\sylk\\sylk_parser.py",
+            "src\\python\\sylk\\__init__.py"
+          ],
+          "missing": [],
+          "reason": "Source files found"
+        },
+        "tests": {
+          "pass": true,
+          "found_count": 2,
+          "missing": [],
+          "reason": "2 test files found"
+        },
+        "raw_log": {
+          "pass": true,
+          "found": [
+            "reports\\mainstream-r114\\sylk-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\rca-fabric-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\iterations\\iteration-002\\raw-logs\\sylk-r115.log"
+          ],
+          "reason": "Raw log found: reports\\mainstream-r114\\sylk-tests.log"
+        },
+        "examples": {
+          "pass": true,
+          "found": [
+            "examples\\python\\sylk\\sylk_csv_pipeline.py",
+            "examples\\python\\sylk\\write_export_sylk.py"
+          ],
+          "missing": [],
+          "reason": "Examples found"
+        },
+        "proof_record": {
+          "pass": true,
+          "source": "product-code-change-ledger.json",
+          "count": 6,
+          "reason": "Found 6 ledger entries for SYLK"
+        },
+        "draft_check": {
+          "pass": true,
+          "ai_draft_files": [],
+          "warning": null,
+          "reason": "No ai_draft-only proof detected"
+        }
+      }
+    },
+    {
+      "format": "DIF",
+      "passed": true,
+      "required_checks": {
+        "source_exists": true,
+        "tests_exist": true,
+        "raw_log_exists": true,
+        "examples_exist": true,
+        "proof_record_exists": true,
+        "no_ai_draft_only": true
+      },
+      "failures": [],
+      "details": {
+        "source": {
+          "pass": true,
+          "found": [
+            "src\\python\\dif\\dif_parser.py",
+            "src\\python\\dif\\dif_stats.py",
+            "src\\python\\dif\\__init__.py"
+          ],
+          "missing": [],
+          "reason": "Source files found"
+        },
+        "tests": {
+          "pass": true,
+          "found_count": 2,
+          "missing": [],
+          "reason": "2 test files found"
+        },
+        "raw_log": {
+          "pass": true,
+          "found": [
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\controller-gate-reconciliation-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\dif-r116-tests.log",
+            "reports\\unified-authority-integrated-poc-train\\raw-logs\\spec-authority-tests.log"
+          ],
+          "reason": "Raw log found: reports\\unified-authority-integrated-poc-train\\raw-logs\\controller-gate-reconciliation-tests.log"
+        },
+        "examples": {
+          "pass": true,
+          "found": [],
+          "reason": "No example required for this format"
+        },
+        "proof_record": {
+          "pass": true,
+          "source": "product-code-change-ledger.json",
+          "count": 4,
+          "reason": "Found 4 ledger entries for DIF"
+        },
+        "draft_check": {
+          "pass": true,
+          "ai_draft_files": [],
+          "warning": null,
+          "reason": "No ai_draft-only proof detected"
+        }
+      }
+    }
+  ],
+  "foss_pass_count": 3,
+  "foss_passes": [
+    "ZST",
+    "SYLK",
+    "DIF"
+  ],
+  "foss_failures": [
+    [
+      "Netpbm-Python",
+      [
+        "proof_record_exists"
+      ]
+    ]
+  ],
+  "foss_minimum_required": 3,
+  "proof_failures": [
+    {
+      "format": "Netpbm-Python",
+      "failures": [
+        "proof_record_exists"
+      ]
+    }
+  ],
+  "missing_logs": [],
+  "missing_proof_records": [
+    "Netpbm-Python"
+  ],
+  "missing_examples": [],
+  "stale_claims": [
+    "poc-targets.yaml gates_passed text is NOT proof \u2014 replaced by this gate"
+  ],
+  "decision": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+  "terminal_state": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+  "evaluated_at": "2026-06-05T07:46:39.223988"
+}

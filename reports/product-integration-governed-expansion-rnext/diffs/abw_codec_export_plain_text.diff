@@ -1,0 +1,419 @@
+diff --git a/src/python/abw/abw_codec.py b/src/python/abw/abw_codec.py
+index 2591abf..ce24aa1 100644
+--- a/src/python/abw/abw_codec.py
++++ b/src/python/abw/abw_codec.py
+@@ -299,3 +299,414 @@ def _build_model(root: ET.Element) -> dict[str, Any]:
+         "paragraph_count": len(paragraphs),
+         "paragraphs": paragraphs,
+     }
++
++
++# ---------------------------------------------------------------------------
++# Sprint 2 additions (R130)
++# ---------------------------------------------------------------------------
++
++def search_paragraph(model: dict, query: str, *, case_sensitive: bool = True) -> list:
++    """Return indices of paragraphs containing query string."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    if not isinstance(query, str):
++        raise TypeError("query must be a str")
++    paragraphs = model.get("paragraphs", [])
++    if case_sensitive:
++        return [i for i, p in enumerate(paragraphs) if query in p]
++    q = query.lower()
++    return [i for i, p in enumerate(paragraphs) if q in p.lower()]
++
++
++def get_word_count(model: dict) -> int:
++    """Return total word count across all paragraphs."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    return sum(len(p.split()) for p in model.get("paragraphs", []))
++
++
++def search_replace_paragraph(
++    model: dict, old: str, new: str, *, case_sensitive: bool = True
++) -> dict:
++    """Replace all occurrences of old with new in all paragraphs."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    if not isinstance(old, str):
++        raise TypeError("old must be a str")
++    if not isinstance(new, str):
++        raise TypeError("new must be a str")
++    if not old:
++        return {**model, "paragraphs": list(model.get("paragraphs", []))}
++    paragraphs = model.get("paragraphs", [])
++    if case_sensitive:
++        new_paras = [p.replace(old, new) for p in paragraphs]
++    else:
++        import re
++        new_paras = [re.sub(re.escape(old), new, p, flags=re.IGNORECASE) for p in paragraphs]
++    return {**model, "paragraphs": new_paras, "paragraph_count": len(new_paras)}
++
++
++def get_paragraph(model: dict, index: int) -> str:
++    """Return paragraph at index. Raises IndexError if out of range."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    paragraphs = model.get("paragraphs", [])
++    if index < 0 or index >= len(paragraphs):
++        raise IndexError(f"paragraph index {index} out of range")
++    return paragraphs[index]
++
++
++# ---------------------------------------------------------------------------
++# Sprint 3 additions (R135) — export_to_json, edit_paragraph, export_to_csv
++# ---------------------------------------------------------------------------
++
++def export_to_json(source) -> str:
++    """Export an ABW document to a JSON string.
++
++    Loads the document from source and returns a JSON object with the model fields.
++
++    Args:
++        source: Path, bytes, or XML string.
++
++    Returns:
++        JSON string representation of the document model.
++    """
++    import json as _json
++    model = load(source)
++    return _json.dumps(
++        {
++            "is_abw": model.get("is_abw", True),
++            "section_count": model.get("section_count", 0),
++            "paragraph_count": model.get("paragraph_count", 0),
++            "paragraphs": model.get("paragraphs", []),
++        },
++        ensure_ascii=True,
++        indent=2,
++    )
++
++
++def edit_paragraph(model: dict, index: int, text: str) -> dict:
++    """Return a new model with the paragraph at index replaced by text.
++
++    Args:
++        model: ABW document model dict.
++        index: Zero-based paragraph index.
++        text:  Replacement text.
++
++    Raises:
++        IndexError: If index is out of range.
++        TypeError:  If model is not a dict or text is not a str.
++    """
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    if not isinstance(text, str):
++        raise TypeError("text must be a str")
++    paragraphs = model.get("paragraphs", [])
++    if index < 0 or index >= len(paragraphs):
++        raise IndexError(f"paragraph index {index} out of range")
++    new_paras = list(paragraphs)
++    new_paras[index] = text
++    return {**model, "paragraphs": new_paras, "paragraph_count": len(new_paras)}
++
++
++def export_to_csv(source) -> str:
++    """Export an ABW document to a CSV string.
++
++    Each paragraph is a row with a single 'text' column.
++
++    Args:
++        source: Path, bytes, or XML string.
++
++    Returns:
++        CSV string with header 'text' and one row per paragraph.
++    """
++    model = load(source)
++    paragraphs = model.get("paragraphs", [])
++    lines = ["text"]
++    for para in paragraphs:
++        escaped = para.replace('"', '""')
++        if "," in escaped or '"' in para or "\n" in para or "\r" in para:
++            lines.append(f'"{escaped}"')
++        else:
++            lines.append(escaped)
++    return "\n".join(lines) + "\n"
++
++
++# ---------------------------------------------------------------------------
++# Sprint 4 additions (R136-R137)
++# ---------------------------------------------------------------------------
++
++def merge_abw(a: dict, b: dict) -> dict:
++    """Merge two ABW document models by concatenating their paragraphs."""
++    if not isinstance(a, dict):
++        raise TypeError("a must be a dict")
++    if not isinstance(b, dict):
++        raise TypeError("b must be a dict")
++    combined = list(a.get("paragraphs", [])) + list(b.get("paragraphs", []))
++    return {**a, "paragraphs": combined, "paragraph_count": len(combined)}
++
++
++def word_frequency(model: dict) -> dict:
++    """Return a dict mapping each word (lowercased) to its count."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    freq: dict = {}
++    for para in model.get("paragraphs", []):
++        for word in para.lower().split():
++            freq[word] = freq.get(word, 0) + 1
++    return freq
++
++
++# ---------------------------------------------------------------------------
++# Sprint 5 additions (R138)
++# ---------------------------------------------------------------------------
++
++def truncate_paragraphs(model: dict, n: int) -> dict:
++    """Return a new model with at most n paragraphs."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    if n < 0:
++        raise ValueError("n must be >= 0")
++    paragraphs = list(model.get("paragraphs", []))[:n]
++    return {**model, "paragraphs": paragraphs, "paragraph_count": len(paragraphs)}
++
++
++def get_unique_words(model: dict) -> list:
++    """Return sorted list of unique lowercased words across all paragraphs."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    words: set = set()
++    for para in model.get("paragraphs", []):
++        for word in para.lower().split():
++            words.add(word)
++    return sorted(words)
++
++
++# ---------------------------------------------------------------------------
++# Sprint 6 additions (R140)
++# ---------------------------------------------------------------------------
++
++def append_paragraph(model: dict, text: str) -> dict:
++    """Return a new model with text appended as a new paragraph."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    if not isinstance(text, str):
++        raise TypeError("text must be a str")
++    paragraphs = list(model.get("paragraphs", [])) + [text]
++    return {**model, "paragraphs": paragraphs, "paragraph_count": len(paragraphs)}
++
++
++def split_paragraphs(model: dict, chunk_size: int) -> list:
++    """Split the model into sub-models of chunk_size paragraphs each."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    if chunk_size <= 0:
++        raise ValueError("chunk_size must be > 0")
++    paragraphs = model.get("paragraphs", [])
++    if not paragraphs:
++        return [{**model, "paragraphs": [], "paragraph_count": 0}]
++    chunks = []
++    for i in range(0, len(paragraphs), chunk_size):
++        chunk = list(paragraphs[i : i + chunk_size])
++        chunks.append({**model, "paragraphs": chunk, "paragraph_count": len(chunk)})
++    return chunks
++
++
++# ---------------------------------------------------------------------------
++# Sprint 7 additions (R142)
++# ---------------------------------------------------------------------------
++
++def get_char_count(model: dict) -> int:
++    """Return total character count across all paragraphs."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    return sum(len(p) for p in model.get("paragraphs", []))
++
++
++def join_paragraphs(model: dict, sep: str = "\n") -> str:
++    """Join all paragraphs with sep and return as a single string."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    return sep.join(model.get("paragraphs", []))
++
++
++def replace_in_paragraphs(model: dict, old: str, new: str) -> dict:
++    """Return a new model with all occurrences of old replaced by new."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    if not isinstance(old, str):
++        raise TypeError("old must be a str")
++    if not isinstance(new, str):
++        raise TypeError("new must be a str")
++    paragraphs = [p.replace(old, new) for p in model.get("paragraphs", [])]
++    return {**model, "paragraphs": paragraphs, "paragraph_count": len(paragraphs)}
++
++
++# ---------------------------------------------------------------------------
++# Sprint 8 additions (R144)
++# ---------------------------------------------------------------------------
++
++def export_to_markdown(model: dict) -> str:
++    """Export document paragraphs as Markdown text (paragraphs separated by blank lines)."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    return "\n\n".join(model.get("paragraphs", []))
++
++
++def get_paragraph_at(model: dict, index: int) -> str:
++    """Return paragraph at index. Does NOT accept negative indices.
++
++    Raises IndexError if index is out of range or negative.
++    """
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    paragraphs = model.get("paragraphs", [])
++    if index < 0 or index >= len(paragraphs):
++        raise IndexError(f"paragraph index {index} out of range")
++    return paragraphs[index]
++
++
++# ---------------------------------------------------------------------------
++# Sprint 9 additions (R146)
++# ---------------------------------------------------------------------------
++
++def paragraph_lengths(model: dict) -> list:
++    """Return a list of character lengths for each paragraph."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    return [len(p) for p in model.get("paragraphs", [])]
++
++
++def reverse_paragraphs(model: dict) -> dict:
++    """Return a new model with paragraphs in reversed order."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    paragraphs = list(reversed(model.get("paragraphs", [])))
++    return {**model, "paragraphs": paragraphs, "paragraph_count": len(paragraphs)}
++
++
++# ---------------------------------------------------------------------------
++# Sprint 10 additions (R148)
++# ---------------------------------------------------------------------------
++
++def word_wrap(model: dict, width: int) -> dict:
++    """Wrap long paragraphs at word boundaries to fit within width characters.
++
++    Each paragraph that exceeds width is split into multiple shorter paragraphs.
++    """
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    import textwrap
++    result_paras: list = []
++    for para in model.get("paragraphs", []):
++        if len(para) <= width:
++            result_paras.append(para)
++        else:
++            wrapped = textwrap.wrap(para, width)
++            result_paras.extend(wrapped if wrapped else [para])
++    return {**model, "paragraphs": result_paras, "paragraph_count": len(result_paras)}
++
++
++def has_paragraph(model: dict, text: str) -> bool:
++    """Return True if any paragraph exactly matches text."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    return text in model.get("paragraphs", [])
++
++
++# ---------------------------------------------------------------------------
++# Sprint 11 additions (R150)
++# ---------------------------------------------------------------------------
++
++def first_paragraph(model: dict) -> str:
++    """Return the first paragraph, or '' if the document is empty."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    paragraphs = model.get("paragraphs", [])
++    return paragraphs[0] if paragraphs else ""
++
++
++def last_paragraph(model: dict) -> str:
++    """Return the last paragraph, or '' if the document is empty."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    paragraphs = model.get("paragraphs", [])
++    return paragraphs[-1] if paragraphs else ""
++
++
++# ---------------------------------------------------------------------------
++# Sprint 12 additions (R152)
++# ---------------------------------------------------------------------------
++
++def count_words(model: dict) -> int:
++    """Return total word count across all paragraphs."""
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    return sum(len(p.split()) for p in model.get("paragraphs", []))
++
++
++def paragraph_at(model: dict, index: int) -> str:
++    """Return paragraph at index. Supports negative indices.
++
++    Raises IndexError if index is out of range.
++    """
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    paragraphs = model.get("paragraphs", [])
++    if not paragraphs or index >= len(paragraphs) or index < -len(paragraphs):
++        raise IndexError(f"paragraph index {index} out of range")
++    return paragraphs[index]
++
++
++# pfgi-rnext — text_stats
++# FORMAT_FACTORY_EXECUTION: taskcard=PFGI-TC-005; method=MANUAL_GOVERNED_BY_SKILL; skill=add-python-api; idempotency=dccee3ccbb0b816812baaa43930a298729c24fbad552eec09f21873a74a12a3b; evidence=.local/evidences/product-first-governed-implementation-rnext/evidence-declaration.yaml
++def text_stats(model: dict) -> dict:
++    """Return text statistics for the document model.
++
++    Returns a dict with:
++        paragraph_count (int): Number of paragraphs.
++        word_count (int): Total words across all paragraphs.
++        char_count (int): Total characters across all paragraphs.
++        avg_words_per_paragraph (float): Average words per paragraph (0.0 if none).
++
++    Args:
++        model: ABW neutral model dict (must have 'paragraphs' key).
++
++    Raises:
++        TypeError: If model is not a dict.
++    """
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    paragraphs = model.get("paragraphs", [])
++    paragraph_count = len(paragraphs)
++    word_count = sum(len(p.split()) for p in paragraphs)
++    char_count = sum(len(p) for p in paragraphs)
++    avg_words = word_count / paragraph_count if paragraph_count else 0.0
++    return {
++        "paragraph_count": paragraph_count,
++        "word_count": word_count,
++        "char_count": char_count,
++        "avg_words_per_paragraph": avg_words,
++    }
++
++
++# pige-rnext — export_to_plain_text
++# FORMAT_FACTORY_EXECUTION: taskcard=PIGE-TC-005; method=AGENT_GOVERNED_DIRECT_EXECUTION; skill=add-python-api; idempotency=634e6b842d83c862f52513443a3f2830944efa8c2e0676c8e751900edb6045a9; evidence=.local/evidences/product-integration-governed-expansion-rnext/evidence-declaration.yaml
++def export_to_plain_text(model: dict) -> str:
++    """Export all paragraphs as a single plain-text string.
++
++    Paragraphs are joined with double newlines.
++
++    Args:
++        model: ABW neutral model dict (must have 'paragraphs' key).
++
++    Returns:
++        Plain text string with paragraphs separated by blank lines.
++
++    Raises:
++        TypeError: If model is not a dict.
++    """
++    if not isinstance(model, dict):
++        raise TypeError("model must be a dict")
++    paragraphs = model.get("paragraphs", [])
++    return "\n\n".join(paragraphs)

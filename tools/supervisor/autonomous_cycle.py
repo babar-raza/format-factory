@@ -25,6 +25,11 @@ REPO_ROOT = SCRIPT_DIR.parent.parent
 
 # Import sibling modules
 sys.path.insert(0, str(SCRIPT_DIR))
+
+# Structured logging (TC-APRV-011)
+from logging_config import configure_supervisor_logging
+_logger = configure_supervisor_logging()
+
 from evidence_declaration import validate_declaration, load_declaration
 from inspect_declared_evidence import inspect_declaration
 from grade_declared_work import grade_all, write_outputs
@@ -134,6 +139,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     timestamp = datetime.now().isoformat()
 
     # Step 1: Validate declaration
+    _logger.info("Step 1: Validate declaration", extra={"sprint_id": "pending"})
     print("=== STEP 1: VALIDATE DECLARATION ===")
     validation = validate_declaration(declaration_path, repo_root)
     if not validation["valid"]:
@@ -147,6 +153,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     decl = validation["declaration"]
     run_id = decl.get("run_id", "unknown")
     sprint_id = decl.get("sprint_id", "unknown")
+    _logger.info("Declaration validated", extra={"sprint_id": run_id})
     print(f"  VALID: run_id={run_id}, sprint_id={sprint_id}")
 
     # Step 2: Inspect declared evidence
@@ -202,8 +209,39 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     except Exception as e:
         print(f"  WARNING: Adoption compliance check skipped: {e}")
 
-    # Step 3: Grade work items
+    # Step 2e: Governance validators (GRE-TC-002: wired into pipeline)
+    print("\n=== STEP 2e: GOVERNANCE VALIDATORS ===")
+    governance_validation_result = None
+    try:
+        from governance_validators import run_all_governance_validators
+        governance_validation_result = run_all_governance_validators(decl, repo_root)
+        (review_dir / "governance-validation-result.json").write_text(
+            json.dumps(governance_validation_result, indent=2), encoding="utf-8"
+        )
+        _gov_fail = governance_validation_result.get("fail_count", 0)
+        _gov_warn = governance_validation_result.get("warn_count", 0)
+        _gov_pass = governance_validation_result.get("pass_count", 0)
+        _gov_blocks = governance_validation_result.get("blocks_sprint", False)
+        print(f"  Governance: {_gov_pass} PASS / {_gov_warn} WARN / {_gov_fail} FAIL"
+              f" | blocks_sprint={_gov_blocks}")
+        if _gov_fail > 0:
+            for v in governance_validation_result.get("validators", []):
+                if v.get("result") == "FAIL":
+                    print(f"    FAIL [{v['validator']}]: {v.get('summary', '')[:120]}")
+    except Exception as e:
+        print(f"  WARNING: Governance validators skipped: {e}")
+
+    # Step 3: Grade work items (includes Step 3a: LLM semantic verification)
     print("\n=== STEP 3: GRADE WORK ITEMS ===")
+    # Inject repo_root for semantic verification (LLM reads evidence files)
+    decl["_repo_root"] = str(repo_root)
+    # Debug: check LLM gateway availability before grading
+    try:
+        from grade_declared_work import _get_sv_gateway
+        _dbg_gw, _dbg_cfg = _get_sv_gateway()
+        print(f"  LLM gateway: {'AVAILABLE' if _dbg_gw else 'UNAVAILABLE'} (configured={getattr(_dbg_cfg, 'is_configured', False) if _dbg_cfg else False})")
+    except Exception as _dbg_e:
+        print(f"  LLM gateway check failed: {_dbg_e}")
     review = grade_all(inspection, decl)
     review["declaration_path"] = str(declaration_path)
     print(f"  Verdict: {review['overall_verdict']}")
@@ -211,6 +249,19 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     print(f"  Rework: {len(review['rework_items'])}")
     print(f"  Overclaimed: {len(review['overclaimed_items'])}")
     print(f"  Autonomous Continue: {review['autonomous_continue']}")
+
+    # Step 3a: Report LLM semantic verification results
+    sv_items = [g for g in review.get("item_grades", []) if g.get("semantic_verification", {}).get("llm_used")]
+    if sv_items:
+        sv_downgrades = [g for g in sv_items if not g["semantic_verification"].get("adequate")]
+        sv_stubs = [g for g in sv_items if g["semantic_verification"].get("stub_detected")]
+        print(f"\n  --- Step 3a: LLM Semantic Verification ---")
+        print(f"  Items verified: {len(sv_items)}")
+        print(f"  Downgrades: {len(sv_downgrades)}")
+        print(f"  Stubs detected: {len(sv_stubs)}")
+        for g in sv_downgrades:
+            deficiencies = g["semantic_verification"].get("deficiencies", [])
+            print(f"    [{g['item_id']}] {'; '.join(deficiencies[:2])}")
 
     # R111: Attach adoption compliance result to review for downstream consumption
     if adoption_result is not None:
@@ -222,6 +273,18 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
                 review["stop_reason"] = (
                     review.get("stop_reason", "") +
                     f" Adoption compliance FAIL: {adoption_result['summary']}"
+                ).strip()
+
+    # GRE-TC-002: Attach governance validation result to review
+    if governance_validation_result is not None:
+        review["governance_validation"] = governance_validation_result
+        if governance_validation_result.get("blocks_sprint"):
+            # Blocking governance failure downgrades to ACCEPTED_WITH_REWORK
+            if review["overall_verdict"] in ("ACCEPTED", "ACCEPTED_WITH_LIMITATIONS"):
+                review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
+                review["stop_reason"] = (
+                    review.get("stop_reason", "") +
+                    f" Governance validator FAIL: {governance_validation_result.get('summary', '')}"
                 ).strip()
 
     # Write review outputs
@@ -814,6 +877,7 @@ def main() -> int:
         print(f"ERROR: Declaration not found: {args.declaration}", file=sys.stderr)
         return 1
 
+    _logger.info("Autonomous supervisor cycle starting", extra={"sprint_id": str(args.declaration)})
     print("=" * 60)
     print("AUTONOMOUS SUPERVISOR CYCLE")
     print(f"Declaration: {args.declaration}")
@@ -823,6 +887,13 @@ def main() -> int:
     manifest = run_cycle(args.declaration, args.repo_root)
 
     exit_code = manifest.get("exit_code", 9)
+    _logger.info(
+        "Cycle complete",
+        extra={
+            "sprint_id": manifest.get("run_id", "unknown"),
+            "work_item": f"exit_{exit_code}",
+        },
+    )
     print()
     print("=" * 60)
     print(f"CYCLE COMPLETE (exit {exit_code})")

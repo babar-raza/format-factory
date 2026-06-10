@@ -1,0 +1,19 @@
+{
+  "transcript_id": "transcript:iter002-fods-r115",
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "iteration": 2,
+  "lane_id": "lane-007-fods-r115",
+  "format": "fods",
+  "track": "commercial_net",
+  "capability_added": ["ExportSheetToCsvFile", "FilterRows"],
+  "source_files_modified": ["src/net/fods/FodsDocument.cs"],
+  "test_files_added": [
+    "tests/net/fods/FodsR115ExportCsvFileTests.cs",
+    "tests/net/fods/FodsR115FilterRowsTests.cs"
+  ],
+  "tests_run": 16,
+  "tests_passed": 16,
+  "tests_failed": 0,
+  "skill_verdict": "LANE_COMPLETE",
+  "notes": "ExportSheetToCsvFile (2 overloads) + FilterRows (header-always-included, empty on missing sheet) added to FodsDocument. 16 tests pass."
+}

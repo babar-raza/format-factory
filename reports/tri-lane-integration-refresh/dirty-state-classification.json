@@ -1,0 +1,62 @@
+{
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "classification_purpose": "Classify pre-existing dirty product source state before this sprint begins",
+  "product_source_files": [
+    {
+      "file": "src/net/fods/FodsDocument.cs",
+      "git_status": "M",
+      "classification": "PRE_EXISTING_PRODUCT_WIP",
+      "classification_reason": "Modified before this sprint. Previous sprints (R93, R85-R93) added FODS API methods (GetColumnHeaders, ExportToCsv, etc.). Changes are tracked in reports/r90/product-code-change-ledger.json. Not unsafe — prior work in progress.",
+      "action": "Carry forward to Mainstream as pre-classified WIP. Mainstream must classify before new edits.",
+      "sprint_origin": "R85-R93 product sprints",
+      "unsafe": false
+    },
+    {
+      "file": "src/net/fodt/FodtDocument.cs",
+      "git_status": "M",
+      "classification": "PRE_EXISTING_PRODUCT_WIP",
+      "classification_reason": "Modified before this sprint. Previous sprints added FODT API methods (GetParagraphTexts, ExportToMarkdown, etc.). Changes are tracked in product-code-change-ledger. Not unsafe.",
+      "action": "Carry forward to Mainstream as pre-classified WIP.",
+      "sprint_origin": "R85-R93 product sprints",
+      "unsafe": false
+    },
+    {
+      "file": "src/net/netpbm/Model/NetpbmImage.cs",
+      "git_status": "M",
+      "classification": "PRE_EXISTING_PRODUCT_WIP",
+      "classification_reason": "Modified before this sprint. Previous sprints added Netpbm operations (CopyRegion, FlipDiagonal, etc.). Not unsafe.",
+      "action": "Carry forward to Mainstream as pre-classified WIP.",
+      "sprint_origin": "R85-R93 product sprints",
+      "unsafe": false
+    },
+    {
+      "file": "src/python/sylk/sylk_parser.py",
+      "git_status": "M",
+      "classification": "PRE_EXISTING_PRODUCT_WIP",
+      "classification_reason": "Modified before this sprint. R93 added write_sylk capability. Changes are tracked in product-code-change-ledger.",
+      "action": "Carry forward. Not in scope for Mainstream .NET sprints.",
+      "sprint_origin": "R93 SYLK FOSS sprint",
+      "unsafe": false
+    }
+  ],
+  "supervisor_governance_files": [
+    {
+      "pattern": "tools/supervisor/*.py (M)",
+      "git_status": "M",
+      "classification": "PRE_EXISTING_GOVERNANCE_WIP",
+      "classification_reason": "Supervisor tools updated in prior governance/hardening sprints. Not product source.",
+      "action": "These files may be modified by this sprint as they are in allowed paths."
+    },
+    {
+      "pattern": "reports/supervisor/* (M)",
+      "git_status": "M",
+      "classification": "PRE_EXISTING_GOVERNANCE_WIP",
+      "classification_reason": "Supervisor output files from prior sprints.",
+      "action": "Read-only from this sprint's perspective."
+    }
+  ],
+  "overall_unsafe_dirty_state": false,
+  "overall_classification": "PRE_EXISTING_PRODUCT_WIP_CLASSIFIED",
+  "mainstream_preflight_requirement": "Mainstream must re-confirm classification of all 4 product WIP files before new edits."
+}

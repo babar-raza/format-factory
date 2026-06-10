@@ -1,0 +1,77 @@
+{
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-POC-AUTHORITY-RECONCILIATION-R118-001",
+  "generated": "2026-06-05",
+  "source_sprint": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "corrected_verdict": "UNIFIED_POC_R118_AUTHORITY_VERIFIED_GATE11_REVIEW_READY",
+  "evidence_status": {
+    "overall_verdict": "ACCEPTED",
+    "evidence_quality_score": 0.83,
+    "verified_item_count": 5,
+    "total_items": 6,
+    "autonomous_cycle_exit": 0,
+    "review_package_sha": "821891a3d292dde83e68cf3b0c7d48440d520e177e6a475836a1261b4fabd5a0"
+  },
+  "test_totals": {
+    "authoritative_total": 383,
+    "breakdown": {
+      "iter1_authority_rca_fabric": 94,
+      "iter2_r115": 57,
+      "iter3_r116_controller": 116,
+      "iter4_dif_dogfood": 66,
+      "wi006_controller_gate_reconciliation": 50
+    },
+    "passed": 383,
+    "failed": 0
+  },
+  "export_policy": {
+    "result": "PASS_WITH_CORRECT_CLASSIFICATION",
+    "target_writers_exist": false,
+    "fods_csv_export": "product_local_GAP_DOGFOOD_EXTERNAL",
+    "fodt_markdown_export": "product_local_GAP_DOGFOOD_EXTERNAL",
+    "poc_targets_correctly_classified": true,
+    "poc_blocker": false
+  },
+  "proof_graph": {
+    "nodes": 88,
+    "edges": 82,
+    "ai_draft": false,
+    "evidence_only": false,
+    "verdict": "VALID"
+  },
+  "closure_criteria": {
+    "met": 13,
+    "total": 13,
+    "status": "ALL_MET"
+  },
+  "gate_11": {
+    "status": "PENDING_HUMAN_APPROVAL",
+    "approver": "Babar Raza",
+    "packet_prepared": true,
+    "approval_executed": false,
+    "commercial_product_ready": false
+  },
+  "corrected_git_status": "dirty_state_classified_SPRINT_WORK_IN_PROGRESS_AUTHORIZED",
+  "artifact_counts": {
+    "raw_logs_on_disk": 11,
+    "sample_outputs_on_disk": 12,
+    "source_diffs": 4,
+    "transcripts": 4,
+    "capability_deltas": 19,
+    "total_materialized": 93,
+    "missing": 0
+  },
+  "product_progress": [
+    "FODS .NET R114 GetSheetStats, SetCellStyle (16 tests)",
+    "FODT .NET R114 SetParagraphStyle (9 tests)",
+    "Netpbm .NET R114 MedianFilter, Create factory (16 tests)",
+    "FODS/FODT/Netpbm R115 (57 tests)",
+    "FODS R116 GetColumnAggregates, FODT R116 GetWordFrequency, Netpbm R116 DrawLine (24 tests)",
+    "DIF Python R116 probe/csv pipeline + R117 write_dif CRLF fix (22 tests)",
+    "Autonomous POC Controller (50 tests)",
+    "Spec Authority + RCA MWP + Integration Fabric (94 tests)"
+  ],
+  "no_commit": true,
+  "no_push": true,
+  "no_publication": true,
+  "no_gate_approval": true
+}

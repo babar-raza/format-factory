@@ -1,0 +1,37 @@
+taskcard_id: LFI-H-001
+title: "Verification and Evidence Closeout"
+lane: H
+owner_role: verifier
+status: READY_FOR_EXECUTION
+allowed_paths:
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/test-and-evidence-map.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/final-verdict.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/*.log"
+forbidden_paths:
+  - "src/python/"
+  - "src/net/"
+  - "registry/"
+  - "tools/supervisor/"
+inputs:
+  - "tools/supervisor/capability_verifier.py"
+  - "tests/supervisor/test_capability_verifier.py"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/pilot-1-test-output.log"
+outputs:
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/test-and-evidence-map.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/final-verdict.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
+file_ownership:
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/test-and-evidence-map.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/supervisor-regression.log"
+verification_commands:
+  - "test -f .local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
+  - "test -f .local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
+evidence_files:
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/test-and-evidence-map.md"
+rollback: "Delete verification-summary.md, test-and-evidence-map.md, final-verdict.md from evidence dir"
+closeout_criteria: "All V1-V11 checks documented; evidence-declaration.yaml valid; final-verdict.md written"

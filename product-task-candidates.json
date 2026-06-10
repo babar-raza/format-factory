@@ -1,0 +1,356 @@
+{
+  "generated_at": "2026-06-08T14:16:20.638969+00:00",
+  "generator_version": "1.0",
+  "total_candidates": 6,
+  "source": "capability_expansion_goals",
+  "tasks": [
+    {
+      "action_id": "atg-abw-count-words-001",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 1,
+      "source": "capability_expansion:abw-count_words",
+      "reason": "Return total word count across all paragraphs in the ABW model",
+      "objective": "Implement count_words() for ABW format: Return total word count across all paragraphs in the ABW model",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_r152_abw_count_words.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-count_words -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_r152_abw_count_words.py passes; count_words() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "getter",
+      "spec_authority": "schema_authority_available",
+      "format": "abw",
+      "function_name": "count_words"
+    },
+    {
+      "action_id": "atg-abw-paragraph-at-002",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 2,
+      "source": "capability_expansion:abw-paragraph_at",
+      "reason": "Return paragraph at a given index; raise IndexError if out of range",
+      "objective": "Implement paragraph_at() for ABW format: Return paragraph at a given index; raise IndexError if out of range",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/abw/",
+        "tests/python/abw/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/abw/abw_codec.py"
+      ],
+      "target_path": "src/python/abw/abw_codec.py",
+      "expected_tests": [
+        "tests/python/abw/test_r152_abw_paragraph_at.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "ABW-paragraph_at -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/abw/abw_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/abw/test_r152_abw_paragraph_at.py passes; paragraph_at() defined in src/python/abw/abw_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "getter",
+      "spec_authority": "schema_authority_available",
+      "format": "abw",
+      "function_name": "paragraph_at"
+    },
+    {
+      "action_id": "atg-gnumeric-sheet-names-003",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 3,
+      "source": "capability_expansion:gnumeric-sheet_names",
+      "reason": "Return list of sheet names from Gnumeric model",
+      "objective": "Implement sheet_names() for GNUMERIC format: Return list of sheet names from Gnumeric model",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/gnumeric/",
+        "tests/python/gnumeric/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/gnumeric/gnumeric_codec.py"
+      ],
+      "target_path": "src/python/gnumeric/gnumeric_codec.py",
+      "expected_tests": [
+        "tests/python/gnumeric/test_r152_gnumeric_sheet_names.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "GNUMERIC-sheet_names -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/gnumeric/gnumeric_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/gnumeric/test_r152_gnumeric_sheet_names.py passes; sheet_names() defined in src/python/gnumeric/gnumeric_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "getter",
+      "spec_authority": "schema_authority_available",
+      "format": "gnumeric",
+      "function_name": "sheet_names"
+    },
+    {
+      "action_id": "atg-gnumeric-row-count-004",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 4,
+      "source": "capability_expansion:gnumeric-row_count",
+      "reason": "Return the number of rows with data in a Gnumeric sheet",
+      "objective": "Implement row_count() for GNUMERIC format: Return the number of rows with data in a Gnumeric sheet",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/gnumeric/",
+        "tests/python/gnumeric/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/gnumeric/gnumeric_codec.py"
+      ],
+      "target_path": "src/python/gnumeric/gnumeric_codec.py",
+      "expected_tests": [
+        "tests/python/gnumeric/test_r152_gnumeric_row_count.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "GNUMERIC-row_count -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/gnumeric/gnumeric_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/gnumeric/test_r152_gnumeric_row_count.py passes; row_count() defined in src/python/gnumeric/gnumeric_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "getter",
+      "spec_authority": "schema_authority_available",
+      "format": "gnumeric",
+      "function_name": "row_count"
+    },
+    {
+      "action_id": "atg-tsv-column-count-005",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 5,
+      "source": "capability_expansion:tsv-column_count",
+      "reason": "Return the number of columns (headers) in a TSV source",
+      "objective": "Implement column_count() for TSV format: Return the number of columns (headers) in a TSV source",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/tsv/",
+        "tests/python/tsv/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/tsv/tsv_parser.py"
+      ],
+      "target_path": "src/python/tsv/tsv_parser.py",
+      "expected_tests": [
+        "tests/python/tsv/test_r152_tsv_column_count.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "TSV-column_count -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/tsv/tsv_parser.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/tsv/test_r152_tsv_column_count.py passes; column_count() defined in src/python/tsv/tsv_parser.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "getter",
+      "spec_authority": "no_public_spec_available",
+      "format": "tsv",
+      "function_name": "column_count"
+    },
+    {
+      "action_id": "atg-ndjson-sum-field-006",
+      "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+      "stream": "product",
+      "lane": "product_feature",
+      "priority": 6,
+      "source": "capability_expansion:ndjson-sum_field",
+      "reason": "Sum numeric values for a field across all NDJSON records",
+      "objective": "Implement sum_field() for NDJSON format: Sum numeric values for a field across all NDJSON records",
+      "autonomy_value": 3,
+      "product_value": 3,
+      "risk_level": "LOW",
+      "gate_classification": "LOCAL_AUTONOMOUS",
+      "human_approval_required": false,
+      "allowed_paths": [
+        "src/python/ndjson/",
+        "tests/python/ndjson/"
+      ],
+      "forbidden_paths": [
+        "src/net/",
+        "registry/",
+        "product-capability-matrix/poc-targets.yaml",
+        ".supervisor/",
+        "AGENTS.md",
+        "GOVERNANCE.md"
+      ],
+      "expected_files_to_change": [
+        "src/python/ndjson/ndjson_codec.py"
+      ],
+      "target_path": "src/python/ndjson/ndjson_codec.py",
+      "expected_tests": [
+        "tests/python/ndjson/test_r152_ndjson_sum_field.py"
+      ],
+      "expected_ledgers": [
+        "reports/r90/product-code-change-ledger.json"
+      ],
+      "expected_capability_updates": [
+        "NDJSON-sum_field -> test_verified"
+      ],
+      "expected_spec_refs": [],
+      "rollback_strategy": "git checkout src/python/ndjson/ndjson_codec.py",
+      "max_attempts": 3,
+      "repair_allowed": true,
+      "evidence_required": true,
+      "done_criteria": "pytest tests/python/ndjson/test_r152_ndjson_sum_field.py passes; sum_field() defined in src/python/ndjson/ndjson_codec.py; ledger entry added",
+      "status": "pending",
+      "external_gate": false,
+      "queued_at": null,
+      "started_at": null,
+      "completed_at": null,
+      "result_path": null,
+      "error": null,
+      "sprint_id": null,
+      "pattern": "aggregator",
+      "spec_authority": "no_public_spec_available",
+      "format": "ndjson",
+      "function_name": "sum_field"
+    }
+  ]
+}

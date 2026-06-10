@@ -1,0 +1,77 @@
+{
+  "review_id": "broad-rnext-package138-review",
+  "reviewed_package": "capability-layer-broad-healing-rnext3",
+  "package_sha256": "d771bb5db8a843a6fc3682ac367b962019737b0ade19fd61ceafb50126741750",
+  "reviewer": "agent-broad-rnext",
+  "review_date": "2026-06-08",
+  "git_head_at_review": "e382e5fd8e65bc146c0821602cb8fb1ecfab982c",
+
+  "verified_accepted_items": [
+    {
+      "item_id": "LANE-D-NDJSON-ROUNDTRIP",
+      "verified": true,
+      "evidence": "src/python/ndjson/ndjson_codec.py contains def roundtrip(); tests/python/ndjson/test_rnext3_ndjson_roundtrip.py has 8 tests"
+    },
+    {
+      "item_id": "LANE-E-TSV-ROUNDTRIP",
+      "verified": true,
+      "evidence": "src/python/tsv/tsv_parser.py contains def roundtrip(); tests/python/tsv/test_rnext3_tsv_roundtrip.py has 8 tests"
+    },
+    {
+      "item_id": "LANE-C-MAP-REGENERATION",
+      "verified": true,
+      "evidence": "reports/capability-layer/gap-ledger.json run_id=capability-layer-broad-healing-rnext3; total_gaps=0; validator PASS"
+    },
+    {
+      "item_id": "LANE-F-SAMPLE-OUTPUTS",
+      "verified": true,
+      "evidence": "4 sample files exist in reports/capability-layer-rnext3/sample-outputs/"
+    }
+  ],
+
+  "limitations_confirmed": [
+    {
+      "item_id": "LANE-B-PACKAGE136-REVIEW",
+      "limitation": "path-only evidence — review JSON created but supervisor grades as path-only",
+      "root_cause": "No tests_supporting in evidence declaration for review items",
+      "action_this_sprint": "Add raw-proof evidence (test log line counts) to review items"
+    },
+    {
+      "item_id": "LANE-C-ARTIFACT-FRESHNESS",
+      "limitation": "path-only — generator updated but no test for freshness enforcement",
+      "root_cause": "No test verifies that generated artifacts carry current run_id",
+      "action_this_sprint": "Add freshness validation test"
+    },
+    {
+      "item_id": "LANE-H-ACTION-QUEUE-MACHINE-EXECUTABLE",
+      "limitation": "Action queue has only 1 action (ACT-UPDATE-POC-TARGETS); no real product actions",
+      "root_cause": "Gap-ledger=0 means no gap-driven actions; need to generate non-gap product actions",
+      "action_this_sprint": "Rebuild action queue with feature-expansion actions for FOSS formats"
+    },
+    {
+      "item_id": "EVIDENCE-QUALITY",
+      "limitation": "evidence_quality_score=0.11 — all items path-only",
+      "root_cause": "Work items had evidence_paths but no tests_supporting with test_count evidence",
+      "action_this_sprint": "Add tests_supporting with test file refs and explicit test_count in declaration"
+    }
+  ],
+
+  "unsafe_prompt_wording": {
+    "found": true,
+    "pattern": "generated next prompt from supervisor may include 'authorized to commit/push' wording",
+    "action": "Never use generated prompt verbatim; always re-verify wording before following"
+  },
+
+  "gap_ledger_0_adversarial_challenge": {
+    "claim": "total_gaps: 0",
+    "challenge_method": "scan source for untracked capabilities not in poc-targets.yaml",
+    "findings": [
+      "NDJSON: sort_records() — not in source, not in poc-targets; genuine new capability gap",
+      "TSV: filter_rows() — not in source, not in poc-targets; genuine new capability gap",
+      "TOML: entire format — not acquired yet; stdlib tomllib available in Python 3.11+"
+    ],
+    "verdict": "0-gap claim is correct for TRACKED capabilities but INCOMPLETE coverage — new feature gaps exist"
+  },
+
+  "overall_verdict": "PACKAGE_138_ACCEPTED_8_LIMITATIONS_ALL_ADDRESSABLE_ZERO_GAPS_TRUE_BUT_INCOMPLETE"
+}

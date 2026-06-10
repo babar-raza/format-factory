@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-06T20:25:04.223930
+Timestamp: 2026-06-10T08:57:05.153958
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-first-acquisition-train\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-rnext31\declaration-review-package.zip
 Sprint ID: unknown
-Entry count: 80
-Bundle mtime: 2026-06-06T20:24:40.024603
-Bundle size: 117220 bytes
+Entry count: 56
+Bundle mtime: 2026-06-10T08:55:04.109759
+Bundle size: 97392 bytes

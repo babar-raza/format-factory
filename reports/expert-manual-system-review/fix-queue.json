@@ -1,0 +1,90 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-INVESTIGATE-AND-HEAL-001",
+  "generated_at": "2026-06-05T00:12:00Z",
+  "queue_policy": "FIX_NOW_SAFE and FIX_NOW_WITH_LIMITED_SCOPE (pilot) only — ordered by severity then impact",
+  "fix_queue": [
+    {
+      "order": 1,
+      "problem_id": "PROB-PK01",
+      "title": "FODS .csproj Description stale",
+      "severity": "HIGH",
+      "classification": "FIX_NOW_SAFE",
+      "lane": "PACKAGING_LANE",
+      "files": ["src/net/fods/FormatFactory.Fods.csproj"],
+      "validation_command": "dotnet build src/net/fods/FormatFactory.Fods.csproj --configuration Release"
+    },
+    {
+      "order": 2,
+      "problem_id": "PROB-PK02",
+      "title": "FODT .csproj Description stale",
+      "severity": "HIGH",
+      "classification": "FIX_NOW_SAFE",
+      "lane": "PACKAGING_LANE",
+      "files": ["src/net/fodt/FormatFactory.Fodt.csproj"],
+      "validation_command": "dotnet build src/net/fodt/FormatFactory.Fodt.csproj --configuration Release"
+    },
+    {
+      "order": 3,
+      "problem_id": "PROB-PK03",
+      "title": "Netpbm .csproj Description says Gate 11 NOT_STARTED",
+      "severity": "HIGH",
+      "classification": "FIX_NOW_SAFE",
+      "lane": "PACKAGING_LANE",
+      "files": ["src/net/netpbm/FormatFactory.Netpbm.csproj"],
+      "validation_command": "dotnet build src/net/netpbm/FormatFactory.Netpbm.csproj --configuration Release"
+    },
+    {
+      "order": 4,
+      "problem_id": "PROB-PK04",
+      "title": "All .csproj missing GenerateDocumentationFile=true",
+      "severity": "HIGH",
+      "classification": "FIX_NOW_SAFE",
+      "lane": "PACKAGING_LANE",
+      "files": [
+        "src/net/fods/FormatFactory.Fods.csproj",
+        "src/net/fodt/FormatFactory.Fodt.csproj",
+        "src/net/netpbm/FormatFactory.Netpbm.csproj"
+      ],
+      "validation_command": "dotnet build src/net/fods/FormatFactory.Fods.csproj --configuration Release",
+      "pre_check": "Verify TreatWarningsAsErrors setting before applying — CS1591 warnings may appear"
+    },
+    {
+      "order": 5,
+      "problem_id": "PROB-SRC01",
+      "title": "FodsCsvExporter.cs stale header comments",
+      "severity": "MEDIUM",
+      "classification": "FIX_NOW_SAFE",
+      "lane": "DOTNET_COMMERCIAL_LANE",
+      "files": ["src/net/fods/FodsCsvExporter.cs"],
+      "validation_command": "dotnet build src/net/fods/FormatFactory.Fods.csproj --configuration Release"
+    },
+    {
+      "order": 6,
+      "problem_id": "PROB-PY01",
+      "title": "No pyproject.toml in Python packages (pilot: abw + gnumeric)",
+      "severity": "CRITICAL",
+      "classification": "FIX_NOW_WITH_LIMITED_SCOPE",
+      "lane": "PYTHON_FOSS_LANE",
+      "files": [
+        "src/python/abw/pyproject.toml",
+        "src/python/gnumeric/pyproject.toml"
+      ],
+      "validation_command": ".local/venv/Scripts/pip install -e src/python/abw/ && .local/venv/Scripts/python -c \"import abw; print(abw.__version__)\"",
+      "note": "Pilot fix only: abw + gnumeric. Full fix for all 10 packages is FIX_LATER."
+    }
+  ],
+  "excluded_from_queue": [
+    {
+      "problem_id": "PROB-PK05",
+      "reason": "FIX_LATER_NEEDS_USER_APPROVAL — README.md does not exist; creation requires user authorization"
+    },
+    {
+      "problem_id": "PROB-AUTO01",
+      "reason": "FIX_LATER_NEEDS_USER_APPROVAL — session-resume.md is supervisor-generated; correct fix is via autonomous_cycle.py run in Phase 5"
+    },
+    {
+      "problem_id": "PROB-PY02",
+      "reason": "DO_NOT_FIX_FALSE_POSITIVE — both fods/__init__.py and fodt/__init__.py line 72 already have __version__ = PACKAGE_VERSION. Review matrix was incorrect."
+    }
+  ]
+}

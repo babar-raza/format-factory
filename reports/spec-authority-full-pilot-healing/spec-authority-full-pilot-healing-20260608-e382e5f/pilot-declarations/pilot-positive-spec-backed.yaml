@@ -1,0 +1,18 @@
+# Pilot: TCA-FULL-003 — Positive spec-backed declaration acceptance pilot
+# Expected: ACCEPTED — PRODUCT_SOURCE with valid FACT-FODS-001 reference
+pilot_id: pilot-positive-spec-backed
+sprint_id: SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001
+run_id: spec-authority-full-pilot-healing-20260608-e382e5f
+expected_result: ACCEPTED_AS_EXPECTED
+
+planned_work_items:
+  - item_id: WI-PILOT-POS-001
+    item_type: PRODUCT_SOURCE
+    title: "FODS product source change backed by verified spec fact"
+    status: completed
+    spec_fact_refs:
+      - FACT-FODS-001
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    tests_supporting: []
+    acceptance_criteria: "This item MUST be accepted — spec_fact_refs populated with FACT-FODS-001"

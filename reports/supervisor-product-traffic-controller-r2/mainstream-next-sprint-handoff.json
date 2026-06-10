@@ -1,0 +1,65 @@
+{
+  "handoff_id": "MAINSTREAM-NEXT-SPRINT-HANDOFF-R2",
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-R2-VERIFIED-ROUTING-CYCLE-ENFORCEMENT-AND-CROSS-STREAM-CONSUMPTION-001",
+  "generated_at": "2026-06-04T08:00:00Z",
+  "handoff_to": "mainstream",
+  "source_stream": "supervisor",
+  "current_classification": "PARTIAL_FEW_FAMILIES",
+  "current_decision": "CONTINUE_WITH_LIMITATIONS",
+  "current_breadth_score": 2,
+  "clean_pass_requirements": {
+    "families_touched_minimum": 3,
+    "source_diffs_minimum": 3,
+    "governed_transcripts_minimum": 3,
+    "raw_logs_minimum": 3,
+    "capability_matrix_deltas_minimum": 3,
+    "repair_items_max_fraction": 0.5,
+    "skills_consumption": "consumed",
+    "acceleration_consumption": "consumed"
+  },
+  "target_format_families": [
+    {
+      "family": "FODS",
+      "priority": 1,
+      "rationale": "OpenDocument Spreadsheet — well-established, 215 .NET tests passing, needs governed transcripts",
+      "minimum_new_apis": 2,
+      "minimum_source_diffs": 1,
+      "minimum_raw_logs": 1
+    },
+    {
+      "family": "FODT",
+      "priority": 2,
+      "rationale": "OpenDocument Text — 201 .NET tests passing, needs new APIs and governed transcripts",
+      "minimum_new_apis": 2,
+      "minimum_source_diffs": 1,
+      "minimum_raw_logs": 1
+    },
+    {
+      "family": "Netpbm",
+      "priority": 3,
+      "rationale": "PBM/PGM/PPM family — 120 .NET tests, multi-format, good for breadth",
+      "minimum_new_apis": 2,
+      "minimum_source_diffs": 1,
+      "minimum_raw_logs": 1
+    }
+  ],
+  "cross_stream_requirements": {
+    "must_consume_skills": true,
+    "skills_requirement": "declare governed_execution_consumed=true after Skills produces governed transcripts",
+    "must_consume_acceleration": true,
+    "acceleration_requirement": "declare reusable_accelerator_consumed=true after Acceleration produces ai_draft outputs"
+  },
+  "stop_conditions": [
+    "Do NOT target fewer than 3 format families (blocks CLEAN_PASS)",
+    "Do NOT declare CLEAN_PASS without source_diffs≥3",
+    "Do NOT declare governed_execution_consumed=true unless Skills actually produced governed transcripts",
+    "Do NOT claim reusable_accelerator_consumed=true unless Acceleration produced ai_draft outputs",
+    "Do NOT push or commit without explicit user authorization",
+    "Do NOT approve Gate 8 or Gate 11"
+  ],
+  "minimum_test_proof": {
+    "raw_test_log_required": true,
+    "test_pass_minimum": 1,
+    "log_must_show_format_family": true
+  }
+}

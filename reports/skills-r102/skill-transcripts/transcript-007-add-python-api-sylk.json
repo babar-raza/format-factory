@@ -1,0 +1,44 @@
+{
+  "invocation_id": "SKILLS-R102-INV-007",
+  "skill_id": "add-python-api",
+  "command_path": ".claude/commands/add-python-api.md",
+  "mode": "dry-run",
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R93",
+  "stream": "skills",
+  "timestamp": "2026-06-03T14:00:00Z",
+  "inputs": {
+    "format_id": "sylk",
+    "feature_name": "write_sylk"
+  },
+  "allowed_files": [
+    "src/python/sylk/sylk_parser.py",
+    "tests/python/sylk/test_r94_sylk_write_edge_cases.py"
+  ],
+  "forbidden_files": [
+    "registry/format-registry.yaml",
+    "plans/master-plan.md"
+  ],
+  "actual_files_read": [
+    "src/python/sylk/sylk_parser.py",
+    "tests/python/sylk/test_r94_sylk_write_edge_cases.py"
+  ],
+  "actual_files_changed": [
+    "src/python/sylk/sylk_parser.py",
+    "tests/python/sylk/test_r94_sylk_write_edge_cases.py"
+  ],
+  "validation_commands": [],
+  "raw_log_paths": [],
+  "tests_added": [
+    "tests/python/sylk/test_r94_sylk_write_edge_cases.py"
+  ],
+  "tests_run": [
+    "tests/python/sylk/test_r94_sylk_write_edge_cases.py"
+  ],
+  "ledger_entry_id": "R93-GOVERNED-SYLK-WRITE_SYLK-001",
+  "evidence_paths": [
+    "tests/python/sylk/test_r94_sylk_write_edge_cases.py"
+  ],
+  "result": "PASS",
+  "limitations": [],
+  "rollback_plan": "Revert source changes and remove test files"
+}

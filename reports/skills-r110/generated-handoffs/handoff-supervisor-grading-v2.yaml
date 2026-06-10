@@ -1,0 +1,52 @@
+handoff_id: HO-R110-SUPERVISOR-001
+type: supervisor-grading
+title: "Supervisor Grading Adoption — Handoff (Hardened)"
+stream_from: skills
+stream_to: supervisor
+skill_id: evidence-review-next-prompt
+version: "2.0"
+timestamp: "2026-06-03T23:10:00Z"
+
+description: |
+  Supervisor cycle must use transcript-aware grading and adoption compliance.
+  grade_item() boosts items with valid transcripts to ACCEPTED_VERIFIED.
+  Path-only sprints yield ACCEPTED_WITH_REWORK quality downgrade.
+
+required_inputs:
+  grading_engine: "tools/supervisor/grade_declared_work.py"
+  inspector: "tools/supervisor/inspect_declared_evidence.py"
+  transcript_validator: "tools/supervisor/validate_skill_transcript.py"
+  adoption_validator: "tools/supervisor/validate_adoption_compliance.py"
+  adoption_package: "reports/skills-r108/adoption-packages/supervisor-adoption.yaml"
+
+validation_command: |
+  python -m pytest tests/python/supervisor/test_r108_transcript_grade_boost.py tests/python/supervisor/test_r109_adoption_consumption.py::TestSupervisorGradingFixture -v
+
+expected_evidence:
+  grading_with_transcript: "ACCEPTED_VERIFIED when transcript_validation.all_valid=True"
+  grading_without_transcript: "ACCEPTED_WITH_LIMITATIONS when no concrete proof"
+  quality_enforcement: "evidence_quality_score=0.0 yields ACCEPTED_WITH_REWORK"
+  raw_log: "reports/r-next/raw-logs/test-supervisor.log"
+
+transcript_requirement:
+  mode: "dry-run"
+  required_fields: ["invocation_id", "skill_id", "mode", "inputs", "allowed_files", "actual_files_changed", "tests_run", "result"]
+
+raw_log_requirement:
+  format: "pytest output"
+  minimum_lines: 10
+  must_contain: ["passed", "test_r108", "test_r109"]
+
+pass_criteria:
+  - "grade_item boosts transcript-valid items to ACCEPTED_VERIFIED"
+  - "grade_item downgrades path-only items to ACCEPTED_WITH_LIMITATIONS"
+  - "grade_all enforces quality score (0% → ACCEPTED_WITH_REWORK)"
+  - "All supervisor tests pass"
+
+fail_conditions:
+  - "Transcript boost not wired into grade_item"
+  - "Path-only items graded as ACCEPTED_VERIFIED"
+  - "Quality score enforcement bypassed"
+  - "Supervisor tests fail"
+
+adoption_gates_enforced: [ADOPT-S-01, ADOPT-S-02, ADOPT-S-03, ADOPT-S-04]

@@ -1,0 +1,23 @@
+{
+  "description": "Sample: how a product-code-change-ledger entry looks for a governed .NET API",
+  "example_entry": {
+    "entry_id": "R109-GOVERNED-DOTNET-FODS-HASSHEET-001",
+    "classification": "GOVERNED_SKILL_EXECUTION",
+    "sprint": "mainstream-r109",
+    "skill_id": "add-dotnet-api",
+    "product": "FODS .NET",
+    "capability_refs": ["commercial_net_products.FODS.dotnet_status.has_sheet"],
+    "api_symbols": ["HasSheet"],
+    "source_files": [
+      {
+        "path": "src/net/fods/FodsDocument.cs",
+        "state": "present",
+        "sha256": "8d2027865ef5876c0dbd7acf6b3de2b49a242c649058bd18aeec3e22d7072a30"
+      }
+    ],
+    "test_files": ["tests/net/fods/FodsR109HasSheetTests.cs"],
+    "test_count": 8,
+    "focused_test_command": "dotnet test tests/net/fods/ --filter FullyQualifiedName~R109HasSheet",
+    "transcript_path": "reports/mainstream-r109/skill-transcripts/r109-fods-hassheet.md"
+  }
+}

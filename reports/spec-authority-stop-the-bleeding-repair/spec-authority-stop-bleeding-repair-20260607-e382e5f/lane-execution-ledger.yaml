@@ -1,0 +1,80 @@
+run_id: spec-authority-stop-bleeding-repair-20260607-e382e5f
+sprint_id: SPEC-AUTHORITY-LAYER-STOP-THE-BLEEDING-REPAIR-AND-ENFORCEMENT-001
+created_at: 2026-06-07T00:00:00Z
+
+lanes:
+  - lane_id: L-SCHEMA
+    description: "spec_fact_refs enforcement schema + wiring"
+    work_items:
+      - TCA-R001-evidence-declaration-py
+      - TCA-R001-grade-declared-work-py
+      - TCA-R001-inspect-declared-evidence-py
+      - TCA-R001-validate-spec-fact-refs-py
+    commands_executed:
+      - "Write tools/supervisor/validate_spec_fact_refs.py"
+      - "Edit tools/supervisor/evidence_declaration.py (wire enforcement)"
+      - "Edit tools/supervisor/grade_declared_work.py (wire enforcement + _raw_item)"
+      - "Edit tools/supervisor/inspect_declared_evidence.py (_raw_item passthrough)"
+    exit_codes: [0, 0, 0, 0]
+    output_paths:
+      - tools/supervisor/validate_spec_fact_refs.py
+      - tools/supervisor/evidence_declaration.py
+      - tools/supervisor/grade_declared_work.py
+      - tools/supervisor/inspect_declared_evidence.py
+    status: completed
+
+  - lane_id: L-TEST
+    description: "Negative tests for spec_fact_refs enforcement"
+    work_items:
+      - TCA-R002-spec-fact-refs-enforcement-tests
+      - TCA-R004-product-task-selector-authority-gate-tests
+    commands_executed:
+      - "Write tests/supervisor/test_spec_fact_refs_enforcement.py (20 tests)"
+      - "Write tests/supervisor/test_product_task_selector_authority_gate.py (5 tests)"
+      - ".local/venv/Scripts/python -m pytest tests/supervisor/test_spec_fact_refs_enforcement.py -v"
+      - ".local/venv/Scripts/python -m pytest tests/supervisor/test_product_task_selector_authority_gate.py -v"
+    exit_codes: [0, 0, 0, 0]
+    output_paths:
+      - tests/supervisor/test_spec_fact_refs_enforcement.py
+      - tests/supervisor/test_product_task_selector_authority_gate.py
+      - reports/spec-authority-stop-the-bleeding-repair/spec-authority-stop-bleeding-repair-20260607-e382e5f/raw-logs/test-spec-fact-refs-enforcement.txt
+      - reports/spec-authority-stop-the-bleeding-repair/spec-authority-stop-bleeding-repair-20260607-e382e5f/raw-logs/test-product-task-selector-authority-gate.txt
+    status: completed
+
+  - lane_id: L-PRODUCT-SELECTOR
+    description: "Authority gate hardening for product task selector"
+    work_items:
+      - TCA-R004-product-task-selector-authority-gate
+    commands_executed:
+      - "Edit tools/supervisor/product_task_selector.py (add authority gate)"
+    exit_codes: [0]
+    output_paths:
+      - tools/supervisor/product_task_selector.py
+    status: completed
+
+  - lane_id: L-AUTHORITY-LEDGER
+    description: "Gnumeric/ABW bypass ledger correction"
+    work_items:
+      - TCA-R005-gnumeric-abw-classification-correction
+    commands_executed:
+      - "Write reports/spec-authority-stop-the-bleeding/stop-the-bleeding-20260607-e382e5f/bypass-ledger/gnumeric-bypass.yaml (corrected)"
+      - "Edit reports/spec-authority-stop-the-bleeding/stop-the-bleeding-20260607-e382e5f/bypass-ledger/abw-bypass.yaml (reviewed)"
+    exit_codes: [0, 0]
+    output_paths:
+      - reports/spec-authority-stop-the-bleeding/stop-the-bleeding-20260607-e382e5f/bypass-ledger/gnumeric-bypass.yaml
+      - reports/spec-authority-stop-the-bleeding/stop-the-bleeding-20260607-e382e5f/bypass-ledger/abw-bypass.yaml
+    status: completed
+
+  - lane_id: L-EVIDENCE
+    description: "Evidence declaration + defect review"
+    work_items:
+      - Phase-1-previous-package-review
+      - TCA-R006-anti-skip-lane-ledger
+    commands_executed:
+      - "Write reports/spec-authority-stop-the-bleeding-repair/.../previous-package-review.md"
+      - "Write reports/spec-authority-stop-the-bleeding-repair/.../lane-execution-ledger.yaml"
+    exit_codes: [0, 0]
+    output_paths:
+      - reports/spec-authority-stop-the-bleeding-repair/spec-authority-stop-bleeding-repair-20260607-e382e5f/previous-package-review.md
+      - reports/spec-authority-stop-the-bleeding-repair/spec-authority-stop-bleeding-repair-20260607-e382e5f/lane-execution-ledger.yaml
+    status: completed

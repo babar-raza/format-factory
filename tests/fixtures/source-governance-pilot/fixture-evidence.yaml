@@ -1,0 +1,47 @@
+# Controlled Source Governance Pilot — Complete Evidence Chain
+# Sprint: FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001
+# Date: 2026-06-09
+# Purpose: Demonstrate that a complete governance evidence chain passes all 10 validators
+
+planned_work_items:
+  - item_id: GEC-K-PS-001
+    title: "Controlled fixture: get_fixture_value"
+    item_type: PRODUCT_SOURCE
+    format_id: fixture
+    capability_id: get_fixture_value
+    status: completed
+    grade: PASS
+    execution_method: MANUAL_GOVERNED_BY_SKILL
+    claim_classification: GOVERNED_BUT_NOT_REPLAYED
+    skill_id: add-python-api
+    skill_version: "1.0"
+    skill_transcript_path: reports/repeatability-governance-closure-rnext/raw-logs/pilot-tests.log
+    idempotency_key: "aaa0000000000000000000000000000000000000000000000000000000000001"
+    source_diff_paths:
+      - tests/fixtures/source-governance-pilot/fixture_source.py
+    before_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    after_sha256: "1111111111111111111111111111111111111111111111111111111111111111"
+    evidence_paths:
+      - tests/fixtures/source-governance-pilot/fixture_source.py
+    tests_supporting: []
+    state_machine_start: VALIDATED
+    state_machine_target: GOVERNANCE_ACCEPTED
+
+expected_result: PASS
+expected_blocks_sprint: false
+expected_validator_results:
+  execution_method_required_validator: PASS
+  source_diff_required_validator: PASS
+  idempotency_key_required_validator: PASS
+  replay_recipe_required_validator: PASS
+  claim_classification_validator: PASS
+  legacy_backfill_validator: PASS
+  manual_ungoverned_rejection_validator: PASS
+  governed_direct_execution_validator: WARN
+  source_marker_or_sidecar_attribution_validator: PASS
+  taskcard_state_transition_validator: PASS
+
+notes: >
+  governed_direct_execution_validator is WARN (not FAIL) because the skill transcript
+  path is a real log file but does not contain a formal skill-execution transcript.
+  This is acceptable for a controlled pilot fixture.

@@ -1,0 +1,82 @@
+[
+  {
+    "item_id": "W0-PREFLIGHT",
+    "r107_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r108_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Standard preflight scaffolding. Path-only evidence. No tests.",
+    "carry_forward": false
+  },
+  {
+    "item_id": "W1-R106-REGRADING",
+    "r107_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r108_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Regrading JSON produced. No tests validate regrading logic.",
+    "carry_forward": false
+  },
+  {
+    "item_id": "W2-TRANSCRIPT-CYCLE-INTEGRATION",
+    "r107_grade": "ACCEPTED_VERIFIED",
+    "r108_regrade": "ACCEPTED_VERIFIED",
+    "reason": "18 enrichment tests pass. Inspector wired. Concrete proof via test content.",
+    "carry_forward": false
+  },
+  {
+    "item_id": "W3-REGISTRY-MATURITY",
+    "r107_grade": "ACCEPTED_VERIFIED",
+    "r108_regrade": "ACCEPTED_VERIFIED",
+    "reason": "13 dedicated stability tests. Registry counts verified. Command file quality checked.",
+    "carry_forward": false
+  },
+  {
+    "item_id": "W4-HANDOFF-PROOF",
+    "r107_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r108_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Handoff YAML and transcript JSON exist. No test validates schema. Carried to R108 for simulation proof.",
+    "carry_forward": true,
+    "r108_action": "3 simulation transcripts created and validated (3/3 PASS)"
+  },
+  {
+    "item_id": "W5-ADOPTION-ENFORCEMENT",
+    "r107_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r108_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "3 adoption checklists are prose. No machine-readable enforcement.",
+    "carry_forward": true,
+    "r108_action": "Adoption compliance validator created (validate_adoption_compliance.py) + 7 tests"
+  },
+  {
+    "item_id": "W6-VALIDATOR-ADVANCEMENT",
+    "r107_grade": "ACCEPTED_VERIFIED",
+    "r108_regrade": "ACCEPTED_VERIFIED",
+    "reason": "12 validator tests pass. Pipeline proven end-to-end.",
+    "carry_forward": false
+  },
+  {
+    "item_id": "W7-STREAM-STATE",
+    "r107_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r108_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Documentation only. No enforcement mechanism.",
+    "carry_forward": true,
+    "r108_action": "Stream tagging tests + sample outputs created"
+  },
+  {
+    "item_id": "W8-NEXT-PROMPT",
+    "r107_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r108_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "R108 prompt consumed. Standard process overhead.",
+    "carry_forward": false
+  },
+  {
+    "item_id": "W9-FINAL-IV",
+    "r107_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r108_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "14-point checklist. Self-asserted. Sprint-specific.",
+    "carry_forward": false
+  },
+  {
+    "item_id": "W10-EVIDENCE-CLOSEOUT",
+    "r107_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "r108_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Declaration is self-referential evidence. Standard closeout.",
+    "carry_forward": false
+  }
+]

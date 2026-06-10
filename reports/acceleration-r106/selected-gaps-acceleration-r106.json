@@ -1,0 +1,55 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-R106-CYCLE-INTEGRATION-PATH-PROOF-HARDENING-AND-AUTONOMOUS-ADVANCEMENT-001",
+  "stream": "acceleration",
+  "generated_at": "2026-06-03T16:00:00Z",
+  "gaps": [
+    {
+      "gap_id": "GAP-ACCEL-CYCLE-INTEGRATION",
+      "stream": "acceleration",
+      "title": "Autonomous cycle does not invoke anti-skip or package-identity validators",
+      "severity": "high",
+      "status": "fixing_in_r106",
+      "fix_lane": "B"
+    },
+    {
+      "gap_id": "GAP-ACCEL-PATH-ONLY-GRADING",
+      "stream": "acceleration",
+      "title": "Grade engine reports ACCEPTED_WITH_LIMITATIONS for all items due to path-only checking",
+      "severity": "high",
+      "status": "fixing_in_r106",
+      "fix_lane": "C"
+    },
+    {
+      "gap_id": "GAP-ACCEL-STALE-GLOBAL-GAPS",
+      "stream": "acceleration",
+      "title": "Global selected-product-gaps.json still from R98/wrong stream",
+      "severity": "medium",
+      "status": "documented",
+      "fix_lane": "D"
+    },
+    {
+      "gap_id": "GAP-ACCEL-ANTI-SKIP-COVERAGE",
+      "stream": "acceleration",
+      "title": "Anti-skip has 11 detectors but no evidence-quality or declaration-completeness checks",
+      "severity": "medium",
+      "status": "fixing_in_r106",
+      "fix_lane": "E"
+    },
+    {
+      "gap_id": "GAP-ACCEL-PROMPT-STRUCTURE",
+      "stream": "acceleration",
+      "title": "Prompt quality validator lacks structure/section check",
+      "severity": "low",
+      "status": "fixing_in_r106",
+      "fix_lane": "F"
+    },
+    {
+      "gap_id": "GAP-ACCEL-NO-PACKAGE-PILOT",
+      "stream": "acceleration",
+      "title": "R105 package pilot was documentation only — no actual ZIP built and validated",
+      "severity": "medium",
+      "status": "fixing_in_r106",
+      "fix_lane": "G"
+    }
+  ]
+}

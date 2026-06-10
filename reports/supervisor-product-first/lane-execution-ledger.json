@@ -1,0 +1,235 @@
+sprint_id: FORMAT-FACTORY-SUPERVISOR-PRODUCT-FIRST-TRAFFIC-CONTROLLER-REPLAN-AND-STREAM-LOCAL-CLOSURE-001
+run_id: supervisor-product-first
+generated_at: '2026-06-04T11:02:17.347487'
+lanes:
+- lane_id: TC-COORD-001
+  title: Coordinator preflight
+  status: completed
+  command: '[manual] Coordinator preflight'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-product-first/taskcard-state.json
+  notes: taskcard-state.json parses + OVERLAP_FREE
+- lane_id: TC-EXT-001
+  title: External Runtime Governance
+  status: completed
+  command: '[manual] External Runtime Governance'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-product-first/external-tool-governance-verdict.json
+  notes: All 8 files exist, JSON valid, deterministic_supervisor_retains_authority=true
+- lane_id: TC-EXT-REPAIR-001
+  title: External governance repair docs
+  status: completed
+  command: '[manual] External governance repair docs'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-repair/external-runtime-governance-review.md
+  notes: 8 MD files exist
+- lane_id: TC-HEAL-001
+  title: 'Healing docs: 00-plan-review.md'
+  status: completed
+  command: '[manual] Healing docs: 00-plan-review.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/00-plan-review.md
+  notes: File exists with heading
+- lane_id: TC-HEAL-002
+  title: 'Healing docs: gap-analysis.md'
+  status: completed
+  command: '[manual] Healing docs: gap-analysis.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/gap-analysis.md
+  notes: File exists with heading
+- lane_id: TC-HEAL-003
+  title: 'Healing docs: supervisor-control-plane-boundary.md'
+  status: completed
+  command: '[manual] Healing docs: supervisor-control-plane-boundary.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/supervisor-control-plane-boundary.md
+  notes: File exists
+- lane_id: TC-HEAL-004
+  title: 'Healing docs: ai-supervisor-advisory-model.md'
+  status: completed
+  command: '[manual] Healing docs: ai-supervisor-advisory-model.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/ai-supervisor-advisory-model.md
+  notes: File exists
+- lane_id: TC-HEAL-005
+  title: 'Healing docs: semantic-drift-review-model.md'
+  status: completed
+  command: '[manual] Healing docs: semantic-drift-review-model.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/semantic-drift-review-model.md
+  notes: File exists
+- lane_id: TC-HEAL-006
+  title: 'Healing docs: product-velocity-decision-model.md'
+  status: completed
+  command: '[manual] Healing docs: product-velocity-decision-model.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/product-velocity-decision-model.md
+  notes: File exists
+- lane_id: TC-HEAL-007
+  title: 'Healing docs: machinery-overhead-scoring.md'
+  status: completed
+  command: '[manual] Healing docs: machinery-overhead-scoring.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/machinery-overhead-scoring.md
+  notes: File exists
+- lane_id: TC-HEAL-008
+  title: 'Healing docs: replay-hardening-model.md'
+  status: completed
+  command: '[manual] Healing docs: replay-hardening-model.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/replay-hardening-model.md
+  notes: File exists
+- lane_id: TC-HEAL-009
+  title: 'Healing docs: healed-plan.md'
+  status: completed
+  command: '[manual] Healing docs: healed-plan.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/healed-plan.md
+  notes: File exists
+- lane_id: TC-HEAL-010
+  title: 'Healing docs: final-adversarial-IV.md'
+  status: completed
+  command: '[manual] Healing docs: final-adversarial-IV.md'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-plan-healing/final-adversarial-independent-verification.md
+  notes: File exists
+- lane_id: TC-IMPL-001
+  title: Create product_velocity_scorer.py
+  status: completed
+  command: '[manual] Create product_velocity_scorer.py'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - tools/supervisor/product_velocity_scorer.py
+  notes: All 5 functions; 12 dims; acceptance checks PASS
+- lane_id: TC-IMPL-002
+  title: Modify autonomous_cycle.py (3 new states)
+  status: completed
+  command: '[manual] Modify autonomous_cycle.py (3 new states)'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - tools/supervisor/autonomous_cycle.py
+  - reports/supervisor-product-first/autonomous-cycle-edit-proof.md
+  notes: py_compile PASS; focused tests 20/20; diff saved
+- lane_id: TC-IMPL-003
+  title: Create ai_supervisor_advisor.py
+  status: completed
+  command: '[manual] Create ai_supervisor_advisor.py'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - tools/supervisor/ai_supervisor_advisor.py
+  notes: non_authoritative=True; disagreement rules PASS
+- lane_id: TC-IMPL-004
+  title: Create external_tool_governance.py
+  status: completed
+  command: '[manual] Create external_tool_governance.py'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - tools/supervisor/external_tool_governance.py
+  notes: All 7 functions; read-only; acceptance checks PASS
+- lane_id: TC-EVD-001
+  title: Planning docs (7 MD files)
+  status: completed
+  command: '[manual] Planning docs (7 MD files)'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-product-first/00-current-state-review.md
+  notes: 7 MD files exist
+- lane_id: TC-EVD-002
+  title: Machine-readable control models (JSON)
+  status: completed
+  command: '[manual] Machine-readable control models (JSON)'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-product-first/blocker-routing-matrix.json
+  notes: 13 routes; 4 streams; 12 dims; all parse
+- lane_id: TC-EVD-003
+  title: AI advisory output files
+  status: completed
+  command: '[manual] AI advisory output files'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-product-first/ai-semantic-drift-review.json
+  notes: non_authoritative + advisory_mode PASS
+- lane_id: TC-EVD-004
+  title: Acceleration and Skills consumption checks
+  status: completed
+  command: '[manual] Acceleration and Skills consumption checks'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-product-first/ai-acceleration-consumption-check.json
+  notes: 4 files exist; JSON valid
+- lane_id: TC-EVD-005
+  title: Deep replay results
+  status: completed
+  command: '[manual] Deep replay results'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-product-first/replay-results.json
+  notes: 4 streams; all fields present; discovery JSON valid
+- lane_id: TC-EVD-006
+  title: Product-velocity sample outputs (6 files)
+  status: completed
+  command: '[manual] Product-velocity sample outputs (6 files)'
+  exit_code: 0
+  duration_seconds: null
+  log_path: null
+  artifacts:
+  - reports/supervisor-product-first/sample-outputs/blocker-routing-example.json
+  notes: 6 files; all JSON valid; 4 streams

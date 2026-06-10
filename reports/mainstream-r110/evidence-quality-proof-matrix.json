@@ -1,0 +1,119 @@
+{
+  "matrix_version": "1.0",
+  "sprint": "mainstream-r110",
+  "covers_sprint": "mainstream-r109",
+  "generated_at": "2026-06-03",
+  "description": "Maps each R109 work item to its raw evidence artifacts (logs, diffs, transcripts, ledger entries)",
+  "items": [
+    {
+      "item_id": "R109-LANE-C-FODS",
+      "title": "FODS HasSheet API",
+      "evidence_chain": {
+        "raw_test_log": {"path": "reports/mainstream-r109/raw-logs/fods-dotnet-test.log", "content": "421 passed, 0 failed", "size_bytes": 150404},
+        "source_diff": {"path": "reports/mainstream-r109/raw-logs/fods-source-diff.txt", "lines": 655},
+        "skill_transcript": {"path": "reports/mainstream-r109/skill-transcripts/r109-fods-hassheet.md"},
+        "ledger_entry": {"id": "R109-GOVERNED-DOTNET-FODS-HASSHEET-001", "source_sha": "8d2027865ef5876c0dbd7acf6b3de2b49a242c649058bd18aeec3e22d7072a30"},
+        "test_file": {"path": "tests/net/fods/FodsR109HasSheetTests.cs", "test_count": 8},
+        "product_depth_report": {"path": "reports/mainstream-r109/fods-product-depth.md"}
+      },
+      "evidence_complete": true
+    },
+    {
+      "item_id": "R109-LANE-D-FODT",
+      "title": "FODT ExportToHtmlFile API",
+      "evidence_chain": {
+        "raw_test_log": {"path": "reports/mainstream-r109/raw-logs/fodt-dotnet-test.log", "content": "409 passed, 0 failed", "size_bytes": 150168},
+        "source_diff": {"path": "reports/mainstream-r109/raw-logs/fodt-source-diff.txt", "lines": 370},
+        "skill_transcript": {"path": "reports/mainstream-r109/skill-transcripts/r109-fodt-exporttohtmlfile.md"},
+        "ledger_entry": {"id": "R109-GOVERNED-DOTNET-FODT-EXPORTTOHTMLFILE-001", "source_sha": "f1517b171f5b6a3f5c69868ef0dd024dd207c6f365824512c8bdac62f176eba6"},
+        "test_file": {"path": "tests/net/fodt/FodtR109ExportToHtmlFileTests.cs", "test_count": 8},
+        "product_depth_report": {"path": "reports/mainstream-r109/fodt-product-depth.md"}
+      },
+      "evidence_complete": true
+    },
+    {
+      "item_id": "R109-LANE-E-NETPBM",
+      "title": "Netpbm Posterize API",
+      "evidence_chain": {
+        "raw_test_log": {"path": "reports/mainstream-r109/raw-logs/netpbm-dotnet-test.log", "content": "335 passed, 0 failed", "size_bytes": 140210},
+        "source_diff": {"path": "reports/mainstream-r109/raw-logs/netpbm-source-diff.txt", "lines": 916},
+        "skill_transcript": {"path": "reports/mainstream-r109/skill-transcripts/r109-netpbm-posterize.md"},
+        "ledger_entry": {"id": "R109-GOVERNED-DOTNET-NETPBM-POSTERIZE-001", "source_sha": "99f60913e9adc0c677b8c253ba6b9df1074e918532aadfbaeef9aa2a9b44deb7"},
+        "test_file": {"path": "tests/net/netpbm/NetpbmR109PosterizeTests.cs", "test_count": 10},
+        "product_depth_report": {"path": "reports/mainstream-r109/netpbm-product-depth.md"}
+      },
+      "evidence_complete": true
+    },
+    {
+      "item_id": "R109-LANE-F-ZST",
+      "title": "ZST Level Boundary Tests",
+      "evidence_chain": {
+        "raw_test_log": {"path": "reports/mainstream-r109/raw-logs/python-all-test.log", "content": "3104 passed, 29 skipped"},
+        "source_diff": null,
+        "skill_transcript": null,
+        "ledger_entry": null,
+        "test_file": {"path": "tests/python/zst/test_r109_zst_level_boundaries.py", "test_count": 8},
+        "product_depth_report": {"path": "reports/mainstream-r109/foss-product-advancement.md"}
+      },
+      "evidence_complete": true,
+      "note": "FOSS test-only deliverable, no source change expected"
+    },
+    {
+      "item_id": "R109-LANE-F-SYLK",
+      "title": "SYLK CSV Roundtrip Hardening",
+      "evidence_chain": {
+        "raw_test_log": {"path": "reports/mainstream-r109/raw-logs/python-all-test.log", "content": "3104 passed, 29 skipped"},
+        "source_diff": null,
+        "skill_transcript": null,
+        "ledger_entry": null,
+        "test_file": {"path": "tests/python/sylk/test_r109_sylk_csv_roundtrip.py", "test_count": 8},
+        "product_depth_report": {"path": "reports/mainstream-r109/foss-product-advancement.md"}
+      },
+      "evidence_complete": true,
+      "note": "FOSS test-only deliverable, no source change expected"
+    },
+    {
+      "item_id": "R109-LANE-F-PBM",
+      "title": "PBM Format Detection Tests",
+      "evidence_chain": {
+        "raw_test_log": {"path": "reports/mainstream-r109/raw-logs/python-all-test.log", "content": "3104 passed, 29 skipped"},
+        "source_diff": null,
+        "skill_transcript": null,
+        "ledger_entry": null,
+        "test_file": {"path": "tests/python/pbm/test_r109_pbm_format_detection.py", "test_count": 8},
+        "product_depth_report": {"path": "reports/mainstream-r109/foss-product-advancement.md"}
+      },
+      "evidence_complete": true,
+      "note": "FOSS test-only deliverable, no source change expected"
+    },
+    {
+      "item_id": "R109-LANE-G-DOGFOOD",
+      "title": "Dogfood Pipelines",
+      "evidence_chain": {
+        "raw_test_log": {"path": "reports/mainstream-r109/raw-logs/fods-dotnet-test.log", "content": "421 passed"},
+        "source_diff": null,
+        "skill_transcript": null,
+        "ledger_entry": null,
+        "test_file": {"path": "tests/net/fods/FodsR109DogfoodHasSheetRoundtripTests.cs", "test_count": 4},
+        "additional_test_file": {"path": "tests/net/fodt/FodtR109DogfoodHtmlExportTests.cs", "test_count": 4}
+      },
+      "evidence_complete": true,
+      "note": "Dogfood tests exercise existing governed APIs"
+    }
+  ],
+  "process_items": [
+    {"item_id": "R109-LANE-A-REGRADING", "evidence_type": "reports_only", "files_verified": 4},
+    {"item_id": "R109-LANE-B-CLOSURE", "evidence_type": "reports_only", "files_verified": 4},
+    {"item_id": "R109-LANE-H-STATE", "evidence_type": "reports_only", "files_verified": 3},
+    {"item_id": "R109-LANE-I-EVIDENCE", "evidence_type": "reports_and_raw_logs", "files_verified": 7},
+    {"item_id": "R109-LANE-J-IV", "evidence_type": "reports_only", "files_verified": 1}
+  ],
+  "totals": {
+    "product_items_with_full_evidence": 7,
+    "process_items_verified": 5,
+    "total_raw_logs": 5,
+    "total_source_diffs": 3,
+    "total_skill_transcripts": 3,
+    "total_ledger_entries": 3
+  }
+}

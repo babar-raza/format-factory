@@ -75,3 +75,20 @@ ZIP is NOT required. ZIP is only used for:
 - Cross-machine transfer
 
 The declaration-driven loop works without ZIP.
+
+## Autonomous Loop Integration
+
+This contract operates within the autonomous supervision loop. After the worker writes `evidence-declaration.yaml` and the supervisor grades it:
+
+1. If all items are ACCEPTED (exit 0), the supervisor generates a new `next-sprint.md` with forward work
+2. The worker reads `next-sprint.md` as its next sprint prompt and repeats the cycle
+3. This continues until `max_iterations` is reached or a hard stop is encountered
+
+The worker is **stateless** — it does not need memory of prior sprints. All state is carried by:
+- `reports/supervisor/session-resume.md` (last sprint outcome)
+- `reports/supervisor/approval-gates.md` (YES/NO continuation)
+- `reports/supervisor/next-sprint.md` (work items)
+- `.local/supervisor/continuation-signal.json` (iteration counter)
+
+For the full replication guide, see:
+[Autonomous Supervision — Replication Guide](autonomous-supervision-replication-guide.md)

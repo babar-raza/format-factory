@@ -1,0 +1,24 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-R102-STREAM-AWARE-REVIEW-AND-CONTINUATION-HARDENING-CAMPAIGN-001",
+  "classifications": [
+    {"item_id": "R102-TRAIN-A", "title": "Legacy review root cause", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Report file exists locally, not packaged in ZIP"},
+    {"item_id": "R102-TRAIN-B", "title": "Declaration-sourced marker", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Code change verified, tests pass, but tests_supporting empty in grade"},
+    {"item_id": "R102-TRAIN-C", "title": "Skip legacy checks", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Code change verified, tests pass, but tests_supporting empty in grade"},
+    {"item_id": "R102-TRAIN-D", "title": "Detect declaration-review packages", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Code change verified, tests pass, but tests_supporting empty in grade"},
+    {"item_id": "R102-TRAIN-E", "title": "Stream-specific headers", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Code change verified, tests pass, but tests_supporting empty in grade"},
+    {"item_id": "R102-TRAIN-F", "title": "Stream-specific lanes", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Code change verified, tests pass, but tests_supporting empty in grade"},
+    {"item_id": "R102-TRAIN-G", "title": "Stream-specific rules", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Code change verified, tests pass, but tests_supporting empty in grade"},
+    {"item_id": "R102-TRAIN-H", "title": "4 new continuation states", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Code change verified, tests pass, but tests_supporting empty in grade"},
+    {"item_id": "R102-TRAIN-I", "title": "Replay 3 packages", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Tests pass, but tests_supporting empty in grade"},
+    {"item_id": "R102-TRAIN-J", "title": "Generate 4 prompts", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Files exist locally, not packaged in ZIP"},
+    {"item_id": "R102-TRAIN-K", "title": "Evidence self-containment reports", "classification": "INSUFFICIENT_EVIDENCE", "reason": "Reports exist locally but NOT in package; package claims 0 missing"},
+    {"item_id": "R102-TRAIN-L", "title": "Final IV, forecast", "classification": "INSUFFICIENT_EVIDENCE", "reason": "Reports exist locally but NOT in package; package claims 0 missing"}
+  ],
+  "summary": {
+    "VERIFIED_SELF_CONTAINED": 0,
+    "VERIFIED_LOCAL_ONLY": 10,
+    "ACCEPTED_WITH_LIMITATIONS": 0,
+    "INSUFFICIENT_EVIDENCE": 2,
+    "OVERCLAIMED": 0
+  }
+}

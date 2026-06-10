@@ -1,0 +1,10 @@
+{
+  "sample_type": "yes-with-limitations",
+  "description": "Sample output demonstrating YES_WITH_LIMITATIONS continuation semantics",
+  "scenarios": {
+    "clean_all_pass": {"anti_skip_all_pass": true, "continuation": "YES"},
+    "low_severity_only": {"anti_skip_all_pass": false, "block": false, "downgrade": false, "continuation": "YES_WITH_LIMITATIONS"},
+    "critical_block": {"anti_skip_all_pass": false, "block": true, "continuation": "NO_BROKEN_BASELINE"},
+    "prompt_quality_fail": {"continuation": "NO_PROMPT_QUALITY_FAILURE"}
+  }
+}

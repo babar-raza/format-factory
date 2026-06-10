@@ -1,0 +1,30 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-ECOSYSTEM-PLAN-FINAL-REPAIR-001",
+  "generated": "2026-06-06",
+  "claims_verified": [
+    {"claim": "autonomous-cycle subcommand exists in supervisor_loop.py", "result": "VERIFIED"},
+    {"claim": "--declaration arg exists in build_declaration_review_package.py", "result": "VERIFIED"},
+    {"claim": "task-master-ai in .vscode/mcp.json", "result": "VERIFIED"},
+    {"claim": "policies.yaml loads as valid YAML", "result": "VERIFIED"},
+    {"claim": "endpoints.yaml loads (6 endpoints)", "result": "VERIFIED"},
+    {"claim": "superpowers-skill-intake.md exists", "result": "VERIFIED"}
+  ],
+  "claims_contradicted": [
+    {
+      "original_claim": ".claude/commands/ absent",
+      "actual": "PRESENT with 24 skill files",
+      "impact": "SESSION_SKILL_TOOL backend is available in this session; prior plan assumed absent — now corrected",
+      "correction": "Commands are repo-local skills callable via Skill tool in session only, NOT via external host"
+    },
+    {
+      "original_claim": "5 LLM endpoints",
+      "actual": "6 endpoints (local-custom is additional)",
+      "impact": "Minor; does not change backend selector design"
+    }
+  ],
+  "claims_not_checkable": [
+    {"claim": "MCP daemon running", "reason": "Cannot verify from inside Claude Code session"},
+    {"claim": "Task Master tool callable", "reason": "Would require MCP daemon probe"},
+    {"claim": "local Ollama running", "reason": "Would require HTTP probe to localhost:11434"}
+  ]
+}

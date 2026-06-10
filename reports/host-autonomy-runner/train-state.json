@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-06-05T12:47:14.221165",
+  "execution_state": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+  "terminal": true,
+  "next_action": {
+    "action": "TERMINAL",
+    "terminal_state": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+    "reason": "Terminal state reached: MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+    "executable_locally": false,
+    "continuation_packet_required": false
+  },
+  "continuation_signal": {
+    "autonomous_continue": true,
+    "iteration": 7,
+    "max_iterations": 12,
+    "next_sprint_path": "reports/supervisor/next-sprint.md",
+    "stop_reason": null,
+    "rework_items": [],
+    "safe_lanes_available": true,
+    "generated_at": "2026-06-05T11:57:23.601646",
+    "source_sprint_id": "FORMAT-FACTORY-AUTONOMOUS-EXECUTION-CHAINING-AND-POC-CONTINUATION-001",
+    "hard_stops_detected": [],
+    "continuation_state": "YES_WITH_LIMITATIONS"
+  },
+  "poc_dashboard": {
+    "commercial_targets_count": 3,
+    "foss_targets_count": 4,
+    "all_commercial_gates_1_10_pass": true,
+    "all_foss_gates_1_10_pass": true,
+    "poc_candidate_valid": true,
+    "poc_ready": true,
+    "gate_11_approved": false,
+    "commercial_product_ready": false,
+    "proof_backed": true,
+    "decision": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+    "missing_logs": [],
+    "missing_proof_records": [
+      "Netpbm-Python"
+    ],
+    "missing_examples": [],
+    "foss_pass_count": 3,
+    "foss_minimum_required": 3,
+    "proof_failures": [
+      {
+        "format": "Netpbm-Python",
+        "failures": [
+          "proof_record_exists"
+        ]
+      }
+    ]
+  }
+}

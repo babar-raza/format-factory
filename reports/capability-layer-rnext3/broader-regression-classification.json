@@ -1,0 +1,70 @@
+{
+  "sprint_id": "FORMAT-FACTORY-BROAD-CAPABILITY-LAYER-HEALING-RNEXT3",
+  "total_failures": 9,
+  "new_from_this_sprint": 0,
+  "pre_existing": 9,
+  "product_impacting": 0,
+  "classification": [
+    {
+      "test_file": "tests/python/supervisor/test_r107_registry_stability.py",
+      "test_names": [
+        "TestRegistryStability::test_deferred_count",
+        "TestRegistryStability::test_no_draft_skills",
+        "TestDeferredSkillsHaveReason::test_deferred_skill_ids"
+      ],
+      "classification": "supervisor_only",
+      "root_cause": "Skill registry has 'check-mcp-status' with status='draft' but test expects 'deferred'; deferred_count mismatch",
+      "product_impacting": false,
+      "pre_existing": true,
+      "new_this_sprint": false,
+      "blocks_product_lanes": false,
+      "note": "Supervisor skill registry state mismatch — does not affect product functionality"
+    },
+    {
+      "test_file": "tests/python/supervisor/test_r108_adoption_compliance.py",
+      "test_names": [
+        "TestAdoptionCompliance::test_missing_skill_id_still_compliant",
+        "TestAdoptionCompliance::test_missing_transcript_still_compliant",
+        "TestAdoptionCompliance::test_src_editing_with_ledger_compliant"
+      ],
+      "classification": "adoption_compliance_validator_logic",
+      "root_cause": "validate_adoption() strict enforcement: when no transcript AND no skill_id exist, compliance fails even for items that should not require both. Validator logic stricter than tests expect.",
+      "product_impacting": false,
+      "pre_existing": true,
+      "new_this_sprint": false,
+      "blocks_product_lanes": false,
+      "note": "Adoption compliance validator tests were written for a relaxed design but implementation is strict. Does not affect product source correctness."
+    },
+    {
+      "test_file": "tests/python/supervisor/test_r109_adoption_consumption.py",
+      "test_names": ["TestAccelerationAdoptionConsumption::test_gap_routing_missing_skill_coverage"],
+      "classification": "adoption_only",
+      "root_cause": "Gap routing expected to reject items missing skill coverage — pre-existing validator state mismatch",
+      "product_impacting": false,
+      "pre_existing": true,
+      "new_this_sprint": false,
+      "blocks_product_lanes": false
+    },
+    {
+      "test_file": "tests/python/supervisor/test_r110_sample_outputs_and_enforcement.py",
+      "test_names": ["TestAdoptionConsumptionHardening::test_acceleration_missing_skill_validates"],
+      "classification": "adoption_only",
+      "root_cause": "Acceleration missing_skill validate behavior mismatch — pre-existing",
+      "product_impacting": false,
+      "pre_existing": true,
+      "new_this_sprint": false,
+      "blocks_product_lanes": false
+    },
+    {
+      "test_file": "tests/python/supervisor/test_r113_live_cycle_convergence.py",
+      "test_names": ["TestMCPReadiness::test_check_mcp_status_still_deferred"],
+      "classification": "mcp_status_only",
+      "root_cause": "check-mcp-status skill has status='draft' but test expects 'deferred'",
+      "product_impacting": false,
+      "pre_existing": true,
+      "new_this_sprint": false,
+      "blocks_product_lanes": false
+    }
+  ],
+  "verdict": "All 9 failures are pre-existing, supervisor/adoption/MCP-status-only, and do not impact product source correctness or product lanes. No new regressions introduced this sprint."
+}

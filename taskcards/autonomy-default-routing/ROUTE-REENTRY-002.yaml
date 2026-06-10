@@ -1,0 +1,16 @@
+taskcard_id: ROUTE-REENTRY-002
+title: "Complete missing routing taskcard state"
+status: COMPLETED
+owner_lane: supervisor
+allowed_files:
+  - "taskcards/autonomy-default-routing/"
+forbidden_files:
+  - "src/"
+  - "tools/"
+dependencies: []
+gates: []
+evidence_paths:
+  - ".local/evidences/route-aware-product-reentry-20260610-001030-e382e5f/"
+tests: []
+rollback_notes: "Revert changes to allowed_files only"
+closeout_criteria: "All 12 ROUTE-REENTRY taskcards created with required fields"

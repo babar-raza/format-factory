@@ -1,0 +1,372 @@
+"""
+Format Authority Matrix
+Sprint: SPEC-AUTHORITY-LAYER-FAST-OPS-INTEGRATION-AND-AUTHORITY-CONVEYOR-001
+Generated: 2026-06-08
+
+Authority Level Definitions:
+  P0: No spec available or accessible (no formal spec exists or cannot be found)
+  P1: Schema/metadata only (informal spec or schema file, no citable facts)
+  P2: Spec accessible/cached, no facts extracted yet
+  P3: Candidate facts extracted (needs_review — not yet independently verified)
+  P4: Verified facts (deterministic spec text citation, independent verification)
+  P5: Fact cited in code/tests (inline citation comments + test docstrings)
+  P6: Proof graph complete (spec→fact→code→test→evidence all wired)
+"""
+
+matrix_version: "1.0"
+generated_at: "2026-06-08T14:30:00Z"
+sprint_id: SPEC-AUTHORITY-LAYER-FAST-OPS-INTEGRATION-AND-AUTHORITY-CONVEYOR-001
+
+formats:
+
+  # ===== Commercial .NET Products =====
+
+  - format_id: fods
+    name: "Flat OpenDocument Spreadsheet"
+    poc_section: commercial_net_products
+    authority_level: P6
+    authority_level_scope: "P6 only for FACT-FODS-001; other facts at needs_review"
+    spec_state:
+      spec_id: odf-1.3-part3
+      spec_cached: true
+      spec_sha256: "sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066"
+      spec_normalized: true
+      spec_type: OASIS_STANDARD
+    facts_state:
+      facts_extracted: 10
+      facts_verified: 1
+      facts_needs_review: 9
+      verified_fact_ids: ["FACT-FODS-001"]
+    code_state:
+      code_citations: ["QN_DOCUMENT", "ATTR_MIMETYPE in src/python/fods/constants.py"]
+      test_citations: ["tests/python/fods/test_r125_fact_traceability.py (6 tests)"]
+    proof_graph_ref: "reports/authority-conveyor-20260608/fods-p6-proof-graph.yaml"
+    readiness_allowed: true
+    readiness_note: "P6 for FACT-FODS-001; READINESS gate requires spec_fact_refs with verified facts"
+    blockers: []
+    next_authority_action: "Verify FACT-FODS-002 through FACT-FODS-010 to achieve full coverage"
+
+  - format_id: fodt
+    name: "Flat OpenDocument Text"
+    poc_section: commercial_net_products
+    authority_level: P2
+    authority_level_scope: "Spec accessible (same ODF 1.3 PDF), no FODT-specific facts extracted"
+    spec_state:
+      spec_id: odf-1.3-part3
+      spec_cached: true
+      spec_sha256: "sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066"
+      spec_normalized: true
+      spec_type: OASIS_STANDARD
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+      notes: "FODT uses same ODF namespace. Shared facts from FODS spec workbench could apply with cross-format citation."
+    code_state:
+      code_citations: []
+      test_citations: []
+    proof_graph_ref: null
+    readiness_allowed: false
+    readiness_note: "schema_authority_available would block READINESS (DEBT-005). Need spec_fact_refs."
+    blockers: ["No verified facts extracted for FODT specifically"]
+    next_authority_action: "Extract and verify FODT-specific facts from ODF 1.3 (text section) or cross-cite FODS facts"
+
+  - format_id: netpbm
+    name: "Netpbm family (PBM/PGM/PPM)"
+    poc_section: commercial_net_products
+    authority_level: P2
+    authority_level_scope: "Spec-index cached, no facts extracted"
+    spec_state:
+      spec_id: netpbm-spec
+      spec_cached: true
+      spec_sha256: null
+      spec_normalized: false
+      spec_type: INFORMAL_ONLINE_SPEC
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+      notes: "Netpbm spec at netpbm.sourceforge.net. spec-index.yaml exists. No workbench populated."
+    code_state:
+      code_citations: []
+      test_citations: []
+    proof_graph_ref: null
+    readiness_allowed: false
+    readiness_note: "P2 — no facts. READINESS gate not reachable without spec_fact_refs."
+    blockers: ["No spec text cached (only spec-index.yaml)", "No facts extracted"]
+    next_authority_action: "Cache Netpbm spec text (PBM/PGM/PPM format descriptions). Extract FACT-PBM-001."
+
+  # ===== FOSS Reduced Products =====
+
+  - format_id: zst
+    name: "Zstandard compressed format"
+    poc_section: foss_reduced_products
+    authority_level: P4
+    authority_level_scope: "2 verified facts from RFC 8878 (this sprint)"
+    spec_state:
+      spec_id: rfc8878
+      spec_cached: true
+      spec_sha256: "sha256:8ee6be03534113f5689cda75b9539a02e0704a2506d420814223e506420aeea4"
+      spec_normalized: false
+      spec_type: IETF_RFC
+    facts_state:
+      facts_extracted: 2
+      facts_verified: 2
+      facts_needs_review: 0
+      verified_fact_ids: ["FACT-ZST-001", "FACT-ZST-002"]
+    code_state:
+      code_citations: []
+      test_citations: []
+    proof_graph_ref: null
+    readiness_allowed: false
+    readiness_note: "P4 — verified facts exist but not cited in code/tests yet"
+    blockers: ["No code/test citations yet (P4 not P5)"]
+    next_authority_action: "Cite FACT-ZST-001 in src/python/zst/zst_codec.py (probe/magic check). Add traceability test."
+
+  - format_id: sylk
+    name: "Symbolic Link (SYLK) spreadsheet"
+    poc_section: foss_reduced_products
+    authority_level: P1
+    authority_level_scope: "No formal accessible spec; Microsoft proprietary"
+    spec_state:
+      spec_id: null
+      spec_cached: false
+      spec_sha256: null
+      spec_normalized: false
+      spec_type: PROPRIETARY_NO_PUBLIC_SPEC
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+      notes: "SYLK is a Microsoft Excel format with no publicly accessible formal spec."
+    code_state:
+      code_citations: []
+      test_citations: []
+    proof_graph_ref: null
+    readiness_allowed: false
+    readiness_note: "P1 — no_public_spec_available exception applies. Cannot reach READINESS/RELEASE_GATE."
+    blockers: ["no_public_spec_available"]
+    next_authority_action: "Document no_public_spec_available formally in exception registry. Cannot advance without spec."
+
+  - format_id: abw
+    name: "AbiWord Document Format"
+    poc_section: foss_reduced_products
+    authority_level: P1
+    authority_level_scope: "AbiWord XML schema referenced but no formal citable spec"
+    spec_state:
+      spec_id: awml-1.0
+      spec_cached: false
+      spec_sha256: null
+      spec_normalized: false
+      spec_type: INFORMAL_SCHEMA_REFERENCE
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+      notes: "spec-index.yaml exists under abw/awml-1.0/ but spec file not cached. AWM/AWML is not a published standard."
+    code_state:
+      code_citations: []
+      test_citations: []
+    proof_graph_ref: null
+    readiness_allowed: false
+    readiness_note: "P1 — no_public_spec_available applies for formal spec. schema_authority_available in debt-only."
+    blockers: ["No accessible formal spec"]
+    next_authority_action: "Investigate whether AWM/AWML DTD or schema is accessible. Cache if found."
+
+  - format_id: gnumeric
+    name: "Gnumeric Spreadsheet Format"
+    poc_section: foss_reduced_products
+    authority_level: P1
+    authority_level_scope: "gnumeric.xsd schema is the only authority reference"
+    spec_state:
+      spec_id: gnumeric-v10
+      spec_cached: false
+      spec_sha256: null
+      spec_normalized: false
+      spec_type: XML_SCHEMA
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+      notes: "gnumeric.xsd is the primary authority (schema metadata). Not a citable formal spec."
+    code_state:
+      code_citations: []
+      test_citations: []
+    proof_graph_ref: null
+    readiness_allowed: false
+    readiness_note: "P1 — schema_authority_available in DEBT_ONLY_EXCEPTIONS. Blocks READINESS (DEBT-005)."
+    blockers: ["No formal spec — schema_authority_available only"]
+    next_authority_action: "Check if Gnumeric format documentation exists at gnumeric.org or GNOME GitLab. Cache XSD."
+
+  # ===== Sub-formats (Netpbm family) =====
+
+  - format_id: pbm
+    name: "Portable Bitmap (PBM)"
+    poc_section: foss_reduced_products
+    authority_level: P2
+    authority_level_scope: "spec-index.yaml cached, no spec text, no facts"
+    spec_state:
+      spec_id: netpbm-spec
+      spec_cached: false
+      spec_sha256: null
+      spec_normalized: false
+      spec_type: INFORMAL_ONLINE_SPEC
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+    code_state:
+      code_citations: []
+      test_citations: []
+    proof_graph_ref: null
+    readiness_allowed: false
+    readiness_note: "P2 — spec accessible online but not cached"
+    blockers: ["No spec text cached"]
+    next_authority_action: "Cache Netpbm PBM spec text. Extract FACT-PBM-001 (magic P1/P4)."
+
+  - format_id: pgm
+    name: "Portable Graymap (PGM)"
+    poc_section: foss_reduced_products
+    authority_level: P2
+    spec_state: {spec_id: netpbm-spec, spec_cached: false}
+    facts_state: {facts_extracted: 0, facts_verified: 0}
+    readiness_allowed: false
+    blockers: ["No spec text cached"]
+    next_authority_action: "Cache Netpbm PGM spec text. Extract FACT-PGM-001 (magic P2/P5)."
+
+  - format_id: ppm
+    name: "Portable Pixmap (PPM)"
+    poc_section: foss_reduced_products
+    authority_level: P2
+    spec_state: {spec_id: netpbm-spec, spec_cached: false}
+    facts_state: {facts_extracted: 0, facts_verified: 0}
+    readiness_allowed: false
+    blockers: ["No spec text cached"]
+    next_authority_action: "Cache Netpbm PPM spec text. Extract FACT-PPM-001 (magic P3/P6)."
+
+  # ===== Output/Derived formats (no input spec needed) =====
+
+  - format_id: csv
+    name: "Comma-Separated Values"
+    poc_section: derived_output_format
+    authority_level: P3
+    authority_level_scope: "2 candidate facts from RFC 4180 (needs_review — spec text not cached)"
+    spec_state:
+      spec_id: rfc4180
+      spec_cached: false
+      spec_sha256: null
+      spec_normalized: false
+      spec_type: IETF_RFC
+    facts_state:
+      facts_extracted: 2
+      facts_verified: 0
+      facts_needs_review: 2
+      candidate_fact_ids: ["FACT-CSV-001", "FACT-CSV-002"]
+    code_state:
+      code_citations: []
+      test_citations: []
+    proof_graph_ref: null
+    readiness_allowed: false
+    readiness_note: "P3 — candidate facts. Must cache RFC 4180 text and verify to advance to P4."
+    blockers: ["RFC 4180 text not cached (only spec-index.yaml)"]
+    next_authority_action: "Cache RFC 4180 text. Run deterministic text search to verify FACT-CSV-001, FACT-CSV-002."
+
+  - format_id: tsv
+    name: "Tab-Separated Values"
+    poc_section: derived_output_format
+    authority_level: P1
+    authority_level_scope: "Informal spec only (no formal RFC)"
+    spec_state:
+      spec_id: informal
+      spec_cached: false
+      spec_sha256: null
+      spec_type: INFORMAL_DE_FACTO
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+      notes: "TSV has no formal RFC. IANA registered text/tab-separated-values. Spec-index.yaml exists (informal)."
+    readiness_allowed: false
+    readiness_note: "P1 — no formal spec. no_public_spec_available applies."
+    blockers: ["No formal spec exists"]
+    next_authority_action: "Document no_public_spec_available for TSV. Can cite IANA registration as authority for MIME type."
+
+  - format_id: txt
+    name: "Plain Text"
+    poc_section: derived_output_format
+    authority_level: P0
+    authority_level_scope: "No format-specific spec — plain UTF-8/ASCII is universal"
+    spec_state:
+      spec_id: null
+      spec_cached: false
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+      notes: "TXT is a universal format with no unique spec. RFC 2046 (MIME text/plain) exists but this is not format-specific."
+    readiness_allowed: false
+    readiness_note: "P0 — no spec. fallback_authority_approved or legacy_backfill if needed."
+    blockers: ["No format-specific spec"]
+    next_authority_action: "Use fallback_authority_approved exception with rationale for TXT outputs"
+
+  - format_id: html
+    name: "HyperText Markup Language"
+    poc_section: derived_output_format
+    authority_level: P2
+    authority_level_scope: "W3C HTML spec is publicly accessible but not cached"
+    spec_state:
+      spec_id: html5
+      spec_cached: false
+      spec_sha256: null
+      spec_type: W3C_STANDARD
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+    readiness_allowed: false
+    readiness_note: "P2 — spec accessible but not cached; no facts extracted"
+    blockers: ["No spec cached"]
+    next_authority_action: "Cache HTML spec (or relevant subset). Extract FACT-HTML-001 (DOCTYPE, content-type)."
+
+  - format_id: markdown
+    name: "Markdown / CommonMark"
+    poc_section: derived_output_format
+    authority_level: P1
+    authority_level_scope: "CommonMark spec is accessible but informal; no IETF/ISO backing"
+    spec_state:
+      spec_id: commonmark-0.31.2
+      spec_cached: false
+      spec_sha256: null
+      spec_type: INFORMAL_COMMUNITY_STANDARD
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+    readiness_allowed: false
+    readiness_note: "P1 — community standard, no formal ISO/IETF backing"
+    blockers: ["No formal spec"]
+    next_authority_action: "Evaluate whether CommonMark spec is sufficient. Cache if using as authority."
+
+  # ===== On-hold formats =====
+
+  - format_id: dif
+    name: "Data Interchange Format"
+    poc_section: on_hold
+    authority_level: P1
+    authority_level_scope: "VisiCalc DIF spec referenced in spec-index; not formally standardized"
+    spec_state:
+      spec_id: dif-v1
+      spec_cached: false
+      spec_sha256: null
+      spec_type: PROPRIETARY_LEGACY
+    facts_state:
+      facts_extracted: 0
+      facts_verified: 0
+    readiness_allowed: false
+    readiness_note: "On-hold. P1 authority."
+    blockers: ["On-hold", "No formal spec"]
+    next_authority_action: "Defer until SYLK POC complete per poc-targets.yaml"
+
+summary:
+  total_formats: 16
+  by_level:
+    P0: ["txt"]
+    P1: ["fodt_partial", "sylk", "abw", "gnumeric", "tsv", "markdown", "dif"]
+    P2: ["fodt", "netpbm", "pbm", "pgm", "ppm", "html"]
+    P3: ["csv"]
+    P4: ["zst"]
+    P5: []
+    P6: ["fods (FACT-FODS-001 only)"]
+  readiness_ready: ["fods (with spec_fact_refs=FACT-FODS-001)"]
+  product_expansion_blocked: ["fodt", "gnumeric", "abw", "sylk", "netpbm", "pbm", "pgm", "ppm", "zst"]
+  note: "Product expansion requires P4+ for production work or explicit exception classification"

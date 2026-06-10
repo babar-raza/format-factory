@@ -1,0 +1,24 @@
+{
+  "analysis_sprint": "FORMAT-FACTORY-ACCELERATION-R112-ANTISKIP-CONSISTENCY-SAMPLE-OUTPUT-DETECTION-AND-CONTINUATION-SEMANTICS-CAMPAIGN-001",
+  "r111_anti_skip_observation": {
+    "check": "wrong_stream_next_sprint",
+    "detected_stream": "skills",
+    "target_stream": "acceleration",
+    "path_read": "reports/supervisor/next-sprint.md",
+    "source_kind": "workspace",
+    "authority": "ARCHIVED_LAST_WRITER_SNAPSHOT",
+    "is_blocking": false,
+    "explanation": "The global next-sprint.md is last-writer-wins. Between R111 cycle and review, skills-r112 overwrote it. This is expected behavior."
+  },
+  "current_global_state": {
+    "global_next_sprint_stream": "mainstream",
+    "global_next_sprint_source": "FORMAT-FACTORY-MAINSTREAM-R112",
+    "stream_local_acceleration_state": "YES",
+    "stream_local_acceleration_source": "FORMAT-FACTORY-ACCELERATION-R111"
+  },
+  "r112_fix": {
+    "source_tracing_added": true,
+    "fields_added": ["path_read", "source_kind", "is_blocking"],
+    "blocking_rule": "Only INVALID_WRONG_STREAM (non-global, non-archived) blocks. ARCHIVED_LAST_WRITER_SNAPSHOT is a caveat only."
+  }
+}

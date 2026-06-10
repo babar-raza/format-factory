@@ -1,0 +1,36 @@
+---
+handoff_id: R105-HANDOFF-002
+skill_id: add-dotnet-object-model-feature
+format_id: netpbm
+feature_name: ExtractChannel
+mode: live
+generated_by: skills-r105
+target_stream: mainstream
+
+inputs:
+  format_id: netpbm
+  feature_name: ExtractChannel
+  exact_source_paths:
+    - src/net/netpbm/Model/NetpbmImage.cs
+  exact_test_paths:
+    - tests/net/netpbm/NetpbmExtractChannelTests.cs
+  ledger_entry_path: reports/r90/product-code-change-ledger.json
+  focused_test_command: "dotnet test --filter NetpbmExtractChannel"
+
+allowed_files:
+  - src/net/netpbm/Model/NetpbmImage.cs
+  - tests/net/netpbm/NetpbmExtractChannelTests.cs
+  - reports/r90/product-code-change-ledger.json
+
+description: |
+  Add an ExtractChannel(channelIndex) method to NetpbmImage.cs that extracts
+  a single color channel from a PPM image as a grayscale PGM image. The method should:
+  1. Validate channelIndex (0=R, 1=G, 2=B)
+  2. Create a new grayscale image with the selected channel values
+  3. Return the new image
+  Tests: at least 8 focused tests covering each channel, out-of-range, grayscale input, etc.
+
+transcript_requirement:
+  mode: live
+  ledger_entry_id: required
+  result_expected: PASS

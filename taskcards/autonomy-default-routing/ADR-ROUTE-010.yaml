@@ -1,0 +1,31 @@
+id: ADR-ROUTE-010
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Prompt Quality Check 9 — Unsafe Instruction Detection"
+status: completed
+lane: validator_prompt_safety
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-001]
+gates:
+  - "Check 9 fails on git commit outside advisory section"
+  - "Check 9 passes on advisory section examples"
+  - "clean prompts pass"
+  - "existing Check 8 not broken"
+allowed_files:
+  - "tools/supervisor/validate_prompt_quality.py"
+forbidden_files:
+  - "src/"
+  - "tools/supervisor/action_queue.py"
+acceptance_criteria:
+  - "Check 9 added to validate_prompt_quality()"
+  - "Reuses check_prompt_for_unsafe_instructions from route decider"
+  - "Advisory/policy sections not false-positived"
+tests:
+  - "tests/supervisor/test_autonomy_machinery_bypass_prevention.py::TestPromptUnsafePatternCheck"
+evidence:
+  - "tools/supervisor/validate_prompt_quality.py"
+rollback: "Remove Check 9 from validate_prompt_quality()"
+closeout_criteria: "4 test cases pass, total_checks becomes 9"

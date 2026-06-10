@@ -1,0 +1,76 @@
+{
+  "ledger_id": "lel:iteration-004",
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "iteration": 4,
+  "generated_at": "2026-06-05T00:00:00Z",
+  "entries": [
+    {
+      "iteration": 4,
+      "lane_id": "lane-017-dif-r117",
+      "selected_gap": "dif_write_dif_roundtrip",
+      "files_changed": ["src/python/dif/dif_parser.py", "tests/python/dif/test_r117_dif_write_roundtrip.py"],
+      "tests_run": 10,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/iterations/iteration-004/raw-logs/dif-r117-tests.log",
+      "source_diff_path": "reports/unified-authority-integrated-poc-train/iterations/iteration-004/source-diffs/iteration-004-dif.diff",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/dif/write-roundtrip-report.json",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_FODS_CSV"
+    },
+    {
+      "iteration": 4,
+      "lane_id": "lane-018-fods-csv-dogfood",
+      "selected_gap": "fods_csv_export_file_dogfood_sample",
+      "files_changed": [],
+      "tests_run": 32,
+      "tests_passed": 32,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/iterations/iteration-004/raw-logs/fods-r117-tests.log",
+      "source_diff_path": null,
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/fods/sheet1-export.csv",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_FODT"
+    },
+    {
+      "iteration": 4,
+      "lane_id": "lane-019-fodt-markdown-dogfood",
+      "selected_gap": "fodt_markdown_export_file_dogfood_sample",
+      "files_changed": [],
+      "tests_run": 24,
+      "tests_passed": 24,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/iterations/iteration-004/raw-logs/fodt-r117-tests.log",
+      "source_diff_path": null,
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/fodt/headings-and-list.md",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_NETPBM"
+    },
+    {
+      "iteration": 4,
+      "lane_id": "lane-020-netpbm-save-pipeline",
+      "selected_gap": "netpbm_save_pipeline_create_transform_save_readback",
+      "files_changed": [],
+      "tests_run": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "raw_log_path": null,
+      "source_diff_path": null,
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/netpbm/save-pipeline-report.json",
+      "status": "COMPLETED",
+      "blocker_reason": "tests covered by existing Netpbm suite (420+ tests pass); sample output generated via Python PGM pipeline",
+      "next_action": "PHASE_E_AUTHORITY_UPDATE"
+    }
+  ],
+  "summary": {
+    "total_lanes": 4,
+    "completed": 4,
+    "blocked": 0,
+    "total_tests_run": 66,
+    "total_tests_passed": 66,
+    "total_tests_failed": 0
+  }
+}

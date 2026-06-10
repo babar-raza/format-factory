@@ -1,0 +1,47 @@
+{
+  "pilot_id": "CAP-PILOT-F001",
+  "format": "ABW",
+  "product_type": "foss_reduced",
+  "authority_inputs": [
+    "product-capability-matrix/poc-targets.yaml (foss_reduced_products.ABW)",
+    "acquisition-packs/abw/pack.yaml"
+  ],
+  "source_files_inspected": [
+    "src/python/abw/abw_codec.py"
+  ],
+  "tests_inspected": 10,
+  "examples_inspected": "None",
+  "generated_capability_records": {
+    "count": 22,
+    "sample": "load, probe_abw, extract_text, export_to_txt, export_to_csv, export_to_json, write_abw, create_abw, edit_paragraph"
+  },
+  "generated_gap_entries": {
+    "count": 0,
+    "summary": "All expected capabilities present"
+  },
+  "taskcards_created_or_updated": [],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "PASS advisory warnings only"
+  },
+  "test_result": {
+    "pass_count": 189,
+    "fail_count": 0,
+    "log_path": ""
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [
+      "src/python/abw/abw_codec.py"
+    ],
+    "key_checks": [
+      "18 public functions",
+      "10 test files",
+      "189 tests pass"
+    ],
+    "result": "VERIFIED"
+  },
+  "contradictions_found": [],
+  "repairs_performed": [],
+  "final_verdict": "PASS_VERIFIED",
+  "verdict_reason": "ABW FOSS fully implemented. 18 functions, 10 test files, 189 tests passing."
+}

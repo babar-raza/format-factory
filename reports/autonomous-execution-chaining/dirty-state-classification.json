@@ -1,0 +1,46 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-EXECUTION-CHAINING-AND-POC-CONTINUATION-001",
+  "classification": "SPRINT_WORK_IN_PROGRESS_AUTHORIZED",
+  "categories": {
+    "PRE_EXISTING_AUTONOMY_HARDENING_WIP": [
+      "tools/supervisor/stop_reason_adjudicator.py",
+      "tools/supervisor/generate_next_worker_prompt.py",
+      "tools/supervisor/autonomous_poc_controller.py",
+      "tests/supervisor/test_stop_reason_adjudicator.py",
+      "tests/supervisor/test_human_gate_policy.py",
+      "tests/supervisor/test_next_sprint_false_stop_regression.py",
+      "tests/supervisor/test_supervisor_loop_continuation_contract.py",
+      "docs/governance/autonomous-stop-reason-policy.md",
+      "docs/governance/human-gate-classification-policy.md",
+      "docs/governance/agent-owned-review-policy.md",
+      "reports/autonomy-stop-reason-hardening/**",
+      ".supervisor/schemas/stop-reason-decision.schema.json",
+      ".supervisor/schemas/human-gate-classification.schema.json"
+    ],
+    "PRE_EXISTING_PRODUCT_WIP": [
+      "src/net/fods/FodsDocument.cs",
+      "src/net/fodt/FodtDocument.cs",
+      "src/net/netpbm/Model/NetpbmImage.cs",
+      "src/python/sylk/sylk_parser.py"
+    ],
+    "PRE_EXISTING_SUPERVISOR_WIP": [
+      ".supervisor/**",
+      "reports/supervisor/**",
+      "plans/master-plan.md",
+      "product-capability-matrix/poc-targets.yaml"
+    ],
+    "PRE_EXISTING_AUTHORITY_WIP": [
+      ".claude/commands/**",
+      ".gitignore"
+    ],
+    "ALLOWED_THIS_SPRINT_DIRTY_STATE": [
+      "reports/autonomous-execution-chaining/**",
+      "tools/supervisor/autonomous_train_executor.py",
+      "tests/supervisor/test_autonomous_train_executor.py",
+      "tests/supervisor/test_combined_next_worker_prompt_no_false_stops.py"
+    ],
+    "UNSAFE_DIRTY_STATE_REQUIRES_STOP": []
+  },
+  "unsafe_count": 0,
+  "stop_required": false
+}

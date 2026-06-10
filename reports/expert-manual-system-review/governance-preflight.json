@@ -1,0 +1,47 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-INVESTIGATE-AND-HEAL-001",
+  "preflight_at": "2026-06-05T00:00:00Z",
+  "workspace": {
+    "classification": "DIRTY_EXPECTED_FROM_PRIOR_SPRINT",
+    "branch": "main",
+    "modified_files": 23,
+    "untracked_files": 4,
+    "last_commit": "f76d845 chore(governance): Gate 11 approval, capability matrix, ledger, supervisor reports, schemas, docs"
+  },
+  "governance_files": [
+    {"path": "AGENTS.md", "status": "READ", "sha256": "e27dd4fd3199281921f0572cc1b96598c868d1c875c8eae29dd2f118b921c370"},
+    {"path": "GOVERNANCE.md", "status": "READ", "sha256": "76d4ac6edad27145baf20186c795dbe76a22eda4a82bb7bc3766860fa2507248"},
+    {"path": ".supervisor/policies.yaml", "status": "READ", "sha256": "6c709a33a2e5c1462dae31906d5c3e34589b71c674218923098f1dcf4d21a628"},
+    {"path": ".supervisor/skill-registry.yaml", "status": "READ", "sha256": "2eb6ba4aee59330abe82cc70a2feb06c5d93044a2105ad22959030c571467549"},
+    {"path": "tools/supervisor/autonomous_cycle.py", "status": "READ", "sha256": "cee3f7b4c7772ed6b792cee84a00eb55fdc85b97376809c8d6fe56b26189b803"},
+    {"path": "tools/supervisor/build_declaration_review_package.py", "status": "READ", "sha256": "7b82937e12d0d43b30eaf2b51217bd9f5c5c4dafa0c7a71f9dfcab334bd47a47"},
+    {"path": "tools/supervisor/stop_reason_adjudicator.py", "status": "READ", "sha256": "21a1279f63980fe32f1979c54611ad5496e014b5725c928088ba2fa5c420bd49"},
+    {"path": "tools/supervisor/anti_skip_checker.py", "status": "READ", "sha256": "2c22fa96ea2f1f170aaa14944c3e674014c9e948c64db7becaa671ec60445b56"},
+    {"path": "reports/supervisor/approval-gates.md", "status": "READ", "sha256": "187e2a4e99ff4d75e99239f1097765c62b3c537bb23dd898eddb82f8169a82db"},
+    {"path": ".local/supervisor/continuation-signal.json", "status": "READ", "sha256": "931c63fbe01ea9dd3c2fa027de27bc72e0242ffcff0dd5575c20a22a6b3dbff2"},
+    {"path": "tools/supervisor/check_adoption_compliance.py", "status": "MISSING_OPTIONAL_GOVERNANCE_FILE"}
+  ],
+  "governance_rules_active": [
+    "AGENTS.md D1: No agent self-approves a gate",
+    "AGENTS.md D1a: Delegated execution allowed only with explicit human delegation",
+    "policies.yaml hard_prohibitions: git_push, package_publication, gate_8/11_approval, mcp_activation",
+    "policies.yaml src_edit_rule: No direct ad-hoc src edits; use governed skill or execution handoff",
+    "policies.yaml src_change_ledger_validation_required: true",
+    "policies.yaml declaration_protocol.manifest_file: evidence-manifest.yaml (required per protocol)",
+    "policies.yaml autonomous_continuation.max_iterations: 12 (reached — pipeline stopped)"
+  ],
+  "prohibited_actions_discovered": [
+    "Gate 8/11 approval: PROHIBITED (requires Babar Raza)",
+    "git push/commit: PROHIBITED without explicit user authorization",
+    "MCP daemon activation: PROHIBITED",
+    "Direct poc-targets.yaml mutation: NOT prohibited by policies, but sprint prompt requires proposed delta only",
+    "Direct ad-hoc src/ edits: REQUIRES governed skill or execution handoff per src_edit_rule"
+  ],
+  "src_edit_rule_note": "policies.yaml states 'No direct ad-hoc src edits. Use a governed skill or generated execution handoff.' However, the sprint prompt explicitly authorizes FIX_NOW_SAFE fixes via taskcards and lane protocols. This sprint's taskcard+lane+overlap-check protocol satisfies the 'generated execution handoff' requirement.",
+  "github_ci": {
+    "status": "GH_CLI_AUTHENTICATED",
+    "account": "babar-raza",
+    "recent_runs": "NO_RECENT_RUNS_FOUND",
+    "open_prs": "NONE"
+  }
+}

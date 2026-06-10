@@ -1,0 +1,84 @@
+{
+  "timestamp": "2026-06-05T12:47:14.247755",
+  "execution_state": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+  "terminal": true,
+  "terminal_state": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+  "next_action": {
+    "action": "TERMINAL",
+    "terminal_state": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+    "reason": "Terminal state reached: MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+    "executable_locally": false,
+    "continuation_packet_required": false
+  },
+  "prompt_validation": {
+    "valid": true,
+    "false_stops_found": [],
+    "false_stop_count": 0,
+    "path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\supervisor\\next-sprint.md"
+  },
+  "poc_dashboard": {
+    "commercial_targets_count": 3,
+    "foss_targets_count": 4,
+    "all_commercial_gates_1_10_pass": true,
+    "all_foss_gates_1_10_pass": true,
+    "poc_candidate_valid": true,
+    "poc_ready": true,
+    "gate_11_approved": false,
+    "commercial_product_ready": false,
+    "proof_backed": true,
+    "decision": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+    "missing_logs": [],
+    "missing_proof_records": [
+      "Netpbm-Python"
+    ],
+    "missing_examples": [],
+    "foss_pass_count": 3,
+    "foss_minimum_required": 3,
+    "proof_failures": [
+      {
+        "format": "Netpbm-Python",
+        "failures": [
+          "proof_record_exists"
+        ]
+      }
+    ]
+  },
+  "continuation_signal": {
+    "autonomous_continue": true,
+    "iteration": 7,
+    "max_iterations": 12,
+    "next_sprint_path": "reports/supervisor/next-sprint.md",
+    "stop_reason": null,
+    "rework_items": [],
+    "safe_lanes_available": true,
+    "generated_at": "2026-06-05T11:57:23.601646",
+    "source_sprint_id": "FORMAT-FACTORY-AUTONOMOUS-EXECUTION-CHAINING-AND-POC-CONTINUATION-001",
+    "hard_stops_detected": [],
+    "continuation_state": "YES_WITH_LIMITATIONS"
+  },
+  "adjudicator_result": {
+    "decisions": [],
+    "overall_terminal": false,
+    "overall_decision": "CONTINUE_NEXT_ITERATION",
+    "has_true_external_gate": false,
+    "has_unsafe_workspace": false,
+    "has_release_pending": false,
+    "all_agent_owned": true,
+    "terminal_signals": [],
+    "continuation_signals": []
+  },
+  "outputs": {
+    "train_state": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\host-autonomy-runner\\train-state.json",
+    "next_action": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\host-autonomy-runner\\next-action.json",
+    "stop_reason_decision": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\host-autonomy-runner\\stop-reason-decision.json",
+    "continuation_packet_md": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\host-autonomy-runner\\continuation-packet.md",
+    "continuation_packet_json": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\reports\\host-autonomy-runner\\continuation-packet.json"
+  },
+  "non_terminal_proof": {
+    "hardening_sprint_complete_is_not_terminal": true,
+    "accepted_verdict_is_not_terminal": true,
+    "generated_next_sprint_is_not_terminal": true,
+    "false_blockers_repaired_is_not_terminal": true,
+    "next_action_is_executable_or_machine_consumable": true
+  }
+}

@@ -97,7 +97,10 @@
       "Write(tools/repro/**)",
       "Bash(python3 -c \"import jsonschema\")",
       "Bash(.local/venv/Scripts/python -c \"import jsonschema; print\\(''jsonschema:'', jsonschema.__version__\\)\")",
-      "Bash(dotnet test --verbosity minimal)"
+      "Bash(dotnet test --verbosity minimal)",
+      "Read(//c/Users/prora/OneDrive/Documents/GitHub/format-factory/**)",
+      "Bash(.local/venv/Scripts/python -m pytest tests/ -q --tb=line)",
+      "Bash(.local/venv/Scripts/python -m pytest tests/supervisor/test_governance_closure_pilots.py -x -q)"
     ],
     "deny": [
       "Write(.env)",

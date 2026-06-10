@@ -1,0 +1,371 @@
+[
+  {
+    "parser": "FodsParser (.NET)",
+    "source": "src/net/fods/FodsParser.cs",
+    "security_dimensions": {
+      "dtd_injection_prevention": {
+        "score": 5,
+        "finding": "SECURE — DtdProcessing.Prohibit set at XmlReader creation; XmlResolver explicitly controlled",
+        "source_ref": "FodsParser.cs XmlReaderSettings block"
+      },
+      "input_size_guard": {
+        "score": 3,
+        "finding": "No explicit file-size limit before parsing begins; depends on OS/CLR limits",
+        "source_ref": "FodsParser.cs Parse() entry — no size check before XmlReader.Create()"
+      },
+      "malformed_input_handling": {
+        "score": 4,
+        "finding": "XmlException caught and propagated; FodsParseException wraps parse errors",
+        "source_ref": "FodsParser.cs catch(XmlException)"
+      },
+      "resource_exhaustion_protection": {
+        "score": 3,
+        "finding": "No per-sheet or per-row count limits; very large FODS files could exhaust memory",
+        "source_ref": "FodsParser.cs — no row/cell cap"
+      },
+      "injection_surface": {
+        "score": 5,
+        "finding": "No string interpolation into SQL/shell; output is object model only",
+        "source_ref": "N/A — library only"
+      },
+      "exception_propagation": {
+        "score": 4,
+        "finding": "Exceptions wrapped in domain types; no leaking of internal stack to untrusted consumer expected",
+        "source_ref": "FodsParseException wrapping"
+      }
+    },
+    "overall_security_score": 4.0,
+    "classification": "SECURE_WITH_MINOR_GAPS",
+    "critical_findings": [],
+    "medium_findings": ["No file-size pre-check before parsing", "No per-row/cell count limit"],
+    "low_findings": []
+  },
+  {
+    "parser": "FodtParser (.NET)",
+    "source": "src/net/fodt/FodtParser.cs",
+    "security_dimensions": {
+      "dtd_injection_prevention": {
+        "score": 5,
+        "finding": "SECURE — DTD processing prohibited; XmlResolver=null explicitly set",
+        "source_ref": "FodtParser.cs XmlReaderSettings block"
+      },
+      "input_size_guard": {
+        "score": 4,
+        "finding": "File size guard present: 50MB limit enforced before XmlReader opens the stream",
+        "source_ref": "FodtParser.cs — 50MB guard"
+      },
+      "malformed_input_handling": {
+        "score": 4,
+        "finding": "XmlException caught; FodtParseException wraps errors",
+        "source_ref": "FodtParser.cs catch(XmlException)"
+      },
+      "resource_exhaustion_protection": {
+        "score": 3,
+        "finding": "Has file-size guard but no per-paragraph or per-element count limit",
+        "source_ref": "FodtParser.cs — no element cap beyond file size"
+      },
+      "injection_surface": {
+        "score": 5,
+        "finding": "No injection surface; library outputs object model only",
+        "source_ref": "N/A"
+      },
+      "exception_propagation": {
+        "score": 4,
+        "finding": "Wrapped exceptions via FodtParseException",
+        "source_ref": "FodtParser.cs"
+      }
+    },
+    "overall_security_score": 4.2,
+    "classification": "SECURE_WITH_MINOR_GAPS",
+    "critical_findings": [],
+    "medium_findings": ["No per-element count limit beyond 50MB file-size guard"],
+    "low_findings": []
+  },
+  {
+    "parser": "NetpbmParser (.NET)",
+    "source": "src/net/netpbm/NetpbmParser.cs",
+    "security_dimensions": {
+      "dtd_injection_prevention": {
+        "score": 5,
+        "finding": "N/A — binary/text format, no XML; no DTD attack surface",
+        "source_ref": "N/A"
+      },
+      "input_size_guard": {
+        "score": 5,
+        "finding": "SECURE — 64MB file-size guard enforced at entry; dimension guard 65536 px/side; pixel count guard 1 billion",
+        "source_ref": "NetpbmParser.cs — ParseHeader() guards"
+      },
+      "malformed_input_handling": {
+        "score": 4,
+        "finding": "Magic byte validation; header parse errors throw NetpbmParseException",
+        "source_ref": "NetpbmParser.cs ParseHeader()"
+      },
+      "resource_exhaustion_protection": {
+        "score": 5,
+        "finding": "SECURE — layered guards: file size + max dimension + max pixel count all enforced",
+        "source_ref": "NetpbmParser.cs"
+      },
+      "injection_surface": {
+        "score": 5,
+        "finding": "No injection surface; library outputs pixel data arrays",
+        "source_ref": "N/A"
+      },
+      "exception_propagation": {
+        "score": 4,
+        "finding": "Domain exception type NetpbmParseException wraps errors",
+        "source_ref": "NetpbmParser.cs"
+      }
+    },
+    "overall_security_score": 4.7,
+    "classification": "SECURE_WELL_GUARDED",
+    "critical_findings": [],
+    "medium_findings": [],
+    "low_findings": ["Minor: dimension guard uses flat cap rather than format-spec limit"]
+  },
+  {
+    "parser": "FodsParser (Python)",
+    "source": "src/python/fods/parser.py",
+    "security_dimensions": {
+      "dtd_injection_prevention": {
+        "score": 4,
+        "finding": "xml.etree.ElementTree used — Python stdlib ET does not process external entities by default in modern Python (3.8+); defusedxml not used but ET is safe for well-formed ODF",
+        "source_ref": "src/python/fods/parser.py — ET.parse()"
+      },
+      "input_size_guard": {
+        "score": 2,
+        "finding": "No file size guard before parsing; large FODS files will be fully loaded into memory",
+        "source_ref": "src/python/fods/parser.py — no size check"
+      },
+      "malformed_input_handling": {
+        "score": 3,
+        "finding": "ET.ParseError raised on malformed XML; not explicitly caught and wrapped",
+        "source_ref": "src/python/fods/parser.py"
+      },
+      "resource_exhaustion_protection": {
+        "score": 2,
+        "finding": "No resource limits; adversarial FODS with 10M cells would exhaust memory",
+        "source_ref": "src/python/fods/parser.py — no row/cell cap"
+      },
+      "injection_surface": {
+        "score": 5,
+        "finding": "No injection surface; outputs dict/list structures",
+        "source_ref": "N/A"
+      },
+      "exception_propagation": {
+        "score": 3,
+        "finding": "Raw ET.ParseError not wrapped in a domain exception type",
+        "source_ref": "src/python/fods/parser.py"
+      }
+    },
+    "overall_security_score": 3.2,
+    "classification": "MODERATE_SECURITY_FOSS_ACCEPTABLE",
+    "critical_findings": [],
+    "medium_findings": ["No file-size guard", "No resource exhaustion protection", "ET.ParseError not wrapped"],
+    "low_findings": ["defusedxml not used (low priority given ET safe defaults)"]
+  },
+  {
+    "parser": "FodtParser (Python)",
+    "source": "src/python/fodt/parser.py",
+    "security_dimensions": {
+      "dtd_injection_prevention": {
+        "score": 4,
+        "finding": "xml.etree.ElementTree — same safe default as fods_py parser",
+        "source_ref": "src/python/fodt/parser.py — ET.parse()"
+      },
+      "input_size_guard": {
+        "score": 2,
+        "finding": "No file size guard",
+        "source_ref": "src/python/fodt/parser.py"
+      },
+      "malformed_input_handling": {
+        "score": 3,
+        "finding": "ET.ParseError raised; not explicitly caught",
+        "source_ref": "src/python/fodt/parser.py"
+      },
+      "resource_exhaustion_protection": {
+        "score": 2,
+        "finding": "No resource limits",
+        "source_ref": "src/python/fodt/parser.py"
+      },
+      "injection_surface": {
+        "score": 5,
+        "finding": "No injection surface",
+        "source_ref": "N/A"
+      },
+      "exception_propagation": {
+        "score": 3,
+        "finding": "Raw ET.ParseError not wrapped",
+        "source_ref": "src/python/fodt/parser.py"
+      }
+    },
+    "overall_security_score": 3.2,
+    "classification": "MODERATE_SECURITY_FOSS_ACCEPTABLE",
+    "critical_findings": [],
+    "medium_findings": ["No file-size guard", "No resource exhaustion protection"],
+    "low_findings": []
+  },
+  {
+    "parser": "NetpbmParser (Python PBM/PGM/PPM)",
+    "source": "src/python/pbm/pbm_parser.py + src/python/pgm/pgm_parser.py + src/python/ppm/ppm_parser.py",
+    "security_dimensions": {
+      "dtd_injection_prevention": {
+        "score": 5,
+        "finding": "N/A — binary/text format, no XML attack surface",
+        "source_ref": "N/A"
+      },
+      "input_size_guard": {
+        "score": 3,
+        "finding": "Header parsing validates magic bytes and image dimensions; no explicit byte-count pre-check found",
+        "source_ref": "pbm_parser.py parse header section"
+      },
+      "malformed_input_handling": {
+        "score": 4,
+        "finding": "ValueError/IOError raised on invalid headers and data; magic byte validation enforced",
+        "source_ref": "pbm_parser.py magic byte check"
+      },
+      "resource_exhaustion_protection": {
+        "score": 3,
+        "finding": "Dimension parsing present; no explicit max-dimension guard comparable to .NET NetpbmParser",
+        "source_ref": "pbm_parser.py — parse_header()"
+      },
+      "injection_surface": {
+        "score": 5,
+        "finding": "No injection surface; outputs pixel data",
+        "source_ref": "N/A"
+      },
+      "exception_propagation": {
+        "score": 3,
+        "finding": "stdlib exceptions raised; no domain exception type",
+        "source_ref": "pbm_parser.py"
+      }
+    },
+    "overall_security_score": 3.8,
+    "classification": "MODERATE_SECURITY_FOSS_ACCEPTABLE",
+    "critical_findings": [],
+    "medium_findings": ["No explicit max-dimension guard (unlike .NET counterpart)", "No file-size pre-check"],
+    "low_findings": ["No domain exception type"]
+  },
+  {
+    "parser": "ZST codec (Python)",
+    "source": "src/python/zst/zst_codec.py",
+    "security_dimensions": {
+      "dtd_injection_prevention": {
+        "score": 5,
+        "finding": "N/A — binary compression codec",
+        "source_ref": "N/A"
+      },
+      "input_size_guard": {
+        "score": 3,
+        "finding": "Relies on zstandard library's internal limits; no application-level size cap",
+        "source_ref": "src/python/zst/zst_codec.py"
+      },
+      "malformed_input_handling": {
+        "score": 4,
+        "finding": "zstandard library raises ZstdError on corrupt input; propagated to caller",
+        "source_ref": "zst_codec.py"
+      },
+      "resource_exhaustion_protection": {
+        "score": 3,
+        "finding": "No decompression bomb guard; adversarial zst with high compression ratio could exhaust memory",
+        "source_ref": "zst_codec.py decompress_file()"
+      },
+      "injection_surface": {
+        "score": 5,
+        "finding": "No injection surface",
+        "source_ref": "N/A"
+      },
+      "exception_propagation": {
+        "score": 3,
+        "finding": "zstandard exceptions propagate as-is",
+        "source_ref": "zst_codec.py"
+      }
+    },
+    "overall_security_score": 3.8,
+    "classification": "MODERATE_SECURITY_FOSS_ACCEPTABLE",
+    "critical_findings": [],
+    "medium_findings": ["No decompression bomb / output size guard — zstandard library default"],
+    "low_findings": []
+  },
+  {
+    "parser": "SYLK parser (Python)",
+    "source": "src/python/sylk/sylk_parser.py",
+    "security_dimensions": {
+      "dtd_injection_prevention": {
+        "score": 5,
+        "finding": "N/A — text/line-based format, no XML",
+        "source_ref": "N/A"
+      },
+      "input_size_guard": {
+        "score": 2,
+        "finding": "No file size guard; large SYLK files read line by line but no line count cap",
+        "source_ref": "sylk_parser.py parse_sylk()"
+      },
+      "malformed_input_handling": {
+        "score": 3,
+        "finding": "ValueError on unexpected tokens; some malformed cases handled",
+        "source_ref": "sylk_parser.py"
+      },
+      "resource_exhaustion_protection": {
+        "score": 2,
+        "finding": "No resource limits on row/cell counts",
+        "source_ref": "sylk_parser.py"
+      },
+      "injection_surface": {
+        "score": 5,
+        "finding": "No injection surface",
+        "source_ref": "N/A"
+      },
+      "exception_propagation": {
+        "score": 3,
+        "finding": "Raw exceptions propagated",
+        "source_ref": "sylk_parser.py"
+      }
+    },
+    "overall_security_score": 3.3,
+    "classification": "MODERATE_SECURITY_FOSS_ACCEPTABLE",
+    "critical_findings": [],
+    "medium_findings": ["No file-size guard", "No row/cell count cap"],
+    "low_findings": []
+  },
+  {
+    "parser": "DIF parser (Python)",
+    "source": "src/python/dif/dif_parser.py",
+    "security_dimensions": {
+      "dtd_injection_prevention": {
+        "score": 5,
+        "finding": "N/A — text format, no XML",
+        "source_ref": "N/A"
+      },
+      "input_size_guard": {
+        "score": 2,
+        "finding": "No file size guard",
+        "source_ref": "dif_parser.py"
+      },
+      "malformed_input_handling": {
+        "score": 3,
+        "finding": "ValueError on unexpected DIF tokens",
+        "source_ref": "dif_parser.py"
+      },
+      "resource_exhaustion_protection": {
+        "score": 2,
+        "finding": "No resource limits",
+        "source_ref": "dif_parser.py"
+      },
+      "injection_surface": {
+        "score": 5,
+        "finding": "No injection surface",
+        "source_ref": "N/A"
+      },
+      "exception_propagation": {
+        "score": 3,
+        "finding": "Raw exceptions propagated",
+        "source_ref": "dif_parser.py"
+      }
+    },
+    "overall_security_score": 3.3,
+    "classification": "MODERATE_SECURITY_FOSS_ACCEPTABLE",
+    "critical_findings": [],
+    "medium_findings": ["No file-size guard", "No resource exhaustion limits"],
+    "low_findings": []
+  }
+]

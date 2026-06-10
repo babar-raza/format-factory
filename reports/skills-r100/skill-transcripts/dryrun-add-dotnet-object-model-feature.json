@@ -1,0 +1,23 @@
+{
+  "invocation_id": "R100-DRYRUN-DOTNET-OBJ-001",
+  "skill_id": "add-dotnet-object-model-feature",
+  "mode": "dry-run",
+  "timestamp": "2026-06-03T08:10:00Z",
+  "inputs": {
+    "format_id": "FODS",
+    "feature_name": "GetRowValues",
+    "exact_source_paths": ["src/net/fods/FodsDocument.cs"],
+    "exact_test_paths": ["tests/net/fods/FodsR100GetRowValuesTests.cs"],
+    "ledger_entry_path": "reports/r90/product-code-change-ledger.json"
+  },
+  "allowed_files": [
+    "src/net/fods/FodsDocument.cs",
+    "src/net/fods/Model/FodsSheet.cs",
+    "tests/net/fods/FodsR100GetRowValuesTests.cs"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "notes": "Dry-run only. Verified: inputs complete, path controls correct (src/net/fods/ allowed, src/python/** forbidden), ledger entry template ready, 3-case test pattern (normal, boundary, invalid-input)."
+}

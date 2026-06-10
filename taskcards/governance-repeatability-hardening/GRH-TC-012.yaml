@@ -1,0 +1,23 @@
+id: GRH-TC-012
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Create autonomy boundary contract YAML (Lane L)"
+status: completed
+lane: autonomy_boundary
+item_type: GOVERNANCE_DOC
+problem: >
+  The autonomy boundary handoff document exists as Markdown but not as a structured
+  YAML contract that can be machine-verified. A YAML contract enables automated
+  checking of deferred-item classification and Level 3+ prerequisites.
+scope:
+  - Create .supervisor/autonomy-boundary-contract.yaml with formal structure
+  - List deferred items with machine-readable classification
+  - List Level 3+ prerequisites with check functions
+  - Reference governance docs produced by Sprint 1
+files_to_create:
+  - .supervisor/autonomy-boundary-contract.yaml
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-001]
+handoff_to_autonomy_sprint: true

@@ -1,0 +1,28 @@
+id: GRE-TC-009
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Integration tests — validators against real Sprint 1 evidence (Lane I)"
+status: completed
+lane: integration_tests
+item_type: GOVERNANCE_DOC
+problem: >
+  Sprint 2 validators were only tested on synthetic fixtures. They needed to run
+  against real Sprint 1 evidence declarations to confirm no false positives
+  in production use. Integration tests provide this confidence.
+scope:
+  - Create tests/supervisor/test_governance_validators_integration.py
+  - 32 sidecar verification tests (4 sidecars x 8 assertions each)
+  - 16 GR-REPLAY taskcard verification tests
+  - 11 Sprint 1 declaration integration tests (run all 10 validators on real evidence)
+  - Fix all_pass vs overall_result key assertion
+files_created:
+  - tests/supervisor/test_governance_validators_integration.py
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+test_results:
+  passed: 59
+  failed: 0
+dependencies: []
+handoff_to_autonomy_sprint: false

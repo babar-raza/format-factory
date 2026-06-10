@@ -1,0 +1,46 @@
+{
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-FABRIC-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "dry_run_verdict": "E2E_DRY_RUN_PASS",
+  "checks": {
+    "packets_load_recon": "PASS",
+    "packets_load_supervisor": "PASS",
+    "packets_load_skills": "PASS",
+    "contract_loads": "PASS",
+    "contract_blocks": "PASS",
+    "contract_validation_verdict": "TRI_LANE_CONTRACT_VALID",
+    "mainstream_packet_loads": "PASS",
+    "mainstream_family_count": 3,
+    "mainstream_has_fods": true,
+    "mainstream_has_fodt": true,
+    "mainstream_has_netpbm": true,
+    "no_product_source_edits_this_sprint": "PASS",
+    "pre_existing_product_source_changes": ["src/net/fods/FodsDocument.cs", "src/net/fodt/FodtDocument.cs", "src/net/netpbm/Model/NetpbmImage.cs", "src/python/sylk/sylk_parser.py"],
+    "pre_existing_note": "These 4 src/ files have uncommitted changes from prior sprints (R93 era). No new product source edits were made in FORMAT-FACTORY-TRI-LANE-INTEGRATION-FABRIC-001.",
+    "no_authority_mutation_poc_targets": "PASS",
+    "no_authority_mutation_format_registry": "PASS",
+    "no_external_tool_activation": "PASS",
+    "netpbm_retained": "PASS",
+    "svg_rejected": "PASS",
+    "acceleration_remains_ai_draft": "PASS",
+    "skills_remains_governed_execution": "PASS",
+    "supervisor_remains_routing_authority": "PASS"
+  },
+  "check_counts": {
+    "total": 18,
+    "pass": 18,
+    "fail": 0,
+    "limitations": 1
+  },
+  "limitations": [
+    "PREEXISTING_SRC_CHANGES: 4 product source files have uncommitted changes from prior sprints. No new edits from this integration sprint."
+  ],
+  "authority_invariants": {
+    "supervisor_is_routing_authority": true,
+    "skills_is_governed_execution_authority": true,
+    "acceleration_is_ai_draft_only": true,
+    "mainstream_product_authority_not_claimed": true,
+    "format_factory_gates_not_self_approved": true,
+    "poc_targets_not_mutated": true
+  }
+}

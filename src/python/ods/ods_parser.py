@@ -301,3 +301,205 @@ def probe_ods(file_path: str | Path) -> dict[str, Any]:
         result["valid_container"] = False
         result["error"] = str(exc)
     return result
+
+
+# ---------------------------------------------------------------------------
+# Rnext15 — ODS accessor functions
+# ---------------------------------------------------------------------------
+
+
+def get_cell_value(
+    file_path: str | Path, sheet_index: int, row: int, col: int
+) -> Any:
+    """Return the value at (sheet_index, row, col) in an ODS file (all 0-based).
+
+    Returns None if the coordinates are out of range.
+
+    Args:
+        file_path:    Path to ODS file.
+        sheet_index:  0-based sheet index.
+        row:          0-based row index.
+        col:          0-based column index.
+
+    Returns:
+        Cell value (str, float, or None).
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return None
+    sheet = doc.sheets[sheet_index]
+    if row < 0 or row >= len(sheet.rows):
+        return None
+    r = sheet.rows[row]
+    if col < 0 or col >= len(r.cells):
+        return None
+    return r.cells[col].value
+
+
+def get_sheet_names(file_path: str | Path) -> list[str]:
+    """Return the list of sheet names in an ODS file.
+
+    Args:
+        file_path: Path to ODS file.
+
+    Returns:
+        List of sheet name strings.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    return [s.name for s in doc.sheets]
+
+
+def get_row_count(file_path: str | Path, sheet_index: int = 0) -> int:
+    """Return the number of non-empty rows in a given sheet (0-based index).
+
+    Args:
+        file_path:    Path to ODS file.
+        sheet_index:  0-based sheet index (default 0).
+
+    Returns:
+        Integer row count. Returns 0 if sheet_index is out of range.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    return len(doc.sheets[sheet_index].rows)
+
+
+def get_column_count(file_path: str | Path, sheet_index: int = 0) -> int:
+    """Return the maximum number of columns in any row of a given sheet.
+
+    Args:
+        file_path:    Path to ODS file.
+        sheet_index:  0-based sheet index (default 0).
+
+    Returns:
+        Integer column count. Returns 0 if sheet has no rows or sheet_index is out of range.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    if not sheet.rows:
+        return 0
+    return max(len(r.cells) for r in sheet.rows)
+
+
+def get_row_values(
+    file_path: str | Path, sheet_index: int, row: int
+) -> list[Any]:
+    """Return all cell values for a given row (0-based) as a list.
+
+    Args:
+        file_path:    Path to ODS file.
+        sheet_index:  0-based sheet index.
+        row:          0-based row index.
+
+    Returns:
+        List of cell values. Returns empty list if row or sheet is out of range.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return []
+    sheet = doc.sheets[sheet_index]
+    if row < 0 or row >= len(sheet.rows):
+        return []
+    return [c.value for c in sheet.rows[row].cells]
+
+
+def count_sheets(file_path: str | Path) -> int:
+    """Return the number of sheets in an ODS file."""
+    doc = parse_ods_strict(file_path)
+    return len(doc.sheets)
+
+
+def get_all_values(file_path: str | Path, sheet_index: int = 0) -> list[Any]:
+    """Return a flat list of all cell values in a sheet, row by row."""
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return []
+    sheet = doc.sheets[sheet_index]
+    result: list[Any] = []
+    for row in sheet.rows:
+        for cell in row.cells:
+            result.append(cell.value)
+    return result
+
+
+def get_cell_count(file_path: str | Path, sheet_index: int = 0) -> int:
+    """Return the total number of cells in a sheet."""
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    return sum(len(row.cells) for row in sheet.rows)
+
+
+def ods_to_csv(file_path: str | Path, sheet_index: int = 0) -> str:
+    """Export an ODS sheet as a CSV string.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        CSV string. Empty string if sheet not found.
+    """
+    import csv as csv_mod
+    import io
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return ""
+    sheet = doc.sheets[sheet_index]
+    buf = io.StringIO()
+    writer = csv_mod.writer(buf, lineterminator="\r\n")
+    for row in sheet.rows:
+        csv_row = []
+        for cell in row.cells:
+            val = cell.value
+            if val is None:
+                csv_row.append("")
+            elif isinstance(val, float) and val == int(val):
+                csv_row.append(str(int(val)))
+            else:
+                csv_row.append(str(val))
+        writer.writerow(csv_row)
+    return buf.getvalue()
+
+
+def get_column_values(file_path: str | Path, col: int, sheet_index: int = 0) -> list[Any]:
+    """Return all values in a column (0-based) from a given sheet.
+
+    Args:
+        file_path: Path to ODS file.
+        col: 0-based column index.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        List of cell values. None for missing cells.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return []
+    sheet = doc.sheets[sheet_index]
+    result: list[Any] = []
+    for row in sheet.rows:
+        if col < len(row.cells):
+            result.append(row.cells[col].value)
+        else:
+            result.append(None)
+    return result

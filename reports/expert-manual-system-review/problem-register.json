@@ -1,0 +1,186 @@
+[
+  {
+    "problem_id": "PROB-PK01",
+    "title": "FODS .csproj Description stale \u00e2\u20ac\u201d says 'not release-ready' after Gate 11 APPROVED",
+    "category": "PACKAGING_METADATA",
+    "owner_lane": "PACKAGING_LANE",
+    "severity": "HIGH",
+    "confidence": "VERIFIED",
+    "source_line_refs": [
+      "src/net/fods/FormatFactory.Fods.csproj line 11: <Description>...Gate 11 commercial_readiness_in_progress; not release-ready.</Description>",
+      "src/net/fods/FormatFactory.Fods.csproj lines 36-37: comment 'Gate 11 has NOT been approved'",
+      "product-capability-matrix/poc-targets.yaml lines 24-26: gate_11_status=APPROVED, gate_11_g11g=APPROVED_BY_BABAR_RAZA_2026_06_05, commercial_product_ready=true"
+    ],
+    "claim_refs": [
+      "CLAIM-001"
+    ],
+    "observed_behavior": "NuGet consumers reading package Description see 'not release-ready' \u00e2\u20ac\u201d inaccurate after Gate 11 approval",
+    "expected_behavior": "Description should reflect post-Gate-11 state without promotional language (Gate approval is human's to communicate)",
+    "sha256_source_files": {
+      "FormatFactory.Fods.csproj": "32dd10dc4740d40687c3ac939da47d52e44def0b82f60b892204979f242b6803",
+      "poc-targets.yaml": "bd8b5d6af7c3eeab27fbb95b30452e5b5e9fc2ec8577880a7040d8466be64b74"
+    },
+    "revalidated": true,
+    "status": "CLOSED_VERIFIED"
+  },
+  {
+    "problem_id": "PROB-PK02",
+    "title": "FODT .csproj Description stale \u00e2\u20ac\u201d says 'not release-ready' after Gate 11 APPROVED",
+    "category": "PACKAGING_METADATA",
+    "owner_lane": "PACKAGING_LANE",
+    "severity": "HIGH",
+    "confidence": "VERIFIED",
+    "source_line_refs": [
+      "src/net/fodt/FormatFactory.Fodt.csproj line 11: <Description>...Gate 11 commercial_readiness_in_progress; not release-ready.</Description>",
+      "src/net/fodt/FormatFactory.Fodt.csproj lines 36-37: comment 'Gate 11 has NOT been approved'",
+      "product-capability-matrix/poc-targets.yaml FODT section: gate_11_status=APPROVED"
+    ],
+    "claim_refs": [
+      "CLAIM-002"
+    ],
+    "observed_behavior": "NuGet consumers see stale 'not release-ready' Description for FODT",
+    "expected_behavior": "Description should reflect post-Gate-11 state",
+    "sha256_source_files": {
+      "FormatFactory.Fodt.csproj": "622e7a52e9eadd92af50619f1007778dd0be65fccb059d2f830cf38476d901dd",
+      "poc-targets.yaml": "bd8b5d6af7c3eeab27fbb95b30452e5b5e9fc2ec8577880a7040d8466be64b74"
+    },
+    "revalidated": true,
+    "status": "CLOSED_VERIFIED"
+  },
+  {
+    "problem_id": "PROB-PK03",
+    "title": "Netpbm .csproj Description says 'Gate 11 NOT_STARTED' \u00e2\u20ac\u201d Gate 11 was APPROVED",
+    "category": "PACKAGING_METADATA",
+    "owner_lane": "PACKAGING_LANE",
+    "severity": "HIGH",
+    "confidence": "VERIFIED",
+    "source_line_refs": [
+      "src/net/netpbm/FormatFactory.Netpbm.csproj Description: 'Gate 11 NOT_STARTED; not release-ready'",
+      "product-capability-matrix/poc-targets.yaml Netpbm section: gate_11_status=APPROVED"
+    ],
+    "claim_refs": [],
+    "observed_behavior": "NuGet Description for Netpbm says Gate 11 NOT_STARTED \u00e2\u20ac\u201d directly contradicts approved status",
+    "expected_behavior": "Description should not claim Gate 11 NOT_STARTED when it was approved",
+    "sha256_source_files": {
+      "poc-targets.yaml": "bd8b5d6af7c3eeab27fbb95b30452e5b5e9fc2ec8577880a7040d8466be64b74"
+    },
+    "revalidated": true,
+    "status": "CLOSED_VERIFIED"
+  },
+  {
+    "problem_id": "PROB-PK04",
+    "title": "All 3 .NET .csproj files missing GenerateDocumentationFile=true",
+    "category": "PACKAGING_METADATA",
+    "owner_lane": "PACKAGING_LANE",
+    "severity": "HIGH",
+    "confidence": "VERIFIED",
+    "source_line_refs": [
+      "src/net/fods/FormatFactory.Fods.csproj \u00e2\u20ac\u201d GenerateDocumentationFile not present",
+      "src/net/fodt/FormatFactory.Fodt.csproj \u00e2\u20ac\u201d GenerateDocumentationFile not present",
+      "src/net/netpbm/FormatFactory.Netpbm.csproj \u00e2\u20ac\u201d GenerateDocumentationFile not present"
+    ],
+    "claim_refs": [],
+    "observed_behavior": "NuGet packages do not include XML documentation files \u00e2\u20ac\u201d no IntelliSense for consumers",
+    "expected_behavior": "GenerateDocumentationFile=true in <PropertyGroup> so .xml file is produced and packed",
+    "sha256_source_files": {},
+    "revalidated": true,
+    "status": "CLOSED_VERIFIED"
+  },
+  {
+    "problem_id": "PROB-PK05",
+    "title": "Netpbm .csproj missing PackageReadmeFile \u00e2\u20ac\u201d no README in NuGet package",
+    "category": "PACKAGING_METADATA",
+    "owner_lane": "PACKAGING_LANE",
+    "severity": "MEDIUM",
+    "confidence": "VERIFIED",
+    "source_line_refs": [
+      "src/net/netpbm/FormatFactory.Netpbm.csproj \u00e2\u20ac\u201d PackageReadmeFile not present (FODS and FODT have it)"
+    ],
+    "claim_refs": [],
+    "observed_behavior": "Netpbm NuGet package has no readme visible on NuGet.org",
+    "expected_behavior": "PackageReadmeFile=README.md with <None Include=README.md Pack=true PackagePath=/>",
+    "sha256_source_files": {},
+    "revalidated": true,
+    "status": "OPEN"
+  },
+  {
+    "problem_id": "PROB-SRC01",
+    "title": "FodsCsvExporter.cs header comments say 'G11-G NOT approved' and 'commercial_product_ready: false'",
+    "category": "SOURCE_COMMENT_STALENESS",
+    "owner_lane": "DOTNET_COMMERCIAL_LANE",
+    "severity": "MEDIUM",
+    "confidence": "VERIFIED",
+    "source_line_refs": [
+      "src/net/fods/FodsCsvExporter.cs line 3: comment 'G11-G NOT approved'",
+      "src/net/fods/FodsCsvExporter.cs line 11: comment 'commercial_product_ready: false'"
+    ],
+    "claim_refs": [],
+    "observed_behavior": "Source comments mislead developers who read the source code",
+    "expected_behavior": "Comments should be updated or removed to reflect post-Gate-11 state",
+    "sha256_source_files": {},
+    "revalidated": true,
+    "status": "CLOSED_VERIFIED"
+  },
+  {
+    "problem_id": "PROB-PY01",
+    "title": "CRITICAL: No pyproject.toml in any of 10 Python FOSS packages \u00e2\u20ac\u201d cannot pip install",
+    "category": "PYTHON_PACKAGING",
+    "owner_lane": "PYTHON_FOSS_LANE",
+    "severity": "CRITICAL",
+    "confidence": "VERIFIED",
+    "source_line_refs": [
+      "Glob scan: src/python/**/pyproject.toml returned NO FILES",
+      "All 10 packages confirmed PYTHONPATH_ONLY install method in python-foss-review-matrix.json"
+    ],
+    "claim_refs": [
+      "CLAIM-004"
+    ],
+    "observed_behavior": "`pip install format-factory-zst` (or any package) fails \u00e2\u20ac\u201d no installable layout",
+    "expected_behavior": "Each package should have a pyproject.toml with [build-system] and [project] sections",
+    "sha256_source_files": {},
+    "revalidated": true,
+    "status": "CLOSED_VERIFIED"
+  },
+  {
+    "problem_id": "PROB-PY02",
+    "title": "fods_py and fodt_py __init__.py missing __version__ [FALSE POSITIVE]",
+    "category": "PYTHON_METADATA",
+    "owner_lane": "PYTHON_FOSS_LANE",
+    "severity": "LOW",
+    "confidence": "REFUTED",
+    "source_line_refs": [
+      "src/python/fods/__init__.py line 72: __version__ = PACKAGE_VERSION (imported from constants.py) \u00e2\u20ac\u201d PRESENT",
+      "src/python/fodt/__init__.py line 72: __version__ = PACKAGE_VERSION (imported from constants.py) \u00e2\u20ac\u201d PRESENT"
+    ],
+    "claim_refs": [],
+    "observed_behavior": "REFUTED \u00e2\u20ac\u201d both __init__.py files DO have __version__ = PACKAGE_VERSION at line 72. The initial review matrix was incorrect (stated version found only in parser.py).",
+    "expected_behavior": "__version__ is already present via PACKAGE_VERSION constant",
+    "sha256_source_files": {},
+    "revalidated": true,
+    "status": "CLOSED_FALSE_POSITIVE",
+    "resolution": "DO_NOT_FIX \u00e2\u20ac\u201d problem does not exist"
+  },
+  {
+    "problem_id": "PROB-AUTO01",
+    "title": "session-resume.md stale \u00e2\u20ac\u201d shows Autonomous continue: True after max_iterations reached",
+    "category": "AUTONOMY_DOCUMENTATION",
+    "owner_lane": "AUTONOMY_SYSTEM_LANE",
+    "severity": "LOW",
+    "confidence": "VERIFIED",
+    "source_line_refs": [
+      "reports/supervisor/session-resume.md line 11: 'Autonomous continue: True'",
+      ".local/supervisor/continuation-signal.json: autonomous_continue=false, iteration=12/12"
+    ],
+    "claim_refs": [
+      "CLAIM-003"
+    ],
+    "observed_behavior": "An agent or human reading session-resume.md would incorrectly believe the pipeline can continue",
+    "expected_behavior": "session-resume.md should reflect current autonomous_continue=false state",
+    "sha256_source_files": {
+      "session-resume.md": "3f9558d5aefc80d341b5bed3bf3b79c823cf6da6b4d2db16fd7015da202ce3c2",
+      "continuation-signal.json": "931c63fbe01ea9dd3c2fa027de27bc72e0242ffcff0dd5575c20a22a6b3dbff2"
+    },
+    "revalidated": true,
+    "status": "OPEN"
+  }
+]

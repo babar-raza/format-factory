@@ -1,0 +1,174 @@
+{
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R105-POC-COMPLETION-AND-PROOF-CAMPAIGN-001",
+  "date": "2026-06-03",
+  "total_new_tests": 120,
+  "quotas": {
+    "commercial_dotnet_apis": {"required": 6, "delivered": 6},
+    "foss_deliverables": {"required": 5, "delivered": 5},
+    "dogfood_export": {"required": 3, "delivered": 3},
+    "usability_examples": {"required": 3, "delivered": 3}
+  },
+  "trains": [
+    {
+      "id": "R105-W0-RECONCILE",
+      "wave": 0,
+      "title": "R104 Reconciliation",
+      "status": "PASS",
+      "deliverables": ["reports/mainstream-r105/00-preflight.md", "reports/mainstream-r105/r104-reconciliation.md", "reports/mainstream-r105/context-pack-contamination-check.md", "reports/mainstream-r105/raw-test-log-index.md"]
+    },
+    {
+      "id": "R105-W1-GAP-SELECTION",
+      "wave": 1,
+      "title": "Fresh mainstream gap selection",
+      "status": "PASS",
+      "deliverables": ["reports/mainstream-r105/selected-mainstream-gaps-r105.json"]
+    },
+    {
+      "id": "R105-W2-FODS-DELETEROWS",
+      "wave": 2,
+      "title": "FODS DeleteRows",
+      "status": "PASS",
+      "tests": 8,
+      "test_file": "tests/net/fods/FodsR105DeleteRowsTests.cs",
+      "source_file": "src/net/fods/FodsDocument.cs"
+    },
+    {
+      "id": "R105-W2-FODS-INSERTROW",
+      "wave": 2,
+      "title": "FODS InsertRow",
+      "status": "PASS",
+      "tests": 8,
+      "test_file": "tests/net/fods/FodsR105InsertRowTests.cs",
+      "source_file": "src/net/fods/FodsDocument.cs"
+    },
+    {
+      "id": "R105-W2-FODT-EXPORTTOHTML",
+      "wave": 2,
+      "title": "FODT ExportToHtml",
+      "status": "PASS",
+      "tests": 9,
+      "test_file": "tests/net/fodt/FodtR105ExportToHtmlTests.cs",
+      "source_file": "src/net/fodt/FodtDocument.cs"
+    },
+    {
+      "id": "R105-W2-FODT-GETPARAGRAPHTEXT",
+      "wave": 2,
+      "title": "FODT GetParagraphText",
+      "status": "PASS",
+      "tests": 8,
+      "test_file": "tests/net/fodt/FodtR105GetParagraphTextTests.cs",
+      "source_file": "src/net/fodt/FodtDocument.cs"
+    },
+    {
+      "id": "R105-W2-NETPBM-MERGEVERTICAL",
+      "wave": 2,
+      "title": "Netpbm MergeVertical",
+      "status": "PASS",
+      "tests": 10,
+      "test_file": "tests/net/netpbm/NetpbmR105MergeVerticalTests.cs",
+      "source_file": "src/net/netpbm/Model/NetpbmImage.cs"
+    },
+    {
+      "id": "R105-W2-NETPBM-ADJUSTCONTRAST",
+      "wave": 2,
+      "title": "Netpbm AdjustContrast",
+      "status": "PASS",
+      "tests": 10,
+      "test_file": "tests/net/netpbm/NetpbmR105AdjustContrastTests.cs",
+      "source_file": "src/net/netpbm/Model/NetpbmImage.cs"
+    },
+    {
+      "id": "R105-W3-ZST-FILE-WORKFLOW",
+      "wave": 3,
+      "title": "ZST file workflow hardening",
+      "status": "PASS",
+      "tests": 9,
+      "test_file": "tests/python/zst/test_r105_zst_file_workflow.py"
+    },
+    {
+      "id": "R105-W3-PGM-WRITE-HARDENING",
+      "wave": 3,
+      "title": "PGM write roundtrip hardening",
+      "status": "PASS",
+      "tests": 12,
+      "test_file": "tests/python/pgm/test_r105_pgm_write_hardening.py"
+    },
+    {
+      "id": "R105-W3-SYLK-MALFORMED",
+      "wave": 3,
+      "title": "SYLK malformed input diagnostics",
+      "status": "PASS",
+      "tests": 10,
+      "test_file": "tests/python/sylk/test_r105_sylk_malformed_diagnostics.py"
+    },
+    {
+      "id": "R105-W3-PPM-COLOR-STATS",
+      "wave": 3,
+      "title": "PPM color channel stats",
+      "status": "PASS",
+      "tests": 9,
+      "test_file": "tests/python/ppm/test_r105_ppm_color_stats.py"
+    },
+    {
+      "id": "R105-W3-PBM-PARSE-EDGE",
+      "wave": 3,
+      "title": "PBM P1 parse edge cases",
+      "status": "PASS",
+      "tests": 9,
+      "test_file": "tests/python/pbm/test_r105_pbm_parse_edge_cases.py"
+    },
+    {
+      "id": "R105-W4-FODS-DOGFOOD-ROWOPS",
+      "wave": 4,
+      "title": "FODS dogfood row operations",
+      "status": "PASS",
+      "tests": 6,
+      "test_file": "tests/net/fods/FodsR105DogfoodRowOpsTests.cs"
+    },
+    {
+      "id": "R105-W4-FODT-DOGFOOD-HTML",
+      "wave": 4,
+      "title": "FODT dogfood HTML export",
+      "status": "PASS",
+      "tests": 6,
+      "test_file": "tests/net/fodt/FodtR105DogfoodHtmlExportTests.cs"
+    },
+    {
+      "id": "R105-W4-NETPBM-DOGFOOD-MERGE",
+      "wave": 4,
+      "title": "Netpbm dogfood merge pipeline",
+      "status": "PASS",
+      "tests": 6,
+      "test_file": "tests/net/netpbm/NetpbmR105DogfoodMergePipelineTests.cs"
+    },
+    {
+      "id": "R105-W5-FODS-EXAMPLE",
+      "wave": 5,
+      "title": "FODS RowManipulation example",
+      "status": "PASS",
+      "deliverable": "examples/net/fods/RowManipulationExample.cs"
+    },
+    {
+      "id": "R105-W5-FODT-EXAMPLE",
+      "wave": 5,
+      "title": "FODT HtmlExport example",
+      "status": "PASS",
+      "deliverable": "examples/net/fodt/HtmlExportExample.cs"
+    },
+    {
+      "id": "R105-W5-NETPBM-EXAMPLE",
+      "wave": 5,
+      "title": "Netpbm MergeContrast example",
+      "status": "PASS",
+      "deliverable": "examples/net/netpbm/MergeContrastExample.cs"
+    }
+  ],
+  "final_test_counts": {
+    "python": {"passed": 2840, "skipped": 13},
+    "fods_dotnet": 353,
+    "fodt_dotnet": 341,
+    "netpbm_dotnet": 267,
+    "dotnet_total": 961,
+    "grand_total": 3801
+  }
+}

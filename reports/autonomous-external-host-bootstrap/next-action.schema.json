@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExternalHostNextAction",
+  "description": "Machine-readable action contract consumed by external_host_loop.py",
+  "type": "object",
+  "required": [
+    "schema_version", "action_id", "action_type", "mode",
+    "prompt_path", "allowed_write_roots", "forbidden_actions",
+    "expected_output_files", "success_marker",
+    "max_runtime_seconds", "next_on_success", "next_on_failure"
+  ],
+  "properties": {
+    "schema_version": {"type": "integer", "enum": [1]},
+    "action_id": {"type": "string"},
+    "action_type": {"type": "string", "enum": ["CLAUDE_PRINT_PROMPT", "NOOP_ONLY", "DRY_RUN"]},
+    "mode": {"type": "string", "enum": ["LIVE_NOOP_OR_SMOKE", "DRY_RUN", "LIVE_SMOKE"]},
+    "prompt_path": {"type": "string"},
+    "allowed_write_roots": {"type": "array", "items": {"type": "string"}},
+    "forbidden_actions": {"type": "array", "items": {"type": "string"}},
+    "expected_output_files": {"type": "array", "items": {"type": "string"}},
+    "success_marker": {"type": "string"},
+    "max_runtime_seconds": {"type": "integer", "minimum": 10, "maximum": 600},
+    "next_on_success": {"type": "string"},
+    "next_on_failure": {"type": "string"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,8 @@
+{"from": "fods-csv-exporter", "to": "csv-writer-library", "edge_type": "delegates_serialization_to", "proof": "FodsCsvExporter.ExportSheetToCsv calls CsvWriter.WriteRowsToFile"}
+{"from": "fods-html-exporter", "to": "html-writer-library", "edge_type": "delegates_serialization_to", "proof": "FodsHtmlExporter.ExportToHtml calls HtmlWriter.WriteTable + HtmlWriter.EscapeHtml"}
+{"from": "fodt-txt-exporter", "to": "txt-writer-library", "edge_type": "delegates_serialization_to", "proof": "FodtTxtExporter.ExportTxt calls TxtWriter.WriteLinesToFile"}
+{"from": "fodt-markdown-exporter", "to": "markdown-writer-library", "edge_type": "delegates_serialization_to", "proof": "FodtMarkdownExporter.ExportToMarkdown calls MarkdownWriter.WriteHeading + MarkdownWriter.WriteLinesToFile"}
+{"from": "csv-writer-library", "to": "gap-fods-csv", "edge_type": "unblocks", "proof": "detect_target_writer_status: src/net/csv/CsvWriter.cs exists -> gap removed from BLOCKED_GAP_IDS"}
+{"from": "html-writer-library", "to": "gap-fods-html", "edge_type": "unblocks", "proof": "detect_target_writer_status: src/net/html/HtmlWriter.cs exists -> gap removed from BLOCKED_GAP_IDS"}
+{"from": "markdown-writer-library", "to": "gap-fodt-markdown", "edge_type": "unblocks", "proof": "detect_target_writer_status: src/net/markdown/MarkdownWriter.cs exists -> gap removed from BLOCKED_GAP_IDS"}
+{"from": "txt-writer-library", "to": "gap-fodt-txt", "edge_type": "unblocks", "proof": "detect_target_writer_status: src/net/txt/TxtWriter.cs exists -> gap removed from BLOCKED_GAP_IDS"}

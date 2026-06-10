@@ -1,0 +1,28 @@
+{
+  "classification_version": "1.0",
+  "classified_by": "skills-r103-wave0",
+  "timestamp": "2026-06-03T14:30:00Z",
+  "r102_claims": [
+    {"claim_id": "R102-RECONCILIATION", "classification": "DECLARED_NOT_PACKAGED", "reason": "3 files exist locally but 0 in review ZIP"},
+    {"claim_id": "R102-VALIDATOR-HARDENING", "classification": "VERIFIED_LOCAL_ONLY", "reason": "Tool + 17 tests pass locally, not in ZIP"},
+    {"claim_id": "R102-COMMAND-HARDENING", "classification": "VERIFIED_LOCAL_ONLY", "reason": "18/18 pass confirmed, not in ZIP"},
+    {"claim_id": "R102-TRANSCRIPTS", "classification": "DECLARED_NOT_PACKAGED", "reason": "15 files exist, 0 in ZIP"},
+    {"claim_id": "R102-HANDOFFS", "classification": "DECLARED_NOT_PACKAGED", "reason": "4 YAML files exist, 0 in ZIP"},
+    {"claim_id": "R102-ANTI-BYPASS", "classification": "DECLARED_NOT_PACKAGED", "reason": "8/8 pass locally, result not in ZIP"},
+    {"claim_id": "R102-CONTROLLED-PROOF", "classification": "DECLARED_NOT_PACKAGED", "reason": "MD exists, not in ZIP"},
+    {"claim_id": "R102-NEXT-PROMPT-FORECAST", "classification": "DECLARED_NOT_PACKAGED", "reason": "2 MD files exist, not in ZIP"},
+    {"claim_id": "R102-EVIDENCE-MANIFEST", "classification": "DECLARED_NOT_PACKAGED", "reason": "evidence-manifest.yaml exists but not in ZIP"}
+  ],
+  "summary": {
+    "VERIFIED_SELF_CONTAINED": 0,
+    "VERIFIED_LOCAL_ONLY": 2,
+    "DECLARED_NOT_PACKAGED": 7,
+    "INSUFFICIENT_EVIDENCE": 0,
+    "OVERCLAIMED": 0
+  },
+  "stream_contamination": {
+    "evidence_review": "References Supervisor R103, not Skills R102",
+    "contradictions": "References Supervisor R103, not Skills R102",
+    "next_sprint": "Stream: mainstream, not skills"
+  }
+}

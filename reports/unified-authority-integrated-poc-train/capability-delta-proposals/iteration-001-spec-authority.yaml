@@ -1,0 +1,14 @@
+target: specification-authority
+iteration: 1
+authority_status: proposed_only
+note: Supervisor-infrastructure capability, not a product format
+proposed_capabilities:
+  - capability: spec_authority_mwp
+    operation: add
+    proof_type: test_verified
+    source_files: [tools/specification-authority-layer/]
+    test_files: [tests/specification-authority-layer/test_spec_authority_mwp.py]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/spec-authority-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-spec-authority.json
+    sample_output: null
+    notes: 12-module Specification Authority MWP; anti-bypass, ZST/DIF/Netpbm pilot specs pass

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "execution-method-taxonomy.schema.json",
+  "title": "Format Factory Execution Method Taxonomy",
+  "version": "1.0",
+  "generated_by": "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001",
+  "generated_at": "2026-06-08",
+  "definitions": {
+    "execution_method": {
+      "type": "string",
+      "enum": [
+        "MANUAL_UNGOVERNED",
+        "MANUAL_GOVERNED_BY_SKILL",
+        "LOCAL_GOVERNED_DIRECT_EXECUTION",
+        "AGENT_GOVERNED_DIRECT_EXECUTION",
+        "SKILL_GUIDED_AGENT_EXECUTION",
+        "QUEUE_DECLARED_EXECUTION",
+        "QUEUE_DISPATCHED_EXECUTION",
+        "GENERATED_PATCH_EXECUTION",
+        "REPLAYED_PATCH_EXECUTION",
+        "BACKFILLED_LEGACY_EXECUTION",
+        "UNKNOWN_EXECUTION_METHOD"
+      ],
+      "description": "How the product source mutation was performed."
+    },
+    "claim_classification": {
+      "type": "string",
+      "enum": [
+        "WORKS_BUT_NOT_REPEATABLE",
+        "GOVERNED_BUT_NOT_REPLAYED",
+        "REPLAYABLE_NOT_YET_REPLAYED",
+        "REPLAYED_AND_PROVEN",
+        "LEGACY_BACKFILLED",
+        "INVALID_CLAIM"
+      ]
+    },
+    "forbidden_for_closing_taskcards": {
+      "description": "These methods may never close a product source taskcard.",
+      "const": ["MANUAL_UNGOVERNED", "UNKNOWN_EXECUTION_METHOD", "QUEUE_DECLARED_EXECUTION"]
+    }
+  }
+}

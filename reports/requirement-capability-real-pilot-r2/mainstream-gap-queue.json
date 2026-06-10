@@ -1,0 +1,164 @@
+{
+  "algorithm_steps": [
+    "Step 01: Load POC target model",
+    "Step 02: Proof graph loaded \u2014 graph_hash=adf6e1cad05c31d8...",
+    "Step 03: Compute claim coverage",
+    "Step 04: Identify blocked claims",
+    "  Found 5 blocked/partial claims",
+    "Step 05: Group blocked claims by product/family",
+    "Step 06: Rank by POC impact",
+    "Step 07: Rank by smallest missing proof",
+    "Step 08: Prefer required commercial + FOSS set",
+    "Step 09: Include DIF/Gnumeric only if they speed POC",
+    "Step 10: Generate lane-specific gaps with expected artifacts",
+    "Step 11: Emit mainstream-gap-queue.json"
+  ],
+  "entries": [
+    {
+      "claim_id": "claim:fods:export_csv",
+      "dependencies": [
+        "TestProof",
+        "DogfoodProof"
+      ],
+      "estimated_unlock": 12,
+      "expected_dogfood": [],
+      "expected_files": [
+        "src/net/fods/FormatFactory.Export/...",
+        "src/net/fods/... (source exporter must call FormatFactory.Export)"
+      ],
+      "expected_tests": [
+        "tests/net/fods/test_export_writer_*.py"
+      ],
+      "format_id": "fods",
+      "gap_id": "gap:fods:export:0001",
+      "missing_proof_type": "TargetWriterLibraryMissing",
+      "next_action": "Create missing target writer library FormatFactory.Export for fods/export \u2014 source exporter must call FormatFactory.Export writer \u2014 do NOT use /add-dogfood-export until writer library exists",
+      "priority_score": 21.0,
+      "recommended_lane": "Target-Writer-Architecture",
+      "stop_conditions": [
+        "claim_id='claim:fods:export_csv' reaches coverage_verdict=PASS",
+        "Target writer library created and claim:fods:export_csv implementation calls it",
+        "Do NOT proceed with /add-dogfood-export until writer library exists"
+      ],
+      "target_product": "fods",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:fods:export_csv"
+    },
+    {
+      "claim_id": "claim:fods:export_html",
+      "dependencies": [
+        "TestProof",
+        "DogfoodProof"
+      ],
+      "estimated_unlock": 12,
+      "expected_dogfood": [],
+      "expected_files": [
+        "src/net/fods/FormatFactory.Export/...",
+        "src/net/fods/... (source exporter must call FormatFactory.Export)"
+      ],
+      "expected_tests": [
+        "tests/net/fods/test_export_writer_*.py"
+      ],
+      "format_id": "fods",
+      "gap_id": "gap:fods:export:0002",
+      "missing_proof_type": "TargetWriterLibraryMissing",
+      "next_action": "Create missing target writer library FormatFactory.Export for fods/export \u2014 source exporter must call FormatFactory.Export writer \u2014 do NOT use /add-dogfood-export until writer library exists",
+      "priority_score": 21.0,
+      "recommended_lane": "Target-Writer-Architecture",
+      "stop_conditions": [
+        "claim_id='claim:fods:export_html' reaches coverage_verdict=PASS",
+        "Target writer library created and claim:fods:export_html implementation calls it",
+        "Do NOT proceed with /add-dogfood-export until writer library exists"
+      ],
+      "target_product": "fods",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:fods:export_html"
+    },
+    {
+      "claim_id": "claim:fodt:export_markdown",
+      "dependencies": [
+        "TestProof",
+        "DogfoodProof"
+      ],
+      "estimated_unlock": 12,
+      "expected_dogfood": [],
+      "expected_files": [
+        "src/net/fodt/FormatFactory.Export/...",
+        "src/net/fodt/... (source exporter must call FormatFactory.Export)"
+      ],
+      "expected_tests": [
+        "tests/net/fodt/test_export_writer_*.py"
+      ],
+      "format_id": "fodt",
+      "gap_id": "gap:fodt:export:0003",
+      "missing_proof_type": "TargetWriterLibraryMissing",
+      "next_action": "Create missing target writer library FormatFactory.Export for fodt/export \u2014 source exporter must call FormatFactory.Export writer \u2014 do NOT use /add-dogfood-export until writer library exists",
+      "priority_score": 21.0,
+      "recommended_lane": "Target-Writer-Architecture",
+      "stop_conditions": [
+        "claim_id='claim:fodt:export_markdown' reaches coverage_verdict=PASS",
+        "Target writer library created and claim:fodt:export_markdown implementation calls it",
+        "Do NOT proceed with /add-dogfood-export until writer library exists"
+      ],
+      "target_product": "fodt",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:fodt:export_markdown"
+    },
+    {
+      "claim_id": "claim:fodt:export_txt",
+      "dependencies": [
+        "TestProof",
+        "DogfoodProof"
+      ],
+      "estimated_unlock": 12,
+      "expected_dogfood": [],
+      "expected_files": [
+        "src/net/fodt/FormatFactory.Export/...",
+        "src/net/fodt/... (source exporter must call FormatFactory.Export)"
+      ],
+      "expected_tests": [
+        "tests/net/fodt/test_export_writer_*.py"
+      ],
+      "format_id": "fodt",
+      "gap_id": "gap:fodt:export:0004",
+      "missing_proof_type": "TargetWriterLibraryMissing",
+      "next_action": "Create missing target writer library FormatFactory.Export for fodt/export \u2014 source exporter must call FormatFactory.Export writer \u2014 do NOT use /add-dogfood-export until writer library exists",
+      "priority_score": 21.0,
+      "recommended_lane": "Target-Writer-Architecture",
+      "stop_conditions": [
+        "claim_id='claim:fodt:export_txt' reaches coverage_verdict=PASS",
+        "Target writer library created and claim:fodt:export_txt implementation calls it",
+        "Do NOT proceed with /add-dogfood-export until writer library exists"
+      ],
+      "target_product": "fodt",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:fodt:export_txt"
+    },
+    {
+      "claim_id": "claim:zst:old-compress",
+      "dependencies": [
+        "ImplementationProof",
+        "TestProof"
+      ],
+      "estimated_unlock": 11,
+      "expected_dogfood": [],
+      "expected_files": [
+        "src/net/zst/..."
+      ],
+      "expected_tests": [
+        "tests/net/zst/test_compress_*.py"
+      ],
+      "format_id": "zst",
+      "gap_id": "gap:zst:compress:0005",
+      "missing_proof_type": "RequirementProof",
+      "next_action": "Provide RequirementProof for zst/compress claim",
+      "priority_score": 15.0,
+      "recommended_lane": "Mainstream-General",
+      "stop_conditions": [
+        "claim_id='claim:zst:old-compress' reaches coverage_verdict=PASS",
+        "All missing proof types resolved: ['RequirementProof', 'ImplementationProof', 'TestProof']"
+      ],
+      "target_product": "zst",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:zst:old-compress"
+    }
+  ],
+  "generated_at": "2026-06-05T05:59:55.820996+00:00",
+  "graph_hash": "adf6e1cad05c31d833f35fcc7558d98f6232336beafce9a8662dc240277b6b7c",
+  "total_gaps": 5
+}

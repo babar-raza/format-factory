@@ -1,0 +1,29 @@
+id: ADR-ROUTE-002
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Routing Policy and Taxonomy"
+status: completed
+lane: policy_schema
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-001]
+gates:
+  - "docs contain all 5 routes + 13 categories + fail-closed rules"
+allowed_files:
+  - "docs/governance/autonomy-default-routing-policy.md"
+  - "docs/governance/spec-to-product-machinery-routing.md"
+forbidden_files:
+  - "src/"
+  - "tools/supervisor/*.py"
+acceptance_criteria:
+  - "Policy doc defines all 5 routes"
+  - "Policy doc defines all 13 task categories"
+  - "Fail-closed rules documented"
+tests: []
+evidence:
+  - "docs/governance/autonomy-default-routing-policy.md"
+  - "docs/governance/spec-to-product-machinery-routing.md"
+rollback: "rm docs/governance/autonomy-default-routing-policy.md docs/governance/spec-to-product-machinery-routing.md"
+closeout_criteria: "policy docs committed to docs/governance/"

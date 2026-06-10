@@ -1,0 +1,24 @@
+id: GRH-TC-005
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Implement 10 governance validators (Lane E)"
+status: completed
+lane: validator_implementation
+item_type: GOVERNANCE_DOC
+problem: >
+  validator-hardening-plan.md defined 10 validators but none were implemented.
+  Validators must be implemented as Python functions/modules in tools/supervisor/.
+scope:
+  - Implement all 10 validators in tools/supervisor/governance_validators.py
+  - Write unit tests in tests/supervisor/test_governance_validators.py
+  - "Validators: execution_method_required, source_diff_required, idempotency_key_required, replay_recipe_required, claim_classification, legacy_backfill, manual_ungoverned_rejection, governed_direct_execution, source_marker_or_sidecar_attribution, taskcard_state_transition"
+out_of_scope:
+  - Enforcing validators in supervisor_loop.py (integration deferred)
+files_to_create:
+  - tools/supervisor/governance_validators.py
+  - tests/supervisor/test_governance_validators.py
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-001]
+handoff_to_autonomy_sprint: false

@@ -1,0 +1,36 @@
+stream: supervisor
+adoption_version: "R108-001"
+timestamp: "2026-06-03T21:00:00Z"
+
+enforcement_gates:
+  - gate_id: ADOPT-S-01
+    name: "Inspector transcript enrichment"
+    description: "Inspector automatically validates transcript JSON found in evidence_paths"
+    enforcement: "inspect_declared_evidence.py calls check_transcript_in_evidence()"
+    status: active
+
+  - gate_id: ADOPT-S-02
+    name: "Transcript-grade pipeline boost"
+    description: "grade_item() treats transcript_validation.all_valid=True as concrete proof for ACCEPTED_VERIFIED"
+    enforcement: "grade_declared_work.py line 150+ includes has_valid_transcript in has_concrete_proof"
+    status: active
+
+  - gate_id: ADOPT-S-03
+    name: "Anti-skip raw-log detection"
+    description: "detect_missing_raw_logs() searches subdirectories and accepts both raw_log and raw-log types"
+    enforcement: "anti_skip_checker.py uses raw-logs/ subdir search and dual type match"
+    status: active
+
+  - gate_id: ADOPT-S-04
+    name: "Evidence-manifest path resolution"
+    description: "build_declaration_review_package.py resolves manifest from declaration evidence_root as fallback"
+    enforcement: "build_declaration_review_package.py checks decl_evidence_root when .local/evidences/{run_id} missing"
+    status: active
+
+integration_points:
+  - tool: "autonomous_cycle.py"
+    when: "Every sprint closeout"
+    action: "Runs full pipeline: inspect → grade → anti-skip → next-prompt"
+  - tool: "build_declaration_review_package.py"
+    when: "After autonomous-cycle"
+    action: "Builds ZIP with manifest from correct path"

@@ -1,0 +1,35 @@
+handoff_id: HO-R109-MAINSTREAM-001
+type: mainstream-product
+title: "FODS RenameSheet — Mainstream Product Handoff"
+stream_from: skills
+stream_to: mainstream
+skill_id: add-dotnet-api
+timestamp: "2026-06-03T22:00:00Z"
+
+description: |
+  Mainstream worker must implement FODS RenameSheet API in src/net/fods/FodsDocument.cs.
+  This handoff enforces adoption compliance: skill_id, transcript, ledger, source hash.
+
+required_inputs:
+  format_id: fods
+  api_name: RenameSheet
+  exact_source_paths:
+    - src/net/fods/FodsDocument.cs
+  exact_test_paths:
+    - tests/net/fods/FodsRenameSheetTests.cs
+  focused_test_command: "dotnet test --filter FodsRenameSheet"
+  ledger_entry_path: reports/r-next/product-code-change-ledger.json
+
+validation_command: |
+  python tools/supervisor/validate_skill_transcript.py reports/r-next/skill-transcripts/transcript-fods-rename.json
+
+expected_evidence:
+  - transcript_json: "reports/r-next/skill-transcripts/transcript-fods-rename.json"
+  - ledger_entry: "reports/r-next/product-code-change-ledger.json"
+  - raw_test_log: "reports/r-next/raw-logs/test-fods-rename.log"
+  - source_diff: "reports/r-next/source-diffs/fods-rename.patch"
+
+adoption_gates_enforced:
+  - ADOPT-M-01  # skill registry lookup
+  - ADOPT-M-02  # transcript generation
+  - ADOPT-M-03  # ledger entry

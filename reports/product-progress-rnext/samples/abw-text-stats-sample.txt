@@ -1,0 +1,15 @@
+ABW text_stats Sample Output
+=============================
+Source: create_abw() with 4 paragraphs
+
+Results:
+  paragraph_count         : 4
+  word_count              : 44
+  char_count              : 279
+  avg_words_per_paragraph : 11.0
+
+Usage:
+  from abw.abw_codec import load, text_stats
+  model = load('document.abw')
+  stats = text_stats(model)
+  print(stats)

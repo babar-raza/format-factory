@@ -1,0 +1,26 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 16 items
+
+tests/supervisor/test_external_tool_governance_integration.py::TestExternalToolDetection::test_detect_external_tools_returns_dict PASSED [  6%]
+tests/supervisor/test_external_tool_governance_integration.py::TestExternalToolDetection::test_detect_reads_repo_root PASSED [ 12%]
+tests/supervisor/test_external_tool_governance_integration.py::TestRufloClassification::test_ruflo_absent_mode PASSED [ 18%]
+tests/supervisor/test_external_tool_governance_integration.py::TestRufloClassification::test_ruflo_detected_not_configured PASSED [ 25%]
+tests/supervisor/test_external_tool_governance_integration.py::TestRufloClassification::test_ruflo_verdict_absent PASSED [ 31%]
+tests/supervisor/test_external_tool_governance_integration.py::TestRufloClassification::test_ruflo_verdict_detected_not_configured PASSED [ 37%]
+tests/supervisor/test_external_tool_governance_integration.py::TestExternalToolAuthority::test_output_cannot_close_taskcard PASSED [ 43%]
+tests/supervisor/test_external_tool_governance_integration.py::TestExternalToolAuthority::test_output_cannot_approve_continuation PASSED [ 50%]
+tests/supervisor/test_external_tool_governance_integration.py::TestExternalToolAuthority::test_output_without_authority_claims_is_valid PASSED [ 56%]
+tests/supervisor/test_external_tool_governance_integration.py::TestExternalToolAuthority::test_missing_closes_taskcard_field_defaults_safe PASSED [ 62%]
+tests/supervisor/test_external_tool_governance_integration.py::TestSuperpowersClassification::test_superpowers_absent PASSED [ 68%]
+tests/supervisor/test_external_tool_governance_integration.py::TestSuperpowersClassification::test_superpowers_installed_not_governed PASSED [ 75%]
+tests/supervisor/test_external_tool_governance_integration.py::TestGhidraMCPClassification::test_ghidra_absent_disabled_default PASSED [ 81%]
+tests/supervisor/test_external_tool_governance_integration.py::TestGhidraMCPClassification::test_ghidra_registered_without_authorization PASSED [ 87%]
+tests/supervisor/test_external_tool_governance_integration.py::TestGovernanceVerdictBuilder::test_build_verdict_schema PASSED [ 93%]
+tests/supervisor/test_external_tool_governance_integration.py::TestGovernanceVerdictBuilder::test_no_invocations_verdict PASSED [100%]
+
+============================= 16 passed in 0.70s ==============================

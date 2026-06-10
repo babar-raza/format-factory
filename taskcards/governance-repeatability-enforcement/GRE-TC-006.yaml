@@ -1,0 +1,24 @@
+id: GRE-TC-006
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Package consistency report — manifest count reconciliation (Lane F)"
+status: completed
+lane: package_consistency
+item_type: GOVERNANCE_DOC
+problem: >
+  Sprint 1 had a manifest count contradiction (CONTR-001): 16 vs 32 vs 33 files.
+  The discrepancy was caused by counting different file sets (new-only vs cumulative
+  vs including existing files). The package consistency report documents the
+  definitive file counts for this sprint.
+scope:
+  - Investigate and document manifest count discrepancy
+  - Document definitive counts for Sprint 2 and Sprint 3 (this sprint)
+  - Reconcile counts between evidence declaration, review package, and git status
+files_created:
+  - reports/repeatability-governance-enforcement-rnext/package-consistency-report.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+dependencies: []
+handoff_to_autonomy_sprint: false

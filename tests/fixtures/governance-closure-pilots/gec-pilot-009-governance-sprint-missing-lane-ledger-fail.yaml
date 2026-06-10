@@ -1,0 +1,12 @@
+# GEC Pilot 009: Governance sprint with missing lane ledger — anti-skip FAIL
+# This tests that a governance sprint with no ledger still gets the anti-skip violation
+id: gec-pilot-009
+description: >
+  Anti-skip lane-ledger check must still report a violation when no ledger
+  file is present, even for governance-only sprints. The violation message
+  must name the expected file: lane-execution-ledger.jsonl
+test_type: anti_skip_pilot
+evidence_root: __empty__
+expected_violation: true
+expected_check: missing_lane_ledger
+expected_severity: medium

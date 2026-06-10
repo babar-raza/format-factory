@@ -1,0 +1,20 @@
+{
+  "receiver": "acceleration",
+  "description": "Receiver-side enforcement fixture for Acceleration gap routing",
+  "compliant_item": {
+    "item_id": "W1-GAP-ROUTING",
+    "title": "FODS gap routing",
+    "skill_id": "select-poc-gap",
+    "evidence_paths": [
+      "reports/r-test/skill-transcripts/transcript-gap-select.json"
+    ],
+    "status": "completed"
+  },
+  "failing_item": {
+    "item_id": "W2-NO-SKILL",
+    "title": "Routing without skill_id",
+    "evidence_paths": ["reports/r-test/routing.md"],
+    "status": "completed"
+  },
+  "expected_compliant_result": true
+}

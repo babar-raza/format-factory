@@ -1,0 +1,39 @@
+id: GRE-TC-011
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Enforcement pilot tests — 8 pilots through real pipeline (Lane K)"
+status: completed
+lane: enforcement_pilots
+item_type: GOVERNANCE_DOC
+problem: >
+  The core question for this sprint: can the pipeline now block a false
+  product-source repeatability claim? The answer must be demonstrated with
+  concrete pilot fixtures run through run_all_governance_validators() — the
+  same function wired into autonomous_cycle.py Step 2e.
+scope:
+  - Create 8 pilot fixture YAML files in tests/fixtures/governance-enforcement-pilots/
+  - Create tests/supervisor/test_pipeline_enforcement_pilots.py (30 tests)
+  - Pilots 001-004: false/invalid claims must FAIL
+  - Pilots 005-006, 008: honest/governance claims must PASS
+  - Pilot 007: mixed sprint — one bad product item blocks overall
+  - Fix enf-pilot-008 fixture (MANUAL_GOVERNED_BY_SKILL requires skill_id + transcript)
+files_created:
+  - tests/fixtures/governance-enforcement-pilots/enf-pilot-001-false-replayable-claim.yaml
+  - tests/fixtures/governance-enforcement-pilots/enf-pilot-002-missing-execution-method.yaml
+  - tests/fixtures/governance-enforcement-pilots/enf-pilot-003-forbidden-state-jump.yaml
+  - tests/fixtures/governance-enforcement-pilots/enf-pilot-004-manual-ungoverned-product.yaml
+  - tests/fixtures/governance-enforcement-pilots/enf-pilot-005-governance-doc-passes.yaml
+  - tests/fixtures/governance-enforcement-pilots/enf-pilot-006-legacy-backfill-passes.yaml
+  - tests/fixtures/governance-enforcement-pilots/enf-pilot-007-mixed-sprint-product-blocked.yaml
+  - tests/fixtures/governance-enforcement-pilots/enf-pilot-008-governed-not-replayed-passes.yaml
+  - tests/supervisor/test_pipeline_enforcement_pilots.py
+  - reports/repeatability-governance-enforcement-rnext/raw-logs/pilot-tests.log
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+test_results:
+  passed: 30
+  failed: 0
+dependencies: [GRE-TC-002]
+handoff_to_autonomy_sprint: false

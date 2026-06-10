@@ -253,12 +253,18 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
                     "verification_command": f"dotnet test tests/net/{fmt.lower()}/ --verbosity quiet",
                 })
         elif gate_11 not in ("passed", "not_applicable"):
-            # Generic advancement train
+            # Generic advancement train — sanitize next_action: never embed external-gate wording
+            safe_next_action = (
+                "Prepare commit-ready packet only. Do not commit or push. "
+                "External gate requires explicit human authorization."
+                if _next_action_requires_external_gate(next_action)
+                else next_action
+            )
             trains.append({
                 "letter": next_letter(),
                 "group": "G3",
                 "title": f"{fmt} .NET Product Deepening",
-                "description": f"Continue {fmt} commercial .NET product advancement. {next_action}",
+                "description": f"Continue {fmt} commercial .NET product advancement. {safe_next_action}",
                 "acceptance_criteria": [
                     f"{fmt} .NET test count increased or new API proven",
                     f"dotnet_status in poc-targets.yaml updated",
@@ -591,12 +597,17 @@ def generate_prompt(review: dict, next_work: dict | None = None,
         result = result.replace("{train_details}", format_train_details(trains))
         result = result.replace("{python_venv}", venv_path)
         result = result.replace("{dotnet_test_command}", dotnet_test_cmd)
-        return result
+        deterministic_prompt = result
+    else:
+        # Fallback: build prompt without template
+        deterministic_prompt = _build_fallback_prompt(
+            review, trains, sprint_goal, test_line,
+            next_sprint, venv_path, dotnet_test_cmd, effective_stream,
+        )
 
-    # Fallback: build prompt without template
-    return _build_fallback_prompt(review, trains, sprint_goal, test_line,
-                                  next_sprint, venv_path, dotnet_test_cmd,
-                                  effective_stream)
+    # LLM-enhanced prompt rewrite (optional — preserves governance sections)
+    rewritten = rewrite_prompt_with_context(deterministic_prompt, review, effective_stream)
+    return rewritten if rewritten else deterministic_prompt
 
 
 def _build_fallback_prompt(review, trains, sprint_goal, test_line,
@@ -885,6 +896,191 @@ def generate_next_work_items(review: dict, stream: str = None) -> dict:
             "approval-blocked", "blocked", "human-required", "stop"
         ],
     }
+
+
+# ---------------------------------------------------------------------------
+# LLM-enhanced prompt rewriter — optional, with governance-section preservation
+# ---------------------------------------------------------------------------
+
+# Sections that MUST survive any rewrite unchanged (governance-critical)
+_GOVERNANCE_SECTION_HEADERS = [
+    "## Hard Prohibitions",
+    "## STOP CONDITIONS",
+    "## FORBIDDEN",
+    "## EVIDENCE REQUIREMENTS",
+    "## Evidence Declaration Requirements",
+    "## Final Validation Sequence",
+    "## ADVISORY: Stop Reason Adjudicator",
+]
+
+
+def _extract_governance_sections(prompt: str) -> list[tuple[str, str]]:
+    """Extract governance-critical sections as (header, content) pairs."""
+    sections = []
+    lines = prompt.split("\n")
+    current_header = None
+    current_lines = []
+
+    for line in lines:
+        is_header = any(line.strip().startswith(h) for h in _GOVERNANCE_SECTION_HEADERS)
+        if is_header:
+            if current_header:
+                sections.append((current_header, "\n".join(current_lines)))
+            current_header = line.strip()
+            current_lines = [line]
+        elif current_header:
+            # Stop collecting if we hit a new ## section that isn't governance
+            if line.startswith("## ") and not any(line.strip().startswith(h) for h in _GOVERNANCE_SECTION_HEADERS):
+                sections.append((current_header, "\n".join(current_lines)))
+                current_header = None
+                current_lines = []
+            else:
+                current_lines.append(line)
+
+    if current_header:
+        sections.append((current_header, "\n".join(current_lines)))
+
+    return sections
+
+
+def rewrite_prompt_with_context(
+    prompt_text: str, review: dict, stream: str
+) -> str | None:
+    """LLM-enhanced prompt rewriter. Returns rewritten prompt or None on failure.
+
+    Preserves governance-critical sections verbatim. Enriches the prompt with:
+    - Sprint review learnings (what failed, what was overclaimed)
+    - Stream-specific context and priorities
+    - Removal of stale/irrelevant sections
+
+    Returns None if:
+    - LLM gateway is unavailable
+    - Rewrite fails prompt quality validation
+    """
+    try:
+        # SCRIPT_DIR = tools/supervisor, repo_root = tools/supervisor/../.. = repo root
+        repo_root_for_import = str(SCRIPT_DIR.parent.parent)
+        if repo_root_for_import not in sys.path:
+            sys.path.insert(0, repo_root_for_import)
+        from tools.ai.control_plane.gateway import gateway_chat
+        from tools.ai.control_plane.config import load_ai_config
+        cfg = load_ai_config()
+        if not cfg.is_configured:
+            return None
+    except Exception:
+        return None
+
+    # Extract governance sections to preserve
+    gov_sections = _extract_governance_sections(prompt_text)
+    gov_headers = [h for h, _ in gov_sections]
+
+    # Build review summary for context
+    verdict = review.get("overall_verdict", "unknown")
+    rework_items = [
+        g for g in review.get("item_grades", [])
+        if g.get("supervisor_grade") in ("REWORK_REQUIRED", "OVERCLAIMED", "REJECTED")
+    ]
+    rework_summary = "; ".join(
+        f"{g.get('item_title', g['item_id'])}: {g.get('required_rework', 'unknown issue')}"
+        for g in rework_items[:5]
+    ) if rework_items else "None"
+
+    quality_score = review.get("evidence_quality_score", 0.0)
+    verified_count = review.get("verified_item_count", 0)
+    accepted_count = len(review.get("accepted_items", []))
+
+    # Semantic verification summary
+    sv_downgrades = []
+    for g in review.get("item_grades", []):
+        sv = g.get("semantic_verification", {})
+        if sv.get("llm_used") and not sv.get("adequate"):
+            sv_downgrades.append(f"{g.get('item_title', g['item_id'])}: {sv.get('deficiencies', [])}")
+
+    review_context = (
+        f"Prior sprint verdict: {verdict}\n"
+        f"Evidence quality: {quality_score:.0%} ({verified_count}/{accepted_count} verified)\n"
+        f"Rework items: {rework_summary}\n"
+        f"Semantic verification downgrades: {'; '.join(sv_downgrades) if sv_downgrades else 'None'}\n"
+        f"Stream: {stream}"
+    )
+
+    messages = [
+        {"role": "system", "content": (
+            "You are a sprint prompt editor for a software build system. "
+            "Given a generated sprint prompt and a review summary of the prior sprint, "
+            "improve the prompt by:\n"
+            "1. Adding a 'Sprint Context' section after the header that summarizes what "
+            "went wrong last sprint and what to prioritize differently\n"
+            "2. Making acceptance criteria more specific based on prior failures\n"
+            "3. Removing sections that are clearly stale or duplicated\n\n"
+            "CRITICAL RULES:\n"
+            f"- PRESERVE these sections EXACTLY as-is (do not modify, reorder, or remove): "
+            f"{gov_headers}\n"
+            "- Keep the same markdown structure (# headers, ## sections, ### trains)\n"
+            "- Do not add new trains or remove existing ones\n"
+            "- Do not change train letters or group assignments\n"
+            "- Output the complete rewritten prompt, not a diff"
+        )},
+        {"role": "user", "content": (
+            f"REVIEW CONTEXT:\n{review_context}\n\n"
+            f"PROMPT TO IMPROVE:\n{prompt_text[:8000]}"
+        )},
+    ]
+
+    try:
+        resp, _record = gateway_chat(
+            config=cfg,
+            model="recommended",
+            messages=messages,
+            role="summarization",
+            operation="rewrite_prompt_with_context",
+        )
+        rewritten = resp.get("content", "")
+        # If gateway returned empty (e.g. litellm import failure), try direct SDK
+        if not rewritten and _record and getattr(_record, "status", None) and "error" in str(_record.status).lower():
+            rewritten = _rewrite_sdk_fallback(messages, cfg) or ""
+        if not rewritten or len(rewritten) < 200:
+            return None
+
+        # Validate governance sections survived
+        for header, content in gov_sections:
+            if header not in rewritten:
+                return None  # Governance section lost — discard rewrite
+
+        # Validate with prompt quality checker
+        try:
+            from validate_prompt_quality import validate_prompt_quality
+            pq = validate_prompt_quality(rewritten, stream, has_repairs=bool(rework_items))
+            if not pq["valid"]:
+                return None  # Rewrite failed quality validation — discard
+        except Exception:
+            pass  # Quality checker unavailable, accept rewrite cautiously
+
+        return rewritten
+
+    except Exception:
+        return None
+
+
+def _rewrite_sdk_fallback(messages: list[dict], cfg) -> str | None:
+    """Fallback: call endpoint directly via SDK when litellm fails."""  # policy-allowed
+    try:
+        import os
+        _sdk = __import__("openai")  # policy-approved endpoint only
+        _Client = _sdk.OpenAI  # policy-approved
+        key = os.environ.get("GPT_OSS_API_KEY", "").strip()
+        if not key or not cfg.endpoint:
+            return None
+        client = _Client(base_url=cfg.endpoint, api_key=key)
+        resp = client.chat.completions.create(
+            model="recommended",
+            messages=messages,
+            max_tokens=4000,
+            temperature=0,
+        )
+        return resp.choices[0].message.content or None
+    except Exception:
+        return None
 
 
 def main() -> int:

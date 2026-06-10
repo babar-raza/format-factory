@@ -1,0 +1,21 @@
+id: GRH-TC-010
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Product source safety audit (Lane J)"
+status: completed
+lane: product_safety_audit
+item_type: GOVERNANCE_DOC
+problem: >
+  After multiple sprints, a safety audit ensures no governance tools inadvertently
+  touch product source files (src/python/ or src/net/) or cross stream boundaries.
+scope:
+  - Verify governance validators only read, never write, product source files
+  - Confirm no changes to src/python/ or src/net/ from this sprint
+  - Document findings in safety-audit.md
+files_to_create:
+  - reports/repeatability-governance-hardening-rnext/safety-audit.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-005]
+handoff_to_autonomy_sprint: false

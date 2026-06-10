@@ -1,0 +1,22 @@
+{
+  "transcript_id": "tr:iteration-001-netpbm",
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "iteration": 1,
+  "lane_id": "lane-006-netpbm-r114",
+  "skill_used": "add-dotnet-object-model-feature",
+  "target_format": "netpbm",
+  "target_track": "commercial_net",
+  "capabilities_added": [
+    {"name": "MedianFilter", "type": "transform", "method": "MedianFilter(int radius)", "proof_type": "test_verified"},
+    {"name": "Create", "type": "factory", "method": "NetpbmImage.Create(int, int, NetpbmFormat, byte)", "proof_type": "test_verified"}
+  ],
+  "source_files_changed": ["src/net/netpbm/Model/NetpbmImage.cs"],
+  "test_files_added": ["tests/net/netpbm/NetpbmR114MedianFilterTests.cs", "tests/net/netpbm/NetpbmR114CreateCanvasTests.cs"],
+  "tests_run": 25,
+  "tests_passed": 25,
+  "tests_failed": 0,
+  "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/netpbm-r114-tests.log",
+  "ai_draft_used": false,
+  "status": "ACCEPTED",
+  "notes": "R114 Train C: noise-reduction median filter, blank canvas factory for composition pipelines"
+}

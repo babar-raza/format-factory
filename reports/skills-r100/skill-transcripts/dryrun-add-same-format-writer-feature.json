@@ -1,0 +1,22 @@
+{
+  "invocation_id": "R100-DRYRUN-SAME-FORMAT-WRITER-001",
+  "skill_id": "add-same-format-writer-feature",
+  "mode": "dry-run",
+  "timestamp": "2026-06-03T08:12:00Z",
+  "inputs": {
+    "format_id": "FODT",
+    "writer_scope": "SaveToString method for .NET FODT",
+    "exact_source_paths": ["src/net/fodt/FodtDocument.cs"],
+    "exact_test_paths": ["tests/net/fodt/FodtR100SaveToStringTests.cs"],
+    "ledger_entry_path": "reports/r90/product-code-change-ledger.json"
+  },
+  "allowed_files": [
+    "src/net/fodt/FodtDocument.cs",
+    "tests/net/fodt/FodtR100SaveToStringTests.cs"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "notes": "Dry-run only. Verified: inputs complete, path controls correct, ledger required (cross_product track), roundtrip test pattern."
+}

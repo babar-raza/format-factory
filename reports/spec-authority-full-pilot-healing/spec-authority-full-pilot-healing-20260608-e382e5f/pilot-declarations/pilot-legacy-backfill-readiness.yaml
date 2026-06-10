@@ -1,0 +1,29 @@
+# Pilot: TCA-FULL-004 — Legacy backfill cannot claim readiness
+# Two items:
+#   Part A: PRODUCT_SOURCE + legacy_backfill → expected ACCEPTED (debt)
+#   Part B: READINESS + legacy_backfill → expected REJECTED
+pilot_id: pilot-legacy-backfill-readiness
+sprint_id: SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001
+run_id: spec-authority-full-pilot-healing-20260608-e382e5f
+expected_result: PART_A_ACCEPTED_DEBT__PART_B_REJECTED
+
+planned_work_items:
+  - item_id: WI-PILOT-LEGBF-001
+    item_type: PRODUCT_SOURCE
+    title: "Pre-existing product code documented retroactively (Part A)"
+    status: completed
+    exception_classification: legacy_backfill
+    exception_rationale: "Pre-existing code from before spec authority layer."
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    acceptance_criteria: "ACCEPTED with authority debt note"
+
+  - item_id: WI-PILOT-LEGBF-002
+    item_type: READINESS
+    title: "Claiming product readiness with legacy_backfill only (Part B)"
+    status: completed
+    exception_classification: legacy_backfill
+    exception_rationale: "Pre-existing code, claiming readiness."
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    acceptance_criteria: "MUST BE REJECTED — legacy_backfill cannot gate readiness"

@@ -1,0 +1,30 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 20 items
+
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_product_source_no_refs_no_exception_is_rejected PASSED [  5%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_product_source_empty_refs_no_exception_is_rejected PASSED [ 10%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_product_source_invalid_fact_id_format_is_rejected PASSED [ 15%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_invalid_exception_classification_is_rejected PASSED [ 20%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_test_item_no_refs_no_exception_is_rejected PASSED [ 25%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_release_gate_no_refs_no_exception_is_rejected PASSED [ 30%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_legacy_backfill_cannot_claim_readiness PASSED [ 35%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_no_public_spec_available_cannot_claim_release_gate PASSED [ 40%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_fallback_authority_without_rationale_is_rejected PASSED [ 45%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementNegative::test_declaration_with_blocking_violation_is_non_compliant PASSED [ 50%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_product_source_with_valid_refs_is_accepted PASSED [ 55%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_product_source_with_investigation_only_is_accepted PASSED [ 60%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_product_source_with_legacy_backfill_is_accepted_as_debt PASSED [ 65%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_non_blocking_type_always_passes PASSED [ 70%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_schema_authority_available_on_readiness_is_accepted PASSED [ 75%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_fallback_authority_approved_with_rationale_is_accepted PASSED [ 80%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_requirement_with_valid_refs_is_accepted PASSED [ 85%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingEnforcementPositive::test_declaration_all_compliant_passes PASSED [ 90%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingItemTypes::test_all_required_blocking_types_present PASSED [ 95%]
+tests/supervisor/test_spec_fact_refs_enforcement.py::TestBlockingItemTypes::test_valid_exception_classifications_complete PASSED [100%]
+
+============================= 20 passed in 0.97s ==============================

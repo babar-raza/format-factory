@@ -1,0 +1,46 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "validated_at": "2026-06-04T12:00:00Z",
+  "overall_result": "PASS",
+  "families": [
+    {
+      "family": "FODS",
+      "packet_type": "FULL",
+      "packet_safe": true,
+      "forbidden_files_present": true,
+      "allowed_files_narrow": true,
+      "authority_mutation_forbidden": true,
+      "result": "PASS"
+    },
+    {
+      "family": "FODT",
+      "packet_type": "SHELL",
+      "packet_safe": true,
+      "forbidden_files_present": true,
+      "allowed_files_narrow": true,
+      "authority_mutation_forbidden": true,
+      "limitations": ["NEEDS_MAINSTREAM_DISCOVERY"],
+      "result": "PASS_WITH_LIMITATIONS"
+    },
+    {
+      "family": "Netpbm",
+      "packet_type": "SHELL",
+      "packet_safe": true,
+      "forbidden_files_present": true,
+      "allowed_files_narrow": true,
+      "authority_mutation_forbidden": true,
+      "limitations": ["NEEDS_MAINSTREAM_DISCOVERY"],
+      "result": "PASS_WITH_LIMITATIONS"
+    }
+  ],
+  "breadth_requirement": {
+    "required_families": 3,
+    "actual_families": 3,
+    "met": true
+  },
+  "fods_full_packet_valid": true,
+  "fodt_netpbm_shells_safe": true,
+  "all_shells_forbid_authority_mutation": true,
+  "all_shells_forbid_unrelated_product_paths": true,
+  "verdict": "PRODUCT_BREADTH_HANDOFF_HARDENING_PASS"
+}

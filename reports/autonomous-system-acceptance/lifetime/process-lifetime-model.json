@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001",
+  "generated_at": "2026-06-06T00:00:00Z",
+  "model_file": "tools/supervisor/orchestrator_lifetime.py",
+  "stop_codes": [
+    {"code": "TRUE_EXTERNAL_GATE", "resumable": false, "requires_external_authority": true},
+    {"code": "CREDENTIAL_REQUIRED", "resumable": false, "requires_external_authority": true},
+    {"code": "UNSAFE_WORKSPACE", "resumable": false, "requires_external_authority": true},
+    {"code": "REPEATED_FAILURE", "resumable": true, "diagnosis_required": true},
+    {"code": "NO_SAFE_ACTION", "resumable": true, "diagnosis_required": true},
+    {"code": "MAX_CYCLES_REACHED_RESUMABLE", "resumable": true},
+    {"code": "WATCH_IDLE", "resumable": true},
+    {"code": "USER_STOPPED", "resumable": true},
+    {"code": "EVIDENCE_PACKAGE_FAILED", "resumable": true, "diagnosis_required": true},
+    {"code": "ORCHESTRATOR_ERROR", "resumable": true, "diagnosis_required": true},
+    {"code": "QUEUE_EMPTY_NO_PENDING", "resumable": true},
+    {"code": "DRY_RUN_COMPLETE", "resumable": true},
+    {"code": "ADVISORY_PROMPT_NOT_EXECUTABLE", "resumable": true, "diagnosis_required": true},
+    {"code": "ORCHESTRATOR_LOCK_HELD", "resumable": true}
+  ],
+  "resume_command_template": ".local/venv/Scripts/python tools/supervisor/autonomous_orchestrator.py --resume --max-cycles N --backend local",
+  "verdict": "PROCESS_LIFETIME_MODEL_COMPLETE_13_STOP_CODES_DEFINED"
+}

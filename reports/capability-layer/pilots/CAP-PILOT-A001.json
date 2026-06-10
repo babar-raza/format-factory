@@ -1,0 +1,45 @@
+{
+  "pilot_id": "CAP-PILOT-A001",
+  "format": "TOML",
+  "product_type": "foss_reduced",
+  "authority_inputs": [
+    "TOML selected as new acquisition candidate (no gates passed yet)",
+    "Python 3.11+ stdlib: tomllib (read-only)"
+  ],
+  "source_files_inspected": [],
+  "tests_inspected": 0,
+  "examples_inspected": "None",
+  "generated_capability_records": {
+    "count": 0,
+    "sample": "No records yet"
+  },
+  "generated_gap_entries": {
+    "count": 1,
+    "summary": "Format not in poc-targets.yaml, no src/ implementation"
+  },
+  "taskcards_created_or_updated": [],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "Not applicable"
+  },
+  "test_result": {
+    "pass_count": 0,
+    "fail_count": 0,
+    "log_path": ""
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [],
+    "key_checks": [
+      "TOML not in src/python/ (no acquisition started)",
+      "TOML not in acquisition-packs/",
+      "Python stdlib tomllib available (3.11+) read-only",
+      "Write requires tomli-w (PyPI)",
+      "Gates 1-7 not run"
+    ],
+    "result": "NOT_STARTED"
+  },
+  "contradictions_found": [],
+  "repairs_performed": [],
+  "final_verdict": "NOT_ENOUGH_AUTHORITY_DATA",
+  "verdict_reason": "TOML acquisition not started. Requires gates 1-7 before any source work. Good candidate for next acquisition sprint."
+}

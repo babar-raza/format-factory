@@ -1,0 +1,34 @@
+{
+  "skill_id": "fact-traceability-upgrade",
+  "sprint_id": "FORMAT-FACTORY-BROAD-AUTHORITY-PRODUCT-AUTONOMY-AND-HEALING-MEGA-TRAIN-001",
+  "invocation_timestamp": "2026-06-08T16:00:00Z",
+  "format_id": "zst",
+  "action": "add_code_and_test_citations",
+  "facts_upgraded": ["FACT-ZST-001", "FACT-ZST-002"],
+  "code_changes": [
+    {
+      "file": "src/python/zst/zst_codec.py",
+      "change": "Added FACT-ZST-001 citation comment to ZSTD_MAGIC constant",
+      "symbol": "ZSTD_MAGIC",
+      "comment_added": "# FACT-ZST-001: Zstandard frame starts with 4-byte magic number 0xFD2FB528 in little-endian format"
+    }
+  ],
+  "test_additions": [
+    {
+      "file": "tests/python/zst/test_r127_zst_fact_traceability.py",
+      "test_classes": ["TestZstFactZst001Traceability", "TestZstFactZst002Traceability"],
+      "test_count": 11,
+      "facts_covered": ["FACT-ZST-001", "FACT-ZST-002"]
+    }
+  ],
+  "validation_command": "python -m pytest tests/python/zst/test_r127_zst_fact_traceability.py -v --tb=short",
+  "validation_result": "11/11 PASS",
+  "p_level_before": "P4",
+  "p_level_after": "P5",
+  "evidence_paths": [
+    "src/python/zst/zst_codec.py",
+    "tests/python/zst/test_r127_zst_fact_traceability.py",
+    ".local/spec-cache/zst/rfc8878/workbench/verified-facts-review.yaml"
+  ],
+  "verdict": "PASS"
+}

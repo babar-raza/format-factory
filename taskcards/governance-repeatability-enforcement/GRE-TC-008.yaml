@@ -1,0 +1,26 @@
+id: GRE-TC-008
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Prompt generator repair — next-sprint.md improvements (Lane H)"
+status: completed
+lane: prompt_generator_repair
+item_type: GOVERNANCE_DOC
+problem: >
+  The Sprint 2 execution prompt had several quality gaps (graded B+ overall):
+  - No explicit pytest invocations in verification section
+  - Missing dependency DAG for lane ordering
+  - No explicit .py file path requirement for test evidence
+  - No explicit validator count contract
+  Sprint 3 prompt was constructed incorporating these lessons.
+scope:
+  - Document prompt quality assessment for Sprint 2
+  - Document improvements applied to Sprint 3 prompt
+  - No changes to generate_supervisor_packet.py this sprint (plan only)
+files_created:
+  - reports/repeatability-governance-enforcement-rnext/prompt-generator-repair-report.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+dependencies: []
+handoff_to_autonomy_sprint: false

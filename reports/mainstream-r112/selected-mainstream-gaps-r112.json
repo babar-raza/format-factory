@@ -1,0 +1,120 @@
+{
+  "sprint_id": "mainstream-r112",
+  "generated_at": "2026-06-03T21:00:00Z",
+  "source_matrix_hash": "poc-targets.yaml as of R111 close",
+  "source_skill_registry_hash": "skill-registry.yaml as of R111 close",
+  "note": "Stream-local authority — does NOT reference .local/supervisor/selected-product-gaps.json",
+
+  "commercial_gaps": [
+    {
+      "gap_id": "GAP-FODS-REMOVESHEET-001",
+      "format": "FODS",
+      "api": "RemoveSheet",
+      "depth_class": "object_model_depth",
+      "description": "Remove a named sheet from the FODS document body",
+      "skill": "add-dotnet-api",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-FODS-GETSHEETROWCOUNT-001",
+      "format": "FODS",
+      "api": "GetSheetRowCount",
+      "depth_class": "object_model_depth",
+      "description": "Return row count for a specific sheet by name",
+      "skill": "add-dotnet-api",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-FODT-INSERTHEADING-001",
+      "format": "FODT",
+      "api": "InsertHeading (already exists)",
+      "depth_class": "save_export_depth",
+      "description": "InsertHeading already implemented — add save-reload roundtrip tests proving heading persistence",
+      "skill": "add-roundtrip-test",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-FODT-REPLACETEXT-ROUNDTRIP-001",
+      "format": "FODT",
+      "api": "ReplaceText save roundtrip",
+      "depth_class": "save_export_depth",
+      "description": "Prove ReplaceText survives Save→Load roundtrip with verification",
+      "skill": "add-roundtrip-test",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-NETPBM-EQUALIZE-001",
+      "format": "Netpbm",
+      "api": "Equalize (already exists)",
+      "depth_class": "image_processing_depth",
+      "description": "Add comprehensive tests for histogram equalization including edge cases",
+      "skill": "add-dotnet-api",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-NETPBM-SEPIA-SAVE-001",
+      "format": "Netpbm",
+      "api": "Sepia + SaveToFile roundtrip",
+      "depth_class": "save_export_depth",
+      "description": "Prove Sepia→SaveToFile→Load roundtrip preserves image data",
+      "skill": "add-roundtrip-test",
+      "priority": "high"
+    }
+  ],
+
+  "foss_gaps": [
+    {
+      "gap_id": "GAP-ZST-MULTIFRAME-001",
+      "format": "ZST",
+      "description": "Multi-frame compress/decompress hardening — large payloads, streaming",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-PPM-BINARY-FORMAT-001",
+      "format": "PPM",
+      "description": "Binary P6 write/read roundtrip hardening",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-SYLK-EDGECASE-001",
+      "format": "SYLK",
+      "description": "SYLK write edge cases — special characters, large grids, empty cells",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-DIF-ROUNDTRIP-001",
+      "format": "DIF",
+      "description": "DIF parse→export→verify roundtrip with various data types",
+      "priority": "low"
+    }
+  ],
+
+  "dogfood_export_gaps": [
+    {
+      "gap_id": "GAP-FODS-CSV-DOGFOOD-001",
+      "format": "FODS",
+      "description": "FODS ExportSheetToCsv dogfood — edit→export→verify CSV output",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-FODT-MARKDOWN-DOGFOOD-001",
+      "format": "FODT",
+      "description": "FODT ExportToMarkdown dogfood — edit→export→verify Markdown",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-NETPBM-FORMAT-CONVERT-DOGFOOD-001",
+      "format": "Netpbm",
+      "description": "Netpbm ConvertFormat dogfood — PGM→PPM→save→reload",
+      "priority": "high"
+    }
+  ],
+
+  "package_usability_gaps": [
+    {
+      "gap_id": "GAP-INSTALLED-EXAMPLE-REFRESH-001",
+      "description": "Refresh installed-package examples with new R111/R112 APIs",
+      "priority": "low"
+    }
+  ]
+}

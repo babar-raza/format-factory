@@ -1,0 +1,86 @@
+{
+  "source": "superpowers-marketplace",
+  "evaluated_at": "2026-06-04T00:00:00Z",
+  "generated_by": "TC-W10-002",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "skills": [
+    {
+      "external_skill": "brainstorm",
+      "source_plugin": "superpowers",
+      "local_skill_id": "ff-brainstorm-planning",
+      "status": "proposed",
+      "reason": "Useful structured ideation pattern for sprint planning. SessionStart injection removed. Local wrapper extracts template structure only.",
+      "allowed_files": ["reports/skills-product-first/", "docs/prompt-templates/skills/"],
+      "forbidden_files": ["src/net/*", "src/python/*", ".claude-plugin/*", "AGENTS.md", "GOVERNANCE.md"],
+      "validation_command": "python tools/supervisor/validate_skill_registry.py",
+      "evidence_required": ["transcript", "adoption_compliance"],
+      "authority_state": "skill_draft",
+      "activation_gate": "validate_skill_registry.py PASS + Supervisor approval"
+    },
+    {
+      "external_skill": "write-plan",
+      "source_plugin": "superpowers",
+      "local_skill_id": "ff-write-plan",
+      "status": "proposed",
+      "reason": "Plan generation pattern with acceptance criteria structure. No SessionStart dependency in local wrapper. Useful for sprint plan generation.",
+      "allowed_files": ["reports/", "docs/prompt-templates/"],
+      "forbidden_files": ["src/*", ".claude-plugin/*", "AGENTS.md"],
+      "validation_command": "python tools/supervisor/validate_skill_registry.py",
+      "evidence_required": ["transcript", "adoption_compliance"],
+      "authority_state": "skill_draft",
+      "activation_gate": "validate_skill_registry.py PASS + Supervisor approval"
+    },
+    {
+      "external_skill": "execute-plan",
+      "source_plugin": "superpowers",
+      "local_skill_id": "ff-execute-plan",
+      "status": "proposed",
+      "reason": "Execution coordination pattern. Must be scoped to allowed paths only. Useful for structured multi-step execution coordination.",
+      "allowed_files": ["reports/", "docs/prompt-templates/"],
+      "forbidden_files": ["src/*", ".claude-plugin/*"],
+      "validation_command": "python tools/supervisor/validate_skill_registry.py",
+      "evidence_required": ["transcript", "adoption_compliance"],
+      "authority_state": "skill_draft",
+      "activation_gate": "validate_skill_registry.py PASS + Supervisor approval"
+    },
+    {
+      "external_skill": "working-with-claude-code",
+      "source_plugin": "superpowers-developing-for-claude-code",
+      "local_skill_id": "ff-claude-code-dev-reference",
+      "status": "proposed",
+      "reason": "Plugin/MCP dev patterns useful as reference. No execution needed. Read-only local copy of key patterns.",
+      "allowed_files": ["docs/prompt-templates/skills/"],
+      "forbidden_files": ["src/*", ".claude-plugin/*", "AGENTS.md"],
+      "validation_command": "python tools/supervisor/validate_skill_registry.py",
+      "evidence_required": ["transcript"],
+      "authority_state": "skill_draft",
+      "activation_gate": "validate_skill_registry.py PASS + Supervisor approval"
+    },
+    {
+      "external_skill": "writing-clearly-and-concisely",
+      "source_plugin": "elements-of-style",
+      "local_skill_id": "ff-writing-style-reference",
+      "status": "deferred",
+      "reason": "Low priority. 12k-token context cost. Defer until dedicated docs quality sprint.",
+      "allowed_files": [],
+      "forbidden_files": [],
+      "validation_command": "",
+      "evidence_required": [],
+      "authority_state": "deferred",
+      "activation_gate": "future docs quality sprint"
+    },
+    {
+      "external_skill": "private-journal-mcp (all capabilities)",
+      "source_plugin": "private-journal-mcp",
+      "local_skill_id": null,
+      "status": "rejected",
+      "reason": "MCP server requires Supervisor approval per .supervisor/policies.yaml. Memory policy absent. No POC relevance.",
+      "allowed_files": [],
+      "forbidden_files": [],
+      "validation_command": "",
+      "evidence_required": [],
+      "authority_state": "rejected",
+      "activation_gate": "N/A — rejected"
+    }
+  ]
+}

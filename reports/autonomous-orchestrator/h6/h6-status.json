@@ -1,0 +1,22 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001",
+  "generated": "2026-06-06",
+  "h6_status": "H6_EXTERNAL_HOST_READY_MANUAL_START_ONCE",
+  "in_claudecode_session": true,
+  "claudecode_env": "1",
+  "external_run_confirmed": false,
+  "false_h6_claim": false,
+  "orchestrator_available": true,
+  "orchestrator_path": "tools/supervisor/autonomous_orchestrator.py",
+  "external_command_available": true,
+  "scripts": [
+    "scripts/start_format_factory_orchestrator.ps1",
+    "scripts/start_format_factory_orchestrator.cmd",
+    "scripts/run_format_factory_orchestrator_once.ps1"
+  ],
+  "blocking_reason": "CLAUDECODE=1 in current session. H6 requires external PowerShell terminal with CLAUDECODE cleared.",
+  "human_action_required": "Open external PowerShell and run: .\\scripts\\start_format_factory_orchestrator.ps1",
+  "one_time_command": "$env:CLAUDECODE=''; cd 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'; .local\\venv\\Scripts\\python tools\\supervisor\\autonomous_orchestrator.py --max-cycles 3 --backend local",
+  "h6_classification": "H6_EXTERNAL_HOST_READY_MANUAL_START_ONCE",
+  "task_scheduler_proposal": "reports/autonomous-orchestrator/h6/task-scheduler-proposal.md"
+}

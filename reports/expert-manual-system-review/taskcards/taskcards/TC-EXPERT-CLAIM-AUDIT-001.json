@@ -1,0 +1,43 @@
+{
+  "taskcard_id": "TC-EXPERT-CLAIM-AUDIT-001",
+  "title": "Re-validate CLAIM-001 through CLAIM-004 against current worktree files",
+  "category": "CLAIM_AUDIT",
+  "owner_lane": "CLAIM_REALITY_LANE",
+  "status": "CLOSED_VERIFIED",
+  "severity": "HIGH",
+  "problem_id": null,
+  "allowed_files": [
+    "reports/expert-manual-system-review/claim-vs-source-matrix.json"
+  ],
+  "forbidden_files": [
+    "product-capability-matrix/poc-targets.yaml",
+    "src/**"
+  ],
+  "entry_gate": [
+    "TC-EXPERT-PREFLIGHT-001 CLOSED_VERIFIED"
+  ],
+  "exit_gate": [
+    "claim-vs-source-matrix.json written with 4 entries, each with SHA-256 and verdict"
+  ],
+  "validation_commands": [
+    "python -c \"import json; m=json.loads(open('reports/expert-manual-system-review/claim-vs-source-matrix.json').read()); assert len(m)==4\""
+  ],
+  "evidence_required": [
+    "claim-vs-source-matrix.json (4 claims, each VERIFIED/REFUTED/PARTIALLY_VERIFIED)"
+  ],
+  "rollback_plan": [
+    "Delete claim-vs-source-matrix.json \u2014 no source changes"
+  ],
+  "closeout_criteria": [
+    "All 4 claims have verdict",
+    "SHA-256 per file recorded"
+  ],
+  "dependencies": [
+    "TC-EXPERT-PREFLIGHT-001"
+  ],
+  "concrete_files_claimed": false,
+  "overlap_check_passed": false,
+  "before_sha256_recorded": false,
+  "created_at": "2026-06-05T00:00:00Z",
+  "updated_at": "2026-06-05T00:02:00Z"
+}

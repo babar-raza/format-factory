@@ -1,0 +1,368 @@
+REPO_ROOT=C:/Users/prora/OneDrive/Documents/GitHub/format-factory
+HEAD_SHA=e382e5fd8e65bc146c0821602cb8fb1ecfab982c
+SHORT_SHA=e382e5f
+BRANCH=main
+RUN_ID=spec-authority-full-hardening-backfill-20260608-e382e5f
+
+=== git status --short ===
+ M .claude/settings.json
+ M .supervisor/context-pack.yaml
+ M .supervisor/project-memory.md
+ M .supervisor/state/current-run.json
+ M .supervisor/state/watcher.json
+ M docs/automation/supervisor-worker-contract.md
+ M product-capability-matrix/poc-targets.yaml
+ M registry/format-completion-matrix.yaml
+ M reports/r90/product-code-change-ledger.json
+ M reports/supervisor/approval-gates.md
+ M reports/supervisor/context-pack.md
+ M reports/supervisor/contradictions.json
+ M reports/supervisor/contradictions.md
+ M reports/supervisor/discovery-summary.md
+ M reports/supervisor/evidence-review.json
+ M reports/supervisor/evidence-review.md
+ M reports/supervisor/latest-cycle-summary.md
+ M reports/supervisor/latest-next-worker-prompt.md
+ M reports/supervisor/latest-review.md
+ M reports/supervisor/materialized-evidence-review.md
+ M reports/supervisor/memory-sync-report.md
+ M reports/supervisor/next-ruflo-lanes.json
+ M reports/supervisor/next-sprint-taskmaster.json
+ M reports/supervisor/next-sprint.md
+ M reports/supervisor/session-resume.md
+ M reports/supervisor/work-item-grades.json
+ M reports/supervisor/work-item-grades.md
+ M reports/supervisor/work-item-grades.yaml
+ M src/net/fods/FodsCsvExporter.cs
+ M src/python/abw/__init__.py
+ M src/python/abw/abw_codec.py
+ M src/python/fodg/__init__.py
+ M src/python/fodg/fodg_codec.py
+ M src/python/fods/constants.py
+ M src/python/gnumeric/__init__.py
+ M src/python/gnumeric/gnumeric_codec.py
+ M src/python/tsv/__init__.py
+ M src/python/tsv/tsv_parser.py
+ M src/python/zst/zst_codec.py
+ M tests/evidence/test_format_completion_matrix.py
+ M tests/evidence/test_source_track_maturity.py
+ M tests/python/supervisor/test_r108_adoption_compliance.py
+ M tests/python/supervisor/test_r109_adoption_consumption.py
+ M tests/supervisor/acceleration/test_acceleration_hardening_iv.py
+ M tests/supervisor/test_authority_integration_fabric.py
+ M tests/supervisor/test_autonomous_host_runner.py
+ M tests/supervisor/test_cross_stream_consumption.py
+ M tests/supervisor/test_h6_external_host_activation.py
+ M tests/supervisor/test_llm_api_backend.py
+ M tests/supervisor/test_r85_product_factory_policies.py
+ M tests/supervisor/test_r90_poc_gap_selector.py
+ M tests/supervisor/test_r90_product_acceleration.py
+ M tests/supervisor/test_supervisor_product_traffic_controller_integration.py
+ M tests/supervisor/test_validate_product_code_ledger.py
+ M tools/supervisor/action_queue.py
+ M tools/supervisor/anti_skip_checker.py
+ M tools/supervisor/autonomous_host_runner.py
+ M tools/supervisor/backends/local_deterministic_backend.py
+ M tools/supervisor/evidence_continuation.py
+ M tools/supervisor/evidence_declaration.py
+ M tools/supervisor/generate_next_worker_prompt.py
+ M tools/supervisor/generate_supervisor_packet.py
+ M tools/supervisor/grade_declared_work.py
+ M tools/supervisor/inspect_declared_evidence.py
+ M tools/supervisor/product_task_selector.py
+ M tools/supervisor/validate_skill_registry.py
+?? .vscode/tasks.json
+?? docs/capability-layer-design.md
+?? docs/governance/execution-method-taxonomy.md
+?? docs/governance/idempotency-contract.md
+?? docs/governance/legacy-manual-backfill-policy.md
+?? docs/governance/product-mutation-taskcard-state-machine.md
+?? docs/governance/repeatability-contract.md
+?? evidence-stub.json
+?? plans/healing/sr-capability-layer-closeout-repair.md
+?? playbooks/
+?? product-task-candidates.json
+?? reports/acceleration-hardening/
+?? reports/acceleration-plan-healing/
+?? reports/acceleration-plan-repair/
+?? reports/acceleration-product-first/
+?? reports/acceleration-r100/
+?? reports/acceleration-r101/
+?? reports/acceleration-r102/
+?? reports/acceleration-r103/
+?? reports/acceleration-r104/
+?? reports/acceleration-r105/
+?? reports/acceleration-r106/
+?? reports/acceleration-r107/
+?? reports/acceleration-r108/
+?? reports/acceleration-r109/
+?? reports/acceleration-r110/
+?? reports/acceleration-r111/
+?? reports/acceleration-r112/
+?? reports/acceleration-r99/
+?? reports/agents/agent-a-readme-plan/
+?? reports/authority-conveyor-20260608/
+?? reports/authority-target-writer-mega-train-r119/
+?? reports/autonomous-acquisition-mega-train/
+?? reports/autonomous-control-hardening/
+?? reports/autonomous-cycle-proof/
+?? reports/autonomous-execution-chaining/
+?? reports/autonomous-execution-healing/
+?? reports/autonomous-execution-spine/
+?? reports/autonomous-external-host-bootstrap/
+?? reports/autonomous-host-loop-repair/
+?? reports/autonomous-orchestrator/
+?? reports/autonomous-system-acceptance/
+?? reports/autonomous-system-audit/
+?? reports/autonomy-stop-reason-hardening/
+?? reports/broad-mega-train/
+?? reports/broad-rnext/
+?? reports/capability-layer-full-hardening/
+?? reports/capability-layer-plan-healing/
+?? reports/capability-layer-rnext/
+?? reports/capability-layer-rnext3/
+?? reports/capability-layer/
+?? reports/cross-plan-harmonization/
+?? reports/dogfood-matrix-reconciliation-r120/
+?? reports/dotnet-dogfood-architecture-gap/
+?? reports/dotnet-target-writer-mwp-dogfood-unblocking/
+?? reports/dotnet-target-writer-readiness-hardening/
+?? reports/expanded-multilane-product-first-train/
+?? reports/expert-manual-system-review/
+?? reports/expert-review-followup-r2/
+?? reports/expert-review-followup/
+?? reports/expert-review-r3/
+?? reports/final-poc-authority-audit/
+?? reports/h6-external-host-activation/
+?? reports/h6-product-source-pilot/
+?? reports/h6-queue-product-loop/
+?? reports/host-autonomy-runner/
+?? reports/host-proofed-format-pilot/
+?? reports/local-memory-sync-package-repair/
+?? reports/local-memory-sync/
+?? reports/mainstream-plan-repair/
+?? reports/mainstream-r100/
+?? reports/mainstream-r101/
+?? reports/mainstream-r104/
+?? reports/mainstream-r105/
+?? reports/mainstream-r106/
+?? reports/mainstream-r107/
+?? reports/mainstream-r108/
+?? reports/mainstream-r109/
+?? reports/mainstream-r110/
+?? reports/mainstream-r111/
+?? reports/mainstream-r112/
+?? reports/mainstream-r113/
+?? reports/mainstream-r114/
+?? reports/mainstream-r99/
+?? reports/multilane-product-first-mega-train/
+?? reports/netpbm-zst-gap-closure-r122/
+?? reports/no-manual-chain-final-acceptance/
+?? reports/no-manual-prompt-chain-repair/
+?? reports/product-first-acquisition-train/
+?? reports/product-first-reset/
+?? reports/r123-gate11-prep/
+?? reports/r125-final-iv/
+?? reports/r94/
+?? reports/r95/
+?? reports/r96/
+?? reports/r97/
+?? reports/r98/
+?? reports/readme-refresh-plan/
+?? reports/repeatability-governance-plan-healing/
+?? reports/requirement-capability-authority-layer-mwp/
+?? reports/requirement-capability-authority-layer-production-healing/
+?? reports/requirement-capability-real-pilot-r1/
+?? reports/requirement-capability-real-pilot-r2/
+?? reports/skills-governed-execution-hardening/
+?? reports/skills-plan-repair/
+?? reports/skills-product-breadth-finalization/
+?? reports/skills-product-first/
+?? reports/skills-r100/
+?? reports/skills-r101/
+?? reports/skills-r102/
+?? reports/skills-r103/
+?? reports/skills-r104/
+?? reports/skills-r105/
+?? reports/skills-r106/
+?? reports/skills-r107/
+?? reports/skills-r108/
+?? reports/skills-r109/
+?? reports/skills-r110/
+?? reports/skills-r111/
+?? reports/skills-r112/
+?? reports/skills-r113/
+?? reports/skills-r114/
+?? reports/skills-r120/
+?? reports/skills-r99/
+?? reports/spec-authority-conveyor-acc-20260608/
+?? reports/spec-authority-full-hardening-backfill/
+?? reports/spec-authority-full-pilot-healing/
+?? reports/spec-authority-plan-repair/
+?? reports/spec-authority-r3-closure-repair/
+?? reports/spec-authority-real-pilot-r1/
+?? reports/spec-authority-real-pilot-r2/
+?? reports/spec-authority-real-pilot-r3/
+?? reports/spec-authority-stop-the-bleeding-repair/
+?? reports/spec-authority-stop-the-bleeding/
+?? reports/spec-authority/
+?? reports/specification-authority-layer-mwp/
+?? reports/specification-authority-layer-production-healing-plan-repair/
+?? reports/specification-authority-layer-production-healing/
+?? reports/superpowers-agentic-autonomy-loop-hardening/
+?? reports/superpowers-agentic-autonomy/
+?? reports/superpowers-ecosystem-plan-final-repair/
+?? reports/supervisor-plan-healing/
+?? reports/supervisor-plan-repair/
+?? reports/supervisor-product-first/
+?? reports/supervisor-product-traffic-controller-r2/
+?? reports/supervisor-product-traffic-controller/
+?? reports/supervisor-r100/
+?? reports/supervisor-r101/
+?? reports/supervisor-r102/
+?? reports/supervisor-r103/
+?? reports/supervisor-r104/
+?? reports/supervisor-r105/
+?? reports/supervisor-r106/
+?? reports/supervisor-r107/
+?? reports/supervisor-r108/
+?? reports/supervisor-r109/
+?? reports/supervisor-r110/
+?? reports/supervisor-r99/
+?? reports/supervisor-streams/
+?? reports/supervisor-traffic-controller-hardening/
+?? reports/supervisor-tri-lane-reconciliation/
+?? reports/sylk-blocker-repair-gate11-prep-r121/
+?? reports/tri-lane-integration-fabric/
+?? reports/tri-lane-integration-refresh/
+?? reports/unified-authority-integrated-poc-train/
+?? reports/unified-poc-authority-reconciliation-r118/
+?? schemas/capability/
+?? schemas/evidence/spec-fact-refs.schema.json
+?? schemas/governance/
+?? schemas/queue/
+?? scripts/
+?? selected-product-task.json
+?? src/python/ndjson/
+?? src/python/toml/
+?? taskcards/governance-repeatability/
+?? tests/capability_layer/
+?? tests/python/abw/test_r121_abw_json_export.py
+?? tests/python/abw/test_r122_abw_edit_and_json.py
+?? tests/python/abw/test_r123_abw_csv_export.py
+?? tests/python/abw/test_r126_abw_get_paragraph.py
+?? tests/python/abw/test_r130_abw_search_paragraph.py
+?? tests/python/abw/test_r135_abw_roundtrip.py
+?? tests/python/abw/test_r136_abw_merge.py
+?? tests/python/abw/test_r137_abw_word_frequency.py
+?? tests/python/abw/test_r138_abw_truncate.py
+?? tests/python/abw/test_r138_abw_unique_words.py
+?? tests/python/abw/test_r140_abw_append_paragraph.py
+?? tests/python/abw/test_r140_abw_split_paragraphs.py
+?? tests/python/abw/test_r142_abw_char_count.py
+?? tests/python/abw/test_r142_abw_join_paragraphs.py
+?? tests/python/abw/test_r142_abw_replace.py
+?? tests/python/abw/test_r144_abw_export_markdown.py
+?? tests/python/abw/test_r144_abw_paragraph_at.py
+?? tests/python/abw/test_r146_abw_paragraph_lengths.py
+?? tests/python/abw/test_r146_abw_reverse_paragraphs.py
+?? tests/python/abw/test_r148_abw_has_paragraph.py
+?? tests/python/abw/test_r148_abw_word_wrap.py
+?? tests/python/fodg/test_cap_fodg_export_csv.py
+?? tests/python/fodg/test_cap_fodg_write_export.py
+?? tests/python/fodg/test_r122_fodg_probe.py
+?? tests/python/fodg/test_r133_fodg_get_shapes.py
+?? tests/python/fodg/test_r136_fodg_get_page_by_name.py
+?? tests/python/fodg/test_r138_fodg_add_page.py
+?? tests/python/fodg/test_r138_fodg_text_shapes.py
+?? tests/python/fodg/test_r140_fodg_remove_page.py
+?? tests/python/fodg/test_r140_fodg_rename_page.py
+?? tests/python/fodg/test_r142_fodg_get_all_text.py
+?? tests/python/fodg/test_r144_fodg_count_shapes.py
+?? tests/python/fodg/test_r144_fodg_export_json.py
+?? tests/python/fodg/test_r146_fodg_duplicate_page.py
+?? tests/python/fodg/test_r146_fodg_page_index.py
+?? tests/python/fodg/test_r148_fodg_clear_page.py
+?? tests/python/fodg/test_r148_fodg_swap_pages.py
+?? tests/python/fodg/test_rnext2_fodg_roundtrip.py
+?? tests/python/fods/test_r125_fact_traceability.py
+?? tests/python/gnumeric/test_r123_gnumeric_cell_accessor.py
+?? tests/python/gnumeric/test_r125_gnumeric_sheet_names.py
+?? tests/python/gnumeric/test_r126_gnumeric_set_cell.py
+?? tests/python/gnumeric/test_r130_gnumeric_row_col_sheet_ops.py
+?? tests/python/gnumeric/test_r135_gnumeric_roundtrip.py
+?? tests/python/gnumeric/test_r136_gnumeric_add_sheet.py
+?? tests/python/gnumeric/test_r136_gnumeric_get_sheet_by_name.py
+?? tests/python/gnumeric/test_r137_gnumeric_copy_sheet.py
+?? tests/python/gnumeric/test_r138_gnumeric_clear_cell.py
+?? tests/python/gnumeric/test_r138_gnumeric_row_count.py
+?? tests/python/gnumeric/test_r140_gnumeric_column_count.py
+?? tests/python/gnumeric/test_r140_gnumeric_read_cell.py
+?? tests/python/gnumeric/test_r142_gnumeric_count_nonempty.py
+?? tests/python/gnumeric/test_r144_gnumeric_sheet_index.py
+?? tests/python/gnumeric/test_r144_gnumeric_sum_column.py
+?? tests/python/gnumeric/test_r146_gnumeric_fill_column.py
+?? tests/python/gnumeric/test_r146_gnumeric_sum_row.py
+?? tests/python/gnumeric/test_r148_gnumeric_clear_sheet.py
+?? tests/python/gnumeric/test_r148_gnumeric_get_all_values.py
+?? tests/python/ndjson/
+?? tests/python/toml/
+?? tests/python/tsv/test_broad_rnext_tsv_filter_rows.py
+?? tests/python/tsv/test_cap_tsv_append_row.py
+?? tests/python/tsv/test_r122_tsv_write.py
+?? tests/python/tsv/test_r125_tsv_load_tsv.py
+?? tests/python/tsv/test_r126_tsv_get_headers.py
+?? tests/python/tsv/test_r128_tsv_expanded_functions.py
+?? tests/python/tsv/test_r133_tsv_get_column.py
+?? tests/python/tsv/test_r136_tsv_get_row.py
+?? tests/python/tsv/test_r137_tsv_validate_headers.py
+?? tests/python/tsv/test_r138_tsv_count_rows.py
+?? tests/python/tsv/test_r138_tsv_to_csv.py
+?? tests/python/tsv/test_r140_tsv_deduplicate_rows.py
+?? tests/python/tsv/test_r140_tsv_get_row_by_key.py
+?? tests/python/tsv/test_r142_tsv_add_column.py
+?? tests/python/tsv/test_r142_tsv_rename_column.py
+?? tests/python/tsv/test_r144_tsv_drop_column.py
+?? tests/python/tsv/test_r144_tsv_sort_rows.py
+?? tests/python/tsv/test_r146_tsv_sample_rows.py
+?? tests/python/tsv/test_r146_tsv_sum_column.py
+?? tests/python/tsv/test_r148_tsv_merge.py
+?? tests/python/tsv/test_r148_tsv_min_column.py
+?? tests/python/tsv/test_rnext3_tsv_roundtrip.py
+?? tests/python/zst/test_r127_zst_fact_traceability.py
+?? tests/supervisor/test_ai_acceleration_guard.py
+?? tests/supervisor/test_authority_conveyor.py
+?? tests/supervisor/test_authority_gate_validation.py
+?? tests/supervisor/test_autonomous_task_generator.py
+?? tests/supervisor/test_bounded_repair_engine.py
+?? tests/supervisor/test_debt_repair_r125.py
+?? tests/supervisor/test_evidence_auto_packager.py
+?? tests/supervisor/test_fast_format_authority_r126.py
+?? tests/supervisor/test_full_pilot_verification.py
+?? tests/supervisor/test_product_feature_factory.py
+?? tests/supervisor/test_product_source_executor.py
+?? tests/supervisor/test_product_task_selector_authority_gate.py
+?? tests/supervisor/test_queue_schema_v2.py
+?? tests/supervisor/test_rnext_gap_selector_integration.py
+?? tests/supervisor/test_spec_fact_refs_enforcement.py
+?? tools/capability_layer/
+?? tools/supervisor/authority_conveyor.py
+?? tools/supervisor/authority_gate_validation.py
+?? tools/supervisor/autonomous_task_generator.py
+?? tools/supervisor/bounded_repair_engine.py
+?? tools/supervisor/evidence_auto_packager.py
+?? tools/supervisor/product_feature_factory.py
+?? tools/supervisor/product_source_executor.py
+?? tools/supervisor/validate_spec_fact_refs.py
+
+=== git log --oneline -10 ===
+e382e5f feat(r94-r116+): .gitignore repair, tests, supervisor tools, planning artifacts
+f76d845 chore(governance): Gate 11 approval, capability matrix, ledger, supervisor reports, schemas, docs
+9ccd17d feat(supervisor): autonomous supervisor pipeline — stop-reason adjudicator, POC gate, RCA layer, train executor, host runner
+f9468bd feat(zst): ZST Python FOSS — compression/decompression tests + installed workflow
+e4d83fc feat(python-foss): SYLK write + DIF write/probe/csv + Python FODS/FODT tests
+6c347a9 feat(netpbm): extend Netpbm .NET + Python FOSS — transforms, filters, draw, overlay
+b1fc845 feat(fodt): extend FODT .NET — TXT/Markdown export, headings, metadata, outline
+47e4054 feat(fods): extend FODS .NET — CSV/HTML export, row/sheet ops, formulas, styles, sorting
+9dc9417 feat(net-writer-libs): add FormatFactory.Csv/Html/Txt/Markdown writer libraries
+3a86a05 feat(r93): context-pack, D92 defect repair, governed acceleration — FODS/FODT/Netpbm/.NET + ZST/PPM/SYLK FOSS (FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001)

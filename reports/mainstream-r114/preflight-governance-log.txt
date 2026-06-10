@@ -1,0 +1,22 @@
+=== TC-C0-001: Ledger Validator ===
+PRODUCT_CODE_LEDGER: PASS
+  changed_src_files: 6
+
+=== TC-C0-002: Gap verification from poc-targets.yaml ===
+  ZST: installed_workflow=PASS
+  Netpbm: installed_workflow=?
+  SYLK: installed_workflow=PASS
+  FODS: fods_to_csv_dotnet=GAP_DOGFOOD_EXTERNAL
+  FODS: fods_to_html_dotnet=GAP_DOGFOOD_EXTERNAL
+  FODT: fodt_to_txt_dotnet=GAP_DOGFOOD_EXTERNAL
+  FODT: fodt_to_markdown_dotnet=GAP_DOGFOOD_EXTERNAL
+SYLK installed_workflow=PASS confirmed
+4 .NET dogfood gaps confirmed GAP_DOGFOOD_EXTERNAL
+
+=== TC-C1-001: Governance orientation ===
+AGENTS.md: read - Claude is executor not approver; read AGENTS.md+master-plan before action
+skill_invocation_transcript_required: True
+product_code_ledger_required_before_source_edit: True
+skill add-dotnet-api: status=active
+skill update-capability-matrix: status=active
+skill package-install-proof: status=active

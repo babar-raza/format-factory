@@ -1,0 +1,93 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001",
+  "generated_at": "2026-06-04T09:00:00Z",
+  "fixtures": [
+    {
+      "id": "F1",
+      "name": "Evidence quality zero but product evidence exists",
+      "kwargs": {"product_output_floor_met": true, "required_artifacts_present": true, "dirty_state_classified": true},
+      "expected_state": "YES",
+      "blocks_continuation": false,
+      "rationale": "evidence_quality_zero alone does NOT block continuation; it downgrades verdict to YES_WITH_LIMITATIONS at review level"
+    },
+    {
+      "id": "F2",
+      "name": "Prompt quality false positive but product routing valid",
+      "kwargs": {"product_output_floor_met": true, "required_artifacts_present": true, "dirty_state_classified": true},
+      "expected_state": "YES",
+      "blocks_continuation": false,
+      "rationale": "prompt quality issue at reviewer level, not continuation-state level"
+    },
+    {
+      "id": "F3",
+      "name": "Missing required artifact",
+      "kwargs": {"required_artifacts_present": false, "product_output_floor_met": true, "dirty_state_classified": true},
+      "expected_state": "NO_MISSING_REQUIRED_ARTIFACTS",
+      "blocks_continuation": true
+    },
+    {
+      "id": "F4",
+      "name": "Dirty state unclassified",
+      "kwargs": {"dirty_state_classified": false, "required_artifacts_present": true, "product_output_floor_met": true},
+      "expected_state": "NO_UNCLASSIFIED_DIRTY_STATE",
+      "blocks_continuation": true
+    },
+    {
+      "id": "F5",
+      "name": "Product output floor not met",
+      "kwargs": {"product_output_floor_met": false, "dirty_state_classified": true, "required_artifacts_present": true},
+      "expected_state": "NO_PRODUCT_OUTPUT_FLOOR",
+      "blocks_continuation": true
+    },
+    {
+      "id": "F6",
+      "name": "Overclaim detected",
+      "kwargs": {"overclaimed": ["TC-001"], "product_output_floor_met": true, "dirty_state_classified": true, "required_artifacts_present": true},
+      "expected_state": "NO_UNSAFE_SOURCE_STATE",
+      "blocks_continuation": true,
+      "priority_note": "overclaim has higher priority than product floor"
+    },
+    {
+      "id": "F7",
+      "name": "Max iterations reached but no external blocker",
+      "kwargs": {"at_max_iterations": true, "product_output_floor_met": true, "dirty_state_classified": true, "required_artifacts_present": true},
+      "expected_state": "NO_MAX_ITERATIONS",
+      "blocks_continuation": true
+    },
+    {
+      "id": "F8",
+      "name": "External tool unavailable",
+      "kwargs": {},
+      "expected_behavior": "choose local coordinator; continue with YES or YES_WITH_LIMITATIONS",
+      "blocks_continuation": false,
+      "rationale": "external tool unavailable is not a hard stop — local coordinator is fallback"
+    },
+    {
+      "id": "F9",
+      "name": "Skills packet missing but local coordinator available",
+      "kwargs": {"product_output_floor_met": true, "dirty_state_classified": true, "required_artifacts_present": true},
+      "expected_state": "YES",
+      "blocks_continuation": false,
+      "rationale": "Skills packet missing is a routing gap, not a continuation blocker"
+    },
+    {
+      "id": "F10",
+      "name": "Acceleration missing but product routing still possible",
+      "kwargs": {"product_output_floor_met": true, "dirty_state_classified": true, "required_artifacts_present": true},
+      "expected_state": "YES",
+      "blocks_continuation": false,
+      "rationale": "Acceleration missing is a cross-stream gap, not a continuation blocker"
+    }
+  ],
+  "priority_order": [
+    "hard_stops (push/gate)",
+    "overclaimed",
+    "NO_UNCLASSIFIED_DIRTY_STATE",
+    "NO_MISSING_REQUIRED_ARTIFACTS",
+    "NO_PRODUCT_OUTPUT_FLOOR",
+    "NO_MAX_ITERATIONS",
+    "autonomous_continue_false",
+    "rework_items → YES_WITH_LIMITATIONS",
+    "clean → YES"
+  ]
+}

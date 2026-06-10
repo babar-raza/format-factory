@@ -1,0 +1,31 @@
+{
+  "sprint": "mainstream-r110",
+  "classification_date": "2026-06-03",
+  "overall_classification": "PRODUCT_WORK_VERIFIED_SUPERVISOR_REGRADING_NEEDED",
+  "items": [
+    {"item_id": "R110-WAVE-0-REWORK", "classification": "VERIFIED_PROCESS_ITEM", "reason": "R109 rework reports present on disk"},
+    {"item_id": "R110-WAVE-1-PROOF-MATRIX", "classification": "VERIFIED_PROCESS_ITEM", "reason": "Proof matrix JSON present and valid"},
+    {"item_id": "R110-WAVE-2-LANE-LEDGER", "classification": "VERIFIED_PROCESS_ITEM", "reason": "Lane ledger + 3 sample outputs present"},
+    {"item_id": "R110-WAVE-3-GAPS", "classification": "VERIFIED_PROCESS_ITEM", "reason": "Gap selection JSON present, no stale R98"},
+    {"item_id": "R110-WAVE-4A-FODS-GETCELLDATATYPE", "classification": "VERIFIED_PRODUCT_WORK", "reason": "API in source, 8 tests on disk, transcript present, log shows 441 passed"},
+    {"item_id": "R110-WAVE-4B-FODS-FINDCELLSBYVALUE", "classification": "VERIFIED_PRODUCT_WORK", "reason": "API in source, 8 tests on disk, transcript present, log shows 441 passed"},
+    {"item_id": "R110-WAVE-4C-FODT-INSERTHEADING", "classification": "VERIFIED_PRODUCT_WORK", "reason": "API in source, 10 tests on disk, transcript present, log shows 431 passed"},
+    {"item_id": "R110-WAVE-4D-FODT-GETPARAGRAPHSTYLENAME", "classification": "VERIFIED_PRODUCT_WORK", "reason": "API in source, 8 tests on disk, transcript present, log shows 431 passed"},
+    {"item_id": "R110-WAVE-4E-NETPBM-SOLARIZE", "classification": "VERIFIED_PRODUCT_WORK", "reason": "API in source, 8 tests on disk, transcript present, log shows 357 passed"},
+    {"item_id": "R110-WAVE-4F-NETPBM-SEPIA", "classification": "VERIFIED_PRODUCT_WORK", "reason": "API in source, 10 tests on disk, transcript present, log shows 357 passed"},
+    {"item_id": "R110-WAVE-5A-ZST-WORKFLOW", "classification": "VERIFIED_FOSS_WORK", "reason": "8 test file on disk, Python log shows 3164 passed"},
+    {"item_id": "R110-WAVE-5B-PPM-WORKFLOW", "classification": "VERIFIED_FOSS_WORK", "reason": "8 test file on disk, Python log shows 3164 passed"},
+    {"item_id": "R110-WAVE-5C-SYLK-ROUNDTRIP", "classification": "VERIFIED_FOSS_WORK", "reason": "8 test file on disk, Python log shows 3164 passed"},
+    {"item_id": "R110-WAVE-5D-PBM-ROUNDTRIP", "classification": "VERIFIED_FOSS_WORK", "reason": "8 test file on disk, Python log shows 3164 passed"},
+    {"item_id": "R110-WAVE-6A-FODS-DOGFOOD", "classification": "VERIFIED_DOGFOOD_WORK", "reason": "4 dogfood tests on disk, FODS log shows 441 passed"},
+    {"item_id": "R110-WAVE-6B-FODT-DOGFOOD", "classification": "VERIFIED_DOGFOOD_WORK", "reason": "4 dogfood tests on disk, FODT log shows 431 passed"},
+    {"item_id": "R110-WAVE-6C-NETPBM-DOGFOOD", "classification": "VERIFIED_DOGFOOD_WORK", "reason": "4 dogfood tests on disk, Netpbm log shows 357 passed"},
+    {"item_id": "R110-WAVE-8-IV", "classification": "VERIFIED_PROCESS_ITEM", "reason": "Final IV report present on disk"}
+  ],
+  "supervisor_defect": {
+    "defect_id": "D110-SUP-01",
+    "description": "Inspector fallback for evidence_paths test-file scanning requires test_summaries to be truthy, but when tests_supporting is absent test_summaries is always empty",
+    "affected_items": "ALL 18",
+    "expected_corrected_grade": "ACCEPTED_VERIFIED for at least 9 product items"
+  }
+}

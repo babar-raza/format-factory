@@ -1,0 +1,14 @@
+target: authority-integration-fabric
+iteration: 1
+authority_status: proposed_only
+note: Supervisor-infrastructure capability, not a product format
+proposed_capabilities:
+  - capability: authority_integration_fabric
+    operation: add
+    proof_type: test_verified
+    source_files: [tools/supervisor/authority_integration_fabric.py]
+    test_files: [tests/supervisor/test_authority_integration_fabric.py]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/rca-fabric-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-integration-fabric.json
+    sample_output: null
+    notes: 7/7 invariants verified; 4 canonical JSON outputs; NETPBM_RETAINED=True; SVG rejected

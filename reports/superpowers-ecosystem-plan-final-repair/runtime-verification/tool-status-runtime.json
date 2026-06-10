@@ -1,0 +1,105 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-ECOSYSTEM-PLAN-FINAL-REPAIR-001",
+  "generated": "2026-06-06",
+  "manifest_missing_count": 0,
+  "tools": [
+    {
+      "tool": "supervisor_loop.py autonomous-cycle",
+      "status": "VERIFIED_NOW",
+      "evidence": "subcommand present in --help output",
+      "notes": "Canonical command confirmed"
+    },
+    {
+      "tool": "build_declaration_review_package.py --declaration",
+      "status": "VERIFIED_NOW",
+      "evidence": "--declaration arg present in --help output"
+    },
+    {
+      "tool": ".vscode/mcp.json task-master-ai",
+      "status": "CONFIG_PRESENT",
+      "mcp_layers": {
+        "L1_config_present": true,
+        "L2_daemon_running": "UNKNOWN",
+        "L3_tool_callable": "UNKNOWN",
+        "L4_api_key_configured": "UNKNOWN",
+        "L5_ready": false
+      },
+      "notes": "Config present; daemon running status unverifiable from session"
+    },
+    {
+      "tool": ".vscode/mcp.json claude-flow",
+      "status": "CONFIG_PRESENT",
+      "mcp_layers": {
+        "L1_config_present": true,
+        "L2_daemon_running": "UNKNOWN",
+        "L3_tool_callable": "UNKNOWN"
+      }
+    },
+    {
+      "tool": "tools/llm/endpoints.yaml",
+      "status": "CONFIG_PRESENT",
+      "endpoint_count": 6,
+      "endpoints": [
+        "claude-native",
+        "professionalize",
+        "local-ollama",
+        "local-lm-studio",
+        "local-custom",
+        "codex"
+      ],
+      "notes": "Plan said 5; actual is 6 (local-custom is additional). PROFESSIONALIZE_API_KEY: PRESENT. ANTHROPIC_API_KEY: ABSENT in this env."
+    },
+    {
+      "tool": ".claude/commands/",
+      "status": "INSTALLED_NOT_CONFIGURED",
+      "notes": "Directory EXISTS with 24 skill .md files. Prior plan assumption 'ABSENT' was INCORRECT. Skills callable via SESSION_SKILL_TOOL (Skill tool in session). NOT same as Superpowers plugin. NOT callable from external host.",
+      "callable_from_session": true,
+      "callable_from_external_host": false,
+      "file_count": 24
+    },
+    {
+      "tool": "cognee",
+      "status": "NOT_FOUND",
+      "evidence": "ModuleNotFoundError: No module named 'cognee'",
+      "install_command": "pip install cognee"
+    },
+    {
+      "tool": "openspec CLI",
+      "status": "NOT_FOUND",
+      "evidence": "npm error could not determine executable to run (npx --no-install openspec --version)",
+      "install_command": "npm install -g openspec"
+    },
+    {
+      "tool": "skill_seekers",
+      "status": "NOT_FOUND",
+      "evidence": "ModuleNotFoundError: No module named 'skill_seekers'"
+    },
+    {
+      "tool": "ANTHROPIC_API_KEY",
+      "status": "ABSENT",
+      "notes": "Not in current shell environment"
+    },
+    {
+      "tool": "PROFESSIONALIZE_API_KEY",
+      "status": "PRESENT",
+      "notes": "Available in environment; value not logged"
+    },
+    {
+      "tool": "TASK_MASTER_API_KEY",
+      "status": "ABSENT",
+      "notes": "Not in current shell environment"
+    },
+    {
+      "tool": "docs/governance/superpowers-skill-intake.md",
+      "status": "VERIFIED_NOW",
+      "evidence": "File exists at declared path"
+    },
+    {
+      "tool": ".claude/plugins/",
+      "status": "ABSENT",
+      "notes": "Directory does not exist"
+    }
+  ],
+  "build_result": "SUCCESS",
+  "zip_sha256": "b3fe39f81174376cb2dfbf177cff319f76439dd19918ca29cce9de512fc41ff2"
+}

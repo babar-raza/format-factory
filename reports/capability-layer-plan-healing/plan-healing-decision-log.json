@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-CAPABILITY-FEATURE-UNDERSTANDING-LAYER-INVESTIGATIVE-HEALING-001",
+  "run_id": "capability-feature-understanding-layer-healing-20260608-e382e5f",
+  "generated_at": "2026-06-08",
+  "decisions": [
+    {
+      "id": "DEC-001",
+      "category": "stale_assumption_correction",
+      "finding": "Plan assumed Gnumeric set_cell_value was missing",
+      "evidence": "gnumeric_codec.py lines 223-257 contain complete set_cell_value implementation; gnumeric/__init__.py exports it; test_r126_gnumeric_set_cell.py exists",
+      "correction": "Remove set_cell_value implementation work from Phase E. Keep only: run tests to verify, update poc-targets.yaml, add ledger entry.",
+      "risk": "low",
+      "impact": "Phase E scope reduced — FODG remains the main product work"
+    },
+    {
+      "id": "DEC-002",
+      "category": "stale_assumption_correction",
+      "finding": "Plan assumed no FUL (Format Understanding Layer) existed",
+      "evidence": "schemas/format-understanding/ has 6 schemas; acquisition-packs/ has 22 format dirs; FUL-001 and FUL-002 taskcards are COMPLETED",
+      "correction": "New capability layer must EXTEND the existing FUL, not create a competing system. Schemas go to schemas/capability/ (different namespace from schemas/format-understanding/). capability_map_generator.py should consume acquisition-packs/ data as one input.",
+      "risk": "medium",
+      "impact": "Generator design must account for FUL pack structure"
+    },
+    {
+      "id": "DEC-003",
+      "category": "stale_assumption_correction",
+      "finding": "Plan used hardcoded run number R126",
+      "evidence": "Auto-detect from repo state: HEAD=e382e5f, last sprint=SPEC-AUTHORITY-LAYER-PILOT-CLOSURE-DEBT-REPAIR-001",
+      "correction": "Run ID = capability-feature-understanding-layer-healing-20260608-e382e5f",
+      "risk": "low",
+      "impact": "All file paths updated to use correct run ID"
+    },
+    {
+      "id": "DEC-004",
+      "category": "stale_assumption_correction",
+      "finding": "Plan assumed 21 pre-existing supervisor test failures",
+      "evidence": "Must re-detect. Session-resume shows last sprint had 71 tests pass / 0 fail — this is for supervisor tests. Earlier note about 21 failures may be from older sprints.",
+      "correction": "Run supervisor tests fresh and re-detect. Do not assume count.",
+      "risk": "medium",
+      "impact": "Phase G must re-detect known failures"
+    },
+    {
+      "id": "DEC-005",
+      "category": "stale_assumption_correction",
+      "finding": "poc-targets.yaml missing 3 FOSS formats and several capabilities",
+      "evidence": "Last updated R114/2026-06-04. Missing: FODG, TSV, NDJSON in foss_reduced. ABW missing export_to_csv. Gnumeric missing get_cell_value, get_sheet_names, set_cell_value.",
+      "correction": "Phase A4/Reconciliation: update poc-targets.yaml to R126 state as a healing step",
+      "risk": "low",
+      "impact": "poc-targets.yaml will be updated — capability generator will produce more accurate maps"
+    },
+    {
+      "id": "DEC-006",
+      "category": "scope_clarification",
+      "finding": "FUL-003 and FUL-004 taskcard status unknown",
+      "evidence": "FUL-003 covers FODT; FUL-004 covers product source consuming FUL — status not yet checked",
+      "correction": "Investigation task CAP-DISC-001 will check FUL-003/004 status",
+      "risk": "low",
+      "impact": "May affect pilot authority chain understanding"
+    },
+    {
+      "id": "DEC-007",
+      "category": "architecture_decision",
+      "finding": "capability_map_generator.py should be a repo tool, not a one-off report generator",
+      "evidence": "Sprint prompt requires deterministic reruns, reusable capability extraction, machine-readable output",
+      "correction": "Generator: stdlib-only Python, reads poc-targets.yaml + acquisition-packs + source introspection, outputs JSON. Exit 0 on success.",
+      "risk": "low",
+      "impact": "Generator design stays pragmatic and rerunnable"
+    },
+    {
+      "id": "DEC-008",
+      "category": "safety_check",
+      "finding": "FODG write requires adding XML serialization — same ODF structure as Gnumeric/ABW",
+      "evidence": "fodg_codec.py has load/probe but no write. write_gnumeric pattern is safe to follow.",
+      "correction": "FODG write: add write_fodg + export_to_txt. Defer export_to_svg (not meaningfully testable without SVG viewer tooling).",
+      "risk": "medium",
+      "impact": "write_fodg adds new FODG product capability with roundtrip tests"
+    }
+  ]
+}

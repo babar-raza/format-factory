@@ -1,0 +1,263 @@
+{
+  "generated_at": "2026-06-03T08:39:54.059398+00:00",
+  "sprint_id": "R103",
+  "is_stale": false,
+  "total_gaps": 31,
+  "streams": {
+    "mainstream": 4,
+    "acceleration": 8,
+    "skills": 12,
+    "supervisor": 7
+  },
+  "gaps": [
+    {
+      "stream": "mainstream",
+      "gap_id": "mainstream-fods-dogfood-status-fods-to-csv-dotnet",
+      "format": "FODS",
+      "product_track": "commercial_net",
+      "capability": "dogfood_status.fods_to_csv_dotnet",
+      "current_status": "GAP_DOGFOOD_EXTERNAL",
+      "description": "FODS dogfood_status.fods_to_csv_dotnet is GAP_DOGFOOD_EXTERNAL",
+      "priority": 80
+    },
+    {
+      "stream": "mainstream",
+      "gap_id": "mainstream-fods-dogfood-status-fods-to-html-dotnet",
+      "format": "FODS",
+      "product_track": "commercial_net",
+      "capability": "dogfood_status.fods_to_html_dotnet",
+      "current_status": "GAP_DOGFOOD_EXTERNAL",
+      "description": "FODS dogfood_status.fods_to_html_dotnet is GAP_DOGFOOD_EXTERNAL",
+      "priority": 80
+    },
+    {
+      "stream": "mainstream",
+      "gap_id": "mainstream-fodt-dogfood-status-fodt-to-txt-dotnet",
+      "format": "FODT",
+      "product_track": "commercial_net",
+      "capability": "dogfood_status.fodt_to_txt_dotnet",
+      "current_status": "GAP_DOGFOOD_EXTERNAL",
+      "description": "FODT dogfood_status.fodt_to_txt_dotnet is GAP_DOGFOOD_EXTERNAL",
+      "priority": 80
+    },
+    {
+      "stream": "mainstream",
+      "gap_id": "mainstream-fodt-dogfood-status-fodt-to-markdown-dotnet",
+      "format": "FODT",
+      "product_track": "commercial_net",
+      "capability": "dogfood_status.fodt_to_markdown_dotnet",
+      "current_status": "GAP_DOGFOOD_EXTERNAL",
+      "description": "FODT dogfood_status.fodt_to_markdown_dotnet is GAP_DOGFOOD_EXTERNAL",
+      "priority": 80
+    },
+    {
+      "stream": "acceleration",
+      "gap_id": "acceleration-tool-untested-select-poc-gaps-py",
+      "tool": "select_poc_gaps.py",
+      "current_status": "PARTIAL",
+      "description": "Tool select_poc_gaps.py exists but has no dedicated test file",
+      "priority": 70
+    },
+    {
+      "stream": "acceleration",
+      "gap_id": "acceleration-tool-untested-choose-skill-or-handoff-py",
+      "tool": "choose_skill_or_handoff.py",
+      "current_status": "PARTIAL",
+      "description": "Tool choose_skill_or_handoff.py exists but has no dedicated test file",
+      "priority": 70
+    },
+    {
+      "stream": "acceleration",
+      "gap_id": "acceleration-tool-untested-detect-product-progress-py",
+      "tool": "detect_product_progress.py",
+      "current_status": "PARTIAL",
+      "description": "Tool detect_product_progress.py exists but has no dedicated test file",
+      "priority": 70
+    },
+    {
+      "stream": "acceleration",
+      "gap_id": "acceleration-tool-untested-materialize-and-review-py",
+      "tool": "materialize_and_review.py",
+      "current_status": "PARTIAL",
+      "description": "Tool materialize_and_review.py exists but has no dedicated test file",
+      "priority": 70
+    },
+    {
+      "stream": "acceleration",
+      "gap_id": "acceleration-tool-untested-build-declaration-review-package-py",
+      "tool": "build_declaration_review_package.py",
+      "current_status": "PARTIAL",
+      "description": "Tool build_declaration_review_package.py exists but has no dedicated test file",
+      "priority": 70
+    },
+    {
+      "stream": "acceleration",
+      "gap_id": "acceleration-tool-untested-build-context-pack-py",
+      "tool": "build_context_pack.py",
+      "current_status": "PARTIAL",
+      "description": "Tool build_context_pack.py exists but has no dedicated test file",
+      "priority": 70
+    },
+    {
+      "stream": "acceleration",
+      "gap_id": "acceleration-integration-review-package-evidence-inclusion",
+      "tool": "build_declaration_review_package.py",
+      "current_status": "GAP",
+      "description": "Review package does not include acceleration evidence artifacts (reports, sample outputs, raw logs)",
+      "priority": 90
+    },
+    {
+      "stream": "acceleration",
+      "gap_id": "acceleration-integration-evidence-manifest-colocation",
+      "tool": "evidence-manifest.yaml",
+      "current_status": "GAP",
+      "description": "Evidence manifest not co-located with declaration for review package builder",
+      "priority": 85
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-unregistered-next-best-action",
+      "tool": "next_best_action.py",
+      "current_status": "NOT_REGISTERED",
+      "description": "Tool next_best_action.py is not registered as a governed skill",
+      "priority": 60
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-unregistered-stream-forecaster",
+      "tool": "stream_forecaster.py",
+      "current_status": "NOT_REGISTERED",
+      "description": "Tool stream_forecaster.py is not registered as a governed skill",
+      "priority": 60
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-unregistered-anti-skip-checker",
+      "tool": "anti_skip_checker.py",
+      "current_status": "NOT_REGISTERED",
+      "description": "Tool anti_skip_checker.py is not registered as a governed skill",
+      "priority": 60
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-unregistered-stream-prompt-generator",
+      "tool": "stream_prompt_generator.py",
+      "current_status": "NOT_REGISTERED",
+      "description": "Tool stream_prompt_generator.py is not registered as a governed skill",
+      "priority": 60
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-unregistered-generate-stream-gaps",
+      "tool": "generate_stream_gaps.py",
+      "current_status": "NOT_REGISTERED",
+      "description": "Tool generate_stream_gaps.py is not registered as a governed skill",
+      "priority": 60
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-draft-materialize-declaration-review",
+      "skill_id": "materialize-declaration-review",
+      "current_status": "DRAFT",
+      "description": "Skill materialize-declaration-review is in draft status",
+      "priority": 50
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-draft-record-lane-execution",
+      "skill_id": "record-lane-execution",
+      "current_status": "DRAFT",
+      "description": "Skill record-lane-execution is in draft status",
+      "priority": 50
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-draft-build-context-pack",
+      "skill_id": "build-context-pack",
+      "current_status": "DRAFT",
+      "description": "Skill build-context-pack is in draft status",
+      "priority": 50
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-draft-check-mcp-status",
+      "skill_id": "check-mcp-status",
+      "current_status": "DRAFT",
+      "description": "Skill check-mcp-status is in draft status",
+      "priority": 50
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-draft-select-poc-gap",
+      "skill_id": "select-poc-gap",
+      "current_status": "DRAFT",
+      "description": "Skill select-poc-gap is in draft status",
+      "priority": 50
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-draft-validate-product-code-ledger",
+      "skill_id": "validate-product-code-ledger",
+      "current_status": "DRAFT",
+      "description": "Skill validate-product-code-ledger is in draft status",
+      "priority": 50
+    },
+    {
+      "stream": "skills",
+      "gap_id": "skills-registry-draft-validate-skill-transcript",
+      "skill_id": "validate-skill-transcript",
+      "current_status": "DRAFT",
+      "description": "Skill validate-skill-transcript is in draft status",
+      "priority": 50
+    },
+    {
+      "stream": "supervisor",
+      "gap_id": "supervisor-pipeline-evidence-manifest-in-review-package",
+      "current_status": "GAP",
+      "description": "Supervisor pipeline missing: evidence-manifest in review package",
+      "priority": 70
+    },
+    {
+      "stream": "supervisor",
+      "gap_id": "supervisor-pipeline-acceleration-report-packaging",
+      "current_status": "GAP",
+      "description": "Supervisor pipeline missing: acceleration report packaging",
+      "priority": 70
+    },
+    {
+      "stream": "supervisor",
+      "gap_id": "supervisor-pipeline-raw-log-packaging",
+      "current_status": "GAP",
+      "description": "Supervisor pipeline missing: raw log packaging",
+      "priority": 70
+    },
+    {
+      "stream": "supervisor",
+      "gap_id": "supervisor-pipeline-sample-output-packaging",
+      "current_status": "GAP",
+      "description": "Supervisor pipeline missing: sample output packaging",
+      "priority": 70
+    },
+    {
+      "stream": "supervisor",
+      "gap_id": "supervisor-pipeline-lane-ledger-packaging",
+      "current_status": "GAP",
+      "description": "Supervisor pipeline missing: lane ledger packaging",
+      "priority": 70
+    },
+    {
+      "stream": "supervisor",
+      "gap_id": "supervisor-pipeline-cross-stream-prompt-contamination-detection",
+      "current_status": "GAP",
+      "description": "Supervisor pipeline missing: cross-stream prompt contamination detection",
+      "priority": 70
+    },
+    {
+      "stream": "supervisor",
+      "gap_id": "supervisor-pipeline-evidence-self-containment-validation",
+      "current_status": "GAP",
+      "description": "Supervisor pipeline missing: evidence self-containment validation",
+      "priority": 70
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "ods",
+  "api_name": "parse_ods,parse_ods_strict,probe_ods,get_capabilities,spreadsheet_stats,ods_sheet_name_list",
+  "sprint_run_id": "mainstream-product-deepening-rnext10",
+  "changed_files": [
+    "src/python/ods/__init__.py",
+    "tests/python/ods/test_mdr10_ods_exports.py"
+  ],
+  "test_results": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "ledger_entry_id": "MDR10-ODS-EXPORTS-001",
+  "ledger_validator": "PASS",
+  "verdict": "PASS",
+  "notes": "Exported parse_ods, parse_ods_strict, probe_ods, get_capabilities from ods_parser.py + spreadsheet_stats, ods_sheet_name_list from ods_stats.py via ods/__init__.py. 12/12 tests pass."
+}

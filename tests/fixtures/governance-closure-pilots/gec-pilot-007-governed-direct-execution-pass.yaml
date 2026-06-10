@@ -1,0 +1,28 @@
+# GEC Pilot 007: Governed direct execution with required evidence — expected PASS
+id: gec-pilot-007
+description: >
+  PRODUCT_SOURCE with MANUAL_GOVERNED_BY_SKILL, all required evidence fields
+  present: skill_id, skill_transcript_path, source_diff_paths, idempotency_key.
+  Should PASS all validators.
+planned_work_items:
+  - item_id: GEC-P007-PS-001
+    item_type: PRODUCT_SOURCE
+    format_id: abw
+    capability_id: export_to_csv
+    status: completed
+    grade: PASS
+    execution_method: MANUAL_GOVERNED_BY_SKILL
+    claim_classification: GOVERNED_BUT_NOT_REPLAYED
+    exception_classification: legacy_backfill
+    skill_id: add-python-api
+    skill_version: "1.0"
+    skill_transcript_path: reports/repeatability-governance-closure-rnext/raw-logs/pilot-tests.log
+    source_diff_paths:
+      - .local/diffs/gec-pilot-007/abw_codec.py.diff
+    idempotency_key: 7feeaa430000000000000000000000000000000000000000000000000000def1
+    evidence_paths:
+      - src/python/abw/abw_codec.py
+    tests_supporting:
+      - tests/python/abw/test_r123_abw_csv_export.py
+expected_result: PASS
+expected_blocks_sprint: false

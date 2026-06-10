@@ -1,0 +1,15 @@
+{
+  "fixture_id": "mainstream-product-compliant",
+  "description": "Compliant fixture: all 9 minimum viable packet fields present. Expected: PASS.",
+  "skill_id": "add-dotnet-api",
+  "format_id": "fods",
+  "transcript_path": "reports/skills-product-first/skill-transcripts/transcript-spf-001-add-dotnet-api-near-live.json",
+  "focused_test_raw_log_path": "reports/skills-product-first/raw-logs/test-spf-run.log",
+  "source_diff_path": "reports/skills-product-first/raw-logs/source-diff-placeholder.txt",
+  "allowed_files": ["src/net/fods/FodsDocument.cs", "tests/net/fods/FodsTests.cs"],
+  "forbidden_files": ["src/python/*", "registry/*"],
+  "rollback_note": "git checkout src/net/fods/FodsDocument.cs tests/net/fods/FodsTests.cs",
+  "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+  "capability_matrix_update": "product-capability-matrix/poc-targets.yaml",
+  "expected_result": "PASS"
+}

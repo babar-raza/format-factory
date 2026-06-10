@@ -1,0 +1,28 @@
+id: ADR-ROUTE-017
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Documentation and Operating Model"
+status: completed
+lane: policy_schema
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-002, ADR-ROUTE-005]
+gates:
+  - "doc states: product defaults to autonomy only when qualified"
+  - "machinery defaults to governed"
+  - "unknown fails closed"
+  - "autonomy is acceleration not authority"
+allowed_files:
+  - "docs/governance/autonomy-default-routing-policy.md"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "Operating model complete"
+  - "No stale commit/push instructions"
+tests: []
+evidence:
+  - "docs/governance/autonomy-default-routing-policy.md"
+rollback: "Covered by ADR-ROUTE-002 rollback"
+closeout_criteria: "operating model doc complete"

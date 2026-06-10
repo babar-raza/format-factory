@@ -1,0 +1,48 @@
+{
+  "transcript_version": "1.0",
+  "skill_id": "add-python-api",
+  "invocation_id": "SKILLS-R99-DRYRUN-PYTHON-API-001",
+  "run_id": "FORMAT-FACTORY-SKILLS-R99-SKILL-REGISTRY-GOVERNED-EXECUTION-PARALLEL-MEGA-TRAIN-001",
+  "timestamp": "2026-06-03T03:10:00Z",
+  "mode": "DRY_RUN",
+  "inputs": {
+    "format_id": "fods",
+    "api_name": "workbook_get_sheet_names",
+    "exact_source_paths": ["src/python/fods/parser.py"],
+    "exact_test_paths": ["tests/python/fods/test_r99_fods_get_sheet_names.py"],
+    "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+    "focused_test_command": ".local/venv/Scripts/python -m pytest tests/python/fods/test_r99_fods_get_sheet_names.py -q --tb=short"
+  },
+  "allowed_files": [
+    "src/python/fods/parser.py",
+    "tests/python/fods/test_r99_fods_get_sheet_names.py",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "forbidden_files": [
+    "src/net/**",
+    "registry/format-registry.yaml",
+    "plans/master-plan.md",
+    "product-capability-matrix/poc-targets.yaml"
+  ],
+  "actual_changed_files": [],
+  "tests_generated": [],
+  "tests_run": {
+    "command": "N/A (dry-run)",
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ledger_entry": {
+    "entry_id": "R99-GOVERNED-PYTHON-FODS-GETSHEETNAMES-001",
+    "classification": "GOVERNED_PRODUCT_CHANGE",
+    "skill": "add-python-api",
+    "status": "DRY_RUN_NOT_CREATED"
+  },
+  "matrix_update": null,
+  "evidence_outputs": [
+    "reports/skills-r99/skill-transcripts/SKILLS-R99-DRYRUN-PYTHON-API-001.json",
+    "reports/skills-r99/skill-transcripts/SKILLS-R99-DRYRUN-PYTHON-API-001.md"
+  ],
+  "result": "PASS",
+  "notes": "Dry-run: validated skill inputs, path controls, ledger entry format, test command. No src edit made."
+}

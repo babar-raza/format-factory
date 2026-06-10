@@ -265,7 +265,26 @@ def build_package(declaration_path: Path, repo_root: Path, out_dir: Path) -> dic
         except Exception:
             pass
 
-        # --- Package manifest ---
+        # --- Package manifest (GEC-TC-006: richer fields) ---
+        declared_evidence_artifacts = [
+            a for a in decl.get("evidence_artifacts", []) if isinstance(a, dict)
+        ]
+        declared_changed_files = decl.get("changed_files", [])
+        packaged_changed_files = [
+            cf for cf in declared_changed_files
+            if (repo_root / cf).exists() and (repo_root / cf).is_file()
+        ]
+        raw_log_artifacts = [
+            a for a in declared_evidence_artifacts
+            if a.get("type") == "test_log" or "log" in a.get("path", "").lower()
+        ]
+        # Detect ledger files in evidence root
+        ledger_files = []
+        if evidence_root and evidence_root.is_dir():
+            ledger_files = list(evidence_root.glob("*ledger*"))
+        reports_run_dir = repo_root / "reports" / run_id
+        if reports_run_dir.is_dir():
+            ledger_files += list(reports_run_dir.glob("*ledger*"))
         pkg_manifest = {
             "run_id": run_id,
             "sprint_id": sprint_id,
@@ -274,7 +293,23 @@ def build_package(declaration_path: Path, repo_root: Path, out_dir: Path) -> dic
             "artifacts_missing": missing,
             "artifacts_missing_count": len(missing),
             "stream_identity_warnings": stream_warnings,
-            "declared_changed_files_count": len(decl.get("changed_files", [])),
+            "declared_evidence_artifacts_count": len(declared_evidence_artifacts),
+            "declared_changed_files_count": len(declared_changed_files),
+            "unique_changed_files_count": len(set(declared_changed_files)),
+            "package_changed_files_count": len(packaged_changed_files),
+            "materialized_verified_count": sum(
+                1 for item in decl.get("planned_work_items", [])
+                if item.get("status") == "completed"
+            ),
+            "raw_logs_declared_count": len(raw_log_artifacts),
+            "raw_logs_packaged_count": sum(
+                1 for a in raw_log_artifacts
+                if (repo_root / a.get("path", "")).exists()
+            ),
+            "lane_ledger_present": len(ledger_files) > 0,
+            "state_ledger_present": any(
+                "state" in f.name.lower() for f in ledger_files
+            ),
         }
         zf.writestr(
             "package-manifest.json",

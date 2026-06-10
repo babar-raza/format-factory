@@ -1,0 +1,156 @@
+{
+  "verification_sprint_id": "FORMAT-FACTORY-CAPABILITY-LAYER-CLOSEOUT-RNEXT-001",
+  "run_id": "capability-layer-closeout-rnext-e382e5f",
+  "verified_at": "2026-06-09T19:45:00Z",
+  "artifacts": [
+    {
+      "artifact_path": "schemas/capability/capability_record.schema.json",
+      "artifact_type": "schema",
+      "opened_by_agent": true,
+      "key_contents_checked": "35+ fields, required fields list, pattern for capability_id",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "schemas/capability/capability_map.schema.json",
+      "artifact_type": "schema",
+      "opened_by_agent": true,
+      "key_contents_checked": "schema_version, product_type enum, capabilities array, summary object",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "schemas/capability/capability_gap.schema.json",
+      "artifact_type": "schema",
+      "opened_by_agent": true,
+      "key_contents_checked": "gap_id, gap_type enum, priority, blocks_poc/readiness fields",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "schemas/capability/capability_status_taxonomy.schema.json",
+      "artifact_type": "schema",
+      "opened_by_agent": true,
+      "key_contents_checked": "18-state taxonomy, verification rules for ai_draft",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "schemas/capability/pilot_report.schema.json",
+      "artifact_type": "schema",
+      "opened_by_agent": true,
+      "key_contents_checked": "pilot_id, format, verdict enum with 5 states",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "tools/capability_layer/capability_map_generator.py",
+      "artifact_type": "generator_source",
+      "opened_by_agent": true,
+      "key_contents_checked": "952 lines, generate(), _build_foss_records(), _build_commercial_records(), source introspection, gap ledger",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "tools/capability_layer/validate_capability_map.py",
+      "artifact_type": "validator_source",
+      "opened_by_agent": true,
+      "key_contents_checked": "465 lines, VAL-001..010, exit codes 0/1/2",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer/foss-reduced-capability-map.json",
+      "artifact_type": "generated_map",
+      "opened_by_agent": true,
+      "key_contents_checked": "442 records, product_type=foss_reduced, ZST/ABW/FODG/TSV/NDJSON records present",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer/commercial-capability-map.json",
+      "artifact_type": "generated_map",
+      "opened_by_agent": true,
+      "key_contents_checked": "125 records, product_type=commercial, FODS/FODT/Netpbm",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer/unified-capability-map.json",
+      "artifact_type": "generated_map",
+      "opened_by_agent": true,
+      "key_contents_checked": "567 total records, unified type",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer/gap-ledger.json",
+      "artifact_type": "gap_ledger",
+      "opened_by_agent": true,
+      "key_contents_checked": "0 gaps, schema_version 1.0",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer/action-queue.json",
+      "artifact_type": "action_queue",
+      "opened_by_agent": true,
+      "key_contents_checked": "1 advisory action ACT-UPDATE-POC-TARGETS, advisory_only=true",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer/pilots/CAP-PILOT-C001.json",
+      "artifact_type": "pilot_report",
+      "opened_by_agent": true,
+      "key_contents_checked": "FODS commercial, PASS_VERIFIED",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer/pilots/CAP-PILOT-F001.json",
+      "artifact_type": "pilot_report",
+      "opened_by_agent": true,
+      "key_contents_checked": "ABW FOSS, PASS_VERIFIED, 189 tests",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer/pilots/CAP-PILOT-E001.json",
+      "artifact_type": "pilot_report",
+      "opened_by_agent": true,
+      "key_contents_checked": "FODG expansion, PASS_VERIFIED, write_fodg/export_to_txt added",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "product-capability-matrix/poc-targets.yaml",
+      "artifact_type": "capability_matrix",
+      "opened_by_agent": true,
+      "key_contents_checked": "11 targets, FODG/TSV/ABW added, summary updated, YAML parses correctly",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer-plan-healing/execution-state.json",
+      "artifact_type": "execution_state",
+      "opened_by_agent": true,
+      "key_contents_checked": "Phases A-F complete, G-H in_progress, I pending",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer-plan-healing/taskcard-registry.json",
+      "artifact_type": "taskcard_registry",
+      "opened_by_agent": true,
+      "key_contents_checked": "52 cards, statuses updated to reflect actual completions",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "docs/capability-layer-design.md",
+      "artifact_type": "design_doc",
+      "opened_by_agent": true,
+      "key_contents_checked": "201 lines, purpose, 18-state taxonomy, generator inputs, limitations",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer-closeout/test-logs/focused-tests.log",
+      "artifact_type": "test_log",
+      "opened_by_agent": true,
+      "key_contents_checked": "1592 passed, 4 pre-existing failed, 2 skipped",
+      "result": "PASS"
+    },
+    {
+      "artifact_path": "reports/capability-layer-closeout/test-logs/broader-regression.log",
+      "artifact_type": "test_log",
+      "opened_by_agent": true,
+      "key_contents_checked": "5246 passed, 9 pre-existing failed, 39 skipped",
+      "result": "PASS"
+    }
+  ],
+  "overall_result": "PASS",
+  "notes": "All capability layer artifacts verified. 9 pre-existing test failures (DIF stats, FODG find_text, TSV stats) unrelated to capability layer work."
+}

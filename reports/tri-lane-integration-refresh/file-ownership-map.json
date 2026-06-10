@@ -1,0 +1,33 @@
+{
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "owned_by_this_sprint": [
+    "tools/supervisor/tri_lane_integration.py",
+    "tools/supervisor/validate_tri_lane_contract.py",
+    "tools/supervisor/generate_mainstream_execution_packet.py",
+    "tests/supervisor/test_tri_lane_integration_refresh_readiness.py",
+    "reports/tri-lane-integration-refresh/**",
+    ".local/evidences/tri-lane-integration-refresh/**",
+    ".local/supervisor/reviews/tri-lane-integration-refresh/**"
+  ],
+  "read_only_inputs": [
+    "reports/acceleration-hardening/**",
+    "reports/acceleration-product-first/**",
+    "reports/skills-product-breadth-finalization/**",
+    "reports/skills-product-first/**",
+    "reports/supervisor-tri-lane-reconciliation/**",
+    "reports/supervisor-traffic-controller-hardening/**",
+    "reports/tri-lane-integration-fabric/**",
+    "product-capability-matrix/poc-targets.yaml",
+    "registry/format-registry.yaml",
+    "state/current-state.md"
+  ],
+  "hard_prohibited": [
+    "src/net/**",
+    "src/python/**",
+    "tests/net/**",
+    "tests/python/**",
+    "product-capability-matrix/poc-targets.yaml (mutation)",
+    "registry/format-registry.yaml (mutation)"
+  ]
+}

@@ -1,0 +1,33 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 23 items
+
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestScoreStreamVelocity::test_score_supervisor_removes_blocker PASSED [  4%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestScoreStreamVelocity::test_score_mainstream_direct_product PASSED [  8%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestClassifyMainstreamPackage::test_classify_mainstream_clean_pass PASSED [ 13%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestClassifyMainstreamPackage::test_classify_mainstream_partial_evidence_repair PASSED [ 17%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestClassifyMainstreamPackage::test_classify_mainstream_partial_one_source PASSED [ 21%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestClassifyMainstreamPackage::test_classify_mainstream_partial_few_families PASSED [ 26%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestContinuationStates::test_continuation_no_product_output_floor PASSED [ 30%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestContinuationStates::test_continuation_no_missing_required_artifacts PASSED [ 34%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestContinuationStates::test_continuation_no_unclassified_dirty_state PASSED [ 39%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestContinuationStates::test_continuation_yes_with_defaults PASSED [ 43%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestContinuationStates::test_continuation_overclaim_still_priority PASSED [ 47%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestAIAdvisory::test_ai_advisory_is_non_authoritative PASSED [ 52%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestAIAdvisory::test_deterministic_failure_overrides_ai_pass PASSED [ 56%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestAIAdvisory::test_deterministic_pass_plus_ai_drift_yields_limitations PASSED [ 60%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestRufloGovernance::test_ruflo_absent_allows_local_coordinator PASSED [ 65%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestRufloGovernance::test_ruflo_full_loop_requires_approval PASSED [ 69%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestRufloGovernance::test_ruflo_output_cannot_close_taskcard PASSED [ 73%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestRufloGovernance::test_ruflo_detected_not_configured PASSED [ 78%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestSuperpowersGovernance::test_superpowers_install_requires_governance PASSED [ 82%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestSuperpowersGovernance::test_superpowers_sessionstart_injection_detected PASSED [ 86%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestGhidraMCPGovernance::test_ghidra_mcp_disabled_by_default PASSED [ 91%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestGhidraMCPGovernance::test_ghidra_mcp_requires_authorized_input PASSED [ 95%]
+tests/supervisor/test_supervisor_product_first_traffic_controller.py::TestExternalToolDetectionSchema::test_external_tool_mode_detection_json_schema PASSED [100%]
+
+============================= 23 passed in 0.81s ==============================

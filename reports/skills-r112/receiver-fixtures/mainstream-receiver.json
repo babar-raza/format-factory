@@ -1,0 +1,21 @@
+{
+  "receiver": "mainstream",
+  "version": "r112",
+  "description": "Receiver-side enforcement fixture for Mainstream product source work (R112 rerun)",
+  "compliant_item": {
+    "item_id": "W1-FODS-GETROWCOUNT",
+    "title": "FODS GetRowCount",
+    "skill_id": "add-dotnet-api",
+    "product_track": "commercial_dotnet",
+    "ledger_entry_id": "LED-R112-FODS-GETROW-001",
+    "evidence_paths": ["reports/r-test/skill-transcripts/transcript-fods-getrow.json"],
+    "status": "completed"
+  },
+  "failing_item": {
+    "item_id": "W2-FODS-NO-LEDGER",
+    "title": "FODS without ledger entry",
+    "product_track": "commercial_dotnet",
+    "evidence_paths": ["reports/r-test/evidence.md"],
+    "status": "completed"
+  }
+}

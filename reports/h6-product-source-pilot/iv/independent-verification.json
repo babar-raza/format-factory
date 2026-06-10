@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001",
+  "generated": "2026-06-06",
+  "checks": [
+    {
+      "id": "IV-01",
+      "check": "Package 114 baseline captured and prior sprint SHA verified",
+      "pass": true,
+      "evidence": "package-114-baseline.json: prior SHA=c8823920925e6d6f4022cddef4c04e6d821f41effd34d0b5f50ae424988229ee; prior verdict=COMPLETE_QUEUE_DRIVEN_H6_MULTI_ACTION_PROVEN"
+    },
+    {
+      "id": "IV-02",
+      "check": "Queue accounting inconsistency documented and resolved",
+      "pass": true,
+      "evidence": "queue-accounting-fix.json: correct_consumed_count=4; h6-q-002 confirmed done in authoritative queue; iv_verdict_stands=true"
+    },
+    {
+      "id": "IV-03",
+      "check": "Null action_type item (c31d2171) quarantined from queue",
+      "pass": true,
+      "evidence": "quarantine-report.json: c31d2171 removed; queue-after-quarantine.jsonl has 0 null-action_type items"
+    },
+    {
+      "id": "IV-04",
+      "check": "product_task_selector.py created and selects actionable task",
+      "pass": true,
+      "evidence": "tools/supervisor/product_task_selector.py exists; selected-product-task.json: task_id=h8-probe-abw-001; no_safe_task_found=false; classification=AGENT_OWNED_SAFE"
+    },
+    {
+      "id": "IV-05",
+      "check": "product_action_guard.py extended with PRODUCT_SOURCE_PATCH_BOUNDED",
+      "pass": true,
+      "evidence": "BOUNDED_PRODUCT_SOURCE_ACTIONS contains PRODUCT_SOURCE_PATCH_BOUNDED; ALLOWED_PRODUCT_SOURCE_PATCH_PATHS has 8 FOSS Python paths; src/net/ blocked by guard; guard test passes"
+    },
+    {
+      "id": "IV-06",
+      "check": "Queue item h8-probe-abw-001 seeded at priority=0",
+      "pass": true,
+      "evidence": "queue-after-seed.jsonl: h8-probe-abw-001 at priority=0, action_type=PRODUCT_SOURCE_PATCH_BOUNDED, status was pending; dequeue_next() correctly selects it first"
+    },
+    {
+      "id": "IV-07",
+      "check": "PRODUCT_SOURCE_PATCH_BOUNDED executed via backend — probe_abw() added to ABW codec",
+      "pass": true,
+      "evidence": "execution-result.json: status=SUCCESS; product_source_mutated=true; target=src/python/abw/abw_codec.py; poc_targets_mutated=false; probe_abw() at line 136 of abw_codec.py"
+    },
+    {
+      "id": "IV-08",
+      "check": "probe_abw() function is correct — True for ABW, False for non-ABW",
+      "pass": true,
+      "evidence": "test_r118_probe_abw.py: 13/13 PASS; probe_abw(valid_file)=True; probe_abw(html)=False; probe_abw(empty)=False; does_not_mutate_file=True"
+    },
+    {
+      "id": "IV-09",
+      "check": "probe_abw exported in __init__.py and __all__",
+      "pass": true,
+      "evidence": "src/python/abw/__init__.py: probe_abw in imports and __all__; test_probe_abw_in_init PASS; test_probe_abw_in_all PASS"
+    },
+    {
+      "id": "IV-10",
+      "check": "No src/net/, registry/, poc-targets.yaml mutated",
+      "pass": true,
+      "evidence": "post-closeout-state.json: poc_targets_mutated=false; registry_mutated=false; execution-result.json: poc_targets_mutated=false; git diff shows only src/python/abw/ changes"
+    },
+    {
+      "id": "IV-11",
+      "check": "Rollback instructions documented",
+      "pass": true,
+      "evidence": "rollback-instructions.md: git checkout HEAD -- src/python/abw/abw_codec.py src/python/abw/__init__.py; reversible=true"
+    },
+    {
+      "id": "IV-12",
+      "check": "44 new tests pass; all new tests cover new functionality",
+      "pass": true,
+      "evidence": "test_r118_probe_abw.py: 13 PASS; test_queue_consumption_accounting.py: 8 PASS; test_unsafe_next_work_items_quarantine.py: 7 PASS; test_product_source_action_guard.py: 16 PASS; total new=44; 0 new failures"
+    },
+    {
+      "id": "IV-13",
+      "check": "Pre-existing failures unchanged (21 failures are all from prior sprints)",
+      "pass": true,
+      "evidence": "All 21 failures are in files not created/modified by Sprint 8; test_poc_targets_checksum_unchanged is pre-existing from R121 poc-targets mutation; test_autonomous_host_runner failures are pre-existing"
+    },
+    {
+      "id": "IV-14",
+      "check": "No git commit, no git push, no Gate approval, no MCP activation",
+      "pass": true,
+      "evidence": "post-closeout-state.json: no_git_commit=true; no_git_push=true; no_gate_approval=true; git log unchanged from f76d845"
+    }
+  ],
+  "verdict": "COMPLETE_QUEUE_DRIVEN_PRODUCT_SOURCE_PILOT_PROVEN",
+  "verdict_reasoning": "Sprint 8 executed one bounded real product-source change (probe_abw() added to src/python/abw/abw_codec.py) through the PRODUCT_SOURCE_PATCH_BOUNDED queue item h8-probe-abw-001. Guard extension enforces FOSS Python only, blocks src/net/. 44 new tests pass. Queue accounting fixed (h6-q-002 documented). Null item quarantined. No git commit, push, or gate approval. 21 pre-existing failures unchanged.",
+  "product_source_pilot_proven": true,
+  "queue_driven_execution_proven": true,
+  "guard_enforced_foss_only": true,
+  "no_git_commit": true,
+  "no_gate_approval": true
+}

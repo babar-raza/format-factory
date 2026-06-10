@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/capability/capability_record.schema.json",
+  "title": "CapabilityRecord",
+  "description": "A single capability entry in a Format Factory capability map. Represents one named operation for one format in one product profile.",
+  "type": "object",
+  "required": [
+    "capability_id",
+    "format",
+    "product_type",
+    "capability_name",
+    "capability_category",
+    "operation_kind",
+    "current_state",
+    "authority_state",
+    "required_for_poc",
+    "blocks_readiness",
+    "ai_involvement_flag",
+    "manual_agent_verified",
+    "last_verified"
+  ],
+  "properties": {
+    "capability_id": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_-]+$",
+      "description": "Unique ID, e.g. FODS-COMMERCIAL-LOAD-001"
+    },
+    "format": {
+      "type": "string",
+      "description": "Format identifier, e.g. FODS, FODG, ABW"
+    },
+    "format_family": {
+      "type": "string",
+      "description": "Format family, e.g. odf_flat, netpbm, spreadsheet_text"
+    },
+    "product_type": {
+      "type": "string",
+      "enum": ["commercial", "foss_reduced", "internal"],
+      "description": "Product track. commercial = .NET commercial; foss_reduced = Python FOSS"
+    },
+    "product_profile": {
+      "type": "string",
+      "description": "Specific product profile name, e.g. fods-dotnet-v1, abw-python-foss"
+    },
+    "capability_name": {
+      "type": "string",
+      "description": "Human-readable capability name, e.g. Load FODS file"
+    },
+    "capability_category": {
+      "type": "string",
+      "enum": ["probe", "load", "inspect", "edit", "save", "export", "import", "validate", "dogfood", "package", "utility"],
+      "description": "Operation category"
+    },
+    "operation_kind": {
+      "type": "string",
+      "description": "Specific operation kind, e.g. load_file, export_csv, probe_format"
+    },
+    "input_cardinality": {
+      "type": "string",
+      "enum": ["single", "multiple", "none"],
+      "description": "Number of inputs the operation accepts"
+    },
+    "output_cardinality": {
+      "type": "string",
+      "enum": ["single", "multiple", "none", "in_place"],
+      "description": "Number of outputs the operation produces"
+    },
+    "expected_for_commercial": {
+      "type": "boolean",
+      "description": "Whether this capability is expected for the commercial product track"
+    },
+    "expected_for_foss": {
+      "type": "boolean",
+      "description": "Whether this capability is expected for the FOSS/reduced product track"
+    },
+    "required_for_poc": {
+      "type": "boolean",
+      "description": "Whether this capability is required for POC readiness"
+    },
+    "blocks_readiness": {
+      "type": "boolean",
+      "description": "Whether absence of this capability blocks product readiness"
+    },
+    "current_state": {
+      "type": "string",
+      "enum": [
+        "missing",
+        "planned",
+        "ai_draft",
+        "human_goal",
+        "inferred_unverified",
+        "spec_verified",
+        "requirement_verified",
+        "capability_verified",
+        "implementation_partial",
+        "implementation_verified",
+        "test_verified",
+        "example_verified",
+        "package_verified",
+        "dogfood_verified",
+        "blocked",
+        "unsupported",
+        "out_of_scope",
+        "future"
+      ],
+      "description": "Current evidence state (see capability_status_taxonomy.schema.json)"
+    },
+    "authority_state": {
+      "type": "string",
+      "enum": [
+        "spec_fact",
+        "schema_authority",
+        "gate_evidence",
+        "product_goal",
+        "human_approval",
+        "ai_draft",
+        "no_authority"
+      ],
+      "description": "Source of authority for this capability"
+    },
+    "spec_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Spec fact IDs or fact file paths"
+    },
+    "requirement_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Requirement IDs or requirement file paths"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Source file paths (src/python/ or src/net/)"
+    },
+    "implementation_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Implementation function/method references, e.g. src/python/fodg/fodg_codec.py::load"
+    },
+    "test_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Test file paths"
+    },
+    "example_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Example file paths (examples/)"
+    },
+    "package_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Package artifact paths (.nupkg, .whl, pyproject.toml)"
+    },
+    "dogfood_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Dogfood output file paths or library references"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Evidence artifact paths (test logs, sample outputs, gate reports)"
+    },
+    "gaps": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Known gaps in this capability"
+    },
+    "blockers": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Blocking constraints"
+    },
+    "next_task_candidate": {
+      "type": "string",
+      "description": "Suggested next taskcard or work item to advance this capability"
+    },
+    "confidence_level": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "none"],
+      "description": "Confidence in the current_state assessment"
+    },
+    "confidence_reason": {
+      "type": "string",
+      "description": "Reason for the confidence level"
+    },
+    "ai_involvement_flag": {
+      "type": "boolean",
+      "description": "Whether AI was involved in generating this record. If true, record needs independent verification."
+    },
+    "manual_agent_verified": {
+      "type": "boolean",
+      "description": "Whether the agent manually opened and inspected source artifacts for this record"
+    },
+    "last_verified": {
+      "type": "string",
+      "description": "ISO 8601 timestamp of last verification"
+    },
+    "verifier": {
+      "type": "string",
+      "description": "Verifier identity (agent ID, sprint ID, or human)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-text notes"
+    }
+  },
+  "additionalProperties": false,
+  "$comment": "RULE: ai_involvement_flag=true AND current_state in verified states = VIOLATION. Must use validate_capability_map.py to enforce."
+}

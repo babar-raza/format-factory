@@ -1,0 +1,37 @@
+{
+  "hardening_sprint": "FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001",
+  "generated_at": "2026-06-04T09:00:00Z",
+  "defect_fixed": "check_cross_stream_consumption.py now probes filesystem for Skills and Acceleration packets",
+  "skills": {
+    "verdict": "SKILLS_CONSUMABLE_NOT_YET_CONSUMED",
+    "packet_on_disk": true,
+    "packet_paths": [
+      "reports/skills-product-first/mainstream-consumption-packet.json",
+      "reports/skills-product-first/handoff-to-mainstream.json"
+    ],
+    "coverage_scope": "dogfood_status.fods_to_csv_dotnet",
+    "flags": ["MAINSTREAM_NOT_CONSUMING_SKILLS"],
+    "prior_verdict": "SKILLS_MISSING_PACKET",
+    "change": "SKILLS_MISSING_PACKET suppressed because packet is present on disk"
+  },
+  "acceleration": {
+    "verdict": "ACCELERATION_CONSUMABLE_PARTIAL",
+    "packets_on_disk": true,
+    "valid_packet_count": 5,
+    "packet_paths": [
+      "reports/acceleration-product-first/mainstream-consumption-packets/fods-dogfood_status-fods_to_csv_dotnet.json",
+      "reports/acceleration-product-first/mainstream-consumption-packets/fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+      "reports/acceleration-product-first/mainstream-consumption-packets/netpbm-dotnet_status-netpbm_flip_diagonal.json",
+      "reports/acceleration-product-first/mainstream-consumption-packets/packet-selection-rationale.json",
+      "reports/acceleration-product-first/mainstream-consumption-packets/sylk-python_status-write_sylk.json"
+    ],
+    "flags": ["MAINSTREAM_NOT_CONSUMING_ACCELERATION"],
+    "prior_verdict": "ACCELERATION_CONSUMPTION_GAP",
+    "change": "ACCELERATION_CONSUMPTION_GAP upgraded to ACCELERATION_CONSUMABLE_PARTIAL because packets found on disk",
+    "ai_authority_note": "All Acceleration outputs are ai_draft — non-authoritative. Requires deterministic validation."
+  },
+  "overall_verdict": "CROSS_STREAM_CONSUMPTION_GAPS_DETECTED",
+  "remaining_flags": ["MAINSTREAM_NOT_CONSUMING_SKILLS", "MAINSTREAM_NOT_CONSUMING_ACCELERATION"],
+  "resolved_flags": ["SKILLS_MISSING_PACKET", "ACCELERATION_NO_AI_OUTPUT"],
+  "mainstream_action_required": "Mainstream must declare governed_execution_consumed=true and reusable_accelerator_consumed=true to resolve remaining flags"
+}

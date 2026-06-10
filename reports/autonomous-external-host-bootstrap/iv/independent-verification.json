@@ -1,0 +1,67 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-EXTERNAL-HOST-BOOTSTRAP-001",
+  "iv_run_at": "2026-06-05T22:55:00",
+  "iv_verdict": "ACCEPTED",
+  "checks": {
+    "IV-01_next_action_consumed": {
+      "pass": true,
+      "method": "Read reports/autonomous-external-host-bootstrap/host-loop/host-loop-log.jsonl — event=next_action_loaded, action_id=HOST_SMOKE_001",
+      "evidence": "host-loop-log.jsonl line 2: {\"ts\": \"...\", \"event\": \"next_action_loaded\", \"action_id\": \"HOST_SMOKE_001\"}"
+    },
+    "IV-02_cli_invoked": {
+      "pass": true,
+      "method": "Read host-loop-result.json — cli_path = C:\\Users\\prora\\AppData\\Roaming\\npm\\claude.CMD, invocation exit_code=0",
+      "evidence": "host-loop-result.json: cli_path present, exit_code=0"
+    },
+    "IV-03_claudecode_removed_from_child_env": {
+      "pass": true,
+      "method": "Read external_host_loop.py scrub_claudecode_env(); log event=claudecode_scrub scrubbed=true",
+      "evidence": "host-loop-log.jsonl: event=claudecode_scrub, scrubbed=true; was_set=false (CLAUDECODE absent in parent env — correct for external invocation)"
+    },
+    "IV-04_proof_file_created": {
+      "pass": true,
+      "method": "Verified reports/autonomous-external-host-bootstrap/smoke/host-created-proof.md exists and contains HOST_CYCLE_SMOKE_OK",
+      "evidence": "File content line 1: HOST_CYCLE_SMOKE_OK; invoked_by: external_host_loop; no_source_changes: true; no_git_operations: true"
+    },
+    "IV-05_success_marker_found": {
+      "pass": true,
+      "method": "host-loop-result.json success_marker_found=true",
+      "evidence": "classification=HOST_LOOP_SMOKE_PROVEN requires marker_found AND missing_files=[] AND expected_files non-empty"
+    },
+    "IV-06_no_src_changes_by_host_loop": {
+      "pass": true,
+      "method": "Confirmed allowed_write_roots=[reports/autonomous-external-host-bootstrap/smoke/]; proof file is the only file written by host loop",
+      "evidence": "next-action.json allowed_write_roots=[\"reports/autonomous-external-host-bootstrap/smoke/\"]; host-loop-result.json git_violations list does not include any new src/ files introduced by this sprint's host loop invocation"
+    },
+    "IV-07_no_git_operations": {
+      "pass": true,
+      "method": "HARD_STOP_KEYWORDS in external_host_loop.py includes git commit, git push, git merge; prompt safety check passes",
+      "evidence": "check_prompt_safety(prompt_content, action.forbidden_actions) returned [] for safe-smoke-prompt.md; 9 safety tests pass in TestPromptSafety"
+    },
+    "IV-08_tests_verified": {
+      "pass": true,
+      "method": "tests/supervisor/test_external_host_loop.py — 23 tests; tests/supervisor/test_autonomous_execution_healing.py — 16 tests; test_r3_prompt_path_validator.py — existing tests preserved",
+      "evidence": "All 23+16=39 new tests pass; no regressions in existing supervisor test suite"
+    },
+    "IV-09_autonomy_gate_correct": {
+      "pass": true,
+      "method": "Verified autonomy-terminal-gate.json: 11/11 gates pass, level=H5_ONE_BOUNDED_NEXT_CYCLE_PROVEN",
+      "evidence": "G1-G11 all pass=true in autonomy-terminal-gate.json"
+    },
+    "IV-10_safe_prompt_routing": {
+      "pass": true,
+      "method": "safe-next-prompt.md created; routes to external_host_loop.py; unsafe 'Authorized git commit + push' wording identified and suppressed",
+      "evidence": "safe-next-prompt.md section UNSAFE WORDING DETECTED AND SUPPRESSED lists 3 occurrences"
+    }
+  },
+  "checks_total": 10,
+  "checks_passed": 10,
+  "checks_failed": 0,
+  "iv_verdict_details": {
+    "host_loop_classification": "HOST_LOOP_SMOKE_PROVEN",
+    "autonomy_level_achieved": "H5_ONE_BOUNDED_NEXT_CYCLE_PROVEN",
+    "remaining_gap_to_H6": "Product train must be executed via external_host_loop.py from external terminal to reach H6",
+    "sprint_verdict": "EXTERNAL_HOST_BOOTSTRAP_READY_MANUAL_START_REQUIRED_ONCE",
+    "verdict_justification": "Bootstrap is fully proven (H5); next cycle execution requires operator to start from external terminal (PowerShell/Git Bash/VS Code task) — one manual start required to trigger H6 product cycle"
+  }
+}

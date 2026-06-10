@@ -1,0 +1,50 @@
+handoff_id: HO-R110-ACCELERATION-001
+type: acceleration-tooling
+title: "POC Gap Routing — Acceleration Handoff (Hardened)"
+stream_from: skills
+stream_to: acceleration
+skill_id: select-poc-gap
+version: "2.0"
+timestamp: "2026-06-03T23:05:00Z"
+
+description: |
+  Acceleration worker must route POC gaps through skill registry.
+  Each selected gap references the governing skill_id.
+
+required_inputs:
+  gap_source: "product-capability-matrix/poc-targets.yaml"
+  skill_registry: ".supervisor/skill-registry.yaml"
+  adoption_package: "reports/skills-r108/adoption-packages/acceleration-adoption.yaml"
+
+validation_command: |
+  python -c "from tools.supervisor.validate_adoption_compliance import validate_adoption; import yaml; d=yaml.safe_load(open('declaration.yaml')); print(validate_adoption(d))"
+
+expected_evidence:
+  gap_routing_map: "reports/r-next/gap-skill-routing.yaml"
+  poc_transcript: "reports/r-next/skill-transcripts/transcript-poc-gap.json"
+  adoption_check: "reports/r-next/validator-results/adoption-compliance.json"
+  raw_log: "reports/r-next/raw-logs/test-poc.log"
+
+transcript_requirement:
+  mode: "dry-run"
+  required_fields: ["invocation_id", "skill_id", "mode", "inputs", "allowed_files", "actual_files_changed", "tests_run", "result"]
+  skill_id_must_match: "select-poc-gap"
+
+raw_log_requirement:
+  format: "pytest output"
+  minimum_lines: 5
+  must_contain: ["passed"]
+
+pass_criteria:
+  - "Each POC gap has skill_id reference"
+  - "Transcript validates"
+  - "Adoption compliance check passes"
+  - "Raw log captured"
+
+fail_conditions:
+  - "Gap selected without skill_id lookup"
+  - "Missing transcript for POC proof"
+  - "Adoption compliance fails"
+  - "No raw test log"
+
+adoption_gates_enforced: [ADOPT-A-01, ADOPT-A-02, ADOPT-A-03]

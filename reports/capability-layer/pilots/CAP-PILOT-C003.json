@@ -1,0 +1,50 @@
+{
+  "pilot_id": "CAP-PILOT-C003",
+  "format": "Netpbm",
+  "product_type": "commercial",
+  "authority_inputs": [
+    "product-capability-matrix/poc-targets.yaml (commercial_net_products.Netpbm)",
+    "Gate 11 G11-G approval by Babar Raza 2026-06-05"
+  ],
+  "source_files_inspected": [
+    "src/net/netpbm/"
+  ],
+  "tests_inspected": 50,
+  "examples_inspected": "examples/net/netpbm/ (3 files)",
+  "generated_capability_records": {
+    "count": 25,
+    "sample": "load, save_same_format, parse_pbm, parse_pgm, parse_ppm"
+  },
+  "generated_gap_entries": {
+    "count": 0,
+    "summary": "All expected capabilities implemented"
+  },
+  "taskcards_created_or_updated": [],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "PASS advisory warnings only"
+  },
+  "test_result": {
+    "pass_count": 465,
+    "fail_count": 0,
+    "log_path": ""
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [
+      "src/net/netpbm/"
+    ],
+    "key_checks": [
+      "Gate 11 confirmed",
+      "465 tests pass"
+    ],
+    "result": "VERIFIED"
+  },
+  "contradictions_found": [
+    "LIMITATION: poc-targets.yaml Netpbm Python FOSS split into pbm/pgm/ppm packages"
+  ],
+  "repairs_performed": [
+    "capability_map_generator.py: impl_refs omitted when src dir absent"
+  ],
+  "final_verdict": "PASS_WITH_LIMITATIONS",
+  "verdict_reason": "Commercial Netpbm verified at Gate 11. Python FOSS naming limitation documented."
+}

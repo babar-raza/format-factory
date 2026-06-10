@@ -1,0 +1,48 @@
+handoff_id: HO-R111-SUP-001
+type: supervisor-grading
+title: "Supervisor Cycle Grading — Adoption-Integrated Handoff v3"
+stream_from: skills
+stream_to: supervisor
+skill_id: evidence-review-next-prompt
+version: "3.0"
+timestamp: "2026-06-03T23:30:00Z"
+
+description: |
+  Supervisor reviews evidence and produces next prompt.
+  Step 2d adoption compliance is now part of the cycle.
+
+required_inputs:
+  evidence_bundle_path: ".local/evidences/skills-r111/evidence-declaration.yaml"
+
+validation_command: |
+  python tools/supervisor/validate_skill_transcript.py reports/r-next/skill-transcripts/transcript-supervisor-grading.json
+
+expected_evidence:
+  transcript_json: "reports/r-next/skill-transcripts/transcript-supervisor-grading.json"
+  review_json: ".local/supervisor/reviews/r-next/supervisor-review.json"
+  adoption_compliance_json: ".local/supervisor/reviews/r-next/adoption-compliance-result.json"
+
+transcript_requirement:
+  mode: "dry-run"
+  required_fields: ["invocation_id", "skill_id", "mode", "inputs", "allowed_files", "actual_files_changed", "tests_run", "result"]
+  skill_id_must_match: "evidence-review-next-prompt"
+  result_must_be: "PASS"
+
+raw_log_requirement:
+  format: "supervisor cycle log"
+  minimum_lines: 10
+  must_contain: ["STEP", "GRADE"]
+
+pass_criteria:
+  - "Transcript validates"
+  - "Evidence review produced"
+  - "Adoption compliance result packaged"
+  - "Next prompt generated"
+
+fail_conditions:
+  - "Missing transcript"
+  - "Missing evidence review"
+  - "Missing adoption compliance result"
+  - "Prompt quality failure"
+
+adoption_gates_enforced: [ADOPT-S-01, ADOPT-CYCLE-01]

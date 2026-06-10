@@ -1,0 +1,17 @@
+# Governance Pilot 002: PRODUCT_SOURCE with MANUAL_UNGOVERNED (non-backfill claim) → FAIL
+# Expected result: FAIL (manual_ungoverned_rejection_validator)
+# Pilot type: negative — forbidden method without legacy_backfill exemption
+pilot_id: "PILOT-002"
+description: "PRODUCT_SOURCE using MANUAL_UNGOVERNED without LEGACY_BACKFILLED claim"
+expected_validator: "manual_ungoverned_rejection_validator"
+expected_result: "FAIL"
+declaration:
+  run_id: pilot-002-manual-ungoverned-fail
+  planned_work_items:
+    - item_id: "PILOT-002-TC-001"
+      item_type: "PRODUCT_SOURCE"
+      format_id: "tsv"
+      status: "completed"
+      execution_method: "MANUAL_UNGOVERNED"
+      claim_classification: "WORKS_BUT_NOT_REPEATABLE"
+      # MANUAL_UNGOVERNED with non-LEGACY_BACKFILLED claim must be rejected

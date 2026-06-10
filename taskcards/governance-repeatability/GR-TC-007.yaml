@@ -1,0 +1,38 @@
+id: GR-TC-007
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+generated_at: "2026-06-08"
+title: "Create product mutation taskcard state machine"
+status: ready_to_execute
+lane: taskcard_state_machine
+item_type: GOVERNANCE_SCHEMA
+problem: >
+  Existing 8-state model lacks: DIFF_CAPTURED, IDEMPOTENCY_KEY_ASSIGNED,
+  REPLAY_RECIPE_RECORDED, BACKFILLED_LEGACY_ACCEPTED, REJECTED_UNGOVERNED.
+  No state requires diff before GOVERNANCE_ACCEPTED.
+scope:
+  - Create docs/governance/product-mutation-taskcard-state-machine.md (15 states)
+  - Create schemas/governance/product-mutation-taskcard-state-machine.schema.json
+out_of_scope:
+  - Modifying docs/automation/supervisor-taskcard-state-model.md
+  - Enforcing state machine in supervisor_loop.py
+files_to_create:
+  - docs/governance/product-mutation-taskcard-state-machine.md
+  - schemas/governance/product-mutation-taskcard-state-machine.schema.json
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+acceptance_criteria:
+  - Both files exist
+  - 15 states defined
+  - hard_rules section present
+  - BACKFILLED_LEGACY_ACCEPTED has may_support_repeatability=false
+  - JSON schema is syntactically valid
+verification:
+  - "python -c \"import json; json.load(open('schemas/governance/product-mutation-taskcard-state-machine.schema.json'))\""
+  - "check file exists: docs/governance/product-mutation-taskcard-state-machine.md"
+rollback: delete created files
+dependencies:
+  - GR-TC-002
+  - GR-TC-003
+  - GR-TC-004
+handoff_to_autonomy_sprint: false

@@ -1,0 +1,55 @@
+---
+# Capability Delta Proposal — FODS .NET → CSV Export
+# Sprint: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
+# Hardening: FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001
+# Generated: 2026-06-05
+
+gap_id: commercial-net-fods-dogfood-status-fods-to-csv-dotnet
+product: FormatFactory.Fods (.NET)
+target_format: CSV
+prior_status: GAP_DOGFOOD_EXTERNAL
+proposed_status: IMPLEMENTED
+
+export_target_support_policy:
+  condition_1_standalone_writer_library: true
+  condition_1_evidence: src/net/csv/CsvWriter.cs + src/net/csv/FormatFactory.Csv.csproj
+  condition_2_writer_registered: true
+  condition_2_evidence: FormatFactory.Csv — standalone library, registerable
+  condition_3_exporter_delegates_to_writer: true
+  condition_3_evidence: src/net/fods/FodsCsvExporter.cs — calls CsvWriter.WriteRows()
+  condition_4_tests_prove_invocation: true
+  condition_4_evidence: tests/net/fods/FodsR104DogfoodCsvExportTests.cs (547/547 FODS tests PASS)
+  condition_5_dogfood_output_artifacts: true
+  condition_5_evidence: reports/dotnet-target-writer-mwp-dogfood-unblocking/sample-outputs/sample-fods-to-csv.csv
+  all_five_met: true
+
+writer_library_proof:
+  library_name: FormatFactory.Csv
+  source_file: src/net/csv/CsvWriter.cs
+  project_file: src/net/csv/FormatFactory.Csv.csproj
+  test_project_file: tests/net/csv/FormatFactory.Csv.Tests.csproj
+  tests_run: 15
+  tests_passed: 15
+  raw_log_path: reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/writer-tests.log
+
+exporter_refactor_proof:
+  exporter_file: src/net/fods/FodsCsvExporter.cs
+  project_file: src/net/fods/FormatFactory.Fods.csproj
+  delegation_method: CsvWriter.WriteRows()
+  inline_serialization_removed: true
+  fods_total_tests: 547
+  fods_regressions: 0
+
+dogfood_output_proof:
+  sample_output_path: reports/dotnet-target-writer-mwp-dogfood-unblocking/sample-outputs/sample-fods-to-csv.csv
+  sample_output_type: CSV
+  sample_valid: true
+
+skill_transcript_path: reports/dotnet-target-writer-readiness-hardening/skill-transcripts/fods-csv-dogfood-refactor.json
+ledger_entry_id: MWP-FODS-CSV-DOGFOOD-REFACTOR
+proof_graph_node_id: fods-csv-exporter
+
+caveats:
+  - This delta requires human review before poc-targets.yaml mutation
+  - No direct poc-targets.yaml change — this is a proposal only
+  - Gate 11 approval required for commercial_product_ready=true

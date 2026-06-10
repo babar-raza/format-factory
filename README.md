@@ -90,6 +90,33 @@ Agents may prepare evidence, but only a human can approve a gate.
 
 ---
 
+## Engineering Practices
+
+- **Test Suite:** 1,000+ test files with 11,800+ assertions covering edge cases, error paths, and spec-fact traceability. Tests verify that code cites the correct specification sections (e.g., `tests/python/zst/test_r127_zst_fact_traceability.py`).
+- **Test Framework:** pytest with `--import-mode=importlib` and 120-second per-test timeout. Dual conftest pattern handles stdlib module shadowing (`csv`, `html`).
+- **Quality Gates:** 11 programmatic governance validators block sprints on policy violations (`tools/supervisor/governance_validators.py`). Validators enforce: declaration schema compliance, evidence artifact existence, anti-skip checks, adoption compliance, prompt quality, skill registry consistency, spec-fact references, state machine transitions, cross-stream rules, evidence quality scoring, and package manifest completeness.
+- **Security:** Gate 8 requires human security review before any format reaches product. Parser threat model covers XXE, billion laughs, zip bombs, path traversal, malformed input handling, memory limits, recursion limits, and binary parser safety (`docs/security.md`).
+
+---
+
+## Autonomous Supervision Architecture
+
+format-factory uses an autonomous supervisor pipeline that manages multi-sprint execution with bounded repair and evidence materialization.
+
+- **State Management:** Session state persisted in `session-resume.md` and `continuation-signal.json`. Cross-window recovery restores full operational context from these files without requiring prior conversation history.
+- **Flow Orchestration:** 4-stream architecture (Mainstream Product, Acceleration, Skills/Governed Execution, Supervisor/Autonomous Continuation) with a 15-state taskcard machine governing work item lifecycle. Pipeline: sprint start, execute work items, write evidence declaration, validate with 11 governance validators, grade work items, generate next sprint, check continuation signal.
+- **Boundary Enforcement:** `AGENTS.md` (59KB operating contract) defines non-negotiable rules for all automated executors. 11 governance validators programmatically block sprints on policy violations. Gate approvals require explicit human authorization.
+- **Adaptive Repair:** `tools/supervisor/bounded_repair_engine.py` classifies test and build failures into 6 categories (IMPORT, SYNTAX, ATTRIBUTE, NAME, ASSERTION, TIMEOUT) and applies targeted repairs with automatic rollback on failure. Repairs are bounded to a maximum of 3 attempts per error.
+
+Key implementation files:
+- `tools/supervisor/autonomous_cycle.py` — Sprint execution and evidence pipeline
+- `tools/supervisor/governance_validators.py` — 11 programmatic quality gates
+- `tools/supervisor/bounded_repair_engine.py` — Error classification and bounded repair
+- `tools/supervisor/product_feature_factory.py` — 6-pattern feature generation (getter, export_csv, roundtrip, append, probe, package_proof)
+- `tools/supervisor/evidence_auto_packager.py` — Automatic evidence declaration generation
+
+---
+
 ## Project Status
 
 **Current phase:** Phase 3/4. FODS Gates 1-10 are passed and Gate 11 is `commercial_readiness_in_progress` (NOT approved). FODT Gates 1-10 are passed, Gate 11 is `commercial_readiness_in_progress` (NOT approved). DEC-033 resolved as Option B (.NET Commercial Only). commercial_product_ready: false. ZST Gates 1-4 prototype COMPLETE (R18, 2026-05-16). FODP/FODG/Gnumeric/ABW Gate 1 APPROVED (R18, delegated).

@@ -1,0 +1,15 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 5 items
+
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_blocked_missing_spec_format_is_not_actionable PASSED [ 20%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_all_blocked_states_prevent_task_selection PASSED [ 40%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_allowed_format_can_still_be_actionable PASSED [ 60%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_get_format_authority_status_returns_allowed_for_unknown_format PASSED [ 80%]
+tests/supervisor/test_product_task_selector_authority_gate.py::TestAuthorityGate::test_blocked_states_set_is_complete PASSED [100%]
+
+============================== 5 passed in 1.01s ==============================

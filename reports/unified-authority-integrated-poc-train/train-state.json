@@ -1,0 +1,70 @@
+{
+  "current_iteration": 4,
+  "absolute_iteration": 10,
+  "rollover_count": 0,
+  "checkpoint_reached": false,
+  "required_targets": {
+    "commercial_targets": {
+      "FODS": "PASS",
+      "FODT": "PASS",
+      "Netpbm": "PASS"
+    },
+    "foss_targets": {
+      "ZST": "PASS",
+      "Python_Netpbm": "PASS",
+      "SYLK": "PASS",
+      "DIF": "IN_PROGRESS",
+      "Gnumeric": "NOT_STARTED"
+    }
+  },
+  "foss_pass_count": 3,
+  "foss_minimum_required": 3,
+  "foss_minimum_met": true,
+  "all_commercial_pass": true,
+  "poc_ready": true,
+  "active_lanes": [],
+  "blocked_lanes": [],
+  "rerouted_lanes": [],
+  "completed_gaps": [
+    "spec_authority_mwp", "rca_mwp_verification", "authority_integration_fabric",
+    "fods_r114_style_stats", "fodt_r114_paragraph_style", "netpbm_r114_median_canvas",
+    "fods_r115_export_csv_file_filter_rows", "fodt_r115_export_outline_json",
+    "netpbm_r115_draw_rectangle_brightness_map", "sylk_r115_write_roundtrip",
+    "zst_r115_file_roundtrip_probe", "fods_r116_column_aggregates",
+    "fodt_r116_word_frequency", "netpbm_r116_draw_line", "dif_r116_probe_csv_pipeline",
+    "autonomous_poc_controller"
+  ],
+  "remaining_gaps": [
+    "dif_write_dif_roundtrip",
+    "fods_csv_export_file_dogfood_sample",
+    "fodt_markdown_export_file_dogfood_sample",
+    "fodt_txt_export_file_dogfood_sample",
+    "netpbm_save_pipeline_create_transform_save_readback",
+    "proof_materialization_iteration_003"
+  ],
+  "next_gap_queue": [
+    {"rank": 1, "target": "DIF", "gap": "write_dif_roundtrip"},
+    {"rank": 2, "target": "FODS", "gap": "csv_export_file_dogfood"},
+    {"rank": 3, "target": "FODT", "gap": "markdown_export_file_dogfood"},
+    {"rank": 4, "target": "Netpbm", "gap": "save_pipeline_proof"}
+  ],
+  "machinery_status": {
+    "ruflo": "ABSENT",
+    "supervisor": "ACTIVE"
+  },
+  "ruflo_mode": "LOCAL_COORDINATOR",
+  "supervisor_decision": "ACCEPTED_NON_TERMINAL_CONTINUE",
+  "local_decision": "CONTINUE_NEXT_ITERATION",
+  "iteration_floor_class": "PRODUCT_DELTA_PASS",
+  "cumulative_tests_passed": 267,
+  "evidence_package_paths": [
+    ".local/evidences/unified-authority-poc-train-001/evidence-declaration.yaml",
+    ".local/evidences/autonomous-control-hardening/evidence-declaration.yaml"
+  ],
+  "next_iteration_prompt_path": null,
+  "terminal_state_reached": true,
+  "terminal_state_reason": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED",
+  "spec_context_attached": true,
+  "closure_criteria_met": true,
+  "last_updated": "2026-06-05T00:01:00Z"
+}

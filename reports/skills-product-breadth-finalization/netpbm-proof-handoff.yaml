@@ -1,0 +1,88 @@
+sprint_id: FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001
+generated_at: "2026-06-04T14:00:00Z"
+handoff_id: handoff-netpbm-pipeline-r114-001
+skill_id: add-dotnet-api
+format_id: Netpbm
+api_name: Pipeline
+gap_id: GAP-NETPBM-DOGFOOD-PIPELINE-DOTNET-001
+capability: dotnet_status.netpbm_image_pipeline_dotnet
+mode: live
+
+note: >
+  Upgraded from SHELL packet. Original shell had placeholder {N}{FeatureName}.
+  This handoff resolves to R114 / Pipeline method. Acceleration packet chose
+  flip_diagonal (ai_draft, stale — R106 already implements FlipDiagonal).
+  Skills finalization sprint selects Pipeline as the R114 capability.
+
+exact_source_paths:
+  - src/net/netpbm/Model/NetpbmImage.cs
+
+exact_test_paths:
+  - tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs
+
+examples_paths:
+  - examples/net/netpbm/
+
+ledger_entry_path: reports/r90/product-code-change-ledger.json
+
+focused_test_command: "dotnet test --filter FullyQualifiedName~NetpbmR114FlipMergePipelineTests"
+
+allowed_files:
+  - src/net/netpbm/Model/NetpbmImage.cs
+  - tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs
+  - examples/net/netpbm/
+  - reports/r90/product-code-change-ledger.json
+
+forbidden_files:
+  - src/python/*
+  - src/net/fods/*
+  - src/net/fodt/*
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+  - product-capability-matrix/poc-targets.yaml
+  - .vscode/mcp.json
+  - .supervisor/policies.yaml
+  - reports/supervisor/approval-gates.md
+  - .claude-plugin/*
+  - .claude/commands/*
+
+implementation_guidance:
+  method_name: Pipeline
+  source_class: NetpbmImage
+  method_signature: "public NetpbmImage Pipeline(IEnumerable<Func<NetpbmImage, NetpbmImage>> steps)"
+  description: >
+    Add Pipeline method to NetpbmImage.cs. The method chains image transformation steps,
+    each step receiving the result of the previous. Steps are applied in order.
+    Empty steps list returns the original image (or a copy). Null step in list should
+    throw ArgumentNullException. Returns the final transformed NetpbmImage.
+  test_pattern: >
+    Create NetpbmR114FlipMergePipelineTests.cs with 8 tests using a small test PPM/PBM image:
+    1. Single step pipeline (e.g., img => img.Resize(10,10)) returns correct result
+    2. Two step pipeline (flip + resize) applies both transforms in order
+    3. Three step pipeline works correctly
+    4. Empty steps list returns image (not null)
+    5. Null step in list throws ArgumentNullException
+    6. Pipeline result can be saved to file via SaveToFile
+    7. Pipeline roundtrip: apply two inverse operations, result equals original
+    8. Pipeline result is a new object (not same reference as input)
+
+rollback_note: >
+  Delete tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs.
+  Restore NetpbmImage.cs via: git checkout src/net/netpbm/Model/NetpbmImage.cs
+  No other files need rollback.
+
+acceptance_criteria:
+  - "python tools/supervisor/validate_skill_transcript.py <transcript> exits 0"
+  - "8+ tests pass: dotnet test --filter FullyQualifiedName~NetpbmR114FlipMergePipelineTests"
+  - "Pipeline method present in NetpbmImage.cs"
+  - "actual_files_changed is subset of allowed_files"
+
+proposed_capability_delta:
+  field: netpbm.dotnet_status.netpbm_image_pipeline_dotnet
+  from: GAP
+  proposed_value: IMPLEMENTED
+  authority_update_required: false
+  note: "Supervisor or human approves poc-targets.yaml update separately"
+
+enforcement_tier: FAIL_CLOSED
+packet_path: reports/skills-product-breadth-finalization/netpbm-proof-packet.json

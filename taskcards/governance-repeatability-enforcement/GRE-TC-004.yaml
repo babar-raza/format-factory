@@ -1,0 +1,27 @@
+id: GRE-TC-004
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Evidence quality score upgrade for governance sprints (Lane D)"
+status: completed
+lane: evidence_quality
+item_type: GOVERNANCE_DOC
+problem: >
+  Sprint 2 evidence quality score was 0.0 from supervisor grader vs 1.0 from
+  anti-skip (CONTR-002). Governance sprints with investigation_only items
+  were penalized for missing transcripts that are not required for governance work.
+scope:
+  - Add governance sprint exemption in grade_declared_work.py
+  - Governance-only sprints with investigation_only exception_classification
+    receive quality exemption — not penalized for missing transcripts
+  - Write tests confirming: governance exemption granted, product sprints unchanged
+files_modified:
+  - tools/supervisor/grade_declared_work.py
+files_created:
+  - tests/supervisor/test_evidence_quality_governance_exempt.py
+  - reports/repeatability-governance-enforcement-rnext/evidence-quality-upgrade-report.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+dependencies: []
+handoff_to_autonomy_sprint: false

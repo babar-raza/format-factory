@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "evaluated_at": "2026-06-04T00:00:00Z",
+  "generated_by": "TC-W10-004",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "entries": [
+    {
+      "source_plugin": "superpowers",
+      "external_skill": "all (20+ skills + 3 slash commands: /brainstorm, /write-plan, /execute-plan)",
+      "install_required": true,
+      "workspace_mutation_risk": "HIGH — installs into .claude/ workspace, creates .claude-plugin/",
+      "prompt_injection_risk": "MEDIUM — SessionStart injects context before every session",
+      "context_injection_risk": "HIGH — SessionStart auto-injection conflicts with AGENTS.md",
+      "registry_conflict_risk": "MEDIUM — /brainstorm, /write-plan, /execute-plan slash commands may conflict",
+      "evidence_bypass_risk": "LOW — no direct evidence bypass mechanism",
+      "authority_confusion_risk": "HIGH — external skill instructions could be treated as authority over local governance",
+      "mitigation": "Do not install. Extract brainstorm/plan/execute patterns as local reference templates. Use external-skill-wrapper-template.md for any local wrappers.",
+      "final_decision": "EVALUATE_PATTERNS_ONLY"
+    },
+    {
+      "source_plugin": "superpowers-developing-for-claude-code",
+      "external_skill": "working-with-claude-code + developing-claude-code-plugins",
+      "install_required": true,
+      "workspace_mutation_risk": "MEDIUM — 42+ doc files installed into workspace",
+      "prompt_injection_risk": "LOW",
+      "context_injection_risk": "MEDIUM — self-update mechanism unreviewed, may inject context",
+      "registry_conflict_risk": "LOW",
+      "evidence_bypass_risk": "LOW",
+      "authority_confusion_risk": "MEDIUM — plugin dev patterns may suggest overriding local governance conventions",
+      "mitigation": "Do not install. Read GitHub docs directly for pattern reference. Local equivalents exist in .supervisor/ and docs/.",
+      "final_decision": "EVALUATE_PATTERNS_ONLY"
+    },
+    {
+      "source_plugin": "elements-of-style",
+      "external_skill": "writing-clearly-and-concisely",
+      "install_required": true,
+      "workspace_mutation_risk": "LOW — single skill + Strunk & White reference text",
+      "prompt_injection_risk": "LOW",
+      "context_injection_risk": "LOW — no SessionStart injection",
+      "registry_conflict_risk": "LOW",
+      "evidence_bypass_risk": "LOW",
+      "authority_confusion_risk": "LOW",
+      "mitigation": "Defer to docs quality sprint. Reference Strunk & White directly if needed.",
+      "final_decision": "DEFER"
+    },
+    {
+      "source_plugin": "private-journal-mcp",
+      "external_skill": "journal MCP server (5 sections: daily-journal, weekly-review, project-notes, reading-list, ideas)",
+      "install_required": true,
+      "workspace_mutation_risk": "HIGH — installs MCP server, modifies .vscode/mcp.json (forbidden path)",
+      "prompt_injection_risk": "LOW",
+      "context_injection_risk": "LOW — no session injection",
+      "registry_conflict_risk": "LOW",
+      "evidence_bypass_risk": "LOW",
+      "authority_confusion_risk": "LOW",
+      "mitigation": "Reject. MCP server activation requires explicit Supervisor approval. Memory policy absent. .vscode/mcp.json modification forbidden.",
+      "final_decision": "REJECT"
+    }
+  ]
+}

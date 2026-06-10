@@ -1,0 +1,20 @@
+{
+  "transcript_id": "iter-004-fodt-markdown-dogfood",
+  "iteration": 4,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "skill_used": "verify-dogfood-path",
+  "target": "FODT .NET Commercial",
+  "gap_closed": "fodt_markdown_export_file_dogfood_sample",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "execution_steps": [
+    {"step": 1, "action": "Run FodtR108ExportToMarkdownFileTests + FodtR108DogfoodMarkdownExportTests + FodtR110DogfoodMarkdownExportTests"},
+    {"step": 2, "action": "All 24 tests pass"},
+    {"step": 3, "action": "Generate Markdown from fodt-headings-and-list.fodt using Python FODT parser"},
+    {"step": 4, "action": "Markdown output: '# Chapter One\\n\\nIntroduction paragraph...' in headings-and-list.md"}
+  ],
+  "tests_passed": 24,
+  "tests_failed": 0,
+  "source_changed": [],
+  "sample_output": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/fodt/headings-and-list.md",
+  "verdict": "SKILL_EXECUTED_PASS"
+}

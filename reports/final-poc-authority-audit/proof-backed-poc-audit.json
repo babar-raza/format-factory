@@ -1,0 +1,126 @@
+{
+  "audit_id": "FORMAT-FACTORY-FINAL-POC-AUTHORITY-AUDIT-001",
+  "sprint_id": "FORMAT-FACTORY-FINAL-POC-AUTHORITY-AUDIT-AND-GATE11-READINESS-001",
+  "audited_at": "2026-06-05",
+  "git_head": "3a86a05295cb4b82ed40a3408b0612a90f93643c",
+  "independent_gate_result": "poc_ready=True (fresh run, exit 0)",
+
+  "poc_ready_candidate": true,
+
+  "commercial": {
+    "FODS": {
+      "verdict": "PASS",
+      "source": "src/net/fods/*.cs (6 files)",
+      "tests": "tests/net/fods/*.cs (64 files) — 547 PASSED, 0 FAILED (live dotnet test run)",
+      "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/fods-r114-tests.log (16 passed), fods-r116 (8 passed)",
+      "examples": "examples/net/fods/ (4 files: ClearSheetExample.cs, CopySheetExample.cs, ExportCsvExample.cs, RowManipulationExample.cs)",
+      "proof_record": "product-code-change-ledger.json: 38 entries for FODS",
+      "ai_draft": "none",
+      "notes": "All 6 required checks PASS independently verified."
+    },
+    "FODT": {
+      "verdict": "PASS",
+      "source": "src/net/fodt/*.cs (6 files)",
+      "tests": "tests/net/fodt/*.cs (61 files) — 520 PASSED, 0 FAILED (live dotnet test run)",
+      "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/fodt-r114-tests.log (9 passed), fodt-r116 (8 passed)",
+      "examples": "examples/net/fodt/ (3 files: DocumentStatsExample.cs, HtmlExportExample.cs, TextRangeExample.cs)",
+      "proof_record": "product-code-change-ledger.json: 35 entries for FODT",
+      "ai_draft": "none",
+      "notes": "All 6 required checks PASS independently verified."
+    },
+    "Netpbm": {
+      "verdict": "PASS",
+      "source": "src/net/netpbm/ (1 directory, multiple .cs files via Model/)",
+      "tests": "tests/net/netpbm/*.cs (54 files) — 465 PASSED, 0 FAILED (live dotnet test run)",
+      "raw_log": "reports/mainstream-r114/netpbm-installed-proof.log, unified-poc-train/raw-logs/netpbm-r114-tests.log (25 passed)",
+      "examples": "examples/net/netpbm/ (5 files: FlipOverlayExample.cs, LoadEditSaveExample.cs, MergeBrightnessExample.cs, MergeContrastExample.cs, PixelEditSaveExample.cs)",
+      "proof_record": "product-code-change-ledger.json: 40 entries for Netpbm",
+      "ai_draft": "none",
+      "notes": "All 6 required checks PASS independently verified. Netpbm RETAINED (not replaced by SVG)."
+    }
+  },
+
+  "foss": {
+    "ZST": {
+      "verdict": "PASS",
+      "source": "src/python/zst/ (2 files: zst_codec.py, __init__.py)",
+      "tests": "tests/python/zst/ (23 files) — pass verified via 1295 total FOSS tests",
+      "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/rca-fabric-tests.log",
+      "examples": "examples/python/zst/ (compress_decompress_file.py, validate_compressed_file.py, README.md)",
+      "proof_record": "product-code-change-ledger.json: 7 entries for ZST",
+      "ai_draft": "none",
+      "counted_for_minimum": true
+    },
+    "Python_Netpbm": {
+      "verdict": "FAIL",
+      "source": "src/python/pbm/, src/python/pgm/, src/python/ppm/ — PRESENT",
+      "tests": "tests/python/pbm/, pgm/, ppm/ — PRESENT (6 test dirs)",
+      "raw_log": "reports/mainstream-r114/netpbm-installed-proof.log — PRESENT",
+      "examples": "examples/python/ppm/pgm_to_ppm_example.py — PRESENT",
+      "proof_record": "FAIL — gate search key 'netpbm_python'/'netpbm-python' does NOT match ledger entry product='Netpbm Python FOSS'. Ledger entry R90-GOVERNED-PYTHON-NETPBM-PPM-TO-PGM-001 EXISTS but gate pattern mismatch.",
+      "gate_note": "Gate false negative: actual ledger entry exists with product='Netpbm Python FOSS'. Minimum still met via ZST+SYLK+DIF.",
+      "counted_for_minimum": false
+    },
+    "SYLK": {
+      "verdict": "PASS",
+      "source": "src/python/sylk/ (2 files: sylk_parser.py, __init__.py)",
+      "tests": "tests/python/sylk/ (30 files) — 252 passed (in mainstream-r114 sylk-tests.log)",
+      "raw_log": "reports/mainstream-r114/sylk-tests.log (252 passed)",
+      "examples": "examples/python/sylk/ (sylk_csv_pipeline.py, write_export_sylk.py)",
+      "proof_record": "product-code-change-ledger.json: 6 entries for SYLK",
+      "ai_draft": "none",
+      "counted_for_minimum": true
+    },
+    "DIF": {
+      "verdict": "PASS",
+      "source": "src/python/dif/ (3 files: dif_parser.py, dif_stats.py, __init__.py)",
+      "tests": "tests/python/dif/ (20 files) — 12 passed (dif-r116-tests.log)",
+      "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/dif-r116-tests.log (12 passed)",
+      "examples": "Not required for DIF",
+      "proof_record": "product-code-change-ledger.json: 4 entries for DIF",
+      "ai_draft": "none",
+      "counted_for_minimum": true
+    },
+    "Gnumeric": {
+      "verdict": "NOT_EVALUATED",
+      "notes": "Not in proof-backed gate definition. Not required for minimum."
+    }
+  },
+
+  "foss_pass_count": 3,
+  "foss_minimum_required": 3,
+  "foss_minimum_met": true,
+  "foss_counted_formats": ["ZST", "SYLK", "DIF"],
+
+  "dotnet_test_summary": {
+    "FODS": "547 PASSED, 0 FAILED",
+    "FODT": "520 PASSED, 0 FAILED",
+    "Netpbm": "465 PASSED, 0 FAILED",
+    "total": "1532 PASSED, 0 FAILED"
+  },
+  "python_test_summary": {
+    "foss_targets": "1295 passed, 28 skipped (ZST + SYLK + DIF + PPM/PBM/PGM)",
+    "supervisor": "99 passed (proof gate + executor + host runner + false-stop regression)"
+  },
+
+  "missing_proof_items": [
+    "Netpbm-Python: gate search pattern mismatch (ledger entry exists but not detected) — non-blocking (minimum met)"
+  ],
+  "stale_claims": [
+    "poc-targets.yaml gates_passed text is NOT proof — replaced by this gate"
+  ],
+  "proof_graph_status": "product-code-change-ledger.json used as proof record (129 total entries). Proof graph .jsonl not present — ledger is canonical proof.",
+  "raw_log_status": "PRESENT for all 3 commercial targets + ZST + SYLK + DIF",
+  "sample_output_status": "PRESENT for all 3 commercial targets + ZST + SYLK",
+  "transcript_status": "Ledger entries serve as governed skill transcripts. Dedicated transcript files not separately stored.",
+  "capability_delta_status": "poc-targets.yaml + product-code-change-ledger.json serve as capability delta records.",
+  "product_ledger_status": "reports/r90/product-code-change-ledger.json: 129 entries (FODS 38, FODT 35, Netpbm 40, ZST 7, SYLK 6, DIF 4)",
+
+  "poc_targets_advisory_confirmed": true,
+  "gate_11_approved": false,
+  "release_approval_pending": true,
+
+  "final_decision": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+
+  "independent_audit_conclusion": "Fresh proof-backed gate run confirms poc_ready=True. All 3 commercial targets pass all 6 checks. FOSS minimum met via ZST+SYLK+DIF. 1532 .NET tests + 1295 Python FOSS tests pass live. No ai_draft-only proof. poc-targets.yaml treated as advisory. Gate 11 approval pending (human required)."
+}

@@ -1,0 +1,21 @@
+{
+  "invocation_id": "R106-DRY-001-FODT-ROUNDTRIP-HANDOFF",
+  "skill_id": "add-roundtrip-test",
+  "mode": "dry-run",
+  "inputs": {
+    "format_id": "fodt",
+    "roundtrip_scope": "parse-edit-write-reparse roundtrip for FODT paragraph append covering GAP-FODT-STRUCT-001 repair path",
+    "exact_test_paths": [
+      "tests/python/fodt/test_r106_fodt_roundtrip.py"
+    ]
+  },
+  "allowed_files": [
+    "tests/python/fodt/test_r106_fodt_roundtrip.py"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T18:00:00Z",
+  "notes": "Dry-run: validated handoff-003-fodt-roundtrip-test.yaml structure. Skill add-roundtrip-test is registered and active in skill-registry.yaml. All required_handoff_fields (format_id, roundtrip_scope, exact_test_paths) present in inputs. No source edits required (testing track). No files changed in dry-run mode."
+}

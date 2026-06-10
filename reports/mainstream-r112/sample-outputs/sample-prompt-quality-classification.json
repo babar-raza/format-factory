@@ -1,0 +1,33 @@
+{
+  "sample_type": "prompt-quality-classification",
+  "sprint": "mainstream-r112",
+  "description": "Shows how supervisor tool references in a Mainstream prompt should be classified",
+  "example_checks": {
+    "no_wrong_stream": {
+      "current_behavior": "Flags ALL tools/supervisor/ references as wrong-stream",
+      "corrected_behavior": "Allowlist governance commands; flag implementation tasks only"
+    },
+    "reference_classifications": [
+      {
+        "pattern": "python tools/supervisor/supervisor_loop.py autonomous-cycle",
+        "classification": "ALLOWED_GOVERNANCE_COMMAND",
+        "rationale": "Required by CLAUDE.md for evidence submission"
+      },
+      {
+        "pattern": "python tools/supervisor/validate_product_code_ledger.py",
+        "classification": "ALLOWED_GOVERNANCE_COMMAND",
+        "rationale": "Required by governed skill for ledger validation"
+      },
+      {
+        "pattern": "Fix bug in tools/supervisor/inspector.py",
+        "classification": "WRONG_STREAM_IMPLEMENTATION",
+        "rationale": "Supervisor tool implementation belongs to Supervisor stream"
+      },
+      {
+        "pattern": "Add feature to tools/supervisor/grader.py",
+        "classification": "WRONG_STREAM_IMPLEMENTATION",
+        "rationale": "Supervisor tool feature work belongs to Supervisor stream"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+id: GR-TC-001
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+generated_at: "2026-06-08"
+title: "Write plan quality review and healed plan"
+status: ready_to_execute
+lane: coordinator
+item_type: GOVERNANCE_DOC
+problem: >
+  The original plan mixed governance with autonomy improvement. A quality review
+  and focused healed plan summary are required before autonomous execution.
+scope:
+  - Write plan-quality-review.md grading original plan on 10 categories
+  - Write healed-plan.md as executive summary of this repaired plan
+out_of_scope:
+  - Any product source changes
+  - Autonomy improvement
+files_to_create:
+  - reports/repeatability-governance-plan-healing/plan-quality-review.md
+  - reports/repeatability-governance-plan-healing/healed-plan.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+acceptance_criteria:
+  - plan-quality-review.md exists with 10-category grade table
+  - healed-plan.md exists with scope boundary and handoff list
+  - No autonomy improvement work in healed plan
+verification:
+  - "check file exists: reports/repeatability-governance-plan-healing/plan-quality-review.md"
+  - "check file exists: reports/repeatability-governance-plan-healing/healed-plan.md"
+rollback: delete created files (no source changes)
+dependencies: []
+handoff_to_autonomy_sprint: false

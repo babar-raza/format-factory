@@ -1,0 +1,31 @@
+{
+  "sample_type": "mainstream-compliant",
+  "description": "A fully compliant Mainstream product work item passing all adoption gates",
+  "work_item": {
+    "item_id": "W1-FODS-RENAME",
+    "title": "FODS RenameSheet implementation",
+    "skill_id": "add-dotnet-api",
+    "product_track": "commercial_dotnet",
+    "ledger_entry_id": "LED-R94-FODS-RENAME-001",
+    "evidence_paths": [
+      "reports/r94/fods-rename-sheet.md",
+      "reports/r94/skill-transcripts/transcript-fods-rename.json"
+    ],
+    "status": "completed",
+    "source_hash": "a1b2c3d4e5f6",
+    "raw_logs": ["reports/r94/raw-logs/test-fods.log"],
+    "poc_reference": "poc-targets.yaml#fods-rename-sheet"
+  },
+  "adoption_result": {
+    "compliant": true,
+    "checks": {
+      "has_skill_id": true,
+      "has_transcript": true,
+      "has_ledger_entry": true
+    }
+  },
+  "grading_result": {
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "reason": "Test content verified + transcript validation all_valid=True"
+  }
+}

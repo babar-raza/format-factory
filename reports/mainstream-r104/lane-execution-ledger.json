@@ -1,0 +1,204 @@
+{
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R104-MULTI-WAVE-PRODUCT-COMPLETION-CAMPAIGN-001",
+  "wave_summary": {
+    "wave_0_preflight": "COMPLETE",
+    "wave_1_commercial_net": "COMPLETE — 6 APIs across 3 products, 56 new tests",
+    "wave_2_foss_python": "COMPLETE — 6 test suites across 3 products, 92 new tests",
+    "wave_3_dogfood_usability": "COMPLETE — 3 dogfood suites (18 tests) + 3 examples",
+    "wave_4_evidence": "COMPLETE"
+  },
+  "trains": [
+    {
+      "train_id": "R104-WAVE1-FODS-GETSHEETBYINDEX",
+      "product": "FODS .NET",
+      "skill": "add-dotnet-api",
+      "capability": "GetSheetByIndex",
+      "test_file": "tests/net/fods/FodsR104GetSheetByIndexTests.cs",
+      "test_count": 8,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE1-FODS-COPYSHEET",
+      "product": "FODS .NET",
+      "skill": "add-dotnet-api",
+      "capability": "CopySheet",
+      "test_file": "tests/net/fods/FodsR104CopySheetTests.cs",
+      "test_count": 10,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE1-FODT-SETPARAGRAPHTEXT",
+      "product": "FODT .NET",
+      "skill": "add-dotnet-api",
+      "capability": "SetParagraphText",
+      "test_file": "tests/net/fodt/FodtR104SetParagraphTextTests.cs",
+      "test_count": 10,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE1-FODT-GETDOCUMENTSTATS",
+      "product": "FODT .NET",
+      "skill": "add-dotnet-api",
+      "capability": "GetDocumentStats",
+      "test_file": "tests/net/fodt/FodtR104GetDocumentStatsTests.cs",
+      "test_count": 9,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE1-NETPBM-ADJUSTBRIGHTNESS",
+      "product": "Netpbm .NET",
+      "skill": "add-dotnet-object-model-feature",
+      "capability": "AdjustBrightness",
+      "test_file": "tests/net/netpbm/NetpbmR104AdjustBrightnessTests.cs",
+      "test_count": 9,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE1-NETPBM-MERGEHORIZONTAL",
+      "product": "Netpbm .NET",
+      "skill": "add-dotnet-object-model-feature",
+      "capability": "MergeHorizontal",
+      "test_file": "tests/net/netpbm/NetpbmR104MergeHorizontalTests.cs",
+      "test_count": 10,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE2-ZST-COMPRESSION-LEVELS",
+      "product": "ZST Python FOSS",
+      "skill": "add-roundtrip-test",
+      "capability": "compression_level_coverage",
+      "test_file": "tests/python/zst/test_r104_zst_compression_levels.py",
+      "test_count": 20,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE2-ZST-GUARD-LIMITS",
+      "product": "ZST Python FOSS",
+      "skill": "add-roundtrip-test",
+      "capability": "guard_limits_and_validation",
+      "test_file": "tests/python/zst/test_r104_zst_guard_limits.py",
+      "test_count": 19,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE2-PBM-WRITE-EDGE-CASES",
+      "product": "Netpbm Python FOSS (PBM)",
+      "skill": "add-roundtrip-test",
+      "capability": "write_pbm_edge_cases",
+      "test_file": "tests/python/pbm/test_r104_pbm_write_edge_cases.py",
+      "test_count": 13,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE2-PPM-WRITE-EDGE-CASES",
+      "product": "Netpbm Python FOSS (PPM)",
+      "skill": "add-roundtrip-test",
+      "capability": "write_ppm_edge_cases",
+      "test_file": "tests/python/ppm/test_r104_ppm_write_edge_cases.py",
+      "test_count": 16,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE2-SYLK-COMPLEX-GRID",
+      "product": "SYLK Python FOSS",
+      "skill": "add-roundtrip-test",
+      "capability": "complex_grid_roundtrip",
+      "test_file": "tests/python/sylk/test_r104_sylk_complex_grid.py",
+      "test_count": 12,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE2-SYLK-CSV-EXPORT-HARDENING",
+      "product": "SYLK Python FOSS",
+      "skill": "add-roundtrip-test",
+      "capability": "csv_export_hardening",
+      "test_file": "tests/python/sylk/test_r104_sylk_csv_export_hardening.py",
+      "test_count": 12,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE3-FODS-DOGFOOD",
+      "product": "FODS .NET",
+      "skill": "verify-dogfood-path",
+      "capability": "fods_csv_html_json_dogfood",
+      "test_file": "tests/net/fods/FodsR104DogfoodCsvExportTests.cs",
+      "test_count": 6,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE3-FODT-DOGFOOD",
+      "product": "FODT .NET",
+      "skill": "verify-dogfood-path",
+      "capability": "fodt_plaintext_markdown_dogfood",
+      "test_file": "tests/net/fodt/FodtR104DogfoodExportTests.cs",
+      "test_count": 6,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE3-NETPBM-DOGFOOD",
+      "product": "Netpbm .NET",
+      "skill": "verify-dogfood-path",
+      "capability": "netpbm_brightness_merge_pipeline",
+      "test_file": "tests/net/netpbm/NetpbmR104DogfoodPipelineTests.cs",
+      "test_count": 6,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE3-FODS-EXAMPLE",
+      "product": "FODS .NET",
+      "skill": "add-installed-package-example",
+      "capability": "copy_sheet_example",
+      "file": "examples/net/fods/CopySheetExample.cs",
+      "test_count": 0,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE3-FODT-EXAMPLE",
+      "product": "FODT .NET",
+      "skill": "add-installed-package-example",
+      "capability": "document_stats_example",
+      "file": "examples/net/fodt/DocumentStatsExample.cs",
+      "test_count": 0,
+      "status": "PASS"
+    },
+    {
+      "train_id": "R104-WAVE3-NETPBM-EXAMPLE",
+      "product": "Netpbm .NET",
+      "skill": "add-installed-package-example",
+      "capability": "merge_brightness_example",
+      "file": "examples/net/netpbm/MergeBrightnessExample.cs",
+      "test_count": 0,
+      "status": "PASS"
+    }
+  ],
+  "totals": {
+    "trains": 18,
+    "trains_pass": 18,
+    "trains_fail": 0,
+    "new_tests": 166,
+    "commercial_net_deliverables": 6,
+    "foss_deliverables": 6,
+    "dogfood_deliverables": 3,
+    "usability_deliverables": 3
+  },
+  "test_counts": {
+    "python_total": 2779,
+    "python_skipped": 13,
+    "dotnet_fods": 331,
+    "dotnet_fodt": 318,
+    "dotnet_netpbm": 241,
+    "dotnet_total": 890,
+    "grand_total": 3669
+  },
+  "quota_compliance": {
+    "commercial_net_minimum": 6,
+    "commercial_net_actual": 6,
+    "foss_minimum": 5,
+    "foss_actual": 6,
+    "dogfood_minimum": 3,
+    "dogfood_actual": 3,
+    "usability_minimum": 3,
+    "usability_actual": 3,
+    "all_quotas_met": true
+  }
+}

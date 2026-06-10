@@ -1,0 +1,63 @@
+Sample output: DIF probe/CSV pipeline
+Test class: TestDifDogfoodPipeline, TestProbeDif, TestDifToCsv
+Test file: tests/python/dif/test_r116_dif_probe_csv_pipeline.py
+
+--- probe_dif ---
+Scenario: test_probe_returns_dict
+  Input: tests/data/sample.dif (or fixture)
+  probe_dif(path) -> dict
+  Result keys: ['path', 'exists', 'valid_header', ...] PASS
+
+Scenario: test_probe_valid_header_flag
+  probe result['valid_header'] == True for valid DIF file
+  Result: PASS
+
+Scenario: test_probe_exists_flag
+  probe result['exists'] == True for existing file
+  Result: PASS
+
+Scenario: test_probe_missing_file_exists_false
+  probe_dif("nonexistent.dif")['exists'] == False
+  Result: PASS
+
+Scenario: test_probe_has_title
+  DIF file with TABLE header has title in probe result
+  Result: PASS
+
+--- dif_to_csv ---
+Scenario: test_dif_to_csv_returns_string
+  dif_to_csv(path) -> str
+  CSV content is a string with comma-separated values
+  Result: PASS
+
+Scenario: test_dif_to_csv_missing_file_raises
+  dif_to_csv("bad.dif") raises exception
+  Result: PASS
+
+Scenario: test_dif_to_csv_nonexistent_raises
+  dif_to_csv("nonexistent.dif") raises FileNotFoundError
+  Result: PASS
+
+--- parse_dif_strict ---
+Scenario: test_parse_dif_strict_returns_document
+  parse_dif_strict(path) -> DifDocument object
+  Result: PASS
+
+Scenario: test_parse_dif_strict_missing_file_raises
+  parse_dif_strict("bad.dif") raises exception
+  Result: PASS
+
+Scenario: test_parse_dif_returns_dict_with_ok
+  parse_dif result has expected structure
+  Result: PASS
+
+--- Dogfood pipeline ---
+Scenario: test_dogfood_pipeline
+  probe_dif -> parse_dif_strict -> dif_to_csv
+  Pipeline executes end-to-end without error
+  Result: PASS
+
+Total: 12/12 PASSED
+
+NOTE: write_dif NOT YET IMPLEMENTED — target for iteration 4.
+SAMPLE_OUTPUT_BLOCKED_BY_MISSING_WRITE_DIF — selecting write_dif as next gap.

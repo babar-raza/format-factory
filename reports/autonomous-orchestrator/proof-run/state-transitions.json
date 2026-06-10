@@ -1,0 +1,32 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001",
+  "proof_level_achieved": "RESTARTABLE_ORCHESTRATOR_PROVEN",
+  "three_cycle_run": {
+    "run_id": "41c8b149",
+    "cycles_completed": 3,
+    "stop_code": "MAX_CYCLES_REACHED",
+    "cycles": [
+      {"cycle": 1, "action_id": "orch-proof-001", "type": "RUN_JSON_VALIDATION", "backend": "LOCAL_DETERMINISTIC", "status": "SUCCESS"},
+      {"cycle": 2, "action_id": "orch-cycle-002", "type": "RUN_YAML_VALIDATION", "backend": "LOCAL_DETERMINISTIC", "status": "SUCCESS"},
+      {"cycle": 3, "action_id": "orch-cycle-003", "type": "RUN_COMMAND_DISCOVERY", "backend": "LOCAL_DETERMINISTIC", "status": "SUCCESS"}
+    ]
+  },
+  "resume_proof": {
+    "run_id": "caeda74d",
+    "step_1": {"mode": "--once", "cycles_completed": 1, "stop_code": "MAX_CYCLES_REACHED", "resumed": false},
+    "step_2": {"mode": "--max-cycles 2 --resume", "cycles_completed": 2, "stop_code": "MAX_CYCLES_REACHED", "resumed": true, "run_id_preserved": "caeda74d"},
+    "resume_works": true
+  },
+  "orchestrator_features_proven": [
+    "max-cycles 3 runs without manual prompt paste",
+    "--once stops after 1 cycle",
+    "--resume continues from stopped state with same run_id",
+    "next-action auto-generated between cycles",
+    "active-continuation.json updated between cycles",
+    "orchestrator-state.json written per cycle",
+    "heartbeat written",
+    "stop-reason.json written with resumable=true",
+    "advisory prompt not executed"
+  ],
+  "notes": "Orchestrator proved: no manual prompt paste needed for 3 cycles. Resume after --once proven with run_id preservation."
+}

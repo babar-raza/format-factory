@@ -1,0 +1,18 @@
+{
+  "receiver": "mainstream",
+  "version": "r113",
+  "description": "Receiver-side enforcement fixture for Mainstream product work (R113 rerun)",
+  "compliant_item": {
+    "item_id": "W1-FODS-GETCOL",
+    "title": "FODS GetColumnHeaders API",
+    "skill_id": "add-dotnet-api",
+    "evidence_paths": ["reports/r-test/skill-transcripts/transcript-fods-getcol.json"],
+    "status": "completed"
+  },
+  "failing_item": {
+    "item_id": "W2-NO-SKILL",
+    "title": "API without skill_id",
+    "evidence_paths": ["reports/r-test/api-added.md"],
+    "status": "completed"
+  }
+}

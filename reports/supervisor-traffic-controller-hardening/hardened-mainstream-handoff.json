@@ -1,0 +1,70 @@
+{
+  "generated_at": "2026-06-04T09:45:00Z",
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001",
+  "handoff_type": "supervisor_to_mainstream",
+  "routing_determinism": {
+    "verified": true,
+    "method": "two_identical_runs_semantic_hash_comparison",
+    "result": "ROUTING_DETERMINISTIC"
+  },
+  "cross_stream_update": {
+    "skills": {
+      "old_verdict": "SKILLS_MISSING_PACKET",
+      "new_verdict": "SKILLS_CONSUMABLE_NOT_YET_CONSUMED",
+      "defect_fixed": true,
+      "packet_on_disk": true,
+      "packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "required_action": "Mainstream must declare governed_execution_consumed=true"
+    },
+    "acceleration": {
+      "old_verdict": "ACCELERATION_CONSUMPTION_GAP",
+      "new_verdict": "ACCELERATION_CONSUMABLE_PARTIAL",
+      "defect_fixed": true,
+      "packets_on_disk": true,
+      "valid_packet_count": 5,
+      "required_action": "Mainstream must declare reusable_accelerator_consumed=true"
+    }
+  },
+  "mainstream_status": {
+    "families_active": ["FODS", "FODT", "Netpbm", "SYLK"],
+    "families_count": 4,
+    "clean_pass_threshold": 3,
+    "breadth_met": true,
+    "current_classification": "PARTIAL_GOVERNED_TRANSCRIPTS_NEEDED",
+    "missing_for_clean_pass": ["governed_transcripts (need 1 more)", "capability_matrix_deltas (need 1 more)"]
+  },
+  "netpbm_retention": {
+    "retained": true,
+    "source_diff_confirmed": true,
+    "source_file": "src/net/netpbm/Model/NetpbmImage.cs",
+    "svg_replacement_rejected": true,
+    "rejection_reason": "format_class_mismatch_vector_vs_raster"
+  },
+  "external_tool_governance": {
+    "ruflo_mode": "DETECTED_NOT_CONFIGURED",
+    "ruflo_invoked": false,
+    "task_master_ai_invoked": false,
+    "superpowers_mode": "ABSENT",
+    "ghidra_mode": "ABSENT",
+    "overall": "EXTERNAL_TOOLS_GOVERNED_LOCAL_COORDINATOR_ACTIVE",
+    "routing_impact": "none"
+  },
+  "test_results": {
+    "hardening_iv_tests": {"total": 37, "passed": 37, "failed": 0},
+    "defect_fix_regressions": {
+      "count": 2,
+      "classification": "PRE_EXISTING_WRONG_BEHAVIOR_TESTS",
+      "description": "Old tests asserted wrong behavior (SKILLS_MISSING_PACKET when packet exists on disk). Fix is correct."
+    }
+  },
+  "path_guard": {
+    "src_net_changed": false,
+    "src_python_changed": false,
+    "registry_changed": false,
+    "plans_master_plan_changed": false,
+    "git_push_executed": false,
+    "git_commit_executed": false,
+    "verdict": "PATH_GUARD_PASS"
+  },
+  "overall_verdict": "MAINSTREAM_HANDOFF_HARDENED_READY_FOR_CONSUMPTION"
+}

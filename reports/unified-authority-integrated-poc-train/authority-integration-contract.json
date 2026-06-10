@@ -1,0 +1,31 @@
+{
+  "contract_id": "aic:1e99ca7a0b536ff2",
+  "generated_at": "2026-06-04T14:52:36.091719+00:00",
+  "spec_authority_status": "PRESENT",
+  "rca_status": "VERIFIED",
+  "tri_lane_status": "READY",
+  "netpbm_retained": true,
+  "svg_replacement_rejected": true,
+  "poc_targets_count": 8,
+  "required_targets_count": 6,
+  "prohibited_replacements": {
+    "svg": "netpbm-net"
+  },
+  "invariants_verified": [
+    "NETPBM_RETAINED",
+    "SVG_NOT_REPLACE_NETPBM",
+    "18_NODE_TYPES",
+    "19_EDGE_TYPES",
+    "SPEC_AUTHORITY_ANTI_BYPASS",
+    "GRAPH_HASH_DETERMINISTIC",
+    "GAP_QUEUE_DETERMINISTIC"
+  ],
+  "invariants_violated": [],
+  "stream_handoff_protocol": {
+    "spec_authority_to_rca": "spec_artifacts_dir \u2192 rca_graph_nodes (SpecRequirementRef)",
+    "rca_to_mainstream": "supervisor_verdict_packet + gap_queue \u2192 mainstream worker",
+    "mainstream_to_supervisor": "evidence_declaration \u2192 autonomous_cycle",
+    "supervisor_to_tri_lane": "routing_packet \u2192 skills/acceleration/mainstream",
+    "tri_lane_to_supervisor": "completion_signals \u2192 next_sprint_prompt"
+  }
+}

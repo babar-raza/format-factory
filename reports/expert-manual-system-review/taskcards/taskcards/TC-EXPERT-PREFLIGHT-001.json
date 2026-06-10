@@ -1,0 +1,48 @@
+{
+  "taskcard_id": "TC-EXPERT-PREFLIGHT-001",
+  "title": "Governance preflight, coordinator setup, and initial taskcard registration",
+  "category": "INVESTIGATION",
+  "owner_lane": null,
+  "status": "CLOSED_VERIFIED",
+  "severity": null,
+  "problem_id": null,
+  "allowed_files": [
+    "reports/expert-manual-system-review/**"
+  ],
+  "forbidden_files": [
+    "src/**",
+    "tests/**",
+    "examples/**",
+    "product-capability-matrix/**",
+    "registry/**",
+    ".supervisor/policies.yaml"
+  ],
+  "entry_gate": [],
+  "exit_gate": [
+    "governance-preflight.md written",
+    "all 13 taskcards created",
+    "coordinator files created",
+    "execution-state.json written"
+  ],
+  "validation_commands": [
+    "python -c \"import json; r=json.loads(open('reports/expert-manual-system-review/taskcards/taskcard-registry.json').read()); assert r['total']==13\""
+  ],
+  "evidence_required": [
+    "governance-preflight.json",
+    "taskcard-registry.json with 13 entries",
+    "coordinator/coordinator-log.md"
+  ],
+  "rollback_plan": [
+    "Delete reports/expert-manual-system-review/ \u2014 no source files touched"
+  ],
+  "closeout_criteria": [
+    "All 13 taskcards created as .json+.md",
+    "execution-state.json state=PREFLIGHT"
+  ],
+  "dependencies": [],
+  "concrete_files_claimed": false,
+  "overlap_check_passed": true,
+  "before_sha256_recorded": false,
+  "created_at": "2026-06-05T00:00:00Z",
+  "updated_at": "2026-06-05T00:01:00Z"
+}

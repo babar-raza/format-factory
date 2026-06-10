@@ -1,0 +1,18 @@
+{
+  "validation_run": "skills-r109",
+  "timestamp": "2026-06-03T22:40:00Z",
+  "test_results": {
+    "mainstream_consumption": {"loaded": true, "gates": 3, "all_active": true, "pass_fail_proven": true},
+    "acceleration_consumption": {"loaded": true, "gates": 3, "all_planned": true, "pass_fail_proven": true},
+    "supervisor_consumption": {"loaded": true, "gates": 4, "all_active": true, "pass_fail_proven": true}
+  },
+  "enforcement_results": {
+    "compliant_mainstream_item": "PASS",
+    "failing_mainstream_no_ledger": "FAIL (correct)",
+    "gap_with_skill_coverage": "PASS",
+    "gap_without_skill_coverage": "PASS (noted, not blocking)",
+    "transcript_aware_grading": "ACCEPTED_VERIFIED",
+    "path_only_rejection": "ACCEPTED_WITH_REWORK",
+    "bad_transcript_rejection": "INVALID (correct)"
+  }
+}

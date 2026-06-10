@@ -1,0 +1,95 @@
+{
+  "sprint": "mainstream-r113",
+  "selection_date": "2026-06-03",
+  "stale_r98_references": false,
+  "commercial_net": [
+    {
+      "id": "R113-FODS-REMOVESHEETAPI",
+      "format": "FODS",
+      "gap": "RemoveSheet API with save roundtrip",
+      "depth_class": "object_model_depth",
+      "type": "source_api"
+    },
+    {
+      "id": "R113-FODS-INSERTROWWITHVALUES-DEPTH",
+      "format": "FODS",
+      "gap": "InsertRowWithValues save-reload roundtrip depth",
+      "depth_class": "save_export_depth",
+      "type": "depth_test"
+    },
+    {
+      "id": "R113-FODT-GETPARAGRAPHSTYLES",
+      "format": "FODT",
+      "gap": "GetParagraphStyles API - extract style info from paragraphs",
+      "depth_class": "object_model_depth",
+      "type": "source_api"
+    },
+    {
+      "id": "R113-FODT-EXPORTTXT-DEPTH",
+      "format": "FODT",
+      "gap": "ExportToText save-reload roundtrip depth",
+      "depth_class": "save_export_depth",
+      "type": "depth_test"
+    },
+    {
+      "id": "R113-NETPBM-CROP",
+      "format": "Netpbm",
+      "gap": "Crop(x, y, width, height) API",
+      "depth_class": "image_processing_depth",
+      "type": "source_api"
+    },
+    {
+      "id": "R113-NETPBM-FLIPH",
+      "format": "Netpbm",
+      "gap": "FlipHorizontal API",
+      "depth_class": "image_processing_depth",
+      "type": "source_api"
+    }
+  ],
+  "foss": [
+    {
+      "id": "R113-ZST-DICT-MODE",
+      "format": "ZST",
+      "gap": "Dictionary compression mode roundtrip",
+      "type": "roundtrip"
+    },
+    {
+      "id": "R113-PPM-GRAYSCALE-ROUNDTRIP",
+      "format": "PPM",
+      "gap": "PPM grayscale conversion roundtrip",
+      "type": "roundtrip"
+    },
+    {
+      "id": "R113-SYLK-CSV-EXPORT",
+      "format": "SYLK",
+      "gap": "SYLK to CSV export workflow",
+      "type": "export"
+    },
+    {
+      "id": "R113-DIF-PARSE-HARDENING",
+      "format": "DIF",
+      "gap": "DIF parse error handling hardening",
+      "type": "hardening"
+    }
+  ],
+  "dogfood": [
+    {
+      "id": "R113-FODS-JSON-DOGFOOD",
+      "format": "FODS",
+      "gap": "FODS edit-to-JSON export dogfood",
+      "type": "dogfood"
+    },
+    {
+      "id": "R113-FODT-TXT-DOGFOOD",
+      "format": "FODT",
+      "gap": "FODT edit-to-TXT export dogfood",
+      "type": "dogfood"
+    },
+    {
+      "id": "R113-NETPBM-SAVE-DOGFOOD",
+      "format": "Netpbm",
+      "gap": "Netpbm Crop+Save dogfood pipeline",
+      "type": "dogfood"
+    }
+  ]
+}

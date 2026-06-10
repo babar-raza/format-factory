@@ -1,0 +1,28 @@
+{
+  "task_id": "TC-PHASE4-FODT-TXT-REFACTOR",
+  "skill_id": "add-dogfood-export",
+  "lane_id": "LANE-FODT-TXT-REFACTOR",
+  "allowed_files": [
+    "src/net/fodt/**"
+  ],
+  "forbidden_files": [
+    "product-capability-matrix/poc-targets.yaml"
+  ],
+  "actual_files_changed": [
+    "src/net/fodt/FodtTxtExporter.cs",
+    "src/net/fodt/FormatFactory.Fodt.csproj"
+  ],
+  "source_diff_path": null,
+  "tests_run": 520,
+  "raw_log_path": "reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/product-dogfood-tests.log",
+  "sample_output_path": "reports/dotnet-target-writer-mwp-dogfood-unblocking/sample-outputs/sample-fodt-to-txt.txt",
+  "capability_delta_path": "reports/dotnet-target-writer-readiness-hardening/capability-delta-proposals/fodt-txt-dotnet.yaml",
+  "proof_graph_node_ids": [
+    "fodt-txt-exporter",
+    "gap-fodt-txt"
+  ],
+  "rollback_note": "Revert FodtTxtExporter.cs to inline TXT serialization; remove ProjectReference to FormatFactory.Txt",
+  "result": "PASS",
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001",
+  "generated_at": "2026-06-05T00:00:00Z"
+}

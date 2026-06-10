@@ -1,0 +1,33 @@
+handoff_id: SKILLS-R102-HANDOFF-003
+skill_id: add-dotnet-object-model-feature
+format_id: fodt
+feature_name: GetPlainTextRange
+target_sprint: R103
+stream: skills
+
+inputs:
+  format_id: fodt
+  feature_name: GetPlainTextRange
+  model_class: FodtDocument
+  exact_source_paths:
+    - src/net/fodt/FodtDocument.cs
+  exact_test_paths:
+    - tests/net/fodt/FodtR103GetPlainTextRangeTests.cs
+  ledger_entry_path: reports/r90/product-code-change-ledger.json
+
+preconditions:
+  - FodtDocument.cs exists with paragraph access API
+  - GetParagraphTexts() proven in R93
+  - Ledger validator PASS for current HEAD
+
+acceptance_criteria:
+  - GetPlainTextRange(startPara, count) returns concatenated text from paragraph range
+  - 8+ tests covering: single paragraph, multi-paragraph, out-of-range, empty document, special chars
+  - Ledger entry added with SHA-256
+  - dotnet test passes focused filter
+
+forbidden_paths:
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+
+rollback_plan: Revert FodtDocument.cs changes and remove test file

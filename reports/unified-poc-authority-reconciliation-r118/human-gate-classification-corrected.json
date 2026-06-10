@@ -1,0 +1,40 @@
+{
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-POC-AUTHORITY-RECONCILIATION-R118-001",
+  "generated": "2026-06-05",
+  "gates": [
+    {
+      "gate": "gate_11_commercial_release",
+      "original_classification": "IMPLEMENTATION_BLOCKER",
+      "corrected_classification": "RELEASE_ONLY_GATE",
+      "reason": "Gate 11 requires business approval from Babar Raza, not additional implementation",
+      "blocks_poc_candidate": false,
+      "blocks_release": true,
+      "agent_can_approve": false,
+      "approver": "Babar Raza"
+    },
+    {
+      "gate": "git_push",
+      "original_classification": "HARD_STOP",
+      "corrected_classification": "HARD_STOP",
+      "reason": "Push requires explicit user authorization — unchanged",
+      "blocks_poc_candidate": false,
+      "blocks_release": true,
+      "agent_can_approve": false,
+      "approver": "user"
+    },
+    {
+      "gate": "nuget_publication",
+      "original_classification": "HARD_STOP",
+      "corrected_classification": "HARD_STOP",
+      "reason": "Publication requires Gate 11 + explicit user authorization",
+      "blocks_poc_candidate": false,
+      "blocks_release": true,
+      "agent_can_approve": false,
+      "approver": "Babar Raza + user"
+    }
+  ],
+  "implementation_blockers": 0,
+  "poc_blockers": 0,
+  "release_blockers": 3,
+  "verdict": "NO_IMPLEMENTATION_BLOCKERS_RELEASE_APPROVAL_PENDING"
+}

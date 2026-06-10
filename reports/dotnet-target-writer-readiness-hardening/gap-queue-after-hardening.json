@@ -1,0 +1,47 @@
+{
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "architecture_blocked_seed": [
+    "commercial-net-fods-dogfood-status-fods-to-csv-dotnet",
+    "commercial-net-fods-dogfood-status-fods-to-html-dotnet",
+    "commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet",
+    "commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet"
+  ],
+  "gap_statuses": [
+    {
+      "gap_id": "commercial-net-fods-dogfood-status-fods-to-csv-dotnet",
+      "readiness_status": "READY",
+      "accepted_for_poc": true,
+      "blocked": false,
+      "writer_library": "FormatFactory.Csv",
+      "writer_source": "src/net/csv/CsvWriter.cs"
+    },
+    {
+      "gap_id": "commercial-net-fods-dogfood-status-fods-to-html-dotnet",
+      "readiness_status": "READY",
+      "accepted_for_poc": true,
+      "blocked": false,
+      "writer_library": "FormatFactory.Html",
+      "writer_source": "src/net/html/HtmlWriter.cs"
+    },
+    {
+      "gap_id": "commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet",
+      "readiness_status": "READY",
+      "accepted_for_poc": true,
+      "blocked": false,
+      "writer_library": "FormatFactory.Txt",
+      "writer_source": "src/net/txt/TxtWriter.cs"
+    },
+    {
+      "gap_id": "commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet",
+      "readiness_status": "READY",
+      "accepted_for_poc": true,
+      "blocked": false,
+      "writer_library": "FormatFactory.Markdown",
+      "writer_source": "src/net/markdown/MarkdownWriter.cs"
+    }
+  ],
+  "blocked_gap_ids_after_hardening": [],
+  "gaps_remaining_blocked": 0,
+  "BLOCKED_GAP_IDS_dynamic": []
+}

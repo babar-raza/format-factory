@@ -1,0 +1,19 @@
+adoption_handoff_id: SKILLS-R103-ADOPT-SUPERVISOR-001
+target_stream: supervisor
+integration_type: transcript_enforcement
+description: "Supervisor grading rejects work items that claim skill execution but lack valid transcript"
+enforcement_rules:
+  - rule: "If work_item references a skill_id, evidence_paths must include a transcript JSON"
+    check: "File exists and validate_skill_transcript.py returns valid=true"
+    failure_grade: OVERCLAIMED
+    failure_reason: "Missing or invalid skill transcript"
+  - rule: "Live src-editing transcripts must have ledger_entry_id"
+    check: "validate_skill_transcript.py checks track in SRC_EDITING_TRACKS"
+    failure_grade: OVERCLAIMED
+    failure_reason: "Live src-editing without ledger entry"
+  - rule: "Transcript actual_files_changed must be subset of allowed_files"
+    check: "validate_skill_transcript.py path containment check"
+    failure_grade: OVERCLAIMED
+    failure_reason: "Files changed outside allowed paths"
+validator_tool: tools/supervisor/validate_skill_transcript.py
+test_suite: tests/python/supervisor/test_validate_skill_transcript.py

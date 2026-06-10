@@ -1,0 +1,70 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMY-LOOP-HARDENING-AFTER-H4-001",
+  "generated": "2026-06-06",
+  "ecosystem_tools": [
+    {
+      "id": "cognee",
+      "display_name": "Cognee Memory/RAG",
+      "current_status": "NOT_FOUND",
+      "discover_method": "python -c \"import cognee\"",
+      "install_command": "pip install cognee",
+      "credential_required": false,
+      "agent_can_install": true,
+      "sprint_to_install": "future_sprint_post_h4_plus",
+      "h_level_unlock": "H5 (if dispatched via runner after install)",
+      "notes": "Memory backend; Cognee recall != proof. Would enable COGNEE_MEMORY_BACKEND discover()=VERIFIED_CALLABLE after install."
+    },
+    {
+      "id": "skill_seekers",
+      "display_name": "Skill Seekers",
+      "current_status": "NOT_FOUND",
+      "discover_method": "python -c \"import skill_seekers\"",
+      "install_command": "pip install skill-seekers",
+      "credential_required": false,
+      "agent_can_install": true,
+      "sprint_to_install": "future_sprint_post_h4_plus",
+      "h_level_unlock": "H5 (if dispatched via runner and Skill tool invocation evidence recorded)",
+      "notes": "Generated SKILL.md != installed skill. Proof requires Skill tool call returns execution evidence."
+    },
+    {
+      "id": "openspec",
+      "display_name": "OpenSpec",
+      "current_status": "NOT_FOUND",
+      "discover_method": "npx --no-install openspec --version",
+      "install_command": "npm install -g openspec",
+      "credential_required": false,
+      "agent_can_install": true,
+      "sprint_to_install": "future_sprint_post_h4_plus",
+      "h_level_unlock": "H5 (spec/change layer; does not add proof level directly)",
+      "notes": "OpenSpec = spec layer, NOT executor. Not counted as H-level proof."
+    },
+    {
+      "id": "task_master",
+      "display_name": "Task Master MCP",
+      "current_status": "CONFIG_ONLY",
+      "discover_method": "L1=config in .vscode/mcp.json; L2=daemon running?; L3=tool callable?; L4=API key?",
+      "install_command": "TASK_MASTER_API_KEY env var + start MCP daemon",
+      "credential_required": true,
+      "agent_can_install": false,
+      "credential_provider": "human (TASK_MASTER_API_KEY)",
+      "sprint_to_install": "human_action_required_first",
+      "h_level_unlock": "H5 (if dispatched via runner and L5=READY)",
+      "notes": "TM 'done' != taskcard CLOSED. Format Factory supervisor = sole authority."
+    },
+    {
+      "id": "professionalize_llm",
+      "display_name": "llm.professionalize.com",
+      "current_status": "CONFIG_PRESENT_CREDENTIAL_PRESENT",
+      "discover_method": "classify_endpoint_availability('professionalize')",
+      "install_command": "Implement LLM_API_CALL dispatch in llm_api_backend.py",
+      "credential_required": true,
+      "credential_status": "PRESENT",
+      "agent_can_install": true,
+      "sprint_to_install": "immediate_next_sprint (allow tools/supervisor/ writes)",
+      "h_level_unlock": "H5 (first agentic LLM backend dispatch via runner)",
+      "notes": "PROFESSIONALIZE_API_KEY PRESENT. Only missing: HTTP dispatch implementation in llm_api_backend.py. This is the highest-priority H5 path."
+    }
+  ],
+  "highest_priority_h5_path": "professionalize_llm",
+  "recommended_next_sprint": "Implement LLM_API_CALL dispatch in llm_api_backend.py; set preferred_backend=LLM_API in next-action; prove H5"
+}

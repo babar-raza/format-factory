@@ -1,0 +1,50 @@
+[
+  {
+    "item_id": "W0-R103-ACCEPTANCE",
+    "r104_grade": "ACCEPTED",
+    "r105_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Path-evidence only, no test proof. Single markdown report with no automated verification of R103 verdict accuracy or carry-forward issue documentation."
+  },
+  {
+    "item_id": "W1-ADOPTION-ENFORCEMENT",
+    "r104_grade": "ACCEPTED",
+    "r105_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "YAML enforcement packages exist for 3 streams but no tests validate schema, rule completeness, or grade-impact definitions. Declaration shows tests_supporting: []."
+  },
+  {
+    "item_id": "W2-SKILL-PROMOTION",
+    "r104_grade": "ACCEPTED",
+    "r105_regrade": "ACCEPTED_VERIFIED",
+    "reason": "21 tests pass covering command file structure, frontmatter, registry consistency. Command validation JSON confirms 23/23 commands pass."
+  },
+  {
+    "item_id": "W3-VALIDATOR-HARDENING",
+    "r104_grade": "ACCEPTED",
+    "r105_regrade": "ACCEPTED_VERIFIED",
+    "reason": "50/50 tests pass across 3 test files. Raw log present. Both command-validation and transcript-validation JSON results present with structured data."
+  },
+  {
+    "item_id": "W4-PROOF-TRANSCRIPTS",
+    "r104_grade": "ACCEPTED",
+    "r105_regrade": "ACCEPTED_VERIFIED",
+    "reason": "4 transcripts validate via validator. 3 PASS (dry-run), 1 FAIL (anti-bypass-demo -- expected). Covers .NET, Python, governance, and anti-bypass scenarios."
+  },
+  {
+    "item_id": "W5-LEDGER-BRIDGE",
+    "r104_grade": "ACCEPTED",
+    "r105_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Bridge design doc and remediation template YAML exist but no tests validate the workflow or template structure."
+  },
+  {
+    "item_id": "W6-STREAM-ISOLATION",
+    "r104_grade": "ACCEPTED",
+    "r105_regrade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "Stream isolation documented but not enforced. Infrastructure limitation acknowledged. 5 orphan commands represent cross-stream contamination."
+  },
+  {
+    "item_id": "W7-EVIDENCE-MANIFEST",
+    "r104_grade": "ACCEPTED",
+    "r105_regrade": "ACCEPTED_VERIFIED",
+    "reason": "48 artifacts enumerated, 0 missing. Manifest internally consistent and machine-parseable."
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-06-05",
+  "subsystems": {
+    "ProductRequirementRegistry": {"status": "PRESENT", "module": "models.py+graph_store.py", "pilot_used": true},
+    "CapabilityClaimRegistry": {"status": "PRESENT", "module": "models.py+graph_store.py", "pilot_used": true},
+    "UnsupportedFeatureLedger": {"status": "PRESENT", "module": "models.py+graph_store.py", "pilot_used": true},
+    "CapabilityDeltaSystem": {"status": "PRESENT", "module": "capability_delta.py", "pilot_used": false, "note": "Delta records created; full promotion chain not run in pilot (outputs produced)"},
+    "CapabilityCoverageEvaluator": {"status": "PRESENT", "module": "coverage_evaluator.py", "pilot_used": true, "claims_evaluated": 20},
+    "OverclaimDetector": {"status": "PRESENT", "module": "overclaim_detector.py", "pilot_used": true, "overclaims_found": 0},
+    "StalenessInvalidationEngine": {"status": "PRESENT", "module": "staleness_invalidator.py", "pilot_used": true, "stale_claims": 1},
+    "PocReadinessComputer": {"status": "PRESENT", "module": "poc_readiness.py", "pilot_used": true},
+    "MainstreamGapQueueGenerator": {"status": "PRESENT", "module": "mainstream_gap_queue.py", "pilot_used": true},
+    "SupervisorVerdictPacketGenerator": {"status": "PRESENT", "module": "supervisor_verdict_packet.py", "pilot_used": true},
+    "PocTargetsSyncProposalGenerator": {"status": "PRESENT", "module": "poc_targets_sync_proposal.py", "pilot_used": true},
+    "EvidenceGraphImporter": {"status": "PRESENT", "module": "import_existing_state.py", "pilot_used": false, "note": "Importer exists; pilot built graph directly for performance"},
+    "GoldenReplaySuite": {"status": "PRESENT", "module": "run_replay_fixtures.py", "pilot_used": true, "fixtures": 6}
+  },
+  "all_present": true,
+  "missing": [],
+  "unverified": []
+}

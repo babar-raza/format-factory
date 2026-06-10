@@ -1,0 +1,43 @@
+{
+  "sprint_id": "FORMAT-FACTORY-HOST-PROOFED-AUTONOMOUS-FORMAT-PILOT-001",
+  "evaluated_at": "2026-06-05",
+
+  "classification": "HOST_RUNNER_LIVE_INVOCATION_BLOCKED_BY_CLAUDECODE",
+  "proven": false,
+
+  "environment_checks": {
+    "CLAUDECODE_env_var": "PRESENT",
+    "CLAUDECODE_value": "1",
+    "nested_session_detected": true,
+    "cli_path": "C:/Users/prora/AppData/Roaming/npm/claude.cmd",
+    "cli_version": "2.1.62 (Claude Code)",
+    "cli_detected": true,
+    "dry_run_safe": true
+  },
+
+  "noop_attempt": {
+    "attempted": false,
+    "reason": "CLAUDECODE=1 env var present — nested Claude Code session detected. Per autonomous_host_runner.py policy, nested invocation is not attempted when CLAUDECODE is set. This prevents infinite session nesting.",
+    "would_block": true,
+    "expected_error": "Claude Code cannot be launched inside another Claude Code session"
+  },
+
+  "policy_compliance": {
+    "compliant": true,
+    "rule": "Do not attempt nested invocation unless policy explicitly allows it",
+    "source": "Phase 1 requirement 2: If CLAUDECODE is present, do not attempt nested invocation unless policy explicitly allows it"
+  },
+
+  "wiring_instructions": {
+    "description": "To prove live host invocation, run from an EXTERNAL terminal (not inside Claude Code):",
+    "step_1": "Open a new terminal window outside Claude Code",
+    "step_2": "cd c:/Users/prora/OneDrive/Documents/GitHub/format-factory",
+    "step_3": "Run: claude --print -p \"Respond with exactly: HOST_RUNNER_NOOP_OK. Do not modify files. Do not run commands.\"",
+    "step_4": "Expected output: HOST_RUNNER_NOOP_OK",
+    "step_5": "Confirm git status unchanged",
+    "step_6": "Record result in reports/host-proofed-format-pilot/host-runner-external-proof.json",
+    "command": "claude --print -p \"Respond with exactly: HOST_RUNNER_NOOP_OK. Do not modify files. Do not run commands.\""
+  },
+
+  "impact_on_pilot": "Pilot proceeds in SUPERVISED_AUTONOMOUS_PILOT_ONLY mode. No claim of fully unattended autonomy. All pilot execution is supervised (Babar manually starts Claude Code). This is not a product defect — it is a runtime environment constraint."
+}

@@ -1,0 +1,72 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-R3-CLOSURE-REPAIR-AND-R4-ODF-PREPARATION-001",
+  "generated_at": "2026-06-05",
+  "r3_contradictions": [
+    {
+      "id": "C1",
+      "description": "review-package-proof.md states 'Accepted: 8 work items / Rework: 1' (intermediate state) but supervisor-review.json final_verdict=ACCEPTED with 9/9 ACCEPTED_VERIFIED",
+      "classification": "STALE_INTERMEDIATE_STATE",
+      "severity": "LOW",
+      "evidence_path": "reports/spec-authority-real-pilot-r3/review-package-proof.md",
+      "disposition": "CARRY_FORWARD_NOTE",
+      "resolution": "R3C sprint documents final state is ACCEPTED. R3C review-package-proof.md will accurately reflect final state."
+    },
+    {
+      "id": "C2",
+      "description": "R3 ZIP (6eb270b) does not contain final-git-status.txt because the file was created after the ZIP was built",
+      "classification": "CLOSURE_ORDER_DEFECT",
+      "severity": "MEDIUM",
+      "evidence_path": ".local/supervisor/reviews/spec-authority-real-pilot-r3/declaration-review-package.zip",
+      "disposition": "REBUILD_IN_R3C",
+      "resolution": "R3C sprint creates fresh ZIP after all artifacts including final-git-status.txt are present."
+    },
+    {
+      "id": "C3",
+      "description": "R3 ZIP contains placeholder version of review-package-proof.md (pre-SHA update), not the final version",
+      "classification": "CLOSURE_ORDER_DEFECT",
+      "severity": "MEDIUM",
+      "evidence_path": ".local/supervisor/reviews/spec-authority-real-pilot-r3/declaration-review-package.zip",
+      "disposition": "REBUILD_IN_R3C",
+      "resolution": "R3C review-package-proof.md written before ZIP is built; ZIP will contain final proof."
+    },
+    {
+      "id": "C4",
+      "description": "Proof SHA 6eb270b85353fd385f9369e4ffdd479a39a42f8cac6e9cac6b9c72ef7883769c was computed from incomplete artifact set (missing final-git-status.txt, containing stale proof)",
+      "classification": "HASH_COVERS_INCOMPLETE_ARTIFACT_SET",
+      "severity": "MEDIUM",
+      "evidence_path": "reports/spec-authority-real-pilot-r3/review-package-proof.md",
+      "disposition": "REBUILD_IN_R3C",
+      "resolution": "R3C will build new ZIP and compute new SHA from complete artifact set."
+    }
+  ],
+  "r3_non_contradictions": [
+    {
+      "id": "NC1",
+      "description": "overall_verdict in supervisor-review.json = ACCEPTED (not ACCEPTED_WITH_REWORK as reported in sprint prompt)",
+      "classification": "STALE_PROMPT_DESCRIPTION",
+      "note": "Sprint prompt described intermediate state. Final state is ACCEPTED. No repair needed for this."
+    },
+    {
+      "id": "NC2",
+      "description": "DIF authority_status = EMPIRICAL_ONLY in all artifacts. No promotion attempted.",
+      "classification": "CONSISTENT",
+      "note": "No contradiction."
+    },
+    {
+      "id": "NC3",
+      "description": "FODS/FODT authority_status = ACCEPTED_WITH_CAVEAT in all artifacts. No overclaim.",
+      "classification": "CONSISTENT",
+      "note": "No contradiction."
+    },
+    {
+      "id": "NC4",
+      "description": "80/80 tests passed. Raw logs present. Sample output present.",
+      "classification": "CONSISTENT",
+      "note": "No contradiction."
+    }
+  ],
+  "root_cause": "CLOSURE_ORDER_DEFECT — ZIP was built before all artifacts were finalized",
+  "total_contradictions": 4,
+  "contradictions_requiring_rebuild": 3,
+  "contradictions_carry_forward_only": 1
+}

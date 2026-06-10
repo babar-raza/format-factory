@@ -1,0 +1,25 @@
+{
+  "snapshot_id": "SAL-RCA-SNAPSHOT-R2R3-001",
+  "confirmed_by_sprint": "FORMAT-FACTORY-AUTHORITY-LAYERS-AND-TARGET-WRITER-MEGA-TRAIN-R119-001",
+  "confirmed_at": "2026-06-05",
+  "source_packet": "reports/spec-authority-r3-closure-repair/rca-r2-input-packet.json",
+  "status": "FROZEN",
+  "rca_ready": true,
+  "spec_tests_pass": true,
+  "spec_test_count": 163,
+  "spec_test_fail_count": 0,
+  "review_package_proof_sha256": "cda78872d5b98e5e1b5634257700c63ef452b3111f9153d58d827acab409e96d",
+  "review_package_proof_path": "reports/spec-authority-r3-closure-repair/review-package-proof.md",
+  "context_packs": [
+    {"format_id": "zst", "status": "ACCEPTED_SPEC", "requirements_count": 58},
+    {"format_id": "netpbm", "status": "ACCEPTED_WITH_CAVEAT", "requirements_count": 12},
+    {"format_id": "dif", "status": "ACCEPTED_WITH_CAVEAT", "requirements_count": 0},
+    {"format_id": "fods", "status": "ACCEPTED_SPEC", "requirements_count": null},
+    {"format_id": "fodt", "status": "ACCEPTED_SPEC", "requirements_count": null}
+  ],
+  "caveats": [
+    "DIF has no formal standard — empirical only",
+    "Netpbm is de facto standard — advisory not binding",
+    "FODS/FODT snapshot was pending at R1 — now confirmed present in rca-r2-input-packet.json"
+  ]
+}

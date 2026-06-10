@@ -1,0 +1,343 @@
+{
+  "packet_version": "2.0",
+  "packet_v1_path": "reports/tri-lane-integration-fabric/mainstream-execution-packet.json",
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "packet_type": "mainstream_execution_packet",
+  "authority_state": "advisory",
+  "non_authoritative": true,
+  "requires_mainstream_product_authority": true,
+  "integration_status": "OK",
+  "acceleration_hardening_index_used": true,
+  "skills_finalization_packets_loaded": [
+    "FODS",
+    "FODT_MARKDOWN",
+    "FODT_TXT",
+    "Netpbm"
+  ],
+  "family_count": 4,
+  "families": [
+    {
+      "family": "FODS",
+      "capability": "dogfood_status.fods_to_csv_dotnet",
+      "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+      "product_track": "commercial_net",
+      "readiness": "READY_FOR_EXECUTION",
+      "supervisor_route": {
+        "source_file": "src/net/fods/FodsDocument.cs",
+        "git_status": "M",
+        "family_active": true,
+        "svg_replacement_rejected": false,
+        "routing_note": "",
+        "authority_state": "routing_authority"
+      },
+      "skills_handoff": {
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+        "skill": "add-dotnet-api",
+        "note": "Full FODS packet from skills-product-first sprint",
+        "authority_state": "governed_execution_authority"
+      },
+      "acceleration_advisory": {
+        "packet_path": "reports\\acceleration-hardening\\replay-run-2\\fods-dogfood_status-fods_to_csv_dotnet.json",
+        "capability_path": "dogfood_status.fods_to_csv_dotnet",
+        "authority_state": "ai_draft",
+        "use_for": "Skills stream may use packet data as advisory input; normalization required before registry entry.",
+        "non_authoritative": true
+      },
+      "allowed_files": [
+        "src/net/fods/FodsDocument.cs",
+        "src/net/fods/FodsWorkbook.cs",
+        "tests/net/fods/FodsR114ExportToCsvTests.cs",
+        "examples/net/fods/"
+      ],
+      "forbidden_files": [
+        "src/python/",
+        "registry/format-registry.yaml",
+        "plans/master-plan.md",
+        "product-capability-matrix/poc-targets.yaml"
+      ],
+      "expected_tests": "tests/net/fods/FodsR114ExportToCsvTests.cs with 8+ test methods",
+      "expected_dogfood_output": "CSV file produced from FODS spreadsheet using FodsDocument.ExportToCsv()",
+      "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-fods-csv-{id}.json",
+      "proposed_capability_delta": {
+        "file": "product-capability-matrix/poc-targets.yaml",
+        "path": "fods.dogfood_status.fods_to_csv_dotnet",
+        "proposed_status": "IMPLEMENTED",
+        "requires_test_evidence": true,
+        "proposed_only": true,
+        "authority_note": "Do not write directly \u2014 requires test evidence and Mainstream product authority"
+      },
+      "validation_commands": [
+        "dotnet test --filter FodsR114",
+        "python tools/supervisor/validate_skill_transcript.py <transcript-path>"
+      ],
+      "stop_conditions": [
+        "git push without human authorization",
+        "Gate 8 or Gate 11 approval without human",
+        "product source edit outside allowed_files",
+        "product-capability-matrix/poc-targets.yaml direct write",
+        "AI output declared authoritative without test evidence",
+        "SVG declared as Netpbm replacement"
+      ],
+      "rollback_requirements": [
+        "If tests fail after source edit, revert the edit before re-attempting",
+        "If governed transcript validation fails, do not declare evidence accepted",
+        "If capability delta lacks test evidence, do not update poc-targets.yaml"
+      ]
+    },
+    {
+      "family": "FODT",
+      "capability": "dogfood_status.fodt_to_markdown_dotnet",
+      "gap_id": "GAP-FODT-DOGFOOD-MD-DOTNET-001",
+      "product_track": "commercial_net",
+      "readiness": "READY_FOR_EXECUTION",
+      "supervisor_route": {
+        "source_file": "src/net/fodt/FodtDocument.cs",
+        "git_status": "M",
+        "family_active": true,
+        "svg_replacement_rejected": false,
+        "routing_note": "",
+        "authority_state": "routing_authority"
+      },
+      "skills_handoff": {
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+        "skill": "add-dotnet-api",
+        "note": "Full FODT Markdown packet from skills-product-breadth-finalization sprint",
+        "authority_state": "governed_execution_authority"
+      },
+      "acceleration_advisory": {
+        "packet_path": "reports\\acceleration-hardening\\replay-run-2\\fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+        "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+        "authority_state": "ai_draft",
+        "use_for": "Skills stream may use packet data as advisory input; normalization required before registry entry.",
+        "non_authoritative": true
+      },
+      "allowed_files": [
+        "src/net/fodt/FodtDocument.cs",
+        "src/net/fodt/FodtMarkdownExporter.cs",
+        "tests/net/fodt/FodtR114ExportToMarkdownTests.cs",
+        "examples/net/fodt/"
+      ],
+      "forbidden_files": [
+        "src/python/",
+        "registry/format-registry.yaml",
+        "plans/master-plan.md",
+        "product-capability-matrix/poc-targets.yaml"
+      ],
+      "expected_tests": "tests/net/fodt/FodtR114ExportToMarkdownTests.cs with 8+ test methods",
+      "expected_dogfood_output": "Markdown file produced from FODT document using FodtDocument.ExportToMarkdown()",
+      "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-fodt-markdown-{id}.json",
+      "proposed_capability_delta": {
+        "file": "product-capability-matrix/poc-targets.yaml",
+        "path": "fodt.dogfood_status.fodt_to_markdown_dotnet",
+        "proposed_status": "IMPLEMENTED",
+        "requires_test_evidence": true,
+        "proposed_only": true,
+        "authority_note": "Do not write directly \u2014 requires test evidence and Mainstream product authority"
+      },
+      "validation_commands": [
+        "dotnet test --filter FodtR114",
+        "python tools/supervisor/validate_skill_transcript.py <transcript-path>"
+      ],
+      "stop_conditions": [
+        "git push without human authorization",
+        "Gate 8 or Gate 11 approval without human",
+        "product source edit outside allowed_files",
+        "product-capability-matrix/poc-targets.yaml direct write",
+        "AI output declared authoritative without test evidence",
+        "SVG declared as Netpbm replacement"
+      ],
+      "rollback_requirements": [
+        "If tests fail after source edit, revert the edit before re-attempting",
+        "If governed transcript validation fails, do not declare evidence accepted",
+        "If capability delta lacks test evidence, do not update poc-targets.yaml"
+      ]
+    },
+    {
+      "family": "FODT_TXT",
+      "capability": "dogfood_status.fodt_to_txt_dotnet",
+      "gap_id": "GAP-FODT-DOGFOOD-TXT-DOTNET-001",
+      "product_track": "commercial_net",
+      "readiness": "READY_FOR_EXECUTION",
+      "supervisor_route": {
+        "source_file": "src/net/fodt/FodtDocument.cs",
+        "git_status": "M",
+        "family_active": true,
+        "svg_replacement_rejected": false,
+        "routing_note": "",
+        "authority_state": "routing_authority"
+      },
+      "skills_handoff": {
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+        "skill": "add-dotnet-api",
+        "note": "Full FODT TXT packet from skills-product-breadth-finalization sprint (new in refresh)",
+        "authority_state": "governed_execution_authority"
+      },
+      "acceleration_advisory": {
+        "packet_path": "reports\\acceleration-hardening\\replay-run-2\\fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+        "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+        "authority_state": "ai_draft",
+        "use_for": "Skills stream may use packet data as advisory input; normalization required before registry entry.",
+        "non_authoritative": true
+      },
+      "allowed_files": [
+        "src/net/fodt/FodtDocument.cs",
+        "src/net/fodt/FodtTxtExporter.cs",
+        "tests/net/fodt/FodtR114ExportToTxtTests.cs",
+        "examples/net/fodt/"
+      ],
+      "forbidden_files": [
+        "src/python/",
+        "registry/format-registry.yaml",
+        "plans/master-plan.md",
+        "product-capability-matrix/poc-targets.yaml"
+      ],
+      "expected_tests": "tests/net/fodt/FodtR114ExportToTxtTests.cs with 8+ test methods",
+      "expected_dogfood_output": "Plain text file produced from FODT document using FodtDocument.ExportToTxt()",
+      "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-fodt-txt-{id}.json",
+      "proposed_capability_delta": {
+        "file": "product-capability-matrix/poc-targets.yaml",
+        "path": "fodt.dogfood_status.fodt_to_txt_dotnet",
+        "proposed_status": "IMPLEMENTED",
+        "requires_test_evidence": true,
+        "proposed_only": true,
+        "authority_note": "Do not write directly \u2014 requires test evidence and Mainstream product authority"
+      },
+      "validation_commands": [
+        "dotnet test --filter FodtR114ExportToTxt",
+        "python tools/supervisor/validate_skill_transcript.py <transcript-path>"
+      ],
+      "stop_conditions": [
+        "git push without human authorization",
+        "Gate 8 or Gate 11 approval without human",
+        "product source edit outside allowed_files",
+        "product-capability-matrix/poc-targets.yaml direct write",
+        "AI output declared authoritative without test evidence",
+        "SVG declared as Netpbm replacement"
+      ],
+      "rollback_requirements": [
+        "If tests fail after source edit, revert the edit before re-attempting",
+        "If governed transcript validation fails, do not declare evidence accepted",
+        "If capability delta lacks test evidence, do not update poc-targets.yaml"
+      ]
+    },
+    {
+      "family": "Netpbm",
+      "capability": "dotnet_status.netpbm_flip_and_merge_pipeline",
+      "gap_id": "GAP-NETPBM-DOGFOOD-PIPELINE-DOTNET-001",
+      "product_track": "commercial_net",
+      "readiness": "READY_FOR_EXECUTION_WITH_VALIDATION",
+      "supervisor_route": {
+        "source_file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "git_status": "M",
+        "family_active": true,
+        "svg_replacement_rejected": true,
+        "routing_note": "SVG cannot replace Netpbm \u2014 format class mismatch (vector vs raster)",
+        "authority_state": "routing_authority"
+      },
+      "skills_handoff": {
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+        "skill": "add-dotnet-api",
+        "note": "Full Netpbm packet from skills-product-breadth-finalization sprint (upgraded from shell)",
+        "authority_state": "governed_execution_authority"
+      },
+      "acceleration_advisory": {
+        "packet_path": "reports\\acceleration-hardening\\replay-run-2\\netpbm-dotnet_status-netpbm_flip_diagonal.json",
+        "capability_path": "dotnet_status.netpbm_flip_diagonal",
+        "authority_state": "ai_draft",
+        "use_for": "Skills stream may use packet data as advisory input; normalization required before registry entry.",
+        "non_authoritative": true
+      },
+      "allowed_files": [
+        "src/net/netpbm/Model/NetpbmImage.cs",
+        "tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs",
+        "examples/net/netpbm/"
+      ],
+      "forbidden_files": [
+        "src/python/",
+        "registry/format-registry.yaml",
+        "plans/master-plan.md",
+        "product-capability-matrix/poc-targets.yaml",
+        "src/net/svg/"
+      ],
+      "expected_tests": "tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs with 8+ test methods",
+      "expected_dogfood_output": "Netpbm image produced using NetpbmImage.Pipeline() method chain (flip + merge steps)",
+      "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-netpbm-pipeline-{id}.json",
+      "proposed_capability_delta": {
+        "file": "product-capability-matrix/poc-targets.yaml",
+        "path": "netpbm.dotnet_status.netpbm_image_pipeline_dotnet",
+        "proposed_status": "IMPLEMENTED",
+        "requires_test_evidence": true,
+        "proposed_only": true,
+        "authority_note": "Do not write directly \u2014 requires test evidence and Mainstream product authority"
+      },
+      "validation_commands": [
+        "dotnet test --filter NetpbmR114",
+        "python tools/supervisor/validate_skill_transcript.py <transcript-path>"
+      ],
+      "stop_conditions": [
+        "git push without human authorization",
+        "Gate 8 or Gate 11 approval without human",
+        "product source edit outside allowed_files",
+        "product-capability-matrix/poc-targets.yaml direct write",
+        "AI output declared authoritative without test evidence",
+        "SVG declared as Netpbm replacement"
+      ],
+      "rollback_requirements": [
+        "If tests fail after source edit, revert the edit before re-attempting",
+        "If governed transcript validation fails, do not declare evidence accepted",
+        "If capability delta lacks test evidence, do not update poc-targets.yaml"
+      ]
+    }
+  ],
+  "global_stop_conditions": [
+    "git push without explicit human authorization",
+    "Gate 8 or Gate 11 self-approval",
+    "product-capability-matrix/poc-targets.yaml direct write from this packet",
+    "Acceleration advisory used as authoritative evidence without test validation",
+    "External tool activated without MODE 4+ authorization"
+  ],
+  "global_rollback_requirements": [
+    "All src/ changes must be reversible via git revert",
+    "No gate states may be permanently mutated by Mainstream alone",
+    "Evidence declaration requires supervisor autonomous-cycle validation"
+  ],
+  "authority_boundaries": {
+    "supervisor": "routing_authority",
+    "skills": "governed_execution_authority",
+    "acceleration": "ai_draft (advisory only)",
+    "mainstream": "product_implementation_authority (this stream implements)",
+    "format_factory_gates": "human_authority (never self-approved)"
+  },
+  "limitations": [],
+  "metadata": {
+    "integration_result_status": "OK",
+    "integration_active_families": 4,
+    "integration_limitations": [],
+    "source_lanes": {
+      "supervisor": {
+        "reconciliation_path": "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
+        "routing_path": "reports/supervisor-streams/supervisor/routing-packet.json",
+        "authority": "routing_authority"
+      },
+      "skills": {
+        "fods_packet": "reports/skills-product-first/mainstream-consumption-packet.json",
+        "fodt_markdown_packet": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+        "fodt_txt_packet": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+        "netpbm_packet": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+        "authority": "governed_execution_authority",
+        "resolver_version": "v2_finalization"
+      },
+      "acceleration": {
+        "hardening_index": "reports/acceleration-hardening/mainstream-packet-index.json",
+        "legacy_fallback": "reports/acceleration-product-first/mainstream-consumption-packets",
+        "authority": "ai_draft",
+        "non_authoritative": true
+      }
+    }
+  }
+}

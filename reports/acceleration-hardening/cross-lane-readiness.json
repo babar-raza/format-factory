@@ -1,0 +1,60 @@
+{
+  "generated": "2026-06-04T08:40:14.102711+00:00",
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-HARDENING-IV-AND-CONSUMPTION-CONTRACT-001",
+  "overall_verdict": "ACCELERATION_CONSUMABLE_WITH_LIMITATIONS",
+  "verdict_reason": "All 4 packets have runtime_status=ok after hardening; agentic_low_risk management still skipped (no model)",
+  "supervisor_classification": "ACCELERATION_CONSUMABLE",
+  "skills_classification": "ACCELERATION_CONSUMABLE_WITH_LIMITATIONS",
+  "mainstream_advisory_status": "ADVISORY_ONLY",
+  "packets": [
+    {
+      "format": "fods",
+      "capability_path": "dogfood_status.fods_to_csv_dotnet",
+      "product_track": "commercial_net",
+      "runtime_status": "ok",
+      "directly_consumable": true,
+      "test_plan_exists": true,
+      "supervisor_verdict": "ACCELERATION_CONSUMABLE",
+      "skills_compatible": true
+    },
+    {
+      "format": "fodt",
+      "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+      "product_track": "commercial_net",
+      "runtime_status": "ok",
+      "directly_consumable": true,
+      "test_plan_exists": true,
+      "supervisor_verdict": "ACCELERATION_CONSUMABLE",
+      "skills_compatible": true
+    },
+    {
+      "format": "netpbm",
+      "capability_path": "dotnet_status.netpbm_flip_diagonal",
+      "product_track": "commercial_net",
+      "runtime_status": "ok",
+      "directly_consumable": true,
+      "test_plan_exists": true,
+      "supervisor_verdict": "ACCELERATION_CONSUMABLE",
+      "skills_compatible": true
+    },
+    {
+      "format": "sylk",
+      "capability_path": "python_status.write_sylk",
+      "product_track": "foss_reduced",
+      "runtime_status": "ok",
+      "directly_consumable": true,
+      "test_plan_exists": true,
+      "supervisor_verdict": "ACCELERATION_CONSUMABLE",
+      "skills_compatible": true
+    }
+  ],
+  "cross_lane_rules": [
+    "No Acceleration packet mutates authority state",
+    "No Acceleration output closes taskcards",
+    "Mainstream can consume packet only as ai_draft advisory",
+    "Skills must normalize before any registry entry",
+    "Supervisor routes packet \u2014 does not execute it"
+  ],
+  "authority_state": "ai_draft",
+  "non_authoritative": true
+}

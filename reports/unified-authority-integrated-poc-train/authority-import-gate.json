@@ -1,0 +1,62 @@
+{
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "gate_id": "AUTHORITY-IMPORT-GATE-001",
+
+  "spec_authority": {
+    "status": "SPEC_AUTH_MWP_MISSING_OR_PARTIAL",
+    "tools_present": [],
+    "tools_missing": [
+      "tools/specification-authority-layer/spec_source_registry.py",
+      "tools/specification-authority-layer/spec_vault_ingest.py",
+      "tools/specification-authority-layer/spec_parser.py",
+      "tools/specification-authority-layer/spec_normalizer.py",
+      "tools/specification-authority-layer/spec_indexer.py",
+      "tools/specification-authority-layer/spec_digestor.py",
+      "tools/specification-authority-layer/requirement_extractor.py",
+      "tools/specification-authority-layer/spec_verifier.py",
+      "tools/specification-authority-layer/requirement_graph.py",
+      "tools/specification-authority-layer/context_pack_builder.py",
+      "tools/specification-authority-layer/spec_governance_runtime.py"
+    ],
+    "action": "EXECUTE_PHASE_2"
+  },
+
+  "req_capability_authority": {
+    "status": "RCA_MWP_PRESENT",
+    "tools_present": [
+      "tools/requirements_authority/__init__.py",
+      "tools/requirements_authority/models.py",
+      "tools/requirements_authority/graph_store.py",
+      "tools/requirements_authority/validators.py",
+      "tools/requirements_authority/import_existing_state.py",
+      "tools/requirements_authority/capability_delta.py",
+      "tools/requirements_authority/coverage_evaluator.py",
+      "tools/requirements_authority/overclaim_detector.py",
+      "tools/requirements_authority/staleness_invalidator.py",
+      "tools/requirements_authority/poc_readiness.py",
+      "tools/requirements_authority/mainstream_gap_queue.py",
+      "tools/requirements_authority/supervisor_verdict_packet.py",
+      "tools/requirements_authority/poc_targets_sync_proposal.py",
+      "tools/requirements_authority/run_replay_fixtures.py",
+      "tools/requirements_authority/validate_requirements_authority.py"
+    ],
+    "py_compile": "PASS",
+    "import_check": "PASS",
+    "node_types_count": 18,
+    "edge_types_count": 19,
+    "action": "EXECUTE_PHASE_3_VERIFY_AND_TEST"
+  },
+
+  "tri_lane_integration": {
+    "status": "READY_WITH_LIMITATIONS",
+    "mainstream_may_run_next": true,
+    "final_qa_gate": "PASS (15/15)",
+    "packet_v2_path": "reports/tri-lane-integration-refresh/mainstream-execution-packet.v2.json",
+    "action": "USE_AS_IS"
+  },
+
+  "overall_gate_result": "EXECUTE_PHASE_2_AND_3_BEFORE_MAINSTREAM",
+  "blocking_items": ["SPEC_AUTH_MWP_MISSING"],
+  "non_blocking_items": []
+}

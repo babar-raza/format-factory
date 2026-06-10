@@ -1,0 +1,26 @@
+id: GEC-TC-004
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Fix prompt generator: sanitize unsafe 'Authorized git commit + push' wording"
+status: completed
+lane: lane_d_prompt_generator
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  synthesize_trains() in generate_next_worker_prompt.py embedded next_action from
+  poc-targets.yaml directly, producing prompts with "Authorized git commit + push
+  (requires user authorization)" — an unsafe pattern that could confuse agents.
+scope:
+  - Add _next_action_requires_external_gate() helper in generate_next_worker_prompt.py
+  - Replace unsafe next_action text with safe alternative in synthesize_trains()
+  - Add tests to verify 0 trains with unsafe wording after fix
+files_modified:
+  - tools/supervisor/generate_next_worker_prompt.py
+acceptance_criteria:
+  - No train descriptions contain "Authorized git commit" after fix
+  - Safe replacement text is: "Prepare commit-ready packet only. Do not commit or push."
+dependencies: []
+handoff_to_autonomy_sprint: false

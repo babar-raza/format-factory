@@ -1,0 +1,20 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "qoi",
+  "api_name": "parse_qoi,parse_qoi_strict,probe_qoi,get_capabilities,encode_qoi,encode_qoi_to_file,get_encoder_capabilities",
+  "sprint_run_id": "mainstream-product-deepening-rnext10",
+  "changed_files": [
+    "src/python/qoi/__init__.py",
+    "tests/python/qoi/test_mdr10_qoi_exports.py"
+  ],
+  "test_results": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "ledger_entry_id": "MDR10-QOI-EXPORTS-001",
+  "ledger_validator": "PASS",
+  "verdict": "PASS",
+  "notes": "Exported parse_qoi, parse_qoi_strict, probe_qoi, get_capabilities from qoi_parser.py + encode_qoi, encode_qoi_to_file, get_encoder_capabilities from qoi_encoder.py via qoi/__init__.py. 9/9 tests pass."
+}

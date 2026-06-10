@@ -1,0 +1,102 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "evidence": "All 13 tool modules imported successfully",
+      "name": "tool_imports",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "No graph_dir provided \u2014 using empty store for smoke test",
+      "name": "graph_load",
+      "status": "SKIP"
+    },
+    {
+      "detail": "SHA-256 hash computed deterministically",
+      "evidence": "graph_hash=e3b0c44298fc1c14... (SHA-256, 64 hex chars)",
+      "name": "graph_hash_deterministic",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "0 errors, 0 warnings",
+      "name": "schema_and_invariants",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "Evaluated 0 claims. Overall: COVERAGE_BLOCKED (0/0 PASS)",
+      "name": "coverage_evaluator",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "0 errors, 0 warnings",
+      "name": "overclaim_detector",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "0 stale events, 0 stale claims",
+      "name": "staleness_invalidator",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "netpbm_retained=True \u2014 invariant enforced",
+      "name": "poc_readiness_netpbm_retained",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "svg_replacement_rejected=True \u2014 SVG must not replace Netpbm",
+      "name": "poc_readiness_svg_rejected",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "Gap queue: 0 entries, graph_hash=e3b0c44298fc1c14...",
+      "name": "gap_queue_generated",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "packet_id=svp:e3b0c44298fc1c14:202... decision=CONTINUE_MAINSTREAM_WITH_GAP_QUEUE",
+      "name": "supervisor_verdict_packet",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "source_graph_hash=e3b0c44298fc1c14...",
+      "name": "source_graph_hash_present",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "false_stop_risks count=3 (>= 3 required)",
+      "name": "false_stop_risks_present",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "proposal_id=sync-proposal:e3b0c44298... Prohibition note present \u2014 never direct mutation",
+      "name": "poc_targets_sync_proposal_no_mutation",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "6/6 fixtures PASS",
+      "name": "replay_fixtures_all_pass",
+      "status": "PASS"
+    },
+    {
+      "detail": "",
+      "evidence": "Same inputs \u2192 same graph hash across 3 reruns for all fixtures",
+      "name": "determinism_test",
+      "status": "PASS"
+    }
+  ],
+  "generated_at": "2026-06-04T12:55:19.939623+00:00",
+  "overall": "PASS"
+}

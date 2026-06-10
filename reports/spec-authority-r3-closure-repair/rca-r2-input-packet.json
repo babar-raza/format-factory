@@ -1,0 +1,98 @@
+{
+  "packet_id": "RCA-R2-INPUT-PACKET-001",
+  "generated_at": "2026-06-05",
+  "status": "FROZEN",
+  "source_snapshot_id": "SAL-RCA-SNAPSHOT-R2R3-001",
+  "source_snapshot_path": "reports/spec-authority-real-pilot-r3/rca-input-snapshot-manifest.json",
+  "capability_claims_present": false,
+  "rca_ready": true,
+  "context_packs": [
+    {
+      "format_id": "zst",
+      "source_id": "src-r2-zst-rfc8878",
+      "context_pack_id": "CP-ZST-9707e015c308",
+      "context_pack_sha256": "9707e015c3081ce2e7099fd3aed39b3c71b1e2ceac89c5fce93de6f61898e7b1",
+      "authority_status": "ACCEPTED_SPEC",
+      "caveat": null,
+      "downstream_usage": "Requirements MAY be used as authoritative product obligations",
+      "requirements_count": 58,
+      "sections_count": 491,
+      "deterministic": true,
+      "source_type": "rfc",
+      "source_url": "https://www.rfc-editor.org/rfc/rfc8878.txt"
+    },
+    {
+      "format_id": "netpbm",
+      "source_id": "src-r2-netpbm-spec",
+      "context_pack_id": "CP-NETPBM-9dee4b8f8608",
+      "context_pack_sha256": "9dee4b8f8608ff87f1cc6d4e9e0e19e3e1df2f4e87e4839e5d5a9f3ebc3abd91",
+      "authority_status": "ACCEPTED_WITH_CAVEAT",
+      "caveat": "De facto public domain standard; no formal IETF/ISO standards body",
+      "downstream_usage": "Advisory; requirements are de facto standard only, not binding RFC/ISO",
+      "requirements_count": 12,
+      "sections_count": 3,
+      "deterministic": true,
+      "source_type": "public_domain_spec",
+      "source_url": "https://netpbm.sourceforge.net/doc/"
+    },
+    {
+      "format_id": "dif",
+      "source_id": "src-r2-dif-empirical",
+      "context_pack_id": "CP-DIF-9ccc23683556",
+      "context_pack_sha256": "9ccc23683556d1b64d0f70427ef4cec7b6e4ef09f9defc50a4c7b1a2e8f7ce3d",
+      "authority_status": "EMPIRICAL_ONLY",
+      "caveat": "No authoritative public spec. Requirements are observational only. MUST NOT be promoted.",
+      "downstream_usage": "Observational only; not binding; MUST NOT be promoted to ACCEPTED_SPEC or ACCEPTED_WITH_CAVEAT",
+      "requirements_count": 13,
+      "sections_count": 6,
+      "deterministic": true,
+      "source_type": "empirical_observation",
+      "source_url": null,
+      "anti_bypass_rule": "DIF MUST NOT be promoted. Doing so is a governance bypass."
+    },
+    {
+      "format_id": "fods",
+      "source_id": "src-r2-fods-odf13",
+      "context_pack_id": "CP-FODS-418cb43b3ad8",
+      "context_pack_sha256": "418cb43b3ad808eab57f78e8d7a9f1e4b8e2d8e3c9a1f7e5b3d8a1e6c9f3b2a7",
+      "authority_status": "ACCEPTED_WITH_CAVEAT",
+      "caveat": "Scoped ODF 1.3 intro only (6000 chars). Full 1000+ page spec deferred to R4+. License review pending.",
+      "downstream_usage": "Structural guidance only; MUST be qualified as intro-only. Full spec pending R4+.",
+      "requirements_count": 3,
+      "sections_count": 51,
+      "deterministic": true,
+      "source_type": "odf_standard",
+      "source_url": "https://docs.oasis-open.org/office/OpenDocument/v1.3/os/",
+      "full_spec_status": "DEFERRED_R4_PLUS"
+    },
+    {
+      "format_id": "fodt",
+      "source_id": "src-r3-fodt-odf13",
+      "context_pack_id": "CP-FODT-ce25cfe79029",
+      "context_pack_sha256": "ce25cfe790299e6932ccb7c6385a6ac2f17b05e631d9ed2a0ee8a32f04cd70cf",
+      "authority_status": "ACCEPTED_WITH_CAVEAT",
+      "caveat": "Scoped ODF 1.3 intro only (5000 chars). Full spec deferred to R4+. License review pending.",
+      "downstream_usage": "Structural guidance only; MUST be qualified as intro-only. Full spec pending R4+.",
+      "requirements_count": 3,
+      "sections_count": 47,
+      "deterministic": true,
+      "source_type": "odf_standard",
+      "source_url": "https://docs.oasis-open.org/office/OpenDocument/v1.3/os/",
+      "full_spec_status": "DEFERRED_R4_PLUS"
+    }
+  ],
+  "downstream_usage_rules": {
+    "ZST": "ACCEPTED_SPEC — requirements are authoritative product obligations",
+    "Netpbm": "ACCEPTED_WITH_CAVEAT — advisory; de facto standard, no formal body",
+    "DIF": "EMPIRICAL_ONLY — observational; MUST NOT be promoted; not binding",
+    "FODS": "ACCEPTED_WITH_CAVEAT — intro scope only; await R4 full ingest",
+    "FODT": "ACCEPTED_WITH_CAVEAT — intro scope only; await R4 full ingest"
+  },
+  "open_items_for_rcal": [
+    "Full ODF 1.3 ingest for FODS/FODT (R4+) — currently only 3 requirements each",
+    "OASIS ODF 1.3 license confirmation — FODS/FODT currently ACCEPTED_WITH_CAVEAT",
+    "DIF authoritative spec location — EMPIRICAL_ONLY until found",
+    "Gnumeric XML spec ingestion (not yet started)",
+    "Netpbm PAM format ingestion (not yet started)"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "transcript_id": "tr:iteration-001-fodt",
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "iteration": 1,
+  "lane_id": "lane-005-fodt-r114",
+  "skill_used": "add-dotnet-object-model-feature",
+  "target_format": "fodt",
+  "target_track": "commercial_net",
+  "capabilities_added": [
+    {"name": "CreateEmpty", "type": "factory", "method": "FodtDocument.CreateEmpty()", "proof_type": "test_verified"},
+    {"name": "SetParagraphStyle", "type": "edit", "method": "SetParagraphStyle(int, string)", "proof_type": "test_verified"},
+    {"name": "GetParagraphStyles", "type": "inspect", "method": "GetParagraphStyles()", "proof_type": "test_verified"}
+  ],
+  "source_files_changed": ["src/net/fodt/FodtDocument.cs"],
+  "test_files_added": ["tests/net/fodt/FodtR114SetParagraphStyleTests.cs"],
+  "tests_run": 9,
+  "tests_passed": 9,
+  "tests_failed": 0,
+  "raw_log": "reports/unified-authority-integrated-poc-train/raw-logs/fodt-r114-tests.log",
+  "ai_draft_used": false,
+  "status": "ACCEPTED",
+  "notes": "R114 Train B: blank document factory, paragraph style management"
+}

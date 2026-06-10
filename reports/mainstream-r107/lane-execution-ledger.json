@@ -1,0 +1,87 @@
+{
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R107-PRODUCT-DEPTH-AND-EVIDENCE-GOVERNANCE-CAMPAIGN-001",
+  "waves": [
+    {
+      "wave": 0,
+      "name": "Preflight + R106 Reconciliation",
+      "items": [
+        {"id": "R107-W0-PREFLIGHT", "description": "Baseline test counts and state snapshot", "status": "PASS"},
+        {"id": "R107-W0-R106-RECONCILIATION", "description": "All 20 R106 items verified self-contained", "status": "PASS"},
+        {"id": "R107-W0-CLAIM-CLASSIFICATION", "description": "19 VERIFIED_SELF_CONTAINED, 1 ACCEPTED_WITH_LIMITATIONS", "status": "PASS"}
+      ]
+    },
+    {
+      "wave": 1,
+      "name": "Evidence Governance Repair",
+      "items": [
+        {"id": "R107-W1-D106-REPAIR", "description": "7 defects classified and dispositioned (D106-01..07)", "status": "PASS"},
+        {"id": "R107-W1-CONTAMINATION-CHECK", "description": "Context-pack cross-stream contamination checked", "status": "PASS"},
+        {"id": "R107-W1-STALE-GAPS", "description": "R98 gaps archived, fresh R107 gaps selected", "status": "PASS"},
+        {"id": "R107-W1-DEEP-STRATEGY", "description": "Depth-over-breadth product strategy documented", "status": "PASS"}
+      ]
+    },
+    {
+      "wave": 2,
+      "name": "Commercial .NET APIs",
+      "items": [
+        {"id": "R107-W2-FODS-EXPORTCSV", "description": "ExportSheetToCsv + 2 overloads (RFC 4180)", "status": "PASS", "tests": 8},
+        {"id": "R107-W2-FODS-INSERTROW", "description": "InsertRowWithValues method", "status": "PASS", "tests": 8},
+        {"id": "R107-W2-FODT-HEADINGS", "description": "GetHeadingTexts method", "status": "PASS", "tests": 8},
+        {"id": "R107-W2-FODT-PLAINTEXTFILE", "description": "ExportToPlainTextFile method", "status": "PASS", "tests": 8},
+        {"id": "R107-W2-NETPBM-EQUALIZE", "description": "Equalize (histogram equalization)", "status": "PASS", "tests": 8},
+        {"id": "R107-W2-NETPBM-CONVERTFORMAT", "description": "ConvertFormat (ASCII<->binary)", "status": "PASS", "tests": 10}
+      ]
+    },
+    {
+      "wave": 3,
+      "name": "FOSS Deliverables",
+      "items": [
+        {"id": "R107-W3-ZST-ISOLATION", "description": "ZST dependency isolation tests", "status": "PASS", "tests": 10},
+        {"id": "R107-W3-PBM-ROUNDTRIP", "description": "PBM binary roundtrip proof", "status": "PASS", "tests": 10},
+        {"id": "R107-W3-PPM-PGM", "description": "PPM+PGM conversion workflow", "status": "PASS", "tests": 10},
+        {"id": "R107-W3-SYLK-CSV", "description": "SYLK CSV export hardening", "status": "PASS", "tests": 9},
+        {"id": "R107-W3-DIF-ROUNDTRIP", "description": "DIF roundtrip proof", "status": "PASS", "tests": 9}
+      ]
+    },
+    {
+      "wave": 4,
+      "name": "Dogfood / Export",
+      "items": [
+        {"id": "R107-W4-FODS-DOGFOOD-CSV", "description": "FODS CSV export dogfood pipeline", "status": "PASS", "tests": 6},
+        {"id": "R107-W4-FODT-DOGFOOD-PLAINTEXT", "description": "FODT plain text export dogfood pipeline", "status": "PASS", "tests": 6},
+        {"id": "R107-W4-NETPBM-DOGFOOD-EQUALIZE", "description": "Netpbm equalize+overlay+convert dogfood", "status": "PASS", "tests": 6},
+        {"id": "R107-W4-SYLK-DOGFOOD-CSV", "description": "SYLK CSV dogfood pipeline", "status": "PASS", "tests": 6}
+      ]
+    },
+    {
+      "wave": 5,
+      "name": "Examples / Docs",
+      "items": [
+        {"id": "R107-W5-FODS-CSV-EXAMPLE", "description": "FODS CSV export .NET example", "status": "PASS"},
+        {"id": "R107-W5-FODT-PLAINTEXT-EXAMPLE", "description": "FODT plain text export .NET example", "status": "PASS"},
+        {"id": "R107-W5-NETPBM-EQUALIZE-EXAMPLE", "description": "Netpbm equalize+convert .NET example", "status": "PASS"},
+        {"id": "R107-W5-SYLK-CSV-EXAMPLE", "description": "SYLK CSV pipeline Python example", "status": "PASS"}
+      ]
+    },
+    {
+      "wave": 6,
+      "name": "Evidence Closeout",
+      "items": [
+        {"id": "R107-W6-SKILL-TRANSCRIPTS", "description": "6 skill transcripts for all source changes", "status": "PASS"},
+        {"id": "R107-W6-SOURCE-DIFFS", "description": "3 source diffs captured", "status": "PASS"},
+        {"id": "R107-W6-RAW-TEST-LOGS", "description": "Full test suite results captured", "status": "PASS"},
+        {"id": "R107-W6-DECLARATION", "description": "Evidence declaration and autonomous-cycle", "status": "PENDING"}
+      ]
+    }
+  ],
+  "test_summary": {
+    "fods_net": 397,
+    "fodt_net": 385,
+    "netpbm_net": 315,
+    "dotnet_total": 1097,
+    "python_total": 2977,
+    "python_skipped": 14,
+    "grand_total": 4074,
+    "new_r107_tests": 142
+  }
+}

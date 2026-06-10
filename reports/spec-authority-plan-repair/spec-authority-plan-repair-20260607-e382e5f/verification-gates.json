@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-PLAN-REPAIR-FOR-SINGLE-GO-EXECUTION-001",
+  "run_id": "spec-authority-plan-repair-20260607-e382e5f",
+  "generated_at": "2026-06-07",
+  "gate_count": 20,
+  "gates": [
+    {
+      "gate_id": "VG-001",
+      "description": "State machine JSON parses without error",
+      "command": "python -m json.tool authority-healing-state-machine.json",
+      "expected_result": "exit 0",
+      "blocking": true,
+      "artifact_path": "authority-healing-state-machine.json",
+      "failure_interpretation": "JSON syntax error in state machine; fix and rerun",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-002",
+      "description": "State count in JSON matches markdown declaration of 32",
+      "command": "python -c \"import json; sm=json.load(open('authority-healing-state-machine.json')); n=len(sm['states']); assert n==32, f'Expected 32, got {n}'; print(f'OK: {n}')\"",
+      "expected_result": "OK: 32",
+      "blocking": true,
+      "artifact_path": "authority-healing-state-machine.json",
+      "failure_interpretation": "State count mismatch; REPAIR-001 not fully applied",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-003",
+      "description": "Taskcard schema JSON parses",
+      "command": "python -m json.tool taskcard-schema.json",
+      "expected_result": "exit 0",
+      "blocking": true,
+      "artifact_path": "taskcard-schema.json",
+      "failure_interpretation": "JSON syntax error in taskcard schema",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-004",
+      "description": "All taskcards JSON parses and has 25 taskcards",
+      "command": "python -c \"import json; tcs=json.load(open('authority-healing-taskcards.json')); n=len(tcs['taskcards']); assert n==25, f'Expected 25, got {n}'; print(f'OK: {n}')\"",
+      "expected_result": "OK: 25",
+      "blocking": true,
+      "artifact_path": "authority-healing-taskcards.json",
+      "failure_interpretation": "Taskcard count mismatch or JSON syntax error",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-005",
+      "description": "Taskcard validator passes (validate_repaired_plan.py exits 0)",
+      "command": "python validate_repaired_plan.py --run-dir .",
+      "expected_result": "exit 0",
+      "blocking": true,
+      "artifact_path": "validate_repaired_plan.py",
+      "failure_interpretation": "One or more plan validation checks failed; see raw-logs/validate-repaired-plan.txt",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-006",
+      "description": "State machine terminal states are complete (3 terminal states present)",
+      "command": "python -c \"import json; sm=json.load(open('authority-healing-state-machine.json')); terminals=[s for s in sm['states'] if s.get('terminal')]; expected={'CLOSED_VERIFIED','CLOSED_WITH_AUTHORITY_DEBT','REJECTED_FALSE_CLAIM'}; actual={s['state_id'] for s in terminals}; assert actual==expected, f'Missing: {expected-actual}'; print('OK')\"",
+      "expected_result": "OK",
+      "blocking": true,
+      "artifact_path": "authority-healing-state-machine.json",
+      "failure_interpretation": "One or more terminal states missing",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-007",
+      "description": "Transition ledger is valid JSONL (each line parses)",
+      "command": "python -c \"import json; [json.loads(line) for line in open('taskcard-transition-ledger.jsonl') if line.strip()]; print('OK')\"",
+      "expected_result": "OK",
+      "blocking": true,
+      "artifact_path": "taskcard-transition-ledger.jsonl",
+      "failure_interpretation": "Invalid JSONL; fix the malformed line",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-008",
+      "description": "Lane ownership map JSON parses",
+      "command": "python -m json.tool lane-ownership-map.json",
+      "expected_result": "exit 0",
+      "blocking": true,
+      "artifact_path": "lane-ownership-map.json",
+      "failure_interpretation": "JSON syntax error in lane ownership map",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-009",
+      "description": "Lane count is 9 in lane ownership map",
+      "command": "python -c \"import json; lm=json.load(open('lane-ownership-map.json')); n=len(lm['lanes']); assert n==9, f'Expected 9, got {n}'; print(f'OK: {n}')\"",
+      "expected_result": "OK: 9",
+      "blocking": true,
+      "artifact_path": "lane-ownership-map.json",
+      "failure_interpretation": "Lane count mismatch; REPAIR-005 not fully applied",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-010",
+      "description": "No hardcoded Windows paths in repaired plan",
+      "command": "python -c \"content=open('repaired-plan.md').read(); count=content.count('C:\\\\\\\\Users'); assert count==0, f'Found {count} hardcoded Windows paths'; print('OK')\"",
+      "expected_result": "OK",
+      "blocking": true,
+      "artifact_path": "repaired-plan.md",
+      "failure_interpretation": "Hardcoded Windows paths present; REPAIR-002 not fully applied",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-011",
+      "description": "No 'validated_by: human' as default in repaired plan",
+      "command": "python -c \"import re; content=open('repaired-plan.md').read(); unsafe=re.findall(r'validated_by.*human(?!.*human_approval_required_reason)', content); assert len(unsafe)==0, f'Found unsafe: {unsafe}'; print('OK')\"",
+      "expected_result": "OK",
+      "blocking": true,
+      "artifact_path": "repaired-plan.md",
+      "failure_interpretation": "validated_by:human used as default; REPAIR-003 not fully applied",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-012",
+      "description": "No warning-only spec_fact_refs for new product work in repaired plan",
+      "command": "python -c \"content=open('repaired-plan.md').read(); import re; warn=re.findall(r'(?:warn|warning).{0,50}spec_fact_refs|spec_fact_refs.{0,50}(?:warn|warning)', content, re.I); assert len(warn)==0, f'Found warning-only: {warn}'; print('OK')\"",
+      "expected_result": "OK",
+      "blocking": true,
+      "artifact_path": "repaired-plan.md",
+      "failure_interpretation": "spec_fact_refs still configured as warning-only; REPAIR-007 not applied",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-013",
+      "description": "No FODS-only narrowing (plan covers multiple formats, bypass pilot for non-FODS)",
+      "command": "python -c \"content=open('repaired-plan.md').read(); assert 'gnumeric' in content.lower() or 'abw' in content.lower() or 'bypass' in content.lower(), 'FODS-only narrowing detected'; print('OK')\"",
+      "expected_result": "OK",
+      "blocking": true,
+      "artifact_path": "repaired-plan.md",
+      "failure_interpretation": "Plan only covers FODS; REPAIR-008 not applied",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-014",
+      "description": "No product implementation task in plan-repair sprint",
+      "command": "python -c \"import json; tcs=json.load(open('authority-healing-taskcards.json')); bad=[t['taskcard_id'] for t in tcs['taskcards'] if any('src/' in str(p) for p in t.get('allowed_paths',[]))]; assert len(bad)==0, f'Tasks with src/ access: {bad}'; print('OK')\"",
+      "expected_result": "OK",
+      "blocking": true,
+      "artifact_path": "authority-healing-taskcards.json",
+      "failure_interpretation": "A taskcard has src/ in allowed_paths — plan-repair sprint must not touch src/",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-015",
+      "description": "TCA-000 NOT pre-marked CLOSED_VERIFIED at plan-repair sprint start",
+      "command": "python -c \"import json; ts=json.load(open('taskcard-state.json')); s=ts['states']['TCA-000']['state']; assert s in ('IMPLEMENTING','IMPLEMENTED','VALIDATING'), f'TCA-000 should not be {s} at start'; print(f'OK: {s}')\"",
+      "expected_result": "OK: IMPLEMENTING",
+      "blocking": true,
+      "artifact_path": "taskcard-state.json",
+      "failure_interpretation": "TCA-000 pre-marked complete; REPAIR-004 not applied",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-016",
+      "description": "Rollback plan JSON parses and covers 12 failure modes",
+      "command": "python -c \"import json; rp=json.load(open('rollback-recovery-plan.json')); n=len(rp['failure_modes']); assert n>=12, f'Expected >=12, got {n}'; print(f'OK: {n}')\"",
+      "expected_result": "OK: 12",
+      "blocking": true,
+      "artifact_path": "rollback-recovery-plan.json",
+      "failure_interpretation": "Rollback plan has fewer than 12 failure modes; REPAIR-006 incomplete",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-017",
+      "description": "Evidence bundle contract exists",
+      "command": "test -f evidence-bundle-contract.md && echo PASS || echo FAIL",
+      "expected_result": "PASS",
+      "blocking": true,
+      "artifact_path": "evidence-bundle-contract.md",
+      "failure_interpretation": "Evidence bundle contract not written; Phase 15 incomplete",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-018",
+      "description": "Required files list for bundle is complete (22 items)",
+      "command": "python -c \"content=open('evidence-bundle-contract.md').read(); n=content.count('\\n- ') + content.count('\\n1. ') + content.count('\\n2. '); print(f'Items found: {n}'); assert n>=20, f'Bundle contract incomplete: {n} items'\"",
+      "expected_result": "Items found: >=20",
+      "blocking": true,
+      "artifact_path": "evidence-bundle-contract.md",
+      "failure_interpretation": "Bundle contract is missing required file entries",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-019",
+      "description": "SHA256 manifest builds without error",
+      "command": "find .local/spec-authority-plan-repair/${RUN_ID}/ -type f | sort | xargs sha256sum > .local/spec-authority-plan-repair/${RUN_ID}/SHA256-MANIFEST.txt && echo PASS || echo FAIL",
+      "expected_result": "PASS",
+      "blocking": true,
+      "artifact_path": ".local/spec-authority-plan-repair/${RUN_ID}/SHA256-MANIFEST.txt",
+      "failure_interpretation": "File copy or sha256sum failed; check .local/ directory",
+      "ci_available": false
+    },
+    {
+      "gate_id": "VG-020",
+      "description": "Validator script runs and exits 0",
+      "command": "python validate_repaired_plan.py --run-dir . && echo VALIDATOR_PASS || echo VALIDATOR_FAIL",
+      "expected_result": "VALIDATOR_PASS",
+      "blocking": true,
+      "artifact_path": "validate_repaired_plan.py",
+      "failure_interpretation": "One or more validator checks failed; see output for specific failures",
+      "ci_available": false
+    }
+  ]
+}

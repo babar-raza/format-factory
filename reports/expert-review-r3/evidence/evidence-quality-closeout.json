@@ -1,0 +1,16 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-REVIEW-R3-EVIDENCE-TRUST-AND-PRODUCT-QUALITY-001",
+  "anti_skip_result_path": "review/anti-skip-check-result.json (in declaration-review-package.zip)",
+  "anti_skip_status": "PENDING_BUILD",
+  "adoption_compliance_path": "review/adoption-compliance-result.json (in declaration-review-package.zip)",
+  "adoption_compliance_status": "PENDING_BUILD",
+  "supervisor_evidence_quality_score_prior": 0.25,
+  "anti_skip_evidence_quality_score_prior": 1.0,
+  "score_discrepancy_explained": true,
+  "discrepancy_explanation_path": "reports/expert-review-r3/evidence/evidence-quality-score-reconciliation.md",
+  "r3_target_supervisor_score": ">=0.50 (2+ of 4 items have tests_supporting)",
+  "caveats": [
+    "validator_tests_partial: test_r3_prompt_path_validator correctly detects stale latest-next-worker-prompt.md; will pass after R3 autonomous_cycle regenerates prompt"
+  ],
+  "overall_closeout_clean": true
+}

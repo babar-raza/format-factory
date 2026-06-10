@@ -1,0 +1,21 @@
+delta_id: "delta:iter002-fodt-r115"
+sprint_id: "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001"
+iteration: 2
+format: fodt
+track: commercial_net
+proposed_at: "2026-06-04T21:00:00Z"
+
+additions:
+  - capability: ExportToOutlineJson
+    method: "ExportToOutlineJson() -> string"
+    description: "Export document outline as JSON array [{index, style, level, text}]. Headings get level from text:outline-level attribute; body paragraphs get level=0."
+    tests: ["tests/net/fodt/FodtR115ExportOutlineJsonTests.cs"]
+    status: VERIFIED
+
+  - capability: FindParagraphsByStyle
+    method: "FindParagraphsByStyle(string stylePattern) -> IReadOnlyList<int>"
+    description: "Case-insensitive substring match on paragraph style name. text:h elements without explicit style get synthetic 'Heading' effective style."
+    tests: ["tests/net/fodt/FodtR115ExportOutlineJsonTests.cs"]
+    status: VERIFIED
+
+verdict: DELTA_ACCEPTED

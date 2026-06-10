@@ -1,0 +1,24 @@
+id: PFGI-TC-001
+version: "1.0"
+generated_by: FORMAT-FACTORY-PRODUCT-FIRST-GOVERNED-SOURCE-IMPLEMENTATION-001
+generated_at: "2026-06-09"
+title: "Implement average_column_tsv in tsv_parser.py"
+status: closed
+lane: tsv_implementation
+item_type: PRODUCT_SOURCE
+format_id: tsv
+capability_id: average_column_tsv
+function_name: average_column_tsv
+source_file: src/python/tsv/tsv_parser.py
+execution_method: AGENT_GOVERNED_DIRECT_EXECUTION
+claim_classification: GOVERNED_BUT_NOT_REPLAYED
+idempotency_key: fa552d78fe7e8ee870cff37a1a3cdd2c2949ae1648034aea445eb56a0d183118
+state_machine_start: EVIDENCE_LOCATED
+state_machine_target: GOVERNANCE_ACCEPTED
+test_file: tests/python/tsv/test_pfgi_tsv_average_column.py
+tests_added: 8
+acceptance_criteria:
+  - Function exists in source with source marker
+  - 8 tests pass including skip-non-numeric, TsvError for missing column, float return
+verification:
+  - pytest tests/python/tsv/test_pfgi_tsv_average_column.py -v

@@ -202,6 +202,7 @@ def _extract_pages(root: ET.Element) -> list[dict[str, Any]]:
             "style": page.get(f"{{{NS['draw']}}}style-name", ""),
             "master_page": page.get(f"{{{NS['draw']}}}master-page-name", ""),
             "shape_count": 0,
+            "shapes": [],
             "text_content": [],
         }
         # Count direct shape children (avoid double-counting shapes inside groups)
@@ -215,3 +216,535 @@ def _extract_pages(root: ET.Element) -> list[dict[str, Any]]:
                 page_info["text_content"].append(t)
         pages.append(page_info)
     return pages
+
+
+# ---------------------------------------------------------------------------
+# Model creation and serialization (Sprint 4, R133-R136)
+# ---------------------------------------------------------------------------
+
+def create_fodg(pages_list: list[dict]) -> dict[str, Any]:
+    """Create a minimal FODG graphics model from a list of page dicts.
+
+    Args:
+        pages_list: List of page dicts, each with optional:
+                      'name' (str) — page name (default 'Page<n>').
+                      'texts' (list[str]) — text content; each text becomes a shape.
+                      'style' (str) — page style name.
+                      'master_page' (str) — master page name.
+
+    Returns:
+        Graphics model dict compatible with write_fodg() and load().
+    """
+    pages = []
+    for i, p in enumerate(pages_list):
+        _raw_name = p.get("name")
+        name = f"Page{i + 1}" if _raw_name is None else _raw_name
+        texts = [str(t) for t in p.get("texts", []) if t is not None and str(t) != ""]
+        page: dict[str, Any] = {
+            "name": name,
+            "shape_count": len(texts),
+            "shapes": [],
+            "text_content": texts,
+            "style": p.get("style", ""),
+            "master_page": p.get("master_page", ""),
+        }
+        pages.append(page)
+    shapes_total = sum(p["shape_count"] for p in pages)
+    return {
+        "is_fodg": True,
+        "mime_type": FODG_MIME,
+        "page_count": len(pages),
+        "pages": pages,
+        "shapes_total": shapes_total,
+    }
+
+
+def write_fodg(model: dict[str, Any], dest: "str | Path") -> None:
+    """Serialize a FODG model to a flat OpenDocument Graphics XML file.
+
+    Args:
+        model: Graphics model dict as returned by load() or create_fodg().
+        dest:  Destination file path.
+
+    Raises:
+        FodgError: If model is not a valid FODG model dict or dest cannot be written.
+    """
+    if not isinstance(model, dict):
+        raise FodgError("model must be a dict")
+    if model.get("is_fodg") is False:
+        raise FodgError("model is_fodg must be True")
+    dest = Path(dest)
+    root = ET.Element(f"{{{NS['office']}}}document")
+    root.set(f"{{{NS['office']}}}mimetype", FODG_MIME)
+    # Register namespaces to produce clean output
+    for prefix, uri in NS.items():
+        ET.register_namespace(prefix, uri)
+    body = ET.SubElement(root, f"{{{NS['office']}}}body")
+    drawing = ET.SubElement(body, f"{{{NS['office']}}}drawing")
+    for page_data in model.get("pages", []):
+        page_el = ET.SubElement(drawing, f"{{{NS['draw']}}}page")
+        page_el.set(f"{{{NS['draw']}}}name", page_data.get("name", ""))
+        for text in page_data.get("text_content", []):
+            tb = ET.SubElement(page_el, f"{{{NS['draw']}}}text-box")
+            tp = ET.SubElement(tb, f"{{{NS['text']}}}p")
+            tp.text = text
+    xml_str = ET.tostring(root, encoding="unicode", xml_declaration=False)
+    content = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_str
+    try:
+        dest.write_text(content, encoding="utf-8")
+    except OSError as exc:
+        raise FodgError(f"Cannot write {dest}: {exc}") from exc
+
+
+def get_shapes(source: "str | bytes | Path") -> list[dict[str, Any]]:
+    """Return a flat list of shape info dicts from all pages.
+
+    Each dict contains: page_name, page_index, shape_index, tag (local name), text.
+
+    Args:
+        source: Path to .fodg file, bytes, or XML string.
+
+    Returns:
+        List of shape dicts; empty list if no shapes or on parse failure.
+    """
+    try:
+        xml_bytes = _read_source(source)
+        root = _parse_xml(xml_bytes)
+    except Exception:
+        return []
+    shapes: list[dict[str, Any]] = []
+    for page_idx, page in enumerate(root.iter(f"{{{NS['draw']}}}page")):
+        page_name = page.get(f"{{{NS['draw']}}}name", "")
+        shape_idx = 0
+        for child in page:
+            if child.tag in SHAPE_TAGS:
+                # Extract text content from nested text:p elements
+                text_parts = []
+                for tp in child.iter(f"{{{NS['text']}}}p"):
+                    text_parts.append("".join(tp.itertext()))
+                text = "".join(text_parts)
+                # Strip namespace from tag
+                tag_name = child.tag.split("}", 1)[1] if "}" in child.tag else child.tag
+                shapes.append({
+                    "page_name": page_name,
+                    "page_index": page_idx,
+                    "shape_index": shape_idx,
+                    "tag": tag_name,
+                    "text": text,
+                })
+                shape_idx += 1
+    return shapes
+
+
+def get_page_by_name(model: dict[str, Any], name: str) -> "dict[str, Any] | None":
+    """Return the first page dict with matching name, or None if not found.
+
+    Raises:
+        TypeError: If model is not a dict or name is not a str.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    if not isinstance(name, str):
+        raise TypeError("name must be a str")
+    for page in model.get("pages", []):
+        if page.get("name") == name:
+            return page
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Sprint 5 additions (R138) — add_page, get_text_shapes
+# ---------------------------------------------------------------------------
+
+def add_page(
+    model: dict[str, Any], page_or_name: "str | dict"
+) -> dict[str, Any]:
+    """Return a new model with a page appended (immutable).
+
+    Args:
+        model: FODG graphics model dict.
+        page_or_name: Either a str (page name) or a dict with optional 'name' and 'texts' keys.
+                      If a str, an empty page with that name is added.
+                      If a dict, 'texts' values become the page's text content / shapes.
+
+    Raises:
+        TypeError: If model is not a dict or page_or_name is not str or dict.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    if not isinstance(page_or_name, (str, dict)):
+        raise TypeError("page_or_name must be str or dict")
+    pages = list(model.get("pages", []))
+    auto_name = f"Page{len(pages) + 1}"
+    if isinstance(page_or_name, str):
+        name: str = page_or_name
+        texts: list[str] = []
+    else:
+        name = page_or_name.get("name") or auto_name
+        texts = [str(t) for t in page_or_name.get("texts", []) if t is not None]
+    new_page: dict[str, Any] = {
+        "name": name,
+        "shape_count": len(texts),
+        "shapes": [],
+        "text_content": texts,
+        "style": "",
+        "master_page": "",
+    }
+    new_pages = pages + [new_page]
+    shapes_total = sum(p.get("shape_count", 0) for p in new_pages)
+    return {**model, "pages": new_pages, "page_count": len(new_pages), "shapes_total": shapes_total}
+
+
+def get_text_shapes(model: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return a list of page info dicts for pages that have non-empty text content.
+
+    Each result dict contains: page_name, page_index, text_content (non-empty strings only).
+
+    Raises:
+        TypeError: If model is not a dict.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    result = []
+    for idx, page in enumerate(model.get("pages", [])):
+        texts = [t for t in page.get("text_content", []) if t]
+        if texts:
+            result.append({
+                "page_name": page.get("name", ""),
+                "page_index": idx,
+                "text_content": texts,
+            })
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Sprint 6 additions (R140) — remove_page, rename_page
+# ---------------------------------------------------------------------------
+
+def remove_page(model: dict[str, Any], idx: int) -> dict[str, Any]:
+    """Return a new model with the page at idx removed (immutable).
+
+    Raises:
+        TypeError: If model is not a dict.
+        FodgError: If idx is out of range or negative.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    pages = model.get("pages", [])
+    if idx < 0 or idx >= len(pages):
+        raise FodgError(
+            f"page index {idx} out of range (0-{len(pages) - 1})"
+        )
+    new_pages = [p for i, p in enumerate(pages) if i != idx]
+    shapes_total = sum(p.get("shape_count", 0) for p in new_pages)
+    return {**model, "pages": new_pages, "page_count": len(new_pages), "shapes_total": shapes_total}
+
+
+def rename_page(model: dict[str, Any], idx: int, name: str) -> dict[str, Any]:
+    """Return a new model with the page at idx renamed (immutable).
+
+    Raises:
+        TypeError: If model is not a dict or name is not a str.
+        FodgError: If idx is out of range or negative.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    if not isinstance(name, str):
+        raise TypeError("name must be a str")
+    pages = model.get("pages", [])
+    if idx < 0 or idx >= len(pages):
+        raise FodgError(f"page index {idx} out of range")
+    new_pages = [
+        ({**p, "name": name} if i == idx else p)
+        for i, p in enumerate(pages)
+    ]
+    return {**model, "pages": new_pages}
+
+
+# ---------------------------------------------------------------------------
+# Sprint 7 additions (R142)
+# ---------------------------------------------------------------------------
+
+def get_all_text(model: dict[str, Any]) -> list[str]:
+    """Return a flat list of all non-empty text strings across all pages.
+
+    Raises:
+        TypeError: If model is not a dict.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    result: list[str] = []
+    for page in model.get("pages", []):
+        for t in page.get("text_content", []):
+            if t:
+                result.append(t)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Sprint 8 additions (R144)
+# ---------------------------------------------------------------------------
+
+def count_shapes(model: dict[str, Any]) -> int:
+    """Return the total shape count across all pages."""
+    return model.get("shapes_total", 0)
+
+
+def export_to_json(model: dict[str, Any]) -> str:
+    """Export a FODG model to a JSON string.
+
+    Returns a JSON object with page_count, pages (name, shape_count, text_content),
+    and shapes_total.
+    """
+    import json as _json
+    out = {
+        "page_count": model.get("page_count", 0),
+        "pages": [
+            {
+                "name": p.get("name", ""),
+                "shape_count": p.get("shape_count", 0),
+                "text_content": p.get("text_content", []),
+            }
+            for p in model.get("pages", [])
+        ],
+        "shapes_total": model.get("shapes_total", 0),
+    }
+    return _json.dumps(out, ensure_ascii=True, indent=2)
+
+
+# ---------------------------------------------------------------------------
+# Sprint 9 additions (R146)
+# ---------------------------------------------------------------------------
+
+def duplicate_page(model: dict[str, Any], idx: int) -> dict[str, Any]:
+    """Return a new model with a deep copy of the page at idx appended (immutable).
+
+    Raises:
+        TypeError: If model is not a dict.
+        FodgError: If idx is out of range.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    pages = model.get("pages", [])
+    if idx < 0 or idx >= len(pages):
+        raise FodgError(f"page index {idx} out of range")
+    import copy as _copy
+    page_copy = _copy.deepcopy(pages[idx])
+    new_pages = list(pages) + [page_copy]
+    shapes_total = sum(p.get("shape_count", 0) for p in new_pages)
+    return {**model, "pages": new_pages, "page_count": len(new_pages), "shapes_total": shapes_total}
+
+
+def get_page_index(model: dict[str, Any], name: str) -> int:
+    """Return the zero-based index of the page with the given name.
+
+    Raises:
+        KeyError: If no page with that name exists.
+    """
+    for i, page in enumerate(model.get("pages", [])):
+        if page.get("name") == name:
+            return i
+    raise KeyError(f"Page {name!r} not found")
+
+
+# ---------------------------------------------------------------------------
+# Sprint 10 additions (R148)
+# ---------------------------------------------------------------------------
+
+def clear_page(model: dict[str, Any], idx: int) -> dict[str, Any]:
+    """Return a new model with all content cleared from the page at idx (immutable).
+
+    Raises:
+        TypeError: If model is not a dict.
+        FodgError: If idx is out of range.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    pages = model.get("pages", [])
+    if idx < 0 or idx >= len(pages):
+        raise FodgError(f"page index {idx} out of range")
+    new_pages = [
+        ({**p, "shape_count": 0, "shapes": [], "text_content": []} if i == idx else p)
+        for i, p in enumerate(pages)
+    ]
+    shapes_total = sum(p.get("shape_count", 0) for p in new_pages)
+    return {**model, "pages": new_pages, "shapes_total": shapes_total}
+
+
+def swap_pages(model: dict[str, Any], idx1: int, idx2: int) -> dict[str, Any]:
+    """Return a new model with the pages at idx1 and idx2 swapped (immutable).
+
+    Raises:
+        TypeError: If model is not a dict.
+        FodgError: If either index is out of range.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    pages = model.get("pages", [])
+    for idx in (idx1, idx2):
+        if idx < 0 or idx >= len(pages):
+            raise FodgError(f"page index {idx} out of range")
+    new_pages = list(pages)
+    new_pages[idx1], new_pages[idx2] = new_pages[idx2], new_pages[idx1]
+    return {**model, "pages": new_pages}
+
+
+# ---------------------------------------------------------------------------
+# Sprint 11 additions (R150)
+# ---------------------------------------------------------------------------
+
+def page_names(model: dict[str, Any]) -> list[str]:
+    """Return a list of page names in order."""
+    return [p.get("name", "") for p in model.get("pages", [])]
+
+
+def has_page(model: dict[str, Any], name: str) -> bool:
+    """Return True if any page has the given name (case-sensitive)."""
+    return any(p.get("name") == name for p in model.get("pages", []))
+
+
+# pfgi-rnext — get_page_count
+# FORMAT_FACTORY_EXECUTION: taskcard=PFGI-TC-005; method=MANUAL_GOVERNED_BY_SKILL; skill=add-python-api; idempotency=3b38cde01bea7c6dc76227c9995d7389fcb0d420ce300d4652d1db576dc1d0b4; evidence=.local/evidences/product-first-governed-implementation-rnext/evidence-declaration.yaml
+def get_page_count(model: dict[str, Any]) -> int:
+    """Return the number of pages in the document.
+
+    Args:
+        model: FODG neutral model dict (must have 'pages' key).
+
+    Returns:
+        Integer count of pages. Returns 0 for empty or missing pages list.
+    """
+    return len(model.get("pages", []))
+
+
+# pige-rnext — find_text
+# FORMAT_FACTORY_EXECUTION: taskcard=PIGE-TC-006; method=AGENT_GOVERNED_DIRECT_EXECUTION; skill=add-python-api; idempotency=03d52c0a35f242d09916242da0014f343f8d9e0e9b27f5608d3e255d8d8c8117; evidence=.local/evidences/product-integration-governed-expansion-rnext/evidence-declaration.yaml
+def find_text(model: dict[str, Any], query: str, *, case_sensitive: bool = True) -> list[dict]:
+    """Search for text across all pages and return match locations.
+
+    Args:
+        model: FODG neutral model dict (must have 'pages' key).
+        query: Text to search for.
+        case_sensitive: Whether the search is case-sensitive. Default True.
+
+    Returns:
+        List of dicts with keys: page_index, page_name, shape_index, text.
+    """
+    results: list[dict] = []
+    for pi, page in enumerate(model.get("pages", [])):
+        page_name = page.get("name", f"Page {pi}")
+        for si, shape in enumerate(page.get("shapes", [])):
+            text = shape.get("text", "")
+            if not text:
+                continue
+            match_text = text if case_sensitive else text.lower()
+            match_query = query if case_sensitive else query.lower()
+            if match_query in match_text:
+                results.append({
+                    "page_index": pi,
+                    "page_name": page_name,
+                    "shape_index": si,
+                    "text": text,
+                })
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Additional export / probe functions
+# ---------------------------------------------------------------------------
+
+def export_to_txt(source: "str | bytes | Path") -> str:
+    """Export all text content from a FODG document to a plain text string.
+
+    Each page is preceded by a header line: '=== PageName ===' or 'Page N' if unnamed.
+
+    Args:
+        source: Path to .fodg file, bytes, or XML string.
+
+    Returns:
+        Plain text string with page headers and texts joined by newlines.
+    """
+    model = load(source)
+    sections: list[str] = []
+    for page_idx, page in enumerate(model.get("pages", []), start=1):
+        page_name = page.get("name", "")
+        header = f"=== {page_name} ===" if page_name else f"Page {page_idx}"
+        page_texts = [t for t in page.get("text_content", []) if t]
+        sections.append(header)
+        sections.extend(page_texts)
+    return "\n".join(sections)
+
+
+def probe_fodg(source: "str | bytes | Path") -> bool:
+    """Probe whether source is a valid FODG document.
+
+    Checks for the FODG MIME type without full parsing.
+    Returns False on any error.
+
+    Args:
+        source: Path to a file, bytes, or XML string.
+
+    Returns:
+        True if source appears to be a FODG document, False otherwise.
+    """
+    try:
+        xml_bytes = _read_source(source)
+        snippet = xml_bytes[:4096].decode("utf-8", errors="replace")
+        return FODG_MIME in snippet
+    except Exception:
+        return False
+
+
+def export_to_csv(
+    source: "str | bytes | Path",
+    dest: "str | Path | None" = None,
+) -> str:
+    """Export FODG text content to a CSV string.
+
+    Columns: page_name, shape_index, text. shape_index resets to 0 for each page.
+
+    Args:
+        source: Path to .fodg file, bytes, or XML string.
+        dest:   Optional destination path; if given, CSV is also written there.
+
+    Returns:
+        CSV string with header 'page_name,shape_index,text'.
+    """
+
+    def _csv_field(value: str) -> str:
+        if "," in value or '"' in value or "\n" in value:
+            return '"' + value.replace('"', '""') + '"'
+        return value
+
+    model = load(source)
+    lines = ["page_name,shape_index,text"]
+    for page in model.get("pages", []):
+        page_name = page.get("name", "")
+        for shape_idx, text in enumerate(page.get("text_content", [])):
+            lines.append(f"{_csv_field(page_name)},{shape_idx},{_csv_field(text)}")
+    csv_str = "\n".join(lines) + "\n"
+    if dest is not None:
+        dest_path = Path(dest)
+        try:
+            dest_path.write_text(csv_str, encoding="utf-8")
+        except OSError as exc:
+            raise FodgError(f"Cannot write {dest_path}: {exc}") from exc
+    return csv_str
+
+
+def roundtrip(
+    source: "str | bytes | Path",
+    dest: "str | Path",
+) -> dict:
+    """Load a FODG document, write it to dest, then reload and return the model.
+
+    Args:
+        source: Path to source .fodg file or raw bytes.
+        dest:   Destination path for the roundtripped file.
+
+    Returns:
+        The reloaded FODG model dict.
+    """
+    model = load(source)
+    write_fodg(model, dest)
+    return load(dest)

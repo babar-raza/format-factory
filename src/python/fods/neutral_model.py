@@ -1344,3 +1344,121 @@ def workbook_get_cell_value(
         return None
 
     return cells[col_index].get("value")
+
+
+def workbook_find_cells(
+    workbook: dict[str, Any],
+    value: Any,
+    case_sensitive: bool = False,
+) -> list[dict[str, Any]]:
+    """Find all cells whose value matches the given search value.
+
+    Searches across all sheets. String comparisons are case-insensitive by
+    default. Non-string values are compared with equality.
+
+    Aligned with ODF 1.3 spreadsheet content model (FACT-FODS-001): cell values
+    are stored in the workbook neutral model under sheets → rows → cells.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        value: Value to search for (string, number, bool, etc.).
+        case_sensitive: If True, string matching is case-sensitive. Default False.
+
+    Returns:
+        List of match dicts, each containing:
+            sheet_name (str): Name of the sheet.
+            row_index (int): 0-based row index.
+            col_index (int): 0-based column index.
+            value: The cell value that matched.
+
+    Added in Sprint FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-PROGRESS-AND-FORMAT-BACKFILL-MEGA-TRAIN-001
+    as FODS product feature advancement (authority: P6, FACT-FODS-001).
+    """
+    matches: list[dict[str, Any]] = []
+    is_str_search = isinstance(value, str)
+    compare_value = value.lower() if (is_str_search and not case_sensitive) else value
+
+    for sheet in workbook.get("sheets", []):
+        sheet_name = sheet.get("name", "")
+        for row_idx, row in enumerate(sheet.get("rows", [])):
+            for col_idx, cell in enumerate(row.get("cells", [])):
+                cell_val = cell.get("value")
+                if cell_val is None:
+                    continue
+                if is_str_search and isinstance(cell_val, str):
+                    compare_cell = cell_val if case_sensitive else cell_val.lower()
+                    if compare_cell == compare_value:
+                        matches.append({
+                            "sheet_name": sheet_name,
+                            "row_index": row_idx,
+                            "col_index": col_idx,
+                            "value": cell_val,
+                        })
+                else:
+                    if cell_val == value:
+                        matches.append({
+                            "sheet_name": sheet_name,
+                            "row_index": row_idx,
+                            "col_index": col_idx,
+                            "value": cell_val,
+                        })
+
+    return matches
+
+
+def workbook_count_matching_cells(
+    workbook: dict[str, Any],
+    value: Any,
+    case_sensitive: bool = False,
+) -> int:
+    """Count the number of cells whose value matches the given search value.
+
+    Convenience wrapper around workbook_find_cells that returns only the count.
+    Aligned with ODF 1.3 spreadsheet content model (FACT-FODS-001).
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        value: Value to search for.
+        case_sensitive: If True, string matching is case-sensitive. Default False.
+
+    Returns:
+        Integer count of matching cells across all sheets.
+
+    Added in Sprint FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-DOGFOOD-FEATURES-AND-BACKFILL-001
+    (authority: P6, FACT-FODS-001).
+    """
+    return len(workbook_find_cells(workbook, value, case_sensitive=case_sensitive))
+
+
+def workbook_to_html(workbook: dict[str, Any], sheet_index: int = 0) -> str:
+    """Export a FODS workbook sheet as an HTML table string.
+
+    Cell values are HTML-escaped.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        HTML string containing a <table> element. Empty string if sheet not found.
+    """
+    from html import escape
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return ""
+    sheet = sheets[sheet_index]
+    rows = sheet.get("rows", [])
+    if not rows:
+        return "<table></table>"
+
+    lines = ["<table>"]
+    for row in rows:
+        lines.append("  <tr>")
+        for cell in row.get("cells", []):
+            val = cell.get("value", "")
+            if val is None:
+                val = ""
+            lines.append(f"    <td>{escape(str(val))}</td>")
+        lines.append("  </tr>")
+    lines.append("</table>")
+    return "\n".join(lines)

@@ -1,0 +1,23 @@
+id: GRH-TC-013
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Final IV, evidence declaration, and sprint closeout (Lane M)"
+status: completed
+lane: final_iv
+item_type: GOVERNANCE_DOC
+problem: >
+  Final integration verification and sprint closeout must package all evidence,
+  run autonomous-cycle, and report the review package ZIP path.
+scope:
+  - Write evidence-declaration.yaml for this sprint
+  - Validate declaration
+  - Run autonomous-cycle
+  - Build declaration-review-package.zip
+  - Report absolute ZIP path
+files_to_create:
+  - .local/evidences/governance-repeatability-hardening-rnext/evidence-declaration.yaml
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-001 through GRH-TC-012]
+handoff_to_autonomy_sprint: false

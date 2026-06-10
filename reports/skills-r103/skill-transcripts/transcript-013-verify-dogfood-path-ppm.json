@@ -1,0 +1,41 @@
+{
+  "invocation_id": "SKILLS-R103-INV-013",
+  "skill_id": "verify-dogfood-path",
+  "command_path": ".claude/commands/verify-dogfood-path.md",
+  "mode": "dry-run",
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R90",
+  "stream": "skills",
+  "timestamp": "2026-06-03T15:00:00Z",
+  "inputs": {
+    "format_id": "ppm",
+    "feature_name": "ppm_to_pgm_verify"
+  },
+  "allowed_files": [
+    "tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py"
+  ],
+  "forbidden_files": [
+    "registry/format-registry.yaml",
+    "plans/master-plan.md"
+  ],
+  "actual_files_read": [
+    "tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py"
+  ],
+  "actual_files_changed": [
+    "tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py"
+  ],
+  "validation_commands": [],
+  "raw_log_paths": [],
+  "tests_added": [
+    "tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py"
+  ],
+  "tests_run": [
+    "tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py"
+  ],
+  "ledger_entry_id": null,
+  "evidence_paths": [
+    "tests/python/ppm/test_r90_ppm_to_pgm_dogfood.py"
+  ],
+  "result": "PASS",
+  "limitations": [],
+  "rollback_plan": "No source changes to revert"
+}

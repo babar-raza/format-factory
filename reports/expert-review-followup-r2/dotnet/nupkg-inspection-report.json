@@ -1,0 +1,101 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-REVIEW-FOLLOWUP-QUALITY-AND-PACKAGING-HARDENING-002",
+  "inspected_at": "2026-06-05T22:00:00Z",
+  "packages": [
+    {
+      "package_id": "FormatFactory.Fods",
+      "version": "0.1.0-tier0",
+      "nupkg_path": "reports/expert-review-followup/package-artifacts/FormatFactory.Fods.0.1.0-tier0.nupkg",
+      "file_count": 7,
+      "files": [
+        "FormatFactory.Fods.nuspec",
+        "README.md",
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "lib/net10.0/FormatFactory.Fods.dll",
+        "lib/net10.0/FormatFactory.Fods.xml",
+        "package/services/metadata/core-properties/*.psmdcp"
+      ],
+      "has_readme": true,
+      "has_dll": true,
+      "has_xml_docs": true,
+      "readme_in_nuspec": true,
+      "dll_size_bytes": 44544,
+      "xml_size_bytes": 47085,
+      "verdict": "COMPLETE",
+      "issues": []
+    },
+    {
+      "package_id": "FormatFactory.Fodt",
+      "version": "0.1.0-tier0",
+      "nupkg_path": "reports/expert-review-followup/package-artifacts/FormatFactory.Fodt.0.1.0-tier0.nupkg",
+      "file_count": 7,
+      "files": [
+        "FormatFactory.Fodt.nuspec",
+        "README.md",
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "lib/net10.0/FormatFactory.Fodt.dll",
+        "lib/net10.0/FormatFactory.Fodt.xml",
+        "package/services/metadata/core-properties/*.psmdcp"
+      ],
+      "has_readme": true,
+      "has_dll": true,
+      "has_xml_docs": true,
+      "readme_in_nuspec": true,
+      "dll_size_bytes": 35840,
+      "xml_size_bytes": 39392,
+      "verdict": "COMPLETE",
+      "issues": []
+    },
+    {
+      "package_id": "FormatFactory.Netpbm",
+      "version": "0.1.0-r85-poc",
+      "nupkg_path_prior": "reports/expert-review-followup/package-artifacts/FormatFactory.Netpbm.0.1.0-r85-poc.nupkg",
+      "nupkg_path_rebuilt": "reports/expert-review-followup-r2/dotnet/package-artifacts/FormatFactory.Netpbm.0.1.0-r85-poc.nupkg",
+      "file_count": 7,
+      "files_prior": [
+        "FormatFactory.Netpbm.nuspec",
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "lib/net10.0/FormatFactory.Netpbm.dll",
+        "lib/net10.0/FormatFactory.Netpbm.xml",
+        "package/services/metadata/core-properties/*.psmdcp"
+      ],
+      "files_rebuilt": [
+        "FormatFactory.Netpbm.nuspec",
+        "README.md",
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "lib/net10.0/FormatFactory.Netpbm.dll",
+        "lib/net10.0/FormatFactory.Netpbm.xml",
+        "package/services/metadata/core-properties/*.psmdcp"
+      ],
+      "has_readme_prior": false,
+      "has_readme_rebuilt": true,
+      "has_dll": true,
+      "has_xml_docs": true,
+      "readme_in_nuspec_prior": false,
+      "readme_in_nuspec_rebuilt": true,
+      "dll_size_bytes": 39424,
+      "xml_size_bytes": 29111,
+      "defect": "PRIOR nupkg was built before PackageReadmeFile was added to csproj. README.md absent.",
+      "fix": "Rebuilt with dotnet pack --no-build after csproj update. README.md now included.",
+      "verdict": "FIXED_IN_R2",
+      "issues": []
+    }
+  ],
+  "summary": {
+    "packages_inspected": 3,
+    "complete": 2,
+    "fixed_in_r2": 1,
+    "defects_found": 1,
+    "defects_fixed": 1,
+    "cs1591_warnings": {
+      "fods": 0,
+      "fodt": 0,
+      "netpbm": 19,
+      "note": "Netpbm 19 CS1591 warnings (missing XML comments on public APIs). Build succeeds with TreatWarningsAsErrors=false."
+    }
+  }
+}

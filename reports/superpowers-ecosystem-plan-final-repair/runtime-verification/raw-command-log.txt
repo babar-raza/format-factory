@@ -1,0 +1,61 @@
+TC-FR-001 Runtime Claim Verification Log
+Sprint: FORMAT-FACTORY-SUPERPOWERS-ECOSYSTEM-PLAN-FINAL-REPAIR-001
+Date: 2026-06-06
+
+=== Step 1: supervisor_loop.py --help ===
+autonomous-cycle: VERIFIED in subcommand list
+run-on-latest: PRESENT (deprecated)
+
+=== Step 2: build_declaration_review_package.py --help ===
+--declaration arg: VERIFIED
+
+=== Step 3: .vscode/mcp.json ===
+MCP servers: ['task-master-ai', 'claude-flow']
+task-master-ai: PRESENT (L1=CONFIG_PRESENT)
+
+=== Step 4: .supervisor/policies.yaml ===
+YAML loads OK: policies OK
+
+=== Step 5: tools/llm/endpoints.yaml ===
+6 endpoints (claude-native, professionalize, local-ollama, local-lm-studio, local-custom, codex)
+NOTE: Plan said 5 endpoints; actual count is 6 (local-custom is 6th)
+
+=== Step 6: .claude/commands/ ===
+EXISTS with 20+ .md skill files (NOT absent as plan originally assumed)
+FILES: _readme.md, add-dogfood-export.md, add-dotnet-api.md, add-dotnet-object-model-feature.md,
+add-installed-package-example.md, add-python-api.md, add-python-object-model-feature.md,
+add-roundtrip-test.md, add-same-format-writer-feature.md, build-context-pack.md,
+evidence-review-next-prompt.md, execution-handoff.md, export-plan-context.md,
+generate-execution-handoff.md, materialize-declaration-review.md, memory-sprint.md,
+package-install-proof.md, plan-hardening.md, promote-gap-to-taskcard.md, record-lane-execution.md,
+select-poc-gap.md, update-capability-matrix.md, validate-product-code-ledger.md,
+validate-skill-transcript.md, verify-dogfood-path.md
+STATUS: SESSION_SKILL_TOOL_AVAILABLE (via Skill tool in session) — NOT same as Superpowers plugin
+
+=== Step 7: cognee importable ===
+RESULT: ModuleNotFoundError: No module named 'cognee'
+STATUS: NOT_FOUND
+
+=== Step 8: openspec CLI (npx --no-install) ===
+RESULT: npm error could not determine executable to run
+STATUS: NOT_FOUND
+INSTALL_COMMAND: npm install -g openspec
+
+=== Step 9: ANTHROPIC_API_KEY ===
+STATUS: ABSENT
+
+=== Step 10: PROFESSIONALIZE_API_KEY ===
+STATUS: PRESENT
+
+=== Step 11: TASK_MASTER_API_KEY ===
+STATUS: ABSENT
+
+=== Step 12: skill_seekers importable ===
+RESULT: ModuleNotFoundError: No module named 'skill_seekers'
+STATUS: NOT_FOUND
+
+=== Step 13: docs/governance/superpowers-skill-intake.md ===
+STATUS: EXISTS
+
+=== Step 14: .claude/plugins/ ===
+STATUS: ABSENT (directory does not exist)

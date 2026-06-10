@@ -1,0 +1,41 @@
+{
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "git_head": "3a86a05295cb4b82ed40a3408b0612a90f93643c",
+  "dirty_state_classification": "SAFE_CONTINUATION",
+  "categories": {
+    "PRE_EXISTING_SUPERVISOR_WIP": [
+      ".claude/commands/*",
+      ".gitignore",
+      ".supervisor/*",
+      "plans/*",
+      "reports/supervisor/*",
+      "state/*",
+      "tools/supervisor/*"
+    ],
+    "PRE_EXISTING_PRODUCT_WIP": [
+      "product-capability-matrix/poc-targets.yaml",
+      "reports/r90/product-code-change-ledger.json"
+    ],
+    "ALLOWED_THIS_SPRINT_DIRTY_STATE": [
+      "src/net/csv/",
+      "src/net/html/",
+      "src/net/txt/",
+      "src/net/markdown/",
+      "src/net/fods/FodsCsvExporter.cs",
+      "src/net/fods/FodsHtmlExporter.cs",
+      "src/net/fods/FormatFactory.Fods.csproj",
+      "src/net/fodt/FodtTxtExporter.cs",
+      "src/net/fodt/FodtMarkdownExporter.cs",
+      "src/net/fodt/FormatFactory.Fodt.csproj",
+      "tests/net/csv/",
+      "tests/net/html/",
+      "tests/net/txt/",
+      "tests/net/markdown/",
+      "tests/supervisor/test_target_writer_dynamic_unblock.py",
+      "reports/dotnet-target-writer-mwp-dogfood-unblocking/"
+    ],
+    "UNSAFE_DIRTY_STATE_REQUIRES_STOP": []
+  },
+  "verdict": "PROCEED"
+}

@@ -1,0 +1,14 @@
+id: route-pilot-001
+title: "Product implementation task — should route to AUTONOMOUS_ACCELERATED_DEFAULT"
+task_id: "PILOT-001-PRODUCT-IMPL"
+task_summary: "Implement get_paragraph function in ABW codec"
+action_type: "IMPLEMENT_SMALL_PRODUCT_FEATURE"
+task_category: "PRODUCT_IMPLEMENTATION"
+risk_level: "LOW"
+hints:
+  required_tests: ["tests/python/abw/test_get_paragraph.py"]
+  required_evidence: ["evidence/product-impl-pilot-001.json"]
+  allowed_paths: ["src/python/abw/"]
+expected_route: "AUTONOMOUS_ACCELERATED_DEFAULT"
+expected_autonomous_allowed: true
+expected_blocked: false

@@ -45,7 +45,7 @@ SRC_EDITING_TRACKS = {
     "cross_product",
 }
 
-VALID_STATUSES = {"active", "draft", "deprecated", "disabled"}
+VALID_STATUSES = {"active", "draft", "deprecated", "disabled", "deferred"}
 
 # Minimum purpose length to avoid shallow stubs
 MIN_PURPOSE_LENGTH = 10
@@ -139,12 +139,12 @@ def validate_registry(registry_path: Path, repo_root: Path) -> dict:
             )
             classification = "PLACEHOLDER"
 
-        # Command file exists (skip for draft/deprecated skills)
+        # Command file exists (skip for draft/deprecated/deferred skills)
         cmd_file = skill.get("command_file", "")
         if cmd_file:
             cmd_path = repo_root / cmd_file
             if not cmd_path.exists():
-                if status in ("draft", "deprecated"):
+                if status in ("draft", "deprecated", "deferred"):
                     warnings.append(f"[{sid}] command_file not found (acceptable for {status}): {cmd_file}")
                 else:
                     skill_errors.append(f"command_file not found: {cmd_file}")

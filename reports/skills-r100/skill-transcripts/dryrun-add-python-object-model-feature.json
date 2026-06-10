@@ -1,0 +1,22 @@
+{
+  "invocation_id": "R100-DRYRUN-PYTHON-OBJ-001",
+  "skill_id": "add-python-object-model-feature",
+  "mode": "dry-run",
+  "timestamp": "2026-06-03T08:11:00Z",
+  "inputs": {
+    "format_id": "fods",
+    "feature_name": "workbook_get_sheet_names",
+    "exact_source_paths": ["src/python/fods/parser.py"],
+    "exact_test_paths": ["tests/python/fods/test_r100_fods_get_sheet_names.py"],
+    "ledger_entry_path": "reports/r90/product-code-change-ledger.json"
+  },
+  "allowed_files": [
+    "src/python/fods/parser.py",
+    "tests/python/fods/test_r100_fods_get_sheet_names.py"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "notes": "Dry-run only. Verified: inputs complete, path controls correct (src/python/fods/ allowed, src/net/** forbidden), ledger entry template ready, 4+ test functions pattern."
+}

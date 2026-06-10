@@ -1,0 +1,18 @@
+{
+  "receiver": "supervisor",
+  "version": "r112",
+  "description": "Receiver-side enforcement fixture for Supervisor transcript-aware grading (R112 rerun)",
+  "compliant_item": {
+    "item_id": "W1-SUP-GRADING",
+    "title": "Supervisor grading with transcript",
+    "skill_id": "evidence-review-next-prompt",
+    "evidence_paths": ["reports/r-test/skill-transcripts/transcript-supervisor-grading.json"],
+    "status": "completed"
+  },
+  "failing_item": {
+    "item_id": "W2-NO-TRANSCRIPT",
+    "title": "Grading without transcript",
+    "evidence_paths": ["reports/r-test/grading.md"],
+    "status": "completed"
+  }
+}

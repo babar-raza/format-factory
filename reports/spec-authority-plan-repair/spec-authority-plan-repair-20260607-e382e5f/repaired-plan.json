@@ -1,0 +1,55 @@
+{
+  "plan_id": "FORMAT-FACTORY-SPEC-AUTHORITY-PLAN-HARDENING-TASKCARD-STATE-MACHINE-AND-HEALING-SYSTEM-001",
+  "repair_sprint": "FORMAT-FACTORY-SPEC-AUTHORITY-PLAN-REPAIR-FOR-SINGLE-GO-EXECUTION-001",
+  "run_id": "spec-authority-plan-repair-20260607-e382e5f",
+  "head_sha": "e382e5fd8e65bc146c0821602cb8fb1ecfab982c",
+  "branch": "main",
+  "generated_at": "2026-06-07",
+  "state_count": 32,
+  "taskcard_count": 25,
+  "lanes": [
+    "L-COORD", "L-EVIDENCE", "L-STATEMACHINE", "L-GOVERNANCE",
+    "L-SCHEMA", "L-SELECTOR", "L-VERIFY", "L-ADVERSARIAL", "L-BUNDLE"
+  ],
+  "repairs_applied": [
+    "REPAIR-001: State count corrected from 29 to 32 everywhere",
+    "REPAIR-002: All hardcoded C:\\Users\\prora paths replaced with ${REPO_ROOT}/...",
+    "REPAIR-002A: Normalization output path corrected to .local/spec-cache/fods/1.3/normalized/",
+    "REPAIR-003: validated_by:human replaced with independent_agent_verifier as default for agent-verifiable facts",
+    "REPAIR-004: TCA-000 starts as IMPLEMENTING (not pre-marked CLOSED_VERIFIED)",
+    "REPAIR-005: 9-lane swarm model added with exclusive write ownership and overlap checker",
+    "REPAIR-006: Rollback-recovery plan added covering 12 failure modes",
+    "REPAIR-007: spec_fact_refs is BLOCKING (not warning-only) for new product work; 5 exception classifications defined",
+    "REPAIR-008: Bypass pilot for Gnumeric/ABW added as TCA-012 with explicit non_goals: no product code",
+    "REPAIR-009: FODS PDF availability handled: TCA-011 transitions to BLOCKED_MISSING_SPEC if absent; SHA-256 read from spec-index.yaml at runtime",
+    "REPAIR-010: CI/hooks confirmed absent; all verification gates marked ci_available=false"
+  ],
+  "new_findings_addressed": [
+    "NEW-001: verified-facts.yaml 10 auto-verified facts — TCA-010 adds downgrade-to-needs_review step",
+    "NEW-002: schemas/evidence-declaration.schema.json absent — TCA-002 designs formal JSON schema fragment",
+    "NEW-003: No CI/hooks — all gates local only"
+  ],
+  "readiness_verdict": "PLAN_REPAIRED_READY_FOR_SINGLE_GO_EXECUTION",
+  "single_go_prompt_path": "reports/spec-authority-plan-repair/spec-authority-plan-repair-20260607-e382e5f/single-go-execution-prompt.md",
+  "evidence_bundle_path": ".local/spec-authority-plan-repair/spec-authority-plan-repair-20260607-e382e5f/",
+  "spec_fact_refs_enforcement": "BLOCKING",
+  "spec_fact_refs_exceptions": [
+    "investigation_only",
+    "sample_only_non_product",
+    "legacy_backfill",
+    "fallback_authority_approved",
+    "no_public_spec_available"
+  ],
+  "human_approval_required_for": [
+    "git push or commit",
+    "Gate 11 (G11-G) commercial readiness — requires Babar Raza",
+    "Package publication (NuGet, PyPI)",
+    "MCP activation changes"
+  ],
+  "independent_agent_verifier_used_for": [
+    "spec fact verification (reading spec and confirming claim)",
+    "requirement extraction quality check",
+    "test citation presence check",
+    "evidence declaration completeness check"
+  ]
+}

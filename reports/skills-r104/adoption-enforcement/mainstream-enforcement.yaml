@@ -1,0 +1,100 @@
+---
+# Mainstream Stream — Skill Adoption Enforcement Package
+# Skills R104: FORMAT-FACTORY-SKILLS-R104-ADOPTION-ENFORCEMENT-AND-CROSS-STREAM-GOVERNED-EXECUTION-CAMPAIGN-001
+#
+# This file defines the enforceable contract between the Skills stream and
+# the Mainstream product stream. Mainstream sprints MUST follow these rules
+# when executing product features that map to governed skills.
+
+package_id: mainstream-enforcement-r104
+stream: mainstream
+version: "1.0"
+effective_from: skills-r104
+
+# ============================================================
+# RULE 1: Skill routing — product lanes MUST use skill_id
+# ============================================================
+skill_routing:
+  description: >
+    Every mainstream sprint task that adds or modifies product source code
+    MUST reference a skill_id from the governed registry.
+  enforcement: required
+  registry_path: .supervisor/skill-registry.yaml
+  routing_map:
+    commercial_dotnet_api: add-dotnet-api
+    commercial_dotnet_feature: add-dotnet-object-model-feature
+    foss_python_api: add-python-api
+    foss_python_feature: add-python-object-model-feature
+    cross_product_export: add-dogfood-export
+    cross_product_writer: add-same-format-writer-feature
+    roundtrip_test: add-roundtrip-test
+    package_example: add-installed-package-example
+    package_proof: package-install-proof
+    dogfood_verify: verify-dogfood-path
+  unroutable_action: flag_for_skills_stream
+
+# ============================================================
+# RULE 2: Transcript generation — every skill invocation produces a transcript
+# ============================================================
+transcript_generation:
+  description: >
+    After executing a skill, the mainstream worker MUST write a transcript
+    JSON file at the path declared in the evidence declaration.
+  enforcement: required
+  schema_fields:
+    - invocation_id
+    - skill_id
+    - mode
+    - inputs
+    - allowed_files
+    - actual_files_changed
+    - tests_run
+    - ledger_entry_id
+    - result
+    - timestamp
+  validator: tools/supervisor/validate_skill_transcript.py
+  output_dir: reports/{run_id}/skill-transcripts/
+
+# ============================================================
+# RULE 3: Ledger requirement — src-editing skills need ledger entries
+# ============================================================
+ledger_requirement:
+  description: >
+    Any skill that edits product source (tracks: commercial_dotnet, foss_python,
+    cross_product_export, cross_product) in LIVE mode MUST have a ledger_entry_id.
+  enforcement: required
+  ledger_path: reports/r90/product-code-change-ledger.json
+  validator: tools/supervisor/validate_product_code_ledger.py
+  src_editing_tracks:
+    - commercial_dotnet
+    - foss_python
+    - cross_product_export
+    - cross_product
+
+# ============================================================
+# RULE 4: Handoff consumption — structured handoffs preferred
+# ============================================================
+handoff_consumption:
+  description: >
+    When a generated execution handoff exists for a task, the mainstream worker
+    SHOULD consume it rather than ad-hoc interpreting the sprint prompt.
+  enforcement: recommended
+  handoff_dir: reports/skills-r{N}/generated-handoffs/
+  handoff_format: YAML with exact_source_paths, exact_test_paths, skill_id
+
+# ============================================================
+# FAILURE MODES
+# ============================================================
+failure_modes:
+  missing_skill_id:
+    grade_impact: OVERCLAIMED
+    reason: "Product work item executed without skill_id routing"
+  missing_transcript:
+    grade_impact: OVERCLAIMED
+    reason: "Skill invocation completed but no transcript produced"
+  invalid_transcript:
+    grade_impact: OVERCLAIMED
+    reason: "Transcript fails validate_skill_transcript.py"
+  missing_ledger_for_live:
+    grade_impact: OVERCLAIMED
+    reason: "LIVE src-editing skill without ledger_entry_id"

@@ -1,0 +1,19 @@
+{
+  "invocation_id": "r111-002-netpbm-product",
+  "skill_id": "add-dotnet-api",
+  "mode": "dry-run",
+  "timestamp": "2026-06-03T23:36:00Z",
+  "inputs": {
+    "format_id": "netpbm",
+    "api_name": "FlipHorizontal",
+    "exact_source_paths": ["src/net/netpbm/Model/NetpbmImage.cs"],
+    "exact_test_paths": ["tests/net/netpbm/NetpbmFlipTests.cs"],
+    "ledger_entry_path": "reports/r-next/product-code-change-ledger.json",
+    "focused_test_command": "dotnet test --filter NetpbmFlip"
+  },
+  "allowed_files": ["src/net/netpbm/Model/NetpbmImage.cs", "tests/net/netpbm/NetpbmFlipTests.cs"],
+  "actual_files_changed": [],
+  "tests_run": ["NetpbmFlip_Basic", "NetpbmFlip_Empty"],
+  "ledger_entry_id": null,
+  "result": "PASS"
+}

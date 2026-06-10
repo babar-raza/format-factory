@@ -15,8 +15,15 @@ from .zst_codec import (
     ZstOutputLimitExceeded,
     compress_bytes,
     decompress_bytes,
+    compress_file,
+    decompress_file,
+    validate_roundtrip,
     probe_frame,
     validate_file,
+    get_frame_info,
+    estimate_ratio,
+    batch_compress,
+    batch_decompress,
 )
 
 __all__ = [
@@ -26,8 +33,15 @@ __all__ = [
     "ZstOutputLimitExceeded",
     "compress_bytes",
     "decompress_bytes",
+    "compress_file",
+    "decompress_file",
+    "validate_roundtrip",
     "probe_frame",
     "validate_file",
+    "get_frame_info",
+    "estimate_ratio",
+    "batch_compress",
+    "batch_decompress",
 ]
 
 __version__ = "0.1.0.dev0"

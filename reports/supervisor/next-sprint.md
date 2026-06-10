@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
+# Source sprint: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-10-001
 # Stream: mainstream
-# Generated: 2026-06-06T20:25:05.004273
+# Generated: 2026-06-10T13:43:49.700881
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +11,9 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001
-- Evidence verdict: ACCEPTED
-- Tests: 1490 passed, 0 failed, 0 skipped
+- Sprint ID: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-10-001
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 55 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -47,11 +47,11 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - [pending] TASK-009: Work on open taskcard: ABW-GATE4-001-parser-prototype
 - [pending] TASK-010: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
 - [pending] TASK-011: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
-- [pending] TASK-012: Product deepening: GAP-CAP-001 — PPM load/parse (P3/P6)
-- [pending] TASK-013: Product deepening: GAP-CAP-003 — FODS→CSV export
-- [pending] TASK-014: Product deepening: GAP-DOGFOOD-DIF-CSV-001 — GAP-DOGFOOD-DIF-CSV-001
-- [pending] TASK-015: Product deepening: GAP-DOC-001 — .NET Netpbm example
-- [pending] TASK-016: Product deepening: GAP-DOC-002 — FODS→CSV example
+- [pending] TASK-012: Product deepening: GAP-ABW-FOSS-LOAD-001 — GAP-ABW-FOSS-LOAD-001
+- [pending] TASK-013: Product deepening: GAP-FODG-FOSS-LOAD-001 — GAP-FODG-FOSS-LOAD-001
+- [pending] TASK-014: Product deepening: GAP-Gnumeric-FOSS-LOAD-001 — GAP-Gnumeric-FOSS-LOAD-001
+- [pending] TASK-015: Product deepening: GAP-TOML-FOSS-ROUNDTRIP-001 — GAP-TOML-FOSS-ROUNDTRIP-001
+- [pending] TASK-016: Product deepening: GAP-DIF-FOSS-PROBE_DIF-001 — GAP-DIF-FOSS-PROBE_DIF-001
 - [pending] TASK-017: Advance one dogfood export path using a Format Factory library
 - [pending] TASK-018: Build package artifacts and run installed-workflow proof
 - [pending] TASK-019: Write evidence declaration and run supervisor autonomous-cycle
@@ -92,56 +92,56 @@ None
 
 ## Project Memory Context
 ```
-- test_delta: +46
-- test_delta_from: 92
-
-## Entry: FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001
-- timestamp: 2026-06-06T17:55:05.133371
+- timestamp: 2026-06-10T08:41:23.974503
 - verdict: ACCEPTED
-- test_count: 44
+- test_count: 245
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\h6-product-source-pilot\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-rnext28\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 106
+- bundle_entry_count: 54
 - bundle_validation_pass: True
-- test_delta: -94
-- test_delta_from: 138
+- test_delta: +69
+- test_delta_from: 176
 
-## Entry: FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001
-- timestamp: 2026-06-06T18:53:07.105192
+## Entry: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT29-001
+- timestamp: 2026-06-10T08:47:07.650867
 - verdict: ACCEPTED
-- test_count: 54
+- test_count: 258
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\autonomous-acquisition-mega-train\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-rnext29\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 75
+- bundle_entry_count: 60
 - bundle_validation_pass: True
-- test_delta: +10
-- test_delta_from: 44
+- test_delta: +13
+- test_delta_from: 245
 
-## Entry: FORMAT-FACTORY-AUTONOMY-NO-MANUAL-PROMPT-CHAIN-REPAIR-001
-- timestamp: 2026-06-06T19:31:05.046807
+## Entry: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT30-001
+- timestamp: 2026-06-10T08:53:07.658609
 - verdict: ACCEPTED
-- test_count: 0
+- test_count: 303
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\no-manual-chain-repair\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-rnext30\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 79
+- bundle_entry_count: 56
 - bundle_validation_pass: True
+- test_delta: +45
+- test_delta_from: 258
 
-## Entry: FORMAT-FACTORY-NO-MANUAL-PROMPT-CHAIN-FINAL-ACCEPTANCE-001
-- timestamp: 2026-06-06T19:59:04.855069
+## Entry: FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT31-001
+- timestamp: 2026-06-10T08:57:06.410306
 - verdict: ACCEPTED
-- test_count: 0
+- test_count: 391
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\no-manual-chain-final-acceptance\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-rnext31\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 58
+- bundle_entry_count: 56
 - bundle_validation_pass: True
+- test_delta: +88
+- test_delta_from: 303
 ```
 
 ---

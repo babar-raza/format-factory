@@ -1,0 +1,28 @@
+{
+  "captured_at": "2026-06-06T00:00:00Z",
+  "sprint_id": "FORMAT-FACTORY-AUTONOMY-NO-MANUAL-PROMPT-CHAIN-REPAIR-001",
+  "lane": "L3",
+  "autonomy_failure_addressed": "AF-003",
+  "queue_state": {
+    "path": ".local/supervisor/action-queue.jsonl",
+    "total_items": 11,
+    "pending_items": 0,
+    "done_items": 11,
+    "diagnosis": "QUEUE_EXHAUSTED_NO_PENDING",
+    "last_done_item": "h9-abw-txt-export-001"
+  },
+  "active_continuation_state": {
+    "path": ".local/supervisor/active-continuation.json",
+    "sprint_id": "FORMAT-FACTORY-H6-EXTERNAL-HOST-ACTIVATION-AND-PROOF-001",
+    "stop_reason": "DRY_RUN_COMPLETE",
+    "diagnosis": "STALE_FROM_OLD_SPRINT",
+    "correct_sprint_id": "FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001"
+  },
+  "next_action_state": {
+    "path": ".local/supervisor/next-action.json",
+    "action_type": "RUN_MD_NONEMPTY_CHECK",
+    "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001",
+    "diagnosis": "STALE_FROM_OLD_SPRINT"
+  },
+  "consequence": "After autonomous-cycle closes out a sprint, the next autonomous cycle has no queue item to execute and stale continuation files — forcing manual prompt chain repair"
+}

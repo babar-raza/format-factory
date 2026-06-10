@@ -1,0 +1,23 @@
+{
+  "invocation_id": "R104-DRY-003-MATERIALIZE-REVIEW-GOVERNANCE",
+  "skill_id": "materialize-declaration-review",
+  "mode": "dry-run",
+  "inputs": {
+    "declaration_path": ".local/evidences/skills-r103/evidence-declaration.yaml"
+  },
+  "allowed_files": [
+    "tools/supervisor/build_declaration_review_package.py",
+    ".local/evidences/skills-r103/evidence-declaration.yaml",
+    "reports/skills-r103/",
+    ".supervisor/",
+    ".local/supervisor/reviews/"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [
+    "python tools/supervisor/build_declaration_review_package.py --declaration .local/evidences/skills-r103/evidence-declaration.yaml"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T09:36:53.276939Z",
+  "notes": "Dry-run: materialized R103 declaration review package. 119 entries, 78 skills artifacts."
+}

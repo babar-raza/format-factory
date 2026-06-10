@@ -1,0 +1,48 @@
+{
+  "transcript_version": "1.0",
+  "skill_id": "add-dotnet-object-model-feature",
+  "invocation_id": "SKILLS-R99-DRYRUN-DOTNET-OBJ-FEATURE-001",
+  "run_id": "FORMAT-FACTORY-SKILLS-R99-SKILL-REGISTRY-GOVERNED-EXECUTION-PARALLEL-MEGA-TRAIN-001",
+  "timestamp": "2026-06-03T03:05:00Z",
+  "mode": "DRY_RUN",
+  "inputs": {
+    "format_id": "FODS",
+    "feature_name": "GetRowValues",
+    "model_class": "FodsDocument",
+    "exact_source_paths": ["src/net/fods/FodsDocument.cs"],
+    "exact_test_paths": ["tests/net/fods/FodsR99GetRowValuesTests.cs"],
+    "ledger_entry_path": "reports/r90/product-code-change-ledger.json"
+  },
+  "allowed_files": [
+    "src/net/fods/FodsDocument.cs",
+    "tests/net/fods/FodsR99GetRowValuesTests.cs",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "forbidden_files": [
+    "src/python/**",
+    "registry/format-registry.yaml",
+    "plans/master-plan.md",
+    "product-capability-matrix/poc-targets.yaml"
+  ],
+  "actual_changed_files": [],
+  "tests_generated": [],
+  "tests_run": {
+    "command": "dotnet test tests/net/fods/FormatFactory.Fods.Tests.csproj --filter FullyQualifiedName~R99GetRowValues --verbosity quiet",
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ledger_entry": {
+    "entry_id": "R99-GOVERNED-DOTNET-FODS-GETROWVALUES-001",
+    "classification": "GOVERNED_PRODUCT_CHANGE",
+    "skill": "add-dotnet-object-model-feature",
+    "status": "DRY_RUN_NOT_CREATED"
+  },
+  "matrix_update": null,
+  "evidence_outputs": [
+    "reports/skills-r99/skill-transcripts/SKILLS-R99-DRYRUN-DOTNET-OBJ-FEATURE-001.json",
+    "reports/skills-r99/skill-transcripts/SKILLS-R99-DRYRUN-DOTNET-OBJ-FEATURE-001.md"
+  ],
+  "result": "PASS",
+  "notes": "Dry-run: validated skill inputs, path controls, ledger entry format. No src edit made."
+}

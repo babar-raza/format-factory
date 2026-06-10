@@ -1,0 +1,26 @@
+{
+  "invocation_id": "R100-DRYRUN-DOGFOOD-EXPORT-001",
+  "skill_id": "add-dogfood-export",
+  "mode": "dry-run",
+  "timestamp": "2026-06-03T08:13:00Z",
+  "inputs": {
+    "source_format_id": "PBM",
+    "target_format_id": "PPM",
+    "export_name": "convert_pbm_to_ppm",
+    "target_ff_library": "ppm.ppm_parser.write_ppm",
+    "exact_source_paths": ["src/python/pbm/pbm_to_ppm.py", "src/python/pbm/__init__.py"],
+    "exact_test_paths": ["tests/python/pbm/test_r100_pbm_to_ppm_dogfood.py"],
+    "ledger_entry_path": "reports/r90/product-code-change-ledger.json",
+    "focused_test_command": ".local/venv/Scripts/python -m pytest tests/python/pbm/test_r100_pbm_to_ppm_dogfood.py -v"
+  },
+  "allowed_files": [
+    "src/python/pbm/pbm_to_ppm.py",
+    "src/python/pbm/__init__.py",
+    "tests/python/pbm/test_r100_pbm_to_ppm_dogfood.py"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "notes": "Dry-run only. Verified: target_ff_library is Format Factory library (ppm_parser.write_ppm), external_export_dependency_scan would pass, path controls correct."
+}

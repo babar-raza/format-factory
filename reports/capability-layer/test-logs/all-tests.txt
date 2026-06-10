@@ -1,0 +1,142 @@
+........................................................................ [  1%]
+........................................................................ [  2%]
+........................................................................ [  3%]
+........................................................................ [  4%]
+.......................................................ssss..ss..ssss... [  5%]
+........................................................................ [  6%]
+........................................................................ [  7%]
+........................................................................ [  8%]
+..............................ssss...................................... [  9%]
+........................................................................ [ 10%]
+........................................................................ [ 11%]
+........................................................................ [ 12%]
+........................................................................ [ 13%]
+........................ss..s..s........................................ [ 15%]
+........................................................................ [ 16%]
+........................................................................ [ 17%]
+........................................................................ [ 18%]
+........................................................................ [ 19%]
+........................................................................ [ 20%]
+........................................................................ [ 21%]
+....................................................s..s..s............. [ 22%]
+........................................................................ [ 23%]
+........................................................................ [ 24%]
+........................................................................ [ 25%]
+........................................................................ [ 26%]
+........................................................................ [ 27%]
+........................................................................ [ 28%]
+........................................................................ [ 30%]
+........................................................................ [ 31%]
+.......................................................ss.sss..sss..s... [ 32%]
+........................................................................ [ 33%]
+........................................................................ [ 34%]
+........................................................................ [ 35%]
+........................................................................ [ 36%]
+........................................................................ [ 37%]
+........................................................................ [ 38%]
+........................................................................ [ 39%]
+........................................................................ [ 40%]
+........................................................................ [ 41%]
+...............................................................FF...F... [ 42%]
+.............................F...............................F.......... [ 44%]
+........................................................................ [ 45%]
+........................................................................ [ 46%]
+........................................................................ [ 47%]
+.............s................sss.sss................................... [ 48%]
+........................................................................ [ 49%]
+....................ss.................................................. [ 50%]
+........................................................................ [ 51%]
+........................................................................ [ 52%]
+........................................................................ [ 53%]
+........................................................................ [ 54%]
+........................................................................ [ 55%]
+........................................................................ [ 56%]
+........................................................................ [ 57%]
+...................................................................F.... [ 59%]
+........................................................................ [ 60%]
+........................................................................ [ 61%]
+........................................................................ [ 62%]
+........................................................................ [ 63%]
+........................................................................ [ 64%]
+........................................................................ [ 65%]
+........................................................................ [ 66%]
+........................................................................ [ 67%]
+........................................................................ [ 68%]
+......F....................................................FF.FF.....FF. [ 69%]
+........................................................................ [ 70%]
+........................................................................ [ 71%]
+...................................F.................................... [ 72%]
+.......F............................................................F... [ 74%]
+........................................................................ [ 75%]
+.....s.................................................................. [ 76%]
+...............FF.................................F..................... [ 77%]
+............................F.........F................................. [ 78%]
+.................F..................................................F... [ 79%]
+.......................................................................s [ 80%]
+........................................................................ [ 81%]
+........................................................................ [ 82%]
+........................................................................ [ 83%]
+........................................................................ [ 84%]
+........................................................................ [ 85%]
+........................................................................ [ 86%]
+........................................................................ [ 88%]
+...F.................................................................... [ 89%]
+...................................F...FF.............................F. [ 90%]
+F....................................................................... [ 91%]
+......................................................................F. [ 92%]
+...........................F....................F....................... [ 93%]
+........................................................................ [ 94%]
+........................................................................ [ 95%]
+........................................................................ [ 96%]
+........................F............................................... [ 97%]
+........................................................................ [ 98%]
+..................................................F............F........ [ 99%]
+............                                                             [100%]
+============================== warnings summary ===============================
+tests/supervisor/test_autonomous_train_executor.py: 2 warnings
+tests/supervisor/test_proof_backed_poc_gate.py: 10 warnings
+  C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\proof_backed_poc_gate.py:506: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "evaluated_at": datetime.utcnow().isoformat(),
+
+tests/supervisor/test_product_ledger_to_proof_graph_projection.py: 13 warnings
+  C:\Users\prora\OneDrive\Documents\GitHub\format-factory\tools\supervisor\project_product_ledger_to_proof_graph.py:227: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "generated_at": datetime.utcnow().isoformat() + "Z",
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/python/supervisor/test_r108_adoption_compliance.py::TestAdoptionCompliance::test_missing_skill_id_still_compliant
+FAILED tests/python/supervisor/test_r108_adoption_compliance.py::TestAdoptionCompliance::test_missing_transcript_still_compliant
+FAILED tests/python/supervisor/test_r108_adoption_compliance.py::TestAdoptionCompliance::test_src_editing_with_ledger_compliant
+FAILED tests/python/supervisor/test_r109_adoption_consumption.py::TestAccelerationAdoptionConsumption::test_gap_routing_missing_skill_coverage
+FAILED tests/python/supervisor/test_r110_sample_outputs_and_enforcement.py::TestAdoptionConsumptionHardening::test_acceleration_missing_skill_validates
+FAILED tests/supervisor/acceleration/test_acceleration_hardening_iv.py::TestNoProductSourceEdits::test_poc_targets_checksum_unchanged
+FAILED tests/supervisor/test_authority_integration_fabric.py::test_spec_context_pack_fods_complete
+FAILED tests/supervisor/test_autonomous_host_runner.py::TestMissingCli::test_missing_cli_returns_layer_missing
+FAILED tests/supervisor/test_autonomous_host_runner.py::TestMissingCli::test_missing_cli_honest_classification_is_packet_only
+FAILED tests/supervisor/test_autonomous_host_runner.py::TestTerminalStateDeferred::test_terminal_train_state_deferred
+FAILED tests/supervisor/test_autonomous_host_runner.py::TestTerminalStateDeferred::test_poc_ready_terminal_deferred
+FAILED tests/supervisor/test_autonomous_host_runner.py::TestSafetyCheck::test_unsafe_prompt_returns_refused
+FAILED tests/supervisor/test_autonomous_host_runner.py::TestDryRun::test_dry_run_with_available_cli_returns_attempted
+FAILED tests/supervisor/test_continuation_signal_contract.py::test_seed_post_closeout_queue_item_seeds_when_empty
+FAILED tests/supervisor/test_cross_stream_consumption.py::TestCrossStreamConsumptionIntegration::test_replay_file_detects_gaps
+FAILED tests/supervisor/test_evidence_continuation.py::test_generate_post_closeout_action_not_advisory
+FAILED tests/supervisor/test_h6_external_host_activation.py::test_h6_proof_requires_orchestrator_state
+FAILED tests/supervisor/test_h6_external_host_activation.py::test_h6_proof_requires_stop_reason
+FAILED tests/supervisor/test_llm_api_backend.py::test_llm_execute_returns_blocked
+FAILED tests/supervisor/test_next_sprint_false_stop_regression.py::TestFalseStopLabels::test_product_items_have_agent_owned_label
+FAILED tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_autonomous_continue_true_produces_executable_items
+FAILED tests/supervisor/test_no_prompt_only_continuation.py::test_evidence_continuation_applied_produces_non_advisory
+FAILED tests/supervisor/test_post_closeout_queue_replenishment.py::TestSeedPostCloseoutQueueItem::test_seeded_item_is_queue_health_check
+FAILED tests/supervisor/test_r109_stream_local_authority.py::TestSelectedGapRouting::test_supervisor_stream_has_no_active_gaps
+FAILED tests/supervisor/test_r85_product_factory_policies.py::TestPocTargetMatrix::test_three_foss_reduced_products
+FAILED tests/supervisor/test_r85_product_factory_policies.py::TestPocTargetMatrix::test_no_commercial_product_ready_true
+FAILED tests/supervisor/test_r85_product_factory_policies.py::TestPocTargetMatrix::test_summary_counts_correct
+FAILED tests/supervisor/test_r90_poc_gap_selector.py::test_selector_extracts_current_matrix_product_gaps
+FAILED tests/supervisor/test_r90_product_acceleration.py::test_repo_ledger_backfills_r89_apis_and_validates
+FAILED tests/supervisor/test_skills_product_breadth_finalization.py::TestFodtMarkdownHandoff::test_fodt_markdown_handoff_mode_is_live
+FAILED tests/supervisor/test_skills_product_breadth_finalization.py::TestSkillsIntegrationContract::test_integration_contract_all_packets_ready
+FAILED tests/supervisor/test_skills_product_breadth_finalization.py::TestHardeningSprintCompatibility::test_all_handoffs_have_mode_live
+FAILED tests/supervisor/test_supervisor_product_traffic_controller_integration.py::TestCrossStreamConsumptionBridge::test_skills_missing_packet_in_real_replay
+FAILED tests/supervisor/test_validate_product_code_ledger.py::TestLedgerValidatorPositive::test_real_ledger_passes
+FAILED tests/supervisor/test_validate_skill_registry.py::TestRegistryValidatorPositive::test_real_registry_passes
+35 failed, 6632 passed, 41 skipped, 25 warnings in 74.02s (0:01:14)

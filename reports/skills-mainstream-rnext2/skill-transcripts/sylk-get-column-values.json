@@ -1,0 +1,21 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "sylk",
+  "api_name": "get_column_values",
+  "sprint_run_id": "mainstream-product-deepening-rnext2",
+  "changed_files": [
+    "src/python/sylk/sylk_parser.py",
+    "src/python/sylk/__init__.py",
+    "tests/python/sylk/test_mdr_sylk_get_column_values.py"
+  ],
+  "test_results": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "ledger_entry_id": "MDR-SYLK-GET-COLUMN-VALUES-001",
+  "ledger_validator": "PASS",
+  "verdict": "PASS",
+  "notes": "get_column_values(file_path, col) returns values in a 1-based column as a list, None for sparse row gaps, empty list if column absent. 9/9 tests pass."
+}

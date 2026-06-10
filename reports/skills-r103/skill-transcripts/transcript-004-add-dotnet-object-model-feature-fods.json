@@ -1,0 +1,44 @@
+{
+  "invocation_id": "SKILLS-R103-INV-004",
+  "skill_id": "add-dotnet-object-model-feature",
+  "command_path": ".claude/commands/add-dotnet-object-model-feature.md",
+  "mode": "dry-run",
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R103",
+  "stream": "skills",
+  "timestamp": "2026-06-03T15:00:00Z",
+  "inputs": {
+    "format_id": "fods",
+    "feature_name": "RenameSheet"
+  },
+  "allowed_files": [
+    "src/net/fods/FodsDocument.cs",
+    "tests/net/fods/FodsR103RenameSheetTests.cs"
+  ],
+  "forbidden_files": [
+    "registry/format-registry.yaml",
+    "plans/master-plan.md"
+  ],
+  "actual_files_read": [
+    "src/net/fods/FodsDocument.cs",
+    "tests/net/fods/FodsR103RenameSheetTests.cs"
+  ],
+  "actual_files_changed": [
+    "src/net/fods/FodsDocument.cs",
+    "tests/net/fods/FodsR103RenameSheetTests.cs"
+  ],
+  "validation_commands": [],
+  "raw_log_paths": [],
+  "tests_added": [
+    "tests/net/fods/FodsR103RenameSheetTests.cs"
+  ],
+  "tests_run": [
+    "tests/net/fods/FodsR103RenameSheetTests.cs"
+  ],
+  "ledger_entry_id": "R103-GOVERNED-FODS-RENAMESHEET-001",
+  "evidence_paths": [
+    "tests/net/fods/FodsR103RenameSheetTests.cs"
+  ],
+  "result": "PASS",
+  "limitations": [],
+  "rollback_plan": "Revert source changes and remove test files"
+}

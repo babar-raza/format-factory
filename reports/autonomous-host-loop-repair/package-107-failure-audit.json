@@ -1,0 +1,98 @@
+{
+  "audit_id": "PACKAGE-107-FAILURE-AUDIT",
+  "sprint_audited": "FORMAT-FACTORY-AUTONOMOUS-EXTERNAL-HOST-BOOTSTRAP-001",
+  "package_ref": "declaration-review-package.zip (autonomous-external-host-bootstrap)",
+  "sha256_audited": "4e84d8126a2ee0e0a5641504981c28048192ece05629dc4fb4c426a4fff74000",
+  "audited_at": "2026-06-06T00:00:00",
+  "verdict": "FALSE_POSITIVE_HOST_PROOF",
+  "prior_claimed_classification": "HOST_LOOP_SMOKE_PROVEN",
+  "prior_claimed_autonomy_level": "H5_ONE_BOUNDED_NEXT_CYCLE_PROVEN",
+  "corrected_classification": "FALSE_POSITIVE_HOST_PROOF",
+  "corrected_autonomy_level": "INVALID_FALSE_POSITIVE_PRIOR_PROOF",
+
+  "findings": {
+    "F1_did_claude_stdout_equal_marker": {
+      "question": "Did Claude stdout equal the expected smoke marker HOST_CYCLE_SMOKE_OK?",
+      "answer": false,
+      "evidence": "host-loop-result.json invocation.stdout excerpt: 'I need your approval to run these commands. Could you approve:... HOST_CYCLE_SMOKE_OK marker...' — marker appears inside explanatory prose, not as sole output",
+      "severity": "CRITICAL"
+    },
+    "F2_did_claude_ask_for_approval": {
+      "question": "Did Claude stdout ask for approval?",
+      "answer": true,
+      "evidence": "stdout starts with: 'I need your approval to run these commands. Could you approve:' — this is a permission prompt, not the requested structured output",
+      "severity": "CRITICAL"
+    },
+    "F3_did_host_runner_create_proof_file_itself": {
+      "question": "Did the host runner create the proof file itself (not the child agent)?",
+      "answer": true,
+      "evidence": "external_host_loop.py lines 340-357 (step 7b): 'if marker_found and expected_files: ... ef_path.write_text(f\"{success_marker}\\ntimestamp: {_now()}\\ninvoked_by: external_host_loop...' — host runner synthesized the proof file",
+      "severity": "CRITICAL"
+    },
+    "F4_was_success_based_on_substring_matching": {
+      "question": "Was success based on substring matching of the marker in stdout?",
+      "answer": true,
+      "evidence": "external_host_loop.py line 338: 'marker_found = success_marker in stdout if success_marker else True' — substring match only. Marker 'HOST_CYCLE_SMOKE_OK' appeared somewhere in Claude's prose output.",
+      "severity": "CRITICAL"
+    },
+    "F5_was_git_clean": {
+      "question": "Was git_clean=true?",
+      "answer": false,
+      "evidence": "host-loop-result.json: git_clean=false, git_violations=[56 files including src/net/**, src/python/**, tools/supervisor/**] — dirty files existed outside allowed write root",
+      "severity": "HIGH",
+      "note": "git violations did not prevent SMOKE_PROVEN classification — this was also a bug"
+    },
+    "F6_were_git_violations_outside_allowed_roots": {
+      "question": "Were git violations outside allowed write roots?",
+      "answer": true,
+      "evidence": "allowed_write_roots=['reports/autonomous-external-host-bootstrap/smoke/']; violations include src/net/fods/FodsCsvExporter.cs, src/python/abw/abw_codec.py, tools/supervisor/*.py — all outside allowed root",
+      "severity": "HIGH"
+    },
+    "F7_did_real_next_iteration_start": {
+      "question": "Did a real next iteration start (child agent performed bounded action)?",
+      "answer": false,
+      "evidence": "Child agent (Claude via --print) did not write any files. It only produced text output asking for approval. No autonomous action was performed.",
+      "severity": "CRITICAL"
+    },
+    "F8_was_child_run_evidence_independent": {
+      "question": "Was any child-run evidence produced independent of the parent host runner?",
+      "answer": false,
+      "evidence": "smoke/host-created-proof.md was written by the host runner (step 7b in external_host_loop.py), not by the child Claude invocation. The file's content says 'invoked_by: external_host_loop' confirming host runner authorship.",
+      "severity": "CRITICAL"
+    }
+  },
+
+  "root_cause_analysis": {
+    "bug_1_substring_marker_detection": {
+      "location": "external_host_loop.py:338",
+      "code": "marker_found = success_marker in stdout if success_marker else True",
+      "problem": "Substring match allows marker to appear anywhere in stdout including explanatory prose. Claude's response about what it 'cannot do' or 'needs approval' can reference the marker text.",
+      "fix_required": "Strict output validation: exact match for NOOP, structured JSON for SMOKE"
+    },
+    "bug_2_parent_synthesizes_proof_file": {
+      "location": "external_host_loop.py:340-357 (step 7b)",
+      "code": "if marker_found and expected_files: for ef in expected_files: ... ef_path.write_text(...invoked_by: external_host_loop...)",
+      "problem": "Parent host runner creates the proof file when marker is found in stdout. This defeats the purpose — real autonomy requires the child agent to create the file.",
+      "fix_required": "Remove step 7b entirely. Parent may only verify child-created files, never create them."
+    },
+    "bug_3_git_violations_not_blocking": {
+      "location": "external_host_loop.py:371-376 (classification logic)",
+      "code": "if expected_files and not missing_files and marker_found: classification = SMOKE_PROVEN",
+      "problem": "git_clean=false does not prevent SMOKE_PROVEN classification. Dirty state outside allowed roots should indicate unauthorized changes.",
+      "fix_required": "git violations outside allowed_write_roots → HOST_LOOP_GIT_VIOLATION (blocking)"
+    },
+    "bug_4_no_permission_prompt_detection": {
+      "location": "external_host_loop.py:invoke_claude()",
+      "problem": "No detection of Claude asking for approval/permission. Permission prompts should classify as HOST_LOOP_BLOCKED_PERMISSION_PROMPT, not pass through to marker check.",
+      "fix_required": "Add PERMISSION_PROMPT_PATTERNS detection in invoke_claude result processing"
+    },
+    "bug_5_no_nonce_requirement": {
+      "location": "next-action.json schema v1",
+      "problem": "No nonce in the contract. Even if a child agent wrote a proof file, we cannot verify it was created for this specific invocation.",
+      "fix_required": "Schema v2 with nonce field; proof file must contain matching nonce"
+    }
+  },
+
+  "prior_h5_claim_is_invalid": true,
+  "reason": "All 5 bugs contributed to false positive. The actual child agent (Claude via --print) asked for approval and wrote nothing. The parent host runner synthesized the proof file and found the marker in its own explanatory text. No real autonomous action was performed."
+}

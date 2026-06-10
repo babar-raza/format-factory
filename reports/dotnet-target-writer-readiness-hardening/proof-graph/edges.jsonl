@@ -1,0 +1,12 @@
+{"edge_id": "e1", "from": "csv-writer-library", "to": "fods-csv-exporter", "relationship": "CONSUMED_BY", "description": "FodsCsvExporter delegates to CsvWriter.WriteRows()"}
+{"edge_id": "e2", "from": "html-writer-library", "to": "fods-html-exporter", "relationship": "CONSUMED_BY", "description": "FodsHtmlExporter delegates to HtmlWriter.WriteTable()"}
+{"edge_id": "e3", "from": "txt-writer-library", "to": "fodt-txt-exporter", "relationship": "CONSUMED_BY", "description": "FodtTxtExporter delegates to TxtWriter.WriteLines()"}
+{"edge_id": "e4", "from": "markdown-writer-library", "to": "fodt-markdown-exporter", "relationship": "CONSUMED_BY", "description": "FodtMarkdownExporter delegates to MarkdownWriter.WriteParagraphs()"}
+{"edge_id": "e5", "from": "fods-csv-exporter", "to": "gap-fods-csv", "relationship": "CLOSES", "description": "Exporter refactor satisfies all 5 policy conditions for CSV gap"}
+{"edge_id": "e6", "from": "fods-html-exporter", "to": "gap-fods-html", "relationship": "CLOSES", "description": "Exporter refactor satisfies all 5 policy conditions for HTML gap"}
+{"edge_id": "e7", "from": "fodt-txt-exporter", "to": "gap-fodt-txt", "relationship": "CLOSES", "description": "Exporter refactor satisfies all 5 policy conditions for TXT gap"}
+{"edge_id": "e8", "from": "fodt-markdown-exporter", "to": "gap-fodt-markdown", "relationship": "CLOSES", "description": "Exporter refactor satisfies all 5 policy conditions for Markdown gap"}
+{"edge_id": "e9", "from": "dynamic-unblocking-v5", "to": "gap-fods-csv", "relationship": "PROBES", "description": "detect_target_writer_readiness verifies READY status for this gap"}
+{"edge_id": "e10", "from": "dynamic-unblocking-v5", "to": "gap-fods-html", "relationship": "PROBES", "description": "detect_target_writer_readiness verifies READY status for this gap"}
+{"edge_id": "e11", "from": "dynamic-unblocking-v5", "to": "gap-fodt-txt", "relationship": "PROBES", "description": "detect_target_writer_readiness verifies READY status for this gap"}
+{"edge_id": "e12", "from": "dynamic-unblocking-v5", "to": "gap-fodt-markdown", "relationship": "PROBES", "description": "detect_target_writer_readiness verifies READY status for this gap"}

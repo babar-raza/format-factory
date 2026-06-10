@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/capability/capability_status_taxonomy.schema.json",
+  "title": "CapabilityStatusTaxonomy",
+  "description": "Canonical capability state taxonomy for Format Factory capability maps. Defines allowed current_state values and their rules.",
+  "type": "object",
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "states": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/CapabilityState"}
+    }
+  },
+  "required": ["schema_version", "states"],
+
+  "$defs": {
+    "CapabilityState": {
+      "type": "object",
+      "required": ["state", "label", "description", "counts_as_verified", "requires_evidence"],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "missing",
+            "planned",
+            "ai_draft",
+            "human_goal",
+            "inferred_unverified",
+            "spec_verified",
+            "requirement_verified",
+            "capability_verified",
+            "implementation_partial",
+            "implementation_verified",
+            "test_verified",
+            "example_verified",
+            "package_verified",
+            "dogfood_verified",
+            "blocked",
+            "unsupported",
+            "out_of_scope",
+            "future"
+          ]
+        },
+        "label": {"type": "string"},
+        "description": {"type": "string"},
+        "counts_as_verified": {"type": "boolean"},
+        "requires_evidence": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "promoted_from": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

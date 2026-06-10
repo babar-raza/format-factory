@@ -1,0 +1,349 @@
+{
+  "contract_version": "2.0",
+  "supersedes": "reports/tri-lane-integration-fabric/tri-lane-contract.json (v1.0)",
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "contract_type": "tri_lane_integration",
+  "authority_state": "advisory",
+  "non_authoritative": true,
+
+  "changes_from_v1": [
+    "FODT Skills: upgraded from shell to full finalization packet (fodt-markdown-packet.json)",
+    "FODT TXT: new family added — full finalization packet (fodt-txt-packet.json)",
+    "Netpbm Skills: upgraded from shell to full finalization packet (netpbm-proof-packet.json)",
+    "Acceleration source: upgraded from product-first dir to hardening index (mainstream-packet-index.json)",
+    "Validation commands: removed invalid python pytest commands for .cs files",
+    "Validator updated: rejects shell packets when finalization exists",
+    "Validator updated: rejects python pytest commands for .NET test files"
+  ],
+
+  "supervisor_routing": {
+    "source": "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
+    "routing_decision": "CONTINUE_TO_MAINSTREAM",
+    "authority_state": "routing_authority",
+    "families": [
+      {
+        "family": "FODS",
+        "active": true,
+        "svg_replacement_rejected": false,
+        "source_file": "src/net/fods/FodsDocument.cs",
+        "routing_note": "FODS family active, git_status=M (PRE_EXISTING_PRODUCT_WIP)"
+      },
+      {
+        "family": "FODT",
+        "active": true,
+        "svg_replacement_rejected": false,
+        "source_file": "src/net/fodt/FodtDocument.cs",
+        "routing_note": "FODT family active, git_status=M (PRE_EXISTING_PRODUCT_WIP)"
+      },
+      {
+        "family": "FODT TXT",
+        "active": true,
+        "svg_replacement_rejected": false,
+        "source_file": "src/net/fodt/FodtDocument.cs",
+        "routing_note": "FODT TXT family active — new in v2 contract. Supervisor routing inherited from FODT."
+      },
+      {
+        "family": "Netpbm",
+        "active": true,
+        "svg_replacement_rejected": true,
+        "source_file": "src/net/netpbm/Model/NetpbmImage.cs",
+        "routing_note": "Netpbm family active. SVG cannot replace Netpbm — format class mismatch."
+      }
+    ]
+  },
+
+  "skills_handoff": {
+    "source": "reports/skills-product-breadth-finalization/handoff-to-mainstream.json",
+    "handoff_type": "full_finalization",
+    "authority_state": "governed_execution_authority",
+    "resolver_version": "v2_finalization",
+    "families": [
+      {
+        "family": "FODS",
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+        "skill": "add-dotnet-api",
+        "capability": "dogfood_status.fods_to_csv_dotnet",
+        "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+        "note": "Full handoff from skills-product-first sprint (no newer FODS finalization packet)"
+      },
+      {
+        "family": "FODT Markdown",
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+        "skill": "add-dotnet-api",
+        "capability": "dogfood_status.fodt_to_markdown_dotnet",
+        "gap_id": "GAP-FODT-DOGFOOD-MD-DOTNET-001",
+        "note": "Full finalization packet — supersedes shell packet from skills-governed-execution-hardening"
+      },
+      {
+        "family": "FODT TXT",
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+        "skill": "add-dotnet-api",
+        "capability": "dogfood_status.fodt_to_txt_dotnet",
+        "gap_id": "GAP-FODT-DOGFOOD-TXT-DOTNET-001",
+        "note": "New in v2 contract — FODT TXT was missing from v1"
+      },
+      {
+        "family": "Netpbm",
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+        "skill": "add-dotnet-api",
+        "capability": "dotnet_status.netpbm_flip_and_merge_pipeline",
+        "gap_id": "GAP-NETPBM-DOGFOOD-PIPELINE-DOTNET-001",
+        "note": "Full finalization packet — supersedes shell packet. Pipeline method at R114."
+      }
+    ]
+  },
+
+  "acceleration_advisory": {
+    "source": "reports/acceleration-hardening/mainstream-packet-index.json",
+    "source_sprint": "FORMAT-FACTORY-ACCELERATION-HARDENING-IV-AND-CONSUMPTION-CONTRACT-001",
+    "authority_state": "ai_draft",
+    "non_authoritative": true,
+    "hardening_index_used": true,
+    "families": [
+      {
+        "family": "FODS",
+        "packet_path": "reports/acceleration-hardening/replay-run-2/fods-dogfood_status-fods_to_csv_dotnet.json",
+        "authority_state": "ai_draft",
+        "use_for": "implementation pattern reference only",
+        "runtime_status": "ok"
+      },
+      {
+        "family": "FODT Markdown",
+        "packet_path": "reports/acceleration-hardening/replay-run-2/fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+        "authority_state": "ai_draft",
+        "use_for": "method selection guidance only",
+        "runtime_status": "ok"
+      },
+      {
+        "family": "FODT TXT",
+        "packet_path": null,
+        "authority_state": "ai_draft",
+        "use_for": "not available — FODT TXT not in hardening index. Proceed with Skills handoff only.",
+        "runtime_status": "n/a",
+        "advisory_note": "Optional missing allowed — Skills finalization packet is sufficient"
+      },
+      {
+        "family": "Netpbm",
+        "packet_path": "reports/acceleration-hardening/replay-run-2/netpbm-dotnet_status-netpbm_flip_diagonal.json",
+        "authority_state": "ai_draft",
+        "use_for": "capability selection reference only — NOTE: acceleration targets flip_diagonal (already implemented at R106); Skills targets Pipeline method at R114",
+        "runtime_status": "ok",
+        "advisory_note": "Capability mismatch: acceleration=flip_diagonal, Skills=netpbm_flip_and_merge_pipeline. Follow Skills handoff."
+      }
+    ]
+  },
+
+  "mainstream_execution": {
+    "allowed_files": [
+      "src/net/fods/FodsDocument.cs",
+      "src/net/fodt/FodtDocument.cs",
+      "src/net/netpbm/Model/NetpbmImage.cs",
+      "tests/net/fods/",
+      "tests/net/fodt/",
+      "tests/net/netpbm/",
+      "examples/net/"
+    ],
+    "forbidden_files": [
+      "src/python/",
+      "registry/format-registry.yaml",
+      "plans/master-plan.md",
+      "product-capability-matrix/poc-targets.yaml"
+    ],
+    "stop_conditions": [
+      "git push without explicit human authorization",
+      "Gate 8 or Gate 11 approval without human",
+      "product source edit outside allowed_files",
+      "product-capability-matrix/poc-targets.yaml direct write",
+      "AI output declared authoritative without test evidence",
+      "SVG declared as Netpbm replacement"
+    ],
+    "rollback_requirements": [
+      "All src/ changes must be reversible via git revert",
+      "No gate states may be permanently mutated by Mainstream alone",
+      "Evidence declaration requires supervisor autonomous-cycle validation",
+      "If tests fail after source edit, revert the edit before re-attempting"
+    ],
+    "preflight_requirement": "Classify 4 pre-existing product source WIP files before any new edits",
+    "families": [
+      {
+        "family": "FODS",
+        "capability": "dogfood_status.fods_to_csv_dotnet",
+        "allowed_files": [
+          "src/net/fods/FodsDocument.cs",
+          "src/net/fods/FodsWorkbook.cs",
+          "tests/net/fods/FodsR114ExportToCsvTests.cs"
+        ],
+        "forbidden_files": [
+          "src/python/",
+          "registry/format-registry.yaml",
+          "product-capability-matrix/poc-targets.yaml"
+        ],
+        "expected_tests": "tests/net/fods/FodsR114ExportToCsvTests.cs with 8+ test methods",
+        "expected_dogfood_output": "CSV file produced from FODS spreadsheet using FodsDocument.ExportToCsv()",
+        "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-fods-csv-{id}.json",
+        "validation_commands": [
+          "dotnet test --filter FodsR114",
+          "python tools/supervisor/validate_skill_transcript.py <transcript-path>"
+        ]
+      },
+      {
+        "family": "FODT Markdown",
+        "capability": "dogfood_status.fodt_to_markdown_dotnet",
+        "allowed_files": [
+          "src/net/fodt/FodtDocument.cs",
+          "src/net/fodt/FodtMarkdownExporter.cs",
+          "tests/net/fodt/FodtR114ExportToMarkdownTests.cs"
+        ],
+        "forbidden_files": [
+          "src/python/",
+          "registry/format-registry.yaml",
+          "product-capability-matrix/poc-targets.yaml"
+        ],
+        "expected_tests": "tests/net/fodt/FodtR114ExportToMarkdownTests.cs with 8+ test methods",
+        "expected_dogfood_output": "Markdown file produced from FODT document using FodtDocument.ExportToMarkdown()",
+        "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-fodt-markdown-{id}.json",
+        "validation_commands": [
+          "dotnet test --filter FodtR114",
+          "python tools/supervisor/validate_skill_transcript.py <transcript-path>"
+        ]
+      },
+      {
+        "family": "FODT TXT",
+        "capability": "dogfood_status.fodt_to_txt_dotnet",
+        "allowed_files": [
+          "src/net/fodt/FodtDocument.cs",
+          "src/net/fodt/FodtTxtExporter.cs",
+          "tests/net/fodt/FodtR114ExportToTxtTests.cs"
+        ],
+        "forbidden_files": [
+          "src/python/",
+          "registry/format-registry.yaml",
+          "product-capability-matrix/poc-targets.yaml"
+        ],
+        "expected_tests": "tests/net/fodt/FodtR114ExportToTxtTests.cs with 8+ test methods",
+        "expected_dogfood_output": "Plain text file produced from FODT document using FodtDocument.ExportToTxt()",
+        "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-fodt-txt-{id}.json",
+        "validation_commands": [
+          "dotnet test --filter FodtR114ExportToTxt",
+          "python tools/supervisor/validate_skill_transcript.py <transcript-path>"
+        ]
+      },
+      {
+        "family": "Netpbm",
+        "capability": "dotnet_status.netpbm_flip_and_merge_pipeline",
+        "allowed_files": [
+          "src/net/netpbm/Model/NetpbmImage.cs",
+          "tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs",
+          "examples/net/netpbm/"
+        ],
+        "forbidden_files": [
+          "src/python/",
+          "registry/format-registry.yaml",
+          "product-capability-matrix/poc-targets.yaml",
+          "src/net/svg/"
+        ],
+        "expected_tests": "tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs with 8+ test methods",
+        "expected_dogfood_output": "Netpbm image produced using NetpbmImage.Pipeline() method chain",
+        "expected_transcript": "reports/{sprint}/skill-transcripts/transcript-netpbm-pipeline-{id}.json",
+        "svg_replacement_rejected": true,
+        "svg_rejection_note": "SVG cannot replace Netpbm — format class mismatch (vector vs raster)",
+        "validation_commands": [
+          "dotnet test --filter NetpbmR114",
+          "python tools/supervisor/validate_skill_transcript.py <transcript-path>"
+        ]
+      }
+    ]
+  },
+
+  "evidence_expectations": {
+    "minimum_passing_tests": 32,
+    "minimum_governed_transcripts": 4,
+    "minimum_source_diffs": 4,
+    "required_for_clean_pass": {
+      "families_touched": 4,
+      "source_diffs": 4,
+      "governed_transcripts": 4,
+      "raw_logs": 4,
+      "capability_matrix_deltas": 4
+    },
+    "required_families": ["FODS", "FODT Markdown", "FODT TXT", "Netpbm"],
+    "stretch_families": [],
+    "note": "v2 adds FODT TXT as required family (was missing from v1)"
+  },
+
+  "capability_delta": {
+    "proposed_only": true,
+    "authority_note": "Do not write poc-targets.yaml directly. Requires test evidence and Mainstream product authority.",
+    "deltas": [
+      {
+        "family": "FODS",
+        "capability_path": "fods.dogfood_status.fods_to_csv_dotnet",
+        "proposed_status": "IMPLEMENTED",
+        "requires_test_evidence": true
+      },
+      {
+        "family": "FODT Markdown",
+        "capability_path": "fodt.dogfood_status.fodt_to_markdown_dotnet",
+        "proposed_status": "IMPLEMENTED",
+        "requires_test_evidence": true
+      },
+      {
+        "family": "FODT TXT",
+        "capability_path": "fodt.dogfood_status.fodt_to_txt_dotnet",
+        "proposed_status": "IMPLEMENTED",
+        "requires_test_evidence": true
+      },
+      {
+        "family": "Netpbm",
+        "capability_path": "netpbm.dotnet_status.netpbm_image_pipeline_dotnet",
+        "proposed_status": "IMPLEMENTED",
+        "requires_test_evidence": true
+      }
+    ]
+  },
+
+  "validation": {
+    "validator_tool": "tools/supervisor/validate_tri_lane_contract.py",
+    "pass_criteria": [
+      "supervisor_routing block present with routing_authority",
+      "skills_handoff block present with governed_execution_authority",
+      "acceleration_advisory block present with ai_draft authority",
+      "4 families in mainstream execution (FODS, FODT Markdown, FODT TXT, Netpbm)",
+      "Netpbm present",
+      "SVG not replacing Netpbm",
+      "capability_delta.proposed_only=true",
+      "no direct poc-targets mutation",
+      "no python pytest commands for .cs files",
+      "FODT full packet (not shell)",
+      "Netpbm full packet (not shell)"
+    ],
+    "rejection_conditions": [
+      "missing supervisor_routing block",
+      "missing skills_handoff block",
+      "acceleration authority_state != ai_draft",
+      "direct poc-targets mutation request",
+      "fewer than 3 families in mainstream execution",
+      "Netpbm missing from families",
+      "SVG replacing Netpbm (absent Netpbm)",
+      "missing expected_tests, expected_dogfood_output, or expected_transcript for any family",
+      "capability_delta.proposed_only != true",
+      "python -m pytest command referencing .cs file",
+      "python -m pytest command referencing tests/net/ path",
+      "FODT shell packet when full finalization packet exists",
+      "Netpbm shell packet when full finalization packet exists"
+    ]
+  },
+
+  "authority_boundary": {
+    "supervisor": "Stream-control authority — routing decisions, continuation states, cross-stream status",
+    "skills": "Governed execution authority — handoff templates, transcript validation, dry-run contracts",
+    "acceleration": "Advisory only — ai_draft outputs, require deterministic validation before use as evidence",
+    "mainstream": "Product implementation authority — source changes, tests, dogfood, capability delta proposals",
+    "format_factory_gates": "Human authority — Gate 8 and Gate 11 require human approval (never self-approved)"
+  }
+}

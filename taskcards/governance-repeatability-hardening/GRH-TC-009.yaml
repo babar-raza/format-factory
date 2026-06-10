@@ -1,0 +1,24 @@
+id: GRH-TC-009
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Create raw logs and sample output policy (Lane I)"
+status: completed
+lane: raw_logs_policy
+item_type: GOVERNANCE_DOC
+problem: >
+  Governance-only sprints are penalized by anti_skip_checker for missing raw logs and
+  sample outputs, even though governance docs produce no binary outputs and run no tests.
+  Need: (a) raw log capture for this sprint's tests, (b) sample-output-policy.md,
+  (c) anti-skip exemption for governance sprint stream.
+scope:
+  - Create raw-logs directory and capture validator test output
+  - Create sample-output-policy.md documenting what constitutes a sample output for governance
+  - Create governance-stream-exempt note for anti-skip
+files_to_create:
+  - reports/repeatability-governance-hardening-rnext/raw-logs/validator-tests.log
+  - reports/repeatability-governance-hardening-rnext/sample-output-policy.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-005]
+handoff_to_autonomy_sprint: false

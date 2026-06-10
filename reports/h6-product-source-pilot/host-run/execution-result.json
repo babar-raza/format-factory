@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "action_type": "PRODUCT_SOURCE_PATCH_BOUNDED",
+  "task_id": "h8-probe-abw-001",
+  "status": "SUCCESS",
+  "generated_at": "2026-06-06T12:38:53.210092+00:00",
+  "target_path": "src/python/abw/abw_codec.py",
+  "patch_type": "add_function",
+  "also_modified": [],
+  "product_source_mutated": true,
+  "poc_targets_mutated": false,
+  "rollback_instruction": "git checkout HEAD -- src/python/abw/abw_codec.py",
+  "before_length": 6148,
+  "after_length": 6819,
+  "result_path": "reports/h6-product-source-pilot/host-run/execution-result.json",
+  "backend_used": "LOCAL_DETERMINISTIC",
+  "proof_level": "H3",
+  "executed_at": "2026-06-06T12:38:53.214918+00:00",
+  "stdout": "PRODUCT_SOURCE_PATCH: target=src/python/abw/abw_codec.py, patch_type=add_function\nproduct_source_mutated=True, rollback=git checkout HEAD -- src/python/abw/abw_codec.py",
+  "stderr": ""
+}

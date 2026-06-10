@@ -1,0 +1,33 @@
+handoff_id: SKILLS-R102-HANDOFF-004
+skill_id: add-python-object-model-feature
+format_id: ppm
+feature_name: brightness_adjust
+target_sprint: R103
+stream: skills
+
+inputs:
+  format_id: ppm
+  feature_name: brightness_adjust
+  exact_source_paths:
+    - src/python/ppm/ppm_parser.py
+  exact_test_paths:
+    - tests/python/ppm/test_r103_ppm_brightness_adjust.py
+  ledger_entry_path: reports/r90/product-code-change-ledger.json
+
+preconditions:
+  - ppm_parser.py exists with pixel read/write capability
+  - PPM P3/P6 parsing proven in R84+
+  - Ledger validator PASS for current HEAD
+
+acceptance_criteria:
+  - brightness_adjust(factor) scales all pixel values by factor, clamped to maxval
+  - 4+ tests covering: brighten (1.5x), darken (0.5x), clamp at maxval, factor=1.0 identity
+  - Ledger entry added with SHA-256
+  - pytest passes focused test
+
+forbidden_paths:
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+  - External imaging backends (PIL, OpenCV)
+
+rollback_plan: Revert ppm_parser.py changes and remove test file

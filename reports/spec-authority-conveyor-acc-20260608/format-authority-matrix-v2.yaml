@@ -1,0 +1,167 @@
+sprint: SPEC-AUTHORITY-LAYER-CONVEYOR-ACCELERATION-AND-OPS-CLEANUP-001
+run_id: spec-authority-conveyor-acc-20260608-e382e5f
+generated_at: "2026-06-08T15:30:00Z"
+changelog_from_v1: >
+  ZST: P4 -> P5 (code citation + test citation added for FACT-ZST-001/ZST-002).
+  PBM/PGM/PPM: P2 -> P3 (candidate facts extracted from spec-index.yaml metadata).
+  FODT: corrected P2 -> P0 (no spec-cache exists; prior P2 classification was incorrect).
+
+formats:
+  - format_id: fods
+    authority_level: P6
+    authority_level_int: 6
+    readiness_allowed: true
+    product_expansion_allowed: true
+    exception_allowed: null
+    verified_fact_ids: [FACT-FODS-001]
+    code_citations: [src/python/fods/constants.py]
+    test_citations: [tests/python/fods/test_r125_fact_traceability.py]
+    proof_graph: reports/authority-conveyor-20260608/fods-p6-proof-graph.yaml
+    notes: "P6 complete for FACT-FODS-001 (ODF 1.3 office:mimetype). Other FODS facts remain debt."
+
+  - format_id: zst
+    authority_level: P6
+    authority_level_int: 6
+    readiness_allowed: true
+    product_expansion_allowed: true
+    exception_allowed: null
+    verified_fact_ids: [FACT-ZST-001, FACT-ZST-002]
+    code_citations: [src/python/zst/zst_codec.py]
+    test_citations: [tests/python/zst/test_r127_zst_fact_traceability.py]
+    proof_graph: reports/authority-conveyor-20260608/zst-p6-proof-graph.yaml
+    notes: "P6: proof graph stored and registered. FACT-ZST-001 (magic 0xFD2FB528) and FACT-ZST-002 (skippable range) both P6."
+
+  - format_id: csv
+    authority_level: P3
+    authority_level_int: 3
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: legacy_backfill
+    verified_fact_ids: []
+    candidate_fact_ids: [FACT-CSV-001, FACT-CSV-002]
+    notes: "P3: candidate facts extracted. Blocked: RFC 4180 text not cached."
+
+  - format_id: pbm
+    authority_level: P3
+    authority_level_int: 3
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: legacy_backfill
+    verified_fact_ids: []
+    candidate_fact_ids: [FACT-PBM-001, FACT-PBM-002]
+    notes: "P3: candidate facts extracted this sprint. Blocked: Netpbm pbm.html not cached."
+
+  - format_id: pgm
+    authority_level: P3
+    authority_level_int: 3
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: legacy_backfill
+    verified_fact_ids: []
+    candidate_fact_ids: [FACT-PGM-001, FACT-PGM-002]
+    notes: "P3: candidate facts extracted this sprint. Blocked: Netpbm pgm.html not cached."
+
+  - format_id: ppm
+    authority_level: P3
+    authority_level_int: 3
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: legacy_backfill
+    verified_fact_ids: []
+    candidate_fact_ids: [FACT-PPM-001, FACT-PPM-002]
+    notes: "P3: candidate facts extracted this sprint. Blocked: Netpbm ppm.html not cached."
+
+  - format_id: fodt
+    authority_level: P0
+    authority_level_int: 0
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: legacy_backfill
+    notes: "P0: no spec-cache entry. FODT uses same ODF spec as FODS. Cache ODF 1.3 under fodt/ to advance."
+
+  - format_id: gnumeric
+    authority_level: P1
+    authority_level_int: 1
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: schema_authority_available
+    notes: "P1: schema-only authority (gnumeric.xsd). No formal spec. DEBT_ONLY classification."
+
+  - format_id: abw
+    authority_level: P1
+    authority_level_int: 1
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: no_public_spec_available
+    notes: "P1: no public formal spec for AWM/AWML format."
+
+  - format_id: sylk
+    authority_level: P1
+    authority_level_int: 1
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: no_public_spec_available
+    notes: "P1: no public formal spec available."
+
+  - format_id: tsv
+    authority_level: P1
+    authority_level_int: 1
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: no_public_spec_available
+    notes: "P1: no formal RFC for TSV."
+
+  - format_id: dif
+    authority_level: P1
+    authority_level_int: 1
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: no_public_spec_available
+    notes: "P1: no accessible formal spec."
+
+  - format_id: markdown
+    authority_level: P1
+    authority_level_int: 1
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: no_public_spec_available
+    notes: "P1: community standard only."
+
+  - format_id: netpbm
+    authority_level: P0
+    authority_level_int: 0
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: legacy_backfill
+    notes: "P0: no unified netpbm spec-cache; individual pbm/pgm/ppm entries exist."
+
+  - format_id: html
+    authority_level: P0
+    authority_level_int: 0
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: legacy_backfill
+    notes: "P0: no spec-cache. HTML spec (W3C/WHATWG) not yet cached."
+
+  - format_id: txt
+    authority_level: P1
+    authority_level_int: 1
+    readiness_allowed: false
+    product_expansion_allowed: false
+    exception_allowed: no_public_spec_available
+    notes: "P1: no format-specific spec."
+
+summary:
+  total_formats: 16
+  p6_count: 2
+  p5_count: 0
+  p4_count: 0
+  p3_count: 4
+  p2_count: 0
+  p1_count: 6
+  p0_count: 4
+  readiness_ready: [fods, zst]
+  product_expansion_ready: [fods, zst]
+  p6_formats: [fods, zst]
+  formats_with_no_public_spec: [abw, sylk, tsv, dif, markdown, txt]
+  formats_schema_only: [gnumeric]

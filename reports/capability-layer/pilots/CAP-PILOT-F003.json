@@ -1,0 +1,50 @@
+{
+  "pilot_id": "CAP-PILOT-F003",
+  "format": "NDJSON",
+  "product_type": "foss_reduced",
+  "authority_inputs": [
+    "reports/capability-layer/foss-reduced-capability-map.json (source scan discovery)"
+  ],
+  "source_files_inspected": [
+    "src/python/ndjson/ndjson_codec.py"
+  ],
+  "tests_inspected": 4,
+  "examples_inspected": "None",
+  "generated_capability_records": {
+    "count": 12,
+    "sample": "load_ndjson, probe_ndjson, get_record_count, get_field_names, write_ndjson, append_record, filter_records, export_to_csv"
+  },
+  "generated_gap_entries": {
+    "count": 1,
+    "summary": "NDJSON not in poc-targets.yaml foss_reduced_products"
+  },
+  "taskcards_created_or_updated": [
+    "CAP-PROD-005"
+  ],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "PASS advisory warnings only"
+  },
+  "test_result": {
+    "pass_count": 32,
+    "fail_count": 0,
+    "log_path": ""
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [
+      "src/python/ndjson/ndjson_codec.py"
+    ],
+    "key_checks": [
+      "12 public functions",
+      "4 test files",
+      "NOT in poc-targets.yaml"
+    ],
+    "result": "VERIFIED with limitation"
+  },
+  "contradictions_found": [
+    "NDJSON not in poc-targets.yaml foss_reduced_products despite being implemented"
+  ],
+  "repairs_performed": [],
+  "final_verdict": "PASS_WITH_LIMITATIONS",
+  "verdict_reason": "NDJSON FOSS implemented with 12 functions, 4 test files. poc-targets.yaml needs updating (CAP-PROD-005)."
+}

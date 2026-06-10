@@ -1,0 +1,20 @@
+{
+  "invocation_id": "r109-anti-bypass-005",
+  "skill_id": "add-python-api",
+  "mode": "anti-bypass-demo",
+  "inputs": {
+    "format_id": "ppm",
+    "api_name": "grayscale_conversion",
+    "bypass_attempt": "Attempted to skip transcript generation and ledger entry",
+    "enforcement_result": "BLOCKED by validate_adoption_compliance — no ledger_entry_id for foss_python track"
+  },
+  "allowed_files": [
+    "src/python/ppm/ppm_writer.py"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "FAIL",
+  "timestamp": "2026-06-03T22:35:00Z",
+  "notes": "Anti-bypass demonstration: worker attempted to skip adoption compliance. Validator caught missing ledger_entry_id. Result is FAIL intentionally — proves enforcement works."
+}

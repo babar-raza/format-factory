@@ -84,6 +84,7 @@ class TestMatrixCompleteness:
             if os.path.isdir(os.path.join(SRC_PYTHON, d))
             and not d.startswith("_")
             and not d.startswith(".")
+            and not d.endswith(".egg-info")
         }
         missing = src_formats - set(matrix_formats.keys())
         assert missing == set(), f"Formats in src/python/ but missing from matrix: {missing}"

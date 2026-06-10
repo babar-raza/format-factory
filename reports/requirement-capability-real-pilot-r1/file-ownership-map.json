@@ -1,0 +1,96 @@
+{
+  "sprint_id": "FORMAT-FACTORY-REQUIREMENT-CAPABILITY-AUTHORITY-LAYER-REAL-PILOT-R1-001",
+  "lane_assignments": {
+    "Lane 0 (Coordinator)": [
+      "reports/requirement-capability-real-pilot-r1/lane-ownership.md",
+      "reports/requirement-capability-real-pilot-r1/overlap-check.md",
+      "reports/requirement-capability-real-pilot-r1/taskcard-state.json",
+      "reports/requirement-capability-real-pilot-r1/file-ownership-map.json",
+      ".local/evidences/requirement-capability-real-pilot-r1/evidence-declaration.yaml",
+      ".local/evidences/requirement-capability-real-pilot-r1/evidence-manifest.yaml"
+    ],
+    "Lane A (Preflight + Inventory)": [
+      "reports/requirement-capability-real-pilot-r1/00-preflight.md",
+      "reports/requirement-capability-real-pilot-r1/layer-implementation-inventory.md",
+      "reports/requirement-capability-real-pilot-r1/pilot-plan.md",
+      "reports/requirement-capability-real-pilot-r1/rca-entrypoints.json"
+    ],
+    "Lane B (Input Snapshots)": [
+      "reports/requirement-capability-real-pilot-r1/input-snapshot-manifest.md",
+      "reports/requirement-capability-real-pilot-r1/input-snapshots-manifest.json",
+      "reports/requirement-capability-real-pilot-r1/spec-input-reliability-table.json",
+      "reports/requirement-capability-real-pilot-r1/input-snapshots/"
+    ],
+    "Lane C (Proof Graph Construction)": [
+      "reports/requirement-capability-real-pilot-r1/proof-graph/",
+      "reports/requirement-capability-real-pilot-r1/proof-graph-validation-report.md",
+      "reports/requirement-capability-real-pilot-r1/product-requirements.jsonl",
+      "reports/requirement-capability-real-pilot-r1/capability-claims.jsonl",
+      "reports/requirement-capability-real-pilot-r1/claim-registry-report.md"
+    ],
+    "Lane D (Evidence Import)": [
+      "reports/requirement-capability-real-pilot-r1/imported-evidence-artifacts.jsonl",
+      "reports/requirement-capability-real-pilot-r1/evidence-import-report.md",
+      "reports/requirement-capability-real-pilot-r1/import-conflicts.json",
+      "reports/requirement-capability-real-pilot-r1/missing-evidence-map.json"
+    ],
+    "Lane E (Coverage Evaluation)": [
+      "reports/requirement-capability-real-pilot-r1/coverage-records.jsonl",
+      "reports/requirement-capability-real-pilot-r1/proof-sufficiency-evaluation.md",
+      "reports/requirement-capability-real-pilot-r1/proof-sufficiency-summary.json",
+      "reports/requirement-capability-real-pilot-r1/subsystem-coverage-matrix.json"
+    ],
+    "Lane F (Overclaim Detection)": [
+      "reports/requirement-capability-real-pilot-r1/overclaim-detection-report.md",
+      "reports/requirement-capability-real-pilot-r1/claim-decomposition-results.json"
+    ],
+    "Lane G (Staleness Invalidation)": [
+      "reports/requirement-capability-real-pilot-r1/staleness-invalidation-report.md",
+      "reports/requirement-capability-real-pilot-r1/stale-claims.md",
+      "reports/requirement-capability-real-pilot-r1/recomputation-queue.json",
+      "reports/requirement-capability-real-pilot-r1/blocked-poc-targets.json"
+    ],
+    "Lane H (Delta Promotion)": [
+      "reports/requirement-capability-real-pilot-r1/delta-promotion-report.md",
+      "reports/requirement-capability-real-pilot-r1/capability-deltas/",
+      "reports/requirement-capability-real-pilot-r1/proposed-authority-updates/"
+    ],
+    "Lane I (POC Readiness)": [
+      "reports/requirement-capability-real-pilot-r1/poc-readiness.json",
+      "reports/requirement-capability-real-pilot-r1/scoreboard.md",
+      "reports/requirement-capability-real-pilot-r1/risk-register.md"
+    ],
+    "Lane J (Gap Queue)": [
+      "reports/requirement-capability-real-pilot-r1/mainstream-gap-queue.json",
+      "reports/requirement-capability-real-pilot-r1/mainstream-gap-queue-report.md",
+      "reports/requirement-capability-real-pilot-r1/actionable-vs-blocked-gap-summary.json"
+    ],
+    "Lane K (Supervisor Verdict + Sync)": [
+      "reports/requirement-capability-real-pilot-r1/supervisor-verdict-packet.json",
+      "reports/requirement-capability-real-pilot-r1/supervisor-verdict-packet-report.md",
+      "reports/requirement-capability-real-pilot-r1/poc-targets-sync-proposal.yaml",
+      "reports/requirement-capability-real-pilot-r1/poc-targets-sync-proposal-review.md",
+      "reports/requirement-capability-real-pilot-r1/false-pass-false-stop-risk-report.md"
+    ],
+    "Lane L (Tests)": [
+      "tests/requirement_capability_authority/test_real_pilot_r1.py",
+      "reports/requirement-capability-real-pilot-r1/test-run-report.md",
+      "reports/requirement-capability-real-pilot-r1/regression-test-plan.md",
+      "reports/requirement-capability-real-pilot-r1/golden-replay-results.json",
+      "reports/requirement-capability-real-pilot-r1/raw-logs/rca-tests.log"
+    ],
+    "Lane M (State Sync)": [
+      "reports/requirement-capability-real-pilot-r1/state-taskcard-memory-sync.md"
+    ],
+    "Lane N (Repair Report)": [
+      "reports/requirement-capability-real-pilot-r1/minimal-repair-report.md",
+      "reports/requirement-capability-real-pilot-r1/command-ledger.json"
+    ],
+    "Lane O (Final IV + Evidence)": [
+      "reports/requirement-capability-real-pilot-r1/final-adversarial-iv.md",
+      "reports/requirement-capability-real-pilot-r1/next-sprint-recommendation.md",
+      "reports/requirement-capability-real-pilot-r1/generated-next-prompt.md"
+    ]
+  },
+  "overlap_check": "CLEAN"
+}

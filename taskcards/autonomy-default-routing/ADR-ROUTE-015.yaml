@@ -1,0 +1,26 @@
+id: ADR-ROUTE-015
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Migration/Backfill Handling for Legacy Items"
+status: completed
+lane: validator_prompt_safety
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-009]
+gates:
+  - "Legacy items with backfill_exemption get WARN not FAIL"
+allowed_files:
+  - "tools/supervisor/governance_validators.py"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "Legacy backfill items exempt from route_decision_id requirement"
+  - "WARN severity for legacy items"
+tests:
+  - "tests/supervisor/test_autonomy_machinery_bypass_prevention.py::TestGovernanceValidatorLegacyBackfill"
+evidence:
+  - "tools/supervisor/governance_validators.py"
+rollback: "Covered by ADR-ROUTE-009 rollback"
+closeout_criteria: "legacy backfill test passes"

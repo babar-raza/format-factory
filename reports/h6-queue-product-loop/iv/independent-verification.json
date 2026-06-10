@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-AUTONOMOUS-PRODUCT-QUEUE-CONSUMPTION-001",
+  "generated": "2026-06-06",
+  "checks": [
+    {
+      "id": "IV-01",
+      "check": "Package 113 H6 proof is accepted",
+      "pass": true,
+      "evidence": "SHA-256=b9a09c8213a00f87a5af3df32a12d5716def1e55d08ea9282212de1bdd6107d6; IV verdict=H6_EXTERNAL_HOST_PROVEN; external_run_confirmed=true; tests=92/0"
+    },
+    {
+      "id": "IV-02",
+      "check": "Queue was previously pending/passive (no items consumed in prior run)",
+      "pass": true,
+      "evidence": "queue-before.json: 5 items, all status=pending; cycle_results_summary from prior sprint noted queue_note=Queue items pending; queue consumed via dequeue_next() integration needed"
+    },
+    {
+      "id": "IV-03",
+      "check": "Queue is now primary execution source (--queue-first flag implemented)",
+      "pass": true,
+      "evidence": "autonomous_orchestrator.py: added --queue-first flag, _resolve_seed_action() calls dequeue_next() before generate_next_action(); _queue_item_to_next_action() converter added; write_roots merged from queue item"
+    },
+    {
+      "id": "IV-04",
+      "check": "At least one queue item was consumed (pending → done)",
+      "pass": true,
+      "evidence": "queue-after.json: done_count=4; h6q-product-001 status=done; h6-q-001 status=done; h6-q-002 status=done; h6-q-003 status=done"
+    },
+    {
+      "id": "IV-05",
+      "check": "Product-safe queued item (PRODUCT_GAP_CLASSIFICATION_READONLY) executed",
+      "pass": true,
+      "evidence": "queue-consumption-result.json: h6q-product-001 action_type=PRODUCT_GAP_CLASSIFICATION_READONLY status=done; result_path=reports/h6-queue-product-loop/product-pilot/product-gap-classification.json"
+    },
+    {
+      "id": "IV-06",
+      "check": "Product-safe result file exists with correct structure",
+      "pass": true,
+      "evidence": "product-gap-classification.json: action_type=PRODUCT_GAP_CLASSIFICATION_READONLY, status=SUCCESS, product_source_mutated=false, poc_targets_mutated=false"
+    },
+    {
+      "id": "IV-07",
+      "check": "No product source files changed",
+      "pass": true,
+      "evidence": "queue-consumption-result.json: no_product_source_mutated=true; product_action_guard.py FORBIDDEN_WRITE_PATHS enforced; no src/ edits"
+    },
+    {
+      "id": "IV-08",
+      "check": "No advisory prompt executed",
+      "pass": true,
+      "evidence": "queue-consumption-result.json: no_advisory_prompt_executed=true; active-continuation.json advisory_prompt_executable=false; next-action.json action_type=RUN_JSON_VALIDATION (not .md)"
+    },
+    {
+      "id": "IV-09",
+      "check": "Global continuation has machine-readable paths",
+      "pass": true,
+      "evidence": "continuation-signal.json: machine_continuation_path=.local/supervisor/next-action.json, active_continuation_path=.local/supervisor/active-continuation.json, action_queue_path=.local/supervisor/action-queue.jsonl, advisory_prompt_executable=false, global_repair_applied=true"
+    },
+    {
+      "id": "IV-10",
+      "check": "Post-closeout continuation is queue-backed",
+      "pass": true,
+      "evidence": "post-closeout-continuation.json: queue_backed_continuation=true, no_prompt_paste_needed=true; action-queue-final.jsonl has 2 pending items for next run"
+    },
+    {
+      "id": "IV-11",
+      "check": "Tests passed: 138/0 (46 new H6Q + 92 prior)",
+      "pass": true,
+      "evidence": "all-tests.log: 138 passed, 0 failed; test_action_queue_primary_source (17), test_orchestrator_queue_consumption (9), test_global_continuation_machine_readable (11), test_product_safe_queue_item (11), plus prior H6/queue/continuation/lifetime suites"
+    },
+    {
+      "id": "IV-12",
+      "check": "Evidence package includes queue before/after, host run, product-pilot, and continuation",
+      "pass": true,
+      "evidence": "reports/h6-queue-product-loop/queue/queue-before.json, queue-after.json; host-run/queue-consumption-result.json; product-pilot/product-gap-classification.json; post-closeout/post-closeout-continuation.json; continuation/global-continuation-after.json"
+    },
+    {
+      "id": "IV-13",
+      "check": "Final verdict does not overclaim — product source not changed, external gate items remain",
+      "pass": true,
+      "evidence": "No src/ writes; 2 pending queue items remain (h6-q-004, h6-q-005); verdict=COMPLETE_QUEUE_DRIVEN_H6_MULTI_ACTION_PROVEN is justified by 4 items consumed (3 cycles from orchestrator + 1 pre-seeded run)"
+    }
+  ],
+  "verdict": "COMPLETE_QUEUE_DRIVEN_H6_MULTI_ACTION_PROVEN",
+  "verdict_reasoning": "External host orchestrator ran with --queue-first; consumed 4 queue items in 3 cycles (h6q-product-001 PRODUCT_GAP_CLASSIFICATION_READONLY + h6-q-001 RUN_JSON_VALIDATION + h6-q-002/h6-q-003); product-safe pilot executed with no source mutations; global continuation signal repaired with machine-readable paths; 138 tests pass (0 failures); post-closeout continuation is queue-backed; Babar does NOT need to paste prompts.",
+  "babar_still_needs_to_paste_prompts": false,
+  "queue_driven_autonomy_proven": true,
+  "product_safe_pilot_proven": true
+}

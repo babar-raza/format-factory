@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001",
+  "generated_at": "2026-06-06",
+  "lanes": [
+    {
+      "lane_id": "L0",
+      "title": "Coordinator Preflight",
+      "owner": "coordinator",
+      "owned_paths": ["reports/h6-product-source-pilot/"],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/"],
+      "shared_paths": [],
+      "status": "completed"
+    },
+    {
+      "lane_id": "L1",
+      "title": "Queue Accounting Fix + Quarantine",
+      "owner": "lane-1",
+      "owned_paths": [
+        "reports/h6-product-source-pilot/queue/",
+        ".local/supervisor/action-queue.jsonl"
+      ],
+      "forbidden_paths": ["src/"],
+      "shared_paths": [".local/supervisor/action-queue.jsonl"],
+      "status": "pending"
+    },
+    {
+      "lane_id": "L2",
+      "title": "Product Task Selector",
+      "owner": "lane-2",
+      "owned_paths": [
+        "tools/supervisor/product_task_selector.py",
+        "reports/h6-product-source-pilot/product-task/"
+      ],
+      "forbidden_paths": ["src/net/", "tests/net/"],
+      "shared_paths": [],
+      "status": "pending"
+    },
+    {
+      "lane_id": "L3",
+      "title": "Product Action Guard Extension",
+      "owner": "lane-3",
+      "owned_paths": ["tools/supervisor/product_action_guard.py"],
+      "forbidden_paths": ["src/"],
+      "shared_paths": [],
+      "status": "pending"
+    },
+    {
+      "lane_id": "L4",
+      "title": "Queue Item Seed",
+      "owner": "lane-4",
+      "owned_paths": [
+        ".local/supervisor/action-queue.jsonl",
+        ".local/supervisor/next-action.json"
+      ],
+      "forbidden_paths": ["src/"],
+      "shared_paths": [".local/supervisor/action-queue.jsonl"],
+      "status": "pending"
+    },
+    {
+      "lane_id": "L5",
+      "title": "Execute Bounded Product-Source Task",
+      "owner": "lane-5",
+      "owned_paths": [
+        "src/python/abw/abw_codec.py",
+        "src/python/abw/__init__.py",
+        "reports/h6-product-source-pilot/host-run/"
+      ],
+      "forbidden_paths": ["src/net/", "tests/net/"],
+      "shared_paths": [],
+      "status": "pending"
+    },
+    {
+      "lane_id": "L6",
+      "title": "Tests",
+      "owner": "lane-6",
+      "owned_paths": [
+        "tests/supervisor/test_queue_consumption_accounting.py",
+        "tests/supervisor/test_unsafe_next_work_items_quarantine.py",
+        "tests/supervisor/test_product_source_action_guard.py",
+        "tests/python/abw/test_r118_probe_abw.py",
+        "reports/h6-product-source-pilot/test-logs/"
+      ],
+      "forbidden_paths": ["src/net/"],
+      "shared_paths": [],
+      "status": "pending"
+    },
+    {
+      "lane_id": "L7",
+      "title": "Post-Closeout Queue State",
+      "owner": "lane-7",
+      "owned_paths": ["reports/h6-product-source-pilot/post-closeout/"],
+      "forbidden_paths": ["src/"],
+      "shared_paths": [],
+      "status": "pending"
+    },
+    {
+      "lane_id": "L8",
+      "title": "Independent Verification",
+      "owner": "lane-8",
+      "owned_paths": ["reports/h6-product-source-pilot/iv/"],
+      "forbidden_paths": ["src/"],
+      "shared_paths": [],
+      "status": "pending"
+    },
+    {
+      "lane_id": "LE",
+      "title": "Evidence Package",
+      "owner": "lane-e",
+      "owned_paths": [".local/evidences/h6-product-source-pilot/"],
+      "forbidden_paths": ["src/"],
+      "shared_paths": [],
+      "status": "pending"
+    }
+  ]
+}

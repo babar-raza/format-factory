@@ -1,0 +1,20 @@
+# Governance Pilot 004: PRODUCT_SOURCE jumps DISCOVERED → GOVERNANCE_ACCEPTED (forbidden)
+# Expected result: FAIL (taskcard_state_transitions_validator)
+# Pilot type: negative — forbidden state machine jump for product source item
+pilot_id: "PILOT-004"
+description: "PRODUCT_SOURCE makes forbidden DISCOVERED→GOVERNANCE_ACCEPTED jump"
+expected_validator: "taskcard_state_transitions_validator"
+expected_result: "FAIL"
+declaration:
+  run_id: pilot-004-forbidden-state-jump
+  planned_work_items:
+    - item_id: "PILOT-004-TC-001"
+      item_type: "PRODUCT_SOURCE"
+      format_id: "ndjson"
+      product_track: "foss_python"
+      status: "completed"
+      execution_method: "MANUAL_GOVERNED_BY_SKILL"
+      claim_classification: "GOVERNED_BUT_NOT_REPLAYED"
+      state_machine_start: "DISCOVERED"
+      state_machine_target: "GOVERNANCE_ACCEPTED"
+      # FORBIDDEN: PRODUCT_SOURCE may not jump DISCOVERED→GOVERNANCE_ACCEPTED

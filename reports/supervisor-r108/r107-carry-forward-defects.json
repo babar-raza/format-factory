@@ -1,0 +1,39 @@
+{
+  "sprint": "FORMAT-FACTORY-SUPERVISOR-R108-STREAM-PRIMARY-STATE-PROMPT-QUALITY-GATING-AND-CONTINUATION-ENFORCEMENT-CAMPAIGN-001",
+  "prior_sprint": "FORMAT-FACTORY-SUPERVISOR-R107-RAW-LOG-CAPTURE-STREAM-STATE-ISOLATION-CONTINUATION-GATING-CAMPAIGN-001",
+  "carry_forward_defects": [
+    {
+      "id": "D108-PQ-01",
+      "source": "R107 prompt-quality-result.json: advancement_lane FAIL",
+      "severity": "high",
+      "description": "Supervisor prompt lacks advancement terms recognized by validate_prompt_quality.py",
+      "r108_resolution": "Make advancement_lane check stream-aware with supervisor-specific terms",
+      "acceptance": "Supervisor prompt passes all prompt-quality checks including advancement_lane"
+    },
+    {
+      "id": "D108-STATE-01",
+      "source": "R107 global-state Mainstream contamination",
+      "severity": "high",
+      "description": "reports/supervisor/ files overwritten by Mainstream R109/R110 with wrong-stream references",
+      "r108_resolution": "Stream-primary state classification; supervisor authoritative state in reports/supervisor-r108/",
+      "acceptance": "Package stream identity warnings flag Mainstream references in global state"
+    },
+    {
+      "id": "D108-GAPS-01",
+      "source": "R107 stale R98 selected gaps",
+      "severity": "medium",
+      "description": ".local/supervisor/selected-product-gaps.json references R98 sprint, not current supervisor sprint",
+      "r108_resolution": "Classify as stale global reference; supervisor ignores product gaps",
+      "acceptance": "Anti-skip stale_gaps check does not flag supervisor sprint for product gap staleness"
+    },
+    {
+      "id": "D108-CONT-01",
+      "source": "R107 continuation YES despite prompt-quality failure",
+      "severity": "high",
+      "description": "advancement_lane is not in critical_prompt_failures set, allowing continuation with invalid prompt",
+      "r108_resolution": "Add prompt_quality_invalid to continuation hard stops when any prompt check fails",
+      "acceptance": "Prompt-quality failure produces NO_PROMPT_QUALITY_FAILURE continuation state"
+    }
+  ],
+  "r107_classification": "ACCEPTED_WITH_LIMITATIONS"
+}

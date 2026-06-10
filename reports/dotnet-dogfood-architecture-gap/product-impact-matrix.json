@@ -1,0 +1,17 @@
+[
+  {"product":"FODS .NET","blocked_capabilities":["fods_to_csv_dotnet","fods_to_html_dotnet"],
+   "blocker":"format-factory-csv-dotnet and format-factory-html-dotnet libraries do not exist",
+   "still_available_work":["load/parse","edit","save-same-format","roundtrip tests","examples","object-model features"],
+   "recommended_next_lane":"SYLK Python installed workflow OR FODS/FODT object model deepening",
+   "stop_condition":"Do not claim dogfood IMPLEMENTED without FF writer library"},
+  {"product":"FODT .NET","blocked_capabilities":["fodt_to_markdown_dotnet","fodt_to_txt_dotnet"],
+   "blocker":"format-factory-markdown-dotnet and format-factory-txt-dotnet libraries do not exist",
+   "still_available_work":["load/parse","edit","save-same-format","roundtrip tests","examples","object-model features"],
+   "recommended_next_lane":"SYLK Python installed workflow OR FODT object model deepening",
+   "stop_condition":"Do not claim dogfood IMPLEMENTED without FF writer library"},
+  {"product":"Netpbm .NET","blocked_capabilities":[],
+   "blocker":"none — dogfood IMPLEMENTED via NetpbmWriter",
+   "still_available_work":["all capabilities available","additional image processing features"],
+   "recommended_next_lane":"Continue Netpbm features OR installed-package proof",
+   "stop_condition":"none"}
+]

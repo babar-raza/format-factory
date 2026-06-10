@@ -1,0 +1,147 @@
+sprint_id: FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-REAL-PILOT-R3-CLOSURE-HARDENING-AND-ODF-DEPTH-001
+run_id: spec-authority-real-pilot-r3
+generated_at: "2026-06-05T00:00:00Z"
+
+lanes:
+  - lane_id: lane-0
+    name: Coordinator preflight
+    owner: coordinator
+    status: CLOSED_VERIFIED
+    commands:
+      - command: "mkdir -p reports/spec-authority-real-pilot-r3/raw-logs"
+        description: Create output directories
+        exit_code: 0
+        log_path: null
+        no_command_reason: null
+    artifacts:
+      - reports/spec-authority-real-pilot-r3/00-preflight.md
+      - reports/spec-authority-real-pilot-r3/r2-caveat-register.md
+      - reports/spec-authority-real-pilot-r3/lane-ownership.md
+      - reports/spec-authority-real-pilot-r3/file-ownership-map.json
+      - reports/spec-authority-real-pilot-r3/overlap-check.md
+      - reports/spec-authority-real-pilot-r3/taskcard-state.json
+      - reports/spec-authority-real-pilot-r3/command-ledger.json
+      - reports/spec-authority-real-pilot-r3/scoreboard.md
+      - reports/spec-authority-real-pilot-r3/lane-execution-ledger.yaml
+
+  - lane_id: lane-a
+    name: R2 re-review and contradiction register
+    owner: review-agent
+    status: CLOSED_VERIFIED
+    commands:
+      - command: "python -c \"import json,zipfile; z=zipfile.ZipFile('.local/supervisor/reviews/spec-authority-real-pilot-r2/declaration-review-package.zip'); print(z.namelist()[:5])\""
+        description: Read R2 anti-skip and grades from package
+        exit_code: 0
+        log_path: null
+        no_command_reason: null
+    artifacts:
+      - reports/spec-authority-real-pilot-r3/r2-regrading.md
+      - reports/spec-authority-real-pilot-r3/r2-contradiction-register.json
+
+  - lane_id: lane-b
+    name: Review-package-proof repair validation
+    owner: repair-agent
+    status: CLOSED_VERIFIED
+    commands:
+      - command: "cat reports/spec-authority-real-pilot-r2/review-package-proof.md"
+        description: Verify R2 review-package-proof has no placeholders
+        exit_code: 0
+        log_path: null
+        no_command_reason: null
+    artifacts:
+      - reports/spec-authority-real-pilot-r3/review-package-proof-validation.md
+
+  - lane_id: lane-c
+    name: Lane ledger integration
+    owner: ledger-agent
+    status: CLOSED_VERIFIED
+    commands:
+      - command: "No shell command — lane ledger created via Write tool"
+        description: Create lane execution ledger YAML
+        exit_code: 0
+        log_path: null
+        no_command_reason: "Lane ledger is a declarative YAML artifact, not a script output"
+    artifacts:
+      - reports/spec-authority-real-pilot-r3/lane-execution-ledger.yaml
+      - reports/spec-authority-real-pilot-r3/lane-ledger-proof.md
+
+  - lane_id: lane-d
+    name: Grading and anti-skip consistency
+    owner: grading-agent
+    status: CLOSED_VERIFIED
+    commands:
+      - command: "No shell command — analysis only"
+        description: Analyze grading vs anti-skip contradiction
+        exit_code: 0
+        log_path: null
+        no_command_reason: "Analysis is documentation-only; no runtime command needed"
+    artifacts:
+      - reports/spec-authority-real-pilot-r3/grading-anti-skip-consistency.md
+
+  - lane_id: lane-e
+    name: ODF/FODS/FODT depth plan and scoped expansion
+    owner: odf-agent
+    status: CLOSED_VERIFIED
+    commands:
+      - command: ".local/venv/Scripts/python reports/spec-authority-real-pilot-r3/_r3_odf_driver.py"
+        description: Build FODT scoped context pack from fetched ODF abstract
+        exit_code: 0
+        log_path: reports/spec-authority-real-pilot-r3/raw-logs/r3-odf-driver.log
+        no_command_reason: null
+    artifacts:
+      - reports/spec-authority-real-pilot-r3/odf-depth-report.md
+      - reports/spec-authority-real-pilot-r3/fodt-context-pack-report.md
+      - .local/evidences/spec-authority-real-pilot-r3/context-packs/fodt-context-pack.json
+
+  - lane_id: lane-f
+    name: R2 snapshot packet for RCA
+    owner: snapshot-agent
+    status: CLOSED_VERIFIED
+    commands:
+      - command: "No shell command — JSON generated via Write tool"
+        description: Produce RCA input snapshot manifest
+        exit_code: 0
+        log_path: null
+        no_command_reason: "JSON is assembled from known pilot facts, no runtime script needed"
+    artifacts:
+      - reports/spec-authority-real-pilot-r3/rca-input-snapshot-manifest.json
+      - reports/spec-authority-real-pilot-r3/rca-input-caveat-summary.md
+
+  - lane_id: lane-g
+    name: Tests and validation
+    owner: test-agent
+    status: CLOSED_VERIFIED
+    commands:
+      - command: ".local/venv/Scripts/python -m pytest tests/spec_authority/ -v"
+        description: Run all spec authority tests including new R3 tests
+        exit_code: 0
+        log_path: .local/evidences/spec-authority-real-pilot-r3/raw-logs/spec-authority-r3-tests.log
+        no_command_reason: null
+    artifacts:
+      - tests/spec_authority/test_real_pilot_r3.py
+      - reports/spec-authority-real-pilot-r3/test-run-report.md
+      - reports/spec-authority-real-pilot-r3/raw-logs/spec-authority-r3-tests.log
+      - .local/evidences/spec-authority-real-pilot-r3/raw-logs/spec-authority-r3-tests.log
+      - .local/evidences/spec-authority-real-pilot-r3/sample-outputs/fodt-context-pack-sample.json
+
+  - lane_id: lane-h
+    name: Final IV and evidence closeout
+    owner: evidence-agent
+    status: CLOSED_VERIFIED
+    commands:
+      - command: ".local/venv/Scripts/python tools/supervisor/autonomous_cycle.py --declaration .local/evidences/spec-authority-real-pilot-r3/evidence-declaration.yaml"
+        description: Run autonomous-cycle
+        exit_code: 0
+        log_path: null
+        no_command_reason: null
+      - command: ".local/venv/Scripts/python tools/supervisor/build_declaration_review_package.py --declaration .local/evidences/spec-authority-real-pilot-r3/evidence-declaration.yaml"
+        description: Build review package
+        exit_code: 0
+        log_path: null
+        no_command_reason: null
+    artifacts:
+      - reports/spec-authority-real-pilot-r3/final-adversarial-independent-verification.md
+      - .local/evidences/spec-authority-real-pilot-r3/evidence-declaration.yaml
+      - .local/evidences/spec-authority-real-pilot-r3/evidence-manifest.yaml
+      - reports/spec-authority-real-pilot-r3/review-package-proof.md
+      - reports/spec-authority-real-pilot-r3/final-git-status.txt

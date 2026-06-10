@@ -1,0 +1,154 @@
+{
+  "determinism_pass": true,
+  "determinism_results": [
+    {
+      "deterministic": true,
+      "fixture_name": "clean_fods_export",
+      "hashes": [
+        "0118864fef7ba58f5f518b1c589de1a88dd2ec222f3601b7deb6eebaf1da0c6b",
+        "0118864fef7ba58f5f518b1c589de1a88dd2ec222f3601b7deb6eebaf1da0c6b",
+        "0118864fef7ba58f5f518b1c589de1a88dd2ec222f3601b7deb6eebaf1da0c6b"
+      ],
+      "notes": "All 3 runs produced identical hash."
+    },
+    {
+      "deterministic": true,
+      "fixture_name": "fodt_export_not_save_overclaim",
+      "hashes": [
+        "b5ca8df572053caeb475fcd19f893f67b93d569dfc454123d514b6814b06fb39",
+        "b5ca8df572053caeb475fcd19f893f67b93d569dfc454123d514b6814b06fb39",
+        "b5ca8df572053caeb475fcd19f893f67b93d569dfc454123d514b6814b06fb39"
+      ],
+      "notes": "All 3 runs produced identical hash."
+    },
+    {
+      "deterministic": true,
+      "fixture_name": "netpbm_partial_variant_coverage",
+      "hashes": [
+        "a0351701ad8bf74e02854cb6a29b8971d37ace9c3b7cf564db0d4a5540828ec7",
+        "a0351701ad8bf74e02854cb6a29b8971d37ace9c3b7cf564db0d4a5540828ec7",
+        "a0351701ad8bf74e02854cb6a29b8971d37ace9c3b7cf564db0d4a5540828ec7"
+      ],
+      "notes": "All 3 runs produced identical hash."
+    },
+    {
+      "deterministic": true,
+      "fixture_name": "zst_roundtrip_clean",
+      "hashes": [
+        "e45b844e7ae4f6dab6a33cf2bf7ba926e03d3a322bee6160806d855039bbb47a",
+        "e45b844e7ae4f6dab6a33cf2bf7ba926e03d3a322bee6160806d855039bbb47a",
+        "e45b844e7ae4f6dab6a33cf2bf7ba926e03d3a322bee6160806d855039bbb47a"
+      ],
+      "notes": "All 3 runs produced identical hash."
+    },
+    {
+      "deterministic": true,
+      "fixture_name": "sylk_missing_dogfood",
+      "hashes": [
+        "ac1106179c907180ed7c330e52ef493fc61a4706edf140dd6661fb19974d957f",
+        "ac1106179c907180ed7c330e52ef493fc61a4706edf140dd6661fb19974d957f",
+        "ac1106179c907180ed7c330e52ef493fc61a4706edf140dd6661fb19974d957f"
+      ],
+      "notes": "All 3 runs produced identical hash."
+    },
+    {
+      "deterministic": true,
+      "fixture_name": "dif_empirical_only_caveated",
+      "hashes": [
+        "120d3f8b10111595a88a5765790e1ddebb467553613bd6184c0317cc0295464c",
+        "120d3f8b10111595a88a5765790e1ddebb467553613bd6184c0317cc0295464c",
+        "120d3f8b10111595a88a5765790e1ddebb467553613bd6184c0317cc0295464c"
+      ],
+      "notes": "All 3 runs produced identical hash."
+    }
+  ],
+  "fixture_results": [
+    {
+      "coverage_verdict": "COVERAGE_CLEAN",
+      "error": null,
+      "expected_coverage_verdict": "COVERAGE_CLEAN",
+      "expected_overclaim": false,
+      "expected_stale": false,
+      "fixture_name": "clean_fods_export",
+      "graph_hash": "0118864fef7ba58f5f518b1c589de1a88dd2ec222f3601b7deb6eebaf1da0c6b",
+      "notes": [],
+      "overclaim_found": false,
+      "passed": true,
+      "stale_found": false,
+      "validator_errors": 0
+    },
+    {
+      "coverage_verdict": "COVERAGE_CLEAN",
+      "error": null,
+      "expected_coverage_verdict": "COVERAGE_CLEAN",
+      "expected_overclaim": true,
+      "expected_stale": false,
+      "fixture_name": "fodt_export_not_save_overclaim",
+      "graph_hash": "b5ca8df572053caeb475fcd19f893f67b93d569dfc454123d514b6814b06fb39",
+      "notes": [],
+      "overclaim_found": true,
+      "passed": true,
+      "stale_found": false,
+      "validator_errors": 0
+    },
+    {
+      "coverage_verdict": "COVERAGE_CLEAN",
+      "error": null,
+      "expected_coverage_verdict": "COVERAGE_CLEAN",
+      "expected_overclaim": true,
+      "expected_stale": false,
+      "fixture_name": "netpbm_partial_variant_coverage",
+      "graph_hash": "a0351701ad8bf74e02854cb6a29b8971d37ace9c3b7cf564db0d4a5540828ec7",
+      "notes": [],
+      "overclaim_found": true,
+      "passed": true,
+      "stale_found": false,
+      "validator_errors": 0
+    },
+    {
+      "coverage_verdict": "COVERAGE_CLEAN",
+      "error": null,
+      "expected_coverage_verdict": "COVERAGE_CLEAN",
+      "expected_overclaim": false,
+      "expected_stale": false,
+      "fixture_name": "zst_roundtrip_clean",
+      "graph_hash": "e45b844e7ae4f6dab6a33cf2bf7ba926e03d3a322bee6160806d855039bbb47a",
+      "notes": [],
+      "overclaim_found": false,
+      "passed": true,
+      "stale_found": false,
+      "validator_errors": 0
+    },
+    {
+      "coverage_verdict": "COVERAGE_BLOCKED",
+      "error": null,
+      "expected_coverage_verdict": "COVERAGE_BLOCKED",
+      "expected_overclaim": false,
+      "expected_stale": false,
+      "fixture_name": "sylk_missing_dogfood",
+      "graph_hash": "ac1106179c907180ed7c330e52ef493fc61a4706edf140dd6661fb19974d957f",
+      "notes": [],
+      "overclaim_found": false,
+      "passed": true,
+      "stale_found": false,
+      "validator_errors": 0
+    },
+    {
+      "coverage_verdict": "COVERAGE_CLEAN",
+      "error": null,
+      "expected_coverage_verdict": "COVERAGE_CLEAN",
+      "expected_overclaim": false,
+      "expected_stale": false,
+      "fixture_name": "dif_empirical_only_caveated",
+      "graph_hash": "120d3f8b10111595a88a5765790e1ddebb467553613bd6184c0317cc0295464c",
+      "notes": [],
+      "overclaim_found": false,
+      "passed": true,
+      "stale_found": false,
+      "validator_errors": 0
+    }
+  ],
+  "overall_pass": true,
+  "passed_fixtures": 6,
+  "total_fixtures": 6
+}

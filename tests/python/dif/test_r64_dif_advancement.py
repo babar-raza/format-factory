@@ -71,5 +71,5 @@ class TestDifStringValueList:
         assert result == ["a", "b", "c"]
 
     def test_callable_from_module(self):
-        from src.python.dif import dif_stats
-        assert callable(dif_stats.dif_string_value_list)
+        from src.python.dif.dif_stats import dif_string_value_list as fn
+        assert callable(fn)

@@ -1,0 +1,23 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "validation_timestamp": "2026-06-04T07:20:00+00:00",
+  "verified_at_gate": "Gate 7 (TC-EXT-007)",
+  "external_tool_invariants": [
+    {"invariant": "no_ruflo_install_or_activation", "status": "VERIFIED", "evidence": "importlib.util.find_spec('ruflo') returned None"},
+    {"invariant": "no_superpowers_plugin_install", "status": "VERIFIED", "evidence": "No superpowers commands in .claude/commands/"},
+    {"invariant": "no_ghidra_mcp_install_or_activation", "status": "VERIFIED", "evidence": "No .mcp.json exists; GhidraMCP not configured"},
+    {"invariant": "no_binary_analysis_occurred", "status": "VERIFIED", "evidence": "GhidraMCP not installed; no Ghidra process run"},
+    {"invariant": "no_external_tool_output_used_as_authority", "status": "VERIFIED", "evidence": "All external tool outputs carry authority_state: ai_draft"},
+    {"invariant": "external_tool_risk_register_exists", "status": "VERIFIED", "evidence": "reports/acceleration-product-first/external-tool-risk-register.json has 3 entries"},
+    {"invariant": "all_external_tool_recommendations_are_ai_draft", "status": "VERIFIED", "evidence": "external-tool-adoption-recommendations.json: all entries authority_state=ai_draft"}
+  ],
+  "ruflo_mode_confirmed": "absent",
+  "superpowers_mode_confirmed": "audit_only",
+  "ghidra_mcp_status_confirmed": "disabled",
+  "poc_checksum_before": "f57d501eaaed4d5148e1f4973908cc7370e66c7c9ebdcc97585b9321c6bc119c",
+  "poc_checksum_after": "f57d501eaaed4d5148e1f4973908cc7370e66c7c9ebdcc97585b9321c6bc119c",
+  "poc_checksum_unchanged": true,
+  "final_status": "PASS",
+  "authority_state": "ai_draft",
+  "non_authoritative": true
+}

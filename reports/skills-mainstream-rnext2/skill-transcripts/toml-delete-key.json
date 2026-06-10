@@ -1,0 +1,21 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "toml",
+  "api_name": "delete_key",
+  "sprint_run_id": "mainstream-product-deepening-rnext2",
+  "changed_files": [
+    "src/python/toml/toml_codec.py",
+    "src/python/toml/__init__.py",
+    "tests/python/toml/test_mdr_toml_delete_key.py"
+  ],
+  "test_results": {
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "ledger_entry_id": "MDR-TOML-DELETE-KEY-001",
+  "ledger_validator": "PASS",
+  "verdict": "PASS",
+  "notes": "delete_key(data, key_path) removes a key at a dotted path without mutating input. Raises KeyError if not found, TypeError if intermediate is not a dict. 14/14 tests pass."
+}

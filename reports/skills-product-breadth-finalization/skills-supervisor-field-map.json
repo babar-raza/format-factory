@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "description": "Maps Skills full packet fields to Supervisor grading schema for autonomous grading",
+  "grading_rule": "Supervisor grades evidence declarations. Skills packets define what evidence Mainstream must produce. Supervisor validates: transcript fields, test counts, allowed_files compliance, ledger entry.",
+  "field_mappings": [
+    {
+      "skills_field": "acceptance_criteria",
+      "supervisor_grading_field": "planned_work_items[*].acceptance_check",
+      "mapping_type": "direct",
+      "note": "Each acceptance criterion maps to a grading acceptance_check. Supervisor runs each check."
+    },
+    {
+      "skills_field": "required_transcript_fields",
+      "supervisor_grading_field": "evidence_artifacts[*] (type: transcript)",
+      "mapping_type": "validation",
+      "note": "Supervisor uses validate_skill_transcript.py against transcript artifact. All required_transcript_fields must be present."
+    },
+    {
+      "skills_field": "expected_tests.test_count",
+      "supervisor_grading_field": "test_results.new_tests",
+      "mapping_type": "minimum_count",
+      "note": "Supervisor checks new_tests >= expected_tests.test_count (8 for all three capabilities)"
+    },
+    {
+      "skills_field": "allowed_files",
+      "supervisor_grading_field": "changed_files",
+      "mapping_type": "subset_check",
+      "note": "All changed_files must be in allowed_files. Supervisor flags OVERCLAIMED if any changed_file is forbidden."
+    },
+    {
+      "skills_field": "expected_ledger_entry",
+      "supervisor_grading_field": "evidence_artifacts[*] (type: ledger_entry)",
+      "mapping_type": "existence_check",
+      "note": "Supervisor checks ledger entry added for the specific capability."
+    },
+    {
+      "skills_field": "proposed_capability_delta",
+      "supervisor_grading_field": "evidence_artifacts[*] (type: capability_delta_proposal)",
+      "mapping_type": "non_blocking_check",
+      "note": "proposed_capability_delta is advisory. Supervisor does not block grading on it — flags as ACCEPTED_WITH_LIMITATIONS if missing."
+    },
+    {
+      "skills_field": "enforcement_tier: FAIL_CLOSED",
+      "supervisor_grading_field": "work_items[*].status",
+      "mapping_type": "gate",
+      "note": "FAIL_CLOSED: any product source change outside allowed_files is REJECTED. Any test failure is REJECTED."
+    },
+    {
+      "skills_field": "rollback_note",
+      "supervisor_grading_field": "worker_self_verdict",
+      "mapping_type": "advisory",
+      "note": "Supervisor does not grade rollback_note content. It is for Mainstream worker documentation."
+    }
+  ],
+  "grading_rubric": [
+    {
+      "criterion": "transcript_validates",
+      "command": "python tools/supervisor/validate_skill_transcript.py <transcript_path>",
+      "expected": "exit 0",
+      "grade_weight": "BLOCKING"
+    },
+    {
+      "criterion": "test_count_met",
+      "command": "check test_results.new_tests >= 8",
+      "expected": "true",
+      "grade_weight": "BLOCKING"
+    },
+    {
+      "criterion": "no_forbidden_files_changed",
+      "command": "check changed_files subset of allowed_files",
+      "expected": "true",
+      "grade_weight": "BLOCKING"
+    },
+    {
+      "criterion": "ledger_entry_added",
+      "command": "check evidence_artifacts contains type=ledger_entry",
+      "expected": "true",
+      "grade_weight": "NON_BLOCKING (downgrade to ACCEPTED_WITH_LIMITATIONS if missing)"
+    },
+    {
+      "criterion": "capability_delta_proposed",
+      "command": "check evidence_artifacts contains type=capability_delta_proposal",
+      "expected": "true",
+      "grade_weight": "NON_BLOCKING (advisory)"
+    }
+  ]
+}

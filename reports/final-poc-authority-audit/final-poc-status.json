@@ -1,0 +1,76 @@
+{
+  "sprint_id": "FORMAT-FACTORY-FINAL-POC-AUTHORITY-AUDIT-AND-GATE11-READINESS-001",
+  "final_verdict": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+  "evaluated_at": "2026-06-05",
+  "updated_at": "2026-06-05",
+  "update_reason": "FORMAT-FACTORY-FULL-AUTONOMOUS-SYSTEM-AUDIT-AND-REPAIR-001: proof_graph field updated per proof-authority-policy.md (Option B); host_runner noop result recorded",
+  "git_head": "3a86a05295cb4b82ed40a3408b0612a90f93643c",
+
+  "poc_ready_candidate": true,
+  "commercial_all_pass": true,
+  "foss_minimum_met": true,
+  "gate_11_approved": false,
+  "release_approval_pending": true,
+
+  "commercial": {
+    "FODS": "PASS — 547 live tests, 38 ledger entries, examples present",
+    "FODT": "PASS — 520 live tests, 35 ledger entries, examples present",
+    "Netpbm": "PASS — 465 live tests, 40 ledger entries, examples present, RETAINED"
+  },
+
+  "foss": {
+    "ZST": "PASS — 7 ledger entries, examples present",
+    "SYLK": "PASS — 6 ledger entries, 252 tests in log, examples present",
+    "DIF": "PASS — 4 ledger entries, 12 tests in log",
+    "Netpbm_Python": "FAIL (gate pattern mismatch, non-blocking)",
+    "minimum_met_via": ["ZST", "SYLK", "DIF"]
+  },
+
+  "test_summary": {
+    "dotnet_total": "1532 passed, 0 failed",
+    "python_foss": "1295 passed, 28 skipped",
+    "supervisor": "99 passed, 0 failed",
+    "grand_total": "2926 passed, 0 failed, 28 skipped"
+  },
+
+  "proof_chain": {
+    "source_files": "PRESENT for all 6 targets",
+    "test_files": "PRESENT for all 6 targets",
+    "raw_logs": "PRESENT for all 6 targets",
+    "examples": "PRESENT for all targets requiring examples",
+    "product_ledger": "129 entries in reports/r90/product-code-change-ledger.json",
+    "proof_graph": "Generated projection at reports/autonomous-system-audit/projected-proof-graph/ from ledger (129 entries) — 504 nodes, 756 edges",
+    "ai_draft_only": false,
+    "poc_targets_advisory": true
+  },
+
+  "host_runner": {
+    "built": true,
+    "cli_detected": true,
+    "cli_version": "2.1.62",
+    "dry_run_works": true,
+    "noop_attempted": true,
+    "noop_result": "BLOCKED — nested Claude Code session (CLAUDECODE env var)",
+    "live_invocation_tested": false,
+    "classification": "HOST_RUNNER_LIVE_INVOCATION_BLOCKED_BY_POLICY",
+    "wiring_instructions": "Run from external terminal (not inside Claude Code): claude --print -p 'Respond with exactly: HOST_RUNNER_NOOP_OK. Do not modify files. Do not run commands.' to prove live invocation",
+    "reason": "CLAUDECODE env var blocks nested sessions. This is a runtime environment constraint, not a tool defect."
+  },
+
+  "hard_prohibitions": {
+    "no_commit": true,
+    "no_push": true,
+    "no_publication": true,
+    "no_gate_8_approval": true,
+    "no_gate_11_approval": true,
+    "no_commercial_product_ready_true": true,
+    "no_poc_targets_mutation": true,
+    "netpbm_retained": true,
+    "svg_not_replacement": true,
+    "no_mcp_activation": true,
+    "no_superpowers_install": true,
+    "no_ghidra_mcp_activation": true
+  },
+
+  "next_required_human_action": "Gate 11 G11-G approval from Babar Raza"
+}

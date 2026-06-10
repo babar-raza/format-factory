@@ -1,0 +1,30 @@
+Lane 1 Runtime Discovery — FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001
+Date: 2026-06-06
+
+=== Canonical commands ===
+supervisor_loop.py: autonomous-cycle VERIFIED
+build_declaration_review_package.py: --declaration VERIFIED
+anti_skip_checker.py: EXISTS
+validate_adoption_compliance.py: EXISTS
+
+=== MCP config ===
+.vscode/mcp.json servers: ['task-master-ai', 'claude-flow']
+task-master-ai: L1_CONFIG_PRESENT; TASK_MASTER_API_KEY ABSENT → L5=false
+
+=== LLM endpoints ===
+6 endpoints: claude-native, professionalize, local-ollama, local-lm-studio, local-custom, codex
+ANTHROPIC_API_KEY: ABSENT
+PROFESSIONALIZE_API_KEY: PRESENT
+OPENAI_API_KEY: PRESENT (codex endpoint enabled=false by default)
+
+=== .claude/commands/ ===
+25 .md skill files — SESSION_SKILL_TOOL available in session
+NOT Superpowers plugin — .claude/plugins/ ABSENT
+
+=== Tools not installed ===
+cognee: ModuleNotFoundError
+skill_seekers: ModuleNotFoundError
+openspec: npm not found (npx --no-install)
+
+=== gh CLI ===
+Authenticated as babar-raza via GH_TOKEN

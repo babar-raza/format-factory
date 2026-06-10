@@ -1,0 +1,32 @@
+id: GR-TC-009
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+generated_at: "2026-06-08"
+title: "Create autonomy boundary handoff"
+status: ready_to_execute
+lane: autonomy_boundary
+item_type: GOVERNANCE_DOC
+problem: >
+  No formal boundary exists between governance sprint and autonomy sprint.
+  Risk of duplication or gaps.
+scope:
+  - Create reports/repeatability-governance-plan-healing/autonomy-boundary-handoff.md
+  - List 7 deferred items with HANDOFF_TO_AUTONOMY_SPRINT or HANDOFF_TO_PRODUCT_CAPABILITY_SPRINT
+  - Define 5 governance prerequisites the autonomy sprint must satisfy before Level 3+
+out_of_scope:
+  - Implementing anything from the autonomy sprint
+files_to_create:
+  - reports/repeatability-governance-plan-healing/autonomy-boundary-handoff.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+acceptance_criteria:
+  - File exists
+  - All 7 deferred items listed with classification
+  - Level 3+ prerequisite list present
+  - Explicit statement: this sprint does NOT improve autonomy level
+verification:
+  - "check file exists: reports/repeatability-governance-plan-healing/autonomy-boundary-handoff.md"
+rollback: delete file
+dependencies:
+  - GR-TC-001
+handoff_to_autonomy_sprint: true

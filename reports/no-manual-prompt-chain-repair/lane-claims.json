@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMY-NO-MANUAL-PROMPT-CHAIN-REPAIR-001",
+  "lanes": [
+    {
+      "lane_id": "L0",
+      "owned_paths": ["reports/no-manual-prompt-chain-repair/"],
+      "forbidden_paths": ["src/", "tests/python/", "tests/net/"]
+    },
+    {
+      "lane_id": "L1",
+      "owned_paths": [
+        "tools/supervisor/autonomous_cycle.py",
+        "tools/supervisor/evidence_continuation.py",
+        "tools/supervisor/continuation_router.py",
+        "tools/supervisor/continuation_state.py",
+        "tests/supervisor/test_continuation_signal_contract.py",
+        "reports/no-manual-prompt-chain-repair/continuation-contract/"
+      ],
+      "forbidden_paths": ["src/", "tests/python/", "tests/net/"]
+    },
+    {
+      "lane_id": "L2",
+      "owned_paths": [
+        "tools/supervisor/generate_next_worker_prompt.py",
+        "tools/supervisor/stop_reason_adjudicator.py",
+        "tests/supervisor/test_next_work_items_safety.py",
+        "tests/supervisor/test_commit_push_external_gate.py",
+        "reports/no-manual-prompt-chain-repair/next-work-safety/"
+      ],
+      "forbidden_paths": ["src/", "tests/python/", "tests/net/"]
+    },
+    {
+      "lane_id": "L3",
+      "owned_paths": [
+        "tools/supervisor/evidence_continuation.py",
+        "tools/supervisor/action_queue.py",
+        "tests/supervisor/test_post_closeout_queue_replenishment.py",
+        "reports/no-manual-prompt-chain-repair/queue-replenishment/",
+        ".local/supervisor/action-queue.jsonl",
+        ".local/supervisor/next-action.json",
+        ".local/supervisor/active-continuation.json",
+        ".local/supervisor/stop-reason.json"
+      ],
+      "forbidden_paths": ["src/", "tests/python/", "tests/net/"]
+    },
+    {
+      "lane_id": "L4",
+      "owned_paths": [
+        "reports/no-manual-prompt-chain-repair/proof/",
+        ".local/supervisor/"
+      ],
+      "forbidden_paths": ["src/", "tests/python/", "tests/net/"]
+    },
+    {
+      "lane_id": "L5",
+      "owned_paths": [
+        "tools/supervisor/anti_skip_checker.py",
+        "tools/supervisor/validate_adoption_compliance.py",
+        "tests/supervisor/test_adoption_compliance_consistency.py",
+        "tests/supervisor/test_anti_skip_raw_logs.py",
+        "reports/no-manual-prompt-chain-repair/evidence-quality/"
+      ],
+      "forbidden_paths": ["src/", "tests/python/", "tests/net/"]
+    },
+    {
+      "lane_id": "L6",
+      "owned_paths": ["reports/no-manual-prompt-chain-repair/test-logs/"],
+      "forbidden_paths": ["src/", "tests/python/", "tests/net/"]
+    },
+    {
+      "lane_id": "L7",
+      "owned_paths": ["reports/no-manual-prompt-chain-repair/iv/"],
+      "forbidden_paths": []
+    },
+    {
+      "lane_id": "LE",
+      "owned_paths": [
+        ".local/evidences/no-manual-prompt-chain-repair/",
+        ".local/supervisor/reviews/no-manual-prompt-chain-repair/"
+      ],
+      "forbidden_paths": []
+    }
+  ]
+}

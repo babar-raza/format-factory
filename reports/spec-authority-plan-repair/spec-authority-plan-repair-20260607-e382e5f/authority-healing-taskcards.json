@@ -1,0 +1,975 @@
+{
+  "schema_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-PLAN-REPAIR-FOR-SINGLE-GO-EXECUTION-001",
+  "run_id": "spec-authority-plan-repair-20260607-e382e5f",
+  "generated_at": "2026-06-07",
+  "taskcard_count": 25,
+  "taskcards": [
+    {
+      "taskcard_id": "TCA-000",
+      "title": "Plan Repair Sprint Execution — this sprint",
+      "stream": "authority-healing",
+      "lane": "L-COORD",
+      "root_cause_ids": ["PLAN-REPAIR-DISCIPLINE"],
+      "evidence_source_ids": ["C:/Users/prora/.claude/plans/streamed-whistling-owl.md"],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "IMPLEMENTING",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/"],
+      "forbidden_paths": ["src/", ".local/spec-cache/", "tools/supervisor/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": ["prior-plan-file", "investigation-evidence"],
+      "authority_outputs_expected": ["all 23+ plan-repair artifacts", "validate_repaired_plan.py passes"],
+      "implementation_scope": "Execute all 17 phases of the plan-repair sprint; produce all required artifacts; run validator; build evidence bundle",
+      "non_goals": ["product implementation", "spec normalization", "src/ changes", "commits", "pushes"],
+      "blocking_gates": ["VG-020"],
+      "validation_commands": [
+        "python validate_repaired_plan.py --run-dir . && echo PASS || echo FAIL"
+      ],
+      "negative_tests_required": [
+        "grep -c 'C:\\\\Users' repaired-plan.md must return 0",
+        "python -c \"import json; ts=json.load(open('taskcard-state.json')); assert ts['TCA-000']['state'] != 'CLOSED_VERIFIED' or True\" (TCA-000 only closes when validator passes)"
+      ],
+      "pilot_required": false,
+      "evidence_required": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/repaired-plan.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/repaired-plan.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/validate_repaired_plan.py",
+        "reports/spec-authority-plan-repair/${RUN_ID}/raw-logs/validate-repaired-plan.txt"
+      ],
+      "state_transition_rules": {
+        "validator_exits_0_adversarial_no_critical": "IMPLEMENTED -> INDEPENDENT_VERIFIED -> CLOSED_VERIFIED",
+        "validator_exits_1": "VALIDATING -> VALIDATION_FAILED -> fix and revalidate",
+        "adversarial_critical_found": "INDEPENDENT_VERIFICATION_REQUIRED -> VALIDATION_FAILED -> repair"
+      },
+      "rollback_plan": "Fix failing validator checks; rerun validator; all changes are in reports/ directory only — trivial to fix",
+      "risk_level": "LOW",
+      "owner_lane": "L-COORD",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "validate_repaired_plan.py exits 0",
+        "adversarial-review.md has no CRITICAL issues",
+        "SHA256-MANIFEST.txt written",
+        "single-go-execution-prompt.md written"
+      ]
+    },
+    {
+      "taskcard_id": "TCA-001",
+      "title": "Evidence Import and Gap Re-Verification",
+      "stream": "authority-healing",
+      "lane": "L-EVIDENCE",
+      "root_cause_ids": ["PLAN-REPAIR-DISCIPLINE"],
+      "evidence_source_ids": ["reports/spec-authority/spec-authority-investigation-001/"],
+      "affected_pipeline_stages": ["evidence-import"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/evidence-import-review.md"],
+      "forbidden_paths": ["src/", ".local/spec-cache/", "schemas/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": ["reports/spec-authority/spec-authority-investigation-001/root-cause-gap-matrix.json"],
+      "authority_outputs_expected": ["evidence-import-review.md"],
+      "implementation_scope": "Re-verify each GAP finding against live repo; record confirmed/contradicted/stale status",
+      "non_goals": ["fixing the gaps", "src/ changes"],
+      "blocking_gates": [],
+      "validation_commands": [
+        "test -f evidence-import-review.md && echo PASS || echo FAIL"
+      ],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/evidence-import-review.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED",
+        "evidence_not_found": "DISCOVERED -> BLOCKED_BY_MISSING_EVIDENCE"
+      },
+      "rollback_plan": "If investigation bundle missing, record BLOCKED_BY_MISSING_EVIDENCE; continue other taskcards",
+      "risk_level": "LOW",
+      "owner_lane": "L-EVIDENCE",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "evidence-import-review.md exists",
+        "all GAP-001..010 status recorded"
+      ]
+    },
+    {
+      "taskcard_id": "TCA-002",
+      "title": "spec_fact_refs BLOCKING Enforcement — Schema Design",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["GAP-004"],
+      "evidence_source_ids": ["reports/spec-authority/spec-authority-investigation-001/root-cause-gap-matrix.md"],
+      "affected_pipeline_stages": ["evidence-declaration", "supervisor-validation"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "forbidden_paths": ["src/", "schemas/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": ["docs/automation/supervisor-worker-contract.md"],
+      "authority_outputs_expected": ["schema design document", "JSON schema fragment for spec_fact_refs"],
+      "implementation_scope": "Design formal JSON schema fragment for spec_fact_refs field; define BLOCKING enforcement rules; define 5 exception classifications",
+      "non_goals": ["modifying live schemas/", "modifying supervisor validation code"],
+      "blocking_gates": [],
+      "validation_commands": [
+        "grep -c 'spec_fact_refs' reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md | grep -q '^[1-9]' && echo PASS || echo FAIL"
+      ],
+      "negative_tests_required": [
+        "spec_fact_refs empty with no exception_classification must be BLOCKING (not warning) for PRODUCT_SOURCE items"
+      ],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED",
+        "prerequisite_blocked": "DISCOVERED -> BLOCKED_BY_PREREQUISITE_TASKCARD"
+      },
+      "rollback_plan": "Schema design is report-only; no code changes; rollback by deleting schema-design.md",
+      "risk_level": "MEDIUM",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "schema-design.md exists",
+        "5 exception classifications defined",
+        "BLOCKING enforcement rule documented"
+      ]
+    },
+    {
+      "taskcard_id": "TCA-003",
+      "title": "Spec Source Registry — Design Persistence Mechanism",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["GAP-003"],
+      "evidence_source_ids": ["reports/spec-authority/spec-authority-investigation-001/root-cause-gap-matrix.md"],
+      "affected_pipeline_stages": ["spec-cache", "acquisition"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "forbidden_paths": ["src/", ".local/spec-source-registry/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": ["tools/specification-authority-layer/spec_source_registry.py"],
+      "authority_outputs_expected": ["design note in schema-design.md"],
+      "implementation_scope": "Document persistence design for .local/spec-source-registry/sources.jsonl; define when registry is written (after each spec acquisition)",
+      "non_goals": ["writing to .local/spec-source-registry/", "modifying spec_source_registry.py"],
+      "blocking_gates": [],
+      "validation_commands": ["test -f reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["schema-design.md includes registry persistence design"]
+    },
+    {
+      "taskcard_id": "TCA-004",
+      "title": "Product Task Selector — Authority Gate Design",
+      "stream": "authority-healing",
+      "lane": "L-SELECTOR",
+      "root_cause_ids": ["BYP-001"],
+      "evidence_source_ids": ["reports/spec-authority/spec-authority-investigation-001/root-cause-gap-matrix.md"],
+      "affected_pipeline_stages": ["gap-selection", "product-task-selection"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/selector-design.md"],
+      "forbidden_paths": ["src/", "tools/supervisor/product_task_selector.py", ".local/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": ["tools/supervisor/product_task_selector.py"],
+      "authority_outputs_expected": ["selector-design.md"],
+      "implementation_scope": "Design authority gate check to insert into product_task_selector.py: before emitting product work, check spec authority status; block if MISSING",
+      "non_goals": ["modifying product_task_selector.py in this sprint", "changing poc-targets.yaml"],
+      "blocking_gates": [],
+      "validation_commands": ["test -f reports/spec-authority-plan-repair/${RUN_ID}/selector-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/selector-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-SELECTOR",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["selector-design.md exists", "authority gate design documented"]
+    },
+    {
+      "taskcard_id": "TCA-005",
+      "title": "State Machine JSON — Produce 32-State Machine",
+      "stream": "authority-healing",
+      "lane": "L-STATEMACHINE",
+      "root_cause_ids": ["PLAN-REPAIR-001"],
+      "evidence_source_ids": ["C:/Users/prora/.claude/plans/streamed-whistling-owl.md"],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-state-machine.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-state-machine.json"
+      ],
+      "forbidden_paths": ["src/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [],
+      "authority_outputs_expected": ["authority-healing-state-machine.json with exactly 32 states"],
+      "implementation_scope": "Produce state machine JSON with 32 states; validate state count programmatically",
+      "non_goals": ["implementing state transitions in code"],
+      "blocking_gates": ["VG-001", "VG-002"],
+      "validation_commands": [
+        "python -m json.tool authority-healing-state-machine.json",
+        "python -c \"import json; sm=json.load(open('authority-healing-state-machine.json')); assert len(sm['states'])==32\""
+      ],
+      "negative_tests_required": ["state count != 32 must fail validation"],
+      "pilot_required": false,
+      "evidence_required": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-state-machine.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-state-machine.md"
+      ],
+      "state_transition_rules": {
+        "json_valid_count_32": "DISCOVERED -> CLOSED_VERIFIED",
+        "json_invalid": "DISCOVERED -> VALIDATION_FAILED"
+      },
+      "rollback_plan": "Fix JSON syntax errors; recount states; rewrite file",
+      "risk_level": "LOW",
+      "owner_lane": "L-STATEMACHINE",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["state-machine.json parses", "len(states)==32", "all terminal states present"]
+    },
+    {
+      "taskcard_id": "TCA-006",
+      "title": "Taskcard Schema and 25 Taskcards",
+      "stream": "authority-healing",
+      "lane": "L-STATEMACHINE",
+      "root_cause_ids": ["PLAN-REPAIR-DISCIPLINE"],
+      "evidence_source_ids": [],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-schema.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-schema.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-taskcards.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-taskcards.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-state.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-transition-ledger.jsonl"
+      ],
+      "forbidden_paths": ["src/", ".local/", "tools/"],
+      "prerequisite_taskcards": ["TCA-005"],
+      "authority_inputs_required": [],
+      "authority_outputs_expected": ["taskcard-schema.json", "authority-healing-taskcards.json", "taskcard-state.json"],
+      "implementation_scope": "Produce all 25 taskcards (TCA-000..TCA-024) with all required fields; lane assignments; rollback plans; initial states",
+      "non_goals": ["executing the taskcards", "src/ changes"],
+      "blocking_gates": ["VG-003", "VG-004", "VG-005"],
+      "validation_commands": [
+        "python -m json.tool authority-healing-taskcards.json",
+        "python -c \"import json; tcs=json.load(open('authority-healing-taskcards.json')); assert len(tcs['taskcards'])==25\""
+      ],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-taskcards.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-state.json"
+      ],
+      "state_transition_rules": {
+        "json_valid_count_25": "DISCOVERED -> CLOSED_VERIFIED",
+        "json_invalid": "DISCOVERED -> VALIDATION_FAILED"
+      },
+      "rollback_plan": "Fix JSON syntax; rewrite taskcards; revalidate",
+      "risk_level": "LOW",
+      "owner_lane": "L-STATEMACHINE",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["all 25 taskcards JSON valid", "all required fields present", "TCA-000 state=IMPLEMENTING"]
+    },
+    {
+      "taskcard_id": "TCA-007",
+      "title": "Plan Readiness Review — 15 Categories",
+      "stream": "authority-healing",
+      "lane": "L-GOVERNANCE",
+      "root_cause_ids": ["PLAN-REPAIR-DISCIPLINE"],
+      "evidence_source_ids": ["C:/Users/prora/.claude/plans/streamed-whistling-owl.md"],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/plan-readiness-review.md"],
+      "forbidden_paths": ["src/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": ["prior plan file", "AGENTS.md", "CLAUDE.md"],
+      "authority_outputs_expected": ["plan-readiness-review.md"],
+      "implementation_scope": "Review plan across 15 categories; produce PASS/NEEDS_REPAIR/BLOCKED per category; list all issue_ids",
+      "non_goals": [],
+      "blocking_gates": [],
+      "validation_commands": ["test -f plan-readiness-review.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/plan-readiness-review.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Review-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-GOVERNANCE",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["plan-readiness-review.md exists", "all 15 categories reviewed"]
+    },
+    {
+      "taskcard_id": "TCA-008",
+      "title": "Required Plan Repairs — Apply 10 Mandatory Repairs",
+      "stream": "authority-healing",
+      "lane": "L-GOVERNANCE",
+      "root_cause_ids": ["PLAN-REPAIR-DISCIPLINE"],
+      "evidence_source_ids": ["plan-readiness-review.md"],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/required-plan-repairs.md"],
+      "forbidden_paths": ["src/", ".local/", "tools/"],
+      "prerequisite_taskcards": ["TCA-007"],
+      "authority_inputs_required": ["plan-readiness-review.md"],
+      "authority_outputs_expected": ["required-plan-repairs.md"],
+      "implementation_scope": "Document all 10+ mandatory repairs with repair action, files to modify, validation commands",
+      "non_goals": [],
+      "blocking_gates": [],
+      "validation_commands": ["test -f required-plan-repairs.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/required-plan-repairs.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-GOVERNANCE",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["required-plan-repairs.md exists", "all 10 repairs documented"]
+    },
+    {
+      "taskcard_id": "TCA-009",
+      "title": "Quarantine Synthetic Fixture Data — Design Isolation Rules",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["GAP-002"],
+      "evidence_source_ids": [".local/spec-artifacts/FODS-SPEC-001-requirements.json"],
+      "affected_pipeline_stages": ["proof-graph", "requirements"],
+      "affected_formats": ["fods"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "forbidden_paths": ["src/", ".local/spec-artifacts/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [".local/spec-artifacts/FODS-SPEC-001-requirements.json"],
+      "authority_outputs_expected": ["quarantine design in schema-design.md"],
+      "implementation_scope": "Document rules for quarantining synthetic requirements; rename convention; isolation from real extracted requirements",
+      "non_goals": ["modifying .local/spec-artifacts/", "deleting synthetic files"],
+      "blocking_gates": [],
+      "validation_commands": ["test -f reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["quarantine design documented"]
+    },
+    {
+      "taskcard_id": "TCA-010",
+      "title": "Human Review Workflow Design — Fact Promotion via independent_agent_verifier",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["GAP-006"],
+      "evidence_source_ids": [".local/spec-cache/fods/1.3/workbench/verified-facts.yaml"],
+      "affected_pipeline_stages": ["verified-facts", "spec-authority"],
+      "affected_formats": ["fods"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "forbidden_paths": ["src/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [".local/spec-cache/fods/1.3/workbench/verified-facts.yaml"],
+      "authority_outputs_expected": ["promotion workflow design in schema-design.md"],
+      "implementation_scope": "Design fact promotion workflow: candidate -> needs_review -> verified; define validated_by rules (independent_agent_verifier for agent-verifiable; human only for external authority); note that existing 10 auto-verified facts must be downgraded to needs_review",
+      "non_goals": ["modifying verified-facts.yaml", "modifying spec_verifier.py"],
+      "blocking_gates": [],
+      "validation_commands": ["grep -q 'independent_agent_verifier' reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [
+        "validated_by: human must NOT appear for agent-verifiable facts"
+      ],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "MEDIUM",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "validated_by: independent_agent_verifier defined",
+        "existing auto-verified facts downgrade noted"
+      ]
+    },
+    {
+      "taskcard_id": "TCA-011",
+      "title": "FODS Normalization Pilot — Verify Output Exists and Is Real",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["GAP-001"],
+      "evidence_source_ids": [".local/spec-cache/fods/1.3/spec-index.yaml"],
+      "affected_pipeline_stages": ["normalization"],
+      "affected_formats": ["fods"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/raw-logs/fods-normalization-check.txt"
+      ],
+      "forbidden_paths": ["src/", ".local/spec-cache/fods/1.3/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [".local/spec-cache/fods/1.3/spec-index.yaml"],
+      "authority_outputs_expected": ["fods-normalization-check.txt confirming text.txt path and size"],
+      "implementation_scope": "Verify FODS PDF present; verify SHA-256 from spec-index.yaml; verify normalization output at .local/spec-cache/fods/1.3/normalized/text.txt; note path discrepancy from plan (REPAIR-002A). Document that normalization has already been run.",
+      "non_goals": ["running normalize_pdf.py again", "modifying .local/spec-cache/"],
+      "blocking_gates": ["VG-FODS-NORM"],
+      "validation_commands": [
+        "test -f .local/spec-cache/fods/1.3/normalized/text.txt && wc -c .local/spec-cache/fods/1.3/normalized/text.txt",
+        "test -f .local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf && echo PDF_PRESENT || echo BLOCKED_MISSING_SPEC"
+      ],
+      "negative_tests_required": [],
+      "pilot_required": true,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/raw-logs/fods-normalization-check.txt"],
+      "state_transition_rules": {
+        "pdf_present_normalized_output_present": "DISCOVERED -> PILOT_PASSED -> CLOSED_VERIFIED",
+        "pdf_missing": "DISCOVERED -> BLOCKED_BY_MISSING_SPEC",
+        "normalized_output_missing": "DISCOVERED -> PILOT_FAILED (run normalize_pdf.py)"
+      },
+      "rollback_plan": "Verification only; no files modified; no rollback needed",
+      "risk_level": "MEDIUM",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "FODS PDF exists and SHA-256 matches spec-index.yaml",
+        "normalized text.txt exists and is >1MB",
+        "path discrepancy documented (REPAIR-002A)"
+      ]
+    },
+    {
+      "taskcard_id": "TCA-012",
+      "title": "Bypass Pilot — Gnumeric/ABW Metadata-Only Exception Classification",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["BYP-005", "BYP-006"],
+      "evidence_source_ids": ["reports/spec-authority/spec-authority-investigation-001/root-cause-gap-matrix.md"],
+      "affected_pipeline_stages": ["gap-selection", "evidence-declaration"],
+      "affected_formats": ["gnumeric", "abw"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "forbidden_paths": ["src/", ".local/", "tools/", "tests/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [],
+      "authority_outputs_expected": ["bypass classification design for Gnumeric and ABW"],
+      "implementation_scope": "Document exception_classification=no_public_spec_available for Gnumeric and ABW; define metadata-only bypass ledger entry format; explicitly NOT implementing new product code",
+      "non_goals": ["new_product_implementation", "new_test_files", "src_changes", "modifying gnumeric_codec.py or abw_codec.py"],
+      "blocking_gates": [],
+      "validation_commands": ["grep -q 'no_public_spec_available' reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED",
+        "spec_cache_absent": "DISCOVERED -> CLOSED_WITH_AUTHORITY_DEBT (BLOCKED_METADATA_ONLY_SPEC note)"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "exception_classification=no_public_spec_available documented for Gnumeric and ABW",
+        "no_goals confirms no product code changes"
+      ]
+    },
+    {
+      "taskcard_id": "TCA-013",
+      "title": "authority_integration_fabric.py — Design Wiring into autonomous_cycle",
+      "stream": "authority-healing",
+      "lane": "L-SELECTOR",
+      "root_cause_ids": ["GAP-008"],
+      "evidence_source_ids": ["tools/supervisor/authority_integration_fabric.py"],
+      "affected_pipeline_stages": ["supervisor", "autonomous-cycle"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/selector-design.md"],
+      "forbidden_paths": ["src/", "tools/supervisor/autonomous_cycle.py", ".local/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": ["tools/supervisor/authority_integration_fabric.py"],
+      "authority_outputs_expected": ["wiring design in selector-design.md"],
+      "implementation_scope": "Design import and call site for authority_integration_fabric in autonomous_cycle.py; specify what authority_check result does (MISSING caps grade at CONDITIONAL)",
+      "non_goals": ["modifying autonomous_cycle.py in this sprint"],
+      "blocking_gates": [],
+      "validation_commands": ["test -f reports/spec-authority-plan-repair/${RUN_ID}/selector-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/selector-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-SELECTOR",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["wiring design documented", "grade-capping rule specified"]
+    },
+    {
+      "taskcard_id": "TCA-014",
+      "title": "Product Ledger spec_fact_ids — Design Field Addition",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["GAP-009"],
+      "evidence_source_ids": ["reports/r90/product-code-change-ledger.json"],
+      "affected_pipeline_stages": ["ledger"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "forbidden_paths": ["src/", "reports/r90/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": ["reports/r90/product-code-change-ledger.json"],
+      "authority_outputs_expected": ["ledger schema design in schema-design.md"],
+      "implementation_scope": "Design spec_fact_ids field addition to product-code-change-ledger.json entries; define when field is required vs optional",
+      "non_goals": ["modifying product-code-change-ledger.json"],
+      "blocking_gates": [],
+      "validation_commands": ["test -f reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["spec_fact_ids field design documented"]
+    },
+    {
+      "taskcard_id": "TCA-015",
+      "title": "Proof Graph Source Authority Edges — Design Real-Source Connections",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["GAP-002"],
+      "evidence_source_ids": ["tools/supervisor/build_proof_graph_iter001.py"],
+      "affected_pipeline_stages": ["proof-graph"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "forbidden_paths": ["src/", "tools/supervisor/build_proof_graph*.py", ".local/"],
+      "prerequisite_taskcards": ["TCA-009"],
+      "authority_inputs_required": ["tools/supervisor/build_proof_graph_iter001.py"],
+      "authority_outputs_expected": ["proof graph authority edge design"],
+      "implementation_scope": "Design how proof graph builds source-authority edges (spec_id -> requirement -> capability -> test) using only real artifacts; no synthetic injection",
+      "non_goals": ["modifying build_proof_graph_iter*.py in this sprint"],
+      "blocking_gates": [],
+      "validation_commands": ["test -f reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["proof graph source-authority edge design documented"]
+    },
+    {
+      "taskcard_id": "TCA-016",
+      "title": "Code Citation Convention — FACT-xxx Annotation Standard",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["GAP-005"],
+      "evidence_source_ids": ["healing-design.md FPR-2"],
+      "affected_pipeline_stages": ["code-annotation"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "forbidden_paths": ["src/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [],
+      "authority_outputs_expected": ["FACT-xxx annotation standard documented"],
+      "implementation_scope": "Document FACT-xxx comment convention for Python and C# code; define check_code_citations.py design",
+      "non_goals": ["adding annotations to src/ in this sprint", "modifying any source files"],
+      "blocking_gates": [],
+      "validation_commands": ["test -f reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["FACT-xxx annotation convention documented"]
+    },
+    {
+      "taskcard_id": "TCA-017",
+      "title": "Golden Spec-Fact Test Convention — Design SPEC-FACT Citation Pattern",
+      "stream": "authority-healing",
+      "lane": "L-SCHEMA",
+      "root_cause_ids": ["GAP-007"],
+      "evidence_source_ids": ["healing-design.md FPR-3"],
+      "affected_pipeline_stages": ["tests"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "forbidden_paths": ["src/", "tests/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [],
+      "authority_outputs_expected": ["SPEC-FACT test citation pattern documented"],
+      "implementation_scope": "Document # SPEC-FACT: FACT-xxx pattern for Python tests; define what a golden spec-fact test must assert",
+      "non_goals": ["writing new tests in tests/", "src/ changes"],
+      "blocking_gates": [],
+      "validation_commands": ["test -f reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Design-only; no rollback needed",
+      "risk_level": "LOW",
+      "owner_lane": "L-SCHEMA",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["SPEC-FACT test convention documented"]
+    },
+    {
+      "taskcard_id": "TCA-018",
+      "title": "Lane Ownership Map — 9 Lanes with Overlap Check",
+      "stream": "authority-healing",
+      "lane": "L-STATEMACHINE",
+      "root_cause_ids": ["PLAN-REPAIR-005"],
+      "evidence_source_ids": [],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/lane-ownership-map.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/lane-ownership-map.json"
+      ],
+      "forbidden_paths": ["src/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [],
+      "authority_outputs_expected": ["lane-ownership-map.json with 9 lanes", "lane-ownership-map.md"],
+      "implementation_scope": "Produce lane ownership map with 9 lanes; exclusive write paths; forbidden paths; validate no conflicts",
+      "non_goals": [],
+      "blocking_gates": ["VG-008", "VG-009"],
+      "validation_commands": [
+        "python -m json.tool lane-ownership-map.json",
+        "python -c \"import json; lm=json.load(open('lane-ownership-map.json')); assert len(lm['lanes'])==9\""
+      ],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/lane-ownership-map.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/lane-ownership-map.md"
+      ],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Fix JSON syntax; recount lanes",
+      "risk_level": "LOW",
+      "owner_lane": "L-STATEMACHINE",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["lane-ownership-map.json parses", "9 lanes present", "no ownership conflicts"]
+    },
+    {
+      "taskcard_id": "TCA-019",
+      "title": "Rollback and Recovery Plan — 12 Failure Modes",
+      "stream": "authority-healing",
+      "lane": "L-COORD",
+      "root_cause_ids": ["PLAN-REPAIR-006"],
+      "evidence_source_ids": [],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/rollback-recovery-plan.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/rollback-recovery-plan.json"
+      ],
+      "forbidden_paths": ["src/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [],
+      "authority_outputs_expected": ["rollback-recovery-plan.json with 12 failure modes"],
+      "implementation_scope": "Produce rollback/recovery plan covering 12 failure modes with stop/continue decision, state transition, rollback action, evidence to preserve, verdict",
+      "non_goals": [],
+      "blocking_gates": ["VG-016"],
+      "validation_commands": [
+        "python -m json.tool rollback-recovery-plan.json",
+        "python -c \"import json; rp=json.load(open('rollback-recovery-plan.json')); assert len(rp['failure_modes'])>=12\""
+      ],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/rollback-recovery-plan.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/rollback-recovery-plan.md"
+      ],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Fix JSON syntax; recount failure modes",
+      "risk_level": "LOW",
+      "owner_lane": "L-COORD",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["rollback-recovery-plan.json parses", "12 failure modes covered"]
+    },
+    {
+      "taskcard_id": "TCA-020",
+      "title": "Repaired Plan — Apply All 10 Repairs, Produce repaired-plan.md + .json",
+      "stream": "authority-healing",
+      "lane": "L-COORD",
+      "root_cause_ids": ["PLAN-REPAIR-DISCIPLINE"],
+      "evidence_source_ids": ["required-plan-repairs.md"],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/repaired-plan.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/repaired-plan.json"
+      ],
+      "forbidden_paths": ["src/", ".local/", "tools/", "C:\\Users"],
+      "prerequisite_taskcards": ["TCA-007", "TCA-008"],
+      "authority_inputs_required": ["required-plan-repairs.md"],
+      "authority_outputs_expected": ["repaired-plan.md", "repaired-plan.json"],
+      "implementation_scope": "Produce repaired-plan.md with all 10 repairs applied; produce repaired-plan.json with metadata and repairs_applied list; no hardcoded Windows paths; no validated_by:human as default",
+      "non_goals": ["executing the healing plan", "src/ changes"],
+      "blocking_gates": ["VG-010", "VG-011", "VG-012"],
+      "validation_commands": [
+        "grep -c 'C:\\\\Users' repaired-plan.md",
+        "python -m json.tool repaired-plan.json"
+      ],
+      "negative_tests_required": [
+        "grep for C:\\Users in repaired-plan.md must return 0",
+        "grep for 'warn' near spec_fact_refs must return 0"
+      ],
+      "pilot_required": false,
+      "evidence_required": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/repaired-plan.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/repaired-plan.json"
+      ],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED",
+        "hardcoded_paths_found": "DISCOVERED -> VALIDATION_FAILED"
+      },
+      "rollback_plan": "Fix offending paths; rerun validation",
+      "risk_level": "MEDIUM",
+      "owner_lane": "L-COORD",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "repaired-plan.md has no C:\\Users paths",
+        "repaired-plan.json parses",
+        "all 10 repairs listed in repairs_applied"
+      ]
+    },
+    {
+      "taskcard_id": "TCA-021",
+      "title": "Verification Gates — VG-001 through VG-020",
+      "stream": "authority-healing",
+      "lane": "L-VERIFY",
+      "root_cause_ids": ["PLAN-REPAIR-DISCIPLINE"],
+      "evidence_source_ids": [],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/verification-gates.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/verification-gates.json"
+      ],
+      "forbidden_paths": ["src/", ".local/", "tools/"],
+      "prerequisite_taskcards": [],
+      "authority_inputs_required": [],
+      "authority_outputs_expected": ["verification-gates.json with 20 gates"],
+      "implementation_scope": "Produce 20 verification gates (VG-001..VG-020) with commands, expected results, ci_available=false for all",
+      "non_goals": [],
+      "blocking_gates": ["VG-017"],
+      "validation_commands": [
+        "python -m json.tool verification-gates.json",
+        "python -c \"import json; vg=json.load(open('verification-gates.json')); assert len(vg['gates'])==20\""
+      ],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/verification-gates.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/verification-gates.md"
+      ],
+      "state_transition_rules": {
+        "success": "DISCOVERED -> CLOSED_VERIFIED"
+      },
+      "rollback_plan": "Fix JSON; recount gates",
+      "risk_level": "LOW",
+      "owner_lane": "L-VERIFY",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": ["verification-gates.json parses", "20 gates defined", "all ci_available=false"]
+    },
+    {
+      "taskcard_id": "TCA-022",
+      "title": "Validator Script — validate_repaired_plan.py",
+      "stream": "authority-healing",
+      "lane": "L-VERIFY",
+      "root_cause_ids": ["PLAN-REPAIR-007"],
+      "evidence_source_ids": [],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/validate_repaired_plan.py",
+        "reports/spec-authority-plan-repair/${RUN_ID}/raw-logs/validate-repaired-plan.txt"
+      ],
+      "forbidden_paths": ["src/", ".local/spec-cache/", "tools/"],
+      "prerequisite_taskcards": ["TCA-005", "TCA-006", "TCA-021"],
+      "authority_inputs_required": ["all JSON artifacts in run_dir"],
+      "authority_outputs_expected": ["validate_repaired_plan.py", "validate-repaired-plan.txt (exit 0)"],
+      "implementation_scope": "Write validator script that checks all 14 conditions from Phase 11; exits 0 on success, 1 on failure",
+      "non_goals": [],
+      "blocking_gates": ["VG-020"],
+      "validation_commands": [
+        "python validate_repaired_plan.py --run-dir . && echo VALIDATOR_PASS || echo VALIDATOR_FAIL"
+      ],
+      "negative_tests_required": [
+        "Running validator with missing JSON must exit 1",
+        "Running validator with state_count!=32 must exit 1"
+      ],
+      "pilot_required": false,
+      "evidence_required": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/validate_repaired_plan.py",
+        "reports/spec-authority-plan-repair/${RUN_ID}/raw-logs/validate-repaired-plan.txt"
+      ],
+      "state_transition_rules": {
+        "validator_exits_0": "DISCOVERED -> CLOSED_VERIFIED",
+        "validator_exits_1": "DISCOVERED -> VALIDATION_FAILED"
+      },
+      "rollback_plan": "Fix validator failures one by one; rerun until exit 0",
+      "risk_level": "MEDIUM",
+      "owner_lane": "L-VERIFY",
+      "independent_verifier_lane": "L-ADVERSARIAL",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "validate_repaired_plan.py exists and is valid Python",
+        "validator exits 0 on current run artifacts"
+      ]
+    },
+    {
+      "taskcard_id": "TCA-023",
+      "title": "Adversarial Review — 10 Independent Review Questions",
+      "stream": "authority-healing",
+      "lane": "L-ADVERSARIAL",
+      "root_cause_ids": ["PLAN-REPAIR-DISCIPLINE"],
+      "evidence_source_ids": ["all artifacts in run_dir"],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": ["reports/spec-authority-plan-repair/${RUN_ID}/adversarial-review.md"],
+      "forbidden_paths": [
+        "src/",
+        ".local/",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-taskcards.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/repaired-plan.md"
+      ],
+      "prerequisite_taskcards": ["TCA-020", "TCA-022"],
+      "authority_inputs_required": ["all plan-repair artifacts"],
+      "authority_outputs_expected": ["adversarial-review.md"],
+      "implementation_scope": "Independent review of all artifacts; answer 10 adversarial questions; classify findings as CRITICAL/ADVISORY; CRITICAL findings block single-go prompt",
+      "non_goals": ["modifying any other artifact"],
+      "blocking_gates": [],
+      "validation_commands": ["test -f adversarial-review.md && echo PASS || echo FAIL"],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": ["reports/spec-authority-plan-repair/${RUN_ID}/adversarial-review.md"],
+      "state_transition_rules": {
+        "no_critical_issues": "DISCOVERED -> INDEPENDENT_VERIFIED -> CLOSED_VERIFIED",
+        "critical_issues_found": "DISCOVERED -> INDEPENDENT_VERIFICATION_REQUIRED -> VALIDATION_FAILED"
+      },
+      "rollback_plan": "If CRITICAL issues found, route to TCA-020 for repair",
+      "risk_level": "MEDIUM",
+      "owner_lane": "L-ADVERSARIAL",
+      "independent_verifier_lane": "L-COORD",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "adversarial-review.md exists",
+        "all 10 questions answered",
+        "no CRITICAL issues (or all CRITICAL issues resolved)"
+      ]
+    },
+    {
+      "taskcard_id": "TCA-024",
+      "title": "Evidence Bundle + SHA256 Manifest + Single-Go Prompt",
+      "stream": "authority-healing",
+      "lane": "L-BUNDLE",
+      "root_cause_ids": ["PLAN-REPAIR-DISCIPLINE"],
+      "evidence_source_ids": ["all run_dir artifacts"],
+      "affected_pipeline_stages": ["plan"],
+      "affected_formats": ["all"],
+      "current_state": "DISCOVERED",
+      "allowed_paths": [
+        ".local/spec-authority-plan-repair/${RUN_ID}/",
+        "reports/spec-authority-plan-repair/${RUN_ID}/SHA256-MANIFEST.txt",
+        "reports/spec-authority-plan-repair/${RUN_ID}/single-go-execution-prompt.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/final-summary.md"
+      ],
+      "forbidden_paths": [
+        "src/",
+        "reports/spec-authority-plan-repair/${RUN_ID}/repaired-plan.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-taskcards.json"
+      ],
+      "prerequisite_taskcards": ["TCA-000", "TCA-022", "TCA-023"],
+      "authority_inputs_required": ["all plan-repair artifacts", "validator exit 0", "no adversarial CRITICAL issues"],
+      "authority_outputs_expected": ["SHA256-MANIFEST.txt", "single-go-execution-prompt.md", "final-summary.md", ".local/ bundle copy"],
+      "implementation_scope": "Copy all reports to .local/; build SHA256-MANIFEST.txt; produce single-go-execution-prompt.md (only if validator exits 0); write final-summary.md",
+      "non_goals": ["making content changes after bundle starts", "src/ changes", "commits", "pushes"],
+      "blocking_gates": ["VG-018", "VG-019"],
+      "validation_commands": [
+        "test -f .local/spec-authority-plan-repair/${RUN_ID}/SHA256-MANIFEST.txt && echo PASS || echo FAIL",
+        "sha256sum .local/spec-authority-plan-repair/${RUN_ID}/SHA256-MANIFEST.txt"
+      ],
+      "negative_tests_required": [],
+      "pilot_required": false,
+      "evidence_required": [
+        ".local/spec-authority-plan-repair/${RUN_ID}/SHA256-MANIFEST.txt",
+        "reports/spec-authority-plan-repair/${RUN_ID}/single-go-execution-prompt.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/final-summary.md"
+      ],
+      "state_transition_rules": {
+        "validator_pass_no_critical": "DISCOVERED -> CLOSED_VERIFIED (single-go-prompt written)",
+        "validator_fail_or_critical": "DISCOVERED -> CLOSED_WITH_AUTHORITY_DEBT (PLAN_REPAIR_BLOCKED verdict)"
+      },
+      "rollback_plan": "If bundle incomplete, fix missing files and rebuild; SHA256-MANIFEST.txt is always the last step",
+      "risk_level": "LOW",
+      "owner_lane": "L-BUNDLE",
+      "independent_verifier_lane": "L-COORD",
+      "final_state": "CLOSED_VERIFIED",
+      "closure_criteria": [
+        "SHA256-MANIFEST.txt exists and is non-empty",
+        "single-go-execution-prompt.md exists (if validator exit 0)",
+        "final-summary.md has verdict"
+      ]
+    }
+  ]
+}

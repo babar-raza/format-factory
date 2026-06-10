@@ -1,0 +1,355 @@
+{
+  "ledger_id": "lel:unified-authority-poc-train-001",
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "generated_at": "2026-06-04T20:30:00Z",
+  "entries": [
+    {
+      "iteration": 1,
+      "lane_id": "lane-001-spec-authority",
+      "selected_gap": "spec_authority_mwp_missing",
+      "allowed_files": ["tools/specification-authority-layer/**"],
+      "files_changed": [
+        "tools/specification-authority-layer/__init__.py",
+        "tools/specification-authority-layer/spec_source_registry.py",
+        "tools/specification-authority-layer/spec_vault_ingest.py",
+        "tools/specification-authority-layer/spec_parser.py",
+        "tools/specification-authority-layer/spec_normalizer.py",
+        "tools/specification-authority-layer/spec_indexer.py",
+        "tools/specification-authority-layer/spec_digestor.py",
+        "tools/specification-authority-layer/requirement_extractor.py",
+        "tools/specification-authority-layer/spec_verifier.py",
+        "tools/specification-authority-layer/requirement_graph.py",
+        "tools/specification-authority-layer/context_pack_builder.py",
+        "tools/specification-authority-layer/spec_governance_runtime.py"
+      ],
+      "tests_run": 28,
+      "tests_passed": 28,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/spec-authority-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-spec-authority.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-001-spec-authority.yaml",
+      "sample_output_path": null,
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "VERIFY_RCA_MWP"
+    },
+    {
+      "iteration": 1,
+      "lane_id": "lane-002-rca-mwp",
+      "selected_gap": "req_capability_authority_verification",
+      "allowed_files": ["tools/requirements_authority/**", "tests/supervisor/test_requirement_capability_authority_layer.py"],
+      "files_changed": [
+        "tests/supervisor/test_requirement_capability_authority_layer.py"
+      ],
+      "tests_run": 37,
+      "tests_passed": 37,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/rca-fabric-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-rca.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-001-requirement-authority.yaml",
+      "sample_output_path": null,
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "BUILD_INTEGRATION_FABRIC"
+    },
+    {
+      "iteration": 1,
+      "lane_id": "lane-003-integration-fabric",
+      "selected_gap": "authority_integration_fabric_missing",
+      "allowed_files": ["tools/supervisor/authority_integration_fabric.py", "tests/supervisor/test_authority_integration_fabric.py"],
+      "files_changed": [
+        "tools/supervisor/authority_integration_fabric.py",
+        "tests/supervisor/test_authority_integration_fabric.py"
+      ],
+      "tests_run": 29,
+      "tests_passed": 29,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/rca-fabric-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-integration-fabric.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-001-integration-fabric.yaml",
+      "sample_output_path": null,
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "PHASE5_PRODUCT_WORK"
+    },
+    {
+      "iteration": 1,
+      "lane_id": "lane-004-fods-r114",
+      "selected_gap": "fods_r114_style_stats",
+      "allowed_files": ["src/net/fods/**", "tests/net/fods/**"],
+      "files_changed": [
+        "src/net/fods/FodsDocument.cs",
+        "tests/net/fods/FodsR114GetSheetStatsTests.cs",
+        "tests/net/fods/FodsR114SetCellStyleTests.cs"
+      ],
+      "tests_run": 16,
+      "tests_passed": 16,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/fods-r114-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-fods.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-001-fods.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/fods/",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "GENERATE_FODS_SAMPLE"
+    },
+    {
+      "iteration": 1,
+      "lane_id": "lane-005-fodt-r114",
+      "selected_gap": "fodt_r114_paragraph_style",
+      "allowed_files": ["src/net/fodt/**", "tests/net/fodt/**"],
+      "files_changed": [
+        "src/net/fodt/FodtDocument.cs",
+        "tests/net/fodt/FodtR114SetParagraphStyleTests.cs"
+      ],
+      "tests_run": 9,
+      "tests_passed": 9,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/fodt-r114-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-fodt.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-001-fodt.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/fodt/",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "GENERATE_FODT_SAMPLE"
+    },
+    {
+      "iteration": 1,
+      "lane_id": "lane-006-netpbm-r114",
+      "selected_gap": "netpbm_r114_median_canvas",
+      "allowed_files": ["src/net/netpbm/**", "tests/net/netpbm/**"],
+      "files_changed": [
+        "src/net/netpbm/Model/NetpbmImage.cs",
+        "tests/net/netpbm/NetpbmR114MedianFilterTests.cs",
+        "tests/net/netpbm/NetpbmR114CreateCanvasTests.cs"
+      ],
+      "tests_run": 25,
+      "tests_passed": 25,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/netpbm-r114-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-netpbm.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-001-netpbm.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/netpbm/",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "GENERATE_NETPBM_SAMPLE"
+    }
+  ],
+    {
+      "iteration": 2,
+      "lane_id": "lane-007-fods-r115",
+      "selected_gap": "fods_r115_export_csv_file_filter_rows",
+      "allowed_files": ["src/net/fods/**", "tests/net/fods/**"],
+      "files_changed": [
+        "src/net/fods/FodsDocument.cs",
+        "tests/net/fods/FodsR115ExportCsvFileTests.cs",
+        "tests/net/fods/FodsR115FilterRowsTests.cs"
+      ],
+      "tests_run": 16,
+      "tests_passed": 16,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/fods-r115-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-002-fods.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-002-fods.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/fods/",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_FODT_R115"
+    },
+    {
+      "iteration": 2,
+      "lane_id": "lane-008-fodt-r115",
+      "selected_gap": "fodt_r115_export_outline_json_find_paragraphs",
+      "allowed_files": ["src/net/fodt/**", "tests/net/fodt/**"],
+      "files_changed": [
+        "src/net/fodt/FodtDocument.cs",
+        "tests/net/fodt/FodtR115ExportOutlineJsonTests.cs"
+      ],
+      "tests_run": 10,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/fodt-r115-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-002-fodt.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-002-fodt.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/fodt/",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_NETPBM_R115"
+    },
+    {
+      "iteration": 2,
+      "lane_id": "lane-009-netpbm-r115",
+      "selected_gap": "netpbm_r115_draw_rectangle_brightness_map",
+      "allowed_files": ["src/net/netpbm/**", "tests/net/netpbm/**"],
+      "files_changed": [
+        "src/net/netpbm/Model/NetpbmImage.cs",
+        "tests/net/netpbm/NetpbmR115DrawTests.cs"
+      ],
+      "tests_run": 9,
+      "tests_passed": 9,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/netpbm-r115-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-002-netpbm.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-002-netpbm.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/netpbm/",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_SYLK_R115"
+    },
+    {
+      "iteration": 2,
+      "lane_id": "lane-010-sylk-r115",
+      "selected_gap": "sylk_r115_write_roundtrip_csv_deepening",
+      "allowed_files": ["tests/python/sylk/**"],
+      "files_changed": [
+        "tests/python/sylk/test_r115_sylk_write_roundtrip.py"
+      ],
+      "tests_run": 11,
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/sylk-r115-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-002-sylk.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-002-sylk.yaml",
+      "sample_output_path": null,
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_ZST_R115"
+    },
+    {
+      "iteration": 2,
+      "lane_id": "lane-011-zst-r115",
+      "selected_gap": "zst_r115_file_roundtrip_probe_workflow",
+      "allowed_files": ["tests/python/zst/**"],
+      "files_changed": [
+        "tests/python/zst/test_r115_zst_file_roundtrip.py"
+      ],
+      "tests_run": 11,
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/zst-r115-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-002-zst.json",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-002-zst.yaml",
+      "sample_output_path": null,
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "PHASE_D_VALIDATION"
+    },
+    {
+      "iteration": 3,
+      "lane_id": "lane-012-fods-r116",
+      "selected_gap": "fods_r116_column_aggregates",
+      "allowed_files": ["src/net/fods/**", "tests/net/fods/**"],
+      "files_changed": [
+        "src/net/fods/FodsDocument.cs",
+        "tests/net/fods/FodsR116ColumnAggregatesTests.cs"
+      ],
+      "tests_run": 8,
+      "tests_passed": 8,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/fods-r116-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-003-fods.json",
+      "source_diff_path": "reports/unified-authority-integrated-poc-train/source-diffs/iteration-003-fods.diff",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-003-fods.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-003/fods/column-aggregates-report.json",
+      "proof_graph_import_path": "reports/unified-authority-integrated-poc-train/proof-graph/iteration-003/nodes.jsonl",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_FODT_R116"
+    },
+    {
+      "iteration": 3,
+      "lane_id": "lane-013-fodt-r116",
+      "selected_gap": "fodt_r116_word_frequency",
+      "allowed_files": ["src/net/fodt/**", "tests/net/fodt/**"],
+      "files_changed": [
+        "src/net/fodt/FodtDocument.cs",
+        "tests/net/fodt/FodtR116WordFrequencyTests.cs"
+      ],
+      "tests_run": 8,
+      "tests_passed": 8,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/fodt-r116-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-003-fodt.json",
+      "source_diff_path": "reports/unified-authority-integrated-poc-train/source-diffs/iteration-003-fodt.diff",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-003-fodt.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-003/fodt/word-frequency-report.json",
+      "proof_graph_import_path": "reports/unified-authority-integrated-poc-train/proof-graph/iteration-003/nodes.jsonl",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_NETPBM_R116"
+    },
+    {
+      "iteration": 3,
+      "lane_id": "lane-014-netpbm-r116",
+      "selected_gap": "netpbm_r116_draw_line",
+      "allowed_files": ["src/net/netpbm/**", "tests/net/netpbm/**"],
+      "files_changed": [
+        "src/net/netpbm/Model/NetpbmImage.cs",
+        "tests/net/netpbm/NetpbmR116DrawLineTests.cs"
+      ],
+      "tests_run": 8,
+      "tests_passed": 8,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/netpbm-r116-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-003-netpbm.json",
+      "source_diff_path": "reports/unified-authority-integrated-poc-train/source-diffs/iteration-003-netpbm.diff",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-003-netpbm.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-003/netpbm/draw-line-output.txt",
+      "proof_graph_import_path": "reports/unified-authority-integrated-poc-train/proof-graph/iteration-003/nodes.jsonl",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_DIF_R116"
+    },
+    {
+      "iteration": 3,
+      "lane_id": "lane-015-dif-r116",
+      "selected_gap": "dif_r116_probe_csv_pipeline",
+      "allowed_files": ["tests/python/dif/**"],
+      "files_changed": [
+        "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
+      ],
+      "tests_run": 12,
+      "tests_passed": 12,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/dif-r116-tests.log",
+      "transcript_path": "reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-003-dif.json",
+      "source_diff_path": "reports/unified-authority-integrated-poc-train/source-diffs/iteration-003-dif.diff",
+      "capability_delta_path": "reports/unified-authority-integrated-poc-train/capability-delta-proposals/iteration-003-dif.yaml",
+      "sample_output_path": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-003/dif/dif-csv-pipeline.txt",
+      "proof_graph_import_path": "reports/unified-authority-integrated-poc-train/proof-graph/iteration-003/nodes.jsonl",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "CONTINUE_TO_CONTROLLER"
+    },
+    {
+      "iteration": 3,
+      "lane_id": "lane-016-autonomous-controller",
+      "selected_gap": "autonomous_poc_controller_hardening",
+      "allowed_files": ["tools/supervisor/autonomous_poc_controller.py", "tests/supervisor/test_autonomous_poc_controller.py"],
+      "files_changed": [
+        "tools/supervisor/autonomous_poc_controller.py",
+        "tests/supervisor/test_autonomous_poc_controller.py"
+      ],
+      "tests_run": 40,
+      "tests_passed": 40,
+      "tests_failed": 0,
+      "raw_log_path": "reports/unified-authority-integrated-poc-train/raw-logs/controller-r116-tests.log",
+      "transcript_path": "reports/autonomous-control-hardening/skills-transcript-enforcement.md",
+      "source_diff_path": null,
+      "capability_delta_path": "reports/autonomous-control-hardening/poc-closing-gap-priority.json",
+      "sample_output_path": null,
+      "proof_graph_import_path": "reports/unified-authority-integrated-poc-train/proof-graph/iteration-003/nodes.jsonl",
+      "status": "COMPLETED",
+      "blocker_reason": null,
+      "next_action": "PHASE_E_VALIDATION"
+    }
+  ],
+  "summary": {
+    "total_lanes": 16,
+    "completed": 16,
+    "blocked": 0,
+    "total_tests_run": 317,
+    "total_tests_passed": 317,
+    "total_tests_failed": 0
+  }
+}

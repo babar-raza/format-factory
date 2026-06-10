@@ -1,0 +1,52 @@
+{
+  "handoff_type": "skills_to_supervisor",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "generated_by": "TC-W6-004",
+  "grading_rubric": [
+    {
+      "tier": "FAIL_CLOSED",
+      "applies_to": "Product source changes (src/net/*, src/python/*)",
+      "grade_if_present": "ACCEPTED",
+      "grade_if_missing_required": "REJECTED",
+      "grade_if_partial": "FAILED_NEEDS_REPAIR",
+      "required_fields": ["skill_id", "format_id", "transcript_path", "focused_test_raw_log_path", "source_diff_path", "allowed_files", "forbidden_files", "rollback_note", "ledger_entry_path"],
+      "downgrade_rule": "Missing capability_matrix_update → ACCEPT_WITH_LIMITATIONS (not REJECTED)"
+    },
+    {
+      "tier": "FAIL_WITH_REWORK",
+      "applies_to": "Product tests and examples",
+      "grade_if_present": "ACCEPTED",
+      "grade_if_missing_required": "FAILED_NEEDS_REPAIR",
+      "grade_if_partial": "FAILED_NEEDS_REPAIR",
+      "required_fields": ["skill_id", "format_id", "transcript_path", "focused_test_raw_log_path", "source_diff_path", "allowed_files", "forbidden_files", "rollback_note"],
+      "downgrade_rule": "Missing ledger_entry_path → WARNING (not FAILED_NEEDS_REPAIR)"
+    },
+    {
+      "tier": "YES_WITH_LIMITATIONS",
+      "applies_to": "Governance artifacts, tooling, templates",
+      "grade_if_present": "ACCEPTED_WITH_LIMITATIONS",
+      "grade_if_missing_required": "ACCEPTED_WITH_LIMITATIONS",
+      "grade_if_partial": "ACCEPTED_WITH_LIMITATIONS",
+      "required_fields": ["skill_id", "transcript_path", "allowed_files", "forbidden_files", "rollback_note"],
+      "downgrade_rule": "Missing source_diff_path → ACCEPTED (expected for governance work)"
+    },
+    {
+      "tier": "ACCEPT_WITH_LIMITATIONS",
+      "applies_to": "Report-only planning artifacts",
+      "grade_if_present": "ACCEPTED",
+      "grade_if_missing_required": "ACCEPTED",
+      "grade_if_partial": "ACCEPTED",
+      "required_fields": ["skill_id", "allowed_files", "forbidden_files"],
+      "downgrade_rule": "Any missing optional field → note in evidence; not a grade change"
+    },
+    {
+      "tier": "BLOCKED_EXTERNAL_GATE",
+      "applies_to": "Push, publication, Gate 8/11, credentials",
+      "grade_if_present": "BLOCKED_EXTERNAL",
+      "grade_if_missing_required": "BLOCKED_EXTERNAL",
+      "grade_if_partial": "BLOCKED_EXTERNAL",
+      "required_fields": ["blocker_reason", "external_gate_id"],
+      "downgrade_rule": "N/A — blocked items are never graded ACCEPTED"
+    }
+  ]
+}

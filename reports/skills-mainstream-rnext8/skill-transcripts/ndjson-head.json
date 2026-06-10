@@ -1,0 +1,20 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "ndjson",
+  "api_name": "head",
+  "sprint_run_id": "mainstream-product-deepening-rnext8",
+  "changed_files": [
+    "src/python/ndjson/__init__.py",
+    "tests/python/ndjson/test_mdr8_ndjson_head.py"
+  ],
+  "test_results": {
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "ledger_entry_id": "MDR8-NDJSON-HEAD-001",
+  "ledger_validator": "PASS",
+  "verdict": "PASS",
+  "notes": "head(src, n=10) implemented in ndjson_codec.py. Exported via __init__.py. 7/7 tests pass. Covers: basic head, all records when n>len, default n=10, zero returns empty, empty source, returns list, negative n raises ValueError."
+}

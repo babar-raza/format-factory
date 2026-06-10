@@ -1,0 +1,13 @@
+id: route-pilot-004
+title: "Machinery task with valid governed decision — should allow direct execution"
+task_id: "PILOT-004-MACHINERY-GOVERNED"
+task_summary: "Update governance_validator evidence output"
+action_type: "UPDATE_PRODUCT_LEDGER"
+task_category: "VALIDATOR_OR_EVIDENCE_MACHINERY"
+risk_level: "LOW"
+hints:
+  governed_decision_present: true
+expected_route: "GOVERNED_DIRECT_EXECUTION"
+expected_autonomous_allowed: false
+expected_blocked: false
+expected_machinery_mutation_allowed: true

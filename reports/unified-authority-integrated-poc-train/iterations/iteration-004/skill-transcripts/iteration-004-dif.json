@@ -1,0 +1,26 @@
+{
+  "transcript_id": "iter-004-dif-write-r117",
+  "iteration": 4,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "skill_used": "add-python-object-model-feature",
+  "target": "DIF Python FOSS",
+  "gap_closed": "write_dif_roundtrip",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "execution_steps": [
+    {"step": 1, "action": "Read dif_parser.py to understand DifDocument structure and existing API"},
+    {"step": 2, "action": "Implement write_dif() function: TABLE/VECTORS/TUPLES/DATA header + BOT/EOD rows"},
+    {"step": 3, "action": "Use newline='' to suppress Windows CRLF double-translation"},
+    {"step": 4, "action": "Write test_r117_dif_write_roundtrip.py: 10 tests including dogfood pipeline"},
+    {"step": 5, "action": "Run tests — 9 fail (CRLF issue). Diagnose: \\ r\\ n double-translated on Windows"},
+    {"step": 6, "action": "Fix: change path.write_text to path.open('w', newline='')"},
+    {"step": 7, "action": "Re-run tests — 10/10 PASS"},
+    {"step": 8, "action": "Generate sample output: write→probe→parse→csv pipeline report"}
+  ],
+  "tests_passed": 10,
+  "tests_failed": 0,
+  "source_changed": ["src/python/dif/dif_parser.py"],
+  "test_file": "tests/python/dif/test_r117_dif_write_roundtrip.py",
+  "raw_log": "reports/unified-authority-integrated-poc-train/iterations/iteration-004/raw-logs/dif-r117-tests.log",
+  "sample_output": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/dif/write-roundtrip-report.json",
+  "verdict": "SKILL_EXECUTED_PASS"
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "lanes": [
+    {
+      "lane_id": "DRY-RUN-K1",
+      "sprint_id": "R101",
+      "concurrency_group": "dry-run",
+      "owner": "claude-primary",
+      "subagent_id": "",
+      "stream_id": "mainstream",
+      "raw_log_path": "",
+      "dependency_graph": [],
+      "handoff_from": "",
+      "handoff_to": "",
+      "started_at": "2026-06-03T04:04:11.370303+00:00",
+      "ended_at": "2026-06-03T04:04:11.370326+00:00",
+      "duration_seconds": 0.0,
+      "files_read": [],
+      "files_changed": [
+        "tools/supervisor/select_poc_gaps.py"
+      ],
+      "commands": [
+        "select_poc_gaps.py --matrix poc-targets.yaml",
+        "choose_skill_or_handoff.py --gap-json gap.json"
+      ],
+      "command_log": [
+        {
+          "command": "select_poc_gaps.py --matrix poc-targets.yaml",
+          "started_at": "2026-06-03T04:04:11.370311+00:00",
+          "ended_at": "2026-06-03T04:04:11.370317+00:00"
+        },
+        {
+          "command": "choose_skill_or_handoff.py --gap-json gap.json",
+          "started_at": "2026-06-03T04:04:11.370319+00:00",
+          "ended_at": "2026-06-03T04:04:11.370323+00:00"
+        }
+      ],
+      "tests_run": [],
+      "test_count": 80,
+      "tests_passed": 80,
+      "tests_failed": 0,
+      "evidence_artifacts": [
+        "reports/acceleration-r101/dry-run-e2e.md"
+      ],
+      "status": "completed",
+      "blockers": [],
+      "bottleneck_tags": [],
+      "notes": ""
+    }
+  ]
+}

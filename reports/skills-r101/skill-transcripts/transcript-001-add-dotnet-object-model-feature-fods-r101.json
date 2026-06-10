@@ -1,0 +1,40 @@
+{
+  "transcript_id": "SKILLS-R101-TRANSCRIPT-001",
+  "skill_id": "add-dotnet-object-model-feature",
+  "command": "/add-dotnet-object-model-feature",
+  "mode": "dry-run",
+  "sprint": "FORMAT-FACTORY-MAINSTREAM-R101",
+  "timestamp": "2026-06-03T10:00:00Z",
+  "inputs": {
+    "format_id": "fods",
+    "feature_name": "ExportSheetToMarkdown",
+    "model_class": "FodsDocument",
+    "exact_source_paths": ["src/net/fods/FodsDocument.cs"],
+    "exact_test_paths": ["tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs"],
+    "ledger_entry_path": "reports/r90/product-code-change-ledger.json"
+  },
+  "preflight_checks": {
+    "skill_registry_loaded": true,
+    "ledger_exists": true,
+    "ledger_validator_pass": true,
+    "sprint_prompt_names_skill": true,
+    "exact_paths_confirmed": true
+  },
+  "execution": {
+    "source_files_changed": ["src/net/fods/FodsDocument.cs"],
+    "test_files_created": ["tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs"],
+    "tests_run": 8,
+    "tests_passed": 8,
+    "tests_failed": 0,
+    "ledger_entry_id": "R101-GOVERNED-DOTNET-FODS-EXPORTSHEETTOMARKDOWN-001"
+  },
+  "post_checks": {
+    "ledger_validator_pass": true,
+    "focused_tests_pass": true,
+    "no_gate_change": true,
+    "no_commit": true,
+    "no_push": true
+  },
+  "verdict": "PASS",
+  "stop_conditions_triggered": []
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-EXTERNAL-HOST-ACTIVATION-AND-PROOF-001",
+  "generated_at": "2026-06-06T15:00:00Z",
+  "bridge_applied": true,
+  "bridge_function": "evidence_continuation.apply_post_closeout_continuation()",
+  "result": "POST_CLOSEOUT_CONTINUATION_READY",
+  "final_state": {
+    "active_continuation_json": {
+      "path": ".local/supervisor/active-continuation.json",
+      "autonomous_continue": true,
+      "advisory_prompt_executable": false,
+      "next_action_path": ".local/supervisor/next-action.json",
+      "post_closeout": true
+    },
+    "next_action_json": {
+      "path": ".local/supervisor/next-action.json",
+      "action_type": "RUN_JSON_VALIDATION",
+      "objective": "Post-closeout: validate current-gap-analysis.json",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC"
+    },
+    "action_queue_jsonl": {
+      "path": ".local/supervisor/action-queue.jsonl",
+      "pending_items": 5,
+      "items": ["h6-q-001", "h6-q-002", "h6-q-003", "h6-q-004", "h6-q-005"]
+    },
+    "orchestrator_state_json": {
+      "path": ".local/supervisor/orchestrator-state.json",
+      "status": "COMPLETED",
+      "cycle_index": 10,
+      "stop_reason": "MAX_CYCLES_REACHED",
+      "resumable": true
+    },
+    "stop_reason_json": {
+      "path": ".local/supervisor/stop-reason.json",
+      "stop_code": "MAX_CYCLES_REACHED",
+      "resumable": true
+    }
+  },
+  "advisory_next_sprint_md_status": "ADVISORY_ONLY — still exists at reports/supervisor/next-sprint.md but is NOT active-continuation",
+  "no_prompt_paste_needed": true,
+  "verdict": "POST_CLOSEOUT_CONTINUATION_FIXED_MACHINE_READABLE_STATE_COMPLETE"
+}

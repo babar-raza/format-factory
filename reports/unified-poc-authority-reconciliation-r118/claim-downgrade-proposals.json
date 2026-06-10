@@ -1,0 +1,16 @@
+{
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-POC-AUTHORITY-RECONCILIATION-R118-001",
+  "downgrade_proposals": [
+    {
+      "claim": "Export dogfood nodes in proof graph (2 dogfood_proof nodes)",
+      "current_type": "dogfood_proof",
+      "proposed_type": "product_local_export_proof",
+      "reason": "No FormatFactory target writer library; these are product-local export capabilities",
+      "action": "RECLASSIFY_METADATA_ONLY",
+      "poc_impact": "NONE — poc-targets already classifies as GAP_DOGFOOD_EXTERNAL"
+    }
+  ],
+  "no_removal_required": true,
+  "poc_blocker_proposals": 0,
+  "verdict": "NO_DOWNGRADE_REQUIRED_FOR_POC_READINESS"
+}

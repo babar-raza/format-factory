@@ -1,0 +1,39 @@
+{
+  "handoff_type": "skills_to_mainstream_hardening",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "generated_at": "2026-06-04T12:00:00Z",
+  "skills_readiness_status": "SKILLS_CONSUMABLE_WITH_LIMITATIONS",
+  "immediate_action_for_mainstream": {
+    "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+    "packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+    "handoff_path": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+    "template_path": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+    "mode": "live",
+    "skill": "add-dotnet-api",
+    "note": "Switch handoff mode from dry-run to live for actual execution"
+  },
+  "fallback_actions_for_mainstream": [
+    {
+      "family": "FODT",
+      "shell_path": "reports/skills-governed-execution-hardening/fodt-packet-shell.json",
+      "required_discovery": "Select which FODT method to implement; Skills generates live handoff"
+    },
+    {
+      "family": "Netpbm",
+      "shell_path": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+      "required_discovery": "Select which Netpbm method to implement; Skills generates live handoff"
+    }
+  ],
+  "transcript_validation": "python tools/supervisor/validate_skill_transcript.py <transcript>",
+  "governed_execution_consumed_when": "transcript validates PASS + tests pass + ledger entry added",
+  "forbidden_global": [
+    "registry/format-registry.yaml",
+    "plans/master-plan.md",
+    "product-capability-matrix/poc-targets.yaml",
+    ".supervisor/policies.yaml",
+    ".vscode/mcp.json",
+    ".claude-plugin/*",
+    "reports/supervisor/approval-gates.md"
+  ],
+  "capability_matrix_guidance": "Use proposed_delta — do not directly update poc-targets.yaml"
+}

@@ -322,3 +322,301 @@ def sylk_to_csv(file_path: str | Path) -> str:
         row = [row_data.get(c, "") for c in range(max_col)]
         writer.writerow(row)
     return buf.getvalue()
+
+
+def get_cell_value(file_path: str | Path, row: int, col: int) -> Any:
+    """Return the value at (row, col) in a SYLK file (1-based coordinates).
+
+    Returns None if the cell is empty or the coordinates are out of range.
+
+    Args:
+        file_path: Path to SYLK file.
+        row:       1-based row index.
+        col:       1-based column index.
+
+    Returns:
+        Cell value (numeric, str, or None for empty/missing).
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    for cell in doc.cells:
+        if cell.row == row and cell.col == col:
+            return cell.value
+    return None
+
+
+def get_row_values(file_path: str | Path, row: int) -> list[Any]:
+    """Return all cell values for a given row (1-based) as a list.
+
+    Values are ordered by column index. Empty cells within the row range
+    are represented as None. Returns an empty list if the row has no cells.
+
+    Args:
+        file_path: Path to SYLK file.
+        row:       1-based row index.
+
+    Returns:
+        List of cell values in column order. Empty cells are None.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    row_cells = [c for c in doc.cells if c.row == row]
+    if not row_cells:
+        return []
+    max_col = max(c.col for c in row_cells)
+    result: list[Any] = [None] * max_col
+    for cell in row_cells:
+        result[cell.col - 1] = cell.value
+    return result
+
+
+def get_row_count(file_path: str | Path) -> int:
+    """Return the number of rows in a SYLK file.
+
+    The row count is the maximum row index found among all cells.
+
+    Args:
+        file_path: Path to SYLK file.
+
+    Returns:
+        Integer row count.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    return doc.rows
+
+
+def get_column_count(file_path: str | Path) -> int:
+    """Return the number of columns in a SYLK file.
+
+    The column count is the maximum column index found among all cells.
+
+    Args:
+        file_path: Path to SYLK file.
+
+    Returns:
+        Integer column count.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    return doc.cols
+
+
+def get_cell_count(file_path: str | Path) -> int:
+    """Return the number of non-empty cells in a SYLK file.
+
+    Args:
+        file_path: Path to SYLK file.
+
+    Returns:
+        Integer count of cells with non-None values.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    return sum(1 for c in doc.cells if c.value is not None)
+
+
+def get_all_values(file_path: str | Path) -> list[Any]:
+    """Return a flat list of all cell values in a SYLK file."""
+    doc = parse_sylk_strict(file_path)
+    return [c.value for c in doc.cells]
+
+
+def set_cell_value(
+    file_path: str | Path,
+    dest_path: str | Path,
+    row: int,
+    col: int,
+    value: Any,
+    value_type: str = "string",
+) -> dict[str, Any]:
+    """Set a cell value in a SYLK file and write the result.
+
+    Parses the source file, modifies the cell at (row, col) (1-based),
+    and writes the updated document to dest_path.
+
+    Args:
+        file_path:  Source SYLK file path.
+        dest_path:  Destination file path.
+        row:        1-based row index.
+        col:        1-based column index.
+        value:      New cell value.
+        value_type: One of "numeric", "string".
+
+    Returns:
+        Dict with ok, row, col, old_value, new_value keys.
+
+    Raises:
+        SylkError on parse failure or invalid coordinates.
+    """
+    doc = parse_sylk_strict(file_path)
+    if row < 1:
+        raise SylkError(f"Row {row} must be >= 1")
+    if col < 1:
+        raise SylkError(f"Col {col} must be >= 1")
+    old_value = None
+    found = False
+    for cell in doc.cells:
+        if cell.row == row and cell.col == col:
+            old_value = cell.value
+            cell.value = value
+            cell.value_type = value_type
+            found = True
+            break
+    if not found:
+        doc.cells.append(SylkCell(row=row, col=col, value=value, value_type=value_type))
+        doc.rows = max(doc.rows, row)
+        doc.cols = max(doc.cols, col)
+    write_sylk(doc, dest_path)
+    return {
+        "ok": True,
+        "row": row,
+        "col": col,
+        "old_value": old_value,
+        "new_value": value,
+    }
+
+
+def get_column_values(file_path: str | Path, col: int) -> list[Any]:
+    """Return all cell values for a given column (1-based) as a list.
+
+    Values are ordered by row index. Empty cells within the row range
+    are represented as None. Returns an empty list if the column has no cells.
+
+    Args:
+        file_path: Path to SYLK file.
+        col:       1-based column index.
+
+    Returns:
+        List of cell values in row order. Empty cells within the column
+        row span are None.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    col_cells = [c for c in doc.cells if c.col == col]
+    if not col_cells:
+        return []
+    max_row = max(c.row for c in col_cells)
+    result: list[Any] = [None] * max_row
+    for cell in col_cells:
+        result[cell.row - 1] = cell.value
+    return result
+
+
+def add_row(file_path: str | Path, dest_path: str | Path, values: list[Any]) -> dict[str, Any]:
+    """Add a row of values to the end of a SYLK document and write to dest_path.
+
+    Args:
+        file_path: Path to source SYLK file.
+        dest_path: Path to write modified SYLK file.
+        values: List of cell values for the new row.
+
+    Returns:
+        Result dict with success, row_index, cell_count.
+    """
+    doc = parse_sylk_strict(file_path)
+    new_row = max((c.row for c in doc.cells), default=0) + 1
+    for col_idx, val in enumerate(values, start=1):
+        vtype = "numeric" if isinstance(val, (int, float)) else "string"
+        doc.cells.append(SylkCell(row=new_row, col=col_idx, value=val, value_type=vtype))
+    write_sylk(doc, dest_path)
+    return {"success": True, "row_index": new_row, "cell_count": len(values)}
+
+
+def delete_row(file_path: str | Path, dest_path: str | Path, row: int) -> dict[str, Any]:
+    """Delete a row (1-based) from a SYLK document and write to dest_path.
+
+    Cells in the target row are removed. Cells in higher rows are shifted down.
+
+    Args:
+        file_path: Path to source SYLK file.
+        dest_path: Path to write modified SYLK file.
+        row: 1-based row index to delete.
+
+    Returns:
+        Result dict with success, deleted_count.
+    """
+    doc = parse_sylk_strict(file_path)
+    deleted = [c for c in doc.cells if c.row == row]
+    remaining = [c for c in doc.cells if c.row != row]
+    # Shift rows above the deleted row down by 1
+    for c in remaining:
+        if c.row > row:
+            c.row -= 1
+    doc.cells = remaining
+    write_sylk(doc, dest_path)
+    return {"success": True, "deleted_count": len(deleted)}
+
+
+def count_nonempty_cells(file_path: str | Path) -> int:
+    """Count non-empty cells in a SYLK file.
+
+    A cell is non-empty if its value is not None and not an empty string.
+    """
+    doc = parse_sylk_strict(file_path)
+    return sum(1 for c in doc.cells if c.value is not None and c.value != "")
+
+
+def sum_column(file_path: str | Path, col: int) -> float:
+    """Sum all numeric values in a column (1-based, matching SYLK conventions).
+
+    Non-numeric values are ignored. Returns 0.0 if no numeric values found.
+    """
+    doc = parse_sylk_strict(file_path)
+    total = 0.0
+    for c in doc.cells:
+        if c.col == col and isinstance(c.value, (int, float)):
+            total += c.value
+    return total
+
+
+def sylk_to_html(file_path: str | Path) -> str:
+    """Export a SYLK file as an HTML table string.
+
+    Builds a 2D grid from cell coordinates and produces a simple HTML table.
+    Cell values are HTML-escaped.
+
+    Returns:
+        HTML string containing a <table> element.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    from html import escape
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return "<table></table>"
+
+    grid: dict[int, dict[int, Any]] = {}
+    max_row = 0
+    max_col = 0
+    for cell in doc.cells:
+        r = cell.row - 1
+        c = cell.col - 1
+        if r not in grid:
+            grid[r] = {}
+        grid[r][c] = cell.value if cell.value is not None else ""
+        max_row = max(max_row, r)
+        max_col = max(max_col, c)
+
+    lines = ["<table>"]
+    for r in range(max_row + 1):
+        lines.append("  <tr>")
+        for c in range(max_col + 1):
+            val = grid.get(r, {}).get(c, "")
+            lines.append(f"    <td>{escape(str(val))}</td>")
+        lines.append("  </tr>")
+    lines.append("</table>")
+    return "\n".join(lines)

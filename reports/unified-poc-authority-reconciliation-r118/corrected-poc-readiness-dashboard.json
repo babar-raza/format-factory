@@ -1,0 +1,32 @@
+{
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-POC-AUTHORITY-RECONCILIATION-R118-001",
+  "generated": "2026-06-05",
+  "poc_ready": true,
+  "closure_criteria_met": true,
+  "closure_criteria_count": 13,
+  "terminal_state": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+  "evidence_quality_score": 0.83,
+  "verified_item_count": 5,
+  "release_approval_pending": true,
+  "gate_11_required": true,
+  "gate_11_approved": false,
+  "commercial_product_ready": false,
+  "implementation_complete": true,
+  "proof_complete": true,
+  "blocking_gaps": [],
+  "open_optional_gaps": 3,
+  "formats": {
+    "FODS": {"dotnet_status": "PASS", "python_status": "PASS"},
+    "FODT": {"dotnet_status": "PASS", "python_status": "PASS"},
+    "Netpbm": {"dotnet_status": "PASS", "python_status": "PASS"},
+    "DIF": {"python_status": "PARTIAL_ACCEPTED"},
+    "SYLK": {"python_status": "PASS"},
+    "ZST": {"python_status": "PASS"}
+  },
+  "corrections_from_prior": {
+    "poc_ready": "false → true (contradiction reconciled)",
+    "terminal_state": "null → RELEASE_PENDING (corrected)",
+    "evidence_quality_score": "0.0 → 0.83 (grading repair applied)",
+    "verified_item_count": "0 → 5 (tests_supporting added)"
+  }
+}

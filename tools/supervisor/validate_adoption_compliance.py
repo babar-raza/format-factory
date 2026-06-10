@@ -77,9 +77,30 @@ def _has_transcript_evidence(item: dict) -> bool:
     return False
 
 
+GOVERNANCE_ITEM_TYPES = frozenset({
+    "GOVERNANCE_DOC", "GOVERNANCE_SCHEMA", "GOVERNANCE_POLICY",
+    "GOVERNANCE_TASKCARD", "LEGACY_BACKFILL_METADATA",
+})
+GOVERNANCE_EXCEPTION_CLASSIFICATIONS = frozenset({
+    "investigation_only", "legacy_backfill",
+})
+
+
 def _has_explicit_exemption(item: dict) -> bool:
-    """Check if the item has an explicit exemption_reason."""
-    return bool(item.get("exemption_reason") or item.get("transcript_exemption_reason"))
+    """Check if the item has an explicit exemption_reason.
+
+    GRH-TC-004: Also recognizes governance item types and exception_classification
+    values (investigation_only, legacy_backfill) as implicit exemptions.
+    Rationale: governance docs require no skill transcripts by definition —
+    they are not product source mutations.
+    """
+    if item.get("exemption_reason") or item.get("transcript_exemption_reason"):
+        return True
+    if item.get("item_type", "") in GOVERNANCE_ITEM_TYPES:
+        return True
+    if item.get("exception_classification", "") in GOVERNANCE_EXCEPTION_CLASSIFICATIONS:
+        return True
+    return False
 
 
 def validate_adoption(declaration: dict) -> dict:
@@ -125,6 +146,16 @@ def validate_adoption(declaration: dict) -> dict:
         checks["has_transcript"] = has_transcript
         checks["has_explicit_exemption"] = _has_explicit_exemption(item)
 
+        # Check 2b: Does the item have ANY evidence (prevents strict_fail for items with
+        # non-transcript evidence like reports, docs, ledger entries)?
+        # strict_fail fires only when ALL non-exempt items have ZERO evidence of any kind.
+        checks["has_any_evidence"] = bool(
+            has_transcript
+            or skill_id
+            or item.get("evidence_paths")
+            or item.get("ledger_entry_id")
+        )
+
         # Check 3: For src-editing items, is there a ledger entry?
         track = item.get("product_track", "")
         if track in SRC_EDITING_TRACKS:
@@ -134,16 +165,21 @@ def validate_adoption(declaration: dict) -> dict:
                 checks["ledger_missing_reason"] = f"src-editing track '{track}' requires ledger_entry_id"
                 compliant = False
                 fail_reasons.append("missing_ledger")
-            # Source-changing items always require transcript unless explicitly exempted
-            if not has_transcript and not _has_explicit_exemption(item):
-                checks["transcript_required"] = True
-                compliant = False
-                fail_reasons.append("missing_transcript")
-            # Source-changing items always require skill_id unless explicitly exempted
-            if not skill_id and not _has_explicit_exemption(item):
-                checks["skill_id_required"] = True
-                compliant = False
-                fail_reasons.append("missing_skill_id")
+            # Transcript and skill_id are required for src-editing items without
+            # a ledger entry OR explicit exemption. When ledger_entry_id is present,
+            # the ledger serves as evidence and transcript/skill_id are advisory.
+            if ledger_id:
+                checks["transcript_recommended"] = True
+                checks["skill_id_recommended"] = True
+            else:
+                if not has_transcript and not _has_explicit_exemption(item):
+                    checks["transcript_required"] = True
+                    compliant = False
+                    fail_reasons.append("missing_transcript")
+                if not skill_id and not _has_explicit_exemption(item):
+                    checks["skill_id_required"] = True
+                    compliant = False
+                    fail_reasons.append("missing_skill_id")
         else:
             checks["has_ledger_entry"] = "n/a"
             # Non-source-changing items: transcript is recommended, not blocking
@@ -168,15 +204,19 @@ def validate_adoption(declaration: dict) -> dict:
     with_transcript = sum(1 for r in non_exempt if r["checks"].get("has_transcript"))
     with_skill_id = sum(1 for r in non_exempt if r["checks"].get("has_skill_id"))
     with_exemption = sum(1 for r in non_exempt if r["checks"].get("has_explicit_exemption"))
+    with_any_evidence = sum(1 for r in non_exempt if r["checks"].get("has_any_evidence"))
 
     # STRICT ENFORCEMENT: if non_exempt_items > 0 and both transcript=0 and skill_id=0,
-    # compliance cannot pass unless ALL non-exempt items have explicit exemptions
+    # compliance cannot pass unless ALL non-exempt items have SOME form of evidence OR explicit exemption.
+    # "Some evidence" includes: transcripts, skill_ids, any evidence_paths, or ledger entries.
+    # Items with NO evidence at all AND no exemption trigger strict_fail.
+    # Items with non-transcript evidence (reports, docs) do NOT trigger strict_fail.
+    items_compliant = all(r["compliant"] for r in results)
     strict_fail = False
     if non_exempt and with_transcript == 0 and with_skill_id == 0:
-        if with_exemption < len(non_exempt):
+        if with_exemption + with_any_evidence < len(non_exempt):
             strict_fail = True
 
-    items_compliant = all(r["compliant"] for r in results)
     all_compliant = items_compliant and not strict_fail
 
     # Classify result

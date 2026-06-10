@@ -1,0 +1,29 @@
+id: ADR-ROUTE-008
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Backend Dispatch Route Enforcement"
+status: completed
+lane: queue_runner_integration
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-005, ADR-ROUTE-007]
+gates:
+  - "machinery items without route decision are blocked before backend dispatch"
+  - "product items pass through"
+allowed_files:
+  - "tools/supervisor/next_action_runner.py"
+forbidden_files:
+  - "src/"
+  - "tools/supervisor/backend_selector.py"
+  - "tools/supervisor/autonomous_cycle.py"
+acceptance_criteria:
+  - "Route check added in run_action() before backend dispatch"
+  - "ImportError gracefully handled"
+tests:
+  - "tests/supervisor/test_autonomy_machinery_bypass_prevention.py::TestActionRouteAllowed"
+evidence:
+  - "tools/supervisor/next_action_runner.py"
+rollback: "git checkout tools/supervisor/next_action_runner.py"
+closeout_criteria: "block test passes, dispatch allowed test passes"

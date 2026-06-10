@@ -1,0 +1,22 @@
+{
+  "sample_type": "false_pass_downgrade",
+  "generated_at": "2026-06-04T10:40:00.000000",
+  "scenario": "Mainstream sprint with only evidence/reporting changes, no source diffs",
+  "input_evidence": {
+    "families_touched": 0,
+    "source_diffs": 0,
+    "governed_transcripts": 3,
+    "raw_logs": 3,
+    "capability_matrix_deltas": 3,
+    "repair_items": 5,
+    "product_items": 2
+  },
+  "naive_verdict": "ACCEPTED",
+  "velocity_score": {
+    "product_breadth_score": 0,
+    "machinery_overhead_score": 2
+  },
+  "classifier_verdict": "PARTIAL_FEW_FAMILIES",
+  "supervisor_action": "DOWNGRADE — report as PARTIAL_FEW_FAMILIES, not CLEAN_PASS",
+  "false_pass_prevented": true
+}

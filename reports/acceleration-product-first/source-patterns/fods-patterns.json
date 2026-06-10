@@ -1,0 +1,39 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "format_id": "fods",
+  "query": "export csv dogfood",
+  "corpus_empty": false,
+  "chunks_found": 22,
+  "top_k_returned": 5,
+  "lexical_patterns": [
+    {
+      "id": "src\\python\\fods\\csv_exporter.py",
+      "score": 0.044088,
+      "excerpt": "\"\"\"\ncsv_exporter.py -- CSV export for FODS workbooks.\n\nPublic API:\n  export_fods_to_csv(workbook, sheet_index=0) -- returns CSV string (RFC 4180)\n  export_fods_to_csv_file(workbook, output_path, sheet_index=0) -- writes CSV to file\n\nExport path for the Python FOSS FODS package. Converts a parsed neu"
+    },
+    {
+      "id": "src\\net\\fods\\FodsCsvExporter.cs",
+      "score": 0.027073,
+      "excerpt": "// FormatFactory.Fods -- Commercial .NET FODS \u2192 CSV Exporter (G11-E Prototype)\n// DEC-033 Option B: .NET Commercial Only\n// Gate 11 status: g11e_prototype_complete \u2014 G11-G NOT approved\n// Sprint: FORMAT-FACTORY-R22-FULL-THROTTLE-RELEASE-CANDIDATE-AND-GATE11-PROTOTYPE-TRAIN-001\n//\n// PROTOTYPE STATUS"
+    },
+    {
+      "id": "src\\net\\fods\\FodsJsonExporter.cs",
+      "score": 0.007634,
+      "excerpt": "// FormatFactory.Fods -- Commercial .NET FODS \u2192 JSON Exporter (G11-E Expanded Prototype)\n// DEC-033 Option B: .NET Commercial Only\n// Gate 11 status: g11e_prototype_complete \u2014 G11-G NOT approved\n// Sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-001\n//\n// PROTOTYPE STATUS: design_complete_in_progress\n// comme"
+    },
+    {
+      "id": "src\\net\\fods\\FodsDocument.cs",
+      "score": 0.006667,
+      "excerpt": "// FormatFactory.Fods -- Commercial .NET FODS Document (DOM-backed)\n// DEC-033 Option B: .NET Commercial Only\n// Gate 11 status: commercial_readiness_in_progress (NOT approved)\n\nusing System;\nusing System.Collections.Generic;\nusing System.IO;\nusing System.Linq;\nusing System.Xml;\nusing System.Xml.Lin"
+    },
+    {
+      "id": "src\\net\\fods\\FodsHtmlExporter.cs",
+      "score": 0.005822,
+      "excerpt": "// FormatFactory.Fods -- Commercial .NET FODS \u2192 HTML Table Exporter (G11-E Expanded Prototype)\n// DEC-033 Option B: .NET Commercial Only\n// Gate 11 status: g11e_prototype_complete \u2014 G11-G NOT approved\n// Sprint: FORMAT-FACTORY-R23-MEGA-TRAIN-001\n//\n// PROTOTYPE STATUS: design_complete_in_progress\n//"
+    }
+  ],
+  "ai_pattern_summary": "[fixture_error] ModuleNotFoundError: No module named 'tools'",
+  "authority_state": "ai_draft",
+  "non_authoritative": true,
+  "timestamp": "2026-06-04T07:09:12.455631+00:00"
+}

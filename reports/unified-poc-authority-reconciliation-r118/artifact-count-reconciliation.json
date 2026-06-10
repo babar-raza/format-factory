@@ -1,0 +1,31 @@
+{
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-POC-AUTHORITY-RECONCILIATION-R118-001",
+  "source_sprint": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "prior_audit_claim": {
+    "raw_logs": 11,
+    "sample_outputs": 35,
+    "source_diffs": 4,
+    "transcripts": 14,
+    "capability_deltas": 19
+  },
+  "r118_verified": {
+    "raw_logs_in_evidence_artifacts": 6,
+    "sample_outputs_in_evidence_artifacts": 5,
+    "raw_log_files_on_disk": 11,
+    "sample_output_dirs_on_disk": {"iteration-003": 4, "iteration-004": 8},
+    "source_diffs_on_disk": 4,
+    "transcripts_on_disk": 4,
+    "capability_deltas_on_disk": 19
+  },
+  "discrepancy_notes": {
+    "raw_logs_artifact_vs_disk": "6 in evidence_artifacts type=raw_log (key logs); 11 total on disk. Difference: 5 non-critical logs (fods-r114, fodt-r114, netpbm-r114, iteration-004 extra). All exist on disk.",
+    "sample_outputs_artifact_vs_disk": "5 in evidence_artifacts type=sample_output; 12 total files on disk across iteration-003/004. Remainder are iteration-004 non-critical outputs.",
+    "transcripts_14_vs_4": "Prior audit counted 14 (includes iteration-001 to 004 all lanes); evidence declaration iteration-004 skill-transcripts = 4 skill transcript JSON files. Difference: 10 additional skill-invocation transcripts for non-source-changing lanes."
+  },
+  "materialization_result": {
+    "verified": 93,
+    "missing": 0,
+    "status": "COMPLETE"
+  },
+  "verdict": "COUNTS_RECONCILED"
+}

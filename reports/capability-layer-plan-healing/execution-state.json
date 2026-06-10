@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-CAPABILITY-LAYER-CLOSEOUT-RNEXT-001",
+  "run_id": "capability-layer-closeout-rnext-e382e5f",
+  "start_time": "2026-06-09T19:30:00",
+  "git_head_start": "e382e5fd8e65bc146c0821602cb8fb1ecfab982c",
+  "current_phase": "Phase D-I — Closeout Sprint",
+  "phases": {
+    "A_plan_healing": "COMPLETE",
+    "B_taskcard_creation": "COMPLETE",
+    "C_investigation": "COMPLETE",
+    "D_capability_layer_build": "COMPLETE",
+    "E_product_progress": "MOSTLY_COMPLETE",
+    "F_pilots": "COMPLETE",
+    "G_validation": "IN_PROGRESS",
+    "H_manual_verification": "IN_PROGRESS",
+    "I_closeout": "PENDING"
+  },
+  "key_findings": {
+    "autonomous_continue": true,
+    "prior_sprint_verdict": "CAPABILITY_LAYER_PARTIAL_WITH_LIMITATIONS",
+    "schemas_exist": ["capability_record", "capability_map", "capability_gap", "capability_status_taxonomy", "pilot_report"],
+    "generator_exists": true,
+    "validator_exists": true,
+    "pilots_complete": 8,
+    "investigation_reports_exist": true,
+    "manual_verification_artifacts_exist": true,
+    "remaining_deferred_items": ["CAP-PROD-005", "CAP-SEL-001", "CAP-GEN-006"],
+    "gnumeric_set_cell_value_already_implemented": true,
+    "fodg_write_export_already_implemented": true,
+    "poc_targets_staleness": {
+      "missing_foss_formats": ["FODG", "TSV", "NDJSON"],
+      "actionable": true
+    }
+  },
+  "safety_checks": {
+    "no_push_authorized": true,
+    "no_gate_self_approval": true,
+    "no_broad_git_add": true,
+    "ledger_required_for_src_changes": true,
+    "ai_draft_not_authority": true
+  }
+}

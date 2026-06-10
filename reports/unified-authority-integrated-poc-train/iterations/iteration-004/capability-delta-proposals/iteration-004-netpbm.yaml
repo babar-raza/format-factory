@@ -1,0 +1,16 @@
+proposed_only: true
+not_applied_to_poc_targets: true
+iteration: 4
+sprint_id: "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001"
+generated_at: "2026-06-05T00:00:00Z"
+
+capabilities:
+  - capability: "save_pipeline_create_transform_save_readback"
+    operation: "Proof"
+    description: "End-to-end PGM image pipeline: create 10x10 PGM → draw cross pattern → save to file → reload → verify pixel values. Proves complete save/readback roundtrip."
+    product: "Netpbm Python FOSS + .NET"
+    proof_level: "VERIFIED"
+    source_files: []
+    sample_output: "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/netpbm/save-pipeline-report.json"
+    sample_output_verify_pass: true
+    rationale: "Physical PGM file created and reloaded. Center pixel (5,5)=200 confirmed. verify_pass=true."

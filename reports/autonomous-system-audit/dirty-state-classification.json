@@ -1,0 +1,56 @@
+{
+  "sprint_id": "FORMAT-FACTORY-FULL-AUTONOMOUS-SYSTEM-AUDIT-AND-REPAIR-001",
+  "git_head": "3a86a05295cb4b82ed40a3408b0612a90f93643c",
+  "branch": "main",
+  "classification": "SPRINT_WORK_IN_PROGRESS_AUTHORIZED",
+  "categories": {
+    "PRE_EXISTING_AUTONOMY_WIP": [
+      "tools/supervisor/autonomous_host_runner.py",
+      "tools/supervisor/proof_backed_poc_gate.py",
+      "tools/supervisor/autonomous_train_executor.py",
+      "tests/supervisor/test_autonomous_host_runner.py",
+      "tests/supervisor/test_proof_backed_poc_gate.py",
+      "tests/supervisor/test_autonomous_train_executor.py",
+      "reports/host-autonomy-runner/",
+      "reports/final-poc-authority-audit/"
+    ],
+    "PRE_EXISTING_SUPERVISOR_WIP": [
+      "reports/supervisor/",
+      ".supervisor/",
+      "tools/supervisor/",
+      "tests/supervisor/",
+      ".claude/commands/",
+      ".claude/settings.json"
+    ],
+    "PRE_EXISTING_PRODUCT_WIP": [
+      "src/net/fods/FodsDocument.cs",
+      "src/net/fodt/FodtDocument.cs",
+      "src/net/netpbm/Model/NetpbmImage.cs",
+      "src/python/sylk/sylk_parser.py",
+      "examples/net/",
+      "examples/python/"
+    ],
+    "PRE_EXISTING_TEST_WIP": [
+      "tests/net/fods/",
+      "tests/net/fodt/",
+      "tests/net/netpbm/",
+      "tests/python/"
+    ],
+    "ALLOWED_THIS_SPRINT_DIRTY_STATE": [
+      "reports/autonomous-system-audit/",
+      ".local/evidences/autonomous-system-audit/",
+      "tools/supervisor/validate_adoption_compliance.py (patched)",
+      "tools/supervisor/anti_skip_checker.py (patched)",
+      "tools/supervisor/project_product_ledger_to_proof_graph.py (new)",
+      "tools/supervisor/simulate_autonomous_loop.py (new)",
+      "docs/governance/autonomous-execution-contract.md (new)",
+      "docs/governance/proof-authority-policy.md (new)",
+      "tests/supervisor/test_adoption_compliance_strictness.py (new)",
+      "tests/supervisor/test_anti_skip_discovery_strictness.py (new)",
+      "tests/supervisor/test_product_ledger_to_proof_graph_projection.py (new)",
+      "tests/supervisor/test_end_to_end_autonomous_loop.py (new)"
+    ],
+    "UNSAFE_DIRTY_STATE_REQUIRES_STOP": []
+  },
+  "verdict": "SAFE_TO_PROCEED"
+}

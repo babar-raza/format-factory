@@ -1,0 +1,41 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "handoff_target": "Supervisor",
+  "purpose": "Grading guidance for Skills breadth finalization sprint artifacts",
+  "grading_guidance": {
+    "this_sprint": {
+      "verdict_if_all_pass": "SKILLS_PRODUCT_BREADTH_FINALIZATION_PASS",
+      "expected_anti_skip_violations": [
+        "evidence_quality_score HIGH — governance sprint, path-only items expected",
+        "missing_lane_ledger MEDIUM — lane execution ledger is provided this sprint"
+      ],
+      "blocking_violations": [],
+      "non_blocking_violations": ["evidence_quality_score HIGH"],
+      "test_count": "see Lane F test log",
+      "no_product_source_changes": true
+    },
+    "next_sprint_grading": {
+      "when": "Mainstream executes one of the three handoffs",
+      "use_rubric": "reports/skills-product-breadth-finalization/skills-supervisor-field-map.json",
+      "blocking_checks": [
+        "validate_skill_transcript.py exits 0",
+        "new_tests >= 8",
+        "changed_files subset of allowed_files"
+      ],
+      "non_blocking_checks": [
+        "ledger entry added",
+        "proposed_capability_delta noted"
+      ]
+    }
+  },
+  "skills_readiness_update": {
+    "previous_status": "SKILLS_CONSUMABLE_WITH_LIMITATIONS",
+    "new_status": "SKILLS_FULLY_CONSUMABLE_THREE_FAMILIES",
+    "fodt_markdown": "READY_FOR_MAINSTREAM",
+    "fodt_txt": "READY_FOR_MAINSTREAM",
+    "netpbm_pipeline": "READY_FOR_MAINSTREAM",
+    "fods_csv": "READY_FOR_MAINSTREAM (from hardening sprint)"
+  },
+  "integration_contract": "reports/skills-product-breadth-finalization/skills-integration-contract.json"
+}

@@ -1,0 +1,38 @@
+{
+  "gate_id": "crg:unified-authority-poc-train-001",
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "generated_at": "2026-06-04T20:35:00Z",
+  "iteration_repaired": 1,
+  "repairs_completed": [
+    "raw_logs_captured",
+    "lane_execution_ledger_created",
+    "skill_transcripts_created",
+    "capability_delta_proposals_created",
+    "proof_graph_populated",
+    "sample_outputs_generated"
+  ],
+  "raw_logs": {
+    "fods_r114": "reports/unified-authority-integrated-poc-train/raw-logs/fods-r114-tests.log",
+    "fodt_r114": "reports/unified-authority-integrated-poc-train/raw-logs/fodt-r114-tests.log",
+    "netpbm_r114": "reports/unified-authority-integrated-poc-train/raw-logs/netpbm-r114-tests.log",
+    "spec_authority": "reports/unified-authority-integrated-poc-train/raw-logs/spec-authority-tests.log",
+    "rca_fabric": "reports/unified-authority-integrated-poc-train/raw-logs/rca-fabric-tests.log"
+  },
+  "proof_graph": {
+    "path": "reports/unified-authority-integrated-poc-train/proof-graph/iteration-001/",
+    "claims_checked": 29,
+    "total_nodes": 43,
+    "total_edges": 39,
+    "was_zero_before": true
+  },
+  "sample_outputs": {
+    "fods": ["reports/unified-authority-integrated-poc-train/sample-outputs/fods/sample-document.fods",
+             "reports/unified-authority-integrated-poc-train/sample-outputs/fods/sample-export.csv"],
+    "fodt": ["reports/unified-authority-integrated-poc-train/sample-outputs/fodt/sample-document.fodt",
+             "reports/unified-authority-integrated-poc-train/sample-outputs/fodt/sample-export.md"],
+    "netpbm": ["reports/unified-authority-integrated-poc-train/sample-outputs/netpbm/sample-gradient.pgm"]
+  },
+  "gate_result": "REPAIR_COMPLETE_READY_FOR_ITERATION_2",
+  "blocking_items": [],
+  "next_action": "PHASE_B_ITERATION_2_PRODUCT_GAP_SELECTION"
+}

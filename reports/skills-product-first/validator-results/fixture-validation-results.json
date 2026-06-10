@@ -1,0 +1,86 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "generated_by": "TC-W5-011",
+  "results": [
+    {
+      "fixture_file": "mainstream-product-compliant.json",
+      "expected_result": "PASS",
+      "actual_result": "PASS",
+      "expected_failure": false,
+      "match": true,
+      "interpretation": "Compliant fixture passes all MVP field checks"
+    },
+    {
+      "fixture_file": "mainstream-missing-transcript-FAILING.json",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "expected_failure": true,
+      "match": true,
+      "interpretation": "FAILING fixture correctly rejected: FAIL"
+    },
+    {
+      "fixture_file": "mainstream-missing-raw-log-FAILING.json",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "expected_failure": true,
+      "match": true,
+      "interpretation": "FAILING fixture correctly rejected: FAIL"
+    },
+    {
+      "fixture_file": "mainstream-missing-source-diff-FAILING.json",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "expected_failure": true,
+      "match": true,
+      "interpretation": "FAILING fixture correctly rejected: FAIL"
+    },
+    {
+      "fixture_file": "mainstream-missing-allowed-files-FAILING.json",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "expected_failure": true,
+      "match": true,
+      "interpretation": "FAILING fixture correctly rejected: FAIL"
+    },
+    {
+      "fixture_file": "mainstream-missing-forbidden-files-FAILING.json",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "expected_failure": true,
+      "match": true,
+      "interpretation": "FAILING fixture correctly rejected: FAIL"
+    },
+    {
+      "fixture_file": "mainstream-missing-rollback-note-FAILING.json",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "expected_failure": true,
+      "match": true,
+      "interpretation": "FAILING fixture correctly rejected: FAIL"
+    },
+    {
+      "fixture_file": "mainstream-stale-skill-id-FAILING.json",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "expected_failure": true,
+      "match": true,
+      "interpretation": "FAILING fixture correctly rejected: FAIL"
+    },
+    {
+      "fixture_file": "mainstream-invalid-transcript-hash-FAILING.json",
+      "expected_result": "FAIL",
+      "actual_result": "FAIL",
+      "expected_failure": true,
+      "match": true,
+      "interpretation": "FAILING fixture correctly rejected: FAIL"
+    },
+    {
+      "fixture_file": "mainstream-no-capability-matrix-update-WARNING.json",
+      "expected_result": "YES_WITH_LIMITATIONS",
+      "actual_result": "YES_WITH_LIMITATIONS",
+      "expected_failure": false,
+      "match": true,
+      "interpretation": "Downgrade to YES_WITH_LIMITATIONS: capability_matrix_update missing but all MVP fields present"
+    }
+  ]
+}

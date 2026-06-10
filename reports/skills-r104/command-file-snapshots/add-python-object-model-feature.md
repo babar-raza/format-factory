@@ -1,0 +1,105 @@
+---
+version: "1.1"
+last-updated: "2026-06-03"
+phase-available: "3+"
+gate-required: null
+generated_by: claude
+visibility: generated
+---
+
+# /add-python-object-model-feature
+
+Add a new object-model feature to a Python FOSS product (fods, fodt, pbm, pgm, ppm, sylk, zst).
+
+## Usage
+
+```
+/add-python-object-model-feature
+```
+
+## What This Skill Does
+
+1. **Pre-flight**: Reads `.supervisor/skill-registry.yaml` and `reports/r90/product-code-change-ledger.json`
+2. **Plan**: Determines the target Python module and feature to add
+3. **Implement**: Adds the feature to `src/python/<format>/` following existing patterns
+4. **Test**: Creates a test in `tests/python/<format>/test_r<run>_<feature>.py`
+5. **Ledger**: Adds a `GOVERNED_PRODUCT_CHANGE` entry to `reports/r90/product-code-change-ledger.json`
+6. **Verify**: Runs `python -m pytest tests/python/<format>/test_r<run>_<feature>.py -v`
+
+## Constraints
+
+- One feature at a time
+- Must add or modify Python source in `src/python/`
+- Must create at least 4 new test functions
+- Must add ledger entry with SHA-256 before and after
+- No direct src edits without this skill or explicit execution handoff
+
+## Evidence Required
+
+- Source file path
+- Pre-change SHA-256
+- Post-change SHA-256
+- Test file path
+- Test count and pass result
+- Ledger entry ID
+
+## Ledger Entry Format
+
+```json
+{
+  "entry_id": "R<N>-GOVERNED-PYTHON-<FORMAT>-<FEATURE>-001",
+  "sprint": "R<N>",
+  "classification": "GOVERNED_PRODUCT_CHANGE",
+  "skill_used": "/add-python-object-model-feature",
+  "source_files": [{"path": "src/python/<format>/...", "sha256_before": "...", "sha256_after": "..."}],
+  "tests_added": ["tests/python/<format>/test_r<n>_<feature>.py"],
+  "test_count": <n>,
+  "description": "<feature> added to <format>"
+}
+```
+
+## Allowed Paths
+
+- `src/python/<format>/` (source)
+- `tests/python/<format>/` (tests)
+
+## Forbidden Paths
+
+- `src/net/**` (wrong track)
+- `registry/format-registry.yaml` (gate authority)
+- `plans/master-plan.md` (operational authority)
+- `product-capability-matrix/poc-targets.yaml` (use /update-capability-matrix)
+
+## Rollback
+
+1. Revert source changes in `src/python/<format>/`
+2. Remove test file `tests/python/<format>/test_r<n>_<feature>.py`
+3. Remove the ledger entry from `reports/r90/product-code-change-ledger.json`
+4. Re-run `python tools/supervisor/validate_product_code_ledger.py` to confirm PASS
+
+## Validation
+
+Complete only when ledger validation and focused Python tests pass (4+ tests, 0 failures).
+
+## Transcript Requirement
+
+After execution, emit a skill invocation transcript JSON to `reports/skills-r<N>/skill-transcripts/`
+with: skill_id, format_id, feature_name, changed_files, test_results, ledger_entry_id, verdict.
+
+## Sample Invocation
+
+```
+/add-python-object-model-feature
+# Inputs:
+#   format_id: ppm
+#   feature_name: grayscale_conversion
+#   exact_source_paths: [src/python/ppm/ppm_grayscale.py]
+#   exact_test_paths: [tests/python/ppm/test_r94_ppm_grayscale_conversion.py]
+#   ledger_entry_path: reports/r90/product-code-change-ledger.json
+```
+
+## Changelog
+
+- 1.0 (2026-06-02): Initial version
+- 1.1 (2026-06-03): Added frontmatter, allowed/forbidden paths, rollback, changelog (Skills R99)
+- 1.2 (2026-06-03): Added validation, transcript requirement, sample invocation (Skills R101).

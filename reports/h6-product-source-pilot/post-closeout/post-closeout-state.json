@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001",
+  "generated_at": "2026-06-06",
+  "queue_state": {
+    "total": 7,
+    "done": 5,
+    "pending": 2,
+    "corrupt": 0
+  },
+  "done_items": [
+    {"action_id": "h8-probe-abw-001", "action_type": "PRODUCT_SOURCE_PATCH_BOUNDED", "status": "done", "result_path": "reports/h6-product-source-pilot/host-run/execution-result.json"},
+    {"action_id": "h6q-product-001", "action_type": "PRODUCT_GAP_CLASSIFICATION_READONLY", "status": "done"},
+    {"action_id": "h6-q-001", "action_type": "RUN_JSON_VALIDATION", "status": "done"},
+    {"action_id": "h6-q-002", "action_type": "RUN_MD_NONEMPTY_CHECK", "status": "done"},
+    {"action_id": "h6-q-003", "action_type": "RUN_JSON_VALIDATION", "status": "done"}
+  ],
+  "pending_items": [
+    {"action_id": "h6-q-004", "action_type": "RUN_JSON_VALIDATION", "status": "pending"},
+    {"action_id": "h6-q-005", "action_type": "RUN_JSON_VALIDATION", "status": "pending"}
+  ],
+  "product_source_mutated": true,
+  "product_source_changes": [
+    "src/python/abw/abw_codec.py — added probe_abw() function",
+    "src/python/abw/__init__.py — added probe_abw to exports and __all__"
+  ],
+  "poc_targets_mutated": false,
+  "registry_mutated": false,
+  "no_git_commit": true,
+  "no_git_push": true,
+  "no_gate_approval": true,
+  "rollback_available": true,
+  "rollback_command": "git checkout HEAD -- src/python/abw/abw_codec.py src/python/abw/__init__.py",
+  "tests_new": 44,
+  "tests_pass": 2628,
+  "tests_fail_preexisting": 21
+}

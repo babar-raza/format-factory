@@ -1,0 +1,49 @@
+{
+  "proof_type": "simulated-autonomous-cycle",
+  "sprint": "skills-r111",
+  "timestamp": "2026-06-03T23:43:00Z",
+  "description": "Simulated autonomous cycle that exercises adoption compliance, transcript validation, handoff validation, grading, and continuation decision as a single integrated flow",
+  "steps_executed": [
+    "Step 1: Validate declaration (PASS)",
+    "Step 2: Inspect declared evidence (9 items, 10 artifacts)",
+    "Step 2b: Evidence manifest (generated)",
+    "Step 2c: Materialize (all verified)",
+    "Step 2d: Adoption compliance validation (PASS — R111 new)",
+    "Step 3: Grade work items (ACCEPTED, 9/9)",
+    "Step 3b: Anti-skip quality checks (0 violations)",
+    "Step 4: Generate next worker prompt (stream=skills)",
+    "Step 4b: Prompt quality validation (PASS)"
+  ],
+  "adoption_compliance": {
+    "compliant": true,
+    "non_exempt_items": 6,
+    "items_with_transcript": 4,
+    "items_with_skill_id": 5,
+    "summary": "Adoption compliance: PASS. 6 non-exempt items, 4 with transcript, 5 with skill_id."
+  },
+  "transcript_validation": {
+    "total": 7,
+    "pass": 7,
+    "fail": 0,
+    "all_valid": true
+  },
+  "handoff_validation": {
+    "total": 3,
+    "pass": 3,
+    "fail": 0,
+    "valid": true
+  },
+  "grading_result": {
+    "overall_verdict": "ACCEPTED",
+    "accepted": 9,
+    "rework": 0,
+    "overclaimed": 0,
+    "evidence_quality_score": 0.78
+  },
+  "continuation_decision": {
+    "autonomous_continue": true,
+    "state": "YES",
+    "stop_reason": null,
+    "anti_skip_all_pass": true
+  }
+}

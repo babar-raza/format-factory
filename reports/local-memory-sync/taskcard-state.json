@@ -1,0 +1,177 @@
+{
+  "sprint_id": "FORMAT-FACTORY-LOCAL-MEMORY-GOVERNANCE-SYNC-20260604-001",
+  "_prior_sprint_id": "FORMAT-FACTORY-LOCAL-MEMORY-PRODUCT-FIRST-AI-EXTERNAL-TOOLS-SYNC-001",
+  "date": "2026-06-04",
+  "taskcards": [
+    {
+      "id": "TC-MEM-001",
+      "title": "Sync product-first operating model",
+      "owner": "local-memory-sync",
+      "status": "IN_PROGRESS",
+      "allowed_paths": [
+        "docs/governance/product-first-operating-model.md",
+        "reports/local-memory-sync/product-first-sync.md"
+      ],
+      "forbidden_paths": ["src/net/*", "src/python/*", "tests/*"],
+      "evidence_paths": [
+        "reports/local-memory-sync/product-first-sync.md"
+      ],
+      "validation_command": "python -c \"import sys; open('docs/governance/product-first-operating-model.md').read(); print('OK')\"",
+      "closeout_criteria": "product-first-operating-model.md updated with Gnumeric/DIF staging; report written",
+      "rollback_plan": "revert docs/governance/product-first-operating-model.md to previous version"
+    },
+    {
+      "id": "TC-MEM-002",
+      "title": "Sync four-stream architecture",
+      "owner": "local-memory-sync",
+      "status": "IN_PROGRESS",
+      "allowed_paths": [
+        "docs/governance/four-stream-operating-model.md",
+        "reports/local-memory-sync/four-stream-sync.md"
+      ],
+      "forbidden_paths": ["src/net/*", "src/python/*", "tests/*"],
+      "evidence_paths": [
+        "docs/governance/four-stream-operating-model.md",
+        "reports/local-memory-sync/four-stream-sync.md"
+      ],
+      "validation_command": "python -c \"open('docs/governance/four-stream-operating-model.md').read(); print('OK')\"",
+      "closeout_criteria": "four-stream-operating-model.md created with full stream definitions",
+      "rollback_plan": "delete docs/governance/four-stream-operating-model.md"
+    },
+    {
+      "id": "TC-MEM-003",
+      "title": "Sync AI operating model",
+      "owner": "local-memory-sync",
+      "status": "IN_PROGRESS",
+      "allowed_paths": [
+        "docs/governance/acceleration-definition.md",
+        "docs/governance/ai-authority-boundary.md",
+        "reports/local-memory-sync/ai-operating-model-sync.md"
+      ],
+      "forbidden_paths": ["src/net/*", "src/python/*", "tests/*"],
+      "evidence_paths": [
+        "docs/governance/ai-authority-boundary.md",
+        "reports/local-memory-sync/ai-operating-model-sync.md"
+      ],
+      "validation_command": "python -c \"open('docs/governance/ai-authority-boundary.md').read(); print('OK')\"",
+      "closeout_criteria": "ai-authority-boundary.md created; acceleration-definition.md updated",
+      "rollback_plan": "delete docs/governance/ai-authority-boundary.md"
+    },
+    {
+      "id": "TC-MEM-004",
+      "title": "Sync external tool architecture",
+      "owner": "local-memory-sync",
+      "status": "IN_PROGRESS",
+      "allowed_paths": [
+        "docs/governance/external-tool-architecture.md",
+        "docs/governance/ruflo-runtime-governance.md",
+        "docs/governance/superpowers-skill-intake.md",
+        "docs/governance/ghidra-mcp-compliance-gate.md",
+        "reports/local-memory-sync/external-tool-sync.md"
+      ],
+      "forbidden_paths": ["src/net/*", "src/python/*", ".vscode/mcp.json", ".supervisor/policies.yaml"],
+      "evidence_paths": [
+        "docs/governance/external-tool-architecture.md",
+        "reports/local-memory-sync/external-tool-sync.md"
+      ],
+      "validation_command": "python -c \"open('docs/governance/external-tool-architecture.md').read(); print('OK')\"",
+      "closeout_criteria": "all four governance docs created",
+      "rollback_plan": "delete docs/governance/external-tool-architecture.md and related files"
+    },
+    {
+      "id": "TC-MEM-005",
+      "title": "Sync Mainstream POC mega-train model",
+      "owner": "local-memory-sync",
+      "status": "IN_PROGRESS",
+      "allowed_paths": [
+        "docs/governance/mainstream-poc-mega-train.md",
+        "docs/prompt-templates/mainstream-poc-mega-train-template.md",
+        "reports/local-memory-sync/mainstream-train-sync.md"
+      ],
+      "forbidden_paths": ["src/net/*", "src/python/*"],
+      "evidence_paths": [
+        "docs/governance/mainstream-poc-mega-train.md",
+        "docs/prompt-templates/mainstream-poc-mega-train-template.md"
+      ],
+      "validation_command": "python -c \"open('docs/governance/mainstream-poc-mega-train.md').read(); print('OK')\"",
+      "closeout_criteria": "mega-train governance doc and prompt template created",
+      "rollback_plan": "delete docs/governance/mainstream-poc-mega-train.md"
+    },
+    {
+      "id": "TC-MEM-006",
+      "title": "Sync plan-status and next repair prompts",
+      "owner": "local-memory-sync",
+      "status": "IN_PROGRESS",
+      "allowed_paths": [
+        "reports/local-memory-sync/plan-status-sync.md",
+        "state/current-state.md",
+        "docs/prompt-templates/repair-order-reference.md"
+      ],
+      "forbidden_paths": ["src/net/*", "src/python/*", ".supervisor/policies.yaml"],
+      "evidence_paths": [
+        "reports/local-memory-sync/plan-status-sync.md",
+        "docs/prompt-templates/repair-order-reference.md"
+      ],
+      "validation_command": "python -c \"open('reports/local-memory-sync/plan-status-sync.md').read(); print('OK')\"",
+      "closeout_criteria": "plan-status-sync.md written; state/current-state.md updated",
+      "rollback_plan": "revert state/current-state.md"
+    },
+    {
+      "id": "TC-MEM-007",
+      "title": "Sync prompt template requirements",
+      "owner": "local-memory-sync",
+      "status": "IN_PROGRESS",
+      "allowed_paths": [
+        "docs/prompt-templates/format-factory-stream-prompt-requirements.md",
+        "docs/prompt-templates/external-tool-aware-repair-template.md",
+        "reports/local-memory-sync/prompt-template-sync.md"
+      ],
+      "forbidden_paths": ["src/net/*", "src/python/*"],
+      "evidence_paths": [
+        "docs/prompt-templates/format-factory-stream-prompt-requirements.md",
+        "reports/local-memory-sync/prompt-template-sync.md"
+      ],
+      "validation_command": "python -c \"open('docs/prompt-templates/format-factory-stream-prompt-requirements.md').read(); print('OK')\"",
+      "closeout_criteria": "stream-prompt-requirements.md and external-tool-aware-repair-template.md created",
+      "rollback_plan": "delete new prompt template files"
+    },
+    {
+      "id": "TC-MEM-008",
+      "title": "Validate local memory sync",
+      "owner": "local-memory-sync",
+      "status": "READY",
+      "allowed_paths": [
+        "reports/local-memory-sync/validation-results.md",
+        "reports/local-memory-sync/changed-files.md",
+        "reports/local-memory-sync/final-git-status.txt"
+      ],
+      "forbidden_paths": ["src/net/*", "src/python/*"],
+      "evidence_paths": [
+        "reports/local-memory-sync/validation-results.md"
+      ],
+      "validation_command": "git diff -- src/net src/python",
+      "closeout_criteria": "validation-results.md written; no forbidden files changed",
+      "rollback_plan": "n/a (read-only validation)"
+    },
+    {
+      "id": "TC-MEM-009",
+      "title": "Evidence declaration, manifest, and review package",
+      "owner": "local-memory-sync",
+      "status": "READY",
+      "allowed_paths": [
+        ".local/evidences/local-memory-sync/evidence-declaration.yaml",
+        ".local/evidences/local-memory-sync/evidence-manifest.yaml",
+        ".local/supervisor/reviews/local-memory-sync/declaration-review-package.zip",
+        "reports/local-memory-sync/review-package-proof.md"
+      ],
+      "forbidden_paths": ["src/net/*", "src/python/*"],
+      "evidence_paths": [
+        ".local/evidences/local-memory-sync/evidence-declaration.yaml",
+        ".local/supervisor/reviews/local-memory-sync/declaration-review-package.zip"
+      ],
+      "validation_command": "python tools/supervisor/build_declaration_review_package.py --declaration .local/evidences/local-memory-sync/evidence-declaration.yaml",
+      "closeout_criteria": "evidence-declaration.yaml and evidence-manifest.yaml created; review package ZIP built and SHA reported",
+      "rollback_plan": "delete .local/evidences/local-memory-sync/"
+    }
+  ]
+}

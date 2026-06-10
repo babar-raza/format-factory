@@ -1498,3 +1498,187 @@ def document_get_paragraph_text(
     if paragraph_index < 0 or paragraph_index >= len(paragraphs):
         return None
     return paragraphs[paragraph_index].get("text", "")
+
+
+def document_search_text(
+    document: dict[str, Any],
+    query: str,
+    case_sensitive: bool = False,
+) -> list[dict[str, Any]]:
+    """Search for a text query across all blocks in the document.
+
+    Searches paragraph and heading blocks for the query string. Returns a list
+    of match dicts, one per block that contains the query.
+
+    Aligned with ODF 1.3 text content model (FACT-FODT-001): text content is
+    stored in paragraph (text:p) and heading (text:h) blocks.
+
+    Args:
+        document: Parsed FODT document dict.
+        query: Text to search for.
+        case_sensitive: If True, match is case-sensitive. Default False.
+
+    Returns:
+        List of match dicts, each containing:
+            block_index (int): 0-based index in the blocks list.
+            block_type (str): "paragraph" or "heading".
+            text (str): Full text of the matching block.
+            match_count (int): Number of times query appears in this block.
+
+    Added in Sprint FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-PROGRESS-AND-FORMAT-BACKFILL-MEGA-TRAIN-001
+    as FODT product feature advancement (authority: P4, FACT-FODT-001).
+    """
+    if not query:
+        return []
+
+    blocks = document.get("blocks", [])
+    compare_query = query if case_sensitive else query.lower()
+    matches: list[dict[str, Any]] = []
+
+    for idx, block in enumerate(blocks):
+        block_type = block.get("type", "paragraph")
+        if block_type not in ("paragraph", "heading"):
+            continue
+        text = block.get("text", "")
+        compare_text = text if case_sensitive else text.lower()
+        count = compare_text.count(compare_query)
+        if count > 0:
+            matches.append({
+                "block_index": idx,
+                "block_type": block_type,
+                "text": text,
+                "match_count": count,
+            })
+
+    return matches
+
+
+def document_replace_text(
+    document: dict[str, Any],
+    search: str,
+    replacement: str,
+    case_sensitive: bool = False,
+) -> dict[str, Any]:
+    """Replace all occurrences of search text with replacement in all blocks.
+
+    Modifies paragraph and heading blocks in-place.
+
+    Args:
+        document: Parsed FODT document dict.
+        search: Text to search for.
+        replacement: Text to replace with.
+        case_sensitive: If True, match is case-sensitive. Default False.
+
+    Returns:
+        Result dict with total_replacements and blocks_modified.
+    """
+    if not search:
+        return {"total_replacements": 0, "blocks_modified": 0}
+
+    blocks = document.get("blocks", [])
+    total = 0
+    modified = 0
+
+    for block in blocks:
+        block_type = block.get("type", "paragraph")
+        if block_type not in ("paragraph", "heading"):
+            continue
+        text = block.get("text", "")
+        if case_sensitive:
+            count = text.count(search)
+            if count > 0:
+                block["text"] = text.replace(search, replacement)
+                total += count
+                modified += 1
+        else:
+            # Case-insensitive replace
+            lower_text = text.lower()
+            lower_search = search.lower()
+            count = lower_text.count(lower_search)
+            if count > 0:
+                # Build result preserving case of non-matching parts
+                result = []
+                i = 0
+                while i < len(text):
+                    if lower_text[i:i + len(search)] == lower_search:
+                        result.append(replacement)
+                        i += len(search)
+                    else:
+                        result.append(text[i])
+                        i += 1
+                block["text"] = "".join(result)
+                total += count
+                modified += 1
+
+    return {"total_replacements": total, "blocks_modified": modified}
+
+
+def document_to_html(document: dict[str, Any]) -> str:
+    """Convert a FODT document to a simple HTML string.
+
+    Converts paragraphs to <p> and headings to <h1>-<h6> tags.
+    Special characters are HTML-escaped.
+
+    Args:
+        document: Parsed FODT document dict.
+
+    Returns:
+        HTML string.
+    """
+    from html import escape
+    parts: list[str] = ["<!DOCTYPE html>", "<html>", "<head><meta charset=\"utf-8\"></head>", "<body>"]
+
+    for block in document.get("blocks", []):
+        text = escape(block.get("text", ""))
+        btype = block.get("type", "paragraph")
+        if btype == "heading":
+            level = block.get("level", 1)
+            level = max(1, min(6, level))
+            parts.append(f"<h{level}>{text}</h{level}>")
+        elif btype == "paragraph":
+            parts.append(f"<p>{text}</p>")
+
+    parts.append("</body>")
+    parts.append("</html>")
+    return "\n".join(parts)
+
+
+def document_extract_headings(
+    document: dict[str, Any],
+    min_level: int = 1,
+    max_level: int = 6,
+) -> list[dict[str, Any]]:
+    """Extract all heading blocks from the document in document order.
+
+    Returns headings filtered by level range. Useful for building a table of
+    contents or understanding document structure.
+
+    Aligned with ODF 1.3 text heading model (FACT-FODT-001): headings are
+    stored as text:h elements with a text:outline-level attribute.
+
+    Args:
+        document: Parsed FODT document dict.
+        min_level: Minimum heading level to include (inclusive). Default 1.
+        max_level: Maximum heading level to include (inclusive). Default 6.
+
+    Returns:
+        List of heading dicts, each containing:
+            block_index (int): 0-based index in the blocks list.
+            level (int): Heading level (1=H1, 2=H2, etc.).
+            text (str): Heading text.
+
+    Added in Sprint FORMAT-FACTORY-AUTHORITY-GATED-PRODUCT-DOGFOOD-FEATURES-AND-BACKFILL-001
+    (authority: P5, FACT-FODT-001).
+    """
+    headings: list[dict[str, Any]] = []
+    for idx, block in enumerate(document.get("blocks", [])):
+        if block.get("type") != "heading":
+            continue
+        level = block.get("level", 1)
+        if min_level <= level <= max_level:
+            headings.append({
+                "block_index": idx,
+                "level": level,
+                "text": block.get("text", ""),
+            })
+    return headings

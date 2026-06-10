@@ -1,0 +1,112 @@
+{
+  "review_id": "capability-layer-rnext3-package136-review",
+  "reviewed_package": "capability-layer-broad-healing-rnext2",
+  "package_sha256": "648d8868acfd5ef6e2233d3b4d6e4a4ee42a38463046031d4d4763901777efc9",
+  "reviewer": "agent-rnext3",
+  "review_date": "2026-06-08",
+  "git_head_at_review": "e382e5fd8e65bc146c0821602cb8fb1ecfab982c",
+
+  "verified_improvements": [
+    {
+      "claim": "FODG roundtrip() implemented",
+      "verified": true,
+      "evidence": "src/python/fodg/fodg_codec.py contains def roundtrip()",
+      "tests": "tests/python/fodg/test_rnext2_fodg_roundtrip.py — 7 tests pass"
+    },
+    {
+      "claim": "NDJSON validate_schema() implemented",
+      "verified": true,
+      "evidence": "src/python/ndjson/ndjson_codec.py contains def validate_schema()",
+      "tests": "tests/python/ndjson/test_rnext2_ndjson_validate_schema.py — 10 tests pass"
+    },
+    {
+      "claim": "Stream contamination fixed",
+      "verified": true,
+      "evidence": "tests/capability_layer/test_gap_selector_integration.py exists (not tests/supervisor/)",
+      "tests": "8 tests pass"
+    },
+    {
+      "claim": "Gap ledger has 2 gaps",
+      "verified": true,
+      "evidence": "reports/capability-layer/gap-ledger.json has total_gaps=2"
+    },
+    {
+      "claim": "Commercial map pseudo-symbols repaired",
+      "verified": "PARTIAL",
+      "evidence": "Generator updated; 45 symbols resolved. Verification requires reading commercial-capability-map.json records.",
+      "limitation": "path-only acceptance in package 136 — no raw symbol proof in review package"
+    }
+  ],
+
+  "confirmed_limitations": [
+    {
+      "item_id": "LANE-B-SYMBOL-TRUTH-REPAIR",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "limitation": "path-only evidence — no raw proof that all 125 commercial records have valid symbol refs",
+      "taskcard": "CAP-RNEXT3-SYMBOL-001",
+      "action": "audit commercial map records for remaining pseudo-symbols"
+    },
+    {
+      "item_id": "LANE-C-GAP-LEDGER-TRUTH-REPAIR",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "limitation": "gap ledger still carries stale sprint_id and run_id from earlier sprint",
+      "taskcard": "CAP-RNEXT3-FRESH-004",
+      "action": "regenerate gap ledger with current run_id"
+    },
+    {
+      "item_id": "LANE-D-RAW-LOGS-PACKAGING",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "limitation": "validator.log may be stale relative to final gap ledger state",
+      "taskcard": "CAP-RNEXT3-FRESH-006",
+      "action": "regenerate validator log after final map/gap update"
+    },
+    {
+      "item_id": "LANE-K-ADOPTION-COMPLIANCE",
+      "grade": "ACCEPTED_WITH_LIMITATIONS",
+      "limitation": "PASS_WITH_EXEMPTIONS — no skill transcripts; exemptions are self-asserted",
+      "taskcard": "CAP-RNEXT3-LIMIT-003",
+      "action": "verify exemptions are legitimate; add transcript evidence where possible"
+    }
+  ],
+
+  "stale_artifacts_detected": [
+    {
+      "path": "reports/capability-layer/gap-ledger.json",
+      "stale_field": "sprint_id",
+      "stale_value": "FORMAT-FACTORY-CAPABILITY-FEATURE-UNDERSTANDING-LAYER-INVESTIGATIVE-HEALING-001",
+      "expected": "FORMAT-FACTORY-BROAD-CAPABILITY-LAYER-HEALING-RNEXT3"
+    },
+    {
+      "path": "reports/capability-layer/gap-ledger.json",
+      "stale_field": "run_id",
+      "stale_value": "capability-feature-understanding-layer-healing-20260608-e382e5f",
+      "expected": "capability-layer-broad-healing-rnext3"
+    },
+    {
+      "path": "reports/capability-layer/action-queue.json",
+      "stale_field": "sprint_id",
+      "stale_value": "FORMAT-FACTORY-CAPABILITY-FEATURE-UNDERSTANDING-LAYER-INVESTIGATIVE-HEALING-001",
+      "expected": "FORMAT-FACTORY-BROAD-CAPABILITY-LAYER-HEALING-RNEXT3"
+    }
+  ],
+
+  "missing_evidence": [
+    {
+      "item": "sample outputs",
+      "impact": "anti-skip missing_sample_outputs violation",
+      "taskcard": "CAP-RNEXT3-LIMIT-005"
+    },
+    {
+      "item": "action queue machine_executable=true",
+      "impact": "autonomy weak — queue is advisory_only: true",
+      "taskcard": "CAP-RNEXT3-GAP-007"
+    }
+  ],
+
+  "open_gaps": [
+    {"gap_id": "GAP-NDJSON-FOSS-ROUNDTRIP-001", "status": "real — no implementation in src/python/ndjson/ndjson_codec.py"},
+    {"gap_id": "GAP-TSV-FOSS-ROUNDTRIP-001", "status": "real — no implementation in src/python/tsv/tsv_parser.py"}
+  ],
+
+  "overall_verdict": "PACKAGE_136_ACCEPTED_WITH_FOUR_LIMITATIONS_ALL_ADDRESSABLE"
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "action": "Apply PROB-PK05 fix — create src/net/netpbm/README.md",
+    "classification": "AGENT_CAN_PREPARE_ONLY",
+    "reason": "README.md does not exist; creating documentation files requires explicit user authorization per session instructions",
+    "agent_can_do": "Prepare README.md template with standard Netpbm package description for user review; once user approves content, agent can write the file and add PackageReadmeFile to .csproj",
+    "blocked_taskcard": null,
+    "problem_id": "PROB-PK05"
+  },
+  {
+    "action": "Apply full pyproject.toml fix for all 10 Python packages (beyond pilot abw+gnumeric)",
+    "classification": "AGENT_CAN_PREPARE_ONLY",
+    "reason": "10-package scope is large; pilot of 2 packages (abw + gnumeric) is FIX_NOW_WITH_LIMITED_SCOPE. Full 10-package fix needs user confirmation of intended package names, version scheme, and entry points for remaining 8 packages.",
+    "agent_can_do": "Pilot fix for abw + gnumeric demonstrates pattern; user can authorize extension to remaining packages",
+    "blocked_taskcard": null,
+    "problem_id": "PROB-PY01"
+  },
+  {
+    "action": "Gate 11 NuGet publication for FODS, FODT, Netpbm",
+    "classification": "TRUE_EXTERNAL_AUTHORITY_REQUIRED",
+    "reason": "Publication requires NuGet API credentials and explicit user authorization. Gate 11 G11-G was approved by Babar Raza but publication authorization not granted.",
+    "agent_can_do": "Run `dotnet pack` to produce .nupkg files locally; verify package contents; prepare publication manifest",
+    "blocked_taskcard": null,
+    "problem_id": null
+  },
+  {
+    "action": "Apply poc-targets.yaml changes (if any)",
+    "classification": "AGENT_CAN_PREPARE_ONLY",
+    "reason": "poc-targets.yaml is an authoritative governance document; direct mutation requires explicit authorization. Agent may write a proposed delta file.",
+    "agent_can_do": "Write proposed-poc-targets-delta.yaml with recommended changes based on this review's findings",
+    "blocked_taskcard": null,
+    "problem_id": null
+  },
+  {
+    "action": "Git commit of all fixes applied in this sprint",
+    "classification": "TRUE_EXTERNAL_AUTHORITY_REQUIRED",
+    "reason": "No commit authorization was given in the sprint prompt. Hard stop per AGENTS.md and CLAUDE.md.",
+    "agent_can_do": "Produce commit candidate manifest listing all changed files and proposed commit message",
+    "blocked_taskcard": null,
+    "problem_id": null
+  }
+]

@@ -93,15 +93,18 @@ def test_load_wrong_root_raises():
 # ---------------------------------------------------------------------------
 
 def test_get_page_count_minimal():
-    assert get_page_count(SAMPLES_DIR / "minimal-drawing.fodg") == 1
+    model = load(SAMPLES_DIR / "minimal-drawing.fodg")
+    assert get_page_count(model) == 1
 
 
 def test_get_page_count_shapes_basic():
-    assert get_page_count(SAMPLES_DIR / "shapes-basic.fodg") == 1
+    model = load(SAMPLES_DIR / "shapes-basic.fodg")
+    assert get_page_count(model) == 1
 
 
 def test_get_page_count_empty():
-    assert get_page_count(SAMPLES_DIR / "empty-page.fodg") == 1
+    model = load(SAMPLES_DIR / "empty-page.fodg")
+    assert get_page_count(model) == 1
 
 
 # ---------------------------------------------------------------------------

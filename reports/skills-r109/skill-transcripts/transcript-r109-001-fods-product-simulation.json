@@ -1,0 +1,23 @@
+{
+  "invocation_id": "r109-sim-001-fods-rename-sheet-product",
+  "skill_id": "add-dotnet-api",
+  "mode": "dry-run",
+  "inputs": {
+    "format_id": "fods",
+    "api_name": "RenameSheet",
+    "exact_source_paths": ["src/net/fods/FodsDocument.cs"],
+    "exact_test_paths": ["tests/net/fods/FodsRenameSheetTests.cs"],
+    "focused_test_command": "dotnet test --filter FodsRenameSheet",
+    "ledger_entry_path": "reports/r-next/product-code-change-ledger.json"
+  },
+  "allowed_files": [
+    "src/net/fods/FodsDocument.cs",
+    "tests/net/fods/FodsRenameSheetTests.cs"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T22:15:00Z",
+  "notes": "Product simulation: FODS RenameSheet handoff with full adoption inputs. Dry-run — actual implementation delegated to Mainstream."
+}

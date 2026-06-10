@@ -1,0 +1,29 @@
+{
+  "sample_type": "anti-bypass-enforcement",
+  "description": "Anti-bypass demo: worker attempts to skip adoption compliance, enforcement catches it",
+  "bypass_attempt": {
+    "worker_action": "Submit src-editing work item without ledger_entry_id or transcript",
+    "item": {
+      "item_id": "W1-BYPASS-ATTEMPT",
+      "title": "PPM pixel edit without adoption",
+      "product_track": "foss_python",
+      "evidence_paths": ["reports/r94/ppm-edit.md"],
+      "status": "completed"
+    }
+  },
+  "enforcement_result": {
+    "adoption_compliant": false,
+    "blocking_check": "has_ledger_entry",
+    "reason": "src-editing track 'foss_python' requires ledger_entry_id",
+    "validator": "validate_adoption_compliance.py"
+  },
+  "transcript_result": {
+    "mode": "anti-bypass-demo",
+    "result": "FAIL",
+    "notes": "Transcript intentionally records FAIL to demonstrate enforcement pipeline"
+  },
+  "grading_impact": {
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "No transcript, no test content — path-only acceptance"
+  }
+}

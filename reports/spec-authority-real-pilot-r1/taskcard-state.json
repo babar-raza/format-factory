@@ -1,0 +1,290 @@
+[
+  {
+    "id": "TC-R1-000",
+    "title": "Lane 0 Preflight and Coordinator Setup",
+    "lane": "0",
+    "owner": "coordinator",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": [],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**"],
+    "forbidden_paths": ["src/net/**", "src/python/**", "tests/net/**", "tests/python/**"],
+    "input_files": ["CLAUDE.md", "reports/supervisor/session-resume.md", ".supervisor/policies.yaml"],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/00-preflight.md",
+      "reports/spec-authority-real-pilot-r1/lane-ownership.md",
+      "reports/spec-authority-real-pilot-r1/file-ownership-map.json",
+      "reports/spec-authority-real-pilot-r1/overlap-check.md",
+      "reports/spec-authority-real-pilot-r1/taskcard-state.json",
+      "reports/spec-authority-real-pilot-r1/risk-register.md",
+      "reports/spec-authority-real-pilot-r1/pilot-plan.md",
+      "reports/spec-authority-real-pilot-r1/scoreboard.md",
+      "reports/spec-authority-real-pilot-r1/command-ledger.json"
+    ],
+    "evidence_paths": ["reports/spec-authority-real-pilot-r1/00-preflight.md"],
+    "acceptance_check": "All coordinator files created; governance reads documented",
+    "rollback_plan": "Delete reports/spec-authority-real-pilot-r1/ and restart",
+    "closeout_criteria": "All 9 coordinator files present and non-empty",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-001",
+    "title": "Lane A: SAL Implementation Inventory",
+    "lane": "A",
+    "owner": "implementation-investigator",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-000"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**"],
+    "forbidden_paths": ["src/net/**", "src/python/**"],
+    "input_files": ["tools/specification-authority-layer/**"],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/layer-implementation-inventory.md",
+      "reports/spec-authority-real-pilot-r1/spec-authority-entrypoints.json",
+      "reports/spec-authority-real-pilot-r1/subsystem-coverage-matrix.json"
+    ],
+    "evidence_paths": ["reports/spec-authority-real-pilot-r1/layer-implementation-inventory.md"],
+    "acceptance_check": "All 12 SAL subsystems classified PRESENT or PRESENT_UNDER_DIFFERENT_NAME",
+    "rollback_plan": "No rollback needed — read-only investigation",
+    "closeout_criteria": "subsystem-coverage-matrix.json shows at least one executable pilot path",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-002",
+    "title": "Lane B: Source Registry and Vault Ingest",
+    "lane": "B",
+    "owner": "provenance-auditor",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-001"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**", ".local/evidences/spec-authority-real-pilot-r1/**"],
+    "forbidden_paths": ["registry/format-registry.yaml", "product-capability-matrix/**"],
+    "input_files": [],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/source-acquisition-report.md",
+      "reports/spec-authority-real-pilot-r1/spec-source-registry-pilot.json",
+      "reports/spec-authority-real-pilot-r1/spec-vault-manifest.json"
+    ],
+    "evidence_paths": [
+      ".local/evidences/spec-authority-real-pilot-r1/spec-source-registry/sources.jsonl",
+      ".local/evidences/spec-authority-real-pilot-r1/spec-vault/src-zst-rfc8878/snapshot-meta.json"
+    ],
+    "acceptance_check": "ZST, Netpbm, DIF, FODS registered with sha256 and provenance; vault integrity OK",
+    "rollback_plan": "Delete .local/evidences/spec-authority-real-pilot-r1/ and re-run pilot",
+    "closeout_criteria": "4 sources registered; 4 vault entries with INTEGRITY_OK",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-003",
+    "title": "Lane C: Parse, Normalize, Index, Digest",
+    "lane": "C",
+    "owner": "parsing-lead",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-002"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**", ".local/evidences/spec-authority-real-pilot-r1/**"],
+    "forbidden_paths": ["src/**"],
+    "input_files": [".local/evidences/spec-authority-real-pilot-r1/spec-vault/**"],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/normalization-report.md",
+      "reports/spec-authority-real-pilot-r1/normalized-output-index.json",
+      "reports/spec-authority-real-pilot-r1/parser-defects-and-limitations.md",
+      ".local/evidences/spec-authority-real-pilot-r1/normalized/"
+    ],
+    "evidence_paths": [
+      ".local/evidences/spec-authority-real-pilot-r1/artifacts/src-zst-rfc8878-normalized.json",
+      ".local/evidences/spec-authority-real-pilot-r1/artifacts/src-netpbm-docs-normalized.json",
+      ".local/evidences/spec-authority-real-pilot-r1/artifacts/src-dif-softarts-normalized.json"
+    ],
+    "acceptance_check": "At least 3 normalized outputs; digests computed; no missing failures",
+    "rollback_plan": "Delete artifacts/ subdirectory and re-run pilot driver",
+    "closeout_criteria": "All 4 sources have normalized, indexed, and digest artifacts",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-004",
+    "title": "Lane D: Requirement Extraction and Authority Classification",
+    "lane": "D",
+    "owner": "requirement-verifier",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-003"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**", ".local/evidences/spec-authority-real-pilot-r1/**"],
+    "forbidden_paths": ["src/**", "registry/**"],
+    "input_files": [".local/evidences/spec-authority-real-pilot-r1/artifacts/**"],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/requirement-extraction-report.md",
+      "reports/spec-authority-real-pilot-r1/candidate-requirements.jsonl",
+      "reports/spec-authority-real-pilot-r1/authority-classification-summary.json",
+      "reports/spec-authority-real-pilot-r1/rejected-or-caveated-requirements.md"
+    ],
+    "evidence_paths": [
+      ".local/evidences/spec-authority-real-pilot-r1/artifacts/src-zst-rfc8878-requirements.json",
+      "reports/spec-authority-real-pilot-r1/candidate-requirements.jsonl"
+    ],
+    "acceptance_check": "46 candidate requirements; all verified; DIF classified EMPIRICAL_ONLY",
+    "rollback_plan": "Re-run requirement extraction step only",
+    "closeout_criteria": "At least 5 candidate requirements; ZST accepted; DIF not overclaimed",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-005",
+    "title": "Lane E: Context Pack Build and Determinism Test",
+    "lane": "E",
+    "owner": "context-pack-lead",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-004"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**", ".local/evidences/spec-authority-real-pilot-r1/**"],
+    "forbidden_paths": ["src/**"],
+    "input_files": [".local/evidences/spec-authority-real-pilot-r1/artifacts/**"],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/context-pack-generation-report.md",
+      "reports/spec-authority-real-pilot-r1/context-pack-determinism-result.json",
+      ".local/evidences/spec-authority-real-pilot-r1/context-packs/"
+    ],
+    "evidence_paths": [
+      ".local/evidences/spec-authority-real-pilot-r1/context-packs/zst-context-pack.json",
+      ".local/evidences/spec-authority-real-pilot-r1/context-packs/netpbm-context-pack.json",
+      ".local/evidences/spec-authority-real-pilot-r1/context-packs/dif-context-pack.json"
+    ],
+    "acceptance_check": "3 context packs with manifest.sha256; determinism PASS for all 3",
+    "rollback_plan": "Delete context-packs/ and re-run context pack step",
+    "closeout_criteria": "manifest_sha256 present; Run1==Run2 for ZST, Netpbm, DIF",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-006",
+    "title": "Lane F: Staleness and Refresh Test",
+    "lane": "F",
+    "owner": "staleness-validator",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-005"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**"],
+    "forbidden_paths": [".local/evidences/spec-authority-real-pilot-r1/spec-vault/**"],
+    "input_files": [".local/evidences/spec-authority-real-pilot-r1/artifacts/**"],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/staleness-refresh-report.md",
+      "reports/spec-authority-real-pilot-r1/staleness-test-result.json",
+      "reports/spec-authority-real-pilot-r1/recomputation-queue.json"
+    ],
+    "evidence_paths": ["reports/spec-authority-real-pilot-r1/staleness-test-result.json"],
+    "acceptance_check": "All sources fresh; synthetic stale test detected stale condition correctly",
+    "rollback_plan": "Re-run staleness check step only; no state was mutated",
+    "closeout_criteria": "stale=False for all real sources; synthetic_stale_detected=True",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-007",
+    "title": "Lane G: Downstream Contract Check",
+    "lane": "G",
+    "owner": "authority-boundary-supervisor",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-006"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**"],
+    "forbidden_paths": ["src/**", "product-capability-matrix/**"],
+    "input_files": [".local/evidences/spec-authority-real-pilot-r1/context-packs/**"],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/downstream-contract-check.md",
+      "reports/spec-authority-real-pilot-r1/spec-authority-output-contract.json",
+      "reports/spec-authority-real-pilot-r1/sample-requirement-authority-input-packet.json"
+    ],
+    "evidence_paths": ["reports/spec-authority-real-pilot-r1/spec-authority-output-contract.json"],
+    "acceptance_check": "Contract contains no product capability PASS claim; includes provenance and staleness",
+    "rollback_plan": "No state mutation — rewrite contract files",
+    "closeout_criteria": "capability_claims_present=false; provenance_included=true",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-008",
+    "title": "Lane H: Test Run and Pilot Regression Tests",
+    "lane": "H",
+    "owner": "test-supervisor",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-007"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**", "tests/spec_authority/**"],
+    "forbidden_paths": ["tests/net/**", "tests/python/**", "src/**"],
+    "input_files": ["tests/specification-authority-layer/test_spec_authority_mwp.py"],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/test-run-report.md",
+      "reports/spec-authority-real-pilot-r1/regression-test-plan.md",
+      "tests/spec_authority/test_real_pilots.py",
+      "reports/spec-authority-real-pilot-r1/raw-test-logs.md"
+    ],
+    "evidence_paths": [
+      "reports/spec-authority-real-pilot-r1/test-run-report.md",
+      "tests/spec_authority/test_real_pilots.py",
+      "reports/spec-authority-real-pilot-r1/raw-test-logs.md"
+    ],
+    "acceptance_check": "28/28 existing tests pass; pilot regression tests added and pass",
+    "rollback_plan": "Delete tests/spec_authority/test_real_pilots.py if it causes issues",
+    "closeout_criteria": "All tests pass; no tests skipped to force pass",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-009",
+    "title": "Lane I: Minimal Repair (if needed)",
+    "lane": "I",
+    "owner": "repair-supervisor",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-008"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**", "tools/specification-authority-layer/**"],
+    "forbidden_paths": ["src/**", "tests/net/**", "tests/python/**"],
+    "input_files": [],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/minimal-repair-report.md",
+      "reports/spec-authority-real-pilot-r1/changed-files-classification.md"
+    ],
+    "evidence_paths": ["reports/spec-authority-real-pilot-r1/minimal-repair-report.md"],
+    "acceptance_check": "No product source edits; any repairs justified and tested",
+    "rollback_plan": "Revert SAL tool changes only",
+    "closeout_criteria": "changed-files-classification.md confirms no forbidden path edits",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-010",
+    "title": "Lane J: State Sync and Next Pilot Plan",
+    "lane": "J",
+    "owner": "planning-supervisor",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-009"],
+    "allowed_paths": ["reports/spec-authority-real-pilot-r1/**"],
+    "forbidden_paths": ["product-capability-matrix/**", "registry/**", "src/**"],
+    "input_files": [],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/state-taskcard-memory-sync.md",
+      "reports/spec-authority-real-pilot-r1/next-pilot-recommendation.md",
+      "reports/spec-authority-real-pilot-r1/taskcards.json"
+    ],
+    "evidence_paths": ["reports/spec-authority-real-pilot-r1/next-pilot-recommendation.md"],
+    "acceptance_check": "Next step explicitly chosen based on evidence; no unsupported capability claim",
+    "rollback_plan": "Rewrite planning documents",
+    "closeout_criteria": "next-pilot-recommendation.md contains explicit recommendation",
+    "blocker_reason": null
+  },
+  {
+    "id": "TC-R1-011",
+    "title": "Lane K: Final IV + Evidence Closeout + Review Package",
+    "lane": "K",
+    "owner": "iv-supervisor",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R1-010"],
+    "allowed_paths": [
+      "reports/spec-authority-real-pilot-r1/**",
+      ".local/evidences/spec-authority-real-pilot-r1/**",
+      ".local/supervisor/reviews/spec-authority-real-pilot-r1/**"
+    ],
+    "forbidden_paths": ["src/**", "product-capability-matrix/**"],
+    "input_files": ["reports/spec-authority-real-pilot-r1/**"],
+    "output_files": [
+      "reports/spec-authority-real-pilot-r1/final-adversarial-independent-verification.md",
+      "reports/spec-authority-real-pilot-r1/internal-repair-loop-1.md",
+      "reports/spec-authority-real-pilot-r1/final-git-status.txt",
+      ".local/evidences/spec-authority-real-pilot-r1/evidence-declaration.yaml",
+      ".local/evidences/spec-authority-real-pilot-r1/evidence-manifest.yaml",
+      "reports/spec-authority-real-pilot-r1/review-package-proof.md"
+    ],
+    "evidence_paths": [
+      "reports/spec-authority-real-pilot-r1/final-adversarial-independent-verification.md",
+      "reports/spec-authority-real-pilot-r1/review-package-proof.md"
+    ],
+    "acceptance_check": "No high-severity contradiction remains; final verdict supported by evidence",
+    "rollback_plan": "Correct specific IV failures and re-run IV",
+    "closeout_criteria": "review-package-proof.md has SHA-256 and exit code 0",
+    "blocker_reason": null
+  }
+]

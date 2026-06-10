@@ -1,0 +1,77 @@
+{
+  "sprint": "mainstream-r112",
+  "lanes": [
+    {
+      "lane": "W0-R111-RECONCILIATION",
+      "status": "COMPLETE",
+      "deliverables": ["r111-reconciliation.md", "r111-claim-classification.json", "r111-continuation-stop-analysis.md"]
+    },
+    {
+      "lane": "W1-PROMPT-QUALITY",
+      "status": "COMPLETE",
+      "deliverables": ["prompt-quality-failure-analysis.md", "prompt-quality-classification.json", "supervisor-prompt-quality-handoff.md", "supervisor-prompt-quality-handoff.json"]
+    },
+    {
+      "lane": "W2-ANTI-SKIP",
+      "status": "COMPLETE",
+      "deliverables": ["anti-skip-raw-log-path-analysis.md", "acceleration-raw-log-path-resolution-handoff.md", "acceleration-raw-log-path-resolution-handoff.json"]
+    },
+    {
+      "lane": "W3-SAMPLE-OUTPUTS",
+      "status": "COMPLETE",
+      "deliverables": ["sample-outputs/sample-product-proof-matrix.json", "sample-outputs/sample-source-ledger-entry.json", "sample-outputs/sample-mainstream-next-prompt.md", "sample-outputs/sample-prompt-quality-classification.json", "sample-outputs/sample-dogfood-proof.json"]
+    },
+    {
+      "lane": "W4-DIRTY-STATE",
+      "status": "COMPLETE",
+      "deliverables": ["dirty-state-classification.md", "dirty-state-classification.json"]
+    },
+    {
+      "lane": "W5-GAP-SELECTION",
+      "status": "COMPLETE",
+      "deliverables": ["selected-mainstream-gaps-r112.json", "product-depth-strategy.md", "quota-tracker.md"]
+    },
+    {
+      "lane": "W6-COMMERCIAL-NET",
+      "status": "COMPLETE",
+      "new_tests": 72,
+      "deliverables": [
+        "tests/net/fods/FodsR112GetUsedRangeTests.cs (10 tests)",
+        "tests/net/fods/FodsR112CsvExportDogfoodTests.cs (8 tests)",
+        "tests/net/fods/FodsR112SaveRoundtripDepthTests.cs (6 tests)",
+        "tests/net/fodt/FodtR112HeadingSaveRoundtripTests.cs (8 tests)",
+        "tests/net/fodt/FodtR112ReplaceTextSaveRoundtripTests.cs (8 tests)",
+        "tests/net/fodt/FodtR112MarkdownExportDogfoodTests.cs (8 tests)",
+        "tests/net/netpbm/NetpbmR112EqualizeDepthTests.cs (8 tests)",
+        "tests/net/netpbm/NetpbmR112SepiaSaveRoundtripTests.cs (8 tests)",
+        "tests/net/netpbm/NetpbmR112ConvertFormatDogfoodTests.cs (8 tests)"
+      ],
+      "source_changes": ["src/net/fods/FodsDocument.cs (GetUsedRange 3 overloads)"]
+    },
+    {
+      "lane": "W7-FOSS",
+      "status": "COMPLETE",
+      "new_tests": 32,
+      "deliverables": [
+        "tests/python/zst/test_r112_zst_multiframe_hardening.py (8 tests)",
+        "tests/python/ppm/test_r112_ppm_binary_p6_roundtrip.py (8 tests)",
+        "tests/python/sylk/test_r112_sylk_edge_cases.py (8 tests)",
+        "tests/python/dif/test_r112_dif_roundtrip_hardening.py (8 tests)"
+      ]
+    },
+    {
+      "lane": "W8-DOGFOOD",
+      "status": "COMPLETE",
+      "deliverables": [
+        "tests/net/fods/FodsR112CsvExportDogfoodTests.cs (shared with W6)",
+        "tests/net/fodt/FodtR112MarkdownExportDogfoodTests.cs (shared with W6)",
+        "tests/net/netpbm/NetpbmR112ConvertFormatDogfoodTests.cs (shared with W6)"
+      ]
+    },
+    {
+      "lane": "W9-CLOSEOUT",
+      "status": "IN_PROGRESS",
+      "deliverables": []
+    }
+  ]
+}

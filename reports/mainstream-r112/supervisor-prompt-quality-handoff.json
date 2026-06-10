@@ -1,0 +1,22 @@
+{
+  "handoff_id": "D112-PQFP-01",
+  "from_stream": "mainstream",
+  "to_stream": "supervisor",
+  "sprint": "mainstream-r112",
+  "defect_title": "no_wrong_stream false positive on governance commands",
+  "severity": "high",
+  "impact": "All valid Mainstream prompts fail prompt-quality gate",
+  "root_cause": "Substring match on tools/supervisor/ with no allowlist for governance commands",
+  "fix_location": "tools/supervisor/autonomous_cycle.py (prompt-quality validator)",
+  "recommended_allowlist": [
+    "tools/supervisor/supervisor_loop.py autonomous-cycle",
+    "tools/supervisor/validate_product_code_ledger.py",
+    "tools/supervisor/build_declaration_review_package.py",
+    ".local/supervisor/selected-product-gaps.json"
+  ],
+  "evidence_files": [
+    ".local/supervisor/reviews/mainstream-r111/prompt-quality-result.json",
+    ".local/supervisor/reviews/mainstream-r111/combined-next-worker-prompt.md",
+    "reports/mainstream-r112/prompt-quality-classification.json"
+  ]
+}

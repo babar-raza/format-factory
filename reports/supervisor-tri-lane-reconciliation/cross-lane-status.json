@@ -1,0 +1,110 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRI-LANE-RECONCILIATION-001",
+  "generated_at": "2026-06-04T11:10:00Z",
+  "lanes": {
+    "supervisor": {
+      "status": "SUPERVISOR_HARDENED_WITH_LIMITATIONS",
+      "sprint": "supervisor-traffic-controller-hardening-iv",
+      "evidence_complete": true,
+      "test_count": 37,
+      "test_pass_count": 37,
+      "routing_deterministic": true,
+      "cross_stream_defect_fixed": true,
+      "skills_consumption_verdict": "SKILLS_CONSUMABLE_NOT_YET_CONSUMED",
+      "acceleration_consumption_verdict": "ACCELERATION_CONSUMABLE_PARTIAL",
+      "netpbm_retained": true,
+      "svg_rejected": true,
+      "external_tool_governance": "EXTERNAL_TOOLS_GOVERNED_LOCAL_COORDINATOR_ACTIVE",
+      "limitations": [
+        "2 old tests now fail (pre-fix behavior tests)",
+        "Mainstream not yet consuming Skills/Acceleration packets"
+      ],
+      "ready_for_tri_lane": true
+    },
+    "skills": {
+      "status": "SKILLS_READY_FOR_TRI_LANE_INTEGRATION_WITH_LIMITATIONS",
+      "primary_sprint": "skills-governed-execution-hardening",
+      "evidence_complete": true,
+      "breadth_finalization_sprint": "skills-product-breadth-finalization",
+      "breadth_finalization_complete": false,
+      "fods_full_packet": {
+        "path": "reports/skills-product-first/mainstream-consumption-packet.json",
+        "status": "READY_FOR_MAINSTREAM",
+        "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+        "skill": "add-dotnet-api",
+        "expected_tests": "tests/net/fods/FodsR114ExportToCsvTests.cs"
+      },
+      "fodt_shell": {
+        "path": "reports/skills-governed-execution-hardening/fodt-packet-shell.json",
+        "status": "SHELL_READY_NEEDS_MAINSTREAM_DISCOVERY"
+      },
+      "netpbm_shell": {
+        "path": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+        "status": "SHELL_READY_NEEDS_MAINSTREAM_DISCOVERY"
+      },
+      "limitations": [
+        "FODT and Netpbm shells need Mainstream to select specific method",
+        "Breadth finalization sprint incomplete — no final FODT/Netpbm handoffs"
+      ],
+      "ready_for_tri_lane": true
+    },
+    "acceleration": {
+      "status": "ACCELERATION_PACKETS_AVAILABLE_HARDENING_INCOMPLETE",
+      "primary_sprint": "acceleration-product-first",
+      "evidence_complete": true,
+      "hardening_sprint": "acceleration-hardening",
+      "hardening_complete": false,
+      "authority_state": "ai_draft",
+      "non_authoritative": true,
+      "packets": [
+        {
+          "family": "FODS",
+          "format": "fods",
+          "capability_path": "dogfood_status.fods_to_csv_dotnet",
+          "path": "reports/acceleration-product-first/mainstream-consumption-packets/fods-dogfood_status-fods_to_csv_dotnet.json",
+          "status": "ai_draft"
+        },
+        {
+          "family": "FODT",
+          "format": "fodt",
+          "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+          "path": "reports/acceleration-product-first/mainstream-consumption-packets/fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+          "status": "ai_draft"
+        },
+        {
+          "family": "Netpbm",
+          "format": "netpbm",
+          "capability_path": "dotnet_status.netpbm_flip_diagonal",
+          "path": "reports/acceleration-product-first/mainstream-consumption-packets/netpbm-dotnet_status-netpbm_flip_diagonal.json",
+          "status": "ai_draft"
+        },
+        {
+          "family": "SYLK",
+          "format": "sylk",
+          "capability_path": "python_status.write_sylk",
+          "path": "reports/acceleration-product-first/mainstream-consumption-packets/sylk-python_status-write_sylk.json",
+          "status": "ai_draft"
+        }
+      ],
+      "limitations": [
+        "Acceleration Hardening IV incomplete — hardening not independently verified",
+        "All packets are ai_draft — require deterministic validation before use as authority",
+        "No acceleration hardening determinism proof available"
+      ],
+      "ready_for_tri_lane": true
+    }
+  },
+  "overall_readiness": {
+    "supervisor_ready": true,
+    "skills_ready": true,
+    "acceleration_ready": true,
+    "all_ready": true,
+    "verdict": "TRI_LANE_RECONCILIATION_READY_WITH_LIMITATIONS",
+    "blocking_issues": [],
+    "non_blocking_limitations": [
+      "Skills breadth finalization incomplete (FODT/Netpbm not finalized)",
+      "Acceleration hardening incomplete (not independently verified)",
+      "Mainstream has not yet consumed any packets"
+    ]
+  }
+}

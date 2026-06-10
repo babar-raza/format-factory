@@ -1,0 +1,120 @@
+{
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "purpose": "Records which input was selected for each family and why",
+  "acceleration_fallback_used": false,
+  "skills_selections": [
+    {
+      "family": "FODS",
+      "selected_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "source_sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "freshness_status": "LATEST_FOR_FODS",
+      "reason_selected": "No newer FODS finalization packet; product-first packet is authoritative",
+      "fallback_used": false,
+      "packet_type": "FULL"
+    },
+    {
+      "family": "FODT",
+      "selected_path": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "source_sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+      "freshness_status": "LATEST_FINALIZATION",
+      "reason_selected": "Full finalization packet supersedes shell packet from skills-governed-execution-hardening",
+      "fallback_used": false,
+      "packet_type": "FULL"
+    },
+    {
+      "family": "FODT",
+      "selected_path": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+      "source_sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+      "freshness_status": "LATEST_FINALIZATION",
+      "reason_selected": "New in finalization sprint \u2014 FODT TXT capability previously missing from integration",
+      "fallback_used": false,
+      "packet_type": "FULL"
+    },
+    {
+      "family": "Netpbm",
+      "selected_path": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "source_sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+      "freshness_status": "LATEST_FINALIZATION",
+      "reason_selected": "Full finalization packet supersedes shell packet from skills-governed-execution-hardening",
+      "fallback_used": false,
+      "packet_type": "FULL"
+    }
+  ],
+  "acceleration_selection": {
+    "family": "Acceleration (all families)",
+    "selected_path": "reports/acceleration-hardening/mainstream-packet-index.json",
+    "source_sprint_id": "FORMAT-FACTORY-ACCELERATION-HARDENING-IV-AND-CONSUMPTION-CONTRACT-001",
+    "freshness_status": "LATEST_HARDENING",
+    "reason_selected": "Hardening index preferred",
+    "fallback_used": false,
+    "packet_type": "index_with_packets"
+  },
+  "all_selections": [
+    {
+      "family": "FODS",
+      "selected_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "source_sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "freshness_status": "LATEST_FOR_FODS",
+      "reason_selected": "No newer FODS finalization packet; product-first packet is authoritative",
+      "fallback_used": false,
+      "packet_type": "FULL"
+    },
+    {
+      "family": "FODT",
+      "selected_path": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "source_sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+      "freshness_status": "LATEST_FINALIZATION",
+      "reason_selected": "Full finalization packet supersedes shell packet from skills-governed-execution-hardening",
+      "fallback_used": false,
+      "packet_type": "FULL"
+    },
+    {
+      "family": "FODT",
+      "selected_path": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+      "source_sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+      "freshness_status": "LATEST_FINALIZATION",
+      "reason_selected": "New in finalization sprint \u2014 FODT TXT capability previously missing from integration",
+      "fallback_used": false,
+      "packet_type": "FULL"
+    },
+    {
+      "family": "Netpbm",
+      "selected_path": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "source_sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+      "freshness_status": "LATEST_FINALIZATION",
+      "reason_selected": "Full finalization packet supersedes shell packet from skills-governed-execution-hardening",
+      "fallback_used": false,
+      "packet_type": "FULL"
+    },
+    {
+      "family": "Acceleration (all families)",
+      "selected_path": "reports/acceleration-hardening/mainstream-packet-index.json",
+      "source_sprint_id": "FORMAT-FACTORY-ACCELERATION-HARDENING-IV-AND-CONSUMPTION-CONTRACT-001",
+      "freshness_status": "LATEST_HARDENING",
+      "reason_selected": "Hardening index preferred",
+      "fallback_used": false,
+      "packet_type": "index_with_packets"
+    }
+  ],
+  "stale_inputs_rejected": [
+    {
+      "path": "reports/skills-governed-execution-hardening/fodt-packet-shell.json",
+      "reason": "Shell packet superseded by full finalization packet",
+      "classification": "STALE_BLOCKING",
+      "replaced_by": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json"
+    },
+    {
+      "path": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+      "reason": "Shell packet superseded by full finalization packet",
+      "classification": "STALE_BLOCKING",
+      "replaced_by": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json"
+    },
+    {
+      "path": "reports/acceleration-product-first/mainstream-consumption-packets",
+      "reason": "Product-first dir superseded by hardening index (when index available)",
+      "classification": "STALE_WITH_REPAIR_REQUIRED",
+      "replaced_by": "reports/acceleration-hardening/mainstream-packet-index.json"
+    }
+  ]
+}

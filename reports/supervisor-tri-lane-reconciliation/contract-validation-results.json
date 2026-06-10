@@ -1,0 +1,72 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRI-LANE-RECONCILIATION-001",
+  "generated_at": "2026-06-04T11:20:00Z",
+  "families_validated": [
+    {
+      "family": "FODS",
+      "format": "fods",
+      "product_track": "commercial_net",
+      "capability_path": "dogfood_status.fods_to_csv_dotnet",
+      "supervisor_confirms": true,
+      "skills_packet_available": true,
+      "skills_packet_type": "full",
+      "acceleration_packet_available": true,
+      "acceleration_authority_state": "ai_draft",
+      "tri_lane_agreement": true,
+      "contract_status": "READY_FOR_MAINSTREAM",
+      "required_action": "Mainstream executes add-dotnet-api handoff, validates transcript, produces FodsR114ExportToCsvTests"
+    },
+    {
+      "family": "FODT",
+      "format": "fodt",
+      "product_track": "commercial_net",
+      "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+      "supervisor_confirms": true,
+      "skills_packet_available": true,
+      "skills_packet_type": "shell",
+      "acceleration_packet_available": true,
+      "acceleration_authority_state": "ai_draft",
+      "tri_lane_agreement": true,
+      "contract_status": "READY_FOR_MAINSTREAM_WITH_DISCOVERY",
+      "required_action": "Mainstream selects specific method; Skills generates dry-run handoff from shell"
+    },
+    {
+      "family": "Netpbm",
+      "format": "netpbm",
+      "product_track": "commercial_net",
+      "capability_path": "dotnet_status.netpbm_flip_diagonal",
+      "supervisor_confirms": true,
+      "skills_packet_available": true,
+      "skills_packet_type": "shell",
+      "acceleration_packet_available": true,
+      "acceleration_authority_state": "ai_draft",
+      "tri_lane_agreement": true,
+      "contract_status": "READY_FOR_MAINSTREAM_WITH_DISCOVERY",
+      "required_action": "Mainstream selects specific capability; Skills generates dry-run handoff from shell",
+      "supervisor_note": "Netpbm retained — SVG replacement REJECTED"
+    },
+    {
+      "family": "SYLK",
+      "format": "sylk",
+      "product_track": "python_oss",
+      "capability_path": "python_status.write_sylk",
+      "supervisor_confirms": true,
+      "skills_packet_available": false,
+      "skills_packet_type": null,
+      "acceleration_packet_available": true,
+      "acceleration_authority_state": "ai_draft",
+      "tri_lane_agreement": false,
+      "contract_status": "ACCELERATION_ONLY_ADVISORY",
+      "required_action": "Optional — Skills does not have a packet for SYLK yet"
+    }
+  ],
+  "contract_issues": [],
+  "authority_boundary_check": {
+    "supervisor_is_stream_control_authority": true,
+    "skills_is_governed_execution_authority": true,
+    "acceleration_is_advisory_only": true,
+    "no_authority_mutation_of_capability_matrix": true,
+    "no_authority_mutation_of_registry": true
+  },
+  "overall_verdict": "CONTRACT_VALID_THREE_FAMILIES_CONFIRMED"
+}

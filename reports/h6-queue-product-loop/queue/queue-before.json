@@ -1,0 +1,66 @@
+{
+  "items": [
+    {
+      "action_id": "h6-q-001",
+      "action_type": "RUN_JSON_VALIDATION",
+      "target_path": "reports/h6-external-host-activation/current-state-audit.json",
+      "description": "Validate H6 sprint baseline audit JSON",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "pending",
+      "priority": 1,
+      "queued_at": "2026-06-06T11:00:31.433194+00:00",
+      "stream": "autonomy"
+    },
+    {
+      "action_id": "h6-q-002",
+      "action_type": "RUN_MD_NONEMPTY_CHECK",
+      "target_path": "reports/h6-external-host-activation/00-preflight.md",
+      "description": "Verify H6 sprint preflight document is non-empty",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "pending",
+      "priority": 2,
+      "queued_at": "2026-06-06T11:00:31.433217+00:00",
+      "stream": "autonomy"
+    },
+    {
+      "action_id": "h6-q-003",
+      "action_type": "RUN_JSON_VALIDATION",
+      "target_path": ".local/supervisor/active-continuation.json",
+      "description": "Validate active-continuation.json after repair",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "pending",
+      "priority": 3,
+      "queued_at": "2026-06-06T11:00:31.433221+00:00",
+      "stream": "autonomy"
+    },
+    {
+      "action_id": "h6-q-004",
+      "action_type": "RUN_JSON_VALIDATION",
+      "target_path": "reports/h6-external-host-activation/lane-claims.json",
+      "description": "Validate H6 lane claims JSON",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "pending",
+      "priority": 4,
+      "queued_at": "2026-06-06T11:00:31.433223+00:00",
+      "stream": "autonomy"
+    },
+    {
+      "action_id": "h6-q-005",
+      "action_type": "RUN_JSON_VALIDATION",
+      "target_path": ".local/supervisor/next-action.json",
+      "description": "Validate next-action.json after evidence_continuation repair",
+      "external_gate": false,
+      "preferred_backend": "LOCAL_DETERMINISTIC",
+      "status": "pending",
+      "priority": 5,
+      "queued_at": "2026-06-06T11:00:31.433225+00:00",
+      "stream": "autonomy"
+    }
+  ],
+  "count": 5,
+  "all_pending": true
+}

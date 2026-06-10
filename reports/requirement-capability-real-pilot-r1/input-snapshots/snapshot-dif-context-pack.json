@@ -1,0 +1,164 @@
+{
+  "context_pack_id": "CP-DIF-9ccc23683556",
+  "format_id": "dif",
+  "manifest": {
+    "sha256": "9ccc23683556d1b62020cfdb3ecd08ff3655dcf338471d973022cf920b04d8d8",
+    "sources_count": 1
+  },
+  "included_sources": [
+    {
+      "source_id": "src-r2-dif-empirical",
+      "title": "src-r2-dif-empirical \u2014 DIF",
+      "sha256": "d43af099d5db2bc5e75c9971546f2e23ec96648543189e2ab1da7824d0f2444c",
+      "sections_count": 6,
+      "source_type": "empirical_observation"
+    }
+  ],
+  "requirement_summary": [
+    {
+      "req_id": "REQ-src-r2-d-ade8541c",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 1: File Structure",
+      "keyword": "MUST",
+      "text_fragment": "Section 1: File Structure\nA DIF file MUST begin with the TABLE keyword."
+    },
+    {
+      "req_id": "REQ-src-r2-d-21bc8f68",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 1: File Structure",
+      "keyword": "MUST",
+      "text_fragment": "The TABLE record MUST be on the first line."
+    },
+    {
+      "req_id": "REQ-src-r2-d-0982d7ba",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 1: File Structure",
+      "keyword": "MUST",
+      "text_fragment": "Files MUST use structured records with a keyword per line."
+    },
+    {
+      "req_id": "REQ-src-r2-d-d4073f5c",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 2: Records",
+      "keyword": "MUST",
+      "text_fragment": "Section 2: Records\nThe VECTORS record MUST appear after TABLE."
+    },
+    {
+      "req_id": "REQ-src-r2-d-7eabb073",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 2: Records",
+      "keyword": "MUST",
+      "text_fragment": "The TUPLES field MUST equal the number of data rows."
+    },
+    {
+      "req_id": "REQ-src-r2-d-580bef55",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 2: Records",
+      "keyword": "MUST",
+      "text_fragment": "The DATA record MUST follow VECTORS."
+    },
+    {
+      "req_id": "REQ-src-r2-d-8743c154",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 3: Data Block",
+      "keyword": "MUST",
+      "text_fragment": "Section 3: Data Block\nThe DATA block MUST be terminated by an EOD record."
+    },
+    {
+      "req_id": "REQ-src-r2-d-e642a10c",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 3: Data Block",
+      "keyword": "MUST",
+      "text_fragment": "Each tuple MUST start with a BOT record."
+    },
+    {
+      "req_id": "REQ-src-r2-d-f22758c8",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 3: Data Block",
+      "keyword": "SHOULD",
+      "text_fragment": "String values SHOULD be enclosed in double quotes."
+    },
+    {
+      "req_id": "REQ-src-r2-d-38b254d8",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 3: Data Block",
+      "keyword": "MUST",
+      "text_fragment": "Numeric values MUST be unquoted."
+    },
+    {
+      "req_id": "REQ-src-r2-d-0f7f9514",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 4: Encoding",
+      "keyword": "SHOULD",
+      "text_fragment": "Section 4: Encoding\nFiles SHOULD use ASCII encoding."
+    },
+    {
+      "req_id": "REQ-src-r2-d-9848b997",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 4: Encoding",
+      "keyword": "SHOULD",
+      "text_fragment": "Integer values SHOULD NOT have decimal points when integral."
+    },
+    {
+      "req_id": "REQ-src-r2-d-5337b624",
+      "source_id": "src-r2-dif-empirical",
+      "heading": "Section 5: Termination",
+      "keyword": "MUST",
+      "text_fragment": "Section 5: Termination\nThe EOD record MUST be the last record."
+    }
+  ],
+  "index_terms": [
+    "section",
+    "record",
+    "data",
+    "files",
+    "records",
+    "dif",
+    "table",
+    "use",
+    "follow",
+    "eod",
+    "values",
+    "interchange",
+    "format",
+    "empirical",
+    "specification",
+    "source",
+    "observation",
+    "authoritative",
+    "public",
+    "spec",
+    "known",
+    "authority",
+    "empirical_only",
+    "file",
+    "structure",
+    "begin",
+    "keyword",
+    "first",
+    "line",
+    "structured",
+    "per",
+    "vectors",
+    "appear",
+    "after",
+    "tuples",
+    "field",
+    "equal",
+    "number",
+    "rows",
+    "block",
+    "terminated",
+    "tuple",
+    "start",
+    "bot",
+    "string",
+    "enclosed",
+    "double",
+    "quotes",
+    "numeric",
+    "unquoted"
+  ],
+  "created_at": "2026-06-05T03:08:10.638509+00:00",
+  "output_path": null
+}

@@ -1,0 +1,200 @@
+[
+  {
+    "item_id": "BRDTH-LANE0",
+    "item_title": "Coordinator preflight \u2014 git snapshot, lane ownership, overlap check, taskcard state",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/skills-product-breadth-finalization/00-preflight.md",
+      "reports/skills-product-breadth-finalization/current-git-status.txt",
+      "reports/skills-product-breadth-finalization/lane-ownership.md",
+      "reports/skills-product-breadth-finalization/file-ownership-map.json",
+      "reports/skills-product-breadth-finalization/overlap-check.md",
+      "reports/skills-product-breadth-finalization/taskcard-state.json",
+      "reports/skills-product-breadth-finalization/coordinator-integration-log.md",
+      "reports/skills-product-breadth-finalization/lane-execution-ledger.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for BRDTH-LANE0"
+  },
+  {
+    "item_id": "BRDTH-LANE-A",
+    "item_title": "Current skills packet review and gap analysis \u2014 5 gaps identified, all non-blocking",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/skills-product-breadth-finalization/current-skills-packet-review.md",
+      "reports/skills-product-breadth-finalization/packet-gap-analysis.json",
+      "reports/skills-product-breadth-finalization/non-blocking-evidence-caveats.md",
+      "reports/skills-product-breadth-finalization/blocking-integration-gaps.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for BRDTH-LANE-A"
+  },
+  {
+    "item_id": "BRDTH-LANE-B",
+    "item_title": "FODT full governed handoffs \u2014 Markdown (GAP-FODT-DOGFOOD-MD-DOTNET-001) + TXT (GAP-FODT-DOGFOOD-TXT-DOTNET-001)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+      "reports/skills-product-breadth-finalization/fodt-markdown-handoff.yaml",
+      "reports/skills-product-breadth-finalization/fodt-txt-handoff.yaml"
+    ],
+    "tests_supporting": [
+      "TestFodtMarkdownPacket",
+      "TestFodtMarkdownHandoff",
+      "TestFodtTxtPacket"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Tests declared (content check not run)",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for BRDTH-LANE-B"
+  },
+  {
+    "item_id": "BRDTH-LANE-C",
+    "item_title": "Netpbm proof packet \u2014 Pipeline R114 (GAP-NETPBM-DOGFOOD-PIPELINE-DOTNET-001)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "reports/skills-product-breadth-finalization/netpbm-proof-handoff.yaml"
+    ],
+    "tests_supporting": [
+      "TestNetpbmProofPacket",
+      "TestNetpbmProofHandoff"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Tests declared (content check not run)",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for BRDTH-LANE-C"
+  },
+  {
+    "item_id": "BRDTH-LANE-D",
+    "item_title": "Schema compatibility maps \u2014 Acceleration + Supervisor field maps",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/skills-product-breadth-finalization/skills-acceleration-compatibility.md",
+      "reports/skills-product-breadth-finalization/skills-acceleration-field-map.json",
+      "reports/skills-product-breadth-finalization/skills-supervisor-field-map.json"
+    ],
+    "tests_supporting": [
+      "TestSchemaCompatibilityMaps"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Tests declared (content check not run)",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for BRDTH-LANE-D"
+  },
+  {
+    "item_id": "BRDTH-LANE-E",
+    "item_title": "Skills Integration Contract + tri-lane handoffs (Supervisor/Acceleration/Mainstream)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "reports/skills-product-breadth-finalization/skills-integration-contract.json",
+      "reports/skills-product-breadth-finalization/skills-integration-contract.md",
+      "reports/skills-product-breadth-finalization/handoff-to-supervisor.json",
+      "reports/skills-product-breadth-finalization/handoff-to-acceleration.json",
+      "reports/skills-product-breadth-finalization/handoff-to-mainstream.json"
+    ],
+    "tests_supporting": [
+      "TestSkillsIntegrationContract",
+      "TestLaneHandoffs"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Tests declared (content check not run)",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for BRDTH-LANE-E"
+  },
+  {
+    "item_id": "BRDTH-LANE-F",
+    "item_title": "89-test finalization suite \u2014 89 passed, 0 failed",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tests/supervisor/test_skills_product_breadth_finalization.py",
+      "reports/skills-product-breadth-finalization/raw-logs/skills-product-breadth-finalization-tests.log"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for BRDTH-LANE-F"
+  }
+]

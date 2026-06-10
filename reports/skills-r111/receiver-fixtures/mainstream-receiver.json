@@ -1,0 +1,24 @@
+{
+  "receiver": "mainstream",
+  "description": "Receiver-side enforcement fixture for Mainstream product source work",
+  "compliant_item": {
+    "item_id": "W1-FODS-RENAME",
+    "title": "FODS RenameSheet",
+    "skill_id": "add-dotnet-api",
+    "product_track": "commercial_dotnet",
+    "ledger_entry_id": "LED-MAINSTREAM-001",
+    "evidence_paths": [
+      "reports/r-test/skill-transcripts/transcript-fods-rename.json"
+    ],
+    "status": "completed"
+  },
+  "failing_item": {
+    "item_id": "W2-FODS-MISSING-LEDGER",
+    "title": "FODS Missing Ledger",
+    "product_track": "commercial_dotnet",
+    "evidence_paths": ["reports/r-test/evidence.md"],
+    "status": "completed"
+  },
+  "expected_compliant_result": true,
+  "expected_failing_result": false
+}

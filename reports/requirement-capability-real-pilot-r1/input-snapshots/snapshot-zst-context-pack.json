@@ -1,0 +1,213 @@
+{
+  "context_pack_id": "CP-ZST-9707e015c308",
+  "format_id": "zst",
+  "manifest": {
+    "sha256": "9707e015c3081ce2479ee6f129ff72ec3a4ebf7af0c7ae33fbeaa7e1292e8088",
+    "sources_count": 1
+  },
+  "included_sources": [
+    {
+      "source_id": "src-r2-zst-rfc8878",
+      "title": "src-r2-zst-rfc8878 \u2014 ZST",
+      "sha256": "8ee6be03534113f5689cda75b9539a02e0704a2506d420814223e506420aeea4",
+      "sections_count": 491,
+      "source_type": "rfc"
+    }
+  ],
+  "requirement_summary": [
+    {
+      "req_id": "REQ-src-r2-z-1afcae4c",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "This document is subject to BCP 78 and the IETF Trust's Lega",
+      "keyword": "must",
+      "text_fragment": "Code Components extracted from this document must\n include Simplified BSD License text as described in Section 4.e of\n the Trust Legal Provisions and "
+    },
+    {
+      "req_id": "REQ-src-r2-z-b5f53e2b",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "Unless otherwise indicated below, a compliant compressor mus",
+      "keyword": "must",
+      "text_fragment": "Unless otherwise indicated below, a compliant compressor must produce\n data sets that conform to the specifications presented here."
+    },
+    {
+      "req_id": "REQ-src-r2-z-dea0aeb2",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "Unless otherwise indicated below, a compliant compressor mus",
+      "keyword": "support",
+      "text_fragment": "However, it does not need to support all options."
+    },
+    {
+      "req_id": "REQ-src-r2-z-dac3dfaa",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "A compliant decompressor must be able to decompress at least",
+      "keyword": "must",
+      "text_fragment": "A compliant decompressor must be able to decompress at least one\n working set of parameters that conforms to the specifications\n presented here."
+    },
+    {
+      "req_id": "REQ-src-r2-z-706c722b",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "A compliant decompressor must be able to decompress at least",
+      "keyword": "support",
+      "text_fragment": "Whenever it does not support a parameter defined in the\n compressed stream, it must produce an unambiguous error code and\n associated error message ex"
+    },
+    {
+      "req_id": "REQ-src-r2-z-531cdfdd",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "If this flag is set, data must be regenerated within a singl",
+      "keyword": "must",
+      "text_fragment": "If this flag is set, data must be regenerated within a single\n continuous memory segment."
+    },
+    {
+      "req_id": "REQ-src-r2-z-7936902a",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "In this case, Window_Descriptor byte is skipped, but",
+      "keyword": "must",
+      "text_fragment": "As a consequence, the\n decoder must allocate a memory segment of a size equal to or larger\n than Frame_Content_Size."
+    },
+    {
+      "req_id": "REQ-src-r2-z-9ae48501",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "For broader compatibility, decoders are recommended to suppo",
+      "keyword": "support",
+      "text_fragment": "For broader compatibility, decoders are recommended to support memory\n sizes of at least 8 MB."
+    },
+    {
+      "req_id": "REQ-src-r2-z-b85aa6a2",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "For broader compatibility, decoders are recommended to suppo",
+      "keyword": "support",
+      "text_fragment": "This is only a recommendation; each decoder\n is free to support higher or lower limits, depending on local\n limitations."
+    },
+    {
+      "req_id": "REQ-src-r2-z-f3383299",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "A decoder compliant with this specification version shall no",
+      "keyword": "shall",
+      "text_fragment": "A decoder compliant with this specification version shall not\n interpret this bit."
+    },
+    {
+      "req_id": "REQ-src-r2-z-400e4518",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "A decoder compliant with this specification version shall no",
+      "keyword": "must",
+      "text_fragment": "An\n encoder compliant with this specification must set this bit to zero."
+    },
+    {
+      "req_id": "REQ-src-r2-z-0c459877",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "This bit is reserved for some future feature. Its value mus",
+      "keyword": "must",
+      "text_fragment": "Its value must be\n zero."
+    },
+    {
+      "req_id": "REQ-src-r2-z-28b974bb",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "This bit is reserved for some future feature. Its value mus",
+      "keyword": "must",
+      "text_fragment": "A decoder compliant with this specification version must\n ensure it is not set."
+    },
+    {
+      "req_id": "REQ-src-r2-z-29d6c3fe",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "This bit is reserved for some future feature. Its value mus",
+      "keyword": "must",
+      "text_fragment": "This bit may be used in a future revision to\n signal a feature that must be interpreted to decode the frame\n correctly."
+    },
+    {
+      "req_id": "REQ-src-r2-z-d1de35b4",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "For improved interoperability, it's recommended for decoders",
+      "keyword": "support",
+      "text_fragment": "For improved interoperability, it's recommended for decoders to\n support values of Window_Size up to 8 MB and for encoders not to\n generate frames req"
+    },
+    {
+      "req_id": "REQ-src-r2-z-fd3ef0ae",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "For improved interoperability, it's recommended for decoders",
+      "keyword": "support",
+      "text_fragment": "It's\n merely a recommendation though, and decoders are free to support\n higher or lower limits, depending on local limitations."
+    },
+    {
+      "req_id": "REQ-src-r2-z-4ed65494",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "Within private environments, any dictionary ID can be used.",
+      "keyword": "must",
+      "text_fragment": "However,\n for frames and dictionaries distributed in public space,\n Dictionary_ID must be attributed carefully."
+    },
+    {
+      "req_id": "REQ-src-r2-z-eef8389f",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "After Magic_Number and Frame_Header, there are some number o",
+      "keyword": "must",
+      "text_fragment": "Each frame must have at least 1 block, but there is no upper limit on\n the number of blocks per frame."
+    },
+    {
+      "req_id": "REQ-src-r2-z-9a610110",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "RLE_Block: This is a single byte, repeated Block_Size times",
+      "keyword": "must",
+      "text_fragment": "On the decompression\n side, this byte must be repeated Block_Size times."
+    },
+    {
+      "req_id": "REQ-src-r2-z-c35312ab",
+      "source_id": "src-r2-zst-rfc8878",
+      "heading": "Reserved: This is not a block. This value cannot be used w",
+      "keyword": "must",
+      "text_fragment": "If such a value is present, it is\n considered to be corrupt data, and a compliant decoder must reject\n it."
+    }
+  ],
+  "index_terms": [
+    "table",
+    "bytes",
+    "bits",
+    "value",
+    "compressed",
+    "section",
+    "size",
+    "used",
+    "values",
+    "data",
+    "symbol",
+    "decoding",
+    "block",
+    "offset",
+    "fse",
+    "literals",
+    "bitstream",
+    "frame",
+    "see",
+    "format",
+    "byte",
+    "codes",
+    "length",
+    "using",
+    "decoded",
+    "zstandard",
+    "sequence",
+    "one",
+    "present",
+    "compression",
+    "type",
+    "use",
+    "number",
+    "bit",
+    "huffman",
+    "dictionary",
+    "uses",
+    "content",
+    "they",
+    "decoder",
+    "order",
+    "following",
+    "last",
+    "state",
+    "number_of_bits",
+    "frames",
+    "zstd",
+    "specification",
+    "code",
+    "read"
+  ],
+  "created_at": "2026-06-05T03:08:10.608480+00:00",
+  "output_path": null
+}

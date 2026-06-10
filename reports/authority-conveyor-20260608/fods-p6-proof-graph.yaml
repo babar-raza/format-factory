@@ -1,0 +1,133 @@
+"""
+FODS P6 Proof Graph — FACT-FODS-001
+Sprint: SPEC-AUTHORITY-LAYER-FAST-OPS-INTEGRATION-AND-AUTHORITY-CONVEYOR-001
+Generated: 2026-06-08
+"""
+
+proof_graph_id: PROOF-FODS-001-P6
+format_id: fods
+fact_id: FACT-FODS-001
+claim_level: P6
+generated_at: "2026-06-08T14:30:00Z"
+sprint_id: SPEC-AUTHORITY-LAYER-FAST-OPS-INTEGRATION-AND-AUTHORITY-CONVEYOR-001
+
+# P6 definition: spec source → verified fact → cited in code → covered by tests → evidence passes
+proof_path_complete: true
+
+nodes:
+  - node_id: SOURCE-FODS-ODF13
+    node_type: spec_source
+    description: "ODF 1.3 Part 3 Schema Spec (OpenDocument-v1.3-os-part3-schema.pdf)"
+    location: ".local/spec-cache/fods/1.3/OpenDocument-v1.3-os-part3-schema.pdf"
+    sha256: "sha256:92cfe64ee30a8cca1be19a76d38628fdc8ef9153eb59547f6c96fe7b9b81b066"
+    spec_version: "ODF 1.3"
+    publisher: OASIS
+    normalized_artifact: ".local/spec-cache/fods/1.3/normalized/text.txt"
+    verification_status: present_and_normalized
+
+  - node_id: FACT-FODS-001
+    node_type: verified_fact
+    claim: "FODS root element is <office:document> with office:mimetype attribute"
+    source_ref: SOURCE-FODS-ODF13
+    section: "3.1.2"
+    spec_page: 90
+    verification_status: verified
+    validated_by: independent_agent_verifier
+    validated_at: "2026-06-07"
+    confidence: high
+    spec_text_evidence: "Line 7218 (normalized): '<office:document> element is the root element of a document in OpenDocument format which is represented as a single XML document.' Line 7228: 'The <office:document> element has the following attributes: ... office:mimetype 19.379'"
+
+  - node_id: CODE-FODS-QN_DOCUMENT
+    node_type: code_constant
+    description: "QN_DOCUMENT = '{urn:oasis:names:tc:opendocument:xmlns:office:1.0}document'"
+    file: "src/python/fods/constants.py"
+    line_approx: 57
+    citation_comment: "# FACT-FODS-001: root element is <office:document>"
+    fact_ref: FACT-FODS-001
+    citation_present: true
+
+  - node_id: CODE-FODS-ATTR_MIMETYPE
+    node_type: code_constant
+    description: "ATTR_MIMETYPE = '{urn:oasis:names:tc:opendocument:xmlns:office:1.0}mimetype'"
+    file: "src/python/fods/constants.py"
+    line_approx: 76
+    citation_comment: "# FACT-FODS-001: office:mimetype attribute on root element"
+    fact_ref: FACT-FODS-001
+    citation_present: true
+
+  - node_id: TEST-FODS-R125-TRACEABILITY
+    node_type: test_suite
+    description: "6 FODS P5/P6 traceability tests for FACT-FODS-001"
+    file: "tests/python/fods/test_r125_fact_traceability.py"
+    test_class: "TestFactFods001Traceability"
+    test_count: 6
+    tests:
+      - test_qn_document_matches_fact_fods_001
+      - test_attr_mimetype_matches_fact_fods_001
+      - test_ns_office_is_spec_defined_uri
+      - test_fact_fods_001_citation_exists_in_constants_source
+      - test_mimetype_value_is_spec_defined
+      - test_fods_parser_uses_qn_document_for_root_detection
+    fact_ref: FACT-FODS-001
+    citation_in_docstring: true
+
+  - node_id: EVIDENCE-FODS-TEST-PASS
+    node_type: test_evidence
+    description: "All 6 FODS traceability tests pass"
+    test_ref: TEST-FODS-R125-TRACEABILITY
+    result: PASS
+    pass_count: 6
+    fail_count: 0
+    log_ref: ".local/evidences/spec-authority-debt-repair-20260608-e382e5f/raw-logs/all-debt-repair-tests.txt"
+
+edges:
+  - from: SOURCE-FODS-ODF13
+    to: FACT-FODS-001
+    edge_type: extracts_fact
+    verified: true
+
+  - from: FACT-FODS-001
+    to: CODE-FODS-QN_DOCUMENT
+    edge_type: cited_in_code
+    citation_type: inline_comment
+
+  - from: FACT-FODS-001
+    to: CODE-FODS-ATTR_MIMETYPE
+    edge_type: cited_in_code
+    citation_type: inline_comment
+
+  - from: CODE-FODS-QN_DOCUMENT
+    to: TEST-FODS-R125-TRACEABILITY
+    edge_type: tested_by
+
+  - from: CODE-FODS-ATTR_MIMETYPE
+    to: TEST-FODS-R125-TRACEABILITY
+    edge_type: tested_by
+
+  - from: FACT-FODS-001
+    to: TEST-FODS-R125-TRACEABILITY
+    edge_type: traced_in_test_docstring
+
+  - from: TEST-FODS-R125-TRACEABILITY
+    to: EVIDENCE-FODS-TEST-PASS
+    edge_type: produces_evidence
+
+p6_gate_checklist:
+  spec_source_present: true
+  spec_sha_recorded: true
+  spec_normalized: true
+  fact_extracted: true
+  fact_verified: true
+  fact_cited_in_code: true
+  fact_cited_in_test: true
+  test_passes: true
+  proof_graph_complete: true
+  ledger_entry_exists: false  # see fods-authority-ledger-entry.json — to be added
+  p6_complete: true
+
+authority_level_achieved: P6
+fact_scope: "P6 is claimed ONLY for FACT-FODS-001. Other FODS facts (FACT-FODS-002 through FACT-FODS-010) remain at needs_review and are not P6."
+
+remaining_debt:
+  - FACT-FODS-002 through FACT-FODS-010 are at needs_review — require independent verification to advance
+  - No product ledger entry yet cites FACT-FODS-001 — see companion ledger entry

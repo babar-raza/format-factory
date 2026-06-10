@@ -1,0 +1,65 @@
+{
+  "api": "document_search_text",
+  "authority": "P5",
+  "fact_ref": "FACT-FODT-001",
+  "search_flat": {
+    "query": "flat",
+    "matches": 4,
+    "hits": [
+      {
+        "block_index": 0,
+        "block_type": "heading",
+        "text": "Introduction to ODF Flat Text",
+        "match_count": 1
+      },
+      {
+        "block_index": 1,
+        "block_type": "paragraph",
+        "text": "This document demonstrates the OpenDocument Flat Text format.",
+        "match_count": 1
+      },
+      {
+        "block_index": 3,
+        "block_type": "paragraph",
+        "text": "ODF flat text stores documents as single flat XML files.",
+        "match_count": 2
+      },
+      {
+        "block_index": 4,
+        "block_type": "paragraph",
+        "text": "Format Factory supports reading and writing flat text documents.",
+        "match_count": 1
+      }
+    ]
+  },
+  "search_document": {
+    "query": "document",
+    "matches": 4,
+    "hits": [
+      {
+        "block_index": 1,
+        "block_type": "paragraph",
+        "text": "This document demonstrates the OpenDocument Flat Text format.",
+        "match_count": 2
+      },
+      {
+        "block_index": 3,
+        "block_type": "paragraph",
+        "text": "ODF flat text stores documents as single flat XML files.",
+        "match_count": 1
+      },
+      {
+        "block_index": 4,
+        "block_type": "paragraph",
+        "text": "Format Factory supports reading and writing flat text documents.",
+        "match_count": 1
+      },
+      {
+        "block_index": 6,
+        "block_type": "paragraph",
+        "text": "Use document_search_text() to find text across all blocks.",
+        "match_count": 1
+      }
+    ]
+  }
+}

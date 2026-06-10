@@ -1,0 +1,101 @@
+{
+  "version": "1.0",
+  "sprint": "skills-r113",
+  "timestamp": "2026-06-03T23:00:00Z",
+  "description": "Stream-convergence protocol defining how Skills stream-local outputs relate to global supervisor state",
+  "streams": ["skills", "mainstream", "acceleration", "supervisor"],
+  "authority_model": {
+    "principle": "STREAM_LOCAL_AUTHORITATIVE",
+    "description": "Each stream's canonical state lives in reports/supervisor-streams/{stream}/. Global reports/supervisor/ is advisory only.",
+    "global_state_policy": "LAST_WRITER_WINS_ADVISORY"
+  },
+  "file_ownership": {
+    "stream_local_authoritative": {
+      "pattern": "reports/supervisor-streams/{stream}/*",
+      "owner": "STREAM",
+      "readable_by": ["ALL_STREAMS"],
+      "writable_by": ["OWNING_STREAM_ONLY"],
+      "examples": [
+        "reports/supervisor-streams/skills/evidence-review.json",
+        "reports/supervisor-streams/skills/authority-map.json",
+        "reports/supervisor-streams/skills/work-item-grades.json",
+        "reports/supervisor-streams/skills/latest-next-worker-prompt.md"
+      ]
+    },
+    "stream_local_continuation": {
+      "pattern": ".local/supervisor/streams/{stream}/continuation-signal.json",
+      "owner": "STREAM",
+      "readable_by": ["ALL_STREAMS"],
+      "writable_by": ["OWNING_STREAM_ONLY"]
+    },
+    "global_advisory": {
+      "pattern": "reports/supervisor/*",
+      "owner": "LAST_WRITER",
+      "readable_by": ["ALL_STREAMS"],
+      "writable_by": ["ANY_STREAM"],
+      "warning": "Subject to overwrite by any stream cycle — do NOT treat as authoritative for stream-specific decisions",
+      "files": [
+        "reports/supervisor/session-resume.md",
+        "reports/supervisor/approval-gates.md",
+        "reports/supervisor/next-sprint.md",
+        "reports/supervisor/evidence-review.json",
+        "reports/supervisor/contradictions.json",
+        "reports/supervisor/work-item-grades.json",
+        "reports/supervisor/latest-review.md",
+        "reports/supervisor/latest-next-worker-prompt.md",
+        "reports/supervisor/latest-cycle-summary.md"
+      ]
+    },
+    "shared_infrastructure": {
+      "pattern": "tools/supervisor/*.py",
+      "owner": "SHARED",
+      "readable_by": ["ALL_STREAMS"],
+      "writable_by": ["ANY_STREAM_WITH_TESTS"],
+      "warning": "Changes affect all streams — require cross-stream test validation"
+    },
+    "registry": {
+      "pattern": ".supervisor/skill-registry.yaml",
+      "owner": "SKILLS_STREAM",
+      "readable_by": ["ALL_STREAMS"],
+      "writable_by": ["SKILLS_STREAM_ONLY"]
+    }
+  },
+  "conflict_resolution": {
+    "same_stream_conflict": "IMPOSSIBLE — single-writer per stream",
+    "cross_stream_conflict_on_global": "LAST_WRITER_WINS — global is advisory",
+    "cross_stream_conflict_on_shared_infra": "REQUIRES_CROSS_STREAM_TEST_PASS",
+    "stream_local_override": "STREAM_LOCAL always wins for that stream's decisions"
+  },
+  "convergence_rules": [
+    {
+      "rule_id": "CR-001",
+      "description": "Stream-local continuation signal is authoritative for that stream",
+      "path": ".local/supervisor/streams/{stream}/continuation-signal.json",
+      "policy": "NEVER_OVERWRITE_BY_GLOBAL"
+    },
+    {
+      "rule_id": "CR-002",
+      "description": "Global continuation signal is informational snapshot",
+      "path": ".local/supervisor/continuation-signal.json",
+      "policy": "LAST_WRITER_WINS"
+    },
+    {
+      "rule_id": "CR-003",
+      "description": "Stream authority map defines stream's canonical outputs",
+      "path": "reports/supervisor-streams/{stream}/authority-map.json",
+      "policy": "STREAM_OWNED"
+    },
+    {
+      "rule_id": "CR-004",
+      "description": "Skill registry is Skills-stream owned",
+      "path": ".supervisor/skill-registry.yaml",
+      "policy": "SKILLS_STREAM_EXCLUSIVE"
+    },
+    {
+      "rule_id": "CR-005",
+      "description": "Context pack is rebuilt each cycle from current state",
+      "path": ".supervisor/context-pack.yaml",
+      "policy": "EPHEMERAL_REBUILD"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001",
+  "generated": "2026-06-06",
+  "lanes": [
+    {"lane_id": "L0", "owned_paths": ["reports/autonomous-orchestrator/00-preflight.md", "reports/autonomous-orchestrator/lane-claims.json", "reports/autonomous-orchestrator/current-autonomy-baseline.json", "reports/autonomous-orchestrator/current-autonomy-baseline.md", "reports/autonomous-orchestrator/taskcards/"]},
+    {"lane_id": "L1", "owned_paths": ["tools/supervisor/continuation_state.py", "tools/supervisor/continuation_router.py", "tests/supervisor/test_continuation_state.py", "tests/supervisor/test_continuation_router.py", "reports/autonomous-orchestrator/continuation-contract/"]},
+    {"lane_id": "L2", "owned_paths": ["tools/supervisor/autonomous_orchestrator.py", "tools/supervisor/orchestrator_lock.py", "tools/supervisor/orchestrator_state.py", "scripts/start_format_factory_orchestrator.ps1", "scripts/start_format_factory_orchestrator.cmd", "scripts/run_format_factory_orchestrator_once.ps1", "tests/supervisor/test_autonomous_orchestrator.py", "tests/supervisor/test_orchestrator_resume.py", "reports/autonomous-orchestrator/orchestrator/"]},
+    {"lane_id": "L3", "owned_paths": ["tools/supervisor/next_action_generator.py", "tests/supervisor/test_next_action_generator.py", "reports/autonomous-orchestrator/next-action-generation/"]},
+    {"lane_id": "L4", "owned_paths": ["tools/supervisor/backends/llm_api_backend.py", "tools/supervisor/backends/session_skill_backend.py", "tests/supervisor/test_llm_api_backend_execution.py", "tests/supervisor/test_session_skill_backend.py", "reports/autonomous-orchestrator/h5/"]},
+    {"lane_id": "L5", "owned_paths": ["scripts/install_format_factory_orchestrator_task.ps1", "reports/autonomous-orchestrator/h6/", "tests/supervisor/test_external_host_bootstrap.py"]},
+    {"lane_id": "L6", "owned_paths": ["reports/autonomous-orchestrator/test-logs/"]},
+    {"lane_id": "L7", "owned_paths": ["reports/autonomous-orchestrator/proof-run/", ".local/supervisor/active-continuation.json", ".local/supervisor/next-action.json", ".local/supervisor/orchestrator-state.json", ".local/supervisor/orchestrator-heartbeat.json", ".local/supervisor/stop-reason.json"]},
+    {"lane_id": "L8", "owned_paths": ["reports/autonomous-orchestrator/iv/"]},
+    {"lane_id": "LE", "owned_paths": [".local/evidences/autonomous-orchestrator/", ".local/supervisor/reviews/autonomous-orchestrator/"]}
+  ],
+  "overlap_violations": []
+}

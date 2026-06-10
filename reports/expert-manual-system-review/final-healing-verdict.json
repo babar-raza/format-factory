@@ -1,0 +1,30 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-INVESTIGATE-AND-HEAL-001",
+  "verdict": "EXPERT_REVIEW_AND_HEALING_PILOT_FIX_VERIFIED_CONTINUE",
+  "verdict_at": "2026-06-05T00:19:00Z",
+  "verdict_rationale": "6 problems found FIX_NOW_SAFE/FIX_NOW_WITH_LIMITED_SCOPE were applied and verified. 0 CRITICAL/HIGH remain open. 2 problems blocked external (PROB-PK05: README creation needs user authorization; PROB-AUTO01: supervisor-generated file). Output floor PILOT_FIX_VERIFIED met. Evidence bundle built (autonomous_cycle exit 0, 7/7 ACCEPTED). Continuation recommended for remaining PROB-PY01 packages (8 of 10 Python packages still lack pyproject.toml) and PROB-PK05 (Netpbm README).",
+  "fixes_applied": [
+    {"problem_id": "PROB-PK01", "title": "FODS .csproj Description updated, GenerateDocumentationFile added", "status": "CLOSED_VERIFIED"},
+    {"problem_id": "PROB-PK02", "title": "FODT .csproj Description updated, GenerateDocumentationFile added", "status": "CLOSED_VERIFIED"},
+    {"problem_id": "PROB-PK03", "title": "Netpbm .csproj Description updated (removed Gate 11 NOT_STARTED), GenerateDocumentationFile added", "status": "CLOSED_VERIFIED"},
+    {"problem_id": "PROB-PK04", "title": "All .csproj GenerateDocumentationFile=true added", "status": "CLOSED_VERIFIED"},
+    {"problem_id": "PROB-SRC01", "title": "FodsCsvExporter.cs stale header block removed", "status": "CLOSED_VERIFIED"},
+    {"problem_id": "PROB-PY01", "title": "pyproject.toml created for abw + gnumeric (pilot)", "status": "CLOSED_VERIFIED"}
+  ],
+  "problems_blocked_external": [
+    {"problem_id": "PROB-PK05", "reason": "FIX_LATER_NEEDS_USER_APPROVAL — README.md does not exist for Netpbm; creation requires user authorization"},
+    {"problem_id": "PROB-AUTO01", "reason": "FIX_LATER — session-resume.md is supervisor-generated; correct fix is next autonomous_cycle run"}
+  ],
+  "problems_false_positive": [
+    {"problem_id": "PROB-PY02", "reason": "DO_NOT_FIX — fods/__init__.py and fodt/__init__.py both already have __version__ = PACKAGE_VERSION at line 72"}
+  ],
+  "continuation_recommended": [
+    "PROB-PY01 remaining 8 packages (zst, sylk, dif, pbm, pgm, ppm, fods-py, fodt-py) — create pyproject.toml for each",
+    "PROB-PK05 — create src/net/netpbm/README.md with user authorization"
+  ],
+  "output_floor": "PILOT_FIX_VERIFIED",
+  "evidence_bundle_sha256": "cf104646f3f903ce7bb1681fa8c44a8c33c0a261734704022cd952e1b1a65fc4",
+  "autonomous_cycle_exit_code": 0,
+  "items_accepted": 7,
+  "terminal": true
+}

@@ -1,0 +1,41 @@
+{
+  "dry_run_id": "E2E-DRY-RUN-K1",
+  "steps": [
+    {
+      "step": 1,
+      "action": "select_gaps",
+      "result": "13 gaps selected"
+    },
+    {
+      "step": 2,
+      "action": "choose_skill_or_handoff",
+      "result": "GOVERNED_HANDOFF_REQUIRED"
+    },
+    {
+      "step": 3,
+      "action": "generate_handoff",
+      "result": "handoff-fods-api-merge_sheets"
+    },
+    {
+      "step": 4,
+      "action": "record_lane",
+      "result": "DRY-RUN-K1 (completed)"
+    },
+    {
+      "step": 5,
+      "action": "evidence_snippet",
+      "result": "ACCEL-R101-K-DRY-RUN"
+    }
+  ],
+  "lane_summary": {
+    "lane_count": 1,
+    "status_counts": {
+      "completed": 1
+    },
+    "total_duration_seconds": 0.0,
+    "total_tests": 80,
+    "total_tests_passed": 80,
+    "total_files_changed": 1
+  },
+  "verdict": "PASS"
+}

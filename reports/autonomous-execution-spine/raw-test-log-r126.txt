@@ -1,0 +1,54 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 44 items
+
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_returns_dict PASSED [  2%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_value_set_correctly PASSED [  4%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_immutable_original_unchanged PASSED [  6%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_set_new_cell PASSED [  9%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_overwrite_existing_cell PASSED [ 11%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_invalid_sheet_index_raises PASSED [ 13%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_non_dict_model_raises_type_error PASSED [ 15%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_non_string_value_raises_type_error PASSED [ 18%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_set_empty_string PASSED [ 20%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_package_import PASSED [ 22%]
+tests/python/gnumeric/test_r126_gnumeric_set_cell.py::TestSetCellValue::test_in_all PASSED [ 25%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_returns_string PASSED [ 27%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_header_row_present PASSED [ 29%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_data_row_present PASSED [ 31%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_multiple_records PASSED [ 34%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_sorted_headers PASSED [ 36%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_union_of_keys PASSED [ 38%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_missing_key_becomes_empty PASSED [ 40%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_non_dict_records_excluded PASSED [ 43%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_empty_source_returns_header_only PASSED [ 45%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_csv_quoting_for_comma PASSED [ 47%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_from_file PASSED [ 50%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_package_import PASSED [ 52%]
+tests/python/ndjson/test_r126_ndjson_export_csv.py::TestNdjsonExportCsv::test_in_all PASSED [ 54%]
+tests/python/tsv/test_r126_tsv_get_headers.py::TestGetHeaders::test_returns_list_for_headed_file PASSED [ 56%]
+tests/python/tsv/test_r126_tsv_get_headers.py::TestGetHeaders::test_returns_correct_headers PASSED [ 59%]
+tests/python/tsv/test_r126_tsv_get_headers.py::TestGetHeaders::test_accepts_string_path PASSED [ 61%]
+tests/python/tsv/test_r126_tsv_get_headers.py::TestGetHeaders::test_accepts_path_object PASSED [ 63%]
+tests/python/tsv/test_r126_tsv_get_headers.py::TestGetHeaders::test_three_column_file PASSED [ 65%]
+tests/python/tsv/test_r126_tsv_get_headers.py::TestGetHeaders::test_single_column_with_header PASSED [ 68%]
+tests/python/tsv/test_r126_tsv_get_headers.py::TestGetHeaders::test_no_header_returns_none_or_list PASSED [ 70%]
+tests/python/tsv/test_r126_tsv_get_headers.py::TestGetHeaders::test_package_import PASSED [ 72%]
+tests/python/tsv/test_r126_tsv_get_headers.py::TestGetHeaders::test_in_all PASSED [ 75%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_returns_string PASSED [ 77%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_first_paragraph PASSED [ 79%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_last_paragraph PASSED [ 81%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_middle_paragraph PASSED [ 84%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_out_of_range_raises_index_error PASSED [ 86%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_negative_out_of_range_raises PASSED [ 88%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_non_dict_model_raises_type_error PASSED [ 90%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_empty_paragraphs_raises_index_error PASSED [ 93%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_from_written_file PASSED [ 95%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_package_import PASSED [ 97%]
+tests/python/abw/test_r126_abw_get_paragraph.py::TestGetParagraph::test_in_all PASSED [100%]
+
+============================= 44 passed in 1.04s ==============================

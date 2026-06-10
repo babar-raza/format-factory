@@ -1,0 +1,23 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-REAL-PILOT-R1-001",
+  "test_date": "2026-06-05",
+  "real_source_results": {
+    "src-zst-rfc8878":  {"stale": false, "reason": "Digest matches current snapshot."},
+    "src-netpbm-docs":  {"stale": false, "reason": "Digest matches current snapshot."},
+    "src-dif-softarts":  {"stale": false, "reason": "Digest matches current snapshot."},
+    "src-fods-oasis":   {"stale": false, "reason": "Digest matches current snapshot."}
+  },
+  "synthetic_test": {
+    "source_id": "src-zst-rfc8878",
+    "synthetic_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "stale": true,
+    "reason": "SHA256 changed: stored=c15ec66abc6489c0... current=aaaaaaaaaaaaaaa...",
+    "real_vault_mutated": false,
+    "test_result": "PASS"
+  },
+  "summary": {
+    "all_real_sources_fresh": true,
+    "synthetic_stale_correctly_detected": true,
+    "staleness_engine_operational": true
+  }
+}

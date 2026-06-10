@@ -1,0 +1,46 @@
+[
+  {
+    "target_writer": "format-factory-csv-dotnet",
+    "expected_package": "FormatFactory.Csv",
+    "exists": false,
+    "evidence_path": "Grep: pattern 'FormatFactory\\.Csv' — no matches in src/**/*.cs; pattern 'class CsvWriter' — no matches in src/**/*.cs",
+    "product_local_stub": "src/net/fods/FodsCsvExporter.cs",
+    "stub_namespace": "FormatFactory.Fods",
+    "stub_note": "Inline RFC 4180 CSV serialization embedded within FodsCsvExporter.cs via EscapeCsvField() and File.WriteAllText. No target_ff_library declaration present. No FormatFactory.Csv namespace exists anywhere in src/net/.",
+    "implementation_status": "NOT_STARTED",
+    "blocker_status": "ARCHITECTURE_GAP"
+  },
+  {
+    "target_writer": "format-factory-html-dotnet",
+    "expected_package": "FormatFactory.Html",
+    "exists": false,
+    "evidence_path": "Grep: pattern 'FormatFactory\\.Html' — no matches in src/**/*.cs; pattern 'class HtmlWriter' — no matches in src/**/*.cs",
+    "product_local_stub": "src/net/fods/FodsHtmlExporter.cs",
+    "stub_namespace": "FormatFactory.Fods",
+    "stub_note": "HTML5 table serialization embedded inline within FodsHtmlExporter.cs using System.Net.WebUtility.HtmlEncode (BCL) and StringBuilder. No target_ff_library declaration present. No FormatFactory.Html namespace exists anywhere in src/net/.",
+    "implementation_status": "NOT_STARTED",
+    "blocker_status": "ARCHITECTURE_GAP"
+  },
+  {
+    "target_writer": "format-factory-markdown-dotnet",
+    "expected_package": "FormatFactory.Markdown",
+    "exists": false,
+    "evidence_path": "Grep: pattern 'FormatFactory\\.Markdown' — no matches in src/**/*.cs; pattern 'class MarkdownWriter' — no matches in src/**/*.cs",
+    "product_local_stub": "src/net/fodt/FodtMarkdownExporter.cs",
+    "stub_namespace": "FormatFactory.Fodt",
+    "stub_note": "ATX Markdown serialization embedded inline within FodtMarkdownExporter.cs using new string('#', level) and string.Join. No target_ff_library declaration present. No FormatFactory.Markdown namespace exists anywhere in src/net/.",
+    "implementation_status": "NOT_STARTED",
+    "blocker_status": "ARCHITECTURE_GAP"
+  },
+  {
+    "target_writer": "format-factory-txt-dotnet",
+    "expected_package": "FormatFactory.Txt",
+    "exists": false,
+    "evidence_path": "Grep: pattern 'FormatFactory\\.Txt' — no matches in src/**/*.cs; pattern 'class TxtWriter' — no matches in src/**/*.cs",
+    "product_local_stub": "src/net/fodt/FodtTxtExporter.cs",
+    "stub_namespace": "FormatFactory.Fodt",
+    "stub_note": "Plain-text serialization embedded inline within FodtTxtExporter.cs using string.Join and File.WriteAllText. No target_ff_library declaration present. No FormatFactory.Txt namespace exists anywhere in src/net/. latest-next-worker-prompt.md Train H explicitly states: 'No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().'",
+    "implementation_status": "NOT_STARTED",
+    "blocker_status": "ARCHITECTURE_GAP"
+  }
+]

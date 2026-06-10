@@ -1,0 +1,63 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRI-LANE-RECONCILIATION-001",
+  "generated_at": "2026-06-04T11:05:00Z",
+  "discovery_method": "filesystem_scan_of_known_report_paths",
+  "supervisor_lane": {
+    "sprint": "supervisor-traffic-controller-hardening-iv",
+    "status": "COMPLETE",
+    "hardening_packet_path": "reports/supervisor-traffic-controller-hardening/hardened-mainstream-handoff.json",
+    "cross_stream_status_path": "reports/supervisor-traffic-controller-hardening/cross-stream-current-status.json",
+    "routing_packet_path": "reports/supervisor-traffic-controller-hardening/replay-run-1/stream_decision.json",
+    "determinism_proven": true,
+    "test_count": 37,
+    "verdict": "SUPERVISOR_HARDENED_WITH_LIMITATIONS",
+    "stale": false
+  },
+  "skills_lane": {
+    "primary_sprint": "skills-governed-execution-hardening",
+    "primary_status": "COMPLETE",
+    "consumption_readiness_path": "reports/skills-governed-execution-hardening/skills-consumption-readiness.json",
+    "fods_full_packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+    "fodt_shell_path": "reports/skills-governed-execution-hardening/fodt-packet-shell.json",
+    "netpbm_shell_path": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+    "breadth_finalization_sprint": "skills-product-breadth-finalization",
+    "breadth_finalization_status": "PARTIAL",
+    "breadth_finalization_evidence": "preflight only — no final outputs",
+    "best_available_status": "SKILLS_CONSUMABLE_WITH_LIMITATIONS",
+    "stale": false,
+    "missing_outputs": ["skills-product-breadth-finalization final packets for FODT/Netpbm"]
+  },
+  "acceleration_lane": {
+    "primary_sprint": "acceleration-product-first",
+    "primary_status": "COMPLETE",
+    "consumption_packets_dir": "reports/acceleration-product-first/mainstream-consumption-packets/",
+    "consumption_packets": [
+      "fods-dogfood_status-fods_to_csv_dotnet.json",
+      "fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+      "netpbm-dotnet_status-netpbm_flip_diagonal.json",
+      "sylk-python_status-write_sylk.json"
+    ],
+    "hardening_sprint": "acceleration-hardening",
+    "hardening_status": "PARTIAL",
+    "hardening_evidence": "current-git-status.txt only — no replay runs completed",
+    "best_available_status": "ACCELERATION_PACKETS_AVAILABLE_HARDENING_INCOMPLETE",
+    "authority_state": "ai_draft",
+    "stale": false,
+    "missing_outputs": ["acceleration-hardening replay-run-1 and replay-run-2", "acceleration-hardening routing determinism proof"]
+  },
+  "stale_or_missing_lanes": [
+    {
+      "lane": "skills-product-breadth-finalization",
+      "issue": "PARTIAL — only preflight",
+      "impact": "FODT and Netpbm Skills packets not finalized",
+      "blocking": false
+    },
+    {
+      "lane": "acceleration-hardening",
+      "issue": "PARTIAL — only git-status.txt",
+      "impact": "Acceleration hardening not independently verified",
+      "blocking": false
+    }
+  ],
+  "overall_discovery_verdict": "BEST_AVAILABLE_INPUTS_IDENTIFIED_LIMITATIONS_DOCUMENTED"
+}

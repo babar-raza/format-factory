@@ -1,0 +1,673 @@
+[
+  {
+    "id": "TC-REPAIR-000",
+    "title": "Lane 0 — Coordinator preflight: lane ownership, file ownership, overlap check, taskcard-state",
+    "lane": "0",
+    "owner": "Coordinator",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": [],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/lane-ownership.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/file-ownership-map.json",
+      "reports/specification-authority-layer-production-healing-plan-repair/overlap-check.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/taskcard-state.json",
+      "reports/specification-authority-layer-production-healing-plan-repair/coordinator-integration-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/lane-ownership.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/file-ownership-map.json",
+      "reports/specification-authority-layer-production-healing-plan-repair/overlap-check.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/taskcard-state.json",
+      "reports/specification-authority-layer-production-healing-plan-repair/coordinator-integration-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/overlap-check.md"
+    ],
+    "acceptance_check": "file-ownership-map.json parses; taskcard-state.json parses; overlap-check.md ends NO_OVERLAPS_DETECTED; all files present",
+    "rollback_plan": "Delete all 5 files",
+    "closeout_criteria": "All 5 files created; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-001",
+    "title": "Lane A — Review current plan: correctness, safety, governance, path safety, evidence closeout",
+    "lane": "A",
+    "owner": "Review agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": [],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/00-review.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": ["Current plan (inline context)", "docs/governance/ai-authority-boundary.md"],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/00-review.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/00-review.md"
+    ],
+    "acceptance_check": "File exists with H1; all 8 dimensions present; final section PLAN_NEEDS_REPAIR",
+    "rollback_plan": "Delete file",
+    "closeout_criteria": "File created; all acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-002",
+    "title": "Lane B — Fix closeout model: add autonomous-cycle + review-package-proof.md",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": ["tools/supervisor/autonomous_cycle.py", "tools/supervisor/build_declaration_review_package.py"],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "acceptance_check": "gap-analysis.md has Defect 1 section; repair-decision-log.md has autonomous-cycle command",
+    "rollback_plan": "Remove appended sections",
+    "closeout_criteria": "Both files updated; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-003",
+    "title": "Lane B — Fix allowed paths: add .local/supervisor/reviews/... globally",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md"
+    ],
+    "acceptance_check": "gap-analysis.md has Defect 2 section; repair-decision-log.md lists 4 path patterns",
+    "rollback_plan": "Remove appended sections",
+    "closeout_criteria": "Both files updated; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-004",
+    "title": "Lane B — Replace hardcoded counts with declared-vs-materialized validation",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md"
+    ],
+    "acceptance_check": "gap-analysis.md has Defect 3 section; repair-decision-log.md describes declared-vs-materialized approach",
+    "rollback_plan": "Remove appended sections",
+    "closeout_criteria": "Both files updated; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-005",
+    "title": "Lane B — Fix taskcard lifecycle: initialize as READY, enforce READY → IN_PROGRESS → CLOSED_VERIFIED",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md"
+    ],
+    "acceptance_check": "gap-analysis.md has Defect 4 section; repair-decision-log.md states status = READY for initialization",
+    "rollback_plan": "Remove appended sections",
+    "closeout_criteria": "Both files updated; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-006",
+    "title": "Lane B — Fix evidence declaration: conditional worker_self_verdict (no pre-filled PASS)",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md"
+    ],
+    "acceptance_check": "gap-analysis.md has Defect 5 section; repair-decision-log.md has conditional selection logic with 3 macro verdicts",
+    "rollback_plan": "Remove appended sections",
+    "closeout_criteria": "Both files updated; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-007",
+    "title": "Lane B — Fix Python command portability: PYTHON variable with Windows venv + fallback",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md"
+    ],
+    "acceptance_check": "gap-analysis.md has Defect 6 section; repair-decision-log.md shows PYTHON variable definition and fallback",
+    "rollback_plan": "Remove appended sections",
+    "closeout_criteria": "Both files updated; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-008",
+    "title": "Lane B — Remove machine-specific input path, replace with repo-local copy",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md"
+    ],
+    "acceptance_check": "gap-analysis.md has Defect 7 section; repair-decision-log.md describes Options A and B",
+    "rollback_plan": "Remove appended sections",
+    "closeout_criteria": "Both files updated; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-009",
+    "title": "Lane B — Normalize final verdict language (remove generic COMPLETE/BLOCKED/PARTIAL)",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md"
+    ],
+    "acceptance_check": "gap-analysis.md has Defect 8 section; repair-decision-log.md lists 3 macro verdicts",
+    "rollback_plan": "Remove appended sections",
+    "closeout_criteria": "Both files updated; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-010",
+    "title": "Lane B — Strengthen validation: declared-vs-materialized + all mandatory checks",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md"
+    ],
+    "acceptance_check": "gap-analysis.md has Defect 9 section; repair-decision-log.md lists V01 through V12",
+    "rollback_plan": "Remove appended sections",
+    "closeout_criteria": "Both files updated; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-011",
+    "title": "Lane C — Create repaired final single-go execution prompt",
+    "lane": "C",
+    "owner": "Prompt agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-002", "TC-REPAIR-003", "TC-REPAIR-004", "TC-REPAIR-005", "TC-REPAIR-006", "TC-REPAIR-007", "TC-REPAIR-008", "TC-REPAIR-009", "TC-REPAIR-010"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/repaired-final-single-go-execution-prompt.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/gap-analysis.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/repair-decision-log.md"
+    ],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/repaired-final-single-go-execution-prompt.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/repaired-final-single-go-execution-prompt.md"
+    ],
+    "acceptance_check": "File starts with EXECUTION MODE header; all 24 keywords present; no banned strings",
+    "rollback_plan": "Delete file",
+    "closeout_criteria": "File created; all 24 keywords confirmed; no banned strings",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-012",
+    "title": "Lane C — Final adversarial independent verification (11 questions)",
+    "lane": "C",
+    "owner": "Adversarial verifier",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-011"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-adversarial-independent-verification.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/repaired-final-single-go-execution-prompt.md"
+    ],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-adversarial-independent-verification.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-adversarial-independent-verification.md"
+    ],
+    "acceptance_check": "File exists with H1; 11 questions answered; Q1, Q7, Q10, Q11 all PASS",
+    "rollback_plan": "Delete file",
+    "closeout_criteria": "File created; all acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-013a",
+    "title": "Lane C — Validation results + final git status",
+    "lane": "C",
+    "owner": "Validation agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-012"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/validation-results.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/final-git-status.txt"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/validation-results.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/final-git-status.txt"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/validation-results.md",
+      "reports/specification-authority-layer-production-healing-plan-repair/final-git-status.txt"
+    ],
+    "acceptance_check": "validation-results.md has H1; all checks pass; git diff shows no forbidden changes",
+    "rollback_plan": "Delete both files",
+    "closeout_criteria": "Both files created; all acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-REPAIR-013b",
+    "title": "Lane 0 — Evidence declaration, manifest, autonomous-cycle, review package, proof",
+    "lane": "0",
+    "owner": "Evidence agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-013a"],
+    "allowed_paths": [
+      ".local/evidences/specification-authority-layer-production-healing-plan-repair/evidence-declaration.yaml",
+      ".local/evidences/specification-authority-layer-production-healing-plan-repair/evidence-manifest.yaml",
+      "reports/specification-authority-layer-production-healing-plan-repair/review-package-proof.md",
+      ".local/supervisor/reviews/specification-authority-layer-production-healing-plan-repair/declaration-review-package.zip"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*", ".local/evidences/specification-authority-layer-production-healing/**"],
+    "input_files": [],
+    "output_files": [
+      ".local/evidences/specification-authority-layer-production-healing-plan-repair/evidence-declaration.yaml",
+      ".local/evidences/specification-authority-layer-production-healing-plan-repair/evidence-manifest.yaml",
+      "reports/specification-authority-layer-production-healing-plan-repair/review-package-proof.md",
+      ".local/supervisor/reviews/specification-authority-layer-production-healing-plan-repair/declaration-review-package.zip"
+    ],
+    "evidence_paths": [
+      ".local/evidences/specification-authority-layer-production-healing-plan-repair/evidence-declaration.yaml",
+      ".local/evidences/specification-authority-layer-production-healing-plan-repair/evidence-manifest.yaml",
+      "reports/specification-authority-layer-production-healing-plan-repair/review-package-proof.md",
+      ".local/supervisor/reviews/specification-authority-layer-production-healing-plan-repair/declaration-review-package.zip"
+    ],
+    "acceptance_check": "evidence-declaration.yaml parses; review-package-proof.md has SHA-256; autonomous-cycle exit code recorded",
+    "rollback_plan": "Delete evidence files only; preserve sprint outputs",
+    "closeout_criteria": "All 6 gate items present: evidence-declaration.yaml, evidence-manifest.yaml, autonomous-cycle exit=0, ZIP exists, SHA-256 computed, review-package-proof.md written",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-001",
+    "title": "Lane A — Hardening review: identify all remaining portability and safety gaps",
+    "lane": "A",
+    "owner": "Review agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-REPAIR-013a"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-review.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/repaired-final-single-go-execution-prompt.md"
+    ],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-review.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-review.md"
+    ],
+    "acceptance_check": "File exists with H1; 10 dimensions assessed; final section HARDENING_REQUIRED",
+    "rollback_plan": "Delete file",
+    "closeout_criteria": "File created; all 10 dimensions assessed; HARDENING_REQUIRED present",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-002",
+    "title": "Lane B — H-001: Remove all hardcoded absolute paths; add REPO_ROOT variable",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "acceptance_check": "H-001 section present; REPO_ROOT detection shown for Bash and PowerShell",
+    "rollback_plan": "Delete file (created fresh in this taskcard)",
+    "closeout_criteria": "File created with H-001 section; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-003",
+    "title": "Lane B — H-002: Expand banned-string scan to all generated artifacts",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "acceptance_check": "H-002 section present; BANNED list has 7+ patterns; scan covers both directories",
+    "rollback_plan": "Remove appended H-002 section",
+    "closeout_criteria": "Section appended; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-004",
+    "title": "Lane B — H-003: Clarify repair-sprint vs healing-sprint evidence root labels",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "acceptance_check": "H-003 section present; 4 canonical labels defined; hard error rule stated",
+    "rollback_plan": "Remove appended H-003 section",
+    "closeout_criteria": "Section appended; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-005",
+    "title": "Lane B — H-004: Add mandatory preflight governance reads",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "acceptance_check": "H-004 section present; 10 governance files listed; AUTONOMOUS_CONTINUE check present",
+    "rollback_plan": "Remove appended H-004 section",
+    "closeout_criteria": "Section appended; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-006",
+    "title": "Lane B — H-005: Python setup — both Bash and PowerShell blocks",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "acceptance_check": "H-005 section present; Bash block present; PowerShell block with Test-Path present; both define REPO_ROOT",
+    "rollback_plan": "Remove appended H-005 section",
+    "closeout_criteria": "Section appended; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-007",
+    "title": "Lane B — H-006: Fix TC-REPAIR-013b closure ordering — 6-item gate before CLOSED_VERIFIED",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "acceptance_check": "H-006 section present; all 6 gate items enumerated; BLOCKED rule stated",
+    "rollback_plan": "Remove appended H-006 section",
+    "closeout_criteria": "Section appended; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-008",
+    "title": "Lane B — H-007: Specify fallback ZIP contents exactly",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "acceptance_check": "H-007 section present; all report files listed; fallback-package-manifest.json mentioned; ZIP path uses REPO_ROOT",
+    "rollback_plan": "Remove appended H-007 section",
+    "closeout_criteria": "Section appended; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-009",
+    "title": "Lane B — H-008: Clarify local-only validation scope",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "acceptance_check": "H-008 section present; LOCAL ONLY stated; explicit CI exclusions present",
+    "rollback_plan": "Remove appended H-008 section",
+    "closeout_criteria": "Section appended; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-010",
+    "title": "Lane B — H-009: Strengthen final verdict rules (no generic prose fallback)",
+    "lane": "B",
+    "owner": "Repair agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-001"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*"],
+    "input_files": [],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "acceptance_check": "H-009 section present; PLAN_REPAIRED_READY_FOR_EXECUTION and PLAN_STILL_NEEDS_REPAIR present; prohibited prose list present",
+    "rollback_plan": "Remove appended H-009 section",
+    "closeout_criteria": "Section appended; acceptance checks pass",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-011",
+    "title": "Lane C — H-010: Create final-ready-to-send-execution-prompt.md (12 required sections)",
+    "lane": "C",
+    "owner": "Prompt agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-002", "TC-HARD-003", "TC-HARD-004", "TC-HARD-005", "TC-HARD-006", "TC-HARD-007", "TC-HARD-008", "TC-HARD-009", "TC-HARD-010"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-ready-to-send-execution-prompt.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-hardening-diff.md"
+    ],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-ready-to-send-execution-prompt.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-ready-to-send-execution-prompt.md"
+    ],
+    "acceptance_check": "File exists; 12 sections present; 24 keywords present; 8 hardening markers present; no banned strings",
+    "rollback_plan": "Delete file",
+    "closeout_criteria": "File created; all keywords and hardening markers confirmed; no banned strings",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-HARD-012",
+    "title": "Lane C — Final hardening validation: final-plan-validation.md",
+    "lane": "C",
+    "owner": "Validation agent",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-HARD-011"],
+    "allowed_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-validation.md"
+    ],
+    "forbidden_paths": ["src/*", "tests/*", "registry/*", "product-capability-matrix/*"],
+    "input_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-ready-to-send-execution-prompt.md"
+    ],
+    "output_files": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-validation.md"
+    ],
+    "evidence_paths": [
+      "reports/specification-authority-layer-production-healing-plan-repair/final-plan-validation.md"
+    ],
+    "acceptance_check": "File exists with H1; all 10 hardening checks listed; keyword verification present; final verdict is one of 2 macros",
+    "rollback_plan": "Delete file",
+    "closeout_criteria": "File created; all acceptance checks pass",
+    "blocker_reason": ""
+  }
+]

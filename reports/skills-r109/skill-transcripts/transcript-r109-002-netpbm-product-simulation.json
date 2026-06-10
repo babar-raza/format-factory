@@ -1,0 +1,23 @@
+{
+  "invocation_id": "r109-sim-002-netpbm-extract-channel-product",
+  "skill_id": "add-dotnet-api",
+  "mode": "dry-run",
+  "inputs": {
+    "format_id": "netpbm",
+    "api_name": "ExtractChannel",
+    "exact_source_paths": ["src/net/netpbm/Model/NetpbmImage.cs"],
+    "exact_test_paths": ["tests/net/netpbm/NetpbmExtractChannelTests.cs"],
+    "focused_test_command": "dotnet test --filter NetpbmExtractChannel",
+    "ledger_entry_path": "reports/r-next/product-code-change-ledger.json"
+  },
+  "allowed_files": [
+    "src/net/netpbm/Model/NetpbmImage.cs",
+    "tests/net/netpbm/NetpbmExtractChannelTests.cs"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T22:20:00Z",
+  "notes": "Product simulation: Netpbm ExtractChannel with full adoption inputs."
+}

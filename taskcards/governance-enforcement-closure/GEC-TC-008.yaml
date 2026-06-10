@@ -1,0 +1,30 @@
+id: GEC-TC-008
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Pipeline pilot expansion: 10 GEC pilots (gec-pilot-001..010)"
+status: completed
+lane: lane_h_pilots
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  Sprint 3 had 8 enforcement pilots (ENF-PILOT-001..008) but no closure pilots.
+  Sprint 4 must add 10 GEC pilots covering governance-only, missing fields, false
+  REPLAYABLE claims, MANUAL_UNGOVERNED, and unsafe prompt wording.
+scope:
+  - Create tests/fixtures/governance-closure-pilots/ with 10 fixture YAML files
+  - Create tests/supervisor/test_governance_closure_pilots.py with 36 tests
+  - Confirm all 36 tests pass
+files_to_create:
+  - tests/fixtures/governance-closure-pilots/ (10 YAML fixtures)
+  - tests/supervisor/test_governance_closure_pilots.py
+acceptance_criteria:
+  - 36 tests pass
+  - PASS pilots: 001, 005, 007 (no block)
+  - FAIL pilots: 002, 004, 006, 010 (blocks sprint)
+  - Special pilots: 003 (WARN grace), 008 (prompt quality), 009 (anti-skip)
+test_log: reports/repeatability-governance-closure-rnext/raw-logs/closure-pilot-tests.log
+dependencies: [GEC-TC-002, GEC-TC-005]
+handoff_to_autonomy_sprint: false

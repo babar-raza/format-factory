@@ -237,3 +237,85 @@ def seed_autonomy_queue(sprint_id: str) -> List[str]:
     for item in defaults:
         ids.append(enqueue(item))
     return ids
+
+
+# ---------------------------------------------------------------------------
+# Queue item schema v2 validation
+# ---------------------------------------------------------------------------
+
+_V2_REQUIRED_FIELDS = {
+    "action_id", "action_type", "stream", "priority", "status",
+    "objective", "allowed_paths", "forbidden_paths",
+    "human_approval_required", "evidence_required",
+}
+
+_VALID_STATUSES = {"pending", "running", "done", "failed", "blocked"}
+
+_SOURCE_CHANGING_TYPES = {"IMPLEMENT_SMALL_PRODUCT_FEATURE", "PRODUCT_SOURCE_PATCH_BOUNDED"}
+
+_OBJECTIVE_MIN_LEN = 10
+
+
+def validate_item_schema_v2(item: dict) -> list:
+    """Validate a queue item against the v2 schema.
+
+    Returns a list of error strings; empty list means valid.
+    """
+    errors: list = []
+
+    missing = _V2_REQUIRED_FIELDS - set(item.keys())
+    if missing:
+        errors.append(f"missing required fields: {sorted(missing)}")
+
+    if "allowed_paths" in item and not isinstance(item["allowed_paths"], list):
+        errors.append("allowed_paths must be a list")
+
+    if "forbidden_paths" in item and not isinstance(item["forbidden_paths"], list):
+        errors.append("forbidden_paths must be a list")
+
+    if "human_approval_required" in item and not isinstance(item["human_approval_required"], bool):
+        errors.append("human_approval_required must be a bool")
+
+    if "priority" in item and not isinstance(item["priority"], int):
+        errors.append("priority must be an int")
+
+    if "status" in item and item["status"] not in _VALID_STATUSES:
+        errors.append(f"status must be one of {sorted(_VALID_STATUSES)}, got {item['status']!r}")
+
+    if "objective" in item and len(str(item["objective"])) < _OBJECTIVE_MIN_LEN:
+        errors.append(f"objective must be at least {_OBJECTIVE_MIN_LEN} characters")
+
+    action_type = item.get("action_type", "")
+    if action_type in _SOURCE_CHANGING_TYPES:
+        if "rollback_strategy" not in item:
+            errors.append("rollback_strategy is required for source-changing action types")
+        if "expected_tests" not in item:
+            errors.append("expected_tests is required for source-changing action types")
+
+    gate = item.get("gate_classification", "")
+    if gate == "LOCAL_AUTONOMOUS" and item.get("human_approval_required") is True:
+        errors.append("human_approval_required must be False for LOCAL_AUTONOMOUS gate items")
+
+    errors.extend(validate_route_classification(item))
+
+    return errors
+
+
+def validate_route_classification(item: dict) -> list:
+    """Check route metadata for machinery-category items.
+
+    Returns list of error strings (empty = valid).
+    Non-blocking for items without task_category (backward compat).
+    Blocks for items WITH task_category in MACHINERY + no route_decision_id.
+    """
+    from tools.supervisor.autonomy_route_models import TASK_CATEGORIES_MACHINERY
+
+    errors: list = []
+    cat = item.get("task_category", "")
+    if cat and cat in TASK_CATEGORIES_MACHINERY:
+        if not item.get("route_decision_id"):
+            errors.append(
+                f"Machinery category {cat!r} requires route_decision_id. "
+                "Classify via autonomy_route_decider.decide_route() first."
+            )
+    return errors

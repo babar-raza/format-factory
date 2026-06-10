@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "description": "Maps Skills full packet fields to Acceleration packet fields for tri-lane consumption",
+  "authority_rule": "Skills packets are authoritative for allowed_files and acceptance_criteria. Acceleration ai_draft outputs are advisory and superseded by Skills packets.",
+  "field_mappings": [
+    {
+      "skills_field": "allowed_files",
+      "acceleration_field": "allowed_files",
+      "mapping_type": "direct",
+      "note": "Use Skills allowed_files — more specific (exact filenames, not directory patterns)"
+    },
+    {
+      "skills_field": "forbidden_files",
+      "acceleration_field": "forbidden_files",
+      "mapping_type": "superset",
+      "note": "Skills forbidden_files is a superset — includes governance paths like .supervisor/policies.yaml, approval-gates.md"
+    },
+    {
+      "skills_field": "gap_id",
+      "acceleration_field": "selected_gap",
+      "mapping_type": "semantic",
+      "note": "Skills uses GAP-* prefix identifier; Acceleration uses capability path string. Both refer to same gap."
+    },
+    {
+      "skills_field": "capability",
+      "acceleration_field": "capability_path",
+      "mapping_type": "direct",
+      "note": "Same format: family.category.capability_name"
+    },
+    {
+      "skills_field": "acceptance_criteria",
+      "acceleration_field": "downgrade_rules",
+      "mapping_type": "semantic_replacement",
+      "note": "Skills acceptance_criteria are pass/fail gates. Acceleration downgrade_rules are advisory warnings. When Skills packet exists, use acceptance_criteria as the gate."
+    },
+    {
+      "skills_field": "enforcement_tier",
+      "acceleration_field": "governance_rules[*]",
+      "mapping_type": "semantic",
+      "note": "FAIL_CLOSED maps to: no capability matrix update without test evidence; no authority file modification from AI output; all AI outputs must carry ai_draft until human evaluation"
+    },
+    {
+      "skills_field": "proposed_capability_delta",
+      "acceleration_field": "capability_matrix_update_hint",
+      "mapping_type": "equivalent",
+      "note": "Both express the same intent: do not update poc-targets.yaml until tests pass and Supervisor approves"
+    },
+    {
+      "skills_field": "mode",
+      "acceleration_field": null,
+      "mapping_type": "skills_only",
+      "note": "Acceleration does not track execution mode. Skills mode=live means Mainstream will execute against real source."
+    },
+    {
+      "skills_field": "rollback_note",
+      "acceleration_field": null,
+      "mapping_type": "skills_only",
+      "note": "Acceleration has no rollback concept. Skills rollback_note is for Mainstream worker."
+    }
+  ],
+  "packets": {
+    "fodt_markdown": {
+      "skills_packet": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "acceleration_packet": "reports/acceleration-product-first/mainstream-consumption-packets/fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+      "authority": "Skills packet (FULL, READY_FOR_MAINSTREAM)"
+    },
+    "fodt_txt": {
+      "skills_packet": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+      "acceleration_packet": null,
+      "authority": "Skills packet only (no acceleration packet exists for fodt_to_txt_dotnet)"
+    },
+    "netpbm_pipeline": {
+      "skills_packet": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "acceleration_packet": "reports/acceleration-product-first/mainstream-consumption-packets/netpbm-dotnet_status-netpbm_flip_diagonal.json",
+      "authority": "Skills packet (corrects stale ai_draft selection of flip_diagonal)"
+    }
+  }
+}

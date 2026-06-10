@@ -1,0 +1,33 @@
+handoff_id: SKILLS-R102-HANDOFF-001
+skill_id: add-dotnet-object-model-feature
+format_id: fods
+feature_name: RenameSheet
+target_sprint: R103
+stream: skills
+
+inputs:
+  format_id: fods
+  feature_name: RenameSheet
+  model_class: FodsDocument
+  exact_source_paths:
+    - src/net/fods/FodsDocument.cs
+  exact_test_paths:
+    - tests/net/fods/FodsR103RenameSheetTests.cs
+  ledger_entry_path: reports/r90/product-code-change-ledger.json
+
+preconditions:
+  - FodsDocument.cs exists and compiles
+  - Sheet management APIs exist (GetSheetNames, AddSheet proven)
+  - Ledger validator PASS for current HEAD
+
+acceptance_criteria:
+  - RenameSheet(oldName, newName) modifies XML table:name attribute
+  - 8+ tests covering: basic rename, duplicate name rejection, nonexistent sheet error, round-trip preservation
+  - Ledger entry added with SHA-256
+  - dotnet test passes focused filter
+
+forbidden_paths:
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+
+rollback_plan: Revert FodsDocument.cs changes and remove test file

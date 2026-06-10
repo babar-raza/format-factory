@@ -1,0 +1,9 @@
+{
+  "sample_type": "dogfood_proof",
+  "format": "FODS",
+  "workflow": "InsertRowWithValues -> ExportSheetToJson -> Assert.Contains",
+  "test_file": "tests/net/fods/FodsR113JsonDogfoodTests.cs",
+  "test_method": "JsonExport_AfterSetCell_ContainsValue",
+  "assertion": "JSON export after row insertion contains inserted value",
+  "pass": true
+}

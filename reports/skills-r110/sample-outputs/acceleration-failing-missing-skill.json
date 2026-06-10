@@ -1,0 +1,26 @@
+{
+  "sample_type": "acceleration-failing-missing-skill",
+  "description": "An Acceleration POC gap without skill coverage — tracked but low adoption score",
+  "work_item": {
+    "item_id": "W1-POC-UNROUTED",
+    "title": "Unrouted POC gap (no skill in registry)",
+    "evidence_paths": ["reports/r98/poc-unrouted.md"],
+    "exemption_reason": "Gap routing item: no source change, no skill in registry for this gap type.",
+    "status": "completed"
+  },
+  "adoption_result": {
+    "compliant": true,
+    "checks": {
+      "has_skill_id": false,
+      "has_transcript": false,
+      "has_ledger_entry": "n/a"
+    }
+  },
+  "routing": {
+    "gap_source": "poc-targets.yaml#unrouted-gap",
+    "skill_id": null,
+    "handoff_yaml": null,
+    "transcript_expected": false
+  },
+  "adoption_note": "Compliant (skill_id not blocking) but adoption score is 0 — no skill coverage, no transcript, no routing"
+}

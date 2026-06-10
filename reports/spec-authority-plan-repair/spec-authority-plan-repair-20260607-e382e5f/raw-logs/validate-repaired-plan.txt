@@ -1,0 +1,838 @@
+Validating artifacts in: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\reports\spec-authority-plan-repair\spec-authority-plan-repair-20260607-e382e5f
+============================================================
+  PASS: Required file exists: authority-healing-state-machine.json
+  PASS: Required file exists: authority-healing-state-machine.md
+  PASS: Required file exists: taskcard-schema.json
+  PASS: Required file exists: authority-healing-taskcards.json
+  PASS: Required file exists: taskcard-state.json
+  PASS: Required file exists: taskcard-transition-ledger.jsonl
+  PASS: Required file exists: lane-ownership-map.json
+  PASS: Required file exists: lane-ownership-map.md
+  PASS: Required file exists: rollback-recovery-plan.json
+  PASS: Required file exists: rollback-recovery-plan.md
+  PASS: Required file exists: verification-gates.json
+  PASS: Required file exists: verification-gates.md
+  PASS: Required file exists: plan-readiness-review.md
+  PASS: Required file exists: evidence-import-review.md
+  PASS: Required file exists: required-plan-repairs.md
+  PASS: Required file exists: repaired-plan.md
+  PASS: Required file exists: repaired-plan.json
+  PASS: Required file exists: adversarial-review.md
+  PASS: Required file exists: evidence-bundle-contract.md
+  PASS: Required file exists: plan-completeness-check.md
+  PASS: Required file exists: final-summary.md
+  PASS: State count = 32 (got 32)
+  PASS: Declared state_count = 32 (got 32)
+  PASS: Terminal state present: CLOSED_VERIFIED
+  PASS: Terminal state present: REJECTED_FALSE_CLAIM
+  PASS: Terminal state present: CLOSED_WITH_AUTHORITY_DEBT
+  PASS: Exactly 3 states marked terminal (got {'CLOSED_VERIFIED', 'REJECTED_FALSE_CLAIM', 'CLOSED_WITH_AUTHORITY_DEBT'})
+  PASS: taskcard-schema.json is valid JSON
+  PASS: Taskcard count >= 24 (got 25)
+  PASS: Taskcard TCA-000 has required field: taskcard_id
+  PASS: Taskcard TCA-000 has required field: title
+  PASS: Taskcard TCA-000 has required field: stream
+  PASS: Taskcard TCA-000 has required field: lane
+  PASS: Taskcard TCA-000 has required field: root_cause_ids
+  PASS: Taskcard TCA-000 has required field: evidence_source_ids
+  PASS: Taskcard TCA-000 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-000 has required field: affected_formats
+  PASS: Taskcard TCA-000 has required field: current_state
+  PASS: Taskcard TCA-000 has required field: allowed_paths
+  PASS: Taskcard TCA-000 has required field: forbidden_paths
+  PASS: Taskcard TCA-000 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-000 has required field: authority_inputs_required
+  PASS: Taskcard TCA-000 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-000 has required field: implementation_scope
+  PASS: Taskcard TCA-000 has required field: non_goals
+  PASS: Taskcard TCA-000 has required field: blocking_gates
+  PASS: Taskcard TCA-000 has required field: validation_commands
+  PASS: Taskcard TCA-000 has required field: negative_tests_required
+  PASS: Taskcard TCA-000 has required field: pilot_required
+  PASS: Taskcard TCA-000 has required field: evidence_required
+  PASS: Taskcard TCA-000 has required field: state_transition_rules
+  PASS: Taskcard TCA-000 has required field: rollback_plan
+  PASS: Taskcard TCA-000 has required field: risk_level
+  PASS: Taskcard TCA-000 has required field: owner_lane
+  PASS: Taskcard TCA-000 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-000 has required field: final_state
+  PASS: Taskcard TCA-000 has required field: closure_criteria
+  PASS: Taskcard TCA-000 has valid lane: L-COORD
+  PASS: Taskcard TCA-000 current_state 'IMPLEMENTING' exists in state machine
+  PASS: Taskcard TCA-000 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-001 has required field: taskcard_id
+  PASS: Taskcard TCA-001 has required field: title
+  PASS: Taskcard TCA-001 has required field: stream
+  PASS: Taskcard TCA-001 has required field: lane
+  PASS: Taskcard TCA-001 has required field: root_cause_ids
+  PASS: Taskcard TCA-001 has required field: evidence_source_ids
+  PASS: Taskcard TCA-001 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-001 has required field: affected_formats
+  PASS: Taskcard TCA-001 has required field: current_state
+  PASS: Taskcard TCA-001 has required field: allowed_paths
+  PASS: Taskcard TCA-001 has required field: forbidden_paths
+  PASS: Taskcard TCA-001 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-001 has required field: authority_inputs_required
+  PASS: Taskcard TCA-001 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-001 has required field: implementation_scope
+  PASS: Taskcard TCA-001 has required field: non_goals
+  PASS: Taskcard TCA-001 has required field: blocking_gates
+  PASS: Taskcard TCA-001 has required field: validation_commands
+  PASS: Taskcard TCA-001 has required field: negative_tests_required
+  PASS: Taskcard TCA-001 has required field: pilot_required
+  PASS: Taskcard TCA-001 has required field: evidence_required
+  PASS: Taskcard TCA-001 has required field: state_transition_rules
+  PASS: Taskcard TCA-001 has required field: rollback_plan
+  PASS: Taskcard TCA-001 has required field: risk_level
+  PASS: Taskcard TCA-001 has required field: owner_lane
+  PASS: Taskcard TCA-001 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-001 has required field: final_state
+  PASS: Taskcard TCA-001 has required field: closure_criteria
+  PASS: Taskcard TCA-001 has valid lane: L-EVIDENCE
+  PASS: Taskcard TCA-001 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-001 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-002 has required field: taskcard_id
+  PASS: Taskcard TCA-002 has required field: title
+  PASS: Taskcard TCA-002 has required field: stream
+  PASS: Taskcard TCA-002 has required field: lane
+  PASS: Taskcard TCA-002 has required field: root_cause_ids
+  PASS: Taskcard TCA-002 has required field: evidence_source_ids
+  PASS: Taskcard TCA-002 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-002 has required field: affected_formats
+  PASS: Taskcard TCA-002 has required field: current_state
+  PASS: Taskcard TCA-002 has required field: allowed_paths
+  PASS: Taskcard TCA-002 has required field: forbidden_paths
+  PASS: Taskcard TCA-002 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-002 has required field: authority_inputs_required
+  PASS: Taskcard TCA-002 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-002 has required field: implementation_scope
+  PASS: Taskcard TCA-002 has required field: non_goals
+  PASS: Taskcard TCA-002 has required field: blocking_gates
+  PASS: Taskcard TCA-002 has required field: validation_commands
+  PASS: Taskcard TCA-002 has required field: negative_tests_required
+  PASS: Taskcard TCA-002 has required field: pilot_required
+  PASS: Taskcard TCA-002 has required field: evidence_required
+  PASS: Taskcard TCA-002 has required field: state_transition_rules
+  PASS: Taskcard TCA-002 has required field: rollback_plan
+  PASS: Taskcard TCA-002 has required field: risk_level
+  PASS: Taskcard TCA-002 has required field: owner_lane
+  PASS: Taskcard TCA-002 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-002 has required field: final_state
+  PASS: Taskcard TCA-002 has required field: closure_criteria
+  PASS: Taskcard TCA-002 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-002 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-002 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-003 has required field: taskcard_id
+  PASS: Taskcard TCA-003 has required field: title
+  PASS: Taskcard TCA-003 has required field: stream
+  PASS: Taskcard TCA-003 has required field: lane
+  PASS: Taskcard TCA-003 has required field: root_cause_ids
+  PASS: Taskcard TCA-003 has required field: evidence_source_ids
+  PASS: Taskcard TCA-003 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-003 has required field: affected_formats
+  PASS: Taskcard TCA-003 has required field: current_state
+  PASS: Taskcard TCA-003 has required field: allowed_paths
+  PASS: Taskcard TCA-003 has required field: forbidden_paths
+  PASS: Taskcard TCA-003 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-003 has required field: authority_inputs_required
+  PASS: Taskcard TCA-003 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-003 has required field: implementation_scope
+  PASS: Taskcard TCA-003 has required field: non_goals
+  PASS: Taskcard TCA-003 has required field: blocking_gates
+  PASS: Taskcard TCA-003 has required field: validation_commands
+  PASS: Taskcard TCA-003 has required field: negative_tests_required
+  PASS: Taskcard TCA-003 has required field: pilot_required
+  PASS: Taskcard TCA-003 has required field: evidence_required
+  PASS: Taskcard TCA-003 has required field: state_transition_rules
+  PASS: Taskcard TCA-003 has required field: rollback_plan
+  PASS: Taskcard TCA-003 has required field: risk_level
+  PASS: Taskcard TCA-003 has required field: owner_lane
+  PASS: Taskcard TCA-003 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-003 has required field: final_state
+  PASS: Taskcard TCA-003 has required field: closure_criteria
+  PASS: Taskcard TCA-003 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-003 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-003 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-004 has required field: taskcard_id
+  PASS: Taskcard TCA-004 has required field: title
+  PASS: Taskcard TCA-004 has required field: stream
+  PASS: Taskcard TCA-004 has required field: lane
+  PASS: Taskcard TCA-004 has required field: root_cause_ids
+  PASS: Taskcard TCA-004 has required field: evidence_source_ids
+  PASS: Taskcard TCA-004 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-004 has required field: affected_formats
+  PASS: Taskcard TCA-004 has required field: current_state
+  PASS: Taskcard TCA-004 has required field: allowed_paths
+  PASS: Taskcard TCA-004 has required field: forbidden_paths
+  PASS: Taskcard TCA-004 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-004 has required field: authority_inputs_required
+  PASS: Taskcard TCA-004 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-004 has required field: implementation_scope
+  PASS: Taskcard TCA-004 has required field: non_goals
+  PASS: Taskcard TCA-004 has required field: blocking_gates
+  PASS: Taskcard TCA-004 has required field: validation_commands
+  PASS: Taskcard TCA-004 has required field: negative_tests_required
+  PASS: Taskcard TCA-004 has required field: pilot_required
+  PASS: Taskcard TCA-004 has required field: evidence_required
+  PASS: Taskcard TCA-004 has required field: state_transition_rules
+  PASS: Taskcard TCA-004 has required field: rollback_plan
+  PASS: Taskcard TCA-004 has required field: risk_level
+  PASS: Taskcard TCA-004 has required field: owner_lane
+  PASS: Taskcard TCA-004 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-004 has required field: final_state
+  PASS: Taskcard TCA-004 has required field: closure_criteria
+  PASS: Taskcard TCA-004 has valid lane: L-SELECTOR
+  PASS: Taskcard TCA-004 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-004 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-005 has required field: taskcard_id
+  PASS: Taskcard TCA-005 has required field: title
+  PASS: Taskcard TCA-005 has required field: stream
+  PASS: Taskcard TCA-005 has required field: lane
+  PASS: Taskcard TCA-005 has required field: root_cause_ids
+  PASS: Taskcard TCA-005 has required field: evidence_source_ids
+  PASS: Taskcard TCA-005 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-005 has required field: affected_formats
+  PASS: Taskcard TCA-005 has required field: current_state
+  PASS: Taskcard TCA-005 has required field: allowed_paths
+  PASS: Taskcard TCA-005 has required field: forbidden_paths
+  PASS: Taskcard TCA-005 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-005 has required field: authority_inputs_required
+  PASS: Taskcard TCA-005 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-005 has required field: implementation_scope
+  PASS: Taskcard TCA-005 has required field: non_goals
+  PASS: Taskcard TCA-005 has required field: blocking_gates
+  PASS: Taskcard TCA-005 has required field: validation_commands
+  PASS: Taskcard TCA-005 has required field: negative_tests_required
+  PASS: Taskcard TCA-005 has required field: pilot_required
+  PASS: Taskcard TCA-005 has required field: evidence_required
+  PASS: Taskcard TCA-005 has required field: state_transition_rules
+  PASS: Taskcard TCA-005 has required field: rollback_plan
+  PASS: Taskcard TCA-005 has required field: risk_level
+  PASS: Taskcard TCA-005 has required field: owner_lane
+  PASS: Taskcard TCA-005 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-005 has required field: final_state
+  PASS: Taskcard TCA-005 has required field: closure_criteria
+  PASS: Taskcard TCA-005 has valid lane: L-STATEMACHINE
+  PASS: Taskcard TCA-005 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-005 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-006 has required field: taskcard_id
+  PASS: Taskcard TCA-006 has required field: title
+  PASS: Taskcard TCA-006 has required field: stream
+  PASS: Taskcard TCA-006 has required field: lane
+  PASS: Taskcard TCA-006 has required field: root_cause_ids
+  PASS: Taskcard TCA-006 has required field: evidence_source_ids
+  PASS: Taskcard TCA-006 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-006 has required field: affected_formats
+  PASS: Taskcard TCA-006 has required field: current_state
+  PASS: Taskcard TCA-006 has required field: allowed_paths
+  PASS: Taskcard TCA-006 has required field: forbidden_paths
+  PASS: Taskcard TCA-006 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-006 has required field: authority_inputs_required
+  PASS: Taskcard TCA-006 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-006 has required field: implementation_scope
+  PASS: Taskcard TCA-006 has required field: non_goals
+  PASS: Taskcard TCA-006 has required field: blocking_gates
+  PASS: Taskcard TCA-006 has required field: validation_commands
+  PASS: Taskcard TCA-006 has required field: negative_tests_required
+  PASS: Taskcard TCA-006 has required field: pilot_required
+  PASS: Taskcard TCA-006 has required field: evidence_required
+  PASS: Taskcard TCA-006 has required field: state_transition_rules
+  PASS: Taskcard TCA-006 has required field: rollback_plan
+  PASS: Taskcard TCA-006 has required field: risk_level
+  PASS: Taskcard TCA-006 has required field: owner_lane
+  PASS: Taskcard TCA-006 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-006 has required field: final_state
+  PASS: Taskcard TCA-006 has required field: closure_criteria
+  PASS: Taskcard TCA-006 has valid lane: L-STATEMACHINE
+  PASS: Taskcard TCA-006 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-006 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-007 has required field: taskcard_id
+  PASS: Taskcard TCA-007 has required field: title
+  PASS: Taskcard TCA-007 has required field: stream
+  PASS: Taskcard TCA-007 has required field: lane
+  PASS: Taskcard TCA-007 has required field: root_cause_ids
+  PASS: Taskcard TCA-007 has required field: evidence_source_ids
+  PASS: Taskcard TCA-007 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-007 has required field: affected_formats
+  PASS: Taskcard TCA-007 has required field: current_state
+  PASS: Taskcard TCA-007 has required field: allowed_paths
+  PASS: Taskcard TCA-007 has required field: forbidden_paths
+  PASS: Taskcard TCA-007 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-007 has required field: authority_inputs_required
+  PASS: Taskcard TCA-007 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-007 has required field: implementation_scope
+  PASS: Taskcard TCA-007 has required field: non_goals
+  PASS: Taskcard TCA-007 has required field: blocking_gates
+  PASS: Taskcard TCA-007 has required field: validation_commands
+  PASS: Taskcard TCA-007 has required field: negative_tests_required
+  PASS: Taskcard TCA-007 has required field: pilot_required
+  PASS: Taskcard TCA-007 has required field: evidence_required
+  PASS: Taskcard TCA-007 has required field: state_transition_rules
+  PASS: Taskcard TCA-007 has required field: rollback_plan
+  PASS: Taskcard TCA-007 has required field: risk_level
+  PASS: Taskcard TCA-007 has required field: owner_lane
+  PASS: Taskcard TCA-007 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-007 has required field: final_state
+  PASS: Taskcard TCA-007 has required field: closure_criteria
+  PASS: Taskcard TCA-007 has valid lane: L-GOVERNANCE
+  PASS: Taskcard TCA-007 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-007 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-008 has required field: taskcard_id
+  PASS: Taskcard TCA-008 has required field: title
+  PASS: Taskcard TCA-008 has required field: stream
+  PASS: Taskcard TCA-008 has required field: lane
+  PASS: Taskcard TCA-008 has required field: root_cause_ids
+  PASS: Taskcard TCA-008 has required field: evidence_source_ids
+  PASS: Taskcard TCA-008 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-008 has required field: affected_formats
+  PASS: Taskcard TCA-008 has required field: current_state
+  PASS: Taskcard TCA-008 has required field: allowed_paths
+  PASS: Taskcard TCA-008 has required field: forbidden_paths
+  PASS: Taskcard TCA-008 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-008 has required field: authority_inputs_required
+  PASS: Taskcard TCA-008 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-008 has required field: implementation_scope
+  PASS: Taskcard TCA-008 has required field: non_goals
+  PASS: Taskcard TCA-008 has required field: blocking_gates
+  PASS: Taskcard TCA-008 has required field: validation_commands
+  PASS: Taskcard TCA-008 has required field: negative_tests_required
+  PASS: Taskcard TCA-008 has required field: pilot_required
+  PASS: Taskcard TCA-008 has required field: evidence_required
+  PASS: Taskcard TCA-008 has required field: state_transition_rules
+  PASS: Taskcard TCA-008 has required field: rollback_plan
+  PASS: Taskcard TCA-008 has required field: risk_level
+  PASS: Taskcard TCA-008 has required field: owner_lane
+  PASS: Taskcard TCA-008 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-008 has required field: final_state
+  PASS: Taskcard TCA-008 has required field: closure_criteria
+  PASS: Taskcard TCA-008 has valid lane: L-GOVERNANCE
+  PASS: Taskcard TCA-008 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-008 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-009 has required field: taskcard_id
+  PASS: Taskcard TCA-009 has required field: title
+  PASS: Taskcard TCA-009 has required field: stream
+  PASS: Taskcard TCA-009 has required field: lane
+  PASS: Taskcard TCA-009 has required field: root_cause_ids
+  PASS: Taskcard TCA-009 has required field: evidence_source_ids
+  PASS: Taskcard TCA-009 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-009 has required field: affected_formats
+  PASS: Taskcard TCA-009 has required field: current_state
+  PASS: Taskcard TCA-009 has required field: allowed_paths
+  PASS: Taskcard TCA-009 has required field: forbidden_paths
+  PASS: Taskcard TCA-009 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-009 has required field: authority_inputs_required
+  PASS: Taskcard TCA-009 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-009 has required field: implementation_scope
+  PASS: Taskcard TCA-009 has required field: non_goals
+  PASS: Taskcard TCA-009 has required field: blocking_gates
+  PASS: Taskcard TCA-009 has required field: validation_commands
+  PASS: Taskcard TCA-009 has required field: negative_tests_required
+  PASS: Taskcard TCA-009 has required field: pilot_required
+  PASS: Taskcard TCA-009 has required field: evidence_required
+  PASS: Taskcard TCA-009 has required field: state_transition_rules
+  PASS: Taskcard TCA-009 has required field: rollback_plan
+  PASS: Taskcard TCA-009 has required field: risk_level
+  PASS: Taskcard TCA-009 has required field: owner_lane
+  PASS: Taskcard TCA-009 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-009 has required field: final_state
+  PASS: Taskcard TCA-009 has required field: closure_criteria
+  PASS: Taskcard TCA-009 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-009 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-009 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-010 has required field: taskcard_id
+  PASS: Taskcard TCA-010 has required field: title
+  PASS: Taskcard TCA-010 has required field: stream
+  PASS: Taskcard TCA-010 has required field: lane
+  PASS: Taskcard TCA-010 has required field: root_cause_ids
+  PASS: Taskcard TCA-010 has required field: evidence_source_ids
+  PASS: Taskcard TCA-010 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-010 has required field: affected_formats
+  PASS: Taskcard TCA-010 has required field: current_state
+  PASS: Taskcard TCA-010 has required field: allowed_paths
+  PASS: Taskcard TCA-010 has required field: forbidden_paths
+  PASS: Taskcard TCA-010 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-010 has required field: authority_inputs_required
+  PASS: Taskcard TCA-010 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-010 has required field: implementation_scope
+  PASS: Taskcard TCA-010 has required field: non_goals
+  PASS: Taskcard TCA-010 has required field: blocking_gates
+  PASS: Taskcard TCA-010 has required field: validation_commands
+  PASS: Taskcard TCA-010 has required field: negative_tests_required
+  PASS: Taskcard TCA-010 has required field: pilot_required
+  PASS: Taskcard TCA-010 has required field: evidence_required
+  PASS: Taskcard TCA-010 has required field: state_transition_rules
+  PASS: Taskcard TCA-010 has required field: rollback_plan
+  PASS: Taskcard TCA-010 has required field: risk_level
+  PASS: Taskcard TCA-010 has required field: owner_lane
+  PASS: Taskcard TCA-010 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-010 has required field: final_state
+  PASS: Taskcard TCA-010 has required field: closure_criteria
+  PASS: Taskcard TCA-010 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-010 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-010 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-011 has required field: taskcard_id
+  PASS: Taskcard TCA-011 has required field: title
+  PASS: Taskcard TCA-011 has required field: stream
+  PASS: Taskcard TCA-011 has required field: lane
+  PASS: Taskcard TCA-011 has required field: root_cause_ids
+  PASS: Taskcard TCA-011 has required field: evidence_source_ids
+  PASS: Taskcard TCA-011 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-011 has required field: affected_formats
+  PASS: Taskcard TCA-011 has required field: current_state
+  PASS: Taskcard TCA-011 has required field: allowed_paths
+  PASS: Taskcard TCA-011 has required field: forbidden_paths
+  PASS: Taskcard TCA-011 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-011 has required field: authority_inputs_required
+  PASS: Taskcard TCA-011 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-011 has required field: implementation_scope
+  PASS: Taskcard TCA-011 has required field: non_goals
+  PASS: Taskcard TCA-011 has required field: blocking_gates
+  PASS: Taskcard TCA-011 has required field: validation_commands
+  PASS: Taskcard TCA-011 has required field: negative_tests_required
+  PASS: Taskcard TCA-011 has required field: pilot_required
+  PASS: Taskcard TCA-011 has required field: evidence_required
+  PASS: Taskcard TCA-011 has required field: state_transition_rules
+  PASS: Taskcard TCA-011 has required field: rollback_plan
+  PASS: Taskcard TCA-011 has required field: risk_level
+  PASS: Taskcard TCA-011 has required field: owner_lane
+  PASS: Taskcard TCA-011 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-011 has required field: final_state
+  PASS: Taskcard TCA-011 has required field: closure_criteria
+  PASS: Taskcard TCA-011 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-011 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-011 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-012 has required field: taskcard_id
+  PASS: Taskcard TCA-012 has required field: title
+  PASS: Taskcard TCA-012 has required field: stream
+  PASS: Taskcard TCA-012 has required field: lane
+  PASS: Taskcard TCA-012 has required field: root_cause_ids
+  PASS: Taskcard TCA-012 has required field: evidence_source_ids
+  PASS: Taskcard TCA-012 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-012 has required field: affected_formats
+  PASS: Taskcard TCA-012 has required field: current_state
+  PASS: Taskcard TCA-012 has required field: allowed_paths
+  PASS: Taskcard TCA-012 has required field: forbidden_paths
+  PASS: Taskcard TCA-012 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-012 has required field: authority_inputs_required
+  PASS: Taskcard TCA-012 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-012 has required field: implementation_scope
+  PASS: Taskcard TCA-012 has required field: non_goals
+  PASS: Taskcard TCA-012 has required field: blocking_gates
+  PASS: Taskcard TCA-012 has required field: validation_commands
+  PASS: Taskcard TCA-012 has required field: negative_tests_required
+  PASS: Taskcard TCA-012 has required field: pilot_required
+  PASS: Taskcard TCA-012 has required field: evidence_required
+  PASS: Taskcard TCA-012 has required field: state_transition_rules
+  PASS: Taskcard TCA-012 has required field: rollback_plan
+  PASS: Taskcard TCA-012 has required field: risk_level
+  PASS: Taskcard TCA-012 has required field: owner_lane
+  PASS: Taskcard TCA-012 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-012 has required field: final_state
+  PASS: Taskcard TCA-012 has required field: closure_criteria
+  PASS: Taskcard TCA-012 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-012 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-012 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-013 has required field: taskcard_id
+  PASS: Taskcard TCA-013 has required field: title
+  PASS: Taskcard TCA-013 has required field: stream
+  PASS: Taskcard TCA-013 has required field: lane
+  PASS: Taskcard TCA-013 has required field: root_cause_ids
+  PASS: Taskcard TCA-013 has required field: evidence_source_ids
+  PASS: Taskcard TCA-013 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-013 has required field: affected_formats
+  PASS: Taskcard TCA-013 has required field: current_state
+  PASS: Taskcard TCA-013 has required field: allowed_paths
+  PASS: Taskcard TCA-013 has required field: forbidden_paths
+  PASS: Taskcard TCA-013 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-013 has required field: authority_inputs_required
+  PASS: Taskcard TCA-013 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-013 has required field: implementation_scope
+  PASS: Taskcard TCA-013 has required field: non_goals
+  PASS: Taskcard TCA-013 has required field: blocking_gates
+  PASS: Taskcard TCA-013 has required field: validation_commands
+  PASS: Taskcard TCA-013 has required field: negative_tests_required
+  PASS: Taskcard TCA-013 has required field: pilot_required
+  PASS: Taskcard TCA-013 has required field: evidence_required
+  PASS: Taskcard TCA-013 has required field: state_transition_rules
+  PASS: Taskcard TCA-013 has required field: rollback_plan
+  PASS: Taskcard TCA-013 has required field: risk_level
+  PASS: Taskcard TCA-013 has required field: owner_lane
+  PASS: Taskcard TCA-013 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-013 has required field: final_state
+  PASS: Taskcard TCA-013 has required field: closure_criteria
+  PASS: Taskcard TCA-013 has valid lane: L-SELECTOR
+  PASS: Taskcard TCA-013 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-013 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-014 has required field: taskcard_id
+  PASS: Taskcard TCA-014 has required field: title
+  PASS: Taskcard TCA-014 has required field: stream
+  PASS: Taskcard TCA-014 has required field: lane
+  PASS: Taskcard TCA-014 has required field: root_cause_ids
+  PASS: Taskcard TCA-014 has required field: evidence_source_ids
+  PASS: Taskcard TCA-014 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-014 has required field: affected_formats
+  PASS: Taskcard TCA-014 has required field: current_state
+  PASS: Taskcard TCA-014 has required field: allowed_paths
+  PASS: Taskcard TCA-014 has required field: forbidden_paths
+  PASS: Taskcard TCA-014 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-014 has required field: authority_inputs_required
+  PASS: Taskcard TCA-014 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-014 has required field: implementation_scope
+  PASS: Taskcard TCA-014 has required field: non_goals
+  PASS: Taskcard TCA-014 has required field: blocking_gates
+  PASS: Taskcard TCA-014 has required field: validation_commands
+  PASS: Taskcard TCA-014 has required field: negative_tests_required
+  PASS: Taskcard TCA-014 has required field: pilot_required
+  PASS: Taskcard TCA-014 has required field: evidence_required
+  PASS: Taskcard TCA-014 has required field: state_transition_rules
+  PASS: Taskcard TCA-014 has required field: rollback_plan
+  PASS: Taskcard TCA-014 has required field: risk_level
+  PASS: Taskcard TCA-014 has required field: owner_lane
+  PASS: Taskcard TCA-014 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-014 has required field: final_state
+  PASS: Taskcard TCA-014 has required field: closure_criteria
+  PASS: Taskcard TCA-014 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-014 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-014 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-015 has required field: taskcard_id
+  PASS: Taskcard TCA-015 has required field: title
+  PASS: Taskcard TCA-015 has required field: stream
+  PASS: Taskcard TCA-015 has required field: lane
+  PASS: Taskcard TCA-015 has required field: root_cause_ids
+  PASS: Taskcard TCA-015 has required field: evidence_source_ids
+  PASS: Taskcard TCA-015 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-015 has required field: affected_formats
+  PASS: Taskcard TCA-015 has required field: current_state
+  PASS: Taskcard TCA-015 has required field: allowed_paths
+  PASS: Taskcard TCA-015 has required field: forbidden_paths
+  PASS: Taskcard TCA-015 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-015 has required field: authority_inputs_required
+  PASS: Taskcard TCA-015 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-015 has required field: implementation_scope
+  PASS: Taskcard TCA-015 has required field: non_goals
+  PASS: Taskcard TCA-015 has required field: blocking_gates
+  PASS: Taskcard TCA-015 has required field: validation_commands
+  PASS: Taskcard TCA-015 has required field: negative_tests_required
+  PASS: Taskcard TCA-015 has required field: pilot_required
+  PASS: Taskcard TCA-015 has required field: evidence_required
+  PASS: Taskcard TCA-015 has required field: state_transition_rules
+  PASS: Taskcard TCA-015 has required field: rollback_plan
+  PASS: Taskcard TCA-015 has required field: risk_level
+  PASS: Taskcard TCA-015 has required field: owner_lane
+  PASS: Taskcard TCA-015 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-015 has required field: final_state
+  PASS: Taskcard TCA-015 has required field: closure_criteria
+  PASS: Taskcard TCA-015 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-015 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-015 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-016 has required field: taskcard_id
+  PASS: Taskcard TCA-016 has required field: title
+  PASS: Taskcard TCA-016 has required field: stream
+  PASS: Taskcard TCA-016 has required field: lane
+  PASS: Taskcard TCA-016 has required field: root_cause_ids
+  PASS: Taskcard TCA-016 has required field: evidence_source_ids
+  PASS: Taskcard TCA-016 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-016 has required field: affected_formats
+  PASS: Taskcard TCA-016 has required field: current_state
+  PASS: Taskcard TCA-016 has required field: allowed_paths
+  PASS: Taskcard TCA-016 has required field: forbidden_paths
+  PASS: Taskcard TCA-016 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-016 has required field: authority_inputs_required
+  PASS: Taskcard TCA-016 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-016 has required field: implementation_scope
+  PASS: Taskcard TCA-016 has required field: non_goals
+  PASS: Taskcard TCA-016 has required field: blocking_gates
+  PASS: Taskcard TCA-016 has required field: validation_commands
+  PASS: Taskcard TCA-016 has required field: negative_tests_required
+  PASS: Taskcard TCA-016 has required field: pilot_required
+  PASS: Taskcard TCA-016 has required field: evidence_required
+  PASS: Taskcard TCA-016 has required field: state_transition_rules
+  PASS: Taskcard TCA-016 has required field: rollback_plan
+  PASS: Taskcard TCA-016 has required field: risk_level
+  PASS: Taskcard TCA-016 has required field: owner_lane
+  PASS: Taskcard TCA-016 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-016 has required field: final_state
+  PASS: Taskcard TCA-016 has required field: closure_criteria
+  PASS: Taskcard TCA-016 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-016 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-016 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-017 has required field: taskcard_id
+  PASS: Taskcard TCA-017 has required field: title
+  PASS: Taskcard TCA-017 has required field: stream
+  PASS: Taskcard TCA-017 has required field: lane
+  PASS: Taskcard TCA-017 has required field: root_cause_ids
+  PASS: Taskcard TCA-017 has required field: evidence_source_ids
+  PASS: Taskcard TCA-017 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-017 has required field: affected_formats
+  PASS: Taskcard TCA-017 has required field: current_state
+  PASS: Taskcard TCA-017 has required field: allowed_paths
+  PASS: Taskcard TCA-017 has required field: forbidden_paths
+  PASS: Taskcard TCA-017 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-017 has required field: authority_inputs_required
+  PASS: Taskcard TCA-017 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-017 has required field: implementation_scope
+  PASS: Taskcard TCA-017 has required field: non_goals
+  PASS: Taskcard TCA-017 has required field: blocking_gates
+  PASS: Taskcard TCA-017 has required field: validation_commands
+  PASS: Taskcard TCA-017 has required field: negative_tests_required
+  PASS: Taskcard TCA-017 has required field: pilot_required
+  PASS: Taskcard TCA-017 has required field: evidence_required
+  PASS: Taskcard TCA-017 has required field: state_transition_rules
+  PASS: Taskcard TCA-017 has required field: rollback_plan
+  PASS: Taskcard TCA-017 has required field: risk_level
+  PASS: Taskcard TCA-017 has required field: owner_lane
+  PASS: Taskcard TCA-017 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-017 has required field: final_state
+  PASS: Taskcard TCA-017 has required field: closure_criteria
+  PASS: Taskcard TCA-017 has valid lane: L-SCHEMA
+  PASS: Taskcard TCA-017 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-017 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-018 has required field: taskcard_id
+  PASS: Taskcard TCA-018 has required field: title
+  PASS: Taskcard TCA-018 has required field: stream
+  PASS: Taskcard TCA-018 has required field: lane
+  PASS: Taskcard TCA-018 has required field: root_cause_ids
+  PASS: Taskcard TCA-018 has required field: evidence_source_ids
+  PASS: Taskcard TCA-018 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-018 has required field: affected_formats
+  PASS: Taskcard TCA-018 has required field: current_state
+  PASS: Taskcard TCA-018 has required field: allowed_paths
+  PASS: Taskcard TCA-018 has required field: forbidden_paths
+  PASS: Taskcard TCA-018 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-018 has required field: authority_inputs_required
+  PASS: Taskcard TCA-018 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-018 has required field: implementation_scope
+  PASS: Taskcard TCA-018 has required field: non_goals
+  PASS: Taskcard TCA-018 has required field: blocking_gates
+  PASS: Taskcard TCA-018 has required field: validation_commands
+  PASS: Taskcard TCA-018 has required field: negative_tests_required
+  PASS: Taskcard TCA-018 has required field: pilot_required
+  PASS: Taskcard TCA-018 has required field: evidence_required
+  PASS: Taskcard TCA-018 has required field: state_transition_rules
+  PASS: Taskcard TCA-018 has required field: rollback_plan
+  PASS: Taskcard TCA-018 has required field: risk_level
+  PASS: Taskcard TCA-018 has required field: owner_lane
+  PASS: Taskcard TCA-018 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-018 has required field: final_state
+  PASS: Taskcard TCA-018 has required field: closure_criteria
+  PASS: Taskcard TCA-018 has valid lane: L-STATEMACHINE
+  PASS: Taskcard TCA-018 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-018 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-019 has required field: taskcard_id
+  PASS: Taskcard TCA-019 has required field: title
+  PASS: Taskcard TCA-019 has required field: stream
+  PASS: Taskcard TCA-019 has required field: lane
+  PASS: Taskcard TCA-019 has required field: root_cause_ids
+  PASS: Taskcard TCA-019 has required field: evidence_source_ids
+  PASS: Taskcard TCA-019 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-019 has required field: affected_formats
+  PASS: Taskcard TCA-019 has required field: current_state
+  PASS: Taskcard TCA-019 has required field: allowed_paths
+  PASS: Taskcard TCA-019 has required field: forbidden_paths
+  PASS: Taskcard TCA-019 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-019 has required field: authority_inputs_required
+  PASS: Taskcard TCA-019 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-019 has required field: implementation_scope
+  PASS: Taskcard TCA-019 has required field: non_goals
+  PASS: Taskcard TCA-019 has required field: blocking_gates
+  PASS: Taskcard TCA-019 has required field: validation_commands
+  PASS: Taskcard TCA-019 has required field: negative_tests_required
+  PASS: Taskcard TCA-019 has required field: pilot_required
+  PASS: Taskcard TCA-019 has required field: evidence_required
+  PASS: Taskcard TCA-019 has required field: state_transition_rules
+  PASS: Taskcard TCA-019 has required field: rollback_plan
+  PASS: Taskcard TCA-019 has required field: risk_level
+  PASS: Taskcard TCA-019 has required field: owner_lane
+  PASS: Taskcard TCA-019 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-019 has required field: final_state
+  PASS: Taskcard TCA-019 has required field: closure_criteria
+  PASS: Taskcard TCA-019 has valid lane: L-COORD
+  PASS: Taskcard TCA-019 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-019 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-020 has required field: taskcard_id
+  PASS: Taskcard TCA-020 has required field: title
+  PASS: Taskcard TCA-020 has required field: stream
+  PASS: Taskcard TCA-020 has required field: lane
+  PASS: Taskcard TCA-020 has required field: root_cause_ids
+  PASS: Taskcard TCA-020 has required field: evidence_source_ids
+  PASS: Taskcard TCA-020 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-020 has required field: affected_formats
+  PASS: Taskcard TCA-020 has required field: current_state
+  PASS: Taskcard TCA-020 has required field: allowed_paths
+  PASS: Taskcard TCA-020 has required field: forbidden_paths
+  PASS: Taskcard TCA-020 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-020 has required field: authority_inputs_required
+  PASS: Taskcard TCA-020 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-020 has required field: implementation_scope
+  PASS: Taskcard TCA-020 has required field: non_goals
+  PASS: Taskcard TCA-020 has required field: blocking_gates
+  PASS: Taskcard TCA-020 has required field: validation_commands
+  PASS: Taskcard TCA-020 has required field: negative_tests_required
+  PASS: Taskcard TCA-020 has required field: pilot_required
+  PASS: Taskcard TCA-020 has required field: evidence_required
+  PASS: Taskcard TCA-020 has required field: state_transition_rules
+  PASS: Taskcard TCA-020 has required field: rollback_plan
+  PASS: Taskcard TCA-020 has required field: risk_level
+  PASS: Taskcard TCA-020 has required field: owner_lane
+  PASS: Taskcard TCA-020 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-020 has required field: final_state
+  PASS: Taskcard TCA-020 has required field: closure_criteria
+  PASS: Taskcard TCA-020 has valid lane: L-COORD
+  PASS: Taskcard TCA-020 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-020 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-021 has required field: taskcard_id
+  PASS: Taskcard TCA-021 has required field: title
+  PASS: Taskcard TCA-021 has required field: stream
+  PASS: Taskcard TCA-021 has required field: lane
+  PASS: Taskcard TCA-021 has required field: root_cause_ids
+  PASS: Taskcard TCA-021 has required field: evidence_source_ids
+  PASS: Taskcard TCA-021 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-021 has required field: affected_formats
+  PASS: Taskcard TCA-021 has required field: current_state
+  PASS: Taskcard TCA-021 has required field: allowed_paths
+  PASS: Taskcard TCA-021 has required field: forbidden_paths
+  PASS: Taskcard TCA-021 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-021 has required field: authority_inputs_required
+  PASS: Taskcard TCA-021 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-021 has required field: implementation_scope
+  PASS: Taskcard TCA-021 has required field: non_goals
+  PASS: Taskcard TCA-021 has required field: blocking_gates
+  PASS: Taskcard TCA-021 has required field: validation_commands
+  PASS: Taskcard TCA-021 has required field: negative_tests_required
+  PASS: Taskcard TCA-021 has required field: pilot_required
+  PASS: Taskcard TCA-021 has required field: evidence_required
+  PASS: Taskcard TCA-021 has required field: state_transition_rules
+  PASS: Taskcard TCA-021 has required field: rollback_plan
+  PASS: Taskcard TCA-021 has required field: risk_level
+  PASS: Taskcard TCA-021 has required field: owner_lane
+  PASS: Taskcard TCA-021 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-021 has required field: final_state
+  PASS: Taskcard TCA-021 has required field: closure_criteria
+  PASS: Taskcard TCA-021 has valid lane: L-VERIFY
+  PASS: Taskcard TCA-021 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-021 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-022 has required field: taskcard_id
+  PASS: Taskcard TCA-022 has required field: title
+  PASS: Taskcard TCA-022 has required field: stream
+  PASS: Taskcard TCA-022 has required field: lane
+  PASS: Taskcard TCA-022 has required field: root_cause_ids
+  PASS: Taskcard TCA-022 has required field: evidence_source_ids
+  PASS: Taskcard TCA-022 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-022 has required field: affected_formats
+  PASS: Taskcard TCA-022 has required field: current_state
+  PASS: Taskcard TCA-022 has required field: allowed_paths
+  PASS: Taskcard TCA-022 has required field: forbidden_paths
+  PASS: Taskcard TCA-022 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-022 has required field: authority_inputs_required
+  PASS: Taskcard TCA-022 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-022 has required field: implementation_scope
+  PASS: Taskcard TCA-022 has required field: non_goals
+  PASS: Taskcard TCA-022 has required field: blocking_gates
+  PASS: Taskcard TCA-022 has required field: validation_commands
+  PASS: Taskcard TCA-022 has required field: negative_tests_required
+  PASS: Taskcard TCA-022 has required field: pilot_required
+  PASS: Taskcard TCA-022 has required field: evidence_required
+  PASS: Taskcard TCA-022 has required field: state_transition_rules
+  PASS: Taskcard TCA-022 has required field: rollback_plan
+  PASS: Taskcard TCA-022 has required field: risk_level
+  PASS: Taskcard TCA-022 has required field: owner_lane
+  PASS: Taskcard TCA-022 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-022 has required field: final_state
+  PASS: Taskcard TCA-022 has required field: closure_criteria
+  PASS: Taskcard TCA-022 has valid lane: L-VERIFY
+  PASS: Taskcard TCA-022 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-022 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-023 has required field: taskcard_id
+  PASS: Taskcard TCA-023 has required field: title
+  PASS: Taskcard TCA-023 has required field: stream
+  PASS: Taskcard TCA-023 has required field: lane
+  PASS: Taskcard TCA-023 has required field: root_cause_ids
+  PASS: Taskcard TCA-023 has required field: evidence_source_ids
+  PASS: Taskcard TCA-023 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-023 has required field: affected_formats
+  PASS: Taskcard TCA-023 has required field: current_state
+  PASS: Taskcard TCA-023 has required field: allowed_paths
+  PASS: Taskcard TCA-023 has required field: forbidden_paths
+  PASS: Taskcard TCA-023 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-023 has required field: authority_inputs_required
+  PASS: Taskcard TCA-023 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-023 has required field: implementation_scope
+  PASS: Taskcard TCA-023 has required field: non_goals
+  PASS: Taskcard TCA-023 has required field: blocking_gates
+  PASS: Taskcard TCA-023 has required field: validation_commands
+  PASS: Taskcard TCA-023 has required field: negative_tests_required
+  PASS: Taskcard TCA-023 has required field: pilot_required
+  PASS: Taskcard TCA-023 has required field: evidence_required
+  PASS: Taskcard TCA-023 has required field: state_transition_rules
+  PASS: Taskcard TCA-023 has required field: rollback_plan
+  PASS: Taskcard TCA-023 has required field: risk_level
+  PASS: Taskcard TCA-023 has required field: owner_lane
+  PASS: Taskcard TCA-023 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-023 has required field: final_state
+  PASS: Taskcard TCA-023 has required field: closure_criteria
+  PASS: Taskcard TCA-023 has valid lane: L-ADVERSARIAL
+  PASS: Taskcard TCA-023 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-023 does not have src/ in allowed_paths
+  PASS: Taskcard TCA-024 has required field: taskcard_id
+  PASS: Taskcard TCA-024 has required field: title
+  PASS: Taskcard TCA-024 has required field: stream
+  PASS: Taskcard TCA-024 has required field: lane
+  PASS: Taskcard TCA-024 has required field: root_cause_ids
+  PASS: Taskcard TCA-024 has required field: evidence_source_ids
+  PASS: Taskcard TCA-024 has required field: affected_pipeline_stages
+  PASS: Taskcard TCA-024 has required field: affected_formats
+  PASS: Taskcard TCA-024 has required field: current_state
+  PASS: Taskcard TCA-024 has required field: allowed_paths
+  PASS: Taskcard TCA-024 has required field: forbidden_paths
+  PASS: Taskcard TCA-024 has required field: prerequisite_taskcards
+  PASS: Taskcard TCA-024 has required field: authority_inputs_required
+  PASS: Taskcard TCA-024 has required field: authority_outputs_expected
+  PASS: Taskcard TCA-024 has required field: implementation_scope
+  PASS: Taskcard TCA-024 has required field: non_goals
+  PASS: Taskcard TCA-024 has required field: blocking_gates
+  PASS: Taskcard TCA-024 has required field: validation_commands
+  PASS: Taskcard TCA-024 has required field: negative_tests_required
+  PASS: Taskcard TCA-024 has required field: pilot_required
+  PASS: Taskcard TCA-024 has required field: evidence_required
+  PASS: Taskcard TCA-024 has required field: state_transition_rules
+  PASS: Taskcard TCA-024 has required field: rollback_plan
+  PASS: Taskcard TCA-024 has required field: risk_level
+  PASS: Taskcard TCA-024 has required field: owner_lane
+  PASS: Taskcard TCA-024 has required field: independent_verifier_lane
+  PASS: Taskcard TCA-024 has required field: final_state
+  PASS: Taskcard TCA-024 has required field: closure_criteria
+  PASS: Taskcard TCA-024 has valid lane: L-BUNDLE
+  PASS: Taskcard TCA-024 current_state 'DISCOVERED' exists in state machine
+  PASS: Taskcard TCA-024 does not have src/ in allowed_paths
+  PASS: Prerequisite TCA-005 exists in taskcards
+  PASS: Prerequisite TCA-007 exists in taskcards
+  PASS: Prerequisite TCA-009 exists in taskcards
+  PASS: Prerequisite TCA-007 exists in taskcards
+  PASS: Prerequisite TCA-008 exists in taskcards
+  PASS: Prerequisite TCA-005 exists in taskcards
+  PASS: Prerequisite TCA-006 exists in taskcards
+  PASS: Prerequisite TCA-021 exists in taskcards
+  PASS: Prerequisite TCA-020 exists in taskcards
+  PASS: Prerequisite TCA-022 exists in taskcards
+  PASS: Prerequisite TCA-000 exists in taskcards
+  PASS: Prerequisite TCA-022 exists in taskcards
+  PASS: Prerequisite TCA-023 exists in taskcards
+  PASS: TCA-000 starts as IMPLEMENTING/IMPLEMENTED/VALIDATING (got IMPLEMENTING)
+  PASS: Transition ledger JSONL valid (13 entries)
+  PASS: Lane count = 9 (got 9)
+  PASS: All 9 expected lanes present
+  PASS: No exclusive write path conflicts (12 exclusive paths)
+  PASS: No hardcoded Windows paths in repaired-plan.md (found 0)
+  PASS: No 'validated_by: human' as default in repaired-plan.md (found 0)
+  PASS: No warning-only spec_fact_refs in repaired-plan.md (found 0)
+  PASS: Repaired plan covers non-FODS formats or bypass pilot
+  PASS: repairs_applied has >=10 entries (got 11)
+  PASS: repaired-plan.json state_count=32 (got 32)
+  PASS: Rollback plan covers >=12 failure modes (got 12)
+  PASS: Verification gates count = 20 (got 20)
+  PASS: All verification gates have ci_available=false
+  PASS: Evidence bundle contract is non-trivial
+============================================================
+Results: 832 passed, 0 failed
+
+All checks passed. Verdict: PLAN_REPAIRED_READY_FOR_SINGLE_GO_EXECUTION

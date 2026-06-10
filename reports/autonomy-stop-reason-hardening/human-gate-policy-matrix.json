@@ -1,0 +1,60 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PERMANENT-AUTONOMY-STOP-REASON-HARDENING-001",
+  "policy_docs": [
+    "docs/governance/autonomous-stop-reason-policy.md",
+    "docs/governance/human-gate-classification-policy.md",
+    "docs/governance/agent-owned-review-policy.md"
+  ],
+  "agent_owned": [
+    "review_evidence",
+    "classify_gate_state",
+    "prepare_gate_11_packet",
+    "prepare_gate_8_assessment",
+    "prepare_release_recommendation",
+    "prepare_commit_summary",
+    "prepare_publication_packet",
+    "prepare_proposed_poc_targets_delta",
+    "prepare_dif_sylk_zst_promotion_recommendation",
+    "choose_local_coordinator_fallback",
+    "continue_without_ruflo",
+    "repair_evidence",
+    "run_tests",
+    "repair_tests",
+    "choose_next_product_gaps",
+    "generate_next_sprint_prompt",
+    "mark_false_stops",
+    "implement_product_capability",
+    "implement_target_writer_libraries",
+    "build_packages_locally",
+    "update_state_memory",
+    "classify_stop_reason",
+    "classify_terminal_vs_nonterminal"
+  ],
+  "human_only": [
+    "gate_11_approval_execution",
+    "gate_8_approval_execution",
+    "git_commit_execution",
+    "git_push_execution",
+    "git_merge_execution",
+    "nuget_publication",
+    "pypi_publication",
+    "github_release",
+    "credentials_secrets",
+    "destructive_git_operations",
+    "activate_mcp_servers",
+    "enable_paid_external_apis",
+    "official_poc_targets_mutation"
+  ],
+  "forbidden_labels_for_agent_work": [
+    "approval-blocked",
+    "blocked",
+    "human-required",
+    "stop"
+  ],
+  "allowed_labels": [
+    "agent-owned",
+    "external-gate",
+    "release-approval-pending",
+    "unsafe-stop"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-EXECUTION-CHAINING-AND-POC-CONTINUATION-001",
+  "audit_timestamp": "2026-06-05T13:00:00.000000",
+  "output_channels_audited": [
+    {
+      "channel": "reports/supervisor/next-sprint.md",
+      "generator": "tools/supervisor/generate_supervisor_packet.py:generate_next_sprint_md()",
+      "false_stops_found": [
+        "[approval-blocked] TASK-002: Commit uncommitted product code",
+        "[approval-blocked] TASK-003: Advance FODS Gate 11 commercial readiness",
+        "[approval-blocked] TASK-004: Advance FODT Gate 11 commercial readiness",
+        "[blocked] TASK-005: Open ZST Gate 11"
+      ],
+      "false_stop_count": 4,
+      "root_cause": "generate_supervisor_packet.py lines 495, 524, 529 emit approval-blocked/blocked for gate tasks and commit tasks without running adjudicator",
+      "fix_required": true
+    },
+    {
+      "channel": "reports/supervisor/next-sprint-taskmaster.json",
+      "generator": "tools/supervisor/generate_supervisor_packet.py:generate_tm_import()",
+      "false_stops_found": [
+        "TASK-002 status: approval-blocked",
+        "TASK-003 status: approval-blocked",
+        "TASK-004 status: approval-blocked",
+        "TASK-005 status: blocked"
+      ],
+      "false_stop_count": 4,
+      "root_cause": "Same generator function — status fields come from generate_next_sprint_tasks()",
+      "fix_required": true
+    },
+    {
+      "channel": ".local/supervisor/reviews/autonomy-stop-reason-hardening/combined-next-worker-prompt.md",
+      "generator": "tools/supervisor/generate_next_worker_prompt.py:generate_prompt()",
+      "false_stops_found": [],
+      "false_stop_count": 0,
+      "root_cause": "Uses mega-train template — clean format without approval-blocked labels",
+      "fix_required": false,
+      "notes": "This is the authoritative combined prompt. It already includes STOP_REASON_ADVISORY in fallback path."
+    },
+    {
+      "channel": "reports/supervisor/latest-next-worker-prompt.md",
+      "generator": "tools/supervisor/autonomous_cycle.py:Step 4 copy of combined prompt",
+      "false_stops_found": [],
+      "false_stop_count": 0,
+      "root_cause": "Copy of combined-next-worker-prompt.md — inherits its cleanliness",
+      "fix_required": false
+    }
+  ],
+  "summary": {
+    "channels_with_false_stops": 2,
+    "channels_clean": 2,
+    "total_false_stops": 8,
+    "fix_location": "tools/supervisor/generate_supervisor_packet.py",
+    "fix_functions": ["generate_next_sprint_tasks()", "generate_next_sprint_md()"],
+    "fix_type": "label_correction + advisory_injection"
+  },
+  "repaired_output_is_authoritative": "reports/autonomy-stop-reason-hardening/repaired-r118-next-sprint.md",
+  "combined_prompt_is_authoritative": ".local/supervisor/reviews/autonomy-stop-reason-hardening/combined-next-worker-prompt.md"
+}

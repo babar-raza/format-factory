@@ -1,0 +1,100 @@
+[
+  {
+    "lane": "A",
+    "title": "R108 reconciliation + preflight",
+    "status": "completed",
+    "start": "2026-06-03T22:00:00Z",
+    "end": "2026-06-03T22:10:00Z",
+    "outputs": ["reports/skills-r109/00-preflight.md", "reports/skills-r109/r108-reconciliation.md"]
+  },
+  {
+    "lane": "B",
+    "title": "Mainstream adoption consumption fixture",
+    "status": "completed",
+    "start": "2026-06-03T22:10:00Z",
+    "end": "2026-06-03T22:25:00Z",
+    "outputs": ["tests/python/supervisor/test_r109_adoption_consumption.py (TestMainstreamAdoptionConsumption: 6 tests)"]
+  },
+  {
+    "lane": "C",
+    "title": "Acceleration adoption consumption fixture",
+    "status": "completed",
+    "start": "2026-06-03T22:10:00Z",
+    "end": "2026-06-03T22:25:00Z",
+    "outputs": ["tests/python/supervisor/test_r109_adoption_consumption.py (TestAccelerationAdoptionConsumption: 6 tests)"]
+  },
+  {
+    "lane": "D",
+    "title": "Supervisor adoption consumption fixture",
+    "status": "completed",
+    "start": "2026-06-03T22:10:00Z",
+    "end": "2026-06-03T22:25:00Z",
+    "outputs": ["tests/python/supervisor/test_r109_adoption_consumption.py (TestSupervisorAdoptionConsumption: 3 tests)"]
+  },
+  {
+    "lane": "E",
+    "title": "Mainstream compliance enforcement",
+    "status": "completed",
+    "start": "2026-06-03T22:25:00Z",
+    "end": "2026-06-03T22:35:00Z",
+    "outputs": [
+      "tests/python/supervisor/test_r109_adoption_consumption.py (TestMainstreamComplianceEnforcement: 3 tests)",
+      "reports/skills-r109/generated-handoffs/handoff-mainstream-fods-rename-sheet.yaml"
+    ]
+  },
+  {
+    "lane": "F",
+    "title": "Acceleration compliance fixture + handoff",
+    "status": "completed",
+    "start": "2026-06-03T22:25:00Z",
+    "end": "2026-06-03T22:35:00Z",
+    "outputs": [
+      "tests/python/supervisor/test_r109_adoption_consumption.py (TestAccelerationComplianceFixture: 2 tests)",
+      "reports/skills-r109/generated-handoffs/handoff-acceleration-poc-gap-routing.yaml"
+    ]
+  },
+  {
+    "lane": "G",
+    "title": "Supervisor grading fixture + handoff",
+    "status": "completed",
+    "start": "2026-06-03T22:25:00Z",
+    "end": "2026-06-03T22:35:00Z",
+    "outputs": [
+      "tests/python/supervisor/test_r109_adoption_consumption.py (TestSupervisorGradingFixture: 5 tests)",
+      "reports/skills-r109/generated-handoffs/handoff-supervisor-grading-adoption.yaml"
+    ]
+  },
+  {
+    "lane": "H",
+    "title": "Transcript expansion (5 transcripts)",
+    "status": "completed",
+    "start": "2026-06-03T22:35:00Z",
+    "end": "2026-06-03T22:45:00Z",
+    "outputs": [
+      "reports/skills-r109/skill-transcripts/transcript-r109-001-fods-product-simulation.json",
+      "reports/skills-r109/skill-transcripts/transcript-r109-002-netpbm-product-simulation.json",
+      "reports/skills-r109/skill-transcripts/transcript-r109-003-supervisor-grading-simulation.json",
+      "reports/skills-r109/skill-transcripts/transcript-r109-004-acceleration-routing.json",
+      "reports/skills-r109/skill-transcripts/transcript-r109-005-anti-bypass-demo.json"
+    ]
+  },
+  {
+    "lane": "I",
+    "title": "Stream isolation verification",
+    "status": "completed",
+    "start": "2026-06-03T22:45:00Z",
+    "end": "2026-06-03T22:55:00Z",
+    "outputs": ["tests/python/supervisor/test_r109_stream_isolation.py (8 tests)"]
+  },
+  {
+    "lane": "J",
+    "title": "Final IV, evidence closeout",
+    "status": "completed",
+    "start": "2026-06-03T22:55:00Z",
+    "end": "2026-06-03T23:15:00Z",
+    "outputs": [
+      "reports/skills-r109/final-adversarial-independent-verification.md",
+      ".local/evidences/skills-r109/evidence-declaration.yaml"
+    ]
+  }
+]

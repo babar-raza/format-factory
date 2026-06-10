@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001",
+  "lanes": [
+    {"lane_id": "L0", "owned_paths": ["reports/autonomous-acquisition-mega-train/"], "forbidden_paths": ["src/", "tools/supervisor/"]},
+    {"lane_id": "L1", "owned_paths": ["tools/supervisor/action_queue.py", "reports/autonomous-acquisition-mega-train/queue/"], "forbidden_paths": ["src/"]},
+    {"lane_id": "L2", "owned_paths": ["tools/supervisor/product_task_selector.py", "reports/autonomous-acquisition-mega-train/task-selection/"], "forbidden_paths": ["src/net/"]},
+    {"lane_id": "L3", "owned_paths": ["reports/autonomous-acquisition-mega-train/specs/"], "forbidden_paths": ["src/"]},
+    {"lane_id": "L4", "owned_paths": ["src/python/gnumeric/", "src/python/abw/", "reports/autonomous-acquisition-mega-train/source-execution/"], "forbidden_paths": ["src/net/"]},
+    {"lane_id": "L5", "owned_paths": ["reports/autonomous-acquisition-mega-train/vertical-slice/"], "forbidden_paths": ["src/net/"]},
+    {"lane_id": "L6", "owned_paths": ["tests/python/gnumeric/", "tests/python/abw/", "reports/autonomous-acquisition-mega-train/test-logs/"], "forbidden_paths": ["src/net/"]},
+    {"lane_id": "L7", "owned_paths": ["reports/autonomous-acquisition-mega-train/docs-package/"], "forbidden_paths": ["src/net/"]},
+    {"lane_id": "L8", "owned_paths": ["reports/autonomous-acquisition-mega-train/ecosystem/"], "forbidden_paths": []},
+    {"lane_id": "L9", "owned_paths": [".local/supervisor/action-queue.jsonl", "reports/autonomous-acquisition-mega-train/post-closeout/"], "forbidden_paths": ["src/"]},
+    {"lane_id": "L10", "owned_paths": ["reports/autonomous-acquisition-mega-train/iv/"], "forbidden_paths": []},
+    {"lane_id": "LE", "owned_paths": [".local/evidences/autonomous-acquisition-mega-train/"], "forbidden_paths": []}
+  ]
+}

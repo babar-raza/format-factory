@@ -1,0 +1,125 @@
+{
+  "selection_sprint": "mainstream-r110",
+  "selection_date": "2026-06-03",
+  "stale_references_purged": ["R98"],
+  "selected_gaps": [
+    {
+      "gap_id": "GAP-FODS-REMOVESHEET-DEPTH",
+      "format": "FODS",
+      "category": "commercial_dotnet_depth",
+      "description": "RemoveSheet API — governed skill already in registry, removes table element by name",
+      "depth_class": "object_model_depth",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-FODS-INSERTROWWITHVALUES-DEPTH",
+      "format": "FODS",
+      "category": "commercial_dotnet_depth",
+      "description": "InsertRowWithValues already exists — add InsertColumnWithValues for column-oriented insert",
+      "depth_class": "object_model_depth",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-FODS-GETCELLDATATYPE",
+      "format": "FODS",
+      "category": "commercial_dotnet_helper",
+      "description": "GetCellDataType — read office:value-type attribute from cell element",
+      "depth_class": "helper",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-FODT-FINDTEXT",
+      "format": "FODT",
+      "category": "commercial_dotnet_depth",
+      "description": "FindText — return paragraph indices containing a search string",
+      "depth_class": "object_model_depth",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-FODT-GETPARAGRAPHSTYLES",
+      "format": "FODT",
+      "category": "commercial_dotnet_helper",
+      "description": "GetParagraphStyles — return style names for all paragraphs",
+      "depth_class": "helper",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-NETPBM-SOLARIZE",
+      "format": "Netpbm",
+      "category": "commercial_dotnet_depth",
+      "description": "Solarize — invert pixels above a threshold for artistic effect",
+      "depth_class": "image_processing_depth",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-NETPBM-SEPIA",
+      "format": "Netpbm",
+      "category": "commercial_dotnet_depth",
+      "description": "Sepia — apply sepia tone to PPM images (convert to grayscale then tint)",
+      "depth_class": "image_processing_depth",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-ZST-MULTIFRAME",
+      "format": "ZST",
+      "category": "foss_depth",
+      "description": "Multi-frame compress/decompress workflow tests — chain compress→decompress→verify",
+      "depth_class": "workflow",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-SYLK-PARSE-EDGE",
+      "format": "SYLK",
+      "category": "foss_depth",
+      "description": "SYLK parse edge-case hardening — empty cells, special characters, large grids",
+      "depth_class": "roundtrip",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-PBM-WRITE-ROUNDTRIP",
+      "format": "PBM",
+      "category": "foss_depth",
+      "description": "PBM write→read roundtrip verification (requires write_ppm from PPM module for cross-format)",
+      "depth_class": "roundtrip",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-PPM-GRAYSCALE-WORKFLOW",
+      "format": "PPM",
+      "category": "foss_depth",
+      "description": "PPM grayscale conversion workflow — write PPM, read back, verify pixel values",
+      "depth_class": "workflow",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-DOGFOOD-FODS-CSV-EXPORT",
+      "format": "FODS",
+      "category": "dogfood_export",
+      "description": "FODS load→edit→CSV export dogfood pipeline in .NET tests",
+      "depth_class": "dogfood",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-DOGFOOD-FODT-MARKDOWN-EXPORT",
+      "format": "FODT",
+      "category": "dogfood_export",
+      "description": "FODT load→edit→Markdown export dogfood pipeline in .NET tests",
+      "depth_class": "dogfood",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-DOGFOOD-NETPBM-POSTERIZE-SAVE",
+      "format": "Netpbm",
+      "category": "dogfood_export",
+      "description": "Netpbm load→posterize→save dogfood pipeline",
+      "depth_class": "dogfood",
+      "priority": "high"
+    }
+  ],
+  "summary": {
+    "commercial_dotnet_gaps": 7,
+    "foss_gaps": 4,
+    "dogfood_gaps": 3,
+    "total": 14
+  }
+}

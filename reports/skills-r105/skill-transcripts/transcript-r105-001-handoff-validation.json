@@ -1,0 +1,22 @@
+{
+  "invocation_id": "R105-DRY-001-HANDOFF-VALIDATION",
+  "skill_id": "validate-skill-transcript",
+  "mode": "dry-run",
+  "inputs": {
+    "transcript_path": "reports/skills-r104/skill-transcripts/"
+  },
+  "allowed_files": [
+    "tools/supervisor/validate_skill_transcript.py",
+    ".supervisor/skill-registry.yaml",
+    "reports/skills-r104/skill-transcripts/",
+    "reports/skills-r105/validator-results/transcript-validation-r104-recheck.json"
+  ],
+  "actual_files_changed": [],
+  "tests_run": [
+    "pytest tests/python/supervisor/test_r105_transcript_grading.py -v"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T17:00:00Z",
+  "notes": "Dry-run: validated R104 transcripts. 4/4 pass. 13 grading integration tests pass."
+}

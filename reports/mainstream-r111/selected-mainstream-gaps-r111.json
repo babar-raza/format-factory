@@ -1,0 +1,126 @@
+{
+  "selection_sprint": "mainstream-r111",
+  "selection_date": "2026-06-03",
+  "stale_references_purged": ["R98"],
+  "selected_gaps": [
+    {
+      "gap_id": "GAP-FODS-MERGECELLS",
+      "format": "FODS",
+      "category": "commercial_dotnet_depth",
+      "description": "MergeCells — merge a rectangular range of cells in a sheet using table:number-columns-spanned",
+      "depth_class": "object_model_depth",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-FODS-SETCELLFORMULA",
+      "format": "FODS",
+      "category": "commercial_dotnet_depth",
+      "description": "SetCellFormula — set table:formula attribute on a cell element for spreadsheet formulas",
+      "depth_class": "object_model_depth",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-FODT-REMOVEHEADING",
+      "format": "FODT",
+      "category": "commercial_dotnet_depth",
+      "description": "RemoveHeading — remove a heading element by index, complementing InsertHeading",
+      "depth_class": "object_model_depth",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-FODT-GETDOCUMENTOUTLINE",
+      "format": "FODT",
+      "category": "commercial_dotnet_depth",
+      "description": "GetDocumentOutline — return heading hierarchy as list of (Level, Text) tuples for TOC generation",
+      "depth_class": "object_model_depth",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-NETPBM-SHARPEN",
+      "format": "Netpbm",
+      "category": "commercial_dotnet_depth",
+      "description": "Sharpen — apply basic 3x3 sharpening kernel to PGM/PPM images",
+      "depth_class": "image_processing_depth",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-NETPBM-BLURBOX",
+      "format": "Netpbm",
+      "category": "commercial_dotnet_depth",
+      "description": "BlurBox — apply NxN box blur to PGM/PPM images",
+      "depth_class": "image_processing_depth",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-ZST-DICTIONARY-WORKFLOW",
+      "format": "ZST",
+      "category": "foss_depth",
+      "description": "ZST dictionary compression workflow — test dict parameter, verify size reduction",
+      "depth_class": "workflow",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-PPM-PIXEL-TRANSFORM-ROUNDTRIP",
+      "format": "PPM",
+      "category": "foss_depth",
+      "description": "PPM pixel-level transform roundtrip — write, read, transform, verify invariants",
+      "depth_class": "roundtrip",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-SYLK-WRITE-ROUNDTRIP",
+      "format": "SYLK",
+      "category": "foss_depth",
+      "description": "SYLK write→parse roundtrip verification — exercise write_sylk + parse_sylk cycle",
+      "depth_class": "roundtrip",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-DIF-CSV-EXPORT-HARDENING",
+      "format": "DIF",
+      "category": "foss_depth",
+      "description": "DIF CSV export edge-case hardening — empty tables, special chars, large data",
+      "depth_class": "roundtrip",
+      "priority": "medium"
+    },
+    {
+      "gap_id": "GAP-DOGFOOD-FODS-SAVE-ROUNDTRIP",
+      "format": "FODS",
+      "category": "dogfood_export",
+      "description": "FODS load→edit→save→reload roundtrip dogfood pipeline with cell formula",
+      "depth_class": "dogfood",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-DOGFOOD-FODT-OUTLINE-EXPORT",
+      "format": "FODT",
+      "category": "dogfood_export",
+      "description": "FODT load→outline extraction→markdown export dogfood pipeline",
+      "depth_class": "dogfood",
+      "priority": "high"
+    },
+    {
+      "gap_id": "GAP-DOGFOOD-NETPBM-SHARPEN-SAVE",
+      "format": "Netpbm",
+      "category": "dogfood_export",
+      "description": "Netpbm load→sharpen→save→reload dogfood pipeline",
+      "depth_class": "dogfood",
+      "priority": "high"
+    }
+  ],
+  "summary": {
+    "commercial_dotnet_gaps": 6,
+    "foss_gaps": 4,
+    "dogfood_gaps": 3,
+    "total": 13,
+    "depth_class_breakdown": {
+      "object_model_depth": 4,
+      "image_processing_depth": 2,
+      "workflow": 1,
+      "roundtrip": 3,
+      "dogfood": 3
+    },
+    "helper_count": 0,
+    "stale_global_reference": "selected-product-gaps.json may still reference R98 — classified as stale global, not used by R111"
+  }
+}

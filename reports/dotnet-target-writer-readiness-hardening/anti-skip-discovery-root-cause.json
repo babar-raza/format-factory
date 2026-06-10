@@ -1,0 +1,48 @@
+{
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "root_cause": "WRONG_ARTIFACT_TYPE_IN_DECLARATION",
+  "findings": [
+    {
+      "check": "missing_raw_logs",
+      "detector": "detect_missing_raw_logs",
+      "scans": [
+        "evidence_root/ (glob *.log, raw-test-log.txt, raw-log*.txt)",
+        "evidence_root/raw-logs/ (same patterns)",
+        "declaration.evidence_artifacts where type in (raw_log, raw-log)"
+      ],
+      "problem": "Prior sprint declaration had raw-log artifacts with type='report_md'. The detector only picks up type='raw_log' or 'raw-log'. evidence_root (.local/evidences/...) has no raw-logs subdir. Logs exist at reports/dotnet-target-writer-mwp-dogfood-unblocking/raw-logs/ but this path is not scanned by the detector.",
+      "fix_required": "Use type=raw_log for raw log artifacts in evidence declaration. Also copy/symlink logs to evidence_root/raw-logs/ as a secondary safety net."
+    },
+    {
+      "check": "missing_sample_outputs",
+      "detector": "detect_missing_sample_outputs",
+      "scans": [
+        "sample_outputs_dir/ (if provided)",
+        "evidence_root/sample-outputs/ (default)",
+        "declaration.evidence_artifacts where type=sample_output",
+        "evidence-manifest.yaml artifacts where type=sample_output"
+      ],
+      "problem": "Prior sprint declaration had sample-output artifacts with type='report_md'. The detector only picks up type='sample_output'. evidence_root has no sample-outputs subdir. Samples exist at reports/dotnet-target-writer-mwp-dogfood-unblocking/sample-outputs/ but not scanned.",
+      "fix_required": "Use type=sample_output for sample output artifacts in evidence declaration."
+    },
+    {
+      "check": "missing_lane_ledger",
+      "detector": "detect_missing_lane_ledger",
+      "problem": "No lane execution ledger was created in prior sprint. Anti-skip correctly identifies this as a true missing artifact.",
+      "fix_required": "Create lane-execution-ledger.json in Phase D."
+    }
+  ],
+  "fix_approach": "DECLARATION_PATHING",
+  "fix_details": [
+    "In new evidence declaration: use type=raw_log for .log files",
+    "In new evidence declaration: use type=sample_output for sample output files",
+    "Mirror/copy raw logs to evidence_root/raw-logs/ for additional discovery",
+    "Mirror/copy sample outputs to evidence_root/sample-outputs/ for additional discovery",
+    "This covers both declaration-artifact path and evidence_root directory scan paths",
+    "No anti_skip_checker.py source changes needed for this sprint (declaration fix is sufficient)"
+  ],
+  "anti_skip_logic_correct": true,
+  "false_positive": false,
+  "true_defect_in_prior_sprint_declaration": true
+}

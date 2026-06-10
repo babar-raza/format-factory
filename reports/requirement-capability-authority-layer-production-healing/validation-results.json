@@ -1,0 +1,60 @@
+{
+  "checks": [
+    {
+      "name": "md_files_exist",
+      "status": "PASS",
+      "evidence": "All 23 required .md files exist"
+    },
+    {
+      "name": "md_files_have_h1",
+      "status": "PASS",
+      "evidence": "All .md files have H1 heading"
+    },
+    {
+      "name": "json_files_parse",
+      "status": "PASS",
+      "evidence": "All 2 JSON files parse successfully"
+    },
+    {
+      "name": "tc_count_reasonable",
+      "status": "PASS",
+      "evidence": "TC count = 22; IDs: ['TC-RCA-COORD-001', 'TC-RCA-PROD-001', 'TC-RCA-PROD-002', 'TC-RCA-PROD-003', 'TC-RCA-GRAPH-001']..."
+    },
+    {
+      "name": "file_ownership_map_no_duplicates",
+      "status": "PASS",
+      "evidence": "file-ownership-map.json: 38 unique paths, no duplicates"
+    },
+    {
+      "name": "overlap_check_clean",
+      "status": "PASS",
+      "evidence": "overlap-check.md contains CLEAN"
+    },
+    {
+      "name": "healed_prompt_line_count",
+      "status": "PASS",
+      "evidence": "Healed prompt has 334 lines (> 300 required)"
+    },
+    {
+      "name": "required_keywords_in_prompt",
+      "status": "PASS",
+      "evidence": "All 22 required keywords found in healed prompt"
+    },
+    {
+      "name": "verdict_in_blocker_review",
+      "status": "PASS",
+      "evidence": "Verdict line found in 00-production-blocker-review.md"
+    },
+    {
+      "name": "git_status_no_forbidden_paths",
+      "status": "PASS",
+      "evidence": "No forbidden-path modifications. 356 total dirty entries. final-git-status.txt written."
+    },
+    {
+      "name": "adversarial_iv_pass_count",
+      "status": "PASS",
+      "evidence": "Adversarial IV: 22 PASS answers (>= 20 required)"
+    }
+  ],
+  "overall": "PASS"
+}

@@ -1,0 +1,46 @@
+{
+  "detection_timestamp": "2026-06-04T10:05:00.000000",
+  "detection_method": "read_only_scan",
+  "claude_flow_ruflo": {
+    "detected": true,
+    "mode": "DETECTED_NOT_CONFIGURED",
+    "mcp_registered": true,
+    "mcp_server_name": "claude-flow",
+    "mcp_command": "npx -y claude-flow@3.10.14 mcp start",
+    "state_directory_present": false,
+    "state_directory_checked": ".claude-flow/",
+    "hooks_detected": false,
+    "daemon_detected": false,
+    "package_json_present": false,
+    "workspace_mutations": [],
+    "auto_install_risk": true,
+    "auto_install_note": "npx -y will auto-install on first invocation — treat as activation risk",
+    "verdict": "RUFLO_DETECTED_NOT_CONFIGURED_APPROVAL_REQUIRED_FOR_INVOCATION"
+  },
+  "task_master_ai": {
+    "detected": true,
+    "mode": "DETECTED_NOT_CONFIGURED",
+    "mcp_registered": true,
+    "mcp_server_name": "task-master-ai",
+    "mcp_command": "npx -y task-master-ai@0.43.1",
+    "state_directory_present": false,
+    "hooks_detected": false,
+    "daemon_detected": false,
+    "auto_install_risk": true,
+    "auto_install_note": "npx -y will auto-install on first invocation — treat as activation risk",
+    "verdict": "TASKMASTER_DETECTED_NOT_CONFIGURED_APPROVAL_REQUIRED_FOR_INVOCATION"
+  },
+  "superpowers": {
+    "detected": false,
+    "state_directory_checked": ".claude-plugin/",
+    "installed_plugins": [],
+    "sessionstart_injection_detected": false,
+    "verdict": "SUPERPOWERS_NOT_INSTALLED_EVALUATE_ONLY"
+  },
+  "ghidra_mcp": {
+    "detected": false,
+    "mcp_registered": false,
+    "ghidra_in_mcp_json": false,
+    "verdict": "GHIDRA_MCP_DISABLED_DEFAULT"
+  }
+}

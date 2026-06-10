@@ -1,0 +1,12 @@
+{
+  "action_id": "spa-cycle-001",
+  "action_type": "RUN_JSON_VALIDATION",
+  "objective": "Validate pilot-input.json — H3 runner proof cycle 1",
+  "preferred_backend": "LOCAL_DETERMINISTIC",
+  "fallback_backends": [],
+  "target": "reports/superpowers-agentic-autonomy/two-cycle-proof/pilot-input.json",
+  "result_path": "reports/superpowers-agentic-autonomy/two-cycle-proof/cycle-001-result.json",
+  "allowed_write_roots": ["reports/superpowers-agentic-autonomy/two-cycle-proof/"],
+  "evidence_required": true,
+  "success_conditions": ["target is valid JSON", "result_path written by runner", "backend_used=LOCAL_DETERMINISTIC", "proof_level=H3"]
+}

@@ -1,0 +1,134 @@
+[
+  {
+    "layer": "autonomous_cycle.py",
+    "source": "tools/supervisor/autonomous_cycle.py",
+    "purpose": "Orchestrates full supervisor cycle: validate → inspect → grade → plan-next → manifest",
+    "health_status": "HEALTHY",
+    "key_capabilities": [
+      "Declaration-driven (takes evidence-declaration.yaml path)",
+      "classify_continuation_state() implements 19-state machine",
+      "Calls anti_skip_checker.run_all_checks() for quality gate",
+      "Emits evidence-manifest.yaml via evidence_manifest module",
+      "Handles NO_MAX_ITERATIONS, NO_POLICY_BLOCK, YES_WITH_LIMITATIONS etc."
+    ],
+    "exit_codes": {
+      "0": "cycle complete, autonomous continue possible",
+      "3": "critical rework exists",
+      "9": "unexpected error"
+    },
+    "issues_found": [],
+    "citations": [
+      "tools/supervisor/autonomous_cycle.py lines 1-68: module header + classify_continuation_state() signature",
+      "tools/supervisor/autonomous_cycle.py line 35: from anti_skip_checker import run_all_checks"
+    ],
+    "score": 5
+  },
+  {
+    "layer": "stop_reason_adjudicator.py",
+    "source": "tools/supervisor/stop_reason_adjudicator.py",
+    "purpose": "Deterministic classifier: maps every potential stop signal to continuation decision or TRUE_EXTERNAL_GATE",
+    "health_status": "HEALTHY",
+    "key_capabilities": [
+      "SignalCategory enum: 20 signal types (SUPERVISOR_VERDICT, HUMAN_GATE, GATE_11, GATE_8, MCP_MODE, PUSH_COMMIT, etc.)",
+      "StopDecision enum: CONTINUE_NEXT_ITERATION, LOCAL_REPAIR_CONTINUE, AGENT_OWNED_REVIEW_CONTINUE, TRUE_EXTERNAL_GATE, UNSAFE_WORKSPACE",
+      "Central rule: no component may output STOP/approval-blocked/human-required unless adjudicator classifies as TRUE_EXTERNAL_GATE or UNSAFE_WORKSPACE",
+      "18 classification rules, prevents false stops from label contamination"
+    ],
+    "exit_codes": {
+      "0": "adjudication complete",
+      "1": "invalid input",
+      "9": "unexpected error"
+    },
+    "issues_found": [],
+    "citations": [
+      "tools/supervisor/stop_reason_adjudicator.py lines 1-60: module header + signal/decision classes"
+    ],
+    "score": 5
+  },
+  {
+    "layer": "anti_skip_checker.py",
+    "source": "tools/supervisor/anti_skip_checker.py",
+    "purpose": "Detect anti-skip violations in sprint evidence — 17 detectors covering quality, completeness, stream identity",
+    "health_status": "HEALTHY",
+    "key_capabilities": [
+      "17 detectors: generic prompt, stale gap, missing raw logs, path-only acceptance, missing evidence-manifest, missing report files, missing lane ledger, cross-stream contamination, missing sample outputs, dirty git state, wrong-stream gaps, evidence quality score, declaration completeness, test count regression, stale evidence manifest, missing changed files, stream-local authority",
+      "Severity mapping: critical (blocks), high (downgrades), medium (caveat), low (informational)",
+      "run_all_checks() called by autonomous_cycle.py"
+    ],
+    "issues_found": [
+      {
+        "issue": "Missing evidence-manifest detector (detector 5) will fire for this sprint if evidence-manifest.yaml is not created before running autonomous_cycle",
+        "severity": "MEDIUM",
+        "classification": "ANTICIPATED_CAVEAT — will be created in Phase 5 before running autonomous_cycle",
+        "source_ref": "tools/supervisor/anti_skip_checker.py line 8"
+      }
+    ],
+    "citations": [
+      "tools/supervisor/anti_skip_checker.py lines 1-60: module docstring listing all 17 detectors + severity mapping"
+    ],
+    "score": 4
+  },
+  {
+    "layer": "build_declaration_review_package.py",
+    "source": "tools/supervisor/build_declaration_review_package.py",
+    "purpose": "Packages declaration evidence into a reviewable ZIP for external transfer or archival",
+    "health_status": "HEALTHY",
+    "key_capabilities": [
+      "Packages: evidence-declaration.yaml, evidence-manifest.yaml (if present), materialized manifest, missing-evidence-report.md, source-change-diffs.patch, work-item-grades.json/md, session-resume.md, next-sprint.md, poc-targets.yaml snapshot",
+      "Output: .local/supervisor/reviews/<run_id>/declaration-review-package.zip",
+      "Exit code 2 = partial build (missing artifacts); 0 = complete",
+      "auto-generates evidence-manifest.yaml from declaration if not already present"
+    ],
+    "exit_codes": {
+      "0": "package built successfully",
+      "2": "package built with missing artifacts (partial)",
+      "9": "unexpected error"
+    },
+    "issues_found": [],
+    "citations": [
+      "tools/supervisor/build_declaration_review_package.py lines 1-60: module header listing packaged files"
+    ],
+    "score": 5
+  },
+  {
+    "layer": "evidence_declaration cycle",
+    "source": "tools/supervisor/evidence_declaration.py (via autonomous_cycle.py import)",
+    "purpose": "Validate and load evidence-declaration.yaml; enforce required fields",
+    "health_status": "HEALTHY",
+    "key_capabilities": [
+      "validate_declaration() enforces required YAML fields",
+      "load_declaration() returns typed declaration dict",
+      "Called at the start of every autonomous_cycle run"
+    ],
+    "issues_found": [],
+    "citations": [
+      "tools/supervisor/autonomous_cycle.py line 28: from evidence_declaration import validate_declaration, load_declaration"
+    ],
+    "score": 5
+  },
+  {
+    "layer": "autonomous_host_runner.py",
+    "source": "tools/supervisor/autonomous_host_runner.py",
+    "purpose": "Host-level runner that attempts to invoke the next autonomous cycle via Claude CLI",
+    "health_status": "DEGRADED",
+    "degraded_reason": "HOST_INVOCATION_DEFERRED_NESTED_SESSION_LIMITATION — live invocation not proven in non-nested session; CLAUDECODE=1 env var prevents recursive invocation",
+    "key_capabilities": [
+      "4 result states: HOST_INVOCATION_ATTEMPTED, LAYER_MISSING, DEFERRED, REFUSED",
+      "Hard-stop keyword list enforced: git push, git commit, gate 11 approval, gate 8 approval, publish, commercial_product_ready: true, mcp activation",
+      "Claude CLI detection implemented",
+      "Dry-run mode works correctly"
+    ],
+    "issues_found": [
+      {
+        "issue": "Live end-to-end invocation not proven — nested CLAUDECODE=1 env causes deferral",
+        "severity": "MEDIUM",
+        "classification": "ARCHITECTURE_LIMITATION",
+        "fix_eligible": "EXTERNAL_GATE — requires non-nested session for live test"
+      }
+    ],
+    "citations": [
+      "tools/supervisor/autonomous_host_runner.py lines 1-60: module header + hard stop keywords"
+    ],
+    "score": 3
+  }
+]

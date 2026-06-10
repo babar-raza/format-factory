@@ -1,0 +1,43 @@
+# Capability Delta Proposal — FODS → CSV Export via Reusable Writer
+# Sprint: FORMAT-FACTORY-AUTHORITY-LAYERS-AND-TARGET-WRITER-MEGA-TRAIN-R119-001
+# Status: PROPOSED (do NOT apply without coordinator review and human gate approval)
+# DO NOT directly mutate product-capability-matrix/poc-targets.yaml
+
+capability_delta:
+  product: "fods-dotnet"
+  claim_id: "claim:fods:export_csv_dotnet"
+  previous_status: "BLOCKED_ARCHITECTURE_MISSING_TARGET_WRITER"
+  proposed_status: "MWP_IMPLEMENTED"
+
+  evidence:
+    writer_library: "src/net/csv/FormatFactory.Csv.csproj"
+    writer_class: "FormatFactory.Csv.CsvWriter"
+    exporter_file: "src/net/fods/FodsCsvExporter.cs"
+    delegation_line: 149
+    tests: "tests/net/fods/FodsCsvExporterTests.cs"
+    tests_pass: 547
+    tests_fail: 0
+    dogfood_sample: "reports/authority-target-writer-mega-train-r119/fods-csv-integration/fods-csv-output-sample/multi-sheet-first-sheet-expected.csv"
+
+  export_policy_compliance:
+    standalone_writer_exists: true
+    writer_registered: false  # proposed patch only, not yet in registry
+    exporter_calls_writer: true
+    tests_prove_invocation: true
+    dogfood_artifact_exists: true
+    rca_proof_graph_linked: false  # requires RCA R2 sprint
+
+  limitations:
+    - "Only first sheet exported by ExportFirstSheetToCsv (prototype)"
+    - "table:number-columns-repeated not expanded"
+    - "Formula results not available"
+    - "MWP — not production hardened"
+    - "Gate 11 not approved"
+
+  notes: >
+    CSV export via reusable writer is the FIRST format where the full export support
+    policy is met. HTML/Markdown/TXT exports remain separate (writers built but not
+    yet wired to FODS HTML or FODT MD/TXT exporters respectively).
+
+    HTML does NOT become unblocked because CSV is unblocked. Each target format
+    requires its own end-to-end wiring and dogfood proof.

@@ -1,0 +1,20 @@
+taskcard_id: ROUTE-REENTRY-009
+title: "One bounded routed product implementation pilot"
+status: IN_PROGRESS
+owner_lane: product-advancement
+allowed_files:
+  - "src/python/dif/dif_parser.py"
+  - "tests/python/dif/"
+forbidden_files:
+  - "tools/supervisor/"
+  - "schemas/"
+dependencies:
+  - "ROUTE-REENTRY-007"
+  - "ROUTE-REENTRY-008"
+gates: []
+evidence_paths:
+  - ".local/evidences/route-aware-product-reentry-20260610-001030-e382e5f/"
+tests:
+  - "tests/python/dif/test_r156_dif_cell_accessors.py"
+rollback_notes: "Revert changes to allowed_files only"
+closeout_criteria: "One small product function implemented through route-aware flow with passing tests"

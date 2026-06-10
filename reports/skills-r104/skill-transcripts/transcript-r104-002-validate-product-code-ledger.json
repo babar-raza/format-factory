@@ -1,0 +1,27 @@
+{
+  "invocation_id": "R104-DRY-002-VALIDATE-LEDGER-PYTHON",
+  "skill_id": "validate-product-code-ledger",
+  "mode": "dry-run",
+  "inputs": {
+    "ledger_path": "reports/r90/product-code-change-ledger.json"
+  },
+  "allowed_files": [
+    "tools/supervisor/validate_product_code_ledger.py",
+    "reports/r90/product-code-change-ledger.json",
+    "src/net/fods/FodsDocument.cs",
+    "src/net/fodt/FodtDocument.cs",
+    "src/net/netpbm/Model/NetpbmImage.cs",
+    "src/python/sylk/sylk_parser.py",
+    "reports/skills-r104/validator-results/ledger-validation-r104.json"
+  ],
+  "actual_files_changed": [
+    "reports/skills-r104/validator-results/ledger-validation-r104.json"
+  ],
+  "tests_run": [
+    "pytest tests/python/supervisor/ -k ledger -v"
+  ],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T09:36:53.276939Z",
+  "notes": "Dry-run: validated product-code change ledger. All entries checked against source SHA-256."
+}

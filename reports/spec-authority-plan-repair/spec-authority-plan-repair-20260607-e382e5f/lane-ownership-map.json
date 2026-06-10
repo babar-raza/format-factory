@@ -1,0 +1,205 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-PLAN-REPAIR-FOR-SINGLE-GO-EXECUTION-001",
+  "run_id": "spec-authority-plan-repair-20260607-e382e5f",
+  "generated_at": "2026-06-07",
+  "lane_count": 9,
+  "lanes": [
+    {
+      "lane_id": "L-COORD",
+      "name": "Coordinator/Integration",
+      "owner": "primary_agent",
+      "description": "Orchestrates all lanes; writes final summary and bundle; arbitrates conflicts",
+      "allowed_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/",
+        "reports/spec-authority-plan-repair/${RUN_ID}/raw-logs/"
+      ],
+      "exclusive_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/final-summary.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/plan-completeness-check.md"
+      ],
+      "forbidden_write_paths": [
+        "src/",
+        ".local/spec-cache/",
+        "tools/supervisor/",
+        "docs/automation/"
+      ],
+      "read_access": "all",
+      "taskcards_owned": ["TCA-000", "TCA-024"]
+    },
+    {
+      "lane_id": "L-EVIDENCE",
+      "name": "Evidence Import",
+      "owner": "agent_or_subagent",
+      "description": "Imports and re-verifies investigation findings; writes evidence-import-review",
+      "allowed_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/evidence-import-review.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/raw-logs/"
+      ],
+      "exclusive_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/evidence-import-review.md"
+      ],
+      "forbidden_write_paths": [
+        "src/",
+        ".local/spec-cache/",
+        "schemas/"
+      ],
+      "read_access": "all",
+      "taskcards_owned": ["TCA-001"]
+    },
+    {
+      "lane_id": "L-STATEMACHINE",
+      "name": "State Machine + Taskcards",
+      "owner": "primary_or_subagent",
+      "description": "Produces state machine JSON/md and all taskcard artifacts",
+      "allowed_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-state-machine.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-state-machine.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-schema.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-schema.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-taskcards.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-taskcards.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-state.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-transition-ledger.jsonl"
+      ],
+      "exclusive_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-state-machine.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-taskcards.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/taskcard-state.json"
+      ],
+      "forbidden_write_paths": [
+        "src/",
+        "tools/supervisor/",
+        ".local/"
+      ],
+      "read_access": "all",
+      "taskcards_owned": ["TCA-005", "TCA-006"]
+    },
+    {
+      "lane_id": "L-GOVERNANCE",
+      "name": "Governance + Supervisor Gate",
+      "owner": "primary_agent",
+      "description": "Reviews governance compatibility; writes plan-readiness-review; reads supervisor files",
+      "allowed_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/plan-readiness-review.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/required-plan-repairs.md"
+      ],
+      "exclusive_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/plan-readiness-review.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/required-plan-repairs.md"
+      ],
+      "forbidden_write_paths": [
+        "src/",
+        "tools/supervisor/autonomous_cycle.py",
+        "tools/supervisor/product_task_selector.py",
+        ".local/"
+      ],
+      "read_access": "all",
+      "taskcards_owned": ["TCA-007", "TCA-008"]
+    },
+    {
+      "lane_id": "L-SCHEMA",
+      "name": "Evidence Schema + Proof Graph",
+      "owner": "specialist_agent",
+      "description": "Designs spec_fact_refs enforcement; designs proof graph authority edges; writes schema design reports",
+      "allowed_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/schema-design.md"
+      ],
+      "exclusive_write_paths": [],
+      "forbidden_write_paths": [
+        "src/",
+        "schemas/",
+        ".local/",
+        "tools/"
+      ],
+      "read_access": "schemas/, docs/automation/, tools/supervisor/",
+      "taskcards_owned": ["TCA-002", "TCA-015"]
+    },
+    {
+      "lane_id": "L-SELECTOR",
+      "name": "Product Task Selector + Next-Action",
+      "owner": "specialist_agent",
+      "description": "Designs authority gate in product task selector; writes selector design reports",
+      "allowed_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/selector-design.md"
+      ],
+      "exclusive_write_paths": [],
+      "forbidden_write_paths": [
+        "src/",
+        "tools/supervisor/product_task_selector.py",
+        "tools/supervisor/next_action_generator.py",
+        ".local/"
+      ],
+      "read_access": "tools/supervisor/, docs/automation/",
+      "taskcards_owned": ["TCA-001", "TCA-004"]
+    },
+    {
+      "lane_id": "L-VERIFY",
+      "name": "Verification + Negative Tests",
+      "owner": "test_focused_agent",
+      "description": "Runs verification gates; produces validate_repaired_plan.py; writes verification-gates artifacts",
+      "allowed_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/verification-gates.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/verification-gates.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/validate_repaired_plan.py",
+        "reports/spec-authority-plan-repair/${RUN_ID}/raw-logs/validate-repaired-plan.txt"
+      ],
+      "exclusive_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/verification-gates.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/validate_repaired_plan.py"
+      ],
+      "forbidden_write_paths": [
+        "src/",
+        "tests/",
+        ".local/"
+      ],
+      "read_access": "all",
+      "taskcards_owned": ["TCA-021", "TCA-022"]
+    },
+    {
+      "lane_id": "L-ADVERSARIAL",
+      "name": "Independent Review",
+      "owner": "separate_adversarial_agent",
+      "description": "Independent review of all artifacts; writes adversarial-review.md only",
+      "allowed_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/adversarial-review.md"
+      ],
+      "exclusive_write_paths": [
+        "reports/spec-authority-plan-repair/${RUN_ID}/adversarial-review.md"
+      ],
+      "forbidden_write_paths": [
+        "src/",
+        ".local/",
+        "reports/spec-authority-plan-repair/${RUN_ID}/authority-healing-taskcards.json",
+        "reports/spec-authority-plan-repair/${RUN_ID}/repaired-plan.md"
+      ],
+      "read_access": "all_reports_in_run_dir",
+      "taskcards_owned": []
+    },
+    {
+      "lane_id": "L-BUNDLE",
+      "name": "Evidence Bundle",
+      "owner": "coordinator",
+      "description": "Copies all reports to .local/; builds SHA256-MANIFEST.txt",
+      "allowed_write_paths": [
+        ".local/spec-authority-plan-repair/${RUN_ID}/",
+        "reports/spec-authority-plan-repair/${RUN_ID}/SHA256-MANIFEST.txt"
+      ],
+      "exclusive_write_paths": [
+        ".local/spec-authority-plan-repair/${RUN_ID}/SHA256-MANIFEST.txt"
+      ],
+      "forbidden_write_paths": [
+        "src/",
+        "reports/spec-authority-plan-repair/${RUN_ID}/*.md",
+        "reports/spec-authority-plan-repair/${RUN_ID}/*.json"
+      ],
+      "read_access": "reports/spec-authority-plan-repair/${RUN_ID}/",
+      "taskcards_owned": ["TCA-024"]
+    }
+  ],
+  "handoff_rules": {
+    "L-COORD_gates_L-BUNDLE": "Cannot start L-BUNDLE until L-VERIFY passes validate_repaired_plan.py",
+    "L-ADVERSARIAL_trigger": "Reads final artifacts after all other lanes complete; findings trigger repairs if CRITICAL",
+    "L-BUNDLE_start": "Starts only after all other lanes complete required artifacts",
+    "lane_conflict_resolution": "L-COORD arbitrates; assigns exclusive ownership; records conflict in raw-logs/"
+  }
+}

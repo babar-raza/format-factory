@@ -1,0 +1,120 @@
+{
+  "run_id": "mainstream-r109",
+  "classification_sprint": "mainstream-r110",
+  "classification_date": "2026-06-03",
+  "items": [
+    {
+      "item_id": "R109-LANE-C-FODS",
+      "title": "FODS HasSheet API",
+      "classification": "VERIFIED_WITH_PROOF",
+      "raw_log": "reports/mainstream-r109/raw-logs/fods-dotnet-test.log",
+      "source_diff": "reports/mainstream-r109/raw-logs/fods-source-diff.txt",
+      "skill_transcript": "reports/mainstream-r109/skill-transcripts/r109-fods-hassheet.md",
+      "ledger_entry": "R109-GOVERNED-DOTNET-FODS-HASSHEET-001",
+      "test_file": "tests/net/fods/FodsR109HasSheetTests.cs",
+      "test_count": 8
+    },
+    {
+      "item_id": "R109-LANE-D-FODT",
+      "title": "FODT ExportToHtmlFile API",
+      "classification": "VERIFIED_WITH_PROOF",
+      "raw_log": "reports/mainstream-r109/raw-logs/fodt-dotnet-test.log",
+      "source_diff": "reports/mainstream-r109/raw-logs/fodt-source-diff.txt",
+      "skill_transcript": "reports/mainstream-r109/skill-transcripts/r109-fodt-exporttohtmlfile.md",
+      "ledger_entry": "R109-GOVERNED-DOTNET-FODT-EXPORTTOHTMLFILE-001",
+      "test_file": "tests/net/fodt/FodtR109ExportToHtmlFileTests.cs",
+      "test_count": 8
+    },
+    {
+      "item_id": "R109-LANE-E-NETPBM",
+      "title": "Netpbm Posterize API",
+      "classification": "VERIFIED_WITH_PROOF",
+      "raw_log": "reports/mainstream-r109/raw-logs/netpbm-dotnet-test.log",
+      "source_diff": "reports/mainstream-r109/raw-logs/netpbm-source-diff.txt",
+      "skill_transcript": "reports/mainstream-r109/skill-transcripts/r109-netpbm-posterize.md",
+      "ledger_entry": "R109-GOVERNED-DOTNET-NETPBM-POSTERIZE-001",
+      "test_file": "tests/net/netpbm/NetpbmR109PosterizeTests.cs",
+      "test_count": 10
+    },
+    {
+      "item_id": "R109-LANE-F-ZST",
+      "title": "ZST Level Boundary Tests",
+      "classification": "VERIFIED_WITH_PROOF",
+      "raw_log": "reports/mainstream-r109/raw-logs/python-all-test.log",
+      "source_diff": null,
+      "skill_transcript": null,
+      "ledger_entry": null,
+      "test_file": "tests/python/zst/test_r109_zst_level_boundaries.py",
+      "test_count": 8
+    },
+    {
+      "item_id": "R109-LANE-F-SYLK",
+      "title": "SYLK CSV Roundtrip Hardening",
+      "classification": "VERIFIED_WITH_PROOF",
+      "raw_log": "reports/mainstream-r109/raw-logs/python-all-test.log",
+      "source_diff": null,
+      "skill_transcript": null,
+      "ledger_entry": null,
+      "test_file": "tests/python/sylk/test_r109_sylk_csv_roundtrip.py",
+      "test_count": 8
+    },
+    {
+      "item_id": "R109-LANE-F-PBM",
+      "title": "PBM Format Detection Tests",
+      "classification": "VERIFIED_WITH_PROOF",
+      "raw_log": "reports/mainstream-r109/raw-logs/python-all-test.log",
+      "source_diff": null,
+      "skill_transcript": null,
+      "ledger_entry": null,
+      "test_file": "tests/python/pbm/test_r109_pbm_format_detection.py",
+      "test_count": 8
+    },
+    {
+      "item_id": "R109-LANE-G-DOGFOOD",
+      "title": "Dogfood Pipelines",
+      "classification": "VERIFIED_WITH_PROOF",
+      "raw_log": "reports/mainstream-r109/raw-logs/fods-dotnet-test.log",
+      "source_diff": null,
+      "skill_transcript": null,
+      "ledger_entry": null,
+      "test_file": "tests/net/fods/FodsR109DogfoodHasSheetRoundtripTests.cs",
+      "test_count": 8
+    },
+    {
+      "item_id": "R109-LANE-A-REGRADING",
+      "title": "R108 Evidence Regrading",
+      "classification": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "Report-only lane, no test artifacts expected"
+    },
+    {
+      "item_id": "R109-LANE-B-CLOSURE",
+      "title": "Clean Closure and Ledger Enforcement",
+      "classification": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "Governance/process lane, no test artifacts expected"
+    },
+    {
+      "item_id": "R109-LANE-H-STATE",
+      "title": "Mainstream State and Fresh Gaps",
+      "classification": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "State management lane, no test artifacts expected"
+    },
+    {
+      "item_id": "R109-LANE-I-EVIDENCE",
+      "title": "Evidence Package Hardening",
+      "classification": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "Evidence packaging lane, raw logs confirmed present"
+    },
+    {
+      "item_id": "R109-LANE-J-IV",
+      "title": "Independent Verification",
+      "classification": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "Verification-only lane"
+    }
+  ],
+  "summary": {
+    "verified_with_proof": 7,
+    "accepted_with_limitations": 5,
+    "overclaimed": 0,
+    "requires_rework": 0
+  }
+}

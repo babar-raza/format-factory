@@ -1,0 +1,55 @@
+{
+  "packet_version": "1.0-shell",
+  "packet_type": "SHELL",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "generated_at": "2026-06-04T12:00:00Z",
+  "family": "FODT",
+  "track": "commercial_net",
+  "gap_id": "GAP-FODT-DOGFOOD-MD-DOTNET-001",
+  "capability": "dogfood_status.fodt_to_markdown_dotnet",
+  "recommended_skill": "add-dotnet-api",
+  "status": "SHELL — NEEDS_MAINSTREAM_DISCOVERY",
+  "allowed_files_pattern": [
+    "src/net/fodt/FodtDocument.cs",
+    "tests/net/fodt/FodtR{N}ExportToMarkdownTests.cs",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "forbidden_files": [
+    "src/python/*",
+    "src/net/fods/*",
+    "src/net/netpbm/*",
+    "registry/format-registry.yaml",
+    "plans/master-plan.md",
+    "product-capability-matrix/poc-targets.yaml",
+    ".vscode/mcp.json",
+    ".supervisor/policies.yaml",
+    "reports/supervisor/approval-gates.md",
+    ".claude-plugin/*"
+  ],
+  "expected_tests": "tests/net/fodt/FodtR{N}ExportToMarkdownTests.cs with 8+ test methods",
+  "expected_source_diff": "One new method (ExportToMarkdown or similar) in FodtDocument.cs",
+  "expected_raw_logs": "reports/{sprint}/raw-logs/test-fodt-export-md.log",
+  "expected_ledger_entry": "reports/r90/product-code-change-ledger.json entry with change_type=add_api",
+  "proposed_capability_delta": {
+    "field": "fodt.dogfood_status.fodt_to_markdown_dotnet",
+    "proposed_value": "IMPLEMENTED",
+    "authority_update_required": false,
+    "note": "Proposed delta only — Supervisor or human approves separately"
+  },
+  "required_transcript_fields": [
+    "invocation_id", "skill_id", "mode", "inputs", "allowed_files",
+    "actual_files_changed", "tests_run", "result", "timestamp"
+  ],
+  "acceptance_criteria": [
+    "validate_skill_transcript.py exits 0",
+    "8+ tests pass",
+    "source diff shows exactly one new public method",
+    "ledger entry added"
+  ],
+  "limitations": [
+    "NEEDS_MAINSTREAM_DISCOVERY: exact sprint test number ({N}) needs assignment",
+    "Handoff not yet generated — Skills must run dry-run before Mainstream consumes",
+    "FodtDocument.cs method name to be confirmed by Mainstream"
+  ],
+  "enforcement_tier": "FAIL_CLOSED"
+}

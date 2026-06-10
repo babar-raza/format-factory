@@ -1,0 +1,77 @@
+{
+  "classification_version": "1.0",
+  "classified_by": "skills-r102-wave0",
+  "timestamp": "2026-06-03T14:30:00Z",
+  "r101_claims": [
+    {
+      "claim_id": "R101-CMD-VALIDATOR",
+      "description": "Created tools/supervisor/validate_claude_commands.py with 12-section checker",
+      "evidence_paths": ["tools/supervisor/validate_claude_commands.py", "tests/python/supervisor/test_validate_claude_commands.py"],
+      "file_exists": true,
+      "tests_pass": true,
+      "test_count": 12,
+      "classification": "VERIFIED_LOCAL_ONLY",
+      "reason": "Tool exists and tests pass, but was NOT packaged in R101 review ZIP"
+    },
+    {
+      "claim_id": "R101-CMD-HARDENING",
+      "description": "Hardened 13 command files to 12/12 sections",
+      "evidence_paths": [".claude/commands/add-dotnet-api.md", ".claude/commands/add-dotnet-object-model-feature.md", ".claude/commands/add-python-api.md", ".claude/commands/add-python-object-model-feature.md", ".claude/commands/add-dogfood-export.md", ".claude/commands/update-capability-matrix.md", ".claude/commands/add-roundtrip-test.md", ".claude/commands/add-installed-package-example.md", ".claude/commands/add-same-format-writer-feature.md", ".claude/commands/generate-execution-handoff.md", ".claude/commands/verify-dogfood-path.md", ".claude/commands/package-install-proof.md", ".claude/commands/promote-gap-to-taskcard.md"],
+      "validator_result": "13/18 pass (5 legacy unhardened)",
+      "classification": "VERIFIED_LOCAL_ONLY",
+      "reason": "Commands pass validator locally but hardened files were not in R101 review package"
+    },
+    {
+      "claim_id": "R101-TRANSCRIPTS",
+      "description": "Generated 12 skill invocation transcripts",
+      "evidence_paths": ["reports/skills-r101/skill-transcripts/"],
+      "transcript_count": 12,
+      "schema_correct": false,
+      "classification": "DECLARED_NOT_PACKAGED",
+      "reason": "Transcripts exist locally but use WRONG schema (transcript_id instead of invocation_id, verdict instead of result, missing allowed_files/actual_files_changed). Not included in review ZIP."
+    },
+    {
+      "claim_id": "R101-HANDOFFS",
+      "description": "Generated 3 execution handoffs",
+      "evidence_paths": ["reports/skills-r101/generated-handoffs/handoff-001-fods-rename-sheet.yaml", "reports/skills-r101/generated-handoffs/handoff-002-netpbm-extract-channel.yaml", "reports/skills-r101/generated-handoffs/handoff-003-controlled-proof-fodt-get-plain-text-range.yaml"],
+      "handoff_count": 3,
+      "classification": "DECLARED_NOT_PACKAGED",
+      "reason": "Handoff YAML files exist locally but were not included in review ZIP"
+    },
+    {
+      "claim_id": "R101-REGISTRY-EXPANSION",
+      "description": "Expanded registry to 20 skills (13 active, 7 draft)",
+      "evidence_paths": [".supervisor/skill-registry.yaml"],
+      "classification": "VERIFIED_LOCAL_ONLY",
+      "reason": "Registry file exists with claimed skill count but not packaged"
+    },
+    {
+      "claim_id": "R101-ANTI-BYPASS",
+      "description": "Demonstrated 2 anti-bypass scenarios (BACKFILLED_PRE_GOVERNANCE rejection, unregistered skill detection)",
+      "evidence_paths": ["reports/skills-r101/skill-transcripts/transcript-011-BACKFILLED_PRE_GOVERNANCE-fods-r101.json", "reports/skills-r101/skill-transcripts/transcript-012-add-magic-feature-fods-r101.json"],
+      "classification": "DECLARED_NOT_PACKAGED",
+      "reason": "Anti-bypass transcripts exist but use wrong schema and were not in review package"
+    },
+    {
+      "claim_id": "R101-VALIDATOR-TESTS",
+      "description": "12 tests for validate_claude_commands.py all pass",
+      "evidence_paths": ["tests/python/supervisor/test_validate_claude_commands.py"],
+      "classification": "VERIFIED_LOCAL_ONLY",
+      "reason": "Tests pass locally (12/12) but raw log not in review package"
+    }
+  ],
+  "summary": {
+    "VERIFIED_SELF_CONTAINED": 0,
+    "VERIFIED_LOCAL_ONLY": 3,
+    "DECLARED_NOT_PACKAGED": 3,
+    "INSUFFICIENT_EVIDENCE": 0,
+    "OVERCLAIMED": 1
+  },
+  "overclaimed_details": [
+    {
+      "claim": "R101 transcripts use correct validator schema",
+      "actual": "R101 transcripts use old schema (transcript_id/verdict) not validator schema (invocation_id/result/allowed_files)",
+      "severity": "medium"
+    }
+  ]
+}

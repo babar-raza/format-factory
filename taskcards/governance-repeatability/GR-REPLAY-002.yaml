@@ -1,0 +1,29 @@
+id: GR-REPLAY-002
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Upgrade get_headers from BACKFILLED_LEGACY_ACCEPTED to REPLAYABLE"
+status: ready_to_execute
+lane: replay_upgrade
+item_type: PRODUCT_SOURCE
+format_id: tsv
+function_name: get_headers
+source_file: src/python/tsv/tsv_parser.py
+current_state: BACKFILLED_LEGACY_ACCEPTED
+current_claim: LEGACY_BACKFILLED
+target_state: REPLAY_RECIPE_RECORDED
+target_claim: REPLAYABLE_NOT_YET_REPLAYED
+idempotency_key: "569a341630a9d69e7a37c8ca37807cae5f1e9d63ef619044e333ba63161cb20d"
+sidecar_attribution_path: ".local/attribution/tsv/tsv_parser.py.attribution.yaml"
+problem: >
+  get_headers was implemented manually (BACKFILLED_LEGACY_EXECUTION) without a
+  replay recipe. Upgrade path: write replay recipe to move toward REPLAYABLE.
+scope:
+  - Write replay recipe in .local/replay-recipes/tsv-get-headers.yaml
+  - Update sidecar attribution to include replay_recipe_path
+files_to_create:
+  - .local/replay-recipes/tsv-get-headers.yaml
+files_to_update:
+  - .local/attribution/tsv/tsv_parser.py.attribution.yaml
+dependencies: [GR-TC-006, GRH-TC-007]
+handoff_to_autonomy_sprint: true

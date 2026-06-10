@@ -1,0 +1,121 @@
+{
+  "sprint": "mainstream-r112",
+  "prior_sprint": "mainstream-r111",
+  "classification_date": "2026-06-03",
+  "items": [
+    {
+      "item_id": "R111-WAVE-0-RECONCILIATION",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "All 4 evidence paths verified on disk. Path-only limitation is a supervisor grading defect (no tests_supporting for report items)."
+    },
+    {
+      "item_id": "R111-WAVE-1-REGRADING-BRIDGE",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "Both JSON and MD regrading bridge files verified. 13 items mapped with evidence chains."
+    },
+    {
+      "item_id": "R111-WAVE-2-ANTI-SKIP-ANALYSIS",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "Root cause documented: inspect_declared_evidence.py:223 test_summaries guard."
+    },
+    {
+      "item_id": "R111-WAVE-3-HANDOFF",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "3 handoff files verified. Supervisor + acceleration defects documented."
+    },
+    {
+      "item_id": "R111-WAVE-4-GAPS",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_WITH_LIMITATIONS",
+      "reason": "13 gaps in JSON, no stale R98 references. Product depth strategy documented."
+    },
+    {
+      "item_id": "R111-WAVE-5A-FODS-MERGECELLS",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "8 tests, source diff, skill transcript, ledger entry all verified."
+    },
+    {
+      "item_id": "R111-WAVE-5B-FODS-SETCELLFORMULA",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "10 tests, source diff, skill transcript, ledger entry all verified."
+    },
+    {
+      "item_id": "R111-WAVE-5C-FODT-REMOVEHEADING",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "8 tests, source diff, skill transcript, ledger entry all verified."
+    },
+    {
+      "item_id": "R111-WAVE-5D-FODT-GETDOCUMENTOUTLINE",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "8 tests, source diff, skill transcript, ledger entry all verified."
+    },
+    {
+      "item_id": "R111-WAVE-5E-NETPBM-SHARPEN",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "8 tests, source diff, skill transcript, ledger entry all verified."
+    },
+    {
+      "item_id": "R111-WAVE-5F-NETPBM-BLURBOX",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "10 tests, source diff, skill transcript, ledger entry all verified."
+    },
+    {
+      "item_id": "R111-WAVE-6A-ZST-WORKFLOW",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "8 tests verified in test file on disk."
+    },
+    {
+      "item_id": "R111-WAVE-6B-PPM-ROUNDTRIP",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "8 tests verified in test file on disk."
+    },
+    {
+      "item_id": "R111-WAVE-6C-SYLK-ROUNDTRIP",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "8 tests verified in test file on disk."
+    },
+    {
+      "item_id": "R111-WAVE-6D-DIF-EXPORT",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "8 tests (2 pass, 6 skipped due to no minimal.dif sample)."
+    },
+    {
+      "item_id": "R111-WAVE-7A-FODS-DOGFOOD",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "4 dogfood tests verified."
+    },
+    {
+      "item_id": "R111-WAVE-7B-FODT-DOGFOOD",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "4 dogfood tests verified."
+    },
+    {
+      "item_id": "R111-WAVE-7C-NETPBM-DOGFOOD",
+      "r112_classification": "VERIFIED_WITH_PROOF",
+      "r111_grade": "ACCEPTED_VERIFIED",
+      "reason": "4 dogfood tests verified."
+    }
+  ],
+  "summary": {
+    "verified_with_proof": 18,
+    "accepted_with_limitations": 0,
+    "requires_r112_rework": 0,
+    "overclaimed": 0
+  }
+}

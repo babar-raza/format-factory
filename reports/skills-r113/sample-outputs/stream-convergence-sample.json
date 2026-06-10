@@ -1,0 +1,26 @@
+{
+  "sample_type": "stream-convergence",
+  "description": "Sample showing stream-convergence protocol resolution",
+  "scenarios": {
+    "skills_reads_own_state": {
+      "path": "reports/supervisor-streams/skills/evidence-review.json",
+      "authority": "STREAM_LOCAL",
+      "result": "AUTHORITATIVE"
+    },
+    "skills_reads_global": {
+      "path": "reports/supervisor/evidence-review.json",
+      "authority": "ADVISORY_REFERENCE",
+      "result": "MAY_BE_STALE"
+    },
+    "mainstream_overwrites_global": {
+      "path": "reports/supervisor/next-sprint.md",
+      "writer": "mainstream",
+      "effect_on_skills": "NONE — Skills reads stream-local"
+    },
+    "skills_continuation_isolated": {
+      "path": ".local/supervisor/streams/skills/continuation-signal.json",
+      "authority": "STREAM_LOCAL",
+      "result": "NEVER_OVERWRITTEN_BY_GLOBAL"
+    }
+  }
+}

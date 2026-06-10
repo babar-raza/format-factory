@@ -1,0 +1,18 @@
+taskcard_id: ROUTE-REENTRY-008
+title: "Product mutation route evidence integration"
+status: IN_PROGRESS
+owner_lane: supervisor
+allowed_files:
+  - "tools/supervisor/autonomy_route_decider.py"
+  - "schemas/evidence/"
+forbidden_files:
+  - "src/"
+dependencies:
+  - "ROUTE-REENTRY-007"
+gates: []
+evidence_paths:
+  - ".local/evidences/route-aware-product-reentry-20260610-001030-e382e5f/"
+tests:
+  - "tests/supervisor/test_autonomy_routing_integration.py"
+rollback_notes: "Revert changes to allowed_files only"
+closeout_criteria: "Product mutation evidence JSON validates against schema"

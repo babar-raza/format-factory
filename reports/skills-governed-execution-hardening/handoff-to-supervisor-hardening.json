@@ -1,0 +1,34 @@
+{
+  "handoff_type": "skills_to_supervisor_hardening",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "generated_at": "2026-06-04T12:00:00Z",
+  "skills_status": "SKILLS_CONSUMABLE_WITH_LIMITATIONS",
+  "hardening_verdict": "SKILLS_GOVERNED_EXECUTION_HARDENED_INDEPENDENTLY_VERIFIED",
+  "grading_rubric": [
+    {
+      "tier": "FAIL_CLOSED",
+      "applies_to": "Product source changes from Skills sprint",
+      "assessment": "N/A — Skills sprint made no product source changes",
+      "grade": "EXEMPT"
+    },
+    {
+      "tier": "YES_WITH_LIMITATIONS",
+      "applies_to": "Governance and template artifacts",
+      "assessment": "All 6 product templates present with all 15 sections",
+      "grade": "ACCEPTED"
+    },
+    {
+      "tier": "ACCEPT_WITH_LIMITATIONS",
+      "applies_to": "Report-only and planning artifacts",
+      "assessment": "All 17 substantive artifacts confirmed consumable",
+      "grade": "ACCEPTED_WITH_LIMITATIONS"
+    }
+  ],
+  "anti_false_positive_rules": [
+    "Skills sprint with no product source edits = expected — not a failure",
+    "MCP deferred = valid sprint state — not a failure",
+    "Shell packets for FODT/Netpbm = correct approach — not a failure",
+    "Capability matrix update as proposed delta = improved hardening — not a failure"
+  ],
+  "what_supervisor_should_classify": "Skills not missing. Mainstream can consume FODS full packet immediately."
+}

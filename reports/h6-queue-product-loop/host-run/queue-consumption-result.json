@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-AUTONOMOUS-PRODUCT-QUEUE-CONSUMPTION-001",
+  "generated_at": "2026-06-06T11:36:20Z",
+  "run_id": "3ec7eca5",
+  "orchestrator_mode": "queue_first=true, backend=local, max_cycles=3",
+  "claudecode_env": "CLAUDECODE cleared (external host mode via start_format_factory_orchestrator.ps1 -QueueFirst)",
+  "cycles_completed": 3,
+  "stop_code": "MAX_CYCLES_REACHED",
+  "queue_items_consumed": [
+    {
+      "action_id": "h6q-product-001",
+      "action_type": "PRODUCT_GAP_CLASSIFICATION_READONLY",
+      "status_before": "pending",
+      "status_after": "done",
+      "result_path": "reports/h6-queue-product-loop/product-pilot/product-gap-classification.json",
+      "product_source_mutated": false,
+      "poc_targets_mutated": false
+    },
+    {
+      "action_id": "h6-q-001",
+      "action_type": "RUN_JSON_VALIDATION",
+      "status_before": "pending",
+      "status_after": "done",
+      "result_path": "reports/autonomous-orchestrator/queue-run/queue-item-h6-q-001-result.json"
+    },
+    {
+      "action_id": "h6-q-003",
+      "action_type": "RUN_JSON_VALIDATION",
+      "status_before": "pending",
+      "status_after": "done",
+      "result_path": "reports/autonomous-orchestrator/queue-run/queue-item-h6-q-003-result.json"
+    }
+  ],
+  "items_remaining_pending": 2,
+  "no_advisory_prompt_executed": true,
+  "no_product_source_mutated": true,
+  "verdict": "QUEUE_DRIVEN_H6_MULTI_ACTION_PROVEN"
+}

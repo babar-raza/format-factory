@@ -1,0 +1,64 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-HARDENING-IV-AND-CONSUMPTION-CONTRACT-001",
+  "generated": "2026-06-04T08:42:18.716177+00:00",
+  "negative_fixtures": [
+    {
+      "id": "NEG-001",
+      "scenario": "AI output claims authority_state=accepted",
+      "expected_result": "REJECT",
+      "rule": "All AI outputs must stay at authority_state=ai_draft",
+      "enforcement": "Packet validator rejects any packet with authority_state != ai_draft"
+    },
+    {
+      "id": "NEG-002",
+      "scenario": "AI output tries to update poc-targets.yaml",
+      "expected_result": "REJECT",
+      "rule": "poc-targets.yaml is read-only to all Acceleration tools",
+      "enforcement": "Checksum invariant (f57d501e...) must not change"
+    },
+    {
+      "id": "NEG-003",
+      "scenario": "AI output references direct API key value",
+      "expected_result": "REJECT",
+      "rule": "No API key values in any written file",
+      "enforcement": "grep for known key patterns in all output files"
+    },
+    {
+      "id": "NEG-004",
+      "scenario": "External tool output tries to close taskcard",
+      "expected_result": "REJECT",
+      "rule": "No external tool output closes taskcards",
+      "enforcement": "evidence_declaration.yaml must be written by worker, not by tool"
+    },
+    {
+      "id": "NEG-005",
+      "scenario": "Superpowers/Ruflo/Ghidra recommendation tries to mutate workspace",
+      "expected_result": "REJECT",
+      "rule": "All external tool recommendations are advisory only",
+      "enforcement": "TC-EXT-007 verified no external tool installed or activated"
+    },
+    {
+      "id": "NEG-006",
+      "scenario": "Packet lacks ai_draft in authority_state",
+      "expected_result": "REJECT",
+      "rule": "authority_state must be ai_draft in all Acceleration outputs",
+      "enforcement": "packet_validation_results.json confirms all packets have authority_state=ai_draft"
+    },
+    {
+      "id": "NEG-007",
+      "scenario": "Packet lacks required validation note",
+      "expected_result": "REJECT",
+      "rule": "All packets must include required_mainstream_validation list",
+      "enforcement": "required_mainstream_validation field verified in all 4 packets"
+    },
+    {
+      "id": "NEG-008",
+      "scenario": "fixture_error packet claims directly_consumable=true",
+      "expected_result": "REJECT",
+      "rule": "If ai_rationale contains fixture_error, directly_consumable must be False",
+      "enforcement": "_gateway_rationale fixture_error detection sets directly_consumable=False"
+    }
+  ],
+  "authority_state": "ai_draft",
+  "non_authoritative": true
+}

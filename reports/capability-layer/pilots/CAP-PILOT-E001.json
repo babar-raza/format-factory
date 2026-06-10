@@ -1,0 +1,60 @@
+{
+  "pilot_id": "CAP-PILOT-E001",
+  "format": "FODG",
+  "product_type": "foss_reduced",
+  "authority_inputs": [
+    "tests/python/fodg/test_cap_fodg_write_export.py (22 tests PASS)",
+    "reports/capability-layer/foss-reduced-capability-map.json"
+  ],
+  "source_files_inspected": [
+    "src/python/fodg/fodg_codec.py"
+  ],
+  "tests_inspected": 3,
+  "examples_inspected": "None",
+  "generated_capability_records": {
+    "count": 10,
+    "sample": "load, probe_fodg, get_page_count, create_fodg (new), write_fodg (new), export_to_txt (new)"
+  },
+  "generated_gap_entries": {
+    "count": 0,
+    "summary": "write_fodg and export_to_txt now implemented"
+  },
+  "taskcards_created_or_updated": [
+    "CAP-PROD-002",
+    "CAP-PROD-003",
+    "CAP-PROD-006"
+  ],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "PASS advisory warnings only"
+  },
+  "test_result": {
+    "pass_count": 22,
+    "fail_count": 0,
+    "log_path": ""
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [
+      "src/python/fodg/fodg_codec.py",
+      "tests/python/fodg/test_cap_fodg_write_export.py"
+    ],
+    "key_checks": [
+      "create_fodg() builds valid model",
+      "write_fodg() serializes to valid XML",
+      "export_to_txt() returns formatted string",
+      "roundtrip probe and load verified",
+      "22/22 tests pass"
+    ],
+    "result": "VERIFIED"
+  },
+  "contradictions_found": [],
+  "repairs_performed": [
+    "Added create_fodg() to fodg_codec.py",
+    "Added write_fodg() to fodg_codec.py",
+    "Added export_to_txt() to fodg_codec.py",
+    "Updated __init__.py exports",
+    "Added ledger entry FODG-CREATE-WRITE-EXPORT-CAP-001"
+  ],
+  "final_verdict": "PASS_VERIFIED",
+  "verdict_reason": "FODG feature expansion complete. create_fodg, write_fodg, export_to_txt added and tested. 22/22 pass."
+}

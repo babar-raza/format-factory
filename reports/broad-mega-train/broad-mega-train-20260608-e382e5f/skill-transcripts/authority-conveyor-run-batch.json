@@ -1,0 +1,23 @@
+{
+  "skill_id": "authority-conveyor-run",
+  "sprint_id": "FORMAT-FACTORY-BROAD-AUTHORITY-PRODUCT-AUTONOMY-AND-HEALING-MEGA-TRAIN-001",
+  "invocation_timestamp": "2026-06-08T17:00:00Z",
+  "action": "batch_authority_validation",
+  "formats_validated": ["fods","zst","csv","pbm","pgm","ppm","fodt","gnumeric","abw","sylk","tsv","dif","markdown","netpbm","html","txt"],
+  "results_summary": {
+    "p6_count": 2,
+    "p5_count": 0,
+    "p4_count": 0,
+    "p3_count": 4,
+    "p2_count": 0,
+    "p1_count": 7,
+    "p0_count": 3
+  },
+  "readiness_ready": ["fods", "zst"],
+  "product_expansion_ready": ["fods", "zst"],
+  "output_file": "reports/broad-mega-train/broad-mega-train-20260608-e382e5f/matrices/format-authority-matrix-v3.json",
+  "matrix_md": "reports/broad-mega-train/broad-mega-train-20260608-e382e5f/matrices/format-authority-matrix-v3.md",
+  "validation_command": "python -c \"import sys; sys.path.insert(0,'tools/supervisor'); from authority_gate_validation import validate_format_authority; r=validate_format_authority('zst'); print(r['authority_level'])\"",
+  "validation_result": "P6",
+  "verdict": "PASS"
+}

@@ -1,0 +1,90 @@
+{
+  "sprint_id": "mainstream-r101",
+  "generated_at": "2026-06-03T13:00:00Z",
+  "source_poc_matrix_sprint": "R100",
+  "stale_gap_check": "no R98 gaps in use",
+  "selected_commercial_gaps": [
+    {
+      "gap_id": "GAP-FODS-REMOVESHEET-001",
+      "format": "FODS",
+      "track": "commercial_net",
+      "capability": "remove_sheet",
+      "skill": "add-dotnet-api",
+      "ranking_reason": "Sheet management completion: AddSheet exists, RemoveSheet missing"
+    },
+    {
+      "gap_id": "GAP-FODT-INSERTPARAGRAPH-001",
+      "format": "FODT",
+      "track": "commercial_net",
+      "capability": "insert_paragraph",
+      "skill": "add-dotnet-api",
+      "ranking_reason": "Structural edit: AppendParagraph exists, positional insert missing"
+    },
+    {
+      "gap_id": "GAP-NETPBM-ROTATE180-001",
+      "format": "Netpbm",
+      "track": "commercial_net",
+      "capability": "rotate_180",
+      "skill": "add-dotnet-object-model-feature",
+      "ranking_reason": "Transform completion: Rotate90/270 exist, Rotate180 missing; save roundtrip proof"
+    }
+  ],
+  "selected_foss_gaps": [
+    {
+      "gap_id": "GAP-ZST-INSTALLED-SMOKE-001",
+      "format": "ZST",
+      "track": "foss_reduced",
+      "capability": "installed_package_smoke",
+      "skill": "add-roundtrip-test",
+      "ranking_reason": "Package usability: compress/decompress/validate from installed wheel"
+    },
+    {
+      "gap_id": "GAP-NETPBM-PYTHON-INSTALLED-CHAIN-001",
+      "format": "Netpbm",
+      "track": "foss_reduced",
+      "capability": "installed_chain_workflow",
+      "skill": "verify-dogfood-path",
+      "ranking_reason": "Installed workflow: PBM/PGM/PPM write+parse from installed packages"
+    },
+    {
+      "gap_id": "GAP-SYLK-STRICT-EDGE-001",
+      "format": "SYLK",
+      "track": "foss_reduced",
+      "capability": "strict_parse_edge_cases",
+      "skill": "add-roundtrip-test",
+      "ranking_reason": "Parser hardening: Unicode, empty grid, boundary conditions"
+    }
+  ],
+  "selected_dogfood_gaps": [
+    {
+      "gap_id": "GAP-DOGFOOD-FODS-CSV-ROUNDTRIP-001",
+      "format": "FODS",
+      "track": "dogfood",
+      "capability": "fods_csv_edit_export_roundtrip",
+      "ranking_reason": "Edit→CSV export→verify using FF export pipeline"
+    },
+    {
+      "gap_id": "GAP-DOGFOOD-NETPBM-NET-EXPORT-001",
+      "format": "Netpbm",
+      "track": "dogfood",
+      "capability": "netpbm_pgm_ppm_export_roundtrip",
+      "ranking_reason": "PGM→PPM and PPM→PGM using FF NetpbmImage model"
+    }
+  ],
+  "selected_usability_gaps": [
+    {
+      "gap_id": "GAP-USABILITY-SYLK-EXAMPLE-001",
+      "format": "SYLK",
+      "track": "usability",
+      "capability": "installed_example",
+      "ranking_reason": "No SYLK example exists; write+export example needed"
+    },
+    {
+      "gap_id": "GAP-USABILITY-NETPBM-NET-EXAMPLE-001",
+      "format": "Netpbm",
+      "track": "usability",
+      "capability": "pixel_edit_save_example",
+      "ranking_reason": "No .NET Netpbm example with pixel edit + save workflow"
+    }
+  ]
+}

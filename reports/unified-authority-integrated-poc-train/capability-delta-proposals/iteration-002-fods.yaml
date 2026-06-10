@@ -1,0 +1,27 @@
+delta_id: "delta:iter002-fods-r115"
+sprint_id: "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001"
+iteration: 2
+format: fods
+track: commercial_net
+proposed_at: "2026-06-04T21:00:00Z"
+
+additions:
+  - capability: ExportSheetToCsvFile
+    method: "ExportSheetToCsvFile(string sheetName, string filePath)"
+    description: "Write sheet data to a CSV file at the given path"
+    tests: ["tests/net/fods/FodsR115ExportCsvFileTests.cs"]
+    status: VERIFIED
+
+  - capability: ExportSheetToCsvFile_DefaultSheet
+    method: "ExportSheetToCsvFile(string filePath)"
+    description: "Write first sheet to CSV file (default sheet overload)"
+    tests: ["tests/net/fods/FodsR115ExportCsvFileTests.cs"]
+    status: VERIFIED
+
+  - capability: FilterRows
+    method: "FilterRows(string sheetName, int col, string value) -> IReadOnlyList<IReadOnlyList<string?>>"
+    description: "Return header + rows where cell at col matches value; empty if sheet not found; throws on null sheet name"
+    tests: ["tests/net/fods/FodsR115FilterRowsTests.cs"]
+    status: VERIFIED
+
+verdict: DELTA_ACCEPTED

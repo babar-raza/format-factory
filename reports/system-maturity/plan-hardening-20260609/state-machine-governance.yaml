@@ -1,0 +1,172 @@
+# Format Factory — Taskcard State Machine Governance
+# Sprint: Plan Hardening 2026-06-09
+# Authority: Governs all taskcard state transitions in this sprint.
+
+schema_version: "1.0"
+
+states:
+  PROPOSED:
+    description: "Taskcard identified but not yet scoped or triaged"
+    terminal: false
+  TRIAGED:
+    description: "Taskcard scoped with owner, weakness mapping, and initial assessment"
+    terminal: false
+  BLOCKED:
+    description: "Taskcard cannot proceed due to unresolved dependencies or missing prerequisites"
+    terminal: true  # Can be terminal at sprint close
+  READY:
+    description: "All prerequisites met; taskcard eligible for execution"
+    terminal: false
+  IN_PROGRESS:
+    description: "Taskcard actively being executed"
+    terminal: false
+  IMPLEMENTED:
+    description: "Taskcard outputs created but not yet validated"
+    terminal: false
+  VALIDATED:
+    description: "Required tests and validators have passed"
+    terminal: false
+  REWORK:
+    description: "Validation or IV failed; taskcard returned for fixes"
+    terminal: false
+  INDEPENDENTLY_VERIFIED:
+    description: "A different verification lane has confirmed the evidence"
+    terminal: false
+  CLOSED:
+    description: "Taskcard completed with all evidence accepted"
+    terminal: true
+  REJECTED:
+    description: "Taskcard determined to be unnecessary, unsafe, or out of scope"
+    terminal: true
+  DEFERRED:
+    description: "Taskcard postponed to a future sprint with explicit reason"
+    terminal: true  # Terminal for this sprint
+
+transitions:
+  - from: PROPOSED
+    to: TRIAGED
+    requires: [owner_assigned, weakness_ids_mapped, scope_defined]
+
+  - from: TRIAGED
+    to: READY
+    requires:
+      - dependencies_resolved
+      - allowed_paths_listed
+      - forbidden_paths_listed
+      - evidence_requirements_listed
+      - tests_listed_or_exempted
+      - stop_conditions_listed
+
+  - from: TRIAGED
+    to: BLOCKED
+    requires: [blocking_reason_documented]
+
+  - from: TRIAGED
+    to: DEFERRED
+    requires: [deferral_reason_documented]
+
+  - from: READY
+    to: IN_PROGRESS
+    requires:
+      - workspace_safety_check_passed
+      - no_overlap_with_other_in_progress_taskcards
+      - git_status_captured
+
+  - from: IN_PROGRESS
+    to: IMPLEMENTED
+    requires: [file_changes_or_report_outputs_completed]
+
+  - from: IMPLEMENTED
+    to: VALIDATED
+    requires: [required_tests_pass, required_validators_pass]
+
+  - from: VALIDATED
+    to: INDEPENDENTLY_VERIFIED
+    requires: [different_verification_lane_inspects_evidence]
+
+  - from: INDEPENDENTLY_VERIFIED
+    to: CLOSED
+    requires: [closure_evidence_complete, no_unresolved_contradictions]
+
+  - from: VALIDATED
+    to: REWORK
+    requires: [validation_failure_documented]
+
+  - from: INDEPENDENTLY_VERIFIED
+    to: REWORK
+    requires: [iv_failure_documented]
+
+  - from: REWORK
+    to: IN_PROGRESS
+    requires: [rework_scope_defined]
+
+  - from: BLOCKED
+    to: TRIAGED
+    requires: [blocking_condition_resolved]
+
+  - from: DEFERRED
+    to: TRIAGED
+    requires: [deferral_conditions_changed]
+
+  - from: any
+    to: REJECTED
+    requires: [rejection_evidence_documented]
+
+blocking_rules:
+  - rule: "Any source-changing taskcard without tests must remain BLOCKED"
+    applies_to: task_type == source_change
+    condition: required_tests is empty
+
+  - rule: "Any Gate 11 taskcard without registry support must remain BLOCKED"
+    applies_to: title contains 'Gate 11'
+    condition: registry/format-registry.yaml gate_11.approved_by == null
+
+  - rule: "Any publication taskcard without install proof must remain BLOCKED"
+    applies_to: stream == release
+    condition: install_test_proof missing
+
+  - rule: "Any autonomy claim without queue-backed execution trace must remain BLOCKED"
+    applies_to: stream == autonomy AND task_type == pilot
+    condition: queue_execution_trace missing
+
+  - rule: "Any generated-state repair without cross-check validator must remain BLOCKED"
+    applies_to: title contains 'generated' or 'context-pack'
+    condition: cross_check_validator not specified
+
+non_terminal_states_forbidden_at_sprint_close:
+  - PROPOSED
+  - TRIAGED
+  - READY
+  - IN_PROGRESS
+  - IMPLEMENTED
+
+authority_hierarchy:
+  - level: 1
+    source: "AGENTS.md and repo governance policies"
+    type: normative
+  - level: 2
+    source: "registry/format-registry.yaml"
+    type: authoritative
+  - level: 3
+    source: "docs/gates.md"
+    type: normative
+  - level: 4
+    source: "taskcards and state files created by this sprint"
+    type: operational
+  - level: 5
+    source: "Current source, tests, schemas, package files"
+    type: evidence
+  - level: 6
+    source: "Raw command logs from this sprint"
+    type: evidence
+  - level: 7
+    source: "Evidence declarations and review packages"
+    type: advisory
+  - level: 8
+    source: "Supervisor/generated reports"
+    type: advisory
+  - level: 9
+    source: "Old context packs and old next-sprint prompts"
+    type: advisory_stale
+
+conflict_resolution: "If any generated file contradicts registry or governance policy, the generated file is wrong."

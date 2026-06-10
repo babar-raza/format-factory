@@ -1,0 +1,21 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-R2-VERIFIED-ROUTING-CYCLE-ENFORCEMENT-AND-CROSS-STREAM-CONSUMPTION-001",
+  "validated_at": "2026-06-04T08:00:00Z",
+  "prompt_file": "reports/supervisor-product-traffic-controller-r2/generated-next-supervisor-prompt.md",
+  "quality_checks": [
+    {"check": "sprint_id_present", "result": "PASS"},
+    {"check": "lane_structure_defined", "result": "PASS", "lanes_count": 8},
+    {"check": "forbidden_paths_listed", "result": "PASS"},
+    {"check": "allowed_paths_listed", "result": "PASS"},
+    {"check": "cross_stream_consumption_checks_included", "result": "PASS"},
+    {"check": "clean_pass_requirements_stated", "result": "PASS"},
+    {"check": "anti_skip_violations_referenced", "result": "PASS"},
+    {"check": "hard_prohibitions_stated", "result": "PASS"},
+    {"check": "final_response_contract_present", "result": "PASS"},
+    {"check": "no_push_no_commit_stated", "result": "PASS"}
+  ],
+  "checks_passed": 10,
+  "checks_failed": 0,
+  "quality_verdict": "PROMPT_QUALITY_PASS",
+  "target_stream": "supervisor"
+}

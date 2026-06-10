@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "action_id": "h6-q-003",
+  "action_type": "RUN_JSON_VALIDATION",
+  "objective": "Queue item h6-q-003: RUN_JSON_VALIDATION",
+  "preferred_backend": "LOCAL_DETERMINISTIC",
+  "fallback_backends": [],
+  "external_gate": false,
+  "result_path": "reports/autonomous-orchestrator/queue-run/queue-item-h6-q-003-result.json",
+  "allowed_write_roots": [
+    "reports\\autonomous-orchestrator\\queue-run",
+    "reports/autonomous-orchestrator/queue-run",
+    ".local/supervisor",
+    "reports/autonomous-orchestrator"
+  ],
+  "evidence_required": true,
+  "cycle_number": 3,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001",
+  "queue_item_id": "h6-q-003",
+  "from_queue": true,
+  "target": ".local/supervisor/active-continuation.json"
+}

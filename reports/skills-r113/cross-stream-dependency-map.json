@@ -1,0 +1,103 @@
+{
+  "version": "1.0",
+  "sprint": "skills-r113",
+  "timestamp": "2026-06-03T23:00:00Z",
+  "description": "Cross-stream dependency graph for Skills stream",
+  "skills_owns": [
+    {
+      "resource": ".supervisor/skill-registry.yaml",
+      "type": "registry",
+      "consumers": ["mainstream", "acceleration", "supervisor"],
+      "change_impact": "All streams use skill lookup — registry changes require all-stream test pass"
+    },
+    {
+      "resource": "tools/supervisor/validate_skill_transcript.py",
+      "type": "validator",
+      "consumers": ["mainstream", "acceleration"],
+      "change_impact": "Transcript format changes require consumer notification"
+    },
+    {
+      "resource": "tools/supervisor/validate_adoption_compliance.py",
+      "type": "validator",
+      "consumers": ["mainstream", "acceleration"],
+      "change_impact": "Compliance rule changes affect all declaring streams"
+    },
+    {
+      "resource": ".claude/commands/*.md",
+      "type": "command_files",
+      "consumers": ["mainstream", "acceleration"],
+      "change_impact": "Command format changes affect skill invocations"
+    }
+  ],
+  "skills_depends_on": [
+    {
+      "resource": "tools/supervisor/autonomous_cycle.py",
+      "owner": "supervisor",
+      "type": "shared_infrastructure",
+      "dependency_type": "MODIFIES_SHARED",
+      "risk": "Skills adds hooks (Step 2d, authority map) that all streams execute"
+    },
+    {
+      "resource": "tools/supervisor/grade_declared_work.py",
+      "owner": "supervisor",
+      "type": "shared_infrastructure",
+      "dependency_type": "READ_ONLY"
+    },
+    {
+      "resource": "tools/supervisor/anti_skip_checker.py",
+      "owner": "supervisor",
+      "type": "shared_infrastructure",
+      "dependency_type": "READ_ONLY"
+    },
+    {
+      "resource": "tools/supervisor/generate_next_worker_prompt.py",
+      "owner": "supervisor",
+      "type": "shared_infrastructure",
+      "dependency_type": "READ_ONLY"
+    },
+    {
+      "resource": "tools/supervisor/evidence_manifest.py",
+      "owner": "supervisor",
+      "type": "shared_infrastructure",
+      "dependency_type": "READ_ONLY"
+    }
+  ],
+  "unresolved_dependencies": [
+    {
+      "id": "DEP-001",
+      "description": "Skills modifies autonomous_cycle.py which is shared infrastructure",
+      "risk": "HIGH",
+      "mitigation": "All supervisor test suite must pass after Skills changes",
+      "handoff_needed": false,
+      "note": "Covered by 309-test regression suite"
+    },
+    {
+      "id": "DEP-002",
+      "description": "Receiver fixtures define cross-stream handoff contracts",
+      "risk": "MEDIUM",
+      "mitigation": "Receiver fixtures are versioned per-sprint and per-stream",
+      "handoff_needed": true,
+      "handoff_path": "reports/skills-r113/receiver-fixtures/"
+    }
+  ],
+  "receiver_handoffs": [
+    {
+      "target_stream": "mainstream",
+      "handoff_type": "receiver-fixture",
+      "path": "reports/skills-r113/receiver-fixtures/mainstream-receiver.json",
+      "status": "READY"
+    },
+    {
+      "target_stream": "acceleration",
+      "handoff_type": "receiver-fixture",
+      "path": "reports/skills-r113/receiver-fixtures/acceleration-receiver.json",
+      "status": "READY"
+    },
+    {
+      "target_stream": "supervisor",
+      "handoff_type": "receiver-fixture",
+      "path": "reports/skills-r113/receiver-fixtures/supervisor-receiver.json",
+      "status": "READY"
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001",
+  "generated_at": "2026-06-04T09:00:00Z",
+  "taskcards": [
+    {
+      "id": "TC-LANE0",
+      "title": "Coordinator, safety, and state",
+      "lane": "coordinator",
+      "owner": "coordinator",
+      "status": "IN_PROGRESS",
+      "dependencies": [],
+      "allowed_paths": ["reports/supervisor-traffic-controller-hardening/"],
+      "forbidden_paths": ["src/net/**", "src/python/**", "registry/**"],
+      "evidence_paths": [
+        "reports/supervisor-traffic-controller-hardening/00-preflight.md",
+        "reports/supervisor-traffic-controller-hardening/current-git-status.txt",
+        "reports/supervisor-traffic-controller-hardening/lane-ownership.md",
+        "reports/supervisor-traffic-controller-hardening/file-ownership-map.json",
+        "reports/supervisor-traffic-controller-hardening/overlap-check.md",
+        "reports/supervisor-traffic-controller-hardening/taskcard-state.json",
+        "reports/supervisor-traffic-controller-hardening/coordinator-integration-log.md"
+      ],
+      "acceptance_check": "all 7 files exist",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-LANE-A",
+      "title": "Evidence-to-implementation reconciliation",
+      "lane": "A",
+      "owner": "supervisor-lane",
+      "status": "READY",
+      "dependencies": ["TC-LANE0"],
+      "allowed_paths": ["reports/supervisor-traffic-controller-hardening/"],
+      "forbidden_paths": ["src/net/**", "src/python/**"],
+      "evidence_paths": [
+        "reports/supervisor-traffic-controller-hardening/evidence-reconciliation.md",
+        "reports/supervisor-traffic-controller-hardening/substantive-implementation-inventory.json",
+        "reports/supervisor-traffic-controller-hardening/non-blocking-evidence-caveats.md",
+        "reports/supervisor-traffic-controller-hardening/blocking-verification-gaps.md"
+      ],
+      "acceptance_check": "all caveats classified blocking/non-blocking",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-LANE-B",
+      "title": "Replay and determinism hardening",
+      "lane": "B",
+      "owner": "supervisor-lane",
+      "status": "READY",
+      "dependencies": ["TC-LANE-A"],
+      "allowed_paths": [
+        "reports/supervisor-traffic-controller-hardening/",
+        "tools/supervisor/generate_stream_routing_packet.py",
+        "tools/supervisor/check_cross_stream_consumption.py"
+      ],
+      "forbidden_paths": ["src/net/**", "src/python/**"],
+      "evidence_paths": [
+        "reports/supervisor-traffic-controller-hardening/replay-matrix.md",
+        "reports/supervisor-traffic-controller-hardening/replay-results.json",
+        "reports/supervisor-traffic-controller-hardening/routing-determinism-proof.md",
+        "reports/supervisor-traffic-controller-hardening/raw-logs/replay-run-1.log",
+        "reports/supervisor-traffic-controller-hardening/raw-logs/replay-run-2.log"
+      ],
+      "acceptance_check": "determinism proof shows stable semantic hash",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-LANE-C",
+      "title": "Cross-stream consumption hardening",
+      "lane": "C",
+      "owner": "supervisor-lane",
+      "status": "READY",
+      "dependencies": ["TC-LANE-A"],
+      "allowed_paths": [
+        "reports/supervisor-traffic-controller-hardening/",
+        "tools/supervisor/check_cross_stream_consumption.py"
+      ],
+      "forbidden_paths": ["src/net/**", "src/python/**"],
+      "evidence_paths": [
+        "reports/supervisor-traffic-controller-hardening/cross-stream-consumption-hardening.md",
+        "reports/supervisor-traffic-controller-hardening/cross-stream-current-status.json",
+        "reports/supervisor-traffic-controller-hardening/cross-stream-negative-fixtures.json",
+        "reports/supervisor-traffic-controller-hardening/raw-logs/cross-stream-tests.log"
+      ],
+      "acceptance_check": "Skills packet no longer SKILLS_MISSING_PACKET when present",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-LANE-D",
+      "title": "Product routing hardening",
+      "lane": "D",
+      "owner": "supervisor-lane",
+      "status": "READY",
+      "dependencies": ["TC-LANE-B", "TC-LANE-C"],
+      "allowed_paths": [
+        "reports/supervisor-traffic-controller-hardening/",
+        "tools/supervisor/generate_stream_routing_packet.py",
+        "tools/supervisor/product_velocity_scorer.py"
+      ],
+      "forbidden_paths": ["src/net/**", "src/python/**"],
+      "evidence_paths": [
+        "reports/supervisor-traffic-controller-hardening/product-routing-hardening.md",
+        "reports/supervisor-traffic-controller-hardening/mainstream-routing-current.json",
+        "reports/supervisor-traffic-controller-hardening/mainstream-gap-priority-table.md",
+        "reports/supervisor-traffic-controller-hardening/product-family-breadth-proof.json"
+      ],
+      "acceptance_check": "3 families (FODS+FODT+Netpbm) in routing packet",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-LANE-E",
+      "title": "Continuation-state and false-pass/false-stop hardening",
+      "lane": "E",
+      "owner": "supervisor-lane",
+      "status": "READY",
+      "dependencies": ["TC-LANE-A"],
+      "allowed_paths": [
+        "reports/supervisor-traffic-controller-hardening/",
+        "tools/supervisor/autonomous_cycle.py"
+      ],
+      "forbidden_paths": ["src/net/**", "src/python/**"],
+      "evidence_paths": [
+        "reports/supervisor-traffic-controller-hardening/continuation-hardening.md",
+        "reports/supervisor-traffic-controller-hardening/continuation-fixture-results.json",
+        "reports/supervisor-traffic-controller-hardening/false-pass-false-stop-proof.md",
+        "reports/supervisor-traffic-controller-hardening/raw-logs/continuation-tests.log"
+      ],
+      "acceptance_check": "10 fixture scenarios all produce expected outcomes",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-LANE-F",
+      "title": "External-tool governance hardening",
+      "lane": "F",
+      "owner": "supervisor-lane",
+      "status": "READY",
+      "dependencies": ["TC-LANE-A"],
+      "allowed_paths": [
+        "reports/supervisor-traffic-controller-hardening/",
+        "tools/supervisor/external_tool_governance.py"
+      ],
+      "forbidden_paths": ["src/net/**", "src/python/**", ".vscode/mcp.json"],
+      "evidence_paths": [
+        "reports/supervisor-traffic-controller-hardening/external-tool-governance-hardening.md",
+        "reports/supervisor-traffic-controller-hardening/external-tool-readonly-proof.md",
+        "reports/supervisor-traffic-controller-hardening/external-tool-fixture-results.json",
+        "reports/supervisor-traffic-controller-hardening/raw-logs/external-tool-tests.log"
+      ],
+      "acceptance_check": "read-only detection proof; no tool invocation",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-LANE-G",
+      "title": "Supervisor hardening tests",
+      "lane": "G",
+      "owner": "supervisor-lane",
+      "status": "READY",
+      "dependencies": ["TC-LANE-B", "TC-LANE-C", "TC-LANE-D", "TC-LANE-E", "TC-LANE-F"],
+      "allowed_paths": [
+        "tests/supervisor/test_supervisor_traffic_controller_hardening_iv.py",
+        "tests/supervisor/test_supervisor_product_traffic_controller_integration.py",
+        "tests/supervisor/test_cross_stream_consumption.py",
+        "tests/supervisor/test_continuation_state_integration.py",
+        "tests/supervisor/test_external_tool_governance_integration.py",
+        "reports/supervisor-traffic-controller-hardening/raw-logs/"
+      ],
+      "forbidden_paths": ["src/net/**", "src/python/**", "tests/net/**", "tests/python/**"],
+      "evidence_paths": [
+        "tests/supervisor/test_supervisor_traffic_controller_hardening_iv.py",
+        "reports/supervisor-traffic-controller-hardening/raw-logs/"
+      ],
+      "acceptance_check": "all hardening tests pass",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-LANE-H",
+      "title": "Hardened routing outputs",
+      "lane": "H",
+      "owner": "supervisor-lane",
+      "status": "READY",
+      "dependencies": ["TC-LANE-G"],
+      "allowed_paths": [
+        "reports/supervisor-streams/",
+        "reports/supervisor-traffic-controller-hardening/"
+      ],
+      "forbidden_paths": ["src/net/**", "src/python/**"],
+      "evidence_paths": [
+        "reports/supervisor-streams/mainstream/latest-routing-packet.json",
+        "reports/supervisor-traffic-controller-hardening/hardened-mainstream-handoff.md",
+        "reports/supervisor-traffic-controller-hardening/hardened-mainstream-handoff.json",
+        "reports/supervisor-traffic-controller-hardening/final-hardening-summary.md"
+      ],
+      "acceptance_check": "handoff includes FODS+FODT+Netpbm; Skills+Acceleration status accurate",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    },
+    {
+      "id": "TC-LANE-I",
+      "title": "Evidence and closeout",
+      "lane": "I",
+      "owner": "coordinator",
+      "status": "READY",
+      "dependencies": ["TC-LANE-H"],
+      "allowed_paths": [
+        ".local/evidences/supervisor-traffic-controller-hardening/",
+        "reports/supervisor-traffic-controller-hardening/"
+      ],
+      "forbidden_paths": ["src/net/**", "src/python/**"],
+      "evidence_paths": [
+        ".local/evidences/supervisor-traffic-controller-hardening/evidence-declaration.yaml",
+        ".local/evidences/supervisor-traffic-controller-hardening/evidence-manifest.yaml",
+        "reports/supervisor-traffic-controller-hardening/review-package-proof.md"
+      ],
+      "acceptance_check": "autonomous-cycle exit 0; review package SHA computed",
+      "closeout_status": "OPEN",
+      "blocker_reason": null
+    }
+  ]
+}

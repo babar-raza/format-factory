@@ -1,0 +1,23 @@
+id: GRH-TC-011
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Repair prompt quality for governance stream (Lane K)"
+status: completed
+lane: prompt_quality_repair
+item_type: GOVERNANCE_DOC
+problem: >
+  The generated next-worker-prompt for the governance sprint is mainstream product-focused
+  (references FODS, FODT, DIF format capabilities) instead of governance stream work.
+  The wrong-stream-next-sprint detector may flag this or the next execution may take
+  the wrong work items.
+scope:
+  - Diagnose why next-worker-prompt is wrong-stream
+  - Create prompt quality diagnostic in reports
+  - Verify next-sprint prompt for this sprint is governance-stream-aware
+files_to_create:
+  - reports/repeatability-governance-hardening-rnext/prompt-quality-report.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-001]
+handoff_to_autonomy_sprint: false

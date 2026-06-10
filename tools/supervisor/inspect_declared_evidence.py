@@ -20,6 +20,138 @@ import yaml
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 
+# ---------------------------------------------------------------------------
+# LLM semantic helpers — optional enrichment, deterministic fallback
+# ---------------------------------------------------------------------------
+_ai_gateway = None
+_ai_config_obj = None
+
+
+def _get_ai_gateway():
+    """Lazily load AI gateway. Returns (gateway_chat, config) or (None, None)."""
+    global _ai_gateway, _ai_config_obj
+    if _ai_gateway is not None:
+        return _ai_gateway, _ai_config_obj
+    try:
+        # SCRIPT_DIR = tools/supervisor, repo_root = tools/supervisor/../.. = repo root
+        repo_root_for_import = str(SCRIPT_DIR.parent.parent)
+        if repo_root_for_import not in sys.path:
+            sys.path.insert(0, repo_root_for_import)
+        from tools.ai.control_plane.gateway import gateway_chat
+        from tools.ai.control_plane.config import load_ai_config
+        cfg = load_ai_config()
+        if cfg.is_configured:
+            _ai_gateway = gateway_chat
+            _ai_config_obj = cfg
+            return _ai_gateway, _ai_config_obj
+    except Exception:
+        pass
+    return None, None
+
+
+def _llm_call(messages: list[dict], role: str, operation: str) -> str | None:
+    """Single LLM call with graceful fallback. Returns content or None.
+
+    Tries gateway (litellm) first, falls back to direct SDK if litellm unavailable.
+    """
+    gw, cfg = _get_ai_gateway()
+    if gw is None:
+        return None
+    try:
+        resp, _record = gw(
+            config=cfg,
+            model="recommended",
+            messages=messages,
+            role=role,
+            operation=operation,
+        )
+        content = resp.get("content", "")
+        if content:
+            return content
+        # Gateway returned empty — may be litellm import failure; try direct SDK
+        if _record and getattr(_record, "status", None) and "error" in str(_record.status).lower():
+            return _sdk_fallback(messages, cfg)
+        return None
+    except Exception:
+        return None
+
+
+def _sdk_fallback(messages: list[dict], cfg) -> str | None:
+    """Fallback: call endpoint directly via SDK when litellm fails."""  # policy-allowed
+    try:
+        import os
+        _sdk = __import__("openai")  # policy-approved endpoint only
+        _Client = _sdk.OpenAI  # policy-approved
+        key = os.environ.get("GPT_OSS_API_KEY", "").strip()
+        if not key or not cfg.endpoint:
+            return None
+        client = _Client(base_url=cfg.endpoint, api_key=key)
+        resp = client.chat.completions.create(
+            model="recommended",
+            messages=messages,
+            max_tokens=500,
+            temperature=0,
+        )
+        return resp.choices[0].message.content or None
+    except Exception:
+        return None
+
+
+def parse_acceptance_criteria(criteria_text: str) -> dict:
+    """Parse natural-language acceptance criteria into structured assertions.
+
+    Returns:
+        {
+            "assertions": [{"claim": str, "verifiable": bool, "evidence_type": str}],
+            "overall_verifiability": float,  # 0.0-1.0
+            "llm_used": bool,
+        }
+
+    Falls back to regex extraction when LLM is unavailable.
+    """
+    if not criteria_text or not criteria_text.strip():
+        return {"assertions": [], "overall_verifiability": 0.0, "llm_used": False}
+
+    crit_str = str(criteria_text)[:500]  # Bound input size
+
+    messages = [
+        {"role": "system", "content": (
+            "You parse acceptance criteria for software work items. "
+            "Extract each distinct testable assertion. For each, state whether it is "
+            "objectively verifiable (e.g. 'output is valid JSON') vs subjective/vague "
+            "(e.g. 'handles edge cases well'). "
+            "Respond ONLY with valid JSON: "
+            '{"assertions": [{"claim": "...", "verifiable": true/false, '
+            '"evidence_type": "test|file_exists|content_match|manual"}], '
+            '"overall_verifiability": 0.0-1.0}'
+        )},
+        {"role": "user", "content": f"Acceptance criteria:\n{crit_str}"},
+    ]
+
+    raw = _llm_call(messages, role="structured_extraction", operation="parse_acceptance_criteria")
+    if raw:
+        try:
+            import json as _json
+            parsed = _json.loads(raw.strip().removeprefix("```json").removesuffix("```").strip())
+            if "assertions" in parsed:
+                return {**parsed, "llm_used": True}
+        except Exception:
+            pass
+
+    # Deterministic fallback: existing regex logic
+    import re
+    quoted = re.findall(r'"([^"]{3,40})"', crit_str[:120])
+    assertions = []
+    if quoted:
+        assertions = [{"claim": q, "verifiable": True, "evidence_type": "content_match"} for q in quoted]
+    elif "PASS" in crit_str:
+        assertions = [{"claim": "PASS", "verifiable": True, "evidence_type": "content_match"}]
+
+    verifiable_count = sum(1 for a in assertions if a["verifiable"])
+    score = verifiable_count / len(assertions) if assertions else 0.0
+    return {"assertions": assertions, "overall_verifiability": score, "llm_used": False}
+
+
 # R107: Lazy import for transcript validation enrichment
 _validate_transcript_fn = None
 
@@ -45,7 +177,60 @@ def _is_transcript_json(data: dict) -> bool:
     return transcript_fields.issubset(set(data.keys()))
 
 
-def check_transcript_in_evidence(evidence_paths: list, repo_root: Path) -> dict | None:
+def _validate_transcript_scope(
+    transcript_paths: list[str], repo_root: Path, item_context: dict
+) -> dict | None:
+    """LLM-enhanced: validate transcript scope covers declared work item.
+
+    Returns {scope_aligned: bool, coverage_pct: float, gaps: [str]} or None.
+    """
+    if not transcript_paths or not item_context:
+        return None
+
+    # Read first transcript (bounded to 3000 chars)
+    first_path = repo_root / transcript_paths[0]
+    if not first_path.exists():
+        return None
+    try:
+        transcript_text = first_path.read_text(encoding="utf-8")[:3000]
+    except Exception:
+        return None
+
+    item_title = item_context.get("title", item_context.get("item_id", ""))
+    item_criteria = str(item_context.get("acceptance_criteria", ""))[:300]
+
+    messages = [
+        {"role": "system", "content": (
+            "You validate whether a skill execution transcript covers the scope of "
+            "a declared work item. Check if the transcript's executed skills and "
+            "outcomes align with the item's title and acceptance criteria. "
+            "Respond ONLY with valid JSON: "
+            '{"scope_aligned": true/false, "coverage_pct": 0.0-1.0, '
+            '"gaps": ["missing aspect 1", ...]}'
+        )},
+        {"role": "user", "content": (
+            f"Work item: {item_title}\n"
+            f"Acceptance criteria: {item_criteria}\n\n"
+            f"Transcript content:\n{transcript_text}"
+        )},
+    ]
+
+    raw = _llm_call(messages, role="evidence_review", operation="validate_transcript_scope")
+    if raw:
+        try:
+            import json as _json
+            parsed = _json.loads(raw.strip().removeprefix("```json").removesuffix("```").strip())
+            if "scope_aligned" in parsed:
+                return parsed
+        except Exception:
+            pass
+
+    return None  # LLM unavailable — no scope validation, trust deterministic checks
+
+
+def check_transcript_in_evidence(
+    evidence_paths: list, repo_root: Path, item_context: dict | None = None
+) -> dict | None:
     """R107: Detect and validate transcript JSON files in evidence_paths.
 
     Returns a dict with validation results if any transcript found, else None.
@@ -91,7 +276,7 @@ def check_transcript_in_evidence(evidence_paths: list, repo_root: Path) -> dict 
     if not transcripts_found:
         return None
 
-    return {
+    result = {
         "transcripts_found": len(transcripts_found),
         "transcripts_valid": len(transcripts_valid),
         "transcripts_invalid": len(transcripts_invalid),
@@ -99,6 +284,16 @@ def check_transcript_in_evidence(evidence_paths: list, repo_root: Path) -> dict 
         "invalid_transcripts": transcripts_invalid,
         "all_valid": len(transcripts_invalid) == 0,
     }
+
+    # LLM-enhanced transcript scope validation (optional enrichment)
+    if item_context and transcripts_found:
+        scope_result = _validate_transcript_scope(transcripts_found, repo_root, item_context)
+        if scope_result is not None:
+            result["scope_validation"] = scope_result
+            result["transcript_scope_aligned"] = scope_result.get("scope_aligned", True)
+            result["transcript_scope_coverage"] = scope_result.get("coverage_pct", 1.0)
+
+    return result
 
 
 def load_yaml(path: Path) -> dict:
@@ -191,20 +386,30 @@ def inspect_item(item: dict, repo_root: Path) -> dict:
         else:
             tests_empty_or_stub.append(t)
 
-    # Check acceptance criteria pattern in evidence files
+    # Check acceptance criteria — LLM-enhanced parsing with deterministic fallback
     criteria_verified = False
     criteria_pattern = ""
+    criteria_parse = None
     if acceptance_criteria and found_paths:
-        # Extract a key phrase from acceptance criteria for pattern check
-        import re
-        # Take up to first 80 chars, find key technical term
-        crit_text = str(acceptance_criteria)[:120]
-        # Look for quoted strings or capitalized terms as patterns
-        quoted = re.findall(r'"([^"]{3,40})"', crit_text)
-        if quoted:
-            criteria_pattern = quoted[0]
-        elif "PASS" in crit_text:
-            criteria_pattern = "PASS"
+        criteria_parse = parse_acceptance_criteria(acceptance_criteria)
+
+        # Extract a single pattern for backwards-compatible verification
+        if criteria_parse["assertions"]:
+            # Use first verifiable assertion as the pattern
+            verifiable = [a for a in criteria_parse["assertions"] if a.get("verifiable")]
+            if verifiable:
+                criteria_pattern = verifiable[0]["claim"]
+            else:
+                criteria_pattern = criteria_parse["assertions"][0]["claim"]
+        else:
+            # Fallback: legacy regex extraction
+            import re
+            crit_text = str(acceptance_criteria)[:120]
+            quoted = re.findall(r'"([^"]{3,40})"', crit_text)
+            if quoted:
+                criteria_pattern = quoted[0]
+            elif "PASS" in crit_text:
+                criteria_pattern = "PASS"
 
         if criteria_pattern:
             for fp in found_paths[:3]:  # Check first 3 evidence files
@@ -235,7 +440,7 @@ def inspect_item(item: dict, repo_root: Path) -> dict:
                     tests_empty_or_stub.append(fp)
 
     # R107: Transcript enrichment — detect and validate transcript JSON in evidence
-    transcript_validation = check_transcript_in_evidence(found_paths, repo_root)
+    transcript_validation = check_transcript_in_evidence(found_paths, repo_root, item_context=item)
 
     return {
         "item_id": item_id,
@@ -252,6 +457,7 @@ def inspect_item(item: dict, repo_root: Path) -> dict:
         "test_summaries": test_summaries,
         "acceptance_criteria_verified": criteria_verified,
         "acceptance_criteria_pattern": criteria_pattern,
+        "acceptance_criteria_parse": criteria_parse,
         # R107: Transcript validation enrichment
         "transcript_validation": transcript_validation,
     }

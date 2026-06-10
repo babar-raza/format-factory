@@ -49,7 +49,10 @@ class TestSourceTrackPresence:
         if not os.path.isdir(SRC_PYTHON):
             pytest.skip("src/python not found")
         for d in os.listdir(SRC_PYTHON):
-            if os.path.isdir(os.path.join(SRC_PYTHON, d)) and not d.startswith("_"):
+            if (os.path.isdir(os.path.join(SRC_PYTHON, d))
+                    and not d.startswith("_")
+                    and not d.startswith(".")
+                    and not d.endswith(".egg-info")):
                 assert d in matrix_formats, (
                     f"src/python/{d}/ exists but has no matrix entry"
                 )

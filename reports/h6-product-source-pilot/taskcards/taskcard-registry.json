@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001",
+  "generated_at": "2026-06-06",
+  "taskcards": [
+    {
+      "id": "TC-L0",
+      "title": "Coordinator Preflight",
+      "status": "CLOSED",
+      "owner": "L0",
+      "evidence_paths": [
+        "reports/h6-product-source-pilot/00-preflight.md",
+        "reports/h6-product-source-pilot/package-114-baseline.json",
+        "reports/h6-product-source-pilot/lane-claims.json",
+        "reports/h6-product-source-pilot/taskcards/taskcard-registry.json"
+      ]
+    },
+    {
+      "id": "TC-L1",
+      "title": "Queue Accounting Fix + Quarantine null item",
+      "status": "TODO",
+      "owner": "L1",
+      "evidence_paths": [
+        "reports/h6-product-source-pilot/queue/queue-accounting-fix.json",
+        "reports/h6-product-source-pilot/queue/quarantine-report.json"
+      ]
+    },
+    {
+      "id": "TC-L2",
+      "title": "Product Task Selector",
+      "status": "TODO",
+      "owner": "L2",
+      "evidence_paths": [
+        "reports/h6-product-source-pilot/product-task/product-task-candidates.json",
+        "reports/h6-product-source-pilot/product-task/selected-product-task.json"
+      ]
+    },
+    {
+      "id": "TC-L3",
+      "title": "Product Action Guard Extension",
+      "status": "TODO",
+      "owner": "L3",
+      "evidence_paths": [
+        "tools/supervisor/product_action_guard.py"
+      ]
+    },
+    {
+      "id": "TC-L4",
+      "title": "Queue Item Seed for Product Task",
+      "status": "TODO",
+      "owner": "L4",
+      "evidence_paths": [
+        "reports/h6-product-source-pilot/queue/queue-before.jsonl",
+        "reports/h6-product-source-pilot/queue/queue-after-seed.jsonl"
+      ]
+    },
+    {
+      "id": "TC-L5",
+      "title": "Execute Bounded Product-Source Task",
+      "status": "TODO",
+      "owner": "L5",
+      "evidence_paths": [
+        "reports/h6-product-source-pilot/host-run/execution-result.json",
+        "reports/h6-product-source-pilot/host-run/product-diff.txt",
+        "reports/h6-product-source-pilot/host-run/rollback-instructions.md"
+      ]
+    },
+    {
+      "id": "TC-L6",
+      "title": "Tests (24 new)",
+      "status": "TODO",
+      "owner": "L6",
+      "evidence_paths": [
+        "tests/supervisor/test_queue_consumption_accounting.py",
+        "tests/supervisor/test_unsafe_next_work_items_quarantine.py",
+        "tests/supervisor/test_product_source_action_guard.py",
+        "tests/python/abw/test_r118_probe_abw.py",
+        "reports/h6-product-source-pilot/test-logs/all-tests.log"
+      ]
+    },
+    {
+      "id": "TC-L7",
+      "title": "Post-Closeout Queue State",
+      "status": "TODO",
+      "owner": "L7",
+      "evidence_paths": [
+        "reports/h6-product-source-pilot/post-closeout/post-closeout-state.json",
+        "reports/h6-product-source-pilot/post-closeout/queue-final.jsonl"
+      ]
+    },
+    {
+      "id": "TC-L8",
+      "title": "Independent Verification (14 checks)",
+      "status": "TODO",
+      "owner": "L8",
+      "evidence_paths": [
+        "reports/h6-product-source-pilot/iv/independent-verification.json"
+      ]
+    },
+    {
+      "id": "TC-LE",
+      "title": "Evidence Package",
+      "status": "TODO",
+      "owner": "LE",
+      "evidence_paths": [
+        ".local/evidences/h6-product-source-pilot/evidence-declaration.yaml"
+      ]
+    }
+  ]
+}

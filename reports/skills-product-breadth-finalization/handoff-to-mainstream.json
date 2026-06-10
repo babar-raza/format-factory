@@ -1,0 +1,60 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "handoff_target": "Mainstream",
+  "purpose": "Three ready-to-execute handoffs for FODT Markdown, FODT TXT, and Netpbm Pipeline",
+  "consumption_order": [
+    {
+      "priority": 1,
+      "capability": "fodt_to_markdown_dotnet",
+      "reason": "Simplest FODT dogfood — FodtMarkdownExporter.cs already exists",
+      "handoff_yaml": "reports/skills-product-breadth-finalization/fodt-markdown-handoff.yaml",
+      "packet_json": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "skill": "add-dotnet-api",
+      "mode": "live"
+    },
+    {
+      "priority": 2,
+      "capability": "fodt_to_txt_dotnet",
+      "reason": "Second FODT dogfood — FodtTxtExporter.cs already exists",
+      "handoff_yaml": "reports/skills-product-breadth-finalization/fodt-txt-handoff.yaml",
+      "packet_json": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+      "skill": "add-dotnet-api",
+      "mode": "live"
+    },
+    {
+      "priority": 3,
+      "capability": "netpbm_image_pipeline_dotnet",
+      "reason": "New Netpbm R114 capability — Pipeline method on NetpbmImage.cs",
+      "handoff_yaml": "reports/skills-product-breadth-finalization/netpbm-proof-handoff.yaml",
+      "packet_json": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "skill": "add-dotnet-api",
+      "mode": "live"
+    }
+  ],
+  "execution_steps": [
+    "1. Read target handoff YAML",
+    "2. Confirm source files exist at exact_source_paths",
+    "3. Execute add-dotnet-api with mode=live",
+    "4. Only modify files in allowed_files",
+    "5. Run focused_test_command",
+    "6. Produce transcript JSON with all required_transcript_fields",
+    "7. Run validate_skill_transcript.py — must exit 0",
+    "8. Add ledger entry to reports/r90/product-code-change-ledger.json",
+    "9. Do NOT update poc-targets.yaml — use proposed_capability_delta as proposal only",
+    "10. If tests fail: use rollback_note to restore files, then diagnose"
+  ],
+  "hard_prohibitions": [
+    "No src/python/* edits",
+    "No src/net/fods/* edits from FODT or Netpbm handoffs",
+    "No registry/format-registry.yaml edits",
+    "No plans/master-plan.md edits",
+    "No product-capability-matrix/poc-targets.yaml edits",
+    "No .vscode/mcp.json changes",
+    "No .supervisor/policies.yaml changes",
+    "No .claude-plugin/* changes",
+    "No git commit without explicit human authorization",
+    "No git push"
+  ],
+  "integration_contract": "reports/skills-product-breadth-finalization/skills-integration-contract.json"
+}

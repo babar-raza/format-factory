@@ -1,0 +1,16 @@
+{
+  "transcript_id": "transcript:iter002-netpbm-r115",
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "iteration": 2,
+  "lane_id": "lane-009-netpbm-r115",
+  "format": "netpbm",
+  "track": "commercial_net",
+  "capability_added": ["DrawRectangle", "GetBrightnessMap"],
+  "source_files_modified": ["src/net/netpbm/Model/NetpbmImage.cs"],
+  "test_files_added": ["tests/net/netpbm/NetpbmR115DrawTests.cs"],
+  "tests_run": 9,
+  "tests_passed": 9,
+  "tests_failed": 0,
+  "skill_verdict": "LANE_COMPLETE",
+  "notes": "DrawRectangle (PGM-only, filled/outline mode, clips to bounds, zero-size no-op) + GetBrightnessMap (normalized 0..1, Rec.601 luma for PPM). 9 tests pass."
+}

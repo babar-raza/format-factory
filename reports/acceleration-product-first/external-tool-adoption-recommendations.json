@@ -1,0 +1,87 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "authority_state": "ai_draft",
+  "non_authoritative": true,
+  "recommendations": [
+    {
+      "tool_name": "Ruflo",
+      "source_url": "https://github.com/ruvnet/ruflo/",
+      "proposed_use": "Supervisor loop memory and RAG for sprint context persistence across sessions",
+      "owning_stream": "Supervisor/Mainstream",
+      "authority_state": "ai_draft",
+      "non_authoritative": true,
+      "requires_validation": true,
+      "installation_required": false,
+      "default_status": "disabled",
+      "risks": [
+        "External network calls to Ruflo memory service",
+        "Memory store may contain stale context that confuses sprint planner",
+        "Authority confusion if Ruflo outputs treated as evidence"
+      ],
+      "mitigation": [
+        "Only consume Ruflo signals if Supervisor approved mode >= audit_only",
+        "All Ruflo signals must be tagged runtime_advisory not authoritative",
+        "Ruflo never replaces poc-targets.yaml or evidence files"
+      ],
+      "evidence_needed_before_activation": [
+        "Supervisor written approval in .supervisor/policies.yaml",
+        "Ruflo mode documented in sprint prompt",
+        "Test: Ruflo signal does not change poc-targets.yaml checksum"
+      ]
+    },
+    {
+      "tool_name": "Superpowers Marketplace",
+      "source_url": "https://github.com/obra/superpowers-marketplace",
+      "proposed_use": "Skills stream intake of community AI agent skills for test generation and code pattern analysis",
+      "owning_stream": "Skills",
+      "authority_state": "ai_draft",
+      "non_authoritative": true,
+      "requires_validation": true,
+      "installation_required": false,
+      "default_status": "audit_only",
+      "risks": [
+        "Community plugins may have unsafe execution contracts",
+        "License compliance varies per plugin",
+        "Registry pollution if skills bypass normalization"
+      ],
+      "mitigation": [
+        "All skills must pass Skills normalization before registry entry",
+        "Acceleration only recommends — never installs",
+        "Each skill must have allowed_files and forbidden_files defined"
+      ],
+      "evidence_needed_before_activation": [
+        "Skills stream normalization completed for selected skill",
+        "skill-registry.yaml entry added by Skills stream",
+        "Validation command defined and tested"
+      ]
+    },
+    {
+      "tool_name": "GhidraMCP",
+      "source_url": "https://github.com/LaurieWired/GhidraMCP/",
+      "proposed_use": "Binary format analysis for undocumented or complex binary format specifications (e.g., future proprietary format work)",
+      "owning_stream": "Acceleration (specialist gate only)",
+      "authority_state": "ai_draft",
+      "non_authoritative": true,
+      "requires_validation": true,
+      "installation_required": false,
+      "default_status": "disabled_pending_supervisor_approval",
+      "risks": [
+        "Binary analysis of proprietary files may violate license",
+        "Decompiled code must not be copied into product source",
+        "Analysis output used as authority without test evidence"
+      ],
+      "mitigation": [
+        "Only analyze owned, open, test-fixture, or explicitly authorized binaries",
+        "All output stays at authority_state: ai_draft",
+        "Supervisor must approve via policies.yaml before any use",
+        "Input hashes recorded in ghidra-mcp-input-hashes.json"
+      ],
+      "evidence_needed_before_activation": [
+        "Supervisor written approval in policies.yaml",
+        "Binary ownership/license basis recorded",
+        "Input SHA-256 recorded before analysis",
+        "GhidraMCP analysis summary reviewed by human"
+      ]
+    }
+  ]
+}

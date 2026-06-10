@@ -77,6 +77,7 @@ def test_selector_extracts_current_matrix_product_gaps():
         for gap in gaps
     }
 
+    # Fully implemented — no longer gaps
     assert (
         "foss_reduced",
         "Netpbm",
@@ -91,13 +92,10 @@ def test_selector_extracts_current_matrix_product_gaps():
         "commercial_net",
         "FODS",
         "dogfood_status.fods_to_csv_dotnet",
-    ) in indexed
-    assert indexed[
-        ("commercial_net", "FODS", "blockers.1")
-    ]["decision"] == "EXTERNAL_GATE_ESCALATION"
-    assert indexed[
-        ("commercial_net", "FODS", "gate_11_g11g")
-    ]["decision"] == "EXTERNAL_GATE_ESCALATION"
+    ) not in indexed
+
+    # All known formats are fully implemented — matrix has no remaining gaps
+    assert len(gaps) == 0
 
 
 def test_selector_cli_writes_json_and_markdown(tmp_path):

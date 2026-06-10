@@ -1,0 +1,27 @@
+{
+  "skill_id": "update-capability-matrix",
+  "sprint_run_id": "mainstream-product-deepening-rnext2",
+  "matrix_entry": "foss_reduced_products: SYLK, TOML (new), NDJSON (new)",
+  "field_transitions": [
+    {"entry": "SYLK", "field": "scope", "old": "263+ tests PASS", "new": "291 tests PASS + get_column_values added"},
+    {"entry": "SYLK", "field": "python_status.get_cell_value", "old": "missing", "new": "PASS"},
+    {"entry": "SYLK", "field": "python_status.get_row_values", "old": "missing", "new": "PASS"},
+    {"entry": "SYLK", "field": "python_status.get_column_values", "old": "missing", "new": "PASS"},
+    {"entry": "SYLK", "field": "tests.python_count", "old": "missing", "new": "291"},
+    {"entry": "TOML", "field": "entire_entry", "old": "not in matrix", "new": "added — 11 functions, 61 tests, PASS"},
+    {"entry": "NDJSON", "field": "entire_entry", "old": "not in matrix", "new": "added — 8 functions, 244 tests, PASS"}
+  ],
+  "evidence_paths": [
+    "tests/python/sylk/test_mdr_sylk_get_column_values.py",
+    "tests/python/toml/test_mdr_toml_delete_key.py",
+    "tests/python/toml/test_ppr_toml_set_value_list_sections.py",
+    "src/python/toml/toml_codec.py",
+    "src/python/ndjson/ndjson_codec.py",
+    "reports/product-progress-rnext/samples/ndjson-write-csv-sample.csv",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "yaml_valid": true,
+  "gate_authority_unchanged": true,
+  "commercial_product_ready_unchanged": true,
+  "verdict": "PASS"
+}

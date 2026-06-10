@@ -1,0 +1,112 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "source_sprint": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "evaluated_at": "2026-06-04T12:00:00Z",
+  "substantive_items": [
+    {
+      "artifact": "reports/skills-product-first/governed-source-change-contract.yaml",
+      "type": "contract",
+      "assessment": "CONSUMABLE",
+      "notes": "5 tiers, 9 MVP fields, auto_repair_steps. Validates with yaml.safe_load."
+    },
+    {
+      "artifact": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "type": "consumption_packet",
+      "assessment": "CONSUMABLE",
+      "notes": "16 fields present. GAP-FODS-DOGFOOD-CSV-DOTNET-001. Parses cleanly."
+    },
+    {
+      "artifact": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+      "type": "handoff",
+      "assessment": "CONSUMABLE",
+      "notes": "mode=dry-run, skill_id, allowed_files, forbidden_files, rollback_note all present."
+    },
+    {
+      "artifact": "reports/skills-product-first/live-cycle-proof.json",
+      "type": "proof",
+      "assessment": "CONSUMABLE",
+      "notes": "7 steps all PASS, overall_result=PASS, cycle_mode=near-live."
+    },
+    {
+      "artifact": "reports/skills-product-first/skill-transcripts/transcript-spf-001-add-dotnet-api-near-live.json",
+      "type": "transcript",
+      "assessment": "CONSUMABLE",
+      "notes": "Passes validate_skill_transcript.py exit 0. Dry-run expected values correct."
+    },
+    {
+      "artifact": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+      "type": "template",
+      "assessment": "CONSUMABLE",
+      "notes": "All 15 required sections present. 6069 bytes."
+    },
+    {
+      "artifact": "docs/prompt-templates/skills/add-python-api-handoff-template.md",
+      "type": "template",
+      "assessment": "CONSUMABLE",
+      "notes": "All 15 required sections present. 5622 bytes."
+    },
+    {
+      "artifact": "docs/prompt-templates/skills/add-export-handoff-template.md",
+      "type": "template",
+      "assessment": "CONSUMABLE",
+      "notes": "All 15 required sections present. 4200 bytes."
+    },
+    {
+      "artifact": "docs/prompt-templates/skills/add-dogfood-pipeline-template.md",
+      "type": "template",
+      "assessment": "CONSUMABLE",
+      "notes": "All 15 required sections present. 3917 bytes."
+    },
+    {
+      "artifact": "docs/prompt-templates/skills/add-roundtrip-test-template.md",
+      "type": "template",
+      "assessment": "CONSUMABLE",
+      "notes": "All 15 required sections present. 4424 bytes."
+    },
+    {
+      "artifact": "docs/prompt-templates/skills/update-capability-matrix-template.md",
+      "type": "template",
+      "assessment": "CONSUMABLE",
+      "notes": "All 15 required sections present. 4444 bytes."
+    },
+    {
+      "artifact": "docs/prompt-templates/skills/external-skill-wrapper-template.md",
+      "type": "template",
+      "assessment": "CONSUMABLE_DIFFERENT_PURPOSE",
+      "notes": "External skill wrapper — different section set. Authority boundary and activation gate present."
+    },
+    {
+      "artifact": "reports/skills-product-first/receiver-fixtures/mainstream-product-compliant.json",
+      "type": "fixture",
+      "assessment": "CONSUMABLE",
+      "notes": "Compliant fixture PASS confirmed."
+    },
+    {
+      "artifact": "reports/skills-product-first/superpowers-marketplace-evaluation.json",
+      "type": "evaluation",
+      "assessment": "CONSUMABLE",
+      "notes": "4 plugins evaluated. overall_decision=NO_INSTALL_THIS_SPRINT."
+    },
+    {
+      "artifact": "reports/skills-product-first/local-skill-normalization-map.json",
+      "type": "normalization_map",
+      "assessment": "CONSUMABLE",
+      "notes": "6 skills. 0 active. authority_state: skill_draft for all proposed."
+    },
+    {
+      "artifact": "reports/skills-product-first/raw-logs/no-plugin-install-proof.txt",
+      "type": "raw_log",
+      "assessment": "CONSUMABLE",
+      "notes": "VERIFIED: No plugin installation."
+    },
+    {
+      "artifact": "tests/supervisor/test_skills_product_first_spf.py",
+      "type": "test_suite",
+      "assessment": "CONSUMABLE",
+      "notes": "72 tests, 0 failures. All 13 test classes pass."
+    }
+  ],
+  "total_consumable": 16,
+  "total_different_purpose": 1,
+  "overall_assessment": "CONSUMABLE — previous sprint output is independently consumable by Mainstream"
+}

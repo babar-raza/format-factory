@@ -64,5 +64,5 @@ class TestDifVectorDensity:
             assert key in result
 
     def test_callable_from_module(self):
-        from src.python.dif import dif_stats
-        assert callable(dif_stats.dif_vector_density)
+        from src.python.dif.dif_stats import dif_vector_density as fn
+        assert callable(fn)

@@ -65,6 +65,10 @@ from .neutral_model import (
     document_paragraph_count,
     document_to_text,
     document_get_paragraph_text,
+    document_search_text,
+    document_replace_text,
+    document_to_html,
+    document_extract_headings,
 )
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -105,6 +109,10 @@ __all__ = [
     "document_paragraph_count",
     "document_to_text",
     "document_get_paragraph_text",
+    "document_search_text",
+    "document_replace_text",
+    "document_to_html",
+    "document_extract_headings",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

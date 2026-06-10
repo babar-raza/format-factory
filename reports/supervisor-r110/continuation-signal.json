@@ -1,0 +1,17 @@
+{
+  "autonomous_continue": true,
+  "iteration": 8,
+  "max_iterations": 12,
+  "stream": "supervisor",
+  "continuation_state": "YES_WITH_LIMITATIONS",
+  "limitations": [
+    "wrong_stream_next_sprint: global next-sprint.md is acceleration (ARCHIVED_LAST_WRITER_SNAPSHOT, non-blocking)",
+    "stream_local_authority: informational note (low severity)"
+  ],
+  "semantics": {
+    "YES": "clean state, all_pass=true, no caveats",
+    "YES_WITH_LIMITATIONS": "low/medium non-blocking caveats present",
+    "NO_WRONG_STREAM_CONTEXT": "wrong current authority detected (blocking)",
+    "NO_MISSING_REQUIRED": "missing required ledger/sample outputs (blocking depending on severity)"
+  }
+}

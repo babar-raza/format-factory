@@ -1,0 +1,55 @@
+{
+  "status": "BLOCKED",
+  "block_reason": "No available backend can execute this action",
+  "action_id": "post-closeout-4f42e718",
+  "action_type": "QUEUE_HEALTH_CHECK",
+  "selection_trace": {
+    "selected": null,
+    "selection_reason": "",
+    "skipped": [
+      {
+        "backend": "LOCAL_DETERMINISTIC",
+        "reason": "discover()=VERIFIED_CALLABLE but can_execute=False for action_type=QUEUE_HEALTH_CHECK"
+      },
+      {
+        "backend": "SUPERPOWERS_LOCAL_PLUGIN",
+        "reason": "discover()=NOT_FOUND"
+      },
+      {
+        "backend": "SESSION_SKILL_TOOL",
+        "reason": "backend not registered"
+      },
+      {
+        "backend": "CLAUDE_AGENT_SUBAGENT",
+        "reason": "backend not registered"
+      },
+      {
+        "backend": "REPO_LOCAL_SKILL",
+        "reason": "backend not registered"
+      },
+      {
+        "backend": "MCP_SUPERPOWERS",
+        "reason": "discover()=CONFIG_ONLY \u2014 config only, not callable"
+      },
+      {
+        "backend": "TASK_MASTER_MCP",
+        "reason": "discover()=BLOCKED_BY_CREDENTIALS \u2014 credential missing"
+      },
+      {
+        "backend": "LLM_API",
+        "reason": "discover()=CONFIG_PRESENT \u2014 config only, not callable"
+      },
+      {
+        "backend": "CLAUDE_CLI_OPTIONAL",
+        "reason": "backend not registered"
+      },
+      {
+        "backend": "MANUAL_EXTERNAL_GATE",
+        "reason": "backend not registered"
+      }
+    ],
+    "blocked": true,
+    "block_reason": "No available backend can execute this action"
+  },
+  "proof_level": null
+}

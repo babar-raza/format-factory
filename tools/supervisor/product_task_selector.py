@@ -19,7 +19,55 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 _repo_root = Path(__file__).resolve().parent.parent.parent
+
+# ============================================================
+# Authority gate — prevents blocked formats from emitting tasks
+# ============================================================
+
+_BLOCKED_AUTHORITY_STATES: frozenset[str] = frozenset({
+    "BLOCKED_MISSING_SPEC",
+    "BLOCKED_METADATA_ONLY_SPEC",
+    "BLOCKED_NO_VERIFIED_FACTS",
+    "BLOCKED_SYNTHETIC_REQUIREMENTS",
+    "BLOCKED_AI_ONLY_AUTHORITY",
+    "BLOCKED_UNKNOWN_AUTHORITY",
+})
+
+
+def _get_format_authority_status(format_name: str) -> str:
+    """Return the authority gate status for a format.
+
+    Returns 'ALLOWED' only for formats explicitly registered in poc-targets.yaml
+    with a confirmed classification. All unknown or unregistered formats default
+    to BLOCKED_UNKNOWN_AUTHORITY (safe default).
+
+    Fixed: SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001 (2026-06-08)
+    Prior behavior returned 'ALLOWED' for unknown formats — unsafe.
+    """
+    poc_targets_path = _repo_root / "product-capability-matrix" / "poc-targets.yaml"
+    if not poc_targets_path.exists():
+        return "BLOCKED_MISSING_SPEC"
+
+    try:
+        with open(poc_targets_path, encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+    except Exception:
+        return "BLOCKED_MISSING_SPEC"
+
+    # Collect all registered format names from all sections
+    registered: set[str] = set()
+    for section_key, section_val in data.items():
+        if isinstance(section_val, list):
+            for item in section_val:
+                if isinstance(item, dict) and "format" in item:
+                    registered.add(item["format"].upper())
+
+    if format_name.upper() in registered:
+        return "ALLOWED"
+    return "BLOCKED_UNKNOWN_AUTHORITY"
 
 # Known safe bounded task catalog — curated from real repo state
 _CANDIDATE_CATALOG: list[dict[str, Any]] = [
@@ -129,6 +177,17 @@ _CANDIDATE_CATALOG: list[dict[str, Any]] = [
 def _check_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
     """Verify a candidate task is actionable in the current repo state."""
     result = dict(candidate)
+
+    # Authority gate — must pass before any other check
+    authority_status = _get_format_authority_status(candidate.get("format", ""))
+    result["authority_status"] = authority_status
+    if authority_status in _BLOCKED_AUTHORITY_STATES:
+        result["target_exists"] = False
+        result["already_implemented"] = False
+        result["actionable"] = False
+        result["blocker"] = f"authority_gate_blocked: {authority_status}"
+        return result
+
     target = _repo_root / candidate["target_file"]
     result["target_exists"] = target.exists()
 
@@ -155,6 +214,41 @@ def _check_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
     return result
 
 
+_GAP_LEDGER_PATH = _repo_root / "reports" / "capability-layer" / "gap-ledger.json"
+
+
+def _load_gap_candidates() -> list[dict[str, Any]]:
+    """Load gap candidates from the capability gap ledger.
+
+    Returns a list of gap candidate dicts (may be empty if all gaps are closed).
+    Each candidate has: task_id, format, action, target_file, function_name,
+    classification, gap_source, gap_priority.
+    """
+    if not _GAP_LEDGER_PATH.exists():
+        return []
+    try:
+        data = json.loads(_GAP_LEDGER_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+    candidates: list[dict[str, Any]] = []
+    for gap in data.get("gaps", []):
+        fmt = gap.get("format", "")
+        fn = gap.get("function_name", gap.get("capability", ""))
+        gap_id = gap.get("gap_id", f"GAP-{fmt}-{fn}")
+        target = gap.get("target_file", f"src/python/{fmt.lower()}/{fmt.lower()}_codec.py")
+        candidates.append({
+            "task_id": gap_id,
+            "format": fmt,
+            "action": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+            "target_file": target,
+            "function_name": fn,
+            "classification": "AGENT_OWNED_SAFE",
+            "gap_source": gap_id,
+            "gap_priority": gap.get("priority", "P2"),
+        })
+    return candidates
+
+
 def select_product_task() -> dict[str, Any]:
     """Select the best safe bounded product-source task from the current repo state.
 
@@ -163,8 +257,16 @@ def select_product_task() -> dict[str, Any]:
         selected: the chosen task (or None if none actionable)
         selection_rationale: explanation
         no_safe_task_found: bool
+        gap_candidates_loaded: int count of gap candidates loaded
     """
-    evaluated = [_check_candidate(c) for c in _CANDIDATE_CATALOG]
+    gap_candidates = _load_gap_candidates()
+    evaluated_gaps = [
+        {**c, "actionable": True, "rationale": f"Gap-derived: {c['gap_priority']}"}
+        for c in gap_candidates
+    ]
+    evaluated_catalog = [_check_candidate(c) for c in _CANDIDATE_CATALOG]
+    # Gap candidates appear before catalog candidates
+    evaluated = evaluated_gaps + evaluated_catalog
 
     actionable = [c for c in evaluated if c.get("actionable")]
 
@@ -174,18 +276,20 @@ def select_product_task() -> dict[str, Any]:
             "selected": None,
             "selection_rationale": "No actionable safe bounded tasks found in current repo state",
             "no_safe_task_found": True,
+            "gap_candidates_loaded": len(gap_candidates),
         }
 
-    # Prefer the first actionable candidate (ABW probe_abw takes priority)
+    # Prefer the first actionable candidate (gap candidates take priority)
     selected = actionable[0]
     return {
         "candidates": evaluated,
         "selected": selected,
         "selection_rationale": (
-            f"Selected {selected['task_id']}: {selected['description']}. "
-            f"Reason: {selected['rationale']}"
+            f"Selected {selected['task_id']}: {selected.get('description', selected.get('function_name', ''))}. "
+            f"Reason: {selected.get('rationale', '')}"
         ),
         "no_safe_task_found": False,
+        "gap_candidates_loaded": len(gap_candidates),
     }
 
 

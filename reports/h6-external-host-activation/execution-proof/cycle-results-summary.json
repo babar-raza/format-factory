@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-EXTERNAL-HOST-ACTIVATION-AND-PROOF-001",
+  "generated_at": "2026-06-06T15:00:00Z",
+  "orchestrator_run_id": "a5fdd3cb",
+  "total_cycles_executed": 9,
+  "cycle_index_start": 1,
+  "cycle_index_end": 10,
+  "all_cycles_success": true,
+  "backend_used": "LOCAL_DETERMINISTIC",
+  "attempt_b_cycles": {
+    "cycles": 3,
+    "cycle_ids": ["orch-cycle-004", "orch-cycle-006", "orch-cycle-007"],
+    "stop_reason": "MAX_CYCLES_REACHED",
+    "claudecode_cleared": true
+  },
+  "attempt_c_cycles": {
+    "cycles": 3,
+    "cycle_ids": ["orch-cycle-008", "orch-cycle-009", "orch-cycle-010"],
+    "stop_reason": "MAX_CYCLES_REACHED",
+    "claudecode_cleared": true,
+    "detached_start_process": true
+  },
+  "proof_files": [
+    "reports/autonomous-orchestrator/proof-run/cycle-004-result.json",
+    "reports/autonomous-orchestrator/proof-run/cycle-006-result.json",
+    "reports/autonomous-orchestrator/proof-run/cycle-007-result.json",
+    "reports/autonomous-orchestrator/proof-run/cycle-009-result.json",
+    "reports/autonomous-orchestrator/proof-run/cycle-010-result.json"
+  ],
+  "cycle_010_target": ".local/supervisor/active-continuation.json",
+  "cycle_010_status": "SUCCESS",
+  "cycle_010_backend": "LOCAL_DETERMINISTIC",
+  "h6_actions_count_requirement": ">=3",
+  "h6_actions_count_met": true,
+  "no_advisory_prompt_executed": true,
+  "no_forbidden_action_executed": true,
+  "queue_note": "Queue items pending — next_action_generator drives cycles; queue consumed via dequeue_next() integration needed in future sprint",
+  "verdict": "H6_EXTERNAL_HOST_EXECUTION_PROVEN"
+}

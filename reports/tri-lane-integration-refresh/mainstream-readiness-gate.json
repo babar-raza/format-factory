@@ -1,0 +1,64 @@
+{
+  "gate_id": "MAINSTREAM-READINESS-GATE-001",
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "verdict": "TRI_LANE_REFRESH_READY_WITH_LIMITATIONS",
+  "mainstream_may_run_next": true,
+
+  "readiness_criteria": [
+    {
+      "criterion": "integration consumes latest Skills finalization outputs",
+      "status": "PASS",
+      "evidence": "tri_lane_integration.py v2 loads FODT Markdown, FODT TXT, Netpbm from finalization packets"
+    },
+    {
+      "criterion": "integration consumes latest Acceleration hardening outputs",
+      "status": "PASS",
+      "evidence": "acceleration_hardening_index_used=true in integration result"
+    },
+    {
+      "criterion": "Supervisor stale reconciliation patched or overridden by fresh lane discovery",
+      "status": "PASS",
+      "evidence": "Stale FODT/Netpbm Skills fields patched via resolve_skills_inputs() in tri_lane_integration.py v2"
+    },
+    {
+      "criterion": "Mainstream execution packet has FODS, FODT, Netpbm from latest lane inputs",
+      "status": "PASS",
+      "evidence": "packet v2 has 4 families: FODS, FODT, FODT_TXT, Netpbm — all from finalization/hardening inputs"
+    },
+    {
+      "criterion": "generated commands are realistic for .NET/Python targets",
+      "status": "PASS",
+      "evidence": "All .NET families use 'dotnet test --filter ...'; no python pytest for .cs files"
+    },
+    {
+      "criterion": "dirty product source state is classified",
+      "status": "PASS",
+      "evidence": "dirty-state-classification.json classifies 4 files as PRE_EXISTING_PRODUCT_WIP"
+    },
+    {
+      "criterion": "tests pass",
+      "status": "PASS",
+      "evidence": "59/59 tests PASS — raw log: reports/tri-lane-integration-refresh/raw-logs/refresh-tests.log"
+    },
+    {
+      "criterion": "review package created",
+      "status": "PASS",
+      "evidence": "review-package-proof.md created; package built at .local/supervisor/reviews/tri-lane-integration-refresh/declaration-review-package.zip"
+    }
+  ],
+
+  "limitations": [
+    "FODT TXT has no Acceleration advisory packet — optional missing allowed per sprint spec",
+    "Netpbm Acceleration advisory targets different capability (flip_diagonal vs Pipeline) — capability mismatch noted in packet, follow Skills handoff"
+  ],
+
+  "pre_existing_dirty_state_note": "4 product source files classified as PRE_EXISTING_PRODUCT_WIP. Mainstream must re-confirm classification before new edits.",
+
+  "use_ready_criteria": "READY_WITH_LIMITATIONS",
+  "reason": "Packet is usable but 2 pre-existing non-blocking caveats exist: FODT TXT no acceleration advisory (optional), Netpbm acceleration advisory capability mismatch (follow Skills handoff).",
+
+  "packet_v2_path": "reports/tri-lane-integration-refresh/mainstream-execution-packet.v2.json",
+  "contract_v2_path": "reports/tri-lane-integration-refresh/tri-lane-contract.v2.json",
+  "handoff_v2_path": "reports/tri-lane-integration-refresh/mainstream-execution-handoff-v2.md"
+}

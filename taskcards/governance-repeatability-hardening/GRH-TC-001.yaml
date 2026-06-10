@@ -1,0 +1,23 @@
+id: GRH-TC-001
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Create sprint preflight and coordinator artifacts"
+status: completed
+lane: coordinator
+item_type: GOVERNANCE_DOC
+problem: >
+  Sprint preflight must document all environment discoveries and known issues
+  before execution begins.
+scope:
+  - Write reports/repeatability-governance-hardening-rnext/00-preflight.md
+  - Write file-ownership-matrix.md for 13 lanes
+  - Write state-ledger.jsonl tracking all 15 GRH-TC taskcards
+files_to_create:
+  - reports/repeatability-governance-hardening-rnext/00-preflight.md
+  - reports/repeatability-governance-hardening-rnext/file-ownership-matrix.md
+  - reports/repeatability-governance-hardening-rnext/state-ledger.jsonl
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: []
+handoff_to_autonomy_sprint: false

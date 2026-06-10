@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-AUTONOMOUS-PRODUCT-QUEUE-CONSUMPTION-001",
+  "generated_at": "2026-06-06T16:30:00Z",
+  "lanes": [
+    {
+      "lane_id": "L0",
+      "owner": "Coordinator",
+      "owned_paths": ["reports/h6-queue-product-loop/"],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/"],
+      "shared_read": [".local/supervisor/", "tools/supervisor/"],
+      "status": "CLAIMED"
+    },
+    {
+      "lane_id": "L1",
+      "owner": "Queue Primary",
+      "owned_paths": [
+        "tools/supervisor/autonomous_orchestrator.py",
+        "tools/supervisor/action_queue.py",
+        "tests/supervisor/test_action_queue_primary_source.py",
+        "tests/supervisor/test_orchestrator_queue_consumption.py",
+        "reports/h6-queue-product-loop/queue/"
+      ],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/"],
+      "status": "CLAIMED"
+    },
+    {
+      "lane_id": "L2",
+      "owner": "Continuation",
+      "owned_paths": [
+        "tools/supervisor/evidence_continuation.py",
+        "tests/supervisor/test_global_continuation_machine_readable.py",
+        "reports/h6-queue-product-loop/continuation/"
+      ],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/"],
+      "status": "CLAIMED"
+    },
+    {
+      "lane_id": "L3",
+      "owner": "Product Pilot",
+      "owned_paths": [
+        "tools/supervisor/product_action_guard.py",
+        "tools/supervisor/backends/local_deterministic_backend.py",
+        "tests/supervisor/test_product_safe_queue_item.py",
+        "reports/h6-queue-product-loop/product-pilot/"
+      ],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/", "poc-targets.yaml"],
+      "status": "CLAIMED"
+    },
+    {
+      "lane_id": "L4",
+      "owner": "Host Run",
+      "owned_paths": [
+        "reports/h6-queue-product-loop/host-run/",
+        ".local/supervisor/"
+      ],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/"],
+      "status": "CLAIMED"
+    },
+    {
+      "lane_id": "L5",
+      "owner": "Post-Closeout",
+      "owned_paths": [
+        "reports/h6-queue-product-loop/post-closeout/",
+        ".local/supervisor/active-continuation.json",
+        ".local/supervisor/next-action.json"
+      ],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/"],
+      "status": "CLAIMED"
+    },
+    {
+      "lane_id": "L6",
+      "owner": "Tests",
+      "owned_paths": ["reports/h6-queue-product-loop/test-logs/"],
+      "shared_write": ["tests/supervisor/"],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/"],
+      "status": "CLAIMED"
+    },
+    {
+      "lane_id": "L7",
+      "owner": "IV",
+      "owned_paths": ["reports/h6-queue-product-loop/iv/"],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/"],
+      "status": "CLAIMED"
+    },
+    {
+      "lane_id": "LE",
+      "owner": "Evidence",
+      "owned_paths": [
+        ".local/evidences/h6-queue-product-loop/",
+        ".local/supervisor/reviews/h6-queue-product-loop/"
+      ],
+      "forbidden_paths": ["src/", "tests/net/", "tests/python/", "registry/"],
+      "status": "CLAIMED"
+    }
+  ]
+}

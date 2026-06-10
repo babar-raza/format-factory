@@ -1,0 +1,32 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 22 items
+
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestAdvisoryInjection::test_stop_reason_advisory_constant_contains_required_text PASSED [  4%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestAdvisoryInjection::test_advisory_contains_false_stop_examples PASSED [  9%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestAdvisoryInjection::test_advisory_contains_local_coordinator_fallback PASSED [ 13%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestAdvisoryInjection::test_fallback_prompt_contains_advisory PASSED [ 18%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestFalseStopLabels::test_generated_items_have_no_approval_blocked_label PASSED [ 22%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestFalseStopLabels::test_generated_items_have_no_blocked_label PASSED [ 27%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestFalseStopLabels::test_rework_items_have_no_false_stop_label PASSED [ 31%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestFalseStopLabels::test_product_items_have_agent_owned_label PASSED [ 36%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestFalseStopLabels::test_all_items_have_agent_can_execute_field PASSED [ 40%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestTaskAdjudicationFields::test_agent_owned_task_has_correct_fields PASSED [ 45%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestTaskAdjudicationFields::test_approval_blocked_label_is_reclassified PASSED [ 50%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestTaskAdjudicationFields::test_git_push_task_is_external_gate PASSED [ 54%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestTaskAdjudicationFields::test_gate11_with_poc_ready_is_release_pending PASSED [ 59%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestTaskAdjudicationFields::test_mode5_task_is_agent_executable PASSED [ 63%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_result_contains_advisory_field PASSED [ 68%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_result_contains_forbidden_labels_field PASSED [ 72%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_gate11_pending_does_not_emit_blocked_label PASSED [ 77%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_autonomous_continue_true_produces_executable_items PASSED [ 81%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_non_mainstream_stream_has_no_false_stop_labels PASSED [ 86%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_commit_task_would_be_external_gate PASSED [ 90%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_dogfood_writer_task_is_agent_owned PASSED [ 95%]
+tests/supervisor/test_next_sprint_false_stop_regression.py::TestWorkItemsMetadata::test_zst_gate11_reconsideration_is_agent_owned PASSED [100%]
+
+============================= 22 passed in 1.45s ==============================

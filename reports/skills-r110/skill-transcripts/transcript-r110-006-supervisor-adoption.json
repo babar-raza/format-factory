@@ -1,0 +1,16 @@
+{
+  "invocation_id": "r110-sim-006-supervisor-adoption-compliance",
+  "skill_id": "evidence-review-next-prompt",
+  "mode": "dry-run",
+  "inputs": {
+    "declaration_path": ".local/evidences/skills-r110/evidence-declaration.yaml",
+    "evidence_bundle_path": ".local/supervisor/reviews/skills-r110/declaration-review-package.zip",
+    "adoption_validator": "tools/supervisor/validate_adoption_compliance.py"
+  },
+  "allowed_files": ["reports/supervisor/work-item-grades.json"],
+  "actual_files_changed": [],
+  "tests_run": ["tests/python/supervisor/test_r108_adoption_compliance.py"],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T23:20:00Z"
+}

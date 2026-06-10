@@ -1,0 +1,278 @@
+{
+  "status": "OK",
+  "limitations": [],
+  "violations": [],
+  "merged_families": {
+    "FODS": {
+      "family": "FODS",
+      "status": "MERGED",
+      "supervisor_routing": {
+        "source": "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
+        "capability": "dogfood_status.fods_to_csv_dotnet",
+        "product_track": "commercial_net",
+        "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+        "priority": 1,
+        "readiness": "READY_FOR_EXECUTION",
+        "allowed_files": [
+          "src/net/fods/FodsDocument.cs",
+          "src/net/fods/FodsWorkbook.cs",
+          "tests/net/fods/FodsR114ExportToCsvTests.cs"
+        ],
+        "forbidden_files": [
+          "src/python/*",
+          "registry/format-registry.yaml",
+          "plans/master-plan.md",
+          "product-capability-matrix/poc-targets.yaml"
+        ],
+        "expected_tests": "tests/net/fods/FodsR114ExportToCsvTests.cs with 8+ test methods",
+        "proposed_delta": "product-capability-matrix/poc-targets.yaml: fods.dogfood_status.fods_to_csv_dotnet \u2192 IMPLEMENTED",
+        "routing_details": {
+          "source_file": "src/net/fods/FodsDocument.cs",
+          "git_status": "M",
+          "family_active": true,
+          "svg_replacement_rejected": false
+        },
+        "authority_state": "routing_authority"
+      },
+      "skills_handoff": {
+        "source": "reports/skills-product-first/mainstream-consumption-packet.json",
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+        "skill": "add-dotnet-api",
+        "note": "Full FODS packet from skills-product-first sprint",
+        "capability": "dogfood_status.fods_to_csv_dotnet",
+        "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+        "authority_state": "governed_execution_authority"
+      },
+      "acceleration_advisory": {
+        "source": "reports/acceleration-hardening/mainstream-packet-index.json",
+        "capability_path": "dogfood_status.fods_to_csv_dotnet",
+        "packet_path": "reports\\acceleration-hardening\\replay-run-2\\fods-dogfood_status-fods_to_csv_dotnet.json",
+        "use_for": "Skills stream may use packet data as advisory input; normalization required before registry entry.",
+        "authority_state": "ai_draft",
+        "non_authoritative": true,
+        "source_via_hardening_index": true,
+        "advisory_note": ""
+      },
+      "conflict_resolution": "Supervisor controls routing priority; Skills handoff available (type=full); Acceleration advisory available (ai_draft)"
+    },
+    "FODT": {
+      "family": "FODT",
+      "status": "MERGED",
+      "supervisor_routing": {
+        "source": "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
+        "capability": "dogfood_status.fodt_to_markdown_dotnet",
+        "product_track": "commercial_net",
+        "gap_id": "GAP-FODT-DOGFOOD-MARKDOWN-DOTNET-001",
+        "priority": 2,
+        "readiness": "READY_FOR_EXECUTION_WITH_DISCOVERY",
+        "allowed_files": [
+          "src/net/fodt/FodtDocument.cs",
+          "tests/net/fodt/"
+        ],
+        "forbidden_files": [
+          "src/python/*",
+          "registry/format-registry.yaml",
+          "plans/master-plan.md",
+          "product-capability-matrix/poc-targets.yaml"
+        ],
+        "expected_tests": "tests/net/fodt/FodtR114ExportToMarkdownTests.cs with 8+ test methods",
+        "proposed_delta": "product-capability-matrix/poc-targets.yaml: fodt.dogfood_status.fodt_to_markdown_dotnet \u2192 IMPLEMENTED",
+        "routing_details": {
+          "source_file": "src/net/fodt/FodtDocument.cs",
+          "git_status": "M",
+          "family_active": true
+        },
+        "authority_state": "routing_authority"
+      },
+      "skills_handoff": {
+        "source": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+        "skill": "add-dotnet-api",
+        "note": "Full FODT Markdown packet from skills-product-breadth-finalization sprint",
+        "capability": "dogfood_status.fodt_to_markdown_dotnet",
+        "gap_id": "GAP-FODT-DOGFOOD-MD-DOTNET-001",
+        "authority_state": "governed_execution_authority"
+      },
+      "acceleration_advisory": {
+        "source": "reports/acceleration-hardening/mainstream-packet-index.json",
+        "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+        "packet_path": "reports\\acceleration-hardening\\replay-run-2\\fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+        "use_for": "Skills stream may use packet data as advisory input; normalization required before registry entry.",
+        "authority_state": "ai_draft",
+        "non_authoritative": true,
+        "source_via_hardening_index": true,
+        "advisory_note": ""
+      },
+      "conflict_resolution": "Supervisor controls routing priority; Skills handoff available (type=full); Acceleration advisory available (ai_draft)"
+    },
+    "FODT_TXT": {
+      "family": "FODT_TXT",
+      "status": "MERGED",
+      "supervisor_routing": {
+        "source": "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
+        "capability": "dogfood_status.fodt_to_txt_dotnet",
+        "product_track": "commercial_net",
+        "gap_id": "GAP-FODT-DOGFOOD-TXT-DOTNET-001",
+        "priority": 2,
+        "readiness": "READY_FOR_EXECUTION_WITH_DISCOVERY",
+        "allowed_files": [
+          "src/net/fodt/FodtDocument.cs",
+          "tests/net/fodt/"
+        ],
+        "forbidden_files": [
+          "src/python/*",
+          "registry/format-registry.yaml",
+          "plans/master-plan.md",
+          "product-capability-matrix/poc-targets.yaml"
+        ],
+        "expected_tests": "tests/net/fodt/FodtR114ExportToMarkdownTests.cs with 8+ test methods",
+        "proposed_delta": "product-capability-matrix/poc-targets.yaml: fodt.dogfood_status.fodt_to_markdown_dotnet \u2192 IMPLEMENTED",
+        "routing_details": {
+          "source_file": "src/net/fodt/FodtDocument.cs",
+          "git_status": "M",
+          "family_active": true
+        },
+        "authority_state": "routing_authority"
+      },
+      "skills_handoff": {
+        "source": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+        "skill": "add-dotnet-api",
+        "note": "Full FODT TXT packet from skills-product-breadth-finalization sprint (new in refresh)",
+        "capability": "dogfood_status.fodt_to_txt_dotnet",
+        "gap_id": "GAP-FODT-DOGFOOD-TXT-DOTNET-001",
+        "authority_state": "governed_execution_authority"
+      },
+      "acceleration_advisory": {
+        "source": "reports/acceleration-hardening/mainstream-packet-index.json",
+        "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+        "packet_path": "reports\\acceleration-hardening\\replay-run-2\\fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+        "use_for": "Skills stream may use packet data as advisory input; normalization required before registry entry.",
+        "authority_state": "ai_draft",
+        "non_authoritative": true,
+        "source_via_hardening_index": true,
+        "advisory_note": ""
+      },
+      "conflict_resolution": "Supervisor controls routing priority; Skills handoff available (type=full); Acceleration advisory available (ai_draft)"
+    },
+    "Netpbm": {
+      "family": "Netpbm",
+      "status": "MERGED",
+      "supervisor_routing": {
+        "source": "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
+        "capability": "dotnet_status.netpbm_proof_dogfood",
+        "product_track": "commercial_net",
+        "gap_id": "GAP-NETPBM-DOTNET-PROOF-001",
+        "priority": 3,
+        "readiness": "READY_FOR_EXECUTION_WITH_DISCOVERY",
+        "allowed_files": [
+          "src/net/netpbm/Model/NetpbmImage.cs",
+          "tests/net/netpbm/"
+        ],
+        "forbidden_files": [
+          "src/python/*",
+          "registry/format-registry.yaml",
+          "plans/master-plan.md",
+          "product-capability-matrix/poc-targets.yaml"
+        ],
+        "expected_tests": "tests/net/netpbm/NetpbmR114[Feature]Tests.cs with 8+ test methods",
+        "proposed_delta": "product-capability-matrix/poc-targets.yaml: netpbm.dotnet_status.{capability} \u2192 IMPLEMENTED",
+        "routing_details": {
+          "source_file": "src/net/netpbm/Model/NetpbmImage.cs",
+          "git_status": "M",
+          "family_active": true,
+          "svg_replacement_rejected": true,
+          "note": "SVG cannot replace Netpbm \u2014 format class mismatch (vector vs raster)"
+        },
+        "authority_state": "routing_authority"
+      },
+      "skills_handoff": {
+        "source": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+        "packet_type": "full",
+        "packet_path": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+        "skill": "add-dotnet-api",
+        "note": "Full Netpbm packet from skills-product-breadth-finalization sprint (upgraded from shell)",
+        "capability": "dotnet_status.netpbm_flip_and_merge_pipeline",
+        "gap_id": "GAP-NETPBM-DOGFOOD-PIPELINE-DOTNET-001",
+        "authority_state": "governed_execution_authority"
+      },
+      "acceleration_advisory": {
+        "source": "reports/acceleration-hardening/mainstream-packet-index.json",
+        "capability_path": "dotnet_status.netpbm_flip_diagonal",
+        "packet_path": "reports\\acceleration-hardening\\replay-run-2\\netpbm-dotnet_status-netpbm_flip_diagonal.json",
+        "use_for": "Skills stream may use packet data as advisory input; normalization required before registry entry.",
+        "authority_state": "ai_draft",
+        "non_authoritative": true,
+        "source_via_hardening_index": true,
+        "advisory_note": ""
+      },
+      "conflict_resolution": "Supervisor controls routing priority; Skills handoff available (type=full); Acceleration advisory available (ai_draft)"
+    }
+  },
+  "active_family_count": 4,
+  "authority_boundaries": {
+    "supervisor": "Stream-control authority \u2014 routing decisions, continuation states, cross-stream status",
+    "skills": "Governed execution authority \u2014 handoff templates, transcript validation, dry-run contracts",
+    "acceleration": "Advisory only \u2014 ai_draft outputs, require deterministic validation before use as evidence",
+    "mainstream": "Product implementation authority \u2014 source changes, tests, dogfood, capability delta proposals",
+    "format_factory_gates": "Human authority \u2014 Gate 8 and Gate 11 require human approval (never self-approved)"
+  },
+  "skills_finalization_packets_loaded": [
+    "FODS",
+    "FODT_MARKDOWN",
+    "FODT_TXT",
+    "Netpbm"
+  ],
+  "acceleration_hardening_index_used": true,
+  "metadata": {
+    "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+    "integration_tool": "tri_lane_integration.py",
+    "supervisor_reconciliation_found": true,
+    "supervisor_reconciliation_path": "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
+    "supervisor_routing_found": true,
+    "skills_routing_found": true,
+    "acceleration_packets_found": 4,
+    "acceleration_fallback_used": false,
+    "families_in_reconciliation": [
+      "FODS",
+      "FODT",
+      "Netpbm"
+    ],
+    "skills_finalization_families_loaded": [
+      "FODS",
+      "FODT_MARKDOWN",
+      "FODT_TXT",
+      "Netpbm"
+    ],
+    "acceleration_families_loaded": [
+      "FODS",
+      "FODT",
+      "Netpbm",
+      "SYLK"
+    ]
+  },
+  "source_lanes": {
+    "supervisor": {
+      "reconciliation_path": "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
+      "routing_path": "reports/supervisor-streams/supervisor/routing-packet.json",
+      "authority": "routing_authority"
+    },
+    "skills": {
+      "fods_packet": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "fodt_markdown_packet": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "fodt_txt_packet": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+      "netpbm_packet": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "authority": "governed_execution_authority",
+      "resolver_version": "v2_finalization"
+    },
+    "acceleration": {
+      "hardening_index": "reports/acceleration-hardening/mainstream-packet-index.json",
+      "legacy_fallback": "reports/acceleration-product-first/mainstream-consumption-packets",
+      "authority": "ai_draft",
+      "non_authoritative": true
+    }
+  }
+}

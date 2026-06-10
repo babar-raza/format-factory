@@ -1,0 +1,44 @@
+{
+  "run_id": "skills-r108",
+  "stream_id": "skills",
+  "overall_verdict": "ACCEPTED",
+  "evidence_quality_score": 0.45,
+  "item_grades": [
+    {
+      "item_id": "W1-MANIFEST-PATH",
+      "supervisor_grade": "ACCEPTED_VERIFIED",
+      "evidence_found": true,
+      "tests_supporting": ["tests/python/supervisor/test_r108_manifest_path_repair.py"],
+      "acceptance_criteria_met": ["Test content verified (1 files)"]
+    },
+    {
+      "item_id": "W2-ANTISKIP-REPAIR",
+      "supervisor_grade": "ACCEPTED_VERIFIED",
+      "evidence_found": true,
+      "tests_supporting": ["tests/python/supervisor/test_r108_antiskip_rawlog_repair.py"],
+      "acceptance_criteria_met": ["Test content verified (1 files)"]
+    },
+    {
+      "item_id": "W3-TRANSCRIPT-BOOST",
+      "supervisor_grade": "ACCEPTED_VERIFIED",
+      "evidence_found": true,
+      "tests_supporting": ["tests/python/supervisor/test_r108_transcript_grade_boost.py"],
+      "acceptance_criteria_met": ["Test content verified (1 files)", "Transcript validation: all transcripts valid"]
+    },
+    {
+      "item_id": "W4-ADOPTION-VALIDATOR",
+      "supervisor_grade": "ACCEPTED_VERIFIED",
+      "evidence_found": true,
+      "tests_supporting": ["tests/python/supervisor/test_r108_adoption_compliance.py"],
+      "acceptance_criteria_met": ["Test content verified (1 files)"]
+    },
+    {
+      "item_id": "W5-SIMULATION-PROOF",
+      "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+      "evidence_found": true,
+      "tests_supporting": [],
+      "acceptance_criteria_met": ["Transcript validation: all transcripts valid"]
+    }
+  ],
+  "note": "SAMPLE OUTPUT — demonstrates stream-tagged grades with transcript boost"
+}

@@ -1,0 +1,72 @@
+{
+  "packet_version": "1.0",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "generated_by": "TC-W6-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "selected_product_gap": {
+    "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+    "rank": 1,
+    "track": "commercial_net",
+    "format_id": "fods",
+    "capability": "dogfood_status.fods_to_csv_dotnet",
+    "status": "GAP_DOGFOOD_EXTERNAL",
+    "poc_impact": 95,
+    "source": "reports/supervisor/product-gap-selection.md"
+  },
+  "recommended_skill": "add-dotnet-api",
+  "generated_handoff_path": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+  "template_path": "docs/prompt-templates/skills/add-dotnet-api-handoff-template.md",
+  "allowed_files": [
+    "src/net/fods/FodsDocument.cs",
+    "src/net/fods/FodsWorkbook.cs",
+    "tests/net/fods/FodsR114ExportToCsvTests.cs",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "forbidden_files": [
+    "src/python/*",
+    "registry/format-registry.yaml",
+    "plans/master-plan.md",
+    "product-capability-matrix/poc-targets.yaml",
+    ".vscode/mcp.json",
+    ".supervisor/policies.yaml"
+  ],
+  "required_transcript_fields": [
+    "invocation_id",
+    "skill_id",
+    "mode",
+    "inputs",
+    "allowed_files",
+    "actual_files_changed",
+    "tests_run",
+    "result",
+    "timestamp"
+  ],
+  "expected_source_diff": "One new method (ExportToCsv or similar) in FodsDocument.cs or FodsWorkbook.cs",
+  "expected_tests": "tests/net/fods/FodsR114ExportToCsvTests.cs with 8+ test methods",
+  "expected_raw_logs": "reports/{sprint}/raw-logs/test-fods-export-csv.log",
+  "expected_ledger_entry": "reports/r90/product-code-change-ledger.json entry with change_type=add_api",
+  "expected_capability_matrix_update": "product-capability-matrix/poc-targets.yaml: fods.dogfood_status.fods_to_csv_dotnet → IMPLEMENTED",
+  "expected_evidence_manifest_entry": {
+    "path": "reports/{sprint}/skill-transcripts/transcript-{id}.json",
+    "type": "transcript",
+    "created_by_taskcard": "W-ADD-DOTNET-FODS-CSV"
+  },
+  "acceptance_criteria": [
+    "validate_skill_transcript.py exits 0",
+    "8+ tests pass in focused test run",
+    "source diff shows exactly one new public method",
+    "ledger entry added with all required fields",
+    "adoption compliance check: compliant=true"
+  ],
+  "downgrade_rules": [
+    {
+      "condition": "capability_matrix_update missing",
+      "result": "ACCEPT_WITH_LIMITATIONS (not hard FAIL)"
+    },
+    {
+      "condition": "ledger_entry_id null in transcript",
+      "result": "WARNING (not FAIL) if change_type is not src-editing"
+    }
+  ],
+  "auto_repair_guidance": "If any required field is missing: create the artifact → rerun validate_skill_transcript.py → rerun adoption compliance. Governance mode: AUTONOMOUS_REWORK_REQUIRED."
+}

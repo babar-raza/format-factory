@@ -1,0 +1,23 @@
+{
+  "transcript_id": "iter-004-netpbm-save-pipeline",
+  "iteration": 4,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "skill_used": "add-dogfood-export",
+  "target": "Netpbm Python FOSS + .NET",
+  "gap_closed": "netpbm_save_pipeline_create_transform_save_readback",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "execution_steps": [
+    {"step": 1, "action": "Create 10x10 PGM image with all-zero pixels using write_pgm (flat pixel API)"},
+    {"step": 2, "action": "Draw horizontal+vertical cross at row 5 / col 5 (value=200)"},
+    {"step": 3, "action": "Save to cross-pipeline.pgm"},
+    {"step": 4, "action": "Reload with parse_pgm_strict"},
+    {"step": 5, "action": "Verify center pixel (5,5) == 200"},
+    {"step": 6, "action": "verify_pass=true confirmed"}
+  ],
+  "tests_passed": 0,
+  "tests_failed": 0,
+  "source_changed": [],
+  "sample_output": "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/netpbm/save-pipeline-report.json",
+  "note": "No new tests — covered by 448+ existing .NET tests and 80+ Python tests. Pipeline verified via sample output generation.",
+  "verdict": "SKILL_EXECUTED_PASS"
+}

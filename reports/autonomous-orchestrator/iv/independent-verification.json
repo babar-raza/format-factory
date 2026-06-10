@@ -1,0 +1,20 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001",
+  "generated": "2026-06-06",
+  "checks": [
+    {"id": "IV-01", "check": "Package-110 bounded proof accepted but not overclaimed as persistent autonomy", "pass": true, "evidence": "current-autonomy-baseline.json: persistent_autonomous_process=false documented; H4_PLUS prior proof confirmed"},
+    {"id": "IV-02", "check": "active-continuation.json exists and is authoritative (not advisory Markdown)", "pass": true, "evidence": ".local/supervisor/active-continuation.json written by orchestrator; advisory_prompt_executable=false; next_action_path points to next-action.json"},
+    {"id": "IV-03", "check": "next-action.json exists and validates", "pass": true, "evidence": ".local/supervisor/next-action.json exists; router validates schema before dispatch"},
+    {"id": "IV-04", "check": "Orchestrator --max-cycles 3 executed without manual prompt paste", "pass": true, "evidence": "proof-run/state-transitions.json: 3 cycles SUCCESS, run_id=41c8b149, all backend_used=LOCAL_DETERMINISTIC"},
+    {"id": "IV-05", "check": "Resume after process stop works (--once then --resume)", "pass": true, "evidence": "resume-proof.json: step_1 1 cycle, step_2 resumed=true same run_id caeda74d, 2 more cycles"},
+    {"id": "IV-06", "check": "Advisory next-sprint.md cannot be executed directly", "pass": true, "evidence": "continuation_router.py: is_advisory_prompt() rejects .md paths; test_advisory_prompt_stops passes"},
+    {"id": "IV-07", "check": "Product next-work-items not executed", "pass": true, "evidence": "review/next-work-items.json classified as advisory in UNSAFE_ADVISORY_PATTERNS; orchestrator uses next-action.json only"},
+    {"id": "IV-08", "check": "H5 claim is backed (implementation ready) or blocked (not dispatched)", "pass": true, "evidence": "h5/h5-assessment.json: H5_IMPLEMENTATION_READY_NOT_DISPATCHED; LLM backend implemented with can_execute=True when creds present; honest"},
+    {"id": "IV-09", "check": "H6 classified as H6_EXTERNAL_HOST_READY_MANUAL_START_ONCE (not falsely claimed)", "pass": true, "evidence": "h6/h6-status.json: external_run_confirmed=false, false_h6_claim=false, scripts exist"},
+    {"id": "IV-10", "check": "143 targeted tests pass (58 new orchestrator + 85 prior autonomy)", "pass": true, "evidence": "test-logs/all-tests.log: 143 passed, 0 failed"},
+    {"id": "IV-11", "check": "No product src/ changes (FODS/FODT/Netpbm unchanged)", "pass": true, "evidence": "Only new/modified files in tools/supervisor/, tests/supervisor/, scripts/, reports/autonomous-orchestrator/"},
+    {"id": "IV-12", "check": "Final verdict matches proof level (RESTARTABLE_ORCHESTRATOR_PROVEN)", "pass": true, "evidence": "orchestrator-proof.md: COMPLETE_RESTARTABLE_ORCHESTRATOR_PROVEN; 3 cycles + resume proven"}
+  ],
+  "verdict": "ACCEPTED_RESTARTABLE_ORCHESTRATOR_PROOF",
+  "verdict_reasoning": "autonomous_orchestrator.py executes --max-cycles 3 without manual prompt paste. Resume after --once proven with run_id preservation. Machine-readable continuation state replaces advisory Markdown. 143 tests pass. No product changes, no pushes, no gates. H5 implementation ready (not dispatched). H6 ready for manual external start."
+}

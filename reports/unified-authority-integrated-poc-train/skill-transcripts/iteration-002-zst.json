@@ -1,0 +1,16 @@
+{
+  "transcript_id": "transcript:iter002-zst-r115",
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "iteration": 2,
+  "lane_id": "lane-011-zst-r115",
+  "format": "zst",
+  "track": "foss_python",
+  "capability_added": ["zst_file_roundtrip_depth", "probe_frame_workflow", "validate_file_workflow"],
+  "source_files_modified": [],
+  "test_files_added": ["tests/python/zst/test_r115_zst_file_roundtrip.py"],
+  "tests_run": 11,
+  "tests_passed": 11,
+  "tests_failed": 0,
+  "skill_verdict": "LANE_COMPLETE",
+  "notes": "compress_bytes -> write file -> read -> decompress_bytes roundtrip for text/binary/empty/large/multi-level data. probe_frame + validate_file dogfood pipeline. 11 tests pass."
+}

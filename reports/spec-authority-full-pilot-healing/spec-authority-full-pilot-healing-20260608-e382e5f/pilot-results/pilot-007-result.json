@@ -1,0 +1,28 @@
+{
+  "compliant": false,
+  "errors": [
+    "WI-PILOT-AIONLY-001: item_type='PRODUCT_SOURCE' has empty spec_fact_refs and no exception_classification. This is a BLOCKING gate. Either populate spec_fact_refs with verified FACT-xxx IDs or set exception_classification to one of: ['fallback_authority_approved', 'investigation_only', 'legacy_backfill', 'no_public_spec_available', 'sample_only_non_product', 'schema_authority_available']",
+    "WI-PILOT-AIONLY-002: exception_classification='ai_generated_review' is not a valid classification. Valid values: ['fallback_authority_approved', 'investigation_only', 'legacy_backfill', 'no_public_spec_available', 'sample_only_non_product', 'schema_authority_available']"
+  ],
+  "debt_items": [],
+  "item_results": [
+    {
+      "item_id": "WI-PILOT-AIONLY-001",
+      "item_type": "PRODUCT_SOURCE",
+      "blocking_type": true,
+      "compliant": false,
+      "violation": "item_type='PRODUCT_SOURCE' has empty spec_fact_refs and no exception_classification. This is a BLOCKING gate. Either populate spec_fact_refs with verified FACT-xxx IDs or set exception_classification to one of: ['fallback_authority_approved', 'investigation_only', 'legacy_backfill', 'no_public_spec_available', 'sample_only_non_product', 'schema_authority_available']",
+      "grade_impact": "reject",
+      "detail": "Hard gate violation \u2014 no spec authority and no exception"
+    },
+    {
+      "item_id": "WI-PILOT-AIONLY-002",
+      "item_type": "RELEASE_GATE",
+      "blocking_type": true,
+      "compliant": false,
+      "violation": "exception_classification='ai_generated_review' is not a valid classification. Valid values: ['fallback_authority_approved', 'investigation_only', 'legacy_backfill', 'no_public_spec_available', 'sample_only_non_product', 'schema_authority_available']",
+      "grade_impact": "reject",
+      "detail": "Invalid exception classification: 'ai_generated_review'"
+    }
+  ]
+}

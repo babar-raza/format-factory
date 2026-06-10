@@ -1,0 +1,27 @@
+# Pilot: TCA-FULL-006 — Invalid fact ID rejection pilot
+# Expected: REJECTED — spec_fact_refs contains non-existent/malformed IDs
+pilot_id: pilot-invalid-fact-id
+sprint_id: SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001
+run_id: spec-authority-full-pilot-healing-20260608-e382e5f
+expected_result: REJECTED_AS_EXPECTED
+
+planned_work_items:
+  - item_id: WI-PILOT-INVFACT-001
+    item_type: PRODUCT_SOURCE
+    title: "Product source with non-existent FACT ID"
+    status: completed
+    spec_fact_refs:
+      - FACT-DOES-NOT-EXIST
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    acceptance_criteria: "MUST BE REJECTED — FACT-DOES-NOT-EXIST is malformed (insufficient length)"
+
+  - item_id: WI-PILOT-INVFACT-002
+    item_type: PRODUCT_SOURCE
+    title: "Product source with malformed fact ID (no FACT- prefix)"
+    status: completed
+    spec_fact_refs:
+      - bad-fact-id-no-prefix
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    acceptance_criteria: "MUST BE REJECTED — 'bad-fact-id-no-prefix' does not start with FACT-"

@@ -1,0 +1,49 @@
+handoff_id: HO-R111-ACCEL-001
+type: acceleration-routing
+title: "FODS Gap Routing — Cycle-Integrated Handoff v3"
+stream_from: skills
+stream_to: acceleration
+skill_id: select-poc-gap
+version: "3.0"
+timestamp: "2026-06-03T23:30:00Z"
+
+description: |
+  Acceleration worker selects next FODS gap from POC matrix.
+  Adoption compliance validated at cycle level (Step 2d).
+
+required_inputs:
+  matrix_path: product-capability-matrix/poc-targets.yaml
+  gap_id: gap-fods-export-html
+  target_format: fods
+
+validation_command: |
+  python tools/supervisor/validate_skill_transcript.py reports/r-next/skill-transcripts/transcript-gap-routing.json
+
+expected_evidence:
+  transcript_json: "reports/r-next/skill-transcripts/transcript-gap-routing.json"
+  gap_selection_log: "reports/r-next/gap-selection.md"
+
+transcript_requirement:
+  mode: "dry-run"
+  required_fields: ["invocation_id", "skill_id", "mode", "inputs", "allowed_files", "actual_files_changed", "tests_run", "result"]
+  skill_id_must_match: "select-poc-gap"
+  result_must_be: "PASS"
+
+raw_log_requirement:
+  format: "gap selection log"
+  minimum_lines: 5
+  must_contain: ["gap", "selected"]
+
+pass_criteria:
+  - "Transcript validates"
+  - "Gap exists in POC matrix"
+  - "No product source edits (routing only)"
+  - "Adoption compliance Step 2d PASS"
+
+fail_conditions:
+  - "Missing transcript"
+  - "Gap not in matrix"
+  - "Source files edited during routing"
+  - "Adoption compliance FAIL"
+
+adoption_gates_enforced: [ADOPT-A-01, ADOPT-CYCLE-01]

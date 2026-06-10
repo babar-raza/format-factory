@@ -1,0 +1,33 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "generated": "2026-06-04T07:20:15.435771+00:00",
+  "selected_gaps": [
+    {
+      "format": "fods",
+      "track": "commercial_net",
+      "capability_path": "dogfood_status.fods_to_csv_dotnet",
+      "reason": "GAP_DOGFOOD_EXTERNAL \u2014 confirmed in poc-targets.yaml; highest priority commercial gap"
+    },
+    {
+      "format": "fodt",
+      "track": "commercial_net",
+      "capability_path": "dogfood_status.fodt_to_markdown_dotnet",
+      "reason": "GAP_DOGFOOD_EXTERNAL \u2014 confirmed in poc-targets.yaml"
+    },
+    {
+      "format": "netpbm",
+      "track": "commercial_net",
+      "capability_path": "dotnet_status.netpbm_flip_diagonal",
+      "reason": "First available Netpbm gap from poc-targets.yaml netpbm section"
+    },
+    {
+      "format": "sylk",
+      "track": "foss_reduced",
+      "capability_path": "python_status.write_sylk",
+      "reason": "FOSS priority: SYLK chosen because write_sylk is confirmed built in R93; DIF/ZST are lower priority"
+    }
+  ],
+  "foss_selection_rationale": "SYLK selected over DIF/ZST because: (1) write_sylk capability exists from R93; (2) SYLK has CSV export gap; (3) DIF has lower test coverage; (4) ZST is compression-only",
+  "authority_state": "ai_draft",
+  "non_authoritative": true
+}

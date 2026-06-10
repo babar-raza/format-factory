@@ -1,0 +1,26 @@
+id: GEC-TC-005
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Add Check 8 to prompt-quality validator: no_unsafe_commit_push_wording"
+status: completed
+lane: lane_e_prompt_quality
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  validate_prompt_quality() had only 7 checks. Unsafe wording patterns like
+  "authorized git commit + push" or "commit + push (requires" were not detected.
+scope:
+  - Add Check 8 (no_unsafe_commit_push_wording) to validate_prompt_quality()
+  - Define _UNSAFE_PROMPT_PATTERNS list with 4 known unsafe patterns
+  - Tests included in test_governance_closure_pilots.py (TestGecPilot008)
+files_modified:
+  - tools/supervisor/validate_prompt_quality.py
+acceptance_criteria:
+  - validate_prompt_quality() returns 8 checks
+  - Unsafe wording fails check with pass=False
+  - Safe wording passes check with pass=True
+dependencies: []
+handoff_to_autonomy_sprint: false

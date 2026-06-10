@@ -1,0 +1,19 @@
+{
+  "action_id": "orch-proof-001",
+  "action_type": "RUN_JSON_VALIDATION",
+  "objective": "Orchestrator proof run cycle 1: validate proof-run/input-001.json",
+  "preferred_backend": "LOCAL_DETERMINISTIC",
+  "fallback_backends": [],
+  "target": "reports/autonomous-orchestrator/proof-run/input-001.json",
+  "result_path": "reports/autonomous-orchestrator/proof-run/cycle-001-result.json",
+  "allowed_write_roots": ["reports/autonomous-orchestrator"],
+  "evidence_required": true,
+  "cycle_number": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001",
+  "external_gate": false,
+  "success_conditions": [
+    "input-001.json is valid JSON",
+    "result_path written by runner",
+    "backend_used=LOCAL_DETERMINISTIC"
+  ]
+}

@@ -62,3 +62,30 @@ Supervisor validates -> inspects -> grades -> generates next prompt
     Human approves or modifies next prompt
     Worker resumes
 ```
+
+## Cross-Window Recovery
+
+When a Claude Code window exhausts context or crashes mid-sprint:
+
+1. Open a new window in the same repository
+2. `CLAUDE.md` is loaded automatically — it instructs the agent to read `session-resume.md`
+3. `session-resume.md` reflects the last **completed** sprint (not the crashed one)
+4. The agent checks `approval-gates.md` and resumes from the last known-good state
+5. Any in-progress work from the crashed sprint remains in the working tree
+
+**No conversation history is needed.** State is carried entirely by files:
+- `reports/supervisor/session-resume.md` — last sprint outcome
+- `reports/supervisor/approval-gates.md` — YES/NO continuation
+- `reports/supervisor/next-sprint.md` — work items
+- `.local/supervisor/continuation-signal.json` — iteration counter
+
+## Iteration Limits
+
+Default: 5 sprints per autonomous loop (configurable in `.supervisor/policies.yaml`).
+After `max_iterations`, the system stops with `stop_reason: max_iterations_reached`.
+The user can restart with a new limit.
+
+## Replication
+
+For a complete guide on how this system works and how to replicate it for another project, see:
+[Autonomous Supervision — Replication Guide](autonomous-supervision-replication-guide.md)

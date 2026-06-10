@@ -1,0 +1,56 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-INVESTIGATE-AND-HEAL-001",
+  "evaluated_at": "2026-06-05T00:19:00Z",
+  "conditions": [
+    {
+      "condition_id": "C1",
+      "description": "output_floor_met=true in execution-state.json",
+      "result": true,
+      "evidence": "execution-state.json output_floor_met=true, output_floor_condition=PILOT_FIX_VERIFIED — 6 problems fixed+verified (5 HIGH/CRITICAL + 1 MEDIUM); 2 problems blocked external"
+    },
+    {
+      "condition_id": "C2",
+      "description": "evidence_bundle_built=true in execution-state.json",
+      "result": true,
+      "evidence": "autonomous_cycle.py exit 0, 7/7 ACCEPTED; declaration-review-package.zip SHA-256 cf104646f3f903ce7bb1681fa8c44a8c33c0a261734704022cd952e1b1a65fc4"
+    },
+    {
+      "condition_id": "C3",
+      "description": "TC-EXPERT-EVIDENCE-BUNDLE-001 status=CLOSED_VERIFIED",
+      "result": true,
+      "evidence": "taskcard-registry.json TC-EXPERT-EVIDENCE-BUNDLE-001 set CLOSED_VERIFIED at 2026-06-05T00:18:00Z"
+    },
+    {
+      "condition_id": "C4",
+      "description": "TC-EXPERT-FINAL-IV-001 status=CLOSED_VERIFIED",
+      "result": true,
+      "evidence": "taskcard-registry.json TC-EXPERT-FINAL-IV-001 set CLOSED_VERIFIED at 2026-06-05T00:19:00Z"
+    },
+    {
+      "condition_id": "C5",
+      "description": "all non-DEFERRED taskcards are CLOSED_VERIFIED or BLOCKED_EXTERNAL",
+      "result": true,
+      "evidence": "13/13 taskcards CLOSED_VERIFIED; 0 DEFERRED, 0 BLOCKED_EXTERNAL, 0 IN_PROGRESS, 0 NEEDS_REWORK. Fix taskcards TC-FIX-PROB-PK01 through TC-FIX-PROB-PY01 and corresponding IV taskcards all CLOSED_VERIFIED."
+    },
+    {
+      "condition_id": "C6",
+      "description": "final-healing-verdict.json uses a valid verdict from the approved list",
+      "result": true,
+      "evidence": "verdict=EXPERT_REVIEW_AND_HEALING_PILOT_FIX_VERIFIED_CONTINUE — approved by plan; 6 fixes verified, 2 blocked external, pilot floor met"
+    },
+    {
+      "condition_id": "C7",
+      "description": "final git status captured in reports/expert-manual-system-review/final-git-status.txt",
+      "result": true,
+      "evidence": "reports/expert-manual-system-review/final-git-status.txt written at 2026-06-05T00:19:00Z"
+    },
+    {
+      "condition_id": "C8",
+      "description": "no forbidden action occurred (no commit, push, Gate approval, git reset/clean/stash)",
+      "result": true,
+      "evidence": "coordinator-log.md and lane-closeout-ledger.json confirm: 0 commits, 0 pushes, 0 Gate approvals, 0 git reset/clean/stash, 0 MCP activations, 0 poc-targets.yaml mutations during this sprint"
+    }
+  ],
+  "all_conditions_met": true,
+  "terminal_authorized": true
+}

@@ -1,0 +1,28 @@
+{
+  "handoff_id": "D112-ASLP-01",
+  "from_stream": "mainstream",
+  "to_stream": "acceleration",
+  "sprint": "mainstream-r112",
+  "defect_title": "missing_raw_logs false positive due to path resolution",
+  "severity": "medium",
+  "impact": "Anti-skip reports missing raw logs for every Mainstream sprint even when logs are present",
+  "root_cause": "Check searches evidence_root only; Mainstream stores logs in reports/<run_id>/raw-logs/",
+  "fix_location": "tools/supervisor/inspect_declared_evidence.py",
+  "search_priority": [
+    "evidence_root + raw-logs/ subdirectory",
+    "reports/<run_id>/raw-logs/ directory",
+    "evidence_paths entries matching *.log",
+    "evidence_artifacts entries with type: raw_log"
+  ],
+  "failing_example": {
+    "check": "missing_raw_logs",
+    "is_violation": true,
+    "logs_found": [],
+    "actual_logs": [
+      "reports/mainstream-r111/raw-logs/fods-dotnet-test.log",
+      "reports/mainstream-r111/raw-logs/fodt-dotnet-test.log",
+      "reports/mainstream-r111/raw-logs/netpbm-dotnet-test.log",
+      "reports/mainstream-r111/raw-logs/python-all-test.log"
+    ]
+  }
+}

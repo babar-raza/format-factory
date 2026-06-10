@@ -1,0 +1,21 @@
+{"node_id": "req:netpbm:load", "label": "Netpbm: read PBM/PGM/PPM files (P1\u2013P6)", "status": "accepted", "product_id": "netpbm-net", "format_id": "netpbm", "operation": "load"}
+{"node_id": "req:netpbm:save", "label": "Netpbm: write/save PBM/PGM/PPM files (P1\u2013P6)", "status": "accepted", "product_id": "netpbm-net", "format_id": "netpbm", "operation": "save"}
+{"node_id": "req:netpbm:inspect", "label": "Netpbm: inspect image metadata (width, height, type, maxval)", "status": "accepted", "product_id": "netpbm-net", "format_id": "netpbm", "operation": "inspect"}
+{"node_id": "req:netpbm:edit", "label": "Netpbm: pixel-level edit (crop, resize, flip, rotate, overlay)", "status": "accepted", "product_id": "netpbm-net", "format_id": "netpbm", "operation": "edit"}
+{"node_id": "req:fods:load", "label": "FODS: parse flat-ODS XML document", "status": "accepted", "product_id": "fods", "format_id": "fods", "operation": "load"}
+{"node_id": "req:fods:save", "label": "FODS: write/save flat-ODS document same-format", "status": "accepted", "product_id": "fods", "format_id": "fods", "operation": "save"}
+{"node_id": "req:fods:edit", "label": "FODS: modify cell values, add/remove sheets/rows", "status": "accepted", "product_id": "fods", "format_id": "fods", "operation": "edit"}
+{"node_id": "req:fods:export_csv", "label": "FODS: export sheet data to CSV format", "status": "accepted", "product_id": "fods", "format_id": "fods", "operation": "export"}
+{"node_id": "req:fods:export_html", "label": "FODS: export sheet data to HTML format", "status": "accepted", "product_id": "fods", "format_id": "fods", "operation": "export"}
+{"node_id": "req:fodt:load", "label": "FODT: parse flat-ODT XML document", "status": "accepted", "product_id": "fodt", "format_id": "fodt", "operation": "load"}
+{"node_id": "req:fodt:save", "label": "FODT: write/save flat-ODT same-format", "status": "accepted", "product_id": "fodt", "format_id": "fodt", "operation": "save"}
+{"node_id": "req:fodt:edit", "label": "FODT: modify paragraph text/headings/styles", "status": "accepted", "product_id": "fodt", "format_id": "fodt", "operation": "edit"}
+{"node_id": "req:fodt:export_markdown", "label": "FODT: export document to Markdown", "status": "accepted", "product_id": "fodt", "format_id": "fodt", "operation": "export"}
+{"node_id": "req:fodt:export_txt", "label": "FODT: export document to plain text", "status": "accepted", "product_id": "fodt", "format_id": "fodt", "operation": "export"}
+{"node_id": "req:zst:compress", "label": "ZST: compress bytes/file to Zstandard format", "status": "accepted", "product_id": "zst", "format_id": "zst", "operation": "write"}
+{"node_id": "req:zst:decompress", "label": "ZST: decompress Zstandard stream to original bytes", "status": "accepted", "product_id": "zst", "format_id": "zst", "operation": "load"}
+{"node_id": "req:zst:roundtrip", "label": "ZST: compress+decompress roundtrip preserves content", "status": "accepted", "product_id": "zst", "format_id": "zst", "operation": "roundtrip"}
+{"node_id": "req:zst:inspect", "label": "ZST: inspect frame header/metadata", "status": "accepted", "product_id": "zst", "format_id": "zst", "operation": "inspect"}
+{"node_id": "req:dif:parse", "label": "DIF: parse Data Interchange Format grid structure", "status": "accepted", "product_id": "dif", "format_id": "dif", "operation": "load", "empirical_only": true}
+{"node_id": "req:dif:inspect", "label": "DIF: inspect DIF header, cell values, and data table", "status": "accepted", "product_id": "dif", "format_id": "dif", "operation": "inspect", "empirical_only": true}
+{"node_id": "req:zst:old-compress", "label": "ZST old compress requirement (STALE)", "status": "stale", "product_id": "zst", "format_id": "zst", "operation": "write", "stale": true}

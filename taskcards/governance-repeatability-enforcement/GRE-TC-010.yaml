@@ -1,0 +1,25 @@
+id: GRE-TC-010
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Legacy replay readiness — 4 backfilled functions documented (Lane J)"
+status: completed
+lane: legacy_replay_readiness
+item_type: LEGACY_BACKFILL_METADATA
+problem: >
+  The 4 backfilled functions (set_cell_value, get_headers, get_paragraph, export_to_csv)
+  needed a documented replay readiness status showing what is missing before replay
+  execution can begin. GR-REPLAY-001..004 taskcards were upgraded with idempotency
+  keys and sidecar paths but still lack skill_candidate, replay_inputs, etc.
+scope:
+  - Document replay readiness for all 4 functions
+  - Verify sidecar files and idempotency keys match formula
+  - Document stop conditions for replay execution
+  - Confirm all 4 GR-REPLAY taskcards have current_state=BACKFILLED_LEGACY_ACCEPTED
+files_created:
+  - reports/repeatability-governance-enforcement-rnext/legacy-replay-readiness-report.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: legacy_backfill
+dependencies: []
+handoff_to_autonomy_sprint: true

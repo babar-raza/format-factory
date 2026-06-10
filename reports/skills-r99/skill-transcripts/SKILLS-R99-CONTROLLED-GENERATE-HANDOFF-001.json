@@ -1,0 +1,45 @@
+{
+  "transcript_version": "1.0",
+  "skill_id": "generate-execution-handoff",
+  "invocation_id": "SKILLS-R99-CONTROLLED-GENERATE-HANDOFF-001",
+  "run_id": "FORMAT-FACTORY-SKILLS-R99-SKILL-REGISTRY-GOVERNED-EXECUTION-PARALLEL-MEGA-TRAIN-001",
+  "timestamp": "2026-06-03T03:15:00Z",
+  "mode": "CONTROLLED_EXECUTION",
+  "inputs": {
+    "skill_id": "add-dotnet-api",
+    "target_format": "FODS",
+    "scope": "ExportSheetToMarkdown API (3 overloads)"
+  },
+  "allowed_files": [
+    "reports/skills-r99/execution-handoffs/handoff-FODS-ExportSheetToMarkdown.md"
+  ],
+  "forbidden_files": [
+    "src/**",
+    "registry/format-registry.yaml",
+    "plans/master-plan.md"
+  ],
+  "actual_changed_files": [
+    {
+      "path": "reports/skills-r99/execution-handoffs/handoff-FODS-ExportSheetToMarkdown.md",
+      "sha256_before": "N/A (new file)",
+      "sha256_after": "computed_after_write",
+      "change_type": "created"
+    }
+  ],
+  "tests_generated": [],
+  "tests_run": {
+    "command": "N/A (handoff document only)",
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ledger_entry": null,
+  "matrix_update": null,
+  "evidence_outputs": [
+    "reports/skills-r99/skill-transcripts/SKILLS-R99-CONTROLLED-GENERATE-HANDOFF-001.json",
+    "reports/skills-r99/skill-transcripts/SKILLS-R99-CONTROLLED-GENERATE-HANDOFF-001.md",
+    "reports/skills-r99/execution-handoffs/handoff-FODS-ExportSheetToMarkdown.md"
+  ],
+  "result": "PASS",
+  "notes": "Controlled execution: generated a ready execution handoff for FODS ExportSheetToMarkdown. No src edit; handoff is ready for a future product sprint."
+}

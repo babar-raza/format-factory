@@ -1,0 +1,35 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 25 items
+
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestAdjudicatorIntegration::test_adjudicator_available_in_controller PASSED [  4%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestAdjudicatorIntegration::test_empty_signals_returns_none PASSED [  8%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestAdjudicatorIntegration::test_none_signals_returns_none PASSED [ 12%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestAdjudicatorIntegration::test_supervisor_accepted_signal_does_not_stop PASSED [ 16%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestAdjudicatorIntegration::test_gate11_poc_ready_in_adjudicator PASSED [ 20%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestAdjudicatorIntegration::test_git_push_in_adjudicator_is_external_gate PASSED [ 24%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestLoopContract::test_accepted_sprint_with_remaining_gaps_continues PASSED [ 28%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestLoopContract::test_accepted_sprint_with_poc_ready_and_gate11_is_release_pending PASSED [ 32%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestLoopContract::test_accepted_sprint_with_missing_evidence_but_repairable_continues PASSED [ 36%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestLoopContract::test_accepted_sprint_with_commit_requested_stops_for_commit_only PASSED [ 40%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestLoopContract::test_supervisor_cannot_emit_autonomous_continue_false_for_evidence_quality_zero PASSED [ 44%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestLoopContract::test_next_sprint_from_accepted_contains_no_false_blocked_tasks PASSED [ 48%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestLoopContract::test_runtime_limit_gives_continuation_required_not_stop PASSED [ 52%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestLoopContract::test_max_iterations_is_not_external_gate PASSED [ 56%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestR118Adjudication::test_r118_state_returns_poc_ready_candidate_release_pending PASSED [ 60%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestR118Adjudication::test_r118_next_sprint_false_blockers_are_detected PASSED [ 64%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestR118Adjudication::test_r118_approval_gates_mode5_does_not_block_continuation PASSED [ 68%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestR118Adjudication::test_r118_continuation_signal_true_overrides_false_stop_labels PASSED [ 72%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestR118Adjudication::test_r118_safe_lanes_available_forces_executable_next_action PASSED [ 76%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestR118Adjudication::test_r118_if_poc_ready_only_gate11_remains PASSED [ 80%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestR118Adjudication::test_r118_if_poc_not_ready_and_gate11_appears_continue_implementation PASSED [ 84%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestDashboardWithAdjudicator::test_poc_ready_false_closure_true_is_contradiction PASSED [ 88%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestDashboardWithAdjudicator::test_no_contradiction_in_r118_incomplete_state PASSED [ 92%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestGate11VsPoC::test_gate11_pending_not_blocking_poc_candidate_completion PASSED [ 96%]
+tests/supervisor/test_supervisor_loop_continuation_contract.py::TestGate11VsPoC::test_no_invalid_stop_path_exists PASSED [100%]
+
+============================= 25 passed in 1.30s ==============================

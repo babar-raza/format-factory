@@ -1,0 +1,88 @@
+sprint_id: FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001
+generated_at: "2026-06-04T14:00:00Z"
+repaired_at: "2026-06-04T16:00:00Z"
+repair_applied: true
+repair_note: >
+  Two errors: (1) method name was ExportToTxt — WRONG, actual is ExportTxt.
+  (2) Capability ALREADY IMPLEMENTED: GetPlainText() at FodtDocument.cs:161,
+  ExportToPlainTextFile() at :647. FodtTxtExporter.ExportTxt(fodtPath, txtPath) is static class.
+  R113 dogfood tests (FodtR113TxtDogfoodTests.cs, 6 tests) confirm implementation.
+  Mode updated live->verify. Repaired TC-B-002.
+handoff_id: handoff-fodt-txt-r114-001
+skill_id: add-dotnet-api
+format_id: FODT
+api_name: ExportTxt
+gap_id: GAP-FODT-DOGFOOD-TXT-DOTNET-001
+capability: dogfood_status.fodt_to_txt_dotnet
+mode: live
+status: ALREADY_IMPLEMENTED
+
+exact_source_paths:
+  - src/net/fodt/FodtDocument.cs
+  - src/net/fodt/FodtTxtExporter.cs
+
+exact_test_paths:
+  - tests/net/fodt/FodtR113TxtDogfoodTests.cs
+
+examples_paths:
+  - examples/net/fodt/
+
+ledger_entry_path: reports/r90/product-code-change-ledger.json
+
+focused_test_command: "dotnet test tests/net/fodt/FormatFactory.Fodt.Tests.csproj --filter FullyQualifiedName~FodtR113TxtDogfoodTests"
+
+allowed_files:
+  - src/net/fodt/FodtDocument.cs
+  - src/net/fodt/FodtTxtExporter.cs
+  - tests/net/fodt/FodtR113TxtDogfoodTests.cs
+  - examples/net/fodt/
+  - reports/r90/product-code-change-ledger.json
+
+forbidden_files:
+  - src/python/*
+  - src/net/fods/*
+  - src/net/netpbm/*
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+  - product-capability-matrix/poc-targets.yaml
+  - .vscode/mcp.json
+  - .supervisor/policies.yaml
+  - reports/supervisor/approval-gates.md
+  - .claude-plugin/*
+  - .claude/commands/*
+
+implementation_guidance:
+  method_name: ExportTxt
+  source_class: FodtDocument
+  method_signature: "public string GetPlainText()"
+  secondary_method: ExportToPlainTextFile
+  secondary_signature: "public void ExportToPlainTextFile(string filePath)"
+  static_exporter: FodtTxtExporter
+  static_signature: "public static FodtTxtExportResult ExportTxt(string fodtPath, string txtPath, long maxFileSizeBytes = ...)"
+  description: >
+    ALREADY IMPLEMENTED — no new code required. GetPlainText() is an instance method on
+    FodtDocument (FodtDocument.cs:161), returns plain text string. ExportToPlainTextFile(filePath)
+    at :647 writes to file. FodtTxtExporter.ExportTxt() is the static class for file-to-file export.
+    NOTE: method name is ExportTxt (not ExportToTxt). All tested by FodtR113TxtDogfoodTests.cs
+    (6 tests at R113). Verify only.
+
+rollback_note: >
+  Delete tests/net/fodt/FodtR114ExportToTxtTests.cs.
+  If FodtTxtExporter.cs was modified, restore via: git checkout src/net/fodt/FodtTxtExporter.cs
+  No other files need rollback.
+
+acceptance_criteria:
+  - "6 tests pass: dotnet test --filter FullyQualifiedName~FodtR113TxtDogfoodTests"
+  - "GetPlainText() and ExportToPlainTextFile() instance methods confirmed in FodtDocument.cs"
+  - "FodtTxtExporter.ExportTxt() confirmed (not ExportToTxt)"
+  - "No new source files modified (verify mode)"
+
+proposed_capability_delta:
+  field: fodt.dogfood_status.fodt_to_txt_dotnet
+  from: GAP_DOGFOOD_EXTERNAL
+  proposed_value: IMPLEMENTED
+  authority_update_required: false
+  note: "Supervisor or human approves poc-targets.yaml update separately"
+
+enforcement_tier: FAIL_CLOSED
+packet_path: reports/skills-product-breadth-finalization/fodt-txt-packet.json

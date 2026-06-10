@@ -1,0 +1,113 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-ECOSYSTEM-PLAN-FINAL-REPAIR-001",
+  "generated": "2026-06-06",
+  "backends": [
+    {
+      "backend": "SUPERPOWERS_LOCAL_PLUGIN",
+      "availability_status": "SUPERPOWERS_LOCAL_PLUGIN_NOT_FOUND",
+      "discovery_method": "Check .claude/plugins/ for superpowers plugin",
+      "callable_from_current_session": false,
+      "callable_from_external_host": false,
+      "distinct_from": ["SESSION_SKILL_TOOL", "REPO_CLAUDE_COMMAND"],
+      "proof_required": "Plugin file present + tool callable returns execution evidence",
+      "fallback_backend": "SESSION_SKILL_TOOL",
+      "priority": 1
+    },
+    {
+      "backend": "SESSION_SKILL_TOOL",
+      "availability_status": "VERIFIED_NOW",
+      "discovery_method": "Skill tool invocation attempt; check system-reminder for available skills; check .claude/commands/",
+      "callable_from_current_session": true,
+      "callable_from_external_host": false,
+      "distinct_from": ["SUPERPOWERS_LOCAL_PLUGIN", "REPO_CLAUDE_COMMAND"],
+      "notes": ".claude/commands/ EXISTS with 24 skill files. Callable via Skill tool in Claude Code session only.",
+      "proof_required": "Skill tool call returns execution evidence (not just text output); transcript must be captured",
+      "fallback_backend": "CLAUDE_AGENT_SUBAGENT",
+      "priority": 2
+    },
+    {
+      "backend": "CLAUDE_AGENT_SUBAGENT",
+      "availability_status": "HYPOTHESIS",
+      "discovery_method": "Agent tool available in Claude Code session",
+      "callable_from_current_session": true,
+      "callable_from_external_host": false,
+      "proof_required": "Agent tool call with subagent returns execution evidence",
+      "fallback_backend": "REPO_LOCAL_SKILL",
+      "priority": 3
+    },
+    {
+      "backend": "REPO_LOCAL_SKILL",
+      "availability_status": "VERIFIED_NOW",
+      "discovery_method": ".claude/commands/ contents",
+      "callable_from_current_session": true,
+      "callable_from_external_host": false,
+      "notes": "Same as SESSION_SKILL_TOOL when invoked via Skill tool",
+      "proof_required": "Skill tool invocation returns execution evidence",
+      "fallback_backend": "MCP_SUPERPOWERS",
+      "priority": 4
+    },
+    {
+      "backend": "MCP_SUPERPOWERS",
+      "availability_status": "CONFIG_PRESENT_L1",
+      "discovery_method": ".vscode/mcp.json task-master-ai entry",
+      "callable_from_current_session": false,
+      "callable_from_external_host": false,
+      "notes": "L1 config present; L2 daemon running UNKNOWN; TASK_MASTER_API_KEY ABSENT",
+      "proof_required": "MCP tool call returns execution evidence (L3+)",
+      "fallback_backend": "LLM_API",
+      "priority": 5
+    },
+    {
+      "backend": "LLM_API",
+      "availability_status": "CONFIG_PRESENT_PARTIAL_CREDENTIALS",
+      "discovery_method": "tools/llm/endpoints.yaml endpoint list",
+      "callable_from_current_session": false,
+      "callable_from_external_host": true,
+      "notes": "6 endpoints configured. PROFESSIONALIZE_API_KEY PRESENT. ANTHROPIC_API_KEY ABSENT. Local endpoints need daemon.",
+      "proof_required": "HTTP call to endpoint returns response; logged in execution transcript",
+      "fallback_backend": "LOCAL_DETERMINISTIC",
+      "priority": 6
+    },
+    {
+      "backend": "LOCAL_DETERMINISTIC",
+      "availability_status": "IMPLEMENTABLE",
+      "discovery_method": "Python stdlib only — no external dependencies",
+      "callable_from_current_session": true,
+      "callable_from_external_host": true,
+      "proof_required": "Runner executes deterministic action; output written to declared path",
+      "fallback_backend": "CLAUDE_CLI_OPTIONAL",
+      "verdict_if_only_this": "PARTIAL_EXTERNAL_HOST_REQUIRED",
+      "priority": 7
+    },
+    {
+      "backend": "CLAUDE_CLI_OPTIONAL",
+      "availability_status": "DETECTED",
+      "discovery_method": "which claude / claude --version",
+      "callable_from_current_session": false,
+      "callable_from_external_host": true,
+      "notes": "Claude CLI at /c/Users/prora/AppData/Roaming/npm/claude (v2.1.62). Blocked inside session (CLAUDECODE=1). Use from external host only.",
+      "proof_required": "CLI exits 0 with child agent creating proof file (NOT host)",
+      "fallback_backend": "MANUAL_EXTERNAL_GATE",
+      "priority": 8
+    },
+    {
+      "backend": "MANUAL_EXTERNAL_GATE",
+      "availability_status": "ALWAYS_AVAILABLE",
+      "discovery_method": "Human intervention",
+      "callable_from_current_session": false,
+      "callable_from_external_host": false,
+      "proof_required": "Human action documented in evidence",
+      "fallback_backend": null,
+      "priority": 9
+    }
+  ],
+  "verdict_mapping": [
+    {"condition": "Only LOCAL_DETERMINISTIC backend used", "verdict": "PARTIAL_EXTERNAL_HOST_REQUIRED"},
+    {"condition": "SESSION_SKILL_TOOL used via runner dispatch", "verdict": "COMPLETE_BACKEND_SELECTOR_AGENTIC_PROVEN"},
+    {"condition": "CLAUDE_AGENT_SUBAGENT used via runner dispatch", "verdict": "COMPLETE_BACKEND_SELECTOR_AGENTIC_PROVEN"},
+    {"condition": "H3: runner executed one action", "verdict": "COMPLETE_RUNNER_H3"},
+    {"condition": "H4: two sequential runner cycles", "verdict": "COMPLETE_RUNNER_H4"},
+    {"condition": "H5: agentic backend via runner", "verdict": "COMPLETE_BACKEND_SELECTOR_AGENTIC_PROVEN"},
+    {"condition": "H6: external host continuation", "verdict": "COMPLETE_EXTERNAL_HOST_PROVEN"}
+  ]
+}

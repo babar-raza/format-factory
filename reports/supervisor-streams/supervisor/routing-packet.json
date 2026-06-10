@@ -1,0 +1,52 @@
+{
+  "stream": "supervisor",
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-R110-STREAM-LOCAL-REPLAY-LEDGER-SAMPLE-OUTPUTS-AND-YES-WITH-LIMITATIONS-CLOSURE-001",
+  "routing_packet_generated": "2026-06-04T13:00:00.000000Z",
+  "generated_by": "generate_stream_routing_packet.py",
+  "stream_decision": "CONTINUE_WITH_LIMITATIONS",
+  "mainstream_classification": null,
+  "product_velocity": {
+    "poc_help_score": 1,
+    "product_breadth_score": 0,
+    "product_throughput_delta": 0,
+    "mainstream_blocker_removed": false,
+    "reusable_accelerator_consumed": false,
+    "ai_acceleration_consumed": false,
+    "governed_execution_consumed": false,
+    "false_pass_prevented": false,
+    "false_stop_prevented": false,
+    "human_handoff_reduced": false,
+    "machinery_overhead_score": 3,
+    "semantic_drift_risk": "medium"
+  },
+  "product_output_floor_met": false,
+  "note": "Supervisor stream overhead=3 is expected when building traffic controller infrastructure. This sprint (R93-era wiring) is the fix — making machinery operational reduces effective overhead.",
+  "next_sprint_recommendation": "Supervisor stream should produce product-specific routing outputs (this sprint). After wiring is operational, overhead score will decrease.",
+  "actionable_gaps": [
+    {
+      "gap_id": "commercial-net-fods-blockers-1",
+      "format": "FODS",
+      "track": "commercial_net",
+      "description": "Gate 11 G11-G: requires Babar Raza written approval",
+      "external_gate": true
+    },
+    {
+      "gap_id": "commercial-net-fodt-blockers-1",
+      "format": "FODT",
+      "track": "commercial_net",
+      "description": "Gate 11 G11-G: requires Babar Raza written approval",
+      "external_gate": true
+    },
+    {
+      "gap_id": "commercial-net-netpbm-blockers-1",
+      "format": "Netpbm",
+      "track": "commercial_net",
+      "description": "Gate 11 G11-G: requires Babar Raza written approval",
+      "external_gate": true
+    }
+  ],
+  "external_gate_gaps": 3,
+  "external_gate_note": "All Supervisor actionable gaps require Gate 11 human approval. Cannot be unblocked autonomously.",
+  "external_tool_mode": "ruflo_detected_not_active",
+  "deterministic_supervisor_retains_authority": true
+}

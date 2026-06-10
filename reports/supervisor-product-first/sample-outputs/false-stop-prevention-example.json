@@ -1,0 +1,20 @@
+{
+  "sample_type": "false_stop_prevention",
+  "generated_at": "2026-06-04T10:40:00.000000",
+  "scenario": "Prompt quality validation fails, but real product work is present",
+  "input": {
+    "prompt_quality_failure": true,
+    "real_product_work_present": true,
+    "families_touched": 2,
+    "source_diffs": 2
+  },
+  "naive_action": "STOP — NO_PROMPT_QUALITY_FAILURE",
+  "supervisor_action": "ROUTE_BLOCKER — route to Supervisor for analysis, continue Mainstream",
+  "ai_advisory": {
+    "false_stop": true,
+    "drift_flag": false
+  },
+  "deterministic_result": {"valid": true},
+  "final_verdict": "ROUTE_BLOCKER",
+  "false_stop_prevented": true
+}

@@ -1,0 +1,172 @@
+contract_id: GOVERNED-SOURCE-CHANGE-CONTRACT-V1
+version: "1.0"
+sprint_id: FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001
+generated_by: TC-W1-001
+
+enforcement_tiers:
+  - enforcement_tier: FAIL_CLOSED
+    applies_to: Product source changes (src/net/*, src/python/*)
+    severity: CRITICAL
+    autonomous_action: STOP — product source changes are Mainstream-only
+    required_artifacts:
+      - skill_id
+      - format_id
+      - transcript_path
+      - focused_test_raw_log_path
+      - source_diff_path
+      - allowed_files
+      - forbidden_files
+      - rollback_note
+      - ledger_entry_path
+    optional_artifacts:
+      - capability_matrix_update
+      - dogfood_export_proof_path
+      - example_file_path
+    downgrade_rules:
+      - condition: All 9 required fields present; capability_matrix_update missing
+        result: Downgrade to ACCEPT_WITH_LIMITATIONS (not a hard FAIL)
+
+  - enforcement_tier: FAIL_WITH_REWORK
+    applies_to: Product tests and examples (tests/net/*, tests/python/*, examples/*)
+    severity: HIGH
+    autonomous_action: FAIL_NEEDS_REPAIR — produce tests and rerun validator
+    required_artifacts:
+      - skill_id
+      - format_id
+      - transcript_path
+      - focused_test_raw_log_path
+      - source_diff_path
+      - allowed_files
+      - forbidden_files
+      - rollback_note
+    optional_artifacts:
+      - ledger_entry_path
+      - capability_matrix_update
+    downgrade_rules:
+      - condition: Test file produced; no raw log captured
+        result: FAIL_WITH_REWORK (raw log required)
+
+  - enforcement_tier: YES_WITH_LIMITATIONS
+    applies_to: Governance artifacts, tooling, command files, templates
+    severity: MEDIUM
+    autonomous_action: PROCEED with noted limitations
+    required_artifacts:
+      - skill_id
+      - transcript_path
+      - allowed_files
+      - forbidden_files
+      - rollback_note
+    optional_artifacts:
+      - source_diff_path
+      - focused_test_raw_log_path
+      - ledger_entry_path
+      - capability_matrix_update
+    downgrade_rules:
+      - condition: source_diff_path missing (no src edit)
+        result: Accepted — governance work does not require source diffs
+
+  - enforcement_tier: ACCEPT_WITH_LIMITATIONS
+    applies_to: Report-only planning artifacts, docs, analysis
+    severity: LOW
+    autonomous_action: ACCEPT as advisory; note missing artifacts
+    required_artifacts:
+      - skill_id
+      - allowed_files
+      - forbidden_files
+    optional_artifacts:
+      - transcript_path
+      - source_diff_path
+      - focused_test_raw_log_path
+      - ledger_entry_path
+      - rollback_note
+      - capability_matrix_update
+    downgrade_rules:
+      - condition: rollback_note missing
+        result: Note in evidence; not a hard FAIL
+
+  - enforcement_tier: BLOCKED_EXTERNAL_GATE
+    applies_to: External actions — push, publication, Gate 8, Gate 11, credentials
+    severity: BLOCKING
+    autonomous_action: STOP — record blocker in coordinator-integration-log.md
+    required_artifacts:
+      - blocker_reason
+      - external_gate_id
+    optional_artifacts: []
+    downgrade_rules: []
+
+minimum_viable_packet:
+  description: The minimum set of fields that must be present in any governed work item
+  fields:
+    - skill_id
+    - format_id
+    - transcript_path
+    - focused_test_raw_log_path
+    - source_diff_path
+    - allowed_files
+    - forbidden_files
+    - rollback_note
+    - ledger_entry_path
+
+full_packet:
+  description: The full set of fields for a complete governed work item
+  fields:
+    - skill_id
+    - format_id
+    - transcript_path
+    - focused_test_raw_log_path
+    - source_diff_path
+    - allowed_files
+    - forbidden_files
+    - rollback_note
+    - ledger_entry_path
+    - capability_matrix_update
+    - dogfood_export_proof_path
+    - example_file_path
+    - invocation_id
+    - result
+
+auto_repair_steps:
+  - step: 1
+    condition: Missing required artifact
+    action: Create the artifact using AUTONOMOUS_REWORK_REQUIRED mode
+  - step: 2
+    condition: Invalid YAML or JSON
+    action: Repair syntax and rerun parse check
+  - step: 3
+    condition: Transcript validation failure
+    action: Fix transcript fields; rerun validate_skill_transcript.py
+  - step: 4
+    condition: Adoption compliance failure
+    action: Add missing skill_id or transcript reference; rerun validate_adoption
+  - step: 5
+    condition: Registry validation failure
+    action: Restore backup; rerun validator; continue as KEEP_DEFERRED
+
+examples:
+  - scenario: compliant
+    description: Complete TIER 1 work item for add-dotnet-api on FODS
+    work_item:
+      skill_id: add-dotnet-api
+      format_id: fods
+      transcript_path: reports/skills-product-first/skill-transcripts/transcript-spf-001-add-dotnet-api-near-live.json
+      focused_test_raw_log_path: reports/skills-product-first/raw-logs/test-spf-run.log
+      source_diff_path: reports/skills-product-first/raw-logs/source-diff-placeholder.txt
+      allowed_files:
+        - src/net/fods/FodsDocument.cs
+        - tests/net/fods/FodsTests.cs
+      forbidden_files:
+        - src/python/*
+        - registry/*
+      rollback_note: Delete added method and test; rerun dotnet test to confirm green
+      ledger_entry_path: reports/r90/product-code-change-ledger.json
+    result: TIER_1_PASS
+
+  - scenario: non_compliant
+    description: Missing transcript_path — hard FAIL under TIER 1
+    work_item:
+      skill_id: add-dotnet-api
+      format_id: fods
+      source_diff_path: reports/skills-product-first/raw-logs/source-diff-placeholder.txt
+      allowed_files:
+        - src/net/fods/FodsDocument.cs
+    result: TIER_1_FAIL_MISSING_TRANSCRIPT

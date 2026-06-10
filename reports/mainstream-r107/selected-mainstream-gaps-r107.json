@@ -1,0 +1,138 @@
+{
+  "sprint_id": "mainstream-r107",
+  "generated_at": "2026-06-03T00:00:00Z",
+  "poc_matrix_sha256": "f57d501eaaed4d5148e1f4973908cc7370e66c7c9ebdcc97585b9321c6bc119c",
+  "skill_registry_sha256": "ed9d19e6f2b50a1da03ddcf4ac866b0fbf6acce178123b1642f26967fafd99f8",
+  "stale_r98_gaps_active": false,
+  "stream": "mainstream",
+  "commercial_gaps": [
+    {
+      "format": "FODS",
+      "gap": "RemoveSheet",
+      "depth": "object-model-depth",
+      "skill": "/add-dotnet-api",
+      "priority": "high",
+      "rationale": "Sheet lifecycle management — ClearSheet exists but no way to remove a sheet entirely"
+    },
+    {
+      "format": "FODS",
+      "gap": "ExportSheetToCsv",
+      "depth": "export/dogfood",
+      "skill": "/add-dotnet-api",
+      "priority": "high",
+      "rationale": "CSV export missing from .NET — key dogfood/export capability"
+    },
+    {
+      "format": "FODT",
+      "gap": "ReplaceText",
+      "depth": "object-model-depth",
+      "skill": "/add-dotnet-api",
+      "priority": "high",
+      "rationale": "Search+replace is core document editing — ReplaceText exists in Python but .NET version needs test hardening"
+    },
+    {
+      "format": "FODT",
+      "gap": "ExportToPlainText",
+      "depth": "export/dogfood",
+      "skill": "/add-dotnet-api",
+      "priority": "high",
+      "rationale": "Plain text export — complement to HTML/Markdown export"
+    },
+    {
+      "format": "Netpbm",
+      "gap": "GetHistogram",
+      "depth": "object-model-depth",
+      "skill": "/add-dotnet-api",
+      "priority": "medium",
+      "rationale": "Image analysis capability — returns pixel value frequency distribution"
+    },
+    {
+      "format": "Netpbm",
+      "gap": "ExtractChannel",
+      "depth": "object-model-depth",
+      "skill": "/add-dotnet-api",
+      "priority": "medium",
+      "rationale": "Channel extraction for PPM images — returns single-channel grayscale"
+    }
+  ],
+  "foss_gaps": [
+    {
+      "format": "ZST",
+      "gap": "dependency_isolation_proof",
+      "skill": null,
+      "priority": "high",
+      "rationale": "Prove no-network dependency and streaming behavior"
+    },
+    {
+      "format": "Python Netpbm",
+      "gap": "ppm_pgm_conversion_hardening",
+      "skill": null,
+      "priority": "high",
+      "rationale": "PPM<->PGM conversion edge cases and roundtrip proof"
+    },
+    {
+      "format": "SYLK",
+      "gap": "csv_export_hardening",
+      "skill": null,
+      "priority": "medium",
+      "rationale": "SYLK->CSV export edge cases and malformed input handling"
+    },
+    {
+      "format": "DIF",
+      "gap": "roundtrip_proof",
+      "skill": null,
+      "priority": "medium",
+      "rationale": "DIF parse+export roundtrip verification"
+    },
+    {
+      "format": "PBM",
+      "gap": "binary_p4_roundtrip",
+      "skill": null,
+      "priority": "medium",
+      "rationale": "P4 binary format write+read roundtrip"
+    }
+  ],
+  "dogfood_gaps": [
+    {
+      "format": "FODS",
+      "gap": "csv_export_dogfood",
+      "priority": "high",
+      "rationale": "FODS->CSV using ExportSheetToCsv"
+    },
+    {
+      "format": "FODT",
+      "gap": "plaintext_export_dogfood",
+      "priority": "high",
+      "rationale": "FODT->TXT using ExportToPlainText"
+    },
+    {
+      "format": "Netpbm",
+      "gap": "histogram_analysis_dogfood",
+      "priority": "medium",
+      "rationale": "Overlay+GetHistogram pipeline"
+    },
+    {
+      "format": "SYLK",
+      "gap": "csv_export_dogfood",
+      "priority": "medium",
+      "rationale": "SYLK->CSV export pipeline"
+    }
+  ],
+  "usability_gaps": [
+    {
+      "format": "FODS",
+      "gap": "csv_export_example",
+      "priority": "high"
+    },
+    {
+      "format": "FODT",
+      "gap": "plaintext_export_example",
+      "priority": "high"
+    },
+    {
+      "format": "Netpbm",
+      "gap": "histogram_example",
+      "priority": "medium"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-PROOF-CLOSURE-AND-FORMAT-BACKFILL-MEGA-TRAIN-001",
+  "run_id": "spec-authority-proof-closure-backfill-20260608-e382e5f",
+  "lanes": [
+    {
+      "lane_id": "L0",
+      "name": "Coordinator and state",
+      "owner": "primary-agent",
+      "allowed_paths": ["reports/spec-authority-proof-closure-backfill/", ".local/evidences/spec-authority-proof-closure-backfill-20260608-e382e5f/"],
+      "forbidden_paths": ["src/", ".local/spec-cache/"],
+      "evidence_required": ["taskcard-state.initial.json", "lane-ownership-map.json", "taskcard-transition-ledger.jsonl"],
+      "validation_commands": ["python -m json.tool reports/.../taskcard-state.initial.json"],
+      "closeout_criteria": ["All lane states recorded in lane-execution-ledger.jsonl"],
+      "rollback_plan": "Recreate coordinator artifacts from sprint prompt"
+    },
+    {
+      "lane_id": "L1",
+      "name": "Raw log capture and anti-skip clean pass",
+      "owner": "primary-agent",
+      "allowed_paths": ["reports/spec-authority-proof-closure-backfill/.../raw-logs/"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["raw-logs/targeted-tests.txt", "raw-logs/supervisor-suite.txt", "raw-logs/anti-skip-result.json"],
+      "validation_commands": ["python tools/supervisor/anti_skip_checker.py --evidence-root .local/evidences/spec-authority-proof-closure-backfill-20260608-e382e5f"],
+      "closeout_criteria": ["anti-skip missing_raw_logs = false"],
+      "rollback_plan": "Re-run test captures; add logs to evidence_artifacts"
+    },
+    {
+      "lane_id": "L2",
+      "name": "Path-only to test-backed evidence conversion",
+      "owner": "primary-agent",
+      "allowed_paths": ["tests/supervisor/", "reports/spec-authority-proof-closure-backfill/.../"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["test files for FODT, pilot matrix, continuation safety, reconciliation"],
+      "validation_commands": ["python -m pytest tests/supervisor/ -q"],
+      "closeout_criteria": ["No work item remains path-only without justification"],
+      "rollback_plan": "Add explicit non-testable classification with rework taskcard"
+    },
+    {
+      "lane_id": "L3",
+      "name": "Adoption and repeatability hardening",
+      "owner": "primary-agent",
+      "allowed_paths": ["reports/spec-authority-proof-closure-backfill/.../skill-transcripts/", "reports/spec-authority-proof-closure-backfill/.../adoption-repeatability-matrix.*"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["skill-transcripts/*.json", "adoption-repeatability-matrix.json", "skills-backlog.md"],
+      "validation_commands": [],
+      "closeout_criteria": ["Every source/tool-changing item has transcript or governed exemption"],
+      "rollback_plan": "Add exemption records for non-transcriptable items"
+    },
+    {
+      "lane_id": "L4",
+      "name": "FODT P2 to P3/P4 backfill",
+      "owner": "primary-agent",
+      "allowed_paths": [".local/spec-cache/fodt/", "reports/spec-authority-proof-closure-backfill/.../"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["fodt-facts.yaml", "fodt-authority-gate-output.json"],
+      "validation_commands": ["python -c \"from tools.supervisor.authority_gate_validation import validate_format_authority; print(validate_format_authority('fodt'))\""],
+      "closeout_criteria": ["FODT authority level confirmed; candidate facts created or blocker documented"],
+      "rollback_plan": "Keep P2 honestly; record extraction blocker"
+    },
+    {
+      "lane_id": "L5",
+      "name": "P3 format promotion toward P4",
+      "owner": "primary-agent",
+      "allowed_paths": [".local/spec-cache/csv/", ".local/spec-cache/pbm/", "reports/spec-authority-proof-closure-backfill/.../"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["csv-fact-verification.json", "format-authority-matrix-v5.json"],
+      "validation_commands": [],
+      "closeout_criteria": ["At least 2 P3 formats promoted or blocked with explicit source-acquisition taskcard"],
+      "rollback_plan": "Keep P3 and create acquisition taskcards"
+    },
+    {
+      "lane_id": "L6",
+      "name": "P0 source acquisition and backfill",
+      "owner": "primary-agent",
+      "allowed_paths": [".local/spec-cache/netpbm/", ".local/spec-cache/html/", "reports/spec-authority-proof-closure-backfill/.../"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["p0-source-acquisition-matrix.json"],
+      "validation_commands": [],
+      "closeout_criteria": ["P0 formats have acquisition taskcards or are promoted with evidence"],
+      "rollback_plan": "Record ACQUISITION_BLOCKED for formats without available sources"
+    },
+    {
+      "lane_id": "L7",
+      "name": "Proof graph and product ledger hardening",
+      "owner": "primary-agent",
+      "allowed_paths": ["tests/supervisor/", "reports/spec-authority-proof-closure-backfill/.../ledgers/"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["tests for P6 ledger/graph requirements"],
+      "validation_commands": ["python -m pytest tests/supervisor/test_proof_graph_ledger_validation.py -v"],
+      "closeout_criteria": ["P6 ledger/graph gates tested; no overclaim possible"],
+      "rollback_plan": "Add explicit P6 gate check tests"
+    },
+    {
+      "lane_id": "L8",
+      "name": "Pilot matrix with raw execution proof",
+      "owner": "primary-agent",
+      "allowed_paths": ["reports/spec-authority-proof-closure-backfill/.../pilots/", "reports/spec-authority-proof-closure-backfill/.../raw-logs/"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["pilot-matrix-raw.json", "raw-logs/pilot-*.json"],
+      "validation_commands": [],
+      "closeout_criteria": ["10 pilots each with raw log, JSON result, verdict"],
+      "rollback_plan": "Re-run failing pilots with explicit error classification"
+    },
+    {
+      "lane_id": "L9",
+      "name": "Continuation and next-sprint safety",
+      "owner": "primary-agent",
+      "allowed_paths": ["reports/spec-authority-proof-closure-backfill/.../"],
+      "forbidden_paths": ["src/", "reports/supervisor/"],
+      "evidence_required": ["continuation-safety-audit.md"],
+      "validation_commands": [],
+      "closeout_criteria": ["advisory_prompt_executable=false; no unsafe product escalation"],
+      "rollback_plan": "Rewrite next-sprint prompt with explicit product-gate checks"
+    },
+    {
+      "lane_id": "L10",
+      "name": "Product-safe advancement",
+      "owner": "primary-agent",
+      "allowed_paths": ["reports/spec-authority-proof-closure-backfill/.../"],
+      "forbidden_paths": ["src/", ".local/spec-cache/"],
+      "evidence_required": ["product-safe-advancement-matrix.json"],
+      "validation_commands": [],
+      "closeout_criteria": ["No unauthorized product expansion; P6 formats gated correctly"],
+      "rollback_plan": "Revert any product changes; re-classify as backfill"
+    },
+    {
+      "lane_id": "L11",
+      "name": "CI and full-suite classification",
+      "owner": "primary-agent",
+      "allowed_paths": ["reports/spec-authority-proof-closure-backfill/.../raw-logs/"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["raw-logs/targeted-tests.txt", "raw-logs/supervisor-suite.txt", "full-suite-failure-classification.md"],
+      "validation_commands": ["python -m pytest tests/ -q --tb=no"],
+      "closeout_criteria": ["All test failures classified as pre-existing or sprint-introduced"],
+      "rollback_plan": "Fix any sprint-introduced failures immediately"
+    },
+    {
+      "lane_id": "L12",
+      "name": "Adversarial review",
+      "owner": "primary-agent",
+      "allowed_paths": ["reports/spec-authority-proof-closure-backfill/.../adversarial-review.md"],
+      "forbidden_paths": ["src/"],
+      "evidence_required": ["adversarial-review.md with all checks PASS"],
+      "validation_commands": [],
+      "closeout_criteria": ["All adversarial checks PASS or ADVISORY with repair plan"],
+      "rollback_plan": "Fix any CRITICAL adversarial findings before evidence declaration"
+    }
+  ]
+}

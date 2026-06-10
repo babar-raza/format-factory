@@ -1,0 +1,26 @@
+id: GRH-TC-003
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Fix evidence quality score contradiction (Lane C)"
+status: completed
+lane: evidence_quality_repair
+item_type: GOVERNANCE_DOC
+problem: >
+  grade_declared_work.py computes evidence_quality_score as ACCEPTED_VERIFIED/accepted_count.
+  Governance-only sprints have no ACCEPTED_VERIFIED items (all get ACCEPTED_WITH_LIMITATIONS),
+  causing score=0.0 and forcing overall_verdict to ACCEPTED_WITH_REWORK.
+  anti_skip_checker.py uses _item_has_backed_evidence which gives score=1.0.
+  Contradiction: supervisor=0.0, anti-skip=1.0.
+scope:
+  - Fix grade_declared_work.py to not penalize governance-only sprints
+  - Add governance_sprint_exempt logic: if all items are GOVERNANCE_DOC types, skip quality penalty
+  - Write tests verifying governance sprint exempt behavior
+files_to_modify:
+  - tools/supervisor/grade_declared_work.py
+files_to_create:
+  - tests/supervisor/test_evidence_quality_governance_exempt.py
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-001]
+handoff_to_autonomy_sprint: false

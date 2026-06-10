@@ -1,0 +1,69 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001",
+  "generated_at": "2026-06-04T09:00:00Z",
+  "negative_fixtures": [
+    {
+      "id": "NEG-SKL-001",
+      "description": "Missing Skills packet — no files on disk",
+      "input": {"skills_packet_probe": {"found": false, "paths": [], "coverage_scope": null, "packet_valid": false}},
+      "expected_verdict": "SKILLS_CONSUMPTION_GAP",
+      "expected_flags": ["SKILLS_NO_PRODUCT_OUTPUT", "SKILLS_MISSING_PACKET", "MAINSTREAM_NOT_CONSUMING_SKILLS"]
+    },
+    {
+      "id": "NEG-SKL-002",
+      "description": "Malformed Skills packet (JSON parse error)",
+      "input": {"skills_packet_probe": {"found": false, "paths": [], "coverage_scope": null, "packet_valid": false}},
+      "expected_verdict": "SKILLS_CONSUMPTION_GAP",
+      "expected_flags": ["SKILLS_NO_PRODUCT_OUTPUT"]
+    },
+    {
+      "id": "NEG-SKL-003",
+      "description": "Skills packet present, Mainstream already consumed",
+      "input": {"mainstream_skills_consumption": "consumed", "packet_on_disk": true},
+      "expected_verdict": "SKILLS_CONSUMPTION_OK",
+      "expected_flags": []
+    },
+    {
+      "id": "NEG-SKL-004",
+      "description": "Skills packet present, wrong stream (acceleration packet in skills path)",
+      "input": {"packet_on_disk": true, "coverage_scope": "acceleration_output"},
+      "expected_verdict": "SKILLS_CONSUMABLE_NOT_YET_CONSUMED",
+      "expected_flags": ["MAINSTREAM_NOT_CONSUMING_SKILLS"]
+    },
+    {
+      "id": "NEG-ACC-001",
+      "description": "Missing Acceleration packets — directory empty",
+      "input": {"acc_packet_probe": {"found": false, "paths": [], "valid_packet_count": 0}},
+      "expected_verdict": "ACCELERATION_CONSUMPTION_GAP",
+      "expected_flags": ["ACCELERATION_NO_AI_OUTPUT", "MAINSTREAM_NOT_CONSUMING_ACCELERATION"]
+    },
+    {
+      "id": "NEG-ACC-002",
+      "description": "Acceleration packets present but no ai_draft in replay",
+      "input": {"acc_packet_probe": {"found": true, "valid_packet_count": 3}, "ai_output_status": "no_ai"},
+      "expected_verdict": "ACCELERATION_CONSUMABLE_PARTIAL",
+      "expected_flags": ["MAINSTREAM_NOT_CONSUMING_ACCELERATION"]
+    },
+    {
+      "id": "NEG-ACC-003",
+      "description": "Acceleration packet points to forbidden product source (forbidden_files)",
+      "input": {"packet_content": {"forbidden_files": ["src/net/fods/FodsDocument.cs"]}},
+      "expected_behavior": "accept packet but note forbidden_files constraint",
+      "expected_verdict": "ACCELERATION_CONSUMABLE_PARTIAL"
+    },
+    {
+      "id": "NEG-BOTH-001",
+      "description": "Both Skills and Acceleration missing",
+      "input": {"skills_found": false, "acc_found": false},
+      "expected_verdict": "CROSS_STREAM_CONSUMPTION_GAPS_DETECTED",
+      "expected_flags": ["SKILLS_NO_PRODUCT_OUTPUT", "SKILLS_MISSING_PACKET", "MAINSTREAM_NOT_CONSUMING_SKILLS", "ACCELERATION_NO_AI_OUTPUT", "MAINSTREAM_NOT_CONSUMING_ACCELERATION"]
+    },
+    {
+      "id": "NEG-BOTH-002",
+      "description": "Both present, Mainstream consumed both",
+      "input": {"skills_found": true, "acc_found": true, "mainstream_skills_consumption": "consumed", "mainstream_acc_consumption": "consumed"},
+      "expected_verdict": "CROSS_STREAM_CONSUMPTION_OK",
+      "expected_flags": []
+    }
+  ]
+}

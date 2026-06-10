@@ -1,0 +1,126 @@
+{
+  "sprint_id": "SPEC-AUTHORITY-LAYER-PRODUCTION-INVESTIGATION-001",
+  "generated": "2026-06-06",
+  "gaps": [
+    {
+      "gap_id": "GAP-001",
+      "area": "Spec normalization",
+      "severity": "Critical",
+      "priority": "P1",
+      "root_cause": "Normalization pipeline built but never executed for most formats; .local/spec-normalize/ does not exist",
+      "symptom": "No lexical or deterministic retrieval possible for 8 of 9 cached formats",
+      "impact": "Blocks all downstream verified-fact extraction, retrieval, spec-backed requirements",
+      "existing_tests": "WEAK",
+      "missing_tests": "Test asserting .local/spec-normalize/<format>/ exists for each cached format",
+      "pilot_rerun_needed": true
+    },
+    {
+      "gap_id": "GAP-002",
+      "area": "Verified facts / requirement extraction",
+      "severity": "Critical",
+      "priority": "P1",
+      "root_cause": "build_proof_graph_iter001.py injects synthetic fixture text instead of real spec PDF text",
+      "symptom": "All candidate requirements are backed by fabricated strings, not real spec text",
+      "impact": "Spec authority claims in proof graph are not backed by real spec content",
+      "existing_tests": "WEAK — tests validate pipeline on fixture, not real spec",
+      "missing_tests": "Golden test: extract from real FODS PDF and match expected fact",
+      "pilot_rerun_needed": true
+    },
+    {
+      "gap_id": "GAP-003",
+      "area": "Source registry / audit trail",
+      "severity": "High",
+      "priority": "P2",
+      "root_cause": ".local/spec-source-registry/ never created in production context; registry only exists in test tmp_path",
+      "symptom": "No durable audit trail of registered spec sources between sessions",
+      "impact": "Governance enforcement is test-only; no production compliance record",
+      "existing_tests": "WEAK — tests use tmp_path",
+      "missing_tests": "Integration test verifying sources.jsonl written during real acquisition task",
+      "pilot_rerun_needed": true
+    },
+    {
+      "gap_id": "GAP-004",
+      "area": "Evidence validation / supervisor integration",
+      "severity": "High",
+      "priority": "P1",
+      "root_cause": "Evidence declaration schema does not include spec_fact_refs field; supervisor does not check spec traceability",
+      "symptom": "All product work items accepted without spec fact backing",
+      "impact": "125+ ledger entries accepted without verifiable spec compliance",
+      "existing_tests": "MISSING",
+      "missing_tests": "Test: PRODUCT_SOURCE declaration without spec_fact_refs fails validation",
+      "pilot_rerun_needed": false
+    },
+    {
+      "gap_id": "GAP-005",
+      "area": "Source code traceability",
+      "severity": "High",
+      "priority": "P2",
+      "root_cause": "No annotation convention or enforcement for spec fact IDs in implementation source code",
+      "symptom": "Parser/writer code has no reference to FACT-xxx or REQ-xxx identifiers",
+      "impact": "Proof graph chain broken at code level; cannot verify spec→code traceability",
+      "existing_tests": "MISSING",
+      "missing_tests": "Test: for each verified fact, a code file references the fact ID",
+      "pilot_rerun_needed": false
+    },
+    {
+      "gap_id": "GAP-006",
+      "area": "Requirement lifecycle",
+      "severity": "High",
+      "priority": "P1",
+      "root_cause": "No workflow component drives requirements from candidate→verified; human review step was deferred to TC-0021",
+      "symptom": "All requirements remain status=candidate indefinitely; FODS facts are manually seeded, not pipeline-produced",
+      "impact": "No format has a repeatable, auditable set of verified spec facts",
+      "existing_tests": "MISSING",
+      "missing_tests": "Test: after review workflow, requirement status=verified and persisted",
+      "pilot_rerun_needed": true
+    },
+    {
+      "gap_id": "GAP-007",
+      "area": "Test traceability",
+      "severity": "High",
+      "priority": "P2",
+      "root_cause": "Tests written empirically during implementation sprints; no convention or tool to generate spec-fact-backed tests",
+      "symptom": "No test file references a FACT-xxx or REQ-xxx identifier",
+      "impact": "Cannot claim spec compliance via tests; spec-deviant implementations indistinguishable",
+      "existing_tests": "MISSING",
+      "missing_tests": "Golden spec-fact tests for each verified fact",
+      "pilot_rerun_needed": true
+    },
+    {
+      "gap_id": "GAP-008",
+      "area": "Supervisor integration",
+      "severity": "Medium",
+      "priority": "P2",
+      "root_cause": "authority_integration_fabric generates spec_authority_status but supervisor grading never reads it to adjust grades",
+      "symptom": "Formats with MISSING spec authority accepted at same grade as spec-backed formats",
+      "impact": "ACCEPTED verdict does not distinguish spec-backed from empirical implementations",
+      "existing_tests": "CLAIMED_ONLY",
+      "missing_tests": "Test: PRODUCT_SOURCE work for MISSING spec authority gets CONDITIONAL grade",
+      "pilot_rerun_needed": false
+    },
+    {
+      "gap_id": "GAP-009",
+      "area": "Product ledger traceability",
+      "severity": "Medium",
+      "priority": "P3",
+      "root_cause": "Ledger schema designed for implementation record, not compliance record; no spec_fact_ids field",
+      "symptom": "129 ledger entries have no spec fact references",
+      "impact": "Ledger cannot be used to audit spec compliance",
+      "existing_tests": "MISSING",
+      "missing_tests": "Test: new PRODUCT_SOURCE ledger entry requires spec_fact_ids",
+      "pilot_rerun_needed": false
+    },
+    {
+      "gap_id": "GAP-010",
+      "area": "AI support integration",
+      "severity": "Low",
+      "priority": "P4",
+      "root_cause": "tools/ai/ built speculatively; integration work to connect to authority layer deferred",
+      "symptom": "AI subsystem provides no spec authority support; large spec navigation manual-only",
+      "impact": "Efficiency cost; also future activation risk if connected without controls",
+      "existing_tests": "MISSING",
+      "missing_tests": "Contract test: all AI pipeline output has status=candidate",
+      "pilot_rerun_needed": false
+    }
+  ]
+}

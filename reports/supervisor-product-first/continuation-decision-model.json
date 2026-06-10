@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "states": [
+    {"state": "YES", "trigger_condition": "All accepted, anti-skip clean, floor met", "example": "3 families, 50+ tests, no rework"},
+    {"state": "YES_WITH_LIMITATIONS", "trigger_condition": "Accepted + anti-skip low-severity or drift_flag", "example": "Accepted but overhead_score=1"},
+    {"state": "YES_WITH_REWORK", "trigger_condition": "rework_items present but no overclaims", "example": "2 items need rework, rest accepted"},
+    {"state": "NO_MAX_ITERATIONS", "trigger_condition": "iteration >= max_iterations", "example": "5/5 iterations used"},
+    {"state": "NO_EXTERNAL_GATE", "trigger_condition": "auto_continue_value falsy (not True)", "example": "autonomous_continue: false in signal"},
+    {"state": "NO_BROKEN_BASELINE", "trigger_condition": "Non-iteration hard stops present", "example": "unknown_hard_stop in list"},
+    {"state": "NO_UNSAFE_SOURCE_STATE", "trigger_condition": "overclaimed list non-empty", "example": "['item-001'] overclaimed"},
+    {"state": "NO_NO_PROGRESS", "trigger_condition": "Consecutive sprints no gap closure", "example": "3 sprints with same gaps"},
+    {"state": "NO_POLICY_BLOCK", "trigger_condition": "force_stop=True in policies.yaml", "example": "Emergency stop set"},
+    {"state": "NO_GENERIC_NEXT_PROMPT", "trigger_condition": "hard_stop: generic_next_prompt", "example": "Prompt not stream-specific"},
+    {"state": "NO_LEGACY_REVIEW_CONTRADICTION", "trigger_condition": "hard_stop: legacy_review_contradiction", "example": "Legacy review disagrees"},
+    {"state": "NO_STALE_GAPS", "trigger_condition": "hard_stop: stale_gaps", "example": "Gaps not refreshed"},
+    {"state": "NO_MISSING_EVIDENCE_MANIFEST", "trigger_condition": "hard_stop: missing_evidence_manifest", "example": "evidence-manifest.yaml absent"},
+    {"state": "NO_WRONG_STREAM_CONTEXT", "trigger_condition": "hard_stop: wrong_stream_context", "example": "Context pack for wrong stream"},
+    {"state": "NO_MISSING_RAW_LOGS_FOR_VERIFIED_CLAIMS", "trigger_condition": "hard_stop: missing_raw_logs_for_verified_claims", "example": "ACCEPTED_VERIFIED but no raw logs"},
+    {"state": "NO_PROMPT_QUALITY_FAILURE", "trigger_condition": "hard_stop: prompt_quality_failure", "example": "Prompt quality < threshold"},
+    {"state": "NO_UNCLASSIFIED_DIRTY_STATE", "trigger_condition": "dirty_state_classified=False", "example": "git status dirty, no classification"},
+    {"state": "NO_MISSING_REQUIRED_ARTIFACTS", "trigger_condition": "required_artifacts_present=False", "example": "evidence-declaration.yaml missing"},
+    {"state": "NO_PRODUCT_OUTPUT_FLOOR", "trigger_condition": "product_output_floor_met=False", "example": "0 families touched, no blocker removed"}
+  ]
+}

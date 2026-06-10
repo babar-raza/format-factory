@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "streams": {
+    "mainstream": {
+      "role": "Product source changes + format coverage breadth",
+      "minimum_floor": "3+ families, 3+ source diffs, 3+ governed transcripts",
+      "classification": "CLEAN_PASS | PARTIAL_EVIDENCE_REPAIR | PARTIAL_ONE_SOURCE | PARTIAL_FEW_FAMILIES | PARTIAL_HELPER_ONLY | PARTIAL_NO_DOGFOOD | PARTIAL_NO_GOVERNED_TRANSCRIPTS",
+      "consumes_from": ["acceleration", "skills"],
+      "produces_for": ["supervisor_review"]
+    },
+    "acceleration": {
+      "role": "AI output acceleration for Mainstream consumption",
+      "minimum_floor": "AI outputs marked ai_draft, consumed by Mainstream",
+      "classification": "CONSUMED | NOT_CONSUMED | AUTHORITY_VIOLATION",
+      "consumes_from": [],
+      "produces_for": ["mainstream"]
+    },
+    "skills": {
+      "role": "Governed transcripts reducing human handoff",
+      "minimum_floor": "1+ governed transcript, human_handoff_reduced",
+      "classification": "CONTRACT_MET | CONTRACT_NOT_MET",
+      "consumes_from": [],
+      "produces_for": ["mainstream"]
+    },
+    "supervisor": {
+      "role": "Deterministic traffic controller + AI advisory observer",
+      "minimum_floor": "Validates all 3 other streams; no false PASS or false STOP",
+      "classification": "CONTINUE | CONTINUE_WITH_LIMITATIONS | REWORK_REQUIRED | STOP",
+      "consumes_from": ["mainstream", "acceleration", "skills"],
+      "produces_for": ["continuation_signal"]
+    }
+  }
+}

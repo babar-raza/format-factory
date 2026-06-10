@@ -1,0 +1,53 @@
+handoff_id: handoff-supervisor-supervisor-replay_test
+generated_at: '2026-06-03T08:05:18.352220+00:00'
+sprint_id: R103
+purpose: Implement supervisor.replay_test for supervisor (supervisor)
+gap_id: ''
+format: supervisor
+product_track: supervisor
+source_track: unknown
+capability_path: supervisor.replay_test
+work_type: supervisor_tooling
+decision: GOVERNED_HANDOFF_REQUIRED
+allowed_files:
+- src/python/supervisor/
+- tests/python/supervisor/
+forbidden_files:
+- src/net/
+- tools/supervisor/
+implementation_steps:
+- 1. Implement changes in src/python/supervisor/
+- 2. Add tests
+- 3. Verify
+tests_required:
+- At least one test in tests/python/supervisor/
+raw_logs:
+- .local/supervisor/raw-logs/handoff-supervisor-supervisor-replay_test.log
+product_code_ledger: reports/r90/product-code-change-ledger.json
+rollback: git checkout -- src/python/supervisor/ tests/python/supervisor/
+evidence_outputs: &id001
+- reports/r103/handoff-supervisor-supervisor-replay_test.md
+- .local/evidences/R103/evidence-declaration.yaml
+evidence_declaration_entries:
+- item_id: R103-supervisor-supervisor-replay_test
+  title: supervisor supervisor.replay_test implementation
+  status: completed
+  evidence_paths: *id001
+ledger_requirements:
+- Record lane start via record_lane_execution.py start
+- Record lane close with files_changed and test counts
+capability_matrix_update:
+  file: product-capability-matrix/poc-targets.yaml
+  path: supervisor.replay_test
+  expected_transition: NOT_IMPLEMENTED -> DONE or PARTIAL
+stop_conditions:
+- Test suite fails
+- Files modified outside allowed_files
+- Gate or release state change needed
+- Scope exceeds single capability
+safety_gates:
+- No src/* changes outside allowed paths
+- All new tests must pass before closing
+- Update poc-targets.yaml capability status
+- Write lane execution ledger entry
+- No git push or commit without human approval

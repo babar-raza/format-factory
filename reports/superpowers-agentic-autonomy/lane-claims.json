@@ -1,0 +1,21 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001",
+  "generated": "2026-06-06",
+  "lanes": [
+    {"lane": "L0", "owner": "Coordinator", "owned_paths": ["reports/superpowers-agentic-autonomy/", ".local/evidences/superpowers-agentic-autonomy/"], "shared_write": ["execution-state.json", "taskcard-state.json", "touched-files-ledger.jsonl", "lane-claims.json"]},
+    {"lane": "L1", "owner": "Runtime discovery", "owned_paths": ["reports/superpowers-agentic-autonomy/runtime-discovery/"]},
+    {"lane": "L2", "owner": "State/swarm", "owned_paths": ["reports/superpowers-agentic-autonomy/state/", "reports/superpowers-agentic-autonomy/swarm/"]},
+    {"lane": "L3", "owner": "Validator", "owned_paths": ["tests/supervisor/test_false_autonomy_claims.py", "tests/supervisor/test_execution_backends.py", "tests/supervisor/test_next_action_runner.py", "tests/supervisor/test_backend_selector.py", "tests/supervisor/test_autonomous_host_daemon.py", "tests/supervisor/test_superpowers_backend.py", "tests/supervisor/test_mcp_superpowers_backend.py", "tests/supervisor/test_llm_api_backend.py", "tests/supervisor/test_ecosystem_authority_boundaries.py", "reports/superpowers-agentic-autonomy/validators/"]},
+    {"lane": "L4", "owner": "Core execution", "owned_paths": ["tools/supervisor/execution_backend.py", "tools/supervisor/next_action_schema.py", "tools/supervisor/next_action_runner.py", "reports/superpowers-agentic-autonomy/core/"]},
+    {"lane": "L5", "owner": "Backend selector", "owned_paths": ["tools/supervisor/backend_selector.py", "reports/superpowers-agentic-autonomy/backend-selector/"]},
+    {"lane": "L6", "owner": "Local backend", "owned_paths": ["tools/supervisor/backends/__init__.py", "tools/supervisor/backends/local_deterministic_backend.py", "reports/superpowers-agentic-autonomy/local-backend/"]},
+    {"lane": "L7", "owner": "Ecosystem stubs", "owned_paths": ["tools/supervisor/backends/superpowers_skill_backend.py", "tools/supervisor/backends/mcp_superpowers_backend.py", "tools/supervisor/backends/llm_api_backend.py", "tools/supervisor/backends/task_master_backend.py", "tools/supervisor/backends/cognee_memory_backend.py", "tools/supervisor/backends/skill_seekers_backend.py", "tools/supervisor/llm_backend_config.py", "reports/superpowers-agentic-autonomy/ecosystem/"]},
+    {"lane": "L8", "owner": "Host daemon", "owned_paths": ["tools/supervisor/autonomous_host_daemon.py", "scripts/format_factory_autonomous_host.ps1", "scripts/format_factory_autonomous_host.cmd", "reports/superpowers-agentic-autonomy/host-daemon/"]},
+    {"lane": "L9", "owner": "Ecosystem pilots", "owned_paths": ["reports/superpowers-agentic-autonomy/openspec/", "reports/superpowers-agentic-autonomy/taskmaster/", "reports/superpowers-agentic-autonomy/cognee/", "reports/superpowers-agentic-autonomy/skillseekers/"]},
+    {"lane": "L10", "owner": "Proof", "owned_paths": ["reports/superpowers-agentic-autonomy/two-cycle-proof/"]},
+    {"lane": "L11", "owner": "Tests", "owned_paths": ["reports/superpowers-agentic-autonomy/test-logs/"]},
+    {"lane": "L12", "owner": "IV", "owned_paths": ["reports/superpowers-agentic-autonomy/iv/"]},
+    {"lane": "LE", "owner": "Evidence", "owned_paths": [".local/evidences/superpowers-agentic-autonomy/", ".local/supervisor/reviews/superpowers-agentic-autonomy/"]}
+  ],
+  "overlap_check": "PASS"
+}

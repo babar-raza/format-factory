@@ -1,0 +1,31 @@
+id: GRE-TC-007
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "State-machine enforcement against real taskcards (Lane G)"
+status: completed
+lane: state_machine_real_taskcards
+item_type: GOVERNANCE_DOC
+problem: >
+  State machine validators were tested only on synthetic fixtures in Sprint 2.
+  Real taskcards (GRH-TC-001..015 and GR-REPLAY-001..004) needed to be validated
+  against the 15-state machine to confirm the full system works end-to-end.
+scope:
+  - Create tests/supervisor/test_state_machine_real_taskcards.py
+  - Validate all 15 GRH-TC taskcards: exists, YAML valid, ID match, valid states, transition passes
+  - Validate all 4 GR-REPLAY taskcards: backfilled state, target state, claim integrity
+  - Negative tests: forbidden jumps caught, close-eligible target enforcement
+  - Fix GRH-TC-005.yaml YAML parse defect (scope list item with colon)
+files_created:
+  - tests/supervisor/test_state_machine_real_taskcards.py
+  - reports/repeatability-governance-enforcement-rnext/state-machine-real-taskcard-report.md
+files_fixed:
+  - taskcards/governance-repeatability-hardening/GRH-TC-005.yaml
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+test_results:
+  passed: 143
+  failed: 0
+dependencies: [GRE-TC-002]
+handoff_to_autonomy_sprint: false

@@ -1,0 +1,106 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PERMANENT-AUTONOMY-STOP-REASON-HARDENING-001",
+  "taskcards": [
+    {
+      "id": "TC-HARD-0",
+      "title": "Phase 0: Preflight",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": []
+    },
+    {
+      "id": "TC-HARD-1",
+      "title": "Phase 1: Stop Reason Adjudicator",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-HARD-0"],
+      "deliverables": [
+        "tools/supervisor/stop_reason_adjudicator.py",
+        ".supervisor/schemas/stop-reason-decision.schema.json",
+        ".supervisor/schemas/human-gate-classification.schema.json",
+        "reports/autonomy-stop-reason-hardening/stop-reason-taxonomy.md",
+        "reports/autonomy-stop-reason-hardening/stop-reason-taxonomy.json",
+        "tests/supervisor/test_stop_reason_adjudicator.py (91 tests, all pass)"
+      ]
+    },
+    {
+      "id": "TC-HARD-2",
+      "title": "Phase 2: Human Gate Policy",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-HARD-1"],
+      "deliverables": [
+        "docs/governance/autonomous-stop-reason-policy.md",
+        "docs/governance/human-gate-classification-policy.md",
+        "docs/governance/agent-owned-review-policy.md",
+        "reports/autonomy-stop-reason-hardening/human-gate-policy-matrix.json",
+        "tests/supervisor/test_human_gate_policy.py (24 tests, all pass)"
+      ]
+    },
+    {
+      "id": "TC-HARD-3",
+      "title": "Phase 3: Next-Sprint Generator Hardening",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-HARD-1"],
+      "deliverables": [
+        "tools/supervisor/generate_next_worker_prompt.py (STOP_REASON_ADVISORY + task adjudication fields)",
+        "tests/supervisor/test_next_sprint_false_stop_regression.py (22 tests, all pass)"
+      ]
+    },
+    {
+      "id": "TC-HARD-4",
+      "title": "Phase 4: Autonomous POC Controller Integration",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-HARD-1"],
+      "deliverables": [
+        "tools/supervisor/autonomous_poc_controller.py (adjudicator bridge + lazy import)",
+        "tests/supervisor/test_autonomous_poc_controller.py (50 tests, all pass)"
+      ]
+    },
+    {
+      "id": "TC-HARD-5",
+      "title": "Phase 5: Supervisor Loop Contract",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-HARD-1", "TC-HARD-4"],
+      "deliverables": [
+        "tests/supervisor/test_supervisor_loop_continuation_contract.py (25 tests, all pass)"
+      ]
+    },
+    {
+      "id": "TC-HARD-6",
+      "title": "Phase 6: Repair R118 Outputs",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-HARD-3"],
+      "deliverables": [
+        "reports/autonomy-stop-reason-hardening/r118-stop-reason-decision.json",
+        "reports/autonomy-stop-reason-hardening/repaired-r118-next-sprint.md",
+        "reports/autonomy-stop-reason-hardening/repaired-r118-approval-gates.md",
+        "reports/autonomy-stop-reason-hardening/repaired-r118-continuation-signal.json",
+        "reports/supervisor/next-sprint.md (patched false-stop labels)"
+      ]
+    },
+    {
+      "id": "TC-HARD-7",
+      "title": "Phase 7: Validation",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-HARD-1", "TC-HARD-2", "TC-HARD-3", "TC-HARD-4", "TC-HARD-5"],
+      "deliverables": [
+        "212/212 tests passed across all 5 suites",
+        "reports/autonomy-stop-reason-hardening/raw-logs/ (5 log files)"
+      ]
+    },
+    {
+      "id": "TC-HARD-8",
+      "title": "Phase 8: Final Authority Reconciliation",
+      "status": "CLOSED_VERIFIED",
+      "dependencies": ["TC-HARD-7"],
+      "deliverables": [
+        "reports/autonomy-stop-reason-hardening/phase8-final-authority-reconciliation.md",
+        "taskcard-state.json (this file, updated)"
+      ]
+    },
+    {
+      "id": "TC-HARD-9",
+      "title": "Phase 9: Evidence Package",
+      "status": "IN_PROGRESS",
+      "dependencies": ["TC-HARD-8"]
+    }
+  ]
+}

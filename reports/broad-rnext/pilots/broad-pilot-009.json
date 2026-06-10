@@ -1,0 +1,15 @@
+{
+  "pilot_id": "BROAD-PILOT-009",
+  "format": "Gnumeric",
+  "product_type": "foss_reduced",
+  "capability_tested": "set_cell_value + get_sheet_names \u2014 regression",
+  "source_file": "src/python/gnumeric/gnumeric_codec.py",
+  "test_files": [
+    "tests/python/gnumeric/test_r126_gnumeric_set_cell.py",
+    "tests/python/gnumeric/test_r125_gnumeric_sheet_names.py"
+  ],
+  "test_count": 14,
+  "test_result": "PASS",
+  "verdict": "PASS_VERIFIED",
+  "notes": "Gnumeric set_cell_value and get_sheet_names still passing; no regressions"
+}

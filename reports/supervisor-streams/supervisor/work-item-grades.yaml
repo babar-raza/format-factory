@@ -1,0 +1,133 @@
+- item_id: TRL-LANE-0
+  item_title: "Coordinator preflight \u2014 lane discovery, file ownership, overlap\
+    \ check"
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - reports/supervisor-tri-lane-reconciliation/lane-input-discovery.json
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TRL-LANE-0'
+- item_id: TRL-LANE-A
+  item_title: "Lane A \u2014 Cross-lane status reconciliation"
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - reports/supervisor-tri-lane-reconciliation/cross-lane-status.json
+  - reports/supervisor-tri-lane-reconciliation/cross-lane-status.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TRL-LANE-A'
+- item_id: TRL-LANE-B
+  item_title: "Lane B \u2014 Shared field contract validation (14 fields)"
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - reports/supervisor-tri-lane-reconciliation/shared-field-contract.json
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - 'Acceptance criteria verified: CONTRACT_VALID_WITH_LIMITATIONS'
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: TRL-LANE-C
+  item_title: "Lane C \u2014 FODS/FODT/Netpbm packet merge"
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json
+  - reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.md
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed:
+  - 'Acceptance criteria pattern not found: FODS=fods, FODT=fodt, Netpbm=netpbm'
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
+    not found: FODS=fods, FODT=fodt, Netpbm=netpbm'
+- item_id: TRL-LANE-D
+  item_title: "Lane D \u2014 Mainstream readiness packet with 3-family coverage"
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - 'Acceptance criteria verified: READY_FOR_EXECUTION'
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: TRL-LANE-E
+  item_title: "Lane E \u2014 12-test reconciliation test file"
+  declared_status: completed
+  supervisor_grade: ACCEPTED_VERIFIED
+  evidence_found: true
+  evidence_paths:
+  - tests/supervisor/test_supervisor_tri_lane_reconciliation.py
+  - reports/supervisor-tri-lane-reconciliation/raw-logs/test-tri-lane.log
+  tests_supporting:
+  - tests/supervisor/test_supervisor_tri_lane_reconciliation.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - Test content verified (1 files)
+  - 'Acceptance criteria verified: 12 passed'
+  acceptance_criteria_failed: []
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: ''
+- item_id: TRL-LANE-F
+  item_title: "Lane F \u2014 Evidence closeout, declaration, autonomous-cycle, review\
+    \ package"
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - .local/evidences/supervisor-tri-lane-reconciliation/evidence-declaration.yaml
+  tests_supporting: []
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  - No concrete test/criteria proof (path-only acceptance)
+  acceptance_criteria_failed:
+  - No raw proof, test content, or acceptance criteria verified
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: path-only evidence for
+    TRL-LANE-F'

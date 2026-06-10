@@ -1,0 +1,35 @@
+FINAL GIT STATUS — FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-REAL-PILOT-R2-001
+Generated: 2026-06-05
+
+BRANCH: main
+
+RECENT COMMITS:
+3a86a05 feat(r93): context-pack, D92 defect repair, governed acceleration — FODS/FODT/Netpbm/.NET + ZST/PPM/SYLK FOSS
+e283822 feat(r92): declaration materializer, skill expansion, POC deepening
+be0bc9a chore(r91): fill autonomous-continuation-proof and final-adversarial-IV with actual closeout results
+
+PILOT SPRINT NEW FILES (untracked, allowed):
+?? reports/spec-authority-real-pilot-r2/   (all pilot reports)
+?? tests/spec_authority/test_real_pilot_r2.py   (pilot regression tests)
+?? .local/evidences/spec-authority-real-pilot-r2/  (evidence files)
+
+PRE-EXISTING UNCOMMITTED CHANGES (from prior sprints — NOT from this pilot):
+M src/net/fods/FodsDocument.cs             (R93 sprint uncommitted)
+M src/net/fodt/FodtDocument.cs             (R93 sprint uncommitted)
+M src/net/netpbm/Model/NetpbmImage.cs      (R93 sprint uncommitted)
+M src/python/dif/dif_parser.py             (prior sprint uncommitted)
+M src/python/sylk/sylk_parser.py           (R93 sprint uncommitted)
+M product-capability-matrix/poc-targets.yaml (R93 sprint uncommitted)
+
+FORBIDDEN PATH CHECK (git diff HEAD for pilot sprint):
+  src/net/**:                 Changes pre-exist from R93 sprint — 0 new changes by this pilot
+  src/python/**:              Changes pre-exist from prior sprints — 0 new changes by this pilot
+  tests/net/**:               0 changes by this pilot sprint
+  tests/python/**:            0 changes by this pilot sprint
+  product-capability-matrix/: Change pre-exists from R93 — 0 new changes by this pilot
+  registry/**:                0 changes by this pilot sprint
+
+NOTE: All M-flagged files above were pre-existing from R93 sprint (committed at 3a86a05).
+This pilot sprint made ZERO changes to production source files.
+
+VERDICT: NO_PILOT_SPRINT_FORBIDDEN_PATH_CHANGES

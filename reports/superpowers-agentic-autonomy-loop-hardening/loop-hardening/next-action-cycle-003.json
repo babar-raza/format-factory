@@ -1,0 +1,21 @@
+{
+  "action_id": "alh-cycle-003",
+  "action_type": "RUN_JSON_VALIDATION",
+  "objective": "Validate package-109-audit.json — cycle 3, state advanced from H4 sprint 2 cycle 2",
+  "preferred_backend": "LOCAL_DETERMINISTIC",
+  "fallback_backends": [],
+  "target": "reports/superpowers-agentic-autonomy-loop-hardening/package-109-audit.json",
+  "result_path": "reports/superpowers-agentic-autonomy-loop-hardening/loop-hardening/cycle-003-result.json",
+  "allowed_write_roots": ["reports/superpowers-agentic-autonomy-loop-hardening"],
+  "evidence_required": true,
+  "previous_cycle_result": "reports/superpowers-agentic-autonomy/two-cycle-proof/cycle-002-result.json",
+  "cycle_number": 3,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMY-LOOP-HARDENING-AFTER-H4-001",
+  "success_conditions": [
+    "target is valid JSON",
+    "result_path written by runner",
+    "backend_used=LOCAL_DETERMINISTIC",
+    "proof_level=H3",
+    "cumulative_cycles=3 proves H4_PLUS"
+  ]
+}

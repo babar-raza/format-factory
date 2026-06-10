@@ -1,0 +1,121 @@
+{
+  "gate_id": "FINAL-QA-GATE-TRI-LANE-REFRESH-001",
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "overall_verdict": "PASS",
+  "overall_result": "15/15 criteria PASS",
+
+  "criteria": [
+    {
+      "id": 1,
+      "criterion": "Are latest Acceleration hardening outputs consumed?",
+      "status": "PASS",
+      "evidence": "mainstream-packet-index.json from acceleration-hardening sprint used as primary source; fallback to legacy dir only if index missing"
+    },
+    {
+      "id": 2,
+      "criterion": "Are latest Skills finalization outputs consumed?",
+      "status": "PASS",
+      "evidence": "FODT Markdown from fodt-markdown-packet.json, FODT TXT from fodt-txt-packet.json, Netpbm from netpbm-proof-packet.json — all FULL type from SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001"
+    },
+    {
+      "id": 3,
+      "criterion": "Is Supervisor stale state patched or flagged?",
+      "status": "PASS",
+      "evidence": "resolve_skills_inputs() in tri_lane_integration.py v2 bypasses stale reconciliation Skills fields; patches applied via _build_skills_families_from_finalization(); latest-input-selection.json documents all patches"
+    },
+    {
+      "id": 4,
+      "criterion": "Are FODT and Netpbm full Skills packets used instead of shells?",
+      "status": "PASS",
+      "evidence": "FODT_MARKDOWN packet_type=FULL, FODT_TXT packet_type=FULL, Netpbm packet_type=FULL — confirmed by test_tri_lane_integration_refresh_readiness.py tests 2,3,7,8,9"
+    },
+    {
+      "id": 5,
+      "criterion": "Are Acceleration outputs ai_draft only?",
+      "status": "PASS",
+      "evidence": "All acceleration packets have authority_state=ai_draft; non_authoritative=true; confirmed by test 10"
+    },
+    {
+      "id": 6,
+      "criterion": "Are all packet paths resolvable?",
+      "status": "PASS",
+      "evidence": "test_packet_v2_skills_paths_exist confirms all Skills paths in packet v2 exist on disk; all 4 family paths verified"
+    },
+    {
+      "id": 7,
+      "criterion": "Are test commands realistic?",
+      "status": "PASS",
+      "evidence": "All .NET families use 'dotnet test --filter ...'; python pytest for .cs files rejected by validator; confirmed by tests 14,15"
+    },
+    {
+      "id": 8,
+      "criterion": "Is Netpbm retained?",
+      "status": "PASS",
+      "evidence": "Netpbm present in merged families, contract v2, packet v2; confirmed by tests 11"
+    },
+    {
+      "id": 9,
+      "criterion": "Is SVG rejected?",
+      "status": "PASS",
+      "evidence": "SVG not in families; svg_replacement_rejected=true on Netpbm entry; confirmed by tests 12"
+    },
+    {
+      "id": 10,
+      "criterion": "Are capability matrix changes proposed only?",
+      "status": "PASS",
+      "evidence": "capability_delta.proposed_only=true in contract v2; all packet v2 families have proposed_only=true; confirmed by tests 13"
+    },
+    {
+      "id": 11,
+      "criterion": "Is dirty product source state classified?",
+      "status": "PASS",
+      "evidence": "dirty-state-classification.json created with 4 files: PRE_EXISTING_PRODUCT_WIP; overall_unsafe_dirty_state=false; confirmed by tests 16"
+    },
+    {
+      "id": 12,
+      "criterion": "Is Mainstream execution packet v2 ready?",
+      "status": "PASS",
+      "evidence": "packet v2 has 4 families, integration status OK, 35/35 refresh tests pass, 24/24 fabric tests pass (59 total)"
+    },
+    {
+      "id": 13,
+      "criterion": "Is attached/current Mainstream plan aligned or superseded?",
+      "status": "PASS",
+      "evidence": "mainstream-plan-alignment-review.md: plan requires superseding. mainstream-execution-handoff-v2.md created as authoritative superseding handoff."
+    },
+    {
+      "id": 14,
+      "criterion": "Are there no product source edits this sprint?",
+      "status": "PASS",
+      "evidence": "test_no_product_source_edits_by_this_sprint passes; no src/net/ or src/python/ files modified by this sprint; only tools/supervisor/ and tests/supervisor/ and reports/ modified"
+    },
+    {
+      "id": 15,
+      "criterion": "Is evidence package created?",
+      "status": "PASS",
+      "evidence": "Evidence declaration, manifest, raw test logs (59/59 PASS), and review-package-proof.md created; autonomous-cycle exit 0; declaration review package built at .local/supervisor/reviews/tri-lane-integration-refresh/declaration-review-package.zip"
+    }
+  ],
+
+  "no_fail_criteria": true,
+  "final_verdict": "TRI_LANE_REFRESH_READY_WITH_LIMITATIONS",
+  "mainstream_may_run_next": true,
+
+  "summary": {
+    "tests_run": 59,
+    "tests_passed": 59,
+    "tests_failed": 0,
+    "integration_status": "OK",
+    "contract_v2_verdict": "TRI_LANE_CONTRACT_VALID",
+    "contract_v2_checks_passed": 32,
+    "contract_v2_errors": 0,
+    "active_families": 4,
+    "stale_inputs_resolved": 5,
+    "product_source_edits": 0,
+    "authority_mutations": 0,
+    "gate_approvals": 0,
+    "commits": 0,
+    "pushes": 0
+  }
+}

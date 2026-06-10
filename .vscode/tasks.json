@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Format Factory: Start External Autonomous Host",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "Remove-Item Env:CLAUDECODE -ErrorAction SilentlyContinue; .local\\venv\\Scripts\\python.exe tools\\supervisor\\external_host_loop.py --next-action reports\\autonomous-external-host-bootstrap\\next-action.json --output-dir reports\\autonomous-external-host-bootstrap\\host-loop --repo-root '${workspaceFolder}'"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Format Factory: External Host Dry-Run",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "Remove-Item Env:CLAUDECODE -ErrorAction SilentlyContinue; .local\\venv\\Scripts\\python.exe tools\\supervisor\\external_host_loop.py --next-action reports\\autonomous-external-host-bootstrap\\next-action.json --output-dir reports\\autonomous-external-host-bootstrap\\host-loop --repo-root '${workspaceFolder}' --dry-run"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "sprint_id": "FORMAT-FACTORY-STANDING-MULTI-LANE-PRODUCT-FIRST-MEGA-TRAIN-001",
+  "taskcards": [
+    {
+      "id": "TC-COORD-000",
+      "title": "Coordinator Preflight and Lane Ownership",
+      "status": "CLOSED",
+      "owner": "Coordinator",
+      "evidence_paths": ["reports/multilane-product-first-mega-train/00-preflight.md"]
+    },
+    {
+      "id": "TC-TSV-WRITE",
+      "title": "Add write_tsv() to TSV codec",
+      "status": "CLOSED",
+      "owner": "Lane 2 (Product)",
+      "evidence_paths": [
+        "src/python/tsv/tsv_parser.py",
+        "src/python/tsv/__init__.py",
+        "tests/python/tsv/test_r122_tsv_write.py"
+      ]
+    },
+    {
+      "id": "TC-ABW-EDIT",
+      "title": "Add edit_paragraph() to ABW codec",
+      "status": "CLOSED",
+      "owner": "Lane 2 (Product)",
+      "evidence_paths": [
+        "src/python/abw/abw_codec.py",
+        "src/python/abw/__init__.py",
+        "tests/python/abw/test_r122_abw_edit_and_json.py"
+      ]
+    },
+    {
+      "id": "TC-ABW-JSON-WIRE",
+      "title": "Wire export_to_json() into ABW __init__.py",
+      "status": "CLOSED",
+      "owner": "Lane 2 (Product)",
+      "evidence_paths": [
+        "src/python/abw/__init__.py",
+        "tests/python/abw/test_r122_abw_edit_and_json.py"
+      ]
+    },
+    {
+      "id": "TC-FODG-PROBE",
+      "title": "Add probe_fodg() to FODG codec (new format)",
+      "status": "CLOSED",
+      "owner": "Lane 8 (New Formats)",
+      "evidence_paths": [
+        "src/python/fodg/fodg_codec.py",
+        "src/python/fodg/__init__.py",
+        "tests/python/fodg/test_r122_fodg_probe.py"
+      ]
+    },
+    {
+      "id": "TC-NDJSON-KICKSTART",
+      "title": "NDJSON format kickstart: probe, load, write, count",
+      "status": "CLOSED",
+      "owner": "Lane 8 (New Formats)",
+      "evidence_paths": [
+        "src/python/ndjson/ndjson_codec.py",
+        "src/python/ndjson/__init__.py",
+        "tests/python/ndjson/test_r122_ndjson_codec.py"
+      ]
+    },
+    {
+      "id": "TC-PLAYBOOK",
+      "title": "Format Feature Expansion playbook authored",
+      "status": "CLOSED",
+      "owner": "Lane 6 (Feature Coverage)",
+      "evidence_paths": ["playbooks/format-factory/format-feature-expansion.md"]
+    },
+    {
+      "id": "TC-EVIDENCE",
+      "title": "Evidence closeout: declaration, autonomous-cycle, review package",
+      "status": "CLOSED",
+      "owner": "Lane 10 (Evidence)",
+      "evidence_paths": [
+        ".local/evidences/multilane-product-first-mega-train/evidence-declaration.yaml"
+      ]
+    }
+  ]
+}

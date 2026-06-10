@@ -1,0 +1,55 @@
+{
+  "handoff_type": "skills_to_acceleration",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "generated_by": "TC-W6-005",
+  "false_positive_prevention_rules": [
+    {
+      "rule_id": "FPP-001",
+      "condition": "capability_matrix_update field is absent from a Tier 1 work item",
+      "correct_behavior": "DOWNGRADE to ACCEPT_WITH_LIMITATIONS — do not trigger FAIL or STOP",
+      "wrong_behavior": "STOP execution or mark as REJECTED"
+    },
+    {
+      "rule_id": "FPP-002",
+      "condition": "ledger_entry_id is null in a transcript for a non-src-editing item (dry-run or governance work)",
+      "correct_behavior": "WARNING only — do not trigger FAIL",
+      "wrong_behavior": "REJECTED or FAILED_NEEDS_REPAIR"
+    },
+    {
+      "rule_id": "FPP-003",
+      "condition": "actual_files_changed is empty in a dry-run transcript",
+      "correct_behavior": "ACCEPTED — dry-run mode intentionally makes no file changes",
+      "wrong_behavior": "REJECTED for empty actual_files_changed"
+    },
+    {
+      "rule_id": "FPP-004",
+      "condition": "Receiver fixture closes as CLOSED_EXPECTED_FAILURE",
+      "correct_behavior": "Accepted as expected outcome — not a sprint failure",
+      "wrong_behavior": "Sprint FAIL because a fixture returned FAIL"
+    },
+    {
+      "rule_id": "FPP-005",
+      "condition": "MCP promotion decision is KEEP_DEFERRED",
+      "correct_behavior": "Sprint continues as valid — KEEP_DEFERRED is an accepted outcome",
+      "wrong_behavior": "Sprint FAIL because MCP was not promoted"
+    },
+    {
+      "rule_id": "FPP-006",
+      "condition": "Tier 3 or Tier 4 item missing source_diff_path",
+      "correct_behavior": "ACCEPTED — governance/planning work does not produce source diffs",
+      "wrong_behavior": "REJECTED for missing source_diff_path"
+    },
+    {
+      "rule_id": "FPP-007",
+      "condition": "External skill evaluation artifacts have no transcript or ledger entry",
+      "correct_behavior": "ACCEPTED — W10 items use EXEMPT_PREFIXES (W10-EVIDENCE) and are exempt from transcript/ledger requirements",
+      "wrong_behavior": "REJECTED for missing transcript on W10 items"
+    }
+  ],
+  "allowable_limitations": [
+    "Missing capability_matrix_update → note in evidence",
+    "Missing ledger_entry_id for dry-run or governance work → WARNING",
+    "MCP deferred → valid sprint state",
+    "Empty actual_files_changed in dry-run → expected"
+  ]
+}

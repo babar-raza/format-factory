@@ -1,0 +1,59 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "gap_id": "fodt-dogfood-markdown",
+  "template_proposals": [
+    {
+      "proposal_id": "fodt-dogfood-markdown-happy_path",
+      "gap_id": "fodt-dogfood-markdown",
+      "test_type": "happy_path",
+      "description": "Verify fodt-dogfood-markdown completes successfully with valid input.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fodt-dogfood-markdown-roundtrip",
+      "gap_id": "fodt-dogfood-markdown",
+      "test_type": "roundtrip",
+      "description": "Verify fodt-dogfood-markdown produces output that round-trips back to equivalent input.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fodt-dogfood-markdown-edge_empty",
+      "gap_id": "fodt-dogfood-markdown",
+      "test_type": "edge_empty",
+      "description": "Verify fodt-dogfood-markdown handles empty/minimal input without exception.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fodt-dogfood-markdown-edge_large",
+      "gap_id": "fodt-dogfood-markdown",
+      "test_type": "edge_large",
+      "description": "Verify fodt-dogfood-markdown handles large/complex input within resource limits.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fodt-dogfood-markdown-error_invalid_input",
+      "gap_id": "fodt-dogfood-markdown",
+      "test_type": "error_invalid_input",
+      "description": "Verify fodt-dogfood-markdown raises appropriate error on invalid input.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fodt-dogfood-markdown-dogfood_export",
+      "gap_id": "fodt-dogfood-markdown",
+      "test_type": "dogfood_export",
+      "description": "Verify fodt-dogfood-markdown output is usable by a downstream Format Factory tool.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    }
+  ],
+  "ai_enhanced_proposals": [],
+  "total_proposals": 6,
+  "authority_state": "ai_draft",
+  "non_authoritative": true,
+  "timestamp": "2026-06-04T07:09:42.097329+00:00"
+}

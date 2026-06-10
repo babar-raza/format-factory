@@ -1,0 +1,142 @@
+{
+  "run_id": "local-memory-sync-self-contained",
+  "sprint_id": "FORMAT-FACTORY-LOCAL-MEMORY-PRODUCT-FIRST-AI-EXTERNAL-TOOLS-SYNC-001",
+  "repair_sprint_id": "FORMAT-FACTORY-LOCAL-MEMORY-SYNC-EVIDENCE-PACKAGE-REPAIR-001",
+  "built_at": "2026-06-04",
+  "package_path": ".local/supervisor/reviews/local-memory-sync-self-contained/declaration-review-package.zip",
+  "package_sha256": "f18a224e527dff91e405ac71d4964c8260d34ff199c98071c1e11c24fad3e911",
+  "package_size_bytes": 48845,
+  "entry_count": 34,
+  "self_contained": true,
+  "original_package_sha256": "ca54b1e9a6db002f66ee1960130b53aa600f3772013f52287c8878787b0570b1",
+  "original_package_entry_count": 24,
+  "original_package_issue": "Original ZIP (24 entries) contained generic supervisor global-state from Mainstream R113. Missing all 29 declared governance docs, prompt templates, and sprint reports.",
+  "stale_global_state_excluded": [
+    {
+      "path": "global-state/context-pack.yaml",
+      "reason": "Stale Mainstream R113 global state — not relevant to local-memory-sync sprint"
+    },
+    {
+      "path": "global-state/continuation-signal.json",
+      "reason": "Stale Mainstream R113 continuation signal — conflicts with local-memory-sync PASS prose"
+    },
+    {
+      "path": "global-state/mcp.json",
+      "reason": "MCP config snapshot — not produced by this sprint"
+    },
+    {
+      "path": "global-state/poc-targets.yaml",
+      "reason": "Stale POC targets from Mainstream R113"
+    },
+    {
+      "path": "global-state/product-code-change-ledger.json",
+      "reason": "Product ledger from prior sprints"
+    },
+    {
+      "path": "global-state/selected-product-gaps.json",
+      "reason": "Gap selection from prior sprints"
+    },
+    {
+      "path": "global-state/supervisor/approval-gates.md",
+      "reason": "Mainstream R113 approval gates"
+    },
+    {
+      "path": "global-state/supervisor/context-pack.md",
+      "reason": "Mainstream R113 context pack"
+    },
+    {
+      "path": "global-state/supervisor/contradictions.md",
+      "reason": "Mainstream R113 contradictions report"
+    },
+    {
+      "path": "global-state/supervisor/evidence-review.md",
+      "reason": "Mainstream R113 evidence review"
+    },
+    {
+      "path": "global-state/supervisor/latest-cycle-summary.md",
+      "reason": "Stale Mainstream R113 cycle summary"
+    },
+    {
+      "path": "global-state/supervisor/mcp-status.json",
+      "reason": "Stale MCP status"
+    },
+    {
+      "path": "global-state/supervisor/mcp-status.md",
+      "reason": "Stale MCP status"
+    },
+    {
+      "path": "global-state/supervisor/next-sprint.md",
+      "reason": "Stale Mainstream R113 next-sprint prompt — misleads reviewer"
+    },
+    {
+      "path": "global-state/supervisor/session-resume.md",
+      "reason": "Mainstream R113 session resume"
+    },
+    {
+      "path": "historical/r91-work-item-grades.json",
+      "reason": "Old R91 sprint grades — not relevant"
+    },
+    {
+      "path": "historical/r91-work-item-grades.md",
+      "reason": "Old R91 sprint grades — not relevant"
+    },
+    {
+      "path": "supervisor/materialized-evidence-review.md",
+      "reason": "Stale materialized review from prior sprint"
+    },
+    {
+      "path": "supervisor/work-item-grades.json",
+      "reason": "Stale work item grades"
+    },
+    {
+      "path": "supervisor/work-item-grades.md",
+      "reason": "Stale work item grades"
+    },
+    {
+      "path": "supervisor/work-item-grades.yaml",
+      "reason": "Stale work item grades"
+    }
+  ],
+  "included_declared_artifacts": [
+    "evidence/evidence-declaration.yaml",
+    "evidence/evidence-manifest.yaml",
+    "reports/local-memory-sync/preflight.md",
+    "reports/local-memory-sync/read-files.md",
+    "reports/local-memory-sync/allowed-paths.md",
+    "reports/local-memory-sync/forbidden-paths.md",
+    "reports/local-memory-sync/taskcard-state.json",
+    "reports/local-memory-sync/product-first-sync.md",
+    "reports/local-memory-sync/four-stream-sync.md",
+    "reports/local-memory-sync/ai-operating-model-sync.md",
+    "reports/local-memory-sync/external-tool-sync.md",
+    "reports/local-memory-sync/mainstream-train-sync.md",
+    "reports/local-memory-sync/plan-status-sync.md",
+    "reports/local-memory-sync/prompt-template-sync.md",
+    "reports/local-memory-sync/validation-results.md",
+    "reports/local-memory-sync/changed-files.md",
+    "reports/local-memory-sync/final-git-status.txt",
+    "reports/local-memory-sync/review-package-proof.md",
+    "reports/local-memory-sync-package-repair/package-gap-analysis.md",
+    "reports/local-memory-sync-package-repair/self-contained-package-plan.md",
+    "docs/governance/product-first-operating-model.md",
+    "docs/governance/four-stream-operating-model.md",
+    "docs/governance/ai-authority-boundary.md",
+    "docs/governance/external-tool-architecture.md",
+    "docs/governance/ruflo-runtime-governance.md",
+    "docs/governance/superpowers-skill-intake.md",
+    "docs/governance/ghidra-mcp-compliance-gate.md",
+    "docs/governance/mainstream-poc-mega-train.md",
+    "docs/prompt-templates/mainstream-poc-mega-train-template.md",
+    "docs/prompt-templates/format-factory-stream-prompt-requirements.md",
+    "docs/prompt-templates/external-tool-aware-repair-template.md",
+    "docs/prompt-templates/repair-order-reference.md",
+    "state/current-state.md",
+    "package-manifest.json"
+  ],
+  "missing_declared_artifacts": [],
+  "missing_justification": "All declared artifacts are present. The self-referential ZIP entry itself and the repair reports written after the initial build are included via explicit addition (not self-referential).",
+  "governance_docs_included": 8,
+  "prompt_templates_included": 4,
+  "sprint_reports_included": 16,
+  "package_repair_reports_included": 2
+}

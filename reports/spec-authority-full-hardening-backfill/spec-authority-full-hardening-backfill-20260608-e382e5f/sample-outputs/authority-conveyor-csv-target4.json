@@ -1,0 +1,66 @@
+{
+  "format_id": "csv",
+  "current_level": "P3",
+  "current_level_int": 3,
+  "target_level": "P4",
+  "target_level_int": 4,
+  "already_at_or_above_target": false,
+  "authority_blockers": [
+    "unverified_facts: 2 candidate facts \u2014 run verification"
+  ],
+  "exception_allowed": "legacy_backfill",
+  "readiness_allowed": false,
+  "product_expansion_allowed": false,
+  "facts_summary": {
+    "total": 2,
+    "verified": 0,
+    "candidate": 2,
+    "verified_ids": [],
+    "candidate_ids": [
+      "FACT-CSV-001",
+      "FACT-CSV-002"
+    ]
+  },
+  "citations_summary": {
+    "code_cited_files": [],
+    "test_cited_files": [],
+    "proof_graph_files": []
+  },
+  "gap_steps": [
+    {
+      "step": 3,
+      "from_level": "P3",
+      "to_level": "P4",
+      "action": "Verify 2 candidate fact(s) via deterministic spec text search. Set verification_status=verified, validated_by=deterministic_spec_text_search.",
+      "type": "FACT_VERIFICATION",
+      "blocked_by": "Requires: P3 (candidate facts extracted)",
+      "candidate_fact_ids": [
+        "FACT-CSV-001",
+        "FACT-CSV-002"
+      ],
+      "outputs": [
+        ".local/spec-cache/csv/v1/workbench/verified-facts-review.yaml (updated)"
+      ]
+    }
+  ],
+  "gap_count": 1,
+  "matrix_update": {
+    "format_id": "csv",
+    "current_level": "P3",
+    "target_level": "P4",
+    "gap_steps": 1,
+    "already_complete": false,
+    "verified_facts_count": 0,
+    "candidate_facts_count": 2,
+    "code_citations_count": 0,
+    "test_citations_count": 0,
+    "proof_graphs_found": 0
+  },
+  "next_action": "Verify 2 candidate facts for csv via deterministic spec text search. Set verification_status=verified and validated_by=deterministic_spec_text_search.",
+  "spec_state_summary": {
+    "spec_cached": true,
+    "facts_verified": 0,
+    "facts_candidate": 2,
+    "verified_fact_ids": []
+  }
+}

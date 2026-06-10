@@ -1,0 +1,21 @@
+taskcard_id: PPR-FODG-001
+title: Reproduce and verify FODG add_page failing test
+lane: B
+priority: P0
+type: investigation
+status: done
+owner: agent
+repo_paths:
+  - tests/python/fodg/test_r138_fodg_add_page.py
+  - src/python/fodg/fodg_codec.py
+outputs:
+  - Verification that test passes or precise failure classification
+acceptance_criteria:
+  - Test run executed and result recorded
+verification_commands:
+  - ".local/venv/Scripts/python -m pytest tests/python/fodg/test_r138_fodg_add_page.py -v"
+notes: >
+  Result: ALL 11 TESTS PASS (including test_type_error_non_dict_page).
+  The add_page implementation correctly raises TypeError for non-str/non-dict inputs (e.g. int).
+  The R152 dual-signature (string works) also passes.
+  No code change needed — FODG repair is complete.

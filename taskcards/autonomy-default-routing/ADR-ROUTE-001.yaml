@@ -1,0 +1,25 @@
+id: ADR-ROUTE-001
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Current-State Preflight"
+status: completed
+lane: coordinator
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: []
+gates:
+  - "verify git status, python path, continuation signal, last sprint state"
+allowed_files:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/current-state-preflight.md"
+forbidden_files:
+  - "src/"
+  - "registry/"
+acceptance_criteria:
+  - "preflight.md documents all 13 verification items"
+tests: []
+evidence:
+  - ".local/evidences/autonomy-default-routing-impl-20260609/current-state-preflight.md"
+rollback: "Delete preflight doc"
+closeout_criteria: "preflight.md written and documents all verification items"

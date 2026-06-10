@@ -1,0 +1,14 @@
+target: requirement-capability-authority
+iteration: 1
+authority_status: proposed_only
+note: Supervisor-infrastructure capability, not a product format
+proposed_capabilities:
+  - capability: rca_mwp_verified
+    operation: verify
+    proof_type: test_verified
+    source_files: [tools/requirements_authority/]
+    test_files: [tests/supervisor/test_requirement_capability_authority_layer.py]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/rca-fabric-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-rca.json
+    sample_output: null
+    notes: 37/37 tests pass; 7 critical invariants verified; proof graph 18 node types, 19 edge types

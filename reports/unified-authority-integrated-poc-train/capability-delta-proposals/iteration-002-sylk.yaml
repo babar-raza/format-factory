@@ -1,0 +1,23 @@
+delta_id: "delta:iter002-sylk-r115"
+sprint_id: "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001"
+iteration: 2
+format: sylk
+track: foss_python
+proposed_at: "2026-06-04T21:00:00Z"
+
+additions:
+  - capability: write_sylk_roundtrip_depth
+    description: "Deepened write_sylk + parse_sylk_strict roundtrip coverage: string, numeric, empty, grid, header validation, footer validation, special chars"
+    tests: ["tests/python/sylk/test_r115_sylk_write_roundtrip.py::TestSylkWriteRoundtrip"]
+    status: VERIFIED
+
+  - capability: sylk_to_csv_deepening
+    description: "Deepened sylk_to_csv coverage: grid export, column count, dogfood pipeline, invalid path raises"
+    tests: ["tests/python/sylk/test_r115_sylk_write_roundtrip.py::TestSylkToCsvDeepening"]
+    status: VERIFIED
+
+defects_fixed:
+  - issue: "SylkDocument has no get_cell() method — tests used wrong API"
+    fix: "Added get_cell(doc, row, col) helper in test file iterating cells list by row/col"
+
+verdict: DELTA_ACCEPTED

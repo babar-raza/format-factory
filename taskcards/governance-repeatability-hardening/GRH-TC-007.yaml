@@ -1,0 +1,30 @@
+id: GRH-TC-007
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Verify backfill sidecars and create replay upgrade taskcards (Lane G)"
+status: completed
+lane: backfill_verification
+item_type: LEGACY_BACKFILL_METADATA
+problem: >
+  4 sidecar attribution files were created in Sprint 1. Verify they are well-formed
+  YAML with correct idempotency keys. Create 4 replay-upgrade taskcards to track
+  the path from BACKFILLED_LEGACY_ACCEPTED to REPLAYED_AND_PROVEN.
+scope:
+  - Verify 4 sidecar YAML files parse correctly
+  - Recompute idempotency keys and confirm they match
+  - Create taskcards/governance-repeatability/GR-REPLAY-001.yaml through GR-REPLAY-004.yaml
+files_to_verify:
+  - .local/attribution/gnumeric/gnumeric_codec.py.attribution.yaml
+  - .local/attribution/tsv/tsv_parser.py.attribution.yaml
+  - .local/attribution/abw/abw_codec.py.attribution.yaml
+  - .local/attribution/ndjson/ndjson_codec.py.attribution.yaml
+files_to_create:
+  - taskcards/governance-repeatability/GR-REPLAY-001.yaml
+  - taskcards/governance-repeatability/GR-REPLAY-002.yaml
+  - taskcards/governance-repeatability/GR-REPLAY-003.yaml
+  - taskcards/governance-repeatability/GR-REPLAY-004.yaml
+state_machine_start: BACKFILLED_LEGACY_ACCEPTED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-001]
+handoff_to_autonomy_sprint: true

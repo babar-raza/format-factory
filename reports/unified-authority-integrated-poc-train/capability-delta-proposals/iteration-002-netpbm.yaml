@@ -1,0 +1,21 @@
+delta_id: "delta:iter002-netpbm-r115"
+sprint_id: "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001"
+iteration: 2
+format: netpbm
+track: commercial_net
+proposed_at: "2026-06-04T21:00:00Z"
+
+additions:
+  - capability: DrawRectangle
+    method: "DrawRectangle(int top, int left, int rectHeight, int rectWidth, byte fill, bool filled = true)"
+    description: "Draw filled or outline rectangle on PGM image. Clips to bounds. Zero/negative dimensions are no-op. Throws InvalidOperationException for PPM images."
+    tests: ["tests/net/netpbm/NetpbmR115DrawTests.cs"]
+    status: VERIFIED
+
+  - capability: GetBrightnessMap
+    method: "GetBrightnessMap() -> double[]"
+    description: "Return per-pixel brightness normalized 0.0–1.0. PGM: pixel/maxVal. PPM: Rec.601 luminance."
+    tests: ["tests/net/netpbm/NetpbmR115DrawTests.cs"]
+    status: VERIFIED
+
+verdict: DELTA_ACCEPTED

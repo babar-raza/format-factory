@@ -1,0 +1,20 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-ECOSYSTEM-PLAN-FINAL-REPAIR-001",
+  "generated": "2026-06-06",
+  "canonical_commands": {
+    "autonomous_cycle": "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration <path>",
+    "build_review_package": "python tools/supervisor/build_declaration_review_package.py --declaration <path>",
+    "run_on_latest": "DEPRECATED — use autonomous-cycle instead"
+  },
+  "available_session_skills": [
+    "_readme", "add-dogfood-export", "add-dotnet-api", "add-dotnet-object-model-feature",
+    "add-installed-package-example", "add-python-api", "add-python-object-model-feature",
+    "add-roundtrip-test", "add-same-format-writer-feature", "build-context-pack",
+    "evidence-review-next-prompt", "execution-handoff", "export-plan-context",
+    "generate-execution-handoff", "materialize-declaration-review", "memory-sprint",
+    "package-install-proof", "plan-hardening", "promote-gap-to-taskcard", "record-lane-execution",
+    "select-poc-gap", "update-capability-matrix", "validate-product-code-ledger",
+    "validate-skill-transcript", "verify-dogfood-path"
+  ],
+  "notes": "Session skills are callable via Skill tool in Claude Code only. NOT callable from external host. NOT same as Superpowers plugin."
+}

@@ -1,0 +1,22 @@
+proposed_only: true
+not_applied_to_poc_targets: true
+iteration: 4
+sprint_id: "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001"
+generated_at: "2026-06-05T00:00:00Z"
+
+capabilities:
+  - capability: "ExportSheetToCsvFile_dogfood_proof"
+    operation: "Proof"
+    description: "Physical CSV sample output from ExportSheetToCsvFile dogfood pipeline. Tests: 32/32 PASS covering R115+R116+DogfoodCsvExport."
+    product: "FODS .NET + Python FOSS"
+    proof_level: "VERIFIED"
+    source_files: []
+    test_files:
+      - "tests/net/fods/FodsR115ExportCsvFileTests.cs"
+      - "tests/net/fods/FodsR107DogfoodCsvExportTests.cs"
+      - "tests/net/fods/FodsR104DogfoodCsvExportTests.cs"
+    tests_passed: 32
+    tests_failed: 0
+    raw_log: "reports/unified-authority-integrated-poc-train/iterations/iteration-004/raw-logs/fods-r117-tests.log"
+    sample_output: "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/fods/sheet1-export.csv"
+    rationale: "Physical CSV file produced. ExportSheetToCsvFile dogfood closure confirmed."

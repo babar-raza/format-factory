@@ -65,6 +65,9 @@ from .neutral_model import (
     workbook_remove_sheet,
     workbook_to_csv,
     workbook_get_cell_value,
+    workbook_find_cells,
+    workbook_count_matching_cells,
+    workbook_to_html,
 )
 from .exceptions import FodsError, FodsInputError, FodsSizeError, FodsParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -105,6 +108,9 @@ __all__ = [
     "workbook_remove_sheet",
     "workbook_to_csv",
     "workbook_get_cell_value",
+    "workbook_find_cells",
+    "workbook_count_matching_cells",
+    "workbook_to_html",
     "FodsError",
     "FodsInputError",
     "FodsSizeError",

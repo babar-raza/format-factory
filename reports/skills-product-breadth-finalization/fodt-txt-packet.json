@@ -1,0 +1,76 @@
+{
+  "packet_version": "1.0",
+  "packet_type": "FULL",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "family": "FODT",
+  "track": "commercial_net",
+  "gap_id": "GAP-FODT-DOGFOOD-TXT-DOTNET-001",
+  "capability": "dogfood_status.fodt_to_txt_dotnet",
+  "recommended_skill": "add-dotnet-api",
+  "status": "READY_FOR_MAINSTREAM",
+  "source_files": [
+    "src/net/fodt/FodtDocument.cs",
+    "src/net/fodt/FodtTxtExporter.cs"
+  ],
+  "allowed_files": [
+    "src/net/fodt/FodtDocument.cs",
+    "src/net/fodt/FodtTxtExporter.cs",
+    "tests/net/fodt/FodtR114ExportToTxtTests.cs",
+    "examples/net/fodt/",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "forbidden_files": [
+    "src/python/*",
+    "src/net/fods/*",
+    "src/net/netpbm/*",
+    "registry/format-registry.yaml",
+    "plans/master-plan.md",
+    "product-capability-matrix/poc-targets.yaml",
+    ".vscode/mcp.json",
+    ".supervisor/policies.yaml",
+    "reports/supervisor/approval-gates.md",
+    ".claude-plugin/*",
+    ".claude/commands/*"
+  ],
+  "expected_source_diff": {
+    "file": "src/net/fodt/FodtTxtExporter.cs",
+    "description": "FodtTxtExporter already exists — confirm ExportToTxt method signature. If incomplete, add or complete the public ExportToTxt(string outputPath) method that extracts plain text from all paragraphs.",
+    "change_type": "add_api_or_verify_existing",
+    "method_signature": "public void ExportToTxt(string outputPath)"
+  },
+  "expected_tests": {
+    "file": "tests/net/fodt/FodtR114ExportToTxtTests.cs",
+    "test_count": 8,
+    "description": "8 tests covering: file created, contains plain text content, strips XML markup, handles headings as plain text, empty document, single paragraph, output path variation, encoding check"
+  },
+  "expected_raw_logs": "reports/{sprint_id}/raw-logs/test-fodt-export-txt.log",
+  "expected_ledger_entry": {
+    "file": "reports/r90/product-code-change-ledger.json",
+    "change_type": "add_api",
+    "description": "FODT .NET ExportToTxt — 8 tests added"
+  },
+  "proposed_capability_delta": {
+    "field": "fodt.dogfood_status.fodt_to_txt_dotnet",
+    "from": "GAP_DOGFOOD_EXTERNAL",
+    "proposed_value": "IMPLEMENTED",
+    "authority_update_required": false,
+    "note": "Proposed delta only — Supervisor or human approves poc-targets.yaml update separately"
+  },
+  "required_transcript_fields": [
+    "invocation_id", "skill_id", "mode", "inputs", "allowed_files",
+    "actual_files_changed", "tests_run", "result", "timestamp"
+  ],
+  "acceptance_criteria": [
+    "python tools/supervisor/validate_skill_transcript.py <transcript_path> exits 0",
+    "8+ tests pass in FodtR114ExportToTxtTests.cs",
+    "source diff shows ExportToTxt method present in FodtTxtExporter.cs",
+    "actual_files_changed subset of allowed_files",
+    "ledger entry added to reports/r90/product-code-change-ledger.json"
+  ],
+  "rollback_note": "Delete tests/net/fodt/FodtR114ExportToTxtTests.cs. If FodtTxtExporter.cs was modified, restore via git checkout src/net/fodt/FodtTxtExporter.cs. No other files need rollback.",
+  "enforcement_tier": "FAIL_CLOSED",
+  "mode": "live",
+  "handoff_path": "reports/skills-product-breadth-finalization/fodt-txt-handoff.yaml",
+  "note": "This packet is new — not derived from hardening sprint shell. Both fodt_to_markdown_dotnet and fodt_to_txt_dotnet are GAP_DOGFOOD_EXTERNAL per poc-targets.yaml. Both FodtMarkdownExporter.cs and FodtTxtExporter.cs already exist in src/net/fodt/."
+}

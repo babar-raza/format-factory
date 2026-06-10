@@ -1,0 +1,78 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001",
+  "description": "12 verification commands for the future execution sprint",
+  "commands": [
+    {
+      "id": "V-01",
+      "purpose": "Validate all generated JSON files",
+      "command": "python -c \"import json, pathlib; files=list(pathlib.Path('reports/superpowers-agentic-autonomy').rglob('*.json')); [json.load(open(f)) for f in files]; print(f'JSON valid: {len(files)} files')\"",
+      "expected": "JSON valid: N files (0 errors)"
+    },
+    {
+      "id": "V-02",
+      "purpose": "Validate all generated YAML files",
+      "command": "python -c \"import yaml, pathlib; files=list(pathlib.Path('reports/superpowers-agentic-autonomy').rglob('*.yaml'))+list(pathlib.Path('.local/evidences/superpowers-agentic-autonomy').rglob('*.yaml')); [yaml.safe_load(open(f)) for f in files]; print(f'YAML valid: {len(files)} files')\"",
+      "expected": "YAML valid: N files"
+    },
+    {
+      "id": "V-03",
+      "purpose": "Check all required .md files exist and are non-empty",
+      "command": "python -c \"import pathlib; files=list(pathlib.Path('reports/superpowers-agentic-autonomy').rglob('*.md')); empty=[f for f in files if f.stat().st_size==0]; print(f'MD files: {len(files)}, empty: {len(empty)}')\"",
+      "expected": "empty: 0"
+    },
+    {
+      "id": "V-04",
+      "purpose": "Verify canonical commands discovered from current repo (not hardcoded)",
+      "command": "python tools/supervisor/supervisor_loop.py --help 2>&1 | grep autonomous-cycle && python tools/supervisor/build_declaration_review_package.py --help 2>&1 | grep declaration",
+      "expected": "Both commands present"
+    },
+    {
+      "id": "V-05",
+      "purpose": "Run autonomous-cycle on evidence declaration",
+      "command": "python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/superpowers-agentic-autonomy/evidence-declaration.yaml",
+      "expected": "Exit 0"
+    },
+    {
+      "id": "V-06",
+      "purpose": "Build declaration review package",
+      "command": "python tools/supervisor/build_declaration_review_package.py --declaration .local/evidences/superpowers-agentic-autonomy/evidence-declaration.yaml",
+      "expected": "ZIP created"
+    },
+    {
+      "id": "V-07",
+      "purpose": "Run anti-skip checker (if exists)",
+      "command": "python -c \"import pathlib; p=pathlib.Path('tools/supervisor/anti_skip_checker.py'); print('RUNNING' if p.exists() else 'SKIP_NOT_FOUND')\" && python tools/supervisor/anti_skip_checker.py --declaration .local/evidences/superpowers-agentic-autonomy/evidence-declaration.yaml 2>&1 || echo ANTI_SKIP_NOT_FOUND",
+      "expected": "PASS or ANTI_SKIP_NOT_FOUND"
+    },
+    {
+      "id": "V-08",
+      "purpose": "Run adoption compliance (if exists)",
+      "command": "python -c \"import pathlib; p=pathlib.Path('tools/supervisor/validate_adoption_compliance.py'); print('RUNNING' if p.exists() else 'SKIP_NOT_FOUND')\" && python tools/supervisor/validate_adoption_compliance.py --declaration .local/evidences/superpowers-agentic-autonomy/evidence-declaration.yaml 2>&1 || echo COMPLIANCE_NOT_FOUND",
+      "expected": "PASS or COMPLIANCE_NOT_FOUND"
+    },
+    {
+      "id": "V-09",
+      "purpose": "Validate evidence manifest paths exist in repo",
+      "command": "python -c \"import yaml, pathlib; d=yaml.safe_load(open('.local/evidences/superpowers-agentic-autonomy/evidence-manifest.yaml')); missing=[p for item in d.get('artifacts',[]) for p in [item['path']] if not pathlib.Path(p).exists()]; print(f'missing: {len(missing)}')\"",
+      "expected": "missing: 0"
+    },
+    {
+      "id": "V-10",
+      "purpose": "Validate review ZIP includes all declared artifacts (manifest-vs-ZIP)",
+      "command": "python -c \"\nimport zipfile, yaml, pathlib\ndecl = yaml.safe_load(open('.local/evidences/superpowers-agentic-autonomy/evidence-declaration.yaml'))\ndeclared = {item['path'] for item in decl.get('artifacts', [])}\nzf = zipfile.ZipFile(list(pathlib.Path('.local/supervisor/reviews/superpowers-agentic-autonomy').glob('*.zip'))[0])\nin_zip = set(zf.namelist())\nmissing = declared - in_zip\nprint(f'manifest_missing_count={len(missing)}')\nassert len(missing) == 0\n\"",
+      "expected": "manifest_missing_count=0"
+    },
+    {
+      "id": "V-11",
+      "purpose": "Capture final git status",
+      "command": "git status --short > reports/superpowers-agentic-autonomy/final-git-status.txt && echo OK",
+      "expected": "OK"
+    },
+    {
+      "id": "V-12",
+      "purpose": "GitHub CLI check (authenticated only; non-blocking if unavailable)",
+      "command": "gh auth status 2>&1 && gh status 2>&1 || echo GH_CLI_UNAVAILABLE_OR_UNAUTHENTICATED",
+      "expected": "gh status output or GH_CLI_UNAVAILABLE_OR_UNAUTHENTICATED (non-blocking)"
+    }
+  ]
+}

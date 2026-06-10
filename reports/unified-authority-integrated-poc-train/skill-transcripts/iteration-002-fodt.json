@@ -1,0 +1,16 @@
+{
+  "transcript_id": "transcript:iter002-fodt-r115",
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-AUTHORITY-INTEGRATED-POC-MEGA-TRAIN-001",
+  "iteration": 2,
+  "lane_id": "lane-008-fodt-r115",
+  "format": "fodt",
+  "track": "commercial_net",
+  "capability_added": ["ExportToOutlineJson", "FindParagraphsByStyle"],
+  "source_files_modified": ["src/net/fodt/FodtDocument.cs"],
+  "test_files_added": ["tests/net/fodt/FodtR115ExportOutlineJsonTests.cs"],
+  "tests_run": 10,
+  "tests_passed": 10,
+  "tests_failed": 0,
+  "skill_verdict": "LANE_COMPLETE",
+  "notes": "ExportToOutlineJson reads text:outline-level attribute from text:h elements (not style-name). FindParagraphsByStyle uses case-insensitive substring match with synthetic Heading style for text:h elements. 10 tests pass."
+}

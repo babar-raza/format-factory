@@ -1,0 +1,25 @@
+{
+  "audit_date": "2026-06-06",
+  "package_id": "declaration-review-package(108).zip",
+  "observed_sha256": "b3fe39f81174376cb2dfbf177cff319f76439dd19918ca29cce9de512fc41ff2",
+  "overall_verdict": "ACCEPTED_WITH_REWORK",
+  "caveats": [
+    "anti_skip_all_pass: false (missing_raw_logs, missing_sample_outputs)",
+    "adoption_compliance: FAIL_MISSING_TRANSCRIPTS (10 non-exempt items, 0 with transcript/skill_id)",
+    "tests_run: 0",
+    "work_item_acceptance: ACCEPTED_WITH_LIMITATIONS or path-only for most items"
+  ],
+  "safe_artifacts": [
+    "final-handoff/next-execution-prompt.md",
+    "final-handoff/execution-readiness-checklist.json (32/32 PASS)",
+    "iv/independent-plan-review.json (verdict: PLAN_READY_FOR_EXECUTION)"
+  ],
+  "unsafe_artifacts_quarantined": [
+    "review/next-work-items.json (routes to product work, stale for this sprint)",
+    "review/combined-next-worker-prompt.md (may contain commit/push wording)",
+    "global-state/supervisor/next-sprint.md (generated product routing, stale)"
+  ],
+  "continuation_decision": "CONTINUE_WITH_QUARANTINE",
+  "reason": "Active plan source is final-handoff/next-execution-prompt.md which is PLAN_READY_FOR_EXECUTION. Package-108 caveats are plan-repair sprint artifacts (no tests, no logs expected). Continuation is safe because final handoff prompt exists and is usable.",
+  "active_plan_source": "reports/superpowers-ecosystem-plan-final-repair/final-handoff/next-execution-prompt.md"
+}

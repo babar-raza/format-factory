@@ -1,0 +1,68 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "validated_at": "2026-06-04T12:00:00Z",
+  "results": [
+    {
+      "check_id": "EXT-001",
+      "description": "No .claude-plugin mutation",
+      "result": "PASS",
+      "evidence": ".claude-plugin/ directory does not exist"
+    },
+    {
+      "check_id": "EXT-002",
+      "description": "No /plugin install execution",
+      "result": "PASS",
+      "evidence": "no-plugin-install-proof.txt: VERIFIED"
+    },
+    {
+      "check_id": "EXT-003",
+      "description": "No MCP registration",
+      "result": "PASS",
+      "evidence": ".vscode/mcp.json not modified by this sprint; pre-existing config unchanged"
+    },
+    {
+      "check_id": "EXT-004",
+      "description": "No .vscode/mcp.json mutation",
+      "result": "PASS",
+      "evidence": "git diff --diff-filter=A -- .vscode/mcp.json: empty"
+    },
+    {
+      "check_id": "EXT-005",
+      "description": "No SessionStart injection",
+      "result": "PASS",
+      "evidence": "No CLAUDE.md/AGENTS.md modifications; no .claude-plugin/sessionStart.md"
+    },
+    {
+      "check_id": "EXT-006",
+      "description": "External skills remain draft/normalized only (0 active)",
+      "result": "PASS",
+      "evidence": "local-skill-normalization-map.json: 0 skills with status=active"
+    },
+    {
+      "check_id": "EXT-007",
+      "description": "Wrapper template labels authority_state: skill_draft",
+      "result": "PASS",
+      "evidence": "external-skill-wrapper-template.md contains 'skill_draft'"
+    },
+    {
+      "check_id": "EXT-008",
+      "description": "External skill cannot directly edit product source",
+      "result": "PASS",
+      "evidence": "Wrapper template forbidden_files includes src/net/*, src/python/*"
+    },
+    {
+      "check_id": "EXT-009",
+      "description": "External skill cannot update skill registry without guarded taskcard",
+      "result": "PASS",
+      "evidence": "Wrapper template activation_gate: 'validate_skill_registry.py PASS + Supervisor approval'"
+    },
+    {
+      "check_id": "EXT-010",
+      "description": "Wrapper template has authority boundary",
+      "result": "PASS",
+      "evidence": "Section: 'Authority boundary — External plugin has NO authority'"
+    }
+  ],
+  "all_pass": true,
+  "verdict": "EXTERNAL_SKILL_BOUNDARY_SECURE"
+}

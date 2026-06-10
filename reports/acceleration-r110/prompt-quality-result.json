@@ -1,0 +1,46 @@
+{
+  "valid": true,
+  "target_stream": "acceleration",
+  "total_checks": 6,
+  "passed": 6,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "not_generic",
+      "pass": true,
+      "detail": "Word count: 947"
+    },
+    {
+      "check": "stream_identity",
+      "pass": true,
+      "markers_found": [
+        "tool",
+        "anti-skip",
+        "package"
+      ],
+      "detail": "Found 3/5 stream markers"
+    },
+    {
+      "check": "advancement_lane",
+      "pass": true,
+      "detail": "Advancement lane present"
+    },
+    {
+      "check": "evidence_requirement",
+      "pass": true,
+      "detail": "Evidence declaration/manifest requirement present"
+    },
+    {
+      "check": "no_wrong_stream",
+      "pass": true,
+      "forbidden_found": [],
+      "detail": "Clean stream boundaries"
+    },
+    {
+      "check": "prompt_structure",
+      "pass": true,
+      "section_markers_found": 3,
+      "detail": "Prompt has 3 structural markers"
+    }
+  ]
+}

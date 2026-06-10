@@ -1,0 +1,44 @@
+---
+sprint_id: acceleration-r104
+evidence_root: reports/acceleration-r104
+
+reports:
+  - reports/acceleration-r104/00-preflight.md
+  - reports/acceleration-r104/r103-reconciliation.md
+  - reports/acceleration-r104/r103-claim-classification.json
+  - reports/acceleration-r104/package-self-containment.md
+  - reports/acceleration-r104/three-sprint-forecast.md
+  - reports/acceleration-r104/quota-tracker.md
+  - reports/acceleration-r104/final-adversarial-independent-verification.md
+  - reports/acceleration-r104/evidence-manifest.yaml
+
+sample_outputs:
+  - reports/acceleration-r104/sample-outputs/fresh-stream-gaps.json
+  - reports/acceleration-r104/sample-outputs/selected-gaps-mainstream-r104.json
+  - reports/acceleration-r104/sample-outputs/selected-gaps-acceleration-r104.json
+  - reports/acceleration-r104/sample-outputs/selected-gaps-skills-r104.json
+  - reports/acceleration-r104/sample-outputs/selected-gaps-supervisor-r104.json
+  - reports/acceleration-r104/sample-outputs/next-best-actions.json
+  - reports/acceleration-r104/sample-outputs/stream-forecasts.json
+  - reports/acceleration-r104/sample-outputs/dry-run-results.json
+  - reports/acceleration-r104/sample-outputs/dry-run-ledger.json
+  - reports/acceleration-r104/sample-outputs/anti-skip-check-result.json
+
+generated_stream_prompts:
+  - reports/acceleration-r104/generated-stream-prompts/next-mainstream-prompt.md
+  - reports/acceleration-r104/generated-stream-prompts/next-acceleration-prompt.md
+  - reports/acceleration-r104/generated-stream-prompts/next-skills-prompt.md
+  - reports/acceleration-r104/generated-stream-prompts/next-supervisor-prompt.md
+
+raw_logs:
+  - reports/acceleration-r104/raw-test-log.txt
+
+modified_tools:
+  - tools/supervisor/anti_skip_checker.py
+  - tools/supervisor/build_declaration_review_package.py
+
+new_tests:
+  - tests/supervisor/acceleration/test_package_self_containment.py
+
+modified_tests:
+  - tests/supervisor/acceleration/test_anti_skip_checker.py

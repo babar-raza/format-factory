@@ -1,0 +1,14 @@
+{
+  "sample_type": "continuation-state-hardening",
+  "description": "Sample demonstrating all tested continuation states",
+  "states_tested": {
+    "YES": {"anti_skip_all_pass": true, "no_hard_stops": true, "result": "YES"},
+    "YES_WITH_LIMITATIONS": {"anti_skip_all_pass": false, "block": false, "downgrade": false, "result": "YES_WITH_LIMITATIONS"},
+    "NO_BROKEN_BASELINE": {"hard_stops": ["critical_block"], "result": "NO_BROKEN_BASELINE"},
+    "NO_MAX_ITERATIONS": {"at_max_iterations": true, "result": "NO_MAX_ITERATIONS"},
+    "NO_UNSAFE_SOURCE_STATE": {"overclaimed": ["W1"], "result": "NO_UNSAFE_SOURCE_STATE"},
+    "NO_POLICY_BLOCK": {"force_stop": true, "result": "NO_POLICY_BLOCK"},
+    "NO_PROMPT_QUALITY_FAILURE": {"hard_stops": ["prompt_quality_failure"], "result": "NO_PROMPT_QUALITY_FAILURE"}
+  },
+  "stream_isolation_proven": true
+}

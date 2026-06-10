@@ -1,0 +1,43 @@
+---
+# Ledger Enforcement Remediation Handoff Template
+# Skills R104: Ledger Enforcement Bridge
+#
+# This template is consumed by mainstream workers when the ledger
+# validator detects a hash drift on a governed source file.
+
+handoff_type: ledger-remediation
+generated_by: skills-r104-ledger-bridge
+version: "1.0"
+
+# Fill in these fields when generating a concrete remediation handoff
+parameters:
+  drifted_source_path: "{fill: path to source file with drifted hash}"
+  current_sha256: "{fill: actual SHA-256 of file on disk}"
+  stale_sha256: "{fill: SHA-256 recorded in ledger}"
+  ledger_path: "reports/r90/product-code-change-ledger.json"
+
+# Which skill to use depends on the source file's product track
+skill_routing:
+  "src/net/**": add-dotnet-object-model-feature
+  "src/python/**": add-python-object-model-feature
+
+instructions:
+  - "Verify the source change was intentional and authorized by the current sprint"
+  - "Compute SHA-256 of the current source file"
+  - "Update the corresponding entry in {ledger_path}"
+  - "Run: .local/venv/Scripts/python tools/supervisor/validate_product_code_ledger.py"
+  - "Confirm validator reports PASS for the updated entry"
+  - "Produce a skill invocation transcript with ledger_entry_id"
+
+transcript_requirement:
+  skill_id: "{from skill_routing}"
+  mode: live
+  ledger_entry_id: required
+  result_expected: PASS
+  actual_files_changed_must_include:
+    - "{ledger_path}"
+
+failure_handling:
+  source_change_not_authorized: "STOP — do not update ledger for unauthorized changes"
+  validator_still_fails: "Escalate to skills stream for investigation"
+  multiple_files_drifted: "Generate one remediation handoff per drifted file"

@@ -1,0 +1,40 @@
+{
+  "packet_type": "requirement_authority_input",
+  "format_id": "zst",
+  "context_pack_id": "CP-ZST-a1269259b41f",
+  "manifest_sha256": "a1269259b41fd61cc613ecccdfb23354a5d58a749670beb89d7ecf3da3cafcdc",
+  "context_pack_path": ".local/evidences/spec-authority-real-pilot-r1/context-packs/zst-context-pack.json",
+  "staleness": "FRESH",
+  "authority_status": "ACCEPTED_SPEC",
+  "caveat": "Fixture-based; real RFC 8878 text fetch deferred to Pilot R2",
+  "sample_requirements": [
+    {
+      "req_id": "REQ-src-zst-r-XXXXXXX1",
+      "source_id": "src-zst-rfc8878",
+      "source_type": "rfc",
+      "section_id": "src-zst-rfc8878-s0002",
+      "heading": "frame format",
+      "keyword": "MUST",
+      "text_fragment": "Files MUST begin with a magic number of 0xFD2FB528 stored in little-endian byte order.",
+      "authority_status": "ACCEPTED_SPEC",
+      "verified": true
+    },
+    {
+      "req_id": "REQ-src-zst-r-XXXXXXX2",
+      "source_id": "src-zst-rfc8878",
+      "source_type": "rfc",
+      "section_id": "src-zst-rfc8878-s0003",
+      "heading": "block types",
+      "keyword": "MUST",
+      "text_fragment": "A decoder MUST reject a frame containing a Reserved block type.",
+      "authority_status": "ACCEPTED_SPEC",
+      "verified": true
+    }
+  ],
+  "downstream_instructions": {
+    "verify_before_use": "Call verify_context_pack(context_pack_path) before deriving capability requirements",
+    "check_staleness_first": "FRESH — no recomputation needed",
+    "dif_note": "DIF requirements are EMPIRICAL_ONLY — do not treat as authoritative spec evidence",
+    "capability_claim_warning": "These are spec requirements — product capability must be proven separately"
+  }
+}

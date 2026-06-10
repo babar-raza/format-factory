@@ -1,0 +1,120 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRI-LANE-RECONCILIATION-001",
+  "generated_at": "2026-06-04T11:15:00Z",
+  "shared_fields": [
+    {
+      "field": "family",
+      "supervisor_source": "hardened-mainstream-handoff.json:active_families[].family",
+      "skills_source": "mainstream-consumption-packet.json:selected_product_gap.format_id",
+      "acceleration_source": "consumption-packets/*.json:format",
+      "agreement": "FODS=fods, FODT=fodt, Netpbm=netpbm, SYLK=sylk",
+      "validation": "PASS"
+    },
+    {
+      "field": "format",
+      "supervisor_source": "mainstream-routing-current.json:active_families[].family",
+      "skills_source": "mainstream-consumption-packet.json:selected_product_gap.format_id",
+      "acceleration_source": "consumption-packets/*.json:format",
+      "validation": "PASS"
+    },
+    {
+      "field": "product_track",
+      "supervisor_source": "replay-run-1/stream_decision.json:stream",
+      "skills_source": "mainstream-consumption-packet.json:selected_product_gap.track",
+      "acceleration_source": "consumption-packets/*.json:product_track",
+      "agreement": "commercial_net (FODS/FODT/Netpbm), python_oss (SYLK)",
+      "validation": "PASS"
+    },
+    {
+      "field": "capability_path",
+      "supervisor_source": "product-family-breadth-proof.json",
+      "skills_source": "mainstream-consumption-packet.json:selected_product_gap.capability",
+      "acceleration_source": "consumption-packets/*.json:capability_path",
+      "agreement": "dogfood_status.fods_to_csv_dotnet (FODS); dogfood_status.fodt_to_markdown_dotnet (FODT); dotnet_status.netpbm_flip_diagonal (Netpbm); python_status.write_sylk (SYLK)",
+      "validation": "PASS"
+    },
+    {
+      "field": "gap_id",
+      "supervisor_source": "product-gap-selection (via replay)",
+      "skills_source": "mainstream-consumption-packet.json:selected_product_gap.gap_id",
+      "acceleration_source": "consumption-packets/*.json:selected_gap",
+      "agreement": "GAP-FODS-DOGFOOD-CSV-DOTNET-001 matches across Skills and Acceleration",
+      "validation": "PASS"
+    },
+    {
+      "field": "allowed_files",
+      "supervisor_source": "hardened-mainstream-handoff.json:active_families (source_file)",
+      "skills_source": "mainstream-consumption-packet.json:allowed_files",
+      "acceleration_source": "consumption-packets/*.json:allowed_files",
+      "agreement": "FODS: src/net/fods/FodsDocument.cs, FodsWorkbook.cs",
+      "validation": "PASS"
+    },
+    {
+      "field": "forbidden_files",
+      "supervisor_source": "hardened-mainstream-handoff.json:path_guard.src_python_changed=false",
+      "skills_source": "mainstream-consumption-packet.json:forbidden_files",
+      "acceleration_source": "consumption-packets/*.json:forbidden_files",
+      "agreement": "registry/, product-capability-matrix/, plans/master-plan.md, src/python/* (for .NET track)",
+      "validation": "PASS"
+    },
+    {
+      "field": "expected_tests",
+      "supervisor_source": "hardened-mainstream-handoff.json (test_results)",
+      "skills_source": "mainstream-consumption-packet.json:expected_tests",
+      "acceleration_source": "consumption-packets/*.json:test_plan_path",
+      "agreement": "FODS: tests/net/fods/FodsR114ExportToCsvTests.cs (8+ tests)",
+      "validation": "PASS_WITH_LIMITATIONS"
+    },
+    {
+      "field": "expected_outputs",
+      "supervisor_source": "replay-run-1/product_velocity_score.json",
+      "skills_source": "mainstream-consumption-packet.json:expected_source_diff",
+      "acceleration_source": "consumption-packets/*.json:implementation_design_path",
+      "validation": "PASS_WITH_LIMITATIONS"
+    },
+    {
+      "field": "expected_transcript",
+      "supervisor_source": "N/A (supervisor does not generate transcripts)",
+      "skills_source": "mainstream-consumption-packet.json:required_transcript_fields",
+      "acceleration_source": "N/A (no governed transcripts)",
+      "agreement": "invocation_id, skill_id, mode, inputs, allowed_files, actual_files_changed, tests_run, result, timestamp",
+      "validation": "PASS"
+    },
+    {
+      "field": "proposed_delta",
+      "supervisor_source": "mainstream-routing-current.json:clean_pass_assessment.missing",
+      "skills_source": "mainstream-consumption-packet.json:expected_capability_matrix_update",
+      "acceleration_source": "consumption-packets/*.json:capability_matrix_update_hint",
+      "validation": "PASS_WITH_LIMITATIONS"
+    },
+    {
+      "field": "authority_state",
+      "supervisor_source": "hardened-mainstream-handoff.json — supervisor is stream-control authority",
+      "skills_source": "skills-consumption-readiness.json — governs execution handoffs",
+      "acceleration_source": "consumption-packets/*.json:authority_state = ai_draft",
+      "agreement": "Supervisor=AUTHORITY; Skills=GOVERNED_EXECUTION; Acceleration=AI_DRAFT_ADVISORY",
+      "validation": "PASS"
+    },
+    {
+      "field": "requires_validation",
+      "supervisor_source": "autonomous-cycle exit 0 required",
+      "skills_source": "validate_skill_transcript.py required",
+      "acceleration_source": "consumption-packets/*.json:requires_validation = true",
+      "validation": "PASS"
+    },
+    {
+      "field": "evidence_paths",
+      "supervisor_source": "reports/supervisor-traffic-controller-hardening/**",
+      "skills_source": "reports/skills-product-first/**, reports/skills-governed-execution-hardening/**",
+      "acceleration_source": "reports/acceleration-product-first/**",
+      "validation": "PASS"
+    }
+  ],
+  "validation_summary": {
+    "total_fields": 14,
+    "pass": 11,
+    "pass_with_limitations": 3,
+    "fail": 0,
+    "overall": "CONTRACT_VALID_WITH_LIMITATIONS"
+  }
+}

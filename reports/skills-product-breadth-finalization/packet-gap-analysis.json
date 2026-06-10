@@ -1,0 +1,78 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "gaps": [
+    {
+      "gap_id": "BRDTH-GAP-001",
+      "family": "FODT",
+      "capability": "fodt_to_markdown_dotnet",
+      "shell_packet": "reports/skills-governed-execution-hardening/fodt-packet-shell.json",
+      "missing_in_shell": [
+        "exact_test_file_name (has {N} placeholder)",
+        "handoff_yaml",
+        "packet_type == FULL",
+        "concrete rollback_note",
+        "acceptance_criteria with concrete commands"
+      ],
+      "resolution": "Create fodt-markdown-packet.json (FULL) + fodt-markdown-handoff.yaml with R114",
+      "blocking": false
+    },
+    {
+      "gap_id": "BRDTH-GAP-002",
+      "family": "FODT",
+      "capability": "fodt_to_txt_dotnet",
+      "shell_packet": null,
+      "missing_in_shell": [
+        "No packet exists at all — TXT variant not in hardening sprint",
+        "poc-targets shows GAP_DOGFOOD_EXTERNAL for fodt_to_txt_dotnet",
+        "FodtTxtExporter.cs confirmed to exist in src/net/fodt/"
+      ],
+      "resolution": "Create fodt-txt-packet.json (FULL) + fodt-txt-handoff.yaml with R114",
+      "blocking": false
+    },
+    {
+      "gap_id": "BRDTH-GAP-003",
+      "family": "Netpbm",
+      "capability": "netpbm_r114_pipeline",
+      "shell_packet": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+      "missing_in_shell": [
+        "exact_test_file_name (has {N}{FeatureName} placeholder)",
+        "concrete feature name",
+        "handoff_yaml",
+        "packet_type == FULL",
+        "acceptance_criteria with concrete commands"
+      ],
+      "note": "Acceleration packet referenced flip_diagonal but NetpbmR106FlipDiagonalTests.cs already exists — selecting new R114 capability",
+      "selected_capability": "FlipAndMergePipeline (composite: flip + overlay + save)",
+      "resolution": "Create netpbm-proof-packet.json (FULL) + netpbm-proof-handoff.yaml with R114",
+      "blocking": false
+    },
+    {
+      "gap_id": "BRDTH-GAP-004",
+      "family": "all",
+      "capability": "schema_compatibility",
+      "shell_packet": null,
+      "missing_in_shell": [
+        "No field mapping from Skills packets to Acceleration packet schema",
+        "No field mapping from Skills packets to Supervisor grading schema"
+      ],
+      "resolution": "Create skills-acceleration-field-map.json + skills-supervisor-field-map.json",
+      "blocking": false
+    },
+    {
+      "gap_id": "BRDTH-GAP-005",
+      "family": "all",
+      "capability": "tri_lane_integration_contract",
+      "shell_packet": null,
+      "missing_in_shell": [
+        "No unified contract for Supervisor/Acceleration/Mainstream tri-lane consumption",
+        "Handoffs to each lane not yet generated for the finalized packets"
+      ],
+      "resolution": "Create skills-integration-contract.json + 3 lane handoffs",
+      "blocking": false
+    }
+  ],
+  "blocking_gaps": [],
+  "non_blocking_gaps_count": 5,
+  "overall_assessment": "All gaps are non-blocking. No product source changes required. Full handoffs can be produced from confirmed source paths."
+}

@@ -1,0 +1,92 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "generated_by": "TC-W4-001",
+  "evaluated_at": "2026-06-04T00:00:00Z",
+  "criteria": [
+    {
+      "criterion_id": "CRIT-01",
+      "description": ".claude/commands/check-mcp-status.md exists",
+      "current_state": "MISSING",
+      "required_state": "EXISTS",
+      "result": "FAIL",
+      "notes": "Command file not yet created. Will be created on PROMOTE path."
+    },
+    {
+      "criterion_id": "CRIT-02",
+      "description": "tools/supervisor/check_mcp_status.py exists (6-state classifier)",
+      "current_state": "EXISTS",
+      "required_state": "EXISTS",
+      "result": "PASS",
+      "notes": "check_mcp_status.py verified present with 6-state classifier."
+    },
+    {
+      "criterion_id": "CRIT-03",
+      "description": "Command file has allowed_files and forbidden_files sections",
+      "current_state": "MISSING",
+      "required_state": "EXISTS",
+      "result": "FAIL",
+      "notes": "Will be verified when command file is created in TC-W4-002."
+    },
+    {
+      "criterion_id": "CRIT-04",
+      "description": "Command file has validation_command",
+      "current_state": "MISSING",
+      "required_state": "EXISTS",
+      "result": "FAIL",
+      "notes": "Will be verified when command file is created in TC-W4-002."
+    },
+    {
+      "criterion_id": "CRIT-05",
+      "description": "Command file has failure_state_behavior",
+      "current_state": "MISSING",
+      "required_state": "EXISTS",
+      "result": "FAIL",
+      "notes": "Will be verified when command file is created in TC-W4-002."
+    },
+    {
+      "criterion_id": "CRIT-06",
+      "description": "Test or validator exists for the command",
+      "current_state": "PARTIAL",
+      "required_state": "EXISTS",
+      "result": "FAIL",
+      "notes": "TestMcpPromotionOrDeferred class in TC-W8-001 covers this."
+    },
+    {
+      "criterion_id": "CRIT-07",
+      "description": "validate_skill_registry.py passes after registry update",
+      "current_state": "PASS",
+      "required_state": "PASS",
+      "result": "PASS",
+      "notes": "Registry currently validates. Will revalidate after any edit in TC-W4-003."
+    },
+    {
+      "criterion_id": "CRIT-08",
+      "description": "Sample invocation produces expected state (MCP_CONFIG_PRESENT_MODE4_ACTIVE)",
+      "current_state": "EXISTS",
+      "required_state": "EXISTS",
+      "result": "PASS",
+      "notes": "python tools/supervisor/check_mcp_status.py → MCP_CONFIG_PRESENT_MODE4_ACTIVE verified."
+    },
+    {
+      "criterion_id": "CRIT-09",
+      "description": "No unauthorized daemon/global MCP mutation via allowed_files constraint",
+      "current_state": "PARTIAL",
+      "required_state": "EXISTS",
+      "result": "FAIL",
+      "notes": "allowed_files constraint not yet enforced in command file. Will be enforced in TC-W4-002."
+    },
+    {
+      "criterion_id": "CRIT-10",
+      "description": "R113 NOT_READY criteria resolved or superseded (MCP now MODE 4 ACTIVE)",
+      "current_state": "EXISTS",
+      "required_state": "EXISTS",
+      "result": "PASS",
+      "notes": ".vscode/mcp.json verified present. MCP_CONFIG_PRESENT_MODE4_ACTIVE confirmed. R113 deferral superseded."
+    }
+  ],
+  "pass_count": 4,
+  "fail_count": 6,
+  "overall_decision": "KEEP_DEFERRED",
+  "promotion_rationale": "4 of 10 criteria pass. CRIT-01,03,04,05,06,09 fail because the command file does not yet exist. Creating the command file (TC-W4-002 PROMOTE path) would resolve CRIT-01,03,04,05,09. CRIT-06 is resolved by TC-W8-001 tests. However, PROMOTE requires all 10 criteria to pass before the registry change is made. The correct procedure is: create command file first (TC-W4-002), then re-evaluate 10 criteria, then update registry (TC-W4-003). Since TC-W4-002 is conditional on this gate, and this gate currently shows KEEP_DEFERRED, the sprint proceeds with KEEP_DEFERRED path.",
+  "deferred_taskcard": "reports/skills-product-first/mcp-readiness/taskcard-TC-MCP-READINESS-001.md"
+}

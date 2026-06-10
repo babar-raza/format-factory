@@ -23,28 +23,31 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 class TestPytestIniTimeout:
-    """Verify pytest.ini timeout setting is present and correctly valued."""
+    """Verify pytest timeout setting is present and correctly valued.
+
+    Config migrated from pytest.ini to pyproject.toml [tool.pytest.ini_options].
+    """
 
     def test_pytest_ini_has_timeout(self):
-        """pytest.ini must declare a timeout setting."""
-        pytest_ini = REPO_ROOT / "pytest.ini"
-        assert pytest_ini.exists(), "pytest.ini must exist in repo root"
-        content = pytest_ini.read_text(encoding="utf-8")
+        """pyproject.toml must declare a timeout setting."""
+        pyproject = REPO_ROOT / "pyproject.toml"
+        assert pyproject.exists(), "pyproject.toml must exist in repo root"
+        content = pyproject.read_text(encoding="utf-8")
         assert "timeout" in content, (
-            "pytest.ini must declare 'timeout = N' for bounded test execution. "
-            "R45 fix: added 'timeout = 120' to pytest.ini."
+            "pyproject.toml must declare 'timeout = N' under [tool.pytest.ini_options] "
+            "for bounded test execution."
         )
 
     def test_pytest_ini_timeout_value_reasonable(self):
-        """pytest.ini timeout must be at least 60s (auto-proof needs ~40s)."""
-        pytest_ini = REPO_ROOT / "pytest.ini"
-        content = pytest_ini.read_text(encoding="utf-8")
+        """pyproject.toml timeout must be at least 60s (auto-proof needs ~40s)."""
+        pyproject = REPO_ROOT / "pyproject.toml"
+        content = pyproject.read_text(encoding="utf-8")
         import re
         m = re.search(r"^timeout\s*=\s*(\d+)", content, re.MULTILINE)
         if m:
             val = int(m.group(1))
             assert val >= 60, (
-                f"pytest.ini timeout={val} is too short. "
+                f"pyproject.toml timeout={val} is too short. "
                 "auto_proof_bundle.py tests take ~40s, need at least 60s."
             )
 
@@ -113,21 +116,21 @@ class TestAutoProofBoundedExecution:
         )
 
     def test_auto_proof_tests_bounded_by_ini_timeout(self):
-        """With pytest.ini timeout=120, auto_proof tests are bounded.
+        """With pyproject.toml timeout=120, auto_proof tests are bounded.
 
         The 9 auto-proof tests take ~40s total. With timeout=120, even if
         a single test hangs, it will be terminated within 120s.
         """
-        pytest_ini = REPO_ROOT / "pytest.ini"
-        content = pytest_ini.read_text(encoding="utf-8")
+        pyproject = REPO_ROOT / "pyproject.toml"
+        content = pyproject.read_text(encoding="utf-8")
         import re
         m = re.search(r"^timeout\s*=\s*(\d+)", content, re.MULTILINE)
         assert m is not None, (
-            "pytest.ini must have timeout setting for auto-proof bounded execution."
+            "pyproject.toml must have timeout setting for auto-proof bounded execution."
         )
         val = int(m.group(1))
         # 9 tests * ~10s each = ~90s worst case; 120s provides adequate margin
         assert val >= 90, (
-            f"pytest.ini timeout={val}s may be too tight for 9 auto-proof tests. "
+            f"pyproject.toml timeout={val}s may be too tight for 9 auto-proof tests. "
             "Each test builds+validates a bundle; worst case is ~10s per test."
         )

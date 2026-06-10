@@ -1,0 +1,28 @@
+# GEC Pilot 004: REPLAYED_AND_PROVEN claim without replay log — expected FAIL
+id: gec-pilot-004
+description: >
+  PRODUCT_SOURCE item claims REPLAYED_AND_PROVEN but has no replay_recipe_path
+  and no validated_replay_log. This should FAIL Validator 4.
+planned_work_items:
+  - item_id: GEC-P004-PS-001
+    item_type: PRODUCT_SOURCE
+    format_id: tsv
+    capability_id: get_headers
+    status: completed
+    grade: PASS
+    execution_method: MANUAL_GOVERNED_BY_SKILL
+    claim_classification: REPLAYED_AND_PROVEN
+    skill_id: add-python-api
+    skill_version: "1.0"
+    skill_transcript_path: .local/attribution/tsv/tsv_parser.py.attribution.yaml
+    source_diff_paths:
+      - .local/diffs/tsv_parser.diff
+    idempotency_key: 569a341600000000000000000000000000000000000000000000000000000000
+    evidence_paths:
+      - src/python/tsv/tsv_parser.py
+    tests_supporting:
+      - tests/python/tsv/test_r126_tsv_get_headers.py
+    # Missing: replay_recipe_path, validated_replay_log — claim is false
+expected_result: FAIL
+expected_validator: replay_recipe_required_validator
+expected_blocks_sprint: true

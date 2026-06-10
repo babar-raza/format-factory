@@ -1,0 +1,104 @@
+---
+# Acceleration Stream — Skill Adoption Enforcement Package
+# Skills R104: FORMAT-FACTORY-SKILLS-R104-ADOPTION-ENFORCEMENT-AND-CROSS-STREAM-GOVERNED-EXECUTION-CAMPAIGN-001
+#
+# This file defines how the Acceleration stream routes product gaps
+# through the governed skill system instead of ad-hoc execution.
+
+package_id: acceleration-enforcement-r104
+stream: acceleration
+version: "1.0"
+effective_from: skills-r104
+
+# ============================================================
+# RULE 1: Gap-to-skill routing
+# ============================================================
+gap_routing:
+  description: >
+    When the acceleration stream identifies a product gap for execution,
+    it MUST route through a governed skill rather than direct implementation.
+  enforcement: required
+  routing_workflow:
+    1_identify_gap: "Select gap from product-capability-matrix/poc-targets.yaml"
+    2_check_skill_exists: "Look up skill_id for the gap's product_track in registry"
+    3_promote_to_taskcard: "Use /promote-gap-to-taskcard if no taskcard exists"
+    4_generate_handoff: "Use /generate-execution-handoff to create structured handoff"
+    5_queue_for_execution: "Place handoff in reports/skills-r{N}/generated-handoffs/"
+    6_execute_via_skill: "Mainstream consumes handoff using the named skill_id"
+  skill_map:
+    commercial_dotnet:
+      api: add-dotnet-api
+      feature: add-dotnet-object-model-feature
+    foss_python:
+      api: add-python-api
+      feature: add-python-object-model-feature
+    cross_product:
+      export: add-dogfood-export
+      writer: add-same-format-writer-feature
+    testing:
+      roundtrip: add-roundtrip-test
+    packaging:
+      install_proof: package-install-proof
+      example: add-installed-package-example
+
+# ============================================================
+# RULE 2: Handoff generation standard
+# ============================================================
+handoff_standard:
+  description: >
+    Generated handoffs MUST include all required_handoff_fields
+    defined in the target skill's registry entry.
+  enforcement: required
+  generator: /generate-execution-handoff
+  required_output_fields:
+    - skill_id
+    - format_id
+    - exact_source_paths
+    - exact_test_paths
+    - ledger_entry_path
+    - focused_test_command
+  validation: "Handoff YAML must pass YAML lint and contain all fields"
+
+# ============================================================
+# RULE 3: Gap selection must reference matrix
+# ============================================================
+gap_selection:
+  description: >
+    Acceleration MUST select gaps from the POC target matrix, not
+    from ad-hoc sprint prompt interpretation.
+  enforcement: required
+  matrix_path: product-capability-matrix/poc-targets.yaml
+  selector: /select-poc-gap
+  traceability: "Each handoff MUST reference the matrix gap_id"
+
+# ============================================================
+# RULE 4: No direct source edits
+# ============================================================
+no_direct_edits:
+  description: >
+    The acceleration stream MUST NOT directly edit product source.
+    All source changes flow through mainstream via skill-routed handoffs.
+  enforcement: required
+  allowed_actions:
+    - generate handoffs
+    - promote gaps to taskcards
+    - select POC gaps
+    - update capability matrix (via /update-capability-matrix)
+  forbidden_actions:
+    - edit src/net/**
+    - edit src/python/**
+    - create new test files (delegate to mainstream)
+
+# ============================================================
+# FAILURE MODES
+# ============================================================
+failure_modes:
+  gap_without_skill_route:
+    grade_impact: OVERCLAIMED
+    reason: "Gap executed without skill routing"
+  handoff_missing_fields:
+    grade_impact: PARTIAL
+    reason: "Handoff generated but missing required fields"
+  direct_source_edit:
+    grade_impact: REJECTED
+    reason: "Acceleration stream edited product source directly"

@@ -1,0 +1,21 @@
+TOML delete_key Sample Output
+==============================
+Input config keys: server.host, server.port, server.debug, database.url, database.pool_size, logging.level, logging.file
+
+delete_key(config, 'server.debug'):
+  server: {'host': 'localhost', 'port': 8080}
+
+delete_key(config, 'logging'):
+  keys remaining: ['database', 'server']
+
+delete_key(config, 'server.port'):
+  server: {'host': 'localhost', 'debug': True}
+
+Original config unchanged (immutable operation):
+  server.debug still present: True
+
+Usage:
+  from toml.toml_codec import load_toml, write_toml, delete_key
+  data = load_toml('config.toml')
+  updated = delete_key(data, 'server.debug')
+  write_toml(updated, 'config.toml')

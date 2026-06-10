@@ -1,0 +1,34 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-REVIEW-R3-EVIDENCE-TRUST-AND-PRODUCT-QUALITY-001",
+  "run_id": "expert-review-r3",
+  "mode": "EVIDENCE_TRUST_AND_PRODUCT_QUALITY_HARDENING",
+  "current_state": "FINAL_IV",
+  "lanes_completed": [
+    "LANE_0_COORDINATOR",
+    "LANE_1_EVIDENCE_REPAIR",
+    "LANE_2_VALIDATORS",
+    "LANE_3_PYTHON_PACKAGING",
+    "LANE_4_DOTNET",
+    "LANE_5_PRODUCT_QUALITY",
+    "LANE_6_PROMPT_REPAIR",
+    "LANE_7_STATE_SYNC"
+  ],
+  "lanes_remaining": ["LANE_8_IV"],
+  "source_files_changed": [
+    "src/net/netpbm/NetpbmException.cs",
+    "src/net/netpbm/NetpbmParser.cs",
+    "src/net/netpbm/Model/NetpbmImage.cs"
+  ],
+  "test_files_added": [
+    "tests/supervisor/test_r3_prompt_path_validator.py"
+  ],
+  "cs1591_warnings_before": 19,
+  "cs1591_warnings_after": 0,
+  "dotnet_tests_pass": 465,
+  "python_tests_pass": 2402,
+  "nupkgs_built": 3,
+  "wheels_built": 10,
+  "evidence_bundle_built": false,
+  "terminal": false,
+  "last_updated": "2026-06-05T23:30:00Z"
+}

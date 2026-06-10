@@ -1,0 +1,20 @@
+{
+  "sprint_id": "FORMAT-FACTORY-EXPERT-MANUAL-SYSTEM-REVIEW-INVESTIGATE-AND-HEAL-001",
+  "dotnet_commercial": [
+    {"format": "FODS", "type": "commercial_net", "source": "src/net/fods/", "tests": "tests/net/fods/", "test_count": 547, "gate_11_status": "APPROVED_per_poc_targets", "csproj_description_stale": true},
+    {"format": "FODT", "type": "commercial_net", "source": "src/net/fodt/", "tests": "tests/net/fodt/", "test_count": 520, "gate_11_status": "APPROVED_per_poc_targets", "csproj_description_stale": true},
+    {"format": "NETPBM", "type": "commercial_net", "source": "src/net/netpbm/", "tests": "tests/net/netpbm/", "test_count": 465, "gate_11_status": "APPROVED_per_poc_targets", "csproj_description_stale": true}
+  ],
+  "python_foss": [
+    {"pkg": "zst", "source": "src/python/zst/", "write_funcs": [], "test_files": 23, "has_pyproject": false, "import_module": "zst"},
+    {"pkg": "sylk", "source": "src/python/sylk/", "write_funcs": ["write_sylk"], "test_files": 30, "has_pyproject": false, "import_module": "sylk"},
+    {"pkg": "dif", "source": "src/python/dif/", "write_funcs": ["write_dif"], "test_files": 20, "has_pyproject": false, "import_module": "dif"},
+    {"pkg": "abw", "source": "src/python/abw/", "write_funcs": ["create_abw","write_abw"], "test_files": 3, "has_pyproject": false, "import_module": "abw"},
+    {"pkg": "gnumeric", "source": "src/python/gnumeric/", "write_funcs": ["export_to_csv"], "test_files": 2, "has_pyproject": false, "import_module": "gnumeric"},
+    {"pkg": "pbm", "source": "src/python/pbm/", "write_funcs": ["write_pbm"], "test_files": 19, "has_pyproject": false, "import_module": "pbm"},
+    {"pkg": "pgm", "source": "src/python/pgm/", "write_funcs": ["write_pgm"], "test_files": 13, "has_pyproject": false, "import_module": "pgm"},
+    {"pkg": "ppm", "source": "src/python/ppm/", "write_funcs": ["write_ppm"], "test_files": 29, "has_pyproject": false, "import_module": "ppm"},
+    {"pkg": "fods_py", "source": "src/python/fods/", "write_funcs": ["export_fods_to_csv","write_fods"], "test_files": 34, "has_pyproject": false, "import_module": "fods"},
+    {"pkg": "fodt_py", "source": "src/python/fodt/", "write_funcs": ["write_fodt"], "test_files": 34, "has_pyproject": false, "import_module": "fodt"}
+  ]
+}

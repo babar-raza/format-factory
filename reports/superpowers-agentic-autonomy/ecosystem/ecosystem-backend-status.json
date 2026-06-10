@@ -1,0 +1,16 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001",
+  "generated": "2026-06-06",
+  "backends": [
+    {"backend": "SUPERPOWERS_LOCAL_PLUGIN", "status": "NOT_FOUND", "callable": false, "notes": ".claude/plugins/ absent. Governance intake required."},
+    {"backend": "SESSION_SKILL_TOOL", "status": "INSTALLED_NOT_CONFIGURED", "callable": "session-only", "notes": ".claude/commands/ has 25 files. Callable via Skill tool in session only. NOT external host."},
+    {"backend": "TASK_MASTER_MCP", "status": "CONFIG_ONLY", "callable": false, "notes": "L1 present, TASK_MASTER_API_KEY ABSENT → L5=false"},
+    {"backend": "MCP_SUPERPOWERS", "status": "CONFIG_ONLY", "callable": false, "notes": "L1 present, daemon UNKNOWN"},
+    {"backend": "COGNEE_MEMORY", "status": "NOT_FOUND", "callable": false, "notes": "import cognee fails. Memory recall = H1 only even if installed."},
+    {"backend": "SKILL_SEEKERS", "status": "NOT_FOUND", "callable": false, "notes": "Generated SKILL.md ≠ installed skill"},
+    {"backend": "LLM_API", "status": "CONFIG_PRESENT", "callable": false, "notes": "PROFESSIONALIZE_API_KEY PRESENT, ANTHROPIC absent, OPENAI PRESENT but codex disabled. Not yet wired for execution."},
+    {"backend": "LOCAL_DETERMINISTIC", "status": "VERIFIED_CALLABLE", "callable": true, "notes": "Always available. Python stdlib only."},
+    {"backend": "CLAUDE_CLI_OPTIONAL", "status": "FORBIDDEN_IN_SESSION", "callable": false, "notes": "CLI at /c/Users/prora/AppData/Roaming/npm/claude. CLAUDECODE=1 blocks invocation. External host only."},
+    {"backend": "MANUAL_EXTERNAL_GATE", "status": "ALWAYS_AVAILABLE", "callable": false, "notes": "Requires human action"}
+  ]
+}

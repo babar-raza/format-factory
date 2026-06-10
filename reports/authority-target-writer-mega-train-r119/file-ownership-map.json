@@ -1,0 +1,84 @@
+{
+  "sprint": "FORMAT-FACTORY-AUTHORITY-LAYERS-AND-TARGET-WRITER-MEGA-TRAIN-R119-001",
+  "generated": "2026-06-05",
+  "lanes": {
+    "lane_0_coordinator": [
+      "reports/authority-target-writer-mega-train-r119/00-preflight.md",
+      "reports/authority-target-writer-mega-train-r119/input-bundle-review.md",
+      "reports/authority-target-writer-mega-train-r119/amended-execution-plan.md",
+      "reports/authority-target-writer-mega-train-r119/lane-ownership.md",
+      "reports/authority-target-writer-mega-train-r119/file-ownership-map.json",
+      "reports/authority-target-writer-mega-train-r119/overlap-check.md",
+      "reports/authority-target-writer-mega-train-r119/taskcard-state.json",
+      "reports/authority-target-writer-mega-train-r119/command-ledger.json",
+      "reports/authority-target-writer-mega-train-r119/risk-register.md",
+      "reports/authority-target-writer-mega-train-r119/scoreboard.md",
+      "reports/authority-target-writer-mega-train-r119/review-package-proof.md",
+      ".local/evidences/authority-target-writer-mega-train-r119/evidence-declaration.yaml",
+      ".local/evidences/authority-target-writer-mega-train-r119/evidence-manifest.yaml"
+    ],
+    "lane_a_spec_r3c": [
+      "reports/authority-target-writer-mega-train-r119/spec-r3c-closure/spec-r3c-recheck.md",
+      "reports/authority-target-writer-mega-train-r119/spec-r3c-closure/spec-r3c-closure-repair.md",
+      "reports/authority-target-writer-mega-train-r119/spec-r3c-closure/rca-input-snapshot-confirmed.json",
+      "reports/authority-target-writer-mega-train-r119/spec-r3c-closure/review-package-proof-requirement-test.md"
+    ],
+    "lane_b_rca_r1": [
+      "reports/authority-target-writer-mega-train-r119/rca-r1-repair/rca-r1-recheck.md",
+      "reports/authority-target-writer-mega-train-r119/rca-r1-repair/evidence-quality-repair.md",
+      "reports/authority-target-writer-mega-train-r119/rca-r1-repair/raw-log-and-sample-output-proof.md",
+      "reports/authority-target-writer-mega-train-r119/rca-r1-repair/final-git-status.txt"
+    ],
+    "lane_c_csv_writer": [
+      "reports/authority-target-writer-mega-train-r119/target-writer-csv/csv-writer-implementation-report.md",
+      "reports/authority-target-writer-mega-train-r119/target-writer-csv/csv-writer-api-summary.md",
+      "reports/authority-target-writer-mega-train-r119/proposed-authority-updates/csv-writer-registry-patch.yaml"
+    ],
+    "lane_d_fods_csv": [
+      "reports/authority-target-writer-mega-train-r119/fods-csv-integration/fods-csv-integration-report.md",
+      "reports/authority-target-writer-mega-train-r119/fods-csv-integration/fods-csv-output-sample/",
+      "reports/authority-target-writer-mega-train-r119/fods-csv-integration/capability-delta-proposal.yaml"
+    ],
+    "lane_e_workahead": [
+      "reports/authority-target-writer-mega-train-r119/target-writer-workahead/next-writer-decision.md",
+      "reports/authority-target-writer-mega-train-r119/target-writer-workahead/txt-writer-mwp-plan.md",
+      "reports/authority-target-writer-mega-train-r119/target-writer-workahead/html-writer-mwp-plan.md",
+      "reports/authority-target-writer-mega-train-r119/target-writer-workahead/markdown-writer-mwp-plan.md"
+    ],
+    "lane_f_gap_policy": [
+      "reports/authority-target-writer-mega-train-r119/rca-gap-policy/gap-queue-policy-repair.md",
+      "reports/authority-target-writer-mega-train-r119/rca-gap-policy/corrected-mainstream-gap-queue.json",
+      "tests/requirement_capability_authority/test_r119_export_target_writer_policy.py"
+    ],
+    "lane_g_evidence": [
+      "reports/authority-target-writer-mega-train-r119/evidence-validation/evidence-validator-hardening.md",
+      "reports/authority-target-writer-mega-train-r119/evidence-validation/known-failure-regression-map.md",
+      "tests/supervisor/test_r119_evidence_detection.py"
+    ],
+    "lane_h_state": [
+      "reports/authority-target-writer-mega-train-r119/taskcards.json",
+      "reports/authority-target-writer-mega-train-r119/state/state-sync-report.md",
+      "reports/authority-target-writer-mega-train-r119/state/proposed-registry-updates.md",
+      "reports/authority-target-writer-mega-train-r119/state/proposed-capability-matrix-updates.md",
+      "reports/authority-target-writer-mega-train-r119/generated-next-prompt.md"
+    ],
+    "lane_i_workahead": [
+      "reports/authority-target-writer-mega-train-r119/workahead/odf-r4-readiness.md",
+      "reports/authority-target-writer-mega-train-r119/workahead/rca-next-fixtures.md",
+      "reports/authority-target-writer-mega-train-r119/workahead/target-writer-registry-model.md",
+      "reports/authority-target-writer-mega-train-r119/workahead/next-writer-readiness-matrix.json"
+    ],
+    "lane_j_iv": [
+      "reports/authority-target-writer-mega-train-r119/iv/final-adversarial-independent-verification.md",
+      "reports/authority-target-writer-mega-train-r119/iv/source-diff-review.md",
+      "reports/authority-target-writer-mega-train-r119/iv/test-rerun-report.md",
+      "reports/authority-target-writer-mega-train-r119/iv/internal-repair-loop-1.md"
+    ]
+  },
+  "overlap_conflicts": [],
+  "forbidden_paths_all_lanes": [
+    "product-capability-matrix/poc-targets.yaml",
+    "registry/format-registry.yaml",
+    "plans/master-plan.md"
+  ]
+}

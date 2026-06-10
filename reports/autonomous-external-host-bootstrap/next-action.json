@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "action_id": "HOST_SMOKE_001",
+  "action_type": "CLAUDE_PRINT_PROMPT",
+  "mode": "LIVE_NOOP_OR_SMOKE",
+  "prompt_path": "reports/autonomous-external-host-bootstrap/safe-smoke-prompt.md",
+  "allowed_write_roots": [
+    "reports/autonomous-external-host-bootstrap/smoke/"
+  ],
+  "forbidden_actions": [
+    "git commit",
+    "git push",
+    "publish",
+    "Gate approval",
+    "poc-targets mutation",
+    "src mutation",
+    "tests mutation"
+  ],
+  "expected_output_files": [
+    "reports/autonomous-external-host-bootstrap/smoke/host-created-proof.md"
+  ],
+  "success_marker": "HOST_CYCLE_SMOKE_OK",
+  "max_runtime_seconds": 120,
+  "next_on_success": "BUILD_EVIDENCE_PACKAGE",
+  "next_on_failure": "WRITE_HOST_BLOCKER"
+}

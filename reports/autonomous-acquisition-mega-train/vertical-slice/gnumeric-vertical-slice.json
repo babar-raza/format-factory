@@ -1,0 +1,45 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001",
+  "format": "Gnumeric",
+  "lane": "L5",
+  "slice_type": "FULL_ROUNDTRIP",
+  "slice_verdict": "COMPLETE",
+  "capabilities_before_sprint": [
+    "load",
+    "get_sheet_count",
+    "get_cell_count",
+    "extract_values",
+    "get_sheet_metadata",
+    "export_to_csv"
+  ],
+  "capabilities_after_sprint": [
+    "load",
+    "get_sheet_count",
+    "get_cell_count",
+    "extract_values",
+    "get_sheet_metadata",
+    "export_to_csv",
+    "probe_gnumeric",
+    "create_gnumeric",
+    "write_gnumeric"
+  ],
+  "new_capabilities": [
+    "probe_gnumeric",
+    "create_gnumeric",
+    "write_gnumeric"
+  ],
+  "roundtrip_proof": {
+    "step1_create": "create_gnumeric([{name: Results, rows: [[Name,Score],[Alice,95],[Bob,87]]}])",
+    "step2_write": "write_gnumeric(model, dest) => gzip-compressed XML, 200+ bytes",
+    "step3_probe": "probe_gnumeric(dest) => True",
+    "step4_load": "load(dest) => {is_gnumeric: True, sheet_count: 1, cell_count: 6}",
+    "step5_export": "export_to_csv(dest) => CSV with Name,Score header",
+    "roundtrip_complete": true
+  },
+  "test_coverage": {
+    "test_file": "tests/python/gnumeric/test_r119_gnumeric_probe_create_write.py",
+    "test_count": 40,
+    "pass_count": 40,
+    "fail_count": 0
+  }
+}

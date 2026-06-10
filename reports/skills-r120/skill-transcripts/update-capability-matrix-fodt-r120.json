@@ -1,0 +1,50 @@
+{
+  "skill_id": "update-capability-matrix",
+  "sprint_id": "FORMAT-FACTORY-DOGFOOD-MATRIX-RECONCILIATION-R120-001",
+  "invocation_timestamp": "2026-06-05T14:05:00Z",
+  "matrix_entry": "commercial_net_products.FODT",
+  "field_transitions": [
+    {
+      "field": "dogfood_status.fodt_to_txt_dotnet",
+      "old_value": "GAP_DOGFOOD_EXTERNAL",
+      "new_value": "IMPLEMENTED",
+      "evidence": "src/net/fodt/FodtTxtExporter.cs line 122: TxtWriter.WriteLinesToFile (FormatFactory.Txt delegation)"
+    },
+    {
+      "field": "dogfood_status.fodt_to_markdown_dotnet",
+      "old_value": "GAP_DOGFOOD_EXTERNAL",
+      "new_value": "IMPLEMENTED",
+      "evidence": "src/net/fodt/FodtMarkdownExporter.cs line 130: MarkdownWriter.WriteLinesToFile (FormatFactory.Markdown delegation)"
+    },
+    {
+      "field": "dogfood_status.target_ff_library_for_txt_dotnet",
+      "old_value": "(absent)",
+      "new_value": "FormatFactory.Txt.TxtWriter",
+      "evidence": "src/net/txt/TxtWriter.cs exists; src/net/txt/FormatFactory.Txt.csproj exists"
+    },
+    {
+      "field": "dogfood_status.target_ff_library_for_markdown_dotnet",
+      "old_value": "(absent)",
+      "new_value": "FormatFactory.Markdown.MarkdownWriter",
+      "evidence": "src/net/markdown/MarkdownWriter.cs exists; src/net/markdown/FormatFactory.Markdown.csproj exists"
+    },
+    {
+      "field": "dotnet_status.dotnet_tests",
+      "old_value": 493,
+      "new_value": 520,
+      "evidence": "dotnet test tests/net/fodt/FormatFactory.Fodt.Tests.csproj -v quiet: 520/520 PASS"
+    }
+  ],
+  "evidence_paths": [
+    "src/net/fodt/FodtTxtExporter.cs",
+    "src/net/fodt/FodtMarkdownExporter.cs",
+    "reports/r90/product-code-change-ledger.json (MWP-FODT-TXT-DOGFOOD-REFACTOR, MWP-FODT-MARKDOWN-DOGFOOD-REFACTOR)"
+  ],
+  "validation_command": "dotnet test tests/net/fodt/FormatFactory.Fodt.Tests.csproj -v quiet",
+  "validation_result": "520/520 PASS",
+  "authority_flags_unchanged": {
+    "commercial_product_ready": false,
+    "gate_11_g11g": "NOT_STARTED"
+  },
+  "verdict": "PASS"
+}

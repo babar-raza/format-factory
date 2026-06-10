@@ -1,0 +1,69 @@
+{
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001",
+  "sole_editor_rules": {
+    "tools/supervisor/select_poc_gaps.py": "Phase-A only",
+    "tools/supervisor/anti_skip_checker.py": "Phase-C only if needed",
+    "tests/supervisor/test_target_writer_dynamic_unblock.py": "Phase-B only",
+    "tests/supervisor/test_anti_skip_evidence_discovery.py": "Phase-C only if created",
+    "reports/unified-authority-integrated-poc-train/final-poc-readiness-dashboard.json": "Phase-G only"
+  },
+  "phase_output_files": {
+    "Phase-0": [
+      "reports/dotnet-target-writer-readiness-hardening/00-preflight.md",
+      "reports/dotnet-target-writer-readiness-hardening/current-git-status.txt",
+      "reports/dotnet-target-writer-readiness-hardening/dirty-state-classification.md",
+      "reports/dotnet-target-writer-readiness-hardening/dirty-state-classification.json",
+      "reports/dotnet-target-writer-readiness-hardening/file-ownership-map.json",
+      "reports/dotnet-target-writer-readiness-hardening/taskcard-state.json",
+      "reports/dotnet-target-writer-readiness-hardening/coordinator-log.md"
+    ],
+    "Phase-A": [
+      "tools/supervisor/select_poc_gaps.py",
+      "reports/dotnet-target-writer-readiness-hardening/target-writer-readiness-registry.json",
+      "reports/dotnet-target-writer-readiness-hardening/target-writer-readiness-registry.md",
+      "reports/dotnet-target-writer-readiness-hardening/dynamic-unblock-hardening.md"
+    ],
+    "Phase-B": [
+      "tests/supervisor/test_target_writer_dynamic_unblock.py",
+      "reports/dotnet-target-writer-readiness-hardening/raw-logs/dynamic-unblock-hardening-tests.log"
+    ],
+    "Phase-C": [
+      "reports/dotnet-target-writer-readiness-hardening/anti-skip-discovery-root-cause.md",
+      "reports/dotnet-target-writer-readiness-hardening/anti-skip-discovery-root-cause.json",
+      "tests/supervisor/test_anti_skip_evidence_discovery.py"
+    ],
+    "Phase-D": [
+      "reports/dotnet-target-writer-readiness-hardening/lane-execution-ledger.json",
+      "reports/dotnet-target-writer-readiness-hardening/skill-transcripts/"
+    ],
+    "Phase-E": [
+      "reports/dotnet-target-writer-readiness-hardening/capability-delta-proposals/",
+      "reports/dotnet-target-writer-readiness-hardening/poc-targets-proposed-delta.yaml",
+      "reports/dotnet-target-writer-readiness-hardening/poc-targets-proposed-delta.md"
+    ],
+    "Phase-F": [
+      "reports/dotnet-target-writer-readiness-hardening/proof-graph/nodes.jsonl",
+      "reports/dotnet-target-writer-readiness-hardening/proof-graph/edges.jsonl",
+      "reports/dotnet-target-writer-readiness-hardening/coverage-report.json",
+      "reports/dotnet-target-writer-readiness-hardening/gap-queue-after-hardening.json",
+      "reports/dotnet-target-writer-readiness-hardening/supervisor-verdict-packet.json",
+      "reports/dotnet-target-writer-readiness-hardening/poc-dashboard-reconciliation.json",
+      "reports/dotnet-target-writer-readiness-hardening/poc-dashboard-reconciliation.md"
+    ],
+    "Phase-G": [
+      "reports/unified-authority-integrated-poc-train/final-poc-readiness-dashboard.json",
+      "reports/unified-authority-integrated-poc-train/final-poc-candidate-iv.md"
+    ],
+    "Phase-H": [
+      "reports/dotnet-target-writer-readiness-hardening/raw-logs/writer-tests.log",
+      "reports/dotnet-target-writer-readiness-hardening/raw-logs/product-dogfood-tests.log",
+      "reports/dotnet-target-writer-readiness-hardening/raw-logs/routing-tests.log"
+    ],
+    "Phase-I": [
+      ".local/evidences/dotnet-target-writer-readiness-hardening/evidence-declaration.yaml",
+      ".local/evidences/dotnet-target-writer-readiness-hardening/evidence-manifest.yaml",
+      "reports/dotnet-target-writer-readiness-hardening/final-summary.md",
+      "reports/dotnet-target-writer-readiness-hardening/final-adversarial-independent-verification.md"
+    ]
+  }
+}

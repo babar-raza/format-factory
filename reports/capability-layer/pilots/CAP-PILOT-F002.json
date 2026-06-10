@@ -1,0 +1,53 @@
+{
+  "pilot_id": "CAP-PILOT-F002",
+  "format": "Gnumeric",
+  "product_type": "foss_reduced",
+  "authority_inputs": [
+    "product-capability-matrix/poc-targets.yaml (foss_reduced_products.Gnumeric)",
+    "acquisition-packs/gnumeric/pack.yaml"
+  ],
+  "source_files_inspected": [
+    "src/python/gnumeric/gnumeric_codec.py"
+  ],
+  "tests_inspected": 7,
+  "examples_inspected": "None",
+  "generated_capability_records": {
+    "count": 23,
+    "sample": "load, probe_gnumeric, create_gnumeric, write_gnumeric, export_to_csv, export_to_json, get_sheet_names, get_cell_value, set_cell_value"
+  },
+  "generated_gap_entries": {
+    "count": 0,
+    "summary": "All expected capabilities present"
+  },
+  "taskcards_created_or_updated": [
+    "CAP-PROD-004"
+  ],
+  "validator_result": {
+    "exit_code": 2,
+    "summary": "PASS advisory warnings only"
+  },
+  "test_result": {
+    "pass_count": 189,
+    "fail_count": 0,
+    "log_path": ""
+  },
+  "manual_agent_verification_result": {
+    "artifacts_opened": [
+      "src/python/gnumeric/gnumeric_codec.py"
+    ],
+    "key_checks": [
+      "set_cell_value present at lines 223-257",
+      "17 public functions",
+      "7 test files"
+    ],
+    "result": "VERIFIED — DEC-001: set_cell_value was already present"
+  },
+  "contradictions_found": [
+    "Plan said set_cell_value needed implementing - already present since R123"
+  ],
+  "repairs_performed": [
+    "plan-healing-decision-log.json DEC-001: corrected stale assumption"
+  ],
+  "final_verdict": "PASS_VERIFIED",
+  "verdict_reason": "Gnumeric FOSS fully implemented. set_cell_value already present (DEC-001). 189 tests pass."
+}

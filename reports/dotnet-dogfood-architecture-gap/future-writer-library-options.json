@@ -1,0 +1,17 @@
+[
+  {"option":"Alt-A","description":"Build format-factory-csv .NET writer library","recommended":true,
+   "unblocks":["fods_to_csv_dotnet"],"risk":"LOW",
+   "note":"fods_to_html_dotnet requires a SEPARATE format-factory-html .NET writer"},
+  {"option":"Alt-A2","description":"Build format-factory-html .NET writer library","recommended":false,
+   "unblocks":["fods_to_html_dotnet"],"risk":"LOW",
+   "note":"Independent of CSV writer; can be done in same sprint as Alt-A or separately"},
+  {"option":"Alt-B","description":"Build format-factory-markdown .NET writer library","recommended":false,
+   "unblocks":["fodt_to_markdown_dotnet"],"risk":"LOW","note":"Independent"},
+  {"option":"Alt-C","description":"Build format-factory-txt .NET writer library","recommended":false,
+   "unblocks":["fodt_to_txt_dotnet"],"risk":"LOW","note":"Independent"},
+  {"option":"Alt-D","description":"Build all four writers in one sprint","recommended":false,
+   "unblocks":["fods_to_csv_dotnet","fods_to_html_dotnet","fodt_to_markdown_dotnet","fodt_to_txt_dotnet"],
+   "risk":"MEDIUM","note":"Higher effort, higher risk"},
+  {"option":"Alt-E","description":"Defer .NET dogfood, advance safe alternatives","recommended":false,
+   "unblocks":[],"risk":"LOW","note":"SYLK/Netpbm/examples advance while architecture decision pending"}
+]

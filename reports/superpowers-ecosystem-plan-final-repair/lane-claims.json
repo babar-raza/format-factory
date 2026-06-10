@@ -1,0 +1,140 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-ECOSYSTEM-PLAN-FINAL-REPAIR-001",
+  "generated": "2026-06-06",
+  "lanes": [
+    {
+      "lane_id": "TC-FR-000",
+      "owner": "Coordinator",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/00-preflight.md",
+        "reports/superpowers-ecosystem-plan-final-repair/execution-state.json",
+        "reports/superpowers-ecosystem-plan-final-repair/lane-claims.json",
+        "reports/superpowers-ecosystem-plan-final-repair/file-overlap-check.json",
+        "reports/superpowers-ecosystem-plan-final-repair/touched-files-ledger.jsonl",
+        "reports/superpowers-ecosystem-plan-final-repair/validation-command-ledger.json",
+        "reports/superpowers-ecosystem-plan-final-repair/taskcards/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/", "AGENTS.md", "GOVERNANCE.md"],
+      "allowed_read_execute": ["tools/supervisor/"],
+      "shared_files": [],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-001",
+      "owner": "Lane 1",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/runtime-verification/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "allowed_read_execute": ["tools/supervisor/"],
+      "shared_files": ["execution-state.json (read-only from this lane)"],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-002",
+      "owner": "Lane 2",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/scope/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "shared_files": [],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-003",
+      "owner": "Lane 3",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/setup-classification/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "shared_files": [],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-004",
+      "owner": "Lane 4",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/taskcard-model/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "shared_files": [],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-005",
+      "owner": "Lane 5",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/swarm/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "shared_files": [],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-006",
+      "owner": "Lane 6",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/verification/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "shared_files": [],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-007",
+      "owner": "Lane 7",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/rollback/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "shared_files": [],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-008",
+      "owner": "Lane 8",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/superpowers/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "shared_files": [],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-009",
+      "owner": "Lane 9",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/final-handoff/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "shared_files": [],
+      "dependencies": ["TC-FR-001", "TC-FR-002", "TC-FR-003", "TC-FR-004", "TC-FR-005", "TC-FR-006", "TC-FR-007", "TC-FR-008"],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-010",
+      "owner": "Lane 10",
+      "owned_paths": [
+        "reports/superpowers-ecosystem-plan-final-repair/iv/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "shared_files": [],
+      "dependencies": ["TC-FR-009"],
+      "status": "TODO"
+    },
+    {
+      "lane_id": "TC-FR-011",
+      "owner": "Lane 11",
+      "owned_paths": [
+        ".local/evidences/superpowers-ecosystem-plan-final-repair/",
+        ".local/supervisor/reviews/superpowers-ecosystem-plan-final-repair/"
+      ],
+      "forbidden_paths": ["src/", "tools/supervisor/", "tests/", "registry/"],
+      "allowed_read_execute": ["tools/supervisor/"],
+      "shared_files": [],
+      "dependencies": ["TC-FR-000", "TC-FR-001", "TC-FR-002", "TC-FR-003", "TC-FR-004", "TC-FR-005", "TC-FR-006", "TC-FR-007", "TC-FR-008", "TC-FR-009", "TC-FR-010"],
+      "status": "TODO"
+    }
+  ],
+  "overlap_check": "PASS - no two lanes share owned_paths"
+}

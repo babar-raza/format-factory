@@ -1,0 +1,18 @@
+taskcard_id: ROUTE-REENTRY-005
+title: "Validator 11 current-run BLOCK / legacy WARN split"
+status: IN_PROGRESS
+owner_lane: supervisor
+allowed_files:
+  - "tools/supervisor/governance_validators.py"
+forbidden_files:
+  - "src/"
+dependencies:
+  - "ROUTE-REENTRY-003"
+gates: []
+evidence_paths:
+  - ".local/evidences/route-aware-product-reentry-20260610-001030-e382e5f/"
+tests:
+  - "tests/supervisor/test_governance_validators.py"
+  - "tests/supervisor/test_autonomy_routing_integration.py"
+rollback_notes: "Revert changes to allowed_files only"
+closeout_criteria: "Validator 11 BLOCKs current-run source-mutating missing route_decision_id; WARNs legacy only"

@@ -1,0 +1,27 @@
+# Proposed Registry Patch — FormatFactory.Csv
+# Sprint: FORMAT-FACTORY-AUTHORITY-LAYERS-AND-TARGET-WRITER-MEGA-TRAIN-R119-001
+# Status: PROPOSED (not yet applied — requires coordinator review and human approval)
+# DO NOT directly mutate registry/format-registry.yaml
+
+proposed_additions:
+  - writer_id: "ff-csv-writer-net-001"
+    target_format: "csv"
+    library_name: "FormatFactory.Csv"
+    library_path: "src/net/csv/FormatFactory.Csv.csproj"
+    language: "dotnet"
+    api_entrypoint: "FormatFactory.Csv.CsvWriter"
+    public_methods:
+      - "WriteRows(IEnumerable<IEnumerable<string?>> rows) : string"
+      - "WriteRowsToFile(IEnumerable<IEnumerable<string?>> rows, string path) : void"
+      - "EscapeField(string? value) : string"
+    tests:
+      - "tests/net/csv/CsvWriterTests.cs"
+    source_products_consuming:
+      - product: "FormatFactory.Fods"
+        exporter: "FodsCsvExporter"
+        wired: true
+        tests: "tests/net/fods/FodsCsvExporterTests.cs"
+    status: "MWP_IMPLEMENTED_NOT_RELEASE_READY"
+    commercial_product_ready: false
+    gate_11_approved: false
+    notes: "MWP implementation. RFC 4180 compatible. No new deps. net10.0."

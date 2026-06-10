@@ -1,0 +1,20 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "odt",
+  "api_name": "parse_odt,parse_odt_strict,probe_odt,get_capabilities",
+  "sprint_run_id": "mainstream-product-deepening-rnext10",
+  "changed_files": [
+    "src/python/odt/__init__.py",
+    "tests/python/odt/test_mdr10_odt_exports.py"
+  ],
+  "test_results": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "ledger_entry_id": "MDR10-ODT-EXPORTS-001",
+  "ledger_validator": "PASS",
+  "verdict": "PASS",
+  "notes": "Exported parse_odt, parse_odt_strict, probe_odt, get_capabilities + OdtDocument, OdtParagraph, OdtHeading, OdtListItem, OdtError types from odt_parser.py via odt/__init__.py. 8/8 tests pass."
+}

@@ -1,0 +1,20 @@
+{
+  "skill_id": "add-python-api",
+  "format_id": "xcf",
+  "api_name": "parse_xcf,parse_xcf_strict,probe_xcf,get_capabilities",
+  "sprint_run_id": "mainstream-product-deepening-rnext11",
+  "changed_files": [
+    "src/python/xcf/__init__.py",
+    "tests/python/xcf/test_mdr11_xcf_exports.py"
+  ],
+  "test_results": {
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "errors": 0
+  },
+  "ledger_entry_id": "MDR11-XCF-EXPORTS-001",
+  "ledger_validator": "PASS",
+  "verdict": "PASS",
+  "notes": "Exported parse_xcf, parse_xcf_strict, probe_xcf, get_capabilities + XcfImage and error types from xcf_parser.py via xcf/__init__.py. 8/8 tests pass including dimension checks on fixture files."
+}

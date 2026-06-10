@@ -69,7 +69,11 @@ class TestSampleOutputDetectionRepair:
         sample_file.parent.mkdir(parents=True)
         sample_file.write_text('{"result": "pass"}')
 
+        # Must include a PRODUCT_SOURCE item so GRE-TC-003 exemption does not fire
         declaration = {
+            "planned_work_items": [
+                {"item_id": "WI-001", "title": "Implement feature", "item_type": "PRODUCT_SOURCE"},
+            ],
             "evidence_artifacts": [
                 {"path": str(sample_file), "type": "sample_output"},
             ]

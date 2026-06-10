@@ -1,0 +1,65 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-R2-VERIFIED-ROUTING-CYCLE-ENFORCEMENT-AND-CROSS-STREAM-CONSUMPTION-001",
+  "source_sprint": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-INTEGRATION-001",
+  "contradictions": [
+    {
+      "id": "CONT-01",
+      "type": "EVIDENCE_QUALITY_ZERO",
+      "description": "Supervisor review says autonomous_continue=True but stop_reason='Evidence quality: 0% verified'",
+      "review_says": "autonomous_continue=True",
+      "signal_says": "stop_reason=Evidence quality: 0% verified (at time of R1 cycle)",
+      "current_signal": "autonomous_continue=True, continuation_state=YES_WITH_LIMITATIONS (from skills sprint)",
+      "resolution": "Fix in R2 by adding raw logs to raise evidence_quality_score > 0.0",
+      "severity": "high",
+      "blocking": false
+    },
+    {
+      "id": "CONT-02",
+      "type": "DIRTY_STATE_UNCLASSIFIED",
+      "description": "git_status_final declared in R1 but anti-skip reports has_classification=false",
+      "review_says": "dirty_state_classification present in declaration as a string",
+      "anti_skip_says": "has_classification=false",
+      "resolution": "Fix in R2 by adding dirty_state_classification as structured dict in declaration",
+      "severity": "medium",
+      "blocking": false
+    },
+    {
+      "id": "CONT-03",
+      "type": "WRONG_STREAM_NEXT_SPRINT",
+      "description": "Global next-sprint.md targets mainstream stream, not supervisor stream",
+      "current_state": "reports/supervisor/next-sprint.md targets mainstream",
+      "target_state": "Should contain supervisor stream guidance or be left to skills sprint's continuation",
+      "resolution": "Anti-skip violation is non-blocking; supervisor stream has stream-local authority files",
+      "severity": "medium",
+      "blocking": false
+    },
+    {
+      "id": "CONT-04",
+      "type": "MISSING_RAW_LOGS",
+      "description": "53 tests claimed passed but no raw log files in R1 evidence",
+      "resolution": "Fixed in R2 Lane B — 5 raw log files captured",
+      "severity": "medium",
+      "status": "RESOLVED_IN_R2"
+    },
+    {
+      "id": "CONT-05",
+      "type": "MISSING_LANE_LEDGER",
+      "description": "No lane-execution-ledger found in R1 evidence",
+      "resolution": "Fixed in R2 Lane C — lane-execution-ledger.yaml created",
+      "severity": "medium",
+      "status": "RESOLVED_IN_R2"
+    },
+    {
+      "id": "CONT-06",
+      "type": "MISSING_SAMPLE_OUTPUTS",
+      "description": "Anti-skip found 0 sample outputs, requires 1+",
+      "resolution": "Fixed in R2 Lane C — sample-outputs/ directory created",
+      "severity": "low",
+      "status": "RESOLVED_IN_R2"
+    }
+  ],
+  "total_contradictions": 6,
+  "resolved_in_r2": 3,
+  "remaining": 3,
+  "remaining_items": ["CONT-01 (partial fix)", "CONT-02", "CONT-03"]
+}

@@ -1,0 +1,74 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001",
+  "validated_at": "2026-06-04T12:00:00Z",
+  "packet_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+  "handoff_path": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+  "overall_result": "PASS",
+  "field_checks": [
+    {"field": "packet_version", "present": true, "value": "1.0", "result": "PASS"},
+    {"field": "sprint_id", "present": true, "result": "PASS"},
+    {"field": "selected_product_gap", "present": true, "value": "GAP-FODS-DOGFOOD-CSV-DOTNET-001", "result": "PASS"},
+    {"field": "recommended_skill", "present": true, "value": "add-dotnet-api", "result": "PASS"},
+    {"field": "generated_handoff_path", "present": true, "exists_on_disk": true, "result": "PASS"},
+    {"field": "template_path", "present": true, "exists_on_disk": true, "result": "PASS"},
+    {"field": "allowed_files", "present": true, "count": 4, "result": "PASS"},
+    {"field": "forbidden_files", "present": true, "count": 6, "result": "PASS"},
+    {"field": "required_transcript_fields", "present": true, "count": 9, "result": "PASS"},
+    {"field": "expected_source_diff", "present": true, "result": "PASS"},
+    {"field": "expected_tests", "present": true, "result": "PASS"},
+    {"field": "expected_raw_logs", "present": true, "result": "PASS"},
+    {"field": "expected_ledger_entry", "present": true, "result": "PASS"},
+    {"field": "expected_capability_matrix_update", "present": true, "result": "PASS_WITH_NOTE"},
+    {"field": "expected_evidence_manifest_entry", "present": true, "result": "PASS"},
+    {"field": "acceptance_criteria", "present": true, "count": 5, "result": "PASS"},
+    {"field": "downgrade_rules", "present": true, "count": 2, "result": "PASS"},
+    {"field": "auto_repair_guidance", "present": true, "result": "PASS"}
+  ],
+  "safety_checks": [
+    {
+      "check": "allowed_files_are_narrow",
+      "result": "PASS",
+      "notes": "3 explicit files: FodsDocument.cs, FodsWorkbook.cs, FodsR114ExportToCsvTests.cs"
+    },
+    {
+      "check": "forbidden_files_include_registry",
+      "result": "PASS",
+      "notes": "registry/format-registry.yaml in forbidden"
+    },
+    {
+      "check": "forbidden_files_include_master_plan",
+      "result": "PASS",
+      "notes": "plans/master-plan.md in forbidden"
+    },
+    {
+      "check": "forbidden_files_include_poc_targets",
+      "result": "PASS",
+      "notes": "product-capability-matrix/poc-targets.yaml in forbidden"
+    },
+    {
+      "check": "forbidden_files_include_vscode",
+      "result": "PASS",
+      "notes": ".vscode/mcp.json in forbidden"
+    },
+    {
+      "check": "forbidden_files_include_policies",
+      "result": "PASS",
+      "notes": ".supervisor/policies.yaml in forbidden"
+    },
+    {
+      "check": "capability_matrix_update_is_proposed_not_mandatory",
+      "result": "PASS_WITH_NOTE",
+      "notes": "Current packet says IMPLEMENTED (direct). Hardening: future packets should use proposed_delta. Downgrade rule fires if missing, so not a blocking failure."
+    }
+  ],
+  "handoff_validation": {
+    "mode": "dry-run",
+    "skill_id_present": true,
+    "allowed_files_present": true,
+    "forbidden_files_present": true,
+    "rollback_note_present": true,
+    "enforcement_tier": "FAIL_CLOSED",
+    "result": "PASS"
+  },
+  "verdict": "FODS_CSV_PACKET_SAFE_FOR_MAINSTREAM_CONSUMPTION"
+}

@@ -1,0 +1,58 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001",
+  "scan_phase": "POST_EXECUTION",
+  "total_candidates": 5,
+  "pre_execution_actionable": 4,
+  "post_execution_actionable": 0,
+  "tasks_executed": [
+    {
+      "task_id": "h8-probe-gnumeric-001",
+      "function_name": "probe_gnumeric",
+      "target_file": "src/python/gnumeric/gnumeric_codec.py",
+      "capability_added": "FORMAT_DETECTION",
+      "status": "IMPLEMENTED",
+      "lane": "L4"
+    },
+    {
+      "task_id": "h9-gnumeric-create-001",
+      "function_name": "create_gnumeric",
+      "target_file": "src/python/gnumeric/gnumeric_codec.py",
+      "capability_added": "DOCUMENT_CREATION",
+      "status": "IMPLEMENTED",
+      "lane": "L4"
+    },
+    {
+      "task_id": "h9-gnumeric-write-001",
+      "function_name": "write_gnumeric",
+      "target_file": "src/python/gnumeric/gnumeric_codec.py",
+      "capability_added": "DOCUMENT_WRITE",
+      "status": "IMPLEMENTED",
+      "lane": "L4"
+    },
+    {
+      "task_id": "h9-abw-txt-export-001",
+      "function_name": "export_to_txt",
+      "target_file": "src/python/abw/abw_codec.py",
+      "capability_added": "PLAIN_TEXT_EXPORT",
+      "status": "IMPLEMENTED",
+      "lane": "L4"
+    }
+  ],
+  "tasks_pre_existing_done": [
+    {
+      "task_id": "h8-probe-abw-001",
+      "function_name": "probe_abw",
+      "target_file": "src/python/abw/abw_codec.py",
+      "status": "ALREADY_IMPLEMENTED",
+      "sprint_added": "H6"
+    }
+  ],
+  "new_capabilities_this_sprint": [
+    "Gnumeric FORMAT_DETECTION (probe_gnumeric)",
+    "Gnumeric DOCUMENT_CREATION (create_gnumeric)",
+    "Gnumeric DOCUMENT_WRITE (write_gnumeric)",
+    "ABW PLAIN_TEXT_EXPORT (export_to_txt)"
+  ],
+  "vertical_slice_complete": "Gnumeric — probe + create + write (full roundtrip)",
+  "no_safe_task_found": false
+}

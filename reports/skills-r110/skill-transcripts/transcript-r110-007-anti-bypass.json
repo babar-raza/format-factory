@@ -1,0 +1,21 @@
+{
+  "invocation_id": "r110-anti-bypass-007",
+  "skill_id": "add-python-api",
+  "mode": "anti-bypass-demo",
+  "inputs": {
+    "format_id": "ppm",
+    "api_name": "pixel_edit_roundtrip",
+    "exact_source_paths": ["src/python/ppm/ppm_writer.py"],
+    "exact_test_paths": ["tests/python/ppm/test_ppm_roundtrip.py"],
+    "focused_test_command": "pytest tests/python/ppm/test_ppm_roundtrip.py",
+    "ledger_entry_path": "reports/r-next/product-code-change-ledger.json",
+    "bypass_attempt": "Worker submitted without ledger_entry_id for foss_python track"
+  },
+  "allowed_files": ["src/python/ppm/ppm_writer.py"],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "ledger_entry_id": null,
+  "result": "FAIL",
+  "timestamp": "2026-06-03T23:21:00Z",
+  "notes": "Anti-bypass: enforcement caught missing ledger_entry_id. FAIL is intentional."
+}

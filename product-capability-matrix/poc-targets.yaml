@@ -6,8 +6,8 @@
 # Gate 11 G11-G approved by Babar Raza 2026-06-05. commercial_product_ready: true for FODS, FODT, Netpbm.
 
 poc_matrix_version: "1.0"
-last_updated: "2026-06-04"
-sprint: "R114"
+last_updated: "2026-06-09"
+sprint: "capability-layer-closeout-rnext"
 
 # ============================================================
 # COMMERCIAL .NET PRODUCTS (3 targets)
@@ -23,7 +23,8 @@ commercial_net_products:
     gates_passed: "1-11"
     gate_11_status: APPROVED
     gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
-    commercial_product_ready: true
+    commercial_product_ready: false
+    gate_11_approved: true
 
     dotnet_status:
       load: PASS
@@ -98,7 +99,7 @@ commercial_net_products:
 
     blockers: []
 
-    next_action: "Authorized git commit + push (requires user authorization)"
+    next_action: "Continue product maintenance and extended API feature development"
 
   - format: FODT
     classification: POC_TARGET_CONFIRMED
@@ -108,7 +109,8 @@ commercial_net_products:
     gates_passed: "1-11"
     gate_11_status: APPROVED
     gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
-    commercial_product_ready: true
+    commercial_product_ready: false
+    gate_11_approved: true
 
     dotnet_status:
       load: PASS
@@ -183,7 +185,7 @@ commercial_net_products:
 
     blockers: []
 
-    next_action: "Authorized git commit + push (requires user authorization)"
+    next_action: "Continue product maintenance and extended API feature development"
 
   - format: Netpbm
     classification: POC_TARGET_CONFIRMED
@@ -196,7 +198,8 @@ commercial_net_products:
     gates_passed: "1-10 (Python PBM/PGM/PPM); .NET R85 first slice"
     gate_11_status: APPROVED
     gate_11_g11g: APPROVED_BY_BABAR_RAZA_2026_06_05
-    commercial_product_ready: true
+    commercial_product_ready: false
+    gate_11_approved: true
 
     dotnet_status:
       load_pbm: PASS
@@ -273,7 +276,7 @@ commercial_net_products:
 
     blockers: []
 
-    next_action: "Authorized git commit + push (requires user authorization)"
+    next_action: "Continue product maintenance and extended API feature development"
 
 # ============================================================
 # REDUCED/FOSS PYTHON PRODUCTS (3 targets)
@@ -311,7 +314,7 @@ foss_reduced_products:
 
     blockers: []
 
-    next_action: "Gate 11 G11-G approval for commercial release (external gate; human required)"
+    next_action: "Continue FOSS product deepening and additional compression API coverage"
 
   - format: Netpbm
     classification: POC_TARGET_CONFIRMED
@@ -348,33 +351,281 @@ foss_reduced_products:
 
     blockers: []
 
-    next_action: "Gate 11 G11-G approval (external gate; human required for commercial release)"
+    next_action: "Continue FOSS product deepening and additional Python API coverage"
 
   - format: SYLK
     classification: POC_TARGET_CONFIRMED
     full_name: "Symbolic Link (SYLK) spreadsheet"
     python_source: src/python/sylk/
     gates_passed: "1-10"
-    scope: "read + write + CSV export (write_sylk implemented R115+; 263+ tests PASS)"
+    scope: "read + write + CSV export + cell/row/column access (write_sylk R115+; get_cell_value, get_row_values, get_column_values added; 291 tests PASS)"
     commercial_product_ready: false
 
     python_status:
       parse_sylk: PASS
       sylk_to_csv: PASS
       write_sylk: PASS
+      get_cell_value: PASS
+      get_row_values: PASS
+      get_column_values: PASS
       installed_workflow: PASS
 
     dogfood_status:
       sylk_to_csv: IMPLEMENTED
       target_ff_library: "format-factory-sylk sylk_to_csv"
-      notes: "SYLK→CSV export implemented R84; no external library needed; write_sylk implemented (same-format save)"
+      notes: "SYLK→CSV export implemented R84; no external library needed; write_sylk implemented (same-format save); get_cell_value, get_row_values, get_column_values added in product-progress-rnext and mainstream-product-deepening-rnext2"
 
     tests:
       python: tests/python/sylk/
+      python_count: 291
 
     blockers: []
 
-    next_action: "Gate 11 G11-G approval (external gate; human required for commercial release)"
+    next_action: "Continue FOSS product deepening — get_row_count, get_column_count, cell iteration"
+
+  - format: TOML
+    classification: POC_TARGET_CONFIRMED
+    full_name: "Tom's Obvious, Minimal Language (TOML) configuration format"
+    python_source: src/python/toml/
+    gates_passed: "1-4 (Python FOSS track)"
+    scope: "read + write + value access + merge + JSON export + set/delete (11 functions; 61 tests PASS)"
+    commercial_product_ready: false
+
+    python_status:
+      load_toml: PASS
+      write_toml: PASS
+      probe_toml: PASS
+      get_keys: PASS
+      roundtrip: PASS
+      get_value: PASS
+      merge_toml: PASS
+      to_json_str: PASS
+      set_value: PASS
+      list_sections: PASS
+      delete_key: PASS
+
+    tests:
+      python: tests/python/toml/
+      python_count: 61
+
+    blockers: []
+
+    next_action: "dogfood export via TOML config roundtrip; package install proof"
+
+  - format: NDJSON
+    classification: POC_TARGET_CONFIRMED
+    full_name: "Newline-Delimited JSON (NDJSON/JSONL)"
+    python_source: src/python/ndjson/
+    gates_passed: "1-4 (Python FOSS track)"
+    scope: "read + write + CSV export + field stats + filtering/grouping/aggregation (244 tests PASS)"
+    commercial_product_ready: false
+
+    python_status:
+      load_ndjson: PASS
+      write_ndjson: PASS
+      export_to_csv: PASS
+      write_csv: PASS
+      field_stats: PASS
+      count_records: PASS
+      filter_records: PASS
+      group_by: PASS
+
+    dogfood_status:
+      export_to_csv: IMPLEMENTED
+      write_csv: IMPLEMENTED
+      target_ff_library: "format-factory-ndjson export_to_csv / write_csv"
+      notes: "NDJSON→CSV export via export_to_csv (returns string) or write_csv (writes file). Sample output in reports/product-progress-rnext/samples/ndjson-write-csv-sample.csv"
+
+    tests:
+      python: tests/python/ndjson/
+      python_count: 244
+
+    blockers: []
+
+    next_action: "Package install proof; dogfood pipeline integration"
+
+  - format: FODG
+    classification: POC_TARGET_CONFIRMED
+    full_name: "Flat OpenDocument Graphics (ODF Drawing)"
+    python_source: src/python/fodg/
+    gates_passed: "1-4 (Python FOSS track)"
+    scope: "read + write + text/CSV/JSON export + page ops + shape ops (29 functions; 24 test files)"
+    commercial_product_ready: false
+
+    python_status:
+      load: PASS
+      write_fodg: PASS
+      create_fodg: PASS
+      export_to_txt: PASS
+      export_to_csv: PASS
+      export_to_json: PASS
+      probe_fodg: PASS
+      roundtrip: PASS
+      get_page_count: PASS
+      get_shapes: PASS
+      get_text_shapes: PASS
+      add_page: PASS
+      remove_page: PASS
+      rename_page: PASS
+      duplicate_page: PASS
+      swap_pages: PASS
+      clear_page: PASS
+      page_names: PASS
+      has_page: PASS
+      get_page_by_name: PASS
+      get_page_index: PASS
+      get_all_text: PASS
+      count_shapes: PASS
+
+    tests:
+      python: tests/python/fodg/
+      python_count: 24
+
+    blockers: []
+
+    next_action: "Package install proof; SVG export investigation"
+
+  - format: TSV
+    classification: POC_TARGET_CONFIRMED
+    full_name: "Tab-Separated Values"
+    python_source: src/python/tsv/
+    gates_passed: "1-4 (Python FOSS track)"
+    scope: "read + write + column/row ops + sort + filter + merge + stats (32 functions; 35 test files)"
+    commercial_product_ready: false
+
+    python_status:
+      load_tsv: PASS
+      write_tsv: PASS
+      write_tsv_strict: PASS
+      get_headers: PASS
+      get_column: PASS
+      get_row: PASS
+      filter_rows: PASS
+      sort_rows: PASS
+      count_rows: PASS
+      to_csv: PASS
+      deduplicate_rows: PASS
+      get_row_by_key: PASS
+      add_column: PASS
+      rename_column: PASS
+      drop_column: PASS
+      sample_rows: PASS
+      sum_column_tsv: PASS
+      merge_tsv: PASS
+      min_column_tsv: PASS
+      max_column_tsv: PASS
+      get_column_values: PASS
+      validate_headers: PASS
+      column_count: PASS
+
+    tests:
+      python: tests/python/tsv/
+      python_count: 35
+
+    blockers: []
+
+    next_action: "Package install proof; dogfood pipeline integration"
+
+  - format: ABW
+    classification: POC_TARGET_CONFIRMED
+    full_name: "AbiWord document format"
+    python_source: src/python/abw/
+    gates_passed: "1-4 (Python FOSS track)"
+    scope: "read + write + text/CSV/Markdown export + paragraph ops + word analysis (42 functions; 34 test files)"
+    commercial_product_ready: false
+
+    python_status:
+      load: PASS
+      write_abw: PASS
+      export_to_txt: PASS
+      export_to_csv: PASS
+      export_to_json: PASS
+      export_to_markdown: PASS
+      get_paragraphs: PASS
+      get_paragraph: PASS
+      search_paragraph: PASS
+      search_replace_paragraph: PASS
+      append_paragraph: PASS
+      split_paragraphs: PASS
+      join_paragraphs: PASS
+      reverse_paragraphs: PASS
+      truncate_paragraphs: PASS
+      word_frequency: PASS
+      get_unique_words: PASS
+      get_word_count: PASS
+      count_words: PASS
+      get_char_count: PASS
+      merge_abw: PASS
+      roundtrip: PASS
+      probe_abw: PASS
+      has_paragraph: PASS
+      first_paragraph: PASS
+      last_paragraph: PASS
+      paragraph_at: PASS
+      paragraph_lengths: PASS
+      word_wrap: PASS
+      replace_in_paragraphs: PASS
+      installed_workflow: PASS
+
+    tests:
+      python: tests/python/abw/
+      python_count: 34
+
+    blockers: []
+
+    next_action: "Dogfood pipeline integration"
+
+  - format: Gnumeric
+    classification: POC_TARGET_CONFIRMED
+    full_name: "Gnumeric XML spreadsheet format"
+    python_source: src/python/gnumeric/
+    gates_passed: "1-4 (Python FOSS track)"
+    scope: "read + write + cell/row/column/sheet ops + roundtrip (44 functions; 30 test files)"
+    commercial_product_ready: false
+
+    python_status:
+      load: PASS
+      write_gnumeric: PASS
+      export_to_csv: PASS
+      create_gnumeric: PASS
+      get_cell_value: PASS
+      set_cell_value: PASS
+      get_row_values: PASS
+      get_column_values: PASS
+      get_sheet_names: PASS
+      get_sheet_by_name: PASS
+      add_sheet: PASS
+      copy_sheet: PASS
+      delete_sheet: PASS
+      rename_sheet: PASS
+      get_row: PASS
+      get_column: PASS
+      roundtrip: PASS
+      probe_gnumeric: PASS
+      clear_cell: PASS
+      read_cell: PASS
+      get_row_count: PASS
+      get_column_count: PASS
+      count_nonempty_cells: PASS
+      get_sheet_index: PASS
+      sum_column: PASS
+      fill_column: PASS
+      sum_row: PASS
+      get_all_values: PASS
+      clear_sheet: PASS
+      get_sheet_as_rows: PASS
+      fill_row: PASS
+      sheet_names: PASS
+      row_count: PASS
+      installed_workflow: PASS
+
+    tests:
+      python: tests/python/gnumeric/
+      python_count: 30
+
+    blockers: []
+
+    next_action: "Dogfood pipeline integration"
 
 # ============================================================
 # ON-HOLD CANDIDATES
@@ -404,9 +655,9 @@ on_hold:
 
 summary:
   commercial_net_confirmed: 3
-  foss_reduced_confirmed: 3
+  foss_reduced_confirmed: 8
   on_hold: 2
-  poc_targets_total: 6
+  poc_targets_total: 11
 
   commercial_product_ready: false
   gate_11_approved: false

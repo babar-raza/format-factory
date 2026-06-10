@@ -1,0 +1,90 @@
+{
+  "sprint_id": "FORMAT-FACTORY-FULL-AUTONOMOUS-SYSTEM-AUDIT-AND-REPAIR-001",
+  "failures": [
+    {
+      "sprint": "R84",
+      "failure": "Unified train stopped after iteration 1",
+      "root_cause": "No proof graph link from product work; claims_checked=0; missing raw logs/lane ledger/sample outputs",
+      "affected_component": "Autonomous POC Controller, Anti-Skip Checker",
+      "status": "PARTIALLY_FIXED",
+      "regression_test": "test_end_to_end_autonomous_loop.py scenario 1"
+    },
+    {
+      "sprint": "R85",
+      "failure": "Autonomous controller improved but still stopped before POC-ready",
+      "root_cause": "Product-code ledger missing R116; capability deltas incomplete; proof graph packaging thin",
+      "affected_component": "POC Readiness Gate",
+      "status": "PARTIALLY_FIXED",
+      "regression_test": "test_proof_backed_poc_gate.py"
+    },
+    {
+      "sprint": "R88",
+      "failure": "Terminal POC-ready claim contradicted by dashboard/continuation signal",
+      "root_cause": "Human-gate wording in generated prompts treated as local implementation blocker; evidence-quality false stop",
+      "affected_component": "Next-Sprint Generator, Stop Reason Adjudicator",
+      "status": "PARTIALLY_FIXED",
+      "regression_test": "test_next_sprint_false_stop_regression.py"
+    },
+    {
+      "sprint": "R89",
+      "failure": "Dogfood direction corrected; target writer architecture gap",
+      "root_cause": "'human approval required' wrongly treated as local implementation blocker",
+      "affected_component": "Stop Reason Adjudicator, Next-Sprint Generator",
+      "status": "FIXED",
+      "regression_test": "test_stop_reason_adjudicator.py"
+    },
+    {
+      "sprint": "R91",
+      "failure": "Target writers implemented but lane ledger/transcript/delta weaknesses remained",
+      "root_cause": "Unblocking based too heavily on source-file existence without transcript/delta proof",
+      "affected_component": "Adoption Compliance, Anti-Skip",
+      "status": "PARTIALLY_FIXED",
+      "regression_test": "test_adoption_compliance_strictness.py"
+    },
+    {
+      "sprint": "R94_R95",
+      "failure": "Stop reason adjudicator added but generated global next prompts still had false blockers",
+      "root_cause": "generate_next_worker_prompt.py not consuming adjudicator output; hardening sprint treated as terminal",
+      "affected_component": "Next-Sprint Generator",
+      "status": "PARTIALLY_FIXED",
+      "regression_test": "test_next_sprint_false_stop_regression.py, test_combined_next_worker_prompt_no_false_stops.py"
+    },
+    {
+      "sprint": "R96",
+      "failure": "Autonomous train executor added but no true host-level invocation; POC-ready decision too shallow",
+      "root_cause": "Executor classified states but had no host layer to invoke; poc_dashboard used shallow poc-targets.yaml check",
+      "affected_component": "Autonomous Train Executor, POC Readiness Gate",
+      "status": "FIXED_BY_SPRINT2",
+      "regression_test": "test_autonomous_train_executor.py, test_proof_backed_poc_gate.py"
+    },
+    {
+      "sprint": "R97",
+      "failure": "Host runner added, proof-backed gate added, CLI detected, but live invocation not proven",
+      "root_cause": "Train was terminal (RELEASE_APPROVAL_PENDING) so live invocation deferred",
+      "affected_component": "Autonomous Host Runner",
+      "status": "OPEN",
+      "regression_test": "test_autonomous_host_runner.py"
+    },
+    {
+      "sprint": "R100",
+      "failure": "Final audit claims POC-ready but anti-skip still all_pass=false; evidence_quality_score=0; adoption compliance passes with 0 transcripts",
+      "root_cause_list": [
+        "detect_missing_raw_logs: looks in evidence_root dir, not reports/<run_id>/raw-logs/; checks type=raw_log not type=log",
+        "detect_evidence_quality_score: 0% because ACCEPTED_WITH_LIMITATIONS not counted as verified",
+        "validate_adoption_compliance: never fails for 0 transcripts/0 skill_ids on non-product-track items",
+        "proof_backed_poc_gate: accepts ledger-only without proof graph projection",
+        "host_runner: live invocation still not proven (dry-run only)"
+      ],
+      "affected_component": "Anti-Skip, Adoption Compliance, POC Gate, Host Runner",
+      "status": "OPEN_FIXING_THIS_SPRINT",
+      "regression_test": "test_adoption_compliance_strictness.py, test_anti_skip_discovery_strictness.py, test_product_ledger_to_proof_graph_projection.py, test_autonomous_host_runner.py"
+    }
+  ],
+  "summary": {
+    "total_failure_patterns": 9,
+    "fixed": 2,
+    "partially_fixed": 5,
+    "open": 2,
+    "fixing_this_sprint": 1
+  }
+}

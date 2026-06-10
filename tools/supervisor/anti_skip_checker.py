@@ -388,8 +388,10 @@ def detect_missing_lane_ledger(
         if d.exists():
             found.extend(d.glob("*ledger*.json"))
             found.extend(d.glob("*ledger*.yaml"))
+            found.extend(d.glob("*ledger*.jsonl"))  # GEC-TC-002: .jsonl support
             found.extend(d.glob("*lane*.json"))
             found.extend(d.glob("*lane*.yaml"))
+            found.extend(d.glob("*lane*.jsonl"))  # GEC-TC-002: .jsonl support
 
     # R109: Also check declared reports_created for ledger files
     if declaration and repo_root and not found:
@@ -412,6 +414,44 @@ def detect_missing_lane_ledger(
     }
 
 
+_GOVERNANCE_ITEM_TYPES = frozenset({
+    "GOVERNANCE_DOC", "GOVERNANCE_SCHEMA", "GOVERNANCE_POLICY",
+    "GOVERNANCE_TASKCARD", "LEGACY_BACKFILL_METADATA",
+})
+_GOVERNANCE_EXCEPTION_CLASSES = frozenset({
+    "investigation_only", "legacy_backfill",
+})
+_DRY_RUN_CLASSIFICATIONS = frozenset({
+    "dry_run_fixture", "governance_pilot", "test_fixture_only",
+})
+
+
+def _is_governance_only_sprint(declaration: dict[str, Any] | None) -> bool:
+    """Return True if all work items are governance or backfill types (no PRODUCT_SOURCE)."""
+    if not declaration:
+        return False
+    items = declaration.get("planned_work_items", [])
+    if not items:
+        return False
+    return all(
+        item.get("item_type", "") in _GOVERNANCE_ITEM_TYPES
+        or item.get("exception_classification", "") in _GOVERNANCE_EXCEPTION_CLASSES
+        for item in items
+    )
+
+
+def _has_product_source_items(declaration: dict[str, Any] | None) -> bool:
+    """Return True if declaration has any PRODUCT_SOURCE items that need sample outputs."""
+    if not declaration:
+        return False
+    for item in declaration.get("planned_work_items", []):
+        item_type = item.get("item_type", "")
+        exc_class = item.get("exception_classification", "")
+        if item_type == "PRODUCT_SOURCE" and exc_class not in _DRY_RUN_CLASSIFICATIONS:
+            return True
+    return False
+
+
 def detect_missing_sample_outputs(
     evidence_root: Path,
     sample_outputs_dir: Path | None = None,
@@ -423,8 +463,27 @@ def detect_missing_sample_outputs(
 
     R112: Also checks evidence-manifest artifacts with type: sample_output
     and declared evidence_artifacts with type: sample_output.
+
+    GRE-TC-003: Governance-only sprints are exempt from sample output requirement.
+    Sample outputs are only required for PRODUCT_SOURCE work items.
     """
     from collections import Counter
+
+    # GRE-TC-003: Exempt governance-only sprints (only when declaration is provided)
+    if declaration is not None and (
+        _is_governance_only_sprint(declaration) or not _has_product_source_items(declaration)
+    ):
+        return {
+            "check": "missing_sample_outputs",
+            "is_violation": False,
+            "outputs_found": 0,
+            "min_required": 0,
+            "sources": {},
+            "exemption": "governance_or_no_product_source",
+            "recommendation": (
+                "Sample outputs not required: no PRODUCT_SOURCE items in declaration."
+            ),
+        }
 
     found_files: list[str] = []
     found_sources: list[str] = []

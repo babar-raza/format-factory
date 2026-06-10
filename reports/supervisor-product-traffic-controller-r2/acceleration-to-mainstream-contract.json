@@ -1,0 +1,57 @@
+{
+  "contract_id": "ACCELERATION-TO-MAINSTREAM-CONTRACT-R2",
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-TRAFFIC-CONTROLLER-R2-VERIFIED-ROUTING-CYCLE-ENFORCEMENT-AND-CROSS-STREAM-CONSUMPTION-001",
+  "generated_at": "2026-06-04T08:00:00Z",
+  "current_status": "ACCELERATION_CONSUMPTION_GAP",
+  "acceleration_stream_requirements": {
+    "must_produce": [
+      {
+        "artifact": "ai_draft_outputs",
+        "description": "At least 1 ai_draft output with authority_state=ai_draft and non_authoritative=true",
+        "minimum": 1,
+        "current": 0,
+        "gap": "MISSING",
+        "note": "ai_output_status must be ai_draft, not no_ai"
+      },
+      {
+        "artifact": "reusable_accelerator",
+        "description": "At least 1 reusable prompt template or accelerator consumed by Mainstream",
+        "minimum": 1,
+        "current": 0,
+        "gap": "MISSING"
+      }
+    ],
+    "flags_detected": [
+      "ACCELERATION_NO_AI_OUTPUT",
+      "MAINSTREAM_NOT_CONSUMING_ACCELERATION"
+    ]
+  },
+  "mainstream_stream_requirements": {
+    "must_declare": [
+      {
+        "field": "reusable_accelerator_consumed",
+        "value": true,
+        "description": "Mainstream must declare it consumed an Acceleration reusable accelerator"
+      },
+      {
+        "field": "acceleration_consumption",
+        "value": "consumed",
+        "description": "Mainstream replay must show acceleration_consumption=consumed"
+      }
+    ]
+  },
+  "contract_enforcement": {
+    "check_tool": "tools/supervisor/check_cross_stream_consumption.py",
+    "verdict_when_gap": "ACCELERATION_CONSUMPTION_GAP",
+    "verdict_when_ok": "ACCELERATION_CONSUMPTION_OK",
+    "blocks_clean_pass": true,
+    "blocks_continuation": false
+  },
+  "ai_authority_rules": {
+    "ai_draft_non_authoritative": true,
+    "requires_deterministic_validation": true,
+    "advisory_mode": "deterministic_advisory",
+    "cannot_claim": ["closes_taskcard", "approves_gate", "approves_continuation"]
+  },
+  "resolution_path": "Acceleration stream must produce ai_draft outputs for mainstream consumption; Mainstream sprint must then declare reusable_accelerator_consumed=true and ai_acceleration_consumed=true in replay results."
+}

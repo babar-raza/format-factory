@@ -1,0 +1,112 @@
+{
+  "queue_id": "agq:e3b0c44298fc1c14",
+  "generated_at": "2026-06-04T14:52:36.091827+00:00",
+  "source_graph_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "total_gaps": 8,
+  "blocking_gaps": 7,
+  "entries": [
+    {
+      "target_id": "dif",
+      "missing_capabilities": [
+        "parse",
+        "export"
+      ],
+      "priority": "LOW",
+      "spec_auth_refs": [
+        "DIF-SPEC-001"
+      ],
+      "blocking": true
+    },
+    {
+      "target_id": "fods",
+      "missing_capabilities": [
+        "parse",
+        "inspect",
+        "edit",
+        "export",
+        "dogfood"
+      ],
+      "priority": "HIGH",
+      "spec_auth_refs": [
+        "FODS-SPEC-001"
+      ],
+      "blocking": true
+    },
+    {
+      "target_id": "fodt",
+      "missing_capabilities": [
+        "parse",
+        "inspect",
+        "edit",
+        "export",
+        "dogfood"
+      ],
+      "priority": "HIGH",
+      "spec_auth_refs": [
+        "FODT-SPEC-001"
+      ],
+      "blocking": true
+    },
+    {
+      "target_id": "gnumeric",
+      "missing_capabilities": [
+        "parse",
+        "inspect"
+      ],
+      "priority": "LOW",
+      "spec_auth_refs": [
+        "GNUMERIC-SPEC-001"
+      ],
+      "blocking": false
+    },
+    {
+      "target_id": "netpbm-net",
+      "missing_capabilities": [
+        "load",
+        "inspect",
+        "edit",
+        "save",
+        "dogfood"
+      ],
+      "priority": "HIGH",
+      "spec_auth_refs": [
+        "NETPBM-SPEC-001"
+      ],
+      "blocking": true
+    },
+    {
+      "target_id": "netpbm-py",
+      "missing_capabilities": [
+        "load",
+        "inspect",
+        "edit",
+        "save"
+      ],
+      "priority": "MEDIUM",
+      "spec_auth_refs": [],
+      "blocking": true
+    },
+    {
+      "target_id": "sylk",
+      "missing_capabilities": [
+        "parse",
+        "export"
+      ],
+      "priority": "MEDIUM",
+      "spec_auth_refs": [],
+      "blocking": true
+    },
+    {
+      "target_id": "zst",
+      "missing_capabilities": [
+        "package",
+        "roundtrip"
+      ],
+      "priority": "MEDIUM",
+      "spec_auth_refs": [
+        "ZST-SPEC-001"
+      ],
+      "blocking": true
+    }
+  ]
+}

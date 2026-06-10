@@ -129,9 +129,18 @@ class TestCliDetection:
 # Test 2: Missing CLI → HOST_INVOCATION_LAYER_MISSING
 # ─────────────────────────────────────────────────────────────
 
+_NOT_NESTED = {
+    "nested": False,
+    "env_var": None,
+    "wiring_instructions": None,
+    "external_terminal_command": "unset CLAUDECODE && claude --print -p 'HOST_RUNNER_NOOP_OK'",
+}
+
+
 class TestMissingCli:
+    @patch("tools.supervisor.autonomous_host_runner.detect_nested_session")
     @patch("tools.supervisor.autonomous_host_runner.detect_claude_cli")
-    def test_missing_cli_returns_layer_missing(self, mock_detect, tmp_path):
+    def test_missing_cli_returns_layer_missing(self, mock_detect, mock_nested, tmp_path):
         """When CLI is not invocable, run_host_runner returns HOST_INVOCATION_LAYER_MISSING."""
         mock_detect.return_value = {
             "available": False,
@@ -140,6 +149,7 @@ class TestMissingCli:
             "version": None,
             "reason": "Not found",
         }
+        mock_nested.return_value = _NOT_NESTED
         repo = _make_repo(tmp_path)
         report_dir = repo / "reports" / "host-autonomy-runner"
         _make_train_state(report_dir, terminal=False)
@@ -147,8 +157,9 @@ class TestMissingCli:
         result = run_host_runner(repo_root=repo, report_dir=report_dir, dry_run=True)
         assert result["classification"] == HOST_INVOCATION_LAYER_MISSING
 
+    @patch("tools.supervisor.autonomous_host_runner.detect_nested_session")
     @patch("tools.supervisor.autonomous_host_runner.detect_claude_cli")
-    def test_missing_cli_honest_classification_is_packet_only(self, mock_detect, tmp_path):
+    def test_missing_cli_honest_classification_is_packet_only(self, mock_detect, mock_nested, tmp_path):
         """When CLI missing, honest_classification must be CONTINUATION_PACKET_ONLY."""
         mock_detect.return_value = {
             "available": False,
@@ -157,6 +168,7 @@ class TestMissingCli:
             "version": None,
             "reason": "Not found",
         }
+        mock_nested.return_value = _NOT_NESTED
         repo = _make_repo(tmp_path)
         report_dir = repo / "reports" / "host-autonomy-runner"
         _make_train_state(report_dir, terminal=False)
@@ -164,8 +176,9 @@ class TestMissingCli:
         result = run_host_runner(repo_root=repo, report_dir=report_dir, dry_run=True)
         assert result.get("honest_classification") == HOST_INVOCATION_PACKET_ONLY
 
+    @patch("tools.supervisor.autonomous_host_runner.detect_nested_session")
     @patch("tools.supervisor.autonomous_host_runner.detect_claude_cli")
-    def test_runner_never_claims_full_autonomy_when_cli_missing(self, mock_detect, tmp_path):
+    def test_runner_never_claims_full_autonomy_when_cli_missing(self, mock_detect, mock_nested, tmp_path):
         """
         When CLI is missing, the runner must NOT classify as HOST_INVOCATION_ATTEMPTED.
         It is packet-only, not fully autonomous.
@@ -177,6 +190,7 @@ class TestMissingCli:
             "version": None,
             "reason": "Not found",
         }
+        mock_nested.return_value = _NOT_NESTED
         repo = _make_repo(tmp_path)
         report_dir = repo / "reports" / "host-autonomy-runner"
         _make_train_state(report_dir, terminal=False)
@@ -190,8 +204,9 @@ class TestMissingCli:
 # ─────────────────────────────────────────────────────────────
 
 class TestTerminalStateDeferred:
+    @patch("tools.supervisor.autonomous_host_runner.detect_nested_session")
     @patch("tools.supervisor.autonomous_host_runner.detect_claude_cli")
-    def test_terminal_train_state_deferred(self, mock_detect, tmp_path):
+    def test_terminal_train_state_deferred(self, mock_detect, mock_nested, tmp_path):
         """When train is in terminal state, runner returns HOST_INVOCATION_DEFERRED."""
         mock_detect.return_value = {
             "available": True,
@@ -200,6 +215,7 @@ class TestTerminalStateDeferred:
             "version": "2.1.62",
             "reason": "Found",
         }
+        mock_nested.return_value = _NOT_NESTED
         repo = _make_repo(tmp_path)
         report_dir = repo / "reports" / "host-autonomy-runner"
         _make_train_state(report_dir, terminal=True)
@@ -207,13 +223,15 @@ class TestTerminalStateDeferred:
         result = run_host_runner(repo_root=repo, report_dir=report_dir, dry_run=True)
         assert result["classification"] == HOST_INVOCATION_DEFERRED
 
+    @patch("tools.supervisor.autonomous_host_runner.detect_nested_session")
     @patch("tools.supervisor.autonomous_host_runner.detect_claude_cli")
-    def test_poc_ready_terminal_deferred(self, mock_detect, tmp_path):
+    def test_poc_ready_terminal_deferred(self, mock_detect, mock_nested, tmp_path):
         """POC ready terminal state → deferred (no invocation needed)."""
         mock_detect.return_value = {
             "available": True, "invocable": True,
             "path": "/usr/bin/claude", "version": "2.1", "reason": "Found",
         }
+        mock_nested.return_value = _NOT_NESTED
         repo = _make_repo(tmp_path)
         report_dir = repo / "reports" / "host-autonomy-runner"
         _make_train_state(
@@ -265,13 +283,15 @@ class TestSafetyCheck:
         assert result["safe"] is False
         assert "publish" in result["violations"]
 
+    @patch("tools.supervisor.autonomous_host_runner.detect_nested_session")
     @patch("tools.supervisor.autonomous_host_runner.detect_claude_cli")
-    def test_unsafe_prompt_returns_refused(self, mock_detect, tmp_path):
+    def test_unsafe_prompt_returns_refused(self, mock_detect, mock_nested, tmp_path):
         """Unsafe prompt → HOST_INVOCATION_REFUSED from run_host_runner."""
         mock_detect.return_value = {
             "available": True, "invocable": True,
             "path": "/usr/bin/claude", "version": "2.1", "reason": "Found",
         }
+        mock_nested.return_value = _NOT_NESTED
         repo = _make_repo(tmp_path, next_sprint_content="git push origin main\ngit commit -m 'release'\n")
         report_dir = repo / "reports" / "host-autonomy-runner"
         _make_train_state(report_dir, terminal=False)
@@ -286,13 +306,15 @@ class TestSafetyCheck:
 # ─────────────────────────────────────────────────────────────
 
 class TestDryRun:
+    @patch("tools.supervisor.autonomous_host_runner.detect_nested_session")
     @patch("tools.supervisor.autonomous_host_runner.detect_claude_cli")
-    def test_dry_run_with_available_cli_returns_attempted(self, mock_detect, tmp_path):
+    def test_dry_run_with_available_cli_returns_attempted(self, mock_detect, mock_nested, tmp_path):
         """Dry run + available CLI + safe prompt → HOST_INVOCATION_ATTEMPTED."""
         mock_detect.return_value = {
             "available": True, "invocable": True,
             "path": "/usr/bin/claude", "version": "2.1.62", "reason": "Found",
         }
+        mock_nested.return_value = _NOT_NESTED
         repo = _make_repo(tmp_path)
         report_dir = repo / "reports" / "host-autonomy-runner"
         _make_train_state(report_dir, terminal=False)
@@ -301,13 +323,15 @@ class TestDryRun:
         assert result["classification"] == HOST_INVOCATION_ATTEMPTED
         assert result.get("dry_run") is True
 
+    @patch("tools.supervisor.autonomous_host_runner.detect_nested_session")
     @patch("tools.supervisor.autonomous_host_runner.detect_claude_cli")
-    def test_dry_run_does_not_invoke_subprocess(self, mock_detect, tmp_path):
+    def test_dry_run_does_not_invoke_subprocess(self, mock_detect, mock_nested, tmp_path):
         """Dry run must NOT call subprocess.Popen."""
         mock_detect.return_value = {
             "available": True, "invocable": True,
             "path": "/usr/bin/claude", "version": "2.1", "reason": "Found",
         }
+        mock_nested.return_value = _NOT_NESTED
         repo = _make_repo(tmp_path)
         report_dir = repo / "reports" / "host-autonomy-runner"
         _make_train_state(report_dir, terminal=False)

@@ -1,0 +1,30 @@
+id: ADR-ROUTE-013
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Machinery Bypass Prevention Tests"
+status: completed
+lane: pilot_test
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-007, ADR-ROUTE-009, ADR-ROUTE-010]
+gates:
+  - "8+ test functions"
+  - "all machinery bypass scenarios covered"
+allowed_files:
+  - "tests/supervisor/test_autonomy_machinery_bypass_prevention.py"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "Bypass via misclassification tested"
+  - "Queue validation blocks tested"
+  - "Backend dispatch enforcement tested"
+  - "Prompt unsafe pattern check tested"
+  - "Governance validator legacy backfill tested"
+tests:
+  - "tests/supervisor/test_autonomy_machinery_bypass_prevention.py"
+evidence:
+  - "tests/supervisor/test_autonomy_machinery_bypass_prevention.py"
+rollback: "rm tests/supervisor/test_autonomy_machinery_bypass_prevention.py"
+closeout_criteria: "19 tests pass, 0 failures"

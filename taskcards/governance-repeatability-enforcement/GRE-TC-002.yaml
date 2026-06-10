@@ -1,0 +1,27 @@
+id: GRE-TC-002
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-ENFORCEMENT-RNEXT"
+generated_at: "2026-06-08"
+title: "Wire governance validators into autonomous-cycle pipeline (Lane B)"
+status: completed
+lane: pipeline_wiring
+item_type: GOVERNANCE_DOC
+problem: >
+  Governance validators were implemented and tested in Sprint 2 but NOT wired
+  into the actual autonomous-cycle pipeline. A false product-source repeatability
+  claim would NOT have been blocked by the real pipeline.
+scope:
+  - Insert Step 2e into tools/supervisor/autonomous_cycle.py
+  - Step 2e calls run_all_governance_validators() from governance_validators.py
+  - Write governance-validation-result.json to review dir
+  - Downgrade ACCEPTED → ACCEPTED_WITH_REWORK when blocks_sprint=True
+  - Write integration tests in test_pipeline_governance_wiring.py
+files_modified:
+  - tools/supervisor/autonomous_cycle.py
+files_created:
+  - tests/supervisor/test_pipeline_governance_wiring.py
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+exception_classification: investigation_only
+dependencies: []
+handoff_to_autonomy_sprint: false

@@ -1,0 +1,65 @@
+{
+  "matrix_version": "1.0",
+  "sprint": "skills-r105",
+  "states": [
+    {
+      "state": "missing_transcript",
+      "valid": null,
+      "result": null,
+      "mode": null,
+      "grade": "OVERCLAIMED",
+      "reason": "Skill-related work item missing transcript"
+    },
+    {
+      "state": "invalid_transcript",
+      "valid": false,
+      "result": null,
+      "mode": null,
+      "grade": "OVERCLAIMED",
+      "reason": "Transcript fails schema or registry validation"
+    },
+    {
+      "state": "valid_pass_dryrun",
+      "valid": true,
+      "result": "PASS",
+      "mode": "dry-run",
+      "grade": "ACCEPTED_VERIFIED",
+      "reason": "Valid transcript with PASS result"
+    },
+    {
+      "state": "valid_pass_live",
+      "valid": true,
+      "result": "PASS",
+      "mode": "live",
+      "grade": "ACCEPTED_VERIFIED",
+      "reason": "Valid LIVE transcript with PASS result and ledger"
+    },
+    {
+      "state": "valid_fail_normal",
+      "valid": true,
+      "result": "FAIL",
+      "mode": "dry-run",
+      "grade": "REWORK_REQUIRED",
+      "reason": "Skill execution reported FAIL"
+    },
+    {
+      "state": "valid_fail_anti_bypass",
+      "valid": true,
+      "result": "FAIL",
+      "mode": "anti-bypass-demo",
+      "grade": "ACCEPTED",
+      "reason": "Expected failure in anti-bypass demonstration"
+    },
+    {
+      "state": "live_without_ledger",
+      "valid": false,
+      "result": null,
+      "mode": "live",
+      "grade": "OVERCLAIMED",
+      "reason": "LIVE src-editing skill without ledger_entry_id"
+    }
+  ],
+  "tests_run": 13,
+  "tests_passed": 13,
+  "tests_failed": 0
+}

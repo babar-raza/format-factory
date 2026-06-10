@@ -1,0 +1,36 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001",
+  "generated_at": "2026-06-06T15:23:20.677882+00:00",
+  "tests": {
+    "targeted": 38,
+    "family": 174,
+    "fail": 0
+  },
+  "capabilities_added": [
+    {
+      "format": "ABW",
+      "function": "export_to_html",
+      "status": "PASS",
+      "tests": 15
+    },
+    {
+      "format": "ABW",
+      "function": "get_metadata",
+      "status": "PASS",
+      "tests": 8
+    },
+    {
+      "format": "Gnumeric",
+      "function": "export_to_json",
+      "status": "PASS",
+      "tests": 15
+    }
+  ],
+  "usable_outputs": [
+    "reports/product-first-acquisition-train/usable-outputs/sample-meeting-notes.html",
+    "reports/product-first-acquisition-train/usable-outputs/sample-sales-report.json",
+    "examples/python/abw/html_metadata_export_example.py",
+    "examples/python/gnumeric/json_export_example.py"
+  ],
+  "verdict": "MULTI_FORMAT_PRODUCT_PROGRESS_ACCEPTED"
+}

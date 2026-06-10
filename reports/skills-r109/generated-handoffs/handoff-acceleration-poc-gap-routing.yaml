@@ -1,0 +1,30 @@
+handoff_id: HO-R109-ACCELERATION-001
+type: acceleration-tooling
+title: "POC Gap Routing — Acceleration Tooling Handoff"
+stream_from: skills
+stream_to: acceleration
+skill_id: select-poc-gap
+timestamp: "2026-06-03T22:05:00Z"
+
+description: |
+  Acceleration worker must route POC gaps through skill registry.
+  Each selected gap should reference the governing skill_id.
+  Transcript generation is expected for POC proof items.
+
+required_inputs:
+  gap_source: product-capability-matrix/poc-targets.yaml
+  skill_registry: .supervisor/skill-registry.yaml
+  adoption_package: reports/skills-r108/adoption-packages/acceleration-adoption.yaml
+
+validation_command: |
+  python tools/supervisor/validate_adoption_compliance.py --check-skill-ids
+
+expected_evidence:
+  - gap_routing_map: "reports/r-next/gap-skill-routing.yaml"
+  - poc_transcript: "reports/r-next/skill-transcripts/transcript-poc-gap.json"
+  - adoption_check: "reports/r-next/validator-results/adoption-compliance.json"
+
+adoption_gates_enforced:
+  - ADOPT-A-01  # POC target skill mapping
+  - ADOPT-A-02  # transcript generation
+  - ADOPT-A-03  # adoption compliance check

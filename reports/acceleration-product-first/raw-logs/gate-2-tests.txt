@@ -1,0 +1,178 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 58 items
+
+tests/supervisor/acceleration/test_r113_ai_evidence_critic.py::test_critic_produces_critique_json PASSED [  1%]
+tests/supervisor/acceleration/test_r113_ai_evidence_critic.py::test_critic_has_sprint_grade PASSED [  3%]
+tests/supervisor/acceleration/test_r113_ai_evidence_critic.py::test_machinery_creep_is_advisory_only PASSED [  5%]
+tests/supervisor/acceleration/test_r113_ai_evidence_critic.py::test_critic_does_not_modify_authority_files PASSED [  6%]
+tests/supervisor/acceleration/test_r113_ai_evidence_critic.py::test_critic_produces_overclaim_md PASSED [  8%]
+tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_produces_four_docs FAILED [ 10%]
+tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_frontmatter_has_authority_state FAILED [ 12%]
+tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_summary_json_has_track FAILED [ 13%]
+tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_no_src_files_created FAILED [ 15%]
+tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_allowed_files_from_track_rules FAILED [ 17%]
+tests/supervisor/acceleration/test_r113_ai_learning_loop.py::test_loop_produces_jsonl FAILED [ 18%]
+tests/supervisor/acceleration/test_r113_ai_learning_loop.py::test_all_entries_are_valid_json FAILED [ 20%]
+tests/supervisor/acceleration/test_r113_ai_learning_loop.py::test_all_categories_valid FAILED [ 22%]
+tests/supervisor/acceleration/test_r113_ai_learning_loop.py::test_round_trip_readable FAILED [ 24%]
+tests/supervisor/acceleration/test_r113_ai_product_brain.py::test_brain_produces_all_four_outputs PASSED [ 25%]
+tests/supervisor/acceleration/test_r113_ai_product_brain.py::test_brain_does_not_modify_poc_targets PASSED [ 27%]
+tests/supervisor/acceleration/test_r113_ai_product_brain.py::test_brain_result_has_products_analyzed PASSED [ 29%]
+tests/supervisor/acceleration/test_r113_ai_product_brain.py::test_brain_distance_scores_sorted PASSED [ 31%]
+tests/supervisor/acceleration/test_r113_ai_product_brain.py::test_brain_capability_graph_structure PASSED [ 32%]
+tests/supervisor/acceleration/test_r113_ai_sprint_manager.py::test_pre_pass_produces_output PASSED [ 34%]
+tests/supervisor/acceleration/test_r113_ai_sprint_manager.py::test_pre_pass_has_required_fields FAILED [ 36%]
+tests/supervisor/acceleration/test_r113_ai_sprint_manager.py::test_mid_pass_produces_output PASSED [ 37%]
+tests/supervisor/acceleration/test_r113_ai_sprint_manager.py::test_final_pass_produces_output_and_recommendation PASSED [ 39%]
+tests/supervisor/acceleration/test_r113_ai_sprint_manager.py::test_agentic_low_risk_unavailable_produces_skipped_not_fixture FAILED [ 41%]
+tests/supervisor/acceleration/test_r113_ai_sprint_manager.py::test_authority_files_not_modified_by_sprint_manager PASSED [ 43%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_produces_json[fods-dogfood_status.fods_to_csv_dotnet-commercial_net] PASSED [ 44%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_produces_json[fodt-dogfood_status.fodt_to_markdown_dotnet-commercial_net] PASSED [ 46%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_produces_json[netpbm-dotnet_status.convert_format-commercial_net] PASSED [ 48%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_produces_json[sylk-python_status.write_sylk-foss_reduced] PASSED [ 50%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_correct_product_track[fods-dogfood_status.fods_to_csv_dotnet-commercial_net] PASSED [ 51%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_correct_product_track[fodt-dogfood_status.fodt_to_markdown_dotnet-commercial_net] PASSED [ 53%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_correct_product_track[netpbm-dotnet_status.convert_format-commercial_net] PASSED [ 55%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_correct_product_track[sylk-python_status.write_sylk-foss_reduced] PASSED [ 56%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_external_tool_context[fods-dogfood_status.fods_to_csv_dotnet-commercial_net] PASSED [ 58%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_external_tool_context[fodt-dogfood_status.fodt_to_markdown_dotnet-commercial_net] PASSED [ 60%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_external_tool_context[netpbm-dotnet_status.convert_format-commercial_net] PASSED [ 62%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_external_tool_context[sylk-python_status.write_sylk-foss_reduced] PASSED [ 63%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_governance_rules[fods-dogfood_status.fods_to_csv_dotnet-commercial_net] PASSED [ 65%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_governance_rules[fodt-dogfood_status.fodt_to_markdown_dotnet-commercial_net] PASSED [ 67%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_governance_rules[netpbm-dotnet_status.convert_format-commercial_net] PASSED [ 68%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_packet_has_governance_rules[sylk-python_status.write_sylk-foss_reduced] PASSED [ 70%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_sylk_packet_is_foss_reduced PASSED [ 72%]
+tests/supervisor/acceleration/test_r113_mainstream_packet_4formats.py::test_no_src_files_created PASSED [ 74%]
+tests/supervisor/acceleration/test_r113_owl_model_boundary.py::test_poc_targets_unchanged_after_import PASSED [ 75%]
+tests/supervisor/acceleration/test_r113_owl_model_boundary.py::test_no_direct_provider_imports PASSED [ 77%]
+tests/supervisor/acceleration/test_r113_owl_model_boundary.py::test_all_tool_sources_reference_gateway PASSED [ 79%]
+tests/supervisor/acceleration/test_r113_owl_model_boundary.py::test_no_src_files_created_by_tools PASSED [ 81%]
+tests/supervisor/acceleration/test_r113_owl_model_boundary.py::test_authority_state_in_all_outputs PASSED [ 82%]
+tests/supervisor/acceleration/test_r113_source_pattern_miner.py::test_miner_produces_json_output PASSED [ 84%]
+tests/supervisor/acceleration/test_r113_source_pattern_miner.py::test_format_isolation PASSED [ 86%]
+tests/supervisor/acceleration/test_r113_source_pattern_miner.py::test_empty_corpus_is_not_failure PASSED [ 87%]
+tests/supervisor/acceleration/test_r113_source_pattern_miner.py::test_src_not_modified_by_miner PASSED [ 89%]
+tests/supervisor/acceleration/test_r113_source_pattern_miner.py::test_output_json_structure PASSED [ 91%]
+tests/supervisor/acceleration/test_r113_test_plan_generator.py::test_generator_produces_6_template_proposals PASSED [ 93%]
+tests/supervisor/acceleration/test_r113_test_plan_generator.py::test_all_proposals_are_ai_draft PASSED [ 94%]
+tests/supervisor/acceleration/test_r113_test_plan_generator.py::test_output_json_parses PASSED [ 96%]
+tests/supervisor/acceleration/test_r113_test_plan_generator.py::test_all_template_types_present PASSED [ 98%]
+tests/supervisor/acceleration/test_r113_test_plan_generator.py::test_gap_id_in_all_proposals PASSED [100%]
+
+================================== FAILURES ===================================
+______________________ test_designer_produces_four_docs _______________________
+tests\supervisor\acceleration\test_r113_ai_implementation_designer.py:18: in test_designer_produces_four_docs
+    paths = design_gap("fods", "dogfood-csv", design_output_dir, sprint_id="test")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tools\supervisor\ai_implementation_designer.py:91: in design_gap
+    paths[name] = str(out_path.relative_to(_REPO_ROOT))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:385: in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E   ValueError: 'C:\\Users\\prora\\AppData\\Local\\Temp\\pytest-of-prora\\pytest-4875\\test_designer_produces_four_do0\\designs\\fods-dogfood-csv-design.md' is not in the subpath of 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'
+________________ test_designer_frontmatter_has_authority_state ________________
+tests\supervisor\acceleration\test_r113_ai_implementation_designer.py:26: in test_designer_frontmatter_has_authority_state
+    design_gap("fodt", "dogfood-markdown", design_output_dir, sprint_id="test")
+tools\supervisor\ai_implementation_designer.py:91: in design_gap
+    paths[name] = str(out_path.relative_to(_REPO_ROOT))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:385: in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E   ValueError: 'C:\\Users\\prora\\AppData\\Local\\Temp\\pytest-of-prora\\pytest-4875\\test_designer_frontmatter_has_0\\designs\\fodt-dogfood-markdown-design.md' is not in the subpath of 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'
+____________________ test_designer_summary_json_has_track _____________________
+tests\supervisor\acceleration\test_r113_ai_implementation_designer.py:35: in test_designer_summary_json_has_track
+    design_gap("sylk", "csv-export", design_output_dir, sprint_id="test")
+tools\supervisor\ai_implementation_designer.py:91: in design_gap
+    paths[name] = str(out_path.relative_to(_REPO_ROOT))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:385: in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E   ValueError: 'C:\\Users\\prora\\AppData\\Local\\Temp\\pytest-of-prora\\pytest-4875\\test_designer_summary_json_has0\\designs\\sylk-csv-export-design.md' is not in the subpath of 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'
+_____________________ test_designer_no_src_files_created ______________________
+tests\supervisor\acceleration\test_r113_ai_implementation_designer.py:44: in test_designer_no_src_files_created
+    design_gap("netpbm", "export", design_output_dir, sprint_id="test")
+tools\supervisor\ai_implementation_designer.py:91: in design_gap
+    paths[name] = str(out_path.relative_to(_REPO_ROOT))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:385: in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E   ValueError: 'C:\\Users\\prora\\AppData\\Local\\Temp\\pytest-of-prora\\pytest-4875\\test_designer_no_src_files_cre0\\designs\\netpbm-export-design.md' is not in the subpath of 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'
+________________ test_designer_allowed_files_from_track_rules _________________
+tests\supervisor\acceleration\test_r113_ai_implementation_designer.py:51: in test_designer_allowed_files_from_track_rules
+    design_gap("fods", "dogfood-csv", design_output_dir, sprint_id="test")
+tools\supervisor\ai_implementation_designer.py:91: in design_gap
+    paths[name] = str(out_path.relative_to(_REPO_ROOT))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:385: in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E   ValueError: 'C:\\Users\\prora\\AppData\\Local\\Temp\\pytest-of-prora\\pytest-4875\\test_designer_allowed_files_fr0\\designs\\fods-dogfood-csv-design.md' is not in the subpath of 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'
+__________________________ test_loop_produces_jsonl ___________________________
+tests\supervisor\acceleration\test_r113_ai_learning_loop.py:18: in test_loop_produces_jsonl
+    result = run_loop("test-sprint", loop_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tools\supervisor\ai_learning_loop.py:47: in run_loop
+    "output_path": str(out_file.relative_to(_REPO_ROOT)),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:385: in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E   ValueError: 'C:\\Users\\prora\\AppData\\Local\\Temp\\pytest-of-prora\\pytest-4875\\test_loop_produces_jsonl0\\learning\\sprint-learnings.jsonl' is not in the subpath of 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'
+_______________________ test_all_entries_are_valid_json _______________________
+tests\supervisor\acceleration\test_r113_ai_learning_loop.py:26: in test_all_entries_are_valid_json
+    run_loop("test-sprint", loop_dir)
+tools\supervisor\ai_learning_loop.py:47: in run_loop
+    "output_path": str(out_file.relative_to(_REPO_ROOT)),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:385: in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E   ValueError: 'C:\\Users\\prora\\AppData\\Local\\Temp\\pytest-of-prora\\pytest-4875\\test_all_entries_are_valid_jso0\\learning\\sprint-learnings.jsonl' is not in the subpath of 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'
+__________________________ test_all_categories_valid __________________________
+tests\supervisor\acceleration\test_r113_ai_learning_loop.py:36: in test_all_categories_valid
+    run_loop("test-sprint", loop_dir)
+tools\supervisor\ai_learning_loop.py:47: in run_loop
+    "output_path": str(out_file.relative_to(_REPO_ROOT)),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:385: in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E   ValueError: 'C:\\Users\\prora\\AppData\\Local\\Temp\\pytest-of-prora\\pytest-4875\\test_all_categories_valid0\\learning\\sprint-learnings.jsonl' is not in the subpath of 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'
+__________________________ test_round_trip_readable ___________________________
+tests\supervisor\acceleration\test_r113_ai_learning_loop.py:45: in test_round_trip_readable
+    run_loop("test-sprint", loop_dir)
+tools\supervisor\ai_learning_loop.py:47: in run_loop
+    "output_path": str(out_file.relative_to(_REPO_ROOT)),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\pathlib\_local.py:385: in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+E   ValueError: 'C:\\Users\\prora\\AppData\\Local\\Temp\\pytest-of-prora\\pytest-4875\\test_round_trip_readable0\\learning\\sprint-learnings.jsonl' is not in the subpath of 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'
+______________________ test_pre_pass_has_required_fields ______________________
+tests\supervisor\acceleration\test_r113_ai_sprint_manager.py:35: in test_pre_pass_has_required_fields
+    assert "lane_design" in data
+E   AssertionError: assert 'lane_design' in {'advisory_only': True, 'authority_state': 'ai_draft', 'non_authoritative': True, 'pass_name': 'pre', ...}
+_______ test_agentic_low_risk_unavailable_produces_skipped_not_fixture ________
+tests\supervisor\acceleration\test_r113_ai_sprint_manager.py:65: in test_agentic_low_risk_unavailable_produces_skipped_not_fixture
+    with mock.patch("tools.supervisor.ai_sprint_manager.ModelRouter") as mock_router_cls:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\unittest\mock.py:1495: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+C:\Python313\Lib\unittest\mock.py:1465: in get_original
+    raise AttributeError(
+E   AttributeError: <module 'tools.supervisor.ai_sprint_manager' from 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\tools\\supervisor\\ai_sprint_manager.py'> does not have the attribute 'ModelRouter'
+=========================== short test summary info ===========================
+FAILED tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_produces_four_docs
+FAILED tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_frontmatter_has_authority_state
+FAILED tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_summary_json_has_track
+FAILED tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_no_src_files_created
+FAILED tests/supervisor/acceleration/test_r113_ai_implementation_designer.py::test_designer_allowed_files_from_track_rules
+FAILED tests/supervisor/acceleration/test_r113_ai_learning_loop.py::test_loop_produces_jsonl
+FAILED tests/supervisor/acceleration/test_r113_ai_learning_loop.py::test_all_entries_are_valid_json
+FAILED tests/supervisor/acceleration/test_r113_ai_learning_loop.py::test_all_categories_valid
+FAILED tests/supervisor/acceleration/test_r113_ai_learning_loop.py::test_round_trip_readable
+FAILED tests/supervisor/acceleration/test_r113_ai_sprint_manager.py::test_pre_pass_has_required_fields
+FAILED tests/supervisor/acceleration/test_r113_ai_sprint_manager.py::test_agentic_low_risk_unavailable_produces_skipped_not_fixture
+======================== 11 failed, 47 passed in 3.76s ========================

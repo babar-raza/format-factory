@@ -1,0 +1,22 @@
+id: GRH-TC-015
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-LAYER-HARDENING-PILOTS-001"
+generated_at: "2026-06-08"
+title: "Integration test: all 10 validators pass for well-formed governance declaration"
+status: completed
+lane: validator_implementation
+item_type: GOVERNANCE_DOC
+problem: >
+  After all individual validator tests pass, a comprehensive integration test must
+  verify that a well-formed governance evidence declaration passes all 10 validators
+  and that a malformed declaration fails the correct validators.
+scope:
+  - Write integration test in tests/supervisor/test_governance_validators_integration.py
+  - Test with governance-repeatability-contracts-001 evidence declaration (should PASS all)
+  - Test with pilot-002 ungoverned fixture (should FAIL execution_method validator)
+files_to_create:
+  - tests/supervisor/test_governance_validators_integration.py
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [GRH-TC-005, GRH-TC-008]
+handoff_to_autonomy_sprint: false

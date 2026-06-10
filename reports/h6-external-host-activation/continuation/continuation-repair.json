@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-EXTERNAL-HOST-ACTIVATION-AND-PROOF-001",
+  "repaired_at": "2026-06-06T15:00:00Z",
+  "repairs": [
+    {
+      "id": "REP-001",
+      "description": "Applied evidence_continuation.apply_post_closeout_continuation() to generate machine-readable next-action.json",
+      "result": "POST_CLOSEOUT_CONTINUATION_READY",
+      "file": ".local/supervisor/next-action.json"
+    },
+    {
+      "id": "REP-002",
+      "description": "Updated active-continuation.json to point to H6 sprint next-action.json",
+      "result": "WRITTEN",
+      "file": ".local/supervisor/active-continuation.json"
+    },
+    {
+      "id": "REP-003",
+      "description": "Cleared old queue (items had no target_path) and reseeded with 5 H6 sprint items with proper target_path",
+      "result": "RESEEDED",
+      "file": ".local/supervisor/action-queue.jsonl",
+      "items_seeded": 5,
+      "items": ["h6-q-001", "h6-q-002", "h6-q-003", "h6-q-004", "h6-q-005"]
+    }
+  ],
+  "post_repair_state": {
+    "active_continuation_autonomous_continue": true,
+    "next_action_exists": true,
+    "queue_pending_count": 5,
+    "advisory_signal_blocked": true
+  }
+}

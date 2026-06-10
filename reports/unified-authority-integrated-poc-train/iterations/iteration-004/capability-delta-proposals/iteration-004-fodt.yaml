@@ -1,0 +1,22 @@
+proposed_only: true
+not_applied_to_poc_targets: true
+iteration: 4
+sprint_id: "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001"
+generated_at: "2026-06-05T00:00:00Z"
+
+capabilities:
+  - capability: "ExportToMarkdownFile_dogfood_proof"
+    operation: "Proof"
+    description: "Physical Markdown sample output from ExportToMarkdownFile dogfood pipeline. Tests: 24/24 PASS covering R108ExportToMarkdown+DogfoodMarkdown."
+    product: "FODT .NET + Python FOSS"
+    proof_level: "VERIFIED"
+    source_files: []
+    test_files:
+      - "tests/net/fodt/FodtR108ExportToMarkdownFileTests.cs"
+      - "tests/net/fodt/FodtR108DogfoodMarkdownExportTests.cs"
+      - "tests/net/fodt/FodtR110DogfoodMarkdownExportTests.cs"
+    tests_passed: 24
+    tests_failed: 0
+    raw_log: "reports/unified-authority-integrated-poc-train/iterations/iteration-004/raw-logs/fodt-r117-tests.log"
+    sample_output: "reports/unified-authority-integrated-poc-train/sample-outputs/iteration-004/fodt/headings-and-list.md"
+    rationale: "Physical Markdown file produced. ExportToMarkdownFile dogfood closure confirmed."

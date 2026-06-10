@@ -1,0 +1,30 @@
+id: GEC-TC-009
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Legacy replay-readiness completion for GR-REPLAY-001..004"
+status: completed
+lane: lane_i_replay_readiness
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  GR-REPLAY-001..004 taskcards from Sprint 2 were insufficiently detailed.
+  They lacked skill_candidate, replay_inputs, expected_diff_behavior,
+  validation_commands, and stop_conditions fields needed for autonomy sprint execution.
+scope:
+  - Update GR-REPLAY-001..004 with complete replay-readiness fields
+  - Create reports/repeatability-governance-closure-rnext/legacy-replay-readiness-completion.md
+files_to_create:
+  - reports/repeatability-governance-closure-rnext/legacy-replay-readiness-completion.md
+files_modified:
+  - taskcards/governance-repeatability/GR-REPLAY-001.yaml (add new fields)
+  - taskcards/governance-repeatability/GR-REPLAY-002.yaml (add new fields)
+  - taskcards/governance-repeatability/GR-REPLAY-003.yaml (add new fields)
+  - taskcards/governance-repeatability/GR-REPLAY-004.yaml (add new fields)
+acceptance_criteria:
+  - All 4 replay taskcards have skill_candidate, replay_inputs, expected_diff_behavior
+  - Legacy-replay-readiness-completion.md summarizes readiness status
+dependencies: [GEC-TC-001]
+handoff_to_autonomy_sprint: true

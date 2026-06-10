@@ -1,0 +1,105 @@
+[
+  {
+    "problem_id": "PROB-PK01",
+    "title": "FODS .csproj Description stale",
+    "severity": "HIGH",
+    "classification": "FIX_NOW_SAFE",
+    "rationale": "Edit to a .csproj Description field — no logic change, no test impact, no gate required. Rollback is trivial (restore original). The fix is a documentation update in a build metadata file.",
+    "fix_scope": "src/net/fods/FormatFactory.Fods.csproj — Description field + stale inline comment",
+    "validation_command": "dotnet build src/net/fods/FormatFactory.Fods.csproj --configuration Release",
+    "risks": "None — Description is not read at runtime",
+    "human_action_required": false
+  },
+  {
+    "problem_id": "PROB-PK02",
+    "title": "FODT .csproj Description stale",
+    "severity": "HIGH",
+    "classification": "FIX_NOW_SAFE",
+    "rationale": "Same as PROB-PK01. Edit to Description field only.",
+    "fix_scope": "src/net/fodt/FormatFactory.Fodt.csproj — Description field + stale inline comment",
+    "validation_command": "dotnet build src/net/fodt/FormatFactory.Fodt.csproj --configuration Release",
+    "risks": "None",
+    "human_action_required": false
+  },
+  {
+    "problem_id": "PROB-PK03",
+    "title": "Netpbm .csproj Description says 'Gate 11 NOT_STARTED'",
+    "severity": "HIGH",
+    "classification": "FIX_NOW_SAFE",
+    "rationale": "Same pattern. Edit Description field to remove NOT_STARTED false claim.",
+    "fix_scope": "src/net/netpbm/FormatFactory.Netpbm.csproj — Description field",
+    "validation_command": "dotnet build src/net/netpbm/FormatFactory.Netpbm.csproj --configuration Release",
+    "risks": "None",
+    "human_action_required": false
+  },
+  {
+    "problem_id": "PROB-PK04",
+    "title": "All .csproj missing GenerateDocumentationFile=true",
+    "severity": "HIGH",
+    "classification": "FIX_NOW_SAFE",
+    "rationale": "Adding <GenerateDocumentationFile>true</GenerateDocumentationFile> to PropertyGroup is a build metadata change. Build will succeed; it will now produce an .xml doc file. No runtime change. No test impact.",
+    "fix_scope": "src/net/fods/FormatFactory.Fods.csproj, src/net/fodt/FormatFactory.Fodt.csproj, src/net/netpbm/FormatFactory.Netpbm.csproj",
+    "validation_command": "dotnet build src/net/fods/FormatFactory.Fods.csproj --configuration Release && dotnet build src/net/fodt/FormatFactory.Fodt.csproj --configuration Release && dotnet build src/net/netpbm/FormatFactory.Netpbm.csproj --configuration Release",
+    "risks": "May reveal missing XML doc comments as compiler warnings (CS1591) — these are warnings not errors unless TreatWarningsAsErrors is set. Check first.",
+    "human_action_required": false,
+    "note": "Warnings check required before applying — if TreatWarningsAsErrors=true, this would need coordinated fix with XML doc comments added. Investigate first."
+  },
+  {
+    "problem_id": "PROB-PK05",
+    "title": "Netpbm .csproj missing PackageReadmeFile",
+    "severity": "MEDIUM",
+    "classification": "FIX_LATER_NEEDS_USER_APPROVAL",
+    "rationale": "src/net/netpbm/README.md does not exist (confirmed via glob scan). PackageReadmeFile requires a README.md present and packed. Creating a README.md without user-provided content is blocked by session instructions (no doc files without explicit request). User must provide README content or authorize creation.",
+    "fix_scope": "src/net/netpbm/README.md (create — NEEDS USER AUTHORIZATION), then src/net/netpbm/FormatFactory.Netpbm.csproj — add PackageReadmeFile element",
+    "validation_command": "dotnet build src/net/netpbm/FormatFactory.Netpbm.csproj --configuration Release",
+    "risks": "README.md content must be user-provided or explicitly authorized",
+    "human_action_required": true,
+    "pre_check_required": "User must authorize README.md creation and provide content"
+  },
+  {
+    "problem_id": "PROB-SRC01",
+    "title": "FodsCsvExporter.cs stale header comments",
+    "severity": "MEDIUM",
+    "classification": "FIX_NOW_SAFE",
+    "rationale": "Removing or updating misleading header comments in a source file. No logic change. No test impact. Rollback trivial.",
+    "fix_scope": "src/net/fods/FodsCsvExporter.cs — lines 3 and 11 stale comments",
+    "validation_command": "dotnet build src/net/fods/FormatFactory.Fods.csproj --configuration Release",
+    "risks": "None",
+    "human_action_required": false
+  },
+  {
+    "problem_id": "PROB-PY01",
+    "title": "No pyproject.toml in any Python package",
+    "severity": "CRITICAL",
+    "classification": "FIX_NOW_WITH_LIMITED_SCOPE",
+    "rationale": "Creating pyproject.toml files for Python packages is a pure addition — no existing files modified. However: 10 packages is a large scope; each package needs its own pyproject.toml. Start with the two most recently modified packages (abw, gnumeric) as a pilot fix to demonstrate the pattern. Remaining packages queued as FIX_LATER for user to decide scope.",
+    "fix_scope": "src/python/abw/pyproject.toml (create), src/python/gnumeric/pyproject.toml (create) — pilot fix",
+    "validation_command": ".local/venv/Scripts/pip install -e src/python/abw/ && .local/venv/Scripts/python -c \"import abw; print('abw import ok:', abw.__version__)\"",
+    "risks": "Creating pyproject.toml from scratch requires correct package name, version, entry points. If incorrect, pip install will fail. Must follow existing package structure exactly.",
+    "human_action_required": false,
+    "note": "Pilot: abw + gnumeric only. Full fix for all 10 packages should be a separate sprint or user-directed."
+  },
+  {
+    "problem_id": "PROB-PY02",
+    "title": "fods_py and fodt_py missing __version__ in __init__.py",
+    "severity": "LOW",
+    "classification": "FIX_NOW_SAFE",
+    "rationale": "Add __version__ = '0.1.0.dev0' to __init__.py — pure addition, no logic change, no test impact.",
+    "fix_scope": "src/python/fods/__init__.py — add __version__, src/python/fodt/__init__.py — add __version__",
+    "validation_command": ".local/venv/Scripts/python -c \"import sys; sys.path.insert(0,'src/python'); import fods; print(fods.__version__); import fodt; print(fodt.__version__)\"",
+    "risks": "None",
+    "human_action_required": false
+  },
+  {
+    "problem_id": "PROB-AUTO01",
+    "title": "session-resume.md stale — shows Autonomous continue: True",
+    "severity": "LOW",
+    "classification": "FIX_LATER_NEEDS_USER_APPROVAL",
+    "rationale": "session-resume.md is a supervisor-generated file. Directly editing it would bypass the supervisor's regeneration logic. The proper fix is to run autonomous_cycle.py with a new declaration to regenerate session-resume.md. This is within-scope for the evidence bundle phase but should not be edited ad-hoc.",
+    "fix_scope": "Supervisor pipeline regenerates reports/supervisor/session-resume.md via autonomous_cycle.py",
+    "validation_command": "N/A — fixed as a side effect of autonomous_cycle.py run in Phase 5",
+    "risks": "Editing session-resume.md directly would be overwritten on the next autonomous_cycle run",
+    "human_action_required": false,
+    "note": "This will be resolved as part of Phase 5 evidence bundle — autonomous_cycle.py regenerates session-resume.md"
+  }
+]

@@ -1,0 +1,60 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "generated_by": "TC-W2-004",
+  "cycle_mode": "near-live",
+  "skill_id": "add-dotnet-api",
+  "format_id": "fods",
+  "gap_id": "GAP-FODS-DOGFOOD-CSV-DOTNET-001",
+  "overall_result": "PASS",
+  "steps": [
+    {
+      "step_name": "handoff_generated",
+      "status": "PASS",
+      "evidence_path": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+      "timestamp": "2026-06-04T00:00:00Z",
+      "notes": "Handoff YAML created with mode=dry-run, all required fields present."
+    },
+    {
+      "step_name": "execution_plan_created",
+      "status": "PASS",
+      "evidence_path": "reports/skills-product-first/generated-handoffs/handoff-spf-001-add-dotnet-api.yaml",
+      "timestamp": "2026-06-04T00:00:01Z",
+      "notes": "Execution plan embedded in transcript inputs.execution_plan field."
+    },
+    {
+      "step_name": "transcript_produced",
+      "status": "PASS",
+      "evidence_path": "reports/skills-product-first/skill-transcripts/transcript-spf-001-add-dotnet-api-near-live.json",
+      "timestamp": "2026-06-04T00:00:02Z",
+      "notes": "Transcript JSON created with all required fields: invocation_id, skill_id, mode, inputs, allowed_files, actual_files_changed=[], tests_run=[], result=PASS."
+    },
+    {
+      "step_name": "transcript_validated",
+      "status": "PASS",
+      "evidence_path": "reports/skills-product-first/skill-transcripts/transcript-spf-001-add-dotnet-api-near-live.json",
+      "timestamp": "2026-06-04T00:00:03Z",
+      "notes": "validate_skill_transcript.py exit 0. Result: TRANSCRIPT_VALIDATION: PASS. Minor warning: inputs missing ledger_entry_path (expected for dry-run)."
+    },
+    {
+      "step_name": "adoption_compliance_run",
+      "status": "PASS",
+      "evidence_path": "reports/skills-product-first/validator-results/adoption-compliance-w2.json",
+      "timestamp": "2026-06-04T00:00:04Z",
+      "notes": "validate_adoption compliance: compliant=true. 1/1 items compliant."
+    },
+    {
+      "step_name": "graded",
+      "status": "PASS",
+      "evidence_path": "reports/skills-product-first/live-cycle-proof.json",
+      "timestamp": "2026-06-04T00:00:05Z",
+      "notes": "Dry-run cycle graded PASS. No REJECTED/OVERCLAIMED items. Transcript + compliance both PASS."
+    },
+    {
+      "step_name": "continuation_decided",
+      "status": "PASS",
+      "evidence_path": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "timestamp": "2026-06-04T00:00:06Z",
+      "notes": "Decision: Mainstream should use mainstream-consumption-packet.json to execute the live version (mode=live) of this same gap. Dry-run cycle proves the pipeline is ready."
+    }
+  ]
+}

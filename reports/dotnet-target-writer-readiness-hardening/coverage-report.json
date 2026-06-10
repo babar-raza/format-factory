@@ -1,0 +1,55 @@
+{
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "proof_graph": {
+    "nodes_total": 14,
+    "nodes_by_type": {
+      "writer_library": 4,
+      "exporter": 4,
+      "capability_gap": 4,
+      "supervisor_tool": 1,
+      "supervisor_fix": 1
+    },
+    "edges_total": 12,
+    "edges_by_type": {
+      "CONSUMED_BY": 4,
+      "CLOSES": 4,
+      "PROBES": 4
+    }
+  },
+  "gap_coverage": {
+    "total_architecture_blocked_gaps": 4,
+    "gaps_now_closed": 4,
+    "gaps_remaining_open": 0,
+    "closure_rate": 1.0
+  },
+  "writer_library_coverage": {
+    "total_writer_libraries_built": 4,
+    "libraries": [
+      {"name": "FormatFactory.Csv", "tests": 15, "status": "IMPLEMENTED"},
+      {"name": "FormatFactory.Html", "tests": 12, "status": "IMPLEMENTED"},
+      {"name": "FormatFactory.Txt", "tests": 8, "status": "IMPLEMENTED"},
+      {"name": "FormatFactory.Markdown", "tests": 11, "status": "IMPLEMENTED"}
+    ],
+    "total_writer_tests": 46
+  },
+  "exporter_coverage": {
+    "exporters_refactored": 4,
+    "fods_total_tests": 547,
+    "fodt_total_tests": 520,
+    "fods_regressions": 0,
+    "fodt_regressions": 0
+  },
+  "readiness_hardening": {
+    "v4_conditions": 1,
+    "v5_conditions": 5,
+    "new_tests_added": 10,
+    "total_dynamic_unblock_tests": 21,
+    "all_pass": true
+  },
+  "anti_skip_coverage": {
+    "tests_added": 9,
+    "root_cause_documented": true,
+    "artifact_types_corrected": ["raw_log", "sample_output"]
+  }
+}

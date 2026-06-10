@@ -1,0 +1,34 @@
+id: ADR-ROUTE-012
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Machinery-Governed and Blocked Pilot Fixtures"
+status: completed
+lane: pilot_test
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-005, ADR-ROUTE-006]
+gates:
+  - "pilot-002 produces AGENT_GOVERNED_DECISION_REQUIRED"
+  - "pilot-004 produces GOVERNED_DIRECT_EXECUTION"
+  - "pilot-005 produces BLOCKED_UNSAFE_OR_UNCLASSIFIED"
+allowed_files:
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-002-machinery-blocked-no-decision.yaml"
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-004-machinery-governed-route.yaml"
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-005-unknown-blocked.yaml"
+forbidden_files:
+  - "src/"
+acceptance_criteria:
+  - "3 machinery/blocked pilot fixtures exist"
+  - "All route correctly per expected_route"
+tests:
+  - "tests/supervisor/test_autonomy_routing_pilot_fixtures.py::TestPilotFixtures::test_pilot_002_machinery_no_decision"
+  - "tests/supervisor/test_autonomy_routing_pilot_fixtures.py::TestPilotFixtures::test_pilot_004_machinery_governed"
+  - "tests/supervisor/test_autonomy_routing_pilot_fixtures.py::TestPilotFixtures::test_pilot_005_unknown_blocked"
+evidence:
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-002-machinery-blocked-no-decision.yaml"
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-004-machinery-governed-route.yaml"
+  - "tests/fixtures/autonomy-routing-pilots/route-pilot-005-unknown-blocked.yaml"
+rollback: "rm tests/fixtures/autonomy-routing-pilots/route-pilot-002* route-pilot-004* route-pilot-005*"
+closeout_criteria: "3 pilot fixtures exist and tests pass"

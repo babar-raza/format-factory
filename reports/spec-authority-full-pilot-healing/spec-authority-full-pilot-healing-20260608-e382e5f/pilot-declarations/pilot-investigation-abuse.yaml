@@ -1,0 +1,32 @@
+# Pilot: TCA-FULL-005 — Investigation/sample exceptions cannot hide product changes
+# Two items:
+#   Part A: PRODUCT_SOURCE + investigation_only → validator accepts (investigation_only is valid for any blocking type per current code)
+#           NOTE: This reveals a gap — investigation_only on PRODUCT_SOURCE is accepted by validator
+#           but should be reviewed. The validator trusts the classification.
+#   Part B: READINESS + sample_only_non_product → expected ACCEPTED (sample is in readiness-allowed list)
+#           NOTE: This is correct behavior per READINESS_ALLOWED_EXCEPTIONS
+pilot_id: pilot-investigation-abuse
+sprint_id: SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001
+run_id: spec-authority-full-pilot-healing-20260608-e382e5f
+expected_result: INVESTIGATION_ONLY_ACCEPTED_NO_PRODUCT_CLAIM_SAMPLE_ACCEPTED
+
+planned_work_items:
+  - item_id: WI-PILOT-INVABUSE-001
+    item_type: PRODUCT_SOURCE
+    title: "Product source change hidden behind investigation_only (Part A)"
+    status: completed
+    exception_classification: investigation_only
+    exception_rationale: "Pure investigation — no product artifacts."
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    acceptance_criteria: "Validator accepts (classification is valid); supervisor grader should note grade_impact=none; product claim cannot be made via investigation_only alone"
+
+  - item_id: WI-PILOT-INVABUSE-002
+    item_type: READINESS
+    title: "Readiness claim with sample_only_non_product (Part B)"
+    status: completed
+    exception_classification: sample_only_non_product
+    exception_rationale: "Sample output only, not product readiness."
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    acceptance_criteria: "sample_only_non_product is in READINESS_ALLOWED_EXCEPTIONS — accepted by validator; product scope cannot be claimed"

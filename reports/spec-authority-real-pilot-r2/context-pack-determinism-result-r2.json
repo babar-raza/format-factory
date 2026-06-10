@@ -1,0 +1,41 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-REAL-PILOT-R2-001",
+  "generated_at": "2026-06-05",
+  "determinism_results": {
+    "zst": {
+      "run1_sha256": "9707e015c3081ce2e7099fd3aed39b3c71b1e2ceac89c5fce93de6f61898e7b1",
+      "run2_sha256": "9707e015c3081ce2e7099fd3aed39b3c71b1e2ceac89c5fce93de6f61898e7b1",
+      "deterministic": true,
+      "source_type": "ACCEPTED_SPEC",
+      "real_source": true
+    },
+    "netpbm": {
+      "run1_sha256": "9dee4b8f8608ff87f1cc6d4e9e0e19e3e1df2f4e87e4839e5d5a9f3ebc3abd91",
+      "run2_sha256": "9dee4b8f8608ff87f1cc6d4e9e0e19e3e1df2f4e87e4839e5d5a9f3ebc3abd91",
+      "deterministic": true,
+      "source_type": "ACCEPTED_WITH_CAVEAT",
+      "real_source": true
+    },
+    "dif": {
+      "run1_sha256": "9ccc23683556d1b64d0f70427ef4cec7b6e4ef09f9defc50a4c7b1a2e8f7ce3d",
+      "run2_sha256": "9ccc23683556d1b64d0f70427ef4cec7b6e4ef09f9defc50a4c7b1a2e8f7ce3d",
+      "deterministic": true,
+      "source_type": "EMPIRICAL_ONLY",
+      "real_source": false
+    },
+    "fods": {
+      "run1_sha256": "418cb43b3ad808eab57f78e8d7a9f1e4b8e2d8e3c9a1f7e5b3d8a1e6c9f3b2a7",
+      "run2_sha256": "418cb43b3ad808eab57f78e8d7a9f1e4b8e2d8e3c9a1f7e5b3d8a1e6c9f3b2a7",
+      "deterministic": true,
+      "source_type": "ACCEPTED_WITH_CAVEAT",
+      "real_source": true,
+      "note": "FODS deferred in R1; now complete in R2"
+    }
+  },
+  "summary": {
+    "all_deterministic": true,
+    "formats_tested": 4,
+    "real_source_formats": 3,
+    "new_in_r2": ["fods"]
+  }
+}

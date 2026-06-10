@@ -1,0 +1,80 @@
+{
+  "format_id": "zst",
+  "current_level": "P5",
+  "current_level_int": 5,
+  "target_level": "P6",
+  "target_level_int": 6,
+  "already_at_or_above_target": false,
+  "authority_blockers": [
+    "no_proof_graph: citations complete but proof graph YAML not found"
+  ],
+  "exception_allowed": null,
+  "readiness_allowed": true,
+  "product_expansion_allowed": true,
+  "facts_summary": {
+    "total": 2,
+    "verified": 2,
+    "candidate": 0,
+    "verified_ids": [
+      "FACT-ZST-001",
+      "FACT-ZST-002"
+    ],
+    "candidate_ids": []
+  },
+  "citations_summary": {
+    "code_cited_files": [
+      "src\\python\\zst\\zst_codec.py"
+    ],
+    "test_cited_files": [
+      "tests\\python\\zst\\test_r127_zst_fact_traceability.py"
+    ],
+    "proof_graph_files": []
+  },
+  "gap_steps": [
+    {
+      "step": 5,
+      "from_level": "P5",
+      "to_level": "P6",
+      "action": "Build proof graph YAML: spec_source -> fact -> code -> test -> evidence. Store under reports/authority-conveyor-*/.",
+      "type": "PROOF_GRAPH",
+      "blocked_by": "Requires: P5 (code + test citations)",
+      "verified_fact_ids": [
+        "FACT-ZST-001",
+        "FACT-ZST-002"
+      ],
+      "code_cited_in": [
+        "src\\python\\zst\\zst_codec.py"
+      ],
+      "test_cited_in": [
+        "tests\\python\\zst\\test_r127_zst_fact_traceability.py"
+      ],
+      "outputs": [
+        "reports/authority-conveyor-YYYYMMDD/zst-p6-proof-graph.yaml",
+        "reports/authority-conveyor-YYYYMMDD/zst-authority-ledger-entry.json"
+      ]
+    }
+  ],
+  "gap_count": 1,
+  "matrix_update": {
+    "format_id": "zst",
+    "current_level": "P5",
+    "target_level": "P6",
+    "gap_steps": 1,
+    "already_complete": false,
+    "verified_facts_count": 2,
+    "candidate_facts_count": 0,
+    "code_citations_count": 1,
+    "test_citations_count": 1,
+    "proof_graphs_found": 0
+  },
+  "next_action": "Build proof graph YAML: spec_source\u2192fact\u2192code\u2192test\u2192evidence. Store in reports/authority-conveyor-*/. Verify all edges are present.",
+  "spec_state_summary": {
+    "spec_cached": true,
+    "facts_verified": 2,
+    "facts_candidate": 0,
+    "verified_fact_ids": [
+      "FACT-ZST-001",
+      "FACT-ZST-002"
+    ]
+  }
+}

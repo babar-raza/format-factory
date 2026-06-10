@@ -1,0 +1,18 @@
+{
+  "skill_id": "proof-graph-ledger-linker",
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-FULL-HARDENING-BACKFILL-AND-PILOT-MEGA-TRAIN-001",
+  "invocation_timestamp": "2026-06-08T17:48:00Z",
+  "action": "create_ledger_entries_and_edge_graph_for_p6_formats",
+  "formats_covered": ["fods", "zst"],
+  "files_created": [
+    "reports/authority-conveyor-20260608/zst-authority-ledger-entry.json",
+    "reports/spec-authority-full-hardening-backfill/*/ledgers/product-authority-ledger.json",
+    "reports/spec-authority-full-hardening-backfill/*/ledgers/proof-graph-authority-edges.json"
+  ],
+  "test_added": "tests/supervisor/test_proof_graph_ledger_validation.py (14 tests)",
+  "validation_command": "python -m pytest tests/supervisor/test_proof_graph_ledger_validation.py -q",
+  "validation_result": "14/14 PASS",
+  "synthetic_edges_detected": 0,
+  "ai_only_edges_detected": 0,
+  "verdict": "PASS"
+}

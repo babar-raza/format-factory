@@ -1,0 +1,18 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-HARDENING-IV-AND-CONSUMPTION-CONTRACT-001",
+  "generated": "2026-06-04T08:41:38.234005+00:00",
+  "from_stream": "Acceleration",
+  "to_stream": "Supervisor",
+  "classification": "ACCELERATION_CONSUMABLE",
+  "packet_index_path": "reports/acceleration-hardening/mainstream-packet-index.json",
+  "cross_lane_readiness_path": "reports/acceleration-hardening/cross-lane-readiness.json",
+  "packet_validation_path": "reports/acceleration-hardening/packet-validation-results.json",
+  "supervisor_instructions": [
+    "Route packets to Mainstream as advisory input for R94+ implementation",
+    "Priority: FODS (dogfood CSV) > FODT (markdown) > SYLK (FOSS CSV)",
+    "All packets carry authority_state=ai_draft \u2014 Mainstream must validate before implementation",
+    "Supervisor may not close taskcards or update poc-targets.yaml from packets alone"
+  ],
+  "authority_state": "ai_draft",
+  "non_authoritative": true
+}

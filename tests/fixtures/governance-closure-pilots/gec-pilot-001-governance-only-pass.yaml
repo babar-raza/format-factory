@@ -1,0 +1,18 @@
+# GEC Pilot 001: Governance-only declaration — expected PASS
+id: gec-pilot-001
+description: >
+  Pure governance sprint with GOVERNANCE_DOC items only.
+  All 10 validators should PASS. No execution_method required.
+planned_work_items:
+  - item_id: GEC-P001-GD-001
+    item_type: GOVERNANCE_DOC
+    status: completed
+    grade: PASS
+    exception_classification: investigation_only
+    state_machine_start: DISCOVERED
+    state_machine_target: GOVERNANCE_ACCEPTED
+    evidence_paths:
+      - docs/governance/repeatability-contract.md
+    tests_supporting: []
+expected_result: PASS
+expected_blocks_sprint: false

@@ -1,0 +1,59 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "gap_id": "fods-dogfood-csv",
+  "template_proposals": [
+    {
+      "proposal_id": "fods-dogfood-csv-happy_path",
+      "gap_id": "fods-dogfood-csv",
+      "test_type": "happy_path",
+      "description": "Verify fods-dogfood-csv completes successfully with valid input.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fods-dogfood-csv-roundtrip",
+      "gap_id": "fods-dogfood-csv",
+      "test_type": "roundtrip",
+      "description": "Verify fods-dogfood-csv produces output that round-trips back to equivalent input.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fods-dogfood-csv-edge_empty",
+      "gap_id": "fods-dogfood-csv",
+      "test_type": "edge_empty",
+      "description": "Verify fods-dogfood-csv handles empty/minimal input without exception.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fods-dogfood-csv-edge_large",
+      "gap_id": "fods-dogfood-csv",
+      "test_type": "edge_large",
+      "description": "Verify fods-dogfood-csv handles large/complex input within resource limits.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fods-dogfood-csv-error_invalid_input",
+      "gap_id": "fods-dogfood-csv",
+      "test_type": "error_invalid_input",
+      "description": "Verify fods-dogfood-csv raises appropriate error on invalid input.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    },
+    {
+      "proposal_id": "fods-dogfood-csv-dogfood_export",
+      "gap_id": "fods-dogfood-csv",
+      "test_type": "dogfood_export",
+      "description": "Verify fods-dogfood-csv output is usable by a downstream Format Factory tool.",
+      "authority_state": "ai_draft",
+      "reviewer_accepted": true
+    }
+  ],
+  "ai_enhanced_proposals": [],
+  "total_proposals": 6,
+  "authority_state": "ai_draft",
+  "non_authoritative": true,
+  "timestamp": "2026-06-04T07:09:41.854501+00:00"
+}

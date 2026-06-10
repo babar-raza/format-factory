@@ -1,0 +1,88 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001",
+  "generated_at": "2026-06-04T09:00:00Z",
+  "scenarios": [
+    {
+      "id": "S1",
+      "name": "Baseline prior Supervisor state (breadth=2, no cross-stream consumption)",
+      "input_replay": [{"stream": "mainstream", "product_velocity_score": {"product_breadth_score": 2, "machinery_overhead_score": 0}, "skills_consumption": "not_consumed", "acceleration_consumption": "not_consumed", "false_pass_risk": "medium", "false_stop_risk": "low", "ai_output_status": "no_ai"}],
+      "run1_decision": "CONTINUE_WITH_LIMITATIONS",
+      "run2_decision": "CONTINUE_WITH_LIMITATIONS",
+      "deterministic": true,
+      "classification": "PARTIAL_FEW_FAMILIES"
+    },
+    {
+      "id": "S2",
+      "name": "Current state with Skills packet present",
+      "input_replay": [{"stream": "mainstream", "product_velocity_score": {"product_breadth_score": 2, "machinery_overhead_score": 0}, "skills_consumption": "consumed", "acceleration_consumption": "not_consumed", "false_pass_risk": "low", "false_stop_risk": "low", "ai_output_status": "no_ai"}],
+      "run1_decision": "CONTINUE_WITH_LIMITATIONS",
+      "run2_decision": "CONTINUE_WITH_LIMITATIONS",
+      "deterministic": true,
+      "classification": "PARTIAL_FEW_FAMILIES",
+      "note": "Still PARTIAL_FEW_FAMILIES because breadth=2; Skills consumption improves score"
+    },
+    {
+      "id": "S3",
+      "name": "Missing Skills packet (forced via test, not filesystem probe)",
+      "input_replay": [{"stream": "mainstream", "product_velocity_score": {"product_breadth_score": 2, "machinery_overhead_score": 0}, "skills_consumption": "not_consumed", "acceleration_consumption": "not_consumed", "false_pass_risk": "medium", "false_stop_risk": "low", "ai_output_status": "no_ai"}],
+      "skills_packet_present": false,
+      "cross_stream_verdict": "SKILLS_CONSUMPTION_GAP",
+      "deterministic": true
+    },
+    {
+      "id": "S4",
+      "name": "Missing Acceleration packet",
+      "input_replay": [{"stream": "mainstream", "product_velocity_score": {"product_breadth_score": 2, "machinery_overhead_score": 0}, "skills_consumption": "consumed", "acceleration_consumption": "not_consumed", "false_pass_risk": "low", "false_stop_risk": "low", "ai_output_status": "no_ai"}],
+      "acceleration_packets_present": false,
+      "cross_stream_verdict": "ACCELERATION_CONSUMPTION_GAP",
+      "deterministic": true
+    },
+    {
+      "id": "S5",
+      "name": "Both Skills and Acceleration missing",
+      "cross_stream_verdict": "CROSS_STREAM_CONSUMPTION_GAPS_DETECTED",
+      "flags": ["SKILLS_NO_PRODUCT_OUTPUT", "SKILLS_MISSING_PACKET", "MAINSTREAM_NOT_CONSUMING_SKILLS", "ACCELERATION_NO_AI_OUTPUT", "MAINSTREAM_NOT_CONSUMING_ACCELERATION"],
+      "deterministic": true
+    },
+    {
+      "id": "S6",
+      "name": "Stale or malformed Skills packet (parse error)",
+      "skills_probe_result": {"found": false, "packet_valid": false},
+      "cross_stream_verdict": "SKILLS_CONSUMPTION_GAP",
+      "deterministic": true
+    },
+    {
+      "id": "S7",
+      "name": "Stale Acceleration packet (wrong sprint_id)",
+      "note": "Stale sprint_id is still valid JSON — classified as CONSUMABLE_PARTIAL",
+      "cross_stream_verdict": "ACCELERATION_CONSUMABLE_PARTIAL",
+      "deterministic": true
+    },
+    {
+      "id": "S8",
+      "name": "Empty selected-product-gaps fallback",
+      "input_gaps": {"selected_gaps": []},
+      "run_decision": "CONTINUE_WITH_LIMITATIONS",
+      "deterministic": true,
+      "note": "No gaps → no families selected but no crash"
+    },
+    {
+      "id": "S9",
+      "name": "Mainstream weak-breadth case (breadth=1)",
+      "input_replay": [{"stream": "mainstream", "product_velocity_score": {"product_breadth_score": 1, "machinery_overhead_score": 0}}],
+      "run_decision": "CONTINUE_WITH_LIMITATIONS",
+      "classification": "PARTIAL_FEW_FAMILIES",
+      "deterministic": true
+    },
+    {
+      "id": "S10",
+      "name": "Mainstream clean-pass synthetic fixture (breadth=3, all evidence)",
+      "input_evidence": {"families_touched": 3, "source_diffs": 3, "governed_transcripts": 3, "raw_logs": 3, "capability_matrix_deltas": 3, "repair_items": 0, "product_items": 5},
+      "classification": "CLEAN_PASS",
+      "deterministic": true
+    }
+  ],
+  "determinism_verdict": "DETERMINISTIC",
+  "all_scenarios_stable": true,
+  "semantic_hash_method": "strip generated_at/timestamp fields; compare JSON tree"
+}

@@ -1,0 +1,25 @@
+{
+  "sample_type": "mainstream-failing",
+  "description": "A failing Mainstream product work item: src-editing track without ledger_entry_id",
+  "work_item": {
+    "item_id": "W1-PPM-GRAYSCALE",
+    "title": "PPM grayscale conversion",
+    "product_track": "foss_python",
+    "evidence_paths": ["reports/r94/ppm-grayscale.md"],
+    "status": "completed"
+  },
+  "adoption_result": {
+    "compliant": false,
+    "checks": {
+      "has_skill_id": false,
+      "has_transcript": false,
+      "has_ledger_entry": false,
+      "ledger_missing_reason": "src-editing track 'foss_python' requires ledger_entry_id"
+    }
+  },
+  "grading_result": {
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "reason": "No concrete proof: no test content, no transcript, no acceptance criteria verified"
+  },
+  "failure_explanation": "Missing skill_id, transcript, and ledger_entry_id. Adoption compliance validator rejects this item."
+}

@@ -1,0 +1,19 @@
+TCA-009: Quarantine Synthetic Fixture Data
+Sprint: SPEC-AUTHORITY-LAYER-STOP-THE-BLEEDING-001
+Run: stop-the-bleeding-20260607-e382e5f
+Date: 2026-06-07
+
+RESULT: PASS
+
+Actions taken:
+  1. Renamed: .local/spec-artifacts/FODS-SPEC-001-requirements.json
+          to: .local/spec-artifacts/FODS-SPEC-001-requirements-synthetic-DO-NOT-USE.json
+  2. Created: .local/spec-artifacts/FODS-SPEC-001-requirements-QUARANTINE.md
+              (explains why quarantined, what to do instead)
+
+Validation:
+  test ! -f FODS-SPEC-001-requirements.json -> QUARANTINED
+  test -f FODS-SPEC-001-requirements-synthetic-DO-NOT-USE.json -> RENAMED_OK
+
+Root cause fixed: GAP-002 (synthetic requirements were in active use)
+Note: File kept for audit — NOT deleted, only renamed so it cannot be accidentally used.

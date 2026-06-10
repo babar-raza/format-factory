@@ -1,0 +1,123 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+  "schema_version": "1.0",
+  "lanes": [
+    {
+      "lane_id": "LANE-0",
+      "title": "Coordinator / Integration",
+      "status": "in_progress",
+      "owner": "Coordinator",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W0-COORD", "TC-W0-007", "TC-W9-005"],
+      "output_files": ["lane-ownership.md", "file-ownership-map.json", "overlap-check.md", "taskcard-state.json", "coordinator-integration-log.md"]
+    },
+    {
+      "lane_id": "HEAL",
+      "title": "Plan Healing Artifacts",
+      "status": "in_progress",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-HEAL-001", "TC-HEAL-002", "TC-HEAL-003", "TC-HEAL-004", "TC-HEAL-005"],
+      "output_files": ["reports/skills-plan-repair/00-review-response.md", "reports/skills-plan-repair/gap-analysis.md", "reports/skills-plan-repair/execution-readiness-repair.md", "reports/skills-plan-repair/final-single-go-execution-prompt.md", "reports/skills-plan-repair/final-adversarial-independent-verification.md"]
+    },
+    {
+      "lane_id": "W0",
+      "title": "Preflight and Replan",
+      "status": "in_progress",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W0-001", "TC-W0-002", "TC-W0-003", "TC-W0-004", "TC-W0-005", "TC-W0-006"],
+      "output_files": ["00-current-state-review.md", "skills-lane-replan.md", "mainstream-consumption-plan.md", "live-cycle-plan.md", "skill-template-index.md", "lane-execution-ledger.json"]
+    },
+    {
+      "lane_id": "W1",
+      "title": "Governed Source-Change Contract",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W1-001", "TC-W1-002"],
+      "output_files": ["governed-source-change-contract.yaml", "governed-source-change-contract.md"]
+    },
+    {
+      "lane_id": "W2",
+      "title": "Live Cycle Proof",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W2-001", "TC-W2-002", "TC-W2-003", "TC-W2-004"],
+      "output_files": ["generated-handoffs/handoff-spf-001-add-dotnet-api.yaml", "skill-transcripts/transcript-spf-001-add-dotnet-api-near-live.json", "validator-results/adoption-compliance-w2.json", "live-cycle-proof.json"]
+    },
+    {
+      "lane_id": "W3",
+      "title": "Mainstream Reusable Templates",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W3-001", "TC-W3-002", "TC-W3-003", "TC-W3-004", "TC-W3-005", "TC-W3-006"],
+      "output_files": ["docs/prompt-templates/skills/add-dotnet-api-handoff-template.md", "docs/prompt-templates/skills/add-python-api-handoff-template.md", "docs/prompt-templates/skills/add-export-handoff-template.md", "docs/prompt-templates/skills/add-dogfood-pipeline-template.md", "docs/prompt-templates/skills/add-roundtrip-test-template.md", "docs/prompt-templates/skills/update-capability-matrix-template.md"]
+    },
+    {
+      "lane_id": "W4",
+      "title": "MCP Promotion (conditional)",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W4-001", "TC-W4-002", "TC-W4-003"],
+      "output_files": ["mcp-readiness/readiness-gate.json", "registry-backup/"]
+    },
+    {
+      "lane_id": "W5",
+      "title": "Receiver Fixtures",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W5-001", "TC-W5-002", "TC-W5-003", "TC-W5-004", "TC-W5-005", "TC-W5-006", "TC-W5-007", "TC-W5-008", "TC-W5-009", "TC-W5-010", "TC-W5-011"],
+      "output_files": ["receiver-fixtures/", "validator-results/fixture-validation-results.json"]
+    },
+    {
+      "lane_id": "W6",
+      "title": "Mainstream Consumption Packet + Cross-Stream Handoffs",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W6-001", "TC-W6-002", "TC-W6-003", "TC-W6-004", "TC-W6-005"],
+      "output_files": ["mainstream-consumption-packet.json", "mainstream-consumption-packet.md", "handoff-to-mainstream.json", "handoff-to-mainstream.md", "handoff-to-supervisor.json", "handoff-to-supervisor.md", "handoff-to-acceleration.json", "handoff-to-acceleration.md"]
+    },
+    {
+      "lane_id": "W7",
+      "title": "MCP/Tool Readiness",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W7-001", "TC-W7-002"],
+      "output_files": ["mcp-readiness.md", "tool-readiness.json"]
+    },
+    {
+      "lane_id": "W8",
+      "title": "Test Suite",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W8-001"],
+      "output_files": ["tests/supervisor/test_skills_product_first_spf.py"]
+    },
+    {
+      "lane_id": "W9",
+      "title": "Evidence Closeout",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W9-001", "TC-W9-002", "TC-W9-003", "TC-W9-004"],
+      "output_files": [".local/evidences/skills-product-first/evidence-declaration.yaml", ".local/evidences/skills-product-first/evidence-manifest.yaml"]
+    },
+    {
+      "lane_id": "W10",
+      "title": "External Skills Intake (read-only evaluation)",
+      "status": "pending",
+      "owner": "Skills agent",
+      "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+      "taskcards": ["TC-W10-001", "TC-W10-002", "TC-W10-003", "TC-W10-004", "TC-W10-005", "TC-W10-006", "TC-W10-007"],
+      "output_files": ["external-skills-intake.md", "superpowers-marketplace-evaluation.json", "local-skill-normalization-map.json", "external-skill-risk-register.json", "superpowers-adoption-decision.md", "docs/prompt-templates/skills/external-skill-wrapper-template.md", "reports/skills-plan-repair/superpowers-installation-gate.md", "raw-logs/no-plugin-install-proof.txt"]
+    }
+  ]
+}

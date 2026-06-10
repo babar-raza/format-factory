@@ -1,0 +1,72 @@
+{
+  "sprint_id": "FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "dashboard_verdict": "ALL_GAPS_CLOSED_PROOF_CHAIN_COMPLETE_HUMAN_DECISION_PENDING",
+  "closure_criteria": {
+    "all_writer_libraries_built": true,
+    "all_exporters_refactored": true,
+    "all_tests_pass": true,
+    "all_sample_outputs_exist": true,
+    "readiness_v5_all_ready": true,
+    "dynamic_unblocking_confirmed": true,
+    "BLOCKED_GAP_IDS_empty": true,
+    "capability_delta_proposals_created": true,
+    "poc_targets_yaml_mutated": false,
+    "human_decision_pending": true
+  },
+  "test_matrix": {
+    "writer_tests": {
+      "FormatFactory.Csv": {"run": 15, "pass": 15},
+      "FormatFactory.Html": {"run": 12, "pass": 12},
+      "FormatFactory.Txt": {"run": 8, "pass": 8},
+      "FormatFactory.Markdown": {"run": 11, "pass": 11},
+      "total": 46
+    },
+    "product_tests": {
+      "FODS_dotnet": {"run": 547, "pass": 547, "regressions": 0},
+      "FODT_dotnet": {"run": 520, "pass": 520, "regressions": 0},
+      "total": 1067
+    },
+    "supervisor_tests": {
+      "dynamic_unblock": {"run": 21, "pass": 21},
+      "anti_skip": {"run": 9, "pass": 8, "skipped": 1},
+      "total": 30
+    },
+    "grand_total": 1143
+  },
+  "gaps": [
+    {
+      "gap_id": "commercial-net-fods-dogfood-status-fods-to-csv-dotnet",
+      "status": "CLOSED",
+      "readiness": "READY",
+      "accepted_for_poc": true,
+      "delta_proposal": "capability-delta-proposals/fods-csv-dotnet.yaml"
+    },
+    {
+      "gap_id": "commercial-net-fods-dogfood-status-fods-to-html-dotnet",
+      "status": "CLOSED",
+      "readiness": "READY",
+      "accepted_for_poc": true,
+      "delta_proposal": "capability-delta-proposals/fods-html-dotnet.yaml"
+    },
+    {
+      "gap_id": "commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet",
+      "status": "CLOSED",
+      "readiness": "READY",
+      "accepted_for_poc": true,
+      "delta_proposal": "capability-delta-proposals/fodt-txt-dotnet.yaml"
+    },
+    {
+      "gap_id": "commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet",
+      "status": "CLOSED",
+      "readiness": "READY",
+      "accepted_for_poc": true,
+      "delta_proposal": "capability-delta-proposals/fodt-markdown-dotnet.yaml"
+    }
+  ],
+  "next_actions": [
+    "Human review: apply poc-targets-proposed-delta.yaml to poc-targets.yaml",
+    "Gate 11 decision: commercial_product_ready=true for FODS/FODT .NET",
+    "Continue Mainstream R117+ object-model features for FODS/FODT/Netpbm"
+  ]
+}

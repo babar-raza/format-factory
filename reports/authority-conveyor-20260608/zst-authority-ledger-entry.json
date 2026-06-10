@@ -1,0 +1,55 @@
+{
+  "entry_id": "AUTH-CONVEYOR-ZST-P6-FACT001-002",
+  "classification": "AUTHORITY_FACT_TRACEABILITY",
+  "sprint_id": "FORMAT-FACTORY-BROAD-AUTHORITY-PRODUCT-AUTONOMY-AND-HEALING-MEGA-TRAIN-001",
+  "generated_at": "2026-06-08T17:00:00Z",
+  "format_id": "zst",
+  "authority_level_achieved": "P6",
+  "fact_ids": ["FACT-ZST-001", "FACT-ZST-002"],
+  "facts": [
+    {
+      "fact_id": "FACT-ZST-001",
+      "claim": "Zstandard frame starts with 4-byte magic number 0xFD2FB528 in little-endian format",
+      "spec_section": "3.1.1",
+      "spec_version": "RFC 8878",
+      "spec_sha256": "sha256:8ee6be03534113f5689cda75b9539a02e0704a2506d420814223e506420aeea4",
+      "validation_method": "deterministic_spec_text_search"
+    },
+    {
+      "fact_id": "FACT-ZST-002",
+      "claim": "Skippable frames start with 4-byte magic number in range 0x184D2A50 to 0x184D2A5F",
+      "spec_section": "3.1.2",
+      "spec_version": "RFC 8878",
+      "spec_sha256": "sha256:8ee6be03534113f5689cda75b9539a02e0704a2506d420814223e506420aeea4",
+      "validation_method": "deterministic_spec_text_search"
+    }
+  ],
+  "code_citations": [
+    {
+      "file": "src/python/zst/zst_codec.py",
+      "symbol": "ZSTD_MAGIC",
+      "comment": "# FACT-ZST-001: Zstandard frame starts with 4-byte magic number 0xFD2FB528 in little-endian format",
+      "fact_ref": "FACT-ZST-001"
+    }
+  ],
+  "test_citations": [
+    {
+      "file": "tests/python/zst/test_r127_zst_fact_traceability.py",
+      "classes": ["TestZstFactZst001Traceability", "TestZstFactZst002Traceability"],
+      "test_count": 11,
+      "result": "ALL_PASS",
+      "facts_covered": ["FACT-ZST-001", "FACT-ZST-002"]
+    }
+  ],
+  "proof_graph_ref": "reports/authority-conveyor-20260608/zst-p6-proof-graph.yaml",
+  "p6_gate_checklist": {
+    "spec_source_sha256": true,
+    "fact_extracted": true,
+    "fact_verified": true,
+    "fact_cited_in_code": true,
+    "fact_cited_in_test": true,
+    "test_passes": true,
+    "proof_graph_complete": true
+  },
+  "scope_note": "P6 applies to FACT-ZST-001 and FACT-ZST-002. Both magic number facts verified from RFC 8878."
+}

@@ -1,0 +1,36 @@
+---
+handoff_id: R105-HANDOFF-001
+skill_id: add-dotnet-object-model-feature
+format_id: fods
+feature_name: RenameSheet
+mode: live
+generated_by: skills-r105
+target_stream: mainstream
+
+inputs:
+  format_id: fods
+  feature_name: RenameSheet
+  exact_source_paths:
+    - src/net/fods/FodsDocument.cs
+  exact_test_paths:
+    - tests/net/fods/FodsRenameSheetTests.cs
+  ledger_entry_path: reports/r90/product-code-change-ledger.json
+  focused_test_command: "dotnet test --filter FodsRenameSheet"
+
+allowed_files:
+  - src/net/fods/FodsDocument.cs
+  - tests/net/fods/FodsRenameSheetTests.cs
+  - reports/r90/product-code-change-ledger.json
+
+description: |
+  Add a RenameSheet(oldName, newName) method to FodsDocument.cs that renames
+  a sheet in the FODS spreadsheet document. The method should:
+  1. Find the sheet by oldName
+  2. Update the sheet name attribute to newName
+  3. Return success/failure
+  Tests: at least 8 focused tests covering rename, missing sheet, duplicate name, etc.
+
+transcript_requirement:
+  mode: live
+  ledger_entry_id: required
+  result_expected: PASS

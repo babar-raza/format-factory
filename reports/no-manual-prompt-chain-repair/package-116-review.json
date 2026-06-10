@@ -1,0 +1,48 @@
+{
+  "package_number": 116,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001",
+  "sha256": "3aec2d30523ac5743c3094547932f08fb66aa3889a18786830aecacbd801acee",
+  "supervisor_verdict": "ACCEPTED_WITH_REWORK",
+  "product_progress_accepted": true,
+  "autonomy_failure_accepted": true,
+  "product_progress": [
+    "probe_gnumeric() — Gnumeric FORMAT_DETECTION",
+    "create_gnumeric() — Gnumeric DOCUMENT_CREATION",
+    "write_gnumeric() — Gnumeric DOCUMENT_WRITE",
+    "export_to_txt() — ABW PLAIN_TEXT_EXPORT",
+    "54 new tests pass"
+  ],
+  "autonomy_failures": [
+    {
+      "id": "AF-001",
+      "type": "ADVISORY_ONLY_CONTINUATION",
+      "description": "continuation-signal.json has autonomous_continue=true but only next_sprint_path pointing to advisory Markdown",
+      "root_cause": "autonomous_cycle.py Step 8 does not call evidence_continuation.apply_post_closeout_continuation()",
+      "fix_location": "tools/supervisor/autonomous_cycle.py lines 646-673"
+    },
+    {
+      "id": "AF-002",
+      "type": "STALE_ACTIVE_CONTINUATION",
+      "description": "active-continuation.json is stale — points to H6-EXTERNAL-HOST-ACTIVATION sprint, has stop_reason=DRY_RUN_COMPLETE",
+      "root_cause": "autonomous_cycle.py never updates active-continuation.json",
+      "fix_location": "tools/supervisor/evidence_continuation.py write_post_closeout_active_continuation()"
+    },
+    {
+      "id": "AF-003",
+      "type": "EMPTY_POST_CLOSEOUT_QUEUE",
+      "description": "Post-closeout queue has no pending items for the new sprint",
+      "root_cause": "No queue item is seeded after closeout",
+      "fix_location": "tools/supervisor/evidence_continuation.py"
+    },
+    {
+      "id": "AF-004",
+      "type": "ADOPTION_COMPLIANCE_CONTRADICTION",
+      "description": "adoption compliance top-level FAIL_MISSING_TRANSCRIPTS but autonomous-cycle still exits 0",
+      "root_cause": "FAIL_MISSING_TRANSCRIPTS is advisory/warning, not blocking in this context",
+      "fix_location": "tools/supervisor/validate_adoption_compliance.py"
+    }
+  ],
+  "required_fix": "Wire evidence_continuation.apply_post_closeout_continuation() into autonomous_cycle.py Step 8",
+  "product_freeze": true,
+  "product_freeze_reason": "No new product source work until autonomy continuation is wired"
+}

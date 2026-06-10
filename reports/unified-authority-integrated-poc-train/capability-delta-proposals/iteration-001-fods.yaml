@@ -1,0 +1,41 @@
+target: fods
+iteration: 1
+authority_status: proposed_only
+note: not applied to poc-targets.yaml — proposed capability deltas only
+proposed_capabilities:
+  - capability: CreateNew
+    operation: add
+    proof_type: test_verified
+    source_files: [src/net/fods/FodsDocument.cs]
+    test_files: [tests/net/fods/FodsR114SetCellStyleTests.cs, tests/net/fods/FodsR114GetSheetStatsTests.cs]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/fods-r114-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-fods.json
+    sample_output: null
+    notes: Blank document factory for programmatic construction
+  - capability: GetSheetStats
+    operation: add
+    proof_type: test_verified
+    source_files: [src/net/fods/FodsDocument.cs]
+    test_files: [tests/net/fods/FodsR114GetSheetStatsTests.cs]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/fods-r114-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-fods.json
+    sample_output: null
+    notes: Returns (RowCount, ColCount, CellCount, NonEmptyCellCount) tuple
+  - capability: SetCellStyle
+    operation: add
+    proof_type: test_verified
+    source_files: [src/net/fods/FodsDocument.cs]
+    test_files: [tests/net/fods/FodsR114SetCellStyleTests.cs]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/fods-r114-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-fods.json
+    sample_output: null
+    notes: Sets table:style-name attribute on cell; roundtrip-verified (save+reload)
+  - capability: GetCellStyle
+    operation: add
+    proof_type: test_verified
+    source_files: [src/net/fods/FodsDocument.cs]
+    test_files: [tests/net/fods/FodsR114SetCellStyleTests.cs]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/fods-r114-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-fods.json
+    sample_output: null
+    notes: Reads style attribute, returns null if not set

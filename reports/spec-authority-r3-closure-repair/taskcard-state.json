@@ -1,0 +1,147 @@
+[
+  {
+    "id": "TC-R3C-000",
+    "title": "Coordinator preflight — lane ownership, file ownership, overlap check, taskcard state",
+    "lane": "0",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": [],
+    "output_files": [
+      "reports/spec-authority-r3-closure-repair/lane-ownership.md",
+      "reports/spec-authority-r3-closure-repair/file-ownership-map.json",
+      "reports/spec-authority-r3-closure-repair/overlap-check.md",
+      "reports/spec-authority-r3-closure-repair/taskcard-state.json",
+      "reports/spec-authority-r3-closure-repair/command-ledger.json",
+      "reports/spec-authority-r3-closure-repair/scoreboard.md",
+      "reports/spec-authority-r3-closure-repair/00-preflight.md"
+    ],
+    "evidence_paths": [
+      "reports/spec-authority-r3-closure-repair/lane-ownership.md",
+      "reports/spec-authority-r3-closure-repair/file-ownership-map.json",
+      "reports/spec-authority-r3-closure-repair/overlap-check.md"
+    ],
+    "acceptance_check": "NO_OVERLAPS_DETECTED in overlap-check.md; taskcard-state.json parses; all files exist",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-R3C-001",
+    "title": "Lane A — R3 package contradiction audit",
+    "lane": "A",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R3C-000"],
+    "output_files": [
+      "reports/spec-authority-r3-closure-repair/r3-package-recheck.md",
+      "reports/spec-authority-r3-closure-repair/contradiction-register.json"
+    ],
+    "evidence_paths": [
+      "reports/spec-authority-r3-closure-repair/r3-package-recheck.md",
+      "reports/spec-authority-r3-closure-repair/contradiction-register.json"
+    ],
+    "acceptance_check": "contradiction-register.json parses; 4 contradictions classified; root cause documented",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-R3C-002",
+    "title": "Lane B — Closure order repair: document correct closure sequence",
+    "lane": "B",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R3C-001"],
+    "output_files": [
+      "reports/spec-authority-r3-closure-repair/closure-order-repair.md",
+      "reports/spec-authority-r3-closure-repair/package-proof-protocol.md"
+    ],
+    "evidence_paths": [
+      "reports/spec-authority-r3-closure-repair/closure-order-repair.md",
+      "reports/spec-authority-r3-closure-repair/package-proof-protocol.md"
+    ],
+    "acceptance_check": "correct 13-step closure order documented; no-self-reference rule stated",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-R3C-003",
+    "title": "Lane C — R3C closure rebuild (clean package following correct order)",
+    "lane": "C",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R3C-002"],
+    "output_files": [],
+    "evidence_paths": [],
+    "acceptance_check": "R3C closure follows correct order per closure-order-repair.md; evidence-declaration.yaml not pre-filled",
+    "blocker_reason": "NOTE: Lane C is the overall closure sequence enforced in Lane G — no separate file output"
+  },
+  {
+    "id": "TC-R3C-004",
+    "title": "Lane D — RCA input snapshot verification and canonical packet",
+    "lane": "D",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R3C-001"],
+    "output_files": [
+      "reports/spec-authority-r3-closure-repair/rca-input-snapshot-validation.md",
+      "reports/spec-authority-r3-closure-repair/rca-r2-input-packet.json",
+      "reports/spec-authority-r3-closure-repair/rca-input-caveat-summary.md"
+    ],
+    "evidence_paths": [
+      "reports/spec-authority-r3-closure-repair/rca-input-snapshot-validation.md",
+      "reports/spec-authority-r3-closure-repair/rca-r2-input-packet.json",
+      "reports/spec-authority-r3-closure-repair/rca-input-caveat-summary.md"
+    ],
+    "acceptance_check": "5 sources verified; DIF anti-bypass rule stated; rca_ready=true; RCA_INPUT_SNAPSHOT_VALID verdict",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-R3C-005",
+    "title": "Lane E — ODF R4 depth plan and taskcards",
+    "lane": "E",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R3C-004"],
+    "output_files": [
+      "reports/spec-authority-r3-closure-repair/odf-r4-depth-plan.md",
+      "reports/spec-authority-r3-closure-repair/odf-r4-taskcards.json"
+    ],
+    "evidence_paths": [
+      "reports/spec-authority-r3-closure-repair/odf-r4-depth-plan.md",
+      "reports/spec-authority-r3-closure-repair/odf-r4-taskcards.json"
+    ],
+    "acceptance_check": "chunking strategy defined for both FODS/FODT; risk register present; 8 taskcards in odf-r4-taskcards.json",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-R3C-006",
+    "title": "Lane F — Tests and verification",
+    "lane": "F",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R3C-005"],
+    "output_files": [
+      "tests/spec_authority/test_r3c_closure.py",
+      "reports/spec-authority-r3-closure-repair/test-run-report.md",
+      "reports/spec-authority-r3-closure-repair/raw-logs/spec-authority-r3c-tests.log"
+    ],
+    "evidence_paths": [
+      "tests/spec_authority/test_r3c_closure.py",
+      "reports/spec-authority-r3-closure-repair/test-run-report.md",
+      "reports/spec-authority-r3-closure-repair/raw-logs/spec-authority-r3c-tests.log"
+    ],
+    "acceptance_check": "closure-specific tests pass; 25+ total spec_authority tests pass; raw log written",
+    "blocker_reason": ""
+  },
+  {
+    "id": "TC-R3C-007",
+    "title": "Lane G — Final IV and evidence closeout (correct closure order)",
+    "lane": "G",
+    "status": "CLOSED_VERIFIED",
+    "dependencies": ["TC-R3C-006"],
+    "output_files": [
+      "reports/spec-authority-r3-closure-repair/final-adversarial-independent-verification.md",
+      "reports/spec-authority-r3-closure-repair/internal-repair-loop-1.md",
+      ".local/evidences/spec-authority-r3-closure-repair/evidence-declaration.yaml",
+      ".local/evidences/spec-authority-r3-closure-repair/evidence-manifest.yaml",
+      "reports/spec-authority-r3-closure-repair/review-package-proof.md"
+    ],
+    "evidence_paths": [
+      "reports/spec-authority-r3-closure-repair/final-adversarial-independent-verification.md",
+      ".local/evidences/spec-authority-r3-closure-repair/evidence-declaration.yaml",
+      ".local/evidences/spec-authority-r3-closure-repair/evidence-manifest.yaml",
+      "reports/spec-authority-r3-closure-repair/review-package-proof.md"
+    ],
+    "acceptance_check": "autonomous-cycle exit=0; SHA-256 is 64-char hex; no [PLACEHOLDER] in proof; all items ACCEPTED_VERIFIED",
+    "blocker_reason": ""
+  }
+]

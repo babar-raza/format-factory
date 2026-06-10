@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001",
+  "generated_at": "2026-06-06T00:00:00Z",
+  "module_file": "tools/supervisor/evidence_continuation.py",
+  "problem_solved": "After autonomous-cycle exits 0, continuation-signal.json points to advisory next-sprint.md (product Markdown). The orchestrator continuation_router.py rejects advisory paths. Without evidence_continuation.py, the system stops.",
+  "solution": "evidence_continuation.py detects advisory signals and generates machine-readable next-action.json + updates active-continuation.json to point to it.",
+  "key_functions": [
+    "apply_post_closeout_continuation(sprint_id, run_id, cycle_index) -> dict",
+    "repair_continuation_signal(sprint_id) -> dict",
+    "generate_post_closeout_next_action(sprint_id, ...) -> dict",
+    "write_post_closeout_active_continuation(sprint_id, next_action_path, ...) -> Path"
+  ],
+  "old_flow": "autonomous-cycle -> continuation-signal.json -> next-sprint.md (ADVISORY) -> orchestrator STOPS (ADVISORY_PROMPT_NOT_EXECUTABLE)",
+  "new_flow": "autonomous-cycle -> continuation-signal.json -> evidence_continuation.py detects advisory -> generates next-action.json -> active-continuation.json -> orchestrator CONTINUES",
+  "verdict": "EVIDENCE_CONTINUATION_IMPLEMENTED_ADVISORY_TO_MACHINE_READABLE_BRIDGE_READY"
+}

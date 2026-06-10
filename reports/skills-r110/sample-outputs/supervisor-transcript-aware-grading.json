@@ -1,0 +1,36 @@
+{
+  "sample_type": "supervisor-transcript-aware-grading",
+  "description": "Supervisor grading with transcript boost: valid transcript → ACCEPTED_VERIFIED",
+  "item_inspection": {
+    "item_id": "W1-PRODUCT",
+    "declared_status": "completed",
+    "has_evidence": true,
+    "has_tests": false,
+    "evidence_paths_found": ["reports/r94/product-report.md"],
+    "evidence_paths_missing": [],
+    "tests_declared": [],
+    "tests_with_content": [],
+    "tests_empty_or_stub": [],
+    "acceptance_criteria_verified": false,
+    "acceptance_criteria_pattern": "",
+    "transcript_validation": {
+      "transcripts_found": 1,
+      "transcripts_valid": 1,
+      "transcripts_invalid": 0,
+      "all_valid": true,
+      "valid_transcripts": [{"path": "t.json", "skill_id": "add-dotnet-api", "mode": "dry-run", "result": "PASS"}],
+      "invalid_transcripts": []
+    }
+  },
+  "grading_result": {
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "has_concrete_proof": true,
+    "proof_dimensions": ["transcript_validation.all_valid=True"],
+    "acceptance_criteria_met": ["Evidence found", "No missing paths", "Transcript validation: all transcripts valid"]
+  },
+  "contrast_without_transcript": {
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "has_concrete_proof": false,
+    "acceptance_criteria_failed": ["No raw proof, test content, or acceptance criteria verified"]
+  }
+}

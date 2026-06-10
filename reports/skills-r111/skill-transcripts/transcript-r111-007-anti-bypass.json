@@ -1,0 +1,19 @@
+{
+  "invocation_id": "r111-007-anti-bypass",
+  "skill_id": "add-python-api",
+  "mode": "anti-bypass-demo",
+  "timestamp": "2026-06-03T23:41:00Z",
+  "inputs": {
+    "format_id": "fods",
+    "api_name": "bypass_attempt",
+    "exact_source_paths": ["src/python/fods/parser.py"],
+    "exact_test_paths": ["tests/python/fods/test_bypass.py"],
+    "ledger_entry_path": "",
+    "focused_test_command": "pytest tests/python/fods/test_bypass.py"
+  },
+  "allowed_files": [],
+  "actual_files_changed": [],
+  "tests_run": [],
+  "result": "PASS",
+  "notes": "Anti-bypass demonstration: governed skill with anti-bypass-demo mode"
+}

@@ -1,0 +1,40 @@
+{
+  "transcript_version": "1.0",
+  "skill_id": "generate-execution-handoff",
+  "invocation_id": "SKILLS-R99-DRYRUN-GENERATE-HANDOFF-001",
+  "run_id": "FORMAT-FACTORY-SKILLS-R99-SKILL-REGISTRY-GOVERNED-EXECUTION-PARALLEL-MEGA-TRAIN-001",
+  "timestamp": "2026-06-03T03:00:00Z",
+  "mode": "DRY_RUN",
+  "inputs": {
+    "skill_id": "add-dotnet-api",
+    "target_format": "FODS",
+    "scope": "ExportSheetToMarkdown API"
+  },
+  "allowed_files": [
+    "reports/skills-r99/execution-handoffs/handoff-FODS-ExportSheetToMarkdown.md",
+    "src/net/fods/FodsDocument.cs",
+    "tests/net/fods/FodsR99ExportSheetToMarkdownTests.cs",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "forbidden_files": [
+    "registry/format-registry.yaml",
+    "plans/master-plan.md",
+    "product-capability-matrix/poc-targets.yaml"
+  ],
+  "actual_changed_files": [],
+  "tests_generated": [],
+  "tests_run": {
+    "command": "N/A (dry-run)",
+    "passed": 0,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ledger_entry": null,
+  "matrix_update": null,
+  "evidence_outputs": [
+    "reports/skills-r99/skill-transcripts/SKILLS-R99-DRYRUN-GENERATE-HANDOFF-001.json",
+    "reports/skills-r99/skill-transcripts/SKILLS-R99-DRYRUN-GENERATE-HANDOFF-001.md"
+  ],
+  "result": "PASS",
+  "notes": "Dry-run: verified skill inputs, allowed/forbidden paths, and handoff document format. No files changed."
+}

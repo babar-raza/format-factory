@@ -1,0 +1,24 @@
+id: PFGI-TC-004
+version: "1.0"
+generated_by: FORMAT-FACTORY-PRODUCT-FIRST-GOVERNED-SOURCE-IMPLEMENTATION-001
+generated_at: "2026-06-09"
+title: "Implement get_page_count in fodg_codec.py"
+status: closed
+lane: fodg_implementation
+item_type: PRODUCT_SOURCE
+format_id: fodg
+capability_id: get_page_count
+function_name: get_page_count
+source_file: src/python/fodg/fodg_codec.py
+execution_method: AGENT_GOVERNED_DIRECT_EXECUTION
+claim_classification: GOVERNED_BUT_NOT_REPLAYED
+idempotency_key: 3b38cde01bea7c6dc76227c9995d7389fcb0d420ce300d4652d1db576dc1d0b4
+state_machine_start: EVIDENCE_LOCATED
+state_machine_target: GOVERNANCE_ACCEPTED
+test_file: tests/python/fodg/test_pfgi_fodg_get_page_count.py
+tests_added: 7
+acceptance_criteria:
+  - Function returns len(model.get("pages", []))
+  - 7 tests pass including empty model, missing key, add_page increments count
+verification:
+  - pytest tests/python/fodg/test_pfgi_fodg_get_page_count.py -v

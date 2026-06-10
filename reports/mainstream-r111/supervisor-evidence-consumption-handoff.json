@@ -1,0 +1,70 @@
+{
+  "handoff_version": "1.0",
+  "from_stream": "mainstream",
+  "from_sprint": "mainstream-r111",
+  "to_stream": "supervisor",
+  "date": "2026-06-03",
+  "defects": [
+    {
+      "defect_id": "D110-SUP-01",
+      "file": "tools/supervisor/inspect_declared_evidence.py",
+      "line": 223,
+      "severity": "critical",
+      "description": "Fallback test-file scanning from evidence_paths requires test_summaries truthy, blocks when tests_supporting absent",
+      "current_code": "if not tests_with_content and not tests_empty_or_stub and test_summaries:",
+      "proposed_fix": "if not tests_with_content and not tests_empty_or_stub:",
+      "affected_items": 18,
+      "expected_items_upgraded": 13
+    },
+    {
+      "defect_id": "D110-SUP-02",
+      "file": "tools/supervisor/inspect_declared_evidence.py",
+      "line": 210,
+      "severity": "medium",
+      "description": "Criteria verification limited to first 3 evidence_paths, misses raw logs at position 4+",
+      "current_code": "for fp in found_paths[:3]:",
+      "proposed_fix": "for fp in found_paths:",
+      "affected_items": 6
+    },
+    {
+      "defect_id": "D110-SUP-03",
+      "file": "tools/supervisor/inspect_declared_evidence.py",
+      "function": "check_transcript_in_evidence",
+      "severity": "medium",
+      "description": "Only handles JSON transcripts, R110 Markdown transcripts ignored",
+      "proposed_fix": "Add Markdown transcript pattern matching",
+      "affected_items": 6
+    }
+  ],
+  "failing_examples": [
+    {
+      "item_id": "R110-WAVE-4A-FODS-GETCELLDATATYPE",
+      "test_file": "tests/net/fods/FodsR110GetCellDataTypeTests.cs",
+      "test_file_exists": true,
+      "test_content_present": true,
+      "actual_grade": "ACCEPTED_WITH_LIMITATIONS",
+      "expected_grade": "ACCEPTED_VERIFIED"
+    },
+    {
+      "item_id": "R110-WAVE-5A-ZST-WORKFLOW",
+      "test_file": "tests/python/zst/test_r110_zst_multiframe_workflow.py",
+      "test_file_exists": true,
+      "test_content_present": true,
+      "actual_grade": "ACCEPTED_WITH_LIMITATIONS",
+      "expected_grade": "ACCEPTED_VERIFIED"
+    }
+  ],
+  "expected_corrected_state": {
+    "evidence_quality_score": 0.72,
+    "verified_count": 13,
+    "total_accepted": 18,
+    "continuation_state": "YES",
+    "stop_reason": null
+  },
+  "tests_to_add": [
+    "test_items_with_evidence_paths_containing_tests_no_tests_supporting",
+    "test_criteria_verification_scans_all_evidence_paths",
+    "test_markdown_transcript_recognized",
+    "test_evidence_quality_positive_with_test_files_in_evidence_paths"
+  ]
+}

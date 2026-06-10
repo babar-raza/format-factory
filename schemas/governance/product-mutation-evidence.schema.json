@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "product-mutation-evidence.schema.json",
+  "title": "Format Factory Product Mutation Evidence Schema",
+  "version": "1.0",
+  "generated_by": "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001",
+  "generated_at": "2026-06-08",
+  "description": "Required fields for PRODUCT_SOURCE work items in evidence declarations. Governance doc items (GOVERNANCE_DOC, GOVERNANCE_SCHEMA, GOVERNANCE_POLICY, LEGACY_BACKFILL_METADATA) use a subset.",
+  "properties": {
+    "item_type": {
+      "type": "string",
+      "enum": [
+        "PRODUCT_SOURCE",
+        "TEST",
+        "REQUIREMENT",
+        "READINESS",
+        "RELEASE_GATE",
+        "GOVERNANCE_DOC",
+        "GOVERNANCE_SCHEMA",
+        "GOVERNANCE_POLICY",
+        "GOVERNANCE_TASKCARD",
+        "LEGACY_BACKFILL_METADATA"
+      ]
+    },
+    "execution_method": {
+      "type": "string",
+      "enum": [
+        "MANUAL_UNGOVERNED",
+        "MANUAL_GOVERNED_BY_SKILL",
+        "LOCAL_GOVERNED_DIRECT_EXECUTION",
+        "AGENT_GOVERNED_DIRECT_EXECUTION",
+        "SKILL_GUIDED_AGENT_EXECUTION",
+        "QUEUE_DECLARED_EXECUTION",
+        "QUEUE_DISPATCHED_EXECUTION",
+        "GENERATED_PATCH_EXECUTION",
+        "REPLAYED_PATCH_EXECUTION",
+        "BACKFILLED_LEGACY_EXECUTION",
+        "UNKNOWN_EXECUTION_METHOD"
+      ],
+      "description": "NEVER optional for PRODUCT_SOURCE items."
+    },
+    "claim_classification": {
+      "type": "string",
+      "enum": [
+        "WORKS_BUT_NOT_REPEATABLE",
+        "GOVERNED_BUT_NOT_REPLAYED",
+        "REPLAYABLE_NOT_YET_REPLAYED",
+        "REPLAYED_AND_PROVEN",
+        "LEGACY_BACKFILLED",
+        "INVALID_CLAIM"
+      ],
+      "description": "NEVER optional for PRODUCT_SOURCE items."
+    },
+    "taskcard_id": { "type": "string" },
+    "format_id": { "type": "string" },
+    "product_track": { "type": "string", "enum": ["foss_python", "commercial_dotnet"] },
+    "capability_id": { "type": "string" },
+    "touched_files": { "type": "array", "items": { "type": "string" } },
+    "idempotency_key": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "idempotency_status": {
+      "type": "string",
+      "enum": ["NOT_COMPUTED", "COMPUTED", "VERIFIED_NO_OP", "APPLIED", "CONFLICT"]
+    },
+    "source_diff_paths": { "type": "array", "items": { "type": "string" } },
+    "before_fingerprints": { "type": "object" },
+    "after_fingerprints": { "type": "object" },
+    "skill_id": { "type": "string" },
+    "skill_version": { "type": "string" },
+    "agent_id": { "type": "string" },
+    "model_id": { "type": "string" },
+    "backend_id": { "type": "string" },
+    "queue_item_id": { "type": "string" },
+    "replay_recipe_path": { "type": "string" },
+    "validation_commands": { "type": "array", "items": { "type": "string" } },
+    "validation_logs": { "type": "array", "items": { "type": "string" } },
+    "legacy_backfill_status": {
+      "type": "string",
+      "enum": ["NOT_APPLICABLE", "PENDING_BACKFILL", "BACKFILL_IN_PROGRESS", "BACKFILLED"]
+    }
+  },
+  "enforcement_rules": [
+    "execution_method is NEVER optional for PRODUCT_SOURCE items",
+    "claim_classification is NEVER optional for PRODUCT_SOURCE items",
+    "idempotency_key MANDATORY for PRODUCT_SOURCE from next sprint (grace period for pre-taxonomy)",
+    "source_diff_paths MANDATORY for PRODUCT_SOURCE from next sprint (grace period for pre-taxonomy)",
+    "MANUAL_UNGOVERNED and UNKNOWN_EXECUTION_METHOD may never close a product taskcard",
+    "QUEUE_DECLARED_EXECUTION is immediately rejected",
+    "INVALID_CLAIM blocks sprint acceptance",
+    "Governance docs (GOVERNANCE_DOC etc.) use exception_classification: investigation_only"
+  ]
+}

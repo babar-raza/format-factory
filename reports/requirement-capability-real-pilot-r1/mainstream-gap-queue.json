@@ -1,0 +1,164 @@
+{
+  "generated_at": "2026-06-05T03:39:47.283765+00:00",
+  "graph_hash": "8373f1c390198f2e19f7b1c1982bdb11834b1839c559538e9eea2412793da533",
+  "total_gaps": 5,
+  "algorithm_steps": [
+    "Step 01: Load POC target model",
+    "Step 02: Proof graph loaded \u2014 graph_hash=8373f1c390198f2e...",
+    "Step 03: Compute claim coverage",
+    "Step 04: Identify blocked claims",
+    "  Found 5 blocked/partial claims",
+    "Step 05: Group blocked claims by product/family",
+    "Step 06: Rank by POC impact",
+    "Step 07: Rank by smallest missing proof",
+    "Step 08: Prefer required commercial + FOSS set",
+    "Step 09: Include DIF/Gnumeric only if they speed POC",
+    "Step 10: Generate lane-specific gaps with expected artifacts",
+    "Step 11: Emit mainstream-gap-queue.json"
+  ],
+  "entries": [
+    {
+      "gap_id": "gap:fods:export:0001",
+      "target_product": "fods",
+      "format_id": "fods",
+      "claim_id": "claim:fods:export_csv",
+      "missing_proof_type": "ImplementationProof",
+      "next_action": "Provide ImplementationProof for fods/export claim",
+      "expected_files": [
+        "src/net/fods/..."
+      ],
+      "expected_tests": [
+        "tests/net/fods/test_export_*.py"
+      ],
+      "expected_dogfood": [
+        "examples/net/fods/export_dogfood.*"
+      ],
+      "recommended_lane": "Mainstream-Dogfood",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:fods:export_csv",
+      "estimated_unlock": 12,
+      "dependencies": [
+        "TestProof",
+        "DogfoodProof"
+      ],
+      "stop_conditions": [
+        "claim_id='claim:fods:export_csv' reaches coverage_verdict=PASS",
+        "All missing proof types resolved: ['ImplementationProof', 'TestProof', 'DogfoodProof']"
+      ],
+      "priority_score": 21.0
+    },
+    {
+      "gap_id": "gap:fods:export:0002",
+      "target_product": "fods",
+      "format_id": "fods",
+      "claim_id": "claim:fods:export_html",
+      "missing_proof_type": "ImplementationProof",
+      "next_action": "Provide ImplementationProof for fods/export claim",
+      "expected_files": [
+        "src/net/fods/..."
+      ],
+      "expected_tests": [
+        "tests/net/fods/test_export_*.py"
+      ],
+      "expected_dogfood": [
+        "examples/net/fods/export_dogfood.*"
+      ],
+      "recommended_lane": "Mainstream-Dogfood",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:fods:export_html",
+      "estimated_unlock": 12,
+      "dependencies": [
+        "TestProof",
+        "DogfoodProof"
+      ],
+      "stop_conditions": [
+        "claim_id='claim:fods:export_html' reaches coverage_verdict=PASS",
+        "All missing proof types resolved: ['ImplementationProof', 'TestProof', 'DogfoodProof']"
+      ],
+      "priority_score": 21.0
+    },
+    {
+      "gap_id": "gap:fodt:export:0003",
+      "target_product": "fodt",
+      "format_id": "fodt",
+      "claim_id": "claim:fodt:export_markdown",
+      "missing_proof_type": "ImplementationProof",
+      "next_action": "Provide ImplementationProof for fodt/export claim",
+      "expected_files": [
+        "src/net/fodt/..."
+      ],
+      "expected_tests": [
+        "tests/net/fodt/test_export_*.py"
+      ],
+      "expected_dogfood": [
+        "examples/net/fodt/export_dogfood.*"
+      ],
+      "recommended_lane": "Mainstream-Dogfood",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:fodt:export_markdown",
+      "estimated_unlock": 12,
+      "dependencies": [
+        "TestProof",
+        "DogfoodProof"
+      ],
+      "stop_conditions": [
+        "claim_id='claim:fodt:export_markdown' reaches coverage_verdict=PASS",
+        "All missing proof types resolved: ['ImplementationProof', 'TestProof', 'DogfoodProof']"
+      ],
+      "priority_score": 21.0
+    },
+    {
+      "gap_id": "gap:fodt:export:0004",
+      "target_product": "fodt",
+      "format_id": "fodt",
+      "claim_id": "claim:fodt:export_txt",
+      "missing_proof_type": "ImplementationProof",
+      "next_action": "Provide ImplementationProof for fodt/export claim",
+      "expected_files": [
+        "src/net/fodt/..."
+      ],
+      "expected_tests": [
+        "tests/net/fodt/test_export_*.py"
+      ],
+      "expected_dogfood": [
+        "examples/net/fodt/export_dogfood.*"
+      ],
+      "recommended_lane": "Mainstream-Dogfood",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:fodt:export_txt",
+      "estimated_unlock": 12,
+      "dependencies": [
+        "TestProof",
+        "DogfoodProof"
+      ],
+      "stop_conditions": [
+        "claim_id='claim:fodt:export_txt' reaches coverage_verdict=PASS",
+        "All missing proof types resolved: ['ImplementationProof', 'TestProof', 'DogfoodProof']"
+      ],
+      "priority_score": 21.0
+    },
+    {
+      "gap_id": "gap:zst:write:0005",
+      "target_product": "zst",
+      "format_id": "zst",
+      "claim_id": "claim:zst:old-compress",
+      "missing_proof_type": "RequirementProof",
+      "next_action": "Provide RequirementProof for zst/write claim",
+      "expected_files": [
+        "src/net/zst/..."
+      ],
+      "expected_tests": [
+        "tests/net/zst/test_write_*.py"
+      ],
+      "expected_dogfood": [],
+      "recommended_lane": "Mainstream-Write",
+      "validation_command": "python tools/requirements_authority/validate_requirements_authority.py --claim claim:zst:old-compress",
+      "estimated_unlock": 11,
+      "dependencies": [
+        "ImplementationProof",
+        "TestProof"
+      ],
+      "stop_conditions": [
+        "claim_id='claim:zst:old-compress' reaches coverage_verdict=PASS",
+        "All missing proof types resolved: ['RequirementProof', 'ImplementationProof', 'TestProof']"
+      ],
+      "priority_score": 15.0
+    }
+  ]
+}

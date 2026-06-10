@@ -1,0 +1,32 @@
+id: ADR-ROUTE-007
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Action Queue Integration"
+status: completed
+lane: queue_runner_integration
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-006]
+gates:
+  - "validate_item_schema_v2() rejects machinery items without route_decision_id"
+  - "accepts product items without route_decision_id"
+  - "existing queue tests still pass"
+allowed_files:
+  - "tools/supervisor/action_queue.py"
+forbidden_files:
+  - "src/"
+  - "tools/supervisor/autonomous_cycle.py"
+  - "tools/supervisor/governance_validators.py"
+acceptance_criteria:
+  - "validate_route_classification() added"
+  - "Called from validate_item_schema_v2()"
+  - "Backward compatible for items without task_category"
+tests:
+  - "tests/supervisor/test_autonomy_machinery_bypass_prevention.py::TestQueueRouteValidation"
+  - "tests/supervisor/test_queue_schema_v2.py"
+evidence:
+  - "tools/supervisor/action_queue.py"
+rollback: "git checkout tools/supervisor/action_queue.py"
+closeout_criteria: "regression tests pass, new tests pass"

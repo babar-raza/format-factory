@@ -1,0 +1,46 @@
+{
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-POC-AUTHORITY-RECONCILIATION-R118-001",
+  "policy": "No claiming export/dogfood support unless reusable target writer support exists",
+  "target_writer_libraries_found": [],
+  "claims": [
+    {
+      "claim": "FODS ExportSheetToCsv format capability",
+      "claimed_as": "Format export capability",
+      "actual_impl": "Product-local StringBuilder in FodsDocument.cs",
+      "policy_result": "PASS",
+      "reason": "This is the format's own CSV export ability, not FF pipeline dogfood"
+    },
+    {
+      "claim": "FODS ExportSheetToCsvFile dogfood",
+      "claimed_as": "Dogfood proof via capability delta",
+      "actual_impl": "Product-local file write, no FormatFactory.Csv invoked",
+      "policy_result": "RECLASSIFIED",
+      "correction": "Product-local capability; capability delta has proposed_only=true, not_applied_to_poc_targets=true",
+      "poc_blocker": false
+    },
+    {
+      "claim": "poc-targets fods_to_csv_dotnet",
+      "claimed_as": "GAP_DOGFOOD_EXTERNAL",
+      "actual_impl": "Correctly classified — FormatFactory.Csv library does not exist",
+      "policy_result": "PASS",
+      "reason": "Already classified as gap, not as dogfood implemented"
+    },
+    {
+      "claim": "FODT ExportToMarkdown capability",
+      "claimed_as": "Format export capability",
+      "actual_impl": "Product-local StringBuilder in FodtDocument.cs",
+      "policy_result": "PASS",
+      "reason": "Product feature, not FF pipeline dogfood"
+    },
+    {
+      "claim": "FODT ExportToMarkdownFile dogfood",
+      "claimed_as": "Dogfood proof via capability delta",
+      "actual_impl": "Product-local file write, no FormatFactory.Markdown invoked",
+      "policy_result": "RECLASSIFIED",
+      "correction": "Product-local capability; capability delta has proposed_only=true",
+      "poc_blocker": false
+    }
+  ],
+  "poc_blockers_found": 0,
+  "verdict": "NO_POLICY_VIOLATION_IN_POC_TARGETS"
+}

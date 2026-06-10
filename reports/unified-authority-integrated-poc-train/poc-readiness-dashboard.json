@@ -1,0 +1,106 @@
+{
+  "dashboard_version": "1.0",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "train_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "iteration": 4,
+  "poc_ready": true,
+  "terminal_state": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+  "release_approval_pending": true,
+  "gate_11_status": "PENDING_RELEASE_APPROVAL_NOT_IMPLEMENTATION_BLOCKER",
+  "commercial_targets": {
+    "FODS": {
+      "status": "PASS",
+      "dotnet_tests": 523,
+      "source": "src/net/fods/FodsDocument.cs",
+      "key_capabilities": ["GetColumnAggregates", "ExportSheetToCsvFile", "FilterRows", "GetColumnHeaders", "ExportSheetToMarkdown", "SetCellStyle"],
+      "proof_graph_claims": 9
+    },
+    "FODT": {
+      "status": "PASS",
+      "dotnet_tests": 502,
+      "source": "src/net/fodt/FodtDocument.cs",
+      "key_capabilities": ["GetWordFrequency", "ExportToMarkdownFile", "ExportToPlainTextFile", "ExportOutlineJson", "SetParagraphStyle"],
+      "proof_graph_claims": 7
+    },
+    "Netpbm": {
+      "status": "PASS",
+      "dotnet_tests": 448,
+      "source": "src/net/netpbm/Model/NetpbmImage.cs",
+      "key_capabilities": ["DrawLine", "DrawRectangle", "GetBrightnessMap", "MedianFilter", "Create"],
+      "proof_graph_claims": 7
+    }
+  },
+  "foss_targets": {
+    "ZST": {
+      "status": "PASS",
+      "python_tests": "60+",
+      "source": "src/python/zst/zst_codec.py",
+      "key_capabilities": ["compress_bytes", "decompress_bytes", "probe_frame", "validate_file"],
+      "proof_graph_claims": 4
+    },
+    "Python_Netpbm": {
+      "status": "PASS",
+      "python_tests": "80+",
+      "source": "src/python/pbm/ + src/python/pgm/ + src/python/ppm/",
+      "key_capabilities": ["write_pbm", "write_pgm", "write_ppm", "pbm_to_pgm_dogfood"],
+      "proof_graph_claims": 4,
+      "save_pipeline_proof": "PASS"
+    },
+    "SYLK": {
+      "status": "PASS",
+      "python_tests": "60+",
+      "source": "src/python/sylk/sylk_parser.py",
+      "key_capabilities": ["parse_sylk", "write_sylk", "sylk_to_csv", "installed_workflow"],
+      "proof_graph_claims": 3
+    },
+    "DIF": {
+      "status": "PARTIAL_PASS",
+      "python_tests": "178+",
+      "source": "src/python/dif/dif_parser.py",
+      "key_capabilities": ["parse_dif", "probe_dif", "dif_to_csv", "parse_dif_strict", "write_dif"],
+      "missing": ["installed_workflow_proof", "poc_targets_reconsider_decision"],
+      "proof_graph_claims": 5,
+      "write_dif_added": true,
+      "roundtrip_proof": "PASS",
+      "poc_targets_status": "ON_HOLD (reconsider_when SYLK POC complete — SYLK is now PASS)"
+    },
+    "Gnumeric": {
+      "status": "NOT_STARTED",
+      "proof_graph_claims": 0
+    }
+  },
+  "foss_pass_count": 3,
+  "foss_minimum_required": 3,
+  "foss_minimum_met": true,
+  "all_commercial_pass": true,
+  "closure_checklist": {
+    "all_commercial_pass": true,
+    "foss_minimum_pass_3": true,
+    "spec_context_or_fallback_attached": true,
+    "spec_context_attachment_path": "reports/unified-authority-integrated-poc-train/spec-authority-fallback-attachment.yaml",
+    "spec_context_type": "deferred_local_fixture_fallback",
+    "req_authority_proof_graph_non_empty": true,
+    "no_ai_draft_as_proof": true,
+    "no_evidence_package_only_as_truth": true,
+    "no_direct_poc_targets_mutation": true,
+    "no_registry_mutation": true,
+    "tests_pass": true,
+    "sample_outputs_exist_where_required": true,
+    "transcripts_exist": true,
+    "transcripts_note": "Iterations 1-4 skill transcripts all present",
+    "source_diffs_exist": true,
+    "capability_deltas_proposed": true
+  },
+  "closure_criteria_met": true,
+  "blocking_gaps": [],
+  "iteration_004_improvements": [
+    "write_dif implemented and roundtrip verified (10/10 tests)",
+    "FODS CSV physical sample output produced",
+    "FODT Markdown physical sample output produced",
+    "Netpbm save pipeline physical sample verified",
+    "sample_outputs_exist_where_required: now true",
+    "capability_deltas_proposed: now true",
+    "lane_ledger iteration-003 entries added",
+    "product code ledger R116+R117 entries added"
+  ]
+}

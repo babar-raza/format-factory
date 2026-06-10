@@ -1,0 +1,63 @@
+{
+  "sprint_id": "FORMAT-FACTORY-CAPABILITY-LAYER-FULL-HARDENING-001",
+  "run_id": "capability-layer-full-hardening",
+  "generated_at": "2026-06-08",
+  "status": "completed",
+  "lanes_total": 12,
+  "lanes_completed": 12,
+  "lanes_in_progress": 0,
+  "lanes_blocked": 0,
+  "work_items_planned": 10,
+  "work_items_completed": 10,
+  "work_items_blocked": 0,
+  "test_summary": {
+    "focused_tests_pass": 529,
+    "focused_tests_fail": 0,
+    "broader_regression_pass": 4347,
+    "broader_regression_fail": 0,
+    "supervisor_tests_pass": 3028,
+    "supervisor_tests_fail": 0,
+    "new_tsv_expanded_tests_pass": 32,
+    "new_tsv_expanded_tests_fail": 0,
+    "total_pass": 7936,
+    "total_fail": 0
+  },
+  "key_outputs": {
+    "package142_review": "reports/capability-layer-full-hardening/package142-independent-review.json",
+    "all_format_inventory": "reports/capability-layer-full-hardening/all-format-inventory.json",
+    "limitation_ledger": "reports/capability-layer-full-hardening/limitation-ledger.json",
+    "contradiction_ledger": "reports/capability-layer-full-hardening/contradiction-ledger.json",
+    "lane_ledger": "reports/capability-layer-full-hardening/lane-ledger.json",
+    "pilot_matrix": "reports/capability-layer-full-hardening/pilot-matrix.json",
+    "pilots_dir": "reports/capability-layer-full-hardening/pilots/",
+    "raw_logs_dir": "reports/capability-layer-full-hardening/raw-logs/",
+    "commercial_capability_map": "reports/capability-layer/commercial-capability-map.json",
+    "foss_capability_map": "reports/capability-layer/foss-reduced-capability-map.json",
+    "unified_capability_map": "reports/capability-layer/unified-capability-map.json",
+    "gap_ledger": "reports/capability-layer/gap-ledger.json",
+    "selected_product_gaps": ".local/supervisor/selected-product-gaps.json",
+    "tsv_init": "src/python/tsv/__init__.py",
+    "tsv_parser": "src/python/tsv/tsv_parser.py",
+    "new_tsv_tests": "tests/python/tsv/test_r128_tsv_expanded_functions.py",
+    "poc_targets": "product-capability-matrix/poc-targets.yaml",
+    "ledger": "reports/r90/product-code-change-ledger.json"
+  },
+  "source_changes": [
+    {
+      "file": "src/python/tsv/__init__.py",
+      "change": "Added exports for 8 new TSV functions",
+      "ledger_entry": "FULL-HARDENING-TSV-FEATURE-EXPANSION-001"
+    }
+  ],
+  "repaired_contradictions": [
+    "CON-FH-001: selected-product-gaps.json stale run_id",
+    "CON-FH-002: unsafe commit/push wording in poc-targets.yaml (3 instances)",
+    "CON-FH-003: 8 TSV functions missing from __init__.py exports"
+  ],
+  "adversarial_results": {
+    "total_adversarial_pilots": 5,
+    "adversarial_pass": 2,
+    "adversarial_repaired": 2,
+    "adversarial_limitation_documented": 1
+  }
+}

@@ -1,0 +1,33 @@
+stream: acceleration
+adoption_version: "R108-001"
+timestamp: "2026-06-03T21:00:00Z"
+
+enforcement_gates:
+  - gate_id: ADOPT-A-01
+    name: "POC target skill mapping"
+    description: "POC targets in poc-targets.yaml should reference governing skill_ids"
+    enforcement: "Each poc-target entry should include skill_id field"
+    status: planned
+
+  - gate_id: ADOPT-A-02
+    name: "Transcript generation for POC proofs"
+    description: "POC proof items that exercise skills should generate transcript JSON"
+    enforcement: "Transcript JSON placed in evidence_root/skill-transcripts/"
+    validator: "validate_skill_transcript.py"
+    status: planned
+
+  - gate_id: ADOPT-A-03
+    name: "Adoption compliance check at POC closeout"
+    description: "validate_adoption_compliance.py run on POC evidence declarations"
+    enforcement: "autonomous-cycle includes adoption check"
+    status: planned
+
+integration_points:
+  - tool: "validate_adoption_compliance.py"
+    when: "At POC sprint closeout"
+    action: "Validate adoption compliance for POC declarations"
+  - tool: "validate_skill_transcript.py"
+    when: "For each POC transcript"
+    action: "Validate transcript schema and registry membership"
+
+notes: "Acceleration stream gates are planned, not yet enforced. Activation requires first POC sprint to use the skill registry."

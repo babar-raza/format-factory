@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-QUEUE-DRIVEN-PRODUCT-SOURCE-PILOT-001",
+  "generated_at": "2026-06-06",
+  "quarantined_items": [
+    {
+      "action_id": "c31d2171",
+      "action_type": null,
+      "status_was": "pending",
+      "queued_at": "2026-06-06T11:40:15.382339+00:00",
+      "reason": "action_type=null is invalid; item cannot be dispatched to any backend",
+      "action_taken": "removed from action-queue.jsonl",
+      "safe_to_remove": true
+    }
+  ],
+  "next_sprint_taskmaster_git_commit_item": {
+    "file": "reports/supervisor/next-sprint-taskmaster.json",
+    "line_content": "Execute git commit (requires explicit user authorization — do NOT self-execute)",
+    "classification": "EXTERNAL_GATE_ONLY",
+    "action_taken": "no_change_needed — title already has explicit 'do NOT self-execute' guard; item is correctly marked external-gate",
+    "unsafe": false
+  },
+  "queue_after_quarantine": {
+    "done": 4,
+    "pending": 2,
+    "corrupt": 0,
+    "total": 6
+  }
+}

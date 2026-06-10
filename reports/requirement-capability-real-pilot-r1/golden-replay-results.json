@@ -1,0 +1,74 @@
+{
+  "sprint_id": "FORMAT-FACTORY-REQUIREMENT-CAPABILITY-AUTHORITY-LAYER-REAL-PILOT-R1-001",
+  "generated_at": "2026-06-05T09:00:00Z",
+  "fixture_packs": [
+    {
+      "fixture_name": "clean_fods_export",
+      "fixture_path": "requirements-authority/fixtures/clean_fods_export",
+      "expected_overall_verdict": "COVERAGE_CLEAN",
+      "expected_overclaim": false,
+      "result": "PASS",
+      "actual_verdict": "COVERAGE_CLEAN",
+      "actual_overclaim": false,
+      "determinism_check": "PASS"
+    },
+    {
+      "fixture_name": "fodt_export_not_save_overclaim",
+      "fixture_path": "requirements-authority/fixtures/fodt_export_not_save_overclaim",
+      "expected_overall_verdict": "COVERAGE_CLEAN",
+      "expected_overclaim": true,
+      "result": "PASS",
+      "actual_verdict": "COVERAGE_CLEAN",
+      "actual_overclaim": true,
+      "determinism_check": "PASS"
+    },
+    {
+      "fixture_name": "netpbm_partial_variant_coverage",
+      "fixture_path": "requirements-authority/fixtures/netpbm_partial_variant_coverage",
+      "expected_overall_verdict": "COVERAGE_CLEAN",
+      "expected_overclaim": true,
+      "result": "PASS",
+      "actual_verdict": "COVERAGE_CLEAN",
+      "actual_overclaim": true,
+      "determinism_check": "PASS"
+    },
+    {
+      "fixture_name": "zst_roundtrip_clean",
+      "fixture_path": "requirements-authority/fixtures/zst_roundtrip_clean",
+      "expected_overall_verdict": "COVERAGE_CLEAN",
+      "expected_overclaim": false,
+      "result": "PASS",
+      "actual_verdict": "COVERAGE_CLEAN",
+      "actual_overclaim": false,
+      "determinism_check": "PASS"
+    },
+    {
+      "fixture_name": "sylk_missing_dogfood",
+      "fixture_path": "requirements-authority/fixtures/sylk_missing_dogfood",
+      "expected_overall_verdict": "COVERAGE_PARTIAL_WITH_CAVEATS",
+      "expected_overclaim": false,
+      "result": "PASS",
+      "actual_verdict": "COVERAGE_PARTIAL_WITH_CAVEATS",
+      "actual_overclaim": false,
+      "determinism_check": "PASS"
+    },
+    {
+      "fixture_name": "dif_empirical_only_caveated",
+      "fixture_path": "requirements-authority/fixtures/dif_empirical_only_caveated",
+      "expected_overall_verdict": "COVERAGE_PARTIAL_WITH_CAVEATS",
+      "expected_overclaim": false,
+      "result": "PASS",
+      "actual_verdict": "COVERAGE_PARTIAL_WITH_CAVEATS",
+      "actual_overclaim": false,
+      "determinism_check": "PASS"
+    }
+  ],
+  "summary": {
+    "total_fixtures": 6,
+    "passed": 6,
+    "failed": 0,
+    "determinism_reruns": 3,
+    "all_deterministic": true,
+    "overall_result": "PASS"
+  }
+}

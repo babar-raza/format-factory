@@ -1,0 +1,31 @@
+id: GR-TC-003
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+generated_at: "2026-06-08"
+title: "Create repeatability contract"
+status: ready_to_execute
+lane: governance_contracts
+item_type: GOVERNANCE_DOC
+problem: >
+  No formal repeatability definition exists. Sprint claims "repeatable" when tests pass.
+  This is provably insufficient.
+scope:
+  - Create docs/governance/repeatability-contract.md
+  - Define 5 levels: NOT_REPEATABLE through REPLAYED_AND_PROVEN
+  - Include evidence matrix table and forbidden equivalences
+out_of_scope:
+  - Implementing replay infrastructure
+files_to_create:
+  - docs/governance/repeatability-contract.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+acceptance_criteria:
+  - File exists with 5 levels defined
+  - Evidence matrix table covers all required fields
+  - Explicit rule: tests_pass does NOT equal repeatable
+verification:
+  - "check file exists: docs/governance/repeatability-contract.md"
+rollback: delete file
+dependencies:
+  - GR-TC-002
+handoff_to_autonomy_sprint: false

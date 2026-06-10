@@ -1,0 +1,77 @@
+{
+  "sprint_id": "FORMAT-FACTORY-HOST-LEVEL-AUTONOMOUS-RUNNER-AND-PROOF-BACKED-POC-GATE-001",
+  "audit_timestamp": "2026-06-05T12:30:00",
+
+  "executor_capabilities": {
+    "can_invoke_next_agent_cycle": false,
+    "can_call_claude_code_cli": false,
+    "can_call_ruflo_claude_flow": false,
+    "can_call_task_master": false,
+    "can_continue_product_work_without_llm": true,
+    "does_emit_continuation_packets": true,
+    "returns_terminal_when_should_return_host_required": true,
+    "uses_shallow_poc_targets_yaml_gates_as_proof": true,
+    "current_invocation_capability": "CONTINUATION_PACKET_ONLY"
+  },
+
+  "host_environment": {
+    "claude_cli_present": true,
+    "claude_cli_path": "/c/Users/prora/AppData/Roaming/npm/claude",
+    "claude_cli_version": "2.1.62 (Claude Code)",
+    "claude_cli_supports_print": true,
+    "claude_cli_invocation_command": "claude --print -p <prompt_file>",
+    "claude_flow_npx_available": true,
+    "claude_flow_npx_state": "INSTALL_ON_DEMAND_BROKEN",
+    "ruflo_standalone_binary": "NOT_FOUND",
+    "task_master_ai": "NOT_FOUND",
+    "vscode_task_automation": "NOT_CONFIGURED",
+    "net_sdk_available": false
+  },
+
+  "poc_readiness_audit": {
+    "current_method": "SHALLOW",
+    "checks_gates_passed_text": true,
+    "checks_proof_graph": false,
+    "checks_raw_test_logs": false,
+    "checks_sample_outputs": false,
+    "checks_transcripts": false,
+    "checks_capability_deltas": false,
+    "checks_source_or_package_artifacts": false,
+    "uses_ai_draft_as_proof": false,
+    "assessment": "POC readiness declared based only on poc-targets.yaml gates_passed: '1-10' text — NOT proof-backed"
+  },
+
+  "honest_classification": "CONTINUATION_PACKET_ONLY",
+
+  "classification_explanation": {
+    "FULL_HOST_AUTONOMY_AVAILABLE": "NO — executor has no invocation code",
+    "PARTIAL_LOCAL_EXECUTOR_ONLY": "NO — local tooling runs but cannot start next LLM cycle",
+    "CONTINUATION_PACKET_ONLY": "YES — current state: executor emits continuation packets but cannot invoke",
+    "HOST_INVOCATION_LAYER_MISSING": "PARTIALLY — claude CLI exists but host runner not built yet"
+  },
+
+  "path_to_real_autonomy": {
+    "step_1": "Build proof-backed POC gate (replaces shallow gates_passed check)",
+    "step_2": "Build autonomous_host_runner.py with claude --print invocation",
+    "step_3": "Create scripts/run-autonomous-poc-train.ps1 and .sh wrapper scripts",
+    "step_4": "Runner calls: claude --print -p <continuation_packet_content>",
+    "step_5": "After each cycle: check proof-backed POC gate; stop on terminal state",
+    "available_now": "claude CLI at /c/Users/prora/AppData/Roaming/npm/claude"
+  },
+
+  "current_terminal_state_validity": {
+    "state": "MAINSTREAM_POC_READY_CANDIDATE_AUTHORITY_VERIFIED_RELEASE_APPROVAL_PENDING",
+    "valid": false,
+    "reason": "State was based on shallow poc-targets.yaml check. Proof-backed gate required before this terminal state is valid.",
+    "missing_proof": [
+      "proof graph nodes for each claimed capability",
+      "raw test log files per format",
+      "sample/dogfood output files",
+      "transcript or fallback for source-changing work",
+      "capability delta records"
+    ]
+  },
+
+  "100_percent_autonomy_claim": false,
+  "100_percent_autonomy_reason": "Executor cannot self-invoke the next LLM cycle. Host runner not yet built. POC readiness is shallow. These three gaps prevent 100% autonomous execution."
+}

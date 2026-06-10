@@ -1,0 +1,74 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001",
+  "generated_at": "2026-06-04T09:00:00Z",
+  "external_tool_read_only_proof": {
+    "detect_external_tools_called": true,
+    "tools_invoked": [],
+    "files_mutated": [],
+    "vscode_mcp_json_mutated": false,
+    "claude_plugin_mutated": false,
+    "verdict": "READ_ONLY_DETECTION_CONFIRMED"
+  },
+  "governance_fixtures": [
+    {
+      "id": "EXT-01",
+      "tool": "claude-flow/Ruflo",
+      "detection": {"mcp_registered": true, "state_directory_present": false},
+      "mode": "DETECTED_NOT_CONFIGURED",
+      "verdict": "RUFLO_DETECTED_NOT_CONFIGURED_APPROVAL_REQUIRED_FOR_INVOCATION",
+      "invoked": false,
+      "blocks_routing": false
+    },
+    {
+      "id": "EXT-02",
+      "tool": "task-master-ai",
+      "detection": {"mcp_registered": true},
+      "mode": "DETECTED_NOT_CONFIGURED",
+      "verdict": "TASKMASTER_DETECTED_NOT_CONFIGURED_APPROVAL_REQUIRED_FOR_INVOCATION",
+      "invoked": false,
+      "blocks_routing": false
+    },
+    {
+      "id": "EXT-03",
+      "tool": "Superpowers",
+      "detection": {"detected": false},
+      "mode": "ABSENT",
+      "verdict": "SUPERPOWERS_NOT_INSTALLED_EVALUATE_ONLY",
+      "invoked": false,
+      "blocks_routing": false
+    },
+    {
+      "id": "EXT-04",
+      "tool": "GhidraMCP",
+      "detection": {"detected": false, "mcp_registered": false},
+      "mode": "ABSENT",
+      "verdict": "GHIDRA_MCP_DISABLED_DEFAULT",
+      "invoked": false,
+      "blocks_routing": false
+    },
+    {
+      "id": "EXT-05",
+      "scenario": "AI output attempts to close taskcard",
+      "input": {"closes_taskcard": true},
+      "expected": false,
+      "validate_external_tool_output_authority_result": false,
+      "verdict": "BLOCKED"
+    },
+    {
+      "id": "EXT-06",
+      "scenario": "External tool absent → local coordinator active",
+      "input": {"all_tools_absent": true},
+      "expected_routing_impact": "none",
+      "verdict": "LOCAL_COORDINATOR_ACTIVE"
+    },
+    {
+      "id": "EXT-07",
+      "scenario": "npx -y auto-install risk for claude-flow",
+      "detection": {"mcp_registered": true, "state_directory_present": false},
+      "expected": "auto_install_risk=true",
+      "verdict": "ACTIVATION_RISK_DOCUMENTED_NOT_INVOKED"
+    }
+  ],
+  "overall_verdict": "EXTERNAL_TOOLS_GOVERNED_LOCAL_COORDINATOR_ACTIVE",
+  "deterministic_supervisor_retains_authority": true
+}

@@ -1,0 +1,79 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001",
+  "generated": "2026-06-06",
+  "forbidden_recovery_commands": ["git reset --hard", "git stash", "git clean"],
+  "lanes": [
+    {
+      "lane": "L0",
+      "type": "report-only",
+      "rollback": "Remove-Item -Recurse reports/superpowers-agentic-autonomy/ (no code risk)"
+    },
+    {
+      "lane": "L1",
+      "type": "report-only",
+      "rollback": "Delete reports/superpowers-agentic-autonomy/audit/ and superpowers-workflow-model.md"
+    },
+    {
+      "lane": "L2",
+      "type": "report-only",
+      "rollback": "Delete reports/superpowers-agentic-autonomy/capability-taxonomy-update.json"
+    },
+    {
+      "lane": "L3",
+      "type": "code",
+      "rollback": "git diff --name-only HEAD -- tools/supervisor/next_action_schema.py tools/supervisor/next_action_runner.py tools/supervisor/execution_backend.py; git checkout HEAD -- <each file>"
+    },
+    {
+      "lane": "L4",
+      "type": "code",
+      "rollback": "git checkout HEAD -- tools/supervisor/backend_selector.py"
+    },
+    {
+      "lane": "L5",
+      "type": "code",
+      "rollback": "git checkout HEAD -- tools/supervisor/backends/mcp_superpowers_backend.py"
+    },
+    {
+      "lane": "L6",
+      "type": "code",
+      "rollback": "git checkout HEAD -- tools/supervisor/backends/llm_api_backend.py tools/supervisor/llm_backend_config.py"
+    },
+    {
+      "lane": "L7",
+      "type": "code",
+      "rollback": "git checkout HEAD -- tools/supervisor/backends/local_deterministic_backend.py"
+    },
+    {
+      "lane": "L8",
+      "type": "code",
+      "rollback": "git checkout HEAD -- tools/supervisor/autonomous_host_daemon.py scripts/format_factory_autonomous_host.sh"
+    },
+    {
+      "lane": "L9",
+      "type": "report-only",
+      "rollback": "Delete reports/superpowers-agentic-autonomy/two-cycle-proof/"
+    },
+    {
+      "lane": "L10",
+      "type": "report-only",
+      "rollback": "Delete reports/superpowers-agentic-autonomy/superpowers-proof/"
+    },
+    {
+      "lane": "L11",
+      "type": "test-only",
+      "rollback": "git checkout HEAD -- tests/supervisor/test_execution_backends.py tests/supervisor/test_backend_selector.py tests/supervisor/test_two_cycle_proof.py"
+    },
+    {
+      "lane": "L12",
+      "type": "report-only",
+      "rollback": "Delete reports/superpowers-agentic-autonomy/iv/"
+    },
+    {
+      "lane": "LE",
+      "type": "evidence-only",
+      "rollback": "Delete .local/evidences/superpowers-agentic-autonomy/ (report-only sprint, no code changes)"
+    }
+  ],
+  "partial_failure_policy": "If lane N fails, lanes 0..N-1 evidence still valid. Declare partial items as REWORK_REQUIRED not BLOCKED.",
+  "dirty_state_definition": "Modified tracked files outside owned paths. Triggers BLOCKED_LOCAL. Resolution = manual coordinator review."
+}

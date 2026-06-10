@@ -1,0 +1,44 @@
+{
+  "invocation_id": "SKILLS-R103-INV-001",
+  "skill_id": "add-dotnet-object-model-feature",
+  "command_path": ".claude/commands/add-dotnet-object-model-feature.md",
+  "mode": "dry-run",
+  "sprint_id": "FORMAT-FACTORY-MAINSTREAM-R101",
+  "stream": "skills",
+  "timestamp": "2026-06-03T15:00:00Z",
+  "inputs": {
+    "format_id": "fods",
+    "feature_name": "ExportSheetToMarkdown"
+  },
+  "allowed_files": [
+    "src/net/fods/FodsDocument.cs",
+    "tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs"
+  ],
+  "forbidden_files": [
+    "registry/format-registry.yaml",
+    "plans/master-plan.md"
+  ],
+  "actual_files_read": [
+    "src/net/fods/FodsDocument.cs",
+    "tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs"
+  ],
+  "actual_files_changed": [
+    "src/net/fods/FodsDocument.cs",
+    "tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs"
+  ],
+  "validation_commands": [],
+  "raw_log_paths": [],
+  "tests_added": [
+    "tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs"
+  ],
+  "tests_run": [
+    "tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs"
+  ],
+  "ledger_entry_id": "R101-GOVERNED-FODS-EXPORTSHEETTOMARKDOWN-001",
+  "evidence_paths": [
+    "tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs"
+  ],
+  "result": "PASS",
+  "limitations": [],
+  "rollback_plan": "Revert source changes and remove test files"
+}

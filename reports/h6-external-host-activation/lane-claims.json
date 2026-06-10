@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-H6-EXTERNAL-HOST-ACTIVATION-AND-PROOF-001",
+  "lanes": [
+    {"lane_id": "L0", "owned_paths": ["reports/h6-external-host-activation/"], "forbidden": ["src/"]},
+    {"lane_id": "L1", "owned_paths": [".local/supervisor/active-continuation.json", ".local/supervisor/next-action.json", ".local/supervisor/action-queue.jsonl", "reports/h6-external-host-activation/continuation/"], "forbidden": ["src/"]},
+    {"lane_id": "L2", "owned_paths": [".local/supervisor/orchestrator-heartbeat.json", ".local/supervisor/orchestrator-state.json", ".local/supervisor/stop-reason.json", "reports/h6-external-host-activation/host-launch/"], "forbidden": ["src/"]},
+    {"lane_id": "L3", "owned_paths": ["reports/h6-external-host-activation/execution-proof/"], "forbidden": ["src/"]},
+    {"lane_id": "L4", "owned_paths": ["reports/h6-external-host-activation/post-closeout/"], "forbidden": ["src/"]},
+    {"lane_id": "L5", "owned_paths": ["tests/supervisor/test_h6_external_host_activation.py", "tests/supervisor/test_post_closeout_continuation_applied.py", "tests/supervisor/test_no_prompt_only_continuation.py", "reports/h6-external-host-activation/test-logs/"], "forbidden": ["src/"]},
+    {"lane_id": "L6", "owned_paths": ["reports/h6-external-host-activation/iv/"], "forbidden": ["src/"]},
+    {"lane_id": "LE", "owned_paths": [".local/evidences/h6-external-host-activation/", ".local/supervisor/reviews/h6-external-host-activation/"], "forbidden": ["src/"]}
+  ]
+}

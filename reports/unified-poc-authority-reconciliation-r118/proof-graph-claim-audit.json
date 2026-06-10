@@ -1,0 +1,28 @@
+{
+  "sprint_id": "FORMAT-FACTORY-UNIFIED-POC-AUTHORITY-RECONCILIATION-R118-001",
+  "graph_path": "reports/unified-authority-integrated-poc-train/final-proof-graph/",
+  "nodes": 88,
+  "edges": 82,
+  "node_types": {
+    "capability_verified": 1,
+    "dogfood_proof": 2,
+    "pipeline_proof": 1,
+    "roundtrip_verified": 1,
+    "unknown": 83
+  },
+  "semantic_checks": {
+    "ai_draft_nodes": 0,
+    "evidence_only_nodes": 0,
+    "export_policy_violations": 0
+  },
+  "claim_audits": [
+    {
+      "type": "dogfood_proof",
+      "count": 2,
+      "classification": "product_local_dogfood",
+      "policy_result": "PASS_WITH_RECLASSIFICATION",
+      "note": "These represent product-local export dogfood (FODS CSV, FODT Markdown). Correctly classified as GAP_DOGFOOD_EXTERNAL in poc-targets. Capability delta proposals have proposed_only=true."
+    }
+  ],
+  "verdict": "GRAPH_VALID"
+}

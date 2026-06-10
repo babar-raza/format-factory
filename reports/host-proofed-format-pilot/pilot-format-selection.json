@@ -1,0 +1,74 @@
+{
+  "sprint_id": "FORMAT-FACTORY-HOST-PROOFED-AUTONOMOUS-FORMAT-PILOT-001",
+  "created_at": "2026-06-05",
+
+  "selected_formats": [
+    {
+      "format": "ABW",
+      "full_name": "AbiWord Document",
+      "track": "python-foss",
+      "selection_reason": "Taskcard ABW-GATE4-001 explicitly listed in next-sprint TASK-009. Implementation exists (abw_codec.py, 25 passing tests). Adding write_abw()/create_abw() gives roundtrip proof and advances toward full FOSS capability. Public spec available (AWML format, XML-based). No credentials or Gate 11 needed.",
+      "gap_to_fill": "write_abw() and create_abw() — roundtrip capability missing",
+      "existing_state": "load(), get_section_count(), get_paragraph_count(), extract_text() — 25 tests passing",
+      "scope": "Add write_abw(model, dest) and create_abw(paragraphs) to src/python/abw/abw_codec.py. Add 8+ tests. Add example.",
+      "allowed_files": [
+        "src/python/abw/abw_codec.py",
+        "tests/python/abw/test_r117_abw_write_roundtrip.py",
+        "examples/python/abw/"
+      ],
+      "expected_tests": 8,
+      "expected_sample_output": "examples/python/abw/create_document_example.py",
+      "proof_requirements": "Test roundtrip: create_abw() → write_abw() → load() → verify content",
+      "stop_conditions": "No Gate 11 approval needed. Stop if XML generation unsafe.",
+      "gate_11_needed": false,
+      "credentials_needed": false,
+      "low_dependency_risk": true
+    },
+    {
+      "format": "Gnumeric",
+      "full_name": "Gnumeric Spreadsheet",
+      "track": "python-foss",
+      "selection_reason": "Implementation exists (gnumeric_codec.py, 23 passing tests). Adding export_to_csv() is a natural capability extension. Gnumeric is gzip-compressed XML; CSV export follows the same pattern as FODS→CSV. Public spec available. No credentials or Gate 11 needed.",
+      "gap_to_fill": "export_to_csv() — no CSV export capability yet",
+      "existing_state": "load(), get_sheet_count(), get_cell_count(), extract_values(), get_sheet_metadata() — 23 tests passing",
+      "scope": "Add export_to_csv(model, sheet_index=0) to src/python/gnumeric/gnumeric_codec.py. Add 8+ tests. Add example.",
+      "allowed_files": [
+        "src/python/gnumeric/gnumeric_codec.py",
+        "tests/python/gnumeric/test_r117_gnumeric_csv_export.py",
+        "examples/python/gnumeric/"
+      ],
+      "expected_tests": 8,
+      "expected_sample_output": "examples/python/gnumeric/export_csv_example.py",
+      "proof_requirements": "Test: load gnumeric sample → export_to_csv() → verify CSV content",
+      "stop_conditions": "No Gate 11 approval needed. Stop if gzip decompression produces unsafe state.",
+      "gate_11_needed": false,
+      "credentials_needed": false,
+      "low_dependency_risk": true
+    }
+  ],
+
+  "rejected_formats": [
+    {
+      "format": "SVG",
+      "reason": "PROHIBITED — SVG must not be used as Netpbm replacement"
+    },
+    {
+      "format": "ODS",
+      "reason": "Requires zip package extraction (more complex), defer to next sprint"
+    },
+    {
+      "format": "ODT",
+      "reason": "Similar complexity to ODS, defer to next sprint"
+    },
+    {
+      "format": "XCF",
+      "reason": "Binary format requiring custom parser, higher risk, defer"
+    }
+  ],
+
+  "gate_c_status": "READY",
+  "selection_is_evidence_backed": true,
+  "max_formats": 2,
+  "formats_selected": 2,
+  "broad_expansion": false
+}

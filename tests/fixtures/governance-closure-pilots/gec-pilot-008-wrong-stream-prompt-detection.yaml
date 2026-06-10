@@ -1,0 +1,20 @@
+# GEC Pilot 008: Wrong-stream prompt fixture — validates prompt quality checker
+# This is NOT passed through governance validators (it's a prompt, not a declaration)
+# Instead it's validated through validate_prompt_quality()
+id: gec-pilot-008
+description: >
+  A governance-sprint-generated prompt that contains mainstream/product wording.
+  The prompt quality validator should flag stream contamination.
+test_type: prompt_quality_pilot
+prompt_text: |
+  ## Sprint
+  Governance enforcement sprint.
+  ## Lane A
+  Run governance validators. FODS .NET product advancement. Authorized git commit + push (requires user authorization)
+  ## Evidence
+  Write evidence-declaration.yaml and run autonomous-cycle.
+sprint_stream: supervisor
+expected_checks_fail:
+  - no_unsafe_commit_push_wording
+expected_result: FAIL
+expected_validator: validate_prompt_quality

@@ -1,0 +1,32 @@
+id: GEC-TC-001
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Coordinator: preflight review, file ownership matrix, state ledger"
+status: completed
+lane: coordinator
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  Sprint 4 requires a coordinator lane that creates the lane-execution-ledger.jsonl,
+  state-ledger.jsonl, preflight doc, file-ownership-matrix.md, and integration report.
+scope:
+  - Create reports/repeatability-governance-closure-rnext/00-preflight.md
+  - Create reports/repeatability-governance-closure-rnext/file-ownership-matrix.md
+  - Create reports/repeatability-governance-closure-rnext/lane-execution-ledger.jsonl
+  - Create reports/repeatability-governance-closure-rnext/state-ledger.jsonl
+  - Create reports/repeatability-governance-closure-rnext/integration-report.md
+files_to_create:
+  - reports/repeatability-governance-closure-rnext/00-preflight.md
+  - reports/repeatability-governance-closure-rnext/file-ownership-matrix.md
+  - reports/repeatability-governance-closure-rnext/lane-execution-ledger.jsonl
+  - reports/repeatability-governance-closure-rnext/state-ledger.jsonl
+  - reports/repeatability-governance-closure-rnext/integration-report.md
+acceptance_criteria:
+  - All coordinator files exist
+  - lane-execution-ledger.jsonl has entries for all 12 lanes
+  - state-ledger.jsonl has entries for all GEC-TC items
+dependencies: []
+handoff_to_autonomy_sprint: false

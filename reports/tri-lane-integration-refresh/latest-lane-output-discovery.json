@@ -1,0 +1,164 @@
+{
+  "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+  "generated_at": "2026-06-04T00:00:00Z",
+  "discovery_purpose": "Discover latest lane outputs for integration refresh",
+
+  "acceleration_hardening": {
+    "sprint_id": "FORMAT-FACTORY-ACCELERATION-HARDENING-IV-AND-CONSUMPTION-CONTRACT-001",
+    "available": true,
+    "key_files": {
+      "mainstream_packet_index": {
+        "path": "reports/acceleration-hardening/mainstream-packet-index.json",
+        "exists": true,
+        "schema_version": "1.1.0",
+        "authority_state": "ai_draft",
+        "packets": ["fods", "fodt", "netpbm", "sylk"],
+        "all_runtime_status_ok": true
+      },
+      "packet_validation_results": {
+        "path": "reports/acceleration-hardening/packet-validation-results.json",
+        "exists": true
+      },
+      "cross_lane_readiness": {
+        "path": "reports/acceleration-hardening/cross-lane-readiness.json",
+        "exists": true,
+        "overall_verdict": "ACCELERATION_CONSUMABLE_WITH_LIMITATIONS",
+        "supervisor_classification": "ACCELERATION_CONSUMABLE"
+      },
+      "semantic_hash_comparison": {
+        "path": "reports/acceleration-hardening/semantic-hash-comparison.json",
+        "exists": true
+      },
+      "test_log": {
+        "path": "reports/acceleration-hardening/raw-logs/acceleration-hardening-tests.log",
+        "exists": true
+      }
+    },
+    "hardening_index_dir": "reports/acceleration-hardening/replay-run-2/",
+    "index_packets": [
+      "reports/acceleration-hardening/replay-run-2/fods-dogfood_status-fods_to_csv_dotnet.json",
+      "reports/acceleration-hardening/replay-run-2/fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+      "reports/acceleration-hardening/replay-run-2/netpbm-dotnet_status-netpbm_flip_diagonal.json",
+      "reports/acceleration-hardening/replay-run-2/sylk-python_status-write_sylk.json"
+    ],
+    "assessment": "LATEST_AVAILABLE — use hardening index as primary acceleration input"
+  },
+
+  "skills_product_breadth_finalization": {
+    "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+    "available": true,
+    "key_files": {
+      "skills_integration_contract": {
+        "path": "reports/skills-product-breadth-finalization/skills-integration-contract.json",
+        "exists": true
+      },
+      "fodt_markdown_packet": {
+        "path": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+        "exists": true,
+        "packet_type": "FULL",
+        "family": "FODT",
+        "capability": "dogfood_status.fodt_to_markdown_dotnet",
+        "status": "READY_FOR_MAINSTREAM"
+      },
+      "fodt_txt_packet": {
+        "path": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+        "exists": true,
+        "packet_type": "FULL",
+        "family": "FODT",
+        "capability": "dogfood_status.fodt_to_txt_dotnet",
+        "status": "READY_FOR_MAINSTREAM"
+      },
+      "netpbm_proof_packet": {
+        "path": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+        "exists": true,
+        "packet_type": "FULL",
+        "family": "Netpbm",
+        "capability": "dotnet_status.netpbm_flip_and_merge_pipeline",
+        "status": "READY_FOR_MAINSTREAM"
+      },
+      "fodt_markdown_handoff": {
+        "path": "reports/skills-product-breadth-finalization/fodt-markdown-handoff.yaml",
+        "exists": true
+      },
+      "fodt_txt_handoff": {
+        "path": "reports/skills-product-breadth-finalization/fodt-txt-handoff.yaml",
+        "exists": true
+      },
+      "netpbm_proof_handoff": {
+        "path": "reports/skills-product-breadth-finalization/netpbm-proof-handoff.yaml",
+        "exists": true
+      },
+      "handoff_to_mainstream": {
+        "path": "reports/skills-product-breadth-finalization/handoff-to-mainstream.json",
+        "exists": true
+      }
+    },
+    "assessment": "LATEST_AVAILABLE — full finalization packets exist for FODT Markdown, FODT TXT, and Netpbm"
+  },
+
+  "skills_product_first_fods": {
+    "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-FIRST-GOVERNED-EXECUTION-001",
+    "available": true,
+    "key_files": {
+      "mainstream_consumption_packet": {
+        "path": "reports/skills-product-first/mainstream-consumption-packet.json",
+        "exists": true,
+        "family": "FODS",
+        "capability": "dogfood_status.fods_to_csv_dotnet",
+        "packet_type": "FULL"
+      }
+    },
+    "assessment": "LATEST_AVAILABLE_FOR_FODS — no newer FODS finalization packet exists; product-first packet is authoritative for FODS"
+  },
+
+  "supervisor_tri_lane_reconciliation": {
+    "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRI-LANE-RECONCILIATION-001",
+    "available": true,
+    "key_files": {
+      "mainstream_readiness_packet": {
+        "path": "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
+        "exists": true
+      },
+      "shared_field_contract": {
+        "path": "reports/supervisor-tri-lane-reconciliation/shared-field-contract.json",
+        "exists": true
+      },
+      "cross_lane_status": {
+        "path": "reports/supervisor-tri-lane-reconciliation/cross-lane-status.json",
+        "exists": true
+      }
+    },
+    "stale_fields": [
+      "FODT Skills entry: references SHELL packet (stale — finalization exists)",
+      "Netpbm Skills entry: references SHELL packet (stale — finalization exists)",
+      "FODT TXT: not present (stale — finalization exists)"
+    ],
+    "assessment": "STALE_FODT_NETPBM_FIELDS — base routing is valid; FODT/Netpbm Skills fields must be patched from finalization"
+  },
+
+  "old_integration_fabric": {
+    "sprint_id": "FORMAT-FACTORY-TRI-LANE-INTEGRATION-FABRIC-001",
+    "key_files": {
+      "tri_lane_contract": {
+        "path": "reports/tri-lane-integration-fabric/tri-lane-contract.json",
+        "exists": true
+      },
+      "mainstream_execution_packet": {
+        "path": "reports/tri-lane-integration-fabric/mainstream-execution-packet.json",
+        "exists": true
+      },
+      "contract_validation_results": {
+        "path": "reports/tri-lane-integration-fabric/contract-validation-results.json",
+        "exists": true
+      }
+    },
+    "stale_issues": [
+      "FODT: packet_type=shell (STALE_BLOCKING)",
+      "Netpbm: packet_type=shell (STALE_BLOCKING)",
+      "FODT TXT: missing entirely (STALE_BLOCKING)",
+      "Acceleration: source=product-first dir (STALE_WITH_REPAIR_REQUIRED)",
+      "Invalid pytest commands for .cs files (BLOCKING_VALIDATOR_GAP)"
+    ],
+    "assessment": "SUPERSEDED_BY_THIS_SPRINT — v2 artifacts will replace"
+  }
+}

@@ -1,0 +1,61 @@
+---
+sprint_id: acceleration-r101
+evidence_root: reports/acceleration-r101
+
+reports:
+  - reports/acceleration-r101/00-preflight.md
+  - reports/acceleration-r101/lane-ownership.md
+  - reports/acceleration-r101/parallel-execution-map.md
+  - reports/acceleration-r101/multi-mega-train-scoreboard.md
+  - reports/acceleration-r101/tooling-gap-analysis.md
+  - reports/acceleration-r101/hard-quota-plan.md
+  - reports/acceleration-r101/acceleration-r100-review.md
+  - reports/acceleration-r101/acceleration-r100-defect-ledger.json
+  - reports/acceleration-r101/evidence-self-containment.md
+  - reports/acceleration-r101/product-gap-selection-r101.md
+  - reports/acceleration-r101/stream-gap-selection-v4.md
+  - reports/acceleration-r101/router-v4-unsafe-scope-source-track.md
+  - reports/acceleration-r101/handoff-v2-fields.md
+  - reports/acceleration-r101/lane-recorder-v3.md
+  - reports/acceleration-r101/sprint-learning-v3.md
+  - reports/acceleration-r101/package-proof-v3.md
+  - reports/acceleration-r101/progress-detector-v3.md
+  - reports/acceleration-r101/materialization-v2.md
+  - reports/acceleration-r101/dry-run-e2e.md
+  - reports/acceleration-r101/final-iv.md
+
+sample_outputs:
+  - reports/acceleration-r101/sample-outputs/selected-gaps-mainstream-r101.json
+  - reports/acceleration-r101/sample-outputs/selected-gaps-acceleration-r101.json
+  - reports/acceleration-r101/sample-outputs/selected-gaps-skills-r101.json
+  - reports/acceleration-r101/sample-outputs/selected-gaps-supervisor-r101.json
+  - reports/acceleration-r101/sample-outputs/synthetic-gaps-for-handoff.json
+  - reports/acceleration-r101/sample-outputs/sample-package-proof.json
+  - reports/acceleration-r101/sample-outputs/sample-blocker-report.md
+  - reports/acceleration-r101/sample-outputs/sample-progress-detection.json
+  - reports/acceleration-r101/sample-outputs/sample-lane-execution-ledger.json
+  - reports/acceleration-r101/sample-outputs/dry-run-e2e.json
+  - reports/acceleration-r101/sample-outputs/dry-run-ledger.json
+
+generated_handoffs:
+  - reports/acceleration-r101/generated-handoffs/handoff-fods-api-merge_sheets.yaml
+  - reports/acceleration-r101/generated-handoffs/handoff-sylk-sylk_to_html.yaml
+
+raw_logs:
+  - reports/acceleration-r101/raw-test-log.txt
+
+test_files:
+  - tests/supervisor/acceleration/test_select_poc_gaps_v3.py
+  - tests/supervisor/acceleration/test_choose_skill_or_handoff_v2.py
+  - tests/supervisor/acceleration/test_generate_execution_handoff.py
+  - tests/supervisor/acceleration/test_record_lane_v2.py
+  - tests/supervisor/acceleration/test_sprint_learning_v2.py
+  - tests/supervisor/acceleration/test_detect_product_progress_v2.py
+  - tests/supervisor/acceleration/test_package_install_proof.py
+
+changed_tools:
+  - tools/supervisor/select_poc_gaps.py
+  - tools/supervisor/choose_skill_or_handoff.py
+  - tools/supervisor/generate_execution_handoff.py
+  - tools/supervisor/record_lane_execution.py
+  - tools/supervisor/detect_product_progress.py

@@ -1,0 +1,16 @@
+{
+  "invocation_id": "r110-sim-005-supervisor-grading",
+  "skill_id": "evidence-review-next-prompt",
+  "mode": "dry-run",
+  "inputs": {
+    "declaration_path": ".local/evidences/skills-r110/evidence-declaration.yaml",
+    "evidence_bundle_path": ".local/supervisor/reviews/skills-r110/declaration-review-package.zip",
+    "grading_engine": "tools/supervisor/grade_declared_work.py"
+  },
+  "allowed_files": ["reports/supervisor/work-item-grades.json", "reports/supervisor/latest-review.md"],
+  "actual_files_changed": [],
+  "tests_run": ["tests/python/supervisor/test_r108_transcript_grade_boost.py"],
+  "ledger_entry_id": null,
+  "result": "PASS",
+  "timestamp": "2026-06-03T23:19:00Z"
+}

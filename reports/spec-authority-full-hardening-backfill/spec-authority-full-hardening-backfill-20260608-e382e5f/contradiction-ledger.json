@@ -1,0 +1,20 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-FULL-HARDENING-BACKFILL-AND-PILOT-MEGA-TRAIN-001",
+  "run_id": "spec-authority-full-hardening-backfill-20260608-e382e5f",
+  "generated_at": "2026-06-08T18:05:00Z",
+  "contradictions": [
+    {
+      "id": "CONTR-001",
+      "description": "ABW and Gnumeric listed as POC targets in poc-targets.yaml but authority is P1 (not P4+)",
+      "severity": "ADVISORY",
+      "source_a": "product-capability-matrix/poc-targets.yaml",
+      "source_b": "authority matrix v4",
+      "resolution": "EXISTING_KNOWN_DEBT — exceptions documented: no_public_spec (ABW) and schema_authority_available (Gnumeric). Product work under these exceptions is governed as DEBT_ONLY. NOT BLOCKING.",
+      "blocking": false,
+      "taskcard": "TC-020"
+    }
+  ],
+  "blocking_contradictions": 0,
+  "advisory_contradictions": 1,
+  "verdict": "NO_BLOCKING_CONTRADICTIONS"
+}

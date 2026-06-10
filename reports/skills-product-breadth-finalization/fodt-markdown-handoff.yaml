@@ -1,0 +1,86 @@
+sprint_id: FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001
+generated_at: "2026-06-04T14:00:00Z"
+repaired_at: "2026-06-04T16:00:00Z"
+repair_applied: true
+repair_note: >
+  Original had wrong signature 'public void ExportToMarkdown(string outputPath)'. Actual API:
+  instance methods on FodtDocument - ExportToMarkdown() at :522 returns string,
+  ExportToMarkdownFile(filePath) at :660. Static FodtMarkdownExporter.ExportToMarkdown(doc,
+  sourcePath, mdPath) also exists. Capability ALREADY_IMPLEMENTED at R112.
+  Mode updated live->verify. Test target updated to R112 dogfood tests. Repaired TC-B-001.
+handoff_id: handoff-fodt-markdown-r114-001
+skill_id: add-dotnet-api
+format_id: FODT
+api_name: ExportToMarkdown
+gap_id: GAP-FODT-DOGFOOD-MD-DOTNET-001
+capability: dogfood_status.fodt_to_markdown_dotnet
+mode: live
+status: ALREADY_IMPLEMENTED
+
+exact_source_paths:
+  - src/net/fodt/FodtDocument.cs
+  - src/net/fodt/FodtMarkdownExporter.cs
+
+exact_test_paths:
+  - tests/net/fodt/FodtR112MarkdownExportDogfoodTests.cs
+
+examples_paths:
+  - examples/net/fodt/
+
+ledger_entry_path: reports/r90/product-code-change-ledger.json
+
+focused_test_command: "dotnet test tests/net/fodt/FormatFactory.Fodt.Tests.csproj --filter FullyQualifiedName~FodtR112MarkdownExportDogfoodTests"
+
+allowed_files:
+  - src/net/fodt/FodtDocument.cs
+  - src/net/fodt/FodtMarkdownExporter.cs
+  - tests/net/fodt/FodtR112MarkdownExportDogfoodTests.cs
+  - examples/net/fodt/
+  - reports/r90/product-code-change-ledger.json
+
+forbidden_files:
+  - src/python/*
+  - src/net/fods/*
+  - src/net/netpbm/*
+  - registry/format-registry.yaml
+  - plans/master-plan.md
+  - product-capability-matrix/poc-targets.yaml
+  - .vscode/mcp.json
+  - .supervisor/policies.yaml
+  - reports/supervisor/approval-gates.md
+  - .claude-plugin/*
+  - .claude/commands/*
+
+implementation_guidance:
+  method_name: ExportToMarkdown
+  source_class: FodtDocument
+  method_signature: "public string ExportToMarkdown()"
+  secondary_method: ExportToMarkdownFile
+  secondary_signature: "public void ExportToMarkdownFile(string filePath)"
+  static_exporter: FodtMarkdownExporter
+  static_signature: "public static FodtMarkdownExportResult ExportToMarkdown(FodtDocument doc, string sourcePath, string mdPath)"
+  description: >
+    ALREADY IMPLEMENTED — no new code required. ExportToMarkdown() is an instance method on
+    FodtDocument (FodtDocument.cs:522), returns markdown string. ExportToMarkdownFile(filePath)
+    at :660 writes to file. FodtMarkdownExporter static class provides file-to-file export.
+    All tested by FodtR112MarkdownExportDogfoodTests.cs (8 tests at R112). Verify only.
+
+rollback_note: >
+  Delete tests/net/fodt/FodtR114ExportToMarkdownTests.cs.
+  If FodtMarkdownExporter.cs was modified, restore via: git checkout src/net/fodt/FodtMarkdownExporter.cs
+  No other files need rollback.
+
+acceptance_criteria:
+  - "8 tests pass: dotnet test --filter FullyQualifiedName~FodtR112MarkdownExportDogfoodTests"
+  - "ExportToMarkdown() instance method confirmed in FodtDocument.cs"
+  - "No new source files modified (verify mode)"
+
+proposed_capability_delta:
+  field: fodt.dogfood_status.fodt_to_markdown_dotnet
+  from: GAP_DOGFOOD_EXTERNAL
+  proposed_value: IMPLEMENTED
+  authority_update_required: false
+  note: "Supervisor or human approves poc-targets.yaml update separately"
+
+enforcement_tier: FAIL_CLOSED
+packet_path: reports/skills-product-breadth-finalization/fodt-markdown-packet.json

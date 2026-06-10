@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/capability/capability_map.schema.json",
+  "title": "CapabilityMap",
+  "description": "A capability map for one product type (commercial or foss_reduced) in Format Factory. Contains a collection of CapabilityRecord objects for all formats in that product type.",
+  "type": "object",
+  "required": ["schema_version", "generated_at", "product_type", "sprint_id", "run_id", "capabilities", "summary"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "generated_at": {"type": "string", "description": "ISO 8601 generation timestamp"},
+    "product_type": {
+      "type": "string",
+      "enum": ["commercial", "foss_reduced", "unified"],
+      "description": "Product type this map covers. 'unified' contains both but with separated records."
+    },
+    "sprint_id": {"type": "string"},
+    "run_id": {"type": "string"},
+    "authority_note": {
+      "type": "string",
+      "description": "Note on the authority sources used to generate this map"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {"$ref": "capability_record.schema.json"},
+      "description": "List of capability records"
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total_capabilities", "by_state", "by_format", "verified_count", "missing_count"],
+      "properties": {
+        "total_capabilities": {"type": "integer"},
+        "verified_count": {"type": "integer", "description": "Count of capabilities in any verified state"},
+        "missing_count": {"type": "integer"},
+        "by_state": {
+          "type": "object",
+          "additionalProperties": {"type": "integer"}
+        },
+        "by_format": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "total": {"type": "integer"},
+              "verified": {"type": "integer"},
+              "missing": {"type": "integer"}
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

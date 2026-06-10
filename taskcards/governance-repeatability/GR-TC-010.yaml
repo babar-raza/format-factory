@@ -1,0 +1,40 @@
+id: GR-TC-010
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-REPEATABILITY-IDEMPOTENCY-CONTRACTS-001"
+generated_at: "2026-06-08"
+title: "Write final single-go execution prompt"
+status: ready_to_execute
+lane: execution_handoff
+item_type: GOVERNANCE_DOC
+problem: >
+  An execution sprint needs an unambiguous prompt that prevents drift into
+  autonomy improvement or product features.
+scope:
+  - Create reports/repeatability-governance-plan-healing/final-single-go-execution-prompt.md
+  - Prompt references all GR-TC tasks in order
+  - Explicit forbidden actions listed
+  - Evidence bundle and declaration steps included
+files_to_create:
+  - reports/repeatability-governance-plan-healing/final-single-go-execution-prompt.md
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+acceptance_criteria:
+  - File exists
+  - All 10 GR-TC tasks referenced
+  - Forbidden actions explicitly listed
+  - Discovery steps for Python command included
+  - Evidence bundle step included
+verification:
+  - "check file exists: reports/repeatability-governance-plan-healing/final-single-go-execution-prompt.md"
+rollback: delete file
+dependencies:
+  - GR-TC-001
+  - GR-TC-002
+  - GR-TC-003
+  - GR-TC-004
+  - GR-TC-005
+  - GR-TC-006
+  - GR-TC-007
+  - GR-TC-008
+  - GR-TC-009
+handoff_to_autonomy_sprint: false

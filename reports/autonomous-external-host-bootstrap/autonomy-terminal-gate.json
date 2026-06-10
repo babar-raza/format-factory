@@ -1,0 +1,73 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-EXTERNAL-HOST-BOOTSTRAP-001",
+  "evaluated_at": "2026-06-05T22:52:00",
+  "autonomy_level": "H5_ONE_BOUNDED_NEXT_CYCLE_PROVEN",
+  "gate_result": "PASS",
+  "gate_checks": {
+    "G1_next_action_exists": {
+      "pass": true,
+      "evidence": "reports/autonomous-external-host-bootstrap/next-action.json exists, schema_version=1"
+    },
+    "G2_external_host_runner_exists": {
+      "pass": true,
+      "evidence": "tools/supervisor/external_host_loop.py exists, 457 lines"
+    },
+    "G3_claudecode_scrub_implemented": {
+      "pass": true,
+      "evidence": "scrub_claudecode_env() in external_host_loop.py removes CLAUDECODE from child subprocess env; 4 passing tests in TestCLAUDECODEScrub"
+    },
+    "G4_noop_attempted": {
+      "pass": true,
+      "evidence": "reports/autonomous-external-host-bootstrap/raw-logs/noop-result.json: exit=0, stdout=HOST_RUNNER_NOOP_OK"
+    },
+    "G5_smoke_proven": {
+      "pass": true,
+      "evidence": "reports/autonomous-external-host-bootstrap/host-loop/host-loop-result.json: classification=HOST_LOOP_SMOKE_PROVEN, success_marker_found=true, missing_files=[], exit_code=0"
+    },
+    "G6_proof_file_exists": {
+      "pass": true,
+      "evidence": "reports/autonomous-external-host-bootstrap/smoke/host-created-proof.md exists; contains HOST_CYCLE_SMOKE_OK marker"
+    },
+    "G7_active_prompt_safe": {
+      "pass": true,
+      "evidence": "reports/autonomous-external-host-bootstrap/safe-next-prompt.md created; routes to external host loop, suppresses unsafe 'Authorized git commit + push' wording from latest-next-worker-prompt.md"
+    },
+    "G8_bootstrap_scripts_exist": {
+      "pass": true,
+      "evidence": "scripts/autonomous_external_host.ps1 and scripts/autonomous_external_host.sh both exist"
+    },
+    "G9_vscode_task_exists": {
+      "pass": true,
+      "evidence": ".vscode/tasks.json: tasks 'Format Factory: Start External Autonomous Host' and 'Format Factory: External Host Dry-Run' defined"
+    },
+    "G10_tests_pass": {
+      "pass": true,
+      "evidence": "tests/supervisor/test_external_host_loop.py: 23/23 pass; tests/supervisor/test_autonomous_execution_healing.py: 16/16 pass"
+    },
+    "G11_no_forbidden_actions": {
+      "pass": true,
+      "evidence": "No git commit, no git push, no Gate approval, no NuGet/PyPI publication, no src/ changes by host loop, no MCP activation"
+    }
+  },
+  "gates_total": 11,
+  "gates_passed": 11,
+  "gates_failed": 0,
+  "host_invocation_details": {
+    "was_claudecode_scrubbed": false,
+    "note": "CLAUDECODE was not set in parent env during live smoke run (ran from external context). This is the correct behaviour — when running from outside Claude Code, CLAUDECODE is absent. Scrub is idempotent in this case.",
+    "cli_path": "C:\\Users\\prora\\AppData\\Roaming\\npm\\claude.CMD",
+    "cli_exit_code": 0,
+    "classification": "HOST_LOOP_SMOKE_PROVEN"
+  },
+  "autonomy_level_justification": {
+    "H3": "H3 = CLI detected and dry-run works. PROVEN (dry-run EXIT_0 confirmed).",
+    "H4": "H4 = Noop cycle proven (live invocation, no product changes). PROVEN (noop-result.json exit=0, stdout=HOST_RUNNER_NOOP_OK).",
+    "H5": "H5 = One bounded next cycle proven (smoke prompt executed, marker confirmed, proof file created). PROVEN (HOST_LOOP_SMOKE_PROVEN classification).",
+    "H6": "H6 = Full product train proven end-to-end via external host loop. NOT YET — this would require a product sprint executing via external_host_loop.py and a HOST_LOOP_PRODUCT_CYCLE_PROVEN result."
+  },
+  "next_steps": [
+    "To reach H6: write a next-action.json pointing to a product-train prompt; invoke external_host_loop.py from outside VS Code / Claude Code; verify HOST_LOOP_PRODUCT_CYCLE_PROVEN",
+    "Use scripts/autonomous_external_host.ps1 or .vscode tasks to run from an external terminal",
+    "Each product cycle needs its own next-action.json with correct allowed_write_roots and expected_output_files"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-FILE-FORMAT-ACQUISITION-MEGA-TRAIN-001",
+  "formats_acquired": [
+    {
+      "format": "Gnumeric",
+      "extension": ".gnumeric",
+      "mime_type": "application/x-gnumeric",
+      "encoding": "gzip-compressed XML",
+      "namespace": "http://www.gnumeric.org/v10.dtd",
+      "spec_source": "REVERSE_ENGINEERED_FROM_SAMPLES",
+      "reference_samples": [
+        "samples/by-format/gnumeric/minimal-spreadsheet.gnumeric",
+        "samples/by-format/gnumeric/multi-cell-basic.gnumeric",
+        "samples/by-format/gnumeric/empty-sheet.gnumeric"
+      ],
+      "capabilities_added_this_sprint": [
+        "FORMAT_DETECTION",
+        "DOCUMENT_CREATION",
+        "DOCUMENT_WRITE"
+      ],
+      "capabilities_pre_existing": [
+        "DOCUMENT_LOAD",
+        "CELL_EXTRACTION",
+        "CSV_EXPORT"
+      ]
+    },
+    {
+      "format": "ABW",
+      "extension": ".abw",
+      "mime_type": "application/x-abiword",
+      "encoding": "plain XML (AWML 1.0)",
+      "namespace": "abiword",
+      "spec_source": "AWML_1_0_SPEC_PLUS_SAMPLES",
+      "reference_samples": [
+        "samples/by-format/abw/"
+      ],
+      "capabilities_added_this_sprint": [
+        "PLAIN_TEXT_EXPORT"
+      ],
+      "capabilities_pre_existing": [
+        "DOCUMENT_LOAD",
+        "TEXT_EXTRACTION",
+        "DOCUMENT_CREATION",
+        "DOCUMENT_WRITE",
+        "FORMAT_DETECTION"
+      ]
+    }
+  ],
+  "no_new_external_dependencies": true,
+  "stdlib_only": true
+}

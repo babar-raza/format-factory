@@ -1,0 +1,17 @@
+# Pilot: TCA-FULL-002 — Negative missing spec_fact_refs rejection pilot
+# Expected: REJECTED — PRODUCT_SOURCE with no spec_fact_refs and no exception
+pilot_id: pilot-negative-missing-spec-fact-refs
+sprint_id: SPEC-AUTHORITY-LAYER-FULL-PILOT-VERIFICATION-HEALING-AND-CLOSURE-001
+run_id: spec-authority-full-pilot-healing-20260608-e382e5f
+expected_result: REJECTED_AS_EXPECTED
+
+planned_work_items:
+  - item_id: WI-PILOT-NEG-001
+    item_type: PRODUCT_SOURCE
+    title: "Hypothetical product source addition without authority"
+    status: completed
+    # DELIBERATELY MISSING: spec_fact_refs and exception_classification
+    evidence_paths:
+      - reports/spec-authority-full-pilot-healing/spec-authority-full-pilot-healing-20260608-e382e5f/pilot-results/dummy-artifact.txt
+    tests_supporting: []
+    acceptance_criteria: "This item MUST be rejected by spec_fact_refs enforcement"

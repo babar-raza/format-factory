@@ -1,0 +1,71 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SPEC-AUTHORITY-R3-CLOSURE-REPAIR-AND-R4-ODF-PREPARATION-001",
+  "run_id": "spec-authority-r3-closure-repair",
+  "generated": "2026-06-05",
+  "commands": [
+    {
+      "step": 1,
+      "lane": "0",
+      "taskcard": "TC-R3C-000",
+      "command": "git status --short && git branch --show-current && git log --oneline -5",
+      "purpose": "Preflight git state capture",
+      "expected_output": "branch=main; head=3a86a05"
+    },
+    {
+      "step": 2,
+      "lane": "0",
+      "taskcard": "TC-R3C-000",
+      "command": "mkdir -p reports/spec-authority-r3-closure-repair && mkdir -p .local/evidences/spec-authority-r3-closure-repair && mkdir -p .local/supervisor/reviews/spec-authority-r3-closure-repair",
+      "purpose": "Create output directories",
+      "expected_output": "directories created"
+    },
+    {
+      "step": 3,
+      "lane": "A",
+      "taskcard": "TC-R3C-001",
+      "command": "cat .local/supervisor/reviews/spec-authority-real-pilot-r3/supervisor-review.json | python -c \"import json,sys; d=json.load(sys.stdin); print(d['overall_verdict'])\"",
+      "purpose": "Read R3 supervisor review verdict",
+      "expected_output": "ACCEPTED"
+    },
+    {
+      "step": 4,
+      "lane": "D",
+      "taskcard": "TC-R3C-004",
+      "command": "cat .local/evidences/spec-authority-real-pilot-r3/pilot-results-r3.json | python -c \"import json,sys; d=json.load(sys.stdin); print(len(d['context_packs']))\"",
+      "purpose": "Verify 5 context packs in R3 results",
+      "expected_output": "5"
+    },
+    {
+      "step": 5,
+      "lane": "F",
+      "taskcard": "TC-R3C-006",
+      "command": ".local/venv/Scripts/python -m pytest tests/spec_authority/ -v --tb=short 2>&1 | tee reports/spec-authority-r3-closure-repair/raw-logs/spec-authority-r3c-tests.log",
+      "purpose": "Run all spec_authority tests and capture raw log",
+      "expected_output": "all tests PASSED"
+    },
+    {
+      "step": 6,
+      "lane": "G",
+      "taskcard": "TC-R3C-007",
+      "command": ".local/venv/Scripts/python tools/supervisor/autonomous_cycle.py --declaration .local/evidences/spec-authority-r3-closure-repair/evidence-declaration.yaml",
+      "purpose": "Run autonomous-cycle for R3C sprint grading",
+      "expected_output": "exit code 0; overall_verdict=ACCEPTED"
+    },
+    {
+      "step": 7,
+      "lane": "G",
+      "taskcard": "TC-R3C-007",
+      "command": ".local/venv/Scripts/python tools/supervisor/build_declaration_review_package.py --declaration .local/evidences/spec-authority-r3-closure-repair/evidence-declaration.yaml",
+      "purpose": "Build R3C review package ZIP (MUST be after autonomous-cycle)",
+      "expected_output": "ZIP created; SHA-256 in sha256.json"
+    },
+    {
+      "step": 8,
+      "lane": "G",
+      "taskcard": "TC-R3C-007",
+      "command": "python -c \"import json; d=json.load(open('.local/supervisor/reviews/spec-authority-r3-closure-repair/declaration-review-package.sha256.json')); print(d['sha256'])\"",
+      "purpose": "Read ZIP SHA-256 for review-package-proof.md",
+      "expected_output": "64-char hex string"
+    }
+  ]
+}

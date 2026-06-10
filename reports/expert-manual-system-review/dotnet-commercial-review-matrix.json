@@ -1,0 +1,72 @@
+[
+  {
+    "format": "FODS",
+    "source_path": "src/net/fods/",
+    "csproj": "src/net/fods/FormatFactory.Fods.csproj",
+    "dimensions": {
+      "parsing": {"score": 4.5, "max": 5, "evidence": "FodsParser.cs: XmlReader streaming, parses sheets/rows/cells. DtdProcessing=Prohibit. file=src/net/fods/FodsParser.cs lines 68-76"},
+      "write_save_same_format": {"score": 4.0, "max": 5, "evidence": "FodsWriter.cs: Save() method present. file=src/net/fods/FodsWriter.cs"},
+      "csv_export": {"score": 4.0, "max": 5, "evidence": "FodsCsvExporter.cs: delegates to FormatFactory.Csv.CsvWriter. Methods: ExportFirstSheetToCsv, ExportSheetToCsv, ExportAllSheetsToCsv. file=src/net/fods/FodsCsvExporter.cs line 18: using FormatFactory.Csv"},
+      "html_export": {"score": 4.0, "max": 5, "evidence": "FodsHtmlExporter.cs: ExportToHtml(). Delegates to FormatFactory.Html.HtmlWriter. file=src/net/fods/FodsHtmlExporter.cs"},
+      "json_export": {"score": 3.5, "max": 5, "evidence": "FodsJsonExporter.cs exists. file=src/net/fods/FodsJsonExporter.cs (product-local StringBuilder, not delegating to a target writer library)"},
+      "markdown_export": {"score": 3.0, "max": 5, "evidence": "No dedicated FodsMarkdownExporter found. poc-targets.yaml shows export_sheet_to_markdown=PASS suggesting it exists via FODS→CSV→delegate path"},
+      "object_model_api": {"score": 4.5, "max": 5, "evidence": "FodsDocument.cs: CreateNew, Load, Save, GetSheetNames, AddSheet, RemoveSheet, RenameSheet, CopySheet, DeleteRows, InsertRow, GetColumnHeaders, SetCellValue, ExportSheetToHtml, GetRowCount, GetColumnCount (47KB source). 39 capabilities in poc-targets.yaml"},
+      "error_handling": {"score": 3.5, "max": 5, "evidence": "FodsParser.cs: exception propagation. No global catch blocks. Missing explicit FormatException types for user-facing errors. Exceptions propagated upward."},
+      "test_coverage": {"score": 5.0, "max": 5, "evidence": "547 test methods across 70 test files in tests/net/fods/"},
+      "packaging_metadata": {"score": 2.0, "max": 5, "evidence": "FormatFactory.Fods.csproj: GenerateDocumentationFile=False (no XML docs), Description stale ('not release-ready'), PackageReadmeFile=README.md present. Version=0.1.0-tier0"},
+      "documentation": {"score": 3.0, "max": 5, "evidence": "XML summary comments present on key public methods (inferred from FodsCsvExporter.cs G11-E summary block). No generated XML doc file."},
+      "commercial_readiness": {"score": 3.5, "max": 5, "evidence": "Gate 11 APPROVED per poc-targets.yaml (APPROVED_BY_BABAR_RAZA_2026_06_05). csproj Description stale. Header comments stale. Core functionality complete."}
+    },
+    "overall_score": 3.79,
+    "commercial_band": "APPROACHING_SCOPED_COMMERCIAL_READY",
+    "blocking_gaps": ["GenerateDocumentationFile=False", "csproj Description stale", "FodsCsvExporter.cs header comment stale"],
+    "gate_11_status_poc_targets": "APPROVED",
+    "gate_11_status_csproj": "STALE_NOT_UPDATED_AFTER_APPROVAL"
+  },
+  {
+    "format": "FODT",
+    "source_path": "src/net/fodt/",
+    "csproj": "src/net/fodt/FormatFactory.Fodt.csproj",
+    "dimensions": {
+      "parsing": {"score": 4.5, "max": 5, "evidence": "FodtParser.cs: XmlReader streaming, DTD prohibited, XmlResolver=null, file-size guard 50MB. file=src/net/fodt/FodtParser.cs lines 71-72"},
+      "write_save_same_format": {"score": 4.0, "max": 5, "evidence": "FodtWriter.cs: Save() method present. file=src/net/fodt/FodtWriter.cs"},
+      "txt_export": {"score": 4.0, "max": 5, "evidence": "FodtTxtExporter.cs: ExportTxt(). Delegates to FormatFactory.Txt.TxtWriter. file=src/net/fodt/FodtTxtExporter.cs"},
+      "markdown_export": {"score": 4.0, "max": 5, "evidence": "FodtMarkdownExporter.cs: ExportToMarkdown(), FormatParagraphAsMarkdown(). Delegates to FormatFactory.Markdown.MarkdownWriter. file=src/net/fodt/FodtMarkdownExporter.cs"},
+      "html_export": {"score": 3.5, "max": 5, "evidence": "FodtHtmlExporter.cs exists. file=src/net/fodt/FodtHtmlExporter.cs"},
+      "json_export": {"score": 2.0, "max": 5, "evidence": "No FodtJsonExporter found in src/net/fodt/"},
+      "object_model_api": {"score": 4.5, "max": 5, "evidence": "FodtDocument.cs: CreateEmpty, Load, Save, GetPlainText, GetPlainTextRange, ReplaceText, GetHeadingParagraphs, GetWordCount, AppendParagraph, InsertParagraph, 40 capabilities. 39KB source."},
+      "error_handling": {"score": 3.5, "max": 5, "evidence": "FodtParser.cs: file-size guard, exception propagation. Security posture documented in comments."},
+      "test_coverage": {"score": 5.0, "max": 5, "evidence": "520 test methods across 67 test files in tests/net/fodt/"},
+      "packaging_metadata": {"score": 2.0, "max": 5, "evidence": "FormatFactory.Fodt.csproj: GenerateDocumentationFile=False, Description stale ('not release-ready'), PackageReadmeFile=README.md present"},
+      "documentation": {"score": 3.0, "max": 5, "evidence": "XML summary comments in source. No generated XML doc file due to GenerateDocumentationFile=False"},
+      "commercial_readiness": {"score": 3.5, "max": 5, "evidence": "Gate 11 APPROVED per poc-targets.yaml. csproj Description stale. Missing JSON export target writer."}
+    },
+    "overall_score": 3.67,
+    "commercial_band": "APPROACHING_SCOPED_COMMERCIAL_READY",
+    "blocking_gaps": ["GenerateDocumentationFile=False", "csproj Description stale", "Missing JSON export"],
+    "gate_11_status_poc_targets": "APPROVED",
+    "gate_11_status_csproj": "STALE_NOT_UPDATED_AFTER_APPROVAL"
+  },
+  {
+    "format": "NETPBM",
+    "source_path": "src/net/netpbm/",
+    "csproj": "src/net/netpbm/FormatFactory.Netpbm.csproj",
+    "dimensions": {
+      "parsing": {"score": 5.0, "max": 5, "evidence": "NetpbmParser.cs: handles P1/P2/P3/P4/P5/P6 formats, file size guard (64MB), dimension guard (65536), pixel count guard (1B). file=src/net/netpbm/NetpbmParser.cs lines 25-27"},
+      "write_save_same_format": {"score": 4.5, "max": 5, "evidence": "NetpbmWriter.cs: Write(), ToAsciiString(), ToBinaryBytes(). Binary and ASCII modes. file=src/net/netpbm/NetpbmWriter.cs"},
+      "image_transforms": {"score": 4.0, "max": 5, "evidence": "NetpbmExporter.cs: PbmToPgm(), PbmToPpm(), PgmToPpm(), PpmToPgm() export transforms. file=src/net/netpbm/NetpbmExporter.cs"},
+      "object_model_api": {"score": 4.0, "max": 5, "evidence": "NetpbmImage model, Parse/ParseStream/Write API. 46 capabilities per poc-targets.yaml."},
+      "error_handling": {"score": 4.5, "max": 5, "evidence": "NetpbmParser.cs: explicit guards with descriptive exception messages for file size, dimensions, pixel count. lines 43, 91-93"},
+      "test_coverage": {"score": 5.0, "max": 5, "evidence": "465 test methods across 60 test files in tests/net/netpbm/"},
+      "packaging_metadata": {"score": 1.5, "max": 5, "evidence": "FormatFactory.Netpbm.csproj: GenerateDocumentationFile=False, NO PackageReadmeFile, Description stale ('Gate 11 NOT_STARTED'), Version=0.1.0-r85-poc (stale)"},
+      "documentation": {"score": 3.0, "max": 5, "evidence": "Security posture documented in XML comments. No generated doc file."},
+      "commercial_readiness": {"score": 3.0, "max": 5, "evidence": "Gate 11 APPROVED per poc-targets.yaml. csproj Description says 'NOT_STARTED' — stale. Version stale (0.1.0-r85-poc)."},
+      "security": {"score": 5.0, "max": 5, "evidence": "Comprehensive resource guards: file size, dimension, pixel count. Best security posture of all three products."}
+    },
+    "overall_score": 3.95,
+    "commercial_band": "APPROACHING_SCOPED_COMMERCIAL_READY",
+    "blocking_gaps": ["GenerateDocumentationFile=False", "No PackageReadmeFile", "csproj Description stale (NOT_STARTED)", "Version stale (0.1.0-r85-poc)"],
+    "gate_11_status_poc_targets": "APPROVED",
+    "gate_11_status_csproj": "STALE_SAYS_NOT_STARTED"
+  }
+]

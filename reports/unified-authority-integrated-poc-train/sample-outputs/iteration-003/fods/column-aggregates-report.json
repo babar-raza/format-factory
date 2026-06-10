@@ -1,0 +1,45 @@
+{
+  "sample_output_type": "GetColumnAggregates_dogfood",
+  "generated_at": "2026-06-05T00:00:00Z",
+  "api": "FodsDocument.GetColumnAggregates(sheetName, col)",
+  "test_class": "FodsR116ColumnAggregatesTests",
+  "scenarios": [
+    {
+      "scenario": "Sum of column 1 (values 10.0, 20.0, 30.0)",
+      "sheet": "Sheet1",
+      "col": 1,
+      "result": {"Min": 10.0, "Max": 30.0, "Sum": 60.0, "Count": 3},
+      "test": "GetColumnAggregates_Sum_IsCorrect"
+    },
+    {
+      "scenario": "Min of column 1",
+      "sheet": "Sheet1",
+      "col": 1,
+      "result": {"Min": 10.0},
+      "test": "GetColumnAggregates_Min_IsCorrect"
+    },
+    {
+      "scenario": "Max of column 1",
+      "sheet": "Sheet1",
+      "col": 1,
+      "result": {"Max": 30.0},
+      "test": "GetColumnAggregates_Max_IsCorrect"
+    },
+    {
+      "scenario": "Count of column 1 (header skipped)",
+      "sheet": "Sheet1",
+      "col": 1,
+      "result": {"Count": 3},
+      "test": "GetColumnAggregates_HeaderSkipped"
+    },
+    {
+      "scenario": "Dogfood pipeline: filter rows then aggregate",
+      "sheet": "Sheet1",
+      "filter": "value > 5.0",
+      "col": 1,
+      "result": {"Min": 10.0, "Max": 30.0, "Sum": 60.0, "Count": 3},
+      "test": "GetColumnAggregates_DogfoodPipeline_FilterThenAggregate"
+    }
+  ],
+  "test_verdict": "8/8 PASSED"
+}

@@ -1,0 +1,15 @@
+{
+  "pilot_id": "BROAD-PILOT-008",
+  "format": "ABW",
+  "product_type": "foss_reduced",
+  "capability_tested": "export_to_csv + get_paragraph \u2014 regression",
+  "source_file": "src/python/abw/abw_codec.py",
+  "test_files": [
+    "tests/python/abw/test_r123_abw_csv_export.py",
+    "tests/python/abw/test_r126_abw_get_paragraph.py"
+  ],
+  "test_count": 20,
+  "test_result": "PASS",
+  "verdict": "PASS_VERIFIED",
+  "notes": "ABW export_to_csv and get_paragraph still passing; no regressions"
+}

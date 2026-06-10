@@ -1,0 +1,27 @@
+{
+  "sprint": "FORMAT-FACTORY-EXPANDED-STANDING-MULTI-LANE-PRODUCT-FIRST-MEGA-TRAIN-001",
+  "map": {
+    "src/python/abw/abw_codec.py": {
+      "targeted_command": ".local/venv/Scripts/python -m pytest tests/python/abw/ -v",
+      "family_command": ".local/venv/Scripts/python -m pytest tests/python/abw/ tests/python/gnumeric/ -q"
+    },
+    "src/python/gnumeric/gnumeric_codec.py": {
+      "targeted_command": ".local/venv/Scripts/python -m pytest tests/python/gnumeric/ -v",
+      "family_command": ".local/venv/Scripts/python -m pytest tests/python/gnumeric/ -q"
+    },
+    "src/python/ndjson/ndjson_codec.py": {
+      "targeted_command": ".local/venv/Scripts/python -m pytest tests/python/ndjson/ -v",
+      "family_command": ".local/venv/Scripts/python -m pytest tests/python/ndjson/ -q"
+    },
+    "src/python/tsv/tsv_parser.py": {
+      "targeted_command": ".local/venv/Scripts/python -m pytest tests/python/tsv/ -v",
+      "family_command": ".local/venv/Scripts/python -m pytest tests/python/tsv/ -q"
+    },
+    "src/python/fodg/fodg_codec.py": {
+      "targeted_command": ".local/venv/Scripts/python -m pytest tests/python/fodg/ -v",
+      "family_command": ".local/venv/Scripts/python -m pytest tests/python/fodg/ -q"
+    }
+  },
+  "full_python_suite": ".local/venv/Scripts/python -m pytest tests/python/ -q --tb=no",
+  "note": "Do NOT prefix with PYTHONPATH=src/python — causes csv module shadowing. Let sys.path.insert in test files handle path resolution."
+}

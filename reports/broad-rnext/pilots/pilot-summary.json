@@ -1,0 +1,135 @@
+{
+  "sprint_id": "FORMAT-FACTORY-BROAD-CAPABILITY-LAYER-HEALING-RNEXT-BROAD-001",
+  "pilots": [
+    {
+      "pilot_id": "BROAD-PILOT-001",
+      "format": "NDJSON",
+      "product_type": "foss_reduced",
+      "capability_tested": "sort_records",
+      "source_file": "src/python/ndjson/ndjson_codec.py",
+      "test_file": "tests/python/ndjson/test_broad_rnext_ndjson_sort_records.py",
+      "test_count": 10,
+      "test_result": "PASS",
+      "sample_output": "reports/broad-rnext/sample-outputs/ndjson-sort-output.ndjson",
+      "verdict": "PASS_VERIFIED",
+      "notes": "sort_records() implemented and tested; ascending/descending/string/missing-key cases covered"
+    },
+    {
+      "pilot_id": "BROAD-PILOT-002",
+      "format": "TSV",
+      "product_type": "foss_reduced",
+      "capability_tested": "filter_rows",
+      "source_file": "src/python/tsv/tsv_parser.py",
+      "test_file": "tests/python/tsv/test_broad_rnext_tsv_filter_rows.py",
+      "test_count": 10,
+      "test_result": "PASS",
+      "sample_output": "reports/broad-rnext/sample-outputs/tsv-filter-output.tsv",
+      "verdict": "PASS_VERIFIED",
+      "notes": "filter_rows() implemented; exact/substring/case-insensitive/missing-column cases covered"
+    },
+    {
+      "pilot_id": "BROAD-PILOT-003",
+      "format": "TOML",
+      "product_type": "foss_reduced",
+      "capability_tested": "new format acquisition \u2014 probe+load+write+roundtrip",
+      "source_file": "src/python/toml/toml_codec.py",
+      "test_file": "tests/python/toml/test_broad_rnext_toml_codec.py",
+      "test_count": 16,
+      "test_result": "PASS",
+      "sample_output": "reports/broad-rnext/sample-outputs/toml-roundtrip-output.toml",
+      "verdict": "PASS_VERIFIED",
+      "notes": "TOML new format acquired using stdlib tomllib (Python 3.11+); 5 ops verified"
+    },
+    {
+      "pilot_id": "BROAD-PILOT-004",
+      "format": "NDJSON",
+      "product_type": "foss_reduced",
+      "capability_tested": "roundtrip \u2014 regression",
+      "source_file": "src/python/ndjson/ndjson_codec.py",
+      "test_file": "tests/python/ndjson/test_rnext3_ndjson_roundtrip.py",
+      "test_count": 8,
+      "test_result": "PASS",
+      "verdict": "PASS_VERIFIED",
+      "notes": "RNEXT3 roundtrip capability still passing after sort_records addition"
+    },
+    {
+      "pilot_id": "BROAD-PILOT-005",
+      "format": "TSV",
+      "product_type": "foss_reduced",
+      "capability_tested": "roundtrip \u2014 regression",
+      "source_file": "src/python/tsv/tsv_parser.py",
+      "test_file": "tests/python/tsv/test_rnext3_tsv_roundtrip.py",
+      "test_count": 8,
+      "test_result": "PASS",
+      "verdict": "PASS_VERIFIED",
+      "notes": "RNEXT3 roundtrip capability still passing after filter_rows addition"
+    },
+    {
+      "pilot_id": "BROAD-PILOT-006",
+      "format": "NDJSON",
+      "product_type": "foss_reduced",
+      "capability_tested": "validate_schema \u2014 regression",
+      "source_file": "src/python/ndjson/ndjson_codec.py",
+      "test_file": "tests/python/ndjson/test_rnext2_ndjson_validate_schema.py",
+      "test_count": 10,
+      "test_result": "PASS",
+      "verdict": "PASS_VERIFIED",
+      "notes": "RNEXT2 validate_schema still passing; no regressions from sort_records"
+    },
+    {
+      "pilot_id": "BROAD-PILOT-007",
+      "format": "FODG",
+      "product_type": "foss_reduced",
+      "capability_tested": "roundtrip \u2014 regression",
+      "source_file": "src/python/fodg/fodg_codec.py",
+      "test_file": "tests/python/fodg/test_rnext2_fodg_roundtrip.py",
+      "test_count": 7,
+      "test_result": "PASS",
+      "verdict": "PASS_VERIFIED",
+      "notes": "RNEXT2 FODG roundtrip still passing; no regressions"
+    },
+    {
+      "pilot_id": "BROAD-PILOT-008",
+      "format": "ABW",
+      "product_type": "foss_reduced",
+      "capability_tested": "export_to_csv + get_paragraph \u2014 regression",
+      "source_file": "src/python/abw/abw_codec.py",
+      "test_files": [
+        "tests/python/abw/test_r123_abw_csv_export.py",
+        "tests/python/abw/test_r126_abw_get_paragraph.py"
+      ],
+      "test_count": 20,
+      "test_result": "PASS",
+      "verdict": "PASS_VERIFIED",
+      "notes": "ABW export_to_csv and get_paragraph still passing; no regressions"
+    },
+    {
+      "pilot_id": "BROAD-PILOT-009",
+      "format": "Gnumeric",
+      "product_type": "foss_reduced",
+      "capability_tested": "set_cell_value + get_sheet_names \u2014 regression",
+      "source_file": "src/python/gnumeric/gnumeric_codec.py",
+      "test_files": [
+        "tests/python/gnumeric/test_r126_gnumeric_set_cell.py",
+        "tests/python/gnumeric/test_r125_gnumeric_sheet_names.py"
+      ],
+      "test_count": 14,
+      "test_result": "PASS",
+      "verdict": "PASS_VERIFIED",
+      "notes": "Gnumeric set_cell_value and get_sheet_names still passing; no regressions"
+    },
+    {
+      "pilot_id": "BROAD-PILOT-010",
+      "format": "capability_layer",
+      "product_type": "infrastructure",
+      "capability_tested": "gap-selector integration \u2014 0-gap state valid",
+      "test_file": "tests/capability_layer/test_gap_selector_integration.py",
+      "test_count": 8,
+      "test_result": "PASS (2 skipped \u2014 correct for 0-gap state)",
+      "verdict": "PASS_VERIFIED",
+      "notes": "Gap selector correctly handles 0-gap state; closed gaps verified absent from ledger; RNEXT2+RNEXT3 closures confirmed"
+    }
+  ],
+  "total": 10,
+  "pass_count": 10
+}

@@ -1,0 +1,28 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "handoff_target": "Acceleration",
+  "purpose": "Skills packets supersede Acceleration ai_draft outputs for FODT and Netpbm",
+  "packets": {
+    "fodt_markdown": {
+      "skills_packet": "reports/skills-product-breadth-finalization/fodt-markdown-packet.json",
+      "supersedes_acceleration": "reports/acceleration-product-first/mainstream-consumption-packets/fodt-dogfood_status-fodt_to_markdown_dotnet.json",
+      "supersession_reason": "Acceleration packet has ai_rationale: [fixture_error] and authority_state: ai_draft. Skills packet is FULL, READY_FOR_MAINSTREAM.",
+      "action": "Use Skills allowed_files and acceptance_criteria for Mainstream execution"
+    },
+    "fodt_txt": {
+      "skills_packet": "reports/skills-product-breadth-finalization/fodt-txt-packet.json",
+      "supersedes_acceleration": null,
+      "supersession_reason": "No Acceleration packet exists for fodt_to_txt_dotnet. Skills packet is the only source.",
+      "action": "Use Skills packet exclusively"
+    },
+    "netpbm_pipeline": {
+      "skills_packet": "reports/skills-product-breadth-finalization/netpbm-proof-packet.json",
+      "supersedes_acceleration": "reports/acceleration-product-first/mainstream-consumption-packets/netpbm-dotnet_status-netpbm_flip_diagonal.json",
+      "supersession_reason": "Acceleration packet selected flip_diagonal (ai_draft, stale — NetpbmR106FlipDiagonalTests.cs already at R106). Skills finalization corrects to Pipeline at R114.",
+      "action": "Use Skills packet. Ignore Acceleration flip_diagonal selection."
+    }
+  },
+  "field_compatibility_reference": "reports/skills-product-breadth-finalization/skills-acceleration-field-map.json",
+  "authority_rule": "Skills packets are authoritative. When a Skills FULL packet exists, Acceleration ai_draft outputs for the same capability are advisory only."
+}

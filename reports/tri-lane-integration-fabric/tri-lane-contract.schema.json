@@ -1,0 +1,218 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "tri-lane-contract.schema.json",
+  "title": "Tri-Lane Integration Contract",
+  "description": "Schema for a tri-lane integration contract that feeds Mainstream product implementation. Authority: Supervisor > Skills > Acceleration. Mainstream implements only.",
+  "type": "object",
+  "required": [
+    "contract_version",
+    "sprint_id",
+    "generated_at",
+    "supervisor_routing",
+    "skills_handoff",
+    "acceleration_advisory",
+    "mainstream_execution",
+    "evidence_expectations",
+    "capability_delta",
+    "validation",
+    "authority_boundary"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "description": "Semver contract version, e.g. '1.0'"
+    },
+    "sprint_id": {
+      "type": "string",
+      "description": "Sprint identifier string"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO 8601 timestamp"
+    },
+    "supervisor_routing": {
+      "type": "object",
+      "description": "Supervisor stream routing authority block — controls routing priority",
+      "required": ["source", "routing_decision", "families", "authority_state"],
+      "properties": {
+        "source": {"type": "string"},
+        "routing_decision": {"type": "string"},
+        "families": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["family", "active", "svg_replacement_rejected"],
+            "properties": {
+              "family": {"type": "string"},
+              "active": {"type": "boolean"},
+              "svg_replacement_rejected": {"type": "boolean"},
+              "source_file": {"type": "string"},
+              "routing_note": {"type": "string"}
+            }
+          }
+        },
+        "authority_state": {
+          "type": "string",
+          "enum": ["routing_authority"]
+        }
+      }
+    },
+    "skills_handoff": {
+      "type": "object",
+      "description": "Skills stream governed handoff block — controls execution structure",
+      "required": ["source", "handoff_type", "families", "authority_state"],
+      "properties": {
+        "source": {"type": "string"},
+        "handoff_type": {
+          "type": "string",
+          "enum": ["full", "shell", "partial"]
+        },
+        "families": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["family", "packet_type", "packet_path"],
+            "properties": {
+              "family": {"type": "string"},
+              "packet_type": {"type": "string", "enum": ["full", "shell"]},
+              "packet_path": {"type": "string"},
+              "skill": {"type": "string"},
+              "note": {"type": "string"}
+            }
+          }
+        },
+        "authority_state": {
+          "type": "string",
+          "enum": ["governed_execution_authority"]
+        }
+      }
+    },
+    "acceleration_advisory": {
+      "type": "object",
+      "description": "Acceleration stream advisory block — ai_draft only, never authoritative",
+      "required": ["source", "families", "authority_state", "non_authoritative"],
+      "properties": {
+        "source": {"type": "string"},
+        "families": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["family", "packet_path", "authority_state", "use_for"],
+            "properties": {
+              "family": {"type": "string"},
+              "packet_path": {"type": "string"},
+              "authority_state": {"type": "string", "enum": ["ai_draft"]},
+              "use_for": {"type": "string"}
+            }
+          }
+        },
+        "authority_state": {
+          "type": "string",
+          "enum": ["ai_draft"]
+        },
+        "non_authoritative": {
+          "type": "boolean",
+          "enum": [true]
+        }
+      }
+    },
+    "mainstream_execution": {
+      "type": "object",
+      "description": "Mainstream execution block — what Mainstream must implement",
+      "required": ["families", "allowed_files", "forbidden_files", "stop_conditions", "rollback_requirements"],
+      "properties": {
+        "families": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["family", "capability", "allowed_files", "forbidden_files", "expected_tests", "expected_dogfood_output", "expected_transcript", "validation_commands"],
+            "properties": {
+              "family": {"type": "string"},
+              "capability": {"type": "string"},
+              "allowed_files": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+              "forbidden_files": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+              "expected_tests": {"type": "string"},
+              "expected_dogfood_output": {"type": "string"},
+              "expected_transcript": {"type": "string"},
+              "validation_commands": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        },
+        "allowed_files": {"type": "array", "items": {"type": "string"}},
+        "forbidden_files": {"type": "array", "items": {"type": "string"}},
+        "stop_conditions": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "rollback_requirements": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    },
+    "evidence_expectations": {
+      "type": "object",
+      "description": "Evidence quality block — what constitutes valid evidence",
+      "required": ["minimum_passing_tests", "minimum_governed_transcripts", "minimum_source_diffs", "required_for_clean_pass"],
+      "properties": {
+        "minimum_passing_tests": {"type": "integer", "minimum": 1},
+        "minimum_governed_transcripts": {"type": "integer", "minimum": 1},
+        "minimum_source_diffs": {"type": "integer", "minimum": 1},
+        "required_for_clean_pass": {
+          "type": "object",
+          "required": ["families_touched", "source_diffs", "governed_transcripts", "raw_logs", "capability_matrix_deltas"],
+          "properties": {
+            "families_touched": {"type": "integer", "minimum": 1},
+            "source_diffs": {"type": "integer", "minimum": 1},
+            "governed_transcripts": {"type": "integer", "minimum": 1},
+            "raw_logs": {"type": "integer", "minimum": 1},
+            "capability_matrix_deltas": {"type": "integer", "minimum": 1}
+          }
+        }
+      }
+    },
+    "capability_delta": {
+      "type": "object",
+      "description": "Proposed capability delta block — proposed only, never authoritative write",
+      "required": ["proposed_only", "deltas"],
+      "properties": {
+        "proposed_only": {"type": "boolean", "enum": [true]},
+        "authority_note": {"type": "string"},
+        "deltas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["family", "capability_path", "proposed_status"],
+            "properties": {
+              "family": {"type": "string"},
+              "capability_path": {"type": "string"},
+              "proposed_status": {"type": "string"},
+              "requires_test_evidence": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "description": "Validation block — commands and pass criteria",
+      "required": ["validator_tool", "pass_criteria", "rejection_conditions"],
+      "properties": {
+        "validator_tool": {"type": "string"},
+        "pass_criteria": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "rejection_conditions": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+      }
+    },
+    "authority_boundary": {
+      "type": "object",
+      "description": "Authority boundary block — clear delineation of stream authorities",
+      "required": ["supervisor", "skills", "acceleration", "mainstream", "format_factory_gates"],
+      "properties": {
+        "supervisor": {"type": "string"},
+        "skills": {"type": "string"},
+        "acceleration": {"type": "string"},
+        "mainstream": {"type": "string"},
+        "format_factory_gates": {"type": "string"}
+      }
+    }
+  },
+  "additionalProperties": true
+}

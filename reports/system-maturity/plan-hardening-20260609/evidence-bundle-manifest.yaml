@@ -1,0 +1,89 @@
+bundle_id: plan-hardening-20260609
+sprint_date: "2026-06-09"
+git_head: e382e5f
+model: claude-opus-4-6
+source_changes: 0
+commits: 0
+registry_changes: 0
+taskcards_closed: 34
+taskcards_blocked: 6
+total_taskcards: 45
+
+files:
+  - path: README.md
+    description: Bundle summary and reading guide
+    sha256: b1cca627747e4610167bd90844bc24fa1b32fd72374423b3eda0ba09c7138b85
+
+  - path: taskcard-schema.yaml
+    description: Normalized taskcard field definitions (30+ fields)
+    sha256: 9f65ce14a1ca9f106c59ecf61b20a2332a3c15d9c4fe6cb0e3a4d6c1d3611d0c
+
+  - path: state-machine-governance.yaml
+    description: 12 states, 15 transitions, 5 blocking rules, authority hierarchy
+    sha256: 27818bda82ce0a26745be94982384623edc7bd86fac50ba6bb77eebf0be8ef2c
+
+  - path: taskcards.yaml
+    description: 45 taskcards across 9 groups (A-I) with initial and final states
+    sha256: f6532cb3344f3c4c7b8189d06f65806f3ab1ca6348f4264704b2fb87c1b99cff
+
+  - path: taskcard-state-ledger.jsonl
+    description: State transition log (one JSONL line per transition)
+    sha256: cd91467f97bc2b164ff7dfa5e09178bbc8581fd6ba1d6a7b7583c2ff4a13b8fc
+
+  - path: plan-hardening-report.md
+    description: What the earlier plan got right, wrong, missed
+    sha256: 1bd4014360c86a447da77e9df7f1e48b772d46395ff8d7dad54c636d682bbe00
+
+  - path: review-vs-plan-gap-matrix.md
+    description: 15 weaknesses mapped with verdict
+    sha256: c20323fe74086ae68aa4d0d093d3ecd6cdabbd14e7e9aa01614595220a5f6ab7
+
+  - path: authority-state-contradiction-report.md
+    description: Gate 11 contradiction with verbatim evidence from both sources
+    sha256: 7b4c536775e5a4fbae6bb672d45d8df1882a231e0222877df921a5e5748b4045
+
+  - path: commercial-readiness-verification.md
+    description: ".NET FODS/FODT actual tier from source inspection"
+    sha256: d6479b674bebb2a1dfbddf583cf3da7fa7b473658f0592a43d58f09a944b6c9c
+
+  - path: queue-autonomy-gap-verification.md
+    description: 6 autonomy components inventoried, 5 gaps, pilot design
+    sha256: 785d83d6c482a2a710ccce1389ba5e7d71e6e21b9a2ab7280334b9221c31b830
+
+  - path: product-portfolio-maturity-matrix.md
+    description: 20 formats classified by maturity, authority, tests, write capability
+    sha256: b2c2eba53df37a6c950ca35bbd8f41a7fc928d651b06f5e36edca8a1ce9bf542
+
+  - path: evidence-automation-verification.md
+    description: "Auto vs manual fields, lane ledger state (~47% auto, not 80%)"
+    sha256: 13aa3968e71664a6cc2721e282c9ee589e2c3f3239347cd86265ad2f256db1ce
+
+  - path: git-state-classification.md
+    description: 78 modified + 375 untracked files classified by category
+    sha256: dd02604912c2503700639c52112b21cce2bef6ab2ada3274d3061e5d4f14f6e3
+
+  - path: test-integrity-verification.md
+    description: 777 test files audited by format with quality assessment
+    sha256: 6b3b581fd08784d301d01b0413e721ec83cddf763dc132dd3f63ddd56faf2e64
+
+  - path: execution-report.md
+    description: Stage 2 results, taskcard final states, validations
+    sha256: 26c507fed563bc802dafd7fd571d09163f3e1fc5f0536eb50cfcd611df7c7aa6
+
+  - path: independent-verification-report.md
+    description: IV findings (TC-I1, I2, I4, I5) with verdicts
+    sha256: 505c3a9feb1a183d0c796294b803da1175553ff5e928144c94563e0b006ac721
+
+  - path: next-execution-prompt.md
+    description: Taskcard-driven next sprint specification (3 lanes)
+    sha256: 7d5a46ed701342a4d4a21d82239b207a5fb07e634222bd7524e3a96779565845
+
+  - path: evidence-bundle-manifest.yaml
+    description: This file — file list, checksums, provenance
+    sha256: SELF
+
+provenance:
+  created_by: claude-opus-4-6
+  sprint_type: planning (zero source changes)
+  authority_model: "registry/format-registry.yaml is authoritative; supervisor output is advisory"
+  key_finding: "Gate 11 NOT APPROVED for any format — context-pack overclaims"

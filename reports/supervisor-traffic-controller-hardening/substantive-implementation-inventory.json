@@ -1,0 +1,88 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-TRAFFIC-CONTROLLER-HARDENING-IV-001",
+  "generated_at": "2026-06-04T09:00:00Z",
+  "substantive_implementation": [
+    {
+      "file": "tools/supervisor/generate_stream_routing_packet.py",
+      "type": "source",
+      "status": "exists",
+      "functions": ["run", "score_stream", "compute_stream_decision", "assess_false_pass_stop", "write_velocity_summary"],
+      "hardening_needed": "determinism verification — run twice same input, compare semantic hash"
+    },
+    {
+      "file": "tools/supervisor/check_cross_stream_consumption.py",
+      "type": "source",
+      "status": "exists",
+      "functions": ["run", "check_skills_consumption", "check_acceleration_consumption"],
+      "hardening_needed": "verify Skills packet now present → not SKILLS_MISSING_PACKET; negative fixtures"
+    },
+    {
+      "file": "tools/supervisor/product_velocity_scorer.py",
+      "type": "source",
+      "status": "exists",
+      "functions": ["score_stream_velocity", "classify_mainstream_package", "compute_product_output_floor", "score_machinery_overhead", "detect_semantic_drift_risk"],
+      "hardening_needed": "3-family clean-pass test; SVG-rejection test"
+    },
+    {
+      "file": "tools/supervisor/external_tool_governance.py",
+      "type": "source",
+      "status": "exists",
+      "functions": ["detect_external_tools", "classify_ruflo_mode", "get_ruflo_verdict", "validate_external_tool_output_authority", "classify_superpowers_mode", "classify_ghidramcp_mode", "build_external_tool_governance_verdict"],
+      "hardening_needed": "read-only proof; no invocation test"
+    },
+    {
+      "file": "tools/supervisor/ai_supervisor_advisor.py",
+      "type": "source",
+      "status": "exists",
+      "functions": ["create_advisory_output", "handle_ai_deterministic_disagreement", "review_semantic_drift", "check_acceleration_ai_consumption", "check_skills_consumption"],
+      "hardening_needed": "non-authority proof; advisory_mode=deterministic_advisory"
+    },
+    {
+      "file": "tools/supervisor/autonomous_cycle.py",
+      "type": "source",
+      "status": "modified",
+      "functions": ["classify_continuation_state (3 new states added)"],
+      "hardening_needed": "continuation fixture tests for new states"
+    },
+    {
+      "file": "tests/supervisor/test_supervisor_product_traffic_controller_integration.py",
+      "type": "test",
+      "status": "exists",
+      "test_count": 17,
+      "hardening_needed": "add determinism + 3-family + SVG-rejection tests"
+    },
+    {
+      "file": "tests/supervisor/test_cross_stream_consumption.py",
+      "type": "test",
+      "status": "exists",
+      "test_count": 9,
+      "hardening_needed": "add Skills-present (not missing) test; negative fixtures"
+    },
+    {
+      "file": "tests/supervisor/test_continuation_state_integration.py",
+      "type": "test",
+      "status": "exists",
+      "test_count": 11,
+      "hardening_needed": "add 10 fixture scenarios"
+    },
+    {
+      "file": "tests/supervisor/test_external_tool_governance_integration.py",
+      "type": "test",
+      "status": "exists",
+      "test_count": 16,
+      "hardening_needed": "add read-only proof test; no-invocation proof"
+    },
+    {
+      "file": "reports/supervisor-streams/mainstream/routing-packet.json",
+      "type": "output",
+      "status": "exists",
+      "hardening_needed": "regenerate with updated cross-stream status (Skills now present)"
+    },
+    {
+      "file": "reports/skills-product-first/mainstream-consumption-packet.json",
+      "type": "input_read_only",
+      "status": "present",
+      "note": "Skills packet now present — check_cross_stream_consumption.py must recognize it"
+    }
+  ]
+}

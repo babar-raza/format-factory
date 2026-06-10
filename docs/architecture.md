@@ -306,6 +306,88 @@ Commercial-tier source within `src/net/{format}/` is not created until Gate 10 h
 
 ---
 
+## Autonomous Supervision Pipeline (Post-Phase-0)
+
+The autonomous supervision system was built after Phase 0 to manage multi-sprint execution with bounded repair, evidence materialization, and governance enforcement.
+
+### Pipeline Architecture
+
+```
+Sprint Start
+  → Read session-resume.md (last sprint outcome)
+  → Execute work items (format-specific code + tests)
+  → Write evidence-declaration.yaml
+  → Run autonomous_cycle.py:
+      → Step 1: Validate declaration schema
+      → Step 2: Inspect declared evidence
+      → Step 2b: Generate/validate evidence manifest
+      → Step 2c: Materialize declared evidence (SHA checksums)
+      → Step 2d: Adoption compliance validation
+      → Step 2e: Run governance validators (11 validators)
+      → Step 3: Grade work items (ACCEPTED / ACCEPTED_WITH_REWORK / REJECTED)
+      → Step 4: Generate next-sprint.md
+      → Step 5: Update session-resume.md + approval-gates.md
+      → Step 6: Write continuation-signal.json
+  → Check continuation signal → repeat or stop
+```
+
+### State Management
+
+| File | Purpose | Persistence |
+|------|---------|-------------|
+| `reports/supervisor/session-resume.md` | Last sprint outcome, test counts, supervisor mode | Committed |
+| `.local/supervisor/continuation-signal.json` | Autonomous/manual flag, iteration count, stop reason | Local only |
+| `reports/supervisor/approval-gates.md` | AUTONOMOUS_CONTINUE flag | Committed |
+| `reports/supervisor/next-sprint.md` | Generated sprint prompt for next iteration | Committed |
+
+**Cross-window recovery:** Any new session reads session-resume.md, approval-gates.md, and next-sprint.md to restore full operational context without requiring prior conversation history.
+
+### 4-Stream Architecture
+
+| Stream | Purpose | Key Artifacts |
+|--------|---------|---------------|
+| Mainstream Product | Format acquisition, parser development, gate progression | src/python/, tests/python/ |
+| Acceleration | Rapid product function expansion across formats | product-task-candidates.json |
+| Skills/Governed Execution | Repeatable skill patterns, governance enforcement | tools/supervisor/product_feature_factory.py |
+| Supervisor/Autonomous Continuation | Pipeline orchestration, evidence, continuation | tools/supervisor/autonomous_cycle.py |
+
+### Governance Validators (`tools/supervisor/governance_validators.py`)
+
+11 validators that programmatically enforce governance rules:
+
+1. **Execution method required** — Every work item must declare how it was executed
+2. **Source diff required** — Product source items must have evidence of code changes
+3. **Idempotency key required** — Repeatable items must have idempotency keys
+4. **Replay recipe required** — Items claiming replayability must have a replay recipe path
+5. **Claim classification** — Claims must be one of 6 valid classifications
+6. **Legacy backfill validation** — Backfilled items must have proper attribution
+7. **Manual ungoverned rejection** — MANUAL_UNGOVERNED execution method is blocked
+8. **Governed direct execution** — Validates governed execution has proper evidence
+9. **Source marker or sidecar** — Product functions must have attribution markers
+10. **Taskcard state transitions** — State changes must follow the 15-state machine
+11. **Route decision required** — Items must have autonomy routing decisions
+
+### Bounded Repair Engine (`tools/supervisor/bounded_repair_engine.py`)
+
+Classifies test and build failures into 6 categories and applies targeted repairs:
+
+| Category | Detection | Repair Strategy |
+|----------|-----------|-----------------|
+| IMPORT | `ModuleNotFoundError`, `ImportError` | Fix sys.path or install missing dependency |
+| SYNTAX | `SyntaxError` | Locate and fix syntax issue |
+| ATTRIBUTE | `AttributeError` | Fix incorrect attribute access |
+| NAME | `NameError` | Fix undefined name references |
+| ASSERTION | `AssertionError` | Investigate test logic |
+| TIMEOUT | Test timeout exceeded | Optimize or mark as slow |
+
+Repairs are bounded to a maximum of 3 attempts per error. Automatic rollback on failure.
+
+### Evidence Auto-Packager (`tools/supervisor/evidence_auto_packager.py`)
+
+Generates ~80% of evidence-declaration.yaml automatically from the lane-execution-ledger.json, reducing manual declaration effort and preventing transcription errors.
+
+---
+
 ## Relationship to Other Documents
 
 - `plans/master-plan.md` — operational state (current phase, gate history, WIP)

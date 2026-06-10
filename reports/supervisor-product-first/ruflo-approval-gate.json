@@ -1,0 +1,30 @@
+{
+  "sprint_id": "FORMAT-FACTORY-SUPERVISOR-PRODUCT-FIRST-TRAFFIC-CONTROLLER-REPLAN-AND-STREAM-LOCAL-CLOSURE-001",
+  "generated_at": "2026-06-04T10:05:00.000000",
+  "ruflo_mode": "DETECTED_NOT_CONFIGURED",
+  "installation_detected": true,
+  "workspace_mutation_paths": [],
+  "hooks_status": "ABSENT",
+  "daemon_status": "ABSENT",
+  "mcp_registration_status": "REGISTERED_NOT_RUNNING",
+  "memory_paths": [],
+  "rollback_plan": "Do not invoke npx -y claude-flow. State directory absent means no artifacts to clean.",
+  "forbidden_files_check": "PASS",
+  "secrets_stored": false,
+  "taskcard_state_authority": "DETERMINISTIC_SUPERVISOR_ONLY",
+  "evidence_package_affected": false,
+  "human_approval_required_for_full_loop": true,
+  "verdict": "RUFLO_DETECTED_NOT_CONFIGURED_APPROVAL_REQUIRED_FOR_INVOCATION",
+  "allowed_operations": [
+    "read .vscode/mcp.json",
+    "read claude-flow documentation"
+  ],
+  "forbidden_operations": [
+    "invoke npx -y claude-flow",
+    "start claude-flow mcp server",
+    "enable claude-flow hooks",
+    "start daemon",
+    "let claude-flow close taskcards",
+    "let claude-flow approve continuation"
+  ]
+}

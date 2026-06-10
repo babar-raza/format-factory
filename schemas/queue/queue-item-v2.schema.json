@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "queue-item-v2",
+  "title": "Format Factory Queue Item v2",
+  "description": "Schema for action queue items with safe source-changing dispatch support.",
+  "type": "object",
+  "required": [
+    "action_id",
+    "action_type",
+    "stream",
+    "priority",
+    "status",
+    "objective",
+    "allowed_paths",
+    "forbidden_paths",
+    "human_approval_required",
+    "evidence_required"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier for this queue item."
+    },
+    "action_type": {
+      "type": "string",
+      "enum": [
+        "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+        "RUN_TARGETED_PYTEST",
+        "UPDATE_PRODUCT_LEDGER",
+        "UPDATE_CAPABILITY_MAP",
+        "GENERATE_SAMPLE_OUTPUT",
+        "REPAIR_FAILING_TEST",
+        "RUN_JSON_VALIDATION",
+        "RUN_MD_NONEMPTY_CHECK",
+        "PRODUCT_GAP_CLASSIFICATION_READONLY",
+        "PRODUCT_SOURCE_PATCH_BOUNDED",
+        "UPDATE_STATE",
+        "GENERATE_EVIDENCE_STUB",
+        "GENERATE_TASK_CANDIDATES"
+      ],
+      "description": "Identifies the execution backend handler."
+    },
+    "stream": {
+      "type": "string",
+      "enum": ["product", "autonomy", "evidence", "setup"],
+      "description": "Execution stream this item belongs to."
+    },
+    "lane": {
+      "type": "string",
+      "description": "Optional sub-lane within the stream."
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "Lower number = higher priority."
+    },
+    "source": {
+      "type": "string",
+      "description": "Where this task originated (e.g. capability_gap:FODG-export_to_csv)."
+    },
+    "reason": {
+      "type": "string",
+      "description": "Human-readable reason this task was created."
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 10,
+      "description": "What this queue item aims to accomplish."
+    },
+    "autonomy_value": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Score for autonomy advancement (0-5)."
+    },
+    "product_value": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Score for product capability advancement (0-5)."
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"],
+      "description": "Risk level of executing this item."
+    },
+    "gate_classification": {
+      "type": "string",
+      "enum": ["LOCAL_AUTONOMOUS", "HUMAN_GATE_REQUIRED", "EXTERNAL_GATE_ESCALATION"],
+      "description": "Whether human approval is needed."
+    },
+    "human_approval_required": {
+      "type": "boolean",
+      "description": "Whether a human must approve before execution."
+    },
+    "allowed_paths": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "File paths the executor is permitted to read/write."
+    },
+    "forbidden_paths": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "File paths the executor must never touch."
+    },
+    "expected_files_to_change": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Expected source files to be modified."
+    },
+    "expected_tests": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Test files expected to pass after execution."
+    },
+    "expected_sample_outputs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Sample output paths to generate."
+    },
+    "expected_ledgers": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Ledger files to update after execution."
+    },
+    "expected_capability_updates": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Capability map updates expected."
+    },
+    "expected_spec_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Spec fact references required (e.g. FACT-FODG-001)."
+    },
+    "rollback_strategy": {
+      "type": "string",
+      "description": "Command to undo source changes if execution fails."
+    },
+    "max_attempts": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "default": 3,
+      "description": "Maximum execution attempts before giving up."
+    },
+    "repair_allowed": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether bounded auto-repair is permitted on failure."
+    },
+    "evidence_required": {
+      "type": "boolean",
+      "description": "Whether evidence artifacts must be produced."
+    },
+    "done_criteria": {
+      "type": "string",
+      "description": "Human-readable criteria for marking the item done."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "running", "done", "failed", "blocked"],
+      "description": "Current execution status."
+    },
+    "preferred_backend": {
+      "type": "string",
+      "description": "Preferred executor backend."
+    },
+    "external_gate": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this item is blocked on an external gate."
+    },
+    "sprint_id": {
+      "type": ["string", "null"],
+      "description": "Sprint this item belongs to."
+    },
+    "queued_at": {
+      "type": ["string", "null"],
+      "description": "ISO timestamp when the item was enqueued."
+    },
+    "started_at": {
+      "type": ["string", "null"],
+      "description": "ISO timestamp when execution started."
+    },
+    "completed_at": {
+      "type": ["string", "null"],
+      "description": "ISO timestamp when execution completed."
+    },
+    "result_path": {
+      "type": ["string", "null"],
+      "description": "Path to the execution result JSON."
+    },
+    "error": {
+      "type": ["string", "null"],
+      "description": "Error message if execution failed."
+    }
+  },
+  "additionalProperties": true
+}

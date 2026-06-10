@@ -1,0 +1,32 @@
+{
+  "sprint_id": "FORMAT-FACTORY-PRODUCT-FIRST-AUTONOMOUS-ACQUISITION-TRAIN-001",
+  "taskcards": [
+    {
+      "id": "TC-ABW-HTML",
+      "title": "Add export_to_html() to ABW codec",
+      "allowed_paths": ["src/python/abw/abw_codec.py", "tests/python/abw/", "examples/python/abw/"],
+      "forbidden_paths": ["src/net/", "poc-targets.yaml"],
+      "status": "TODO",
+      "feature": "export_to_html",
+      "capability": "HTML_EXPORT"
+    },
+    {
+      "id": "TC-ABW-META",
+      "title": "Add get_metadata() to ABW codec",
+      "allowed_paths": ["src/python/abw/abw_codec.py", "tests/python/abw/", "examples/python/abw/"],
+      "forbidden_paths": ["src/net/", "poc-targets.yaml"],
+      "status": "TODO",
+      "feature": "get_metadata",
+      "capability": "METADATA_EXTRACTION"
+    },
+    {
+      "id": "TC-GNM-JSON",
+      "title": "Add export_to_json() to Gnumeric codec",
+      "allowed_paths": ["src/python/gnumeric/gnumeric_codec.py", "tests/python/gnumeric/", "examples/python/gnumeric/"],
+      "forbidden_paths": ["src/net/", "poc-targets.yaml"],
+      "status": "TODO",
+      "feature": "export_to_json",
+      "capability": "JSON_EXPORT"
+    }
+  ]
+}

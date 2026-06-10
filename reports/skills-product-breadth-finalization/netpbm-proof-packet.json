@@ -1,0 +1,75 @@
+{
+  "packet_version": "1.0",
+  "packet_type": "FULL",
+  "sprint_id": "FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001",
+  "generated_at": "2026-06-04T14:00:00Z",
+  "family": "Netpbm",
+  "track": "commercial_net",
+  "gap_id": "GAP-NETPBM-DOGFOOD-PIPELINE-DOTNET-001",
+  "capability": "dotnet_status.netpbm_flip_and_merge_pipeline",
+  "recommended_skill": "add-dotnet-api",
+  "status": "READY_FOR_MAINSTREAM",
+  "shell_packet_source": "reports/skills-governed-execution-hardening/netpbm-packet-shell.json",
+  "note": "Upgraded from SHELL. Acceleration packet selected flip_diagonal (ai_draft, stale — R106 already has FlipDiagonal). This finalization sprint selects a composite pipeline capability at R114.",
+  "source_files": [
+    "src/net/netpbm/Model/NetpbmImage.cs"
+  ],
+  "allowed_files": [
+    "src/net/netpbm/Model/NetpbmImage.cs",
+    "tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs",
+    "examples/net/netpbm/",
+    "reports/r90/product-code-change-ledger.json"
+  ],
+  "forbidden_files": [
+    "src/python/*",
+    "src/net/fods/*",
+    "src/net/fodt/*",
+    "registry/format-registry.yaml",
+    "plans/master-plan.md",
+    "product-capability-matrix/poc-targets.yaml",
+    ".vscode/mcp.json",
+    ".supervisor/policies.yaml",
+    "reports/supervisor/approval-gates.md",
+    ".claude-plugin/*",
+    ".claude/commands/*"
+  ],
+  "expected_source_diff": {
+    "file": "src/net/netpbm/Model/NetpbmImage.cs",
+    "description": "Add Pipeline(IEnumerable<Func<NetpbmImage, NetpbmImage>> steps) method that chains image transforms. Each step receives the result of the previous. Returns final transformed image.",
+    "change_type": "add_api",
+    "method_signature": "public NetpbmImage Pipeline(IEnumerable<Func<NetpbmImage, NetpbmImage>> steps)"
+  },
+  "expected_tests": {
+    "file": "tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs",
+    "test_count": 8,
+    "description": "8 tests: single step pipeline, two step pipeline (flip+resize), three step pipeline, empty steps returns original, null step throws, pipeline with save, roundtrip via pipeline, result is not same reference as input"
+  },
+  "expected_raw_logs": "reports/{sprint_id}/raw-logs/test-netpbm-pipeline.log",
+  "expected_ledger_entry": {
+    "file": "reports/r90/product-code-change-ledger.json",
+    "change_type": "add_api",
+    "description": "Netpbm .NET Pipeline method — 8 tests added"
+  },
+  "proposed_capability_delta": {
+    "field": "netpbm.dotnet_status.netpbm_image_pipeline_dotnet",
+    "from": "GAP",
+    "proposed_value": "IMPLEMENTED",
+    "authority_update_required": false,
+    "note": "Proposed delta only — Supervisor or human approves poc-targets.yaml update separately"
+  },
+  "required_transcript_fields": [
+    "invocation_id", "skill_id", "mode", "inputs", "allowed_files",
+    "actual_files_changed", "tests_run", "result", "timestamp"
+  ],
+  "acceptance_criteria": [
+    "python tools/supervisor/validate_skill_transcript.py <transcript_path> exits 0",
+    "8+ tests pass in NetpbmR114FlipMergePipelineTests.cs",
+    "source diff shows Pipeline method added to NetpbmImage.cs",
+    "actual_files_changed subset of allowed_files",
+    "ledger entry added to reports/r90/product-code-change-ledger.json"
+  ],
+  "rollback_note": "Delete tests/net/netpbm/NetpbmR114FlipMergePipelineTests.cs. Restore NetpbmImage.cs via: git checkout src/net/netpbm/Model/NetpbmImage.cs. No other files need rollback.",
+  "enforcement_tier": "FAIL_CLOSED",
+  "mode": "live",
+  "handoff_path": "reports/skills-product-breadth-finalization/netpbm-proof-handoff.yaml"
+}

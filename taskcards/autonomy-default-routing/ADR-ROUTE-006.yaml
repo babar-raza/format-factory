@@ -1,0 +1,32 @@
+id: ADR-ROUTE-006
+version: "1.0"
+generated_by: FORMAT-FACTORY-AUTONOMY-DEFAULT-ROUTING-PLAN-REPAIR-001
+generated_at: "2026-06-09"
+title: "Shared Routing Constants/Models Module"
+status: completed
+lane: router_core
+item_type: GOVERNANCE_TASKCARD
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+dependencies: [ADR-ROUTE-001]
+gates:
+  - "module imports cleanly"
+  - "all constants defined"
+  - "no circular imports"
+allowed_files:
+  - "tools/supervisor/autonomy_route_models.py"
+forbidden_files:
+  - "src/"
+  - "tools/supervisor/action_queue.py"
+  - "tools/supervisor/autonomous_cycle.py"
+acceptance_criteria:
+  - "5 routes defined"
+  - "13 task categories defined"
+  - "TASK_CATEGORIES_PRODUCT and TASK_CATEGORIES_MACHINERY are disjoint"
+  - "REQUIRED_DECISION_FIELDS has 21 fields"
+tests:
+  - "tests/supervisor/test_autonomy_routing_integration.py::TestConstantsConsistency"
+evidence:
+  - "tools/supervisor/autonomy_route_models.py"
+rollback: "rm tools/supervisor/autonomy_route_models.py"
+closeout_criteria: "import test passes; constants match schema enums"

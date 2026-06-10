@@ -1,0 +1,60 @@
+{
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-PRODUCT-FIRST-AI-LLM-EMBEDDING-EXECUTION-001",
+  "generated_date": "2026-06-04",
+  "authority_state": "ai_draft",
+  "non_authoritative": true,
+  "note": "These are advisory recommendations only. Skills stream owns all normalization and registry entry.",
+  "recommendations": [
+    {
+      "skill_name": "test-case-generator",
+      "marketplace_source": "https://github.com/obra/superpowers-marketplace/tree/main/skills/test-case-generator",
+      "proposed_use_in_format_factory": "Accelerate test plan generation for new format gaps — could complement test_plan_generator.py with community-curated test patterns for common format issues (encoding, endianness, boundary values)",
+      "owning_stream": "Skills",
+      "activation_path": "Skills normalization required: local wrapper → allowed_files → forbidden_files → validation_command → evidence_rule → skill-registry.yaml entry",
+      "authority_state": "ai_draft",
+      "non_authoritative": true,
+      "installation_required_by_acceleration": false,
+      "risks": [
+        "Community test patterns may not match Format Factory's evidence standards",
+        "Generated test IDs may conflict with existing test numbering (R-series)"
+      ],
+      "mitigation": "Skills stream review and normalization required before any test is counted as evidence"
+    },
+    {
+      "skill_name": "code-pattern-extractor",
+      "marketplace_source": "https://github.com/obra/superpowers-marketplace/tree/main/skills/code-pattern-extractor",
+      "proposed_use_in_format_factory": "Enhance source_pattern_miner.py with community AST-based pattern extraction — could improve semantic chunk quality beyond TF-IDF lexical matching for complex C# and Python format code",
+      "owning_stream": "Skills",
+      "activation_path": "Skills normalization required: local wrapper → allowed_files (src/ read-only) → forbidden_files (no src/ write) → validation_command → evidence_rule → skill-registry.yaml entry",
+      "authority_state": "ai_draft",
+      "non_authoritative": true,
+      "installation_required_by_acceleration": false,
+      "risks": [
+        "AST extraction for C# may require .NET runtime dependency",
+        "Pattern quality depends on community skill version — not pinned"
+      ],
+      "mitigation": "Pin skill version in local wrapper; test on fods src/ before enabling for other formats"
+    },
+    {
+      "skill_name": "dogfood-workflow-tracer",
+      "marketplace_source": "https://github.com/obra/superpowers-marketplace/tree/main/skills/dogfood-workflow-tracer",
+      "proposed_use_in_format_factory": "Trace realistic dogfood execution paths for format output APIs (e.g., fods_to_csv → write to tmp → validate CSV structure) — could accelerate dogfood strategy design in ai_implementation_designer.py",
+      "owning_stream": "Skills",
+      "activation_path": "Skills normalization required: local wrapper → allowed_files (examples/ read-only + tmp write) → forbidden_files (src/ write) → validation_command → evidence_rule → skill-registry.yaml entry",
+      "authority_state": "ai_draft",
+      "non_authoritative": true,
+      "installation_required_by_acceleration": false,
+      "risks": [
+        "Workflow tracer may execute format code — must be sandboxed",
+        "Results may vary by Python/dotnet version"
+      ],
+      "mitigation": "Skills stream must enforce sandbox and pinned environment; trace output is advisory only"
+    }
+  ],
+  "next_steps_for_skills_stream": [
+    "Review each recommendation against Skills normalization gate",
+    "Prioritize test-case-generator as it directly improves product throughput",
+    "Ensure each normalized skill has allowed_files and forbidden_files defined",
+    "Run validation_command against Format Factory test suite before registry entry"
+  ]
+}

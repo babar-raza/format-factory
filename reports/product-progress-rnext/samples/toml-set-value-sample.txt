@@ -1,0 +1,20 @@
+# TOML sample output — mainstream-product-deepening-rnext2
+# Demonstrates: set_value, list_sections, merge_toml
+
+## set_value example
+# Input:  {app: {name: format-factory, version: 1.0.0}, server: {host: localhost, port: 8080}, debug: False}
+# Call:   set_value(data, "server.port", 9090)
+# Output: {'app': {'name': 'format-factory', 'version': '1.0.0'}, 'server': {'host': 'localhost', 'port': 9090}, 'debug': False}
+
+## list_sections example  
+# Input:  [app], [server], [database] TOML
+# Output: ['app', 'database', 'server']
+
+## merge_toml example
+# Base:   server.host=localhost, server.port=8080
+# Override: server.port=443, server.tls=true, logging.level=info
+# Result: {'server': {'host': 'localhost', 'port': 443, 'tls': True}, 'logging': {'level': 'info'}}
+
+## roundtrip proof
+# written and reloaded from C:\Users\prora\AppData\Local\Temp\tmpg7_el72w.toml
+# reloaded top_level_keys: ['debug', 'app', 'server']

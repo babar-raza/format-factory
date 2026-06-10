@@ -1,0 +1,87 @@
+{
+  "sprint_reviewed": "FORMAT-FACTORY-SUPERVISOR-R107-RAW-LOG-CAPTURE-STREAM-STATE-ISOLATION-CONTINUATION-GATING-CAMPAIGN-001",
+  "reviewed_by": "FORMAT-FACTORY-SUPERVISOR-R108-STRICT-CLOSURE-CONTRADICTION-REPAIR-PER-STREAM-STATE-AND-EXECUTION-PROOF-MEGA-TRAIN-001",
+  "generated_at": "2026-06-03T20:10:00",
+  "contradictions": [
+    {
+      "id": "C-R107-01",
+      "title": "Raw exit_code 1 vs declared failed=0",
+      "severity": "HIGH",
+      "source_a": ".local/evidences/supervisor-r107/raw-logs/capture-meta.json: exit_code=1",
+      "source_b": "evidence-declaration.yaml: test_results.failed=0, skipped=1",
+      "root_cause": "pytest returns exit_code=1 for the 1 pre-existing skill registry failure. Declaration counts it as skipped=1 rather than failed=1. The raw capture honestly recorded exit_code=1 but declaration misclassified the outcome.",
+      "fix_lane": "B",
+      "fix_description": "generate_from_declaration() must cross-reference capture-meta.json exit_code when available"
+    },
+    {
+      "id": "C-R107-02",
+      "title": "Lane ledger TEST-EXECUTION exit_code=0 vs capture-meta exit_code=1",
+      "severity": "HIGH",
+      "source_a": "lane-execution-ledger.yaml: TEST-EXECUTION.exit_code=0",
+      "source_b": "capture-meta.json: exit_code=1",
+      "root_cause": "generate_from_declaration() computes exit_code from declaration's test_results.failed count (0=pass). It does not consult the actual capture-meta.json which recorded the real pytest exit_code=1.",
+      "fix_lane": "B",
+      "fix_description": "generate_from_declaration() must read capture-meta.json and use its exit_code for TEST-EXECUTION lane"
+    },
+    {
+      "id": "C-R107-03",
+      "title": "Dirty git detector false clean despite M/?? files",
+      "severity": "CRITICAL",
+      "source_a": "detect_dirty_git_state() output: is_dirty=false, recommendation='Git state is clean.'",
+      "source_b": "evidence-declaration.yaml: git_status_final='M tools/supervisor/anti_skip_checker.py, M tools/supervisor/grade_declared_work.py, ... ?? tools/supervisor/capture_raw_logs.py, ...'",
+      "root_cause": "detect_dirty_git_state() only checks for the word 'uncommitted' in git_status_final. The R107 declaration uses git-status-short format (M, ??) not the word 'uncommitted'. Detector always returns false for short-format status strings.",
+      "fix_lane": "C",
+      "fix_description": "detect_dirty_git_state() must also detect M, ??, A, D, AM, R prefixes as dirty indicators"
+    },
+    {
+      "id": "C-R107-04",
+      "title": "Lane ledger entries have null command/exit_code/duration/artifacts for 10 of 11 lanes",
+      "severity": "MEDIUM",
+      "source_a": "lane-execution-ledger.yaml: WAVE-0 through WAVE-9 all have command=null, exit_code=null, duration_seconds=null, artifacts=[]",
+      "source_b": "Evidence shows actual work was performed with real file creation",
+      "root_cause": "generate_from_declaration() maps planned_work_items to lanes but only populates artifacts from evidence_paths/test_references. No execution metadata (command, exit_code, duration) is recorded because these were manual coding lanes, not subprocess executions.",
+      "fix_lane": "E",
+      "fix_description": "Lane ledger validator should flag null execution fields as warnings. For non-subprocess lanes, populate command with descriptive action and note the lane type."
+    },
+    {
+      "id": "C-R107-05",
+      "title": "Prompt quality invalid but continuation=YES",
+      "severity": "CRITICAL",
+      "source_a": "R107 prompt quality: advancement_lane FAIL (supervisor terms not recognized)",
+      "source_b": "R107 continuation-signal.json: autonomous_continue=true",
+      "root_cause": "advancement_lane failure was not in critical_prompt_failures set. Prompt quality check ran before prompt generation (Step 3c vs Step 4).",
+      "fix_lane": "F",
+      "fix_description": "ALREADY FIXED in first R108 sprint. advancement_lane added to critical_prompt_failures, prompt quality moved to Step 4b, NO_PROMPT_QUALITY_FAILURE state added."
+    },
+    {
+      "id": "C-R107-06",
+      "title": "Lane ledger TEST-EXECUTION title inconsistent",
+      "severity": "LOW",
+      "source_a": "lane-execution-ledger.yaml: TEST-EXECUTION.title='Supervisor test suite'",
+      "source_b": "generate_from_declaration() default: title='Test suite execution'",
+      "root_cause": "R107 manually edited the title after generation. Not a code bug but a ledger was hand-modified without validation.",
+      "fix_lane": "E",
+      "fix_description": "Informational only. Ledger validator should not enforce exact title match."
+    },
+    {
+      "id": "C-R107-07",
+      "title": "source-change-diffs.patch says 'no diff available' for untracked files",
+      "severity": "MEDIUM",
+      "source_a": "git diff cannot produce diffs for untracked (??) files",
+      "source_b": "R107 declares 3 new tools as changed_files (capture_raw_logs.py, lane_execution_ledger.py, generate_sample_outputs.py)",
+      "root_cause": "git diff only works on tracked files. Untracked files (marked with ??) have no prior version to diff against. The materialization step correctly identifies them but cannot produce diffs.",
+      "fix_lane": "G",
+      "fix_description": "Changed-file materialization should use 'git diff /dev/null <file>' for untracked files to produce a full-content diff, or explicitly classify as NEW_FILE"
+    }
+  ],
+  "summary": {
+    "total": 7,
+    "critical": 2,
+    "high": 2,
+    "medium": 2,
+    "low": 1,
+    "already_fixed": 1,
+    "needs_code_fix": 4,
+    "needs_process_fix": 2
+  }
+}

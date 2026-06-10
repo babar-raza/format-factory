@@ -1,0 +1,56 @@
+{
+  "review_id": "FRFH-REVIEW-001",
+  "sprint": "fodg-rework-full-hardening",
+  "reviewed_package": "full-hardening-rnext",
+  "reviewed_sprint_id": "FORMAT-FACTORY-FULL-HARDENING-RNEXT-001",
+  "git_head": "e382e5fd8e65bc146c0821602cb8fb1ecfab982c",
+  "review_date": "2026-06-09",
+  "source_files_inspected": [
+    "src/python/fodg/fodg_codec.py",
+    "src/python/fodg/__init__.py"
+  ],
+  "functions_verified": {
+    "create_fodg": true,
+    "probe_fodg": true,
+    "write_fodg": true,
+    "export_to_txt": true,
+    "export_to_csv": true,
+    "export_to_json": true,
+    "get_shapes": true,
+    "get_text_shapes": true,
+    "get_page_by_name": true,
+    "add_page": true,
+    "remove_page": true,
+    "rename_page": true,
+    "get_all_text": true,
+    "count_shapes": true,
+    "get_page_index": true,
+    "duplicate_page": true,
+    "clear_page": true,
+    "swap_pages": true,
+    "page_names": true,
+    "has_page": true,
+    "roundtrip": true
+  },
+  "new_functions_count": 21,
+  "fodg_test_results": {
+    "passed": 187,
+    "failed": 1,
+    "skipped": 0,
+    "known_failures": [
+      {
+        "test": "test_r138_fodg_add_page::TestAddPage::test_type_error_non_dict_page",
+        "reason": "KNOWN_SPEC_CONTRADICTION: R138 vs R152 add_page dual-signature",
+        "resolution": "R152 accepted as authority; string arg supported"
+      }
+    ]
+  },
+  "supervisor_verdict": "ACCEPTED_WITH_WARNINGS",
+  "governance_gaps_identified": [
+    "missing_raw_logs",
+    "missing_lane_ledger",
+    "adoption_compliance_failure"
+  ],
+  "independent_verdict": "VERIFIED_PASS_WITH_1_KNOWN_CONTRADICTION",
+  "package_integrity": "PASS"
+}

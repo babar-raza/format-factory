@@ -1,0 +1,34 @@
+{
+  "taskcard_id": "GNUMERIC-PILOT-R117-001",
+  "format": "Gnumeric",
+  "sprint_id": "FORMAT-FACTORY-HOST-PROOFED-AUTONOMOUS-FORMAT-PILOT-001",
+  "capability_added": ["export_to_csv"],
+  "source_file": "src/python/gnumeric/gnumeric_codec.py",
+  "test_file": "tests/python/gnumeric/test_r117_gnumeric_csv_export.py",
+  "example_file": "examples/python/gnumeric/export_csv_example.py",
+  "tests_added": 13,
+  "tests_passing": 13,
+  "proof": {
+    "csv_headers_verified": true,
+    "csv_values_verified": true,
+    "positional_grid_verified": true,
+    "empty_sheet_verified": true,
+    "custom_delimiter_verified": true,
+    "error_handling_verified": true,
+    "sample_output": "Name,Score\r\nAlice,42\r\n"
+  },
+  "defect_fixed": "Removed 'import csv' (shadowed by src/python/csv/ package); replaced with inline _csv_field() helper",
+  "sample_output": "reports/host-proofed-format-pilot/raw-logs/gnumeric-example-output.log",
+  "capability_delta": "Gnumeric FOSS CSV export added: export_to_csv(source, sheet_index=0, delimiter=',') with positional grid reconstruction from Row/Col attributes.",
+  "ledger_entry_required": true,
+  "ledger_entry_proposed": {
+    "work_item_id": "GNUMERIC-R117-CSV-EXPORT",
+    "product": "Gnumeric Python FOSS",
+    "sprint": "FORMAT-FACTORY-HOST-PROOFED-AUTONOMOUS-FORMAT-PILOT-001",
+    "type": "GOVERNED_PRODUCT_CHANGE",
+    "source_files": ["src/python/gnumeric/gnumeric_codec.py"],
+    "test_files": ["tests/python/gnumeric/test_r117_gnumeric_csv_export.py"],
+    "capabilities_added": ["export_to_csv"],
+    "tests_added": 13
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "sprint_id": "FORMAT-FACTORY-DOTNET-DOGFOOD-ARCHITECTURE-GAP-INVESTIGATION-AND-PLANNING-001",
+  "run_id": "dotnet-dogfood-architecture-gap",
+  "generated_at": "2026-06-05",
+  "description": "Maps each expected output file path to the owning lane. Only the owning lane may create or edit the file.",
+  "file_ownership": {
+    "reports/dotnet-dogfood-architecture-gap/00-preflight.md": "COORD",
+    "reports/dotnet-dogfood-architecture-gap/lane-ownership.md": "COORD",
+    "reports/dotnet-dogfood-architecture-gap/file-ownership-map.json": "COORD",
+    "reports/dotnet-dogfood-architecture-gap/overlap-check.md": "COORD",
+    "reports/dotnet-dogfood-architecture-gap/risk-register.md": "COORD",
+    "reports/dotnet-dogfood-architecture-gap/issue-001-investigation-plan.md": "COORD",
+    "reports/dotnet-dogfood-architecture-gap/scoreboard.md": "COORD",
+    "reports/dotnet-dogfood-architecture-gap/agents/agent-A/dotnet-dogfood-arch-gap/plan.md": "COORD",
+    "reports/dotnet-dogfood-architecture-gap/01-dotnet-writer-audit.md": "A",
+    "reports/dotnet-dogfood-architecture-gap/02-gap-confirmation.json": "A",
+    "reports/dotnet-dogfood-architecture-gap/03-fods-source-map.md": "B",
+    "reports/dotnet-dogfood-architecture-gap/04-fodt-source-map.md": "B",
+    "reports/dotnet-dogfood-architecture-gap/05-existing-test-inventory.md": "C",
+    "reports/dotnet-dogfood-architecture-gap/06-blocked-gap-ledger.json": "D",
+    "reports/dotnet-dogfood-architecture-gap/07-poc-targets-snapshot.md": "E",
+    "reports/dotnet-dogfood-architecture-gap/08-gap-selector-audit.md": "F",
+    "reports/dotnet-dogfood-architecture-gap/09-next-sprint-delta.md": "G",
+    "reports/dotnet-dogfood-architecture-gap/10-skill-handoff-proposals.yaml": "H",
+    "reports/dotnet-dogfood-architecture-gap/11-test-scaffold-report.md": "I",
+    "reports/dotnet-dogfood-architecture-gap/12-adversarial-challenge.md": "K",
+    ".local/evidences/dotnet-dogfood-architecture-gap/evidence-declaration.yaml": "J",
+    "tools/supervisor/select_poc_gaps.py": "F",
+    "reports/supervisor/next-sprint.md": "G",
+    "tests/supervisor/test_validate_dotnet_dogfood_architecture.py": "I"
+  },
+  "total_files": 31,
+  "notes": [
+    "Lane F owns select_poc_gaps.py for AUDIT ONLY — no edits authorized in this sprint.",
+    "Lane G owns next-sprint.md — ONLY lane authorized to propose content changes.",
+    "Lane I owns the test scaffold file — must create or verify it exists.",
+    "All src/** files are READ-ONLY for all lanes in this sprint.",
+    "All registry/** files are READ-ONLY for all lanes in this sprint.",
+    "plans/master-plan.md is READ-ONLY for all lanes in this sprint."
+  ]
+}

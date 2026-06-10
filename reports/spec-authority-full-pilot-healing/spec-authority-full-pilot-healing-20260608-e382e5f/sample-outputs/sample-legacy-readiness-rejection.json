@@ -1,0 +1,29 @@
+{
+  "compliant": false,
+  "errors": [
+    "WI-PILOT-LEGBF-002: exception_classification='legacy_backfill' is a debt/grace classification and cannot be used with item_type='READINESS'. Readiness and release gates require real spec_fact_refs or a readiness-allowed exception."
+  ],
+  "debt_items": [
+    "WI-PILOT-LEGBF-001: authority debt (exception_classification='legacy_backfill' accepted. Authority debt recorded.)"
+  ],
+  "item_results": [
+    {
+      "item_id": "WI-PILOT-LEGBF-001",
+      "item_type": "PRODUCT_SOURCE",
+      "blocking_type": true,
+      "compliant": true,
+      "violation": null,
+      "grade_impact": "debt",
+      "detail": "exception_classification='legacy_backfill' accepted. Authority debt recorded."
+    },
+    {
+      "item_id": "WI-PILOT-LEGBF-002",
+      "item_type": "READINESS",
+      "blocking_type": true,
+      "compliant": false,
+      "violation": "exception_classification='legacy_backfill' is a debt/grace classification and cannot be used with item_type='READINESS'. Readiness and release gates require real spec_fact_refs or a readiness-allowed exception.",
+      "grade_impact": "reject",
+      "detail": "Debt exception 'legacy_backfill' cannot gate readiness/release"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Commercial .NET product. DEC-033 Option B: no .NET FOSS package. -->
+    <!-- Python FOSS track: src/python/pbm/ + src/python/pgm/ + src/python/ppm/ -->
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>FormatFactory.Netpbm</AssemblyName>
+    <RootNamespace>FormatFactory.Netpbm</RootNamespace>
+    <Version>0.1.0-r85-poc</Version>
+    <Authors>format-factory</Authors>
+    <Description>FormatFactory.Netpbm: .NET commercial parser/writer for Netpbm image family (PBM/PGM/PPM). R85 first slice. Gate 11 NOT_STARTED; not release-ready.</Description>
+    <PackageId>FormatFactory.Netpbm</PackageId>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Gate 11 Note:
+       Gate 11: NOT_STARTED
+       R85 first slice: parse + edit + save + export (PBM→PGM dogfood)
+       commercial_product_ready: false
+       DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only.
+  -->
+
+</Project>

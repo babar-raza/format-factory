@@ -1,0 +1,115 @@
+diff --git a/src/python/abw/__init__.py b/src/python/abw/__init__.py
+index 80af5ec..6b7902b 100644
+--- a/src/python/abw/__init__.py
++++ b/src/python/abw/__init__.py
+@@ -15,6 +15,9 @@ from .abw_codec import (
+     get_section_count,
+     get_paragraph_count,
+     extract_text,
++    create_abw,
++    write_abw,
++    probe_abw,
+ )
+ 
+ __all__ = [
+@@ -24,6 +27,9 @@ __all__ = [
+     "get_section_count",
+     "get_paragraph_count",
+     "extract_text",
++    "create_abw",
++    "write_abw",
++    "probe_abw",
+ ]
+ 
+ __version__ = "0.1.0.dev0"
+diff --git a/src/python/abw/abw_codec.py b/src/python/abw/abw_codec.py
+index 7bf7576..a43e36c 100644
+--- a/src/python/abw/abw_codec.py
++++ b/src/python/abw/abw_codec.py
+@@ -74,6 +74,86 @@ def extract_text(source: str | bytes | Path) -> list[str]:
+     return [p for p in model.get("paragraphs", []) if p]
+ 
+ 
++def create_abw(paragraphs: list[str]) -> dict[str, Any]:
++    """Create a minimal ABW document model from a list of paragraph strings.
++
++    Args:
++        paragraphs: List of paragraph text strings (may be empty).
++
++    Returns:
++        Document model dict compatible with write_abw().
++    """
++    return {
++        "is_abw": True,
++        "section_count": 1,
++        "paragraph_count": len(paragraphs),
++        "paragraphs": list(paragraphs),
++    }
++
++
++def write_abw(model: dict[str, Any], dest: str | Path) -> None:
++    """Serialize an ABW document model to an .abw file.
++
++    Writes a well-formed AWML 1.0 XML file.  The DOCTYPE declaration is
++    intentionally omitted (the DTD server at abisource.com is unreachable).
++
++    Args:
++        model: Document model dict as returned by load() or create_abw().
++        dest:  Destination file path.
++
++    Raises:
++        AbwError: If model is invalid or dest cannot be written.
++    """
++    if not isinstance(model, dict) or not model.get("is_abw"):
++        raise AbwError("model must be a valid ABW document dict (is_abw=True)")
++
++    dest = Path(dest)
++    paragraphs = model.get("paragraphs", [])
++
++    root = ET.Element(
++        ABW_ROOT_TAG,
++        attrib={
++            "template": "false",
++            "styles": "unlocked",
++            "version": "1.0",
++            "fileformat": "1.0",
++        },
++    )
++    section = ET.SubElement(root, "section")
++    for text in paragraphs:
++        p = ET.SubElement(section, "p")
++        p.text = str(text)
++
++    xml_str = ET.tostring(root, encoding="unicode", xml_declaration=False)
++    content = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_str + "\n"
++
++    try:
++        dest.write_text(content, encoding="utf-8")
++    except OSError as exc:
++        raise AbwError(f"Cannot write {dest}: {exc}") from exc
++
++
++def probe_abw(source) -> bool:
++    """Probe whether source is a valid ABW (AbiWord) document.
++
++    Checks for the abiword root element without full parsing.
++    Does not raise on malformed input - returns False instead.
++
++    Args:
++        source: Path to a file, bytes, or XML string to probe.
++
++    Returns:
++        True if source appears to be an ABW document, False otherwise.
++    """
++    try:
++        raw = _read_source(source)
++        snippet = raw[:4096].decode("utf-8", errors="replace")
++        snippet_stripped = _strip_doctype(snippet.encode())
++        # ABW files start with optional XML declaration, then <abiword ...>
++        return "<abiword" in snippet_stripped
++    except Exception:
++        return False
++
+ # ---------------------------------------------------------------------------
+ # Internal helpers
+ # ---------------------------------------------------------------------------

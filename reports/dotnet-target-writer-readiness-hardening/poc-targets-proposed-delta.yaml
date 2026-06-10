@@ -1,0 +1,65 @@
+---
+# POC Targets Proposed Delta — All Four Dogfood Gaps
+# Sprint: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
+# Hardening: FORMAT-FACTORY-DOTNET-TARGET-WRITER-READINESS-HARDENING-AND-POC-RECONCILIATION-001
+# Generated: 2026-06-05
+#
+# NOTE: This is a PROPOSAL only. No direct mutation of poc-targets.yaml occurred.
+# Human review required before applying. Gate 11 approval required for commercial_product_ready=true.
+
+sprint_id: FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001
+proposed_at: "2026-06-05T00:00:00Z"
+requires_human_approval: true
+gate_required: Gate 11 (commercial_product_ready)
+
+proposed_changes:
+  - gap_id: commercial-net-fods-dogfood-status-fods-to-csv-dotnet
+    product: fods
+    stream: commercial_net
+    field: dogfood_status
+    from: GAP_DOGFOOD_EXTERNAL
+    to: IMPLEMENTED
+    writer_library: FormatFactory.Csv
+    evidence: reports/dotnet-target-writer-readiness-hardening/capability-delta-proposals/fods-csv-dotnet.yaml
+    readiness_status: READY
+    accepted_for_poc: true
+
+  - gap_id: commercial-net-fods-dogfood-status-fods-to-html-dotnet
+    product: fods
+    stream: commercial_net
+    field: dogfood_status
+    from: GAP_DOGFOOD_EXTERNAL
+    to: IMPLEMENTED
+    writer_library: FormatFactory.Html
+    evidence: reports/dotnet-target-writer-readiness-hardening/capability-delta-proposals/fods-html-dotnet.yaml
+    readiness_status: READY
+    accepted_for_poc: true
+
+  - gap_id: commercial-net-fodt-dogfood-status-fodt-to-txt-dotnet
+    product: fodt
+    stream: commercial_net
+    field: dogfood_status
+    from: GAP_DOGFOOD_EXTERNAL
+    to: IMPLEMENTED
+    writer_library: FormatFactory.Txt
+    evidence: reports/dotnet-target-writer-readiness-hardening/capability-delta-proposals/fodt-txt-dotnet.yaml
+    readiness_status: READY
+    accepted_for_poc: true
+
+  - gap_id: commercial-net-fodt-dogfood-status-fodt-to-markdown-dotnet
+    product: fodt
+    stream: commercial_net
+    field: dogfood_status
+    from: GAP_DOGFOOD_EXTERNAL
+    to: IMPLEMENTED
+    writer_library: FormatFactory.Markdown
+    evidence: reports/dotnet-target-writer-readiness-hardening/capability-delta-proposals/fodt-markdown-dotnet.yaml
+    readiness_status: READY
+    accepted_for_poc: true
+
+summary:
+  total_gaps_proposed: 4
+  gaps_proposed_implemented: 4
+  gaps_remaining_blocked: 0
+  new_writer_libraries: 4
+  all_five_policy_conditions_met: true

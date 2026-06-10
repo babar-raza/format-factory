@@ -1,0 +1,34 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 24 items
+
+tests/supervisor/test_human_gate_policy.py::TestGate11Policy::test_gate11_readiness_packet_preparation_is_agent_owned PASSED [  4%]
+tests/supervisor/test_human_gate_policy.py::TestGate11Policy::test_gate11_approval_execution_is_human_only_when_poc_ready PASSED [  8%]
+tests/supervisor/test_human_gate_policy.py::TestGate11Policy::test_gate11_does_not_block_implementation_when_poc_not_ready PASSED [ 12%]
+tests/supervisor/test_human_gate_policy.py::TestDifPolicy::test_dif_reconsideration_proposal_is_agent_owned PASSED [ 16%]
+tests/supervisor/test_human_gate_policy.py::TestDifPolicy::test_dif_proposed_delta_does_not_stop_train PASSED [ 20%]
+tests/supervisor/test_human_gate_policy.py::TestPocTargetsPolicy::test_poc_targets_proposed_delta_is_agent_owned PASSED [ 25%]
+tests/supervisor/test_human_gate_policy.py::TestPocTargetsPolicy::test_poc_targets_direct_mutation_via_business_decision_gated PASSED [ 29%]
+tests/supervisor/test_human_gate_policy.py::TestPocTargetsPolicy::test_poc_targets_with_policy_inference_is_agent_recommendation PASSED [ 33%]
+tests/supervisor/test_human_gate_policy.py::TestMode5Policy::test_mode5_pending_does_not_block_local_coordinator PASSED [ 37%]
+tests/supervisor/test_human_gate_policy.py::TestMode5Policy::test_autonomous_sprint_loop_approval_does_not_block PASSED [ 41%]
+tests/supervisor/test_human_gate_policy.py::TestMode5Policy::test_mode5_in_next_sprint_label_reclassified PASSED [ 45%]
+tests/supervisor/test_human_gate_policy.py::TestGenericHumanApproval::test_human_approval_required_string_alone_does_not_stop PASSED [ 50%]
+tests/supervisor/test_human_gate_policy.py::TestGenericHumanApproval::test_approval_blocked_string_is_not_sufficient_to_stop PASSED [ 54%]
+tests/supervisor/test_human_gate_policy.py::TestGenericHumanApproval::test_blocked_string_is_not_sufficient_to_stop PASSED [ 58%]
+tests/supervisor/test_human_gate_policy.py::TestGenericHumanApproval::test_human_required_must_be_reclassified PASSED [ 62%]
+tests/supervisor/test_human_gate_policy.py::TestGenericHumanApproval::test_babar_required_without_poc_does_not_stop_implementation PASSED [ 66%]
+tests/supervisor/test_human_gate_policy.py::TestCommitPushSeparation::test_prepare_commit_summary_is_agent_owned PASSED [ 70%]
+tests/supervisor/test_human_gate_policy.py::TestCommitPushSeparation::test_execute_commit_is_external_gate PASSED [ 75%]
+tests/supervisor/test_human_gate_policy.py::TestDogfoodPolicy::test_target_writer_missing_routes_to_implementation PASSED [ 79%]
+tests/supervisor/test_human_gate_policy.py::TestDogfoodPolicy::test_dogfood_gap_pending_is_agent_owned PASSED [ 83%]
+tests/supervisor/test_human_gate_policy.py::TestDogfoodPolicy::test_dogfood_task_labeled_approval_blocked_is_reclassified PASSED [ 87%]
+tests/supervisor/test_human_gate_policy.py::TestReleasePacketSeparation::test_prepare_release_packet_is_agent_owned PASSED [ 91%]
+tests/supervisor/test_human_gate_policy.py::TestReleasePacketSeparation::test_execute_publication_is_external_gate PASSED [ 95%]
+tests/supervisor/test_human_gate_policy.py::TestReleasePacketSeparation::test_release_approval_execution_is_human_only PASSED [100%]
+
+============================= 24 passed in 1.32s ==============================

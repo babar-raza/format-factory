@@ -1,0 +1,49 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.2, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
+configfile: pytest.ini
+plugins: anyio-4.13.0
+collecting ... collected 39 items
+
+tests/spec_authority/test_real_pilot_r2.py::test_r2_zst_vault_sha256_matches_real_rfc PASSED [  2%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_netpbm_three_components_have_unique_shas PASSED [  5%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_fods_fetch_was_real_not_fixture PASSED [  7%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_dif_stays_empirical_only PASSED [ 10%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_zst_classified_accepted_spec PASSED [ 12%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_netpbm_classified_accepted_with_caveat PASSED [ 15%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_zst_requirements_extracted_from_real_rfc PASSED [ 17%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_total_requirements_substantial PASSED [ 20%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_dif_requirements_do_not_exceed_fixture_count PASSED [ 23%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_all_four_context_packs_built PASSED [ 25%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_context_pack_manifest_sha256_non_empty PASSED [ 28%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_fods_context_pack_present PASSED [ 30%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_context_packs_deterministic_zst PASSED [ 33%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_context_packs_deterministic_netpbm PASSED [ 35%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_context_packs_deterministic_fods PASSED [ 38%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_all_sources_fresh PASSED [ 41%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_synthetic_stale_detected_all_sources PASSED [ 43%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_sample_output_file_exists PASSED [ 46%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_sample_output_has_real_manifest_sha PASSED [ 48%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_registered_citation_valid PASSED [ 51%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_unregistered_citation_rejected PASSED [ 53%]
+tests/spec_authority/test_real_pilot_r2.py::test_r2_empirical_source_stays_empirical PASSED [ 56%]
+tests/spec_authority/test_real_pilots.py::test_source_registry_requires_source_id PASSED [ 58%]
+tests/spec_authority/test_real_pilots.py::test_citation_requires_registered_source PASSED [ 61%]
+tests/spec_authority/test_real_pilots.py::test_citation_rejects_empty_source_id PASSED [ 64%]
+tests/spec_authority/test_real_pilots.py::test_vault_ingest_produces_sha256 PASSED [ 66%]
+tests/spec_authority/test_real_pilots.py::test_vault_not_re_ingested_when_sha_matches PASSED [ 69%]
+tests/spec_authority/test_real_pilots.py::test_normalized_output_has_source_ref PASSED [ 71%]
+tests/spec_authority/test_real_pilots.py::test_normalized_artifact_has_sections PASSED [ 74%]
+tests/spec_authority/test_real_pilots.py::test_requirements_have_source_ref_and_section_ref PASSED [ 76%]
+tests/spec_authority/test_real_pilots.py::test_dif_requirements_not_overclaimed PASSED [ 79%]
+tests/spec_authority/test_real_pilots.py::test_context_pack_has_manifest_sha256 PASSED [ 82%]
+tests/spec_authority/test_real_pilots.py::test_context_pack_deterministic PASSED [ 84%]
+tests/spec_authority/test_real_pilots.py::test_stale_source_triggers_stale_status PASSED [ 87%]
+tests/spec_authority/test_real_pilots.py::test_empirical_source_cannot_become_accepted_spec_via_memory PASSED [ 89%]
+tests/spec_authority/test_real_pilots.py::test_governance_rejects_unregistered_citation PASSED [ 92%]
+tests/spec_authority/test_real_pilots.py::test_full_pipeline_zst PASSED  [ 94%]
+tests/spec_authority/test_real_pilots.py::test_full_pipeline_netpbm PASSED [ 97%]
+tests/spec_authority/test_real_pilots.py::test_full_pipeline_dif PASSED  [100%]
+
+============================= 39 passed in 1.79s ==============================

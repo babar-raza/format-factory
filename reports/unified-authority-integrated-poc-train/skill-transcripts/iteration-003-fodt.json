@@ -1,0 +1,16 @@
+{
+  "transcript_id": "transcript:iter003-fodt-r116",
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-CONTROL-HARDENED-UNIFIED-POC-TRAIN-001",
+  "iteration": 3,
+  "lane_id": "lane-013-fodt-r116",
+  "format": "fodt",
+  "track": "commercial_net",
+  "capability_added": ["GetWordFrequency"],
+  "source_files_modified": ["src/net/fodt/FodtDocument.cs"],
+  "test_files_added": ["tests/net/fodt/FodtR116WordFrequencyTests.cs"],
+  "tests_run": 8,
+  "tests_passed": 8,
+  "tests_failed": 0,
+  "skill_verdict": "LANE_COMPLETE",
+  "notes": "GetWordFrequency(minLength) returns case-insensitive word count dict from all paragraph text. Punctuation stripped. Headings included. 8 tests pass."
+}

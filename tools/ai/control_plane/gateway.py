@@ -82,6 +82,7 @@ def gateway_chat(
             messages=messages,
             api_key=api_key,
             api_base=config.endpoint,
+            temperature=0,
         )
         content = response.choices[0].message.content or ""
         usage = getattr(response, "usage", None)

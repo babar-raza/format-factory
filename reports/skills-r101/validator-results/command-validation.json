@@ -1,0 +1,797 @@
+{
+  "valid": false,
+  "errors": [
+    "[add-dogfood-export.md] Missing section: Allowed paths section",
+    "[add-dogfood-export.md] Missing section: Forbidden paths section",
+    "[add-dotnet-api.md] Missing section: Allowed paths section",
+    "[add-dotnet-api.md] Missing section: Forbidden paths section",
+    "[add-installed-package-example.md] Missing section: Evidence or output format section",
+    "[add-python-api.md] Missing section: Allowed paths section",
+    "[add-python-api.md] Missing section: Forbidden paths section",
+    "[add-roundtrip-test.md] Missing section: Evidence or output format section",
+    "[evidence-review-next-prompt.md] Missing section: Required inputs or usage section",
+    "[evidence-review-next-prompt.md] Missing section: Allowed paths section",
+    "[evidence-review-next-prompt.md] Missing section: Forbidden paths section",
+    "[evidence-review-next-prompt.md] Missing section: Stop conditions or constraints",
+    "[execution-handoff.md] Missing section: Required inputs or usage section",
+    "[execution-handoff.md] Missing section: Allowed paths section",
+    "[execution-handoff.md] Missing section: Forbidden paths section",
+    "[execution-handoff.md] Missing section: Stop conditions or constraints",
+    "[export-plan-context.md] Missing section: Required inputs or usage section",
+    "[export-plan-context.md] Missing section: Allowed paths section",
+    "[export-plan-context.md] Missing section: Forbidden paths section",
+    "[export-plan-context.md] Missing section: Stop conditions or constraints",
+    "[generate-execution-handoff.md] Missing section: Evidence or output format section",
+    "[memory-sprint.md] Missing section: Required inputs or usage section",
+    "[memory-sprint.md] Missing section: Allowed paths section",
+    "[memory-sprint.md] Missing section: Forbidden paths section",
+    "[memory-sprint.md] Missing section: Stop conditions or constraints",
+    "[plan-hardening.md] Missing section: Required inputs or usage section",
+    "[plan-hardening.md] Missing section: Allowed paths section",
+    "[plan-hardening.md] Missing section: Forbidden paths section",
+    "[plan-hardening.md] Missing section: Stop conditions or constraints",
+    "[promote-gap-to-taskcard.md] Missing section: Evidence or output format section",
+    "[update-capability-matrix.md] Missing section: Allowed paths section",
+    "[update-capability-matrix.md] Missing section: Forbidden paths section"
+  ],
+  "warnings": [
+    "[add-dogfood-export.md] Missing section: Rollback instructions",
+    "[add-dogfood-export.md] Missing section: Transcript output requirement (keyword mention)",
+    "[add-dogfood-export.md] Missing section: Sample invocation or usage block",
+    "[add-dotnet-api.md] Missing section: Rollback instructions",
+    "[add-dotnet-api.md] Missing section: Transcript output requirement (keyword mention)",
+    "[add-dotnet-api.md] Missing section: Sample invocation or usage block",
+    "[add-dotnet-object-model-feature.md] Missing section: Rollback instructions",
+    "[add-dotnet-object-model-feature.md] Missing section: Transcript output requirement (keyword mention)",
+    "[add-dotnet-object-model-feature.md] Missing section: Sample invocation or usage block",
+    "[add-dotnet-object-model-feature.md] Missing section: Changelog section",
+    "[add-installed-package-example.md] Missing section: Validation section",
+    "[add-installed-package-example.md] Missing section: Rollback instructions",
+    "[add-installed-package-example.md] Missing section: Transcript output requirement (keyword mention)",
+    "[add-installed-package-example.md] Missing section: Sample invocation or usage block",
+    "[add-installed-package-example.md] Missing section: Changelog section",
+    "[add-python-api.md] Missing section: Rollback instructions",
+    "[add-python-api.md] Missing section: Transcript output requirement (keyword mention)",
+    "[add-python-api.md] Missing section: Sample invocation or usage block",
+    "[add-python-object-model-feature.md] Missing section: Validation section",
+    "[add-python-object-model-feature.md] Missing section: Transcript output requirement (keyword mention)",
+    "[add-roundtrip-test.md] Missing section: Validation section",
+    "[add-roundtrip-test.md] Missing section: Rollback instructions",
+    "[add-roundtrip-test.md] Missing section: Transcript output requirement (keyword mention)",
+    "[add-roundtrip-test.md] Missing section: Sample invocation or usage block",
+    "[add-roundtrip-test.md] Missing section: Changelog section",
+    "[add-same-format-writer-feature.md] Missing section: Validation section",
+    "[add-same-format-writer-feature.md] Missing section: Transcript output requirement (keyword mention)",
+    "[evidence-review-next-prompt.md] Missing section: Rollback instructions",
+    "[evidence-review-next-prompt.md] Missing section: Transcript output requirement (keyword mention)",
+    "[evidence-review-next-prompt.md] Missing section: Sample invocation or usage block",
+    "[execution-handoff.md] Missing section: Rollback instructions",
+    "[execution-handoff.md] Missing section: Transcript output requirement (keyword mention)",
+    "[execution-handoff.md] Missing section: Sample invocation or usage block",
+    "[export-plan-context.md] Missing section: Validation section",
+    "[export-plan-context.md] Missing section: Rollback instructions",
+    "[export-plan-context.md] Missing section: Transcript output requirement (keyword mention)",
+    "[generate-execution-handoff.md] Missing section: Validation section",
+    "[generate-execution-handoff.md] Missing section: Transcript output requirement (keyword mention)",
+    "[memory-sprint.md] Missing section: Rollback instructions",
+    "[memory-sprint.md] Missing section: Transcript output requirement (keyword mention)",
+    "[memory-sprint.md] Missing section: Sample invocation or usage block",
+    "[package-install-proof.md] Missing section: Validation section",
+    "[package-install-proof.md] Missing section: Transcript output requirement (keyword mention)",
+    "[plan-hardening.md] Missing section: Rollback instructions",
+    "[plan-hardening.md] Missing section: Transcript output requirement (keyword mention)",
+    "[plan-hardening.md] Missing section: Sample invocation or usage block",
+    "[promote-gap-to-taskcard.md] Missing section: Validation section",
+    "[promote-gap-to-taskcard.md] Missing section: Transcript output requirement (keyword mention)",
+    "[update-capability-matrix.md] Missing section: Rollback instructions",
+    "[update-capability-matrix.md] Missing section: Transcript output requirement (keyword mention)",
+    "[update-capability-matrix.md] Missing section: Sample invocation or usage block",
+    "[update-capability-matrix.md] Command file contains gate status claims (should be in registry)",
+    "[verify-dogfood-path.md] Missing section: Validation section",
+    "[verify-dogfood-path.md] Missing section: Transcript output requirement (keyword mention)",
+    "Orphan command (not in registry): evidence-review-next-prompt.md",
+    "Orphan command (not in registry): execution-handoff.md",
+    "Orphan command (not in registry): export-plan-context.md",
+    "Orphan command (not in registry): memory-sprint.md",
+    "Orphan command (not in registry): plan-hardening.md",
+    "Registry skill 'materialize-declaration-review' references missing command (acceptable for draft): .claude/commands/materialize-declaration-review.md",
+    "Registry skill 'record-lane-execution' references missing command (acceptable for draft): .claude/commands/record-lane-execution.md",
+    "Registry skill 'build-context-pack' references missing command (acceptable for draft): .claude/commands/build-context-pack.md",
+    "Registry skill 'check-mcp-status' references missing command (acceptable for draft): .claude/commands/check-mcp-status.md",
+    "Registry skill 'select-poc-gap' references missing command (acceptable for draft): .claude/commands/select-poc-gap.md",
+    "Registry skill 'validate-product-code-ledger' references missing command (acceptable for draft): .claude/commands/validate-product-code-ledger.md",
+    "Registry skill 'validate-skill-transcript' references missing command (acceptable for draft): .claude/commands/validate-skill-transcript.md"
+  ],
+  "commands": {
+    "add-dogfood-export.md": {
+      "file": "add-dogfood-export.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section"
+      ],
+      "warnings": [
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "stop_conditions",
+        "evidence_output",
+        "validation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "allowed_paths",
+        "forbidden_paths",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation"
+      ],
+      "section_count": 7,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.0",
+        "last-updated": "2026-06-02",
+        "phase-available": "3+",
+        "gate-required": "Explicit product implementation authorization for both named formats",
+        "generated_by": "codex",
+        "visibility": "generated"
+      }
+    },
+    "add-dotnet-api.md": {
+      "file": "add-dotnet-api.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section"
+      ],
+      "warnings": [
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "stop_conditions",
+        "evidence_output",
+        "validation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "allowed_paths",
+        "forbidden_paths",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation"
+      ],
+      "section_count": 7,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.0",
+        "last-updated": "2026-06-02",
+        "phase-available": "3+",
+        "gate-required": "Explicit product implementation authorization for the named format",
+        "generated_by": "codex",
+        "visibility": "generated"
+      }
+    },
+    "add-dotnet-object-model-feature.md": {
+      "file": "add-dotnet-object-model-feature.md",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block",
+        "Missing section: Changelog section"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "evidence_output",
+        "validation"
+      ],
+      "sections_missing": [
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation",
+        "changelog"
+      ],
+      "section_count": 8,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.0",
+        "last-updated": "2026-06-02",
+        "phase-available": "3+",
+        "gate-required": "Explicit product implementation authorization for the named format",
+        "generated_by": "r92-worker"
+      }
+    },
+    "add-installed-package-example.md": {
+      "file": "add-installed-package-example.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Evidence or output format section"
+      ],
+      "warnings": [
+        "Missing section: Validation section",
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block",
+        "Missing section: Changelog section"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions"
+      ],
+      "sections_missing": [
+        "evidence_output",
+        "validation",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation",
+        "changelog"
+      ],
+      "section_count": 6,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.0",
+        "last-updated": "2026-06-02",
+        "phase-available": "3+",
+        "generated_by": "r92-worker"
+      }
+    },
+    "add-python-api.md": {
+      "file": "add-python-api.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section"
+      ],
+      "warnings": [
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "stop_conditions",
+        "evidence_output",
+        "validation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "allowed_paths",
+        "forbidden_paths",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation"
+      ],
+      "section_count": 7,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.0",
+        "last-updated": "2026-06-02",
+        "phase-available": "3+",
+        "gate-required": "Explicit product implementation authorization for the named format",
+        "generated_by": "codex",
+        "visibility": "generated"
+      }
+    },
+    "add-python-object-model-feature.md": {
+      "file": "add-python-object-model-feature.md",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Missing section: Validation section",
+        "Missing section: Transcript output requirement (keyword mention)"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "evidence_output",
+        "rollback",
+        "sample_invocation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "validation",
+        "transcript_requirement"
+      ],
+      "section_count": 10,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.1",
+        "last-updated": "2026-06-03",
+        "phase-available": "3+",
+        "gate-required": "null",
+        "generated_by": "claude",
+        "visibility": "generated"
+      }
+    },
+    "add-roundtrip-test.md": {
+      "file": "add-roundtrip-test.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Evidence or output format section"
+      ],
+      "warnings": [
+        "Missing section: Validation section",
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block",
+        "Missing section: Changelog section"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions"
+      ],
+      "sections_missing": [
+        "evidence_output",
+        "validation",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation",
+        "changelog"
+      ],
+      "section_count": 6,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.0",
+        "last-updated": "2026-06-02",
+        "phase-available": "3+",
+        "generated_by": "r92-worker"
+      }
+    },
+    "add-same-format-writer-feature.md": {
+      "file": "add-same-format-writer-feature.md",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Missing section: Validation section",
+        "Missing section: Transcript output requirement (keyword mention)"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "evidence_output",
+        "rollback",
+        "sample_invocation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "validation",
+        "transcript_requirement"
+      ],
+      "section_count": 10,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.1",
+        "last-updated": "2026-06-03",
+        "phase-available": "3+",
+        "gate-required": "null",
+        "generated_by": "claude",
+        "visibility": "generated"
+      }
+    },
+    "evidence-review-next-prompt.md": {
+      "file": "evidence-review-next-prompt.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Required inputs or usage section",
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section",
+        "Missing section: Stop conditions or constraints"
+      ],
+      "warnings": [
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block"
+      ],
+      "sections_found": [
+        "purpose",
+        "steps",
+        "evidence_output",
+        "validation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "inputs",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation"
+      ],
+      "section_count": 5,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.1",
+        "last-updated": "2026-05-17",
+        "phase-available": "all",
+        "gate-required": "null",
+        "created-by": "memory-planning-methodology-and-agent-handoff sprint"
+      }
+    },
+    "execution-handoff.md": {
+      "file": "execution-handoff.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Required inputs or usage section",
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section",
+        "Missing section: Stop conditions or constraints"
+      ],
+      "warnings": [
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block"
+      ],
+      "sections_found": [
+        "purpose",
+        "steps",
+        "evidence_output",
+        "validation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "inputs",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation"
+      ],
+      "section_count": 5,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.0",
+        "last-updated": "2026-05-08",
+        "phase-available": "all",
+        "gate-required": "null",
+        "created-by": "memory-planning-methodology-and-agent-handoff sprint"
+      }
+    },
+    "export-plan-context.md": {
+      "file": "export-plan-context.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Required inputs or usage section",
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section",
+        "Missing section: Stop conditions or constraints"
+      ],
+      "warnings": [
+        "Missing section: Validation section",
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)"
+      ],
+      "sections_found": [
+        "purpose",
+        "steps",
+        "evidence_output",
+        "sample_invocation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "inputs",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "validation",
+        "rollback",
+        "transcript_requirement"
+      ],
+      "section_count": 5,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.2",
+        "last-updated": "2026-05-17",
+        "phase-available": "all",
+        "gate-required": "null",
+        "created-by": "R12 sprint session"
+      }
+    },
+    "generate-execution-handoff.md": {
+      "file": "generate-execution-handoff.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Evidence or output format section"
+      ],
+      "warnings": [
+        "Missing section: Validation section",
+        "Missing section: Transcript output requirement (keyword mention)"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "rollback",
+        "sample_invocation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "evidence_output",
+        "validation",
+        "transcript_requirement"
+      ],
+      "section_count": 9,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.1",
+        "last-updated": "2026-06-03",
+        "phase-available": "3+",
+        "gate-required": "null",
+        "generated_by": "claude",
+        "visibility": "generated"
+      }
+    },
+    "memory-sprint.md": {
+      "file": "memory-sprint.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Required inputs or usage section",
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section",
+        "Missing section: Stop conditions or constraints"
+      ],
+      "warnings": [
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block"
+      ],
+      "sections_found": [
+        "purpose",
+        "steps",
+        "evidence_output",
+        "validation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "inputs",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation"
+      ],
+      "section_count": 5,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.1",
+        "last-updated": "2026-05-17",
+        "phase-available": "all",
+        "gate-required": "null",
+        "created-by": "memory-planning-methodology-and-agent-handoff sprint"
+      }
+    },
+    "package-install-proof.md": {
+      "file": "package-install-proof.md",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Missing section: Validation section",
+        "Missing section: Transcript output requirement (keyword mention)"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "evidence_output",
+        "rollback",
+        "sample_invocation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "validation",
+        "transcript_requirement"
+      ],
+      "section_count": 10,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.1",
+        "last-updated": "2026-06-03",
+        "phase-available": "3+",
+        "gate-required": "null",
+        "generated_by": "claude",
+        "visibility": "generated"
+      }
+    },
+    "plan-hardening.md": {
+      "file": "plan-hardening.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Required inputs or usage section",
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section",
+        "Missing section: Stop conditions or constraints"
+      ],
+      "warnings": [
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block"
+      ],
+      "sections_found": [
+        "purpose",
+        "steps",
+        "evidence_output",
+        "validation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "inputs",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation"
+      ],
+      "section_count": 5,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.0",
+        "last-updated": "2026-05-08",
+        "phase-available": "all",
+        "gate-required": "null",
+        "created-by": "memory-planning-methodology-and-agent-handoff sprint"
+      }
+    },
+    "promote-gap-to-taskcard.md": {
+      "file": "promote-gap-to-taskcard.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Evidence or output format section"
+      ],
+      "warnings": [
+        "Missing section: Validation section",
+        "Missing section: Transcript output requirement (keyword mention)"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "rollback",
+        "sample_invocation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "evidence_output",
+        "validation",
+        "transcript_requirement"
+      ],
+      "section_count": 9,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.1",
+        "last-updated": "2026-06-03",
+        "phase-available": "3+",
+        "gate-required": "null",
+        "generated_by": "claude",
+        "visibility": "generated"
+      }
+    },
+    "update-capability-matrix.md": {
+      "file": "update-capability-matrix.md",
+      "valid": false,
+      "errors": [
+        "Missing section: Allowed paths section",
+        "Missing section: Forbidden paths section"
+      ],
+      "warnings": [
+        "Missing section: Rollback instructions",
+        "Missing section: Transcript output requirement (keyword mention)",
+        "Missing section: Sample invocation or usage block",
+        "Command file contains gate status claims (should be in registry)"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "stop_conditions",
+        "evidence_output",
+        "validation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "allowed_paths",
+        "forbidden_paths",
+        "rollback",
+        "transcript_requirement",
+        "sample_invocation"
+      ],
+      "section_count": 7,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.0",
+        "last-updated": "2026-06-02",
+        "phase-available": "3+",
+        "gate-required": "null",
+        "generated_by": "codex",
+        "visibility": "generated"
+      }
+    },
+    "verify-dogfood-path.md": {
+      "file": "verify-dogfood-path.md",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "Missing section: Validation section",
+        "Missing section: Transcript output requirement (keyword mention)"
+      ],
+      "sections_found": [
+        "purpose",
+        "inputs",
+        "steps",
+        "allowed_paths",
+        "forbidden_paths",
+        "stop_conditions",
+        "evidence_output",
+        "rollback",
+        "sample_invocation",
+        "changelog"
+      ],
+      "sections_missing": [
+        "validation",
+        "transcript_requirement"
+      ],
+      "section_count": 10,
+      "section_total": 12,
+      "frontmatter": {
+        "version": "1.1",
+        "last-updated": "2026-06-03",
+        "phase-available": "3+",
+        "gate-required": "null",
+        "generated_by": "claude",
+        "visibility": "generated"
+      }
+    }
+  },
+  "summary": {
+    "total_commands": 18,
+    "passing": 5,
+    "failing": 13,
+    "fully_complete": 0,
+    "total_sections_possible": 12
+  }
+}

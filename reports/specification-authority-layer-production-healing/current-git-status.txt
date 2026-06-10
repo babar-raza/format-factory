@@ -1,0 +1,361 @@
+ M .claude/commands/add-dogfood-export.md
+ M .claude/commands/add-dotnet-api.md
+ M .claude/commands/add-dotnet-object-model-feature.md
+ M .claude/commands/add-installed-package-example.md
+ M .claude/commands/add-python-api.md
+ M .claude/commands/add-python-object-model-feature.md
+ M .claude/commands/add-roundtrip-test.md
+ M .claude/commands/add-same-format-writer-feature.md
+ M .claude/commands/evidence-review-next-prompt.md
+ M .claude/commands/execution-handoff.md
+ M .claude/commands/export-plan-context.md
+ M .claude/commands/generate-execution-handoff.md
+ M .claude/commands/memory-sprint.md
+ M .claude/commands/package-install-proof.md
+ M .claude/commands/plan-hardening.md
+ M .claude/commands/promote-gap-to-taskcard.md
+ M .claude/commands/update-capability-matrix.md
+ M .claude/commands/verify-dogfood-path.md
+ M .gitignore
+ M .supervisor/context-pack.yaml
+ M .supervisor/policies.yaml
+ M .supervisor/project-memory.md
+ M .supervisor/prompts/mega-train-template.md
+ M .supervisor/schemas/evidence-declaration.schema.json
+ M .supervisor/skill-registry.yaml
+ M plans/master-plan.md
+ M product-capability-matrix/poc-targets.yaml
+ M reports/r90/product-code-change-ledger.json
+ M reports/supervisor/approval-gates.md
+ M reports/supervisor/context-pack.md
+ M reports/supervisor/contradictions.json
+ M reports/supervisor/contradictions.md
+ M reports/supervisor/discovery-summary.md
+ M reports/supervisor/evidence-review.json
+ M reports/supervisor/evidence-review.md
+ M reports/supervisor/latest-cycle-summary.md
+ M reports/supervisor/latest-next-worker-prompt.md
+ M reports/supervisor/latest-review.md
+ M reports/supervisor/materialized-evidence-review.md
+ M reports/supervisor/mcp-status.json
+ M reports/supervisor/mcp-status.md
+ M reports/supervisor/memory-sync-report.md
+ M reports/supervisor/next-ruflo-lanes.json
+ M reports/supervisor/next-sprint-taskmaster.json
+ M reports/supervisor/next-sprint.md
+ M reports/supervisor/product-gap-selection.md
+ M reports/supervisor/session-resume.md
+ M reports/supervisor/work-item-grades.json
+ M reports/supervisor/work-item-grades.md
+ M reports/supervisor/work-item-grades.yaml
+ M src/net/fods/FodsDocument.cs
+ M src/net/fodt/FodtDocument.cs
+ M src/net/netpbm/Model/NetpbmImage.cs
+ M src/python/sylk/sylk_parser.py
+ M state/current-state.md
+ M tools/supervisor/autonomous_cycle.py
+ M tools/supervisor/build_context_pack.py
+ M tools/supervisor/build_declaration_review_package.py
+ M tools/supervisor/check_mcp_status.py
+ M tools/supervisor/choose_skill_or_handoff.py
+ M tools/supervisor/compare_goal_to_evidence.py
+ M tools/supervisor/detect_product_progress.py
+ M tools/supervisor/evidence_manifest.py
+ M tools/supervisor/generate_next_worker_prompt.py
+ M tools/supervisor/generate_supervisor_packet.py
+ M tools/supervisor/grade_declared_work.py
+ M tools/supervisor/inspect_declared_evidence.py
+ M tools/supervisor/materialize_declared_evidence.py
+ M tools/supervisor/select_poc_gaps.py
+ M tools/supervisor/validate_evidence_for_supervisor.py
+ M tools/supervisor/validate_product_code_ledger.py
+?? .claude/commands/build-context-pack.md
+?? .claude/commands/materialize-declaration-review.md
+?? .claude/commands/record-lane-execution.md
+?? .claude/commands/select-poc-gap.md
+?? .claude/commands/validate-product-code-ledger.md
+?? .claude/commands/validate-skill-transcript.md
+?? .supervisor/schemas/skill-registry.schema.json
+?? docs/governance/
+?? docs/prompt-templates/
+?? examples/dotnet/
+?? examples/net/fods/ClearSheetExample.cs
+?? examples/net/fods/CopySheetExample.cs
+?? examples/net/fods/RowManipulationExample.cs
+?? examples/net/fodt/
+?? examples/net/netpbm/FlipOverlayExample.cs
+?? examples/net/netpbm/MergeBrightnessExample.cs
+?? examples/net/netpbm/MergeContrastExample.cs
+?? examples/net/netpbm/PixelEditSaveExample.cs
+?? examples/python/ppm/
+?? examples/python/sylk/
+?? examples/python/zst/validate_compressed_file.py
+?? memory/66-product-first-poc-reset-20260603.md
+?? memory/67-local-memory-governance-sync-20260604.md
+?? plans/healing/
+?? tests/net/fods/FodsR100AddSheetTests.cs
+?? tests/net/fods/FodsR101ExportSheetToMarkdownTests.cs
+?? tests/net/fods/FodsR101RemoveSheetTests.cs
+?? tests/net/fods/FodsR102GetRowValuesTests.cs
+?? tests/net/fods/FodsR103RenameSheetTests.cs
+?? tests/net/fods/FodsR104CopySheetTests.cs
+?? tests/net/fods/FodsR104DogfoodCsvExportTests.cs
+?? tests/net/fods/FodsR104GetSheetByIndexTests.cs
+?? tests/net/fods/FodsR105DeleteRowsTests.cs
+?? tests/net/fods/FodsR105DogfoodRowOpsTests.cs
+?? tests/net/fods/FodsR105InsertRowTests.cs
+?? tests/net/fods/FodsR106ClearSheetTests.cs
+?? tests/net/fods/FodsR106DogfoodSaveRoundtripTests.cs
+?? tests/net/fods/FodsR106GetColumnValuesTests.cs
+?? tests/net/fods/FodsR107DogfoodCsvExportTests.cs
+?? tests/net/fods/FodsR107ExportSheetToCsvTests.cs
+?? tests/net/fods/FodsR107InsertRowWithValuesTests.cs
+?? tests/net/fods/FodsR108DogfoodSaveEditRoundtripTests.cs
+?? tests/net/fods/FodsR108GetColumnCountTests.cs
+?? tests/net/fods/FodsR109DogfoodHasSheetRoundtripTests.cs
+?? tests/net/fods/FodsR109HasSheetTests.cs
+?? tests/net/fods/FodsR110DogfoodCsvExportTests.cs
+?? tests/net/fods/FodsR110FindCellsByValueTests.cs
+?? tests/net/fods/FodsR110GetCellDataTypeTests.cs
+?? tests/net/fods/FodsR111DogfoodSaveRoundtripTests.cs
+?? tests/net/fods/FodsR111MergeCellsTests.cs
+?? tests/net/fods/FodsR111SetCellFormulaTests.cs
+?? tests/net/fods/FodsR112CsvExportDogfoodTests.cs
+?? tests/net/fods/FodsR112GetUsedRangeTests.cs
+?? tests/net/fods/FodsR112SaveRoundtripDepthTests.cs
+?? tests/net/fods/FodsR113InsertRowDepthTests.cs
+?? tests/net/fods/FodsR113JsonDogfoodTests.cs
+?? tests/net/fods/FodsR113SortRowsTests.cs
+?? tests/net/fods/FodsR94ExportSheetToHtmlTests.cs
+?? tests/net/fods/FodsR95ExportSheetToJsonTests.cs
+?? tests/net/fods/FodsR96GetRowCountTests.cs
+?? tests/net/fods/FodsR97GetCellCountTests.cs
+?? tests/net/fods/FodsR98SaveAfterEditTests.cs
+?? tests/net/fods/FodsR99ExportQualityTests.cs
+?? tests/net/fodt/FodtR100AppendParagraphTests.cs
+?? tests/net/fodt/FodtR101InsertParagraphTests.cs
+?? tests/net/fodt/FodtR101RemoveParagraphTests.cs
+?? tests/net/fodt/FodtR102InsertParagraphTests.cs
+?? tests/net/fodt/FodtR103GetPlainTextRangeTests.cs
+?? tests/net/fodt/FodtR104DogfoodExportTests.cs
+?? tests/net/fodt/FodtR104GetDocumentStatsTests.cs
+?? tests/net/fodt/FodtR104SetParagraphTextTests.cs
+?? tests/net/fodt/FodtR105DogfoodHtmlExportTests.cs
+?? tests/net/fodt/FodtR105ExportToHtmlTests.cs
+?? tests/net/fodt/FodtR105GetParagraphTextTests.cs
+?? tests/net/fodt/FodtR106DogfoodSaveRoundtripTests.cs
+?? tests/net/fodt/FodtR106GetTextBetweenTests.cs
+?? tests/net/fodt/FodtR106RemoveAllParagraphsTests.cs
+?? tests/net/fodt/FodtR107DogfoodPlainTextExportTests.cs
+?? tests/net/fodt/FodtR107ExportToPlainTextFileTests.cs
+?? tests/net/fodt/FodtR107GetHeadingTextsTests.cs
+?? tests/net/fodt/FodtR108DogfoodMarkdownExportTests.cs
+?? tests/net/fodt/FodtR108ExportToMarkdownFileTests.cs
+?? tests/net/fodt/FodtR109DogfoodHtmlExportTests.cs
+?? tests/net/fodt/FodtR109ExportToHtmlFileTests.cs
+?? tests/net/fodt/FodtR110DogfoodMarkdownExportTests.cs
+?? tests/net/fodt/FodtR110GetParagraphStyleNameTests.cs
+?? tests/net/fodt/FodtR110InsertHeadingTests.cs
+?? tests/net/fodt/FodtR111DogfoodOutlineExportTests.cs
+?? tests/net/fodt/FodtR111GetDocumentOutlineTests.cs
+?? tests/net/fodt/FodtR111RemoveHeadingTests.cs
+?? tests/net/fodt/FodtR112HeadingSaveRoundtripTests.cs
+?? tests/net/fodt/FodtR112MarkdownExportDogfoodTests.cs
+?? tests/net/fodt/FodtR112ReplaceTextSaveRoundtripTests.cs
+?? tests/net/fodt/FodtR113ExportTxtDepthTests.cs
+?? tests/net/fodt/FodtR113GetDocumentMetadataTests.cs
+?? tests/net/fodt/FodtR113TxtDogfoodTests.cs
+?? tests/net/fodt/FodtR94GetWordCountTests.cs
+?? tests/net/fodt/FodtR95GetCharCountTests.cs
+?? tests/net/fodt/FodtR96GetHeadingCountTests.cs
+?? tests/net/fodt/FodtR97GetParagraphCountTests.cs
+?? tests/net/fodt/FodtR98ReplaceTextRoundtripTests.cs
+?? tests/net/fodt/FodtR99ParagraphPersistenceTests.cs
+?? tests/net/netpbm/NetpbmR100Rotate270Tests.cs
+?? tests/net/netpbm/NetpbmR101GetHistogramTests.cs
+?? tests/net/netpbm/NetpbmR101Rotate180Tests.cs
+?? tests/net/netpbm/NetpbmR102ThresholdTests.cs
+?? tests/net/netpbm/NetpbmR103ExtractChannelTests.cs
+?? tests/net/netpbm/NetpbmR104AdjustBrightnessTests.cs
+?? tests/net/netpbm/NetpbmR104DogfoodPipelineTests.cs
+?? tests/net/netpbm/NetpbmR104MergeHorizontalTests.cs
+?? tests/net/netpbm/NetpbmR105AdjustContrastTests.cs
+?? tests/net/netpbm/NetpbmR105DogfoodMergePipelineTests.cs
+?? tests/net/netpbm/NetpbmR105MergeVerticalTests.cs
+?? tests/net/netpbm/NetpbmR106DogfoodCropOverlayTests.cs
+?? tests/net/netpbm/NetpbmR106FlipDiagonalTests.cs
+?? tests/net/netpbm/NetpbmR106OverlayTests.cs
+?? tests/net/netpbm/NetpbmR107ConvertFormatTests.cs
+?? tests/net/netpbm/NetpbmR107DogfoodEqualizeOverlayTests.cs
+?? tests/net/netpbm/NetpbmR107EqualizeTests.cs
+?? tests/net/netpbm/NetpbmR108ApplyGammaTests.cs
+?? tests/net/netpbm/NetpbmR109PosterizeTests.cs
+?? tests/net/netpbm/NetpbmR110DogfoodPosterizeSaveTests.cs
+?? tests/net/netpbm/NetpbmR110SepiaTests.cs
+?? tests/net/netpbm/NetpbmR110SolarizeTests.cs
+?? tests/net/netpbm/NetpbmR111BlurBoxTests.cs
+?? tests/net/netpbm/NetpbmR111DogfoodSharpenSaveTests.cs
+?? tests/net/netpbm/NetpbmR111SharpenTests.cs
+?? tests/net/netpbm/NetpbmR112ConvertFormatDogfoodTests.cs
+?? tests/net/netpbm/NetpbmR112EqualizeDepthTests.cs
+?? tests/net/netpbm/NetpbmR112SepiaSaveRoundtripTests.cs
+?? tests/net/netpbm/NetpbmR113CropSaveDepthTests.cs
+?? tests/net/netpbm/NetpbmR113TileSaveDogfoodTests.cs
+?? tests/net/netpbm/NetpbmR113TileTests.cs
+?? tests/net/netpbm/NetpbmR94ResizeTests.cs
+?? tests/net/netpbm/NetpbmR95ToGrayscaleTests.cs
+?? tests/net/netpbm/NetpbmR96GetBrightnessTests.cs
+?? tests/net/netpbm/NetpbmR97CloneTests.cs
+?? tests/net/netpbm/NetpbmR98SaveToFileTests.cs
+?? tests/net/netpbm/NetpbmR99ToColorTests.cs
+?? tests/python/dif/test_r107_dif_roundtrip_proof.py
+?? tests/python/dif/test_r111_dif_csv_export_hardening.py
+?? tests/python/dif/test_r112_dif_roundtrip_hardening.py
+?? tests/python/dif/test_r113_dif_parse_hardening.py
+?? tests/python/dif/test_r97_dif_parse_hardening.py
+?? tests/python/fods/test_r96_fods_workbook_operations.py
+?? tests/python/fodt/test_r97_fodt_document_operations.py
+?? tests/python/pbm/test_r104_pbm_write_edge_cases.py
+?? tests/python/pbm/test_r105_pbm_parse_edge_cases.py
+?? tests/python/pbm/test_r106_pbm_write_roundtrip.py
+?? tests/python/pbm/test_r107_pbm_binary_roundtrip.py
+?? tests/python/pbm/test_r108_pbm_edge_cases.py
+?? tests/python/pbm/test_r109_pbm_format_detection.py
+?? tests/python/pbm/test_r110_pbm_write_roundtrip.py
+?? tests/python/pbm/test_r97_pbm_write_read.py
+?? tests/python/pgm/test_r105_pgm_write_hardening.py
+?? tests/python/pgm/test_r106_pgm_strict_errors.py
+?? tests/python/pgm/test_r96_pgm_write_read.py
+?? tests/python/ppm/test_r100_pbm_ppm_pgm_chain.py
+?? tests/python/ppm/test_r101_netpbm_installed_chain.py
+?? tests/python/ppm/test_r104_ppm_write_edge_cases.py
+?? tests/python/ppm/test_r105_ppm_color_stats.py
+?? tests/python/ppm/test_r106_ppm_write_maxval.py
+?? tests/python/ppm/test_r107_ppm_pgm_conversion.py
+?? tests/python/ppm/test_r110_ppm_grayscale_workflow.py
+?? tests/python/ppm/test_r111_ppm_pixel_transform_roundtrip.py
+?? tests/python/ppm/test_r112_ppm_binary_p6_roundtrip.py
+?? tests/python/ppm/test_r113_ppm_grayscale_roundtrip.py
+?? tests/python/ppm/test_r94_ppm_grayscale_conversion.py
+?? tests/python/ppm/test_r95_ppm_pixel_stats.py
+?? tests/python/ppm/test_r98_ppm_pixel_edit_roundtrip.py
+?? tests/python/ppm/test_r99_ppm_pgm_conversion.py
+?? tests/python/supervisor/
+?? tests/python/sylk/test_r100_sylk_csv_malformed.py
+?? tests/python/sylk/test_r101_sylk_strict_edge.py
+?? tests/python/sylk/test_r104_sylk_complex_grid.py
+?? tests/python/sylk/test_r104_sylk_csv_export_hardening.py
+?? tests/python/sylk/test_r105_sylk_malformed_diagnostics.py
+?? tests/python/sylk/test_r106_sylk_write_roundtrip.py
+?? tests/python/sylk/test_r107_sylk_csv_export.py
+?? tests/python/sylk/test_r107_sylk_dogfood_csv_pipeline.py
+?? tests/python/sylk/test_r108_sylk_installed_workflow.py
+?? tests/python/sylk/test_r109_sylk_csv_roundtrip.py
+?? tests/python/sylk/test_r110_sylk_parse_edge_cases.py
+?? tests/python/sylk/test_r111_sylk_write_roundtrip.py
+?? tests/python/sylk/test_r112_sylk_edge_cases.py
+?? tests/python/sylk/test_r113_sylk_csv_export.py
+?? tests/python/sylk/test_r94_sylk_write_edge_cases.py
+?? tests/python/sylk/test_r95_sylk_roundtrip_hardening.py
+?? tests/python/sylk/test_r98_sylk_roundtrip.py
+?? tests/python/sylk/test_r99_sylk_installed_workflow.py
+?? tests/python/zst/test_r100_zst_probe_workflow.py
+?? tests/python/zst/test_r101_zst_installed_smoke.py
+?? tests/python/zst/test_r104_zst_compression_levels.py
+?? tests/python/zst/test_r104_zst_guard_limits.py
+?? tests/python/zst/test_r105_zst_file_workflow.py
+?? tests/python/zst/test_r106_zst_streaming_proof.py
+?? tests/python/zst/test_r107_zst_dependency_isolation.py
+?? tests/python/zst/test_r108_zst_frame_inspection.py
+?? tests/python/zst/test_r109_zst_level_boundaries.py
+?? tests/python/zst/test_r110_zst_multiframe_workflow.py
+?? tests/python/zst/test_r111_zst_dictionary_workflow.py
+?? tests/python/zst/test_r112_zst_multiframe_hardening.py
+?? tests/python/zst/test_r113_zst_dict_mode.py
+?? tests/python/zst/test_r94_zst_streaming.py
+?? tests/python/zst/test_r95_zst_level_variations.py
+?? tests/python/zst/test_r96_zst_error_handling.py
+?? tests/python/zst/test_r98_zst_file_roundtrip.py
+?? tests/python/zst/test_r99_zst_streaming_workflow.py
+?? tests/supervisor/acceleration/
+?? tests/supervisor/test_continuation_state_integration.py
+?? tests/supervisor/test_cross_stream_consumption.py
+?? tests/supervisor/test_external_tool_governance_integration.py
+?? tests/supervisor/test_r100_bridge_legacy.py
+?? tests/supervisor/test_r100_context_pack.py
+?? tests/supervisor/test_r100_continuation_state_machine.py
+?? tests/supervisor/test_r100_grade_engine.py
+?? tests/supervisor/test_r100_inspector.py
+?? tests/supervisor/test_r100_materializer.py
+?? tests/supervisor/test_r100_mcp_classifier.py
+?? tests/supervisor/test_r100_review_package.py
+?? tests/supervisor/test_r100_stream_aware_prompts.py
+?? tests/supervisor/test_r101_anti_skip_grading.py
+?? tests/supervisor/test_r101_continuation_scenarios.py
+?? tests/supervisor/test_r101_replay_packages.py
+?? tests/supervisor/test_r101_stream_aware_packet.py
+?? tests/supervisor/test_r102_continuation_states.py
+?? tests/supervisor/test_r102_legacy_review_fix.py
+?? tests/supervisor/test_r102_replay_packages.py
+?? tests/supervisor/test_r102_stream_prompt_quality.py
+?? tests/supervisor/test_r103_cross_stream_and_grading.py
+?? tests/supervisor/test_r104_stream_isolation_and_self_containment.py
+?? tests/supervisor/test_r105_verified_grading_and_state_cleanup.py
+?? tests/supervisor/test_r106_strict_grading_and_cycle_enforcement.py
+?? tests/supervisor/test_r107_raw_logs_ledger_and_enforcement.py
+?? tests/supervisor/test_r108_prompt_quality_and_stream_state.py
+?? tests/supervisor/test_r108_strict_closure_and_contradiction_repair.py
+?? tests/supervisor/test_r109_stream_local_authority.py
+?? tests/supervisor/test_r110_ledger_samples_replay_continuation.py
+?? tests/supervisor/test_skills_governed_execution_hardening_iv.py
+?? tests/supervisor/test_skills_product_breadth_finalization.py
+?? tests/supervisor/test_skills_product_first_spf.py
+?? tests/supervisor/test_supervisor_product_first_traffic_controller.py
+?? tests/supervisor/test_supervisor_product_traffic_controller_integration.py
+?? tests/supervisor/test_supervisor_traffic_controller_hardening_iv.py
+?? tests/supervisor/test_supervisor_tri_lane_reconciliation.py
+?? tests/supervisor/test_tri_lane_integration_fabric.py
+?? tests/supervisor/test_tri_lane_integration_refresh_readiness.py
+?? tests/supervisor/test_validate_product_code_ledger.py
+?? tests/supervisor/test_validate_skill_registry.py
+?? tests/supervisor/test_validate_skill_transcript.py
+?? tools/supervisor/ai_evidence_critic.py
+?? tools/supervisor/ai_implementation_designer.py
+?? tools/supervisor/ai_learning_loop.py
+?? tools/supervisor/ai_product_brain.py
+?? tools/supervisor/ai_sprint_manager.py
+?? tools/supervisor/ai_supervisor_advisor.py
+?? tools/supervisor/anti_skip_checker.py
+?? tools/supervisor/capture_raw_logs.py
+?? tools/supervisor/check_cross_stream_consumption.py
+?? tools/supervisor/external_tool_governance.py
+?? tools/supervisor/generate_execution_handoff.py
+?? tools/supervisor/generate_mainstream_execution_packet.py
+?? tools/supervisor/generate_sample_outputs.py
+?? tools/supervisor/generate_sprint_learning.py
+?? tools/supervisor/generate_stream_gaps.py
+?? tools/supervisor/generate_stream_routing_packet.py
+?? tools/supervisor/lane_execution_ledger.py
+?? tools/supervisor/mainstream_acceleration_packet.py
+?? tools/supervisor/materialize_and_review.py
+?? tools/supervisor/next_best_action.py
+?? tools/supervisor/package_install_proof.py
+?? tools/supervisor/product_velocity_scorer.py
+?? tools/supervisor/record_lane_execution.py
+?? tools/supervisor/source_pattern_miner.py
+?? tools/supervisor/stream_forecaster.py
+?? tools/supervisor/stream_prompt_generator.py
+?? tools/supervisor/test_plan_generator.py
+?? tools/supervisor/tri_lane_integration.py
+?? tools/supervisor/validate_adoption_compliance.py
+?? tools/supervisor/validate_claude_commands.py
+?? tools/supervisor/validate_package_identity.py
+?? tools/supervisor/validate_prompt_quality.py
+?? tools/supervisor/validate_skill_registry.py
+?? tools/supervisor/validate_skill_transcript.py
+?? tools/supervisor/validate_tri_lane_contract.py
+3a86a05 feat(r93): context-pack, D92 defect repair, governed acceleration — FODS/FODT/Netpbm/.NET + ZST/PPM/SYLK FOSS (FORMAT-FACTORY-R93-CONTEXT-PACK-SUPERVISOR-MCP-ACCELERATION-POC-PARALLEL-MEGA-TRAIN-001)
+e283822 feat(r92): declaration materializer, skill expansion, POC deepening (FORMAT-FACTORY-R92-DECLARATION-MATERIALIZER-WORK-ITEM-GRADING-ACCELERATION-POC-MAINSTREAM-MEGA-TRAIN-001)
+be0bc9a chore(r91): fill autonomous-continuation-proof and final-adversarial-IV with actual closeout results
+f881c49 feat(r91): autonomous supervisor healed + POC deepened (FORMAT-FACTORY-R91-AUTONOMOUS-SUPERVISOR-DECLARATION-GRADING-POC-ACCELERATION-MAINSTREAM-MEGA-TRAIN-001)
+95c30f9 chore: commit stale supervisor outputs before R91 sprint start

@@ -1,0 +1,39 @@
+---
+sprint_id: acceleration-r103
+evidence_root: reports/acceleration-r103
+
+reports:
+  - reports/acceleration-r103/00-preflight.md
+  - reports/acceleration-r103/r102-reconciliation.md
+  - reports/acceleration-r103/stream-prompt-adoption-proof.md
+  - reports/acceleration-r103/three-sprint-forecast-by-stream.md
+  - reports/acceleration-r103/quota-tracker.md
+  - reports/acceleration-r103/final-adversarial-independent-verification.md
+  - reports/acceleration-r103/evidence-manifest.yaml
+
+sample_outputs:
+  - reports/acceleration-r103/sample-outputs/fresh-stream-gaps.json
+  - reports/acceleration-r103/sample-outputs/next-best-actions.json
+  - reports/acceleration-r103/sample-outputs/stream-forecasts.json
+  - reports/acceleration-r103/sample-outputs/dry-run-results.json
+  - reports/acceleration-r103/sample-outputs/dry-run-ledger.json
+  - reports/acceleration-r103/sample-outputs/anti-skip-check-result.json
+
+generated_stream_prompts:
+  - reports/acceleration-r103/generated-stream-prompts/next-mainstream-prompt.md
+  - reports/acceleration-r103/generated-stream-prompts/next-acceleration-prompt.md
+  - reports/acceleration-r103/generated-stream-prompts/next-skills-prompt.md
+  - reports/acceleration-r103/generated-stream-prompts/next-supervisor-prompt.md
+
+raw_logs:
+  - reports/acceleration-r103/raw-test-log.txt
+
+new_tools:
+  - tools/supervisor/generate_stream_gaps.py
+
+modified_tools:
+  - tools/supervisor/anti_skip_checker.py
+
+test_files:
+  - tests/supervisor/acceleration/test_generate_stream_gaps.py
+  - tests/supervisor/acceleration/test_anti_skip_checker.py

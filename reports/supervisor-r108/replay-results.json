@@ -1,0 +1,42 @@
+{
+  "replay_sprint": "FORMAT-FACTORY-SUPERVISOR-R108-STREAM-PRIMARY-STATE-PROMPT-QUALITY-GATING-AND-CONTINUATION-ENFORCEMENT-CAMPAIGN-001",
+  "replay_timestamp": "2026-06-03T18:30:00",
+  "replays": [
+    {
+      "package": "supervisor-r107",
+      "path": ".local/supervisor/reviews/supervisor-r107/declaration-review-package.zip",
+      "classification": "ACCEPTED_WITH_LIMITATIONS",
+      "limitations": [
+        "prompt-quality-result.json invalid (advancement_lane FAIL)",
+        "global-state context-pack.yaml references Mainstream R109",
+        "continuation_state YES despite prompt-quality failure"
+      ],
+      "strengths": [
+        "Raw logs captured and packaged",
+        "Lane execution ledger valid (11 lanes)",
+        "5 sample outputs present",
+        "Anti-skip all_pass=true (14 checks, 0 violations)",
+        "33 new tests, 783 total passing",
+        "Evidence quality score 89%"
+      ]
+    },
+    {
+      "package": "mainstream-latest",
+      "path": "N/A (Mainstream R110 continuation-signal references)",
+      "classification": "NOT_REPLAYED_PACKAGE_UNAVAILABLE",
+      "notes": "Mainstream R110 ran but no declaration-review-package.zip found in supervisor review directory. Mainstream uses different review path. Classified as reference-only."
+    },
+    {
+      "package": "acceleration-latest",
+      "path": "N/A (no dedicated acceleration review package)",
+      "classification": "NOT_REPLAYED_STREAM_NOT_ACTIVE",
+      "notes": "Acceleration stream has no independent review packages. Acceleration work is integrated into mainstream sprints."
+    },
+    {
+      "package": "skills-latest",
+      "path": "N/A (no dedicated skills review package)",
+      "classification": "NOT_REPLAYED_STREAM_NOT_ACTIVE",
+      "notes": "Skills stream has no independent review packages. Skills work is integrated into mainstream sprints."
+    }
+  ]
+}

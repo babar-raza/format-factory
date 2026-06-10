@@ -1,0 +1,51 @@
+{
+  "sprint_id": "FORMAT-FACTORY-AUTONOMY-NO-MANUAL-PROMPT-CHAIN-REPAIR-001",
+  "lane": "L2",
+  "autonomy_failure_addressed": "AF-004",
+  "af004_description": "next-work-items.json has product items with agent_can_execute=True even when next_action says 'Authorized git commit + push (requires user authorization)'",
+  "root_cause": "generate_next_work_items() always called _make_task_adjudication_fields('[agent-owned]', title) for all product items, never checking next_action text",
+  "fixes_applied": [
+    {
+      "file": "tools/supervisor/generate_next_worker_prompt.py",
+      "change": "Added _EXTERNAL_GATE_PATTERNS list and _next_action_requires_external_gate() helper (lines 690-716)",
+      "effect": "Pattern-based detection of commit/push/Gate/publication wording in next_action"
+    },
+    {
+      "file": "tools/supervisor/generate_next_worker_prompt.py",
+      "change": "generate_next_work_items() now checks _next_action_requires_external_gate(product.get('next_action', '')) for both commercial_net_products and foss_reduced_products loops (lines 797-799, 822-824)",
+      "effect": "Products with commit/push/Gate next_action get label='[external-gate]' instead of '[agent-owned]'"
+    },
+    {
+      "file": "tools/supervisor/generate_next_worker_prompt.py",
+      "change": "_make_task_adjudication_fields() now short-circuits when label='[external-gate]': sets agent_can_execute=False, execution_status='external-gate-pending', bypasses adjudicator title-based re-derivation (lines 727-736)",
+      "effect": "Adjudicator no longer overrides an explicit [external-gate] label back to agent-owned due to generic task title"
+    }
+  ],
+  "tests_written": [
+    "tests/supervisor/test_next_work_items_safety.py (41 tests)",
+    "tests/supervisor/test_commit_push_external_gate.py (25 tests)"
+  ],
+  "tests_result": "66/66 PASS",
+  "before_fix": {
+    "product_item_with_commit_push_next_action": {
+      "agent_can_execute": true,
+      "execution_status": "executable",
+      "note": "UNSAFE: agent would attempt git commit + push autonomously"
+    }
+  },
+  "after_fix": {
+    "product_item_with_commit_push_next_action": {
+      "agent_can_execute": false,
+      "execution_status": "external-gate-pending",
+      "note": "SAFE: agent correctly stops and waits for human authorization"
+    }
+  },
+  "patterns_covered": [
+    "git commit", "git push", "commit + push", "commit and push",
+    "authorized git", "gate 11", "gate 8", "g11-g", "g8-g",
+    "publication", "publish to nuget", "nuget publish",
+    "human required for commercial", "commercial release",
+    "requires user authorization", "requires explicit user authorization",
+    "requires human authorization"
+  ]
+}

@@ -1,0 +1,16 @@
+# Governance Pilot 006: GOVERNANCE_DOC legitimately uses DISCOVERED→GOVERNANCE_ACCEPTED
+# Expected result: PASS (state machine allows short-circuit for governance docs)
+# Pilot type: positive — governance doc short-circuit path is NOT forbidden
+pilot_id: "PILOT-006"
+description: "GOVERNANCE_DOC uses DISCOVERED→GOVERNANCE_ACCEPTED (valid short-circuit)"
+expected_result: "PASS"
+declaration:
+  run_id: pilot-006-governance-doc-short-circuit
+  planned_work_items:
+    - item_id: "GR-TC-002"
+      item_type: "GOVERNANCE_DOC"
+      exception_classification: "investigation_only"
+      status: "completed"
+      state_machine_start: "DISCOVERED"
+      state_machine_target: "GOVERNANCE_ACCEPTED"
+      # This is ALLOWED for GOVERNANCE_DOC items — only PRODUCT_SOURCE has forbidden jumps

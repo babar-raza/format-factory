@@ -1,0 +1,45 @@
+{
+  "sprint": "FORMAT-FACTORY-AUTHORITY-LAYERS-AND-TARGET-WRITER-MEGA-TRAIN-R119-001",
+  "generated": "2026-06-05",
+  "blocked_gap_ids": [],
+  "gap_routing_status": {
+    "fods-to-csv-dotnet": {
+      "previous_status": "ARCHITECTURE_BLOCKED",
+      "current_status": "UNBLOCKED",
+      "writer_present": "FormatFactory.Csv",
+      "exporter_wired": "FodsCsvExporter",
+      "recommended_lane": "Product-Integration",
+      "next_action": "RCA proof wiring + registry patch"
+    },
+    "fods-to-html-dotnet": {
+      "previous_status": "ARCHITECTURE_BLOCKED",
+      "current_status": "UNBLOCKED",
+      "writer_present": "FormatFactory.Html",
+      "exporter_wired": "FodsHtmlExporter",
+      "recommended_lane": "Product-Integration",
+      "next_action": "Dogfood sample + RCA proof wiring + registry patch"
+    },
+    "fodt-to-markdown-dotnet": {
+      "previous_status": "ARCHITECTURE_BLOCKED",
+      "current_status": "UNBLOCKED",
+      "writer_present": "FormatFactory.Markdown",
+      "exporter_wired": "FodtMarkdownExporter",
+      "recommended_lane": "Product-Integration",
+      "next_action": "Dogfood sample + RCA proof wiring + registry patch"
+    },
+    "fodt-to-txt-dotnet": {
+      "previous_status": "ARCHITECTURE_BLOCKED",
+      "current_status": "UNBLOCKED",
+      "writer_present": "FormatFactory.Txt",
+      "exporter_wired": "FodtTxtExporter",
+      "recommended_lane": "Product-Integration",
+      "next_action": "Dogfood sample + RCA proof wiring + registry patch"
+    }
+  },
+  "policy": {
+    "csv_unblocks_html": false,
+    "csv_unblocks_txt": false,
+    "csv_unblocks_markdown": false,
+    "each_format_requires_own_writer_and_wiring": true
+  }
+}

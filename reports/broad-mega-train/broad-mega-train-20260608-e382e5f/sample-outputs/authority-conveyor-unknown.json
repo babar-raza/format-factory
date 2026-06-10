@@ -1,0 +1,82 @@
+{
+  "format_id": "unknown-fixture-xyz",
+  "current_level": "P0",
+  "current_level_int": 0,
+  "target_level": "P4",
+  "target_level_int": 4,
+  "already_at_or_above_target": false,
+  "authority_blockers": [
+    "no_spec: no spec-cache entry found for unknown-fixture-xyz"
+  ],
+  "exception_allowed": "legacy_backfill",
+  "readiness_allowed": false,
+  "product_expansion_allowed": false,
+  "facts_summary": {
+    "total": 0,
+    "verified": 0,
+    "candidate": 0,
+    "verified_ids": [],
+    "candidate_ids": []
+  },
+  "citations_summary": {
+    "code_cited_files": [],
+    "test_cited_files": [],
+    "proof_graph_files": []
+  },
+  "gap_steps": [
+    {
+      "step": 1,
+      "from_level": "P0/P1",
+      "to_level": "P2",
+      "action": "Cache spec source for unknown-fixture-xyz under .local/spec-cache/unknown-fixture-xyz/",
+      "type": "SPEC_CACHE",
+      "blocked_by": "Requires: locate and download spec document for unknown-fixture-xyz",
+      "outputs": [
+        ".local/spec-cache/unknown-fixture-xyz/v1/spec-index.yaml"
+      ]
+    },
+    {
+      "step": 2,
+      "from_level": "P2",
+      "to_level": "P3",
+      "action": "Extract candidate facts from unknown-fixture-xyz spec. Create workbench/verified-facts-review.yaml",
+      "type": "FACT_EXTRACTION",
+      "blocked_by": "Requires: P2 (spec cached)",
+      "outputs": [
+        ".local/spec-cache/unknown-fixture-xyz/v1/workbench/verified-facts-review.yaml"
+      ]
+    },
+    {
+      "step": 3,
+      "from_level": "P3",
+      "to_level": "P4",
+      "action": "Verify 0 candidate fact(s) via deterministic spec text search. Set verification_status=verified, validated_by=deterministic_spec_text_search.",
+      "type": "FACT_VERIFICATION",
+      "blocked_by": "Requires: P3 (candidate facts extracted)",
+      "candidate_fact_ids": [],
+      "outputs": [
+        ".local/spec-cache/unknown-fixture-xyz/v1/workbench/verified-facts-review.yaml (updated)"
+      ]
+    }
+  ],
+  "gap_count": 3,
+  "matrix_update": {
+    "format_id": "unknown-fixture-xyz",
+    "current_level": "P0",
+    "target_level": "P4",
+    "gap_steps": 3,
+    "already_complete": false,
+    "verified_facts_count": 0,
+    "candidate_facts_count": 0,
+    "code_citations_count": 0,
+    "test_citations_count": 0,
+    "proof_graphs_found": 0
+  },
+  "next_action": "Find and cache spec source for unknown-fixture-xyz under .local/spec-cache/unknown-fixture-xyz/",
+  "spec_state_summary": {
+    "spec_cached": false,
+    "facts_verified": 0,
+    "facts_candidate": 0,
+    "verified_fact_ids": []
+  }
+}

@@ -1,0 +1,32 @@
+target: fodt
+iteration: 1
+authority_status: proposed_only
+note: not applied to poc-targets.yaml
+proposed_capabilities:
+  - capability: CreateEmpty
+    operation: add
+    proof_type: test_verified
+    source_files: [src/net/fodt/FodtDocument.cs]
+    test_files: [tests/net/fodt/FodtR114SetParagraphStyleTests.cs]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/fodt-r114-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-fodt.json
+    sample_output: null
+    notes: Blank FODT document factory for programmatic construction
+  - capability: SetParagraphStyle
+    operation: add
+    proof_type: test_verified
+    source_files: [src/net/fodt/FodtDocument.cs]
+    test_files: [tests/net/fodt/FodtR114SetParagraphStyleTests.cs]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/fodt-r114-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-fodt.json
+    sample_output: null
+    notes: Sets text:style-name on paragraph; roundtrip-verified
+  - capability: GetParagraphStyles
+    operation: add
+    proof_type: test_verified
+    source_files: [src/net/fodt/FodtDocument.cs]
+    test_files: [tests/net/fodt/FodtR114SetParagraphStyleTests.cs]
+    raw_logs: [reports/unified-authority-integrated-poc-train/raw-logs/fodt-r114-tests.log]
+    transcript: reports/unified-authority-integrated-poc-train/skill-transcripts/iteration-001-fodt.json
+    sample_output: null
+    notes: Returns IReadOnlyList<string> with style name for each paragraph

@@ -1,0 +1,29 @@
+{
+  "skill_id": "check-mcp-status",
+  "current_status": "deferred",
+  "readiness": "NOT_READY",
+  "sprint": "skills-r113",
+  "timestamp": "2026-06-03T23:00:00Z",
+  "assessment": {
+    "command_file_exists": false,
+    "mcp_server_configured": false,
+    "health_model_implemented": false,
+    "tests_exist": false,
+    "r106_validator_compliant": false
+  },
+  "promotion_criteria": [
+    {"criterion": "MCP server configured and accessible", "met": false},
+    {"criterion": "5-state health model implemented (CONNECTED, DEGRADED, DISCONNECTED, UNKNOWN, NOT_CONFIGURED)", "met": false},
+    {"criterion": "At least 5 tests covering each state", "met": false},
+    {"criterion": "Command file meets R106 validator requirements", "met": false},
+    {"criterion": "Dry-run execution proof", "met": false}
+  ],
+  "recommendation": "DEFER — no MCP server configured. Create taskcard for future promotion when MCP automation is needed.",
+  "taskcard": {
+    "id": "TC-MCP-READINESS-001",
+    "title": "Promote check-mcp-status to active when MCP server available",
+    "priority": "low",
+    "blocked_by": "MCP server configuration",
+    "estimated_effort": "1 sprint"
+  }
+}

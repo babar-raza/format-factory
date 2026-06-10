@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/capability/capability_gap.schema.json",
+  "title": "CapabilityGap",
+  "description": "A gap entry in the capability gap ledger. Represents a missing or incomplete capability.",
+  "type": "object",
+  "required": [
+    "gap_id",
+    "format",
+    "product_type",
+    "capability_name",
+    "current_state",
+    "gap_type",
+    "blocks_poc",
+    "priority",
+    "owning_lane",
+    "suggested_taskcard"
+  ],
+  "properties": {
+    "gap_id": {
+      "type": "string",
+      "description": "Unique gap ID, e.g. GAP-FODG-FOSS-WRITE-001"
+    },
+    "format": {"type": "string"},
+    "product_type": {
+      "type": "string",
+      "enum": ["commercial", "foss_reduced", "internal"]
+    },
+    "capability_name": {"type": "string"},
+    "current_state": {"type": "string"},
+    "gap_type": {
+      "type": "string",
+      "enum": [
+        "missing_implementation",
+        "missing_tests",
+        "missing_examples",
+        "missing_package_proof",
+        "missing_spec_provenance",
+        "missing_requirement_link",
+        "stale_claim",
+        "overclaimed",
+        "underclaimed"
+      ]
+    },
+    "blocks_poc": {"type": "boolean"},
+    "blocks_readiness": {"type": "boolean"},
+    "commercial_impact": {"type": "string"},
+    "foss_impact": {"type": "string"},
+    "priority": {
+      "type": "string",
+      "enum": ["P0", "P1", "P2", "P3"]
+    },
+    "owning_lane": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8
+    },
+    "suggested_taskcard": {"type": "string"},
+    "suggested_pilot": {"type": "string"},
+    "suggested_verification": {"type": "string"},
+    "recurrence_prevention": {"type": "string"},
+    "blockers": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "related_capability_id": {"type": "string"},
+    "notes": {"type": "string"}
+  },
+  "additionalProperties": false
+}

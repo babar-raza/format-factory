@@ -241,8 +241,10 @@ def run(replay_path: Path, output_dir: Path, repo_root: Path | None = None) -> i
     skills_replay = _find_replay(replay_results, "skills")
     acceleration_replay = _find_replay(replay_results, "acceleration")
 
-    # Probe filesystem for current packets (overrides stale replay verdicts)
-    root = repo_root or Path(".")
+    # Probe filesystem for current packets (overrides stale replay verdicts).
+    # When repo_root is not explicitly provided, probe relative to output_dir so
+    # isolated test runs (using tmp_path as output_dir) don't pick up real repo packets.
+    root = repo_root if repo_root is not None else output_dir
     skills_probe = probe_skills_packet(root)
     acc_probe = probe_acceleration_packets(root)
 

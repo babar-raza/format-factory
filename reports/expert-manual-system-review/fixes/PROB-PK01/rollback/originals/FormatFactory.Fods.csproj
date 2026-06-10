@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Commercial .NET product. DEC-033 Option B: no .NET FOSS package. -->
+    <!-- Python FOSS track: src/python/fods/ (Apache-2.0, format-factory-fods) -->
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>FormatFactory.Fods</AssemblyName>
+    <RootNamespace>FormatFactory.Fods</RootNamespace>
+    <Version>0.1.0-tier0</Version>
+    <Authors>format-factory</Authors>
+    <Description>FormatFactory.Fods: .NET commercial parser for Flat OpenDocument Spreadsheet (FODS). Tier 0 streaming implementation. Gate 11 commercial_readiness_in_progress; not release-ready.</Description>
+    <PackageId>FormatFactory.Fods</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <!-- Sprint FORMAT-FACTORY-DOTNET-TARGET-WRITER-MWP-DOGFOOD-UNBLOCKING-001 -->
+  <!-- FODS exporters now delegate to standalone FF target writer libraries -->
+  <ItemGroup>
+    <ProjectReference Include="../csv/FormatFactory.Csv.csproj" />
+    <ProjectReference Include="../html/FormatFactory.Html.csproj" />
+  </ItemGroup>
+
+  <!-- Gate 11 Tier 0 Note:
+       Commercial-only .NET Tier 0 implementation.
+       DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only.
+       Target: net10.0 LTS (SDK 10.0.204, installed 2026-05-13).
+       Status: Tier 0 streaming parser, not release-ready.
+       Gate 11 has NOT been approved.
+       See: acquisition-packs/fods/gate11-packaging-plan.md
+  -->
+
+</Project>

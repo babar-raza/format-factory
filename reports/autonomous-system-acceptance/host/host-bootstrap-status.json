@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "sprint_id": "FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001",
+  "generated_at": "2026-06-06T00:00:00Z",
+  "h6_status": "H6_EXTERNAL_HOST_READY_MANUAL_START_ONCE",
+  "claudecode_env": "CLAUDECODE=1 (nested session — prevents nested Claude CLI)",
+  "external_start_required": true,
+  "scripts_available": [
+    "scripts/start_format_factory_orchestrator.ps1",
+    "scripts/start_format_factory_orchestrator.cmd",
+    "scripts/run_format_factory_orchestrator_once.ps1",
+    "scripts/install_format_factory_orchestrator_task.ps1"
+  ],
+  "one_time_start_command": "$env:CLAUDECODE=''; cd 'C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory'; .local\\venv\\Scripts\\python tools\\supervisor\\autonomous_orchestrator.py --resume --max-cycles 10 --backend local",
+  "task_scheduler_proposal": "scripts/install_format_factory_orchestrator_task.ps1 (DryRun=$true default, governance approval required)",
+  "external_run_confirmed": false,
+  "false_h6_claim": false,
+  "notes": [
+    "CLAUDECODE=1 is set in current session — nested Claude CLI is blocked",
+    "External PowerShell with $env:CLAUDECODE='' clears the block",
+    "Task Scheduler proposal exists but NOT installed (governance required)",
+    "H6 proof requires a run outside this CLAUDECODE=1 session"
+  ]
+}

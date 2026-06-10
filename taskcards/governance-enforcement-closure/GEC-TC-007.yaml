@@ -1,0 +1,26 @@
+id: GEC-TC-007
+version: "1.0"
+generated_by: "FORMAT-FACTORY-GOVERNANCE-ENFORCEMENT-CLOSURE-AND-SOURCE-REPLAY-PILOT-001"
+generated_at: "2026-06-09"
+title: "Evidence quality scoring closeout report"
+status: completed
+lane: lane_g_evidence_quality
+item_type: GOVERNANCE_DOC
+exception_classification: investigation_only
+state_machine_start: DISCOVERED
+state_machine_target: GOVERNANCE_ACCEPTED
+problem: >
+  Sprint 3 evidence quality score was 0.0 (no test paths declared). This sprint must
+  categorize all evidence by quality tier and produce a closeout scoring report.
+scope:
+  - Create reports/repeatability-governance-closure-rnext/evidence-quality-closeout-report.md
+  - Classify evidence into 5 tiers: PATH_ONLY, RAW_LOG_BACKED, TEST_BACKED,
+    PIPELINE_VERIFIED, PACKAGE_VERIFIED
+files_to_create:
+  - reports/repeatability-governance-closure-rnext/evidence-quality-closeout-report.md
+acceptance_criteria:
+  - Report exists with 5-tier classification
+  - All work items classified
+  - Quality score computed as weighted average
+dependencies: [GEC-TC-003]
+handoff_to_autonomy_sprint: false

@@ -1,0 +1,124 @@
+{
+  "run_id": "acceleration-r99",
+  "sprint_id": "FORMAT-FACTORY-ACCELERATION-R99-PRODUCT-FACTORY-ACCELERATION-LAYER-PARALLEL-MEGA-TRAIN-001",
+  "graded_at": "2026-06-03",
+  "work_item_grades": [
+    {
+      "item_id": "ACCEL-R99-A",
+      "title": "Manual process inventory",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": ["reports/acceleration-r99/manual-process-inventory.md"],
+      "evidence_paths_missing": [],
+      "note": "36 manual processes inventoried, classified into 6 categories"
+    },
+    {
+      "item_id": "ACCEL-R99-B",
+      "title": "Acceleration architecture v2",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": ["reports/acceleration-r99/acceleration-layer-architecture-v2.md"],
+      "evidence_paths_missing": [],
+      "note": "10-component architecture defined with decision tree and integration points"
+    },
+    {
+      "item_id": "ACCEL-R99-C",
+      "title": "POC gap selector v3",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": [
+        "tools/supervisor/select_poc_gaps.py",
+        "tests/supervisor/acceleration/test_select_poc_gaps_v3.py",
+        "reports/acceleration-r99/poc-gap-selector-v3.md"
+      ],
+      "evidence_paths_missing": [],
+      "note": "Stream-aware output, depth scoring, skill registry integration. 12 tests pass."
+    },
+    {
+      "item_id": "ACCEL-R99-D",
+      "title": "Skill-or-handoff router v2",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": [
+        "tools/supervisor/choose_skill_or_handoff.py",
+        "tests/supervisor/acceleration/test_choose_skill_or_handoff_v2.py",
+        "reports/acceleration-r99/skill-or-handoff-router.md"
+      ],
+      "evidence_paths_missing": [],
+      "note": "Registry matching, PLAN_HARDENING and READ_ONLY_VERIFY decisions. 10 tests pass."
+    },
+    {
+      "item_id": "ACCEL-R99-E",
+      "title": "Lane execution recorder",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": [
+        "tools/supervisor/record_lane_execution.py",
+        "tests/supervisor/acceleration/test_record_lane_execution.py",
+        "reports/acceleration-r99/lane-execution-recorder.md"
+      ],
+      "evidence_paths_missing": [],
+      "note": "New tool with start/close/summary CLI. 10 tests pass."
+    },
+    {
+      "item_id": "ACCEL-R99-F",
+      "title": "Sprint learning generator",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": [
+        "tools/supervisor/generate_sprint_learning.py",
+        "tests/supervisor/acceleration/test_generate_sprint_learning.py",
+        "reports/acceleration-r99/sprint-learning-generator.md"
+      ],
+      "evidence_paths_missing": [],
+      "note": "New tool producing 4 learning reports. 7 tests pass."
+    },
+    {
+      "item_id": "ACCEL-R99-G",
+      "title": "Declaration materialization helper",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": ["reports/acceleration-r99/declaration-materialization-helper.md"],
+      "evidence_paths_missing": [],
+      "note": "Quick-path documentation for existing tools. No new tool needed."
+    },
+    {
+      "item_id": "ACCEL-R99-H",
+      "title": "Package/install proof helper",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": [
+        "tools/supervisor/package_install_proof.py",
+        "tests/supervisor/acceleration/test_package_install_proof.py",
+        "reports/acceleration-r99/package-install-proof-helper.md"
+      ],
+      "evidence_paths_missing": [],
+      "note": "New tool with auto-detect and import proof. 5 tests pass."
+    },
+    {
+      "item_id": "ACCEL-R99-I",
+      "title": "End-to-end dry run",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": ["reports/acceleration-r99/end-to-end-acceleration-dry-run.md"],
+      "evidence_paths_missing": [],
+      "note": "Full gap->skill->plan path proven. DRY_RUN_PASS. Zero src edits."
+    },
+    {
+      "item_id": "ACCEL-R99-J",
+      "title": "Final adversarial IV",
+      "declared_status": "completed",
+      "supervisor_grade": "ACCEPTED",
+      "evidence_paths_found": ["reports/acceleration-r99/final-adversarial-independent-verification.md"],
+      "evidence_paths_missing": [],
+      "note": "8-point checklist all PASS. Verdict: ACCELERATION_R99_LAYER_PASS."
+    }
+  ],
+  "summary": {
+    "total": 10,
+    "accepted": 10,
+    "rework": 0,
+    "rejected": 0,
+    "blocked": 0
+  }
+}
