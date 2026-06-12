@@ -16,6 +16,8 @@ from .fodp_codec import (
     get_page_count,
     extract_text,
     get_page_metadata,
+    fodp_total_text_length,
+    fodp_slide_shape_counts,
 )
 
 __all__ = [
@@ -25,6 +27,8 @@ __all__ = [
     "get_page_count",
     "extract_text",
     "get_page_metadata",
+    "fodp_total_text_length",
+    "fodp_slide_shape_counts",
 ]
 
 __version__ = "0.1.0.dev0"

@@ -6,7 +6,9 @@ Classifies MCP readiness using L1-L5 model.
 Config-only (L1) is NOT callable. Requires L5 to execute.
 """
 from __future__ import annotations
-import json, os, sys
+import json
+import os
+import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
 

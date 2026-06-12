@@ -12,7 +12,6 @@ Normalization:
 
 import copy
 import os
-import re
 import sys
 
 import pytest

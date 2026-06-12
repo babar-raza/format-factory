@@ -24,7 +24,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import sys
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -286,7 +285,7 @@ def build_delivery_package(
     print(f"  Package SHA-256: {pkg_sha}")
     print(f"  Package size: {pkg_size:,} bytes")
     print(f"  Package entries: {pkg_entry_count}")
-    print(f"DELIVERY_PACKAGE_BUILD: PASS")
+    print("DELIVERY_PACKAGE_BUILD: PASS")
 
     manifest["delivery_package_sha256"] = pkg_sha
     manifest["delivery_package_size_bytes"] = pkg_size

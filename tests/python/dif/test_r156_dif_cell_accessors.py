@@ -21,7 +21,6 @@ from dif.dif_parser import (
     get_cell_value,
     set_cell_value,
     get_row_values,
-    parse_dif_strict,
     write_dif,
     DifCell,
     DifDocument,

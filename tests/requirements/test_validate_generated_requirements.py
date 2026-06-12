@@ -8,7 +8,6 @@ Run: python -m pytest tests/requirements -q -vv
 
 import pytest
 import sys
-import os
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -331,7 +330,8 @@ class TestFixtures:
 
     def test_duplicate_ids_fixture_fails(self):
         """invalid-duplicate-ids.yaml must fail with duplicate ID error."""
-        import yaml, json
+        import yaml
+        import json
         fixture = FIXTURES_DIR / "invalid-duplicate-ids.yaml"
         assert fixture.exists(), f"Fixture missing: {fixture}"
         data = yaml.safe_load(fixture.read_text(encoding="utf-8"))
@@ -342,7 +342,8 @@ class TestFixtures:
 
     def test_ai_only_accepted_fixture_fails(self):
         """invalid-ai-only-accepted.yaml must fail: AI_PROPOSAL cannot be ACCEPTED."""
-        import yaml, json
+        import yaml
+        import json
         fixture = FIXTURES_DIR / "invalid-ai-only-accepted.yaml"
         assert fixture.exists(), f"Fixture missing: {fixture}"
         data = yaml.safe_load(fixture.read_text(encoding="utf-8"))
@@ -353,7 +354,8 @@ class TestFixtures:
 
     def test_conversion_not_scoped_fixture_fails(self):
         """invalid-conversion-not-scoped.yaml must fail: current scope not allowed."""
-        import yaml, json
+        import yaml
+        import json
         fixture = FIXTURES_DIR / "invalid-conversion-not-scoped.yaml"
         assert fixture.exists(), f"Fixture missing: {fixture}"
         data = yaml.safe_load(fixture.read_text(encoding="utf-8"))

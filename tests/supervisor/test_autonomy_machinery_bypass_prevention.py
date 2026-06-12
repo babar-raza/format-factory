@@ -9,16 +9,8 @@ sys.path.insert(0, str(_REPO))
 
 from tools.supervisor.autonomy_route_decider import (
     classify_task_category,
-    decide_route,
-    check_machinery_mutation_allowed,
     check_action_route_allowed,
     check_prompt_for_unsafe_instructions,
-)
-from tools.supervisor.autonomy_route_models import (
-    ROUTE_BLOCKED,
-    ROUTE_AGENT_GOVERNED_DECISION_REQUIRED,
-    ROUTE_AUTONOMOUS_ACCELERATED_DEFAULT,
-    TASK_CATEGORIES_MACHINERY,
 )
 from tools.supervisor.action_queue import validate_route_classification
 

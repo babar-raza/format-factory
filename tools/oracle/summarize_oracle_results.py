@@ -93,7 +93,7 @@ def write_committed_report(summary: dict, dry_run: bool = False):
         "",
         "## Summary",
         "",
-        f"| Metric | Value |",
+        "| Metric | Value |",
         "|---|---|",
         f"| Total samples | {summary['total']} |",
         f"| PASS | {summary['pass']} |",

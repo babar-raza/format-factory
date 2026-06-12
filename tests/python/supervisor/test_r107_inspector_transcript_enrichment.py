@@ -5,7 +5,6 @@ evidence_paths and validates them via validate_skill_transcript.validate_transcr
 """
 
 import json
-import os
 import sys
 import tempfile
 import unittest

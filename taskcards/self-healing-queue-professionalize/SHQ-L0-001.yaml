@@ -1,0 +1,27 @@
+item_id: SHQ-L0-001
+title: "Lane 0 — Coordinator: evidence control, file ownership, sprint governance"
+lane: L0-coordinator
+status: completed
+sprint_id: FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001
+run_id: format-factory-self-healing-queue-professionalize-rnext-20260611-1500
+acceptance_criteria: >
+  Evidence directory created; file-ownership-map complete; lane-plan written;
+  all lanes have allowed/forbidden paths; final evidence-declaration.yaml complete;
+  autonomous_cycle run successful or exit code documented with honest explanation.
+evidence_paths:
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/00-current-state-verification.md
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/lane-plan.md
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/file-ownership-map.md
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/evidence-declaration.yaml
+tests_supporting: []
+allowed_paths:
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/
+  - taskcards/self-healing-queue-professionalize/
+  - .local/supervisor/action-queue.jsonl
+forbidden_paths:
+  - src/
+  - tools/supervisor/
+  - docs/
+  - registry/
+execution_method: AGENT_GOVERNED_DIRECT_EXECUTION
+item_type: GOVERNANCE_DOC

@@ -10,7 +10,7 @@ from pathlib import Path
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from src.python.ndjson.ndjson_codec import roundtrip, load_ndjson, write_ndjson
+from src.python.ndjson.ndjson_codec import roundtrip, write_ndjson
 
 
 def test_roundtrip_preserves_record_count(tmp_path):

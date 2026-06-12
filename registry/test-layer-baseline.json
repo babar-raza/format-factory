@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "description": "Baseline test count snapshot for test_bare_pytest_count_near_baseline. Updated by sprint tooling whenever the count drifts beyond tolerance. Preferred over hard-coded constant because it is machine-readable and can be updated without touching test source.",
+  "baseline": {
+    "total_tests": 16473,
+    "tolerance": 1000,
+    "command": "python -m pytest --collect-only -q",
+    "measured_date": "2026-06-11",
+    "measured_by": "fullsuite-layering-r2-state-proof-product-20260611-8e45224",
+    "reason": "4th update this session: supervisor pipeline continuously generates new test files. Prior baselines: 14587 (initial), 14996 (update-1), 15497 (update-2), 16127 (update-3)."
+  },
+  "update_policy": {
+    "trigger": "abs(actual - baseline) >= tolerance",
+    "action": "Update total_tests, measured_date, measured_by, and append to history",
+    "authority": "any sprint with test_layer_assignment in scope"
+  },
+  "history": [
+    {"total_tests": 14587, "measured_date": "2026-06-10", "note": "initial layer system introduction"},
+    {"total_tests": 14996, "measured_date": "2026-06-11", "note": "update-1: Autonomy Acceleration + LibForge + Governance sprints"},
+    {"total_tests": 15497, "measured_date": "2026-06-11", "note": "update-2: supervisor pipeline added ~501 new test files"},
+    {"total_tests": 16127, "measured_date": "2026-06-11", "note": "update-3: SAL integration hardening + further supervisor pipeline generation"},
+    {"total_tests": 16473, "measured_date": "2026-06-11", "note": "update-4: continued supervisor pipeline generation, delta=346"}
+  ]
+}

@@ -17,7 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 _src = PROJECT_ROOT / "src" / "python"
 sys.path.insert(0, str(_src))
 
-from dif.dif_parser import parse_dif, parse_dif_strict, probe_dif, get_capabilities, DifError
+from dif.dif_parser import parse_dif, parse_dif_strict, probe_dif, get_capabilities
 from dif.dif_stats import dif_stats, dif_numeric_range, dif_empty_row_count
 
 VALID = PROJECT_ROOT / "samples" / "by-format" / "dif" / "valid"

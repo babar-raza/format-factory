@@ -23,7 +23,6 @@ from .qoi_parser import (
     QoiImage,
     QoiError,
     QOI_MAGIC,
-    QOI_HEADER_SIZE,
     QOI_END_MARKER,
     MAX_DIMENSION,
     MAX_PIXELS,

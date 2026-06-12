@@ -3,7 +3,6 @@
 
 import os
 import tempfile
-import pytest
 import pbm
 import ppm
 

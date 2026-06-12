@@ -12,7 +12,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.tsv.tsv_parser import load_tsv, write_tsv, TsvInputError, TsvSizeError
+from src.python.tsv.tsv_parser import load_tsv, write_tsv, TsvInputError
 
 
 _SAMPLE_TSV = b"name\tage\tcity\nAlice\t30\tNY\nBob\t25\tLA\n"

@@ -4,22 +4,17 @@ test_supervisor_loop_continuation_contract.py — Supervisor Loop Contract Tests
 Verifies the contract that the loop cannot stop for non-terminal reasons,
 and that the adjudicator integration works end-to-end.
 """
-import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-import pytest
 from tools.supervisor.autonomous_poc_controller import (
     TERMINAL_EXTERNAL_GATE,
-    TERMINAL_POC_READY,
     TERMINAL_POC_READY_RELEASE_PENDING,
     TERMINAL_RUNTIME_LIMIT,
-    TERMINAL_UNSAFE,
     NON_TERMINAL_CHECKPOINT,
     NON_TERMINAL_CONTINUE,
-    NON_TERMINAL_REPAIR,
     classify_terminal_state,
     adjudicate_with_stop_reason_adjudicator,
     decide_next_action,
@@ -28,7 +23,6 @@ from tools.supervisor.autonomous_poc_controller import (
 from tools.supervisor.stop_reason_adjudicator import (
     StopDecision,
     adjudicate_stop_reason,
-    adjudicate_batch,
 )
 
 

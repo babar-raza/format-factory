@@ -13,10 +13,9 @@ import tempfile
 
 import pytest
 
-from fodt import parse_fodt, parse_fodt_strict, FodtInputError, FodtSizeError, FodtParseError
+from fodt import parse_fodt, parse_fodt_strict, FodtInputError
 from fodt.constants import (
-    EXPECTED_MIMETYPE, FORMAT_ID, MAX_FILE_BYTES, SPEC_VERSION,
-    NS_OFFICE, NS_TEXT, NS_TABLE
+    EXPECTED_MIMETYPE, FORMAT_ID, MAX_FILE_BYTES, NS_OFFICE, NS_TEXT
 )
 from fodt.list_traversal import collect_list_items
 import xml.etree.ElementTree as ET

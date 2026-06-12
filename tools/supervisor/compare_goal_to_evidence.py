@@ -286,7 +286,7 @@ def write_markdown(result: dict, output_dir: Path) -> None:
         lines.append("## Contradictions")
         for i, c in enumerate(result["contradictions"], 1):
             lines += [
-                f"",
+                "",
                 f"### [{c['severity']}] {i}. {c['description']}",
                 f"Detail: {c.get('detail', '')}",
             ]

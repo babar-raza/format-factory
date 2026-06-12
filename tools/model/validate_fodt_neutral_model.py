@@ -11,7 +11,6 @@ If samples_dir is not given, defaults to samples/by-format/fodt/.
 Exit code 0 on PASS, 1 on FAIL.
 """
 import sys
-import json
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent.parent

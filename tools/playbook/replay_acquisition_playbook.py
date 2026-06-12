@@ -124,7 +124,7 @@ def _validate_playbook_schema(playbook_data: dict, schema_data: dict) -> tuple[b
 # ---------------------------------------------------------------------------
 def mode_validate(playbook_path: str, schema_path: str, format_id: str) -> int:
     """Validate the playbook YAML against the schema. Exit 0=PASS, 1=FAIL."""
-    print(f"REPLAY_MODE: validate", file=sys.stderr)
+    print("REPLAY_MODE: validate", file=sys.stderr)
     print(f"REPLAY_FORMAT_ID: {format_id}", file=sys.stderr)
     print(f"REPLAY_PLAYBOOK: {playbook_path}", file=sys.stderr)
     print(f"REPLAY_SCHEMA: {schema_path}", file=sys.stderr)
@@ -150,10 +150,10 @@ def mode_validate(playbook_path: str, schema_path: str, format_id: str) -> int:
 
     valid, errors = _validate_playbook_schema(playbook, schema)
     if valid:
-        print(f"REPLAY_VALIDATE: PASS")
+        print("REPLAY_VALIDATE: PASS")
         return 0
     else:
-        print(f"REPLAY_VALIDATE: FAIL")
+        print("REPLAY_VALIDATE: FAIL")
         for err in errors:
             print(f"  ERROR: {err}")
         return 1
@@ -230,7 +230,7 @@ def mode_dry_run(
     Dry-run replay: check all operations deterministically.
     Writes ZERO repo files. Returns (exit_code, report_dict).
     """
-    print(f"REPLAY_MODE: dry-run", file=sys.stderr)
+    print("REPLAY_MODE: dry-run", file=sys.stderr)
     print(f"REPLAY_FORMAT_ID: {format_id}", file=sys.stderr)
     print(f"REPLAY_PLAYBOOK: {playbook_path}", file=sys.stderr)
 
@@ -307,7 +307,7 @@ def mode_dry_run(
 # ---------------------------------------------------------------------------
 def mode_explain(playbook_path: str, format_id: str) -> int:
     """Print a human-readable description of each operation. No file writes."""
-    print(f"REPLAY_MODE: explain", file=sys.stderr)
+    print("REPLAY_MODE: explain", file=sys.stderr)
     print(f"REPLAY_FORMAT_ID: {format_id}", file=sys.stderr)
 
     try:
@@ -327,7 +327,7 @@ def mode_explain(playbook_path: str, format_id: str) -> int:
     print(f"FORMAT_ID: {playbook.get('format_id')}")
     print(f"STATUS: {playbook.get('status')}")
     if playbook.get("not_for_execution"):
-        print(f"NOT_FOR_EXECUTION: true")
+        print("NOT_FOR_EXECUTION: true")
     print()
 
     operations = playbook.get("operations", [])
@@ -380,7 +380,7 @@ def mode_export_review_queue(
     schemas/playbook/review-queue.schema.json.
     Output is written to --output only. No repo mutations.
     """
-    print(f"REPLAY_MODE: export-review-queue", file=sys.stderr)
+    print("REPLAY_MODE: export-review-queue", file=sys.stderr)
     print(f"REPLAY_FORMAT_ID: {format_id}", file=sys.stderr)
     print(f"REPLAY_OUTPUT: {output_path}", file=sys.stderr)
 
@@ -474,7 +474,7 @@ def mode_export_review_queue(
         yaml.dump(queue, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
 
     if total == 0:
-        print(f"REPLAY_EXPORT_REVIEW_QUEUE: PASS (0 conflicts — empty review queue written)")
+        print("REPLAY_EXPORT_REVIEW_QUEUE: PASS (0 conflicts — empty review queue written)")
     else:
         print(
             f"REPLAY_EXPORT_REVIEW_QUEUE: CONFLICTS ({total} items written to {output_path})"

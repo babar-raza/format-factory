@@ -72,7 +72,6 @@ def test_evidence_continuation_module_has_objective_field():
 
 def test_evidence_continuation_applied_produces_non_advisory():
     """apply_post_closeout_continuation must produce non-advisory next-action."""
-    import tempfile
     from tools.supervisor.evidence_continuation import (
         generate_post_closeout_next_action,
         _is_advisory,

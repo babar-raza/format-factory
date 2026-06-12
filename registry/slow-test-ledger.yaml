@@ -1,0 +1,212 @@
+# Slow Test Ledger — Format Factory
+# Top slowest tests measured on 2026-06-10 via `pytest tests/python/ --durations=30`
+# Environment: Windows 11, Python 3.13.2, pytest 9.0.3
+# Methodology: Sequential execution, pyproject.toml timeout=120s, 6226 tests in 71.68s
+
+methodology:
+  measured_at: "2026-06-10"
+  command: "pytest tests/python/ --durations=30 -q"
+  scope: "tests/python/ (format codec + supervisor-in-python tests)"
+  total_tests: 6226
+  total_passed: 6226
+  total_skipped: 39
+  total_duration_seconds: 71.68
+  platform: "Windows 11, Python 3.13.2, pytest 9.0.3"
+  limitations:
+    - "Timing includes setup+call+teardown, not just call"
+    - "Only tests/python/ measured; tests/supervisor/, tests/evidence/ etc. not included"
+    - "Single run; no statistical averaging"
+
+slow_tests:
+  - path: "tests/python/supervisor/test_r107_validator_advancement.py::TestEnrichmentPipelineEndToEnd::test_full_pipeline_with_valid_transcript"
+    duration_seconds: 10.48
+    component: supervisor
+    layer: 3
+    reason: "Full enrichment pipeline end-to-end test"
+
+  - path: "tests/python/supervisor/test_r107_inspector_transcript_enrichment.py::TestInspectItemTranscriptEnrichment::test_item_with_invalid_transcript"
+    duration_seconds: 9.64
+    component: supervisor
+    layer: 3
+    reason: "LLM transcript enrichment pipeline with invalid input"
+
+  - path: "tests/python/supervisor/test_r107_inspector_transcript_enrichment.py::TestInspectItemTranscriptEnrichment::test_item_with_valid_transcript"
+    duration_seconds: 7.81
+    component: supervisor
+    layer: 3
+    reason: "LLM transcript enrichment pipeline with valid input"
+
+  - path: "tests/python/supervisor/test_r107_inspector_transcript_enrichment.py::TestDeclarationLevelTranscriptAggregation::test_declaration_with_transcript_produces_enrichment"
+    duration_seconds: 4.60
+    component: supervisor
+    layer: 3
+    reason: "Declaration-level transcript aggregation"
+
+  - path: "tests/python/ods/test_r76_gate8_readiness.py::TestOdsFileSizeGuard::test_oversized_file_rejected"
+    duration_seconds: 1.43
+    component: ods
+    layer: 1
+    reason: "Creates large temporary file for size guard test"
+
+  - path: "tests/python/ods/test_ods_gate7_fuzz_guard.py::TestOdsFuzzGuards::test_zip_bomb_entry_count"
+    duration_seconds: 0.41
+    component: ods
+    layer: 1
+    reason: "Zip bomb detection creates multiple entries"
+
+  - path: "tests/python/odt/test_odt_gate7_fuzz_guard.py::TestOdtFuzzGuards::test_zip_bomb_entry_count"
+    duration_seconds: 0.40
+    component: odt
+    layer: 1
+    reason: "Zip bomb detection for ODT format"
+
+  - path: "tests/python/gnumeric/test_r119_gnumeric_probe_create_write.py::test_probe_gnumeric_valid_bytes"
+    duration_seconds: 0.21
+    component: gnumeric
+    layer: 1
+    reason: "Gnumeric probe with valid byte parsing"
+
+  - path: "tests/python/fodt/test_r67_fodt_installed_api_smoke.py::test_api_present_in_installed_wheel[parse_fodt]"
+    duration_seconds: 0.15
+    phase: setup
+    component: fodt
+    layer: 1
+    reason: "Wheel installation check setup overhead"
+
+  - path: "tests/python/ppm/test_r104_ppm_write_edge_cases.py::TestLargeImageRoundtrip::test_64x64_gradient"
+    duration_seconds: 0.13
+    component: ppm
+    layer: 1
+    reason: "64x64 gradient image roundtrip"
+
+  - path: "tests/python/supervisor/test_r107_validator_advancement.py::TestTranscriptValidatorEdgeCases::test_anti_bypass_demo_mode_accepted"
+    duration_seconds: 0.13
+    component: supervisor
+    layer: 3
+    reason: "Transcript validator demo mode edge case"
+
+  - path: "tests/python/test_pige_public_api_smoke.py::test_gnumeric_get_row_values_from_package"
+    duration_seconds: 0.12
+    component: smoke
+    layer: 0
+    reason: "Package import + gnumeric API call"
+
+  - path: "tests/python/fods/test_r67_fods_installed_api_smoke.py::test_api_present_in_installed_wheel[parse_fods]"
+    duration_seconds: 0.12
+    phase: setup
+    component: fods
+    layer: 1
+    reason: "Wheel installation check setup overhead"
+
+  - path: "tests/python/ods/test_r76_gate8_readiness.py::TestQoiOversizedGuard::test_oversized_qoi_returns_error"
+    duration_seconds: 0.10
+    component: ods
+    layer: 1
+    reason: "QOI oversized file guard"
+
+  - path: "tests/python/zst/test_r158_zst_batch_decompress.py::TestBatchDecompress::test_batch_decompress_restores_content"
+    duration_seconds: 0.10
+    component: zst
+    layer: 1
+    reason: "ZST batch decompression with content verification"
+
+  - path: "tests/python/ods/test_r76_gate8_readiness.py::TestXcfOversizedGuard::test_oversized_xcf_returns_error"
+    duration_seconds: 0.10
+    component: ods
+    layer: 1
+    reason: "XCF oversized file guard"
+
+  - path: "tests/python/abw/test_r117_abw_write_roundtrip.py::TestWriteAbw::test_writes_file"
+    duration_seconds: 0.09
+    phase: setup
+    component: abw
+    layer: 1
+    reason: "ABW write roundtrip setup overhead"
+
+  - path: "tests/python/tsv/test_r56_tsv_gate5_neutral_model.py::TestTsvNeutralModelSchema::test_delimiter_is_tab"
+    duration_seconds: 0.08
+    component: tsv
+    layer: 1
+    reason: "TSV neutral model schema validation"
+
+  - path: "tests/python/zst/test_r158_zst_batch_decompress.py::TestBatchDecompress::test_batch_decompress_all_succeed"
+    duration_seconds: 0.07
+    component: zst
+    layer: 1
+    reason: "ZST batch decompression success path"
+
+  - path: "tests/python/ods/test_ods_gate7_fuzz_guard.py::TestOdsFuzzGuards::test_oversized_row_repeat_guard"
+    duration_seconds: 0.07
+    component: ods
+    layer: 1
+    reason: "ODS oversized row repeat guard"
+
+  - path: "tests/python/dif/test_r116_dif_probe_csv_pipeline.py::TestProbeDif::test_probe_returns_dict"
+    duration_seconds: 0.07
+    component: dif
+    layer: 1
+    reason: "DIF probe returns dictionary"
+
+  - path: "tests/python/supervisor/test_r105_transcript_grading.py::TestTranscriptGradeDecisionMatrix::test_all_valid_modes_accepted"
+    duration_seconds: 0.06
+    component: supervisor
+    layer: 3
+    reason: "Transcript grade decision matrix validation"
+
+  - path: "tests/python/supervisor/test_validate_skill_transcript.py::TestDirectoryValidation::test_validate_directory_counts"
+    duration_seconds: 0.06
+    component: supervisor
+    layer: 3
+    reason: "Skill transcript directory validation"
+
+  - path: "tests/python/supervisor/test_r107_inspector_transcript_enrichment.py::TestCheckTranscriptInEvidence::test_mixed_valid_and_invalid"
+    duration_seconds: 0.05
+    component: supervisor
+    layer: 3
+    reason: "Mixed valid/invalid transcript evidence check"
+
+  - path: "tests/python/sylk/test_r104_sylk_csv_export_hardening.py::TestCsvExportMixedTypes::test_large_integer"
+    duration_seconds: 0.05
+    component: sylk
+    layer: 1
+    reason: "SYLK CSV export with large integer values"
+
+  - path: "tests/python/supervisor/test_r105_transcript_grading.py::TestTranscriptGradeDecisionMatrix::test_directory_validation_separates_pass_fail"
+    duration_seconds: 0.05
+    component: supervisor
+    layer: 3
+    reason: "Transcript grade pass/fail separation"
+
+  - path: "tests/python/tsv/test_r60_tsv_gate8_security.py::TestTsvSecurityLimits::test_many_rows_safe"
+    duration_seconds: 0.04
+    component: tsv
+    layer: 1
+    reason: "TSV security limits with many rows"
+
+  - path: "tests/python/supervisor/test_r106_command_validator_hardening.py::TestRegistryCrossReference::test_draft_skills_allowed_missing_commands"
+    duration_seconds: 0.04
+    component: supervisor
+    layer: 3
+    reason: "Command validator draft skill allowance"
+
+  - path: "tests/python/fods/test_r161_fods_html_export.py::TestWorkbookToHtml::test_basic_table"
+    duration_seconds: 0.04
+    component: fods
+    layer: 1
+    reason: "FODS HTML export basic table"
+
+  - path: "tests/python/supervisor/test_r106_command_validator_hardening.py::TestRegistryCrossReference::test_real_registry_has_no_missing_active_commands"
+    duration_seconds: 0.04
+    component: supervisor
+    layer: 3
+    reason: "Registry cross-reference completeness check"
+
+summary:
+  tests_over_1s: 5
+  tests_over_5s: 3
+  tests_over_10s: 1
+  total_entries: 30
+  optimization_candidates:
+    - "test_r107 transcript enrichment tests (4 tests, ~32s total) — LLM pipeline mocking could reduce"
+    - "test_r76_gate8_readiness oversized file test (1.43s) — smaller test file could help"
+  note: "99.9% of tests complete in <0.04s. Only 5 tests exceed 1s, all in supervisor/ods."

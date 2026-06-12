@@ -13,7 +13,6 @@ Regression tests verifying:
 """
 
 import sys
-import json
 from pathlib import Path
 
 import pytest
@@ -23,7 +22,7 @@ sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
 from governance_validators import run_all_governance_validators
 from validate_adoption_compliance import validate_adoption
-from anti_skip_checker import detect_missing_lane_ledger, detect_missing_sample_outputs
+from anti_skip_checker import detect_missing_lane_ledger
 from authority_gate_validation import validate_format_authority
 
 
@@ -229,7 +228,9 @@ class TestPpmPromotion:
 
     def test_ppm_p4_live(self):
         result = validate_format_authority("ppm")
-        assert result["authority_level_int"] == 4
+        assert result["authority_level_int"] >= 4, (
+            f"PPM should be P4+ (was promoted to P5 in Sprint 1). Got P{result['authority_level_int']}."
+        )
 
 
 class TestFormatAuthorityMatrixConsistency:

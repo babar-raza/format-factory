@@ -10,7 +10,7 @@ from pathlib import Path
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from src.python.tsv.tsv_parser import roundtrip, write_tsv, load_tsv
+from src.python.tsv.tsv_parser import roundtrip, write_tsv
 
 
 def test_roundtrip_preserves_row_count(tmp_path):

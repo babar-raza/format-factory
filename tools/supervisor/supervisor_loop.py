@@ -355,6 +355,47 @@ def cmd_plan_next(args) -> int:
     return run_script("generate_next_worker_prompt.py", extra, REPO_ROOT).returncode
 
 
+def cmd_stale_repair(args) -> int:
+    """Detect and repair stale pending queue items (bounded stale-queue defects only).
+
+    Calls stale_queue_repair_hook.run_stale_repair() which uses rework_orchestrator
+    to detect/classify/repair stale queue items where the target function already
+    exists in source.  Stops on real CAPABILITY_GAP defects.  Safe to run before
+    autonomous-cycle as a pre-cycle repair step.
+
+    Exit codes:
+      0 — no stale items, or all stale items repaired
+      1 — CAPABILITY_GAP detected (queued function genuinely missing)
+      9 — unexpected error
+    """
+    print("=== SUPERVISOR: STALE-REPAIR ===")
+    try:
+        from stale_queue_repair_hook import run_stale_repair
+    except ImportError:
+        import sys as _sys
+        if str(SCRIPT_DIR) not in _sys.path:
+            _sys.path.insert(0, str(SCRIPT_DIR))
+        from stale_queue_repair_hook import run_stale_repair
+
+    dry_run = getattr(args, "dry_run", False)
+    result = run_stale_repair(repo_root=REPO_ROOT, dry_run=dry_run)
+    status = result.get("status", "ERROR")
+    print(f"  Status: {status}")
+    print(f"  Stale repaired: {result.get('stale_repaired', 0)}")
+    print(f"  Capability gaps: {result.get('capability_gaps', 0)}")
+    if dry_run:
+        print("  Mode: dry-run")
+    print(f"  Log: {result.get('log_path')}")
+
+    if status == "CAPABILITY_GAP_STOP":
+        print("  WARNING: CAPABILITY_GAP — investigate before running autonomous-cycle.")
+        return 1
+    if status == "ERROR":
+        print(f"  ERROR: {result.get('error')}", file=sys.stderr)
+        return 9
+    return 0
+
+
 def cmd_autonomous_cycle(args) -> int:
     """Full declaration-driven autonomous supervisor cycle (canonical command).
 
@@ -463,6 +504,7 @@ CANONICAL_COMMANDS = [
     "plan-next", "autonomous-cycle",
     "generate-manifest", "validate-manifest",
     "create-sample-declaration", "list-unreviewed-declarations",
+    "stale-repair",
 ]
 
 LEGACY_COMMANDS = [
@@ -497,6 +539,7 @@ def main() -> int:
         help="Repository root (default: auto-detected)",
     )
     parser.add_argument("--json", action="store_true", help="JSON output mode")
+    parser.add_argument("--dry-run", action="store_true", help="Dry-run mode (stale-repair: detect only, no mutations)")
 
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -512,6 +555,7 @@ def main() -> int:
         "validate-manifest": cmd_validate_manifest,
         "create-sample-declaration": cmd_create_sample_declaration,
         "list-unreviewed-declarations": cmd_list_unreviewed,
+        "stale-repair": cmd_stale_repair,
         # Legacy ZIP/watcher commands
         "discover": cmd_discover,
         "review": cmd_review,

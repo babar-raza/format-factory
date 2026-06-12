@@ -11,7 +11,6 @@ authority_state: ai_draft on all outputs. non_authoritative: True.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import re
 from datetime import datetime, timezone
@@ -132,7 +131,7 @@ def _gateway_summarize(
             gate_id="gate-5",
         )
         _append_ledger(record, sprint_id)
-        return resp.get("content", "") or f"[gateway_empty] No summary returned."
+        return resp.get("content", "") or "[gateway_empty] No summary returned."
     except Exception as e:
         return f"[fixture_error] {type(e).__name__}: {e}"
 

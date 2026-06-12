@@ -5,7 +5,6 @@
 
 """Tests for ZST compression at different levels and with varied data patterns."""
 
-import pytest
 import sys
 import os
 

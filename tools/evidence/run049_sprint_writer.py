@@ -22,10 +22,7 @@ Sections:
 
 import os
 import sys
-import json
-import hashlib
 from pathlib import Path
-from datetime import datetime
 
 REPO = Path("c:/Users/prora/OneDrive/Documents/GitHub/format-factory")
 META_DIR = REPO / ".local" / "run049-sprint-metadata"
@@ -435,7 +432,7 @@ Contracts missing field (patched): {len(contracts_patched)}
         status = "PATCHED" if was_patched else ("MISSING (patch failed)" if was_missing else "OK")
         report += f"- {c}: {status}\n"
 
-    report += f"""
+    report += """
 ## Closure Decision
 
 All run contracts now have current_state_authority: bundle-metadata or
@@ -451,7 +448,7 @@ CLOSURE_POLICY_CHECK: PASS
     stage_meta("c-check-002.txt",
                f"CHECK: C-002\nrun047 contract has current_state_authority: {closure_field not in open(contracts_dir / 'run047-combined-sprint.yaml', encoding='utf-8').read() if (contracts_dir / 'run047-combined-sprint.yaml').exists() else 'file absent'}\nStatus: PATCHED or OK\n")
     stage_meta("c-check-003.txt",
-               f"CHECK: C-003\nrun048 contract closure policy field present after patch: PASS\nStatus: PASS\n")
+               "CHECK: C-003\nrun048 contract closure policy field present after patch: PASS\nStatus: PASS\n")
     stage_meta("c-check-004.txt",
                "CHECK: C-004\nbase-run.yaml already has current_state_authority: bundle-metadata\nStatus: OK (no patch needed)\n")
     stage_meta("c-check-005.txt",
@@ -921,7 +918,7 @@ authorization_model: >
         "FUL-001 status note updated"
     )
 
-    schema_report = f"""# FUL-001 Schema Design Report
+    schema_report = """# FUL-001 Schema Design Report
 # Section E — run049 (2026-05-08)
 
 ## Schemas Created
@@ -2291,7 +2288,7 @@ def section_s_llm_policy():
 
     pass_count = sum(1 for _, _, c in checks if c)
 
-    llm_report = f"""# LLM and Embedding Policy Preservation Report
+    llm_report = """# LLM and Embedding Policy Preservation Report
 # Section S — run049 (2026-05-08)
 
 ## Policy Source
@@ -2609,7 +2606,7 @@ def section_v_metadata_summary():
     # master-plan snapshot
     mp_content = (REPO / "plans/master-plan.md").read_text(encoding="utf-8")
     stage_meta("master-plan-snapshot.md",
-               f"# Master Plan Snapshot — run049 Bundle Build\n# Generated at bundle build time\n\n"
+               "# Master Plan Snapshot — run049 Bundle Build\n# Generated at bundle build time\n\n"
                + mp_content[:5000]
                + "\n\n[...truncated for bundle metadata...]\n")
 

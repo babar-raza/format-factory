@@ -14,7 +14,6 @@ Key difference from R45 test_r45_consumer_proof.py:
 """
 
 import subprocess
-import textwrap
 from pathlib import Path
 
 import pytest

@@ -17,13 +17,12 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
 
-import pytest
-from stale_detection import detect_stale_state, _parse_timestamp, _count_accepted_in_files
+from stale_detection import detect_stale_state, _parse_timestamp
 
 
 # ===========================================================================

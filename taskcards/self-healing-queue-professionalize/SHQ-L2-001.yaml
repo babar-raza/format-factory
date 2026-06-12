@@ -1,0 +1,51 @@
+item_id: SHQ-L2-001
+title: "Lane 2 — Queue-first product mutation: 3 functions via QUEUE_DISPATCHED path"
+lane: L2-queue-product
+status: completed
+sprint_id: FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001
+run_id: format-factory-self-healing-queue-professionalize-rnext-20260611-1500
+acceptance_criteria: >
+  Exactly 3 product functions added via queue dispatch (anl-q-001, shq-q-001, shq-q-002);
+  NO BACKFILLED_LEGACY_EXECUTION for any new function;
+  all 3 have queue items with status=done;
+  all 3 have passing focused tests;
+  execution_method declared for each.
+product_tasks:
+  - id: anl-q-001
+    function: search_text
+    format: abw
+    status: pending_execution
+  - id: shq-q-001
+    function: append_rows
+    format: tsv
+    status: to_create
+  - id: shq-q-002
+    function: flatten_records
+    format: ndjson
+    status: to_create
+evidence_paths:
+  - src/python/abw/abw_codec.py
+  - src/python/tsv/tsv_parser.py
+  - src/python/ndjson/ndjson_codec.py
+  - tests/supervisor/test_queue_product_mutations.py
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/lane-2-queue-product-mutation-report.md
+tests_supporting:
+  - tests/supervisor/test_queue_product_mutations.py
+allowed_paths:
+  - src/python/abw/
+  - src/python/tsv/
+  - src/python/ndjson/
+  - tests/python/abw/
+  - tests/python/tsv/
+  - tests/python/ndjson/
+  - tests/supervisor/
+  - .local/supervisor/action-queue.jsonl
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/
+  - reports/autonomy-next-level-mega-sprint-001/
+forbidden_paths:
+  - src/net/
+  - registry/
+  - .supervisor/
+  - tools/supervisor/
+execution_method: QUEUE_DISPATCHED_EXECUTION
+item_type: PRODUCT_SOURCE

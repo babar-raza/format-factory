@@ -82,5 +82,5 @@ class TestRejectPendingBundleBuildMetadata:
                     if ph in content:
                         violations.append(f"{f.name}: '{ph}'")
         assert not violations, (
-            f"R83 metadata has PENDING_BUNDLE_BUILD placeholders:\n" + "\n".join(violations)
+            "R83 metadata has PENDING_BUNDLE_BUILD placeholders:\n" + "\n".join(violations)
         )

@@ -10,7 +10,6 @@ License: Apache-2.0
 """
 from __future__ import annotations
 
-import io
 import tomllib
 from pathlib import Path
 from typing import Any
@@ -570,3 +569,183 @@ def rename_key(data: dict[str, Any], old_key: str, new_key: str) -> dict[str, An
         else:
             result[k] = v
     return result
+
+
+# FORMAT_FACTORY_EXECUTION: taskcard=PD-Q-001; method=QUEUE_DISPATCHED_EXECUTION; queue_item=pdrnext-q-001
+def has_section(source: str | bytes | Path, section: str) -> bool:
+    """Return True if the TOML source has a top-level section with the given name.
+
+    Args:
+        source: TOML string, bytes, or file path.
+        section: Section name to check.
+
+    Returns:
+        True if the section exists and its value is a dict, False otherwise.
+    """
+    model = load_toml(source)
+    raw_data = model.get("data", {})
+    return isinstance(raw_data.get(section), dict)
+
+
+def update_section(data: dict[str, Any], section: str, updates: dict[str, Any]) -> dict[str, Any]:
+    """Merge key/value pairs into a specific section of a TOML data dict in-memory.
+
+    Args:
+        data: Parsed TOML dict (from load_toml or similar).
+        section: Top-level key identifying the section dict to update.
+        updates: Key/value pairs to merge into the section.
+
+    Returns:
+        New dict with the section updated. Other sections are unchanged.
+        If section does not exist, it is created.
+        Raises TypeError if the existing section value is not a dict.
+    """
+    result = dict(data)
+    existing = result.get(section, {})
+    if not isinstance(existing, dict):
+        raise TypeError(
+            f"Section {section!r} is not a dict (got {type(existing).__name__})"
+        )
+    result[section] = {**existing, **updates}
+    return result
+
+
+def get_all_keys(source: "str | bytes | Path", separator: str = ".") -> "list[str]":
+    """Return all keys in a TOML source, recursively, as dot-separated paths.
+
+    Top-level scalar keys are returned as-is. Nested dict keys are returned
+    as parent.child paths using the given separator.
+
+    Args:
+        source: TOML file path, bytes, or string content.
+        separator: String to join key path segments. Default '.'.
+
+    Returns:
+        Sorted list of all key paths (strings) in the document.
+    """
+    model = load_toml(source)
+    data = model.get("data", {}) if isinstance(model, dict) and "data" in model else model
+
+    result: list[str] = []
+
+    def _collect(obj: Any, prefix: str) -> None:
+        if not isinstance(obj, dict):
+            return
+        for key, val in obj.items():
+            path = f"{prefix}{separator}{key}" if prefix else key
+            result.append(path)
+            if isinstance(val, dict):
+                _collect(val, path)
+
+    _collect(data, "")
+    return sorted(result)
+
+
+def get_section_as_dict(
+    source: "str | bytes | Path",
+    section: str,
+) -> dict:
+    """Return the value of a top-level section key as a dict.
+
+    Args:
+        source: TOML string, bytes, or file path.
+        section: Top-level key name to retrieve.
+
+    Returns:
+        The section value if it is a dict, or {} if not found / not a dict.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    value = data.get(section, {})
+    if isinstance(value, dict):
+        return value
+    return {}
+
+
+def has_any_section(source: "str | bytes | Path") -> bool:
+    """Return True if the TOML document has at least one top-level section (dict value).
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        True if any top-level key has a dict value, False otherwise.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    return any(isinstance(v, dict) for v in data.values())
+
+
+def count_values_in_section(source: "str | bytes | Path", section: str) -> int:
+    """Count the number of key-value pairs in a top-level TOML section.
+
+    Args:
+        source: TOML string, bytes, or file path.
+        section: Top-level section name.
+
+    Returns:
+        Number of keys in the section, or 0 if section not found or not a dict.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    value = data.get(section, {})
+    if isinstance(value, dict):
+        return len(value)
+    return 0
+
+
+def toml_string_value_count(source: "str | bytes | Path") -> int:
+    """Count the number of top-level values that are strings.
+
+    Counts only the top-level key-value pairs where the value is a str.
+    Nested values inside sections are not included.
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        Integer count of top-level string values.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(1 for v in data.values() if isinstance(v, str))
+
+
+def toml_list_count(source: "str | bytes | Path") -> int:
+    """Count the number of top-level values that are lists (TOML arrays).
+
+    Counts only the top-level key-value pairs where the value is a list.
+    Nested values inside sections are not included.
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        Integer count of top-level list/array values.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(1 for v in data.values() if isinstance(v, list))
+
+
+def count_sections_with_key(source: "str | bytes | Path", key: str) -> int:
+    """Count how many top-level TOML sections contain a specific key.
+
+    Iterates over all top-level values that are dicts (i.e., TOML sections/tables)
+    and counts how many of them contain the given key as a direct child.
+
+    Args:
+        source: TOML string, bytes, or file path.
+        key: The key name to search for within each section.
+
+    Returns:
+        Integer count of top-level sections that contain ``key``.
+        Returns 0 if no sections exist or none contain the key.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    count = 0
+    for v in data.values():
+        if isinstance(v, dict) and key in v:
+            count += 1
+    return count

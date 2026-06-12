@@ -11,9 +11,7 @@ if str(_src) not in sys.path:
 import pytest
 from dif.dif_parser import (
     DifDocument,
-    DifError,
     DifInvalidFormatError,
-    DifSizeError,
     parse_dif,
     parse_dif_strict,
     probe_dif,

@@ -9,7 +9,6 @@ R71 IV-R72-003: external-sidecar-proof-summary.txt had "to be generated after Pa
 
 These were RC-blocking defects. R72 must have final, non-placeholder metadata.
 """
-import os
 import pathlib
 import pytest
 

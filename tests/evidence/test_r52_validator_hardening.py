@@ -10,13 +10,11 @@ import io
 import sys
 import zipfile
 import pathlib
-import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools" / "evidence"))
 
 from validate_evidence_bundle import (
-    COMMAND_LOG_STALE_PATTERNS,
     check_validation_command_log_freshness,
     check_proof_sha_consistency,
     check_state_verdict_agreement,
@@ -58,7 +56,7 @@ class TestProofSHAConsistency:
 
     def _make_bundle_with_proof(self, proof_content):
         """Return a path to a temp ZIP containing the given proof content."""
-        import tempfile, os
+        import tempfile
         tmp = tempfile.NamedTemporaryFile(suffix=".zip", delete=False)
         with zipfile.ZipFile(tmp, "w") as zf:
             zf.writestr("bundle-metadata/dummy.txt", "x")

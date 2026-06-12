@@ -123,7 +123,7 @@ def test_artifact_source_commit_is_prior_to_current_head():
     data = _load_yaml_simple(pam)
     commit = data.get("artifact_source_commit", "")
     if not SHA_PATTERN.match(commit):
-        pytest.skip(f"artifact_source_commit not a valid SHA")
+        pytest.skip("artifact_source_commit not a valid SHA")
 
     try:
         # Check if commit is an ancestor of HEAD (or equals HEAD)

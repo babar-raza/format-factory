@@ -491,3 +491,168 @@ def count_white(file_path: str | Path) -> int:
     """Return the count of white pixels (value=0) in a PBM image."""
     img = parse_pbm_strict(file_path)
     return sum(1 for p in img.pixels if p == 0)
+
+
+# Sprint: FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001
+# Queue: broad-accel-q-007
+
+def aspect_ratio(file_path: "str | Path") -> float:
+    """Return the aspect ratio (width / height) of a PBM image.
+
+    Args:
+        file_path: Path to a PBM image file.
+
+    Returns:
+        Float ratio width/height. Returns 0.0 for zero-height images.
+
+    Raises:
+        PbmParseError: If the file cannot be parsed.
+    """
+    img = parse_pbm_strict(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def rotate_90(file_path: "str | Path", dest_path: "str | Path") -> dict[str, Any]:
+    """Rotate a PBM image 90 degrees clockwise and write the result.
+
+    The output image has width=original_height and height=original_width.
+    Pixel at (row, col) in the original maps to (col, height-1-row) in the result.
+
+    Args:
+        file_path: Source PBM file path.
+        dest_path: Destination PBM file path.
+
+    Returns:
+        Dict with keys: ok, width, height, pixel_count.
+
+    Raises:
+        PbmError: If source cannot be parsed.
+    """
+    img = parse_pbm_strict(file_path)
+    new_w = img.height
+    new_h = img.width
+    rotated: list[int] = [0] * (new_w * new_h)
+    for row in range(img.height):
+        for col in range(img.width):
+            src_idx = row * img.width + col
+            dst_row = col
+            dst_col = img.height - 1 - row
+            dst_idx = dst_row * new_w + dst_col
+            rotated[dst_idx] = img.pixels[src_idx]
+    write_pbm(rotated, new_w, new_h, dest_path)
+    return {"ok": True, "width": new_w, "height": new_h, "pixel_count": len(rotated)}
+
+
+def black_pixel_ratio(file_path: "str | Path") -> float:
+    """Return the fraction of black pixels (1-values) in a PBM image.
+
+    In PBM format, 1 = black and 0 = white.
+
+    Args:
+        file_path: Path to a PBM image file.
+
+    Returns:
+        Float in [0.0, 1.0] representing fraction of black pixels.
+        Returns 0.0 for empty images.
+
+    Raises:
+        PbmParseError: If the file cannot be parsed.
+    """
+    img = parse_pbm_strict(file_path)
+    total = img.width * img.height
+    if total == 0:
+        return 0.0
+    black = sum(1 for px in img.pixels if px == 1)
+    return black / total
+
+
+def pbm_white_pixel_ratio(file_path: "str | Path") -> float:
+    """Return the fraction of white pixels (0-values) in a PBM image.
+
+    In PBM format, 0 = white and 1 = black.
+
+    Args:
+        file_path: Path to a PBM image file.
+
+    Returns:
+        Float in [0.0, 1.0] representing fraction of white pixels.
+        Returns 0.0 for empty images.
+
+    Raises:
+        PbmParseError: If the file cannot be parsed.
+    """
+    return 1.0 - black_pixel_ratio(file_path)
+
+
+def pbm_aspect_ratio(file_path: "str | Path") -> float:
+    """Return the aspect ratio (width / height) of a PBM image.
+
+    Args:
+        file_path: Path to a PBM image file.
+
+    Returns:
+        Float representing width divided by height.
+        Returns 0.0 for images with zero height.
+
+    Raises:
+        PbmParseError: If the file cannot be parsed.
+    """
+    img = parse_pbm_strict(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def pbm_white_pixel_count(file_path: "str | Path") -> int:
+    """Return the count of white pixels (value 0) in a PBM image.
+
+    In PBM format, 0 = white and 1 = black.
+
+    Args:
+        file_path: Path to a PBM file.
+
+    Returns:
+        Integer count of white pixels. Returns 0 for all-black images.
+
+    Raises:
+        PbmParseError: If the file cannot be parsed.
+    """
+    img = parse_pbm_strict(file_path)
+    return sum(1 for p in img.pixels if p == 0)
+
+
+def scale_nearest(file_path: "str | Path", dest_path: "str | Path", factor: int) -> dict[str, Any]:
+    """Scale a PBM image up by an integer factor using nearest-neighbor interpolation.
+
+    Each pixel becomes a factor x factor block of identical pixels.
+
+    Args:
+        file_path: Source PBM file path.
+        dest_path: Destination PBM file path.
+        factor: Integer scale factor (must be >= 1).
+
+    Returns:
+        Dict with keys: ok, width, height, pixel_count.
+
+    Raises:
+        PbmError: If source cannot be parsed.
+        ValueError: If factor < 1.
+    """
+    if factor < 1:
+        raise ValueError(f"Scale factor must be >= 1, got {factor}")
+    img = parse_pbm_strict(file_path)
+    new_w = img.width * factor
+    new_h = img.height * factor
+    scaled: list[int] = [0] * (new_w * new_h)
+    for row in range(img.height):
+        for col in range(img.width):
+            px = img.pixels[row * img.width + col]
+            for dr in range(factor):
+                for dc in range(factor):
+                    dst_row = row * factor + dr
+                    dst_col = col * factor + dc
+                    scaled[dst_row * new_w + dst_col] = px
+    write_pbm(scaled, new_w, new_h, dest_path)
+    return {"ok": True, "width": new_w, "height": new_h, "pixel_count": len(scaled)}

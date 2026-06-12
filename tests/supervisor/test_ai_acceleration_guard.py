@@ -19,7 +19,6 @@ from validate_spec_fact_refs import (
     validate_spec_cache_ai_guard,
     _AI_EXTRACTION_METHODS,
     _INDEPENDENT_VERIFICATION_METHODS,
-    reset_fact_registry_cache,
 )
 
 

@@ -12,7 +12,6 @@ Tests:
 """
 
 import sys
-import json
 from pathlib import Path
 
 import pytest
@@ -25,7 +24,6 @@ from tools.ai.retrieval.namespace_manager import (
     IndexManifest,
     CrossNamespaceError,
     MissingEmbeddingModelError,
-    StaleIndexError,
 )
 from tools.ai.telemetry.drain import (
     is_agent_metrics_configured,

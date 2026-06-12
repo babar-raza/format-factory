@@ -11,7 +11,6 @@ sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 from generate_supervisor_packet import (
     generate_next_sprint_md,
     synthesize_sprint_tasks,
-    STREAM_FOCUS,
 )
 
 

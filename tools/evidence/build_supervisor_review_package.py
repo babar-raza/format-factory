@@ -245,10 +245,10 @@ def build_supervisor_review_package(
     print(f"  Review package size: {review_pkg_size:,} bytes")
     print(f"  Entry count: {entry_count}")
     print(f"  Standalone SHA: {review_sha_path.name}")
-    print(f"  Included files:")
+    print("  Included files:")
     for name, info in included_files.items():
         print(f"    {name}: {info['sha256'][:16]}... ({info['size_bytes']:,} bytes)")
-    print(f"REVIEW_PACKAGE_BUILD: PASS")
+    print("REVIEW_PACKAGE_BUILD: PASS")
 
     return {
         "review_package_path": str(output),

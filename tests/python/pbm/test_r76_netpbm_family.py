@@ -12,8 +12,6 @@ These tests verify consistent behavior across the Netpbm family:
 Tests run against all three Netpbm parsers to prove family consistency.
 """
 
-import io
-import struct
 import sys
 from pathlib import Path
 

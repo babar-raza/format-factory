@@ -1379,13 +1379,13 @@ def main() -> int:
     (output_dir / "session-resume.md").write_text(resume_text, encoding="utf-8")
 
     critical_count = contradictions.get("critical_count", 0)
-    print(f"PACKET_GENERATION: COMPLETE")
+    print("PACKET_GENERATION: COMPLETE")
     print(f"  Output dir: {output_dir}")
     print(f"  next-sprint.md: written ({len(tasks)} tasks synthesized)")
-    print(f"  next-sprint-taskmaster.json: written" + (f" (schema errors: {tm_errors})" if tm_errors else " (schema OK)"))
-    print(f"  next-ruflo-lanes.json: written" + (f" (schema errors: {ruflo_errors})" if ruflo_errors else " (schema OK)"))
+    print("  next-sprint-taskmaster.json: written" + (f" (schema errors: {tm_errors})" if tm_errors else " (schema OK)"))
+    print("  next-ruflo-lanes.json: written" + (f" (schema errors: {ruflo_errors})" if ruflo_errors else " (schema OK)"))
     print(f"  approval-gates.md: written (mode {current_mode}: {'MCP ACTIVE' if current_mode >= 4 else 'MCP pending'})")
-    print(f"  session-resume.md: written")
+    print("  session-resume.md: written")
 
     if critical_count > 0:
         print(f"  NOTE: {critical_count} CRITICAL contradictions — next-sprint focuses on repair")

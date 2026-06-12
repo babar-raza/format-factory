@@ -1,0 +1,27 @@
+taskcard_id: LFI-2-H01
+title: "Evidence declaration and supervisor autonomous-cycle"
+lane: H
+owner_role: verifier
+status: ACCEPTED_VERIFIED
+allowed_paths:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/"
+forbidden_paths:
+  - "src/python/"
+  - "src/net/"
+  - "registry/"
+  - "tools/supervisor/autonomous_cycle.py"
+inputs:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/verification-summary.md"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/pytest-output.log"
+outputs:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/evidence-declaration.yaml"
+file_ownership:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/evidence-declaration.yaml"
+tests_supporting:
+  - "tests/supervisor/test_test_drivers.py"
+verification_commands:
+  - ".local/venv/Scripts/python -c \"import yaml; d=yaml.safe_load(open('.local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/evidence-declaration.yaml')); assert 'run_id' in d; print('SCHEMA OK')\""
+evidence_files:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/evidence-declaration.yaml"
+rollback: "Delete evidence-declaration.yaml"
+closeout_criteria: "evidence-declaration.yaml valid with tests_supporting populated; supervisor cycle exit 0 or documented blocker"

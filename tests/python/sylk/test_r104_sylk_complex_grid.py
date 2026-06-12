@@ -2,15 +2,12 @@
 # Lane F — SYLK FOSS hardening
 # Ledger: R104-FOSS-SYLK-COMPLEX-GRID-001
 
-import pytest
-from pathlib import Path
 from sylk.sylk_parser import (
     SylkDocument,
     SylkCell,
     write_sylk,
     parse_sylk_strict,
     sylk_to_csv,
-    SylkError,
 )
 
 

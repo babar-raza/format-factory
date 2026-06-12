@@ -9,10 +9,8 @@ R60 Sprint: FORMAT-FACTORY-R60-CURRENT-HEAD-RC-ARTIFACTS-SIDECAR-CLOSURE-PHASE11
 from __future__ import annotations
 
 import subprocess
-import sys
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 MANIFEST_PATH = PROJECT_ROOT / ".local" / "r60-metadata" / "package-artifact-manifest.yaml"
@@ -45,7 +43,6 @@ class TestR60SourceCommit:
 
     def test_r60_manifest_sha256_are_64_chars(self):
         """All SHA-256 entries in manifest must be 64-char hex strings."""
-        import re
         text = MANIFEST_PATH.read_text(encoding="utf-8")
         sha_lines = [ln.strip() for ln in text.splitlines() if "sha256:" in ln and "PLACEHOLDER" not in ln]
         for ln in sha_lines:

@@ -4,12 +4,10 @@ Verifies detection, classification, and authority boundary enforcement.
 """
 
 import sys
-import json
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
 
-import pytest
 
 
 class TestExternalToolDetection:

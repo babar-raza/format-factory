@@ -19,12 +19,10 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import yaml
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent

@@ -1,0 +1,28 @@
+id: SAL-I-001
+title: "Wire validate_spec_fact_refs into governance_validators (V13)"
+sprint: FORMAT-FACTORY-SAL-VERIFICATION-HEALING-HARDENING-BACKFILL-SINGLE-GO-001
+status: COMPLETED
+completed_in_run: sal-verification-healing-hardening-backfill-single-go-20260611-8e45224
+completed_date: "2026-06-11"
+
+description: >
+  Add validate_spec_fact_refs_wired() as the 13th governance validator in
+  run_all_governance_validators(). PRODUCT_SOURCE/READINESS/RELEASE_GATE items
+  without FACT-* refs and no valid exception_classification must produce
+  blocks_sprint=True.
+
+files_changed:
+  - tools/supervisor/governance_validators.py
+  - tests/supervisor/test_governance_validators_spec_fact_refs.py
+
+tests_added: 17
+tests_result: 17/17 PASS
+
+gap_closed: GAP-01
+root_cause: >
+  validate_spec_fact_refs.py had correct BLOCKING logic but was never called
+  from governance_validators.py. Sprint design focused on proving tool
+  correctness; integration deferred repeatedly.
+
+integration_point: "governance_validators.run_all_governance_validators() line ~420"
+blocking_threshold: "P1 format without valid exception -> blocks_sprint=True"

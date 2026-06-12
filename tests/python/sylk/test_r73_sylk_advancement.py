@@ -9,7 +9,6 @@ Sprint: FORMAT-FACTORY-R73-DELIVERY-PACKAGE-TRUTH-PRODUCT-ADVANCEMENT-GATE-READI
 from __future__ import annotations
 
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -24,8 +23,6 @@ from src.python.sylk.sylk_parser import (
     get_capabilities,
     SylkError,
     SylkInvalidFormatError,
-    SylkDocument,
-    SylkCell,
 )
 
 VALID = PROJECT_ROOT / "samples" / "by-format" / "sylk" / "valid"

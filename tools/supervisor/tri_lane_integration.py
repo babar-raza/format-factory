@@ -35,7 +35,6 @@ Exit codes:
 """
 
 import json
-import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -406,7 +405,7 @@ def emit_latest_input_selection(
 
     md_lines = [
         "# Latest Input Selection",
-        f"# Sprint: FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
+        "# Sprint: FORMAT-FACTORY-TRI-LANE-INTEGRATION-REFRESH-AND-MAINSTREAM-READINESS-GATE-001",
         "",
         "## Skills Selections",
         "",
@@ -931,7 +930,7 @@ def main() -> int:
     result = run_integration(root)
 
     # Print summary
-    print(f"\n=== Tri-Lane Integration (Refresh v2) ===")
+    print("\n=== Tri-Lane Integration (Refresh v2) ===")
     print(f"Status: {result['status']}")
     print(f"Active families: {result.get('active_family_count', 0)}")
     print(f"Acceleration hardening index used: {result.get('acceleration_hardening_index_used', False)}")

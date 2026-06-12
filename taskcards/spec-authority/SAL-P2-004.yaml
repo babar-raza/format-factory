@@ -1,0 +1,26 @@
+id: SAL-P2-004
+title: "SAL Phase 2 — FODS product advancement: workbook_row_count + workbook_cell_text_at"
+sprint: FORMAT-FACTORY-SAL-PHASE2-CLOSEOUT-AND-PRODUCT-GATED-ADVANCEMENT-001
+status: COMPLETED
+completed_in_run: sal-phase2-closeout-product-gated-advancement-20260612-8e45224
+completed_date: "2026-06-12"
+
+description: >
+  Added two new FODS product functions backed by verified spec facts:
+  - workbook_row_count(wb, sheet_index=0): FACT-FODS-005 (rows are table:table-row children)
+  - workbook_cell_text_at(wb, s, r, c): FACT-FODS-006 + FACT-FODS-007 (cells and text:p children)
+  Both functions follow the SAL policy: product code backed by FACT-* references from the
+  verified spec cache. Exported in fods/__init__.py __all__. 16 tests passing.
+
+files_changed:
+  - src/python/fods/neutral_model.py (workbook_row_count, workbook_cell_text_at added)
+  - src/python/fods/__init__.py (exported in __all__)
+  - tests/python/fods/test_r169_sal_product_advancement.py (16 new tests)
+
+spec_fact_refs:
+  - FACT-FODS-005  # Rows are table:table-row children of table:table
+  - FACT-FODS-006  # Cells are table:table-cell children of table:table-row
+  - FACT-FODS-007  # Cell text is in text:p children of table:table-cell
+
+tests_added: 16
+tests_result: "16/16 PASS"

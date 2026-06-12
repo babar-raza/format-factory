@@ -19,7 +19,6 @@ from src.python.csv.csv_parser import (
     SUPPORTED_FEATURES,
     UNSUPPORTED_FEATURES,
     CsvInputError,
-    CsvSizeError,
     get_capabilities,
     parse_csv,
     parse_csv_strict,

@@ -1,0 +1,30 @@
+item_id: SHQ-L1-001
+title: "Lane 1 — Self-healing loop pilot: ReworkOrchestrator wiring bounded_repair_engine"
+lane: L1-healing-loop
+status: completed
+sprint_id: FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001
+run_id: format-factory-self-healing-queue-professionalize-rnext-20260611-1500
+acceptance_criteria: >
+  rework_orchestrator.py built; detects stale queue items via capability_verifier;
+  classifies defect (STALE_QUEUE_ITEM); creates repair taskcard; executes repair
+  (marks stale items done); verifies via capability_verifier re-run; idempotency proven;
+  stop-condition proven (unrepairable defect blocks safely); all tests pass.
+evidence_paths:
+  - tools/supervisor/rework_orchestrator.py
+  - tests/supervisor/test_rework_orchestrator.py
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/lane-1-healing-loop-report.md
+tests_supporting:
+  - tests/supervisor/test_rework_orchestrator.py
+allowed_paths:
+  - tools/supervisor/rework_orchestrator.py
+  - tests/supervisor/test_rework_orchestrator.py
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/
+  - taskcards/self-healing-queue-professionalize/
+forbidden_paths:
+  - src/net/
+  - registry/
+  - .supervisor/
+  - tools/supervisor/autonomous_cycle.py
+  - tools/supervisor/bounded_repair_engine.py
+execution_method: AGENT_GOVERNED_DIRECT_EXECUTION
+item_type: PRODUCT_SOURCE

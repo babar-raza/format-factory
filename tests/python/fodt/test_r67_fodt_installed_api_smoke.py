@@ -5,7 +5,6 @@ Proves all 17+ FODT public functions work from the installed R67 wheel.
 from __future__ import annotations
 
 import subprocess
-import sys
 from pathlib import Path
 
 import pytest

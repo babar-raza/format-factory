@@ -14,14 +14,12 @@ import zipfile
 import io
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from tools.evidence.validate_evidence_bundle import (
     check_no_pending_reports,
-    check_closeout_hygiene_tokens,
 )
 
 

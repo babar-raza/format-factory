@@ -7,10 +7,9 @@ Defines stop reason taxonomy, resume policy, and post-closeout continuation.
 from __future__ import annotations
 
 import json
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Optional
 
 _here = Path(__file__).resolve().parent
 _repo_root = _here.parent.parent

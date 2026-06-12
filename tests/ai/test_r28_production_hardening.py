@@ -14,18 +14,14 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.ai.synthesis.citation_verifier import (
-    CitationResult,
-    VerificationReport,
     verify_all_citations,
     verify_single_citation,
 )
 from tools.ai.synthesis.contradiction_detector import (
-    ContradictionReport,
     check_output_contradictions,
 )
 from tools.ai.synthesis.evaluator import (
     EvaluationCriteria,
-    EvaluationResult,
     evaluate_synthesis,
 )
 from tools.ai.synthesis.runner import SynthesisResult, run_synthesis

@@ -25,7 +25,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import shutil
 import subprocess
 import sys
@@ -237,7 +236,7 @@ def main() -> int:
 
     if args.wheel is None:
         if args.require_wheel:
-            print(f"ERROR: --require-wheel set but --wheel not provided")
+            print("ERROR: --require-wheel set but --wheel not provided")
             return 1
         print(f"WARNING: No wheel specified for {args.format}; skipping reproducibility proof")
         return 0

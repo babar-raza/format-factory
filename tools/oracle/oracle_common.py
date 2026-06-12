@@ -97,7 +97,7 @@ def find_soffice(override=None, verbose=False):
     # 1. CLI override
     if override:
         candidates.append(override)
-        source_labels[override] = f"--soffice-path / CLI override"
+        source_labels[override] = "--soffice-path / CLI override"
 
     # 2. Environment variable
     env_path = os.environ.get(SOFFICE_ENV_VAR, "").strip()
@@ -174,7 +174,7 @@ def print_discovery_summary(soffice_path, version, missing_samples):
     print(f"Python: {sys.version.split()[0]}")
     print()
     if soffice_path:
-        print(f"Oracle binary: FOUND")
+        print("Oracle binary: FOUND")
         print(f"  Path: {soffice_path}")
         print(f"  Version: {version}")
     else:

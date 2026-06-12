@@ -12,11 +12,8 @@ from zst.zst_codec import (
     ZstInvalidFrameError,
     ZstDecompressionError,
     ZstOutputLimitExceeded,
-    ZSTD_MAGIC,
     DEFAULT_MAX_OUTPUT_BYTES,
 )
-import tempfile
-import os
 
 
 class TestOutputGuard:

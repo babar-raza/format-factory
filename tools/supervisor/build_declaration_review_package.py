@@ -84,7 +84,7 @@ def build_package(declaration_path: Path, repo_root: Path, out_dir: Path) -> dic
     # R108: Also check declaration's evidence_root for manifest (autonomous_cycle writes there)
     decl_evidence_root = repo_root / decl.get("evidence_root", "") if decl.get("evidence_root") else None
 
-    zip_path = out_dir / f"declaration-review-package.zip"
+    zip_path = out_dir / "declaration-review-package.zip"
     missing = []
 
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:

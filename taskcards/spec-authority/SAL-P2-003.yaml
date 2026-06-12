@@ -1,0 +1,33 @@
+id: SAL-P2-003
+title: "SAL Phase 2 — stale fact detection policy (SAL-GAP-005, warning mode)"
+sprint: FORMAT-FACTORY-SAL-PHASE2-CLOSEOUT-AND-PRODUCT-GATED-ADVANCEMENT-001
+status: COMPLETED
+completed_in_run: sal-phase2-closeout-product-gated-advancement-20260612-8e45224
+completed_date: "2026-06-12"
+
+description: >
+  Partially healed SAL-GAP-005: stale fact detection implemented in WARNING mode.
+  Facts are classified as CURRENT (sha256 matches), STALE_WARNING (hashes mismatch),
+  or UNKNOWN_FRESHNESS (no hash baseline). Hard-block is not used because legacy
+  formats (ABW, DIF, TSV, Gnumeric) have no registered source hashes. Warning mode
+  avoids disrupting product work. 17 tests passing in
+  tests/supervisor/test_stale_fact_detection.py.
+
+files_changed:
+  - tests/supervisor/test_stale_fact_detection.py (17 new tests)
+  - .local/evidences/sal-phase2-closeout-product-gated-advancement-20260612-8e45224/stale-fact-detection-proof.json
+
+gap_status: PARTIALLY_HEALED
+warning_mode: true
+hard_block: false
+rationale: >
+  Hard-blocking all product work when source hashes mismatch would disrupt legacy formats
+  (ABW/DIF/TSV/Gnumeric) that have no hash baseline. Warning mode is appropriate until
+  all formats have registered source hashes.
+
+tests_added: 17
+tests_result: "17/17 PASS"
+
+next_sprint_action: >
+  Sprint 3: register source_sha256 for FODS/FODT/PBM/PGM/PPM facts. Add automated
+  spec-change detection hook. Promote WARNING mode to BLOCK for formats with registered hashes.

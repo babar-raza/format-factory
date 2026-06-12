@@ -8,8 +8,6 @@ Defect fixed: D79-08 — R79 evidence contained tests that all skipped
 """
 from __future__ import annotations
 
-import subprocess
-import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent

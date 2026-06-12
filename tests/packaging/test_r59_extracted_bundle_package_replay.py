@@ -15,7 +15,6 @@ IV-R58-008, IV-R58-009
 """
 from __future__ import annotations
 
-import os
 import sys
 import tempfile
 import zipfile
@@ -106,8 +105,8 @@ class TestExtractedBundleReplayCurrentSprint:
 
             result = find_artifact_dir(run_label, extracted_repo)
             assert result is not None, (
-                f"find_artifact_dir must find artifacts from extracted bundle parent dir. "
-                f"IV-R58-009 fix required."
+                "find_artifact_dir must find artifacts from extracted bundle parent dir. "
+                "IV-R58-009 fix required."
             )
 
     def test_current_bundle_has_sdists(self):

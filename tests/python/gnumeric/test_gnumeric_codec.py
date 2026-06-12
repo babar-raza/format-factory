@@ -15,9 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 SAMPLES_DIR = REPO_ROOT / "samples" / "by-format" / "gnumeric"
 
 from gnumeric.gnumeric_codec import (
-    GnumericError,
     GnumericParseError,
-    GNM_MIME,
     load,
     get_sheet_count,
     get_cell_count,

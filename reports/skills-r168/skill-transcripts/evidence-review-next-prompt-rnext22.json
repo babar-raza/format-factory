@@ -1,0 +1,29 @@
+{
+  "skill_id": "evidence-review-next-prompt",
+  "skill_version": "1.2",
+  "invocation_timestamp": "2026-06-12T13:30:00Z",
+  "bundle_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\fullsuite-layering-h20-20260611-8e45224\\declaration-review-package.zip",
+  "sprint_reviewed": "FULLSUITE-LAYERING-H20-001",
+  "contract_used": "tools/evidence/contracts/base-run.yaml",
+  "claim_count": 3,
+  "confirmed_count": 2,
+  "incomplete_count": 1,
+  "disputed_count": 0,
+  "missing_count": 0,
+  "bundle_validation_result": "FAIL",
+  "bundle_validation_failure_reason": "Old base-run.yaml contract expects bundle-metadata/+repo/ structure; supervisor pipeline now uses global-state/+review/+sprint-evidence/ structure. Contract is stale, not a sprint work failure.",
+  "consistency_check_result": "PASS",
+  "consistency_check_warn": "Section 33 not found in master-plan.md (non-blocking)",
+  "verdict": "ACCEPTED",
+  "defects_found": [
+    "D-001: column_value_counts test coverage missing (ACCEPTED_WITH_LIMITATIONS)",
+    "D-002: selected-product-gaps.json stale (run_id: hardening-sprint-rnext)",
+    "D-003: next-sprint.md TASK-012--016 reference already-closed gaps",
+    "D-004: poc-targets.yaml commercial_product_ready: false despite G11-G approval",
+    "D-005: base-run.yaml contract stale vs current supervisor bundle format",
+    "D-006: autonomous loop at iteration 8/12, 4 remaining",
+    "D-007: git tree dirty (expected, no commit authorized)"
+  ],
+  "next_sprint_id": "FORMAT-FACTORY-PRODUCT-DEEPENING-GAP-REPAIR-AND-ADVANCE-RNEXT22-001",
+  "next_prompt_ready": true
+}

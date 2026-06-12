@@ -5,7 +5,6 @@
 
 """Tests for ZST streaming compression patterns — chunked input, large payloads."""
 
-import pytest
 import sys
 import os
 

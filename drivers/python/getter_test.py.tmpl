@@ -1,0 +1,17 @@
+"""Test skeleton for ${function_name}() — Pattern A (Getter)."""
+import sys
+from pathlib import Path
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
+from ${module} import ${function_name}
+
+
+class Test${class_name}:
+    def test_basic(self):
+        # TODO: provide a real model or input
+        result = ${function_name}(None)
+        assert result is not None
+
+    def test_returns_${return_type_safe}(self):
+        result = ${function_name}(None)
+        assert isinstance(result, object)

@@ -8,7 +8,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
 
-import pytest
 
 
 def _classify(auto_continue=True, at_max=False, hard_stops=None, overclaimed=None,

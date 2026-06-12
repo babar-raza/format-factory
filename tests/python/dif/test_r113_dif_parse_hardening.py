@@ -1,5 +1,4 @@
 """R113 FOSS: DIF parse error handling hardening."""
-import pytest
 import os
 import sys
 import tempfile

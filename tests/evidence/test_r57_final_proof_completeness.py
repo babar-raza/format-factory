@@ -133,5 +133,5 @@ class TestR56ProofDefectDocumented:
         sha_found = bool(re.search(r"SHA-256.*?[0-9a-f]{64}", content, re.DOTALL))
         assert not sha_found, (
             "R56 proof should lack a full 64-char SHA-256 (IV-R56-008); "
-            f"if this test fails, the proof was updated after IV was written"
+            "if this test fails, the proof was updated after IV was written"
         )

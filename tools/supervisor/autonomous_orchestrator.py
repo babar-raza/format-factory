@@ -35,7 +35,6 @@ import argparse
 import json
 import os
 import sys
-import time
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -46,17 +45,11 @@ _repo_root = _here.parent.parent
 sys.path.insert(0, str(_repo_root))
 
 from tools.supervisor.continuation_state import (
-    ACTIVE_CONTINUATION_PATH,
     NEXT_ACTION_PATH,
-    ORCHESTRATOR_STATE_PATH,
-    ORCHESTRATOR_HEARTBEAT_PATH,
     STOP_REASON_PATH,
     STATE_DIR,
     STOP_MAX_CYCLES,
-    STOP_EXTERNAL_GATE,
-    STOP_INVALID_NEXT_ACTION,
     STOP_NO_SAFE_ACTION,
-    STOP_ADVISORY_PROMPT,
     STOP_DRY_RUN,
     STOP_LOCK_HELD,
     STOP_REPEATED_FAILURE,
@@ -64,7 +57,6 @@ from tools.supervisor.continuation_state import (
     load_active_continuation,
     load_next_action,
     load_orchestrator_state,
-    load_stop_reason,
     make_active_continuation,
     make_orchestrator_state,
     save_active_continuation,
@@ -74,7 +66,7 @@ from tools.supervisor.continuation_state import (
     write_stop_reason,
     STREAM_AUTONOMY,
 )
-from tools.supervisor.continuation_router import route, ROUTE_DISPATCH
+from tools.supervisor.continuation_router import route
 from tools.supervisor.next_action_generator import generate_next_action, save_generation_trace
 from tools.supervisor.next_action_runner import run_action
 from tools.supervisor.action_queue import (

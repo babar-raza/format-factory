@@ -1,0 +1,32 @@
+id: SAL-P2-001
+title: "SAL Phase 2 — capability map direct FACT linkage (spec_fact_refs)"
+sprint: FORMAT-FACTORY-SAL-PHASE2-CLOSEOUT-AND-PRODUCT-GATED-ADVANCEMENT-001
+status: COMPLETED
+completed_in_run: sal-phase2-closeout-product-gated-advancement-20260612-8e45224
+completed_date: "2026-06-12"
+
+description: >
+  Healed SAL-GAP-003: capability map now emits spec_fact_refs (verified-only fact IDs)
+  alongside spec_refs (all facts). The _load_spec_facts() function was updated with a
+  verified_only=True parameter that filters by _VERIFIED_FACT_STATUSES
+  {verified, verified_with_note}. FACT-FODS-002 (not_found_in_normalized_text) is
+  correctly excluded from spec_fact_refs. 17 tests passing in
+  tests/capability_layer/test_capability_fact_linkage.py.
+
+files_changed:
+  - tools/capability_layer/capability_map_generator.py (_load_spec_facts verified_only, spec_fact_refs field in all records)
+  - tests/capability_layer/test_capability_fact_linkage.py (17 new tests)
+
+gap_closed: SAL-GAP-003
+tests_added: 17
+tests_result: "17/17 PASS"
+
+spec_fact_refs_sample:
+  zst: ["FACT-ZST-001", "FACT-ZST-002"]
+  fods: "FACT-FODS-001, FACT-FODS-003..FACT-FODS-010 (FACT-FODS-002 excluded)"
+  abw: []
+  dif: []
+
+next_sprint_action: >
+  Sprint 3: register source_sha256 for CSV facts, promote FODS FACT-FODS-002 to
+  verified by acquiring ODF Part 1 or IANA MIME type registration.

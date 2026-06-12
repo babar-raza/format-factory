@@ -1,6 +1,5 @@
 """Tests for AI Platform Pydantic schemas and YAML contracts."""
 
-import os
 import sys
 from pathlib import Path
 

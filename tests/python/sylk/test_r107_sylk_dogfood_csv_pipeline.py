@@ -4,7 +4,6 @@
 import importlib
 import os
 import tempfile
-import pytest
 
 sylk = importlib.import_module("sylk")
 

@@ -1,10 +1,8 @@
 """Tests for choose_skill_or_handoff.py v2/v3/v4 — skill registry, new decisions, work-type, UNSAFE_SCOPE, source_track."""
 
-import json
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent / "tools" / "supervisor"))
 
@@ -13,7 +11,6 @@ from choose_skill_or_handoff import (
     classify_work_type,
     classify_source_track,
     _match_skill_registry,
-    UNSAFE_SCOPE_PATTERNS,
 )
 
 

@@ -13,10 +13,7 @@ sys.path.insert(0, str(_REPO))
 
 from src.python.zst.zst_codec import (
     compress_file,
-    decompress_file,
-    batch_compress,
     batch_decompress,
-    compress_bytes,
 )
 
 

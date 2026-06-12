@@ -17,7 +17,6 @@ _tools = Path(__file__).resolve().parents[2] / "tools" / "packaging"
 if str(_tools) not in sys.path:
     sys.path.insert(0, str(_tools))
 
-import pytest
 from find_bundle_artifacts import find_artifact_dir, find_manifest_path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -37,7 +36,7 @@ def _make_extracted_bundle(tmpdir: Path, sprint_label: str) -> tuple[Path, Path]
     )
     art = bm / "package-artifacts"
     art.mkdir()
-    (art / f"fake_pkg-0.1.0-py3-none-any.whl").write_bytes(b"PK\x03\x04")
+    (art / "fake_pkg-0.1.0-py3-none-any.whl").write_bytes(b"PK\x03\x04")
     # Also add a manifest
     (bm / "package-artifact-manifest.yaml").write_text(
         f"artifact_count: 1\nrun: {sprint_label}\n", encoding="utf-8"

@@ -20,7 +20,6 @@ from dif.dif_parser import (
     dif_to_csv,
     get_capabilities,
     write_dif,
-    parse_dif_strict,
     DifError,
     DifDocument,
     DifCell,

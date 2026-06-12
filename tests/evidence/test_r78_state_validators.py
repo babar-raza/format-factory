@@ -8,12 +8,10 @@ R78 Train B — Validator tests ensuring:
 - Stale current-state.md (still says prior sprint) is detected and rejected
 """
 import io
-import json
 import sys
 import zipfile
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))

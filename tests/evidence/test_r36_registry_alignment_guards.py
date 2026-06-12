@@ -6,7 +6,6 @@ are consistent with pack.yaml corrections applied in R33/R35.
 Prevents registry drift where pack.yaml is corrected but registry is not.
 """
 
-import sys
 from pathlib import Path
 
 import pytest

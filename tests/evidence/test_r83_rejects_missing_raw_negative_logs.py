@@ -4,7 +4,6 @@ D82-12: No raw-negative-proof-logs/ in R82 review package.
 """
 import zipfile
 import io
-import pytest
 
 
 def _build_review_zip(entries: list[str]) -> bytes:

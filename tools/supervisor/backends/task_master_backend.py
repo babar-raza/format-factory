@@ -5,7 +5,9 @@ Sprint: FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001
 L1-L5 readiness model. Task Master "done" NEVER closes a Format Factory taskcard.
 """
 from __future__ import annotations
-import json, os, sys
+import json
+import os
+import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
 

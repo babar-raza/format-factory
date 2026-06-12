@@ -34,7 +34,6 @@ from pathlib import Path
 # Import shared oracle discovery from oracle_common.py
 sys.path.insert(0, str(Path(__file__).parent))
 from oracle_common import (
-    EXPECTED_SAMPLES,
     LIBREOFFICE_CANDIDATES,
     ORACLE_LOCAL_DIR,
     PREFLIGHT_OUTPUT,

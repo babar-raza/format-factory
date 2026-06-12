@@ -154,7 +154,7 @@ class TestAntiSkipAdoptionConsistency:
 
     def test_supervisor_sprint_passes_both_checks(self):
         """A Sprint 10 style declaration must pass both adoption and anti-skip."""
-        from validate_adoption_compliance import validate_adoption, COMPLIANCE_PASS_WITH_EXEMPTIONS
+        from validate_adoption_compliance import validate_adoption
 
         items = [
             {

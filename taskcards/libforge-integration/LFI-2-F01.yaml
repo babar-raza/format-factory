@@ -1,0 +1,25 @@
+taskcard_id: LFI-2-F01
+title: "Pilot 3 readiness check — Freeze Gate Runner prerequisites"
+lane: F
+owner_role: architect
+status: ACCEPTED_VERIFIED
+allowed_paths:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/"
+forbidden_paths:
+  - "src/python/"
+  - "src/net/"
+  - "registry/"
+inputs:
+  - "src/python/zst/zst_codec.py"
+  - ".local/spec-cache/"
+outputs:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/pilot3-readiness.md"
+file_ownership:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/pilot3-readiness.md"
+tests_supporting: []
+verification_commands:
+  - "test -f .local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/pilot3-readiness.md"
+evidence_files:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/pilot3-readiness.md"
+rollback: "Delete pilot3-readiness.md"
+closeout_criteria: "Readiness assessment documented; ZST fixture status verified; FACT citations confirmed"

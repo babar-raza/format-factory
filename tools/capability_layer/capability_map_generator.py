@@ -133,10 +133,20 @@ def _try_load_yaml(path: Path) -> dict | None:
 _SPEC_CACHE = _REPO_ROOT / ".local" / "spec-cache"
 
 
-def _load_spec_facts(format_id: str) -> list[str]:
-    """Load verified spec fact claim_ids from .local/spec-cache/{format}/*/workbench/verified-facts-review.yaml.
+_VERIFIED_FACT_STATUSES = frozenset(["verified", "verified_with_note"])
+_NON_AUTHORITATIVE_STATUSES = frozenset(["not_found_in_normalized_text", "needs_review", "needs_recheck"])
+
+
+def _load_spec_facts(format_id: str, verified_only: bool = False) -> list[str]:
+    """Load spec fact claim_ids from .local/spec-cache/{format}/*/workbench/verified-facts-review.yaml.
 
     Supports both JSON and YAML formats. Returns list of claim_id strings (e.g. ["FACT-FODS-001"]).
+
+    Args:
+        format_id: The format identifier (e.g. "zst", "fods").
+        verified_only: If True, only return facts with verification_status in
+            _VERIFIED_FACT_STATUSES. Excludes not_found_in_normalized_text,
+            needs_review, etc. Use this for spec_fact_refs (SAL-authoritative).
     """
     fmt_dir = _SPEC_CACHE / format_id.lower()
     if not fmt_dir.exists():
@@ -150,17 +160,32 @@ def _load_spec_facts(format_id: str) -> list[str]:
                 data = json.loads(content)
                 for fact in data.get("facts", []):
                     cid = fact.get("claim_id", "")
-                    if cid:
-                        fact_ids.append(cid)
+                    if not cid:
+                        continue
+                    if verified_only:
+                        prov = fact.get("provenance", {})
+                        vstat = (fact.get("verification_status")
+                                 or prov.get("verification_status", ""))
+                        if vstat not in _VERIFIED_FACT_STATUSES:
+                            continue
+                    fact_ids.append(cid)
             else:
-                # YAML format
+                # YAML format — verification_status may be at top level or nested in provenance
                 data = _try_load_yaml(review_file)
                 if data and isinstance(data, dict):
                     for fact in data.get("facts", []):
-                        if isinstance(fact, dict):
-                            cid = fact.get("claim_id", "")
-                            if cid:
-                                fact_ids.append(cid)
+                        if not isinstance(fact, dict):
+                            continue
+                        cid = fact.get("claim_id", "")
+                        if not cid:
+                            continue
+                        if verified_only:
+                            prov = fact.get("provenance", {}) or {}
+                            vstat = (fact.get("verification_status")
+                                     or prov.get("verification_status", ""))
+                            if vstat not in _VERIFIED_FACT_STATUSES:
+                                continue
+                        fact_ids.append(cid)
         except Exception:
             continue
     return fact_ids
@@ -338,6 +363,7 @@ def _build_foss_records(
     sprint_now: str,
     main_source_file: str | None = None,
     spec_facts: list[str] | None = None,
+    verified_spec_facts: list[str] | None = None,
 ) -> list[dict]:
     """Build FOSS/reduced capability records for one format."""
     records: list[dict] = []
@@ -378,6 +404,7 @@ def _build_foss_records(
             "current_state": state,
             "authority_state": effective_authority,
             "spec_refs": spec_facts or [],
+            "spec_fact_refs": verified_spec_facts or [],
             "requirement_refs": [],
             "source_refs": [f"src/python/{format_id.lower()}/"] if (actually_implemented and src_dir_exists) else [],
             "implementation_refs": [
@@ -425,6 +452,7 @@ def _build_foss_records(
                 "current_state": state2,
                 "authority_state": authority_state,
                 "spec_refs": [],
+                "spec_fact_refs": verified_spec_facts or [],
                 "requirement_refs": [],
                 "source_refs": [f"src/python/{format_id.lower()}/"] if src_dir_exists else [],
                 "implementation_refs": [f"src/python/{format_id.lower()}/{src_file}::{fn}"] if src_dir_exists else [],
@@ -458,6 +486,7 @@ def _build_commercial_records(
     sprint_now: str,
     *,
     spec_facts: list[str] | None = None,
+    verified_spec_facts: list[str] | None = None,
 ) -> list[dict]:
     """Build commercial capability records for one .NET format."""
     records: list[dict] = []
@@ -526,6 +555,7 @@ def _build_commercial_records(
             "current_state": state,
             "authority_state": effective_authority,
             "spec_refs": spec_facts or [],
+            "spec_fact_refs": verified_spec_facts or [],
             "requirement_refs": [],
             "source_refs": [f"src/net/{format_id.lower()}/"] if is_implemented else [],
             "implementation_refs": [impl_ref] if impl_ref else [],
@@ -810,14 +840,18 @@ def generate(
         # Netpbm is a parent format — aggregate facts from child formats (pbm/pgm/ppm)
         if fmt_id.lower() == "netpbm":
             commercial_facts = []
+            commercial_verified = []
             for child_fmt in ("pbm", "pgm", "ppm"):
                 commercial_facts.extend(_load_spec_facts(child_fmt))
+                commercial_verified.extend(_load_spec_facts(child_fmt, verified_only=True))
         else:
             commercial_facts = _load_spec_facts(fmt_id)
+            commercial_verified = _load_spec_facts(fmt_id, verified_only=True)
 
         recs = _build_commercial_records(
             fmt_id, dotnet_status, net_tests, net_examples, authority_state, sprint_now,
             spec_facts=commercial_facts,
+            verified_spec_facts=commercial_verified,
         )
         commercial_records.extend(recs)
 
@@ -844,13 +878,15 @@ def generate(
         ex_dir = _EXAMPLES_PYTHON / fmt_id.lower()
         ex_info = _count_examples(ex_dir)
 
-        # Spec facts
+        # Spec facts — all facts and verified-only facts
         facts = _load_spec_facts(fmt_id)
+        verified_facts = _load_spec_facts(fmt_id, verified_only=True)
 
         recs = _build_foss_records(
             fmt_id, python_status, test_info, ex_info, impl_fns, authority_state, sprint_now,
             main_source_file=main_src_file,
             spec_facts=facts,
+            verified_spec_facts=verified_facts,
         )
         foss_records.extend(recs)
 
@@ -987,6 +1023,7 @@ def _discover_missing_foss_formats(poc_data: dict, sprint_now: str) -> list[dict
 
         # Load spec facts for discovered formats
         facts = _load_spec_facts(module_dir.name.lower())
+        verified_facts = _load_spec_facts(module_dir.name.lower(), verified_only=True)
         effective_authority = "spec_fact" if facts else "gate_evidence"
 
         recs = _build_foss_records(
@@ -999,9 +1036,10 @@ def _discover_missing_foss_formats(poc_data: dict, sprint_now: str) -> list[dict
             sprint_now,
             main_source_file=main_src,
             spec_facts=facts,
+            verified_spec_facts=verified_facts,
         )
         for r in recs:
-            r["notes"] = f"Discovered via source scan — NOT in poc-targets.yaml. Add to foss_reduced_products."
+            r["notes"] = "Discovered via source scan — NOT in poc-targets.yaml. Add to foss_reduced_products."
             r["gaps"].append("not_in_poc_targets_yaml")
         missing.extend(recs)
 

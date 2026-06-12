@@ -23,12 +23,11 @@ Exit codes (when used as script):
 from __future__ import annotations
 
 import re
-import shutil
 import subprocess
 import sys
 from enum import Enum
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional
 
 _here = Path(__file__).resolve().parent
 _REPO_ROOT = _here.parent.parent
@@ -274,7 +273,7 @@ class BoundedRepairEngine:
         local_path = root / "src" / "python" / top_module
         if local_path.exists() and local_path.is_dir():
             # Add sys.path insert at the top of the file if not already present
-            sys_path_line = f'import sys as _sys; _sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent))\n'
+            sys_path_line = 'import sys as _sys; _sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parent.parent))\n'
             if "sys.path.insert" not in content and "_sys.path.insert" not in content:
                 new_content = sys_path_line + content
                 abs_path.write_text(new_content, encoding="utf-8")

@@ -41,7 +41,6 @@ def test_empty_corpus_is_not_failure(patterns_dir):
 
 
 def test_src_not_modified_by_miner(patterns_dir):
-    import hashlib
     src = _REPO / "src"
     before = {str(p): p.stat().st_mtime for p in src.rglob("*") if p.is_file()} if src.exists() else {}
     from tools.supervisor.source_pattern_miner import mine_patterns

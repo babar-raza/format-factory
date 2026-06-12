@@ -3,16 +3,12 @@
 # Ledger: R105-FOSS-PBM-PARSE-EDGE-CASES-001
 
 import pytest
-from pathlib import Path
 from pbm.pbm_parser import (
     parse_pbm,
     parse_pbm_strict,
     write_pbm,
     PbmError,
     PbmInvalidMagicError,
-    PbmInvalidHeaderError,
-    PbmSizeError,
-    PbmDecodeError,
 )
 
 

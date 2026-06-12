@@ -13,7 +13,6 @@ check closes the gap by scanning repo/reports/*/final-verdict.md entries.
 import io
 import zipfile
 
-import pytest
 
 from tools.evidence.validate_evidence_bundle import (
     check_repo_reports_pending,

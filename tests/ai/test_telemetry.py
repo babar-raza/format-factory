@@ -1,17 +1,15 @@
 """Tests for AI telemetry spool."""
 
-import json
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
 from tools.ai.schemas.models import AIUsageRecord, CallStatus
 from tools.ai.telemetry.call_logger import log_call, read_spool, _serialize_record
-from tools.ai.telemetry.spool_manager import get_spool_path, spool_record_count
+from tools.ai.telemetry.spool_manager import get_spool_path
 
 
 class TestCallLogger:

@@ -21,7 +21,6 @@ import io
 import os
 import sys
 import subprocess
-import tempfile
 
 import pytest
 import yaml

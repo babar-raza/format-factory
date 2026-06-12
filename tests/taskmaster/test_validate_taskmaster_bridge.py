@@ -19,13 +19,12 @@ import sys
 import tempfile
 from pathlib import Path
 
-import pytest
 
 # Add repo root to path
 REPO_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from tools.taskmaster.validate_taskmaster_bridge import validate, ValidationResult
+from tools.taskmaster.validate_taskmaster_bridge import validate
 
 
 # ============================================================

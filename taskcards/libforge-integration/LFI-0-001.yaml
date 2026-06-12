@@ -2,10 +2,13 @@ taskcard_id: LFI-0-001
 title: "Coordinator - file ownership, evidence, final verdict"
 lane: "0"
 owner_role: coordinator
-status: EXECUTING
+status: ACCEPTED_VERIFIED
 allowed_paths:
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/"
+  - ".local/evidences/ff-libforge-integration-pilot1-rework-20260610-112016/"
   - "taskcards/libforge-integration/"
+  - "tools/supervisor/libforge_integration_evidence_check.py"
+  - "tests/supervisor/test_libforge_integration_coordinator_evidence.py"
 forbidden_paths:
   - "src/python/"
   - "src/net/"
@@ -18,24 +21,32 @@ forbidden_paths:
   - "tools/supervisor/authority_conveyor.py"
   - "tools/supervisor/action_queue.py"
   - "schemas/queue/queue-item-v2.schema.json"
+  - "AGENTS.md"
+  - "GOVERNANCE.md"
 inputs:
-  - "plans/master-plan.md"
-  - ".local/evidences/ff-libforge-integration-plan-repair-20260610-e382e5f/"
-outputs:
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/file-ownership-matrix.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/final-verdict.md"
-file_ownership:
+  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/"
   - "taskcards/libforge-integration/*.yaml"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/file-ownership-matrix.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/final-verdict.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/precheck.log"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/pre-pilot1-head.txt"
+outputs:
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/acceptance-criteria-map.json"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/checker-valid-fixture-result.json"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/checker-invalid-fixture-result.json"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/coordinator-check-output.log"
+file_ownership:
+  - "tools/supervisor/libforge_integration_evidence_check.py"
+  - "tests/supervisor/test_libforge_integration_coordinator_evidence.py"
+tests_supporting:
+  - "tests/supervisor/test_libforge_integration_coordinator_evidence.py"
 verification_commands:
-  - "test -f .local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
-  - "test -f .local/evidences/ff-libforge-integration-exec-20260610-133949/final-verdict.md"
+  - ".local/venv/Scripts/python -m pytest tests/supervisor/test_libforge_integration_coordinator_evidence.py -v"
+  - "git diff --name-only -- src/python/ src/net/ registry/ .supervisor/skill-registry.yaml"
 evidence_files:
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
-rollback: "Delete all files under .local/evidences/ff-libforge-integration-exec-20260610-133949/ and taskcards/libforge-integration/"
-closeout_criteria: "All lanes at ACCEPTED_VERIFIED or terminal state; evidence-declaration.yaml valid; final-verdict.md written"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/acceptance-criteria-map.json"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/positive-negative-test-matrix.json"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/checker-valid-fixture-result.json"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/checker-invalid-fixture-result.json"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/checker-source-proof.md"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/checker-test-proof.md"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/coordinator-check-output.log"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/pytest-output.log"
+rollback: "Delete tools/supervisor/libforge_integration_evidence_check.py, tests/supervisor/test_libforge_integration_coordinator_evidence.py, and all files under .local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/"
+closeout_criteria: "acceptance-criteria-map.json maps C1-C10 to tests; checker-valid-fixture-result.json shows 10/10 pass; checker-invalid-fixture-result.json shows expected failures; 30 pytest tests pass; no forbidden path changes by this sprint"

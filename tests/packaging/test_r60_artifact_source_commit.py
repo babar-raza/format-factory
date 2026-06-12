@@ -123,7 +123,7 @@ class TestR60ArtifactBuild:
             pytest.skip("R60 FODT wheel not available in this environment")
         with zipfile.ZipFile(wheel) as zf:
             nm_files = [n for n in zf.namelist() if "neutral_model.py" in n]
-            assert nm_files, f"neutral_model.py not found in wheel"
+            assert nm_files, "neutral_model.py not found in wheel"
             nm_content = zf.read(nm_files[0]).decode("utf-8")
             assert "document_word_count" in nm_content, "R60 API document_word_count not in wheel"
             assert "document_table_summary" in nm_content, "R60 API document_table_summary not in wheel"

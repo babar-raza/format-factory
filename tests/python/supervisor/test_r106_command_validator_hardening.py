@@ -9,7 +9,6 @@ Validates that validate_claude_commands.py catches:
 - Cross-reference orphan and missing commands
 """
 
-import json
 import sys
 from pathlib import Path
 
@@ -22,7 +21,6 @@ sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 from validate_claude_commands import (
     validate_command_file,
     validate_all,
-    cross_reference_registry,
     REQUIRED_SECTIONS,
     COMMANDS_DIR,
 )
@@ -30,8 +28,6 @@ from validate_skill_transcript import (
     validate_transcript,
     validate_directory,
     REQUIRED_FIELDS,
-    VALID_MODES,
-    VALID_RESULTS,
     SRC_EDITING_TRACKS,
 )
 

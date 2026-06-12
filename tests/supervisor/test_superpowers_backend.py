@@ -2,7 +2,7 @@
 Format Factory — Superpowers Backend Tests
 Sprint: FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001
 """
-import pytest, sys
+import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from tools.supervisor.execution_backend import BackendStatus, BackendType

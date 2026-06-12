@@ -11,7 +11,6 @@ patterns" are different invariants. The first requires a live git repo. The seco
 can be checked in any extracted source archive.
 """
 import pathlib
-import re
 import subprocess
 
 import pytest

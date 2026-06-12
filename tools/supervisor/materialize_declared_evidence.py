@@ -290,7 +290,7 @@ def materialize(declaration_path: Path, repo_root: Path, out_dir: Path) -> dict:
 
     # --- Write missing evidence report ---
     missing_report_lines = [
-        f"# Missing Evidence Report",
+        "# Missing Evidence Report",
         f"# Run ID: {run_id}",
         f"# Generated: {timestamp}",
         "",
@@ -308,7 +308,7 @@ def materialize(declaration_path: Path, repo_root: Path, out_dir: Path) -> dict:
 
     # --- Write supervisor summary ---
     summary_lines = [
-        f"# Materialized Evidence Review",
+        "# Materialized Evidence Review",
         f"# Run ID: {run_id}",
         f"# Sprint: {sprint_id}",
         f"# Generated: {timestamp}",

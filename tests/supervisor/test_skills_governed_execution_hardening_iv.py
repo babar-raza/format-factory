@@ -6,12 +6,10 @@ Sprint: FORMAT-FACTORY-SKILLS-GOVERNED-EXECUTION-HARDENING-IV-001
 Tests: 68 across 17 categories
 """
 import json
-import os
 import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent

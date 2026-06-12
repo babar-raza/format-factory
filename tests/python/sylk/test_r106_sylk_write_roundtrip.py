@@ -2,11 +2,9 @@
 # Lane F — SYLK FOSS
 # Ledger: R106-FOSS-SYLK-WRITE-ROUNDTRIP-001
 
-import pytest
 from sylk.sylk_parser import (
     parse_sylk_strict,
     write_sylk,
-    SylkError,
     SylkDocument,
     SylkCell,
 )

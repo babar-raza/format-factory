@@ -17,7 +17,6 @@ Usage:
 
 import argparse
 import json
-import os
 import sys
 import zipfile
 from datetime import datetime
@@ -255,15 +254,15 @@ def main() -> int:
     else:
         status = result.get("status", "unknown")
         if status == "found":
-            print(f"DISCOVERY: OK")
+            print("DISCOVERY: OK")
             print(f"  Bundle: {result['bundle_path']}")
             print(f"  Sprint ID: {result['sprint_id']}")
             print(f"  Entries: {result['entry_count']}")
         elif status == "no_bundle":
-            print(f"DISCOVERY: NO_BUNDLE_FOUND")
+            print("DISCOVERY: NO_BUNDLE_FOUND")
             print(f"  {result.get('message', '')}")
         elif status == "malformed_zip":
-            print(f"DISCOVERY: MALFORMED_ZIP")
+            print("DISCOVERY: MALFORMED_ZIP")
             print(f"  {result.get('error', '')}")
         else:
             print(f"DISCOVERY: ERROR — {result.get('error', '')}")

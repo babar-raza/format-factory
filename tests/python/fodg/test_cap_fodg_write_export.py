@@ -16,7 +16,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent / "s
 
 from fodg.fodg_codec import (
     FodgError,
-    FodgParseError,
     create_fodg,
     export_to_txt,
     load,

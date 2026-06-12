@@ -1,0 +1,30 @@
+item_id: PD-Q-001
+title: "TOML update_section — merge key/value pairs into a specific section in-memory"
+lane: product-deepening
+status: completed
+sprint_id: FORMAT-FACTORY-SELF-HEALING-PRODUCT-DEEPENING-RNEXT-001
+run_id: format-factory-self-healing-product-deepening-rnext-20260611-2000
+acceptance_criteria: >
+  update_section(data, section, updates) -> dict implemented;
+  merges updates dict into specified section of data dict in-memory;
+  returns updated dict; non-destructive to other sections;
+  tested; exported from __init__.py; ledger entry created.
+evidence_paths:
+  - src/python/toml/toml_codec.py
+  - tests/python/toml/test_pd_toml_update_section.py
+tests_supporting:
+  - tests/python/toml/test_pd_toml_update_section.py
+allowed_paths:
+  - src/python/toml/toml_codec.py
+  - src/python/toml/__init__.py
+  - tests/python/toml/test_pd_toml_update_section.py
+  - taskcards/product-deepening-rnext-20260611/
+  - .local/supervisor/action-queue.jsonl
+  - reports/r90/product-code-change-ledger.json
+forbidden_paths:
+  - src/net/
+  - .supervisor/
+  - tools/supervisor/autonomous_cycle.py
+execution_method: QUEUE_DISPATCHED_EXECUTION
+queue_item_id: pdrnext-q-001
+item_type: PRODUCT_SOURCE

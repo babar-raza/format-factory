@@ -41,7 +41,6 @@ def test_add_column_no_header():
 
 
 def test_does_not_mutate():
-    import copy
     from src.python.tsv.tsv_parser import load_tsv
     before = load_tsv(TSV_DATA)
     add_column(TSV_DATA, "x", ["a", "b"])

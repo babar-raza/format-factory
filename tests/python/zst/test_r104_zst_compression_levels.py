@@ -8,7 +8,6 @@ from zst.zst_codec import (
     decompress_bytes,
     probe_frame,
     ZstError,
-    ZstInvalidFrameError,
     ZSTD_MAGIC,
 )
 

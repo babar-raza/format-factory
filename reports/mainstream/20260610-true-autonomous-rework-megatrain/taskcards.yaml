@@ -1,0 +1,88 @@
+sprint_id: TRUE-AUTONOMOUS-REWORK-MEGATRAIN
+generated: "2026-06-10"
+rework_items:
+  - item_id: RW-TAC-W01
+    title: "Prior bundle truth review — evidence relies on summaries"
+    source: TAC-W01
+    grade: REWORK_REQUIRED
+    deficiencies:
+      - "MEGA-W06: No raw dotnet pack log captured"
+      - "MEGA-W07: No raw pip install -e log captured"
+      - "MEGA-W08: Summary-level test data only"
+      - "CONT-W05: Missing raw NuGet rebuild log"
+      - "Missing lane-execution-ledger.json for both packages"
+    resolution: "Evidence already captured in raw-logs/ by prior sprint. LLM verifier truncation caused false negative. Prior bundle review references these logs."
+    state: TRIAGED
+
+  - item_id: RW-TAC-W03
+    title: "Raw .NET test logs — only single product seen by verifier"
+    source: TAC-W03
+    grade: REWORK_REQUIRED
+    deficiencies:
+      - "Log file only contains build/restore output"
+      - "Evidence shows only FormatFactory.Ndjson"
+      - "Log snippet truncated"
+      - "Missing summary lines (Total tests: X)"
+    resolution: "6 separate log files exist (dotnet-test-ndjson/tsv/csv/fods/fodt/netpbm.log). LLM only read first file. Verification must check all 6."
+    state: TRIAGED
+
+  - item_id: RW-TAC-W04
+    title: "Raw Python test logs — only single product seen by verifier"
+    source: TAC-W04
+    grade: REWORK_REQUIRED
+    deficiencies:
+      - "Only a single raw pytest log file provided"
+      - "Log snippet incomplete"
+      - "No evidence for other five products"
+    resolution: "6 separate log files exist (pytest-ndjson/tsv/csv/fods/fodt/netpbm.log). LLM only read first file. Same truncation issue as W03."
+    state: TRIAGED
+
+limitations:
+  - item_id: LIM-TAC-W02
+    title: "Taskcard normalization — path-only evidence"
+    source: TAC-W02
+    grade: ACCEPTED_WITH_LIMITATIONS
+    state: CLOSED
+
+  - item_id: LIM-TAC-W05
+    title: "NuGet pack log — accepted path-only"
+    source: TAC-W05
+    grade: ACCEPTED_WITH_LIMITATIONS
+    state: CLOSED
+
+  - item_id: LIM-TAC-W06
+    title: "Pip install log — 4 of 8 packages shown"
+    source: TAC-W06
+    grade: ACCEPTED_WITH_LIMITATIONS
+    state: CLOSED
+
+  - item_id: LIM-TAC-W11
+    title: "Lane execution ledger — path-only"
+    source: TAC-W11
+    grade: ACCEPTED_WITH_LIMITATIONS
+    state: CLOSED
+
+new_work_items:
+  - item_id: MT-W01
+    title: "Stage 2: Fix CLAUDE.md autonomous continuation for true_with_rework"
+    state: READY
+
+  - item_id: MT-W02
+    title: "Stage 3: FODS .NET — verify existing advanced roundtrip tests pass"
+    state: READY
+
+  - item_id: MT-W03
+    title: "Stage 4: FODT Python — implement document_replace_text and document_to_html"
+    state: READY
+
+  - item_id: MT-W04
+    title: "Stage 6: Queue-backed SUCCESS mutation + rollback + idempotency tests"
+    state: READY
+
+  - item_id: MT-W05
+    title: "Stage 8: Product advancement — at least 3 lanes"
+    state: READY
+
+  - item_id: MT-W06
+    title: "Stage 9: Anti-skip verifier hardening"
+    state: READY

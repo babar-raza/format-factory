@@ -15,7 +15,6 @@ from typing import Any
 from tools.ai.schemas.models import (
     AITaskContract,
     ArtifactAuthorityStateValue,
-    CallStatus,
 )
 
 

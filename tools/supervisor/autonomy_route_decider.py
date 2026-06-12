@@ -95,7 +95,7 @@ UNSAFE_INSTRUCTION_PATTERNS = [
 ADVISORY_SKIP_MARKERS = [
     "advisory", "stop_reason", "example:", "e.g.", "never use",
     "false stop", "do not", "must not", "should not", "prohibited",
-    "forbidden", "not allowed", "warning:", "caution:", "without",
+    "forbidden", "not allowed", "warning:", "caution:", "without explicit",
 ]
 
 
@@ -405,7 +405,7 @@ def check_action_route_allowed(
             if decision.get("blocked"):
                 return False, f"Route decision {rdid!r} is blocked"
             if decision.get("task_id") != action.get("task_id", action.get("action_id", "")):
-                return False, f"Route decision task_id mismatch"
+                return False, "Route decision task_id mismatch"
             if decision.get("task_category") != cat:
                 return False, f"Route decision category mismatch: {decision.get('task_category')} vs {cat}"
             if not decision.get("required_tests"):
@@ -494,7 +494,7 @@ def validate_product_mutation_evidence(evidence: dict[str, Any]) -> list[str]:
         "mutation_id", "task_id", "route_decision_id", "authorized_route",
         "allowed_paths_used", "forbidden_paths_checked", "tests_proving_mutation",
     ]
-    for field in required:
+    for field in required:  # noqa: F402
         if field not in evidence:
             errors.append(f"Missing required field: {field}")
     if evidence.get("allowed_paths_used") is not None and not isinstance(evidence.get("allowed_paths_used"), list):

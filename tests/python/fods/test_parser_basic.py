@@ -6,7 +6,6 @@ Covers: IR-FODS-001, IR-FODS-005, IR-FODS-006, IR-FODS-007,
         IR-FODS-014, IR-FODS-019
 """
 from pathlib import Path
-import pytest
 from fods import parse_fods
 from fods.constants import FORMAT_ID, SPEC_VERSION
 

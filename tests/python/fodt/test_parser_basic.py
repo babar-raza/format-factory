@@ -7,7 +7,6 @@ Uses Gate 3 samples: 4 FODT files in samples/by-format/fodt/.
 """
 from pathlib import Path
 
-import pytest
 
 from fodt import parse_fodt
 from fodt.constants import FORMAT_ID, SPEC_VERSION

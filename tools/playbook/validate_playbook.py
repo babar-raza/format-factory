@@ -684,13 +684,13 @@ def main():
         print(_json.dumps(result, indent=2))
     else:
         if passed:
-            print(f"PLAYBOOK_VALIDATION: PASS")
+            print("PLAYBOOK_VALIDATION: PASS")
             print(f"kind: {info['kind']}")
             print(f"input: {info['input']}")
             print(f"schema: {info['schema']}")
             print(f"engine: {engine_label}")
         else:
-            print(f"PLAYBOOK_VALIDATION: FAIL")
+            print("PLAYBOOK_VALIDATION: FAIL")
             print(f"kind: {info['kind']}")
             print(f"input: {info['input']}")
             print(f"schema: {info['schema']}")

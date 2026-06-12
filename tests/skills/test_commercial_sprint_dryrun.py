@@ -7,7 +7,6 @@ Run:
   PYTHONPATH=... python -m pytest tests/skills/test_commercial_sprint_dryrun.py -v
 """
 
-import pytest
 import sys
 from pathlib import Path
 from unittest.mock import patch

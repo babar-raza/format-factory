@@ -13,8 +13,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
 
-import pytest
-from multi_format_planning import plan_multi_format, SUPPORTED_FORMATS
+from multi_format_planning import plan_multi_format
 
 
 class TestMultiFormatPlanningLive:

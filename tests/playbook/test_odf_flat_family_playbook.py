@@ -125,7 +125,7 @@ def test_fodp_fodg_fodb_are_candidate_only():
     text = _read(FORMAT_OVERRIDES_YAML)
     for fmt in ["fodp", "fodg", "fodb"]:
         assert "candidate_only" in text, \
-            f"Candidate formats must be marked candidate_only in format-overrides.yaml"
+            "Candidate formats must be marked candidate_only in format-overrides.yaml"
 
 
 # ---------------------------------------------------------------------------

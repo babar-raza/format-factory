@@ -6,10 +6,9 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-import pytest
 from tools.requirements_authority.models import GraphNode, GraphEdge
 from tools.requirements_authority.graph_store import GraphStore
-from tools.requirements_authority.validators import GraphValidator, validate_graph
+from tools.requirements_authority.validators import validate_graph
 
 
 def _store_with_clean_fods_export():

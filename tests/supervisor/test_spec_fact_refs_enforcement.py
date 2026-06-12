@@ -20,7 +20,6 @@ Tests for spec_fact_refs BLOCKING enforcement gate.
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
 

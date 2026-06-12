@@ -1462,3 +1462,209 @@ def workbook_to_html(workbook: dict[str, Any], sheet_index: int = 0) -> str:
         lines.append("  </tr>")
     lines.append("</table>")
     return "\n".join(lines)
+
+
+def workbook_get_column_values(
+    workbook: dict[str, Any],
+    col: int,
+    sheet_index: int = 0,
+) -> list[Any]:
+    """Return all values in a column (0-based) from a given sheet.
+
+    Aligned with ODF 1.3 spreadsheet content model (FACT-FODS-001).
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        col: 0-based column index.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        List of cell values (None for missing cells). Empty list if sheet not found.
+    """
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return []
+    sheet = sheets[sheet_index]
+    result: list[Any] = []
+    for row in sheet.get("rows", []):
+        cells = row.get("cells", [])
+        if col < len(cells):
+            result.append(cells[col].get("value"))
+        else:
+            result.append(None)
+    return result
+
+
+def workbook_max_column_count(workbook: dict[str, Any]) -> int:
+    """Return the maximum number of columns across all sheets in the workbook.
+
+    Counts the width of the widest row in each sheet, then returns the
+    maximum across all sheets.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+
+    Returns:
+        Maximum column count. Returns 0 if no sheets or all sheets are empty.
+    """
+    max_cols = 0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            cols = len(row.get("cells", []))
+            if cols > max_cols:
+                max_cols = cols
+    return max_cols
+
+
+def workbook_numeric_density(workbook: dict[str, Any], sheet_index: int = 0) -> float:
+    """Return the ratio of numeric cells to total non-empty cells in a sheet.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Float in [0.0, 1.0]. Returns 0.0 if no non-empty cells.
+    """
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return 0.0
+    sheet = sheets[sheet_index]
+    nonempty = 0
+    numeric = 0
+    for row in sheet.get("rows", []):
+        for cell in row.get("cells", []):
+            val = cell.get("value")
+            if val is not None and val != "":
+                nonempty += 1
+                if isinstance(val, (int, float)):
+                    numeric += 1
+    if nonempty == 0:
+        return 0.0
+    return numeric / nonempty
+
+
+def workbook_count_nonempty_cells(
+    workbook: dict[str, Any],
+    sheet_index: int = 0,
+) -> int:
+    """Count cells with non-None, non-empty-string values in a sheet.
+
+    Aligned with ODF 1.3 spreadsheet content model (FACT-FODS-001).
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Count of non-empty cells. Returns 0 if sheet not found.
+    """
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return 0
+    sheet = sheets[sheet_index]
+    count = 0
+    for row in sheet.get("rows", []):
+        for cell in row.get("cells", []):
+            val = cell.get("value")
+            if val is not None and val != "":
+                count += 1
+    return count
+
+
+def workbook_total_numeric_value(
+    workbook: dict[str, Any],
+    sheet_index: int = 0,
+) -> float:
+    """Return the sum of all numeric cell values in a sheet.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Float sum of all numeric (int or float) cell values.
+        Returns 0.0 if sheet not found or has no numeric cells.
+    """
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return 0.0
+    sheet = sheets[sheet_index]
+    total = 0.0
+    for row in sheet.get("rows", []):
+        for cell in row.get("cells", []):
+            val = cell.get("value")
+            if isinstance(val, (int, float)) and not isinstance(val, bool):
+                total += val
+    return total
+
+
+def fods_sheet_count(workbook: dict[str, Any]) -> int:
+    """Return the number of sheets in the workbook.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+
+    Returns:
+        Integer count of sheets. Returns 0 for an empty or invalid workbook.
+    """
+    return len(workbook.get("sheets", []))
+
+
+def workbook_row_count(workbook: dict[str, Any], sheet_index: int = 0) -> int:
+    """Return the number of rows in a sheet.
+
+    Spec authority: FACT-FODS-005 — Rows are <table:table-row> children of <table:table>.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Integer count of rows in the sheet. Returns 0 if sheet not found.
+    """
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return 0
+    return len(sheets[sheet_index].get("rows", []))
+
+
+def workbook_cell_text_at(
+    workbook: dict[str, Any],
+    sheet_index: int,
+    row_index: int,
+    col_index: int,
+) -> str:
+    """Return the text content of a cell at the given position.
+
+    Spec authority: FACT-FODS-006 — Cells are <table:table-cell> children of <table:table-row>.
+                    FACT-FODS-007 — Cell text is in <text:p> children of <table:table-cell>.
+
+    The neutral model stores cell text in cell["value"] when value_type is "string" or
+    in the "text" key when present. Returns empty string for out-of-bounds or empty cells.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+        sheet_index: 0-based sheet index.
+        row_index: 0-based row index.
+        col_index: 0-based column index.
+
+    Returns:
+        String text of the cell, or "" if not found or cell has no text content.
+    """
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return ""
+    rows = sheets[sheet_index].get("rows", [])
+    if row_index < 0 or row_index >= len(rows):
+        return ""
+    cells = rows[row_index].get("cells", [])
+    if col_index < 0 or col_index >= len(cells):
+        return ""
+    cell = cells[col_index]
+    if cell is None:
+        return ""
+    text = cell.get("text") or cell.get("value")
+    if text is None:
+        return ""
+    return str(text)

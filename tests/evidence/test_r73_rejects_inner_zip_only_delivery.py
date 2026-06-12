@@ -7,8 +7,6 @@ A valid delivery package must be an outer ZIP containing inner ZIP + sidecar + m
 IV-R73-001: supervisor uploaded inner ZIP only; outer delivery package not used.
 """
 import hashlib
-import io
-import json
 import pathlib
 import zipfile
 import pytest

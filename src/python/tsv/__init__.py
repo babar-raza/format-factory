@@ -48,6 +48,15 @@ from .tsv_parser import (
     TsvInputError,
     TsvSizeError,
     TsvParseError,
+    append_rows,
+    find_rows_containing,
+    unique_column_values,
+    tsv_nonempty_cell_count,
+    tsv_numeric_cell_count,
+    tsv_empty_row_count,
+    tsv_max_cell_length,
+    tsv_row_count,
+    count_distinct_values,
 )
 
 __version__ = "0.1.0"
@@ -92,4 +101,13 @@ __all__ = [
     "TsvInputError",
     "TsvSizeError",
     "TsvParseError",
+    "append_rows",
+    "find_rows_containing",
+    "unique_column_values",
+    "tsv_nonempty_cell_count",
+    "tsv_numeric_cell_count",
+    "tsv_empty_row_count",
+    "tsv_max_cell_length",
+    "tsv_row_count",
+    "count_distinct_values",
 ]

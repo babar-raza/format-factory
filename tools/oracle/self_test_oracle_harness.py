@@ -258,7 +258,7 @@ notes: "HARNESS_SELF_TEST_ONLY — not Gate 6 evidence. Created run038 (2026-05-
     for s in summary["samples"]:
         content += f"| {s['sample']} | {'YES' if s['synthetic_csv_created'] else 'NO'} | {'YES' if s['sample_file_exists'] else 'NO'} | {'YES' if s['parser_ran'] else 'NO'} | {s['status']} |\n"
 
-    content += f"""
+    content += """
 ---
 
 ## What Was NOT Tested

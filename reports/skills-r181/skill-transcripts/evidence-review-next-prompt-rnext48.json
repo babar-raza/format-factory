@@ -1,0 +1,26 @@
+{
+  "skill_id": "evidence-review-next-prompt",
+  "skill_version": "1.2",
+  "invoked_at": "2026-06-12T16:00:00Z",
+  "bundle_path": "C:\\Users\\prora\\OneDrive\\Documents\\GitHub\\format-factory\\.local\\supervisor\\reviews\\product-deepening-rnext48\\declaration-review-package.zip",
+  "bundle_entries": 60,
+  "sprint_id": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT48-001",
+  "claim_count": 7,
+  "confirmed_count": 4,
+  "disputed_count": 2,
+  "missing_count": 1,
+  "incomplete_count": 0,
+  "verdict": "ACCEPTED_WITH_DEFECTS",
+  "defects": [
+    "DEFECT-D1: product-code-change-ledger.json missing entries for xcf_is_square and abw_sentence_count",
+    "DEFECT-D2: RNEXT48-001 and RNEXT48-002 item_type=GOVERNANCE_DOC should be PRODUCT_SOURCE",
+    "DEFECT-D3: selected-product-gaps.json stale (all 10 selected gaps show status=closed)"
+  ],
+  "consistency_check": "PASS (WARN: Section 33 not in master-plan v3.1 — expected)",
+  "bundle_validation": "FAIL (contract layout mismatch — new pipeline vs old base-run.yaml contract)",
+  "next_sprint_id": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT49-001",
+  "next_sprint_run_id": "product-deepening-rnext49",
+  "next_sprint_iteration": 8,
+  "next_sprint_max_iterations": 12,
+  "next_sprint_focus": "Ledger backfill (D1/D2) + gap refresh (D3) + 6 new FOSS functions (DIF/SYLK/Gnumeric)"
+}

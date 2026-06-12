@@ -28,10 +28,8 @@ Run: PYTHONUTF8=1 python tools/evidence/run048_sprint_writer.py
 from __future__ import annotations
 
 import os
-import re
 import subprocess
 import sys
-import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -197,8 +195,8 @@ def section_b() -> tuple[int, int]:
     report_lines = [
         "# run047 Independent Verification Report",
         "",
-        f"**Run:** run048 (inline DEC-034, authorized by run048 execution prompt)",
-        f"**Date:** 2026-05-08",
+        "**Run:** run048 (inline DEC-034, authorized by run048 execution prompt)",
+        "**Date:** 2026-05-08",
         f"**Checks:** {total}",
         f"**Result:** {pass_count}/{total} PASS",
         "",
@@ -209,7 +207,7 @@ def section_b() -> tuple[int, int]:
         report_lines.append(f"- {'PASS' if ok else 'FAIL'} [{desc}]")
     report_lines += [
         "",
-        f"## Verdict",
+        "## Verdict",
         "",
         f"{'PASS' if pass_count == total else 'PARTIAL'}: {pass_count}/{total} checks passed.",
         "All critical run047 artifacts verified. Known weakness: run047 contract has only 4",
@@ -1798,7 +1796,7 @@ notes: "FODT Gate 7 malformed/fuzz test report. {result_line}. run048 (2026-05-0
     doc = [
         "# FODT Gate 7 Execution Report",
         "",
-        f"**Run:** run048 (2026-05-08)",
+        "**Run:** run048 (2026-05-08)",
         f"**Result:** {result_line}",
         f"**Status:** {'PASS' if fuzz_passed else 'FAIL'}",
         "",

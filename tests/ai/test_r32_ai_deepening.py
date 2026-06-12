@@ -27,10 +27,8 @@ from tools.ai.retrieval.lexical_retriever import (
     tokenize,
     compute_tf,
     compute_idf,
-    score_chunk,
     retrieve,
     RetrievalResult,
-    ScoredChunk,
 )
 from tools.ai.synthesis.runner import SynthesisResult, run_synthesis
 from tools.ai.synthesis.citation_verifier import verify_all_citations
@@ -40,21 +38,12 @@ from tools.ai.requirements.generator import (
     GeneratedRequirement,
     generate_requirements_from_synthesis,
     validate_requirement,
-    review_requirement,
-)
-from tools.ai.validators.authority_lifecycle import (
-    can_transition,
-    is_terminal,
-    transition_with_evidence,
 )
 from tools.ai.validators.secret_redaction import redact_text, contains_secret
 from tools.ai.schemas.models import (
     AITaskContract,
     AIRole,
-    ArtifactAuthorityStateValue,
-    ArtifactAuthorityState,
     CallStatus,
-    VALID_TRANSITIONS,
 )
 from tools.ai.pipeline.e2e_pilot import PilotConfig, run_pilot, stage_2_retrieval
 
@@ -444,7 +433,7 @@ class TestTelemetryEvidenceHardening:
         original_endpoint = os.environ.get("AGENT_METRICS_ENDPOINT", "")
         original_token = os.environ.get("AGENT_METRICS_TOKEN", "")
         if original_endpoint:
-            assert not contains_secret(f"endpoint is configured")  # generic text OK
+            assert not contains_secret("endpoint is configured")  # generic text OK
             text_with_val = f"posted to {original_endpoint}"
             redacted = redact_text(text_with_val)
             assert original_endpoint not in redacted or not original_endpoint

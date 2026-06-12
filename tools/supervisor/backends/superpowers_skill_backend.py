@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
 
 from tools.supervisor.execution_backend import (
-    BackendResult, BackendStatus, BackendType, ExecutionBackend, ProofLevel
+    BackendResult, BackendStatus, BackendType, ExecutionBackend
 )
 
 

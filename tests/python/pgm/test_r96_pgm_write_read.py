@@ -5,7 +5,6 @@
 
 """Tests for PGM write then read integrity — roundtrip, edge cases."""
 
-import pytest
 import sys
 import os
 from pathlib import Path

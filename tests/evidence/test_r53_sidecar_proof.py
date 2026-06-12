@@ -24,7 +24,6 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-import pytest
 
 from tools.evidence.validate_evidence_bundle import check_sidecar_proof
 

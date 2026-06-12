@@ -30,7 +30,6 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
-import os
 import sys
 import time
 from pathlib import Path
@@ -143,7 +142,7 @@ def run_fixture(fixture_path: Path, parse_fods) -> TestResult:
         elif sheet_count == 0:
             # multi-sheet-mut1: table:worksheet not a recognized table:table → 0 sheets
             r.status = "PASS"
-            r.notes = f"no tables recognized (0 sheets); no error raised (acceptable)"
+            r.notes = "no tables recognized (0 sheets); no error raised (acceptable)"
         else:
             # No error returned but one was expected — check if it's a silent corruption
             r.silent_corrupt = True

@@ -14,7 +14,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.python.fods import parse_fods, workbook_style_family_list, workbook_data_validation_summary
-from src.python.fods.neutral_model import validate_workbook
 
 
 def _minimal_workbook():

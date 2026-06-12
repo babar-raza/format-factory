@@ -22,7 +22,6 @@ Run: python tools/evidence/run046_sprint_writer.py
 
 import os
 import sys
-import re
 import subprocess
 from pathlib import Path
 
@@ -1532,7 +1531,7 @@ write("taskcards/TC-0039-fodt-gate5-dec034-verification.md", TC0039)
 # ==============================================================
 print("\n--- Section H/L: Human-review packets ---")
 
-GATE8_PACKET = f"""\
+GATE8_PACKET = """\
 ---
 artifact_id: fods-gate8-human-review-packet
 artifact_type: acquisition-pack
@@ -2834,7 +2833,7 @@ mp = mp.replace(
 
 mp = mp.replace(
     "| Gate 7 status | **PASSED** — Babar Raza, 2026-05-08, run045; GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18; DEC-034 PASS 18/18 |",
-    f"| Gate 7 status | **PASSED** — Babar Raza, 2026-05-08, run045; GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18; DEC-034 PASS 18/18 |\n| Gate 8 status | **PASSED** — Babar Raza, 2026-05-08, run046; GATE8_SECURITY_REVIEW: PASS; TC-0038 DEC-034 PASS 20/20; security report: reports/security/fods.md |"
+    "| Gate 7 status | **PASSED** — Babar Raza, 2026-05-08, run045; GATE7_FUZZ_TEST PASS 18/18 CRASH 0/18 CORRUPT 0/18; DEC-034 PASS 18/18 |\n| Gate 8 status | **PASSED** — Babar Raza, 2026-05-08, run046; GATE8_SECURITY_REVIEW: PASS; TC-0038 DEC-034 PASS 20/20; security report: reports/security/fods.md |"
 )
 
 mp = mp.replace(

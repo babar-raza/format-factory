@@ -1,6 +1,5 @@
 """TC-TEST-004: Mainstream Acceleration Packet tests — 4 formats."""
 
-import json
 from pathlib import Path
 
 import pytest

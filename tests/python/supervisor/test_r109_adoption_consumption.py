@@ -7,12 +7,10 @@ This is the core R109 deliverable: proving other streams are FORCED to consume.
 
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
 
 import yaml
-import pytest
 
 TOOLS_DIR = str(Path(__file__).resolve().parent.parent.parent.parent / "tools" / "supervisor")
 if TOOLS_DIR not in sys.path:
@@ -21,7 +19,7 @@ if TOOLS_DIR not in sys.path:
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 ADOPTION_DIR = REPO_ROOT / "reports" / "skills-r108" / "adoption-packages"
 
-from validate_adoption_compliance import validate_adoption, _is_exempt, _has_transcript_evidence  # noqa: E402
+from validate_adoption_compliance import validate_adoption  # noqa: E402
 from grade_declared_work import grade_item  # noqa: E402
 from validate_skill_transcript import validate_transcript  # noqa: E402
 

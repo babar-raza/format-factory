@@ -196,6 +196,24 @@
     "error": {
       "type": ["string", "null"],
       "description": "Error message if execution failed."
+    },
+    "exception_classification": {
+      "type": ["string", "null"],
+      "description": "Authority exception classification when spec_fact_refs are absent (e.g. no_public_spec_available, legacy_backfill)."
+    },
+    "exception_rationale": {
+      "type": ["string", "null"],
+      "description": "Required when exception_classification=fallback_authority_approved. Explains the approving mechanism and written rationale."
+    },
+    "format_id": {
+      "type": ["string", "null"],
+      "description": "Format identifier for authority preflight (e.g. zst, fods, abw)."
+    },
+    "spec_fact_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": [],
+      "description": "List of FACT-FORMAT-NNN references backing this item."
     }
   },
   "additionalProperties": true

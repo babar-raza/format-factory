@@ -9,7 +9,6 @@ Sprint: FORMAT-FACTORY-R73-DELIVERY-PACKAGE-TRUTH-PRODUCT-ADVANCEMENT-GATE-READI
 from __future__ import annotations
 
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest

@@ -16,11 +16,9 @@ Inner final-verdict rules:
 """
 
 import io
-import re
 import sys
 import zipfile
 import pathlib
-import pytest
 
 # Load the validator module
 sys.path.insert(0, str(pathlib.Path(__file__).parent.parent.parent))

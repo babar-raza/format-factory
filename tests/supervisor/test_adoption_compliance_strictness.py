@@ -9,7 +9,6 @@ These tests verify that the STRICT ENFORCEMENT rules are applied correctly.
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
 from validate_adoption_compliance import (
@@ -17,7 +16,6 @@ from validate_adoption_compliance import (
     COMPLIANCE_PASS,
     COMPLIANCE_PASS_WITH_EXEMPTIONS,
     COMPLIANCE_FAIL_MISSING_TRANSCRIPTS,
-    COMPLIANCE_FAIL_MISSING_SKILL_IDS,
     COMPLIANCE_FAIL_MISSING_LEDGER,
 )
 

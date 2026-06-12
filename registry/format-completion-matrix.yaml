@@ -142,17 +142,17 @@ formats:
     src_python_files: ["ods_parser.py", "ods_csv_exporter.py", "__init__.py"]
     src_python_loc: 450
     src_net_exists: false
-    tests_python_count: 107
+    tests_python_count: 69
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G8 (security review)"
     evidence_backed_gate: "G7-G8"
-    actual_maturity_class: export_capable_library
-    parser_depth: "ZIP container, typed cells (float/date/bool/string), dataclass model + CSV export"
+    actual_maturity_class: roundtrip_capable_library
+    parser_depth: "ZIP container, typed cells (float/date/bool/string), dataclass model + CSV/HTML export; write_ods added (sprint2)"
     read_support: true
-    write_support: false
-    export_support: true  # R33: CSV exporter (RFC 4180, single sheet)
-    roundtrip_support: false
+    write_support: true
+    export_support: true  # R33: CSV exporter (RFC 4180, single sheet); HTML export added
+    roundtrip_support: true
     neutral_model_status: "dataclass (OdsDocument/OdsSheet/OdsRow/OdsCell)"
     security_guard_status: "64MB guard, ZIP entry limit (1000), decompressed size limit, column/row repeat caps"
     corpus_quality: good
@@ -160,9 +160,9 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "107 tests, typed cell parsing, CSV export with RFC 4180 compliance hardening"
-    weakest_area: "no native ODS write, no round-trip, no packaging"
-    recommended_action: "deepen: add ODS write capability, then round-trip"
+    strongest_evidence: "69 test files; write_ods confirmed in __init__.py; roundtrip tests exist (test_ods_multisheet_roundtrip.py)"
+    weakest_area: "no packaging; no .NET track"
+    recommended_action: "add packaging; advance .NET track; run Gate 9-10 product mapping"
     r33_deepening: "CSV exporter added (ods_csv_exporter.py, 25 tests)"
     r33_deepening_date: "2026-05-19"
     r35_deepening: "8 export hardening tests (determinism, Unicode, edge cases)"
@@ -171,6 +171,9 @@ formats:
     r36_deepening_date: "2026-05-20"
     r37_deepening: "6 RFC 4180 compliance tests (tab/semicolon/newline/quotes/boolean/empty field)"
     r37_deepening_date: "2026-05-20"
+    sprint2_deepening: "write_ods added; writer_deepening tests (17 tests); dogfood ODS->CSV pipeline (7 tests)"
+    sprint2_deepening_date: "2026-06-11"
+    sprint_last_updated: hardened-audit-remediation-sprint6
 
   - format_id: odt
     display_name: "OpenDocument Text (ZIP)"
@@ -254,16 +257,16 @@ formats:
     src_python_files: ["dif_parser.py", "__init__.py"]
     src_python_loc: 303
     src_net_exists: false
-    tests_python_count: 39
+    tests_python_count: 40
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G8 (security review)"
     evidence_backed_gate: "G7-G8"
-    actual_maturity_class: read_only_prototype
+    actual_maturity_class: read_write_prototype
     parser_depth: "text triplet parsing, typed cells (numeric/string/bool/special)"
     read_support: true
-    write_support: false
-    export_support: false
+    write_support: true  # wave8: write_dif added
+    export_support: true  # wave8: dif_to_csv export added
     roundtrip_support: false
     neutral_model_status: "dataclass (DifDocument/DifCell)"
     security_guard_status: "64MB guard, row/col limits"
@@ -272,9 +275,11 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "39 tests, typed cell parsing with triplet structure"
-    weakest_area: "no write, 10 unsupported features"
-    recommended_action: "deepen: add DIF writer, reduce unsupported feature count"
+    strongest_evidence: "40 tests, typed cell parsing, write_dif + dif_to_csv export added (Wave 8)"
+    weakest_area: "no roundtrip test, 10 unsupported features"
+    recommended_action: "deepen: add roundtrip test, reduce unsupported feature count"
+    wave8_deepening: "write_dif + dif_to_csv added (probe/capabilities advancement)"
+    wave8_deepening_date: "2026-06-10"
 
   - format_id: sylk
     display_name: "Symbolic Link Spreadsheet"
@@ -286,17 +291,17 @@ formats:
     src_python_files: ["sylk_parser.py", "__init__.py"]
     src_python_loc: 241
     src_net_exists: false
-    tests_python_count: 40
+    tests_python_count: 46
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G7"
     evidence_backed_gate: "G7"
-    actual_maturity_class: read_only_prototype
+    actual_maturity_class: read_write_prototype
     parser_depth: "record-based, C/ID/E records, cell coordinates, typed values"
     read_support: true
-    write_support: false
+    write_support: true  # wave8: write_sylk added
     export_support: false
-    roundtrip_support: false
+    roundtrip_support: true  # wave8: roundtrip tests exist (test_r106_sylk_write_roundtrip.py)
     neutral_model_status: "dataclass (SylkDocument/SylkCell)"
     security_guard_status: "64MB guard, row/col limits"
     corpus_quality: fair
@@ -304,9 +309,11 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "40 tests, record parsing with coordinate handling"
-    weakest_area: "F/B/P record types unsupported, no write"
-    recommended_action: "deepen: add F/B/P records, SYLK writer"
+    strongest_evidence: "46 tests, write_sylk + roundtrip verified (Wave 8)"
+    weakest_area: "F/B/P record types unsupported, no export"
+    recommended_action: "deepen: add F/B/P record support, add CSV/JSON export"
+    wave8_deepening: "write_sylk + mutation export advancement"
+    wave8_deepening_date: "2026-06-10"
 
   - format_id: xcf
     display_name: "GIMP Native Image Format"
@@ -321,7 +328,7 @@ formats:
     tests_python_count: 42
     tests_net_count: 0
     packaging_status: none
-    claimed_gate: "G8 (security review)"
+    claimed_gate: "G8 (security review — header/metadata only scope)"
     evidence_backed_gate: "G5-G6 equivalent (header+layer only)"
     actual_maturity_class: probe_only
     parser_depth: "header parse (26 bytes), property list, layer offset table. NO pixel/tile decode."
@@ -336,7 +343,7 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: moderate
-    overclaim_details: "G8 security review passed, but parser only reads header — not a usable image library"
+    overclaim_details: "G8 security review passed for header-parsing scope only — parser reads header/metadata, NOT pixel/tile data. Not a usable image library. Any product claim must include scope qualifier: (header/metadata only)."
     strongest_evidence: "42 tests, solid header/property parsing"
     weakest_area: "explicitly cannot decode pixels or tiles — probe/inspector only"
     recommended_action: "reclassify as probe_only; G8 security pass is valid for what it parses but does not imply image processing capability"
@@ -495,32 +502,34 @@ formats:
     src_python_files: ["fodg_codec.py", "__init__.py"]
     src_python_loc: 217
     src_net_exists: false
-    tests_python_count: 19
+    tests_python_count: 60
     tests_net_count: 0
     packaging_status: local_build_ready
     claimed_gate: "G10 (verified)"
     evidence_backed_gate: "G4 (prototype quality)"
-    actual_maturity_class: probe_only
-    parser_depth: "shallow shape counter — shape types, text extraction, per-page metadata"
-    read_support: "partial (shape metadata only)"
-    write_support: false
-    export_support: false
-    roundtrip_support: false
+    actual_maturity_class: roundtrip_capable_library
+    parser_depth: "shape counter with write, export (JSON/TXT/CSV), roundtrip — deepened through Waves 9-11"
+    read_support: true
+    write_support: true
+    export_support: true
+    roundtrip_support: true
     neutral_model_status: "plain dict (no schema)"
     security_guard_status: "64MB guard"
     corpus_quality: fair
     spec_quality: fair
-    package_readiness: "local build exists but source is probe-quality"
+    package_readiness: "local build exists; install-proof confirmed (Wave 9)"
     commercial_readiness: "N/A"
-    overclaim_risk: high
-    overclaim_details: "G10 claimed but source is 217 LOC shape counter with no model, no write, no export."
-    strongest_evidence: "19 tests prove shape counting works"
-    weakest_area: "no neutral model, no write, no export — probe only"
-    recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
+    overclaim_risk: low
+    overclaim_details: "Gate G10 still unverified at commercial level; evidence_backed_gate is G4"
+    strongest_evidence: "60 test files; write_fodg + export_to_json/txt/csv + roundtrip in __init__.py"
+    weakest_area: "no neutral model schema; no .NET track; evidence-backed gate still G4"
+    recommended_action: "promote evidence-backed gate as API matures; add Gate 5 oracle"
     r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
     r33_review_date: "2026-05-19"
     r35_gate_correction: "APPLIED — pack.yaml gate_correction section added"
     r35_gate_correction_date: "2026-05-20"
+    waves_deepening: "Wave 9: load_gap_closure; Waves 11: conveyor_deepening; sprint6: matrix refresh"
+    sprint_last_updated: hardened-audit-remediation-sprint6
 
   - format_id: gnumeric
     display_name: "Gnumeric Spreadsheet"
@@ -532,32 +541,34 @@ formats:
     src_python_files: ["gnumeric_codec.py", "__init__.py"]
     src_python_loc: 170
     src_net_exists: false
-    tests_python_count: 16
+    tests_python_count: 73
     tests_net_count: 0
     packaging_status: local_build_ready
     claimed_gate: "G10 (verified)"
     evidence_backed_gate: "G4 (prototype quality)"
-    actual_maturity_class: probe_only
-    parser_depth: "gzip+XML, shallow cell extraction — sheet names, cell_count, cell values"
-    read_support: "partial (cell values without type detection)"
-    write_support: false
-    export_support: false
-    roundtrip_support: false
+    actual_maturity_class: export_capable_library
+    parser_depth: "gzip+XML cell extraction with write, CSV/JSON export; set_cell, sheet ops deepened through Waves 9-11"
+    read_support: true
+    write_support: true
+    export_support: true
+    roundtrip_support: true
     neutral_model_status: "plain dict (no schema)"
     security_guard_status: "64MB guard, gzip magic check"
     corpus_quality: fair
     spec_quality: fair
-    package_readiness: "local build exists but source is probe-quality"
+    package_readiness: "local build exists; install-proof confirmed (hardened-audit-remediation-sprint1)"
     commercial_readiness: "N/A"
-    overclaim_risk: high
-    overclaim_details: "G10 claimed but source is 170 LOC cell counter with no model, no type detection, no write."
-    strongest_evidence: "16 tests prove gzip+XML cell counting works"
-    weakest_area: "no neutral model, no cell type detection, no write — probe only"
-    recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
+    overclaim_risk: low
+    overclaim_details: "Gate G10 still unverified at commercial level; evidence_backed_gate is G4"
+    strongest_evidence: "73 test files; write_gnumeric + export_to_csv/json in __init__.py; roundtrip test exists"
+    weakest_area: "no neutral model schema; no cell type detection; no .NET track"
+    recommended_action: "add typed cell model; advance to Gate 5 oracle"
     r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
     r33_review_date: "2026-05-19"
     r35_gate_correction: "APPLIED — pack.yaml gate_correction section added"
     r35_gate_correction_date: "2026-05-20"
+    waves_deepening: "Wave 9: load_gap_closure; Waves 10-11: cell content, conveyor deepening; sprint6: matrix refresh"
+    sprint_last_updated: hardened-audit-remediation-sprint6
 
   - format_id: abw
     display_name: "AbiWord Document"
@@ -569,32 +580,34 @@ formats:
     src_python_files: ["abw_codec.py", "__init__.py"]
     src_python_loc: 141
     src_net_exists: false
-    tests_python_count: 17
+    tests_python_count: 82
     tests_net_count: 0
     packaging_status: local_build_ready
     claimed_gate: "G10 (verified)"
     evidence_backed_gate: "G4 (prototype quality)"
-    actual_maturity_class: probe_only
-    parser_depth: "XML, paragraph text extraction, DOCTYPE stripping for XXE safety"
-    read_support: "partial (paragraph text only)"
-    write_support: false
-    export_support: false
-    roundtrip_support: false
+    actual_maturity_class: roundtrip_capable_library
+    parser_depth: "XML paragraph extraction with write, multi-format export (txt/html/json/csv/markdown), roundtrip; deepened Waves 8-11"
+    read_support: true
+    write_support: true
+    export_support: true
+    roundtrip_support: true
     neutral_model_status: "plain dict (no schema)"
     security_guard_status: "64MB guard, DOCTYPE strip"
     corpus_quality: fair
     spec_quality: fair
-    package_readiness: "local build exists but source is probe-quality"
+    package_readiness: "local build exists; install-proof confirmed (hardened-audit-remediation-sprint1)"
     commercial_readiness: "N/A"
-    overclaim_risk: high
-    overclaim_details: "G10 claimed but source is 141 LOC text extractor with no model, no write, no export."
-    strongest_evidence: "17 tests prove paragraph extraction works"
-    weakest_area: "smallest parser (141 LOC), no neutral model, no write — probe only"
-    recommended_action: "DRIFT-REVIEW: reclassify evidence-backed gate to G4"
+    overclaim_risk: low
+    overclaim_details: "Gate G10 still unverified at commercial level; evidence_backed_gate is G4"
+    strongest_evidence: "82 test files; write_abw + export_to_txt/html/json/csv/markdown confirmed in __init__.py; roundtrip tests exist"
+    weakest_area: "no neutral model schema; no .NET track; evidence-backed gate is G4 only"
+    recommended_action: "formalize neutral model; advance to Gate 5 oracle"
     r33_review_outcome: "GATE_CORRECTION_REQUIRED — confirmed probe_only, evidence-backed G4"
     r33_review_date: "2026-05-19"
     r35_gate_correction: "APPLIED — pack.yaml gate_correction section added"
     r35_gate_correction_date: "2026-05-20"
+    waves_deepening: "Wave 8: replace/split/truncate; Wave 9: load gap; Wave 10: export content rework; sprint6: matrix refresh"
+    sprint_last_updated: hardened-audit-remediation-sprint6
 
   - format_id: csv
     display_name: "Comma-Separated Values"
@@ -609,10 +622,10 @@ formats:
     packaging_status: none
     claimed_gate: "G4"
     evidence_backed_gate: "G4"
-    actual_maturity_class: read_only_prototype
-    parser_depth: "RFC 4180 inline parser (quoted fields, BOM strip, delimiter sniff)"
+    actual_maturity_class: read_write_prototype
+    parser_depth: "RFC 4180 inline parser (quoted fields, BOM strip, delimiter sniff); write_csv + write_csv_to_file added"
     read_support: "prototype (Gate 4)"
-    write_support: false
+    write_support: true
     export_support: false
     roundtrip_support: false
     neutral_model_status: "Gate 5 declared"
@@ -622,10 +635,11 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "19 tests pass; inline RFC 4180 parser"
-    weakest_area: "no packaging, no Gate 5 oracle"
-    recommended_action: "advance to Gate 5 oracle in next sprint"
-    sprint_last_updated: R55
+    strongest_evidence: "19 test files; write_csv + write_csv_to_file confirmed in __init__.py; advanced roundtrip tests added (Waves 9-10)"
+    weakest_area: "no packaging, no roundtrip function, no Gate 5 oracle run"
+    recommended_action: "add roundtrip support; run Gate 5 oracle comparison"
+    sprint_last_updated: hardened-audit-remediation-sprint6
+    waves_deepening: "Wave 9: csv_advanced_roundtrip; Wave 10: csv_mainstream_writer"
 
   - format_id: tsv
     display_name: "Tab-Separated Values"
@@ -782,13 +796,13 @@ formats:
     src_python_exists: true
     src_python_loc: 815
     src_net_exists: false
-    tests_python_count: 233
+    tests_python_count: 80
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G4"
     evidence_backed_gate: "G4"
     actual_maturity_class: roundtrip_capable_library
-    parser_depth: "Line-by-line JSON record parser with filter/sort/group/aggregate"
+    parser_depth: "Line-by-line JSON record parser with filter/sort/group/aggregate; field ops + dogfood pipelines added (Wave 11)"
     read_support: true
     write_support: true
     export_support: true
@@ -800,10 +814,11 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "233 tests pass; roundtrip verified; export_to_csv working"
+    strongest_evidence: "80 test files; roundtrip verified; export_to_csv working; dogfood CSV/TSV pipelines confirmed"
     weakest_area: "no public formal spec; no .NET implementation"
     recommended_action: "advance to Gate 5 oracle; add formal spec authority"
-    sprint_last_updated: R152
+    sprint_last_updated: hardened-audit-remediation-sprint6
+    wave11_deepening: "field_ops_advancement; dogfood_ndjson_csv_pipeline; dogfood_ndjson_tsv_pipeline"
 
   - format_id: toml
     display_name: "Tom's Obvious Minimal Language"
@@ -813,17 +828,17 @@ formats:
     src_python_exists: true
     src_python_loc: 290
     src_net_exists: false
-    tests_python_count: 30
+    tests_python_count: 15
     tests_net_count: 0
     packaging_status: none
     claimed_gate: "G4"
     evidence_backed_gate: "G4"
-    actual_maturity_class: read_write_library_foundation
-    parser_depth: "tomllib-based reader with dict model"
+    actual_maturity_class: roundtrip_capable_library
+    parser_depth: "tomllib-based reader with dict model; write/roundtrip via tomlkit"
     read_support: true
     write_support: true
     export_support: false
-    roundtrip_support: false
+    roundtrip_support: true
     neutral_model_status: "dict model"
     security_guard_status: "size guard"
     corpus_quality: "samples exist"
@@ -831,7 +846,8 @@ formats:
     package_readiness: none
     commercial_readiness: "N/A"
     overclaim_risk: none
-    strongest_evidence: "30 tests pass; tomllib stdlib in Python 3.11+"
-    weakest_area: "no roundtrip; no .NET implementation"
-    recommended_action: "add roundtrip and export support in next sprint"
-    sprint_last_updated: R152
+    strongest_evidence: "15 test files; write_toml + roundtrip functions confirmed in __init__.py"
+    weakest_area: "no export support; no .NET implementation"
+    recommended_action: "add export support (CSV/JSON); advance to Gate 5 oracle"
+    sprint_last_updated: hardened-audit-remediation-sprint6
+    wave8_deepening: "roundtrip gap closure (test_toml_roundtrip_gap_closure.py)"

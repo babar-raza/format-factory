@@ -6,7 +6,6 @@ Read-only validator tests. No file writes.
 import subprocess
 import sys
 from pathlib import Path
-import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent
 VALIDATOR = REPO / "tools" / "format_understanding" / "validate_format_understanding.py"

@@ -1,6 +1,5 @@
 """TC-TEST-003: AI Evidence Critic tests."""
 
-import json
 from pathlib import Path
 
 import pytest

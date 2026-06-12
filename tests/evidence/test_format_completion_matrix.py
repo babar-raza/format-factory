@@ -8,7 +8,6 @@ These tests ensure the format completion matrix is consistent with the actual
 filesystem and that every active format has a matrix entry.
 """
 import os
-import sys
 
 import pytest
 import yaml

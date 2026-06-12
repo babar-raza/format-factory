@@ -3,11 +3,11 @@
 **Document type:** Living Master Plan
 **Authority level:** Single Operational Authority
 **Project:** format-factory
-**Version:** 3.0
-**Last updated:** 2026-06-10 (Healing sprint — 2229 lines condensed to ~470 lines with archive safety)
-**Last verified:** 2026-06-10
+**Version:** 3.1
+**Last updated:** 2026-06-11 (Authority healing — Gate 11 wording fixed, gate sequential typo fixed, 5 durable authority sections restored)
+**Last verified:** 2026-06-11
 
-**Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 APPROVED by Babar Raza 2026-06-05 for FODS, FODT, Netpbm. commercial_product_ready: false (all entries).
+**Current phase:** Multi-format POC — 11 targets (3 commercial .NET, 8 FOSS Python). Gate 11 G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated after G11-G). commercial_product_ready: false (all entries).
 
 **Canonical sources (do not duplicate — pointer only):**
 - Product targets: `product-capability-matrix/poc-targets.yaml`
@@ -80,8 +80,8 @@ The project goal is to build a production-quality pipeline for acquiring format 
 
 | Format | Status |
 |---|---|
-| FODS | Load/edit/save/export all pass; Gate 11 APPROVED |
-| FODT | Load/edit/save/export all pass; Gate 11 APPROVED |
+| FODS | Load/edit/save/export all pass; G11-G approved 2026-06-05; commercial_product_ready: false |
+| FODT | Load/edit/save/export all pass; G11-G approved 2026-06-05; commercial_product_ready: false |
 | Netpbm (.NET) | Family-based dogfooding (PBM/PGM/PPM) |
 
 ### Reduced/FOSS Python Products (8 targets)
@@ -125,7 +125,21 @@ Open-source ceiling: Tier 0-4. Commercial ceiling: Tier 5-6.
 
 ---
 
-## Section 5 — Four-Stream Architecture
+## Section 5 — Living Master Plan Policy
+
+These rules govern how this document itself must be maintained. They are permanent.
+
+1. `plans/master-plan.md` is the **single operational authority** for this project.
+2. It is **not a snapshot.** It always reflects the current project state.
+3. It must be updated at every phase change, gate transition, taskcard status change, decision, gap discovery, risk materialization, and bundle review.
+4. Generated summaries (created by agents on request) are read-only snapshots. They must state: "Generated summary — not authoritative. Verify against plans/master-plan.md." They are never committed.
+5. It must be reproducible from the repo state plus persisted local artifacts. An agent given the repo, taskcards, registry, and decision/gap/risk registers must be able to verify this document matches actual project state.
+6. No section may be split out in a way that removes it from this document. Sections may be linked to detail files, but a current summary must remain here at all times.
+7. Agents must update this document after every gate transition as part of the completion artifact.
+
+---
+
+## Section 6 — Four-Stream Architecture
 
 > **Full model:** `docs/governance/four-stream-operating-model.md`
 
@@ -140,7 +154,7 @@ Open-source ceiling: Tier 0-4. Commercial ceiling: Tier 5-6.
 
 ---
 
-## Section 6 — Mainstream Product Lane
+## Section 7 — Mainstream Product Lane
 
 > **Full model:** `docs/governance/mainstream-poc-mega-train.md`
 > **Product-output floor:** `docs/governance/mainstream-product-output-floor.md`
@@ -151,7 +165,7 @@ No machinery lane may declare clean success unless it either removes a product b
 
 ---
 
-## Section 7 — Acceleration Layer
+## Section 8 — Acceleration Layer
 
 > **Full model:** `docs/governance/acceleration-definition.md`
 
@@ -160,7 +174,7 @@ No machinery lane may declare clean success unless it either removes a product b
 
 ---
 
-## Section 8 — Skills / Governed Execution
+## Section 9 — Skills / Governed Execution
 
 > **Skill registry:** `.supervisor/skill-registry.yaml`
 
@@ -168,7 +182,7 @@ Bounded product-change skills with governed execution. `tools/supervisor/select_
 
 ---
 
-## Section 9 — Autonomous Supervisor
+## Section 10 — Autonomous Supervisor
 
 > **Full model:** `docs/governance/autonomous-supervisor-role.md`
 
@@ -181,7 +195,7 @@ The declaration-driven supervisor pipeline replaces the legacy ZIP/watcher model
 
 ---
 
-## Section 10 — AI Authority Boundary
+## Section 11 — AI Authority Boundary
 
 > **Full model:** `docs/governance/ai-authority-boundary.md`
 
@@ -193,7 +207,7 @@ The declaration-driven supervisor pipeline replaces the legacy ZIP/watcher model
 
 ---
 
-## Section 11 — External Tool Architecture
+## Section 12 — External Tool Architecture
 
 > **Full model:** `docs/governance/external-tool-architecture.md`
 
@@ -201,7 +215,7 @@ External tools (Ruflo, Superpowers, GhidraMCP) are governed by the external tool
 
 ---
 
-## Section 12 — Evidence and Review Package Model
+## Section 13 — Evidence and Review Package Model
 
 The declaration-driven model is canonical:
 - Worker writes `evidence-declaration.yaml` at `.local/evidences/<run_id>/`
@@ -213,7 +227,7 @@ The declaration-driven model is canonical:
 
 ---
 
-## Section 13 — Gate Model
+## Section 14 — Gate Model
 
 All 11 gates require human approval. No agent may self-approve.
 
@@ -231,13 +245,13 @@ All 11 gates require human approval. No agent may self-approve.
 | 10 | Open-Source Readiness | 4 | Release manifest, boundary check |
 | 11 | Commercial Readiness | 4 | Commercial review, legal review |
 
-**Gate rules:** Sequential (Gate N before Gate N-1). Human approval records in `registry/format-registry.yaml`. Master plan updated at every gate transition.
+**Gate rules:** Sequential (Gate N-1 before Gate N — gates must be passed in ascending order). Human approval recorded in `registry/format-registry.yaml`. Master plan updated at every gate transition.
 
 **WIP limits:** Early stages (Gates 1-3): 3 formats. Middle (Gates 4-6): 2 formats. Late (Gates 7-9): 2 formats. Product (Gates 10-11): active multi-format POC (per poc-targets.yaml).
 
 ---
 
-## Section 14 — Phase Model
+## Section 15 — Phase Model
 
 | Phase | Purpose | Key Rule |
 |---|---|---|
@@ -263,7 +277,7 @@ See `registry/format-registry.yaml` for per-format gate status.
 
 ---
 
-## Section 15 — Legal and Oracle Models
+## Section 16 — Legal and Oracle Models
 
 **Legal categories:** (1) Open Standard RF — fast-path. (2) Permissive OSS. (3) Published Proprietary Spec. (4) Ambiguous Public Documentation — requires review. (5) Reverse-Engineered Binary — auto-reject. (6) Blocked — auto-reject.
 
@@ -271,7 +285,7 @@ See `registry/format-registry.yaml` for per-format gate status.
 
 ---
 
-## Section 16 — Decision Register
+## Section 17 — Decision Register
 
 | ID | Decision | Status |
 |---|---|---|
@@ -314,7 +328,7 @@ See `registry/format-registry.yaml` for per-format gate status.
 
 ---
 
-## Section 17 — Current Status Summary
+## Section 18 — Current Status Summary
 
 **Do not duplicate dynamic state.** Read these canonical sources:
 - **Product targets:** `product-capability-matrix/poc-targets.yaml`
@@ -322,12 +336,12 @@ See `registry/format-registry.yaml` for per-format gate status.
 - **Format status:** `registry/format-registry.yaml`
 - **Gate approvals:** `reports/supervisor/approval-gates.md`
 
-**Gate 11 status:** APPROVED by Babar Raza 2026-06-05 (FODS, FODT, Netpbm).
-**commercial_product_ready:** false (all entries — requires full implementation + human final approval).
+**Gate 11 status:** G11-G sub-gate approved by Babar Raza 2026-06-05 (FODS, FODT, Netpbm). Registry gate_11.status: commercial_readiness_in_progress (registry not yet updated — see `reports/master-plan-authority-healing-20260610/gate11_commercial_readiness_reconciliation.md`).
+**commercial_product_ready:** false (all entries — requires full implementation + final human approval).
 
 ---
 
-## Section 18 — Governance, Visibility, Release Control
+## Section 19 — Governance, Visibility, Release Control
 
 > **Canonical source map:** `docs/governance/master-plan-canonical-source-map.md`
 > **Sync policy:** `docs/governance/master-plan-sync-policy.md`
@@ -340,7 +354,7 @@ See `registry/format-registry.yaml` for per-format gate status.
 
 ---
 
-## Section 19 — Memory Layer
+## Section 20 — Memory Layer
 
 ### Authority Hierarchy
 
@@ -362,7 +376,7 @@ See `registry/format-registry.yaml` for per-format gate status.
 
 ---
 
-## Section 20 — Agent Instructions
+## Section 21 — Agent Instructions
 
 1. Read this master plan and AGENTS.md first.
 2. Obey phase boundaries — Phase N work is forbidden during Phase N-1.
@@ -377,7 +391,7 @@ See `registry/format-registry.yaml` for per-format gate status.
 
 ---
 
-## Section 21 — Independent Authority Layers
+## Section 22 — Independent Authority Layers
 
 > **Full model:** `docs/governance/independent-authority-layers.md`
 
@@ -388,6 +402,72 @@ See `registry/format-registry.yaml` for per-format gate status.
 **Specification Authority Layer:** Makes file-format specs reliably usable by agents. Status: active development. Pilot formats: ZST, Netpbm, DIF.
 
 **Requirement & Capability Authority Layer:** Accountability bridge between spec requirements and product readiness. Answers: "Can we honestly claim this capability is supported, and what proves it?"
+
+---
+
+## Section 23 — Persistence, Reuse, and Visibility
+
+### Persistent Artifact Model
+
+| Artifact Type | Committed | Local-Only |
+|---|---|---|
+| Plans, governance, docs, registry, taskcards | Yes | No |
+| Acquisition pack evidence, schemas, prototypes, oracle outputs | Yes | No |
+| Samples (confirmed open license), product source, release manifests | Yes | No |
+| Specification cache files (PDFs/HTML) | No | Yes |
+| LLM run records, prompt/response cache | No | Yes |
+| Discovered model list, artifact index, evidence bundles | No | Yes |
+| Generated summaries (agent-created) | No | Yes |
+| `.env` secrets | **Never** | Yes |
+
+**`.local/` is gitignored and never committed.** It can be rebuilt from committed state if lost.
+
+### Reuse Decision Table
+
+| Condition | Action |
+|---|---|
+| Artifact exists, source hash matches | Reuse — log `ARTIFACT_REUSED` in run record |
+| Artifact exists, source changed | Refresh — update artifact and source_hash |
+| Artifact marked stale | Regenerate from current inputs |
+| Artifact missing | Generate fresh |
+| Artifact exists, provenance unclear | Flag for human review — do not use |
+
+Before creating any artifact, check `.local/artifact-index.yaml`. Before creating a taskcard, check `taskcards/` for an existing entry.
+
+### Visibility Classification Defaults
+
+| Artifact Type | Default Visibility |
+|---|---|
+| Plans, governance, architecture | `internal` |
+| Registry (after Gate 9) | `public` |
+| Acquisition pack evidence | `evidence-only` |
+| Samples (confirmed open license) | `public` |
+| Samples (uncertain license) | `blocked` until confirmed |
+| Schemas (after Gate 10) | `public` |
+| Product source `src/python/` (FOSS) | `public` after Gate 10 |
+| Product source `src/net/` commercial tiers | `commercial` |
+| LLM prompts/responses | `generated` |
+| Security/legal reports | `internal` |
+| Release manifests | `public` |
+| `.env` secrets | `blocked` — never committed |
+
+**Default rule:** When uncertain, classify as `internal`. Never default to `public`.
+
+---
+
+## Section 24 — Format Expansion Guardrails
+
+**The system must not be limited to formats currently supported by Aspose.**
+
+All format expansion requires explicit human authorization and the full 11-gate pipeline. No format may be added to the registry without passing Gate 1 scoring with human approval.
+
+**Strategic direction:** After XML-based proof formats (FODS/FODT) are stable, expand to any format family where public specifications or sufficient public technical information exist. This includes:
+- Archive/package formats, imaging formats, binary document formats
+- Proprietary-but-documented formats with public reverse-engineering documentation
+- CAD/3D/GIS/media/project/email formats where public technical material exists
+- Non-Aspose formats: these require a pre-acquisition audit before gate 1 scoring
+
+**Non-Aspose candidate backlog:** ~200+ format extensions across 13 categories — all marked `unsupported_by_aspose: needs_audit`. See `docs/format-expansion-roadmap.md` for Tier A candidates.
 
 ---
 
@@ -404,5 +484,5 @@ No content has been deleted — only moved to archive files with pointers.
 
 ---
 
-*End of plans/master-plan.md — version 3.0 — 2026-06-10 (Healing sprint: 2229 lines condensed with archive safety)*
+*End of plans/master-plan.md — version 3.1 — 2026-06-11 (Authority healing: Gate 11 wording fixed, gate sequence typo fixed, 5 durable authority sections restored: §5 Living Master Plan Policy, §23 Persistence/Reuse/Visibility, §24 Format Expansion Guardrails)*
 *This document is the single operational authority for format-factory. All other documents are subordinate to it for operational decisions.*

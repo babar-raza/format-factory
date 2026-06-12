@@ -43,15 +43,25 @@ They must NEVER cause the implementation train to stop:
 
 ## Permanent TRUE_EXTERNAL_GATE Stops
 
-Only these warrant a terminal stop:
+Only these warrant a terminal stop. Apply the Human Task Conversion Rule (AGENTS.md §AG1) before
+classifying. Use the exact blocker category, not "human must":
 
-1. git commit/push/merge (human must execute)
-2. NuGet/PyPI publication (human must execute)
-3. Credentials/secrets (no fallback)
-4. Destructive cleanup (no non-destructive alternative)
-5. Gate 11 approval EXECUTION (not preparation)
-6. Gate 8 approval EXECUTION (not preparation)
-7. Actual external MCP daemon activation (when governance requires it)
+1. **git push** — classified as `EXTERNAL_BLOCKER: git_push_credentials_unavailable` when credentials
+   or branch protection are unavailable for the agent identity. When available, this is an SCM Agent
+   task (AGENTS.md §AG4.2), not a terminal stop.
+   **git commit** — SCM Agent task (AGENTS.md §AG4.1) when sprint policy authorizes. Only a terminal
+   stop when sprint policy and explicit user authorization are both absent.
+   **git merge** — requires explicit policy authority. Classify: `BLOCKED: merge_no_policy_authority`.
+2. **NuGet/PyPI publication** — agent prepares release packet. Actual registry push classified as
+   `EXTERNAL_BLOCKER: publication_credentials_unavailable` when registry credentials unavailable.
+3. **Credentials/secrets (no fallback)** — `EXTERNAL_BLOCKER: credentials_unavailable`.
+4. **Destructive cleanup (no non-destructive alternative)** — `BLOCKED: destructive_no_safe_alternative`.
+5. **Gate 11 approval EXECUTION** — commercial business decision by project lead (Babar Raza). Preparation
+   is always agent-owned: evidence packet, readiness assessment, recommendation. Only the final
+   commercial sign-off requires business authority.
+6. **Gate 8 approval EXECUTION** — formal sign-off where governance requires it. Preparation is
+   always agent-owned.
+7. **Actual external MCP daemon activation (when governance requires it)** — `BLOCKED: mcp_activation_requires_policy`.
 
 ## Enforcement
 

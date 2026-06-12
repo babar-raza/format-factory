@@ -11,11 +11,7 @@ if str(_src) not in sys.path:
 import pytest
 from ppm.ppm_parser import (
     PpmImage,
-    PpmError,
     PpmInvalidMagicError,
-    PpmInvalidHeaderError,
-    PpmSizeError,
-    PpmDecodeError,
     parse_ppm,
     parse_ppm_strict,
     probe_ppm,

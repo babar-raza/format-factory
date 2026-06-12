@@ -5,8 +5,6 @@ Tests that write_fodt() and document_to_xml() correctly serialize
 neutral model document dicts to valid FODT XML.
 """
 
-import tempfile
-from pathlib import Path
 
 import pytest
 

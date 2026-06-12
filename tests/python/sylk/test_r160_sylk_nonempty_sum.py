@@ -19,7 +19,6 @@ sys.path.insert(0, str(_REPO / "src" / "python"))
 from sylk.sylk_parser import (
     count_nonempty_cells,
     sum_column,
-    parse_sylk_strict,
     write_sylk,
     SylkDocument,
     SylkCell,

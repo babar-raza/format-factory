@@ -1,6 +1,5 @@
 """Generate sample outputs for iteration 001 proof."""
 import json
-import sys
 from pathlib import Path
 from datetime import datetime, timezone
 

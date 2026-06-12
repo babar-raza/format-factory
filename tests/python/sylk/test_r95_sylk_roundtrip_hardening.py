@@ -5,10 +5,8 @@
 
 """Tests for SYLK write-then-parse roundtrip integrity and edge cases."""
 
-import pytest
 import sys
 import os
-from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
 

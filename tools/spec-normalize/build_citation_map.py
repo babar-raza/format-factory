@@ -310,10 +310,10 @@ def main():
         source_artifact, gaps,
     )
 
-    print(f"\nStatus: SUCCESS")
+    print("\nStatus: SUCCESS")
     print(f"  Section refs: {len(section_refs)}")
     print(f"  External refs: {len(external_refs)}")
-    print(f"  Artifacts: citations.yaml, citation-report.md")
+    print("  Artifacts: citations.yaml, citation-report.md")
     if gaps:
         print(f"  Gaps: {'; '.join(gaps)}")
     print(f"\nCitation artifacts are at: {normalized_dir}")

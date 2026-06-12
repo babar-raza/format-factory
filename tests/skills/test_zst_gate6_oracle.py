@@ -14,7 +14,6 @@ All tests are deterministic. No network access. No production code.
 """
 import sys
 import io
-import os
 import hashlib
 import pathlib
 import pytest

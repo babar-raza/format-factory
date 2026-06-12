@@ -16,7 +16,6 @@ Exit codes:
 import argparse
 import json
 import re
-import string
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -267,7 +266,7 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
                 "description": f"Continue {fmt} commercial .NET product advancement. {safe_next_action}",
                 "acceptance_criteria": [
                     f"{fmt} .NET test count increased or new API proven",
-                    f"dotnet_status in poc-targets.yaml updated",
+                    "dotnet_status in poc-targets.yaml updated",
                 ],
                 "files_touched": [
                     f"src/net/{fmt.lower()}/",
@@ -339,8 +338,8 @@ def synthesize_trains(review: dict, poc_targets: dict, gaps: dict) -> list[dict]
             "title": f"Dogfood: {gap.get('format', '?')} -> {gap.get('export_target', '?')}",
             "description": f"{gap.get('dogfood_blocker', '')}. Prerequisite: {gap.get('prerequisite', 'none')}.",
             "acceptance_criteria": [
-                f"Export test passes using FF library",
-                f"Dogfood status updated in poc-targets.yaml",
+                "Export test passes using FF library",
+                "Dogfood status updated in poc-targets.yaml",
             ],
             "files_touched": [],
             "verification_command": "",
@@ -560,7 +559,7 @@ def generate_prompt(review: dict, next_work: dict | None = None,
                     "title": fw["title"],
                     "description": fw["desc"],
                     "acceptance_criteria": ["Tests pass for affected tools", "Evidence declared"],
-                    "files_touched": [f"tools/supervisor/", f"tests/supervisor/"],
+                    "files_touched": ["tools/supervisor/", "tests/supervisor/"],
                     "verification_command": "",
                 })
             # Re-letter all trains after insertion
@@ -656,17 +655,17 @@ def _build_fallback_prompt(review, trains, sprint_goal, test_line,
     lines.append(f"1. `{venv_path} -m pytest tests/ -x -q --tb=short`")
     lines.append(f"2. `{venv_path} -m py_compile tools/supervisor/autonomous_cycle.py`")
     lines.append(f"3. `{dotnet_test_cmd}`")
-    lines.append(f"4. Write evidence-declaration.yaml")
-    lines.append(f"5. Run autonomous-cycle")
+    lines.append("4. Write evidence-declaration.yaml")
+    lines.append("5. Run autonomous-cycle")
     lines.append("")
 
     lines.append("## Evidence Declaration Requirements")
     lines.append("At sprint end, create `.local/evidences/<run_id>/evidence-declaration.yaml`")
     lines.append("Then run:")
-    lines.append(f"```")
+    lines.append("```")
     lines.append(f"{venv_path} tools/supervisor/supervisor_loop.py autonomous-cycle \\")
-    lines.append(f"  --declaration .local/evidences/<run_id>/evidence-declaration.yaml")
-    lines.append(f"```")
+    lines.append("  --declaration .local/evidences/<run_id>/evidence-declaration.yaml")
+    lines.append("```")
     lines.append("")
 
     return "\n".join(lines)
@@ -747,7 +746,7 @@ def _make_task_adjudication_fields(task_label: str, task_title: str, context: di
     else:
         try:
             sys.path.insert(0, str(SCRIPT_DIR))
-            from stop_reason_adjudicator import reclassify_task_label, StopDecision
+            from stop_reason_adjudicator import reclassify_task_label
             classification = reclassify_task_label(task_label, task_title, context)
             decision = classification["adjudication"]["decision"]
             agent_can_execute = classification["agent_can_execute"]
@@ -1064,23 +1063,31 @@ def rewrite_prompt_with_context(
 
 def _rewrite_sdk_fallback(messages: list[dict], cfg) -> str | None:
     """Fallback: call endpoint directly via SDK when litellm fails."""  # policy-allowed
-    try:
-        import os
-        _sdk = __import__("openai")  # policy-approved endpoint only
-        _Client = _sdk.OpenAI  # policy-approved
-        key = os.environ.get("GPT_OSS_API_KEY", "").strip()
-        if not key or not cfg.endpoint:
-            return None
-        client = _Client(base_url=cfg.endpoint, api_key=key)
-        resp = client.chat.completions.create(
-            model="recommended",
-            messages=messages,
-            max_tokens=4000,
-            temperature=0,
-        )
-        return resp.choices[0].message.content or None
-    except Exception:
+    import os
+    import time
+    _max_attempts = 3
+    _backoff = [1, 2, 4]
+    key = os.environ.get("GPT_OSS_API_KEY", "").strip()
+    if not key or not cfg.endpoint:
         return None
+    for attempt in range(_max_attempts):
+        try:
+            _sdk = __import__("openai")  # policy-approved endpoint only
+            _Client = _sdk.OpenAI  # policy-approved
+            client = _Client(base_url=cfg.endpoint, api_key=key)
+            resp = client.chat.completions.create(
+                model="recommended",
+                messages=messages,
+                max_tokens=4000,
+                temperature=0,
+            )
+            return resp.choices[0].message.content or None
+        except Exception as exc:
+            print(f"  [LLM] SDK fallback attempt {attempt + 1}/{_max_attempts} failed: {type(exc).__name__}")
+            if attempt < _max_attempts - 1:
+                time.sleep(_backoff[attempt])
+    print("  [LLM] All SDK fallback attempts exhausted")
+    return None
 
 
 def main() -> int:

@@ -9,13 +9,11 @@ Scope: validate, dry-run, explain, export-review-queue modes.
 """
 
 import ast
-import json
 import os
 import subprocess
 import sys
 import tempfile
 
-import pytest
 import yaml
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -226,7 +224,6 @@ class TestDryRunMode:
 
     def test_dry_run_writes_no_repo_files(self):
         """Dry-run must not write any files to the repo directory."""
-        import time
         before_mtime = {}
         for dirpath, dirnames, filenames in os.walk(REPO_ROOT):
             # Skip hidden dirs and .local/

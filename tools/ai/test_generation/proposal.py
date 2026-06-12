@@ -7,9 +7,7 @@ They must pass authority lifecycle and reviewer gate before entering test suites
 from __future__ import annotations
 
 import hashlib
-import json
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from typing import Any
 
 from tools.ai.schemas.models import ArtifactAuthorityStateValue
@@ -109,7 +107,7 @@ class ProposalReviewer:
 class EvidenceReviewHelper:
     """Inspects evidence bundles/reports and produces ai_draft gap findings."""
 
-    def review_directory(self, directory: Path) -> list[dict[str, str]]:
+    def review_directory(self, directory: Path) -> list[dict[str, str]]:  # noqa: F821
         """Scan a directory for evidence gaps. Returns ai_draft findings."""
         from pathlib import Path as P
         findings: list[dict[str, str]] = []

@@ -80,7 +80,7 @@ def _make_product_inspection(item_count: int = 3) -> dict:
                 "declared_status": "completed",
                 "has_evidence": True,
                 "has_tests": False,
-                "evidence_paths_found": [f"src/python/gnumeric/gnumeric_codec.py"],
+                "evidence_paths_found": ["src/python/gnumeric/gnumeric_codec.py"],
                 "evidence_paths_missing": [],
                 "tests_supporting": [],
                 "tests_missing": [],

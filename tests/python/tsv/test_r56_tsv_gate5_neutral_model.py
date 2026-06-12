@@ -19,12 +19,11 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.python.tsv.tsv_parser import parse_tsv_strict, get_capabilities, TsvError
+from src.python.tsv.tsv_parser import parse_tsv_strict, get_capabilities
 
 
 def _write_tsv(tmp_path, name: str, content: str) -> Path:

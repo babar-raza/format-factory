@@ -11,7 +11,6 @@ Addresses AF-002 (stale active-continuation.json) and AF-003 (empty post-closeou
 
 import json
 import sys
-import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[2]
@@ -20,9 +19,7 @@ sys.path.insert(0, str(_REPO / "tools" / "supervisor"))
 from evidence_continuation import (
     seed_post_closeout_queue_item,
     apply_post_closeout_continuation,
-    write_post_closeout_active_continuation,
     generate_post_closeout_next_action,
-    ACTION_QUEUE_PATH,
 )
 
 

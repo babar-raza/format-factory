@@ -258,48 +258,48 @@ def _get_next_actions(
     actions = []
     if state == STATE_CANDIDATE:
         actions.append(f"[SIM] Run support-matrix audit for {fmt.upper()} against current Aspose libraries")
-        actions.append(f"[SIM] Document support gaps and overlaps in support-matrix audit report")
+        actions.append("[SIM] Document support gaps and overlaps in support-matrix audit report")
     elif state == STATE_SUPPORT_MATRIX_AUDIT:
         actions.append(f"[SIM] Locate public specification or documentation for {fmt.upper()}")
-        actions.append(f"[SIM] Classify spec as: full_public / partial_public / reverse_engineering / none")
+        actions.append("[SIM] Classify spec as: full_public / partial_public / reverse_engineering / none")
     elif state == STATE_SPEC_DISCOVERY:
         actions.append(f"[SIM] Download and cache {fmt.upper()} spec locally (AGENTS.md Section T)")
-        actions.append(f"[SIM] Normalize spec into format-factory local spec cache")
+        actions.append("[SIM] Normalize spec into format-factory local spec cache")
     elif state == STATE_SPEC_NORMALIZATION:
-        actions.append(f"[SIM] Generate requirements from normalized spec (AI-assisted)")
-        actions.append(f"[SIM] Validate generated requirements against schema")
+        actions.append("[SIM] Generate requirements from normalized spec (AI-assisted)")
+        actions.append("[SIM] Validate generated requirements against schema")
     elif state == STATE_REQUIREMENTS_GENERATION:
-        actions.append(f"[SIM] Submit generated requirements for LANE_R5 verifier review")
+        actions.append("[SIM] Submit generated requirements for LANE_R5 verifier review")
     elif state == STATE_VERIFIER_REVIEW:
-        actions.append(f"[SIM] Run DEC-034 independent verification sprint (separate session)")
+        actions.append("[SIM] Run DEC-034 independent verification sprint (separate session)")
     elif state == STATE_DEC034_IV:
-        actions.append(f"[SIM] Confirm REQUIREMENTS_AUTHORITATIVE state in format_context_resolver")
-        actions.append(f"[SIM] Build implementation plan via implementation_plan_expander")
+        actions.append("[SIM] Confirm REQUIREMENTS_AUTHORITATIVE state in format_context_resolver")
+        actions.append("[SIM] Build implementation plan via implementation_plan_expander")
     elif state == STATE_PLANNING_READY:
         actions.append(f"[SIM] Run execution_simulator.simulate_format_sprint('{fmt}')")
-        actions.append(f"[SIM] Record simulation results in authority continuity registry")
+        actions.append("[SIM] Record simulation results in authority continuity registry")
     elif state == STATE_IMPLEMENTATION_SIMULATION:
-        actions.append(f"[SIM] Build evidence bundle with sprint-specific metadata directory")
-        actions.append(f"[SIM] Run validate_evidence_bundle.py — expect BUNDLE_VALIDATION: PASS")
+        actions.append("[SIM] Build evidence bundle with sprint-specific metadata directory")
+        actions.append("[SIM] Run validate_evidence_bundle.py — expect BUNDLE_VALIDATION: PASS")
     elif state == STATE_BLOCKED:
-        actions.append(f"[SIM] Human review required to clear blockers before proceeding")
+        actions.append("[SIM] Human review required to clear blockers before proceeding")
     elif state == STATE_DEFERRED:
-        actions.append(f"[SIM] No action until deferral is lifted by human authorization")
+        actions.append("[SIM] No action until deferral is lifted by human authorization")
     return actions
 
 
 def _get_evidence_requirements(fmt: str, state: str) -> list[str]:
     """Return evidence requirements for a format at a given lifecycle state."""
     base = [
-        f"BUNDLE_VALIDATION: PASS",
-        f"METADATA_IDENTITY: CONSISTENT (sprint_id matching)",
-        f"No src/net/ or src/python/ mutations",
+        "BUNDLE_VALIDATION: PASS",
+        "METADATA_IDENTITY: CONSISTENT (sprint_id matching)",
+        "No src/net/ or src/python/ mutations",
     ]
     if state in (STATE_REQUIREMENTS_GENERATION, STATE_VERIFIER_REVIEW, STATE_DEC034_IV):
         base.append(f"generated-requirements/{fmt}/*.yaml — schema-validated")
         base.append(f"generated-requirements/{fmt}/verifier-review.yaml — LANE_R5_PASS")
     if state in (STATE_PLANNING_READY, STATE_IMPLEMENTATION_SIMULATION):
-        base.append(f"Replay fingerprint — deterministic")
+        base.append("Replay fingerprint — deterministic")
         base.append(f"Authority entry — format_isolation_marker: FORMAT:{fmt.upper()}")
     return base
 
@@ -469,7 +469,7 @@ def main():
         if args.json:
             print(json.dumps(result, indent=2))
             return
-        print(f"=== Acquisition Lifecycle Simulation: ALL FORMATS ===")
+        print("=== Acquisition Lifecycle Simulation: ALL FORMATS ===")
         print(f"  Formats: {result['formats_simulated']}")
         print(f"  Any blocked: {result['any_blocked']}")
         print(f"  All planning ready: {result['all_planning_ready']}")
@@ -489,7 +489,7 @@ def main():
         print(f"  Blocked:  {result['is_blocked']}")
         if result["active_blockers"]:
             print(f"  Blockers: {result['active_blockers']}")
-        print(f"  Next actions:")
+        print("  Next actions:")
         for a in result["next_actions"]:
             print(f"    {a}")
 

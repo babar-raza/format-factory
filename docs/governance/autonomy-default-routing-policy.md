@@ -55,3 +55,66 @@ Product work qualifies for AUTONOMOUS_ACCELERATED_DEFAULT when:
 - no forbidden machinery mutation
 - risk_level is LOW or MEDIUM
 - no human_approval_required flag
+
+## Enforcement Boundary
+
+Route enforcement operates at two distinct layers:
+
+**Layer 1 — Governance validator (autonomous_cycle.py Step 2e):**
+- Validator 11 (`route_decision_required_validator`) checks that every current-run PRODUCT_SOURCE
+  item in the declaration has a `route_decision_id`.
+- Current-run items without one: `result=FAIL`, `blocks_sprint=True`.
+- Legacy/backfill items (grace exemption): `result=WARN`, `blocks_sprint=False`.
+- This layer validates PRESENCE only — it does not read the decision file contents.
+
+**Layer 2 — Dispatch-time gate (next_action_runner.py → check_action_route_allowed()):**
+- Called at action dispatch time, before any backend executes the action.
+- Validates decision CONTENT: `allowed_paths`, `forbidden_paths`, `required_tests`, task_id/category match.
+- Machinery items: requires a valid governed route decision on disk.
+- Product source-mutating items: requires route_decision_id + valid decision file.
+- Returns `(allowed=False, reason)` to block dispatch when enforcement fails.
+
+**Gap — Manual/skill execution bypass:**
+- Manual execution and skill-governed execution (MANUAL_GOVERNED_BY_SKILL) bypass Layer 2.
+- These paths are governed by the skill transcript and evidence declaration instead.
+- The governance validator (Layer 1) still applies to these items via Validator 11.
+
+**Implementation references:**
+- `tools/supervisor/governance_validators.py` → `validate_route_decision_required` (V11)
+- `tools/supervisor/autonomy_route_decider.py` → `check_action_route_allowed()`
+- `tools/supervisor/next_action_runner.py` → route enforcement block (Step 2)
+
+## Product Mutation Evidence Auto-Generation
+
+*Design specification — implementation deferred to a future sprint.*
+
+### When to generate
+
+After `check_action_route_allowed()` returns `True` in `next_action_runner.run_action()`,
+immediately before the backend executes, generate a product mutation route evidence record.
+
+### Where to write
+
+`<evidence_root>/product-mutation-route-evidence.json`
+
+### Field mapping
+
+| Evidence field | Source |
+|---------------|--------|
+| `mutation_id` | `action["action_id"]` |
+| `task_id` | `action["task_id"]` |
+| `route_decision_id` | `action["route_decision_id"]` |
+| `authorized_route` | `route_decision["final_route"]` |
+| `allowed_paths_used` | Paths actually modified during execution (post-hoc) |
+| `forbidden_paths_checked` | `route_decision["forbidden_paths"]` |
+| `tests_proving_mutation` | `route_decision["required_tests"]` |
+
+### Reference schema
+
+`schemas/evidence/product-mutation-route-evidence.schema.json`
+
+### Implementation note
+
+One manually-created instance exists at
+`.local/evidences/route-aware-product-reentry-20260610-001030-e382e5f/product-mutation-route-evidence.json`
+as a reference. Auto-generation is deferred — the design here is authoritative.

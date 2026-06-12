@@ -6,9 +6,10 @@ Reads LLM endpoint configuration from tools/llm/endpoints.yaml.
 Never logs credential values.
 """
 from __future__ import annotations
-import os, sys
+import os
+import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 _repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_repo_root))

@@ -4,11 +4,9 @@ continuation-state enforcement, stale gap handling, and replay validation.
 Sprint: FORMAT-FACTORY-SUPERVISOR-R108-STREAM-PRIMARY-STATE-PROMPT-QUALITY-GATING-AND-CONTINUATION-ENFORCEMENT-CAMPAIGN-001
 """
 
-import json
 import sys
 from pathlib import Path
 
-import pytest
 
 TOOLS_DIR = Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"
 sys.path.insert(0, str(TOOLS_DIR))

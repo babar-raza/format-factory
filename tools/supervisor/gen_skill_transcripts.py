@@ -1,7 +1,6 @@
 """Generate skill transcripts for the target writer MWP unblocking sprint."""
 import json
 from pathlib import Path
-from datetime import datetime, timezone
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = REPO_ROOT / "reports" / "dotnet-target-writer-readiness-hardening" / "skill-transcripts"

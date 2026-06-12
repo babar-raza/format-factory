@@ -17,9 +17,7 @@ These tests verify:
   - The check is low-severity (informational only).
 """
 
-import json
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -28,7 +26,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools" / "supervis
 from anti_skip_checker import (
     detect_missing_sample_outputs,
     SEVERITY_MAP,
-    run_all_checks,
 )
 
 # GRE-TC-003: detect_missing_sample_outputs is only active when the declaration

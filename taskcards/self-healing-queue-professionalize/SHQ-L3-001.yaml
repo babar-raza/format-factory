@@ -1,0 +1,31 @@
+item_id: SHQ-L3-001
+title: "Lane 3 — Governed llm.professionalize.com endpoint client"
+lane: L3-professionalize-client
+status: completed
+sprint_id: FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001
+run_id: format-factory-self-healing-queue-professionalize-rnext-20260611-1500
+acceptance_criteria: >
+  tools/llm/endpoint_client.py built; reads from endpoints.yaml; no hardcoded secrets;
+  dry-run mode safe; missing-key handled gracefully (fail-closed); secret redaction in logs;
+  structured advisory-only response; tests prove no direct-mutation authority;
+  live proof if PROFESSIONALIZE_API_KEY present, otherwise BLOCKED_EXTERNAL_GATE recorded.
+evidence_paths:
+  - tools/llm/endpoint_client.py
+  - tests/supervisor/test_endpoint_client.py
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/lane-3-professionalize-client-report.md
+tests_supporting:
+  - tests/supervisor/test_endpoint_client.py
+allowed_paths:
+  - tools/llm/endpoint_client.py
+  - tests/supervisor/test_endpoint_client.py
+  - .local/evidences/format-factory-self-healing-queue-professionalize-rnext-20260611-1500/
+forbidden_paths:
+  - src/
+  - registry/
+  - .supervisor/
+  - tools/supervisor/autonomous_cycle.py
+execution_method: AGENT_GOVERNED_DIRECT_EXECUTION
+item_type: PRODUCT_SOURCE
+external_gate: false
+blocked_if_no_key: true
+blocked_item: LIVE_PROOF_PROFESSIONALIZE_API_KEY

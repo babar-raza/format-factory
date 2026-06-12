@@ -16,6 +16,7 @@ License: Apache-2.0
 from __future__ import annotations
 
 import csv
+import html as _html_module
 import io
 import os
 from dataclasses import dataclass, field
@@ -321,7 +322,7 @@ def write_dif(doc: DifDocument, file_path: str | Path) -> None:
             elif cell.value_type in ("string", "unknown"):
                 str_val = str(cell.value) if cell.value is not None else ""
                 str_val = str_val.replace('"', '""')
-                lines += [f"1,0", f'"{str_val}"']
+                lines += ["1,0", f'"{str_val}"']
             elif cell.value_type == "boolean":
                 val_str = "TRUE" if cell.value else "FALSE"
                 lines += ["-1,0", val_str]
@@ -621,6 +622,36 @@ def max_column_value(file_path: str | Path, col: int) -> Any:
     return max(values) if values else None
 
 
+def sum_column(file_path: str | Path, col: int) -> float:
+    """Return the sum of numeric values in a column (0-based).
+
+    Non-numeric values are ignored. Returns 0.0 if no numeric values found.
+    """
+    doc = parse_dif_strict(file_path)
+    total = 0.0
+    for row in doc.rows:
+        if 0 <= col < len(row):
+            v = row[col].value
+            if isinstance(v, (int, float)):
+                total += v
+    return total
+
+
+def average_column(file_path: str | Path, col: int) -> float:
+    """Return the average (mean) of numeric values in a column (0-based).
+
+    Non-numeric values are ignored. Returns 0.0 if no numeric values found.
+    """
+    doc = parse_dif_strict(file_path)
+    values = []
+    for row in doc.rows:
+        if 0 <= col < len(row):
+            v = row[col].value
+            if isinstance(v, (int, float)):
+                values.append(v)
+    return sum(values) / len(values) if values else 0.0
+
+
 def dif_to_csv(file_path: str | Path) -> str:
     """Export a DIF file as CSV text (RFC 4180 CRLF line endings).
 
@@ -698,3 +729,291 @@ def delete_row(doc: DifDocument, row: int) -> dict[str, Any]:
     deleted = doc.rows.pop(idx)
     doc.tuples = len(doc.rows)
     return {"success": True, "deleted_count": len(deleted)}
+
+
+# Sprint: FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001
+# Queue: broad-accel-q-006
+
+def export_to_html(file_path: "str | Path") -> str:
+    """Export DIF spreadsheet data as an HTML table string.
+
+    Args:
+        file_path: Path to the DIF file.
+
+    Returns:
+        HTML string containing a <table> element with the data.
+        Empty cells are rendered as empty <td> elements.
+    """
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return "<table></table>"
+
+    lines = ["<table>"]
+    for row in doc.rows:
+        lines.append("  <tr>")
+        for cell in row:
+            val = "" if cell is None or cell.value is None else str(cell.value)
+            lines.append(f"    <td>{_html_module.escape(val)}</td>")
+        lines.append("  </tr>")
+    lines.append("</table>")
+    return "\n".join(lines)
+
+
+def sum_row(file_path: str | Path, row: int) -> float:
+    """Return the sum of numeric values in a row.
+
+    Args:
+        file_path: Path to a DIF file.
+        row: 0-based row index.
+
+    Returns:
+        Sum of numeric values in the row. Returns 0.0 if row out of range
+        or no numeric values found.
+    """
+    doc = parse_dif_strict(file_path)
+    if row < 0 or row >= len(doc.rows):
+        return 0.0
+    total = 0.0
+    for cell in doc.rows[row]:
+        val = cell.value
+        if isinstance(val, (int, float)):
+            total += val
+    return total
+
+
+# FORMAT_FACTORY_EXECUTION: taskcard=PD-Q-002; method=QUEUE_DISPATCHED_EXECUTION; queue_item=pdrnext-q-002
+def filter_rows_by_value(data, col, value):
+    """Filter rows in a DIF data model by matching a column value.
+
+    Args:
+        data: DIF data dict (output of parse_dif). Must have a 'data' key
+              containing a list of rows, where each row is a list of cell values.
+        col: Zero-based column index to filter on.
+        value: Value to match (equality check, case-sensitive for strings).
+
+    Returns:
+        List of rows (each a list of cell values) where data[row][col] == value.
+        Returns empty list if no rows match or col is out of range.
+    """
+    rows = data.get("data", [])
+    result = []
+    for row in rows:
+        if not isinstance(row, list):
+            continue
+        if col < 0 or col >= len(row):
+            continue
+        if row[col] == value:
+            result.append(row)
+    return result
+
+
+def sort_rows_by_column(
+    file_path: "str | Path",
+    col: int,
+    reverse: bool = False,
+) -> "DifDocument":
+    """Sort rows in a DIF document by the values in a given column.
+
+    Args:
+        file_path: Path to the DIF file.
+        col: Zero-based column index to sort by.
+        reverse: If True, sort in descending order.
+
+    Returns:
+        A new DifDocument with rows sorted by the specified column.
+        Rows where col is out-of-range are placed at the end.
+    """
+    doc = parse_dif_strict(file_path)
+
+    def sort_key(row: "list[DifCell]") -> "tuple":
+        if col < 0 or col >= len(row):
+            return (1, 0, "")
+        v = row[col].value
+        if isinstance(v, (int, float)):
+            return (0, v, "")
+        return (0, 0, str(v) if v is not None else "")
+
+    sorted_rows = sorted(doc.rows, key=sort_key, reverse=reverse)
+    new_doc = DifDocument(
+        title=doc.title,
+        vectors=doc.vectors,
+        tuples=doc.tuples,
+        rows=sorted_rows,
+    )
+    return new_doc
+
+
+def get_row_as_dict(doc: "DifDocument", row_idx: int) -> dict:
+    """Return a row from a DifDocument as a dict with column indices as keys.
+
+    Args:
+        doc: A DifDocument (from parse_dif_strict).
+        row_idx: Zero-based row index.
+
+    Returns:
+        Dict mapping column index (int) to cell value, or {} if out of range.
+    """
+    if row_idx < 0 or row_idx >= len(doc.rows):
+        return {}
+    return {i: cell.value for i, cell in enumerate(doc.rows[row_idx])}
+
+
+def get_vector_count(file_path: str | Path) -> int:
+    """Return the number of vectors (columns) declared in a DIF file header.
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Integer vector count from the DIF TABLE header (number of columns).
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    return doc.vectors
+
+
+def get_header_info(file_path: str | Path) -> dict[str, Any]:
+    """Return header metadata from a DIF file as a single convenience dict.
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Dict with keys: title, vectors, tuples, row_count.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    return {
+        "title": doc.title,
+        "vectors": doc.vectors,
+        "tuples": doc.tuples,
+        "row_count": len(doc.rows),
+    }
+
+
+def count_distinct_values(file_path: str | Path, col: int) -> int:
+    """Count distinct non-empty values in a column (0-based).
+
+    Empty strings and None values are excluded from the count.
+
+    Args:
+        file_path: Path to DIF file.
+        col: 0-based column index.
+
+    Returns:
+        Integer count of distinct non-empty values.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    values = get_column_values(file_path, col=col)
+    distinct: set[Any] = set()
+    for v in values:
+        if v is not None and v != "":
+            distinct.add(v)
+    return len(distinct)
+
+
+def dif_nonempty_row_count(file_path: str | Path) -> int:
+    """Return the count of rows that contain at least one non-empty cell.
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Integer count of rows with at least one non-None, non-empty-string value.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    count = 0
+    for row in doc.rows:
+        for cell in row:
+            val = cell.value if hasattr(cell, "value") else cell
+            if val is not None and str(val).strip() != "":
+                count += 1
+                break
+    return count
+
+
+def dif_max_row_length(file_path: "str | Path") -> int:
+    """Return the maximum number of cells in any single row of the DIF file.
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Integer maximum row length. Returns 0 if the file has no rows.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return 0
+    return max(len(row) for row in doc.rows)
+
+
+def dif_string_row_count(file_path: "str | Path") -> int:
+    """Return the count of rows containing at least one string cell value.
+
+    Args:
+        file_path: Path to DIF file.
+
+    Returns:
+        Integer count of rows with at least one string value. Returns 0 if no
+        such rows exist.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    count = 0
+    for row in doc.rows:
+        if any(isinstance(cell.value, str) for cell in row):
+            count += 1
+    return count
+
+
+def dif_column_unique_count(file_path: "str | Path", col_idx: int) -> int:
+    """Return the count of unique non-None values in a specific column (0-based).
+
+    Args:
+        file_path: Path to a DIF file.
+        col_idx: 0-based column index.
+
+    Returns:
+        Integer count of distinct non-None values in the column.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    values = set()
+    for row in doc.rows:
+        if col_idx < len(row):
+            v = row[col_idx].value
+            if v is not None:
+                values.add(str(v))
+    return len(values)
+
+
+def dif_vectors_count(file_path: "str | Path") -> int:
+    """Return the number of vectors (columns) declared in a DIF file.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        Integer vector count from the DIF header. Returns 0 if header is absent.
+
+    Raises:
+        DifError subclasses on parse failure.
+    """
+    doc = parse_dif_strict(file_path)
+    return doc.vectors

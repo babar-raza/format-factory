@@ -1,8 +1,9 @@
 # R111 Wave 6: PPM pixel-transform roundtrip tests
 # Tests write_ppm → parse_ppm cycle with various pixel patterns
 
-import pytest
-import sys, os, tempfile
+import sys
+import os
+import tempfile
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../src/python"))
 
 from ppm.ppm_parser import write_ppm, parse_ppm, parse_ppm_strict

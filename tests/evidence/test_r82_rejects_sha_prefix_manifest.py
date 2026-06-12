@@ -34,7 +34,7 @@ class TestManifestFullSha256:
 
     def test_sha_prefix_8chars_rejected(self):
         prefix = "d22f4bf7"
-        assert not _is_full_sha256(prefix), f"8-char prefix should not be full SHA"
+        assert not _is_full_sha256(prefix), "8-char prefix should not be full SHA"
         assert _is_sha_prefix(prefix), "8-char prefix should be detected as truncated"
 
     def test_sha_prefix_16chars_rejected(self):

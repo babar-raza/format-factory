@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "mainstream-product-deepening-rnext21",
+  "latest_sprint": "FORMAT-FACTORY-SAL-PHASE4-PRODUCT-DEEPENING-SPRINT4-001",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -361,7 +361,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change â€” new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
+      "api_behavior": "No src change \u00e2\u20ac\u201d new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r93_zst_roundtrip.py"
@@ -388,7 +388,7 @@
         "convert_ppm_to_pgm",
         "ppm_pixels_to_pgm_pixels"
       ],
-      "api_behavior": "No src change â€” workflow verification tests only. Verifies end-to-end PPMâ†’PGM conversion using FF libraries exclusively, with luminance weighting validation.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d workflow verification tests only. Verifies end-to-end PPM\u00e2\u2020\u2019PGM conversion using FF libraries exclusively, with luminance weighting validation.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py"
@@ -529,7 +529,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change â€” streaming pattern tests only. Verifies large payload, incompressible data, sequential compressions, all byte values.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d streaming pattern tests only. Verifies large payload, incompressible data, sequential compressions, all byte values.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r94_zst_streaming.py"
@@ -556,7 +556,7 @@
         "ppm_pixels_to_pgm_pixels",
         "convert_ppm_to_pgm"
       ],
-      "api_behavior": "No src change â€” grayscale conversion edge case tests. Verifies luminance weighting, pure-color behavior, empty input, file round-trip.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d grayscale conversion edge case tests. Verifies luminance weighting, pure-color behavior, empty input, file round-trip.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
@@ -697,7 +697,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change â€” compression level variation tests. Verifies level 1, level 19, binary data, empty bytes, size comparison.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d compression level variation tests. Verifies level 1, level 19, binary data, empty bytes, size comparison.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r95_zst_level_variations.py"
@@ -724,7 +724,7 @@
         "parse_ppm",
         "write_ppm"
       ],
-      "api_behavior": "No src change â€” pixel statistics and roundtrip integrity tests. Verifies parse structure, write-read roundtrip, single pixel, max/zero values.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d pixel statistics and roundtrip integrity tests. Verifies parse structure, write-read roundtrip, single pixel, max/zero values.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r95_ppm_pixel_stats.py"
@@ -751,7 +751,7 @@
         "write_sylk",
         "parse_sylk"
       ],
-      "api_behavior": "No src change â€” roundtrip hardening tests. Verifies CRLF line endings, header/footer preservation, mixed types, float precision, large grid.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d roundtrip hardening tests. Verifies CRLF line endings, header/footer preservation, mixed types, float precision, large grid.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r95_sylk_roundtrip_hardening.py"
@@ -863,7 +863,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change â€” error handling tests. Invalid data, empty input, corrupt magic, boundary conditions.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d error handling tests. Invalid data, empty input, corrupt magic, boundary conditions.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r96_zst_error_handling.py"
@@ -890,7 +890,7 @@
         "write_pgm",
         "parse_pgm"
       ],
-      "api_behavior": "No src change â€” write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, zero/max values.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, zero/max values.",
       "changed_files": [],
       "test_files": [
         "tests/python/pgm/test_r96_pgm_write_read.py"
@@ -916,7 +916,7 @@
       "api_symbols": [
         "parse_fods"
       ],
-      "api_behavior": "No src change â€” workbook operations hardening tests. Parse structure, multi-sheet, error handling, consistency.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d workbook operations hardening tests. Parse structure, multi-sheet, error handling, consistency.",
       "changed_files": [],
       "test_files": [
         "tests/python/fods/test_r96_fods_workbook_operations.py"
@@ -1027,7 +1027,7 @@
         "write_pbm",
         "parse_pbm"
       ],
-      "api_behavior": "No src change â€” PBM write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, all-white/all-black.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d PBM write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, all-white/all-black.",
       "changed_files": [],
       "test_files": [
         "tests/python/pbm/test_r97_pbm_write_read.py"
@@ -1053,7 +1053,7 @@
       "api_symbols": [
         "parse_fodt"
       ],
-      "api_behavior": "No src change â€” FODT document operations hardening. Parse structure, format, paragraphs, consistency, error handling.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d FODT document operations hardening. Parse structure, format, paragraphs, consistency, error handling.",
       "changed_files": [],
       "test_files": [
         "tests/python/fodt/test_r97_fodt_document_operations.py"
@@ -1079,7 +1079,7 @@
       "api_symbols": [
         "parse_dif"
       ],
-      "api_behavior": "No src change â€” DIF parse hardening tests. Structure, edge cases, error handling, consistency.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d DIF parse hardening tests. Structure, edge cases, error handling, consistency.",
       "changed_files": [],
       "test_files": [
         "tests/python/dif/test_r97_dif_parse_hardening.py"
@@ -1301,7 +1301,7 @@
         "ExportSheetToJson",
         "ExportFirstSheetToCsv"
       ],
-      "api_behavior": "No src change â€” export quality edge case tests. CSV quoting, HTML structure, JSON validity, in-memory/file parity, by-name overloads.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d export quality edge case tests. CSV quoting, HTML structure, JSON validity, in-memory/file parity, by-name overloads.",
       "changed_files": [],
       "test_files": [
         "tests/net/fods/FodsR99ExportQualityTests.cs"
@@ -1332,7 +1332,7 @@
         "GetParagraphTexts",
         "SearchText"
       ],
-      "api_behavior": "No src change â€” paragraph persistence tests. Multiple ReplaceText all persist, word/char counts, heading/paragraph text preservation after save/reload.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d paragraph persistence tests. Multiple ReplaceText all persist, word/char counts, heading/paragraph text preservation after save/reload.",
       "changed_files": [],
       "test_files": [
         "tests/net/fodt/FodtR99ParagraphPersistenceTests.cs"
@@ -1360,7 +1360,7 @@
         "decompress_bytes",
         "validate_file"
       ],
-      "api_behavior": "No src change â€” streaming workflow tests. Large payload, output limit, multiple files, UTF-8, high entropy, truncated file, zero-length, compression level.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d streaming workflow tests. Large payload, output limit, multiple files, UTF-8, high entropy, truncated file, zero-length, compression level.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r99_zst_streaming_workflow.py"
@@ -1389,7 +1389,7 @@
         "parse_ppm_strict",
         "write_pgm"
       ],
-      "api_behavior": "No src change â€” PPM/PGM cross-format conversion tests. Grayscale conversion, color expansion, roundtrip, dimension preservation, maxval roundtrip.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d PPM/PGM cross-format conversion tests. Grayscale conversion, color expansion, roundtrip, dimension preservation, maxval roundtrip.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r99_ppm_pgm_conversion.py"
@@ -1420,7 +1420,7 @@
         "probe_sylk",
         "sylk_to_csv"
       ],
-      "api_behavior": "No src change â€” full installed workflow tests. Create/write/parse/export, probe valid/invalid, dict mode, CSV headers, numeric values, empty cells.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d full installed workflow tests. Create/write/parse/export, probe valid/invalid, dict mode, CSV headers, numeric values, empty cells.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r99_sylk_installed_workflow.py"
@@ -1535,7 +1535,7 @@
         "ZstError",
         "ZstInvalidFrameError"
       ],
-      "api_behavior": "No src change â€” deep probe/validate workflow tests. Valid/nonexistent/corrupt file validation, magic bytes, binary roundtrip, empty input, deterministic compression.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d deep probe/validate workflow tests. Valid/nonexistent/corrupt file validation, magic bytes, binary roundtrip, empty input, deterministic compression.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r100_zst_probe_workflow.py"
@@ -1567,7 +1567,7 @@
         "write_pgm",
         "parse_pgm_strict"
       ],
-      "api_behavior": "No src change â€” full PBM->PPM->PGM chain tests. Pixel mapping, dimension preservation, grayscale conversion, color expansion, all-black/all-white chains.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d full PBM->PPM->PGM chain tests. Pixel mapping, dimension preservation, grayscale conversion, color expansion, all-black/all-white chains.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r100_pbm_ppm_pgm_chain.py"
@@ -1609,7 +1609,7 @@
         "SylkDocument",
         "SylkCell"
       ],
-      "api_behavior": "No src change â€” CSV export hardening + malformed input tests. Commas in values, empty cells, multirow, large grid, random bytes, empty file, special characters.",
+      "api_behavior": "No src change \u00e2\u20ac\u201d CSV export hardening + malformed input tests. Commas in values, empty cells, multirow, large grid, random bytes, empty file, special characters.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r100_sylk_csv_malformed.py"
@@ -3374,7 +3374,7 @@
         "dif_to_csv",
         "parse_dif_strict"
       ],
-      "api_behavior": "probe_dif: returns dict with valid_header/exists/title. dif_to_csv: converts DIF to CSV string. parse_dif_strict: returns DifDocument or raises on invalid. Test-only coverage â€” no src/ change.",
+      "api_behavior": "probe_dif: returns dict with valid_header/exists/title. dif_to_csv: converts DIF to CSV string. parse_dif_strict: returns DifDocument or raises on invalid. Test-only coverage \u00e2\u20ac\u201d no src/ change.",
       "changed_files": [],
       "test_files": [
         "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
@@ -6165,7 +6165,7 @@
         "tests/python/dif/test_r64_dif_advancement.py"
       ],
       "test_count": 2,
-      "description": "Fixed module/function name shadowing in DIF tests â€” import dif_stats function directly from module path instead of package namespace"
+      "description": "Fixed module/function name shadowing in DIF tests \u00e2\u20ac\u201d import dif_stats function directly from module path instead of package namespace"
     },
     {
       "entry_id": "PFF-XCF-HELPERS-001",
@@ -6220,7 +6220,7 @@
         "tests/python/ods/test_pff_ods_data_validation.py"
       ],
       "test_count": 5,
-      "description": "Exported ods_data_validation_count from ods package __init__.py â€” function already existed in ods_stats.py but was missing from public API"
+      "description": "Exported ods_data_validation_count from ods package __init__.py \u00e2\u20ac\u201d function already existed in ods_stats.py but was missing from public API"
     },
     {
       "entry_id": "RNEXT14-DIF-GET-CELL-VALUE-001",
@@ -6249,7 +6249,7 @@
         "tests/python/dif/test_r156_dif_cell_accessors.py"
       ],
       "test_count": 7,
-      "description": "DIF get_cell_value â€” accessor for cell value at (row, col) 0-based indices"
+      "description": "DIF get_cell_value \u00e2\u20ac\u201d accessor for cell value at (row, col) 0-based indices"
     },
     {
       "entry_id": "RNEXT14-DIF-SET-CELL-VALUE-001",
@@ -6278,7 +6278,7 @@
         "tests/python/dif/test_r156_dif_cell_accessors.py"
       ],
       "test_count": 6,
-      "description": "DIF set_cell_value â€” mutation: modify cell value and write updated document"
+      "description": "DIF set_cell_value \u00e2\u20ac\u201d mutation: modify cell value and write updated document"
     },
     {
       "entry_id": "RNEXT14-DIF-GET-ROW-VALUES-001",
@@ -6307,7 +6307,7 @@
         "tests/python/dif/test_r156_dif_cell_accessors.py"
       ],
       "test_count": 6,
-      "description": "DIF get_row_values â€” accessor returning all cell values for a row"
+      "description": "DIF get_row_values \u00e2\u20ac\u201d accessor returning all cell values for a row"
     },
     {
       "entry_id": "RNEXT14-SYLK-GET-ROW-COUNT-001",
@@ -6336,7 +6336,7 @@
         "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
       ],
       "test_count": 5,
-      "description": "SYLK get_row_count â€” accessor returning maximum row index"
+      "description": "SYLK get_row_count \u00e2\u20ac\u201d accessor returning maximum row index"
     },
     {
       "entry_id": "RNEXT14-SYLK-GET-COLUMN-COUNT-001",
@@ -6365,7 +6365,7 @@
         "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
       ],
       "test_count": 4,
-      "description": "SYLK get_column_count â€” accessor returning maximum column index"
+      "description": "SYLK get_column_count \u00e2\u20ac\u201d accessor returning maximum column index"
     },
     {
       "entry_id": "RNEXT14-SYLK-SET-CELL-VALUE-001",
@@ -6394,7 +6394,7 @@
         "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
       ],
       "test_count": 9,
-      "description": "SYLK set_cell_value â€” mutation: modify or add cell value and write updated document"
+      "description": "SYLK set_cell_value \u00e2\u20ac\u201d mutation: modify or add cell value and write updated document"
     },
     {
       "entry_id": "RNEXT15-ODS-GET-CELL-VALUE-001",
@@ -6423,7 +6423,7 @@
         "tests/python/ods/test_r156_ods_accessors.py"
       ],
       "test_count": 9,
-      "description": "ODS get_cell_value â€” accessor for cell value at (sheet_index, row, col) 0-based indices"
+      "description": "ODS get_cell_value \u00e2\u20ac\u201d accessor for cell value at (sheet_index, row, col) 0-based indices"
     },
     {
       "entry_id": "RNEXT15-ODS-GET-SHEET-NAMES-001",
@@ -6452,7 +6452,7 @@
         "tests/python/ods/test_r156_ods_accessors.py"
       ],
       "test_count": 3,
-      "description": "ODS get_sheet_names â€” accessor returning list of sheet names"
+      "description": "ODS get_sheet_names \u00e2\u20ac\u201d accessor returning list of sheet names"
     },
     {
       "entry_id": "RNEXT15-ODS-GET-ROW-COUNT-001",
@@ -6481,7 +6481,7 @@
         "tests/python/ods/test_r156_ods_accessors.py"
       ],
       "test_count": 5,
-      "description": "ODS get_row_count â€” accessor returning number of non-empty rows in a sheet"
+      "description": "ODS get_row_count \u00e2\u20ac\u201d accessor returning number of non-empty rows in a sheet"
     },
     {
       "entry_id": "RNEXT15-XCF-VERSION-001",
@@ -6510,7 +6510,7 @@
         "tests/python/xcf/test_r156_xcf_helpers.py"
       ],
       "test_count": 5,
-      "description": "XCF xcf_version â€” accessor returning version string from XCF header"
+      "description": "XCF xcf_version \u00e2\u20ac\u201d accessor returning version string from XCF header"
     },
     {
       "entry_id": "RNEXT15-XCF-IMAGE-TYPE-NAME-001",
@@ -6539,7 +6539,7 @@
         "tests/python/xcf/test_r156_xcf_helpers.py"
       ],
       "test_count": 4,
-      "description": "XCF xcf_image_type_name â€” accessor returning human-readable image type name"
+      "description": "XCF xcf_image_type_name \u00e2\u20ac\u201d accessor returning human-readable image type name"
     },
     {
       "entry_id": "RNEXT15-DIF-GET-COLUMN-VALUES-001",
@@ -6568,7 +6568,7 @@
         "tests/python/dif/test_r156_dif_column_values.py"
       ],
       "test_count": 7,
-      "description": "DIF get_column_values â€” accessor returning all values for a column across rows"
+      "description": "DIF get_column_values \u00e2\u20ac\u201d accessor returning all values for a column across rows"
     },
     {
       "entry_id": "RNEXT16-DIF-GET-TITLE-001",
@@ -6597,7 +6597,7 @@
         "tests/python/dif/test_r157_dif_metadata_accessors.py"
       ],
       "test_count": 4,
-      "description": "DIF get_title â€” accessor returning document title from TABLE header"
+      "description": "DIF get_title \u00e2\u20ac\u201d accessor returning document title from TABLE header"
     },
     {
       "entry_id": "RNEXT16-DIF-GET-ROW-COUNT-001",
@@ -6626,7 +6626,7 @@
         "tests/python/dif/test_r157_dif_metadata_accessors.py"
       ],
       "test_count": 4,
-      "description": "DIF get_row_count â€” accessor returning number of data rows"
+      "description": "DIF get_row_count \u00e2\u20ac\u201d accessor returning number of data rows"
     },
     {
       "entry_id": "RNEXT16-DIF-GET-COLUMN-COUNT-001",
@@ -6655,7 +6655,7 @@
         "tests/python/dif/test_r157_dif_metadata_accessors.py"
       ],
       "test_count": 4,
-      "description": "DIF get_column_count â€” accessor returning VECTORS count (number of columns)"
+      "description": "DIF get_column_count \u00e2\u20ac\u201d accessor returning VECTORS count (number of columns)"
     },
     {
       "entry_id": "RNEXT16-SYLK-GET-CELL-COUNT-001",
@@ -6684,7 +6684,7 @@
         "tests/python/sylk/test_r157_sylk_cell_count.py"
       ],
       "test_count": 8,
-      "description": "SYLK get_cell_count â€” accessor returning count of non-None valued cells"
+      "description": "SYLK get_cell_count \u00e2\u20ac\u201d accessor returning count of non-None valued cells"
     },
     {
       "entry_id": "RNEXT16-ODS-GET-COLUMN-COUNT-001",
@@ -6713,7 +6713,7 @@
         "tests/python/ods/test_r157_ods_column_row.py"
       ],
       "test_count": 5,
-      "description": "ODS get_column_count â€” accessor returning max column count in a sheet"
+      "description": "ODS get_column_count \u00e2\u20ac\u201d accessor returning max column count in a sheet"
     },
     {
       "entry_id": "RNEXT16-ODS-GET-ROW-VALUES-001",
@@ -6742,7 +6742,7 @@
         "tests/python/ods/test_r157_ods_column_row.py"
       ],
       "test_count": 8,
-      "description": "ODS get_row_values â€” accessor returning all cell values for a given row"
+      "description": "ODS get_row_values \u00e2\u20ac\u201d accessor returning all cell values for a given row"
     },
     {
       "entry_id": "RNEXT17-XCF-PIXEL-COUNT-001",
@@ -6771,7 +6771,7 @@
         "tests/python/xcf/test_r157_xcf_pixel_file.py"
       ],
       "test_count": 4,
-      "description": "XCF xcf_pixel_count â€” accessor returning width * height"
+      "description": "XCF xcf_pixel_count \u00e2\u20ac\u201d accessor returning width * height"
     },
     {
       "entry_id": "RNEXT17-XCF-FILE-SIZE-001",
@@ -6800,7 +6800,7 @@
         "tests/python/xcf/test_r157_xcf_pixel_file.py"
       ],
       "test_count": 5,
-      "description": "XCF xcf_file_size â€” accessor returning file size in bytes"
+      "description": "XCF xcf_file_size \u00e2\u20ac\u201d accessor returning file size in bytes"
     },
     {
       "entry_id": "RNEXT17-PPM-PIXEL-COUNT-001",
@@ -6829,7 +6829,7 @@
         "tests/python/ppm/test_r157_ppm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PPM pixel_count â€” accessor returning total pixel count (width * height)"
+      "description": "PPM pixel_count \u00e2\u20ac\u201d accessor returning total pixel count (width * height)"
     },
     {
       "entry_id": "RNEXT17-PPM-AVERAGE-COLOR-001",
@@ -6858,7 +6858,7 @@
         "tests/python/ppm/test_r157_ppm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PPM average_color â€” accessor returning average (R, G, B) tuple"
+      "description": "PPM average_color \u00e2\u20ac\u201d accessor returning average (R, G, B) tuple"
     },
     {
       "entry_id": "RNEXT17-PBM-PIXEL-COUNT-001",
@@ -6887,7 +6887,7 @@
         "tests/python/pbm/test_r157_pbm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PBM pixel_count â€” accessor returning total pixel count (width * height)"
+      "description": "PBM pixel_count \u00e2\u20ac\u201d accessor returning total pixel count (width * height)"
     },
     {
       "entry_id": "RNEXT17-PBM-COUNT-BLACK-001",
@@ -6916,7 +6916,7 @@
         "tests/python/pbm/test_r157_pbm_accessors.py"
       ],
       "test_count": 6,
-      "description": "PBM count_black â€” accessor returning count of black (value=1) pixels"
+      "description": "PBM count_black \u00e2\u20ac\u201d accessor returning count of black (value=1) pixels"
     },
     {
       "entry_id": "RNEXT18-PGM-PIXEL-COUNT-001",
@@ -6945,7 +6945,7 @@
         "tests/python/pgm/test_r158_pgm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PGM pixel_count â€” accessor returning total pixel count (width * height)"
+      "description": "PGM pixel_count \u00e2\u20ac\u201d accessor returning total pixel count (width * height)"
     },
     {
       "entry_id": "RNEXT18-PGM-AVERAGE-GRAY-001",
@@ -6974,7 +6974,7 @@
         "tests/python/pgm/test_r158_pgm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PGM average_gray â€” accessor returning mean gray value"
+      "description": "PGM average_gray \u00e2\u20ac\u201d accessor returning mean gray value"
     },
     {
       "entry_id": "RNEXT18-PPM-CROP-001",
@@ -7003,7 +7003,7 @@
         "tests/python/ppm/test_r158_ppm_crop.py"
       ],
       "test_count": 6,
-      "description": "PPM crop â€” crop a rectangular region from a PPM image"
+      "description": "PPM crop \u00e2\u20ac\u201d crop a rectangular region from a PPM image"
     },
     {
       "entry_id": "RNEXT18-ODS-COUNT-SHEETS-001",
@@ -7032,7 +7032,7 @@
         "tests/python/ods/test_r158_ods_count_sheets.py"
       ],
       "test_count": 4,
-      "description": "ODS count_sheets â€” accessor returning number of sheets"
+      "description": "ODS count_sheets \u00e2\u20ac\u201d accessor returning number of sheets"
     },
     {
       "entry_id": "RNEXT18-DIF-GET-ALL-VALUES-001",
@@ -7061,7 +7061,7 @@
         "tests/python/dif/test_r158_dif_all_values.py"
       ],
       "test_count": 6,
-      "description": "DIF get_all_values â€” accessor returning flat list of all cell values"
+      "description": "DIF get_all_values \u00e2\u20ac\u201d accessor returning flat list of all cell values"
     },
     {
       "entry_id": "RNEXT18-SYLK-GET-ALL-VALUES-001",
@@ -7090,7 +7090,7 @@
         "tests/python/sylk/test_r158_sylk_all_values.py"
       ],
       "test_count": 6,
-      "description": "SYLK get_all_values â€” accessor returning flat list of all cell values"
+      "description": "SYLK get_all_values \u00e2\u20ac\u201d accessor returning flat list of all cell values"
     },
     {
       "entry_id": "RNEXT19-PGM-COUNT-ABOVE-THRESHOLD-001",
@@ -7119,7 +7119,7 @@
         "tests/python/pgm/test_r159_pgm_threshold_minmax.py"
       ],
       "test_count": 5,
-      "description": "PGM count_above_threshold â€” count pixels with value strictly above threshold"
+      "description": "PGM count_above_threshold \u00e2\u20ac\u201d count pixels with value strictly above threshold"
     },
     {
       "entry_id": "RNEXT19-PGM-MIN-MAX-GRAY-001",
@@ -7148,7 +7148,7 @@
         "tests/python/pgm/test_r159_pgm_threshold_minmax.py"
       ],
       "test_count": 5,
-      "description": "PGM min_max_gray â€” return (min, max) gray values in image"
+      "description": "PGM min_max_gray \u00e2\u20ac\u201d return (min, max) gray values in image"
     },
     {
       "entry_id": "RNEXT19-PBM-FLIP-HORIZONTAL-001",
@@ -7177,7 +7177,7 @@
         "tests/python/pbm/test_r159_pbm_flip.py"
       ],
       "test_count": 5,
-      "description": "PBM flip_horizontal â€” mirror PBM image left-right and write result"
+      "description": "PBM flip_horizontal \u00e2\u20ac\u201d mirror PBM image left-right and write result"
     },
     {
       "entry_id": "RNEXT19-PPM-FLIP-HORIZONTAL-001",
@@ -7206,7 +7206,7 @@
         "tests/python/ppm/test_r159_ppm_flip.py"
       ],
       "test_count": 5,
-      "description": "PPM flip_horizontal â€” mirror PPM image left-right and write result"
+      "description": "PPM flip_horizontal \u00e2\u20ac\u201d mirror PPM image left-right and write result"
     },
     {
       "entry_id": "RNEXT19-XCF-IS-RGB-001",
@@ -7235,7 +7235,7 @@
         "tests/python/xcf/test_r159_xcf_is_rgb.py"
       ],
       "test_count": 4,
-      "description": "XCF xcf_is_rgb â€” check if XCF image type is RGB (type 0)"
+      "description": "XCF xcf_is_rgb \u00e2\u20ac\u201d check if XCF image type is RGB (type 0)"
     },
     {
       "entry_id": "RNEXT19-ODS-GET-ALL-VALUES-001",
@@ -7264,7 +7264,7 @@
         "tests/python/ods/test_r159_ods_all_values.py"
       ],
       "test_count": 6,
-      "description": "ODS get_all_values â€” flat list of all cell values in a sheet"
+      "description": "ODS get_all_values \u00e2\u20ac\u201d flat list of all cell values in a sheet"
     },
     {
       "entry_id": "PKG-TSV-PYPROJECT-001",
@@ -7382,7 +7382,7 @@
         "tests/python/dif/test_r160_dif_min_max_column.py"
       ],
       "test_count": 5,
-      "description": "DIF min_column_value — minimum numeric value in a column"
+      "description": "DIF min_column_value \u2014 minimum numeric value in a column"
     },
     {
       "entry_id": "RNEXT20-DIF-MAX-COLUMN-VALUE-001",
@@ -7411,7 +7411,7 @@
         "tests/python/dif/test_r160_dif_min_max_column.py"
       ],
       "test_count": 5,
-      "description": "DIF max_column_value — maximum numeric value in a column"
+      "description": "DIF max_column_value \u2014 maximum numeric value in a column"
     },
     {
       "entry_id": "RNEXT20-DIF-TOTAL-CELL-COUNT-001",
@@ -7438,7 +7438,7 @@
       ],
       "test_files": [],
       "test_count": 0,
-      "description": "DIF total_cell_count — total number of cells across all rows"
+      "description": "DIF total_cell_count \u2014 total number of cells across all rows"
     },
     {
       "entry_id": "RNEXT20-SYLK-COUNT-NONEMPTY-001",
@@ -7467,7 +7467,7 @@
         "tests/python/sylk/test_r160_sylk_nonempty_sum.py"
       ],
       "test_count": 5,
-      "description": "SYLK count_nonempty_cells — count non-empty cells in document"
+      "description": "SYLK count_nonempty_cells \u2014 count non-empty cells in document"
     },
     {
       "entry_id": "RNEXT20-SYLK-SUM-COLUMN-001",
@@ -7496,7 +7496,7 @@
         "tests/python/sylk/test_r160_sylk_nonempty_sum.py"
       ],
       "test_count": 5,
-      "description": "SYLK sum_column — sum numeric values in a column"
+      "description": "SYLK sum_column \u2014 sum numeric values in a column"
     },
     {
       "entry_id": "RNEXT20-TOML-DIFF-KEYS-001",
@@ -7525,7 +7525,7 @@
         "tests/python/toml/test_r160_toml_diff_rename.py"
       ],
       "test_count": 6,
-      "description": "TOML diff_keys — top-level keys in A but not in B"
+      "description": "TOML diff_keys \u2014 top-level keys in A but not in B"
     },
     {
       "entry_id": "RNEXT20-TOML-RENAME-KEY-001",
@@ -7554,11 +7554,11 @@
         "tests/python/toml/test_r160_toml_diff_rename.py"
       ],
       "test_count": 5,
-      "description": "TOML rename_key — rename a top-level key in data dict"
+      "description": "TOML rename_key \u2014 rename a top-level key in data dict"
     },
     {
       "entry_id": "HSR-SYLK-TEST-FIX-001",
-      "classification": "GOVERNED_TEST_FIX",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
       "origin_sprint": "hardening-sprint-rnext",
       "product": "SYLK Python FOSS",
       "capability_refs": [
@@ -7569,12 +7569,18 @@
         "add_row",
         "delete_row"
       ],
-      "source_files": [],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "a7e716489132f35c77c6f44cc78f0d935beb98dc0fd8e36be79a9dd5b4672c86"
+        }
+      ],
       "test_files": [
         "tests/python/sylk/test_r159_sylk_row_ops.py"
       ],
       "test_count": 6,
-      "description": "Fixed import pattern in test_r159_sylk_row_ops.py — changed from sys.path short import to src.python.sylk full dotted path to prevent cross-test import pollution"
+      "description": "Fixed import pattern in test_r159_sylk_row_ops.py \u2014 changed from sys.path short import to src.python.sylk full dotted path to prevent cross-test import pollution"
     },
     {
       "entry_id": "RNEXT21-ODS-GET-CELL-COUNT-001",
@@ -7590,13 +7596,13 @@
       "source_files": [
         {
           "path": "src/python/ods/ods_parser.py",
-          "state": "modified",
-          "sha256": "d0be6a83a7e04a894f9689f38ce539ce03087b7ae0d853dda327afb1806dee02"
+          "state": "present",
+          "sha256": "d3836b890a6adc2e939574322b4908b9484b1ec24631ffa65964cf7aa278d779"
         },
         {
           "path": "src/python/ods/__init__.py",
-          "state": "modified",
-          "sha256": "488ee31d7643aaec8f91d0dad7c7254c2326cb239776d8b7d81f5df3a1506540"
+          "state": "present",
+          "sha256": "8d6e091d35236bb21696f9cedead631d5123597a611825b0c8ffb7d27f53999a"
         }
       ],
       "test_files": [
@@ -7619,12 +7625,12 @@
       "source_files": [
         {
           "path": "src/python/xcf/xcf_parser.py",
-          "state": "modified",
+          "state": "present",
           "sha256": "7b7323fdaabfa56e941261821f3c8103b6347c0d558c8c72cf0513ed538c75e2"
         },
         {
           "path": "src/python/xcf/__init__.py",
-          "state": "modified",
+          "state": "present",
           "sha256": "e371eeb3206f61909e2c3b8658843807aa99de4ab2db4654ae61f1ac9ce0aff9"
         }
       ],
@@ -7648,12 +7654,12 @@
       "source_files": [
         {
           "path": "src/python/pgm/pgm_parser.py",
-          "state": "modified",
+          "state": "present",
           "sha256": "331236f618c24cac2ab29ffc9fbd3e738a3e1cfe0b65e2974daf3e1f7b4a2b2c"
         },
         {
           "path": "src/python/pgm/__init__.py",
-          "state": "modified",
+          "state": "present",
           "sha256": "720d29e2c158c3f165ddfc6131a344f9307cde85a5b48ee02d05106a5e749f05"
         }
       ],
@@ -7677,12 +7683,12 @@
       "source_files": [
         {
           "path": "src/python/pbm/pbm_parser.py",
-          "state": "modified",
-          "sha256": "70a86b51cbcd24e58bffe5698e4cf9911f611d98382efc3c4c3ded1acd664157"
+          "state": "present",
+          "sha256": "f410347ee0754252ef89f39ea42ccf70b9a6a8d6a1b2f267ebbca2907e41b7e8"
         },
         {
           "path": "src/python/pbm/__init__.py",
-          "state": "modified",
+          "state": "present",
           "sha256": "0e9e7a23b9236bc03afcbaa86817a38ea71d267bb2dd8d4d6aef85c25dee3f5e"
         }
       ],
@@ -7706,12 +7712,12 @@
       "source_files": [
         {
           "path": "src/python/ppm/ppm_parser.py",
-          "state": "modified",
+          "state": "present",
           "sha256": "f640b4a05b515bb544762eb93918f28e97c3be04663d327483fec9d17f31cebe"
         },
         {
           "path": "src/python/ppm/__init__.py",
-          "state": "modified",
+          "state": "present",
           "sha256": "9dc747a1fd2bfcb4ddd922fe926c7f4e7db2c9b7993c60652d6cee0a92bf9d6b"
         }
       ],
@@ -7735,12 +7741,12 @@
       "source_files": [
         {
           "path": "src/python/ppm/ppm_parser.py",
-          "state": "modified",
+          "state": "present",
           "sha256": "f640b4a05b515bb544762eb93918f28e97c3be04663d327483fec9d17f31cebe"
         },
         {
           "path": "src/python/ppm/__init__.py",
-          "state": "modified",
+          "state": "present",
           "sha256": "9dc747a1fd2bfcb4ddd922fe926c7f4e7db2c9b7993c60652d6cee0a92bf9d6b"
         }
       ],
@@ -7749,6 +7755,2045 @@
       ],
       "test_count": 5,
       "description": "PPM flip_vertical - mirror PPM image top-bottom"
+    },
+    {
+      "entry_id": "SHQ-ABW-SEARCH-TEXT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "anl-q-001",
+      "taskcard_id": "SHQ-L2-001",
+      "sprint_id": "FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001",
+      "product": "ABW Python",
+      "capability_refs": [
+        "python_foss_products.ABW.python_status.search_text"
+      ],
+      "api_symbols": [
+        "search_text"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "8ba2ae9287ab3a826262158b69af653687b181fbabb0dde5455048af94463382"
+        }
+      ],
+      "test_refs": [
+        "tests/python/abw/test_abw_search_text.py"
+      ],
+      "notes": "search_text(model, query) -> list[int]: returns paragraph indices containing query string. Now exported via src/python/abw/__init__.py."
+    },
+    {
+      "entry_id": "SHQ-TSV-APPEND-ROWS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "shq-q-001",
+      "taskcard_id": "SHQ-L2-001",
+      "sprint_id": "FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001",
+      "product": "TSV Python",
+      "capability_refs": [
+        "python_foss_products.TSV.python_status.append_rows"
+      ],
+      "api_symbols": [
+        "append_rows"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "3dfeb15d056f767239e25ef1723abf1f705b57cc39cc4447b6ab39112024bbeb"
+        }
+      ],
+      "test_refs": [
+        "tests/python/tsv/test_tsv_append_rows.py"
+      ],
+      "notes": "append_rows(data, rows) -> dict: appends multiple rows to TSV data model in-memory. Now exported via src/python/tsv/__init__.py."
+    },
+    {
+      "entry_id": "SHQ-NDJSON-FLATTEN-RECORDS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "shq-q-002",
+      "taskcard_id": "SHQ-L2-001",
+      "sprint_id": "FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001",
+      "product": "NDJSON Python",
+      "capability_refs": [
+        "python_foss_products.NDJSON.python_status.flatten_records"
+      ],
+      "api_symbols": [
+        "flatten_records"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "dc5b8a4eda195f83dba8dbf12cdfda6fa7f4072c5759817c5ca57fc48da56b9c"
+        }
+      ],
+      "test_refs": [
+        "tests/python/ndjson/test_ndjson_flatten_records.py"
+      ],
+      "notes": "flatten_records(source, prefix) -> list[dict]: flattens nested dict records one level deep. Now exported via src/python/ndjson/__init__.py."
+    },
+    {
+      "entry_id": "PD-TOML-UPDATE-SECTION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "pdrnext-q-001",
+      "taskcard_id": "PD-Q-001",
+      "sprint_id": "FORMAT-FACTORY-SELF-HEALING-PRODUCT-DEEPENING-RNEXT-001",
+      "product": "TOML Python",
+      "api_symbols": [
+        "update_section"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "29afc9b14f3e8877711f287bbea74d3018d340548cddc3a9b064f615fddf44af"
+        }
+      ],
+      "test_refs": [
+        "tests/python/toml/test_pd_toml_update_section.py"
+      ],
+      "notes": "update_section(data, section, updates) -> dict: merges updates into TOML section in-memory.",
+      "capability_refs": [
+        "section"
+      ]
+    },
+    {
+      "entry_id": "PD-DIF-FILTER-ROWS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "pdrnext-q-002",
+      "taskcard_id": "PD-Q-002",
+      "sprint_id": "FORMAT-FACTORY-SELF-HEALING-PRODUCT-DEEPENING-RNEXT-001",
+      "product": "DIF Python",
+      "api_symbols": [
+        "filter_rows_by_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "fb8267d20073c38971950320ed763953a9d110194d6225d715faeddefe4dbad0"
+        }
+      ],
+      "test_refs": [
+        "tests/python/dif/test_pd_dif_filter_rows.py"
+      ],
+      "notes": "filter_rows_by_value(data, col, value) -> list[list]: filter DIF data rows by column value.",
+      "capability_refs": [
+        "rows"
+      ]
+    },
+    {
+      "entry_id": "PD-ABW-GET-WORDS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "pdrnext-q-003",
+      "taskcard_id": "PD-Q-003",
+      "sprint_id": "FORMAT-FACTORY-SELF-HEALING-PRODUCT-DEEPENING-RNEXT-001",
+      "product": "ABW Python",
+      "api_symbols": [
+        "get_words"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "9f75e24979bc765fbb785c320f03a5ae47e2ecad90edd7e6f61d49f15f591015"
+        }
+      ],
+      "test_refs": [
+        "tests/python/abw/test_pd_abw_get_words.py"
+      ],
+      "notes": "get_words(model, para_idx) -> list[str]: tokenizes words from a specific paragraph.",
+      "capability_refs": [
+        "words"
+      ]
+    },
+    {
+      "entry_id": "BROAD-ACCEL-ZST-COMPRESS-STRING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "broad-accel-q-001",
+      "taskcard_id": "BROAD-ACCEL-Q-001",
+      "sprint_id": "FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "ZST Python",
+      "function_name": "compress_string",
+      "source_file": "src/python/zst/zst_codec.py",
+      "test_file": "tests/python/zst/test_r166_zst_string_workflow.py",
+      "changed_at": "2026-06-11T12:57:32.703625+00:00",
+      "note": "Compress UTF-8 string to ZST bytes",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.compress_string"
+      ],
+      "api_symbols": [
+        "compress_string"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "1e237addf0e7a6197b2f4f86c95f512394c1770b2b9602f9fa9a95d3719c092e"
+        }
+      ]
+    },
+    {
+      "entry_id": "BROAD-ACCEL-ZST-DECOMPRESS-STRING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "broad-accel-q-002",
+      "taskcard_id": "BROAD-ACCEL-Q-002",
+      "sprint_id": "FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "ZST Python",
+      "function_name": "decompress_to_string",
+      "source_file": "src/python/zst/zst_codec.py",
+      "test_file": "tests/python/zst/test_r166_zst_string_workflow.py",
+      "changed_at": "2026-06-11T12:57:32.703625+00:00",
+      "note": "Decompress ZST bytes to string",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.decompress_to_string"
+      ],
+      "api_symbols": [
+        "decompress_to_string"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "1e237addf0e7a6197b2f4f86c95f512394c1770b2b9602f9fa9a95d3719c092e"
+        }
+      ]
+    },
+    {
+      "entry_id": "BROAD-ACCEL-NDJSON-TO-TSV-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "broad-accel-q-003",
+      "taskcard_id": "BROAD-ACCEL-Q-003",
+      "sprint_id": "FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "NDJSON Python",
+      "function_name": "to_tsv",
+      "source_file": "src/python/ndjson/ndjson_codec.py",
+      "test_file": "tests/python/ndjson/test_r166_ndjson_to_tsv.py",
+      "changed_at": "2026-06-11T12:57:32.703625+00:00",
+      "note": "Export NDJSON records to TSV string",
+      "capability_refs": [
+        "foss_reduced_products.NDJSON.python_status.to_tsv"
+      ],
+      "api_symbols": [
+        "to_tsv"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "206ffef61189ddb023cddf5bb43d24e5b52afbfb01ae25179e292a6db3852e60"
+        }
+      ]
+    },
+    {
+      "entry_id": "BROAD-ACCEL-ABW-IS-EMPTY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "broad-accel-q-004",
+      "taskcard_id": "BROAD-ACCEL-Q-004",
+      "sprint_id": "FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "ABW Python",
+      "function_name": "is_empty",
+      "source_file": "src/python/abw/abw_codec.py",
+      "test_file": "tests/python/abw/test_r166_abw_is_empty.py",
+      "changed_at": "2026-06-11T12:57:32.703625+00:00",
+      "note": "Check if ABW model has no content",
+      "capability_refs": [
+        "foss_reduced_products.ABW.python_status.is_empty"
+      ],
+      "api_symbols": [
+        "is_empty"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "028091836fd6303fa4d673d3f659b76db4b5a52bd1145cbcacee2777f3161a31"
+        }
+      ]
+    },
+    {
+      "entry_id": "BROAD-ACCEL-SYLK-FIND-ROWS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "broad-accel-q-005",
+      "taskcard_id": "BROAD-ACCEL-Q-005",
+      "sprint_id": "FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "SYLK Python",
+      "function_name": "find_rows_by_value",
+      "source_file": "src/python/sylk/sylk_parser.py",
+      "test_file": "tests/python/sylk/test_r166_sylk_find_rows.py",
+      "changed_at": "2026-06-11T12:57:32.703625+00:00",
+      "note": "Find row indices containing value",
+      "capability_refs": [
+        "foss_reduced_products.SYLK.python_status.find_rows_by_value"
+      ],
+      "api_symbols": [
+        "find_rows_by_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "7f48d406d41a999e53a61a42b4740002fcf76b54a56ffdece337b5a866a2a82f"
+        }
+      ]
+    },
+    {
+      "entry_id": "BROAD-ACCEL-DIF-EXPORT-HTML-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "broad-accel-q-006",
+      "taskcard_id": "BROAD-ACCEL-Q-006",
+      "sprint_id": "FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "DIF Python",
+      "function_name": "export_to_html",
+      "source_file": "src/python/dif/dif_parser.py",
+      "test_file": "tests/python/dif/test_r166_dif_export_html.py",
+      "changed_at": "2026-06-11T12:57:32.703625+00:00",
+      "note": "Export DIF data as HTML table",
+      "capability_refs": [
+        "foss_reduced_products.DIF.python_status.export_to_html"
+      ],
+      "api_symbols": [
+        "export_to_html"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "ba272d7219d0e921edc75c4e0a5bfad3cea76f1dac47e79a0a42fef1d1c97902"
+        }
+      ]
+    },
+    {
+      "entry_id": "BROAD-ACCEL-PBM-ASPECT-RATIO-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "execution_method": "QUEUE_DISPATCHED_EXECUTION",
+      "queue_item_id": "broad-accel-q-007",
+      "taskcard_id": "BROAD-ACCEL-Q-007",
+      "sprint_id": "FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "PBM Python",
+      "function_name": "aspect_ratio",
+      "source_file": "src/python/pbm/pbm_parser.py",
+      "test_file": "tests/python/pbm/test_r166_pbm_aspect_ratio.py",
+      "changed_at": "2026-06-11T12:57:32.703625+00:00",
+      "note": "Return width/height aspect ratio of PBM image",
+      "capability_refs": [
+        "foss_reduced_products.PBM.python_status.aspect_ratio"
+      ],
+      "api_symbols": [
+        "aspect_ratio"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "present",
+          "sha256": "f410347ee0754252ef89f39ea42ccf70b9a6a8d6a1b2f267ebbca2907e41b7e8"
+        }
+      ]
+    },
+    {
+      "entry_id": "PD-RNEXT22-ABW-API-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT22",
+      "product": "ABW Python FOSS",
+      "capability_refs": [
+        "search_text",
+        "get_words",
+        "longest_paragraph",
+        "is_empty"
+      ],
+      "api_symbols": [
+        "search_text",
+        "get_words",
+        "longest_paragraph",
+        "is_empty"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/__init__.py",
+          "state": "present",
+          "sha256": "16193473da2dfe0cf937c350b82c9d99a03450081f23445e6497aff2c59065cb"
+        }
+      ],
+      "test_files": [
+        "tests/python/abw/test_r168_abw_search_words.py"
+      ],
+      "change_summary": "Export search_text, get_words, longest_paragraph, is_empty from ABW __init__.py",
+      "timestamp": "2026-06-11T14:39:33.643651Z"
+    },
+    {
+      "entry_id": "PD-RNEXT22-TOML-UPDATE-SECTION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT22",
+      "product": "TOML Python FOSS",
+      "capability_refs": [
+        "update_section"
+      ],
+      "api_symbols": [
+        "update_section"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/__init__.py",
+          "state": "present",
+          "sha256": "0119fa358b2099411fe2fa8b241952c14136921f066115ffed5a6f615e8122d1"
+        }
+      ],
+      "test_files": [
+        "tests/python/toml/test_r168_toml_update_section.py"
+      ],
+      "change_summary": "Add tests for update_section TOML function exported in __init__.py",
+      "timestamp": "2026-06-11T14:39:33.643794Z"
+    },
+    {
+      "entry_id": "PD-SPRINT4-ODS-SUM-COLUMN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT4-RNEXT-001",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "sum_column"
+      ],
+      "api_symbols": [
+        "sum_column"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "2cb9dc4e1814e975599467cd238457ac8b90fcbd140c6d22151a1e1d014a6a11"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r168_ods_sum_filter.py"
+      ],
+      "change_summary": "Add sum_column function to ODS parser \u2014 sums numeric values in a column",
+      "timestamp": "2026-06-11T23:30:00Z"
+    },
+    {
+      "entry_id": "PD-SPRINT4-ODS-FILTER-ROWS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT4-RNEXT-001",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "filter_rows_by_value"
+      ],
+      "api_symbols": [
+        "filter_rows_by_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "2cb9dc4e1814e975599467cd238457ac8b90fcbd140c6d22151a1e1d014a6a11"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r168_ods_sum_filter.py"
+      ],
+      "change_summary": "Add filter_rows_by_value function to ODS parser \u2014 filter rows matching column value",
+      "timestamp": "2026-06-11T23:30:00Z"
+    },
+    {
+      "entry_id": "PD-SPRINT4-NDJSON-TO-MARKDOWN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT4-RNEXT-001",
+      "product": "NDJSON Python FOSS",
+      "capability_refs": [
+        "to_markdown_table"
+      ],
+      "api_symbols": [
+        "to_markdown_table"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "1de0ce1bb2b443cc2e7653d208c8f7761d75320a4672d14a62872f83ee07eb1b"
+        }
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_r168_ndjson_markdown_table.py"
+      ],
+      "change_summary": "Add to_markdown_table function to NDJSON codec \u2014 export records as GFM table",
+      "timestamp": "2026-06-11T23:30:00Z"
+    },
+    {
+      "entry_id": "PD-SPRINT4-TSV-GET-NUMERIC-COLUMNS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT4-RNEXT-001",
+      "product": "TSV Python FOSS",
+      "capability_refs": [
+        "get_numeric_columns"
+      ],
+      "api_symbols": [
+        "get_numeric_columns"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "0c85b2ec3b0da6cbd78d1a7e5437feeb58ab00900d1145530ab5a9ab042ca963"
+        }
+      ],
+      "test_files": [
+        "tests/python/tsv/test_r168_tsv_numeric_columns.py"
+      ],
+      "change_summary": "Add get_numeric_columns function to TSV parser \u2014 identify all-numeric columns",
+      "timestamp": "2026-06-11T23:30:00Z"
+    },
+    {
+      "entry_id": "GCPA-ODS-AGGREGATES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-GOVERNANCE-CLEAN-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "average_column",
+        "max_column_value",
+        "min_column_value"
+      ],
+      "api_symbols": [
+        "average_column",
+        "max_column_value",
+        "min_column_value"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "c6ce31f5d90bb4d917885a05a969fbdc5ded534eb181efe3e243d41438507aa6"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r169_ods_column_aggregates.py"
+      ],
+      "change_summary": "Add average_column, max_column_value, min_column_value to ODS parser",
+      "timestamp": "2026-06-11T23:50:00Z"
+    },
+    {
+      "entry_id": "GCPA-NDJSON-UNIQUE-ZIP-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-GOVERNANCE-CLEAN-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "NDJSON Python FOSS",
+      "capability_refs": [
+        "count_unique_values",
+        "zip_with_index"
+      ],
+      "api_symbols": [
+        "count_unique_values",
+        "zip_with_index"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "9dde83cafb3d4d8f8f32652fb8c0a4af0511fcd39eaf3e8f14c99959e7441f23"
+        }
+      ],
+      "test_files": [
+        "tests/python/ndjson/test_r169_ndjson_unique_zip.py"
+      ],
+      "change_summary": "Add count_unique_values and zip_with_index to NDJSON codec",
+      "timestamp": "2026-06-11T23:50:00Z"
+    },
+    {
+      "entry_id": "GCPA-ABW-PARA-STATS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-GOVERNANCE-CLEAN-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "ABW Python FOSS",
+      "capability_refs": [
+        "average_paragraph_length",
+        "shortest_paragraph"
+      ],
+      "api_symbols": [
+        "average_paragraph_length",
+        "shortest_paragraph"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "state": "present",
+          "sha256": "e7ff2be581826adb6c0da9b5e5c2749188078c3f53fb047c785c2e05c278b1e4"
+        }
+      ],
+      "test_files": [
+        "tests/python/abw/test_r169_abw_paragraph_stats.py"
+      ],
+      "change_summary": "Add average_paragraph_length and shortest_paragraph to ABW codec",
+      "timestamp": "2026-06-11T23:50:00Z"
+    },
+    {
+      "entry_id": "GCPA-TOML-HAS-SECTION-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-GOVERNANCE-CLEAN-PRODUCT-ACCELERATION-RNEXT-001",
+      "product": "TOML Python FOSS",
+      "capability_refs": [
+        "has_section"
+      ],
+      "api_symbols": [
+        "has_section"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "ab82ee60129420cf99956a738517b24e19270530634e4517bb862298567b605c"
+        }
+      ],
+      "test_files": [
+        "tests/python/toml/test_r169_toml_has_section.py"
+      ],
+      "change_summary": "Add has_section function to TOML codec",
+      "timestamp": "2026-06-11T23:50:00Z"
+    },
+    {
+      "entry_id": "OGHPR-GNUMERIC-AVERAGE-COLUMN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-ORIGINAL-GOALS-HARDENING-PRODUCT-READINESS-RNEXT-001",
+      "product": "Gnumeric Python FOSS",
+      "capability_refs": [
+        "average_column"
+      ],
+      "api_symbols": [
+        "average_column"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "state": "present",
+          "sha256": "6373624ad0fbf546642d1147515fc8cb79fa5f946420b0e4bac2c5402c9f8216"
+        }
+      ],
+      "test_files": [
+        "tests/python/gnumeric/test_r169_gnumeric_average_column.py"
+      ],
+      "change_summary": "Add average_column function to Gnumeric codec",
+      "timestamp": "2026-06-12T00:10:00Z"
+    },
+    {
+      "entry_id": "OGHPR-DIF-SUM-AVERAGE-COLUMN-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-ORIGINAL-GOALS-HARDENING-PRODUCT-READINESS-RNEXT-001",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "sum_column",
+        "average_column"
+      ],
+      "api_symbols": [
+        "sum_column",
+        "average_column"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "bcde181c31f648cf277f60c12d40271cdfc4f6efa2c8a1df80c5b8e6b8c400a6"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r169_dif_sum_average_column.py"
+      ],
+      "change_summary": "Add sum_column and average_column functions to DIF parser",
+      "timestamp": "2026-06-12T00:10:00Z"
+    },
+    {
+      "entry_id": "OGHPR-ODS-DICT-LIST-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-ORIGINAL-GOALS-HARDENING-PRODUCT-READINESS-RNEXT-001",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "get_sheet_as_dict_list"
+      ],
+      "api_symbols": [
+        "get_sheet_as_dict_list"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "state": "present",
+          "sha256": "d6805675fca37bc7dacd673b2d43eb9f82e4c01f811d3d05b9eaecee2bf514ce"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r169_ods_dict_list.py"
+      ],
+      "change_summary": "Add get_sheet_as_dict_list to ODS parser",
+      "timestamp": "2026-06-12T00:10:00Z"
+    },
+    {
+      "entry_id": "OGHPR-FODG-PAGE-TEXT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_sprint": "FORMAT-FACTORY-ORIGINAL-GOALS-HARDENING-PRODUCT-READINESS-RNEXT-001",
+      "product": "FODG Python FOSS",
+      "capability_refs": [
+        "get_page_text"
+      ],
+      "api_symbols": [
+        "get_page_text"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "state": "present",
+          "sha256": "7b7255839fb3625684614ccc28228667e1efef1ce4478d0a6008b1e10438f1a7"
+        }
+      ],
+      "test_files": [
+        "tests/python/fodg/test_r169_fodg_page_text.py"
+      ],
+      "change_summary": "Add get_page_text function to FODG codec",
+      "timestamp": "2026-06-12T00:10:00Z"
+    },
+    {
+      "entry_id": "SAL3-ZST-COMPRESS-STRING-TO-FILE-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "run_id": "sal-reconciliation-hardening-product-gated-sprint3-20260611-8e45224",
+      "product": "ZST Python FOSS",
+      "format_id": "zst",
+      "spec_fact_refs": [
+        "FACT-ZST-001"
+      ],
+      "route_decision_id": "RDEC-RNEXT-LE-001",
+      "exception_classification": "",
+      "api_symbols": [
+        "compress_string_to_file"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "764b0b21af99e8b86bcbebed06d6023c690578ff0c7e34eb0aae1e558d97b015"
+        }
+      ],
+      "test_paths": [
+        "tests/python/zst/test_r166_zst_string_file_roundtrip.py"
+      ],
+      "evidence_paths": [
+        ".local/evidences/sal-reconciliation-hardening-product-gated-sprint3-20260611-8e45224/product-advancement-ledger.json"
+      ],
+      "added_at": "2026-06-11",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.compress_string_to_file"
+      ],
+      "sprint_id": "FORMAT-FACTORY-SAL-RECONCILIATION-HARDENING-AND-PRODUCT-GATED-ADVANCEMENT-SPRINT-3"
+    },
+    {
+      "entry_id": "SAL3-ZST-DECOMPRESS-FILE-TO-STRING-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "run_id": "sal-reconciliation-hardening-product-gated-sprint3-20260611-8e45224",
+      "product": "ZST Python FOSS",
+      "format_id": "zst",
+      "spec_fact_refs": [
+        "FACT-ZST-001"
+      ],
+      "route_decision_id": "RDEC-RNEXT-LE-001",
+      "exception_classification": "",
+      "api_symbols": [
+        "decompress_file_to_string"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "764b0b21af99e8b86bcbebed06d6023c690578ff0c7e34eb0aae1e558d97b015"
+        }
+      ],
+      "test_paths": [
+        "tests/python/zst/test_r166_zst_string_file_roundtrip.py"
+      ],
+      "evidence_paths": [
+        ".local/evidences/sal-reconciliation-hardening-product-gated-sprint3-20260611-8e45224/product-advancement-ledger.json"
+      ],
+      "added_at": "2026-06-11",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.decompress_file_to_string"
+      ],
+      "sprint_id": "FORMAT-FACTORY-SAL-RECONCILIATION-HARDENING-AND-PRODUCT-GATED-ADVANCEMENT-SPRINT-3"
+    },
+    {
+      "entry_id": "RNEXT-ZST-GET-FRAME-SIZE-STATS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "run_id": "sal-enforcement-closeout-product-accel-rnext-20260611-8e45224",
+      "product": "ZST Python FOSS",
+      "format_id": "zst",
+      "spec_fact_refs": [
+        "FACT-ZST-001"
+      ],
+      "route_decision_id": "RDEC-RNEXT-LG-001",
+      "exception_classification": "",
+      "api_symbols": [
+        "get_frame_size_stats"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "state": "present",
+          "sha256": "764b0b21af99e8b86bcbebed06d6023c690578ff0c7e34eb0aae1e558d97b015"
+        }
+      ],
+      "test_paths": [
+        "tests/python/zst/test_r168_zst_frame_size_stats.py"
+      ],
+      "evidence_paths": [
+        ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/lane-g-product-advancement-tests.log"
+      ],
+      "added_at": "2026-06-11",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.get_frame_size_stats"
+      ],
+      "sprint_id": "FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001"
+    },
+    {
+      "entry_id": "RNEXT-ZST-INIT-EXPORT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "run_id": "sal-enforcement-closeout-product-accel-rnext-20260611-8e45224",
+      "product": "ZST Python FOSS",
+      "format_id": "zst",
+      "spec_fact_refs": [
+        "FACT-ZST-001"
+      ],
+      "route_decision_id": "RDEC-RNEXT-LE-001",
+      "exception_classification": "",
+      "api_symbols": [
+        "compress_string_to_file",
+        "decompress_file_to_string",
+        "compress_string",
+        "decompress_to_string",
+        "get_frame_size_stats"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/__init__.py",
+          "state": "present",
+          "sha256": "d8bcfc8933fc61ff41750647a47811847083797169b6920b99dc583c5cb142fd"
+        }
+      ],
+      "test_paths": [
+        "tests/python/zst/test_r167_zst_package_export.py"
+      ],
+      "evidence_paths": [
+        ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/lane-e-zst-package-sample-tests.log"
+      ],
+      "added_at": "2026-06-11",
+      "capability_refs": [
+        "foss_reduced_products.ZST.python_status.package_export"
+      ],
+      "sprint_id": "FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001"
+    },
+    {
+      "entry_id": "PCSR-GNUMERIC-CORRELATION-COLUMNS-001",
+      "sprint_id": "FORMAT-FACTORY-PROOF-CLOSED-SELF-HEALING-PROFESSIONALIZE-PRODUCT-READINESS-RNEXT-001",
+      "format": "gnumeric",
+      "entry_type": "PRODUCT_SOURCE",
+      "description": "Add correlation_columns() to gnumeric_codec.py",
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "sha256": "e21ce644c8363cb3913b668f43484be09da5d30f1a8586da0a3fbc21337650b4"
+        }
+      ],
+      "api_symbols_added": [
+        "correlation_columns"
+      ],
+      "exception_classification": "no_public_spec_available",
+      "authority_state": "foss_prototype",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "api_symbols": [
+        "correlation_columns"
+      ],
+      "capability_refs": [
+        "GAP-Gnumeric-FOSS-CORRELATION-COLUMNS-001"
+      ]
+    },
+    {
+      "entry_id": "PCSR-DIF-SORT-GET-ROW-001",
+      "sprint_id": "FORMAT-FACTORY-PROOF-CLOSED-SELF-HEALING-PROFESSIONALIZE-PRODUCT-READINESS-RNEXT-001",
+      "format": "dif",
+      "entry_type": "PRODUCT_SOURCE",
+      "description": "Add sort_rows_by_column() and get_row_as_dict() to dif_parser.py",
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "sha256": "84fe9104932b701b90cddac596147bc5bfd97ff2e9f6c8c9599af42f450de3e7"
+        }
+      ],
+      "api_symbols_added": [
+        "sort_rows_by_column",
+        "get_row_as_dict"
+      ],
+      "exception_classification": "no_public_spec_available",
+      "authority_state": "foss_prototype",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "api_symbols": [
+        "sort_rows_by_column",
+        "get_row_as_dict"
+      ],
+      "capability_refs": [
+        "GAP-DIF-FOSS-SORT-GET-ROW-001"
+      ]
+    },
+    {
+      "entry_id": "PCSR-TOML-SECTION-DICT-001",
+      "sprint_id": "FORMAT-FACTORY-PROOF-CLOSED-SELF-HEALING-PROFESSIONALIZE-PRODUCT-READINESS-RNEXT-001",
+      "format": "toml",
+      "entry_type": "PRODUCT_SOURCE",
+      "description": "Add get_section_as_dict() and has_any_section() to toml_codec.py",
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "sha256": "6ba6266af3c31a32e9380b6421bcc3c95a4e67dad6268e03c0d7ef3df4b8c8b7"
+        }
+      ],
+      "api_symbols_added": [
+        "get_section_as_dict",
+        "has_any_section"
+      ],
+      "exception_classification": "no_public_spec_available",
+      "authority_state": "foss_prototype",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "api_symbols": [
+        "get_section_as_dict",
+        "has_any_section"
+      ],
+      "capability_refs": [
+        "GAP-TOML-FOSS-SECTION-DICT-001"
+      ]
+    },
+    {
+      "entry_id": "PCSR-FODG-FIND-SHAPES-EXPORT-PAGE-001",
+      "sprint_id": "FORMAT-FACTORY-PROOF-CLOSED-SELF-HEALING-PROFESSIONALIZE-PRODUCT-READINESS-RNEXT-001",
+      "format": "fodg",
+      "entry_type": "PRODUCT_SOURCE",
+      "description": "Add find_shapes_by_text_pattern() and export_page_to_json() to fodg_codec.py",
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "sha256": "b31c6e2e49a7353dcd2d3e9428e301e9c5edb3ee1e345e5dfae7557cda7841fd"
+        }
+      ],
+      "api_symbols_added": [
+        "find_shapes_by_text_pattern",
+        "export_page_to_json"
+      ],
+      "exception_classification": "no_public_spec_available",
+      "authority_state": "foss_prototype",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "api_symbols": [
+        "find_shapes_by_text_pattern",
+        "export_page_to_json"
+      ],
+      "capability_refs": [
+        "GAP-FODG-FOSS-FIND-SHAPES-001"
+      ]
+    },
+    {
+      "entry_id": "PCSR-ZST-DICT-COMPRESS-001",
+      "sprint_id": "FORMAT-FACTORY-PROOF-CLOSED-SELF-HEALING-PROFESSIONALIZE-PRODUCT-READINESS-RNEXT-001",
+      "format": "zst",
+      "entry_type": "PRODUCT_SOURCE",
+      "description": "Add compress_with_dict() and decompress_with_dict() to zst_codec.py",
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "sha256": "5c53710b95ed515a42186dbd0f5db21c9971f46cf46d24492c5c48752452a65f"
+        }
+      ],
+      "api_symbols_added": [
+        "compress_with_dict",
+        "decompress_with_dict"
+      ],
+      "exception_classification": "no_public_spec_available",
+      "authority_state": "foss_prototype",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "api_symbols": [
+        "compress_with_dict",
+        "decompress_with_dict"
+      ],
+      "capability_refs": [
+        "GAP-ZST-FOSS-DICT-COMPRESS-001"
+      ]
+    },
+    {
+      "entry_id": "PCSR-CSV-WRITER-001",
+      "sprint_id": "FULLSUITE-LAYERING-H20-001",
+      "format": "csv",
+      "entry_type": "PRODUCT_SOURCE",
+      "description": "Add csv_writer.py with write_csv(), write_csv_to_file(), parse_and_rewrite() for RFC 4180 CSV serialization",
+      "source_files": [
+        {
+          "path": "src/python/csv/csv_writer.py",
+          "sha256": "2ef2b53a45777eceea4ef4a904ae567bcafc2a1b6c7c058c6d6786d50653ff14"
+        }
+      ],
+      "api_symbols_added": [
+        "write_csv",
+        "write_csv_to_file",
+        "parse_and_rewrite",
+        "CsvWriteError"
+      ],
+      "exception_classification": "no_public_spec_available",
+      "authority_state": "foss_prototype",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "api_symbols": [
+        "write_csv",
+        "write_csv_to_file",
+        "parse_and_rewrite",
+        "CsvWriteError"
+      ],
+      "capability_refs": [
+        "GAP-CSV-FOSS-WRITER-001"
+      ]
+    },
+    {
+      "entry_id": "PAGD-ABW-COUNT-PARAGRAPHS-MATCHING-001",
+      "sprint_id": "FORMAT-FACTORY-PRODUCT-ADVANCE-GOVERNANCE-DURABILITY-001",
+      "run_id": "product-advance-governance-durability-20260612-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "authority": "QUEUE_DISPATCHED_EXECUTION",
+      "spec_fact_refs": [
+        "ABW-FOSS-LOAD-001"
+      ],
+      "route_decision_id": "RDEC-PAGD-ABW-001",
+      "function_name": "count_paragraphs_matching",
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "sha256": "a587905cb34fc12d669ffc23927e8257cd595a0bac7f1773aaebd53f15dacfbc"
+        }
+      ],
+      "test_files": [
+        "tests/python/abw/test_r176_abw_count_paragraphs_matching.py"
+      ],
+      "test_count_added": 16,
+      "description": "count_paragraphs_matching: count paragraphs containing a substring pattern",
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "api_symbols": [
+        "count_paragraphs_matching"
+      ],
+      "capability_refs": [
+        "ABW-FOSS-LOAD-001"
+      ]
+    },
+    {
+      "entry_id": "PDH-ODS-COUNT-DISTINCT-VALUES-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_commit": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "product": "ODS Python FOSS",
+      "capability_refs": [
+        "foss_python_products.ODS.count_distinct_values"
+      ],
+      "api_symbols": [
+        "count_distinct_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ods/ods_parser.py",
+          "sha256": "f6dea756be1002860056396eb4108581bc685190b80f0db51065c6d3cbca27e7"
+        },
+        {
+          "path": "src/python/ods/__init__.py",
+          "sha256": "cb374ba4b87ff3dd561f221d04b833123493a50c4960b7667f7e95581b837745"
+        }
+      ],
+      "test_files": [
+        "tests/python/ods/test_r169_ods_count_distinct.py"
+      ],
+      "skill_id": "add-python-api",
+      "idempotency_key": "c3791012186b10af03ac92d51b59ed5b363dfb45b73c5159b15051e43b85dcaf",
+      "sprint_id": "PRODUCT-DEEPENING-HEALING-20260612",
+      "export_path_affected": true,
+      "description": "Add count_distinct_values(file_path, col, sheet_index) -> int to ODS parser"
+    },
+    {
+      "entry_id": "PDH-PBM-ROTATE-90-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_commit": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "product": "PBM Python FOSS",
+      "capability_refs": [
+        "foss_python_products.PBM.rotate_90"
+      ],
+      "api_symbols": [
+        "rotate_90"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "sha256": "e294716d0335b6c2292d78bcd494b7d21617433c7a52ea2b244d826cbe0f01f2"
+        },
+        {
+          "path": "src/python/pbm/__init__.py",
+          "sha256": "f78a912f7fedd50ef262dd6b55ed06cacce2e07f37039df29fc6db4122a71401"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r169_pbm_rotate90.py"
+      ],
+      "skill_id": "add-python-api",
+      "idempotency_key": "02d563e374082464e51f9855878fe89229b41c4b852a454c720e7393fe1f2356",
+      "sprint_id": "PRODUCT-DEEPENING-HEALING-20260612",
+      "export_path_affected": true,
+      "description": "Add rotate_90(file_path, dest_path) -> dict to PBM parser \u2014 90-degree CW rotation"
+    },
+    {
+      "entry_id": "RNEXT22-DIF-PARSER-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "sha256": "fcdddf04f0c31399f88ad22282c62beebe102790dfd340cc25132768b96fd28a",
+          "change": "add get_header_info"
+        }
+      ],
+      "functions_added": [
+        "get_header_info"
+      ],
+      "format_id": "dif",
+      "api_symbols": [
+        "get_header_info"
+      ],
+      "capability_refs": [
+        "GAP-DIF-FOSS-GET-HEADER-INFO-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT22-DIF-INIT-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/dif/__init__.py",
+          "sha256": "c8658a69ba15bb8395a2bcd5a797fc3b23cb76c2b2e7ee2d4e6b050032c42a50",
+          "change": "export get_header_info"
+        }
+      ],
+      "functions_added": [],
+      "format_id": "dif",
+      "api_symbols": [
+        "get_header_info"
+      ],
+      "capability_refs": [
+        "GAP-DIF-FOSS-GET-HEADER-INFO-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT22-SYLK-PARSER-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "sha256": "02fbe05af9f253f892ad6d70f8a388b0d51cd865c4cba51520c10446a04814fb",
+          "change": "add find_value, find_rows_by_value"
+        }
+      ],
+      "functions_added": [
+        "find_value",
+        "find_rows_by_value"
+      ],
+      "format_id": "sylk",
+      "api_symbols": [
+        "find_value",
+        "find_rows_by_value"
+      ],
+      "capability_refs": [
+        "GAP-SYLK-FOSS-FIND-VALUE-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT22-SYLK-INIT-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/sylk/__init__.py",
+          "sha256": "201a4d432463a9657c8aa6ba95adacb417deb4f913aad7c52f4020c72669e506",
+          "change": "export find_value, find_rows_by_value"
+        }
+      ],
+      "functions_added": [],
+      "format_id": "sylk",
+      "api_symbols": [
+        "find_value",
+        "find_rows_by_value"
+      ],
+      "capability_refs": [
+        "GAP-SYLK-FOSS-FIND-VALUE-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT22-TOML-CODEC-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "sha256": "43d53e89455d6a7c4a34b6416d1250b23177b043546641e9559717113516e101",
+          "change": "add count_values_in_section"
+        }
+      ],
+      "functions_added": [
+        "count_values_in_section"
+      ],
+      "format_id": "toml",
+      "api_symbols": [
+        "count_values_in_section"
+      ],
+      "capability_refs": [
+        "GAP-TOML-FOSS-COUNT-VALUES-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT22-TOML-INIT-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/toml/__init__.py",
+          "sha256": "fcc2cf6dd40a2d01bba2636d5eeec8f20fbfcbce49f659fa86f6a35c35e70ec7",
+          "change": "export count_values_in_section"
+        }
+      ],
+      "functions_added": [],
+      "format_id": "toml",
+      "api_symbols": [
+        "count_values_in_section"
+      ],
+      "capability_refs": [
+        "GAP-TOML-FOSS-COUNT-VALUES-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT22-NDJSON-CODEC-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "sha256": "52614536f8783f515a4620f4355c81e8b278ccddf54020688862e67afb507f8f",
+          "change": "add batch_update"
+        }
+      ],
+      "functions_added": [
+        "batch_update"
+      ],
+      "format_id": "ndjson",
+      "api_symbols": [
+        "batch_update"
+      ],
+      "capability_refs": [
+        "GAP-NDJSON-FOSS-BATCH-UPDATE-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT22-NDJSON-INIT-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/ndjson/__init__.py",
+          "sha256": "d1e78a9b7e0768bc64fe13fca0823882fb441af7de6dfc2b10a32259674f0dee",
+          "change": "export batch_update"
+        }
+      ],
+      "functions_added": [],
+      "format_id": "ndjson",
+      "api_symbols": [
+        "batch_update"
+      ],
+      "capability_refs": [
+        "GAP-NDJSON-FOSS-BATCH-UPDATE-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT22-FODT-NEUTRAL-MODEL-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/fodt/neutral_model.py",
+          "sha256": "61138c5fec7944ef3ca290a5126247cf50cab090efa949af330f44b1847388de",
+          "change": "add document_list_item_count"
+        }
+      ],
+      "functions_added": [
+        "document_list_item_count"
+      ],
+      "format_id": "fodt",
+      "api_symbols": [
+        "document_list_item_count"
+      ],
+      "capability_refs": [
+        "GAP-FODT-FOSS-LIST-ITEM-COUNT-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT22-FODT-INIT-001",
+      "sprint_id": "mainstream-product-deepening-rnext22",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "source_files": [
+        {
+          "path": "src/python/fodt/__init__.py",
+          "sha256": "a2ba911ef6b5b9238731689857082201a67de4355aa89358726279933c3309e5",
+          "change": "export document_list_item_count"
+        }
+      ],
+      "functions_added": [],
+      "format_id": "fodt",
+      "api_symbols": [
+        "document_list_item_count"
+      ],
+      "capability_refs": [
+        "GAP-FODT-FOSS-LIST-ITEM-COUNT-001"
+      ]
+    },
+    {
+      "entry_id": "GAP-DRIVEN-RNEXT-CSV-CSV-TO-DICTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_commit": "working_tree",
+      "product": "CSV Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.CSV.python_status.csv_to_dicts"
+      ],
+      "api_symbols": [
+        "csv_to_dicts"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/csv/csv_parser.py",
+          "state": "present",
+          "sha256": "f06311c6ff1caa18842820b68026b4df7f4c7174822696c34eecde924a530c9c"
+        }
+      ]
+    },
+    {
+      "entry_id": "GAP-DRIVEN-RNEXT-XCF-XCF-SUMMARY-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "origin_commit": "working_tree",
+      "product": "XCF Python FOSS",
+      "capability_refs": [
+        "foss_reduced_products.XCF.python_status.xcf_summary"
+      ],
+      "api_symbols": [
+        "xcf_summary"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "state": "present",
+          "sha256": "2aca28626df82e7fbc4060a9f10566ee421b87e252dc06688b78c88bb0b12c3d"
+        }
+      ]
+    },
+    {
+      "entry_id": "PDAS-FODS-NUMERIC-TYPE-STATS-001",
+      "sprint_id": "FORMAT-FACTORY-PRODUCT-DEEPENING-ADVANCED-STATS-001",
+      "run_id": "product-deepening-advanced-stats-20260612-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "authority": "QUEUE_DISPATCHED_EXECUTION",
+      "spec_fact_refs": [
+        "FODS-FOSS-LOAD-001"
+      ],
+      "route_decision_id": "RDEC-PDAS-FODS-001",
+      "source_files": [
+        {
+          "path": "src/python/fods/neutral_model.py",
+          "state": "present",
+          "sha256": "0784be02a1040be0dede7c943b2dbd41f2a77f1448e569fb249ddc2d65b7027f"
+        }
+      ],
+      "test_files": [
+        "tests/python/fods/test_r177_fods_numeric_type_stats.py"
+      ],
+      "test_count_added": 22,
+      "description": "Test coverage for FODS workbook_numeric_summary, workbook_type_distribution, workbook_count_nonempty_cells, workbook_find_cells",
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "api_symbols": [
+        "workbook_numeric_summary",
+        "workbook_type_distribution",
+        "workbook_count_nonempty_cells",
+        "workbook_find_cells"
+      ],
+      "capability_refs": [
+        "GAP-FODS-FOSS-NUMERIC-STATS-001"
+      ]
+    },
+    {
+      "entry_id": "PDAS-FODT-WORD-STATS-001",
+      "sprint_id": "FORMAT-FACTORY-PRODUCT-DEEPENING-ADVANCED-STATS-001",
+      "run_id": "product-deepening-advanced-stats-20260612-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "authority": "QUEUE_DISPATCHED_EXECUTION",
+      "spec_fact_refs": [
+        "FODT-FOSS-LOAD-001"
+      ],
+      "route_decision_id": "RDEC-PDAS-FODT-001",
+      "source_files": [
+        {
+          "path": "src/python/fodt/neutral_model.py",
+          "state": "present",
+          "sha256": "61138c5fec7944ef3ca290a5126247cf50cab090efa949af330f44b1847388de"
+        }
+      ],
+      "test_files": [
+        "tests/python/fodt/test_r177_fodt_word_stats.py"
+      ],
+      "test_count_added": 26,
+      "description": "Test coverage for FODT document_total_words, document_word_count, document_reading_level, document_heading_level_distribution",
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "api_symbols": [
+        "document_total_words",
+        "document_word_count",
+        "document_reading_level",
+        "document_heading_level_distribution"
+      ],
+      "capability_refs": [
+        "GAP-FODT-FOSS-WORD-STATS-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT47-CSV-COUNT-EMPTY-CELLS-001",
+      "sprint_id": "FORMAT-FACTORY-PROBE-COVERAGE-PRODUCT-RNEXT47-001",
+      "format": "CSV",
+      "module": "src/python/csv/csv_parser.py",
+      "function_added": "count_empty_cells",
+      "classification": "PRODUCT_SOURCE_ITEM",
+      "description": "Count empty/blank cells in a named CSV column",
+      "tests": [
+        "tests/python/csv/test_rnext47_csv_count_empty_cells.py"
+      ],
+      "timestamp": "2026-06-12T08:36:17.747966+00:00"
+    },
+    {
+      "entry_id": "RNEXT47-DIF-GET-VECTOR-COUNT-001",
+      "sprint_id": "FORMAT-FACTORY-PROBE-COVERAGE-PRODUCT-RNEXT47-001",
+      "format": "DIF",
+      "module": "src/python/dif/dif_parser.py",
+      "function_added": "get_vector_count",
+      "classification": "PRODUCT_SOURCE_ITEM",
+      "description": "Return DIF file vector (column) count from header",
+      "tests": [
+        "tests/python/dif/test_rnext47_dif_get_vector_count.py"
+      ],
+      "timestamp": "2026-06-12T08:36:17.747966+00:00"
+    },
+    {
+      "entry_id": "PAB-PPM-ROTATE-90-001",
+      "sprint_id": "PRODUCT-API-BROADENING-20260612-001",
+      "timestamp": "2026-06-12T09:02:57.253252+00:00",
+      "format_id": "ppm",
+      "api_name": "rotate_90",
+      "skill_id": "add-python-api",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "description": "Rotate a PPM image 90 degrees clockwise. Mirrors PBM rotate_90 pattern for RGB color images.",
+      "idempotency_key": "4a1ed5763fd2a58940456f4509efe941536535e0fc182f0871775971852320b4",
+      "api_symbols": [
+        "rotate_90"
+      ],
+      "capability_refs": [
+        "PPM-FOSS-ROTATE-001"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "state": "present",
+          "sha256": "c980ee7ddab62f53934914878416f08493bce38cc0558a62c40947212bd7ec89"
+        }
+      ],
+      "test_files": [
+        "tests/python/ppm/test_r170_ppm_rotate90.py"
+      ],
+      "test_count_added": 8,
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "authority": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "route_decision_id": "RDEC-PAB-PPM-001",
+      "spec_fact_refs": [
+        "FACT-PPM-001"
+      ]
+    },
+    {
+      "entry_id": "PAB-SYLK-COUNT-DISTINCT-001",
+      "sprint_id": "PRODUCT-API-BROADENING-20260612-001",
+      "timestamp": "2026-06-12T09:02:57.253252+00:00",
+      "format_id": "sylk",
+      "api_name": "count_distinct_values",
+      "skill_id": "add-python-api",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "description": "Count distinct non-empty values in a SYLK column (1-based). Mirrors ODS count_distinct_values pattern.",
+      "idempotency_key": "9edd338afa7b3ee148ab195849acd48782a091289f0678ec6839860aab517d53",
+      "api_symbols": [
+        "count_distinct_values"
+      ],
+      "capability_refs": [
+        "SYLK-FOSS-COUNT-DISTINCT-001"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "6c3bf9c37da80434f0378c47d5a923ad933afe8749b872ba3604831d6b64d14a"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r170_sylk_count_distinct.py"
+      ],
+      "test_count_added": 8,
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "authority": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "route_decision_id": "RDEC-PAB-SYLK-001",
+      "spec_fact_refs": [
+        "SYLK-FOSS-LOAD-001"
+      ]
+    },
+    {
+      "entry_id": "PAB-DIF-COUNT-DISTINCT-001",
+      "sprint_id": "PRODUCT-API-BROADENING-20260612-001",
+      "timestamp": "2026-06-12T09:02:57.253252+00:00",
+      "format_id": "dif",
+      "api_name": "count_distinct_values",
+      "skill_id": "add-python-api",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "description": "Count distinct non-empty values in a DIF column (0-based). Mirrors ODS count_distinct_values pattern.",
+      "idempotency_key": "ab2027dcda225a68ac21460ca79fbd6bbd29f5cd06f59640f7ef1afbb722ef35",
+      "api_symbols": [
+        "count_distinct_values"
+      ],
+      "capability_refs": [
+        "DIF-FOSS-COUNT-DISTINCT-001"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "state": "present",
+          "sha256": "f3599afa27c8df2beeef75204a7cf7f833ebd06855613f5c393f4cffdff3d979"
+        }
+      ],
+      "test_files": [
+        "tests/python/dif/test_r170_dif_count_distinct.py"
+      ],
+      "test_count_added": 8,
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "authority": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "route_decision_id": "RDEC-PAB-DIF-001",
+      "spec_fact_refs": [
+        "DIF-FOSS-LOAD-001"
+      ]
+    },
+    {
+      "entry_id": "PAB-PGM-ROTATE-90-001",
+      "sprint_id": "PRODUCT-API-BROADENING-20260612-001",
+      "timestamp": "2026-06-12T09:02:57.253252+00:00",
+      "format_id": "pgm",
+      "api_name": "rotate_90",
+      "skill_id": "add-python-api",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "description": "Rotate a PGM image 90 degrees clockwise. Mirrors PBM rotate_90 pattern for grayscale images.",
+      "idempotency_key": "482044271e8fcf3f9324477a1976fe2c0889ed689a0e06da95eb78b6ba040392",
+      "api_symbols": [
+        "rotate_90"
+      ],
+      "capability_refs": [
+        "PGM-FOSS-ROTATE-001"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "e91d1ff53c38efc77c41a525092d22bed8bb684fdd56ed7b57cc7d0d787e0ece"
+        }
+      ],
+      "test_files": [
+        "tests/python/pgm/test_r170_pgm_rotate90.py"
+      ],
+      "test_count_added": 8,
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "authority": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "route_decision_id": "RDEC-PAB-PGM-001",
+      "spec_fact_refs": [
+        "FACT-PGM-001"
+      ]
+    },
+    {
+      "entry_id": "RNEXT54-TSV-NUMERIC-CELL-COUNT-001",
+      "classification": "FOSS_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT54-001",
+      "product": "TSV Python FOSS",
+      "capability_refs": [
+        "TSV-FOSS-NUMERIC-CELL-COUNT-001"
+      ],
+      "api_symbols": [
+        "tsv_numeric_cell_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "present",
+          "sha256": "c4e6c14d5067b4939f922f8af405c3b9e58b36b11b647ed74a5285d574d4a785"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT54-NDJSON-NULL-FIELD-COUNT-001",
+      "classification": "FOSS_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT54-001",
+      "product": "NDJSON Python FOSS",
+      "capability_refs": [
+        "NDJSON-FOSS-NULL-FIELD-COUNT-001"
+      ],
+      "api_symbols": [
+        "ndjson_null_field_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/ndjson/ndjson_codec.py",
+          "state": "present",
+          "sha256": "e89cb1ad60be6add4c153c9644b78853943adc2e8230b4b11d0fd99ef36b39e0"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT54-DIF-TOTAL-NUMERIC-COUNT-001",
+      "classification": "FOSS_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT54-001",
+      "product": "DIF Python FOSS",
+      "capability_refs": [
+        "DIF-FOSS-TOTAL-NUMERIC-COUNT-001"
+      ],
+      "api_symbols": [
+        "dif_total_numeric_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_stats.py",
+          "state": "present",
+          "sha256": "1f1c6527ffcef0f7efcecaddf5a7bffd3c90f32f5b9b967d363a8270159874ca"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT55-CSV-COLUMN-COUNT-001",
+      "classification": "FOSS_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT55-001",
+      "product": "CSV Python FOSS",
+      "capability_refs": [
+        "CSV-FOSS-COLUMN-COUNT-001"
+      ],
+      "api_symbols": [
+        "csv_column_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/csv/csv_parser.py",
+          "state": "present",
+          "sha256": "edd2cc4b476a6485e451c7250fe156d541c9431beff467c84d07d97d61d59541"
+        },
+        {
+          "path": "src/python/csv/__init__.py",
+          "state": "present",
+          "sha256": "1114fdb8d77c6181d342a4464bf43abc1c61781a9384cb253a4e35c82eac7714"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT55-PBM-WHITE-PIXEL-RATIO-001",
+      "classification": "FOSS_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT55-001",
+      "product": "PBM Python FOSS",
+      "capability_refs": [
+        "PBM-FOSS-WHITE-PIXEL-RATIO-001"
+      ],
+      "api_symbols": [
+        "pbm_white_pixel_ratio"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "present",
+          "sha256": "e67345af67fde0e58b9226390c817a9a56abb9d0f490b69c8b802e38c6af9b01"
+        },
+        {
+          "path": "src/python/pbm/__init__.py",
+          "state": "present",
+          "sha256": "9c3064ab67f711069c3d0f187805873aa7c527bdc5f25a194cd2c456b523db15"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT55-ODT-PARAGRAPH-COUNT-001",
+      "classification": "FOSS_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT55-001",
+      "product": "ODT Python FOSS",
+      "capability_refs": [
+        "ODT-FOSS-PARAGRAPH-COUNT-001"
+      ],
+      "api_symbols": [
+        "odt_paragraph_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/odt/odt_parser.py",
+          "state": "present",
+          "sha256": "879ed1a140ca306dd5ee24aef292635489b5bcf7f6f3de3aae7ff0c49436332e"
+        },
+        {
+          "path": "src/python/odt/__init__.py",
+          "state": "present",
+          "sha256": "b6953e8db16e23df7b26eaf59fcc292998f839cac9024475995b2f99e2e3f35d"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT55-FODP-SLIDE-SHAPE-COUNTS-001",
+      "classification": "FOSS_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT55-001",
+      "product": "FODP Python FOSS",
+      "capability_refs": [
+        "FODP-FOSS-SLIDE-SHAPE-COUNTS-001"
+      ],
+      "api_symbols": [
+        "fodp_slide_shape_counts"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodp/fodp_codec.py",
+          "state": "present",
+          "sha256": "41faeac1324b877571306013cf3e013bb25c8050ab99800920f58901c8582719"
+        },
+        {
+          "path": "src/python/fodp/__init__.py",
+          "state": "present",
+          "sha256": "ff2bd4d753d8eec9528075333c299846dea16ae5cd48882aad70cde65ac59758"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT80-SYLK-TOTAL-SUM-001",
+      "classification": "PRODUCT_SOURCE_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT80-001",
+      "product": "SYLK Python FOSS",
+      "capability_refs": [
+        "python_foss_products.SYLK.aggregate_all_numeric_cells"
+      ],
+      "api_symbols": [
+        "sylk_total_sum"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "state": "present",
+          "sha256": "0e7bf356a7ef5ee66602115865e397985899ba5b250fd2a65f7f7cd4060f9162"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT80-TOML-COUNT-SECTIONS-WITH-KEY-001",
+      "classification": "PRODUCT_SOURCE_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT80-001",
+      "product": "TOML Python FOSS",
+      "capability_refs": [
+        "python_foss_products.TOML.count_sections_with_key"
+      ],
+      "api_symbols": [
+        "count_sections_with_key"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/toml/toml_codec.py",
+          "state": "present",
+          "sha256": "eeec003fe2c842d2202aedab1e8768850cce1c79c164ed446782856ff455b96c"
+        }
+      ]
+    },
+    {
+      "entry_id": "RNEXT80-PGM-CONTRAST-RANGE-001",
+      "classification": "PRODUCT_SOURCE_NEW_FUNCTION",
+      "origin_sprint": "FORMAT-FACTORY-PRODUCT-DEEPENING-RNEXT80-001",
+      "product": "PGM Python FOSS",
+      "capability_refs": [
+        "python_foss_products.PGM.contrast_range_dynamic_range"
+      ],
+      "api_symbols": [
+        "pgm_contrast_range"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "state": "present",
+          "sha256": "815afcc5a9949d17338ac713d1292a2066d3c8547fdeb6d7a97696410ba34667"
+        }
+      ]
+    },
+    {
+      "entry_id": "PKG-PBM-SCALE-NEAREST-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "PACKAGING-BREAKTHROUGH-AND-PRODUCT-BREADTH-001",
+      "product": "PBM Python FOSS",
+      "capability_refs": [
+        "foss_python.PBM.scale_nearest"
+      ],
+      "api_symbols": [
+        "scale_nearest"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "state": "modified",
+          "sha256": "69f39cd6f4031c1ee33be654d52fda9b1097d93e5764c7084ce3a849aac0ee0c"
+        },
+        {
+          "path": "src/python/pbm/__init__.py",
+          "state": "modified",
+          "sha256": "8852e39e66d6bb7387364672fb8ced671e867de5959a67c62075c7ee1dbe82fd"
+        }
+      ],
+      "test_files": [
+        "tests/python/pbm/test_r210_pbm_scale_nearest.py"
+      ],
+      "test_count_added": 8,
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "authority": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "route_decision_id": "packaging-breakthrough-pbm-scale",
+      "spec_fact_refs": [],
+      "exception_classification": "pre_taxonomy_backfill"
+    },
+    {
+      "entry_id": "PKG-TSV-COUNT-DISTINCT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "PACKAGING-BREAKTHROUGH-AND-PRODUCT-BREADTH-001",
+      "product": "TSV Python FOSS",
+      "capability_refs": [
+        "foss_python.TSV.count_distinct_values"
+      ],
+      "api_symbols": [
+        "count_distinct_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "state": "modified",
+          "sha256": "e1e10c174fe8500189906e13049019f9c3735b7eacab893048d158bbc05b6777"
+        },
+        {
+          "path": "src/python/tsv/__init__.py",
+          "state": "modified",
+          "sha256": "59967eb9ddf06828135d6cd81c93f1b390b5d7c515510310d496ebfbe5946711"
+        }
+      ],
+      "test_files": [
+        "tests/python/tsv/test_r210_tsv_count_distinct.py"
+      ],
+      "test_count_added": 8,
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "authority": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "route_decision_id": "packaging-breakthrough-tsv-distinct",
+      "spec_fact_refs": [],
+      "exception_classification": "pre_taxonomy_backfill"
+    },
+    {
+      "entry_id": "PKG-CSV-COUNT-DISTINCT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "PACKAGING-BREAKTHROUGH-AND-PRODUCT-BREADTH-001",
+      "product": "CSV Python FOSS",
+      "capability_refs": [
+        "foss_python.CSV.count_distinct_values"
+      ],
+      "api_symbols": [
+        "count_distinct_values"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/csv/csv_parser.py",
+          "state": "modified",
+          "sha256": "2ffa04b7f0ba0f2b1f2608499f05a207ac2fe6c95e8f56faad7501a16fd92aa1"
+        },
+        {
+          "path": "src/python/csv/__init__.py",
+          "state": "modified",
+          "sha256": "69ef161313f79cbaf50c02c27c70fbbe839f0fdbbd344fb2c7676c611a7bebd1"
+        }
+      ],
+      "test_files": [
+        "tests/python/csv/test_r210_csv_count_distinct.py"
+      ],
+      "test_count_added": 8,
+      "git_head": "8e452246374688a90dc89c3c0d40572153bb3d24",
+      "authority": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "route_decision_id": "packaging-breakthrough-csv-distinct",
+      "spec_fact_refs": [],
+      "exception_classification": "pre_taxonomy_backfill"
+    },
+    {
+      "entry_id": "SAL-P2-FODS-WORKBOOK-ROW-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-SAL-PHASE2-CLOSEOUT-AND-PRODUCT-GATED-ADVANCEMENT-001",
+      "product": "FODS Python FOSS",
+      "capability_refs": [
+        "foss_python.FODS.workbook_row_count"
+      ],
+      "api_symbols": [
+        "workbook_row_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fods/neutral_model.py",
+          "state": "modified",
+          "sha256": "2c2f55e6a61a56c91b18c418a0f6265828c65700f89554b10e144ac7ece7a57f"
+        }
+      ],
+      "added_at": "2026-06-12T00:00:00Z",
+      "notes": "Returns row count for a sheet in workbook. Sprint: SAL Phase 2."
+    },
+    {
+      "entry_id": "SAL-P2-FODS-WORKBOOK-CELL-TEXT-AT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-SAL-PHASE2-CLOSEOUT-AND-PRODUCT-GATED-ADVANCEMENT-001",
+      "product": "FODS Python FOSS",
+      "capability_refs": [
+        "foss_python.FODS.workbook_cell_text_at"
+      ],
+      "api_symbols": [
+        "workbook_cell_text_at"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fods/neutral_model.py",
+          "state": "modified",
+          "sha256": "2c2f55e6a61a56c91b18c418a0f6265828c65700f89554b10e144ac7ece7a57f"
+        }
+      ],
+      "added_at": "2026-06-12T00:00:00Z",
+      "notes": "Returns text content of a cell at (sheet_index, row_index, col_index). Sprint: SAL Phase 2."
+    },
+    {
+      "entry_id": "SAL-P3-FODT-PARAGRAPH-TEXTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-SAL-PHASE3-PRODUCT-DEEPENING-SPRINT3-001",
+      "product": "FODT Python FOSS",
+      "capability_refs": [
+        "foss_python.FODT.document_paragraph_texts"
+      ],
+      "api_symbols": [
+        "document_paragraph_texts"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodt/neutral_model.py",
+          "state": "modified",
+          "sha256": "46c306e9bf5dead631274e06c036312584b7b13af0c507acbbf0d9e91844d7ff"
+        },
+        {
+          "path": "src/python/fodt/__init__.py",
+          "state": "modified",
+          "sha256": "9e1ee309a0b4ac929a9611c2b9147928da144cb567a1bde365765f1de0ded9bd"
+        }
+      ],
+      "added_at": "2026-06-12T00:00:00Z",
+      "notes": "Returns list of paragraph text strings (excludes headings). Sprint 3."
+    },
+    {
+      "entry_id": "SAL-P3-FODT-HEADING-TEXTS-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-SAL-PHASE3-PRODUCT-DEEPENING-SPRINT3-001",
+      "product": "FODT Python FOSS",
+      "capability_refs": [
+        "foss_python.FODT.document_heading_texts"
+      ],
+      "api_symbols": [
+        "document_heading_texts"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodt/neutral_model.py",
+          "state": "modified",
+          "sha256": "46c306e9bf5dead631274e06c036312584b7b13af0c507acbbf0d9e91844d7ff"
+        },
+        {
+          "path": "src/python/fodt/__init__.py",
+          "state": "modified",
+          "sha256": "9e1ee309a0b4ac929a9611c2b9147928da144cb567a1bde365765f1de0ded9bd"
+        }
+      ],
+      "added_at": "2026-06-12T00:00:00Z",
+      "notes": "Returns list of heading text strings in document order. Sprint 3."
+    },
+    {
+      "entry_id": "SAL-P3-FODT-TABLE-ROW-COUNT-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "FORMAT-FACTORY-SAL-PHASE3-PRODUCT-DEEPENING-SPRINT3-001",
+      "product": "FODT Python FOSS",
+      "capability_refs": [
+        "foss_python.FODT.document_table_row_count"
+      ],
+      "api_symbols": [
+        "document_table_row_count"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/fodt/neutral_model.py",
+          "state": "modified",
+          "sha256": "46c306e9bf5dead631274e06c036312584b7b13af0c507acbbf0d9e91844d7ff"
+        },
+        {
+          "path": "src/python/fodt/__init__.py",
+          "state": "modified",
+          "sha256": "9e1ee309a0b4ac929a9611c2b9147928da144cb567a1bde365765f1de0ded9bd"
+        }
+      ],
+      "added_at": "2026-06-12T00:00:00Z",
+      "notes": "Returns row count for specified table index (0-based). Sprint 3."
+    },
+    {
+      "entry_id": "SAL-P4-DIF-FILTER-ROWS-001",
+      "classification": "TEST_COVERAGE",
+      "sprint_id": "FORMAT-FACTORY-SAL-PHASE4-PRODUCT-DEEPENING-SPRINT4-001",
+      "product": "DIF",
+      "capability_refs": [
+        "GAP-DIF-FOSS-PROBE_DIF-001"
+      ],
+      "api_symbols": [
+        "filter_rows_by_value",
+        "count_nonempty_cells",
+        "dif_max_row_length"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/dif/test_r188_dif_product_sprint4.py",
+          "state": "added",
+          "sha256": "new"
+        }
+      ],
+      "added_at": "2026-06-12",
+      "notes": "16 tests: filter_rows_by_value, count_nonempty_cells, dif_max_row_length"
+    },
+    {
+      "entry_id": "SAL-P4-SYLK-FIND-ROWS-001",
+      "classification": "TEST_COVERAGE",
+      "sprint_id": "FORMAT-FACTORY-SAL-PHASE4-PRODUCT-DEEPENING-SPRINT4-001",
+      "product": "SYLK",
+      "capability_refs": [],
+      "api_symbols": [
+        "find_rows_by_value",
+        "sylk_to_html",
+        "sylk_max_column_index"
+      ],
+      "source_files": [
+        {
+          "path": "tests/python/sylk/test_r188_sylk_product_sprint4.py",
+          "state": "added",
+          "sha256": "new"
+        }
+      ],
+      "added_at": "2026-06-12",
+      "notes": "15 tests: find_rows_by_value, sylk_to_html, sylk_max_column_index"
     }
   ]
 }

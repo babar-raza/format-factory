@@ -24,7 +24,6 @@ try:
     from .context_pack_builder import verify_context_pack
 except ImportError:
     from spec_source_registry import is_source_registered
-    from spec_digestor import check_staleness
     from context_pack_builder import verify_context_pack
 
 

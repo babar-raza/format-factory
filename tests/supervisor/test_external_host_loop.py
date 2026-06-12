@@ -13,7 +13,7 @@ import os
 import sys
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -171,7 +171,8 @@ class TestCLAUDECODEScrub:
         """After scrubbing CLAUDECODE, claude --version should work.
         Skipped when running inside Claude Code (CLAUDECODE set) to avoid CLI hangs.
         """
-        import subprocess, shutil
+        import subprocess
+        import shutil
         from external_host_loop import scrub_claudecode_env
         if os.environ.get("CLAUDECODE"):
             pytest.skip("Skipped inside Claude Code session — claude CLI may hang")
@@ -286,7 +287,7 @@ class TestPackage107FalsePositiveRegression:
 
     def test_marker_in_explanatory_stdout_does_not_pass(self):
         """marker found in prose output must classify as FALSE_POSITIVE_MARKER_IN_PROSE."""
-        from external_host_loop import is_marker_in_prose_only, is_permission_prompt
+        from external_host_loop import is_marker_in_prose_only
         prose = (
             "The previous attempt did not output HOST_CYCLE_SMOKE_OK marker. "
             "I need to run the smoke test to produce it."
@@ -550,7 +551,7 @@ class TestPackage107FalsePositiveRegression:
 
     def test_package_107_stdout_fixture_fails_strict_noop(self):
         """The actual package-107 stdout must fail strict NOOP validation."""
-        from external_host_loop import is_permission_prompt, is_marker_in_prose_only
+        from external_host_loop import is_permission_prompt
         stdout = PACKAGE_107_STDOUT_FIXTURE
         # It IS a permission prompt
         assert is_permission_prompt(stdout) is True

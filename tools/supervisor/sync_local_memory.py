@@ -85,7 +85,7 @@ def format_entry(review: dict, additional_facts: dict | None = None) -> str:
     extra = additional_facts or {}
 
     lines = [
-        f"",
+        "",
         f"## Entry: {sprint_id}",
         f"- timestamp: {timestamp}",
         f"- verdict: {verdict}",

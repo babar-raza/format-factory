@@ -352,7 +352,7 @@ def main():
     repo_root = Path(__file__).parent.parent.parent.resolve()
     artifacts_dir = (repo_root / args.artifacts_dir).resolve() if not args.artifacts_dir.is_absolute() else args.artifacts_dir
 
-    print(f"R49 .NET Object-Model POC Proof")
+    print("R49 .NET Object-Model POC Proof")
     print(f"Repo root: {repo_root}")
     print(f"Artifacts dir: {artifacts_dir}")
     print()

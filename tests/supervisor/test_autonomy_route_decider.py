@@ -9,8 +9,6 @@ _REPO = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_REPO))
 
 from tools.supervisor.autonomy_route_models import (
-    ALL_ROUTES,
-    ALL_TASK_CATEGORIES,
     REQUIRED_DECISION_FIELDS,
     ROUTE_AGENT_GOVERNED_DECISION_REQUIRED,
     ROUTE_AUTONOMOUS_ACCELERATED_DEFAULT,
@@ -18,15 +16,11 @@ from tools.supervisor.autonomy_route_models import (
     ROUTE_GOVERNED_DIRECT_EXECUTION,
     ROUTE_HUMAN_APPROVAL_REQUIRED,
     SCHEMA_VERSION,
-    TASK_CATEGORIES_MACHINERY,
-    TASK_CATEGORIES_PRODUCT,
 )
 from tools.supervisor.autonomy_route_decider import (
-    RouteDecision,
     classify_task_category,
     decide_route,
     validate_route_decision,
-    check_machinery_mutation_allowed,
     check_action_route_allowed,
     check_prompt_for_unsafe_instructions,
     quarantine_unsafe_prompt,
@@ -449,3 +443,66 @@ class TestProductSourceMutatingRouteEnforcement:
         }
         allowed, _ = check_action_route_allowed(action)
         assert allowed is True
+
+
+# ---------------------------------------------------------------------------
+# Adversarial skip marker tests (NC-01 included)
+# ---------------------------------------------------------------------------
+
+class TestAdversarialSkipMarkers:
+    """Verify that ADVISORY_SKIP_MARKERS do not produce false-negatives for genuine unsafe lines."""
+
+    def test_direct_git_push_caught(self):
+        """Plain 'git push' instruction is caught (pass=False)."""
+        r = check_prompt_for_unsafe_instructions("git push origin main")
+        assert r["pass"] is False
+        assert len(r["violations"]) >= 1
+
+    def test_direct_git_commit_caught(self):
+        """Plain 'git commit' instruction is caught (pass=False)."""
+        r = check_prompt_for_unsafe_instructions("Run git commit -m fix")
+        assert r["pass"] is False
+        assert len(r["violations"]) >= 1
+
+    def test_npm_publish_caught(self):
+        """npm publish instruction is caught (pass=False)."""
+        r = check_prompt_for_unsafe_instructions("npm publish --access public")
+        assert r["pass"] is False
+        assert len(r["violations"]) >= 1
+
+    def test_gate_bypass_caught(self):
+        """Gate bypass instruction is caught (pass=False)."""
+        r = check_prompt_for_unsafe_instructions("gate bypass enabled")
+        assert r["pass"] is False
+        assert len(r["violations"]) >= 1
+
+    def test_no_git_push_explicit_advisory_skipped(self):
+        """'No git push without explicit user authorization.' is advisory — skipped (pass=True)."""
+        r = check_prompt_for_unsafe_instructions(
+            "No git push without explicit user authorization."
+        )
+        assert r["pass"] is True
+        assert r["violations"] == []
+
+    def test_do_not_advisory_skipped(self):
+        """'Do not run git push under any circumstances.' is advisory — skipped (pass=True)."""
+        r = check_prompt_for_unsafe_instructions(
+            "Do not run git push under any circumstances."
+        )
+        assert r["pass"] is True
+        assert r["violations"] == []
+
+    def test_nc01_without_false_negative_fixed(self):
+        """NC-01: 'git push without --force' is genuine unsafe — must be caught (pass=False)."""
+        r = check_prompt_for_unsafe_instructions("git push without --force")
+        assert r["pass"] is False, (
+            "NC-01: 'git push without --force' was incorrectly skipped by advisory marker. "
+            "The 'without' marker must be narrowed to 'without explicit'."
+        )
+        assert len(r["violations"]) >= 1
+
+    def test_nc01_variant_git_push_without_flag_caught(self):
+        """NC-01 variant: 'run git push without -n flag' is genuine unsafe — caught (pass=False)."""
+        r = check_prompt_for_unsafe_instructions("run git push without -n flag")
+        assert r["pass"] is False
+        assert len(r["violations"]) >= 1

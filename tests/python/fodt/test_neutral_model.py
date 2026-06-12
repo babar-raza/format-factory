@@ -6,7 +6,6 @@ Gate 5 neutral model: 7 entities (Document, Block, List, ListItem, Table, TableR
 """
 from pathlib import Path
 
-import pytest
 
 from fodt import parse_fodt
 from fodt.constants import FORMAT_ID, SPEC_VERSION

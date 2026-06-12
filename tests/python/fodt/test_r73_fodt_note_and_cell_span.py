@@ -13,7 +13,6 @@ import pathlib
 import sys
 import tempfile
 import textwrap
-import pytest
 
 PROJECT_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))

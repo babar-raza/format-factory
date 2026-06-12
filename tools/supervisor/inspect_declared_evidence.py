@@ -56,8 +56,10 @@ def _llm_call(messages: list[dict], role: str, operation: str) -> str | None:
     """
     gw, cfg = _get_ai_gateway()
     if gw is None:
+        print(f"  [LLM] No gateway available for {operation}, skipping")
         return None
     try:
+        print(f"  [LLM] gateway_chat attempt for {operation}...")
         resp, _record = gw(
             config=cfg,
             model="recommended",
@@ -70,31 +72,42 @@ def _llm_call(messages: list[dict], role: str, operation: str) -> str | None:
             return content
         # Gateway returned empty — may be litellm import failure; try direct SDK
         if _record and getattr(_record, "status", None) and "error" in str(_record.status).lower():
+            print(f"  [LLM] gateway_chat failed for {operation}, trying SDK fallback...")
             return _sdk_fallback(messages, cfg)
+        print(f"  [LLM] gateway_chat returned empty for {operation}")
         return None
-    except Exception:
+    except Exception as exc:
+        print(f"  [LLM] gateway_chat exception for {operation}: {type(exc).__name__}")
         return None
 
 
 def _sdk_fallback(messages: list[dict], cfg) -> str | None:
     """Fallback: call endpoint directly via SDK when litellm fails."""  # policy-allowed
-    try:
-        import os
-        _sdk = __import__("openai")  # policy-approved endpoint only
-        _Client = _sdk.OpenAI  # policy-approved
-        key = os.environ.get("GPT_OSS_API_KEY", "").strip()
-        if not key or not cfg.endpoint:
-            return None
-        client = _Client(base_url=cfg.endpoint, api_key=key)
-        resp = client.chat.completions.create(
-            model="recommended",
-            messages=messages,
-            max_tokens=500,
-            temperature=0,
-        )
-        return resp.choices[0].message.content or None
-    except Exception:
+    import os
+    import time
+    _max_attempts = 3
+    _backoff = [1, 2, 4]
+    key = os.environ.get("GPT_OSS_API_KEY", "").strip()
+    if not key or not cfg.endpoint:
         return None
+    for attempt in range(_max_attempts):
+        try:
+            _sdk = __import__("openai")  # policy-approved endpoint only
+            _Client = _sdk.OpenAI  # policy-approved
+            client = _Client(base_url=cfg.endpoint, api_key=key)
+            resp = client.chat.completions.create(
+                model="recommended",
+                messages=messages,
+                max_tokens=500,
+                temperature=0,
+            )
+            return resp.choices[0].message.content or None
+        except Exception as exc:
+            print(f"  [LLM] SDK fallback attempt {attempt + 1}/{_max_attempts} failed: {type(exc).__name__}")
+            if attempt < _max_attempts - 1:
+                time.sleep(_backoff[attempt])
+    print("  [LLM] All SDK fallback attempts exhausted")
+    return None
 
 
 def parse_acceptance_criteria(criteria_text: str) -> dict:

@@ -42,7 +42,7 @@ class TestLiveNextSprintMd:
                 task_lines_with_false_stops.append(stripped[:80])
 
         assert task_lines_with_false_stops == [], (
-            f"False-stop task labels found in next-sprint.md:\n"
+            "False-stop task labels found in next-sprint.md:\n"
             + "\n".join(task_lines_with_false_stops)
         )
 
@@ -81,7 +81,7 @@ class TestGeneratorOutput:
         false_stops = [t for t in tasks if t.get("status") in ("approval-blocked", "blocked")]
 
         assert false_stops == [], (
-            f"Generator emitted false-stop tasks:\n"
+            "Generator emitted false-stop tasks:\n"
             + "\n".join(f"  {t['task_id']}: {t['status']} — {t['title'][:50]}" for t in false_stops)
         )
 
@@ -227,7 +227,6 @@ class TestTaskmasterJson:
 class TestExecutorCombinedPromptValidation:
     def test_executor_validates_live_combined_prompt(self):
         """Executor must validate the live combined-next-worker-prompt.md as clean."""
-        from tools.supervisor.autonomous_train_executor import validate_next_sprint_prompt
 
         # Check the latest combined prompt
         paths_to_check = [

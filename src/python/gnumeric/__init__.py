@@ -48,6 +48,16 @@ from .gnumeric_codec import (
     row_count,
     get_row_values,
     get_column_values,
+    min_column_value,
+    max_column_value,
+    average_column,
+    average_row,
+    correlation_columns,
+    gnumeric_sheet_summary,
+    gnumeric_numeric_cell_count,
+    gnumeric_column_count,
+    gnumeric_string_cell_count,
+    gnumeric_row_count_file,
 )
 
 __all__ = [
@@ -90,6 +100,16 @@ __all__ = [
     "row_count",
     "get_row_values",
     "get_column_values",
+    "min_column_value",
+    "max_column_value",
+    "average_column",
+    "average_row",
+    "correlation_columns",
+    "gnumeric_sheet_summary",
+    "gnumeric_numeric_cell_count",
+    "gnumeric_column_count",
+    "gnumeric_string_cell_count",
+    "gnumeric_row_count_file",
 ]
 
 __version__ = "0.1.0.dev0"

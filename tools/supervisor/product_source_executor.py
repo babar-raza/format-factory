@@ -10,12 +10,24 @@ Design constraints:
 - Patch-size limit: 200 lines of added code
 - Rollback via git checkout on test failure or exception
 - Records execution result to lane-execution-ledger.json
+
+SAL-VERIFICATION-HARDENING-001 (Lane C, 2026-06-11):
+- Authority preflight added to check format authority level before execution.
+- Sprint 1 (WARNING mode): WARN_ALLOW for P1 with valid exception.
+- Sprint 2 (BLOCK mode, SAL-I-002, 2026-06-11): WARN_ALLOW promoted to hard BLOCK.
+  All P0/P1/P2/P3 formats without spec_fact_refs AND without valid exception_classification
+  are now hard-blocked at executor level. WARN_ALLOW path removed.
+  fallback_authority_approved requires non-empty exception_rationale field.
+
+RNEXT (FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001, 2026-06-11):
+- investigation_only and sample_only_non_product removed from _AUTHORITY_ALLOWED_EXCEPTIONS.
+- These carry no specification authority and must not allow PRODUCT_SOURCE mutation.
+- Explicit BLOCK added when these appear as exception_classification on product items.
 """
 from __future__ import annotations
 
 import json
 import subprocess
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -44,6 +56,223 @@ if not _PYTHON.exists():
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+# ---------------------------------------------------------------------------
+# Authority Preflight (SAL-VERIFICATION-HARDENING-001 Lane C)
+# ---------------------------------------------------------------------------
+
+# Exception classifications that allow PRODUCT_SOURCE mutation without FACT-* refs.
+# RNEXT (2026-06-11): investigation_only and sample_only_non_product REMOVED from this set.
+# These may appear on GOVERNANCE_DOC/TEST items but must NOT bypass authority for
+# PRODUCT_SOURCE mutation — they carry no specification authority.
+_AUTHORITY_ALLOWED_EXCEPTIONS = frozenset({
+    "no_public_spec_available",
+    "schema_authority_available",
+    "empirical_authority_with_limits",
+    "fallback_authority_approved",
+    "legacy_backfill",
+})
+
+# Non-product exception classifications: valid on GOVERNANCE_DOC, TEST, REQUIREMENT items
+# but explicitly excluded from PRODUCT_SOURCE authority bypass.
+_NON_PRODUCT_EXCEPTION_CLASSES = frozenset({
+    "investigation_only",
+    "sample_only_non_product",
+})
+
+# Minimum authority level for unrestricted product source work
+_MIN_AUTHORITY_FOR_PRODUCT = 4  # P4: verified spec facts
+
+
+def run_authority_preflight(item: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Run authority preflight check for a PRODUCT_SOURCE queue item.
+
+    Returns a machine-readable dict:
+      {
+        format_id: str,
+        item_type: str,
+        authority_level: str,          # P0-P6 or UNKNOWN
+        authority_level_int: int,
+        product_expansion_allowed: bool,
+        exception_classification: str,
+        decision: "ALLOW" | "BLOCK",
+        reason: str,
+        evidence_paths: list[str],
+      }
+
+    BLOCK is returned for P0/P1/P2/P3 without a valid exception.
+    WARN_ALLOW is no longer returned (Sprint 2: all advisory paths promoted to BLOCK or ALLOW).
+    ALLOW is returned for P4+, for valid exception_classification, or for formats with spec_fact_refs.
+    """
+    format_id = (
+        item.get("format_id")
+        or item.get("format")
+        or _infer_format_id_from_paths(item)
+    )
+    item_type = item.get("item_type", "PRODUCT_SOURCE")
+    exception_class = item.get("exception_classification", "")
+    spec_fact_refs = item.get("spec_fact_refs", []) or []
+
+    # Base result structure
+    preflight = {
+        "format_id": format_id or "unknown",
+        "item_type": item_type,
+        "authority_level": "UNKNOWN",
+        "authority_level_int": -1,
+        "product_expansion_allowed": False,
+        "exception_classification": exception_class,
+        "spec_fact_refs_present": bool(spec_fact_refs),
+        "decision": "PENDING",  # always overwritten before return; WARN_ALLOW is never a valid outcome
+        "reason": "",
+        "evidence_paths": [],
+    }
+
+    if not format_id:
+        # Sprint 2: unknown format_id — BLOCK rather than advisory allow
+        preflight["decision"] = "BLOCK"
+        preflight["reason"] = (
+            "Cannot determine format_id from queue item. "
+            "Set format_id field explicitly to proceed. "
+            "Governance V13 also enforces spec_fact_refs at declaration time."
+        )
+        return preflight
+
+    # Try to load authority gate validation
+    try:
+        import sys
+        _sup_dir = Path(__file__).resolve().parent
+        if str(_sup_dir) not in sys.path:
+            sys.path.insert(0, str(_sup_dir))
+        from authority_gate_validation import validate_format_authority
+        auth_result = validate_format_authority(format_id)
+        authority_level_int = auth_result.get("authority_level_int", -1)
+        authority_level = auth_result.get("authority_level", "UNKNOWN")
+        product_expansion_allowed = auth_result.get("product_expansion_allowed", False)
+        exception_allowed = auth_result.get("exception_allowed")
+
+        preflight["authority_level"] = authority_level
+        preflight["authority_level_int"] = authority_level_int
+        preflight["product_expansion_allowed"] = product_expansion_allowed
+        if exception_allowed:
+            preflight["evidence_paths"].append(
+                f"authority_gate: exception_allowed={exception_allowed}"
+            )
+
+    except Exception as exc:
+        # Sprint 2: import/execution error → BLOCK (fail-closed)
+        preflight["decision"] = "BLOCK"
+        preflight["reason"] = (
+            f"Authority gate import/execution error for format={format_id!r}: {exc}. "
+            "Cannot verify authority level. Fail-closed per Sprint 2 policy."
+        )
+        return preflight
+
+    # Decision logic
+    if spec_fact_refs:
+        # Has spec fact refs — allow (registry check happens in V13)
+        preflight["decision"] = "ALLOW"
+        preflight["reason"] = (
+            f"spec_fact_refs present ({len(spec_fact_refs)} refs). "
+            f"Authority level: {authority_level}."
+        )
+        return preflight
+
+    # RNEXT: investigation_only and sample_only_non_product are explicitly rejected
+    # for PRODUCT_SOURCE mutation — these carry no specification authority.
+    if exception_class in _NON_PRODUCT_EXCEPTION_CLASSES:
+        preflight["decision"] = "BLOCK"
+        preflight["reason"] = (
+            f"exception_classification={exception_class!r} is not valid for PRODUCT_SOURCE "
+            "mutation. This classification is permitted only on GOVERNANCE_DOC, TEST, or "
+            "non-mutating items. For product source work, use no_public_spec_available, "
+            "schema_authority_available, empirical_authority_with_limits, or provide "
+            "spec_fact_refs."
+        )
+        return preflight
+
+    if exception_class in _AUTHORITY_ALLOWED_EXCEPTIONS:
+        # Sprint 2: fallback_authority_approved requires non-empty exception_rationale
+        if exception_class == "fallback_authority_approved":
+            exception_rationale = item.get("exception_rationale", "")
+            if not exception_rationale:
+                preflight["decision"] = "BLOCK"
+                preflight["reason"] = (
+                    "exception_classification=fallback_authority_approved requires a non-empty "
+                    "exception_rationale field. Provide the approving mechanism and written rationale."
+                )
+                return preflight
+
+        # Valid exception — allow (Sprint 2: WARN_ALLOW removed, exceptions are now ALLOW)
+        preflight["decision"] = "ALLOW"
+        preflight["reason"] = (
+            f"No spec_fact_refs but exception_classification={exception_class!r} accepted. "
+            f"Authority level: {authority_level}. "
+            "This classification records authority debt. Not eligible for READINESS/RELEASE_GATE."
+        )
+        try:
+            import time
+            _audit_log = _REPO_ROOT / ".local" / "supervisor" / "authority-preflight-log.jsonl"
+            _audit_log.parent.mkdir(parents=True, exist_ok=True)
+            _entry = {
+                "ts": time.time(),
+                "format_id": format_id,
+                "authority_level": authority_level,
+                "authority_level_int": authority_level_int,
+                "exception": exception_class,
+                "decision": "ALLOW_WITH_EXCEPTION",
+                "item_id": item.get("item_id") or item.get("action_id"),
+                "item_type": item_type,
+            }
+            with _audit_log.open("a", encoding="utf-8") as _f:
+                import json as _json
+                _f.write(_json.dumps(_entry) + "\n")
+        except Exception:
+            pass  # Audit log failure must never block execution
+        return preflight
+
+    if authority_level_int >= _MIN_AUTHORITY_FOR_PRODUCT:
+        # P4+ with no spec_fact_refs and no exception_classification — BLOCK per Hard Rule 10.
+        # P4+ authority alone is not enough for product source mutation. The queue item must
+        # carry either verifiable spec_fact_refs OR an explicit exception_classification.
+        # This prevents silent "high authority" bypass without item-level authority evidence.
+        preflight["decision"] = "BLOCK"
+        preflight["reason"] = (
+            f"format={format_id!r} has authority level {authority_level} (P4+), but the queue "
+            "item has no spec_fact_refs and no exception_classification. "
+            "P4+ authority alone is not sufficient for PRODUCT_SOURCE mutation (Hard Rule 10). "
+            "Either add spec_fact_refs (e.g. FACT-ZST-001) or set exception_classification "
+            "to an allowed value (e.g. no_public_spec_available, legacy_backfill)."
+        )
+        return preflight
+
+    # P0/P1/P2/P3 without exception — BLOCK
+    preflight["decision"] = "BLOCK"
+    preflight["reason"] = (
+        f"format={format_id!r} has authority level {authority_level} "
+        f"(int={authority_level_int}) which is below P4 threshold, "
+        f"and no valid exception_classification is set (got: {exception_class!r}). "
+        "PRODUCT_SOURCE execution blocked. "
+        "Set exception_classification to no_public_spec_available, "
+        "schema_authority_available, or legacy_backfill if applicable."
+    )
+    return preflight
+
+
+def _infer_format_id_from_paths(item: Dict[str, Any]) -> Optional[str]:
+    """Infer format_id from target_path or expected_files_to_change."""
+    paths = []
+    if item.get("target_path"):
+        paths.append(item["target_path"])
+    paths.extend(item.get("expected_files_to_change", []) or [])
+    for p in paths:
+        parts = Path(p).parts
+        # e.g. src/python/zst/zst_codec.py → 'zst'
+        for i, part in enumerate(parts):
+            if part in ("python", "net") and i + 1 < len(parts):
+                return parts[i + 1]
+    return None
 
 
 class ExecutionResult:
@@ -115,6 +344,21 @@ class ProductSourceExecutor:
             )
 
         source_path = self.repo_root / source_path_rel
+
+        # Step 0: Authority preflight (SAL-VERIFICATION-HARDENING-001)
+        preflight = run_authority_preflight(item)
+        if preflight["decision"] == "BLOCK":
+            return ExecutionResult(
+                action_id=action_id,
+                status="BLOCKED",
+                error=(
+                    f"Authority preflight BLOCKED: {preflight['reason']} "
+                    f"[format={preflight['format_id']!r}, "
+                    f"level={preflight['authority_level']}]"
+                ),
+                source_path=source_path_rel,
+            )
+        # ALLOW: preflight passed — proceed to path validation (Sprint 2: no WARN_ALLOW)
 
         # Step 1: Path validation
         path_error = self._validate_paths(item, source_path_rel)

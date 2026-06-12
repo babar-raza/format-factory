@@ -14,14 +14,11 @@ Extends R28 tests with:
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools"))
 
 from tools.ai.synthesis.citation_verifier import (
-    CitationResult,
-    VerificationReport,
     verify_all_citations,
     verify_single_citation,
 )
@@ -30,7 +27,6 @@ from tools.ai.synthesis.contradiction_detector import (
 )
 from tools.ai.synthesis.evaluator import (
     EvaluationCriteria,
-    EvaluationResult,
     evaluate_synthesis,
 )
 from tools.ai.synthesis.runner import SynthesisResult

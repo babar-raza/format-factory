@@ -12,7 +12,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
 
-import pytest
 
 SCHEMA_PATH = REPO_ROOT / "schemas" / "skills" / "format-onboarding.schema.yaml"
 TEMPLATES_DIR = REPO_ROOT / "templates" / "format-onboarding"

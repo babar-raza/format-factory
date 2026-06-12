@@ -2,16 +2,11 @@
 # Lane D — ZST FOSS
 # Ledger: R105-FOSS-ZST-FILE-WORKFLOW-001
 
-import pytest
-from pathlib import Path
 from zst.zst_codec import (
     compress_bytes,
     decompress_bytes,
     probe_frame,
     validate_file,
-    ZstError,
-    ZstOutputLimitExceeded,
-    ZSTD_MAGIC,
 )
 
 

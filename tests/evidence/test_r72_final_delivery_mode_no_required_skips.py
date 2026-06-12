@@ -7,7 +7,6 @@ R71 IV-R72-005: R71 tests replayed as 9 passed, 41 skipped from extracted bundle
 R72 repair: In delivery mode, no required check may skip because files are "not yet built."
 """
 import hashlib
-import io
 import json
 import os
 import pathlib

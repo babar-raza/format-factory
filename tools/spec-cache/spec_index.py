@@ -21,11 +21,9 @@ See also:
 """
 
 import hashlib
-import os
 import pathlib
 import sys
-from datetime import date, datetime, timezone
-from typing import Any, Optional
+from typing import Optional
 
 try:
     import yaml
@@ -205,7 +203,7 @@ def write_entry(entry: dict, allow_overwrite: bool = False) -> pathlib.Path:
     """
     errors = validate_entry(entry)
     if errors:
-        raise ValueError(f"Entry validation failed:\n" + "\n".join(f"  - {e}" for e in errors))
+        raise ValueError("Entry validation failed:\n" + "\n".join(f"  - {e}" for e in errors))
 
     format_id = entry["format_id"]
     version = entry["version"]

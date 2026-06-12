@@ -15,8 +15,6 @@ from tools.supervisor.product_action_guard import (
     generate_product_pilot_actions,
     write_product_gap_classification,
     GuardViolation,
-    FORBIDDEN_ACTION_TYPES,
-    FORBIDDEN_WRITE_PATHS,
     SAFE_PRODUCT_PILOT_ACTIONS,
 )
 

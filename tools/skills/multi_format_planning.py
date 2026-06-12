@@ -186,7 +186,7 @@ def main():
         return
 
     summary = result["cross_format_summary"]
-    print(f"\n=== Multi-Format Planning Summary ===")
+    print("\n=== Multi-Format Planning Summary ===")
     print(f"  Formats:     {', '.join(result['formats_requested'])}")
     print(f"  Authoritative: {result['formats_authoritative']}")
     print(f"  Blocked:       {result['formats_blocked']}")
@@ -195,7 +195,7 @@ def main():
     print(f"  Total slices:         {summary['total_implementation_slices']}")
     print(f"  Total taskcards:      {summary['total_planning_taskcards']}")
     print(f"  Planning ready:       {summary['planning_ready']}")
-    print(f"\n  Orchestration order:")
+    print("\n  Orchestration order:")
     for item in result["orchestration_order"]:
         status = "READY" if item["ready_for_planning"] else "BLOCKED"
         print(f"    [{status}] {item['format_id']}: {item['accepted_count']} accepted, "

@@ -178,7 +178,7 @@ def test_gate7_corrupted_body_rejected_by_oracle():
     """corrupted-block-data.zst: oracle rejects at decompression (corruption in block)."""
     data = (_GENERATED_INVALID / "corrupted-block-data.zst").read_bytes()
     success, error = _decompress_safe(data)
-    assert not success, f"corrupted-block-data.zst should be rejected at decompression"
+    assert not success, "corrupted-block-data.zst should be rejected at decompression"
 
 
 # ── Existing invalid corpus safety ─────────────────────────────────────────

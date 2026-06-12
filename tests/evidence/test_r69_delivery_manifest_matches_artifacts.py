@@ -7,7 +7,6 @@ ensures delivery manifest fields are consistent.
 """
 import hashlib
 import json
-import zipfile
 from pathlib import Path
 
 import pytest

@@ -11,11 +11,10 @@ Import rules:
 5. Evidence packages must materialize files or mark declared_not_verified
 """
 import hashlib
-import json
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 try:
     import yaml

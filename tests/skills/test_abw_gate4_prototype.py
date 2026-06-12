@@ -7,14 +7,13 @@ Tests the prototypes/by-format/abw/abw_parser.py prototype.
 
 import sys
 from pathlib import Path
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 PROTO_DIR = REPO_ROOT / "prototypes" / "by-format" / "abw"
 SAMPLES_DIR = REPO_ROOT / "samples" / "by-format" / "abw"
 
 sys.path.insert(0, str(PROTO_DIR))
-from abw_parser import parse_abw, count_sections, get_paragraph_count, extract_text, ABW_MIME
+from abw_parser import parse_abw, count_sections, get_paragraph_count, extract_text
 
 
 def test_parse_abw_minimal_is_abw():

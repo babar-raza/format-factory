@@ -1,15 +1,13 @@
 """Tests for Phase 2 telemetry and Agent Metrics mapping — Lane C."""
 
-import json
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from tools.ai.schemas.models import AIUsageRecord, CallStatus
+from tools.ai.schemas.models import AIUsageRecord
 from tools.ai.telemetry.call_logger import log_call, read_spool
 from tools.ai.telemetry.spool_manager import (
     AGENT_METRICS_MAPPING,

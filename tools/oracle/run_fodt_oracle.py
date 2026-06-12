@@ -83,7 +83,7 @@ def write_manifest(manifest_path, soffice_version, results):
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         "# FODT Oracle run manifest — local-only, auto-generated",
-        f"oracle_tool: LibreOffice headless",
+        "oracle_tool: LibreOffice headless",
         f"oracle_version: {soffice_version}",
         f"platform: {platform.system()} {platform.version()[:40]}",
         f"samples_dir: {FODT_SAMPLES_DIR}",

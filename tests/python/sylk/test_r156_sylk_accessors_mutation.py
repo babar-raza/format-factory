@@ -23,7 +23,6 @@ from sylk.sylk_parser import (
     set_cell_value,
     get_cell_value,
     write_sylk,
-    parse_sylk_strict,
     SylkCell,
     SylkDocument,
     SylkError,

@@ -7,7 +7,6 @@ R68 Sprint: FORMAT-FACTORY-R68-FINAL-CLOSEOUT-HYGIENE-LOCAL-RC-SEAL-MEGA-TRAIN-0
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import pytest

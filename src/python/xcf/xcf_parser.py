@@ -339,3 +339,47 @@ def xcf_is_grayscale(file_path: str | Path) -> bool:
     """Return True if the XCF image type is Grayscale (type 1)."""
     img = parse_xcf_strict(file_path)
     return img.image_type == 1
+
+
+def xcf_summary(file_path: str | Path) -> dict[str, Any]:
+    """Return a summary dict of an XCF file's key properties.
+
+    Aggregates the most useful metadata into a single call: dimensions,
+    version, image type, layer count, pixel count, and file size.
+
+    Args:
+        file_path: Path to the XCF file.
+
+    Returns:
+        Dict with keys: path, version, width, height, image_type_name,
+        num_layers, pixel_count, file_size_bytes.
+
+    Raises:
+        XcfError subclasses on parse failure.
+    """
+    img = parse_xcf_strict(file_path)
+    return {
+        "path": img.path,
+        "version": img.version,
+        "width": img.width,
+        "height": img.height,
+        "image_type_name": IMAGE_TYPE_NAMES.get(img.image_type, "Unknown"),
+        "num_layers": img.num_layers,
+        "pixel_count": img.width * img.height,
+        "file_size_bytes": xcf_file_size(file_path),
+    }
+
+
+def xcf_aspect_ratio(file_path: str | Path) -> float:
+    """Return the aspect ratio (width / height) of an XCF image."""
+    dims = xcf_image_dimensions(file_path)
+    h = dims["height"]
+    if h == 0:
+        return 0.0
+    return dims["width"] / h
+
+
+def xcf_is_square(file_path: str | Path) -> bool:
+    """Return True if the XCF image has equal width and height."""
+    dims = xcf_image_dimensions(file_path)
+    return dims["width"] == dims["height"]

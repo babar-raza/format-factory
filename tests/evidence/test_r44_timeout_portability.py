@@ -9,7 +9,6 @@ Verifies:
 Sprint: FORMAT-FACTORY-R44-TWO-PRODUCT-LOCAL-RC-BASELINE-001
 """
 
-import importlib
 import subprocess
 import sys
 from pathlib import Path

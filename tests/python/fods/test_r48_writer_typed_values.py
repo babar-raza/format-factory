@@ -15,7 +15,6 @@ Sprint: FORMAT-FACTORY-R48-ARTIFACT-RC-CLEAN-CLOSEOUT-AND-PHASE-AUDIT-COMPLETION
 
 import xml.etree.ElementTree as ET
 
-import pytest
 
 from fods import parse_fods, workbook_to_xml, write_fods
 import tempfile

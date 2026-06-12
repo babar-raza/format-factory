@@ -9,14 +9,12 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.ai.pipeline.e2e_pilot import (
     CONTRADICTION_POLICIES,
     PilotConfig,
-    PilotResult,
     _build_fixture_output,
     _get_diverse_fixture_chunks,
     _resolve_contradiction_check,
@@ -24,7 +22,6 @@ from tools.ai.pipeline.e2e_pilot import (
     stage_1_load_chunks,
     stage_2_retrieval,
     stage_3_synthesis,
-    stage_4_evaluate,
 )
 from tools.ai.schemas.commit_metadata import SprintCommitMetadata
 from tools.ai.telemetry.artifacts import write_telemetry_artifact, _deep_redact

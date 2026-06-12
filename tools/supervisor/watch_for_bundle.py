@@ -156,9 +156,9 @@ def check_once(watch_roots: list[Path], log_file=None) -> bool:
     })
 
     if rc == 0:
-        log(f"PIPELINE: COMPLETE (exit 0) — outputs in reports/supervisor/", log_file)
+        log("PIPELINE: COMPLETE (exit 0) — outputs in reports/supervisor/", log_file)
     elif rc == 3:
-        log(f"PIPELINE: CRITICAL CONTRADICTIONS (exit 3) — see reports/supervisor/approval-gates.md", log_file)
+        log("PIPELINE: CRITICAL CONTRADICTIONS (exit 3) — see reports/supervisor/approval-gates.md", log_file)
     else:
         log(f"PIPELINE: FAILED (exit {rc})", log_file)
 
@@ -210,7 +210,7 @@ def main() -> int:
 
     log_file = str(args.log_file) if args.log_file else None
 
-    log(f"WATCHER STARTED", log_file)
+    log("WATCHER STARTED", log_file)
     for root in watch_roots:
         log(f"  Watch root:   {root} (recursive)", log_file)
     log(f"  Poll interval: {args.interval}s", log_file)

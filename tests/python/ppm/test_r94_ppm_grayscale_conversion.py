@@ -5,16 +5,12 @@
 
 """Tests for PPM-to-PGM grayscale conversion edge cases."""
 
-import pytest
 import sys
 import os
-import tempfile
-from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
 
-from ppm.ppm_parser import parse_ppm, PpmImage
-from ppm.ppm_to_pgm import convert_ppm_to_pgm, ppm_pixels_to_pgm_pixels
+from ppm.ppm_to_pgm import ppm_pixels_to_pgm_pixels
 from pgm.pgm_parser import write_pgm, parse_pgm
 
 

@@ -5,13 +5,10 @@ Sprint: FORMAT-FACTORY-SUPERVISOR-R108-STRICT-CLOSURE-CONTRADICTION-REPAIR-PER-S
 """
 
 import json
-import re
 import sys
 import tempfile
 from pathlib import Path
 
-import pytest
-import yaml
 
 # Ensure tools/supervisor is on path
 TOOLS_DIR = Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"
@@ -224,7 +221,6 @@ class TestChangedFileMaterialization:
 
     def test_fallback_message_no_ambiguity(self):
         """The fallback message should not say 'not tracked' for committed files."""
-        from materialize_declared_evidence import materialize
         # Just verify the string constant was updated
         import materialize_declared_evidence as mod
         source = Path(mod.__file__).read_text(encoding="utf-8")

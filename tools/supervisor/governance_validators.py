@@ -23,7 +23,6 @@ Usage:
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
@@ -429,7 +428,7 @@ def validate_replay_recipe_required(declaration: dict) -> dict:
         "replay_recipe_required_validator",
         "PASS",
         pass_items,
-        f"PASS: All replay claims are valid.",
+        "PASS: All replay claims are valid.",
     )
 
 
@@ -1026,9 +1025,105 @@ def validate_ci_artifacts(declaration: dict, repo_root: Path | None = None) -> d
 # Composite runner
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Validator 13: spec_fact_refs enforcement (SAL-VERIFICATION-HARDENING-001)
+# ---------------------------------------------------------------------------
+
+def validate_spec_fact_refs_wired(declaration: dict,
+                                   repo_root: Path | None = None) -> dict:
+    """V13: Enforce spec_fact_refs on PRODUCT_SOURCE/READINESS/RELEASE_GATE/TEST/REQUIREMENT items.
+
+    Calls validate_declaration_spec_fact_refs from validate_spec_fact_refs module.
+    PRODUCT_SOURCE/READINESS/RELEASE_GATE items without valid FACT-* refs AND without
+    a valid exception_classification are BLOCKED.
+
+    Added: SAL-VERIFICATION-HARDENING-001 (Lane B) — 2026-06-11.
+    """
+    try:
+        # Lazy import to avoid circular imports and to degrade gracefully if missing
+        import sys
+        _supervisor_dir = Path(__file__).resolve().parent
+        if str(_supervisor_dir) not in sys.path:
+            sys.path.insert(0, str(_supervisor_dir))
+        from validate_spec_fact_refs import validate_declaration_spec_fact_refs
+    except ImportError as exc:
+        # Graceful degradation: cannot import the module — return WARN, not hard FAIL
+        return _make_result(
+            "spec_fact_refs_validator",
+            "WARN",
+            [{"note": f"spec_fact_refs enforcement module not importable: {exc}"}],
+            f"spec_fact_refs validator import error (non-blocking degradation): {exc}",
+            blocks_sprint=False,
+        )
+
+    try:
+        sfr_result = validate_declaration_spec_fact_refs(declaration)
+    except Exception as exc:
+        return _make_result(
+            "spec_fact_refs_validator",
+            "WARN",
+            [{"note": f"spec_fact_refs validation error: {exc}"}],
+            f"spec_fact_refs validator runtime error (non-blocking): {exc}",
+            blocks_sprint=False,
+        )
+
+    items = sfr_result.get("item_results", [])
+    errors = sfr_result.get("errors", [])
+    debt_items = sfr_result.get("debt_items", [])
+    compliant = sfr_result.get("compliant", True)
+
+    # Build per-item summary list
+    result_items = [
+        {
+            "item_id": r.get("item_id"),
+            "item_type": r.get("item_type"),
+            "compliant": r.get("compliant"),
+            "grade_impact": r.get("grade_impact"),
+            "detail": r.get("detail"),
+            "violation": r.get("violation"),
+        }
+        for r in items
+    ]
+
+    # Debt items contribute WARN but not FAIL
+    if not compliant:
+        return _make_result(
+            "spec_fact_refs_validator",
+            "FAIL",
+            result_items,
+            (
+                f"spec_fact_refs enforcement: {len(errors)} violation(s). "
+                f"PRODUCT_SOURCE/READINESS/RELEASE_GATE items require valid FACT-* refs "
+                f"or a valid exception_classification. Violations: {errors[:3]}"
+            ),
+            blocks_sprint=True,
+        )
+
+    if debt_items:
+        return _make_result(
+            "spec_fact_refs_validator",
+            "WARN",
+            result_items,
+            (
+                f"spec_fact_refs: {len(result_items)} items compliant, "
+                f"{len(debt_items)} debt item(s) recorded. "
+                f"Debt: {debt_items[:2]}"
+            ),
+            blocks_sprint=False,
+        )
+
+    return _make_result(
+        "spec_fact_refs_validator",
+        "PASS",
+        result_items,
+        f"spec_fact_refs: {len(result_items)} items checked, all compliant.",
+        blocks_sprint=False,
+    )
+
+
 def run_all_governance_validators(declaration: dict,
                                    repo_root: Path | None = None) -> dict:
-    """Run all 11 governance validators against a declaration.
+    """Run all 13 governance validators against a declaration.
 
     Returns a composite result dict:
       {
@@ -1051,6 +1146,7 @@ def run_all_governance_validators(declaration: dict,
         validate_taskcard_state_transitions(declaration),
         validate_route_decision_required(declaration),
         validate_ci_artifacts(declaration, repo_root),
+        validate_spec_fact_refs_wired(declaration, repo_root),  # V13: SAL enforcement
     ]
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")

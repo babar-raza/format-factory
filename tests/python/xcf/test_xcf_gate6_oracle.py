@@ -15,7 +15,6 @@ if str(_src) not in sys.path:
     sys.path.insert(0, str(_src))
 
 from xcf.xcf_parser import (
-    XcfImage,
     parse_xcf,
     parse_xcf_strict,
     probe_xcf,

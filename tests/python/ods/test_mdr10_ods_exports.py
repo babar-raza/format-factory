@@ -13,10 +13,8 @@ sys.path.insert(0, str(_REPO / "src" / "python"))
 
 from ods import (
     parse_ods,
-    parse_ods_strict,
     probe_ods,
     get_capabilities,
-    OdsDocument,
     spreadsheet_stats,
     ods_sheet_name_list,
 )

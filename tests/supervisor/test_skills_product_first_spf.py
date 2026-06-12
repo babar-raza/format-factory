@@ -7,8 +7,6 @@ Zero network calls. Deterministic. No stubs.
 from __future__ import annotations
 
 import json
-import os
-import sys
 from pathlib import Path
 
 import pytest
@@ -540,4 +538,4 @@ class TestNoPluginInstall:
 
     def test_plugin_dir_does_not_exist(self):
         plugin_dir = REPO_ROOT / ".claude-plugin"
-        assert not plugin_dir.exists(), f".claude-plugin/ directory exists — plugin may have been installed"
+        assert not plugin_dir.exists(), ".claude-plugin/ directory exists — plugin may have been installed"

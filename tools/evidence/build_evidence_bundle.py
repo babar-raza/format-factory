@@ -16,7 +16,6 @@ missing, and skipped files.
 
 import argparse
 import fnmatch
-import os
 import re
 import subprocess
 import sys
@@ -502,8 +501,8 @@ def build_bundle(repo_root, contract_path, output_path, metadata_dir, dry_run=Fa
     print(f"  Metadata files: {len(metadata_files)}")
     print(f"  Min metadata required: {min_metadata_count}")
     if require_contract:
-        print(f"  Contract in bundle: YES")
-    print(f"  Manifest generated: YES")
+        print("  Contract in bundle: YES")
+    print("  Manifest generated: YES")
     print("BUNDLE_BUILD: PASS")
     return True
 
@@ -635,7 +634,7 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
             "Pass 2 pre-proof build: computing bundle metrics",
             "",
         ]), encoding="utf-8")
-        print(f"[AUTO-PROOF] Pass 1 proof written (candidate metrics).")
+        print("[AUTO-PROOF] Pass 1 proof written (candidate metrics).")
 
     # =========================================================
     # PASS 2: Build pre-proof final, validate, compute pre-proof metrics
@@ -703,7 +702,7 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
             f"Timestamp: {datetime.now().astimezone().isoformat()}",
             "",
         ]), encoding="utf-8")
-        print(f"[AUTO-PROOF] Complete proof written (candidate + pre-proof + self-ref note).")
+        print("[AUTO-PROOF] Complete proof written (candidate + pre-proof + self-ref note).")
 
     # =========================================================
     # PASS 3: Rebuild final ZIP with complete proof embedded, validate
@@ -761,7 +760,7 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
             f"Pass 3 timestamp: {datetime.now().astimezone().isoformat()}",
             "",
         ]), encoding="utf-8")
-        print(f"[AUTO-PROOF] On-disk proof updated with Pass 3 external verification record.")
+        print("[AUTO-PROOF] On-disk proof updated with Pass 3 external verification record.")
         print(f"[AUTO-PROOF] Proof embedded in ZIP: {'YES' if proof_embedded_ok else 'WARNING: check proof inside ZIP'}")
 
     # Clean up intermediate ZIPs
@@ -770,7 +769,7 @@ def build_auto_proof_bundle(repo_root, contract_path, output_path, metadata_dir,
     if preproof_path.exists():
         preproof_path.unlink()
 
-    print(f"BUNDLE_VALIDATION: PASS")
+    print("BUNDLE_VALIDATION: PASS")
     print(f"EVIDENCE_BUNDLE: {Path(output_path).resolve()}")
     return True
 

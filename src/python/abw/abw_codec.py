@@ -710,3 +710,259 @@ def export_to_plain_text(model: dict) -> str:
         raise TypeError("model must be a dict")
     paragraphs = model.get("paragraphs", [])
     return "\n\n".join(paragraphs)
+
+
+# FORMAT_FACTORY_EXECUTION: taskcard=SHQ-L2-001; method=QUEUE_DISPATCHED_EXECUTION; queue_item=anl-q-001; sprint_id=FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001
+def search_text(model: dict, query: str) -> list[int]:
+    """Return list of paragraph indices where query string appears.
+
+    Case-sensitive search over all paragraphs in the model.
+
+    Args:
+        model: ABW neutral model dict (must have 'paragraphs' key).
+        query: String to search for (case-sensitive).
+
+    Returns:
+        Sorted list of zero-based paragraph indices containing query.
+        Empty list if query is empty or no matches found.
+    """
+    if not isinstance(model, dict):
+        return []
+    if not query:
+        return []
+    paragraphs = model.get("paragraphs", [])
+    return [i for i, p in enumerate(paragraphs) if query in p]
+
+
+# FORMAT_FACTORY_EXECUTION: taskcard=PD-Q-003; method=QUEUE_DISPATCHED_EXECUTION; queue_item=pdrnext-q-003
+def get_words(model: dict, para_idx: int) -> list[str]:
+    """Return the whitespace-tokenized words from a specific paragraph.
+
+    Args:
+        model: ABW neutral model dict (must have 'paragraphs' key).
+        para_idx: Zero-based paragraph index.
+
+    Returns:
+        List of word strings from the paragraph. Returns [] for invalid index,
+        non-dict model, or empty paragraph.
+    """
+    if not isinstance(model, dict):
+        return []
+    paragraphs = model.get("paragraphs", [])
+    if para_idx < 0 or para_idx >= len(paragraphs):
+        return []
+    text = paragraphs[para_idx]
+    if not text or not text.strip():
+        return []
+    return text.split()
+
+
+# Sprint: FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001
+# Queue: broad-accel-q-004
+
+def longest_paragraph(model: dict) -> str:
+    """Return the longest paragraph text from the ABW model.
+
+    Args:
+        model: ABW neutral model dict (from load or parse_abw).
+
+    Returns:
+        The paragraph with the greatest character length. Returns empty string
+        if the model has no paragraphs.
+    """
+    if not isinstance(model, dict):
+        return ""
+    paragraphs = model.get("paragraphs", [])
+    if not paragraphs:
+        return ""
+    texts = [p if isinstance(p, str) else str(p) for p in paragraphs]
+    return max(texts, key=len)
+
+
+def is_empty(model: dict) -> bool:
+    """Return True if the ABW model has no content (no paragraphs or all empty).
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        True if model has no paragraphs or all paragraphs are empty/whitespace.
+        False if any paragraph contains non-whitespace content.
+    """
+    if not isinstance(model, dict):
+        return True
+    paragraphs = model.get("paragraphs", [])
+    if not paragraphs:
+        return True
+    return all(not (p.strip() if isinstance(p, str) else str(p).strip()) for p in paragraphs)
+
+
+def average_paragraph_length(model: dict) -> float:
+    """Return the average character length of paragraphs in the ABW model.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        Average paragraph length in characters. Returns 0.0 for empty models.
+    """
+    if not isinstance(model, dict):
+        return 0.0
+    paragraphs = model.get("paragraphs", [])
+    if not paragraphs:
+        return 0.0
+    lengths = [len(p) if isinstance(p, str) else len(str(p)) for p in paragraphs]
+    return sum(lengths) / len(lengths)
+
+
+def shortest_paragraph(model: dict) -> str:
+    """Return the shortest paragraph text from the ABW model.
+
+    If multiple paragraphs have the same minimum length, returns the first one.
+
+    Args:
+        model: ABW neutral model dict.
+
+    Returns:
+        The shortest paragraph string, or '' for empty models.
+    """
+    if not isinstance(model, dict):
+        return ""
+    paragraphs = model.get("paragraphs", [])
+    if not paragraphs:
+        return ""
+    texts = [p if isinstance(p, str) else str(p) for p in paragraphs]
+    return min(texts, key=len)
+
+
+def contains_text(model: dict, text: str, case_sensitive: bool = True) -> bool:
+    """Return True if any paragraph contains text as a substring.
+
+    Unlike has_paragraph (exact match), this performs substring search.
+
+    Args:
+        model: ABW neutral model dict.
+        text: The substring to search for.
+        case_sensitive: If False, search is case-insensitive. Default True.
+
+    Returns:
+        True if any paragraph contains text, False otherwise.
+    """
+    if not isinstance(model, dict):
+        return False
+    search = text if case_sensitive else text.lower()
+    for para in model.get("paragraphs", []):
+        para_str = para if isinstance(para, str) else str(para)
+        haystack = para_str if case_sensitive else para_str.lower()
+        if search in haystack:
+            return True
+    return False
+
+
+def count_paragraphs_matching(model: dict, pattern: str, case_sensitive: bool = True) -> int:
+    """Count how many paragraphs contain pattern as a substring.
+
+    Performs substring search across all paragraphs in the ABW neutral model.
+
+    Args:
+        model: ABW neutral model dict (from load_abw or parse_abw_bytes).
+        pattern: Substring to search for within each paragraph.
+        case_sensitive: If False, comparison is case-insensitive. Default True.
+
+    Returns:
+        Integer count of paragraphs containing pattern. 0 if model is invalid
+        or no paragraphs match.
+
+    Sprint: FORMAT-FACTORY-PRODUCT-ADVANCE-GOVERNANCE-DURABILITY-001
+    Authority: QUEUE_DISPATCHED_EXECUTION
+    spec_fact_refs: ABW-FOSS-LOAD-001
+    """
+    if not isinstance(model, dict):
+        return 0
+    search = pattern if case_sensitive else pattern.lower()
+    count = 0
+    for para in model.get("paragraphs", []):
+        para_str = para if isinstance(para, str) else str(para)
+        haystack = para_str if case_sensitive else para_str.lower()
+        if search in haystack:
+            count += 1
+    return count
+
+
+def abw_sentence_count(model: dict) -> int:
+    """Return an approximate sentence count by counting sentence-ending punctuation."""
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    all_text = " ".join(model.get("paragraphs", []))
+    return sum(1 for c in all_text if c in ".!?")
+
+
+def abw_longest_word(model: dict) -> str:
+    """Return the longest word found across all paragraphs.
+
+    Args:
+        model: Parsed ABW model dict with 'paragraphs' key.
+
+    Returns:
+        The longest word as a string. Returns empty string if no words found.
+        If multiple words share the maximum length, the first one is returned.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    all_text = " ".join(str(p) for p in model.get("paragraphs", []))
+    words = all_text.split()
+    if not words:
+        return ""
+    return max(words, key=len)
+
+
+def abw_total_char_count(file_path: "str | bytes | Path") -> int:
+    """Return the total number of characters across all paragraphs.
+
+    Convenience file-path API: loads the document internally and sums
+    the character counts of all paragraph text.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Integer total character count (spaces included within paragraphs,
+        inter-paragraph separators excluded).
+
+    Raises:
+        AbwParseError: If the file cannot be parsed.
+    """
+    lines = extract_text(file_path)
+    return sum(len(line) for line in lines)
+
+
+def abw_nonempty_paragraph_count(file_path: "str | bytes | Path") -> int:
+    """Return the count of paragraphs that contain at least one non-whitespace character.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Integer count of non-empty paragraphs.
+
+    Raises:
+        AbwParseError: If the file cannot be parsed.
+    """
+    lines = extract_text(file_path)
+    return sum(1 for line in lines if line.strip())
+
+
+def abw_empty_paragraph_count(file_path: "str | bytes | Path") -> int:
+    """Return the count of paragraphs that are empty or contain only whitespace.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Integer count of empty/whitespace-only paragraphs.
+
+    Raises:
+        AbwParseError: If the file cannot be parsed.
+    """
+    lines = extract_text(file_path)
+    return sum(1 for line in lines if not line.strip())

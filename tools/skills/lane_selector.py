@@ -38,7 +38,6 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 LANE_LIBRARY_PATH = REPO_ROOT / "templates" / "commercial-sprint" / "lane-library.yaml"
@@ -208,7 +207,7 @@ def select_lanes(format_context: dict) -> dict:
         for il in IMPLEMENTATION_LANES:
             _block_lane(
                 il,
-                f"REQUIREMENTS_GENERATED_UNVERIFIED — verifier review required first",
+                "REQUIREMENTS_GENERATED_UNVERIFIED — verifier review required first",
             )
 
     elif state == "REQUIREMENTS_VERIFIED_NO_IV":
@@ -239,7 +238,7 @@ def select_lanes(format_context: dict) -> dict:
             for il in IMPLEMENTATION_LANES:
                 _block_lane(
                     il,
-                    f"STALE_BLOCKED — requirements chain must be re-verified before implementation",
+                    "STALE_BLOCKED — requirements chain must be re-verified before implementation",
                 )
             # Block R3 and R5-IV since R5 (re-verification) is the right path
             for rl in ["LANE-R3", "LANE-R5-IV"]:

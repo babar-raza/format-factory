@@ -25,7 +25,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
 
-import pytest
 
 
 # ---------------------------------------------------------------------------
@@ -285,7 +284,7 @@ class TestOnboardingGovernanceInvariants:
     def test_needs_audit_default_for_new_formats(self):
         """All new backlog formats must start with needs_audit audit_status."""
         from candidate_format_backlog import (
-            TIER_A_CANDIDATES, AUDIT_STATUS_NEEDS_AUDIT, AUDIT_STATUS_AUDITED_SUPPORTED
+            TIER_A_CANDIDATES, AUDIT_STATUS_NEEDS_AUDIT
         )
         for entry in TIER_A_CANDIDATES:
             fmt = entry["format_id"]

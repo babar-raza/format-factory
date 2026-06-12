@@ -6,11 +6,9 @@ Verifies that the autonomous loop does not stop early for invalid reasons.
 Phase 8 of autonomous-system-audit sprint.
 """
 
-import json
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
 from simulate_autonomous_loop import (

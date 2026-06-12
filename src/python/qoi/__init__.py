@@ -11,6 +11,8 @@ from .qoi_parser import (
     parse_qoi_strict,
     probe_qoi,
     get_capabilities,
+    qoi_dimensions,
+    qoi_pixel_count,
     QoiImage,
 )
 from .qoi_encoder import (
@@ -29,6 +31,8 @@ __all__ = [
     "parse_qoi_strict",
     "probe_qoi",
     "get_capabilities",
+    "qoi_dimensions",
+    "qoi_pixel_count",
     "QoiImage",
     "encode_qoi",
     "encode_qoi_to_file",

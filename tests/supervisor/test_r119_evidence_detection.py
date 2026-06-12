@@ -14,7 +14,6 @@ They do NOT change the anti-skip detector — they verify the detector behavior
 and classify false-positive violations correctly.
 """
 import sys
-import json
 from pathlib import Path
 import pytest
 
@@ -157,7 +156,8 @@ class TestSampleOutputDetection:
         if not sample.exists():
             pytest.skip("Sample file not found")
         content = sample.read_text(encoding="utf-8")
-        import csv, io
+        import csv
+        import io
         rows = list(csv.reader(io.StringIO(content)))
         assert len(rows) >= 1, "Sample CSV must have at least one row"
 

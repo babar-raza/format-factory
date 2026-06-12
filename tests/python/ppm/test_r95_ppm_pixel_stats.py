@@ -5,7 +5,6 @@
 
 """Tests for PPM pixel statistics edge cases and data integrity."""
 
-import pytest
 import sys
 import os
 import tempfile

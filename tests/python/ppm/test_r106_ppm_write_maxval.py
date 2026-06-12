@@ -2,8 +2,7 @@
 # Lane E — Python Netpbm FOSS
 # Ledger: R106-FOSS-PPM-WRITE-MAXVAL-001
 
-import pytest
-from ppm.ppm_parser import write_ppm, parse_ppm_strict, PpmImage
+from ppm.ppm_parser import write_ppm, parse_ppm_strict
 
 
 class TestPpmWriteMaxval:

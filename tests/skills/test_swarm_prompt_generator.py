@@ -8,7 +8,6 @@ Run:
 """
 
 import json
-import pytest
 import sys
 from pathlib import Path
 from unittest.mock import patch
@@ -152,7 +151,6 @@ class TestGeneratePromptBlocked:
         }
 
     def test_requirements_missing_blocks_generation(self):
-        import tools.skills.swarm_prompt_generator as gen_mod
         import tools.skills.format_context_resolver as resolver_mod
         import tools.skills.lane_selector as selector_mod
         ctx = self._make_mock_context("REQUIREMENTS_MISSING")
@@ -164,7 +162,6 @@ class TestGeneratePromptBlocked:
         assert result["prompt"] is None
 
     def test_verified_no_iv_blocks_generation(self):
-        import tools.skills.swarm_prompt_generator as gen_mod
         import tools.skills.format_context_resolver as resolver_mod
         import tools.skills.lane_selector as selector_mod
         ctx = self._make_mock_context("REQUIREMENTS_VERIFIED_NO_IV")
@@ -190,7 +187,7 @@ class TestLoadAcceptedRequirements:
     def test_all_have_requirement_id(self):
         accepted = _load_accepted_requirements("fods")
         for req in accepted:
-            assert req["requirement_id"].startswith("FODS-"), f"Expected FODS prefix, got {req["requirement_id"]!r}"
+            assert req["requirement_id"].startswith("FODS-"), f"Expected FODS prefix, got {req['requirement_id']!r}"
 
     def test_no_duplicate_ids(self):
         accepted = _load_accepted_requirements("fods")

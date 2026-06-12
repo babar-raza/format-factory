@@ -14,7 +14,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.ndjson.ndjson_codec import probe_ndjson, load_ndjson, write_ndjson, get_record_count, NdjsonError, NdjsonParseError
+from src.python.ndjson.ndjson_codec import probe_ndjson, load_ndjson, write_ndjson, get_record_count, NdjsonParseError
 
 
 _SIMPLE_NDJSON = b'{"id":1,"name":"Alice"}\n{"id":2,"name":"Bob"}\n'

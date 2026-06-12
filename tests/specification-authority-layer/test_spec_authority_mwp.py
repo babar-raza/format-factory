@@ -15,7 +15,6 @@ Coverage:
 """
 import hashlib
 import json
-import os
 import sys
 import tempfile
 from pathlib import Path
@@ -29,7 +28,7 @@ sys.path.insert(0, str(SAL_DIR))
 sys.path.insert(0, str(REPO_ROOT))
 
 from spec_source_registry import (
-    register_source, get_source, is_source_registered, validate_citation, load_registry
+    register_source, is_source_registered, validate_citation
 )
 from spec_vault_ingest import (
     ingest_text_fixture, get_snapshot_meta, verify_snapshot_integrity
@@ -37,14 +36,13 @@ from spec_vault_ingest import (
 from spec_parser import parse_spec_from_text
 from spec_normalizer import normalize_spec, load_normalized_artifact
 from spec_indexer import build_index, search_index
-from spec_digestor import compute_digest, check_staleness, load_digest
+from spec_digestor import compute_digest, check_staleness
 from requirement_extractor import extract_requirements
 from spec_verifier import verify_requirements, check_anti_bypass
 from requirement_graph import build_requirement_graph
 from context_pack_builder import build_context_pack, verify_context_pack
 from spec_governance_runtime import (
-    check_citation_allowed, check_context_pack_use_allowed,
-    check_memory_only_claim, load_usage_ledger
+    check_citation_allowed, check_memory_only_claim, load_usage_ledger
 )
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────

@@ -190,3 +190,15 @@ def _extract_pages(root: ET.Element) -> list[dict[str, Any]]:
             page_info["shape_count"] += 1
         pages.append(page_info)
     return pages
+
+
+def fodp_total_text_length(source: "str | bytes | Path") -> int:
+    """Return the total character count of all extracted text across all slides."""
+    texts = extract_text(source)
+    return sum(len(t) for t in texts)
+
+
+def fodp_slide_shape_counts(source: "str | bytes | Path") -> list[int]:
+    """Return a list of shape counts, one per slide."""
+    model = load(source)
+    return [p["shape_count"] for p in model.get("pages", [])]

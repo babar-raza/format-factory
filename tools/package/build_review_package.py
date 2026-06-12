@@ -163,7 +163,6 @@ def build_package(mode, output_path, dry_run=False):
                 zf.write(full_path, f)
 
         # Add manifest
-        import json
         zf.writestr("review-package-manifest.yaml",
                      f"mode: {mode}\nincluded_count: {len(included)}\nexcluded_count: {len(excluded)}\n")
 

@@ -23,12 +23,7 @@ sys.path.insert(0, str(_REPO_ROOT))
 
 from tools.requirements_authority.graph_store import GraphStore
 from tools.requirements_authority.models import GraphEdge, GraphNode
-from tools.requirements_authority.coverage_evaluator import CapabilityCoverageEvaluator
-from tools.requirements_authority.overclaim_detector import OverclaimDetector
-from tools.requirements_authority.staleness_invalidator import StalenessInvalidationEngine
 from tools.requirements_authority.mainstream_gap_queue import MainstreamGapQueueGenerator
-from tools.requirements_authority.supervisor_verdict_packet import SupervisorVerdictPacketGenerator
-from tools.requirements_authority.poc_readiness import PocReadinessComputer
 
 NOW = "2026-06-05T10:00:00+00:00"
 R2_OUT = _REPO_ROOT / "reports" / "requirement-capability-real-pilot-r2"

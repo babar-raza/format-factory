@@ -7,7 +7,6 @@ import json
 import sys
 from pathlib import Path
 
-import pytest
 
 TOOLS_DIR = Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"
 sys.path.insert(0, str(TOOLS_DIR))
@@ -18,7 +17,6 @@ from anti_skip_checker import (
     detect_missing_lane_ledger,
     detect_missing_sample_outputs,
     detect_wrong_stream_next_sprint,
-    detect_stream_local_authority,
     classify_stream_output_authority,
     classify_violation_impact,
     run_all_checks,

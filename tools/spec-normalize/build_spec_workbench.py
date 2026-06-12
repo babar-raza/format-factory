@@ -22,9 +22,7 @@ License: Apache-2.0 (project-owned, format-factory)
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
-import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -168,7 +166,6 @@ def _load_parser_requirements_draft(fmt: str, ver: str) -> list[dict[str, Any]]:
     if not draft_path.exists():
         return []
     try:
-        import re
         text = draft_path.read_text(encoding="utf-8")
         # Return as raw text lines for now — full parsing is TC-0021 scope
         reqs = []
@@ -207,7 +204,7 @@ def main() -> None:
     norm_dir = _normalized_dir(fmt, ver)
     wb_dir = _workbench_dir(fmt, ver)
 
-    print(f"=== Spec Consumption Workbench Builder ===")
+    print("=== Spec Consumption Workbench Builder ===")
     print(f"Format: {fmt}, Version: {ver}")
     print(f"Normalized dir: {norm_dir}")
     print(f"Workbench dir: {wb_dir}")
@@ -272,8 +269,8 @@ def main() -> None:
         "",
         f"**Format:** {fmt}",
         f"**Spec version:** ODF {ver}",
-        f"**Generated:** run030 (2026-05-06)",
-        f"**Seeding method:** seeded_from_gate_artifacts (v1)",
+        "**Generated:** run030 (2026-05-06)",
+        "**Seeding method:** seeded_from_gate_artifacts (v1)",
         "",
         "## Normalized Artifacts",
         "",
@@ -289,8 +286,8 @@ def main() -> None:
         "## Verified Facts",
         "",
         f"- Total facts: {len(facts)}",
-        f"- Seeding method: seeded_from_gate_artifacts",
-        f"- Output: workbench/verified-facts.yaml",
+        "- Seeding method: seeded_from_gate_artifacts",
+        "- Output: workbench/verified-facts.yaml",
         "",
         "## Status",
         "",
@@ -317,7 +314,6 @@ def main() -> None:
 
 def _write_yaml(path: Path, data: Any) -> None:
     """Write data as YAML-like output (using JSON for reliability)."""
-    import json
     # Write as pretty-printed YAML-compatible JSON
     text = json.dumps(data, indent=2, ensure_ascii=False)
     # Convert JSON to YAML-style for readability

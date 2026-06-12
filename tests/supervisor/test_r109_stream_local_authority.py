@@ -5,10 +5,8 @@ Sprint: FORMAT-FACTORY-SUPERVISOR-R109-STREAM-LOCAL-AUTHORITY-ROUTING-AND-GLOBAL
 
 import json
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
 
 TOOLS_DIR = Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"
 sys.path.insert(0, str(TOOLS_DIR))

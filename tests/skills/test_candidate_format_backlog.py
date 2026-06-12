@@ -20,7 +20,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
@@ -42,7 +41,6 @@ from candidate_format_backlog import (
     AUDIT_STATUS_NEEDS_AUDIT,
     AUDIT_STATUS_AUDITED_SUPPORTED,
     SPEC_FULL_PUBLIC,
-    SPEC_PARTIAL_PUBLIC,
     SPEC_REVERSE_ENGINEERING,
     TIER_ACTIVE,
     TIER_A_NEAR_TERM,

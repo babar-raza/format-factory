@@ -248,3 +248,26 @@ def probe_odt(file_path: str | Path) -> dict[str, Any]:
         result["valid_container"] = False
         result["error"] = str(exc)
     return result
+
+
+def odt_word_count(file_path: str | Path) -> int:
+    """Count total words across all paragraphs, headings, and list items in an ODT file."""
+    doc = parse_odt_strict(file_path)
+    total = 0
+    for elem in doc.elements:
+        text = getattr(elem, "text", "")
+        if isinstance(text, str):
+            total += len(text.split())
+    return total
+
+
+def odt_heading_count(file_path: str | Path) -> int:
+    """Count the number of headings in an ODT document."""
+    doc = parse_odt_strict(file_path)
+    return len(doc.headings)
+
+
+def odt_paragraph_count(file_path: str | Path) -> int:
+    """Count the number of paragraphs in an ODT document."""
+    doc = parse_odt_strict(file_path)
+    return len(doc.paragraphs)

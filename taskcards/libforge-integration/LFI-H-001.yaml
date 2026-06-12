@@ -2,36 +2,31 @@ taskcard_id: LFI-H-001
 title: "Verification and Evidence Closeout"
 lane: H
 owner_role: verifier
-status: READY_FOR_EXECUTION
+status: ACCEPTED_VERIFIED
 allowed_paths:
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/test-and-evidence-map.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/final-verdict.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/*.log"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/"
 forbidden_paths:
   - "src/python/"
   - "src/net/"
   - "registry/"
   - "tools/supervisor/"
 inputs:
-  - "tools/supervisor/capability_verifier.py"
-  - "tests/supervisor/test_capability_verifier.py"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/pilot-1-test-output.log"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/acceptance-criteria-map.json"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/checker-valid-fixture-result.json"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/pytest-output.log"
 outputs:
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/test-and-evidence-map.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/final-verdict.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/verification-summary.md"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/evidence-declaration.yaml"
 file_ownership:
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/test-and-evidence-map.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/supervisor-regression.log"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/verification-summary.md"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/evidence-declaration.yaml"
+tests_supporting:
+  - "tests/supervisor/test_libforge_integration_coordinator_evidence.py"
 verification_commands:
-  - "test -f .local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
-  - "test -f .local/evidences/ff-libforge-integration-exec-20260610-133949/evidence-declaration.yaml"
+  - "test -f .local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/evidence-declaration.yaml"
+  - "test -f .local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/verification-summary.md"
 evidence_files:
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/verification-summary.md"
-  - ".local/evidences/ff-libforge-integration-exec-20260610-133949/test-and-evidence-map.md"
-rollback: "Delete verification-summary.md, test-and-evidence-map.md, final-verdict.md from evidence dir"
-closeout_criteria: "All V1-V11 checks documented; evidence-declaration.yaml valid; final-verdict.md written"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/verification-summary.md"
+  - ".local/evidences/ff-libforge-pilot1-evidence-quality-repair-20260610-163200/evidence-declaration.yaml"
+rollback: "Delete verification-summary.md, evidence-declaration.yaml from evidence dir"
+closeout_criteria: "evidence-declaration.yaml valid with tests_supporting populated; verification-summary.md written"

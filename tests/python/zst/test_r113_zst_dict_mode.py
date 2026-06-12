@@ -1,5 +1,4 @@
 """R113 FOSS: ZST dictionary mode and advanced compression."""
-import pytest
 import os
 import sys
 

@@ -9,14 +9,10 @@ R77 Train B+D+E — Validator tests ensuring:
 - Package artifact manifest must list physical paths + SHA-256 values
 """
 import io
-import json
-import os
 import sys
-import tempfile
 import zipfile
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))

@@ -13,8 +13,6 @@ from xcf.xcf_parser import (
     XcfImage,
     XcfError,
     XcfInvalidMagicError,
-    XcfInvalidHeaderError,
-    XcfSizeError,
     parse_xcf,
     parse_xcf_strict,
     probe_xcf,

@@ -2,10 +2,7 @@
 Tests for continuation_state.py
 Sprint: FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001
 """
-import json
-import pytest
 import sys
-import tempfile
 from pathlib import Path
 
 _repo_root = Path(__file__).resolve().parent.parent.parent
@@ -17,8 +14,6 @@ from tools.supervisor.continuation_state import (
     make_active_continuation,
     make_orchestrator_state,
     validate_active_continuation,
-    STOP_ADVISORY_PROMPT,
-    STOP_MAX_CYCLES,
     STREAM_AUTONOMY,
 )
 

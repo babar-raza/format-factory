@@ -5,7 +5,11 @@ Tests: FODT context pack, lane ledger anti-skip fix, RCA input snapshot caveats,
 review-package-proof no-placeholders, FODS/FODT scoped authority non-overclaim,
 R3 closure hardening criteria.
 """
-import sys, json, pathlib, pytest, yaml
+import sys
+import json
+import pathlib
+import pytest
+import yaml
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 SAL_DIR = REPO_ROOT / "tools" / "specification-authority-layer"

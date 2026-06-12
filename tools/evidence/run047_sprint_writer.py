@@ -29,11 +29,8 @@ Run from repo root:
 """
 
 import json
-import os
-import re
 import subprocess
 import sys
-from datetime import datetime
 from pathlib import Path
 
 REPO_ROOT = Path(".").resolve()
@@ -1767,7 +1764,7 @@ This approval authorizes FODT Gate 7 malformed/fuzz testing planning only.
 
     # Update TC-0043 status to completed
     old_tc43 = "**Status:** not_started — run after TC-0042 in separate session"
-    new_tc43 = f"**Status:** completed — DEC-034 inline verification PASS 10/10 (authorized by run047 execution prompt)"
+    new_tc43 = "**Status:** completed — DEC-034 inline verification PASS 10/10 (authorized by run047 execution prompt)"
     patch("taskcards/TC-0043-fodt-gate6-oracle-verification.md", old_tc43, new_tc43)
     patch("taskcards/TC-0043-fodt-gate6-oracle-verification.md",
           'notes: "FODT Gate 6 DEC-034 verification taskcard. Created run046 (2026-05-08). Status: not_started — run after TC-0042 in separate session."',

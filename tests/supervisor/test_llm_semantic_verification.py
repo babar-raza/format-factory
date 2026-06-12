@@ -17,7 +17,6 @@ import sys
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
 
 _REPO = Path(__file__).resolve().parent.parent.parent
 _TOOLS = _REPO / "tools" / "supervisor"
@@ -879,3 +878,354 @@ class TestPromptRewriterWithRework:
         if result is not None:
             assert "## Hard Prohibitions" in result
             assert "## Evidence Declaration Requirements" in result
+
+
+# ── P2-H1: SDK Fallback Retry ────────────────────────────────────────────
+
+
+class TestSDKFallbackRetry:
+    """Tests for SDK fallback retry logic with backoff."""
+
+    @staticmethod
+    def _make_mock_openai(create_fn):
+        """Build a mock openai module with a custom create function."""
+        import types
+        mod = types.ModuleType("openai")
+
+        class _Completions:
+            @staticmethod
+            def create(**kw):
+                return create_fn(**kw)
+
+        class _Chat:
+            completions = _Completions()
+
+        class MockClient:
+            def __init__(self, **kw):
+                pass
+            chat = _Chat()
+
+        mod.OpenAI = MockClient
+        return mod
+
+    def test_retry_succeeds_on_second_attempt(self):
+        """Mock first call to fail, second to succeed."""
+        import grade_declared_work as gdw
+        mock_cfg = type("C", (), {"endpoint": "http://test"})()
+
+        call_count = {"n": 0}
+        def create_fn(**kw):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                raise ConnectionError("transient failure")
+            return type("R", (), {
+                "choices": [type("C", (), {
+                    "message": type("M", (), {"content": '{"adequate": true}'})()
+                })()]
+            })()
+
+        messages = [{"role": "user", "content": "test"}]
+        with patch.dict(os.environ, {"GPT_OSS_API_KEY": "test-key"}), \
+             patch.dict(sys.modules, {"openai": self._make_mock_openai(create_fn)}):
+            result = gdw._sv_sdk_fallback(messages, mock_cfg)
+
+        assert result is not None
+        assert call_count["n"] == 2
+
+    def test_retry_exhausted_returns_none(self):
+        """Both attempts fail → returns None gracefully."""
+        import grade_declared_work as gdw
+        mock_cfg = type("C", (), {"endpoint": "http://test"})()
+
+        def fail_fn(**kw):
+            raise ConnectionError("persistent failure")
+
+        messages = [{"role": "user", "content": "test"}]
+        with patch.dict(os.environ, {"GPT_OSS_API_KEY": "test-key"}), \
+             patch.dict(sys.modules, {"openai": self._make_mock_openai(fail_fn)}):
+            result = gdw._sv_sdk_fallback(messages, mock_cfg)
+
+        assert result is None
+
+    def test_no_api_key_skips_retry(self):
+        """No API key → returns None immediately without attempting."""
+        import grade_declared_work as gdw
+        mock_cfg = type("C", (), {"endpoint": "http://test"})()
+        messages = [{"role": "user", "content": "test"}]
+        with patch.dict(os.environ, {"GPT_OSS_API_KEY": ""}):
+            result = gdw._sv_sdk_fallback(messages, mock_cfg)
+        assert result is None
+
+    def test_retry_3_attempts_succeeds_on_third(self):
+        """Mock first 2 calls fail, third succeeds → result returned (3-attempt backoff)."""
+        import grade_declared_work as gdw
+        mock_cfg = type("C", (), {"endpoint": "http://test"})()
+
+        call_count = {"n": 0}
+        def create_fn(**kw):
+            call_count["n"] += 1
+            if call_count["n"] < 3:
+                raise ConnectionError("transient failure")
+            return type("R", (), {
+                "choices": [type("C", (), {
+                    "message": type("M", (), {"content": '{"adequate": true}'})()
+                })()]
+            })()
+
+        messages = [{"role": "user", "content": "test"}]
+        with patch.dict(os.environ, {"GPT_OSS_API_KEY": "test-key"}), \
+             patch.dict(sys.modules, {"openai": self._make_mock_openai(create_fn)}):
+            result = gdw._sv_sdk_fallback(messages, mock_cfg)
+
+        assert result is not None
+        assert call_count["n"] == 3
+
+    def test_retry_sleep_calls_exponential(self):
+        """Verify exponential backoff: sleep(1) then sleep(2) between attempts."""
+        import grade_declared_work as gdw
+        mock_cfg = type("C", (), {"endpoint": "http://test"})()
+
+        def fail_fn(**kw):
+            raise ConnectionError("persistent failure")
+
+        messages = [{"role": "user", "content": "test"}]
+        sleep_calls = []
+        with patch.dict(os.environ, {"GPT_OSS_API_KEY": "test-key"}), \
+             patch.dict(sys.modules, {"openai": self._make_mock_openai(fail_fn)}), \
+             patch("time.sleep", side_effect=lambda s: sleep_calls.append(s)):
+            gdw._sv_sdk_fallback(messages, mock_cfg)
+
+        assert sleep_calls == [1, 2], f"Expected [1, 2] exponential backoff, got {sleep_calls}"
+
+    def test_retry_exhausted_3_returns_none(self):
+        """All 3 attempts fail → returns None gracefully (3-attempt version)."""
+        import grade_declared_work as gdw
+        mock_cfg = type("C", (), {"endpoint": "http://test"})()
+
+        call_count = {"n": 0}
+        def fail_fn(**kw):
+            call_count["n"] += 1
+            raise ConnectionError("persistent failure")
+
+        messages = [{"role": "user", "content": "test"}]
+        with patch.dict(os.environ, {"GPT_OSS_API_KEY": "test-key"}), \
+             patch.dict(sys.modules, {"openai": self._make_mock_openai(fail_fn)}), \
+             patch("time.sleep"):
+            result = gdw._sv_sdk_fallback(messages, mock_cfg)
+
+        assert result is None
+        assert call_count["n"] == 3
+
+
+# ── P2-H2: tests_supporting Population ───────────────────────────────────
+
+
+class TestTestsSupportingPopulation:
+    """Tests for tests_supporting population from evidence_paths."""
+
+    def _grade_item(self):
+        from grade_declared_work import grade_item
+        return grade_item
+
+    def test_test_paths_populate_tests_supporting(self):
+        """Item with test file in evidence_paths + passing tests → tests_supporting populated."""
+        inspection = {
+            "item_id": "W-TEST",
+            "declared_status": "completed",
+            "has_evidence": True,
+            "has_tests": True,
+            "evidence_paths_found": [
+                "src/python/abw/abw_codec.py",
+                "tests/python/abw/test_r148_abw_word_wrap.py",
+            ],
+            "evidence_paths_missing": [],
+        }
+        test_results = {"passed": 5, "failed": 0, "errors": 0}
+        grade = self._grade_item()(inspection, test_results)
+        assert grade["tests_supporting"] == ["tests/python/abw/test_r148_abw_word_wrap.py"]
+
+    def test_failing_tests_block_tests_supporting(self):
+        """Test failures → tests_supporting stays empty."""
+        inspection = {
+            "item_id": "W-FAIL",
+            "declared_status": "completed",
+            "has_evidence": True,
+            "has_tests": True,
+            "evidence_paths_found": [
+                "src/python/abw/abw_codec.py",
+                "tests/python/abw/test_r148_abw_word_wrap.py",
+            ],
+            "evidence_paths_missing": [],
+        }
+        test_results = {"passed": 5, "failed": 1, "errors": 0}
+        grade = self._grade_item()(inspection, test_results)
+        assert grade["tests_supporting"] == []
+
+    def test_no_test_paths_no_population(self):
+        """No test files in evidence_paths → tests_supporting stays empty."""
+        inspection = {
+            "item_id": "W-NOTEST",
+            "declared_status": "completed",
+            "has_evidence": True,
+            "has_tests": False,
+            "evidence_paths_found": ["src/python/abw/abw_codec.py"],
+            "evidence_paths_missing": [],
+        }
+        test_results = {"passed": 5, "failed": 0, "errors": 0}
+        grade = self._grade_item()(inspection, test_results)
+        assert grade["tests_supporting"] == []
+
+    def test_tests_supporting_enables_accepted_verified(self):
+        """With tests_supporting populated, grade can reach ACCEPTED_VERIFIED."""
+        inspection = {
+            "item_id": "W-VERIFIED",
+            "declared_status": "completed",
+            "has_evidence": True,
+            "has_tests": True,
+            "evidence_paths_found": [
+                "src/python/abw/abw_codec.py",
+                "tests/python/abw/test_r148_abw_word_wrap.py",
+            ],
+            "evidence_paths_missing": [],
+        }
+        test_results = {"passed": 5, "failed": 0, "errors": 0}
+        grade = self._grade_item()(inspection, test_results)
+        assert grade["tests_supporting"]
+        assert grade["supervisor_grade"] == "ACCEPTED_VERIFIED"
+
+
+# ── P2-H3: Confidence Floor ─────────────────────────────────────────────
+
+
+class TestConfidenceFloor:
+    """Tests for low-confidence override in semantic_verify_item."""
+
+    def test_low_confidence_inadequate_overridden(self):
+        """adequate=false with confidence < 0.80 → adequate=true with override flag."""
+        from grade_declared_work import semantic_verify_item
+
+        mock_response = json.dumps({
+            "adequate": False,
+            "confidence": 0.73,
+            "stub_detected": False,
+            "deficiencies": ["Missing edge case test"],
+        })
+
+        # Create minimal test fixture
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir)
+            test_file = tmp / "test_example.py"
+            test_file.write_text("def test_basic(): assert True\n")
+
+            inspection = {
+                "evidence_paths_found": [str(test_file)],
+            }
+            decl_item = {
+                "title": "implement example()",
+                "acceptance_criteria": "test passes",
+            }
+
+            with patch("grade_declared_work._sv_llm_call", return_value=mock_response):
+                result = semantic_verify_item(inspection, decl_item, tmp)
+
+        assert result["adequate"] is True
+        assert result["low_confidence_override"] is True
+        assert result["llm_used"] is True
+
+    def test_high_confidence_inadequate_not_overridden(self):
+        """adequate=false with confidence >= 0.80 → stays inadequate."""
+        from grade_declared_work import semantic_verify_item
+
+        mock_response = json.dumps({
+            "adequate": False,
+            "confidence": 0.92,
+            "stub_detected": False,
+            "deficiencies": ["Missing error handling test"],
+        })
+
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir)
+            test_file = tmp / "test_example.py"
+            test_file.write_text("def test_basic(): assert True\n")
+
+            inspection = {
+                "evidence_paths_found": [str(test_file)],
+            }
+            decl_item = {
+                "title": "implement example()",
+                "acceptance_criteria": "test passes",
+            }
+
+            with patch("grade_declared_work._sv_llm_call", return_value=mock_response):
+                result = semantic_verify_item(inspection, decl_item, tmp)
+
+        assert result["adequate"] is False
+        assert result.get("low_confidence_override") is not True
+        assert result["llm_used"] is True
+
+    def test_adequate_true_not_affected(self):
+        """adequate=true is never overridden regardless of confidence."""
+        from grade_declared_work import semantic_verify_item
+
+        mock_response = json.dumps({
+            "adequate": True,
+            "confidence": 0.65,
+            "stub_detected": False,
+            "deficiencies": [],
+        })
+
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp = Path(tmpdir)
+            test_file = tmp / "test_example.py"
+            test_file.write_text("def test_basic(): assert True\n")
+
+            inspection = {
+                "evidence_paths_found": [str(test_file)],
+            }
+            decl_item = {
+                "title": "implement example()",
+                "acceptance_criteria": "test passes",
+            }
+
+            with patch("grade_declared_work._sv_llm_call", return_value=mock_response):
+                result = semantic_verify_item(inspection, decl_item, tmp)
+
+        assert result["adequate"] is True
+        assert result.get("low_confidence_override") is not True
+
+
+# ── P2-H5: Deprecation Marker ───────────────────────────────────────────
+
+
+class TestDeprecationMarker:
+    """Tests for evidence_quality_score deprecation in grade_all output."""
+
+    def test_deprecation_marker_present(self):
+        """evidence_quality_breakdown includes deprecation marker."""
+        from grade_declared_work import grade_all
+
+        inspection = {
+            "test_results": {"passed": 1, "failed": 0, "errors": 0},
+            "item_inspections": [{
+                "item_id": "W1",
+                "declared_status": "completed",
+                "has_evidence": True,
+                "has_tests": False,
+                "evidence_paths_found": ["src/example.py"],
+                "evidence_paths_missing": [],
+            }],
+        }
+        declaration = {
+            "planned_work_items": [{"item_id": "W1", "title": "Test", "status": "completed"}],
+            "_repo_root": str(_REPO),
+        }
+
+        with _disable_llm():
+            result = grade_all(inspection, declaration)
+
+        eqb = result["evidence_quality_breakdown"]
+        assert eqb["evidence_quality_score_deprecated"] is True
+        assert eqb["primary_quality_metric"] == "semantic_quality_score"

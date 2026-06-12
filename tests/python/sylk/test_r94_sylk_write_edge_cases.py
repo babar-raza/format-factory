@@ -5,10 +5,8 @@
 
 """Tests for write_sylk edge cases — empty docs, special characters, large grids."""
 
-import pytest
 import sys
 import os
-from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
 

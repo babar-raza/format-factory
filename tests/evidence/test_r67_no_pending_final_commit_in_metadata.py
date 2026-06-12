@@ -5,7 +5,6 @@ as a forbidden token in metadata files.
 """
 from __future__ import annotations
 
-import sys
 import zipfile
 from pathlib import Path
 

@@ -2,10 +2,7 @@
 Tests for tools/supervisor/action_queue.py
 Sprint: FORMAT-FACTORY-AUTONOMOUS-SYSTEM-ACCEPTANCE-PERSISTENT-PRODUCT-LOOP-001
 """
-import json
-import tempfile
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 

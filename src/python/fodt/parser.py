@@ -346,7 +346,7 @@ def _handle_text_child(
         unsupported_features.add("embedded-frame")
         warnings.append(make_warning(
             WARN_UNSUPPORTED_ELEMENT,
-            f"draw:frame or draw:image at top level of office:text: "
+            "draw:frame or draw:image at top level of office:text: "
             "embedded objects not supported in Tier 0-2",
         ))
 

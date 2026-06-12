@@ -26,11 +26,9 @@ from tools.ai.normalization.adapter import (
     load_normalized_chunks,
 )
 from tools.ai.synthesis.citation_verifier import verify_all_citations
-from tools.ai.synthesis.contradiction_detector import check_output_contradictions
 from tools.ai.synthesis.evaluator import EvaluationCriteria, evaluate_synthesis
 from tools.ai.synthesis.runner import SynthesisResult, run_synthesis
-from tools.ai.schemas.models import AITaskContract, ArtifactAuthorityStateValue
-from tools.ai.validators.authority_lifecycle import VALID_TRANSITIONS
+from tools.ai.schemas.models import AITaskContract
 
 
 # Fixture verified facts for contradiction checking (R38)

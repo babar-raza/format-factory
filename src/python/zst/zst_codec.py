@@ -11,7 +11,6 @@ commercial_product_ready: false
 from __future__ import annotations
 
 import io
-import struct
 from pathlib import Path
 from typing import Any
 
@@ -656,3 +655,332 @@ def batch_decompress(items: list[tuple[str | Path, str | Path]],
                 "error": str(exc),
             })
     return results
+
+
+# ---------------------------------------------------------------------------
+# Sprint: FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001
+# Queue: broad-accel-q-001, broad-accel-q-002
+# ---------------------------------------------------------------------------
+
+def compress_string(text: str, level: int = 3, encoding: str = "utf-8") -> bytes:
+    """Compress a UTF-8 string to Zstandard-compressed bytes.
+
+    Args:
+        text: The string to compress.
+        level: Compression level (1-22, default 3).
+        encoding: Text encoding (default utf-8).
+
+    Returns:
+        Compressed bytes.
+
+    Raises:
+        ZstError: If compression fails or zstandard is unavailable.
+    """
+    data = text.encode(encoding)
+    return compress_bytes(data, level=level)
+
+
+def decompress_to_string(data: bytes, encoding: str = "utf-8") -> str:
+    """Decompress Zstandard-compressed bytes to a string.
+
+    Args:
+        data: Compressed bytes to decompress.
+        encoding: Target encoding for decoding (default utf-8).
+
+    Returns:
+        Decompressed string.
+
+    Raises:
+        ZstError: If decompression fails.
+        UnicodeDecodeError: If the decompressed bytes are not valid for encoding.
+    """
+    raw = decompress_bytes(data)
+    return raw.decode(encoding)
+
+
+# ---------------------------------------------------------------------------
+# Sprint: FORMAT-FACTORY-SAL-RECONCILIATION-HARDENING-AND-PRODUCT-GATED-ADVANCEMENT-SPRINT-3
+# Queue: sal3-product-q-001, sal3-product-q-002
+# spec_fact_refs: FACT-ZST-001 (Zstandard Frame Format, RFC-draft)
+# ---------------------------------------------------------------------------
+
+def compress_string_to_file(text: str, output_path: str | Path,
+                             level: int = 3, encoding: str = "utf-8") -> dict[str, Any]:
+    """Compress a text string and write the result to a .zst file.
+
+    Convenience wrapper combining compress_string() and a file write so that
+    callers do not need to manage the intermediate bytes object.
+
+    Args:
+        text: The string content to compress.
+        output_path: Destination file path for the compressed output.
+        level: Compression level (1-22, default 3).
+        encoding: Text encoding (default utf-8).
+
+    Returns:
+        Dict with keys:
+            success (bool): True on success.
+            output_path (str): Absolute path of the written file.
+            input_bytes (int): Uncompressed size in bytes.
+            output_bytes (int): Compressed size written to disk.
+            compression_ratio (float | None): output / input, or None if input_bytes == 0.
+            error (str | None): Error description, or None on success.
+
+    Raises:
+        ZstError: If compression fails.
+        OSError: If the output file cannot be written.
+    """
+    encoded = text.encode(encoding)
+    compressed = compress_bytes(encoded, level=level)
+    out = Path(output_path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_bytes(compressed)
+    input_bytes = len(encoded)
+    output_bytes = len(compressed)
+    ratio = round(output_bytes / input_bytes, 6) if input_bytes > 0 else None
+    return {
+        "success": True,
+        "output_path": str(out.resolve()),
+        "input_bytes": input_bytes,
+        "output_bytes": output_bytes,
+        "compression_ratio": ratio,
+        "error": None,
+    }
+
+
+def decompress_file_to_string(path: str | Path, encoding: str = "utf-8",
+                               max_output_size: int | None = None) -> str:
+    """Read a .zst file from disk and return its decompressed content as a string.
+
+    Convenience inverse of compress_string_to_file().
+
+    Args:
+        path: Path to the .zst file to decompress.
+        encoding: Text encoding used to decode the decompressed bytes (default utf-8).
+        max_output_size: Maximum decompressed size in bytes. Defaults to
+            DEFAULT_MAX_OUTPUT_BYTES if not specified.
+
+    Returns:
+        Decompressed string content.
+
+    Raises:
+        ZstError: If decompression fails or the file is not a valid Zstandard frame.
+        FileNotFoundError: If the file does not exist.
+        UnicodeDecodeError: If the decompressed bytes are not valid for encoding.
+    """
+    limit = max_output_size if max_output_size is not None else DEFAULT_MAX_OUTPUT_BYTES
+    compressed = Path(path).read_bytes()
+    raw = decompress_bytes(compressed, max_output_size=limit)
+    return raw.decode(encoding)
+
+
+# ---------------------------------------------------------------------------
+# Sprint: FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001
+# Queue: rnext-product-q-001
+# spec_fact_refs: FACT-ZST-001
+# route_decision_id: RDEC-RNEXT-LG-001
+# ---------------------------------------------------------------------------
+
+def get_frame_size_stats(data: bytes) -> dict[str, Any]:
+    """Return size statistics for a Zstandard compressed frame.
+
+    Provides a combined view of compressed size, decompressed size, and
+    space savings, suitable for reporting and monitoring pipelines without
+    requiring external tooling.
+
+    Args:
+        data: Compressed Zstandard frame bytes.
+
+    Returns:
+        Dict with keys:
+            valid (bool): True if this is a valid Zstandard frame.
+            compressed_bytes (int): Size of the compressed data.
+            decompressed_bytes (int | None): Decompressed size, or None if invalid.
+            space_saved_bytes (int | None): compressed_bytes - decompressed_bytes, or None.
+            space_saved_pct (float | None): 100 * (1 - compression_ratio), or None.
+            compression_ratio (float | None): compressed / decompressed, or None.
+            error (str | None): Error description if frame is invalid.
+
+    Raises:
+        ZstError: If the input is not bytes.
+    """
+    if not isinstance(data, (bytes, bytearray)):
+        raise ZstError(f"Expected bytes, got {type(data).__name__}")
+
+    info = get_frame_info(data)
+    result: dict[str, Any] = {
+        "valid": info["valid"],
+        "compressed_bytes": info["compressed_size"],
+        "decompressed_bytes": info["content_size"],
+        "space_saved_bytes": None,
+        "space_saved_pct": None,
+        "compression_ratio": info["compression_ratio"],
+        "error": info.get("error"),
+    }
+    if info["content_size"] is not None and info["valid"]:
+        saved = info["content_size"] - info["compressed_size"]
+        result["space_saved_bytes"] = saved
+        if info["content_size"] > 0:
+            result["space_saved_pct"] = round(100.0 * saved / info["content_size"], 2)
+    return result
+
+
+def is_valid_frame(data: bytes) -> bool:
+    """Return True if data is a valid Zstandard compressed frame.
+
+    A lightweight Boolean wrapper around get_frame_info for use in
+    conditional logic and validation pipelines.
+
+    Args:
+        data: Bytes to check.
+
+    Returns:
+        True if data is a valid Zstandard frame, False otherwise.
+    """
+    if not isinstance(data, (bytes, bytearray)):
+        return False
+    try:
+        info = get_frame_info(data)
+        return bool(info.get("valid", False))
+    except Exception:
+        return False
+
+
+def compress_with_dict(data: bytes, dict_data: bytes, level: int = 3) -> bytes:
+    """Compress bytes using a pre-trained Zstandard dictionary.
+
+    Args:
+        data: Raw bytes to compress.
+        dict_data: Dictionary bytes (pre-trained zstd dictionary).
+        level: Compression level (1–22, default 3).
+
+    Returns:
+        Compressed bytes with dictionary applied.
+    """
+    zstandard = _get_zstandard()
+    zdict = zstandard.ZstdCompressionDict(dict_data)
+    cctx = zstandard.ZstdCompressor(level=level, dict_data=zdict)
+    return cctx.compress(data)
+
+
+def decompress_with_dict(data: bytes, dict_data: bytes) -> bytes:
+    """Decompress bytes that were compressed with a Zstandard dictionary.
+
+    Args:
+        data: Compressed bytes.
+        dict_data: Dictionary bytes matching the one used for compression.
+
+    Returns:
+        Decompressed bytes.
+    """
+    zstandard = _get_zstandard()
+    zdict = zstandard.ZstdCompressionDict(dict_data)
+    dctx = zstandard.ZstdDecompressor(dict_data=zdict)
+    return dctx.decompress(data)
+
+
+def zst_compressed_size(path: "str | Path") -> int:
+    """Return the file size in bytes of a .zst compressed file.
+
+    Args:
+        path: Path to a .zst file.
+
+    Returns:
+        Integer byte count of the compressed file.
+
+    Raises:
+        FileNotFoundError: If the path does not exist.
+        ValueError: If the path is not a file.
+    """
+    from pathlib import Path as _Path
+    p = _Path(path)
+    if not p.exists():
+        raise FileNotFoundError(f"File not found: {p}")
+    if not p.is_file():
+        raise ValueError(f"Not a file: {p}")
+    return p.stat().st_size
+
+
+def zst_is_valid_file(path: "str | Path") -> bool:
+    """Return True if the file at path is a valid Zstandard-compressed file.
+
+    Reads the first 4 bytes to check for the Zstandard magic number
+    (0x28B52FFD little-endian). Returns False for missing, empty, or
+    non-Zstandard files.
+
+    Args:
+        path: Path to the file to check.
+
+    Returns:
+        True if the file starts with the Zstandard magic number; False otherwise.
+    """
+    from pathlib import Path as _Path
+    ZST_MAGIC = b'\x28\xb5\x2f\xfd'
+    p = _Path(path)
+    if not p.exists() or not p.is_file():
+        return False
+    try:
+        header = p.read_bytes()[:4]
+    except OSError:
+        return False
+    return header == ZST_MAGIC
+
+
+def zst_decompressed_size(path: "str | Path") -> int:
+    """Return the byte length of the decompressed content of a ZST file.
+
+    Args:
+        path: Path to a Zstandard-compressed file.
+
+    Returns:
+        Integer byte count of the decompressed data.
+
+    Raises:
+        ZstError subclasses on read or decompression failure.
+    """
+    from pathlib import Path as _Path
+    import zstandard
+    p = _Path(path)
+    if not p.exists():
+        raise ZstFileNotFoundError(f"File not found: {path}")
+    try:
+        compressed = p.read_bytes()
+        dctx = zstandard.ZstdDecompressor()
+        return len(dctx.decompress(compressed))
+    except Exception as exc:
+        raise ZstDecompressError(f"Failed to decompress {path}: {exc}") from exc
+
+
+def zst_frame_count(path: "str | Path") -> int:
+    """Return the number of Zstandard frames in a ZST file.
+
+    Counts frames by scanning for the Zstandard magic number (0xFD2FB528).
+    Standard single-frame files return 1; multi-frame concatenated files return >1.
+
+    Args:
+        path: Path to a Zstandard-compressed file.
+
+    Returns:
+        Integer count of frames. Returns 0 if the file is empty or not a ZST file.
+
+    Raises:
+        ZstError subclasses on read failure.
+    """
+    from pathlib import Path as _Path
+    p = _Path(path)
+    if not p.exists():
+        raise ZstFileNotFoundError(f"File not found: {path}")
+    try:
+        data = p.read_bytes()
+    except OSError as exc:
+        raise ZstReadError(f"Failed to read {path}: {exc}") from exc
+    magic = b"\x28\xb5\x2f\xfd"
+    count = 0
+    pos = 0
+    while True:
+        idx = data.find(magic, pos)
+        if idx == -1:
+            break
+        count += 1
+        pos = idx + 4
+    return count

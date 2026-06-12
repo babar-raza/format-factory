@@ -3,8 +3,6 @@
 Tests write_sylk + parse_sylk_strict roundtrip, sylk_to_csv edge cases,
 and dogfood pipeline (create → write → parse → CSV).
 """
-import tempfile
-from pathlib import Path
 
 import pytest
 

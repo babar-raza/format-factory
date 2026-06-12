@@ -13,7 +13,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
 
-import pytest
 from implementation_plan_expander import expand_implementation_plan
 
 

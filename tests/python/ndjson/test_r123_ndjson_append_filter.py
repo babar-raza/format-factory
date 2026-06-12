@@ -20,7 +20,6 @@ from src.python.ndjson.ndjson_codec import (
     filter_records,
     write_ndjson,
     load_ndjson,
-    NdjsonError,
 )
 
 

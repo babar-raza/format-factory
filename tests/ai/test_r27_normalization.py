@@ -6,7 +6,6 @@ and fail-closed behavior when no normalized artifacts exist.
 
 import json
 import pytest
-from pathlib import Path
 
 from tools.ai.normalization.adapter import (
     NormalizedChunk,

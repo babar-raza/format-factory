@@ -91,7 +91,7 @@ class TestFinalVerdictIntegrity:
             if has_complete and has_pending:
                 offenders.append(str(path.relative_to(REPO_ROOT)))
         assert not offenders, (
-            f"These final-verdict files claim COMPLETE but still say BUNDLE_VALIDATION: PENDING:\n"
+            "These final-verdict files claim COMPLETE but still say BUNDLE_VALIDATION: PENDING:\n"
             + "\n".join(f"  - {p}" for p in offenders)
         )
 
@@ -101,7 +101,6 @@ class TestFinalVerdictIntegrity:
         The file format **VERDICT: R40_COMPLETE** is valid markdown.
         The parser must extract only the identifier (no trailing *).
         """
-        import sys
         sys.path.insert(0, str(REPO_ROOT / "tools" / "state"))
         from state_snapshot import get_latest_sprint
         sprint_info = get_latest_sprint()

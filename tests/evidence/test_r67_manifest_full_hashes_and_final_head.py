@@ -7,7 +7,6 @@ Dotnet nupkg manifest must have filename, size_bytes, sha256.
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 
 import pytest

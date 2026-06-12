@@ -1,0 +1,33 @@
+taskcard_id: LFI-2-E01
+title: "Verification checklist — tests, idempotency, forbidden paths"
+lane: E
+owner_role: verifier
+status: ACCEPTED_VERIFIED
+allowed_paths:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/"
+forbidden_paths:
+  - "src/python/"
+  - "src/net/"
+  - "registry/"
+inputs:
+  - "tools/supervisor/test_drivers.py"
+  - "tests/supervisor/test_test_drivers.py"
+  - "tools/supervisor/product_feature_factory.py"
+outputs:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/verification-summary.md"
+file_ownership:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/verification-summary.md"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/pytest-output.log"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/idempotency-rerun.log"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/import-check.log"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/forbidden-path-check.log"
+tests_supporting:
+  - "tests/supervisor/test_test_drivers.py"
+verification_commands:
+  - ".local/venv/Scripts/python -m pytest tests/supervisor/test_test_drivers.py -v"
+  - "git diff --name-only -- src/python/ src/net/ registry/"
+evidence_files:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/verification-summary.md"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/pytest-output.log"
+rollback: "Delete verification-summary.md and log files"
+closeout_criteria: "All tests pass; idempotency rerun passes; no forbidden path changes; import check OK"

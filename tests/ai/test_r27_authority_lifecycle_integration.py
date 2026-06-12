@@ -4,9 +4,6 @@ Tests for state records, transition evidence, terminal states,
 and no-skip enforcement.
 """
 
-import json
-import pytest
-from pathlib import Path
 
 from tools.ai.schemas.models import (
     ArtifactAuthorityState,

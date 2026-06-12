@@ -12,7 +12,6 @@ Verifies:
 
 from __future__ import annotations
 
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -26,8 +25,6 @@ from abw.abw_codec import (
     write_abw,
     load,
     extract_text,
-    get_paragraph_count,
-    ABW_ROOT_TAG,
 )
 
 

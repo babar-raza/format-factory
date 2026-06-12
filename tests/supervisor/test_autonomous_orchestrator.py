@@ -2,11 +2,9 @@
 Tests for autonomous_orchestrator.py
 Sprint: FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001
 """
-import json
 import pytest
 import sys
 from pathlib import Path
-from unittest import mock
 
 _repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_repo_root))
@@ -14,7 +12,6 @@ sys.path.insert(0, str(_repo_root))
 from tools.supervisor.autonomous_orchestrator import (
     AutonomousOrchestrator,
     DEFAULT_SPRINT_ID,
-    DEFAULT_WRITE_ROOTS,
     main,
 )
 from tools.supervisor.autonomous_orchestrator import LOCK_PATH
@@ -23,7 +20,6 @@ from tools.supervisor.continuation_state import (
     STOP_MAX_CYCLES,
     STOP_LOCK_HELD,
     STOP_NO_SAFE_ACTION,
-    STATE_DIR,
 )
 
 

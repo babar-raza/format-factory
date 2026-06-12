@@ -3,10 +3,8 @@ Lane C: State snapshot and linter tests.
 
 Sprint: FORMAT-FACTORY-MEGA-CLOSURE-R35-R36-AND-PRODUCTION-AUTHORITY-STABILIZATION-001
 """
-import json
 import pathlib
 import sys
-import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools" / "state"))

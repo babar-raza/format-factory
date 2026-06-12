@@ -82,7 +82,7 @@ def select_backend(
 
     # Hard block: external_gate
     if action.get("external_gate"):
-        trace.block(f"external_gate=true — requires human intervention")
+        trace.block("external_gate=true — requires human intervention")
         return None, trace
 
     # Build priority list: preferred first, then fallbacks, then all backends in priority order
@@ -128,20 +128,20 @@ def select_backend(
 
         if status == BackendStatus.VERIFIED_CALLABLE:
             if backend.can_execute(action):
-                trace.select(type_name, f"discover()=VERIFIED_CALLABLE; can_execute=True")
+                trace.select(type_name, "discover()=VERIFIED_CALLABLE; can_execute=True")
                 return backend, trace
             else:
                 trace.skip(type_name, f"discover()=VERIFIED_CALLABLE but can_execute=False for action_type={action_type}")
         elif status in (BackendStatus.CONFIG_PRESENT, BackendStatus.CONFIG_ONLY):
             trace.skip(type_name, f"discover()={status.value} — config only, not callable")
         elif status == BackendStatus.SETUP_REQUIRED:
-            trace.skip(type_name, f"discover()=SETUP_REQUIRED — install needed")
+            trace.skip(type_name, "discover()=SETUP_REQUIRED — install needed")
         elif status == BackendStatus.BLOCKED_BY_CREDENTIALS:
-            trace.skip(type_name, f"discover()=BLOCKED_BY_CREDENTIALS — credential missing")
+            trace.skip(type_name, "discover()=BLOCKED_BY_CREDENTIALS — credential missing")
         elif status == BackendStatus.NOT_FOUND:
-            trace.skip(type_name, f"discover()=NOT_FOUND")
+            trace.skip(type_name, "discover()=NOT_FOUND")
         elif status == BackendStatus.FORBIDDEN_IN_SESSION:
-            trace.skip(type_name, f"discover()=FORBIDDEN_IN_SESSION")
+            trace.skip(type_name, "discover()=FORBIDDEN_IN_SESSION")
         else:
             trace.skip(type_name, f"discover()={status.value}")
 

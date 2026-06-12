@@ -281,7 +281,7 @@ def _generate_recommendations(
     if not sample_files_known:
         recs.append(f"[REC] Identify open-license sample files for {fmt.upper()}")
     if scores["requirements_gen_readiness"] < 5:
-        recs.append(f"[REC] Requirements generation requires spec normalization first")
+        recs.append("[REC] Requirements generation requires spec normalization first")
     if readiness_tier == READINESS_NOT_READY:
         recs.append(f"[REC] {fmt.upper()} is NOT_READY — do not proceed without human investigation")
     elif readiness_tier == READINESS_NEEDS_INVESTIGATION:
@@ -380,7 +380,7 @@ def main():
         if args.json:
             print(json.dumps(result, indent=2))
         else:
-            print(f"=== Public-Spec Readiness Scores ===")
+            print("=== Public-Spec Readiness Scores ===")
             for r in result["ranked"]:
                 print(f"  {r['format_id']:12s} {r['score']:5.2f}  {r['tier']}")
     else:

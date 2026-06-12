@@ -1,0 +1,40 @@
+taskcard_id: LFI-2-C01
+title: "Implement template renderer and .py.tmpl templates"
+lane: C
+owner_role: pilot_designer
+status: ACCEPTED_VERIFIED
+allowed_paths:
+  - "tools/supervisor/test_drivers.py"
+  - "drivers/python/"
+  - "tests/supervisor/test_test_drivers.py"
+forbidden_paths:
+  - "src/python/"
+  - "src/net/"
+  - "registry/"
+  - "tools/supervisor/product_feature_factory.py"
+inputs:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/"
+outputs:
+  - "tools/supervisor/test_drivers.py"
+  - "drivers/python/getter_test.py.tmpl"
+  - "drivers/python/export_csv_test.py.tmpl"
+  - "drivers/python/roundtrip_test.py.tmpl"
+  - "drivers/python/append_test.py.tmpl"
+  - "drivers/python/probe_test.py.tmpl"
+  - "tests/supervisor/test_test_drivers.py"
+file_ownership:
+  - "tools/supervisor/test_drivers.py"
+  - "drivers/python/getter_test.py.tmpl"
+  - "drivers/python/export_csv_test.py.tmpl"
+  - "drivers/python/roundtrip_test.py.tmpl"
+  - "drivers/python/append_test.py.tmpl"
+  - "drivers/python/probe_test.py.tmpl"
+  - "tests/supervisor/test_test_drivers.py"
+tests_supporting:
+  - "tests/supervisor/test_test_drivers.py"
+verification_commands:
+  - ".local/venv/Scripts/python -m pytest tests/supervisor/test_test_drivers.py -v"
+evidence_files:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/pytest-template-output.log"
+rollback: "Delete tools/supervisor/test_drivers.py, tests/supervisor/test_test_drivers.py, all .py.tmpl files under drivers/python/"
+closeout_criteria: "test_drivers.py imports cleanly; all 5 templates render; rendered output matches golden baseline; tests pass"

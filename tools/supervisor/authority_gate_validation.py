@@ -222,10 +222,10 @@ def validate_format_authority(format_id: str, repo_root: Path | None = None) -> 
             blockers.append(f"no_code_citations: {facts_verified} verified facts but none cited in code")
         elif facts_verified > 0 and has_code_citations and not has_test_citations:
             authority_level_int = 5  # P5: cited in code but not in tests
-            blockers.append(f"no_test_citations: facts cited in code but not in test files")
+            blockers.append("no_test_citations: facts cited in code but not in test files")
         elif facts_verified > 0 and has_code_citations and has_test_citations and not has_proof_graph:
             authority_level_int = 5  # P5: all citations present but no proof graph
-            blockers.append(f"no_proof_graph: citations complete but proof graph YAML not found")
+            blockers.append("no_proof_graph: citations complete but proof graph YAML not found")
         elif facts_verified > 0 and has_code_citations and has_test_citations and has_proof_graph:
             authority_level_int = 6  # P6: complete
             blockers = []
@@ -328,7 +328,7 @@ def _determine_next_action(
         )
     if level == 5:
         return (
-            f"Build proof graph YAML: spec_source→fact→code→test→evidence. "
+            "Build proof graph YAML: spec_source→fact→code→test→evidence. "
             "Store in reports/authority-conveyor-*/. Verify all edges are present."
         )
     return "Authority P6 achieved. Maintain by keeping citations and tests up to date."

@@ -21,7 +21,7 @@ from typing import Any, Dict, List, Optional
 try:
     from .spec_parser import ParsedSpec, SpecSection
 except ImportError:
-    from spec_parser import ParsedSpec, SpecSection
+    from spec_parser import ParsedSpec
 
 
 def _now_iso() -> str:

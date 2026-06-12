@@ -4,7 +4,6 @@ Sprint: FORMAT-FACTORY-DOTNET-DOGFOOD-ARCHITECTURE-GAP-INVESTIGATION-AND-PLANNIN
 """
 import json
 import pathlib
-import pytest
 
 REPO_ROOT = pathlib.Path(__file__).parent.parent.parent
 REPORT_DIR = REPO_ROOT / "reports" / "dotnet-dogfood-architecture-gap"

@@ -1,5 +1,4 @@
 """R112 FOSS: SYLK write edge cases — special characters, large grids, empty cells."""
-import pytest
 import os
 import sys
 import tempfile

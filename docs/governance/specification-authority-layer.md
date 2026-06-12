@@ -3,7 +3,7 @@
 **Added:** 2026-06-04
 **Authority:** plans/master-plan.md Section 44.2
 **Source:** memory/67-local-memory-governance-sync-20260604.md Sections 2–3
-**Status:** PLAN_NEEDS_REPAIR
+**Status:** OPERATIONAL — enforcement integrated, V13 active, Sprint 2 BLOCK mode enforced (updated 2026-06-12)
 
 ## Purpose
 
@@ -113,10 +113,21 @@ Every context pack includes:
 Rationale: Strong 3-format pilot is better than 5 shallow ingestions.
 DIF/Gnumeric/ODF source licensing must be verified during execution. If unclear → raw snapshot quarantined + fetch-blocker documented.
 
-## Current Plan Status
+## Current Implementation Status (2026-06-12)
 
-**Plan:** `ticklish-dancing-lobster(1).md`
-**Review verdict:** PLAN_NEEDS_REPAIR
-**Repair prompt:** `FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-PRODUCTION-HEALING-PLAN-REPAIR-001`
+| Component | Status | Evidence |
+|-----------|--------|---------|
+| SpecSourceRegistry | OPERATIONAL | .local/spec-source-registry/sources.jsonl (10 entries) |
+| Spec Cache / SpecVault | OPERATIONAL | .local/spec-cache/ (7 formats with verified-facts-review.yaml) |
+| RequirementExtractor | IMPLEMENTED | tools/specification-authority-layer/requirement_extractor.py |
+| SpecVerifier | IMPLEMENTED | tools/specification-authority-layer/spec_verifier.py |
+| SpecNormalizer | IMPLEMENTED | tools/specification-authority-layer/spec_normalizer.py |
+| SpecGovernanceRuntime | IMPLEMENTED | tools/specification-authority-layer/spec_governance_runtime.py |
+| V13 spec_fact_refs validator | OPERATIONAL | tools/supervisor/governance_validators.py, 17 tests pass |
+| Authority preflight (executor) | HARD BLOCK | tools/supervisor/product_source_executor.py Sprint 2 BLOCK mode |
+| Step 2d2 requirements authority | OPERATIONAL | tools/supervisor/autonomous_cycle.py |
+| AI advisory boundary | ENFORCED | tools/supervisor/embedding_retrieval.py, tools/llm/endpoint_client.py |
 
-See memory/67-local-memory-governance-sync-20260604.md Section 3 for full repair checklist.
+**Phase 2 items (deferred):** AI integration into fact extraction pipeline; capability map to FACT-* direct linkage; automated stale-fact detection.
+
+**Prior status:** `PLAN_NEEDS_REPAIR` (2026-06-04) — now superseded by sprint deliverables through 2026-06-12.

@@ -8,11 +8,10 @@ This is the fallback backend that is always available.
 from __future__ import annotations
 
 import json
-import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import List
 
 # Add repo root to path for tools.supervisor.* imports
 _repo_root = Path(__file__).resolve().parent.parent.parent.parent

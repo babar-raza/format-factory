@@ -10,14 +10,12 @@ import io
 import os
 import tempfile
 import csv
-from pathlib import Path
 
-import pytest
 
 try:
     from sylk.sylk_parser import sylk_to_csv, SylkError
 except ImportError:
-    from src.python.sylk.sylk_parser import sylk_to_csv, SylkError
+    from src.python.sylk.sylk_parser import sylk_to_csv
 
 
 def _write_sylk(rows: list[list[str]]) -> str:

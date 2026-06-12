@@ -4,11 +4,8 @@ Tests for scoped runner, path allowlist, forbidden operations,
 model validation, timeout, and output discard on violation.
 """
 
-import pytest
-from pathlib import Path
 
 from tools.ai.agentic.scoped_runner import (
-    AgenticResult,
     AgenticTaskContract,
     FORBIDDEN_OPERATIONS,
     ScopedRunner,

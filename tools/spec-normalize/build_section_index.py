@@ -35,7 +35,6 @@ import json
 import pathlib
 import re
 import sys
-from typing import Optional
 
 try:
     import yaml
@@ -269,10 +268,10 @@ def main():
 
     # --- Summary ---
     print()
-    print(f"Status: SUCCESS")
+    print("Status: SUCCESS")
     print(f"  Sections indexed: {len(sections)}")
     print(f"  Pages mapped: {len(page_map)}")
-    print(f"  Artifacts: sections.jsonl, page-map.yaml")
+    print("  Artifacts: sections.jsonl, page-map.yaml")
     print()
     print(f"Section index is at: {normalized_dir}")
     print("These are LOCAL ONLY. Do not commit them.")

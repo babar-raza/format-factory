@@ -8,7 +8,6 @@ from pgm.pgm_parser import (
     parse_pgm_strict,
     PgmError,
     PgmInvalidMagicError,
-    PgmSizeError,
 )
 
 

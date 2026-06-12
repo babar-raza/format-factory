@@ -18,7 +18,6 @@ import zipfile
 from io import BytesIO
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 from src.python.ods.ods_parser import (

@@ -1,11 +1,9 @@
 """Tests for validate_claude_commands.py — command file validator."""
 
-import json
 import sys
 import textwrap
 from pathlib import Path
 
-import pytest
 
 TOOLS_DIR = Path(__file__).resolve().parent.parent.parent.parent / "tools" / "supervisor"
 sys.path.insert(0, str(TOOLS_DIR))

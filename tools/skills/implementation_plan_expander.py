@@ -42,7 +42,6 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 REQS_DIR = REPO_ROOT / "generated-requirements"
@@ -178,7 +177,7 @@ def _build_taskcard(
     evidence_expectations = [
         f"Test run output: all {len(req_ids)} requirement tests PASS",
         f"No source mutation outside src/net/{fmt}/ or src/python/{fmt}/",
-        f"No gate approval in this sprint",
+        "No gate approval in this sprint",
     ]
 
     return {

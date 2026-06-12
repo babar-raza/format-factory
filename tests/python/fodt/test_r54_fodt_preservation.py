@@ -14,13 +14,12 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.python.fodt.parser import parse_fodt
-from src.python.fodt.writer import document_to_xml, write_fodt
+from src.python.fodt.writer import document_to_xml
 
 SAMPLES_DIR = PROJECT_ROOT / "samples" / "by-format" / "fodt"
 
@@ -46,7 +45,8 @@ class TestHeadingPreservation:
         doc = parse_fodt(str(SAMPLES_DIR / "headings-and-paragraphs.fodt"))
         xml = document_to_xml(doc)
         # Write and re-parse to verify round-trip
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name
@@ -60,7 +60,8 @@ class TestHeadingPreservation:
     def test_heading_level_2_survives_round_trip(self):
         doc = parse_fodt(str(SAMPLES_DIR / "headings-and-paragraphs.fodt"))
         xml = document_to_xml(doc)
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name
@@ -74,7 +75,8 @@ class TestHeadingPreservation:
     def test_heading_text_content_preserved(self):
         doc = parse_fodt(str(SAMPLES_DIR / "headings-and-paragraphs.fodt"))
         xml = document_to_xml(doc)
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name
@@ -113,7 +115,8 @@ class TestListPreservation:
     def test_list_round_trip_parse_write_parse(self):
         doc = parse_fodt(str(SAMPLES_DIR / "list-basic.fodt"))
         xml = document_to_xml(doc)
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name
@@ -127,7 +130,8 @@ class TestListPreservation:
         doc = parse_fodt(str(SAMPLES_DIR / "list-basic.fodt"))
         original_list_count = len(doc["lists"])
         xml = document_to_xml(doc)
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name
@@ -142,7 +146,8 @@ class TestListPreservation:
         doc = parse_fodt(str(SAMPLES_DIR / "list-basic.fodt"))
         original_items = sum(len(lst["items"]) for lst in doc["lists"])
         xml = document_to_xml(doc)
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name
@@ -165,7 +170,8 @@ class TestListPreservation:
                 break
         xml = document_to_xml(doc)
         assert "text:list" in xml, "Lists must survive block edit"
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name
@@ -207,7 +213,8 @@ class TestTablePreservation:
     def test_table_round_trip_parse_write_parse(self):
         doc = parse_fodt(str(SAMPLES_DIR / "table-basic.fodt"))
         xml = document_to_xml(doc)
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name
@@ -221,7 +228,8 @@ class TestTablePreservation:
         doc = parse_fodt(str(SAMPLES_DIR / "table-basic.fodt"))
         original_rows = sum(len(t["rows"]) for t in doc["tables"])
         xml = document_to_xml(doc)
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name
@@ -252,7 +260,8 @@ class TestTablePreservation:
                 break
         xml = document_to_xml(doc)
         assert "table:table" in xml, "Tables must survive block edit"
-        import tempfile, os
+        import tempfile
+        import os
         with tempfile.NamedTemporaryFile(suffix=".fodt", delete=False, mode="w", encoding="utf-8") as f:
             f.write(xml)
             tmp = f.name

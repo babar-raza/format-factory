@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent))
 from tools.supervisor.execution_backend import (
     BackendResult, BackendStatus, BackendType, ExecutionBackend, ProofLevel
 )
-from tools.supervisor.llm_backend_config import get_ready_endpoints, classify_endpoint_availability
+from tools.supervisor.llm_backend_config import get_ready_endpoints
 
 _here = Path(__file__).resolve().parent
 _repo_root = _here.parent.parent.parent.parent

@@ -3,10 +3,7 @@
 Tests compress_bytes → write to file → read → decompress_bytes roundtrip,
 probe_frame metadata, validate_file, and dogfood pipeline.
 """
-import tempfile
-from pathlib import Path
 
-import pytest
 
 from src.python.zst.zst_codec import (
     compress_bytes,
@@ -14,8 +11,6 @@ from src.python.zst.zst_codec import (
     probe_frame,
     validate_file,
     ZSTD_MAGIC,
-    ZstError,
-    ZstInvalidFrameError,
 )
 
 

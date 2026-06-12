@@ -306,3 +306,19 @@ def probe_qoi(file_path: str | Path) -> dict[str, Any]:
         result["valid_header"] = False
         result["error"] = str(exc)
     return result
+
+
+def qoi_dimensions(file_path: str | Path) -> dict[str, int]:
+    """Return image dimensions and channel info from a QOI file header (no pixel decode)."""
+    path = Path(file_path)
+    data = path.read_bytes()
+    width, height, channels, colorspace = _parse_header(data)
+    return {"width": width, "height": height, "channels": channels, "colorspace": colorspace}
+
+
+def qoi_pixel_count(file_path: str | Path) -> int:
+    """Return the total pixel count (width * height) of a QOI image."""
+    path = Path(file_path)
+    data = path.read_bytes()
+    width, height, _channels, _colorspace = _parse_header(data)
+    return width * height

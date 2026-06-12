@@ -1,11 +1,9 @@
 """Tests for record_lane_execution.py — lane execution recorder."""
 
-import json
 import sys
 import time
 from pathlib import Path
 
-import pytest
 
 # Add tools/supervisor to path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent / "tools" / "supervisor"))

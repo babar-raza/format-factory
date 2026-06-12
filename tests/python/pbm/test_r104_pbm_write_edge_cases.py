@@ -3,12 +3,9 @@
 # Ledger: R104-FOSS-PBM-WRITE-EDGE-CASES-001
 
 import pytest
-import tempfile
-from pathlib import Path
 from pbm.pbm_parser import (
     write_pbm,
     parse_pbm_strict,
-    PbmImage,
     PbmSizeError,
     MAX_DIMENSION,
 )

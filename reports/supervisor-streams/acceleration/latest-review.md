@@ -1,28 +1,25 @@
-# Supervisor Review: autonomy-acceleration-sprint10-20260608-e382e5f
-Sprint: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-10-001
-Timestamp: 2026-06-10T13:42:45.806574
+# Supervisor Review: sal-enforcement-closeout-product-accel-rnext-20260611-8e45224
+Sprint: FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001
+Timestamp: 2026-06-11T21:41:40.586577
 Overall Verdict: ACCEPTED_WITH_REWORK
 Autonomous Continue: True
 
 ## Summary
-- Accepted: 12
-- Rework: 2
+- Accepted: 6
+- Rework: 4
 - Rejected: 0
 - Overclaimed: 0
 - Critical Rework: 0
 
 ## Item Grades
-- **W0-PREFLIGHT** (Verify continuation signal and approval-gates (iter 9/12)): REWORK_REQUIRED
-- **W1-GENERATOR** (TC-GENERATOR: Add Sprint 10 expansion goals to autonomous_task_generator.py): ACCEPTED_WITH_LIMITATIONS
-- **W2-CANDIDATES** (TC-CANDIDATES: Regenerate product-task-candidates.json with 10 Sprint 10 tasks): REWORK_REQUIRED
-- **W3-ABW-WORD-WRAP** (TC-PRODUCT-ABW-WORD-WRAP: implement word_wrap()): ACCEPTED_WITH_LIMITATIONS
-- **W4-ABW-HAS-PARAGRAPH** (TC-PRODUCT-ABW-HAS-PARAGRAPH: implement has_paragraph()): ACCEPTED_WITH_LIMITATIONS
-- **W5-GNUMERIC-GET-ALL-VALUES** (TC-PRODUCT-GNUMERIC-GET-ALL-VALUES: implement get_all_values()): ACCEPTED_WITH_LIMITATIONS
-- **W6-GNUMERIC-CLEAR-SHEET** (TC-PRODUCT-GNUMERIC-CLEAR-SHEET: implement clear_sheet()): ACCEPTED_WITH_LIMITATIONS
-- **W7-TSV-MERGE** (TC-PRODUCT-TSV-MERGE: implement merge_tsv()): ACCEPTED_WITH_LIMITATIONS
-- **W8-TSV-MIN-COL** (TC-PRODUCT-TSV-MIN-COLUMN: implement min_column_tsv()): ACCEPTED_WITH_LIMITATIONS
-- **W9-NDJSON-MIN-VALUE** (TC-PRODUCT-NDJSON-MIN-VALUE: implement min_value()): ACCEPTED_WITH_LIMITATIONS
-- **W10-NDJSON-ZIP-RECORDS** (TC-PRODUCT-NDJSON-ZIP-RECORDS: implement zip_records()): ACCEPTED_WITH_LIMITATIONS
-- **W11-FODG-CLEAR-PAGE** (TC-PRODUCT-FODG-CLEAR-PAGE: implement clear_page()): ACCEPTED_WITH_LIMITATIONS
-- **W12-FODG-SWAP-PAGES** (TC-PRODUCT-FODG-SWAP-PAGES: implement swap_pages()): ACCEPTED_WITH_LIMITATIONS
-- **W13-FULL-SUITE** (Run targeted tests to confirm all 55 Sprint 10 tests pass): ACCEPTED_WITH_LIMITATIONS
+- **RNEXT-LA** (Lane A — Current-state inspection and governance failure documentation): ACCEPTED_WITH_LIMITATIONS
+- **RNEXT-LB** (Lane B — Governance blocker repair ledger (claim_classification, source_diff, route_decision fixes)): ACCEPTED_VERIFIED
+- **RNEXT-LC** (Lane C — Raw log index): REWORK_REQUIRED
+- **RNEXT-LD** (Lane D — Authority bypass hardening: remove investigation_only/sample_only from executor): ACCEPTED_VERIFIED
+- **RNEXT-LE** (Lane E — ZST package export fix: add 5 missing functions to __init__.py): ACCEPTED_VERIFIED
+- **RNEXT-LF** (Lane F — Product code ledger: add 4 new ZST function entries): ACCEPTED_WITH_LIMITATIONS
+- **RNEXT-LG** (Lane G — Product advancement: add get_frame_size_stats() to zst_codec.py): REWORK_REQUIRED
+  - Rework: Stub evidence detected (was ACCEPTED_VERIFIED): ['The provided diff does not contain the implementation of get_frame_size_stats; the function is missing from the changed file.', 'No test file content is included, so we cannot verify that the claimed 11 tests actually exercise the new function or contain meaningful assertions.', 'The added code focuses on unrelated helper functions (compress_string, decompress_to_string, etc.), indicating a scope mismatch with the work item.', 'Without seeing the test code, there is a risk that the tests are stubs (e.g., only assert True or pass) rather than validating the returned statistics.']
+- **RNEXT-LH** (Lane H — Backfill dry-run: capability map generator): REWORK_REQUIRED
+- **RNEXT-LI** (Lane I — Doc state sync verification): REWORK_REQUIRED
+- **RNEXT-LJ** (Lane J — Adversarial review: 6 attack vectors reviewed and defended): ACCEPTED_WITH_LIMITATIONS

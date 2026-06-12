@@ -9,9 +9,8 @@
 import inspect
 from pathlib import Path
 
-import pytest
 
-from ppm.ppm_parser import write_ppm, parse_ppm
+from ppm.ppm_parser import write_ppm
 from ppm.ppm_to_pgm import convert_ppm_to_pgm, ppm_pixels_to_pgm_pixels
 from pgm.pgm_parser import parse_pgm_strict
 

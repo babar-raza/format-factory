@@ -8,7 +8,6 @@ import sys
 import tempfile
 from pathlib import Path
 
-import pytest
 
 _here = Path(__file__).resolve().parent
 _REPO = _here.parent.parent.parent

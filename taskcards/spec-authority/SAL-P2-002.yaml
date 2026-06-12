@@ -1,0 +1,27 @@
+id: SAL-P2-002
+title: "SAL Phase 2 — FODS FACT-FODS-002 quarantine and exclusion policy"
+sprint: FORMAT-FACTORY-SAL-PHASE2-CLOSEOUT-AND-PRODUCT-GATED-ADVANCEMENT-001
+status: COMPLETED
+completed_in_run: sal-phase2-closeout-product-gated-advancement-20260612-8e45224
+completed_date: "2026-06-12"
+
+description: >
+  FACT-FODS-002 (claim: FODS mimetype is application/vnd.oasis.opendocument.spreadsheet-flat-xml)
+  has verification_status=not_found_in_normalized_text in verified-facts-review.yaml. The claim
+  is likely correct (MIME type is in IANA registry) but cannot be verified against ODF Part 3
+  schema spec (which doesn't contain MIME type registrations). The capability map correctly
+  excludes FACT-FODS-002 from spec_fact_refs. 18 tests confirm exclusion policy in
+  tests/spec_authority/test_r125_fact_traceability.py.
+
+files_changed:
+  - tests/spec_authority/test_r125_fact_traceability.py (18 new tests)
+
+quarantine_status: "not_found_in_normalized_text — excluded from spec_fact_refs"
+claim_validity: "LIKELY VALID — absent from Part 3 because Part 3 is schema-only (no MIME registrations)"
+tests_added: 18
+tests_result: "18/18 PASS"
+
+next_sprint_action: >
+  Sprint 3: acquire ODF Part 1 or IANA MIME type registration document. Verify
+  'spreadsheet-flat-xml' appears there. If confirmed, update verification_status to
+  'verified' and add Part 1 as source document.

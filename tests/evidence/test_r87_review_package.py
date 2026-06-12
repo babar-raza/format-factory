@@ -8,7 +8,6 @@ Sprint: FORMAT-FACTORY-R87-CLEAN-SUPERVISOR-CLOSEOUT-REVIEW-PACKAGE-POC-PRODUCT-
 import sys
 import zipfile
 import json
-import tempfile
 from pathlib import Path
 
 import pytest

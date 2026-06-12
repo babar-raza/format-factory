@@ -7,7 +7,6 @@ TC-ABW-GET-PARAGRAPH: get_paragraph() — read-access to paragraph model
 from __future__ import annotations
 
 import sys
-import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]

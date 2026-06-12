@@ -3,7 +3,6 @@ Tests for external host bootstrap (H6 readiness).
 Sprint: FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001
 """
 import json
-import pytest
 import sys
 from pathlib import Path
 

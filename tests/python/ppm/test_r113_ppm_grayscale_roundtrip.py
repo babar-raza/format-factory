@@ -1,5 +1,4 @@
 """R113 FOSS: PPM grayscale conversion and roundtrip."""
-import pytest
 import os
 import sys
 import tempfile

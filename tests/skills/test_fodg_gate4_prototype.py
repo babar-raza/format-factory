@@ -7,7 +7,6 @@ Tests the prototypes/by-format/fodg/fodg_parser.py prototype.
 
 import sys
 from pathlib import Path
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 PROTO_DIR = REPO_ROOT / "prototypes" / "by-format" / "fodg"

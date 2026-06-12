@@ -19,7 +19,6 @@ import tempfile
 from pathlib import Path
 from unittest import mock
 
-import pytest
 
 _here = Path(__file__).resolve().parent
 _REPO = _here.parent.parent
@@ -465,6 +464,13 @@ class TestE2EPipelineIntegration:
                 assert item.get("task_category"), f"Missing task_category: {item}"
                 assert item.get("route_decision_id"), f"Missing route_decision_id: {item}"
 
+            # Verify route decision files were written to isolated temp dir (Amendment A)
+            for item in items:
+                rd_file = rd_dir / f"{item['route_decision_id']}.json"
+                assert rd_file.exists(), (
+                    f"Route decision file not found in isolated dir: {rd_file}"
+                )
+
             # Build a declaration-like structure for validator 11
             decl = {
                 "planned_work_items": [
@@ -487,3 +493,139 @@ class TestE2EPipelineIntegration:
 
         finally:
             shutil.rmtree(td, ignore_errors=True)
+
+
+# -----------------------------------------------------------------------
+# run_action() ImportError Integration Tests (Amendment C)
+# -----------------------------------------------------------------------
+
+class TestRunActionImportError:
+    """Verify that run_action() returns BLOCKED when route decider import fails."""
+
+    def _minimal_action(self, action_type: str, is_legacy: bool = False) -> dict:
+        return {
+            "action_id": f"test-import-error-{action_type.lower().replace('_', '-')}",
+            "action_type": action_type,
+            "objective": "Test ImportError fail-closed behavior",
+            "preferred_backend": "LOCAL_DETERMINISTIC",
+            "legacy_backfill": is_legacy,
+            "schema_version": "1.0",
+        }
+
+    def test_source_mutating_blocked_on_import_error(self, tmp_path):
+        """Source-mutating action must be BLOCKED when route decider import fails."""
+        from tools.supervisor.next_action_runner import run_action
+
+        action = self._minimal_action("IMPLEMENT_SMALL_PRODUCT_FEATURE")
+        action_file = tmp_path / "action.json"
+        action_file.write_text(json.dumps(action), encoding="utf-8")
+
+        with mock.patch.dict(
+            sys.modules,
+            {"tools.supervisor.autonomy_route_decider": None},
+        ):
+            result = run_action(str(action_file), dry_run=False)
+
+        assert result["status"] == "BLOCKED", (
+            f"Expected BLOCKED for source-mutating action on ImportError, got: {result}"
+        )
+        assert "block_reason" in result
+
+    def test_uncategorized_nonlegacy_blocked_on_import_error(self, tmp_path):
+        """Uncategorized non-legacy action must be BLOCKED when route decider import fails."""
+        from tools.supervisor.next_action_runner import run_action
+
+        action = self._minimal_action("UNKNOWN_CUSTOM_ACTION")
+        action_file = tmp_path / "action2.json"
+        action_file.write_text(json.dumps(action), encoding="utf-8")
+
+        with mock.patch.dict(
+            sys.modules,
+            {"tools.supervisor.autonomy_route_decider": None},
+        ):
+            result = run_action(str(action_file), dry_run=False)
+
+        assert result["status"] == "BLOCKED", (
+            f"Expected BLOCKED for uncategorized non-legacy action on ImportError, got: {result}"
+        )
+
+    def test_legacy_not_blocked_by_import_error_handler(self, tmp_path):
+        """Legacy backfill action must NOT be blocked by the ImportError handler."""
+        from tools.supervisor.next_action_runner import run_action
+
+        action = self._minimal_action("UNKNOWN_CUSTOM_ACTION", is_legacy=True)
+        action_file = tmp_path / "action3.json"
+        action_file.write_text(json.dumps(action), encoding="utf-8")
+
+        with mock.patch.dict(
+            sys.modules,
+            {"tools.supervisor.autonomy_route_decider": None},
+        ):
+            result = run_action(str(action_file), dry_run=False)
+
+        # Legacy action should not be blocked by ImportError handler specifically
+        # (may be blocked by backend selector for other reasons, but not import error)
+        if result["status"] == "BLOCKED":
+            block_reason = result.get("block_reason", "")
+            assert "route decider import failed" not in block_reason, (
+                f"Legacy action should not be blocked by ImportError handler: {result}"
+            )
+
+
+# -----------------------------------------------------------------------
+# Validator 11 PRODUCT_SOURCE Pipeline Proof (Amendment B)
+# -----------------------------------------------------------------------
+
+class TestValidator11ProductSourcePipeline:
+    """Prove Validator 11 enforcement path fires for PRODUCT_SOURCE items."""
+
+    def test_product_source_without_route_id_blocks_sprint(self):
+        """run_all_governance_validators with a PRODUCT_SOURCE item missing
+        route_decision_id must produce blocks_sprint=True."""
+        from tools.supervisor.governance_validators import run_all_governance_validators
+
+        decl = {
+            "sprint_id": "TEST-V11-PIPELINE-001",
+            "planned_work_items": [
+                {
+                    "item_id": "V11-PIPE-001",
+                    "title": "Product function without route id",
+                    "item_type": "PRODUCT_SOURCE",
+                    "status": "completed",
+                    "execution_method": "autonomous_direct",
+                    "source_diff_paths": ["src/python/dif/dif_parser.py"],
+                    "idempotency_key": "a" * 64,
+                    "spec_fact_refs": ["FACT-DIF-001"],
+                    # Deliberately omit route_decision_id
+                },
+            ],
+        }
+        result = run_all_governance_validators(decl)
+        assert result["blocks_sprint"] is True, (
+            f"Expected blocks_sprint=True for PRODUCT_SOURCE without route_decision_id: {result}"
+        )
+
+    def test_product_source_with_route_id_passes_validator11(self):
+        """PRODUCT_SOURCE item with route_decision_id must not fail Validator 11."""
+        from tools.supervisor.governance_validators import (
+            run_all_governance_validators,
+            validate_route_decision_required,
+        )
+
+        decl = {
+            "sprint_id": "TEST-V11-PIPELINE-002",
+            "planned_work_items": [
+                {
+                    "item_id": "V11-PIPE-002",
+                    "title": "Product function with route id",
+                    "item_type": "PRODUCT_SOURCE",
+                    "status": "completed",
+                    "route_decision_id": "ROUTE-V11-PIPE-002",
+                },
+            ],
+        }
+        # Direct validator 11 check must PASS
+        v11_result = validate_route_decision_required(decl)
+        assert v11_result["result"] == "PASS", (
+            f"Validator 11 should PASS when route_decision_id is present: {v11_result}"
+        )

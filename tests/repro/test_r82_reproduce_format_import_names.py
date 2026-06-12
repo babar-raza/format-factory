@@ -8,8 +8,6 @@ Defect fixed: D79-07 — tools/repro/reproduce_format.py used wrong import names
 """
 from __future__ import annotations
 
-import ast
-import re
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent

@@ -11,8 +11,6 @@ non-exempt item has an explicit exemption_reason.
 
 from __future__ import annotations
 
-import json
-import sys
 from pathlib import Path
 
 try:

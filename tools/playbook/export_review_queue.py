@@ -179,7 +179,7 @@ def main() -> int:
         yaml.dump(queue, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
 
     if total == 0:
-        print(f"EXPORT_REVIEW_QUEUE: PASS (0 items — clean queue written)")
+        print("EXPORT_REVIEW_QUEUE: PASS (0 items — clean queue written)")
     else:
         print(f"EXPORT_REVIEW_QUEUE: CONFLICTS ({total} items written)")
     print(f"REVIEW_QUEUE_OUTPUT: {os.path.abspath(args.output)}")

@@ -6,10 +6,8 @@
 import tempfile
 from pathlib import Path
 
-import pytest
 
 from ppm.ppm_parser import (
-    PpmImage,
     write_ppm,
     parse_ppm_strict,
 )

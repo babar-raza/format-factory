@@ -28,7 +28,6 @@ Tests verify:
 """
 
 import json
-import os
 import sys
 from pathlib import Path
 import pytest
@@ -42,12 +41,7 @@ from tri_lane_integration import (
     resolve_skills_inputs,
     load_acceleration_packets,
     _project_root,
-    SKILLS_FODT_MARKDOWN_PACKET_PATH,
-    SKILLS_FODT_TXT_PACKET_PATH,
-    SKILLS_NETPBM_PACKET_PATH,
-    SKILLS_FODS_PACKET_PATH,
     ACCELERATION_HARDENING_INDEX_PATH,
-    ACCELERATION_PACKETS_DIR_LEGACY,
 )
 from validate_tri_lane_contract import validate_contract, load_contract
 
@@ -119,7 +113,7 @@ def test_fodt_shell_rejected_when_full_packet_exists(project_root):
     assert "shell" not in sel.selected_path.lower(), \
         f"FODT_MARKDOWN must not reference shell packet, got: {sel.selected_path}"
     assert "finalization" in sel.selected_path.lower() or "breadth" in sel.selected_path.lower(), \
-        f"FODT_MARKDOWN must reference finalization sprint path"
+        "FODT_MARKDOWN must reference finalization sprint path"
     assert sel.packet_type == "FULL", "FODT_MARKDOWN selection must be FULL"
 
 
@@ -136,7 +130,7 @@ def test_netpbm_shell_rejected_when_full_packet_exists(project_root):
     assert "shell" not in sel.selected_path.lower(), \
         f"Netpbm must not reference shell packet, got: {sel.selected_path}"
     assert "breadth" in sel.selected_path.lower() or "finalization" in sel.selected_path.lower(), \
-        f"Netpbm must reference finalization sprint path"
+        "Netpbm must reference finalization sprint path"
     assert sel.packet_type == "FULL", "Netpbm selection must be FULL"
 
 
@@ -212,7 +206,7 @@ def test_fodt_markdown_full_packet_included(project_root):
     assert pkt.get("packet_type") == "FULL"
     assert pkt.get("family") == "FODT"
     assert "fodt_to_markdown_dotnet" in pkt.get("capability", ""), \
-        f"FODT Markdown capability must be fodt_to_markdown_dotnet"
+        "FODT Markdown capability must be fodt_to_markdown_dotnet"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -228,7 +222,7 @@ def test_fodt_txt_full_packet_included(project_root):
     assert pkt.get("packet_type") == "FULL"
     assert pkt.get("family") == "FODT"
     assert "fodt_to_txt_dotnet" in pkt.get("capability", ""), \
-        f"FODT TXT capability must be fodt_to_txt_dotnet"
+        "FODT TXT capability must be fodt_to_txt_dotnet"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -307,7 +301,6 @@ def test_svg_not_replacing_netpbm_in_integration(integration_result):
 
 def test_netpbm_svg_rejection_in_contract_v2(contract_v2):
     """Contract v2 must explicitly reject SVG replacement for Netpbm."""
-    from validate_tri_lane_contract import validate_contract, ValidationResult
     result = validate_contract(contract_v2)
     svg_pass = any("SVG_NOT_REPLACING_NETPBM" in p for p in result.checks_passed)
     svg_confirmed = any("SUPERVISOR_SVG_REJECTION_CONFIRMED" in p for p in result.checks_passed)
@@ -320,7 +313,6 @@ def test_netpbm_svg_rejection_in_contract_v2(contract_v2):
 
 def test_no_poc_targets_mutation_in_contract_v2(contract_v2):
     """Contract v2 must not contain direct poc-targets mutation."""
-    from validate_tri_lane_contract import validate_contract
     result = validate_contract(contract_v2)
 
     poc_errors = [e for e in result.errors if "POC_TARGETS_MUTATION" in e]
@@ -346,7 +338,6 @@ def test_no_poc_targets_mutation_in_packet_v2(packet_v2):
 
 def test_invalid_pytest_cs_command_rejected_by_validator(contract_v2):
     """Validator must reject any python pytest command referencing .cs files."""
-    from validate_tri_lane_contract import validate_contract
 
     # The v2 contract must not have any python pytest .cs commands
     # Check by inspecting validation_commands in mainstream_execution families
@@ -362,7 +353,6 @@ def test_invalid_pytest_cs_command_rejected_by_validator(contract_v2):
 
 def test_validator_rejects_pytest_cs_command():
     """Validator must detect and reject python pytest commands for .cs files."""
-    from validate_tri_lane_contract import validate_contract
 
     bad_contract = {
         "supervisor_routing": {"source": "x", "routing_decision": "y", "families": [], "authority_state": "routing_authority"},
@@ -556,7 +546,6 @@ def test_packet_v2_exists(project_root):
 
 def test_contract_v2_validates_clean(contract_v2):
     """Contract v2 must validate with zero errors."""
-    from validate_tri_lane_contract import validate_contract
     result = validate_contract(contract_v2)
     assert len(result.errors) == 0, f"Contract v2 must have zero errors: {result.errors}"
 

@@ -3,7 +3,6 @@
 
 import importlib
 import os
-import tempfile
 import pytest
 
 pbm = importlib.import_module("pbm")

@@ -165,11 +165,11 @@ def validate_format(format_id: str, registry: dict) -> bool:
 
         path, version = discover_provider(provider_def)
         if path:
-            print(f"  Status: FOUND")
+            print("  Status: FOUND")
             print(f"  Path: {path}")
             print(f"  Version: {version or 'could not determine'}")
         else:
-            print(f"  Status: NOT FOUND")
+            print("  Status: NOT FOUND")
             print(f"  Checked env var: {provider_def.get('discovery', {}).get('env_var', 'none')}")
             n_paths = len(provider_def.get("discovery", {}).get("standard_paths", []))
             print(f"  Checked {n_paths} standard path(s)")

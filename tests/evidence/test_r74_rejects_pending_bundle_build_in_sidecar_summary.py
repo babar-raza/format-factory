@@ -9,11 +9,8 @@ Sprint: FORMAT-FACTORY-R74-R73-CLEAN-CLOSURE-VALIDATOR-HARDENING-PRODUCT-READINE
 from __future__ import annotations
 
 import sys
-import zipfile
-import io
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -55,7 +52,7 @@ class TestRejectsPendingBundleBuild:
         )
         hits = check_no_pending_reports(metadata)
         # PENDING_BUNDLE_BUILD is the canonical uppercase form
-        
+
         assert len(hits) > 0, "PENDING_BUNDLE_BUILD (uppercase) must be caught by PENDING_MARKER_PATTERNS"
 
     def test_r73_style_stale_bundle_would_fail(self):

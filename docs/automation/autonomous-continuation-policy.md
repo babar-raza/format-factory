@@ -22,9 +22,11 @@ Where critical rework = items graded OVERCLAIMED or REJECTED.
 
 - Exit code: 3
 - The loop pauses
-- Human must review the overclaimed/rejected items
-- The next-worker prompt still exists but requires human approval before execution
-- The stop_reason field in the review explains why
+- The Autonomous Supervisor reviews overclaimed/rejected items (supervisor_loop.py output)
+- Human review of rework items is an OPTIONAL external audit, not a required production gate
+- The agent should attempt self-repair of OVERCLAIMED items before concluding human review is needed
+- Apply AGENTS.md §AG1 decision loop: classify whether any stop item can be agent-repaired
+- The stop_reason field in the review explains why — use Stop Reason Adjudicator to adjudicate
 
 ## Exit Codes
 
@@ -39,14 +41,22 @@ Where critical rework = items graded OVERCLAIMED or REJECTED.
 
 External gates (Gate 11 commercial approval, git push authorization) are NOT treated as autonomous-continue blockers. They are tracked as BLOCKED_EXTERNAL_GATE items and carried forward in each prompt cycle.
 
-## Hard Prohibitions (Never Autonomous)
+## Hard Prohibitions (Apply Human Task Conversion Rule First)
 
-These actions always require explicit human authorization:
-- git push
-- Package publication (PyPI, NuGet)
-- Gate 8 or Gate 11 approval
-- MCP activation beyond MODE 3
-- Destructive git operations (reset --hard, force push)
+Apply AGENTS.md §AG1-AG4 before classifying any action as prohibited. The accurate classifications:
+
+- **git push:** SCM Agent task (AGENTS.md §AG4.2) when credentials and branch policy allow + sprint
+  policy authorizes. When credentials unavailable: `EXTERNAL_BLOCKER: git_push_credentials_unavailable`.
+  Not an unconditional human-only prohibition.
+- **git commit:** SCM Agent task (AGENTS.md §AG4.1) when sprint policy authorizes (exit 0, clean diff,
+  validators pass). Not an unconditional human-only prohibition.
+- **Package publication (PyPI, NuGet):** Agent prepares release packet; registry push requires
+  `EXTERNAL_BLOCKER: publication_credentials_unavailable` classification when credentials are absent.
+- **Gate 8 or Gate 11 approval EXECUTION:** Legitimate external gate — commercial/business decision.
+  Preparation (packet, readiness, recommendation) is always agent-owned and never prohibited.
+- **MCP activation beyond MODE 3:** Requires explicit policy authorization. Classify specifically.
+- **Destructive git operations (reset --hard, force push):** Require explicit policy authority +
+  documented rollback. Classify: `BLOCKED: destructive_operation_no_policy_authority`.
 
 ## Loop Continuation Model
 
@@ -58,9 +68,10 @@ Supervisor validates -> inspects -> grades -> generates next prompt
     Loop continues
   If autonomous_continue == False:
     Loop pauses
-    Human reviews rework items
-    Human approves or modifies next prompt
-    Worker resumes
+    Autonomous Supervisor classifies stop items (stop_reason_adjudicator.py)
+    Agent attempts self-repair for OVERCLAIMED/REJECTED items where possible
+    Human reviews only when Stop Reason Adjudicator returns TRUE_EXTERNAL_GATE
+    Worker resumes after repair or after human unblocks TRUE_EXTERNAL_GATE items
 ```
 
 ## Cross-Window Recovery

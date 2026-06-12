@@ -12,7 +12,6 @@ src/python/pbm/, src/python/pgm/, src/python/ppm/.
 
 import json
 import pathlib
-import re
 import pytest
 
 REPO_ROOT = pathlib.Path(__file__).parent.parent.parent
@@ -101,6 +100,5 @@ def test_package_104_audit_exists():
     """Package-104 audit JSON must exist and have findings."""
     audit_path = REPO_ROOT / "reports/expert-review-r3/evidence/package-104-audit.json"
     assert audit_path.exists(), "package-104-audit.json must exist"
-    import json
     data = json.loads(audit_path.read_text(encoding="utf-8"))
     assert data.get("findings_count", 0) >= 1, "Audit must have at least one finding"

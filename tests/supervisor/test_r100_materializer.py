@@ -3,7 +3,6 @@ R100 — Materializer Unit Tests
 Tests materialize() with synthetic declarations and temp directories.
 """
 import sys
-import json
 from pathlib import Path
 
 import yaml

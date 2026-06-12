@@ -15,7 +15,6 @@ These tests verify that:
 import json
 import pathlib
 import sys
-import tempfile
 
 import pytest
 

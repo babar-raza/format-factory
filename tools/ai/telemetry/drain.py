@@ -15,8 +15,6 @@ from typing import Any
 
 from tools.ai.telemetry.call_logger import read_spool
 from tools.ai.telemetry.spool_manager import (
-    AGENT_METRICS_MAPPING,
-    AI_LOCAL_ONLY_FIELDS,
     validate_spool_record,
 )
 

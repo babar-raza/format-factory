@@ -576,3 +576,121 @@ def flip_vertical(file_path: str | Path, dest_path: str | Path) -> dict[str, Any
         flipped.extend(img.pixels[row_start:row_start + img.width])
     write_ppm(flipped, img.width, img.height, img.maxval, dest_path)
     return {"ok": True, "width": img.width, "height": img.height, "pixel_count": len(flipped)}
+
+
+def rotate_90(file_path: str | Path, dest_path: str | Path) -> dict[str, Any]:
+    """Rotate a PPM image 90 degrees clockwise and write the result.
+
+    The output image has width=original_height and height=original_width.
+    Pixel at (row, col) in the original maps to (col, height-1-row) in the result.
+
+    Args:
+        file_path: Source PPM file path.
+        dest_path: Destination PPM file path.
+
+    Returns:
+        Dict with keys: ok, width, height, pixel_count.
+
+    Raises:
+        PpmError: If source cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    new_w = img.height
+    new_h = img.width
+    rotated: list[tuple[int, int, int]] = [(0, 0, 0)] * (new_w * new_h)
+    for row in range(img.height):
+        for col in range(img.width):
+            src_idx = row * img.width + col
+            dst_row = col
+            dst_col = img.height - 1 - row
+            dst_idx = dst_row * new_w + dst_col
+            rotated[dst_idx] = img.pixels[src_idx]
+    write_ppm(rotated, new_w, new_h, img.maxval, dest_path)
+    return {"ok": True, "width": new_w, "height": new_h, "pixel_count": len(rotated)}
+
+
+def is_grayscale(file_path: str | Path) -> bool:
+    """Return True if all pixels in a PPM image are grayscale (R == G == B).
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        True if every pixel has equal R, G, B channels. False otherwise.
+        Returns True for empty images (vacuously).
+
+    Raises:
+        PpmError: If the file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    return all(r == g == b for r, g, b in img.pixels)
+
+
+def ppm_red_channel_average(file_path: str | Path) -> float:
+    """Return the average value of the red channel across all pixels.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Float average red channel value. Returns 0.0 for empty images.
+
+    Raises:
+        PpmError: If the file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(p[0] for p in img.pixels) / len(img.pixels)
+
+
+def ppm_unique_color_count(file_path: str | Path) -> int:
+    """Return the number of unique RGB color tuples in the image.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Integer count of distinct (R, G, B) color tuples. Returns 0 for empty images.
+
+    Raises:
+        PpmError: If the file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    return len(set(img.pixels))
+
+
+def ppm_pixel_count(file_path: str | Path) -> int:
+    """Return the total number of pixels in a PPM image (width * height).
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Integer pixel count. Returns 0 for empty images.
+
+    Raises:
+        PpmError: If the file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    return len(img.pixels)
+
+
+def ppm_brightness_variance(file_path: str | Path) -> float:
+    """Return the variance of per-pixel brightness (mean of R, G, B) across the image.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Float variance of brightness values. Returns 0.0 for single-pixel or empty images.
+
+    Raises:
+        PpmError: If the file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    brightnesses = [sum(p) / 3.0 for p in img.pixels]
+    avg = sum(brightnesses) / len(brightnesses)
+    return sum((b - avg) ** 2 for b in brightnesses) / len(brightnesses)

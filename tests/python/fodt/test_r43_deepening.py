@@ -20,7 +20,7 @@ SAMPLES = REPO_ROOT / "samples" / "by-format" / "fodt"
 
 sys.path.insert(0, str(REPO_ROOT / "src" / "python"))
 
-from fodt import parse_fodt, parse_fodt_strict, FORMAT_ID, SPEC_VERSION
+from fodt import parse_fodt, parse_fodt_strict
 
 
 # ---------------------------------------------------------------------------

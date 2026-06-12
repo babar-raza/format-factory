@@ -13,7 +13,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
-from validate_skill_transcript import validate_transcript, validate_directory, VALID_MODES, VALID_RESULTS, REQUIRED_FIELDS
+from validate_skill_transcript import validate_transcript, validate_directory, VALID_MODES, VALID_RESULTS
 
 
 # ============================================================

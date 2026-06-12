@@ -15,10 +15,8 @@ Coverage:
   - Full pipeline: ZST, Netpbm, DIF
 """
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 SAL_DIR = REPO_ROOT / "tools" / "specification-authority-layer"
@@ -28,11 +26,10 @@ from spec_source_registry import register_source, is_source_registered, validate
 from spec_vault_ingest import ingest_text_fixture, verify_snapshot_integrity
 from spec_parser import parse_spec_from_text
 from spec_normalizer import normalize_spec, load_normalized_artifact
-from spec_indexer import build_index, search_index, load_index
+from spec_indexer import build_index, load_index
 from spec_digestor import compute_digest, check_staleness
 from requirement_extractor import extract_requirements
 from spec_verifier import verify_requirements
-from requirement_graph import build_requirement_graph
 from context_pack_builder import build_context_pack, verify_context_pack
 from spec_governance_runtime import check_citation_allowed, check_memory_only_claim
 

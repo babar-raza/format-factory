@@ -10,7 +10,6 @@ Run from repo root:
 """
 
 import sys
-import os
 import tempfile
 from pathlib import Path
 

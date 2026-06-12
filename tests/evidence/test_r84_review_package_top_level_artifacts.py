@@ -10,7 +10,6 @@ Sprint: FORMAT-FACTORY-R84
 """
 from __future__ import annotations
 
-import os
 import zipfile
 from pathlib import Path
 import pytest

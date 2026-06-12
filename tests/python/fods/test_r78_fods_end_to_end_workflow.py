@@ -18,14 +18,12 @@ import sys
 import tempfile
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 from src.python.fods import (
     parse_fods,
-    parse_fods_strict,
     write_fods,
     workbook_to_xml,
     workbook_stats,

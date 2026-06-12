@@ -7,7 +7,6 @@ Never logs raw secrets, prompts, or responses by default.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
 from pathlib import Path
 
 from tools.ai.schemas.models import AIUsageRecord

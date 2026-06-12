@@ -1,0 +1,18 @@
+"""Test skeleton for ${function_name}() — Pattern B (ExportCsv)."""
+import sys
+from pathlib import Path
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
+from ${module} import ${function_name}
+
+
+class Test${format_cap}CsvExport:
+    def test_returns_string(self):
+        # TODO: provide real source bytes
+        result = ${function_name}(b"")
+        assert isinstance(result, str)
+
+    def test_writes_file(self, tmp_path):
+        dest = tmp_path / "out.csv"
+        ${function_name}(b"", dest=dest)
+        assert dest.exists()

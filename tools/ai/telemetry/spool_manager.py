@@ -6,7 +6,6 @@ Spool replay design placeholder for Phase 2+.
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 

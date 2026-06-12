@@ -31,9 +31,7 @@ See also:
 """
 
 import argparse
-import datetime
 import hashlib
-import json
 import pathlib
 import sys
 from typing import Optional

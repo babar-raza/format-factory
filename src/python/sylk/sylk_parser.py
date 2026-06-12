@@ -620,3 +620,238 @@ def sylk_to_html(file_path: str | Path) -> str:
         lines.append("  </tr>")
     lines.append("</table>")
     return "\n".join(lines)
+
+
+# Sprint: FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001
+# Queue: broad-accel-q-005
+
+def min_column_value(file_path: str | Path, col: int) -> Any:
+    """Return the minimum numeric value in a column (1-based).
+
+    Non-numeric values are ignored. Returns None if no numeric values found.
+    """
+    doc = parse_sylk_strict(file_path)
+    nums = [c.value for c in doc.cells if c.col == col and isinstance(c.value, (int, float))]
+    return min(nums) if nums else None
+
+
+def max_column_value(file_path: str | Path, col: int) -> Any:
+    """Return the maximum numeric value in a column (1-based).
+
+    Non-numeric values are ignored. Returns None if no numeric values found.
+    """
+    doc = parse_sylk_strict(file_path)
+    nums = [c.value for c in doc.cells if c.col == col and isinstance(c.value, (int, float))]
+    return max(nums) if nums else None
+
+
+def average_column(file_path: "str | Path", col: int) -> "float":
+    """Return the average of numeric values in the given 1-based column.
+
+    Non-numeric values are ignored. Returns 0.0 if no numeric values found.
+
+    Args:
+        file_path: Path to a SYLK file.
+        col: 1-based column index.
+
+    Returns:
+        Average of numeric values, or 0.0 if none found.
+    """
+    doc = parse_sylk_strict(file_path)
+    nums = [c.value for c in doc.cells if c.col == col and isinstance(c.value, (int, float))]
+    return sum(nums) / len(nums) if nums else 0.0
+
+
+def find_value(file_path: str | Path, value: Any) -> tuple[int, int] | None:
+    """Return the (row, col) of the first cell matching value (1-based), or None.
+
+    Searches cells in row-then-column order. Returns the coordinates of the
+    first cell whose value equals the given value, or None if not found.
+
+    Args:
+        file_path: Path to SYLK file.
+        value: Value to search for (equality check).
+
+    Returns:
+        Tuple (row, col) of the first matching cell (1-based), or None.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    # Sort cells by row then column for deterministic first-match
+    sorted_cells = sorted(doc.cells, key=lambda c: (c.row, c.col))
+    for cell in sorted_cells:
+        if cell.value == value:
+            return (cell.row, cell.col)
+    return None
+
+
+def count_distinct_values(file_path: "str | Path", col: int) -> int:
+    """Count distinct non-empty values in a column (1-based).
+
+    Empty strings and None values are excluded from the count.
+
+    Args:
+        file_path: Path to SYLK file.
+        col: 1-based column index.
+
+    Returns:
+        Integer count of distinct non-empty values.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    values = get_column_values(file_path, col=col)
+    distinct: set[Any] = set()
+    for v in values:
+        if v is not None and v != "":
+            distinct.add(v)
+    return len(distinct)
+
+
+def find_rows_by_value(file_path: "str | Path", value: "Any") -> "list[int]":
+    """Return 1-based row indices where the given value appears in any cell.
+
+    Args:
+        file_path: Path to a SYLK file.
+        value: The value to search for (compared by equality).
+
+    Returns:
+        Sorted list of 1-based row numbers that contain a cell with the given value.
+        Returns empty list if value is not found.
+    """
+    doc = parse_sylk_strict(file_path)
+    matching: set[int] = set()
+    for cell in doc.cells:
+        if cell.value == value:
+            matching.add(cell.row)
+    return sorted(matching)
+
+
+def sylk_nonempty_rows(file_path: "str | Path") -> int:
+    """Return the count of rows that contain at least one non-empty cell."""
+    doc = parse_sylk_strict(file_path)
+    rows_with_data = set()
+    for cell in doc.cells:
+        val = cell.value
+        if val is not None and str(val).strip() != "":
+            rows_with_data.add(cell.row)
+    return len(rows_with_data)
+
+
+def sylk_numeric_cell_count(file_path: "str | Path") -> int:
+    """Return the count of cells that contain a numeric (int or float) value.
+
+    Args:
+        file_path: Path to SYLK (.slk) file.
+
+    Returns:
+        Integer count of numeric cells.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    count = 0
+    for cell in doc.cells:
+        val = cell.value
+        if isinstance(val, (int, float)) and not isinstance(val, bool):
+            count += 1
+    return count
+
+
+def sylk_string_cell_count(file_path: "str | Path") -> int:
+    """Return the count of cells that contain a string value.
+
+    Args:
+        file_path: Path to SYLK (.slk) file.
+
+    Returns:
+        Integer count of string cells.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    count = 0
+    for cell in doc.cells:
+        if isinstance(cell.value, str):
+            count += 1
+    return count
+
+
+def sylk_max_column_index(file_path: "str | Path") -> int:
+    """Return the maximum column index across all cells in the SYLK file.
+
+    Column indices are 1-based in SYLK format.
+
+    Args:
+        file_path: Path to SYLK (.slk) file.
+
+    Returns:
+        Integer maximum column index. Returns 0 if no cells exist.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0
+    return max(cell.col for cell in doc.cells)
+
+
+def sylk_row_count(file_path: "str | Path") -> int:
+    """Return the number of distinct row indices present in the SYLK document.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        Integer count of distinct rows. Returns 0 if no cells exist.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    rows = {cell.row for cell in doc.cells}
+    return len(rows)
+
+
+def sylk_empty_cell_count(file_path: "str | Path") -> int:
+    """Return the count of cells whose value is None or an empty string.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        Integer count of empty/null cells. Returns 0 if all cells have values.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    return sum(1 for cell in doc.cells if cell.value is None or cell.value == "")
+
+
+def sylk_total_sum(file_path: "str | Path") -> float:
+    """Return the sum of all numeric cell values across the entire SYLK document.
+
+    Iterates every cell in the document and accumulates the sum of all values
+    that are integers or floats. String and None values are skipped.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        Float sum of all numeric cell values. Returns 0.0 if no numeric cells exist.
+
+    Raises:
+        SylkError subclasses on parse failure.
+    """
+    doc = parse_sylk_strict(file_path)
+    total = 0.0
+    for cell in doc.cells:
+        if isinstance(cell.value, (int, float)):
+            total += cell.value
+    return total

@@ -19,10 +19,8 @@ Proves:
 
 import json
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
@@ -35,7 +33,6 @@ from tools.supervisor.proof_backed_poc_gate import (
     _check_examples_exist,
     _check_proof_record,
     COMMERCIAL_NET_FORMATS,
-    FOSS_PYTHON_FORMATS,
     FOSS_MINIMUM_PASS_COUNT,
 )
 

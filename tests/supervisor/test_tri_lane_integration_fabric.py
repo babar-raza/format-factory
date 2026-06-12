@@ -23,9 +23,7 @@ Required tests (15):
 """
 
 import json
-import os
 import sys
-import copy
 from pathlib import Path
 from typing import Any, Dict
 
@@ -35,7 +33,7 @@ import pytest
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_PROJECT_ROOT / "tools" / "supervisor"))
 
-from validate_tri_lane_contract import validate_contract, ValidationResult, load_contract
+from validate_tri_lane_contract import validate_contract, load_contract
 from tri_lane_integration import run_integration, _project_root
 from generate_mainstream_execution_packet import generate_mainstream_execution_packet, build_markdown
 

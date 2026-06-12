@@ -3,11 +3,9 @@
 # Ledger: R105-FOSS-PGM-WRITE-HARDENING-001
 
 import pytest
-from pathlib import Path
 from pgm.pgm_parser import (
     write_pgm,
     parse_pgm_strict,
-    PgmImage,
     PgmSizeError,
     MAX_DIMENSION,
 )

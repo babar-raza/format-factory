@@ -1,0 +1,34 @@
+"""Roundtrip test for ${format_upper}.
+
+Sprint: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-3-001
+Pattern C: Load → write → reload → compare
+"""
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+import pytest
+
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
+
+${test_import}
+
+
+class TestRoundtrip${format_cap}:
+    def test_roundtrip_preserves_${compare_field}(self, tmp_path):
+        # TODO: Replace with a real fixture or minimal bytes for this format
+        source_bytes = b""  # ADD FORMAT-SPECIFIC MINIMAL BYTES HERE
+        model = ${load_function}(source_bytes)
+        dest = tmp_path / "out.${format_name}"
+        ${write_function}(model, dest)
+        model2 = ${load_function}(dest)
+        assert model2["${compare_field}"] == model["${compare_field}"]
+
+    def test_roundtrip_file_exists(self, tmp_path):
+        source_bytes = b""  # ADD FORMAT-SPECIFIC MINIMAL BYTES HERE
+        model = ${load_function}(source_bytes)
+        dest = tmp_path / "out.${format_name}"
+        ${write_function}(model, dest)
+        assert dest.exists()
+        assert dest.stat().st_size > 0

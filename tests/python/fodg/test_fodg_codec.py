@@ -15,7 +15,6 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 SAMPLES_DIR = REPO_ROOT / "samples" / "by-format" / "fodg"
 
 from fodg.fodg_codec import (
-    FodgError,
     FodgParseError,
     FODG_MIME,
     load,

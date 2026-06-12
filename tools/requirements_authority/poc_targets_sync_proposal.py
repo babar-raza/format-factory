@@ -10,10 +10,9 @@ import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from .graph_store import GraphStore
-from .models import GraphNode
 from .poc_readiness import PocReadinessResult, TargetReadiness
 
 
@@ -170,7 +169,7 @@ class PocTargetsSyncProposalGenerator:
 
         limitations = []
         if target.verdict == "PARTIAL_WITH_CAVEATS":
-            limitations.append(f"Accepted_with_limitations — not full poc_ready")
+            limitations.append("Accepted_with_limitations — not full poc_ready")
         if target.is_stretch_target:
             limitations.append("Stretch target — not required for POC gate")
 

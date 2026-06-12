@@ -12,9 +12,8 @@ Sprint: FORMAT-FACTORY-R49-EDITABLE-OBJECT-MODEL-POC-BASELINE-AND-STRATEGY-SYNC-
 import tempfile
 from pathlib import Path
 
-import pytest
 
-from fods import parse_fods, write_fods, workbook_to_xml
+from fods import parse_fods, write_fods
 
 
 # ---------------------------------------------------------------------------

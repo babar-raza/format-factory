@@ -25,7 +25,6 @@ import argparse
 import datetime
 import hashlib
 import json
-import os
 import pathlib
 import sys
 from typing import Optional
@@ -327,7 +326,7 @@ def main():
     if hash_match:
         print(f"  MATCH: {computed}")
     else:
-        print(f"  MISMATCH!")
+        print("  MISMATCH!")
         print(f"  Expected:  {expected}")
         print(f"  Computed:  {computed}")
         write_source_manifest(normalized_dir, pdf_path, spec_index, False, computed, expected)

@@ -59,8 +59,8 @@ class TestR60SHAMismatchConfirmed:
 
         actual_sha = _compute_sha256(bundle_path)
         assert verdict_sha != actual_sha, (
-            f"R60 verdict SHA should NOT match actual bundle (IV-R60-002 should be present). "
-            f"If they match, the defect may have been resolved."
+            "R60 verdict SHA should NOT match actual bundle (IV-R60-002 should be present). "
+            "If they match, the defect may have been resolved."
         )
         # Confirm the interim vs true final SHA
         assert verdict_sha == "d2ab8404730a5b47547186c45e6e0da89ce730d7b4b6a4604dc96afe6357e295", (

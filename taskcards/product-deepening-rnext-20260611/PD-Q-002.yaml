@@ -1,0 +1,29 @@
+item_id: PD-Q-002
+title: "DIF filter_rows_by_value — filter rows by column value in-memory"
+lane: product-deepening
+status: completed
+sprint_id: FORMAT-FACTORY-SELF-HEALING-PRODUCT-DEEPENING-RNEXT-001
+run_id: format-factory-self-healing-product-deepening-rnext-20260611-2000
+acceptance_criteria: >
+  filter_rows_by_value(data, col, value) -> list implemented;
+  accepts DIF data dict (with 'data' key containing rows);
+  filters rows where value at col index matches given value;
+  returns list of matching rows; tested; ledger entry created.
+evidence_paths:
+  - src/python/dif/dif_parser.py
+  - tests/python/dif/test_pd_dif_filter_rows.py
+tests_supporting:
+  - tests/python/dif/test_pd_dif_filter_rows.py
+allowed_paths:
+  - src/python/dif/dif_parser.py
+  - src/python/dif/__init__.py
+  - tests/python/dif/test_pd_dif_filter_rows.py
+  - taskcards/product-deepening-rnext-20260611/
+  - .local/supervisor/action-queue.jsonl
+  - reports/r90/product-code-change-ledger.json
+forbidden_paths:
+  - src/net/
+  - .supervisor/
+execution_method: QUEUE_DISPATCHED_EXECUTION
+queue_item_id: pdrnext-q-002
+item_type: PRODUCT_SOURCE

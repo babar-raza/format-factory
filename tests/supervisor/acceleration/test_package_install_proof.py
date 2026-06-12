@@ -1,16 +1,12 @@
 """Tests for package_install_proof.py — package install proof helper."""
 
-import json
 import sys
 from pathlib import Path
-from unittest.mock import patch
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent / "tools" / "supervisor"))
 
 from package_install_proof import (
-    detect_changed_products,
     run_import_proof,
     run_proof,
     check_wheel_exists,

@@ -168,7 +168,7 @@ def _call_gateway(
         router = ModelRouter()
         decision = router.select(ModelSelectionRequest(role=AIRole.structured_extraction))
         if decision.fail_closed or not decision.selected_model_id:
-            return f"[fixture] No model for structured_extraction."
+            return "[fixture] No model for structured_extraction."
 
         messages = [{"role": "user", "content": prompt}]
         resp, record = gateway_chat(

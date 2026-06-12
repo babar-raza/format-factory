@@ -9,7 +9,6 @@ import sys
 import tempfile
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "python"))
 from abw.abw_codec import load, create_abw, write_abw

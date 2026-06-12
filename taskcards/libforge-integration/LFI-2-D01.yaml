@@ -1,0 +1,27 @@
+taskcard_id: LFI-2-D01
+title: "Integrate template rendering into FeatureFactory"
+lane: D
+owner_role: pilot_designer
+status: ACCEPTED_VERIFIED
+allowed_paths:
+  - "tools/supervisor/product_feature_factory.py"
+forbidden_paths:
+  - "src/python/"
+  - "src/net/"
+  - "registry/"
+inputs:
+  - "tools/supervisor/test_drivers.py"
+  - "drivers/python/"
+outputs:
+  - "tools/supervisor/product_feature_factory.py"
+file_ownership:
+  - "tools/supervisor/product_feature_factory.py"
+tests_supporting:
+  - "tests/supervisor/test_test_drivers.py"
+verification_commands:
+  - ".local/venv/Scripts/python -c \"from tools.supervisor.product_feature_factory import FeatureFactory; print('IMPORT OK')\""
+  - ".local/venv/Scripts/python -m pytest tests/supervisor/test_test_drivers.py -v"
+evidence_files:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/featurefactory-integration-test.log"
+rollback: "Revert product_feature_factory.py inline skeleton methods from git"
+closeout_criteria: "FeatureFactory imports cleanly; skeleton methods delegate to template renderer; rendered output matches golden baseline"

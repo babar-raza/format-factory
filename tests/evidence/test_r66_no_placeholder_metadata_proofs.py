@@ -1,6 +1,5 @@
 """R66 Train C: metadata proof files must not contain placeholder language."""
 
-import sys
 from pathlib import Path
 
 import pytest

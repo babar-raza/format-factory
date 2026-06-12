@@ -11,10 +11,10 @@ Critical rules:
 """
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from .graph_store import GraphStore
-from .models import POC_TARGETS, PROHIBITED_REPLACEMENTS, GraphNode
+from .models import POC_TARGETS, PROHIBITED_REPLACEMENTS
 
 # Netpbm must be retained
 NETPBM_RETAINED = True

@@ -15,7 +15,6 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 SAMPLES_DIR = REPO_ROOT / "samples" / "by-format" / "abw"
 
 from abw.abw_codec import (
-    AbwError,
     AbwParseError,
     ABW_MIME,
     load,

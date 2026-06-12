@@ -32,9 +32,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from src.python.tsv.tsv_parser import (
     parse_tsv,
     parse_tsv_strict,
-    TsvError,
     TsvInputError,
-    TsvSizeError,
     MAX_FILE_SIZE,
     MAX_ROWS,
 )

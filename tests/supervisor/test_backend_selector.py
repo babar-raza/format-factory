@@ -2,15 +2,14 @@
 Format Factory — Backend Selector Tests
 Sprint: FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001
 """
-import pytest
 import sys
 from pathlib import Path
 
 _root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_root))
 
-from tools.supervisor.execution_backend import BackendType, BackendStatus
-from tools.supervisor.backend_selector import select_backend, FORBIDDEN_ACTION_TYPES
+from tools.supervisor.execution_backend import BackendType
+from tools.supervisor.backend_selector import select_backend
 from tools.supervisor.backends.local_deterministic_backend import LocalDeterministicBackend
 from tools.supervisor.backends.superpowers_skill_backend import SuperpowersSkillBackend
 from tools.supervisor.backends.mcp_superpowers_backend import McpSuperpowersBackend

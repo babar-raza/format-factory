@@ -19,7 +19,6 @@ _ev = Path(__file__).resolve().parents[2] / "tools" / "evidence"
 if str(_ev) not in sys.path:
     sys.path.insert(0, str(_ev))
 
-import pytest
 from validate_evidence_bundle import check_closeout_hygiene_tokens, CLOSEOUT_HYGIENE_TOKENS
 
 

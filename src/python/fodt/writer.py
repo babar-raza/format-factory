@@ -46,7 +46,6 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
-from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION
 from .exceptions import FodtInputError
 
 # ODF 1.3 namespace URIs

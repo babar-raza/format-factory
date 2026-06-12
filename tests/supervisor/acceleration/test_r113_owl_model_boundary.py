@@ -8,12 +8,10 @@ Verifies:
 """
 
 import hashlib
-import importlib
 import json
 import sys
 from pathlib import Path
 
-import pytest
 
 _REPO = Path(__file__).resolve().parent.parent.parent.parent
 _POC = _REPO / "product-capability-matrix/poc-targets.yaml"

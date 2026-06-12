@@ -17,7 +17,7 @@ import io
 from pathlib import Path
 from typing import Any
 
-from .ods_parser import OdsDocument, OdsSheet, OdsCell
+from .ods_parser import OdsDocument, OdsCell
 
 
 MAX_EXPORT_ROWS = 1048576

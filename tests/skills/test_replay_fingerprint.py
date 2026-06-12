@@ -13,13 +13,11 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
 
-import pytest
 from replay_fingerprint import (
     fingerprint_requirements,
     fingerprint_lanes,
     fingerprint_prompt,
     fingerprint_stale,
-    fingerprint_plan,
     compute_sprint_fingerprint,
     compare_fingerprints,
 )

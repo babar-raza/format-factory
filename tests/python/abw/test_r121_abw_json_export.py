@@ -11,7 +11,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[3] / "src" / "python"))
 
-import pytest
 from abw.abw_codec import create_abw, export_to_json, load, write_abw
 
 

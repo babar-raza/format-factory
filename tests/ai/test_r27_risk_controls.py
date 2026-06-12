@@ -5,7 +5,6 @@ authority state visibility, gateway enforcement, secret redaction,
 fallback restriction, and cross-format isolation.
 """
 
-import pytest
 from pathlib import Path
 
 from tools.ai.validators.risk_controls import (

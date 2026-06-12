@@ -5,7 +5,6 @@
 import tempfile
 from pathlib import Path
 
-import pytest
 
 from sylk.sylk_parser import (
     SylkDocument,

@@ -5,7 +5,6 @@ Trains E, F, G: Fresh outputs, broad next-sprint, gate classifier truth.
 Sprint: FORMAT-FACTORY-R87-CLEAN-SUPERVISOR-CLOSEOUT-REVIEW-PACKAGE-POC-PRODUCT-FACTORY-DEEPENING-MEGA-TRAIN-001
 """
 
-import json
 import sys
 import tempfile
 from pathlib import Path

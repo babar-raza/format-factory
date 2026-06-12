@@ -481,6 +481,56 @@ def ods_to_csv(file_path: str | Path, sheet_index: int = 0) -> str:
     return buf.getvalue()
 
 
+def sum_column(file_path: str | Path, col: int, sheet_index: int = 0) -> float:
+    """Sum numeric values in a column (0-based) from a given sheet.
+
+    Non-numeric values (None, str) are skipped.
+
+    Args:
+        file_path: Path to ODS file.
+        col: 0-based column index.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Sum of numeric values. Returns 0.0 if no numeric values found.
+    """
+    values = get_column_values(file_path, col=col, sheet_index=sheet_index)
+    total = 0.0
+    for v in values:
+        if isinstance(v, (int, float)) and not isinstance(v, bool):
+            total += v
+    return total
+
+
+def filter_rows_by_value(
+    file_path: str | Path,
+    col: int,
+    value: Any,
+    sheet_index: int = 0,
+) -> list[list[Any]]:
+    """Return all rows where the given column equals value.
+
+    Args:
+        file_path: Path to ODS file.
+        col: 0-based column index to match on.
+        value: Value to match (exact equality).
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        List of matching rows as lists of cell values.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return []
+    sheet = doc.sheets[sheet_index]
+    result: list[list[Any]] = []
+    for row in sheet.rows:
+        cell_val = row.cells[col].value if col < len(row.cells) else None
+        if cell_val == value:
+            result.append([c.value for c in row.cells])
+    return result
+
+
 def get_column_values(file_path: str | Path, col: int, sheet_index: int = 0) -> list[Any]:
     """Return all values in a column (0-based) from a given sheet.
 
@@ -503,3 +553,330 @@ def get_column_values(file_path: str | Path, col: int, sheet_index: int = 0) -> 
         else:
             result.append(None)
     return result
+
+
+def average_column(file_path: str | Path, col: int, sheet_index: int = 0) -> float:
+    """Return the average of numeric values in a column (0-based).
+
+    Non-numeric values (None, str, bool) are skipped.
+
+    Args:
+        file_path: Path to ODS file.
+        col: 0-based column index.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Average of numeric values. Returns 0.0 if no numeric values found.
+    """
+    values = get_column_values(file_path, col=col, sheet_index=sheet_index)
+    nums = [v for v in values if isinstance(v, (int, float)) and not isinstance(v, bool)]
+    return sum(nums) / len(nums) if nums else 0.0
+
+
+def max_column_value(file_path: str | Path, col: int, sheet_index: int = 0) -> Any:
+    """Return the maximum numeric value in a column (0-based).
+
+    Non-numeric values (None, str, bool) are skipped.
+
+    Args:
+        file_path: Path to ODS file.
+        col: 0-based column index.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Maximum numeric value, or None if no numeric values found.
+    """
+    values = get_column_values(file_path, col=col, sheet_index=sheet_index)
+    nums = [v for v in values if isinstance(v, (int, float)) and not isinstance(v, bool)]
+    return max(nums) if nums else None
+
+
+def min_column_value(file_path: str | Path, col: int, sheet_index: int = 0) -> Any:
+    """Return the minimum numeric value in a column (0-based).
+
+    Non-numeric values (None, str, bool) are skipped.
+
+    Args:
+        file_path: Path to ODS file.
+        col: 0-based column index.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Minimum numeric value, or None if no numeric values found.
+    """
+    values = get_column_values(file_path, col=col, sheet_index=sheet_index)
+    nums = [v for v in values if isinstance(v, (int, float)) and not isinstance(v, bool)]
+    return min(nums) if nums else None
+
+
+def ods_to_html(file_path: str | Path, sheet_index: int = 0) -> str:
+    """Export an ODS sheet as an HTML table string.
+
+    Cell values are HTML-escaped. Produces a standalone <table> element.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        HTML string. Empty string if sheet not found or sheet is empty.
+    """
+    from html import escape as _esc
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return ""
+    sheet = doc.sheets[sheet_index]
+    if not sheet.rows:
+        return "<table></table>"
+
+    lines = ["<table>"]
+    for row in sheet.rows:
+        lines.append("  <tr>")
+        for cell in row.cells:
+            val = cell.value
+            if val is None:
+                text = ""
+            elif isinstance(val, float) and val == int(val):
+                text = str(int(val))
+            else:
+                text = str(val)
+            lines.append(f"    <td>{_esc(text)}</td>")
+        lines.append("  </tr>")
+    lines.append("</table>")
+    return "\n".join(lines)
+
+
+def get_sheet_as_dict_list(
+    file_path: str | Path, sheet_index: int = 0
+) -> list[dict[str, Any]]:
+    """Return sheet rows as a list of dicts, using the first row as headers.
+
+    The first row is treated as column headers. Each subsequent row becomes a
+    dict mapping header name → cell value. If a row is shorter than the header,
+    missing fields default to None. If a row is longer, extra cells are ignored.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        List of dicts (one per data row, excluding header). Empty list if sheet
+        has fewer than 2 rows or is not found.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return []
+    sheet = doc.sheets[sheet_index]
+    if len(sheet.rows) < 2:
+        return []
+
+    headers = [str(c.value) if c.value is not None else "" for c in sheet.rows[0].cells]
+    result = []
+    for row in sheet.rows[1:]:
+        cells = row.cells
+        record: dict[str, Any] = {}
+        for i, header in enumerate(headers):
+            if i < len(cells):
+                record[header] = cells[i].value
+            else:
+                record[header] = None
+        result.append(record)
+    return result
+
+
+def count_nonempty_cells(file_path: str | Path, sheet_index: int = 0) -> int:
+    """Count cells with non-None, non-empty-string values in a sheet.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Count of non-empty cells. Returns 0 if sheet not found.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    count = 0
+    for row in sheet.rows:
+        for cell in row.cells:
+            val = cell.value
+            if val is not None and val != "":
+                count += 1
+    return count
+
+
+def count_distinct_values(
+    file_path: str | Path,
+    col: int,
+    sheet_index: int = 0,
+) -> int:
+    """Count distinct non-empty values in a column (0-based).
+
+    Empty strings and None values are excluded from the count.
+
+    Args:
+        file_path: Path to ODS file.
+        col: 0-based column index.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Number of unique non-empty cell values.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    values = get_column_values(file_path, col=col, sheet_index=sheet_index)
+    distinct: set[Any] = set()
+    for v in values:
+        if v is not None and v != "":
+            distinct.add(v)
+    return len(distinct)
+
+
+def sum_row(
+    file_path: str | Path,
+    row: int,
+    sheet_index: int = 0,
+) -> float:
+    """Return the sum of numeric values in a row.
+
+    Args:
+        file_path: Path to ODS file.
+        row: 0-based row index.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Sum of numeric values. Returns 0.0 if no numeric cells found.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0.0
+    sheet = doc.sheets[sheet_index]
+    if row < 0 or row >= len(sheet.rows):
+        return 0.0
+    total = 0.0
+    for cell in sheet.rows[row].cells:
+        val = cell.value
+        if isinstance(val, (int, float)):
+            total += val
+        elif isinstance(val, str):
+            try:
+                total += float(val)
+            except (ValueError, TypeError):
+                pass
+    return total
+
+
+def ods_max_row_length(file_path: "str | Path", sheet_index: int = 0) -> int:
+    """Return the maximum number of cells in any single row of a sheet.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Integer max cell count. Returns 0 if sheet is empty or not found.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    if not sheet.rows:
+        return 0
+    return max(len(row.cells) for row in sheet.rows)
+
+
+def ods_numeric_cell_count(file_path: "str | Path", sheet_index: int = 0) -> int:
+    """Return the count of cells containing numeric (int or float) values.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Integer count of numeric cells. Returns 0 if sheet is empty or not found.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    count = 0
+    for row in sheet.rows:
+        for cell in row.cells:
+            val = cell.value
+            if isinstance(val, (int, float)) and not isinstance(val, bool):
+                count += 1
+    return count
+
+
+def ods_string_cell_count(file_path: "str | Path", sheet_index: int = 0) -> int:
+    """Return the count of cells that contain non-numeric, non-empty string values.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Integer count of string cells. Returns 0 if sheet is empty or not found.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    count = 0
+    for row in sheet.rows:
+        for cell in row.cells:
+            val = cell.value
+            if val is None or val == "":
+                continue
+            try:
+                float(str(val))
+            except (ValueError, TypeError):
+                count += 1
+    return count
+
+
+def ods_empty_cell_count(file_path: "str | Path", sheet_index: int = 0) -> int:
+    """Return the count of cells with no value (None or empty string).
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Integer count of empty cells. Returns 0 if sheet is empty or not found.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    count = 0
+    for row in sheet.rows:
+        for cell in row.cells:
+            val = cell.value
+            if val is None or val == "":
+                count += 1
+    return count

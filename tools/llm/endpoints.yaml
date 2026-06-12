@@ -42,9 +42,12 @@ endpoints:
     auth_env: PROFESSIONALIZE_API_KEY
     priority: 2
     discovery: false
+    default_model: gpt-oss
+    embedding_model: qwen3-embedding-8b
     task_types:
       - spec-analysis
       - batch-sample-analysis
+      - embedding
 
   # Local Ollama — local discoverable endpoint
   - id: local-ollama

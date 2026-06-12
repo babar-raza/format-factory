@@ -38,6 +38,13 @@ from .fodg_codec import (
     export_to_csv,
     roundtrip,
     find_text,
+    get_page_text,
+    total_text_length,
+    find_shapes_by_text_pattern,
+    export_page_to_json,
+    fodg_page_shape_count,
+    fodg_total_shape_count,
+    fodg_text_shape_count,
 )
 
 __all__ = [
@@ -70,6 +77,13 @@ __all__ = [
     "export_to_csv",
     "roundtrip",
     "find_text",
+    "get_page_text",
+    "total_text_length",
+    "find_shapes_by_text_pattern",
+    "export_page_to_json",
+    "fodg_page_shape_count",
+    "fodg_total_shape_count",
+    "fodg_text_shape_count",
 ]
 
 __version__ = "0.1.0.dev0"

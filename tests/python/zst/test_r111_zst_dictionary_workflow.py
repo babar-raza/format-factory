@@ -2,7 +2,8 @@
 # Tests compress_bytes/decompress_bytes with varying levels and data patterns
 
 import pytest
-import sys, os
+import sys
+import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../src/python"))
 
 from zst.zst_codec import compress_bytes, decompress_bytes

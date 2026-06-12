@@ -14,6 +14,12 @@ credential authority.
 The key distinction is between **preparation** (always agent-owned) and **execution**
 (human-only when it is a true external gate).
 
+**Extended by:** Human-Free Autonomy Doctrine (AGENTS.md §AG, 2026-06-12).
+Before classifying any action as human-only, apply the Human Task Conversion Rule (AGENTS.md §AG1):
+evaluate whether an agent with the right role, tools, permissions, and evidence can do it.
+Only classify as human-only when the Stop Reason Adjudicator returns TRUE_EXTERNAL_GATE or
+UNSAFE_WORKSPACE. Use specific blocker codes (AGENTS.md §AG6) instead of vague "needs human".
+
 ## Agent-Owned Actions (never require human to proceed)
 
 The agent may independently perform all of these without waiting for human approval:

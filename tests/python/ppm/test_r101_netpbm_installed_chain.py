@@ -6,7 +6,6 @@
 import tempfile
 from pathlib import Path
 
-import pytest
 
 from pbm.pbm_parser import parse_pbm_strict, write_pbm
 from pgm.pgm_parser import parse_pgm_strict, write_pgm

@@ -7,7 +7,6 @@ Run:
   PYTHONPATH=... python -m pytest tests/skills/test_prompt_quality_gate.py -v
 """
 
-import pytest
 import sys
 from pathlib import Path
 

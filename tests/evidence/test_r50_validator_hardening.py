@@ -21,7 +21,6 @@ import sys
 import zipfile
 from pathlib import Path
 
-import pytest
 
 # ---------------------------------------------------------------------------
 # Import the validator functions

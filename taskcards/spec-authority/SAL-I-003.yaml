@@ -1,0 +1,32 @@
+id: SAL-I-003
+title: "READINESS/RELEASE_GATE authority gate enforcement"
+sprint: FORMAT-FACTORY-SAL-VERIFICATION-HEALING-HARDENING-BACKFILL-SINGLE-GO-001
+status: COMPLETED
+completed_in_run: sal-verification-healing-hardening-backfill-single-go-20260611-8e45224
+completed_date: "2026-06-11"
+
+description: >
+  Enforce authority gate for READINESS and RELEASE_GATE item types via V13
+  governance validator. Debt-only exceptions (no_public_spec_available,
+  schema_authority_available, legacy_backfill) are rejected for READINESS/RELEASE_GATE.
+  Only fallback_authority_approved + exception_rationale or valid FACT-* refs are accepted.
+
+files_changed:
+  - tests/supervisor/test_readiness_authority_gate.py
+  - (governance_validators.py already handles this via V13 SAL-I-001)
+
+tests_added: 8
+tests_result: 8/8 PASS
+
+gap_closed: GAP-03
+root_cause: >
+  governance_validators.py was missing validate_spec_fact_refs check. Once
+  V13 (SAL-I-001) was wired, READINESS enforcement became automatic. No separate
+  grader-level change was needed.
+
+enforcement_policy: >
+  - no_public_spec_available → BLOCKS READINESS (debt-only)
+  - schema_authority_available → BLOCKS READINESS (debt-only)
+  - legacy_backfill → BLOCKS RELEASE_GATE (cannot release with debt)
+  - fallback_authority_approved + exception_rationale → ALLOWS READINESS
+  - FACT-* refs present → ALLOWS READINESS

@@ -21,9 +21,8 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
@@ -35,8 +34,6 @@ from execution_simulator import (
     simulate_all_formats,
     _blocked_result,
     _GOVERNANCE_FLAGS,
-    SIMULATION_LANES,
-    LANE_PREREQUISITES,
 )
 
 
@@ -414,7 +411,6 @@ class TestSimulateAllFormatsMocked:
 class TestSimulationSafetyBoundary:
     def test_no_subprocess_call(self):
         """execution_simulator must never import or call subprocess."""
-        import importlib
         import execution_simulator as esm
         assert not hasattr(esm, "subprocess"), "subprocess must not be imported"
 

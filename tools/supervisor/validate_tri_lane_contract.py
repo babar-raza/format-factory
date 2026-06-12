@@ -37,8 +37,7 @@ Exit codes:
 import json
 import sys
 import os
-from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 
 REQUIRED_TOP_LEVEL_BLOCKS = [
@@ -326,7 +325,7 @@ def check_svg_not_replacing_netpbm(contract: Dict[str, Any], result: ValidationR
         if fam.get("family", "") in NETPBM_FAMILY_NAMES:
             if fam.get("svg_replacement_rejected") is not True:
                 result.add_warning(
-                    f"SUPERVISOR_SVG_REJECTION_NOT_EXPLICIT: Netpbm entry does not explicitly set svg_replacement_rejected=true"
+                    "SUPERVISOR_SVG_REJECTION_NOT_EXPLICIT: Netpbm entry does not explicitly set svg_replacement_rejected=true"
                 )
             else:
                 result.add_pass("SUPERVISOR_SVG_REJECTION_CONFIRMED: svg_replacement_rejected=true on Netpbm")
@@ -502,7 +501,7 @@ def load_contract(path: str) -> Dict[str, Any]:
 
 def print_result(result: ValidationResult, verbose: bool = True) -> None:
     """Print validation results to stdout."""
-    print(f"\n=== Tri-Lane Contract Validation ===")
+    print("\n=== Tri-Lane Contract Validation ===")
     print(f"Verdict: {result.verdict()}")
     print(f"Checks passed: {len(result.checks_passed)}")
     print(f"Errors: {len(result.errors)}")

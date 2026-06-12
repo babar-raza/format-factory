@@ -4,9 +4,7 @@ Tests for namespace isolation, stale index detection, cross-namespace rejection,
 embedding model fingerprint change, and missing model fail-closed.
 """
 
-import json
 import pytest
-from pathlib import Path
 
 from tools.ai.retrieval.namespace_manager import (
     CrossNamespaceError,

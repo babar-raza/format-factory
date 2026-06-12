@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,12 +21,11 @@ for p in [str(_repo_root), str(_here), str(_here / "backends")]:
     if p not in sys.path:
         sys.path.insert(0, p)
 
-from tools.supervisor.execution_backend import BackendResult, BackendType, ProofLevel
 from tools.supervisor.next_action_schema import (
     NextActionValidationError,
     load_and_validate,
 )
-from tools.supervisor.backend_selector import select_backend, BackendSelectionTrace
+from tools.supervisor.backend_selector import select_backend
 from tools.supervisor.backends.local_deterministic_backend import LocalDeterministicBackend
 
 

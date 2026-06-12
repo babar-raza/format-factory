@@ -290,3 +290,211 @@ def get_capabilities() -> dict[str, Any]:
         "unsupported": sorted(UNSUPPORTED_FEATURES),
         "commercial_product_ready": False,
     }
+
+
+def get_row_count(file_path: "str | Path") -> int:
+    """Return the number of data rows in a CSV file (excluding header if present).
+
+    Args:
+        file_path: Path to the CSV file.
+
+    Returns:
+        Integer count of data rows. Returns 0 if file is empty or header-only.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    return len(rows)
+
+
+def get_column_names(file_path: "str | Path") -> "list[str]":
+    """Return the column names (header row) from a CSV file.
+
+    Args:
+        file_path: Path to the CSV file.
+
+    Returns:
+        List of column name strings. Empty list if no header detected.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    return list(model.get("headers", []) or [])
+
+
+def get_cell_value(file_path: "str | Path", row: int, col: int) -> "str | None":
+    """Return the string value at the given row and column position.
+
+    Args:
+        file_path: Path to the CSV file.
+        row: 0-based row index (excluding header).
+        col: 0-based column index.
+
+    Returns:
+        Cell value as a string, or None if out of range.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if row < 0 or row >= len(rows):
+        return None
+    row_data = rows[row]
+    if col < 0 or col >= len(row_data):
+        return None
+    return str(row_data[col])
+
+
+def count_empty_cells(file_path: "str | Path", col_name: str) -> int:
+    """Return the number of empty (blank) cells in a named column.
+
+    Args:
+        file_path: Path to the CSV file.
+        col_name:  Column header name to inspect.
+
+    Returns:
+        Count of cells in that column whose stripped value is empty string.
+        Returns 0 if the column is not found or the file has no data rows.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    headers = model.get("headers") or []
+    if col_name not in headers:
+        return 0
+    col_idx = headers.index(col_name)
+    rows = model.get("rows", [])
+    return sum(1 for row in rows if col_idx >= len(row) or row[col_idx].strip() == "")
+
+
+def csv_to_dicts(file_path: "str | Path") -> "list[dict[str, str]]":
+    """Return CSV rows as a list of dicts mapping column names to string values.
+
+    If the file has a detected header row, column names come from the header.
+    Otherwise, columns are named "col_0", "col_1", etc.
+
+    Args:
+        file_path: Path to the CSV file.
+
+    Returns:
+        List of dicts, one per data row. Empty list if file has no data rows.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return []
+    headers = model.get("headers")
+    if headers:
+        keys = headers
+    else:
+        col_count = max(len(r) for r in rows)
+        keys = [f"col_{i}" for i in range(col_count)]
+    result = []
+    for row in rows:
+        d = {keys[i]: row[i] if i < len(row) else "" for i in range(len(keys))}
+        result.append(d)
+    return result
+
+
+def csv_column_count(file_path: "str | Path") -> int:
+    """Return the number of columns in the CSV file (length of the header/first row).
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Integer column count. Returns 0 for empty files.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    return model.get("column_count", 0)
+
+
+def csv_has_header(file_path: "str | Path") -> bool:
+    """Return True if the CSV file was detected as having a header row.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Boolean indicating whether a header row was detected.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    return bool(model.get("has_header", False))
+
+
+def csv_numeric_row_count(file_path: "str | Path") -> int:
+    """Return the count of rows where all non-empty cells are numeric.
+
+    A row is considered numeric if every non-empty cell value can be parsed as float.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Integer count of all-numeric rows. Returns 0 if no such rows exist.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    count = 0
+    for row in model.get("rows", []):
+        non_empty = [str(c) for c in row if str(c).strip()]
+        if not non_empty:
+            continue
+        try:
+            for c in non_empty:
+                float(c)
+            count += 1
+        except ValueError:
+            pass
+    return count
+
+
+def count_distinct_values(file_path: "str | Path", col_name: str) -> int:
+    """Return the count of distinct non-empty values in a CSV column.
+
+    Args:
+        file_path: Path to the CSV file.
+        col_name: Column header name to inspect.
+
+    Returns:
+        Integer count of unique non-empty cell values.
+        Returns 0 if the column is not found.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    headers = model.get("headers") or []
+    rows = model.get("rows", [])
+    # When header detection fails (all-text CSV), check the first data row
+    if col_name not in headers and rows:
+        first_row = rows[0]
+        if col_name in first_row:
+            headers = first_row
+            rows = rows[1:]
+    if col_name not in headers:
+        return 0
+    col_idx = headers.index(col_name)
+    distinct: set[str] = set()
+    for row in rows:
+        if col_idx < len(row):
+            val = str(row[col_idx]).strip()
+            if val:
+                distinct.add(val)
+    return len(distinct)

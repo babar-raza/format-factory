@@ -2,7 +2,8 @@
 # Tests dif_to_csv and parse_dif with edge-case data
 
 import pytest
-import sys, os
+import sys
+import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../src/python"))
 
 from dif.dif_parser import parse_dif, dif_to_csv, parse_dif_strict

@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from pathlib import Path
 import yaml
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 POLICIES_FILE = PROJECT_ROOT / ".supervisor" / "policies.yaml"

@@ -144,7 +144,7 @@ def run_validation(
         _check(report, "graph_load",
                node_count > 0 or edge_count == 0,
                f"Loaded {node_count} nodes, {edge_count} edges from {graph_dir}",
-               f"nodes.jsonl + edges.jsonl parsed successfully")
+               "nodes.jsonl + edges.jsonl parsed successfully")
     else:
         # Use an empty store for smoke-test validation
         store = GraphStore()

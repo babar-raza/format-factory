@@ -18,14 +18,12 @@ import zipfile
 import io
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from tools.evidence.validate_evidence_bundle import (
     check_repo_reports_pending,
-    check_no_pending_reports,
     PENDING_MARKER_PATTERNS,
 )
 
@@ -33,8 +31,8 @@ from tools.evidence.validate_evidence_bundle import (
 def _make_zip_with_verdict(content: str, run: str = "r74") -> io.BytesIO:
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, 'w') as zf:
-        zf.writestr(f"bundle-metadata/sprint-id.txt",
-                    f"FORMAT-FACTORY-R74-TEST\n")
+        zf.writestr("bundle-metadata/sprint-id.txt",
+                    "FORMAT-FACTORY-R74-TEST\n")
         zf.writestr(f"repo/reports/{run}/final-verdict.md", content)
     buf.seek(0)
     return buf

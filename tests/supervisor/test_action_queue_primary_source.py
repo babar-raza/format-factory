@@ -4,9 +4,7 @@ Sprint: FORMAT-FACTORY-H6-AUTONOMOUS-PRODUCT-QUEUE-CONSUMPTION-001
 """
 from __future__ import annotations
 
-import json
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -15,10 +13,8 @@ _repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_repo_root))
 
 from tools.supervisor.action_queue import (
-    STATUS_PENDING, STATUS_RUNNING, STATUS_DONE, STATUS_FAILED,
     FORBIDDEN_IN_QUEUE,
-    dequeue_next, mark_done, mark_failed, enqueue,
-    _load_queue, _save_queue,
+    dequeue_next, mark_done, mark_failed, _load_queue, _save_queue,
 )
 from tools.supervisor.autonomous_orchestrator import _queue_item_to_next_action
 
@@ -154,7 +150,6 @@ def test_product_gap_classification_in_safe_pilot_actions():
 
 
 def test_product_gap_classification_not_in_forbidden():
-    from tools.supervisor.action_queue import FORBIDDEN_IN_QUEUE
     assert "PRODUCT_GAP_CLASSIFICATION_READONLY" not in FORBIDDEN_IN_QUEUE
 
 
@@ -162,7 +157,6 @@ def test_product_gap_classification_not_in_forbidden():
 
 def test_advisory_md_not_an_action_type_in_forbidden_set():
     """Advisory Markdown file names never appear as action types in FORBIDDEN_IN_QUEUE."""
-    from tools.supervisor.action_queue import FORBIDDEN_IN_QUEUE
     import re
     md_pattern = re.compile(r'\.md$', re.IGNORECASE)
     for forbidden in FORBIDDEN_IN_QUEUE:

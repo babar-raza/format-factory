@@ -3,7 +3,6 @@ R100 — Inspector Unit Tests
 Tests inspect_item(), inspect_declaration(), and check_test_file_content().
 """
 import sys
-import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]

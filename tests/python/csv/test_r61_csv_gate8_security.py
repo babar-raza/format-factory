@@ -11,14 +11,13 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 import tempfile
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.python.csv.csv_parser import parse_csv, probe_csv, CsvError  # noqa: E402
+from src.python.csv.csv_parser import parse_csv, probe_csv  # noqa: E402
 
 
 def _parse_text(text: str) -> dict:

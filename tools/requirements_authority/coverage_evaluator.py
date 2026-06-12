@@ -17,7 +17,7 @@ Minimum proof per capability type:
   roundtrip:     DOGFOODED + evidence package
 """
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from .graph_store import GraphStore
 from .models import GraphNode, PROOF_LEVELS

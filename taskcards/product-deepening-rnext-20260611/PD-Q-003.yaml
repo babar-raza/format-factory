@@ -1,0 +1,29 @@
+item_id: PD-Q-003
+title: "ABW get_words — tokenize and return words from a specific paragraph"
+lane: product-deepening
+status: completed
+sprint_id: FORMAT-FACTORY-SELF-HEALING-PRODUCT-DEEPENING-RNEXT-001
+run_id: format-factory-self-healing-product-deepening-rnext-20260611-2000
+acceptance_criteria: >
+  get_words(model, para_idx) -> list[str] implemented;
+  returns tokenized words (split on whitespace) from paragraph at para_idx;
+  returns [] for invalid index or empty paragraph;
+  tested; exported from __init__.py; ledger entry created.
+evidence_paths:
+  - src/python/abw/abw_codec.py
+  - tests/python/abw/test_pd_abw_get_words.py
+tests_supporting:
+  - tests/python/abw/test_pd_abw_get_words.py
+allowed_paths:
+  - src/python/abw/abw_codec.py
+  - src/python/abw/__init__.py
+  - tests/python/abw/test_pd_abw_get_words.py
+  - taskcards/product-deepening-rnext-20260611/
+  - .local/supervisor/action-queue.jsonl
+  - reports/r90/product-code-change-ledger.json
+forbidden_paths:
+  - src/net/
+  - .supervisor/
+execution_method: QUEUE_DISPATCHED_EXECUTION
+queue_item_id: pdrnext-q-003
+item_type: PRODUCT_SOURCE

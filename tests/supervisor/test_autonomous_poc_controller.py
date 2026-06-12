@@ -12,7 +12,6 @@ import json
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from tools.supervisor.autonomous_poc_controller import (
@@ -26,7 +25,6 @@ from tools.supervisor.autonomous_poc_controller import (
     NON_TERMINAL_REPAIR,
     NON_TERMINAL_REROUTE,
     GATE_CLASS_FALSE_STOP,
-    GATE_CLASS_RELEASE_ONLY,
     GATE_CLASS_NOT_REQUIRED,
     GATE_CLASS_AGENT_REVIEWABLE,
     GATE_CLASS_TRUE_EXTERNAL,
@@ -36,7 +34,6 @@ from tools.supervisor.autonomous_poc_controller import (
     reclassify_supervisor_signal,
     write_train_state,
     write_next_iteration_prompt,
-    build_poc_dashboard,
     reconcile_dashboard_contradiction,
     classify_human_gate_item,
     evaluate_evidence_quality_override,

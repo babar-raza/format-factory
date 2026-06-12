@@ -8,11 +8,8 @@ These tests verify the fixed discovery logic.
 """
 
 import sys
-import json
-import tempfile
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
 from anti_skip_checker import (
@@ -258,7 +255,7 @@ class TestR100RegressionIntegration:
         ]:
             log_path = tmp_path / "reports" / run_id / "raw-logs" / log_name
             log_path.parent.mkdir(parents=True, exist_ok=True)
-            log_path.write_text(f"28 passed\n36 passed\n25 passed\n1295 passed\n1532 passed")
+            log_path.write_text("28 passed\n36 passed\n25 passed\n1295 passed\n1532 passed")
 
         declaration = {
             "run_id": run_id,

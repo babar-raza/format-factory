@@ -6,19 +6,13 @@ Added: 2026-06-08
 Tests for tools/supervisor/authority_gate_validation.py
 """
 import sys
-import tempfile
 from pathlib import Path
-from unittest.mock import patch
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
 
 from authority_gate_validation import (
     validate_format_authority,
-    _load_format_spec_state,
-    _check_code_citations,
-    _check_test_citations,
     NO_PUBLIC_SPEC_FORMATS,
     SCHEMA_ONLY_FORMATS,
     MIN_PRODUCT_EXPANSION_LEVEL,

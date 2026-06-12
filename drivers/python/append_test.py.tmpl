@@ -1,0 +1,14 @@
+"""Test skeleton for ${function_name}() — Pattern D (Append)."""
+import sys
+from pathlib import Path
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
+from ${module} import ${function_name}
+
+
+class Test${format_cap}Append:
+    def test_append_increases_count(self):
+        # TODO: provide real source bytes
+        result = ${function_name}(b"", [])
+        assert isinstance(result, dict)
+        assert "${collection_key}" in result

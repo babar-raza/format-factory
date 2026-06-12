@@ -9,12 +9,10 @@ Gate 8 TC-7: PARTIALLY_MITIGATED in prototype (recursive). This module
 verifies the product source resolves TC-7 fully.
 """
 import xml.etree.ElementTree as ET
-from pathlib import Path
 
-import pytest
 
 from fodt.list_traversal import collect_list_items
-from fodt.constants import NS_TEXT, QN_LIST, QN_LIST_ITEM, QN_TEXT_P
+from fodt.constants import NS_TEXT
 
 
 def _build_list_xml(*items, ns=NS_TEXT) -> ET.Element:

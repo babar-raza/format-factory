@@ -12,7 +12,6 @@ Run from repo root:
 """
 
 import sys
-import tempfile
 import zipfile
 from pathlib import Path
 

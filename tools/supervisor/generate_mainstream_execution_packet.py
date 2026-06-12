@@ -39,7 +39,6 @@ Exit codes:
 """
 
 import json
-import os
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -356,7 +355,7 @@ def main() -> int:
 
     packet = generate_mainstream_execution_packet(root)
 
-    print(f"\n=== Mainstream Execution Packet ===")
+    print("\n=== Mainstream Execution Packet ===")
     print(f"Sprint: {packet['sprint_id']}")
     print(f"Families: {packet['family_count']}")
     print(f"Integration status: {packet['integration_status']}")

@@ -1,52 +1,12 @@
 [
   {
-    "item_id": "W0-PREFLIGHT",
-    "item_title": "Verify continuation signal and approval-gates (iter 9/12)",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/supervisor/continuation-signal.json",
-      "reports/supervisor/approval-gates.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified",
-      "Evidence shows iteration 10 instead of the expected iteration 9/12, indicating a scope mismatch.",
-      "The continuation signal JSON reports \"autonomous_continue\": false, while the approval-gates summary states \"AUTONOMOUS_CONTINUE: YES\", a contradictory inconsistency.",
-      "No test code or execution logs are provided to demonstrate that the system actually evaluated the continuation signal and approval gates.",
-      "The evidence consists only of static JSON and markdown files without any verification steps, making coverage thin and not demonstrative of the required functionality."
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence shows iteration 10 instead of the expected iteration 9/12, indicating a scope mismatch.; The continuation signal JSON reports \"autonomous_continue\": false, while the approval-gates summary states \"AUTONOMOUS_CONTINUE: YES\", a contradictory inconsistency.; No test code or execution logs are provided to demonstrate that the system actually evaluated the continuation signal and approval gates.; The evidence consists only of static JSON and markdown files without any verification steps, making coverage thin and not demonstrative of the required functionality.",
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.95,
-      "stub_detected": false,
-      "deficiencies": [
-        "Evidence shows iteration 10 instead of the expected iteration 9/12, indicating a scope mismatch.",
-        "The continuation signal JSON reports \"autonomous_continue\": false, while the approval-gates summary states \"AUTONOMOUS_CONTINUE: YES\", a contradictory inconsistency.",
-        "No test code or execution logs are provided to demonstrate that the system actually evaluated the continuation signal and approval gates.",
-        "The evidence consists only of static JSON and markdown files without any verification steps, making coverage thin and not demonstrative of the required functionality."
-      ],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W1-GENERATOR",
-    "item_title": "TC-GENERATOR: Add Sprint 10 expansion goals to autonomous_task_generator.py",
+    "item_id": "RNEXT-LA",
+    "item_title": "Lane A \u2014 Current-state inspection and governance failure documentation",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "tools/supervisor/autonomous_task_generator.py"
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/current-state-inspection.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -60,26 +20,229 @@
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W1-GENERATOR",
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for RNEXT-LA",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.85,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "RNEXT-LB",
+    "item_title": "Lane B \u2014 Governance blocker repair ledger (claim_classification, source_diff, route_decision fixes)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/governance-blocker-repair-ledger.yaml"
+    ],
+    "tests_supporting": [
+      "tests/supervisor/test_governance_validators_spec_fact_refs.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.0,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": false
+    }
+  },
+  {
+    "item_id": "RNEXT-LC",
+    "item_title": "Lane C \u2014 Raw log index",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/raw-log-index.json"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified",
+      "Missing entry for lane C in the raw log index, which is the primary work item.",
+      "Evidence only lists other lanes; does not demonstrate that lane C logs were indexed.",
+      "No verification that the listed log files correspond to actual generated logs (no checksum validation or cross\u2011reference).",
+      "Scope mismatch: evidence covers unrelated lanes rather than the claimed lane C."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Missing entry for lane C in the raw log index, which is the primary work item.; Evidence only lists other lanes; does not demonstrate that lane C logs were indexed.; No verification that the listed log files correspond to actual generated logs (no checksum validation or cross\u2011reference).; Scope mismatch: evidence covers unrelated lanes rather than the claimed lane C.",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [
+        "Missing entry for lane C in the raw log index, which is the primary work item.",
+        "Evidence only lists other lanes; does not demonstrate that lane C logs were indexed.",
+        "No verification that the listed log files correspond to actual generated logs (no checksum validation or cross\u2011reference).",
+        "Scope mismatch: evidence covers unrelated lanes rather than the claimed lane C."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "RNEXT-LD",
+    "item_title": "Lane D \u2014 Authority bypass hardening: remove investigation_only/sample_only from executor",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/authority-bypass-hardening-proof.json",
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/diff-product-source-executor.patch"
+    ],
+    "tests_supporting": [
+      "tests/supervisor/test_authority_preflight.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.82,
+      "stub_detected": false,
+      "deficiencies": [
+        "Test file content not provided \u2013 cannot verify that assertions actually test the removal of investigation_only and sample_only_non_product.",
+        "Only a summary JSON and a diff are shown; the implementation of the block check using _NON_PRODUCT_EXCEPTION_CLASSES is not visible in the provided snippet.",
+        "No evidence of execution results (e.g., test run logs) beyond the JSON flag \"all_pass\": true.",
+        "Potential thin coverage \u2013 the claim of 6 new tests is not substantiated without seeing the test cases."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "RNEXT-LE",
+    "item_title": "Lane E \u2014 ZST package export fix: add 5 missing functions to __init__.py",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/zst-package-sample-proof.json",
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/diff-zst-init.patch"
+    ],
+    "tests_supporting": [
+      "tests/python/zst/test_r167_zst_package_export.py",
+      "tests/python/zst/test_r168_zst_frame_size_stats.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (2 files)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "",
     "semantic_verification": {
       "adequate": true,
       "confidence": 0.78,
       "stub_detected": false,
       "deficiencies": [
-        "Evidence consists only of the updated source file; there are no accompanying tests or validation scripts confirming that the new expansion goals are correctly consumed by the generator logic.",
-        "No explicit comment or documentation linking the added entries to the Sprint\u202f10 objectives, making it harder to verify that the correct goals were added."
+        "The actual test file (tests/python/zst/test_r167_zst_package_export.py) is not included, so the depth and relevance of the 8 tests cannot be verified."
       ],
       "llm_used": true
     }
   },
   {
-    "item_id": "W2-CANDIDATES",
-    "item_title": "TC-CANDIDATES: Regenerate product-task-candidates.json with 10 Sprint 10 tasks",
+    "item_id": "RNEXT-LF",
+    "item_title": "Lane F \u2014 Product code ledger: add 4 new ZST function entries",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/product-code-ledger-proof.json"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for RNEXT-LF",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.96,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "RNEXT-LG",
+    "item_title": "Lane G \u2014 Product advancement: add get_frame_size_stats() to zst_codec.py",
     "declared_status": "completed",
     "supervisor_grade": "REWORK_REQUIRED",
     "evidence_found": true,
     "evidence_paths": [
-      "product-task-candidates.json"
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/product-advancement-ledger.json",
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/diff-zst-codec.patch"
+    ],
+    "tests_supporting": [
+      "tests/python/zst/test_r168_zst_frame_size_stats.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['The provided diff does not contain the implementation of get_frame_size_stats; the function is missing from the changed file.', 'No test file content is included, so we cannot verify that the claimed 11 tests actually exercise the new function or contain meaningful assertions.', 'The added code focuses on unrelated helper functions (compress_string, decompress_to_string, etc.), indicating a scope mismatch with the work item.', 'Without seeing the test code, there is a risk that the tests are stubs (e.g., only assert True or pass) rather than validating the returned statistics.']",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for RNEXT-LG.",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.68,
+      "stub_detected": true,
+      "deficiencies": [
+        "The provided diff does not contain the implementation of get_frame_size_stats; the function is missing from the changed file.",
+        "No test file content is included, so we cannot verify that the claimed 11 tests actually exercise the new function or contain meaningful assertions.",
+        "The added code focuses on unrelated helper functions (compress_string, decompress_to_string, etc.), indicating a scope mismatch with the work item.",
+        "Without seeing the test code, there is a risk that the tests are stubs (e.g., only assert True or pass) rather than validating the returned statistics."
+      ],
+      "llm_used": true,
+      "low_confidence_override": true
+    }
+  },
+  {
+    "item_id": "RNEXT-LH",
+    "item_title": "Lane H \u2014 Backfill dry-run: capability map generator",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/backfill-proof.json"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -90,384 +253,106 @@
     ],
     "acceptance_criteria_failed": [
       "No raw proof, test content, or acceptance criteria verified",
-      "JSON reports only 6 total_candidates instead of the required 10 tasks",
-      "Only three task entries are shown; the rest are missing or truncated",
-      "All tasks have status \"pending\" with no completion timestamps, contradicting the expectation that the regeneration is done",
-      "No sprint_id or sprint-related metadata indicating these are Sprint 10 tasks",
-      "The evidence does not demonstrate that the file was regenerated (no version change, timestamps, or commit information)",
-      "Missing required fields for the remaining tasks (e.g., action_id, done_criteria, etc.)"
+      "Evidence consists only of a metadata JSON without any actual log output, diff, or generated capability map data.",
+      "No concrete verification that the generator produced correct output or that no source mutations occurred.",
+      "Missing the referenced log file (lane-h-backfill-dryrun.log) to substantiate the claim of successful run.",
+      "No automated test or script output showing assertions or checks of the generator's behavior.",
+      "Provides only a high\u2011level advisory verdict without measurable results, which does not satisfy the acceptance criteria."
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: JSON reports only 6 total_candidates instead of the required 10 tasks; Only three task entries are shown; the rest are missing or truncated; All tasks have status \"pending\" with no completion timestamps, contradicting the expectation that the regeneration is done; No sprint_id or sprint-related metadata indicating these are Sprint 10 tasks; The evidence does not demonstrate that the file was regenerated (no version change, timestamps, or commit information); Missing required fields for the remaining tasks (e.g., action_id, done_criteria, etc.)",
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence consists only of a metadata JSON without any actual log output, diff, or generated capability map data.; No concrete verification that the generator produced correct output or that no source mutations occurred.; Missing the referenced log file (lane-h-backfill-dryrun.log) to substantiate the claim of successful run.; No automated test or script output showing assertions or checks of the generator's behavior.; Provides only a high\u2011level advisory verdict without measurable results, which does not satisfy the acceptance criteria.",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.92,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence consists only of a metadata JSON without any actual log output, diff, or generated capability map data.",
+        "No concrete verification that the generator produced correct output or that no source mutations occurred.",
+        "Missing the referenced log file (lane-h-backfill-dryrun.log) to substantiate the claim of successful run.",
+        "No automated test or script output showing assertions or checks of the generator's behavior.",
+        "Provides only a high\u2011level advisory verdict without measurable results, which does not satisfy the acceptance criteria."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "RNEXT-LI",
+    "item_title": "Lane I \u2014 Doc state sync verification",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/source-diff-index.json"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified",
+      "Evidence provided is only a source-diff index JSON, not test code, execution logs, or verification reports.",
+      "No evidence of any doc state sync verification activity, which is the core of the work item.",
+      "The diffs listed pertain to lanes D, E, and G, not lane I, indicating a scope mismatch.",
+      "Absence of assertions, test results, or measurable outcomes to demonstrate that the doc state sync works correctly."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence provided is only a source-diff index JSON, not test code, execution logs, or verification reports.; No evidence of any doc state sync verification activity, which is the core of the work item.; The diffs listed pertain to lanes D, E, and G, not lane I, indicating a scope mismatch.; Absence of assertions, test results, or measurable outcomes to demonstrate that the doc state sync works correctly.",
     "semantic_verification": {
       "adequate": false,
       "confidence": 0.95,
       "stub_detected": false,
       "deficiencies": [
-        "JSON reports only 6 total_candidates instead of the required 10 tasks",
-        "Only three task entries are shown; the rest are missing or truncated",
-        "All tasks have status \"pending\" with no completion timestamps, contradicting the expectation that the regeneration is done",
-        "No sprint_id or sprint-related metadata indicating these are Sprint 10 tasks",
-        "The evidence does not demonstrate that the file was regenerated (no version change, timestamps, or commit information)",
-        "Missing required fields for the remaining tasks (e.g., action_id, done_criteria, etc.)"
+        "Evidence provided is only a source-diff index JSON, not test code, execution logs, or verification reports.",
+        "No evidence of any doc state sync verification activity, which is the core of the work item.",
+        "The diffs listed pertain to lanes D, E, and G, not lane I, indicating a scope mismatch.",
+        "Absence of assertions, test results, or measurable outcomes to demonstrate that the doc state sync works correctly."
       ],
       "llm_used": true
     }
   },
   {
-    "item_id": "W3-ABW-WORD-WRAP",
-    "item_title": "TC-PRODUCT-ABW-WORD-WRAP: implement word_wrap()",
+    "item_id": "RNEXT-LJ",
+    "item_title": "Lane J \u2014 Adversarial review: 6 attack vectors reviewed and defended",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "src/python/abw/abw_codec.py",
-      "tests/python/abw/test_r148_abw_word_wrap.py"
+      ".local/evidences/sal-enforcement-closeout-product-accel-rnext-20260611-8e45224/adversarial-review.md"
     ],
-    "tests_supporting": [],
+    "tests_supporting": [
+      "tests/supervisor/test_authority_preflight.py",
+      "tests/python/zst/test_r168_zst_frame_size_stats.py"
+    ],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
+      "Test content verified (2 files)"
     ],
     "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
+      "Evidence consists only of a markdown summary without including the actual test code, test results, or execution logs.",
+      "No concrete artifacts (e.g., test files, coverage reports, CI logs) are provided to verify that the referenced tests exist and pass.",
+      "The description references tests but does not demonstrate that they cover the claimed attack vectors comprehensively, leading to thin or unverified coverage.",
+      "Potential scope mismatch: the work item requires a review and defense of six attack vectors, but the evidence does not show the underlying code changes or validation steps, only high\u2011level assertions."
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W3-ABW-WORD-WRAP",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.85,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W4-ABW-HAS-PARAGRAPH",
-    "item_title": "TC-PRODUCT-ABW-HAS-PARAGRAPH: implement has_paragraph()",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/abw/abw_codec.py",
-      "tests/python/abw/test_r148_abw_has_paragraph.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W4-ABW-HAS-PARAGRAPH",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.85,
-      "stub_detected": false,
-      "deficiencies": [
-        "No test verifies that passing a non\u2011dict model raises a TypeError, even though the implementation includes this check."
-      ],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W5-GNUMERIC-GET-ALL-VALUES",
-    "item_title": "TC-PRODUCT-GNUMERIC-GET-ALL-VALUES: implement get_all_values()",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/gnumeric/gnumeric_codec.py",
-      "tests/python/gnumeric/test_r148_gnumeric_get_all_values.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W5-GNUMERIC-GET-ALL-VALUES",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.9,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W6-GNUMERIC-CLEAR-SHEET",
-    "item_title": "TC-PRODUCT-GNUMERIC-CLEAR-SHEET: implement clear_sheet()",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/gnumeric/gnumeric_codec.py",
-      "tests/python/gnumeric/test_r148_gnumeric_clear_sheet.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W6-GNUMERIC-CLEAR-SHEET",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.85,
-      "stub_detected": false,
-      "deficiencies": [
-        "No test for negative sheet_idx handling (out-of-range negative index).",
-        "Cell count and other metadata updates are not explicitly verified in tests."
-      ],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W7-TSV-MERGE",
-    "item_title": "TC-PRODUCT-TSV-MERGE: implement merge_tsv()",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/tsv/tsv_parser.py",
-      "tests/python/tsv/test_r148_tsv_merge.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W7-TSV-MERGE",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.85,
-      "stub_detected": false,
-      "deficiencies": [
-        "Tests do not verify the 'row_count' field returned by merge_tsv()",
-        "No test for handling non-bytes inputs or other data types accepted by _load_tsv_data"
-      ],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W8-TSV-MIN-COL",
-    "item_title": "TC-PRODUCT-TSV-MIN-COLUMN: implement min_column_tsv()",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/tsv/tsv_parser.py",
-      "tests/python/tsv/test_r148_tsv_min_column.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W8-TSV-MIN-COL",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.95,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W9-NDJSON-MIN-VALUE",
-    "item_title": "TC-PRODUCT-NDJSON-MIN-VALUE: implement min_value()",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/ndjson/ndjson_codec.py",
-      "tests/python/ndjson/test_r148_ndjson_min_value.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W9-NDJSON-MIN-VALUE",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.97,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W10-NDJSON-ZIP-RECORDS",
-    "item_title": "TC-PRODUCT-NDJSON-ZIP-RECORDS: implement zip_records()",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/ndjson/ndjson_codec.py",
-      "tests/python/ndjson/test_r148_ndjson_zip_records.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W10-NDJSON-ZIP-RECORDS",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.95,
-      "stub_detected": false,
-      "deficiencies": [],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W11-FODG-CLEAR-PAGE",
-    "item_title": "TC-PRODUCT-FODG-CLEAR-PAGE: implement clear_page()",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/fodg/fodg_codec.py",
-      "tests/python/fodg/test_r148_fodg_clear_page.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W11-FODG-CLEAR-PAGE",
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_VERIFIED -> ACCEPTED_WITH_LIMITATIONS: Evidence consists only of a markdown summary without including the actual test code, test results, or execution logs.; No concrete artifacts (e.g., test files, coverage reports, CI logs) are provided to verify that the referenced tests exist and pass.; The description references tests but does not demonstrate that they cover the claimed attack vectors comprehensively, leading to thin or unverified coverage.; Potential scope mismatch: the work item requires a review and defense of six attack vectors, but the evidence does not show the underlying code changes or validation steps, only high\u2011level assertions.",
     "semantic_verification": {
       "adequate": false,
-      "confidence": 0.75,
+      "confidence": 0.92,
       "stub_detected": false,
       "deficiencies": [
-        "No test verifies that clear_page raises TypeError when the model argument is not a dict.",
-        "No test checks that the returned model's shapes_total field is correctly updated after clearing a page.",
-        "Negative index case is not tested; only a large out\u2011of\u2011range index is covered.",
-        "The test suite does not verify that the function preserves other page fields (e.g., name) unchanged."
+        "Evidence consists only of a markdown summary without including the actual test code, test results, or execution logs.",
+        "No concrete artifacts (e.g., test files, coverage reports, CI logs) are provided to verify that the referenced tests exist and pass.",
+        "The description references tests but does not demonstrate that they cover the claimed attack vectors comprehensively, leading to thin or unverified coverage.",
+        "Potential scope mismatch: the work item requires a review and defense of six attack vectors, but the evidence does not show the underlying code changes or validation steps, only high\u2011level assertions."
       ],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W12-FODG-SWAP-PAGES",
-    "item_title": "TC-PRODUCT-FODG-SWAP-PAGES: implement swap_pages()",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "src/python/fodg/fodg_codec.py",
-      "tests/python/fodg/test_r148_fodg_swap_pages.py"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W12-FODG-SWAP-PAGES",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.85,
-      "stub_detected": false,
-      "deficiencies": [
-        "No test verifies that a non\u2011dict model raises TypeError as specified.",
-        "Negative index out\u2011of\u2011range case is not explicitly tested."
-      ],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "W13-FULL-SUITE",
-    "item_title": "Run targeted tests to confirm all 55 Sprint 10 tests pass",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/autonomy-acceleration-sprint10-20260608-e382e5f/sprint10-targeted-tests.log"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for W13-FULL-SUITE",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.98,
-      "stub_detected": false,
-      "deficiencies": [],
       "llm_used": true
     }
   }

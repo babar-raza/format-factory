@@ -18,7 +18,6 @@ from src.python.toml.toml_codec import (
     merge_toml,
     to_json_str,
     write_toml,
-    TomlParseError,
 )
 
 SIMPLE_TOML = b'[server]\nhost = "localhost"\nport = 8080\n\n[database]\nname = "mydb"\n'

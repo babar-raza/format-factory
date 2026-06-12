@@ -8,11 +8,9 @@ R58 Sprint: FORMAT-FACTORY-R58-TRUE-SELF-VERIFYING-RC-REBUILD-PHASE9-EXPANSION-M
 """
 from __future__ import annotations
 
-import struct
 import sys
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -20,9 +18,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from src.python.pgm.pgm_parser import (
     SUPPORTED_FEATURES,
     UNSUPPORTED_FEATURES,
-    PgmDecodeError,
-    PgmInvalidHeaderError,
-    PgmInvalidMagicError,
     parse_pgm_strict,
 )
 

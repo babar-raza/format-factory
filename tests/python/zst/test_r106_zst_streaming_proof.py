@@ -2,13 +2,11 @@
 # Lane D — ZST FOSS
 # Ledger: R106-FOSS-ZST-STREAMING-PROOF-001
 
-import pytest
 from zst.zst_codec import (
     compress_bytes,
     decompress_bytes,
     probe_frame,
     validate_file,
-    ZstError,
     ZSTD_MAGIC,
 )
 

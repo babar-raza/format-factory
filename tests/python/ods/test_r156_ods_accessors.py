@@ -11,12 +11,11 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from ods.ods_parser import get_cell_value, get_sheet_names, get_row_count, OdsError
+from ods.ods_parser import get_cell_value, get_sheet_names, get_row_count
 
 _SAMPLES = _REPO / "samples" / "by-format" / "ods" / "valid"
 

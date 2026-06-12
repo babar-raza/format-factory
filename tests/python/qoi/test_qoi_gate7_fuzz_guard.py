@@ -18,7 +18,6 @@ from qoi.qoi_parser import (
     QOI_MAGIC,
     QoiDecodeError,
     QoiError,
-    QoiInvalidHeaderError,
     QoiInvalidMagicError,
     QoiSizeError,
     parse_qoi,

@@ -12,7 +12,6 @@ _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
 from src.python.sylk.sylk_parser import (
-    parse_sylk_strict,
     write_sylk,
     add_row,
     delete_row,

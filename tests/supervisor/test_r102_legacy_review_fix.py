@@ -6,7 +6,6 @@ Tests that:
   - validate_evidence_for_supervisor.py detects declaration-review packages
   - Legacy bundle checks still run for actual legacy bundles
 """
-import json
 import sys
 import zipfile
 import tempfile
@@ -20,7 +19,7 @@ sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
 from compare_goal_to_evidence import compare
 from validate_evidence_for_supervisor import (
-    validate, _is_declaration_review_package, _validate_declaration_review_package
+    validate, _is_declaration_review_package
 )
 
 

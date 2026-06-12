@@ -106,7 +106,6 @@ class TestDiffUnchangedGolden:
 
     def test_diff_unchanged_exits_zero_via_cli(self, tmp_path):
         """CLI diff of identical files exits 0."""
-        import tempfile
         env = os.environ.copy()
         env["PYTHONUTF8"] = "1"
         if "PYTHONPATH" not in env:

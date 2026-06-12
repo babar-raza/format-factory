@@ -3,13 +3,11 @@
 # Ledger: R105-FOSS-SYLK-MALFORMED-DIAGNOSTICS-001
 
 import pytest
-from pathlib import Path
 from sylk.sylk_parser import (
     parse_sylk,
     parse_sylk_strict,
     SylkError,
     SylkInvalidFormatError,
-    SylkSizeError,
 )
 
 

@@ -22,15 +22,10 @@ sys.path.insert(0, str(REPO_ROOT))
 from tools.supervisor.authority_integration_fabric import (
     AuthorityIntegrationFabric,
     SpecContextPackIndex,
-    SpecContextPackEntry,
-    AuthorityIntegrationContract,
-    AuthoritativeGapQueue,
-    AuthoritativeGapQueueEntry,
     EXPECTED_SPEC_FORMATS,
     FORMAT_TO_POC_TARGET,
 )
 from tools.requirements_authority.graph_store import GraphStore
-from tools.requirements_authority.models import GraphNode, GraphEdge
 
 
 SPEC_ARTIFACTS_DIR = REPO_ROOT / ".local" / "spec-artifacts"

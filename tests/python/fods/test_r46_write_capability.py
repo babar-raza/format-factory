@@ -5,8 +5,6 @@ Tests that write_fods() and workbook_to_xml() correctly serialize
 neutral model workbook dicts to valid FODS XML.
 """
 
-import tempfile
-from pathlib import Path
 
 import pytest
 

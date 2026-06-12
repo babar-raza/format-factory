@@ -36,8 +36,7 @@ Authority: AGENTS.md AF9-AF15 | GOVERNANCE.md 26.8-26.13
 
 from __future__ import annotations
 
-import os
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -272,7 +271,7 @@ def detect_stale_state(fmt: str) -> dict:
         else:
             checks["iv_after_verification"] = "WARN"
             reasons.append(
-                f"Registry IV date is within 1 day of verifier review — borderline"
+                "Registry IV date is within 1 day of verifier review — borderline"
             )
             warnings += 1
     else:

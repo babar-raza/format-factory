@@ -43,10 +43,8 @@ from select_poc_gaps import (  # noqa: E402
     detect_target_writer_status,
     detect_target_writer_readiness,
     READINESS_READY,
-    READINESS_MISSING_SOURCE,
     READINESS_MISSING_PROJECT,
     READINESS_MISSING_TESTS,
-    READINESS_MISSING_RAW_LOG,
     READINESS_MISSING_SAMPLE_OUTPUT,
     READINESS_SOURCE_PRESENT_TESTS_REQUIRED,
 )

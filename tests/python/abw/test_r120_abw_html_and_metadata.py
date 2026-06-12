@@ -11,7 +11,6 @@ import sys
 import tempfile
 from pathlib import Path
 
-import pytest
 
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
@@ -21,7 +20,6 @@ from abw.abw_codec import (
     write_abw,
     export_to_html,
     get_metadata,
-    load,
 )
 
 

@@ -4,7 +4,6 @@ Validates that Gate 8 approval evidence is consistent across security reports,
 pack.yaml files, and the expert review report.
 """
 
-import os
 import sys
 from pathlib import Path
 

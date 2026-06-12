@@ -8,7 +8,6 @@ Run from repo root:
         python -m pytest tests/python/fodp/ -v
 """
 
-import sys
 from pathlib import Path
 import pytest
 
@@ -16,9 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 SAMPLES_DIR = REPO_ROOT / "samples" / "by-format" / "fodp"
 
 from fodp.fodp_codec import (
-    FodpError,
     FodpParseError,
-    FODP_MIME,
     load,
     get_page_count,
     extract_text,

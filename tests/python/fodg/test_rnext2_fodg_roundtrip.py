@@ -10,7 +10,7 @@ from pathlib import Path
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from src.python.fodg.fodg_codec import create_fodg, write_fodg, roundtrip, load, FodgError
+from src.python.fodg.fodg_codec import create_fodg, write_fodg, roundtrip
 
 
 def test_roundtrip_preserves_page_count(tmp_path):

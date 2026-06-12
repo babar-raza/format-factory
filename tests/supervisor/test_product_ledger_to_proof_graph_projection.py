@@ -12,7 +12,6 @@ Phase 6 of autonomous-system-audit sprint.
 
 import json
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest

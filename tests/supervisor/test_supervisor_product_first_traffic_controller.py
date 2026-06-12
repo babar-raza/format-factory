@@ -14,7 +14,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 # Ensure tools/supervisor is importable
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
@@ -334,7 +333,7 @@ class TestSuperpowersGovernance:
             }
         })
         # Must not be INSTALLED_GOVERNED when injection detected
-        assert mode != "INSTALLED_GOVERNED", f"Got unexpected INSTALLED_GOVERNED"
+        assert mode != "INSTALLED_GOVERNED", "Got unexpected INSTALLED_GOVERNED"
 
 
 class TestGhidraMCPGovernance:

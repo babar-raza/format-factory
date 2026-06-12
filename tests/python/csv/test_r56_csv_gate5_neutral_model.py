@@ -18,12 +18,11 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.python.csv.csv_parser import parse_csv_strict, get_capabilities, CsvError
+from src.python.csv.csv_parser import parse_csv_strict, get_capabilities
 
 
 def _write_csv(tmp_path, name: str, content: str) -> Path:

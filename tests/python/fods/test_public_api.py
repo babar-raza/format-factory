@@ -3,7 +3,6 @@ test_public_api.py -- Public API contract tests for format-factory-fods.
 
 Verifies: exports, exception hierarchy, return type contract, __version__.
 """
-import pytest
 
 
 # ---------------------------------------------------------------------------

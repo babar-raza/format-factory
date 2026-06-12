@@ -16,7 +16,7 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.python.toml.toml_codec import diff_keys, rename_key, TomlError
+from src.python.toml.toml_codec import diff_keys, rename_key
 
 
 class TestDiffKeys:

@@ -9,7 +9,6 @@ Sprint: FORMAT-FACTORY-R73-DELIVERY-PACKAGE-TRUTH-PRODUCT-ADVANCEMENT-GATE-READI
 from __future__ import annotations
 
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -17,7 +16,7 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.python.pbm.pbm_parser import image_pixel_stats, parse_pbm_strict
+from src.python.pbm.pbm_parser import image_pixel_stats
 
 VALID = PROJECT_ROOT / "samples" / "by-format" / "pbm" / "valid"
 

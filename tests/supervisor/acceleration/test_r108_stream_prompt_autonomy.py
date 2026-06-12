@@ -3,11 +3,9 @@
 Verifies that generate_next_worker_prompt.py produces stream-specific outputs
 for all 4 streams (mainstream, acceleration, skills, supervisor).
 """
-import json
 import sys
 from pathlib import Path
 
-import pytest
 
 TOOLS_DIR = Path(__file__).resolve().parent.parent.parent.parent / "tools" / "supervisor"
 sys.path.insert(0, str(TOOLS_DIR))
@@ -17,7 +15,6 @@ from generate_next_worker_prompt import (
     generate_prompt,
     STREAM_GROUPS,
     STREAM_FORWARD_WORK,
-    synthesize_trains,
 )
 from validate_prompt_quality import validate_next_work_items
 from anti_skip_checker import classify_gap_freshness, detect_stale_gaps

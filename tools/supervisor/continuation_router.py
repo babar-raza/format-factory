@@ -10,19 +10,16 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Optional
 
 _here = Path(__file__).resolve().parent
 _repo_root = _here.parent.parent
 sys.path.insert(0, str(_repo_root))
 
 from tools.supervisor.continuation_state import (
-    ACTIVE_CONTINUATION_PATH,
-    NEXT_ACTION_PATH,
     STOP_ADVISORY_PROMPT,
     STOP_INVALID_NEXT_ACTION,
     STOP_NO_SAFE_ACTION,
-    STATE_DIR,
     is_advisory_prompt,
     is_action_safe,
     load_active_continuation,

@@ -72,7 +72,7 @@ class TestR64FinalProofNoPlaceholders:
             pytest.skip("R64 final-bundle-validation-proof.txt not yet written")
         findings = _check_file_for_placeholders(proof_path, FORBIDDEN_TOKENS)
         assert not findings, (
-            f"final-bundle-validation-proof.txt contains placeholder language:\n"
+            "final-bundle-validation-proof.txt contains placeholder language:\n"
             + "\n".join(findings)
         )
 
@@ -82,7 +82,7 @@ class TestR64FinalProofNoPlaceholders:
             pytest.skip("R64 validation-command-log.txt not yet written")
         findings = _check_file_for_placeholders(log_path, FORBIDDEN_TOKENS)
         assert not findings, (
-            f"validation-command-log.txt contains placeholder language:\n"
+            "validation-command-log.txt contains placeholder language:\n"
             + "\n".join(findings)
         )
 
@@ -94,7 +94,7 @@ class TestR64FinalProofNoPlaceholders:
         critical_tokens = ["to be computed", "to be confirmed", "to be completed", "to be generated"]
         findings = _check_file_for_placeholders(verdict_path, critical_tokens)
         assert not findings, (
-            f"final-verdict.md contains placeholder language:\n"
+            "final-verdict.md contains placeholder language:\n"
             + "\n".join(findings)
         )
 

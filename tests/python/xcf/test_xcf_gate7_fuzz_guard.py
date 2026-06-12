@@ -14,7 +14,6 @@ if str(_src) not in sys.path:
 
 import pytest
 from xcf.xcf_parser import (
-    XcfError,
     XcfInvalidHeaderError,
     XcfInvalidMagicError,
     XcfParseError,

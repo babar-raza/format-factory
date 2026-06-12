@@ -18,7 +18,6 @@ from dif.dif_parser import (
     DifCell,
     write_dif,
     parse_dif_strict,
-    DifError,
 )
 
 

@@ -1,0 +1,34 @@
+id: SAL-I-002
+title: "Authority preflight integration in ProductSourceExecutor"
+sprint: FORMAT-FACTORY-SAL-VERIFICATION-HEALING-HARDENING-BACKFILL-SINGLE-GO-001
+status: COMPLETED
+completed_in_run: sal-integration-hardening-sprint2-20260611-8e45224
+completed_date: "2026-06-11"
+
+sprint1_summary: >
+  Added run_authority_preflight() to product_source_executor.py.
+  Integrated as Step 0 in execute(). WARN_ALLOW for P1 with exception.
+
+sprint2_summary: >
+  WARN_ALLOW promoted to hard BLOCK (SAL-I-002 Sprint 2 action).
+  Unknown format_id now BLOCKs (fail-closed). fallback_authority_approved
+  requires non-empty exception_rationale. WARN_ALLOW path removed entirely.
+  Exception audit JSONL written to .local/supervisor/authority-preflight-log.jsonl.
+
+description: >
+  Add run_authority_preflight() to tools/supervisor/product_source_executor.py.
+  Sprint 1: advisory WARN_ALLOW for P1 with exception.
+  Sprint 2: promoted to hard BLOCK — all low-authority formats BLOCK unless valid exception.
+
+files_changed:
+  - tools/supervisor/product_source_executor.py
+  - tests/supervisor/test_authority_preflight.py
+  - schemas/queue/queue-item-v2.schema.json
+
+tests_added: 16
+tests_result: 16/16 PASS
+
+gap_closed: GAP-02
+integration_point: "ProductSourceExecutor.execute() Step 0 (before path validation)"
+blocking_mode: "BLOCK for P0/P1/P2/P3 without valid exception (Sprint 2: no WARN_ALLOW)"
+sprint2_completed: true

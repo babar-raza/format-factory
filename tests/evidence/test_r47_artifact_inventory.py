@@ -19,9 +19,7 @@ import hashlib
 import io
 import zipfile
 from pathlib import Path
-from unittest.mock import patch
 
-import pytest
 
 # Import the validator module
 import sys
@@ -179,7 +177,6 @@ class TestBuilderSubdirectoryFix:
         """Verify that build_evidence_bundle.py rglob fix collects subdir files."""
         import sys
         sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "tools" / "evidence"))
-        import build_evidence_bundle as builder
         import tempfile
 
         with tempfile.TemporaryDirectory() as tmpdir:

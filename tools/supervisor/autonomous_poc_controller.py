@@ -14,7 +14,6 @@ of every potential stop signal (Phase 4: FORMAT-FACTORY-PERMANENT-AUTONOMY-STOP-
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import sys
 from datetime import datetime, timezone

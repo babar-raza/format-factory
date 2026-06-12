@@ -9,14 +9,10 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 from src.python.ods.ods_parser import (
-    OdsCell,
     OdsDocument,
-    OdsRow,
-    OdsSheet,
     parse_ods_strict,
 )
 from src.python.ods.ods_writer import add_sheet, set_cell_value, write_ods

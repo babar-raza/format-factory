@@ -1,0 +1,33 @@
+taskcard_id: LFI-2-B01
+title: "Capture golden baseline outputs from FeatureFactory patterns"
+lane: B
+owner_role: architect
+status: ACCEPTED_VERIFIED
+allowed_paths:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/"
+forbidden_paths:
+  - "src/python/"
+  - "src/net/"
+  - "registry/"
+  - "tools/supervisor/product_feature_factory.py"
+inputs:
+  - "tools/supervisor/product_feature_factory.py"
+outputs:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/getter.py"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/export_csv.py"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/roundtrip.py"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/append.py"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/probe.py"
+file_ownership:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/"
+tests_supporting: []
+verification_commands:
+  - "test -f .local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/getter.py"
+evidence_files:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/getter.py"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/export_csv.py"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/roundtrip.py"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/append.py"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/golden-featurefactory/probe.py"
+rollback: "Delete all files under golden-featurefactory/"
+closeout_criteria: "5 golden baseline files exist with non-zero size"

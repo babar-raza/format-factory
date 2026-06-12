@@ -11,10 +11,7 @@ from zst.zst_codec import (
     compress_bytes,
     decompress_bytes,
     validate_file,
-    ZstError,
-    ZstInvalidFrameError,
     ZstOutputLimitExceeded,
-    ZSTD_MAGIC,
 )
 
 

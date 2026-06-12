@@ -24,11 +24,9 @@ Exits 0 if all tests PASS, 1 if any test FAILS.
 """
 
 import sys
-import tempfile
 import zipfile
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "evidence"))

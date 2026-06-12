@@ -10,7 +10,6 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
@@ -21,7 +20,6 @@ from tools.ai.pipeline.e2e_pilot import (
     stage_3_synthesis,
 )
 from tools.ai.telemetry.artifacts import (
-    _deep_redact,
     _strip_content_keys,
     write_telemetry_artifact,
 )

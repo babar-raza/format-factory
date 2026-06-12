@@ -11,7 +11,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 _src = Path(__file__).resolve().parents[3] / "src" / "python"
 sys.path.insert(0, str(_src))

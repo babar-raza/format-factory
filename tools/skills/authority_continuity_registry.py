@@ -280,7 +280,7 @@ def main():
         print(json.dumps(registry, indent=2))
         return
 
-    print(f"=== Authority Continuity Registry ===")
+    print("=== Authority Continuity Registry ===")
     print(f"  Registry ID:      {registry.get('registry_id', 'ERROR')}")
     print(f"  Formats:          {registry.get('format_ids', [])}")
     print(f"  All authoritative:{registry.get('all_authoritative')}")

@@ -9,7 +9,6 @@ Lane G: Secret redaction coverage
 Lane H: Schema validator dedicated coverage
 """
 
-import json
 import os
 import sys
 import tempfile
@@ -86,7 +85,6 @@ class TestEvaluatorContradictionBypass(unittest.TestCase):
 
 from tools.ai.requirements.generator import (
     GeneratedRequirement,
-    generate_requirements_from_synthesis,
     review_requirement,
     validate_requirement,
     write_requirements_packet,
@@ -239,7 +237,6 @@ class TestEvidenceReviewHelper(unittest.TestCase):
 from tools.ai.agentic.scoped_runner import (
     AgenticTaskContract,
     ScopedRunner,
-    FORBIDDEN_OPERATIONS,
 )
 
 

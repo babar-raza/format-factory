@@ -11,8 +11,6 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
-import subprocess
-import sys
 from pathlib import Path
 
 import pytest
@@ -76,7 +74,7 @@ class TestAiSprintManagerNoSilentFixture:
 class TestFixtureErrorNotConsumable:
     def test_fixture_error_forces_not_directly_consumable(self, tmp_path):
         """build_packet: if ai_rationale contains fixture_error → directly_consumable=False."""
-        from tools.supervisor.mainstream_acceleration_packet import build_packet, _GOVERNANCE_RULES
+        from tools.supervisor.mainstream_acceleration_packet import build_packet
 
         # Patch _gateway_rationale to return fixture_error
         import tools.supervisor.mainstream_acceleration_packet as mod

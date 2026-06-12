@@ -1,11 +1,9 @@
 """Tests for review package self-containment — R104 Wave 1."""
 
-import json
 import sys
 import zipfile
 from pathlib import Path
 
-import pytest
 import yaml
 
 TOOLS_DIR = Path(__file__).resolve().parent.parent.parent.parent / "tools" / "supervisor"

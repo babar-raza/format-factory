@@ -3,7 +3,6 @@
 
 import importlib
 import os
-import tempfile
 import pytest
 
 zst = importlib.import_module("zst")

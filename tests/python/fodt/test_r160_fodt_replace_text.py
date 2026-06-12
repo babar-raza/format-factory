@@ -10,7 +10,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from fodt.neutral_model import document_replace_text, document_search_text
+from fodt.neutral_model import document_replace_text
 
 
 def _make_doc(blocks):

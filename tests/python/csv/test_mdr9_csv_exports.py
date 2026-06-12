@@ -9,18 +9,14 @@ import sys
 import tempfile
 from pathlib import Path
 
-import pytest
 
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
 from src.python.csv import (
     parse_csv,
-    parse_csv_strict,
     probe_csv,
     get_capabilities,
-    CsvError,
-    CsvInputError,
     table_stats,
     column_value_counts,
 )

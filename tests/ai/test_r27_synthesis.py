@@ -5,12 +5,9 @@ structured output validation, and authority lifecycle enforcement.
 """
 
 import json
-import pytest
-from pathlib import Path
 
 from tools.ai.schemas.models import AIRole, AITaskContract, ArtifactAuthorityStateValue
 from tools.ai.synthesis.runner import (
-    SynthesisResult,
     check_contradictions,
     run_synthesis,
     validate_structured_output,

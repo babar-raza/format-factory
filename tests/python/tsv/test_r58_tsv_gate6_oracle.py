@@ -19,7 +19,7 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.python.tsv.tsv_parser import parse_tsv, parse_tsv_strict, probe_tsv, TsvError, TsvInputError, TsvParseError
+from src.python.tsv.tsv_parser import parse_tsv, parse_tsv_strict, probe_tsv, TsvError
 
 SAMPLES = Path(__file__).resolve().parents[3] / "samples" / "by-format" / "tsv"
 

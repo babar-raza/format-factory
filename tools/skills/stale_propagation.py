@@ -374,7 +374,7 @@ def main():
         return
 
     if args.format == "all":
-        print(f"=== Stale Propagation: ALL FORMATS ===")
+        print("=== Stale Propagation: ALL FORMATS ===")
         print(f"  All clean:    {result['all_clean']}")
         print(f"  Any blocked:  {result['any_blocked']}")
         print(f"  Max tier:     {result['aggregate_tier']}")

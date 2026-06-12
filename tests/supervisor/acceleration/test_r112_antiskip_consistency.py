@@ -8,12 +8,9 @@ Verifies:
 - Evidence quality maintenance
 - Stream-output authority integration
 """
-import json
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
 import yaml
 
 TOOLS_DIR = Path(__file__).resolve().parent.parent.parent.parent / "tools" / "supervisor"
@@ -437,7 +434,7 @@ class TestReplay:
         assert nwi_result["valid"] is True
 
     def test_mainstream_replay(self):
-        from generate_next_worker_prompt import generate_prompt, generate_next_work_items
+        from generate_next_worker_prompt import generate_next_work_items
         from validate_prompt_quality import validate_next_work_items
 
         review = {

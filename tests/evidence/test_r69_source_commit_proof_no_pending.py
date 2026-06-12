@@ -5,8 +5,6 @@ Covers IV-R69-001: R68's source-commit-proof.txt had PENDING_PASS2_SHA_COMMIT wh
 was never replaced with the actual final commit SHA. This test ensures R69 repairs
 that defect and prevents it from recurring.
 """
-import io
-import zipfile
 from pathlib import Path
 
 import pytest

@@ -3,11 +3,9 @@
 # Ledger: R104-FOSS-PPM-WRITE-EDGE-CASES-001
 
 import pytest
-from pathlib import Path
 from ppm.ppm_parser import (
     write_ppm,
     parse_ppm_strict,
-    PpmImage,
     PpmSizeError,
     MAX_DIMENSION,
     MAX_MAXVAL,

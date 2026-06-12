@@ -12,7 +12,6 @@ import sys
 import hashlib
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -22,8 +21,6 @@ from src.python.zst.zst_codec import (
     decompress_bytes,
     probe_frame,
     validate_file,
-    ZstError,
-    ZstDecompressionError,
 )
 
 

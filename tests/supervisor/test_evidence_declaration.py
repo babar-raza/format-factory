@@ -1,9 +1,7 @@
 """Tests for declaration-driven evidence directory supervisor loop."""
 
 import json
-import os
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -13,10 +11,9 @@ import yaml
 REPO_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
-from evidence_declaration import validate_declaration, validate_schema, validate_paths, create_sample_declaration, REQUIRED_FIELDS
-from inspect_declared_evidence import inspect_declaration, inspect_item
+from evidence_declaration import validate_declaration
 from grade_declared_work import grade_item, grade_all
-from generate_next_worker_prompt import generate_prompt, generate_next_work_items
+from generate_next_worker_prompt import generate_prompt
 from evidence_manifest import generate_from_declaration, validate_manifest, sha256_file, infer_type, write_manifest
 
 

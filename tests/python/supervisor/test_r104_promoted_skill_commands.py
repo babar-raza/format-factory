@@ -4,7 +4,6 @@ Validates that the 5 newly promoted skills have complete command files
 that pass the command validator with all 12 required sections.
 """
 
-import json
 import sys
 from pathlib import Path
 
@@ -13,7 +12,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
-from validate_claude_commands import validate_command_file, validate_all, REQUIRED_SECTIONS
+from validate_claude_commands import validate_command_file
 
 
 PROMOTED_SKILLS = [
@@ -99,7 +98,7 @@ class TestPromotedSkillRegistryConsistency:
             )
         # Verify record-lane-execution is now active (promoted in R112)
         assert skills["record-lane-execution"]["status"] == "active", (
-            f"record-lane-execution should be active after R112 promotion"
+            "record-lane-execution should be active after R112 promotion"
         )
 
     def test_total_active_skills_at_least_18(self):

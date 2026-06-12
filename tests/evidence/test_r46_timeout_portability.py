@@ -8,12 +8,10 @@ Verifies that:
 4. The filterwarnings pattern matches the exact PytestConfigWarning text
 """
 
-import configparser
 import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 PYTEST_INI = REPO_ROOT / "pytest.ini"

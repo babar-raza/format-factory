@@ -4,13 +4,11 @@ test_next_sprint_false_stop_regression.py — Regression Tests for Next-Sprint G
 Verifies that generate_next_worker_prompt.py no longer emits false-stop labels
 for agent-owned work, and that the Stop Reason Advisory is always present.
 """
-import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "tools" / "supervisor"))
 
-import pytest
 from generate_next_worker_prompt import (
     generate_prompt,
     generate_next_work_items,

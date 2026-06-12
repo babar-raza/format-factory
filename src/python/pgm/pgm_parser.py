@@ -587,3 +587,167 @@ def threshold(file_path: str | Path, dest_path: str | Path,
         "above_count": above,
         "below_count": below,
     }
+
+
+def rotate_90(file_path: str | Path, dest_path: str | Path) -> dict[str, Any]:
+    """Rotate a PGM image 90 degrees clockwise and write the result.
+
+    The output image has width=original_height and height=original_width.
+    Pixel at (row, col) in the original maps to (col, height-1-row) in the result.
+
+    Args:
+        file_path: Source PGM file path.
+        dest_path: Destination PGM file path.
+
+    Returns:
+        Dict with keys: ok, width, height, pixel_count.
+
+    Raises:
+        PgmError: If source cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    new_w = img.height
+    new_h = img.width
+    rotated: list[int] = [0] * (new_w * new_h)
+    for row in range(img.height):
+        for col in range(img.width):
+            src_idx = row * img.width + col
+            dst_row = col
+            dst_col = img.height - 1 - row
+            dst_idx = dst_row * new_w + dst_col
+            rotated[dst_idx] = img.pixels[src_idx]
+    write_pgm(rotated, new_w, new_h, img.maxval, dest_path)
+    return {"ok": True, "width": new_w, "height": new_h, "pixel_count": len(rotated)}
+
+
+def grayscale_variance(file_path: str | Path) -> float:
+    """Return the variance of pixel grayscale values in a PGM image.
+
+    Computes population variance of all pixel values.
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Float variance. Returns 0.0 for empty images.
+    """
+    img = parse_pgm_strict(file_path)
+    n = len(img.pixels)
+    if n == 0:
+        return 0.0
+    mean = sum(img.pixels) / n
+    return sum((p - mean) ** 2 for p in img.pixels) / n
+
+
+def pgm_bright_pixel_ratio(file_path: str | Path, threshold: int = 128) -> float:
+    """Return the fraction of pixels with value strictly above the threshold.
+
+    Args:
+        file_path: Path to a PGM file.
+        threshold: Brightness threshold (default 128). Pixels > threshold are "bright".
+
+    Returns:
+        Float in [0.0, 1.0]. Returns 0.0 for empty images.
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    total = len(img.pixels)
+    if total == 0:
+        return 0.0
+    bright = sum(1 for p in img.pixels if p > threshold)
+    return bright / total
+
+
+def pgm_dark_pixel_count(file_path: str | Path, threshold: int = 64) -> int:
+    """Return the count of pixels with value at or below the threshold (dark pixels).
+
+    Args:
+        file_path: Path to a PGM file.
+        threshold: Darkness threshold (default 64). Pixels <= threshold are "dark".
+
+    Returns:
+        Integer count of dark pixels. Returns 0 for empty images.
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    return sum(1 for p in img.pixels if p <= threshold)
+
+
+def pgm_max_pixel_value(file_path: str | Path) -> int:
+    """Return the maximum pixel value in a PGM image.
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Integer maximum pixel value in [0, maxval]. Returns 0 for empty images.
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return max(img.pixels)
+
+
+def pgm_min_pixel_value(file_path: str | Path) -> int:
+    """Return the minimum pixel value in a PGM image.
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Integer minimum pixel value in [0, maxval]. Returns 0 for empty images.
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return min(img.pixels)
+
+
+def pgm_average_brightness(file_path: str | Path) -> float:
+    """Return the average pixel brightness (mean gray value) of a PGM image.
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Float mean pixel value in [0.0, maxval]. Returns 0.0 for empty images.
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(img.pixels) / len(img.pixels)
+
+
+def pgm_contrast_range(file_path: str | Path) -> int:
+    """Return the contrast range (dynamic range) of a PGM image.
+
+    The contrast range is defined as ``max_gray - min_gray``, giving the span
+    of gray values present in the image. A value of 0 means the image is
+    perfectly uniform (all pixels the same shade).
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Integer contrast range in [0, maxval]. Returns 0 for empty images.
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return max(img.pixels) - min(img.pixels)

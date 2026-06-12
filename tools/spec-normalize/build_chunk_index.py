@@ -33,12 +33,10 @@ See also:
 
 import argparse
 import datetime
-import hashlib
 import json
 import pathlib
 import re
 import sys
-from typing import Optional
 
 try:
     import yaml
@@ -294,7 +292,7 @@ These artifacts are local-only. Do not commit them.
     print("Status: SUCCESS")
     print(f"  Chunks: {len(chunks)} ({chunking_method})")
     print(f"  Total words indexed: {total_words:,}")
-    print(f"  Artifacts: chunks.jsonl, navigation-report.md")
+    print("  Artifacts: chunks.jsonl, navigation-report.md")
     print()
     print(f"Chunk index is at: {normalized_dir}")
     print("These are LOCAL ONLY. Do not commit them.")

@@ -102,7 +102,6 @@ def test_backend_supports_product_source_patch_bounded():
 
 def test_run_product_source_patch_bounded_adds_function(tmp_path):
     """run_product_source_patch_bounded adds a function to a target file."""
-    from tools.supervisor.product_action_guard import run_product_source_patch_bounded
     target = tmp_path / "abw_test.py"
     target.write_text("# test file\n\ndef existing(): pass\n\n# end\n")
 

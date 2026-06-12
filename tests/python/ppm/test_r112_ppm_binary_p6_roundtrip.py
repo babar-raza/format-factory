@@ -1,5 +1,4 @@
 """R112 FOSS: PPM P3 write/read roundtrip hardening."""
-import pytest
 import os
 import sys
 import tempfile

@@ -328,5 +328,5 @@ class TestValidatorsAgainstSprint1Declaration:
         decl = self._load_declaration()
         summary = run_all_governance_validators(decl, REPO_ROOT)
         assert "validators" in summary
-        assert len(summary["validators"]) == 12
+        assert len(summary["validators"]) == 13  # 12 original + V13 spec_fact_refs (SAL-VH-001)
         assert "all_pass" in summary or "overall_result" in summary or "fail_count" in summary

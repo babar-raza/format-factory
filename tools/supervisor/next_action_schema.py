@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 
 REQUIRED_FIELDS = ["action_id", "action_type", "objective", "preferred_backend"]

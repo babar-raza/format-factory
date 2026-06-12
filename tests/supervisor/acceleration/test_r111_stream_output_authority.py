@@ -8,7 +8,6 @@ Verifies:
 - Evidence-quality scoring improvements
 - generate_supervisor_packet.py main() stream detection
 """
-import json
 import sys
 from pathlib import Path
 

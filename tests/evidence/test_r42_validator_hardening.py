@@ -10,7 +10,6 @@ import pathlib
 import sys
 import zipfile
 
-import pytest
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "tools" / "evidence"))

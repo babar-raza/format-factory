@@ -10,7 +10,6 @@ sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
 from generate_next_worker_prompt import (
     STREAM_GROUPS,
-    GROUP_DEFS,
     synthesize_trains,
     generate_prompt,
     generate_next_work_items,

@@ -130,11 +130,11 @@ def test_fail_latest_commit_pending() -> bool:
         make_minimal_repo(tmp_path, content)
         rc, out = run_checker(tmp_path)
         if rc == 0:
-            print(f"FAIL: test_fail_latest_commit_pending — expected FAIL exit code, got PASS")
+            print("FAIL: test_fail_latest_commit_pending — expected FAIL exit code, got PASS")
             print(f"  Output: {out[:300]}")
             return False
         if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
-            print(f"FAIL: test_fail_latest_commit_pending — expected FAIL message in output")
+            print("FAIL: test_fail_latest_commit_pending — expected FAIL message in output")
             print(f"  Output: {out[:300]}")
             return False
         print("PASS: test_fail_latest_commit_pending — correctly rejected 'Latest commit: PENDING'")
@@ -152,11 +152,11 @@ def test_fail_changes_pending_commit() -> bool:
         make_minimal_repo(tmp_path, content)
         rc, out = run_checker(tmp_path)
         if rc == 0:
-            print(f"FAIL: test_fail_changes_pending_commit — expected FAIL exit code, got PASS")
+            print("FAIL: test_fail_changes_pending_commit — expected FAIL exit code, got PASS")
             print(f"  Output: {out[:300]}")
             return False
         if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
-            print(f"FAIL: test_fail_changes_pending_commit — expected FAIL message in output")
+            print("FAIL: test_fail_changes_pending_commit — expected FAIL message in output")
             return False
         print("PASS: test_fail_changes_pending_commit — correctly rejected 'changes pending commit'")
         return True
@@ -170,11 +170,11 @@ def test_fail_memory09_pending() -> bool:
         make_minimal_repo(tmp_path, _default_master_plan(), mem09_content=mem09)
         rc, out = run_checker(tmp_path)
         if rc == 0:
-            print(f"FAIL: test_fail_memory09_pending — expected FAIL exit code, got PASS")
+            print("FAIL: test_fail_memory09_pending — expected FAIL exit code, got PASS")
             print(f"  Output: {out[:300]}")
             return False
         if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
-            print(f"FAIL: test_fail_memory09_pending — expected FAIL message in output")
+            print("FAIL: test_fail_memory09_pending — expected FAIL message in output")
             return False
         print("PASS: test_fail_memory09_pending — correctly rejected PENDING marker in memory/09")
         return True
@@ -195,11 +195,11 @@ def test_fail_gate6_approved() -> bool:
         make_minimal_repo(tmp_path, _default_master_plan(), registry_content=registry)
         rc, out = run_checker(tmp_path)
         if rc == 0:
-            print(f"FAIL: test_fail_gate6_approved — expected FAIL exit code, got PASS")
+            print("FAIL: test_fail_gate6_approved — expected FAIL exit code, got PASS")
             print(f"  Output: {out[:300]}")
             return False
         if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
-            print(f"FAIL: test_fail_gate6_approved — expected FAIL message in output")
+            print("FAIL: test_fail_gate6_approved — expected FAIL message in output")
             return False
         print("PASS: test_fail_gate6_approved — correctly rejected gate_6 approved_by not null")
         return True
@@ -223,11 +223,11 @@ def test_fail_fodt_inconsistent() -> bool:
         )
         rc, out = run_checker(tmp_path)
         if rc == 0:
-            print(f"FAIL: test_fail_fodt_inconsistent — expected FAIL exit code, got PASS")
+            print("FAIL: test_fail_fodt_inconsistent — expected FAIL exit code, got PASS")
             print(f"  Output: {out[:300]}")
             return False
         if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
-            print(f"FAIL: test_fail_fodt_inconsistent — expected FAIL message in output")
+            print("FAIL: test_fail_fodt_inconsistent — expected FAIL message in output")
             return False
         print("PASS: test_fail_fodt_inconsistent — correctly detected FODT registry/scoring mismatch")
         return True
@@ -240,10 +240,10 @@ def test_fail_master_plan_missing() -> bool:
         make_minimal_repo(tmp_path, None)  # No master-plan
         rc, out = run_checker(tmp_path)
         if rc == 0:
-            print(f"FAIL: test_fail_master_plan_missing — expected FAIL exit code, got PASS")
+            print("FAIL: test_fail_master_plan_missing — expected FAIL exit code, got PASS")
             return False
         if "CURRENT_STATE_CONSISTENCY: FAIL" not in out:
-            print(f"FAIL: test_fail_master_plan_missing — expected FAIL message in output")
+            print("FAIL: test_fail_master_plan_missing — expected FAIL message in output")
             return False
         print("PASS: test_fail_master_plan_missing — correctly FAILed when master-plan missing")
         return True
@@ -253,11 +253,11 @@ def test_pass_on_live_repo() -> bool:
     """PASS on the actual project repo (after run041 state-authority fixes)."""
     rc, out = run_checker(REPO_ROOT)
     if rc != 0:
-        print(f"FAIL: test_pass_on_live_repo — expected PASS, got FAIL")
+        print("FAIL: test_pass_on_live_repo — expected PASS, got FAIL")
         print(f"  Output: {out[:600]}")
         return False
     if "CURRENT_STATE_CONSISTENCY: PASS" not in out:
-        print(f"FAIL: test_pass_on_live_repo — expected PASS message, got:")
+        print("FAIL: test_pass_on_live_repo — expected PASS message, got:")
         print(f"  {out[:300]}")
         return False
     print("PASS: test_pass_on_live_repo — live repo is consistent")

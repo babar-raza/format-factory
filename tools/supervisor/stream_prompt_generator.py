@@ -16,7 +16,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import yaml
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
@@ -90,7 +89,7 @@ def generate_stream_prompt(
         f"Sprint: {sprint_id}",
         f"Generated: {datetime.now(timezone.utc).isoformat()}",
         "",
-        f"## Focus",
+        "## Focus",
         f"{boundaries['focus']}",
         "",
         "## File Boundaries",
@@ -135,7 +134,7 @@ def generate_stream_prompt(
         "1. If all quota items met and tests pass -> PASS",
         "2. If quota partially met -> PARTIAL (list what's missing)",
         "3. If blocked by external gate -> BLOCKED (state gate)",
-        f"4. Continue-if-fast: if finished early, pick next action from forecast",
+        "4. Continue-if-fast: if finished early, pick next action from forecast",
     ])
 
     return "\n".join(lines) + "\n"

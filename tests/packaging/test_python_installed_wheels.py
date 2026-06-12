@@ -11,8 +11,6 @@
 #   pip install --target <tmpdir> <wheel>
 # and then imports from that target, not from src/python/.
 
-import importlib
-import importlib.util
 import json
 import os
 import subprocess

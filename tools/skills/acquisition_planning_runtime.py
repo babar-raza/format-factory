@@ -171,8 +171,8 @@ def _build_proposed_acquisition_lanes(first_candidate: str, lifecycle_sim: dict)
         lanes.append(f"[LANE] Implementation simulation (R9-style) for {first_candidate.upper()}")
     elif state == "EVIDENCE_READY":
         lanes.append(f"[LANE] Gate 11 preparation sub-gates for {first_candidate.upper()}")
-    lanes.append(f"[LANE] DEC-034 independent verification sprint (separate session)")
-    lanes.append(f"[LANE] Evidence bundle build and validation")
+    lanes.append("[LANE] DEC-034 independent verification sprint (separate session)")
+    lanes.append("[LANE] Evidence bundle build and validation")
     return lanes
 
 
@@ -188,8 +188,8 @@ def _build_risks(first_candidate: str, scorer_result: dict) -> list[str]:
         risks.append(f"[RISK] No known public spec for {first_candidate.upper()} — acquisition may be blocked at SPEC_DISCOVERY")
     if score < 7.0:
         risks.append(f"[RISK] Score {score}/10 below ACQUISITION_READY threshold (7.0) — investigation sprint recommended first")
-    risks.append(f"[RISK] aspose_supported is None — audit required before DEC-033 compatibility is known")
-    risks.append(f"[RISK] Requirements generation has not started — REQUIREMENTS_AUTHORITATIVE state not reached")
+    risks.append("[RISK] aspose_supported is None — audit required before DEC-033 compatibility is known")
+    risks.append("[RISK] Requirements generation has not started — REQUIREMENTS_AUTHORITATIVE state not reached")
     return risks
 
 
@@ -198,7 +198,7 @@ def _build_non_goals(first_candidate: str) -> list[str]:
     return [
         f"[NON-GOAL] Do NOT begin implementation of {first_candidate.upper()} until PLANNING_READY state is reached",
         "[NON-GOAL] Do NOT approve Gate 11 for any format (requires human review)",
-        f"[NON-GOAL] Do NOT set commercial_product_ready=True",
+        "[NON-GOAL] Do NOT set commercial_product_ready=True",
         "[NON-GOAL] Do NOT fetch internet resources (spec cache required locally first)",
         "[NON-GOAL] Do NOT execute autonomous rollout",
         "[NON-GOAL] Do NOT modify src/net/ or src/python/ product sources",
@@ -390,28 +390,28 @@ def main():
         print(json.dumps(result, indent=2))
         return
 
-    print(f"=== Acquisition Planning Runtime ===")
+    print("=== Acquisition Planning Runtime ===")
     print(f"  Tier:             {result['tier']}")
     print(f"  Top N:            {result['top_n']}")
     print(f"  dry_run_only:     {result['dry_run_only']}")
     print(f"  simulation_only:  {result['simulation_only']}")
-    print(f"")
+    print("")
     print(f"  Candidate Ranking (top {result['top_n']}):")
     for r in result["candidate_ranking"]:
         print(f"    {r['format_id']:12s}  score={r['score']:.2f}  tier={r['tier']}")
-    print(f"")
+    print("")
     print(f"  Selected first candidate: {result['selected_first_candidate']}")
     print(f"  Readiness score:          {result['first_candidate_readiness_score']}")
-    print(f"")
+    print("")
     if result["first_candidate_blockers"]:
-        print(f"  Blockers:")
+        print("  Blockers:")
         for b in result["first_candidate_blockers"]:
             print(f"    {b}")
-    print(f"")
-    print(f"  Proposed acquisition lanes:")
+    print("")
+    print("  Proposed acquisition lanes:")
     for lane in result["first_candidate_proposed_acquisition_lanes"]:
         print(f"    {lane}")
-    print(f"")
+    print("")
     print(f"  Next recommended sprint: {result['next_recommended_sprint']}")
     print(f"  {result['bundle_note']}")
 

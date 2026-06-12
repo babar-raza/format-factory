@@ -7,7 +7,7 @@ import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
 from ppm.ppm_parser import (
     parse_ppm, parse_ppm_strict, probe_ppm, get_capabilities,
-    PpmError, PpmInvalidMagicError, PpmSizeError,
+    PpmError, PpmInvalidMagicError,
 )
 
 SAMPLES = os.path.join(os.path.dirname(__file__), "..", "..", "..", "samples", "by-format", "ppm")

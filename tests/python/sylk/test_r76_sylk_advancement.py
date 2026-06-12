@@ -27,14 +27,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from src.python.sylk.sylk_parser import (
     parse_sylk,
     parse_sylk_strict,
-    probe_sylk,
-    SylkError,
     SylkParseError,
-    SylkInvalidFormatError,
-    SylkDocument,
-    SylkCell,
-    MAX_COLUMNS,
-    MAX_ROWS,
 )
 
 

@@ -1,11 +1,10 @@
 """R113 FOSS: SYLK to CSV export workflow."""
-import pytest
 import os
 import sys
 import tempfile
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
-from sylk.sylk_parser import parse_sylk, parse_sylk_strict, write_sylk, SylkDocument, SylkCell, sylk_to_csv
+from sylk.sylk_parser import parse_sylk, write_sylk, SylkDocument, SylkCell, sylk_to_csv
 
 
 class TestR113SylkCsvExport:

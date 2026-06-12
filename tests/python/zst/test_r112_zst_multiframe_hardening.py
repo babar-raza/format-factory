@@ -1,5 +1,4 @@
 """R112 FOSS: ZST multi-frame / large payload compress/decompress hardening."""
-import pytest
 import os
 import sys
 

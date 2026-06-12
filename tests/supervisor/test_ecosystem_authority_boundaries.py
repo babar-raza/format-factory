@@ -6,7 +6,6 @@ Lane 3: Validators 15-20 + package-108 quarantine validators
 Tests 15-20: Ecosystem tool authority boundaries.
 """
 import json
-import pytest
 import sys
 from pathlib import Path
 
@@ -14,12 +13,9 @@ _root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_root))
 
 from tools.supervisor.execution_backend import BackendStatus
-from tools.supervisor.backends.superpowers_skill_backend import SuperpowersSkillBackend
-from tools.supervisor.backends.mcp_superpowers_backend import McpSuperpowersBackend
 from tools.supervisor.backends.task_master_backend import TaskMasterBackend, get_task_master_layers
 from tools.supervisor.backends.cognee_memory_backend import CogneeMemoryBackend
 from tools.supervisor.backends.skill_seekers_backend import SkillSeekersBackend
-from tools.supervisor.backends.llm_api_backend import LlmApiBackend
 
 
 # --------------------------------------------------------------------------

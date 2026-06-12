@@ -5,7 +5,6 @@ Covers: make_warning, build_workbook, validate_workbook (IR-FODS-018).
 """
 from pathlib import Path
 
-import pytest
 
 from fods import parse_fods
 from fods.constants import FORMAT_ID, SPEC_VERSION

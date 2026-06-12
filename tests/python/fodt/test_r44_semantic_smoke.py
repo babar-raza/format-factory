@@ -19,7 +19,6 @@ Sprint: FORMAT-FACTORY-R44-TWO-PRODUCT-LOCAL-RC-BASELINE-001
 import pathlib
 import sys
 
-import pytest
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[3]
 SAMPLES = REPO_ROOT / "samples" / "by-format" / "fodt"

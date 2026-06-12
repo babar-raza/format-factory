@@ -8,7 +8,7 @@ import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
 from pgm.pgm_parser import (
     parse_pgm_strict, parse_pgm,
-    PgmError, PgmInvalidMagicError, PgmInvalidHeaderError, PgmSizeError, PgmDecodeError,
+    PgmInvalidMagicError, PgmInvalidHeaderError, PgmSizeError, PgmDecodeError,
 )
 
 

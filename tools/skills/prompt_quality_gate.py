@@ -32,9 +32,7 @@ Authority: AGENTS.md AF9-AF15 | GOVERNANCE.md 26.8-26.13
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
-from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
@@ -286,12 +284,12 @@ def main():
         print(json.dumps(result, indent=2))
         return
 
-    print(f"\n=== Prompt Quality Gate ===")
+    print("\n=== Prompt Quality Gate ===")
     print(f"  STATUS:   {result['status']}")
     print(f"  SCORE:    {result['score']}/10")
     print(f"  BLOCKERS: {result['blocker_count']}")
     print(f"  WARNINGS: {result['warning_count']}")
-    print(f"\n  Per-criterion results:")
+    print("\n  Per-criterion results:")
     for check in result["checks"]:
         icon = "PASS" if check["status"] == "PASS" else check["status"]
         print(f"    [{icon}] #{check['id']} {check['name']}: {check['detail']}")

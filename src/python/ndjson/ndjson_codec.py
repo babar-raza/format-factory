@@ -409,27 +409,6 @@ def deduplicate(source, key: str) -> list[Any]:
     return result
 
 
-def head(source, n: int) -> list[Any]:
-    """Return the first N records from an NDJSON source.
-
-    Args:
-        source: Path to a file, bytes, string, or list of records.
-        n:      Number of records to return (non-negative integer).
-
-    Returns:
-        List of up to n records from the beginning of the source.
-
-    Raises:
-        ValueError:       If n is negative.
-        NdjsonParseError: If source cannot be parsed.
-        NdjsonError:      For other load errors.
-    """
-    if n < 0:
-        raise ValueError("n must be >= 0")
-    records = load_ndjson(source)
-    return records[:n]
-
-
 def min_value(source, field: str) -> Any:
     """Return the minimum value for a field across all NDJSON records.
 
@@ -802,7 +781,6 @@ def write_csv(source, dest: str | Path) -> None:
     Raises:
         NdjsonError: If records are not dicts or dest cannot be written.
     """
-    import csv as _csv
     csv_str = export_to_csv(source)
     try:
         Path(dest).write_text(csv_str, encoding="utf-8")
@@ -865,7 +843,348 @@ def _read_source(source) -> bytes:
     raise NdjsonError(f"Unsupported source type: {type(source)}")
 
 
+# FORMAT_FACTORY_EXECUTION: taskcard=SHQ-L2-001; method=QUEUE_DISPATCHED_EXECUTION; queue_item=shq-q-002; sprint_id=FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001
+def flatten_records(source: "Any", prefix: str = "") -> "list[dict]":
+    """Flatten nested dict records one level deep.
+
+    For each record, if a field value is a dict, its keys are expanded as
+    '<outer_key>_<inner_key>' (with optional prefix prepended to outer keys).
+    Non-dict values are kept as-is. Non-dict records are passed through unchanged.
+
+    Args:
+        source: NDJSON source (file path, bytes, list of records).
+        prefix: Optional string to prepend to all top-level field names.
+
+    Returns:
+        List of flattened records (dicts). Non-dict records are passed through.
+
+    Example:
+        flatten_records([{"a": {"x": 1, "y": 2}, "b": 3}])
+        → [{"a_x": 1, "a_y": 2, "b": 3}]
+    """
+    if isinstance(source, list):
+        records = source
+    else:
+        records = load_ndjson(source)
+
+    result = []
+    for record in records:
+        if not isinstance(record, dict):
+            result.append(record)
+            continue
+        flat: dict = {}
+        for key, val in record.items():
+            outer = f"{prefix}{key}" if prefix else key
+            if isinstance(val, dict):
+                for sub_key, sub_val in val.items():
+                    flat[f"{outer}_{sub_key}"] = sub_val
+            else:
+                flat[outer] = val
+        result.append(flat)
+    return result
+
+
+# Sprint: FORMAT-FACTORY-BROAD-SELF-HEALING-PRODUCT-ACCELERATION-RNEXT-001
+# Queue: broad-accel-q-003
+
+def to_tsv(source: "Any", include_header: bool = True) -> str:
+    """Export NDJSON records to a TSV (tab-separated values) string.
+
+    Args:
+        source: File path, bytes, or list of records.
+        include_header: If True, include a header row with field names.
+
+    Returns:
+        TSV string with tab-separated columns and newline-separated rows.
+        Fields not present in a row are rendered as empty string.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    if not records:
+        return ""
+
+    # Collect all unique field names in order of first appearance
+    field_names: list[str] = []
+    seen: set[str] = set()
+    for rec in records:
+        if isinstance(rec, dict):
+            for k in rec:
+                if k not in seen:
+                    field_names.append(k)
+                    seen.add(k)
+
+    if not field_names:
+        # Non-dict records: just convert each to string
+        rows = [str(r) for r in records]
+        return "\n".join(rows)
+
+    lines: list[str] = []
+    if include_header:
+        lines.append("\t".join(field_names))
+
+    for rec in records:
+        if isinstance(rec, dict):
+            row = "\t".join(str(rec.get(f, "")) for f in field_names)
+        else:
+            row = str(rec)
+        lines.append(row)
+
+    return "\n".join(lines)
+
+
+def to_markdown_table(source: "Any") -> str:
+    """Export NDJSON records to a GitHub-flavored Markdown table.
+
+    Args:
+        source: File path, bytes, or list of dict records.
+
+    Returns:
+        Markdown table string. Returns empty string for empty input.
+        Non-dict records are serialized as strings in a single column.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    if not records:
+        return ""
+
+    # Collect field names
+    field_names: list[str] = []
+    seen: set[str] = set()
+    for rec in records:
+        if isinstance(rec, dict):
+            for k in rec:
+                if k not in seen:
+                    field_names.append(k)
+                    seen.add(k)
+
+    if not field_names:
+        lines = ["| value |", "| --- |"]
+        for rec in records:
+            lines.append(f"| {str(rec)} |")
+        return "\n".join(lines)
+
+    header = "| " + " | ".join(str(f) for f in field_names) + " |"
+    separator = "| " + " | ".join("---" for _ in field_names) + " |"
+    lines = [header, separator]
+    for rec in records:
+        if isinstance(rec, dict):
+            cells = " | ".join(str(rec.get(f, "")) for f in field_names)
+        else:
+            cells = " | ".join(str(rec) if i == 0 else "" for i in range(len(field_names)))
+        lines.append(f"| {cells} |")
+    return "\n".join(lines)
+
+
+def count_unique_values(source: "Any", field: str) -> int:
+    """Count the number of unique values for a field across all records.
+
+    Records missing the field are excluded from counting.
+
+    Args:
+        source: NDJSON bytes, path, or list of records.
+        field: Field name to count unique values for.
+
+    Returns:
+        Count of distinct values for the field.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    seen: set = set()
+    for rec in records:
+        if isinstance(rec, dict) and field in rec:
+            try:
+                seen.add(rec[field])
+            except TypeError:
+                seen.add(str(rec[field]))
+    return len(seen)
+
+
+def zip_with_index(source: "Any", field_name: str = "_index") -> "list[dict]":
+    """Add a sequential index field to each record.
+
+    Args:
+        source: NDJSON bytes, path, or list of records.
+        field_name: Name of the index field to add (default '_index').
+
+    Returns:
+        List of records each with field_name set to 0-based index.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    result = []
+    for i, rec in enumerate(records):
+        if isinstance(rec, dict):
+            out = dict(rec)
+            out[field_name] = i
+        else:
+            out = {field_name: i, "_value": rec}
+        result.append(out)
+    return result
+
+
+def omit(source: "Any", fields: list[str]) -> "list[dict]":
+    """Return records with specified fields removed.
+
+    Args:
+        source: NDJSON bytes, path, or list of records.
+        fields: Field names to omit from each record.
+
+    Returns:
+        List of dict records with the given fields removed.
+        Non-dict records are returned unchanged.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    field_set = set(fields)
+    result = []
+    for rec in records:
+        if isinstance(rec, dict):
+            result.append({k: v for k, v in rec.items() if k not in field_set})
+        else:
+            result.append(rec)
+    return result
+
+
+def batch_update(source: "Any", field: str, value: "Any") -> "list[Any]":
+    """Set a field to a given value in every dict record.
+
+    Non-dict records are passed through unchanged.
+
+    Args:
+        source: NDJSON bytes, path, string, or list of records.
+        field:  Field name to set.
+        value:  Value to assign to the field.
+
+    Returns:
+        New list of records with the field updated in every dict.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    result = []
+    for rec in records:
+        if isinstance(rec, dict):
+            out = dict(rec)
+            out[field] = value
+            result.append(out)
+        else:
+            result.append(rec)
+    return result
+
+
 def _check_size(path: Path) -> None:
     size = path.stat().st_size
     if size > MAX_FILE_SIZE:
         raise NdjsonError(f"File size {size} exceeds limit of {MAX_FILE_SIZE}")
+
+
+def ndjson_max_field_count(source: "Any") -> int:
+    """Return the maximum number of fields (keys) in any record in the dataset."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return max((len(r) for r in records if isinstance(r, dict)), default=0)
+
+
+def ndjson_average_field_count(source: "Any") -> float:
+    """Return the average number of fields (keys) per dict record.
+
+    Args:
+        source: List of records or path/string to NDJSON file.
+
+    Returns:
+        Float average. Returns 0.0 if no dict records exist.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    counts = [len(r) for r in records if isinstance(r, dict)]
+    if not counts:
+        return 0.0
+    return sum(counts) / len(counts)
+
+
+def ndjson_null_field_count(source: "Any", field_name: str) -> int:
+    """Return the count of records where the given field is null or absent.
+
+    A record is counted if:
+    - It is a dict and the field is present with value None, or
+    - It is a dict and the field is absent entirely.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+        field_name: The field name to check.
+
+    Returns:
+        Integer count of records where the field is null or missing.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    count = 0
+    for rec in records:
+        if isinstance(rec, dict):
+            val = rec.get(field_name, None)
+            if val is None:
+                count += 1
+    return count
+
+
+def ndjson_min_field_count(source: "Any") -> int:
+    """Return the minimum number of fields (keys) in any dict record.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Integer minimum field count across all dict records.
+        Returns 0 if no dict records exist.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return min((len(r) for r in records if isinstance(r, dict)), default=0)
+
+
+def ndjson_record_count(source: "Any") -> int:
+    """Return the total number of records (lines) in an NDJSON source.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Integer count of all records, including non-dict records.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return len(records)
+
+
+def ndjson_field_exists(source: "Any", field_name: str) -> bool:
+    """Return True if at least one record contains the given field name.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+        field_name: The field name to check for existence.
+
+    Returns:
+        True if any dict record has field_name as a key; False otherwise.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return any(isinstance(r, dict) and field_name in r for r in records)
+
+
+def ndjson_max_record_size(source: "Any") -> int:
+    """Return the byte length of the largest record when serialized as JSON.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Integer byte count of the largest serialized record. Returns 0 if empty.
+    """
+    import json as _json
+    records = source if isinstance(source, list) else load_ndjson(source)
+    if not records:
+        return 0
+    return max(len(_json.dumps(r)) for r in records)
+
+
+def ndjson_total_field_count(source: "Any") -> int:
+    """Return the total number of fields across all records in an NDJSON source.
+
+    Only dict records contribute fields. Non-dict records (strings, numbers,
+    lists, etc.) contribute 0 fields.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Integer total field count across all records. Returns 0 if empty.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return sum(len(r) for r in records if isinstance(r, dict))

@@ -13,12 +13,10 @@ Verifies:
 Sprint: FORMAT-FACTORY-R44-TWO-PRODUCT-LOCAL-RC-BASELINE-001
 """
 
-import io
 import pathlib
 import sys
 import zipfile
 
-import pytest
 
 # Load module under test
 _TOOLS_EVIDENCE = pathlib.Path(__file__).resolve().parents[2] / "tools" / "evidence"

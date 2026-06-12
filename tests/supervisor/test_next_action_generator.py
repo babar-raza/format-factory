@@ -2,8 +2,6 @@
 Tests for next_action_generator.py
 Sprint: FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001
 """
-import json
-import pytest
 import sys
 from pathlib import Path
 

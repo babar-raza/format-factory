@@ -29,7 +29,6 @@ Spec basis:
 
 import argparse
 import pathlib
-import sys
 
 # Required XML namespaces for FODS per ODF 1.3
 FODS_NS = (

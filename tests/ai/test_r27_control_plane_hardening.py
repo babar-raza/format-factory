@@ -3,9 +3,8 @@
 Tests for strict fallback policy, role enforcement, and no-fallback roles.
 """
 
-import pytest
 from tools.ai.schemas.models import AIRole, ModelCapability, ModelSelectionRequest
-from tools.ai.control_plane.model_router import ModelRouter, NO_FALLBACK_ROLES, load_role_requirements
+from tools.ai.control_plane.model_router import ModelRouter, load_role_requirements
 
 
 def _make_model(model_id: str, roles: list[AIRole] | None = None, **kwargs) -> ModelCapability:

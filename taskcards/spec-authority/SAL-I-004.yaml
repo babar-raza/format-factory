@@ -1,0 +1,28 @@
+id: SAL-I-004
+title: "requirements_authority adoption pipeline integration"
+sprint: FORMAT-FACTORY-SAL-INTEGRATION-HARDENING-SPRINT-2
+status: IN_PROGRESS
+completed_in_run: sal-integration-hardening-sprint2-20260611-8e45224
+completed_date: "2026-06-11"
+previous_status: DEFERRED
+previous_sprint: FORMAT-FACTORY-SAL-VERIFICATION-HEALING-HARDENING-BACKFILL-SINGLE-GO-001
+
+description: >
+  Wire run_validation() from validate_requirements_authority.py into autonomous_cycle.py
+  Step 2d2 for REQUIREMENT item types. Added advisory warning mode (not hard block in
+  Sprint 2). 6 tests added and passing.
+
+files_changed:
+  - tools/supervisor/autonomous_cycle.py (Step 2d2 added)
+  - tests/supervisor/test_requirements_authority_integration.py (6 new tests)
+
+gap_closed: GAP-04
+
+integration_point: "autonomous_cycle.py Step 2d2 (between adoption compliance and governance validators)"
+blocking_mode: "Advisory WARNING (not hard block in Sprint 2)"
+tests_added: 6
+tests_result: "6/6 PASS"
+
+next_sprint_action: >
+  Sprint 3: promote advisory WARNING to hard BLOCK for REQUIREMENT items
+  without requirements authority validation passing.

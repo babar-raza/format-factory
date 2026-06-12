@@ -29,7 +29,6 @@ import argparse
 import subprocess
 import sys
 import time
-from pathlib import Path
 
 
 def pytest_timeout_available(python_exe):
@@ -117,7 +116,7 @@ def main():
 
     if timed_out:
         print(f"BOUNDED_REPLAY: TIMEOUT after {elapsed:.1f}s (limit={max_seconds}s)")
-        print(f"BOUNDED_REPLAY: FAIL")
+        print("BOUNDED_REPLAY: FAIL")
         sys.exit(2)
 
     status = "PASS" if exit_code == 0 else "FAIL"

@@ -10,7 +10,6 @@ if str(_src) not in sys.path:
 from qoi.qoi_parser import (
     QoiImage,
     QoiInvalidMagicError,
-    QoiSizeError,
     parse_qoi,
     parse_qoi_strict,
     probe_qoi,
@@ -145,7 +144,6 @@ class TestQoiMalformedInput:
     def test_oversized_dimensions(self, tmp_path):
         """Header claiming 65535x65535 dimensions must be rejected."""
         import struct
-        from qoi.qoi_parser import QoiSizeError
         f = tmp_path / "huge.qoi"
         data = b"qoif" + struct.pack(">II", 65535, 65535) + bytes([4, 0])
         f.write_bytes(data)

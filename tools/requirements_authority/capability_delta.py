@@ -19,15 +19,13 @@ Implements the 12-step promotion flow:
   stale_evidence, overclaim, hidden_unsupported_feature, ai_draft_proof,
   evidence_missing_artifact, claim_too_broad, policy_decision_required
 """
-import json
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from .graph_store import GraphStore
-from .models import GraphNode, GraphEdge
+from .models import GraphNode
 
 REJECTION_REASONS = [
     "missing_requirement",

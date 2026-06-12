@@ -4,7 +4,6 @@
 
 """Tests for PBM write then read integrity."""
 
-import pytest
 import sys
 import os
 from pathlib import Path

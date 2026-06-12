@@ -107,7 +107,7 @@ def check_action(action: Dict[str, Any]) -> None:
     action_type = action.get("action_type", "UNKNOWN")
 
     if action_type in FORBIDDEN_ACTION_TYPES:
-        raise GuardViolation(action_type, f"action_type is in FORBIDDEN_ACTION_TYPES")
+        raise GuardViolation(action_type, "action_type is in FORBIDDEN_ACTION_TYPES")
 
     target_path = action.get("target_path", "")
     if target_path:

@@ -16,14 +16,12 @@ Tri-Lane Reconciliation tests — FORMAT-FACTORY-SUPERVISOR-TRI-LANE-RECONCILIAT
 12. No product source edits
 """
 
-import sys
 import json
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 TRI_LANE_DIR = REPO_ROOT / "reports" / "supervisor-tri-lane-reconciliation"
 
-import pytest
 
 
 # ===========================================================================

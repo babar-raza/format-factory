@@ -3,7 +3,6 @@
 Tests probe_dif metadata inspection, dif_to_csv workflow,
 parse_dif_strict cell types, and full dogfood pipeline.
 """
-import tempfile
 from pathlib import Path
 
 import pytest

@@ -22,13 +22,10 @@ sys.path.insert(0, str(_REPO / "tools" / "supervisor"))
 
 from validate_adoption_compliance import (
     validate_adoption,
-    COMPLIANCE_PASS,
     COMPLIANCE_PASS_WITH_EXEMPTIONS,
     COMPLIANCE_FAIL_MISSING_TRANSCRIPTS,
-    COMPLIANCE_FAIL_MISSING_SKILL_IDS,
     COMPLIANCE_FAIL_MISSING_LEDGER,
     _is_exempt,
-    _is_non_source_changing,
     _has_explicit_exemption,
 )
 

@@ -12,11 +12,8 @@ if str(_src) not in sys.path:
 from odt.odt_parser import (
     SUPPORTED_FEATURES,
     UNSUPPORTED_FEATURES,
-    OdtDocument,
-    OdtError,
     OdtHeading,
     OdtInvalidContainerError,
-    OdtListItem,
     OdtParagraph,
     get_capabilities,
     parse_odt,

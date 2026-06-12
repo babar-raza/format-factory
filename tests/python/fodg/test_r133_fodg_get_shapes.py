@@ -7,12 +7,11 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
 
-from fodg.fodg_codec import create_fodg, write_fodg, get_shapes, load
+from fodg.fodg_codec import create_fodg, write_fodg, get_shapes
 
 
 MINIMAL_FODG = b"""<?xml version="1.0" encoding="UTF-8"?>

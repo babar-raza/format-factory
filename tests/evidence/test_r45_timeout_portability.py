@@ -13,8 +13,6 @@ The core guarantee: tests have BOUNDED execution via pytest.ini timeout=120,
 even if pytest-timeout is installed from user site-packages rather than globally.
 """
 
-import subprocess
-import sys
 from pathlib import Path
 
 import pytest

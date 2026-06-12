@@ -156,7 +156,7 @@ def main() -> None:
     validation_command = args.validation_command
 
     if args.verify:
-        print(f"R54 --verify: running actual bundle validation...")
+        print("R54 --verify: running actual bundle validation...")
         exit_code, output = run_validation(bundle_path, args.contract)
         validation_exit_code = exit_code
         if exit_code != 0:
@@ -171,7 +171,7 @@ def main() -> None:
                 f"{sys.executable} tools/evidence/validate_evidence_bundle.py "
                 f"--bundle {bundle_path} --contract {args.contract} --check-no-pending"
             )
-        print(f"R54 --verify: PASS (exit code 0) — proceeding to write sidecar.")
+        print("R54 --verify: PASS (exit code 0) — proceeding to write sidecar.")
 
     sidecar = build_sidecar(
         bundle_path=bundle_path,

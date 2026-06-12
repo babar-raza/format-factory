@@ -424,7 +424,7 @@ def main():
             icon = "PASS" if stale_status in ("PASS", "MANUAL_REQUIRED") else "FAIL"
             print(f"  [{icon}] stale-check: {stale_status} ({len(stale_errs)} errors, {len(stale_warns)} warnings)")
             if stale_status == "MANUAL_REQUIRED":
-                print(f"    STALE_DETECTION: MANUAL_REQUIRED — see GOVERNANCE.md 26.11")
+                print("    STALE_DETECTION: MANUAL_REQUIRED — see GOVERNANCE.md 26.11")
             for w in stale_warns[:2]:
                 print(f"    {w}")
             if stale_status == "FAIL":

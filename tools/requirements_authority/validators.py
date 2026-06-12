@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from typing import List, Optional
 
 from .graph_store import GraphStore
-from .models import GraphNode, GraphEdge, NODE_TYPES, EDGE_TYPES
+from .models import NODE_TYPES, EDGE_TYPES
 
 
 @dataclass

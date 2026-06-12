@@ -5,12 +5,10 @@
 
 from pathlib import Path
 
-import pytest
 
 from sylk.sylk_parser import (
     SylkCell,
     SylkDocument,
-    SylkError,
     parse_sylk_strict,
     write_sylk,
 )

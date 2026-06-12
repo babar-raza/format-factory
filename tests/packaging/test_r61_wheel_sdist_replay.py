@@ -14,9 +14,7 @@ R61 Sprint: FORMAT-FACTORY-R61-EXTRACTED-BUNDLE-REPLAY-DOTNET-SELF-CONTAINED-SOU
 from __future__ import annotations
 
 import hashlib
-import os
 import sys
-import tempfile
 import zipfile
 from pathlib import Path
 
@@ -72,7 +70,7 @@ class TestWheelContentReplay:
             pytest.skip("FODT wheel not available via portable discovery")
         with zipfile.ZipFile(wheel) as zf:
             nm_files = [n for n in zf.namelist() if "neutral_model.py" in n]
-            assert nm_files, f"neutral_model.py not in FODT wheel"
+            assert nm_files, "neutral_model.py not in FODT wheel"
             content = zf.read(nm_files[0]).decode("utf-8")
         # R59 APIs
         for api in ["document_heading_outline", "document_text_content", "document_stats"]:

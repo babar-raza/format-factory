@@ -51,19 +51,19 @@ class TestBlockedGapIdsEmpty:
 
     def test_csv_writer_project_exists(self):
         proj = REPO_ROOT / "src" / "net" / "csv" / "FormatFactory.Csv.csproj"
-        assert proj.exists(), f"FormatFactory.Csv.csproj must exist"
+        assert proj.exists(), "FormatFactory.Csv.csproj must exist"
 
     def test_html_writer_project_exists(self):
         proj = REPO_ROOT / "src" / "net" / "html" / "FormatFactory.Html.csproj"
-        assert proj.exists(), f"FormatFactory.Html.csproj must exist"
+        assert proj.exists(), "FormatFactory.Html.csproj must exist"
 
     def test_txt_writer_project_exists(self):
         proj = REPO_ROOT / "src" / "net" / "txt" / "FormatFactory.Txt.csproj"
-        assert proj.exists(), f"FormatFactory.Txt.csproj must exist"
+        assert proj.exists(), "FormatFactory.Txt.csproj must exist"
 
     def test_markdown_writer_project_exists(self):
         proj = REPO_ROOT / "src" / "net" / "markdown" / "FormatFactory.Markdown.csproj"
-        assert proj.exists(), f"FormatFactory.Markdown.csproj must exist"
+        assert proj.exists(), "FormatFactory.Markdown.csproj must exist"
 
 
 class TestExporterDelegation:

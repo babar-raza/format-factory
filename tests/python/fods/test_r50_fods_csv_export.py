@@ -16,7 +16,6 @@ Sprint: FORMAT-FACTORY-R50-EVIDENCE-CLOSEOUT-REPAIR-AND-OBJECT-MODEL-HARDENING-0
 """
 
 import sys
-import tempfile
 from pathlib import Path
 
 import pytest

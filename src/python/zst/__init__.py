@@ -24,6 +24,20 @@ from .zst_codec import (
     estimate_ratio,
     batch_compress,
     batch_decompress,
+    # Sprint 3 (FORMAT-FACTORY-SAL-RECONCILIATION-HARDENING-SPRINT-3, spec_fact_refs=FACT-ZST-001)
+    compress_string,
+    decompress_to_string,
+    # RNEXT (FORMAT-FACTORY-SAL-ENFORCEMENT-CLOSEOUT-AND-PRODUCT-ACCELERATION-RNEXT-001)
+    compress_string_to_file,
+    decompress_file_to_string,
+    get_frame_size_stats,
+    is_valid_frame,
+    compress_with_dict,
+    decompress_with_dict,
+    zst_compressed_size,
+    zst_is_valid_file,
+    zst_decompressed_size,
+    zst_frame_count,
 )
 
 __all__ = [
@@ -42,6 +56,18 @@ __all__ = [
     "estimate_ratio",
     "batch_compress",
     "batch_decompress",
+    "compress_string",
+    "decompress_to_string",
+    "compress_string_to_file",
+    "decompress_file_to_string",
+    "get_frame_size_stats",
+    "is_valid_frame",
+    "compress_with_dict",
+    "decompress_with_dict",
+    "zst_compressed_size",
+    "zst_is_valid_file",
+    "zst_decompressed_size",
+    "zst_frame_count",
 ]
 
 __version__ = "0.1.0.dev0"

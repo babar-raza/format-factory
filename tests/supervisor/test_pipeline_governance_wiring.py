@@ -12,13 +12,9 @@ Tests:
 
 from __future__ import annotations
 
-import json
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
-import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
@@ -78,7 +74,7 @@ class TestGovernanceOnlyDeclarationPassesPipeline:
         from governance_validators import run_all_governance_validators
         decl = _make_decl()
         result = run_all_governance_validators(decl, REPO_ROOT)
-        assert len(result["validators"]) == 12
+        assert len(result["validators"]) == 13  # 12 original + V13 spec_fact_refs (SAL-VH-001)
 
 
 class TestProductSourceMissingExecutionMethodFailsPipeline:

@@ -17,7 +17,6 @@ Covers:
 import hashlib
 import json
 import sys
-import tempfile
 import zipfile
 from pathlib import Path
 

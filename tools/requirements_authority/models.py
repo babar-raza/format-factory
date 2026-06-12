@@ -3,7 +3,7 @@ Data models for the Canonical Capability Proof Graph.
 All 18 node types and 19 edge types are represented here.
 """
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 
 # ── Node type enum values ──────────────────────────────────────────────────────

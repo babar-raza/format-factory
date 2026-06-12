@@ -18,8 +18,6 @@ from dif.dif_parser import (
     delete_row,
     write_dif,
     parse_dif_strict,
-    get_row_count,
-    get_cell_value,
 )
 
 

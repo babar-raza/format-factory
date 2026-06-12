@@ -4,14 +4,12 @@ Sprint: FORMAT-FACTORY-SUPERPOWERS-AGENTIC-AUTONOMY-EXECUTION-001
 Lane 3: Runner validators
 """
 import json
-import pytest
 import sys
 from pathlib import Path
 
 _root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_root))
 
-from tools.supervisor.next_action_schema import NextActionValidationError, validate_next_action
 from tools.supervisor.next_action_runner import run_action
 from tools.supervisor.execution_backend import BackendType, ProofLevel
 

@@ -1,8 +1,9 @@
 # R111 Wave 6: SYLK write→parse roundtrip tests
 # Tests write_sylk + parse_sylk cycle
 
-import pytest
-import sys, os, tempfile
+import sys
+import os
+import tempfile
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../src/python"))
 
 from sylk.sylk_parser import parse_sylk_strict, write_sylk, parse_sylk, sylk_to_csv, SylkDocument, SylkCell

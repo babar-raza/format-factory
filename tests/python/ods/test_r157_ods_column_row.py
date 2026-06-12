@@ -11,12 +11,11 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO / "src" / "python"))
 
-from ods.ods_parser import get_column_count, get_row_values, OdsError
+from ods.ods_parser import get_column_count, get_row_values
 
 _SAMPLES = _REPO / "samples" / "by-format" / "ods" / "valid"
 

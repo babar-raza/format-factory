@@ -90,7 +90,7 @@ def test_evidence_root_raw_logs_dir_discovered(tmp_path):
 
     result = detect_missing_raw_logs(evidence_root)
     assert not result["is_violation"], (
-        f"evidence_root/raw-logs/ should be scanned; got is_violation=True"
+        "evidence_root/raw-logs/ should be scanned; got is_violation=True"
     )
 
 
@@ -120,7 +120,7 @@ def test_sample_output_type_discovered_from_declaration(tmp_path):
     }
     result = detect_missing_sample_outputs(evidence_root, declaration=declaration)
     assert not result["is_violation"], (
-        f"type=sample_output should be discovered; got is_violation=True"
+        "type=sample_output should be discovered; got is_violation=True"
     )
 
 

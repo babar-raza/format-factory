@@ -14,7 +14,6 @@ Sprint: FORMAT-FACTORY-R49-EDITABLE-OBJECT-MODEL-POC-BASELINE-AND-STRATEGY-SYNC-
 import sys
 from pathlib import Path
 
-import pytest
 
 # ---------------------------------------------------------------------------
 # Import the validator

@@ -3,8 +3,6 @@
 Tests for proposal validation, reviewer, rejection, and evidence review helper.
 """
 
-import pytest
-from pathlib import Path
 
 from tools.ai.schemas.models import ArtifactAuthorityStateValue
 from tools.ai.test_generation.proposal import (

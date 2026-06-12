@@ -3,13 +3,11 @@
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.ai.pipeline.e2e_pilot import (
     PilotConfig,
-    PilotResult,
     run_pilot,
     stage_1_load_chunks,
     stage_2_retrieval,

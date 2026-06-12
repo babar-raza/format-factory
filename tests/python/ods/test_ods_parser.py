@@ -11,7 +11,6 @@ if str(_src) not in sys.path:
 from ods.ods_parser import (
     OdsDocument,
     OdsInvalidContainerError,
-    OdsSizeError,
     parse_ods,
     parse_ods_strict,
     probe_ods,
@@ -160,7 +159,7 @@ class TestOdsMalformedInput:
     def test_oversized_decompressed_claim(self, tmp_path):
         """ZIP entry that claims enormous decompressed size must be caught."""
         import zipfile as zf
-        from ods.ods_parser import ODS_MIMETYPE, OdsSizeError
+        from ods.ods_parser import ODS_MIMETYPE
         p = tmp_path / "big-claim.ods"
         with zf.ZipFile(p, "w") as z:
             z.writestr("mimetype", ODS_MIMETYPE)

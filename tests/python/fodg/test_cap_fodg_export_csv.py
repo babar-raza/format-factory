@@ -7,12 +7,11 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from src.python.fodg.fodg_codec import create_fodg, write_fodg, export_to_csv, FodgError
+from src.python.fodg.fodg_codec import create_fodg, write_fodg, export_to_csv
 
 
 def _make_fodg(tmp_path, pages):

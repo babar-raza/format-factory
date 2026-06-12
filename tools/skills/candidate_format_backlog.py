@@ -417,7 +417,7 @@ def main():
         if args.json:
             print(json.dumps(result, indent=2))
         else:
-            print(f"=== Candidate Format Backlog Classification ===")
+            print("=== Candidate Format Backlog Classification ===")
             print(f"  Total:     {result['total_count']}")
             print(f"  Active:    {result['active_count']}")
             print(f"  Tier A:    {result['tier_a_count']}")

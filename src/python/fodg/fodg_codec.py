@@ -77,19 +77,6 @@ def load(source: str | bytes | Path) -> dict[str, Any]:
     return _build_model(root)
 
 
-def get_page_count(source: str | bytes | Path) -> int:
-    """Return the number of drawing pages.
-
-    Args:
-        source: Path, bytes, or XML string.
-
-    Returns:
-        Number of draw:page elements.
-    """
-    model = load(source)
-    return model["page_count"]
-
-
 def get_shape_count(source: str | bytes | Path) -> int:
     """Return total shape count across all pages.
 
@@ -481,6 +468,28 @@ def get_all_text(model: dict[str, Any]) -> list[str]:
     return result
 
 
+def get_page_text(model: dict[str, Any], page_idx: int) -> list[str]:
+    """Return a list of non-empty text strings from a specific page.
+
+    Args:
+        model: FODG neutral model dict.
+        page_idx: Zero-based page index.
+
+    Returns:
+        List of non-empty text strings from the page. Empty list if page
+        index is out of range or the page has no text.
+
+    Raises:
+        TypeError: If model is not a dict.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    pages = model.get("pages", [])
+    if page_idx < 0 or page_idx >= len(pages):
+        return []
+    return [t for t in pages[page_idx].get("text_content", []) if t]
+
+
 # ---------------------------------------------------------------------------
 # Sprint 8 additions (R144)
 # ---------------------------------------------------------------------------
@@ -748,3 +757,127 @@ def roundtrip(
     model = load(source)
     write_fodg(model, dest)
     return load(dest)
+
+
+def total_text_length(model: dict[str, Any]) -> int:
+    """Return the total character count of all text across all pages.
+
+    Sums the length of every text string extracted from all pages.
+
+    Args:
+        model: FODG model dict.
+
+    Returns:
+        Total number of characters in all text content.
+    """
+    return sum(len(t) for t in get_all_text(model))
+
+
+def find_shapes_by_text_pattern(model: dict[str, Any], pattern: str) -> list[dict[str, Any]]:
+    """Find shapes across all pages whose text matches a regex pattern.
+
+    Args:
+        model: FODG model dict.
+        pattern: Regular expression pattern to search for.
+
+    Returns:
+        List of dicts with keys: page_idx, shape_idx, text, matched.
+        Returns [] for no matches or invalid pattern.
+    """
+    import re
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    try:
+        compiled = re.compile(pattern)
+    except re.error:
+        return []
+
+    results = []
+    pages = model.get("pages", [])
+    for page_idx, page in enumerate(pages):
+        texts = page.get("text_content", [])
+        for shape_idx, text in enumerate(texts):
+            if text and compiled.search(text):
+                results.append({
+                    "page_idx": page_idx,
+                    "shape_idx": shape_idx,
+                    "text": text,
+                    "matched": True,
+                })
+    return results
+
+
+def export_page_to_json(model: dict[str, Any], page_idx: int) -> str:
+    """Export a single page as a JSON string.
+
+    Args:
+        model: FODG model dict.
+        page_idx: Zero-based page index.
+
+    Returns:
+        JSON string representing the page, or '{}' if page_idx out of range.
+    """
+    import json
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    pages = model.get("pages", [])
+    if page_idx < 0 or page_idx >= len(pages):
+        return "{}"
+    page = pages[page_idx]
+    return json.dumps(page, ensure_ascii=False)
+
+
+def fodg_total_shape_count(file_path: "str | bytes | Path") -> int:
+    """Return the total number of shapes across all pages in a FODG file.
+
+    Args:
+        file_path: Path to a FODG file.
+
+    Returns:
+        Integer total shape count across all pages.
+
+    Raises:
+        FodgError subclasses on parse failure.
+    """
+    model = load(file_path)
+    return get_shape_count(file_path)
+
+
+def fodg_text_shape_count(file_path: "str | bytes | Path") -> int:
+    """Return the total number of text shapes across all pages in a FODG file.
+
+    Args:
+        file_path: Path to a FODG file.
+
+    Returns:
+        Integer count of text shapes. Returns 0 if no text shapes exist.
+
+    Raises:
+        FodgError subclasses on parse failure.
+    """
+    model = load(file_path)
+    return len(get_text_shapes(model))
+
+
+def fodg_page_shape_count(model: dict[str, Any], page_idx: int) -> int:
+    """Return the number of shapes on a specific page.
+
+    Uses the shape_count field from the parsed model when available,
+    falling back to the length of the shapes list.
+
+    Args:
+        model: FODG model dict returned by load().
+        page_idx: Zero-based index of the page.
+
+    Returns:
+        Integer count of shapes on the page. Returns 0 if page_idx is out of range.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    pages = model.get("pages", [])
+    if page_idx < 0 or page_idx >= len(pages):
+        return 0
+    page = pages[page_idx]
+    if "shape_count" in page:
+        return int(page["shape_count"])
+    return len(page.get("shapes", []))

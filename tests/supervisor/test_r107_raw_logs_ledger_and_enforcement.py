@@ -6,12 +6,8 @@ Sprint: FORMAT-FACTORY-SUPERVISOR-R107-RAW-LOG-CAPTURE-STREAM-STATE-ISOLATION-CO
 
 import json
 import sys
-import textwrap
 from pathlib import Path
-from unittest.mock import patch, MagicMock
 
-import pytest
-import yaml
 
 TOOLS_DIR = Path(__file__).resolve().parent.parent.parent / "tools" / "supervisor"
 sys.path.insert(0, str(TOOLS_DIR))

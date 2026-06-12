@@ -19,7 +19,7 @@ Remediation actions enum:
  10. Supports format, blocking unsupported feature → policy decision or accepted_with_limitations
 """
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from .graph_store import GraphStore
 from .models import GraphNode

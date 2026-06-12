@@ -25,10 +25,8 @@ Decision output:
 from __future__ import annotations
 
 import json
-import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
 SCRIPT_DIR = Path(__file__).parent
 REPO_ROOT = SCRIPT_DIR.parent.parent

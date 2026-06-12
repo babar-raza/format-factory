@@ -9,8 +9,6 @@ The validator must fail when:
 2. Delivery manifest is missing
 3. Only inner ZIP is present (no outer delivery package wrapper)
 """
-import hashlib
-import json
 import os
 import pathlib
 import zipfile

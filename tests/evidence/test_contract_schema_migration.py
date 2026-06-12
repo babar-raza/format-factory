@@ -6,7 +6,6 @@ and that the validator correctly reads required_repo_files.
 
 Sprint: FORMAT-FACTORY-R34-CLEAN-CLOSURE-AUTHORITY-PIPELINE-REPAIR-SWARM-001
 """
-import os
 import pathlib
 import yaml
 import pytest

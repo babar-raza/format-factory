@@ -12,10 +12,7 @@ if str(_src) not in sys.path:
 from ods.ods_parser import (
     SUPPORTED_FEATURES,
     UNSUPPORTED_FEATURES,
-    OdsDocument,
-    OdsError,
     OdsInvalidContainerError,
-    OdsSizeError,
     get_capabilities,
     parse_ods,
     parse_ods_strict,

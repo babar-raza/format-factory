@@ -23,7 +23,7 @@ SAMPLES = REPO_ROOT / "samples" / "by-format" / "fods"
 
 sys.path.insert(0, str(REPO_ROOT / "src" / "python"))
 
-from fods import parse_fods, parse_fods_strict, FORMAT_ID, SPEC_VERSION
+from fods import parse_fods, parse_fods_strict
 from fods.neutral_model import validate_workbook
 
 

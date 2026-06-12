@@ -72,7 +72,8 @@ class TestOdsWriteBasic:
             assert "META-INF/manifest.xml" in names
 
     def test_mimetype_is_correct(self):
-        import zipfile, io
+        import zipfile
+        import io
         doc = _make_doc()
         data = document_to_ods_bytes(doc)
         with zipfile.ZipFile(io.BytesIO(data), "r") as zf:

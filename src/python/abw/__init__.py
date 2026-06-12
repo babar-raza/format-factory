@@ -49,6 +49,19 @@ from .abw_codec import (
     paragraph_at,
     text_stats,
     export_to_plain_text,
+    search_text,
+    get_words,
+    longest_paragraph,
+    is_empty,
+    average_paragraph_length,
+    shortest_paragraph,
+    contains_text,
+    count_paragraphs_matching,
+    abw_sentence_count,
+    abw_longest_word,
+    abw_total_char_count,
+    abw_empty_paragraph_count,
+    abw_nonempty_paragraph_count,
 )
 
 __all__ = [
@@ -92,6 +105,19 @@ __all__ = [
     "paragraph_at",
     "text_stats",
     "export_to_plain_text",
+    "search_text",
+    "get_words",
+    "longest_paragraph",
+    "is_empty",
+    "average_paragraph_length",
+    "shortest_paragraph",
+    "contains_text",
+    "count_paragraphs_matching",
+    "abw_sentence_count",
+    "abw_longest_word",
+    "abw_total_char_count",
+    "abw_empty_paragraph_count",
+    "abw_nonempty_paragraph_count",
 ]
 
 __version__ = "0.1.0.dev0"

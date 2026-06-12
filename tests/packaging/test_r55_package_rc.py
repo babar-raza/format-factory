@@ -16,12 +16,9 @@ commercial_product_ready: false
 from __future__ import annotations
 
 import json
-import os
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / ".local" / "package-builds" / "python-foss"

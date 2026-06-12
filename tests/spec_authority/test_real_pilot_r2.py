@@ -3,7 +3,10 @@ R2 Pilot Regression Tests — FORMAT-FACTORY-SPECIFICATION-AUTHORITY-LAYER-REAL-
 
 Tests real-source pipeline: ZST (real RFC), Netpbm (real HTML), DIF (empirical), FODS (real HTML).
 """
-import sys, json, pathlib, pytest
+import sys
+import json
+import pathlib
+import pytest
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 SAL_DIR = REPO_ROOT / "tools" / "specification-authority-layer"
@@ -16,13 +19,7 @@ REGISTRY_DIR = str(EVIDENCE_ROOT)
 CONTEXT_PACK_DIR = EVIDENCE_ROOT / "context-packs"
 RESULTS_PATH = EVIDENCE_ROOT / "pilot-results-r2.json"
 
-from spec_source_registry import register_source, is_source_registered, validate_citation, load_registry
-from spec_vault_ingest import ingest_text_fixture, verify_snapshot_integrity
-from spec_parser import parse_spec_from_text
-from spec_normalizer import normalize_spec, load_normalized_artifact
-from spec_digestor import compute_digest, check_staleness
-from requirement_extractor import extract_requirements
-from context_pack_builder import build_context_pack, verify_context_pack
+from spec_source_registry import register_source, validate_citation
 
 
 # ─── Fixtures ──────────────────────────────────────────────────────────

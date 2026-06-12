@@ -117,7 +117,7 @@ def test_proof_model_check_does_not_skip():
 
     # Layer 2 → Layer 3 check: sidecar file SHA in manifest
     assert manifest_sidecar_sha == sidecar_file_sha, (
-        f"Layer 3 integrity: manifest.sidecar_sha256 != actual sidecar file SHA"
+        "Layer 3 integrity: manifest.sidecar_sha256 != actual sidecar file SHA"
     )
     # Layer 1 ≠ Layer 2 SHA check
     assert manifest_evidence_sha != manifest_sidecar_sha, (

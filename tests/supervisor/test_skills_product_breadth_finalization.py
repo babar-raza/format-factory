@@ -6,7 +6,6 @@ Test suite for FORMAT-FACTORY-SKILLS-PRODUCT-BREADTH-HANDOFF-FINALIZATION-001
 import json
 import os
 import yaml
-import pytest
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SPRINT_DIR = os.path.join(REPO_ROOT, "reports", "skills-product-breadth-finalization")

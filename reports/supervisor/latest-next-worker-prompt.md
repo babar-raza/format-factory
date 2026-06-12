@@ -1,31 +1,8 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-10T13:42:46.039857
-# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-10-001
-# Stream: acceleration
+# Generated: 2026-06-12T21:54:33.181127
+# Source: Supervisor autonomous-cycle review of FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT19-001
+# Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
-
----
-
-## Sprint Context
-
-The previous sprint (FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-10-001) was **ACCEPTED_WITH_REWORK** due to several critical evidence and verification gaps:
-
-| Issue | Symptom | Root Cause |
-|-------|---------|------------|
-| Continuation signal mismatch | `continuation-signal.json` reported `"autonomous_continue": false` while `approval-gates.md` claimed `AUTONOMOUS_CONTINUE: YES` | Inconsistent generation logic and no test asserting alignment |
-| Scope drift | Evidence showed iteration **10** instead of the required **9/12** | Wrong iteration parameter supplied to generation scripts |
-| Missing execution proof | No test logs or runtime output demonstrating that the continuation signal or approval gates were actually evaluated | Absence of integration‑test harness |
-| Incomplete task regeneration | `product-task-candidates.json` contained only **6** candidates, with many fields missing and no sprint metadata | Generation script truncated output and omitted required fields |
-| Insufficient clear_page testing | No tests for `TypeError` on non‑dict input, no verification of `shapes_total` update, and negative‑index handling not covered | Test suite focused only on happy path |
-| Evidence thinness | Static JSON/markdown without timestamps, version stamps, or commit references | No systematic evidence‑declaration workflow |
-
-**Priorities for this sprint**
-
-1. **Align continuation signal with approval‑gate declaration** and provide a concrete test that asserts the match.
-2. **Regenerate `product-task-candidates.json`** with **exactly 10 fully‑populated tasks** (including `action_id`, `done_criteria`, `status`, `completion_timestamp`, `sprint_id`, etc.) and prove the regeneration with version/timestamp evidence.
-3. **Add comprehensive tests for `clear_page()`** covering type validation, shape updates, negative indices, and preservation of unrelated fields.
-4. **Produce verifiable execution logs** for all new/updated functionality and reference them in the evidence declaration.
-5. **Ensure all evidence files are declared** in `.local/evidences/<run_id>/evidence-declaration.yaml` with correct status and paths.
 
 ---
 
@@ -50,8 +27,8 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-10-001
-- Prior verdict: ACCEPTED_WITH_REWORK
+- Prior sprint: FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT19-001
+- Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
@@ -59,7 +36,7 @@ Read these files before writing any code:
 
 ## Sprint Goal
 
-**Goal:** Repair 2 item(s) flagged by supervisor review. Advance Acceleration tooling: Expand anti‑skip detectors or severity mapping; Improve grading engine or evidence quality scoring; Harden hard gates and continuation policy. Build evidence declaration and run supervisor autonomous‑cycle.
+**Goal:** Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
 
 ---
 
@@ -67,7 +44,7 @@ Read these files before writing any code:
 
 1. Worker MUST write `.local/evidences/<run_id>/evidence-declaration.yaml` at sprint end.
 2. Last instruction MUST be:
-   ```bash
+   ```
    python tools/supervisor/supervisor_loop.py autonomous-cycle \
      --declaration .local/evidences/<run_id>/evidence-declaration.yaml
    ```
@@ -81,9 +58,9 @@ Read these files before writing any code:
 
 1. Load `.local/supervisor/selected-product-gaps.json` before choosing product work.
 2. Resolve each selected product gap through `.supervisor/skill-registry.yaml`.
-3. No direct ad‑hoc `src/` edits are permitted. Use a governed skill or generated execution handoff.
+3. No direct ad-hoc `src/` edits are permitted. Use a governed skill or generated execution handoff.
 4. Every `src/` edit MUST be recorded in `reports/r90/product-code-change-ledger.json`.
-5. Run `python tools/supervisor/validate_product_code_ledger.py --ledger reports/r90/product-code-change-ledger.json` after product‑code changes.
+5. Run `python tools/supervisor/validate_product_code_ledger.py --ledger reports/r90/product-code-change-ledger.json` after product-code changes.
 6. Include at least one dogfood export lane and one package/install proof lane.
 
 ---
@@ -93,13 +70,23 @@ Read these files before writing any code:
 | Train | Group | Title |
 |-------|-------|-------|
 | A | G1 | Governance Preflight |
-| B | G2 | Rework: Verify continuation signal and approval-gates (iter 9/12) |
-| C | G2 | Rework: TC-CANDIDATES: Regenerate product-task-candidates.json with 10 Sprint 10 tasks |
-| D | G2 | Expand anti-skip detectors or severity mapping |
-| E | G2 | Improve grading engine or evidence quality scoring |
-| F | G2 | Harden hard gates and continuation policy |
-| G | G7 | State + Memory + POC Matrix Sync |
-| H | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| B | G3 | FODS .NET Product Deepening |
+| C | G3 | FODT .NET Product Deepening |
+| D | G3 | Netpbm .NET Product Deepening |
+| E | G4 | ZST Python Improvement |
+| F | G4 | Netpbm Python Improvement |
+| G | G4 | SYLK Python Improvement |
+| H | G4 | TOML Python Improvement |
+| I | G4 | NDJSON Python Improvement |
+| J | G4 | FODG Python Improvement |
+| K | G4 | TSV Python Improvement |
+| L | G4 | ABW Python Improvement |
+| M | G4 | Gnumeric Python Improvement |
+| N | G5 | Dogfood: fodt -> txt |
+| O | G5 | Dogfood: fodt -> html |
+| P | G6 | Package Build + Install Proof |
+| Q | G7 | State + Memory + POC Matrix Sync |
+| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -110,90 +97,275 @@ Read these files before writing any code:
 Read all governance files. Verify no policy violations from prior sprint. Confirm MCP status, supervisor mode, and gate states. Load `.local/supervisor/selected-product-gaps.json` and `.supervisor/skill-registry.yaml` before selecting product work.
 
 **Acceptance Criteria:**
-- All preflight files are read without error.
-- No policy violations are detected; any findings are documented.
-- Current gate states are captured in `reports/<run_id>/00-preflight.md`.
+- All preflight files read
+- No policy violations detected
+- Gate states documented
 
 **Files:**
 - `reports/<run_id>/00-preflight.md`
 
-## Group G2: Rework / Repair
+## Group G3: Commercial .NET Product
 
-### Train B: Rework: Verify continuation signal and approval-gates (iter 9/12)
+### Train B: FODS .NET Product Deepening
 
-**Acceptance Criteria:**
-1. `continuation-signal.json` contains `"autonomous_continue": true` **and** the same boolean value appears in `approval-gates.md` under `AUTONOMOUS_CONTINUE`.
-2. A unit test `tests/supervisor/test_continuation_signal.py` asserts the equality of the two sources.
-3. Execution logs (`logs/continuation-eval.log`) show the signal being read and the gate decision applied.
-4. The evidence declaration references the JSON, the markdown, the test file, and the log.
-
-**Files:**
-- `.local/supervisor/continuation-signal.json`
-- `reports/supervisor/approval-gates.md`
-- `tests/supervisor/test_continuation_signal.py`
-- `logs/continuation-eval.log`
-
-### Train C: Rework: TC-CANDIDATES: Regenerate product-task-candidates.json with 10 Sprint 10 tasks
+Continue FODS commercial .NET product advancement. Continue product maintenance and extended API feature development
 
 **Acceptance Criteria:**
-1. `product-task-candidates.json` contains **exactly 10** top‑level task objects.
-2. Each task includes the fields: `task_id`, `action_id`, `done_criteria`, `status` (set to `completed`), `completion_timestamp` (ISO‑8601), `sprint_id` = 10, and any other required metadata.
-3. The file includes a `generated_at` timestamp and a version bump (`"version": "10.0.0"` or similar) different from the prior sprint.
-4. A regeneration script test `tests/product/test_task_candidates_regeneration.py` validates the count, required fields, and timestamp freshness.
-5. Evidence includes the git diff (`git diff --stat product-task-candidates.json`) and the generation log (`logs/task-candidates-regeneration.log`).
+- FODS .NET test count increased or new API proven
+- dotnet_status in poc-targets.yaml updated
 
 **Files:**
-- `product-task-candidates.json`
-- `tests/product/test_task_candidates_regeneration.py`
-- `logs/task-candidates-regeneration.log`
+- `src/net/fods/`
+- `tests/net/fods/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train D: Expand anti-skip detectors or severity mapping
+**Verification:**
+```bash
+dotnet test tests/net/fods/ --verbosity quiet
+```
 
-Add new detectors, refine severity levels, or improve detection accuracy.
+### Train C: FODT .NET Product Deepening
+
+Continue FODT commercial .NET product advancement. Continue product maintenance and extended API feature development
 
 **Acceptance Criteria:**
-- New detector modules are covered by unit tests in `tests/supervisor/`.
-- Severity mapping changes are reflected in `tools/supervisor/severity_map.yaml`.
-- Evidence of test pass and updated mapping is declared.
+- FODT .NET test count increased or new API proven
+- dotnet_status in poc-targets.yaml updated
 
 **Files:**
-- `tools/supervisor/`
-- `tests/supervisor/`
+- `src/net/fodt/`
+- `tests/net/fodt/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train E: Improve grading engine or evidence quality scoring
+**Verification:**
+```bash
+dotnet test tests/net/fodt/ --verbosity quiet
+```
 
-Enhance `grade_declared_work.py` or evidence quality heuristics.
+### Train D: Netpbm .NET Product Deepening
+
+Continue Netpbm commercial .NET product advancement. Continue product maintenance and extended API feature development
 
 **Acceptance Criteria:**
-- Updated grading logic is exercised by tests in `tests/supervisor/`.
-- Evidence of improved scoring (e.g., before/after score CSV) is included.
+- Netpbm .NET test count increased or new API proven
+- dotnet_status in poc-targets.yaml updated
 
 **Files:**
-- `tools/supervisor/`
-- `tests/supervisor/`
+- `src/net/netpbm/`
+- `tests/net/netpbm/`
+- `reports/r90/product-code-change-ledger.json`
 
-### Train F: Harden hard gates and continuation policy
+**Verification:**
+```bash
+dotnet test tests/net/netpbm/ --verbosity quiet
+```
 
-Strengthen autonomous‑cycle enforcement and stop conditions.
+## Group G4: FOSS / Reduced Product
+
+### Train E: ZST Python Improvement
+
+Continue ZST FOSS product. Continue FOSS product deepening and additional compression API coverage
 
 **Acceptance Criteria:**
-- Gate‑evaluation code is covered by tests.
-- Evidence shows gate decisions for at least three distinct scenarios (continue, pause, abort).
+- ZST Python test count maintained or increased
 
 **Files:**
-- `tools/supervisor/`
-- `tests/supervisor/`
+- `src/python/zst/`
+- `tests/python/zst/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/zst/ -x -q
+```
+
+### Train F: Netpbm Python Improvement
+
+Continue Netpbm FOSS product. Continue FOSS product deepening and additional Python API coverage
+
+**Acceptance Criteria:**
+- Netpbm Python test count maintained or increased
+
+**Files:**
+- `src/python/pbm/`
+- `src/python/pgm/`
+- `src/python/ppm/`
+- `tests/python/pbm/`
+- `tests/python/pgm/`
+- `tests/python/ppm/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ -x -q
+```
+
+### Train G: SYLK Python Improvement
+
+Continue SYLK FOSS product. Continue FOSS product deepening — get_row_count, get_column_count, cell iteration
+
+**Acceptance Criteria:**
+- SYLK Python test count maintained or increased
+
+**Files:**
+- `src/python/sylk/`
+- `tests/python/sylk/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/sylk/ -x -q
+```
+
+### Train H: TOML Python Improvement
+
+Continue TOML FOSS product. dogfood export via TOML config roundtrip; package install proof
+
+**Acceptance Criteria:**
+- TOML Python test count maintained or increased
+
+**Files:**
+- `src/python/toml/`
+- `tests/python/toml/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/toml/ -x -q
+```
+
+### Train I: NDJSON Python Improvement
+
+Continue NDJSON FOSS product. Package install proof; dogfood pipeline integration
+
+**Acceptance Criteria:**
+- NDJSON Python test count maintained or increased
+
+**Files:**
+- `src/python/ndjson/`
+- `tests/python/ndjson/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/ndjson/ -x -q
+```
+
+### Train J: FODG Python Improvement
+
+Continue FODG FOSS product. Package install proof; SVG export investigation
+
+**Acceptance Criteria:**
+- FODG Python test count maintained or increased
+
+**Files:**
+- `src/python/fodg/`
+- `tests/python/fodg/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/fodg/ -x -q
+```
+
+### Train K: TSV Python Improvement
+
+Continue TSV FOSS product. Package install proof; dogfood pipeline integration
+
+**Acceptance Criteria:**
+- TSV Python test count maintained or increased
+
+**Files:**
+- `src/python/tsv/`
+- `tests/python/tsv/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/tsv/ -x -q
+```
+
+### Train L: ABW Python Improvement
+
+Continue ABW FOSS product. Dogfood pipeline integration
+
+**Acceptance Criteria:**
+- ABW Python test count maintained or increased
+
+**Files:**
+- `src/python/abw/`
+- `tests/python/abw/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/abw/ -x -q
+```
+
+### Train M: Gnumeric Python Improvement
+
+Continue Gnumeric FOSS product. Dogfood pipeline integration
+
+**Acceptance Criteria:**
+- Gnumeric Python test count maintained or increased
+
+**Files:**
+- `src/python/gnumeric/`
+- `tests/python/gnumeric/`
+- `reports/r90/product-code-change-ledger.json`
+
+**Verification:**
+```bash
+python -m pytest tests/python/gnumeric/ -x -q
+```
+
+## Group G5: Dogfood Exports
+
+### Train N: Dogfood: fodt -> txt
+
+No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().
+
+**Acceptance Criteria:**
+- Export test passes using FF library
+- Dogfood status updated in poc-targets.yaml
+
+### Train O: Dogfood: fodt -> html
+
+No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET library.
+
+**Acceptance Criteria:**
+- Export test passes using FF library
+- Dogfood status updated in poc-targets.yaml
+
+## Group G6: Package / Install Proof
+
+### Train P: Package Build + Install Proof
+
+Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
+
+**Acceptance Criteria:**
+- All changed packages rebuilt
+- Installed import test passes
+- Package artifacts present in evidence directory
+
+**Files:**
+- `packaging/`
+
+**Verification:**
+```bash
+python -m pytest tests/evidence/ -x -q
+```
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train G: State + Memory + POC Matrix Sync
+### Train Q: State + Memory + POC Matrix Sync
 
-Update `state/current-state.md`, `.supervisor/project-memory.md`, and `product-capability-matrix/poc-targets.yaml` with sprint results.
+Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
 **Acceptance Criteria:**
-- `poc-targets.yaml` reflects the actual status of each POC (no over‑claiming).
-- `state/current-state.md` includes a summary table with the new sprint ID.
-- `.supervisor/project-memory.md` has a new entry dated with the sprint end timestamp.
+- poc-targets.yaml reflects actual status (no overclaiming)
+- state/current-state.md updated
+- project-memory.md entry appended
 
 **Files:**
 - `state/current-state.md`
@@ -202,28 +374,25 @@ Update `state/current-state.md`, `.supervisor/project-memory.md`, and `product-c
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train H: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
 
-Write `evidence-declaration.yaml` listing ALL work items. Run autonomous‑cycle. Verify `session-resume.md` is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
+Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
 **Acceptance Criteria:**
-- `evidence-declaration.yaml` enumerates every train (A‑H) with status `completed`, paths to evidence files, and test references.
-- Autonomous‑cycle exits with code **0** (success) or **3** (graceful stop) and logs are captured (`logs/autonomous-cycle.log`).
-- `reports/supervisor/session-resume.md` contains the latest run metadata.
-- `approval-gates.md` shows `AUTONOMOUS_CONTINUE: YES` matching the continuation signal.
-- Ledger validation passes with no unauthorized edits.
+- evidence-declaration.yaml written with all work items
+- autonomous-cycle exits 0 or 3
+- session-resume.md regenerated with current data
+- approval-gates.md shows correct AUTONOMOUS_CONTINUE
 
 **Files:**
 - `.local/evidences/<run_id>/evidence-declaration.yaml`
 - `reports/supervisor/session-resume.md`
-- `reports/supervisor/approval-gates.md`
-- `logs/autonomous-cycle.log`
 
 **Verification:**
 ```bash
-python tools/supervisor/supervisor_loop.py autonomous-cycle \
-  --declaration .local/evidences/<run_id>/evidence-declaration.yaml
+python tools/supervisor/supervisor_loop.py autonomous-cycle --declaration .local/evidences/<run_id>/evidence-declaration.yaml
 ```
+
 
 ---
 
@@ -240,7 +409,7 @@ python tools/supervisor/supervisor_loop.py autonomous-cycle \
 - No deletion of existing test files.
 - No PENDING markers in final state files.
 - No overclaiming: if evidence is missing, declare status honestly.
-- No direct ad‑hoc `src/` edits outside the governed skill registry or generated handoff.
+- No direct ad-hoc `src/` edits outside the governed skill registry or generated handoff.
 - No product-code change without a product-code ledger entry.
 
 ---
@@ -259,7 +428,7 @@ After all trains complete, run this exact sequence:
 .local/venv/Scripts/python -m py_compile tools/supervisor/generate_supervisor_packet.py
 
 # 3. .NET tests (if .NET work was done)
-# (no .NET work this sprint)
+dotnet test tests/net/ --verbosity quiet
 
 # 4. Write evidence declaration
 # (create .local/evidences/<run_id>/evidence-declaration.yaml)
@@ -268,3 +437,32 @@ After all trains complete, run this exact sequence:
 .local/venv/Scripts/python tools/supervisor/supervisor_loop.py autonomous-cycle \
   --declaration .local/evidences/<run_id>/evidence-declaration.yaml
 ```
+
+---
+
+## Allowed Verdicts
+
+The sprint MUST end with one of these verdicts in the evidence declaration:
+
+| Verdict | Meaning |
+|---------|---------|
+| ALL_TRAINS_COMPLETE | All trains passed acceptance criteria |
+| PARTIAL_TRAINS_COMPLETE_PUBLICATION_BLOCKED | Some trains done, publication gate blocks remaining |
+| REWORK_REQUIRED | Supervisor review found issues requiring repair |
+| BLOCKED_EXTERNAL_GATE | Cannot proceed without external gate approval |
+
+---
+
+## Final Artifact Specification
+
+At sprint end, these files MUST exist:
+
+- `.local/evidences/<run_id>/evidence-declaration.yaml` -- declaration of all work items
+- `reports/supervisor/session-resume.md` -- regenerated by autonomous-cycle
+- `reports/supervisor/approval-gates.md` -- regenerated by autonomous-cycle
+- `product-capability-matrix/poc-targets.yaml` -- updated if any product status changed
+- `state/current-state.md` -- updated with sprint outcome
+
+---
+
+END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT

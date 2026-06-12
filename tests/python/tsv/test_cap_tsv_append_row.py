@@ -7,12 +7,11 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO_ROOT))
 
-from src.python.tsv.tsv_parser import append_row, load_tsv, write_tsv, TsvError
+from src.python.tsv.tsv_parser import append_row, load_tsv, write_tsv
 
 
 def test_append_row_to_existing_file(tmp_path):

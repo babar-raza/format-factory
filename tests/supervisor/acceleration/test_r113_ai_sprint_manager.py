@@ -5,7 +5,6 @@ advisory_only: true in all outputs.
 """
 
 import json
-import os
 from pathlib import Path
 from unittest import mock
 

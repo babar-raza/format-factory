@@ -5,7 +5,6 @@ R67 Train C requires both manifests to have actual full-SHA final_git_head field
 """
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import pytest

@@ -9,7 +9,6 @@ R71 IV-R72-007: 10 failing tests uninvestigated, unclassified, untaskcarded.
 R72 repair: Failing-test ledger must exist and name each failure.
 """
 import json
-import os
 import pathlib
 import pytest
 

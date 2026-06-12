@@ -68,7 +68,7 @@ def convert_pbm_to_ppm(
         height=pbm_image.height,
         maxval=maxval,
         file_path=ppm_output_path,
-        comment=f"Converted from PBM by format-factory (dogfood export)",
+        comment="Converted from PBM by format-factory (dogfood export)",
     )
 
     return {

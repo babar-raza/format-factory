@@ -27,12 +27,11 @@ MainstreamGapQueueGenerator: 11-step deterministic gap queue algorithm.
 import json
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from .coverage_evaluator import CoverageRecord, CapabilityCoverageEvaluator
 from .graph_store import GraphStore
-from .models import POC_TARGETS, REQUIRED_TARGETS, GraphNode
-from .poc_readiness import TARGET_REQUIRED_CAPABILITIES, STRETCH_TARGETS
+from .models import POC_TARGETS, REQUIRED_TARGETS
 
 # Product family weights (higher = more important)
 PRODUCT_FAMILY_WEIGHTS: Dict[str, float] = {

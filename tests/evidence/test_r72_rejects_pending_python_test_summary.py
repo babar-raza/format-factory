@@ -6,9 +6,7 @@ Verify that python-tests-summary.txt does NOT contain POST_BUNDLE_AUTHORITATIVE:
 R71 IV-R72-004: python-tests-summary.txt had POST_BUNDLE_AUTHORITATIVE: PENDING.
 R72 repair: POST_BUNDLE_AUTHORITATIVE must be filled with actual test result after bundle build.
 """
-import os
 import pathlib
-import re
 import pytest
 
 LOCAL = pathlib.Path(".local")
@@ -61,7 +59,7 @@ def test_python_tests_summary_has_post_bundle_result():
 
     content = f.read_text(encoding="utf-8")
     assert "POST_BUNDLE_AUTHORITATIVE:" in content, (
-        f"python-tests-summary.txt must have POST_BUNDLE_AUTHORITATIVE field."
+        "python-tests-summary.txt must have POST_BUNDLE_AUTHORITATIVE field."
     )
     # The value must contain actual test result pattern (N passed, M failed, K skipped)
     post_bundle_line = None
@@ -112,6 +110,6 @@ def test_python_tests_summary_no_to_be_filled():
 
     content = f.read_text(encoding="utf-8").lower()
     assert "to be filled" not in content, (
-        f"python-tests-summary.txt contains 'to be filled' placeholder. "
-        f"All fields must be finalized before bundle build."
+        "python-tests-summary.txt contains 'to be filled' placeholder. "
+        "All fields must be finalized before bundle build."
     )

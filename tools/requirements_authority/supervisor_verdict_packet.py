@@ -23,12 +23,10 @@ False stop risks (>=3):
   2. staleness_flagging_already_recomputed_records
   3. empirical_only_requirement_blocking_acceptable_poc_claim
 """
-import hashlib
 import json
-import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from .coverage_evaluator import CoverageRecord
 from .graph_store import GraphStore

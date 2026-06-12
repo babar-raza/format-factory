@@ -459,7 +459,7 @@ class TestRunAllValidators:
         from governance_validators import run_all_governance_validators
         decl = _decl([])
         result = run_all_governance_validators(decl)
-        assert len(result["validators"]) == 12
+        assert len(result["validators"]) == 13  # 12 original + V13 spec_fact_refs (SAL-VH-001)
 
     def test_deprecated_queue_declared_fails_ungoverned(self):
         from governance_validators import run_all_governance_validators

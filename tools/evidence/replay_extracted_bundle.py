@@ -143,7 +143,7 @@ def main():
     has_meta = meta_dir.exists()
 
     if not has_repo or not has_meta:
-        print(f"ERROR: Extracted directory missing expected structure.")
+        print("ERROR: Extracted directory missing expected structure.")
         print(f"  repo/          present: {has_repo}")
         print(f"  bundle-metadata/ present: {has_meta}")
         print("REPLAY_VALIDATION: FAIL")

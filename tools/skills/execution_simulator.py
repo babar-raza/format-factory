@@ -157,9 +157,9 @@ def _build_lane_simulation(
     simulated_actions = [
         f"[SIM] Would implement {len(requirement_ids)} requirements in {lane_id} for format {fmt.upper()}",
         f"[SIM] Would write implementation code in src/net/{fmt}/ or src/python/{fmt}/",
-        f"[SIM] Would NOT execute any code — implementation requires human authorization",
+        "[SIM] Would NOT execute any code — implementation requires human authorization",
         f"[SIM] Would produce tests covering all {len(requirement_ids)} requirement IDs",
-        f"[SIM] Would generate evidence bundle after test suite passes",
+        "[SIM] Would generate evidence bundle after test suite passes",
     ]
 
     # Test simulation
@@ -261,7 +261,7 @@ def simulate_format_sprint(fmt: str) -> dict:
     if stale_verdict == "STALE_BLOCKED":
         return _blocked_result(
             fmt, "BLOCKED_STALE",
-            f"Stale state blocks simulation (verdict=STALE_BLOCKED). Human review required.",
+            "Stale state blocks simulation (verdict=STALE_BLOCKED). Human review required.",
             req_state, stale_verdict,
         )
 
@@ -457,7 +457,7 @@ def main():
         if args.json:
             print(json.dumps(result, indent=2))
             return
-        print(f"=== Simulation Results: ALL FORMATS ===")
+        print("=== Simulation Results: ALL FORMATS ===")
         print(f"  All pass:     {result['all_pass']}")
         print(f"  Any blocked:  {result['any_blocked']}")
         print(f"  Total lanes:  {result['total_lanes_simulated']}")

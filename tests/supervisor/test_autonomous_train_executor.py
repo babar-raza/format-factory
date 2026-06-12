@@ -20,15 +20,12 @@ Verifies:
 
 import json
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from tools.supervisor.autonomous_train_executor import (
-    NON_TERMINAL_CONTINUE,
     NON_TERMINAL_POC_NOT_READY,
     TERMINAL_EXTERNAL_GATE,
     TERMINAL_HOST_INVOCATION,
@@ -486,7 +483,6 @@ class TestFullExecutorRun:
 
         # With autonomous_continue=true and POC not ready, should be non-terminal:
         # Either NON_TERMINAL_CONTINUE (shallow) or NON_TERMINAL_POC_NOT_READY (proof-backed)
-        from tools.supervisor.autonomous_train_executor import NON_TERMINAL_POC_NOT_READY
         non_terminal_states = ("NON_TERMINAL_CONTINUE", NON_TERMINAL_POC_NOT_READY)
         assert result["execution_state"] in non_terminal_states
         assert result["terminal_state"] != TERMINAL_EXTERNAL_GATE
@@ -503,7 +499,6 @@ class TestShallowPocTargetsNotTerminal:
         A dashboard built from shallow poc-targets.yaml text (not proof-backed)
         must NOT produce a POC-ready terminal state even if gates_passed='1-10'.
         """
-        from tools.supervisor.autonomous_train_executor import NON_TERMINAL_POC_NOT_READY
 
         # Shallow dashboard — as if built from poc-targets.yaml text only
         shallow_dashboard = {
@@ -545,7 +540,6 @@ class TestShallowPocTargetsNotTerminal:
         """
         When proof_backed=True and poc_ready=False, POC-ready terminal is never reached.
         """
-        from tools.supervisor.autonomous_train_executor import NON_TERMINAL_POC_NOT_READY
 
         # Proof-backed dashboard — gate says not ready
         proof_backed_dashboard = {
@@ -575,7 +569,6 @@ class TestPocNotReadyContinueAction:
         When proof-backed gate says POC_NOT_READY_CONTINUE and autonomous_continue=True,
         executor must emit CONTINUE_PRODUCT_TRAIN action, not TERMINAL.
         """
-        from tools.supervisor.autonomous_train_executor import NON_TERMINAL_POC_NOT_READY
 
         proof_backed_dashboard = {
             "poc_candidate_valid": False,
@@ -600,7 +593,6 @@ class TestPocNotReadyContinueAction:
 
     def test_poc_not_ready_action_is_not_terminal(self):
         """CONTINUE_PRODUCT_TRAIN action must not have terminal_state set."""
-        from tools.supervisor.autonomous_train_executor import NON_TERMINAL_POC_NOT_READY
 
         proof_backed_dashboard = {
             "poc_ready": False,
@@ -619,7 +611,6 @@ class TestPocNotReadyContinueAction:
         Gate 11 readiness packets (Phase 4 advisory docs) without on-disk source/test logs
         do NOT constitute product proof. Gate says POC_NOT_READY_CONTINUE.
         """
-        from tools.supervisor.autonomous_train_executor import NON_TERMINAL_POC_NOT_READY
 
         # Simulate what proof-backed gate returns when only Phase 4 docs exist
         phase4_only_dashboard = {

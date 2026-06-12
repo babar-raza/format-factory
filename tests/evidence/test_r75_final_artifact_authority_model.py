@@ -14,14 +14,12 @@ Sprint: FORMAT-FACTORY-R75-FINAL-ARTIFACT-AUTHORITY-REPAIR-RC-SEAL-PRODUCT-ADVAN
 from __future__ import annotations
 
 import hashlib
-import io
 import json
 import sys
 import tempfile
 import zipfile
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))

@@ -7,7 +7,6 @@ Secrets are never logged. Every call produces a telemetry record.
 from __future__ import annotations
 
 import hashlib
-from datetime import datetime, timezone
 from typing import Any
 
 import tools.ai.control_plane.config as _ai_config

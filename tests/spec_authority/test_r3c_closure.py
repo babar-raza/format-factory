@@ -15,7 +15,6 @@ Tests verify:
 
 import json
 import pathlib
-import re
 import pytest
 
 REPO_ROOT = pathlib.Path(__file__).parent.parent.parent

@@ -22,7 +22,6 @@ import json
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
@@ -44,14 +43,12 @@ from implementation_simulation_v2 import (
     NODE_TYPE_AUTHORITY,
     NODE_TYPE_STALE_DOMAIN,
     NODE_TYPE_FINGERPRINT,
-    EDGE_TYPE_SEQUENCE,
     EDGE_TYPE_PRODUCES,
     EDGE_TYPE_REQUIRES,
     EDGE_TYPE_PROPAGATES_TO,
     EDGE_TYPE_AUTHORIZES,
     EDGE_TYPE_CHAINS_TO,
     _GOVERNANCE_FLAGS,
-    _stable_hash,
 )
 
 

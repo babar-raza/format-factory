@@ -15,12 +15,9 @@ sys.path.insert(0, str(REPO_ROOT / "tools" / "supervisor"))
 
 from validate_skill_transcript import validate_transcript, validate_directory, REQUIRED_FIELDS, VALID_MODES, VALID_RESULTS
 from inspect_declared_evidence import (
-    _is_transcript_json,
-    check_transcript_in_evidence,
-    inspect_item,
     inspect_declaration,
 )
-from grade_declared_work import grade_item, grade_all
+from grade_declared_work import grade_all
 
 
 def _make_transcript(**overrides):

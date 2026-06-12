@@ -6,7 +6,6 @@ exported via src/python/qoi/__init__.py.
 from __future__ import annotations
 
 import sys
-import tempfile
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[3]
@@ -14,11 +13,9 @@ sys.path.insert(0, str(_REPO / "src" / "python"))
 
 from qoi import (
     parse_qoi,
-    parse_qoi_strict,
     probe_qoi,
     get_capabilities,
     encode_qoi,
-    encode_qoi_to_file,
     get_encoder_capabilities,
     QoiImage,
 )

@@ -131,7 +131,6 @@ class TestR83InstalledFodsRealSampleWorkflow:
         fods_mod.workbook_warnings_for_unsupported_edit(sample_wb, sheets[0], 0, 0)
 
         # Write (write_fods requires file path)
-        import tempfile, os
         with tempfile.NamedTemporaryFile(suffix=".fods", delete=False) as tf:
             tmp_path = tf.name
         fods_mod.write_fods(sample_wb, tmp_path)

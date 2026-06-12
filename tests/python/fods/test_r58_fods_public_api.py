@@ -11,7 +11,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT / "src" / "python"))
@@ -50,7 +49,6 @@ class TestFodsPublicApi:
 
     def test_workbook_stats_counts_correctly(self):
         import fods
-        from fods.neutral_model import workbook_stats
         # Same function
         wb = {"format_id": "fods", "sheet_count": 1, "sheets": [
             {"name": "Sheet1", "rows": [

@@ -403,7 +403,6 @@ class TestGovernanceInvariants:
 class TestNoSourceMutation:
     def test_runtime_does_not_write_to_src_net(self):
         """Running the runtime should not create files under src/net/."""
-        import os
         src_net = REPO_ROOT / "src" / "net"
         before = set()
         if src_net.exists():

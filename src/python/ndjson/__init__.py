@@ -44,6 +44,20 @@ from .ndjson_codec import (
     sort_by,
     aggregate,
     head,
+    flatten_records,
+    to_markdown_table,
+    count_unique_values,
+    zip_with_index,
+    omit,
+    batch_update,
+    ndjson_max_field_count,
+    ndjson_average_field_count,
+    ndjson_null_field_count,
+    ndjson_min_field_count,
+    ndjson_record_count,
+    ndjson_field_exists,
+    ndjson_max_record_size,
+    ndjson_total_field_count,
 )
 
 __all__ = [
@@ -81,6 +95,20 @@ __all__ = [
     "sort_by",
     "aggregate",
     "head",
+    "flatten_records",
+    "to_markdown_table",
+    "count_unique_values",
+    "zip_with_index",
+    "omit",
+    "batch_update",
+    "ndjson_max_field_count",
+    "ndjson_average_field_count",
+    "ndjson_null_field_count",
+    "ndjson_min_field_count",
+    "ndjson_record_count",
+    "ndjson_field_exists",
+    "ndjson_max_record_size",
+    "ndjson_total_field_count",
 ]
 
 __version__ = "0.1.0.dev0"

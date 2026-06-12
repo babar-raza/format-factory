@@ -11,7 +11,6 @@ Run from repo root:
 
 import sys
 from pathlib import Path
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 PROTO_DIR = REPO_ROOT / "prototypes" / "by-format" / "fodp"

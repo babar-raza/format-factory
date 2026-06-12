@@ -1,10 +1,8 @@
 """Tests for select_poc_gaps.py v3/v4 — stream-aware gap selection + stale detection."""
 
-import json
 import sys
 from pathlib import Path
 
-import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent / "tools" / "supervisor"))
 
@@ -17,8 +15,6 @@ from select_poc_gaps import (
     split_by_stream,
     build_payload,
     load_skill_registry,
-    DEPTH_KEYWORDS_HIGH,
-    DEPTH_KEYWORDS_LOW,
 )
 
 

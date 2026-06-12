@@ -2,11 +2,9 @@
 Tests for GraphStore: load/save JSONL, add nodes/edges, queries, graph hash determinism.
 Sprint: FORMAT-FACTORY-REQUIREMENT-CAPABILITY-AUTHORITY-LAYER-MWP-001
 """
-import json
 import tempfile
 from pathlib import Path
 
-import pytest
 
 # Import path setup
 import sys

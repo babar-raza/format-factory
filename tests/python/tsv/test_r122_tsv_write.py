@@ -13,7 +13,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
-from src.python.tsv.tsv_parser import write_tsv, parse_tsv_strict, TsvError
+from src.python.tsv.tsv_parser import write_tsv, parse_tsv_strict
 
 
 def _tmp() -> Path:

@@ -17,37 +17,26 @@ Sprint: FORMAT-FACTORY-R76-PARALLEL-FINISH-LINE-ARTIFACT-AUTHORITY-PRODUCT-DEEPE
 """
 from __future__ import annotations
 
-import io
-import struct
 import sys
 import zipfile
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.python.ods.ods_parser import (
     parse_ods,
-    parse_ods_strict,
-    OdsError,
-    OdsInvalidContainerError,
-    OdsSizeError,
     MAX_FILE_SIZE as ODS_MAX_FILE_SIZE,
     MAX_ZIP_ENTRIES,
 )
 from src.python.qoi.qoi_parser import (
     parse_qoi,
-    parse_qoi_strict,
-    QoiError,
     MAX_FILE_SIZE as QOI_MAX_FILE_SIZE,
     MAX_DIMENSION,
 )
 from src.python.xcf.xcf_parser import (
     parse_xcf,
-    parse_xcf_strict,
-    XcfError,
     MAX_FILE_SIZE as XCF_MAX_FILE_SIZE,
 )
 

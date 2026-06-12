@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 FIXTURE_ROOT = Path(__file__).resolve().parent / "fixtures" / "git_safety"

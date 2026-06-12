@@ -6,10 +6,8 @@ from __future__ import annotations
 
 import json
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_REPO_ROOT / "tools" / "supervisor"))
@@ -17,7 +15,6 @@ sys.path.insert(0, str(_REPO_ROOT / "tools" / "supervisor"))
 from autonomous_task_generator import (
     generate_task_candidates,
     _function_exists_in_source,
-    _goal_to_queue_item,
     _score_task,
 )
 

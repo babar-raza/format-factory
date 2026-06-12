@@ -15,11 +15,8 @@ from __future__ import annotations
 
 import json
 import sys
-import tempfile
-import uuid
 from pathlib import Path
 
-import pytest
 
 _repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_repo_root / "tools" / "supervisor"))
@@ -28,15 +25,9 @@ from evidence_continuation import (
     _is_advisory,
     generate_post_closeout_next_action,
     write_post_closeout_next_action,
-    write_post_closeout_active_continuation,
     apply_post_closeout_continuation,
     repair_global_continuation_signal,
-    repair_continuation_signal,
     seed_post_closeout_queue_item,
-    CONTINUATION_SIGNAL_PATH,
-    NEXT_ACTION_PATH,
-    ACTIVE_CONTINUATION_PATH,
-    ACTION_QUEUE_PATH,
 )
 
 
@@ -160,7 +151,6 @@ def test_write_post_closeout_next_action_valid_json(tmp_path):
 
 def test_write_post_closeout_active_continuation_not_advisory(tmp_path):
     """active-continuation must not point to advisory Markdown."""
-    from unittest.mock import patch
     import evidence_continuation as ec
     orig = ec.ACTIVE_CONTINUATION_PATH
     ec.ACTIVE_CONTINUATION_PATH = tmp_path / "active-continuation.json"
@@ -178,7 +168,6 @@ def test_write_post_closeout_active_continuation_not_advisory(tmp_path):
 
 
 def test_write_post_closeout_active_continuation_autonomous_continue(tmp_path):
-    from unittest.mock import patch
     import evidence_continuation as ec
     orig = ec.ACTIVE_CONTINUATION_PATH
     ec.ACTIVE_CONTINUATION_PATH = tmp_path / "active-continuation.json"

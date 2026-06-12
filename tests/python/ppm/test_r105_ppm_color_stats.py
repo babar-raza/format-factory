@@ -2,12 +2,9 @@
 # Lane E — Python Netpbm FOSS
 # Ledger: R105-FOSS-PPM-COLOR-STATS-001
 
-import pytest
-from pathlib import Path
 from ppm.ppm_parser import (
     write_ppm,
     parse_ppm_strict,
-    PpmImage,
 )
 
 

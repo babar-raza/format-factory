@@ -1,0 +1,16 @@
+"""Test skeleton for ${function_name}() — Pattern E (Probe)."""
+import sys
+from pathlib import Path
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
+from ${module} import ${function_name}
+
+
+class Test${format_cap}Probe:
+    def test_returns_dict(self):
+        result = ${function_name}(b"")
+        assert isinstance(result, dict)
+
+    def test_format_field(self):
+        result = ${function_name}(b"")
+        assert result.get("format") == "${format_lower}"

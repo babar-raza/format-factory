@@ -5,11 +5,8 @@ and field mapping.
 """
 
 import json
-import pytest
-from pathlib import Path
 
 from tools.ai.telemetry.drain import (
-    REQUIRED_AGENT_METRICS_FIELDS,
     drain_spool,
     map_spool_to_agent_metrics,
     validate_drain_payload,

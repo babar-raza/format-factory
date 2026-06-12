@@ -641,7 +641,7 @@ def test_proposed_pending_human_approval_does_not_fail():
 
 
 def test_real_sprint_contract_with_test_contract_true_fails(tmp_path):
-    """A real sprint contract (run\d+) with test_contract: true must fail."""
+    r"""A real sprint contract (run\d+) with test_contract: true must fail."""
     contract = tmp_path / "run099-test.yaml"
     contract.write_text(
         "contract_id: run099-test\n"

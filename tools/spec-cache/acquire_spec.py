@@ -37,11 +37,9 @@ See also:
 """
 
 import argparse
-import os
 import pathlib
 import sys
 from datetime import date, datetime, timezone
-from urllib.parse import urlparse
 
 try:
     import yaml

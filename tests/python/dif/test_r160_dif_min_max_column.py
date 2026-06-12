@@ -19,7 +19,6 @@ sys.path.insert(0, str(_REPO / "src" / "python"))
 from dif.dif_parser import (
     min_column_value,
     max_column_value,
-    parse_dif_strict,
     write_dif,
     DifDocument,
     DifCell,

@@ -6,7 +6,6 @@
 import tempfile
 from pathlib import Path
 
-import pytest
 
 from zst.zst_codec import (
     compress_bytes,

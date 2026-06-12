@@ -1,0 +1,279 @@
+wave_id: WAVE-001
+generated_at: "2026-06-10"
+checkpoint_window_size: 12
+global_iteration: 13
+
+python_formats:
+  - format_id: fods
+    authority_level: P6
+    ecosystem: python
+    has_pyproject: true
+    source_files: [parser.py, writer.py, csv_exporter.py, constants.py, neutral_model.py, exceptions.py]
+    public_function_count: ~8  # excluding build/ duplicates
+    test_file_count: 46
+    safe_lane: true
+    conveyor_group: A
+    product_gaps: []
+    next_actions: [dogfood, package_proof]
+
+  - format_id: zst
+    authority_level: P6
+    ecosystem: python
+    has_pyproject: true
+    source_files: [zst_codec.py]
+    public_function_count: ~11
+    test_file_count: 31
+    safe_lane: true
+    conveyor_group: A
+    product_gaps: []
+    next_actions: [dogfood, package_proof]
+
+  - format_id: abw
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: true
+    source_files: [abw_codec.py]
+    public_function_count: ~34
+    test_file_count: 37
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: [GAP-ABW-FOSS-LOAD-001]
+    next_actions: [new_feature_functions, dogfood]
+    exception: no_public_spec_available
+
+  - format_id: gnumeric
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: true
+    source_files: [gnumeric_codec.py]
+    public_function_count: ~35
+    test_file_count: 33
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: [GAP-Gnumeric-FOSS-LOAD-001]
+    next_actions: [new_feature_functions, dogfood]
+    exception: schema_authority_available
+
+  - format_id: ndjson
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: true
+    source_files: [ndjson_codec.py]
+    public_function_count: ~29
+    test_file_count: 37
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: []
+    next_actions: [new_feature_functions, dogfood]
+    exception: no_public_spec_available
+
+  - format_id: fodg
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: true
+    source_files: [fodg_codec.py]
+    public_function_count: ~26
+    test_file_count: 26
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: [GAP-FODG-FOSS-LOAD-001]
+    next_actions: [new_feature_functions, dogfood]
+
+  - format_id: tsv
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: true
+    source_files: [tsv_parser.py]
+    public_function_count: ~32
+    test_file_count: 34
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: []
+    next_actions: [new_feature_functions, dogfood]
+    exception: no_public_spec_available
+
+  - format_id: sylk
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: true
+    source_files: [sylk_parser.py]
+    public_function_count: ~19
+    test_file_count: 41
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: []
+    next_actions: [new_feature_functions, dogfood]
+    exception: no_public_spec_available
+
+  - format_id: csv
+    authority_level: P3
+    ecosystem: python
+    has_pyproject: true
+    source_files: [csv_parser.py, csv_writer.py, csv_stats.py]
+    public_function_count: ~13
+    test_file_count: 14
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: []
+    next_actions: [new_feature_functions]
+    exception: legacy_backfill
+
+  - format_id: dif
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: true
+    source_files: [dif_parser.py, dif_stats.py]
+    public_function_count: ~13
+    test_file_count: 33
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: [GAP-DIF-FOSS-PROBE_DIF-001]
+    next_actions: [new_feature_functions]
+    exception: no_public_spec_available
+
+  - format_id: toml
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: false
+    source_files: [toml_codec.py]
+    public_function_count: ~15
+    test_file_count: 9
+    safe_lane: true
+    conveyor_group: C
+    product_gaps: [GAP-TOML-FOSS-ROUNDTRIP-001]
+    next_actions: [add_pyproject, new_feature_functions, package_proof]
+
+  - format_id: fodp
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: false
+    source_files: [fodp_codec.py]
+    public_function_count: 3
+    test_file_count: 2
+    safe_lane: true
+    conveyor_group: C
+    product_gaps: [missing_pyproject, low_function_count]
+    next_actions: [add_functions, add_pyproject, tests]
+
+  - format_id: fodt
+    authority_level: P0
+    ecosystem: python
+    has_pyproject: true
+    source_files: [parser.py, writer.py, constants.py, neutral_model.py, list_traversal.py, exceptions.py]
+    public_function_count: ~19
+    test_file_count: 45
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: []
+    next_actions: [spec_cache_for_authority, new_feature_functions]
+    exception: legacy_backfill
+
+  - format_id: ods
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: false
+    source_files: [ods_parser.py, ods_writer.py, ods_csv_exporter.py, ods_stats.py]
+    public_function_count: ~15
+    test_file_count: 31
+    safe_lane: true
+    conveyor_group: C
+    product_gaps: [missing_pyproject]
+    next_actions: [add_pyproject, new_feature_functions]
+
+  - format_id: odt
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: false
+    source_files: [odt_parser.py]
+    public_function_count: 3
+    test_file_count: 5
+    safe_lane: true
+    conveyor_group: C
+    product_gaps: [missing_pyproject, low_function_count]
+    next_actions: [add_functions, add_pyproject, tests]
+
+  - format_id: pbm
+    authority_level: P3
+    ecosystem: python
+    has_pyproject: true
+    source_files: [pbm_parser.py, pbm_to_pgm.py, pbm_to_ppm.py]
+    public_function_count: ~8
+    test_file_count: 25
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: []
+    next_actions: [new_feature_functions]
+    exception: legacy_backfill
+
+  - format_id: pgm
+    authority_level: P3
+    ecosystem: python
+    has_pyproject: true
+    source_files: [pgm_parser.py, pgm_to_ppm.py]
+    public_function_count: ~8
+    test_file_count: 19
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: []
+    next_actions: [new_feature_functions]
+    exception: legacy_backfill
+
+  - format_id: ppm
+    authority_level: P3
+    ecosystem: python
+    has_pyproject: true
+    source_files: [ppm_parser.py, ppm_stats.py, ppm_to_pgm.py]
+    public_function_count: ~11
+    test_file_count: 36
+    safe_lane: true
+    conveyor_group: B
+    product_gaps: []
+    next_actions: [new_feature_functions]
+    exception: legacy_backfill
+
+  - format_id: qoi
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: false
+    source_files: [qoi_parser.py, qoi_encoder.py]
+    public_function_count: ~7
+    test_file_count: 6
+    safe_lane: true
+    conveyor_group: C
+    product_gaps: [missing_pyproject, low_test_count]
+    next_actions: [add_pyproject, tests, new_feature_functions]
+
+  - format_id: xcf
+    authority_level: P1
+    ecosystem: python
+    has_pyproject: false
+    source_files: [xcf_parser.py]
+    public_function_count: ~6
+    test_file_count: 10
+    safe_lane: true
+    conveyor_group: C
+    product_gaps: [missing_pyproject, low_function_count]
+    next_actions: [add_pyproject, tests]
+
+conveyor_groups:
+  A:
+    description: "P6 authority — full expansion, dogfood, package proof"
+    formats: [fods, zst]
+  B:
+    description: "Has pyproject.toml — feature expansion, test deepening, dogfood"
+    formats: [abw, gnumeric, ndjson, fodg, tsv, sylk, csv, dif, fodt, pbm, pgm, ppm]
+  C:
+    description: "No pyproject.toml — add packaging, then features+tests"
+    formats: [toml, fodp, ods, odt, qoi, xcf]
+
+summary:
+  total_python_formats: 20
+  safe_lanes: 20
+  formats_with_pyproject: 14
+  formats_without_pyproject: 6
+  p6_formats: 2
+  p3_formats: 4
+  p1_formats: 12
+  p0_formats: 2
+  human_gates_parked: [git_commit, git_push, gate_11_approval, nuget_publish, pypi_publish]
+  true_stop_conditions: [STOP_ALL_LANES_COMPLETE, STOP_ONLY_TRUE_EXTERNAL_GATES_REMAIN, STOP_UNSAFE_WORKSPACE, STOP_CREDENTIAL_REQUIRED_AND_NO_SAFE_LANES]

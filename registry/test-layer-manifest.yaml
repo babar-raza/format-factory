@@ -1,0 +1,131 @@
+# Test Layer Manifest — Format Factory
+# Machine-readable mapping: layers, format families, and change-impact rules.
+# Consumed by tools/test_runner.py for auto-detection and layer selection.
+
+layers:
+  layer0:
+    name: structural
+    description: "Health check, import smoke, conftest validity"
+    max_time_seconds: 5
+  layer1:
+    name: focused
+    description: "Single-format unit tests for the changed format"
+    max_time_seconds: 30
+  layer2:
+    name: family
+    description: "All formats in the same family"
+    max_time_seconds: 60
+  layer3:
+    name: integration
+    description: "Supervisor, governance, evidence, capability_layer"
+    max_time_seconds: 120
+  layer4:
+    name: golden
+    description: "Roundtrip, cross-format, export, dogfood tests"
+    max_time_seconds: 180
+  layer5:
+    name: broad
+    description: "All python + supervisor + evidence + packaging + skills + ai"
+    max_time_seconds: 600
+  layer6:
+    name: full
+    description: "Entire test suite"
+    max_time_seconds: 900
+
+format_families:
+  netpbm: [pbm, pgm, ppm]
+  opendocument_spreadsheet: [fods, ods]
+  opendocument_text: [fodt, odt, abw]
+  opendocument_graphics: [fodg]
+  tabular: [csv, tsv, sylk, dif, gnumeric]
+  image: [pbm, pgm, ppm, qoi, xcf]
+  archive: [zst]
+  structured: [ndjson, toml]
+
+# Change-impact matrix: file pattern -> minimum required layer.
+# Patterns are matched top-to-bottom; first match wins.
+# The runner extracts format names from {format} path segments.
+change_impact:
+  # Documentation only — structural sanity suffices
+  - pattern: "docs/**"
+    min_layer: 0
+  - pattern: "reports/**"
+    min_layer: 0
+  - pattern: "plans/**"
+    min_layer: 0
+  - pattern: "*.md"
+    min_layer: 0
+  - pattern: "CHANGELOG.md"
+    min_layer: 0
+
+  # Product source — focused format tests
+  - pattern: "src/python/*/[!_]*.py"
+    min_layer: 1
+    format_from: path_segment_2
+  - pattern: "src/python/**"
+    min_layer: 1
+    format_from: path_segment_2
+
+  # Format-specific tests
+  - pattern: "tests/python/*/test_*.py"
+    min_layer: 1
+    format_from: path_segment_2
+
+  # Supervisor / governance / evidence
+  - pattern: "tools/supervisor/**"
+    min_layer: 3
+  - pattern: "tests/supervisor/**"
+    min_layer: 3
+  - pattern: "tests/evidence/**"
+    min_layer: 3
+  - pattern: "tests/capability_layer/**"
+    min_layer: 3
+  - pattern: "registry/**"
+    min_layer: 3
+  - pattern: "schemas/**"
+    min_layer: 3
+
+  # AI tools — integration level
+  - pattern: "tools/ai/**"
+    min_layer: 3
+
+  # Broad — shared infrastructure
+  - pattern: "tools/*"
+    min_layer: 5
+  - pattern: "tests/python/conftest.py"
+    min_layer: 5
+  - pattern: "src/net/**"
+    min_layer: 5
+
+  # Full suite — build/CI/config changes
+  - pattern: "pyproject.toml"
+    min_layer: 6
+  - pattern: ".github/**"
+    min_layer: 6
+  - pattern: "tests/conftest.py"
+    min_layer: 6
+  - pattern: ".pre-commit-config.yaml"
+    min_layer: 6
+
+  # Default: unrecognized paths escalate to full suite (fail-safe)
+  - pattern: "_default"
+    min_layer: 6
+
+# Shards for Layer 6 execution
+shards:
+  1:
+    path: "tests/python/"
+    description: "Format codec tests"
+  2:
+    path: "tests/supervisor/"
+    description: "Supervisor pipeline tests"
+  3:
+    path: "tests/evidence/"
+    description: "Evidence validation tests"
+  4:
+    path: "tests/"
+    ignore:
+      - "tests/python"
+      - "tests/supervisor"
+      - "tests/evidence"
+    description: "Everything else (packaging, skills, ai, playbook, etc.)"

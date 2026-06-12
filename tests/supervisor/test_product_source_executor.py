@@ -6,16 +6,14 @@ from __future__ import annotations
 
 import json
 import sys
-import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
-import pytest
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_REPO_ROOT / "tools" / "supervisor"))
 
-from product_source_executor import ProductSourceExecutor, _HARD_FORBIDDEN
+from product_source_executor import ProductSourceExecutor
 
 
 def _make_item(**overrides):

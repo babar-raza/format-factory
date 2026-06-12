@@ -14,7 +14,6 @@ R56 Sprint: FORMAT-FACTORY-R56-R55-CLOSURE-REPAIR-PACKAGE-RC-PHASE7-PRODUCT-EXPA
 """
 from __future__ import annotations
 
-import sys
 import zipfile
 from pathlib import Path
 

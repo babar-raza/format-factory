@@ -18,20 +18,16 @@ Tests:
   test_pending_in_verdict_fails
 """
 
-import io
-import json
-import os
 import sys
 import zipfile
 from pathlib import Path
 
-import pytest
 
 # Allow import from tools/supervisor
 ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(ROOT))
 
-from tools.supervisor.validate_supervisor_evidence_bundle import validate_bundle, BundleValidationResult
+from tools.supervisor.validate_supervisor_evidence_bundle import validate_bundle
 
 
 def make_zip(files: dict, path: str):

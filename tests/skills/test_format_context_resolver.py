@@ -18,7 +18,6 @@ Run:
 """
 
 import json
-import pytest
 import sys
 import tempfile
 import shutil
@@ -31,9 +30,6 @@ sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
 from format_context_resolver import (
     resolve_format_context,
     _resolve_requirements_state,
-    _resolve_gate_state,
-    REQS_DIR,
-    REGISTRY_PATH,
 )
 
 

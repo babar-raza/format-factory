@@ -209,8 +209,8 @@ def _determine_gap_to_target(
             "from_level": "P5",
             "to_level": "P6",
             "action": (
-                f"Build proof graph YAML: spec_source -> fact -> code -> test -> evidence. "
-                f"Store under reports/authority-conveyor-*/."
+                "Build proof graph YAML: spec_source -> fact -> code -> test -> evidence. "
+                "Store under reports/authority-conveyor-*/."
             ),
             "type": "PROOF_GRAPH",
             "blocked_by": "Requires: P5 (code + test citations)",

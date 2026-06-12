@@ -6,10 +6,8 @@ Task: h8-probe-abw-001
 from __future__ import annotations
 
 import sys
-import tempfile
 from pathlib import Path
 
-import pytest
 
 _repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_repo_root / "src" / "python"))

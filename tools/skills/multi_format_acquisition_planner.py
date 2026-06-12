@@ -256,7 +256,7 @@ def plan_format_group(
     if spec_type == "mixed":
         recs.append("[PLAN-REC] Segregate full-public formats from reverse-engineering formats.")
     if not parallelizable and len(formats) > 1:
-        recs.append(f"[PLAN-REC] Process formats sequentially per sequencing_recommendation.")
+        recs.append("[PLAN-REC] Process formats sequentially per sequencing_recommendation.")
     if lifecycle_state == "CANDIDATE":
         recs.append("[PLAN-REC] Begin with SUPPORT_MATRIX_AUDIT as first gate.")
     if gates_remaining <= 2 and lifecycle_state not in ("BLOCKED", "DEFERRED"):

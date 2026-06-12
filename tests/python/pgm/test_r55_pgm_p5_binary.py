@@ -20,8 +20,6 @@ from src.python.pgm.pgm_parser import (
     SUPPORTED_FEATURES,
     UNSUPPORTED_FEATURES,
     PgmDecodeError,
-    PgmInvalidHeaderError,
-    PgmInvalidMagicError,
     parse_pgm_strict,
 )
 

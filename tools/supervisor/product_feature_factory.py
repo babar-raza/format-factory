@@ -24,9 +24,16 @@ Does NOT modify test files — returns test skeleton as string for caller review
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 from typing import Optional
+
+from tools.supervisor.test_drivers import (
+    render_getter_test,
+    render_export_csv_test,
+    render_roundtrip_test,
+    render_append_test,
+    render_probe_test,
+)
 
 _here = Path(__file__).resolve().parent
 _REPO_ROOT = _here.parent.parent
@@ -162,45 +169,9 @@ def {function_name}(source, dest=None) -> str:
         Returns:
             Test file content as string.
         """
-        module_path = source_path.replace("/", ".").removesuffix(".py")
-        module_parts = module_path.split(".")
-        test_import = f"from {'.'.join(module_parts[:-1])} import {load_function}, {write_function}"
-
-        return f'''"""Roundtrip test for {format_name.upper()}.
-
-Sprint: FORMAT-FACTORY-AUTONOMY-ACCELERATION-SPRINT-3-001
-Pattern C: Load → write → reload → compare
-"""
-from __future__ import annotations
-
-import sys
-from pathlib import Path
-import pytest
-
-_REPO_ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
-
-{test_import}
-
-
-class TestRoundtrip{format_name.capitalize()}:
-    def test_roundtrip_preserves_{compare_field}(self, tmp_path):
-        # TODO: Replace with a real fixture or minimal bytes for this format
-        source_bytes = b""  # ADD FORMAT-SPECIFIC MINIMAL BYTES HERE
-        model = {load_function}(source_bytes)
-        dest = tmp_path / "out.{format_name}"
-        {write_function}(model, dest)
-        model2 = {load_function}(dest)
-        assert model2["{compare_field}"] == model["{compare_field}"]
-
-    def test_roundtrip_file_exists(self, tmp_path):
-        source_bytes = b""  # ADD FORMAT-SPECIFIC MINIMAL BYTES HERE
-        model = {load_function}(source_bytes)
-        dest = tmp_path / "out.{format_name}"
-        {write_function}(model, dest)
-        assert dest.exists()
-        assert dest.stat().st_size > 0
-'''
+        return render_roundtrip_test(
+            format_name, source_path, load_function, write_function, compare_field
+        )
 
     # ------------------------------------------------------------------
     # Pattern D: Append / Mutation
@@ -354,91 +325,22 @@ def {function_name}(source) -> dict:
     def _getter_test_skeleton(
         self, source_path: str, function_name: str, params: str, return_type: str
     ) -> str:
-        module = self._source_to_import(source_path)
-        return f'''"""Test skeleton for {function_name}() — Pattern A (Getter)."""
-import sys
-from pathlib import Path
-_REPO_ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
-from {module} import {function_name}
-
-
-class Test{function_name.replace("_", " ").title().replace(" ", "")}:
-    def test_basic(self):
-        # TODO: provide a real model or input
-        result = {function_name}(None)
-        assert result is not None
-
-    def test_returns_{return_type.replace("[", "_").replace("]", "").replace(",", "_").strip()}(self):
-        result = {function_name}(None)
-        assert isinstance(result, object)
-'''
+        return render_getter_test(source_path, function_name, params, return_type)
 
     def _export_csv_test_skeleton(
         self, source_path: str, function_name: str, format_name: str
     ) -> str:
-        module = self._source_to_import(source_path)
-        return f'''"""Test skeleton for {function_name}() — Pattern B (ExportCsv)."""
-import sys
-from pathlib import Path
-_REPO_ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
-from {module} import {function_name}
-
-
-class Test{format_name.capitalize()}CsvExport:
-    def test_returns_string(self):
-        # TODO: provide real source bytes
-        result = {function_name}(b"")
-        assert isinstance(result, str)
-
-    def test_writes_file(self, tmp_path):
-        dest = tmp_path / "out.csv"
-        {function_name}(b"", dest=dest)
-        assert dest.exists()
-'''
+        return render_export_csv_test(source_path, function_name, format_name)
 
     def _append_test_skeleton(
         self, source_path: str, function_name: str, format_name: str, collection_key: str
     ) -> str:
-        module = self._source_to_import(source_path)
-        return f'''"""Test skeleton for {function_name}() — Pattern D (Append)."""
-import sys
-from pathlib import Path
-_REPO_ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
-from {module} import {function_name}
-
-
-class Test{format_name.capitalize()}Append:
-    def test_append_increases_count(self):
-        # TODO: provide real source bytes
-        result = {function_name}(b"", [])
-        assert isinstance(result, dict)
-        assert "{collection_key}" in result
-'''
+        return render_append_test(source_path, function_name, format_name, collection_key)
 
     def _probe_test_skeleton(
         self, source_path: str, function_name: str, format_name: str
     ) -> str:
-        module = self._source_to_import(source_path)
-        return f'''"""Test skeleton for {function_name}() — Pattern E (Probe)."""
-import sys
-from pathlib import Path
-_REPO_ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(_REPO_ROOT / "src" / "python"))
-from {module} import {function_name}
-
-
-class Test{format_name.capitalize()}Probe:
-    def test_returns_dict(self):
-        result = {function_name}(b"")
-        assert isinstance(result, dict)
-
-    def test_format_field(self):
-        result = {function_name}(b"")
-        assert result.get("format") == "{format_name.lower()}"
-'''
+        return render_probe_test(source_path, function_name, format_name)
 
     def _source_to_import(self, source_path: str) -> str:
         """Convert 'src/python/abw/abw_codec.py' -> 'abw.abw_codec'."""

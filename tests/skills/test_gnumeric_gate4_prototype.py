@@ -7,14 +7,13 @@ Tests the prototypes/by-format/gnumeric/gnumeric_parser.py prototype.
 
 import sys
 from pathlib import Path
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 PROTO_DIR = REPO_ROOT / "prototypes" / "by-format" / "gnumeric"
 SAMPLES_DIR = REPO_ROOT / "samples" / "by-format" / "gnumeric"
 
 sys.path.insert(0, str(PROTO_DIR))
-from gnumeric_parser import parse_gnumeric, count_sheets, get_cell_count, extract_values, GNM_MIME
+from gnumeric_parser import parse_gnumeric, count_sheets, get_cell_count, extract_values
 
 
 def test_parse_gnumeric_minimal_is_gnumeric():

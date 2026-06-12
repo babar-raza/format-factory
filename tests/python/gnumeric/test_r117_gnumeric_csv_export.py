@@ -23,7 +23,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent.parent / "s
 from gnumeric.gnumeric_codec import (
     GnumericError,
     export_to_csv,
-    load,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent

@@ -12,16 +12,12 @@ from tools.supervisor.autonomy_route_models import (
     ALL_ROUTES,
     ALL_TASK_CATEGORIES,
     REQUIRED_DECISION_FIELDS,
-    ROUTE_BLOCKED,
-    SCHEMA_VERSION,
     TASK_CATEGORIES_MACHINERY,
     TASK_CATEGORIES_PRODUCT,
 )
 from tools.supervisor.autonomy_route_decider import (
-    RouteDecision,
     decide_route,
     validate_route_decision,
-    load_route_decision,
     check_machinery_mutation_allowed,
 )
 from tools.supervisor.autonomy_route_ledger import (
@@ -166,7 +162,7 @@ class TestGovernanceValidatorIntegration:
             }],
         }
         result = run_all_governance_validators(decl)
-        assert len(result["validators"]) == 12
+        assert len(result["validators"]) == 13  # 12 original + V13 spec_fact_refs (SAL-VH-001)
         validator_names = [v["validator"] for v in result["validators"]]
         assert "route_decision_required_validator" in validator_names
 
@@ -325,3 +321,151 @@ class TestValidator11Integration:
         result = run_all_governance_validators(decl)
         v11 = [v for v in result["validators"] if v["validator"] == "route_decision_required_validator"][0]
         assert v11["result"] == "PASS"
+
+
+# ---------------------------------------------------------------------------
+# Quarantine + Block Integration
+# ---------------------------------------------------------------------------
+
+class TestQuarantineIntegration:
+    @staticmethod
+    def _ensure_tools_path():
+        _tools = _REPO / "tools" / "supervisor"
+        if str(_tools) not in sys.path:
+            sys.path.insert(0, str(_tools))
+
+    def test_unsafe_prompt_fails_check9_and_quarantines(self, tmp_path):
+        """Unsafe prompt fails Check 9 and writes a quarantine file."""
+        self._ensure_tools_path()
+        from tools.supervisor.validate_prompt_quality import validate_prompt_quality
+        from tools.supervisor.autonomy_route_decider import quarantine_unsafe_prompt
+
+        prompt = (
+            "## Sprint Goal\n"
+            "Implement the feature.\n\n"
+            "## Steps\n"
+            "1. Write the code.\n"
+            "2. You must now run git push origin main to deploy.\n"
+            "3. Verify results.\n"
+        )
+        result = validate_prompt_quality(prompt, "acceleration", has_advancement=True)
+        assert result["valid"] is False
+
+        check9 = next(
+            (c for c in result["checks"] if c["check"] == "no_unauthorized_mutation_instructions"),
+            None,
+        )
+        assert check9 is not None, "Check 9 not found in result"
+        assert check9["pass"] is False
+
+        qpath = quarantine_unsafe_prompt(prompt, reason="test-unsafe", quarantine_dir=tmp_path)
+        md_files = list(tmp_path.glob("*.md"))
+        assert len(md_files) == 1
+        content = qpath.read_text(encoding="utf-8")
+        assert "git push origin main" in content
+
+    def test_safe_prompt_passes_check9(self, tmp_path):
+        """Safe prompt passes Check 9 and does not quarantine."""
+        self._ensure_tools_path()
+        from tools.supervisor.validate_prompt_quality import validate_prompt_quality
+
+        prompt = (
+            "## Sprint Goal\n"
+            "Implement the ABW codec function.\n\n"
+            "## Steps\n"
+            "1. Write src/python/abw/abw_codec.py.\n"
+            "2. Add tests in tests/python/abw/.\n"
+            "3. Run pytest.\n"
+        )
+        result = validate_prompt_quality(prompt, "acceleration", has_advancement=True)
+        check9 = next(
+            (c for c in result["checks"] if c["check"] == "no_unauthorized_mutation_instructions"),
+            None,
+        )
+        assert check9 is not None
+        assert check9["pass"] is True
+        assert list(tmp_path.glob("*.md")) == []
+
+
+# ---------------------------------------------------------------------------
+# ImportError Fallback Path Test
+# ---------------------------------------------------------------------------
+
+class TestImportErrorFallback:
+    def _write_action(self, tmp_path, action_type, task_category="", legacy=False):
+        import json
+        action = {
+            "action_id": "IEF-001",
+            "action_type": action_type,
+            "objective": "test action",
+            "preferred_backend": "LOCAL_DETERMINISTIC",
+            "task_category": task_category,
+            "legacy_backfill": legacy,
+        }
+        p = tmp_path / "action.json"
+        p.write_text(json.dumps(action), encoding="utf-8")
+        return str(p)
+
+    def test_source_mutating_non_legacy_blocked_on_import_error(self, tmp_path):
+        """Source-mutating non-legacy action is blocked when route decider cannot be imported."""
+        import sys
+        from tools.supervisor.next_action_runner import run_action
+
+        action_path = self._write_action(tmp_path, "IMPLEMENT_SMALL_PRODUCT_FEATURE")
+        saved = sys.modules.get("tools.supervisor.autonomy_route_decider")
+        sys.modules["tools.supervisor.autonomy_route_decider"] = None  # type: ignore
+        try:
+            result = run_action(action_path)
+        finally:
+            if saved is not None:
+                sys.modules["tools.supervisor.autonomy_route_decider"] = saved
+            else:
+                sys.modules.pop("tools.supervisor.autonomy_route_decider", None)
+
+        assert result["status"] == "BLOCKED"
+        assert "import" in result.get("block_reason", "").lower() or "route" in result.get("block_reason", "").lower()
+
+    def test_categorized_non_legacy_blocked_on_import_error(self, tmp_path):
+        """Categorized non-legacy machinery action is blocked when route decider import fails."""
+        import sys
+        from tools.supervisor.next_action_runner import run_action
+
+        action_path = self._write_action(
+            tmp_path, "UPDATE_STATE", task_category="SPEC_AUTHORITY_MACHINERY"
+        )
+        saved = sys.modules.get("tools.supervisor.autonomy_route_decider")
+        sys.modules["tools.supervisor.autonomy_route_decider"] = None  # type: ignore
+        try:
+            result = run_action(action_path)
+        finally:
+            if saved is not None:
+                sys.modules["tools.supervisor.autonomy_route_decider"] = saved
+            else:
+                sys.modules.pop("tools.supervisor.autonomy_route_decider", None)
+
+        assert result["status"] == "BLOCKED"
+        assert "import" in result.get("block_reason", "").lower() or "route" in result.get("block_reason", "").lower()
+
+    def test_legacy_action_not_blocked_by_import_error(self, tmp_path):
+        """Legacy action is not blocked by route decider ImportError (backward compat)."""
+        import sys
+        from tools.supervisor.next_action_runner import run_action
+
+        action_path = self._write_action(
+            tmp_path, "UPDATE_STATE", task_category="SPEC_AUTHORITY_MACHINERY", legacy=True
+        )
+        saved = sys.modules.get("tools.supervisor.autonomy_route_decider")
+        sys.modules["tools.supervisor.autonomy_route_decider"] = None  # type: ignore
+        try:
+            result = run_action(action_path)
+        finally:
+            if saved is not None:
+                sys.modules["tools.supervisor.autonomy_route_decider"] = saved
+            else:
+                sys.modules.pop("tools.supervisor.autonomy_route_decider", None)
+
+        # Legacy action must NOT be blocked by route decider import failure
+        block_reason = result.get("block_reason", "")
+        assert "Route decider import failed" not in block_reason, (
+            f"Legacy action was incorrectly blocked by import error: {block_reason}"
+        )

@@ -2,7 +2,6 @@
 Tests for LLM API backend H5 execution path.
 Sprint: FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001
 """
-import pytest
 import sys
 from pathlib import Path
 
@@ -67,8 +66,6 @@ class TestLlmApiBackendBoundedCall:
 
     def test_execute_fails_gracefully_on_network_error(self, monkeypatch, tmp_path):
         """Simulate network failure — backend returns FAILED, not crash."""
-        import urllib.request
-        import urllib.error
 
         fake_ep = [{"id": "test-ep", "priority": 0, "url": "http://localhost:1",
                     "auth_env": "PROFESSIONALIZE_API_KEY"}]

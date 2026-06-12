@@ -12,18 +12,16 @@ ODF 1.3 section 9.1.4 (table:table-cell attributes)
 """
 from __future__ import annotations
 
-import io
 import pathlib
 import sys
 import tempfile
 import textwrap
-import pytest
 
 PROJECT_ROOT = pathlib.Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.python.fods.parser import parse_fods
-from src.python.fods.constants import WARN_FORMULA_CELL, WARN_COVERED_CELL
+from src.python.fods.constants import WARN_FORMULA_CELL
 
 
 # ---------------------------------------------------------------------------

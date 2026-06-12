@@ -114,7 +114,7 @@ def check_registry_gate6_passed(repo_root: Path, issues: list, warnings: list) -
         if status_m:
             status = status_m.group(1).strip('"\'')
             if status.lower() == 'passed':
-                print(f"  registry FODS gate_6.status: passed (correct — Gate 6 APPROVED run044)")
+                print("  registry FODS gate_6.status: passed (correct — Gate 6 APPROVED run044)")
             else:
                 issues.append(
                     f"registry FODS gate_6.status is '{status}' — must be 'passed' "
@@ -149,7 +149,7 @@ def check_registry_gate6_passed(repo_root: Path, issues: list, warnings: list) -
         if status_m:
             status = status_m.group(1).strip('"\'')
             if status.lower() == 'planning_ready':
-                print(f"  registry FODS gate_7.status: planning_ready (correct)")
+                print("  registry FODS gate_7.status: planning_ready (correct)")
             elif status.lower() == 'not_started':
                 warnings.append("registry FODS gate_7.status is not_started — expected planning_ready after run044")
             else:

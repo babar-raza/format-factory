@@ -10,7 +10,6 @@ import io
 import json
 import os
 import pathlib
-import tempfile
 import zipfile
 import pytest
 

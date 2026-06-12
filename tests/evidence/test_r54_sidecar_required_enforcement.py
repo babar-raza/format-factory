@@ -13,13 +13,10 @@ R54 Sprint: FORMAT-FACTORY-R54-SIDECAR-ENFORCEMENT-FODT-PRESERVATION-PHASE5-MEGA
 from __future__ import annotations
 
 import json
-import os
 import sys
-import tempfile
 import zipfile
 from pathlib import Path
 
-import pytest
 
 # Ensure project root is on sys.path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]

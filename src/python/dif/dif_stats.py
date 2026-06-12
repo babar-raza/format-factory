@@ -102,7 +102,6 @@ def dif_vector_density(dif_doc: dict) -> dict:
 
     Added in R63 Train I (DIF format track advancement).
     """
-    from typing import Any
     vectors = dif_doc.get("vectors", [])
     total_tuples = 0
     non_empty = 0
@@ -191,5 +190,29 @@ def dif_string_cell_count(dif_doc: dict[str, Any]) -> int:
             cell_type = cell.get("type", "")
             val = cell.get("value")
             if cell_type in ("string", "text") and val is not None and val != "":
+                count += 1
+    return count
+
+
+def dif_total_numeric_count(dif_doc: dict[str, Any]) -> int:
+    """Return the total count of numeric-type cells in the DIF document.
+
+    Scans all rows for cells whose type is 'numeric' or 'number', or whose
+    value is an int or float. Complements dif_string_cell_count() for a
+    complete numeric/string/empty breakdown without requiring the full
+    dif_stats() aggregation.
+
+    Args:
+        dif_doc: Parsed DIF document dict (from parse_dif()).
+
+    Returns:
+        int — total number of numeric cells. 0 if none.
+    """
+    count = 0
+    for row in dif_doc.get("rows", []):
+        for cell in row:
+            cell_type = cell.get("type", "")
+            val = cell.get("value")
+            if cell_type in ("numeric", "number") or isinstance(val, (int, float)):
                 count += 1
     return count

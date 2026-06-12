@@ -15,10 +15,8 @@ These tests establish P5 traceability:
 - Tests here reference FACT-FODS-001 explicitly
 """
 import sys
-import textwrap
 from pathlib import Path
 
-import pytest
 
 # Allow direct import of fods package
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / "src" / "python"))

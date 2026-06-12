@@ -8,7 +8,7 @@ import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
 from pbm.pbm_parser import (
     parse_pbm_strict, parse_pbm,
-    PbmError, PbmInvalidMagicError, PbmInvalidHeaderError, PbmSizeError, PbmDecodeError,
+    PbmInvalidMagicError, PbmInvalidHeaderError, PbmSizeError, PbmDecodeError,
 )
 
 

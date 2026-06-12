@@ -14,7 +14,6 @@ import sys
 import zipfile
 from pathlib import Path
 
-import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -29,7 +28,7 @@ def _compute_sha256(path: Path) -> str:
 def _make_minimal_zip(tmp_path: Path, run_number: str = "R60") -> Path:
     zp = tmp_path / f"{run_number.lower()}-test-bundle.zip"
     with zipfile.ZipFile(zp, "w") as zf:
-        zf.writestr("repo/state/current-state.md", f"**Verdict:** R60_TEST_COMPLETE")
+        zf.writestr("repo/state/current-state.md", "**Verdict:** R60_TEST_COMPLETE")
         zf.writestr("bundle-metadata/sprint-id.txt", run_number)
         zf.writestr("bundle-metadata/git-status-final.txt", "nothing to commit, working tree clean")
     return zp

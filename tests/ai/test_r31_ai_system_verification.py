@@ -875,7 +875,7 @@ class TestPipelineFixtureMode(unittest.TestCase):
         -> authority lifecycle -> telemetry summary.
         """
         from tools.ai.synthesis.runner import run_synthesis
-        from tools.ai.synthesis.evaluator import evaluate_synthesis, EvaluationCriteria
+        from tools.ai.synthesis.evaluator import evaluate_synthesis
         from tools.ai.synthesis.citation_verifier import verify_all_citations
         from tools.ai.synthesis.contradiction_detector import check_output_contradictions
         from tools.ai.requirements.generator import (
@@ -884,7 +884,7 @@ class TestPipelineFixtureMode(unittest.TestCase):
             review_requirement,
         )
         from tools.ai.validators.authority_lifecycle import (
-            can_transition, transition_with_evidence,
+            can_transition,
         )
         from tools.ai.schemas.models import (
             AITaskContract, AIRole, ArtifactAuthorityState,

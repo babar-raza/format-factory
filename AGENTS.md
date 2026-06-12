@@ -22,7 +22,7 @@
 
 **B2.** Before any format-specific work, read `plans/master-plan.md` and verify the current active format and gate status.
 
-**B3.** An agent must not proceed if the current phase or gate status is unclear. Log a gap and wait for human clarification.
+**B3.** An agent must not proceed if the current phase or gate status is unclear. Log a gap (Section M) and apply the Human Task Conversion Rule (Section AG1): use `tools/supervisor/stop_reason_adjudicator.py` to classify the blocker, create a machine-readable gap record, and continue with safe non-blocked work. Classify as `EXTERNAL_BLOCKER` only if the Stop Reason Adjudicator returns `TRUE_EXTERNAL_GATE` or `UNSAFE_WORKSPACE`. Do not default to waiting for human clarification when the agent can classify and continue.
 
 ---
 
@@ -45,7 +45,7 @@
 
 ## D. Gate Rules
 
-**D1.** No agent may self-approve a gate autonomously. All 11 gates require human review and explicit sign-off recorded in `registry/format-registry.yaml`.
+**D1.** No agent may self-approve a gate with no evidence or policy basis. Gate approval follows a two-tier model: (a) PREPARATION is always agent-owned — the agent prepares readiness packets, evidence bundles, acceptance criteria assessment, and contradiction scans; (b) EXECUTION approval for Gates 1-9 (OSS quality) may be agent-owned under delegated decision (see D1a) when all acceptance criteria are met and independently verified; (c) Gate 10 (OSS release readiness), Gate 11 G11-G (commercial release), and Gate 8 (formal sign-off where required) require human business authority (Babar Raza). The agent must always attempt preparation before concluding that human approval is needed for execution. Self-approval without evidence is prohibited. Evidence-backed policy-gate approval per D1a is authorized.
 
 **D1a. Delegated Decision Execution.** When the human project lead explicitly delegates a gate decision to the agent via an execution prompt, the agent may execute that decision on the human's behalf, provided: (a) the delegation is explicit and named in the execution prompt; (b) complete evidence gates exist in the repo; (c) no external authority, credential, payment, or legal signature is required; (d) the decision and its basis are transparently recorded in a delegated-decision report; (e) the registry approval record identifies the approval_method as `delegated_agent_decision_under_<human>_instruction`. A delegated execution is the agent carrying out a human decision — it is not autonomous self-approval. Evidence requirements are not waived. See GOVERNANCE.md §2.1a.
 
@@ -83,7 +83,7 @@
 
 **F5.** Do not change visibility from `internal` to `public` without human review and explicit approval.
 
-**F6.** LLM-generated content defaults to `visibility: generated`. Changing to `public` requires human approval.
+**F6.** LLM-generated content defaults to `visibility: generated`. Changing to `public` requires either: (a) explicit user authorization in the current session, OR (b) agent-owned review by Documentation Governance Agent with evidence of: independent verification, legal/copyright clearance, and spec redistribution compliance. Apply Human Task Conversion Rule (Section AG1) — do not default to waiting for human if documentation agent review can satisfy all criteria.
 
 **F7.** LLM content that quotes spec text defaults to `visibility: evidence-only` pending legal review.
 
@@ -128,14 +128,14 @@ Before marking any gate complete, any taskcard complete, or any significant work
 5. Did I create any file in a phase-forbidden directory?
 6. Did I attempt to self-approve a gate?
 7. Did I accidentally perform Phase N+1 work during Phase N?
-8. Did I commit or push without explicit human instruction?
+8. Did I commit or push without sprint policy authorization or explicit human instruction?
 9. Did I preserve the rule that bundle inspection is required before the next prompt?
 10. Did I leave any gap unlogged?
 11. Did I read the relevant `/memory` files before this task?
 12. Did I treat `/memory` as context only, not as operational authority?
 13. Did I log any contradictions I found between `/memory` and the master plan?
 14. Did I update `/memory` or create a memory-update taskcard when a trigger event occurred?
-15. Am I asking for human review or approval, and if yes, did an independent agent verification sprint already occur in a separate session for this item? (See Section V.)
+15. Am I asking for human review or approval? If yes: (a) did an independent agent verification sprint already occur (see Section V)?; (b) can the review be delegated to an independent agent per Section AG3?; (c) is this a legitimate external gate (Gate 11 business decision) per Section AG5?
 
 The agent must answer "no" to questions 4, 5, 6, 7, 8, and 10, and "yes" to questions 1, 2 (all evidence present), 3 (evidence is sufficient), and 9. For questions 11-14: if a memory read was required for the task type, answer "yes" to 11 and 12. If no contradiction existed, "yes" to 13 means "I confirmed there was no contradiction to log." For question 14, if no memory-update trigger event occurred during the task, the acceptable answer is "Not applicable — no trigger event occurred." For question 15: if asking for human review, the answer must be "yes — independent verification sprint completed." If not asking for human review, the acceptable answer is "Not applicable — no human review requested." If any required answer is wrong, the agent must log the gap and wait for human resolution before marking work complete.
 
@@ -235,11 +235,11 @@ An agent must never create the following in Phase 0:
 
 ## P. Commit and Push Rules
 
-**P1.** An agent must never run `git commit` or `git push` unless the human explicitly says to commit or push in the current session.
+**P1.** Git commit is an SCM Agent task governed by sprint policy (see Section AG4). An agent must not commit unless sprint policy explicitly authorizes it (e.g., sprint closeout with autonomous-cycle exit 0, AUTONOMOUS_CONTINUE=YES, and sprint_type permits commit) OR the human explicitly authorizes it in the current session. When sprint policy authorizes: the agent commits with an honest, exact commit message after reviewing the diff for secrets, local content, and blocked artifacts. Approval does NOT carry over across sessions without sprint policy authorization.
 
-**P2.** "Phase complete" does not mean "commit." Completing a phase produces an evidence bundle and awaits human review. Commits happen only when the human explicitly requests them.
+**P2.** "Phase complete" does not mean "commit." Completing a phase produces an evidence bundle. The agent then evaluates whether sprint policy authorizes commit (Section AG4). If sprint policy does not authorize, the agent prepares a commit-candidate summary and records the commit as pending. Commits happen when sprint policy OR explicit human instruction in the current session authorizes them.
 
-**P3.** If the human approved a commit in a previous session, that approval does not carry over to the current session. Each commit requires explicit human instruction in the current session.
+**P3.** Git push is an SCM Agent task when credentials and branch policy allow (see Section AG4.2). If credentials are unavailable, classify as `EXTERNAL_BLOCKER: git_push_credentials_unavailable` and record in the gap register. Do not use "human must push" as a universal default — classify the specific credential or permission blocker honestly.
 
 **P4.** Before any commit (when authorized): verify no `.env`, no secrets, no `.local/` contents, no `visibility: blocked` artifacts are staged.
 
@@ -631,7 +631,7 @@ human prompt.
 
 **AD6. Evidence-Producing Sprints Must Print Bundle Path.** Every sprint that produces an evidence bundle must print, as its final line: EVIDENCE_BUNDLE: <absolute Windows path to zip>. No other line may follow it.
 
-**AD7. No Push Without Explicit Authorization.** Push is prohibited unless the human explicitly authorizes it in the current session. Default is no push.
+**AD7. Push Policy.** Push is an SCM Agent task governed by Section AG4.2. When credentials and branch policy allow and sprint policy authorizes: the SCM Agent may push. When credentials are unavailable: classify as `EXTERNAL_BLOCKER: git_push_credentials_unavailable`. Do not default to "no push" as a vague prohibition — classify the specific blocker. If no sprint policy authorization and no human authorization exists in the current session, default is no push.
 
 **AD8. Before Converting Prose Plan, Use Methodology Docs.** Before converting a prose plan to an execution handoff, use `docs/planning-methodology.md` and `docs/plan-hardening-checklist.md`. Before writing a handoff prompt, use `docs/agent-execution-handoff-standard.md`. Before reviewing an evidence bundle and producing the next prompt, use `.claude/commands/evidence-review-next-prompt.md` or its template.
 
@@ -799,3 +799,210 @@ normalization is mandatory input for AI consumption. Runtime product code (`src/
 AI infrastructure — enforced by `tools/ai/validators/runtime_guard.py`. 40-item risk register:
 `docs/ai/ai-risk-register.md`. Full plan: `plans/master-plan.md` Section 39.
 See GOVERNANCE.md §26.14.
+
+---
+
+## AG. Human-Free Autonomy and Agent Delegation Doctrine
+
+**Sprint:** human-free-autonomy-governance-20260612-001
+**Date:** 2026-06-12
+**Authority:** This section supersedes any prior "wait for human" default language in this document
+where the referenced task can be honestly, safely, and policy-compliantly executed by an agent.
+It does NOT weaken genuine safety gates. It converts vague human dependencies into classified,
+agent-owned tasks or honest external blockers.
+
+---
+
+### AG1. Human Task Conversion Rule
+
+Whenever any instruction, gate, process, or task appears to require a human, the responsible agent
+must evaluate internally before stopping:
+
+1. **Can an agent with the right role, tools, permissions, and evidence do this?**
+2. **Is it safe under repository policy?**
+3. **Is it non-destructive or properly guarded?**
+4. **Are credentials available if required?**
+5. **Can success be verified independently?**
+
+If YES to all applicable questions: the agent executes or delegates to the appropriate specialized
+agent and records the action with full evidence.
+
+If NO to any applicable question: the agent records the exact blocker with specificity, creates a
+machine-readable gap item (Section M), and produces a concrete remediation path. The agent does NOT
+use "needs human" as a vague escape hatch.
+
+---
+
+### AG2. "Can I Do It? If I Can, I Will" Decision Loop
+
+```
+HUMAN_TASK_DETECTED:
+  inspect(task) →
+    policy_allows_agent? YES → inspect(credentials_available) →
+      credentials_ok? YES → inspect(safety_check) →
+        safe_and_non_destructive? YES → EXECUTE_AS_AGENT(task)
+                                          record_action_evidence()
+                                          verify_independently()
+        safe_and_non_destructive? NO  → GUARD(dry_run=True) →
+                                          if policy_authority exists → EXECUTE_WITH_GUARD()
+                                          else → CLASSIFY_HONEST_BLOCKER(reason="destructive_without_policy_authority")
+      credentials_ok? NO → CLASSIFY_HONEST_BLOCKER(reason="credentials_unavailable")
+                           create_machine_readable_gap()
+                           propose_remediation()
+    policy_allows_agent? NO → inspect(can_agent_policy_be_updated?) →
+                               YES → PROPOSE_POLICY_CHANGE_TASKCARD()
+                               NO  → CLASSIFY_HONEST_BLOCKER(reason="policy_forbids_agent_execution")
+```
+
+---
+
+### AG3. Agent Delegation Roles
+
+Human-labeled tasks must be reassigned to the appropriate specialized agent:
+
+| Human-labeled task | Delegated to |
+|-------------------|-------------|
+| Review evidence/grades | Independent Verification Agent / Supervisor Agent (`supervisor_loop.py`) |
+| Quality approval | Policy Gate Agent (governance_validators.py) / Evidence Review Agent |
+| Commit source changes | SCM Agent (git commit with policy-authorized sprint) |
+| Push to remote | SCM Agent when credentials and branch policy allow |
+| Release/package checks | Release Verification Agent |
+| Documentation review | Documentation Governance Agent |
+| Security review | Security Agent |
+| Evidence review | Evidence Integrity Agent (`build_declaration_review_package.py`) |
+| Product validation | Product Verification Agent (pytest, oracle) |
+| Continuation decisions | Autonomous Supervisor (`supervisor_loop.py autonomous-cycle`) |
+| Queue selection | Queue Governor Agent (`action_queue.py`) |
+| Contradiction detection | Adversarial Governance Reviewer |
+| Rework review | Autonomous Supervisor (not human by default) |
+
+---
+
+### AG4. SCM Agent Policy (Commit and Push)
+
+**AG4.1 Commit.** Git commit is an SCM Agent task when ALL of the following are true:
+- Sprint policy explicitly authorizes commit for the current sprint type
+- Tests pass (autonomous-cycle exit 0)
+- Diff has been reviewed by the agent (no secrets, no `.local/`, no blocked artifacts)
+- Evidence declaration is clean
+- Governance validators pass (blocks_sprint=False)
+
+When these conditions are met, the SCM Agent commits with a clear, honest message. The agent does
+NOT default to "wait for human" when commit conditions are met.
+
+**AG4.2 Push.** Git push is an SCM Agent task when ALL of the following are true:
+- Commit conditions above are met
+- Git credentials are available in the current shell environment
+- Branch protection does not require an external identity unavailable to the agent
+- No force-push or destructive operation is required
+
+When credentials are unavailable or branch protection blocks the agent identity: classify as
+`EXTERNAL_BLOCKER: git_push_credentials_unavailable` and record in the gap register. Never claim
+"human must push" as the universal default — classify the specific blocker.
+
+**AG4.3 Honest Blocker.** If git push cannot proceed: produce a push-ready manifest showing
+exactly what would be pushed, the exact credential/permission gap, and the remediation path.
+
+---
+
+### AG5. Human-Free Approval Gates
+
+Replace human approval with policy-based agent approval wherever possible. A gate approval requires:
+
+1. Explicit acceptance criteria (machine-readable)
+2. Evidence matching all criteria
+3. Independent agent verification (separate session or tool)
+4. Test/validator proof
+5. Contradiction scan
+6. Rollback or stop conditions
+7. Final status classification (ACCEPTED / REWORK_REQUIRED / BLOCKED_EXTERNAL_GATE)
+
+Human review remains ONLY as an optional external audit for:
+- Commercial release decisions (Gate 11 G11-G EXECUTION — Babar Raza's business decision)
+- Gate 8 formal sign-off where explicit external authority is required
+- Destructive operations with no safe agent-owned alternative
+- Legal/compliance decisions requiring external authority
+
+For everything else: agent prepares, agent verifies, agent approves via policy gate.
+
+---
+
+### AG6. Honest External Blocker Classification
+
+Only classify something as externally blocked when the agent truly cannot proceed due to a REAL
+external condition. Valid external blockers:
+
+- `CREDENTIALS_UNAVAILABLE`: missing API key, SSH key, or auth token
+- `PERMISSION_DENIED_EXTERNAL`: denied by remote system with no agent-owned workaround
+- `BRANCH_PROTECTION_AGENT_IDENTITY_UNAVAILABLE`: branch requires signer the agent cannot be
+- `LEGAL_COMPLIANCE_NO_AGENT_POLICY`: legally restricted decision without an agent-authorized policy
+- `DESTRUCTIVE_NO_POLICY_AUTHORITY`: destructive operation with no safe guard and no policy
+- `BUSINESS_DECISION_EXTERNAL`: commercial/legal/human-authority decision (Gate 11 execution)
+
+The agent must NOT use these blockers for tasks it is merely unfamiliar with, or that are complex,
+or that would require effort. Effort and complexity do not make something human-only.
+
+---
+
+### AG7. No Fake Autonomy Rule
+
+The system must never mark itself autonomous if:
+
+- Continuation requires a human to paste the next prompt (queue-backed continuation exists)
+- Review requires human judgment with no agent substitute available
+- Approval gates say "human approval" without an agent-owned alternative having been attempted
+- Evidence is not independently verified
+- Zero-product-work loops continue without autonomous diagnosis and repair
+
+When zero-product-work loops occur, governance requires autonomous diagnosis:
+1. Inspect queue (action_queue.py)
+2. Inspect capability gaps (gap-ledger.json)
+3. Inspect supervisor stop reasons (stop_reason_adjudicator.py)
+4. Select safe next product work from poc-targets.yaml
+5. Execute or delegate
+6. Verify and update continuation state
+
+---
+
+### AG8. Autonomous Escalation Rule
+
+When a task is beyond the current agent's skill, it must delegate to or request execution by a
+more appropriate agent role. Defaulting to "needs human" when a specialized agent could handle
+the task is a governance violation.
+
+---
+
+### AG9. Machine-Readable Gap Rule
+
+Any remaining non-agent-owned task must be recorded as a gap with:
+
+- `file`: source file containing the human-bound instruction
+- `instruction_summary`: brief summary of what requires human action
+- `why_human_bound`: specific reason (credential, policy, legal, destructive)
+- `agent_can_take_over`: YES / NO / PARTIALLY
+- `assigned_replacement_agent`: e.g., SCM_Agent, Policy_Gate_Agent
+- `required_policy_or_tooling`: what needs to exist before agent can own it
+- `remediation_status`: OPEN / IN_PROGRESS / RESOLVED
+- `verification_status`: UNVERIFIED / VERIFIED
+
+Gaps are logged per Section M rules and tracked in `reports/capability-layer/gap-ledger.json`.
+
+---
+
+### AG10. Scope of This Doctrine
+
+This doctrine applies to all Format Factory agents (Claude, Codex, specialized sub-agents).
+It does NOT:
+- Remove evidence requirements (evidence is always required)
+- Bypass safety gates (convert them to agent-owned policy gates)
+- Allow self-approval of commercial business decisions
+- Allow destructive operations without policy authority
+- Weaken test, validator, or declaration requirements
+
+It DOES:
+- Require agents to attempt execution before declaring something human-bound
+- Classify every "human" task as agent-owned, honestly-externally-blocked, or escalated
+- Require machine-readable gap records for anything that remains human-bound
+- Replace human review with independent agent verification wherever possible
+- Replace human approval with policy-based gate approval wherever possible
+- Give SCM tasks to the SCM Agent when credentials and policy allow

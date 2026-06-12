@@ -694,3 +694,254 @@ def roundtrip(src: Any, dest: str | Path) -> dict[str, Any]:
     result = _load_tsv_data(src)
     write_tsv(result.get("rows", []), dest, headers=result.get("headers"))
     return result
+
+
+# FORMAT_FACTORY_EXECUTION: taskcard=SHQ-L2-001; method=QUEUE_DISPATCHED_EXECUTION; queue_item=shq-q-001; sprint_id=FORMAT-FACTORY-SELF-HEALING-QUEUE-PROFESSIONALIZE-RNEXT-001
+def append_rows(data: Any, rows: "list[list[str]]") -> "dict[str, Any]":
+    """Append multiple rows to a TSV data model (in-memory, returns updated model).
+
+    Unlike append_row() which writes to a file path, this function operates on
+    the neutral model dict and returns the updated model. Suitable for batch
+    in-memory operations.
+
+    Args:
+        data: TSV data dict (with 'rows' key), or raw bytes/path for auto-loading.
+        rows: List of rows to append; each row is a list of string values.
+              Values are sanitized (tabs/newlines replaced with spaces).
+
+    Returns:
+        Updated data model dict with new rows appended and row_count updated.
+    """
+    if isinstance(data, dict):
+        model = data
+    else:
+        model = _load_tsv_data(data)
+    existing: list = list(model.get("rows", []))
+    for row in rows:
+        sanitized = [
+            str(c).replace("\t", " ").replace("\n", " ").replace("\r", " ")
+            for c in row
+        ]
+        existing.append(sanitized)
+    model = dict(model)
+    model["rows"] = existing
+    model["row_count"] = len(existing)
+    return model
+
+
+def find_rows_containing(data: Any, text: str, case_sensitive: bool = True) -> list[int]:
+    """Return 0-based indices of data rows where any cell contains text as a substring.
+
+    Args:
+        data: TSV data dict, file path, or raw bytes.
+        text: The substring to search for in cell values.
+        case_sensitive: If False, search is case-insensitive. Default True.
+
+    Returns:
+        Sorted list of 0-based row indices with a matching cell.
+        Returns empty list if no matches found.
+    """
+    if isinstance(data, dict):
+        model = data
+    else:
+        model = _load_tsv_data(data)
+    rows: list[list[str]] = model.get("rows") or []
+    search = text if case_sensitive else text.lower()
+    result = []
+    for idx, row in enumerate(rows):
+        for cell in row:
+            haystack = cell if case_sensitive else cell.lower()
+            if search in haystack:
+                result.append(idx)
+                break
+    return result
+
+
+def get_numeric_columns(data: Any) -> list[str]:
+    """Return the names of columns whose data rows are all parseable as float.
+
+    A column is considered numeric if every non-empty value in that column
+    can be converted to float. Columns with no data rows or all-empty values
+    are excluded.
+
+    Args:
+        data: TSV data dict, file path, or raw bytes.
+
+    Returns:
+        List of column names (from header) that are entirely numeric.
+        Returns empty list if no header or no data rows.
+    """
+    if isinstance(data, dict):
+        model = data
+    else:
+        model = _load_tsv_data(data)
+    headers: list[str] = model.get("headers") or []
+    rows: list[list[str]] = model.get("rows") or []
+    if not headers or not rows:
+        return []
+
+    numeric: list[str] = []
+    for col_idx, col_name in enumerate(headers):
+        values = []
+        for row in rows:
+            if col_idx < len(row):
+                cell = row[col_idx].strip()
+                if cell:
+                    values.append(cell)
+        if not values:
+            continue
+        all_numeric = True
+        for v in values:
+            try:
+                float(v)
+            except (ValueError, TypeError):
+                all_numeric = False
+                break
+        if all_numeric:
+            numeric.append(col_name)
+    return numeric
+
+
+def unique_column_values(data: Any, col_name: str) -> list[str]:
+    """Return sorted list of unique values in a TSV column."""
+    values = get_column_values(data, col_name)
+    return sorted(set(values))
+
+
+def tsv_numeric_cell_count(file_path: "str | Path") -> int:
+    """Return the count of cells that contain a numeric value across all rows.
+
+    Scans both the header row (if present) and all data rows. A cell is
+    counted as numeric if its string value (after strip) can be converted to
+    a float. Empty cells and non-numeric strings are excluded.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer count of numeric cells.
+
+    Raises:
+        TsvError subclasses on parse failure.
+    """
+    parsed = parse_tsv_strict(file_path)
+
+    def _count_in_rows(rows_list):
+        c = 0
+        for row in rows_list:
+            for cell in row:
+                if isinstance(cell, str):
+                    stripped = cell.strip()
+                    if stripped:
+                        try:
+                            float(stripped)
+                            c += 1
+                        except ValueError:
+                            pass
+        return c
+
+    count = _count_in_rows(parsed.get("rows", []))
+    headers = parsed.get("headers")
+    if headers:
+        count += _count_in_rows([headers])
+    return count
+
+
+def tsv_nonempty_cell_count(file_path: "str | Path") -> int:
+    """Return the count of all non-empty cells across all rows and columns.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer count of cells where the string value is non-empty after strip.
+
+    Raises:
+        TsvError subclasses on parse failure.
+    """
+    parsed = parse_tsv_strict(file_path)
+    count = 0
+    for row in parsed.get("rows", []):
+        for cell in row:
+            if isinstance(cell, str) and cell.strip() != "":
+                count += 1
+    return count
+
+
+def tsv_empty_row_count(file_path: "str | Path") -> int:
+    """Return the count of rows where all cells are empty strings.
+
+    A row is considered empty if every cell value is an empty string or
+    contains only whitespace after stripping.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer count of completely empty rows.
+
+    Raises:
+        TsvError subclasses on parse failure.
+    """
+    parsed = parse_tsv_strict(file_path)
+    count = 0
+    for row in parsed.get("rows", []):
+        if all(not (isinstance(cell, str) and cell.strip()) for cell in row):
+            count += 1
+    return count
+
+
+def tsv_row_count(file_path: "str | Path") -> int:
+    """Return the number of data rows in the TSV file.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer count of rows. Returns 0 for empty files.
+
+    Raises:
+        TsvError subclasses on parse failure.
+    """
+    parsed = parse_tsv_strict(file_path)
+    return len(parsed.get("rows", []))
+
+
+def tsv_max_cell_length(file_path: "str | Path") -> int:
+    """Return the character length of the longest cell value in the TSV file.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer length of the longest cell string. Returns 0 for empty files.
+
+    Raises:
+        TsvError subclasses on parse failure.
+    """
+    parsed = parse_tsv_strict(file_path)
+    rows = parsed.get("rows", [])
+    if not rows:
+        return 0
+    return max((len(str(cell)) for row in rows for cell in row), default=0)
+
+
+def count_distinct_values(data: Any, col_name: str) -> int:
+    """Return the count of distinct non-empty values in a TSV column.
+
+    Args:
+        data: TSV data dict, file path, or raw bytes.
+        col_name: Header name of the column to inspect.
+
+    Returns:
+        Integer count of unique non-empty cell values.
+
+    Raises:
+        TsvError: If the column is not found.
+    """
+    values = get_column_values(data, col_name)
+    distinct: set[str] = set()
+    for v in values:
+        if v is not None and v != "":
+            distinct.add(v)
+    return len(distinct)

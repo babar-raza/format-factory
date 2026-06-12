@@ -11,7 +11,6 @@ Verifies that the .NET FODS and FODT consumer projects:
 This closes R44 blocker #1 and #11: ".NET consumer project proof not completed".
 """
 import subprocess
-import sys
 from pathlib import Path
 
 import pytest

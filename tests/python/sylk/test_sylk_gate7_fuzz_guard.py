@@ -8,7 +8,7 @@ import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "src", "python"))
 from sylk.sylk_parser import (
     parse_sylk_strict, parse_sylk,
-    SylkError, SylkInvalidFormatError, SylkSizeError, SylkParseError,
+    SylkInvalidFormatError, SylkSizeError, SylkParseError,
 )
 
 

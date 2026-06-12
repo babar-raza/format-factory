@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "format-factory-ods"
+version = "0.1.0"
+description = "Format Factory ODS (OpenDocument Spreadsheet) FOSS Python parser, writer, and exporter"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+where = [".."]
+include = ["ods*"]

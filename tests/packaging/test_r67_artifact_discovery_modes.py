@@ -16,8 +16,7 @@ _tools = Path(__file__).resolve().parents[2] / "tools" / "packaging"
 if str(_tools) not in sys.path:
     sys.path.insert(0, str(_tools))
 
-import pytest
-from find_bundle_artifacts import find_artifact_dir, find_manifest_path
+from find_bundle_artifacts import find_artifact_dir
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 

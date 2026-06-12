@@ -31,6 +31,15 @@ from .toml_codec import (
     to_env,
     diff_keys,
     rename_key,
+    update_section,
+    has_section,
+    get_all_keys,
+    get_section_as_dict,
+    has_any_section,
+    count_values_in_section,
+    toml_string_value_count,
+    toml_list_count,
+    count_sections_with_key,
 )
 
 __all__ = [
@@ -56,6 +65,15 @@ __all__ = [
     "to_env",
     "diff_keys",
     "rename_key",
+    "update_section",
+    "has_section",
+    "get_all_keys",
+    "get_section_as_dict",
+    "has_any_section",
+    "count_values_in_section",
+    "toml_string_value_count",
+    "toml_list_count",
+    "count_sections_with_key",
 ]
 
 __version__ = "0.1.0.dev0"

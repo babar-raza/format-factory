@@ -30,7 +30,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
 from logging_config import configure_supervisor_logging
 _logger = configure_supervisor_logging()
 
-from evidence_declaration import validate_declaration, load_declaration
+from evidence_declaration import validate_declaration
 from inspect_declared_evidence import inspect_declaration
 from grade_declared_work import grade_all, write_outputs
 from generate_next_worker_prompt import generate_prompt, generate_next_work_items
@@ -134,9 +134,74 @@ def classify_continuation_state(
     return "NO_EXTERNAL_GATE"
 
 
+def run_stale_repair_pre_cycle(
+    repo_root: Path,
+    dry_run: bool = True,
+    enabled: bool = False,
+) -> dict:
+    """Pre-cycle stale queue repair step (disabled by default).
+
+    Calls stale_queue_repair_hook to detect and mark STALE_QUEUE_ITEM defects
+    before the main autonomous cycle runs.
+
+    Args:
+        repo_root: Repository root path.
+        dry_run: If True, report stale items without writing repairs. Default True.
+        enabled: Master enable switch. Default False (disabled by default).
+
+    Returns:
+        dict with keys: enabled, skipped, stale_count, gap_count, status
+    """
+    if not enabled:
+        return {"enabled": False, "skipped": True, "status": "DISABLED_BY_DEFAULT"}
+
+    try:
+        _supervisor_dir = Path(__file__).resolve().parent
+        import sys as _sys
+        if str(_supervisor_dir) not in _sys.path:
+            _sys.path.insert(0, str(_supervisor_dir))
+        from stale_queue_repair_hook import run_stale_repair  # type: ignore[import]
+
+        result = run_stale_repair(repo_root=repo_root, dry_run=dry_run)
+        return {
+            "enabled": True,
+            "skipped": False,
+            "stale_count": result.get("stale_count", 0),
+            "gap_count": result.get("gap_count", 0),
+            "status": result.get("status", "UNKNOWN"),
+            "dry_run": dry_run,
+        }
+    except ImportError as exc:
+        return {
+            "enabled": True,
+            "skipped": False,
+            "status": f"IMPORT_ERROR: {exc}",
+            "stale_count": 0,
+            "gap_count": 0,
+        }
+    except Exception as exc:  # noqa: BLE001
+        return {
+            "enabled": True,
+            "skipped": False,
+            "status": f"ERROR: {type(exc).__name__}: {exc}",
+            "stale_count": 0,
+            "gap_count": 0,
+        }
+
+
 def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     """Run a complete autonomous supervisor cycle."""
     timestamp = datetime.now().isoformat()
+
+    # Step 0 (pre-cycle): Stale queue repair (disabled by default, dry-run safe)
+    print("=== STEP 0: PRE-CYCLE STALE REPAIR ===")
+    repair_result = run_stale_repair_pre_cycle(repo_root, dry_run=True, enabled=False)
+    if repair_result.get("skipped"):
+        print(f"  Stale repair: {repair_result['status']}")
+    else:
+        print(f"  Stale repair: stale={repair_result.get('stale_count', 0)} "
+              f"gaps={repair_result.get('gap_count', 0)} "
+              f"status={repair_result.get('status', 'UNKNOWN')}")
 
     # Step 1: Validate declaration
     _logger.info("Step 1: Validate declaration", extra={"sprint_id": "pending"})
@@ -209,10 +274,60 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     except Exception as e:
         print(f"  WARNING: Adoption compliance check skipped: {e}")
 
+    # Step 2d2: Requirements authority validation (SAL-I-004, Sprint 2 advisory / Sprint 3 hard-block)
+    # REQUIREMENT and READINESS items must pass requirements authority validation.
+    # Sprint 3 promotion: failure for these item types marks critical rework (blocks continuation).
+    print("\n=== STEP 2d2: REQUIREMENTS AUTHORITY VALIDATION ===")
+    _BLOCKING_RA_TYPES = frozenset({"REQUIREMENT", "READINESS", "RELEASE_GATE"})
+    requirement_items = [
+        item for item in decl.get("planned_work_items", [])
+        if item.get("item_type") in _BLOCKING_RA_TYPES
+    ]
+    _ra_failure_blocks = False  # set True if blocking item types fail RA validation
+    if requirement_items:
+        try:
+            import sys as _sys
+            _ra_dir = repo_root / "tools" / "requirements_authority"
+            if str(_ra_dir) not in _sys.path:
+                _sys.path.insert(0, str(_ra_dir))
+            from validate_requirements_authority import run_validation
+            _ra_output_dir = review_dir / "requirements-authority"
+            _ra_output_dir.mkdir(parents=True, exist_ok=True)
+            _ra_result = run_validation(
+                graph_dir=None,
+                fixtures_dir=None,
+                output_dir=_ra_output_dir,
+            )
+            _ra_overall = _ra_result.overall
+            _blocking_count = sum(
+                1 for i in requirement_items if i.get("item_type") in _BLOCKING_RA_TYPES
+            )
+            print(f"  Requirements authority: {_ra_overall} ({_blocking_count} blocking-type items)")
+            if _ra_overall != "PASS":
+                _ra_failure_blocks = True
+                print(f"  BLOCK: Requirements authority validation FAIL for {_blocking_count} "
+                      f"REQUIREMENT/READINESS/RELEASE_GATE items. "
+                      f"Review {_ra_output_dir} for details.")
+            else:
+                print(f"  PASS: Requirements authority validation passed.")
+            (_ra_output_dir / "item-count.txt").write_text(
+                f"{_blocking_count} blocking-type items validated, overall={_ra_overall}\n",
+                encoding="utf-8",
+            )
+        except Exception as _ra_e:
+            print(f"  WARNING: Requirements authority validation skipped: {_ra_e}")
+    else:
+        print(f"  No REQUIREMENT/READINESS/RELEASE_GATE items in declaration — "
+              f"requirements authority step skipped")
+
     # Step 2e: Governance validators (GRE-TC-002: wired into pipeline)
     print("\n=== STEP 2e: GOVERNANCE VALIDATORS ===")
     governance_validation_result = None
     try:
+        # governance_validators.py internally uses `from tools.supervisor.*` imports,
+        # which requires REPO_ROOT (not just SCRIPT_DIR) to be on sys.path.
+        if str(REPO_ROOT) not in sys.path:
+            sys.path.insert(0, str(REPO_ROOT))
         from governance_validators import run_all_governance_validators
         governance_validation_result = run_all_governance_validators(decl, repo_root)
         (review_dir / "governance-validation-result.json").write_text(
@@ -231,6 +346,13 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     except Exception as e:
         print(f"  WARNING: Governance validators skipped: {e}")
 
+    # ENFORCEMENT BOUNDARY NOTE:
+    # Route decision PRESENCE is validated by Validator 11 (validate_route_decision_required).
+    # Route decision CONTENT (allowed_paths, forbidden_paths, required_tests) is enforced
+    # at action dispatch time via next_action_runner.run_action() → check_action_route_allowed().
+    # Manual/skill execution bypasses this dispatch-time enforcement.
+    # See docs/governance/autonomy-default-routing-policy.md for full boundary specification.
+
     # Step 3: Grade work items (includes Step 3a: LLM semantic verification)
     print("\n=== STEP 3: GRADE WORK ITEMS ===")
     # Inject repo_root for semantic verification (LLM reads evidence files)
@@ -244,6 +366,19 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         print(f"  LLM gateway check failed: {_dbg_e}")
     review = grade_all(inspection, decl)
     review["declaration_path"] = str(declaration_path)
+
+    # Step 2d2 post-grading: promote requirements authority failure to critical rework
+    # Sprint 3: REQUIREMENT/READINESS/RELEASE_GATE failure is now a hard block.
+    if _ra_failure_blocks:
+        review["critical_rework_count"] = max(review.get("critical_rework_count", 0) + 1, 1)
+        if review.get("overall_verdict") in ("ACCEPTED", "ACCEPTED_WITH_LIMITATIONS"):
+            review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
+        review["stop_reason"] = (
+            review.get("stop_reason", "") +
+            " Requirements authority validation FAIL for REQUIREMENT/READINESS items."
+        ).strip()
+        print("  [Step 2d2] Requirements authority failure promoted to CRITICAL REWORK.")
+
     print(f"  Verdict: {review['overall_verdict']}")
     print(f"  Accepted: {len(review['accepted_items'])}")
     print(f"  Rework: {len(review['rework_items'])}")
@@ -255,7 +390,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     if sv_items:
         sv_downgrades = [g for g in sv_items if not g["semantic_verification"].get("adequate")]
         sv_stubs = [g for g in sv_items if g["semantic_verification"].get("stub_detected")]
-        print(f"\n  --- Step 3a: LLM Semantic Verification ---")
+        print("\n  --- Step 3a: LLM Semantic Verification ---")
         print(f"  Items verified: {len(sv_items)}")
         print(f"  Downgrades: {len(sv_downgrades)}")
         print(f"  Stubs detected: {len(sv_stubs)}")
@@ -303,7 +438,6 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     anti_skip_result = None
     try:
         from validate_package_identity import _extract_stream_from_sprint
-        from anti_skip_checker import classify_violation_impact
         evidence_root = repo_root / decl.get("evidence_root", "")
         target_stream = _extract_stream_from_sprint(sprint_id)
         sample_outputs_dir = evidence_root / "sample-outputs"
@@ -369,13 +503,13 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             review["autonomous_continue"] = False
             review["stop_reason"] = f"Anti-skip critical block: {anti_skip_impact['block_items']}"
             review["critical_rework_count"] = max(review["critical_rework_count"], 1)
-            print(f"  >>> CONTINUATION BLOCKED by anti-skip critical violations")
+            print("  >>> CONTINUATION BLOCKED by anti-skip critical violations")
         elif anti_skip_impact and anti_skip_impact.get("downgrade"):
             # High-severity violations downgrade the overall verdict
             if review["overall_verdict"] == "ACCEPTED":
                 review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
             review["anti_skip_downgrade_reasons"] = anti_skip_impact["downgrade_items"]
-            print(f"  >>> VERDICT DOWNGRADED by anti-skip high-severity violations")
+            print("  >>> VERDICT DOWNGRADED by anti-skip high-severity violations")
 
     except Exception as e:
         print(f"  WARNING: Anti-skip checks skipped: {e}")
@@ -429,9 +563,9 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
                     review["autonomous_continue"] = False
                     review["stop_reason"] = f"Prompt quality gate: {failed_checks}"
                     review["prompt_quality_failure"] = True
-                    print(f"  >>> CONTINUATION BLOCKED by prompt quality failures")
+                    print("  >>> CONTINUATION BLOCKED by prompt quality failures")
         else:
-            print(f"  No prompt file to validate")
+            print("  No prompt file to validate")
     except Exception as e:
         print(f"  WARNING: Prompt quality check skipped: {e}")
     print(f"  Next work: {len(next_work['items'])} items (stream={detected_stream})")
@@ -565,7 +699,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
 
     # Write latest cycle summary
     summary_lines = [
-        f"# Latest Supervisor Cycle Summary",
+        "# Latest Supervisor Cycle Summary",
         f"Run: {run_id}",
         f"Sprint: {sprint_id}",
         f"Timestamp: {timestamp}",
@@ -679,8 +813,11 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
                 hard_stops.append("max_iterations_reached")
 
         # R107 Lane G: Check evidence quality — stop on quality regression
+        # Legacy evidence_quality_score is deprecated; check semantic_quality_score first
+        eqb = review.get("evidence_quality_breakdown", {})
+        sqs = eqb.get("semantic_quality_score")
         eqs = review.get("evidence_quality_score", 1.0)
-        if eqs == 0.0 and len(review.get("accepted_items", [])) > 0:
+        if sqs is None and eqs == 0.0 and len(review.get("accepted_items", [])) > 0:
             hard_stops.append("evidence_quality_zero")
 
         # R107 Lane G: Check anti-skip critical blocks

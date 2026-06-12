@@ -3,14 +3,12 @@
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
 from tools.ai.validators.runtime_guard import (
     run_guard,
-    scan_directory,
     scan_for_direct_endpoint_calls,
 )
 

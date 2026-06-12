@@ -5,31 +5,19 @@ Sprint: FORMAT-FACTORY-AUTONOMOUS-ORCHESTRATOR-PERSISTENT-CONTINUATION-001
 import json
 import pytest
 import sys
-import tempfile
 from pathlib import Path
-from unittest import mock
 
 _repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_repo_root))
 
 from tools.supervisor.continuation_router import (
-    ROUTE_DISPATCH,
     ROUTE_STOP_ADVISORY,
     ROUTE_STOP_INVALID,
-    ROUTE_STOP_NO_ACTION,
     ROUTE_STOP_NO_CONTINUATION,
-    ROUTE_STOP_UNSAFE,
     route,
 )
 from tools.supervisor.continuation_state import (
-    STOP_ADVISORY_PROMPT,
-    STOP_INVALID_NEXT_ACTION,
-    STOP_NO_SAFE_ACTION,
     make_active_continuation,
-    save_active_continuation,
-    save_next_action,
-    NEXT_ACTION_PATH,
-    ACTIVE_CONTINUATION_PATH,
 )
 
 _VALID_ACTION = {

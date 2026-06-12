@@ -4,7 +4,6 @@ Verify validator correctly identifies stale/wrong SHA in final-verdict.md.
 These are unit tests of the detection logic (no .local/ required).
 """
 
-import pytest
 
 # Simulate final-verdict.md content with stale SHA vs correct SHA
 INNER_ZIP_SHA = "3e02c171fe2c188d4331a885eb1abbfa4261e3475d87766c998bd913157fda22"

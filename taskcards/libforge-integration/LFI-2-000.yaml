@@ -1,0 +1,39 @@
+taskcard_id: LFI-2-000
+title: "Pilot 2 Coordinator — lane registry, file ownership, evidence closeout"
+lane: "0"
+owner_role: coordinator
+status: ACCEPTED_VERIFIED
+allowed_paths:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/"
+  - "taskcards/libforge-integration/"
+forbidden_paths:
+  - "src/python/"
+  - "src/net/"
+  - "registry/"
+  - ".supervisor/skill-registry.yaml"
+  - "tools/supervisor/autonomous_cycle.py"
+  - "tools/supervisor/governance_validators.py"
+  - "tools/supervisor/authority_conveyor.py"
+  - "tools/supervisor/action_queue.py"
+  - "schemas/queue/queue-item-v2.schema.json"
+  - "AGENTS.md"
+  - "GOVERNANCE.md"
+inputs:
+  - "taskcards/libforge-integration/LFI-0-001.yaml"
+  - "taskcards/libforge-integration/LFI-H-001.yaml"
+outputs:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/lane-registry.json"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/file-ownership-matrix.json"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/evidence-declaration.yaml"
+file_ownership:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/lane-registry.json"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/file-ownership-matrix.json"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/evidence-declaration.yaml"
+tests_supporting: []
+verification_commands:
+  - "test -f .local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/evidence-declaration.yaml"
+evidence_files:
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/lane-registry.json"
+  - ".local/evidences/ff-libforge-pilot2-template-drivers-autonomous-20260610-171000/file-ownership-matrix.json"
+rollback: "Delete lane-registry.json, file-ownership-matrix.json, evidence-declaration.yaml from evidence dir"
+closeout_criteria: "All lanes at terminal state; evidence-declaration.yaml valid; no forbidden path changes"

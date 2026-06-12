@@ -21,7 +21,6 @@ import json
 import sys
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT / "tools" / "skills"))
@@ -37,7 +36,6 @@ from public_spec_readiness_scorer import (
     READINESS_CANDIDATE_READY,
     READINESS_ACQUISITION_READY,
     THRESHOLD_NOT_READY,
-    THRESHOLD_NEEDS_INVESTIGATION,
     THRESHOLD_CANDIDATE_READY,
     _classify_readiness,
     _GOVERNANCE_FLAGS,

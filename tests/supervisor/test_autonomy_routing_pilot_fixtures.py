@@ -5,7 +5,6 @@ import sys
 from pathlib import Path
 
 import yaml
-import pytest
 
 _REPO = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_REPO))
