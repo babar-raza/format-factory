@@ -308,3 +308,22 @@ def fodp_empty_slide_count(source: "str | bytes | Path") -> int:
         1 for p in model.get("pages", [])
         if p.get("shape_count", 0) == 0 and not p.get("text_content")
     )
+
+
+def fodp_master_page_count(source: "str | bytes | Path") -> int:
+    """Return the number of distinct master pages (slide layouts) used.
+
+    Each slide references a master-page-name via draw:master-page-name.
+    This function counts how many unique master page names appear across
+    all slides in the presentation.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Count of distinct master page names. Returns 0 if no slides exist.
+    """
+    model = load(source)
+    names = {p.get("master_page", "") for p in model.get("pages", [])}
+    names.discard("")
+    return len(names)

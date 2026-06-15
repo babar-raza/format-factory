@@ -981,6 +981,28 @@ def abw_empty_paragraph_count(file_path: "str | bytes | Path") -> int:
     return sum(1 for line in lines if not line.strip())
 
 
+def abw_average_word_length(file_path: "str | bytes | Path") -> float:
+    """Return the average word length (characters per word) across all paragraphs.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Float average word length. Returns 0.0 if there are no words.
+    """
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    total_chars = 0
+    total_words = 0
+    for p in paragraphs:
+        words = p.split()
+        total_words += len(words)
+        total_chars += sum(len(w) for w in words)
+    if total_words == 0:
+        return 0.0
+    return total_chars / total_words
+
+
 def get_paragraphs(model: dict) -> list[str]:
     """Return a copy of all paragraph texts from a loaded ABW model.
 

@@ -36,6 +36,7 @@ from .ods_parser import (
     ods_empty_cell_count,
     ods_row_count,
     ods_string_cell_count,
+    ods_column_count,
     OdsError,
     OdsInvalidContainerError,
     OdsSizeError,
@@ -119,4 +120,5 @@ __all__ = [
     "ods_empty_cell_count",
     "ods_row_count",
     "ods_string_cell_count",
+    "ods_column_count",
 ]

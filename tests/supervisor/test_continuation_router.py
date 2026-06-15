@@ -44,10 +44,8 @@ def temp_state(tmp_path, monkeypatch):
                         tmp_path / "next-action.json")
     monkeypatch.setattr("tools.supervisor.continuation_state.STOP_REASON_PATH",
                         tmp_path / "stop-reason.json")
-    monkeypatch.setattr("tools.supervisor.continuation_router.ACTIVE_CONTINUATION_PATH",
-                        tmp_path / "active-continuation.json")
-    monkeypatch.setattr("tools.supervisor.continuation_router.NEXT_ACTION_PATH",
-                        tmp_path / "next-action.json")
+    # NOTE: continuation_router delegates to continuation_state for paths,
+    # so patching continuation_state above is sufficient.
     return tmp_path
 
 

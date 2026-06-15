@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-15T09:35:28.772827
-# Source: Supervisor autonomous-cycle review of POST-SPRINT-AUTONOMY-LOOP-20260615
+# Generated: 2026-06-15T15:59:08.482299
+# Source: Supervisor autonomous-cycle review of PRODUCT-DEEPENING-PHASE11-20260615-001
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,10 +27,10 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: POST-SPRINT-AUTONOMY-LOOP-20260615
-- Prior verdict: ACCEPTED_WITH_REWORK
+- Prior sprint: PRODUCT-DEEPENING-PHASE11-20260615-001
+- Prior verdict: ACCEPTED
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: False
+- Autonomous continue: True
 
 ---
 
@@ -473,7 +473,12 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 4x, last: POST-SPRINT-AUTONOMY-LOOP-20260615)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 5x, last: PRODUCT-DEEPENING-NEXT6-20260615)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 6x, last: HARDENED-PLAN-EXECUTION-CLOSEOUT-20260615)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 4x, last: PRODUCT-DEEPENING-NEXT6-20260615)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 3x, last: PRODUCT-DEEPENING-NEXT6-20260615)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 4x, last: PRODUCT-DEEPENING-NEXT6-20260615)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 19x, last: PRODUCT-DEEPENING-PHASE1-20260615-001)
 - WARNING: 7 unresolved failures in failure memory
 
 

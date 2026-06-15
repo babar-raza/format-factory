@@ -1687,3 +1687,21 @@ def fods_formula_count(workbook: dict[str, Any]) -> int:
                 if cell is not None and cell.get("formula") is not None:
                     count += 1
     return count
+
+
+def fods_total_cell_count(workbook: dict[str, Any]) -> int:
+    """Return the total number of non-empty cells across all sheets.
+
+    A cell is considered non-empty if it exists in the neutral model
+    and has a non-None value or text content.
+    """
+    count = 0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell is not None:
+                    val = cell.get("value")
+                    txt = cell.get("text")
+                    if val is not None or txt is not None:
+                        count += 1
+    return count

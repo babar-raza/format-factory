@@ -974,3 +974,28 @@ def tsv_has_header(file_path: "str | Path") -> bool:
     """
     doc = parse_tsv_strict(file_path)
     return bool(doc.get("has_header", False))
+
+
+def tsv_max_field_length(file_path: "str | Path") -> int:
+    """Return the maximum string length of any cell in a TSV file.
+
+    Examines all rows (including headers if present) and returns the length
+    of the longest field value. Returns 0 for empty files.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer length of the longest field.
+    """
+    doc = parse_tsv_strict(file_path)
+    max_len = 0
+    headers = doc.get("headers") or []
+    for h in headers:
+        if len(h) > max_len:
+            max_len = len(h)
+    for row in doc.get("rows", []):
+        for cell in row:
+            if len(cell) > max_len:
+                max_len = len(cell)
+    return max_len

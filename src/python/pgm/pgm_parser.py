@@ -751,3 +751,28 @@ def pgm_contrast_range(file_path: str | Path) -> int:
     if not img.pixels:
         return 0
     return max(img.pixels) - min(img.pixels)
+
+
+def pgm_median_pixel_value(file_path: str | Path) -> int:
+    """Return the median pixel value of a PGM image.
+
+    The median is the middle value when all pixels are sorted. For even-length
+    pixel arrays, returns the lower of the two middle values (integer result).
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Integer median pixel value. Returns 0 for empty images.
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    sorted_px = sorted(img.pixels)
+    mid = len(sorted_px) // 2
+    if len(sorted_px) % 2 == 1:
+        return sorted_px[mid]
+    return sorted_px[mid - 1]

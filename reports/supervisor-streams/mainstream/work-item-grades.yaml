@@ -1,478 +1,73 @@
-- item_id: TC-SCHEMA-001
-  item_title: Create Stage 1 issue model schema
+- item_id: TASK-001-GAP-CLOSURE-ROUND11
+  item_title: Close 5 more FOSS gaps with verified test coverage (ABW)
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/pilot-results.md
-  - .supervisor/schemas/stage1-issue-model.schema.json
+  - reports/capability-layer/gap-ledger.json
+  - .local/evidences/product-deepening-phase11-20260615-001/raw-logs/sprint-tests.log
   tests_supporting:
-  - tests/supervisor/test_summary_classifier.py::test_nc07_issue_schema_requires_root_cause
-  - tests/supervisor/test_summary_classifier.py::test_nc20_achievement_requires_proof_level
+  - tests/python/abw/test_r214_abw_word_count.py
+  - tests/python/abw/test_rnext_abw_get_paragraphs.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
   - Test content verified (2 files)
   acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: Schema loads as valid JSON'
+  - Evidence does not demonstrate that five FOSS gaps have been closed; most listed
+    gaps remain open.
+  - "No actual test execution reports or coverage metrics are provided\u2014only suggested\
+    \ verification commands."
+  - Missing concrete proof that tests have been added and passed for the claimed gaps.
+  - The JSON report appears to be a generated status list rather than verification
+    of completed work.
   required_rework: ''
   can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: Schema loads as valid JSON'
+  next_prompt_instruction: "Semantic verification downgraded ACCEPTED_VERIFIED ->\
+    \ ACCEPTED_WITH_LIMITATIONS: Evidence does not demonstrate that five FOSS gaps\
+    \ have been closed; most listed gaps remain open.; No actual test execution reports\
+    \ or coverage metrics are provided\u2014only suggested verification commands.;\
+    \ Missing concrete proof that tests have been added and passed for the claimed\
+    \ gaps.; The JSON report appears to be a generated status list rather than verification\
+    \ of completed work."
   semantic_verification:
-    adequate: true
-    confidence: 0.97
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: TC-SCHEMA-002
-  item_title: Create Stage 2 taskcard contract schema
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .supervisor/schemas/stage2-taskcard-contract.schema.json
-  tests_supporting:
-  - tests/supervisor/test_summary_classifier.py::test_nc08_taskcard_contract_requires_taskcards
-  - tests/supervisor/test_summary_classifier.py::test_nc16_taskcard_requires_source_issues
-  - tests/supervisor/test_summary_classifier.py::test_nc19_stage2_requires_taskcards
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (3 files)
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: The schema loads as valid JSON'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: The schema loads as valid JSON'
-  semantic_verification:
-    adequate: true
+    adequate: false
     confidence: 0.96
     stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: TC-SCHEMA-003
-  item_title: Create Stage 3 quality scoring rubric schema
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .supervisor/schemas/stage3-quality-scoring-rubric.schema.json
-  tests_supporting:
-  - tests/supervisor/test_summary_classifier.py::test_nc10_prompt3_requires_self_review
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: Schema loads as valid JSON'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: Schema loads as valid JSON'
-  semantic_verification:
-    adequate: true
-    confidence: 0.97
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: TC-SCHEMA-004
-  item_title: Create summary parser contract schema
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .supervisor/schemas/summary-parser-contract.schema.json
-  tests_supporting:
-  - tests/supervisor/test_summary_classifier.py::test_nc24_controller_always_decides
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: The schema loads as valid JSON.'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: The schema loads as valid JSON.'
-  semantic_verification:
-    adequate: true
-    confidence: 0.97
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: TC-SCHEMA-005
-  item_title: Create loop decision state machine schema
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .supervisor/schemas/loop-decision-state-machine.schema.json
-  tests_supporting:
-  - tests/supervisor/test_loop_controller.py::TestValidStates::test_all_valid_states_covered
-  - tests/supervisor/test_summary_classifier.py::test_nc13_invalid_final_state
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (2 files)
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: Schema loads as valid JSON'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: Schema loads as valid JSON'
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
     deficiencies:
-    - llm_verification_unavailable
-    llm_used: false
-- item_id: TC-SCHEMA-006
-  item_title: Create support schemas (taskcard-state-machine, evidence-bundle-contract,
-    project-adapter-contract, governance-contract)
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .supervisor/schemas/taskcard-state-machine.schema.json
-  - .supervisor/schemas/evidence-bundle-contract.schema.json
-  - .supervisor/schemas/project-adapter-contract.schema.json
-  - .supervisor/schemas/governance-contract.schema.json
-  tests_supporting:
-  - tests/supervisor/test_summary_classifier.py::test_nc11_evidence_bundle_contract_checks_missing
-  - tests/supervisor/test_summary_classifier.py::test_nc14_adapter_requires_test_commands
-  - tests/supervisor/test_summary_classifier.py::test_nc17_invalid_state_transitions
-  - tests/supervisor/test_summary_classifier.py::test_nc22_evidence_bundle_manifest_mismatch
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (4 files)
-  acceptance_criteria_failed:
-  - Governance-contract schema file is missing from the provided evidence.
-  - No explicit test or validation script is provided to demonstrate that the schemas
-    load as valid JSON.
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Semantic verification downgraded ACCEPTED_VERIFIED ->
-    ACCEPTED_WITH_LIMITATIONS: Governance-contract schema file is missing from the
-    provided evidence.; No explicit test or validation script is provided to demonstrate
-    that the schemas load as valid JSON.'
-  semantic_verification:
-    adequate: false
-    confidence: 0.86
-    stub_detected: false
-    deficiencies:
-    - Governance-contract schema file is missing from the provided evidence.
-    - No explicit test or validation script is provided to demonstrate that the schemas
-      load as valid JSON.
+    - Evidence does not demonstrate that five FOSS gaps have been closed; most listed
+      gaps remain open.
+    - "No actual test execution reports or coverage metrics are provided\u2014only\
+      \ suggested verification commands."
+    - Missing concrete proof that tests have been added and passed for the claimed
+      gaps.
+    - The JSON report appears to be a generated status list rather than verification
+      of completed work.
     llm_used: true
-- item_id: TC-PROMPT-001
-  item_title: "Install Prompt 1 \u2014 Post-Sprint Strict Evidence Audit"
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .supervisor/prompts/prompt1-post-sprint-audit.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: The specified file exists in the repository.'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: The specified file exists in the repository.'
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - llm_verification_unavailable
-    llm_used: false
-- item_id: TC-PROMPT-002
-  item_title: "Install Prompt 2 \u2014 Plan Hardening"
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .supervisor/prompts/prompt2-plan-hardening.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: File exists'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: File exists'
-  semantic_verification:
-    adequate: true
-    confidence: 0.95
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: TC-PROMPT-003
-  item_title: "Install Prompt 3 \u2014 Controlled Execution"
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/focused-proof-prompt3.md
-  - .supervisor/prompts/prompt3-controlled-execution.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: A file exists that includes phases 0-7'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: A file exists that includes phases 0-7'
-  semantic_verification:
-    adequate: true
-    confidence: 0.95
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: TC-PROMPT-004
-  item_title: Install Loop Controller + Output Contracts + Adapter Template prompts
+- item_id: TASK-017-DOGFOOD-ABW-TEXT
+  item_title: 'Dogfood: ABW create/write/extract/export text pipeline'
   declared_status: completed
   supervisor_grade: ACCEPTED_VERIFIED
   evidence_found: true
   evidence_paths:
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/focused-proof-prompt4.md
-  - .supervisor/prompts/prompt-loop-controller.md
-  - .supervisor/prompts/prompt-output-contracts.md
-  - .supervisor/prompts/project-adapter-template.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - 'Acceptance criteria verified: All 3 files exist'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  semantic_verification:
-    adequate: true
-    confidence: 0.95
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: TC-PYTHON-001
-  item_title: Implement summary_classifier.py
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/focused-proof-python1.md
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/pytest-output.txt
-  - tools/supervisor/summary_classifier.py
-  tests_supporting:
-  - tests/supervisor/test_summary_classifier.py
+  - tests/python/dogfood/test_dogfood_abw_text_extraction.py
+  - .local/evidences/product-deepening-phase11-20260615-001/raw-logs/sprint-tests.log
+  tests_supporting: &id001
+  - tests/python/dogfood/test_dogfood_abw_text_extraction.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
   - Test content verified (1 files)
-  - 'Acceptance criteria verified: 27 tests pass'
   acceptance_criteria_failed: []
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: ''
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - llm_verification_unavailable
-    llm_used: false
-- item_id: TC-PYTHON-002
-  item_title: Implement quality_scorer.py
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/focused-proof-python2.md
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/pytest-output.txt
-  - tools/supervisor/quality_scorer.py
-  tests_supporting:
-  - tests/supervisor/test_quality_scorer.py
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: All 14 tests pass'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: All 14 tests pass'
+  tests_evidence_verified: *id001
   semantic_verification:
     adequate: true
     confidence: 0.93
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: TC-PYTHON-003
-  item_title: Implement post_sprint_loop_controller.py
-  declared_status: completed
-  supervisor_grade: ACCEPTED_VERIFIED
-  evidence_found: true
-  evidence_paths:
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/focused-proof-python3.md
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/pytest-output.txt
-  - tools/supervisor/post_sprint_loop_controller.py
-  tests_supporting:
-  - tests/supervisor/test_loop_controller.py
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  - 'Acceptance criteria verified: 19 tests pass'
-  acceptance_criteria_failed: []
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: ''
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - llm_verification_unavailable
-    llm_used: false
-- item_id: TC-CMD-001
-  item_title: Register /post-sprint-audit and /post-sprint-loop commands
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .claude/commands/post-sprint-audit.md
-  - .claude/commands/post-sprint-loop.md
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: Both files exist'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: Both files exist'
-  semantic_verification:
-    adequate: true
-    confidence: 0.95
-    stub_detected: false
-    deficiencies: []
-    llm_used: true
-- item_id: TC-REG-001
-  item_title: Create prompt registry and add skill registry entries
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .supervisor/prompts/prompt-registry.yaml
-  tests_supporting:
-  - tests/supervisor/test_summary_classifier.py::test_nc18_all_prompts_registered
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: prompt-registry.yaml loads as valid YAML'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: prompt-registry.yaml loads as valid YAML'
-  semantic_verification:
-    adequate: false
-    confidence: 0.85
-    stub_detected: false
-    deficiencies:
-    - No evidence provided for skill registry entries being added (e.g., skill-registry.yaml
-      or equivalent).
-    - No automated test or validation script confirming that prompt-registry.yaml
-      parses as valid YAML.
-    - No explicit verification that the six new prompts have stable IDs beyond their
-      presence in the file.
-    llm_used: true
-- item_id: TC-TEST-001
-  item_title: Implement 24 negative control tests for summary_classifier
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - tests/supervisor/test_summary_classifier.py
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/pilot-results.md
-  tests_supporting: &id001
-  - tests/supervisor/test_summary_classifier.py
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (1 files)
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: There are 24 negative control tests and
-    3 additional tests, '
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: There are 24 negative control tests and 3 additional tests, '
-  tests_evidence_verified: *id001
-  semantic_verification:
-    adequate: false
-    confidence: 0.0
-    stub_detected: false
-    deficiencies:
-    - llm_verification_unavailable
-    llm_used: false
-- item_id: TC-TEST-002
-  item_title: Implement quality_scorer and loop_controller tests
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/focused-proof-test2.md
-  - .local/evidences/post-sprint-autonomy-loop-20260615-0f43aa0/pytest-output.txt
-  - tests/supervisor/test_quality_scorer.py
-  - tests/supervisor/test_loop_controller.py
-  tests_supporting: &id002
-  - tests/supervisor/test_quality_scorer.py
-  - tests/supervisor/test_loop_controller.py
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  - Test content verified (2 files)
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: 14 quality scorer tests pass'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: 14 quality scorer tests pass'
-  tests_evidence_verified: *id002
-  semantic_verification:
-    adequate: true
-    confidence: 0.86
     stub_detected: false
     deficiencies: []
     llm_used: true

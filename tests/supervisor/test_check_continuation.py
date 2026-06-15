@@ -190,6 +190,23 @@ def test_evidence_continuation_warning(tmp_path):
     assert "import error" in result["warning"]
 
 
+def test_evidence_continuation_fallback_path(tmp_path):
+    """TC-VERI-002: Full fallback — evidence_continuation fails but continuation
+    still works via canonical next-work-items.json."""
+    _setup_all(tmp_path, {
+        "evidence_continuation_failed": True,
+        "evidence_continuation_error": "ModuleNotFoundError: No module named 'evidence_continuation'",
+    })
+    result = check(tmp_path)
+    assert result["verdict"] == "CONTINUE"
+    assert "warning" in result
+    assert "ModuleNotFoundError" in result["warning"]
+    # Verify canonical next-work-items.json is what the agent would use
+    wi_path = tmp_path / ".local" / "supervisor" / "next-work-items.json"
+    assert wi_path.exists()
+    assert result["next_work_items_path"] == ".local/supervisor/next-work-items.json"
+
+
 # ── Idempotency ─────────────────────────────────────────────────────────
 
 def test_idempotent(tmp_path):

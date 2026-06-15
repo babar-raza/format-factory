@@ -322,6 +322,12 @@ def main() -> int:
         if not isinstance(taskcard_results, list):
             taskcard_results = [taskcard_results]
 
+        # Auto-detect supervisor item-grades format and adapt if needed
+        sys.path.insert(0, str(SCRIPT_DIR))
+        from grade_to_quality_adapter import is_item_grades_format, adapt_item_grades  # noqa: E402
+        if is_item_grades_format(taskcard_results):
+            taskcard_results = adapt_item_grades(taskcard_results)
+
         result = score_execution(taskcard_results, repo_root=Path(args.repo_root))
         output_json = json.dumps(result, indent=2)
         print(output_json)

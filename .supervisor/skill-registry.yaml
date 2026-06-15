@@ -540,11 +540,11 @@ skills:
 
   # Post-Sprint Autonomy Loop skills
   - skill_id: post-sprint-audit
-    name: Post-Sprint Audit (Stage 1)
     command: /post-sprint-audit
-    category: supervisor_governance
-    description: "Run Stage 1 post-sprint evidence audit with L1/L2/L3 issue discovery"
-    execution_method: governed_skill
+    command_file: .claude/commands/post-sprint-audit.md
+    status: active
+    spec_qname_required: false
+    purpose: "Run Stage 1 post-sprint evidence audit with L1/L2/L3 issue discovery"
     product_track: governance
     required_handoff_fields:
       - evidence_root
@@ -554,11 +554,11 @@ skills:
       - claim_classification_matrix_present
 
   - skill_id: post-sprint-loop
-    name: Post-Sprint Autonomy Loop (Full)
     command: /post-sprint-loop
-    category: supervisor_governance
-    description: "Run full post-sprint autonomy loop: Audit -> Harden -> Execute -> Classify -> Loop until all-green"
-    execution_method: governed_skill
+    command_file: .claude/commands/post-sprint-loop.md
+    status: active
+    spec_qname_required: false
+    purpose: "Run full post-sprint autonomy loop: Audit -> Harden -> Execute -> Classify -> Loop until all-green"
     product_track: governance
     required_handoff_fields:
       - evidence_root

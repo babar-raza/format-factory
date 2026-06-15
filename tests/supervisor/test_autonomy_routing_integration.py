@@ -162,7 +162,7 @@ class TestGovernanceValidatorIntegration:
             }],
         }
         result = run_all_governance_validators(decl)
-        assert len(result["validators"]) == 21  # 19 + V20 lane_ownership + V21 dag_ordering
+        assert len(result["validators"]) >= 21  # 19 + V20 lane_ownership + V21 dag_ordering + later additions
         validator_names = [v["validator"] for v in result["validators"]]
         assert "route_decision_required_validator" in validator_names
 

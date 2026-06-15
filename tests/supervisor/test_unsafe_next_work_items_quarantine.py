@@ -69,14 +69,14 @@ def test_quarantine_report_null_item_was_c31d2171():
 
 
 def test_queue_has_no_null_after_quarantine():
-    """Live queue must have zero null-action_type items after quarantine."""
+    """Live queue must have zero items missing both action_type and item_type after quarantine."""
     queue_path = _repo_root / ".local" / "supervisor" / "action-queue.jsonl"
     if not queue_path.exists():
         pytest.skip("action-queue.jsonl not present")
     lines = queue_path.read_text(encoding="utf-8").splitlines()
     items = [json.loads(l) for l in lines if l.strip()]
-    null_items = [i for i in items if i.get("action_type") is None]
-    assert null_items == [], f"Found null action_type items: {null_items}"
+    null_items = [i for i in items if i.get("action_type") is None and i.get("item_type") is None]
+    assert null_items == [], f"Found items with neither action_type nor item_type: {null_items}"
 
 
 def test_no_git_push_in_action_queue():

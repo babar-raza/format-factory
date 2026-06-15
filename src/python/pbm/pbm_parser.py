@@ -656,3 +656,28 @@ def scale_nearest(file_path: "str | Path", dest_path: "str | Path", factor: int)
                     scaled[dst_row * new_w + dst_col] = px
     write_pbm(scaled, new_w, new_h, dest_path)
     return {"ok": True, "width": new_w, "height": new_h, "pixel_count": len(scaled)}
+
+
+def pbm_row_black_counts(file_path: "str | Path") -> list[int]:
+    """Return a list of per-row black pixel counts for a PBM image.
+
+    For a PBM image with height H, returns a list of H integers where each
+    element is the count of black pixels (value 1) in that row. Useful for
+    detecting horizontal patterns, text lines, or image structure.
+
+    Args:
+        file_path: Path to a PBM file.
+
+    Returns:
+        List of integers, one per row, each being the black pixel count.
+
+    Raises:
+        PbmParseError: If the file cannot be parsed.
+    """
+    img = parse_pbm_strict(file_path)
+    counts: list[int] = []
+    for row in range(img.height):
+        start = row * img.width
+        end = start + img.width
+        counts.append(sum(1 for p in img.pixels[start:end] if p == 1))
+    return counts

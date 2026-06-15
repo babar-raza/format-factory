@@ -63,6 +63,7 @@ from .abw_codec import (
     abw_word_count,
     abw_empty_paragraph_count,
     abw_nonempty_paragraph_count,
+    abw_average_word_length,
     get_paragraphs,
 )
 
@@ -121,6 +122,7 @@ __all__ = [
     "abw_word_count",
     "abw_empty_paragraph_count",
     "abw_nonempty_paragraph_count",
+    "abw_average_word_length",
     "get_paragraphs",
 ]
 

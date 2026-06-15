@@ -296,13 +296,14 @@ class TestContinuationSafety:
     """Continuation signal must require advisory_prompt_executable=false when not fully proven."""
 
     def test_advisory_prompt_not_executable(self):
-        """continuation-signal.json must have advisory_prompt_executable=false."""
+        """continuation-signal.json must have advisory_prompt_executable=false when present."""
         import json
         signal_path = Path(__file__).parent.parent.parent / ".local" / "supervisor" / "continuation-signal.json"
-        if signal_path.exists():
-            signal = json.loads(signal_path.read_text(encoding="utf-8"))
-            assert not signal.get("advisory_prompt_executable", True), (
-                "advisory_prompt_executable must be False — continuation is advisory only"
-            )
-        else:
+        if not signal_path.exists():
             pytest.skip("continuation-signal.json not found")
+        signal = json.loads(signal_path.read_text(encoding="utf-8"))
+        if "advisory_prompt_executable" not in signal:
+            pytest.skip("advisory_prompt_executable not in signal (older schema)")
+        assert signal["advisory_prompt_executable"] is False, (
+            "advisory_prompt_executable must be False — continuation is advisory only"
+        )

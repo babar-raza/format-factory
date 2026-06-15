@@ -1630,11 +1630,12 @@ def validate_dag_ordering(declaration: dict,
     if missing:
         return _make_result(
             "dag_ordering_validator",
-            "WARN",
+            "FAIL",
             [{"lane_id": lane_id, "wave": wave,
-              "missing_prerequisites": missing, "severity": "WARN"}],
-            f"WARN: {lane_id} (wave {wave}) has unmet prerequisites: {missing}. "
+              "missing_prerequisites": missing, "severity": "FAIL"}],
+            f"FAIL: {lane_id} (wave {wave}) has unmet prerequisites: {missing}. "
             "Declare 'completed_waves' in evidence-declaration.yaml to clear.",
+            blocks_sprint=True,
         )
     return _make_result(
         "dag_ordering_validator",
@@ -2132,9 +2133,208 @@ def validate_helpers_only_overclaim(declaration: dict) -> dict:
     )
 
 
+# ── ────────────────────────────────────────────────────────────────────────────
+# V_NAMESPACE_TREE: Namespace tree completeness for spec-parity
+# ── ────────────────────────────────────────────────────────────────────────────
+
+_NAMESPACE_TREE_FORMATS = ("fods", "fodt", "fodp", "ods", "odt")
+
+
+def validate_namespace_tree(declaration: dict,
+                            repo_root: Path | None = None) -> dict:
+    """V_NAMESPACE_TREE: RELEASE_GATE items for ODF formats must reference a
+    namespace-tree artifact in evidence_paths or evidence_artifacts."""
+    validator = "validate_namespace_tree"
+    items = declaration.get("planned_work_items", [])
+    fail_items: list[dict] = []
+
+    for item in items:
+        if item.get("item_type") != "RELEASE_GATE":
+            continue
+        item_id = item.get("item_id", "unknown")
+        fmt = _extract_format_from_item(item)
+        if fmt not in _NAMESPACE_TREE_FORMATS:
+            continue
+        # Check evidence_paths + evidence_artifacts for namespace-tree reference
+        paths = (item.get("evidence_paths") or []) + [
+            a.get("path", "") for a in (item.get("evidence_artifacts") or [])
+        ]
+        has_ns_tree = any("namespace-tree" in p or "namespace_tree" in p for p in paths)
+        if not has_ns_tree:
+            fail_items.append({
+                "item_id": item_id,
+                "format": fmt,
+                "issue": f"RELEASE_GATE for ODF format '{fmt}' missing namespace-tree artifact",
+            })
+
+    if fail_items:
+        return _make_result(
+            validator, "FAIL", fail_items,
+            f"FAIL: {len(fail_items)} RELEASE_GATE item(s) missing namespace-tree artifact",
+            blocks_sprint=True,
+        )
+    return _make_result(
+        validator, "PASS", [],
+        f"PASS: namespace-tree check passed ({len(items)} items reviewed)",
+    )
+
+
+# ── ────────────────────────────────────────────────────────────────────────────
+# V_ATTRIBUTE_PROPERTY_MAP: Attribute-property map for ODF spec-parity
+# ── ────────────────────────────────────────────────────────────────────────────
+
+
+def validate_attribute_property_map(declaration: dict,
+                                    repo_root: Path | None = None) -> dict:
+    """V_ATTRIBUTE_PROPERTY_MAP: RELEASE_GATE items for ODF formats must
+    include an attribute-property-map or qname-to-code-map artifact."""
+    validator = "validate_attribute_property_map"
+    items = declaration.get("planned_work_items", [])
+    fail_items: list[dict] = []
+
+    for item in items:
+        if item.get("item_type") != "RELEASE_GATE":
+            continue
+        item_id = item.get("item_id", "unknown")
+        fmt = _extract_format_from_item(item)
+        if fmt not in _NAMESPACE_TREE_FORMATS:
+            continue
+        paths = (item.get("evidence_paths") or []) + [
+            a.get("path", "") for a in (item.get("evidence_artifacts") or [])
+        ]
+        has_map = any(
+            "attribute-property-map" in p or "qname-to-code-map" in p
+            or "attribute_property_map" in p or "qname_to_code_map" in p
+            for p in paths
+        )
+        if not has_map:
+            fail_items.append({
+                "item_id": item_id,
+                "format": fmt,
+                "issue": f"RELEASE_GATE for '{fmt}' missing attribute-property-map or qname-to-code-map",
+            })
+
+    if fail_items:
+        return _make_result(
+            validator, "FAIL", fail_items,
+            f"FAIL: {len(fail_items)} RELEASE_GATE item(s) missing attribute-property-map",
+            blocks_sprint=True,
+        )
+    return _make_result(
+        validator, "PASS", [],
+        f"PASS: attribute-property-map check passed ({len(items)} items reviewed)",
+    )
+
+
+# ── ────────────────────────────────────────────────────────────────────────────
+# V_CONTAINMENT_GRAPH: Containment graph for complex format spec-parity
+# ── ────────────────────────────────────────────────────────────────────────────
+
+_CONTAINMENT_GRAPH_FORMATS = ("fods", "fodt", "ods", "odt", "fodp")
+
+
+def validate_containment_graph(declaration: dict,
+                               repo_root: Path | None = None) -> dict:
+    """V_CONTAINMENT_GRAPH: RELEASE_GATE items for complex ODF formats must
+    declare a containment-graph artifact showing element nesting structure."""
+    validator = "validate_containment_graph"
+    items = declaration.get("planned_work_items", [])
+    warn_items: list[dict] = []
+
+    for item in items:
+        if item.get("item_type") != "RELEASE_GATE":
+            continue
+        item_id = item.get("item_id", "unknown")
+        fmt = _extract_format_from_item(item)
+        if fmt not in _CONTAINMENT_GRAPH_FORMATS:
+            continue
+        paths = (item.get("evidence_paths") or []) + [
+            a.get("path", "") for a in (item.get("evidence_artifacts") or [])
+        ]
+        has_graph = any(
+            "containment-graph" in p or "containment_graph" in p for p in paths
+        )
+        if not has_graph:
+            warn_items.append({
+                "item_id": item_id,
+                "format": fmt,
+                "issue": f"RELEASE_GATE for '{fmt}' missing containment-graph artifact",
+                "severity": "WARN",
+            })
+
+    if warn_items:
+        return _make_result(
+            validator, "WARN", warn_items,
+            f"WARN: {len(warn_items)} RELEASE_GATE item(s) missing containment-graph (advisory)",
+        )
+    return _make_result(
+        validator, "PASS", [],
+        f"PASS: containment-graph check passed ({len(items)} items reviewed)",
+    )
+
+
+# ── ────────────────────────────────────────────────────────────────────────────
+# V_ALIAS_COMPATIBILITY: Alias compatibility for spec-parity
+# ── ────────────────────────────────────────────────────────────────────────────
+
+
+def validate_alias_compatibility(declaration: dict,
+                                 repo_root: Path | None = None) -> dict:
+    """V_ALIAS_COMPATIBILITY: RELEASE_GATE items must not have conflicting
+    function aliases (same alias pointing to different implementations)."""
+    validator = "validate_alias_compatibility"
+    items = declaration.get("planned_work_items", [])
+    seen_aliases: dict[str, str] = {}  # alias -> first item_id
+    fail_items: list[dict] = []
+
+    for item in items:
+        if item.get("item_type") not in ("PRODUCT_SOURCE", "RELEASE_GATE"):
+            continue
+        item_id = item.get("item_id", "unknown")
+        aliases = item.get("function_aliases") or []
+        for alias_entry in aliases:
+            alias_name = alias_entry if isinstance(alias_entry, str) else alias_entry.get("alias", "")
+            if not alias_name:
+                continue
+            if alias_name in seen_aliases and seen_aliases[alias_name] != item_id:
+                fail_items.append({
+                    "item_id": item_id,
+                    "alias": alias_name,
+                    "conflicts_with": seen_aliases[alias_name],
+                    "issue": f"Alias '{alias_name}' also declared by {seen_aliases[alias_name]}",
+                })
+            else:
+                seen_aliases[alias_name] = item_id
+
+    if fail_items:
+        return _make_result(
+            validator, "FAIL", fail_items,
+            f"FAIL: {len(fail_items)} conflicting alias(es) detected",
+            blocks_sprint=True,
+        )
+    return _make_result(
+        validator, "PASS", [],
+        f"PASS: alias-compatibility check passed ({len(items)} items, {len(seen_aliases)} aliases reviewed)",
+    )
+
+
+def _extract_format_from_item(item: dict) -> str:
+    """Extract format name from a work item (checks title, item_id, format field)."""
+    fmt = item.get("format", "")
+    if fmt:
+        return fmt.lower()
+    # Try to extract from item_id or title
+    item_id = item.get("item_id", "").lower()
+    title = item.get("title", "").lower()
+    for candidate in _NAMESPACE_TREE_FORMATS:
+        if candidate in item_id or candidate in title:
+            return candidate
+    return ""
+
+
 def run_all_governance_validators(declaration: dict,
                                    repo_root: Path | None = None) -> dict:
-    """Run all 13 governance validators against a declaration.
+    """Run all governance validators against a declaration.
 
     Returns a composite result dict:
       {
@@ -2179,6 +2379,11 @@ def run_all_governance_validators(declaration: dict,
         validate_depth_score(declaration),
         validate_changed_without_tests(declaration),
         validate_helpers_only_overclaim(declaration),
+        # V_NAMESPACE_TREE / V_ATTRIBUTE_PROPERTY_MAP / V_CONTAINMENT_GRAPH / V_ALIAS_COMPATIBILITY
+        validate_namespace_tree(declaration, repo_root),
+        validate_attribute_property_map(declaration, repo_root),
+        validate_containment_graph(declaration, repo_root),
+        validate_alias_compatibility(declaration, repo_root),
     ]
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")

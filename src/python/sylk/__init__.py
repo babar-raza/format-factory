@@ -54,6 +54,7 @@ from .sylk_parser import (
     SylkDocument,
     sylk_unique_values,
     sylk_cell_type_distribution,
+    sylk_has_header,
 )
 
 __version__ = "0.1.0"
@@ -103,4 +104,5 @@ __all__ = [
     "SylkDocument",
     "sylk_unique_values",
     "sylk_cell_type_distribution",
+    "sylk_has_header",
 ]

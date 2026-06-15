@@ -25,6 +25,7 @@ from .fodp_codec import (
     fodp_slide_titles,
     fodp_image_count,
     fodp_empty_slide_count,
+    fodp_master_page_count,
 )
 
 __all__ = [
@@ -43,6 +44,7 @@ __all__ = [
     "fodp_slide_titles",
     "fodp_image_count",
     "fodp_empty_slide_count",
+    "fodp_master_page_count",
 ]
 
 __version__ = "0.1.0.dev0"

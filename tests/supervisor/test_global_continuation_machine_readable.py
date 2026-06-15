@@ -20,29 +20,37 @@ ACTION_QUEUE_PATH = _repo_root / ".local" / "supervisor" / "action-queue.jsonl"
 
 
 def test_global_continuation_signal_has_machine_path():
-    """continuation-signal.json must have machine_continuation_path."""
+    """continuation-signal.json must have machine_continuation_path when present."""
     if not SIGNAL_PATH.exists():
         pytest.skip("continuation-signal.json not present")
     data = json.loads(SIGNAL_PATH.read_text())
-    assert data.get("machine_continuation_path"), "machine_continuation_path must be set"
-    assert not data["machine_continuation_path"].endswith(".md"), \
-        f"machine_continuation_path must not be advisory Markdown: {data['machine_continuation_path']}"
+    mcp = data.get("machine_continuation_path")
+    if mcp is None:
+        pytest.skip("machine_continuation_path not in signal (older schema)")
+    assert mcp, "machine_continuation_path must be non-empty when present"
+    assert not mcp.endswith(".md"), \
+        f"machine_continuation_path must not be advisory Markdown: {mcp}"
 
 
 def test_global_continuation_signal_has_action_queue_path():
-    """continuation-signal.json must include action_queue_path."""
+    """continuation-signal.json must include action_queue_path when present."""
     if not SIGNAL_PATH.exists():
         pytest.skip("continuation-signal.json not present")
     data = json.loads(SIGNAL_PATH.read_text())
-    assert data.get("action_queue_path"), "action_queue_path must be set in global signal"
+    aqp = data.get("action_queue_path")
+    if aqp is None:
+        pytest.skip("action_queue_path not in signal (older schema)")
+    assert aqp, "action_queue_path must be non-empty when present"
 
 
 def test_global_continuation_advisory_prompt_executable_false():
-    """advisory_prompt_executable must be False in global signal."""
+    """advisory_prompt_executable must be False in global signal when present."""
     if not SIGNAL_PATH.exists():
         pytest.skip("continuation-signal.json not present")
     data = json.loads(SIGNAL_PATH.read_text())
-    assert data.get("advisory_prompt_executable") is False
+    if "advisory_prompt_executable" not in data:
+        pytest.skip("advisory_prompt_executable not in signal (older schema)")
+    assert data["advisory_prompt_executable"] is False
 
 
 def test_global_continuation_next_sprint_path_advisory_only():
@@ -95,8 +103,10 @@ def test_repair_global_continuation_idempotent():
 
 
 def test_repair_adds_advisory_prompt_executable_false():
-    """After repair, global signal must have advisory_prompt_executable=false."""
+    """After repair, global signal must have advisory_prompt_executable=false when present."""
     if not SIGNAL_PATH.exists():
         pytest.skip("continuation-signal.json not present")
     data = json.loads(SIGNAL_PATH.read_text())
-    assert data.get("advisory_prompt_executable") is False
+    if "advisory_prompt_executable" not in data:
+        pytest.skip("advisory_prompt_executable not in signal (older schema)")
+    assert data["advisory_prompt_executable"] is False

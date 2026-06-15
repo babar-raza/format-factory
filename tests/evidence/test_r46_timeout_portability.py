@@ -2,7 +2,7 @@
 R46 timeout portability tests — MT4.
 
 Verifies that:
-1. pytest.ini has filterwarnings to suppress Unknown config option: timeout
+1. pyproject.toml has filterwarnings to suppress Unknown config option: timeout
 2. tools/testing/run_bounded_pytest.py exists and is importable
 3. The bounded runner handles cases with and without pytest-timeout
 4. The filterwarnings pattern matches the exact PytestConfigWarning text
@@ -14,39 +14,39 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).parent.parent.parent
-PYTEST_INI = REPO_ROOT / "pytest.ini"
+PYPROJECT_TOML = REPO_ROOT / "pyproject.toml"
 BOUNDED_RUNNER = REPO_ROOT / "tools" / "testing" / "run_bounded_pytest.py"
 
 
-class TestPytestIniFilterWarnings:
-    """Verify pytest.ini has the filterwarnings fix for timeout warning."""
+class TestPytestConfigFilterWarnings:
+    """Verify pyproject.toml has the filterwarnings fix for timeout warning."""
 
-    def test_filterwarnings_present_in_pytest_ini(self):
-        """pytest.ini must have a filterwarnings section."""
-        assert PYTEST_INI.exists(), "pytest.ini must exist"
-        content = PYTEST_INI.read_text(encoding="utf-8")
+    def test_filterwarnings_present_in_pyproject(self):
+        """pyproject.toml must have a filterwarnings section."""
+        assert PYPROJECT_TOML.exists(), "pyproject.toml must exist"
+        content = PYPROJECT_TOML.read_text(encoding="utf-8")
         assert "filterwarnings" in content, (
-            "pytest.ini must have filterwarnings section to suppress "
+            "pyproject.toml must have filterwarnings in [tool.pytest.ini_options] to suppress "
             "PytestConfigWarning for Unknown config option: timeout"
         )
 
     def test_filterwarnings_suppresses_timeout_warning(self):
         """filterwarnings must include a pattern for Unknown config option.*timeout."""
-        content = PYTEST_INI.read_text(encoding="utf-8")
+        content = PYPROJECT_TOML.read_text(encoding="utf-8")
         assert "Unknown config option" in content or "timeout" in content.lower(), (
             "filterwarnings must reference 'timeout' or 'Unknown config option'"
         )
 
-    def test_pytest_ini_timeout_value_is_present(self):
+    def test_pyproject_timeout_value_is_present(self):
         """timeout = 120 must still be present (for CI with pytest-timeout)."""
-        content = PYTEST_INI.read_text(encoding="utf-8")
+        content = PYPROJECT_TOML.read_text(encoding="utf-8")
         assert "timeout = 120" in content or "timeout=120" in content, (
-            "pytest.ini must still declare timeout = 120 for environments with pytest-timeout"
+            "pyproject.toml must still declare timeout = 120 for environments with pytest-timeout"
         )
 
     def test_filterwarnings_targets_pytestconfigwarning(self):
         """filterwarnings must target pytest.PytestConfigWarning."""
-        content = PYTEST_INI.read_text(encoding="utf-8")
+        content = PYPROJECT_TOML.read_text(encoding="utf-8")
         assert "PytestConfigWarning" in content, (
             "filterwarnings must reference pytest.PytestConfigWarning to be specific"
         )

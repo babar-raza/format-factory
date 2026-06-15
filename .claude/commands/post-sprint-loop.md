@@ -79,6 +79,21 @@ Default: 3 outer loops. Configurable via --max-loops.
 - `AGENTS.md`, `GOVERNANCE.md`
 - `plans/master-plan.md` (read only)
 
+## Stop conditions or constraints
+
+- Stop if `MAX_LOOPS_EXCEEDED` (default 3 outer loops).
+- Stop if `BLOCKED_EXTERNAL` or `HARD_STOP` classification received.
+- Stop if `CONTRADICTORY` classification received — investigate before continuing.
+- Do not commit or push without explicit user authorization.
+- Do not modify `registry/format-registry.yaml` or governance docs.
+
+## Evidence or output format
+
+- Evidence declaration: `.local/evidences/<run_id>/evidence-declaration.yaml`
+- Review package: `.local/supervisor/reviews/<run_id>/declaration-review-package.zip`
+- Report absolute path and SHA-256 of the review package.
+- Loop state: `.local/supervisor/loop-state-<run_id>.json`
+
 ## Usage
 
 ```

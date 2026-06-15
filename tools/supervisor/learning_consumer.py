@@ -133,6 +133,32 @@ class LearningConsumer:
             )[:5],
         }
 
+    def read_promoted_proposals(self, path: str | None = None) -> list[dict[str, Any]]:
+        """Read rule-proposals.json and return promoted proposals (status=proposed)."""
+        proposals_path = self.repo_root / (path or DEFAULT_PROPOSALS_PATH)
+        if not proposals_path.exists():
+            return []
+        try:
+            data = json.loads(proposals_path.read_text(encoding="utf-8"))
+            return [p for p in data.get("proposals", []) if p.get("status") == "proposed"]
+        except (json.JSONDecodeError, OSError):
+            return []
+
+    def format_governance_advisories(self, proposals: list[dict[str, Any]] | None = None) -> str:
+        """Format promoted proposals as markdown advisories for worker prompts."""
+        if proposals is None:
+            proposals = self.read_promoted_proposals()
+        if not proposals:
+            return ""
+        lines = ["## Learning-Based Governance Advisories", ""]
+        for p in proposals:
+            lines.append(
+                f"- **{p.get('category', 'unknown')}** (seen {p.get('occurrence_count', '?')}x): "
+                f"{p.get('description', '')} — *Action:* {p.get('recommended_action', 'none')}"
+            )
+        lines.append("")
+        return "\n".join(lines)
+
     @staticmethod
     def _make_key(category: str, description: str) -> str:
         normalized = f"{category}:{description.strip().lower()[:100]}"

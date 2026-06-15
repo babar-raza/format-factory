@@ -920,3 +920,23 @@ def sylk_cell_type_distribution(file_path: "str | Path") -> "dict[str, int]":
             except (ValueError, TypeError):
                 counts["string"] += 1
     return counts
+
+
+def sylk_has_header(file_path: "str | Path") -> bool:
+    """Heuristic: detect if row 1 of a SYLK file is a header row.
+
+    A row is considered a header if it has at least one cell AND every cell
+    in row 1 is a string (non-numeric). If row 1 has no cells or contains
+    any numeric value, returns False.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        True if row 1 appears to be a header, False otherwise.
+    """
+    doc = parse_sylk_strict(file_path)
+    row1_cells = [c for c in doc.cells if c.row == 1]
+    if not row1_cells:
+        return False
+    return all(c.value_type == "string" for c in row1_cells)

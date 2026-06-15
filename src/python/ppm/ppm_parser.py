@@ -734,3 +734,21 @@ def ppm_is_binary(file_path: str | Path) -> bool:
     if magic == b"P3":
         return False
     raise PpmError(f"Unrecognized PPM magic: {magic!r}")
+
+
+def ppm_aspect_ratio(file_path: str | Path) -> float:
+    """Return the aspect ratio (width / height) of a PPM image.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Float aspect ratio. Returns 0.0 if height is 0.
+
+    Raises:
+        PpmError: If the file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height

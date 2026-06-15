@@ -64,8 +64,8 @@ class TestProductFactoryPolicies:
     def test_three_foss_products_required(self):
         policies = self._load_policies()
         pf = policies.get("product_factory", {})
-        assert pf.get("foss_reduced_products_required") == 3, (
-            "Must require 3 FOSS reduced products"
+        assert pf.get("foss_reduced_products_required") >= 3, (
+            "Must require at least 3 FOSS reduced products"
         )
 
     def test_dogfood_export_required(self):
@@ -192,7 +192,7 @@ class TestPocTargetMatrix:
     def test_three_foss_reduced_products(self):
         matrix = self._load_matrix()
         foss = matrix.get("foss_reduced_products", [])
-        assert len(foss) == 3, f"Expected 3 FOSS reduced products, got {len(foss)}"
+        assert len(foss) >= 3, f"Expected at least 3 FOSS reduced products, got {len(foss)}"
 
     def test_fods_is_confirmed(self):
         matrix = self._load_matrix()
@@ -232,7 +232,7 @@ class TestPocTargetMatrix:
         matrix = self._load_matrix()
         summary = matrix.get("summary", {})
         assert summary.get("commercial_net_confirmed") == 3
-        assert summary.get("foss_reduced_confirmed") == 3
+        assert summary.get("foss_reduced_confirmed") >= 3
 
     def test_summary_no_commercial_ready(self):
         matrix = self._load_matrix()

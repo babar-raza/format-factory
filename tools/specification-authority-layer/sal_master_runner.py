@@ -244,6 +244,24 @@ _FORMAT_SPECIFIC_FACTS: Dict[str, List[Dict[str, str]]] = {
                 "Cached result in office:value attributes."
             ),
         },
+        {
+            "qname": "FODS-FACT-006",
+            "section": "ODF 1.3 §9.1.3 — Column Attributes",
+            "description": (
+                "Table columns are table:table-column with optional "
+                "table:number-columns-repeated, table:style-name, "
+                "and table:default-cell-style-name attributes."
+            ),
+        },
+        {
+            "qname": "FODS-FACT-007",
+            "section": "ODF 1.3 §9.3 — Merged Cells",
+            "description": (
+                "Merged cells use table:number-columns-spanned and "
+                "table:number-rows-spanned on table:table-cell. "
+                "Covered cells are table:covered-table-cell elements."
+            ),
+        },
     ],
     "fodt": [
         {
@@ -292,6 +310,25 @@ _FORMAT_SPECIFIC_FACTS: Dict[str, List[Dict[str, str]]] = {
                 "List items: text:list-item. Nested lists allowed."
             ),
         },
+        {
+            "qname": "FODT-FACT-006",
+            "section": "ODF 1.3 §7 — Sections and Frames",
+            "description": (
+                "Text sections: text:section with text:name. "
+                "Frames: draw:frame containing draw:image or draw:text-box. "
+                "Anchoring: text:anchor-type (paragraph, page, char, as-char)."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-007",
+            "section": "ODF 1.3 §6 — Change Tracking",
+            "description": (
+                "Change tracking in text:tracked-changes. "
+                "Insertions: text:change-start/text:change-end. "
+                "Deletions: text:deletion with deleted content. "
+                "Creator and date in dc:creator, dc:date."
+            ),
+        },
     ],
     "zst": [
         {
@@ -317,6 +354,85 @@ _FORMAT_SPECIFIC_FACTS: Dict[str, List[Dict[str, str]]] = {
             "description": (
                 "Skippable frames start with 0x184D2A50-0x184D2A5F magic. "
                 "Applications must skip them. Used for metadata."
+            ),
+        },
+        {
+            "qname": "ZST-FACT-004",
+            "section": "RFC 8878 §3.1.1 — Compressed Blocks",
+            "description": (
+                "Compressed blocks use Zstandard's encoding: sequences of "
+                "literals and match copies. Literals section + sequences section. "
+                "Huffman or FSE entropy coding for literals."
+            ),
+        },
+        {
+            "qname": "ZST-FACT-005",
+            "section": "RFC 8878 §3.1.1.1 — Literals Section",
+            "description": (
+                "Literals section header specifies: Literals_Section_Type "
+                "(Raw, RLE, Compressed, Treeless), Regenerated_Size, "
+                "Compressed_Size. Huffman tree may be embedded."
+            ),
+        },
+        {
+            "qname": "ZST-FACT-006",
+            "section": "RFC 8878 §3.1.1.2 — Sequences Section",
+            "description": (
+                "Sequences section encodes match copies: Number_of_Sequences, "
+                "Symbol_Compression_Modes (predefined, RLE, FSE, repeat). "
+                "Each sequence: Literals_Length, Match_Length, Offset."
+            ),
+        },
+        {
+            "qname": "ZST-FACT-007",
+            "section": "RFC 8878 §4 — Dictionaries",
+            "description": (
+                "Dictionary compression uses a 4-byte dict ID in the frame header. "
+                "Dictionary content: header (magic 0xEC30A437), entropy tables, "
+                "and a content section used as initial history."
+            ),
+        },
+        {
+            "qname": "ZST-FACT-008",
+            "section": "RFC 8878 §3 — Frame Header Descriptor",
+            "description": (
+                "Frame_Header_Descriptor byte: Frame_Content_Size_flag (2 bits), "
+                "Single_Segment_flag, Content_Checksum_flag, Dictionary_ID_flag (2 bits). "
+                "Window_Descriptor follows if Single_Segment_flag=0."
+            ),
+        },
+        {
+            "qname": "ZST-FACT-009",
+            "section": "RFC 8878 §3 — Window Size",
+            "description": (
+                "Window_Descriptor encodes maximum back-reference distance. "
+                "Window_Size = windowBase + (windowBase >> 3) * Exponent. "
+                "Max window size: 2^41 bytes (decoder may impose lower limit)."
+            ),
+        },
+        {
+            "qname": "ZST-FACT-010",
+            "section": "RFC 8878 §3 — Content Checksum",
+            "description": (
+                "Optional 4-byte content checksum (lower 32 bits of XXH64 of "
+                "original decompressed data). Present when Content_Checksum_flag=1."
+            ),
+        },
+        {
+            "qname": "ZST-FACT-011",
+            "section": "RFC 8878 §5 — FSE Encoding",
+            "description": (
+                "Finite State Entropy (tANS) is used for sequence symbol encoding. "
+                "Accuracy_Log determines table size. Distribution is encoded "
+                "in a normalized probability table."
+            ),
+        },
+        {
+            "qname": "ZST-FACT-012",
+            "section": "RFC 8878 §6 — Huffman Coding",
+            "description": (
+                "Huffman coding used for literals when Literals_Section_Type=Compressed. "
+                "Weight table defines symbol weights. Max number of bits per symbol: 11."
             ),
         },
     ],
@@ -466,49 +582,46 @@ def _load_format_registry() -> List[Dict[str, Any]]:
 
 
 def _spec_facts_for_format(fmt: Dict[str, Any]) -> List[Dict[str, str]]:
-    """Return spec facts for a given format dict."""
+    """Return spec facts for a given format dict.
+
+    Combines base family facts (from spec_body) with format-specific facts
+    to ensure depth >= 15 for priority formats.
+    """
     fid = fmt.get("format_id", "").lower()
     spec_body = fmt.get("spec_body", "")
 
-    # Check format-specific facts first (most precise)
-    if fid in _FORMAT_SPECIFIC_FACTS:
-        return _FORMAT_SPECIFIC_FACTS[fid]
-
-    # Fall back to spec_body family facts
+    # Step 1: Collect base family facts from spec_body
+    base: List[Dict[str, str]] = []
     if "OASIS" in spec_body:
         family = fmt.get("family", "")
         base = [dict(f) for f in _SPEC_FACT_TEMPLATES["OASIS"]]
         if family == "cells":
             base += [dict(f) for f in _SPEC_FACT_TEMPLATES["OASIS-SPREADSHEET"]]
-        elif family == "text":
+        elif family in ("text", "words"):
             base += [dict(f) for f in _SPEC_FACT_TEMPLATES["OASIS-TEXT"]]
-        # Qualify QNames with format ID
-        qualified = []
         for fact in base:
-            qfact = dict(fact)
-            # Replace generic ODF- prefix with format-specific if it exists
-            if qfact["qname"].startswith("ODF-"):
-                qfact = dict(qfact)
-                qfact["authority"] = f"ODF 1.3 / OASIS (format: {fid.upper()})"
-            else:
-                qfact["authority"] = f"ODF 1.3 / OASIS"
-            qualified.append(qfact)
-        return qualified
-
-    if "IETF" in spec_body or "RFC" in spec_body:
-        facts = [dict(f) for f in _SPEC_FACT_TEMPLATES["IETF"]]
+            fact["authority"] = f"ODF 1.3 / OASIS (format: {fid.upper()})"
+    elif "IETF" in spec_body or "RFC" in spec_body:
+        base = [dict(f) for f in _SPEC_FACT_TEMPLATES["IETF"]]
         spec_version = fmt.get("spec_version", "")
-        for f in facts:
+        for f in base:
             f["authority"] = spec_version or "IETF RFC"
-        return facts
+    else:
+        base = [dict(f) for f in _SPEC_FACT_TEMPLATES["DEFAULT"]]
+        for f in base:
+            f["qname"] = f["qname"].replace("FORMAT", fid.upper())
+            f["authority"] = spec_body or "Unknown spec body"
 
-    # Default: return generic facts (deep-copy to avoid mutating template)
-    default = [dict(f) for f in _SPEC_FACT_TEMPLATES["DEFAULT"]]
-    for f in default:
-        # Qualify QName with format ID
-        f["qname"] = f["qname"].replace("FORMAT", fid.upper())
-        f["authority"] = spec_body or "Unknown spec body"
-    return default
+    # Step 2: Merge format-specific facts (override takes priority, appended after base)
+    specific = _FORMAT_SPECIFIC_FACTS.get(fid, [])
+    if specific:
+        specific_qnames = {f["qname"] for f in specific}
+        # Keep base facts whose qnames don't collide with specific ones
+        merged = [f for f in base if f["qname"] not in specific_qnames]
+        merged += [dict(f) for f in specific]
+        return merged
+
+    return base
 
 
 def run_sal_pipeline(

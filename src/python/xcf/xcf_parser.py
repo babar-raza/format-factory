@@ -395,3 +395,19 @@ def xcf_width(file_path: str | Path) -> int:
     """Return the width of an XCF image in pixels."""
     dims = xcf_image_dimensions(file_path)
     return dims["width"]
+
+
+def xcf_megapixels(file_path: str | Path) -> float:
+    """Return the image size in megapixels (width * height / 1_000_000).
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Float megapixel count (e.g. 2.073600 for a 1920x1080 image).
+
+    Raises:
+        XcfError: If the file cannot be parsed.
+    """
+    img = parse_xcf_strict(file_path)
+    return (img.width * img.height) / 1_000_000

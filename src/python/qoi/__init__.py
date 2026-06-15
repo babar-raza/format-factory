@@ -16,6 +16,9 @@ from .qoi_parser import (
     qoi_unique_color_count,
     qoi_channel_count,
     qoi_is_opaque,
+    qoi_has_alpha,
+    qoi_average_brightness,
+    qoi_red_channel_average,
     QoiImage,
 )
 from .qoi_encoder import (
@@ -39,6 +42,9 @@ __all__ = [
     "qoi_unique_color_count",
     "qoi_channel_count",
     "qoi_is_opaque",
+    "qoi_has_alpha",
+    "qoi_average_brightness",
+    "qoi_red_channel_average",
     "QoiImage",
     "encode_qoi",
     "encode_qoi_to_file",

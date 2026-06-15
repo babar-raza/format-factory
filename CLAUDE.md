@@ -17,6 +17,20 @@ Check `reports/supervisor/approval-gates.md`:
 - `AUTONOMOUS_CONTINUE: YES` → proceed with `next-sprint.md` tasks
 - `AUTONOMOUS_CONTINUE: NO` → address contradictions listed in `reports/supervisor/contradictions.md` first
 
+## Spec-to-Feature Correction Plan (READ before product/architecture work)
+
+Before any product architecture, source generation, spec-parity, or capability work, read:
+- **Quick reference:** `docs/spec-to-feature-correction-plan-summary.md`
+- **Full plan:** `plans/spec-to-feature-radical-correction-plan.md` (27 sections, ~3200 lines)
+
+Key rules from this plan:
+1. **System healing first:** Lanes 1-6, 14, 15 MUST complete before product regeneration (Lanes 7-13)
+2. **Canonical naming:** Spec QName → canonical class (e.g., `Table.TableCell`) → facade in `Compat/` only (e.g., `FodsCell`). NEVER use format-prefixed names as primary implementation targets.
+3. **Gate 11:** NOT approved. Babar Raza is the only approver. Criteria: C1-C20 (.NET), P1-P11 (Python).
+4. **No fake progress:** Skeleton-only files are `architecture_only`, not product progress. No model class without `spec_qname` mapping. No product-progress claim without spec parity evidence.
+5. **Supervision gaps exist:** Lane ownership and DAG ordering are NOT enforced by code (prompt-only). Overclaim detector is never called. These are known gaps being addressed in Lane 14.
+6. **Zero durable learning:** All decision rules are static. No failure-memory.json exists. Corrections do not auto-propagate. Being addressed in Lane 15.
+
 ## Sprint Closeout (MANDATORY — do this at the end of every sprint)
 
 After completing sprint work, you MUST:

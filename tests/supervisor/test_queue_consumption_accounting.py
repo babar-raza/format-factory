@@ -38,10 +38,10 @@ def _load_queue():
 
 
 def test_queue_has_no_null_action_types():
-    """After quarantine fix, action-queue.jsonl must have no null action_type items."""
+    """After quarantine fix, action-queue.jsonl must have no items missing both action_type and item_type."""
     items = _load_queue()
-    null_items = [i for i in items if i.get("action_type") is None]
-    assert null_items == [], f"Corrupt items with null action_type: {null_items}"
+    null_items = [i for i in items if i.get("action_type") is None and i.get("item_type") is None]
+    assert null_items == [], f"Corrupt items with neither action_type nor item_type: {null_items}"
 
 
 def test_queue_done_items_at_least_four():
@@ -86,7 +86,8 @@ def test_queue_path_exists():
 
 
 def test_all_queue_items_have_action_type():
-    """Every queue item must have a non-null action_type."""
+    """Every queue item must have a non-null action_type or item_type."""
     items = _load_queue()
     for item in items:
-        assert item.get("action_type") is not None, f"Null action_type: {item}"
+        has_type = item.get("action_type") is not None or item.get("item_type") is not None
+        assert has_type, f"Missing both action_type and item_type: {item}"

@@ -1017,3 +1017,33 @@ def dif_vectors_count(file_path: "str | Path") -> int:
     """
     doc = parse_dif_strict(file_path)
     return doc.vectors
+
+
+def dif_numeric_cell_count(file_path: "str | Path") -> int:
+    """Return the count of numeric cells in a DIF file.
+
+    Counts all cells whose value_type is 'numeric' across all rows.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        Integer count of numeric cells.
+    """
+    doc = parse_dif_strict(file_path)
+    return sum(
+        1 for row in doc.rows for cell in row if cell.value_type == "numeric"
+    )
+
+
+def dif_total_cell_count(file_path: "str | Path") -> int:
+    """Return the total number of cells across all rows in a DIF file.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        Integer total cell count.
+    """
+    doc = parse_dif_strict(file_path)
+    return sum(len(row) for row in doc.rows)

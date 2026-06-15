@@ -1895,3 +1895,15 @@ def document_empty_paragraph_count(document: dict[str, Any]) -> int:
         elif all(not (r.get("text") or "").strip() for r in runs):
             count += 1
     return count
+
+
+def fodt_total_block_count(document: dict[str, Any]) -> int:
+    """Return the total number of top-level blocks in the document.
+
+    Counts all entries in the blocks list (paragraphs, headings)
+    plus all entries in the lists and tables lists.
+    """
+    blocks = len(document.get("blocks", []))
+    lists = len(document.get("lists", []))
+    tables = len(document.get("tables", []))
+    return blocks + lists + tables

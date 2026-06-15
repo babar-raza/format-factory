@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-06-15T14:50:00Z",
+  "generator": "TC-GAP-E01 product regeneration lane setup",
+  "parent_plan": "plans/spec-to-feature-radical-correction-plan.md",
+  "note": "SETUP ONLY — defines lane structure for Lanes 7-13. Does not execute product regeneration.",
+  "lanes": [
+    {
+      "lane_id": 7,
+      "title": ".NET Architecture Blueprint + Spec-Literal Regeneration",
+      "scope": "Define .NET namespace hierarchy, class inventory, and spec-literal attribute mapping for all commercial formats",
+      "file_ownership": ["src/net/", "schemas/dotnet/", "reports/architecture/dotnet/"],
+      "entry_criteria": "System healing complete (Lanes 1-6); SAL facts at 15+ depth for target formats",
+      "exit_criteria": "Architecture blueprint exists per format; QName-to-class mapping documented; namespace tree validated"
+    },
+    {
+      "lane_id": 8,
+      "title": "Python Blueprint + Spec-Literal Migration",
+      "scope": "Migrate Python modules from function-based to spec-shaped class-based architecture",
+      "file_ownership": ["src/python/", "schemas/python/", "reports/architecture/python/"],
+      "entry_criteria": "Domain classes exist (TC-GAP-B01 done); SAL facts at 15+ depth",
+      "exit_criteria": "Each Python module has spec-literal domain classes; parity matrix populated; existing tests pass"
+    },
+    {
+      "lane_id": 9,
+      "title": "FODS Product Rebuild",
+      "scope": "Rebuild FODS to Gate 11 commercial (.NET 20/25) and FOSS (Python 18.5/25) targets",
+      "file_ownership": ["src/net/fods/", "src/python/fods/", "tests/net/fods/", "tests/python/fods/"],
+      "entry_criteria": "Lanes 7-8 blueprints exist for FODS",
+      "exit_criteria": ".NET implementation_depth >= 4/5; capability_coverage >= 80%; 3+ roundtrip tests; spec_fact_ref on every public method"
+    },
+    {
+      "lane_id": 10,
+      "title": "FODT Product Rebuild",
+      "scope": "Rebuild FODT to Gate 11 commercial (.NET 20/25) and FOSS (Python 18.5/25) targets",
+      "file_ownership": ["src/net/fodt/", "src/python/fodt/", "tests/net/fodt/", "tests/python/fodt/"],
+      "entry_criteria": "Lanes 7-8 blueprints exist for FODT",
+      "exit_criteria": ".NET implementation_depth >= 4/5; capability_coverage >= 80%; 3+ roundtrip tests; spec_fact_ref on every public method"
+    },
+    {
+      "lane_id": 11,
+      "title": "ZST Product Hardening",
+      "scope": "Harden ZST to Gate 11 FOSS (Python 20/25) target",
+      "file_ownership": ["src/python/zst/", "tests/python/zst/"],
+      "entry_criteria": "Lane 8 blueprint exists for ZST; SAL facts at 15+",
+      "exit_criteria": "Python capability_coverage >= 60%; class-based model; parity matrix"
+    },
+    {
+      "lane_id": 12,
+      "title": "CI, Package, Evidence Hardening",
+      "scope": "CI pipeline hardening, package build proof, evidence infrastructure",
+      "file_ownership": [".github/workflows/", "tools/ci/", "tools/supervisor/"],
+      "entry_criteria": "Lanes 9-11 producing testable code",
+      "exit_criteria": "CI green for all product targets; package artifacts build; evidence pipeline clean"
+    },
+    {
+      "lane_id": 13,
+      "title": "Post-Regeneration Recompute",
+      "scope": "Recompute capability maps, gap ledger, scoring from regenerated product state",
+      "file_ownership": ["reports/capability-layer/", "reports/r90/"],
+      "entry_criteria": "Lanes 9-11 complete",
+      "exit_criteria": "Capability maps refreshed; gap ledger updated; scoring reflects actual state"
+    }
+  ],
+  "selected_gaps": [
+    {
+      "gap_id": "GAP-FODS-COMM-LOAD-001",
+      "format": "FODS",
+      "capability": "Load",
+      "product_type": "commercial",
+      "target_lane": 9,
+      "rationale": "FODS is the pilot format with most infrastructure ready"
+    },
+    {
+      "gap_id": "GAP-FODT-COMM-LOAD-001",
+      "format": "FODT",
+      "capability": "Load",
+      "product_type": "commercial",
+      "target_lane": 10,
+      "rationale": "FODT opens the Words family; spec-parity infrastructure now available"
+    },
+    {
+      "gap_id": "GAP-PYTHON-ARCH-FODS",
+      "format": "FODS",
+      "capability": "Python spec-shaped architecture",
+      "product_type": "foss",
+      "target_lane": 8,
+      "rationale": "Domain classes now exist (TC-GAP-B01); need spec-literal migration"
+    }
+  ]
+}

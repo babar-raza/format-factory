@@ -541,3 +541,26 @@ def csv_duplicate_row_count(file_path: "str | Path") -> int:
         else:
             seen.add(key)
     return count
+
+
+def csv_empty_cell_count(file_path: "str | Path") -> int:
+    """Return the total count of empty cells across all rows.
+
+    A cell is considered empty if its string value is empty after stripping.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Integer count of empty cells. Returns 0 if there are no empty cells.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    count = 0
+    for row in model.get("rows", []):
+        for cell in row:
+            if not str(cell).strip():
+                count += 1
+    return count

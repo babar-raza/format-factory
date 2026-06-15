@@ -13,7 +13,21 @@ Each test receives exactly ONE "home" layer marker (layer0-layer5) plus layer6.
 The runner constructs cumulative expressions like ``-m "layer0 or layer1"`` for layer 1.
 Bare ``pytest`` (no -m flag) runs everything as before.
 """
+import sys
+
 import pytest
+
+@pytest.fixture(autouse=True, scope="module")
+def _restore_sys_path():
+    """Restore sys.path after each test module to prevent import pollution.
+
+    Snapshots sys.path at the START of each module's tests (after the module's
+    own sys.path.insert calls) and restores it after the module completes.
+    This prevents one module's path additions from leaking into later modules.
+    """
+    snapshot = list(sys.path)
+    yield
+    sys.path[:] = snapshot
 
 _LAYER_MARKERS = [f"layer{i}" for i in range(7)]
 

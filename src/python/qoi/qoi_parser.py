@@ -355,3 +355,55 @@ def qoi_is_opaque(file_path: str | Path) -> bool:
     if img.channels == 3:
         return True
     return all(pixel[3] == 255 for pixel in img.pixels)
+
+
+def qoi_has_alpha(file_path: str | Path) -> bool:
+    """Return True if the QOI image has an alpha channel (4 channels).
+
+    This is a header-only operation — no pixel decode required.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        True if channels == 4 (RGBA), False if channels == 3 (RGB).
+    """
+    path = Path(file_path)
+    data = path.read_bytes()
+    _width, _height, channels, _colorspace = _parse_header(data)
+    return channels == 4
+
+
+def qoi_average_brightness(file_path: str | Path) -> float:
+    """Return the average pixel brightness of a QOI image.
+
+    Brightness is computed as the mean of (0.299*R + 0.587*G + 0.114*B)
+    across all pixels, using the ITU-R BT.601 luma formula.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Average brightness as a float in range [0.0, 255.0].
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = sum(0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2] for p in img.pixels)
+    return total / len(img.pixels)
+
+
+def qoi_red_channel_average(file_path: str | Path) -> float:
+    """Return the average red channel value across all pixels.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Average red value as a float in range [0.0, 255.0].
+        Returns 0.0 for empty images.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(p[0] for p in img.pixels) / len(img.pixels)

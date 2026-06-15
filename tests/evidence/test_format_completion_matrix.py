@@ -25,6 +25,7 @@ VALID_MATURITY_CLASSES = {
     "read_only_prototype",
     "read_only_library_foundation",
     "read_write_library_foundation",
+    "read_write_prototype",
     "export_capable_library",
     "roundtrip_capable_library",
     "commercial_candidate",

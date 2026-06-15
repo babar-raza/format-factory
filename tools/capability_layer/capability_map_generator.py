@@ -753,6 +753,7 @@ def _build_gap_ledger(all_records: list[dict]) -> list[dict]:
             "capability_name": r["capability_name"],
             "current_state": state,
             "gap_type": gap_type,
+            "status": "open",
             "blocks_poc": r.get("required_for_poc", False),
             "blocks_readiness": r.get("blocks_readiness", False),
             "commercial_impact": "HIGH" if r.get("expected_for_commercial") else "NONE",
@@ -1049,6 +1050,22 @@ def generate(
 
     # --- Write gap ledger ---
     gaps = _build_gap_ledger(all_records)
+    # Merge status from existing gap-ledger to preserve closed statuses
+    existing_gap_path = output_dir / "gap-ledger.json"
+    if existing_gap_path.exists():
+        try:
+            old = json.loads(existing_gap_path.read_text(encoding="utf-8"))
+            old_status = {g["gap_id"]: g for g in old.get("gaps", []) if g.get("status") == "closed"}
+            for g in gaps:
+                if g["gap_id"] in old_status:
+                    prev = old_status[g["gap_id"]]
+                    g["status"] = "closed"
+                    if "closed_by_sprint" in prev:
+                        g["closed_by_sprint"] = prev["closed_by_sprint"]
+                    if "closed_at" in prev:
+                        g["closed_at"] = prev["closed_at"]
+        except (json.JSONDecodeError, KeyError):
+            pass  # If old file is corrupt, start fresh
     gap_ledger = {
         "schema_version": "1.0",
         "generated_at": sprint_now,

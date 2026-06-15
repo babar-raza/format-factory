@@ -20,6 +20,7 @@ def _make_item(**overrides):
     base = {
         "action_id": "q-test-001",
         "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+        "format_id": "fodg",
         "stream": "product",
         "priority": 1,
         "status": "pending",
@@ -31,6 +32,7 @@ def _make_item(**overrides):
         "rollback_strategy": "git checkout src/python/fodg/fodg_codec.py",
         "expected_tests": [],
         "patch_code": "def test_func():\n    return 42\n",
+        "exception_classification": "legacy_backfill",
     }
     base.update(overrides)
     return base
@@ -198,10 +200,12 @@ class TestSuccessPath:
         )
 
         executor = ProductSourceExecutor(repo_root=tmp_path)
+        _allow = {"decision": "ALLOW", "format_id": "fodg", "reason": "test", "authority_level": "P0", "authority_level_int": 0, "product_expansion_allowed": True, "exception_classification": "legacy_backfill", "spec_fact_refs_present": False, "evidence_paths": [], "item_type": "PRODUCT_SOURCE"}
 
-        with patch.object(executor, "_run_tests", return_value=(True, "1 passed")):
-            with patch.object(executor, "_record_evidence"):
-                result = executor.execute(item)
+        with patch("product_source_executor.run_authority_preflight", return_value=_allow):
+            with patch.object(executor, "_run_tests", return_value=(True, "1 passed")):
+                with patch.object(executor, "_record_evidence"):
+                    result = executor.execute(item)
 
         assert result.status == "SUCCESS"
         assert result.test_passed is True
@@ -220,9 +224,11 @@ class TestSuccessPath:
         )
 
         executor = ProductSourceExecutor(repo_root=tmp_path)
+        _allow = {"decision": "ALLOW", "format_id": "fodg", "reason": "test", "authority_level": "P0", "authority_level_int": 0, "product_expansion_allowed": True, "exception_classification": "legacy_backfill", "spec_fact_refs_present": False, "evidence_paths": [], "item_type": "PRODUCT_SOURCE"}
 
-        with patch.object(executor, "_run_tests", return_value=(False, "1 failed")):
-            result = executor.execute(item)
+        with patch("product_source_executor.run_authority_preflight", return_value=_allow):
+            with patch.object(executor, "_run_tests", return_value=(False, "1 failed")):
+                result = executor.execute(item)
 
         assert result.status == "ROLLED_BACK"
         assert result.rollback_performed is True

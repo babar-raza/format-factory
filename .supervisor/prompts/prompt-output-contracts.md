@@ -69,6 +69,23 @@ Conforming to `summary-parser-contract.schema.json`:
 - `confidence`: 0.0 to 1.0
 - `next_stage_recommendation`: one of 8 actions
 
+## Evidence Quality Score (Supervisor Pipeline)
+
+The `evidence_quality_score` in supervisor review output is calculated as:
+
+    evidence_quality_score = ACCEPTED_VERIFIED count / total accepted count
+
+This is a **deep verification ratio**, not an overall quality score. A sprint that
+accepts 17 items but only 3 achieve ACCEPTED_VERIFIED will score 3/17 = 0.18, even
+though all 17 items are legitimately accepted. This is by design: ACCEPTED_WITH_LIMITATIONS
+items have path-only evidence (no test content verification), which dilutes the ratio.
+
+Complementary metric: `semantic_quality_score` from LLM assessment measures adequacy
+independent of the VERIFIED/LIMITATIONS distinction.
+
+A low evidence_quality_score does NOT block continuation (only exact 0.0 triggers
+the `evidence_quality_zero` hard stop). It is a quality signal for improvement, not a gate.
+
 ## Quality Score Threshold
 
 All 15 dimensions must score >= 4/5 for acceptance. Dimensions:

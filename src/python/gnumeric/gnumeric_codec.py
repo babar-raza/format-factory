@@ -1270,3 +1270,23 @@ def gnumeric_nonempty_cell_count_file(
     """
     model = load(file_path)
     return count_nonempty_cells(model, sheet_idx)
+
+
+def gnumeric_total_cell_count(file_path: "str | bytes | Path") -> int:
+    """Return the total number of cells across all sheets in a Gnumeric file.
+
+    Sums the cell count from every sheet. Counts cells stored in the
+    document (entries in cell_grid), not the theoretical grid size.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        Total cell count across all sheets.
+    """
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    total = 0
+    for i in range(len(sheets)):
+        total += count_nonempty_cells(model, i)
+    return total

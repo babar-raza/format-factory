@@ -58,6 +58,7 @@ from .ndjson_codec import (
     ndjson_field_exists,
     ndjson_max_record_size,
     ndjson_total_field_count,
+    ndjson_unique_field_names,
 )
 
 __all__ = [
@@ -109,6 +110,7 @@ __all__ = [
     "ndjson_field_exists",
     "ndjson_max_record_size",
     "ndjson_total_field_count",
+    "ndjson_unique_field_names",
 ]
 
 __version__ = "0.1.0.dev0"

@@ -1,22 +1,22 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-15T09:36:00.341445
+# Generated: 2026-06-15T15:59:38.363055
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 0f43aa0 |
+| Git HEAD | 98ca92c |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | HARDENED-PLAN-EXECUTION-20260615... |
-| Autonomous continue | true_with_rework |
-| Iteration | 8/12 |
+| Sprint ID | PRODUCT-DEEPENING-PHASE10-20260615-001... |
+| Autonomous continue | True |
+| Iteration | 11/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
-| Active skills | 29 |
-| Ledger entries | 392 total (344 governed) |
+| Active skills | 31 |
+| Ledger entries | 412 total (344 governed) |
 
 ## .NET Test Counts (POC Matrix)
 
@@ -29,7 +29,7 @@
 
 ## Skill Registry
 
-Skills: add-dotnet-api, add-python-api, add-dogfood-export, update-capability-matrix, add-dotnet-object-model-feature, add-python-object-model-feature, add-same-format-writer-feature, add-roundtrip-test, add-installed-package-example, promote-gap-to-taskcard, generate-execution-handoff, verify-dogfood-path, package-install-proof, materialize-declaration-review, record-lane-execution, build-context-pack, select-poc-gap, validate-product-code-ledger, validate-skill-transcript, evidence-review-next-prompt, execution-handoff, export-plan-context, memory-sprint, plan-hardening, spec-literal-qname-to-code-mapping, spec-shaped-product-architecture-blueprint, spec-parity-source-regeneration-and-migration, python-reduced-spec-parity-model, spec-parity-verification
+Skills: add-dotnet-api, add-python-api, add-dogfood-export, update-capability-matrix, add-dotnet-object-model-feature, add-python-object-model-feature, add-same-format-writer-feature, add-roundtrip-test, add-installed-package-example, promote-gap-to-taskcard, generate-execution-handoff, verify-dogfood-path, package-install-proof, materialize-declaration-review, record-lane-execution, build-context-pack, select-poc-gap, validate-product-code-ledger, validate-skill-transcript, evidence-review-next-prompt, execution-handoff, export-plan-context, memory-sprint, plan-hardening, spec-literal-qname-to-code-mapping, spec-shaped-product-architecture-blueprint, spec-parity-source-regeneration-and-migration, python-reduced-spec-parity-model, spec-parity-verification, post-sprint-audit, post-sprint-loop
 
 ## Governance
 

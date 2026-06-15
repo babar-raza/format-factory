@@ -108,7 +108,8 @@
       "Bash(tee reports/product-deepening-rnext23/raw-logs/product-tests.log)",
       "Bash(.local/venv/Scripts/python -c \"import sys; print\\(sys.version\\)\")",
       "Bash(.local/venv/Scripts/python tools/supervisor/build_declaration_review_package.py --declaration .local/evidences/mainstream-product-deepening-rnext21/evidence-declaration.yaml)",
-      "Bash(PYTHONIOENCODING=utf-8 .local/venv/Scripts/python -m pytest tests/supervisor/test_recompute_chain.py -v)"
+      "Bash(PYTHONIOENCODING=utf-8 .local/venv/Scripts/python -m pytest tests/supervisor/test_recompute_chain.py -v)",
+      "Bash(.local/venv/Scripts/python -m pytest tests/python/supervisor/test_r106_command_validator_hardening.py tests/python/supervisor/test_r107_registry_stability.py tests/python/supervisor/test_r112_live_handoff_stream_isolation.py -v --tb=short)"
     ],
     "deny": [
       "Write(.env)",

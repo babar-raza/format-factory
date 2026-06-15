@@ -31,6 +31,7 @@ MAX_ZIP_ENTRIES = 1000
 NS = {
     "office": "urn:oasis:names:tc:opendocument:xmlns:office:1.0",
     "text": "urn:oasis:names:tc:opendocument:xmlns:text:1.0",
+    "table": "urn:oasis:names:tc:opendocument:xmlns:table:1.0",
 }
 
 
@@ -305,3 +306,54 @@ def odt_list_count(file_path: str | Path) -> int:
         return 0
     list_tag = f"{{{NS['text']}}}list"
     return sum(1 for child in text_body if child.tag == list_tag)
+
+
+def odt_table_count(file_path: str | Path) -> int:
+    """Count the number of tables in an ODT document.
+
+    Counts table:table elements that are direct children of the text body.
+    ODF 1.3 §9.1.2 — table:table is the element for tables in text documents.
+
+    Args:
+        file_path: Path to .odt file.
+
+    Returns:
+        Number of table:table elements in the text body.
+    """
+    path = Path(file_path)
+    _check_file_size(path)
+    with zipfile.ZipFile(path, "r") as zf:
+        _validate_container(zf)
+        content = zf.read("content.xml")
+    root = ET.fromstring(content)
+    body = root.find(f"{{{NS['office']}}}body")
+    if body is None:
+        return 0
+    text_body = body.find(f"{{{NS['office']}}}text")
+    if text_body is None:
+        return 0
+    table_tag = f"{{{NS['table']}}}table"
+    return sum(1 for child in text_body if child.tag == table_tag)
+
+
+def odt_sentence_count(file_path: str | Path) -> int:
+    """Estimate the number of sentences in an ODT document.
+
+    Counts sentence-ending punctuation (.!?) across all paragraphs and
+    headings.  This is a heuristic — abbreviations like "Dr." will be
+    over-counted, but for most prose it gives a reasonable approximation.
+
+    Args:
+        file_path: Path to .odt file.
+
+    Returns:
+        Estimated number of sentences.
+    """
+    import re
+    doc = parse_odt_strict(file_path)
+    total = 0
+    for elem in doc.elements:
+        text = getattr(elem, "text", "")
+        if isinstance(text, str) and text:
+            total += len(re.findall(r"[.!?]+", text))
+    return total

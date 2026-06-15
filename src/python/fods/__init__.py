@@ -74,6 +74,7 @@ from .neutral_model import (
     workbook_numeric_density,
     workbook_total_numeric_value,
     fods_sheet_count,
+    fods_total_cell_count,
     workbook_row_count,
     workbook_cell_text_at,
 )
@@ -125,6 +126,7 @@ __all__ = [
     "workbook_numeric_density",
     "workbook_total_numeric_value",
     "fods_sheet_count",
+    "fods_total_cell_count",
     "workbook_row_count",
     "workbook_cell_text_at",
     "FodsError",

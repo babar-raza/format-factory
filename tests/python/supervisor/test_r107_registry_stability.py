@@ -55,7 +55,7 @@ class TestRegistryStability(unittest.TestCase):
         self.assertEqual(len(orphan), 0, f"Expected 0 orphan, got {len(orphan)}")
 
     def test_total_skill_count(self):
-        self.assertEqual(len(self.skills), 30, f"Expected 30 total, got {len(self.skills)}")
+        self.assertEqual(len(self.skills), 32, f"Expected 32 total, got {len(self.skills)}")
 
     def test_registry_status_is_active_fail_closed(self):
         meta = _load_registry_meta()

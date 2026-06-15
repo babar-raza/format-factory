@@ -22,6 +22,8 @@
 
 **B2.** Before any format-specific work, read `plans/master-plan.md` and verify the current active format and gate status.
 
+**B2a.** Before any product architecture, source generation, or spec-parity work, read `docs/spec-to-feature-correction-plan-summary.md` (quick reference) or the full plan at `plans/spec-to-feature-radical-correction-plan.md`. This plan defines the 16-lane remediation structure, canonical naming rules (spec QName → canonical class → facade), 8 spec-parity validators, Gate 11 criteria (C1-C20, P1-P11), and the binding constraint that system healing lanes (1-6, 14, 15) must complete before product regeneration lanes (7-13).
+
 **B3.** An agent must not proceed if the current phase or gate status is unclear. Log a gap (Section M) and apply the Human Task Conversion Rule (Section AG1): use `tools/supervisor/stop_reason_adjudicator.py` to classify the blocker, create a machine-readable gap record, and continue with safe non-blocked work. Classify as `EXTERNAL_BLOCKER` only if the Stop Reason Adjudicator returns `TRUE_EXTERNAL_GATE` or `UNSAFE_WORKSPACE`. Do not default to waiting for human clarification when the agent can classify and continue.
 
 ---

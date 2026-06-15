@@ -1188,3 +1188,22 @@ def ndjson_total_field_count(source: "Any") -> int:
     """
     records = source if isinstance(source, list) else load_ndjson(source)
     return sum(len(r) for r in records if isinstance(r, dict))
+
+
+def ndjson_unique_field_names(source: "Any") -> list[str]:
+    """Return a sorted list of unique field names across all records.
+
+    Only dict records contribute field names.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Sorted list of unique field name strings.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    names: set[str] = set()
+    for r in records:
+        if isinstance(r, dict):
+            names.update(r.keys())
+    return sorted(names)

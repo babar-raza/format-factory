@@ -896,3 +896,22 @@ def ods_empty_cell_count(file_path: "str | Path", sheet_index: int = 0) -> int:
             if val is None or val == "":
                 count += 1
     return count
+
+
+def ods_column_count(file_path: "str | Path", sheet_index: int = 0) -> int:
+    """Return the maximum number of columns across all rows in a sheet.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Integer max column count. Returns 0 if sheet is empty or not found.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    if not sheet.rows:
+        return 0
+    return max(len(row.cells) for row in sheet.rows)

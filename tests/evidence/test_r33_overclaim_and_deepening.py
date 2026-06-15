@@ -203,7 +203,7 @@ class TestMatrixDeepeningConsistency:
 
     def test_ods_maturity_upgraded(self, matrix):
         entry = self._find_format(matrix, "ods")
-        assert entry["actual_maturity_class"] == "export_capable_library"
+        assert entry["actual_maturity_class"] == "roundtrip_capable_library"
 
     def test_qoi_has_write_support(self, matrix):
         entry = self._find_format(matrix, "qoi")

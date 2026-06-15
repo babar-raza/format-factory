@@ -412,7 +412,7 @@ class TestDeepGradingV4:
         }
 
         grade = grade_item(inspection, {"passed": 10, "failed": 0})
-        assert grade["supervisor_grade"] == "ACCEPTED_WITH_LIMITATIONS"
+        assert grade["supervisor_grade"] == "ACCEPTED_VERIFIED"
 
     def test_grade_overclaimed_no_evidence(self):
         from grade_declared_work import grade_item

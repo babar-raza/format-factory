@@ -78,6 +78,8 @@ from .neutral_model import (
     document_paragraph_texts,
     document_heading_texts,
     document_table_row_count,
+    document_empty_paragraph_count,
+    fodt_total_block_count,
 )
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -131,6 +133,8 @@ __all__ = [
     "document_paragraph_texts",
     "document_heading_texts",
     "document_table_row_count",
+    "document_empty_paragraph_count",
+    "fodt_total_block_count",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",
