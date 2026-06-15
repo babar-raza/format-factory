@@ -1,35 +1,435 @@
 [
   {
-    "item_id": "SPRINT19-GNUMERIC-ADVANCED-OPS-001",
-    "item_title": "Gnumeric advanced operations \u2014 load/probe, dimensions, cell ops, analytics, export (32 tests)",
+    "item_id": "HC-001-EVIDENCE-TRAIN-B",
+    "item_title": "Evidence repair: SAL-to-capability wiring (TRAIN-B)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/product-deepening-sprint19-20260612-001/gnumeric-advanced-test-log.txt",
-      "tests/python/gnumeric/test_r202_gnumeric_advanced_ops.py"
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-train-b.md"
     ],
-    "tests_supporting": [
-      "tests/python/gnumeric/test_r202_gnumeric_advanced_ops.py"
-    ],
+    "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (4 files)"
+      "No concrete test/criteria proof (path-only acceptance)"
     ],
     "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: gnumeric-advanced-test-log.txt contains '32 passed'"
+      "No raw proof, test content, or acceptance criteria verified"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: gnumeric-advanced-test-log.txt contains '32 passed'",
-    "tests_evidence_verified": [
-      "tests/python/gnumeric/test_r202_gnumeric_advanced_ops.py"
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-001-EVIDENCE-TRAIN-B",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.0,
+      "stub_detected": false,
+      "deficiencies": [
+        "llm_verification_unavailable"
+      ],
+      "llm_used": false
+    }
+  },
+  {
+    "item_id": "HC-002-EVIDENCE-TRAIN-C",
+    "item_title": "Evidence repair: Recompute chain wiring (TRAIN-C)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-train-c.md"
     ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-002-EVIDENCE-TRAIN-C",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.82,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence only provides a summary markdown; the actual test code files are not included, preventing verification of real assertions.",
+        "No concrete proof that the subprocess `capability_map_generator.py` is invoked (e.g., mock verification or command capture).",
+        "Log evidence claim is not shown (no captured log output or assertion on log content).",
+        "Staleness validator behavior is not demonstrated with concrete test inputs and assertions.",
+        "Scope verification (trigger after PRODUCT_GAP_CLOSURE items) is not evidenced beyond test name; actual test logic is missing."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-003-EVIDENCE-TRAIN-D",
+    "item_title": "Evidence repair: Compiler phases (TRAIN-D)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-train-d.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-003-EVIDENCE-TRAIN-D",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.0,
+      "stub_detected": false,
+      "deficiencies": [
+        "llm_verification_unavailable"
+      ],
+      "llm_used": false
+    }
+  },
+  {
+    "item_id": "HC-004-EVIDENCE-TRAIN-E",
+    "item_title": "Evidence repair: QName enforcement (TRAIN-E)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-train-e.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-004-EVIDENCE-TRAIN-E",
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.85,
+      "confidence": 0.9,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-005-EVIDENCE-TRAIN-G",
+    "item_title": "Evidence repair: ZST product processing (TRAIN-G)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-train-g.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-005-EVIDENCE-TRAIN-G",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.9,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-006-EVIDENCE-SHCPH-L1",
+    "item_title": "Evidence repair: Governance closeout defect repair (SHCPH-L1)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-shcph-l1.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-006-EVIDENCE-SHCPH-L1",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.9,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-007-EVIDENCE-SHCPH-L2",
+    "item_title": "Evidence repair: Spec-parity validators (SHCPH-L2)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-shcph-l2.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-007-EVIDENCE-SHCPH-L2",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-008-EVIDENCE-SHCPH-L3",
+    "item_title": "Evidence repair: Depth validators (SHCPH-L3)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-shcph-l3.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-008-EVIDENCE-SHCPH-L3",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.9,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-009-EVIDENCE-SHCPH-L4",
+    "item_title": "Evidence repair: Schema hardening (SHCPH-L4)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-shcph-l4.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-009-EVIDENCE-SHCPH-L4",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.9,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-010-ENCODING-FIX",
+    "item_title": "Fix cp1252 encoding bug in dispatch_recompute",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-encoding-fix.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-010-ENCODING-FIX",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-011-EVIDENCE-SHCPH-L6",
+    "item_title": "Evidence repair: Task generation repair (SHCPH-L6)",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-shcph-l6.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ['Evidence consists only of a markdown summary with test names and pass/fail status; the actual test implementations are not provided for review.', 'Without seeing the test code, it cannot be verified that the tests contain meaningful assertions rather than placeholders (e.g., `assert True` or `pass`).', 'Potential thin coverage: only ten tests are listed for a feature that involves multiple complex behaviors (priority scoring, advisory-only handling, gap skipping, taskcard quality). The depth of each test cannot be assessed.', 'No concrete test output, logs, or coverage metrics are included to demonstrate that the code paths were exercised.']",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for HC-011-EVIDENCE-SHCPH-L6.",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.73,
+      "stub_detected": true,
+      "deficiencies": [
+        "Evidence consists only of a markdown summary with test names and pass/fail status; the actual test implementations are not provided for review.",
+        "Without seeing the test code, it cannot be verified that the tests contain meaningful assertions rather than placeholders (e.g., `assert True` or `pass`).",
+        "Potential thin coverage: only ten tests are listed for a feature that involves multiple complex behaviors (priority scoring, advisory-only handling, gap skipping, taskcard quality). The depth of each test cannot be assessed.",
+        "No concrete test output, logs, or coverage metrics are included to demonstrate that the code paths were exercised."
+      ],
+      "llm_used": true,
+      "low_confidence_override": true
+    }
+  },
+  {
+    "item_id": "HC-012-EVIDENCE-SHCPH-L7",
+    "item_title": "Evidence repair: CI hardening (SHCPH-L7)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-shcph-l7.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-012-EVIDENCE-SHCPH-L7",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.9,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-013-DISPATCH-CLASSIFICATION",
+    "item_title": "Dispatch classification document (consumption-chain-status.yaml)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/supervisor/consumption-chain-status.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-013-DISPATCH-CLASSIFICATION",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "HC-014-PLAN-STATUS",
+    "item_title": "Plan implementation status document",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/supervisor/plan-implementation-status.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for HC-014-PLAN-STATUS",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.95,
       "stub_detected": false,
       "deficiencies": [],
       "llm_used": true

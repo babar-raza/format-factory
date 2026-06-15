@@ -282,6 +282,49 @@ def test_cross_stream_contamination_mainstream_with_tools():
     assert "tools/supervisor/" in result["forbidden_refs_found"]
 
 
+def test_cross_stream_exemption_with_supervisor_scope():
+    """Stream-aware: supervisor item types exempt supervisor paths in mainstream."""
+    prompt = "Sprint: fix tools/supervisor/closeout_gate.py and tests/supervisor/test_gate.py"
+    result = detect_cross_stream_prompt_contamination(
+        prompt, "mainstream",
+        declared_scope=["SUPERVISOR_REPAIR", "SUPERVISOR_TEST"],
+    )
+    assert result["is_violation"] is False
+    assert "exempt_paths" in result
+    assert len(result["exempt_paths"]) == 2
+
+
+def test_cross_stream_no_exemption_without_supervisor_scope():
+    """Stream-aware: no exemption when scope is only product work."""
+    prompt = "Sprint: fix tools/supervisor/closeout_gate.py"
+    result = detect_cross_stream_prompt_contamination(
+        prompt, "mainstream",
+        declared_scope=["PRODUCT_SOURCE", "TEST"],
+    )
+    assert result["is_violation"] is True
+
+
+def test_cross_stream_mixed_scope_exempts_only_supervisor():
+    """Stream-aware: mixed scope with GOVERNANCE_DOC exempts supervisor paths."""
+    prompt = "Sprint: fix tools/supervisor/anti_skip_checker.py and update src/python/csv/csv_parser.py"
+    result = detect_cross_stream_prompt_contamination(
+        prompt, "mainstream",
+        declared_scope=["PRODUCT_SOURCE", "GOVERNANCE_HARDENING"],
+    )
+    assert result["is_violation"] is False
+
+
+def test_cross_stream_exemption_does_not_apply_to_acceleration():
+    """Stream-aware: exemption only applies to mainstream, not acceleration."""
+    prompt = "Sprint: fix src/python/csv/csv_parser.py"
+    result = detect_cross_stream_prompt_contamination(
+        prompt, "acceleration",
+        declared_scope=["SUPERVISOR_REPAIR"],
+    )
+    # src/python/ is forbidden for acceleration and supervisor scope shouldn't exempt it
+    assert result["is_violation"] is True
+
+
 # --- Missing sample outputs detection (R104) ---
 
 def test_missing_sample_outputs_detected(tmp_path):

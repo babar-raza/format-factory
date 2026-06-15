@@ -35,7 +35,7 @@ _DATA = b"Hello ZST Gate 11 readiness test data. " * 20
 
 
 class TestZstApiCompleteness:
-    """Verify all 26 public exports are present and callable."""
+    """Verify all 28 public exports are present and callable."""
 
     def test_all_27_exports_present(self):
         expected = {
@@ -46,7 +46,7 @@ class TestZstApiCompleteness:
             "compress_string_to_file", "decompress_file_to_string", "get_frame_size_stats",
             "is_valid_frame", "compress_with_dict", "decompress_with_dict",
             "zst_compressed_size", "zst_is_valid_file", "zst_decompressed_size",
-            "zst_frame_count",
+            "zst_frame_count", "zst_frame_sizes",
         }
         actual = set(zst.__all__)
         assert expected == actual, f"API mismatch. Missing: {expected - actual}. Extra: {actual - expected}"

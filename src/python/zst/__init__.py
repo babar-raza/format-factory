@@ -38,6 +38,7 @@ from .zst_codec import (
     zst_is_valid_file,
     zst_decompressed_size,
     zst_frame_count,
+    zst_frame_sizes,
 )
 
 __all__ = [
@@ -68,6 +69,7 @@ __all__ = [
     "zst_is_valid_file",
     "zst_decompressed_size",
     "zst_frame_count",
+    "zst_frame_sizes",
 ]
 
 __version__ = "0.1.0.dev0"

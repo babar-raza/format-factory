@@ -56,8 +56,11 @@ from .gnumeric_codec import (
     gnumeric_sheet_summary,
     gnumeric_numeric_cell_count,
     gnumeric_column_count,
+    gnumeric_cell_count_file,
     gnumeric_string_cell_count,
+    gnumeric_empty_cell_count,
     gnumeric_row_count_file,
+    gnumeric_column_count_file,
 )
 
 __all__ = [
@@ -108,8 +111,11 @@ __all__ = [
     "gnumeric_sheet_summary",
     "gnumeric_numeric_cell_count",
     "gnumeric_column_count",
+    "gnumeric_cell_count_file",
     "gnumeric_string_cell_count",
+    "gnumeric_empty_cell_count",
     "gnumeric_row_count_file",
+    "gnumeric_column_count_file",
 ]
 
 __version__ = "0.1.0.dev0"

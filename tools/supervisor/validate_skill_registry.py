@@ -59,7 +59,7 @@ def _load_yaml(path: Path) -> dict:
     raise ImportError("PyYAML is required: pip install pyyaml")
 
 
-def validate_registry(registry_path: Path, repo_root: Path) -> dict:
+def validate_registry(registry_path: Path, repo_root: Path, check_spec_qname: bool = False) -> dict:
     errors: list[str] = []
     warnings: list[str] = []
     skill_summaries: list[dict] = []
@@ -181,6 +181,15 @@ def validate_registry(registry_path: Path, repo_root: Path) -> dict:
                 )
                 classification = "UNSAFE"
 
+        # spec_qname_required field check
+        if check_spec_qname:
+            if "spec_qname_required" not in skill:
+                skill_errors.append("missing spec_qname_required field (run REQ-WIRE-001)")
+                if classification == "READY":
+                    classification = "PARTIAL"
+            elif not isinstance(skill.get("spec_qname_required"), bool):
+                skill_errors.append("spec_qname_required must be a boolean")
+
         if skill_errors:
             for err in skill_errors:
                 errors.append(f"[{sid}] {err}")
@@ -232,9 +241,14 @@ def main() -> int:
     parser.add_argument("--registry", type=Path, default=DEFAULT_REGISTRY)
     parser.add_argument("--repo-root", type=Path, default=REPO_ROOT)
     parser.add_argument("--json", action="store_true", help="Print JSON result")
+    parser.add_argument(
+        "--check-spec-qname",
+        action="store_true",
+        help="Verify all skills have spec_qname_required field (REQ-WIRE-001)",
+    )
     args = parser.parse_args()
 
-    result = validate_registry(args.registry, args.repo_root)
+    result = validate_registry(args.registry, args.repo_root, check_spec_qname=args.check_spec_qname)
 
     if args.json:
         print(json.dumps(result, indent=2))

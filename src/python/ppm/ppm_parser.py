@@ -644,6 +644,24 @@ def ppm_red_channel_average(file_path: str | Path) -> float:
     return sum(p[0] for p in img.pixels) / len(img.pixels)
 
 
+def ppm_green_channel_average(file_path: str | Path) -> float:
+    """Return the average value of the green channel across all pixels.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Float average green channel value. Returns 0.0 for empty images.
+
+    Raises:
+        PpmError: If the file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(p[1] for p in img.pixels) / len(img.pixels)
+
+
 def ppm_unique_color_count(file_path: str | Path) -> int:
     """Return the number of unique RGB color tuples in the image.
 
@@ -694,3 +712,25 @@ def ppm_brightness_variance(file_path: str | Path) -> float:
     brightnesses = [sum(p) / 3.0 for p in img.pixels]
     avg = sum(brightnesses) / len(brightnesses)
     return sum((b - avg) ** 2 for b in brightnesses) / len(brightnesses)
+
+
+def ppm_is_binary(file_path: str | Path) -> bool:
+    """Return True if the PPM file uses binary P6 format, False if ASCII P3.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        True for P6 (binary), False for P3 (ASCII).
+
+    Raises:
+        PpmError: If the file cannot be parsed or has an unrecognized magic.
+    """
+    p = Path(file_path)
+    data = p.read_bytes()
+    magic = data[:2]
+    if magic == b"P6":
+        return True
+    if magic == b"P3":
+        return False
+    raise PpmError(f"Unrecognized PPM magic: {magic!r}")

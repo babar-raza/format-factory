@@ -855,3 +855,39 @@ def sylk_total_sum(file_path: "str | Path") -> float:
         if isinstance(cell.value, (int, float)):
             total += cell.value
     return total
+
+
+def sylk_column_count(file_path: "str | Path") -> int:
+    """Return the number of distinct column indices present in the SYLK document.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        Integer count of unique column indices.
+    """
+    doc = parse_sylk_strict(file_path)
+    cols = {cell.col for cell in doc.cells}
+    return len(cols)
+
+
+def sylk_unique_values(file_path: "str | Path", col: int) -> "list":
+    """Return a sorted list of unique non-None values in the given column.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+        col: 1-based column index to inspect.
+
+    Returns:
+        Sorted list of unique values found in that column (excluding None/empty).
+    """
+    doc = parse_sylk_strict(file_path)
+    seen: set = set()
+    for cell in doc.cells:
+        if cell.col == col and cell.value is not None:
+            seen.add(cell.value)
+    try:
+        return sorted(seen)
+    except TypeError:
+        # mixed types (str + int) — sort by string representation
+        return sorted(seen, key=str)

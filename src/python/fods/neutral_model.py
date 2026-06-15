@@ -1668,3 +1668,22 @@ def workbook_cell_text_at(
     if text is None:
         return ""
     return str(text)
+
+
+# ---------------------------------------------------------------------------
+# Formula count (product-healing pilot)
+# ---------------------------------------------------------------------------
+
+def fods_formula_count(workbook: dict[str, Any]) -> int:
+    """Return the total number of formula cells across all sheets.
+
+    Uses the same traversal logic as ``workbook_formula_list`` but returns
+    only the count, which is cheaper for large workbooks.
+    """
+    count = 0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell is not None and cell.get("formula") is not None:
+                    count += 1
+    return count

@@ -1,149 +1,237 @@
 [
   {
-    "item_id": "TRL-LANE-0",
-    "item_title": "Coordinator preflight \u2014 lane discovery, file ownership, overlap check",
+    "item_id": "SHCPH-L1-GOV-REPAIR",
+    "item_title": "Lane 1: Governance closeout defect repair \u2014 blocks_sprint enforcement + claim classification regression tests",
     "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "supervisor_grade": "REWORK_REQUIRED",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/supervisor-tri-lane-reconciliation/lane-input-discovery.json"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TRL-LANE-0"
-  },
-  {
-    "item_id": "TRL-LANE-A",
-    "item_title": "Lane A \u2014 Cross-lane status reconciliation",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "reports/supervisor-tri-lane-reconciliation/cross-lane-status.json",
-      "reports/supervisor-tri-lane-reconciliation/cross-lane-status.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
-    ],
-    "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TRL-LANE-A"
-  },
-  {
-    "item_id": "TRL-LANE-B",
-    "item_title": "Lane B \u2014 Shared field contract validation (14 fields)",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "reports/supervisor-tri-lane-reconciliation/shared-field-contract.json"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Acceptance criteria verified: CONTRACT_VALID_WITH_LIMITATIONS"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": ""
-  },
-  {
-    "item_id": "TRL-LANE-C",
-    "item_title": "Lane C \u2014 FODS/FODT/Netpbm packet merge",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json",
-      "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.md"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths"
-    ],
-    "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: FODS=fods, FODT=fodt, Netpbm=netpbm"
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: FODS=fods, FODT=fodt, Netpbm=netpbm"
-  },
-  {
-    "item_id": "TRL-LANE-D",
-    "item_title": "Lane D \u2014 Mainstream readiness packet with 3-family coverage",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "reports/supervisor-tri-lane-reconciliation/mainstream-readiness-packet.json"
-    ],
-    "tests_supporting": [],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Acceptance criteria verified: READY_FOR_EXECUTION"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": ""
-  },
-  {
-    "item_id": "TRL-LANE-E",
-    "item_title": "Lane E \u2014 12-test reconciliation test file",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
-    "evidence_found": true,
-    "evidence_paths": [
-      "tests/supervisor/test_supervisor_tri_lane_reconciliation.py",
-      "reports/supervisor-tri-lane-reconciliation/raw-logs/test-tri-lane.log"
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/claim-classification-repair.md",
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/governance-closeout-contradiction-repair.md"
     ],
     "tests_supporting": [
-      "tests/supervisor/test_supervisor_tri_lane_reconciliation.py"
+      "tests/supervisor/test_claim_classification_closeout.py"
     ],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (1 files)",
-      "Acceptance criteria verified: 12 passed"
+      "Test content verified (1 files)"
     ],
     "acceptance_criteria_failed": [],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": ""
+    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['No actual test code provided; only a description of a test file with 10 tests.', 'No concrete evidence (e.g., logs, exit code output) showing that critical_rework_count is incremented and exit code becomes 3.', 'Verification step only shows a pytest summary without showing test assertions or coverage of the enforcement logic.', 'Evidence does not demonstrate that the regression tests cover both claim classification validator behavior and blocks_sprint enforcement comprehensively.']",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L1-GOV-REPAIR.",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.32,
+      "stub_detected": true,
+      "deficiencies": [
+        "No actual test code provided; only a description of a test file with 10 tests.",
+        "No concrete evidence (e.g., logs, exit code output) showing that critical_rework_count is incremented and exit code becomes 3.",
+        "Verification step only shows a pytest summary without showing test assertions or coverage of the enforcement logic.",
+        "Evidence does not demonstrate that the regression tests cover both claim classification validator behavior and blocks_sprint enforcement comprehensively."
+      ],
+      "llm_used": true,
+      "low_confidence_override": true
+    }
   },
   {
-    "item_id": "TRL-LANE-F",
-    "item_title": "Lane F \u2014 Evidence closeout, declaration, autonomous-cycle, review package",
+    "item_id": "SHCPH-L2-SPEC-PARITY",
+    "item_title": "Lane 2: Spec-parity validator implementation \u2014 4 validators wired into governance pipeline",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/spec-parity-validator-design.md"
+    ],
+    "tests_supporting": [
+      "tests/supervisor/test_spec_parity_validators.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['No actual test code provided \u2013 only a reference to a test file is mentioned.', 'Design document does not show the implementation of the four validators in the codebase.', 'No evidence that the validators are wired into `run_all_governance_validators()` (e.g., diff or code snippet).', 'Absence of concrete test assertions or execution results to verify PASS/WARN/FAIL behavior.']",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L2-SPEC-PARITY.",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.32,
+      "stub_detected": true,
+      "deficiencies": [
+        "No actual test code provided \u2013 only a reference to a test file is mentioned.",
+        "Design document does not show the implementation of the four validators in the codebase.",
+        "No evidence that the validators are wired into `run_all_governance_validators()` (e.g., diff or code snippet).",
+        "Absence of concrete test assertions or execution results to verify PASS/WARN/FAIL behavior."
+      ],
+      "llm_used": true,
+      "low_confidence_override": true
+    }
+  },
+  {
+    "item_id": "SHCPH-L3-DEPTH",
+    "item_title": "Lane 3: Depth validator implementation \u2014 3 validators for shallow code detection",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/depth-validator-design.md"
+    ],
+    "tests_supporting": [
+      "tests/supervisor/test_depth_validators.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['Evidence only includes a design markdown; actual validator implementation code is not shown.', 'Test file `tests/supervisor/test_depth_validators.py` is described but its contents are not provided, preventing verification of real assertions.', 'No test execution reports or coverage data are included to demonstrate that the validators behave as specified.', 'The description of test cases is high\u2011level; without concrete test code it is impossible to confirm that edge cases and failure modes are exercised.']",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L3-DEPTH.",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.85,
+      "stub_detected": true,
+      "deficiencies": [
+        "Evidence only includes a design markdown; actual validator implementation code is not shown.",
+        "Test file `tests/supervisor/test_depth_validators.py` is described but its contents are not provided, preventing verification of real assertions.",
+        "No test execution reports or coverage data are included to demonstrate that the validators behave as specified.",
+        "The description of test cases is high\u2011level; without concrete test code it is impossible to confirm that edge cases and failure modes are exercised."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "SHCPH-L4-SCHEMA",
+    "item_title": "Lane 4: Evidence schema hardening \u2014 13 optional fields for spec-parity and depth validation",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/schema-hardening-design.md",
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/schema-diff.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified",
+      "Evidence adds 16 optional fields, but acceptance criteria specify 13 fields (scope mismatch).",
+      "No automated test or validation run is provided to prove the updated JSON schema is still valid.",
+      "Evidence consists only of design and diff markdown; lacks executable verification (e.g., schema validation script or CI test).",
+      "No evidence that the new fields are truly optional (e.g., schema validation against existing declarations)."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence adds 16 optional fields, but acceptance criteria specify 13 fields (scope mismatch).; No automated test or validation run is provided to prove the updated JSON schema is still valid.; Evidence consists only of design and diff markdown; lacks executable verification (e.g., schema validation script or CI test).; No evidence that the new fields are truly optional (e.g., schema validation against existing declarations).",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.86,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence adds 16 optional fields, but acceptance criteria specify 13 fields (scope mismatch).",
+        "No automated test or validation run is provided to prove the updated JSON schema is still valid.",
+        "Evidence consists only of design and diff markdown; lacks executable verification (e.g., schema validation script or CI test).",
+        "No evidence that the new fields are truly optional (e.g., schema validation against existing declarations)."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "SHCPH-L5-HEALING",
+    "item_title": "Lane 5: Durable healing \u2014 failure memory wired into autonomous cycle and prompt generation",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/supervisor-tri-lane-reconciliation/evidence-declaration.yaml"
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/healing-persistence-design.md",
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/failure-memory-before-after.md"
+    ],
+    "tests_supporting": [
+      "tests/supervisor/test_failure_memory_persistence.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [
+      "No actual test code or test execution reports are provided; only design and description markdown files are present.",
+      "Evidence does not show the modified source files (autonomous_cycle.py, generate_next_worker_prompt.py) with the required FailureMemory integration.",
+      "The claimed regression tests (tests/supervisor/test_failure_memory_persistence.py) are not included, so coverage and assertions cannot be verified.",
+      "Without test results or logs, it cannot be confirmed that the feature works as specified or that edge cases (duplicate detection, escalation, unresolved filtering) are handled."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_VERIFIED -> ACCEPTED_WITH_LIMITATIONS: No actual test code or test execution reports are provided; only design and description markdown files are present.; Evidence does not show the modified source files (autonomous_cycle.py, generate_next_worker_prompt.py) with the required FailureMemory integration.; The claimed regression tests (tests/supervisor/test_failure_memory_persistence.py) are not included, so coverage and assertions cannot be verified.; Without test results or logs, it cannot be confirmed that the feature works as specified or that edge cases (duplicate detection, escalation, unresolved filtering) are handled.",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.9,
+      "stub_detected": false,
+      "deficiencies": [
+        "No actual test code or test execution reports are provided; only design and description markdown files are present.",
+        "Evidence does not show the modified source files (autonomous_cycle.py, generate_next_worker_prompt.py) with the required FailureMemory integration.",
+        "The claimed regression tests (tests/supervisor/test_failure_memory_persistence.py) are not included, so coverage and assertions cannot be verified.",
+        "Without test results or logs, it cannot be confirmed that the feature works as specified or that edge cases (duplicate detection, escalation, unresolved filtering) are handled."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "SHCPH-L6-TASKGEN",
+    "item_title": "Lane 6: Task generation repair \u2014 gap-ledger primary, advisory-only guard, hardcoded goals demoted",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/task-generation-source-of-truth-repair.md"
+    ],
+    "tests_supporting": [
+      "tests/supervisor/test_task_generation_queue.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [],
+    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['No actual test code or assertions are provided; only a description of intended tests.', 'Evidence file is a markdown summary without concrete test artifacts (e.g., pytest files, coverage reports).', 'Cannot verify that the regression tests cover the claimed scenarios (priority inversion, advisory-only guard, queue tracking).', \"Potential scope mismatch: the described tests are not shown, so it's unclear if they exercise the full feature set.\"]",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L6-TASKGEN.",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.92,
+      "stub_detected": true,
+      "deficiencies": [
+        "No actual test code or assertions are provided; only a description of intended tests.",
+        "Evidence file is a markdown summary without concrete test artifacts (e.g., pytest files, coverage reports).",
+        "Cannot verify that the regression tests cover the claimed scenarios (priority inversion, advisory-only guard, queue tracking).",
+        "Potential scope mismatch: the described tests are not shown, so it's unclear if they exercise the full feature set."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "SHCPH-L7-CI",
+    "item_title": "Lane 7: CI gate hardening \u2014 || true removed from .NET build, continue-on-error for experimental only",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/ci-hardening.md",
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/lane-ledger-contradiction-resolution.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -155,8 +243,64 @@
     "acceptance_criteria_failed": [
       "No raw proof, test content, or acceptance criteria verified"
     ],
+    "required_rework": "Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ['Evidence consists only of descriptive markdown without showing the actual .github/workflows/ci.yml changes or diffs.', 'No CI run logs or screenshots demonstrating that the `|| true` was removed and that builds now fail as expected for established projects.', 'No verification that experimental projects are configured with `continue-on-error: true` (e.g., step definitions or logs).', 'Included lane\u2011ledger contradiction resolution file is unrelated to the CI hardening work, indicating scope mismatch.', 'Absence of automated tests or assertions confirming the new behavior; only narrative description is provided.']",
+    "can_autonomously_repair": true,
+    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L7-CI.",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.22,
+      "stub_detected": true,
+      "deficiencies": [
+        "Evidence consists only of descriptive markdown without showing the actual .github/workflows/ci.yml changes or diffs.",
+        "No CI run logs or screenshots demonstrating that the `|| true` was removed and that builds now fail as expected for established projects.",
+        "No verification that experimental projects are configured with `continue-on-error: true` (e.g., step definitions or logs).",
+        "Included lane\u2011ledger contradiction resolution file is unrelated to the CI hardening work, indicating scope mismatch.",
+        "Absence of automated tests or assertions confirming the new behavior; only narrative description is provided."
+      ],
+      "llm_used": true,
+      "low_confidence_override": true
+    }
+  },
+  {
+    "item_id": "SHCPH-L8-PILOT",
+    "item_title": "Lane 8: Controlled product healing pilot \u2014 ZST verification through healed governance machinery",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/controlled-product-healing-selection.md"
+    ],
+    "tests_supporting": [
+      "tests/python/zst/test_rnext_zst_file_info.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [
+      "Evidence consists only of a markdown summary; no actual test code, logs, or CI reports are provided.",
+      "Claims of \"10 tests, 10 passed\" are not substantiated with runnable test files or output artifacts.",
+      "No concrete proof that the healed governance machinery (validators, depth checks, failure memory, etc.) was exercised during the pilot.",
+      "Absence of coverage data or verification that the governance repairs are active and correctly configured.",
+      "Recommendation steps are present, but the pilot verification itself lacks verifiable artifacts."
+    ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for TRL-LANE-F"
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_VERIFIED -> ACCEPTED_WITH_LIMITATIONS: Evidence consists only of a markdown summary; no actual test code, logs, or CI reports are provided.; Claims of \"10 tests, 10 passed\" are not substantiated with runnable test files or output artifacts.; No concrete proof that the healed governance machinery (validators, depth checks, failure memory, etc.) was exercised during the pilot.; Absence of coverage data or verification that the governance repairs are active and correctly configured.; Recommendation steps are present, but the pilot verification itself lacks verifiable artifacts.",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.86,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence consists only of a markdown summary; no actual test code, logs, or CI reports are provided.",
+        "Claims of \"10 tests, 10 passed\" are not substantiated with runnable test files or output artifacts.",
+        "No concrete proof that the healed governance machinery (validators, depth checks, failure memory, etc.) was exercised during the pilot.",
+        "Absence of coverage data or verification that the governance repairs are active and correctly configured.",
+        "Recommendation steps are present, but the pilot verification itself lacks verifiable artifacts."
+      ],
+      "llm_used": true
+    }
   }
 ]

@@ -1,0 +1,118 @@
+"""Spec-parity migration proof for FODT format.
+
+Verifies that each SAL spec fact for FODT has at least one matching
+implementation function in the FODT codec.
+"""
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+import pytest
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT))
+
+SAL_FACTS_PATH = REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
+
+# Mapping: FODT spec fact qname -> list of functions that implement it
+FODT_SPEC_FUNCTION_MAP = {
+    "FODT-FACT-001": [
+        "parse_fodt",
+        "parse_fodt_strict",
+        "write_fodt",
+        "document_to_xml",
+    ],
+    "FODT-FACT-002": [
+        "document_text_content",
+        "document_paragraph_count",
+        "document_extract_headings",
+        "document_heading_outline",
+        "document_list_stats",
+        "document_heading_level_distribution",
+    ],
+    "FODT-FACT-003": [
+        "document_hyperlink_count",
+        "document_footnote_count",
+        "document_footnote_endnote_summary",
+        "document_paragraph_style_distribution",
+    ],
+    "FODT-FACT-004": [
+        "document_table_summary",
+        "document_count_tables",
+        "document_has_tables",
+        "document_table_cell_count",
+        "document_table_cell_span_summary",
+        "document_table_row_count",
+    ],
+    "FODT-FACT-005": [
+        "document_list_stats",
+        "document_list_item_count",
+        "document_block_type_count",
+    ],
+}
+
+
+@pytest.fixture(scope="module")
+def sal_fodt_facts():
+    if not SAL_FACTS_PATH.is_file():
+        pytest.skip("SAL output file not found")
+    data = json.loads(SAL_FACTS_PATH.read_text(encoding="utf-8"))
+    for entry in data.get("results", []):
+        if entry.get("format_id", "").upper() == "FODT":
+            return entry.get("spec_facts", [])
+    pytest.skip("No FODT facts in SAL output")
+
+
+@pytest.fixture(scope="module")
+def fodt_exports():
+    from src.python.fodt import __all__
+    return set(__all__)
+
+
+class TestFodtSpecParity:
+    def test_sal_has_fodt_facts(self, sal_fodt_facts):
+        assert len(sal_fodt_facts) >= 5
+
+    def test_all_qnames_present(self, sal_fodt_facts):
+        qnames = {f["qname"] for f in sal_fodt_facts}
+        for expected in FODT_SPEC_FUNCTION_MAP:
+            assert expected in qnames, f"Missing spec fact {expected}"
+
+    def test_fact_001_flat_xml_variant(self, fodt_exports):
+        for fn in FODT_SPEC_FUNCTION_MAP["FODT-FACT-001"]:
+            assert fn in fodt_exports, f"{fn} not exported"
+
+    def test_fact_002_text_content(self, fodt_exports):
+        for fn in FODT_SPEC_FUNCTION_MAP["FODT-FACT-002"]:
+            assert fn in fodt_exports, f"{fn} not exported"
+
+    def test_fact_003_inline_formatting(self, fodt_exports):
+        for fn in FODT_SPEC_FUNCTION_MAP["FODT-FACT-003"]:
+            assert fn in fodt_exports, f"{fn} not exported"
+
+    def test_fact_004_tables(self, fodt_exports):
+        for fn in FODT_SPEC_FUNCTION_MAP["FODT-FACT-004"]:
+            assert fn in fodt_exports, f"{fn} not exported"
+
+    def test_fact_005_lists(self, fodt_exports):
+        for fn in FODT_SPEC_FUNCTION_MAP["FODT-FACT-005"]:
+            assert fn in fodt_exports, f"{fn} not exported"
+
+    def test_all_mapped_functions_are_callable(self):
+        import src.python.fodt as fodt_module
+        for qname, funcs in FODT_SPEC_FUNCTION_MAP.items():
+            for fn in funcs:
+                obj = getattr(fodt_module, fn, None)
+                assert callable(obj), f"{fn} (for {qname}) is not callable"
+
+    def test_coverage_is_complete(self, sal_fodt_facts):
+        mapped_qnames = set(FODT_SPEC_FUNCTION_MAP.keys())
+        sal_qnames = {f["qname"] for f in sal_fodt_facts}
+        unmapped = sal_qnames - mapped_qnames
+        assert unmapped == set(), f"Unmapped spec facts: {unmapped}"
+
+    def test_minimum_function_coverage_per_fact(self):
+        for qname, funcs in FODT_SPEC_FUNCTION_MAP.items():
+            assert len(funcs) >= 2, f"{qname} has only {len(funcs)} function(s)"

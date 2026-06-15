@@ -322,3 +322,36 @@ def qoi_pixel_count(file_path: str | Path) -> int:
     data = path.read_bytes()
     width, height, _channels, _colorspace = _parse_header(data)
     return width * height
+
+
+def qoi_unique_color_count(file_path: str | Path) -> int:
+    """Return the number of unique pixel color tuples in a QOI image."""
+    img = parse_qoi_strict(file_path)
+    return len(set(img.pixels))
+
+
+def qoi_channel_count(file_path: str | Path) -> int:
+    """Return the number of color channels (3=RGB or 4=RGBA) in a QOI image."""
+    path = Path(file_path)
+    data = path.read_bytes()
+    _width, _height, channels, _colorspace = _parse_header(data)
+    return channels
+
+
+def qoi_is_opaque(file_path: str | Path) -> bool:
+    """Return True if every pixel in the QOI image has alpha == 255.
+
+    For 3-channel (RGB) images this always returns True since there is
+    no alpha channel.  For 4-channel (RGBA) images it decodes all pixels
+    and checks that every alpha value equals 255.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        True if the image is fully opaque, False otherwise.
+    """
+    img = parse_qoi_strict(file_path)
+    if img.channels == 3:
+        return True
+    return all(pixel[3] == 255 for pixel in img.pixels)

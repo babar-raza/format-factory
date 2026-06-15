@@ -1,0 +1,146 @@
+# Python/.NET Feature Parity Matrix
+# Generated: 2026-06-14 (Pre-Product-Acquisition Readiness Recon Sprint)
+# Purpose: Track which Python formats have .NET counterparts and vice versa
+
+version: "1.0"
+generated_by: "pre-product-acquisition-readiness-recon-20260614-915cfd2"
+
+# Format parity status
+formats:
+  # --- Formats with BOTH Python and .NET ---
+  csv:
+    python: {exists: true, module: "src/python/csv/"}
+    dotnet: {exists: true, project: "src/net/csv/FormatFactory.Csv.csproj"}
+    parity: both
+
+  fods:
+    python: {exists: true, module: "src/python/fods/"}
+    dotnet: {exists: true, project: "src/net/fods/FormatFactory.Fods.csproj"}
+    parity: both
+
+  fodt:
+    python: {exists: true, module: "src/python/fodt/"}
+    dotnet: {exists: true, project: "src/net/fodt/FormatFactory.Fodt.csproj"}
+    parity: both
+
+  ndjson:
+    python: {exists: true, module: "src/python/ndjson/"}
+    dotnet: {exists: true, project: "src/net/ndjson/FormatFactory.Ndjson.csproj"}
+    parity: both
+
+  tsv:
+    python: {exists: true, module: "src/python/tsv/"}
+    dotnet: {exists: true, project: "src/net/tsv/FormatFactory.Tsv.csproj"}
+    parity: both
+
+  # --- Formats with .NET ONLY ---
+  html:
+    python: {exists: false}
+    dotnet: {exists: true, project: "src/net/html/FormatFactory.Html.csproj"}
+    parity: dotnet_only
+
+  markdown:
+    python: {exists: false}
+    dotnet: {exists: true, project: "src/net/markdown/FormatFactory.Markdown.csproj"}
+    parity: dotnet_only
+
+  txt:
+    python: {exists: false}
+    dotnet: {exists: true, project: "src/net/txt/FormatFactory.Txt.csproj"}
+    parity: dotnet_only
+
+  netpbm:
+    python: {exists: true, module: "src/python/pbm/ + src/python/pgm/ + src/python/ppm/", note: "Split into PBM/PGM/PPM"}
+    dotnet: {exists: true, project: "src/net/netpbm/FormatFactory.Netpbm.csproj"}
+    parity: both_different_structure
+
+  # --- Formats with Python ONLY ---
+  abw:
+    python: {exists: true, module: "src/python/abw/"}
+    dotnet: {exists: false}
+    parity: python_only
+    decision: "FOSS Python only"
+
+  dif:
+    python: {exists: true, module: "src/python/dif/"}
+    dotnet: {exists: false}
+    parity: python_only
+    decision: "FOSS Python only"
+
+  fodg:
+    python: {exists: true, module: "src/python/fodg/"}
+    dotnet: {exists: false}
+    parity: python_only
+
+  fodp:
+    python: {exists: true, module: "src/python/fodp/"}
+    dotnet: {exists: false}
+    parity: python_only
+
+  gnumeric:
+    python: {exists: true, module: "src/python/gnumeric/"}
+    dotnet: {exists: false}
+    parity: python_only
+    decision: "FOSS Python only"
+
+  ods:
+    python: {exists: true, module: "src/python/ods/"}
+    dotnet: {exists: false}
+    parity: python_only
+
+  odt:
+    python: {exists: true, module: "src/python/odt/"}
+    dotnet: {exists: false}
+    parity: python_only
+
+  qoi:
+    python: {exists: true, module: "src/python/qoi/"}
+    dotnet: {exists: false}
+    parity: python_only
+    decision: "FOSS Python only"
+
+  sylk:
+    python: {exists: true, module: "src/python/sylk/"}
+    dotnet: {exists: false}
+    parity: python_only
+    decision: "FOSS Python only"
+
+  toml:
+    python: {exists: true, module: "src/python/toml/"}
+    dotnet: {exists: false}
+    parity: python_only
+
+  xcf:
+    python: {exists: true, module: "src/python/xcf/"}
+    dotnet: {exists: false}
+    parity: python_only
+    decision: "FOSS Python only"
+
+  zst:
+    python: {exists: true, module: "src/python/zst/"}
+    dotnet: {exists: false}
+    parity: python_only
+    decision: "Python-only FOSS — .NET intentionally absent"
+
+  pbm:
+    python: {exists: true, module: "src/python/pbm/"}
+    dotnet: {exists: false, note: "Covered by netpbm .NET project"}
+    parity: python_only_dotnet_grouped
+
+  pgm:
+    python: {exists: true, module: "src/python/pgm/"}
+    dotnet: {exists: false, note: "Covered by netpbm .NET project"}
+    parity: python_only_dotnet_grouped
+
+  ppm:
+    python: {exists: true, module: "src/python/ppm/"}
+    dotnet: {exists: false, note: "Covered by netpbm .NET project"}
+    parity: python_only_dotnet_grouped
+
+# Summary
+summary:
+  both_python_and_dotnet: 5  # csv, fods, fodt, ndjson, tsv
+  both_different_structure: 1  # netpbm (pbm+pgm+ppm in Python)
+  dotnet_only: 3  # html, markdown, txt
+  python_only: 14  # abw, dif, fodg, fodp, gnumeric, ods, odt, qoi, sylk, toml, xcf, zst, pbm, pgm, ppm (minus grouped)
+  intentionally_absent_dotnet: 5  # zst, abw, dif, sylk, qoi (FOSS-only decision)

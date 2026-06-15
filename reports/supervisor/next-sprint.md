@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT19-001
+# Source sprint: EVIDENCE-REPAIR-HARDENING-20260614
 # Stream: mainstream
-# Generated: 2026-06-12T21:57:08.549002
+# Generated: 2026-06-15T08:13:05.224775
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +11,9 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT19-001
+- Sprint ID: EVIDENCE-REPAIR-HARDENING-20260614
 - Evidence verdict: ACCEPTED
-- Tests: 32 passed, 0 failed, 0 skipped
+- Tests: 111 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -92,56 +92,56 @@ None
 
 ## Project Memory Context
 ```
-- timestamp: 2026-06-12T21:27:08.688252
+- timestamp: 2026-06-14T12:57:05.930677
 - verdict: ACCEPTED
-- test_count: 31
+- test_count: 75
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\sal-phase4-product-deepening-sprint4-20260612-8e45224\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\system-hardening-and-controlled-product-healing-20260614-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 56
+- bundle_entry_count: 88
 - bundle_validation_pass: True
-- test_delta: -15
-- test_delta_from: 46
+- test_delta: -910
+- test_delta_from: 985
 
-## Entry: FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT16-001
-- timestamp: 2026-06-12T21:29:08.030104
+## Entry: EVIDENCE-REPAIR-HARDENING-20260614
+- timestamp: 2026-06-14T14:09:06.506048
 - verdict: ACCEPTED
-- test_count: 43
+- test_count: 111
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint16-20260612-001\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\evidence-repair-hardening-20260614-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 57
+- bundle_entry_count: 67
 - bundle_validation_pass: True
-- test_delta: +12
-- test_delta_from: 31
+- test_delta: +36
+- test_delta_from: 75
 
-## Entry: FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT17-001
-- timestamp: 2026-06-12T21:41:08.622480
+## Entry: SELF-GOVERNED-CLOSEOUT-REPAIR-20260614
+- timestamp: 2026-06-14T14:19:07.033667
 - verdict: ACCEPTED
-- test_count: 67
+- test_count: 223
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint17-20260612-001\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\self-governed-closeout-repair-20260614-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 57
+- bundle_entry_count: 69
 - bundle_validation_pass: True
-- test_delta: +24
-- test_delta_from: 43
+- test_delta: +112
+- test_delta_from: 111
 
-## Entry: FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT18-001
-- timestamp: 2026-06-12T21:49:08.484127
+## Entry: EVIDENCE-COMPLETION-PILOT-20260614
+- timestamp: 2026-06-14T20:05:09.245817
 - verdict: ACCEPTED
-- test_count: 61
+- test_count: 239
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint18-20260612-001\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\evidence-completion-pilot-20260614-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 57
+- bundle_entry_count: 59
 - bundle_validation_pass: True
-- test_delta: -6
-- test_delta_from: 67
+- test_delta: +16
+- test_delta_from: 223
 ```
 
 ---

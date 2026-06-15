@@ -56,7 +56,9 @@ from .tsv_parser import (
     tsv_empty_row_count,
     tsv_max_cell_length,
     tsv_row_count,
+    tsv_column_count,
     count_distinct_values,
+    tsv_has_header,
 )
 
 __version__ = "0.1.0"
@@ -109,5 +111,7 @@ __all__ = [
     "tsv_empty_row_count",
     "tsv_max_cell_length",
     "tsv_row_count",
+    "tsv_column_count",
     "count_distinct_values",
+    "tsv_has_header",
 ]

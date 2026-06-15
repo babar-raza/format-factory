@@ -26,6 +26,20 @@ Add a new object-model feature to a Python FOSS product (fods, fodt, pbm, pgm, p
 5. **Ledger**: Adds a `GOVERNED_PRODUCT_CHANGE` entry to `reports/r90/product-code-change-ledger.json`
 6. **Verify**: Runs `python -m pytest tests/python/<format>/test_r<run>_<feature>.py -v`
 
+## Spec-Literal Requirements
+
+Because `spec_qname_required: true` for this skill, the execution handoff MUST include at least one
+`spec_fact_refs` entry linking the feature to a format specification fact. Example:
+
+```yaml
+spec_fact_refs:
+  - PPM-FACT-001   # Netpbm §2.1 — P6 binary header
+```
+
+If no `spec_fact_refs` are provided, stop with `BLOCKED_SPEC_QNAME_REQUIRED`.
+Spec facts are produced by `tools/specification-authority-layer/sal_master_runner.py` and stored
+in `.local/sal-output/sal-facts-latest.json`. Verify the cited QName exists in that file.
+
 ## Constraints
 
 - One feature at a time

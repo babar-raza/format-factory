@@ -465,6 +465,19 @@ def csv_numeric_row_count(file_path: "str | Path") -> int:
     return count
 
 
+def csv_total_cell_count(file_path: "str | Path") -> int:
+    """Return the total number of cells across all data rows in the CSV file.
+
+    Args:
+        file_path: Path to the CSV file.
+
+    Returns:
+        Integer total cell count (sum of cells in each row).
+    """
+    model = parse_csv_strict(file_path)
+    return sum(len(row) for row in model.get("rows", []))
+
+
 def count_distinct_values(file_path: "str | Path", col_name: str) -> int:
     """Return the count of distinct non-empty values in a CSV column.
 

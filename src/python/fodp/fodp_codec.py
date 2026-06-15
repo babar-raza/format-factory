@@ -198,7 +198,76 @@ def fodp_total_text_length(source: "str | bytes | Path") -> int:
     return sum(len(t) for t in texts)
 
 
+def fodp_slide_count(source: "str | bytes | Path") -> int:
+    """Return the number of slides (pages) in a FODP presentation."""
+    return get_page_count(source)
+
+
 def fodp_slide_shape_counts(source: "str | bytes | Path") -> list[int]:
     """Return a list of shape counts, one per slide."""
     model = load(source)
     return [p["shape_count"] for p in model.get("pages", [])]
+
+
+def fodp_total_shape_count(source: "str | bytes | Path") -> int:
+    """Return the total number of shapes across all slides.
+
+    Sums the per-slide shape counts returned by ``fodp_slide_shape_counts``.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Total shape count across the entire presentation.
+    """
+    return sum(fodp_slide_shape_counts(source))
+
+
+def fodp_notes_text(source: "str | bytes | Path") -> list[str]:
+    """Return presentation notes text, one string per slide.
+
+    Extracts text from ``presentation:notes`` elements within each
+    ``draw:page``.  Slides without notes produce an empty string.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        List of notes strings in slide order.
+    """
+    xml_bytes = _read_source(source)
+    root = _parse_xml(xml_bytes)
+    notes: list[str] = []
+    ns_pres = NS["presentation"]
+    ns_draw = NS["draw"]
+    ns_text = NS["text"]
+    for page in root.iter(f"{{{ns_draw}}}page"):
+        page_notes_parts: list[str] = []
+        for notes_elem in page.findall(f"{{{ns_pres}}}notes"):
+            for tp in notes_elem.iter(f"{{{ns_text}}}p"):
+                t = "".join(tp.itertext()).strip()
+                if t:
+                    page_notes_parts.append(t)
+        notes.append(" ".join(page_notes_parts))
+    return notes
+
+
+def fodp_has_notes(source: "str | bytes | Path") -> bool:
+    """Return True if any slide has non-empty presentation notes."""
+    return any(n for n in fodp_notes_text(source))
+
+
+def fodp_slide_titles(source: "str | bytes | Path") -> "list[str | None]":
+    """Return a list of slide titles, one per slide.
+
+    Each entry is the title string extracted from the slide's title frame,
+    or None if the slide has no title frame.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        List of title strings (or None) in slide order.
+    """
+    model = load(source)
+    return [p.get("title") for p in model.get("pages", [])]

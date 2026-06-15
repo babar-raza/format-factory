@@ -1176,6 +1176,38 @@ def gnumeric_row_count_file(file_path: "str | bytes | Path", sheet_idx: int = 0)
     return row_count(model, sheet_idx)
 
 
+def gnumeric_column_count_file(file_path: "str | bytes | Path", sheet_idx: int = 0) -> int:
+    """Return the number of distinct column indices with data in the given sheet.
+
+    File-path wrapper around gnumeric_column_count(model, sheet_idx).
+
+    Args:
+        file_path: Path to a Gnumeric file.
+        sheet_idx: 0-based sheet index (default 0).
+
+    Returns:
+        Integer column count.
+    """
+    model = load(file_path)
+    return gnumeric_column_count(model, sheet_idx)
+
+
+def gnumeric_cell_count_file(file_path: "str | bytes | Path", sheet_idx: int = 0) -> int:
+    """Return the number of non-empty cells in a sheet, taking a file path.
+
+    Convenience wrapper around the model-based ``count_nonempty_cells``.
+
+    Args:
+        file_path: Path to a ``.gnumeric`` file.
+        sheet_idx: 0-based sheet index (default 0).
+
+    Returns:
+        Integer count of non-empty cells.
+    """
+    model = load(file_path)
+    return count_nonempty_cells(model, sheet_idx)
+
+
 def gnumeric_string_cell_count(model: "dict[str, Any]", sheet_idx: int) -> int:
     """Return the count of cells that contain non-numeric string values.
 
@@ -1197,5 +1229,26 @@ def gnumeric_string_cell_count(model: "dict[str, Any]", sheet_idx: int) -> int:
         try:
             float(v)
         except (ValueError, TypeError):
+            count += 1
+    return count
+
+
+def gnumeric_empty_cell_count(model: "dict[str, Any]", sheet_idx: int) -> int:
+    """Return the count of cells in the grid with empty or None values.
+
+    Args:
+        model: Parsed Gnumeric model dict.
+        sheet_idx: 0-based sheet index.
+
+    Returns:
+        Integer count of empty cells. Returns 0 if sheet not found or empty.
+    """
+    sheets = model.get("sheets", [])
+    if sheet_idx < 0 or sheet_idx >= len(sheets):
+        return 0
+    grid = sheets[sheet_idx].get("cell_grid", {})
+    count = 0
+    for v in grid.values():
+        if v is None or v == "":
             count += 1
     return count

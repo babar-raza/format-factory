@@ -1,13 +1,13 @@
 # Evidence Review — Supervisor
-Sprint ID: FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT19-001
-Timestamp: 2026-06-12T21:57:06.059589
+Sprint ID: EVIDENCE-REPAIR-HARDENING-20260614
+Timestamp: 2026-06-15T08:13:04.685823
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint19-20260612-001\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\evidence-repair-hardening-20260614-915cfd2\declaration-review-package.zip
 
 ## Facts
-- Tests: 32 passed, 0 failed, 0 skipped
+- Tests: 111 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 55
+- Bundle entries: 69
 - PENDING markers: 0
 
 ## Gate States

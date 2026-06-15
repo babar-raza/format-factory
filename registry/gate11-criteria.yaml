@@ -1,0 +1,62 @@
+# Gate 11 Acceptance Criteria — Machine-Readable
+# Format Factory — Specification Authority Layer
+# REQ-GOV-001: These criteria are used by validate_gate11_criteria() in
+# governance_validators.py to automatically check Gate 11 readiness packets.
+# Human approval (Babar Raza) is still required for Gate 11 execution.
+# This file provides the threshold values for the validator only.
+
+schema_version: "1.0"
+gate: 11
+description: >
+  Gate 11 is the commercial release gate. A format must satisfy all spec-literal
+  implementation criteria before being submitted to Babar Raza for commercial
+  release approval. These thresholds are minimum requirements — the actual
+  packet may exceed them.
+
+criteria:
+  # Minimum number of spec fact references (FACT-* or format-specific QNames)
+  # cited in test files or evidence. Prevents "spec-unaware" implementations.
+  min_spec_facts_cited: 3
+
+  # Minimum fraction of spec-defined APIs that have passing tests.
+  # 0.6 = 60% of the APIs listed in the format registry must be test-covered.
+  min_api_coverage: 0.6
+
+  # Minimum passing FOSS Python tests for the format.
+  foss_test_count_min: 50
+
+  # Minimum passing .NET commercial tests for the format.
+  commercial_test_count_min: 10
+
+  # Whether a parity matrix artifact is required.
+  # A parity matrix maps spec-defined features to implementation status.
+  parity_matrix_required: true
+
+  # Whether a dogfood export proof is required.
+  # Dogfood = using Format Factory's own library in a real pipeline.
+  dogfood_proof_required: true
+
+  # Whether placeholder metadata (TBD, pending, PLACEHOLDER) is forbidden.
+  # Gate 11 packets must not contain incomplete sections.
+  no_placeholder_metadata: true
+
+# Violation thresholds: how many violations are tolerated per check
+# (0 = zero tolerance, any violation blocks)
+violation_thresholds:
+  spec_facts_cited: 0
+  api_coverage: 0
+  foss_test_count: 0
+  commercial_test_count: 0
+  parity_matrix: 0
+  dogfood_proof: 0
+  placeholder_metadata: 0
+
+# Patterns that trigger the no_placeholder_metadata check
+placeholder_patterns:
+  - "TBD"
+  - "TODO"
+  - "PLACEHOLDER"
+  - "pending"
+  - "to be filled"
+  - "NOT YET"
+  - "IN PROGRESS"

@@ -508,6 +508,49 @@ STREAM_GROUPS = {
 }
 
 
+def _build_spec_parity_section(repo_root: Path) -> str:
+    """Build spec-parity requirements section from skill registry.
+
+    Reads .supervisor/skill-registry.yaml to find skills with
+    spec_qname_required: true and injects a requirements section into the
+    generated prompt. Advisory-only — gracefully returns empty string if
+    registry is unavailable.
+    """
+    try:
+        registry_path = repo_root / SKILL_REGISTRY_PATH
+        if not registry_path.exists():
+            return ""
+        registry = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+        skills = registry.get("skills", [])
+        if not skills:
+            return ""
+        qname_skills = [s for s in skills if s.get("spec_qname_required")]
+        if not qname_skills:
+            return ""
+        lines = [
+            "",
+            "## Spec-Parity Requirements (from skill registry)",
+            "",
+            "The following skills require `spec_qname` mapping when invoked for product model work.",
+            "Any product model task using these skills MUST declare which spec QNames are addressed",
+            "and MUST NOT invent arbitrary flat class names without spec authority.",
+            "",
+        ]
+        for s in qname_skills:
+            sid = s.get("skill_id", "unknown")
+            lines.append(f"- **{sid}**: spec_qname_required=true")
+        lines.extend([
+            "",
+            "**Enforcement:** If a product model change is made without citing spec_fact_refs,",
+            "governance validator V8 (spec_fact_references) will FAIL the item.",
+            "Use SAL output at `.local/sal-output/sal-facts-latest.json` for valid FACT-* refs.",
+            "",
+        ])
+        return "\n".join(lines)
+    except Exception:
+        return ""
+
+
 def generate_prompt(review: dict, next_work: dict | None = None,
                     repo_root: Path = None, stream: str = None) -> str:
     """Generate the mega-train execution prompt from review results and project data.
@@ -521,6 +564,25 @@ def generate_prompt(review: dict, next_work: dict | None = None,
     """
     if repo_root is None:
         repo_root = REPO_ROOT
+
+    # Lane 5: Inject durable failure memory into prompt
+    failure_warnings = []
+    try:
+        from failure_memory import FailureMemory
+        fm = FailureMemory(repo_root)
+        escalated = fm.find_escalated()
+        for e in escalated:
+            failure_warnings.append(
+                f"ESCALATED FAILURE ({e['category']}): {e['root_cause']} "
+                f"(seen {e['occurrence_count']}x, last: {e.get('last_seen_sprint', 'unknown')})"
+            )
+        unresolved = fm.find_unresolved()
+        if len(unresolved) > 5:
+            failure_warnings.append(
+                f"WARNING: {len(unresolved)} unresolved failures in failure memory"
+            )
+    except Exception:
+        pass
 
     # Load data sources
     poc_targets = load_poc_targets(repo_root)
@@ -603,6 +665,21 @@ def generate_prompt(review: dict, next_work: dict | None = None,
             review, trains, sprint_goal, test_line,
             next_sprint, venv_path, dotnet_test_cmd, effective_stream,
         )
+
+    # Lane 5: Inject failure memory warnings into prompt
+    if failure_warnings:
+        fw_section = "\n\n## Durable Failure Memory Warnings\n\n"
+        fw_section += "The following failures have been recorded in durable failure memory.\n"
+        fw_section += "Address escalated failures with priority.\n\n"
+        for fw in failure_warnings:
+            fw_section += f"- {fw}\n"
+        fw_section += "\n"
+        deterministic_prompt += fw_section
+
+    # Inject spec-parity requirements from skill registry (advisory)
+    spec_section = _build_spec_parity_section(repo_root)
+    if spec_section:
+        deterministic_prompt += spec_section
 
     # LLM-enhanced prompt rewrite (optional — preserves governance sections)
     rewritten = rewrite_prompt_with_context(deterministic_prompt, review, effective_stream)

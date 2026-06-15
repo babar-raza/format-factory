@@ -952,6 +952,19 @@ def abw_nonempty_paragraph_count(file_path: "str | bytes | Path") -> int:
     return sum(1 for line in lines if line.strip())
 
 
+def abw_word_count(file_path: "str | bytes | Path") -> int:
+    """Return the total word count across all paragraphs in an ABW file.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Integer total word count.
+    """
+    model = load(file_path)
+    return count_words(model)
+
+
 def abw_empty_paragraph_count(file_path: "str | bytes | Path") -> int:
     """Return the count of paragraphs that are empty or contain only whitespace.
 
@@ -966,3 +979,20 @@ def abw_empty_paragraph_count(file_path: "str | bytes | Path") -> int:
     """
     lines = extract_text(file_path)
     return sum(1 for line in lines if not line.strip())
+
+
+def get_paragraphs(model: dict) -> list[str]:
+    """Return a copy of all paragraph texts from a loaded ABW model.
+
+    Args:
+        model: A dict returned by :func:`load`.
+
+    Returns:
+        List of paragraph strings (may include empty strings for blank paragraphs).
+
+    Raises:
+        TypeError: If *model* is not a dict.
+    """
+    if not isinstance(model, dict):
+        raise TypeError("model must be a dict")
+    return list(model.get("paragraphs", []))

@@ -1371,6 +1371,96 @@ _GLOBAL_FORBIDDEN = [
 ]
 
 
+_GAP_LEDGER_PATH = _REPO_ROOT / "reports" / "capability-layer" / "gap-ledger.json"
+
+# Format name → Python source module mapping for gap-ledger integration
+_FORMAT_SOURCE_MAP: Dict[str, str] = {
+    "FODS": "src/python/fods/__init__.py",
+    "FODT": "src/python/fodt/__init__.py",
+    "ZST": "src/python/zst/zst_codec.py",
+    "ODS": "src/python/ods/ods_parser.py",
+    "ABW": "src/python/abw/abw_codec.py",
+    "NDJSON": "src/python/ndjson/ndjson_codec.py",
+    "TSV": "src/python/tsv/tsv_parser.py",
+    "CSV": "src/python/csv/csv_parser.py",
+    "DIF": "src/python/dif/dif_parser.py",
+    "SYLK": "src/python/sylk/sylk_parser.py",
+    "FODT": "src/python/fodt/__init__.py",
+    "FODG": "src/python/fodg/fodg_codec.py",
+    "FODP": "src/python/fodp/fodp_codec.py",
+    "GNUMERIC": "src/python/gnumeric/gnumeric_codec.py",
+    "QOI": "src/python/qoi/qoi_parser.py",
+    "PBM": "src/python/pbm/pbm_parser.py",
+    "PGM": "src/python/pgm/pgm_parser.py",
+    "PPM": "src/python/ppm/ppm_parser.py",
+    "XCF": "src/python/xcf/xcf_parser.py",
+    "TOML": "src/python/toml/toml_codec.py",
+}
+
+
+def _load_gap_ledger_goals() -> List[Dict[str, Any]]:
+    """Load FOSS reduced gaps from gap-ledger.json as expansion goal dicts.
+
+    Reads reports/capability-layer/gap-ledger.json and converts
+    missing_test_coverage gaps for foss_reduced products into goal dicts
+    compatible with _EXPANSION_GOALS format.
+
+    Returns empty list if gap-ledger is unavailable.
+    """
+    if not _GAP_LEDGER_PATH.exists():
+        return []
+    try:
+        data = json.loads(_GAP_LEDGER_PATH.read_text(encoding="utf-8"))
+        gaps = data.get("gaps", []) if isinstance(data, dict) else data
+    except Exception:
+        return []
+
+    goals = []
+    for gap in gaps:
+        # Only generate tasks for FOSS gaps with missing test coverage
+        if gap.get("product_type") != "foss_reduced":
+            continue
+        if gap.get("gap_type") not in ("missing_test_coverage", "no_test_coverage"):
+            continue
+        if gap.get("blockers"):
+            continue  # Skip gated gaps
+
+        fmt = gap.get("format", "").upper()
+        cap_name = gap.get("capability_name", "")
+        # Convert "Probe Csv" → "probe_csv"
+        fn = cap_name.lower().replace(" ", "_")
+        if not fn or not fmt:
+            continue
+
+        source_file = _FORMAT_SOURCE_MAP.get(fmt)
+        if not source_file:
+            continue
+
+        fmt_lower = fmt.lower()
+        test_file = f"tests/python/{fmt_lower}/test_gap_{fn}.py"
+
+        priority = gap.get("priority", "P2")
+        product_value = {"P0": 5, "P1": 4, "P2": 3, "P3": 2}.get(priority, 2)
+
+        goals.append({
+            "format": fmt_lower,
+            "function_name": fn,
+            "action_type": "IMPLEMENT_SMALL_PRODUCT_FEATURE",
+            "pattern": "test_coverage",
+            "source_file": source_file,
+            "test_file": test_file,
+            "spec_authority": gap.get("notes", "no_spec_reference"),
+            "product_value": product_value,
+            "autonomy_value": 3,
+            "risk_level": "LOW",
+            "description": f"Close gap {gap['gap_id']}: add test coverage for {cap_name}",
+            "gap_id": gap["gap_id"],
+            "gap_source": "gap_ledger",
+        })
+
+    return goals
+
+
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -1448,6 +1538,9 @@ def _goal_to_queue_item(goal: Dict[str, Any], run_number: int) -> Dict[str, Any]
         "spec_authority": goal.get("spec_authority"),
         "format": fmt,
         "function_name": fn,
+        # Lane 6: advisory_only guard — prevent advisory queue items from
+        # being treated as executable product work
+        "advisory_only": goal.get("advisory_only", False),
     }
 
 
@@ -1468,10 +1561,29 @@ def generate_task_candidates(
     """
     output_path = output_path or DEFAULT_OUTPUT
 
+    # Lane 6 repair: gap-ledger is now PRIMARY source of truth for task selection.
+    # Hardcoded _EXPANSION_GOALS are demoted to fallback — only used when gap-ledger
+    # does not cover a function. This prevents hardcoded goals from overriding the
+    # current capability gap state.
+    gap_ledger_goals = _load_gap_ledger_goals()
+    all_goals = list(gap_ledger_goals)  # gap-ledger goals first (primary)
+    existing_fns = {g["function_name"] for g in all_goals}
+    # Fallback: add hardcoded goals only for functions NOT in gap-ledger
+    for hardcoded_goal in _EXPANSION_GOALS:
+        if hardcoded_goal["function_name"] not in existing_fns:
+            all_goals.append(hardcoded_goal)
+            existing_fns.add(hardcoded_goal["function_name"])
+
     candidates = []
-    for goal in _EXPANSION_GOALS:
+    advisory_skipped = 0
+    for goal in all_goals:
         fn = goal["function_name"]
         source_file = goal["source_file"]
+
+        # Lane 6: Skip advisory-only items — they cannot be executed as product work
+        if goal.get("advisory_only", False):
+            advisory_skipped += 1
+            continue
 
         # Skip if function already in source
         if skip_existing and _function_exists_in_source(source_file, fn):
@@ -1497,12 +1609,46 @@ def generate_task_candidates(
     except ImportError:
         pass  # Route enrichment unavailable — items remain unenriched
 
+    # SUP-RECT-005: Circuit breaker for zero-task loops
+    zero_task_tracker_path = Path(output_path).parent / ".zero-task-counter.json"
+    if len(queue_items) == 0:
+        zero_count = 0
+        if zero_task_tracker_path.exists():
+            try:
+                zt = json.loads(zero_task_tracker_path.read_text(encoding="utf-8"))
+                zero_count = zt.get("consecutive_zero_count", 0)
+            except Exception:
+                pass
+        zero_count += 1
+        zero_task_tracker_path.parent.mkdir(parents=True, exist_ok=True)
+        zero_task_tracker_path.write_text(json.dumps({
+            "consecutive_zero_count": zero_count,
+            "last_zero_at": _now_iso(),
+            "escalation_threshold": 3,
+            "escalated": zero_count >= 3,
+        }, indent=2), encoding="utf-8")
+        if zero_count >= 3:
+            print(f"CIRCUIT_BREAKER: {zero_count} consecutive zero-task cycles. "
+                  "Escalation triggered — inspect gap-ledger and _EXPANSION_GOALS.",
+                  file=sys.stderr)
+    else:
+        # Reset counter on successful generation
+        if zero_task_tracker_path.exists():
+            try:
+                zero_task_tracker_path.unlink()
+            except Exception:
+                pass
+
     # Write output
     output = {
         "generated_at": _now_iso(),
-        "generator_version": "1.0",
+        "generator_version": "1.2",
         "total_candidates": len(queue_items),
-        "source": "capability_expansion_goals",
+        "gap_ledger_goals_available": len(gap_ledger_goals),
+        "hardcoded_fallback_goals_used": sum(1 for g in all_goals if g.get("gap_source") != "gap_ledger"),
+        "advisory_only_skipped": advisory_skipped,
+        "source": "gap_ledger_primary+expansion_goals_fallback",
+        "zero_task_circuit_breaker": len(queue_items) == 0,
         "tasks": queue_items,
     }
     output_path = Path(output_path)

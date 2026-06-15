@@ -57,6 +57,9 @@ def _extract_stream_from_sprint(sprint_id: str) -> str:
         return "skills"
     if "supervisor" in lower and "acceleration" not in lower:
         return "supervisor"
+    # System-healing / rectification sprints are supervisor-stream work
+    if any(k in lower for k in ("system-healing", "healing", "rect-sprint", "rectification")):
+        return "supervisor"
     if "mainstream" in lower:
         return "mainstream"
     # Older sprints without stream prefix are mainstream

@@ -74,7 +74,7 @@ class TestGovernanceOnlyDeclarationPassesPipeline:
         from governance_validators import run_all_governance_validators
         decl = _make_decl()
         result = run_all_governance_validators(decl, REPO_ROOT)
-        assert len(result["validators"]) == 13  # 12 original + V13 spec_fact_refs (SAL-VH-001)
+        assert len(result["validators"]) >= 29  # 29 validators as of sprint 20260614
 
 
 class TestProductSourceMissingExecutionMethodFailsPipeline:

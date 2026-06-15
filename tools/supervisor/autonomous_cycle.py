@@ -415,13 +415,39 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     if governance_validation_result is not None:
         review["governance_validation"] = governance_validation_result
         if governance_validation_result.get("blocks_sprint"):
-            # Blocking governance failure downgrades to ACCEPTED_WITH_REWORK
-            if review["overall_verdict"] in ("ACCEPTED", "ACCEPTED_WITH_LIMITATIONS"):
+            # Blocking governance failure is a hard block (exit 3), not just a downgrade
+            review["critical_rework_count"] = max(review.get("critical_rework_count", 0) + 1, 1)
+            review["autonomous_continue"] = False
+            if review["overall_verdict"] in ("ACCEPTED", "ACCEPTED_WITH_LIMITATIONS",
+                                              "ACCEPTED_WITH_REWORK"):
                 review["overall_verdict"] = "ACCEPTED_WITH_REWORK"
-                review["stop_reason"] = (
-                    review.get("stop_reason", "") +
-                    f" Governance validator FAIL: {governance_validation_result.get('summary', '')}"
-                ).strip()
+            review["stop_reason"] = (
+                review.get("stop_reason", "") +
+                f" Governance validator FAIL (blocks_sprint): {governance_validation_result.get('summary', '')}"
+            ).strip()
+            # Add blocking validators to rework_items so they are visible
+            for v in governance_validation_result.get("validators", []):
+                if v.get("result") == "FAIL" and v.get("blocks_sprint"):
+                    rework_id = f"GOV_BLOCK:{v['validator']}"
+                    if rework_id not in review.get("rework_items", []):
+                        review.setdefault("rework_items", []).append(rework_id)
+
+    # Lane 5: Record governance failures to durable failure memory
+    if governance_validation_result is not None and governance_validation_result.get("blocks_sprint"):
+        try:
+            from failure_memory import FailureMemory
+            fm = FailureMemory(repo_root)
+            for v in governance_validation_result.get("validators", []):
+                if v.get("result") == "FAIL":
+                    fm.record_failure(
+                        category="GOVERNANCE_FALSE_TRIGGER" if not v.get("blocks_sprint") else "SUPERVISOR_CONTROL_FAILURE",
+                        root_cause=f"governance_validator_{v['validator']}_failed",
+                        correction="Requires item-level fix in declaration",
+                        sprint_id=sprint_id,
+                    )
+            fm.save()
+        except Exception as fm_err:
+            print(f"  [WARN] Failure memory recording failed: {fm_err}")
 
     # Write review outputs
     review_dir = repo_root / ".local" / "supervisor" / "reviews" / run_id
@@ -466,6 +492,13 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             except Exception:
                 pass
 
+        # Extract declared item types for stream-aware anti-skip exemptions
+        _declared_item_types = list({
+            item.get("item_type", "")
+            for item in decl.get("planned_work_items", [])
+            if item.get("item_type")
+        }) if decl else None
+
         anti_skip_result = run_anti_skip_checks(
             prompt_text=prompt_text,
             gaps_data=gaps_data,
@@ -477,6 +510,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             repo_root=repo_root,
             sample_outputs_dir=sample_outputs_dir if sample_outputs_dir.exists() else None,
             next_sprint_text=global_next_sprint_text,
+            declared_scope=_declared_item_types,
         )
         # Write anti-skip results
         (review_dir / "anti-skip-check-result.json").write_text(
@@ -513,6 +547,101 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
 
     except Exception as e:
         print(f"  WARNING: Anti-skip checks skipped: {e}")
+
+    # Step 3c (SUP-RECT-003): Run overclaim detector if graph store available
+    print("\n=== STEP 3c: OVERCLAIM DETECTOR ===")
+    try:
+        ra_tools = REPO_ROOT / "tools" / "requirements_authority"
+        if str(ra_tools) not in sys.path:
+            sys.path.insert(0, str(ra_tools))
+        from overclaim_detector import OverclaimDetector, OverclaimReport
+        from graph_store import GraphStore
+
+        graph_path = repo_root / "reports" / "capability-layer" / "proof-graph.json"
+        if graph_path.exists():
+            store = GraphStore.load(graph_path)
+            detector = OverclaimDetector(store)
+            oc_report: OverclaimReport = detector.detect_all()
+            oc_dict = oc_report.to_dict()
+            (review_dir / "overclaim-detector-result.json").write_text(
+                json.dumps(oc_dict, indent=2), encoding="utf-8"
+            )
+            print(f"  Overclaim detector: {oc_report.error_count} ERROR, "
+                  f"{oc_report.warning_count} WARNING findings")
+            if oc_report.error_count > 0:
+                review["overclaim_detector_errors"] = oc_report.error_count
+                # Promote ERROR findings to critical rework if items are overclaimed
+                for finding in oc_report.findings:
+                    if finding.severity == "ERROR":
+                        review.setdefault("overclaim_findings", []).append(finding.to_dict())
+                print(f"  >>> {oc_report.error_count} ERROR overclaim findings recorded")
+        else:
+            print("  Overclaim detector: proof-graph.json not found — skipped")
+    except ImportError:
+        print("  Overclaim detector: import failed — skipped (non-blocking)")
+    except Exception as e:
+        print(f"  WARNING: Overclaim detector failed: {e}")
+
+    # Step 3d: SAL + Capability Map Recompute (R1/R2 — recon sprint repair)
+    # Triggers SAL pipeline refresh and capability map regeneration after grading.
+    # Non-blocking: failures are logged but do not stop the cycle.
+    print("\n=== STEP 3d: SAL + CAPABILITY MAP RECOMPUTE ===")
+    import subprocess as _subprocess_recompute
+    sal_recompute_result = {"status": "skipped"}
+    capmap_recompute_result = {"status": "skipped"}
+
+    changed_files = decl.get("changed_files", [])
+    product_src_changed = any(
+        f.startswith("src/") for f in changed_files
+    )
+    if product_src_changed:
+        try:
+            sal_runner_path = repo_root / "tools" / "specification-authority-layer" / "sal_master_runner.py"
+            if sal_runner_path.exists():
+                sal_proc = _subprocess_recompute.run(
+                    [sys.executable, str(sal_runner_path), "--all", "--output-dir",
+                     str(repo_root / ".local" / "sal-output")],
+                    capture_output=True, text=True, timeout=120, cwd=str(repo_root)
+                )
+                sal_recompute_result = {
+                    "status": "completed" if sal_proc.returncode == 0 else "failed",
+                    "returncode": sal_proc.returncode,
+                    "trigger": "product_src_changed",
+                }
+                print(f"  SAL recompute: {'OK' if sal_proc.returncode == 0 else 'FAILED'} "
+                      f"(exit {sal_proc.returncode})")
+            else:
+                sal_recompute_result = {"status": "not_found", "path": str(sal_runner_path)}
+                print(f"  SAL recompute: sal_master_runner.py not found — skipped")
+        except Exception as sal_err:
+            sal_recompute_result = {"status": "error", "error": str(sal_err)}
+            print(f"  WARNING: SAL recompute failed: {sal_err}")
+
+        try:
+            capmap_gen_path = repo_root / "tools" / "capability_layer" / "capability_map_generator.py"
+            if capmap_gen_path.exists():
+                capmap_proc = _subprocess_recompute.run(
+                    [sys.executable, str(capmap_gen_path)],
+                    capture_output=True, text=True, timeout=120, cwd=str(repo_root)
+                )
+                capmap_recompute_result = {
+                    "status": "completed" if capmap_proc.returncode == 0 else "failed",
+                    "returncode": capmap_proc.returncode,
+                    "trigger": "sal_recompute_completed",
+                }
+                print(f"  Capability map recompute: {'OK' if capmap_proc.returncode == 0 else 'FAILED'} "
+                      f"(exit {capmap_proc.returncode})")
+            else:
+                capmap_recompute_result = {"status": "not_found", "path": str(capmap_gen_path)}
+                print(f"  Capability map recompute: capability_map_generator.py not found — skipped")
+        except Exception as cap_err:
+            capmap_recompute_result = {"status": "error", "error": str(cap_err)}
+            print(f"  WARNING: Capability map recompute failed: {cap_err}")
+    else:
+        print("  No product source changes detected — recompute skipped")
+
+    review["sal_recompute"] = sal_recompute_result
+    review["capmap_recompute"] = capmap_recompute_result
 
     # Step 4: Generate next worker prompt (R108: stream-specific)
     print("\n=== STEP 4: GENERATE NEXT WORKER PROMPT ===")
@@ -555,15 +684,22 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             else:
                 failed_checks = [c["check"] for c in pq_result["checks"] if not c["pass"]]
                 print(f"  Prompt quality: FAIL ({pq_result['failed']} failures: {failed_checks})")
-                # R108: All prompt quality failures affect continuation
-                critical_prompt_failures = {
-                    "stream_identity", "no_wrong_stream", "not_generic", "advancement_lane"
-                }
-                if critical_prompt_failures & set(failed_checks):
+                # R108: Prompt quality failures — hard-stop only for truly unrecoverable issues
+                hard_prompt_failures = {"stream_identity", "not_generic"}
+                soft_prompt_failures = {"no_wrong_stream", "advancement_lane"}
+                failed_set = set(failed_checks)
+                has_hard = bool(hard_prompt_failures & failed_set)
+                has_soft_only = bool(soft_prompt_failures & failed_set) and not has_hard
+                if has_hard:
                     review["autonomous_continue"] = False
                     review["stop_reason"] = f"Prompt quality gate: {failed_checks}"
                     review["prompt_quality_failure"] = True
                     print("  >>> CONTINUATION BLOCKED by prompt quality failures")
+                elif has_soft_only:
+                    # Soft failures become rework items — safe lanes can continue
+                    review.setdefault("rework_items", [])
+                    review["rework_items"].append(f"PROMPT_QUALITY_REWORK:{','.join(failed_checks)}")
+                    print(f"  Prompt quality: soft failure {failed_checks} → rework (not hard stop)")
         else:
             print("  No prompt file to validate")
     except Exception as e:
@@ -828,6 +964,36 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         if review.get("prompt_quality_failure"):
             hard_stops.append("prompt_quality_failure")
 
+        # R-CLOSEOUT: Run closeout gate and no-stop watchdog if evidence root exists
+        evidence_root_path = None
+        if declaration_path and declaration_path.parent.exists():
+            evidence_root_path = declaration_path.parent
+        if evidence_root_path:
+            try:
+                from validate_closeout_gate import run_closeout_gate
+                closeout_result = run_closeout_gate(evidence_root_path)
+                review["closeout_gate_verdict"] = closeout_result.get("verdict", "UNKNOWN")
+                review["closeout_gate_checks"] = closeout_result.get("gates", [])
+                print(f"  Closeout gate: {closeout_result.get('verdict', 'UNKNOWN')} "
+                      f"({closeout_result.get('passed_count', 0)}/{closeout_result.get('total_gates', 0)})")
+            except ImportError:
+                print("  WARNING: validate_closeout_gate not available, skipping")
+            except Exception as cg_err:
+                print(f"  WARNING: Closeout gate check failed: {cg_err}")
+
+            try:
+                from validate_no_stop_watchdog import run_no_stop_watchdog
+                watchdog_result = run_no_stop_watchdog(evidence_root_path)
+                review["watchdog_verdict"] = watchdog_result.get("verdict", "UNKNOWN")
+                review["watchdog_checks"] = watchdog_result.get("checks", [])
+                wd_verdict = watchdog_result.get("verdict", "ALLOW_STOP")
+                print(f"  No-stop watchdog: {wd_verdict} "
+                      f"({watchdog_result.get('block_count', 0)} blocks)")
+            except ImportError:
+                print("  WARNING: validate_no_stop_watchdog not available, skipping")
+            except Exception as wd_err:
+                print(f"  WARNING: No-stop watchdog check failed: {wd_err}")
+
         if hard_stops or overclaimed:
             auto_continue_value = False
         elif rework_items and not overclaimed:
@@ -870,6 +1036,21 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         stream_signal_path = stream_signal_dir / "continuation-signal.json"
         stream_signal_path.write_text(json.dumps(stream_signal, indent=2), encoding="utf-8")
         print(f"  Stream signal: {stream_signal_path}")
+
+        # HEAL-RECT-005: Archive rework items for cross-sprint persistence
+        if rework_items:
+            rework_archive_path = signal_dir / "rework_archive.jsonl"
+            try:
+                with open(rework_archive_path, "a", encoding="utf-8") as ra:
+                    for rw_id in rework_items:
+                        ra.write(json.dumps({
+                            "item_id": rw_id,
+                            "sprint_id": sprint_id,
+                            "archived_at": timestamp,
+                            "resolved": False,
+                        }) + "\n")
+            except Exception as ra_err:
+                print(f"  WARNING: Rework archive failed: {ra_err}")
 
         # R-NMPC: Wire evidence_continuation to produce machine-readable continuation.
         # Without this, autonomous_continue=true points only to advisory Markdown

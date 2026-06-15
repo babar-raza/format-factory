@@ -1,6 +1,6 @@
 ---
 version: "2.0"
-last_updated: "2026-06-02"
+last_updated: "2026-06-12"
 generated_by: claude
 visibility: generated
 sprint: FORMAT-FACTORY-R98-AUTONOMOUS-LOOP-TRUST-LAYER-ITERATION-SCALING-ACCELERATION-POC-MEGA-TRAIN-001
@@ -48,6 +48,7 @@ skills:
     command: /add-dotnet-api
     command_file: .claude/commands/add-dotnet-api.md
     status: active
+    spec_qname_required: true
     purpose: Add or extend one bounded commercial .NET product API with focused tests and evidence.
     product_track: commercial_dotnet
     required_handoff_fields:
@@ -66,6 +67,7 @@ skills:
     command: /add-python-api
     command_file: .claude/commands/add-python-api.md
     status: active
+    spec_qname_required: true
     purpose: Add or extend one bounded Python FOSS product API with focused tests and evidence.
     product_track: foss_python
     required_handoff_fields:
@@ -84,6 +86,7 @@ skills:
     command: /add-dogfood-export
     command_file: .claude/commands/add-dogfood-export.md
     status: active
+    spec_qname_required: false
     purpose: Add one bounded export path whose write backend is another Format Factory library.
     product_track: cross_product_export
     required_handoff_fields:
@@ -105,6 +108,7 @@ skills:
     command: /update-capability-matrix
     command_file: .claude/commands/update-capability-matrix.md
     status: active
+    spec_qname_required: false
     purpose: Reconcile proven product capability results into the POC target matrix without changing gate authority.
     product_track: shared_reference_snapshot
     required_handoff_fields:
@@ -126,6 +130,7 @@ skills:
     command: /add-dotnet-object-model-feature
     command_file: .claude/commands/add-dotnet-object-model-feature.md
     status: active
+    spec_qname_required: true
     purpose: Add a feature to a .NET object model (property, method, conversion).
     product_track: commercial_dotnet
     required_handoff_fields:
@@ -142,6 +147,7 @@ skills:
     command: /add-python-object-model-feature
     command_file: .claude/commands/add-python-object-model-feature.md
     status: active
+    spec_qname_required: true
     purpose: Add a feature to a Python object model (method, conversion, property).
     product_track: foss_python
     required_handoff_fields:
@@ -158,6 +164,7 @@ skills:
     command: /add-same-format-writer-feature
     command_file: .claude/commands/add-same-format-writer-feature.md
     status: active
+    spec_qname_required: true
     purpose: Add same-format save/write capability after editing.
     product_track: cross_product
     required_handoff_fields:
@@ -174,6 +181,7 @@ skills:
     command: /add-roundtrip-test
     command_file: .claude/commands/add-roundtrip-test.md
     status: active
+    spec_qname_required: false
     purpose: Add a parse-edit-write-reparse roundtrip test.
     product_track: testing
     required_handoff_fields:
@@ -187,6 +195,7 @@ skills:
     command: /add-installed-package-example
     command_file: .claude/commands/add-installed-package-example.md
     status: active
+    spec_qname_required: false
     purpose: Add an example that uses an installed package (not PYTHONPATH).
     product_track: developer_experience
     required_handoff_fields:
@@ -200,6 +209,7 @@ skills:
     command: /promote-gap-to-taskcard
     command_file: .claude/commands/promote-gap-to-taskcard.md
     status: active
+    spec_qname_required: false
     purpose: Promote a product gap from the POC matrix to a formal taskcard.
     product_track: planning
     required_handoff_fields:
@@ -212,6 +222,7 @@ skills:
     command: /generate-execution-handoff
     command_file: .claude/commands/generate-execution-handoff.md
     status: active
+    spec_qname_required: false
     purpose: Generate a structured execution handoff for a governed skill.
     product_track: planning
     required_handoff_fields:
@@ -225,6 +236,7 @@ skills:
     command: /verify-dogfood-path
     command_file: .claude/commands/verify-dogfood-path.md
     status: active
+    spec_qname_required: false
     purpose: Verify that an export path uses only Format Factory libraries.
     product_track: cross_product_export
     required_handoff_fields:
@@ -241,6 +253,7 @@ skills:
     command: /package-install-proof
     command_file: .claude/commands/package-install-proof.md
     status: active
+    spec_qname_required: false
     purpose: Prove that a package installs and imports correctly from wheel.
     product_track: packaging
     required_handoff_fields:
@@ -259,6 +272,7 @@ skills:
     command: /materialize-declaration-review
     command_file: .claude/commands/materialize-declaration-review.md
     status: active
+    spec_qname_required: false
     purpose: Build a declaration review package ZIP from an evidence declaration YAML for supervisor grading.
     product_track: planning
     required_handoff_fields:
@@ -271,6 +285,7 @@ skills:
     command: /record-lane-execution
     command_file: .claude/commands/record-lane-execution.md
     status: active
+    spec_qname_required: false
     purpose: Record the execution of a sprint lane into the lane execution ledger for multi-lane coordination and evidence tracking.
     product_track: planning
     required_handoff_fields:
@@ -283,6 +298,7 @@ skills:
     command: /build-context-pack
     command_file: .claude/commands/build-context-pack.md
     status: active
+    spec_qname_required: false
     purpose: Build a machine-readable context pack YAML summarizing current project state for session bootstrap.
     product_track: planning
     required_handoff_fields:
@@ -294,6 +310,7 @@ skills:
     command: /check-mcp-status
     command_file: .claude/commands/check-mcp-status.md
     status: deferred
+    spec_qname_required: false
     deferred_reason: "No command file exists. MCP status is checked ad-hoc during preflight. Promote when automated MCP health monitoring is needed."
     purpose: Check and classify the MCP server connection status using a 5-state model.
     product_track: planning
@@ -306,6 +323,7 @@ skills:
     command: /select-poc-gap
     command_file: .claude/commands/select-poc-gap.md
     status: active
+    spec_qname_required: false
     purpose: Select the next product gap from the POC matrix for sprint execution based on priority and readiness.
     product_track: planning
     required_handoff_fields:
@@ -321,6 +339,7 @@ skills:
     command: /validate-product-code-ledger
     command_file: .claude/commands/validate-product-code-ledger.md
     status: active
+    spec_qname_required: false
     purpose: Run the product-code change ledger validator and report pass/fail results for sprint evidence.
     product_track: planning
     required_handoff_fields:
@@ -333,6 +352,7 @@ skills:
     command: /validate-skill-transcript
     command_file: .claude/commands/validate-skill-transcript.md
     status: active
+    spec_qname_required: false
     purpose: Validate a skill invocation transcript against the registry schema and report pass/fail.
     product_track: planning
     required_handoff_fields:
@@ -349,6 +369,7 @@ skills:
     command: /evidence-review-next-prompt
     command_file: .claude/commands/evidence-review-next-prompt.md
     status: active
+    spec_qname_required: false
     purpose: Review evidence bundle and produce the next execution prompt.
     product_track: planning
     required_handoff_fields:
@@ -361,6 +382,7 @@ skills:
     command: /execution-handoff
     command_file: .claude/commands/execution-handoff.md
     status: active
+    spec_qname_required: false
     purpose: Convert a hardened plan into a single-go autonomous execution prompt with internal gates.
     product_track: planning
     required_handoff_fields:
@@ -373,6 +395,7 @@ skills:
     command: /export-plan-context
     command_file: .claude/commands/export-plan-context.md
     status: active
+    spec_qname_required: false
     purpose: Bundle long-term plan context files into a zip for LLM sharing.
     product_track: planning
     required_handoff_fields:
@@ -384,6 +407,7 @@ skills:
     command: /memory-sprint
     command_file: .claude/commands/memory-sprint.md
     status: active
+    spec_qname_required: false
     purpose: Capture strategic decisions and architecture notes into durable memory artifacts.
     product_track: planning
     required_handoff_fields:
@@ -396,9 +420,120 @@ skills:
     command: /plan-hardening
     command_file: .claude/commands/plan-hardening.md
     status: active
+    spec_qname_required: false
     purpose: Review, challenge, and harden a draft plan against repo truth before execution.
     product_track: planning
     required_handoff_fields:
       - plan_path
     mandatory_validations:
       - hardening_score_reported
+
+  # ============================================================
+  # SPEC-LITERAL SKILLS (swarm-plan-completion 2026-06-13)
+  # Enforce spec-parity requirements on all future product work.
+  # ============================================================
+
+  - skill_id: spec-literal-qname-to-code-mapping
+    command: /spec-literal-qname-to-code-mapping
+    command_file: .claude/commands/spec-literal-qname-to-code-mapping.md
+    status: active
+    spec_qname_required: true
+    purpose: >
+      Generate or validate a QName-to-code mapping for a format. Produces
+      qname-to-code-map-<format>.yaml, namespace-tree-<format>.yaml, and
+      containment-graph-<format>.yaml. Required before any product model work.
+    product_track: spec_parity
+    required_handoff_fields:
+      - format_id
+      - source_paths
+      - output_dir
+    mandatory_validations:
+      - qname_map_json_valid
+      - namespace_tree_json_valid
+      - qname_generator_exit_zero
+
+  - skill_id: spec-shaped-product-architecture-blueprint
+    command: /spec-shaped-product-architecture-blueprint
+    command_file: .claude/commands/spec-shaped-product-architecture-blueprint.md
+    status: active
+    spec_qname_required: true
+    purpose: >
+      Generate a spec-shaped architecture blueprint for a format. The blueprint
+      defines the class hierarchy, containment edges, and namespace mapping
+      that implementation must follow. No flat/ad-hoc class invention allowed.
+    product_track: spec_parity
+    required_handoff_fields:
+      - format_id
+      - spec_body
+      - qname_map_path
+      - output_path
+    mandatory_validations:
+      - blueprint_yaml_valid
+      - no_flat_class_violations
+      - spec_qname_present_in_all_classes
+
+  - skill_id: spec-parity-source-regeneration-and-migration
+    command: /spec-parity-source-regeneration-and-migration
+    command_file: .claude/commands/spec-parity-source-regeneration-and-migration.md
+    status: active
+    spec_qname_required: true
+    purpose: >
+      Regenerate or migrate existing source code to match the spec-shaped blueprint.
+      May not create arbitrary flat classes for spec concepts. All model classes
+      must have a canonical_namespace and spec_qname.
+    product_track: spec_parity
+    required_handoff_fields:
+      - format_id
+      - blueprint_path
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+    mandatory_validations:
+      - product_code_ledger_validator
+      - spec_parity_validator_pass
+      - no_flat_class_violations
+      - focused_tests_pass
+
+  - skill_id: python-reduced-spec-parity-model
+    command: /python-reduced-spec-parity-model
+    command_file: .claude/commands/python-reduced-spec-parity-model.md
+    status: active
+    spec_qname_required: true
+    purpose: >
+      Implement a reduced-scope spec-parity model for a Python FOSS format.
+      "Reduced" means a documented subset of the full spec is implemented,
+      with spec_qname present and a valid exception classification for
+      omitted spec concepts. Not a free pass to omit spec fields.
+    product_track: foss_python
+    required_handoff_fields:
+      - format_id
+      - spec_qname
+      - reduced_scope_rationale
+      - exact_source_paths
+      - exact_test_paths
+      - ledger_entry_path
+    mandatory_validations:
+      - product_code_ledger_validator
+      - spec_qname_present
+      - reduced_scope_documented
+      - focused_python_tests
+
+  - skill_id: spec-parity-verification
+    command: /spec-parity-verification
+    command_file: .claude/commands/spec-parity-verification.md
+    status: active
+    spec_qname_required: false
+    purpose: >
+      Run spec-parity validators (SpecParityQNameValidator, NamespaceTreeValidator,
+      SkeletonProgressValidator, SkillWiringValidator) and produce a structured
+      verification report. Required before any product model taskcard is declared complete.
+    product_track: spec_parity
+    required_handoff_fields:
+      - format_id
+      - evidence_root
+    mandatory_validations:
+      - spec_parity_qname_validator_run
+      - namespace_tree_validator_run
+      - skeleton_progress_validator_run
+      - skill_wiring_validator_run
+      - verification_report_written

@@ -585,17 +585,39 @@ def _strip_boundary_section(text: str) -> str:
     return "\n".join(filtered)
 
 
+SUPERVISOR_ITEM_TYPES = frozenset({
+    "GOVERNANCE_DOC", "GOVERNANCE_HARDENING", "SUPERVISOR_TOOL",
+    "SUPERVISOR_REPAIR", "SUPERVISOR_INTEGRATION", "SUPERVISOR_TEST",
+    "SYSTEM_HEALING", "CLOSEOUT_GATE", "WATCHDOG",
+})
+
+
 def detect_cross_stream_prompt_contamination(
     prompt_text: str,
     target_stream: str,
+    declared_scope: list[str] | None = None,
 ) -> dict[str, Any]:
     """Detect if a stream-specific prompt contains content from other streams.
 
     Ignores the 'File Boundaries' section which legitimately references forbidden paths.
+
+    When ``declared_scope`` contains supervisor/governance item types,
+    supervisor paths (``tools/supervisor/``, ``tests/supervisor/``) are
+    exempt from the mainstream forbidden list because the sprint explicitly
+    includes governance work.
     """
     content_text = _strip_boundary_section(prompt_text)
     lower = content_text.lower()
-    forbidden = STREAM_BOUNDARY_FORBIDDEN.get(target_stream, [])
+    forbidden = list(STREAM_BOUNDARY_FORBIDDEN.get(target_stream, []))
+
+    # Stream-aware exemption: if declared scope includes supervisor item types,
+    # supervisor paths are legitimate in mainstream prompts.
+    scope_types = set(declared_scope or [])
+    has_supervisor_scope = bool(scope_types & SUPERVISOR_ITEM_TYPES)
+    exempt_paths: list[str] = []
+    if has_supervisor_scope and target_stream == "mainstream":
+        exempt_paths = [p for p in forbidden if "supervisor" in p]
+        forbidden = [p for p in forbidden if p not in exempt_paths]
 
     # Check for forbidden path references outside boundary docs
     forbidden_refs = [f for f in forbidden if f.lower() in lower]
@@ -609,7 +631,7 @@ def detect_cross_stream_prompt_contamination(
         target_stream == "acceleration" and len(product_contamination) > 3
     )
 
-    return {
+    result: dict[str, Any] = {
         "check": "cross_stream_prompt_contamination",
         "is_violation": is_contaminated,
         "target_stream": target_stream,
@@ -621,6 +643,10 @@ def detect_cross_stream_prompt_contamination(
             else f"Prompt for {target_stream} has clean stream boundaries."
         ),
     }
+    if exempt_paths:
+        result["exempt_paths"] = exempt_paths
+        result["exemption_reason"] = "declared_scope includes supervisor item types"
+    return result
 
 
 def _detect_dirty_from_status(git_status: str) -> bool:
@@ -1131,6 +1157,7 @@ def run_all_checks(
     sample_outputs_dir: Path | None = None,
     prior_test_count: int = 0,
     next_sprint_text: str = "",
+    declared_scope: list[str] | None = None,
 ) -> dict[str, Any]:
     """Run all 18 anti-skip checks and return consolidated results with severity."""
     results = []
@@ -1158,7 +1185,17 @@ def run_all_checks(
             repo_root=repo_root,
         ))
     if prompt_text and target_stream:
-        results.append(detect_cross_stream_prompt_contamination(prompt_text, target_stream))
+        # Extract declared item types from declaration for stream-aware exemption
+        _scope = declared_scope
+        if _scope is None and declaration:
+            _scope = list({
+                item.get("item_type", "")
+                for item in declaration.get("work_items", [])
+                if item.get("item_type")
+            })
+        results.append(detect_cross_stream_prompt_contamination(
+            prompt_text, target_stream, declared_scope=_scope,
+        ))
 
     # R104 detector (R112: also check declaration/manifest for sample_output artifacts)
     if evidence_root:

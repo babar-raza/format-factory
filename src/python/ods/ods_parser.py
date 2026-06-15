@@ -856,6 +856,22 @@ def ods_string_cell_count(file_path: "str | Path", sheet_index: int = 0) -> int:
     return count
 
 
+def ods_row_count(file_path: "str | Path", sheet_index: int = 0) -> int:
+    """Return the number of rows in an ODS sheet.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Integer row count. Returns 0 if sheet is empty or not found.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    return len(doc.sheets[sheet_index].rows)
+
+
 def ods_empty_cell_count(file_path: "str | Path", sheet_index: int = 0) -> int:
     """Return the count of cells with no value (None or empty string).
 

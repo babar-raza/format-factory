@@ -60,8 +60,10 @@ from .abw_codec import (
     abw_sentence_count,
     abw_longest_word,
     abw_total_char_count,
+    abw_word_count,
     abw_empty_paragraph_count,
     abw_nonempty_paragraph_count,
+    get_paragraphs,
 )
 
 __all__ = [
@@ -116,8 +118,10 @@ __all__ = [
     "abw_sentence_count",
     "abw_longest_word",
     "abw_total_char_count",
+    "abw_word_count",
     "abw_empty_paragraph_count",
     "abw_nonempty_paragraph_count",
+    "get_paragraphs",
 ]
 
 __version__ = "0.1.0.dev0"

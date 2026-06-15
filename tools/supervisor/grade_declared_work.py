@@ -140,15 +140,17 @@ def semantic_verify_item(
             "llm_used": bool,
         }
     """
-    fallback = {"adequate": True, "confidence": 0.0, "stub_detected": False,
-                "deficiencies": [], "llm_used": False}
+    fallback_no_evidence = {"adequate": False, "confidence": 0.0, "stub_detected": False,
+                            "deficiencies": ["no_evidence_paths_provided"], "llm_used": False}
+    fallback_no_content = {"adequate": False, "confidence": 0.0, "stub_detected": False,
+                           "deficiencies": ["evidence_files_unreadable"], "llm_used": False}
 
     item_title = declaration_item.get("title", declaration_item.get("item_id", ""))
     acceptance_criteria = str(declaration_item.get("acceptance_criteria", ""))[:300]
     evidence_paths = item_inspection.get("evidence_paths_found", [])
 
     if not evidence_paths:
-        return fallback
+        return fallback_no_evidence
 
     # Collect evidence content — targeted extraction for source files, full for tests
     # Extract function name from item title (e.g. "implement word_wrap()" -> "word_wrap")
@@ -186,7 +188,7 @@ def semantic_verify_item(
             continue
 
     if not evidence_samples:
-        return fallback
+        return fallback_no_content
 
     combined = "\n\n".join(evidence_samples)[:6000]  # Hard cap on input
 
@@ -227,7 +229,9 @@ def semantic_verify_item(
         except Exception:
             pass
 
-    return fallback
+    # LLM unavailable or returned malformed JSON — default to inadequate (SUP-RECT-004)
+    return {"adequate": False, "confidence": 0.0, "stub_detected": False,
+            "deficiencies": ["llm_verification_unavailable"], "llm_used": False}
 
 
 EXTERNAL_GATE_KEYWORDS = {

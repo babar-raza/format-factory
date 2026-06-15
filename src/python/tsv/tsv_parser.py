@@ -926,6 +926,19 @@ def tsv_max_cell_length(file_path: "str | Path") -> int:
     return max((len(str(cell)) for row in rows for cell in row), default=0)
 
 
+def tsv_column_count(file_path: "str | Path") -> int:
+    """Return the number of columns (headers) in a TSV file.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer column count based on headers. Returns 0 if no headers.
+    """
+    parsed = parse_tsv_strict(file_path)
+    return len(parsed.get("headers", []))
+
+
 def count_distinct_values(data: Any, col_name: str) -> int:
     """Return the count of distinct non-empty values in a TSV column.
 
@@ -945,3 +958,19 @@ def count_distinct_values(data: Any, col_name: str) -> int:
         if v is not None and v != "":
             distinct.add(v)
     return len(distinct)
+
+
+def tsv_has_header(file_path: "str | Path") -> bool:
+    """Return True if the TSV file has a header row.
+
+    Uses the parser's built-in header detection. The parser separates headers
+    from data rows when a header is detected.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        True if a header is detected, False otherwise.
+    """
+    doc = parse_tsv_strict(file_path)
+    return bool(doc.get("has_header", False))

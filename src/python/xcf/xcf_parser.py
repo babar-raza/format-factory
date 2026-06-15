@@ -341,6 +341,12 @@ def xcf_is_grayscale(file_path: str | Path) -> bool:
     return img.image_type == 1
 
 
+def xcf_is_indexed(file_path: str | Path) -> bool:
+    """Return True if the XCF image type is Indexed (type 2)."""
+    img = parse_xcf_strict(file_path)
+    return img.image_type == 2
+
+
 def xcf_summary(file_path: str | Path) -> dict[str, Any]:
     """Return a summary dict of an XCF file's key properties.
 
@@ -383,3 +389,9 @@ def xcf_is_square(file_path: str | Path) -> bool:
     """Return True if the XCF image has equal width and height."""
     dims = xcf_image_dimensions(file_path)
     return dims["width"] == dims["height"]
+
+
+def xcf_width(file_path: str | Path) -> int:
+    """Return the width of an XCF image in pixels."""
+    dims = xcf_image_dimensions(file_path)
+    return dims["width"]

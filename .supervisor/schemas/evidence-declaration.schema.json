@@ -38,7 +38,31 @@
           "test_references": { "type": "array", "items": { "type": "string" } },
           "acceptance_criteria": { "type": "string" },
           "gate_ref": { "type": "string" },
-          "notes": { "type": "string" }
+          "notes": { "type": "string" },
+          "spec_qname_refs": { "type": "array", "items": { "type": "string" }, "description": "ODF QName references for spec-parity validation" },
+          "qname_to_code_map_refs": { "type": "array", "items": { "type": "string" } },
+          "canonical_classes_added_or_modified": { "type": "array", "items": { "type": "string" } },
+          "implementation_depth_score": {
+            "type": "object",
+            "properties": {
+              "source_loc_delta": { "type": "integer" },
+              "function_count": { "type": "integer" },
+              "tests_added": { "type": "integer" },
+              "behavior_assertions": { "type": "integer" }
+            }
+          },
+          "spec_parity_validator_results": { "type": "object" },
+          "depth_validator_results": { "type": "object" },
+          "capability_refs_covered": { "type": "array", "items": { "type": "string" } },
+          "feature_refs_covered": { "type": "array", "items": { "type": "string" } },
+          "source_diff_paths": { "type": "array", "items": { "type": "string" } },
+          "idempotency_key": { "type": "string" },
+          "replay_recipe": { "type": "string" },
+          "item_type": { "type": "string" },
+          "execution_method": { "type": "string" },
+          "claim_classification": { "type": "string" },
+          "spec_fact_refs": { "type": "array", "items": { "type": "string" } },
+          "changed_files": { "type": "array", "items": { "type": "string" } }
         }
       }
     },

@@ -40,6 +40,18 @@ class ZstOutputLimitExceeded(ZstError):
     """Raised when decompressed output exceeds the configured size limit."""
 
 
+class ZstFileNotFoundError(ZstError):
+    """Raised when a ZST file does not exist."""
+
+
+class ZstReadError(ZstError):
+    """Raised when a ZST file cannot be read."""
+
+
+class ZstDecompressError(ZstError):
+    """Raised when decompression of a ZST file fails."""
+
+
 def _get_zstandard():
     """Import zstandard, raising a clear error if not installed."""
     try:
@@ -984,3 +996,92 @@ def zst_frame_count(path: "str | Path") -> int:
         count += 1
         pos = idx + 4
     return count
+
+
+def zst_frame_sizes(path: "str | Path") -> "list[int]":
+    """Return the compressed size in bytes of each Zstandard frame in a file.
+
+    Scans the file for Zstandard magic bytes and uses the frame header to
+    determine each frame's total size (header + compressed data + checksum).
+    For standard single-frame files, returns a list with one element.
+
+    Args:
+        path: Path to a Zstandard-compressed file.
+
+    Returns:
+        List of frame sizes in bytes, one per frame. Empty list if no frames found.
+
+    Raises:
+        ZstFileNotFoundError: If the file does not exist.
+        ZstReadError: If the file cannot be read.
+    """
+    from pathlib import Path as _Path
+    p = _Path(path)
+    if not p.exists():
+        raise ZstFileNotFoundError(f"File not found: {path}")
+    try:
+        data = p.read_bytes()
+    except OSError as exc:
+        raise ZstReadError(f"Failed to read {path}: {exc}") from exc
+
+    magic = b"\x28\xb5\x2f\xfd"
+    sizes: list[int] = []
+    pos = 0
+    while True:
+        idx = data.find(magic, pos)
+        if idx == -1:
+            break
+        # Find the next frame start (or end of data) to determine frame size
+        next_idx = data.find(magic, idx + 4)
+        if next_idx == -1:
+            frame_size = len(data) - idx
+        else:
+            frame_size = next_idx - idx
+        sizes.append(frame_size)
+        pos = idx + 4
+    return sizes
+
+
+def zst_file_info(path: "str | Path") -> dict:
+    """Return consolidated analytics for a Zstandard-compressed file.
+
+    Combines compressed_size, decompressed_size, frame_count, compression_ratio,
+    and is_valid into a single dict so callers avoid multiple separate calls.
+
+    Args:
+        path: Path to a Zstandard-compressed file.
+
+    Returns:
+        Dict with keys:
+            compressed_size (int): Size of the .zst file in bytes.
+            decompressed_size (int): Size after decompression in bytes, or 0 on error.
+            frame_count (int): Number of Zstandard frames in the file.
+            compression_ratio (float): compressed_size / decompressed_size,
+                or 0.0 if decompressed_size is 0.
+            is_valid (bool): True if the file passes zst_is_valid_file check.
+
+    Raises:
+        ZstFileNotFoundError: If the file does not exist.
+        ZstReadError: If the file cannot be read.
+    """
+    from pathlib import Path as _Path
+    p = _Path(path)
+    if not p.exists():
+        raise ZstError(f"File not found: {path}")
+    c_size = zst_compressed_size(path)
+    try:
+        d_size = zst_decompressed_size(path)
+    except Exception:
+        d_size = 0
+    frames = zst_frame_count(path)
+    valid = zst_is_valid_file(path)
+    ratio = round(c_size / d_size, 4) if d_size > 0 else 0.0
+    return {
+        "compressed_size": c_size,
+        "decompressed_size": d_size,
+        "frame_count": frames,
+        "compression_ratio": ratio,
+        "is_valid": valid,
+    }
+
+

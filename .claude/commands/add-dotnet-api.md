@@ -21,6 +21,20 @@ contract, not standing authorization to edit `src/`.
 - focused `dotnet test` command
 - evidence output directory for the active sprint
 
+## Spec-Literal Requirements
+
+Because `spec_qname_required: true` for this skill, the execution handoff MUST include at least one
+`spec_fact_refs` entry linking the API to a format specification fact. Example:
+
+```yaml
+spec_fact_refs:
+  - FODS-FACT-001   # ODF §3.2 — office:spreadsheet element
+```
+
+If no `spec_fact_refs` are provided, stop with `BLOCKED_SPEC_QNAME_REQUIRED`.
+Spec facts are produced by `tools/specification-authority-layer/sal_master_runner.py` and stored
+in `.local/sal-output/sal-facts-latest.json`. Verify the cited QName exists in that file.
+
 ## Steps
 
 1. Read `AGENTS.md`, `plans/master-plan.md`, `.supervisor/skill-registry.yaml`, and

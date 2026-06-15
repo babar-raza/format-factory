@@ -162,7 +162,7 @@ class TestGovernanceValidatorIntegration:
             }],
         }
         result = run_all_governance_validators(decl)
-        assert len(result["validators"]) == 13  # 12 original + V13 spec_fact_refs (SAL-VH-001)
+        assert len(result["validators"]) == 21  # 19 + V20 lane_ownership + V21 dag_ordering
         validator_names = [v["validator"] for v in result["validators"]]
         assert "route_decision_required_validator" in validator_names
 

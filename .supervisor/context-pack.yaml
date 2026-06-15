@@ -1,23 +1,24 @@
 schema_version: '1.0'
-generated_at: '2026-06-12T21:55:03.964893'
-repo_root: .
+generated_at: '2026-06-15T08:11:49.342908'
+repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 8e45224
+  head: 915cfd2
   status:
-    modified_count: 842
-    untracked_count: 620
+    modified_count: 97
+    untracked_count: 92
     staged_count: 1
-    total_changed: 1466
+    total_changed: 190
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: FORMAT-FACTORY-PRODUCT-DEEPENING-SPRINT18-001
+  sprint_id: EVIDENCE-REPAIR-HARDENING-20260614
   run_id: unknown
-  autonomous_continue: true
+  autonomous_continue: true_with_rework
   iteration: 8
   max_iterations: 12
   hard_stops: []
-  rework_items: []
+  rework_items:
+  - HC-006-EVIDENCE-SHCPH-L1
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-09'
@@ -36,8 +37,8 @@ poc_matrix:
       commercial_ready: false
   foss_python_products: {}
 skill_registry:
-  total_skills: 25
-  active_skills: 24
+  total_skills: 30
+  active_skills: 29
   skill_ids:
   - add-dotnet-api
   - add-python-api
@@ -63,10 +64,15 @@ skill_registry:
   - export-plan-context
   - memory-sprint
   - plan-hardening
+  - spec-literal-qname-to-code-mapping
+  - spec-shaped-product-architecture-blueprint
+  - spec-parity-source-regeneration-and-migration
+  - python-reduced-spec-parity-model
+  - spec-parity-verification
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 362
+  total_entries: 386
   governed_changes: 344
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json

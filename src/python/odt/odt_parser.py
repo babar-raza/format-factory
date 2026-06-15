@@ -271,3 +271,9 @@ def odt_paragraph_count(file_path: str | Path) -> int:
     """Count the number of paragraphs in an ODT document."""
     doc = parse_odt_strict(file_path)
     return len(doc.paragraphs)
+
+
+def odt_char_count(file_path: str | Path) -> int:
+    """Return the total character count across all paragraphs in an ODT document."""
+    doc = parse_odt_strict(file_path)
+    return sum(len(p.text) for p in doc.paragraphs)

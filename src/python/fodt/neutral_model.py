@@ -1873,3 +1873,25 @@ def document_table_row_count(document: dict[str, Any], table_index: int = 0) -> 
     if table_index < 0 or table_index >= len(tables):
         return 0
     return len(tables[table_index].get("rows", []))
+
+
+# ---------------------------------------------------------------------------
+# Empty paragraph count (product-healing pilot)
+# ---------------------------------------------------------------------------
+
+def document_empty_paragraph_count(document: dict[str, Any]) -> int:
+    """Return the count of empty paragraph blocks in the document.
+
+    A paragraph is considered empty if it has no runs, or all its runs
+    have empty or whitespace-only text.
+    """
+    count = 0
+    for block in document.get("blocks", []):
+        if block.get("type", "paragraph") != "paragraph":
+            continue
+        runs = block.get("runs", [])
+        if not runs:
+            count += 1
+        elif all(not (r.get("text") or "").strip() for r in runs):
+            count += 1
+    return count

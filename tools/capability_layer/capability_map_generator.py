@@ -131,6 +131,57 @@ def _try_load_yaml(path: Path) -> dict | None:
 
 
 _SPEC_CACHE = _REPO_ROOT / ".local" / "spec-cache"
+_SAL_OUTPUT = _REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
+
+# SAL facts cache (loaded once per generation run)
+_sal_facts_cache: dict[str, list[dict]] | None = None
+
+
+def _load_sal_facts() -> dict[str, list[dict]]:
+    """Load SAL spec facts from sal-facts-latest.json, indexed by uppercase format_id.
+
+    Returns a dict mapping e.g. "FODS" -> [{"qname": "FODS-FACT-001", ...}, ...].
+    If the SAL output is missing or malformed, returns {} with a warning.
+    """
+    global _sal_facts_cache
+    if _sal_facts_cache is not None:
+        return _sal_facts_cache
+
+    if not _SAL_OUTPUT.is_file():
+        print("[WARN] SAL output not found at "
+              f"{_SAL_OUTPUT} — capability map will lack SAL enrichment",
+              file=sys.stderr)
+        _sal_facts_cache = {}
+        return _sal_facts_cache
+
+    try:
+        data = json.loads(_SAL_OUTPUT.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"[WARN] SAL output malformed/unreadable: {exc}", file=sys.stderr)
+        _sal_facts_cache = {}
+        return _sal_facts_cache
+
+    # Validate minimal schema
+    if not isinstance(data, dict) or "results" not in data:
+        print("[WARN] SAL output missing 'results' key — quarantined", file=sys.stderr)
+        _sal_facts_cache = {}
+        return _sal_facts_cache
+
+    index: dict[str, list[dict]] = {}
+    for entry in data.get("results", []):
+        fmt = entry.get("format_id", "").upper()
+        if fmt:
+            index[fmt] = entry.get("spec_facts", [])
+    _sal_facts_cache = index
+    print(f"[OK] SAL facts loaded: {len(index)} formats, "
+          f"{sum(len(v) for v in index.values())} total facts", file=sys.stderr)
+    return _sal_facts_cache
+
+
+def reset_sal_facts_cache() -> None:
+    """Clear the SAL facts cache (for testing)."""
+    global _sal_facts_cache
+    _sal_facts_cache = None
 
 
 _VERIFIED_FACT_STATUSES = frozenset(["verified", "verified_with_note"])
@@ -818,6 +869,10 @@ def generate(
     commercial_records: list[dict] = []
     foss_records: list[dict] = []
 
+    # --- Load SAL facts for enrichment ---
+    sal_facts = _load_sal_facts()
+    sal_enrichment_log: list[dict] = []
+
     # --- Commercial .NET products ---
     for fmt_entry in poc_data.get("commercial_net_products", []):
         fmt_id = fmt_entry.get("format", "")
@@ -847,6 +902,21 @@ def generate(
         else:
             commercial_facts = _load_spec_facts(fmt_id)
             commercial_verified = _load_spec_facts(fmt_id, verified_only=True)
+
+        # Merge SAL facts into commercial records
+        sal_comm_facts = sal_facts.get(fmt_id.upper(), [])
+        sal_comm_qnames = [f.get("qname", "") for f in sal_comm_facts if f.get("qname")]
+        if sal_comm_qnames:
+            existing_comm = set(commercial_facts)
+            for q in sal_comm_qnames:
+                if q not in existing_comm:
+                    commercial_facts.append(q)
+            sal_enrichment_log.append({
+                "format": fmt_id, "product_type": "commercial",
+                "sal_facts_count": len(sal_comm_facts),
+                "sal_qnames": sal_comm_qnames,
+                "action": "enriched",
+            })
 
         recs = _build_commercial_records(
             fmt_id, dotnet_status, net_tests, net_examples, authority_state, sprint_now,
@@ -881,6 +951,27 @@ def generate(
         # Spec facts — all facts and verified-only facts
         facts = _load_spec_facts(fmt_id)
         verified_facts = _load_spec_facts(fmt_id, verified_only=True)
+
+        # Merge SAL facts: SAL provides qnames, spec_cache provides claim_ids
+        sal_format_facts = sal_facts.get(fmt_id.upper(), [])
+        sal_qnames = [f.get("qname", "") for f in sal_format_facts if f.get("qname")]
+        if sal_qnames and not facts:
+            # SAL provides facts where spec-cache has none — use SAL qnames as spec_refs
+            facts = sal_qnames
+        elif sal_qnames:
+            # Merge: add SAL qnames not already in facts
+            existing = set(facts)
+            for q in sal_qnames:
+                if q not in existing:
+                    facts.append(q)
+        if sal_format_facts:
+            sal_enrichment_log.append({
+                "format": fmt_id, "product_type": "foss_reduced",
+                "sal_facts_count": len(sal_format_facts),
+                "sal_qnames": sal_qnames,
+                "action": "enriched" if sal_qnames else "no_change",
+                "reason": "SAL facts merged into spec_refs" if sal_qnames else "SAL facts present but no qnames",
+            })
 
         recs = _build_foss_records(
             fmt_id, python_status, test_info, ex_info, impl_fns, authority_state, sprint_now,
@@ -942,6 +1033,12 @@ def generate(
         "sprint_id": SPRINT_ID,
         "run_id": RUN_ID,
         "authority_note": "Unified map combining commercial and foss_reduced records. Records are separated by product_type field.",
+        "sal_enrichment": {
+            "sal_source": str(_SAL_OUTPUT),
+            "sal_consumed": bool(sal_facts),
+            "formats_enriched": len(sal_enrichment_log),
+            "log": sal_enrichment_log,
+        },
         "capabilities": all_records,
         "summary": unified_summary,
     }

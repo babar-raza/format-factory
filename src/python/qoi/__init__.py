@@ -13,6 +13,9 @@ from .qoi_parser import (
     get_capabilities,
     qoi_dimensions,
     qoi_pixel_count,
+    qoi_unique_color_count,
+    qoi_channel_count,
+    qoi_is_opaque,
     QoiImage,
 )
 from .qoi_encoder import (
@@ -33,6 +36,9 @@ __all__ = [
     "get_capabilities",
     "qoi_dimensions",
     "qoi_pixel_count",
+    "qoi_unique_color_count",
+    "qoi_channel_count",
+    "qoi_is_opaque",
     "QoiImage",
     "encode_qoi",
     "encode_qoi_to_file",

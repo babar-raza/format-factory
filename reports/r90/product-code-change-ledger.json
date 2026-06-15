@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "FORMAT-FACTORY-SAL-PHASE4-PRODUCT-DEEPENING-SPRINT4-001",
+  "latest_sprint": "evidence-completion-pilot-20260614-915cfd2",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -9794,6 +9794,515 @@
       ],
       "added_at": "2026-06-12",
       "notes": "15 tests: find_rows_by_value, sylk_to_html, sylk_max_column_index"
+    },
+    {
+      "entry_id": "WAVE1-SAL-MASTER-RUNNER-001",
+      "format_id": "ALL",
+      "source_file": "tools/specification-authority-layer/sal_master_runner.py",
+      "function_name": "run_sal_pipeline",
+      "change_type": "NEW_FILE",
+      "sha256": "0020629d9ce27136529ea7d4947ac82a0c7dc069744d0db0852dc5dcebec57ec",
+      "tests_added": [
+        "tests/specification-authority-layer/test_sal_master_runner.py"
+      ],
+      "test_count": 17,
+      "sprint_id": "SPEC-TO-FEATURE-WAVE1-HEALING-001",
+      "requirement_id": "REQ-SAL-001",
+      "added_at": "2026-06-12T19:25:15.066109+00:00",
+      "description": "SAL master runner: orchestrates SAL tools to produce structured spec-fact output per format"
+    },
+    {
+      "entry_id": "PDC-FODP-SLIDE-TITLES-001",
+      "format_id": "FODP",
+      "source_file": "src/python/fodp/fodp_codec.py",
+      "function_name": "fodp_slide_titles",
+      "change_type": "NEW_FUNCTION",
+      "sha256": "247336d28a86957931aaddab94435a2a84362c379c4ca5abe3183247633b0b63",
+      "tests_added": [
+        "tests/python/fodp/test_r220_fodp_slide_titles.py"
+      ],
+      "test_count": 12,
+      "sprint_id": "PRODUCT-DEEPENING-CONTINUATION-20260613",
+      "added_at": "2026-06-13T11:15:00.000000+00:00",
+      "description": "fodp_slide_titles: returns per-slide title list from FODP presentation"
+    },
+    {
+      "entry_id": "PDC-QOI-IS-OPAQUE-001",
+      "format_id": "QOI",
+      "source_file": "src/python/qoi/qoi_parser.py",
+      "function_name": "qoi_is_opaque",
+      "change_type": "NEW_FUNCTION",
+      "sha256": "550f03d38a41640e7e78574019a96242bfd039ada27d95b4a68a41e792f38096",
+      "tests_added": [
+        "tests/python/qoi/test_r220_qoi_is_opaque.py"
+      ],
+      "test_count": 10,
+      "sprint_id": "PRODUCT-DEEPENING-CONTINUATION-20260613",
+      "added_at": "2026-06-13T11:15:00.000000+00:00",
+      "description": "qoi_is_opaque: returns True if every pixel has alpha==255 (or RGB 3-channel)"
+    },
+    {
+      "entry_id": "SHRP-FODP-NOTES-TEXT-001",
+      "file": "src/python/fodp/fodp_codec.py",
+      "function": "fodp_notes_text",
+      "sprint_id": "FORMAT-FACTORY-SYSTEM-HEALING-REWORK-AND-PRODUCT-RESUME-20260613",
+      "description": "Extract presentation notes text from FODP slides",
+      "sha256": "7ceee713c5cc666cf1b9e334565661aeb2f331c201772546b6a6fd51dc74800f",
+      "test_file": "tests/python/fodp/test_r221_fodp_notes_text.py",
+      "test_count": 11,
+      "status": "ACTIVE"
+    },
+    {
+      "entry_id": "SHRP-FODP-HAS-NOTES-001",
+      "file": "src/python/fodp/fodp_codec.py",
+      "function": "fodp_has_notes",
+      "sprint_id": "FORMAT-FACTORY-SYSTEM-HEALING-REWORK-AND-PRODUCT-RESUME-20260613",
+      "description": "Check if FODP has any non-empty presentation notes",
+      "sha256": "7ceee713c5cc666cf1b9e334565661aeb2f331c201772546b6a6fd51dc74800f",
+      "test_file": "tests/python/fodp/test_r221_fodp_notes_text.py",
+      "test_count": 4,
+      "status": "ACTIVE"
+    },
+    {
+      "entry_id": "SHRP-GNUMERIC-CELL-COUNT-FILE-001",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "function": "gnumeric_cell_count_file",
+      "sprint_id": "FORMAT-FACTORY-SYSTEM-HEALING-REWORK-AND-PRODUCT-RESUME-20260613",
+      "description": "File-path-based non-empty cell count for Gnumeric spreadsheets",
+      "sha256": "69f14fe3980278da8ebf521cb9dbb6146a0f0130ff7e9ea171ae7d7238299b6d",
+      "test_file": "tests/python/gnumeric/test_r221_gnumeric_cell_count_file.py",
+      "test_count": 7,
+      "status": "ACTIVE"
+    },
+    {
+      "entry_id": "FCEX-ZST-FILE-INFO-001",
+      "sprint_id": "FORMAT-FACTORY-FORCED-CONTINUATION-EXECUTION-20260613",
+      "taskcard_id": "FOSS-ZST-FILE-INFO-001",
+      "classification": "PRODUCT_SOURCE_PATCH_BOUNDED",
+      "function_added": "zst_file_info",
+      "capability_added": "CONSOLIDATED_FILE_ANALYTICS",
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "sha256": "4c55c01eb5244f1bc6a9ac1b963eca4fa90837e7825d3f5ce34352c0d5d93d5d",
+          "change_type": "function_added"
+        }
+      ],
+      "test_files": [
+        "tests/python/zst/test_rnext_zst_file_info.py"
+      ],
+      "tests_added": 10,
+      "description": "Add zst_file_info(path) returning consolidated dict: compressed_size, decompressed_size, frame_count, compression_ratio, is_valid",
+      "created_at": "2026-06-13T20:00:00Z"
+    },
+    {
+      "entry_id": "FPEX-SYLK-UNIQUE-VALUES-001",
+      "sprint_id": "FORMAT-FACTORY-FORCED-PLAN-EXECUTION-20260613",
+      "taskcard_id": "FOSS-SYLK-UNIQUE-VALUES-001",
+      "function_added": "sylk_unique_values",
+      "capability_added": "UNIQUE_VALUE_ENUMERATION",
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "sha256": "9c5bee5f45b9e5a908fab19f41f1d04e81ea6f6b66a93be53a6d35c71011975a"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_rnext_sylk_unique_values.py"
+      ],
+      "tests_added": 8,
+      "recorded_at": "2026-06-13T14:33:00.965275"
+    },
+    {
+      "entry_id": "BACKFILL-SYLK-COLUMN-COUNT-001",
+      "sprint_id": "product-deepening-rnext88",
+      "taskcard_id": "RNEXT88-SYLK-COLUMN-COUNT-001",
+      "function_added": "sylk_column_count",
+      "capability_added": "COLUMN_COUNT",
+      "source_files": [
+        {
+          "path": "src/python/sylk/sylk_parser.py",
+          "sha256": "9c5bee5f45b9e5a908fab19f41f1d04e81ea6f6b66a93be53a6d35c71011975a"
+        }
+      ],
+      "test_files": [
+        "tests/python/sylk/test_r218_sylk_column_count.py"
+      ],
+      "tests_added": 6,
+      "backfill": true,
+      "backfill_reason": "Function present in source and test file since sprint product-deepening-rnext88 but ledger entry missing",
+      "recorded_at": "2026-06-13T17:17:22.240394+00:00"
+    },
+    {
+      "entry_id": "SWARM-DIF-PROBE-TC0287A024-001",
+      "sprint_id": "format-factory-supervised-swarm-plan-completion-20260613-915cfd2",
+      "taskcard_id": "TC-0287A024",
+      "function_added": "probe_dif",
+      "capability_added": "PROBE_DIF",
+      "source_files": [
+        {
+          "path": "src/python/dif/dif_parser.py",
+          "sha256": "5bd921cd746b36ef84f94711dfc335230c0cde111112bd151cf09d20309c2299"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/dif/test_swarm_dif_probe_tc0287a024.py",
+          "sha256": "48c5e0c046a363256b5387b7b170138b676626233eae6e9e314802dd4e509956"
+        }
+      ],
+      "tests_added": 15,
+      "backfill": false,
+      "backfill_reason": null,
+      "gap_id": "GAP-DIF-FOSS-PROBE_DIF-001",
+      "gap_closure_method": "test_coverage_extension",
+      "spec_qname_exception": "no_public_spec_available",
+      "recorded_at": "2026-06-13T18:16:14.090708+00:00"
+    },
+    {
+      "entry_id": "ROLLING-ABW-GET-PARAGRAPHS-001",
+      "sprint_id": "ROLLING-CHECKPOINT-SPRINT-20260614-001",
+      "taskcard_id": "atg-abw-get-paragraphs-001",
+      "function_added": "get_paragraphs",
+      "capability_added": "GET_PARAGRAPHS",
+      "source_files": [
+        {
+          "path": "src/python/abw/abw_codec.py",
+          "sha256": "5657d5a71f7b28f1d34205a699ef01eb3d220119cd479636cf4445602931f5b7"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/abw/test_rnext_abw_get_paragraphs.py",
+          "sha256": "72d09909ad8d1e18129744ccfa6f316f6312152445437491215a9dc217636685"
+        }
+      ],
+      "tests_added": 12,
+      "backfill": false,
+      "backfill_reason": null,
+      "gap_id": "GAP-ABW-FOSS-GET_PARAGRAP-001",
+      "gap_closure_method": "new_function_implementation",
+      "spec_qname_exception": "no_public_spec_available",
+      "recorded_at": "2026-06-14T00:00:00.000000+00:00"
+    },
+    {
+      "entry_id": "PROBE-CSV-TC-A9665F07-001",
+      "sprint_id": "product-probe-gap-closure-20260614-001",
+      "taskcard_id": "TC-A9665F07",
+      "function_added": "probe_csv",
+      "capability_added": "PROBE_CSV",
+      "source_files": [
+        {
+          "path": "src/python/csv/csv_parser.py",
+          "sha256": "dec94c0d2ceb640bfcac58ef44f769e3b60b3a4b3c406e9908137fcacd24fe28"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/csv/test_tc_a9665f07_csv_probe.py",
+          "sha256": "c45306174e5e7c68507e871e8d985e685204ffd552af2ac826f90a06c42a3f8d"
+        }
+      ],
+      "tests_added": 17,
+      "backfill": false,
+      "backfill_reason": null,
+      "gap_id": "GAP-CSV-FOSS-PROBE_CSV-001",
+      "gap_closure_method": "test_coverage_extension",
+      "spec_qname_exception": "no_public_spec_available",
+      "recorded_at": "2026-06-14T03:56:20.796643+00:00"
+    },
+    {
+      "entry_id": "PROBE-FODG-TC-5369BE63-001",
+      "sprint_id": "product-probe-gap-closure-20260614-001",
+      "taskcard_id": "TC-5369BE63",
+      "function_added": "probe_fodg",
+      "capability_added": "PROBE_FODG",
+      "source_files": [
+        {
+          "path": "src/python/fodg/fodg_codec.py",
+          "sha256": "7d76587a55c33263642e2594062146ea8e37727eeccd1d152f62acea69986036"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/fodg/test_tc_5369be63_fodg_probe.py",
+          "sha256": "3e04655fb533b800bdcaede954937d0cb49335229e53327cd2b54d92f8151990"
+        }
+      ],
+      "tests_added": 16,
+      "backfill": false,
+      "backfill_reason": null,
+      "gap_id": "GAP-FODG-FOSS-PROBE_FODG-001",
+      "gap_closure_method": "test_coverage_extension",
+      "spec_qname_exception": "no_public_spec_available",
+      "recorded_at": "2026-06-14T03:56:20.796643+00:00"
+    },
+    {
+      "entry_id": "PROBE-GNUMERIC-TC-0BADFC11-001",
+      "sprint_id": "product-probe-gap-closure-20260614-001",
+      "taskcard_id": "TC-0BADFC11",
+      "function_added": "probe_gnumeric",
+      "capability_added": "PROBE_GNUMERIC",
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "sha256": "69f14fe3980278da8ebf521cb9dbb6146a0f0130ff7e9ea171ae7d7238299b6d"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/gnumeric/test_tc_0badfc11_gnumeric_probe.py",
+          "sha256": "fcd6f0b662ff626777184df83e3f7f5dc4dff627cf1c3ec47b90caa20ab1de38"
+        }
+      ],
+      "tests_added": 16,
+      "backfill": false,
+      "backfill_reason": null,
+      "gap_id": "GAP-Gnumeric-FOSS-PROBE_GNUMER-001",
+      "gap_closure_method": "test_coverage_extension",
+      "spec_qname_exception": "no_public_spec_available",
+      "recorded_at": "2026-06-14T03:56:20.796643+00:00"
+    },
+    {
+      "entry_id": "ROLLING3-FODP-TOTAL-SHAPE-COUNT-001",
+      "sprint_id": "ROLLING-CHECKPOINT-SPRINT-20260614-003",
+      "function_added": "fodp_total_shape_count",
+      "capability_added": "FODP_TOTAL_SHAPE_COUNT",
+      "source_files": [
+        {
+          "path": "src/python/fodp/fodp_codec.py",
+          "sha256": "aa2caa4c1f656e09d7d55b298a618fbe5a5af60eda709a38ef334b859a065132"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/fodp/test_rnext_fodp_total_shape_count.py",
+          "sha256": "8fe9f8e74df6e84342db9675271fad6340f7325a71b0a32c75d8ff6455794c4b"
+        }
+      ],
+      "test_count": 8,
+      "change_type": "addition",
+      "description": "Add fodp_total_shape_count \u2014 total shapes across all slides",
+      "timestamp": "2026-06-14T10:00:00+00:00"
+    },
+    {
+      "entry_id": "ROLLING4-GNUMERIC-EMPTY-CELL-COUNT-001",
+      "sprint_id": "ROLLING-CHECKPOINT-SPRINT-20260614-004",
+      "function_added": "gnumeric_empty_cell_count",
+      "capability_added": "GNUMERIC_EMPTY_CELL_COUNT",
+      "source_files": [
+        {
+          "path": "src/python/gnumeric/gnumeric_codec.py",
+          "sha256": "d93b5f506edecf32f9d4517cb8eac149a1d0b5b7ada6e569448c691f89f007bc"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/gnumeric/test_rnext_gnumeric_empty_cell_count.py",
+          "sha256": "a10c47143e5874756c0710056688cd57d408b0cb9424689478e2faf5beae4413"
+        }
+      ],
+      "test_count": 12,
+      "change_type": "addition",
+      "description": "Add gnumeric_empty_cell_count \u2014 count empty/None cells in a sheet",
+      "timestamp": "2026-06-14T10:30:00+00:00"
+    },
+    {
+      "entry_id": "ROLLING5-XCF-IS-INDEXED-001",
+      "sprint_id": "ROLLING-CHECKPOINT-SPRINT-20260614-005",
+      "function_added": "xcf_is_indexed",
+      "capability_added": "XCF_IS_INDEXED",
+      "source_files": [
+        {
+          "path": "src/python/xcf/xcf_parser.py",
+          "sha256": "4f14b1bdb2a4e48c50f4fedaaddcdbd9fafda2f3770e56a618d8967fb78697d5"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/xcf/test_rnext_xcf_is_indexed.py",
+          "sha256": "2494f6b9d751ac6851a2998f24a3fc3b96697607650e7ed55a67877a634986bd"
+        }
+      ],
+      "test_count": 7,
+      "change_type": "addition",
+      "description": "Add xcf_is_indexed \u2014 check if XCF image uses indexed color mode (completes RGB/Grayscale/Indexed trio)",
+      "timestamp": "2026-06-14T11:00:00+00:00"
+    },
+    {
+      "entry_id": "PROBE-PBM-TC-733307B4-001",
+      "sprint_id": "pbm-pgm-probe-gap-closure-20260614-001",
+      "taskcard_id": "TC-733307B4",
+      "function_added": "probe_pbm",
+      "capability_added": "PROBE_PBM",
+      "source_files": [
+        {
+          "path": "src/python/pbm/pbm_parser.py",
+          "sha256": "69f39cd6f4031c1ee33be654d52fda9b1097d93e5764c7084ce3a849aac0ee0c"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/pbm/test_tc_733307b4_pbm_probe.py",
+          "sha256": "6db113a63e44807ad561506368d3cbb3dd37636dd8c58c0b129223d70cb95730"
+        }
+      ],
+      "tests_added": 20,
+      "backfill": false,
+      "backfill_reason": null,
+      "gap_id": "GAP-PBM-FOSS-PROBE_PBM-001",
+      "gap_closure_method": "test_coverage_extension",
+      "spec_qname_exception": "no_public_spec_available",
+      "recorded_at": "2026-06-14T05:31:55.529837+00:00"
+    },
+    {
+      "entry_id": "PROBE-PGM-TC-51CBBCB4-001",
+      "sprint_id": "pbm-pgm-probe-gap-closure-20260614-001",
+      "taskcard_id": "TC-51CBBCB4",
+      "function_added": "probe_pgm",
+      "capability_added": "PROBE_PGM",
+      "source_files": [
+        {
+          "path": "src/python/pgm/pgm_parser.py",
+          "sha256": "da7dcee8519d69f0329d7d8a09813a1f519ec3b3c28bed18b08ac766d7cd5989"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/pgm/test_tc_51cbbcb4_pgm_probe.py",
+          "sha256": "57ab05e027793b58c1c0d65d5f3482d1cc06c2bf56195d37f8d285619c4e1769"
+        }
+      ],
+      "tests_added": 21,
+      "backfill": false,
+      "backfill_reason": null,
+      "gap_id": "GAP-PGM-FOSS-PROBE_PGM-001",
+      "gap_closure_method": "test_coverage_extension",
+      "spec_qname_exception": "no_public_spec_available",
+      "recorded_at": "2026-06-14T05:31:55.529837+00:00"
+    },
+    {
+      "entry_id": "ROLLING6-PPM-IS-BINARY-001",
+      "sprint_id": "ROLLING-CHECKPOINT-SPRINT-20260614-006",
+      "function_added": "ppm_is_binary",
+      "capability_added": "PPM_IS_BINARY",
+      "source_files": [
+        {
+          "path": "src/python/ppm/ppm_parser.py",
+          "sha256": "7d4e7e66f9e83fdbae7c5d3c6587232b1dbbe25579c5d1576fc0ae7b162258b9"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/ppm/test_rnext_ppm_is_binary.py",
+          "sha256": "aed93417ccd4231705aecaafdb1f7880f3a3e2188ef318a186741ec24e15dee1"
+        }
+      ],
+      "test_count": 7,
+      "change_type": "addition",
+      "description": "Add ppm_is_binary \u2014 detect P6 (binary) vs P3 (ASCII) PPM format",
+      "timestamp": "2026-06-14T11:30:00+00:00"
+    },
+    {
+      "entry_id": "PLAN-MACHINERY-ZST-FRAME-SIZES-001",
+      "classification": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "origin_commit": "915cfd2",
+      "product": "ZST Python FOSS",
+      "capability_refs": [
+        "ZST-FOSS-ZST_FRAME_SIZES-SRC-001"
+      ],
+      "api_symbols": [
+        "zst_frame_sizes"
+      ],
+      "source_files": [
+        {
+          "path": "src/python/zst/zst_codec.py",
+          "sha256": "98f21dc6415379077c75a09e21cb2bd3b4cc90a6e23a7cc0b78fa9501eca2a8c",
+          "change_type": "added_function"
+        }
+      ],
+      "test_files": [
+        "tests/python/zst/test_rnext_zst_frame_sizes.py"
+      ],
+      "tests_passed": 11,
+      "tests_failed": 0,
+      "sprint_id": "PLAN-MACHINERY-HARDENING-20260614",
+      "run_id": "format-factory-plan-machinery-hardening-product-processing-20260614-915cfd2",
+      "taskcard_id": "TC-0350BD00",
+      "generated_by": "capability_compiler",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "idempotency_key": "TC-0350BD00-exec",
+      "spec_fact_refs": [
+        "ZST-FACT-001",
+        "ZST-FACT-002",
+        "ZST-FACT-003"
+      ]
+    },
+    {
+      "entry_id": "ROLLING7-TSV-HAS-HEADER-001",
+      "sprint_id": "ROLLING-CHECKPOINT-SPRINT-20260614-007",
+      "function_added": "tsv_has_header",
+      "capability_added": "TSV_HAS_HEADER",
+      "source_files": [
+        {
+          "path": "src/python/tsv/tsv_parser.py",
+          "sha256": "39c1ed45b8ba3b2f8b21565649ea4ab4d573e15f9706717b42dd52dc836a2e39"
+        }
+      ],
+      "test_files": [
+        {
+          "path": "tests/python/tsv/test_rnext_tsv_has_header.py",
+          "sha256": "010e29aad3f22246f5cac356ce84ebeaf3705bbd9996ae503c26a97df637fe76"
+        }
+      ],
+      "test_count": 8,
+      "change_type": "addition",
+      "description": "Add tsv_has_header \u2014 detect if TSV file has a header row",
+      "timestamp": "2026-06-14T12:00:00+00:00"
+    },
+    {
+      "entry_id": "SGCR-FODS-FORMULA-COUNT-001",
+      "sprint_id": "self-governed-closeout-repair-20260614-915cfd2",
+      "format": "FODS",
+      "product_type": "foss_reduced",
+      "change_type": "product_source_addition",
+      "description": "Added fods_formula_count(workbook) function to neutral_model.py",
+      "source_files": [
+        "src/python/fods/neutral_model.py"
+      ],
+      "test_files": [
+        "tests/python/fods/test_rnext_fods_formula_count.py"
+      ],
+      "test_count": 15,
+      "function_name": "fods_formula_count",
+      "module": "fods.neutral_model",
+      "execution_method": "skill_add_python_object_model_feature",
+      "claim_classification": "NEW_PRODUCT_SOURCE",
+      "idempotency_key": "496a2292ba77933d",
+      "status": "verified",
+      "evidence": "tests/python/fods/test_rnext_fods_formula_count.py (15 passed)"
+    },
+    {
+      "entry_id": "ECP-FODT-EMPTY-PARA-COUNT-001",
+      "sprint_id": "evidence-completion-pilot-20260614-915cfd2",
+      "format": "FODT",
+      "product_type": "foss_reduced",
+      "change_type": "product_source_addition",
+      "description": "Added document_empty_paragraph_count(document) function to neutral_model.py",
+      "source_files": [
+        "src/python/fodt/neutral_model.py"
+      ],
+      "test_files": [
+        "tests/python/fodt/test_rnext_fodt_empty_paragraph_count.py"
+      ],
+      "test_count": 16,
+      "function_name": "document_empty_paragraph_count",
+      "module": "fodt.neutral_model",
+      "execution_method": "AGENT_GOVERNED_DIRECT_EXECUTION",
+      "claim_classification": "GOVERNED_BUT_NOT_REPLAYED",
+      "idempotency_key": "0f9930324f130bba",
+      "status": "verified",
+      "evidence": "tests/python/fodt/test_rnext_fodt_empty_paragraph_count.py (16 passed)"
     }
   ]
 }

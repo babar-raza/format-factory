@@ -62,6 +62,38 @@ jobs:
       - name: Governance validators smoke test
         run: python -c "import sys; sys.path.insert(0, 'tools/supervisor'); from governance_validators import run_all_governance_validators; print('Governance validators: OK')"
 
+  dotnet-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+      - name: Restore all .NET projects
+        run: dotnet restore src/net/*/FormatFactory.*.csproj
+      - name: Build established .NET projects (csv, fods, fodt, ndjson, tsv)
+        run: |
+          for fmt in csv fods fodt ndjson tsv; do
+            proj="src/net/${fmt}/FormatFactory.*.csproj"
+            echo "Building $proj"
+            dotnet build $proj --configuration Release --no-restore
+          done
+      - name: Build experimental .NET projects (html, markdown, txt, netpbm)
+        continue-on-error: true
+        run: |
+          for fmt in html markdown txt netpbm; do
+            proj="src/net/${fmt}/FormatFactory.*.csproj"
+            echo "Building $proj (experimental)"
+            dotnet build $proj --configuration Release --no-restore
+          done
+      - name: Run .NET tests (if any)
+        run: |
+          if [ -d "tests/dotnet" ]; then
+            for proj in tests/dotnet/*/FormatFactory.*.Tests.csproj; do
+              [ -f "$proj" ] && dotnet test "$proj" --no-build --configuration Release
+            done
+          fi
+
   test-full:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
