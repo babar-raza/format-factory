@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "evidence-completion-pilot-20260614-915cfd2",
+  "latest_sprint": "HARDENED-PLAN-EXECUTION-20260615",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -10303,6 +10303,80 @@
       "idempotency_key": "0f9930324f130bba",
       "status": "verified",
       "evidence": "tests/python/fodt/test_rnext_fodt_empty_paragraph_count.py (16 passed)"
+    },
+    {
+      "entry_id": "DRCV-GNUMERIC-NONEMPTY-COUNT-FILE-001",
+      "sprint_id": "deep-recon-product-advance-20260615-915cfd2",
+      "format": "Gnumeric",
+      "product_type": "foss_reduced",
+      "change_type": "product_source_addition",
+      "description": "Added gnumeric_nonempty_cell_count_file(file_path, sheet_idx) function to gnumeric_codec.py",
+      "source_file": "src/python/gnumeric/gnumeric_codec.py",
+      "test_file": "tests/python/gnumeric/test_rnext_gnumeric_nonempty_cell_count_file.py",
+      "test_count": 10,
+      "timestamp": "2026-06-15T00:00:00+00:00"
+    },
+    {
+      "entry_id": "DRCV-SYLK-CELL-TYPE-DIST-001",
+      "sprint_id": "deep-recon-product-advance-20260615-915cfd2",
+      "format": "SYLK",
+      "product_type": "foss_reduced",
+      "change_type": "product_source_addition",
+      "description": "Added sylk_cell_type_distribution(file_path) function to sylk_parser.py",
+      "source_file": "src/python/sylk/sylk_parser.py",
+      "test_file": "tests/python/sylk/test_rnext_sylk_cell_type_distribution.py",
+      "test_count": 9,
+      "timestamp": "2026-06-15T00:00:00+00:00"
+    },
+    {
+      "entry_id": "RWPD-CSV-DUPLICATE-ROW-COUNT-001",
+      "sprint_id": "REWORK-AND-PRODUCT-DEEPENING-20260615-915cfd2",
+      "format": "CSV",
+      "product_type": "foss_reduced",
+      "change_type": "product_source_addition",
+      "description": "Added csv_duplicate_row_count(file_path) function to csv_parser.py",
+      "source_file": "src/python/csv/csv_parser.py",
+      "test_file": "tests/python/csv/test_rnext_csv_duplicate_row_count.py",
+      "test_count": 10,
+      "timestamp": "2026-06-15T08:30:00+00:00"
+    },
+    {
+      "entry_id": "RWPD-FODP-EMPTY-SLIDE-COUNT-001",
+      "sprint_id": "REWORK-AND-PRODUCT-DEEPENING-20260615-915cfd2",
+      "format": "FODP",
+      "product_type": "foss_reduced",
+      "change_type": "product_source_addition",
+      "description": "Added fodp_empty_slide_count(source) function to fodp_codec.py",
+      "source_file": "src/python/fodp/fodp_codec.py",
+      "test_file": "tests/python/fodp/test_rnext_fodp_empty_slide_count.py",
+      "test_count": 8,
+      "timestamp": "2026-06-15T08:30:00+00:00"
+    },
+    {
+      "entry_id": "EXEC-FODP-IMAGE-COUNT-001",
+      "sprint_id": "HARDENED-PLAN-EXECUTION-20260615",
+      "format": "FODP",
+      "track": "python-foss",
+      "function_name": "fodp_image_count",
+      "source_file": "src/python/fodp/fodp_codec.py",
+      "test_file": "tests/python/fodp/test_rnext_fodp_image_count.py",
+      "test_count": 8,
+      "change_type": "new_function",
+      "description": "Count embedded draw:image elements in FODP presentation",
+      "sha256": "2180d2cc996efc7428e271f82d28a90aeb3907ad7305f357c822ae434b723788"
+    },
+    {
+      "entry_id": "EXEC-ODT-LIST-COUNT-001",
+      "sprint_id": "HARDENED-PLAN-EXECUTION-20260615",
+      "format": "ODT",
+      "track": "python-foss",
+      "function_name": "odt_list_count",
+      "source_file": "src/python/odt/odt_parser.py",
+      "test_file": "tests/python/odt/test_rnext_odt_list_count.py",
+      "test_count": 8,
+      "change_type": "new_function",
+      "description": "Count top-level text:list elements in ODT document",
+      "sha256": "bf526c434bc979685142c3547617c3fe4c9c7b1173cd4d2fdd16581b6823f0bd"
     }
   ]
 }

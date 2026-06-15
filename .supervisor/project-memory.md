@@ -5337,3 +5337,55 @@ Contract: C:\Users\prora\OneDrive\Documents\
 - bundle_validation_pass: True
 - test_delta: +16
 - test_delta_from: 223
+
+## Entry: DEEP-RECON-PRODUCT-ADVANCE-20260615
+- timestamp: 2026-06-15T08:43:10.583783
+- verdict: ACCEPTED
+- test_count: 176
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\deep-recon-product-advance-20260615-915cfd2\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 59
+- bundle_validation_pass: True
+- test_delta: -63
+- test_delta_from: 239
+
+## Entry: REWORK-AND-PRODUCT-DEEPENING-20260615
+- timestamp: 2026-06-15T08:51:13.605227
+- verdict: ACCEPTED
+- test_count: 72
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\rework-and-product-deepening-20260615-915cfd2\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+- test_delta: -104
+- test_delta_from: 176
+
+## Entry: HARDENED-PLAN-EXECUTION-20260615
+- timestamp: 2026-06-15T09:33:12.926828
+- verdict: ACCEPTED
+- test_count: 16
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\hardened-plan-execution-20260615-0f43aa0\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+- test_delta: -56
+- test_delta_from: 72
+
+## Entry: POST-SPRINT-AUTONOMY-LOOP-20260615
+- timestamp: 2026-06-15T09:37:10.037023
+- verdict: ACCEPTED
+- test_count: 60
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\post-sprint-autonomy-loop-20260615-0f43aa0\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 112
+- bundle_validation_pass: True
+- test_delta: +44
+- test_delta_from: 16

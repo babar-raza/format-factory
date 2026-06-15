@@ -1,11 +1,11 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-15T08:13:05.244375
+# Generated: 2026-06-15T09:37:09.841455
 
 ## Quick State
-- Last sprint: EVIDENCE-REPAIR-HARDENING-20260614
+- Last sprint: POST-SPRINT-AUTONOMY-LOOP-20260615
 - Evidence verdict: ACCEPTED
-- Tests: 111 passed / 0 failed
+- Tests: 60 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -16,58 +16,19 @@
 (Read reports/supervisor/evidence-review.md for full details)
 
 ## What To Do Next
-1. Read this file and evidence-review.md
-2. Read approval-gates.md — follow classification
-3. If contradictions exist -> fix them before advancing
-4. If autonomous-continue -> proceed with next-sprint.md prompt
-5. Read plans/master-plan.md for current phase state (AUTHORITY)
+1. Run: `python tools/supervisor/check_continuation.py`
+2. If verdict=CONTINUE: read `next_work_items_path` from output (structured work items)
+3. If verdict=STOP: report the reason to the user and halt
+4. Structured work items: `.local/supervisor/next-work-items.json`
+5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\evidence-repair-hardening-20260614-915cfd2\declaration-review-package.zip
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\post-sprint-autonomy-loop-20260615-0f43aa0\declaration-review-package.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- timestamp: 2026-06-14T12:57:05.930677
-- verdict: ACCEPTED
-- test_count: 75
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\system-hardening-and-controlled-product-healing-20260614-915cfd2\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 88
-- bundle_validation_pass: True
-- test_delta: -910
-- test_delta_from: 985
-
-## Entry: EVIDENCE-REPAIR-HARDENING-20260614
-- timestamp: 2026-06-14T14:09:06.506048
-- verdict: ACCEPTED
-- test_count: 111
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\evidence-repair-hardening-20260614-915cfd2\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 67
-- bundle_validation_pass: True
-- test_delta: +36
-- test_delta_from: 75
-
-## Entry: SELF-GOVERNED-CLOSEOUT-REPAIR-20260614
-- timestamp: 2026-06-14T14:19:07.033667
-- verdict: ACCEPTED
-- test_count: 223
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\self-governed-closeout-repair-20260614-915cfd2\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 69
-- bundle_validation_pass: True
-- test_delta: +112
-- test_delta_from: 111
-
-## Entry: EVIDENCE-COMPLETION-PILOT-20260614
 - timestamp: 2026-06-14T20:05:09.245817
 - verdict: ACCEPTED
 - test_count: 239
@@ -79,6 +40,45 @@
 - bundle_validation_pass: True
 - test_delta: +16
 - test_delta_from: 223
+
+## Entry: DEEP-RECON-PRODUCT-ADVANCE-20260615
+- timestamp: 2026-06-15T08:43:10.583783
+- verdict: ACCEPTED
+- test_count: 176
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\deep-recon-product-advance-20260615-915cfd2\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 59
+- bundle_validation_pass: True
+- test_delta: -63
+- test_delta_from: 239
+
+## Entry: REWORK-AND-PRODUCT-DEEPENING-20260615
+- timestamp: 2026-06-15T08:51:13.605227
+- verdict: ACCEPTED
+- test_count: 72
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\rework-and-product-deepening-20260615-915cfd2\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 62
+- bundle_validation_pass: True
+- test_delta: -104
+- test_delta_from: 176
+
+## Entry: HARDENED-PLAN-EXECUTION-20260615
+- timestamp: 2026-06-15T09:33:12.926828
+- verdict: ACCEPTED
+- test_count: 16
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\hardened-plan-execution-20260615-0f43aa0\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+- test_delta: -56
+- test_delta_from: 72
 ```
 
 ## IMPORTANT REMINDERS

@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-15T08:11:09.476293
-# Source: Supervisor autonomous-cycle review of EVIDENCE-REPAIR-HARDENING-20260614
+# Generated: 2026-06-15T09:35:28.772827
+# Source: Supervisor autonomous-cycle review of POST-SPRINT-AUTONOMY-LOOP-20260615
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,16 +27,16 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: EVIDENCE-REPAIR-HARDENING-20260614
+- Prior sprint: POST-SPRINT-AUTONOMY-LOOP-20260615
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
-- Autonomous continue: True
+- Autonomous continue: False
 
 ---
 
 ## Sprint Goal
 
-**Goal:** Repair 1 item(s) flagged by supervisor review. Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
+**Goal:** Advance product POC: FODS .NET Product Deepening; FODT .NET Product Deepening; Netpbm .NET Product Deepening; ZST Python Improvement. Build evidence declaration and run supervisor autonomous-cycle.
 
 ---
 
@@ -70,24 +70,23 @@ Read these files before writing any code:
 | Train | Group | Title |
 |-------|-------|-------|
 | A | G1 | Governance Preflight |
-| B | G2 | Rework: Evidence repair: Task generation repair (SHCPH-L6) |
-| C | G3 | FODS .NET Product Deepening |
-| D | G3 | FODT .NET Product Deepening |
-| E | G3 | Netpbm .NET Product Deepening |
-| F | G4 | ZST Python Improvement |
-| G | G4 | Netpbm Python Improvement |
-| H | G4 | SYLK Python Improvement |
-| I | G4 | TOML Python Improvement |
-| J | G4 | NDJSON Python Improvement |
-| K | G4 | FODG Python Improvement |
-| L | G4 | TSV Python Improvement |
-| M | G4 | ABW Python Improvement |
-| N | G4 | Gnumeric Python Improvement |
-| O | G5 | Dogfood: fodt -> txt |
-| P | G5 | Dogfood: fodt -> html |
-| Q | G6 | Package Build + Install Proof |
-| R | G7 | State + Memory + POC Matrix Sync |
-| S | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| B | G3 | FODS .NET Product Deepening |
+| C | G3 | FODT .NET Product Deepening |
+| D | G3 | Netpbm .NET Product Deepening |
+| E | G4 | ZST Python Improvement |
+| F | G4 | Netpbm Python Improvement |
+| G | G4 | SYLK Python Improvement |
+| H | G4 | TOML Python Improvement |
+| I | G4 | NDJSON Python Improvement |
+| J | G4 | FODG Python Improvement |
+| K | G4 | TSV Python Improvement |
+| L | G4 | ABW Python Improvement |
+| M | G4 | Gnumeric Python Improvement |
+| N | G5 | Dogfood: fodt -> txt |
+| O | G5 | Dogfood: fodt -> html |
+| P | G6 | Package Build + Install Proof |
+| Q | G7 | State + Memory + POC Matrix Sync |
+| R | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -105,22 +104,9 @@ Read all governance files. Verify no policy violations from prior sprint. Confir
 **Files:**
 - `reports/<run_id>/00-preflight.md`
 
-## Group G2: Rework / Repair
-
-### Train B: Rework: Evidence repair: Task generation repair (SHCPH-L6)
-
-Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ['Evidence consists only of a markdown summary with test names and pass/fail status; the actual test implementations are not provided for review.', 'Without seeing the test code, it cannot be verified that the tests contain meaningful assertions rather than placeholders (e.g., `assert True` or `pass`).', 'Potential thin coverage: only ten tests are listed for a feature that involves multiple complex behaviors (priority scoring, advisory-only handling, gap skipping, taskcard quality). The depth of each test cannot be assessed.', 'No concrete test output, logs, or coverage metrics are included to demonstrate that the code paths were exercised.']
-
-**Acceptance Criteria:**
-- Evidence for HC-011-EVIDENCE-SHCPH-L6 passes supervisor inspection
-- Tests pass for affected code
-
-**Files:**
-- `.local/evidences/evidence-repair-hardening-20260614-915cfd2/focused-proof-shcph-l6.md`
-
 ## Group G3: Commercial .NET Product
 
-### Train C: FODS .NET Product Deepening
+### Train B: FODS .NET Product Deepening
 
 Continue FODS commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -138,7 +124,7 @@ Continue FODS commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fods/ --verbosity quiet
 ```
 
-### Train D: FODT .NET Product Deepening
+### Train C: FODT .NET Product Deepening
 
 Continue FODT commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -156,7 +142,7 @@ Continue FODT commercial .NET product advancement. Continue product maintenance 
 dotnet test tests/net/fodt/ --verbosity quiet
 ```
 
-### Train E: Netpbm .NET Product Deepening
+### Train D: Netpbm .NET Product Deepening
 
 Continue Netpbm commercial .NET product advancement. Continue product maintenance and extended API feature development
 
@@ -176,7 +162,7 @@ dotnet test tests/net/netpbm/ --verbosity quiet
 
 ## Group G4: FOSS / Reduced Product
 
-### Train F: ZST Python Improvement
+### Train E: ZST Python Improvement
 
 Continue ZST FOSS product. Continue FOSS product deepening and additional compression API coverage
 
@@ -193,7 +179,7 @@ Continue ZST FOSS product. Continue FOSS product deepening and additional compre
 python -m pytest tests/python/zst/ -x -q
 ```
 
-### Train G: Netpbm Python Improvement
+### Train F: Netpbm Python Improvement
 
 Continue Netpbm FOSS product. Continue FOSS product deepening and additional Python API coverage
 
@@ -214,7 +200,7 @@ Continue Netpbm FOSS product. Continue FOSS product deepening and additional Pyt
 python -m pytest tests/python/pbm/ tests/python/pgm/ tests/python/ppm/ -x -q
 ```
 
-### Train H: SYLK Python Improvement
+### Train G: SYLK Python Improvement
 
 Continue SYLK FOSS product. Continue FOSS product deepening — get_row_count, get_column_count, cell iteration
 
@@ -231,7 +217,7 @@ Continue SYLK FOSS product. Continue FOSS product deepening — get_row_count, g
 python -m pytest tests/python/sylk/ -x -q
 ```
 
-### Train I: TOML Python Improvement
+### Train H: TOML Python Improvement
 
 Continue TOML FOSS product. dogfood export via TOML config roundtrip; package install proof
 
@@ -248,7 +234,7 @@ Continue TOML FOSS product. dogfood export via TOML config roundtrip; package in
 python -m pytest tests/python/toml/ -x -q
 ```
 
-### Train J: NDJSON Python Improvement
+### Train I: NDJSON Python Improvement
 
 Continue NDJSON FOSS product. Package install proof; dogfood pipeline integration
 
@@ -265,7 +251,7 @@ Continue NDJSON FOSS product. Package install proof; dogfood pipeline integratio
 python -m pytest tests/python/ndjson/ -x -q
 ```
 
-### Train K: FODG Python Improvement
+### Train J: FODG Python Improvement
 
 Continue FODG FOSS product. Package install proof; SVG export investigation
 
@@ -282,7 +268,7 @@ Continue FODG FOSS product. Package install proof; SVG export investigation
 python -m pytest tests/python/fodg/ -x -q
 ```
 
-### Train L: TSV Python Improvement
+### Train K: TSV Python Improvement
 
 Continue TSV FOSS product. Package install proof; dogfood pipeline integration
 
@@ -299,7 +285,7 @@ Continue TSV FOSS product. Package install proof; dogfood pipeline integration
 python -m pytest tests/python/tsv/ -x -q
 ```
 
-### Train M: ABW Python Improvement
+### Train L: ABW Python Improvement
 
 Continue ABW FOSS product. Dogfood pipeline integration
 
@@ -316,7 +302,7 @@ Continue ABW FOSS product. Dogfood pipeline integration
 python -m pytest tests/python/abw/ -x -q
 ```
 
-### Train N: Gnumeric Python Improvement
+### Train M: Gnumeric Python Improvement
 
 Continue Gnumeric FOSS product. Dogfood pipeline integration
 
@@ -335,7 +321,7 @@ python -m pytest tests/python/gnumeric/ -x -q
 
 ## Group G5: Dogfood Exports
 
-### Train O: Dogfood: fodt -> txt
+### Train N: Dogfood: fodt -> txt
 
 No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET library with write_text().
 
@@ -343,7 +329,7 @@ No FF .NET text write library. Prerequisite: Build FormatFactory.Text .NET libra
 - Export test passes using FF library
 - Dogfood status updated in poc-targets.yaml
 
-### Train P: Dogfood: fodt -> html
+### Train O: Dogfood: fodt -> html
 
 No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET library.
 
@@ -353,7 +339,7 @@ No FF .NET HTML write library. Prerequisite: Build FormatFactory.Html .NET libra
 
 ## Group G6: Package / Install Proof
 
-### Train Q: Package Build + Install Proof
+### Train P: Package Build + Install Proof
 
 Rebuild wheels/sdists for any changed packages. Run installed-workflow smoke test from extracted wheel. Treat missing artifacts as failures, not skips.
 
@@ -372,7 +358,7 @@ python -m pytest tests/evidence/ -x -q
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train R: State + Memory + POC Matrix Sync
+### Train Q: State + Memory + POC Matrix Sync
 
 Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
@@ -388,7 +374,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train S: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train R: Evidence Declaration + Supervisor Autonomous-Cycle
 
 Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
@@ -487,6 +473,7 @@ END OF SUPERVISOR-GENERATED MEGA-TRAIN EXECUTION PROMPT
 The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 4x, last: POST-SPRINT-AUTONOMY-LOOP-20260615)
 - WARNING: 7 unresolved failures in failure memory
 
 
