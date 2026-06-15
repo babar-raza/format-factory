@@ -44,32 +44,29 @@ Do NOT use the legacy `run-on-latest --bundle` command. It is deprecated.
 
 ## Autonomous Continuation (when authorized)
 
-After Sprint Closeout step 3 (checking exit code), if ALL of these are true:
-1. autonomous-cycle exit code was 0
-2. `reports/supervisor/approval-gates.md` contains `AUTONOMOUS_CONTINUE: YES`
-3. `.local/supervisor/continuation-signal.json` exists with `"autonomous_continue"` set to
-   a truthy value (`true`, `"true_with_rework"`, or any non-false/non-null value).
-   The value `"true_with_rework"` means rework items exist but safe lanes can continue —
-   treat it as a GO signal, not a stop.
-4. `continuation_state` in the signal starts with `YES` (e.g., `YES`, `YES_WITH_REWORK`,
-   `YES_WITH_LIMITATIONS`). Any `NO_*` state is a stop.
-5. `iteration` < `max_iterations` in the signal file
-6. No hard stop detected (push/commit needed, Gate 8/11 approval, credentials)
-7. `hard_stops_detected` array in the signal is empty
+After Sprint Closeout step 3 (checking exit code), run the continuation checker:
+
+```
+python tools/supervisor/check_continuation.py
+```
+
+- **Exit code 0** + `"verdict": "CONTINUE"` in stdout → proceed autonomously:
+  1. Read the `next_work_items_path` from the JSON output (structured work items)
+  2. Read `reports/supervisor/next-sprint.md` for prose context
+  3. If `rework_items` exist in the output, address them FIRST before new work
+  4. Increment `iteration` in `.local/supervisor/continuation-signal.json`
+  5. Execute the sprint — use `next-sprint.md` as your sprint prompt
+  6. At the end, write a new `evidence-declaration.yaml` and run autonomous-cycle again
+  7. Run `check_continuation.py` again and repeat from step 1
+
+- **Exit code 1** + `"verdict": "STOP"` → report the `reason` and `detail` fields to the
+  user and STOP. Do NOT attempt to override STOP verdicts.
+
+Do NOT manually check continuation-signal.json, approval-gates.md, or iteration counts.
+`check_continuation.py` encodes all 7 conditions deterministically.
 
 Note: `advisory_prompt_executable` is ALWAYS `false` by design — it does NOT indicate
-that continuation is blocked. Ignore this field when deciding whether to continue.
-
-Then IMMEDIATELY:
-1. Read `reports/supervisor/next-sprint.md`
-2. If `rework_items` exist in the signal, address them FIRST before new work
-3. Increment `iteration` in `.local/supervisor/continuation-signal.json`
-4. Begin executing the next sprint — treat `next-sprint.md` as your sprint prompt
-5. At the end, write a new `evidence-declaration.yaml` and run autonomous-cycle again
-6. Repeat from the check above
-
-If ANY condition is false, STOP and report the termination reason to the user.
-Do NOT stop for `advisory_prompt_executable: false` — this is always false and is not a stop signal.
+that continuation is blocked. Ignore this field everywhere.
 
 ### Cross-Window Recovery
 If this window is new (context was exhausted, window crashed, or user opened a fresh session):
