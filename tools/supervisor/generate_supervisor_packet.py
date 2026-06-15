@@ -1182,11 +1182,11 @@ def generate_session_resume_md(review: dict, contradictions: dict, memory_snippe
 (Read reports/supervisor/evidence-review.md for full details)
 
 ## What To Do Next
-1. Read this file and evidence-review.md
-2. Read approval-gates.md — follow classification
-3. If contradictions exist -> fix them before advancing
-4. If autonomous-continue -> proceed with next-sprint.md prompt
-5. Read plans/master-plan.md for current phase state (AUTHORITY)
+1. Run: `python tools/supervisor/check_continuation.py`
+2. If verdict=CONTINUE: read `next_work_items_path` from output (structured work items)
+3. If verdict=STOP: report the reason to the user and halt
+4. Structured work items: `.local/supervisor/next-work-items.json`
+5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
 - Last evidence bundle: {review.get('bundle_path', 'see .supervisor/state/current-run.json')}

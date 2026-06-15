@@ -724,6 +724,27 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     except Exception as e:
         print(f"  WARNING: Next-work-items validation skipped: {e}")
 
+    # Step 4c: Output classification (summary_classifier)
+    print("\n=== STEP 4c: OUTPUT CLASSIFICATION ===")
+    try:
+        from summary_classifier import classify_summary
+        classification = classify_summary(prompt_path)
+        (review_dir / "output-classification.json").write_text(
+            json.dumps(classification, indent=2), encoding="utf-8"
+        )
+        cls = classification.get("classification", "UNKNOWN")
+        print(f"  Classification: {cls}")
+        if cls == "PROSE_ONLY":
+            review.setdefault("rework_items", [])
+            review["rework_items"].append("OUTPUT_CLASSIFICATION_PROSE_ONLY")
+            print("  >>> Prose-only output -> added to rework items")
+        elif cls in ("MISSING", "CONTRADICTORY"):
+            review["autonomous_continue"] = False
+            review["stop_reason"] = f"Output classification: {cls}"
+            print(f"  >>> CONTINUATION BLOCKED: {cls}")
+    except Exception as e:
+        print(f"  WARNING: Output classification skipped: {e}")
+
     # Step 5: Write cycle manifest
     print("\n=== STEP 5: WRITE CYCLE MANIFEST ===")
     manifest = {
@@ -779,6 +800,14 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         if src.exists():
             shutil.copy2(str(src), str(dst))
     print(f"  Stream dir: {stream_dir}")
+
+    # Canonical work-items copy for check_continuation.py
+    canonical_work_items = repo_root / ".local" / "supervisor" / "next-work-items.json"
+    canonical_work_items.parent.mkdir(parents=True, exist_ok=True)
+    src_work = review_dir / "next-work-items.json"
+    if src_work.exists():
+        shutil.copy2(str(src_work), str(canonical_work_items))
+        print(f"  Canonical work items: {canonical_work_items}")
 
     # R112: Write stream-local authority map
     authority_map = {
@@ -1076,6 +1105,10 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
                 print(f"  Queue seed: {seed_result.get('status')}")
             except Exception as ec_err:
                 print(f"  WARNING: evidence_continuation bridge failed: {ec_err}")
+                # Non-silent: record failure in signal so check_continuation surfaces it
+                signal["evidence_continuation_failed"] = True
+                signal["evidence_continuation_error"] = str(ec_err)
+                signal_path.write_text(json.dumps(signal, indent=2), encoding="utf-8")
     except Exception as e:
         print(f"  WARNING: Continuation signal failed: {e}")
 
