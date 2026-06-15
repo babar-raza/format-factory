@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stage 1 Issue Model",
+  "description": "Output contract for Post-Sprint Audit (Prompt 1). Defines structured L1/L2/L3 issues, claim classifications, and evidence quality verdicts.",
+  "type": "object",
+  "required": ["sprint_id", "timestamp", "audit_summary", "issues", "claim_classification_matrix", "evidence_quality_verdict", "final_verdict", "next_stage_recommendation"],
+  "properties": {
+    "sprint_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "audit_summary": {
+      "type": "object",
+      "required": ["what_achieved", "what_this_proves", "effect_on_final_outcome"],
+      "properties": {
+        "what_achieved": { "type": "array", "items": { "$ref": "#/$defs/achievement" } },
+        "what_this_proves": { "type": "array", "items": { "$ref": "#/$defs/proof_item" } },
+        "effect_on_final_outcome": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "issues": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/issue" }
+    },
+    "claim_classification_matrix": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/claim_classification" }
+    },
+    "evidence_quality_verdict": {
+      "type": "string",
+      "enum": ["STRONG", "ADEQUATE_WITH_LIMITATIONS", "WEAK", "INSUFFICIENT", "MISLEADING"]
+    },
+    "final_verdict": {
+      "type": "string",
+      "enum": [
+        "SPRINT_ALL_GREEN_VERIFIED",
+        "SPRINT_ACCEPTED_WITH_LIMITATIONS",
+        "SPRINT_REQUIRES_PLAN_HARDENING",
+        "SPRINT_REQUIRES_REEXECUTION",
+        "SPRINT_REQUIRES_EVIDENCE_REPAIR",
+        "SPRINT_BLOCKED_EXTERNAL",
+        "SPRINT_SUMMARY_INSUFFICIENT"
+      ]
+    },
+    "next_stage_recommendation": {
+      "type": "object",
+      "required": ["stage", "reason"],
+      "properties": {
+        "stage": { "type": "string", "enum": ["ACCEPT", "PROMPT_2", "PROMPT_3_EVIDENCE_REPAIR", "PROMPT_2_THEN_3", "PROMPT_1_RERUN", "BLOCKER_PACKAGE_AND_STOP"] },
+        "reason": { "type": "string" },
+        "open_issue_ids": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "total_issues": { "type": "integer", "minimum": 0 },
+    "critical_count": { "type": "integer", "minimum": 0 },
+    "l1_count": { "type": "integer", "minimum": 0 },
+    "l2_count": { "type": "integer", "minimum": 0 },
+    "l3_count": { "type": "integer", "minimum": 0 }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "achievement": {
+      "type": "object",
+      "required": ["description", "evidence", "proof_level"],
+      "properties": {
+        "description": { "type": "string" },
+        "changed_files": { "type": "array", "items": { "type": "string" } },
+        "fully_done": { "type": "boolean" },
+        "evidence": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "integrated": { "type": "boolean" },
+        "production_ready": { "type": "boolean" },
+        "caveats": { "type": "string" },
+        "proof_level": {
+          "type": "string",
+          "enum": ["implementation_only", "partial_validation", "focused_validation", "integration_validation", "end_to_end_proof", "pilot_proof", "no_proof_yet"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "proof_item": {
+      "type": "object",
+      "required": ["conclusion", "supported"],
+      "properties": {
+        "conclusion": { "type": "string" },
+        "supported": { "type": "boolean" },
+        "evidence_ref": { "type": "string" },
+        "limitations": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "issue": {
+      "type": "object",
+      "required": ["issue_id", "issue_level", "title", "description", "severity", "root_cause"],
+      "properties": {
+        "issue_id": { "type": "string" },
+        "issue_level": { "type": "string", "enum": ["L1_EXECUTION", "L2_INTEGRATION", "L3_SYSTEM_WEAKNESS"] },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "evidence": { "type": "string" },
+        "missing_evidence": { "type": "string" },
+        "root_cause": { "type": "string" },
+        "why_not_only_symptom": { "type": "string" },
+        "affected_files": { "type": "array", "items": { "type": "string" } },
+        "affected_components": { "type": "array", "items": { "type": "string" } },
+        "affected_connection_points": { "type": "array", "items": { "type": "string" } },
+        "severity": { "type": "string", "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"] },
+        "blocker": { "type": "boolean" },
+        "recurrence_risk": { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW"] },
+        "required_fix_type": { "type": "string" },
+        "requires_plan_update": { "type": "boolean" },
+        "requires_taskcard": { "type": "boolean" },
+        "requires_system_healing": { "type": "boolean" },
+        "requires_reexecution": { "type": "boolean" },
+        "requires_governance_change": { "type": "boolean" },
+        "requires_evidence_repair": { "type": "boolean" },
+        "recommended_next_stage": { "type": "string" },
+        "acceptance_impact": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "claim_classification": {
+      "type": "object",
+      "required": ["claim", "classification"],
+      "properties": {
+        "claim": { "type": "string" },
+        "classification": {
+          "type": "string",
+          "enum": ["ACCEPTED_VERIFIED", "ACCEPTED_WITH_LIMITATIONS", "PARTIAL", "UNVERIFIED", "FAILED", "STALE", "MISLEADING", "DAMAGED_OR_REGRESSED", "EXTERNAL_BLOCKED"]
+        },
+        "evidence_ref": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

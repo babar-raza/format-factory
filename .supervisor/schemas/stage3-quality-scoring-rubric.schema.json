@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stage 3 Quality Scoring Rubric",
+  "description": "Output contract for Controlled Execution (Prompt 3). Defines 15-dimension quality scoring, reroute triggers, and final sprint summary.",
+  "type": "object",
+  "required": ["sprint_id", "timestamp", "execution_results", "overall_verdict", "all_green"],
+  "properties": {
+    "sprint_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "preflight_state": {
+      "type": "object",
+      "properties": {
+        "repo_root": { "type": "string" },
+        "branch": { "type": "string" },
+        "head_commit": { "type": "string" },
+        "git_status_clean": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "execution_results": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/taskcard_result" }
+    },
+    "overall_scores": { "$ref": "#/$defs/quality_scores" },
+    "overall_verdict": {
+      "type": "string",
+      "enum": [
+        "EXECUTION_COMPLETE_VERIFIED",
+        "EXECUTION_COMPLETE_WITH_LIMITATIONS",
+        "EXECUTION_REROUTED_REWORK_REQUIRED",
+        "PLAN_NOT_READY_HEALED_ONLY",
+        "BLOCKED_BY_FAILED_GATE",
+        "BLOCKED_BY_REPO_SAFETY",
+        "BLOCKED_EXTERNAL",
+        "NEEDS_HUMAN_DECISION"
+      ]
+    },
+    "all_green": { "type": "boolean" },
+    "reroute_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["taskcard_id", "reason", "rework_owner"],
+        "properties": {
+          "taskcard_id": { "type": "string" },
+          "reason": { "type": "string" },
+          "failing_dimensions": { "type": "array", "items": { "type": "string" } },
+          "rework_owner": { "type": "string" },
+          "reworked": { "type": "boolean" },
+          "rescored": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence_manifest": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "type"],
+        "properties": {
+          "path": { "type": "string" },
+          "type": { "type": "string" },
+          "sha256": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "self_review": {
+      "type": "object",
+      "properties": {
+        "l1_execution_issues": { "type": "array", "items": { "type": "object" } },
+        "l2_integration_issues": { "type": "array", "items": { "type": "object" } },
+        "l3_system_weaknesses": { "type": "array", "items": { "type": "object" } },
+        "evidence_quality_verdict": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "lane_status": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["lane_id", "status"],
+        "properties": {
+          "lane_id": { "type": "string" },
+          "status": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence_bundle_path": { "type": "string" },
+    "evidence_bundle_sha256": { "type": "string" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "quality_scores": {
+      "type": "object",
+      "properties": {
+        "correctness": { "$ref": "#/$defs/score_value" },
+        "test_coverage": { "$ref": "#/$defs/score_value" },
+        "evidence_completeness": { "$ref": "#/$defs/score_value" },
+        "code_quality": { "$ref": "#/$defs/score_value" },
+        "schema_compliance": { "$ref": "#/$defs/score_value" },
+        "governance_compliance": { "$ref": "#/$defs/score_value" },
+        "path_discipline": { "$ref": "#/$defs/score_value" },
+        "documentation": { "$ref": "#/$defs/score_value" },
+        "idempotency": { "$ref": "#/$defs/score_value" },
+        "regression_safety": { "$ref": "#/$defs/score_value" },
+        "performance": { "$ref": "#/$defs/score_value" },
+        "error_handling": { "$ref": "#/$defs/score_value" },
+        "integration_consistency": { "$ref": "#/$defs/score_value" },
+        "evidence_traceability": { "$ref": "#/$defs/score_value" },
+        "acceptance_criteria_met": { "$ref": "#/$defs/score_value" }
+      },
+      "additionalProperties": false
+    },
+    "score_value": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "taskcard_result": {
+      "type": "object",
+      "required": ["taskcard_id", "status", "quality_scores"],
+      "properties": {
+        "taskcard_id": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["COMPLETED", "FAILED", "BLOCKED", "REROUTED", "REWORKED", "SKIPPED"]
+        },
+        "quality_scores": { "$ref": "#/$defs/quality_scores" },
+        "evidence_paths": { "type": "array", "items": { "type": "string" } },
+        "test_results": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "integer" },
+            "failed": { "type": "integer" },
+            "skipped": { "type": "integer" }
+          },
+          "additionalProperties": false
+        },
+        "verification_log": { "type": "string" },
+        "rerouted": { "type": "boolean" },
+        "rework_reason": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

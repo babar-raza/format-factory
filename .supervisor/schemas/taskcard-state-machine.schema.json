@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Taskcard State Machine",
+  "description": "Valid taskcard states and transitions for the post-sprint autonomy loop.",
+  "type": "object",
+  "required": ["states", "transitions", "initial_state", "terminal_states"],
+  "properties": {
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "PROPOSED", "READY", "BLOCKED", "IN_PROGRESS",
+          "IMPLEMENTED", "VERIFIED", "SCORED",
+          "REROUTED", "REWORKING", "REWORKED",
+          "ACCEPTED", "ACCEPTED_WITH_LIMITATIONS",
+          "BLOCKED_EXTERNAL", "DEFERRED_WITH_REASON"
+        ]
+      }
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "trigger"],
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "trigger": { "type": "string" },
+          "guard": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "initial_state": { "type": "string", "const": "PROPOSED" },
+    "terminal_states": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "default_transitions": {
+      "description": "Standard transitions",
+      "default": [
+        { "from": "PROPOSED", "to": "READY", "trigger": "plan_approved" },
+        { "from": "READY", "to": "IN_PROGRESS", "trigger": "execution_started" },
+        { "from": "READY", "to": "BLOCKED", "trigger": "dependency_unmet" },
+        { "from": "BLOCKED", "to": "READY", "trigger": "dependency_resolved" },
+        { "from": "BLOCKED", "to": "BLOCKED_EXTERNAL", "trigger": "external_gate_identified" },
+        { "from": "IN_PROGRESS", "to": "IMPLEMENTED", "trigger": "implementation_complete" },
+        { "from": "IMPLEMENTED", "to": "VERIFIED", "trigger": "verification_passed" },
+        { "from": "IMPLEMENTED", "to": "REROUTED", "trigger": "verification_failed" },
+        { "from": "VERIFIED", "to": "SCORED", "trigger": "quality_scored" },
+        { "from": "SCORED", "to": "ACCEPTED", "trigger": "all_scores_gte_4", "guard": "min(scores) >= 4" },
+        { "from": "SCORED", "to": "ACCEPTED_WITH_LIMITATIONS", "trigger": "scores_acceptable_with_notes" },
+        { "from": "SCORED", "to": "REROUTED", "trigger": "score_below_threshold", "guard": "min(scores) < 4" },
+        { "from": "REROUTED", "to": "REWORKING", "trigger": "rework_started" },
+        { "from": "REWORKING", "to": "REWORKED", "trigger": "rework_complete" },
+        { "from": "REWORKED", "to": "VERIFIED", "trigger": "re_verification_passed" },
+        { "from": "REWORKED", "to": "REROUTED", "trigger": "re_verification_failed" },
+        { "from": "IN_PROGRESS", "to": "DEFERRED_WITH_REASON", "trigger": "defer_decision" }
+      ]
+    },
+    "invalid_transitions": {
+      "description": "Transitions that must be rejected",
+      "default": [
+        { "from": "IMPLEMENTED", "to": "ACCEPTED", "reason": "Cannot skip VERIFIED and SCORED" },
+        { "from": "IMPLEMENTED", "to": "SCORED", "reason": "Cannot skip VERIFIED" },
+        { "from": "REROUTED", "to": "ACCEPTED", "reason": "Cannot accept without re-evaluation" },
+        { "from": "PROPOSED", "to": "ACCEPTED", "reason": "Cannot skip execution entirely" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Project Adapter Contract",
+  "description": "Defines the project adapter interface for portability of the post-sprint loop across projects.",
+  "type": "object",
+  "required": ["project_name", "repo_root", "test_commands", "prompt_folder_path"],
+  "properties": {
+    "project_name": { "type": "string" },
+    "repo_root": { "type": "string" },
+    "evidence_root_pattern": { "type": "string", "description": "Glob pattern for evidence directories, e.g. .local/evidences/*" },
+    "plan_paths": { "type": "array", "items": { "type": "string" } },
+    "taskcard_paths": { "type": "array", "items": { "type": "string" } },
+    "prompt_folder_path": { "type": "string" },
+    "prompt_registry_path": { "type": "string" },
+    "test_commands": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "validator_commands": { "type": "array", "items": { "type": "string" } },
+    "build_commands": { "type": "array", "items": { "type": "string" } },
+    "governance_commands": { "type": "array", "items": { "type": "string" } },
+    "protected_paths": { "type": "array", "items": { "type": "string" } },
+    "allowed_mutation_paths": { "type": "array", "items": { "type": "string" } },
+    "docs_paths": { "type": "array", "items": { "type": "string" } },
+    "skills_paths": { "type": "array", "items": { "type": "string" } },
+    "agent_instruction_paths": { "type": "array", "items": { "type": "string" } },
+    "final_package_format": { "type": "string", "enum": ["zip", "tar.gz", "directory"] },
+    "declaration_schema_path": { "type": "string" },
+    "policies_path": { "type": "string" },
+    "project_specific_gates": { "type": "array", "items": { "type": "string" } },
+    "external_blockers": { "type": "array", "items": { "type": "string" } },
+    "max_loop_iterations": { "type": "integer", "minimum": 1, "default": 3 },
+    "quality_threshold": { "type": "integer", "minimum": 1, "maximum": 5, "default": 4 }
+  },
+  "additionalProperties": false
+}

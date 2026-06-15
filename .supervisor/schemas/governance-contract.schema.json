@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Governance Contract",
+  "description": "Defines governance checks the loop controller must pass before accepting a sprint.",
+  "type": "object",
+  "required": ["required_validators", "governance_result"],
+  "properties": {
+    "required_validators": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of validator names that must be run"
+    },
+    "blocking_validators": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Validators whose failure blocks acceptance"
+    },
+    "min_pass_count": { "type": "integer", "minimum": 0 },
+    "governance_result": {
+      "type": "object",
+      "required": ["pass_count", "fail_count", "warn_count", "verdict"],
+      "properties": {
+        "pass_count": { "type": "integer", "minimum": 0 },
+        "fail_count": { "type": "integer", "minimum": 0 },
+        "warn_count": { "type": "integer", "minimum": 0 },
+        "verdict": {
+          "type": "string",
+          "enum": ["ALL_PASS", "PASS_WITH_WARNINGS", "BLOCKED_BY_FAILURE"]
+        },
+        "validator_results": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "status"],
+            "properties": {
+              "name": { "type": "string" },
+              "status": { "type": "string", "enum": ["PASS", "WARN", "FAIL"] },
+              "message": { "type": "string" },
+              "blocks_sprint": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

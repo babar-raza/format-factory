@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Loop Decision State Machine",
+  "description": "State machine for the post-sprint loop controller. Defines valid states, transitions, and decision history.",
+  "type": "object",
+  "required": ["current_state", "iteration", "max_iterations"],
+  "properties": {
+    "current_state": {
+      "type": "string",
+      "enum": [
+        "INITIAL",
+        "AUDIT_RUNNING",
+        "AUDIT_COMPLETE",
+        "HARDENING_RUNNING",
+        "HARDENING_COMPLETE",
+        "EXECUTION_RUNNING",
+        "EXECUTION_COMPLETE",
+        "CLASSIFYING",
+        "REROUTE_TO_HARDEN",
+        "REROUTE_TO_AUDIT",
+        "REROUTE_REWORK",
+        "ADVERSARIAL_REVIEW",
+        "ACCEPTED_ALL_GREEN",
+        "MAX_LOOPS_EXCEEDED",
+        "HARD_STOP",
+        "BLOCKED_EXTERNAL"
+      ]
+    },
+    "iteration": { "type": "integer", "minimum": 0 },
+    "max_iterations": { "type": "integer", "minimum": 1 },
+    "run_id": { "type": "string" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "decision_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["iteration", "from_state", "to_state", "trigger", "timestamp"],
+        "properties": {
+          "iteration": { "type": "integer" },
+          "from_state": { "type": "string" },
+          "to_state": { "type": "string" },
+          "trigger": { "type": "string" },
+          "classification": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "stage1_output_path": { "type": "string" },
+    "stage2_output_path": { "type": "string" },
+    "stage3_output_path": { "type": "string" },
+    "evidence_bundle_path": { "type": "string" },
+    "final_verdict": { "type": "string" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "valid_transitions": {
+      "description": "Allowed state transitions",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "trigger"],
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "trigger": { "type": "string" },
+          "guard": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "default": [
+        { "from": "INITIAL", "to": "AUDIT_RUNNING", "trigger": "start_audit" },
+        { "from": "AUDIT_RUNNING", "to": "AUDIT_COMPLETE", "trigger": "audit_finished" },
+        { "from": "AUDIT_COMPLETE", "to": "HARDENING_RUNNING", "trigger": "start_hardening" },
+        { "from": "HARDENING_RUNNING", "to": "HARDENING_COMPLETE", "trigger": "hardening_finished" },
+        { "from": "HARDENING_COMPLETE", "to": "EXECUTION_RUNNING", "trigger": "start_execution" },
+        { "from": "EXECUTION_RUNNING", "to": "EXECUTION_COMPLETE", "trigger": "execution_finished" },
+        { "from": "EXECUTION_COMPLETE", "to": "CLASSIFYING", "trigger": "start_classification" },
+        { "from": "CLASSIFYING", "to": "ACCEPTED_ALL_GREEN", "trigger": "all_green", "guard": "classification == STRUCTURED_ALL_GREEN" },
+        { "from": "CLASSIFYING", "to": "REROUTE_TO_HARDEN", "trigger": "not_green", "guard": "classification in [STRUCTURED_NOT_GREEN, PROSE_ONLY, SCORES_MISSING, EVIDENCE_MISSING, TASKCARDS_INCOMPLETE]" },
+        { "from": "CLASSIFYING", "to": "REROUTE_TO_AUDIT", "trigger": "missing", "guard": "classification == MISSING" },
+        { "from": "CLASSIFYING", "to": "REROUTE_REWORK", "trigger": "scores_below_threshold", "guard": "classification == STRUCTURED_NOT_GREEN and has_below_4_scores" },
+        { "from": "CLASSIFYING", "to": "BLOCKED_EXTERNAL", "trigger": "external_blocker", "guard": "classification == BLOCKED_EXTERNAL" },
+        { "from": "CLASSIFYING", "to": "HARD_STOP", "trigger": "contradictory", "guard": "classification == CONTRADICTORY" },
+        { "from": "REROUTE_TO_HARDEN", "to": "HARDENING_RUNNING", "trigger": "restart_hardening" },
+        { "from": "REROUTE_TO_AUDIT", "to": "AUDIT_RUNNING", "trigger": "restart_audit" },
+        { "from": "REROUTE_REWORK", "to": "EXECUTION_RUNNING", "trigger": "restart_rework_execution" },
+        { "from": "ACCEPTED_ALL_GREEN", "to": "ADVERSARIAL_REVIEW", "trigger": "start_adversarial" },
+        { "from": "ADVERSARIAL_REVIEW", "to": "ACCEPTED_ALL_GREEN", "trigger": "adversarial_passed" }
+      ]
+    },
+    "invalid_final_states": {
+      "description": "States that are never valid as final loop outcomes",
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [
+        "NEXT_PROMPT_NEEDED",
+        "HUMAN_REVIEW_NEEDED_BEFORE_AGENT_REVIEW",
+        "PROSE_ONLY_ACCEPTED",
+        "SUMMARY_MISSING_ACCEPTED",
+        "SCORE_BELOW_4_ACCEPTED",
+        "EVIDENCE_PACKAGE_MISSING_ACCEPTED",
+        "PLAN_UPDATED_NOT_EXECUTED",
+        "EXECUTED_NOT_EVALUATED",
+        "PROMPT_ASSETS_DISCONNECTED",
+        "TASKCARDS_MISSING_ACCEPTED"
+      ]
+    }
+  }
+}

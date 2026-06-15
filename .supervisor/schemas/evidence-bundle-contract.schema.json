@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence Bundle Contract",
+  "description": "Defines what constitutes a valid evidence bundle for the post-sprint loop.",
+  "type": "object",
+  "required": ["bundle_path", "contains_declaration", "contains_manifest", "timestamp"],
+  "properties": {
+    "bundle_path": { "type": "string" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "contains_declaration": { "type": "boolean" },
+    "contains_manifest": { "type": "boolean" },
+    "contains_grades": { "type": "boolean" },
+    "contains_review_package": { "type": "boolean" },
+    "contains_raw_logs": { "type": "boolean" },
+    "contains_test_output": { "type": "boolean" },
+    "declaration_valid": { "type": "boolean" },
+    "manifest_matches_contents": { "type": "boolean" },
+    "declared_artifacts_present": { "type": "boolean" },
+    "missing_artifacts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "artifact_count": { "type": "integer", "minimum": 0 },
+    "validation_verdict": {
+      "type": "string",
+      "enum": ["VALID", "VALID_WITH_WARNINGS", "INVALID_MISSING_ARTIFACTS", "INVALID_MANIFEST_MISMATCH", "INVALID_NO_DECLARATION", "MISSING"]
+    }
+  },
+  "additionalProperties": false
+}

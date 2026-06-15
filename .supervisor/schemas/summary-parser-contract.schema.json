@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Summary Parser Contract",
+  "description": "Output contract for the summary classifier. Defines how Stage 3 outputs are classified for loop decisions.",
+  "type": "object",
+  "required": ["classification", "confidence", "next_stage_recommendation"],
+  "properties": {
+    "classification": {
+      "type": "string",
+      "enum": [
+        "STRUCTURED_ALL_GREEN",
+        "STRUCTURED_NOT_GREEN",
+        "PROSE_ONLY",
+        "MISSING",
+        "CONTRADICTORY",
+        "EVIDENCE_MISSING",
+        "SCORES_MISSING",
+        "TASKCARDS_INCOMPLETE",
+        "BLOCKED_EXTERNAL"
+      ]
+    },
+    "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "has_structured_data": { "type": "boolean" },
+        "has_all_green": { "type": "boolean" },
+        "has_quality_scores": { "type": "boolean" },
+        "has_evidence_manifest": { "type": "boolean" },
+        "has_self_review": { "type": "boolean" },
+        "has_taskcard_results": { "type": "boolean" },
+        "reroute_log_empty": { "type": "boolean" },
+        "all_scores_above_threshold": { "type": "boolean" },
+        "contradictions_detected": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "next_stage_recommendation": {
+      "type": "string",
+      "enum": [
+        "ACCEPT",
+        "REROUTE_TO_PROMPT_2_THEN_3",
+        "RESTART_FROM_PROMPT_1",
+        "RUN_EVIDENCE_PACKAGING",
+        "RUN_SCORING_LANE",
+        "REROUTE_REWORK",
+        "ADVERSARIAL_REVIEW",
+        "BLOCKER_PACKAGE_AND_STOP"
+      ]
+    },
+    "failing_items": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "reason": { "type": "string" }
+  },
+  "additionalProperties": false
+}
