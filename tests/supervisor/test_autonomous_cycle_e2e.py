@@ -257,3 +257,69 @@ class TestE2EMultiSprint:
 
         # Second sprint should have higher iteration
         assert iter2 > iter1, f"Iteration did not increment: {iter1} -> {iter2}"
+
+
+class TestE2EStep8bReset:
+    """TC-E2E-002: Verify Step 8b loop state reset through full autonomous_cycle."""
+
+    @patch("grade_declared_work._get_sv_gateway", side_effect=_mock_gateway)
+    def test_step_8b_reinit_on_new_run_id(self, mock_gw, tmp_path):
+        """Two cycles with different run_ids → second cycle gets fresh loop state."""
+        _setup_repo_structure(tmp_path)
+
+        # Sprint 1 with run_id "alpha-001"
+        decl1 = _write_declaration(tmp_path, run_id="alpha-001", sprint_id="ALPHA-SPRINT")
+        __import__("autonomous_cycle").run_cycle(decl1, tmp_path)
+
+        loop_state_path = tmp_path / ".local" / "supervisor" / "post-sprint-loop-state.json"
+        assert loop_state_path.exists(), "Loop state not created after first cycle"
+        state1 = json.loads(loop_state_path.read_text(encoding="utf-8"))
+        assert state1["run_id"] == "alpha-001"
+        # First cycle should have progressed past INITIAL (fast-forward + classify)
+        assert state1["current_state"] != "INITIAL"
+
+        # Sprint 2 with DIFFERENT run_id "beta-002"
+        decl2 = _write_declaration(tmp_path, run_id="beta-002", sprint_id="BETA-SPRINT")
+        __import__("autonomous_cycle").run_cycle(decl2, tmp_path)
+
+        state2 = json.loads(loop_state_path.read_text(encoding="utf-8"))
+
+        # New run_id should have triggered reinit
+        assert state2["run_id"] == "beta-002", (
+            f"Expected run_id='beta-002' after reinit, got '{state2['run_id']}'"
+        )
+        # The decision_history should start fresh (not carry over alpha-001 history)
+        for entry in state2.get("decision_history", []):
+            assert "alpha-001" not in json.dumps(entry), (
+                "Decision history should not contain entries from previous run_id"
+            )
+
+    @patch("grade_declared_work._get_sv_gateway", side_effect=_mock_gateway)
+    def test_step_8b_archives_previous_state(self, mock_gw, tmp_path):
+        """After two cycles with different run_ids, previous state is archived."""
+        _setup_repo_structure(tmp_path)
+
+        # Sprint 1
+        decl1 = _write_declaration(tmp_path, run_id="first-run", sprint_id="FIRST-SPRINT")
+        __import__("autonomous_cycle").run_cycle(decl1, tmp_path)
+
+        loop_state_path = tmp_path / ".local" / "supervisor" / "post-sprint-loop-state.json"
+        state1 = json.loads(loop_state_path.read_text(encoding="utf-8"))
+        assert state1["run_id"] == "first-run"
+
+        # Sprint 2 with different run_id triggers archive
+        decl2 = _write_declaration(tmp_path, run_id="second-run", sprint_id="SECOND-SPRINT")
+        __import__("autonomous_cycle").run_cycle(decl2, tmp_path)
+
+        # Verify archive file exists and contains first run's state
+        archive_path = tmp_path / ".local" / "supervisor" / "post-sprint-loop-state-previous.json"
+        assert archive_path.exists(), "post-sprint-loop-state-previous.json not created"
+
+        archived = json.loads(archive_path.read_text(encoding="utf-8"))
+        assert archived["run_id"] == "first-run", (
+            f"Archived state should be from first-run, got '{archived['run_id']}'"
+        )
+
+        # Current state should be second-run
+        state2 = json.loads(loop_state_path.read_text(encoding="utf-8"))
+        assert state2["run_id"] == "second-run"
