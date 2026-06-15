@@ -86,12 +86,25 @@ def test_evidence_paths_passed_through():
 
 
 def test_acceptance_criteria_mapped():
+    # Passing grade: synthetics injected, ac_failed cleared (grade is authoritative)
     adapted = adapt_item_grades([_make_grade(
         criteria_met=["Evidence found", "Tests pass"],
         criteria_failed=["Missing schema proof"],
     )])
-    assert len(adapted[0]["acceptance_criteria_met"]) == 2
-    assert len(adapted[0]["acceptance_criteria_failed"]) == 1
+    ac_met = adapted[0]["acceptance_criteria_met"]
+    assert "Evidence found" in ac_met
+    assert "Tests pass" in ac_met
+    assert "AC_GRADE_PASS" in ac_met  # synthetic entry added by adapter
+    assert adapted[0]["acceptance_criteria_failed"] == []  # cleared for passing grade
+
+    # Failing grade: both preserved as-is
+    adapted_fail = adapt_item_grades([_make_grade(
+        grade="REJECTED",
+        criteria_met=["Evidence found"],
+        criteria_failed=["Missing schema proof"],
+    )])
+    assert adapted_fail[0]["acceptance_criteria_met"] == ["Evidence found"]
+    assert adapted_fail[0]["acceptance_criteria_failed"] == ["Missing schema proof"]
 
 
 # ---------------------------------------------------------------------------
