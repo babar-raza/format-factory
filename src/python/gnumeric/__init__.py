@@ -61,6 +61,7 @@ from .gnumeric_codec import (
     gnumeric_empty_cell_count,
     gnumeric_row_count_file,
     gnumeric_column_count_file,
+    gnumeric_nonempty_cell_count_file,
 )
 
 __all__ = [
@@ -116,6 +117,7 @@ __all__ = [
     "gnumeric_empty_cell_count",
     "gnumeric_row_count_file",
     "gnumeric_column_count_file",
+    "gnumeric_nonempty_cell_count_file",
 ]
 
 __version__ = "0.1.0.dev0"

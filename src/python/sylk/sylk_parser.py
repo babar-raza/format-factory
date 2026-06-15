@@ -891,3 +891,32 @@ def sylk_unique_values(file_path: "str | Path", col: int) -> "list":
     except TypeError:
         # mixed types (str + int) — sort by string representation
         return sorted(seen, key=str)
+
+
+def sylk_cell_type_distribution(file_path: "str | Path") -> "dict[str, int]":
+    """Return a distribution of cell types in a SYLK file.
+
+    Classifies every cell as 'numeric', 'string', or 'empty' and returns
+    the count for each type.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        Dict with keys 'numeric', 'string', 'empty' mapping to integer counts.
+    """
+    doc = parse_sylk_strict(file_path)
+    counts: dict[str, int] = {"numeric": 0, "string": 0, "empty": 0}
+    for cell in doc.cells:
+        if cell.value is None or (isinstance(cell.value, str) and not cell.value.strip()):
+            counts["empty"] += 1
+        elif isinstance(cell.value, (int, float)):
+            counts["numeric"] += 1
+        else:
+            s = str(cell.value).strip()
+            try:
+                float(s)
+                counts["numeric"] += 1
+            except (ValueError, TypeError):
+                counts["string"] += 1
+    return counts

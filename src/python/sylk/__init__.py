@@ -52,6 +52,8 @@ from .sylk_parser import (
     SylkParseError,
     SylkCell,
     SylkDocument,
+    sylk_unique_values,
+    sylk_cell_type_distribution,
 )
 
 __version__ = "0.1.0"
@@ -99,4 +101,6 @@ __all__ = [
     "SylkParseError",
     "SylkCell",
     "SylkDocument",
+    "sylk_unique_values",
+    "sylk_cell_type_distribution",
 ]

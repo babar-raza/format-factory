@@ -23,6 +23,8 @@ from .fodp_codec import (
     fodp_notes_text,
     fodp_has_notes,
     fodp_slide_titles,
+    fodp_image_count,
+    fodp_empty_slide_count,
 )
 
 __all__ = [
@@ -39,6 +41,8 @@ __all__ = [
     "fodp_notes_text",
     "fodp_has_notes",
     "fodp_slide_titles",
+    "fodp_image_count",
+    "fodp_empty_slide_count",
 ]
 
 __version__ = "0.1.0.dev0"

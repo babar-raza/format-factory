@@ -1252,3 +1252,21 @@ def gnumeric_empty_cell_count(model: "dict[str, Any]", sheet_idx: int) -> int:
         if v is None or v == "":
             count += 1
     return count
+
+
+def gnumeric_nonempty_cell_count_file(
+    file_path: "str | bytes | Path", sheet_idx: int = 0
+) -> int:
+    """Return the count of non-empty cells in a Gnumeric sheet (file-path API).
+
+    Loads the file, parses it, and delegates to count_nonempty_cells.
+
+    Args:
+        file_path: Path to a .gnumeric file.
+        sheet_idx: 0-based sheet index (default 0).
+
+    Returns:
+        Integer count of non-empty cells. Returns 0 for empty or missing sheets.
+    """
+    model = load(file_path)
+    return count_nonempty_cells(model, sheet_idx)

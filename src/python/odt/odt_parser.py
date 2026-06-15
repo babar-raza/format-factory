@@ -277,3 +277,31 @@ def odt_char_count(file_path: str | Path) -> int:
     """Return the total character count across all paragraphs in an ODT document."""
     doc = parse_odt_strict(file_path)
     return sum(len(p.text) for p in doc.paragraphs)
+
+
+def odt_list_count(file_path: str | Path) -> int:
+    """Count the number of top-level lists in an ODT document.
+
+    Counts text:list elements that are direct children of the text body.
+    ODF 1.3 §5.3.1 — text:list is the element for ordered/unordered lists.
+
+    Args:
+        file_path: Path to .odt file.
+
+    Returns:
+        Number of top-level text:list elements.
+    """
+    path = Path(file_path)
+    _check_file_size(path)
+    with zipfile.ZipFile(path, "r") as zf:
+        _validate_container(zf)
+        content = zf.read("content.xml")
+    root = ET.fromstring(content)
+    body = root.find(f"{{{NS['office']}}}body")
+    if body is None:
+        return 0
+    text_body = body.find(f"{{{NS['office']}}}text")
+    if text_body is None:
+        return 0
+    list_tag = f"{{{NS['text']}}}list"
+    return sum(1 for child in text_body if child.tag == list_tag)

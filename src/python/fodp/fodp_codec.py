@@ -271,3 +271,40 @@ def fodp_slide_titles(source: "str | bytes | Path") -> "list[str | None]":
     """
     model = load(source)
     return [p.get("title") for p in model.get("pages", [])]
+
+
+def fodp_image_count(source: "str | bytes | Path") -> int:
+    """Return the total number of embedded images across all slides.
+
+    Counts draw:image elements within the presentation body.
+    ODF 1.3 §10.4.3.3 — draw:image is the element for embedded bitmap images.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Total count of draw:image elements.
+    """
+    xml_bytes = _read_source(source)
+    root = _parse_xml(xml_bytes)
+    image_tag = f"{{{NS['draw']}}}image"
+    return sum(1 for _ in root.iter(image_tag))
+
+
+def fodp_empty_slide_count(source: "str | bytes | Path") -> int:
+    """Return the number of slides that have no shapes and no text content.
+
+    A slide is considered empty if its shape_count is 0 and its
+    text_content list is empty.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Count of empty slides.
+    """
+    model = load(source)
+    return sum(
+        1 for p in model.get("pages", [])
+        if p.get("shape_count", 0) == 0 and not p.get("text_content")
+    )

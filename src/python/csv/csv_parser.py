@@ -511,3 +511,33 @@ def count_distinct_values(file_path: "str | Path", col_name: str) -> int:
             if val:
                 distinct.add(val)
     return len(distinct)
+
+
+def csv_duplicate_row_count(file_path: "str | Path") -> int:
+    """Return the count of duplicate rows in the CSV file.
+
+    Two rows are duplicates if they have identical cell values (as strings).
+    The first occurrence of each unique row is not counted; only subsequent
+    duplicates are counted. E.g. if a row appears 3 times, it contributes 2
+    to the count.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Integer count of duplicate rows. Returns 0 if all rows are unique.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    seen: set[tuple[str, ...]] = set()
+    count = 0
+    for row in rows:
+        key = tuple(str(c) for c in row)
+        if key in seen:
+            count += 1
+        else:
+            seen.add(key)
+    return count
