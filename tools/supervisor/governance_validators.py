@@ -154,6 +154,12 @@ def _has_grace_exemption(item: dict) -> bool:
     )
 
 
+def _is_test_item(item: dict) -> bool:
+    """TEST items add tests, not product source mutations.
+    They should WARN (not FAIL) when governance metadata is absent."""
+    return item.get("item_type") == "TEST"
+
+
 def _make_result(validator: str, result: str, items: list, summary: str,
                  blocks_sprint: bool = False) -> dict:
     return {
@@ -188,12 +194,12 @@ def validate_execution_method_required(declaration: dict) -> dict:
         item_id = item.get("item_id", "unknown")
         method = item.get("execution_method", "")
         if not method:
-            if _has_grace_exemption(item):
+            if _has_grace_exemption(item) or _is_test_item(item):
                 warn_items.append({
                     "item_id": item_id,
                     "issue": "missing_execution_method",
                     "severity": "WARN",
-                    "note": "grace_period: pre_taxonomy_backfill",
+                    "note": "grace_period: pre_taxonomy_backfill or TEST item",
                 })
             else:
                 fail_items.append({
@@ -264,12 +270,12 @@ def validate_source_diff_required(declaration: dict) -> dict:
         is_missing = not diff_paths or diff_paths == ["MISSING_BACKFILL_REQUIRED"]
 
         if is_missing:
-            if _has_grace_exemption(item) or item.get("execution_method") == "BACKFILLED_LEGACY_EXECUTION":
+            if _has_grace_exemption(item) or _is_test_item(item) or item.get("execution_method") == "BACKFILLED_LEGACY_EXECUTION":
                 warn_items.append({
                     "item_id": item_id,
                     "issue": "missing_source_diff_paths",
                     "severity": "WARN",
-                    "note": "grace: backfill or pre_taxonomy",
+                    "note": "grace: backfill, pre_taxonomy, or TEST item",
                 })
             else:
                 fail_items.append({
@@ -327,12 +333,12 @@ def validate_idempotency_key_required(declaration: dict) -> dict:
         item_id = item.get("item_id", "unknown")
         key = item.get("idempotency_key", "")
         if not key:
-            if _has_grace_exemption(item):
+            if _has_grace_exemption(item) or _is_test_item(item):
                 warn_items.append({
                     "item_id": item_id,
                     "issue": "missing_idempotency_key",
                     "severity": "WARN",
-                    "note": "grace: pre_taxonomy",
+                    "note": "grace: pre_taxonomy or TEST item",
                 })
             else:
                 fail_items.append({
@@ -915,14 +921,14 @@ def validate_route_decision_required(declaration: dict) -> dict:
         if itype in GOVERNANCE_ITEM_TYPES:
             continue
 
-        has_grace = _has_grace_exemption(item)
+        has_grace = _has_grace_exemption(item) or _is_test_item(item)
 
         if has_grace:
-            # Legacy/backfill — WARN only
+            # Legacy/backfill/TEST — WARN only
             if itype in PRODUCT_SOURCE_ITEM_TYPES and not item.get("route_decision_id"):
                 warns.append({
                     "item_id": item.get("item_id", "?"),
-                    "issue": "Legacy/backfill PRODUCT_SOURCE item missing route_decision_id",
+                    "issue": "Grace/TEST PRODUCT_SOURCE item missing route_decision_id",
                     "severity": "WARN",
                 })
             continue
@@ -1058,8 +1064,15 @@ def validate_spec_fact_refs_wired(declaration: dict,
             blocks_sprint=False,
         )
 
+    # TEST items add tests, not product source — exempt from spec_fact_refs
+    filtered_declaration = dict(declaration)
+    original_items = filtered_declaration.get("planned_work_items", [])
+    filtered_declaration["planned_work_items"] = [
+        item for item in original_items if not _is_test_item(item)
+    ]
+
     try:
-        sfr_result = validate_declaration_spec_fact_refs(declaration)
+        sfr_result = validate_declaration_spec_fact_refs(filtered_declaration)
     except Exception as exc:
         return _make_result(
             "spec_fact_refs_validator",

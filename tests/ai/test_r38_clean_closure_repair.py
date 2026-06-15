@@ -10,6 +10,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+import pytest
+
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
@@ -247,6 +249,7 @@ class TestTelemetryMinimizationV2:
 
 # --- Lane K: Live runner verification ---
 
+@pytest.mark.network
 class TestLiveRunnerVerification:
     def test_live_probe_blocked_or_passes(self):
         from tools.ai.run_ai_checks import run_live_probe

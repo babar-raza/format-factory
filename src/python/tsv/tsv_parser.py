@@ -999,3 +999,29 @@ def tsv_max_field_length(file_path: "str | Path") -> int:
             if len(cell) > max_len:
                 max_len = len(cell)
     return max_len
+
+
+def tsv_duplicate_row_count(file_path: "str | Path") -> int:
+    """Return the count of duplicate rows in the TSV file.
+
+    Two rows are duplicates if they have identical cell values. The first
+    occurrence of each unique row is not counted; only subsequent duplicates
+    contribute to the count.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer count of duplicate rows. Returns 0 if all rows are unique.
+    """
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    seen: set[tuple[str, ...]] = set()
+    count = 0
+    for row in rows:
+        key = tuple(row)
+        if key in seen:
+            count += 1
+        else:
+            seen.add(key)
+    return count

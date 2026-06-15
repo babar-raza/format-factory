@@ -122,6 +122,19 @@ def load_poc_targets(repo_root: Path) -> dict:
         return {}
 
 
+def load_gap_ledger_ids(repo_root: Path) -> set[str]:
+    """Load all valid gap IDs from gap-ledger.json for phantom-ID validation."""
+    path = repo_root / "reports" / "capability-layer" / "gap-ledger.json"
+    if not path.exists():
+        return set()
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        gaps = data.get("gaps", []) if isinstance(data, dict) else data
+        return {g.get("gap_id", "") for g in gaps if g.get("gap_id")}
+    except Exception:
+        return set()
+
+
 def load_gap_extraction(repo_root: Path) -> dict:
     """Load the most recent gap extraction fixture."""
     fixtures_dir = repo_root / ".supervisor" / "fixtures"
@@ -584,6 +597,22 @@ def generate_prompt(review: dict, next_work: dict | None = None,
     except Exception:
         pass
 
+    # HEAL-RECT-002/006: Inject learning-based governance advisories
+    learning_advisories = ""
+    try:
+        from learning_consumer import LearningConsumer
+        lc = LearningConsumer(repo_root)
+        lc.scan_all_learnings()
+        proposals = lc.generate_proposals(threshold=3)
+        if proposals:
+            lc.save_proposals()
+            learning_advisories = lc.format_governance_advisories(proposals)
+        # Also include any previously saved proposals
+        if not learning_advisories:
+            learning_advisories = lc.format_governance_advisories()
+    except Exception:
+        pass
+
     # Load data sources
     poc_targets = load_poc_targets(repo_root)
     gaps = load_gap_extraction(repo_root)
@@ -675,6 +704,10 @@ def generate_prompt(review: dict, next_work: dict | None = None,
             fw_section += f"- {fw}\n"
         fw_section += "\n"
         deterministic_prompt += fw_section
+
+    # HEAL-RECT-002/006: Inject learning-based governance advisories
+    if learning_advisories:
+        deterministic_prompt += "\n\n" + learning_advisories
 
     # Inject spec-parity requirements from skill registry (advisory)
     spec_section = _build_spec_parity_section(repo_root)

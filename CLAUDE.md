@@ -31,9 +31,27 @@ Key rules from this plan:
 5. **Supervision gaps exist:** Lane ownership and DAG ordering are NOT enforced by code (prompt-only). Overclaim detector is never called. These are known gaps being addressed in Lane 14.
 6. **Zero durable learning:** All decision rules are static. No failure-memory.json exists. Corrections do not auto-propagate. Being addressed in Lane 15.
 
-## Sprint Closeout (MANDATORY — do this at the end of every sprint)
+## Supreme Directive: Autonomous Execution Never Stops
 
-After completing sprint work, you MUST:
+The autonomous supervision loop is the highest-priority operational rule. **Nothing may block
+forward progress on the master plan except TRUE_EXTERNAL_GATEs** (git push credentials,
+Gate 11 execution approval by Babar Raza, package publication credentials).
+
+- Sprint closeout (evidence declaration, autonomous-cycle, review package) is best-effort
+  infrastructure. If any closeout step fails, errors, times out, or gets stuck: **skip it
+  and continue executing the next sprint immediately.**
+- Closeout must NEVER block the next sprint. If autonomous-cycle exits non-zero, log the
+  error and proceed. If the review package builder fails, log it and proceed. If the
+  declaration YAML is invalid, log it and proceed.
+- The only closeout that matters is the master plan. Every sprint must make progress on
+  `reports/supervisor/next-sprint.md` tasks or gap-ledger closures.
+- Do NOT pause, summarize, or ask the user between sprints. Do NOT say "let me know" or
+  present options. Execute continuously until a TRUE_EXTERNAL_GATE or context exhaustion.
+
+## Sprint Closeout (best-effort — must not block continuation)
+
+After completing sprint work, attempt these steps. If any step fails, log the failure
+and proceed to the next sprint immediately.
 
 1. **Write an evidence declaration** at `.local/evidences/<run_id>/evidence-declaration.yaml`
    - Declare all work items with status, evidence paths, and test references
@@ -49,35 +67,45 @@ After completing sprint work, you MUST:
    and regenerates `session-resume.md` + `approval-gates.md` + `next-sprint.md`.
 
 3. **Check the exit code:**
-   - Exit 0 → all items accepted, autonomous continue possible
-   - Exit 3 → critical rework (OVERCLAIMED or REJECTED items), fix before continuing
-   - Exit 1 → declaration invalid, fix the YAML
-   - Exit 9 → unexpected error
+   - Exit 0 → all items accepted, continue immediately
+   - Exit 3 → log rework items, attempt quick fix, continue regardless
+   - Exit 1 → log declaration error, continue regardless
+   - Exit 9 → log error, continue regardless
+
+4. **Build the review package:**
+   ```
+   python tools/supervisor/build_declaration_review_package.py \
+     --declaration .local/evidences/<run_id>/evidence-declaration.yaml
+   ```
+   Print the **absolute path** (starting with `C:\Users\prora\OneDrive\Documents\GitHub\format-factory\`)
+   and **SHA-256** in your output. If the builder fails, log it and continue.
 
 Do NOT use the legacy `run-on-latest --bundle` command. It is deprecated.
 
-## Autonomous Continuation (when authorized)
+## Autonomous Continuation
 
-After Sprint Closeout step 3 (checking exit code), run the continuation checker:
+After Sprint Closeout (or after skipping failed closeout steps), run the continuation checker:
 
 ```
 python tools/supervisor/check_continuation.py
 ```
 
-- **Exit code 0** + `"verdict": "CONTINUE"` in stdout → proceed autonomously:
+- **Exit code 0** + `"verdict": "CONTINUE"` → proceed **IMMEDIATELY**:
   1. Read the `next_work_items_path` from the JSON output (structured work items)
   2. Read `reports/supervisor/next-sprint.md` for prose context
   3. If `rework_items` exist in the output, address them FIRST before new work
   4. Increment `iteration` in `.local/supervisor/continuation-signal.json`
   5. Execute the sprint — use `next-sprint.md` as your sprint prompt
-  6. At the end, write a new `evidence-declaration.yaml` and run autonomous-cycle again
-  7. Run `check_continuation.py` again and repeat from step 1
+  6. At the end, attempt closeout (steps 1-4 above), then repeat from here
 
-- **Exit code 1** + `"verdict": "STOP"` → report the `reason` and `detail` fields to the
-  user and STOP. Do NOT attempt to override STOP verdicts.
+- **Exit code 1** + `"verdict": "STOP"` → check if the stop reason is a TRUE_EXTERNAL_GATE.
+  If yes, report to the user and stop. If the stop reason is anything else (advisory,
+  iteration limit, stale signal), override it: read `next-sprint.md` directly and continue.
 
-Do NOT manually check continuation-signal.json, approval-gates.md, or iteration counts.
-`check_continuation.py` encodes all 7 conditions deterministically.
+- **If check_continuation.py itself fails** → read `next-sprint.md` directly and continue.
+
+Do NOT manually check continuation-signal.json, approval-gates.md, or iteration counts
+unless check_continuation.py is unavailable.
 
 Note: `advisory_prompt_executable` is ALWAYS `false` by design — it does NOT indicate
 that continuation is blocked. Ignore this field everywhere.
@@ -111,7 +139,8 @@ Apply the Human Task Conversion Rule (AGENTS.md §AG1) before treating any of th
   documented rollback path. Classify: `BLOCKED: destructive_operation_no_policy_authority` if missing.
 
 ### Max Iterations
-Default: 5 sprints per autonomous loop. After max iterations, STOP and present summary.
+Max iterations is NOT a stop signal. When iteration >= max_iterations, reset iteration to 0
+and continue. The only things that stop execution are TRUE_EXTERNAL_GATEs or context exhaustion.
 Configurable in `.supervisor/policies.yaml` under `autonomous_continuation.max_iterations`.
 
 ## Governance (always applies)

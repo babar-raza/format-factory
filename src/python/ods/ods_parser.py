@@ -915,3 +915,30 @@ def ods_column_count(file_path: "str | Path", sheet_index: int = 0) -> int:
     if not sheet.rows:
         return 0
     return max(len(row.cells) for row in sheet.rows)
+
+
+def ods_empty_row_count(file_path: "str | Path", sheet_index: int = 0) -> int:
+    """Return the count of rows where all cells are empty (None or empty string).
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Integer count of fully-empty rows. Returns 0 if sheet is empty or not found.
+
+    Raises:
+        OdsError subclasses on parse failure.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    count = 0
+    for row in sheet.rows:
+        if all(
+            cell.value is None or cell.value == ""
+            for cell in row.cells
+        ):
+            count += 1
+    return count

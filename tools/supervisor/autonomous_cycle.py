@@ -353,6 +353,54 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     # Manual/skill execution bypasses this dispatch-time enforcement.
     # See docs/governance/autonomy-default-routing-policy.md for full boundary specification.
 
+    # Step 2f (SUP-RECT-002): DAG prerequisite validation
+    print("\n=== STEP 2f: DAG PREREQUISITE VALIDATION ===")
+    dag_validation_result = {"status": "skipped"}
+    try:
+        dag_path = repo_root / ".local" / "evidences" / "spec-to-feature-radical-correction-plan-20260612-915cfd2" / "execution-dag.yaml"
+        if dag_path.exists():
+            dag_data = yaml.safe_load(dag_path.read_text(encoding="utf-8"))
+            waves = dag_data.get("waves", [])
+            declared_wave = decl.get("wave", None)
+            if declared_wave is not None:
+                # Check all prerequisite waves are COMPLETED
+                target_wave = None
+                for w in waves:
+                    if w.get("wave") == declared_wave:
+                        target_wave = w
+                        break
+                if target_wave:
+                    depends_on = target_wave.get("depends_on", [])
+                    unmet = []
+                    for dep in depends_on:
+                        dep_num = int(str(dep).replace("wave-", ""))
+                        for w in waves:
+                            if w.get("wave") == dep_num and w.get("status") != "COMPLETED":
+                                unmet.append(f"wave-{dep_num} (status={w.get('status', 'UNKNOWN')})")
+                    dag_validation_result = {
+                        "status": "checked",
+                        "declared_wave": declared_wave,
+                        "prerequisites": depends_on,
+                        "unmet": unmet,
+                        "passed": len(unmet) == 0,
+                    }
+                    if unmet:
+                        print(f"  DAG validation: WARN — unmet prerequisites: {unmet}")
+                    else:
+                        print(f"  DAG validation: PASS (wave {declared_wave}, deps={depends_on})")
+                else:
+                    dag_validation_result = {"status": "wave_not_found", "declared_wave": declared_wave}
+                    print(f"  DAG validation: wave {declared_wave} not found in DAG")
+            else:
+                dag_validation_result = {"status": "no_wave_declared"}
+                print("  DAG validation: no wave declared in evidence — skipped")
+        else:
+            print("  DAG validation: execution-dag.yaml not found — skipped")
+    except Exception as dag_err:
+        safe_err = str(dag_err).encode("ascii", "replace").decode()
+        print(f"  WARNING: DAG prerequisite check skipped: {safe_err}")
+    # dag_validation_result is applied to review after grade_all() creates it (below)
+
     # Step 3: Grade work items (includes Step 3a: LLM semantic verification)
     print("\n=== STEP 3: GRADE WORK ITEMS ===")
     # Inject repo_root for semantic verification (LLM reads evidence files)
@@ -366,6 +414,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         print(f"  LLM gateway check failed: {_dbg_e}")
     review = grade_all(inspection, decl)
     review["declaration_path"] = str(declaration_path)
+    review["dag_validation"] = dag_validation_result
 
     # Step 2d2 post-grading: promote requirements authority failure to critical rework
     # Sprint 3: REQUIREMENT/READINESS/RELEASE_GATE failure is now a hard block.
@@ -432,6 +481,29 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
                     if rework_id not in review.get("rework_items", []):
                         review.setdefault("rework_items", []).append(rework_id)
 
+    # Step 2e (SUP-RECT-001): Lane enforcement validation
+    print("\n=== STEP 2e: LANE ENFORCEMENT VALIDATION ===")
+    try:
+        from lane_enforcement_validator import LaneEnforcementValidator
+        lane_validator = LaneEnforcementValidator()
+        declared_lane = decl.get("lane", None)
+        lane_result = lane_validator.validate(decl, declared_lane=declared_lane)
+        (review_dir / "lane-enforcement-result.json").write_text(
+            json.dumps({"passed": lane_result.passed, "violations": lane_result.violations,
+                        "evidence": lane_result.evidence}, indent=2), encoding="utf-8"
+        )
+        if lane_result.passed:
+            print(f"  Lane enforcement: PASS ({len(lane_result.evidence)} files checked)")
+        else:
+            print(f"  Lane enforcement: FAIL — {len(lane_result.violations)} violation(s)")
+            for v in lane_result.violations:
+                print(f"    [VIOLATION] {v}")
+            # Lane violations are advisory rework, not hard stops (multi-lane sprints are common)
+            review.setdefault("rework_items", [])
+            review["rework_items"].append(f"LANE_ENFORCEMENT:{len(lane_result.violations)}_violations")
+    except Exception as lane_err:
+        print(f"  WARNING: Lane enforcement check skipped: {lane_err}")
+
     # Lane 5: Record governance failures to durable failure memory
     if governance_validation_result is not None and governance_validation_result.get("blocks_sprint"):
         try:
@@ -448,6 +520,22 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             fm.save()
         except Exception as fm_err:
             print(f"  [WARN] Failure memory recording failed: {fm_err}")
+
+    # HEAL-RECT-002: Run learning consumer — scan learnings, generate rule proposals
+    print("\n=== STEP 2g: LEARNING CONSUMER ===")
+    try:
+        from learning_consumer import LearningConsumer
+        lc = LearningConsumer(repo_root)
+        scan_count = lc.scan_all_learnings()
+        proposals = lc.generate_proposals(threshold=3)
+        if proposals:
+            lc.save_proposals()
+            print(f"  Learning consumer: {scan_count} entries, {len(proposals)} rule proposal(s) promoted")
+        else:
+            print(f"  Learning consumer: {scan_count} entries scanned, no promotions")
+        review["learning_consumer"] = {"scanned": scan_count, "proposals": len(proposals)}
+    except Exception as lc_err:
+        print(f"  WARNING: Learning consumer skipped: {lc_err}")
 
     # Write review outputs
     review_dir = repo_root / ".local" / "supervisor" / "reviews" / run_id
@@ -726,6 +814,34 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     except Exception as e:
         print(f"  WARNING: Prompt quality check skipped: {e}")
     print(f"  Next work: {len(next_work['items'])} items (stream={detected_stream})")
+
+    # SUP-RECT-005: Circuit breaker for zero-task loops
+    if len(next_work.get("items", [])) == 0:
+        zero_task_counter_path = repo_root / ".local" / "supervisor" / "zero-task-counter.json"
+        ztc = {"count": 0, "sprints": []}
+        try:
+            if zero_task_counter_path.exists():
+                ztc = json.loads(zero_task_counter_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            pass
+        ztc["count"] = ztc.get("count", 0) + 1
+        ztc.setdefault("sprints", []).append(sprint_id)
+        zero_task_counter_path.parent.mkdir(parents=True, exist_ok=True)
+        zero_task_counter_path.write_text(json.dumps(ztc, indent=2), encoding="utf-8")
+        if ztc["count"] >= 3:
+            print(f"  CIRCUIT BREAKER: {ztc['count']} consecutive zero-task cycles detected!")
+            review["stop_reason"] = (
+                review.get("stop_reason", "") +
+                f" CIRCUIT_BREAKER: {ztc['count']} zero-task cycles ({ztc['sprints'][-3:]})"
+            ).strip()
+            review["autonomous_continue"] = False
+        else:
+            print(f"  Zero-task warning: {ztc['count']}/3 before circuit breaker triggers")
+    else:
+        # Reset counter on successful task generation
+        ztc_path = repo_root / ".local" / "supervisor" / "zero-task-counter.json"
+        if ztc_path.exists():
+            ztc_path.write_text(json.dumps({"count": 0, "sprints": []}, indent=2), encoding="utf-8")
 
     # Step 4b: Validate next-work-items stream correctness (R108)
     try:
@@ -1154,9 +1270,39 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     try:
         from post_sprint_loop_controller import init_loop, transition_to, classify_and_decide, get_next_stages
         loop_state_path = repo_root / ".local" / "supervisor" / "post-sprint-loop-state.json"
-        if not loop_state_path.exists():
-            init_loop(repo_root, run_id)
-            print("  Loop state initialized")
+
+        # Read max_iterations from policies (align with continuation signal)
+        _lc_max_iter = 12  # default matching continuation signal
+        _lc_policies_path = repo_root / ".supervisor" / "policies.yaml"
+        if _lc_policies_path.exists():
+            try:
+                _lc_policies = yaml.safe_load(_lc_policies_path.read_text(encoding="utf-8"))
+                _lc_max_iter = _lc_policies.get("autonomous_continuation", {}).get("max_iterations", 12)
+            except Exception:
+                pass
+
+        # Determine if loop state needs (re)initialization
+        _lc_needs_init = not loop_state_path.exists()
+        if not _lc_needs_init and loop_state_path.exists():
+            try:
+                _lc_existing = json.loads(loop_state_path.read_text(encoding="utf-8"))
+                _lc_existing_run_id = _lc_existing.get("run_id", "")
+                _lc_existing_state = _lc_existing.get("current_state", "")
+                _lc_terminal_states = {"MAX_LOOPS_EXCEEDED", "HARD_STOP", "BLOCKED_EXTERNAL", "ACCEPTED_ALL_GREEN"}
+                if _lc_existing_run_id != run_id or _lc_existing_state in _lc_terminal_states:
+                    # Archive old state before reset
+                    _lc_archive_path = repo_root / ".local" / "supervisor" / "post-sprint-loop-state-previous.json"
+                    _lc_archive_path.write_text(
+                        loop_state_path.read_text(encoding="utf-8"), encoding="utf-8"
+                    )
+                    _lc_needs_init = True
+                    print(f"  Loop state reset (was run_id={_lc_existing_run_id}, state={_lc_existing_state})")
+            except Exception:
+                _lc_needs_init = True
+
+        if _lc_needs_init:
+            init_loop(repo_root, run_id, max_loops=_lc_max_iter)
+            print(f"  Loop state initialized (run_id={run_id}, max_iterations={_lc_max_iter})")
             # Fast-forward through audit/hardening since autonomous_cycle is the execution
             _lc_fast_forward = [
                 ("AUDIT_RUNNING", "cycle_audit_phase"),

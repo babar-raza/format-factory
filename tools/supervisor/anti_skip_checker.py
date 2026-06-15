@@ -589,6 +589,8 @@ SUPERVISOR_ITEM_TYPES = frozenset({
     "GOVERNANCE_DOC", "GOVERNANCE_HARDENING", "SUPERVISOR_TOOL",
     "SUPERVISOR_REPAIR", "SUPERVISOR_INTEGRATION", "SUPERVISOR_TEST",
     "SYSTEM_HEALING", "CLOSEOUT_GATE", "WATCHDOG",
+    # Canonical short-form item types used in evidence declarations
+    "governance", "supervisor", "system_healing", "test",
 })
 
 

@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "PRODUCT-DEEPENING-NEXT5-20260615",
+  "latest_sprint": "HARDENED-PLAN-EXECUTION-20260615",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -361,7 +361,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
+      "api_behavior": "No src change â€” new tests only. Verifies compress/decompress round-trip with 8 test cases including edge cases (empty, binary, level range, invalid magic).",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r93_zst_roundtrip.py"
@@ -388,7 +388,7 @@
         "convert_ppm_to_pgm",
         "ppm_pixels_to_pgm_pixels"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d workflow verification tests only. Verifies end-to-end PPM\u00e2\u2020\u2019PGM conversion using FF libraries exclusively, with luminance weighting validation.",
+      "api_behavior": "No src change â€” workflow verification tests only. Verifies end-to-end PPMâ†’PGM conversion using FF libraries exclusively, with luminance weighting validation.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r93_ppm_pgm_installed_workflow.py"
@@ -529,7 +529,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d streaming pattern tests only. Verifies large payload, incompressible data, sequential compressions, all byte values.",
+      "api_behavior": "No src change â€” streaming pattern tests only. Verifies large payload, incompressible data, sequential compressions, all byte values.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r94_zst_streaming.py"
@@ -556,7 +556,7 @@
         "ppm_pixels_to_pgm_pixels",
         "convert_ppm_to_pgm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d grayscale conversion edge case tests. Verifies luminance weighting, pure-color behavior, empty input, file round-trip.",
+      "api_behavior": "No src change â€” grayscale conversion edge case tests. Verifies luminance weighting, pure-color behavior, empty input, file round-trip.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r94_ppm_grayscale_conversion.py"
@@ -697,7 +697,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d compression level variation tests. Verifies level 1, level 19, binary data, empty bytes, size comparison.",
+      "api_behavior": "No src change â€” compression level variation tests. Verifies level 1, level 19, binary data, empty bytes, size comparison.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r95_zst_level_variations.py"
@@ -724,7 +724,7 @@
         "parse_ppm",
         "write_ppm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d pixel statistics and roundtrip integrity tests. Verifies parse structure, write-read roundtrip, single pixel, max/zero values.",
+      "api_behavior": "No src change â€” pixel statistics and roundtrip integrity tests. Verifies parse structure, write-read roundtrip, single pixel, max/zero values.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r95_ppm_pixel_stats.py"
@@ -751,7 +751,7 @@
         "write_sylk",
         "parse_sylk"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d roundtrip hardening tests. Verifies CRLF line endings, header/footer preservation, mixed types, float precision, large grid.",
+      "api_behavior": "No src change â€” roundtrip hardening tests. Verifies CRLF line endings, header/footer preservation, mixed types, float precision, large grid.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r95_sylk_roundtrip_hardening.py"
@@ -863,7 +863,7 @@
         "compress_bytes",
         "decompress_bytes"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d error handling tests. Invalid data, empty input, corrupt magic, boundary conditions.",
+      "api_behavior": "No src change â€” error handling tests. Invalid data, empty input, corrupt magic, boundary conditions.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r96_zst_error_handling.py"
@@ -890,7 +890,7 @@
         "write_pgm",
         "parse_pgm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, zero/max values.",
+      "api_behavior": "No src change â€” write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, zero/max values.",
       "changed_files": [],
       "test_files": [
         "tests/python/pgm/test_r96_pgm_write_read.py"
@@ -916,7 +916,7 @@
       "api_symbols": [
         "parse_fods"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d workbook operations hardening tests. Parse structure, multi-sheet, error handling, consistency.",
+      "api_behavior": "No src change â€” workbook operations hardening tests. Parse structure, multi-sheet, error handling, consistency.",
       "changed_files": [],
       "test_files": [
         "tests/python/fods/test_r96_fods_workbook_operations.py"
@@ -1027,7 +1027,7 @@
         "write_pbm",
         "parse_pbm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d PBM write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, all-white/all-black.",
+      "api_behavior": "No src change â€” PBM write-read integrity tests. Roundtrip dimensions, pixel count, single pixel, all-white/all-black.",
       "changed_files": [],
       "test_files": [
         "tests/python/pbm/test_r97_pbm_write_read.py"
@@ -1053,7 +1053,7 @@
       "api_symbols": [
         "parse_fodt"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d FODT document operations hardening. Parse structure, format, paragraphs, consistency, error handling.",
+      "api_behavior": "No src change â€” FODT document operations hardening. Parse structure, format, paragraphs, consistency, error handling.",
       "changed_files": [],
       "test_files": [
         "tests/python/fodt/test_r97_fodt_document_operations.py"
@@ -1079,7 +1079,7 @@
       "api_symbols": [
         "parse_dif"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d DIF parse hardening tests. Structure, edge cases, error handling, consistency.",
+      "api_behavior": "No src change â€” DIF parse hardening tests. Structure, edge cases, error handling, consistency.",
       "changed_files": [],
       "test_files": [
         "tests/python/dif/test_r97_dif_parse_hardening.py"
@@ -1301,7 +1301,7 @@
         "ExportSheetToJson",
         "ExportFirstSheetToCsv"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d export quality edge case tests. CSV quoting, HTML structure, JSON validity, in-memory/file parity, by-name overloads.",
+      "api_behavior": "No src change â€” export quality edge case tests. CSV quoting, HTML structure, JSON validity, in-memory/file parity, by-name overloads.",
       "changed_files": [],
       "test_files": [
         "tests/net/fods/FodsR99ExportQualityTests.cs"
@@ -1332,7 +1332,7 @@
         "GetParagraphTexts",
         "SearchText"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d paragraph persistence tests. Multiple ReplaceText all persist, word/char counts, heading/paragraph text preservation after save/reload.",
+      "api_behavior": "No src change â€” paragraph persistence tests. Multiple ReplaceText all persist, word/char counts, heading/paragraph text preservation after save/reload.",
       "changed_files": [],
       "test_files": [
         "tests/net/fodt/FodtR99ParagraphPersistenceTests.cs"
@@ -1360,7 +1360,7 @@
         "decompress_bytes",
         "validate_file"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d streaming workflow tests. Large payload, output limit, multiple files, UTF-8, high entropy, truncated file, zero-length, compression level.",
+      "api_behavior": "No src change â€” streaming workflow tests. Large payload, output limit, multiple files, UTF-8, high entropy, truncated file, zero-length, compression level.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r99_zst_streaming_workflow.py"
@@ -1389,7 +1389,7 @@
         "parse_ppm_strict",
         "write_pgm"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d PPM/PGM cross-format conversion tests. Grayscale conversion, color expansion, roundtrip, dimension preservation, maxval roundtrip.",
+      "api_behavior": "No src change â€” PPM/PGM cross-format conversion tests. Grayscale conversion, color expansion, roundtrip, dimension preservation, maxval roundtrip.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r99_ppm_pgm_conversion.py"
@@ -1420,7 +1420,7 @@
         "probe_sylk",
         "sylk_to_csv"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d full installed workflow tests. Create/write/parse/export, probe valid/invalid, dict mode, CSV headers, numeric values, empty cells.",
+      "api_behavior": "No src change â€” full installed workflow tests. Create/write/parse/export, probe valid/invalid, dict mode, CSV headers, numeric values, empty cells.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r99_sylk_installed_workflow.py"
@@ -1535,7 +1535,7 @@
         "ZstError",
         "ZstInvalidFrameError"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d deep probe/validate workflow tests. Valid/nonexistent/corrupt file validation, magic bytes, binary roundtrip, empty input, deterministic compression.",
+      "api_behavior": "No src change â€” deep probe/validate workflow tests. Valid/nonexistent/corrupt file validation, magic bytes, binary roundtrip, empty input, deterministic compression.",
       "changed_files": [],
       "test_files": [
         "tests/python/zst/test_r100_zst_probe_workflow.py"
@@ -1567,7 +1567,7 @@
         "write_pgm",
         "parse_pgm_strict"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d full PBM->PPM->PGM chain tests. Pixel mapping, dimension preservation, grayscale conversion, color expansion, all-black/all-white chains.",
+      "api_behavior": "No src change â€” full PBM->PPM->PGM chain tests. Pixel mapping, dimension preservation, grayscale conversion, color expansion, all-black/all-white chains.",
       "changed_files": [],
       "test_files": [
         "tests/python/ppm/test_r100_pbm_ppm_pgm_chain.py"
@@ -1609,7 +1609,7 @@
         "SylkDocument",
         "SylkCell"
       ],
-      "api_behavior": "No src change \u00e2\u20ac\u201d CSV export hardening + malformed input tests. Commas in values, empty cells, multirow, large grid, random bytes, empty file, special characters.",
+      "api_behavior": "No src change â€” CSV export hardening + malformed input tests. Commas in values, empty cells, multirow, large grid, random bytes, empty file, special characters.",
       "changed_files": [],
       "test_files": [
         "tests/python/sylk/test_r100_sylk_csv_malformed.py"
@@ -3374,7 +3374,7 @@
         "dif_to_csv",
         "parse_dif_strict"
       ],
-      "api_behavior": "probe_dif: returns dict with valid_header/exists/title. dif_to_csv: converts DIF to CSV string. parse_dif_strict: returns DifDocument or raises on invalid. Test-only coverage \u00e2\u20ac\u201d no src/ change.",
+      "api_behavior": "probe_dif: returns dict with valid_header/exists/title. dif_to_csv: converts DIF to CSV string. parse_dif_strict: returns DifDocument or raises on invalid. Test-only coverage â€” no src/ change.",
       "changed_files": [],
       "test_files": [
         "tests/python/dif/test_r116_dif_probe_csv_pipeline.py"
@@ -6165,7 +6165,7 @@
         "tests/python/dif/test_r64_dif_advancement.py"
       ],
       "test_count": 2,
-      "description": "Fixed module/function name shadowing in DIF tests \u00e2\u20ac\u201d import dif_stats function directly from module path instead of package namespace"
+      "description": "Fixed module/function name shadowing in DIF tests â€” import dif_stats function directly from module path instead of package namespace"
     },
     {
       "entry_id": "PFF-XCF-HELPERS-001",
@@ -6220,7 +6220,7 @@
         "tests/python/ods/test_pff_ods_data_validation.py"
       ],
       "test_count": 5,
-      "description": "Exported ods_data_validation_count from ods package __init__.py \u00e2\u20ac\u201d function already existed in ods_stats.py but was missing from public API"
+      "description": "Exported ods_data_validation_count from ods package __init__.py â€” function already existed in ods_stats.py but was missing from public API"
     },
     {
       "entry_id": "RNEXT14-DIF-GET-CELL-VALUE-001",
@@ -6249,7 +6249,7 @@
         "tests/python/dif/test_r156_dif_cell_accessors.py"
       ],
       "test_count": 7,
-      "description": "DIF get_cell_value \u00e2\u20ac\u201d accessor for cell value at (row, col) 0-based indices"
+      "description": "DIF get_cell_value â€” accessor for cell value at (row, col) 0-based indices"
     },
     {
       "entry_id": "RNEXT14-DIF-SET-CELL-VALUE-001",
@@ -6278,7 +6278,7 @@
         "tests/python/dif/test_r156_dif_cell_accessors.py"
       ],
       "test_count": 6,
-      "description": "DIF set_cell_value \u00e2\u20ac\u201d mutation: modify cell value and write updated document"
+      "description": "DIF set_cell_value â€” mutation: modify cell value and write updated document"
     },
     {
       "entry_id": "RNEXT14-DIF-GET-ROW-VALUES-001",
@@ -6307,7 +6307,7 @@
         "tests/python/dif/test_r156_dif_cell_accessors.py"
       ],
       "test_count": 6,
-      "description": "DIF get_row_values \u00e2\u20ac\u201d accessor returning all cell values for a row"
+      "description": "DIF get_row_values â€” accessor returning all cell values for a row"
     },
     {
       "entry_id": "RNEXT14-SYLK-GET-ROW-COUNT-001",
@@ -6336,7 +6336,7 @@
         "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
       ],
       "test_count": 5,
-      "description": "SYLK get_row_count \u00e2\u20ac\u201d accessor returning maximum row index"
+      "description": "SYLK get_row_count â€” accessor returning maximum row index"
     },
     {
       "entry_id": "RNEXT14-SYLK-GET-COLUMN-COUNT-001",
@@ -6365,7 +6365,7 @@
         "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
       ],
       "test_count": 4,
-      "description": "SYLK get_column_count \u00e2\u20ac\u201d accessor returning maximum column index"
+      "description": "SYLK get_column_count â€” accessor returning maximum column index"
     },
     {
       "entry_id": "RNEXT14-SYLK-SET-CELL-VALUE-001",
@@ -6394,7 +6394,7 @@
         "tests/python/sylk/test_r156_sylk_accessors_mutation.py"
       ],
       "test_count": 9,
-      "description": "SYLK set_cell_value \u00e2\u20ac\u201d mutation: modify or add cell value and write updated document"
+      "description": "SYLK set_cell_value â€” mutation: modify or add cell value and write updated document"
     },
     {
       "entry_id": "RNEXT15-ODS-GET-CELL-VALUE-001",
@@ -6423,7 +6423,7 @@
         "tests/python/ods/test_r156_ods_accessors.py"
       ],
       "test_count": 9,
-      "description": "ODS get_cell_value \u00e2\u20ac\u201d accessor for cell value at (sheet_index, row, col) 0-based indices"
+      "description": "ODS get_cell_value â€” accessor for cell value at (sheet_index, row, col) 0-based indices"
     },
     {
       "entry_id": "RNEXT15-ODS-GET-SHEET-NAMES-001",
@@ -6452,7 +6452,7 @@
         "tests/python/ods/test_r156_ods_accessors.py"
       ],
       "test_count": 3,
-      "description": "ODS get_sheet_names \u00e2\u20ac\u201d accessor returning list of sheet names"
+      "description": "ODS get_sheet_names â€” accessor returning list of sheet names"
     },
     {
       "entry_id": "RNEXT15-ODS-GET-ROW-COUNT-001",
@@ -6481,7 +6481,7 @@
         "tests/python/ods/test_r156_ods_accessors.py"
       ],
       "test_count": 5,
-      "description": "ODS get_row_count \u00e2\u20ac\u201d accessor returning number of non-empty rows in a sheet"
+      "description": "ODS get_row_count â€” accessor returning number of non-empty rows in a sheet"
     },
     {
       "entry_id": "RNEXT15-XCF-VERSION-001",
@@ -6510,7 +6510,7 @@
         "tests/python/xcf/test_r156_xcf_helpers.py"
       ],
       "test_count": 5,
-      "description": "XCF xcf_version \u00e2\u20ac\u201d accessor returning version string from XCF header"
+      "description": "XCF xcf_version â€” accessor returning version string from XCF header"
     },
     {
       "entry_id": "RNEXT15-XCF-IMAGE-TYPE-NAME-001",
@@ -6539,7 +6539,7 @@
         "tests/python/xcf/test_r156_xcf_helpers.py"
       ],
       "test_count": 4,
-      "description": "XCF xcf_image_type_name \u00e2\u20ac\u201d accessor returning human-readable image type name"
+      "description": "XCF xcf_image_type_name â€” accessor returning human-readable image type name"
     },
     {
       "entry_id": "RNEXT15-DIF-GET-COLUMN-VALUES-001",
@@ -6568,7 +6568,7 @@
         "tests/python/dif/test_r156_dif_column_values.py"
       ],
       "test_count": 7,
-      "description": "DIF get_column_values \u00e2\u20ac\u201d accessor returning all values for a column across rows"
+      "description": "DIF get_column_values â€” accessor returning all values for a column across rows"
     },
     {
       "entry_id": "RNEXT16-DIF-GET-TITLE-001",
@@ -6597,7 +6597,7 @@
         "tests/python/dif/test_r157_dif_metadata_accessors.py"
       ],
       "test_count": 4,
-      "description": "DIF get_title \u00e2\u20ac\u201d accessor returning document title from TABLE header"
+      "description": "DIF get_title â€” accessor returning document title from TABLE header"
     },
     {
       "entry_id": "RNEXT16-DIF-GET-ROW-COUNT-001",
@@ -6626,7 +6626,7 @@
         "tests/python/dif/test_r157_dif_metadata_accessors.py"
       ],
       "test_count": 4,
-      "description": "DIF get_row_count \u00e2\u20ac\u201d accessor returning number of data rows"
+      "description": "DIF get_row_count â€” accessor returning number of data rows"
     },
     {
       "entry_id": "RNEXT16-DIF-GET-COLUMN-COUNT-001",
@@ -6655,7 +6655,7 @@
         "tests/python/dif/test_r157_dif_metadata_accessors.py"
       ],
       "test_count": 4,
-      "description": "DIF get_column_count \u00e2\u20ac\u201d accessor returning VECTORS count (number of columns)"
+      "description": "DIF get_column_count â€” accessor returning VECTORS count (number of columns)"
     },
     {
       "entry_id": "RNEXT16-SYLK-GET-CELL-COUNT-001",
@@ -6684,7 +6684,7 @@
         "tests/python/sylk/test_r157_sylk_cell_count.py"
       ],
       "test_count": 8,
-      "description": "SYLK get_cell_count \u00e2\u20ac\u201d accessor returning count of non-None valued cells"
+      "description": "SYLK get_cell_count â€” accessor returning count of non-None valued cells"
     },
     {
       "entry_id": "RNEXT16-ODS-GET-COLUMN-COUNT-001",
@@ -6713,7 +6713,7 @@
         "tests/python/ods/test_r157_ods_column_row.py"
       ],
       "test_count": 5,
-      "description": "ODS get_column_count \u00e2\u20ac\u201d accessor returning max column count in a sheet"
+      "description": "ODS get_column_count â€” accessor returning max column count in a sheet"
     },
     {
       "entry_id": "RNEXT16-ODS-GET-ROW-VALUES-001",
@@ -6742,7 +6742,7 @@
         "tests/python/ods/test_r157_ods_column_row.py"
       ],
       "test_count": 8,
-      "description": "ODS get_row_values \u00e2\u20ac\u201d accessor returning all cell values for a given row"
+      "description": "ODS get_row_values â€” accessor returning all cell values for a given row"
     },
     {
       "entry_id": "RNEXT17-XCF-PIXEL-COUNT-001",
@@ -6771,7 +6771,7 @@
         "tests/python/xcf/test_r157_xcf_pixel_file.py"
       ],
       "test_count": 4,
-      "description": "XCF xcf_pixel_count \u00e2\u20ac\u201d accessor returning width * height"
+      "description": "XCF xcf_pixel_count â€” accessor returning width * height"
     },
     {
       "entry_id": "RNEXT17-XCF-FILE-SIZE-001",
@@ -6800,7 +6800,7 @@
         "tests/python/xcf/test_r157_xcf_pixel_file.py"
       ],
       "test_count": 5,
-      "description": "XCF xcf_file_size \u00e2\u20ac\u201d accessor returning file size in bytes"
+      "description": "XCF xcf_file_size â€” accessor returning file size in bytes"
     },
     {
       "entry_id": "RNEXT17-PPM-PIXEL-COUNT-001",
@@ -6829,7 +6829,7 @@
         "tests/python/ppm/test_r157_ppm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PPM pixel_count \u00e2\u20ac\u201d accessor returning total pixel count (width * height)"
+      "description": "PPM pixel_count â€” accessor returning total pixel count (width * height)"
     },
     {
       "entry_id": "RNEXT17-PPM-AVERAGE-COLOR-001",
@@ -6858,7 +6858,7 @@
         "tests/python/ppm/test_r157_ppm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PPM average_color \u00e2\u20ac\u201d accessor returning average (R, G, B) tuple"
+      "description": "PPM average_color â€” accessor returning average (R, G, B) tuple"
     },
     {
       "entry_id": "RNEXT17-PBM-PIXEL-COUNT-001",
@@ -6887,7 +6887,7 @@
         "tests/python/pbm/test_r157_pbm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PBM pixel_count \u00e2\u20ac\u201d accessor returning total pixel count (width * height)"
+      "description": "PBM pixel_count â€” accessor returning total pixel count (width * height)"
     },
     {
       "entry_id": "RNEXT17-PBM-COUNT-BLACK-001",
@@ -6916,7 +6916,7 @@
         "tests/python/pbm/test_r157_pbm_accessors.py"
       ],
       "test_count": 6,
-      "description": "PBM count_black \u00e2\u20ac\u201d accessor returning count of black (value=1) pixels"
+      "description": "PBM count_black â€” accessor returning count of black (value=1) pixels"
     },
     {
       "entry_id": "RNEXT18-PGM-PIXEL-COUNT-001",
@@ -6945,7 +6945,7 @@
         "tests/python/pgm/test_r158_pgm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PGM pixel_count \u00e2\u20ac\u201d accessor returning total pixel count (width * height)"
+      "description": "PGM pixel_count â€” accessor returning total pixel count (width * height)"
     },
     {
       "entry_id": "RNEXT18-PGM-AVERAGE-GRAY-001",
@@ -6974,7 +6974,7 @@
         "tests/python/pgm/test_r158_pgm_accessors.py"
       ],
       "test_count": 5,
-      "description": "PGM average_gray \u00e2\u20ac\u201d accessor returning mean gray value"
+      "description": "PGM average_gray â€” accessor returning mean gray value"
     },
     {
       "entry_id": "RNEXT18-PPM-CROP-001",
@@ -7003,7 +7003,7 @@
         "tests/python/ppm/test_r158_ppm_crop.py"
       ],
       "test_count": 6,
-      "description": "PPM crop \u00e2\u20ac\u201d crop a rectangular region from a PPM image"
+      "description": "PPM crop â€” crop a rectangular region from a PPM image"
     },
     {
       "entry_id": "RNEXT18-ODS-COUNT-SHEETS-001",
@@ -7032,7 +7032,7 @@
         "tests/python/ods/test_r158_ods_count_sheets.py"
       ],
       "test_count": 4,
-      "description": "ODS count_sheets \u00e2\u20ac\u201d accessor returning number of sheets"
+      "description": "ODS count_sheets â€” accessor returning number of sheets"
     },
     {
       "entry_id": "RNEXT18-DIF-GET-ALL-VALUES-001",
@@ -7061,7 +7061,7 @@
         "tests/python/dif/test_r158_dif_all_values.py"
       ],
       "test_count": 6,
-      "description": "DIF get_all_values \u00e2\u20ac\u201d accessor returning flat list of all cell values"
+      "description": "DIF get_all_values â€” accessor returning flat list of all cell values"
     },
     {
       "entry_id": "RNEXT18-SYLK-GET-ALL-VALUES-001",
@@ -7090,7 +7090,7 @@
         "tests/python/sylk/test_r158_sylk_all_values.py"
       ],
       "test_count": 6,
-      "description": "SYLK get_all_values \u00e2\u20ac\u201d accessor returning flat list of all cell values"
+      "description": "SYLK get_all_values â€” accessor returning flat list of all cell values"
     },
     {
       "entry_id": "RNEXT19-PGM-COUNT-ABOVE-THRESHOLD-001",
@@ -7119,7 +7119,7 @@
         "tests/python/pgm/test_r159_pgm_threshold_minmax.py"
       ],
       "test_count": 5,
-      "description": "PGM count_above_threshold \u00e2\u20ac\u201d count pixels with value strictly above threshold"
+      "description": "PGM count_above_threshold â€” count pixels with value strictly above threshold"
     },
     {
       "entry_id": "RNEXT19-PGM-MIN-MAX-GRAY-001",
@@ -7148,7 +7148,7 @@
         "tests/python/pgm/test_r159_pgm_threshold_minmax.py"
       ],
       "test_count": 5,
-      "description": "PGM min_max_gray \u00e2\u20ac\u201d return (min, max) gray values in image"
+      "description": "PGM min_max_gray â€” return (min, max) gray values in image"
     },
     {
       "entry_id": "RNEXT19-PBM-FLIP-HORIZONTAL-001",
@@ -7177,7 +7177,7 @@
         "tests/python/pbm/test_r159_pbm_flip.py"
       ],
       "test_count": 5,
-      "description": "PBM flip_horizontal \u00e2\u20ac\u201d mirror PBM image left-right and write result"
+      "description": "PBM flip_horizontal â€” mirror PBM image left-right and write result"
     },
     {
       "entry_id": "RNEXT19-PPM-FLIP-HORIZONTAL-001",
@@ -7206,7 +7206,7 @@
         "tests/python/ppm/test_r159_ppm_flip.py"
       ],
       "test_count": 5,
-      "description": "PPM flip_horizontal \u00e2\u20ac\u201d mirror PPM image left-right and write result"
+      "description": "PPM flip_horizontal â€” mirror PPM image left-right and write result"
     },
     {
       "entry_id": "RNEXT19-XCF-IS-RGB-001",
@@ -7235,7 +7235,7 @@
         "tests/python/xcf/test_r159_xcf_is_rgb.py"
       ],
       "test_count": 4,
-      "description": "XCF xcf_is_rgb \u00e2\u20ac\u201d check if XCF image type is RGB (type 0)"
+      "description": "XCF xcf_is_rgb â€” check if XCF image type is RGB (type 0)"
     },
     {
       "entry_id": "RNEXT19-ODS-GET-ALL-VALUES-001",
@@ -7264,7 +7264,7 @@
         "tests/python/ods/test_r159_ods_all_values.py"
       ],
       "test_count": 6,
-      "description": "ODS get_all_values \u00e2\u20ac\u201d flat list of all cell values in a sheet"
+      "description": "ODS get_all_values â€” flat list of all cell values in a sheet"
     },
     {
       "entry_id": "PKG-TSV-PYPROJECT-001",
@@ -7382,7 +7382,7 @@
         "tests/python/dif/test_r160_dif_min_max_column.py"
       ],
       "test_count": 5,
-      "description": "DIF min_column_value \u2014 minimum numeric value in a column"
+      "description": "DIF min_column_value — minimum numeric value in a column"
     },
     {
       "entry_id": "RNEXT20-DIF-MAX-COLUMN-VALUE-001",
@@ -7411,7 +7411,7 @@
         "tests/python/dif/test_r160_dif_min_max_column.py"
       ],
       "test_count": 5,
-      "description": "DIF max_column_value \u2014 maximum numeric value in a column"
+      "description": "DIF max_column_value — maximum numeric value in a column"
     },
     {
       "entry_id": "RNEXT20-DIF-TOTAL-CELL-COUNT-001",
@@ -7438,7 +7438,7 @@
       ],
       "test_files": [],
       "test_count": 0,
-      "description": "DIF total_cell_count \u2014 total number of cells across all rows"
+      "description": "DIF total_cell_count — total number of cells across all rows"
     },
     {
       "entry_id": "RNEXT20-SYLK-COUNT-NONEMPTY-001",
@@ -7467,7 +7467,7 @@
         "tests/python/sylk/test_r160_sylk_nonempty_sum.py"
       ],
       "test_count": 5,
-      "description": "SYLK count_nonempty_cells \u2014 count non-empty cells in document"
+      "description": "SYLK count_nonempty_cells — count non-empty cells in document"
     },
     {
       "entry_id": "RNEXT20-SYLK-SUM-COLUMN-001",
@@ -7496,7 +7496,7 @@
         "tests/python/sylk/test_r160_sylk_nonempty_sum.py"
       ],
       "test_count": 5,
-      "description": "SYLK sum_column \u2014 sum numeric values in a column"
+      "description": "SYLK sum_column — sum numeric values in a column"
     },
     {
       "entry_id": "RNEXT20-TOML-DIFF-KEYS-001",
@@ -7525,7 +7525,7 @@
         "tests/python/toml/test_r160_toml_diff_rename.py"
       ],
       "test_count": 6,
-      "description": "TOML diff_keys \u2014 top-level keys in A but not in B"
+      "description": "TOML diff_keys — top-level keys in A but not in B"
     },
     {
       "entry_id": "RNEXT20-TOML-RENAME-KEY-001",
@@ -7554,7 +7554,7 @@
         "tests/python/toml/test_r160_toml_diff_rename.py"
       ],
       "test_count": 5,
-      "description": "TOML rename_key \u2014 rename a top-level key in data dict"
+      "description": "TOML rename_key — rename a top-level key in data dict"
     },
     {
       "entry_id": "HSR-SYLK-TEST-FIX-001",
@@ -7580,7 +7580,7 @@
         "tests/python/sylk/test_r159_sylk_row_ops.py"
       ],
       "test_count": 6,
-      "description": "Fixed import pattern in test_r159_sylk_row_ops.py \u2014 changed from sys.path short import to src.python.sylk full dotted path to prevent cross-test import pollution"
+      "description": "Fixed import pattern in test_r159_sylk_row_ops.py — changed from sys.path short import to src.python.sylk full dotted path to prevent cross-test import pollution"
     },
     {
       "entry_id": "RNEXT21-ODS-GET-CELL-COUNT-001",
@@ -8176,7 +8176,7 @@
       "test_files": [
         "tests/python/ods/test_r168_ods_sum_filter.py"
       ],
-      "change_summary": "Add sum_column function to ODS parser \u2014 sums numeric values in a column",
+      "change_summary": "Add sum_column function to ODS parser — sums numeric values in a column",
       "timestamp": "2026-06-11T23:30:00Z"
     },
     {
@@ -8200,7 +8200,7 @@
       "test_files": [
         "tests/python/ods/test_r168_ods_sum_filter.py"
       ],
-      "change_summary": "Add filter_rows_by_value function to ODS parser \u2014 filter rows matching column value",
+      "change_summary": "Add filter_rows_by_value function to ODS parser — filter rows matching column value",
       "timestamp": "2026-06-11T23:30:00Z"
     },
     {
@@ -8224,7 +8224,7 @@
       "test_files": [
         "tests/python/ndjson/test_r168_ndjson_markdown_table.py"
       ],
-      "change_summary": "Add to_markdown_table function to NDJSON codec \u2014 export records as GFM table",
+      "change_summary": "Add to_markdown_table function to NDJSON codec — export records as GFM table",
       "timestamp": "2026-06-11T23:30:00Z"
     },
     {
@@ -8248,7 +8248,7 @@
       "test_files": [
         "tests/python/tsv/test_r168_tsv_numeric_columns.py"
       ],
-      "change_summary": "Add get_numeric_columns function to TSV parser \u2014 identify all-numeric columns",
+      "change_summary": "Add get_numeric_columns function to TSV parser — identify all-numeric columns",
       "timestamp": "2026-06-11T23:30:00Z"
     },
     {
@@ -8841,7 +8841,7 @@
       "idempotency_key": "02d563e374082464e51f9855878fe89229b41c4b852a454c720e7393fe1f2356",
       "sprint_id": "PRODUCT-DEEPENING-HEALING-20260612",
       "export_path_affected": true,
-      "description": "Add rotate_90(file_path, dest_path) -> dict to PBM parser \u2014 90-degree CW rotation"
+      "description": "Add rotate_90(file_path, dest_path) -> dict to PBM parser — 90-degree CW rotation"
     },
     {
       "entry_id": "RNEXT22-DIF-PARSER-001",
@@ -10082,7 +10082,7 @@
       ],
       "test_count": 8,
       "change_type": "addition",
-      "description": "Add fodp_total_shape_count \u2014 total shapes across all slides",
+      "description": "Add fodp_total_shape_count — total shapes across all slides",
       "timestamp": "2026-06-14T10:00:00+00:00"
     },
     {
@@ -10104,7 +10104,7 @@
       ],
       "test_count": 12,
       "change_type": "addition",
-      "description": "Add gnumeric_empty_cell_count \u2014 count empty/None cells in a sheet",
+      "description": "Add gnumeric_empty_cell_count — count empty/None cells in a sheet",
       "timestamp": "2026-06-14T10:30:00+00:00"
     },
     {
@@ -10126,7 +10126,7 @@
       ],
       "test_count": 7,
       "change_type": "addition",
-      "description": "Add xcf_is_indexed \u2014 check if XCF image uses indexed color mode (completes RGB/Grayscale/Indexed trio)",
+      "description": "Add xcf_is_indexed — check if XCF image uses indexed color mode (completes RGB/Grayscale/Indexed trio)",
       "timestamp": "2026-06-14T11:00:00+00:00"
     },
     {
@@ -10200,7 +10200,7 @@
       ],
       "test_count": 7,
       "change_type": "addition",
-      "description": "Add ppm_is_binary \u2014 detect P6 (binary) vs P3 (ASCII) PPM format",
+      "description": "Add ppm_is_binary — detect P6 (binary) vs P3 (ASCII) PPM format",
       "timestamp": "2026-06-14T11:30:00+00:00"
     },
     {
@@ -10257,7 +10257,7 @@
       ],
       "test_count": 8,
       "change_type": "addition",
-      "description": "Add tsv_has_header \u2014 detect if TSV file has a header row",
+      "description": "Add tsv_has_header — detect if TSV file has a header row",
       "timestamp": "2026-06-14T12:00:00+00:00"
     },
     {
@@ -10637,6 +10637,137 @@
       "change_type": "new_function",
       "description": "Sorted list of unique field names across all NDJSON records",
       "sha256": "7a0ba0c34d311a6b"
+    },
+    {
+      "file": "tests/python/abw/test_rnext_abw_search_replace_paragraph.py",
+      "change_type": "added",
+      "gap_id": "GAP-ABW-FOSS-SEARCH_REPLA-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-4",
+      "timestamp": "2026-06-15T18:40:15.783757"
+    },
+    {
+      "file": "tests/python/fods/test_rnext_fods_workbook_to_xml.py",
+      "change_type": "added",
+      "gap_id": "GAP-FODS-FOSS-WORKBOOK_TO_-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-4",
+      "timestamp": "2026-06-15T18:40:15.783757"
+    },
+    {
+      "file": "tests/python/fodt/test_rnext_fodt_write_fodt.py",
+      "change_type": "added",
+      "gap_id": "GAP-FODT-FOSS-WRITE_FODT-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-4",
+      "timestamp": "2026-06-15T18:40:15.783757"
+    },
+    {
+      "file": "tests/python/gnumeric/test_rnext_gnumeric_set_cell_value.py",
+      "change_type": "added",
+      "gap_id": "GAP-Gnumeric-FOSS-SET_CELL_VAL-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-4",
+      "timestamp": "2026-06-15T18:40:15.783757"
+    },
+    {
+      "file": "tests/python/ndjson/test_rnext_ndjson_write_ndjson.py",
+      "change_type": "added",
+      "gap_id": "GAP-NDJSON-FOSS-WRITE_NDJSON-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-4",
+      "timestamp": "2026-06-15T18:40:15.783757"
+    },
+    {
+      "file": "src/python/ods/ods_parser.py",
+      "change_type": "modified",
+      "gap_id": "GAP-ODS-FOSS-EMPTY_ROW_COUNT-001",
+      "sprint": "HARDENED-PLAN-EXECUTION-20260615",
+      "timestamp": "2026-06-15T13:46:11.347346Z",
+      "entry_id": "HARDENED-ODS-EMPTY-ROW-COUNT-001",
+      "entry_number": 418,
+      "function_added": "ods_empty_row_count",
+      "test_file": "tests/python/ods/test_rnext_ods_empty_row_count.py",
+      "test_count": 8,
+      "checksum": "5397dce96ff5ed0a"
+    },
+    {
+      "file": "src/python/tsv/tsv_parser.py",
+      "change_type": "modified",
+      "gap_id": "GAP-TSV-FOSS-DUPLICATE_ROW_COUNT-001",
+      "sprint": "HARDENED-PLAN-EXECUTION-20260615",
+      "timestamp": "2026-06-15T13:46:11.347543Z",
+      "entry_id": "HARDENED-TSV-DUPLICATE-ROW-COUNT-001",
+      "entry_number": 419,
+      "function_added": "tsv_duplicate_row_count",
+      "test_file": "tests/python/tsv/test_rnext_tsv_duplicate_row_count.py",
+      "test_count": 9,
+      "checksum": "19698df5bf69e96a"
+    },
+    {
+      "file": "tests/python/abw/test_rnext_abw_truncate_paragraphs.py",
+      "change_type": "added",
+      "gap_id": "GAP-ABW-FOSS-TRUNCATE_PAR-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-5",
+      "timestamp": "2026-06-15T18:57:05.528696"
+    },
+    {
+      "file": "tests/python/fods/test_rnext_fods_workbook_stats.py",
+      "change_type": "added",
+      "gap_id": "GAP-FODS-FOSS-WORKBOOK_STA-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-5",
+      "timestamp": "2026-06-15T18:57:05.528696"
+    },
+    {
+      "file": "tests/python/fodt/test_rnext_fodt_document_to_xml.py",
+      "change_type": "added",
+      "gap_id": "GAP-FODT-FOSS-DOCUMENT_TO_-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-5",
+      "timestamp": "2026-06-15T18:57:05.528696"
+    },
+    {
+      "file": "tests/python/ndjson/test_rnext_ndjson_append_record.py",
+      "change_type": "added",
+      "gap_id": "GAP-NDJSON-FOSS-APPEND_RECOR-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-5",
+      "timestamp": "2026-06-15T18:57:05.528696"
+    },
+    {
+      "file": "tests/python/ppm/test_rnext_ppm_flip_horizontal.py",
+      "change_type": "added",
+      "gap_id": "GAP-PPM-FOSS-FLIP_HORIZON-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-5",
+      "timestamp": "2026-06-15T18:57:05.528696"
+    },
+    {
+      "file": "tests/python/fods/test_rnext_fods_workbook_type_distribution.py",
+      "change_type": "added",
+      "gap_id": "GAP-FODS-FOSS-WORKBOOK_TYP-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-6",
+      "timestamp": "2026-06-15T19:04:25.430393"
+    },
+    {
+      "file": "tests/python/fodt/test_rnext_fodt_document_stats.py",
+      "change_type": "added",
+      "gap_id": "GAP-FODT-FOSS-DOCUMENT_STA-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-6",
+      "timestamp": "2026-06-15T19:04:25.430393"
+    },
+    {
+      "file": "tests/python/ndjson/test_rnext_ndjson_merge.py",
+      "change_type": "added",
+      "gap_id": "GAP-NDJSON-FOSS-MERGE_NDJSON-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-6",
+      "timestamp": "2026-06-15T19:04:25.430393"
+    },
+    {
+      "file": "tests/python/pbm/test_rnext_pbm_write_pbm.py",
+      "change_type": "added",
+      "gap_id": "GAP-Netpbm-FOSS-WRITE_PBM-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-6",
+      "timestamp": "2026-06-15T19:04:25.430393"
+    },
+    {
+      "file": "tests/python/fods/test_rnext_fods_find_sheet_by_name.py",
+      "change_type": "added",
+      "gap_id": "GAP-FODS-FOSS-FIND_SHEET_B-001",
+      "sprint": "IDEMPOTENT-SWARM-SPRINT-6",
+      "timestamp": "2026-06-15T19:04:25.430393"
     }
   ]
 }

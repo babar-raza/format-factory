@@ -157,6 +157,19 @@ def load_json(path: Path) -> dict:
     return {}
 
 
+def _load_gap_ledger_ids(repo_root: Path) -> set:
+    """Load all valid gap IDs from gap-ledger.json for phantom-ID prevention."""
+    path = repo_root / "reports" / "capability-layer" / "gap-ledger.json"
+    if not path.exists():
+        return set()
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        gaps = data.get("gaps", []) if isinstance(data, dict) else data
+        return {g.get("gap_id", "") for g in gaps if g.get("gap_id")}
+    except Exception:
+        return set()
+
+
 def load_selected_product_gaps(repo_root: Path) -> list[dict]:
     """Load bounded product work selected by the governed R90 selector."""
     payload = load_json(repo_root / SELECTED_PRODUCT_GAPS_PATH)
@@ -659,10 +672,14 @@ def synthesize_sprint_tasks(review: dict, contradictions: dict, repo_root: Path,
             for gap in report.get(gap_list_key, []):
                 all_gaps[gap.get("id", "")] = gap
 
+        # Validate gap IDs against canonical gap-ledger to prevent phantoms
+        valid_gap_ids = _load_gap_ledger_ids(repo_root)
         for gap_id in r_next_targets[:5]:
             gap = all_gaps.get(gap_id, {})
             if not gap:
                 continue
+            if valid_gap_ids and gap_id not in valid_gap_ids:
+                continue  # Skip phantom gap IDs not in canonical ledger
             product = gap.get("product", gap.get("format", "unknown"))
             capability = gap.get("capability", gap.get("description", gap_id))
             tasks.append({

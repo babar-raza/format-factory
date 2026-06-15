@@ -93,13 +93,20 @@ def test_full_pipeline_produces_no_cross_contaminated_qnames():
         fid = r["format_id"].upper()
         for fact in r.get("spec_facts", []):
             qname = fact["qname"]
-            # qname must start with own fid OR ODF- (for OASIS generics)
-            assert qname.startswith(fid + "-") or qname.startswith("ODF-"), (
+            # qname must start with own fid, ODF- (OASIS generics), or
+            # a standards-body prefix (IETF-, W3C-, ISO-) for formats
+            # governed by those bodies (e.g. ZST is RFC 8478).
+            _STANDARDS_PREFIXES = ("ODF-", "IETF-", "W3C-", "ISO-")
+            assert qname.startswith(fid + "-") or any(
+                qname.startswith(p) for p in _STANDARDS_PREFIXES
+            ), (
                 f"Format {fid} has cross-contaminated qname: {qname}"
             )
             # Must NOT start with any OTHER format's prefix
             for other in all_fids:
-                if other != fid and not qname.startswith("ODF-"):
+                if other != fid and not any(
+                    qname.startswith(p) for p in _STANDARDS_PREFIXES
+                ):
                     assert not qname.startswith(other + "-"), (
                         f"Format {fid} has qname with {other} prefix: {qname}"
                     )

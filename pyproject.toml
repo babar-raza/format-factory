@@ -29,6 +29,8 @@ markers = [
     "layer4: Golden - roundtrip, cross-format, export",
     "layer5: Broad - all python + supervisor + evidence",
     "layer6: Full - entire test suite",
+    "state_dependent: Test reads live repo state files (may skip when dirty)",
+    "network: Test makes real network calls (LLM, HTTP endpoints)",
 ]
 filterwarnings = [
     "ignore::DeprecationWarning",

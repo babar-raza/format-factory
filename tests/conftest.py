@@ -39,6 +39,8 @@ def pytest_configure(config):
     """Register layer markers (belt-and-suspenders with pyproject.toml)."""
     for i in range(7):
         config.addinivalue_line("markers", f"layer{i}: Test layer {i}")
+    config.addinivalue_line("markers", "state_dependent: Test reads live repo state files")
+    config.addinivalue_line("markers", "network: Test makes real network calls")
 
 
 def pytest_collection_modifyitems(config, items):

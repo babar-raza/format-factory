@@ -19,6 +19,44 @@ SAL_FACTS_PATH = REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
 
 # Mapping: FODS spec fact qname -> list of functions that implement it
 FODS_SPEC_FUNCTION_MAP = {
+    # --- ODF-shared facts (common to all flat ODF formats) ---
+    "ODF-FACT-NAMESPACE": [
+        "parse_fods",
+        "parse_fods_strict",
+    ],
+    "ODF-FACT-ROOT-ELEMENT": [
+        "parse_fods",
+        "workbook_to_xml",
+    ],
+    "ODF-FACT-STYLES": [
+        "workbook_style_family_list",
+        "workbook_row_style_summary",
+        "workbook_column_style_summary",
+    ],
+    "ODF-FACT-METADATA": [
+        "workbook_stats",
+        "parse_fods",
+    ],
+    "ODF-FACT-BODY": [
+        "parse_fods_strict",
+        "workbook_stats",
+    ],
+    "ODF-SHEET-FACT-TABLE": [
+        "find_sheet_by_name",
+        "fods_sheet_count",
+        "workbook_sheet_summary",
+    ],
+    "ODF-SHEET-FACT-ROW": [
+        "workbook_row_count",
+        "workbook_empty_rows",
+    ],
+    "ODF-SHEET-FACT-CELL": [
+        "workbook_get_cell_value",
+        "workbook_set_cell_value",
+        "workbook_cell_type_matrix",
+        "fods_total_cell_count",
+    ],
+    # --- FODS-specific facts ---
     "FODS-FACT-001": [
         "parse_fods",
         "parse_fods_strict",
@@ -50,6 +88,15 @@ FODS_SPEC_FUNCTION_MAP = {
     "FODS-FACT-005": [
         "workbook_formula_list",
         "workbook_formula_edit_policy",
+    ],
+    "FODS-FACT-006": [
+        "workbook_column_count",
+        "workbook_max_column_count",
+        "workbook_column_width_summary",
+    ],
+    "FODS-FACT-007": [
+        "workbook_merged_cell_summary",
+        "workbook_cell_range",
     ],
 }
 

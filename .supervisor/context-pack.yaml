@@ -1,23 +1,29 @@
 schema_version: '1.0'
-generated_at: '2026-06-15T15:59:38.363055'
+generated_at: '2026-06-15T19:30:12.451713'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 98ca92c
+  head: e31fa98
   status:
-    modified_count: 107
-    untracked_count: 57
+    modified_count: 64
+    untracked_count: 47
     staged_count: 1
-    total_changed: 165
+    total_changed: 112
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: PRODUCT-DEEPENING-PHASE10-20260615-001
+  sprint_id: IDEMPOTENT-SWARM-SPRINT-7
   run_id: unknown
-  autonomous_continue: true
-  iteration: 11
+  autonomous_continue: false
+  iteration: 2
   max_iterations: 12
-  hard_stops: []
-  rework_items: []
+  hard_stops:
+  - critical_rework_blocks_continuation
+  rework_items:
+  - GOV_BLOCK:execution_method_required_validator
+  - GOV_BLOCK:source_diff_required_validator
+  - GOV_BLOCK:idempotency_key_required_validator
+  - GOV_BLOCK:route_decision_required_validator
+  - GOV_BLOCK:spec_fact_refs_validator
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-09'
@@ -73,7 +79,7 @@ skill_registry:
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 412
+  total_entries: 429
   governed_changes: 344
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json

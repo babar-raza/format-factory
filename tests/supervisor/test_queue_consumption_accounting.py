@@ -10,6 +10,8 @@ from pathlib import Path
 
 import pytest
 
+pytestmark = pytest.mark.state_dependent
+
 _repo_root = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_repo_root))
 

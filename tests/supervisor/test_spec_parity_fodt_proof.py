@@ -18,6 +18,43 @@ SAL_FACTS_PATH = REPO_ROOT / ".local" / "sal-output" / "sal-facts-latest.json"
 
 # Mapping: FODT spec fact qname -> list of functions that implement it
 FODT_SPEC_FUNCTION_MAP = {
+    # --- ODF-shared facts (common to all flat ODF formats) ---
+    "ODF-FACT-NAMESPACE": [
+        "parse_fodt",
+        "parse_fodt_strict",
+    ],
+    "ODF-FACT-ROOT-ELEMENT": [
+        "parse_fodt",
+        "document_to_xml",
+    ],
+    "ODF-FACT-STYLES": [
+        "document_paragraph_style_distribution",
+        "document_stats",
+    ],
+    "ODF-FACT-METADATA": [
+        "document_stats",
+        "parse_fodt",
+    ],
+    "ODF-FACT-BODY": [
+        "parse_fodt_strict",
+        "document_stats",
+    ],
+    "ODF-TEXT-FACT-PARAGRAPH": [
+        "document_paragraph_count",
+        "document_extract_headings",
+        "document_heading_outline",
+        "document_paragraph_texts",
+    ],
+    "ODF-TEXT-FACT-SPAN": [
+        "document_paragraph_style_distribution",
+        "document_hyperlink_count",
+    ],
+    "ODF-TEXT-FACT-TABLE": [
+        "document_count_tables",
+        "document_table_summary",
+        "document_table_cell_count",
+    ],
+    # --- FODT-specific facts ---
     "FODT-FACT-001": [
         "parse_fodt",
         "parse_fodt_strict",
@@ -50,6 +87,14 @@ FODT_SPEC_FUNCTION_MAP = {
         "document_list_stats",
         "document_list_item_count",
         "document_block_type_count",
+    ],
+    "FODT-FACT-006": [
+        "document_section_summary",
+        "document_image_frame_list",
+    ],
+    "FODT-FACT-007": [
+        "document_change_tracking_summary",
+        "document_stats",
     ],
 }
 

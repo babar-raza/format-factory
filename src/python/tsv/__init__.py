@@ -60,6 +60,7 @@ from .tsv_parser import (
     count_distinct_values,
     tsv_has_header,
     tsv_max_field_length,
+    tsv_duplicate_row_count,
 )
 
 __version__ = "0.1.0"
@@ -116,4 +117,5 @@ __all__ = [
     "count_distinct_values",
     "tsv_has_header",
     "tsv_max_field_length",
+    "tsv_duplicate_row_count",
 ]

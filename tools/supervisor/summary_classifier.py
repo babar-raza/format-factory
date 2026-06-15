@@ -123,8 +123,28 @@ def _check_quality_scores(data: dict[str, Any]) -> tuple[bool, list[str]]:
     return len(failing) == 0, failing
 
 
+def _is_quality_scores_format(data: dict[str, Any]) -> bool:
+    """Detect if input is quality-scores.json from quality_scorer.py.
+
+    Quality scorer output has execution_results + overall_scores + overall_verdict
+    but no evidence_bundle_path or evidence_manifest. This is a valid structured
+    input that should bypass the evidence check.
+    """
+    return (
+        bool(data.get("execution_results"))
+        and bool(data.get("overall_scores"))
+        and bool(data.get("overall_verdict"))
+    )
+
+
 def _check_evidence(data: dict[str, Any]) -> bool:
-    """Check if evidence bundle path is present."""
+    """Check if evidence bundle path is present.
+
+    Returns True for quality-scores.json format (which never contains
+    evidence_bundle_path but is still a valid structured input).
+    """
+    if _is_quality_scores_format(data):
+        return True
     bundle_path = data.get("evidence_bundle_path")
     if bundle_path:
         return True

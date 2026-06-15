@@ -1,75 +1,104 @@
 [
   {
-    "item_id": "TASK-001-GAP-CLOSURE-ROUND11",
-    "item_title": "Close 5 more FOSS gaps with verified test coverage (ABW)",
+    "item_id": "GATE11-FODS-READINESS",
+    "item_title": "Prepare FODS Gate 11 readiness packet",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "reports/capability-layer/gap-ledger.json",
-      ".local/evidences/product-deepening-phase11-20260615-001/raw-logs/sprint-tests.log"
+      ".local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/fods-gate11-readiness-packet.md",
+      ".local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/raw-logs/dogfood-and-gate11-tests.log"
     ],
-    "tests_supporting": [
-      "tests/python/abw/test_r214_abw_word_count.py",
-      "tests/python/abw/test_rnext_abw_get_paragraphs.py"
-    ],
+    "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths",
-      "Test content verified (2 files)"
+      "No missing paths"
     ],
     "acceptance_criteria_failed": [
-      "Evidence does not demonstrate that five FOSS gaps have been closed; most listed gaps remain open.",
-      "No actual test execution reports or coverage metrics are provided\u2014only suggested verification commands.",
-      "Missing concrete proof that tests have been added and passed for the claimed gaps.",
-      "The JSON report appears to be a generated status list rather than verification of completed work."
+      "Acceptance criteria pattern not found: All 7 Gate 11 criteria assessed for FODS"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_VERIFIED -> ACCEPTED_WITH_LIMITATIONS: Evidence does not demonstrate that five FOSS gaps have been closed; most listed gaps remain open.; No actual test execution reports or coverage metrics are provided\u2014only suggested verification commands.; Missing concrete proof that tests have been added and passed for the claimed gaps.; The JSON report appears to be a generated status list rather than verification of completed work.",
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: All 7 Gate 11 criteria assessed for FODS",
     "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.96,
+      "adequate": true,
+      "confidence": 0.78,
       "stub_detected": false,
       "deficiencies": [
-        "Evidence does not demonstrate that five FOSS gaps have been closed; most listed gaps remain open.",
-        "No actual test execution reports or coverage metrics are provided\u2014only suggested verification commands.",
-        "Missing concrete proof that tests have been added and passed for the claimed gaps.",
-        "The JSON report appears to be a generated status list rather than verification of completed work."
+        "Dogfood test log is truncated and does not show all 22 claimed tests, limiting verification of full pass status",
+        "No direct artifact (e.g., parity-matrix.yaml) is included to confirm its existence and content"
       ],
       "llm_used": true
     }
   },
   {
-    "item_id": "TASK-017-DOGFOOD-ABW-TEXT",
-    "item_title": "Dogfood: ABW create/write/extract/export text pipeline",
+    "item_id": "GATE11-FODT-READINESS",
+    "item_title": "Prepare FODT Gate 11 readiness packet",
     "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_VERIFIED",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "tests/python/dogfood/test_dogfood_abw_text_extraction.py",
-      ".local/evidences/product-deepening-phase11-20260615-001/raw-logs/sprint-tests.log"
+      ".local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/fodt-gate11-readiness-packet.md",
+      ".local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/raw-logs/dogfood-and-gate11-tests.log"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: All 7 Gate 11 criteria assessed for FODT"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: All 7 Gate 11 criteria assessed for FODT",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.68,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence consists mainly of a summary markdown; the actual test files, coverage reports, or full pytest output showing the claimed 1030 FOSS tests are not provided.",
+        "Dogfood proof logs are truncated (only 39 items shown) and do not demonstrate that all claimed dogfood tests (22 + 9 + dedicated) have executed and passed.",
+        "The parity matrix artifact is referenced but its contents are not included, nor is there a checksum or verification that the file exists in the repository.",
+        "No direct evidence (e.g., coverage report, test count command output) confirming the FOSS test count exceeds the required minimum of 50.",
+        "The readiness packet does not include the gap ledger or other artifacts that would substantiate the claim of zero remaining FOSS gaps."
+      ],
+      "llm_used": true,
+      "low_confidence_override": true
+    }
+  },
+  {
+    "item_id": "DOGFOOD-GNUMERIC-NDJSON",
+    "item_title": "New dogfood export: Gnumeric-to-NDJSON pipeline",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tests/python/dogfood/test_dogfood_gnumeric_ndjson_pipeline.py",
+      ".local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/raw-logs/dogfood-and-gate11-tests.log"
     ],
     "tests_supporting": [
-      "tests/python/dogfood/test_dogfood_abw_text_extraction.py"
+      "tests/python/dogfood/test_dogfood_gnumeric_ndjson_pipeline.py"
     ],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
+      "No missing paths"
     ],
-    "acceptance_criteria_failed": [],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: Exactly 8 dogfood tests must pass."
+    ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "",
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: Exactly 8 dogfood tests must pass.",
     "tests_evidence_verified": [
-      "tests/python/dogfood/test_dogfood_abw_text_extraction.py"
+      "tests/python/dogfood/test_dogfood_gnumeric_ndjson_pipeline.py"
     ],
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.93,
+      "confidence": 0.95,
       "stub_detected": false,
       "deficiencies": [],
       "llm_used": true

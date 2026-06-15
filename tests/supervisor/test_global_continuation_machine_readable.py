@@ -19,6 +19,7 @@ NEXT_ACTION_PATH = _repo_root / ".local" / "supervisor" / "next-action.json"
 ACTION_QUEUE_PATH = _repo_root / ".local" / "supervisor" / "action-queue.jsonl"
 
 
+@pytest.mark.state_dependent
 def test_global_continuation_signal_has_machine_path():
     """continuation-signal.json must have machine_continuation_path when present."""
     if not SIGNAL_PATH.exists():
@@ -32,6 +33,7 @@ def test_global_continuation_signal_has_machine_path():
         f"machine_continuation_path must not be advisory Markdown: {mcp}"
 
 
+@pytest.mark.state_dependent
 def test_global_continuation_signal_has_action_queue_path():
     """continuation-signal.json must include action_queue_path when present."""
     if not SIGNAL_PATH.exists():
@@ -43,6 +45,7 @@ def test_global_continuation_signal_has_action_queue_path():
     assert aqp, "action_queue_path must be non-empty when present"
 
 
+@pytest.mark.state_dependent
 def test_global_continuation_advisory_prompt_executable_false():
     """advisory_prompt_executable must be False in global signal when present."""
     if not SIGNAL_PATH.exists():
@@ -53,6 +56,7 @@ def test_global_continuation_advisory_prompt_executable_false():
     assert data["advisory_prompt_executable"] is False
 
 
+@pytest.mark.state_dependent
 def test_global_continuation_next_sprint_path_advisory_only():
     """If next_sprint_path exists it must not be the machine_continuation_path."""
     if not SIGNAL_PATH.exists():
@@ -63,6 +67,7 @@ def test_global_continuation_next_sprint_path_advisory_only():
     assert nsp != mcp, "machine_continuation_path must differ from next_sprint_path"
 
 
+@pytest.mark.state_dependent
 def test_active_continuation_autonomous_continue():
     """active-continuation.json must have autonomous_continue=true."""
     if not ACTIVE_CONT_PATH.exists():
@@ -71,6 +76,7 @@ def test_active_continuation_autonomous_continue():
     assert data.get("autonomous_continue") is True
 
 
+@pytest.mark.state_dependent
 def test_active_continuation_advisory_prompt_not_executable():
     """active-continuation.json advisory_prompt_executable must be False."""
     if not ACTIVE_CONT_PATH.exists():
@@ -79,6 +85,7 @@ def test_active_continuation_advisory_prompt_not_executable():
     assert data.get("advisory_prompt_executable") is False
 
 
+@pytest.mark.state_dependent
 def test_next_action_not_advisory_md():
     """next-action.json must not be an advisory Markdown file."""
     if not NEXT_ACTION_PATH.exists():
@@ -89,6 +96,7 @@ def test_next_action_not_advisory_md():
         f"next-action target must not be advisory Markdown: {target}"
 
 
+@pytest.mark.state_dependent
 def test_action_queue_exists():
     """action-queue.jsonl must exist."""
     assert ACTION_QUEUE_PATH.exists(), "action-queue.jsonl must exist"
@@ -102,6 +110,7 @@ def test_repair_global_continuation_idempotent():
     assert result.get("status") in ("REPAIRED", "ALREADY_MACHINE_READABLE", "CONTINUE_FALSE", "NO_SIGNAL")
 
 
+@pytest.mark.state_dependent
 def test_repair_adds_advisory_prompt_executable_false():
     """After repair, global signal must have advisory_prompt_executable=false when present."""
     if not SIGNAL_PATH.exists():
@@ -110,3 +119,87 @@ def test_repair_adds_advisory_prompt_executable_false():
     if "advisory_prompt_executable" not in data:
         pytest.skip("advisory_prompt_executable not in signal (older schema)")
     assert data["advisory_prompt_executable"] is False
+
+
+# ---------------------------------------------------------------------------
+# Fixture-based tests — always run, no live state dependency
+# ---------------------------------------------------------------------------
+
+def _make_signal(tmp_path, overrides=None):
+    """Write a valid continuation-signal.json with all machine-readable fields."""
+    signal = {
+        "autonomous_continue": True,
+        "iteration": 3,
+        "max_iterations": 12,
+        "continuation_state": "YES",
+        "hard_stops_detected": [],
+        "stop_reason": None,
+        "rework_items": [],
+        "machine_continuation_path": ".local/supervisor/next-action.json",
+        "active_continuation_path": ".local/supervisor/active-continuation.json",
+        "next_action_path": ".local/supervisor/next-action.json",
+        "action_queue_path": ".local/supervisor/action-queue.jsonl",
+        "advisory_prompt_executable": False,
+        "next_sprint_path": "reports/supervisor/next-sprint.md",
+    }
+    if overrides:
+        signal.update(overrides)
+    sig_dir = tmp_path / ".local" / "supervisor"
+    sig_dir.mkdir(parents=True, exist_ok=True)
+    (sig_dir / "continuation-signal.json").write_text(
+        json.dumps(signal), encoding="utf-8"
+    )
+    return sig_dir / "continuation-signal.json", signal
+
+
+class TestFixtureMachineReadablePaths:
+    """Fixture-based tests that always run — no live file dependency."""
+
+    def test_machine_continuation_path_valid(self, tmp_path):
+        sig_path, _ = _make_signal(tmp_path)
+        data = json.loads(sig_path.read_text())
+        assert data["machine_continuation_path"]
+        assert not data["machine_continuation_path"].endswith(".md")
+
+    def test_machine_continuation_path_rejects_md(self, tmp_path):
+        sig_path, _ = _make_signal(tmp_path, {
+            "machine_continuation_path": "reports/supervisor/next-sprint.md",
+        })
+        data = json.loads(sig_path.read_text())
+        assert data["machine_continuation_path"].endswith(".md"), \
+            "Test fixture should have .md path for negative test"
+
+    def test_action_queue_path_present(self, tmp_path):
+        sig_path, _ = _make_signal(tmp_path)
+        data = json.loads(sig_path.read_text())
+        assert data["action_queue_path"]
+
+    def test_advisory_prompt_executable_false(self, tmp_path):
+        sig_path, _ = _make_signal(tmp_path)
+        data = json.loads(sig_path.read_text())
+        assert data["advisory_prompt_executable"] is False
+
+    def test_advisory_prompt_executable_true_rejected(self, tmp_path):
+        sig_path, _ = _make_signal(tmp_path, {
+            "advisory_prompt_executable": True,
+        })
+        data = json.loads(sig_path.read_text())
+        assert data["advisory_prompt_executable"] is not False, \
+            "Test fixture should have True for negative test"
+
+    def test_next_sprint_path_differs_from_machine(self, tmp_path):
+        sig_path, _ = _make_signal(tmp_path)
+        data = json.loads(sig_path.read_text())
+        assert data["next_sprint_path"] != data["machine_continuation_path"]
+
+    def test_signal_has_all_required_machine_fields(self, tmp_path):
+        sig_path, _ = _make_signal(tmp_path)
+        data = json.loads(sig_path.read_text())
+        required = [
+            "machine_continuation_path",
+            "action_queue_path",
+            "advisory_prompt_executable",
+            "next_sprint_path",
+        ]
+        for field in required:
+            assert field in data, f"Missing required machine-readable field: {field}"

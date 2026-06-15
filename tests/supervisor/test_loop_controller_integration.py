@@ -130,13 +130,15 @@ def test_classify_all_green(tmp_path):
 
     decision = classify_and_decide(tmp_path, quality_path)
 
-    # The classifier may or may not detect the quality-scores as STRUCTURED_ALL_GREEN
-    # depending on its heuristics (it checks for specific schema fields).
-    # What matters is that classify_and_decide produces a valid loop state.
-    valid_next_states = VALID_TRANSITIONS.get("CLASSIFYING", [])
-    assert decision["next_state"] in valid_next_states, (
-        f"Unexpected next_state: {decision['next_state']}. "
+    # With the classifier fix (TC-CLASS-001), all-green quality-scores.json
+    # should produce ACCEPTED_ALL_GREEN, not fall through to EVIDENCE_MISSING.
+    assert decision["next_state"] == "ACCEPTED_ALL_GREEN", (
+        f"Expected ACCEPTED_ALL_GREEN, got {decision['next_state']}. "
         f"Classification: {decision['classification']['classification']}"
+    )
+    assert decision["next_state"] != "MAX_LOOPS_EXCEEDED", (
+        f"Fresh loop should not hit MAX_LOOPS_EXCEEDED. "
+        f"Iteration: {decision['iteration']}"
     )
     assert "classification" in decision
     assert "iteration" in decision

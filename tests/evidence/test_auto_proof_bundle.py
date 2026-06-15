@@ -49,6 +49,9 @@ _SKIP_SCOREBOARD = pytest.mark.skipif(
     reason="Scoreboard has IN_PROGRESS lanes — auto-proof validation will fail on live repo state",
 )
 
+# Mark all auto-proof tests as state_dependent (they bundle the live repo)
+pytestmark = pytest.mark.state_dependent
+
 
 # ---------------------------------------------------------------------------
 # Fixtures / helpers

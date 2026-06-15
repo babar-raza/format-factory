@@ -115,8 +115,15 @@ def test_inspect_item_test_file_paths_classified(tmp_path):
     assert result["test_summaries"] == []
 
 
-def test_inspect_item_acceptance_criteria_pattern(tmp_path):
+def test_inspect_item_acceptance_criteria_pattern(tmp_path, monkeypatch):
     """Acceptance criteria with a quoted pattern is checked against evidence files."""
+    # Disable LLM gateway so deterministic regex fallback is exercised
+    monkeypatch.setenv("GPT_OSS_API_KEY", "")
+    monkeypatch.setenv("GPT_OSS_ENDPOINT", "")
+    import inspect_declared_evidence as _ide
+    _ide._ai_gateway = None
+    _ide._ai_config_obj = None
+
     evidence = tmp_path / "proof.md"
     evidence.write_text('Result: REPRODUCE_RESULT: PASS\n')
     item = {
