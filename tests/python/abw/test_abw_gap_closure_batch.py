@@ -201,3 +201,49 @@ class TestAbwAverageWordLength:
         avg = abw_average_word_length(abw_path)
         assert isinstance(avg, (int, float))
         assert avg >= 0
+
+
+class TestAbwConcreteValues:
+    """Concrete value assertions verifying specific expected outputs from two-paragraphs.abw."""
+
+    def test_paragraph_count_two_paras(self):
+        assert get_paragraph_count(str(TWO_PARA)) == 2
+
+    def test_word_count_doc(self, doc):
+        assert get_word_count(doc) == 4
+
+    def test_abw_word_count_path(self):
+        assert abw_word_count(str(TWO_PARA)) == 4
+
+    def test_abw_sentence_count_doc(self, doc):
+        assert abw_sentence_count(doc) == 2
+
+    def test_abw_longest_word_doc(self, doc):
+        assert abw_longest_word(doc) == "paragraph."
+
+    def test_abw_total_char_count(self):
+        assert abw_total_char_count(str(TWO_PARA)) == 33
+
+    def test_abw_average_word_length(self):
+        assert abw_average_word_length(str(TWO_PARA)) == 7.75
+
+    def test_abw_nonempty_paragraph_count(self):
+        assert abw_nonempty_paragraph_count(str(TWO_PARA)) == 2
+
+    def test_abw_empty_paragraph_count(self):
+        assert abw_empty_paragraph_count(str(TWO_PARA)) == 0
+
+    def test_get_paragraph_first(self, doc):
+        para = get_paragraph(doc, 0)
+        assert para == "First paragraph."
+
+    def test_probe_abw_valid_file(self):
+        assert probe_abw(str(MINIMAL)) is True
+
+    def test_search_text_no_match(self, doc):
+        results = search_text(doc, "Hello")
+        assert results == []
+
+    def test_doc_keys(self, doc):
+        assert "paragraph_count" in doc
+        assert doc["paragraph_count"] == 2

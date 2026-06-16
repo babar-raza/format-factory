@@ -2482,6 +2482,151 @@ def validate_no_stub_tests(declaration: dict,
     }
 
 
+def validate_spec_fact_authority_chain(declaration: dict,
+                                       repo_root: Path | None = None) -> dict:
+    """V37: WARN when PRODUCT_SOURCE items for ODF formats lack spec-fact authority.
+
+    Checks that planned_work_items with item_type=PRODUCT_SOURCE and an ODF
+    format_id (FODS, FODT, FODP, FODG, ODS, ODT) have at least one valid
+    spec_fact_ref that traces to a verified fact in sal-facts-latest.json.
+
+    WARN-only (blocks_sprint=False) until fact counts are sufficient.
+    """
+    if repo_root is None:
+        repo_root = REPO_ROOT
+
+    ODF_FORMATS = {"fods", "fodt", "fodp", "fodg", "ods", "odt"}
+
+    items = declaration.get("planned_work_items", [])
+    odf_product_items = [
+        item for item in items
+        if item.get("item_type") == "PRODUCT_SOURCE"
+        and (item.get("format_id", "") or "").lower() in ODF_FORMATS
+    ]
+
+    if not odf_product_items:
+        return _make_result(
+            "spec_fact_authority_chain_validator",
+            "PASS",
+            [],
+            "No ODF PRODUCT_SOURCE items found — spec-fact authority check not applicable.",
+            blocks_sprint=False,
+        )
+
+    # Load SAL facts for fast lookup
+    sal_path = repo_root / ".local" / "sal-output" / "sal-facts-latest.json"
+    known_qnames: set[str] = set()
+    if sal_path.is_file():
+        try:
+            import json
+            sal_data = json.loads(sal_path.read_text(encoding="utf-8"))
+            for fmt_result in sal_data.get("results", []):
+                for fact in fmt_result.get("spec_facts", []):
+                    qname = fact.get("qname", "")
+                    if qname:
+                        known_qnames.add(qname)
+        except Exception:
+            pass
+
+    missing = []
+    covered = []
+    for item in odf_product_items:
+        item_id = item.get("item_id", item.get("id", "unknown"))
+        fmt_id = (item.get("format_id", "") or "").upper()
+        refs = item.get("spec_fact_refs", [])
+
+        # Check if any ref traces to a known SAL fact
+        valid_refs = [r for r in refs if r.startswith("FACT-")]
+        has_sal_trace = any(r in known_qnames for r in refs) if known_qnames else bool(valid_refs)
+
+        if not valid_refs and not has_sal_trace:
+            exc = item.get("exception_classification", "")
+            if exc:
+                covered.append({"item_id": item_id, "format_id": fmt_id,
+                                "note": f"exception_classification={exc}"})
+            else:
+                missing.append({"item_id": item_id, "format_id": fmt_id,
+                                "spec_fact_refs": refs})
+        else:
+            covered.append({"item_id": item_id, "format_id": fmt_id,
+                            "valid_refs": valid_refs})
+
+    if missing:
+        return _make_result(
+            "spec_fact_authority_chain_validator",
+            "WARN",
+            missing,
+            (
+                f"spec_fact_authority_chain: {len(missing)} ODF PRODUCT_SOURCE item(s) "
+                f"lack spec-fact authority (no valid FACT-* refs or SAL trace). "
+                f"Items: {[m['item_id'] for m in missing[:5]]}"
+            ),
+            blocks_sprint=False,
+        )
+
+    return _make_result(
+        "spec_fact_authority_chain_validator",
+        "PASS",
+        covered,
+        f"spec_fact_authority_chain: {len(covered)} ODF PRODUCT_SOURCE item(s) have spec-fact authority.",
+        blocks_sprint=False,
+    )
+
+
+def validate_evidence_minimum(declaration: dict, repo_root: Path | None = None) -> dict:
+    """V38 (TC-H3-001): WARN when declared evidence is too thin to support grading.
+
+    Rules:
+    - All planned_work_items must have >= 2 evidence_paths.
+    - TEST items should have at least 1 path that looks like a raw-log (contains
+      'raw-logs', '.log', or 'pytest').
+    - PRODUCT_SOURCE items must have non-empty source_diff_paths.
+
+    Severity: WARN (blocks_sprint=False) — does not block sprint but signals thin evidence.
+    """
+    items = declaration.get("planned_work_items", [])
+    warnings = []
+
+    for item in items:
+        item_id = item.get("item_id", item.get("id", "unknown"))
+        itype = item.get("item_type", "")
+        evidence_paths = item.get("evidence_paths", [])
+
+        if len(evidence_paths) < 2:
+            warnings.append(f"{item_id}: only {len(evidence_paths)} evidence_path(s) (minimum 2 recommended)")
+
+        if itype == "TEST":
+            has_log = any(
+                ("raw-logs" in p or ".log" in p or "pytest" in p.lower())
+                for p in evidence_paths
+            )
+            if not has_log:
+                warnings.append(f"{item_id} (TEST): no raw-log evidence_path found")
+
+        if itype == "PRODUCT_SOURCE":
+            diff_paths = item.get("source_diff_paths", [])
+            if not diff_paths:
+                warnings.append(f"{item_id} (PRODUCT_SOURCE): source_diff_paths is empty")
+
+    if warnings:
+        return _make_result(
+            "evidence_minimum_validator",
+            "WARN",
+            warnings,
+            f"evidence_minimum: {len(warnings)} item(s) have thin evidence. "
+            f"Add raw-logs, focused proofs, and source_diff_paths to improve grading accuracy.",
+            blocks_sprint=False,
+        )
+
+    return _make_result(
+        "evidence_minimum_validator",
+        "PASS",
+        [],
+        f"evidence_minimum: all {len(items)} item(s) meet minimum evidence requirements.",
+        blocks_sprint=False,
+    )
+
+
 def run_all_governance_validators(declaration: dict,
                                    repo_root: Path | None = None) -> dict:
     """Run all governance validators against a declaration.
@@ -2538,6 +2683,10 @@ def run_all_governance_validators(declaration: dict,
         validate_class_count_minimum(declaration, repo_root),
         validate_monolith_detection(declaration, repo_root),
         validate_no_stub_tests(declaration, repo_root),
+        # V37: Spec-fact authority chain (WARN-only until fact counts sufficient)
+        validate_spec_fact_authority_chain(declaration, repo_root),
+        # V38 (TC-H3-001): Minimum evidence depth per item (WARN-only)
+        validate_evidence_minimum(declaration, repo_root),
     ]
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")

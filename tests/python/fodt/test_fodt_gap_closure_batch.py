@@ -43,6 +43,7 @@ from src.python.fodt import (
     document_count_tables,
     document_empty_paragraph_count,
     document_extract_headings,
+    document_paragraph_count,
     document_footnote_count,
     document_get_paragraph_text,
     document_has_tables,
@@ -335,3 +336,60 @@ class TestDocumentEmptyParagraphCount:
         count = document_empty_paragraph_count(doc)
         assert isinstance(count, int)
         assert count >= 0
+
+
+from src.python.fodt import document_heading_texts  # noqa: E402
+
+
+class TestFodtConcreteValues:
+    """Concrete value assertions verifying specific expected outputs from known fixtures."""
+
+    def test_format_id_is_fodt(self):
+        assert FORMAT_ID == "fodt"
+
+    def test_spec_version_is_odf_13(self):
+        assert SPEC_VERSION == "ODF 1.3"
+
+    def test_paragraph_count_headings_doc(self, doc):
+        assert document_paragraph_count(doc) == 4
+
+    def test_total_words_headings_doc(self, doc):
+        assert document_total_words(doc) == 44
+
+    def test_word_count_dict_total_words(self, doc):
+        wc = document_word_count(doc)
+        assert wc["total_words"] == 44
+        assert wc["list_words"] == 0
+
+    def test_heading_texts_headings_doc(self, doc):
+        texts = document_heading_texts(doc)
+        assert "Section One" in texts
+        assert "Section Two" in texts
+        assert len(texts) == 3
+
+    def test_has_tables_table_doc(self, table_doc):
+        assert document_has_tables(table_doc) is True
+
+    def test_empty_paragraph_count_minimal(self, minimal_doc):
+        assert document_empty_paragraph_count(minimal_doc) == 0
+
+    def test_stats_paragraph_count_minimal(self, minimal_doc):
+        stats = document_stats(minimal_doc)
+        assert stats["paragraph_count"] == 1
+        assert stats["heading_count"] == 0
+
+    def test_stats_total_text_length_minimal(self, minimal_doc):
+        stats = document_stats(minimal_doc)
+        assert stats["total_text_length"] == 13
+
+    def test_max_paragraph_length_headings(self, doc):
+        assert document_max_paragraph_length(doc) == 81
+
+    def test_text_content_starts_with_section(self, doc):
+        text = document_text_content(doc)
+        assert text.startswith("Section One")
+
+    def test_search_text_finds_section(self, doc):
+        results = document_search_text(doc, "Section")
+        assert len(results) > 0
+        assert any(r["text"] == "Section One" for r in results)

@@ -189,6 +189,36 @@ def run_stale_repair_pre_cycle(
         }
 
 
+_PRODUCT_SOURCE_TYPES = frozenset({
+    "PRODUCT_SOURCE", "PRODUCT_TEST", "READINESS", "TEST",
+})
+
+
+def _compute_exit_code(review: dict, decl: dict, gov_result: dict | None) -> int:
+    """Compute exit code for the cycle manifest.
+
+    TC-H4-001: If governance blocks_sprint=True AND declaration has PRODUCT_SOURCE
+    items → exit 3 (not 0). GOVERNANCE_DOC/GOVERNANCE_TOOL items are exempt.
+
+    Exit codes:
+      0 = all accepted, governance clean
+      3 = critical rework OR governance blocks PRODUCT_SOURCE items
+    """
+    if review["critical_rework_count"] > 0:
+        return 3
+    if gov_result is not None and gov_result.get("blocks_sprint"):
+        items = decl.get("planned_work_items", [])
+        has_product_items = any(
+            item.get("item_type", "") in _PRODUCT_SOURCE_TYPES for item in items
+        )
+        if has_product_items:
+            print("  [EXIT_CODE] governance blocks_sprint=True with PRODUCT_SOURCE items -> exit 3")
+            return 3
+        else:
+            print("  [EXIT_CODE] governance blocks_sprint=True, all items are governance/doc -> exit 0 with WARNING")
+    return 0
+
+
 def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     """Run a complete autonomous supervisor cycle."""
     timestamp = datetime.now().isoformat()
@@ -220,6 +250,16 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     sprint_id = decl.get("sprint_id", "unknown")
     _logger.info("Declaration validated", extra={"sprint_id": run_id})
     print(f"  VALID: run_id={run_id}, sprint_id={sprint_id}")
+
+    # TC-H2-002: Anti-inflation check — tests_run vs tests_created
+    _tests_run = decl.get("tests_run", 0)
+    _tests_created = decl.get("tests_created")
+    if _tests_created is not None and _tests_created < 5 and _tests_run > 1000:
+        print(f"  [WARN] TEST_COUNT_INFLATION: tests_run={_tests_run} but tests_created={_tests_created}. "
+              f"tests_run reflects full-suite regression; tests_created should count new tests only.")
+    elif _tests_created is None and _tests_run > 1000:
+        print(f"  [INFO] tests_created not declared. Add tests_created to distinguish "
+              f"new tests from full-suite run ({_tests_run} tests_run).")
 
     # Step 2: Inspect declared evidence
     print("\n=== STEP 2: INSPECT DECLARED EVIDENCE ===")
@@ -912,7 +952,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         "memory_synced": False,
         "autonomous_continue": review["autonomous_continue"],
         "stop_reason": review.get("stop_reason", ""),
-        "exit_code": 3 if review["critical_rework_count"] > 0 else 0,
+        "exit_code": _compute_exit_code(review, decl, governance_validation_result),
         "accepted_count": len(review["accepted_items"]),
         "rework_count": len(review["rework_items"]),
         "rejected_count": len(review["rejected_items"]),
@@ -924,6 +964,29 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         yaml.dump(manifest, default_flow_style=False, sort_keys=False), encoding="utf-8"
     )
     print(f"  Manifest: {manifest_path}")
+
+    # TC-H5-001: Append grading history BEFORE overwriting latest-review
+    try:
+        import json as _json
+        grading_history_path = repo_root / "reports" / "supervisor" / "grading-history.jsonl"
+        grading_history_path.parent.mkdir(parents=True, exist_ok=True)
+        _history_record = {
+            "sprint_id": sprint_id,
+            "run_id": run_id,
+            "timestamp": timestamp,
+            "verdict": review.get("overall_verdict", ""),
+            "accepted_count": len(review["accepted_items"]),
+            "rework_count": len(review.get("rework_items", [])),
+            "overclaimed_count": len(review.get("overclaimed_items", [])),
+            "rework_items": list(review.get("rework_items", [])),
+            "continuation_state": manifest.get("autonomous_continue", False),
+            "exit_code": manifest.get("exit_code", 0),
+        }
+        with grading_history_path.open("a", encoding="utf-8") as _gf:
+            _gf.write(_json.dumps(_history_record) + "\n")
+        print(f"  [HISTORY] Appended to grading-history.jsonl (total lines: {sum(1 for _ in grading_history_path.open())})")
+    except Exception as _hist_err:
+        print(f"  [WARN] grading-history.jsonl append failed: {_hist_err}")
 
     # Step 6: Copy latest summaries to reports/supervisor/
     print("\n=== STEP 6: COPY LATEST SUMMARIES ===")

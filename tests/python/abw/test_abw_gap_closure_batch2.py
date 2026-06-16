@@ -119,3 +119,35 @@ class TestInstalledWorkflow:
         import src.python.abw
         assert hasattr(src.python.abw, "load")
         assert hasattr(src.python.abw, "create_abw")
+
+
+class TestAbwBatch2ConcreteValues:
+    """Concrete value assertions from two-paragraphs.abw known data."""
+
+    def test_paragraph_count_equals_two(self):
+        assert get_paragraph_count(str(TWO_PARA)) == 2
+
+    def test_get_unique_words_content(self, doc):
+        words = get_unique_words(doc)
+        assert "first" in words or "paragraph." in words
+        assert len(words) == 3
+
+    def test_merge_doubles_paragraph_count(self, doc):
+        merged = merge_abw(doc, doc)
+        assert merged["paragraph_count"] == 4
+
+    def test_replace_in_paragraphs_preserves_structure(self, doc):
+        result = replace_in_paragraphs(doc, "paragraph", "section")
+        assert result["paragraph_count"] == 2
+
+    def test_average_paragraph_length_value(self, doc):
+        avg = average_paragraph_length(doc)
+        assert avg == 16.5
+
+    def test_shortest_paragraph_is_first(self, doc):
+        result = shortest_paragraph(doc)
+        assert result == "First paragraph."
+
+    def test_truncate_to_one_paragraph(self, doc):
+        result = truncate_paragraphs(doc, 1)
+        assert result["paragraph_count"] == 1

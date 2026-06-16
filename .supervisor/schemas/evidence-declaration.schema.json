@@ -70,6 +70,7 @@
     "incomplete_work_items": { "type": "array", "items": { "type": "string" } },
     "changed_files": { "type": "array", "items": { "type": "string" } },
     "tests_run": { "type": "integer", "minimum": 0 },
+    "tests_created": { "type": "integer", "minimum": 0, "description": "Number of new test functions/methods created in this sprint (not total suite run). Separate from tests_run which reflects full suite." },
     "test_results": {
       "type": "object",
       "properties": {

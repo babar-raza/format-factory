@@ -362,3 +362,65 @@ class TestFodsTotalCellCount:
         count = fods_total_cell_count(wb)
         assert isinstance(count, int)
         assert count >= 0
+
+
+MULTI = SAMPLES / "multi-sheet-basic.fods"
+
+
+class TestFodsConcreteValues:
+    """Concrete value assertions verifying specific expected outputs from known fixtures."""
+
+    def test_format_id_is_fods(self):
+        assert FORMAT_ID == "fods"
+
+    def test_spec_version_is_odf_13(self):
+        assert SPEC_VERSION == "ODF 1.3"
+
+    def test_sheet_count_minimal_is_one(self):
+        wb = parse_fods(str(MINIMAL))
+        assert fods_sheet_count(wb) == 1
+
+    def test_total_cell_count_minimal_is_one(self):
+        wb = parse_fods(str(MINIMAL))
+        assert fods_total_cell_count(wb) == 1
+
+    def test_sheet_names_minimal(self):
+        wb = parse_fods(str(MINIMAL))
+        assert workbook_sheet_order(wb) == ["Sheet1"]
+
+    def test_type_distribution_total_cells_typed(self, typed_wb):
+        dist = workbook_type_distribution(typed_wb)
+        assert dist["total_cells"] == 8
+
+    def test_numeric_density_typed(self, typed_wb):
+        density = workbook_numeric_density(typed_wb)
+        assert density == 0.25
+
+    def test_find_missing_sheet_returns_none(self, wb):
+        result = find_sheet_by_name(wb, "DefinitelyNotASheet_xyz")
+        assert result is None
+
+    def test_xml_starts_with_declaration(self, wb):
+        xml = workbook_to_xml(wb)
+        assert xml.startswith("<?xml")
+
+    def test_nonempty_cell_count_minimal(self, wb):
+        count = workbook_count_nonempty_cells(wb)
+        assert count == 1
+
+    def test_multi_sheet_count(self):
+        wb = parse_fods(str(MULTI))
+        assert fods_sheet_count(wb) == 2
+
+    def test_multi_sheet_names(self):
+        wb = parse_fods(str(MULTI))
+        assert workbook_sheet_order(wb) == ["Data", "Summary"]
+
+    def test_workbook_row_count_minimal(self, wb):
+        count = workbook_row_count(wb)
+        assert count == 1
+
+    def test_count_matching_cells_empty_string(self, wb):
+        count = workbook_count_matching_cells(wb, "")
+        assert isinstance(count, int)
+        assert count >= 0

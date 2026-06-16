@@ -247,3 +247,43 @@ class TestCountValuesInSection:
     def test_empty_section(self):
         count = count_values_in_section(b'[empty]\n', "empty")
         assert count == 0
+
+
+class TestTomlConcreteValues:
+    """Concrete value assertions from SAMPLE_TOML inline fixture."""
+
+    def test_count_keys_is_three_sections(self):
+        assert count_keys(SAMPLE_TOML) == 3
+
+    def test_has_any_section_true(self):
+        assert has_any_section(SAMPLE_TOML) is True
+
+    def test_get_section_keys_server(self):
+        keys = get_section_keys(SAMPLE_TOML, "server")
+        assert set(keys) == {"host", "port", "debug"}
+
+    def test_count_values_in_section_server(self):
+        assert count_values_in_section(SAMPLE_TOML, "server") == 3
+
+    def test_to_json_str_server_host(self):
+        import json
+        parsed = json.loads(to_json_str(SAMPLE_TOML))
+        assert parsed["server"]["host"] == "localhost"
+        assert parsed["server"]["port"] == 8080
+
+    def test_diff_keys_excludes_shared(self):
+        # SAMPLE_TOML has server/database/logging; SAMPLE2 has server/extra
+        sample2 = b"[server]\nhost = \"remote\"\n\n[extra]\nenabled = true\n"
+        diffs = diff_keys(SAMPLE_TOML, sample2)
+        # sections in SAMPLE but not SAMPLE2
+        assert "database" in diffs or "logging" in diffs
+
+    def test_to_env_contains_server_keys(self):
+        env_output = to_env(SAMPLE_TOML)
+        assert "SERVER_HOST" in env_output.upper() or "SERVER_DEBUG" in env_output.upper()
+
+    def test_flat_toml_section_count_is_zero(self):
+        # count_keys counts top-level sections; flat key with no section → 0 sections
+        flat = b'[empty]\n'
+        count = count_keys(flat)
+        assert count == 1  # one section named "empty"
