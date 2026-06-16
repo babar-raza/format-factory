@@ -203,3 +203,71 @@ class TestFixtureMachineReadablePaths:
         ]
         for field in required:
             assert field in data, f"Missing required machine-readable field: {field}"
+
+
+# ---------------------------------------------------------------------------
+# TC-CONT-001: check_continuation verdict mapping tests
+# ---------------------------------------------------------------------------
+
+sys.path.insert(0, str(_repo_root / "tools" / "supervisor"))
+
+
+def _setup_for_check(tmp_path, signal_overrides=None):
+    """Create the minimal repo structure check_continuation.check() needs."""
+    # Write continuation signal
+    _make_signal(tmp_path, signal_overrides)
+    # approval-gates.md with AUTONOMOUS_CONTINUE: YES
+    gates_dir = tmp_path / "reports" / "supervisor"
+    gates_dir.mkdir(parents=True, exist_ok=True)
+    (gates_dir / "approval-gates.md").write_text(
+        "AUTONOMOUS_CONTINUE: YES\n", encoding="utf-8"
+    )
+    # next-work-items.json
+    wi_dir = tmp_path / ".local" / "supervisor"
+    wi_dir.mkdir(parents=True, exist_ok=True)
+    (wi_dir / "next-work-items.json").write_text("[]", encoding="utf-8")
+
+
+class TestCheckContinuationVerdictMapping:
+    """TC-CONT-001: Verify check_continuation maps continuation states correctly."""
+
+    def test_yes_with_limitations_returns_continue(self, tmp_path):
+        """YES_WITH_LIMITATIONS must produce verdict=CONTINUE."""
+        _setup_for_check(tmp_path, {"continuation_state": "YES_WITH_LIMITATIONS"})
+        from check_continuation import check
+        result = check(tmp_path)
+        assert result["verdict"] == "CONTINUE", (
+            f"YES_WITH_LIMITATIONS should CONTINUE, got {result['verdict']}: {result}"
+        )
+
+    def test_yes_returns_continue(self, tmp_path):
+        """Plain YES must produce verdict=CONTINUE."""
+        _setup_for_check(tmp_path, {"continuation_state": "YES"})
+        from check_continuation import check
+        result = check(tmp_path)
+        assert result["verdict"] == "CONTINUE"
+
+    def test_yes_with_rework_returns_continue(self, tmp_path):
+        """YES_WITH_REWORK must produce verdict=CONTINUE."""
+        _setup_for_check(tmp_path, {
+            "continuation_state": "YES_WITH_REWORK",
+            "rework_items": ["ITEM-001"],
+        })
+        from check_continuation import check
+        result = check(tmp_path)
+        assert result["verdict"] == "CONTINUE"
+
+    def test_no_max_iterations_returns_stop(self, tmp_path):
+        """NO_MAX_ITERATIONS must produce verdict=STOP."""
+        _setup_for_check(tmp_path, {"continuation_state": "NO_MAX_ITERATIONS"})
+        from check_continuation import check
+        result = check(tmp_path)
+        assert result["verdict"] == "STOP"
+        assert result["reason"] == "NO_MAX_ITERATIONS"
+
+    def test_no_external_gate_returns_stop(self, tmp_path):
+        """NO_EXTERNAL_GATE must produce verdict=STOP."""
+        _setup_for_check(tmp_path, {"continuation_state": "NO_EXTERNAL_GATE"})
+        from check_continuation import check
+        result = check(tmp_path)
+        assert result["verdict"] == "STOP"

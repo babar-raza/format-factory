@@ -303,3 +303,78 @@ def test_mixed_passing_grades_with_diagnostics():
     assert result["all_green"] is True, (
         f"Expected all_green=true. Scores: {result.get('overall_scores')}"
     )
+
+
+# ---------------------------------------------------------------------------
+# TC-ADVERSARIAL-001: Edge case tests for adapter fix
+# ---------------------------------------------------------------------------
+
+def test_passing_grade_with_empty_evidence_still_scores_well():
+    """ACCEPTED_VERIFIED with empty evidence and suspicious ac_failed.
+
+    The adapter treats the passing grade as authoritative. Even when evidence_paths
+    is empty and ac_failed has concerning content, the grade decision stands.
+    This documents the design choice: the grader made the ACCEPTED decision,
+    the adapter respects it.
+    """
+    from quality_scorer import score_execution
+
+    grades = [_make_grade(
+        "EDGE-1", "ACCEPTED_VERIFIED",
+        tests=["t1"], evidence=[],
+        ac_met=["Tests verified"],
+        ac_failed=["No evidence found", "Critical validation missing"],
+    )]
+    adapted = adapt_item_grades(grades)
+
+    # Passing grade clears ac_failed and injects synthetics
+    assert adapted[0]["acceptance_criteria_failed"] == []
+    assert "AC_GRADE_PASS" in adapted[0]["acceptance_criteria_met"]
+
+    result = score_execution(adapted)
+    ac_score = result["execution_results"][0]["quality_scores"]["acceptance_criteria_met"]
+    assert ac_score >= 4, (
+        f"Passing grade must score >= 4 on AC even with empty evidence, got {ac_score}"
+    )
+
+
+@pytest.mark.parametrize("grade", [
+    "REJECTED", "REWORK_REQUIRED", "OVERCLAIMED",
+    "INSUFFICIENT_EVIDENCE", "BLOCKED_EXTERNAL_GATE",
+])
+def test_all_failing_grades_preserve_ac_failed(grade):
+    """Failing grades must preserve ac_failed and NOT inject synthetic AC entries."""
+    grades = [_make_grade(
+        "FAIL-1", grade,
+        tests=[], evidence=[],
+        ac_met=["Partial check"],
+        ac_failed=["Missing proof", "Test failures"],
+    )]
+    adapted = adapt_item_grades(grades)
+
+    assert adapted[0]["acceptance_criteria_failed"] == ["Missing proof", "Test failures"], (
+        f"Grade {grade}: ac_failed must be preserved, got {adapted[0]['acceptance_criteria_failed']}"
+    )
+    assert "AC_GRADE_PASS" not in adapted[0]["acceptance_criteria_met"], (
+        f"Grade {grade}: must NOT inject AC_GRADE_PASS synthetic"
+    )
+
+
+def test_mixed_sprint_one_failing_prevents_green():
+    """4 ACCEPTED + 1 REWORK_REQUIRED -> all_green=false."""
+    from quality_scorer import score_execution
+
+    grades = [
+        _make_grade("OK-1", "ACCEPTED_VERIFIED", tests=["t1", "t2"], evidence=["e1"]),
+        _make_grade("OK-2", "ACCEPTED", tests=["t3"], evidence=["e2"]),
+        _make_grade("OK-3", "ACCEPTED_WITH_WARNINGS", tests=["t4"], evidence=["e3"]),
+        _make_grade("OK-4", "ACCEPTED_WITH_LIMITATIONS", tests=["t5"], evidence=["e4"]),
+        _make_grade("BAD-1", "REWORK_REQUIRED", tests=[], evidence=[],
+                    ac_met=[], ac_failed=["Failed validation"]),
+    ]
+    adapted = adapt_item_grades(grades)
+    result = score_execution(adapted)
+
+    assert result["all_green"] is False, (
+        "One REWORK_REQUIRED item must prevent all_green=true"
+    )
