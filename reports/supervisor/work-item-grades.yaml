@@ -1,60 +1,62 @@
-- item_id: DOGFOOD-FODT-DEPTH-ANALYTICS-NDJSON
-  item_title: 'FODT depth analytics: stats, word count, reading level, hyperlinks
-    to NDJSON (6 tests)'
+- item_id: DOGFOOD-GNUMERIC-MODEL-ODS-REMAINING-NDJSON
+  item_title: 'Gnumeric model-based remaining + ODS remaining: copy_sheet, clear_sheet,
+    add_sheet, clear_cell, average_column(ods), count_distinct_values(ods) to NDJSON
+    (6 tests)'
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - tests/python/dogfood/test_dogfood_fodt_depth_analytics_ndjson_export.py
-  - .local/evidences/idempotent-swarm-sprint31-20260615-915cfd2/raw-logs/dogfood-full.log
+  - tests/python/dogfood/test_dogfood_gnumeric_model_ods_remaining_ndjson_export.py
+  - .local/evidences/idempotent-swarm-sprint116-20260616-baf84d6/raw-logs/dogfood-sprint116.log
   tests_supporting: &id001
-  - tests/python/dogfood/test_dogfood_fodt_depth_analytics_ndjson_export.py
+  - tests/python/dogfood/test_dogfood_gnumeric_model_ods_remaining_ndjson_export.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
   acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: Document stats dict test passes'
+  - 'Acceptance criteria pattern not found: copy_sheet returns a dict with a ''sheets''
+    key whose value is'
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: Document stats dict test passes'
+    not found: copy_sheet returns a dict with a ''sheets'' key whose value is'
   tests_evidence_verified: *id001
   semantic_verification:
     adequate: true
-    confidence: 0.93
+    confidence: 0.9
     stub_detected: false
     deficiencies:
-    - The tests for document_stats and document_word_count only verify the return
-      type (dict) and do not assert on specific content, providing minimal validation.
-    - The depth analytics NDJSON test checks file existence, size, and record count
-      but does not validate the correctness of each analytic field within the records.
+    - "NDJSON round\u2011trip validation is minimal (only checks that the loaded record\
+      \ exists and basic fields are present, not that the exact values match the original\
+      \ output, e.g., add_sheet only checks >=2 instead of exact before+1)."
     llm_used: true
-- item_id: DOGFOOD-CSV-DATA-PROFILING-NDJSON
-  item_title: 'CSV data profiling: header detection, cell/column counts, avg cells/row
+- item_id: DOGFOOD-FODP-REMAINING-ANALYTICS-NDJSON
+  item_title: 'FODP remaining analytics: fodp_all_slides_have_text, fodp_average_shapes_per_slide,
+    fodp_avg_notes_length, fodp_empty_slide_count, fodp_has_empty_slides, fodp_has_images
     to NDJSON (6 tests)'
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - tests/python/dogfood/test_dogfood_csv_data_profiling_ndjson_export.py
-  - .local/evidences/idempotent-swarm-sprint31-20260615-915cfd2/raw-logs/dogfood-full.log
+  - tests/python/dogfood/test_dogfood_fodp_remaining_analytics_ndjson_export.py
+  - .local/evidences/idempotent-swarm-sprint116-20260616-baf84d6/raw-logs/dogfood-sprint116.log
   tests_supporting: &id002
-  - tests/python/dogfood/test_dogfood_csv_data_profiling_ndjson_export.py
+  - tests/python/dogfood/test_dogfood_fodp_remaining_analytics_ndjson_export.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
   acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: Header flag is a boolean value'
+  - 'Acceptance criteria pattern not found: fodp_all_slides_have_text returns bool'
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: Header flag is a boolean value'
+    not found: fodp_all_slides_have_text returns bool'
   tests_evidence_verified: *id002
   semantic_verification:
     adequate: true
-    confidence: 0.95
+    confidence: 0.93
     stub_detected: false
     deficiencies: []
     llm_used: true

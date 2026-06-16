@@ -1,0 +1,184 @@
+---
+# Prefix-Namespace Registry for Format Factory
+# Maps XML namespace prefixes to URIs and code module targets
+# Source: ODF 1.3 specification (OASIS), RFC 8878 (ZST), RFC 4180 (CSV)
+#
+# This registry is the CANONICAL source for:
+#   spec QName prefix → namespace URI → code namespace → module path
+
+schema_version: "1.0"
+generated_at: "2026-06-15"
+run_id: "ff-idempotent-spec-to-feature-swarm-20260615-e31fa98"
+
+# ODF 1.3 namespaces (govern FODS and FODT)
+odf_namespaces:
+  office:
+    uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    spec: "ODF 1.3"
+    dotnet_namespace: "FormatFactory.Office"
+    python_module: "src.python.{format}.office"
+    concepts:
+      - "office:document"
+      - "office:body"
+      - "office:spreadsheet"
+      - "office:text"
+      - "office:automatic-styles"
+      - "office:master-styles"
+      - "office:font-face-decls"
+      - "office:scripts"
+      - "office:settings"
+      - "office:meta"
+
+  table:
+    uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+    spec: "ODF 1.3"
+    dotnet_namespace: "FormatFactory.Table"
+    python_module: "src.python.{format}.table"
+    concepts:
+      - "table:table"
+      - "table:table-row"
+      - "table:table-cell"
+      - "table:table-column"
+      - "table:covered-table-cell"
+      - "table:named-range"
+      - "table:named-expressions"
+      - "table:data-pilot-tables"
+      - "table:content-validations"
+      - "table:content-validation"
+
+  text:
+    uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    spec: "ODF 1.3"
+    dotnet_namespace: "FormatFactory.Text"
+    python_module: "src.python.{format}.text"
+    concepts:
+      - "text:p"
+      - "text:h"
+      - "text:span"
+      - "text:list"
+      - "text:list-item"
+      - "text:section"
+      - "text:note"
+      - "text:note-body"
+      - "text:a"
+      - "text:bookmark"
+      - "text:sequence-decls"
+
+  style:
+    uri: "urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    spec: "ODF 1.3"
+    dotnet_namespace: "FormatFactory.Style"
+    python_module: "src.python.{format}.style"
+    concepts:
+      - "style:style"
+      - "style:default-style"
+      - "style:font-face"
+      - "style:text-properties"
+      - "style:paragraph-properties"
+      - "style:table-properties"
+      - "style:table-row-properties"
+      - "style:table-cell-properties"
+      - "style:table-column-properties"
+      - "style:page-layout"
+      - "style:master-page"
+
+  fo:
+    uri: "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+    spec: "ODF 1.3 (XSL-FO)"
+    dotnet_namespace: "FormatFactory.Fo"
+    python_module: "src.python.{format}.fo"
+    concepts:
+      - "fo:font-size"
+      - "fo:font-weight"
+      - "fo:color"
+      - "fo:background-color"
+      - "fo:text-align"
+      - "fo:margin"
+      - "fo:padding"
+      - "fo:border"
+
+  draw:
+    uri: "urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+    spec: "ODF 1.3"
+    dotnet_namespace: "FormatFactory.Draw"
+    python_module: "src.python.{format}.draw"
+    concepts:
+      - "draw:frame"
+      - "draw:image"
+      - "draw:text-box"
+      - "draw:page"
+      - "draw:custom-shape"
+      - "draw:ellipse"
+      - "draw:rect"
+
+  number:
+    uri: "urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+    spec: "ODF 1.3"
+    dotnet_namespace: "FormatFactory.Number"
+    python_module: "src.python.{format}.number"
+    concepts:
+      - "number:number-style"
+      - "number:date-style"
+      - "number:time-style"
+      - "number:percentage-style"
+      - "number:currency-style"
+      - "number:text-style"
+
+  svg:
+    uri: "urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+    spec: "ODF 1.3 (SVG)"
+    dotnet_namespace: "FormatFactory.Svg"
+    python_module: "src.python.{format}.svg"
+    concepts:
+      - "svg:width"
+      - "svg:height"
+      - "svg:x"
+      - "svg:y"
+
+# Non-ODF format namespaces
+non_odf:
+  zst:
+    uri: "urn:ietf:rfc:8878"
+    spec: "RFC 8878"
+    dotnet_namespace: "FormatFactory.Zst"
+    python_module: "src.python.zst"
+    concepts:
+      - "zst:frame"
+      - "zst:magic-number"
+      - "zst:frame-header"
+      - "zst:block"
+
+  csv:
+    uri: "urn:ietf:rfc:4180"
+    spec: "RFC 4180"
+    dotnet_namespace: "FormatFactory.Csv"
+    python_module: "src.python.csv"
+    concepts:
+      - "csv:record"
+      - "csv:field"
+      - "csv:header"
+
+# Facade mapping rule
+facade_policy:
+  rule: "Spec QName -> Canonical Class -> Format-Prefixed Name is Facade ONLY in Compat/"
+  examples:
+    - spec_qname: "table:table-cell"
+      canonical_class: "Table.TableCell"
+      facade: "FodsCell"
+      facade_location: "Compat/"
+    - spec_qname: "text:list"
+      canonical_class: "Text.List"
+      facade: "FodtList"
+      facade_location: "Compat/"
+    - spec_qname: "style:style"
+      canonical_class: "Style.Style"
+      facade: "FodsStyle"
+      facade_location: "Compat/"
+    - spec_qname: "text:span"
+      canonical_class: "Text.Span"
+      facade: "FodtTextSpan"
+      facade_location: "Compat/"
+    - spec_qname: "text:h"
+      canonical_class: "Text.Heading"
+      facade: "FodtHeading"
+      facade_location: "Compat/"

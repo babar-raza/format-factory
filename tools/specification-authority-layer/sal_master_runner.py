@@ -624,6 +624,53 @@ def _spec_facts_for_format(fmt: Dict[str, Any]) -> List[Dict[str, str]]:
     return base
 
 
+def _load_workbench_verified_facts(format_id: str) -> List[Dict[str, str]]:
+    """Load verified facts from workbench verified-facts-review.yaml for a format.
+
+    Returns a list of fact dicts with qname=claim_id, source="workbench_verified".
+    Only returns facts with verification_status in (verified, verified_with_note).
+    Returns empty list if no workbench file exists (graceful degradation).
+    """
+    _VERIFIED = frozenset(["verified", "verified_with_note"])
+    spec_cache = _REPO_ROOT / ".local" / "spec-cache"
+    pattern = f"{format_id.lower()}/*/workbench/verified-facts-review.yaml"
+    workbench_facts: List[Dict[str, str]] = []
+
+    for rf in spec_cache.glob(pattern):
+        try:
+            text = rf.read_text(encoding="utf-8")
+            if text.lstrip().startswith("{"):
+                data = json.loads(text)
+            else:
+                try:
+                    import yaml  # type: ignore
+                    data = yaml.safe_load(text) or {}
+                except ImportError:
+                    continue
+
+            for fact in data.get("facts", []):
+                prov = fact.get("provenance", {}) or {}
+                status = prov.get("verification_status") or fact.get("verification_status", "")
+                if status not in _VERIFIED:
+                    continue
+                claim_id = fact.get("claim_id") or fact.get("fact_id") or ""
+                if not claim_id:
+                    continue
+                workbench_facts.append({
+                    "qname": claim_id,
+                    "claim": fact.get("claim", ""),
+                    "section": prov.get("section_id", ""),
+                    "description": fact.get("claim", ""),
+                    "authority": f"verified-facts-review.yaml (status: {status})",
+                    "verification_status": status,
+                    "source": "workbench_verified",
+                })
+        except Exception:
+            pass
+
+    return workbench_facts
+
+
 def run_sal_pipeline(
     formats: Optional[List[str]] = None,
     output_dir: Optional[Path] = None,
@@ -655,6 +702,14 @@ def run_sal_pipeline(
     for fmt in all_formats:
         fid = fmt.get("format_id", "")
         facts = _spec_facts_for_format(fmt)
+
+        # TC-SAL-014: Merge verified workbench facts (additive — template facts preserved)
+        workbench_facts = _load_workbench_verified_facts(fid)
+        if workbench_facts:
+            existing_qnames = {f.get("qname", "") for f in facts}
+            new_facts = [wf for wf in workbench_facts if wf["qname"] not in existing_qnames]
+            facts = facts + new_facts
+
         entry = {
             "format_id": fid,
             "display_name": fmt.get("display_name", fid),
@@ -662,16 +717,19 @@ def run_sal_pipeline(
             "spec_version": fmt.get("spec_version", ""),
             "spec_url": fmt.get("spec_url", ""),
             "spec_facts": facts,
+            "workbench_verified_fact_count": len(workbench_facts),
         }
         results.append(entry)
 
     total_facts = sum(len(r["spec_facts"]) for r in results)
+    total_workbench = sum(r.get("workbench_verified_fact_count", 0) for r in results)
 
     output = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "generator": "sal_master_runner.py v1.0",
         "formats_processed": len(results),
         "spec_facts_total": total_facts,
+        "workbench_verified_fact_total": total_workbench,
         "results": results,
     }
 

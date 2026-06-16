@@ -1,17 +1,17 @@
 # Evidence Review — Supervisor
-Sprint ID: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING
-Timestamp: 2026-06-16T08:39:10.388960
+Sprint ID: TOML-DEEPENING-R275-R279-20260616
+Timestamp: 2026-06-16T15:19:09.099058
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-idempotent-spec-to-feature-swarm-20260615-e31fa98\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\toml-deepening-r275-r279-20260616-e5ba655\declaration-review-package.zip
 
 ## Facts
-- Tests: 13395 passed, 0 failed, 37 skipped
+- Tests: 50 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 55
+- Bundle entries: 66
 - PENDING markers: 0
 
 ## Gate States
 (none extracted)
 
 ## Limitation Notes
-- No cycle-manifest found in declaration-review package
+None

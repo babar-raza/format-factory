@@ -3203,3 +3203,200 @@ A validator that ensures plan internal consistency:
 5. **Tests reference canonical classes** — new tests import from canonical namespaces; existing tests may reference facades
 6. **Documentation references canonical** — API docs, architecture docs, taskcards reference canonical names
 7. **Evidence declarations reference canonical** — `spec_qname_refs` and `canonical_classes_added` use canonical names
+
+---
+
+# Section 28 — Stage 0: Capability Fact-to-Feature Truth Reconstruction
+
+## Status: REQUIRED HARD DEPENDENCY before Capability Healing (Lanes 2-3, 6)
+
+> Added: 2026-06-16 forensic audit `cap-fact-to-feature-forensics-20260616`.
+> Full forensic report: `.local/evidences/cap-fact-to-feature-forensics-20260616/forensic-report.md`
+> Surgical enhancement detail: `.local/evidences/cap-fact-to-feature-forensics-20260616/surgical-plan-enhancement.md`
+> All prior sections (1-27) preserved unchanged. This section adds new findings and taskcards only.
+
+---
+
+## 28.1 — Stale Plan Assumption Corrections
+
+### CORRECTED: Gap Ledger Not Consumed (was HIGH risk)
+**Repository truth:** `autonomous_task_generator.py` lines 1564-1568 make gap-ledger the PRIMARY source; `_EXPANSION_GOALS` is fallback.
+**Revised risk:** MEDIUM — gap-ledger IS consumed. However, compiled taskcards (output of `capability_queue_consumer.py`) are NOT fed to sprint selection. This is the actual remaining defect.
+
+### CORRECTED: No capability_map_generator.py (was HIGH risk)
+**Repository truth:** `tools/capability_layer/capability_map_generator.py` exists and is functional.
+**Revised risk:** MEDIUM for SAL-derivation deficiency only.
+
+### CORRECTED: No capability_compiler.py (was implied missing)
+**Repository truth:** `tools/supervisor/capability_compiler.py` exists with SAL fact loading and feature IR compilation.
+**Remaining gap:** Wiring between compiler output and autonomous loop — not compiler existence.
+
+### CONFIRMED: Proof graph dormant (HIGH)
+GraphStore + CoverageEvaluator + MainstreamGapQueueGenerator exist in `tools/requirements_authority/` but NO production JSONL files are populated. The 6 fixture packs are test-only. This is the largest structural gap remaining.
+
+### CONFIRMED: Capability derivation is POC-driven, not SAL-driven (HIGH)
+`capability_map_generator.py` derives capabilities from `poc-targets.yaml` field names. SAL facts are post-hoc enrichment metadata. No spec fact causes a new capability to be generated.
+
+### NEW: Compiled taskcards not consumed (HIGH)
+`capability_queue_consumer.py` → `capability_compiler.py` pipeline writes taskcard JSON to `.local/capability-consumer/taskcards/`. `autonomous_task_generator.py` does NOT read this path. The compiler pipeline is validated in isolation but drives no autonomous work.
+
+### NEW: Capability closure loop absent (HIGH)
+After implementation + verification, no component updates `gap-ledger.json`. Gaps remain `open` indefinitely and can be re-selected by task generation.
+
+---
+
+## 28.2 — Reclassified Findings
+
+**Confirmed root causes:**
+1. poc-targets.yaml used as capability derivation source (not SAL facts)
+2. Compiled taskcard output path not registered as autonomous loop input
+3. GraphStore not populated from production capability data
+4. No closure event emitted after capability verification
+
+**Contributing defects:**
+1. SAL facts are hand-authored (external gate for live download)
+2. Action queue (action-queue.json) has 1 entry and no consumers
+
+**Downstream symptoms (not causes):**
+1. Autonomous loop generates tasks from limited set
+2. Sprint selection does not improve as features are implemented
+3. Capability gap count (696) includes already-implemented entries
+
+---
+
+## 28.3 — Diagnostic Taskcards
+
+### TC-CAP-DIAG-001: Wire Compiled Taskcards into Autonomous Task Selection
+
+**Status:** OPEN | **Priority:** P0 | **Root cause:** compiled taskcards not consumed
+
+Add `_load_compiled_taskcards()` to `autonomous_task_generator.py`. Reads `*.json` files from `.local/capability-consumer/taskcards/`. Compiled taskcards take priority over raw gap-ledger records.
+
+**Acceptance criteria:**
+1. Compiled taskcard for any FOSS gap appears in `product-task-candidates.json`
+2. Focused-proof script (<80 lines) demonstrates end-to-end selection
+3. No regression in existing tests
+
+**Dependency:** TC-CAP-DIAG-002 must complete first (compiled taskcards need `source_fact_refs`).
+
+---
+
+### TC-CAP-DIAG-002: Add SAL-Derived Capability Generation Step
+
+**Status:** OPEN | **Priority:** P1 | **Root cause:** poc-derived capabilities, not spec-derived
+
+Add `_derive_from_sal_facts(sal_facts, format_id) -> list[dict]` to `capability_map_generator.py`. Map SAL qnames to capability categories using minimum taxonomy:
+
+```python
+SAL_TO_CAPABILITY_CATEGORY = {
+    "ODF-FACT-NAMESPACE": ["parse", "validate"],
+    "ODF-FACT-ROOT-ELEMENT": ["parse", "load"],
+    "ODF-FACT-BODY": ["parse", "inspect"],
+    "ODF-SHEET-FACT-TABLE": ["inspect", "edit", "save"],
+    "ODF-SHEET-FACT-ROW": ["inspect", "edit"],
+    "ODF-SHEET-FACT-CELL": ["inspect", "edit", "validate"],
+    "FODS-FACT-003": ["validate", "roundtrip"],
+    "ODF-FACT-STYLES": ["parse", "save"],
+    "ODF-FACT-METADATA": ["inspect", "edit"],
+}
+```
+
+New candidates flagged `derivation_source: "sal_fact"`. poc-targets.yaml status becomes VERIFICATION evidence, not derivation.
+
+**Acceptance criteria:**
+1. ≥3 new SAL-derived candidates for FODS with resolvable `source_fact_refs`
+2. No existing capabilities removed
+3. Before/after gap count comparison logged
+
+---
+
+### TC-CAP-DIAG-003: Populate GraphStore from Production Capability Map
+
+**Status:** OPEN | **Priority:** P1 | **Root cause:** proof graph dormant
+
+Create `tools/capability_layer/capability_map_to_graph.py`. Reads `unified-capability-map.json`, emits JSONL to `.local/proof-graph/nodes.jsonl` and `.local/proof-graph/edges.jsonl`. For each `implementation_verified` capability: 1 CapabilityClaim node + ImplementationArtifact nodes + TestArtifact nodes + edges.
+
+**Acceptance criteria:**
+1. ≥20 CapabilityClaim nodes for FODS in output JSONL
+2. `mainstream_gap_queue.py` produces non-empty queue from populated graph
+3. CoverageEvaluator verdicts differ from simple gap-ledger heuristics for ≥3 capabilities
+
+---
+
+### TC-CAP-DIAG-004: Implement Capability Closure Loop
+
+**Status:** OPEN | **Priority:** P1 | **Root cause:** no closure mechanism
+
+Add `emit_closure_event(gap_id, format_id, function_name)` to `capability_verifier.py`. Events written to `.local/capability-events/closures.jsonl`. `capability_map_generator.py` reads closures at startup and marks matching gaps `status: closed`. `autonomous_task_generator.py` skips closed gaps.
+
+**Acceptance criteria:**
+1. Verifier emits closure events for all-green format functions
+2. Re-running generator marks those gaps closed
+3. Re-running task generator excludes closed gaps from candidates
+4. Dependency: TC-CAP-DIAG-001 must be wired before closure has observable effect
+
+---
+
+### TC-CAP-DIAG-005: Validate SAL → Capability Traceability (FODS Slice)
+
+**Status:** OPEN | **Priority:** P2
+
+Create `tools/capability_layer/trace_capability_to_sal.py`. For a given capability_id, resolves `source_fact_refs` → SAL qname → section → authority. Reports broken traces.
+
+**Acceptance criteria:**
+1. For 5 SAL-derived FODS capabilities: all traces resolve
+2. For 5 poc-derived capabilities: `source_fact_refs: []` (explicit empty)
+3. No capability has `source_fact_refs: null`
+
+---
+
+### TC-CAP-DIAG-006: Proof-Level Census for FODS Capabilities
+
+**Status:** OPEN | **Priority:** P2
+
+Extend `select_poc_gaps.py` `detect_target_writer_readiness()` to produce proof-level census. Report distribution: NO_PROOF / IMPLEMENTATION_ONLY / TESTED / DOGFOODED for FODS commercial capabilities.
+
+**Acceptance criteria:**
+1. Proof census output for ≥30 FODS commercial capabilities
+2. ≥1 capability at TESTED level or higher
+3. Discrepancy between poc-targets.yaml PASS count vs TESTED-level count logged
+
+---
+
+## 28.4 — Dependency Order
+
+```
+TC-CAP-DIAG-002 → TC-CAP-DIAG-003 → TC-CAP-DIAG-005
+                                         ↓
+TC-CAP-DIAG-001 → TC-CAP-DIAG-004 → TC-CAP-DIAG-006
+```
+
+TC-CAP-DIAG-001 must follow TC-CAP-DIAG-002 (compiled taskcards need `source_fact_refs`).
+TC-CAP-DIAG-004 must follow TC-CAP-DIAG-001 (closure needs a working selection loop).
+
+---
+
+## 28.5 — Existing Taskcards Requiring Updates
+
+| Taskcard | Contradicted Premise | Required Update |
+|----------|---------------------|-----------------|
+| CAP-SEL-001 | gap-ledger not consumed | Replace with TC-CAP-DIAG-001 (compiled taskcard wiring) |
+| CAP-GEN-006 | FUL packs as proxy for proof graph | Replace with TC-CAP-DIAG-003 (populate GraphStore directly) |
+| CAP-GEN-011 | machine-readable action queue | Deprecate action-queue.json; gap-ledger IS the queue |
+| CAP-PROD-005 | poc-targets.yaml update as capability fix | Clarify: poc-targets.yaml is VERIFICATION evidence only after TC-CAP-DIAG-002 |
+
+---
+
+## 28.6 — Stage 0 Completion Gate
+
+Complete when ALL of:
+1. ≥3 SAL-derived FODS capabilities with resolvable `source_fact_refs` (TC-CAP-DIAG-002)
+2. GraphStore populated with ≥20 FODS CapabilityClaim nodes (TC-CAP-DIAG-003)
+3. `mainstream_gap_queue.py` produces non-empty queue (TC-CAP-DIAG-003)
+4. ≥1 compiled taskcard appears in `autonomous_task_generator.py` output (TC-CAP-DIAG-001)
+5. Closure events emitted and processed for ≥1 implemented format function (TC-CAP-DIAG-004)
+6. Proof-level census shows ≥0 capabilities at TESTED level (TC-CAP-DIAG-006)
+7. No new test regression
+
+Does NOT require live spec downloads (DEFECT-005 is external gate).
+Does NOT require Gate 11 approval.

@@ -1,7 +1,7 @@
 # FODT — Gate 11 Commercial Readiness Packet
 # Prepared by: Agent (agent-owned preparation — submission requires human authorization)
-# Prepared: 2026-06-12
-# Sprint: FORMAT-FACTORY-PRODUCT-GATE11-PREPARATION-AND-GAP-DEEPENING-001
+# Prepared: 2026-06-12 (Updated: 2026-06-16, SAL facts deepened to 27)
+# Sprint: PLAN-HARDENING-EXECUTION-20260616 (original: FORMAT-FACTORY-PRODUCT-GATE11-PREPARATION-AND-GAP-DEEPENING-001)
 # Status: PREPARATION ONLY — NOT SUBMITTED — Human approval from Babar Raza required before submission
 
 ---
@@ -25,15 +25,15 @@
 |------|--------|-------------------|
 | G1 (Candidate Approval) | PASSED | `prototypes/by-format/fodt/` exists |
 | G2 (Spec Authority) | PASSED | OASIS ODF 1.3 spec acquired |
-| G3 (Prototype Execution) | PASSED | `src/python/fodt/` + 1027 Python test functions |
+| G3 (Prototype Execution) | PASSED | `src/python/fodt/` + 1155 Python test functions |
 | G4 (Parser Prototype) | PASSED | `src/python/fodt/parser.py` — streaming XML, depth-tracking |
 | G5 (Neutral Model) | PASSED | `src/python/fodt/neutral_model.py` — 8 entities (Document/Block/List/ListItem/Table/TableRow/TableCell + Note) |
 | G6 (Oracle Comparison) | PASSED | Oracle tests exist, TXT/HTML export verified |
 | G7 (Fuzz/Security) | PASSED | 100MB guard, DTD prohibited, defusedxml, malformed-XML tests |
 | G8 (Security Review) | PASSED | defusedxml, DTD prohibited, bounds checking |
 | G9 (Dogfood) | PASSED | FODT→TXT/HTML export chain verified |
-| G10 (FOSS POC Complete) | PASSED (Python) | 1027 Python test functions; parse→inspect→export verified |
-| G11-E (.NET prototype) | IN_PROGRESS | .NET: FodtParser.cs + FodtWriter.cs + 145 .NET tests |
+| G10 (FOSS POC Complete) | PASSED (Python) | 1155 Python test functions; parse→inspect→export verified |
+| G11-E (.NET prototype) | VERIFIED | .NET: FodtParser.cs + FodtWriter.cs + FodtPdfExporter.cs + 549 .NET tests |
 | G11-G (Commercial readiness) | NOT APPROVED | Requires Babar Raza approval |
 
 **Claimed gate:** G11 (commercial_readiness_in_progress)
@@ -60,8 +60,8 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Python test functions | **712** |
-| Test files | 49 files in `tests/python/fodt/` |
+| Total Python test functions | **1155** |
+| Test files | 79 files in `tests/python/fodt/` |
 | Coverage depth | parse, neutral model, public API, security, fuzz, spans/ordering, hyperlinks, nested lists, preservation, roundtrip |
 | Security tests | Malformed XML, DTD injection, oversized input |
 | Roundtrip/preservation tests | `test_r54_fodt_preservation.py`, `test_r84_fodt_text_export.py` |
@@ -104,7 +104,7 @@ Python FOSS has **read capability and basic write** via `writer.py`, but full wr
 | FodtMarkdownExporter.cs | `src/net/fodt/FodtMarkdownExporter.cs` |
 | Model/ | `src/net/fodt/Model/` (FodtBody, FodtParagraph) |
 
-**Estimated .NET tests:** 145 (from `registry/format-completion-matrix.yaml` field `tests_net_count: 145`)
+**Verified .NET tests:** 549 (FodtPdfExporter.cs added 2026-06-16, +20 PDF export tests)
 
 ### 4B. .NET Capabilities Verified
 
@@ -138,6 +138,19 @@ Python FOSS has **read capability and basic write** via `writer.py`, but full wr
 | 100MB file size guard | ACTIVE |
 | Malformed XML handling | TESTED |
 | Depth-tracking overflow guard | TESTED — list recursion bounded |
+
+---
+
+## 5B. Specification Authority (SAL) Facts
+
+| Metric | Value |
+|--------|-------|
+| Verified spec facts | **27** (FACT-FODT-001 through FACT-FODT-027) |
+| Fact source | `.local/spec-cache/fodt/odf-1.3/workbench/verified-facts-review.yaml` |
+| Spec reference | ODF 1.3 (OASIS) |
+| Key areas covered | office:document root, office:body/office:text containment, text:p, text:h (headings with outline-level), text:list/text:list-item, text:section, text:span, text:note/text:note-body, text:bookmark, style:text-properties, style:paragraph-properties, draw:frame, text:tracked-changes, text:table-of-content |
+| QName ontology | 9 YAMLs deployed to `registry/odf-ontology/` |
+| Capability gaps | 9 open (all commercial-track) |
 
 ---
 

@@ -1,0 +1,64 @@
+---
+# Naming Exceptions — Format Factory
+# Documents deviations from the canonical QName-to-class naming rule
+schema_version: "1.0"
+generated_at: "2026-06-15"
+
+# Rule: Spec QName -> Canonical Class
+# Example: table:table-cell -> Table.TableCell
+# Exceptions are documented here with justification
+
+exceptions:
+  - qname: "text:p"
+    expected_class: "Text.P"
+    actual_class: "Text.Paragraph"
+    reason: "Single-letter class name is not usable. 'Paragraph' is the universally understood long form."
+    approved: true
+
+  - qname: "text:h"
+    expected_class: "Text.H"
+    actual_class: "Text.Heading"
+    reason: "Single-letter class name is not usable. 'Heading' is the universally understood long form."
+    approved: true
+
+  - qname: "text:a"
+    expected_class: "Text.A"
+    actual_class: "Text.Anchor"
+    reason: "Single-letter class name is not usable. 'Anchor' matches HTML convention for hyperlinks."
+    approved: true
+
+  - qname: "office:value-type"
+    expected_class: "Office.ValueType"
+    actual_class: "Table.TypedValue"
+    reason: "office:value-type is an attribute, not an element. TypedValue is a value object representing the typed cell value concept. Placed in Table namespace because it's used exclusively on table:table-cell."
+    approved: true
+
+  - qname: "table:formula"
+    expected_class: "Table.TableFormula"
+    actual_class: "Table.Formula"
+    reason: "table:formula is an attribute, not an element. 'Formula' is clearer without the redundant 'Table' prefix since it's already in the Table namespace."
+    approved: true
+
+  - qname: "text:note"
+    expected_class: "Text.Note"
+    actual_class: "Text.Note"
+    facade_exception: "FodtFootnote"
+    reason: "The facade name 'FodtFootnote' is acceptable because text:note covers both footnotes and endnotes, and 'Footnote' is the more common user-facing term. The canonical class remains Text.Note."
+    approved: true
+
+  - qname: "draw:custom-shape"
+    expected_class: "Draw.CustomShape"
+    actual_class: "Draw.CustomShape"
+    reason: "No exception — follows standard rule. Listed for completeness."
+    approved: true
+
+# Non-ODF formats (no QName mapping needed)
+non_odf_notes:
+  - format: "ZST"
+    note: "ZST (RFC 8878) does not use XML namespaces. Module path is src.python.zst. No canonical class naming exception needed."
+
+  - format: "CSV"
+    note: "CSV (RFC 4180) does not use XML namespaces. Module path is src.python.csv. No canonical class naming exception needed."
+
+  - format: "PBM/PGM/PPM"
+    note: "Netpbm formats have no formal namespace. Module paths follow format name convention."

@@ -1,6 +1,6 @@
-# Supervisor Review: idempotent-swarm-sprint31-20260615-915cfd2
-Sprint: IDEMPOTENT-SWARM-SPRINT-31
-Timestamp: 2026-06-15T22:58:04.167459
+# Supervisor Review: idempotent-swarm-sprint116-20260616-baf84d6
+Sprint: IDEMPOTENT-SWARM-SPRINT-116
+Timestamp: 2026-06-16T15:15:18.190654
 Overall Verdict: ACCEPTED_WITH_REWORK
 Autonomous Continue: True
 
@@ -12,5 +12,5 @@ Autonomous Continue: True
 - Critical Rework: 0
 
 ## Item Grades
-- **DOGFOOD-FODT-DEPTH-ANALYTICS-NDJSON** (FODT depth analytics: stats, word count, reading level, hyperlinks to NDJSON (6 tests)): ACCEPTED_WITH_LIMITATIONS
-- **DOGFOOD-CSV-DATA-PROFILING-NDJSON** (CSV data profiling: header detection, cell/column counts, avg cells/row to NDJSON (6 tests)): ACCEPTED_WITH_LIMITATIONS
+- **DOGFOOD-GNUMERIC-MODEL-ODS-REMAINING-NDJSON** (Gnumeric model-based remaining + ODS remaining: copy_sheet, clear_sheet, add_sheet, clear_cell, average_column(ods), count_distinct_values(ods) to NDJSON (6 tests)): ACCEPTED_WITH_LIMITATIONS
+- **DOGFOOD-FODP-REMAINING-ANALYTICS-NDJSON** (FODP remaining analytics: fodp_all_slides_have_text, fodp_average_shapes_per_slide, fodp_avg_notes_length, fodp_empty_slide_count, fodp_has_empty_slides, fodp_has_images to NDJSON (6 tests)): ACCEPTED_WITH_LIMITATIONS

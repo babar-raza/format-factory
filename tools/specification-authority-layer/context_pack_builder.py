@@ -208,3 +208,87 @@ def load_context_pack(pack_path: str) -> Optional[Dict[str, Any]]:
         return None
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+# ---------------------------------------------------------------------------
+# SAL Fact Coverage Integration (TC-SAL-008)
+# ---------------------------------------------------------------------------
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+
+
+def get_sal_coverage_summary(format_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    """Load SAL fact coverage summary from .local/sal-output/fact-coverage-report.json.
+
+    Returns a dict with coverage metrics for the supervisor context pack, or None if
+    the report has not been generated yet (graceful degradation).
+
+    Args:
+        format_id: If given, return coverage for only that format. Otherwise return summary.
+    """
+    report_path = _REPO_ROOT / ".local" / "sal-output" / "fact-coverage-report.json"
+    if not report_path.is_file():
+        return None
+    try:
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+    if format_id:
+        for fmt in report.get("formats", []):
+            if fmt.get("format_id") == format_id:
+                return {
+                    "format_id": format_id,
+                    "effective_verified": fmt.get("effective_verified", 0),
+                    "total_registered": fmt.get("total_registered", 0),
+                    "coverage_percent": fmt.get("coverage_percent", 0.0),
+                    "pending": fmt.get("pending", 0),
+                    "generated_at": report.get("generated_at"),
+                }
+        return None
+
+    s = report.get("summary", {})
+    return {
+        "total_verified": s.get("total_verified", 0),
+        "total_registered": s.get("total_registered", 0),
+        "overall_coverage_percent": s.get("overall_coverage_percent", 0.0),
+        "total_pending": s.get("total_pending", 0),
+        "formats": [
+            {
+                "format_id": f["format_id"],
+                "effective_verified": f.get("effective_verified", 0),
+                "total_registered": f.get("total_registered", 0),
+                "coverage_percent": f.get("coverage_percent", 0.0),
+            }
+            for f in report.get("formats", [])
+        ],
+        "generated_at": report.get("generated_at"),
+    }
+
+
+def format_sal_coverage_for_context_pack(format_id: Optional[str] = None) -> str:
+    """Return a human-readable SAL coverage string for supervisor context packs.
+
+    Returns empty string if coverage report is not available.
+    """
+    data = get_sal_coverage_summary(format_id)
+    if data is None:
+        return ""
+
+    if format_id and "effective_verified" in data:
+        return (
+            f"SAL Fact Coverage ({format_id}): "
+            f"{data['effective_verified']}/{data['total_registered']} verified "
+            f"({data['coverage_percent']}%), {data['pending']} pending"
+        )
+
+    lines = [
+        f"SAL Fact Coverage: {data['total_verified']}/{data['total_registered']} verified "
+        f"({data['overall_coverage_percent']}%), {data['total_pending']} pending"
+    ]
+    for f in data.get("formats", []):
+        lines.append(
+            f"  [{f['format_id']}] {f['effective_verified']}/{f['total_registered']} "
+            f"({f['coverage_percent']}%)"
+        )
+    return "\n".join(lines)

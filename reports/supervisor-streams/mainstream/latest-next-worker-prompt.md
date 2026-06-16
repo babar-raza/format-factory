@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-15T22:58:04.870077
-# Source: Supervisor autonomous-cycle review of IDEMPOTENT-SWARM-SPRINT-31
+# Generated: 2026-06-16T15:15:19.363882
+# Source: Supervisor autonomous-cycle review of IDEMPOTENT-SWARM-SPRINT-116
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,7 +27,7 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: IDEMPOTENT-SWARM-SPRINT-31
+- Prior sprint: IDEMPOTENT-SWARM-SPRINT-116
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
@@ -474,11 +474,11 @@ The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 21x, last: HARDENED-GOV-PRODUCT-SPRINT-20260615)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 19x, last: IDEMPOTENT-SWARM-SPRINT-7)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 25x, last: product-deepening-sprint9-20260616)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 5x, last: IDEMPOTENT-SWARM-SPRINT-7)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 17x, last: IDEMPOTENT-SWARM-SPRINT-7)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 36x, last: IDEMPOTENT-SWARM-SPRINT-7)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 23x, last: product-deepening-sprint9-20260616)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 42x, last: product-deepening-sprint9-20260616)
 
 
 ## Spec-Parity Requirements (from skill registry)

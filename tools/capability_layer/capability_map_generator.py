@@ -1079,8 +1079,18 @@ def generate(
     )
     print(f"[OK] gap-ledger.json — {len(gaps)} gaps", file=sys.stderr)
 
-    # --- Write action queue ---
+    # --- Write action queue (merge with existing user-populated actions) ---
     actions = _build_action_queue(gaps, commercial_records, foss_records)
+    generated_ids = {a["action_id"] for a in actions}
+    queue_path = output_dir / "action-queue.json"
+    if queue_path.exists():
+        try:
+            existing = json.loads(queue_path.read_text(encoding="utf-8"))
+            for existing_action in existing.get("actions", []):
+                if existing_action.get("action_id") not in generated_ids:
+                    actions.append(existing_action)
+        except (json.JSONDecodeError, KeyError):
+            pass  # corrupt file — regenerate from scratch
     action_queue = {
         "schema_version": "1.0",
         "generated_at": sprint_now,
@@ -1091,7 +1101,7 @@ def generate(
         "total_actions": len(actions),
         "actions": actions,
     }
-    (output_dir / "action-queue.json").write_text(
+    queue_path.write_text(
         json.dumps(action_queue, indent=2, ensure_ascii=False), encoding="utf-8"
     )
     print(f"[OK] action-queue.json — {len(actions)} actions", file=sys.stderr)

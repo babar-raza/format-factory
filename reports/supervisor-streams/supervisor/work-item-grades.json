@@ -1,16 +1,16 @@
 [
   {
-    "item_id": "SHCPH-L1-GOV-REPAIR",
-    "item_title": "Lane 1: Governance closeout defect repair \u2014 blocks_sprint enforcement + claim classification regression tests",
+    "item_id": "L6-DEPLOY-001",
+    "item_title": "Deploy 9 QName ontology YAMLs from evidence root to registry/odf-ontology/",
     "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/claim-classification-repair.md",
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/governance-closeout-contradiction-repair.md"
+      "registry/odf-ontology/qname-to-code-map.yaml",
+      "tools/requirements_authority/validate_odf_ontology.py"
     ],
     "tests_supporting": [
-      "tests/supervisor/test_claim_classification_closeout.py"
+      "tests/python/supervisor/test_r108_odf_ontology_deployed.py"
     ],
     "tests_missing": [],
     "acceptance_criteria_met": [
@@ -18,104 +18,34 @@
       "No missing paths",
       "Test content verified (1 files)"
     ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['No actual test code provided; only a description of a test file with 10 tests.', 'No concrete evidence (e.g., logs, exit code output) showing that critical_rework_count is incremented and exit code becomes 3.', 'Verification step only shows a pytest summary without showing test assertions or coverage of the enforcement logic.', 'Evidence does not demonstrate that the regression tests cover both claim classification validator behavior and blocks_sprint enforcement comprehensively.']",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L1-GOV-REPAIR.",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.32,
-      "stub_detected": true,
-      "deficiencies": [
-        "No actual test code provided; only a description of a test file with 10 tests.",
-        "No concrete evidence (e.g., logs, exit code output) showing that critical_rework_count is incremented and exit code becomes 3.",
-        "Verification step only shows a pytest summary without showing test assertions or coverage of the enforcement logic.",
-        "Evidence does not demonstrate that the regression tests cover both claim classification validator behavior and blocks_sprint enforcement comprehensively."
-      ],
-      "llm_used": true,
-      "low_confidence_override": true
-    }
-  },
-  {
-    "item_id": "SHCPH-L2-SPEC-PARITY",
-    "item_title": "Lane 2: Spec-parity validator implementation \u2014 4 validators wired into governance pipeline",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/spec-parity-validator-design.md"
+    "acceptance_criteria_failed": [
+      "Only a single YAML file is provided, but the work item requires nine separate QName ontology YAML files to be deployed.",
+      "No evidence (e.g., commit logs, CI/CD pipeline output, or deployment scripts) showing that the files were actually placed in the target directory registry/odf-ontology/.",
+      "Absence of verification tests or checks confirming the presence and correctness of the nine expected YAML files."
     ],
-    "tests_supporting": [
-      "tests/supervisor/test_spec_parity_validators.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['No actual test code provided \u2013 only a reference to a test file is mentioned.', 'Design document does not show the implementation of the four validators in the codebase.', 'No evidence that the validators are wired into `run_all_governance_validators()` (e.g., diff or code snippet).', 'Absence of concrete test assertions or execution results to verify PASS/WARN/FAIL behavior.']",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L2-SPEC-PARITY.",
-    "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.32,
-      "stub_detected": true,
-      "deficiencies": [
-        "No actual test code provided \u2013 only a reference to a test file is mentioned.",
-        "Design document does not show the implementation of the four validators in the codebase.",
-        "No evidence that the validators are wired into `run_all_governance_validators()` (e.g., diff or code snippet).",
-        "Absence of concrete test assertions or execution results to verify PASS/WARN/FAIL behavior."
-      ],
-      "llm_used": true,
-      "low_confidence_override": true
-    }
-  },
-  {
-    "item_id": "SHCPH-L3-DEPTH",
-    "item_title": "Lane 3: Depth validator implementation \u2014 3 validators for shallow code detection",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/depth-validator-design.md"
-    ],
-    "tests_supporting": [
-      "tests/supervisor/test_depth_validators.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['Evidence only includes a design markdown; actual validator implementation code is not shown.', 'Test file `tests/supervisor/test_depth_validators.py` is described but its contents are not provided, preventing verification of real assertions.', 'No test execution reports or coverage data are included to demonstrate that the validators behave as specified.', 'The description of test cases is high\u2011level; without concrete test code it is impossible to confirm that edge cases and failure modes are exercised.']",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L3-DEPTH.",
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_VERIFIED -> ACCEPTED_WITH_LIMITATIONS: Only a single YAML file is provided, but the work item requires nine separate QName ontology YAML files to be deployed.; No evidence (e.g., commit logs, CI/CD pipeline output, or deployment scripts) showing that the files were actually placed in the target directory registry/odf-ontology/.; Absence of verification tests or checks confirming the presence and correctness of the nine expected YAML files.",
     "semantic_verification": {
       "adequate": false,
-      "confidence": 0.85,
-      "stub_detected": true,
+      "confidence": 0.97,
+      "stub_detected": false,
       "deficiencies": [
-        "Evidence only includes a design markdown; actual validator implementation code is not shown.",
-        "Test file `tests/supervisor/test_depth_validators.py` is described but its contents are not provided, preventing verification of real assertions.",
-        "No test execution reports or coverage data are included to demonstrate that the validators behave as specified.",
-        "The description of test cases is high\u2011level; without concrete test code it is impossible to confirm that edge cases and failure modes are exercised."
+        "Only a single YAML file is provided, but the work item requires nine separate QName ontology YAML files to be deployed.",
+        "No evidence (e.g., commit logs, CI/CD pipeline output, or deployment scripts) showing that the files were actually placed in the target directory registry/odf-ontology/.",
+        "Absence of verification tests or checks confirming the presence and correctness of the nine expected YAML files."
       ],
       "llm_used": true
     }
   },
   {
-    "item_id": "SHCPH-L4-SCHEMA",
-    "item_title": "Lane 4: Evidence schema hardening \u2014 13 optional fields for spec-parity and depth validation",
+    "item_id": "SYSGATE-001",
+    "item_title": "System-healing gate formal reassessment \u2014 verdict CONDITIONALLY_PASSABLE",
     "declared_status": "completed",
     "supervisor_grade": "REWORK_REQUIRED",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/schema-hardening-design.md",
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/schema-diff.md"
+      ".local/evidences/system-healing-gate-20260616-baf84d6/system-healing-gate-verdict.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -126,112 +56,40 @@
     ],
     "acceptance_criteria_failed": [
       "No raw proof, test content, or acceptance criteria verified",
-      "Evidence adds 16 optional fields, but acceptance criteria specify 13 fields (scope mismatch).",
-      "No automated test or validation run is provided to prove the updated JSON schema is still valid.",
-      "Evidence consists only of design and diff markdown; lacks executable verification (e.g., schema validation script or CI test).",
-      "No evidence that the new fields are truly optional (e.g., schema validation against existing declarations)."
+      "Evidence consists only of a high\u2011level markdown summary; no actual test code, logs, or detailed reports are provided.",
+      "Claims of \"Yes\" verification are not backed by concrete artifacts (e.g., test output files, CI logs, coverage reports).",
+      "References to source files (e.g., sal_master_runner.py, capability_compiler.py) are not accompanied by evidence of their execution or passing tests.",
+      "No independent audit or validation artifacts are included; the markdown merely asserts their existence.",
+      "The evidence does not demonstrate that the deferred items (lanes 2,4,14,15) are being tracked or will not block product regeneration."
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence adds 16 optional fields, but acceptance criteria specify 13 fields (scope mismatch).; No automated test or validation run is provided to prove the updated JSON schema is still valid.; Evidence consists only of design and diff markdown; lacks executable verification (e.g., schema validation script or CI test).; No evidence that the new fields are truly optional (e.g., schema validation against existing declarations).",
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence consists only of a high\u2011level markdown summary; no actual test code, logs, or detailed reports are provided.; Claims of \"Yes\" verification are not backed by concrete artifacts (e.g., test output files, CI logs, coverage reports).; References to source files (e.g., sal_master_runner.py, capability_compiler.py) are not accompanied by evidence of their execution or passing tests.; No independent audit or validation artifacts are included; the markdown merely asserts their existence.; The evidence does not demonstrate that the deferred items (lanes 2,4,14,15) are being tracked or will not block product regeneration.",
     "semantic_verification": {
       "adequate": false,
       "confidence": 0.86,
       "stub_detected": false,
       "deficiencies": [
-        "Evidence adds 16 optional fields, but acceptance criteria specify 13 fields (scope mismatch).",
-        "No automated test or validation run is provided to prove the updated JSON schema is still valid.",
-        "Evidence consists only of design and diff markdown; lacks executable verification (e.g., schema validation script or CI test).",
-        "No evidence that the new fields are truly optional (e.g., schema validation against existing declarations)."
+        "Evidence consists only of a high\u2011level markdown summary; no actual test code, logs, or detailed reports are provided.",
+        "Claims of \"Yes\" verification are not backed by concrete artifacts (e.g., test output files, CI logs, coverage reports).",
+        "References to source files (e.g., sal_master_runner.py, capability_compiler.py) are not accompanied by evidence of their execution or passing tests.",
+        "No independent audit or validation artifacts are included; the markdown merely asserts their existence.",
+        "The evidence does not demonstrate that the deferred items (lanes 2,4,14,15) are being tracked or will not block product regeneration."
       ],
       "llm_used": true
     }
   },
   {
-    "item_id": "SHCPH-L5-HEALING",
-    "item_title": "Lane 5: Durable healing \u2014 failure memory wired into autonomous cycle and prompt generation",
-    "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/healing-persistence-design.md",
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/failure-memory-before-after.md"
-    ],
-    "tests_supporting": [
-      "tests/supervisor/test_failure_memory_persistence.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
-    ],
-    "acceptance_criteria_failed": [
-      "No actual test code or test execution reports are provided; only design and description markdown files are present.",
-      "Evidence does not show the modified source files (autonomous_cycle.py, generate_next_worker_prompt.py) with the required FailureMemory integration.",
-      "The claimed regression tests (tests/supervisor/test_failure_memory_persistence.py) are not included, so coverage and assertions cannot be verified.",
-      "Without test results or logs, it cannot be confirmed that the feature works as specified or that edge cases (duplicate detection, escalation, unresolved filtering) are handled."
-    ],
-    "required_rework": "",
-    "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_VERIFIED -> ACCEPTED_WITH_LIMITATIONS: No actual test code or test execution reports are provided; only design and description markdown files are present.; Evidence does not show the modified source files (autonomous_cycle.py, generate_next_worker_prompt.py) with the required FailureMemory integration.; The claimed regression tests (tests/supervisor/test_failure_memory_persistence.py) are not included, so coverage and assertions cannot be verified.; Without test results or logs, it cannot be confirmed that the feature works as specified or that edge cases (duplicate detection, escalation, unresolved filtering) are handled.",
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.9,
-      "stub_detected": false,
-      "deficiencies": [
-        "No actual test code or test execution reports are provided; only design and description markdown files are present.",
-        "Evidence does not show the modified source files (autonomous_cycle.py, generate_next_worker_prompt.py) with the required FailureMemory integration.",
-        "The claimed regression tests (tests/supervisor/test_failure_memory_persistence.py) are not included, so coverage and assertions cannot be verified.",
-        "Without test results or logs, it cannot be confirmed that the feature works as specified or that edge cases (duplicate detection, escalation, unresolved filtering) are handled."
-      ],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "SHCPH-L6-TASKGEN",
-    "item_title": "Lane 6: Task generation repair \u2014 gap-ledger primary, advisory-only guard, hardcoded goals demoted",
+    "item_id": "L1-DEPTH-001",
+    "item_title": "Lane 1 SAL concept inventories verified \u2014 FODS 17, FODT 16, ZST 10 concepts",
     "declared_status": "completed",
     "supervisor_grade": "REWORK_REQUIRED",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/task-generation-source-of-truth-repair.md"
-    ],
-    "tests_supporting": [
-      "tests/supervisor/test_task_generation_queue.py"
-    ],
-    "tests_missing": [],
-    "acceptance_criteria_met": [
-      "Evidence found",
-      "No missing paths",
-      "Test content verified (1 files)"
-    ],
-    "acceptance_criteria_failed": [],
-    "required_rework": "Stub evidence detected (was ACCEPTED_VERIFIED): ['No actual test code or assertions are provided; only a description of intended tests.', 'Evidence file is a markdown summary without concrete test artifacts (e.g., pytest files, coverage reports).', 'Cannot verify that the regression tests cover the claimed scenarios (priority inversion, advisory-only guard, queue tracking).', \"Potential scope mismatch: the described tests are not shown, so it's unclear if they exercise the full feature set.\"]",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L6-TASKGEN.",
-    "semantic_verification": {
-      "adequate": false,
-      "confidence": 0.92,
-      "stub_detected": true,
-      "deficiencies": [
-        "No actual test code or assertions are provided; only a description of intended tests.",
-        "Evidence file is a markdown summary without concrete test artifacts (e.g., pytest files, coverage reports).",
-        "Cannot verify that the regression tests cover the claimed scenarios (priority inversion, advisory-only guard, queue tracking).",
-        "Potential scope mismatch: the described tests are not shown, so it's unclear if they exercise the full feature set."
-      ],
-      "llm_used": true
-    }
-  },
-  {
-    "item_id": "SHCPH-L7-CI",
-    "item_title": "Lane 7: CI gate hardening \u2014 || true removed from .NET build, continue-on-error for experimental only",
-    "declared_status": "completed",
-    "supervisor_grade": "REWORK_REQUIRED",
-    "evidence_found": true,
-    "evidence_paths": [
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/ci-hardening.md",
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/lane-ledger-contradiction-resolution.md"
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-fods.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-fodt.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-zst.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/sal-fact-target-assessment.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
@@ -241,64 +99,111 @@
       "No concrete test/criteria proof (path-only acceptance)"
     ],
     "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
+      "No raw proof, test content, or acceptance criteria verified",
+      "FODT concept inventory file is incomplete/truncated; does not list the required 16 concepts",
+      "No concept inventory provided for ZST format (expected 10 concepts)",
+      "Evidence consists only of static YAML inventories; lacks automated verification tests or reports confirming the mappings are correct",
+      "Missing evidence of fact verification (current_facts vs facts_needed) for FODT and ZST",
+      "No summary or count confirming that FODT meets the target of 16 concepts"
     ],
-    "required_rework": "Stub evidence detected (was ACCEPTED_WITH_LIMITATIONS): ['Evidence consists only of descriptive markdown without showing the actual .github/workflows/ci.yml changes or diffs.', 'No CI run logs or screenshots demonstrating that the `|| true` was removed and that builds now fail as expected for established projects.', 'No verification that experimental projects are configured with `continue-on-error: true` (e.g., step definitions or logs).', 'Included lane\u2011ledger contradiction resolution file is unrelated to the CI hardening work, indicating scope mismatch.', 'Absence of automated tests or assertions confirming the new behavior; only narrative description is provided.']",
-    "can_autonomously_repair": true,
-    "next_prompt_instruction": "REWORK: Evidence contains stub code. Provide real tests/evidence for SHCPH-L7-CI.",
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: FODT concept inventory file is incomplete/truncated; does not list the required 16 concepts; No concept inventory provided for ZST format (expected 10 concepts); Evidence consists only of static YAML inventories; lacks automated verification tests or reports confirming the mappings are correct; Missing evidence of fact verification (current_facts vs facts_needed) for FODT and ZST; No summary or count confirming that FODT meets the target of 16 concepts",
     "semantic_verification": {
-      "adequate": true,
-      "confidence": 0.22,
-      "stub_detected": true,
+      "adequate": false,
+      "confidence": 0.92,
+      "stub_detected": false,
       "deficiencies": [
-        "Evidence consists only of descriptive markdown without showing the actual .github/workflows/ci.yml changes or diffs.",
-        "No CI run logs or screenshots demonstrating that the `|| true` was removed and that builds now fail as expected for established projects.",
-        "No verification that experimental projects are configured with `continue-on-error: true` (e.g., step definitions or logs).",
-        "Included lane\u2011ledger contradiction resolution file is unrelated to the CI hardening work, indicating scope mismatch.",
-        "Absence of automated tests or assertions confirming the new behavior; only narrative description is provided."
+        "FODT concept inventory file is incomplete/truncated; does not list the required 16 concepts",
+        "No concept inventory provided for ZST format (expected 10 concepts)",
+        "Evidence consists only of static YAML inventories; lacks automated verification tests or reports confirming the mappings are correct",
+        "Missing evidence of fact verification (current_facts vs facts_needed) for FODT and ZST",
+        "No summary or count confirming that FODT meets the target of 16 concepts"
       ],
-      "llm_used": true,
-      "low_confidence_override": true
+      "llm_used": true
     }
   },
   {
-    "item_id": "SHCPH-L8-PILOT",
-    "item_title": "Lane 8: Controlled product healing pilot \u2014 ZST verification through healed governance machinery",
+    "item_id": "GAPLED-001",
+    "item_title": "Gap-ledger refresh: 55 foss_reduced entries closed (89 \u2192 34 open)",
     "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "supervisor_grade": "REWORK_REQUIRED",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/system-hardening-and-controlled-product-healing-20260614-915cfd2/controlled-product-healing-selection.md"
+      "reports/capability-layer/gap-ledger.json"
     ],
-    "tests_supporting": [
-      "tests/python/zst/test_rnext_zst_file_info.py"
-    ],
+    "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (1 files)"
+      "No concrete test/criteria proof (path-only acceptance)"
     ],
     "acceptance_criteria_failed": [
-      "Evidence consists only of a markdown summary; no actual test code, logs, or CI reports are provided.",
-      "Claims of \"10 tests, 10 passed\" are not substantiated with runnable test files or output artifacts.",
-      "No concrete proof that the healed governance machinery (validators, depth checks, failure memory, etc.) was exercised during the pilot.",
-      "Absence of coverage data or verification that the governance repairs are active and correctly configured.",
-      "Recommendation steps are present, but the pilot verification itself lacks verifiable artifacts."
+      "No raw proof, test content, or acceptance criteria verified",
+      "The JSON report does not provide a total count of foss_reduced entries closed, so the claim of 55 closures cannot be verified.",
+      "Only a partial list of gaps is shown; the overall open/closed counts (89 \u2192 34) are not demonstrated.",
+      "No automated test or script evidence is provided to validate that the gap ledger was refreshed as required.",
+      "The evidence consists solely of a static report without accompanying verification steps or assertions."
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_VERIFIED -> ACCEPTED_WITH_LIMITATIONS: Evidence consists only of a markdown summary; no actual test code, logs, or CI reports are provided.; Claims of \"10 tests, 10 passed\" are not substantiated with runnable test files or output artifacts.; No concrete proof that the healed governance machinery (validators, depth checks, failure memory, etc.) was exercised during the pilot.; Absence of coverage data or verification that the governance repairs are active and correctly configured.; Recommendation steps are present, but the pilot verification itself lacks verifiable artifacts.",
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: The JSON report does not provide a total count of foss_reduced entries closed, so the claim of 55 closures cannot be verified.; Only a partial list of gaps is shown; the overall open/closed counts (89 \u2192 34) are not demonstrated.; No automated test or script evidence is provided to validate that the gap ledger was refreshed as required.; The evidence consists solely of a static report without accompanying verification steps or assertions.",
     "semantic_verification": {
       "adequate": false,
       "confidence": 0.86,
       "stub_detected": false,
       "deficiencies": [
-        "Evidence consists only of a markdown summary; no actual test code, logs, or CI reports are provided.",
-        "Claims of \"10 tests, 10 passed\" are not substantiated with runnable test files or output artifacts.",
-        "No concrete proof that the healed governance machinery (validators, depth checks, failure memory, etc.) was exercised during the pilot.",
-        "Absence of coverage data or verification that the governance repairs are active and correctly configured.",
-        "Recommendation steps are present, but the pilot verification itself lacks verifiable artifacts."
+        "The JSON report does not provide a total count of foss_reduced entries closed, so the claim of 55 closures cannot be verified.",
+        "Only a partial list of gaps is shown; the overall open/closed counts (89 \u2192 34) are not demonstrated.",
+        "No automated test or script evidence is provided to validate that the gap ledger was refreshed as required.",
+        "The evidence consists solely of a static report without accompanying verification steps or assertions."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "REALWORLD-001",
+    "item_title": "Real-world file testing: 11 tests pass across 6 functions and 5 formats",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "samples/by-format/fods/minimal-spreadsheet.fods",
+      "samples/by-format/odt/valid/minimal-document.odt",
+      "samples/by-format/ods/valid/minimal-spreadsheet.ods",
+      "samples/by-format/dif/valid/minimal-2x2.dif",
+      "samples/by-format/ppm/valid/1x1-red.ppm",
+      "samples/by-format/csv/minimal-2x2.csv"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified",
+      "No test code or test runner output is provided; only raw sample files are shown.",
+      "Evidence does not demonstrate that 11 tests were executed or that they passed.",
+      "No mapping of tests to the claimed 6 functions and 5 formats is present.",
+      "Absence of assertions or validation logic; cannot verify that the files are being correctly processed.",
+      "Missing documentation of test results, logs, or coverage metrics to confirm acceptance criteria."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: No test code or test runner output is provided; only raw sample files are shown.; Evidence does not demonstrate that 11 tests were executed or that they passed.; No mapping of tests to the claimed 6 functions and 5 formats is present.; Absence of assertions or validation logic; cannot verify that the files are being correctly processed.; Missing documentation of test results, logs, or coverage metrics to confirm acceptance criteria.",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [
+        "No test code or test runner output is provided; only raw sample files are shown.",
+        "Evidence does not demonstrate that 11 tests were executed or that they passed.",
+        "No mapping of tests to the claimed 6 functions and 5 formats is present.",
+        "Absence of assertions or validation logic; cannot verify that the files are being correctly processed.",
+        "Missing documentation of test results, logs, or coverage metrics to confirm acceptance criteria."
       ],
       "llm_used": true
     }

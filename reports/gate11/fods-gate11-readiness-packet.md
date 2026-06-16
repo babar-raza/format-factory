@@ -1,7 +1,7 @@
 # FODS — Gate 11 Commercial Readiness Packet
 # Prepared by: Agent (agent-owned preparation — submission requires human authorization)
-# Prepared: 2026-06-12
-# Sprint: FORMAT-FACTORY-PRODUCT-GATE11-PREPARATION-AND-GAP-DEEPENING-001
+# Prepared: 2026-06-12 (Updated: 2026-06-16, SAL facts deepened)
+# Sprint: PLAN-HARDENING-EXECUTION-20260616 (original: FORMAT-FACTORY-PRODUCT-GATE11-PREPARATION-AND-GAP-DEEPENING-001)
 # Status: PREPARATION ONLY — NOT SUBMITTED — Human approval from Babar Raza required before submission
 
 ---
@@ -25,19 +25,19 @@
 |------|--------|-------------------|
 | G1 (Candidate Approval) | PASSED | `prototypes/by-format/fods/` exists |
 | G2 (Spec Authority) | PASSED | OASIS ODF 1.3 spec acquired |
-| G3 (Prototype Execution) | PASSED | `src/python/fods/` + 933 Python test functions |
+| G3 (Prototype Execution) | PASSED | `src/python/fods/` + 1039 Python test functions |
 | G4 (Parser Prototype) | PASSED | `src/python/fods/parser.py` — streaming XML, defusedxml |
 | G5 (Neutral Model) | PASSED | `src/python/fods/neutral_model.py` — 6 entities (Workbook/Sheet/Row/Cell/Formula/Warning) |
 | G6 (Oracle Comparison) | PASSED | Oracle tests exist, CSV export verified |
 | G7 (Fuzz/Security) | PASSED | 100MB guard, DTD prohibited, defusedxml, 64MB guard |
 | G8 (Security Review) | PASSED | defusedxml, DTD prohibited, malformed-input tests pass |
 | G9 (Dogfood) | PASSED | FODS→CSV export chain verified |
-| G10 (FOSS POC Complete) | PASSED (Python) | 933 Python test functions; parse→inspect→export verified |
-| G11-E (.NET prototype) | IN_PROGRESS | .NET: FodsParser.cs + FodsWriter.cs + 157 .NET tests |
+| G10 (FOSS POC Complete) | PASSED (Python) | 1039 Python test functions; parse→inspect→export verified |
+| G11-E (.NET prototype - VERIFIED) | IN_PROGRESS | .NET: FodsParser.cs + FodsWriter.cs + FodsPdfExporter.cs + 574 .NET tests |
 | G11-G (Commercial readiness) | NOT APPROVED | Requires Babar Raza approval |
 
 **Claimed gate:** G11 (commercial_readiness_in_progress)
-**Evidence-backed gate:** G10 (Python FOSS); G11-E (.NET prototype)
+**Evidence-backed gate:** G10 (Python FOSS); G11-E (.NET prototype - VERIFIED)
 
 ---
 
@@ -60,8 +60,8 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Python test functions | **933** |
-| Test files | 50 files in `tests/python/fods/` |
+| Total Python test functions | **1039** |
+| Test files | 76 files in `tests/python/fods/` |
 | Coverage depth | parse, neutral model, public API, security, fuzz, roundtrip, write, CSV export |
 | Security tests | `test_parser_security.py` — malformed XML, DTD injection, oversized input |
 | Roundtrip tests | `test_r76_fods_edit_save.py`, `test_r78_fods_end_to_end_workflow.py` |
@@ -101,7 +101,7 @@ Python FOSS has **read and basic write** via `writer.py`, but full write capabil
 | FodsJsonExporter.cs | `src/net/fods/FodsJsonExporter.cs` |
 | Model/ | `src/net/fods/Model/` (FodsSheet, FodsRow, FodsCell) |
 
-**Estimated .NET tests:** 157 (from `registry/format-completion-matrix.yaml` field `tests_net_count: 157`)
+**Verified .NET tests:** 574 (FodsPdfExporter.cs added 2026-06-16, +21 PDF export tests)
 
 ### 4B. .NET Capabilities Verified
 
@@ -138,6 +138,19 @@ Python FOSS has **read and basic write** via `writer.py`, but full write capabil
 
 ---
 
+## 5B. Specification Authority (SAL) Facts
+
+| Metric | Value |
+|--------|-------|
+| Verified spec facts | **36** (FACT-FODS-001 through FACT-FODS-036) |
+| Fact source | `.local/spec-cache/fods/1.3/workbench/verified-facts-review.yaml` |
+| Spec reference | ODF 1.3 (OASIS) |
+| Key areas covered | office:document root, table:table, table:table-row, table:table-cell, office:value-type, value-type-to-attribute mapping (Table 14), office:meta, office:font-face-decls, office:automatic-styles, number:number-style, number:date-style, office:spreadsheet, table:table-column, table:table-header-rows |
+| QName ontology | 9 YAMLs deployed to `registry/odf-ontology/` |
+| Capability gaps | 10 open (all commercial-track) |
+
+---
+
 ## 6. Remaining Gaps Before Full G11
 
 | Gap | Severity | Blocker for G11-G? |
@@ -170,7 +183,7 @@ This packet is agent-prepared. The following decisions require **human authoriza
 | Format matrix entry | `registry/format-completion-matrix.yaml` → format_id: fods |
 | Python source | `src/python/fods/` |
 | .NET source | `src/net/fods/` |
-| Python tests | `tests/python/fods/` (50 files, 648 test functions) |
+| Python tests | `tests/python/fods/` (76 files, 1039 test functions) |
 | Security tests | `tests/python/fods/test_parser_security.py` |
 | Roundtrip tests | `tests/python/fods/test_r76_fods_edit_save.py` |
 | Product code ledger | `reports/r90/product-code-change-ledger.json` (FODS entries) |

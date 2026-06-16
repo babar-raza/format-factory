@@ -338,7 +338,27 @@ def check_item(item: dict) -> dict:
                     "detail": f"Unknown fact IDs: {unknown_refs}",
                 }
 
-    # Case 1: has valid spec_fact_refs (format OK + registry check passed) — PASS
+    # Case 1a: check for pending/needs_review refs — authority debt (non-blocking)
+    if has_refs:
+        pending_refs = [r for r in spec_fact_refs if registry.get(r) in ("pending_verification", "needs_review")]
+        if pending_refs:
+            verified_refs = [r for r in spec_fact_refs if r not in pending_refs]
+            return {
+                "item_id": item_id,
+                "item_type": item_type,
+                "blocking_type": False,
+                "compliant": True,
+                "violation": None,
+                "grade_impact": "debt",
+                "detail": (
+                    f"{len(pending_refs)} spec_fact_ref(s) have unverified status "
+                    f"(pending_verification or needs_review): {pending_refs}. "
+                    f"Verified refs: {verified_refs}. "
+                    f"Run run_fact_verification.py to promote pending facts to verified."
+                ),
+            }
+
+    # Case 1b: has valid spec_fact_refs (format OK + registry check passed + all verified) — PASS
     if has_refs:
         return {
             "item_id": item_id,

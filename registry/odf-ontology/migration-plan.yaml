@@ -1,0 +1,118 @@
+---
+# Migration Plan — Format Factory
+# Step-by-step plan for migrating from legacy format-prefixed names to canonical spec-literal names
+schema_version: "1.0"
+generated_at: "2026-06-15"
+
+# Migration is BLOCKED until system-healing gate passes (Lanes 1, 3, 6 complete)
+# This plan is a DESIGN DOCUMENT for Lane 9/10 execution
+
+phases:
+  phase_1_canonical_classes:
+    title: "Create canonical class library"
+    wave: "Wave 4 (Architecture/regeneration planning)"
+    status: "not_started"
+    steps:
+      - id: "M1.1"
+        action: "Create src/net/FormatFactory/Office/ namespace with Document.cs, Body.cs, Spreadsheet.cs, Text.cs"
+        depends_on: []
+      - id: "M1.2"
+        action: "Create src/net/FormatFactory/Table/ namespace with Table.cs, TableRow.cs, TableCell.cs, TableColumn.cs, CoveredTableCell.cs, TypedValue.cs, Formula.cs"
+        depends_on: ["M1.1"]
+      - id: "M1.3"
+        action: "Create src/net/FormatFactory/Text/ namespace with Paragraph.cs, Heading.cs, Span.cs, List.cs, ListItem.cs, Section.cs, Note.cs, Anchor.cs"
+        depends_on: ["M1.1"]
+      - id: "M1.4"
+        action: "Create src/net/FormatFactory/Style/ namespace with Style.cs, TextProperties.cs, ParagraphProperties.cs, TableCellProperties.cs"
+        depends_on: ["M1.1"]
+      - id: "M1.5"
+        action: "Create src/net/FormatFactory/Draw/ namespace with Frame.cs, Image.cs"
+        depends_on: ["M1.1"]
+      - id: "M1.6"
+        action: "Add spec_qname attribute to each canonical class (e.g., [SpecQName('table:table-cell')])"
+        depends_on: ["M1.2", "M1.3", "M1.4", "M1.5"]
+
+  phase_2_facade_migration:
+    title: "Convert existing classes to facades"
+    wave: "Wave 5 (Product rebuild)"
+    status: "not_started"
+    depends_on: ["phase_1_canonical_classes"]
+    steps:
+      - id: "M2.1"
+        action: "Create src/net/fods/Compat/ directory"
+        depends_on: []
+      - id: "M2.2"
+        action: "Move FodsDocument.cs to Compat/, make it delegate to Office.Document"
+        depends_on: ["M2.1"]
+      - id: "M2.3"
+        action: "Move FodsSheet.cs to Compat/, make it delegate to Table.Table"
+        depends_on: ["M2.1"]
+      - id: "M2.4"
+        action: "Move FodsRow.cs to Compat/, make it delegate to Table.TableRow"
+        depends_on: ["M2.1"]
+      - id: "M2.5"
+        action: "Move FodsCell.cs to Compat/, make it delegate to Table.TableCell"
+        depends_on: ["M2.1"]
+      - id: "M2.6"
+        action: "Create src/net/fodt/Compat/ directory, move FodtDocument.cs, FodtParagraph.cs, FodtBody.cs"
+        depends_on: ["M2.1"]
+
+  phase_3_test_migration:
+    title: "Update tests to use canonical classes"
+    wave: "Wave 5"
+    status: "not_started"
+    depends_on: ["phase_2_facade_migration"]
+    steps:
+      - id: "M3.1"
+        action: "Add tests for canonical classes (Table.TableCell, Text.Paragraph, etc.)"
+        depends_on: []
+      - id: "M3.2"
+        action: "Verify existing facade-based tests still pass (backward compat)"
+        depends_on: ["M3.1"]
+      - id: "M3.3"
+        action: "Add spec-parity validator tests (SpecParityQNameValidator, ContainmentGraphValidator)"
+        depends_on: ["M3.1"]
+
+  phase_4_python_model_layer:
+    title: "Add Python class-based model layer"
+    wave: "Wave 5"
+    status: "not_started"
+    depends_on: ["phase_1_canonical_classes"]
+    steps:
+      - id: "M4.1"
+        action: "Create src/python/fods/table/ with table.py, table_row.py, table_cell.py"
+        depends_on: []
+      - id: "M4.2"
+        action: "Create src/python/fodt/text/ with paragraph.py, heading.py, span.py"
+        depends_on: []
+      - id: "M4.3"
+        action: "Wrap existing dict-based neutral_model with class accessors"
+        depends_on: ["M4.1", "M4.2"]
+      - id: "M4.4"
+        action: "Keep functional API backward-compatible (existing functions remain)"
+        depends_on: ["M4.3"]
+
+  phase_5_recompute:
+    title: "Post-migration recompute"
+    wave: "Wave 7"
+    status: "not_started"
+    depends_on: ["phase_3_test_migration", "phase_4_python_model_layer"]
+    steps:
+      - id: "M5.1"
+        action: "Recompute capability maps with canonical class references"
+        depends_on: []
+      - id: "M5.2"
+        action: "Update gap ledger with canonical class targets"
+        depends_on: ["M5.1"]
+      - id: "M5.3"
+        action: "Run spec-parity validators on migrated code"
+        depends_on: ["M5.2"]
+      - id: "M5.4"
+        action: "Generate updated Gate 11 readiness projection"
+        depends_on: ["M5.3"]
+
+blockers:
+  - "System-healing gate must pass before Phase 2+ execution"
+  - "Lane 1 SAL pipeline must be wired for deterministic fact regeneration"
+  - "Lane 3 compiler must exist for automated task generation"
+  - "Gate 11 approval requires Babar Raza — migration does not change this"

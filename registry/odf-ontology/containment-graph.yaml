@@ -1,0 +1,118 @@
+---
+# Containment Graph — Format Factory
+# Parent-child containment relationships from ODF 1.3 spec
+schema_version: "1.0"
+generated_at: "2026-06-15"
+
+# Format: parent -> [children]
+# Each edge represents "parent element may contain child element"
+
+containment:
+  # Document root
+  "Office.Document":
+    children:
+      - "Office.Body"
+      - "Office.AutomaticStyles"
+    spec_ref: "3.1.2"
+
+  # Body splits by document type
+  "Office.Body":
+    children:
+      - "Office.Spreadsheet"  # for FODS
+      - "Office.Text"          # for FODT
+    spec_ref: "3.3"
+
+  # Spreadsheet contains tables
+  "Office.Spreadsheet":
+    children:
+      - "Table.Table"
+    spec_ref: "3.7"
+
+  # Text document contains paragraphs, headings, lists, sections
+  "Office.Text":
+    children:
+      - "Text.Paragraph"
+      - "Text.Heading"
+      - "Text.List"
+      - "Text.Section"
+    spec_ref: "3.4"
+
+  # Table structure
+  "Table.Table":
+    children:
+      - "Table.TableColumn"
+      - "Table.TableRow"
+    spec_ref: "9.1.2"
+
+  "Table.TableRow":
+    children:
+      - "Table.TableCell"
+      - "Table.CoveredTableCell"
+    spec_ref: "9.1.3"
+
+  "Table.TableCell":
+    children:
+      - "Text.Paragraph"
+      - "Table.Table"  # nested tables
+    spec_ref: "9.1.4"
+    value_attrs:
+      - "Table.TypedValue"
+      - "Table.Formula"
+
+  # Text structure
+  "Text.Paragraph":
+    children:
+      - "Text.Span"
+      - "Text.Anchor"
+      - "Text.Note"
+      - "Draw.Frame"
+    spec_ref: "5.1.3"
+
+  "Text.Heading":
+    children:
+      - "Text.Span"
+      - "Text.Anchor"
+    spec_ref: "5.1.2"
+
+  "Text.List":
+    children:
+      - "Text.ListItem"
+    spec_ref: "5.3.1"
+
+  "Text.ListItem":
+    children:
+      - "Text.Paragraph"
+      - "Text.List"  # nested lists
+    spec_ref: "5.3.3"
+
+  "Text.Section":
+    children:
+      - "Text.Paragraph"
+      - "Text.Heading"
+      - "Text.List"
+      - "Text.Section"  # nested sections
+    spec_ref: "5.4"
+
+  "Text.Note":
+    children:
+      - "Text.Paragraph"
+    spec_ref: "6.3.2"
+
+  # Draw structure
+  "Draw.Frame":
+    children:
+      - "Draw.Image"
+    spec_ref: "10.4.2"
+
+  # Style structure
+  "Style.Style":
+    children:
+      - "Style.TextProperties"
+      - "Style.ParagraphProperties"
+      - "Style.TableCellProperties"
+    spec_ref: "16.2"
+
+  "Office.AutomaticStyles":
+    children:
+      - "Style.Style"
+    spec_ref: "3.15.3"

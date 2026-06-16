@@ -1,0 +1,194 @@
+---
+# Attribute-Property Map — Format Factory
+# Maps ODF element attributes to canonical class properties
+schema_version: "1.0"
+generated_at: "2026-06-15"
+
+mappings:
+  "Office.Document":
+    "office:mimetype":
+      property: "mimetype"
+      type: "string"
+      required: true
+      spec_ref: "19.379"
+    "office:version":
+      property: "version"
+      type: "string"
+      spec_ref: "19.386"
+
+  "Table.Table":
+    "table:name":
+      property: "name"
+      type: "string"
+      required: true
+      spec_ref: "19.675"
+    "table:style-name":
+      property: "style_name"
+      type: "string"
+      spec_ref: "19.727"
+    "table:print":
+      property: "print_ranges"
+      type: "string"
+      spec_ref: "19.683"
+
+  "Table.TableRow":
+    "table:style-name":
+      property: "style_name"
+      type: "string"
+      spec_ref: "19.727"
+    "table:number-rows-repeated":
+      property: "repeated"
+      type: "int"
+      default: 1
+      spec_ref: "19.674"
+
+  "Table.TableCell":
+    "office:value-type":
+      property: "value_type"
+      type: "string"
+      spec_ref: "19.389"
+    "office:value":
+      property: "value"
+      type: "double"
+      spec_ref: "19.388"
+    "office:date-value":
+      property: "date_value"
+      type: "date"
+      spec_ref: "19.371"
+    "office:boolean-value":
+      property: "boolean_value"
+      type: "boolean"
+      spec_ref: "19.367"
+    "office:string-value":
+      property: "string_value"
+      type: "string"
+      spec_ref: "19.385"
+    "table:formula":
+      property: "formula"
+      type: "string"
+      spec_ref: "19.641"
+    "table:style-name":
+      property: "style_name"
+      type: "string"
+      spec_ref: "19.727"
+    "table:number-columns-spanned":
+      property: "columns_spanned"
+      type: "int"
+      default: 1
+      spec_ref: "19.672"
+    "table:number-rows-spanned":
+      property: "rows_spanned"
+      type: "int"
+      default: 1
+      spec_ref: "19.673"
+
+  "Table.TableColumn":
+    "table:style-name":
+      property: "style_name"
+      type: "string"
+      spec_ref: "19.727"
+    "table:default-cell-style-name":
+      property: "default_cell_style_name"
+      type: "string"
+      spec_ref: "19.623"
+    "table:number-columns-repeated":
+      property: "repeated"
+      type: "int"
+      default: 1
+      spec_ref: "19.671"
+
+  "Text.Paragraph":
+    "text:style-name":
+      property: "style_name"
+      type: "string"
+      spec_ref: "19.880"
+
+  "Text.Heading":
+    "text:style-name":
+      property: "style_name"
+      type: "string"
+      spec_ref: "19.880"
+    "text:outline-level":
+      property: "outline_level"
+      type: "int"
+      required: true
+      spec_ref: "19.850"
+
+  "Text.Span":
+    "text:style-name":
+      property: "style_name"
+      type: "string"
+      spec_ref: "19.880"
+
+  "Text.List":
+    "text:style-name":
+      property: "style_name"
+      type: "string"
+      spec_ref: "19.880"
+
+  "Text.Section":
+    "text:name":
+      property: "name"
+      type: "string"
+      required: true
+      spec_ref: "19.842"
+    "text:style-name":
+      property: "style_name"
+      type: "string"
+      spec_ref: "19.880"
+
+  "Text.Note":
+    "text:note-class":
+      property: "note_class"
+      type: "string"
+      required: true
+      spec_ref: "19.845"
+
+  "Text.Anchor":
+    "xlink:href":
+      property: "href"
+      type: "string"
+      required: true
+      spec_ref: "19.916"
+
+  "Style.Style":
+    "style:name":
+      property: "name"
+      type: "string"
+      required: true
+      spec_ref: "19.502"
+    "style:family":
+      property: "family"
+      type: "string"
+      required: true
+      spec_ref: "19.480"
+    "style:parent-style-name":
+      property: "parent_style_name"
+      type: "string"
+      spec_ref: "19.510"
+
+  "Draw.Frame":
+    "draw:name":
+      property: "name"
+      type: "string"
+      spec_ref: "19.200"
+    "svg:width":
+      property: "width"
+      type: "length"
+      spec_ref: "19.571"
+    "svg:height":
+      property: "height"
+      type: "length"
+      spec_ref: "19.543"
+    "svg:x":
+      property: "x"
+      type: "length"
+      spec_ref: "19.573"
+    "svg:y":
+      property: "y"
+      type: "length"
+      spec_ref: "19.574"
+    "text:anchor-type":
+      property: "anchor_type"
+      type: "string"
+      spec_ref: "19.765"
