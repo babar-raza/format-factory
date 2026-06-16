@@ -420,3 +420,341 @@ def odt_longest_paragraph(file_path: str | Path) -> int:
 def odt_has_tables(file_path: str | Path) -> bool:
     """Return True if the ODT document contains at least one table."""
     return odt_table_count(file_path) > 0
+
+
+def odt_avg_paragraph_length(file_path: str | Path) -> float:
+    """Return the average character length of paragraphs.
+
+    Args:
+        file_path: Path to an ODT file.
+
+    Returns:
+        Float average characters per paragraph, or 0.0 if no paragraphs.
+    """
+    para_count = odt_paragraph_count(file_path)
+    if para_count == 0:
+        return 0.0
+    return odt_char_count(file_path) / para_count
+
+
+def odt_words_per_sentence(file_path: str | Path) -> float:
+    """Return the average number of words per sentence.
+
+    Args:
+        file_path: Path to an ODT file.
+
+    Returns:
+        Float average words per sentence, or 0.0 if no sentences.
+    """
+    sentence_count = odt_sentence_count(file_path)
+    if sentence_count == 0:
+        return 0.0
+    return odt_word_count(file_path) / sentence_count
+
+
+def odt_vocabulary_richness(file_path: str | Path) -> float:
+    """Return vocabulary richness: unique_words / total_words.
+
+    Also known as type-token ratio (TTR). Higher values mean more
+    diverse vocabulary.
+
+    Args:
+        file_path: Path to an ODT file.
+
+    Returns:
+        Float ratio 0.0-1.0, or 0.0 if no words.
+    """
+    total = odt_word_count(file_path)
+    if total == 0:
+        return 0.0
+    unique = odt_unique_word_count(file_path)
+    return unique / total
+
+
+def odt_chars_per_word(file_path: str | Path) -> float:
+    """Return the average number of characters per word.
+
+    Args:
+        file_path: Path to an ODT file.
+
+    Returns:
+        Float average, or 0.0 if no words.
+    """
+    words = odt_word_count(file_path)
+    if words == 0:
+        return 0.0
+    return odt_char_count(file_path) / words
+
+
+def odt_has_headings(file_path: str | Path) -> bool:
+    """Return True if the ODT document contains at least one heading."""
+    doc = parse_odt_strict(file_path)
+    return len(doc.headings) > 0
+
+
+def odt_max_paragraph_length(file_path: str | Path) -> int:
+    """Return the character count of the longest paragraph. Returns 0 if none."""
+    doc = parse_odt_strict(file_path)
+    if not doc.paragraphs:
+        return 0
+    return max(len(p.text) for p in doc.paragraphs)
+
+
+def odt_min_paragraph_length(file_path: str | Path) -> int:
+    """Return the character count of the shortest paragraph. Returns 0 if none."""
+    doc = parse_odt_strict(file_path)
+    if not doc.paragraphs:
+        return 0
+    return min(len(p.text) for p in doc.paragraphs)
+
+
+def odt_heading_to_paragraph_ratio(file_path: str | Path) -> float:
+    """Return the ratio of headings to paragraphs. 0.0 if no paragraphs."""
+    doc = parse_odt_strict(file_path)
+    if not doc.paragraphs:
+        return 0.0
+    return len(doc.headings) / len(doc.paragraphs)
+
+
+def odt_total_elements(file_path: str | Path) -> int:
+    """Return the total count of parsed elements (paragraphs + headings)."""
+    doc = parse_odt_strict(file_path)
+    return len(doc.paragraphs) + len(doc.headings)
+
+
+def odt_is_empty(file_path: str | Path) -> bool:
+    """Return True if the document has no paragraphs or headings."""
+    doc = parse_odt_strict(file_path)
+    return len(doc.paragraphs) == 0 and len(doc.headings) == 0
+
+
+def odt_shortest_word(file_path: str | Path) -> int:
+    """Return the length of the shortest word across all paragraphs. 0 if none."""
+    doc = parse_odt_strict(file_path)
+    words = []
+    for p in doc.paragraphs:
+        words.extend(p.text.split())
+    if not words:
+        return 0
+    return min(len(w) for w in words)
+
+
+def odt_paragraph_density(file_path: str | Path) -> float:
+    """Return total paragraph characters / total elements. 0.0 if no elements."""
+    doc = parse_odt_strict(file_path)
+    total_elements = len(doc.paragraphs) + len(doc.headings)
+    if total_elements == 0:
+        return 0.0
+    total_chars = sum(len(p.text) for p in doc.paragraphs)
+    return total_chars / total_elements
+
+
+def odt_heading_density(file_path: str | Path) -> float:
+    """Return heading count / total elements. 0.0 if no elements."""
+    doc = parse_odt_strict(file_path)
+    total = len(doc.paragraphs) + len(doc.headings)
+    if total == 0:
+        return 0.0
+    return len(doc.headings) / total
+
+
+def odt_longest_word(file_path: str | Path) -> int:
+    """Return the length of the longest word across all paragraphs. 0 if none."""
+    doc = parse_odt_strict(file_path)
+    words = []
+    for p in doc.paragraphs:
+        words.extend(p.text.split())
+    if not words:
+        return 0
+    return max(len(w) for w in words)
+
+
+def odt_list_to_paragraph_ratio(file_path: str | Path) -> float:
+    """Return list count / paragraph count. 0.0 if no paragraphs."""
+    paras = odt_paragraph_count(file_path)
+    if paras == 0:
+        return 0.0
+    return odt_list_count(file_path) / paras
+
+
+def odt_has_lists(file_path: str | Path) -> bool:
+    """Return True if the document contains at least one list."""
+    return odt_list_count(file_path) > 0
+
+
+def odt_has_unicode(file_path: str | Path) -> bool:
+    """Return True if any paragraph contains non-ASCII (Unicode) characters."""
+    doc = parse_odt_strict(file_path)
+    return any(ord(c) > 127 for p in doc.paragraphs for c in p.text)
+
+
+def odt_max_words_per_paragraph(file_path: str | Path) -> int:
+    """Return the maximum word count in any paragraph; 0 if no paragraphs."""
+    doc = parse_odt_strict(file_path)
+    counts = [len(p.text.split()) for p in doc.paragraphs if p.text.strip()]
+    return max(counts) if counts else 0
+
+
+def odt_min_words_per_paragraph(file_path: str | Path) -> int:
+    """Return the minimum word count in any non-empty paragraph; 0 if none."""
+    doc = parse_odt_strict(file_path)
+    counts = [len(p.text.split()) for p in doc.paragraphs if p.text.strip()]
+    return min(counts) if counts else 0
+
+
+def odt_word_density(file_path: str | Path) -> float:
+    """Return words / paragraphs. 0.0 if no paragraphs."""
+    doc = parse_odt_strict(file_path)
+    paras = len(doc.paragraphs)
+    if paras == 0:
+        return 0.0
+    words = sum(len(p.text.split()) for p in doc.paragraphs)
+    return words / paras
+
+
+def odt_sentence_density(file_path: str | Path) -> float:
+    """Return sentences / paragraphs. 0.0 if no paragraphs."""
+    paras = odt_paragraph_count(file_path)
+    if paras == 0:
+        return 0.0
+    return odt_sentence_count(file_path) / paras
+
+
+def odt_table_density(file_path: str | Path) -> float:
+    """Return tables / total elements (paragraphs + headings). 0.0 if no elements."""
+    total = odt_total_elements(file_path)
+    if total == 0:
+        return 0.0
+    return odt_table_count(file_path) / total
+
+
+def odt_nonempty_paragraph_count(file_path: str | Path) -> int:
+    """Return the count of paragraphs that contain non-whitespace text."""
+    doc = parse_odt_strict(file_path)
+    return sum(1 for p in doc.paragraphs if p.text.strip())
+
+
+def odt_char_density(file_path: str | Path) -> float:
+    """Return characters / paragraphs. 0.0 if no paragraphs."""
+    doc = parse_odt_strict(file_path)
+    paras = len(doc.paragraphs)
+    if paras == 0:
+        return 0.0
+    chars = sum(len(p.text) for p in doc.paragraphs)
+    return chars / paras
+
+
+def odt_empty_paragraph_count(file_path: str | Path) -> int:
+    """Return the count of paragraphs with only whitespace text."""
+    doc = parse_odt_strict(file_path)
+    return sum(1 for p in doc.paragraphs if not p.text.strip())
+
+
+def odt_words_per_heading(file_path: str | Path) -> float:
+    """Return total words / headings. 0.0 if no headings."""
+    doc = parse_odt_strict(file_path)
+    headings = len(doc.headings)
+    if headings == 0:
+        return 0.0
+    words = sum(len(p.text.split()) for p in doc.paragraphs)
+    return words / headings
+
+
+def odt_avg_words_per_sentence(file_path: str | Path) -> float:
+    """Return average words per sentence. 0.0 if no sentences."""
+    doc = parse_odt_strict(file_path)
+    sentences = odt_sentence_count(file_path)
+    if sentences == 0:
+        return 0.0
+    words = sum(len(p.text.split()) for p in doc.paragraphs)
+    return words / sentences
+
+
+def odt_shortest_paragraph_length(file_path: str | Path) -> int:
+    """Return the character length of the shortest non-empty paragraph. 0 if none."""
+    doc = parse_odt_strict(file_path)
+    lengths = [len(p.text) for p in doc.paragraphs if p.text.strip()]
+    if not lengths:
+        return 0
+    return min(lengths)
+
+
+def odt_max_paragraph_length(file_path: str | Path) -> int:
+    """Return the character length of the longest paragraph. 0 if none."""
+    doc = parse_odt_strict(file_path)
+    lengths = [len(p.text) for p in doc.paragraphs if p.text.strip()]
+    if not lengths:
+        return 0
+    return max(lengths)
+
+
+def odt_avg_chars_per_paragraph(file_path: str | Path) -> float:
+    """Return the average character count per non-empty paragraph. 0.0 if none."""
+    doc = parse_odt_strict(file_path)
+    lengths = [len(p.text) for p in doc.paragraphs if p.text.strip()]
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def odt_paragraph_variance(file_path: str | Path) -> float:
+    """Return variance of word counts across non-empty paragraphs. 0.0 if fewer than 2."""
+    doc = parse_odt_strict(file_path)
+    counts = [len(p.text.split()) for p in doc.paragraphs if p.text.strip()]
+    if len(counts) < 2:
+        return 0.0
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+def odt_is_single_paragraph(file_path: str | Path) -> bool:
+    """Return True if the document has exactly one non-empty paragraph."""
+    doc = parse_odt_strict(file_path)
+    nonempty = [p for p in doc.paragraphs if p.text.strip()]
+    return len(nonempty) == 1
+
+
+def odt_list_density(file_path: str | Path) -> float:
+    """Return lists / total elements. 0.0 if no elements."""
+    total = odt_total_elements(file_path)
+    if total == 0:
+        return 0.0
+    return odt_list_count(file_path) / total
+
+
+def odt_heading_per_paragraph(file_path: str | Path) -> float:
+    """Return headings / paragraphs. 0.0 if no paragraphs."""
+    paras = odt_paragraph_count(file_path)
+    if paras == 0:
+        return 0.0
+    return odt_heading_count(file_path) / paras
+
+
+def odt_is_multi_paragraph(file_path: str | Path) -> bool:
+    """Return True if the document has more than one non-empty paragraph."""
+    doc = parse_odt_strict(file_path)
+    nonempty = [p for p in doc.paragraphs if p.text.strip()]
+    return len(nonempty) > 1
+
+
+def odt_avg_chars_per_word(file_path: str | Path) -> float:
+    """Return average characters per word. 0.0 if no words."""
+    words = odt_word_count(file_path)
+    if words == 0:
+        return 0.0
+    return odt_char_count(file_path) / words
+
+
+def odt_is_content_rich(file_path: str | Path) -> bool:
+    """Return True if the document has more than 2 words."""
+    return odt_word_count(file_path) > 2
+
+
+def odt_whitespace_ratio(file_path: str | Path) -> float:
+    """Return ratio of whitespace characters to total characters. 0.0 if empty."""
+    doc = parse_odt_strict(file_path)
+    text = " ".join(p.text for p in doc.paragraphs)
+    if not text:
+        return 0.0
+    ws = sum(1 for ch in text if ch.isspace())
+    return ws / len(text)

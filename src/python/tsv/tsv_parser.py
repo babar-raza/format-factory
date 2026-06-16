@@ -1105,3 +1105,266 @@ def tsv_header_count(file_path: "str | Path") -> int:
     doc = parse_tsv_strict(file_path)
     headers = doc.get("headers", [])
     return len(headers) if headers else 0
+
+
+def tsv_min_cell_length(file_path: "str | Path") -> int:
+    """Return the minimum cell length across all data rows.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer min cell length, or 0 for empty files.
+    """
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    min_len = None
+    for row in rows:
+        for cell in row:
+            cell_str = str(cell) if cell is not None else ""
+            if min_len is None or len(cell_str) < min_len:
+                min_len = len(cell_str)
+    return min_len if min_len is not None else 0
+
+
+def tsv_all_rows_same_length(file_path: "str | Path") -> bool:
+    """Return True if all data rows have the same number of fields.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        True if every row has equal field count; True for empty files.
+    """
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return True
+    expected = len(rows[0])
+    return all(len(row) == expected for row in rows)
+
+
+def tsv_all_rows(file_path: "str | Path") -> list:
+    """Return all data rows from a TSV file as a list of lists.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        List of lists, where each inner list is a row of string values.
+    """
+    doc = parse_tsv_strict(file_path)
+    return list(doc.get("rows", []))
+
+
+def tsv_max_numeric_value(file_path: "str | Path"):
+    """Return the maximum numeric value across all cells, or None if no numeric cells."""
+    doc = parse_tsv_strict(file_path)
+    nums = []
+    for row in doc.get("rows", []):
+        for field in row:
+            try:
+                nums.append(float(field))
+            except (ValueError, TypeError):
+                pass
+    return max(nums) if nums else None
+
+
+def tsv_has_empty_rows(file_path: "str | Path") -> bool:
+    """Return True if any row has all-empty fields."""
+    doc = parse_tsv_strict(file_path)
+    for row in doc.get("rows", []):
+        if all(f.strip() == "" for f in row):
+            return True
+    return False
+
+
+def tsv_is_rectangular(file_path: "str | Path") -> bool:
+    """Return True if all rows have the same number of fields."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return True
+    first_len = len(rows[0])
+    return all(len(row) == first_len for row in rows)
+
+
+def tsv_empty_cell_count(file_path: "str | Path") -> int:
+    """Return the count of empty cells across all rows."""
+    doc = parse_tsv_strict(file_path)
+    count = 0
+    for row in doc.get("rows", []):
+        for f in row:
+            if f.strip() == "":
+                count += 1
+    return count
+
+
+def tsv_data_density(file_path: "str | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    total = tsv_total_cell_count(file_path)
+    if total == 0:
+        return 0.0
+    nonempty = tsv_nonempty_cell_count(file_path)
+    return nonempty / total
+
+
+def tsv_min_numeric_value(file_path: "str | Path"):
+    """Return the minimum numeric value across all cells, or None if no numeric cells."""
+    doc = parse_tsv_strict(file_path)
+    nums = []
+    for row in doc.get("rows", []):
+        for field in row:
+            try:
+                nums.append(float(field))
+            except (ValueError, TypeError):
+                pass
+    return min(nums) if nums else None
+
+
+def tsv_is_single_column(file_path: "str | Path") -> bool:
+    """Return True if all rows have exactly one field."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return False
+    return all(len(row) == 1 for row in rows)
+
+
+def tsv_is_all_numeric(file_path: "str | Path") -> bool:
+    """Return True if every non-empty field can be parsed as a number."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    found_any = False
+    for row in rows:
+        for field in row:
+            v = field.strip()
+            if v:
+                found_any = True
+                try:
+                    float(v)
+                except (ValueError, TypeError):
+                    return False
+    return found_any
+
+
+def tsv_max_field_length(file_path: "str | Path") -> int:
+    """Return the length of the longest cell value. 0 if no cells."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return 0
+    return max((len(f) for row in rows for f in row), default=0)
+
+
+def tsv_unique_value_count(file_path: "str | Path") -> int:
+    """Return the count of distinct non-empty cell values."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    values = set()
+    for row in rows:
+        for f in row:
+            v = f.strip()
+            if v:
+                values.add(v)
+    return len(values)
+
+
+def tsv_row_length_variance(file_path: "str | Path") -> float:
+    """Return variance of row lengths (field counts). 0.0 if fewer than 2 rows."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if len(rows) < 2:
+        return 0.0
+    lengths = [len(row) for row in rows]
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def tsv_column_type_counts(file_path: "str | Path") -> dict:
+    """Return dict with counts of numeric and string columns."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return {"numeric": 0, "string": 0}
+    col_count = max(len(row) for row in rows)
+    numeric = 0
+    for ci in range(col_count):
+        has_value = False
+        all_numeric = True
+        for row in rows:
+            if ci < len(row):
+                val = row[ci].strip()
+                if val:
+                    has_value = True
+                    try:
+                        float(val)
+                    except (ValueError, TypeError):
+                        all_numeric = False
+                        break
+        if has_value and all_numeric:
+            numeric += 1
+    return {"numeric": numeric, "string": col_count - numeric}
+
+
+def tsv_string_density(file_path: "str | Path") -> float:
+    """Return ratio of non-numeric cells to total cells. 0.0 if no cells."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    total = sum(len(row) for row in rows)
+    if total == 0:
+        return 0.0
+    numeric = 0
+    for row in rows:
+        for val in row:
+            v = val.strip()
+            if v:
+                try:
+                    float(v)
+                    numeric += 1
+                except (ValueError, TypeError):
+                    pass
+    return (total - numeric) / total
+
+
+def tsv_avg_row_length(file_path: "str | Path") -> float:
+    """Return average number of fields per row. 0.0 if no rows."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return 0.0
+    return sum(len(row) for row in rows) / len(rows)
+
+
+def tsv_max_field_count(file_path: "str | Path") -> int:
+    """Return the maximum number of fields in any row. 0 if no rows."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return 0
+    return max(len(row) for row in rows)
+
+
+def tsv_is_multi_row(file_path: "str | Path") -> bool:
+    """Return True if the file has more than one data row."""
+    doc = parse_tsv_strict(file_path)
+    return len(doc.get("rows", [])) > 1
+
+
+def tsv_min_field_count(file_path: "str | Path") -> int:
+    """Return the minimum number of fields in any row. 0 if no rows."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return 0
+    return min(len(row) for row in rows)
+
+
+def tsv_nonempty_row_ratio(file_path: "str | Path") -> float:
+    """Return ratio of non-empty rows to total rows. 0.0 if no rows."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return 0.0
+    nonempty = sum(1 for row in rows if any(v.strip() for v in row))
+    return nonempty / len(rows)

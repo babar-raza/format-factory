@@ -669,3 +669,429 @@ def csv_has_duplicates(file_path: "str | Path") -> bool:
             return True
         seen.add(key)
     return False
+
+
+def csv_all_rows_same_length(file_path: "str | Path") -> bool:
+    """Return True if all rows have the same number of fields.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        True if every row has an identical field count; True for empty files.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return True
+    expected = len(rows[0])
+    return all(len(row) == expected for row in rows)
+
+
+def csv_max_row_length(file_path: "str | Path") -> int:
+    """Return the maximum number of fields in any single row.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Integer max field count. Returns 0 for empty files.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    return max(len(row) for row in rows)
+
+
+def csv_field_type_ratio(file_path: "str | Path") -> float:
+    """Return the ratio of numeric fields to string fields.
+
+    Fields that can be parsed as float are numeric; all others are string.
+    Empty cells are excluded from both counts.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Float ratio (numeric / string). Returns 0.0 if no string fields.
+        Returns float('inf') if all non-empty fields are numeric.
+    """
+    model = parse_csv_strict(file_path)
+    numeric = 0
+    string = 0
+    for row in model.get("rows", []):
+        for cell in row:
+            val = str(cell).strip()
+            if not val:
+                continue
+            try:
+                float(val)
+                numeric += 1
+            except (ValueError, TypeError):
+                string += 1
+    if string == 0:
+        return float("inf") if numeric > 0 else 0.0
+    return numeric / string
+
+
+def csv_all_rows(file_path: "str | Path") -> list:
+    """Return all data rows from a CSV file as a list of lists.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        List of lists, where each inner list is a row of string values.
+    """
+    model = parse_csv_strict(file_path)
+    return list(model.get("rows", []))
+
+
+def csv_distinct_value_count(file_path: "str | Path") -> int:
+    """Return the count of distinct non-empty cell values across all rows.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Integer count of unique non-empty values.
+    """
+    model = parse_csv_strict(file_path)
+    seen: set = set()
+    for row in model.get("rows", []):
+        for cell in row:
+            val = str(cell).strip()
+            if val:
+                seen.add(val)
+    return len(seen)
+
+
+def csv_empty_cell_ratio(file_path: "str | Path") -> float:
+    """Return the ratio of empty cells to total cells.
+
+    A cell is empty if its stripped string value is empty.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Float ratio in [0.0, 1.0]. Returns 0.0 if no cells exist.
+    """
+    model = parse_csv_strict(file_path)
+    total = 0
+    empty = 0
+    for row in model.get("rows", []):
+        for cell in row:
+            total += 1
+            if not str(cell).strip():
+                empty += 1
+    if total == 0:
+        return 0.0
+    return empty / total
+
+
+def csv_total_cell_count(file_path: "str | Path") -> int:
+    """Return the total number of cells across all rows."""
+    model = parse_csv_strict(file_path)
+    return sum(len(row) for row in model.get("rows", []))
+
+
+def csv_min_row_length(file_path: "str | Path") -> int:
+    """Return the number of fields in the narrowest row."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    return min(len(row) for row in rows)
+
+
+def csv_max_numeric_value(file_path: "str | Path"):
+    """Return the maximum numeric value across all cells, or None if no numeric cells."""
+    model = parse_csv_strict(file_path)
+    nums = []
+    for row in model.get("rows", []):
+        for field in row:
+            try:
+                nums.append(float(field))
+            except (ValueError, TypeError):
+                pass
+    return max(nums) if nums else None
+
+
+def csv_has_empty_rows(file_path: "str | Path") -> bool:
+    """Return True if any row has all-empty fields."""
+    model = parse_csv_strict(file_path)
+    for row in model.get("rows", []):
+        if all(f.strip() == "" for f in row):
+            return True
+    return False
+
+
+def csv_header_count(file_path: "str | Path") -> int:
+    """Return the number of header columns. 0 if no header detected."""
+    model = parse_csv_strict(file_path)
+    header = model.get("header", [])
+    return len(header)
+
+
+def csv_is_rectangular(file_path: "str | Path") -> bool:
+    """Return True if all rows have the same number of fields."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return True
+    first_len = len(rows[0])
+    return all(len(row) == first_len for row in rows)
+
+
+def csv_nonempty_cell_count(file_path: "str | Path") -> int:
+    """Return the count of non-empty cells across all rows."""
+    model = parse_csv_strict(file_path)
+    count = 0
+    for row in model.get("rows", []):
+        for f in row:
+            if f.strip():
+                count += 1
+    return count
+
+
+def csv_string_density(file_path: "str | Path") -> float:
+    """Return ratio of non-numeric cells to total cells. 0.0 if no cells."""
+    total = csv_total_cell_count(file_path)
+    if total == 0:
+        return 0.0
+    numeric = 0
+    model = parse_csv_strict(file_path)
+    for row in model.get("rows", []):
+        for f in row:
+            try:
+                float(f)
+                numeric += 1
+            except (ValueError, TypeError):
+                pass
+    return (total - numeric) / total
+
+
+def csv_min_numeric_value(file_path: "str | Path"):
+    """Return the minimum numeric value across all cells, or None if no numerics."""
+    model = parse_csv_strict(file_path)
+    nums = []
+    for row in model.get("rows", []):
+        for f in row:
+            try:
+                nums.append(float(f))
+            except (ValueError, TypeError):
+                pass
+    return min(nums) if nums else None
+
+
+def csv_data_density(file_path: "str | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    total = csv_total_cell_count(file_path)
+    if total == 0:
+        return 0.0
+    nonempty = csv_nonempty_cell_count(file_path)
+    return nonempty / total
+
+
+def csv_avg_row_length(file_path: "str | Path") -> float:
+    """Return the average number of fields per row. 0.0 if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0.0
+    return sum(len(row) for row in rows) / len(rows)
+
+
+def csv_numeric_column_count(file_path: "str | Path") -> int:
+    """Return the count of columns where all non-empty values are numeric.
+
+    A column is numeric if every non-empty cell can be parsed as float.
+    Empty columns (all empty) are not counted.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    col_count = max(len(row) for row in rows)
+    numeric_cols = 0
+    for ci in range(col_count):
+        has_value = False
+        all_numeric = True
+        for row in rows:
+            if ci < len(row):
+                val = row[ci].strip()
+                if val:
+                    has_value = True
+                    try:
+                        float(val)
+                    except (ValueError, TypeError):
+                        all_numeric = False
+                        break
+        if has_value and all_numeric:
+            numeric_cols += 1
+    return numeric_cols
+
+
+def csv_is_single_column(file_path: "str | Path") -> bool:
+    """Return True if all rows have exactly one field."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return False
+    return all(len(row) == 1 for row in rows)
+
+
+def csv_is_all_numeric(file_path: "str | Path") -> bool:
+    """Return True if every non-empty cell value can be parsed as a number."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    found_any = False
+    for row in rows:
+        for val in row:
+            v = val.strip()
+            if v:
+                found_any = True
+                try:
+                    float(v)
+                except (ValueError, TypeError):
+                    return False
+    return found_any
+
+
+def csv_max_field_value_length(file_path: "str | Path") -> int:
+    """Return the length of the longest cell value. 0 if no cells."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    return max((len(f) for row in rows for f in row), default=0)
+
+
+def csv_unique_value_count(file_path: "str | Path") -> int:
+    """Return the count of distinct non-empty cell values."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    values = set()
+    for row in rows:
+        for f in row:
+            v = f.strip()
+            if v:
+                values.add(v)
+    return len(values)
+
+
+def csv_column_type_counts(file_path: "str | Path") -> dict:
+    """Return dict with counts of numeric and string columns."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return {"numeric": 0, "string": 0}
+    col_count = max(len(row) for row in rows)
+    numeric = 0
+    for ci in range(col_count):
+        has_value = False
+        all_numeric = True
+        for row in rows:
+            if ci < len(row):
+                val = row[ci].strip()
+                if val:
+                    has_value = True
+                    try:
+                        float(val)
+                    except (ValueError, TypeError):
+                        all_numeric = False
+                        break
+        if has_value and all_numeric:
+            numeric += 1
+    return {"numeric": numeric, "string": col_count - numeric}
+
+
+def csv_row_length_variance(file_path: "str | Path") -> float:
+    """Return variance of row lengths. 0.0 if fewer than 2 rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if len(rows) < 2:
+        return 0.0
+    lengths = [len(row) for row in rows]
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def csv_is_empty(file_path: "str | Path") -> bool:
+    """Return True if the CSV has no data rows."""
+    model = parse_csv_strict(file_path)
+    return len(model.get("rows", [])) == 0
+
+
+def csv_column_name_lengths(file_path: "str | Path") -> list:
+    """Return list of header column name lengths. Empty list if no header."""
+    model = parse_csv_strict(file_path)
+    headers = model.get("headers", [])
+    return [len(h) for h in headers]
+
+
+def csv_max_field_count(file_path: "str | Path") -> int:
+    """Return the maximum number of fields in any row. 0 if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    return max(len(row) for row in rows)
+
+
+def csv_is_multi_row(file_path: "str | Path") -> bool:
+    """Return True if the file has more than one data row."""
+    model = parse_csv_strict(file_path)
+    return len(model.get("rows", [])) > 1
+
+
+def csv_column_count_variance(file_path: "str | Path") -> float:
+    """Return variance of field counts across rows. 0.0 if fewer than 2 rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if len(rows) < 2:
+        return 0.0
+    counts = [len(row) for row in rows]
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+def csv_has_numeric_header(file_path: "str | Path") -> bool:
+    """Return True if any header column name is purely numeric."""
+    model = parse_csv_strict(file_path)
+    headers = model.get("headers", [])
+    for h in headers:
+        if h.strip():
+            try:
+                float(h.strip())
+                return True
+            except (ValueError, TypeError):
+                pass
+    return False
+
+
+def csv_nonempty_row_ratio(file_path: "str | Path") -> float:
+    """Return ratio of non-empty rows to total rows. 0.0 if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0.0
+    nonempty = sum(1 for row in rows if any(v.strip() for v in row))
+    return nonempty / len(rows)
+
+
+def csv_avg_cell_length(file_path: "str | Path") -> float:
+    """Return average character length of all cells. 0.0 if no cells."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    total_len = 0
+    total_count = 0
+    for row in rows:
+        for val in row:
+            total_len += len(val)
+            total_count += 1
+    if total_count == 0:
+        return 0.0
+    return total_len / total_count

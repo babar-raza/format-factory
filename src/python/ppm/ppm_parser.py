@@ -841,3 +841,231 @@ def ppm_saturation_estimate(file_path: str | Path) -> float:
         return 0.0
     total = sum(max(p[0], p[1], p[2]) - min(p[0], p[1], p[2]) for p in img.pixels)
     return total / len(img.pixels)
+
+
+def ppm_is_dark(file_path: str | Path) -> bool:
+    """Return True if the average pixel brightness is below 128.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        True if average brightness < 128, False otherwise or if no pixels.
+    """
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return False
+    avg = sum((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels) / len(img.pixels)
+    return avg < 128.0
+
+
+def ppm_red_channel_sum(file_path: str | Path) -> int:
+    """Return the sum of all red channel pixel values.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Integer sum of all red channel values.
+    """
+    img = parse_ppm_strict(file_path)
+    return sum(p[0] for p in img.pixels)
+
+
+def ppm_luminance_average(file_path: str | Path) -> float:
+    """Return the average luminance using ITU-R BT.601 formula.
+
+    Y = 0.299*R + 0.587*G + 0.114*B
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Float average luminance in [0.0, maxval]. Returns 0.0 for empty images.
+    """
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = sum(0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2] for p in img.pixels)
+    return total / len(img.pixels)
+
+
+def ppm_green_channel_sum(file_path: str | Path) -> int:
+    """Return the sum of all green channel pixel values.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Integer sum of all green channel values.
+    """
+    img = parse_ppm_strict(file_path)
+    return sum(p[1] for p in img.pixels)
+
+
+def ppm_row_count(file_path: str | Path) -> int:
+    """Return the number of rows (height) in the PPM image."""
+    img = parse_ppm_strict(file_path)
+    return img.height
+
+
+def ppm_blue_channel_sum(file_path: str | Path) -> int:
+    """Return the sum of all blue channel pixel values."""
+    img = parse_ppm_strict(file_path)
+    return sum(p[2] for p in img.pixels)
+
+
+def ppm_unique_color_count(file_path: str | Path) -> int:
+    """Return the number of distinct colors (R,G,B tuples) in the image.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Integer count of unique color tuples. 0 for empty images.
+    """
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return len(set(tuple(p) for p in img.pixels))
+
+
+def ppm_perimeter(file_path: str | Path) -> int:
+    """Return the image perimeter in pixels: 2 * (width + height).
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Integer perimeter.
+    """
+    img = parse_ppm_strict(file_path)
+    return 2 * (img.width + img.height)
+
+
+def ppm_dimension_ratio(file_path: str | Path) -> float:
+    """Return width / height ratio. 0.0 if height is 0."""
+    img = parse_ppm_strict(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def ppm_is_square(file_path: str | Path) -> bool:
+    """Return True if the PPM image width equals its height."""
+    img = parse_ppm_strict(file_path)
+    return img.width == img.height
+
+
+def ppm_is_landscape(file_path: str | Path) -> bool:
+    """Return True if the PPM image is wider than it is tall."""
+    img = parse_ppm_strict(file_path)
+    return img.width > img.height
+
+
+def ppm_max_dimension(file_path: str | Path) -> int:
+    """Return the larger of width and height."""
+    img = parse_ppm_strict(file_path)
+    return max(img.width, img.height)
+
+
+def ppm_has_pure_black(file_path: str | Path) -> bool:
+    """Return True if any pixel is pure black (R=0, G=0, B=0)."""
+    img = parse_ppm_strict(file_path)
+    return any(r == 0 and g == 0 and b == 0 for r, g, b in img.pixels)
+
+
+def ppm_max_channel_sum(file_path: str | Path) -> int:
+    """Return the maximum R+G+B sum across all pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return max(r + g + b for r, g, b in img.pixels)
+
+
+def ppm_min_channel_sum(file_path: str | Path) -> int:
+    """Return the minimum R+G+B sum across all pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return min(r + g + b for r, g, b in img.pixels)
+
+
+def ppm_has_pure_white(file_path: str | Path) -> bool:
+    """Return True if any pixel has R=maxval, G=maxval, B=maxval."""
+    img = parse_ppm_strict(file_path)
+    mv = img.maxval
+    return any(r == mv and g == mv and b == mv for r, g, b in img.pixels)
+
+
+def ppm_megapixels(file_path: str | Path) -> float:
+    """Return image size in megapixels."""
+    img = parse_ppm_strict(file_path)
+    return (img.width * img.height) / 1_000_000
+
+
+def ppm_channel_balance(file_path: str | Path) -> float:
+    """Return 1.0 - (max_avg - min_avg)/maxval. Higher = more balanced."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels or img.maxval == 0:
+        return 1.0
+    r_avg = sum(p[0] for p in img.pixels) / len(img.pixels)
+    g_avg = sum(p[1] for p in img.pixels) / len(img.pixels)
+    b_avg = sum(p[2] for p in img.pixels) / len(img.pixels)
+    spread = max(r_avg, g_avg, b_avg) - min(r_avg, g_avg, b_avg)
+    return 1.0 - (spread / img.maxval)
+
+
+def ppm_column_count(file_path: str | Path) -> int:
+    """Return the number of columns (width) in the image."""
+    img = parse_ppm_strict(file_path)
+    return img.width
+
+
+def ppm_min_dimension(file_path: str | Path) -> int:
+    """Return the minimum of width and height."""
+    img = parse_ppm_strict(file_path)
+    return min(img.width, img.height)
+
+
+def ppm_is_tall(file_path: str | Path) -> bool:
+    """Return True if height > 2 * width."""
+    img = parse_ppm_strict(file_path)
+    return img.height > 2 * img.width
+
+
+def ppm_pixel_density(file_path: str | Path) -> float:
+    """Return pixels per byte of file size. 0.0 if file_size is 0."""
+    img = parse_ppm_strict(file_path)
+    fsize = Path(file_path).stat().st_size
+    if fsize == 0:
+        return 0.0
+    return (img.width * img.height) / fsize
+
+
+def ppm_is_portrait(file_path: str | Path) -> bool:
+    """Return True if height > width."""
+    img = parse_ppm_strict(file_path)
+    return img.height > img.width
+
+
+def ppm_diagonal(file_path: str | Path) -> float:
+    """Return diagonal length: sqrt(width^2 + height^2)."""
+    import math
+    img = parse_ppm_strict(file_path)
+    return math.sqrt(img.width ** 2 + img.height ** 2)
+
+
+def ppm_is_monochrome(file_path: str | Path) -> bool:
+    """Return True if all pixels share the same RGB values."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return True
+    first = (img.pixels[0][0], img.pixels[0][1], img.pixels[0][2])
+    return all((p[0], p[1], p[2]) == first for p in img.pixels)
+
+
+def ppm_total_channel_sum(file_path: str | Path) -> int:
+    """Return the sum of all R+G+B values across all pixels."""
+    img = parse_ppm_strict(file_path)
+    return sum(p[0] + p[1] + p[2] for p in img.pixels)

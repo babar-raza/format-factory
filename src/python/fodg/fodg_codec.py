@@ -881,3 +881,274 @@ def fodg_page_shape_count(model: dict[str, Any], page_idx: int) -> int:
     if "shape_count" in page:
         return int(page["shape_count"])
     return len(page.get("shapes", []))
+
+
+def fodg_avg_shapes_per_page(file_path: "str | bytes | Path") -> float:
+    """Return the average number of shapes per page.
+
+    Args:
+        file_path: Path to a .fodg file.
+
+    Returns:
+        Float average shape count per page, or 0.0 if no pages.
+    """
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0.0
+    total = sum(p.get("shape_count", 0) for p in pages)
+    return total / len(pages)
+
+
+def fodg_has_empty_pages(file_path: "str | bytes | Path") -> bool:
+    """Return True if any page contains zero shapes.
+
+    Args:
+        file_path: Path to a .fodg file.
+
+    Returns:
+        True if at least one page has no shapes, False otherwise.
+    """
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    return any(p.get("shape_count", 0) == 0 for p in pages)
+
+
+def fodg_page_count(file_path: "str | bytes | Path") -> int:
+    """Return the total number of pages in the FODG document."""
+    doc = load(file_path)
+    return len(doc.get("pages", []))
+
+
+def fodg_all_pages_have_shapes(file_path: "str | bytes | Path") -> bool:
+    """Return True if every page has at least one shape; False otherwise."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return False
+    return all(p.get("shape_count", 0) > 0 for p in pages)
+
+
+def fodg_text_to_shape_ratio(file_path: "str | bytes | Path") -> float:
+    """Return the ratio of text shapes to total shapes. 0.0 if no shapes."""
+    total = get_shape_count(file_path)
+    if total == 0:
+        return 0.0
+    doc = load(file_path)
+    text_count = len(get_text_shapes(doc))
+    return text_count / total
+
+
+def fodg_max_shapes_per_page(file_path: "str | bytes | Path") -> int:
+    """Return the maximum number of shapes on any single page. 0 if no pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0
+    return max(p.get("shape_count", 0) for p in pages)
+
+
+def fodg_min_shapes_per_page(file_path: "str | bytes | Path") -> int:
+    """Return the minimum number of shapes on any single page. 0 if no pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0
+    return min(p.get("shape_count", 0) for p in pages)
+
+
+def fodg_shape_density(file_path: "str | bytes | Path") -> float:
+    """Return total shapes / page count. 0.0 if no pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0.0
+    total = sum(p.get("shape_count", 0) for p in pages)
+    return total / len(pages)
+
+
+def fodg_empty_page_count(file_path: "str | bytes | Path") -> int:
+    """Return the number of pages with zero shapes."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    return sum(1 for p in pages if p.get("shape_count", 0) == 0)
+
+
+def fodg_is_single_page(file_path: "str | bytes | Path") -> bool:
+    """Return True if the drawing has exactly one page."""
+    doc = load(file_path)
+    return len(doc.get("pages", [])) == 1
+
+
+def fodg_total_text_length(file_path: "str | bytes | Path") -> int:
+    """Return total character count of all text content in the drawing."""
+    doc = load(file_path)
+    total = 0
+    for page in doc.get("pages", []):
+        for shape in page.get("shapes", []):
+            total += len(shape.get("text", ""))
+    return total
+
+
+def fodg_has_text(file_path: "str | bytes | Path") -> bool:
+    """Return True if any shape in the drawing contains text."""
+    return fodg_total_text_length(file_path) > 0
+
+
+def fodg_is_empty_document(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has no shapes on any page."""
+    return fodg_total_shape_count(file_path) == 0
+
+
+def fodg_non_text_shape_count(file_path: "str | bytes | Path") -> int:
+    """Return the count of shapes that are not text shapes."""
+    return fodg_total_shape_count(file_path) - fodg_text_shape_count(file_path)
+
+
+def fodg_avg_text_per_page(file_path: "str | bytes | Path") -> float:
+    """Return average character count of text per page. 0.0 if no pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0.0
+    total = fodg_total_text_length(file_path)
+    return total / len(pages)
+
+
+def fodg_has_multiple_pages(file_path: "str | bytes | Path") -> bool:
+    """Return True if the drawing has more than one page."""
+    return fodg_page_count(file_path) > 1
+
+
+def fodg_shape_to_page_variance(file_path: "str | bytes | Path") -> float:
+    """Return variance of shape counts across pages. 0.0 if fewer than 2 pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if len(pages) < 2:
+        return 0.0
+    counts = [p.get("shape_count", 0) for p in pages]
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+def fodg_max_text_per_page(file_path: "str | bytes | Path") -> int:
+    """Return the maximum text length on any single page. 0 if no pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0
+    lengths = [sum(len(t) for t in p.get("text_content", [])) for p in pages]
+    return max(lengths) if lengths else 0
+
+
+def fodg_text_per_shape(file_path: "str | bytes | Path") -> float:
+    """Return total text length / total shapes. 0.0 if no shapes."""
+    shapes = fodg_total_shape_count(file_path)
+    if shapes == 0:
+        return 0.0
+    return fodg_total_text_length(file_path) / shapes
+
+
+def fodg_nonempty_page_count(file_path: "str | bytes | Path") -> int:
+    """Return the count of pages that have at least one shape."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    return sum(1 for p in pages if p.get("shape_count", 0) > 0)
+
+
+def fodg_text_density(file_path: "str | bytes | Path") -> float:
+    """Return total text length / total shape count. 0.0 if no shapes."""
+    total_shapes = fodg_total_shape_count(file_path)
+    if total_shapes == 0:
+        return 0.0
+    return fodg_total_text_length(file_path) / total_shapes
+
+
+def fodg_is_multi_page(file_path: "str | bytes | Path") -> bool:
+    """Return True if document has more than one page."""
+    return fodg_page_count(file_path) > 1
+
+
+def fodg_shape_count_variance(file_path: "str | bytes | Path") -> float:
+    """Return variance of shape counts across pages. 0.0 if fewer than 2 pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if len(pages) < 2:
+        return 0.0
+    counts = [len(p.get("shapes", [])) for p in pages]
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+def fodg_is_text_only(file_path: "str | bytes | Path") -> bool:
+    """Return True if all shapes are text shapes (text_shape_count == total_shape_count)."""
+    total = fodg_total_shape_count(file_path)
+    if total == 0:
+        return False
+    return fodg_text_shape_count(file_path) == total
+
+
+def fodg_avg_shapes_per_nonempty_page(file_path: "str | bytes | Path") -> float:
+    """Return average shape count per non-empty page. 0.0 if no non-empty pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    nonempty = [p.get("shape_count", 0) for p in pages if p.get("shape_count", 0) > 0]
+    if not nonempty:
+        return 0.0
+    return sum(nonempty) / len(nonempty)
+
+
+def fodg_has_single_shape(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document contains exactly one shape across all pages."""
+    return fodg_total_shape_count(file_path) == 1
+
+
+def fodg_page_text_variance(file_path: "str | bytes | Path") -> float:
+    """Return variance of text lengths across pages. 0.0 if fewer than 2 pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if len(pages) < 2:
+        return 0.0
+    lengths = []
+    for p in pages:
+        text = ""
+        for s in p.get("shapes", []):
+            text += s.get("text", "")
+        lengths.append(len(text))
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def fodg_total_text_chars(file_path: "str | bytes | Path") -> int:
+    """Return total character count of all text in all shapes across all pages."""
+    doc = load(file_path)
+    total = 0
+    for p in doc.get("pages", []):
+        for s in p.get("shapes", []):
+            total += len(s.get("text", ""))
+    return total
+
+
+def fodg_avg_text_per_shape(file_path: "str | bytes | Path") -> float:
+    """Return average text length per shape. 0.0 if no shapes."""
+    doc = load(file_path)
+    lengths = []
+    for p in doc.get("pages", []):
+        for s in p.get("shapes", []):
+            lengths.append(len(s.get("text", "")))
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def fodg_min_text_per_page(file_path: "str | bytes | Path") -> int:
+    """Return the minimum total text length of any page. 0 if no pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0
+    page_lens = []
+    for p in pages:
+        total = sum(len(s.get("text", "")) for s in p.get("shapes", []))
+        page_lens.append(total)
+    return min(page_lens)

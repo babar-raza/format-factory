@@ -1324,3 +1324,275 @@ def ndjson_string_field_count(source: "Any") -> int:
                 if isinstance(v, str):
                     count += 1
     return count
+
+
+def ndjson_all_records_nonempty(source: "Any") -> bool:
+    """Return True if no record in the NDJSON source is an empty dict or empty value.
+
+    Args:
+        source: File path or pre-loaded list of records.
+
+    Returns:
+        True if every record is non-empty (dict with at least one key or non-dict value).
+        Returns True for an empty list of records (vacuously true).
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    for r in records:
+        if isinstance(r, dict) and len(r) == 0:
+            return False
+    return True
+
+
+def ndjson_max_field_name_length(source: "Any") -> int:
+    """Return the length of the longest field name across all records.
+
+    Args:
+        source: File path or pre-loaded list of records.
+
+    Returns:
+        Integer max field name length, or 0 if no fields exist.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    max_len = 0
+    for r in records:
+        if isinstance(r, dict):
+            for key in r.keys():
+                if len(key) > max_len:
+                    max_len = len(key)
+    return max_len
+
+
+def ndjson_min_field_name_length(source: "Any") -> int:
+    """Return the length of the shortest field name across all records.
+
+    Args:
+        source: File path or pre-loaded list of records.
+
+    Returns:
+        Integer min field name length, or 0 if no fields exist.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    min_len = None
+    for r in records:
+        if isinstance(r, dict):
+            for key in r.keys():
+                if min_len is None or len(key) < min_len:
+                    min_len = len(key)
+    return min_len if min_len is not None else 0
+
+
+def ndjson_field_type_distribution(source: "Any") -> "dict[str, int]":
+    """Return a distribution of field value types across all records.
+
+    Classifies each field value as 'string', 'number', 'boolean', 'null',
+    'object', 'array', or 'other' and returns counts.
+
+    Args:
+        source: File path or pre-loaded list of records.
+
+    Returns:
+        Dict mapping type names to integer counts.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    dist: dict[str, int] = {}
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if v is None:
+                    t = "null"
+                elif isinstance(v, bool):
+                    t = "boolean"
+                elif isinstance(v, (int, float)):
+                    t = "number"
+                elif isinstance(v, str):
+                    t = "string"
+                elif isinstance(v, dict):
+                    t = "object"
+                elif isinstance(v, list):
+                    t = "array"
+                else:
+                    t = "other"
+                dist[t] = dist.get(t, 0) + 1
+    return dist
+
+
+def ndjson_is_homogeneous(source: "Any") -> bool:
+    """Return True if all records have the same set of field names."""
+    records = load_ndjson(source)
+    if not records:
+        return True
+    first_keys = set(records[0].keys())
+    return all(set(r.keys()) == first_keys for r in records)
+
+
+def ndjson_unique_field_count(source: "Any") -> int:
+    """Return the count of distinct field names across all records."""
+    records = load_ndjson(source)
+    names: set[str] = set()
+    for r in records:
+        if isinstance(r, dict):
+            names.update(r.keys())
+    return len(names)
+
+
+def ndjson_has_null_fields(source: "Any") -> bool:
+    """Return True if any field in any record has a null (None) value."""
+    records = load_ndjson(source)
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if v is None:
+                    return True
+    return False
+
+
+def ndjson_max_numeric_value(source: "Any"):
+    """Return the maximum numeric value across all fields in all records, or None."""
+    records = load_ndjson(source)
+    nums = []
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, (int, float)) and not isinstance(v, bool):
+                    nums.append(v)
+    return max(nums) if nums else None
+
+
+def ndjson_min_numeric_value(source: "Any"):
+    """Return the minimum numeric value across all fields in all records, or None."""
+    records = load_ndjson(source)
+    nums = []
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, (int, float)) and not isinstance(v, bool):
+                    nums.append(v)
+    return min(nums) if nums else None
+
+
+def ndjson_has_string_fields(source: "Any") -> bool:
+    """Return True if any record contains a string-typed field value."""
+    records = load_ndjson(source)
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, str):
+                    return True
+    return False
+
+
+def ndjson_has_boolean_fields(source: "Any") -> bool:
+    """Return True if any record contains a boolean-typed field value."""
+    records = load_ndjson(source)
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, bool):
+                    return True
+    return False
+
+
+def ndjson_max_string_length(source: "Any") -> int:
+    """Return the maximum length of any string field value. 0 if no strings."""
+    records = load_ndjson(source)
+    max_len = 0
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, str) and len(v) > max_len:
+                    max_len = len(v)
+    return max_len
+
+
+def ndjson_avg_field_name_length(source: "Any") -> float:
+    """Return average length of unique field names. 0.0 if no fields."""
+    records = load_ndjson(source)
+    names = set()
+    for r in records:
+        if isinstance(r, dict):
+            names.update(r.keys())
+    if not names:
+        return 0.0
+    return sum(len(n) for n in names) / len(names)
+
+
+def ndjson_record_size_variance(source: "Any") -> float:
+    """Return variance of record sizes (field count). 0.0 if fewer than 2 records."""
+    records = load_ndjson(source)
+    sizes = [len(r) if isinstance(r, dict) else 0 for r in records]
+    if len(sizes) < 2:
+        return 0.0
+    mean = sum(sizes) / len(sizes)
+    return sum((s - mean) ** 2 for s in sizes) / len(sizes)
+
+
+def ndjson_is_empty(source: "Any") -> bool:
+    """Return True if the NDJSON source has no records."""
+    records = load_ndjson(source)
+    return len(records) == 0
+
+
+def ndjson_avg_string_length(source: "Any") -> float:
+    """Return average length of string field values. 0.0 if no strings."""
+    records = load_ndjson(source)
+    lengths = []
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, str):
+                    lengths.append(len(v))
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def ndjson_list_field_count(source: "Any") -> int:
+    """Return count of fields that have list values across all records. 0 if none."""
+    records = load_ndjson(source)
+    count = 0
+    for r in records:
+        if isinstance(r, dict):
+            count += sum(1 for v in r.values() if isinstance(v, list))
+    return count
+
+
+def ndjson_field_count_variance(source: "Any") -> float:
+    """Return variance of field counts across records. 0.0 if fewer than 2 records."""
+    records = load_ndjson(source)
+    counts = [len(r) for r in records if isinstance(r, dict)]
+    if len(counts) < 2:
+        return 0.0
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+def ndjson_max_nesting_depth(source: "Any") -> int:
+    """Return the maximum nesting depth of objects. 0 if no records."""
+    records = load_ndjson(source)
+    def _depth(obj: "Any") -> int:
+        if isinstance(obj, dict):
+            if not obj:
+                return 1
+            return 1 + max(_depth(v) for v in obj.values())
+        if isinstance(obj, list):
+            if not obj:
+                return 1
+            return 1 + max(_depth(v) for v in obj)
+        return 0
+    if not records:
+        return 0
+    return max(_depth(r) for r in records)
+
+
+def ndjson_avg_numeric_value(source: "Any") -> float:
+    """Return average of all numeric field values. 0.0 if none."""
+    records = load_ndjson(source)
+    nums = []
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, (int, float)) and not isinstance(v, bool):
+                    nums.append(v)
+    if not nums:
+        return 0.0
+    return sum(nums) / len(nums)

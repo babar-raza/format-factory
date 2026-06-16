@@ -523,3 +523,362 @@ def qoi_total_brightness(file_path: str | Path) -> float:
     if not img.pixels:
         return 0.0
     return sum((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels)
+
+
+def qoi_avg_rgb_value(file_path: str | Path) -> float:
+    """Return the average of all channel values across all pixels.
+
+    Computes mean of R, G, B values across every pixel.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Float average RGB value (0.0-255.0), or 0.0 if no pixels.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = sum(p[0] + p[1] + p[2] for p in img.pixels)
+    return total / (len(img.pixels) * 3)
+
+
+def qoi_red_dominance_ratio(file_path: str | Path) -> float:
+    """Return the ratio of red channel sum to total RGB sum.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Float ratio 0.0-1.0, or 0.0 if no pixels.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    red_sum = sum(p[0] for p in img.pixels)
+    total = sum(p[0] + p[1] + p[2] for p in img.pixels)
+    if total == 0:
+        return 0.0
+    return red_sum / total
+
+
+def qoi_aspect_ratio(file_path: str | Path) -> float:
+    """Return the aspect ratio (width / height) of a QOI image.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Float ratio. Returns 0.0 for zero-height images.
+    """
+    path = Path(file_path)
+    data = path.read_bytes()
+    width, height, _channels, _colorspace = _parse_header(data)
+    if height == 0:
+        return 0.0
+    return width / height
+
+
+def qoi_color_concentration(file_path: str | Path) -> float:
+    """Return color concentration: unique_colors / total_pixels.
+
+    Lower values mean fewer unique colors relative to pixel count
+    (more repeated colors). A value of 1.0 means every pixel is unique.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Float ratio in (0.0, 1.0], or 0.0 for empty images.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    unique = len(set(img.pixels))
+    return unique / len(img.pixels)
+
+
+def qoi_avg_rgb(file_path: str | Path) -> tuple:
+    """Return the average (R, G, B) values across all pixels.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Tuple of three floats (avg_r, avg_g, avg_b). Returns (0.0, 0.0, 0.0) for empty images.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return (0.0, 0.0, 0.0)
+    n = len(img.pixels)
+    r = sum(p[0] for p in img.pixels) / n
+    g = sum(p[1] for p in img.pixels) / n
+    b = sum(p[2] for p in img.pixels) / n
+    return (r, g, b)
+
+
+def qoi_red_dominant(file_path: str | Path) -> bool:
+    """Return True if the red channel has the highest average across all pixels.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        True if avg red > avg green and avg red > avg blue. False otherwise.
+    """
+    avg_r, avg_g, avg_b = qoi_avg_rgb(file_path)
+    return avg_r > avg_g and avg_r > avg_b
+
+
+def qoi_blue_dominant(file_path: str | Path) -> bool:
+    """Return True if the blue channel has the highest average across all pixels.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        True if avg blue > avg red and avg blue > avg green. False otherwise.
+    """
+    avg_r, avg_g, avg_b = qoi_avg_rgb(file_path)
+    return avg_b > avg_r and avg_b > avg_g
+
+
+def qoi_green_dominant(file_path: str | Path) -> bool:
+    """Return True if the green channel has the highest average across all pixels.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        True if avg green > avg red and avg green > avg blue. False otherwise.
+    """
+    avg_r, avg_g, avg_b = qoi_avg_rgb(file_path)
+    return avg_g > avg_r and avg_g > avg_b
+
+
+def qoi_row_count(file_path: str | Path) -> int:
+    """Return the number of rows (height) in the QOI image."""
+    img = parse_qoi_strict(file_path)
+    return img.height
+
+
+def qoi_is_square(file_path: str | Path) -> bool:
+    """Return True if the QOI image width equals its height."""
+    img = parse_qoi_strict(file_path)
+    return img.width == img.height
+
+
+def qoi_perimeter(file_path: str | Path) -> int:
+    """Return the image perimeter in pixels: 2 * (width + height)."""
+    img = parse_qoi_strict(file_path)
+    return 2 * (img.width + img.height)
+
+
+def qoi_color_variance(file_path: str | Path) -> float:
+    """Return the variance of average RGB values across all pixels."""
+    avg_r, avg_g, avg_b = qoi_avg_rgb(file_path)
+    mean = (avg_r + avg_g + avg_b) / 3
+    return ((avg_r - mean) ** 2 + (avg_g - mean) ** 2 + (avg_b - mean) ** 2) / 3
+
+
+def qoi_dimension_ratio(file_path: str | Path) -> float:
+    """Return width / height ratio. 0.0 if height is 0."""
+    img = parse_qoi_strict(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def qoi_is_landscape(file_path: str | Path) -> bool:
+    """Return True if the image is wider than it is tall."""
+    img = parse_qoi_strict(file_path)
+    return img.width > img.height
+
+
+def qoi_is_portrait(file_path: str | Path) -> bool:
+    """Return True if the image is taller than it is wide."""
+    img = parse_qoi_strict(file_path)
+    return img.height > img.width
+
+
+def qoi_max_dimension(file_path: str | Path) -> int:
+    """Return the larger of width and height."""
+    img = parse_qoi_strict(file_path)
+    return max(img.width, img.height)
+
+
+def qoi_has_any_black(file_path: str | Path) -> bool:
+    """Return True if any pixel has R=0, G=0, B=0."""
+    img = parse_qoi_strict(file_path)
+    return any(p[0] == 0 and p[1] == 0 and p[2] == 0 for p in img.pixels)
+
+
+def qoi_max_channel_average(file_path: str | Path) -> float:
+    """Return the maximum of the per-channel averages (R, G, B)."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    n = len(img.pixels)
+    avg_r = sum(p[0] for p in img.pixels) / n
+    avg_g = sum(p[1] for p in img.pixels) / n
+    avg_b = sum(p[2] for p in img.pixels) / n
+    return max(avg_r, avg_g, avg_b)
+
+
+def qoi_min_channel_average(file_path: str | Path) -> float:
+    """Return the minimum of the per-channel averages (R, G, B)."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    n = len(img.pixels)
+    avg_r = sum(p[0] for p in img.pixels) / n
+    avg_g = sum(p[1] for p in img.pixels) / n
+    avg_b = sum(p[2] for p in img.pixels) / n
+    return min(avg_r, avg_g, avg_b)
+
+
+def qoi_has_any_white(file_path: str | Path) -> bool:
+    """Return True if any pixel has R=255, G=255, B=255."""
+    img = parse_qoi_strict(file_path)
+    return any(p[0] == 255 and p[1] == 255 and p[2] == 255 for p in img.pixels)
+
+
+def qoi_channel_range(file_path: str | Path) -> float:
+    """Return the range between the max and min per-channel averages."""
+    return qoi_max_channel_average(file_path) - qoi_min_channel_average(file_path)
+
+
+def qoi_diagonal(file_path: str | Path) -> float:
+    """Return the diagonal length of the image: sqrt(width^2 + height^2)."""
+    import math
+    img = parse_qoi_strict(file_path)
+    return math.sqrt(img.width ** 2 + img.height ** 2)
+
+
+def qoi_min_dimension(file_path: str | Path) -> int:
+    """Return the smaller of width and height."""
+    img = parse_qoi_strict(file_path)
+    return min(img.width, img.height)
+
+
+def qoi_area(file_path: str | Path) -> int:
+    """Return the area of the image: width * height."""
+    img = parse_qoi_strict(file_path)
+    return img.width * img.height
+
+
+def qoi_brightness_range(file_path: str | Path) -> int:
+    """Return the difference between max and min average brightness per pixel."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0
+    brightness = [(p[0] + p[1] + p[2]) // 3 for p in img.pixels]
+    return max(brightness) - min(brightness)
+
+
+def qoi_is_small(file_path: str | Path) -> bool:
+    """Return True if the image area is less than 1024 pixels."""
+    img = parse_qoi_strict(file_path)
+    return img.width * img.height < 1024
+
+
+def qoi_megapixels(file_path: str | Path) -> float:
+    """Return the image size in megapixels."""
+    img = parse_qoi_strict(file_path)
+    return (img.width * img.height) / 1_000_000
+
+
+def qoi_channel_balance(file_path: str | Path) -> float:
+    """Return 1.0 - (max_avg - min_avg)/255. Higher = more balanced channels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 1.0
+    r_avg = sum(p[0] for p in img.pixels) / len(img.pixels)
+    g_avg = sum(p[1] for p in img.pixels) / len(img.pixels)
+    b_avg = sum(p[2] for p in img.pixels) / len(img.pixels)
+    spread = max(r_avg, g_avg, b_avg) - min(r_avg, g_avg, b_avg)
+    return 1.0 - (spread / 255.0)
+
+
+def qoi_is_tall(file_path: str | Path) -> bool:
+    """Return True if height > 2 * width (very tall portrait)."""
+    img = parse_qoi_strict(file_path)
+    return img.height > 2 * img.width
+
+
+def qoi_channel_entropy(file_path: str | Path) -> float:
+    """Return simple channel diversity: unique RGB tuples / total pixels. 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    unique = len(set((p[0], p[1], p[2]) for p in img.pixels))
+    return unique / len(img.pixels)
+
+
+def qoi_is_monochrome(file_path: str | Path) -> bool:
+    """Return True if all pixels share the same RGB values (single color image)."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return True
+    first = (img.pixels[0][0], img.pixels[0][1], img.pixels[0][2])
+    return all((p[0], p[1], p[2]) == first for p in img.pixels)
+
+
+def qoi_red_ratio(file_path: str | Path) -> float:
+    """Return ratio of average red channel to total average (R+G+B). 0.0 if all channels zero."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    r_avg = sum(p[0] for p in img.pixels) / len(img.pixels)
+    g_avg = sum(p[1] for p in img.pixels) / len(img.pixels)
+    b_avg = sum(p[2] for p in img.pixels) / len(img.pixels)
+    total = r_avg + g_avg + b_avg
+    if total == 0:
+        return 0.0
+    return r_avg / total
+
+
+def qoi_green_ratio(file_path: str | Path) -> float:
+    """Return ratio of average green channel to total average (R+G+B). 0.0 if all channels zero."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    r_avg = sum(p[0] for p in img.pixels) / len(img.pixels)
+    g_avg = sum(p[1] for p in img.pixels) / len(img.pixels)
+    b_avg = sum(p[2] for p in img.pixels) / len(img.pixels)
+    total = r_avg + g_avg + b_avg
+    if total == 0:
+        return 0.0
+    return g_avg / total
+
+
+def qoi_blue_ratio(file_path: str | Path) -> float:
+    """Return ratio of average blue channel to total average (R+G+B). 0.0 if all channels zero."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    r_avg = sum(p[0] for p in img.pixels) / len(img.pixels)
+    g_avg = sum(p[1] for p in img.pixels) / len(img.pixels)
+    b_avg = sum(p[2] for p in img.pixels) / len(img.pixels)
+    total = r_avg + g_avg + b_avg
+    if total == 0:
+        return 0.0
+    return b_avg / total
+
+
+def qoi_pixel_density(file_path: str | Path) -> float:
+    """Return pixels per byte of file size. 0.0 if file_size is 0."""
+    img = parse_qoi_strict(file_path)
+    fsize = Path(file_path).stat().st_size
+    if fsize == 0:
+        return 0.0
+    return (img.width * img.height) / fsize
+
+
+def qoi_is_dark(file_path: str | Path) -> bool:
+    """Return True if average brightness is below 50% of max (128 for 8-bit)."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return False
+    avg = sum(p[0] + p[1] + p[2] for p in img.pixels) / (len(img.pixels) * 3)
+    return avg < 128

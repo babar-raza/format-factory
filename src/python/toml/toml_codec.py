@@ -728,6 +728,34 @@ def toml_list_count(source: "str | bytes | Path") -> int:
     return sum(1 for v in data.values() if isinstance(v, list))
 
 
+def toml_numeric_value_count(source: "str | bytes | Path") -> int:
+    """Count top-level values that are numeric (int or float, not bool).
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        Integer count of top-level numeric values.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(1 for v in data.values() if isinstance(v, (int, float)) and not isinstance(v, bool))
+
+
+def toml_boolean_value_count(source: "str | bytes | Path") -> int:
+    """Count top-level values that are booleans.
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        Integer count of top-level boolean values.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(1 for v in data.values() if isinstance(v, bool))
+
+
 def count_sections_with_key(source: "str | bytes | Path", key: str) -> int:
     """Count how many top-level TOML sections contain a specific key.
 
@@ -749,3 +777,160 @@ def count_sections_with_key(source: "str | bytes | Path", key: str) -> int:
         if isinstance(v, dict) and key in v:
             count += 1
     return count
+
+
+def toml_table_count(source: "str | bytes | Path") -> int:
+    """Count top-level values that are tables (dicts).
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        Integer count of top-level table values.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(1 for v in data.values() if isinstance(v, dict))
+
+
+def toml_total_keys(source: "str | bytes | Path") -> int:
+    """Count total top-level keys.
+
+    Args:
+        source: TOML string, bytes, or file path.
+
+    Returns:
+        Integer count of top-level keys.
+    """
+    model = load_toml(source)
+    data = model.get("data", model)
+    return len(data)
+
+
+def toml_has_tables(source: "str | bytes | Path") -> bool:
+    """Return True if the TOML document contains at least one table (dict value)."""
+    return toml_table_count(source) > 0
+
+
+def toml_has_lists(source: "str | bytes | Path") -> bool:
+    """Return True if the TOML document contains at least one list value."""
+    return toml_list_count(source) > 0
+
+
+def toml_is_empty(source: "str | bytes | Path") -> bool:
+    """Return True if the TOML document has no keys."""
+    return toml_total_keys(source) == 0
+
+
+def toml_string_density(source: "str | bytes | Path") -> float:
+    """Return ratio of string values to total value count. 0.0 if no values."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    total = 0
+    strings = 0
+    for v in data.values():
+        total += 1
+        if isinstance(v, str):
+            strings += 1
+    if total == 0:
+        return 0.0
+    return strings / total
+
+
+def toml_numeric_density(source: "str | bytes | Path") -> float:
+    """Return ratio of numeric values to total top-level value count. 0.0 if no values."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    total = len(data)
+    if total == 0:
+        return 0.0
+    numeric = sum(1 for v in data.values() if isinstance(v, (int, float)) and not isinstance(v, bool))
+    return numeric / total
+
+
+def toml_depth(source: "str | bytes | Path") -> int:
+    """Return the maximum nesting depth of the TOML document. 0 for empty, 1 for flat."""
+    model = load_toml(source)
+    data = model.get("data", model)
+
+    def _depth(node: dict) -> int:
+        if not node:
+            return 0
+        max_child = 0
+        for v in node.values():
+            if isinstance(v, dict):
+                max_child = max(max_child, _depth(v))
+        return 1 + max_child
+
+    return _depth(data)
+
+
+def toml_list_count(source: "str | bytes | Path") -> int:
+    """Return the count of top-level keys whose values are lists."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(1 for v in data.values() if isinstance(v, list))
+
+
+def toml_avg_key_length(source: "str | bytes | Path") -> float:
+    """Return the average length of top-level key names. 0.0 if no keys."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    keys = list(data.keys())
+    if not keys:
+        return 0.0
+    return sum(len(k) for k in keys) / len(keys)
+
+
+def toml_max_value_length(source: "str | bytes | Path") -> int:
+    """Return the max string length of any top-level value. 0 if no keys."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    if not data:
+        return 0
+    return max(len(str(v)) for v in data.values())
+
+
+def toml_nested_table_count(source: "str | bytes | Path") -> int:
+    """Return the count of top-level values that are dicts (nested tables)."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return sum(1 for v in data.values() if isinstance(v, dict))
+
+
+def toml_has_booleans(source: "str | bytes | Path") -> bool:
+    """Return True if any top-level value is a boolean."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return any(isinstance(v, bool) for v in data.values())
+
+
+def toml_key_count_per_table(source: "str | bytes | Path") -> list:
+    """Return list of key counts for each top-level table. Empty list if no tables."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return [len(v) for v in data.values() if isinstance(v, dict)]
+
+
+def toml_is_flat(source: "str | bytes | Path") -> bool:
+    """Return True if no top-level value is a dict (no nested tables)."""
+    model = load_toml(source)
+    data = model.get("data", model)
+    return not any(isinstance(v, dict) for v in data.values())
+
+
+def toml_total_value_count(source: "str | bytes | Path") -> int:
+    """Return total count of leaf values across all tables (recursive)."""
+    model = load_toml(source)
+    data = model.get("data", model)
+
+    def _count(d):
+        total = 0
+        for v in d.values():
+            if isinstance(v, dict):
+                total += _count(v)
+            else:
+                total += 1
+        return total
+
+    return _count(data)

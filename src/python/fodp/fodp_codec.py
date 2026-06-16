@@ -427,3 +427,240 @@ def fodp_slide_text_density(source: "str | bytes | Path") -> float:
     if not texts:
         return 0.0
     return sum(len(t) for t in texts) / len(texts)
+
+
+def fodp_nonempty_slide_count(source: "str | bytes | Path") -> int:
+    """Return the number of slides that contain at least one text character.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Integer count of slides with non-empty text content.
+    """
+    texts = fodp_text_per_slide(source)
+    return sum(1 for t in texts if t.strip())
+
+
+def fodp_text_to_slide_ratio(source: "str | bytes | Path") -> float:
+    """Return the ratio of total text length to slide count.
+
+    Identical to slide_text_density but named for clarity in analytics.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Float ratio. Returns 0.0 if no slides exist.
+    """
+    count = fodp_slide_count(source)
+    if count == 0:
+        return 0.0
+    total = fodp_total_text_length(source)
+    return total / count
+
+
+def fodp_all_slides_have_text(source: "str | bytes | Path") -> bool:
+    """Return True if every slide has at least some non-empty text."""
+    texts = fodp_text_per_slide(source)
+    if not texts:
+        return False
+    return all(t.strip() for t in texts)
+
+
+def fodp_max_title_length(source: "str | bytes | Path") -> int:
+    """Return the character count of the longest slide title; 0 if no titles."""
+    titles = fodp_slide_titles(source)
+    if not titles:
+        return 0
+    return max((len(t) for t in titles if t is not None), default=0)
+
+
+def fodp_average_text_per_slide(source: "str | bytes | Path") -> float:
+    """Return the average character count of text per slide."""
+    texts = fodp_text_per_slide(source)
+    if not texts:
+        return 0.0
+    return sum(len(t) for t in texts) / len(texts)
+
+
+def fodp_shape_to_slide_ratio(source: "str | bytes | Path") -> float:
+    """Return the ratio of total shapes to slide count."""
+    count = fodp_slide_count(source)
+    if count == 0:
+        return 0.0
+    total = fodp_total_shape_count(source)
+    return total / count
+
+
+def fodp_notes_to_slide_ratio(source: "str | bytes | Path") -> float:
+    """Return the ratio of total notes text length to slide count."""
+    count = fodp_slide_count(source)
+    if count == 0:
+        return 0.0
+    total = fodp_total_notes_length(source)
+    return total / count
+
+
+def fodp_image_to_slide_ratio(source: "str | bytes | Path") -> float:
+    """Return the ratio of image count to slide count."""
+    count = fodp_slide_count(source)
+    if count == 0:
+        return 0.0
+    return fodp_image_count(source) / count
+
+
+def fodp_has_empty_slides(source: "str | bytes | Path") -> bool:
+    """Return True if any slide has zero text content."""
+    return fodp_empty_slide_count(source) > 0
+
+
+def fodp_title_coverage(source: "str | bytes | Path") -> float:
+    """Return the ratio of slides with non-None titles to total slides."""
+    count = fodp_slide_count(source)
+    if count == 0:
+        return 0.0
+    titles = fodp_slide_titles(source)
+    titled = sum(1 for t in titles if t is not None)
+    return titled / count
+
+
+def fodp_is_single_slide(source: "str | bytes | Path") -> bool:
+    """Return True if the presentation has exactly one slide."""
+    return fodp_slide_count(source) == 1
+
+
+def fodp_notes_density(source: "str | bytes | Path") -> float:
+    """Return total notes length / slide count. 0.0 if no slides."""
+    count = fodp_slide_count(source)
+    if count == 0:
+        return 0.0
+    return fodp_total_notes_length(source) / count
+
+
+def fodp_has_titles(source: "str | bytes | Path") -> bool:
+    """Return True if any slide has a non-empty title."""
+    titles = fodp_slide_titles(source)
+    return any(t is not None and t.strip() for t in titles)
+
+
+def fodp_min_shapes_per_slide(source: "str | bytes | Path") -> int:
+    """Return the minimum shape count across all slides. 0 if no slides."""
+    counts = fodp_slide_shape_counts(source)
+    if not counts:
+        return 0
+    return min(counts)
+
+
+def fodp_has_multi_slide(source: "str | bytes | Path") -> bool:
+    """Return True if the presentation has more than one slide."""
+    return fodp_slide_count(source) > 1
+
+
+def fodp_max_shapes_per_slide(source: "str | bytes | Path") -> int:
+    """Return the maximum shape count across all slides. 0 if no slides."""
+    counts = fodp_slide_shape_counts(source)
+    if not counts:
+        return 0
+    return max(counts)
+
+
+def fodp_avg_notes_length(source: "str | bytes | Path") -> float:
+    """Return the average notes text length per slide. 0.0 if no slides."""
+    count = fodp_slide_count(source)
+    if count == 0:
+        return 0.0
+    return fodp_total_notes_length(source) / count
+
+
+def fodp_shape_variance(source: "str | bytes | Path") -> int:
+    """Return the difference between max and min shapes per slide. 0 if no slides."""
+    counts = fodp_slide_shape_counts(source)
+    if not counts:
+        return 0
+    return max(counts) - min(counts)
+
+
+def fodp_total_shape_count(source: "str | bytes | Path") -> int:
+    """Return the total number of shapes across all slides."""
+    return sum(fodp_slide_shape_counts(source))
+
+
+def fodp_avg_shapes_per_slide(source: "str | bytes | Path") -> float:
+    """Return the average shape count per slide. 0.0 if no slides."""
+    count = fodp_slide_count(source)
+    if count == 0:
+        return 0.0
+    return sum(fodp_slide_shape_counts(source)) / count
+
+
+def fodp_empty_slide_count(source: "str | bytes | Path") -> int:
+    """Return the count of slides with zero shapes."""
+    counts = fodp_slide_shape_counts(source)
+    return sum(1 for c in counts if c == 0)
+
+
+def fodp_max_text_length(source: "str | bytes | Path") -> int:
+    """Return the maximum text length on any single slide. 0 if no slides."""
+    doc = load(source)
+    slides = doc.get("slides", [])
+    if not slides:
+        return 0
+    return max(len(s.get("text", "")) for s in slides)
+
+
+def fodp_text_length_variance(source: "str | bytes | Path") -> float:
+    """Return variance of text lengths across slides. 0.0 if fewer than 2 slides."""
+    doc = load(source)
+    slides = doc.get("slides", [])
+    if len(slides) < 2:
+        return 0.0
+    lengths = [len(s.get("text", "")) for s in slides]
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def fodp_slide_text_lengths(source: "str | bytes | Path") -> list:
+    """Return a list of text lengths, one per slide."""
+    doc = load(source)
+    return [len(s.get("text", "")) for s in doc.get("slides", [])]
+
+
+def fodp_avg_title_length(source: "str | bytes | Path") -> float:
+    """Return average length of slide titles. 0.0 if no titles."""
+    titles = fodp_slide_titles(source)
+    named = [t for t in titles if t]
+    if not named:
+        return 0.0
+    return sum(len(t) for t in named) / len(named)
+
+
+def fodp_is_text_heavy(source: "str | bytes | Path") -> bool:
+    """Return True if total text length > 500 chars."""
+    return fodp_total_text_length(source) > 500
+
+
+def fodp_max_notes_length(source: "str | bytes | Path") -> int:
+    """Return the length of the longest notes text across slides. 0 if no notes."""
+    notes = fodp_notes_text(source)
+    if not notes:
+        return 0
+    return max(len(n) for n in notes)
+
+
+def fodp_slide_count_is_one(source: "str | bytes | Path") -> bool:
+    """Return True if the presentation has exactly one slide."""
+    return fodp_slide_count(source) == 1
+
+
+def fodp_is_shape_heavy(source: "str | bytes | Path") -> bool:
+    """Return True if the total shape count exceeds the slide count."""
+    sc = fodp_slide_count(source)
+    if sc == 0:
+        return False
+    return fodp_total_shape_count(source) > sc
+
+
+def fodp_has_zero_shapes(source: "str | bytes | Path") -> bool:
+    """Return True if the presentation has no shapes at all."""
+    return fodp_total_shape_count(source) == 0

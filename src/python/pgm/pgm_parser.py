@@ -850,3 +850,242 @@ def pgm_pixel_sum(file_path: str | Path) -> int:
     if not img.pixels:
         return 0
     return sum(img.pixels)
+
+
+def pgm_zero_pixel_count(file_path: str | Path) -> int:
+    """Return the count of pixels with value 0 (pure black).
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Integer count of zero-value pixels.
+    """
+    img = parse_pgm_strict(file_path)
+    return sum(1 for p in img.pixels if p == 0)
+
+
+def pgm_saturated_pixel_count(file_path: str | Path) -> int:
+    """Return the count of pixels at the maximum value (saturated/pure white).
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Integer count of pixels equal to maxval.
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return sum(1 for p in img.pixels if p >= img.maxval)
+
+
+def pgm_standard_deviation(file_path: str | Path) -> float:
+    """Return the standard deviation of pixel values.
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Float standard deviation. Returns 0.0 for empty images.
+    """
+    img = parse_pgm_strict(file_path)
+    n = len(img.pixels)
+    if n == 0:
+        return 0.0
+    mean = sum(img.pixels) / n
+    variance = sum((p - mean) ** 2 for p in img.pixels) / n
+    return variance ** 0.5
+
+
+def pgm_brightness_ratio(file_path: str | Path) -> float:
+    """Return the ratio of average brightness to max possible (maxval).
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Float in [0.0, 1.0]. Returns 0.0 for empty images.
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels or img.maxval == 0:
+        return 0.0
+    mean = sum(img.pixels) / len(img.pixels)
+    return mean / img.maxval
+
+
+def pgm_has_any_saturated(file_path: str | Path) -> bool:
+    """Return True if at least one pixel equals maxval (fully bright)."""
+    img = parse_pgm_strict(file_path)
+    return any(p == img.maxval for p in img.pixels)
+
+
+def pgm_is_all_dark(file_path: str | Path) -> bool:
+    """Return True if all pixels are strictly below the midpoint (maxval // 2)."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return False
+    mid = img.maxval // 2
+    return all(p < mid for p in img.pixels)
+
+
+def pgm_perimeter(file_path: str | Path) -> int:
+    """Return the image perimeter in pixels: 2 * (width + height).
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Integer perimeter.
+    """
+    img = parse_pgm_strict(file_path)
+    return 2 * (img.width + img.height)
+
+
+def pgm_unique_value_count(file_path: str | Path) -> int:
+    """Return the number of distinct pixel values in the image.
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Integer count of unique pixel values. 0 for empty images.
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return len(set(img.pixels))
+
+
+def pgm_dimension_ratio(file_path: str | Path) -> float:
+    """Return width / height ratio. 0.0 if height is 0."""
+    img = parse_pgm_strict(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def pgm_is_square(file_path: str | Path) -> bool:
+    """Return True if the PGM image width equals its height."""
+    img = parse_pgm_strict(file_path)
+    return img.width == img.height
+
+
+def pgm_is_landscape(file_path: str | Path) -> bool:
+    """Return True if the PGM image is wider than it is tall."""
+    img = parse_pgm_strict(file_path)
+    return img.width > img.height
+
+
+def pgm_max_dimension(file_path: str | Path) -> int:
+    """Return the larger of width and height."""
+    img = parse_pgm_strict(file_path)
+    return max(img.width, img.height)
+
+
+def pgm_has_any_zero(file_path: str | Path) -> bool:
+    """Return True if at least one pixel has value 0 (pure black)."""
+    img = parse_pgm_strict(file_path)
+    return any(p == 0 for p in img.pixels)
+
+
+def pgm_is_all_bright(file_path: str | Path) -> bool:
+    """Return True if all pixels are at or above the midpoint (maxval // 2)."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return False
+    mid = img.maxval // 2
+    return all(p >= mid for p in img.pixels)
+
+
+def pgm_diagonal(file_path: str | Path) -> float:
+    """Return the diagonal length of the image."""
+    import math
+    img = parse_pgm_strict(file_path)
+    return math.sqrt(img.width ** 2 + img.height ** 2)
+
+
+def pgm_aspect_ratio(file_path: str | Path) -> float:
+    """Return width / height. 0.0 if height is 0."""
+    img = parse_pgm_strict(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def pgm_min_dimension(file_path: str | Path) -> int:
+    """Return the smaller of width and height."""
+    img = parse_pgm_strict(file_path)
+    return min(img.width, img.height)
+
+
+def pgm_brightness_range(file_path: str | Path) -> int:
+    """Return the difference between max and min pixel values. 0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return max(img.pixels) - min(img.pixels)
+
+
+def pgm_area(file_path: str | Path) -> int:
+    """Return the area of the image: width * height."""
+    img = parse_pgm_strict(file_path)
+    return img.width * img.height
+
+
+def pgm_mean_brightness(file_path: str | Path) -> float:
+    """Return the mean pixel value. 0.0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(img.pixels) / len(img.pixels)
+
+
+def pgm_megapixels(file_path: str | Path) -> float:
+    """Return image size in megapixels."""
+    img = parse_pgm_strict(file_path)
+    return (img.width * img.height) / 1_000_000
+
+
+def pgm_is_tall(file_path: str | Path) -> bool:
+    """Return True if height > 2 * width."""
+    img = parse_pgm_strict(file_path)
+    return img.height > 2 * img.width
+
+
+def pgm_column_count(file_path: str | Path) -> int:
+    """Return the number of columns (width) in the image."""
+    img = parse_pgm_strict(file_path)
+    return img.width
+
+
+def pgm_is_uniform(file_path: str | Path) -> bool:
+    """Return True if all pixels have the same brightness value (range == 0)."""
+    return pgm_brightness_range(file_path) == 0
+
+
+def pgm_is_wide(file_path: str | Path) -> bool:
+    """Return True if width > 2 * height."""
+    img = parse_pgm_strict(file_path)
+    return img.width > 2 * img.height
+
+
+def pgm_pixel_density(file_path: str | Path) -> float:
+    """Return pixels per byte of file size. 0.0 if file_size is 0."""
+    img = parse_pgm_strict(file_path)
+    fsize = Path(file_path).stat().st_size
+    if fsize == 0:
+        return 0.0
+    return (img.width * img.height) / fsize
+
+
+def pgm_row_count(file_path: str | Path) -> int:
+    """Return the image height (number of rows)."""
+    img = parse_pgm_strict(file_path)
+    return img.height
+
+
+def pgm_is_portrait(file_path: str | Path) -> bool:
+    """Return True if height > width."""
+    img = parse_pgm_strict(file_path)
+    return img.height > img.width

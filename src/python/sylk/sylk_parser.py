@@ -1010,3 +1010,379 @@ def sylk_nonempty_cell_count(file_path: "str | Path") -> int:
     """Return the number of cells with non-empty values."""
     doc = parse_sylk_strict(file_path)
     return sum(1 for c in doc.cells if c.value is not None and str(c.value).strip() != "")
+
+
+def sylk_avg_row_length(file_path: "str | Path") -> float:
+    """Return the average number of cells per row.
+
+    Args:
+        file_path: Path to a SYLK file.
+
+    Returns:
+        Float average cells per row, or 0.0 if no rows.
+    """
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0.0
+    rows: dict[int, int] = {}
+    for c in doc.cells:
+        rows[c.row] = rows.get(c.row, 0) + 1
+    return sum(rows.values()) / len(rows)
+
+
+def sylk_min_col_index(file_path: "str | Path") -> int:
+    """Return the minimum column index used in the SYLK file.
+
+    Args:
+        file_path: Path to a SYLK file.
+
+    Returns:
+        Minimum column index (1-based), or 0 if no cells.
+    """
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0
+    return min(c.col for c in doc.cells)
+
+
+def sylk_data_sparsity(file_path: "str | Path") -> float:
+    """Return the sparsity of the SYLK grid: empty / (rows * cols).
+
+    Measures how much of the logical grid (rows x columns) is unused.
+    1.0 = completely empty; 0.0 = every cell in the grid is occupied.
+
+    Args:
+        file_path: Path to a SYLK file.
+
+    Returns:
+        Float sparsity ratio 0.0-1.0. Returns 0.0 if no cells exist.
+    """
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0.0
+    max_row = max(c.row for c in doc.cells)
+    max_col = max(c.col for c in doc.cells)
+    grid_size = max_row * max_col
+    if grid_size == 0:
+        return 0.0
+    occupied = len(doc.cells)
+    return 1.0 - (occupied / grid_size)
+
+
+def sylk_max_cell_value_length(file_path: "str | Path") -> int:
+    """Return the length of the longest cell value (as string).
+
+    Args:
+        file_path: Path to a SYLK file.
+
+    Returns:
+        Integer max length. Returns 0 if no cells or all cells are empty.
+    """
+    doc = parse_sylk_strict(file_path)
+    max_len = 0
+    for cell in doc.cells:
+        if cell.value is not None:
+            max_len = max(max_len, len(str(cell.value)))
+    return max_len
+
+
+def sylk_empty_cell_count(file_path: "str | Path") -> int:
+    """Return the count of cells with no value (None or empty string).
+
+    Args:
+        file_path: Path to a SYLK file.
+
+    Returns:
+        Integer count of cells whose value is None or empty/whitespace.
+    """
+    doc = parse_sylk_strict(file_path)
+    count = 0
+    for cell in doc.cells:
+        if cell.value is None or str(cell.value).strip() == "":
+            count += 1
+    return count
+
+
+def sylk_min_cell_value_length(file_path: "str | Path") -> int:
+    """Return the length of the shortest non-empty cell value string.
+
+    Args:
+        file_path: Path to a SYLK file.
+
+    Returns:
+        Integer min length of cell value string, or 0 if no non-empty cells.
+    """
+    doc = parse_sylk_strict(file_path)
+    min_len = None
+    for cell in doc.cells:
+        if cell.value is not None:
+            s = str(cell.value).strip()
+            if s:
+                length = len(str(cell.value))
+                if min_len is None or length < min_len:
+                    min_len = length
+    return min_len if min_len is not None else 0
+
+
+def sylk_max_numeric_value(file_path: "str | Path") -> "float | None":
+    """Return the maximum numeric cell value.
+
+    Args:
+        file_path: Path to a SYLK file.
+
+    Returns:
+        Float max numeric value, or None if no numeric cells.
+    """
+    doc = parse_sylk_strict(file_path)
+    max_val = None
+    for cell in doc.cells:
+        if cell.value is None:
+            continue
+        try:
+            v = float(cell.value)
+            if max_val is None or v > max_val:
+                max_val = v
+        except (ValueError, TypeError):
+            pass
+    return max_val
+
+
+def sylk_min_numeric_value(file_path: "str | Path") -> "float | None":
+    """Return the minimum numeric cell value.
+
+    Args:
+        file_path: Path to a SYLK file.
+
+    Returns:
+        Float min numeric value, or None if no numeric cells.
+    """
+    doc = parse_sylk_strict(file_path)
+    min_val = None
+    for cell in doc.cells:
+        if cell.value is None:
+            continue
+        try:
+            v = float(cell.value)
+            if min_val is None or v < min_val:
+                min_val = v
+        except (ValueError, TypeError):
+            pass
+    return min_val
+
+
+def sylk_numeric_range(file_path: "str | Path") -> float:
+    """Return the range (max - min) of numeric cell values.
+
+    Args:
+        file_path: Path to a SYLK file.
+
+    Returns:
+        Float range, or 0.0 if fewer than 2 numeric cells.
+    """
+    max_val = sylk_max_numeric_value(file_path)
+    min_val = sylk_min_numeric_value(file_path)
+    if max_val is None or min_val is None:
+        return 0.0
+    return max_val - min_val
+
+
+def sylk_is_rectangular(file_path: "str | Path") -> bool:
+    """Return True if all rows have the same number of cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return True
+    row_counts: dict[int, int] = {}
+    for c in doc.cells:
+        row_counts[c.row] = row_counts.get(c.row, 0) + 1
+    counts = list(row_counts.values())
+    return len(set(counts)) <= 1
+
+
+def sylk_min_row_length(file_path: "str | Path") -> int:
+    """Return the number of cells in the narrowest row. 0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0
+    row_counts: dict[int, int] = {}
+    for c in doc.cells:
+        row_counts[c.row] = row_counts.get(c.row, 0) + 1
+    return min(row_counts.values())
+
+
+def sylk_has_string_cells(file_path: "str | Path") -> bool:
+    """Return True if any cell contains a string value.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        True if at least one cell has a string value.
+    """
+    doc = parse_sylk_strict(file_path)
+    return any(isinstance(c.value, str) and c.value.strip() for c in doc.cells)
+
+
+def sylk_unique_row_count(file_path: "str | Path") -> int:
+    """Return the number of distinct row indices in the spreadsheet.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        Count of unique row indices.
+    """
+    doc = parse_sylk_strict(file_path)
+    return len(set(c.row for c in doc.cells))
+
+
+def sylk_unique_column_count(file_path: "str | Path") -> int:
+    """Return the number of distinct column indices in the spreadsheet."""
+    doc = parse_sylk_strict(file_path)
+    return len(set(c.col for c in doc.cells))
+
+
+def sylk_has_numeric_cells(file_path: "str | Path") -> bool:
+    """Return True if any cell has a numeric value type."""
+    doc = parse_sylk_strict(file_path)
+    return any(c.value_type in ("number", "numeric") for c in doc.cells)
+
+
+def sylk_data_density(file_path: "str | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    total = sylk_total_cell_count(file_path)
+    if total == 0:
+        return 0.0
+    nonempty = sylk_nonempty_cell_count(file_path)
+    return nonempty / total
+
+
+def sylk_avg_cell_value_length(file_path: "str | Path") -> float:
+    """Return the average string length of all cell values. 0.0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0.0
+    return sum(len(str(c.value)) for c in doc.cells) / len(doc.cells)
+
+
+def sylk_is_single_row(file_path: "str | Path") -> bool:
+    """Return True if the file contains exactly one row of data."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return False
+    rows = {c.row for c in doc.cells}
+    return len(rows) == 1
+
+
+def sylk_max_string_length(file_path: "str | Path") -> int:
+    """Return the maximum length of any string cell value. 0 if no string cells."""
+    doc = parse_sylk_strict(file_path)
+    lengths = [len(str(c.value)) for c in doc.cells if isinstance(c.value, str)]
+    return max(lengths) if lengths else 0
+
+
+def sylk_column_variance(file_path: "str | Path") -> float:
+    """Return variance of cell counts per column. 0.0 if fewer than 2 columns."""
+    doc = parse_sylk_strict(file_path)
+    from collections import Counter
+    col_counts = Counter(c.col for c in doc.cells)
+    vals = list(col_counts.values())
+    if len(vals) < 2:
+        return 0.0
+    mean = sum(vals) / len(vals)
+    return sum((v - mean) ** 2 for v in vals) / len(vals)
+
+
+def sylk_is_empty(file_path: "str | Path") -> bool:
+    """Return True if the SYLK document has no cells."""
+    doc = parse_sylk_strict(file_path)
+    return len(doc.cells) == 0
+
+
+def sylk_has_empty_rows(file_path: "str | Path") -> bool:
+    """Return True if any row in the grid has no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return True
+    from collections import defaultdict
+    row_cells = defaultdict(int)
+    for c in doc.cells:
+        row_cells[c.row] += 1
+    max_row = max(c.row for c in doc.cells)
+    for r in range(1, max_row + 1):
+        if row_cells[r] == 0:
+            return True
+    return False
+
+
+def sylk_avg_numeric_cell_length(file_path: "str | Path") -> float:
+    """Return average string length of numeric cell values. 0.0 if none."""
+    doc = parse_sylk_strict(file_path)
+    lengths = []
+    for c in doc.cells:
+        if c.value is not None:
+            try:
+                float(c.value)
+                lengths.append(len(str(c.value)))
+            except (ValueError, TypeError):
+                pass
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def sylk_unique_value_count(file_path: "str | Path") -> int:
+    """Return the count of distinct cell values."""
+    doc = parse_sylk_strict(file_path)
+    return len({c.value for c in doc.cells})
+
+
+def sylk_is_multi_row(file_path: "str | Path") -> bool:
+    """Return True if the document has more than one row."""
+    doc = parse_sylk_strict(file_path)
+    rows = {c.row for c in doc.cells}
+    return len(rows) > 1
+
+
+def sylk_is_single_column(file_path: "str | Path") -> bool:
+    """Return True if all cells are in the same column."""
+    doc = parse_sylk_strict(file_path)
+    cols = {c.col for c in doc.cells}
+    return len(cols) == 1
+
+
+def sylk_cell_count_variance(file_path: "str | Path") -> float:
+    """Return variance of cell counts per row. 0.0 if fewer than 2 rows."""
+    from collections import defaultdict
+    doc = parse_sylk_strict(file_path)
+    row_counts = defaultdict(int)
+    for c in doc.cells:
+        row_counts[c.row] += 1
+    counts = list(row_counts.values())
+    if len(counts) < 2:
+        return 0.0
+    mean = sum(counts) / len(counts)
+    return sum((v - mean) ** 2 for v in counts) / len(counts)
+
+
+def sylk_is_all_numeric(file_path: "str | Path") -> bool:
+    """Return True if all cells have numeric values. False if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return False
+    for c in doc.cells:
+        if c.value is None:
+            return False
+        try:
+            float(c.value)
+        except (ValueError, TypeError):
+            return False
+    return True
+
+
+def sylk_row_span(file_path: "str | Path") -> int:
+    """Return the row span (max_row - min_row + 1). 0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0
+    rows = [c.row for c in doc.cells]
+    return max(rows) - min(rows) + 1

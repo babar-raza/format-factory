@@ -522,3 +522,270 @@ def xcf_is_landscape(file_path: str | Path) -> bool:
     """Return True if the image width exceeds its height."""
     img = parse_xcf_strict(file_path)
     return img.width > img.height
+
+
+def xcf_is_portrait(file_path: str | Path) -> bool:
+    """Return True if the image height exceeds its width.
+
+    Args:
+        file_path: Path to a XCF file.
+
+    Returns:
+        True if height > width, False otherwise (includes square images).
+    """
+    img = parse_xcf_strict(file_path)
+    return img.height > img.width
+
+
+def xcf_layer_count_per_megapixel(file_path: str | Path) -> float:
+    """Return the number of layers per megapixel of canvas.
+
+    Args:
+        file_path: Path to a XCF file.
+
+    Returns:
+        Float layers per megapixel, or 0.0 if canvas has 0 pixels.
+    """
+    img = parse_xcf_strict(file_path)
+    megapixels = (img.width * img.height) / 1_000_000
+    if megapixels == 0:
+        return 0.0
+    return img.num_layers / megapixels
+
+
+def xcf_compression_ratio(file_path: str | Path) -> float:
+    """Return the compression ratio: uncompressed_canvas_bytes / file_size.
+
+    Higher values mean better compression.
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Float ratio >= 0.0. Returns 0.0 if file_size is 0.
+    """
+    canvas = xcf_canvas_size_bytes(file_path)
+    fsize = xcf_file_size(file_path)
+    if fsize == 0:
+        return 0.0
+    return canvas / fsize
+
+
+def xcf_layers_per_dimension(file_path: str | Path) -> float:
+    """Return layers divided by the max dimension (width or height).
+
+    A density metric: how many layers per pixel of the longest side.
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Float ratio. Returns 0.0 if both dimensions are 0.
+    """
+    img = parse_xcf_strict(file_path)
+    max_dim = max(img.width, img.height)
+    if max_dim == 0:
+        return 0.0
+    return img.num_layers / max_dim
+
+
+def xcf_perimeter(file_path: str | Path) -> int:
+    """Return the canvas perimeter in pixels: 2 * (width + height).
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Integer perimeter in pixels.
+    """
+    img = parse_xcf_strict(file_path)
+    return 2 * (img.width + img.height)
+
+
+def xcf_diagonal(file_path: str | Path) -> float:
+    """Return the canvas diagonal length in pixels.
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Float diagonal length (sqrt(width^2 + height^2)).
+    """
+    import math
+    img = parse_xcf_strict(file_path)
+    return math.sqrt(img.width ** 2 + img.height ** 2)
+
+
+def xcf_dimension_ratio(file_path: str | Path) -> float:
+    """Return width / height ratio. 0.0 if height is 0."""
+    img = parse_xcf_strict(file_path)
+    if img.height == 0:
+        return 0.0
+    return img.width / img.height
+
+
+def xcf_layer_density(file_path: str | Path) -> float:
+    """Return num_layers / total_pixels. 0.0 if image has no pixels."""
+    img = parse_xcf_strict(file_path)
+    total = img.width * img.height
+    if total == 0:
+        return 0.0
+    return img.num_layers / total
+
+
+def xcf_total_layer_pixels(file_path: str | Path) -> int:
+    """Return num_layers * width * height (total pixels across all layers)."""
+    img = parse_xcf_strict(file_path)
+    return img.num_layers * img.width * img.height
+
+
+def xcf_is_single_layer(file_path: str | Path) -> bool:
+    """Return True if the image has exactly one layer."""
+    img = parse_xcf_strict(file_path)
+    return img.num_layers == 1
+
+
+def xcf_canvas_area(file_path: str | Path) -> int:
+    """Return the total canvas area (width * height) in pixels.
+
+    Args:
+        file_path: Path to a .xcf file.
+
+    Returns:
+        Integer pixel area of the canvas.
+    """
+    img = parse_xcf_strict(file_path)
+    return img.width * img.height
+
+
+def xcf_max_layer_dimension(file_path: str | Path) -> int:
+    """Return the larger of width and height of the canvas.
+
+    Args:
+        file_path: Path to a .xcf file.
+
+    Returns:
+        Integer maximum of width and height.
+    """
+    img = parse_xcf_strict(file_path)
+    return max(img.width, img.height)
+
+
+def xcf_min_layer_dimension(file_path: str | Path) -> int:
+    """Return the smaller of width and height of the canvas."""
+    img = parse_xcf_strict(file_path)
+    return min(img.width, img.height)
+
+
+def xcf_has_multiple_layers(file_path: str | Path) -> bool:
+    """Return True if the image has more than one layer."""
+    img = parse_xcf_strict(file_path)
+    return img.num_layers > 1
+
+
+def xcf_max_dimension(file_path: str | Path) -> int:
+    """Return the larger of width and height."""
+    img = parse_xcf_strict(file_path)
+    return max(img.width, img.height)
+
+
+def xcf_min_dimension(file_path: str | Path) -> int:
+    """Return the smaller of width and height."""
+    img = parse_xcf_strict(file_path)
+    return min(img.width, img.height)
+
+
+def xcf_perimeter(file_path: str | Path) -> int:
+    """Return the perimeter of the canvas: 2 * (width + height)."""
+    img = parse_xcf_strict(file_path)
+    return 2 * (img.width + img.height)
+
+
+def xcf_diagonal(file_path: str | Path) -> float:
+    """Return the diagonal length of the canvas: sqrt(width^2 + height^2)."""
+    import math
+    img = parse_xcf_strict(file_path)
+    return math.sqrt(img.width ** 2 + img.height ** 2)
+
+
+def xcf_layer_to_pixel_ratio(file_path: str | Path) -> float:
+    """Return num_layers / pixel_count. 0.0 if no pixels."""
+    img = parse_xcf_strict(file_path)
+    pixels = img.width * img.height
+    if pixels == 0:
+        return 0.0
+    return img.num_layers / pixels
+
+
+def xcf_is_tall(file_path: str | Path) -> bool:
+    """Return True if height > 2 * width (very tall portrait)."""
+    img = parse_xcf_strict(file_path)
+    return img.height > 2 * img.width
+
+
+def xcf_column_count(file_path: str | Path) -> int:
+    """Return the canvas width (number of columns)."""
+    img = parse_xcf_strict(file_path)
+    return img.width
+
+
+def xcf_is_wide(file_path: str | Path) -> bool:
+    """Return True if width > 2 * height (very wide landscape)."""
+    img = parse_xcf_strict(file_path)
+    return img.width > 2 * img.height
+
+
+def xcf_pixel_density(file_path: str | Path) -> float:
+    """Return pixels per byte of file size. 0.0 if file_size is 0."""
+    img = parse_xcf_strict(file_path)
+    fsize = Path(file_path).stat().st_size
+    if fsize == 0:
+        return 0.0
+    return (img.width * img.height) / fsize
+
+
+def xcf_layer_area_variance(file_path: str | Path) -> float:
+    """Return variance of layer areas (width*height). 0.0 if fewer than 2 layers."""
+    img = parse_xcf_strict(file_path)
+    if img.num_layers < 2:
+        return 0.0
+    # All layers share canvas dimensions in our model
+    area = img.width * img.height
+    # With uniform layers, variance is 0
+    areas = [area] * img.num_layers
+    mean = sum(areas) / len(areas)
+    return sum((a - mean) ** 2 for a in areas) / len(areas)
+
+
+def xcf_pixel_count_per_layer(file_path: str | Path) -> float:
+    """Return average pixel count per layer. 0.0 if no layers."""
+    layers = xcf_layer_count(file_path)
+    if layers == 0:
+        return 0.0
+    return xcf_pixel_count(file_path) / layers
+
+
+def xcf_is_multi_pixel(file_path: str | Path) -> bool:
+    """Return True if the canvas has more than one pixel."""
+    return xcf_pixel_count(file_path) > 1
+
+
+def xcf_row_count(file_path: str | Path) -> int:
+    """Return the canvas height (number of rows)."""
+    img = parse_xcf_strict(file_path)
+    return img.height
+
+
+def xcf_file_bytes_per_layer(file_path: str | Path) -> float:
+    """Return file size divided by layer count. 0.0 if no layers."""
+    img = parse_xcf_strict(file_path)
+    if img.num_layers == 0:
+        return 0.0
+    fsize = Path(file_path).stat().st_size
+    return fsize / img.num_layers
+
+
+def xcf_average_dimension(file_path: str | Path) -> float:
+    """Return average of width and height."""
+    img = parse_xcf_strict(file_path)
+    return (img.width + img.height) / 2.0

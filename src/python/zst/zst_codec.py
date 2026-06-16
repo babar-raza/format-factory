@@ -1085,3 +1085,156 @@ def zst_file_info(path: "str | Path") -> dict:
     }
 
 
+def zst_compression_ratio(path: "str | Path") -> float:
+    """Return the compression ratio (compressed_size / decompressed_size).
+
+    Returns 0.0 if the file cannot be decompressed or decompressed_size is 0.
+
+    Args:
+        path: Path to a Zstandard-compressed file.
+
+    Returns:
+        Float ratio, or 0.0 if decompressed size is unavailable.
+    """
+    c_size = zst_compressed_size(path)
+    try:
+        d_size = zst_decompressed_size(path)
+    except Exception:
+        d_size = 0
+    if d_size == 0:
+        return 0.0
+    return c_size / d_size
+
+
+def zst_avg_frame_size(path: "str | Path") -> float:
+    """Return the average size of Zstandard frames in bytes.
+
+    Args:
+        path: Path to a Zstandard-compressed file.
+
+    Returns:
+        Float average frame size in bytes, or 0.0 if no frames.
+    """
+    frames = zst_frame_sizes(path)
+    if not frames:
+        return 0.0
+    return sum(frames) / len(frames)
+
+
+def zst_is_single_frame(path: "str | Path") -> bool:
+    """Return True if the ZST file contains exactly one frame."""
+    return zst_frame_count(path) == 1
+
+
+def zst_max_frame_size(path: "str | Path") -> int:
+    """Return the size of the largest frame in bytes; 0 if no frames."""
+    frames = zst_frame_sizes(path)
+    if not frames:
+        return 0
+    return max(frames)
+
+
+def zst_min_frame_size(path: "str | Path") -> int:
+    """Return the size of the smallest frame in bytes; 0 if no frames."""
+    frames = zst_frame_sizes(path)
+    if not frames:
+        return 0
+    return min(frames)
+
+
+def zst_is_small_file(path: "str | Path") -> bool:
+    """Return True if the compressed file size is less than 128 bytes."""
+    return zst_compressed_size(path) < 128
+
+
+def zst_total_frame_size(path: "str | Path") -> int:
+    """Return the sum of all frame sizes in bytes; 0 if no frames."""
+    return sum(zst_frame_sizes(path))
+
+
+def zst_has_multiple_frames(path: "str | Path") -> bool:
+    """Return True if the ZST file contains more than one frame."""
+    return zst_frame_count(path) > 1
+
+
+def zst_frame_size_variance(path: "str | Path") -> float:
+    """Return the variance of frame sizes. 0.0 if fewer than 2 frames."""
+    frames = zst_frame_sizes(path)
+    if len(frames) < 2:
+        return 0.0
+    mean = sum(frames) / len(frames)
+    return sum((f - mean) ** 2 for f in frames) / len(frames)
+
+
+def zst_largest_frame_ratio(path: "str | Path") -> float:
+    """Return the ratio of the largest frame to the total size. 0.0 if no frames."""
+    total = zst_total_frame_size(path)
+    if total == 0:
+        return 0.0
+    return zst_max_frame_size(path) / total
+
+
+def zst_smallest_frame_ratio(path: "str | Path") -> float:
+    """Return the ratio of the smallest frame to the total size. 0.0 if no frames."""
+    total = zst_total_frame_size(path)
+    if total == 0:
+        return 0.0
+    return zst_min_frame_size(path) / total
+
+
+def zst_frame_count_is_one(path: "str | Path") -> bool:
+    """Return True if the file contains exactly one frame."""
+    return zst_frame_count(path) == 1
+
+
+
+
+def zst_decompressed_to_compressed_ratio(path: "str | Path") -> float:
+    """Return the ratio of decompressed size to compressed size.
+
+    Returns 0.0 if the file cannot be decompressed or compressed_size is 0.
+
+    Args:
+        path: Path to a Zstandard-compressed file.
+
+    Returns:
+        Float ratio (decompressed / compressed), or 0.0 if unavailable.
+    """
+    c_size = zst_compressed_size(path)
+    if c_size == 0:
+        return 0.0
+    try:
+        d_size = zst_decompressed_size(path)
+        return d_size / c_size
+    except Exception:
+        return 0.0
+
+
+def zst_frame_median_size(path: "str | Path") -> int:
+    """Return the median frame size. 0 if no frames."""
+    frames = zst_frame_sizes(path)
+    if not frames:
+        return 0
+    frames_sorted = sorted(frames)
+    n = len(frames_sorted)
+    if n % 2 == 1:
+        return frames_sorted[n // 2]
+    return (frames_sorted[n // 2 - 1] + frames_sorted[n // 2]) // 2
+
+
+def zst_is_large_file(path: "str | Path") -> bool:
+    """Return True if compressed size exceeds 1 MB."""
+    return zst_compressed_size(path) > 1_000_000
+
+
+def zst_frame_size_range(path: "str | Path") -> int:
+    """Return max frame size minus min frame size. 0 if fewer than 2 frames."""
+    frames = zst_frame_sizes(path)
+    if len(frames) < 2:
+        return 0
+    return max(frames) - min(frames)
+
+
+def zst_is_multi_frame(path: "str | Path") -> bool:
+    """Return True if file contains more than one frame."""
+    return zst_frame_count(path) > 1

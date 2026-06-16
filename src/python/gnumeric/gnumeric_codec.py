@@ -1398,3 +1398,299 @@ def gnumeric_max_cell_length(file_path: "str | bytes | Path") -> int:
         for val in sheet.get("cell_values", []):
             max_len = max(max_len, len(str(val)))
     return max_len
+
+
+def gnumeric_min_cell_length(file_path: "str | bytes | Path") -> int:
+    """Return the length of the shortest cell value string.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        Integer min length, or 0 if no cells.
+    """
+    model = load(file_path)
+    min_len = None
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_values", []):
+            length = len(str(val))
+            if min_len is None or length < min_len:
+                min_len = length
+    return min_len if min_len is not None else 0
+
+
+def gnumeric_all_sheets_have_data(file_path: "str | bytes | Path") -> bool:
+    """Return True if every sheet has at least one non-empty cell value.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        True if all sheets have data; False if any sheet is empty or has no cells.
+    """
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return False
+    for sheet in sheets:
+        vals = [v for v in sheet.get("cell_values", []) if str(v).strip()]
+        if not vals:
+            return False
+    return True
+
+
+def gnumeric_has_any_string_cell(file_path: "str | bytes | Path") -> bool:
+    """Return True if any cell contains a non-empty string value.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        True if at least one cell has a non-empty string value.
+    """
+    model = load(file_path)
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_values", []):
+            if isinstance(val, str) and val.strip():
+                return True
+    return False
+
+
+def gnumeric_cell_count_all_sheets(file_path: "str | bytes | Path") -> int:
+    """Return total number of cells across all sheets.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        Total cell count (sum of cell_values lengths across all sheets).
+    """
+    model = load(file_path)
+    return sum(len(sheet.get("cell_values", [])) for sheet in model.get("sheets", []))
+
+
+def gnumeric_is_single_sheet(file_path: "str | bytes | Path") -> bool:
+    """Return True if the workbook contains exactly one sheet."""
+    model = load(file_path)
+    return len(model.get("sheets", [])) == 1
+
+
+def gnumeric_empty_sheet_count(file_path: "str | bytes | Path") -> int:
+    """Return the number of sheets that have no non-empty cell values."""
+    model = load(file_path)
+    count = 0
+    for sheet in model.get("sheets", []):
+        vals = [v for v in sheet.get("cell_values", []) if str(v).strip()]
+        if not vals:
+            count += 1
+    return count
+
+
+def gnumeric_data_density(file_path: "str | bytes | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    total = gnumeric_total_cell_count(file_path)
+    if total == 0:
+        return 0.0
+    model = load(file_path)
+    nonempty = 0
+    for sheet in model.get("sheets", []):
+        for v in sheet.get("cell_values", []):
+            if str(v).strip():
+                nonempty += 1
+    return nonempty / total
+
+
+def gnumeric_max_row_count(file_path: "str | bytes | Path") -> int:
+    """Return the maximum row count across all sheets. 0 if no sheets."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0
+    return max(sheet.get("row_count", 0) for sheet in sheets)
+
+
+def gnumeric_min_row_count(file_path: "str | bytes | Path") -> int:
+    """Return the minimum row count across all sheets. 0 if no sheets."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0
+    return min(sheet.get("row_count", 0) for sheet in sheets)
+
+
+def gnumeric_has_empty_sheets(file_path: "str | bytes | Path") -> bool:
+    """Return True if any sheet has zero cells."""
+    return gnumeric_empty_sheet_count(file_path) > 0
+
+
+def gnumeric_avg_row_count(file_path: "str | bytes | Path") -> float:
+    """Return the average row count across all sheets. 0.0 if no sheets."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0.0
+    return sum(sheet.get("row_count", 0) for sheet in sheets) / len(sheets)
+
+
+def gnumeric_nonempty_density(file_path: "str | bytes | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    total = gnumeric_total_cell_count(file_path)
+    if total == 0:
+        return 0.0
+    model = load(file_path)
+    nonempty = 0
+    for sheet in model.get("sheets", []):
+        for v in sheet.get("cell_values", []):
+            if str(v).strip():
+                nonempty += 1
+    return nonempty / total
+
+
+def gnumeric_is_empty(file_path: "str | bytes | Path") -> bool:
+    """Return True if the file has no cells across all sheets."""
+    return gnumeric_total_cell_count(file_path) == 0
+
+
+def gnumeric_max_column_count(file_path: "str | bytes | Path") -> int:
+    """Return the maximum number of columns across all sheets. 0 if no cells."""
+    model = load(file_path)
+    max_col = 0
+    for sheet in model.get("sheets", []):
+        grid = sheet.get("cell_grid", {})
+        if grid:
+            col_max = max(col for (row, col) in grid.keys()) + 1
+            if col_max > max_col:
+                max_col = col_max
+    return max_col
+
+
+def gnumeric_total_string_length(file_path: "str | bytes | Path") -> int:
+    """Return total length of all string cell values across all sheets."""
+    model = load(file_path)
+    total = 0
+    for sheet in model.get("sheets", []):
+        for v in sheet.get("cell_values", []):
+            if isinstance(v, str):
+                total += len(v)
+    return total
+
+
+def gnumeric_avg_cell_length(file_path: "str | bytes | Path") -> float:
+    """Return average length of non-empty cell values. 0.0 if no cells."""
+    model = load(file_path)
+    lengths = []
+    for sheet in model.get("sheets", []):
+        for v in sheet.get("cell_values", []):
+            s = str(v).strip()
+            if s:
+                lengths.append(len(s))
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def gnumeric_column_variance(file_path: "str | bytes | Path") -> float:
+    """Return variance of column counts across sheets. 0.0 if fewer than 2 sheets."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if len(sheets) < 2:
+        return 0.0
+    col_counts = [sheet.get("max_col", 0) + 1 for sheet in sheets]
+    mean = sum(col_counts) / len(col_counts)
+    return sum((c - mean) ** 2 for c in col_counts) / len(col_counts)
+
+
+def gnumeric_is_rectangular(file_path: "str | bytes | Path") -> bool:
+    """Return True if all sheets have the same column count."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if len(sheets) < 2:
+        return True
+    col_counts = [sheet.get("max_col", 0) for sheet in sheets]
+    return len(set(col_counts)) == 1
+
+
+def gnumeric_min_column_count(file_path: "str | bytes | Path") -> int:
+    """Return the minimum number of columns across all sheets. 0 if no cells."""
+    model = load(file_path)
+    col_counts = []
+    for sheet in model.get("sheets", []):
+        grid = sheet.get("cell_grid", {})
+        if grid:
+            col_counts.append(max(col for (row, col) in grid.keys()) + 1)
+        else:
+            col_counts.append(0)
+    if not col_counts:
+        return 0
+    return min(col_counts)
+
+
+def gnumeric_avg_column_count(file_path: "str | bytes | Path") -> float:
+    """Return the average number of columns across all sheets. 0.0 if no sheets."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0.0
+    col_counts = []
+    for sheet in sheets:
+        grid = sheet.get("cell_grid", {})
+        if grid:
+            col_counts.append(max(col for (row, col) in grid.keys()) + 1)
+        else:
+            col_counts.append(0)
+    return sum(col_counts) / len(col_counts)
+
+
+def gnumeric_has_empty_cells(file_path: "str | bytes | Path") -> bool:
+    """Return True if any sheet has cells with empty or None values."""
+    model = load(file_path)
+    for sheet in model.get("sheets", []):
+        grid = sheet.get("cell_grid", {})
+        for val in grid.values():
+            if val is None or (isinstance(val, str) and not val.strip()):
+                return True
+    return False
+
+
+def gnumeric_total_row_count(file_path: "str | bytes | Path") -> int:
+    """Return total row count across all sheets."""
+    model = load(file_path)
+    total = 0
+    for sheet in model.get("sheets", []):
+        grid = sheet.get("cell_grid", {})
+        if grid:
+            total += max(row for (row, col) in grid.keys()) + 1
+    return total
+
+
+def gnumeric_is_all_numeric(file_path: "str | bytes | Path") -> bool:
+    """Return True if all cells have numeric values. False if no cells."""
+    model = load(file_path)
+    has_cells = False
+    for sheet in model.get("sheets", []):
+        grid = sheet.get("cell_grid", {})
+        for val in grid.values():
+            has_cells = True
+            if val is None:
+                return False
+            try:
+                float(val)
+            except (ValueError, TypeError):
+                return False
+    return has_cells
+
+
+def gnumeric_nonempty_cell_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    model = load(file_path)
+    total = 0
+    nonempty = 0
+    for sheet in model.get("sheets", []):
+        grid = sheet.get("cell_grid", {})
+        total += len(grid)
+        for val in grid.values():
+            if val is not None and (not isinstance(val, str) or val.strip()):
+                nonempty += 1
+    if total == 0:
+        return 0.0
+    return nonempty / total

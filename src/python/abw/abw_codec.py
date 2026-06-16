@@ -1123,3 +1123,234 @@ def abw_total_word_count(file_path: "str | bytes | Path") -> int:
         if isinstance(text, str):
             total += len(text.split())
     return total
+
+
+def abw_nonempty_paragraph_count(file_path: "str | bytes | Path") -> int:
+    """Return the count of paragraphs that contain at least one word.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Integer count of non-empty paragraphs.
+    """
+    model = load(file_path)
+    count = 0
+    for para in model.get("paragraphs", []):
+        text = para if isinstance(para, str) else para.get("text", "") if isinstance(para, dict) else ""
+        if isinstance(text, str) and text.strip():
+            count += 1
+    return count
+
+
+def abw_char_count(file_path: "str | bytes | Path") -> int:
+    """Return the total character count across all paragraphs.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Integer total character count.
+    """
+    model = load(file_path)
+    total = 0
+    for para in model.get("paragraphs", []):
+        text = para if isinstance(para, str) else para.get("text", "") if isinstance(para, dict) else ""
+        if isinstance(text, str):
+            total += len(text)
+    return total
+
+
+def abw_min_paragraph_length(file_path: "str | bytes | Path") -> int:
+    """Return the character count of the shortest non-empty paragraph; 0 if none."""
+    model = load(file_path)
+    min_len = None
+    for para in model.get("paragraphs", []):
+        text = para if isinstance(para, str) else para.get("text", "") if isinstance(para, dict) else ""
+        if isinstance(text, str) and text.strip():
+            length = len(text)
+            if min_len is None or length < min_len:
+                min_len = length
+    return min_len if min_len is not None else 0
+
+
+def abw_has_content(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has at least one non-empty paragraph."""
+    model = load(file_path)
+    for para in model.get("paragraphs", []):
+        text = para if isinstance(para, str) else para.get("text", "") if isinstance(para, dict) else ""
+        if isinstance(text, str) and text.strip():
+            return True
+    return False
+
+
+def abw_heading_count(file_path: "str | bytes | Path") -> int:
+    """Return the number of heading-style paragraphs (style contains 'heading')."""
+    model = load(file_path)
+    count = 0
+    for para in model.get("paragraphs", []):
+        if isinstance(para, dict):
+            style = para.get("style", "")
+            if isinstance(style, str) and "heading" in style.lower():
+                count += 1
+    return count
+
+
+def abw_vocabulary_richness(file_path: "str | bytes | Path") -> float:
+    """Return unique_words / total_words. 0.0 if no words."""
+    total = abw_total_word_count(file_path)
+    if total == 0:
+        return 0.0
+    unique = abw_unique_word_count(file_path)
+    return unique / total
+
+
+def abw_average_paragraph_length(file_path: "str | bytes | Path") -> float:
+    """Return the average length of paragraphs in characters. 0.0 if none."""
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    texts = []
+    for p in paragraphs:
+        if isinstance(p, dict):
+            texts.append(p.get("text", ""))
+        elif isinstance(p, str):
+            texts.append(p)
+    if not texts:
+        return 0.0
+    return sum(len(t) for t in texts) / len(texts)
+
+
+def abw_is_empty(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has no content (no paragraphs or all empty)."""
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    if not paragraphs:
+        return True
+    for p in paragraphs:
+        text = p.get("text", "") if isinstance(p, dict) else str(p)
+        if text.strip():
+            return False
+    return True
+
+
+def abw_sentence_density(file_path: "str | bytes | Path") -> float:
+    """Return sentences / paragraphs. 0.0 if no paragraphs."""
+    paras = abw_paragraph_count(file_path)
+    if paras == 0:
+        return 0.0
+    model = load(file_path)
+    return abw_sentence_count(model) / paras
+
+
+def abw_has_unicode(file_path: "str | bytes | Path") -> bool:
+    """Return True if any paragraph contains non-ASCII characters."""
+    model = load(file_path)
+    for p in model.get("paragraphs", []):
+        text = p.get("text", "") if isinstance(p, dict) else str(p)
+        if any(ord(c) > 127 for c in text):
+            return True
+    return False
+
+
+def abw_is_single_paragraph(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has exactly one paragraph."""
+    return abw_paragraph_count(file_path) == 1
+
+
+def abw_avg_words_per_paragraph(file_path: "str | bytes | Path") -> float:
+    """Return the average number of words per paragraph. 0.0 if no paragraphs."""
+    paras = abw_paragraph_count(file_path)
+    if paras == 0:
+        return 0.0
+    return abw_word_count(file_path) / paras
+
+
+def abw_char_density(file_path: "str | bytes | Path") -> float:
+    """Return characters / paragraphs. 0.0 if no paragraphs."""
+    paras = abw_paragraph_count(file_path)
+    if paras == 0:
+        return 0.0
+    return abw_char_count(file_path) / paras
+
+
+def abw_longest_paragraph_length(file_path: "str | bytes | Path") -> int:
+    """Return the length in characters of the longest paragraph. 0 if none."""
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    if not paragraphs:
+        return 0
+    return max(len(p.get("text", "") if isinstance(p, dict) else str(p)) for p in paragraphs)
+
+
+def abw_words_per_sentence(file_path: "str | bytes | Path") -> float:
+    """Return average words per sentence. 0.0 if no sentences."""
+    import re
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    text = " ".join(p.get("text", "") if isinstance(p, dict) else str(p) for p in paragraphs)
+    sentences = len(re.findall(r'[.!?]+', text))
+    if sentences == 0:
+        return 0.0
+    words = len(text.split())
+    return words / sentences
+
+
+def abw_paragraph_length_variance(file_path: "str | bytes | Path") -> float:
+    """Return variance of paragraph lengths (in chars). 0.0 if fewer than 2 paragraphs."""
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    lengths = [len(p.get("text", "") if isinstance(p, dict) else str(p)) for p in paragraphs if (p.get("text", "") if isinstance(p, dict) else str(p)).strip()]
+    if len(lengths) < 2:
+        return 0.0
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def abw_is_multi_paragraph(file_path: "str | bytes | Path") -> bool:
+    """Return True if document has more than one non-empty paragraph."""
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    nonempty = [p for p in paragraphs if (p.get("text", "") if isinstance(p, dict) else str(p)).strip()]
+    return len(nonempty) > 1
+
+
+def abw_heading_density(file_path: "str | bytes | Path") -> float:
+    """Return headings / total paragraphs. 0.0 if no paragraphs."""
+    total = abw_paragraph_count(file_path)
+    if total == 0:
+        return 0.0
+    return abw_heading_count(file_path) / total
+
+
+def abw_is_content_rich(file_path: "str | bytes | Path") -> bool:
+    """Return True if the document has more than one unique word."""
+    return abw_unique_word_count(file_path) > 1
+
+
+def abw_avg_chars_per_word(file_path: "str | bytes | Path") -> float:
+    """Return average characters per word. 0.0 if no words."""
+    words = abw_word_count(file_path)
+    if words == 0:
+        return 0.0
+    return abw_char_count(file_path) / words
+
+
+def abw_whitespace_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of whitespace characters to total characters. 0.0 if empty."""
+    model = load(file_path)
+    text = ""
+    for p in model.get("paragraphs", []):
+        text += p.get("text", "") if isinstance(p, dict) else str(p)
+    if not text:
+        return 0.0
+    ws = sum(1 for ch in text if ch.isspace())
+    return ws / len(text)
+
+
+def abw_avg_sentence_length(file_path: "str | bytes | Path") -> float:
+    """Return average words per sentence. 0.0 if no sentences."""
+    model = load(file_path)
+    scount = abw_sentence_count(model)
+    if scount == 0:
+        return 0.0
+    return abw_word_count(file_path) / scount
