@@ -101,6 +101,11 @@ from .tsv_parser import (
     tsv_numeric_field_ratio,
     tsv_is_square,
     tsv_cell_to_row_ratio,
+    tsv_string_cell_count,
+    tsv_total_string_length,
+    tsv_nonempty_row_count,
+    tsv_avg_fields_per_row,
+    tsv_nonempty_cell_ratio,
 )
 
 __version__ = "0.1.0"
@@ -198,4 +203,9 @@ __all__ = [
     "tsv_numeric_field_ratio",
     "tsv_is_square",
     "tsv_cell_to_row_ratio",
+    "tsv_string_cell_count",
+    "tsv_total_string_length",
+    "tsv_nonempty_row_count",
+    "tsv_avg_fields_per_row",
+    "tsv_nonempty_cell_ratio",
 ]

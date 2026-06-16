@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-16T09:41:25.843019
-# Source: Supervisor autonomous-cycle review of SYSTEM-HEALING-GATE-20260616
+# Generated: 2026-06-16T16:33:26.582445
+# Source: Supervisor autonomous-cycle review of FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
 # Stream: supervisor
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,7 +27,7 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: SYSTEM-HEALING-GATE-20260616
+- Prior sprint: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
@@ -36,7 +36,7 @@ Read these files before writing any code:
 
 ## Sprint Goal
 
-**Goal:** Repair 4 item(s) flagged by supervisor review. Advance Supervisor tooling: Improve supervisor pipeline components; Strengthen evidence model or declaration schema. Build evidence declaration and run supervisor autonomous-cycle.
+**Goal:** Repair 7 item(s) flagged by supervisor review. Advance Supervisor tooling: Improve supervisor pipeline components; Strengthen evidence model or declaration schema. Build evidence declaration and run supervisor autonomous-cycle.
 
 ---
 
@@ -70,14 +70,17 @@ Read these files before writing any code:
 | Train | Group | Title |
 |-------|-------|-------|
 | A | G1 | Governance Preflight |
-| B | G2 | Rework: System-healing gate formal reassessment — verdict CONDITIONALLY_PASSABLE |
-| C | G2 | Rework: Lane 1 SAL concept inventories verified — FODS 17, FODT 16, ZST 10 concepts |
-| D | G2 | Rework: Gap-ledger refresh: 55 foss_reduced entries closed (89 → 34 open) |
-| E | G2 | Rework: Real-world file testing: 11 tests pass across 6 functions and 5 formats |
-| F | G2 | Improve supervisor pipeline components |
-| G | G2 | Strengthen evidence model or declaration schema |
-| H | G7 | State + Memory + POC Matrix Sync |
-| I | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
+| B | G2 | Rework: Lane-by-lane implementation classification and verdict |
+| C | G2 | Rework: Lane 6 QName ontology — all 9 YAML artifacts |
+| D | G2 | Rework: Lane 5 — Add depth validators V34-V37 |
+| E | G2 | Rework: Lane 15 — Healing/learning executable audit artifacts |
+| F | G2 | Rework: Produce concept inventories with exclusion reasons (FODS, FODT, ZST) |
+| G | G2 | Rework: Validate existing compiler end-to-end |
+| H | G2 | Rework: Create V37 validate_spec_fact_authority_chain |
+| I | G2 | Improve supervisor pipeline components |
+| J | G2 | Strengthen evidence model or declaration schema |
+| K | G7 | State + Memory + POC Matrix Sync |
+| L | G8 | Evidence Declaration + Supervisor Autonomous-Cycle |
 
 ---
 
@@ -97,59 +100,99 @@ Read all governance files. Verify no policy violations from prior sprint. Confir
 
 ## Group G2: Rework / Repair
 
-### Train B: Rework: System-healing gate formal reassessment — verdict CONDITIONALLY_PASSABLE
+### Train B: Rework: Lane-by-lane implementation classification and verdict
 
 
 
 **Acceptance Criteria:**
-- Evidence for SYSGATE-001 passes supervisor inspection
+- Evidence for LANE-CLASSIFICATION passes supervisor inspection
 - Tests pass for affected code
 
 **Files:**
-- `.local/evidences/system-healing-gate-20260616-baf84d6/system-healing-gate-verdict.md`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/lane-implementation-classification.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/final-verdict.md`
 
-### Train C: Rework: Lane 1 SAL concept inventories verified — FODS 17, FODT 16, ZST 10 concepts
+### Train C: Rework: Lane 6 QName ontology — all 9 YAML artifacts
 
 
 
 **Acceptance Criteria:**
-- Evidence for L1-DEPTH-001 passes supervisor inspection
+- Evidence for LANE6-QNAME-ONTOLOGY passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/prefix-namespace-registry.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/qname-to-code-map.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/namespace-tree.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/canonical-class-inventory.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/attribute-property-map.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/containment-graph.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/naming-exceptions.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/legacy-alias-map.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/migration-plan.yaml`
+
+### Train D: Rework: Lane 5 — Add depth validators V34-V37
+
+
+
+**Acceptance Criteria:**
+- Evidence for LANE5-DEPTH-VALIDATORS passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `tools/supervisor/governance_validators.py`
+- `tests/supervisor/test_depth_validators.py`
+
+### Train E: Rework: Lane 15 — Healing/learning executable audit artifacts
+
+
+
+**Acceptance Criteria:**
+- Evidence for LANE15-HEALING-LEARNING passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/failure-taxonomy-v2.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/healing-learning-state-machine.yaml`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/healing-learning-bypass-analysis.md`
+
+### Train F: Rework: Produce concept inventories with exclusion reasons (FODS, FODT, ZST)
+
+
+
+**Acceptance Criteria:**
+- Evidence for TC-SAL-001 passes supervisor inspection
 - Tests pass for affected code
 
 **Files:**
 - `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-fods.yaml`
 - `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-fodt.yaml`
 - `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-zst.yaml`
-- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/sal-fact-target-assessment.md`
 
-### Train D: Rework: Gap-ledger refresh: 55 foss_reduced entries closed (89 → 34 open)
-
-
-
-**Acceptance Criteria:**
-- Evidence for GAPLED-001 passes supervisor inspection
-- Tests pass for affected code
-
-**Files:**
-- `reports/capability-layer/gap-ledger.json`
-
-### Train E: Rework: Real-world file testing: 11 tests pass across 6 functions and 5 formats
+### Train G: Rework: Validate existing compiler end-to-end
 
 
 
 **Acceptance Criteria:**
-- Evidence for REALWORLD-001 passes supervisor inspection
+- Evidence for TC-COMP-002 passes supervisor inspection
 - Tests pass for affected code
 
 **Files:**
-- `samples/by-format/fods/minimal-spreadsheet.fods`
-- `samples/by-format/odt/valid/minimal-document.odt`
-- `samples/by-format/ods/valid/minimal-spreadsheet.ods`
-- `samples/by-format/dif/valid/minimal-2x2.dif`
-- `samples/by-format/ppm/valid/1x1-red.ppm`
-- `samples/by-format/csv/minimal-2x2.csv`
+- `.local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/compiler-phase-assessment.md`
 
-### Train F: Improve supervisor pipeline components
+### Train H: Rework: Create V37 validate_spec_fact_authority_chain
+
+
+
+**Acceptance Criteria:**
+- Evidence for TC-VAL-001 passes supervisor inspection
+- Tests pass for affected code
+
+**Files:**
+- `tools/supervisor/governance_validators.py`
+- `tests/supervisor/test_depth_validators.py`
+
+### Train I: Improve supervisor pipeline components
 
 Enhance inspection, grading, prompt generation, or context-pack building.
 
@@ -161,7 +204,7 @@ Enhance inspection, grading, prompt generation, or context-pack building.
 - `tools/supervisor/`
 - `tests/supervisor/`
 
-### Train G: Strengthen evidence model or declaration schema
+### Train J: Strengthen evidence model or declaration schema
 
 Improve declaration validation, manifest generation, or materialization.
 
@@ -175,7 +218,7 @@ Improve declaration validation, manifest generation, or materialization.
 
 ## Group G7: State / Memory / POC Matrix
 
-### Train H: State + Memory + POC Matrix Sync
+### Train K: State + Memory + POC Matrix Sync
 
 Update state/current-state.md, .supervisor/project-memory.md, and product-capability-matrix/poc-targets.yaml with sprint results.
 
@@ -191,7 +234,7 @@ Update state/current-state.md, .supervisor/project-memory.md, and product-capabi
 
 ## Group G8: Evidence + Supervisor Loop
 
-### Train I: Evidence Declaration + Supervisor Autonomous-Cycle
+### Train L: Evidence Declaration + Supervisor Autonomous-Cycle
 
 Write evidence-declaration.yaml listing ALL work items. Run autonomous-cycle. Verify session-resume.md is regenerated. Validate `reports/r90/product-code-change-ledger.json` for any governed product source edit.
 
@@ -291,11 +334,11 @@ The following failures have been recorded in durable failure memory.
 Address escalated failures with priority.
 
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_execution_method_required_validator_failed (seen 21x, last: HARDENED-GOV-PRODUCT-SPRINT-20260615)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 19x, last: IDEMPOTENT-SWARM-SPRINT-7)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 5x, last: IDEMPOTENT-SWARM-SPRINT-7)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_source_diff_required_validator_failed (seen 26x, last: GAP-CLOSURE-SPRINT-R282-20260616)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_idempotency_key_required_validator_failed (seen 6x, last: GAP-CLOSURE-SPRINT-R282-20260616)
 - ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_claim_classification_validator_failed (seen 7x, last: IDEMPOTENT-SWARM-EXECUTION-20260615-E31FA98)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 17x, last: IDEMPOTENT-SWARM-SPRINT-7)
-- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 36x, last: IDEMPOTENT-SWARM-SPRINT-7)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_route_decision_required_validator_failed (seen 24x, last: GAP-CLOSURE-SPRINT-R282-20260616)
+- ESCALATED FAILURE (SUPERVISOR_CONTROL_FAILURE): governance_validator_spec_fact_refs_validator_failed (seen 43x, last: GAP-CLOSURE-SPRINT-R282-20260616)
 
 
 ## Spec-Parity Requirements (from skill registry)

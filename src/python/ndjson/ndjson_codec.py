@@ -1743,3 +1743,29 @@ def ndjson_avg_list_length(source: "Any") -> float:
     if not lengths:
         return 0.0
     return sum(lengths) / len(lengths)
+
+
+def ndjson_nested_count(source: "Any") -> int:
+    """Return count of fields that are dicts (nested objects). 0 if none."""
+    records = load_ndjson(source)
+    count = 0
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, dict):
+                    count += 1
+    return count
+
+
+def ndjson_min_record_fields(source: "Any") -> int:
+    """Return the minimum number of fields across all records. 0 if no records."""
+    records = load_ndjson(source)
+    if not records:
+        return 0
+    min_fields = None
+    for r in records:
+        if isinstance(r, dict):
+            n = len(r)
+            if min_fields is None or n < min_fields:
+                min_fields = n
+    return min_fields if min_fields is not None else 0

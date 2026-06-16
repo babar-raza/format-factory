@@ -1640,3 +1640,25 @@ def dif_max_numeric_length(file_path: "str | Path") -> int:
                 if l > max_len:
                     max_len = l
     return max_len
+
+
+def dif_value_type_variance(file_path: "str | Path") -> float:
+    """Return variance of numeric vs string cell counts per row. 0.0 if fewer than 2 rows."""
+    doc = parse_dif_strict(file_path)
+    if len(doc.rows) < 2:
+        return 0.0
+    numeric_counts = []
+    for row in doc.rows:
+        nc = sum(1 for cell in row if cell.value_type == "numeric")
+        numeric_counts.append(nc)
+    mean = sum(numeric_counts) / len(numeric_counts)
+    return sum((n - mean) ** 2 for n in numeric_counts) / len(numeric_counts)
+
+
+def dif_total_cell_length(file_path: "str | Path") -> int:
+    """Return total string length of all cell values. 0 if no cells."""
+    doc = parse_dif_strict(file_path)
+    return sum(
+        len(str(cell.value)) for row in doc.rows for cell in row
+        if cell.value is not None
+    )

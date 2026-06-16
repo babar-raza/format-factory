@@ -98,6 +98,8 @@ from .ndjson_codec import (
     ndjson_max_field_value_length,
     ndjson_string_density,
     ndjson_avg_list_length,
+    ndjson_nested_count,
+    ndjson_min_record_fields,
 )
 
 __all__ = [
@@ -189,6 +191,8 @@ __all__ = [
     "ndjson_max_field_value_length",
     "ndjson_string_density",
     "ndjson_avg_list_length",
+    "ndjson_nested_count",
+    "ndjson_min_record_fields",
 ]
 
 __version__ = "0.1.0.dev0"

@@ -111,6 +111,8 @@ from .dif_parser import (
     dif_column_density,
     dif_string_value_count,
     dif_max_numeric_length,
+    dif_value_type_variance,
+    dif_total_cell_length,
 )
 
 __version__ = "0.1.0"
@@ -212,4 +214,6 @@ __all__ = [
     "dif_column_density",
     "dif_string_value_count",
     "dif_max_numeric_length",
+    "dif_value_type_variance",
+    "dif_total_cell_length",
 ]

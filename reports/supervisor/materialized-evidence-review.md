@@ -1,7 +1,7 @@
 # Materialized Evidence Review
-# Run ID: idempotent-swarm-sprint132-20260616-baf84d6
-# Sprint: IDEMPOTENT-SWARM-SPRINT-132
-# Generated: 2026-06-16T16:24:37.002413
+# Run ID: idempotent-swarm-sprint134-20260616-baf84d6
+# Sprint: IDEMPOTENT-SWARM-SPRINT-134
+# Generated: 2026-06-16T16:33:47.682422
 
 ## Materialization Summary
 
@@ -13,11 +13,11 @@
 
 | Item | Grade | Note |
 |------|-------|------|
-| DOGFOOD-FODS-WORKBOOK-NDJSON | ACCEPTED | All 2 evidence path(s) verified |
-| DOGFOOD-ODS-REMAINING7-NDJSON | ACCEPTED | All 2 evidence path(s) verified |
+| DOGFOOD-FODS-REMAINING4-NDJSON | ACCEPTED | All 2 evidence path(s) verified |
+| DOGFOOD-FODT-REMAINING2-NDJSON | ACCEPTED | All 2 evidence path(s) verified |
 
 ## Manifest Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\idempotent-swarm-sprint132-20260616-baf84d6\materialized-evidence-manifest.yaml
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\idempotent-swarm-sprint134-20260616-baf84d6\materialized-evidence-manifest.yaml
 
 ## Patch Location
-- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\idempotent-swarm-sprint132-20260616-baf84d6\source-change-diffs.patch
+- C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\materialized\idempotent-swarm-sprint134-20260616-baf84d6\source-change-diffs.patch

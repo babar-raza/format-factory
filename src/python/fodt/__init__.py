@@ -120,6 +120,8 @@ from .neutral_model import (
     fodt_max_heading_depth,
     fodt_total_char_count,
     fodt_heading_to_para_ratio,
+    fodt_words_per_paragraph,
+    fodt_is_text_heavy,
 )
 from .exceptions import FodtError, FodtInputError, FodtSizeError, FodtParseError
 from .constants import FORMAT_ID, SPEC_VERSION, PACKAGE_VERSION, MAX_FILE_BYTES
@@ -213,6 +215,8 @@ __all__ = [
     "fodt_max_heading_depth",
     "fodt_total_char_count",
     "fodt_heading_to_para_ratio",
+    "fodt_words_per_paragraph",
+    "fodt_is_text_heavy",
     "FodtError",
     "FodtInputError",
     "FodtSizeError",

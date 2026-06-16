@@ -1,125 +1,558 @@
 [
   {
-    "item_id": "FODT-PARA-DEPTH-DOGFOOD-001",
-    "item_title": "FODT paragraph depth analytics dogfood \u2192 NDJSON (12 tests)",
+    "item_id": "RECON-INTAKE",
+    "item_title": "Deep recon intake \u2014 plan reading, repo state capture, artifact audit",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/product-deepening-dogfood-quad-20260617/focused-proof-quad-dogfood.md",
-      ".local/evidences/product-deepening-dogfood-quad-20260617/raw-logs/quad-dogfood.log"
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/recon-intake.md",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/repo-state-snapshot.md",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/active-plan-identification.md",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/current-governance-baseline.md",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/run-safety-lock.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
+      "No missing paths"
     ],
     "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
+      "Acceptance criteria pattern not found: Recon intake files are produced"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for FODT-PARA-DEPTH-DOGFOOD-001",
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: Recon intake files are produced",
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.93,
+      "confidence": 0.92,
       "stub_detected": false,
       "deficiencies": [],
       "llm_used": true
     }
   },
   {
-    "item_id": "ABW-PUNCTUATION-DOGFOOD-001",
-    "item_title": "ABW punctuation/text analytics dogfood \u2192 NDJSON (12 tests)",
+    "item_id": "LANE-CLASSIFICATION",
+    "item_title": "Lane-by-lane implementation classification and verdict",
     "declared_status": "completed",
-    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "supervisor_grade": "REWORK_REQUIRED",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/product-deepening-dogfood-quad-20260617/focused-proof-quad-dogfood.md",
-      ".local/evidences/product-deepening-dogfood-quad-20260617/raw-logs/quad-dogfood.log"
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/lane-implementation-classification.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/final-verdict.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
+      "No missing paths"
     ],
     "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
+      "Acceptance criteria pattern not found: Exactly 16 lanes are classified",
+      "Only lanes 0 through 5 are documented; the remaining 10 lanes are missing, so the work item\u2019s requirement of classifying all 16 lanes is not met.",
+      "Gate verdicts (e.g., pass/fail, readiness) are not provided for any lane, contrary to the acceptance criteria.",
+      "Evidence consists solely of a descriptive YAML file; there are no executable tests, reports, or artefacts that verify the claimed implementations.",
+      "No concrete verification artefacts (e.g., test results, CI logs) are attached to substantiate the \u201cimplemented\u201d items listed.",
+      "The classification appears to be a manual report rather than an automated, auditable classification process."
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for ABW-PUNCTUATION-DOGFOOD-001",
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Only lanes 0 through 5 are documented; the remaining 10 lanes are missing, so the work item\u2019s requirement of classifying all 16 lanes is not met.; Gate verdicts (e.g., pass/fail, readiness) are not provided for any lane, contrary to the acceptance criteria.; Evidence consists solely of a descriptive YAML file; there are no executable tests, reports, or artefacts that verify the claimed implementations.; No concrete verification artefacts (e.g., test results, CI logs) are attached to substantiate the \u201cimplemented\u201d items listed.; The classification appears to be a manual report rather than an automated, auditable classification process.",
     "semantic_verification": {
-      "adequate": true,
+      "adequate": false,
+      "confidence": 0.97,
+      "stub_detected": false,
+      "deficiencies": [
+        "Only lanes 0 through 5 are documented; the remaining 10 lanes are missing, so the work item\u2019s requirement of classifying all 16 lanes is not met.",
+        "Gate verdicts (e.g., pass/fail, readiness) are not provided for any lane, contrary to the acceptance criteria.",
+        "Evidence consists solely of a descriptive YAML file; there are no executable tests, reports, or artefacts that verify the claimed implementations.",
+        "No concrete verification artefacts (e.g., test results, CI logs) are attached to substantiate the \u201cimplemented\u201d items listed.",
+        "The classification appears to be a manual report rather than an automated, auditable classification process."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "LANE6-QNAME-ONTOLOGY",
+    "item_title": "Lane 6 QName ontology \u2014 all 9 YAML artifacts",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/prefix-namespace-registry.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/qname-to-code-map.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/namespace-tree.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/canonical-class-inventory.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/attribute-property-map.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/containment-graph.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/naming-exceptions.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/legacy-alias-map.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/migration-plan.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: Exactly 9 Lane 6 YAML artifacts are created in the evidence ",
+      "Only 2 of the required 9 YAML artifacts are present; 7 artifacts are missing.",
+      "No containment graph artifact is provided, which is required by the acceptance criteria.",
+      "No migration plan artifact is provided, which is required by the acceptance criteria.",
+      "The provided artifacts do not demonstrate a complete canonical class inventory; only a subset of mappings is shown.",
+      "Evidence does not show that all ODF namespace mappings are present for the full Lane\u202f6 ontology (e.g., missing some namespaces or concepts)."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Only 2 of the required 9 YAML artifacts are present; 7 artifacts are missing.; No containment graph artifact is provided, which is required by the acceptance criteria.; No migration plan artifact is provided, which is required by the acceptance criteria.; The provided artifacts do not demonstrate a complete canonical class inventory; only a subset of mappings is shown.; Evidence does not show that all ODF namespace mappings are present for the full Lane\u202f6 ontology (e.g., missing some namespaces or concepts).",
+    "semantic_verification": {
+      "adequate": false,
       "confidence": 0.96,
       "stub_detected": false,
-      "deficiencies": [],
+      "deficiencies": [
+        "Only 2 of the required 9 YAML artifacts are present; 7 artifacts are missing.",
+        "No containment graph artifact is provided, which is required by the acceptance criteria.",
+        "No migration plan artifact is provided, which is required by the acceptance criteria.",
+        "The provided artifacts do not demonstrate a complete canonical class inventory; only a subset of mappings is shown.",
+        "Evidence does not show that all ODF namespace mappings are present for the full Lane\u202f6 ontology (e.g., missing some namespaces or concepts)."
+      ],
       "llm_used": true
     }
   },
   {
-    "item_id": "CSV-ANALYTICS-GAPS-DOGFOOD-001",
-    "item_title": "CSV analytics gap functions dogfood \u2192 NDJSON (12 tests)",
+    "item_id": "LANE5-DEPTH-VALIDATORS",
+    "item_title": "Lane 5 \u2014 Add depth validators V34-V37",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tools/supervisor/governance_validators.py",
+      "tests/supervisor/test_depth_validators.py"
+    ],
+    "tests_supporting": [
+      "tests/supervisor/test_depth_validators.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: Validators V34, V35, V36, and V37 have been added to the cod",
+      "Evidence file does not contain validators V34-V37; it contains unrelated governance validators.",
+      "No test file (test_depth_validators.py) or test results are provided to demonstrate 34 passing unit tests.",
+      "Scope mismatch: work item expects depth validators, but evidence shows governance validators.",
+      "Missing implementation details for the required V34-V37 validators."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence file does not contain validators V34-V37; it contains unrelated governance validators.; No test file (test_depth_validators.py) or test results are provided to demonstrate 34 passing unit tests.; Scope mismatch: work item expects depth validators, but evidence shows governance validators.; Missing implementation details for the required V34-V37 validators.",
+    "tests_evidence_verified": [
+      "tests/supervisor/test_depth_validators.py"
+    ],
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.96,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence file does not contain validators V34-V37; it contains unrelated governance validators.",
+        "No test file (test_depth_validators.py) or test results are provided to demonstrate 34 passing unit tests.",
+        "Scope mismatch: work item expects depth validators, but evidence shows governance validators.",
+        "Missing implementation details for the required V34-V37 validators."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "LANE14-SUPERVISION-AUDIT",
+    "item_title": "Lane 14 \u2014 Autonomous supervision executable audit artifacts",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/product-deepening-dogfood-quad-20260617/focused-proof-quad-dogfood.md",
-      ".local/evidences/product-deepening-dogfood-quad-20260617/raw-logs/quad-dogfood.log"
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/autonomous-supervision-call-graph.md",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/autonomous-supervision-state-machine.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/autonomous-supervision-enforcement-proof.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
+      "No missing paths"
     ],
     "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
+      "Acceptance criteria pattern not found: A call graph artifact is produced"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for CSV-ANALYTICS-GAPS-DOGFOOD-001",
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: A call graph artifact is produced",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.85,
+      "stub_detected": false,
+      "deficiencies": [
+        "Enforcement proof artifacts are not provided; the document references a missing proof-graph.json and does not include concrete evidence of enforcement validation.",
+        "The evidence stops short of showing generated artifacts (e.g., governance-validation-result.json, authority-map.json) that would demonstrate that supervision controls were actually enforced."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "LANE15-HEALING-LEARNING",
+    "item_title": "Lane 15 \u2014 Healing/learning executable audit artifacts",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/failure-taxonomy-v2.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/healing-learning-state-machine.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/healing-learning-bypass-analysis.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: Failure taxonomy v2 is produced",
+      "Evidence only includes Failure Taxonomy v2 YAML; no artifacts for the healing loop state machine.",
+      "No bypass analysis documentation or output provided.",
+      "Acceptance criteria require documentation of all learning gaps, which is not present.",
+      "Scope mismatch: supplied evidence does not cover two of the three required deliverables."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Evidence only includes Failure Taxonomy v2 YAML; no artifacts for the healing loop state machine.; No bypass analysis documentation or output provided.; Acceptance criteria require documentation of all learning gaps, which is not present.; Scope mismatch: supplied evidence does not cover two of the three required deliverables.",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence only includes Failure Taxonomy v2 YAML; no artifacts for the healing loop state machine.",
+        "No bypass analysis documentation or output provided.",
+        "Acceptance criteria require documentation of all learning gaps, which is not present.",
+        "Scope mismatch: supplied evidence does not cover two of the three required deliverables."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "TC-RECLASS-001",
+    "item_title": "Correct lane-implementation-classification.yaml \u2014 v2 capability-based reclassification",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/lane-implementation-classification.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: Lane 1 and Lane 3 are reclassified from MISSING to PARTIAL a"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: Lane 1 and Lane 3 are reclassified from MISSING to PARTIAL a",
     "semantic_verification": {
       "adequate": true,
+      "confidence": 0.85,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence file appears truncated at lane_5_validators reclassification_note, missing closing sections",
+        "No explicit verification (e.g., test results) that no lanes remain MISSING beyond the YAML status fields"
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "TC-SAL-001",
+    "item_title": "Produce concept inventories with exclusion reasons (FODS, FODT, ZST)",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-fods.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-fodt.yaml",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/concept-inventory-zst.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: Exactly three concept inventory YAML files are produced.",
+      "Only the FODS concept inventory is fully provided; the FODT inventory is truncated and lacks included and excluded concept sections.",
+      "No concept inventory file for ZST is present in the evidence.",
+      "The evidence does not demonstrate that all three required YAML files contain both included concepts with spec section references and excluded concepts with reason codes."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: Only the FODS concept inventory is fully provided; the FODT inventory is truncated and lacks included and excluded concept sections.; No concept inventory file for ZST is present in the evidence.; The evidence does not demonstrate that all three required YAML files contain both included concepts with spec section references and excluded concepts with reason codes.",
+    "semantic_verification": {
+      "adequate": false,
       "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [
+        "Only the FODS concept inventory is fully provided; the FODT inventory is truncated and lacks included and excluded concept sections.",
+        "No concept inventory file for ZST is present in the evidence.",
+        "The evidence does not demonstrate that all three required YAML files contain both included concepts with spec section references and excluded concepts with reason codes."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "TC-SAL-002",
+    "item_title": "Assess fact count gap and decide target",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/sal-fact-target-assessment.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: Fact count target per format is assessed"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: Fact count target per format is assessed",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.9,
       "stub_detected": false,
       "deficiencies": [],
       "llm_used": true
     }
   },
   {
-    "item_id": "DIF-ANALYTICS-GAPS-DOGFOOD-001",
-    "item_title": "DIF analytics gap functions dogfood \u2192 NDJSON (12 tests)",
+    "item_id": "TC-SAL-003",
+    "item_title": "Produce spec-authority-integration-audit.md",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      ".local/evidences/product-deepening-dogfood-quad-20260617/focused-proof-quad-dogfood.md",
-      ".local/evidences/product-deepening-dogfood-quad-20260617/raw-logs/quad-dogfood.log"
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/spec-authority-integration-audit.md"
     ],
     "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
-      "No missing paths",
-      "No concrete test/criteria proof (path-only acceptance)"
+      "No missing paths"
     ],
     "acceptance_criteria_failed": [
-      "No raw proof, test content, or acceptance criteria verified"
+      "Acceptance criteria pattern not found: Exactly 12 SAL modules are audited"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for DIF-ANALYTICS-GAPS-DOGFOOD-001",
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: Exactly 12 SAL modules are audited",
     "semantic_verification": {
       "adequate": true,
+      "confidence": 0.92,
+      "stub_detected": false,
+      "deficiencies": [
+        "The audit notes that 10 of the 12 SAL modules have no unit tests, which is reported as a gap but may be considered a shortcoming in test coverage."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "TC-COMP-001",
+    "item_title": "Formally assess 2-phase vs 9-phase compiler requirement",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/compiler-phase-assessment.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: All 9 phases are assessed with an honest status of REQUIRED,"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: All 9 phases are assessed with an honest status of REQUIRED,",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.85,
+      "stub_detected": false,
+      "deficiencies": [
+        "The assessment references functions for phases 5\u20117 but provides no concrete validation results or artifacts demonstrating they work at scale.",
+        "No explicit evidence (e.g., logs, output samples) is attached for the ALREADY_COVERED phases; the claim relies on external lane outputs that are not shown.",
+        "Phase enumeration includes a \"3.5\" entry; while it counts toward the nine phases, the mapping to the original nine\u2011phase model could be clarified."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "TC-COMP-002",
+    "item_title": "Validate existing compiler end-to-end",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/compiler-phase-assessment.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: Exactly 5 taskcards are compiled from gap-ledger",
+      "No concrete evidence that 5 taskcards were actually compiled from the gap-ledger.",
+      "Idempotency is not demonstrated; there are no before/after output comparisons or timestamps handling.",
+      "Missing test code, logs, or reports that verify the end\u2011to\u2011end compilation process.",
+      "Evidence consists only of a high\u2011level markdown assessment of compiler phases, not execution results.",
+      "No artifacts (e.g., generated taskcard files) or validation scripts are provided to prove the claim."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: No concrete evidence that 5 taskcards were actually compiled from the gap-ledger.; Idempotency is not demonstrated; there are no before/after output comparisons or timestamps handling.; Missing test code, logs, or reports that verify the end\u2011to\u2011end compilation process.; Evidence consists only of a high\u2011level markdown assessment of compiler phases, not execution results.; No artifacts (e.g., generated taskcard files) or validation scripts are provided to prove the claim.",
+    "semantic_verification": {
+      "adequate": false,
       "confidence": 0.95,
       "stub_detected": false,
-      "deficiencies": [],
+      "deficiencies": [
+        "No concrete evidence that 5 taskcards were actually compiled from the gap-ledger.",
+        "Idempotency is not demonstrated; there are no before/after output comparisons or timestamps handling.",
+        "Missing test code, logs, or reports that verify the end\u2011to\u2011end compilation process.",
+        "Evidence consists only of a high\u2011level markdown assessment of compiler phases, not execution results.",
+        "No artifacts (e.g., generated taskcard files) or validation scripts are provided to prove the claim."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "TC-VAL-001",
+    "item_title": "Create V37 validate_spec_fact_authority_chain",
+    "declared_status": "completed",
+    "supervisor_grade": "REWORK_REQUIRED",
+    "evidence_found": true,
+    "evidence_paths": [
+      "tools/supervisor/governance_validators.py",
+      "tests/supervisor/test_depth_validators.py"
+    ],
+    "tests_supporting": [
+      "tests/supervisor/test_depth_validators.py"
+    ],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "Test content verified (1 files)"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: V37 validator is added to governance_validators.py",
+      "The evidence does not contain a validator named validate_spec_fact_authority_chain (V37) or any function matching the V37 naming convention.",
+      "No indication that the V37 validator is configured as WARN\u2011only with blocks_sprint=False.",
+      "The provided file only shows the beginning of the module (validator 1) and does not include the full set of validators, making it impossible to verify the presence of V37.",
+      "No unit test files or test code are included, so the claim of \"8 unit tests passing\" cannot be verified.",
+      "The evidence is incomplete and does not demonstrate that the acceptance criteria have been met."
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Semantic verification downgraded ACCEPTED_WITH_LIMITATIONS -> REWORK_REQUIRED: The evidence does not contain a validator named validate_spec_fact_authority_chain (V37) or any function matching the V37 naming convention.; No indication that the V37 validator is configured as WARN\u2011only with blocks_sprint=False.; The provided file only shows the beginning of the module (validator 1) and does not include the full set of validators, making it impossible to verify the presence of V37.; No unit test files or test code are included, so the claim of \"8 unit tests passing\" cannot be verified.; The evidence is incomplete and does not demonstrate that the acceptance criteria have been met.",
+    "tests_evidence_verified": [
+      "tests/supervisor/test_depth_validators.py"
+    ],
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [
+        "The evidence does not contain a validator named validate_spec_fact_authority_chain (V37) or any function matching the V37 naming convention.",
+        "No indication that the V37 validator is configured as WARN\u2011only with blocks_sprint=False.",
+        "The provided file only shows the beginning of the module (validator 1) and does not include the full set of validators, making it impossible to verify the presence of V37.",
+        "No unit test files or test code are included, so the claim of \"8 unit tests passing\" cannot be verified.",
+        "The evidence is incomplete and does not demonstrate that the acceptance criteria have been met."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "TC-GATE-001",
+    "item_title": "Reassess system-healing gate with corrected lane statuses",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/final-verdict.md"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: Gate has been reassessed with corrected statuses"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: Gate has been reassessed with corrected statuses",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.75,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence is limited to a summary markdown; no raw verification data, test logs, or automated checks are attached to demonstrate that lane statuses were programmatically re\u2011evaluated.",
+        "References to unit tests (e.g., 34 unit tests in test_depth_validators.py) are mentioned but the actual test artifacts or results are not provided."
+      ],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "TC-DOWNSTREAM-001",
+    "item_title": "Propagate corrections to final-verdict.md and downstream artifacts",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/final-verdict.md",
+      ".local/evidences/ff-idempotent-spec-to-feature-swarm-20260615-e31fa98/lane-implementation-classification.yaml"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths"
+    ],
+    "acceptance_criteria_failed": [
+      "Acceptance criteria pattern not found: final-verdict.md is updated with corrected lane statuses and"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: final-verdict.md is updated with corrected lane statuses and",
+    "semantic_verification": {
+      "adequate": false,
+      "confidence": 0.85,
+      "stub_detected": false,
+      "deficiencies": [
+        "Evidence only includes final-verdict.md; no downstream artifact files are provided to verify they were also updated.",
+        "No proof that other artifacts no longer contain 'Lane 1: MISSING' or 'Lane 3: MISSING' entries.",
+        "Acceptance criteria require propagation to downstream artifacts, which is not demonstrated."
+      ],
       "llm_used": true
     }
   }

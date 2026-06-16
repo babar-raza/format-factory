@@ -1262,3 +1262,67 @@ def csv_empty_field_ratio(file_path: "str | Path") -> float:
     if total == 0:
         return 0.0
     return empty / total
+
+
+def csv_string_cell_count(file_path: "str | Path") -> int:
+    """Return count of cells with non-numeric string values."""
+    model = parse_csv_strict(file_path)
+    count = 0
+    for row in model.get("rows", []):
+        for val in row:
+            s = val.strip()
+            if s:
+                try:
+                    float(s)
+                except (ValueError, TypeError):
+                    count += 1
+    return count
+
+
+def csv_nonempty_row_count(file_path: "str | Path") -> int:
+    """Return count of rows that have at least one non-empty field."""
+    model = parse_csv_strict(file_path)
+    return sum(
+        1 for row in model.get("rows", [])
+        if any(val.strip() for val in row)
+    )
+
+
+def csv_avg_fields_per_row(file_path: "str | Path") -> float:
+    """Return average number of fields per row. 0.0 if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0.0
+    return sum(len(row) for row in rows) / len(rows)
+
+
+def csv_nonempty_cell_ratio(file_path: "str | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    total = sum(len(row) for row in rows)
+    if total == 0:
+        return 0.0
+    nonempty = sum(1 for row in rows for val in row if val.strip())
+    return nonempty / total
+
+
+def csv_numeric_cell_ratio(file_path: "str | Path") -> float:
+    """Return ratio of numeric cells to total cells. 0.0 if no cells."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    total = sum(len(row) for row in rows)
+    if total == 0:
+        return 0.0
+    numeric = 0
+    for row in rows:
+        for val in row:
+            s = val.strip()
+            if s:
+                try:
+                    float(s)
+                    numeric += 1
+                except (ValueError, TypeError):
+                    pass
+    return numeric / total

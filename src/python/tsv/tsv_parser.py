@@ -1541,3 +1541,63 @@ def tsv_cell_to_row_ratio(file_path: "str | Path") -> float:
     if rows == 0:
         return 0.0
     return tsv_total_cell_count(file_path) / rows
+
+
+def tsv_string_cell_count(file_path: "str | Path") -> int:
+    """Return count of cells with non-numeric string values."""
+    doc = parse_tsv_strict(file_path)
+    count = 0
+    for row in doc.get("rows", []):
+        for cell in row:
+            if cell is not None:
+                s = str(cell).strip()
+                if s:
+                    try:
+                        float(s)
+                    except (ValueError, TypeError):
+                        count += 1
+    return count
+
+
+def tsv_total_string_length(file_path: "str | Path") -> int:
+    """Return sum of character lengths of all cell values."""
+    doc = parse_tsv_strict(file_path)
+    total = 0
+    for row in doc.get("rows", []):
+        for cell in row:
+            if cell is not None:
+                total += len(str(cell))
+    return total
+
+
+def tsv_nonempty_row_count(file_path: "str | Path") -> int:
+    """Return count of rows that have at least one non-empty field."""
+    doc = parse_tsv_strict(file_path)
+    count = 0
+    for row in doc.get("rows", []):
+        if any(cell is not None and str(cell).strip() for cell in row):
+            count += 1
+    return count
+
+
+def tsv_avg_fields_per_row(file_path: "str | Path") -> float:
+    """Return average number of fields per row. 0.0 if no rows."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    if not rows:
+        return 0.0
+    return sum(len(row) for row in rows) / len(rows)
+
+
+def tsv_nonempty_cell_ratio(file_path: "str | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    total = sum(len(row) for row in rows)
+    if total == 0:
+        return 0.0
+    nonempty = sum(
+        1 for row in rows for cell in row
+        if cell is not None and str(cell).strip()
+    )
+    return nonempty / total

@@ -107,6 +107,8 @@ from .sylk_parser import (
     sylk_min_row_index,
     sylk_max_row_index,
     sylk_numeric_cell_ratio,
+    sylk_value_length_sum,
+    sylk_avg_row_density,
 )
 
 __version__ = "0.1.0"
@@ -209,4 +211,6 @@ __all__ = [
     "sylk_min_row_index",
     "sylk_max_row_index",
     "sylk_numeric_cell_ratio",
+    "sylk_value_length_sum",
+    "sylk_avg_row_density",
 ]

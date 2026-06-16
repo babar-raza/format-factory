@@ -76,6 +76,8 @@ from .fodp_codec import (
     fodp_avg_sentence_length,
     fodp_slide_text_variance,
     fodp_total_images,
+    fodp_shortest_slide_index,
+    fodp_shape_count_variance,
 )
 
 __all__ = [
@@ -145,6 +147,8 @@ __all__ = [
     "fodp_avg_sentence_length",
     "fodp_slide_text_variance",
     "fodp_total_images",
+    "fodp_shortest_slide_index",
+    "fodp_shape_count_variance",
 ]
 
 __version__ = "0.1.0.dev0"

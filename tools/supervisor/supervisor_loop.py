@@ -51,7 +51,7 @@ def run_script(script_name: str, extra_args: list[str], repo_root: Path) -> subp
         capture_output=False,  # Let output stream to terminal
         text=True,
         cwd=str(repo_root),
-        timeout=120,
+        timeout=600,
     )
     return result
 
@@ -65,7 +65,7 @@ def run_script_capture(script_name: str, extra_args: list[str], repo_root: Path)
         capture_output=True,
         text=True,
         cwd=str(repo_root),
-        timeout=120,
+        timeout=600,
     )
     return result.returncode, result.stdout, result.stderr
 

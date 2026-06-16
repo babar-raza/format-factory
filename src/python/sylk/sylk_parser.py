@@ -1574,3 +1574,19 @@ def sylk_numeric_cell_ratio(file_path: "str | Path") -> float:
         return 0.0
     numeric = sum(1 for c in doc.cells if isinstance(c.value, (int, float)))
     return numeric / total
+
+
+def sylk_value_length_sum(file_path: "str | Path") -> int:
+    """Return total string length of all cell values. 0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    return sum(len(str(c.value)) for c in doc.cells if c.value is not None)
+
+
+def sylk_avg_row_density(file_path: "str | Path") -> float:
+    """Return average number of cells per row. 0.0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0.0
+    from collections import Counter as _Counter
+    row_counts = _Counter(c.row for c in doc.cells)
+    return sum(row_counts.values()) / len(row_counts)

@@ -1,23 +1,30 @@
 schema_version: '1.0'
-generated_at: '2026-06-16T16:24:11.352110'
+generated_at: '2026-06-16T16:34:22.675262'
 repo_root: C:\Users\prora\OneDrive\Documents\GitHub\format-factory
 git:
-  head: 8fd6593
+  head: b2ed09e
   status:
-    modified_count: 0
-    untracked_count: 0
-    staged_count: 57
-    total_changed: 185
+    modified_count: 59
+    untracked_count: 13
+    staged_count: 1
+    total_changed: 73
     clean: false
 supervisor_mode: 4
 latest_sprint:
-  sprint_id: PRODUCT-DEEPENING-SPRINT-30-20260616
+  sprint_id: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2
   run_id: unknown
-  autonomous_continue: true
-  iteration: 11
+  autonomous_continue: true_with_rework
+  iteration: 10
   max_iterations: 12
   hard_stops: []
-  rework_items: []
+  rework_items:
+  - LANE-CLASSIFICATION
+  - LANE6-QNAME-ONTOLOGY
+  - LANE5-DEPTH-VALIDATORS
+  - LANE15-HEALING-LEARNING
+  - TC-SAL-001
+  - TC-COMP-002
+  - TC-VAL-001
 poc_matrix:
   sprint: capability-layer-closeout-rnext
   last_updated: '2026-06-09'
@@ -73,7 +80,7 @@ skill_registry:
   source_edits_require_handoff: true
   ledger_required: true
 product_code_ledger:
-  total_entries: 920
+  total_entries: 936
   governed_changes: 780
   backfilled: 4
   ledger_path: reports\r90\product-code-change-ledger.json

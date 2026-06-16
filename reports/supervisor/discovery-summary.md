@@ -1,8 +1,8 @@
 # Evidence Bundle Discovery Summary
-Timestamp: 2026-06-16T16:23:08.546782
+Timestamp: 2026-06-16T16:33:05.919844
 Status: found
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint84-20260616-fc60c35\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint32-20260616-70ea6bc\declaration-review-package.zip
 Sprint ID: unknown
-Entry count: 71
-Bundle mtime: 2026-06-16T16:22:14.526332
-Bundle size: 266871 bytes
+Entry count: 60
+Bundle mtime: 2026-06-16T16:31:50.777530
+Bundle size: 151640 bytes

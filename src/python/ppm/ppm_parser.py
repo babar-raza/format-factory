@@ -1193,3 +1193,23 @@ def ppm_area(file_path: str | Path) -> int:
     """Return image area in pixels: width * height."""
     img = parse_ppm_strict(file_path)
     return img.width * img.height
+
+
+def ppm_min_channel_avg(file_path: str | Path) -> float:
+    """Return the minimum of the average R, G, B channel values. 0.0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    n = len(img.pixels)
+    avg_r = sum(p[0] for p in img.pixels) / n
+    avg_g = sum(p[1] for p in img.pixels) / n
+    avg_b = sum(p[2] for p in img.pixels) / n
+    return min(avg_r, avg_g, avg_b)
+
+
+def ppm_max_pixel_brightness(file_path: str | Path) -> float:
+    """Return the maximum per-pixel brightness ((R+G+B)/3). 0.0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return max((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels)

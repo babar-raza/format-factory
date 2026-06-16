@@ -1,13 +1,13 @@
 # Evidence Review — Supervisor
-Sprint ID: product-deepening-sprint84
-Timestamp: 2026-06-16T16:23:08.802123
+Sprint ID: PRODUCT-DEEPENING-SPRINT-32-20260616
+Timestamp: 2026-06-16T16:33:06.059833
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint84-20260616-fc60c35\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint32-20260616-70ea6bc\declaration-review-package.zip
 
 ## Facts
-- Tests: 16 passed, 0 failed, 0 skipped
+- Tests: 20 passed, 0 failed, 0 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 71
+- Bundle entries: 60
 - PENDING markers: 0
 
 ## Gate States

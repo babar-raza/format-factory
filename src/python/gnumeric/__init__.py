@@ -104,6 +104,8 @@ from .gnumeric_codec import (
     gnumeric_empty_column_count,
     gnumeric_cell_count_variance,
     gnumeric_max_row_length,
+    gnumeric_cell_to_row_ratio,
+    gnumeric_total_string_length,
 )
 
 __all__ = [
@@ -202,6 +204,8 @@ __all__ = [
     "gnumeric_empty_column_count",
     "gnumeric_cell_count_variance",
     "gnumeric_max_row_length",
+    "gnumeric_cell_to_row_ratio",
+    "gnumeric_total_string_length",
 ]
 
 __version__ = "0.1.0.dev0"

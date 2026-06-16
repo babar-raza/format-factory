@@ -1,22 +1,22 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-16T16:24:11.352110
+# Generated: 2026-06-16T16:34:22.675262
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | 8fd6593 |
+| Git HEAD | b2ed09e |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | PRODUCT-DEEPENING-SPRINT-30-20260616... |
-| Autonomous continue | True |
-| Iteration | 11/12 |
+| Sprint ID | FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING-V2... |
+| Autonomous continue | true_with_rework |
+| Iteration | 10/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 31 |
-| Ledger entries | 920 total (780 governed) |
+| Ledger entries | 936 total (780 governed) |
 
 ## .NET Test Counts (POC Matrix)
 

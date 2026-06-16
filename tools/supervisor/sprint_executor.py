@@ -92,16 +92,18 @@ def _atomic_write(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
     try:
-        tmp.write_text(text, encoding="utf-8")
-        tmp_fd = tmp.open("rb")
-        try:
-            os.fsync(tmp_fd.fileno())
-        finally:
-            tmp_fd.close()
+        data = text.encode("utf-8")
+        with open(tmp, "wb") as tmp_fd:
+            tmp_fd.write(data)
+            try:
+                os.fsync(tmp_fd.fileno())
+            except OSError:
+                pass  # fsync best-effort on Windows
         os.replace(str(tmp), str(path))
-    finally:
+    except Exception:
         if tmp.exists():
             tmp.unlink(missing_ok=True)
+        raise
 
 
 def _sha256(path: Path) -> str:
