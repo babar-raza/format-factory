@@ -34,7 +34,14 @@ from ndjson import (
     ndjson_average_field_count, ndjson_max_field_count, ndjson_min_field_count,
     ndjson_max_record_size, ndjson_null_field_count,
 )
-from zst import compress_bytes, decompress_bytes, validate_roundtrip
+import pytest
+
+try:
+    import zstandard as _zstandard  # noqa: F401
+    from zst import compress_bytes, decompress_bytes, validate_roundtrip
+    _HAS_ZST = True
+except Exception:
+    _HAS_ZST = False
 
 _RECORDS = [
     {"name": "Alice", "age": 30, "dept": "engineering"},
@@ -403,6 +410,7 @@ class TestNdjsonValidateAndRoundtrip:
             os.unlink(out)
 
 
+@pytest.mark.skipif(not _HAS_ZST, reason="python-zstandard not installed")
 class TestNdjsonZstDogfoodPipeline:
     """NDJSON→ZST dogfood pipeline proof."""
 

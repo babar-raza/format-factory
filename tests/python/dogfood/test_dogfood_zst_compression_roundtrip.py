@@ -12,6 +12,8 @@ import pytest
 _REPO = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(_REPO))
 
+pytest.importorskip("zstandard", reason="python-zstandard not installed")
+
 from src.python.zst.zst_codec import (
     compress_string_to_file,
     decompress_file_to_string,

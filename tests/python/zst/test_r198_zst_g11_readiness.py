@@ -47,6 +47,8 @@ class TestZstApiCompleteness:
             "is_valid_frame", "compress_with_dict", "decompress_with_dict",
             "zst_compressed_size", "zst_is_valid_file", "zst_decompressed_size",
             "zst_frame_count", "zst_frame_sizes",
+            "zst_avg_frame_size", "zst_compression_ratio",
+            "zst_max_frame_size", "zst_is_single_frame",
         }
         actual = set(zst.__all__)
         assert expected == actual, f"API mismatch. Missing: {expected - actual}. Extra: {actual - expected}"
