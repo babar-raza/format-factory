@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-16T16:22:54.062021
-# Source: Supervisor autonomous-cycle review of PRODUCT-DEEPENING-SPRINT-30-20260616
+# Generated: 2026-06-16T16:23:52.088964
+# Source: Supervisor autonomous-cycle review of PRODUCT-DEEPENING-DOGFOOD-QUAD-20260617
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,8 +27,8 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: PRODUCT-DEEPENING-SPRINT-30-20260616
-- Prior verdict: ACCEPTED
+- Prior sprint: PRODUCT-DEEPENING-DOGFOOD-QUAD-20260617
+- Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 

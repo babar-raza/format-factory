@@ -2390,3 +2390,16 @@ def fodt_heading_to_para_ratio(file_path: "str | os.PathLike[str]") -> float:
     if paragraphs == 0:
         return 0.0
     return headings / paragraphs
+
+
+def fodt_words_per_paragraph(file_path: "str | os.PathLike[str]") -> float:
+    """Return word count divided by paragraph count. 0.0 if no paragraphs."""
+    paras = fodt_paragraph_count(file_path)
+    if paras == 0:
+        return 0.0
+    return fodt_word_count(file_path) / paras
+
+
+def fodt_is_text_heavy(file_path: "str | os.PathLike[str]") -> bool:
+    """Return True if total char count exceeds 50."""
+    return fodt_char_count(file_path) > 50

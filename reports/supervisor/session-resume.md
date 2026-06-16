@@ -1,11 +1,11 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-16T16:23:15.153702
+# Generated: 2026-06-16T16:24:11.336642
 
 ## Quick State
-- Last sprint: PRODUCT-DEEPENING-SPRINT-30-20260616
-- Evidence verdict: ACCEPTED
-- Tests: 20 passed / 0 failed
+- Last sprint: PRODUCT-DEEPENING-DOGFOOD-QUAD-20260617
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 48 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -23,7 +23,7 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: .local/evidences/product-deepening-sprint30-20260616-70ea6bc
+- Last evidence bundle: .local/evidences/product-deepening-dogfood-quad-20260617
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 

@@ -102,6 +102,11 @@ from .sylk_parser import (
     sylk_max_row_cell_count,
     sylk_string_value_count,
     sylk_has_empty_cells,
+    sylk_total_cells,
+    sylk_nonempty_cell_ratio,
+    sylk_min_row_index,
+    sylk_max_row_index,
+    sylk_numeric_cell_ratio,
 )
 
 __version__ = "0.1.0"
@@ -199,4 +204,9 @@ __all__ = [
     "sylk_max_row_cell_count",
     "sylk_string_value_count",
     "sylk_has_empty_cells",
+    "sylk_total_cells",
+    "sylk_nonempty_cell_ratio",
+    "sylk_min_row_index",
+    "sylk_max_row_index",
+    "sylk_numeric_cell_ratio",
 ]

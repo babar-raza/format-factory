@@ -1842,3 +1842,21 @@ def gnumeric_max_row_length(file_path: "str | bytes | Path") -> int:
             if rc > max_len:
                 max_len = rc
     return max_len
+
+
+def gnumeric_cell_to_row_ratio(file_path: "str | bytes | Path") -> float:
+    """Return total cell count divided by row count. 0.0 if no rows."""
+    rows = gnumeric_row_count_file(file_path)
+    if rows == 0:
+        return 0.0
+    return gnumeric_total_cell_count(file_path) / rows
+
+
+def gnumeric_total_string_length(file_path: "str | bytes | Path") -> int:
+    """Return sum of string lengths of all cell values across all sheets."""
+    model = load(file_path)
+    return sum(
+        len(str(v))
+        for sheet in model.get("sheets", [])
+        for v in sheet.get("cell_values", [])
+    )

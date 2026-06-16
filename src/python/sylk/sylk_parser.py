@@ -1529,3 +1529,48 @@ def sylk_has_empty_cells(file_path: "str | Path") -> bool:
         if c.value is None or (isinstance(c.value, str) and not c.value.strip()):
             return True
     return False
+
+
+def sylk_total_cells(file_path: "str | Path") -> int:
+    """Return the total number of cells in the SYLK document."""
+    doc = parse_sylk_strict(file_path)
+    return len(doc.cells)
+
+
+def sylk_nonempty_cell_ratio(file_path: "str | Path") -> float:
+    """Return ratio of non-empty cells to total cells. 0.0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    total = len(doc.cells)
+    if total == 0:
+        return 0.0
+    nonempty = sum(
+        1 for c in doc.cells
+        if c.value is not None and not (isinstance(c.value, str) and not c.value.strip())
+    )
+    return nonempty / total
+
+
+def sylk_min_row_index(file_path: "str | Path") -> int:
+    """Return the minimum row index present in the document. 0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0
+    return min(c.row for c in doc.cells)
+
+
+def sylk_max_row_index(file_path: "str | Path") -> int:
+    """Return the maximum row index present in the document. 0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0
+    return max(c.row for c in doc.cells)
+
+
+def sylk_numeric_cell_ratio(file_path: "str | Path") -> float:
+    """Return ratio of numeric cells to total cells. 0.0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    total = len(doc.cells)
+    if total == 0:
+        return 0.0
+    numeric = sum(1 for c in doc.cells if isinstance(c.value, (int, float)))
+    return numeric / total

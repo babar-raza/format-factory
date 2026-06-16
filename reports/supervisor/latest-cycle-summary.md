@@ -1,11 +1,11 @@
 # Latest Supervisor Cycle Summary
-Run: product-deepening-sprint30-20260616-70ea6bc
-Sprint: PRODUCT-DEEPENING-SPRINT-30-20260616
-Timestamp: 2026-06-16T16:22:25.706692
-Verdict: ACCEPTED
+Run: product-deepening-dogfood-quad-20260617
+Sprint: PRODUCT-DEEPENING-DOGFOOD-QUAD-20260617
+Timestamp: 2026-06-16T16:23:26.887231
+Verdict: ACCEPTED_WITH_REWORK
 Autonomous Continue: True
-Accepted: 1
+Accepted: 4
 Rework: 0
 Overclaimed: 0
-Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint30-20260616-70ea6bc\supervisor-review.md
-Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-sprint30-20260616-70ea6bc\combined-next-worker-prompt.md
+Review: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-dogfood-quad-20260617\supervisor-review.md
+Next Prompt: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\product-deepening-dogfood-quad-20260617\combined-next-worker-prompt.md

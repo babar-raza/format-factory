@@ -1,6 +1,6 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-16T16:23:14.016835
+# Generated: 2026-06-16T16:24:11.352110
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State

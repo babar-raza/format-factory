@@ -1,43 +1,126 @@
 [
   {
-    "item_id": "QOI-ANALYTICS-001",
-    "item_title": "QOI analytics: 5 new functions with 20 tests",
+    "item_id": "FODT-PARA-DEPTH-DOGFOOD-001",
+    "item_title": "FODT paragraph depth analytics dogfood \u2192 NDJSON (12 tests)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "tests/python/qoi/test_r294_qoi_new_analytics.py",
-      "src/python/qoi/qoi_parser.py"
+      ".local/evidences/product-deepening-dogfood-quad-20260617/focused-proof-quad-dogfood.md",
+      ".local/evidences/product-deepening-dogfood-quad-20260617/raw-logs/quad-dogfood.log"
     ],
-    "tests_supporting": [
-      "tests/python/qoi/test_r294_qoi_new_analytics.py"
-    ],
+    "tests_supporting": [],
     "tests_missing": [],
     "acceptance_criteria_met": [
       "Evidence found",
       "No missing paths",
-      "Test content verified (1 files)"
+      "No concrete test/criteria proof (path-only acceptance)"
     ],
     "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: 20 tests pass"
+      "No raw proof, test content, or acceptance criteria verified"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: 20 tests pass",
-    "tests_evidence_verified": [
-      "tests/python/qoi/test_r294_qoi_new_analytics.py"
-    ],
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for FODT-PARA-DEPTH-DOGFOOD-001",
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.73,
+      "confidence": 0.93,
       "stub_detected": false,
-      "deficiencies": [
-        "No evidence that the five QOI analytics functions are actually implemented or exported in the qoi module; only import statements are shown.",
-        "No test execution report or CI output confirming that the 20 tests pass.",
-        "The provided source file (qoi_parser.py) is unrelated to the analytics functions and does not demonstrate the required functionality."
-      ],
-      "llm_used": true,
-      "low_confidence_override": true
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "ABW-PUNCTUATION-DOGFOOD-001",
+    "item_title": "ABW punctuation/text analytics dogfood \u2192 NDJSON (12 tests)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/product-deepening-dogfood-quad-20260617/focused-proof-quad-dogfood.md",
+      ".local/evidences/product-deepening-dogfood-quad-20260617/raw-logs/quad-dogfood.log"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for ABW-PUNCTUATION-DOGFOOD-001",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.96,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "CSV-ANALYTICS-GAPS-DOGFOOD-001",
+    "item_title": "CSV analytics gap functions dogfood \u2192 NDJSON (12 tests)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/product-deepening-dogfood-quad-20260617/focused-proof-quad-dogfood.md",
+      ".local/evidences/product-deepening-dogfood-quad-20260617/raw-logs/quad-dogfood.log"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for CSV-ANALYTICS-GAPS-DOGFOOD-001",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
+    }
+  },
+  {
+    "item_id": "DIF-ANALYTICS-GAPS-DOGFOOD-001",
+    "item_title": "DIF analytics gap functions dogfood \u2192 NDJSON (12 tests)",
+    "declared_status": "completed",
+    "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
+    "evidence_found": true,
+    "evidence_paths": [
+      ".local/evidences/product-deepening-dogfood-quad-20260617/focused-proof-quad-dogfood.md",
+      ".local/evidences/product-deepening-dogfood-quad-20260617/raw-logs/quad-dogfood.log"
+    ],
+    "tests_supporting": [],
+    "tests_missing": [],
+    "acceptance_criteria_met": [
+      "Evidence found",
+      "No missing paths",
+      "No concrete test/criteria proof (path-only acceptance)"
+    ],
+    "acceptance_criteria_failed": [
+      "No raw proof, test content, or acceptance criteria verified"
+    ],
+    "required_rework": "",
+    "can_autonomously_repair": false,
+    "next_prompt_instruction": "Item accepted with limitations: path-only evidence for DIF-ANALYTICS-GAPS-DOGFOOD-001",
+    "semantic_verification": {
+      "adequate": true,
+      "confidence": 0.95,
+      "stub_detected": false,
+      "deficiencies": [],
+      "llm_used": true
     }
   }
 ]
