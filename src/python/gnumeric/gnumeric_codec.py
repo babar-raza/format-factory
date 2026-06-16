@@ -1694,3 +1694,151 @@ def gnumeric_nonempty_cell_ratio(file_path: "str | bytes | Path") -> float:
     if total == 0:
         return 0.0
     return nonempty / total
+
+
+def gnumeric_row_count_variance(file_path: "str | bytes | Path") -> float:
+    """Return variance of row counts across sheets. 0.0 if fewer than 2 sheets."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if len(sheets) < 2:
+        return 0.0
+    counts = [len(s.get("cell_grid", {})) for s in sheets]
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+def gnumeric_sheet_name_lengths(file_path: "str | bytes | Path") -> list[int]:
+    """Return list of character lengths of sheet names."""
+    model = load(file_path)
+    return [len(s.get("name", "")) for s in model.get("sheets", [])]
+
+
+def gnumeric_max_cell_value_length(file_path: "str | bytes | Path") -> int:
+    """Return the maximum character length of any cell value. 0 if no cells."""
+    model = load(file_path)
+    max_len = 0
+    for sheet in model.get("sheets", []):
+        for _key, cell in sheet.get("cell_grid", {}).items():
+            val = cell.get("value", "")
+            if val is not None and len(str(val)) > max_len:
+                max_len = len(str(val))
+    return max_len
+
+
+def gnumeric_is_multi_sheet(file_path: "str | bytes | Path") -> bool:
+    """Return True if the workbook has more than one sheet."""
+    model = load(file_path)
+    return len(model.get("sheets", [])) > 1
+
+
+def gnumeric_avg_numeric_value(file_path: "str | bytes | Path") -> float:
+    """Return average of all numeric cell values across all sheets. 0.0 if none."""
+    model = load(file_path)
+    values = []
+    for sheet in model.get("sheets", []):
+        for _key, val in sheet.get("cell_grid", {}).items():
+            if val is not None:
+                try:
+                    values.append(float(str(val)))
+                except (ValueError, TypeError):
+                    pass
+    return sum(values) / len(values) if values else 0.0
+
+
+def gnumeric_nonempty_row_ratio(file_path: "str | bytes | Path") -> float:
+    """Return ratio of rows with at least one non-empty cell to total rows in sheet 0. 0.0 if empty."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0.0
+    grid = sheets[0].get("cell_grid", {})
+    if not grid:
+        return 0.0
+    rows_with_data = set()
+    all_rows = set()
+    for key, val in grid.items():
+        row, col = key
+        all_rows.add(row)
+        if val is not None and str(val).strip():
+            rows_with_data.add(row)
+    if not all_rows:
+        return 0.0
+    return len(rows_with_data) / len(all_rows)
+
+
+def gnumeric_longest_row_index(file_path: "str | bytes | Path") -> int:
+    """Return 0-based row index with the most non-empty cells in sheet 0. -1 if empty."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return -1
+    grid = sheets[0].get("cell_grid", {})
+    if not grid:
+        return -1
+    row_counts: dict = {}
+    for key, val in grid.items():
+        row, col = key
+        if val is not None and str(val).strip():
+            row_counts[row] = row_counts.get(row, 0) + 1
+    if not row_counts:
+        return -1
+    return max(row_counts, key=row_counts.get)
+
+
+def gnumeric_numeric_sum_all(file_path: "str | bytes | Path") -> float:
+    """Return sum of all numeric cell values across all sheets."""
+    model = load(file_path)
+    total = 0.0
+    for sheet in model.get("sheets", []):
+        for _key, val in sheet.get("cell_grid", {}).items():
+            if val is not None:
+                try:
+                    total += float(str(val))
+                except (ValueError, TypeError):
+                    pass
+    return total
+
+
+def gnumeric_empty_column_count(file_path: "str | bytes | Path") -> int:
+    """Return number of entirely empty columns in sheet 0."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0
+    grid = sheets[0].get("cell_grid", {})
+    if not grid:
+        return 0
+    all_cols: set = set()
+    cols_with_data: set = set()
+    for key, val in grid.items():
+        row, col = key
+        all_cols.add(col)
+        if val is not None and str(val).strip():
+            cols_with_data.add(col)
+    empty_cols = all_cols - cols_with_data
+    return len(empty_cols)
+
+
+def gnumeric_cell_count_variance(file_path: "str | bytes | Path") -> float:
+    """Return variance of cell counts across sheets. 0.0 if fewer than 2 sheets."""
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if len(sheets) < 2:
+        return 0.0
+    counts = [len(s.get("cell_grid", {})) for s in sheets]
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+def gnumeric_max_row_length(file_path: "str | bytes | Path") -> int:
+    """Return maximum number of cells in any single row across all sheets. 0 if no cells."""
+    model = load(file_path)
+    max_len = 0
+    for sheet in model.get("sheets", []):
+        from collections import Counter as _Counter
+        row_counts = _Counter(key[0] for key in sheet.get("cell_grid", {}).keys())
+        if row_counts:
+            rc = max(row_counts.values())
+            if rc > max_len:
+                max_len = rc
+    return max_len

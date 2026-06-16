@@ -93,6 +93,17 @@ from .gnumeric_codec import (
     gnumeric_has_empty_cells,
     gnumeric_is_all_numeric,
     gnumeric_nonempty_cell_ratio,
+    gnumeric_row_count_variance,
+    gnumeric_sheet_name_lengths,
+    gnumeric_max_cell_value_length,
+    gnumeric_is_multi_sheet,
+    gnumeric_avg_numeric_value,
+    gnumeric_nonempty_row_ratio,
+    gnumeric_longest_row_index,
+    gnumeric_numeric_sum_all,
+    gnumeric_empty_column_count,
+    gnumeric_cell_count_variance,
+    gnumeric_max_row_length,
 )
 
 __all__ = [
@@ -180,6 +191,17 @@ __all__ = [
     "gnumeric_has_empty_cells",
     "gnumeric_is_all_numeric",
     "gnumeric_nonempty_cell_ratio",
+    "gnumeric_row_count_variance",
+    "gnumeric_sheet_name_lengths",
+    "gnumeric_max_cell_value_length",
+    "gnumeric_is_multi_sheet",
+    "gnumeric_avg_numeric_value",
+    "gnumeric_nonempty_row_ratio",
+    "gnumeric_longest_row_index",
+    "gnumeric_numeric_sum_all",
+    "gnumeric_empty_column_count",
+    "gnumeric_cell_count_variance",
+    "gnumeric_max_row_length",
 ]
 
 __version__ = "0.1.0.dev0"

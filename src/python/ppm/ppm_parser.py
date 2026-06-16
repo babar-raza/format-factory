@@ -1069,3 +1069,127 @@ def ppm_total_channel_sum(file_path: str | Path) -> int:
     """Return the sum of all R+G+B values across all pixels."""
     img = parse_ppm_strict(file_path)
     return sum(p[0] + p[1] + p[2] for p in img.pixels)
+
+
+def ppm_avg_brightness(file_path: str | Path) -> float:
+    """Return average brightness (mean of R+G+B / 3) across all pixels. 0.0 if none."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = sum((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels)
+    return total / len(img.pixels)
+
+
+def ppm_color_variance(file_path: str | Path) -> float:
+    """Return variance of pixel brightness values. 0.0 if fewer than 2 pixels."""
+    img = parse_ppm_strict(file_path)
+    if len(img.pixels) < 2:
+        return 0.0
+    brightnesses = [(p[0] + p[1] + p[2]) / 3.0 for p in img.pixels]
+    mean = sum(brightnesses) / len(brightnesses)
+    return sum((b - mean) ** 2 for b in brightnesses) / len(brightnesses)
+
+
+def ppm_distinct_pixel_count(file_path: str | Path) -> int:
+    """Return the count of distinct (R, G, B) pixel tuples."""
+    img = parse_ppm_strict(file_path)
+    return len(set(img.pixels))
+
+
+def ppm_is_grayscale(file_path: str | Path) -> bool:
+    """Return True if all pixels have equal R, G, and B channel values."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return True
+    return all(p[0] == p[1] == p[2] for p in img.pixels)
+
+
+def ppm_red_ratio(file_path: str | Path) -> float:
+    """Return ratio of red channel sum to total channel sum. 0.0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    red = sum(p[0] for p in img.pixels)
+    total = sum(p[0] + p[1] + p[2] for p in img.pixels)
+    if total == 0:
+        return 0.0
+    return red / total
+
+
+def ppm_border_brightness(file_path: str | Path) -> float:
+    """Return average brightness of border pixels. 0.0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if img.width == 0 or img.height == 0:
+        return 0.0
+    border = []
+    for i, p in enumerate(img.pixels):
+        r = i // img.width
+        c = i % img.width
+        if r == 0 or r == img.height - 1 or c == 0 or c == img.width - 1:
+            border.append((p[0] + p[1] + p[2]) / 3.0)
+    if not border:
+        return 0.0
+    return sum(border) / len(border)
+
+
+def ppm_green_ratio(file_path: str | Path) -> float:
+    """Return ratio of green channel sum to total channel sum. 0.0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    green = sum(p[1] for p in img.pixels)
+    total = sum(p[0] + p[1] + p[2] for p in img.pixels)
+    if total == 0:
+        return 0.0
+    return green / total
+
+
+def ppm_pixel_brightness_range(file_path: str | Path) -> float:
+    """Return brightness range (max - min) as ratio of maxval. 0.0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    brightnesses = [(p[0] + p[1] + p[2]) / 3.0 for p in img.pixels]
+    return (max(brightnesses) - min(brightnesses)) / max(img.maxval, 1)
+
+
+def ppm_blue_ratio(file_path: str | Path) -> float:
+    """Return blue channel sum as ratio of total channel sum. 0.0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = sum(p[0] + p[1] + p[2] for p in img.pixels)
+    if total == 0:
+        return 0.0
+    blue = sum(p[2] for p in img.pixels)
+    return blue / total
+
+
+def ppm_is_bright(file_path: str | Path) -> bool:
+    """Return True if mean brightness exceeds 66% of maxval."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels or img.maxval == 0:
+        return False
+    mean = sum((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels) / len(img.pixels)
+    return mean > (img.maxval * 0.66)
+
+
+def ppm_maxval(file_path: str | Path) -> int:
+    """Return the maxval field from the PPM header."""
+    img = parse_ppm_strict(file_path)
+    return img.maxval
+
+
+def ppm_normalized_brightness(file_path: str | Path) -> float:
+    """Return mean brightness normalized to [0.0, 1.0] by maxval. 0.0 if no pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels or img.maxval == 0:
+        return 0.0
+    mean = sum((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels) / len(img.pixels)
+    return mean / img.maxval
+
+
+def ppm_area(file_path: str | Path) -> int:
+    """Return image area in pixels: width * height."""
+    img = parse_ppm_strict(file_path)
+    return img.width * img.height

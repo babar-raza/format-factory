@@ -93,6 +93,18 @@ from .abw_codec import (
     abw_avg_chars_per_word,
     abw_whitespace_ratio,
     abw_avg_sentence_length,
+    abw_punctuation_count,
+    abw_median_paragraph_length,
+    abw_longest_paragraph_words,
+    abw_distinct_word_ratio,
+    abw_total_text_length,
+    abw_nonempty_paragraph_ratio,
+    abw_has_numeric_content,
+    abw_longest_paragraph_index,
+    abw_unique_char_count,
+    abw_nonspace_char_count,
+    abw_line_count,
+    abw_uppercase_ratio,
 )
 
 __all__ = [
@@ -180,6 +192,18 @@ __all__ = [
     "abw_avg_chars_per_word",
     "abw_whitespace_ratio",
     "abw_avg_sentence_length",
+    "abw_punctuation_count",
+    "abw_median_paragraph_length",
+    "abw_longest_paragraph_words",
+    "abw_distinct_word_ratio",
+    "abw_total_text_length",
+    "abw_nonempty_paragraph_ratio",
+    "abw_has_numeric_content",
+    "abw_longest_paragraph_index",
+    "abw_unique_char_count",
+    "abw_nonspace_char_count",
+    "abw_line_count",
+    "abw_uppercase_ratio",
 ]
 
 __version__ = "0.1.0.dev0"

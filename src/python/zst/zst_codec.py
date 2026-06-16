@@ -1238,3 +1238,14 @@ def zst_frame_size_range(path: "str | Path") -> int:
 def zst_is_multi_frame(path: "str | Path") -> bool:
     """Return True if file contains more than one frame."""
     return zst_frame_count(path) > 1
+
+
+def zst_is_compressible(path: "str | Path") -> bool:
+    """Return True if compressed size is less than decompressed size."""
+    return zst_compressed_size(path) < zst_decompressed_size(path)
+
+
+def zst_compression_saving(path: "str | Path") -> int:
+    """Return bytes saved by compression. 0 if compressed size >= decompressed size."""
+    saving = zst_decompressed_size(path) - zst_compressed_size(path)
+    return max(0, saving)

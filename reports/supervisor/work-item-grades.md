@@ -1,15 +1,14 @@
 # Work Item Grades
-Sprint: IDEMPOTENT-SWARM-SPRINT-117
-Generated: 2026-06-16T15:17:55.811539
-Global Status: ACCEPTED_WITH_REWORK
+Sprint: PRODUCT-DEEPENING-SPRINT-30-20260616
+Generated: 2026-06-16T16:22:25.706692
+Global Status: ACCEPTED
 
 | Item ID | Grade | Rework Required |
 |---------|-------|-----------------|
-| DOGFOOD-ZST-COMPRESS-ABW-REMAINING-NDJSON | ACCEPTED_WITH_LIMITATIONS |  |
-| DOGFOOD-ABW-REMAINING3-SYLK-REMAINING-NDJSON | ACCEPTED_WITH_LIMITATIONS |  |
+| QOI-ANALYTICS-001 | ACCEPTED_WITH_LIMITATIONS |  |
 
 ## Summary
-- Accepted: 2
+- Accepted: 1
 - Rework: 0
 - Overclaimed: 0
 - Autonomous Continue: True

@@ -1476,3 +1476,167 @@ def dif_nonempty_cell_ratio(file_path: "str | Path") -> float:
             if str(val).strip():
                 nonempty += 1
     return nonempty / total
+
+
+def dif_avg_numeric_value(file_path: "str | Path") -> float:
+    """Return average of all numeric cell values. 0.0 if no numeric cells."""
+    doc = parse_dif_strict(file_path)
+    nums = []
+    for row in doc.rows:
+        for cell in row:
+            if cell.value is not None:
+                try:
+                    nums.append(float(str(cell.value)))
+                except (ValueError, TypeError):
+                    pass
+    if not nums:
+        return 0.0
+    return sum(nums) / len(nums)
+
+
+def dif_row_length_variance(file_path: "str | Path") -> float:
+    """Return variance of row lengths. 0.0 if fewer than 2 rows."""
+    doc = parse_dif_strict(file_path)
+    if len(doc.rows) < 2:
+        return 0.0
+    lengths = [len(row) for row in doc.rows]
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def dif_numeric_sum(file_path: "str | Path") -> float:
+    """Return sum of all numeric cell values. 0.0 if no numeric cells."""
+    doc = parse_dif_strict(file_path)
+    total = 0.0
+    for row in doc.rows:
+        for cell in row:
+            if cell.value is not None:
+                try:
+                    total += float(str(cell.value))
+                except (ValueError, TypeError):
+                    pass
+    return total
+
+
+def dif_is_single_row(file_path: "str | Path") -> bool:
+    """Return True if the document has exactly one data row."""
+    doc = parse_dif_strict(file_path)
+    return len(doc.rows) == 1
+
+
+def dif_empty_column_count(file_path: "str | Path") -> int:
+    """Return number of columns that are entirely empty across all rows."""
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return 0
+    col_count = max(len(row) for row in doc.rows)
+    empty_cols = 0
+    for ci in range(col_count):
+        if all(
+            ci >= len(row) or row[ci].value is None or str(row[ci].value).strip() == ""
+            for row in doc.rows
+        ):
+            empty_cols += 1
+    return empty_cols
+
+
+def dif_longest_row_index(file_path: "str | Path") -> int:
+    """Return 0-based index of the row with the most cells. -1 if no rows."""
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return -1
+    return max(range(len(doc.rows)), key=lambda i: len(doc.rows[i]))
+
+
+def dif_total_string_length(file_path: "str | Path") -> int:
+    """Return total character count of all string cell values combined."""
+    doc = parse_dif_strict(file_path)
+    total = 0
+    for row in doc.rows:
+        for cell in row:
+            if cell.value is not None:
+                total += len(str(cell.value))
+    return total
+
+
+def dif_nonempty_row_ratio(file_path: "str | Path") -> float:
+    """Return ratio of non-empty rows to total rows. 0.0 if no rows."""
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return 0.0
+    nonempty = sum(
+        1 for row in doc.rows
+        if any(cell.value is not None and str(cell.value).strip() for cell in row)
+    )
+    return nonempty / len(doc.rows)
+
+
+def dif_numeric_cell_count(file_path: "str | Path") -> int:
+    """Return the count of cells with numeric values."""
+    doc = parse_dif_strict(file_path)
+    return sum(
+        1 for row in doc.rows for cell in row
+        if cell.value_type == "numeric"
+    )
+
+
+def dif_has_string_cells(file_path: "str | Path") -> bool:
+    """Return True if any cell has value_type 'string'."""
+    doc = parse_dif_strict(file_path)
+    return any(
+        cell.value_type == "string"
+        for row in doc.rows for cell in row
+    )
+
+
+def dif_avg_cell_length_variance(file_path: "str | Path") -> float:
+    """Return variance of cell value string lengths. 0.0 if fewer than 2 cells."""
+    doc = parse_dif_strict(file_path)
+    lengths = []
+    for row in doc.rows:
+        for cell in row:
+            if cell.value is not None:
+                lengths.append(len(str(cell.value)))
+    if len(lengths) < 2:
+        return 0.0
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def dif_column_density(file_path: "str | Path") -> float:
+    """Return ratio of non-empty columns to total columns. 0.0 if no columns."""
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return 0.0
+    max_cols = max(len(row) for row in doc.rows) if doc.rows else 0
+    if max_cols == 0:
+        return 0.0
+    nonempty_cols = 0
+    for c in range(max_cols):
+        for row in doc.rows:
+            if c < len(row) and row[c].value is not None and str(row[c].value).strip():
+                nonempty_cols += 1
+                break
+    return nonempty_cols / max_cols
+
+
+def dif_string_value_count(file_path: "str | Path") -> int:
+    """Return count of cells with string-type values."""
+    doc = parse_dif_strict(file_path)
+    return sum(
+        1 for row in doc.rows for cell in row
+        if cell.value_type == "string"
+    )
+
+
+def dif_max_numeric_length(file_path: "str | Path") -> int:
+    """Return max string length of any numeric cell value. 0 if no numeric cells."""
+    doc = parse_dif_strict(file_path)
+    max_len = 0
+    for row in doc.rows:
+        for cell in row:
+            if cell.value_type == "numeric" and cell.value is not None:
+                l = len(str(cell.value))
+                if l > max_len:
+                    max_len = l
+    return max_len

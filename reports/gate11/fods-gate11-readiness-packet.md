@@ -33,7 +33,7 @@
 | G8 (Security Review) | PASSED | defusedxml, DTD prohibited, malformed-input tests pass |
 | G9 (Dogfood) | PASSED | FODS→CSV export chain verified |
 | G10 (FOSS POC Complete) | PASSED (Python) | 1039 Python test functions; parse→inspect→export verified |
-| G11-E (.NET prototype - VERIFIED) | IN_PROGRESS | .NET: FodsParser.cs + FodsWriter.cs + FodsPdfExporter.cs + 574 .NET tests |
+| G11-E (.NET prototype - VERIFIED) | IN_PROGRESS | .NET: FodsParser.cs + FodsWriter.cs + FodsPdfExporter.cs + FodsOdsExporter.cs + FodsPngExporter.cs + 611 .NET tests |
 | G11-G (Commercial readiness) | NOT APPROVED | Requires Babar Raza approval |
 
 **Claimed gate:** G11 (commercial_readiness_in_progress)
@@ -99,9 +99,12 @@ Python FOSS has **read and basic write** via `writer.py`, but full write capabil
 | FodsCsvExporter.cs | `src/net/fods/FodsCsvExporter.cs` |
 | FodsHtmlExporter.cs | `src/net/fods/FodsHtmlExporter.cs` |
 | FodsJsonExporter.cs | `src/net/fods/FodsJsonExporter.cs` |
+| FodsPdfExporter.cs | `src/net/fods/FodsPdfExporter.cs` |
+| FodsOdsExporter.cs | `src/net/fods/FodsOdsExporter.cs` |
+| FodsPngExporter.cs | `src/net/fods/FodsPngExporter.cs` |
 | Model/ | `src/net/fods/Model/` (FodsSheet, FodsRow, FodsCell) |
 
-**Verified .NET tests:** 574 (FodsPdfExporter.cs added 2026-06-16, +21 PDF export tests)
+**Verified .NET tests:** 611 (FodsPdfExporter.cs +21, FodsOdsExporter.cs +20, FodsPngExporter.cs +17 — all added 2026-06-16)
 
 ### 4B. .NET Capabilities Verified
 
@@ -113,6 +116,9 @@ Python FOSS has **read and basic write** via `writer.py`, but full write capabil
 | Export to CSV | VERIFIED |
 | Export to HTML | VERIFIED |
 | Export to JSON | VERIFIED |
+| Export to PDF | VERIFIED |
+| Export to ODS (ODF ZIP archive) | VERIFIED |
+| Export to PNG (thumbnail grid) | VERIFIED |
 | Security guards (100MB, DTD prohibited) | VERIFIED |
 
 ### 4C. .NET Packaging

@@ -1411,3 +1411,121 @@ def sylk_is_square(file_path: "str | Path") -> bool:
     rows = set(c.row for c in doc.cells)
     cols = set(c.col for c in doc.cells)
     return len(rows) == len(cols)
+
+
+def sylk_avg_cell_length(file_path: "str | Path") -> float:
+    """Return average string length of all cell values. 0.0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0.0
+    total = sum(len(str(c.value)) for c in doc.cells if c.value is not None)
+    return total / len(doc.cells)
+
+
+def sylk_column_span(file_path: "str | Path") -> int:
+    """Return the column span (max_col - min_col + 1). 0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0
+    cols = [c.col for c in doc.cells]
+    return max(cols) - min(cols) + 1
+
+
+def sylk_numeric_sum(file_path: "str | Path") -> float:
+    """Return sum of all numeric cell values. 0.0 if no numeric cells."""
+    doc = parse_sylk_strict(file_path)
+    total = 0.0
+    for c in doc.cells:
+        if c.value is not None:
+            try:
+                total += float(c.value)
+            except (ValueError, TypeError):
+                pass
+    return total
+
+
+def sylk_avg_numeric_value(file_path: "str | Path") -> float:
+    """Return average of all numeric cell values. 0.0 if no numeric cells."""
+    doc = parse_sylk_strict(file_path)
+    nums = []
+    for c in doc.cells:
+        if c.value is not None:
+            try:
+                nums.append(float(c.value))
+            except (ValueError, TypeError):
+                pass
+    if not nums:
+        return 0.0
+    return sum(nums) / len(nums)
+
+
+def sylk_total_string_length(file_path: "str | Path") -> int:
+    """Return total character count of all cell string representations."""
+    doc = parse_sylk_strict(file_path)
+    return sum(len(str(c.value)) for c in doc.cells if c.value is not None)
+
+
+def sylk_nonempty_row_ratio(file_path: "str | Path") -> float:
+    """Return ratio of rows with at least one non-empty cell to total rows. 0.0 if empty."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0.0
+    all_rows = set(c.row for c in doc.cells)
+    nonempty_rows = set(
+        c.row for c in doc.cells
+        if c.value is not None and str(c.value).strip()
+    )
+    if not all_rows:
+        return 0.0
+    return len(nonempty_rows) / len(all_rows)
+
+
+def sylk_longest_row_index(file_path: "str | Path") -> int:
+    """Return the row index with the most cells. -1 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return -1
+    from collections import Counter as _Counter
+    row_counts = _Counter(c.row for c in doc.cells)
+    return row_counts.most_common(1)[0][0]
+
+
+def sylk_numeric_variance(file_path: "str | Path") -> float:
+    """Return variance of numeric cell values. 0.0 if fewer than 2 numeric cells."""
+    doc = parse_sylk_strict(file_path)
+    nums = []
+    for c in doc.cells:
+        if c.value is not None:
+            try:
+                nums.append(float(str(c.value)))
+            except (ValueError, TypeError):
+                pass
+    if len(nums) < 2:
+        return 0.0
+    mean = sum(nums) / len(nums)
+    return sum((n - mean) ** 2 for n in nums) / len(nums)
+
+
+def sylk_max_row_cell_count(file_path: "str | Path") -> int:
+    """Return the maximum number of cells in any single row. 0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0
+    from collections import Counter as _Counter
+    row_counts = _Counter(c.row for c in doc.cells)
+    return max(row_counts.values())
+
+
+def sylk_string_value_count(file_path: "str | Path") -> int:
+    """Return count of cells whose value is a string type."""
+    doc = parse_sylk_strict(file_path)
+    return sum(1 for c in doc.cells if isinstance(c.value, str))
+
+
+def sylk_has_empty_cells(file_path: "str | Path") -> bool:
+    """Return True if any cell has a None or empty-string value."""
+    doc = parse_sylk_strict(file_path)
+    for c in doc.cells:
+        if c.value is None or (isinstance(c.value, str) and not c.value.strip()):
+            return True
+    return False

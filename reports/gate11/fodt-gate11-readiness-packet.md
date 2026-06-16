@@ -33,7 +33,7 @@
 | G8 (Security Review) | PASSED | defusedxml, DTD prohibited, bounds checking |
 | G9 (Dogfood) | PASSED | FODT→TXT/HTML export chain verified |
 | G10 (FOSS POC Complete) | PASSED (Python) | 1155 Python test functions; parse→inspect→export verified |
-| G11-E (.NET prototype) | VERIFIED | .NET: FodtParser.cs + FodtWriter.cs + FodtPdfExporter.cs + 549 .NET tests |
+| G11-E (.NET prototype) | VERIFIED | .NET: FodtParser.cs + FodtWriter.cs + FodtPdfExporter.cs + FodtPngExporter.cs + 567 .NET tests |
 | G11-G (Commercial readiness) | NOT APPROVED | Requires Babar Raza approval |
 
 **Claimed gate:** G11 (commercial_readiness_in_progress)
@@ -102,9 +102,11 @@ Python FOSS has **read capability and basic write** via `writer.py`, but full wr
 | FodtHtmlExporter.cs | `src/net/fodt/FodtHtmlExporter.cs` |
 | FodtTxtExporter.cs | `src/net/fodt/FodtTxtExporter.cs` |
 | FodtMarkdownExporter.cs | `src/net/fodt/FodtMarkdownExporter.cs` |
+| FodtPdfExporter.cs | `src/net/fodt/FodtPdfExporter.cs` |
+| FodtPngExporter.cs | `src/net/fodt/FodtPngExporter.cs` |
 | Model/ | `src/net/fodt/Model/` (FodtBody, FodtParagraph) |
 
-**Verified .NET tests:** 549 (FodtPdfExporter.cs added 2026-06-16, +20 PDF export tests)
+**Verified .NET tests:** 567 (FodtPdfExporter.cs +20, FodtPngExporter.cs +18 — both added 2026-06-16)
 
 ### 4B. .NET Capabilities Verified
 
@@ -116,6 +118,8 @@ Python FOSS has **read capability and basic write** via `writer.py`, but full wr
 | Export to HTML | VERIFIED |
 | Export to TXT | VERIFIED |
 | Export to Markdown | VERIFIED |
+| Export to PDF | VERIFIED |
+| Export to PNG (document outline thumbnail) | VERIFIED |
 | Security guards (100MB, DTD prohibited) | VERIFIED |
 
 ### 4C. .NET Packaging

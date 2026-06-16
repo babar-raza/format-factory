@@ -1,7 +1,7 @@
 {
   "ledger_version": "2.0",
   "created_at_sprint": "R90",
-  "latest_sprint": "product-deepening-sprint72-20260616",
+  "latest_sprint": "product-deepening-sprint81-20260616",
   "tracking_base_ref": "a2b8618bf82d364cecc2009bd536b7378f391140",
   "tracking_rule": "Every src change after tracking_base_ref requires a ledger source_files reference with the current SHA-256 or an explicit deletion state.",
   "entries": [
@@ -16022,7 +16022,925 @@
         }
       ],
       "note": "New: FODS\u2192ODS ZIP archive exporter. System.IO.Compression only. 20 tests pass."
+    },
+    {
+      "id": 823,
+      "sprint": "R303",
+      "format": "PBM",
+      "function": "pbm_avg_row_density",
+      "file": "src/python/pbm/pbm_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 824,
+      "sprint": "R303",
+      "format": "PBM",
+      "function": "pbm_border_black_count",
+      "file": "src/python/pbm/pbm_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 825,
+      "sprint": "R303",
+      "format": "PGM",
+      "function": "pgm_is_high_contrast",
+      "file": "src/python/pgm/pgm_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 826,
+      "sprint": "R303",
+      "format": "PGM",
+      "function": "pgm_avg_row_brightness",
+      "file": "src/python/pgm/pgm_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 827,
+      "sprint": "R303",
+      "format": "FODP",
+      "function": "fodp_min_title_length",
+      "file": "src/python/fodp/fodp_codec.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 828,
+      "sprint": "R303",
+      "format": "FODP",
+      "function": "fodp_image_density",
+      "file": "src/python/fodp/fodp_codec.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 829,
+      "sprint": "R303",
+      "format": "FODT",
+      "function": "fodt_avg_heading_length",
+      "file": "src/python/fodt/neutral_model.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 830,
+      "sprint": "R303",
+      "format": "FODT",
+      "function": "fodt_table_density",
+      "file": "src/python/fodt/neutral_model.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 831,
+      "sprint": "R304",
+      "format": "PPM",
+      "function": "ppm_avg_brightness",
+      "file": "src/python/ppm/ppm_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 832,
+      "sprint": "R304",
+      "format": "PPM",
+      "function": "ppm_color_variance",
+      "file": "src/python/ppm/ppm_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 833,
+      "sprint": "R304",
+      "format": "NDJSON",
+      "function": "ndjson_total_string_length",
+      "file": "src/python/ndjson/ndjson_codec.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 834,
+      "sprint": "R304",
+      "format": "NDJSON",
+      "function": "ndjson_numeric_density",
+      "file": "src/python/ndjson/ndjson_codec.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 835,
+      "sprint": "R304",
+      "format": "SYLK",
+      "function": "sylk_avg_cell_length",
+      "file": "src/python/sylk/sylk_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 836,
+      "sprint": "R304",
+      "format": "SYLK",
+      "function": "sylk_column_span",
+      "file": "src/python/sylk/sylk_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 837,
+      "sprint": "R304",
+      "format": "DIF",
+      "function": "dif_avg_numeric_value",
+      "file": "src/python/dif/dif_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 838,
+      "sprint": "R304",
+      "format": "DIF",
+      "function": "dif_row_length_variance",
+      "file": "src/python/dif/dif_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 839,
+      "sprint": "R305",
+      "format": "FODS",
+      "function": "fods_avg_string_length",
+      "file": "src/python/fods/neutral_model.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 840,
+      "sprint": "R305",
+      "format": "FODS",
+      "function": "fods_col_count_variance",
+      "file": "src/python/fods/neutral_model.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 841,
+      "sprint": "R305",
+      "format": "Gnumeric",
+      "function": "gnumeric_row_count_variance",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 842,
+      "sprint": "R305",
+      "format": "Gnumeric",
+      "function": "gnumeric_sheet_name_lengths",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 843,
+      "sprint": "R305",
+      "format": "ABW",
+      "function": "abw_punctuation_count",
+      "file": "src/python/abw/abw_codec.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 844,
+      "sprint": "R305",
+      "format": "ABW",
+      "function": "abw_median_paragraph_length",
+      "file": "src/python/abw/abw_codec.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 845,
+      "sprint": "R305",
+      "format": "TSV",
+      "function": "tsv_max_row_cell_count",
+      "file": "src/python/tsv/tsv_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 846,
+      "sprint": "R305",
+      "format": "TSV",
+      "function": "tsv_distinct_value_ratio",
+      "file": "src/python/tsv/tsv_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "entry_id": "FODS-NET-PNG-EXPORTER-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "product-deepening-fods-png-export-20260616",
+      "capability_refs": [
+        "FODS-NET-EXPORT-PNG"
+      ],
+      "api_symbols": [
+        "FodsPngExporter.ExportToPng",
+        "FodsPngExporter.ExportToPngBytes",
+        "FodsPngExportResult"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/fods/FodsPngExporter.cs",
+          "sha256": "fdd55a79b5e70c707f1f1693e60dfba472c663b6fb53d7ba0094e99828ba81a4",
+          "state": "present"
+        },
+        {
+          "path": "tests/net/fods/FodsPngExporterTests.cs",
+          "sha256": "7c7bcfe7a2b12381d9acde32c9079e0d406d3fc32f650102d0ad3fe5b93312e9",
+          "state": "present"
+        }
+      ],
+      "test_count": 17,
+      "notes": "Pure .NET PNG thumbnail exporter using System.IO.Compression.ZLibStream. Grid visualization of sheet data (filled/empty cells). 17 tests."
+    },
+    {
+      "id": 848,
+      "sprint": "R306",
+      "format": "ODS",
+      "function": "ods_empty_sheet_count",
+      "file": "src/python/ods/ods_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 849,
+      "sprint": "R306",
+      "format": "ODS",
+      "function": "ods_numeric_sum",
+      "file": "src/python/ods/ods_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 850,
+      "sprint": "R306",
+      "format": "QOI",
+      "function": "qoi_color_depth_estimate",
+      "file": "src/python/qoi/qoi_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 851,
+      "sprint": "R306",
+      "format": "QOI",
+      "function": "qoi_is_bright",
+      "file": "src/python/qoi/qoi_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 852,
+      "sprint": "R306",
+      "format": "XCF",
+      "function": "xcf_file_size_per_pixel",
+      "file": "src/python/xcf/xcf_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 853,
+      "sprint": "R306",
+      "format": "XCF",
+      "function": "xcf_is_multi_layer",
+      "file": "src/python/xcf/xcf_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 854,
+      "sprint": "R306",
+      "format": "CSV",
+      "function": "csv_column_value_variance",
+      "file": "src/python/csv/csv_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "id": 855,
+      "sprint": "R306",
+      "format": "CSV",
+      "function": "csv_is_multi_column",
+      "file": "src/python/csv/csv_parser.py",
+      "type": "analytics",
+      "status": "implemented"
+    },
+    {
+      "entry_id": "FODT-NET-PNG-EXPORTER-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "product-deepening-fodt-png-export-20260616",
+      "capability_refs": [
+        "FODT-NET-EXPORT-PNG"
+      ],
+      "api_symbols": [
+        "FodtPngExporter.ExportToPng",
+        "FodtPngExporter.ExportToPngBytes",
+        "FodtPngExportResult"
+      ],
+      "source_files": [
+        {
+          "path": "src/net/fodt/FodtPngExporter.cs",
+          "sha256": "4f1be1067ec9d95685f5adce8b079cff8f0f270fcd0aaa148edab37748e57e7b",
+          "state": "present"
+        },
+        {
+          "path": "tests/net/fodt/FodtPngExporterTests.cs",
+          "sha256": "23044b4e7ff96eb4cc6901703782c81fbddc2efc8c0bb1b3b69a3a1688993c7c",
+          "state": "present"
+        }
+      ],
+      "test_count": 18,
+      "notes": "Pure .NET PNG document-outline exporter. Paragraph bars: headings=blue, body=gray (proportional to word count). Uses ZLibStream + CRC32. 18 tests."
+    },
+    {
+      "id": 857,
+      "sprint": "R307",
+      "format": "PBM",
+      "function": "pbm_row_density_variance",
+      "file": "src/python/pbm/pbm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 858,
+      "sprint": "R307",
+      "format": "PBM",
+      "function": "pbm_is_checkerboard",
+      "file": "src/python/pbm/pbm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 859,
+      "sprint": "R307",
+      "format": "PGM",
+      "function": "pgm_dark_pixel_ratio",
+      "file": "src/python/pgm/pgm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 860,
+      "sprint": "R307",
+      "format": "PGM",
+      "function": "pgm_row_brightness_variance",
+      "file": "src/python/pgm/pgm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 861,
+      "sprint": "R307",
+      "format": "FODP",
+      "function": "fodp_total_text_chars",
+      "file": "src/python/fodp/fodp_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 862,
+      "sprint": "R307",
+      "format": "FODP",
+      "function": "fodp_avg_title_words",
+      "file": "src/python/fodp/fodp_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 863,
+      "sprint": "R307",
+      "format": "FODT",
+      "function": "fodt_heading_to_paragraph_ratio",
+      "file": "src/python/fodt/neutral_model.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 864,
+      "sprint": "R307",
+      "format": "FODT",
+      "function": "fodt_total_table_cells",
+      "file": "src/python/fodt/neutral_model.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r307_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 865,
+      "sprint": "R308",
+      "format": "PPM",
+      "function": "ppm_red_ratio",
+      "file": "src/python/ppm/ppm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 866,
+      "sprint": "R308",
+      "format": "PPM",
+      "function": "ppm_border_brightness",
+      "file": "src/python/ppm/ppm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 867,
+      "sprint": "R308",
+      "format": "NDJSON",
+      "function": "ndjson_boolean_density",
+      "file": "src/python/ndjson/ndjson_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 868,
+      "sprint": "R308",
+      "format": "NDJSON",
+      "function": "ndjson_max_field_value_length",
+      "file": "src/python/ndjson/ndjson_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 869,
+      "sprint": "R308",
+      "format": "SYLK",
+      "function": "sylk_numeric_variance",
+      "file": "src/python/sylk/sylk_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 870,
+      "sprint": "R308",
+      "format": "SYLK",
+      "function": "sylk_max_row_cell_count",
+      "file": "src/python/sylk/sylk_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 871,
+      "sprint": "R308",
+      "format": "DIF",
+      "function": "dif_avg_cell_length_variance",
+      "file": "src/python/dif/dif_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 872,
+      "sprint": "R308",
+      "format": "DIF",
+      "function": "dif_column_density",
+      "file": "src/python/dif/dif_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r308_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 873,
+      "sprint": "R309",
+      "format": "FODS",
+      "function": "fods_numeric_cell_ratio",
+      "file": "src/python/fods/neutral_model.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r309_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 874,
+      "sprint": "R309",
+      "format": "FODS",
+      "function": "fods_max_row_cell_count",
+      "file": "src/python/fods/neutral_model.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r309_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 875,
+      "sprint": "R309",
+      "format": "GNUMERIC",
+      "function": "gnumeric_max_cell_value_length",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r309_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 876,
+      "sprint": "R309",
+      "format": "GNUMERIC",
+      "function": "gnumeric_is_multi_sheet",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r309_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 877,
+      "sprint": "R309",
+      "format": "ABW",
+      "function": "abw_longest_paragraph_words",
+      "file": "src/python/abw/abw_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r309_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 878,
+      "sprint": "R309",
+      "format": "ABW",
+      "function": "abw_distinct_word_ratio",
+      "file": "src/python/abw/abw_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r309_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 879,
+      "sprint": "R309",
+      "format": "TSV",
+      "function": "tsv_empty_cell_ratio",
+      "file": "src/python/tsv/tsv_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r309_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 880,
+      "sprint": "R309",
+      "format": "TSV",
+      "function": "tsv_column_value_variance",
+      "file": "src/python/tsv/tsv_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r309_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 881,
+      "sprint": "R310",
+      "format": "ODS",
+      "function": "ods_max_numeric_sum",
+      "file": "src/python/ods/ods_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r310_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 882,
+      "sprint": "R310",
+      "format": "ODS",
+      "function": "ods_cell_density",
+      "file": "src/python/ods/ods_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r310_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 883,
+      "sprint": "R310",
+      "format": "QOI",
+      "function": "qoi_saturation_estimate",
+      "file": "src/python/qoi/qoi_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r310_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 884,
+      "sprint": "R310",
+      "format": "QOI",
+      "function": "qoi_pixel_contrast",
+      "file": "src/python/qoi/qoi_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r310_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 885,
+      "sprint": "R310",
+      "format": "XCF",
+      "function": "xcf_color_mode_name",
+      "file": "src/python/xcf/xcf_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r310_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 886,
+      "sprint": "R310",
+      "format": "XCF",
+      "function": "xcf_layer_size_variance",
+      "file": "src/python/xcf/xcf_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r310_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 887,
+      "sprint": "R310",
+      "format": "CSV",
+      "function": "csv_field_type_variance",
+      "file": "src/python/csv/csv_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r310_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 888,
+      "sprint": "R310",
+      "format": "CSV",
+      "function": "csv_header_length_sum",
+      "file": "src/python/csv/csv_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r310_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 889,
+      "sprint": "R311",
+      "format": "PBM",
+      "function": "pbm_column_density_variance",
+      "file": "src/python/pbm/pbm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 890,
+      "sprint": "R311",
+      "format": "PBM",
+      "function": "pbm_diagonal_pixel_count",
+      "file": "src/python/pbm/pbm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 891,
+      "sprint": "R311",
+      "format": "PGM",
+      "function": "pgm_brightness_histogram",
+      "file": "src/python/pgm/pgm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 892,
+      "sprint": "R311",
+      "format": "PGM",
+      "function": "pgm_contrast_ratio",
+      "file": "src/python/pgm/pgm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 893,
+      "sprint": "R311",
+      "format": "FODP",
+      "function": "fodp_slide_text_variance",
+      "file": "src/python/fodp/fodp_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 894,
+      "sprint": "R311",
+      "format": "FODP",
+      "function": "fodp_total_images",
+      "file": "src/python/fodp/fodp_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 895,
+      "sprint": "R311",
+      "format": "FODT",
+      "function": "fodt_paragraph_length_range",
+      "file": "src/python/fodt/neutral_model.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 896,
+      "sprint": "R311",
+      "format": "FODT",
+      "function": "fodt_max_heading_depth",
+      "file": "src/python/fodt/neutral_model.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r311_pbm_pgm_fodp_fodt_deepening.py"
+    },
+    {
+      "id": 897,
+      "sprint": "product-deepening-sprint82",
+      "format": "ppm",
+      "function": "ppm_green_ratio",
+      "file": "src/python/ppm/ppm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r312_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 898,
+      "sprint": "product-deepening-sprint82",
+      "format": "ppm",
+      "function": "ppm_pixel_brightness_range",
+      "file": "src/python/ppm/ppm_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r312_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 899,
+      "sprint": "product-deepening-sprint82",
+      "format": "ndjson",
+      "function": "ndjson_string_density",
+      "file": "src/python/ndjson/ndjson_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r312_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 900,
+      "sprint": "product-deepening-sprint82",
+      "format": "ndjson",
+      "function": "ndjson_avg_list_length",
+      "file": "src/python/ndjson/ndjson_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r312_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 901,
+      "sprint": "product-deepening-sprint82",
+      "format": "sylk",
+      "function": "sylk_string_value_count",
+      "file": "src/python/sylk/sylk_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r312_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 902,
+      "sprint": "product-deepening-sprint82",
+      "format": "sylk",
+      "function": "sylk_has_empty_cells",
+      "file": "src/python/sylk/sylk_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r312_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 903,
+      "sprint": "product-deepening-sprint82",
+      "format": "dif",
+      "function": "dif_string_value_count",
+      "file": "src/python/dif/dif_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r312_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 904,
+      "sprint": "product-deepening-sprint82",
+      "format": "dif",
+      "function": "dif_max_numeric_length",
+      "file": "src/python/dif/dif_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r312_ppm_ndjson_sylk_dif_deepening.py"
+    },
+    {
+      "id": 905,
+      "sprint": "product-deepening-sprint83",
+      "format": "fods",
+      "function": "fods_formula_cell_count",
+      "file": "src/python/fods/neutral_model.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r313_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 906,
+      "sprint": "product-deepening-sprint83",
+      "format": "fods",
+      "function": "fods_sheet_row_variance",
+      "file": "src/python/fods/neutral_model.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r313_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 907,
+      "sprint": "product-deepening-sprint83",
+      "format": "gnumeric",
+      "function": "gnumeric_cell_count_variance",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r313_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 908,
+      "sprint": "product-deepening-sprint83",
+      "format": "gnumeric",
+      "function": "gnumeric_max_row_length",
+      "file": "src/python/gnumeric/gnumeric_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r313_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 909,
+      "sprint": "product-deepening-sprint83",
+      "format": "abw",
+      "function": "abw_line_count",
+      "file": "src/python/abw/abw_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r313_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 910,
+      "sprint": "product-deepening-sprint83",
+      "format": "abw",
+      "function": "abw_uppercase_ratio",
+      "file": "src/python/abw/abw_codec.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r313_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 911,
+      "sprint": "product-deepening-sprint83",
+      "format": "tsv",
+      "function": "tsv_field_length_sum",
+      "file": "src/python/tsv/tsv_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r313_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 912,
+      "sprint": "product-deepening-sprint83",
+      "format": "tsv",
+      "function": "tsv_numeric_field_ratio",
+      "file": "src/python/tsv/tsv_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r313_fods_gnumeric_abw_tsv_deepening.py"
+    },
+    {
+      "id": 913,
+      "sprint": "product-deepening-sprint84",
+      "format": "ods",
+      "function": "ods_numeric_column_count",
+      "file": "src/python/ods/ods_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 914,
+      "sprint": "product-deepening-sprint84",
+      "format": "ods",
+      "function": "ods_row_cell_variance",
+      "file": "src/python/ods/ods_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 915,
+      "sprint": "product-deepening-sprint84",
+      "format": "qoi",
+      "function": "qoi_channel_variance",
+      "file": "src/python/qoi/qoi_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 916,
+      "sprint": "product-deepening-sprint84",
+      "format": "qoi",
+      "function": "qoi_red_blue_ratio",
+      "file": "src/python/qoi/qoi_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 917,
+      "sprint": "product-deepening-sprint84",
+      "format": "xcf",
+      "function": "xcf_version_number",
+      "file": "src/python/xcf/xcf_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 918,
+      "sprint": "product-deepening-sprint84",
+      "format": "xcf",
+      "function": "xcf_dimension_sum",
+      "file": "src/python/xcf/xcf_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 919,
+      "sprint": "product-deepening-sprint84",
+      "format": "csv",
+      "function": "csv_row_length_sum",
+      "file": "src/python/csv/csv_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
+    },
+    {
+      "id": 920,
+      "sprint": "product-deepening-sprint84",
+      "format": "csv",
+      "function": "csv_empty_field_ratio",
+      "file": "src/python/csv/csv_parser.py",
+      "type": "analytics",
+      "test": "tests/python/deepening/test_r314_ods_qoi_xcf_csv_deepening.py"
     }
   ],
-  "total_entries": 787
+  "total_entries": 856
 }

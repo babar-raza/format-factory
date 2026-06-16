@@ -989,3 +989,147 @@ def pbm_is_binary_balanced(file_path: "str | Path") -> bool:
     black = sum(1 for p in img.pixels if p == 1)
     white = sum(1 for p in img.pixels if p == 0)
     return black == white
+
+
+def pbm_avg_row_density(file_path: "str | Path") -> float:
+    """Return average black-pixel density per row. 0.0 if no pixels."""
+    img = parse_pbm_strict(file_path)
+    if img.width == 0 or img.height == 0:
+        return 0.0
+    total_density = 0.0
+    for r in range(img.height):
+        row_start = r * img.width
+        row_pixels = img.pixels[row_start:row_start + img.width]
+        total_density += sum(1 for p in row_pixels if p == 1) / img.width
+    return total_density / img.height
+
+
+def pbm_border_black_count(file_path: "str | Path") -> int:
+    """Return the number of black pixels on the image border (edges)."""
+    img = parse_pbm_strict(file_path)
+    if img.width == 0 or img.height == 0:
+        return 0
+    border = set()
+    for x in range(img.width):
+        border.add(x)
+        border.add((img.height - 1) * img.width + x)
+    for y in range(img.height):
+        border.add(y * img.width)
+        border.add(y * img.width + img.width - 1)
+    return sum(1 for idx in border if img.pixels[idx] == 1)
+
+
+def pbm_row_density_variance(file_path: "str | Path") -> float:
+    """Return variance of black-pixel density across rows. 0.0 if fewer than 2 rows."""
+    img = parse_pbm_strict(file_path)
+    if img.width == 0 or img.height < 2:
+        return 0.0
+    densities = []
+    for r in range(img.height):
+        row_start = r * img.width
+        row_pixels = img.pixels[row_start:row_start + img.width]
+        densities.append(sum(1 for p in row_pixels if p == 1) / img.width)
+    mean = sum(densities) / len(densities)
+    return sum((d - mean) ** 2 for d in densities) / len(densities)
+
+
+def pbm_is_checkerboard(file_path: "str | Path") -> bool:
+    """Return True if the image follows a checkerboard pattern (alternating 0/1)."""
+    img = parse_pbm_strict(file_path)
+    if img.width == 0 or img.height == 0:
+        return False
+    for r in range(img.height):
+        for c in range(img.width):
+            expected = (r + c) % 2
+            if img.pixels[r * img.width + c] != expected:
+                return False
+    return True
+
+
+def pbm_column_density_variance(file_path: "str | Path") -> float:
+    """Return variance of black-pixel density across columns. 0.0 if fewer than 2 columns."""
+    img = parse_pbm_strict(file_path)
+    if img.height == 0 or img.width < 2:
+        return 0.0
+    densities = []
+    for c in range(img.width):
+        col_black = sum(1 for r in range(img.height) if img.pixels[r * img.width + c] == 1)
+        densities.append(col_black / img.height)
+    mean = sum(densities) / len(densities)
+    return sum((d - mean) ** 2 for d in densities) / len(densities)
+
+
+def pbm_diagonal_pixel_count(file_path: "str | Path") -> int:
+    """Return count of black pixels on the main diagonal. 0 if empty."""
+    img = parse_pbm_strict(file_path)
+    if img.width == 0 or img.height == 0:
+        return 0
+    diag_len = min(img.width, img.height)
+    return sum(1 for i in range(diag_len) if img.pixels[i * img.width + i] == 1)
+
+
+def pbm_total_pixels(file_path: "str | Path") -> int:
+    """Return total pixel count (width * height)."""
+    img = parse_pbm_strict(file_path)
+    return img.width * img.height
+
+
+def pbm_aspect_ratio(file_path: "str | Path") -> float:
+    """Return width/height ratio. 0.0 if height is 0."""
+    img = parse_pbm_strict(file_path)
+    return img.width / img.height if img.height > 0 else 0.0
+
+
+def pbm_is_square(file_path: "str | Path") -> bool:
+    """Return True if width equals height."""
+    img = parse_pbm_strict(file_path)
+    return img.width == img.height
+
+
+def pbm_white_density(file_path: "str | Path") -> float:
+    """Return ratio of white pixels (0) to total pixels. 0.0 if no pixels."""
+    img = parse_pbm_strict(file_path)
+    total = img.width * img.height
+    if total == 0:
+        return 0.0
+    white = sum(1 for p in img.pixels if p == 0)
+    return white / total
+
+
+def pbm_is_all_black(file_path: "str | Path") -> bool:
+    """Return True if all pixels are black (1)."""
+    img = parse_pbm_strict(file_path)
+    return all(p == 1 for p in img.pixels)
+
+
+def pbm_total_black_in_border(file_path: "str | Path") -> int:
+    """Return count of black pixels on the border (first/last row/column)."""
+    img = parse_pbm_strict(file_path)
+    if img.width == 0 or img.height == 0:
+        return 0
+    count = 0
+    for i, p in enumerate(img.pixels):
+        r = i // img.width
+        c = i % img.width
+        if (r == 0 or r == img.height - 1 or c == 0 or c == img.width - 1) and p == 1:
+            count += 1
+    return count
+
+
+def pbm_center_black_ratio(file_path: "str | Path") -> float:
+    """Return ratio of black pixels in the center quarter to total center pixels. 0.0 if too small."""
+    img = parse_pbm_strict(file_path)
+    if img.width < 4 or img.height < 4:
+        return 0.0
+    r1, r2 = img.height // 4, 3 * img.height // 4
+    c1, c2 = img.width // 4, 3 * img.width // 4
+    total = 0
+    black = 0
+    for r in range(r1, r2):
+        for c in range(c1, c2):
+            total += 1
+            if img.pixels[r * img.width + c] == 1:
+                black += 1
+    if total == 0:
+        return 0.0
+    return black / total

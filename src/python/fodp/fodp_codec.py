@@ -664,3 +664,149 @@ def fodp_is_shape_heavy(source: "str | bytes | Path") -> bool:
 def fodp_has_zero_shapes(source: "str | bytes | Path") -> bool:
     """Return True if the presentation has no shapes at all."""
     return fodp_total_shape_count(source) == 0
+
+
+def fodp_min_title_length(source: "str | bytes | Path") -> int:
+    """Return length of the shortest slide title. 0 if no titles."""
+    titles = fodp_slide_titles(source)
+    if not titles:
+        return 0
+    return min(len(t) for t in titles)
+
+
+def fodp_image_density(source: "str | bytes | Path") -> float:
+    """Return images per slide. 0.0 if no slides."""
+    sc = fodp_slide_count(source)
+    if sc == 0:
+        return 0.0
+    return fodp_image_count(source) / sc
+
+
+def fodp_total_text_chars(source: "str | bytes | Path") -> int:
+    """Return total character count of all slide text combined."""
+    texts = fodp_text_per_slide(source)
+    return sum(len(t) for t in texts)
+
+
+def fodp_avg_title_words(source: "str | bytes | Path") -> float:
+    """Return average word count per slide title. 0.0 if no titles."""
+    titles = fodp_slide_titles(source)
+    if not titles:
+        return 0.0
+    total = sum(len(t.split()) for t in titles)
+    return total / len(titles)
+
+
+def fodp_max_title_length(source: "str | bytes | Path") -> int:
+    """Return the length of the longest slide title. 0 if no slides."""
+    doc = load(source)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0
+    return max((len(pg.get("title", "")) for pg in pages), default=0)
+
+
+def fodp_avg_text_length(source: "str | bytes | Path") -> float:
+    """Return average total text character count per slide. 0.0 if no slides."""
+    doc = load(source)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0.0
+    total = sum(
+        sum(len(t) for t in pg.get("text_content", []))
+        for pg in pages
+    )
+    return total / len(pages)
+
+
+def fodp_total_text_length(source: "str | bytes | Path") -> int:
+    """Return total character count across all slides' text content."""
+    doc = load(source)
+    total = 0
+    for pg in doc.get("pages", []):
+        for text in pg.get("text_content", []):
+            total += len(text)
+    return total
+
+
+def fodp_nonempty_slide_ratio(source: "str | bytes | Path") -> float:
+    """Return ratio of slides with non-empty text content to total slides. 0.0 if none."""
+    doc = load(source)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0.0
+    nonempty = sum(
+        1 for pg in pages
+        if any(t.strip() for t in pg.get("text_content", []))
+    )
+    return nonempty / len(pages)
+
+
+def fodp_has_numeric_content(source: "str | bytes | Path") -> bool:
+    """Return True if any slide contains text with a digit."""
+    import re
+    doc = load(source)
+    for pg in doc.get("pages", []):
+        for text in pg.get("text_content", []):
+            if re.search(r"\d", text):
+                return True
+    return False
+
+
+def fodp_longest_slide_index(source: "str | bytes | Path") -> int:
+    """Return 0-based index of the slide with the most total text characters. -1 if none."""
+    doc = load(source)
+    pages = doc.get("pages", [])
+    if not pages:
+        return -1
+    totals = [sum(len(t) for t in pg.get("text_content", [])) for pg in pages]
+    return max(range(len(totals)), key=lambda i: totals[i])
+
+
+def fodp_avg_sentence_length(source: "str | bytes | Path") -> float:
+    """Return average sentence length in characters across all slides. 0.0 if none."""
+    import re
+    doc = load(source)
+    all_text = " ".join(
+        t for pg in doc.get("pages", []) for t in pg.get("text_content", [])
+    )
+    sentences = [s.strip() for s in re.split(r"[.!?]+", all_text) if s.strip()]
+    if not sentences:
+        return 0.0
+    return sum(len(s) for s in sentences) / len(sentences)
+
+
+def fodp_slide_text_variance(source: "str | bytes | Path") -> float:
+    """Return variance of text lengths per slide. 0.0 if fewer than 2 slides."""
+    texts = fodp_text_per_slide(source)
+    if len(texts) < 2:
+        return 0.0
+    lengths = [len(t) for t in texts]
+    mean = sum(lengths) / len(lengths)
+    return sum((l - mean) ** 2 for l in lengths) / len(lengths)
+
+
+def fodp_total_images(source: "str | bytes | Path") -> int:
+    """Return total number of images across all slides."""
+    return fodp_image_count(source)
+
+
+def fodp_shortest_slide_index(source: "str | bytes | Path") -> int:
+    """Return the index of the slide with the shortest text. -1 if no slides."""
+    texts = fodp_text_per_slide(source)
+    if not texts:
+        return -1
+    min_len = min(len(t) for t in texts)
+    for i, t in enumerate(texts):
+        if len(t) == min_len:
+            return i
+    return -1
+
+
+def fodp_shape_count_variance(source: "str | bytes | Path") -> float:
+    """Return variance of shape counts per slide. 0.0 if fewer than 2 slides."""
+    counts = fodp_slide_shape_counts(source)
+    if len(counts) < 2:
+        return 0.0
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)

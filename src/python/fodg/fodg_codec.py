@@ -1152,3 +1152,19 @@ def fodg_min_text_per_page(file_path: "str | bytes | Path") -> int:
         total = sum(len(s.get("text", "")) for s in p.get("shapes", []))
         page_lens.append(total)
     return min(page_lens)
+
+
+def fodg_total_text_items(file_path: "str | bytes | Path") -> int:
+    """Return total count of text content items across all pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    return sum(len(pg.get("text_content", [])) for pg in pages)
+
+
+def fodg_avg_shapes_per_page(file_path: "str | bytes | Path") -> float:
+    """Return average shape count per page. 0.0 if no pages."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    if not pages:
+        return 0.0
+    return sum(pg.get("shape_count", 0) for pg in pages) / len(pages)

@@ -75,6 +75,8 @@ from .fodg_codec import (
     fodg_total_text_chars,
     fodg_avg_text_per_shape,
     fodg_min_text_per_page,
+    fodg_total_text_items,
+    fodg_avg_shapes_per_page,
 )
 
 __all__ = [
@@ -144,6 +146,8 @@ __all__ = [
     "fodg_total_text_chars",
     "fodg_avg_text_per_shape",
     "fodg_min_text_per_page",
+    "fodg_total_text_items",
+    "fodg_avg_shapes_per_page",
 ]
 
 __version__ = "0.1.0.dev0"

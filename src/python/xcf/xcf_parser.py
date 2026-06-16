@@ -789,3 +789,101 @@ def xcf_average_dimension(file_path: str | Path) -> float:
     """Return average of width and height."""
     img = parse_xcf_strict(file_path)
     return (img.width + img.height) / 2.0
+
+
+def xcf_file_size_per_pixel(file_path: str | Path) -> float:
+    """Return file bytes per pixel. 0.0 if no pixels."""
+    img = parse_xcf_strict(file_path)
+    pixels = img.width * img.height
+    if pixels == 0:
+        return 0.0
+    fsize = Path(file_path).stat().st_size
+    return fsize / pixels
+
+
+def xcf_is_multi_layer(file_path: str | Path) -> bool:
+    """Return True if the image has more than one layer."""
+    img = parse_xcf_strict(file_path)
+    return img.num_layers > 1
+
+
+def xcf_color_mode_name(file_path: str | Path) -> str:
+    """Return the image type as a string (e.g. 'RGB', 'Grayscale', 'Indexed')."""
+    img = parse_xcf_strict(file_path)
+    mode_map = {0: "RGB", 1: "Grayscale", 2: "Indexed"}
+    return mode_map.get(img.image_type, f"Unknown({img.image_type})")
+
+
+def xcf_layer_size_variance(file_path: str | Path) -> float:
+    """Return variance based on layer count and canvas area. 0.0 if single layer."""
+    img = parse_xcf_strict(file_path)
+    if img.num_layers < 2:
+        return 0.0
+    area = img.width * img.height
+    avg_area = area / img.num_layers
+    return float(avg_area)
+
+
+def xcf_total_pixels(file_path: str | Path) -> int:
+    """Return total pixel count (width * height)."""
+    img = parse_xcf_strict(file_path)
+    return img.width * img.height
+
+
+def xcf_aspect_ratio(file_path: str | Path) -> float:
+    """Return width/height ratio. 0.0 if height is 0."""
+    img = parse_xcf_strict(file_path)
+    return img.width / img.height if img.height > 0 else 0.0
+
+
+def xcf_is_square(file_path: str | Path) -> bool:
+    """Return True if width equals height."""
+    img = parse_xcf_strict(file_path)
+    return img.width == img.height
+
+
+def xcf_layers_per_pixel(file_path: str | Path) -> float:
+    """Return layers / (width * height). 0.0 if no pixels."""
+    img = parse_xcf_strict(file_path)
+    pixels = img.width * img.height
+    return img.num_layers / pixels if pixels > 0 else 0.0
+
+
+def xcf_is_rgb(file_path: str | Path) -> bool:
+    """Return True if the image color mode is RGB (image_type == 0)."""
+    img = parse_xcf_strict(file_path)
+    return img.image_type == 0
+
+
+def xcf_image_type_code(file_path: str | Path) -> int:
+    """Return raw image type code: 0=RGB, 1=Grayscale, 2=Indexed."""
+    img = parse_xcf_strict(file_path)
+    return img.image_type
+
+
+def xcf_file_header_overhead(file_path: str | Path) -> int:
+    """Return file size minus pixel count (bytes used by header/metadata)."""
+    img = parse_xcf_strict(file_path)
+    from pathlib import Path as _Path
+    fsize = _Path(file_path).stat().st_size
+    return fsize - (img.width * img.height)
+
+
+def xcf_version_number(file_path: str | Path) -> int:
+    """Return the XCF version number as an integer. 0 if unknown."""
+    img = parse_xcf_strict(file_path)
+    ver = getattr(img, "version", None)
+    if ver is None:
+        return 0
+    if isinstance(ver, int):
+        return ver
+    # version may be a string like 'v011'
+    import re
+    m = re.search(r"\d+", str(ver))
+    return int(m.group()) if m else 0
+
+
+def xcf_dimension_sum(file_path: str | Path) -> int:
+    """Return width + height of the canvas."""
+    img = parse_xcf_strict(file_path)
+    return img.width + img.height

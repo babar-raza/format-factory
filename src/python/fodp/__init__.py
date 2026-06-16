@@ -63,6 +63,19 @@ from .fodp_codec import (
     fodp_slide_count_is_one,
     fodp_is_shape_heavy,
     fodp_has_zero_shapes,
+    fodp_min_title_length,
+    fodp_image_density,
+    fodp_total_text_chars,
+    fodp_avg_title_words,
+    fodp_max_title_length,
+    fodp_avg_text_length,
+    fodp_total_text_length,
+    fodp_nonempty_slide_ratio,
+    fodp_has_numeric_content,
+    fodp_longest_slide_index,
+    fodp_avg_sentence_length,
+    fodp_slide_text_variance,
+    fodp_total_images,
 )
 
 __all__ = [
@@ -119,6 +132,19 @@ __all__ = [
     "fodp_slide_count_is_one",
     "fodp_is_shape_heavy",
     "fodp_has_zero_shapes",
+    "fodp_min_title_length",
+    "fodp_image_density",
+    "fodp_total_text_chars",
+    "fodp_avg_title_words",
+    "fodp_max_title_length",
+    "fodp_avg_text_length",
+    "fodp_total_text_length",
+    "fodp_nonempty_slide_ratio",
+    "fodp_has_numeric_content",
+    "fodp_longest_slide_index",
+    "fodp_avg_sentence_length",
+    "fodp_slide_text_variance",
+    "fodp_total_images",
 ]
 
 __version__ = "0.1.0.dev0"

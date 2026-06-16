@@ -1997,3 +1997,198 @@ def fods_row_count_variance(workbook: dict[str, Any]) -> float:
     counts = [len(s.get("rows", [])) for s in sheets]
     mean = sum(counts) / len(counts)
     return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+def fods_avg_string_length(workbook: dict[str, Any]) -> float:
+    """Return average character length of string cell values. 0.0 if none."""
+    lengths = []
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell is not None:
+                    vt = cell.get("value_type", "")
+                    txt = cell.get("text", "")
+                    if vt == "string" or (txt and not cell.get("value")):
+                        lengths.append(len(txt))
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def fods_col_count_variance(workbook: dict[str, Any]) -> float:
+    """Return variance of column counts across sheets. 0.0 if fewer than 2 sheets."""
+    sheets = workbook.get("sheets", [])
+    if len(sheets) < 2:
+        return 0.0
+    counts = []
+    for sheet in sheets:
+        max_cols = 0
+        for row in sheet.get("rows", []):
+            cells = row.get("cells", [])
+            if len(cells) > max_cols:
+                max_cols = len(cells)
+        counts.append(max_cols)
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)
+
+
+def fods_max_row_count(workbook: dict[str, Any]) -> int:
+    """Return the maximum row count across all sheets. 0 if no sheets."""
+    sheets = workbook.get("sheets", [])
+    if not sheets:
+        return 0
+    return max(sheet.get("row_count", 0) for sheet in sheets)
+
+
+def fods_cell_to_sheet_ratio(workbook: dict[str, Any]) -> float:
+    """Return total cell count divided by sheet count. 0.0 if no sheets."""
+    sheets = workbook.get("sheets", [])
+    if not sheets:
+        return 0.0
+    total = sum(
+        sum(len(row.get("cells", [])) for row in sheet.get("rows", []))
+        for sheet in sheets
+    )
+    return total / len(sheets)
+
+
+def fods_avg_numeric_value(workbook: dict[str, Any]) -> float:
+    """Return average of all numeric cell values across all sheets. 0.0 if none."""
+    values = []
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell is not None and cell.get("value_type") in ("float", "integer"):
+                    try:
+                        v = cell.get("value")
+                        if v is not None:
+                            values.append(float(v))
+                    except (ValueError, TypeError):
+                        pass
+    return sum(values) / len(values) if values else 0.0
+
+
+def fods_nonempty_row_ratio(workbook: dict[str, Any], sheet_index: int = 0) -> float:
+    """Return ratio of non-empty rows to total rows in a sheet. 0.0 if no rows."""
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return 0.0
+    rows = sheets[sheet_index].get("rows", [])
+    if not rows:
+        return 0.0
+    nonempty = sum(
+        1 for row in rows
+        if any(
+            cell is not None and str(cell.get("text", "")).strip()
+            for cell in row.get("cells", [])
+        )
+    )
+    return nonempty / len(rows)
+
+
+def fods_longest_row_index(workbook: dict[str, Any], sheet_index: int = 0) -> int:
+    """Return 0-based index of the row with the most non-empty cells. -1 if no rows."""
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return -1
+    rows = sheets[sheet_index].get("rows", [])
+    if not rows:
+        return -1
+    best_idx, best_count = 0, 0
+    for i, row in enumerate(rows):
+        count = sum(
+            1 for cell in row.get("cells", [])
+            if cell is not None and str(cell.get("text", "")).strip()
+        )
+        if count > best_count:
+            best_count = count
+            best_idx = i
+    return best_idx
+
+
+def fods_numeric_sum_all(workbook: dict[str, Any]) -> float:
+    """Return sum of all numeric cell values across all sheets."""
+    total = 0.0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell is not None and cell.get("value_type") in ("float", "integer"):
+                    try:
+                        v = cell.get("value")
+                        if v is not None:
+                            total += float(v)
+                    except (ValueError, TypeError):
+                        pass
+    return total
+
+
+def fods_empty_column_count(workbook: dict[str, Any], sheet_index: int = 0) -> int:
+    """Return number of columns that are entirely empty in a sheet."""
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return 0
+    rows = sheets[sheet_index].get("rows", [])
+    if not rows:
+        return 0
+    max_cols = max((len(row.get("cells", [])) for row in rows), default=0)
+    empty_count = 0
+    for col_idx in range(max_cols):
+        col_empty = all(
+            col_idx >= len(row.get("cells", []))
+            or row["cells"][col_idx] is None
+            or not str(row["cells"][col_idx].get("text", "")).strip()
+            for row in rows
+        )
+        if col_empty:
+            empty_count += 1
+    return empty_count
+
+
+def fods_numeric_cell_ratio(workbook: dict[str, Any]) -> float:
+    """Return ratio of numeric cells to total non-empty cells. 0.0 if none."""
+    total = 0
+    numeric = 0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell is not None and cell.get("text", "").strip():
+                    total += 1
+                    if cell.get("value_type") in ("float", "currency", "percentage"):
+                        numeric += 1
+    if total == 0:
+        return 0.0
+    return numeric / total
+
+
+def fods_max_row_cell_count(workbook: dict[str, Any], sheet_index: int = 0) -> int:
+    """Return maximum number of cells in any row. 0 if no rows."""
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return 0
+    rows = sheets[sheet_index].get("rows", [])
+    if not rows:
+        return 0
+    return max(len(row.get("cells", [])) for row in rows)
+
+
+def fods_formula_cell_count(workbook: dict[str, Any], sheet_index: int = 0) -> int:
+    """Return count of cells that have a formula attribute. 0 if none."""
+    sheets = workbook.get("sheets", [])
+    if sheet_index < 0 or sheet_index >= len(sheets):
+        return 0
+    count = 0
+    for row in sheets[sheet_index].get("rows", []):
+        for cell in row.get("cells", []):
+            if cell is not None and cell.get("formula"):
+                count += 1
+    return count
+
+
+def fods_sheet_row_variance(workbook: dict[str, Any]) -> float:
+    """Return variance of row counts across sheets. 0.0 if fewer than 2 sheets."""
+    sheets = workbook.get("sheets", [])
+    if len(sheets) < 2:
+        return 0.0
+    counts = [len(s.get("rows", [])) for s in sheets]
+    mean = sum(counts) / len(counts)
+    return sum((c - mean) ** 2 for c in counts) / len(counts)

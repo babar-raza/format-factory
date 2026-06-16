@@ -758,3 +758,70 @@ def odt_whitespace_ratio(file_path: str | Path) -> float:
         return 0.0
     ws = sum(1 for ch in text if ch.isspace())
     return ws / len(text)
+
+
+def odt_total_text_length(file_path: str | Path) -> int:
+    """Return total character count across all paragraphs (including spaces)."""
+    doc = parse_odt_strict(file_path)
+    return sum(len(p.text) for p in doc.paragraphs)
+
+
+def odt_nonempty_paragraph_ratio(file_path: str | Path) -> float:
+    """Return ratio of non-empty paragraphs to total paragraphs. 0.0 if no paragraphs."""
+    doc = parse_odt_strict(file_path)
+    paras = doc.paragraphs
+    if not paras:
+        return 0.0
+    nonempty = sum(1 for p in paras if p.text.strip())
+    return nonempty / len(paras)
+
+
+def odt_avg_sentence_length(file_path: str | Path) -> float:
+    """Return average character length per sentence. 0.0 if no sentences."""
+    import re as _re
+    doc = parse_odt_strict(file_path)
+    text = " ".join(p.text for p in doc.paragraphs)
+    sentences = [s.strip() for s in _re.split(r"[.!?]+", text) if s.strip()]
+    if not sentences:
+        return 0.0
+    return sum(len(s) for s in sentences) / len(sentences)
+
+
+def odt_longest_paragraph_index(file_path: str | Path) -> int:
+    """Return 0-based index of the longest paragraph by character count. -1 if none."""
+    doc = parse_odt_strict(file_path)
+    paras = doc.paragraphs
+    if not paras:
+        return -1
+    return max(range(len(paras)), key=lambda i: len(paras[i].text))
+
+
+def odt_has_numeric_content(file_path: str | Path) -> bool:
+    """Return True if any paragraph contains at least one digit."""
+    doc = parse_odt_strict(file_path)
+    return any(any(ch.isdigit() for ch in p.text) for p in doc.paragraphs)
+
+
+def odt_numeric_value_sum(file_path: str | Path) -> float:
+    """Return sum of all numeric tokens found in the document text. 0.0 if none."""
+    import re as _re
+    doc = parse_odt_strict(file_path)
+    text = " ".join(p.text for p in doc.paragraphs)
+    tokens = _re.findall(r"-?\d+(?:\.\d+)?", text)
+    if not tokens:
+        return 0.0
+    return sum(float(t) for t in tokens)
+
+
+def odt_unique_char_count(file_path: str | Path) -> int:
+    """Return count of unique characters across all paragraph text."""
+    doc = parse_odt_strict(file_path)
+    text = " ".join(p.text for p in doc.paragraphs)
+    return len(set(text))
+
+
+def odt_nonspace_char_count(file_path: str | Path) -> int:
+    """Return count of non-whitespace characters across all paragraph text."""
+    doc = parse_odt_strict(file_path)
+    text = " ".join(p.text for p in doc.paragraphs)
+    return sum(1 for c in text if not c.isspace())

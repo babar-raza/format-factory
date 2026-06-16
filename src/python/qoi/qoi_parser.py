@@ -882,3 +882,130 @@ def qoi_is_dark(file_path: str | Path) -> bool:
         return False
     avg = sum(p[0] + p[1] + p[2] for p in img.pixels) / (len(img.pixels) * 3)
     return avg < 128
+
+
+def qoi_color_depth_estimate(file_path: str | Path) -> float:
+    """Return log2 of unique color count (approx bits of color depth). 0.0 if no pixels."""
+    import math
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    unique = len(set(img.pixels))
+    if unique <= 1:
+        return 0.0
+    return math.log2(unique)
+
+
+def qoi_is_bright(file_path: str | Path) -> bool:
+    """Return True if average brightness is above 50% of max (128 for 8-bit)."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return False
+    avg = sum(p[0] + p[1] + p[2] for p in img.pixels) / (len(img.pixels) * 3)
+    return avg >= 128
+
+
+def qoi_saturation_estimate(file_path: str | Path) -> float:
+    """Return average saturation estimate (max_channel - min_channel) / 255. 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = 0.0
+    for p in img.pixels:
+        channels = p[:3]
+        total += (max(channels) - min(channels)) / 255.0
+    return total / len(img.pixels)
+
+
+def qoi_pixel_contrast(file_path: str | Path) -> float:
+    """Return brightness range (max - min) as a ratio of 255. 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    brightnesses = [(p[0] + p[1] + p[2]) / 3.0 for p in img.pixels]
+    return (max(brightnesses) - min(brightnesses)) / 255.0
+
+
+def qoi_max_brightness(file_path: str | Path) -> float:
+    """Return maximum pixel brightness ((R+G+B)/3) across all pixels. 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return max((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels)
+
+
+def qoi_total_rgb_sum(file_path: str | Path) -> int:
+    """Return sum of all R+G+B channel values across all pixels. 0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    return sum(p[0] + p[1] + p[2] for p in img.pixels)
+
+
+def qoi_channel_variance(file_path: str | Path) -> float:
+    """Return variance of average R, G, B channel values. 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    n = len(img.pixels)
+    avg_r = sum(p[0] for p in img.pixels) / n
+    avg_g = sum(p[1] for p in img.pixels) / n
+    avg_b = sum(p[2] for p in img.pixels) / n
+    mean = (avg_r + avg_g + avg_b) / 3.0
+    return ((avg_r - mean) ** 2 + (avg_g - mean) ** 2 + (avg_b - mean) ** 2) / 3.0
+
+
+def qoi_red_blue_ratio(file_path: str | Path) -> float:
+    """Return ratio of red channel sum to blue channel sum. 0.0 if blue is zero."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    red = sum(p[0] for p in img.pixels)
+    blue = sum(p[2] for p in img.pixels)
+    if blue == 0:
+        return 0.0
+    return red / blue
+
+
+def qoi_normalized_brightness(file_path: str | Path) -> float:
+    """Return mean brightness normalized to [0.0, 1.0] (divides by 255). 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    mean = sum((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels) / len(img.pixels)
+    return mean / 255.0
+
+
+def qoi_min_brightness(file_path: str | Path) -> float:
+    """Return minimum per-pixel brightness (mean of R, G, B channels). 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return min((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels)
+
+
+def qoi_above_mean_ratio(file_path: str | Path) -> float:
+    """Return ratio of pixels with brightness strictly above the mean. 0.0 if no pixels."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    brightnesses = [(p[0] + p[1] + p[2]) / 3.0 for p in img.pixels]
+    mean = sum(brightnesses) / len(brightnesses)
+    above = sum(1 for b in brightnesses if b > mean)
+    return above / len(brightnesses)
+
+
+def qoi_green_blue_ratio(file_path: str | Path) -> float:
+    """Return ratio of green channel sum to blue channel sum. 0.0 if blue is zero."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    green = sum(p[1] for p in img.pixels)
+    blue = sum(p[2] for p in img.pixels)
+    if blue == 0:
+        return 0.0
+    return green / blue
+
+
+def qoi_is_wide(file_path: str | Path) -> bool:
+    """Return True if image width is more than twice its height."""
+    img = parse_qoi_strict(file_path)
+    return img.width > 2 * img.height

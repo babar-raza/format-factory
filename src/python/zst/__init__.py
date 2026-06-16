@@ -56,6 +56,8 @@ from .zst_codec import (
     zst_is_large_file,
     zst_frame_size_range,
     zst_is_multi_frame,
+    zst_is_compressible,
+    zst_compression_saving,
 )
 
 __all__ = [
@@ -103,6 +105,8 @@ __all__ = [
     "zst_is_large_file",
     "zst_frame_size_range",
     "zst_is_multi_frame",
+    "zst_is_compressible",
+    "zst_compression_saving",
 ]
 
 __version__ = "0.1.0.dev0"

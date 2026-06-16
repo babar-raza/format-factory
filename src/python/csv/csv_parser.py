@@ -1095,3 +1095,170 @@ def csv_avg_cell_length(file_path: "str | Path") -> float:
     if total_count == 0:
         return 0.0
     return total_len / total_count
+
+
+def csv_numeric_sum(file_path: "str | Path") -> float:
+    """Return sum of all numeric cell values. 0.0 if no numeric cells."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    total = 0.0
+    for row in rows:
+        for val in row:
+            v = val.strip()
+            if v:
+                try:
+                    total += float(v)
+                except (ValueError, TypeError):
+                    pass
+    return total
+
+
+def csv_avg_numeric_value(file_path: "str | Path") -> float:
+    """Return average of all numeric cell values. 0.0 if no numeric cells."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    nums = []
+    for row in rows:
+        for val in row:
+            v = val.strip()
+            if v:
+                try:
+                    nums.append(float(v))
+                except (ValueError, TypeError):
+                    pass
+    if not nums:
+        return 0.0
+    return sum(nums) / len(nums)
+
+
+def csv_is_single_row(file_path: "str | Path") -> bool:
+    """Return True if the file has exactly one data row."""
+    model = parse_csv_strict(file_path)
+    return len(model.get("rows", [])) == 1
+
+
+def csv_empty_column_count(file_path: "str | Path") -> int:
+    """Return number of columns that are entirely empty across all data rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    col_count = max(len(row) for row in rows)
+    empty_cols = 0
+    for ci in range(col_count):
+        if all(ci >= len(row) or not row[ci].strip() for row in rows):
+            empty_cols += 1
+    return empty_cols
+
+
+def csv_longest_row_index(file_path: "str | Path") -> int:
+    """Return 0-based index of the row with the most fields. -1 if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return -1
+    return max(range(len(rows)), key=lambda i: len(rows[i]))
+
+
+def csv_total_string_length(file_path: "str | Path") -> int:
+    """Return total character count of all cell values combined."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    return sum(len(val) for row in rows for val in row)
+
+
+def csv_min_row_field_count(file_path: "str | Path") -> int:
+    """Return the minimum number of fields in any row. 0 if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    return min(len(row) for row in rows)
+
+
+def csv_is_square(file_path: "str | Path") -> bool:
+    """Return True if row count equals the field count of the first row."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return False
+    return len(rows) == len(rows[0])
+
+
+def csv_column_value_variance(file_path: "str | Path") -> float:
+    """Return variance of numeric cell values across all cells. 0.0 if fewer than 2 numeric values."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    nums = []
+    for row in rows:
+        for val in row:
+            v = val.strip()
+            if v:
+                try:
+                    nums.append(float(v))
+                except (ValueError, TypeError):
+                    pass
+    if len(nums) < 2:
+        return 0.0
+    mean = sum(nums) / len(nums)
+    return sum((n - mean) ** 2 for n in nums) / len(nums)
+
+
+def csv_is_multi_column(file_path: "str | Path") -> bool:
+    """Return True if the file has more than one column in any row."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    return any(len(row) > 1 for row in rows)
+
+
+def csv_field_type_variance(file_path: "str | Path") -> float:
+    """Return variance of numeric vs string field counts per row. 0.0 if fewer than 2 rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if len(rows) < 2:
+        return 0.0
+    numeric_counts = []
+    for row in rows:
+        nc = 0
+        for val in row:
+            v = val.strip()
+            if v:
+                try:
+                    float(v)
+                    nc += 1
+                except (ValueError, TypeError):
+                    pass
+        numeric_counts.append(nc)
+    mean = sum(numeric_counts) / len(numeric_counts)
+    return sum((n - mean) ** 2 for n in numeric_counts) / len(numeric_counts)
+
+
+def csv_header_length_sum(file_path: "str | Path") -> int:
+    """Return total character length of all header (first row) fields. 0 if no rows."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    if not rows:
+        return 0
+    return sum(len(field) for field in rows[0])
+
+
+def csv_row_length_sum(file_path: "str | Path") -> int:
+    """Return total character length of all field values across all rows."""
+    model = parse_csv_strict(file_path)
+    return sum(len(val) for row in model.get("rows", []) for val in row)
+
+
+def csv_empty_field_ratio(file_path: "str | Path") -> float:
+    """Return ratio of empty fields to total fields. 0.0 if no fields."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    total = 0
+    empty = 0
+    for row in rows:
+        for val in row:
+            total += 1
+            if not val.strip():
+                empty += 1
+    if total == 0:
+        return 0.0
+    return empty / total

@@ -2144,7 +2144,7 @@ def fodt_sentence_count(file_path: "str | os.PathLike[str]") -> int:
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
     text = ""
-    for block in doc.get("body_blocks", []):
+    for block in doc.get("blocks", []):
         if isinstance(block, dict):
             text += block.get("text", "") + " "
     import re
@@ -2164,7 +2164,7 @@ def fodt_unique_word_count(file_path: "str | os.PathLike[str]") -> int:
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
     words = set()
-    for block in doc.get("body_blocks", []):
+    for block in doc.get("blocks", []):
         if isinstance(block, dict):
             for w in block.get("text", "").split():
                 words.add(w.lower().strip(".,;:!?\"'()[]{}"))
@@ -2193,7 +2193,7 @@ def fodt_is_multi_paragraph(file_path: "str | os.PathLike[str]") -> bool:
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
     count = 0
-    for block in doc.get("body_blocks", []):
+    for block in doc.get("blocks", []):
         if isinstance(block, dict) and block.get("text", "").strip():
             count += 1
             if count > 1:
@@ -2206,7 +2206,7 @@ def fodt_whitespace_ratio(file_path: "str | os.PathLike[str]") -> float:
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
     text = ""
-    for block in doc.get("body_blocks", []):
+    for block in doc.get("blocks", []):
         if isinstance(block, dict):
             text += block.get("text", "")
     if not text:
@@ -2220,10 +2220,173 @@ def fodt_longest_word(file_path: "str | os.PathLike[str]") -> str:
     from .parser import parse_fodt_strict
     doc = parse_fodt_strict(file_path)
     longest = ""
-    for block in doc.get("body_blocks", []):
+    for block in doc.get("blocks", []):
         if isinstance(block, dict):
             for word in block.get("text", "").split():
                 clean = word.strip(".,;:!?\"'()-")
                 if len(clean) > len(longest):
                     longest = clean
     return longest
+
+
+def fodt_avg_heading_length(file_path: "str | os.PathLike[str]") -> float:
+    """Return average character length of headings. 0.0 if no headings."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    lengths = []
+    for block in doc.get("blocks", []):
+        if isinstance(block, dict) and block.get("type") == "heading":
+            lengths.append(len(block.get("text", "")))
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def fodt_table_density(file_path: "str | os.PathLike[str]") -> float:
+    """Return tables per 1000 words. 0.0 if no words."""
+    wc = fodt_word_count(file_path)
+    if wc == 0:
+        return 0.0
+    tc = fodt_table_count(file_path)
+    return (tc / wc) * 1000
+
+
+def fodt_heading_to_paragraph_ratio(file_path: "str | os.PathLike[str]") -> float:
+    """Return ratio of headings to paragraphs. 0.0 if no paragraphs."""
+    pc = fodt_paragraph_count(file_path)
+    if pc == 0:
+        return 0.0
+    hc = fodt_heading_count(file_path)
+    return hc / pc
+
+
+def fodt_total_table_cells(file_path: "str | os.PathLike[str]") -> int:
+    """Return total number of table cells across all tables. 0 if no tables."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    total = 0
+    for block in doc.get("blocks", []):
+        if isinstance(block, dict) and block.get("type") == "table":
+            for row in block.get("rows", []):
+                total += len(row.get("cells", []))
+    return total
+
+
+def fodt_total_text_length(file_path: "str | os.PathLike[str]") -> int:
+    """Return total character count across all blocks (paragraphs and headings)."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    total = 0
+    for block in doc.get("blocks", []):
+        if isinstance(block, dict) and block.get("type") in ("paragraph", "heading"):
+            total += len(block.get("text", ""))
+    return total
+
+
+def fodt_nonempty_paragraph_ratio(file_path: "str | os.PathLike[str]") -> float:
+    """Return ratio of non-empty paragraphs to total paragraphs. 0.0 if none."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    paragraphs = [
+        b for b in doc.get("blocks", [])
+        if isinstance(b, dict) and b.get("type") == "paragraph"
+    ]
+    if not paragraphs:
+        return 0.0
+    nonempty = sum(1 for p in paragraphs if p.get("text", "").strip())
+    return nonempty / len(paragraphs)
+
+
+def fodt_has_numeric_content(file_path: "str | os.PathLike[str]") -> bool:
+    """Return True if any paragraph or heading contains a digit."""
+    from .parser import parse_fodt_strict
+    import re
+    doc = parse_fodt_strict(file_path)
+    for block in doc.get("blocks", []):
+        if isinstance(block, dict) and block.get("type") in ("paragraph", "heading"):
+            if re.search(r"\d", block.get("text", "")):
+                return True
+    return False
+
+
+def fodt_avg_sentence_length(file_path: "str | os.PathLike[str]") -> float:
+    """Return average sentence length in characters. 0.0 if no sentences."""
+    from .parser import parse_fodt_strict
+    import re
+    doc = parse_fodt_strict(file_path)
+    all_text = " ".join(
+        b.get("text", "")
+        for b in doc.get("blocks", [])
+        if isinstance(b, dict) and b.get("type") in ("paragraph", "heading")
+    )
+    sentences = [s.strip() for s in re.split(r"[.!?]+", all_text) if s.strip()]
+    if not sentences:
+        return 0.0
+    return sum(len(s) for s in sentences) / len(sentences)
+
+
+def fodt_longest_paragraph_index(file_path: "str | os.PathLike[str]") -> int:
+    """Return 0-based index of the longest paragraph by character count. -1 if none."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    paragraphs = [
+        b for b in doc.get("blocks", [])
+        if isinstance(b, dict) and b.get("type") == "paragraph"
+    ]
+    if not paragraphs:
+        return -1
+    return max(range(len(paragraphs)), key=lambda i: len(paragraphs[i].get("text", "")))
+
+
+def fodt_paragraph_length_range(file_path: "str | os.PathLike[str]") -> int:
+    """Return the range (max - min) of paragraph lengths in characters. 0 if fewer than 2."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    lengths = []
+    for block in doc.get("blocks", []):
+        if isinstance(block, dict) and block.get("type") == "paragraph":
+            lengths.append(len(block.get("text", "")))
+    if len(lengths) < 2:
+        return 0
+    return max(lengths) - min(lengths)
+
+
+def fodt_max_heading_depth(file_path: "str | os.PathLike[str]") -> int:
+    """Return the maximum heading outline level. 0 if no headings."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    max_depth = 0
+    for block in doc.get("blocks", []):
+        if isinstance(block, dict) and block.get("type") == "heading":
+            level = block.get("outline_level", 1)
+            if isinstance(level, int) and level > max_depth:
+                max_depth = level
+    return max_depth
+
+
+def fodt_total_char_count(file_path: "str | os.PathLike[str]") -> int:
+    """Return total character count across all paragraphs. 0 if none."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    total = 0
+    for block in doc.get("blocks", []):
+        if isinstance(block, dict) and block.get("type") == "paragraph":
+            total += len(block.get("text", ""))
+    return total
+
+
+def fodt_heading_to_para_ratio(file_path: "str | os.PathLike[str]") -> float:
+    """Return ratio of heading count to paragraph count. 0.0 if no paragraphs."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    headings = 0
+    paragraphs = 0
+    for block in doc.get("blocks", []):
+        if isinstance(block, dict):
+            if block.get("type") == "heading":
+                headings += 1
+            elif block.get("type") == "paragraph":
+                paragraphs += 1
+    if paragraphs == 0:
+        return 0.0
+    return headings / paragraphs

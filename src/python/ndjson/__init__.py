@@ -86,6 +86,18 @@ from .ndjson_codec import (
     ndjson_field_count_variance,
     ndjson_max_nesting_depth,
     ndjson_avg_numeric_value,
+    ndjson_min_record_size,
+    ndjson_has_numeric_fields,
+    ndjson_has_lists,
+    ndjson_schema_consistency,
+    ndjson_total_numeric_sum,
+    ndjson_is_single_record,
+    ndjson_total_string_length,
+    ndjson_numeric_density,
+    ndjson_boolean_density,
+    ndjson_max_field_value_length,
+    ndjson_string_density,
+    ndjson_avg_list_length,
 )
 
 __all__ = [
@@ -165,6 +177,18 @@ __all__ = [
     "ndjson_field_count_variance",
     "ndjson_max_nesting_depth",
     "ndjson_avg_numeric_value",
+    "ndjson_min_record_size",
+    "ndjson_has_numeric_fields",
+    "ndjson_has_lists",
+    "ndjson_schema_consistency",
+    "ndjson_total_numeric_sum",
+    "ndjson_is_single_record",
+    "ndjson_total_string_length",
+    "ndjson_numeric_density",
+    "ndjson_boolean_density",
+    "ndjson_max_field_value_length",
+    "ndjson_string_density",
+    "ndjson_avg_list_length",
 ]
 
 __version__ = "0.1.0.dev0"

@@ -1089,3 +1089,140 @@ def pgm_is_portrait(file_path: str | Path) -> bool:
     """Return True if height > width."""
     img = parse_pgm_strict(file_path)
     return img.height > img.width
+
+
+def pgm_is_high_contrast(file_path: str | Path) -> bool:
+    """Return True if contrast range exceeds 50% of maxval."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels or img.maxval == 0:
+        return False
+    lo = min(img.pixels)
+    hi = max(img.pixels)
+    return (hi - lo) > (img.maxval * 0.5)
+
+
+def pgm_avg_row_brightness(file_path: str | Path) -> list[float]:
+    """Return list of average brightness for each row."""
+    img = parse_pgm_strict(file_path)
+    if img.width == 0 or img.height == 0:
+        return []
+    result = []
+    for r in range(img.height):
+        row_start = r * img.width
+        row_pixels = img.pixels[row_start:row_start + img.width]
+        result.append(sum(row_pixels) / img.width)
+    return result
+
+
+def pgm_dark_pixel_ratio(file_path: str | Path) -> float:
+    """Return ratio of pixels below 50% of maxval to total pixels. 0.0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels or img.maxval == 0:
+        return 0.0
+    threshold = img.maxval * 0.5
+    dark = sum(1 for p in img.pixels if p < threshold)
+    return dark / len(img.pixels)
+
+
+def pgm_row_brightness_variance(file_path: str | Path) -> float:
+    """Return variance of average row brightness values. 0.0 if fewer than 2 rows."""
+    avgs = pgm_avg_row_brightness(file_path)
+    if len(avgs) < 2:
+        return 0.0
+    mean = sum(avgs) / len(avgs)
+    return sum((a - mean) ** 2 for a in avgs) / len(avgs)
+
+
+def pgm_min_brightness(file_path: str | Path) -> int:
+    """Return the minimum pixel brightness value. 0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return min(img.pixels)
+
+
+def pgm_is_bright(file_path: str | Path) -> bool:
+    """Return True if mean brightness exceeds 200."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return False
+    return sum(img.pixels) / len(img.pixels) > 200
+
+
+def pgm_brightness_histogram(file_path: str | Path, bins: int = 4) -> list[int]:
+    """Return histogram of pixel brightness values in the given number of bins."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels or img.maxval == 0 or bins <= 0:
+        return [0] * max(bins, 1)
+    histogram = [0] * bins
+    for p in img.pixels:
+        idx = min(int(p * bins / (img.maxval + 1)), bins - 1)
+        histogram[idx] += 1
+    return histogram
+
+
+def pgm_contrast_ratio(file_path: str | Path) -> float:
+    """Return contrast ratio (max-min)/maxval. 0.0 if no pixels or maxval is 0."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels or img.maxval == 0:
+        return 0.0
+    return (max(img.pixels) - min(img.pixels)) / img.maxval
+
+
+def pgm_saturated_pixel_ratio(file_path: str | Path) -> float:
+    """Return ratio of saturated (maxval) pixels to total pixels. 0.0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    saturated = sum(1 for p in img.pixels if p >= img.maxval)
+    return saturated / len(img.pixels)
+
+
+def pgm_normalized_mean(file_path: str | Path) -> float:
+    """Return mean pixel value normalized to [0.0, 1.0] by dividing by maxval."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels or img.maxval == 0:
+        return 0.0
+    return (sum(img.pixels) / len(img.pixels)) / img.maxval
+
+
+def pgm_above_mean_ratio(file_path: str | Path) -> float:
+    """Return ratio of pixels strictly above the mean brightness. 0.0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    mean = sum(img.pixels) / len(img.pixels)
+    above = sum(1 for p in img.pixels if p > mean)
+    return above / len(img.pixels)
+
+
+def pgm_maxval(file_path: str | Path) -> int:
+    """Return the maxval field from the PGM header."""
+    img = parse_pgm_strict(file_path)
+    return img.maxval
+
+
+def pgm_midpoint_gray(file_path: str | Path) -> int:
+    """Return the mid-gray value: maxval // 2."""
+    img = parse_pgm_strict(file_path)
+    return img.maxval // 2
+
+
+def pgm_median_brightness(file_path: str | Path) -> float:
+    """Return the median pixel value. 0.0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    s = sorted(img.pixels)
+    n = len(s)
+    if n % 2 == 1:
+        return float(s[n // 2])
+    return (s[n // 2 - 1] + s[n // 2]) / 2.0
+
+
+def pgm_pixel_value_range(file_path: str | Path) -> int:
+    """Return the range (max - min) of pixel values. 0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return max(img.pixels) - min(img.pixels)

@@ -33,10 +33,10 @@ formats:
     src_python_loc: 793
     src_net_exists: true
     src_net_path: "src/net/fods/"
-    src_net_files: ["FodsDocument.cs", "FodsParser.cs", "FodsWriter.cs", "FodsCsvExporter.cs", "FodsHtmlExporter.cs", "FodsJsonExporter.cs", "FodsPdfExporter.cs", "Model/FodsSheet.cs", "Model/FodsRow.cs", "Model/FodsCell.cs"]
-    src_net_loc: 1592
+    src_net_files: ["FodsDocument.cs", "FodsParser.cs", "FodsWriter.cs", "FodsCsvExporter.cs", "FodsHtmlExporter.cs", "FodsJsonExporter.cs", "FodsPdfExporter.cs", "FodsOdsExporter.cs", "FodsPngExporter.cs", "Model/FodsSheet.cs", "Model/FodsRow.cs", "Model/FodsCell.cs"]
+    src_net_loc: 2072
     tests_python_count: 211
-    tests_net_count: 574
+    tests_net_count: 611
     packaging_status: local_build_ready
     claimed_gate: "G11 (commercial_readiness_in_progress)"
     evidence_backed_gate: "G10 (Python FOSS); G11-E (.NET prototype)"
@@ -44,7 +44,7 @@ formats:
     parser_depth: "streaming XML, neutral model (6 entities), defusedxml; R55: style/column-def round-trip, formula preservation"
     read_support: true
     write_support: true  # .NET only
-    export_support: true  # .NET: CSV, HTML, JSON, PDF
+    export_support: true  # .NET: CSV, HTML, JSON, PDF, ODS, PNG
     roundtrip_support: true  # .NET: load-edit-save-reload verified
     neutral_model_status: "formal (Workbook/Sheet/Row/Cell/Formula/Warning)"
     security_guard_status: "defusedxml, 100MB guard, DTD prohibited (.NET)"
@@ -68,10 +68,10 @@ formats:
     src_python_loc: 857
     src_net_exists: true
     src_net_path: "src/net/fodt/"
-    src_net_files: ["FodtDocument.cs", "FodtParser.cs", "FodtWriter.cs", "FodtHtmlExporter.cs", "FodtTxtExporter.cs", "FodtMarkdownExporter.cs", "FodtPdfExporter.cs", "Model/FodtBody.cs", "Model/FodtParagraph.cs"]
-    src_net_loc: 1498
+    src_net_files: ["FodtDocument.cs", "FodtParser.cs", "FodtWriter.cs", "FodtHtmlExporter.cs", "FodtTxtExporter.cs", "FodtMarkdownExporter.cs", "FodtPdfExporter.cs", "FodtPngExporter.cs", "Model/FodtBody.cs", "Model/FodtParagraph.cs"]
+    src_net_loc: 1748
     tests_python_count: 248
-    tests_net_count: 549
+    tests_net_count: 567
     packaging_status: local_build_ready
     claimed_gate: "G11 (commercial_readiness_in_progress)"
     evidence_backed_gate: "G10 (Python FOSS); G11-E (.NET prototype)"
@@ -79,7 +79,7 @@ formats:
     parser_depth: "streaming XML, depth-tracking, list recursion, neutral model (8 entities); R55: inline spans, document ordering, list/table preservation"
     read_support: true
     write_support: true  # .NET only
-    export_support: true  # .NET: HTML, TXT, Markdown, PDF
+    export_support: true  # .NET: HTML, TXT, Markdown, PDF, PNG
     roundtrip_support: true  # .NET: load-edit-save-reload verified
     neutral_model_status: "formal (Document/Block/List/ListItem/Table/TableRow/TableCell)"
     security_guard_status: "defusedxml, 100MB guard, DTD prohibited (.NET)"
