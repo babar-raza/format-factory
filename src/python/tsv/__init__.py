@@ -61,6 +61,11 @@ from .tsv_parser import (
     tsv_has_header,
     tsv_max_field_length,
     tsv_duplicate_row_count,
+    tsv_total_cell_count,
+    tsv_average_cell_length,
+    tsv_numeric_density,
+    tsv_unique_row_count,
+    tsv_header_count,
 )
 
 __version__ = "0.1.0"
@@ -118,4 +123,9 @@ __all__ = [
     "tsv_has_header",
     "tsv_max_field_length",
     "tsv_duplicate_row_count",
+    "tsv_total_cell_count",
+    "tsv_average_cell_length",
+    "tsv_numeric_density",
+    "tsv_unique_row_count",
+    "tsv_header_count",
 ]

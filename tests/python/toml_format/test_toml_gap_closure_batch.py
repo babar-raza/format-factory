@@ -100,13 +100,14 @@ class TestGetValue:
 
 
 class TestSetValue:
-    @pytest.mark.xfail(reason="set_value has a bug traversing into string values")
     def test_sets_value(self, tmp_path):
         content = 'title = "hello"\n'
         f = tmp_path / "simple.toml"
         f.write_text(content, encoding="utf-8")
-        result = set_value(str(f), "title", "world")
+        model = load_toml(f)
+        result = set_value(model["data"], "title", "world")
         assert result is not None
+        assert result["title"] == "world"
 
 
 class TestHasKey:

@@ -1,4 +1,4 @@
-"""Tests for V_DEPTH_SCORE, V_CHANGED_NO_TESTS, V_HELPERS_ONLY validators."""
+"""Tests for V_DEPTH_SCORE, V_CHANGED_NO_TESTS, V_HELPERS_ONLY, V34-V36 validators."""
 
 import sys
 from pathlib import Path
@@ -10,6 +10,9 @@ from governance_validators import (
     validate_depth_score,
     validate_changed_without_tests,
     validate_helpers_only_overclaim,
+    validate_class_count_minimum,
+    validate_monolith_detection,
+    validate_no_stub_tests,
 )
 
 
@@ -184,3 +187,95 @@ class TestValidateHelpersOnlyOverclaim:
         )
         result = validate_helpers_only_overclaim(_decl([item]))
         assert result["result"] == "PASS"
+
+
+# ── V34: CLASS_COUNT_MINIMUM ─────────────────────────────────────────────
+
+
+class TestValidateClassCountMinimum:
+    """Tests for validate_class_count_minimum (V34)."""
+
+    def test_pass_when_no_product_source(self):
+        decl = _decl([_base_item(item_type="TEST")])
+        result = validate_class_count_minimum(decl, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_warn_fods_below_minimum(self):
+        item = _base_item(item_id="FODS-REBUILD", title="FODS rebuild")
+        result = validate_class_count_minimum(_decl([item]), REPO_ROOT)
+        assert result["result"] == "WARN"
+        assert "fods" in result["detail"].lower()
+
+    def test_pass_non_complex_format(self):
+        item = _base_item(item_id="ZST-WORK", title="ZST compression")
+        result = validate_class_count_minimum(_decl([item]), REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_does_not_block_sprint(self):
+        item = _base_item(item_id="FODT-REBUILD", title="fodt rebuild")
+        result = validate_class_count_minimum(_decl([item]), REPO_ROOT)
+        assert result["blocks_sprint"] is False
+
+
+# ── V35: MONOLITH_DETECTION ──────────────────────────────────────────────
+
+
+class TestValidateMonolithDetection:
+    """Tests for validate_monolith_detection (V35)."""
+
+    def test_pass_empty_changed_files(self):
+        result = validate_monolith_detection({"changed_files": []}, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_pass_small_files(self):
+        result = validate_monolith_detection(
+            {"changed_files": ["tests/supervisor/test_depth_validators.py"]},
+            REPO_ROOT,
+        )
+        assert result["result"] == "PASS"
+
+    def test_warn_large_file(self):
+        result = validate_monolith_detection(
+            {"changed_files": ["tools/supervisor/governance_validators.py"]},
+            REPO_ROOT,
+        )
+        assert result["result"] == "WARN"
+        assert "governance_validators.py" in result["detail"]
+
+    def test_does_not_block_sprint(self):
+        result = validate_monolith_detection(
+            {"changed_files": ["tools/supervisor/governance_validators.py"]},
+            REPO_ROOT,
+        )
+        assert result["blocks_sprint"] is False
+
+
+# ── V36: NO_STUB_TESTS ──────────────────────────────────────────────────
+
+
+class TestValidateNoStubTests:
+    """Tests for validate_no_stub_tests (V36)."""
+
+    def test_pass_no_test_references(self):
+        decl = _decl([_base_item(test_references=[])])
+        result = validate_no_stub_tests(decl, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_pass_strong_assertions(self):
+        decl = _decl([_base_item(
+            test_references=["tests/python/zst/test_zst_gap_closure_batch2.py"]
+        )])
+        result = validate_no_stub_tests(decl, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_pass_missing_file(self):
+        decl = _decl([_base_item(test_references=["nonexistent/test.py"])])
+        result = validate_no_stub_tests(decl, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_does_not_block_sprint(self):
+        decl = _decl([_base_item(
+            test_references=["tests/python/zst/test_zst_gap_closure_batch.py"]
+        )])
+        result = validate_no_stub_tests(decl, REPO_ROOT)
+        assert result["blocks_sprint"] is False

@@ -55,6 +55,12 @@ from .sylk_parser import (
     sylk_unique_values,
     sylk_cell_type_distribution,
     sylk_has_header,
+    sylk_average_numeric_value,
+    sylk_max_row_length,
+    sylk_numeric_density,
+    sylk_total_cell_count,
+    sylk_string_density,
+    sylk_nonempty_cell_count,
 )
 
 __version__ = "0.1.0"
@@ -105,4 +111,10 @@ __all__ = [
     "sylk_unique_values",
     "sylk_cell_type_distribution",
     "sylk_has_header",
+    "sylk_average_numeric_value",
+    "sylk_max_row_length",
+    "sylk_numeric_density",
+    "sylk_total_cell_count",
+    "sylk_string_density",
+    "sylk_nonempty_cell_count",
 ]

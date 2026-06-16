@@ -1,9 +1,9 @@
 # ABW-GATE4-001 — ABW Gate 4 Parser Prototype
 
 **Created:** 2026-05-16 (R19)
-**Status:** not_started
+**Status:** completed
 **Priority:** MEDIUM
-**Blocker:** Requires R20+ implementation sprint prompt
+**Completed:** 2026-06-15 (verified: prototype + 14 tests pass)
 
 ## Scope
 
@@ -31,8 +31,8 @@ AWML 1.0 is documented as "out-of-date" relative to current AbiWord.
 - [x] ABW Gate 1: passed
 - [x] ABW Gate 2: passed_with_notes (secondary sources)
 - [x] ABW Gate 3: passed (3 synthetic samples)
-- [ ] Prototype: not created yet
-- [ ] Gate 4 tests: not created yet
+- [x] Prototype: prototypes/by-format/abw/abw_parser.py
+- [x] Gate 4 tests: tests/skills/test_abw_gate4_prototype.py (14 tests, all pass)
 - [ ] DEC-034 IV: not done yet
 
 ## Test Plan

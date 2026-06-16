@@ -1705,3 +1705,64 @@ def fods_total_cell_count(workbook: dict[str, Any]) -> int:
                     if val is not None or txt is not None:
                         count += 1
     return count
+
+
+def fods_empty_cell_count(workbook: dict[str, Any]) -> int:
+    """Return the count of empty cells across all sheets.
+
+    A cell is empty if it is None or has both value and text as None.
+    """
+    count = 0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell is None:
+                    count += 1
+                else:
+                    val = cell.get("value")
+                    txt = cell.get("text")
+                    if val is None and txt is None:
+                        count += 1
+    return count
+
+
+def fods_has_formulas(workbook: dict[str, Any]) -> bool:
+    """Return True if the workbook contains at least one formula cell."""
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell is not None and cell.get("formula"):
+                    return True
+    return False
+
+
+def fods_sheet_names(workbook: dict[str, Any]) -> list[str]:
+    """Return a list of sheet names in the workbook.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+
+    Returns:
+        List of sheet name strings.
+    """
+    return [s.get("name", "") for s in workbook.get("sheets", [])]
+
+
+def fods_string_cell_count(workbook: dict[str, Any]) -> int:
+    """Return the total number of string-type cells across all sheets.
+
+    Args:
+        workbook: Parsed FODS workbook dict.
+
+    Returns:
+        Integer count.
+    """
+    count = 0
+    for sheet in workbook.get("sheets", []):
+        for row in sheet.get("rows", []):
+            for cell in row.get("cells", []):
+                if cell is not None:
+                    vt = cell.get("value_type", "")
+                    if vt == "string":
+                        count += 1
+    return count

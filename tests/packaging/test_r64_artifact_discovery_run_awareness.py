@@ -66,39 +66,25 @@ class TestArtifactDiscoveryRunAwareness:
 class TestExtractedBundleMode:
     """Extracted-bundle mode via env var."""
 
-    def test_env_var_override_with_valid_dir(self, tmp_path):
+    def test_env_var_override_with_valid_dir(self, tmp_path, monkeypatch):
         """FORMAT_FACTORY_BUNDLE_METADATA_DIR should take priority."""
         artifacts = tmp_path / "package-artifacts"
         artifacts.mkdir()
         # Create a dummy .whl file
         (artifacts / "dummy-0.1.0-py3-none-any.whl").write_bytes(b"PK\x03\x04dummy")
-        old_env = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR", "")
-        try:
-            os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(tmp_path)
-            result = find_artifact_dir("r64", PROJECT_ROOT)
-            assert result is not None
-            assert result == artifacts
-        finally:
-            if old_env:
-                os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = old_env
-            else:
-                os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
+        monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(tmp_path))
+        result = find_artifact_dir("r64", PROJECT_ROOT)
+        assert result is not None
+        assert result == artifacts
 
-    def test_env_var_override_with_empty_dir(self, tmp_path):
+    def test_env_var_override_with_empty_dir(self, tmp_path, monkeypatch):
         """Empty artifacts dir should not match (no .whl files)."""
         artifacts = tmp_path / "package-artifacts"
         artifacts.mkdir()
-        old_env = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR", "")
-        try:
-            os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(tmp_path)
-            result = find_artifact_dir("r64", PROJECT_ROOT)
-            # Should fall through to other candidates since env dir has no .whl
-            # Result depends on whether other candidate dirs exist
-        finally:
-            if old_env:
-                os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = old_env
-            else:
-                os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
+        monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(tmp_path))
+        result = find_artifact_dir("r64", PROJECT_ROOT)
+        # Should fall through to other candidates since env dir has no .whl
+        # Result depends on whether other candidate dirs exist
 
 
 class TestR64PackagePresence:

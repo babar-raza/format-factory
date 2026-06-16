@@ -406,26 +406,19 @@ class TestImportErrorFallback:
         p.write_text(json.dumps(action), encoding="utf-8")
         return str(p)
 
-    def test_source_mutating_non_legacy_blocked_on_import_error(self, tmp_path):
+    def test_source_mutating_non_legacy_blocked_on_import_error(self, tmp_path, monkeypatch):
         """Source-mutating non-legacy action is blocked when route decider cannot be imported."""
         import sys
         from tools.supervisor.next_action_runner import run_action
 
         action_path = self._write_action(tmp_path, "IMPLEMENT_SMALL_PRODUCT_FEATURE")
-        saved = sys.modules.get("tools.supervisor.autonomy_route_decider")
-        sys.modules["tools.supervisor.autonomy_route_decider"] = None  # type: ignore
-        try:
-            result = run_action(action_path)
-        finally:
-            if saved is not None:
-                sys.modules["tools.supervisor.autonomy_route_decider"] = saved
-            else:
-                sys.modules.pop("tools.supervisor.autonomy_route_decider", None)
+        monkeypatch.setitem(sys.modules, "tools.supervisor.autonomy_route_decider", None)
+        result = run_action(action_path)
 
         assert result["status"] == "BLOCKED"
         assert "import" in result.get("block_reason", "").lower() or "route" in result.get("block_reason", "").lower()
 
-    def test_categorized_non_legacy_blocked_on_import_error(self, tmp_path):
+    def test_categorized_non_legacy_blocked_on_import_error(self, tmp_path, monkeypatch):
         """Categorized non-legacy machinery action is blocked when route decider import fails."""
         import sys
         from tools.supervisor.next_action_runner import run_action
@@ -433,20 +426,13 @@ class TestImportErrorFallback:
         action_path = self._write_action(
             tmp_path, "UPDATE_STATE", task_category="SPEC_AUTHORITY_MACHINERY"
         )
-        saved = sys.modules.get("tools.supervisor.autonomy_route_decider")
-        sys.modules["tools.supervisor.autonomy_route_decider"] = None  # type: ignore
-        try:
-            result = run_action(action_path)
-        finally:
-            if saved is not None:
-                sys.modules["tools.supervisor.autonomy_route_decider"] = saved
-            else:
-                sys.modules.pop("tools.supervisor.autonomy_route_decider", None)
+        monkeypatch.setitem(sys.modules, "tools.supervisor.autonomy_route_decider", None)
+        result = run_action(action_path)
 
         assert result["status"] == "BLOCKED"
         assert "import" in result.get("block_reason", "").lower() or "route" in result.get("block_reason", "").lower()
 
-    def test_legacy_action_not_blocked_by_import_error(self, tmp_path):
+    def test_legacy_action_not_blocked_by_import_error(self, tmp_path, monkeypatch):
         """Legacy action is not blocked by route decider ImportError (backward compat)."""
         import sys
         from tools.supervisor.next_action_runner import run_action
@@ -454,15 +440,8 @@ class TestImportErrorFallback:
         action_path = self._write_action(
             tmp_path, "UPDATE_STATE", task_category="SPEC_AUTHORITY_MACHINERY", legacy=True
         )
-        saved = sys.modules.get("tools.supervisor.autonomy_route_decider")
-        sys.modules["tools.supervisor.autonomy_route_decider"] = None  # type: ignore
-        try:
-            result = run_action(action_path)
-        finally:
-            if saved is not None:
-                sys.modules["tools.supervisor.autonomy_route_decider"] = saved
-            else:
-                sys.modules.pop("tools.supervisor.autonomy_route_decider", None)
+        monkeypatch.setitem(sys.modules, "tools.supervisor.autonomy_route_decider", None)
+        result = run_action(action_path)
 
         # Legacy action must NOT be blocked by route decider import failure
         block_reason = result.get("block_reason", "")

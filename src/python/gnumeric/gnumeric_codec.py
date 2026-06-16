@@ -1290,3 +1290,111 @@ def gnumeric_total_cell_count(file_path: "str | bytes | Path") -> int:
     for i in range(len(sheets)):
         total += count_nonempty_cells(model, i)
     return total
+
+
+def gnumeric_sheet_count(file_path: "str | bytes | Path") -> int:
+    """Return the number of sheets in a Gnumeric file.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        Integer count of sheets.
+    """
+    model = load(file_path)
+    return len(model.get("sheets", []))
+
+
+def gnumeric_has_multiple_sheets(file_path: "str | bytes | Path") -> bool:
+    """Return True if the Gnumeric file contains more than one sheet.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        True if sheet count > 1, False otherwise.
+    """
+    return gnumeric_sheet_count(file_path) > 1
+
+
+def gnumeric_average_cells_per_sheet(file_path: "str | bytes | Path") -> float:
+    """Return the average number of cells per sheet.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        Float average. 0.0 if no sheets.
+    """
+    model = load(file_path)
+    sheets = model.get("sheets", [])
+    if not sheets:
+        return 0.0
+    total = sum(len(s.get("cell_values", [])) for s in sheets)
+    return total / len(sheets)
+
+
+def gnumeric_numeric_density(file_path: "str | bytes | Path") -> float:
+    """Return the ratio of numeric cells to total cells.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        Float between 0.0 and 1.0. 0.0 if no cells.
+    """
+    model = load(file_path)
+    total = 0
+    numeric = 0
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_values", []):
+            total += 1
+            try:
+                float(val)
+                numeric += 1
+            except (ValueError, TypeError):
+                pass
+    if total == 0:
+        return 0.0
+    return numeric / total
+
+
+def gnumeric_string_density(file_path: "str | bytes | Path") -> float:
+    """Return the ratio of non-numeric cells to total cells.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        Float between 0.0 and 1.0. 0.0 if no cells.
+    """
+    model = load(file_path)
+    total = 0
+    string_count = 0
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_values", []):
+            total += 1
+            try:
+                float(val)
+            except (ValueError, TypeError):
+                string_count += 1
+    if total == 0:
+        return 0.0
+    return string_count / total
+
+
+def gnumeric_max_cell_length(file_path: "str | bytes | Path") -> int:
+    """Return the length of the longest cell value string.
+
+    Args:
+        file_path: Path to a .gnumeric (gzip-compressed XML) file.
+
+    Returns:
+        Integer max length. 0 if no cells.
+    """
+    model = load(file_path)
+    max_len = 0
+    for sheet in model.get("sheets", []):
+        for val in sheet.get("cell_values", []):
+            max_len = max(max_len, len(str(val)))
+    return max_len

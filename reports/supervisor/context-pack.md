@@ -1,19 +1,19 @@
 # Supervisor Context Pack
 # Format Factory — Machine-Readable State Snapshot
-# Generated: 2026-06-15T19:30:12.451713
+# Generated: 2026-06-15T22:58:17.319449
 # ADVISORY ONLY — not a gate approval or authority document
 
 ## Current State
 
 | Item | Value |
 |------|-------|
-| Git HEAD | e31fa98 |
+| Git HEAD | fc60c35 |
 | Working tree clean | False |
 | Supervisor mode | MODE 4 |
 | Latest sprint | unknown |
-| Sprint ID | IDEMPOTENT-SWARM-SPRINT-7... |
-| Autonomous continue | False |
-| Iteration | 2/12 |
+| Sprint ID | IDEMPOTENT-SWARM-SPRINT-30... |
+| Autonomous continue | True |
+| Iteration | 1/12 |
 | MCP status | MCP_CONFIG_PRESENT_MODE4_ACTIVE |
 | Active skills | 31 |
 | Ledger entries | 429 total (344 governed) |

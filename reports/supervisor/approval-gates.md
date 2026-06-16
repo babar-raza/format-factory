@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: IDEMPOTENT-SWARM-SPRINT-7
-Generated: 2026-06-15T19:31:11.070495
+Sprint ID: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING
+Generated: 2026-06-16T08:39:11.747450
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

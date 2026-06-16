@@ -564,3 +564,108 @@ def csv_empty_cell_count(file_path: "str | Path") -> int:
             if not str(cell).strip():
                 count += 1
     return count
+
+
+def csv_row_count(file_path: "str | Path") -> int:
+    """Return the number of data rows in a CSV file (excluding header).
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Integer row count.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    return len(model.get("rows", []))
+
+
+def csv_average_field_length(file_path: "str | Path") -> float:
+    """Return the average length of all field values across all rows.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Float average field length. Returns 0.0 if there are no fields.
+
+    Raises:
+        CsvError subclasses on parse failure.
+    """
+    model = parse_csv_strict(file_path)
+    lengths: list[int] = []
+    for row in model.get("rows", []):
+        for cell in row:
+            lengths.append(len(str(cell)))
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def csv_numeric_density(file_path: "str | Path") -> float:
+    """Return the ratio of numeric cells to total cells. 0.0 if no cells."""
+    model = parse_csv_strict(file_path)
+    total = 0
+    numeric = 0
+    for row in model.get("rows", []):
+        for cell in row:
+            total += 1
+            try:
+                float(cell)
+                numeric += 1
+            except (ValueError, TypeError):
+                pass
+    if total == 0:
+        return 0.0
+    return numeric / total
+
+
+def csv_unique_row_count(file_path: "str | Path") -> int:
+    """Return the number of distinct rows in the CSV file."""
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    seen: set[tuple[str, ...]] = set()
+    for row in rows:
+        seen.add(tuple(str(c) for c in row))
+    return len(seen)
+
+
+def csv_min_field_length(file_path: "str | Path") -> int:
+    """Return the length of the shortest non-empty field in the CSV.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        Integer minimum length. 0 if no non-empty fields.
+    """
+    model = parse_csv_strict(file_path)
+    min_len = None
+    for row in model.get("rows", []):
+        for cell in row:
+            if cell:
+                if min_len is None or len(cell) < min_len:
+                    min_len = len(cell)
+    return min_len if min_len is not None else 0
+
+
+def csv_has_duplicates(file_path: "str | Path") -> bool:
+    """Return True if the CSV file contains duplicate rows.
+
+    Args:
+        file_path: Path to a CSV file.
+
+    Returns:
+        True if any two rows are identical.
+    """
+    model = parse_csv_strict(file_path)
+    rows = model.get("rows", [])
+    seen: set[tuple[str, ...]] = set()
+    for row in rows:
+        key = tuple(str(c) for c in row)
+        if key in seen:
+            return True
+        seen.add(key)
+    return False

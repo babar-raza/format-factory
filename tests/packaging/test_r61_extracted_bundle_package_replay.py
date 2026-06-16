@@ -108,7 +108,7 @@ class TestR60ExtractedBundleReplay:
         manifests = [n for n in names if "package-artifact-manifest.yaml" in n]
         assert manifests, f"No manifest found in bundle. Entries: {[n for n in names[:20]]}"
 
-    def test_r60_extracted_bundle_artifact_discovery(self, tmp_path):
+    def test_r60_extracted_bundle_artifact_discovery(self, tmp_path, monkeypatch):
         """Extracted R60 bundle: find_artifact_dir discovers artifacts without .local/."""
         bundle = _get_r60_bundle()
         if bundle is None:
@@ -128,23 +128,20 @@ class TestR60ExtractedBundleReplay:
         # Use env-var to point at extracted bundle-metadata
         bundle_meta = extract_dir / "bundle-metadata"
         if bundle_meta.exists():
-            os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(bundle_meta)
-            try:
-                result = find_artifact_dir("r60", repo_root)
-                assert result is not None, (
-                    f"find_artifact_dir must find artifacts in extracted bundle. "
-                    f"Checked: {bundle_meta / 'package-artifacts'}"
-                )
-                wheels = list(result.glob("*.whl"))
-                assert len(wheels) >= 10, (
-                    f"Expected 10+ wheels in extracted bundle artifact dir. Got: {wheels}"
-                )
-            finally:
-                os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
+            monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(bundle_meta))
+            result = find_artifact_dir("r60", repo_root)
+            assert result is not None, (
+                f"find_artifact_dir must find artifacts in extracted bundle. "
+                f"Checked: {bundle_meta / 'package-artifacts'}"
+            )
+            wheels = list(result.glob("*.whl"))
+            assert len(wheels) >= 10, (
+                f"Expected 10+ wheels in extracted bundle artifact dir. Got: {wheels}"
+            )
         else:
             pytest.skip(f"Extracted bundle has no bundle-metadata/ dir: {list(extract_dir.iterdir())}")
 
-    def test_r60_extracted_bundle_manifest_discovery(self, tmp_path):
+    def test_r60_extracted_bundle_manifest_discovery(self, tmp_path, monkeypatch):
         """Extracted R60 bundle: find_manifest_path discovers manifest without .local/."""
         bundle = _get_r60_bundle()
         if bundle is None:
@@ -161,13 +158,10 @@ class TestR60ExtractedBundleReplay:
 
         bundle_meta = extract_dir / "bundle-metadata"
         if bundle_meta.exists() and (bundle_meta / "package-artifact-manifest.yaml").exists():
-            os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(bundle_meta)
-            try:
-                result = find_manifest_path("r60", extract_dir)
-                assert result is not None, "Manifest must be discoverable from extracted bundle"
-                assert result.exists(), f"Manifest path {result} does not exist"
-            finally:
-                os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
+            monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(bundle_meta))
+            result = find_manifest_path("r60", extract_dir)
+            assert result is not None, "Manifest must be discoverable from extracted bundle"
+            assert result.exists(), f"Manifest path {result} does not exist"
         else:
             pytest.skip(f"Manifest not at expected location in extract: {extract_dir}")
 
@@ -201,7 +195,7 @@ class TestR61PackagingNoLocalPaths:
             "with .local/package-builds path. Use find_artifact_dir instead."
         )
 
-    def test_find_artifact_dir_is_portable(self, tmp_path):
+    def test_find_artifact_dir_is_portable(self, tmp_path, monkeypatch):
         """find_artifact_dir works from a completely local-path-free environment."""
         # Create a fake extracted bundle structure
         fake_meta = tmp_path / "bundle-metadata"
@@ -209,11 +203,8 @@ class TestR61PackagingNoLocalPaths:
         fake_artifacts.mkdir(parents=True)
         (fake_artifacts / "test_pkg-0.1-py3-none-any.whl").write_bytes(b"PK")
 
-        os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(fake_meta)
-        try:
-            result = find_artifact_dir("r61", tmp_path)
-            assert result == fake_artifacts, (
-                f"Expected {fake_artifacts}, got {result}"
-            )
-        finally:
-            os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
+        monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(fake_meta))
+        result = find_artifact_dir("r61", tmp_path)
+        assert result == fake_artifacts, (
+            f"Expected {fake_artifacts}, got {result}"
+        )

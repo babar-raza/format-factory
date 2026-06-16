@@ -179,42 +179,28 @@ def project_ledger(
         encoding="utf-8",
     )
 
+    # Pre-index edges by source node ID for O(1) lookup (avoids O(P×N×E) scan)
+    from collections import defaultdict
+    _edges_by_src: dict[str, set[str]] = defaultdict(set)
+    for e in edges:
+        _edges_by_src[e["src_node_id"]].add(e["dst_node_id"])
+
     # Per-product coverage summary
     per_product_coverage: dict[str, dict] = {}
     for product_key in product_counts:
-        product_nodes = [n for n in nodes.values() if n.get("label") == product_key]
-        has_source = any(
-            e["dst_node_id"] in nodes
-            and nodes[e["dst_node_id"]]["type"] in ("source_file",)
-            and e["src_node_id"] in [n["node_id"] for n in product_nodes]
-            for e in edges
-        )
+        product_nid = _stable_node_id("product", product_key)
+        dst_ids = _edges_by_src.get(product_nid, set())
         product_sources = [
-            n for n in nodes.values()
-            if n["type"] == "source_file"
-            and any(
-                e["src_node_id"] == _stable_node_id("product", product_key)
-                and e["dst_node_id"] == n["node_id"]
-                for e in edges
-            )
+            n for nid, n in nodes.items()
+            if n["type"] == "source_file" and nid in dst_ids
         ]
         product_tests = [
-            n for n in nodes.values()
-            if n["type"] == "test_file"
-            and any(
-                e["src_node_id"] == _stable_node_id("product", product_key)
-                and e["dst_node_id"] == n["node_id"]
-                for e in edges
-            )
+            n for nid, n in nodes.items()
+            if n["type"] == "test_file" and nid in dst_ids
         ]
         product_logs = [
-            n for n in nodes.values()
-            if n["type"] == "raw_log"
-            and any(
-                e["src_node_id"] == _stable_node_id("product", product_key)
-                and e["dst_node_id"] == n["node_id"]
-                for e in edges
-            )
+            n for nid, n in nodes.items()
+            if n["type"] == "raw_log" and nid in dst_ids
         ]
         per_product_coverage[product_key] = {
             "ledger_entries": product_counts[product_key],

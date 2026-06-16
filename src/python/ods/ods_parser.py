@@ -942,3 +942,113 @@ def ods_empty_row_count(file_path: "str | Path", sheet_index: int = 0) -> int:
         ):
             count += 1
     return count
+
+
+def ods_total_cell_count(file_path: "str | Path", sheet_index: int = 0) -> int:
+    """Return the total number of cells (including empty) in a sheet.
+
+    Args:
+        file_path: Path to ODS file.
+        sheet_index: 0-based sheet index (default 0).
+
+    Returns:
+        Integer total cell count. Returns 0 if sheet is empty or not found.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0
+    sheet = doc.sheets[sheet_index]
+    return sum(len(row.cells) for row in sheet.rows)
+
+
+def ods_sheet_count(file_path: "str | Path") -> int:
+    """Return the number of sheets in an ODS file.
+
+    Args:
+        file_path: Path to ODS file.
+
+    Returns:
+        Integer sheet count.
+    """
+    doc = parse_ods_strict(file_path)
+    return len(doc.sheets)
+
+
+def ods_has_merged_cells(file_path: "str | Path", sheet_index: int = 0) -> bool:
+    """Return True if the sheet contains any merged cells."""
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return False
+    sheet = doc.sheets[sheet_index]
+    for row in sheet.rows:
+        for cell in row.cells:
+            cols_span = getattr(cell, "number_columns_spanned", 1) or 1
+            rows_span = getattr(cell, "number_rows_spanned", 1) or 1
+            if cols_span > 1 or rows_span > 1:
+                return True
+    return False
+
+
+def ods_numeric_density(file_path: "str | Path", sheet_index: int = 0) -> float:
+    """Return the ratio of numeric cells to total cells. 0.0 if no cells."""
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0.0
+    sheet = doc.sheets[sheet_index]
+    total = 0
+    numeric = 0
+    for row in sheet.rows:
+        for cell in row.cells:
+            total += 1
+            vt = getattr(cell, "value_type", "")
+            if vt in ("float", "currency", "percentage"):
+                numeric += 1
+    if total == 0:
+        return 0.0
+    return numeric / total
+
+
+def ods_average_cells_per_row(file_path: "str | Path", sheet_index: int = 0) -> float:
+    """Return the average number of cells per row in the specified sheet.
+
+    Args:
+        file_path: Path to an ODS file.
+        sheet_index: 0-based sheet index.
+
+    Returns:
+        Float average. 0.0 if no rows.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return 0.0
+    sheet = doc.sheets[sheet_index]
+    if not sheet.rows:
+        return 0.0
+    total_cells = sum(len(row.cells) for row in sheet.rows)
+    return total_cells / len(sheet.rows)
+
+
+def ods_has_empty_rows(file_path: "str | Path", sheet_index: int = 0) -> bool:
+    """Return True if the specified sheet contains any completely empty rows.
+
+    Args:
+        file_path: Path to an ODS file.
+        sheet_index: 0-based sheet index.
+
+    Returns:
+        True if at least one row has all empty/None cells.
+    """
+    doc = parse_ods_strict(file_path)
+    if sheet_index < 0 or sheet_index >= len(doc.sheets):
+        return False
+    sheet = doc.sheets[sheet_index]
+    for row in sheet.rows:
+        if not row.cells:
+            return True
+        all_empty = all(
+            not getattr(cell, "value", None) and not getattr(cell, "text", None)
+            for cell in row.cells
+        )
+        if all_empty:
+            return True
+    return False

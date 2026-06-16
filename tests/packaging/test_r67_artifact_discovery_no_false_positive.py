@@ -46,45 +46,24 @@ class TestNoFalsePositiveWithEnv:
                 return d
         pytest.skip("No metadata directory available")
 
-    def test_r99999_with_env_returns_none(self):
+    def test_r99999_with_env_returns_none(self, monkeypatch):
         d = self._get_metadata_dir()
-        old = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR")
-        try:
-            os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(d)
-            assert find_artifact_dir("r99999", PROJECT_ROOT) is None
-        finally:
-            if old is None:
-                os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
-            else:
-                os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = old
+        monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(d))
+        assert find_artifact_dir("r99999", PROJECT_ROOT) is None
 
-    def test_r99999_manifest_with_env_returns_none(self):
+    def test_r99999_manifest_with_env_returns_none(self, monkeypatch):
         d = self._get_metadata_dir()
-        old = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR")
-        try:
-            os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(d)
-            assert find_manifest_path("r99999", PROJECT_ROOT) is None
-        finally:
-            if old is None:
-                os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
-            else:
-                os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = old
+        monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(d))
+        assert find_manifest_path("r99999", PROJECT_ROOT) is None
 
-    def test_correct_run_with_env_finds_artifacts(self):
+    def test_correct_run_with_env_finds_artifacts(self, monkeypatch):
         d = self._get_metadata_dir()
         # Derive run label from directory name
         run = d.name.replace("-metadata", "")
-        old = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR")
-        try:
-            os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(d)
-            result = find_artifact_dir(run, PROJECT_ROOT)
-            if (d / "package-artifacts").exists():
-                assert result is not None
-        finally:
-            if old is None:
-                os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
-            else:
-                os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = old
+        monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(d))
+        result = find_artifact_dir(run, PROJECT_ROOT)
+        if (d / "package-artifacts").exists():
+            assert result is not None
 
 
 class TestExtractedBundleModeWithSprintId:

@@ -506,7 +506,7 @@ def aspect_ratio(file_path: "str | Path") -> float:
         Float ratio width/height. Returns 0.0 for zero-height images.
 
     Raises:
-        PbmParseError: If the file cannot be parsed.
+        PbmError: If the file cannot be parsed.
     """
     img = parse_pbm_strict(file_path)
     if img.height == 0:
@@ -558,7 +558,7 @@ def black_pixel_ratio(file_path: "str | Path") -> float:
         Returns 0.0 for empty images.
 
     Raises:
-        PbmParseError: If the file cannot be parsed.
+        PbmError: If the file cannot be parsed.
     """
     img = parse_pbm_strict(file_path)
     total = img.width * img.height
@@ -581,7 +581,7 @@ def pbm_white_pixel_ratio(file_path: "str | Path") -> float:
         Returns 0.0 for empty images.
 
     Raises:
-        PbmParseError: If the file cannot be parsed.
+        PbmError: If the file cannot be parsed.
     """
     return 1.0 - black_pixel_ratio(file_path)
 
@@ -597,7 +597,7 @@ def pbm_aspect_ratio(file_path: "str | Path") -> float:
         Returns 0.0 for images with zero height.
 
     Raises:
-        PbmParseError: If the file cannot be parsed.
+        PbmError: If the file cannot be parsed.
     """
     img = parse_pbm_strict(file_path)
     if img.height == 0:
@@ -617,7 +617,7 @@ def pbm_white_pixel_count(file_path: "str | Path") -> int:
         Integer count of white pixels. Returns 0 for all-black images.
 
     Raises:
-        PbmParseError: If the file cannot be parsed.
+        PbmError: If the file cannot be parsed.
     """
     img = parse_pbm_strict(file_path)
     return sum(1 for p in img.pixels if p == 0)
@@ -672,7 +672,7 @@ def pbm_row_black_counts(file_path: "str | Path") -> list[int]:
         List of integers, one per row, each being the black pixel count.
 
     Raises:
-        PbmParseError: If the file cannot be parsed.
+        PbmError: If the file cannot be parsed.
     """
     img = parse_pbm_strict(file_path)
     counts: list[int] = []
@@ -681,3 +681,79 @@ def pbm_row_black_counts(file_path: "str | Path") -> list[int]:
         end = start + img.width
         counts.append(sum(1 for p in img.pixels[start:end] if p == 1))
     return counts
+
+
+def pbm_total_pixel_count(file_path: "str | Path") -> int:
+    """Return the total number of pixels in a PBM image (width * height).
+
+    Args:
+        file_path: Path to a PBM file.
+
+    Returns:
+        Integer total pixel count.
+
+    Raises:
+        PbmError: If the file cannot be parsed.
+    """
+    img = parse_pbm_strict(file_path)
+    return img.width * img.height
+
+
+def pbm_is_binary(file_path: "str | Path") -> bool:
+    """Return True if the PBM file uses binary P4 format, False if ASCII P1.
+
+    Args:
+        file_path: Path to a PBM file.
+
+    Returns:
+        True for P4 (binary), False for P1 (ASCII).
+
+    Raises:
+        PbmError: If the file cannot be parsed or has an unrecognized magic.
+    """
+    p = Path(file_path)
+    data = p.read_bytes()
+    magic = data[:2]
+    if magic == b"P4":
+        return True
+    if magic == b"P1":
+        return False
+    raise PbmError(f"Unrecognized PBM magic: {magic!r}")
+
+
+def pbm_black_pixel_ratio(file_path: "str | Path") -> float:
+    """Return the ratio of black pixels to total pixels. 0.0 if no pixels."""
+    img = parse_pbm_strict(file_path)
+    total = img.width * img.height
+    if total == 0:
+        return 0.0
+    stats = image_pixel_stats(file_path)
+    return stats["black_count"] / total
+
+
+def pbm_dimensions(file_path: "str | Path") -> dict:
+    """Return width and height of the PBM image as a dict."""
+    img = parse_pbm_strict(file_path)
+    return {"width": img.width, "height": img.height}
+
+
+def pbm_column_black_counts(file_path: "str | Path") -> list[int]:
+    """Return the number of black pixels in each column."""
+    img = parse_pbm_strict(file_path)
+    if not img.pixels or img.width == 0:
+        return []
+    counts = [0] * img.width
+    for y in range(img.height):
+        for x in range(img.width):
+            if img.pixels[y * img.width + x] == 1:
+                counts[x] += 1
+    return counts
+
+
+def pbm_white_density(file_path: "str | Path") -> float:
+    """Return the ratio of white pixels to total pixels. 0.0 if no pixels."""
+    img = parse_pbm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    white = sum(1 for p in img.pixels if p == 0)
+    return white / len(img.pixels)

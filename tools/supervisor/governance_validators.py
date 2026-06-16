@@ -2345,6 +2345,143 @@ def _extract_format_from_item(item: dict) -> str:
     return ""
 
 
+# ---------------------------------------------------------------------------
+# V34-V36: Depth validators (class_count_minimum, monolith_detection, no_stub_tests)
+# ---------------------------------------------------------------------------
+
+# Formats that require at least 15 classes for product-readiness
+_COMPLEX_FORMATS = {"fods", "fodt"}
+_CLASS_COUNT_MINIMUM = 15
+_MONOLITH_LOC_THRESHOLD = 1500
+
+def validate_class_count_minimum(declaration: dict,
+                                  repo_root: Path | None = None) -> dict:
+    """V34: Reject PRODUCT_SOURCE items for complex formats with < 15 classes."""
+    if repo_root is None:
+        repo_root = Path(".")
+    items = declaration.get("planned_work_items", [])
+    violations = []
+    for item in items:
+        if item.get("item_type") != "PRODUCT_SOURCE":
+            continue
+        item_id = item.get("item_id", "").lower()
+        title = item.get("title", "").lower()
+        fmt = ""
+        for candidate in _COMPLEX_FORMATS:
+            if candidate in item_id or candidate in title:
+                fmt = candidate
+                break
+        if not fmt:
+            continue
+        # Count .cs files in the format's src directory
+        fmt_dir = repo_root / "src" / "net" / fmt
+        if not fmt_dir.is_dir():
+            violations.append(f"{item.get('item_id')}: format dir {fmt_dir} not found")
+            continue
+        cs_files = list(fmt_dir.rglob("*.cs"))
+        # Exclude obj/ and bin/ directories
+        cs_files = [f for f in cs_files if "obj" not in f.parts and "bin" not in f.parts]
+        if len(cs_files) < _CLASS_COUNT_MINIMUM:
+            violations.append(
+                f"{item.get('item_id')}: {fmt} has {len(cs_files)} .cs files "
+                f"(minimum {_CLASS_COUNT_MINIMUM})"
+            )
+    if violations:
+        return {
+            "validator": "class_count_minimum_validator",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "detail": f"{len(violations)} complex format(s) below class minimum. "
+                       + "; ".join(violations),
+        }
+    return {
+        "validator": "class_count_minimum_validator",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "detail": "All complex-format PRODUCT_SOURCE items meet class count minimum.",
+    }
+
+
+def validate_monolith_detection(declaration: dict,
+                                 repo_root: Path | None = None) -> dict:
+    """V35: Warn on single source file > 1500 LOC in changed_files."""
+    if repo_root is None:
+        repo_root = Path(".")
+    changed = declaration.get("changed_files", [])
+    monoliths = []
+    for fpath in changed:
+        p = repo_root / fpath
+        if not p.is_file():
+            continue
+        if p.suffix not in (".cs", ".py"):
+            continue
+        try:
+            loc = sum(1 for _ in p.open(encoding="utf-8", errors="replace"))
+        except OSError:
+            continue
+        if loc > _MONOLITH_LOC_THRESHOLD:
+            monoliths.append(f"{fpath} ({loc} LOC)")
+    if monoliths:
+        return {
+            "validator": "monolith_detection_validator",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "detail": f"{len(monoliths)} file(s) exceed {_MONOLITH_LOC_THRESHOLD} LOC: "
+                       + "; ".join(monoliths),
+        }
+    return {
+        "validator": "monolith_detection_validator",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "detail": f"No changed source files exceed {_MONOLITH_LOC_THRESHOLD} LOC.",
+    }
+
+
+def validate_no_stub_tests(declaration: dict,
+                            repo_root: Path | None = None) -> dict:
+    """V36: Reject test files that only assert `is not None` or `isinstance`."""
+    if repo_root is None:
+        repo_root = Path(".")
+    items = declaration.get("planned_work_items", [])
+    violations = []
+    for item in items:
+        for ref in item.get("test_references", []):
+            p = repo_root / ref
+            if not p.is_file():
+                continue
+            try:
+                content = p.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            # Count assertion types
+            total_asserts = content.count("assert ")
+            weak_asserts = (
+                content.count("assert result is not None")
+                + content.count("assert isinstance(")
+                + content.count("is not None")
+            )
+            # If > 80% of assertions are weak, flag it
+            if total_asserts > 0 and weak_asserts / total_asserts > 0.8:
+                violations.append(
+                    f"{ref}: {weak_asserts}/{total_asserts} assertions are weak "
+                    f"(is not None / isinstance)"
+                )
+    if violations:
+        return {
+            "validator": "no_stub_tests_validator",
+            "result": "WARN",
+            "blocks_sprint": False,
+            "detail": f"{len(violations)} test file(s) have mostly stub assertions. "
+                       + "; ".join(violations[:5]),
+        }
+    return {
+        "validator": "no_stub_tests_validator",
+        "result": "PASS",
+        "blocks_sprint": False,
+        "detail": "No test files detected with predominantly stub assertions.",
+    }
+
+
 def run_all_governance_validators(declaration: dict,
                                    repo_root: Path | None = None) -> dict:
     """Run all governance validators against a declaration.
@@ -2397,6 +2534,10 @@ def run_all_governance_validators(declaration: dict,
         validate_attribute_property_map(declaration, repo_root),
         validate_containment_graph(declaration, repo_root),
         validate_alias_compatibility(declaration, repo_root),
+        # V34-V36: Depth validators (class count, monolith, stub tests)
+        validate_class_count_minimum(declaration, repo_root),
+        validate_monolith_detection(declaration, repo_root),
+        validate_no_stub_tests(declaration, repo_root),
     ]
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")

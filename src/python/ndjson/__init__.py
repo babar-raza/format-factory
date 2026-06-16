@@ -59,6 +59,13 @@ from .ndjson_codec import (
     ndjson_max_record_size,
     ndjson_total_field_count,
     ndjson_unique_field_names,
+    ndjson_nested_field_count,
+    ndjson_boolean_field_count,
+    ndjson_has_nested_objects,
+    ndjson_empty_record_count,
+    ndjson_numeric_field_count,
+    ndjson_average_record_size,
+    ndjson_string_field_count,
 )
 
 __all__ = [
@@ -111,6 +118,13 @@ __all__ = [
     "ndjson_max_record_size",
     "ndjson_total_field_count",
     "ndjson_unique_field_names",
+    "ndjson_nested_field_count",
+    "ndjson_boolean_field_count",
+    "ndjson_has_nested_objects",
+    "ndjson_empty_record_count",
+    "ndjson_numeric_field_count",
+    "ndjson_average_record_size",
+    "ndjson_string_field_count",
 ]
 
 __version__ = "0.1.0.dev0"

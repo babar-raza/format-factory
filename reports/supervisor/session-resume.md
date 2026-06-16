@@ -1,11 +1,11 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-15T19:31:11.075479
+# Generated: 2026-06-16T08:39:11.752942
 
 ## Quick State
-- Last sprint: IDEMPOTENT-SWARM-SPRINT-7
+- Last sprint: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING
 - Evidence verdict: ACCEPTED
-- Tests: 12605 passed / 0 failed
+- Tests: 13395 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -23,62 +23,62 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint7-20260615-915cfd2\declaration-review-package.zip
+- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-idempotent-spec-to-feature-swarm-20260615-e31fa98\declaration-review-package.zip
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- timestamp: 2026-06-15T18:49:10.792549
-- verdict: ACCEPTED_WITH_WARNINGS
-- test_count: 12435
-- fail_count: 4
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\deep-recon-claim-verification-20260615-e31fa98\declaration-review-package-deep-recon-claim-verification-20260615-e31fa98.zip
-- pending_marker_count: 0
-- bundle_entry_count: 22
-- bundle_validation_pass: True
-- test_delta: +12435
-- test_delta_from: 0
-
-## Entry: IDEMPOTENT-SWARM-SPRINT-4
-- timestamp: 2026-06-15T18:53:11.251068
+- timestamp: 2026-06-15T22:49:11.231338
 - verdict: ACCEPTED
-- test_count: 12460
+- test_count: 17762
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint4-20260615-e31fa98\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint28-20260615-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 68
+- bundle_entry_count: 60
 - bundle_validation_pass: True
-- test_delta: +25
-- test_delta_from: 12435
+- test_delta: 0
+- test_delta_from: 17762
 
-## Entry: IDEMPOTENT-SWARM-SPRINT-5
-- timestamp: 2026-06-15T19:03:09.628976
+## Entry: IDEMPOTENT-SWARM-SPRINT-29
+- timestamp: 2026-06-15T22:51:10.603702
 - verdict: ACCEPTED
-- test_count: 12559
+- test_count: 17762
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint5-20260615-915cfd2\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint29-20260615-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 69
+- bundle_entry_count: 60
 - bundle_validation_pass: True
-- test_delta: +99
-- test_delta_from: 12460
+- test_delta: 0
+- test_delta_from: 17762
 
-## Entry: IDEMPOTENT-SWARM-SPRINT-6
-- timestamp: 2026-06-15T19:09:08.459374
+## Entry: IDEMPOTENT-SWARM-SPRINT-30
+- timestamp: 2026-06-15T22:55:10.409089
 - verdict: ACCEPTED
-- test_count: 12597
+- test_count: 17762
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint6-20260615-915cfd2\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint30-20260615-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 69
+- bundle_entry_count: 60
 - bundle_validation_pass: True
-- test_delta: +38
-- test_delta_from: 12559
+- test_delta: 0
+- test_delta_from: 17762
+
+## Entry: IDEMPOTENT-SWARM-SPRINT-31
+- timestamp: 2026-06-16T08:05:24.967966
+- verdict: ACCEPTED
+- test_count: 18023
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint31-20260615-915cfd2\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+- test_delta: +261
+- test_delta_from: 17762
 ```
 
 ## IMPORTANT REMINDERS

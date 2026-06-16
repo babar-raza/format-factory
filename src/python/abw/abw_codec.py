@@ -1003,6 +1003,39 @@ def abw_average_word_length(file_path: "str | bytes | Path") -> float:
     return total_chars / total_words
 
 
+def abw_max_paragraph_length(file_path: "str | bytes | Path") -> int:
+    """Return the character count of the longest paragraph.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Integer length of longest paragraph. Returns 0 if no paragraphs.
+    """
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    if not paragraphs:
+        return 0
+    return max(len(p) for p in paragraphs)
+
+
+def abw_unique_word_count(file_path: "str | bytes | Path") -> int:
+    """Return the number of distinct words (case-insensitive) across all paragraphs.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Integer count of unique words.
+    """
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    words: set[str] = set()
+    for p in paragraphs:
+        words.update(w.lower() for w in p.split())
+    return len(words)
+
+
 def get_paragraphs(model: dict) -> list[str]:
     """Return a copy of all paragraph texts from a loaded ABW model.
 
@@ -1018,3 +1051,75 @@ def get_paragraphs(model: dict) -> list[str]:
     if not isinstance(model, dict):
         raise TypeError("model must be a dict")
     return list(model.get("paragraphs", []))
+
+
+def abw_paragraph_count(file_path: "str | bytes | Path") -> int:
+    """Return the number of paragraphs in an ABW file.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        Integer count of paragraphs.
+    """
+    model = load(file_path)
+    return len(model.get("paragraphs", []))
+
+
+def abw_shortest_word(file_path: "str | bytes | Path") -> str:
+    """Return the shortest word in the ABW document.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        The shortest word string. Empty string if no words.
+    """
+    model = load(file_path)
+    paragraphs = model.get("paragraphs", [])
+    shortest = ""
+    for para in paragraphs:
+        text = para if isinstance(para, str) else para.get("text", "") if isinstance(para, dict) else ""
+        if isinstance(text, str):
+            for word in text.split():
+                if word and (not shortest or len(word) < len(shortest)):
+                    shortest = word
+    return shortest
+
+
+def abw_has_sections(file_path: "str | bytes | Path") -> bool:
+    """Return True if the ABW file contains section elements.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        True if section count > 0.
+    """
+    model = load(file_path)
+    return model.get("section_count", 0) > 0
+
+
+def abw_has_metadata(file_path: "str | bytes | Path") -> bool:
+    """Return True if the ABW file contains any metadata fields.
+
+    Args:
+        file_path: Path to an ABW file.
+
+    Returns:
+        True if metadata dict is non-empty.
+    """
+    model = load(file_path)
+    meta = model.get("metadata", {})
+    return bool(meta)
+
+
+def abw_total_word_count(file_path: "str | bytes | Path") -> int:
+    """Return the total number of words across all paragraphs."""
+    model = load(file_path)
+    total = 0
+    for para in model.get("paragraphs", []):
+        text = para if isinstance(para, str) else para.get("text", "") if isinstance(para, dict) else ""
+        if isinstance(text, str):
+            total += len(text.split())
+    return total

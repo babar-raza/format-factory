@@ -1025,3 +1025,83 @@ def tsv_duplicate_row_count(file_path: "str | Path") -> int:
         else:
             seen.add(key)
     return count
+
+
+def tsv_total_cell_count(file_path: "str | Path") -> int:
+    """Return the total number of cells in the TSV file (rows * columns).
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer total cell count.
+    """
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    return sum(len(row) for row in rows)
+
+
+def tsv_average_cell_length(file_path: "str | Path") -> float:
+    """Return the average character length of non-empty cells.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Float average length. Returns 0.0 if no non-empty cells exist.
+    """
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    lengths = [len(cell) for row in rows for cell in row if cell]
+    if not lengths:
+        return 0.0
+    return sum(lengths) / len(lengths)
+
+
+def tsv_numeric_density(file_path: "str | Path") -> float:
+    """Return the fraction of cells that are numeric.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Float in [0.0, 1.0]. 0.0 if no cells.
+    """
+    doc = parse_tsv_strict(file_path)
+    total = 0
+    numeric = 0
+    for row in doc.get("rows", []):
+        for cell in row:
+            total += 1
+            try:
+                float(cell)
+                numeric += 1
+            except (ValueError, TypeError):
+                pass
+    if total == 0:
+        return 0.0
+    return numeric / total
+
+
+def tsv_unique_row_count(file_path: "str | Path") -> int:
+    """Return the number of unique rows in the TSV file.
+
+    Args:
+        file_path: Path to a TSV file.
+
+    Returns:
+        Integer count of distinct rows.
+    """
+    doc = parse_tsv_strict(file_path)
+    rows = doc.get("rows", [])
+    seen: set[tuple[str, ...]] = set()
+    for row in rows:
+        seen.add(tuple(str(c) for c in row))
+    return len(seen)
+
+
+def tsv_header_count(file_path: "str | Path") -> int:
+    """Return the number of header columns in the TSV file."""
+    doc = parse_tsv_strict(file_path)
+    headers = doc.get("headers", [])
+    return len(headers) if headers else 0

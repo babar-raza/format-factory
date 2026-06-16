@@ -2,12 +2,12 @@
   "schema_version": "1.0",
   "description": "Baseline test count snapshot for test_bare_pytest_count_near_baseline. Updated by sprint tooling whenever the count drifts beyond tolerance. Preferred over hard-coded constant because it is machine-readable and can be updated without touching test source.",
   "baseline": {
-    "total_tests": 21316,
+    "total_tests": 23273,
     "tolerance": 1000,
     "command": "python -m pytest --collect-only -q",
-    "measured_date": "2026-06-15",
-    "measured_by": "test-fix-plan-phase1-20260615",
-    "reason": "5th update: test suite grew to 21316 across product deepening + supervisor pipeline + governance sprints."
+    "measured_date": "2026-06-16",
+    "measured_by": "plan-hardening-sprint-20260616-fba0d4c",
+    "reason": "6th update: test suite grew to 23273 from dogfood tests (71 files), product deepening analytics (16 functions), and gap closure tests."
   },
   "update_policy": {
     "trigger": "abs(actual - baseline) >= tolerance",
@@ -20,6 +20,7 @@
     {"total_tests": 15497, "measured_date": "2026-06-11", "note": "update-2: supervisor pipeline added ~501 new test files"},
     {"total_tests": 16127, "measured_date": "2026-06-11", "note": "update-3: SAL integration hardening + further supervisor pipeline generation"},
     {"total_tests": 16473, "measured_date": "2026-06-11", "note": "update-4: continued supervisor pipeline generation, delta=346"},
-    {"total_tests": 21316, "measured_date": "2026-06-15", "note": "update-5: product deepening + supervisor pipeline + governance sprints"}
+    {"total_tests": 21316, "measured_date": "2026-06-15", "note": "update-5: product deepening + supervisor pipeline + governance sprints"},
+    {"total_tests": 23273, "measured_date": "2026-06-16", "note": "update-6: dogfood tests (71 files) + product deepening analytics + gap closure tests"}
   ]
 }

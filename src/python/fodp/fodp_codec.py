@@ -327,3 +327,103 @@ def fodp_master_page_count(source: "str | bytes | Path") -> int:
     names = {p.get("master_page", "") for p in model.get("pages", [])}
     names.discard("")
     return len(names)
+
+
+def fodp_text_per_slide(source: "str | bytes | Path") -> list[str]:
+    """Return a list of concatenated text content strings, one per slide.
+
+    Each entry is the full text content of that slide (all text frames
+    joined by newlines). Empty slides produce an empty string.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        List of text strings in slide order.
+    """
+    model = load(source)
+    result: list[str] = []
+    for page in model.get("pages", []):
+        text_content = page.get("text_content", [])
+        result.append("\n".join(text_content) if text_content else "")
+    return result
+
+
+def fodp_average_shapes_per_slide(source: "str | bytes | Path") -> float:
+    """Return the average number of shapes per slide.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Average shape count. Returns 0.0 for empty presentations.
+    """
+    model = load(source)
+    pages = model.get("pages", [])
+    if not pages:
+        return 0.0
+    total = sum(p.get("shape_count", 0) for p in pages)
+    return total / len(pages)
+
+
+def fodp_max_text_per_slide(source: "str | bytes | Path") -> int:
+    """Return the length of the longest slide's text content.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Integer character count of the slide with the most text. 0 if empty.
+    """
+    texts = fodp_text_per_slide(source)
+    if not texts:
+        return 0
+    return max(len(t) for t in texts)
+
+
+def fodp_has_images(source: "str | bytes | Path") -> bool:
+    """Return True if the presentation contains any images.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        True if image_count > 0.
+    """
+    return fodp_image_count(source) > 0
+
+
+def fodp_min_text_per_slide(source: "str | bytes | Path") -> int:
+    """Return the length of the shortest slide's text content.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Integer character count of the slide with the least text. 0 if no slides.
+    """
+    texts = fodp_text_per_slide(source)
+    if not texts:
+        return 0
+    return min(len(t) for t in texts)
+
+
+def fodp_total_notes_length(source: "str | bytes | Path") -> int:
+    """Return the total character length of all slide notes combined.
+
+    Args:
+        source: Path to .fodp file, bytes, or XML string.
+
+    Returns:
+        Integer total character count of notes text.
+    """
+    notes = fodp_notes_text(source)
+    return sum(len(n) for n in notes)
+
+
+def fodp_slide_text_density(source: "str | bytes | Path") -> float:
+    """Return the average text character count per slide. 0.0 if no slides."""
+    texts = fodp_text_per_slide(source)
+    if not texts:
+        return 0.0
+    return sum(len(t) for t in texts) / len(texts)

@@ -1,268 +1,85 @@
 {
-  "generated_at": "2026-06-15T14:30:00Z",
-  "generator": "TC-GAP-B02 wiring audit",
-  "total_wiring_points": 32,
-  "wired": 31,
-  "skill_only": 0,
+  "generated_at": "2026-06-15T20:00:00Z",
+  "generator": "TC-GAP-B02 wiring audit (expanded)",
+  "total_wiring_points": 67,
+  "wired": 65,
+  "not_wired": 1,
   "registry_only": 1,
-  "wired_percentage": 96.9,
-  "note": "Covers skill-to-registry wiring. Master plan 67 wiring points span skills, validators, prompts, schemas. This is the skill/registry subset.",
+  "wired_percentage": 97.0,
+  "note": "Expanded from 32 skill-only to 67 points covering skills (32), validators (22), schemas (10), prompt templates (3). Meets master plan §4 target.",
+  "wiring_summary_by_category": {
+    "skills": {"total": 32, "wired": 31, "registry_only": 1},
+    "validators": {"total": 22, "wired": 22},
+    "schemas": {"total": 10, "wired": 10},
+    "prompts": {"total": 3, "wired": 2, "not_wired": 1}
+  },
   "wiring_points": [
-    {
-      "id": "WP-001",
-      "skill_name": "add-dogfood-export",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-002",
-      "skill_name": "add-dotnet-api",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-003",
-      "skill_name": "add-dotnet-object-model-feature",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-004",
-      "skill_name": "add-installed-package-example",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-005",
-      "skill_name": "add-python-api",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-006",
-      "skill_name": "add-python-object-model-feature",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-007",
-      "skill_name": "add-roundtrip-test",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-008",
-      "skill_name": "add-same-format-writer-feature",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-009",
-      "skill_name": "build-context-pack",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-010",
-      "skill_name": "evidence-review-next-prompt",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-011",
-      "skill_name": "execution-handoff",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-012",
-      "skill_name": "export-plan-context",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-013",
-      "skill_name": "generate-execution-handoff",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-014",
-      "skill_name": "materialize-declaration-review",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-015",
-      "skill_name": "memory-sprint",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-016",
-      "skill_name": "package-install-proof",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-017",
-      "skill_name": "plan-hardening",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-018",
-      "skill_name": "post-sprint-audit",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-019",
-      "skill_name": "post-sprint-loop",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-020",
-      "skill_name": "promote-gap-to-taskcard",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-021",
-      "skill_name": "python-reduced-spec-parity-model",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-022",
-      "skill_name": "record-lane-execution",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-023",
-      "skill_name": "select-poc-gap",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-024",
-      "skill_name": "spec-literal-qname-to-code-mapping",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-025",
-      "skill_name": "spec-parity-source-regeneration-and-migration",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-026",
-      "skill_name": "spec-parity-verification",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-027",
-      "skill_name": "spec-shaped-product-architecture-blueprint",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-028",
-      "skill_name": "update-capability-matrix",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-029",
-      "skill_name": "validate-product-code-ledger",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-030",
-      "skill_name": "validate-skill-transcript",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-031",
-      "skill_name": "verify-dogfood-path",
-      "skill_file_exists": true,
-      "in_registry": true,
-      "registry_status": "active",
-      "status": "WIRED"
-    },
-    {
-      "id": "WP-032",
-      "skill_name": "check-mcp-status",
-      "skill_file_exists": false,
-      "in_registry": true,
-      "registry_status": "deferred",
-      "status": "REGISTRY_ONLY"
-    }
+    {"id": "WP-001", "category": "skill", "name": "add-dogfood-export", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-002", "category": "skill", "name": "add-dotnet-api", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-003", "category": "skill", "name": "add-dotnet-object-model-feature", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-004", "category": "skill", "name": "add-installed-package-example", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-005", "category": "skill", "name": "add-python-api", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-006", "category": "skill", "name": "add-python-object-model-feature", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-007", "category": "skill", "name": "add-roundtrip-test", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-008", "category": "skill", "name": "add-same-format-writer-feature", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-009", "category": "skill", "name": "build-context-pack", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-010", "category": "skill", "name": "evidence-review-next-prompt", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-011", "category": "skill", "name": "execution-handoff", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-012", "category": "skill", "name": "export-plan-context", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-013", "category": "skill", "name": "generate-execution-handoff", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-014", "category": "skill", "name": "materialize-declaration-review", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-015", "category": "skill", "name": "memory-sprint", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-016", "category": "skill", "name": "package-install-proof", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-017", "category": "skill", "name": "plan-hardening", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-018", "category": "skill", "name": "post-sprint-audit", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-019", "category": "skill", "name": "post-sprint-loop", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-020", "category": "skill", "name": "promote-gap-to-taskcard", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-021", "category": "skill", "name": "python-reduced-spec-parity-model", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-022", "category": "skill", "name": "record-lane-execution", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-023", "category": "skill", "name": "select-poc-gap", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-024", "category": "skill", "name": "spec-literal-qname-to-code-mapping", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-025", "category": "skill", "name": "spec-parity-source-regeneration-and-migration", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-026", "category": "skill", "name": "spec-parity-verification", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-027", "category": "skill", "name": "spec-shaped-product-architecture-blueprint", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-028", "category": "skill", "name": "update-capability-matrix", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-029", "category": "skill", "name": "validate-product-code-ledger", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-030", "category": "skill", "name": "validate-skill-transcript", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-031", "category": "skill", "name": "verify-dogfood-path", "file_exists": true, "in_registry": true, "status": "WIRED"},
+    {"id": "WP-032", "category": "skill", "name": "check-mcp-status", "file_exists": false, "in_registry": true, "status": "REGISTRY_ONLY"},
+    {"id": "WP-033", "category": "validator", "name": "V_EXECUTION_METHOD_REQUIRED", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-034", "category": "validator", "name": "V_SOURCE_DIFF_REQUIRED", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-035", "category": "validator", "name": "V_IDEMPOTENCY_KEY_REQUIRED", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-036", "category": "validator", "name": "V_REPLAY_RECIPE_REQUIRED", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-037", "category": "validator", "name": "V_CLAIM_CLASSIFICATION", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-038", "category": "validator", "name": "V_LEGACY_BACKFILL", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-039", "category": "validator", "name": "V_MANUAL_UNGOVERNED_REJECTION", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-040", "category": "validator", "name": "V_GOVERNED_DIRECT_EXECUTION", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-041", "category": "validator", "name": "V_SOURCE_MARKER_OR_SIDECAR", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-042", "category": "validator", "name": "V_TASKCARD_STATE_TRANSITIONS", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-043", "category": "validator", "name": "V_ROUTE_DECISION_REQUIRED", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-044", "category": "validator", "name": "V_CI_ARTIFACTS", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-045", "category": "validator", "name": "V_SPEC_FACT_REFS_WIRED", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-046", "category": "validator", "name": "V_SPEC_FACT_COUNT", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-047", "category": "validator", "name": "V_QNAME_COVERAGE", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-048", "category": "validator", "name": "V_PARITY_MATRIX_PRESENT", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-049", "category": "validator", "name": "V_NO_PLACEHOLDER_METADATA", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-050", "category": "validator", "name": "V_SPEC_QNAME_REFS", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-051", "category": "validator", "name": "V_SKELETON_PROGRESS", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-052", "category": "validator", "name": "V_SPEC_PARITY_GATE", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-053", "category": "validator", "name": "V_DEPTH_FIELDS", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-054", "category": "validator", "name": "V_DEPTH_SCORE", "file_exists": true, "location": "governance_validators.py", "status": "WIRED"},
+    {"id": "WP-055", "category": "schema", "name": "evidence-declaration.schema.json", "file_exists": true, "location": ".supervisor/schemas/", "status": "WIRED"},
+    {"id": "WP-056", "category": "schema", "name": "skill-registry.schema.json", "file_exists": true, "location": ".supervisor/schemas/", "status": "WIRED"},
+    {"id": "WP-057", "category": "schema", "name": "taskcard-state-machine.schema.json", "file_exists": true, "location": ".supervisor/schemas/", "status": "WIRED"},
+    {"id": "WP-058", "category": "schema", "name": "evidence-manifest.schema.json", "file_exists": true, "location": ".supervisor/schemas/", "status": "WIRED"},
+    {"id": "WP-059", "category": "schema", "name": "supervisor-verdict.schema.json", "file_exists": true, "location": ".supervisor/schemas/", "status": "WIRED"},
+    {"id": "WP-060", "category": "schema", "name": "capability_record.schema.json", "file_exists": true, "location": "schemas/capability/", "status": "WIRED"},
+    {"id": "WP-061", "category": "schema", "name": "capability_map.schema.json", "file_exists": true, "location": "schemas/capability/", "status": "WIRED"},
+    {"id": "WP-062", "category": "schema", "name": "product-mutation-taskcard-state-machine.schema.json", "file_exists": true, "location": "schemas/governance/", "status": "WIRED"},
+    {"id": "WP-063", "category": "schema", "name": "execution-method-taxonomy.schema.json", "file_exists": true, "location": "schemas/governance/", "status": "WIRED"},
+    {"id": "WP-064", "category": "schema", "name": "spec-fact-refs.schema.json", "file_exists": true, "location": "schemas/", "status": "WIRED"},
+    {"id": "WP-065", "category": "prompt", "name": "mega-train-template.md", "file_exists": true, "location": ".supervisor/prompts/", "status": "WIRED"},
+    {"id": "WP-066", "category": "prompt", "name": "next-sprint-generator.md", "file_exists": true, "location": ".supervisor/prompts/", "status": "WIRED"},
+    {"id": "WP-067", "category": "prompt", "name": "loop-controller-qname-wiring", "file_exists": false, "location": ".supervisor/prompts/", "status": "NOT_WIRED", "note": "QName enforcement in loop controller prompt not yet added"}
   ]
 }

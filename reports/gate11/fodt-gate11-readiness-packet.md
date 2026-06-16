@@ -25,14 +25,14 @@
 |------|--------|-------------------|
 | G1 (Candidate Approval) | PASSED | `prototypes/by-format/fodt/` exists |
 | G2 (Spec Authority) | PASSED | OASIS ODF 1.3 spec acquired |
-| G3 (Prototype Execution) | PASSED | `src/python/fodt/` + 712 Python test functions |
+| G3 (Prototype Execution) | PASSED | `src/python/fodt/` + 1027 Python test functions |
 | G4 (Parser Prototype) | PASSED | `src/python/fodt/parser.py` — streaming XML, depth-tracking |
 | G5 (Neutral Model) | PASSED | `src/python/fodt/neutral_model.py` — 8 entities (Document/Block/List/ListItem/Table/TableRow/TableCell + Note) |
 | G6 (Oracle Comparison) | PASSED | Oracle tests exist, TXT/HTML export verified |
 | G7 (Fuzz/Security) | PASSED | 100MB guard, DTD prohibited, defusedxml, malformed-XML tests |
 | G8 (Security Review) | PASSED | defusedxml, DTD prohibited, bounds checking |
 | G9 (Dogfood) | PASSED | FODT→TXT/HTML export chain verified |
-| G10 (FOSS POC Complete) | PASSED (Python) | 712 Python test functions; parse→inspect→export verified |
+| G10 (FOSS POC Complete) | PASSED (Python) | 1027 Python test functions; parse→inspect→export verified |
 | G11-E (.NET prototype) | IN_PROGRESS | .NET: FodtParser.cs + FodtWriter.cs + 145 .NET tests |
 | G11-G (Commercial readiness) | NOT APPROVED | Requires Babar Raza approval |
 

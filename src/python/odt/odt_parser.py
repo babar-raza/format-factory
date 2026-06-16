@@ -357,3 +357,66 @@ def odt_sentence_count(file_path: str | Path) -> int:
         if isinstance(text, str) and text:
             total += len(re.findall(r"[.!?]+", text))
     return total
+
+
+def odt_average_word_length(file_path: str | Path) -> float:
+    """Return the average word length (characters per word) in an ODT document.
+
+    Args:
+        file_path: Path to .odt file.
+
+    Returns:
+        Float average word length. Returns 0.0 if document has no words.
+    """
+    doc = parse_odt_strict(file_path)
+    words: list[str] = []
+    for elem in doc.elements:
+        text = getattr(elem, "text", "")
+        if isinstance(text, str) and text:
+            words.extend(text.split())
+    if not words:
+        return 0.0
+    return sum(len(w) for w in words) / len(words)
+
+
+def odt_unique_word_count(file_path: str | Path) -> int:
+    """Return the number of distinct words (case-insensitive) in an ODT document.
+
+    Args:
+        file_path: Path to .odt file.
+
+    Returns:
+        Integer count of unique words.
+    """
+    doc = parse_odt_strict(file_path)
+    unique: set[str] = set()
+    for elem in doc.elements:
+        text = getattr(elem, "text", "")
+        if isinstance(text, str) and text:
+            unique.update(w.lower() for w in text.split())
+    return len(unique)
+
+
+def odt_longest_paragraph(file_path: str | Path) -> int:
+    """Return the character count of the longest paragraph in an ODT document.
+
+    Returns 0 if no paragraphs exist.
+    """
+    doc = parse_odt_strict(file_path)
+    max_len = 0
+    for elem in doc.elements:
+        elem_type = getattr(elem, "type", getattr(elem, "tag", ""))
+        text = getattr(elem, "text", "")
+        if isinstance(text, str) and ("paragraph" in str(elem_type).lower() or "p" == str(elem_type).lower()):
+            max_len = max(max_len, len(text))
+    if max_len == 0:
+        for elem in doc.elements:
+            text = getattr(elem, "text", "")
+            if isinstance(text, str):
+                max_len = max(max_len, len(text))
+    return max_len
+
+
+def odt_has_tables(file_path: str | Path) -> bool:
+    """Return True if the ODT document contains at least one table."""
+    return odt_table_count(file_path) > 0

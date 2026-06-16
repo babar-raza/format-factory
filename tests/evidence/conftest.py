@@ -13,11 +13,7 @@ import pytest
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _LOCAL_DIR = _REPO_ROOT / ".local"
-_IN_CI = os.getenv("CI") == "true"
-_LOCAL_POPULATED = _LOCAL_DIR.exists() and any(_LOCAL_DIR.iterdir())
 
-# Skip evidence tests when running in CI or when .local/ is not populated
-_SHOULD_SKIP = _IN_CI or not _LOCAL_POPULATED
 _SKIP_REASON = (
     "evidence tests require .local/ artifacts (gitignored); "
     "set CI != 'true' and populate .local/ to run locally"
@@ -25,8 +21,14 @@ _SKIP_REASON = (
 
 
 def pytest_collection_modifyitems(config, items):
-    """Skip evidence tests in CI where .local/ artifacts are absent."""
-    if not _SHOULD_SKIP:
+    """Skip evidence tests in CI where .local/ artifacts are absent.
+
+    Evaluates CI env and .local/ presence at collection time (not import time)
+    to avoid caching stale values when other tests manipulate os.environ.
+    """
+    in_ci = os.getenv("CI") == "true"
+    local_populated = _LOCAL_DIR.exists() and any(_LOCAL_DIR.iterdir())
+    if not in_ci and local_populated:
         return
     skip_marker = pytest.mark.skip(reason=_SKIP_REASON)
     for item in items:

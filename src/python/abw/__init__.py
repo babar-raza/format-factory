@@ -64,6 +64,13 @@ from .abw_codec import (
     abw_empty_paragraph_count,
     abw_nonempty_paragraph_count,
     abw_average_word_length,
+    abw_max_paragraph_length,
+    abw_unique_word_count,
+    abw_paragraph_count,
+    abw_shortest_word,
+    abw_has_sections,
+    abw_has_metadata,
+    abw_total_word_count,
     get_paragraphs,
 )
 
@@ -123,6 +130,13 @@ __all__ = [
     "abw_empty_paragraph_count",
     "abw_nonempty_paragraph_count",
     "abw_average_word_length",
+    "abw_max_paragraph_length",
+    "abw_unique_word_count",
+    "abw_paragraph_count",
+    "abw_shortest_word",
+    "abw_has_sections",
+    "abw_has_metadata",
+    "abw_total_word_count",
     "get_paragraphs",
 ]
 

@@ -26,6 +26,13 @@ from .fodp_codec import (
     fodp_image_count,
     fodp_empty_slide_count,
     fodp_master_page_count,
+    fodp_text_per_slide,
+    fodp_average_shapes_per_slide,
+    fodp_max_text_per_slide,
+    fodp_has_images,
+    fodp_min_text_per_slide,
+    fodp_total_notes_length,
+    fodp_slide_text_density,
 )
 
 __all__ = [
@@ -45,6 +52,13 @@ __all__ = [
     "fodp_image_count",
     "fodp_empty_slide_count",
     "fodp_master_page_count",
+    "fodp_text_per_slide",
+    "fodp_average_shapes_per_slide",
+    "fodp_max_text_per_slide",
+    "fodp_has_images",
+    "fodp_min_text_per_slide",
+    "fodp_total_notes_length",
+    "fodp_slide_text_density",
 ]
 
 __version__ = "0.1.0.dev0"

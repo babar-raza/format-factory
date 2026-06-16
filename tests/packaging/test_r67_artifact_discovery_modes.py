@@ -75,42 +75,28 @@ class TestExtractedBundleMode:
 class TestEnvVarOverrideMode:
     """Env-var override mode: FORMAT_FACTORY_BUNDLE_METADATA_DIR with sprint-id.txt."""
 
-    def test_env_var_r99999_with_sprint_id_returns_none(self):
+    def test_env_var_r99999_with_sprint_id_returns_none(self, monkeypatch):
         with tempfile.TemporaryDirectory() as td:
             bm = Path(td)
             (bm / "sprint-id.txt").write_text("R66\n", encoding="utf-8")
             art = bm / "package-artifacts"
             art.mkdir()
             (art / "fake-0.1.0-py3-none-any.whl").write_bytes(b"PK\x03\x04")
-            old = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR")
-            try:
-                os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(bm)
-                assert find_artifact_dir("r99999", PROJECT_ROOT) is None
-            finally:
-                if old is None:
-                    os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
-                else:
-                    os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = old
+            monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(bm))
+            assert find_artifact_dir("r99999", PROJECT_ROOT) is None
 
-    def test_env_var_correct_run_returns_path(self):
+    def test_env_var_correct_run_returns_path(self, monkeypatch):
         with tempfile.TemporaryDirectory() as td:
             bm = Path(td)
             (bm / "sprint-id.txt").write_text("R66\n", encoding="utf-8")
             art = bm / "package-artifacts"
             art.mkdir()
             (art / "fake-0.1.0-py3-none-any.whl").write_bytes(b"PK\x03\x04")
-            old = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR")
-            try:
-                os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(bm)
-                result = find_artifact_dir("r66", PROJECT_ROOT)
-                assert result == art
-            finally:
-                if old is None:
-                    os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
-                else:
-                    os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = old
+            monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(bm))
+            result = find_artifact_dir("r66", PROJECT_ROOT)
+            assert result == art
 
-    def test_env_var_no_sprint_id_backward_compat(self):
+    def test_env_var_no_sprint_id_backward_compat(self, monkeypatch):
         """Without sprint-id.txt, env-var override matches any run."""
         with tempfile.TemporaryDirectory() as td:
             bm = Path(td)
@@ -118,13 +104,6 @@ class TestEnvVarOverrideMode:
             art = bm / "package-artifacts"
             art.mkdir()
             (art / "fake-0.1.0-py3-none-any.whl").write_bytes(b"PK\x03\x04")
-            old = os.environ.get("FORMAT_FACTORY_BUNDLE_METADATA_DIR")
-            try:
-                os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = str(bm)
-                result = find_artifact_dir("r99999", PROJECT_ROOT)
-                assert result is not None, "Without sprint-id.txt, env-var allows any run"
-            finally:
-                if old is None:
-                    os.environ.pop("FORMAT_FACTORY_BUNDLE_METADATA_DIR", None)
-                else:
-                    os.environ["FORMAT_FACTORY_BUNDLE_METADATA_DIR"] = old
+            monkeypatch.setenv("FORMAT_FACTORY_BUNDLE_METADATA_DIR", str(bm))
+            result = find_artifact_dir("r99999", PROJECT_ROOT)
+            assert result is not None, "Without sprint-id.txt, env-var allows any run"

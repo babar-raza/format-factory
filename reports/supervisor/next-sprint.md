@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: IDEMPOTENT-SWARM-SPRINT-7
+# Source sprint: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING
 # Stream: mainstream
-# Generated: 2026-06-15T19:31:11.040822
+# Generated: 2026-06-16T08:39:11.724798
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +11,9 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: IDEMPOTENT-SWARM-SPRINT-7
+- Sprint ID: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING
 - Evidence verdict: ACCEPTED
-- Tests: 12605 passed, 0 failed, 42 skipped
+- Tests: 13395 passed, 0 failed, 37 skipped
 - Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -44,9 +44,9 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 - [agent-owned] TASK-006: Prepare FODT Gate 11 readiness packet and commercial checklist
 - [external-gate] TASK-007: Submit FODT Gate 11 for Babar Raza approval (after packet ready — human required)
 - [pending] TASK-008: Continue ZST implementation toward Gate 11 readiness criteria
-- [pending] TASK-009: Work on open taskcard: ABW-GATE4-001-parser-prototype
-- [pending] TASK-010: Work on open taskcard: AI-USAGE-LEDGER-AND-METRICS
-- [pending] TASK-011: Work on open taskcard: EVIDENCE-HYGIENE-ENFORCEMENT
+- [pending] TASK-009: Work on open taskcard: FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG
+- [pending] TASK-010: Work on open taskcard: FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG
+- [pending] TASK-011: Work on open taskcard: NEXT-COMMERCIAL-IMPLEMENTATION-SWARM
 - [pending] TASK-012: Product deepening: GAP-ABW-FOSS-LOAD-001 — GAP-ABW-FOSS-LOAD-001
 - [pending] TASK-013: Product deepening: GAP-FODG-FOSS-LOAD-001 — GAP-FODG-FOSS-LOAD-001
 - [pending] TASK-014: Product deepening: GAP-Gnumeric-FOSS-LOAD-001 — GAP-Gnumeric-FOSS-LOAD-001
@@ -92,56 +92,56 @@ None
 
 ## Project Memory Context
 ```
-- timestamp: 2026-06-15T18:49:10.792549
-- verdict: ACCEPTED_WITH_WARNINGS
-- test_count: 12435
-- fail_count: 4
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\evidences\deep-recon-claim-verification-20260615-e31fa98\declaration-review-package-deep-recon-claim-verification-20260615-e31fa98.zip
-- pending_marker_count: 0
-- bundle_entry_count: 22
-- bundle_validation_pass: True
-- test_delta: +12435
-- test_delta_from: 0
-
-## Entry: IDEMPOTENT-SWARM-SPRINT-4
-- timestamp: 2026-06-15T18:53:11.251068
+- timestamp: 2026-06-15T22:49:11.231338
 - verdict: ACCEPTED
-- test_count: 12460
+- test_count: 17762
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint4-20260615-e31fa98\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint28-20260615-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 68
+- bundle_entry_count: 60
 - bundle_validation_pass: True
-- test_delta: +25
-- test_delta_from: 12435
+- test_delta: 0
+- test_delta_from: 17762
 
-## Entry: IDEMPOTENT-SWARM-SPRINT-5
-- timestamp: 2026-06-15T19:03:09.628976
+## Entry: IDEMPOTENT-SWARM-SPRINT-29
+- timestamp: 2026-06-15T22:51:10.603702
 - verdict: ACCEPTED
-- test_count: 12559
+- test_count: 17762
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint5-20260615-915cfd2\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint29-20260615-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 69
+- bundle_entry_count: 60
 - bundle_validation_pass: True
-- test_delta: +99
-- test_delta_from: 12460
+- test_delta: 0
+- test_delta_from: 17762
 
-## Entry: IDEMPOTENT-SWARM-SPRINT-6
-- timestamp: 2026-06-15T19:09:08.459374
+## Entry: IDEMPOTENT-SWARM-SPRINT-30
+- timestamp: 2026-06-15T22:55:10.409089
 - verdict: ACCEPTED
-- test_count: 12597
+- test_count: 17762
 - fail_count: 0
 - git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint6-20260615-915cfd2\declaration-review-package.zip
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint30-20260615-915cfd2\declaration-review-package.zip
 - pending_marker_count: 0
-- bundle_entry_count: 69
+- bundle_entry_count: 60
 - bundle_validation_pass: True
-- test_delta: +38
-- test_delta_from: 12559
+- test_delta: 0
+- test_delta_from: 17762
+
+## Entry: IDEMPOTENT-SWARM-SPRINT-31
+- timestamp: 2026-06-16T08:05:24.967966
+- verdict: ACCEPTED
+- test_count: 18023
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint31-20260615-915cfd2\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 60
+- bundle_validation_pass: True
+- test_delta: +261
+- test_delta_from: 17762
 ```
 
 ---

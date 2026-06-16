@@ -1207,3 +1207,120 @@ def ndjson_unique_field_names(source: "Any") -> list[str]:
         if isinstance(r, dict):
             names.update(r.keys())
     return sorted(names)
+
+
+def ndjson_nested_field_count(source: "Any") -> int:
+    """Return the total number of fields whose values are dicts or lists.
+
+    Counts across all records. Only top-level fields of dict records are examined.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Integer count of nested (dict or list) field values.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    count = 0
+    for r in records:
+        if isinstance(r, dict):
+            count += sum(1 for v in r.values() if isinstance(v, (dict, list)))
+    return count
+
+
+def ndjson_boolean_field_count(source: "Any") -> int:
+    """Return the total number of boolean field values across all records.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Integer count of boolean values.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    count = 0
+    for r in records:
+        if isinstance(r, dict):
+            count += sum(1 for v in r.values() if isinstance(v, bool))
+    return count
+
+
+def ndjson_has_nested_objects(source: "Any") -> bool:
+    """Return True if any record contains a nested dict or list value.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        True if at least one field value is a dict or list.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, (dict, list)):
+                    return True
+    return False
+
+
+def ndjson_empty_record_count(source: "Any") -> int:
+    """Return the number of records that have zero fields.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Integer count of empty dict records.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    return sum(1 for r in records if isinstance(r, dict) and len(r) == 0)
+
+
+def ndjson_numeric_field_count(source: "Any") -> int:
+    """Return the total count of fields with numeric values across all records.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Integer count of numeric-valued fields.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    count = 0
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, (int, float)) and not isinstance(v, bool):
+                    count += 1
+    return count
+
+
+def ndjson_average_record_size(source: "Any") -> float:
+    """Return the average number of fields per record.
+
+    Args:
+        source: List of records or path/string/bytes to NDJSON file.
+
+    Returns:
+        Float average. 0.0 if no records.
+    """
+    records = source if isinstance(source, list) else load_ndjson(source)
+    if not records:
+        return 0.0
+    total = sum(len(r) for r in records if isinstance(r, dict))
+    dict_count = sum(1 for r in records if isinstance(r, dict))
+    if dict_count == 0:
+        return 0.0
+    return total / dict_count
+
+
+def ndjson_string_field_count(source: "Any") -> int:
+    """Return the total count of string-valued fields across all records."""
+    records = source if isinstance(source, list) else load_ndjson(source)
+    count = 0
+    for r in records:
+        if isinstance(r, dict):
+            for v in r.values():
+                if isinstance(v, str):
+                    count += 1
+    return count

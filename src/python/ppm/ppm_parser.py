@@ -752,3 +752,92 @@ def ppm_aspect_ratio(file_path: str | Path) -> float:
     if img.height == 0:
         return 0.0
     return img.width / img.height
+
+
+def ppm_dominant_channel(file_path: str | Path) -> str:
+    """Return the dominant color channel ('red', 'green', or 'blue') of a PPM image.
+
+    The dominant channel is the one with the highest sum of pixel values.
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        String 'red', 'green', or 'blue'. Returns 'red' for empty images (tie-break).
+
+    Raises:
+        PpmError: If the file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return "red"
+    r_sum = sum(p[0] for p in img.pixels)
+    g_sum = sum(p[1] for p in img.pixels)
+    b_sum = sum(p[2] for p in img.pixels)
+    if r_sum >= g_sum and r_sum >= b_sum:
+        return "red"
+    if g_sum >= b_sum:
+        return "green"
+    return "blue"
+
+
+def ppm_min_max_brightness(file_path: str | Path) -> dict[str, float]:
+    """Return the min and max pixel brightness of a PPM image.
+
+    Brightness is computed as 0.299*R + 0.587*G + 0.114*B (ITU-R BT.601).
+
+    Args:
+        file_path: Path to a PPM file.
+
+    Returns:
+        Dict with 'min' and 'max' float values. Returns {'min': 0.0, 'max': 0.0}
+        for empty images.
+
+    Raises:
+        PpmError: If the file cannot be parsed.
+    """
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return {"min": 0.0, "max": 0.0}
+    brightnesses = [0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2] for p in img.pixels]
+    return {"min": min(brightnesses), "max": max(brightnesses)}
+
+
+def ppm_blue_channel_average(file_path: str | Path) -> float:
+    """Return the average blue channel value across all pixels."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(p[2] for p in img.pixels) / len(img.pixels)
+
+
+def ppm_is_grayscale(file_path: str | Path) -> bool:
+    """Return True if all pixels have equal R, G, B values."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return True
+    return all(p[0] == p[1] == p[2] for p in img.pixels)
+
+
+def ppm_channel_range(file_path: str | Path) -> dict[str, int]:
+    """Return the range (max - min) for each RGB channel."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return {"red": 0, "green": 0, "blue": 0}
+    reds = [p[0] for p in img.pixels]
+    greens = [p[1] for p in img.pixels]
+    blues = [p[2] for p in img.pixels]
+    return {
+        "red": max(reds) - min(reds),
+        "green": max(greens) - min(greens),
+        "blue": max(blues) - min(blues),
+    }
+
+
+def ppm_saturation_estimate(file_path: str | Path) -> float:
+    """Return the average per-pixel saturation estimate (max_channel - min_channel)."""
+    img = parse_ppm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    total = sum(max(p[0], p[1], p[2]) - min(p[0], p[1], p[2]) for p in img.pixels)
+    return total / len(img.pixels)

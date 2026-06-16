@@ -940,3 +940,73 @@ def sylk_has_header(file_path: "str | Path") -> bool:
     if not row1_cells:
         return False
     return all(c.value_type == "string" for c in row1_cells)
+
+
+def sylk_average_numeric_value(file_path: "str | Path") -> float:
+    """Return the average value of all numeric cells in a SYLK file.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        Float average. Returns 0.0 if there are no numeric cells.
+    """
+    doc = parse_sylk_strict(file_path)
+    nums: list[float] = []
+    for c in doc.cells:
+        if c.value_type in ("number", "numeric"):
+            try:
+                nums.append(float(c.value))
+            except (ValueError, TypeError):
+                pass
+    if not nums:
+        return 0.0
+    return sum(nums) / len(nums)
+
+
+def sylk_max_row_length(file_path: "str | Path") -> int:
+    """Return the maximum number of cells in any single row of a SYLK file.
+
+    Args:
+        file_path: Path to a SYLK (.slk) file.
+
+    Returns:
+        Integer max row length. Returns 0 if file has no cells.
+    """
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0
+    row_counts: dict[int, int] = {}
+    for c in doc.cells:
+        row_counts[c.row] = row_counts.get(c.row, 0) + 1
+    return max(row_counts.values())
+
+
+def sylk_numeric_density(file_path: "str | Path") -> float:
+    """Return the ratio of numeric cells to total cells. 0.0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0.0
+    numeric = sum(1 for c in doc.cells if c.value_type in ("number", "numeric"))
+    return numeric / len(doc.cells)
+
+
+def sylk_total_cell_count(file_path: "str | Path") -> int:
+    """Return the total number of cells in the SYLK file."""
+    doc = parse_sylk_strict(file_path)
+    return len(doc.cells)
+
+
+def sylk_string_density(file_path: "str | Path") -> float:
+    """Return the ratio of string cells to total cells. 0.0 if no cells."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return 0.0
+    string_count = sum(1 for c in doc.cells if c.value_type in ("string", "text"))
+    return string_count / len(doc.cells)
+
+
+def sylk_nonempty_cell_count(file_path: "str | Path") -> int:
+    """Return the number of cells with non-empty values."""
+    doc = parse_sylk_strict(file_path)
+    return sum(1 for c in doc.cells if c.value is not None and str(c.value).strip() != "")

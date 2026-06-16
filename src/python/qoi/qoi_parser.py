@@ -407,3 +407,119 @@ def qoi_red_channel_average(file_path: str | Path) -> float:
     if not img.pixels:
         return 0.0
     return sum(p[0] for p in img.pixels) / len(img.pixels)
+
+
+def qoi_dominant_channel(file_path: str | Path) -> str:
+    """Return the name of the dominant color channel ('red', 'green', or 'blue').
+
+    Dominant is defined as the channel with the highest total value sum
+    across all pixels. Ties are broken in R > G > B order.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        One of 'red', 'green', 'blue'.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return "red"
+    r_sum = sum(p[0] for p in img.pixels)
+    g_sum = sum(p[1] for p in img.pixels)
+    b_sum = sum(p[2] for p in img.pixels)
+    if r_sum >= g_sum and r_sum >= b_sum:
+        return "red"
+    if g_sum >= b_sum:
+        return "green"
+    return "blue"
+
+
+def qoi_min_max_brightness(file_path: str | Path) -> dict[str, float]:
+    """Return the min and max pixel brightness values.
+
+    Brightness uses the ITU-R BT.601 luma formula:
+    Y = 0.299*R + 0.587*G + 0.114*B
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Dict with keys 'min' and 'max' (float in range [0.0, 255.0]).
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return {"min": 0.0, "max": 0.0}
+    brightnesses = [0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2] for p in img.pixels]
+    return {"min": min(brightnesses), "max": max(brightnesses)}
+
+
+def qoi_green_channel_average(file_path: str | Path) -> float:
+    """Return the average green channel value across all pixels.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Float average in [0.0, 255.0]. Returns 0.0 for empty images.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(p[1] for p in img.pixels) / len(img.pixels)
+
+
+def qoi_blue_channel_average(file_path: str | Path) -> float:
+    """Return the average blue channel value across all pixels.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Float average in [0.0, 255.0]. Returns 0.0 for empty images.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum(p[2] for p in img.pixels) / len(img.pixels)
+
+
+def qoi_is_grayscale(file_path: str | Path) -> bool:
+    """Return True if all pixels have equal R, G, B channels.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        True if every pixel satisfies R == G == B.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return True
+    return all(p[0] == p[1] == p[2] for p in img.pixels)
+
+
+def qoi_brightness_variance(file_path: str | Path) -> float:
+    """Return the variance of pixel brightness values.
+
+    Brightness is computed as (R + G + B) / 3 per pixel.
+
+    Args:
+        file_path: Path to a QOI file.
+
+    Returns:
+        Float variance. Returns 0.0 for empty images.
+    """
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    brightnesses = [(p[0] + p[1] + p[2]) / 3.0 for p in img.pixels]
+    mean = sum(brightnesses) / len(brightnesses)
+    return sum((b - mean) ** 2 for b in brightnesses) / len(brightnesses)
+
+
+def qoi_total_brightness(file_path: str | Path) -> float:
+    """Return the sum of all pixel brightness values (R+G+B)/3."""
+    img = parse_qoi_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    return sum((p[0] + p[1] + p[2]) / 3.0 for p in img.pixels)

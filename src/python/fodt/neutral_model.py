@@ -1907,3 +1907,76 @@ def fodt_total_block_count(document: dict[str, Any]) -> int:
     lists = len(document.get("lists", []))
     tables = len(document.get("tables", []))
     return blocks + lists + tables
+
+
+def fodt_paragraph_count(file_path: "str | os.PathLike[str]") -> int:
+    """Return the number of paragraph blocks in a FODT file.
+
+    Args:
+        file_path: Path to a .fodt file.
+
+    Returns:
+        Integer paragraph count.
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    return sum(1 for b in doc.get("blocks", []) if b.get("type") == "paragraph")
+
+
+def fodt_word_count(file_path: "str | os.PathLike[str]") -> int:
+    """Return the total word count of a FODT file.
+
+    Args:
+        file_path: Path to a .fodt file.
+
+    Returns:
+        Integer word count.
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    count = 0
+    for block in doc.get("blocks", []):
+        for run in block.get("runs", []):
+            text = run.get("text", "")
+            if text:
+                count += len(text.split())
+    return count
+
+
+def fodt_heading_count(file_path: "str | os.PathLike[str]") -> int:
+    """Return the number of heading blocks in a FODT file.
+
+    Args:
+        file_path: Path to a .fodt file.
+
+    Returns:
+        Integer heading count.
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    return sum(1 for b in doc.get("blocks", []) if b.get("type") == "heading")
+
+
+def fodt_has_tables(file_path: "str | os.PathLike[str]") -> bool:
+    """Return True if the FODT file contains at least one table.
+
+    Args:
+        file_path: Path to a .fodt file.
+
+    Returns:
+        Boolean.
+    """
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    return len(doc.get("tables", [])) > 0
+
+
+def fodt_average_paragraph_length(file_path: "str | os.PathLike[str]") -> float:
+    """Return the average character length of paragraphs. 0.0 if none."""
+    from .parser import parse_fodt_strict
+    doc = parse_fodt_strict(file_path)
+    blocks = [b for b in doc.get("blocks", []) if b.get("type") == "paragraph"]
+    if not blocks:
+        return 0.0
+    total = sum(len(b.get("text", "")) for b in blocks)
+    return total / len(blocks)

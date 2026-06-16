@@ -776,3 +776,77 @@ def pgm_median_pixel_value(file_path: str | Path) -> int:
     if len(sorted_px) % 2 == 1:
         return sorted_px[mid]
     return sorted_px[mid - 1]
+
+
+def pgm_total_pixel_count(file_path: str | Path) -> int:
+    """Return the total number of pixels in a PGM image (width * height).
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Integer total pixel count. Returns 0 for empty images.
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    return img.width * img.height
+
+
+def pgm_brightness_quartiles(file_path: str | Path) -> dict[str, int]:
+    """Return the 25th, 50th, and 75th percentile pixel values of a PGM image.
+
+    Args:
+        file_path: Path to a PGM file.
+
+    Returns:
+        Dict with 'q25', 'q50', 'q75' integer values. Returns all zeros for empty images.
+
+    Raises:
+        PgmError: If the file cannot be parsed.
+    """
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return {"q25": 0, "q50": 0, "q75": 0}
+    sorted_px = sorted(img.pixels)
+    n = len(sorted_px)
+    return {
+        "q25": sorted_px[n // 4],
+        "q50": sorted_px[n // 2],
+        "q75": sorted_px[(3 * n) // 4],
+    }
+
+
+def pgm_is_uniform(file_path: str | Path) -> bool:
+    """Return True if all pixels have the same value."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return True
+    first = img.pixels[0]
+    return all(p == first for p in img.pixels)
+
+
+def pgm_nonzero_pixel_ratio(file_path: str | Path) -> float:
+    """Return the ratio of non-zero pixels to total pixels. 0.0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0.0
+    nonzero = sum(1 for p in img.pixels if p > 0)
+    return nonzero / len(img.pixels)
+
+
+def pgm_dynamic_range(file_path: str | Path) -> int:
+    """Return the dynamic range (max - min pixel value). 0 if no pixels."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return max(img.pixels) - min(img.pixels)
+
+
+def pgm_pixel_sum(file_path: str | Path) -> int:
+    """Return the sum of all pixel values."""
+    img = parse_pgm_strict(file_path)
+    if not img.pixels:
+        return 0
+    return sum(img.pixels)

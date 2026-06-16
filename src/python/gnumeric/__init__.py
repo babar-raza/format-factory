@@ -63,6 +63,12 @@ from .gnumeric_codec import (
     gnumeric_column_count_file,
     gnumeric_nonempty_cell_count_file,
     gnumeric_total_cell_count,
+    gnumeric_sheet_count,
+    gnumeric_has_multiple_sheets,
+    gnumeric_average_cells_per_sheet,
+    gnumeric_numeric_density,
+    gnumeric_string_density,
+    gnumeric_max_cell_length,
 )
 
 __all__ = [
@@ -120,6 +126,12 @@ __all__ = [
     "gnumeric_column_count_file",
     "gnumeric_nonempty_cell_count_file",
     "gnumeric_total_cell_count",
+    "gnumeric_sheet_count",
+    "gnumeric_has_multiple_sheets",
+    "gnumeric_average_cells_per_sheet",
+    "gnumeric_numeric_density",
+    "gnumeric_string_density",
+    "gnumeric_max_cell_length",
 ]
 
 __version__ = "0.1.0.dev0"

@@ -1047,3 +1047,153 @@ def dif_total_cell_count(file_path: "str | Path") -> int:
     """
     doc = parse_dif_strict(file_path)
     return sum(len(row) for row in doc.rows)
+
+
+def dif_column_types(file_path: "str | Path") -> list[str]:
+    """Infer the dominant data type for each column.
+
+    For each column index, counts how many cells are 'numeric', 'string',
+    or 'special', and returns the type with the highest count. Empty
+    columns return 'empty'. Ties are broken as numeric > string > special.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        List of type strings, one per column. Possible values:
+        'numeric', 'string', 'special', 'empty'.
+    """
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return []
+    max_cols = max(len(row) for row in doc.rows) if doc.rows else 0
+    result: list[str] = []
+    for col_idx in range(max_cols):
+        counts: dict[str, int] = {"numeric": 0, "string": 0, "special": 0}
+        for row in doc.rows:
+            if col_idx < len(row):
+                vt = row[col_idx].value_type
+                if vt in counts:
+                    counts[vt] += 1
+        total = sum(counts.values())
+        if total == 0:
+            result.append("empty")
+        elif counts["numeric"] >= counts["string"] and counts["numeric"] >= counts["special"]:
+            result.append("numeric")
+        elif counts["string"] >= counts["special"]:
+            result.append("string")
+        else:
+            result.append("special")
+    return result
+
+
+def dif_row_value_counts(file_path: "str | Path") -> list[int]:
+    """Return the count of non-empty cells per row.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        List of integers, one per row, counting cells with non-None values.
+    """
+    doc = parse_dif_strict(file_path)
+    return [sum(1 for cell in row if cell.value is not None) for row in doc.rows]
+
+
+def dif_empty_cell_count(file_path: "str | Path") -> int:
+    """Return the count of cells with None value across all rows.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        Integer count of empty (None-valued) cells.
+    """
+    doc = parse_dif_strict(file_path)
+    return sum(1 for row in doc.rows for cell in row if cell.value is None)
+
+
+def dif_has_header(file_path: "str | Path") -> bool:
+    """Heuristic: detect if the first row of a DIF file is a header.
+
+    A row is considered a header if it has at least one cell and all
+    cells are of type 'string'.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        True if the first row appears to be a header, False otherwise.
+    """
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return False
+    first_row = doc.rows[0]
+    if not first_row:
+        return False
+    return all(cell.value_type == "string" for cell in first_row)
+
+
+def dif_row_count(file_path: "str | Path") -> int:
+    """Return the number of data rows in a DIF file."""
+    doc = parse_dif_strict(file_path)
+    return len(doc.rows)
+
+
+def dif_column_count(file_path: "str | Path") -> int:
+    """Return the number of columns (max row width) in a DIF file. 0 if no rows."""
+    doc = parse_dif_strict(file_path)
+    if not doc.rows:
+        return 0
+    return max(len(row) for row in doc.rows)
+
+
+def dif_string_density(file_path: "str | Path") -> float:
+    """Return the fraction of cells that are string type.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        Float in [0.0, 1.0]. 0.0 if no cells.
+    """
+    doc = parse_dif_strict(file_path)
+    total = 0
+    string_count = 0
+    for row in doc.rows:
+        for cell in row:
+            total += 1
+            if cell.value_type == "string":
+                string_count += 1
+    if total == 0:
+        return 0.0
+    return string_count / total
+
+
+def dif_max_cell_length(file_path: "str | Path") -> int:
+    """Return the length of the longest cell value in a DIF file.
+
+    Args:
+        file_path: Path to a DIF file.
+
+    Returns:
+        Integer max length. 0 if no cells.
+    """
+    doc = parse_dif_strict(file_path)
+    max_len = 0
+    for row in doc.rows:
+        for cell in row:
+            val = cell.value if cell.value is not None else ""
+            max_len = max(max_len, len(str(val)))
+    return max_len
+
+
+def dif_has_empty_cells(file_path: "str | Path") -> bool:
+    """Return True if any cell has an empty or None value."""
+    doc = parse_dif_strict(file_path)
+    for row in doc.rows:
+        for cell in row:
+            val = cell.value if cell.value is not None else ""
+            if str(val).strip() == "":
+                return True
+    return False

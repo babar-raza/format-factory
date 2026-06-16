@@ -35,6 +35,14 @@ _LAYER_MARKERS = [f"layer{i}" for i in range(7)]
 _GOLDEN_KEYWORDS = ("roundtrip", "cross_format", "cross-format", "dogfood")
 
 
+def pytest_addoption(parser):
+    """Register --no-state and --no-network flags for selective test filtering."""
+    parser.addoption("--no-state", action="store_true", default=False,
+                     help="Skip tests marked @pytest.mark.state_dependent")
+    parser.addoption("--no-network", action="store_true", default=False,
+                     help="Skip tests marked @pytest.mark.network")
+
+
 def pytest_configure(config):
     """Register layer markers (belt-and-suspenders with pyproject.toml)."""
     for i in range(7):
@@ -45,6 +53,20 @@ def pytest_configure(config):
 
 def pytest_collection_modifyitems(config, items):
     """Assign exactly one home-layer marker to each collected test."""
+    # Apply --no-state / --no-network skip markers
+    skip_state = config.getoption("--no-state", default=False)
+    skip_network = config.getoption("--no-network", default=False)
+    if skip_state:
+        skip_marker = pytest.mark.skip(reason="--no-state flag: skipping state_dependent tests")
+        for item in items:
+            if "state_dependent" in item.keywords:
+                item.add_marker(skip_marker)
+    if skip_network:
+        skip_marker = pytest.mark.skip(reason="--no-network flag: skipping network tests")
+        for item in items:
+            if "network" in item.keywords:
+                item.add_marker(skip_marker)
+
     for item in items:
         fspath = str(item.fspath).replace("\\", "/")
         name = item.name.lower()

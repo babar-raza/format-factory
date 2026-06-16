@@ -411,3 +411,114 @@ def xcf_megapixels(file_path: str | Path) -> float:
     """
     img = parse_xcf_strict(file_path)
     return (img.width * img.height) / 1_000_000
+
+
+def xcf_has_alpha(file_path: str | Path) -> bool:
+    """Return True if the XCF image is configured to support alpha.
+
+    XCF images of type RGB (0) or Grayscale (1) with multiple layers
+    inherently support alpha compositing. Indexed images (type 2) have
+    a single-layer palette model where alpha is typically absent.
+
+    This is a heuristic based on header metadata — it does not decode
+    pixel data.
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        True if the image likely supports alpha transparency.
+    """
+    img = parse_xcf_strict(file_path)
+    if img.image_type == 2:
+        return False
+    return img.num_layers > 1
+
+
+def xcf_canvas_size_bytes(file_path: str | Path) -> int:
+    """Return the uncompressed canvas size in bytes (width * height * bpp).
+
+    Bytes per pixel:
+    - RGB (type 0): 4 bytes (RGBA)
+    - Grayscale (type 1): 2 bytes (gray + alpha)
+    - Indexed (type 2): 1 byte (palette index)
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Estimated uncompressed canvas size in bytes.
+    """
+    bpp_map = {0: 4, 1: 2, 2: 1}
+    img = parse_xcf_strict(file_path)
+    bpp = bpp_map.get(img.image_type, 4)
+    return img.width * img.height * bpp
+
+
+def xcf_height(file_path: str | Path) -> int:
+    """Return the image height in pixels.
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Integer height.
+    """
+    img = parse_xcf_strict(file_path)
+    return img.height
+
+
+def xcf_layer_to_canvas_ratio(file_path: str | Path) -> float:
+    """Return the ratio of layers to canvas area (layers / megapixels).
+
+    Useful as a complexity metric — more layers per megapixel means
+    more complex compositing.
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Float ratio. Returns 0.0 if canvas area is zero.
+    """
+    img = parse_xcf_strict(file_path)
+    mp = (img.width * img.height) / 1_000_000
+    if mp == 0:
+        return 0.0
+    return img.num_layers / mp
+
+
+def xcf_total_layers_area(file_path: str | Path) -> int:
+    """Return total canvas area multiplied by number of layers (in pixels).
+
+    This estimates the total pixel data area across all layers,
+    assuming each layer covers the full canvas.
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Integer total area (width * height * num_layers).
+    """
+    img = parse_xcf_strict(file_path)
+    return img.width * img.height * img.num_layers
+
+
+def xcf_average_layer_size(file_path: str | Path) -> float:
+    """Return the average layer size in pixels (canvas area per layer).
+
+    Args:
+        file_path: Path to an XCF file.
+
+    Returns:
+        Float average pixels per layer. Returns 0.0 if no layers.
+    """
+    img = parse_xcf_strict(file_path)
+    if img.num_layers == 0:
+        return 0.0
+    return (img.width * img.height) / img.num_layers
+
+
+def xcf_is_landscape(file_path: str | Path) -> bool:
+    """Return True if the image width exceeds its height."""
+    img = parse_xcf_strict(file_path)
+    return img.width > img.height

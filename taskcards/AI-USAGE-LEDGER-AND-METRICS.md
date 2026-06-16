@@ -1,6 +1,6 @@
 # Taskcard: AI-USAGE-LEDGER-AND-METRICS
 
-**Status:** not_started
+**Status:** completed
 **Created:** 2026-05-13
 
 ## Purpose

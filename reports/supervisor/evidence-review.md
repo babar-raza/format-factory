@@ -1,17 +1,17 @@
 # Evidence Review — Supervisor
-Sprint ID: IDEMPOTENT-SWARM-SPRINT-7
-Timestamp: 2026-06-15T19:31:09.832063
+Sprint ID: FF-IDEMPOTENT-SPEC-TO-FEATURE-SWARM-HEALING
+Timestamp: 2026-06-16T08:39:10.388960
 Verdict: ACCEPTED
-Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint7-20260615-915cfd2\declaration-review-package.zip
+Bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\ff-idempotent-spec-to-feature-swarm-20260615-e31fa98\declaration-review-package.zip
 
 ## Facts
-- Tests: 12605 passed, 0 failed, 42 skipped
+- Tests: 13395 passed, 0 failed, 37 skipped
 - Git HEAD: see-declaration
-- Bundle entries: 62
+- Bundle entries: 55
 - PENDING markers: 0
 
 ## Gate States
 (none extracted)
 
 ## Limitation Notes
-None
+- No cycle-manifest found in declaration-review package

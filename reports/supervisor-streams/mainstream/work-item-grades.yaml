@@ -1,89 +1,57 @@
-- item_id: GATE11-FODS-READINESS
-  item_title: Prepare FODS Gate 11 readiness packet
+- item_id: DOGFOOD-FODT-DEPTH-ANALYTICS-NDJSON
+  item_title: 'FODT depth analytics: stats, word count, reading level, hyperlinks
+    to NDJSON (6 tests)'
   declared_status: completed
   supervisor_grade: ACCEPTED_WITH_LIMITATIONS
   evidence_found: true
   evidence_paths:
-  - .local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/fods-gate11-readiness-packet.md
-  - .local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/raw-logs/dogfood-and-gate11-tests.log
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: All 7 Gate 11 criteria assessed for FODS'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: All 7 Gate 11 criteria assessed for FODS'
-  semantic_verification:
-    adequate: true
-    confidence: 0.78
-    stub_detected: false
-    deficiencies:
-    - Dogfood test log is truncated and does not show all 22 claimed tests, limiting
-      verification of full pass status
-    - No direct artifact (e.g., parity-matrix.yaml) is included to confirm its existence
-      and content
-    llm_used: true
-- item_id: GATE11-FODT-READINESS
-  item_title: Prepare FODT Gate 11 readiness packet
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - .local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/fodt-gate11-readiness-packet.md
-  - .local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/raw-logs/dogfood-and-gate11-tests.log
-  tests_supporting: []
-  tests_missing: []
-  acceptance_criteria_met:
-  - Evidence found
-  - No missing paths
-  acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: All 7 Gate 11 criteria assessed for FODT'
-  required_rework: ''
-  can_autonomously_repair: false
-  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: All 7 Gate 11 criteria assessed for FODT'
-  semantic_verification:
-    adequate: true
-    confidence: 0.68
-    stub_detected: false
-    deficiencies:
-    - Evidence consists mainly of a summary markdown; the actual test files, coverage
-      reports, or full pytest output showing the claimed 1030 FOSS tests are not provided.
-    - Dogfood proof logs are truncated (only 39 items shown) and do not demonstrate
-      that all claimed dogfood tests (22 + 9 + dedicated) have executed and passed.
-    - The parity matrix artifact is referenced but its contents are not included,
-      nor is there a checksum or verification that the file exists in the repository.
-    - No direct evidence (e.g., coverage report, test count command output) confirming
-      the FOSS test count exceeds the required minimum of 50.
-    - The readiness packet does not include the gap ledger or other artifacts that
-      would substantiate the claim of zero remaining FOSS gaps.
-    llm_used: true
-    low_confidence_override: true
-- item_id: DOGFOOD-GNUMERIC-NDJSON
-  item_title: 'New dogfood export: Gnumeric-to-NDJSON pipeline'
-  declared_status: completed
-  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
-  evidence_found: true
-  evidence_paths:
-  - tests/python/dogfood/test_dogfood_gnumeric_ndjson_pipeline.py
-  - .local/evidences/idempotent-swarm-sprint7-20260615-915cfd2/raw-logs/dogfood-and-gate11-tests.log
+  - tests/python/dogfood/test_dogfood_fodt_depth_analytics_ndjson_export.py
+  - .local/evidences/idempotent-swarm-sprint31-20260615-915cfd2/raw-logs/dogfood-full.log
   tests_supporting: &id001
-  - tests/python/dogfood/test_dogfood_gnumeric_ndjson_pipeline.py
+  - tests/python/dogfood/test_dogfood_fodt_depth_analytics_ndjson_export.py
   tests_missing: []
   acceptance_criteria_met:
   - Evidence found
   - No missing paths
   acceptance_criteria_failed:
-  - 'Acceptance criteria pattern not found: Exactly 8 dogfood tests must pass.'
+  - 'Acceptance criteria pattern not found: Document stats dict test passes'
   required_rework: ''
   can_autonomously_repair: false
   next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
-    not found: Exactly 8 dogfood tests must pass.'
+    not found: Document stats dict test passes'
   tests_evidence_verified: *id001
+  semantic_verification:
+    adequate: true
+    confidence: 0.93
+    stub_detected: false
+    deficiencies:
+    - The tests for document_stats and document_word_count only verify the return
+      type (dict) and do not assert on specific content, providing minimal validation.
+    - The depth analytics NDJSON test checks file existence, size, and record count
+      but does not validate the correctness of each analytic field within the records.
+    llm_used: true
+- item_id: DOGFOOD-CSV-DATA-PROFILING-NDJSON
+  item_title: 'CSV data profiling: header detection, cell/column counts, avg cells/row
+    to NDJSON (6 tests)'
+  declared_status: completed
+  supervisor_grade: ACCEPTED_WITH_LIMITATIONS
+  evidence_found: true
+  evidence_paths:
+  - tests/python/dogfood/test_dogfood_csv_data_profiling_ndjson_export.py
+  - .local/evidences/idempotent-swarm-sprint31-20260615-915cfd2/raw-logs/dogfood-full.log
+  tests_supporting: &id002
+  - tests/python/dogfood/test_dogfood_csv_data_profiling_ndjson_export.py
+  tests_missing: []
+  acceptance_criteria_met:
+  - Evidence found
+  - No missing paths
+  acceptance_criteria_failed:
+  - 'Acceptance criteria pattern not found: Header flag is a boolean value'
+  required_rework: ''
+  can_autonomously_repair: false
+  next_prompt_instruction: 'Item accepted with limitations: Acceptance criteria pattern
+    not found: Header flag is a boolean value'
+  tests_evidence_verified: *id002
   semantic_verification:
     adequate: true
     confidence: 0.95
