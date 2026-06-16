@@ -1,16 +1,16 @@
 [
   {
-    "item_id": "DOGFOOD-GNUMERIC-MODEL-ODS-REMAINING-NDJSON",
-    "item_title": "Gnumeric model-based remaining + ODS remaining: copy_sheet, clear_sheet, add_sheet, clear_cell, average_column(ods), count_distinct_values(ods) to NDJSON (6 tests)",
+    "item_id": "DOGFOOD-ZST-COMPRESS-ABW-REMAINING-NDJSON",
+    "item_title": "ZST compress/decompress + ABW remaining: compress_file, decompress_file, compress_string_to_file, decompress_file_to_string, abw_average_word_length, abw_avg_words_per_paragraph to NDJSON (6 tests)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "tests/python/dogfood/test_dogfood_gnumeric_model_ods_remaining_ndjson_export.py",
-      ".local/evidences/idempotent-swarm-sprint116-20260616-baf84d6/raw-logs/dogfood-sprint116.log"
+      "tests/python/dogfood/test_dogfood_zst_compress_abw_remaining_ndjson_export.py",
+      ".local/evidences/idempotent-swarm-sprint117-20260616-baf84d6/raw-logs/dogfood-sprint117.log"
     ],
     "tests_supporting": [
-      "tests/python/dogfood/test_dogfood_gnumeric_model_ods_remaining_ndjson_export.py"
+      "tests/python/dogfood/test_dogfood_zst_compress_abw_remaining_ndjson_export.py"
     ],
     "tests_missing": [],
     "acceptance_criteria_met": [
@@ -18,36 +18,34 @@
       "No missing paths"
     ],
     "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: copy_sheet returns a dict with a 'sheets' key whose value is"
+      "Acceptance criteria pattern not found: compress_file creates a .zst file"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: copy_sheet returns a dict with a 'sheets' key whose value is",
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: compress_file creates a .zst file",
     "tests_evidence_verified": [
-      "tests/python/dogfood/test_dogfood_gnumeric_model_ods_remaining_ndjson_export.py"
+      "tests/python/dogfood/test_dogfood_zst_compress_abw_remaining_ndjson_export.py"
     ],
     "semantic_verification": {
       "adequate": true,
-      "confidence": 0.9,
+      "confidence": 0.96,
       "stub_detected": false,
-      "deficiencies": [
-        "NDJSON round\u2011trip validation is minimal (only checks that the loaded record exists and basic fields are present, not that the exact values match the original output, e.g., add_sheet only checks >=2 instead of exact before+1)."
-      ],
+      "deficiencies": [],
       "llm_used": true
     }
   },
   {
-    "item_id": "DOGFOOD-FODP-REMAINING-ANALYTICS-NDJSON",
-    "item_title": "FODP remaining analytics: fodp_all_slides_have_text, fodp_average_shapes_per_slide, fodp_avg_notes_length, fodp_empty_slide_count, fodp_has_empty_slides, fodp_has_images to NDJSON (6 tests)",
+    "item_id": "DOGFOOD-ABW-REMAINING3-SYLK-REMAINING-NDJSON",
+    "item_title": "ABW remaining 3 + SYLK remaining: abw_empty_paragraph_count, abw_has_content, abw_has_metadata, find_rows_by_value, add_row, delete_row to NDJSON (6 tests)",
     "declared_status": "completed",
     "supervisor_grade": "ACCEPTED_WITH_LIMITATIONS",
     "evidence_found": true,
     "evidence_paths": [
-      "tests/python/dogfood/test_dogfood_fodp_remaining_analytics_ndjson_export.py",
-      ".local/evidences/idempotent-swarm-sprint116-20260616-baf84d6/raw-logs/dogfood-sprint116.log"
+      "tests/python/dogfood/test_dogfood_abw_remaining3_sylk_remaining_ndjson_export.py",
+      ".local/evidences/idempotent-swarm-sprint117-20260616-baf84d6/raw-logs/dogfood-sprint117.log"
     ],
     "tests_supporting": [
-      "tests/python/dogfood/test_dogfood_fodp_remaining_analytics_ndjson_export.py"
+      "tests/python/dogfood/test_dogfood_abw_remaining3_sylk_remaining_ndjson_export.py"
     ],
     "tests_missing": [],
     "acceptance_criteria_met": [
@@ -55,13 +53,13 @@
       "No missing paths"
     ],
     "acceptance_criteria_failed": [
-      "Acceptance criteria pattern not found: fodp_all_slides_have_text returns bool"
+      "Acceptance criteria pattern not found: abw_empty_paragraph_count returns an integer greater than or"
     ],
     "required_rework": "",
     "can_autonomously_repair": false,
-    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: fodp_all_slides_have_text returns bool",
+    "next_prompt_instruction": "Item accepted with limitations: Acceptance criteria pattern not found: abw_empty_paragraph_count returns an integer greater than or",
     "tests_evidence_verified": [
-      "tests/python/dogfood/test_dogfood_fodp_remaining_analytics_ndjson_export.py"
+      "tests/python/dogfood/test_dogfood_abw_remaining3_sylk_remaining_ndjson_export.py"
     ],
     "semantic_verification": {
       "adequate": true,

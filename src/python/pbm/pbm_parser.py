@@ -975,3 +975,17 @@ def pbm_pixel_density(file_path: "str | Path") -> float:
     if fsize == 0:
         return 0.0
     return (img.width * img.height) / fsize
+
+
+def pbm_row_count(file_path: "str | Path") -> int:
+    """Return the number of rows (height) in the image."""
+    img = parse_pbm_strict(file_path)
+    return img.height
+
+
+def pbm_is_binary_balanced(file_path: "str | Path") -> bool:
+    """Return True if black pixel count equals white pixel count."""
+    img = parse_pbm_strict(file_path)
+    black = sum(1 for p in img.pixels if p == 1)
+    white = sum(1 for p in img.pixels if p == 0)
+    return black == white

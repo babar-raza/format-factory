@@ -1386,3 +1386,28 @@ def sylk_row_span(file_path: "str | Path") -> int:
         return 0
     rows = [c.row for c in doc.cells]
     return max(rows) - min(rows) + 1
+
+
+def sylk_numeric_cell_count(file_path: "str | Path") -> int:
+    """Return the count of cells that have numeric values."""
+    doc = parse_sylk_strict(file_path)
+    count = 0
+    for c in doc.cells:
+        if c.value is None:
+            continue
+        try:
+            float(c.value)
+            count += 1
+        except (ValueError, TypeError):
+            pass
+    return count
+
+
+def sylk_is_square(file_path: "str | Path") -> bool:
+    """Return True if the number of unique rows equals the number of unique columns."""
+    doc = parse_sylk_strict(file_path)
+    if not doc.cells:
+        return False
+    rows = set(c.row for c in doc.cells)
+    cols = set(c.col for c in doc.cells)
+    return len(rows) == len(cols)

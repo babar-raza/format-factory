@@ -1,6 +1,6 @@
 # Approval Gates Classification
-Sprint ID: TOML-DEEPENING-R275-R279-20260616
-Generated: 2026-06-16T15:19:10.110935
+Sprint ID: IDEMPOTENT-SWARM-SPRINT-117
+Generated: 2026-06-16T15:19:42.919712
 Current Mode: MODE 4 (ACTIVE_MCP_ACTIVATION)
 
 ## Pending Actions

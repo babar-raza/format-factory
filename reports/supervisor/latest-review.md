@@ -1,6 +1,6 @@
-# Supervisor Review: idempotent-swarm-sprint116-20260616-baf84d6
-Sprint: IDEMPOTENT-SWARM-SPRINT-116
-Timestamp: 2026-06-16T15:15:18.190654
+# Supervisor Review: idempotent-swarm-sprint117-20260616-baf84d6
+Sprint: IDEMPOTENT-SWARM-SPRINT-117
+Timestamp: 2026-06-16T15:18:50.508717
 Overall Verdict: ACCEPTED_WITH_REWORK
 Autonomous Continue: True
 
@@ -12,5 +12,5 @@ Autonomous Continue: True
 - Critical Rework: 0
 
 ## Item Grades
-- **DOGFOOD-GNUMERIC-MODEL-ODS-REMAINING-NDJSON** (Gnumeric model-based remaining + ODS remaining: copy_sheet, clear_sheet, add_sheet, clear_cell, average_column(ods), count_distinct_values(ods) to NDJSON (6 tests)): ACCEPTED_WITH_LIMITATIONS
-- **DOGFOOD-FODP-REMAINING-ANALYTICS-NDJSON** (FODP remaining analytics: fodp_all_slides_have_text, fodp_average_shapes_per_slide, fodp_avg_notes_length, fodp_empty_slide_count, fodp_has_empty_slides, fodp_has_images to NDJSON (6 tests)): ACCEPTED_WITH_LIMITATIONS
+- **DOGFOOD-ZST-COMPRESS-ABW-REMAINING-NDJSON** (ZST compress/decompress + ABW remaining: compress_file, decompress_file, compress_string_to_file, decompress_file_to_string, abw_average_word_length, abw_avg_words_per_paragraph to NDJSON (6 tests)): ACCEPTED_WITH_LIMITATIONS
+- **DOGFOOD-ABW-REMAINING3-SYLK-REMAINING-NDJSON** (ABW remaining 3 + SYLK remaining: abw_empty_paragraph_count, abw_has_content, abw_has_metadata, find_rows_by_value, add_row, delete_row to NDJSON (6 tests)): ACCEPTED_WITH_LIMITATIONS

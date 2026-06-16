@@ -164,20 +164,16 @@ class TestCredentialHandling:
             assert os.environ.get("TEST_PROF_KEY") == "test-secret-value"
 
     def test_call_fails_closed_when_no_credential(
-        self, professionalize_client: EndpointClient
+        self, professionalize_client: EndpointClient, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         """Client must fail-closed (not raise, but return error) when no credential."""
         # Ensure env var is absent
-        saved = os.environ.pop("TEST_PROF_KEY", None)
-        try:
-            client = professionalize_client
-            client._credential = None  # Force no credential
-            result = client.call("test prompt", task_type="general")
-            assert result.success is False
-            assert "BLOCKED_NO_CREDENTIAL" in (result.error or "")
-        finally:
-            if saved:
-                os.environ["TEST_PROF_KEY"] = saved
+        monkeypatch.delenv("TEST_PROF_KEY", raising=False)
+        client = professionalize_client
+        client._credential = None  # Force no credential
+        result = client.call("test prompt", task_type="general")
+        assert result.success is False
+        assert "BLOCKED_NO_CREDENTIAL" in (result.error or "")
 
     def test_null_auth_env_means_no_credential_required(
         self, endpoints_yaml: Path

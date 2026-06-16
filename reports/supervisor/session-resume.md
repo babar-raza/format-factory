@@ -1,11 +1,11 @@
 # Session Resume Briefing
 # Format Factory — Supervisor-Generated
-# Generated: 2026-06-16T15:19:10.116524
+# Generated: 2026-06-16T15:19:42.923624
 
 ## Quick State
-- Last sprint: TOML-DEEPENING-R275-R279-20260616
-- Evidence verdict: ACCEPTED
-- Tests: 50 passed / 0 failed
+- Last sprint: IDEMPOTENT-SWARM-SPRINT-117
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 12 passed / 0 failed
 - PENDING markers: 0
 - CRITICAL contradictions: 0
 - Autonomous continue: True
@@ -23,25 +23,12 @@
 5. Prose context: `reports/supervisor/next-sprint.md`
 
 ## Where To Find Evidence
-- Last evidence bundle: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\toml-deepening-r275-r279-20260616-e5ba655\declaration-review-package.zip
+- Last evidence bundle: .local/evidences/idempotent-swarm-sprint117-20260616-baf84d6
 - Supervisor outputs: reports/supervisor/
 - Project memory: .supervisor/project-memory.md
 
 ## Project Memory (recent)
 ```
-- timestamp: 2026-06-16T15:09:09.555833
-- verdict: ACCEPTED
-- test_count: 12
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint114-20260616-baf84d6\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 60
-- bundle_validation_pass: True
-- test_delta: 0
-- test_delta_from: 12
-
-## Entry: product-deepening-sprint70
 - timestamp: 2026-06-16T15:11:10.543853
 - verdict: ACCEPTED
 - test_count: 21
@@ -78,6 +65,19 @@
 - bundle_entry_count: 60
 - bundle_validation_pass: True
 - test_delta: 0
+- test_delta_from: 12
+
+## Entry: TOML-DEEPENING-R275-R279-20260616
+- timestamp: 2026-06-16T15:19:10.293711
+- verdict: ACCEPTED
+- test_count: 50
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\toml-deepening-r275-r279-20260616-e5ba655\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 66
+- bundle_validation_pass: True
+- test_delta: +38
 - test_delta_from: 12
 ```
 

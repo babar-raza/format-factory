@@ -1,6 +1,6 @@
 # FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-# Generated: 2026-06-16T15:15:19.363882
-# Source: Supervisor autonomous-cycle review of IDEMPOTENT-SWARM-SPRINT-116
+# Generated: 2026-06-16T15:18:51.495513
+# Source: Supervisor autonomous-cycle review of IDEMPOTENT-SWARM-SPRINT-117
 # Stream: mainstream
 # ADVISORY ONLY -- not a Format Factory authority document
 
@@ -27,7 +27,7 @@ Read these files before writing any code:
 ## Sprint Identity
 
 - Sprint ID: FORMAT-FACTORY-RNEXT-MEGA-TRAIN-001
-- Prior sprint: IDEMPOTENT-SWARM-SPRINT-116
+- Prior sprint: IDEMPOTENT-SWARM-SPRINT-117
 - Prior verdict: ACCEPTED_WITH_REWORK
 - Prior tests: 0 passed, 0 failed, 0 skipped
 - Autonomous continue: True

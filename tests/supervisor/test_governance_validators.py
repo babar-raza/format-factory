@@ -459,7 +459,7 @@ class TestRunAllValidators:
         from governance_validators import run_all_governance_validators
         decl = _decl([])
         result = run_all_governance_validators(decl)
-        assert len(result["validators"]) == 33  # 29 + 4 spec-parity completeness validators
+        assert len(result["validators"]) == 38  # 29 + 4 spec-parity completeness + 5 additional
 
     def test_deprecated_queue_declared_fails_ungoverned(self):
         from governance_validators import run_all_governance_validators
@@ -489,3 +489,56 @@ class TestRunAllValidators:
             f"{[v['validator'] for v in result['validators'] if v['result'] == 'FAIL']}"
         )
         assert not result["blocks_sprint"]
+
+
+# ---------------------------------------------------------------------------
+# TC-SAL-006: Pending fact debt enforcement in validate_spec_fact_refs.check_item
+# ---------------------------------------------------------------------------
+
+class TestSpecFactRefStatusDebt:
+    """Tests for pending fact status debt enforcement added in TC-SAL-005."""
+
+    def test_pending_fact_ref_produces_debt(self):
+        """spec_fact_ref with pending_verification status → grade_impact=debt (not reject)."""
+        from unittest.mock import patch
+        from validate_spec_fact_refs import check_item
+
+        fake_registry = {"FACT-TEST-PENDING-001": "pending_verification"}
+        item = {
+            "item_id": "TC-DEBT-001",
+            "item_type": "PRODUCT_SOURCE",
+            "status": "completed",
+            "spec_fact_refs": ["FACT-TEST-PENDING-001"],
+        }
+        with patch("validate_spec_fact_refs.get_fact_registry", return_value=fake_registry):
+            result = check_item(item)
+
+        assert result["compliant"] is True, (
+            f"Expected compliant=True (debt is not a rejection), got: {result}"
+        )
+        assert result["grade_impact"] == "debt", (
+            f"Expected grade_impact='debt', got: {result['grade_impact']}"
+        )
+        assert "pending_verification" in result["detail"]
+
+    def test_unknown_fact_ref_produces_reject(self):
+        """spec_fact_ref not found in registry → grade_impact=reject."""
+        from unittest.mock import patch
+        from validate_spec_fact_refs import check_item
+
+        fake_registry = {"FACT-TEST-KNOWN-001": "verified"}  # FACT-TEST-UNKNOWN-999 absent
+        item = {
+            "item_id": "TC-REJECT-001",
+            "item_type": "PRODUCT_SOURCE",
+            "status": "completed",
+            "spec_fact_refs": ["FACT-TEST-UNKNOWN-999"],
+        }
+        with patch("validate_spec_fact_refs.get_fact_registry", return_value=fake_registry):
+            result = check_item(item)
+
+        assert result["compliant"] is False, (
+            f"Expected compliant=False (unknown ref is a rejection), got: {result}"
+        )
+        assert result["grade_impact"] == "reject", (
+            f"Expected grade_impact='reject', got: {result['grade_impact']}"
+        )

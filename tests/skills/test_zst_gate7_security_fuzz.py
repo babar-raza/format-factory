@@ -37,12 +37,16 @@ except ImportError:
 
 
 def _import_frame_header():
+    import importlib
     if "frame_header" in sys.modules:
         cached = sys.modules["frame_header"]
         if not hasattr(cached, "ZSTD_MAGIC"):
-            del sys.modules["frame_header"]
-    import frame_header as fh
-    return fh
+            # Wrong module cached (name collision) — reload from correct path
+            fh = importlib.import_module("frame_header")
+            importlib.reload(fh)
+            return fh
+        return cached
+    return importlib.import_module("frame_header")
 
 
 def _decompress_safe(data: bytes, max_window_size: int = 2**31):

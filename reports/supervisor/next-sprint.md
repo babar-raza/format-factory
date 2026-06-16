@@ -1,7 +1,7 @@
 # Supervisor-Generated Next Sprint Prompt
-# Source sprint: TOML-DEEPENING-R275-R279-20260616
+# Source sprint: IDEMPOTENT-SWARM-SPRINT-117
 # Stream: mainstream
-# Generated: 2026-06-16T15:19:10.091685
+# Generated: 2026-06-16T15:19:42.914344
 # ADVISORY ONLY — not a Format Factory authority document
 # This is INPUT to the next sprint, not a gate approval or commit authorization.
 
@@ -11,9 +11,9 @@
 ADVANCE: Product deepening — .NET commercial + Python FOSS + dogfood + packaging
 
 ## Prior Sprint Summary
-- Sprint ID: TOML-DEEPENING-R275-R279-20260616
-- Evidence verdict: ACCEPTED
-- Tests: 50 passed, 0 failed, 0 skipped
+- Sprint ID: IDEMPOTENT-SWARM-SPRINT-117
+- Evidence verdict: ACCEPTED_WITH_REWORK
+- Tests: 12 passed, 0 failed, 0 skipped
 - Autonomous continue: True
 
 ## STOP_REASON_ADVISORY (enforced by stop_reason_adjudicator.py)
@@ -37,24 +37,22 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 
 ## Section 1: New Product Work (Advisory — Always Execute)
 - [pending] TASK-001: Select governed product gaps and validate the product-code ledger
-- [agent-owned] TASK-002: Prepare commit candidate summary and changed-file manifest
-- [external-gate] TASK-003: Execute git commit (requires explicit user authorization — do NOT self-execute)
-- [agent-owned] TASK-004: Prepare FODS Gate 11 readiness packet and commercial checklist
-- [external-gate] TASK-005: Submit FODS Gate 11 for Babar Raza approval (after packet ready — human required)
-- [agent-owned] TASK-006: Prepare FODT Gate 11 readiness packet and commercial checklist
-- [external-gate] TASK-007: Submit FODT Gate 11 for Babar Raza approval (after packet ready — human required)
-- [pending] TASK-008: Continue ZST implementation toward Gate 11 readiness criteria
-- [pending] TASK-009: Work on open taskcard: FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG
-- [pending] TASK-010: Work on open taskcard: FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG
-- [pending] TASK-011: Work on open taskcard: NEXT-COMMERCIAL-IMPLEMENTATION-SWARM
-- [pending] TASK-012: Product deepening: GAP-ABW-FOSS-LOAD-001 — GAP-ABW-FOSS-LOAD-001
-- [pending] TASK-013: Product deepening: GAP-FODG-FOSS-LOAD-001 — GAP-FODG-FOSS-LOAD-001
-- [pending] TASK-014: Product deepening: GAP-Gnumeric-FOSS-LOAD-001 — GAP-Gnumeric-FOSS-LOAD-001
-- [pending] TASK-015: Product deepening: GAP-TOML-FOSS-ROUNDTRIP-001 — GAP-TOML-FOSS-ROUNDTRIP-001
-- [pending] TASK-016: Product deepening: GAP-DIF-FOSS-PROBE_DIF-001 — GAP-DIF-FOSS-PROBE_DIF-001
-- [pending] TASK-017: Advance one dogfood export path using a Format Factory library
-- [pending] TASK-018: Build package artifacts and run installed-workflow proof
-- [pending] TASK-019: Write evidence declaration and run supervisor autonomous-cycle
+- [agent-owned] TASK-002: Prepare FODS Gate 11 readiness packet and commercial checklist
+- [external-gate] TASK-003: Submit FODS Gate 11 for Babar Raza approval (after packet ready — human required)
+- [agent-owned] TASK-004: Prepare FODT Gate 11 readiness packet and commercial checklist
+- [external-gate] TASK-005: Submit FODT Gate 11 for Babar Raza approval (after packet ready — human required)
+- [pending] TASK-006: Continue ZST implementation toward Gate 11 readiness criteria
+- [pending] TASK-007: Work on open taskcard: FODS-COMMERCIAL-EXPORT-HTML-PDF-PNG
+- [pending] TASK-008: Work on open taskcard: FODT-COMMERCIAL-EXPORT-HTML-PDF-PNG
+- [pending] TASK-009: Work on open taskcard: NEXT-COMMERCIAL-IMPLEMENTATION-SWARM
+- [pending] TASK-010: Product deepening: GAP-ABW-FOSS-LOAD-001 — GAP-ABW-FOSS-LOAD-001
+- [pending] TASK-011: Product deepening: GAP-FODG-FOSS-LOAD-001 — GAP-FODG-FOSS-LOAD-001
+- [pending] TASK-012: Product deepening: GAP-Gnumeric-FOSS-LOAD-001 — GAP-Gnumeric-FOSS-LOAD-001
+- [pending] TASK-013: Product deepening: GAP-TOML-FOSS-ROUNDTRIP-001 — GAP-TOML-FOSS-ROUNDTRIP-001
+- [pending] TASK-014: Product deepening: GAP-DIF-FOSS-PROBE_DIF-001 — GAP-DIF-FOSS-PROBE_DIF-001
+- [pending] TASK-015: Advance one dogfood export path using a Format Factory library
+- [pending] TASK-016: Build package artifacts and run installed-workflow proof
+- [pending] TASK-017: Write evidence declaration and run supervisor autonomous-cycle
 
 ## Section 2: Rework / Repair (Advisory — Fix Before Closeout)
 None
@@ -92,19 +90,6 @@ None
 
 ## Project Memory Context
 ```
-- timestamp: 2026-06-16T15:09:09.555833
-- verdict: ACCEPTED
-- test_count: 12
-- fail_count: 0
-- git_head: see-declaration
-- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\idempotent-swarm-sprint114-20260616-baf84d6\declaration-review-package.zip
-- pending_marker_count: 0
-- bundle_entry_count: 60
-- bundle_validation_pass: True
-- test_delta: 0
-- test_delta_from: 12
-
-## Entry: product-deepening-sprint70
 - timestamp: 2026-06-16T15:11:10.543853
 - verdict: ACCEPTED
 - test_count: 21
@@ -141,6 +126,19 @@ None
 - bundle_entry_count: 60
 - bundle_validation_pass: True
 - test_delta: 0
+- test_delta_from: 12
+
+## Entry: TOML-DEEPENING-R275-R279-20260616
+- timestamp: 2026-06-16T15:19:10.293711
+- verdict: ACCEPTED
+- test_count: 50
+- fail_count: 0
+- git_head: see-declaration
+- bundle_path: C:\Users\prora\OneDrive\Documents\GitHub\format-factory\.local\supervisor\reviews\toml-deepening-r275-r279-20260616-e5ba655\declaration-review-package.zip
+- pending_marker_count: 0
+- bundle_entry_count: 66
+- bundle_validation_pass: True
+- test_delta: +38
 - test_delta_from: 12
 ```
 

@@ -1,4 +1,4 @@
-"""Tests for V_DEPTH_SCORE, V_CHANGED_NO_TESTS, V_HELPERS_ONLY, V34-V36 validators."""
+"""Tests for V_DEPTH_SCORE, V_CHANGED_NO_TESTS, V_HELPERS_ONLY, V34-V37 validators."""
 
 import sys
 from pathlib import Path
@@ -13,6 +13,7 @@ from governance_validators import (
     validate_class_count_minimum,
     validate_monolith_detection,
     validate_no_stub_tests,
+    validate_spec_fact_authority_chain,
 )
 
 
@@ -279,3 +280,65 @@ class TestValidateNoStubTests:
         )])
         result = validate_no_stub_tests(decl, REPO_ROOT)
         assert result["blocks_sprint"] is False
+
+
+# ── V37: validate_spec_fact_authority_chain ─────────────────────────────────
+
+
+class TestValidateSpecFactAuthorityChain:
+    """Tests for V37 validate_spec_fact_authority_chain."""
+
+    def test_pass_no_odf_items(self):
+        """Non-ODF items should pass without check."""
+        decl = _decl([_base_item(format_id="CSV")])
+        result = validate_spec_fact_authority_chain(decl, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_pass_empty_declaration(self):
+        result = validate_spec_fact_authority_chain({"planned_work_items": []}, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_warn_odf_item_without_spec_fact_refs(self):
+        """ODF PRODUCT_SOURCE without spec_fact_refs should WARN."""
+        decl = _decl([_base_item(format_id="FODS", spec_fact_refs=[])])
+        result = validate_spec_fact_authority_chain(decl, REPO_ROOT)
+        assert result["result"] == "WARN"
+        assert result["blocks_sprint"] is False
+
+    def test_pass_odf_item_with_valid_fact_ref(self):
+        """ODF PRODUCT_SOURCE with FACT-* ref should PASS."""
+        decl = _decl([_base_item(format_id="FODS", spec_fact_refs=["FACT-FODS-001"])])
+        result = validate_spec_fact_authority_chain(decl, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_pass_odf_item_with_exception_classification(self):
+        """ODF item with exception_classification should not WARN."""
+        decl = _decl([_base_item(
+            format_id="FODT",
+            spec_fact_refs=[],
+            exception_classification="format_has_no_spec"
+        )])
+        result = validate_spec_fact_authority_chain(decl, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_never_blocks_sprint(self):
+        """V37 must never block sprint (WARN-only)."""
+        decl = _decl([_base_item(format_id="FODS", spec_fact_refs=[])])
+        result = validate_spec_fact_authority_chain(decl, REPO_ROOT)
+        assert result["blocks_sprint"] is False
+
+    def test_non_product_source_odf_skipped(self):
+        """Non-PRODUCT_SOURCE ODF items should be skipped."""
+        decl = _decl([_base_item(format_id="FODS", item_type="TEST")])
+        result = validate_spec_fact_authority_chain(decl, REPO_ROOT)
+        assert result["result"] == "PASS"
+
+    def test_multiple_items_mixed(self):
+        """Mix of covered and uncovered ODF items."""
+        decl = _decl([
+            _base_item(item_id="GOOD-001", format_id="FODS", spec_fact_refs=["FACT-FODS-001"]),
+            _base_item(item_id="BAD-001", format_id="FODT", spec_fact_refs=[]),
+        ])
+        result = validate_spec_fact_authority_chain(decl, REPO_ROOT)
+        assert result["result"] == "WARN"
+        assert any("BAD-001" in str(m.get("item_id", "")) for m in result["items"])
