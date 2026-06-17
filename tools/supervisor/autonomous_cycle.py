@@ -1288,7 +1288,8 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             from continuation_identity import get_or_create_session_identity
             _cci_identity = get_or_create_session_identity(sprint_id=sprint_id)
             session_id = _cci_identity.session_id
-        except Exception:
+        except Exception as _cci_err:
+            print(f"  WARNING: CCI identity fallback: {_cci_err}", file=sys.stderr)
             session_id = os.environ.get("CLAUDE_SESSION_ID") or str(uuid.uuid4())[:12]
 
         signal = {
@@ -1310,6 +1311,14 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         signal_path.write_text(json.dumps(signal, indent=2), encoding="utf-8")
         print(f"  Signal: {signal_path} (continue={signal['autonomous_continue']}, "
               f"iter={existing_iteration}/{max_iterations})")
+
+        # CCI: Record signal creation in continuation ledger (TC-CCI-202)
+        try:
+            from continuation_ledger import append_event
+            append_event("CREATED", "continuation-signal.json",
+                         session_id=session_id, sprint_id=sprint_id)
+        except Exception:
+            pass  # Ledger is best-effort
 
         # R109: Also write stream-local continuation signal
         stream_signal_dir = signal_dir / "streams" / detected_stream

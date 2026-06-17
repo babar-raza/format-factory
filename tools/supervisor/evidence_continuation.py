@@ -122,7 +122,9 @@ def write_post_closeout_active_continuation(
         from continuation_identity import get_or_create_session_identity
         _cci_identity = get_or_create_session_identity(sprint_id=sprint_id)
         session_id = _cci_identity.session_id
-    except Exception:
+    except Exception as _cci_err:
+        import sys as _sys
+        print(f"  WARNING: CCI identity fallback: {_cci_err}", file=_sys.stderr)
         session_id = os.environ.get("CLAUDE_SESSION_ID") or str(uuid.uuid4())[:12]
 
     data = {
@@ -141,6 +143,15 @@ def write_post_closeout_active_continuation(
     }
     ACTIVE_CONTINUATION_PATH.parent.mkdir(parents=True, exist_ok=True)
     ACTIVE_CONTINUATION_PATH.write_text(json.dumps(data, indent=2), encoding="utf-8")
+
+    # CCI: Record active-continuation creation in ledger (TC-CCI-202)
+    try:
+        from continuation_ledger import append_event
+        append_event("CREATED", "active-continuation.json",
+                     session_id=session_id, sprint_id=sprint_id)
+    except Exception:
+        pass  # Ledger is best-effort
+
     return ACTIVE_CONTINUATION_PATH
 
 

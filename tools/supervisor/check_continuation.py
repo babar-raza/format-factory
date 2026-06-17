@@ -46,19 +46,34 @@ def check(repo_root: Path, *, session_id: str | None = None) -> dict:
             sys.path.insert(0, str(Path(__file__).resolve().parent))
             from continuation_identity import get_or_create_session_identity
             session_id = get_or_create_session_identity().session_id
-        except Exception:
-            pass  # Graceful degradation: skip guard if identity module unavailable
+        except Exception as _cci_err:
+            print(f"WARNING: CCI identity fallback: {_cci_err}", file=sys.stderr)
 
+    # Use continuation_selector for richer session matching (TC-CCI-203)
     signal_session_id = signal.get("session_id")
     if session_id and signal_session_id:
-        if session_id != signal_session_id:
-            return _stop(
-                "SESSION_MISMATCH",
-                f"Signal session_id={signal_session_id!r} does not match "
-                f"caller session_id={session_id!r}. This continuation belongs to another chat.",
-                iteration=signal.get("iteration", 0),
-                max_iterations=signal.get("max_iterations", 5),
-            )
+        try:
+            from continuation_identity import ContinuationIdentity
+            from continuation_selector import select_continuation
+            caller_identity = ContinuationIdentity(session_id=session_id)
+            sel_result = select_continuation(caller_identity, signal_path)
+            if sel_result.verdict == "REJECT":
+                return _stop(
+                    "SESSION_MISMATCH",
+                    sel_result.reason or "Session mismatch (selector)",
+                    iteration=signal.get("iteration", 0),
+                    max_iterations=signal.get("max_iterations", 5),
+                )
+        except ImportError:
+            # Fallback to inline comparison if selector unavailable
+            if session_id != signal_session_id:
+                return _stop(
+                    "SESSION_MISMATCH",
+                    f"Signal session_id={signal_session_id!r} does not match "
+                    f"caller session_id={session_id!r}. This continuation belongs to another chat.",
+                    iteration=signal.get("iteration", 0),
+                    max_iterations=signal.get("max_iterations", 5),
+                )
 
     iteration = signal.get("iteration", 0)
     max_iterations = signal.get("max_iterations", 5)
