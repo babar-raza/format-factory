@@ -55,7 +55,7 @@ _ODF_NAMESPACES = {
     "math", "svg", "xlink", "dc", "grddl", "xhtml", "pkg",
 }
 
-_MAX_CANDIDATES_PER_FORMAT = 200  # cap to prevent explosion
+_MAX_CANDIDATES_PER_FORMAT = 5000  # ROOT-09 fix: raised from 200 to enable comprehensive extraction
 
 
 def _now_iso() -> str:
@@ -74,9 +74,20 @@ def _load_spec_index(format_id: str) -> Optional[Dict[str, Any]]:
 
 
 def _find_normalized_text(format_id: str) -> Optional[Path]:
-    """Find normalized/text.txt for a format."""
+    """Find normalized/text.txt for a format.
+
+    ROOT-07 fix: Also searches for RFC .txt files when normalized/text.txt
+    is not found (e.g., zst/rfc8878/rfc8878.txt).
+    """
+    # Primary: standard normalized path
     matches = list(_SPEC_CACHE.glob(f"{format_id}/*/normalized/text.txt"))
-    return matches[0] if matches else None
+    if matches:
+        return matches[0]
+    # Fallback: RFC text files (e.g., zst/rfc8878/rfc8878.txt)
+    rfc_matches = list(_SPEC_CACHE.glob(f"{format_id}/*/*.txt"))
+    if rfc_matches:
+        return rfc_matches[0]
+    return None
 
 
 def _find_workbench_yaml(format_id: str) -> Optional[Path]:

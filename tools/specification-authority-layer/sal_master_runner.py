@@ -262,6 +262,69 @@ _FORMAT_SPECIFIC_FACTS: Dict[str, List[Dict[str, str]]] = {
                 "Covered cells are table:covered-table-cell elements."
             ),
         },
+        {
+            "qname": "FODS-FACT-008",
+            "section": "ODF 1.3 §9.1.5 — Covered Table Cell",
+            "description": (
+                "table:covered-table-cell represents a cell covered by a "
+                "merge span. It occupies space in the row but carries no "
+                "independent value. Used in workbook_merged_cell_summary."
+            ),
+        },
+        {
+            "qname": "FODS-FACT-009",
+            "section": "ODF 1.3 §19.642 — Formula Attribute",
+            "description": (
+                "table:formula attribute on table:table-cell contains a "
+                "formula expression with namespace prefix (e.g. of:=SUM(A1:A5)). "
+                "The cached result is stored in office:value attributes."
+            ),
+        },
+        {
+            "qname": "FODS-FACT-010",
+            "section": "ODF 1.3 §16.2 — Style Element",
+            "description": (
+                "style:style defines a named style with style:family attribute "
+                "(table-cell, table-column, table-row, paragraph). "
+                "Referenced by style:name from content elements."
+            ),
+        },
+        {
+            "qname": "FODS-FACT-011",
+            "section": "ODF 1.3 §9.4.4 — Content Validation",
+            "description": (
+                "table:content-validation in table:content-validations defines "
+                "cell validation rules. Attributes: table:condition (formula), "
+                "table:allow-empty-cell, table:base-cell-address."
+            ),
+        },
+        {
+            "qname": "FODS-FACT-012",
+            "section": "ODF 1.3 §16.27 — Number Style",
+            "description": (
+                "number:number-style defines numeric formatting. Contains "
+                "number:number (decimal places, grouping), number:text "
+                "(literal text). Referenced via style:data-style-name."
+            ),
+        },
+        {
+            "qname": "FODS-FACT-013",
+            "section": "ODF 1.3 §5.1.3 — Text Paragraph in Cell",
+            "description": (
+                "Cell text content is wrapped in text:p elements inside "
+                "table:table-cell. Multiple text:p elements represent "
+                "multi-line cell content. Used by workbook_cell_text_at."
+            ),
+        },
+        {
+            "qname": "FODS-FACT-014",
+            "section": "ODF 1.3 §17.16 — Table Column Properties",
+            "description": (
+                "style:table-column-properties defines column layout. "
+                "Key attribute: style:column-width (length value). "
+                "Referenced from table:table-column via table:style-name."
+            ),
+        },
     ],
     "fodt": [
         {
@@ -327,6 +390,87 @@ _FORMAT_SPECIFIC_FACTS: Dict[str, List[Dict[str, str]]] = {
                 "Insertions: text:change-start/text:change-end. "
                 "Deletions: text:deletion with deleted content. "
                 "Creator and date in dc:creator, dc:date."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-008",
+            "section": "ODF 1.3 §5.3.3 — List Item",
+            "description": (
+                "text:list-item is a child of text:list. Contains text:p "
+                "or nested text:list for multi-level lists. "
+                "Used by document_list_item_count."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-009",
+            "section": "ODF 1.3 §16.2 — Paragraph Style",
+            "description": (
+                "style:style with style:family='paragraph' defines paragraph "
+                "formatting. Properties in style:paragraph-properties "
+                "(alignment, margin) and style:text-properties (font, size)."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-010",
+            "section": "ODF 1.3 §6.3.2 — Footnotes and Endnotes",
+            "description": (
+                "text:note with text:note-class='footnote' or 'endnote'. "
+                "Contains text:note-citation (mark) and text:note-body "
+                "(content). Used by document_footnote_endnote_summary."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-011",
+            "section": "ODF 1.3 §6.1.8 — Hyperlinks",
+            "description": (
+                "text:a element with xlink:href for the URL, "
+                "xlink:type='simple'. May wrap text:span for styled links. "
+                "Used by document_hyperlink_count."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-012",
+            "section": "ODF 1.3 §10.4.2 — Draw Frame",
+            "description": (
+                "draw:frame contains draw:image (with xlink:href to image data) "
+                "or draw:text-box. Attributes: svg:width, svg:height, "
+                "text:anchor-type. Used by document_image_frame_list."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-013",
+            "section": "ODF 1.3 §3.1.2 — Document Language",
+            "description": (
+                "fo:language and fo:country attributes on style:text-properties "
+                "specify text language. Multiple languages may coexist in a "
+                "document via different paragraph styles."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-014",
+            "section": "ODF 1.3 §7.4 — User Field Declarations",
+            "description": (
+                "text:user-field-decl defines reusable text variables. "
+                "Attributes: text:name, office:value-type, office:string-value. "
+                "Displayed via text:user-field-get. Used by document_text_field_warnings."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-015",
+            "section": "ODF 1.3 §5.1.2 — Headings",
+            "description": (
+                "text:h elements represent headings with mandatory "
+                "text:outline-level attribute (1-10). Heading style is "
+                "determined by text:style-name. Used by document_extract_headings."
+            ),
+        },
+        {
+            "qname": "FODT-FACT-016",
+            "section": "ODF 1.3 §5.4 — Text Sections",
+            "description": (
+                "text:section partitions document content with text:name. "
+                "Sections can be linked (text:section-source) or protected "
+                "(text:protected). Used by document_section_summary."
             ),
         },
     ],
@@ -674,6 +818,7 @@ def _load_workbench_verified_facts(format_id: str) -> List[Dict[str, str]]:
 def run_sal_pipeline(
     formats: Optional[List[str]] = None,
     output_dir: Optional[Path] = None,
+    from_cache_only: bool = False,
 ) -> Dict[str, Any]:
     """
     Run the SAL pipeline for one or more formats.
@@ -681,6 +826,8 @@ def run_sal_pipeline(
     Args:
         formats: list of format IDs to process (None = all registered)
         output_dir: directory to write output JSON (None = .local/sal-output)
+        from_cache_only: if True, suppress template facts and emit only
+            workbench-verified FACT-<FORMAT>-NNN facts (TC-SAL-IMPL-001)
 
     Returns:
         dict with keys: formats_processed, spec_facts_total, output_path, results
@@ -701,14 +848,21 @@ def run_sal_pipeline(
     results = []
     for fmt in all_formats:
         fid = fmt.get("format_id", "")
-        facts = _spec_facts_for_format(fmt)
 
-        # TC-SAL-014: Merge verified workbench facts (additive — template facts preserved)
-        workbench_facts = _load_workbench_verified_facts(fid)
-        if workbench_facts:
-            existing_qnames = {f.get("qname", "") for f in facts}
-            new_facts = [wf for wf in workbench_facts if wf["qname"] not in existing_qnames]
-            facts = facts + new_facts
+        if from_cache_only:
+            # TC-SAL-IMPL-001: emit ONLY workbench-verified facts
+            facts = []
+            workbench_facts = _load_workbench_verified_facts(fid)
+            if workbench_facts:
+                facts = list(workbench_facts)
+        else:
+            facts = _spec_facts_for_format(fmt)
+            # TC-SAL-014: Merge verified workbench facts (additive — template facts preserved)
+            workbench_facts = _load_workbench_verified_facts(fid)
+            if workbench_facts:
+                existing_qnames = {f.get("qname", "") for f in facts}
+                new_facts = [wf for wf in workbench_facts if wf["qname"] not in existing_qnames]
+                facts = facts + new_facts
 
         entry = {
             "format_id": fid,
@@ -761,6 +915,8 @@ def _cli() -> int:
     )
     parser.add_argument("--list-formats", action="store_true",
                         help="List all known format IDs and exit")
+    parser.add_argument("--from-cache-only", action="store_true",
+                        help="Emit only workbench-verified FACT-<FORMAT>-NNN facts (suppress templates)")
     args = parser.parse_args()
 
     if args.list_formats:
@@ -776,7 +932,11 @@ def _cli() -> int:
         # Default: process all
         formats = None
 
-    result = run_sal_pipeline(formats=formats, output_dir=Path(args.output_dir))
+    result = run_sal_pipeline(
+        formats=formats,
+        output_dir=Path(args.output_dir),
+        from_cache_only=args.from_cache_only,
+    )
 
     print(f"[sal_master_runner] Processed {result['formats_processed']} formats")
     print(f"[sal_master_runner] Total spec facts: {result['spec_facts_total']}")
