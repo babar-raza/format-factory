@@ -13,8 +13,10 @@ Exit codes:
 
 import argparse
 import json
+import os
 import shutil
 import sys
+import uuid
 from datetime import datetime
 from pathlib import Path
 
@@ -385,6 +387,32 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
                     print(f"    FAIL [{v['validator']}]: {v.get('summary', '')[:120]}")
     except Exception as e:
         print(f"  WARNING: Governance validators skipped: {e}")
+
+    # Step 2e½: Source structure validator (spec-derived architecture governance)
+    print("\n=== STEP 2e½: SOURCE STRUCTURE VALIDATOR ===")
+    try:
+        _validator_path = repo_root / "tools" / "validators" / "source_structure_validator.py"
+        if _validator_path.is_file():
+            import importlib.util
+            _spec = importlib.util.spec_from_file_location("source_structure_validator", str(_validator_path))
+            _ssv = importlib.util.module_from_spec(_spec)
+            _spec.loader.exec_module(_ssv)
+            _ss_result = _ssv.run_full_scan(repo_root)
+            (review_dir / "source-structure-result.json").write_text(
+                json.dumps(_ss_result, indent=2), encoding="utf-8"
+            )
+            _ss_blocks = _ss_result.get("blocks_sprint", False)
+            _ss_status = _ss_result.get("result", _ss_result.get("status", "UNKNOWN"))
+            print(f"  Source structure: {_ss_status} | blocks_sprint={_ss_blocks}")
+            if _ss_blocks:
+                for k in ("new_violations", "regressions"):
+                    items = _ss_result.get(k, [])
+                    if items:
+                        print(f"    {k}: {'; '.join(items[:5])}")
+        else:
+            print("  Source structure validator not found — skipped")
+    except Exception as e:
+        print(f"  WARNING: Source structure validator skipped: {e}")
 
     # ENFORCEMENT BOUNDARY NOTE:
     # Route decision PRESENCE is validated by Validator 11 (validate_route_decision_required).
@@ -1255,6 +1283,14 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             # New params use default True — backward compatible (R113 product-first)
         )
 
+        # CCI-MVP: Stable session_id for cross-chat isolation (TC-CCI-200)
+        try:
+            from continuation_identity import get_or_create_session_identity
+            _cci_identity = get_or_create_session_identity(sprint_id=sprint_id)
+            session_id = _cci_identity.session_id
+        except Exception:
+            session_id = os.environ.get("CLAUDE_SESSION_ID") or str(uuid.uuid4())[:12]
+
         signal = {
             "autonomous_continue": auto_continue_value,
             "iteration": existing_iteration,
@@ -1267,6 +1303,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             "source_sprint_id": sprint_id,
             "hard_stops_detected": hard_stops,
             "continuation_state": continuation_state,
+            "session_id": session_id,
         }
         if rollover_note:
             signal["checkpoint_rollover"] = rollover_note

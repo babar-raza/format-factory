@@ -23,8 +23,11 @@ _here = Path(__file__).resolve().parent
 _default_repo = _here.parent.parent
 
 
-def check(repo_root: Path) -> dict:
-    """Run all 7 continuation conditions. Returns a verdict dict."""
+def check(repo_root: Path, *, session_id: str | None = None) -> dict:
+    """Run continuation conditions. Returns a verdict dict.
+
+    If session_id is provided, rejects signals from a different session (Condition 0).
+    """
     repo_root = repo_root.resolve()
 
     # --- Check 1: continuation-signal.json exists and is valid JSON ---
@@ -35,6 +38,27 @@ def check(repo_root: Path) -> dict:
         signal = json.loads(signal_path.read_text(encoding="utf-8"))
     except Exception as e:
         return _stop("INVALID_SIGNAL", f"continuation-signal.json is not valid JSON: {e}")
+
+    # --- Check 0 (CCI-MVP): Session identity guard (TC-CCI-201) ---
+    # Auto-resolve session_id when not explicitly provided by caller.
+    if session_id is None:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            from continuation_identity import get_or_create_session_identity
+            session_id = get_or_create_session_identity().session_id
+        except Exception:
+            pass  # Graceful degradation: skip guard if identity module unavailable
+
+    signal_session_id = signal.get("session_id")
+    if session_id and signal_session_id:
+        if session_id != signal_session_id:
+            return _stop(
+                "SESSION_MISMATCH",
+                f"Signal session_id={signal_session_id!r} does not match "
+                f"caller session_id={session_id!r}. This continuation belongs to another chat.",
+                iteration=signal.get("iteration", 0),
+                max_iterations=signal.get("max_iterations", 5),
+            )
 
     iteration = signal.get("iteration", 0)
     max_iterations = signal.get("max_iterations", 5)
@@ -89,6 +113,7 @@ def check(repo_root: Path) -> dict:
         "iteration": iteration,
         "max_iterations": max_iterations,
         "continuation_state": cont_state,
+        "session_id": signal.get("session_id"),
         "next_work_items_path": ".local/supervisor/next-work-items.json",
         "next_sprint_path": "reports/supervisor/next-sprint.md",
         "rework_items": rework_items,
@@ -118,9 +143,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Check autonomous continuation conditions")
     parser.add_argument("--repo-root", type=Path, default=_default_repo,
                         help="Repository root (default: auto-detected)")
+    parser.add_argument("--session-id", type=str, default=None,
+                        help="Session ID for cross-chat isolation (CCI-MVP)")
     args = parser.parse_args(argv)
 
-    result = check(args.repo_root)
+    result = check(args.repo_root, session_id=args.session_id)
     print(json.dumps(result, indent=2))
     return 0 if result["verdict"] == "CONTINUE" else 1
 

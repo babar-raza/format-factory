@@ -12,6 +12,7 @@ Markdown which is rejected by continuation_router.py.
 from __future__ import annotations
 
 import json
+import os
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -116,6 +117,14 @@ def write_post_closeout_active_continuation(
     prior_run_id: Optional[str] = None,
 ) -> Path:
     """Write active-continuation.json pointing to machine-readable next action (not Markdown)."""
+    # CCI-MVP: Stable session_id for cross-chat isolation (TC-CCI-200)
+    try:
+        from continuation_identity import get_or_create_session_identity
+        _cci_identity = get_or_create_session_identity(sprint_id=sprint_id)
+        session_id = _cci_identity.session_id
+    except Exception:
+        session_id = os.environ.get("CLAUDE_SESSION_ID") or str(uuid.uuid4())[:12]
+
     data = {
         "schema_version": 1,
         "sprint_id": sprint_id,
@@ -127,6 +136,7 @@ def write_post_closeout_active_continuation(
         "prior_run_id": prior_run_id,
         "generated_at": _now_iso(),
         "generated_by": "evidence_continuation.py",
+        "session_id": session_id,
         "note": "Machine-readable continuation — not advisory Markdown",
     }
     ACTIVE_CONTINUATION_PATH.parent.mkdir(parents=True, exist_ok=True)

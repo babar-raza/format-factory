@@ -2352,7 +2352,19 @@ def _extract_format_from_item(item: dict) -> str:
 # Formats that require at least 15 classes for product-readiness
 _COMPLEX_FORMATS = {"fods", "fodt"}
 _CLASS_COUNT_MINIMUM = 15
-_MONOLITH_LOC_THRESHOLD = 1500
+_MONOLITH_LOC_THRESHOLD = 800
+_MONOLITH_BASELINE_PATH = Path(__file__).resolve().parents[2] / "registry" / "source-structure-baseline.json"
+
+
+def _load_monolith_baseline() -> dict:
+    """Load known monolith violations from source-structure-baseline.json."""
+    if _MONOLITH_BASELINE_PATH.is_file():
+        try:
+            import json as _json
+            return _json.loads(_MONOLITH_BASELINE_PATH.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            pass
+    return {}
 
 def validate_class_count_minimum(declaration: dict,
                                   repo_root: Path | None = None) -> dict:
@@ -2404,11 +2416,21 @@ def validate_class_count_minimum(declaration: dict,
 
 def validate_monolith_detection(declaration: dict,
                                  repo_root: Path | None = None) -> dict:
-    """V35: Warn on single source file > 1500 LOC in changed_files."""
+    """V35: Block new monolith files and monolith regression.
+
+    Uses baseline grandfathering from registry/source-structure-baseline.json:
+    - File in baseline AND LOC <= baseline → WARN (grandfathered)
+    - File in baseline AND LOC > baseline → FAIL, blocks_sprint
+    - File NOT in baseline AND LOC > 800 → FAIL, blocks_sprint
+    """
     if repo_root is None:
         repo_root = Path(".")
+    baseline = _load_monolith_baseline()
+    known = baseline.get("known_violations", {})
     changed = declaration.get("changed_files", [])
-    monoliths = []
+    grandfathered = []
+    regressions = []
+    new_violations = []
     for fpath in changed:
         p = repo_root / fpath
         if not p.is_file():
@@ -2419,15 +2441,39 @@ def validate_monolith_detection(declaration: dict,
             loc = sum(1 for _ in p.open(encoding="utf-8", errors="replace"))
         except OSError:
             continue
-        if loc > _MONOLITH_LOC_THRESHOLD:
-            monoliths.append(f"{fpath} ({loc} LOC)")
-    if monoliths:
+        if loc <= _MONOLITH_LOC_THRESHOLD:
+            continue
+        rel = str(Path(fpath)).replace("\\", "/")
+        baseline_entry = known.get(rel)
+        if baseline_entry:
+            baseline_loc = baseline_entry.get("loc", 0)
+            if loc > baseline_loc:
+                regressions.append(f"{rel} ({loc} LOC, baseline {baseline_loc})")
+            else:
+                grandfathered.append(f"{rel} ({loc} LOC, grandfathered)")
+        else:
+            new_violations.append(f"{rel} ({loc} LOC)")
+    blocks = bool(regressions or new_violations)
+    parts = []
+    if grandfathered:
+        parts.append(f"grandfathered: {'; '.join(grandfathered)}")
+    if regressions:
+        parts.append(f"REGRESSION: {'; '.join(regressions)}")
+    if new_violations:
+        parts.append(f"NEW VIOLATION: {'; '.join(new_violations)}")
+    if blocks:
+        return {
+            "validator": "monolith_detection_validator",
+            "result": "FAIL",
+            "blocks_sprint": True,
+            "detail": f"Monolith violations block sprint: {' | '.join(parts)}",
+        }
+    if grandfathered:
         return {
             "validator": "monolith_detection_validator",
             "result": "WARN",
             "blocks_sprint": False,
-            "detail": f"{len(monoliths)} file(s) exceed {_MONOLITH_LOC_THRESHOLD} LOC: "
-                       + "; ".join(monoliths),
+            "detail": f"Grandfathered monoliths (no regression): {'; '.join(grandfathered)}",
         }
     return {
         "validator": "monolith_detection_validator",

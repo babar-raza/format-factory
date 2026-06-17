@@ -11,6 +11,26 @@ This file is generated automatically by the supervisor pipeline after each sprin
 
 If `session-resume.md` does not exist yet, read `plans/master-plan.md` instead.
 
+### Cross-Chat Continuation Isolation (CCI-MVP)
+
+Before following any continuation instructions from `session-resume.md`:
+1. Check if the user's current request is related to the sprint described in `session-resume.md`.
+2. If the user explicitly asks to continue autonomous work, follow `session-resume.md` normally.
+3. If the user's request is **unrelated** to the sprint in `session-resume.md`, do NOT auto-continue
+   the previous sprint. Treat `session-resume.md` as background context only.
+4. If `continuation-signal.json` contains a `session_id` field and you have a different session
+   identity, the signal belongs to another chat — do not consume it.
+
+### Mandatory Plan Files (read every session)
+
+Read ALL files in the `plans/` root directory at the start of every session:
+- `plans/master-plan.md` — the master project plan
+- `plans/spec-to-feature-radical-correction-plan.md` — the spec-to-feature correction plan (master authority)
+- `plans/snoopy-juggling-seal.md` — active plan context
+
+These files define the project's strategic direction and must be read before any work begins.
+If new files appear in `plans/`, read those too.
+
 ## After Reading session-resume.md
 
 Check `reports/supervisor/approval-gates.md`:
@@ -53,10 +73,25 @@ Gate 11 execution approval by Babar Raza, package publication credentials).
 After completing sprint work, attempt these steps. If any step fails, log the failure
 and proceed to the next sprint immediately.
 
+0. **Sync the source structure baseline** (best-effort — prevents false regression alerts):
+   If any `src/python/` source files were modified, run the baseline sync before declaration:
+   ```python
+   python -c "import json,ast;from pathlib import Path;bp=Path('registry/source-structure-baseline.json');b=json.loads(bp.read_text());k=b['known_violations'];[exec('entry[\"loc\"]=sum(1 for _ in Path(rel).open());tree=ast.parse(Path(rel).read_text());entry[\"functions\"]=sum(1 for n in ast.iter_child_nodes(tree) if isinstance(n,ast.FunctionDef))') for rel,entry in k.items() if Path(rel).is_file() and rel.endswith('.py')];bp.write_text(json.dumps(b,indent=2)+chr(10))"
+   ```
+
 1. **Write an evidence declaration** at `.local/evidences/<run_id>/evidence-declaration.yaml`
    - Declare all work items with status, evidence paths, and test references
    - Include test results, changed files, and worker self-verdict
    - See `docs/automation/supervisor-worker-contract.md` for the full field list
+
+1b. **Validate the declaration before submitting** (best-effort — log and proceed if tool unavailable):
+   ```
+   python tools/supervisor/sprint_executor_validate.py \
+     .local/evidences/<run_id>/evidence-declaration.yaml --repair
+   ```
+   The `--repair` flag auto-corrects markdown fences, type mismatches, and banned fields.
+   Fix any `FAIL` errors before proceeding to step 2. If the validator itself fails, log it
+   and proceed to step 2 regardless.
 
 2. **Run the supervisor pipeline:**
    ```
@@ -110,6 +145,48 @@ unless check_continuation.py is unavailable.
 Note: `advisory_prompt_executable` is ALWAYS `false` by design — it does NOT indicate
 that continuation is blocked. Ignore this field everywhere.
 
+### One-Mechanism Lock
+
+For each run, select exactly one autonomous authority — either the interactive
+`/autonomous-loop` command (VSCode supervised) OR `sprint_executor.py run-loop`
+(headless). Never run both simultaneously. If using the interactive path in VSCode,
+the headless run-loop subprocess is inactive. If using headless run-loop, the VSCode
+session is not issuing separate sprint executions. See AGENTS.md §AH1 for full rule.
+
+### Sprint Audit (mandatory between sprints)
+
+After each sprint's closeout produces `evidence-review.json`, produce a structured
+sprint audit before starting the next sprint. The audit must categorize every work
+item into exactly one of these 6 classifications:
+
+- `completed_verified` — implemented AND verified with real tests and direct evidence
+- `completed_but_weakly_verified` — implementation exists; proof is synthetic, narrow, or limited
+- `partially_done` — code exists but is unwired, unregistered, or unvalidated against real source
+- `not_attempted` — required work not started
+- `claimed_unproven` — report or state claims completion without adequate direct proof
+- `risk_not_reduced` — code changed but production/pipeline risk unchanged (stale artifacts, unwired gates)
+
+Do not present implementation as verified behavior. Do not present synthetic tests
+as real-world proof. The audit is a factual inventory, not a celebration.
+
+`AUDIT COMPLETE` is NOT a valid stopping point — proceed immediately to Plan Hardening.
+
+### Plan Hardening (mandatory before next sprint)
+
+Immediately after the sprint audit, before executing the next sprint:
+
+1. Convert every `partially_done`, `not_attempted`, `claimed_unproven`, and
+   `risk_not_reduced` audit finding into an owned taskcard or lane amendment.
+2. Do not carry forward unresolved findings as prose recommendations — they must
+   become governed tasks with status tracking.
+3. Do not modify product source during this step — only update plan/taskcard state.
+4. Read `reports/supervisor/next-sprint.md` AFTER hardening, not before. The
+   hardened amendments take priority over stale next-sprint.md content.
+
+`PLAN HARDENED` is NOT a valid stopping point — proceed immediately to sprint execution.
+The audit and plan-hardening steps form the transition gate between sprints. Together
+they must complete within the same autonomous session as the sprint they follow.
+
 ### Cross-Window Recovery
 If this window is new (context was exhausted, window crashed, or user opened a fresh session):
 - The state files (`session-resume.md`, `approval-gates.md`, `next-sprint.md`) contain everything
@@ -137,6 +214,11 @@ Apply the Human Task Conversion Rule (AGENTS.md §AG1) before treating any of th
 - **MCP activation changes:** Classify specifically. Active MCP configuration changes require explicit policy.
 - **Destructive git operations (reset --hard, force push):** Require explicit policy authority and a
   documented rollback path. Classify: `BLOCKED: destructive_operation_no_policy_authority` if missing.
+- **MAX_ITERATIONS from check_continuation.py:** This is NOT a TRUE_EXTERNAL_GATE. When
+  check_continuation.py returns `"reason": "MAX_ITERATIONS"`, apply governed rollover:
+  run `python tools/supervisor/sprint_executor.py run-loop` (which resets iteration to 0),
+  OR manually reset `iteration` to 0 in `.local/supervisor/continuation-signal.json` and
+  continue. Never treat MAX_ITERATIONS as a stop condition. See also "Max Iterations" below.
 
 ### Max Iterations
 Max iterations is NOT a stop signal. When iteration >= max_iterations, reset iteration to 0
