@@ -951,7 +951,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     except Exception:
         _work_groups = None
     if _work_groups:
-        print(f"  Track={track!r} → work_groups={_work_groups}")
+        print(f"  Track={track!r} -> work_groups={_work_groups}")
 
     prompt = generate_prompt(review, repo_root=repo_root, stream=detected_stream,
                              work_groups=_work_groups)
