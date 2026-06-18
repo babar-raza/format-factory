@@ -1536,12 +1536,6 @@ def zst_compression_savings_ratio(path: "str | Path") -> float:
         return 0.0
 
 
-def zst_compressed_size_minus_header(path: "str | Path") -> int:
-    """Return compressed file size minus header size. 0 if result is negative."""
-    result = zst_compressed_size(path) - zst_header_size(path)
-    return max(0, result)
-
-
 def zst_size_exceeds_1k(path: "str | Path") -> bool:
     """Return True if compressed file size exceeds 1000 bytes."""
     return zst_compressed_size(path) > 1000

@@ -1099,12 +1099,6 @@ def xcf_total_canvas_pixels(file_path: str | Path) -> int:
     return img.width * img.height
 
 
-def xcf_width_plus_height(file_path: str | Path) -> int:
-    """Return the sum of canvas width and height."""
-    img = parse_xcf_strict(file_path)
-    return img.width + img.height
-
-
 def xcf_layer_pixel_count(file_path: str | Path) -> int:
     """Return total pixels multiplied by layer count (num_layers * width * height)."""
     img = parse_xcf_strict(file_path)
@@ -1239,35 +1233,9 @@ def xcf_image_type_id(file_path: str | Path) -> int:
     return img.image_type
 
 
-def xcf_file_size_minus_header(file_path: str | Path) -> int:
-    """Return file size in bytes minus the 26-byte XCF header. 0 if file smaller than header."""
-    import os as _os
-    size = _os.path.getsize(file_path)
-    return max(0, size - 26)
-
-
-def xcf_num_layers_plus_image_type_id(file_path: str | Path) -> int:
-    """Return num_layers plus image_type_id (0=RGB, 1=GRAY, 2=INDEXED)."""
-    img = parse_xcf_strict(file_path)
-    return img.num_layers + img.image_type
-
-
-def xcf_file_size_minus_width(file_path: str | Path) -> int:
-    """Return file size in bytes minus canvas width. 0 if result would be negative."""
-    import os as _os
-    img = parse_xcf_strict(file_path)
-    return max(0, _os.path.getsize(file_path) - img.width)
-
-
 def xcf_layer_count_exceeds_one(file_path: str | Path) -> bool:
     """Return True if the file has more than one layer."""
     return xcf_layer_count(file_path) > 1
-
-
-def xcf_width_plus_height(file_path: str | Path) -> int:
-    """Return canvas width plus canvas height in pixels."""
-    img = parse_xcf_strict(file_path)
-    return img.width + img.height
 
 
 def xcf_file_size_per_layer(file_path: str | Path) -> float:

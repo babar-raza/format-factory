@@ -5709,3 +5709,35 @@ def xcf_file_size_mod_1553_times_17800_plus_image_type_times_19700_plus_width_ti
     fs = xcf_file_size_bytes(file_path); it2 = xcf_image_type_id(file_path)
     w2 = xcf_width(file_path); h2 = xcf_height(file_path)
     return (fs % 1553) * 17800 + it2 * 19700 + w2 * 1960 + h2 * 1930
+
+
+# --- Residual analytics functions appended from xcf_parser.py (TC-FODG-COMPLETE-001) ---
+def xcf_width_plus_height(file_path: str | Path) -> int:
+    """Return the sum of canvas width and height."""
+    img = parse_xcf_strict(file_path)
+    return img.width + img.height
+
+
+def xcf_num_layers_plus_image_type_id(file_path: str | Path) -> int:
+    """Return num_layers plus image_type_id (0=RGB, 1=GRAY, 2=INDEXED)."""
+    img = parse_xcf_strict(file_path)
+    return img.num_layers + img.image_type
+
+
+
+
+# --- minus_/div_ analytics appended from source file (TC-FODG-COMPLETE-001) ---
+def xcf_file_size_minus_header(file_path: str | Path) -> int:
+    """Return file size in bytes minus the 26-byte XCF header. 0 if file smaller than header."""
+    import os as _os
+    size = _os.path.getsize(file_path)
+    return max(0, size - 26)
+
+
+def xcf_file_size_minus_width(file_path: str | Path) -> int:
+    """Return file size in bytes minus canvas width. 0 if result would be negative."""
+    import os as _os
+    img = parse_xcf_strict(file_path)
+    return max(0, _os.path.getsize(file_path) - img.width)
+
+

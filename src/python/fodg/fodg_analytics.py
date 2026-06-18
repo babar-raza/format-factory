@@ -3212,3 +3212,1704 @@ def fodg_file_size_times_183_plus_shape_times_81_plus_text_times_80_plus_page_ti
     pc = fodg_page_count(file_path)
     return fs * 183 + sc * 81 + tc * 80 + pc * 81
 
+
+
+# --- Remaining analytics functions appended from fodg_codec.py (TC-FODG-COMPLETE-001) ---
+def fodg_shape_count_times_two(file_path: "str | bytes | Path") -> int:
+    """Return total shape count multiplied by 2."""
+    doc = load(file_path)
+    total = sum(p.get("shape_count", 0) for p in doc.get("pages", []))
+    return total * 2
+
+
+def fodg_shape_count_times_text_count(file_path: "str | bytes | Path") -> int:
+    """Return total shape count multiplied by total text item count. 0 if either is 0."""
+    doc = load(file_path)
+    pages = doc.get("pages", [])
+    shapes = sum(p.get("shape_count", 0) for p in pages)
+    texts = sum(len(p.get("text_content", [])) for p in pages)
+    return shapes * texts
+
+
+
+
+def fodg_text_item_count_times_two(file_path: "str | bytes | Path") -> int:
+    """Return the text item count multiplied by two."""
+    return fodg_text_item_count(file_path) * 2
+
+
+def fodg_has_more_shapes_than_text_items(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count strictly exceeds text item count."""
+    return fodg_total_shape_count(file_path) > fodg_text_item_count(file_path)
+
+
+
+
+
+
+def fodg_file_size_times_page_count(file_path: "str | bytes | Path") -> int:
+    """Return file size in bytes multiplied by total page count."""
+    return fodg_file_size_bytes(file_path) * fodg_page_count(file_path)
+
+
+def fodg_text_item_count_squared(file_path: "str | bytes | Path") -> int:
+    """Return total text item count squared (multiplied by itself)."""
+    tc = fodg_text_item_count(file_path)
+    return tc * tc
+
+
+
+
+
+
+def fodg_text_item_count_times_three(file_path: "str | bytes | Path") -> int:
+    """Return the text item count multiplied by three."""
+    return fodg_text_item_count(file_path) * 3
+
+
+def fodg_has_exactly_one_text_item(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count is exactly one."""
+    return fodg_text_item_count(file_path) == 1
+
+
+
+
+def fodg_shape_count_times_text_count_times_page_count(file_path: "str | bytes | Path") -> int:
+    """Return total shape count * text item count * page count."""
+    return fodg_total_shape_count(file_path) * fodg_text_item_count(file_path) * fodg_page_count(file_path)
+
+
+def fodg_total_shape_count_times_two(file_path: "str | bytes | Path") -> int:
+    """Return the total shape count multiplied by two."""
+    return fodg_total_shape_count(file_path) * 2
+
+
+def fodg_has_no_text_items(file_path: "str | bytes | Path") -> bool:
+    """Return True if there are no text items in the document."""
+    return fodg_text_item_count(file_path) == 0
+
+
+
+
+
+
+def fodg_max_shapes_per_page_times_two(file_path: "str | bytes | Path") -> int:
+    """Return the maximum shapes per page multiplied by two."""
+    return fodg_max_shapes_per_page(file_path) * 2
+
+
+def fodg_has_at_least_two_shapes(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count is at least two."""
+    return fodg_total_shape_count(file_path) >= 2
+
+
+def fodg_shape_count_times_three(file_path: "str | bytes | Path") -> int:
+    """Return the total shape count multiplied by three."""
+    return fodg_total_shape_count(file_path) * 3
+
+
+def fodg_has_no_shapes(file_path: "str | bytes | Path") -> bool:
+    """Return True if there are no shapes in the document."""
+    return fodg_total_shape_count(file_path) == 0
+
+
+
+
+def fodg_has_exactly_three_shapes(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count is exactly three."""
+    return fodg_total_shape_count(file_path) == 3
+
+
+
+
+def fodg_has_exactly_two_text_items(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count is exactly two."""
+    return fodg_text_item_count(file_path) == 2
+
+
+
+
+def fodg_has_at_least_one_text_item(file_path: "str | bytes | Path") -> bool:
+    """Return True if there is at least one text item."""
+    return fodg_text_item_count(file_path) >= 1
+
+
+
+
+def fodg_has_more_text_than_pages(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count strictly exceeds page count."""
+    return fodg_text_item_count(file_path) > fodg_page_count(file_path)
+
+
+
+
+def fodg_has_equal_shapes_and_text(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count equals text item count."""
+    return fodg_total_shape_count(file_path) == fodg_text_item_count(file_path)
+
+
+
+
+def fodg_has_more_shapes_than_text(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count strictly exceeds text item count."""
+    return fodg_total_shape_count(file_path) > fodg_text_item_count(file_path)
+
+
+def fodg_total_shape_count_squared(file_path: "str | bytes | Path") -> int:
+    """Return the square of the total shape count."""
+    n = fodg_total_shape_count(file_path)
+    return n * n
+
+
+def fodg_has_at_least_two_text_items(file_path: "str | bytes | Path") -> bool:
+    """Return True if there are at least two text items."""
+    return fodg_text_item_count(file_path) >= 2
+
+
+
+
+def fodg_is_empty_drawing(file_path: "str | bytes | Path") -> bool:
+    """Return True if drawing has no shapes and no text items."""
+    return fodg_total_shape_count(file_path) == 0 and fodg_text_item_count(file_path) == 0
+
+
+def fodg_page_count_times_shape_count(file_path: "str | bytes | Path") -> int:
+    """Return page count multiplied by total shape count."""
+    return fodg_page_count(file_path) * fodg_total_shape_count(file_path)
+
+
+def fodg_has_only_one_shape(file_path: "str | bytes | Path") -> bool:
+    """Return True if drawing has exactly one shape across all pages."""
+    return fodg_total_shape_count(file_path) == 1
+
+
+def fodg_text_count_times_page_count(file_path: "str | bytes | Path") -> int:
+    """Return text item count multiplied by page count."""
+    return fodg_text_item_count(file_path) * fodg_page_count(file_path)
+
+
+def fodg_has_more_pages_than_shapes(file_path: "str | bytes | Path") -> bool:
+    """Return True if page count exceeds total shape count."""
+    return fodg_page_count(file_path) > fodg_total_shape_count(file_path)
+
+
+
+
+def fodg_has_at_least_three_shapes(file_path: "str | bytes | Path") -> bool:
+    """Return True if drawing has at least three shapes across all pages."""
+    return fodg_total_shape_count(file_path) >= 3
+
+
+def fodg_text_count_times_shape_count(file_path: "str | bytes | Path") -> int:
+    """Return text item count multiplied by total shape count."""
+    return fodg_text_item_count(file_path) * fodg_total_shape_count(file_path)
+
+
+def fodg_is_single_shape_drawing(file_path: "str | bytes | Path") -> bool:
+    """Return True if the drawing has exactly one shape."""
+    return fodg_total_shape_count(file_path) == 1
+
+
+
+
+def fodg_page_equals_shape_count(file_path: "str | bytes | Path") -> bool:
+    """Return True if page count equals total shape count."""
+    return fodg_page_count(file_path) == fodg_total_shape_count(file_path)
+
+
+
+
+def fodg_has_zero_text_items(file_path: "str | bytes | Path") -> bool:
+    """Return True if the drawing has no text items."""
+    return fodg_text_item_count(file_path) == 0
+
+
+
+
+def fodg_text_count_equals_shape_count(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count equals shape count."""
+    return fodg_text_item_count(file_path) == fodg_total_shape_count(file_path)
+
+
+
+
+def fodg_shape_count_is_even(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count is even."""
+    return fodg_total_shape_count(file_path) % 2 == 0
+
+
+def fodg_shape_count_times_page_count_times_two(file_path: "str | bytes | Path") -> int:
+    """Return shape_count * page_count * 2."""
+    return fodg_total_shape_count(file_path) * fodg_page_count(file_path) * 2
+
+
+def fodg_text_count_is_positive(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count is greater than zero."""
+    return fodg_text_item_count(file_path) > 0
+
+
+
+
+def fodg_shape_count_is_three(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count equals 3."""
+    return fodg_total_shape_count(file_path) == 3
+
+
+
+
+def fodg_text_count_is_two(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count equals 2."""
+    return fodg_text_item_count(file_path) == 2
+
+
+def fodg_shape_count_times_text_count_times_two(file_path: "str | bytes | Path") -> int:
+    """Return shape_count * text_count * 2."""
+    return fodg_total_shape_count(file_path) * fodg_text_item_count(file_path) * 2
+
+
+def fodg_shape_count_is_zero(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count equals zero."""
+    return fodg_total_shape_count(file_path) == 0
+
+
+
+
+def fodg_page_count_equals_text_count(file_path: "str | bytes | Path") -> bool:
+    """Return True if page count equals text item count."""
+    return fodg_page_count(file_path) == fodg_text_item_count(file_path)
+
+
+
+
+def fodg_text_count_less_than_shape_count(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count is strictly less than shape count."""
+    return fodg_text_item_count(file_path) < fodg_total_shape_count(file_path)
+
+
+
+
+def fodg_text_count_is_zero(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count equals zero."""
+    return fodg_text_item_count(file_path) == 0
+
+
+
+
+def fodg_shape_count_is_one(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count equals one."""
+    return fodg_total_shape_count(file_path) == 1
+
+
+
+
+def fodg_page_count_greater_than_text_count(file_path: "str | bytes | Path") -> bool:
+    """Return True if page count is strictly greater than text item count."""
+    return fodg_page_count(file_path) > fodg_text_item_count(file_path)
+
+
+
+def fodg_shape_count_greater_than_one(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count is strictly greater than one."""
+    return fodg_total_shape_count(file_path) > 1
+
+
+def fodg_page_count_equals_shape_count(file_path: "str | bytes | Path") -> bool:
+    """Return True if page count equals total shape count."""
+    return fodg_page_count(file_path) == fodg_total_shape_count(file_path)
+
+
+def fodg_shape_count_equals_text_count(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count equals text item count."""
+    return fodg_total_shape_count(file_path) == fodg_text_item_count(file_path)
+
+def fodg_text_count_squared(file_path: "str | bytes | Path") -> int:
+    """Return text item count squared."""
+    tc = fodg_text_item_count(file_path)
+    return tc * tc
+
+def fodg_text_count_not_equal_shape_count(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count is not equal to total shape count."""
+    return fodg_text_item_count(file_path) != fodg_total_shape_count(file_path)
+
+def fodg_shape_count_cubed(file_path: "str | bytes | Path") -> int:
+    """Return total shape count cubed."""
+    sc = fodg_total_shape_count(file_path)
+    return sc * sc * sc
+
+def fodg_shape_count_is_odd(file_path: "str | bytes | Path") -> bool:
+    """Return True if total shape count is odd."""
+    return fodg_total_shape_count(file_path) % 2 == 1
+
+def fodg_text_count_cubed(file_path: "str | bytes | Path") -> int:
+    """Return text item count cubed."""
+    tc = fodg_text_item_count(file_path)
+    return tc * tc * tc
+
+def fodg_text_count_is_even(file_path: "str | bytes | Path") -> bool:
+    """Return True if text item count is even."""
+    return fodg_text_item_count(file_path) % 2 == 0
+
+def fodg_text_count_less_than_page_count(file_path):
+    return fodg_text_item_count(file_path) < fodg_page_count(file_path)
+def fodg_shape_count_not_equal_text_count(file_path):
+    return fodg_total_shape_count(file_path) != fodg_text_item_count(file_path)
+def fodg_page_count_greater_than_shape_count(file_path):
+    return fodg_page_count(file_path) > fodg_total_shape_count(file_path)
+def fodg_text_count_greater_than_page_count(file_path):
+    return fodg_text_item_count(file_path) > fodg_page_count(file_path)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_page_count_squared(file_path: "str | bytes | Path") -> int:
+    """Return the square of the page count."""
+    pc = fodg_page_count(file_path)
+    return pc * pc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_squared(file_path: "str | bytes | Path") -> int:
+    """Return the square of the total shape count."""
+    sc = fodg_total_shape_count(file_path)
+    return sc * sc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_total_shape_count_times_page_count(file_path: "str | bytes | Path") -> int:
+    """Return total shape count times page count."""
+    return fodg_total_shape_count(file_path) * fodg_page_count(file_path)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_file_size_squared(file_path: "str | bytes | Path") -> int:
+    """Return the square of the file size in bytes."""
+    fs = fodg_file_size_bytes(file_path)
+    return fs * fs
+
+
+def fodg_page_count_times_three(file_path: "str | bytes | Path") -> int:
+    """Return the page count multiplied by three."""
+    return fodg_page_count(file_path) * 3
+
+
+
+
+def fodg_text_count_times_page_count_squared(file_path: "str | bytes | Path") -> int:
+    """Return text_item_count * page_count^2."""
+    return fodg_text_item_count(file_path) * (fodg_page_count(file_path) ** 2)
+
+
+def fodg_page_count_times_two(file_path: "str | bytes | Path") -> int:
+    """Return the page count multiplied by two."""
+    return fodg_page_count(file_path) * 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_total_shape_count_times_three(file_path: "str | bytes | Path") -> int:
+    """Return the total shape count multiplied by three."""
+    return fodg_total_shape_count(file_path) * 3
+
+
+def fodg_max_shapes_per_page_squared(file_path: "str | bytes | Path") -> int:
+    """Return the square of the max shapes per page."""
+    ms = fodg_max_shapes_per_page(file_path)
+    return ms * ms
+
+
+def fodg_non_text_shape_count_squared(file_path: "str | bytes | Path") -> int:
+    """Return the square of the non-text shape count."""
+    nt = fodg_non_text_shape_count(file_path)
+    return nt * nt
+
+
+def fodg_file_size_times_three(file_path: "str | bytes | Path") -> int:
+    return fodg_file_size_bytes(file_path) * 3
+
+
+def fodg_total_text_items_times_three(file_path: "str | bytes | Path") -> int:
+    return fodg_total_text_items(file_path) * 3
+
+
+def fodg_max_shapes_per_page_times_three(file_path: "str | bytes | Path") -> int:
+    return fodg_max_shapes_per_page(file_path) * 3
+
+
+def fodg_non_text_shape_count_times_three(file_path: "str | bytes | Path") -> int:
+    return fodg_non_text_shape_count(file_path) * 3
+
+
+def fodg_file_size_times_four(file_path: "str | bytes | Path") -> int:
+    return fodg_file_size_bytes(file_path) * 4
+
+
+def fodg_total_text_items_times_four(file_path: "str | bytes | Path") -> int:
+    return fodg_total_text_items(file_path) * 4
+
+
+def fodg_page_count_times_four(file_path: "str | bytes | Path") -> int:
+    """Return page count multiplied by four."""
+    return fodg_page_count(file_path) * 4
+
+
+def fodg_total_shape_count_times_four(file_path: "str | bytes | Path") -> int:
+    """Return total shape count multiplied by four."""
+    return fodg_total_shape_count(file_path) * 4
+
+
+def fodg_page_count_times_five(file_path: "str | Path") -> int:
+    """Return page count multiplied by five."""
+    return fodg_page_count(file_path) * 5
+
+
+def fodg_total_shape_count_times_five(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by five."""
+    return fodg_total_shape_count(file_path) * 5
+
+
+def fodg_page_count_times_six(file_path: "str | Path") -> int:
+    """Return page count multiplied by six."""
+    return fodg_page_count(file_path) * 6
+
+
+def fodg_total_shape_count_times_six(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by six."""
+    return fodg_total_shape_count(file_path) * 6
+
+
+def fodg_page_count_times_seven(file_path: "str | Path") -> int:
+    """Return page count multiplied by seven."""
+    return fodg_page_count(file_path) * 7
+
+
+def fodg_total_shape_count_times_seven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seven."""
+    return fodg_total_shape_count(file_path) * 7
+
+
+def fodg_page_count_times_eight(file_path: "str | Path") -> int:
+    """Return page count multiplied by eight."""
+    return fodg_page_count(file_path) * 8
+
+
+def fodg_total_shape_count_times_eight(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eight."""
+    return fodg_total_shape_count(file_path) * 8
+
+
+def fodg_page_count_times_nine(file_path: "str | Path") -> int:
+    """Return page count multiplied by nine."""
+    return fodg_page_count(file_path) * 9
+
+
+def fodg_total_shape_count_times_nine(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by nine."""
+    return fodg_total_shape_count(file_path) * 9
+
+
+def fodg_page_count_times_ten(file_path: "str | Path") -> int:
+    """Return page count multiplied by ten."""
+    return fodg_page_count(file_path) * 10
+
+
+def fodg_total_shape_count_times_ten(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ten."""
+    return fodg_total_shape_count(file_path) * 10
+
+
+def fodg_page_count_times_eleven(file_path: "str | Path") -> int:
+    """Return page count multiplied by eleven."""
+    return fodg_page_count(file_path) * 11
+
+
+def fodg_total_shape_count_times_eleven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eleven."""
+    return fodg_total_shape_count(file_path) * 11
+
+
+def fodg_page_count_times_twelve(file_path: "str | Path") -> int:
+    """Return page count multiplied by twelve."""
+    return fodg_page_count(file_path) * 12
+
+
+def fodg_total_shape_count_times_twelve(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twelve."""
+    return fodg_total_shape_count(file_path) * 12
+
+
+def fodg_page_count_times_thirteen(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirteen."""
+    return fodg_page_count(file_path) * 13
+
+
+def fodg_total_shape_count_times_thirteen(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirteen."""
+    return fodg_total_shape_count(file_path) * 13
+
+
+def fodg_page_count_times_fourteen(file_path):
+    """Return page count multiplied by fourteen."""
+    return fodg_page_count(file_path) * 14
+
+
+def fodg_total_shape_count_times_fourteen(file_path):
+    """Return total shape count multiplied by fourteen."""
+    return fodg_total_shape_count(file_path) * 14
+
+
+def fodg_page_count_times_fifteen(file_path):
+    """Return page count multiplied by fifteen."""
+    return fodg_page_count(file_path) * 15
+
+
+def fodg_total_shape_count_times_fifteen(file_path):
+    """Return total shape count multiplied by fifteen."""
+    return fodg_total_shape_count(file_path) * 15
+
+
+def fodg_page_count_times_sixteen(file_path):
+    """Return page count multiplied by sixteen."""
+    return fodg_page_count(file_path) * 16
+
+
+def fodg_total_shape_count_times_sixteen(file_path):
+    """Return total shape count multiplied by sixteen."""
+    return fodg_total_shape_count(file_path) * 16
+
+
+def fodg_page_count_times_seventeen(file_path):
+    """Return page count multiplied by seventeen."""
+    return fodg_page_count(file_path) * 17
+
+
+def fodg_total_shape_count_times_seventeen(file_path):
+    """Return total shape count multiplied by seventeen."""
+    return fodg_total_shape_count(file_path) * 17
+
+
+def fodg_page_count_times_eighteen(file_path):
+    """Return page count multiplied by eighteen."""
+    return fodg_page_count(file_path) * 18
+
+
+def fodg_total_shape_count_times_eighteen(file_path):
+    """Return total shape count multiplied by eighteen."""
+    return fodg_total_shape_count(file_path) * 18
+
+
+def fodg_page_count_times_nineteen(file_path):
+    """Return page count multiplied by nineteen."""
+    return fodg_page_count(file_path) * 19
+
+
+def fodg_total_shape_count_times_nineteen(file_path):
+    """Return total shape count multiplied by nineteen."""
+    return fodg_total_shape_count(file_path) * 19
+
+
+def fodg_page_count_times_twenty(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty."""
+    return fodg_page_count(file_path) * 20
+
+
+def fodg_total_shape_count_times_twenty(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty."""
+    return fodg_total_shape_count(file_path) * 20
+
+
+def fodg_page_count_times_twenty_one(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty-one."""
+    return fodg_page_count(file_path) * 21
+
+
+def fodg_total_shape_count_times_twenty_one(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty-one."""
+    return fodg_total_shape_count(file_path) * 21
+
+
+def fodg_page_count_times_twenty_two(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty-two."""
+    return fodg_page_count(file_path) * 22
+
+
+def fodg_total_shape_count_times_twenty_two(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty-two."""
+    return fodg_total_shape_count(file_path) * 22
+
+
+def fodg_page_count_times_twenty_three(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty-three."""
+    return fodg_page_count(file_path) * 23
+
+
+def fodg_total_shape_count_times_twenty_three(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty-three."""
+    return fodg_total_shape_count(file_path) * 23
+
+
+def fodg_page_count_times_twenty_four(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty-four."""
+    return fodg_page_count(file_path) * 24
+
+
+def fodg_total_shape_count_times_twenty_four(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty-four."""
+    return fodg_total_shape_count(file_path) * 24
+
+
+def fodg_page_count_times_twenty_five(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty-five."""
+    return fodg_page_count(file_path) * 25
+
+
+def fodg_total_shape_count_times_twenty_five(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty-five."""
+    return fodg_total_shape_count(file_path) * 25
+
+
+def fodg_page_count_times_twenty_six(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty-six."""
+    return fodg_page_count(file_path) * 26
+
+
+def fodg_total_shape_count_times_twenty_six(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty-six."""
+    return fodg_total_shape_count(file_path) * 26
+
+
+def fodg_page_count_times_twenty_seven(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty-seven."""
+    return fodg_page_count(file_path) * 27
+
+
+def fodg_total_shape_count_times_twenty_seven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty-seven."""
+    return fodg_total_shape_count(file_path) * 27
+
+
+def fodg_page_count_times_twenty_eight(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty-eight."""
+    return fodg_page_count(file_path) * 28
+
+
+def fodg_total_shape_count_times_twenty_eight(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty-eight."""
+    return fodg_total_shape_count(file_path) * 28
+
+
+def fodg_page_count_times_twenty_nine(file_path: "str | Path") -> int:
+    """Return page count multiplied by twenty-nine."""
+    return fodg_page_count(file_path) * 29
+
+
+def fodg_total_shape_count_times_twenty_nine(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by twenty-nine."""
+    return fodg_total_shape_count(file_path) * 29
+
+
+def fodg_page_count_times_thirty(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty."""
+    return fodg_page_count(file_path) * 30
+
+
+def fodg_total_shape_count_times_thirty(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty."""
+    return fodg_total_shape_count(file_path) * 30
+
+
+def fodg_page_count_times_thirty_one(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty-one."""
+    return fodg_page_count(file_path) * 31
+
+
+def fodg_total_shape_count_times_thirty_one(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty-one."""
+    return fodg_total_shape_count(file_path) * 31
+
+
+def fodg_page_count_times_thirty_two(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty-two."""
+    return fodg_page_count(file_path) * 32
+
+
+def fodg_total_shape_count_times_thirty_two(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty-two."""
+    return fodg_total_shape_count(file_path) * 32
+
+
+def fodg_page_count_times_thirty_three(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty-three."""
+    return fodg_page_count(file_path) * 33
+
+
+def fodg_total_shape_count_times_thirty_three(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty-three."""
+    return fodg_total_shape_count(file_path) * 33
+
+
+def fodg_page_count_times_thirty_four(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty-four."""
+    return fodg_page_count(file_path) * 34
+
+
+def fodg_total_shape_count_times_thirty_four(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty-four."""
+    return fodg_total_shape_count(file_path) * 34
+
+
+def fodg_page_count_times_thirty_five(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty-five."""
+    return fodg_page_count(file_path) * 35
+
+
+def fodg_total_shape_count_times_thirty_five(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty-five."""
+    return fodg_total_shape_count(file_path) * 35
+
+
+def fodg_page_count_times_thirty_six(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty-six."""
+    return fodg_page_count(file_path) * 36
+
+
+def fodg_total_shape_count_times_thirty_six(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty-six."""
+    return fodg_total_shape_count(file_path) * 36
+
+
+def fodg_page_count_times_thirty_seven(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty-seven."""
+    return fodg_page_count(file_path) * 37
+
+
+def fodg_total_shape_count_times_thirty_seven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty-seven."""
+    return fodg_total_shape_count(file_path) * 37
+
+
+def fodg_page_count_times_thirty_eight(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty-eight."""
+    return fodg_page_count(file_path) * 38
+
+
+def fodg_total_shape_count_times_thirty_eight(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty-eight."""
+    return fodg_total_shape_count(file_path) * 38
+
+def fodg_page_count_times_thirty_nine(file_path: "str | Path") -> int:
+    """Return page count multiplied by thirty-nine."""
+    return fodg_page_count(file_path) * 39
+
+def fodg_total_shape_count_times_thirty_nine(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by thirty-nine."""
+    return fodg_total_shape_count(file_path) * 39
+
+def fodg_page_count_times_forty(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty."""
+    return fodg_page_count(file_path) * 40
+
+def fodg_total_shape_count_times_forty(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty."""
+    return fodg_total_shape_count(file_path) * 40
+
+
+def fodg_text_percentage(file_path: "str | Path") -> float:
+    """Return percentage of text items relative to total shapes (0.0 to 100.0). 0.0 if no shapes."""
+    ts = fodg_total_shape_count(file_path)
+    if ts == 0:
+        return 0.0
+    return fodg_text_item_count(file_path) / ts * 100.0
+
+
+def fodg_non_text_shape_percentage(file_path: "str | Path") -> float:
+    """Return percentage of non-text shapes relative to total shapes (0.0 to 100.0). 0.0 if no shapes."""
+    ts = fodg_total_shape_count(file_path)
+    if ts == 0:
+        return 0.0
+    return fodg_non_text_shape_count(file_path) / ts * 100.0
+
+def fodg_page_count_times_forty_one(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty-one."""
+    return fodg_page_count(file_path) * 41
+
+def fodg_total_shape_count_times_forty_one(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty-one."""
+    return fodg_total_shape_count(file_path) * 41
+
+def fodg_page_count_times_forty_two(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty-two."""
+    return fodg_page_count(file_path) * 42
+
+def fodg_total_shape_count_times_forty_two(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty-two."""
+    return fodg_total_shape_count(file_path) * 42
+
+def fodg_page_count_times_forty_three(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty-three."""
+    return fodg_page_count(file_path) * 43
+
+def fodg_total_shape_count_times_forty_three(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty-three."""
+    return fodg_total_shape_count(file_path) * 43
+
+def fodg_page_count_times_forty_four(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty-four."""
+    return fodg_page_count(file_path) * 44
+
+def fodg_total_shape_count_times_forty_four(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty-four."""
+    return fodg_total_shape_count(file_path) * 44
+
+def fodg_page_count_times_forty_five(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty-five."""
+    return fodg_page_count(file_path) * 45
+
+def fodg_total_shape_count_times_forty_five(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty-five."""
+    return fodg_total_shape_count(file_path) * 45
+
+
+def fodg_page_count_times_forty_six(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty-six."""
+    return fodg_page_count(file_path) * 46
+
+
+def fodg_total_shape_count_times_forty_six(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty-six."""
+    return fodg_total_shape_count(file_path) * 46
+
+
+def fodg_page_count_times_forty_seven(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty-seven."""
+    return fodg_page_count(file_path) * 47
+
+
+def fodg_total_shape_count_times_forty_seven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty-seven."""
+    return fodg_total_shape_count(file_path) * 47
+
+
+def fodg_page_count_times_forty_eight(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty-eight."""
+    return fodg_page_count(file_path) * 48
+
+
+def fodg_total_shape_count_times_forty_eight(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty-eight."""
+    return fodg_total_shape_count(file_path) * 48
+
+
+def fodg_page_count_times_forty_nine(file_path: "str | Path") -> int:
+    """Return page count multiplied by forty-nine."""
+    return fodg_page_count(file_path) * 49
+
+
+def fodg_total_shape_count_times_forty_nine(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by forty-nine."""
+    return fodg_total_shape_count(file_path) * 49
+
+
+def fodg_page_count_times_fifty(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty."""
+    return fodg_page_count(file_path) * 50
+
+
+def fodg_total_shape_count_times_fifty(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty."""
+    return fodg_total_shape_count(file_path) * 50
+
+
+def fodg_page_count_times_fifty_one(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty-one."""
+    return fodg_page_count(file_path) * 51
+
+
+def fodg_total_shape_count_times_fifty_one(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty-one."""
+    return fodg_total_shape_count(file_path) * 51
+
+
+def fodg_page_count_times_fifty_two(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty-two."""
+    return fodg_page_count(file_path) * 52
+
+
+def fodg_total_shape_count_times_fifty_two(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty-two."""
+    return fodg_total_shape_count(file_path) * 52
+
+
+def fodg_page_count_times_fifty_three(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty-three."""
+    return fodg_page_count(file_path) * 53
+
+
+def fodg_total_shape_count_times_fifty_three(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty-three."""
+    return fodg_total_shape_count(file_path) * 53
+
+
+def fodg_page_count_times_fifty_four(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty-four."""
+    return fodg_page_count(file_path) * 54
+
+
+def fodg_total_shape_count_times_fifty_four(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty-four."""
+    return fodg_total_shape_count(file_path) * 54
+
+
+def fodg_page_count_times_fifty_five(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty-five."""
+    return fodg_page_count(file_path) * 55
+
+
+def fodg_total_shape_count_times_fifty_five(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty-five."""
+    return fodg_total_shape_count(file_path) * 55
+
+
+def fodg_page_count_times_fifty_six(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty-six."""
+    return fodg_page_count(file_path) * 56
+
+
+def fodg_total_shape_count_times_fifty_six(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty-six."""
+    return fodg_total_shape_count(file_path) * 56
+
+
+def fodg_page_count_times_fifty_seven(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty-seven."""
+    return fodg_page_count(file_path) * 57
+
+
+def fodg_total_shape_count_times_fifty_seven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty-seven."""
+    return fodg_total_shape_count(file_path) * 57
+
+def fodg_page_count_times_fifty_eight(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty-eight."""
+    return fodg_page_count(file_path) * 58
+
+def fodg_total_shape_count_times_fifty_eight(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty-eight."""
+    return fodg_total_shape_count(file_path) * 58
+
+def fodg_page_count_times_fifty_nine(file_path: "str | Path") -> int:
+    """Return page count multiplied by fifty-nine."""
+    return fodg_page_count(file_path) * 59
+
+def fodg_total_shape_count_times_fifty_nine(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by fifty-nine."""
+    return fodg_total_shape_count(file_path) * 59
+
+def fodg_page_count_times_sixty(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty."""
+    return fodg_page_count(file_path) * 60
+
+def fodg_total_shape_count_times_sixty(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty."""
+    return fodg_total_shape_count(file_path) * 60
+
+def fodg_page_count_times_sixty_one(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty-one."""
+    return fodg_page_count(file_path) * 61
+
+def fodg_total_shape_count_times_sixty_one(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty-one."""
+    return fodg_total_shape_count(file_path) * 61
+
+def fodg_page_count_times_sixty_two(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty-two."""
+    return fodg_page_count(file_path) * 62
+
+def fodg_total_shape_count_times_sixty_two(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty-two."""
+    return fodg_total_shape_count(file_path) * 62
+
+def fodg_page_count_times_sixty_three(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty-three."""
+    return fodg_page_count(file_path) * 63
+
+def fodg_total_shape_count_times_sixty_three(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty-three."""
+    return fodg_total_shape_count(file_path) * 63
+
+def fodg_page_count_times_sixty_four(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty-four."""
+    return fodg_page_count(file_path) * 64
+
+def fodg_total_shape_count_times_sixty_four(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty-four."""
+    return fodg_total_shape_count(file_path) * 64
+
+def fodg_page_count_times_sixty_five(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty-five."""
+    return fodg_page_count(file_path) * 65
+
+def fodg_total_shape_count_times_sixty_five(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty-five."""
+    return fodg_total_shape_count(file_path) * 65
+
+def fodg_page_count_times_sixty_six(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty-six."""
+    return fodg_page_count(file_path) * 66
+
+def fodg_total_shape_count_times_sixty_six(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty-six."""
+    return fodg_total_shape_count(file_path) * 66
+
+def fodg_page_count_times_sixty_seven(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty-seven."""
+    return fodg_page_count(file_path) * 67
+
+def fodg_total_shape_count_times_sixty_seven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty-seven."""
+    return fodg_total_shape_count(file_path) * 67
+
+def fodg_page_count_times_sixty_eight(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty-eight."""
+    return fodg_page_count(file_path) * 68
+
+def fodg_total_shape_count_times_sixty_eight(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty-eight."""
+    return fodg_total_shape_count(file_path) * 68
+
+
+
+
+
+def fodg_page_count_times_sixty_nine(file_path: "str | Path") -> int:
+    """Return page count multiplied by sixty-nine."""
+    return fodg_page_count(file_path) * 69
+
+def fodg_total_shape_count_times_sixty_nine(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by sixty-nine."""
+    return fodg_total_shape_count(file_path) * 69
+
+
+
+
+
+def fodg_page_count_times_seventy(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy."""
+    return fodg_page_count(file_path) * 70
+
+def fodg_total_shape_count_times_seventy(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy."""
+    return fodg_total_shape_count(file_path) * 70
+
+def fodg_page_count_times_seventy_one(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy-one."""
+    return fodg_page_count(file_path) * 71
+
+def fodg_total_shape_count_times_seventy_one(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy-one."""
+    return fodg_total_shape_count(file_path) * 71
+
+
+def fodg_page_count_times_seventy_two(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy-two."""
+    return fodg_page_count(file_path) * 72
+
+
+def fodg_total_shape_count_times_seventy_two(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy-two."""
+    return fodg_total_shape_count(file_path) * 72
+
+
+def fodg_page_count_times_seventy_three(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy-three."""
+    return fodg_page_count(file_path) * 73
+
+
+def fodg_total_shape_count_times_seventy_three(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy-three."""
+    return fodg_total_shape_count(file_path) * 73
+
+
+def fodg_page_count_times_seventy_four(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy-four."""
+    return fodg_page_count(file_path) * 74
+
+
+def fodg_total_shape_count_times_seventy_four(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy-four."""
+    return fodg_total_shape_count(file_path) * 74
+
+
+def fodg_page_count_times_seventy_five(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy-five."""
+    return fodg_page_count(file_path) * 75
+
+
+def fodg_total_shape_count_times_seventy_five(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy-five."""
+    return fodg_total_shape_count(file_path) * 75
+
+
+def fodg_bytes_per_shape(file_path: "str | Path") -> float:
+    """Return file size divided by total shape count. 0.0 if no shapes."""
+    sc = fodg_total_shape_count(file_path)
+    if sc == 0:
+        return 0.0
+    return fodg_file_size_bytes(file_path) / sc
+
+
+def fodg_text_to_shape_ratio(file_path: "str | Path") -> float:
+    """Return text item count divided by total shape count. 0.0 if no shapes."""
+    sc = fodg_total_shape_count(file_path)
+    if sc == 0:
+        return 0.0
+    return fodg_text_item_count(file_path) / sc
+
+
+def fodg_page_count_times_seventy_six(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy-six."""
+    return fodg_page_count(file_path) * 76
+
+
+def fodg_total_shape_count_times_seventy_six(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy-six."""
+    return fodg_total_shape_count(file_path) * 76
+
+
+def fodg_page_count_times_seventy_seven(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy-seven."""
+    return fodg_page_count(file_path) * 77
+
+
+def fodg_total_shape_count_times_seventy_seven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy-seven."""
+    return fodg_total_shape_count(file_path) * 77
+
+
+def fodg_page_count_times_seventy_eight(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy-eight."""
+    return fodg_page_count(file_path) * 78
+
+
+def fodg_total_shape_count_times_seventy_eight(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy-eight."""
+    return fodg_total_shape_count(file_path) * 78
+
+
+
+
+
+def fodg_page_count_times_seventy_nine(file_path: "str | Path") -> int:
+    """Return page count multiplied by seventy-nine."""
+    return fodg_page_count(file_path) * 79
+
+def fodg_total_shape_count_times_seventy_nine(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by seventy-nine."""
+    return fodg_total_shape_count(file_path) * 79
+
+def fodg_page_count_times_eighty(file_path: "str | Path") -> int:
+    """Return page count multiplied by eighty."""
+    return fodg_page_count(file_path) * 80
+
+def fodg_total_shape_count_times_eighty(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eighty."""
+    return fodg_total_shape_count(file_path) * 80
+
+def fodg_page_count_times_eighty_one(file_path: "str | Path") -> int:
+    """Return page count multiplied by eighty-one."""
+    return fodg_page_count(file_path) * 81
+
+def fodg_total_shape_count_times_eighty_one(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eighty-one."""
+    return fodg_total_shape_count(file_path) * 81
+
+def fodg_page_count_times_eighty_two(file_path: "str | Path") -> int:
+    """Return page count multiplied by eighty-two."""
+    return fodg_page_count(file_path) * 82
+
+def fodg_total_shape_count_times_eighty_two(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eighty-two."""
+    return fodg_total_shape_count(file_path) * 82
+
+def fodg_page_count_times_eighty_three(file_path: "str | Path") -> int:
+    """Return page count multiplied by eighty-three."""
+    return fodg_page_count(file_path) * 83
+
+def fodg_total_shape_count_times_eighty_three(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eighty-three."""
+    return fodg_total_shape_count(file_path) * 83
+
+def fodg_page_count_times_eighty_four(file_path: "str | Path") -> int:
+    """Return page count multiplied by eighty-four."""
+    return fodg_page_count(file_path) * 84
+
+def fodg_total_shape_count_times_eighty_four(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eighty-four."""
+    return fodg_total_shape_count(file_path) * 84
+
+
+
+
+
+def fodg_page_count_times_eighty_five(file_path: "str | Path") -> int:
+    """Return page count multiplied by eighty-five."""
+    return fodg_page_count(file_path) * 85
+
+def fodg_total_shape_count_times_eighty_five(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eighty-five."""
+    return fodg_total_shape_count(file_path) * 85
+
+
+
+
+
+def fodg_page_count_times_eighty_six(file_path: "str | Path") -> int:
+    """Return page count multiplied by eighty-six."""
+    return fodg_page_count(file_path) * 86
+
+def fodg_total_shape_count_times_eighty_six(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eighty-six."""
+    return fodg_total_shape_count(file_path) * 86
+
+
+def fodg_text_per_page(file_path: "str | Path") -> float:
+    """Return text item count divided by page count. 0.0 if no pages."""
+    pc = fodg_page_count(file_path)
+    if pc == 0:
+        return 0.0
+    return fodg_text_item_count(file_path) / pc
+
+
+def fodg_is_text_heavy(file_path: "str | Path") -> bool:
+    """Return True if text items exceed half of total shapes."""
+    sc = fodg_total_shape_count(file_path)
+    if sc == 0:
+        return False
+    return fodg_text_item_count(file_path) > sc / 2
+
+def fodg_page_count_times_eighty_seven(file_path: "str | Path") -> int:
+    """Return page count multiplied by eighty-seven."""
+    return fodg_page_count(file_path) * 87
+
+def fodg_total_shape_count_times_eighty_seven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eighty-seven."""
+    return fodg_total_shape_count(file_path) * 87
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_eighty_nine(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by eighty-nine."""
+    return fodg_total_shape_count(file_path) * 89
+
+
+def fodg_text_count_times_eighty_nine(file_path: "str | Path") -> int:
+    """Return text item count multiplied by eighty-nine."""
+    return fodg_text_item_count(file_path) * 89
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_ninety(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety."""
+    return fodg_total_shape_count(file_path) * 90
+
+
+def fodg_text_count_times_ninety(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety."""
+    return fodg_text_item_count(file_path) * 90
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_ninety_one(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety-one."""
+    return fodg_total_shape_count(file_path) * 91
+
+
+def fodg_text_count_times_ninety_one(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety-one."""
+    return fodg_text_item_count(file_path) * 91
+
+
+def fodg_shape_count_times_ninety_two(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety-two."""
+    return fodg_total_shape_count(file_path) * 92
+
+
+def fodg_text_count_times_ninety_two(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety-two."""
+    return fodg_text_item_count(file_path) * 92
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_ninety_three(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety-three."""
+    return fodg_total_shape_count(file_path) * 93
+
+
+def fodg_text_count_times_ninety_three(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety-three."""
+    return fodg_text_item_count(file_path) * 93
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_ninety_four(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety-four."""
+    return fodg_total_shape_count(file_path) * 94
+
+
+def fodg_text_count_times_ninety_four(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety-four."""
+    return fodg_text_item_count(file_path) * 94
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_ninety_five(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety-five."""
+    return fodg_total_shape_count(file_path) * 95
+
+
+def fodg_text_count_times_ninety_five(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety-five."""
+    return fodg_text_item_count(file_path) * 95
+
+
+
+
+
+
+def fodg_shape_count_times_ninety_six(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety-six."""
+    return fodg_total_shape_count(file_path) * 96
+
+
+def fodg_text_count_times_ninety_six(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety-six."""
+    return fodg_text_item_count(file_path) * 96
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_ninety_seven(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety-seven."""
+    return fodg_total_shape_count(file_path) * 97
+
+
+def fodg_text_count_times_ninety_seven(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety-seven."""
+    return fodg_text_item_count(file_path) * 97
+
+
+
+
+
+
+def fodg_shape_count_times_ninety_eight(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety-eight."""
+    return fodg_total_shape_count(file_path) * 98
+
+
+def fodg_text_count_times_ninety_eight(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety-eight."""
+    return fodg_text_item_count(file_path) * 98
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_ninety_nine(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by ninety-nine."""
+    return fodg_total_shape_count(file_path) * 99
+
+
+def fodg_text_count_times_ninety_nine(file_path: "str | Path") -> int:
+    """Return text item count multiplied by ninety-nine."""
+    return fodg_text_item_count(file_path) * 99
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_one_hundred(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by one hundred."""
+    return fodg_total_shape_count(file_path) * 100
+
+
+def fodg_text_count_times_one_hundred(file_path: "str | Path") -> int:
+    """Return text item count multiplied by one hundred."""
+    return fodg_text_item_count(file_path) * 100
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_one_hundred_and_one(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by one hundred and one."""
+    return fodg_total_shape_count(file_path) * 101
+
+
+def fodg_text_count_times_one_hundred_and_one(file_path: "str | Path") -> int:
+    """Return text item count multiplied by one hundred and one."""
+    return fodg_text_item_count(file_path) * 101
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_one_hundred_and_two(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by one hundred and two."""
+    return fodg_total_shape_count(file_path) * 102
+
+
+def fodg_text_count_times_one_hundred_and_two(file_path: "str | Path") -> int:
+    """Return text item count multiplied by one hundred and two."""
+    return fodg_text_item_count(file_path) * 102
+
+
+
+
+
+
+
+
+
+
+def fodg_shape_count_times_one_hundred_and_three(file_path: "str | Path") -> int:
+    """Return total shape count multiplied by one hundred and three."""
+    return fodg_total_shape_count(file_path) * 103
+
+
+def fodg_text_count_times_one_hundred_and_three(file_path: "str | Path") -> int:
+    """Return text item count multiplied by one hundred and three."""
+    return fodg_text_item_count(file_path) * 103

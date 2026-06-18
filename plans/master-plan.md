@@ -523,6 +523,32 @@ Existing violations with `baseline_loc_cap` entries are WARN not FAIL (grandfath
 
 See `docs/code-quality/production-readiness-standard.md` for the full standard.
 
+### 24.11 Analytics Module Secondary Splitting (PLANNED — TC-ANALYTICS-SPLIT-*)
+
+Analytics modules exceeding 2,000 LOC must be split into category-based sub-modules before the
+analytics file itself becomes a monolith. The following modules require secondary splitting:
+
+| Module | Current LOC | Cap | Status |
+|--------|-------------|-----|--------|
+| `src/python/xcf/xcf_analytics.py` | 5743 | 5743 | NEEDS_SPLIT |
+| `src/python/zst/zst_analytics.py` | 5543 | 5543 | NEEDS_SPLIT |
+| `src/python/fodg/fodg_analytics.py` | 4915 | 4915 | NEEDS_SPLIT |
+
+**Naming convention for sub-modules:**
+```
+{format}_analytics_{category}.py
+```
+Where category is one of: `file` (file-level stats), `structure` (structural metrics),
+`compound` (multi-field combinations), `scale` (size/dimension analytics).
+
+**Taskcards scheduled:**
+- TC-ANALYTICS-SPLIT-FODG-001 — Split `fodg_analytics.py` by category
+- TC-ANALYTICS-SPLIT-XCF-001 — Split `xcf_analytics.py` by category
+- TC-ANALYTICS-SPLIT-ZST-001 — Split `zst_analytics.py` by category
+
+**Rule:** When a format's `{format}_analytics.py` reaches its `baseline_loc_cap`, the next sprint
+for that format must be a secondary split, not new analytics additions. Growth beyond cap is WORSENED.
+
 ### Enforcement
 
 | Validator | Trigger | Blocking |

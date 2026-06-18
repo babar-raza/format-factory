@@ -5532,3 +5532,12 @@ def zst_compressed_mod_1567_times_14500_plus_decompressed_times_395_plus_file_si
     ds = zst_decompressed_size(file_path)
     fs = zst_file_size_bytes(file_path)
     return (cs % 1567) * 14500 + ds * 395 + fs * 398
+
+
+# --- minus_/div_ analytics appended from source file (TC-FODG-COMPLETE-001) ---
+def zst_compressed_size_minus_header(path: "str | Path") -> int:
+    """Return compressed file size minus header size. 0 if result is negative."""
+    result = zst_compressed_size(path) - zst_header_size(path)
+    return max(0, result)
+
+
