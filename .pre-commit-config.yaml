@@ -13,3 +13,21 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
         args: [--maxkb=500]
+  - repo: local
+    hooks:
+      - id: source-structure-baseline-check
+        name: Architecture baseline growth check
+        entry: python tools/validators/source_structure_validator.py --check-baseline-growth
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: ^src/(python|net)/
+        stages: [pre-commit]
+      - id: validate-source-architecture
+        name: Validate source architecture (anti-monolith)
+        entry: python tools/validators/validate_source_architecture.py --check-new-files
+        language: system
+        pass_filenames: false
+        always_run: false
+        files: ^src/python/
+        stages: [pre-commit]

@@ -471,6 +471,75 @@ All format expansion requires explicit human authorization and the full 11-gate 
 
 ---
 
+## Specification-Derived Architecture Governance (Binding)
+
+All source organization under `src/` must be traceable to specification concepts. This section is binding and enforced by `tools/validators/source_structure_validator.py` and `tests/test_source_structure.py`.
+
+### Rules (apply to ALL formats — ODF and non-ODF alike)
+
+1. **No source file may exceed 800 LOC.** Pre-existing violations grandfathered in `registry/source-structure-baseline.json`. Baseline entries must not regress (LOC may not increase). New violations block the sprint. Applies to every `.py` and `.cs` file under `src/`.
+2. **Analytics must be separated from parser/model.** Mixed-responsibility files are grandfathered but must not grow. New analytics functions belong in `analytics/` subpackages. This applies to every format module.
+3. **Every domain class must trace to a specification concept.** ODF formats trace to spec QNames via `registry/odf-ontology/qname-to-code-map.yaml`. Non-ODF formats trace to format-native spec concepts (e.g., RFC 4180 fields for CSV, DIF vectors, SYLK cells). All formats must have `spec_qname` or `spec_concept` documentation on domain classes.
+4. **Canonical class inventory must improve monotonically.** The count of implemented canonical classes in `registry/odf-ontology/canonical-class-inventory.yaml` must never decrease.
+5. **No orphan source files.** Every `.py`/`.cs` under `src/` — across all formats — must have a recognized purpose: parser, writer, model, analytics, constants, exceptions, encoder, exporter, converter.
+6. **Format-prefixed class names (e.g., FodsCell) only in Compat/ directories.** Primary implementation classes use canonical spec-derived names. Applies to all format modules.
+7. **`__init__.py` must re-export all public functions via `__all__`.** Moving functions between submodules must not change the public API surface. Every format package must comply.
+
+### 24.7 Analytics Separation (BINDING — effective immediately)
+
+All analytics functions (functions that compute statistics, metadata summaries, or formula-based values from parsed file data) MUST reside in a dedicated `analytics.py` module per format package. They MUST NOT appear in `parser.py`, codec files, or `neutral_model.py`.
+
+**Detection rule (RULE-AM-001):** Functions with names matching `{format}_.+_(?:mod_\d+|times_\d+|plus_|minus_|div_)` are analytics functions. `validate_source_architecture.py` scans ALL Python files via AST on every `autonomous-cycle`. Analytics functions found outside `analytics.py` in non-grandfathered files are FAIL (blocks sprint).
+
+Existing violations in `source-structure-baseline.json` must migrate to `analytics.py` before they can be closed as compliant. When a file's analytics are migrated, update its `baseline_loc_cap` to reflect the post-migration state.
+
+### 24.8 `__init__.py` Size Limit (BINDING)
+
+No `__init__.py` file may exceed **100 LOC** (new files: zero grandfathering). The only permitted content is:
+- Module-level docstring
+- Imports from submodules
+- `__all__` declaration
+
+Any `__init__.py` exceeding 100 LOC must be treated as an active `known_violation` in `source-structure-baseline.json` and scheduled for reduction. Existing violations are grandfathered but must not grow.
+
+### 24.9 Shared Infrastructure Required (BINDING — Phase 2 prerequisite)
+
+Before any new format package is created, `src/python/_shared/` must exist with:
+- `exceptions.py` — `FormatFactoryError`, `ParseError`, `WriteError` base classes
+- `base_parser.py` — `BaseParser` abstract class with `parse(path) -> model` signature
+- `base_codec.py` — `BaseCodec` abstract class with `encode/decode` signatures
+
+Existing format packages must migrate exception hierarchies to inherit from `_shared/exceptions.py`. This migration is governed through taskcards; existing code is not broken until the taskcard for that format is executed.
+
+### 24.10 Anti-Monolith Validator Gate (BINDING)
+
+`validate_source_architecture.py` (validator added to `governance_validators.py`) runs as part of every `autonomous-cycle`. It fails on:
+- RULE-AM-001: Analytics function pattern found outside `analytics.py`
+- RULE-AM-002: `__init__.py` exceeds 100 LOC in new (non-grandfathered) files
+- RULE-AM-003: New file exceeds 800 LOC
+- RULE-AM-004: New file has > 60 functions
+
+Existing violations with `baseline_loc_cap` entries are WARN not FAIL (grandfathered). New violations are always FAIL (block sprint). **This validator proactively scans all `src/python/` files** — it does not rely solely on declared-changed files in the sprint declaration.
+
+See `docs/code-quality/production-readiness-standard.md` for the full standard.
+
+### Enforcement
+
+| Validator | Trigger | Blocking |
+|-----------|---------|----------|
+| `source_structure_validator.py` | Every autonomous-cycle | Yes (new violations) |
+| `test_source_structure.py` | Every pytest run (layer 0) | Yes |
+| V35 (hardened) | Every governance validation | Yes (new/worsened) |
+| Self-challenge Q16-20 | Every gate/taskcard completion | Yes |
+
+### Reference
+
+- Baseline: `registry/source-structure-baseline.json`
+- Checklist: `docs/code-quality/production-library-checklist.md`
+- Correction plan: `plans/spec-to-feature-radical-correction-plan.md`
+
+---
+
 ## ARCHIVE-PTR — Historical Content Archive
 
 The following sections were archived during the healing sprint of 2026-06-10.

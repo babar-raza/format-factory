@@ -2,6 +2,31 @@
 
 ## Session Start (MANDATORY — do this before anything else)
 
+### Step 0 — Plan Lock (runs BEFORE reading session-resume.md, BEFORE any sprint work)
+
+Check whether a per-chat plan file is loaded. Look for a system message containing
+`A plan file exists from plan mode at:` in the conversation context.
+
+**If a plan file is loaded:**
+1. Write the plan lock IMMEDIATELY — before any sprint, before any continuation check:
+   ```
+   python tools/supervisor/write_plan_lock.py --plan-path <plan-file-path>
+   ```
+   Example: `python tools/supervisor/write_plan_lock.py --plan-path plans/polished-giggling-tome.md`
+2. The lock blocks `check_continuation.py` from returning CONTINUE for sprint loops.
+3. Execute the loaded plan exclusively. Do NOT resume prior sprints. Do NOT run product
+   deepening rotations. The conversation summary saying "sprint N was in progress" is
+   IRRELEVANT — the loaded plan is the SOLE work authority.
+4. When all plan taskcards are complete, run:
+   ```
+   python tools/supervisor/write_plan_lock.py --plan-path <plan-file-path> --complete
+   ```
+   Only then does the sprint loop become available again.
+
+**If no plan file is loaded:** proceed normally to session-resume.md.
+
+---
+
 Read `reports/supervisor/session-resume.md` at the start of every session.
 This file is generated automatically by the supervisor pipeline after each sprint and contains:
 - Last sprint outcome and test counts
@@ -63,21 +88,102 @@ Gate 11 execution approval by Babar Raza, package publication credentials).
 - Closeout must NEVER block the next sprint. If autonomous-cycle exits non-zero, log the
   error and proceed. If the review package builder fails, log it and proceed. If the
   declaration YAML is invalid, log it and proceed.
+
+### GOV_BLOCK Exception (BINDING — overrides Supreme Directive for structural failures)
+
+`GOV_BLOCK:monolith_detection_validator` and `GOV_BLOCK:validate_source_architecture` are
+**structural failures**, not transient closeout failures. The Supreme Directive "log exit 3 and
+proceed" does NOT apply to these two validators.
+
+When `rework_items` in the continuation signal contains any item matching
+`GOV_BLOCK:monolith_detection_validator` or `GOV_BLOCK:validate_source_architecture`:
+
+1. Do NOT proceed to the next product deepening sprint
+2. The NEXT sprint must be the analytics separation refactor for the blocking format
+   (execute TC-HEAL-PY-{FORMAT}-001 as documented in `docs/code-quality/production-readiness-standard.md` §8.1)
+3. Only after the GOV_BLOCK rework item is resolved (gone from `rework_items`) may
+   product deepening resume
+4. `check_continuation.py` will return STOP with `reason: structural_govblock_must_be_resolved_first`
+   as the machine-enforceable gate
+
+This is NOT a TRUE_EXTERNAL_GATE — the agent CAN resolve it by running the analytics
+separation sprint. This scope is intentionally narrow (two named validators only) to avoid
+blocking on unrelated governance failures.
 - The only closeout that matters is the master plan. Every sprint must make progress on
   `reports/supervisor/next-sprint.md` tasks or gap-ledger closures.
 - Do NOT pause, summarize, or ask the user between sprints. Do NOT say "let me know" or
   present options. Execute continuously until a TRUE_EXTERNAL_GATE or context exhaustion.
+- **Per-chat plan precedence (HARD LOCK — not advisory):** If a plan file is loaded for the
+  current conversation (e.g., via plan mode or system reminder), that plan is the **SOLE**
+  work-selection authority until ALL taskcards in it are CLOSED.
+  - Do NOT switch to product deepening sprints, rotation sprints (XCF/ZST/FODG etc.), or any
+    `next-sprint.md` tasks while a per-chat plan is active.
+  - `APPROVAL_GATE_NO`, exit 3, exit 1, `check_continuation STOP`, and `MAX_ITERATIONS` are
+    NOT plan-switches. After any such signal, continue the per-chat plan's next taskcard — do
+    NOT fall back to the general ledger.
+  - **"Resume from where you left off"** means resume the PLAN, not the prior product sprint.
+    A conversation summary saying "sprint 275 was in progress" does NOT override the loaded plan.
+    The loaded plan is ALWAYS the first priority regardless of what prior context was doing.
+  - After completing one taskcard group (e.g., TC-C3-001), the next action MUST be the next
+    taskcard in the same plan (e.g., TC-DIAG-001), never a different plan's task.
+  - The general ledger (`next-sprint.md`) governs ONLY when no per-chat plan is active.
+  - MEMORY.md rules about this are structural confirmations, not the source — this CLAUDE.md
+    entry is the enforceable version.
+  - **PLAN LOCK FILE (mandatory mechanical enforcement):** When a per-chat plan is loaded:
+    1. IMMEDIATELY write `.local/supervisor/active-plan-lock.json`:
+       ```json
+       {"plan_path": "<path to plan file>", "status": "IN_PROGRESS", "last_taskcard": "<first taskcard id>"}
+       ```
+    2. Update `last_taskcard` as each taskcard completes.
+    3. When ALL taskcards are CLOSED, write `"status": "COMPLETE"` to the lock file.
+    4. `check_continuation.py` blocks CONTINUE verdicts while the lock file has `status != "COMPLETE"`.
+       This provides machine-level enforcement — no agent can reach product deepening while the plan is active.
 
 ## Sprint Closeout (best-effort — must not block continuation)
 
 After completing sprint work, attempt these steps. If any step fails, log the failure
 and proceed to the next sprint immediately.
 
-0. **Sync the source structure baseline** (best-effort — prevents false regression alerts):
-   If any `src/python/` source files were modified, run the baseline sync before declaration:
+0. **Detect NEW architecture violations** (best-effort — NEVER updates existing known_violations entries):
+   If any `src/python/` source files were modified, run the NEW-violations detector before declaration.
+   This script SKIPS all files already in `known_violations` (they have frozen `baseline_loc_cap` ceilings).
+   It only adds NEW files that exceed limits and are not yet tracked.
    ```python
-   python -c "import json,ast;from pathlib import Path;bp=Path('registry/source-structure-baseline.json');b=json.loads(bp.read_text());k=b['known_violations'];[exec('entry[\"loc\"]=sum(1 for _ in Path(rel).open());tree=ast.parse(Path(rel).read_text());entry[\"functions\"]=sum(1 for n in ast.iter_child_nodes(tree) if isinstance(n,ast.FunctionDef))') for rel,entry in k.items() if Path(rel).is_file() and rel.endswith('.py')];bp.write_text(json.dumps(b,indent=2)+chr(10))"
+   python -c "
+   import json, ast, sys
+   from pathlib import Path
+   bp = Path('registry/source-structure-baseline.json')
+   b = json.loads(bp.read_text())
+   k = b['known_violations']
+   changed = False
+   for rel in sorted(Path('src/python').rglob('*.py')):
+       parts = rel.parts
+       # Skip build artifacts and nested duplicate packages
+       if 'build' in parts or '__pycache__' in parts:
+           continue
+       # Skip nested duplicate packages (e.g. fods/fods/)
+       rel_to_src = rel.relative_to('src/python')
+       if len(rel_to_src.parts) >= 2 and rel_to_src.parts[0] == rel_to_src.parts[1]:
+           continue
+       rel_str = rel.as_posix()
+       if rel_str in k:
+           continue
+       try:
+           loc = sum(1 for _ in rel.open(encoding='utf-8', errors='replace'))
+           tree = ast.parse(rel.read_text(encoding='utf-8', errors='replace'))
+           fn = sum(1 for n in ast.iter_child_nodes(tree) if isinstance(n, ast.FunctionDef))
+       except Exception:
+           continue
+       if loc > 800 or fn > 60:
+           k[rel_str] = {'loc': loc, 'baseline_loc_cap': loc, 'functions': fn, 'baseline_functions_cap': fn, 'category': 'new_violation_detected'}
+           changed = True
+           print(f'NEW VIOLATION: {rel_str} ({loc} LOC, {fn} functions)', file=sys.stderr)
+   if changed:
+       bp.write_text(json.dumps(b, indent=2) + chr(10))
+   "
    ```
+   **IMPORTANT:** This script NEVER modifies `loc`, `functions`, `baseline_loc_cap`, or `baseline_functions_cap`
+   for files already in `known_violations`. Existing violations are governed by their frozen caps.
 
 1. **Write an evidence declaration** at `.local/evidences/<run_id>/evidence-declaration.yaml`
    - Declare all work items with status, evidence paths, and test references
@@ -128,6 +234,12 @@ python tools/supervisor/check_continuation.py
 - **Exit code 0** + `"verdict": "CONTINUE"` → proceed **IMMEDIATELY**:
   1. Read the `next_work_items_path` from the JSON output (structured work items)
   2. Read `reports/supervisor/next-sprint.md` for prose context
+  2b. **Per-chat plan precedence (HARD LOCK):** If a plan file is loaded for the current
+      conversation, that plan's taskcards are the ONLY valid next action — do NOT read
+      `next-sprint.md` for work selection while a per-chat plan is active. `next-sprint.md`
+      is authority ONLY when no per-chat plan is active. `exit 3`, `APPROVAL_GATE_NO`, and
+      `check_continuation STOP` do not override this — they are non-blocking; continue the
+      plan's next taskcard immediately.
   3. If `rework_items` exist in the output, address them FIRST before new work
   4. Increment `iteration` in `.local/supervisor/continuation-signal.json`
   5. Execute the sprint — use `next-sprint.md` as your sprint prompt

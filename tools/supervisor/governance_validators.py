@@ -2446,11 +2446,15 @@ def validate_monolith_detection(declaration: dict,
         rel = str(Path(fpath)).replace("\\", "/")
         baseline_entry = known.get(rel)
         if baseline_entry:
-            baseline_loc = baseline_entry.get("loc", 0)
+            # TC-BASE-001: Use baseline_loc_cap (write-once ceiling), not stale "loc" field.
+            # "loc" is updated by the Step 0 script after each sprint, making the comparison
+            # "did this file grow this sprint?" instead of "is it above its cap?".
+            # baseline_loc_cap is frozen at grandfathering time and must never increase.
+            baseline_loc = baseline_entry.get("baseline_loc_cap", baseline_entry.get("loc", 0))
             if loc > baseline_loc:
-                regressions.append(f"{rel} ({loc} LOC, baseline {baseline_loc})")
+                regressions.append(f"{rel} ({loc} LOC, cap {baseline_loc})")
             else:
-                grandfathered.append(f"{rel} ({loc} LOC, grandfathered)")
+                grandfathered.append(f"{rel} ({loc} LOC, grandfathered at cap {baseline_loc})")
         else:
             new_violations.append(f"{rel} ({loc} LOC)")
     blocks = bool(regressions or new_violations)
@@ -2673,6 +2677,164 @@ def validate_evidence_minimum(declaration: dict, repo_root: Path | None = None) 
     )
 
 
+# ---------------------------------------------------------------------------
+# V39: governance_only_no_source_delta (WARN-only)
+# Detects sprints where ALL items are governance-type with no source delta.
+# ---------------------------------------------------------------------------
+
+_GOVERNANCE_ITEM_TYPES = frozenset({
+    "GOVERNANCE_DOC", "GOVERNANCE_TASKCARD", "GOVERNANCE_REVIEW",
+    "GOVERNANCE_REPORT", "GOVERNANCE_POLICY", "GOVERNANCE_PLAN",
+})
+
+
+def validate_governance_only_no_source_delta(declaration: dict,
+                                              repo_root: Path | None = None) -> dict:
+    """V39: Warn if all items are governance-type and no source files changed.
+
+    This detects the wave 117-120 pattern where the autonomous loop runs
+    governance-only sprints with no product source mutations.
+    """
+    items = declaration.get("planned_work_items", [])
+    if not items:
+        return _make_result(
+            "governance_only_no_source_delta",
+            "PASS",
+            [],
+            "governance_only_no_source_delta: no items to check.",
+            blocks_sprint=False,
+        )
+
+    # Check if ALL items are governance-type
+    all_governance = all(
+        item.get("item_type", "") in _GOVERNANCE_ITEM_TYPES
+        for item in items
+    )
+    if not all_governance:
+        return _make_result(
+            "governance_only_no_source_delta",
+            "PASS",
+            [],
+            "governance_only_no_source_delta: mixed item types (has non-governance items).",
+            blocks_sprint=False,
+        )
+
+    # Check if any changed file starts with "src/"
+    changed_files = declaration.get("changed_files", [])
+    has_source_delta = any(
+        str(f).replace("\\", "/").startswith("src/")
+        for f in changed_files
+    )
+    if has_source_delta:
+        return _make_result(
+            "governance_only_no_source_delta",
+            "PASS",
+            [],
+            "governance_only_no_source_delta: governance items but source files were changed.",
+            blocks_sprint=False,
+        )
+
+    # All governance + no source delta → WARNING
+    item_ids = [item.get("item_id", "unknown") for item in items]
+    return _make_result(
+        "governance_only_no_source_delta",
+        "WARN",
+        item_ids,
+        (
+            "governance_only_no_source_delta: all items are governance-type with no "
+            "source delta. If intentional, add sprint_type: governance_only to "
+            "declaration. Otherwise, add PRODUCT_SOURCE items."
+        ),
+        blocks_sprint=False,
+    )
+
+
+def _validate_source_architecture(declaration: dict,
+                                   repo_root: Path | None = None) -> dict:
+    """V40: Anti-monolith architecture validator (TC-VAL-001).
+
+    Proactively scans src/python/ for RULE-AM-001 through RULE-AM-004 violations.
+    Does NOT rely solely on source_diff_paths from the declaration.
+    """
+    if repo_root is None:
+        repo_root = REPO_ROOT
+    try:
+        import importlib.util
+        _val_path = repo_root / "tools" / "validators" / "validate_source_architecture.py"
+        _spec = importlib.util.spec_from_file_location("validate_source_architecture", str(_val_path))
+        _mod = importlib.util.module_from_spec(_spec)
+        _spec.loader.exec_module(_mod)
+
+        import json
+        _baseline_path = repo_root / "registry" / "source-structure-baseline.json"
+        _baseline = json.loads(_baseline_path.read_text(encoding="utf-8"))
+        _src_root = repo_root / "src" / "python"
+        return _mod.scan(_src_root, _baseline, repo_root)
+    except Exception as e:
+        return {
+            "validator": "validate_source_architecture",
+            "result": "WARN",
+            "items": [],
+            "summary": f"validate_source_architecture: unavailable ({e})",
+            "blocks_sprint": False,
+        }
+
+
+def validate_analytics_skill_required(declaration: dict,
+                                       repo_root: Path | None = None) -> dict:
+    """V41 (REQ-ENFORCE-001): Enforce skill attribution for analytics.py changes.
+
+    Detects work items that touch src/python/<format>/analytics.py (the §24.7-compliant
+    location for all analytics functions) without declaring skill_id: add-analytics-function.
+
+    This validator is COMPLEMENTARY to RULE-AM-001 (validate_source_architecture.py):
+    - RULE-AM-001: detects analytics functions placed in WRONG LOCATION (codec/parser files)
+    - This validator: detects analytics.py changes in RIGHT LOCATION but without skill attribution
+
+    Uses regex matching on changed_files — analytics.py files may not yet be in the
+    baseline (new files), so we do NOT use baseline category lookup.
+    """
+    import re
+    analytics_pattern = re.compile(r"src/python/[^/]+/analytics\.py$")
+    violations = []
+    items = declaration.get("planned_work_items", [])
+
+    for item in items:
+        touched = set(str(f).replace("\\", "/") for f in item.get("changed_files", []))
+        analytics_touched = {f for f in touched if analytics_pattern.search(f)}
+        if not analytics_touched:
+            continue
+        skill_id = item.get("skill_id") or item.get("fallback_skill_id")
+        if not skill_id:
+            violations.append({
+                "item_id": item.get("item_id", "?"),
+                "analytics_files": sorted(analytics_touched),
+                "message": (
+                    f"analytics.py change requires skill_id: add-analytics-function "
+                    f"(affected: {sorted(analytics_touched)})"
+                ),
+            })
+
+    if not violations:
+        return _make_result(
+            "analytics_skill_required",
+            "PASS",
+            [],
+            "analytics_skill_required: all analytics.py changes have skill attribution.",
+            blocks_sprint=False,
+        )
+
+    item_ids = [v["item_id"] for v in violations]
+    messages = "; ".join(v["message"] for v in violations)
+    return _make_result(
+        "analytics_skill_required",
+        "FAIL",
+        item_ids,
+        f"GOV_BLOCK:analytics_skill_required — {messages}",
+        blocks_sprint=True,
+    )
+
+
 def run_all_governance_validators(declaration: dict,
                                    repo_root: Path | None = None) -> dict:
     """Run all governance validators against a declaration.
@@ -2733,6 +2895,12 @@ def run_all_governance_validators(declaration: dict,
         validate_spec_fact_authority_chain(declaration, repo_root),
         # V38 (TC-H3-001): Minimum evidence depth per item (WARN-only)
         validate_evidence_minimum(declaration, repo_root),
+        # V39: Governance-only sprint with no source delta (WARN-only)
+        validate_governance_only_no_source_delta(declaration, repo_root),
+        # V40 (TC-VAL-001): Anti-monolith source architecture validator (proactive scan)
+        _validate_source_architecture(declaration, repo_root),
+        # V41 (REQ-ENFORCE-001): Analytics skill attribution enforcement (§24.7 compliance)
+        validate_analytics_skill_required(declaration, repo_root),
     ]
 
     fail_count = sum(1 for r in results if r["result"] == "FAIL")

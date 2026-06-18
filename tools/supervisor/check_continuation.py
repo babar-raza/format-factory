@@ -246,8 +246,50 @@ def check(repo_root: Path, *, session_id: str | None = None,
                       f"{work_items_rel} does not exist",
                       iteration=iteration, max_iterations=max_iterations)
 
-    # --- All checks passed ---
+    # --- Check 8 (TC-GOVBLK-001): Structural GOV_BLOCK carve-out ---
+    # GOV_BLOCK:monolith_detection_validator and GOV_BLOCK:validate_source_architecture
+    # are STRUCTURAL failures, not transient closeout failures. They must NOT be
+    # overridden by the Supreme Directive "log exit 3 and continue". The next sprint
+    # MUST be an analytics separation refactor for the blocking format.
+    #
+    # Scoped ONLY to structural architecture validators — does not affect transient
+    # or non-structural GOV_BLOCK types (schema errors, replay failures, etc.).
+    #
+    # Override: if the current sprint IS an analytics separation sprint (declared via
+    # "govblock_resolved_by" field in the signal), skip this check.
+    _STRUCTURAL_GOVBLOCK_VALIDATORS = {
+        "GOV_BLOCK:monolith_detection_validator",
+        "GOV_BLOCK:validate_source_architecture",
+    }
     rework_items = signal.get("rework_items", [])
+    if not signal.get("govblock_resolved_by"):
+        structural_blocks = [
+            item for item in rework_items
+            if any(item.startswith(vname) or item == vname
+                   for vname in _STRUCTURAL_GOVBLOCK_VALIDATORS)
+        ]
+        if structural_blocks:
+            return _stop(
+                "structural_govblock_must_be_resolved_first",
+                (
+                    f"Structural GOV_BLOCK detected — product deepening is blocked until "
+                    f"analytics separation resolves: {structural_blocks[:3]}. "
+                    "Run the analytics separation sprint (TC-HEAL-PY-{FORMAT}-001) for the "
+                    "blocking format(s). Set 'govblock_resolved_by' in continuation-signal.json "
+                    "once the refactor sprint is complete."
+                ),
+                iteration=iteration,
+                max_iterations=max_iterations,
+                structural_govblock_items=structural_blocks,
+                next_action=(
+                    "Read docs/code-quality/production-readiness-standard.md §8.1 "
+                    "(Analytics Separation Protocol). Execute the analytics separation for "
+                    "the blocking format. Update continuation-signal.json with "
+                    "'govblock_resolved_by': 'TC-HEAL-PY-{FORMAT}-001' when done."
+                ),
+            )
+
+    # --- All checks passed ---
     result = {
         "verdict": "CONTINUE",
         "iteration": iteration,

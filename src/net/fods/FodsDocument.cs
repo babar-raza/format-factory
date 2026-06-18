@@ -501,26 +501,11 @@ public sealed class FodsDocument
 
     /// <summary>
     /// Export a specific sheet as an HTML table string.
+    /// Delegates to <see cref="FodsDocumentExporter.ExportSheetToHtml"/>.
     /// R94 Train M: HTML export for dogfood pipeline.
     /// </summary>
     public static string ExportSheetToHtml(FodsSheet sheet)
-    {
-        ArgumentNullException.ThrowIfNull(sheet);
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine("<table>");
-        foreach (var row in sheet.Rows)
-        {
-            sb.Append("  <tr>");
-            foreach (var cell in row.Cells)
-            {
-                var text = System.Net.WebUtility.HtmlEncode(cell.Value ?? string.Empty);
-                sb.Append($"<td>{text}</td>");
-            }
-            sb.AppendLine("</tr>");
-        }
-        sb.AppendLine("</table>");
-        return sb.ToString();
-    }
+        => FodsDocumentExporter.ExportSheetToHtml(sheet);
 
     /// <summary>
     /// Return the number of rows in the first sheet.
@@ -661,39 +646,11 @@ public sealed class FodsDocument
     /// <summary>
     /// Export a specific sheet as a JSON array of row objects.
     /// First row = header keys; subsequent rows = value objects.
+    /// Delegates to <see cref="FodsDocumentExporter.ExportSheetToJson"/>.
     /// R95 Train L: JSON export (static overload).
     /// </summary>
     public static string ExportSheetToJson(FodsSheet sheet)
-    {
-        ArgumentNullException.ThrowIfNull(sheet);
-        var rows = sheet.Rows;
-        if (rows.Count <= 1)
-            return "[]";
-
-        var headers = new List<string>();
-        foreach (var cell in rows[0].Cells)
-            headers.Add(cell.Value ?? $"col{headers.Count}");
-
-        var sb = new System.Text.StringBuilder();
-        sb.AppendLine("[");
-        for (int i = 1; i < rows.Count; i++)
-        {
-            if (i > 1) sb.AppendLine(",");
-            sb.Append("  {");
-            var cells = rows[i].Cells;
-            for (int j = 0; j < headers.Count; j++)
-            {
-                if (j > 0) sb.Append(", ");
-                var key = JsonEscape(headers[j]);
-                var val = j < cells.Count ? JsonEscape(cells[j].Value ?? "") : "";
-                sb.Append($"\"{key}\": \"{val}\"");
-            }
-            sb.Append("}");
-        }
-        sb.AppendLine();
-        sb.AppendLine("]");
-        return sb.ToString();
-    }
+        => FodsDocumentExporter.ExportSheetToJson(sheet);
 
     /// <summary>
     /// Export a sheet as a Markdown table string.
@@ -724,61 +681,11 @@ public sealed class FodsDocument
     /// <summary>
     /// Export a specific sheet as a Markdown table string.
     /// First row = headers; separator line = dashes; subsequent rows = data.
+    /// Delegates to <see cref="FodsDocumentExporter.ExportSheetToMarkdown"/>.
     /// R101 Train A: Markdown export (static overload).
     /// </summary>
     public static string ExportSheetToMarkdown(FodsSheet sheet)
-    {
-        ArgumentNullException.ThrowIfNull(sheet);
-        var rows = sheet.Rows;
-        if (rows.Count == 0) return string.Empty;
-
-        var sb = new System.Text.StringBuilder();
-
-        // Header row
-        var headerCells = rows[0].Cells;
-        sb.Append('|');
-        foreach (var cell in headerCells)
-        {
-            sb.Append(' ');
-            sb.Append(MdEscape(cell.Value ?? string.Empty));
-            sb.Append(" |");
-        }
-        sb.AppendLine();
-
-        // Separator row
-        sb.Append('|');
-        for (int j = 0; j < headerCells.Count; j++)
-        {
-            sb.Append(" --- |");
-        }
-        sb.AppendLine();
-
-        // Data rows
-        for (int i = 1; i < rows.Count; i++)
-        {
-            sb.Append('|');
-            var cells = rows[i].Cells;
-            int colCount = Math.Max(headerCells.Count, cells.Count);
-            for (int j = 0; j < colCount; j++)
-            {
-                sb.Append(' ');
-                var val = j < cells.Count ? (cells[j].Value ?? string.Empty) : string.Empty;
-                sb.Append(MdEscape(val));
-                sb.Append(" |");
-            }
-            sb.AppendLine();
-        }
-
-        return sb.ToString();
-    }
-
-    private static string MdEscape(string s) => s.Replace("|", "\\|");
-
-    private static string JsonEscape(string s)
-    {
-        return s.Replace("\\", "\\\\").Replace("\"", "\\\"")
-                .Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t");
-    }
+        => FodsDocumentExporter.ExportSheetToMarkdown(sheet);
 
     /// <summary>
     /// Remove all rows from the named sheet, leaving it empty.
@@ -866,35 +773,11 @@ public sealed class FodsDocument
 
     /// <summary>
     /// Export a specific sheet as CSV.
+    /// Delegates to <see cref="FodsDocumentExporter.ExportSheetToCsv"/>.
     /// R107 Wave 2: CSV export (static overload).
     /// </summary>
     public static string ExportSheetToCsv(FodsSheet sheet)
-    {
-        ArgumentNullException.ThrowIfNull(sheet);
-        var sb = new System.Text.StringBuilder();
-        foreach (var row in sheet.Rows)
-        {
-            bool firstCell = true;
-            foreach (var cell in row.Cells)
-            {
-                if (!firstCell) sb.Append(',');
-                firstCell = false;
-                var val = cell.Value ?? string.Empty;
-                if (val.Contains(',') || val.Contains('"') || val.Contains('\n') || val.Contains('\r'))
-                {
-                    sb.Append('"');
-                    sb.Append(val.Replace("\"", "\"\""));
-                    sb.Append('"');
-                }
-                else
-                {
-                    sb.Append(val);
-                }
-            }
-            sb.AppendLine();
-        }
-        return sb.ToString();
-    }
+        => FodsDocumentExporter.ExportSheetToCsv(sheet);
 
     /// <summary>
     /// Insert a new row at the given index with the specified cell values.
@@ -1374,13 +1257,4 @@ public sealed class FodsDocument
     /// </summary>
     public string? OdfVersion =>
         _doc.Root?.Attribute(NsOffice + "version")?.Value;
-}
-
-/// <summary>
-/// Thrown by <see cref="FodsDocument.Load"/> when the file cannot be parsed or loaded safely.
-/// </summary>
-public sealed class FodsDocumentException : Exception
-{
-    public FodsDocumentException(string message) : base(message) { }
-    public FodsDocumentException(string message, Exception inner) : base(message, inner) { }
 }
