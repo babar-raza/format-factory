@@ -302,14 +302,11 @@ class AutonomousOrchestrator:
                             f"stream={item_stream!r} not allowed for --stream {self.stream_filter!r}. "
                             f"Re-queuing with 'wrong-track' annotation."
                         )
-                        # Re-queue with wrong-track annotation (not consumed)
+                        # Re-queue with wrong-track annotation (not consumed); item is preserved
                         q_item["_wrong_track_rejected"] = True
                         q_item["_rejected_by_stream"] = self.stream_filter
                         from action_queue import enqueue_front
-                        try:
-                            enqueue_front(q_item)
-                        except ImportError:
-                            pass  # enqueue_front unavailable — item is lost (acceptable for MVP)
+                        enqueue_front(q_item)
                         return None  # Skip this item; cycle will go idle
                 self._current_queue_item = q_item
                 action = _queue_item_to_next_action(q_item, cycle_index + 1, self.sprint_id)

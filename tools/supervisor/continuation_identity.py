@@ -117,7 +117,7 @@ def get_or_create_session_identity(
     Same branch+HEAD+track → identical session_id across chat windows.
     Falls back to UUID4 when git is unavailable.
     """
-    stable_session_id = _derive_stable_session_id(track_type)
+    stable_session_id = os.environ.get("CLAUDE_SESSION_ID") or _derive_stable_session_id(track_type)
 
     existing = ContinuationIdentity.load(ACTIVE_SESSION_PATH)
     if existing and not existing.is_stale():
