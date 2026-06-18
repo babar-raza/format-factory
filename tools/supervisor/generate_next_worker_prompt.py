@@ -520,6 +520,14 @@ STREAM_GROUPS = {
     "supervisor": ("G1", "G2", "G7", "G8"),
 }
 
+# TC-P2-003 / REQ-TRK-005, REQ-TRK-006: Two-track work group partitioning.
+# Track P (product): format deepening, spec parity, product code, dogfood exports.
+# Track M (machinery): governance, rework/repair, package/install, state/memory, supervisor loop.
+TRACK_GROUPS = {
+    "product": ("G3", "G4", "G5"),
+    "machinery": ("G1", "G2", "G6", "G7", "G8"),
+}
+
 
 def _build_spec_parity_section(repo_root: Path) -> str:
     """Build spec-parity requirements section from skill registry.
@@ -565,7 +573,8 @@ def _build_spec_parity_section(repo_root: Path) -> str:
 
 
 def generate_prompt(review: dict, next_work: dict | None = None,
-                    repo_root: Path = None, stream: str = None) -> str:
+                    repo_root: Path = None, stream: str = None,
+                    work_groups: list | None = None) -> str:
     """Generate the mega-train execution prompt from review results and project data.
 
     Args:
@@ -574,6 +583,8 @@ def generate_prompt(review: dict, next_work: dict | None = None,
             - "acceleration" — rework + evidence only (no product trains)
             - "skills" — rework + evidence only (for governed skill work)
             - "supervisor" — rework + evidence only (for supervisor infrastructure)
+        work_groups: TC-P2-003 — when set, restricts generated trains to specified groups.
+            E.g. ["G3","G4","G5"] for Track P, ["G1","G2","G6","G7","G8"] for Track M.
     """
     if repo_root is None:
         repo_root = REPO_ROOT
@@ -636,6 +647,12 @@ def generate_prompt(review: dict, next_work: dict | None = None,
     if stream and stream in STREAM_GROUPS:
         allowed_groups = STREAM_GROUPS[stream]
         trains = [t for t in trains if t["group"] in allowed_groups]
+
+    # TC-P2-003: Filter trains by work_groups when provided (two-track separation).
+    # work_groups takes precedence over stream-based filtering for track-specific runs.
+    if work_groups:
+        _wg = set(work_groups)
+        trains = [t for t in trains if t["group"] in _wg]
 
     # R110: Add stream-specific advancement trains for non-mainstream streams
     if stream and stream not in ("mainstream", "product", None):
@@ -884,7 +901,48 @@ def _make_task_adjudication_fields(task_label: str, task_title: str, context: di
     }
 
 
-def generate_next_work_items(review: dict, stream: str = None) -> dict:
+def _run_capability_consumer(repo_root: Path, max_gaps: int = 3) -> list[dict]:
+    """Subprocess-invoke capability_queue_consumer.py and return compiled taskcard dicts.
+
+    TC-WIRE-001: production wiring of the capability compiler into the supervisor pipeline
+    via subprocess dispatch (not library import — consistent with system's subprocess pattern).
+
+    Returns [] on any failure (non-blocking); never raises.
+    """
+    import subprocess
+    import tempfile
+
+    consumer_script = repo_root / "tools" / "supervisor" / "capability_queue_consumer.py"
+    if not consumer_script.exists():
+        return []
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        try:
+            result = subprocess.run(
+                [sys.executable, str(consumer_script),
+                 "--max-gaps", str(max_gaps),
+                 "--output-dir", tmp_dir],
+                capture_output=True, text=True, timeout=60,
+                cwd=str(repo_root),
+            )
+        except Exception:
+            return []
+
+        if result.returncode != 0:
+            return []
+
+        taskcards = []
+        for tc_path in sorted(Path(tmp_dir).glob("TC-*.json")):
+            try:
+                tc = json.loads(tc_path.read_text(encoding="utf-8"))
+                taskcards.append(tc)
+            except Exception:
+                continue
+        return taskcards
+
+
+def generate_next_work_items(review: dict, stream: str = None, plan_lock: dict | None = None,
+                            work_groups: list | None = None) -> dict:
     """Generate next-work-items.yaml from review.
 
     R108: When stream is specified, only include items relevant to that stream.
@@ -894,32 +952,113 @@ def generate_next_work_items(review: dict, stream: str = None) -> dict:
     Every generated task includes stop_reason_adjudicator fields to prevent
     false stops. The labels [approval-blocked], [blocked], [human-required]
     are replaced with correct classifications.
+
+    plan_lock: if provided and status != COMPLETE, suppresses all system-ledger items
+    and returns a single PLAN-ACTIVE work item scoped to the active plan.
+
+    work_groups: TC-P2-003 / REQ-TRK-005, REQ-TRK-006 — when set, restricts generated items
+    to the specified work groups (e.g. ["G3","G4","G5"] for Track P,
+    ["G1","G2","G6","G7","G8"] for Track M). None = include all groups.
     """
+    # Plan-lock guard: if a per-chat plan is active, suppress system ledger entirely.
+    if plan_lock and plan_lock.get("status") != "COMPLETE":
+        _plan_path = plan_lock.get("plan_path", "unknown")
+        _last_tc = plan_lock.get("last_taskcard", "unknown")
+        return {
+            "items": [
+                {
+                    "item_id": "PLAN-ACTIVE",
+                    "title": "Execute next taskcard in active per-chat plan",
+                    "lane": "per-chat-plan",
+                    "priority": 1,
+                    "description": (
+                        f"A per-chat plan is active and must be completed before ledger work. "
+                        f"Plan: {_plan_path}. Last completed taskcard: {_last_tc!r}. "
+                        f"Read the plan file, find the next open taskcard after {_last_tc!r}, "
+                        f"and execute it. Run write_plan_lock.py after each taskcard completes."
+                    ),
+                    "acceptance_criteria": "All plan taskcards CLOSED, plan status=COMPLETE",
+                    "verification_command": (
+                        f"python tools/supervisor/write_plan_lock.py "
+                        f"--plan-path \"{_plan_path}\" --complete"
+                    ),
+                    "evidence_expected": "plan lock status=COMPLETE",
+                    "source": "per-chat-plan",
+                    "stop_reason_adjudication": "agent-owned",
+                    "human_required": False,
+                    "blocked_by": None,
+                    "external_gate": False,
+                }
+            ],
+            "work_selection_mode": "PLAN_LOCKED",
+            "active_plan": _plan_path,
+            "last_taskcard": _last_tc,
+            "ledger_items_suppressed": True,
+        }
+
     items = []
     priority = 1
     effective_stream = stream or "mainstream"
 
-    # Rework items first (always included, regardless of stream)
-    for g in review.get("item_grades", []):
-        if g["supervisor_grade"] in ("REWORK_REQUIRED", "OVERCLAIMED"):
-            title = f"Rework: {g['item_title']}"
+    # TC-P2-003: Determine effective group set for filtering.
+    # work_groups=None means no filter (all groups included).
+    _wg_set = set(work_groups) if work_groups else None
+
+    def _group_allowed(group_id: str) -> bool:
+        """Return True if group_id is in the allowed work_groups (or no filter set)."""
+        return _wg_set is None or group_id in _wg_set
+
+    # Rework items (G2): included when G2 is allowed (or no filter)
+    if _group_allowed("G2"):
+        for g in review.get("item_grades", []):
+            if g["supervisor_grade"] in ("REWORK_REQUIRED", "OVERCLAIMED"):
+                title = f"Rework: {g['item_title']}"
+                adj = _make_task_adjudication_fields("[agent-owned]", title)
+                items.append({
+                    "item_id": f"REWORK-{g['item_id']}",
+                    "title": title,
+                    "lane": "rework",
+                    "priority": priority,
+                    "description": g.get("required_rework", ""),
+                    "acceptance_criteria": "Evidence found and tests pass",
+                    "verification_command": "",
+                    "evidence_expected": f"Evidence at declared paths for {g['item_id']}",
+                    "source": "rework-from-prior",
+                    **adj,
+                })
+                priority += 1
+
+    # Capability-compiler-generated work items (TC-WIRE-001: subprocess invocation)
+    # Non-blocking: if consumer fails or returns nothing, continues with existing items.
+    # These are G4 product items — only include when Track P groups allowed.
+    _product_groups_allowed = any(_group_allowed(g) for g in ("G3", "G4", "G5"))
+    if effective_stream in ("mainstream", "product", None) and _product_groups_allowed:
+        compiled_taskcards = _run_capability_consumer(REPO_ROOT)
+        for tc in compiled_taskcards:
+            func_name = tc.get("function_name", "capability_function")
+            title = tc.get("title", f"Implement {func_name}")
             adj = _make_task_adjudication_fields("[agent-owned]", title)
             items.append({
-                "item_id": f"REWORK-{g['item_id']}",
+                "item_id": tc.get("taskcard_id", f"CAP-{func_name.upper()}"),
                 "title": title,
-                "lane": "rework",
+                "lane": "capability-compiler",
                 "priority": priority,
-                "description": g.get("required_rework", ""),
-                "acceptance_criteria": "Evidence found and tests pass",
-                "verification_command": "",
-                "evidence_expected": f"Evidence at declared paths for {g['item_id']}",
-                "source": "rework-from-prior",
+                "description": (
+                    f"Compiler-generated taskcard from gap {tc.get('source_gap_id', '')}. "
+                    f"Implement {func_name} in {tc.get('expected_module', 'src/python/<format>/')}. "
+                    f"Min tests: {tc.get('test_obligations', {}).get('min_test_count', 10)}. "
+                    f"Evidence: {', '.join(tc.get('evidence_obligations', []))}."
+                ),
+                "acceptance_criteria": tc.get("acceptance_criteria", f"{func_name} passes 10+ tests"),
+                "verification_command": f"python -m pytest {tc.get('governance_requirements', {}).get('source_diff_paths', [''])[0].replace('src/', 'tests/')}",
+                "evidence_expected": ", ".join(tc.get("evidence_obligations", [])),
+                "source": "capability-compiler",
                 **adj,
             })
             priority += 1
 
-    if effective_stream in ("mainstream", "product"):
-        # Product-factory forward work from POC targets (mainstream only)
+    if effective_stream in ("mainstream", "product") and _product_groups_allowed:
+        # Product-factory forward work from POC targets (mainstream only, Track P allowed)
         poc_targets = load_poc_targets(REPO_ROOT)
         for product in poc_targets.get("commercial_net_products", []):
             fmt = product.get("format", "unknown")
@@ -994,6 +1133,7 @@ def generate_next_work_items(review: dict, stream: str = None) -> dict:
         "run_id": review.get("run_id", "unknown"),
         "sprint_id": review.get("sprint_id", "unknown"),
         "stream": effective_stream,
+        "work_groups_filter": list(work_groups) if work_groups else None,
         "generated_at": datetime.now().isoformat(),
         "items": items,
         "stop_reason_adjudicator_advisory": (

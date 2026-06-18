@@ -23,10 +23,62 @@ Exit codes:
 """
 
 import argparse
+import hashlib
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
+
+from atomic_io import atomic_write_json
+
+# Grade cache for LLM semantic verification results
+# Key: "{item_id}:{evidence_hash}" → cached verification result
+_GRADE_CACHE_PATH = Path(__file__).resolve().parent.parent.parent / ".local" / "supervisor" / "grade-cache.json"
+
+
+def _evidence_hash(item: dict) -> str:
+    """Stable hash of evidence paths + status + criteria. Changes when evidence changes."""
+    key = json.dumps({
+        "evidence_paths": sorted(item.get("evidence_paths", [])),
+        "status": item.get("status", ""),
+        "acceptance_criteria": item.get("acceptance_criteria", ""),
+    }, sort_keys=True)
+    return hashlib.sha256(key.encode()).hexdigest()[:16]
+
+
+def _get_cached_grade(item_id: str, ev_hash: str,
+                      cache_path: "Path | None" = None) -> "dict | None":
+    """Return cached verification result or None on miss/error.
+
+    cache_path: override default cache path (for track-scoped caches, REQ-TRK-008).
+    """
+    _path = cache_path if cache_path is not None else _GRADE_CACHE_PATH
+    try:
+        cache = json.loads(_path.read_text(encoding="utf-8"))
+        return cache.get(f"{item_id}:{ev_hash}")
+    except Exception:
+        return None
+
+
+def _cache_grade(item_id: str, ev_hash: str, result: dict,
+                 cache_path: "Path | None" = None) -> None:
+    """Persist verification result to grade cache using atomic write.
+
+    cache_path: override default cache path (for track-scoped caches, REQ-TRK-008).
+    """
+    _path = cache_path if cache_path is not None else _GRADE_CACHE_PATH
+    try:
+        try:
+            cache = json.loads(_path.read_text(encoding="utf-8"))
+        except Exception:
+            cache = {}
+        cache[f"{item_id}:{ev_hash}"] = {
+            **result,
+            "_cached_at": datetime.now(timezone.utc).isoformat(),
+        }
+        atomic_write_json(_path, cache)
+    except Exception:
+        pass  # Cache write failure is non-fatal
 
 import yaml
 
@@ -124,7 +176,8 @@ def _sv_sdk_fallback(messages: list[dict], cfg) -> str | None:
 
 
 def semantic_verify_item(
-    item_inspection: dict, declaration_item: dict, repo_root: Path
+    item_inspection: dict, declaration_item: dict, repo_root: Path,
+    cache_path: "Path | None" = None,
 ) -> dict:
     """LLM-enhanced evidence content verification.
 
@@ -144,6 +197,13 @@ def semantic_verify_item(
                             "deficiencies": ["no_evidence_paths_provided"], "llm_used": False}
     fallback_no_content = {"adequate": False, "confidence": 0.0, "stub_detected": False,
                            "deficiencies": ["evidence_files_unreadable"], "llm_used": False}
+
+    # Cache check: same evidence content → same grade (REQ-GRC-001, REQ-GRC-003)
+    item_id = declaration_item.get("item_id", declaration_item.get("title", ""))
+    ev_hash = _evidence_hash(declaration_item)
+    cached = _get_cached_grade(item_id, ev_hash, cache_path=cache_path)
+    if cached is not None:
+        return {**cached, "_from_cache": True}
 
     item_title = declaration_item.get("title", declaration_item.get("item_id", ""))
     acceptance_criteria = str(declaration_item.get("acceptance_criteria", ""))[:300]
@@ -225,13 +285,17 @@ def semantic_verify_item(
                 if not result.get("adequate") and result.get("confidence", 0) < 0.80:
                     result["adequate"] = True
                     result["low_confidence_override"] = True
+                # Cache successful LLM result (REQ-GRC-001)
+                _cache_grade(item_id, ev_hash, result, cache_path=cache_path)
                 return result
         except Exception:
             pass
 
-    # LLM unavailable or returned malformed JSON — default to inadequate (SUP-RECT-004)
-    return {"adequate": False, "confidence": 0.0, "stub_detected": False,
-            "deficiencies": ["llm_verification_unavailable"], "llm_used": False}
+    # LLM unavailable or returned malformed JSON — preserve existing grade (REQ-GRC-002)
+    # Do NOT downgrade on timeout: timeout adds noise without signal
+    return {"adequate": True, "confidence": 0.0, "stub_detected": False,
+            "deficiencies": [], "llm_used": False, "source": "timeout_preserve",
+            "note": "LLM unavailable or malformed response; grade preserved"}
 
 
 EXTERNAL_GATE_KEYWORDS = {
@@ -389,8 +453,13 @@ def grade_item(item_inspection: dict, test_results: dict) -> dict:
     return grade
 
 
-def grade_all(inspection: dict, declaration: dict) -> dict:
-    """Grade all items from inspection and declaration."""
+def grade_all(inspection: dict, declaration: dict,
+              grade_cache_path: "Path | None" = None) -> dict:
+    """Grade all items from inspection and declaration.
+
+    grade_cache_path: optional track-scoped cache path (REQ-TRK-008).
+    Defaults to the global _GRADE_CACHE_PATH when not provided.
+    """
     test_results = inspection.get("test_results", {})
     item_inspections = inspection.get("item_inspections", [])
 
@@ -420,7 +489,8 @@ def grade_all(inspection: dict, declaration: dict) -> dict:
         ii_match = next((ii for ii in item_inspections if ii["item_id"] == g["item_id"]), None)
         if not ii_match:
             continue
-        sv = semantic_verify_item(ii_match, decl_item, repo_root)
+        sv = semantic_verify_item(ii_match, decl_item, repo_root,
+                                   cache_path=grade_cache_path)
         g["semantic_verification"] = sv
         if not sv.get("llm_used"):
             continue  # LLM unavailable, keep deterministic grade

@@ -28,6 +28,8 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from atomic_io import atomic_write_json, atomic_write_text  # noqa: E402
+
 SELECTED_PRODUCT_GAPS_PATH = ".local/supervisor/selected-product-gaps.json"
 SKILL_REGISTRY_PATH = ".supervisor/skill-registry.yaml"
 PRODUCT_CODE_LEDGER_PATH = "reports/r90/product-code-change-ledger.json"
@@ -815,7 +817,7 @@ def validate_against_schema(data: dict, schema_path: Path) -> list[str]:
     return errors
 
 
-def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: str, tasks: list, stream: str = "mainstream") -> str:
+def generate_next_sprint_md(review: dict, contradictions: dict, memory_snippet: str, tasks: list, stream: str = "mainstream", plan_lock: dict | None = None) -> str:
     sprint_id = review.get("sprint_id", "unknown")
     verdict = review.get("verdict", "unknown")
     facts = review.get("facts", {})
@@ -985,6 +987,23 @@ TRUE_EXTERNAL_GATE (ONLY these warrant a stop):
 ---
 END OF SUPERVISOR-GENERATED NEXT SPRINT PROMPT
 """
+    # Plan-lock header: if a per-chat plan is active, prepend a prominent notice.
+    if plan_lock and plan_lock.get("status") != "COMPLETE":
+        _pp = plan_lock.get("plan_path", "unknown")
+        _ltc = plan_lock.get("last_taskcard", "unknown")
+        _plan_header = (
+            "## ACTIVE PER-CHAT PLAN \u2014 SYSTEM LEDGER SUPPRESSED\n\n"
+            "A per-chat plan is active. Complete ALL plan taskcards before any ledger/product work.\n\n"
+            f"- **Plan:** `{_pp}`\n"
+            f"- **Last completed taskcard:** `{_ltc}`\n"
+            f"- **Action:** Read the plan file. Find the next open taskcard after `{_ltc}`. Execute it.\n"
+            f"  After each: `python tools/supervisor/write_plan_lock.py --plan-path \"{_pp}\" --last-taskcard <TC_ID>`\n"
+            f"  When ALL done: `python tools/supervisor/write_plan_lock.py --plan-path \"{_pp}\" --complete`\n\n"
+            "**Do NOT start system ledger / product hardening work until plan status = COMPLETE.**\n\n"
+            "---\n\n"
+        )
+        return _plan_header + content
+
     return content
 
 
@@ -1223,7 +1242,7 @@ def generate_session_resume_md(review: dict, contradictions: dict, memory_snippe
 """
 
 
-def generate_packet(repo_root: Path, output_dir: Path = None, stream: str = None) -> int:
+def generate_packet(repo_root: Path, output_dir: Path = None, stream: str = None, plan_lock: dict | None = None) -> int:
     """Generate the full supervisor packet from evidence-review.json + contradictions.json.
 
     This is the programmatic entry point used by autonomous_cycle.py (R99 fix: D99-STALE-01).
@@ -1272,7 +1291,7 @@ def generate_packet(repo_root: Path, output_dir: Path = None, stream: str = None
     tasks = synthesize_sprint_tasks(review, contradictions, repo_root, stream=stream)
 
     (output_dir / "next-sprint.md").write_text(
-        generate_next_sprint_md(review, contradictions, memory_snippet, tasks, stream=stream), encoding="utf-8"
+        generate_next_sprint_md(review, contradictions, memory_snippet, tasks, stream=stream, plan_lock=plan_lock), encoding="utf-8"
     )
     (output_dir / "approval-gates.md").write_text(
         generate_approval_gates_md(review, contradictions, current_mode, repo_root), encoding="utf-8"
@@ -1374,26 +1393,26 @@ def main() -> int:
 
     # Generate next-sprint.md
     next_sprint_text = generate_next_sprint_md(review, contradictions, memory_snippet, tasks, stream=stream)
-    (output_dir / "next-sprint.md").write_text(next_sprint_text, encoding="utf-8")
+    atomic_write_text(output_dir / "next-sprint.md", next_sprint_text)
 
     # Generate next-sprint-taskmaster.json
     tm_data = generate_taskmaster_json(review, contradictions, tasks)
     schema_dir = repo_root / ".supervisor" / "schemas"
     tm_errors = validate_against_schema(tm_data, schema_dir / "next-sprint-taskmaster.schema.json")
-    (output_dir / "next-sprint-taskmaster.json").write_text(json.dumps(tm_data, indent=2), encoding="utf-8")
+    atomic_write_json(output_dir / "next-sprint-taskmaster.json", tm_data)
 
     # Generate next-ruflo-lanes.json
     ruflo_data = generate_ruflo_lanes_json(review, contradictions, tasks)
     ruflo_errors = validate_against_schema(ruflo_data, schema_dir / "next-ruflo-lanes.schema.json")
-    (output_dir / "next-ruflo-lanes.json").write_text(json.dumps(ruflo_data, indent=2), encoding="utf-8")
+    atomic_write_json(output_dir / "next-ruflo-lanes.json", ruflo_data)
 
     # Generate approval-gates.md (mode-aware)
     gates_text = generate_approval_gates_md(review, contradictions, current_mode, repo_root)
-    (output_dir / "approval-gates.md").write_text(gates_text, encoding="utf-8")
+    atomic_write_text(output_dir / "approval-gates.md", gates_text)
 
     # Generate session-resume.md
     resume_text = generate_session_resume_md(review, contradictions, memory_snippet, current_mode)
-    (output_dir / "session-resume.md").write_text(resume_text, encoding="utf-8")
+    atomic_write_text(output_dir / "session-resume.md", resume_text)
 
     critical_count = contradictions.get("critical_count", 0)
     print("PACKET_GENERATION: COMPLETE")

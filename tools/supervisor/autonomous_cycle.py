@@ -16,6 +16,8 @@ import json
 import os
 import shutil
 import sys
+
+from atomic_io import atomic_write_json, atomic_write_text  # noqa: E402
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -40,6 +42,7 @@ from evidence_manifest import generate_from_declaration, validate_manifest, writ
 from materialize_declared_evidence import materialize as materialize_evidence
 from build_context_pack import build_context_pack, generate_md as generate_context_md
 from anti_skip_checker import run_all_checks as run_anti_skip_checks
+from failure_memory import FailureMemory
 
 
 def classify_continuation_state(
@@ -221,8 +224,14 @@ def _compute_exit_code(review: dict, decl: dict, gov_result: dict | None) -> int
     return 0
 
 
-def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
-    """Run a complete autonomous supervisor cycle."""
+def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None) -> dict:
+    """Run a complete autonomous supervisor cycle.
+
+    track: TC-P2-002 — "product" | "machinery" | None.
+      product  → work_groups=["G3","G4","G5"], signal written to product/ subdir
+      machinery → work_groups=["G1","G2","G6","G7","G8"], signal written to machinery/ subdir
+      None     → legacy mode (all groups, shared .local/supervisor/ path)
+    """
     timestamp = datetime.now().isoformat()
 
     # Step 0 (pre-cycle): Stale queue repair (disabled by default, dry-run safe)
@@ -234,6 +243,26 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         print(f"  Stale repair: stale={repair_result.get('stale_count', 0)} "
               f"gaps={repair_result.get('gap_count', 0)} "
               f"status={repair_result.get('status', 'UNKNOWN')}")
+
+    # Step 0b: Detect active per-chat plan lock
+    plan_lock = None
+    _plan_locks_dir = repo_root / ".local" / "supervisor" / "plan-locks"
+    _plan_lock_candidates: list[Path] = []
+    if _plan_locks_dir.is_dir():
+        _plan_lock_candidates.extend(sorted(_plan_locks_dir.glob("*.json")))
+    _shared_lock = repo_root / ".local" / "supervisor" / "active-plan-lock.json"
+    if _shared_lock.exists():
+        _plan_lock_candidates.append(_shared_lock)
+    for _lp in _plan_lock_candidates:
+        try:
+            _ld = json.loads(_lp.read_text(encoding="utf-8"))
+            if _ld.get("status") != "COMPLETE":
+                plan_lock = _ld
+                print(f"  [PLAN_LOCK] Active plan: {plan_lock.get('plan_path')}")
+                print(f"  [PLAN_LOCK] Last taskcard: {plan_lock.get('last_taskcard')}")
+                break
+        except Exception as _pe:
+            print(f"  [PLAN_LOCK] Warning: could not read {_lp.name}: {_pe}")
 
     # Step 1: Validate declaration
     _logger.info("Step 1: Validate declaration", extra={"sprint_id": "pending"})
@@ -480,7 +509,15 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         print(f"  LLM gateway: {'AVAILABLE' if _dbg_gw else 'UNAVAILABLE'} (configured={getattr(_dbg_cfg, 'is_configured', False) if _dbg_cfg else False})")
     except Exception as _dbg_e:
         print(f"  LLM gateway check failed: {_dbg_e}")
-    review = grade_all(inspection, decl)
+    # TC-P2-004: Track-scoped grade cache (REQ-TRK-008)
+    _supervisor_base = repo_root / ".local" / "supervisor"
+    if track == "product":
+        _grade_cache_path = _supervisor_base / "product" / "grade-cache.json"
+    elif track == "machinery":
+        _grade_cache_path = _supervisor_base / "machinery" / "grade-cache.json"
+    else:
+        _grade_cache_path = None  # Use default (legacy path)
+    review = grade_all(inspection, decl, grade_cache_path=_grade_cache_path)
     review["declaration_path"] = str(declaration_path)
     review["dag_validation"] = dag_validation_result
 
@@ -820,6 +857,86 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     review["sal_recompute"] = sal_recompute_result
     review["capmap_recompute"] = capmap_recompute_result
 
+    # Step 3e: Capability Queue Consumer (TC-WIRE-001)
+    # Run capability_queue_consumer.py after every capability map recompute to compile
+    # fresh gap entries into actionable taskcards. Uses subprocess pattern consistent
+    # with SAL + capability map recompute above. Non-blocking.
+    print("\n=== STEP 3e: CAPABILITY QUEUE CONSUMER ===")
+    cap_consumer_result = {"status": "skipped"}
+    consumer_path = repo_root / "tools" / "supervisor" / "capability_queue_consumer.py"
+    if consumer_path.exists():
+        try:
+            consumer_proc = _subprocess_recompute.run(
+                [sys.executable, str(consumer_path), "--max-gaps", "5"],
+                capture_output=True, text=True, timeout=60, cwd=str(repo_root)
+            )
+            cap_consumer_result = {
+                "status": "completed" if consumer_proc.returncode == 0 else "failed",
+                "returncode": consumer_proc.returncode,
+                "trigger": "post_capmap_recompute",
+                "stdout_tail": consumer_proc.stdout.strip().splitlines()[-3:] if consumer_proc.stdout else [],
+            }
+            print(f"  Capability queue consumer: {'OK' if consumer_proc.returncode == 0 else 'FAILED'} "
+                  f"(exit {consumer_proc.returncode})")
+            if consumer_proc.stdout:
+                for line in consumer_proc.stdout.strip().splitlines()[-3:]:
+                    print(f"    {line}")
+        except Exception as consumer_err:
+            cap_consumer_result = {"status": "error", "error": str(consumer_err)}
+            print(f"  WARNING: Capability queue consumer failed: {consumer_err}")
+    else:
+        cap_consumer_result = {"status": "not_found", "path": str(consumer_path)}
+        print(f"  Capability queue consumer: not found — skipped")
+    review["cap_consumer"] = cap_consumer_result
+
+    # Step 3f: Authority Integration Fabric (TC-FABRIC-001)
+    # Subprocess-invoke authority_integration_fabric.py to produce 4 canonical outputs:
+    # spec-context-pack-index.json, authority-integration-contract.json,
+    # mainstream-gap-queue-authoritative.json, supervisor-verdict-authority-packet.json.
+    # Non-blocking — failure is logged but does not prevent continuation.
+    print("\n=== STEP 3f: AUTHORITY INTEGRATION FABRIC ===")
+    fabric_result = {"status": "skipped"}
+    fabric_script = repo_root / "tools" / "supervisor" / "authority_integration_fabric.py"
+    if fabric_script.exists():
+        try:
+            fabric_proc = _subprocess_recompute.run(
+                [sys.executable, str(fabric_script)],
+                capture_output=True, text=True, timeout=120, cwd=str(repo_root)
+            )
+            fabric_result = {
+                "status": "completed" if fabric_proc.returncode == 0 else "failed",
+                "returncode": fabric_proc.returncode,
+                "stdout_lines": fabric_proc.stdout.strip().splitlines()[-5:] if fabric_proc.stdout else [],
+                "stderr_lines": fabric_proc.stderr.strip().splitlines()[-5:] if fabric_proc.stderr else [],
+            }
+            if fabric_proc.returncode == 0:
+                print("  Authority integration fabric: OK")
+            else:
+                print(f"  Authority integration fabric: non-zero exit {fabric_proc.returncode} (non-blocking)")
+        except Exception as fabric_err:
+            fabric_result = {"status": "error", "error": str(fabric_err)}
+            print(f"  Authority integration fabric error (non-blocking): {fabric_err}")
+    review["authority_fabric"] = fabric_result
+
+    # Step 3g: Track P reads machinery_to_product handoff (TC-P2-005-04, advisory)
+    # Advisory only — if Track M has published a fresh gap snapshot, log it for
+    # sprint context. Does NOT block if missing or stale.
+    if track == "product":
+        try:
+            from write_track_handoff import read_machinery_handoff
+            _m2p = read_machinery_handoff(repo_root)
+            if _m2p:
+                print("\n=== STEP 3g: TRACK M HANDOFF (advisory) ===")
+                print(f"  machinery_to_product: written_at={_m2p.get('written_at', 'unknown')}")
+                print(f"    validated_gap_count: {_m2p.get('validated_gap_count', 'n/a')}")
+                print(f"    high_priority_gap_count: {_m2p.get('high_priority_gap_count', 'n/a')}")
+                print(f"    gap_ledger_snapshot: {_m2p.get('gap_ledger_snapshot_path', 'n/a')}")
+                review["machinery_handoff"] = _m2p
+            else:
+                review["machinery_handoff"] = None
+        except Exception as _m2p_err:
+            review["machinery_handoff"] = {"error": str(_m2p_err)}
+
     # Step 4: Generate next worker prompt (R108: stream-specific)
     print("\n=== STEP 4: GENERATE NEXT WORKER PROMPT ===")
     try:
@@ -827,11 +944,22 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         detected_stream = _extract_stream_from_sprint(sprint_id)
     except Exception:
         detected_stream = "mainstream"
-    prompt = generate_prompt(review, repo_root=repo_root, stream=detected_stream)
+    # TC-P2-002/TC-P2-003: Derive work_groups from track for two-track routing.
+    try:
+        from generate_next_worker_prompt import TRACK_GROUPS
+        _work_groups = list(TRACK_GROUPS[track]) if track and track in TRACK_GROUPS else None
+    except Exception:
+        _work_groups = None
+    if _work_groups:
+        print(f"  Track={track!r} → work_groups={_work_groups}")
+
+    prompt = generate_prompt(review, repo_root=repo_root, stream=detected_stream,
+                             work_groups=_work_groups)
     prompt_path = review_dir / "combined-next-worker-prompt.md"
     prompt_path.write_text(prompt, encoding="utf-8")
 
-    next_work = generate_next_work_items(review, stream=detected_stream)
+    next_work = generate_next_work_items(review, stream=detected_stream, plan_lock=plan_lock,
+                                         work_groups=_work_groups)
     work_path = review_dir / "next-work-items.yaml"
     work_path.write_text(
         yaml.dump(next_work, default_flow_style=False, sort_keys=False), encoding="utf-8"
@@ -1045,11 +1173,24 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     print(f"  Stream dir: {stream_dir}")
 
     # Canonical work-items copy for check_continuation.py
-    canonical_work_items = repo_root / ".local" / "supervisor" / "next-work-items.json"
+    # TC-P2-002: Write to track-specific subdir when --track is set.
+    _supervisor_dir = repo_root / ".local" / "supervisor"
+    if track == "product":
+        _track_supervisor_dir = _supervisor_dir / "product"
+    elif track == "machinery":
+        _track_supervisor_dir = _supervisor_dir / "machinery"
+    else:
+        _track_supervisor_dir = _supervisor_dir
+    canonical_work_items = _track_supervisor_dir / "next-work-items.json"
     canonical_work_items.parent.mkdir(parents=True, exist_ok=True)
+    # Also always write to legacy path for backward compat (non-track callers)
+    legacy_work_items = _supervisor_dir / "next-work-items.json"
+    legacy_work_items.parent.mkdir(parents=True, exist_ok=True)
     src_work = review_dir / "next-work-items.json"
     if src_work.exists():
         shutil.copy2(str(src_work), str(canonical_work_items))
+        if track:
+            shutil.copy2(str(src_work), str(legacy_work_items))
         print(f"  Canonical work items: {canonical_work_items}")
 
     # R112: Write stream-local authority map
@@ -1135,7 +1276,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     try:
         from generate_supervisor_packet import generate_packet, detect_stream_from_sprint_id
         detected_stream = detect_stream_from_sprint_id(sprint_id)
-        generate_packet(repo_root, stream=detected_stream)
+        generate_packet(repo_root, stream=detected_stream, plan_lock=plan_lock)
         print(f"  Regenerated: session-resume.md, approval-gates.md, next-sprint.md (stream={detected_stream})")
     except Exception as e:
         print(f"  WARNING: Legacy markdown regeneration failed: {e}")
@@ -1155,12 +1296,63 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
     except Exception as e:
         print(f"  WARNING: Context pack rebuild failed: {e}")
 
+    # Step 7b: Track P Ledger Enforcement (TC-P2-008 — REQ-LED-001/LED-002/LED-003)
+    # For Track P sprints, validate that at least one ledger entry exists in
+    # product-code-change-ledger.json for this sprint_id before writing signal.
+    # Non-Track-P: skipped entirely (backward compat).
+    if track == "product":
+        print("\n=== STEP 7b: TRACK P LEDGER VALIDATION ===")
+        try:
+            from validate_ledger_entry import validate_ledger_entry_exists
+            _led_items = decl.get("planned_work_items", [])
+            _ledger_path = repo_root / "reports" / "r90" / "product-code-change-ledger.json"
+            _led_valid, _led_missing, _led_error = validate_ledger_entry_exists(
+                sprint_id=sprint_id,
+                work_items=_led_items,
+                ledger_path=_ledger_path,
+            )
+            if _led_valid:
+                print(f"  Ledger validation: PASS (sprint_id={sprint_id!r})")
+                review["ledger_validation"] = {"status": "passed", "sprint_id": sprint_id}
+            else:
+                print(f"  Ledger validation: FAIL — {_led_error}", file=sys.stderr)
+                review["ledger_validation"] = {
+                    "status": "failed",
+                    "sprint_id": sprint_id,
+                    "missing": _led_missing,
+                    "error": _led_error,
+                }
+                # REQ-LED-003: Reject declaration if ledger entry is missing for product work items
+                sys.exit(7)
+        except ImportError as _led_import_err:
+            print(f"  WARNING: validate_ledger_entry unavailable — skipping ({_led_import_err})")
+            review["ledger_validation"] = {"status": "skipped", "reason": str(_led_import_err)}
+        except SystemExit:
+            raise
+        except Exception as _led_exc:
+            print(f"  WARNING: Ledger validation error (non-blocking): {_led_exc}")
+            review["ledger_validation"] = {"status": "error", "error": str(_led_exc)}
+
     # Step 8: Write continuation signal for autonomous loop (MODE 5)
     print("\n=== STEP 8: WRITE CONTINUATION SIGNAL ===")
     try:
         signal_dir = repo_root / ".local" / "supervisor"
         signal_dir.mkdir(parents=True, exist_ok=True)
-        signal_path = signal_dir / "continuation-signal.json"
+        # TC-P2-002: Route signal to track-specific subdirectory when --track is set.
+        # Legacy path is always updated for backward compat.
+        if track == "product":
+            _track_signal_dir = signal_dir / "product"
+            _track_signal_dir.mkdir(parents=True, exist_ok=True)
+            signal_path = _track_signal_dir / "continuation-signal.json"
+            _legacy_signal_path = signal_dir / "continuation-signal.json"
+        elif track == "machinery":
+            _track_signal_dir = signal_dir / "machinery"
+            _track_signal_dir.mkdir(parents=True, exist_ok=True)
+            signal_path = _track_signal_dir / "continuation-signal.json"
+            _legacy_signal_path = None  # Track M: no legacy fallback (strict isolation)
+        else:
+            signal_path = signal_dir / "continuation-signal.json"
+            _legacy_signal_path = None
 
         # Read existing signal to preserve iteration count, then increment
         existing_iteration = 0
@@ -1292,6 +1484,20 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             print(f"  WARNING: CCI identity fallback: {_cci_err}", file=sys.stderr)
             session_id = os.environ.get("CLAUDE_SESSION_ID") or str(uuid.uuid4())[:12]
 
+        # TC-P2-002: Include track and chat_id (for Track M) in signal.
+        _chat_id_value = None
+        if track == "machinery":
+            try:
+                from continuation_identity import get_or_create_machinery_identity
+                _m_identity = get_or_create_machinery_identity()
+                _chat_id_value = _m_identity.chat_id
+                # Write current-chat-id.json for check_continuation.py resolution
+                _chat_id_reg = signal_dir / "machinery" / "current-chat-id.json"
+                _chat_id_reg.parent.mkdir(parents=True, exist_ok=True)
+                atomic_write_json(_chat_id_reg, {"chat_id": _chat_id_value, "written_at": timestamp})
+            except Exception as _cid_err:
+                print(f"  WARNING: Track M chat_id generation failed: {_cid_err}", file=sys.stderr)
+
         signal = {
             "autonomous_continue": auto_continue_value,
             "iteration": existing_iteration,
@@ -1306,11 +1512,18 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
             "continuation_state": continuation_state,
             "session_id": session_id,
         }
+        if track:
+            signal["track"] = track
+        if _chat_id_value:
+            signal["chat_id"] = _chat_id_value
         if rollover_note:
             signal["checkpoint_rollover"] = rollover_note
-        signal_path.write_text(json.dumps(signal, indent=2), encoding="utf-8")
+        atomic_write_json(signal_path, signal)
+        # Also update legacy path for Track P (backward compat) — NOT for Track M (strict isolation)
+        if _legacy_signal_path is not None:
+            atomic_write_json(_legacy_signal_path, signal)
         print(f"  Signal: {signal_path} (continue={signal['autonomous_continue']}, "
-              f"iter={existing_iteration}/{max_iterations})")
+              f"iter={existing_iteration}/{max_iterations}, track={track!r})")
 
         # CCI: Record signal creation in continuation ledger (TC-CCI-202)
         try:
@@ -1325,7 +1538,7 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
         stream_signal_dir.mkdir(parents=True, exist_ok=True)
         stream_signal = {**signal, "stream": detected_stream}
         stream_signal_path = stream_signal_dir / "continuation-signal.json"
-        stream_signal_path.write_text(json.dumps(stream_signal, indent=2), encoding="utf-8")
+        atomic_write_json(stream_signal_path, stream_signal)
         print(f"  Stream signal: {stream_signal_path}")
 
         # HEAL-RECT-005: Archive rework items for cross-sprint persistence
@@ -1370,9 +1583,35 @@ def run_cycle(declaration_path: Path, repo_root: Path) -> dict:
                 # Non-silent: record failure in signal so check_continuation surfaces it
                 signal["evidence_continuation_failed"] = True
                 signal["evidence_continuation_error"] = str(ec_err)
-                signal_path.write_text(json.dumps(signal, indent=2), encoding="utf-8")
+                atomic_write_json(signal_path, signal)
     except Exception as e:
         print(f"  WARNING: Continuation signal failed: {e}")
+
+    # TC-P2-002-04: Write Track P handoff entry when running as Track P
+    # (so Track M can read it to learn about new capabilities)
+    if track == "product":
+        try:
+            _shared_dir = repo_root / ".local" / "supervisor" / "shared"
+            _shared_dir.mkdir(parents=True, exist_ok=True)
+            _handoff_path = _shared_dir / "track-handoff.json"
+            _existing_handoff: dict = {}
+            if _handoff_path.exists():
+                try:
+                    _existing_handoff = json.loads(_handoff_path.read_text(encoding="utf-8"))
+                except Exception:
+                    pass
+            _existing_handoff["handoff_version"] = 1
+            _existing_handoff["product_to_machinery"] = {
+                "written_at": timestamp,
+                "written_by_session": session_id,
+                "sprint_id": sprint_id,
+                "new_capabilities_count": len(review.get("accepted_items", [])),
+                "test_count": review.get("total_test_count", 0),
+            }
+            atomic_write_json(_handoff_path, _existing_handoff)
+            print(f"  Track P handoff: {_handoff_path}")
+        except Exception as _hf_err:
+            print(f"  WARNING: Track P handoff write failed: {_hf_err}")
 
     # Step 8b: Loop Controller State Tracking (advisory, non-blocking)
     print("\n=== STEP 8b: LOOP CONTROLLER STATE ===")
@@ -1549,6 +1788,15 @@ def main() -> int:
         help="Path to evidence-declaration.yaml"
     )
     parser.add_argument("--repo-root", type=Path, default=REPO_ROOT)
+    parser.add_argument(
+        "--track", type=str, choices=["product", "machinery"], default=None,
+        help=(
+            "TC-P2-002: Track type for two-track separation. "
+            "product → G3/G4/G5 work groups, product/ signal path. "
+            "machinery → G1/G2/G6/G7/G8 work groups, machinery/ signal path. "
+            "None (default) → legacy mode (all groups, shared signal path)."
+        ),
+    )
     args = parser.parse_args()
 
     if not args.declaration.exists():
@@ -1559,10 +1807,12 @@ def main() -> int:
     print("=" * 60)
     print("AUTONOMOUS SUPERVISOR CYCLE")
     print(f"Declaration: {args.declaration}")
+    if args.track:
+        print(f"Track: {args.track}")
     print(f"Started: {datetime.now().isoformat()}")
     print("=" * 60)
 
-    manifest = run_cycle(args.declaration, args.repo_root)
+    manifest = run_cycle(args.declaration, args.repo_root, track=args.track)
 
     exit_code = manifest.get("exit_code", 9)
     _logger.info(
@@ -1572,6 +1822,29 @@ def main() -> int:
             "work_item": f"exit_{exit_code}",
         },
     )
+
+    # TC-RECON-007 / HEAL-RECT-001: Record failure on exit code 3 (rework required).
+    # Best-effort — wrapped in try/except so failure memory write never blocks sprint exit.
+    if exit_code == 3:
+        try:
+            sprint_id = manifest.get("run_id", "unknown")
+            rework_items = manifest.get("rework_items", [])
+            correction = f"Rework required: {', '.join(str(r) for r in rework_items[:5])}" if rework_items else "critical_rework_required"
+            fm = FailureMemory(args.repo_root)
+            fm.record_failure(
+                category="SUPERVISOR_CONTROL_FAILURE",
+                root_cause="exit_code_3_rework_required",
+                correction=correction,
+                sprint_id=sprint_id,
+                files_modified=[str(args.declaration)],
+                verification_command=f"python autonomous_cycle.py --declaration {args.declaration}",
+                severity="HIGH",
+            )
+            fm.save()
+            print(f"  [FAILURE_MEMORY] Recorded exit-3 failure for sprint {sprint_id}")
+        except Exception as _fm_err:  # noqa: BLE001
+            print(f"  [FAILURE_MEMORY] Warning: could not record failure: {_fm_err}")
+
     print()
     print("=" * 60)
     print(f"CYCLE COMPLETE (exit {exit_code})")

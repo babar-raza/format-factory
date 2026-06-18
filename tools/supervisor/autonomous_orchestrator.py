@@ -190,6 +190,16 @@ def _queue_item_to_next_action(item: Dict[str, Any], cycle_index: int, sprint_id
 
 
 class AutonomousOrchestrator:
+    # TC-P2-007: stream filter — maps stream name to allowed item streams
+    # machinery: refuses STREAM_PRODUCT actions (G3/G4/G5)
+    # product:   refuses non-STREAM_PRODUCT actions
+    # all/None:  no filter (current behavior)
+    _STREAM_ALLOWED: Dict[str, set] = {
+        "machinery": {"autonomy", "mainstream", "setup", "evidence", "autonomy_setup"},
+        "product": {"product"},
+        "all": set(),  # empty = accept all
+    }
+
     def __init__(
         self,
         max_cycles: int = 3,
@@ -202,6 +212,7 @@ class AutonomousOrchestrator:
         interval_seconds: int = 10,
         stop_after_idle: int = 1,
         queue_first: bool = False,
+        stream_filter: Optional[str] = None,
     ):
         self.max_cycles = max_cycles
         self.backend = backend
@@ -213,9 +224,19 @@ class AutonomousOrchestrator:
         self.interval_seconds = interval_seconds
         self.stop_after_idle = stop_after_idle
         self.queue_first = queue_first
+        self.stream_filter = stream_filter  # TC-P2-007: "machinery" | "product" | "all" | None
         self.run_id = str(uuid.uuid4())[:8]
         self.results: List[Dict[str, Any]] = []
         self._current_queue_item: Optional[Dict[str, Any]] = None
+        # CCI: resolve session identity once at init (default behavior)
+        try:
+            from tools.supervisor.continuation_identity import get_or_create_session_identity
+            self._session_id = get_or_create_session_identity(
+                sprint_id=sprint_id,
+            ).session_id
+        except Exception as _cci_err:
+            print(f"WARNING: CCI orchestrator identity fallback: {_cci_err}", file=sys.stderr)
+            self._session_id = None
 
     def _init_state(self) -> int:
         """Initialize or resume orchestrator state. Returns starting cycle_index."""
@@ -237,6 +258,7 @@ class AutonomousOrchestrator:
             run_id=self.run_id,
             status="RUNNING",
             cycle_index=0,
+            session_id=self._session_id,
         )
         save_orchestrator_state(state)
         return 0
@@ -251,11 +273,14 @@ class AutonomousOrchestrator:
                 next_action_path=next_action_path,
                 autonomous_continue=True,
                 active_stream=STREAM_AUTONOMY,
+                session_id=self._session_id,
             )
             save_active_continuation(cont)
         else:
             cont["next_action_path"] = next_action_path
             cont["autonomous_continue"] = True
+            if self._session_id:
+                cont["session_id"] = self._session_id
             save_active_continuation(cont)
 
     def _resolve_seed_action(self, cycle_index: int) -> Optional[str]:
@@ -267,6 +292,25 @@ class AutonomousOrchestrator:
         if self.queue_first and QUEUE_PATH.exists():
             q_item = dequeue_next()
             if q_item is not None:
+                # TC-P2-007: Stream filter — refuse wrong-track action types (REQ-TRK-011)
+                if self.stream_filter and self.stream_filter != "all":
+                    allowed = self._STREAM_ALLOWED.get(self.stream_filter, set())
+                    item_stream = q_item.get("stream", "autonomy")
+                    if item_stream not in allowed:
+                        print(
+                            f"  [stream-filter] REJECTED queue item {q_item.get('action_id','?')}: "
+                            f"stream={item_stream!r} not allowed for --stream {self.stream_filter!r}. "
+                            f"Re-queuing with 'wrong-track' annotation."
+                        )
+                        # Re-queue with wrong-track annotation (not consumed)
+                        q_item["_wrong_track_rejected"] = True
+                        q_item["_rejected_by_stream"] = self.stream_filter
+                        from action_queue import enqueue_front
+                        try:
+                            enqueue_front(q_item)
+                        except ImportError:
+                            pass  # enqueue_front unavailable — item is lost (acceptable for MVP)
+                        return None  # Skip this item; cycle will go idle
                 self._current_queue_item = q_item
                 action = _queue_item_to_next_action(q_item, cycle_index + 1, self.sprint_id)
                 save_next_action(action)
@@ -360,7 +404,7 @@ class AutonomousOrchestrator:
             next_action_path = self._resolve_seed_action(cycle_index)
             if next_action_path is None:
                 write_stop_reason(self.run_id, STOP_NO_SAFE_ACTION, "No seed action available", cycle_index)
-                update_orch_state(self.run_id, "STOPPED", cycle_index, stop_reason=STOP_NO_SAFE_ACTION)
+                update_orch_state(self.run_id, "STOPPED", cycle_index, stop_reason=STOP_NO_SAFE_ACTION, session_id=self._session_id)
                 return OrchestratorResult(
                     self.run_id, 0, STOP_NO_SAFE_ACTION, "No seed action", [], self.resume, self.dry_run
                 )
@@ -385,7 +429,7 @@ class AutonomousOrchestrator:
                     # Stop cleanly
                     stop_code = decision.stop_reason or STOP_NO_SAFE_ACTION
                     write_stop_reason(self.run_id, stop_code, decision.detail, cycle_index + cycles_done)
-                    update_orch_state(self.run_id, "STOPPED", cycle_index + cycles_done, stop_reason=stop_code)
+                    update_orch_state(self.run_id, "STOPPED", cycle_index + cycles_done, stop_reason=stop_code, session_id=self._session_id)
                     return OrchestratorResult(
                         self.run_id, cycles_done, stop_code, decision.detail,
                         self.results, self.resume, self.dry_run
@@ -416,6 +460,7 @@ class AutonomousOrchestrator:
                             self.run_id, "BLOCKED", cycle_index + cycles_done,
                             last_result=result.get("result_path"),
                             stop_reason=STOP_REPEATED_FAILURE,
+                            session_id=self._session_id,
                         )
                         return OrchestratorResult(
                             self.run_id, cycles_done, STOP_REPEATED_FAILURE,
@@ -431,6 +476,7 @@ class AutonomousOrchestrator:
                     self.run_id, "RUNNING", cycle_index + cycles_done,
                     last_action_id=result.get("action_id"),
                     last_result=result.get("result_path"),
+                    session_id=self._session_id,
                 )
 
                 if cycles_done >= actual_max:
@@ -458,7 +504,7 @@ class AutonomousOrchestrator:
                         self.run_id, STOP_NO_SAFE_ACTION, "Generator returned None",
                         cycle_index + cycles_done
                     )
-                    update_orch_state(self.run_id, "STOPPED", cycle_index + cycles_done, stop_reason=STOP_NO_SAFE_ACTION)
+                    update_orch_state(self.run_id, "STOPPED", cycle_index + cycles_done, stop_reason=STOP_NO_SAFE_ACTION, session_id=self._session_id)
                     return OrchestratorResult(
                         self.run_id, cycles_done, STOP_NO_SAFE_ACTION, "No more safe actions",
                         self.results, self.resume, self.dry_run
@@ -486,6 +532,7 @@ class AutonomousOrchestrator:
                 last_action_id=self.results[-1].get("action_id") if self.results else None,
                 last_result=self.results[-1].get("result_path") if self.results else None,
                 stop_reason=stop_code,
+                session_id=self._session_id,
             )
 
             # Update active-continuation: point to newly written next-action
@@ -514,8 +561,9 @@ def update_orch_state(
     last_action_id: Optional[str] = None,
     last_result: Optional[str] = None,
     stop_reason: Optional[str] = None,
+    session_id: Optional[str] = None,
 ) -> None:
-    state = load_orchestrator_state() or make_orchestrator_state(run_id)
+    state = load_orchestrator_state() or make_orchestrator_state(run_id, session_id=session_id)
     state["status"] = status
     state["cycle_index"] = cycle_index
     if last_action_id:
@@ -545,6 +593,14 @@ def _build_parser() -> argparse.ArgumentParser:
     p.add_argument("--stop-after-idle", type=int, default=1)
     p.add_argument("--queue-first", action="store_true", dest="queue_first",
                    help="Dequeue from action-queue.jsonl before generating synthetic actions")
+    p.add_argument("--stream", type=str, choices=["machinery", "product", "all"], default=None,
+                   dest="stream_filter",
+                   help=(
+                       "TC-P2-007: Stream filter for two-track separation. "
+                       "'machinery' only processes non-product streams (REQ-TRK-011). "
+                       "'product' only processes STREAM_PRODUCT actions. "
+                       "'all' (default) processes all streams (backward compat)."
+                   ))
     p.add_argument("--json", action="store_true", dest="json_output", help="Print result as JSON")
     return p
 
@@ -566,6 +622,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         interval_seconds=args.interval_seconds,
         stop_after_idle=args.stop_after_idle,
         queue_first=args.queue_first,
+        stream_filter=args.stream_filter,  # TC-P2-007
     )
 
     result = orch.run(once=args.once)

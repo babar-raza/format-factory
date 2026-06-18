@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+from atomic_io import atomic_write_json
+
 # Repo root detection
 _here = Path(__file__).resolve().parent       # tools/supervisor/
 _repo_root = _here.parent.parent              # repo root
@@ -62,8 +64,7 @@ def _load_json(path: Path) -> Optional[Dict[str, Any]]:
 
 
 def _save_json(path: Path, data: Dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, indent=2, default=str), encoding="utf-8")
+    atomic_write_json(path, data)
 
 
 # ── Active Continuation ───────────────────────────────────────────────────────
@@ -87,6 +88,7 @@ def make_active_continuation(
     stop_reason: Optional[str] = None,
     last_evidence_package: Optional[str] = None,
     active_stream: str = STREAM_AUTONOMY,
+    session_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     return {
         "schema_version": SCHEMA_VERSION,
@@ -101,6 +103,7 @@ def make_active_continuation(
         "stop_reason": stop_reason,
         "last_evidence_package": last_evidence_package,
         "unsafe_advisory_prompts_quarantined": True,
+        "session_id": session_id,
         "updated_at": _now_iso(),
     }
 
@@ -134,6 +137,10 @@ def validate_active_continuation(data: Dict[str, Any]) -> list[str]:
                 errors.append(f"next_action_path does not exist: {nap}")
     if data.get("advisory_prompt_executable") is True:
         errors.append("advisory_prompt_executable must not be true")
+    # CCI: validate session_id if present (TC-CCI-204)
+    sid = data.get("session_id")
+    if sid is not None and (not isinstance(sid, str) or not sid.strip()):
+        errors.append("session_id is present but empty or not a string")
     return errors
 
 
@@ -157,6 +164,7 @@ def make_orchestrator_state(
     last_result_path: Optional[str] = None,
     next_action_path: str = str(NEXT_ACTION_PATH),
     stop_reason: Optional[str] = None,
+    session_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     return {
         "schema_version": SCHEMA_VERSION,
@@ -169,6 +177,7 @@ def make_orchestrator_state(
         "last_heartbeat": _now_iso(),
         "stop_reason": stop_reason,
         "resume_supported": True,
+        "session_id": session_id,
         "updated_at": _now_iso(),
     }
 
@@ -208,6 +217,7 @@ STOP_REPEATED_FAILURE = "REPEATED_FAILURE_THRESHOLD"
 STOP_ADVISORY_PROMPT = "ADVISORY_PROMPT_NOT_EXECUTABLE"
 STOP_LOCK_HELD = "ORCHESTRATOR_LOCK_HELD"
 STOP_DRY_RUN = "DRY_RUN_COMPLETE"
+STOP_SESSION_MISMATCH = "SESSION_MISMATCH"
 
 
 def write_stop_reason(
