@@ -126,6 +126,26 @@ def enqueue(item: Dict[str, Any]) -> str:
     return item["action_id"]
 
 
+def enqueue_front(item: Dict[str, Any]) -> str:
+    """Insert item at front of queue (before all pending items). Returns action_id.
+    Used by stream filter to re-queue rejected wrong-track items without silent loss.
+    TC-P2-007: REQ-TRK-011 — prevents item loss on stream filter rejection.
+    """
+    if item.get("action_type") in FORBIDDEN_IN_QUEUE:
+        raise ValueError(f"Forbidden action type in queue: {item['action_type']}")
+    if "action_id" not in item:
+        item = dict(item)
+        item["action_id"] = str(uuid.uuid4())[:8]
+    if "status" not in item:
+        item["status"] = STATUS_PENDING
+    if "queued_at" not in item:
+        item["queued_at"] = _now_iso()
+    items = _load_queue()
+    items.insert(0, item)
+    _save_queue(items)
+    return item["action_id"]
+
+
 def dequeue_next() -> Optional[Dict[str, Any]]:
     """Get highest-priority pending item. Marks it as running."""
     items = _load_queue()
