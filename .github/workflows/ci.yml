@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: pip install -e ".[dev]"
       - name: Run layered tests (L0-L3)
-        run: python tools/test_runner.py --layer 3 --json-out .local/test-results/ci-fast.json
+        run: python tools/test_runner.py --layer 3 --known-failures registry/known-failure-ledger.yaml --json-out .local/test-results/ci-fast.json
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4

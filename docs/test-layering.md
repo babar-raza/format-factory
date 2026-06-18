@@ -160,3 +160,102 @@ These are **not layering regressions**. The marker assignment is correct — the
 2. **Layer 2 (Family)**: Not assigned as a marker — the runner handles family expansion by adding multiple directory paths to L1's marker expression.
 3. **No parallel execution**: pytest-xdist is not installed. Tests run sequentially.
 4. **Auto-detection scope**: `--auto` uses `git diff HEAD` + staged + unstaged changes. In CI, use `--base-ref` to compare against the target branch.
+5. **--auto on dirty repos**: On repos with many untracked files not in the manifest, `--auto` selects L6 (fail-safe). Use explicit `--layer N` on dirty branches.
+6. **test_layer schema enforcement**: The `test_layer`, `full_suite_required`, and `full_suite_run` fields in evidence-declaration.yaml are ADVISORY ONLY. The supervisor schema does not enforce them. Agents must self-enforce these rules.
+
+## Taskcard State Machine
+
+Taskcards use these states to track validation progress:
+
+| State | Description |
+|-------|-------------|
+| `backlog` | Not yet started |
+| `ready` | Prerequisites met; can start |
+| `active` | Currently in progress |
+| `blocked` | Waiting on external dependency |
+| `LAYER0_VALIDATING` | Running L0 structural tests |
+| `FOCUSED_VALIDATING` | Running L1 format-focused tests |
+| `COMPONENT_VALIDATING` | Running L2 family tests |
+| `INTEGRATION_VALIDATING` | Running L3 supervisor/governance tests |
+| `BROAD_VALIDATING` | Running L5 broad infrastructure tests |
+| `FULLSUITE_VALIDATING` | Running L6 full suite (all shards) |
+| `EVIDENCE_PACKAGING` | Writing evidence-declaration.yaml |
+| `ACCEPTED_VERIFIED` | All tests passed; evidence accepted |
+| `ACCEPTED_WITH_REWORK` | Accepted with documented limitations |
+| `REJECTED_NEEDS_REWORK` | Failed; rework required before re-submission |
+
+**Transition rules:**
+1. No taskcard may move to `ACCEPTED_VERIFIED` without test evidence at or above its required layer.
+2. No product-behavior taskcard (`item_type=PRODUCT_SOURCE`) may close with docs-only validation (L0 only).
+3. No shared-infrastructure taskcard may close with single-family test only (L1 only).
+4. No full-suite claim without all 4 shards completing at `exit_code=0`.
+5. Any timeout or incomplete execution keeps the taskcard in its current VALIDATING state.
+6. Pre-existing known failures (in `registry/known-failure-ledger.yaml`) do not block closure; new failures do.
+7. Advisory-only evidence (dry-run output, prose summaries) does NOT satisfy a VALIDATING state.
+
+## Known-Failure vs New-Failure Handling
+
+Pre-existing failures are tracked in `registry/known-failure-ledger.yaml`.
+
+**Classification procedure:**
+1. After running tests, collect the list of failing test IDs.
+2. Look up each failing test ID in `registry/known-failure-ledger.yaml`.
+3. If found → PRE-EXISTING: document in evidence but do not require rework.
+4. If NOT found → NEW FAILURE: investigate before declaring the taskcard complete.
+
+**Known pre-existing failures (as of 2026-06-18):**
+- `tests/evidence/test_auto_proof_bundle.py` — fails on dirty working tree. Mitigation: `--no-state` flag.
+- Unmarked supervisor network tests — timeout-dependent. Mitigation: `--timeout=N` per test.
+
+Use `--known-failures registry/known-failure-ledger.yaml` with `tools/test_runner.py` (after HEAL-003)
+to get automatic classification of new vs pre-existing failures in JSON output.
+
+## Slow Test Policy
+
+Slow tests are defined as individual tests consistently exceeding **5 seconds**.
+
+**Detection:** Use `pytest --durations=10 tests/python/{fmt}/` to find the 10 slowest tests.
+No extra dependency required — `--durations` is a built-in pytest flag.
+
+**Registration:** Slow tests are registered in `registry/slow-test-ledger.yaml`.
+
+**@pytest.mark.slow strategy:**
+- Marker is informational only — slow tests are NOT auto-skipped.
+- Slow tests run in full suite (L6) and in L1+format runs.
+- Developers may exclude them locally: `pytest tests/python/{fmt}/ -m "not slow" -q`.
+- CI always includes slow tests.
+
+**Slow format threshold:** A format directory with L1 runtime >60 seconds is a slow-format candidate.
+
+## Flaky Test Policy
+
+A test is flaky if it fails non-deterministically across identical runs.
+
+**Confirmation:** 3-run rule — must fail in 2 of 3 identical runs.
+
+**Quarantine:** Apply `@pytest.mark.skip(reason="QUARANTINE: {cause}. Owner: {owner}. Review by: {date}")`.
+Register in `registry/slow-test-ledger.yaml` under the `flaky_tests` section.
+
+**Expiry:** Quarantined tests older than 30 days without a fix are escalated to deletion review.
+
+## Evidence Declaration — Required Test Layer Fields
+
+Include these fields in every sprint's `evidence-declaration.yaml`:
+
+```yaml
+# Test layer fields (advisory — not schema-enforced as of 2026-06-18)
+test_layer: 3                          # int: highest layer run (0–6)
+test_layer_name: "integration"         # str: layer name
+test_layer_reason: "tools/supervisor/ changed"  # str: why this layer was chosen
+full_suite_required: false             # bool: was L6 mandatory for this sprint?
+full_suite_run: false                  # bool: was L6 actually run?
+full_suite_reason: "Change scope is docs/tools/registry — no L6-triggering files modified"
+full_suite_shards_run: []             # list: shard IDs completed (e.g., [1, 2])
+full_suite_shards_not_run: [1,2,3,4]  # list: shard IDs not run
+# Failure fields
+known_failures: []                     # list: pre-existing failures from ledger
+new_failures: []                       # list: failures not in known ledger (require rework)
+# Slow/flaky tracking
+slow_tests_identified: []              # list: tests flagged as slow this sprint
+flaky_tests_identified: []            # list: tests confirmed flaky this sprint
+```
