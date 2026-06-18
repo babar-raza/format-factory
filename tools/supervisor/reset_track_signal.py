@@ -108,7 +108,7 @@ def reset_signal(
 
     # Write atomically
     atomic_write_json(signal_path, new_signal)
-    print(f"[reset_track_signal] {track} signal reset → session_id={new_session_id!r}")
+    print(f"[reset_track_signal] {track} signal reset -> session_id={new_session_id!r}")
     print(f"[reset_track_signal] Written to: {signal_path}")
     if adopt_session:
         print(f"[reset_track_signal] Adopted from prior session: {adopt_session!r}")

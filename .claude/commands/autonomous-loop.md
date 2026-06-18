@@ -87,9 +87,11 @@ python tools/supervisor/check_continuation.py --repo-root . --track product
   Read the active plan file. Execute the next open taskcard. When all taskcards are
   CLOSED, run `write_plan_lock.py --complete`. Only then resume the sprint loop.
 
-- verdict=STOP, reason=CHAT_ID_MISMATCH → **HARD STOP.**
-  A different chat's Track M machinery state was detected. Do NOT consume it.
-  Fresh Track M state must be initialized for this chat.
+- verdict=STOP, reason=CHAT_ID_MISMATCH → **HARD STOP (Track M only).**
+  NOTE: This stop can only fire under `--track machinery` (Track M / autonomous_orchestrator.py).
+  This loop uses `--track product`; CHAT_ID_MISMATCH cannot fire here.
+  If running Track M directly: a different chat's machinery state was detected. Do NOT consume it.
+  Re-initialize Track M state for this chat via autonomous_orchestrator.py.
 
 - verdict=STOP, reason=ACTIVE_PLAN_LOCK_CORRUPT → **HARD STOP.**
   Plan lock file is malformed. Inspect and repair manually. Do NOT proceed.
@@ -191,7 +193,7 @@ Read the updated continuation-signal.json and repeat from Step 1.
 | verdict=CONTINUE | Execute sprint normally |
 | verdict=STOP, reason=SESSION_MISMATCH | **HARD STOP** — run reset_track_signal.py first |
 | verdict=STOP, reason=ACTIVE_PLAN_INCOMPLETE | **HARD STOP** — execute plan taskcard |
-| verdict=STOP, reason=CHAT_ID_MISMATCH | **HARD STOP** — re-initialize Track M state |
+| verdict=STOP, reason=CHAT_ID_MISMATCH | **HARD STOP (Track M only)** — cannot fire under --track product; only from autonomous_orchestrator.py |
 | verdict=STOP, reason=ACTIVE_PLAN_LOCK_CORRUPT | **HARD STOP** — repair lock manually |
 | verdict=STOP, reason=EXTERNAL_GATE/GIT_PUSH/GATE_11 | Stop, report to user |
 | verdict=STOP, reason=MAX_ITERATIONS | Override: reset iteration to 0, continue |

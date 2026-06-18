@@ -97,8 +97,10 @@ def check(repo_root: Path, *, session_id: str | None = None,
     max_iterations = signal.get("max_iterations", 5)
 
     # --- Check 0b: Track M per-chat isolation (TC-P1-007 / REQ-CCI-M-003) ---
-    # When running as --track machinery, validate chat_id match.
-    # A different chat cannot consume a prior chat's Track M continuation state.
+    # IMPORTANT: CHAT_ID_MISMATCH only fires under --track machinery.
+    # The /autonomous-loop command uses --track product; this check is unreachable from it.
+    # CHAT_ID_MISMATCH is enforced by autonomous_orchestrator.py (Track M) only.
+    # TC-CCI-H-03 (Option A): documented as Track M only — not wired to product loop.
     if track == "machinery":
         signal_chat_id = signal.get("chat_id")
         if signal_chat_id:

@@ -542,3 +542,91 @@ class TestG10_TrackMSignalUnaffectedByTrackPRun:
 
         result = check(mock_repo, session_id="productsess1", track="product")
         assert result["verdict"] == "CONTINUE", f"Product track should CONTINUE, got: {result}"
+
+
+class TestH02_SessionMismatchCLIExitCode:
+    """TC-CCI-H-02: Subprocess integration test — SESSION_MISMATCH causes CLI exit code 1.
+
+    Unlike unit tests that mock signal files, this test invokes check_continuation.py
+    as a real subprocess to verify the CLI exit code behavior that autonomous-loop.md
+    depends on for hard-stop enforcement.
+    """
+
+    def test_session_mismatch_exits_nonzero(self, tmp_path):
+        """When signal session_id != caller session_id, CLI exits 1 with SESSION_MISMATCH."""
+        import os
+        import subprocess
+
+        # Build a minimal mock repo structure
+        product_dir = tmp_path / ".local" / "supervisor" / "product"
+        product_dir.mkdir(parents=True)
+        reports_dir = tmp_path / "reports" / "supervisor"
+        reports_dir.mkdir(parents=True)
+
+        # Write signal with session_id "aabbccddeeff" (distinct from caller)
+        (product_dir / "continuation-signal.json").write_text(json.dumps({
+            "session_id": "aabbccddeeff",
+            "autonomous_continue": True,
+            "iteration": 0,
+            "max_iterations": 5,
+            "continuation_state": "YES",
+            "hard_stops_detected": [],
+            "rework_items": [],
+        }), encoding="utf-8")
+        (reports_dir / "approval-gates.md").write_text("AUTONOMOUS_CONTINUE: YES\n")
+
+        env = {**os.environ, "CLAUDE_SESSION_ID": "ffffffffffffffff"}
+        script = str(_REPO_ROOT / "tools" / "supervisor" / "check_continuation.py")
+        result = subprocess.run(
+            [sys.executable, script, "--repo-root", str(tmp_path), "--track", "product"],
+            capture_output=True,
+            text=True,
+            env=env,
+            timeout=30,
+        )
+
+        assert result.returncode == 1, (
+            f"Expected exit 1 on SESSION_MISMATCH, got {result.returncode}.\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+        combined = result.stdout + result.stderr
+        assert "SESSION_MISMATCH" in combined, (
+            f"Expected SESSION_MISMATCH in output, got:\nstdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+
+    def test_matching_session_exits_zero(self, tmp_path):
+        """When signal session_id matches caller, CLI exits 0 with CONTINUE."""
+        import os
+        import subprocess
+
+        product_dir = tmp_path / ".local" / "supervisor" / "product"
+        product_dir.mkdir(parents=True)
+        reports_dir = tmp_path / "reports" / "supervisor"
+        reports_dir.mkdir(parents=True)
+
+        (product_dir / "continuation-signal.json").write_text(json.dumps({
+            "session_id": "ffffffffffffffff",
+            "autonomous_continue": True,
+            "iteration": 0,
+            "max_iterations": 5,
+            "continuation_state": "YES",
+            "hard_stops_detected": [],
+            "rework_items": [],
+        }), encoding="utf-8")
+        (product_dir / "next-work-items.json").write_text(json.dumps([]))
+        (reports_dir / "approval-gates.md").write_text("AUTONOMOUS_CONTINUE: YES\n")
+
+        env = {**os.environ, "CLAUDE_SESSION_ID": "ffffffffffffffff"}
+        script = str(_REPO_ROOT / "tools" / "supervisor" / "check_continuation.py")
+        result = subprocess.run(
+            [sys.executable, script, "--repo-root", str(tmp_path), "--track", "product"],
+            capture_output=True,
+            text=True,
+            env=env,
+            timeout=30,
+        )
+
+        assert result.returncode == 0, (
+            f"Expected exit 0 on matching session, got {result.returncode}.\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
