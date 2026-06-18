@@ -184,6 +184,77 @@ def reset_sal_facts_cache() -> None:
     _sal_facts_cache = None
 
 
+# Keywords that indicate a SAL fact is relevant to an operation kind.
+# Maps operation_kind substrings → matching SAL fact content keywords.
+_OP_KEYWORDS: dict[str, list[str]] = {
+    "load":       ["load", "parse", "read", "import", "open", "document", "file"],
+    "write":      ["write", "serialize", "export", "output", "save", "generate"],
+    "roundtrip":  ["roundtrip", "round-trip", "preserve", "identity", "lossless"],
+    "probe":      ["probe", "detect", "identify", "header", "magic", "signature"],
+    "sheet":      ["sheet", "table", "spreadsheet", "calc", "calc:table"],
+    "cell":       ["cell", "table-cell", "table:table-cell", "value", "data-type"],
+    "row":        ["row", "table-row", "table:table-row", "rows"],
+    "column":     ["column", "col", "table-column", "table:table-column"],
+    "paragraph":  ["paragraph", "text:p", "para"],
+    "text":       ["text", "string", "content", "character"],
+    "style":      ["style", "format", "formatting", "font", "colour", "color"],
+    "formula":    ["formula", "expression", "calc", "function", "computation"],
+    "metadata":   ["metadata", "meta", "document-meta", "office:meta", "title", "author"],
+    "image":      ["image", "draw:image", "graphic", "picture", "bitmap", "pixel"],
+    "drawing":    ["draw", "shape", "frame", "object", "svg"],
+    "analytics":  ["count", "sum", "average", "mean", "max", "min", "total", "distinct"],
+}
+
+
+def _match_sal_facts_per_op(
+    sal_fact_objects: list[dict],
+    operation_kind: str,
+    max_results: int = 20,
+) -> list[str]:
+    """Return SAL fact qnames relevant to the given operation_kind.
+
+    Matches facts by checking whether operation-related keywords appear in the
+    fact's qname, description, or section fields. Returns up to max_results qnames.
+
+    Args:
+        sal_fact_objects: List of fact dicts with keys 'qname', 'description', 'section'.
+        operation_kind: Operation name (e.g., 'load', 'fods_sheet_count').
+        max_results: Maximum number of qnames to return (default 20).
+
+    Returns:
+        List of matching qname strings, capped at max_results.
+    """
+    if not sal_fact_objects or not operation_kind:
+        return []
+
+    op_lower = operation_kind.lower()
+
+    # Collect keywords: direct op name parts + mapped keyword lists
+    op_parts = [p for p in op_lower.replace("-", "_").split("_") if len(p) > 2]
+    keywords: list[str] = list(op_parts)
+    for segment, kw_list in _OP_KEYWORDS.items():
+        if segment in op_lower:
+            keywords.extend(kw_list)
+    keywords = list(dict.fromkeys(kw for kw in keywords if kw))  # deduplicate, preserve order
+
+    if not keywords:
+        return []
+
+    matched: list[str] = []
+    for fact in sal_fact_objects:
+        qname = fact.get("qname", "")
+        desc = fact.get("description", "").lower()
+        section = fact.get("section", "").lower()
+        qname_lower = qname.lower()
+        haystack = f"{qname_lower} {desc} {section}"
+        if any(kw in haystack for kw in keywords):
+            matched.append(qname)
+        if len(matched) >= max_results:
+            break
+
+    return matched
+
+
 _VERIFIED_FACT_STATUSES = frozenset(["verified", "verified_with_note"])
 _NON_AUTHORITATIVE_STATUSES = frozenset(["not_found_in_normalized_text", "needs_review", "needs_recheck"])
 
@@ -415,6 +486,7 @@ def _build_foss_records(
     main_source_file: str | None = None,
     spec_facts: list[str] | None = None,
     verified_spec_facts: list[str] | None = None,
+    sal_fact_objects: list[dict] | None = None,
 ) -> list[dict]:
     """Build FOSS/reduced capability records for one format."""
     records: list[dict] = []
@@ -437,6 +509,13 @@ def _build_foss_records(
             op_key, actually_implemented, test_files, example_count, effective_authority
         )
 
+        # Per-operation spec_refs: use SAL fact matching when sal_fact_objects available
+        if sal_fact_objects:
+            per_op_refs = _match_sal_facts_per_op(sal_fact_objects, op_key)
+            op_spec_refs = per_op_refs if per_op_refs else (spec_facts[:5] if spec_facts else [])
+        else:
+            op_spec_refs = spec_facts or []
+
         record: dict[str, Any] = {
             "capability_id": f"{format_id}-FOSS-{op_key.upper()}-001",
             "format": format_id,
@@ -454,7 +533,7 @@ def _build_foss_records(
             "blocks_readiness": op_key in ("load", "write", "roundtrip"),
             "current_state": state,
             "authority_state": effective_authority,
-            "spec_refs": spec_facts or [],
+            "spec_refs": op_spec_refs,
             "spec_fact_refs": verified_spec_facts or [],
             "requirement_refs": [],
             "source_refs": [f"src/python/{format_id.lower()}/"] if (actually_implemented and src_dir_exists) else [],
@@ -746,6 +825,7 @@ def _build_gap_ledger(all_records: list[dict]) -> list[dict]:
             "missing_implementation"
         )
 
+        _gap_spec_facts = r.get("spec_fact_refs", []) or []
         gaps.append({
             "gap_id": gap_id,
             "format": r["format"],
@@ -767,6 +847,7 @@ def _build_gap_ledger(all_records: list[dict]) -> list[dict]:
             "blockers": r.get("blockers", []),
             "related_capability_id": r.get("capability_id", ""),
             "notes": r.get("notes", ""),
+            "spec_facts": _gap_spec_facts,
         })
 
     return sorted(gaps, key=lambda g: (g["priority"], g["format"]))
@@ -979,6 +1060,7 @@ def generate(
             main_source_file=main_src_file,
             spec_facts=facts,
             verified_spec_facts=verified_facts,
+            sal_fact_objects=sal_format_facts if sal_format_facts else None,
         )
         foss_records.extend(recs)
 
@@ -1150,6 +1232,10 @@ def _discover_missing_foss_formats(poc_data: dict, sprint_now: str) -> list[dict
         verified_facts = _load_spec_facts(module_dir.name.lower(), verified_only=True)
         effective_authority = "spec_fact" if facts else "gate_evidence"
 
+        # Load SAL facts for per-operation spec_refs matching
+        sal_all = _load_sal_facts()
+        sal_objs = sal_all.get(module_dir.name.upper(), []) or None
+
         recs = _build_foss_records(
             module_dir.name.upper(),
             python_status,
@@ -1161,6 +1247,7 @@ def _discover_missing_foss_formats(poc_data: dict, sprint_now: str) -> list[dict
             main_source_file=main_src,
             spec_facts=facts,
             verified_spec_facts=verified_facts,
+            sal_fact_objects=sal_objs,
         )
         for r in recs:
             r["notes"] = "Discovered via source scan — NOT in poc-targets.yaml. Add to foss_reduced_products."
