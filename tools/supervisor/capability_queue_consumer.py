@@ -90,7 +90,10 @@ def load_foss_gaps(max_gaps: int = 5) -> list[dict]:
         ptype = gap.get("product_type", "").lower()
         if ptype not in _ELIGIBLE_PRODUCT_TYPES:
             continue
-        # Skip already-closed gaps
+        # Skip gaps explicitly marked as closed
+        if gap.get("status", "").lower() == "closed":
+            continue
+        # Skip already-closed gaps by gap_type
         if gap.get("gap_type", "").lower() in _SKIP_GAP_TYPES:
             continue
         # Must have a format and function hint

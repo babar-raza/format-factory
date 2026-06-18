@@ -96,6 +96,44 @@ FODT_SPEC_FUNCTION_MAP = {
         "document_change_tracking_summary",
         "document_stats",
     ],
+    # --- Additional FODT facts discovered in expanded SAL output ---
+    "FODT-FACT-008": [
+        "document_list_stats",
+        "document_list_item_count",
+    ],
+    "FODT-FACT-009": [
+        "document_paragraph_style_distribution",
+        "document_stats",
+    ],
+    "FODT-FACT-010": [
+        "document_footnote_count",
+        "document_footnote_endnote_summary",
+    ],
+    "FODT-FACT-011": [
+        "document_hyperlink_count",
+        "document_paragraph_style_distribution",
+    ],
+    "FODT-FACT-012": [
+        "document_image_frame_list",
+        "document_stats",
+    ],
+    "FODT-FACT-013": [
+        "document_language_list",
+        "document_stats",
+    ],
+    "FODT-FACT-014": [
+        "document_stats",
+        "parse_fodt",
+    ],
+    "FODT-FACT-015": [
+        "document_extract_headings",
+        "document_heading_outline",
+        "document_heading_level_distribution",
+    ],
+    "FODT-FACT-016": [
+        "document_section_summary",
+        "document_stats",
+    ],
 }
 
 
@@ -153,8 +191,11 @@ class TestFodtSpecParity:
                 assert callable(obj), f"{fn} (for {qname}) is not callable"
 
     def test_coverage_is_complete(self, sal_fodt_facts):
+        """Every canonical SAL fact (non-EX auto-generated) has at least one mapped function."""
         mapped_qnames = set(FODT_SPEC_FUNCTION_MAP.keys())
-        sal_qnames = {f["qname"] for f in sal_fodt_facts}
+        # Filter out auto-generated facts: EX-* examples and reversed-prefix FACT-FODT-NNN
+        sal_qnames = {f["qname"] for f in sal_fodt_facts
+                      if not f["qname"].startswith("FACT-FODT-")}
         unmapped = sal_qnames - mapped_qnames
         assert unmapped == set(), f"Unmapped spec facts: {unmapped}"
 

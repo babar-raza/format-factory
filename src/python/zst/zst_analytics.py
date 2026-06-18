@@ -991,7 +991,6 @@ def zst_decompressed_size_times_thirty(file_path: "str | Path") -> int:
     return zst_decompressed_size(file_path) * 30
 
 
-def _dummy_sal_test(): pass
 
 
 def zst_file_size_bytes_times_thirty_one(file_path: "str | Path") -> int:
@@ -1024,7 +1023,6 @@ def zst_decompressed_size_times_thirty_three(file_path: "str | Path") -> int:
     return zst_decompressed_size(file_path) * 33
 
 
-def _dummy_sal_test(): pass
 
 
 def zst_file_size_bytes_times_thirty_four(file_path: "str | Path") -> int:
@@ -1750,25 +1748,18 @@ def zst_max_byte_value_times_100_plus_compressed_size_mod_17_times_250_plus_file
     return zst_max_byte_value(file_path) * 100 + (zst_compressed_size(file_path) % 17) * 250 + (zst_file_size_bytes(file_path) % 31) * 300
 
 
-def _dummy_sal_test(): pass
 
 
-def _dummy_sal_test(): pass
 
 
-def _dummy_sal_test(): pass
 
 
-def _dummy_sal_test(): pass
 
 
-def _dummy_sal_test(): pass
 
 
-def _dummy_sal_test(): pass
 
 
-def _dummy_sal_test(): pass
 
 
 def zst_compressed_mod_31_times_200_plus_decompressed_times_11_plus_file_size_times_15(file_path):
@@ -1863,7 +1854,6 @@ def zst_compressed_size_mod_53_times_100_plus_decompressed_size_mod_200_plus_min
     return (zst_compressed_size(file_path) % 53) * 100 + (zst_decompressed_size(file_path) % 200) + zst_min_byte_value(file_path) * 200
 
 
-def _dummy_sal_test(): pass
 
 
 def zst_compressed_mod_43_times_250_plus_decompressed_times_15_plus_file_size_times_22(file_path):
@@ -2300,7 +2290,6 @@ def zst_file_size_times_29_plus_decompressed_size_mod_400_times_9_plus_max_byte_
     return zst_file_size_bytes(file_path) * 29 + (zst_decompressed_size(file_path) % 400) * 9 + zst_max_byte_value(file_path) * 100
 
 
-def _dummy_sal_test(): pass
 
 
 def zst_compressed_mod_71_times_600_plus_decompressed_times_27_plus_file_size_times_34(file_path: "str | Path") -> int:
@@ -2507,7 +2496,6 @@ def zst_compressed_times_19_plus_decompressed_mod_200_times_140_plus_file_size_t
     return cs * 19 + (ds % 200) * 140 + fs * 40
 
 
-def _dummy_sal_test(): pass
 
 
 def zst_compressed_mod_109_times_950_plus_decompressed_times_41_plus_file_size_times_48(file_path: "str | Path") -> int:
@@ -3632,7 +3620,6 @@ def zst_compressed_times_81_plus_decompressed_mod_560_times_450_plus_file_size_t
     return cs * 81 + (ds % 560) * 450 + fs * 112
 
 
-def _dummy_sal_test(): pass
 
 
 def zst_compressed_mod_247_times_2750_plus_decompressed_times_113_plus_file_size_times_120(file_path: "str | Path") -> int:
@@ -4181,7 +4168,6 @@ def zst_compressed_times_121_plus_decompressed_mod_760_times_650_plus_file_size_
     return cs * 121 + (ds % 760) * 650 + fs * 152
 
 
-def _dummy_sal_test(): pass
 
 
 def zst_compressed_mod_337_times_3750_plus_decompressed_times_153_plus_file_size_times_160(file_path: "str | Path") -> int:
@@ -4899,22 +4885,6 @@ def zst_compressed_mod_1069_times_7800_plus_decompressed_times_261_plus_file_siz
 
 
 def zst_compressed_mod_1087_times_7900_plus_decompressed_times_263_plus_file_size_times_266(file_path: "str | Path") -> int:
-    """Return (compressed_size % 1087) * 7900 + decompressed_size * 263 + file_size * 266."""
-    cs = zst_compressed_size(file_path)
-    ds = zst_decompressed_size(file_path)
-    fs = zst_file_size_bytes(file_path)
-    return (cs % 1087) * 7900 + ds * 263 + fs * 266
-
-
-def zst_compressed_mod_1069_times_7800_plus_decompressed_times_261_plus_file_size_times_264(file_path):
-    """Return (compressed_size % 1069) * 7800 + decompressed_size * 261 + file_size * 264."""
-    cs = zst_compressed_size(file_path)
-    ds = zst_decompressed_size(file_path)
-    fs = zst_file_size_bytes(file_path)
-    return (cs % 1069) * 7800 + ds * 261 + fs * 264
-
-
-def zst_compressed_mod_1087_times_7900_plus_decompressed_times_263_plus_file_size_times_266(file_path):
     """Return (compressed_size % 1087) * 7900 + decompressed_size * 263 + file_size * 266."""
     cs = zst_compressed_size(file_path)
     ds = zst_decompressed_size(file_path)

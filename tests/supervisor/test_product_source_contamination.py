@@ -23,8 +23,13 @@ _FORBIDDEN_FUNCTION_PATTERNS = [
 
 
 def _collect_python_product_files() -> list[Path]:
-    """Return all .py files under src/python/."""
-    return list(_SRC_ROOT.rglob("*.py"))
+    """Return all .py files under src/python/, excluding build artifacts."""
+    _EXCLUDE_DIRS = {"build", "__pycache__", "dist", ".eggs", "*.egg-info"}
+    result = []
+    for path in _SRC_ROOT.rglob("*.py"):
+        if not any(part in _EXCLUDE_DIRS for part in path.parts):
+            result.append(path)
+    return result
 
 
 def test_no_dummy_sal_test_in_product_source():

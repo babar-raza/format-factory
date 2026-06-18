@@ -1549,4 +1549,3 @@ except ImportError:
     pass  # Standalone module import (no package context) — analytics unavailable
 
 
-def _dummy_sal_test(): pass

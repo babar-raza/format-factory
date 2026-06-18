@@ -36,10 +36,11 @@ from atomic_io import atomic_write_json
 _GRADE_CACHE_PATH = Path(__file__).resolve().parent.parent.parent / ".local" / "supervisor" / "grade-cache.json"
 
 
-def _evidence_hash(item: dict) -> str:
+def _evidence_hash(item: dict, item_inspection: "dict | None" = None) -> str:
     """Stable hash of evidence paths + status + criteria. Changes when evidence changes."""
     key = json.dumps({
         "evidence_paths": sorted(item.get("evidence_paths", [])),
+        "evidence_paths_found": sorted((item_inspection or {}).get("evidence_paths_found", [])),
         "status": item.get("status", ""),
         "acceptance_criteria": item.get("acceptance_criteria", ""),
     }, sort_keys=True)
@@ -200,7 +201,7 @@ def semantic_verify_item(
 
     # Cache check: same evidence content → same grade (REQ-GRC-001, REQ-GRC-003)
     item_id = declaration_item.get("item_id", declaration_item.get("title", ""))
-    ev_hash = _evidence_hash(declaration_item)
+    ev_hash = _evidence_hash(declaration_item, item_inspection)
     cached = _get_cached_grade(item_id, ev_hash, cache_path=cache_path)
     if cached is not None:
         return {**cached, "_from_cache": True}
@@ -291,11 +292,12 @@ def semantic_verify_item(
         except Exception:
             pass
 
-    # LLM unavailable or returned malformed JSON — preserve existing grade (REQ-GRC-002)
-    # Do NOT downgrade on timeout: timeout adds noise without signal
-    return {"adequate": True, "confidence": 0.0, "stub_detected": False,
-            "deficiencies": [], "llm_used": False, "source": "timeout_preserve",
-            "note": "LLM unavailable or malformed response; grade preserved"}
+    # LLM unavailable or returned malformed JSON — flag as inadequate (SUP-RECT-004)
+    # When LLM cannot verify, mark evidence as needing manual review (adequate=False)
+    return {"adequate": False, "confidence": 0.0, "stub_detected": False,
+            "deficiencies": ["llm_verification_unavailable"], "llm_used": False,
+            "source": "fallback_llm_unavailable",
+            "note": "LLM unavailable or malformed response; evidence needs manual review"}
 
 
 EXTERNAL_GATE_KEYWORDS = {
@@ -306,7 +308,56 @@ EXTERNAL_GATE_KEYWORDS = {
 }
 
 
-def grade_item(item_inspection: dict, test_results: dict) -> dict:
+def _check_product_source_content(
+    found_paths: list[str],
+    item_id: str,
+    repo_root: "Path | None" = None,
+) -> dict:
+    """Deterministic content check for PRODUCT_SOURCE items (no LLM).
+
+    Checks test files for def test_ + assert.
+    Pure source-only items (no test file) are not penalized.
+
+    Returns: {source_exists, test_content_valid, details}
+    """
+    _repo = repo_root or REPO_ROOT
+    source_paths = [p for p in found_paths
+                    if "test_" not in Path(p).name and p.endswith(".py")]
+    test_paths = [p for p in found_paths
+                  if "test_" in Path(p).name and p.endswith(".py")]
+
+    source_exists = any((_repo / sp).exists() for sp in source_paths)
+
+    test_content_valid = False
+    details: list[str] = []
+    for tp in test_paths:
+        full = _repo / tp
+        if not full.exists():
+            details.append(f"test file missing: {tp}")
+            continue
+        try:
+            content = full.read_text(encoding="utf-8", errors="replace")
+            has_test_fn = "def test_" in content
+            has_assert = "assert" in content
+            if has_test_fn and has_assert:
+                test_content_valid = True
+                details.append(f"test content valid: {tp}")
+            elif not has_test_fn:
+                details.append(f"no def test_ in: {tp}")
+            else:
+                details.append(f"no assert in: {tp}")
+        except Exception as _e:
+            details.append(f"read error {tp}: {_e}")
+
+    if not test_paths:
+        test_content_valid = True  # Pure source items not penalized
+
+    return {"source_exists": source_exists, "test_content_valid": test_content_valid,
+            "details": details}
+
+
+def grade_item(item_inspection: dict, test_results: dict,
+               item_type: str = "", repo_root: "Path | None" = None) -> dict:
     """Grade a single work item from its inspection."""
     item_id = item_inspection["item_id"]
     declared_status = item_inspection["declared_status"]
@@ -390,6 +441,15 @@ def grade_item(item_inspection: dict, test_results: dict) -> dict:
         grade["tests_supporting"] = test_evidence_paths
         grade["tests_evidence_verified"] = test_evidence_paths
 
+    # PRODUCT_SOURCE deterministic content check (RC-03 fix, no LLM)
+    if item_type in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+        _ps_check = _check_product_source_content(found_paths, item_id, repo_root)
+        grade["product_source_check"] = _ps_check
+        if not _ps_check["test_content_valid"]:
+            grade["acceptance_criteria_failed"] = grade.get("acceptance_criteria_failed", []) + [
+                f"PRODUCT_SOURCE test content check failed: {'; '.join(_ps_check['details'])}"
+            ]
+
     # Declared complete with evidence and no missing paths
     if declared_status == "completed" and has_evidence and not missing_paths:
         if test_failed and has_tests:
@@ -400,7 +460,7 @@ def grade_item(item_inspection: dict, test_results: dict) -> dict:
         else:
             # D92-03 fix: Deep verification — check evidence content, not just existence
             criteria_met = ["Evidence found", "No missing paths"]
-            criteria_failed = []
+            criteria_failed = list(grade.get("acceptance_criteria_failed", []))
 
             # Check test files contain actual test methods
             tests_with_content = item_inspection.get("tests_with_content", [])
@@ -466,16 +526,53 @@ def grade_all(inspection: dict, declaration: dict,
     # Enrich with declaration data
     decl_items = {item["item_id"]: item for item in declaration.get("planned_work_items", [])}
 
+    _repo_root = Path(declaration.get("_repo_root", REPO_ROOT))
     grades = []
     for ii in item_inspections:
-        g = grade_item(ii, test_results)
-        # Enrich title from declaration
-        decl_item = decl_items.get(g["item_id"], {})
+        decl_item = decl_items.get(ii["item_id"], {})
+        _itype = decl_item.get("item_type", "")
+        g = grade_item(ii, test_results, item_type=_itype, repo_root=_repo_root)
         g["item_title"] = decl_item.get("title", g["item_id"])
+
+        # TC-GUARD-002: purpose_check — non-blocking purpose dimension on every grade.
+        # WARN mode until 2026-07-18, then escalates to block per TC-GUARD-001 ramp.
+        _pc_type = decl_item.get("item_type", "")
+        if _pc_type in ("PRODUCT_SOURCE", "PRODUCT_TEST"):
+            _pc_gap = (
+                decl_item.get("gap_ledger_ref")
+                or decl_item.get("capability_ref")
+                or decl_item.get("spec_fact_refs")
+            )
+            _pc_has_gap = bool(_pc_gap)
+            _pc_spec_count = len(decl_item.get("spec_fact_refs", []) or [])
+            g["purpose_check"] = {
+                "item_type": _pc_type,
+                "has_gap_ref": _pc_has_gap,
+                "gap_ref": _pc_gap if _pc_has_gap else None,
+                "spec_fact_count": _pc_spec_count,
+                "verdict": "PURPOSEFUL" if _pc_has_gap else "UNPURPOSEFUL",
+                "note": (
+                    ""
+                    if _pc_has_gap
+                    else (
+                        "WARN: PRODUCT_SOURCE item has no gap_ledger_ref or capability_ref. "
+                        "Escalates to block after 2026-07-18 (TC-GUARD-001 ramp). "
+                        "See plan keen-dancing-hopper."
+                    )
+                ),
+            }
+        else:
+            g["purpose_check"] = {
+                "item_type": _pc_type,
+                "has_gap_ref": None,
+                "verdict": "NOT_APPLICABLE",
+                "note": "purpose_check only applies to PRODUCT_SOURCE/PRODUCT_TEST items",
+            }
+
         grades.append(g)
 
     # Step 3a: LLM semantic verification — can DOWNGRADE grades, never UPGRADE
-    repo_root = Path(declaration.get("_repo_root", REPO_ROOT))
+    repo_root = _repo_root
     _downgrade_map = {
         "ACCEPTED_VERIFIED": "ACCEPTED_WITH_LIMITATIONS",
         "ACCEPTED_WITH_LIMITATIONS": "REWORK_REQUIRED",

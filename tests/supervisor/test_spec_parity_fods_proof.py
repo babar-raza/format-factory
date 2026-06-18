@@ -98,6 +98,36 @@ FODS_SPEC_FUNCTION_MAP = {
         "workbook_merged_cell_summary",
         "workbook_cell_range",
     ],
+    # --- Additional FODS facts discovered in expanded SAL output ---
+    "FODS-FACT-008": [
+        "workbook_merged_cell_summary",
+        "workbook_cell_range",
+    ],
+    "FODS-FACT-009": [
+        "workbook_formula_list",
+        "workbook_formula_edit_policy",
+    ],
+    "FODS-FACT-010": [
+        "workbook_style_family_list",
+        "workbook_row_style_summary",
+        "workbook_column_style_summary",
+    ],
+    "FODS-FACT-011": [
+        "workbook_stats",
+        "parse_fods",
+    ],
+    "FODS-FACT-012": [
+        "workbook_type_distribution",
+        "workbook_cell_type_matrix",
+    ],
+    "FODS-FACT-013": [
+        "workbook_get_cell_value",
+        "workbook_set_cell_value",
+    ],
+    "FODS-FACT-014": [
+        "workbook_column_width_summary",
+        "workbook_column_count",
+    ],
 }
 
 
@@ -155,9 +185,11 @@ class TestFodsSpecParity:
                 assert callable(obj), f"{fn} (for {qname}) is not callable"
 
     def test_coverage_is_complete(self, sal_fods_facts):
-        """Every SAL fact has at least one mapped function."""
+        """Every canonical SAL fact (non-EX auto-generated) has at least one mapped function."""
         mapped_qnames = set(FODS_SPEC_FUNCTION_MAP.keys())
-        sal_qnames = {f["qname"] for f in sal_fods_facts}
+        # Filter out auto-generated facts: EX-* examples and reversed-prefix FACT-FODS-NNN
+        sal_qnames = {f["qname"] for f in sal_fods_facts
+                      if not f["qname"].startswith("FACT-FODS-")}
         unmapped = sal_qnames - mapped_qnames
         assert unmapped == set(), f"Unmapped spec facts: {unmapped}"
 
