@@ -1546,6 +1546,4 @@ def zst_size_exceeds_1k(path: "str | Path") -> bool:
 try:
     from .zst_analytics import *  # noqa: F401, F403
 except ImportError:
-    pass  # Standalone module import (no package context) — analytics unavailable
-
-
+    pass  # Standalone module import (no package context) - analytics unavailable
