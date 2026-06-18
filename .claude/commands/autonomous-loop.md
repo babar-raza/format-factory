@@ -1,9 +1,10 @@
 ---
-version: "1.0"
-last-updated: "2026-06-16"
+version: "2.0"
+last-updated: "2026-06-18"
 phase-available: "all"
 gate-required: null
 created-by: autonomous-loop activation sprint
+updated-by: CCI-production-hardening
 ---
 
 # /autonomous-loop
@@ -22,22 +23,88 @@ NEVER stop between iterations unless a TRUE_EXTERNAL_GATE is reached:
 - Gate 11 execution approval required (Babar Raza)
 - PyPI/NuGet publication credentials
 
-All other STOP signals from check_continuation.py are overridden: read
-next-sprint.md directly and continue. Max iterations resets to 0, never blocks.
+Advisory STOP signals (MAX_ITERATIONS, APPROVAL_GATE, NO_UNSAFE_SOURCE_STATE, etc.)
+are overridden: read next-sprint.md directly and continue. Max iterations resets to
+0, never blocks.
+
+**EXCEPTION:** SESSION_MISMATCH, CHAT_ID_MISMATCH, ACTIVE_PLAN_INCOMPLETE, and
+ACTIVE_PLAN_LOCK_CORRUPT are NON-OVERRIDABLE hard stops. See Step 0 and Step 1 below.
 
 ---
 
 ## Loop Steps (repeat until hard stop)
 
+### Step 0 — Plan Lock Pre-Check (runs BEFORE check_continuation.py)
+
+Check whether a per-chat plan is active and incomplete:
+
+```python
+python -c "
+import json, sys
+from pathlib import Path
+
+lock_path = Path('.local/supervisor/active-plan-lock.json')
+locks_dir = Path('.local/supervisor/plan-locks')
+found = None
+if lock_path.exists():
+    d = json.loads(lock_path.read_text(encoding='utf-8'))
+    if d.get('status') != 'COMPLETE':
+        found = d
+if not found and locks_dir.is_dir():
+    for f in sorted(locks_dir.glob('*.json')):
+        d = json.loads(f.read_text(encoding='utf-8'))
+        if d.get('status') != 'COMPLETE':
+            found = d
+            break
+print(json.dumps(found))
+sys.exit(1 if found else 0)
+"
+```
+
+- Exit 0 (found=null): No active plan. Proceed to Step 1.
+- Exit 1 (found=plan data): **HARD STOP. An active plan is incomplete.**
+  Read the plan file at `found["plan_path"]`. Find the next OPEN taskcard.
+  Execute it. Do NOT proceed to Step 1. Do NOT read next-sprint.md.
+  This stop CANNOT be overridden by the Supreme Directive.
+
 ### Step 1 — Check continuation signal
 
 ```
-python tools/supervisor/check_continuation.py --repo-root .
+python tools/supervisor/check_continuation.py --repo-root . --track product
 ```
 
-- verdict=CONTINUE → proceed to Step 2
-- verdict=STOP, reason is TRUE_EXTERNAL_GATE → report to user, stop
-- verdict=STOP, any other reason → override, read reports/supervisor/next-sprint.md directly, proceed to Step 2
+**NON-OVERRIDABLE STOPS (Supreme Directive does NOT apply):**
+
+- verdict=STOP, reason=SESSION_MISMATCH → **HARD STOP.**
+  A different chat's continuation signal was detected. Do NOT consume it.
+  This chat has no authority over another chat's state.
+  To adopt the prior session explicitly:
+  `python tools/supervisor/reset_track_signal.py --track product`
+  Then restart from Step 0. Do NOT read next-sprint.md.
+
+- verdict=STOP, reason=ACTIVE_PLAN_INCOMPLETE → **HARD STOP.**
+  A per-chat plan is loaded and not yet complete. Do NOT switch to product deepening.
+  Read the active plan file. Execute the next open taskcard. When all taskcards are
+  CLOSED, run `write_plan_lock.py --complete`. Only then resume the sprint loop.
+
+- verdict=STOP, reason=CHAT_ID_MISMATCH → **HARD STOP.**
+  A different chat's Track M machinery state was detected. Do NOT consume it.
+  Fresh Track M state must be initialized for this chat.
+
+- verdict=STOP, reason=ACTIVE_PLAN_LOCK_CORRUPT → **HARD STOP.**
+  Plan lock file is malformed. Inspect and repair manually. Do NOT proceed.
+
+- verdict=STOP, reason=EXTERNAL_GATE or GIT_PUSH or GATE_11 → Report to user, stop.
+
+**OVERRIDABLE STOPS (Supreme Directive applies — read next-sprint.md and continue):**
+
+- verdict=CONTINUE → proceed to Step 2 normally
+- verdict=STOP, reason=MAX_ITERATIONS → Reset iteration to 0, continue
+- verdict=STOP, reason=APPROVAL_GATE_NO or APPROVAL_GATE_MISSING → Override, continue
+- verdict=STOP, reason contains NO_ (continuation_state check) → Override, continue
+- verdict=STOP, reason=AUTONOMOUS_CONTINUE_FALSE → Override if no hard_stops_detected, continue
+- verdict=STOP, reason=HARD_STOP → Override ONLY if rework items are addressable this sprint
+- verdict=STOP, any OTHER reason not explicitly listed above → Override, read next-sprint.md, continue
 
 ### Step 2 — Inject declaration skeleton
 
@@ -120,9 +187,16 @@ Read the updated continuation-signal.json and repeat from Step 1.
 
 | Condition | Action |
 |-----------|--------|
+| Step 0: active plan found, status != COMPLETE | **HARD STOP** — execute plan taskcard, not sprint |
 | verdict=CONTINUE | Execute sprint normally |
+| verdict=STOP, reason=SESSION_MISMATCH | **HARD STOP** — run reset_track_signal.py first |
+| verdict=STOP, reason=ACTIVE_PLAN_INCOMPLETE | **HARD STOP** — execute plan taskcard |
+| verdict=STOP, reason=CHAT_ID_MISMATCH | **HARD STOP** — re-initialize Track M state |
+| verdict=STOP, reason=ACTIVE_PLAN_LOCK_CORRUPT | **HARD STOP** — repair lock manually |
 | verdict=STOP, reason=EXTERNAL_GATE/GIT_PUSH/GATE_11 | Stop, report to user |
-| verdict=STOP, any other reason | Override, read next-sprint.md directly |
+| verdict=STOP, reason=MAX_ITERATIONS | Override: reset iteration to 0, continue |
+| verdict=STOP, reason=APPROVAL_GATE_NO/MISSING | Override: read next-sprint.md, continue |
+| verdict=STOP, any other advisory reason | Override: read next-sprint.md, continue |
 | autonomous_cycle exit 0 | Continue immediately |
 | autonomous_cycle exit 3 | Note rework items, continue (address in next sprint) |
 | autonomous_cycle exit 1 or 9 | Log error, continue (Supreme Directive) |

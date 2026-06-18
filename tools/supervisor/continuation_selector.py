@@ -15,18 +15,24 @@ Selection priority:
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
 from continuation_identity import ContinuationIdentity
 
+# UUID4 truncated format: str(uuid.uuid4())[:12] → "xxxxxxxx-xxx" (8 hex + hyphen + 3 hex)
+# This pattern detects signals written when git was unavailable (prior to Phase A).
+# Such signals are anonymous (not foreign) and should be adopted, not rejected.
+_UUID4_TRUNCATED_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{3}$")
+
 
 @dataclass
 class SelectionResult:
     """Result of the continuation selection algorithm."""
 
-    verdict: str  # ACCEPT | REJECT | WARN_LEGACY
+    verdict: str  # ACCEPT | REJECT | WARN_LEGACY | WARN_UUID_FALLBACK
     signal_path: Optional[Path] = None
     reason: Optional[str] = None
     signal_session_id: Optional[str] = None
@@ -88,6 +94,22 @@ def select_continuation(
             signal_path=signal_path,
             reason="Signal has no session_id (legacy artifact). Accepting with warning.",
             signal_session_id=None,
+            caller_session_id=caller_identity.session_id,
+        )
+
+    # Case 3.5: UUID fallback signal — written when git was unavailable
+    # str(uuid.uuid4())[:12] → "e587a603-097" (8 hex + hyphen + 3 hex, 12 chars)
+    # Git-derived IDs are pure hex (no hyphen). UUID-format = anonymous, not foreign.
+    # These are adoptable — we cannot verify they belong to another chat.
+    if _UUID4_TRUNCATED_RE.match(signal_session_id):
+        return SelectionResult(
+            verdict="WARN_UUID_FALLBACK",
+            signal_path=signal_path,
+            reason=(
+                "Signal session_id is UUID-format (git was unavailable when written). "
+                "Treating as anonymous — not a foreign session. Adopting."
+            ),
+            signal_session_id=signal_session_id,
             caller_session_id=caller_identity.session_id,
         )
 

@@ -292,6 +292,35 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         print(f"  [INFO] tests_created not declared. Add tests_created to distinguish "
               f"new tests from full-suite run ({_tests_run} tests_run).")
 
+    # Step 1b: System healing gate check (GATE_ADVISORY — warns but does not block)
+    _healing_gate_failed = False
+    _has_product_source_items = any(
+        item.get("item_type", "") in _PRODUCT_SOURCE_TYPES
+        for item in decl.get("planned_work_items", [])
+    )
+    if _has_product_source_items:
+        try:
+            _sys_heal_dir = Path(__file__).parent
+            import sys as _sys_mod
+            if str(_sys_heal_dir) not in _sys_mod.path:
+                _sys_mod.path.insert(0, str(_sys_heal_dir))
+            from check_system_healing_gate import check_healing_gate as _chg
+            _gate_result = _chg(repo_root=repo_root, advisory=True)
+            _gate_verdict = _gate_result.get("verdict", "UNKNOWN")
+            _gate_exit = _gate_result.get("exit_code", -1)
+            _failed_lanes = _gate_result.get("failed_lanes", [])
+            if _gate_exit != 0:
+                print(f"  [SYSTEM_HEALING_GATE] ADVISORY: verdict={_gate_verdict}, "
+                      f"failed_lanes={_failed_lanes}. "
+                      f"Product source work proceeding (advisory mode). "
+                      f"Resolve healing gate before switching to GATE_STRICT mode.")
+                _healing_gate_failed = True
+            else:
+                print(f"  [SYSTEM_HEALING_GATE] PASSED: verdict={_gate_verdict}")
+        except Exception as _ghg_err:
+            print(f"  [SYSTEM_HEALING_GATE] Could not check: {_ghg_err}")
+            _healing_gate_failed = False
+
     # Step 2: Inspect declared evidence
     print("\n=== STEP 2: INSPECT DECLARED EVIDENCE ===")
     inspection = inspect_declaration(decl, repo_root)
@@ -1511,6 +1540,7 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             "hard_stops_detected": hard_stops,
             "continuation_state": continuation_state,
             "session_id": session_id,
+            "owner": "autonomous_cycle",
         }
         if track:
             signal["track"] = track

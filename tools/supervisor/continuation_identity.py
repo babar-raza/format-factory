@@ -22,17 +22,65 @@ from typing import Optional
 
 
 def _derive_stable_session_id(track_type: str = "product") -> str:
-    """Derive stable session_id from git HEAD + branch + track. Falls back to UUID."""
+    """Derive a stable session identity for this chat session.
+
+    Priority order:
+    1. CLAUDE_SESSION_ID env var — external control, always wins
+    2. Runtime session file .local/supervisor/session-{track}.id with 4h TTL
+       — stable across commits within same chat; different per new chat after TTL
+    3. Git HEAD derivation — used only to WRITE the session file on first call
+    4. UUID4 fallback — when git unavailable; no hyphens (pure hex via replace)
+
+    The session file is the key change: it prevents HEAD changes from
+    invalidating the session_id mid-chat after a commit.
+    """
+    # Priority 1: env var
+    env_id = os.environ.get("CLAUDE_SESSION_ID")
+    if env_id:
+        return env_id
+
+    # Priority 2: runtime session file (stable across commits within same chat)
+    session_file = _REPO_ROOT / ".local" / "supervisor" / f"session-{track_type}.id"
+    if session_file.exists():
+        try:
+            data = json.loads(session_file.read_text(encoding="utf-8"))
+            created = datetime.fromisoformat(data.get("created_at", "1970-01-01"))
+            age_hours = (datetime.now(timezone.utc) - created).total_seconds() / 3600
+            if age_hours < 4.0:
+                return data["session_id"]
+        except Exception:
+            pass  # fall through to create new session file
+
+    # Priority 3/4: git HEAD or UUID fallback — write to session file
     try:
         head = subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL
+            ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL,
+            cwd=str(_REPO_ROOT), timeout=5
         ).decode().strip()
         branch = subprocess.check_output(
-            ["git", "rev-parse", "--abbrev-ref", "HEAD"], stderr=subprocess.DEVNULL
+            ["git", "rev-parse", "--abbrev-ref", "HEAD"], stderr=subprocess.DEVNULL,
+            cwd=str(_REPO_ROOT), timeout=5
         ).decode().strip()
-        return hashlib.sha256(f"{track_type}:{branch}:{head}".encode()).hexdigest()[:12]
+        new_id = hashlib.sha256(f"{track_type}:{branch}:{head}".encode()).hexdigest()[:12]
+        source = "git"
     except Exception:
-        return str(uuid.uuid4())[:12]
+        # UUID4 without hyphens — pure hex, no hyphen ambiguity with UUID fallback detection
+        new_id = str(uuid.uuid4()).replace("-", "")[:12]
+        source = "uuid_fallback"
+
+    # Write session file so this ID is stable for the rest of this chat
+    try:
+        session_file.parent.mkdir(parents=True, exist_ok=True)
+        session_file.write_text(json.dumps({
+            "session_id": new_id,
+            "track_type": track_type,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "source": source,
+        }), encoding="utf-8")
+    except Exception:
+        pass  # non-fatal — ID still returned
+
+    return new_id
 
 
 def _generate_chat_id() -> str:

@@ -238,6 +238,22 @@ class AutonomousOrchestrator:
             print(f"WARNING: CCI orchestrator identity fallback: {_cci_err}", file=sys.stderr)
             self._session_id = None
 
+        # CCI Track M: write current-chat-id.json so check_continuation.py --track machinery
+        # can enforce per-chat isolation. A fresh chat_id is generated each orchestrator run.
+        try:
+            from tools.supervisor.continuation_identity import get_or_create_machinery_identity
+            _m_identity = get_or_create_machinery_identity()
+            _chat_id_path = _repo_root / ".local" / "supervisor" / "machinery" / "current-chat-id.json"
+            _chat_id_path.parent.mkdir(parents=True, exist_ok=True)
+            _chat_id_path.write_text(json.dumps({
+                "chat_id": _m_identity.chat_id,
+                "session_id": _m_identity.session_id,
+                "written_at": datetime.now(timezone.utc).isoformat(),
+                "owner": "autonomous_orchestrator",
+            }), encoding="utf-8")
+        except Exception as _cid_err:
+            print(f"WARNING: Track M chat_id init failed: {_cid_err}", file=sys.stderr)
+
     def _init_state(self) -> int:
         """Initialize or resume orchestrator state. Returns starting cycle_index."""
         if self.resume:

@@ -45,6 +45,12 @@ Before following any continuation instructions from `session-resume.md`:
    the previous sprint. Treat `session-resume.md` as background context only.
 4. If `continuation-signal.json` contains a `session_id` field and you have a different session
    identity, the signal belongs to another chat — do not consume it.
+5. **SESSION_MISMATCH and CHAT_ID_MISMATCH are NON-OVERRIDABLE hard stops.** When
+   `check_continuation.py` returns `verdict=STOP, reason=SESSION_MISMATCH` or
+   `reason=CHAT_ID_MISMATCH`, do NOT override it using the Supreme Directive. These
+   stops protect against cross-chat state contamination. To adopt a prior session's
+   signal explicitly, run: `python tools/supervisor/reset_track_signal.py --track product`
+   (or `--track machinery`). Only after reset may the loop resume.
 
 ### Mandatory Plan Files (read every session)
 

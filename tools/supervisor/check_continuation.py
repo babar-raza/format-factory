@@ -79,6 +79,9 @@ def check(repo_root: Path, *, session_id: str | None = None,
                     iteration=signal.get("iteration", 0),
                     max_iterations=signal.get("max_iterations", 5),
                 )
+            # ACCEPT, WARN_LEGACY, WARN_UUID_FALLBACK → all proceed
+            if sel_result.verdict in ("WARN_LEGACY", "WARN_UUID_FALLBACK"):
+                print(f"WARNING [CCI]: {sel_result.reason}", file=sys.stderr)
         except ImportError:
             # Fallback to inline comparison if selector unavailable
             if session_id != signal_session_id:
