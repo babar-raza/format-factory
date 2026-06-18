@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Commercial .NET product. DEC-033 Option B: no .NET FOSS package. -->
+    <!-- Python FOSS track: src/python/zst/ (Apache-2.0) -->
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>FormatFactory.Zst</AssemblyName>
+    <RootNamespace>FormatFactory.Zst</RootNamespace>
+    <Version>0.1.0-r85-poc</Version>
+    <Authors>format-factory</Authors>
+    <Description>FormatFactory.Zst: .NET commercial library for Zstandard compressed files (.zst). Parse, probe, and inspect ZST files. Gate 11 status: commercial_readiness_in_progress.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>FormatFactory.Zst</PackageId>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Gate 11 Note:
+       Gate 11 status: commercial_readiness_in_progress (NOT approved).
+       Python FOSS track at G10 (625 tests). .NET track NOT_STARTED as of R85.
+       DEC-033 resolved Option B (2026-05-12, Babar Raza): .NET Commercial Only.
+  -->
+
+</Project>

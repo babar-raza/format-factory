@@ -744,6 +744,39 @@ public sealed class FodsDocument
     }
 
     /// <summary>
+    /// Return numeric (float) cell values from the given column in the named sheet.
+    /// Reads office:value-type="float" cells and returns their office:value attribute as double.
+    /// Cells with no value, non-numeric type, or out-of-range column index are skipped.
+    /// Spec: FACT-FODS-006 (table:table-cell), FACT-FODS-010 (office:value-type float).
+    /// R100 Wave 5: numeric column extraction for data analysis.
+    /// </summary>
+    public IReadOnlyList<double> GetNumericColumnValues(string sheetName, int col)
+    {
+        if (string.IsNullOrWhiteSpace(sheetName))
+            throw new ArgumentException("Sheet name must not be null or empty.", nameof(sheetName));
+        if (col < 0)
+            throw new ArgumentOutOfRangeException(nameof(col), "Column index must not be negative.");
+
+        var sheet = GetSheetByName(sheetName)
+            ?? throw new InvalidOperationException($"No sheet named '{sheetName}' exists.");
+
+        var result = new List<double>();
+        foreach (var row in sheet.Rows)
+        {
+            var cells = row.Element.Elements(NsTable + "table-cell").ToList();
+            if (col >= cells.Count) continue;
+            var cell = cells[col];
+            var vtype = cell.Attribute(NsOffice + "value-type")?.Value;
+            if (vtype != "float" && vtype != "currency" && vtype != "percentage") continue;
+            var raw = cell.Attribute(NsOffice + "value")?.Value;
+            if (raw is not null && double.TryParse(raw, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out var d))
+                result.Add(d);
+        }
+        return result;
+    }
+
+    /// <summary>
     /// Export a sheet as CSV (comma-separated values).
     /// Each row becomes a line, cells are comma-separated, values containing commas/quotes/newlines
     /// are enclosed in double quotes with internal quotes doubled (RFC 4180).
