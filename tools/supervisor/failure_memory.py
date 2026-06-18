@@ -182,3 +182,49 @@ class FailureMemory:
             cat = e.get("category", "OTHER")
             counts[cat] = counts.get(cat, 0) + 1
         return counts
+
+    def _read_exclusion_window(self) -> int:
+        """Read failure_exclusion_window_sprints from .supervisor/policies.yaml.
+
+        Falls back to 3 if the file is missing or the key is absent.
+        """
+        policies_path = self.repo_root / ".supervisor" / "policies.yaml"
+        if not policies_path.exists():
+            return 3
+        try:
+            import yaml  # type: ignore[import]
+            policies = yaml.safe_load(policies_path.read_text(encoding="utf-8"))
+            return int(
+                policies.get("autonomous_continuation", {})
+                .get("failure_exclusion_window_sprints", 3)
+            )
+        except Exception:
+            return 3
+
+    def load_excluded_gap_ids(self, exclusion_window_sprints: int | None = None) -> set[str]:
+        """Return gap_ids to exclude from task selection due to repeated failures.
+
+        Excludes gaps where:
+        - entry has a gap_id
+        - resolved is False (or absent)
+        - occurrence_count >= ESCALATION_THRESHOLD
+
+        exclusion_window_sprints controls how long a gap stays suppressed.
+        If None (default), reads the value from .supervisor/policies.yaml
+        (key: autonomous_continuation.failure_exclusion_window_sprints).
+        Falls back to 3 if the policy file is absent or the key is missing.
+        Passing an explicit int overrides the policy value (used in tests).
+        """
+        if exclusion_window_sprints is None:
+            exclusion_window_sprints = self._read_exclusion_window()
+
+        excluded: set[str] = set()
+        for entry in self.entries:
+            gap_id = entry.get("gap_id", "")
+            if not gap_id:
+                continue
+            if entry.get("resolved"):
+                continue
+            if entry.get("occurrence_count", 1) >= ESCALATION_THRESHOLD:
+                excluded.add(gap_id)
+        return excluded

@@ -825,7 +825,10 @@ def _build_gap_ledger(all_records: list[dict]) -> list[dict]:
             "missing_implementation"
         )
 
-        _gap_spec_facts = r.get("spec_fact_refs", []) or []
+        # Use verified spec_fact_refs first; fall back to spec_refs (SAL qnames) when absent.
+        # This allows formats with SAL-extracted but unverified facts to still appear
+        # in gap ledger spec_facts (e.g. FODG, ODS, ODT via ODF-FACT-* qnames).
+        _gap_spec_facts = r.get("spec_fact_refs", []) or r.get("spec_refs", []) or []
         gaps.append({
             "gap_id": gap_id,
             "format": r["format"],

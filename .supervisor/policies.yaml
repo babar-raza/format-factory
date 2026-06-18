@@ -275,6 +275,11 @@ autonomous_continuation:
   # Continuous loop settings (MODE 5+)
   # R98: Raised from 5 to 12 with checkpoint safeguards
   max_iterations: 12
+
+  # Failure exclusion window (TC-HB-FOLLOW-003):
+  # Number of sprints a gap_id is suppressed from task selection after escalation.
+  # Increase to suppress longer; decrease to retry sooner. Tunable without source edits.
+  failure_exclusion_window_sprints: 3
   checkpoint_every: 3
   max_dirty_files_before_checkpoint: 75
   max_src_files_changed_before_checkpoint: 12

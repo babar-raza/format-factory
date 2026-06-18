@@ -169,7 +169,7 @@ class TestCircuitBreaker:
 
     def test_generator_version_updated(self):
         src = (_REPO / "tools" / "supervisor" / "autonomous_task_generator.py").read_text(encoding="utf-8")
-        assert '"generator_version": "1.2"' in src
+        assert '"generator_version": "1.3"' in src
 
     def test_zero_task_output_has_flag(self):
         src = (_REPO / "tools" / "supervisor" / "autonomous_task_generator.py").read_text(encoding="utf-8")

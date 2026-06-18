@@ -51,60 +51,65 @@ def run_loop(sprint_id: str, output_dir: Path) -> dict[str, Any]:
 
 
 def _collect_learnings(sprint_id: str) -> list[dict]:
-    """Deterministic learnings based on what was built this sprint."""
+    """Dynamic learnings from failure_memory — one entry per escalated unresolved failure."""
     ts = datetime.now(timezone.utc).isoformat()
-    return [
-        {
+    results: list[dict] = []
+    try:
+        import sys as _sys
+        _supervisor_dir = Path(__file__).resolve().parent
+        if str(_supervisor_dir) not in _sys.path:
+            _sys.path.insert(0, str(_supervisor_dir))
+        from failure_memory import FailureMemory, ESCALATION_THRESHOLD  # noqa: F401
+        fm = FailureMemory(repo_root=_REPO_ROOT)
+        escalated = fm.find_escalated()
+        for entry in escalated:
+            if entry.get("resolved"):
+                continue
+            gap_id = entry.get("gap_id", "")
+            count = entry.get("occurrence_count", 1)
+            category_raw = entry.get("category", "OTHER")
+            if "OVERCLAIM" in category_raw or "GRADING" in category_raw:
+                learn_cat = "false_positive"
+            elif "VALIDATION" in category_raw or "ARCHITECTURE" in category_raw:
+                learn_cat = "validator_issue"
+            elif "PROMPT" in category_raw or "SELECTION" in category_raw:
+                learn_cat = "prompt_confusion"
+            elif "PRODUCT" in category_raw or "IMPLEMENTATION" in category_raw:
+                learn_cat = "product_win"
+            else:
+                learn_cat = "slowdown"
+            recommended = (
+                f"Exclude gap_id={gap_id} from task selection (escalated, {count} occurrences)."
+                if gap_id
+                else f"Review failure {entry.get('id', '?')}: {entry.get('root_cause', '')[:80]}"
+            )
+            results.append({
+                "sprint_id": sprint_id,
+                "timestamp": ts,
+                "category": learn_cat,
+                "description": (
+                    f"Escalated failure [{entry.get('id', '?')}] category={category_raw}, "
+                    f"occurrences={count}: {entry.get('root_cause', '')[:120]}"
+                ),
+                "impacted_stream": "Supervisor",
+                "recommended_action": recommended,
+                "failure_id": entry.get("id", ""),
+                "gap_id": gap_id,
+                "authority_state": "ai_draft",
+                "archived_to_memory": False,
+            })
+    except Exception as _e:
+        results.append({
             "sprint_id": sprint_id,
             "timestamp": ts,
-            "category": "product_win",
-            "description": "Established AI cognitive layer: 8 tools built covering brain, sprint management, design, critique, learning, and packet generation.",
-            "impacted_stream": "Acceleration",
-            "recommended_action": "Maintain tool quality and expand patterns for new formats.",
+            "category": "slowdown",
+            "description": f"Could not load failure_memory for dynamic learnings: {_e}",
+            "impacted_stream": "Supervisor",
+            "recommended_action": "Check failure_memory.py import path in ai_learning_loop.py.",
             "authority_state": "ai_draft",
             "archived_to_memory": False,
-        },
-        {
-            "sprint_id": sprint_id,
-            "timestamp": ts,
-            "category": "useful_ai",
-            "description": "Live gateway (PROFESSIONALIZE_BASE_URL) confirmed available — AI calls were live, not fixture.",
-            "impacted_stream": "Acceleration",
-            "recommended_action": "Continue using live gateway for implementation designs and gap rankings.",
-            "authority_state": "ai_draft",
-            "archived_to_memory": False,
-        },
-        {
-            "sprint_id": sprint_id,
-            "timestamp": ts,
-            "category": "product_win",
-            "description": "Four Mainstream consumption packets produced covering FODS, FODT, Netpbm, SYLK — directly consumable by next Mainstream sprint.",
-            "impacted_stream": "Mainstream",
-            "recommended_action": "Mainstream sprint should consume packet designs for FODS dogfood CSV gap first.",
-            "authority_state": "ai_draft",
-            "archived_to_memory": False,
-        },
-        {
-            "sprint_id": sprint_id,
-            "timestamp": ts,
-            "category": "product_win",
-            "description": "External tool intake modeled: Ruflo/Superpowers/GhidraMCP risk registers and boundary docs created without installing any tool.",
-            "impacted_stream": "Acceleration",
-            "recommended_action": "Supervisor should review GhidraMCP gate before any binary analysis sprint.",
-            "authority_state": "ai_draft",
-            "archived_to_memory": False,
-        },
-        {
-            "sprint_id": sprint_id,
-            "timestamp": ts,
-            "category": "validator_issue",
-            "description": "Source pattern corpus is sparse for some formats (src/ has limited coverage for netpbm Python). Lexical scores low.",
-            "impacted_stream": "Acceleration",
-            "recommended_action": "Next sprint: expand src corpus indexing to include test files and example files.",
-            "authority_state": "ai_draft",
-            "archived_to_memory": False,
-        },
-    ]
+        })
+    return results
 
 
 def _gateway_learnings(sprint_id: str) -> list[dict]:

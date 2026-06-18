@@ -244,6 +244,59 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
               f"gaps={repair_result.get('gap_count', 0)} "
               f"status={repair_result.get('status', 'UNKNOWN')}")
 
+    # Step 0a (TC-SAL-REGEN-001): SAL regeneration trigger.
+    # Refreshes spec facts if sal-facts-latest.json is older than 7 days.
+    # Completely non-blocking: timeout or error logs and skips — never stops sprint.
+    print("=== STEP 0a: SAL REGENERATION CHECK ===")
+    try:
+        import subprocess as _sal_subprocess
+        import time as _sal_time
+        _sal_facts_path = repo_root / ".local" / "sal-output" / "sal-facts-latest.json"
+        _sal_stale_days = 7
+        _sal_is_stale = False
+        if _sal_facts_path.exists():
+            _sal_age_days = (_sal_time.time() - _sal_facts_path.stat().st_mtime) / 86400
+            _sal_is_stale = _sal_age_days > _sal_stale_days
+            print(f"  SAL facts age: {_sal_age_days:.1f} days "
+                  f"({'STALE — regenerating' if _sal_is_stale else 'fresh — skipping'})")
+        else:
+            _sal_is_stale = True
+            print("  SAL facts: not found — triggering regeneration")
+        if _sal_is_stale:
+            _sal_runner = repo_root / "tools" / "specification-authority-layer" / "sal_master_runner.py"
+            if _sal_runner.exists():
+                _sal_result = _sal_subprocess.run(
+                    ["python", str(_sal_runner), "--all"],
+                    cwd=str(repo_root),
+                    timeout=300,
+                    capture_output=True,
+                    text=True,
+                )
+                if _sal_result.returncode == 0:
+                    print("  SAL regeneration: SUCCESS — triggering capability map refresh")
+                    # Trigger capability map regeneration downstream
+                    _capmap = repo_root / "tools" / "capability_layer" / "capability_map_generator.py"
+                    if _capmap.exists():
+                        _cm_result = _sal_subprocess.run(
+                            ["python", str(_capmap)],
+                            cwd=str(repo_root),
+                            timeout=120,
+                            capture_output=True,
+                            text=True,
+                        )
+                        if _cm_result.returncode == 0:
+                            print("  Capability map refresh: SUCCESS")
+                        else:
+                            print(f"  WARNING: Capability map refresh failed (non-blocking): "
+                                  f"{_cm_result.stderr[:200]}")
+                else:
+                    print(f"  WARNING: SAL regeneration failed (non-blocking): "
+                          f"{_sal_result.stderr[:200]}")
+            else:
+                print("  SAL runner not found — skipping regeneration")
+    except Exception as _sal_exc:
+        print(f"  WARNING: SAL regeneration check skipped (non-blocking): {_sal_exc}")
+
     # Step 0b: Detect active per-chat plan lock
     plan_lock = None
     _plan_locks_dir = repo_root / ".local" / "supervisor" / "plan-locks"
@@ -419,6 +472,35 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
     else:
         print(f"  No REQUIREMENT/READINESS/RELEASE_GATE items in declaration — "
               f"requirements authority step skipped")
+
+    # Step 2d3: TC-GUARD-001 — Gap ledger trace check (WARN mode until 2026-07-18)
+    # Warns when PRODUCT_SOURCE items lack gap_ledger_ref or capability_ref.
+    # Escalates to a hard block after 2026-07-18. Non-blocking until then.
+    print("\n=== STEP 2d3: TC-GUARD-001 GAP LEDGER TRACE CHECK ===")
+    _guard001_date = datetime.strptime("2026-07-18", "%Y-%m-%d").date()
+    _guard001_today = datetime.now().date()
+    _guard001_blocking = _guard001_today >= _guard001_date
+    _guard001_items = [
+        item for item in decl.get("planned_work_items", [])
+        if item.get("item_type", "") in ("PRODUCT_SOURCE", "PRODUCT_TEST")
+    ]
+    _guard001_ungapped = [
+        item["item_id"] for item in _guard001_items
+        if not (
+            item.get("gap_ledger_ref")
+            or item.get("capability_ref")
+            or item.get("spec_fact_refs")
+        )
+    ]
+    if _guard001_ungapped:
+        _guard001_mode = "BLOCK" if _guard001_blocking else "WARN"
+        print(
+            f"  [{_guard001_mode}] TC-GUARD-001: {len(_guard001_ungapped)} PRODUCT_SOURCE/TEST "
+            f"item(s) have no gap_ledger_ref or capability_ref: {_guard001_ungapped}. "
+            f"{'Blocking continuation (escalation date passed).' if _guard001_blocking else 'WARN only until 2026-07-18. See plan keen-dancing-hopper.'}"
+        )
+    else:
+        print(f"  PASS: TC-GUARD-001 — all {len(_guard001_items)} PRODUCT_SOURCE/TEST items have gap tracing (or no such items)")
 
     # Step 2e: Governance validators (GRE-TC-002: wired into pipeline)
     print("\n=== STEP 2e: GOVERNANCE VALIDATORS ===")
@@ -1385,10 +1467,12 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
 
         # Read existing signal to preserve iteration count, then increment
         existing_iteration = 0
+        existing_rework_items: list = []  # TC-REPAIR-VERIFY-001: track prior structural GOV_BLOCKs
         if signal_path.exists():
             try:
                 existing = json.loads(signal_path.read_text(encoding="utf-8"))
                 existing_iteration = existing.get("iteration", 0)
+                existing_rework_items = existing.get("rework_items", [])
             except Exception:
                 pass
         existing_iteration += 1  # Each cycle run advances the counter
@@ -1413,6 +1497,75 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
         #   false           — hard stop (overclaim/reject/external gate)
         rework_items = review.get("rework_items", [])
         overclaimed = review.get("overclaimed_items", [])
+
+        # TC-REPAIR-VERIFY-001: Active post-repair GOV_BLOCK re-scan.
+        # If prior signal had structural GOV_BLOCK items and this sprint looks like
+        # a TC-HEAL analytics-separation sprint, run validate_source_architecture.py.
+        # Exit 0 → remove GOV_BLOCK items from rework_items; non-zero → annotate.
+        _tc_heal_sprint = (
+            "TC-HEAL" in sprint_id.upper()
+            or "analytics-separation" in sprint_id.lower()
+            or "analytics-heal" in sprint_id.lower()
+        )
+        if not _tc_heal_sprint:
+            _all_planned = decl.get("planned_work_items", [])
+            if _all_planned and all(
+                item.get("item_type") == "GOVERNANCE_TASKCARD" for item in _all_planned
+            ):
+                _tc_heal_sprint = True
+
+        _GOVBLOCK_PREFIXES = (
+            "GOV_BLOCK:monolith_detection_validator",
+            "GOV_BLOCK:validate_source_architecture",
+        )
+        _prior_structural_blocks = [
+            it for it in existing_rework_items
+            if any(it.startswith(p) or it == p for p in _GOVBLOCK_PREFIXES)
+        ]
+
+        if _tc_heal_sprint and _prior_structural_blocks:
+            _val_path = repo_root / "tools" / "validators" / "validate_source_architecture.py"
+            if _val_path.exists():
+                try:
+                    import subprocess as _sp
+                    _rescan = _sp.run(
+                        [sys.executable, str(_val_path), "--check-new-files"],
+                        capture_output=True, text=True, timeout=60,
+                    )
+                    if _rescan.returncode == 0:
+                        rework_items = [
+                            it for it in rework_items
+                            if not any(it.startswith(p) or it == p for p in _GOVBLOCK_PREFIXES)
+                        ]
+                        review["post_repair_rescan"] = {
+                            "status": "RESOLVED",
+                            "sprint_id": sprint_id,
+                            "resolved_prior_items": _prior_structural_blocks,
+                            "validator_exit_code": 0,
+                        }
+                        print(
+                            f"  TC-REPAIR-VERIFY-001: Post-repair re-scan PASSED — "
+                            f"{len(_prior_structural_blocks)} structural GOV_BLOCK(s) resolved"
+                        )
+                    else:
+                        rework_items = [
+                            (it + " [post_repair_rescan:STILL_FAILING]"
+                             if any(it.startswith(p) or it == p for p in _GOVBLOCK_PREFIXES)
+                             else it)
+                            for it in rework_items
+                        ]
+                        review["post_repair_rescan"] = {
+                            "status": "STILL_FAILING",
+                            "sprint_id": sprint_id,
+                            "validator_exit_code": _rescan.returncode,
+                            "validator_stderr": _rescan.stderr[:500],
+                        }
+                        print(
+                            f"  TC-REPAIR-VERIFY-001: Post-repair re-scan FAILED "
+                            f"(exit {_rescan.returncode}) — GOV_BLOCK items retained"
+                        )
+                except Exception as _rescan_err:
+                    print(f"  TC-REPAIR-VERIFY-001: Re-scan error (non-blocking): {_rescan_err}")
 
         # R98 fix: Check iteration >= max_iterations before allowing continuation
         at_max_iterations = existing_iteration >= max_iterations
@@ -1548,6 +1701,32 @@ def run_cycle(declaration_path: Path, repo_root: Path, track: str | None = None)
             signal["chat_id"] = _chat_id_value
         if rollover_note:
             signal["checkpoint_rollover"] = rollover_note
+
+        # TC-REPAIR-VERIFY-001: Auto-confirm post-repair GOV_BLOCK resolution.
+        # If the prior signal had structural GOV_BLOCK items but the current cycle's
+        # governance validators passed (no new structural blocks), mark as resolved.
+        # This removes the need for manual govblock_resolved_by setting after TC-HEAL.
+        _STRUCTURAL_GOV_VALIDATORS = {
+            "GOV_BLOCK:monolith_detection_validator",
+            "GOV_BLOCK:validate_source_architecture",
+        }
+        _prior_structural_blocks = [
+            item for item in existing_rework_items
+            if any(item.startswith(v) or item == v for v in _STRUCTURAL_GOV_VALIDATORS)
+        ]
+        _current_structural_blocks = [
+            item for item in rework_items
+            if any(item.startswith(v) or item == v for v in _STRUCTURAL_GOV_VALIDATORS)
+        ]
+        if _prior_structural_blocks and not _current_structural_blocks:
+            signal["govblock_resolved_by"] = (
+                f"post_repair_auto_verified:{sprint_id}"
+            )
+            print(
+                f"  TC-REPAIR-VERIFY-001: Structural GOV_BLOCK auto-resolved — "
+                f"prior blocks {_prior_structural_blocks} cleared by passing validators"
+            )
+
         atomic_write_json(signal_path, signal)
         # Also update legacy path for Track P (backward compat) — NOT for Track M (strict isolation)
         if _legacy_signal_path is not None:
