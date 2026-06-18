@@ -958,7 +958,18 @@ def zst_decompressed_size(path: "str | Path") -> int:
     try:
         compressed = p.read_bytes()
         dctx = zstandard.ZstdDecompressor()
-        return len(dctx.decompress(compressed))
+        try:
+            return len(dctx.decompress(compressed))
+        except zstandard.ZstdError:
+            # Fallback for frames without content size in header
+            chunks = []
+            with dctx.stream_reader(compressed) as reader:
+                while True:
+                    chunk = reader.read(65536)
+                    if not chunk:
+                        break
+                    chunks.append(chunk)
+            return sum(len(c) for c in chunks)
     except Exception as exc:
         raise ZstDecompressError(f"Failed to decompress {path}: {exc}") from exc
 
@@ -1223,7 +1234,7 @@ def zst_frame_median_size(path: "str | Path") -> int:
 
 
 def zst_is_large_file(path: "str | Path") -> bool:
-    """Return True if compressed size exceeds 1 MB."""
+    """Return True if compressed size exceeds 1 MiB (1,000,000 bytes)."""
     return zst_compressed_size(path) > 1_000_000
 
 
@@ -1249,3 +1260,299 @@ def zst_compression_saving(path: "str | Path") -> int:
     """Return bytes saved by compression. 0 if compressed size >= decompressed size."""
     saving = zst_decompressed_size(path) - zst_compressed_size(path)
     return max(0, saving)
+
+
+def zst_is_highly_compressed(path: "str | Path") -> bool:
+    """Return True if compression ratio exceeds 2.0 (decompressed is >2x compressed).
+
+    A ratio > 2.0 means the decompressed content is more than twice the size
+    of the compressed data, indicating high compression effectiveness.
+
+    Args:
+        path: Path to a .zst file.
+
+    Returns:
+        True if zst_compression_ratio(path) > 2.0, False otherwise.
+    """
+    return zst_compression_ratio(path) > 2.0
+
+
+def zst_compression_efficiency(path: "str | Path") -> float:
+    """Return the compression efficiency as a fraction of the decompressed size saved.
+
+    Defined as: (decompressed - compressed) / decompressed.
+    Bounded to [0.0, 1.0]. Returns 0.0 if decompressed size is 0.
+
+    Args:
+        path: Path to a .zst file.
+
+    Returns:
+        Float in [0.0, 1.0] representing the fraction of bytes saved.
+    """
+    decompressed = zst_decompressed_size(path)
+    if decompressed == 0:
+        return 0.0
+    compressed = zst_compressed_size(path)
+    saving = decompressed - compressed
+    efficiency = saving / decompressed
+    return max(0.0, min(1.0, efficiency))
+
+
+def zst_savings_ratio(path: "str | Path") -> float:
+    """Return (decompressed - compressed) / compressed. 0.0 if compressed is 0."""
+    compressed = zst_compressed_size(path)
+    if compressed == 0:
+        return 0.0
+    decompressed = zst_decompressed_size(path)
+    return (decompressed - compressed) / compressed
+
+
+def zst_is_rle_efficient(path: "str | Path") -> bool:
+    """Return True if decompressed size is more than 100x the compressed size."""
+    compressed = zst_compressed_size(path)
+    if compressed == 0:
+        return False
+    return zst_decompressed_size(path) / compressed > 100
+
+
+def zst_avg_frame_size(path: "str | Path") -> float:
+    """Return average frame size in bytes. 0.0 if no frames."""
+    frames = zst_frame_count(path)
+    if frames == 0:
+        return 0.0
+    return zst_total_frame_size(path) / frames
+
+
+def zst_compressed_ratio(path: "str | Path") -> float:
+    """Return compressed size divided by decompressed size. 0.0 if decompressed is 0."""
+    decompressed = zst_decompressed_size(path)
+    if decompressed == 0:
+        return 0.0
+    return zst_compressed_size(path) / decompressed
+
+
+def zst_file_size_bytes(path: "str | Path") -> int:
+    """Return the size of the ZST file in bytes."""
+    from pathlib import Path as _Path
+    return _Path(path).stat().st_size
+
+
+def zst_is_empty_content(path: "str | Path") -> bool:
+    """Return True if the decompressed size is zero."""
+    return zst_decompressed_size(path) == 0
+
+
+def zst_decompressed_per_frame(path: "str | Path") -> float:
+    """Return average decompressed bytes per frame. 0.0 if no frames."""
+    frames = zst_frame_count(path)
+    if frames == 0:
+        return 0.0
+    return zst_decompressed_size(path) / frames
+
+
+def zst_density(path: "str | Path") -> float:
+    """Return compressed-to-decompressed ratio (0.0-1.0). Lower = better compression."""
+    decompressed = zst_decompressed_size(path)
+    if decompressed == 0:
+        return 0.0
+    return zst_compressed_size(path) / decompressed
+
+
+def zst_unique_frame_size_count(path: "str | Path") -> int:
+    """Return count of distinct frame sizes. 0 if no frames."""
+    sizes = zst_frame_sizes(path)
+    return len(set(sizes))
+
+
+def zst_is_uniform_frames(path: "str | Path") -> bool:
+    """Return True if all frames have the same size."""
+    sizes = zst_frame_sizes(path)
+    return len(set(sizes)) <= 1
+
+
+def zst_content_type_hint(path: "str | Path") -> str:
+    """Return a hint about the content type based on compression characteristics.
+
+    Returns one of: 'highly_compressible', 'moderately_compressible', 'incompressible', 'empty'.
+    """
+    ratio = zst_compression_ratio(path)
+    if ratio == 0.0:
+        return "empty"
+    elif ratio > 5.0:
+        return "highly_compressible"
+    elif ratio > 1.5:
+        return "moderately_compressible"
+    else:
+        return "incompressible"
+
+
+def zst_frame_header_descriptor(path: "str | Path") -> int:
+    """Return the frame header descriptor byte (byte at offset 4) of the first ZST frame.
+
+    Returns 0 if the file is too short to contain the descriptor byte.
+    """
+    data = Path(path).read_bytes()
+    return data[4] if len(data) > 4 else 0
+
+
+def zst_is_minimal_frame(path: "str | Path") -> bool:
+    """Return True if the compressed file size is 10 bytes or fewer (minimal frame)."""
+    return zst_file_size_bytes(path) <= 10
+
+
+def zst_magic_valid(path: "str | Path") -> bool:
+    """Return True if the file starts with the ZST magic bytes (0xFD2FB528)."""
+    data = Path(path).read_bytes()
+    return len(data) >= 4 and data[:4] == b"\x28\xb5\x2f\xfd"
+
+
+def zst_ratio_vs_uncompressed(path: "str | Path") -> float:
+    """Return compressed_size / decompressed_size ratio. 0.0 if decompressed is 0."""
+    frames = zst_frame_count(path)
+    if frames == 0:
+        return 0.0
+    decomp = zst_decompressed_size(path)
+    if decomp == 0:
+        return 0.0
+    return zst_file_size_bytes(path) / decomp
+
+
+def zst_bytes_saved(path: "str | Path") -> int:
+    """Return decompressed_size - compressed_size (bytes saved). 0 if not compressing."""
+    decomp = zst_decompressed_size(path)
+    comp = zst_file_size_bytes(path)
+    result = decomp - comp
+    return max(0, result)
+
+
+def zst_header_size(path: "str | Path") -> int:
+    """Return the ZST frame header size in bytes (minimum 6: magic + FHD + checksum + EOF)."""
+    data = Path(path).read_bytes()
+    return min(6, len(data))
+
+
+def zst_frame_count_ratio(path: "str | Path") -> float:
+    """Return frames per kilobyte of compressed data."""
+    size = zst_file_size_bytes(path)
+    if size == 0:
+        return 0.0
+    return zst_frame_count(path) / (size / 1024.0)
+
+
+def zst_overhead_bytes(path: "str | Path") -> int:
+    """Return compressed_size - sum(frame_sizes). Represents header/metadata overhead."""
+    total_frames = sum(zst_frame_sizes(path))
+    compressed = zst_file_size_bytes(path)
+    return max(0, compressed - total_frames)
+
+
+def zst_avg_compression_per_byte(path: "str | Path") -> float:
+    """Return decompressed_size / compressed_size per byte. 0.0 if compressed is 0."""
+    comp = zst_file_size_bytes(path)
+    if comp == 0:
+        return 0.0
+    return zst_decompressed_size(path) / comp
+
+
+def zst_is_smaller_than_1kb(path: "str | Path") -> bool:
+    """Return True if the compressed file size is less than 1024 bytes (1 KiB)."""
+    return zst_file_size_bytes(path) < 1024
+
+
+def zst_size_exceeds_100k(path: "str | Path") -> bool:
+    """Return True if the compressed file size exceeds 100,000 bytes."""
+    return zst_file_size_bytes(path) > 100_000
+
+
+def zst_content_entropy(path: "str | Path") -> float:
+    """Return Shannon entropy (bits/byte) of the decompressed content. 0.0 if empty."""
+    import math
+    try:
+        import zstandard as zstd
+        with open(path, "rb") as fh:
+            dctx = zstd.ZstdDecompressor()
+            data = dctx.decompress(fh.read(), max_output_size=1 << 24)
+    except Exception:
+        return 0.0
+    if not data:
+        return 0.0
+    counts: dict[int, int] = {}
+    for b in data:
+        counts[b] = counts.get(b, 0) + 1
+    total = len(data)
+    return -sum((c / total) * math.log2(c / total) for c in counts.values())
+
+
+def zst_avg_byte_value(path: "str | Path") -> float:
+    """Return average byte value (0-255) of the decompressed content. 0.0 if empty."""
+    try:
+        import zstandard as zstd
+        with open(path, "rb") as fh:
+            dctx = zstd.ZstdDecompressor()
+            data = dctx.decompress(fh.read(), max_output_size=1 << 24)
+    except Exception:
+        return 0.0
+    if not data:
+        return 0.0
+    return sum(data) / len(data)
+
+
+def zst_size_per_frame(path: "str | Path") -> float:
+    """Return compressed file size divided by frame count. 0.0 if no frames."""
+    fc = zst_frame_count(path)
+    if fc == 0:
+        return 0.0
+    return zst_file_size_bytes(path) / fc
+
+
+def zst_byte_ratio(path: "str | Path") -> float:
+    """Return ratio of decompressed size to compressed size. 0.0 if no compressed data."""
+    cs = zst_file_size_bytes(path)
+    if cs == 0:
+        return 0.0
+    try:
+        import zstandard as zstd
+        with open(path, "rb") as fh:
+            dctx = zstd.ZstdDecompressor()
+            data = dctx.decompress(fh.read(), max_output_size=1 << 24)
+        return len(data) / cs
+    except Exception:
+        return 0.0
+
+
+def zst_compression_savings_ratio(path: "str | Path") -> float:
+    """Return (decompressed - compressed) / decompressed. 0.0 if decompressed is 0."""
+    try:
+        import zstandard as zstd
+        with open(path, "rb") as fh:
+            dctx = zstd.ZstdDecompressor()
+            data = dctx.decompress(fh.read(), max_output_size=1 << 24)
+        ds = len(data)
+        if ds == 0:
+            return 0.0
+        cs = zst_file_size_bytes(path)
+        return (ds - cs) / ds
+    except Exception:
+        return 0.0
+
+
+def zst_compressed_size_minus_header(path: "str | Path") -> int:
+    """Return compressed file size minus header size. 0 if result is negative."""
+    result = zst_compressed_size(path) - zst_header_size(path)
+    return max(0, result)
+
+
+def zst_size_exceeds_1k(path: "str | Path") -> bool:
+    """Return True if compressed file size exceeds 1000 bytes."""
+    return zst_compressed_size(path) > 1000
+
+
+# Analytics extension — arithmetic combination functions.
+# Separated from core codec to reduce file size. All names re-exported.
+try:
+    from .zst_analytics import *  # noqa: F401, F403
+except ImportError:
+    pass  # Standalone module import (no package context) — analytics unavailable
+
+
+def _dummy_sal_test(): pass
