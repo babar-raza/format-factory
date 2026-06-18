@@ -1,0 +1,95 @@
+# Track P Evidence Declaration Template
+# Use this as the starting point for all Track P (product deepening) sprint declarations.
+# Validate before submitting:
+#   python tools/supervisor/sprint_executor_validate.py <your-declaration.yaml> --repair
+# Submit via:
+#   python tools/supervisor/autonomous_cycle.py --declaration <your-declaration.yaml> --track product
+
+# --- Top-level identity fields ---
+run_id: sprint-NNN-<format>-deepening-YYYYMMDD          # unique; use kebab-case, include date
+sprint_id: sprint-NNN-<format>-deepening-YYYYMMDD       # typically same as run_id
+track: product
+worker_verdict: ACCEPTED                                 # or REWORK_REQUIRED if self-identified issues
+autonomous_continue: true
+
+# --- Evidence root (directory containing this file) ---
+evidence_root: .local/evidences/sprint-NNN-<format>-deepening-YYYYMMDD
+
+# --- Timing ---
+start_time: "2026-01-01T00:00:00Z"                      # ISO 8601, set to sprint start
+end_time: "2026-01-01T01:00:00Z"                        # ISO 8601, set to sprint end
+
+# --- Git state ---
+git_head_start: <40-char SHA at sprint start>           # git rev-parse HEAD (before changes)
+git_head_end: <40-char SHA at sprint end>               # git rev-parse HEAD (after commit)
+git_status_final: clean                                  # or "uncommitted changes" if any
+
+# --- Sprint scope ---
+declared_scope: "<Format> format deepening — N compound analytic functions"
+
+# --- Planned work items (must be objects with item_id, title, status) ---
+planned_work_items:
+  - item_id: <format>-fn-<descriptor>                   # e.g. xcf-fn-mod499-8400
+    title: "<Format> compound analytic: <formula description>"
+    status: completed                                    # completed | partial | not_started | blocked_external_gate
+
+# --- Completed item IDs (strings, not objects) ---
+completed_work_items:
+  - <format>-fn-<descriptor>
+
+# --- Incomplete item IDs (empty if all completed) ---
+incomplete_work_items: []
+
+# --- Changed files ---
+changed_files:
+  - src/python/<format>/<format>_parser.py
+  - src/python/<format>/__init__.py
+  - tests/python/deepening/test_rNNN_<format>_deepening.py
+
+# --- Test metrics ---
+tests_run: 10                                            # total test count (int)
+test_results:
+  passed: 10
+  failed: 0
+  skipped: 0
+  errors: 0
+
+# --- Evidence artifacts (objects with path and type) ---
+evidence_artifacts:
+  - path: tests/python/deepening/test_rNNN_<format>_deepening.py
+    type: test_file
+    description: "pytest test file with N tests for sprint deliverables"
+
+# --- Reports generated (empty list if none) ---
+reports_created: []
+
+# --- Worker self-assessment ---
+worker_self_verdict: ACCEPTED                            # ACCEPTED | REWORK_REQUIRED
+worker_self_grade: PASS                                  # PASS | PARTIAL | FAIL | BLOCKED
+
+# --- Next recommended work (empty list or array of strings) ---
+next_recommended_work: []
+
+# --- Work items (full detail, used for grading) ---
+work_items:
+  - item_id: <format>-fn-<descriptor>
+    group: G4                                            # G4 for FOSS Python format deepening
+    capability: <full_function_name>
+    format: <format>                                     # xcf | zst | fodg | fods | fodt | etc.
+    status: ACCEPTED
+    evidence_paths:
+      - src/python/<format>/<format>_parser.py
+      - src/python/<format>/__init__.py
+      - tests/python/deepening/test_rNNN_<format>_deepening.py
+    test_references:
+      - tests/python/deepening/test_rNNN_<format>_deepening.py::<TestClassName>
+    tests_passed: 5
+    tests_failed: 0
+
+# --- Summary ---
+summary:
+  total_tests_passed: 10
+  total_tests_failed: 0
+  new_functions: 2
+  formats_covered:
+    - <format>
