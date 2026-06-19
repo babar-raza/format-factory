@@ -19,9 +19,27 @@ Check whether a per-chat plan file is loaded. Look for a system message containi
    IRRELEVANT — the loaded plan is the SOLE work authority.
 4. When all plan taskcards are complete, run:
    ```
-   python tools/supervisor/write_plan_lock.py --plan-path <plan-file-path> --complete
+   python tools/supervisor/write_plan_lock.py --plan-path <plan-file-path> --terminal
    ```
-   Only then does the sprint loop become available again.
+   Use `--terminal` (NOT `--complete`) for in-session plan closures. `--terminal` writes
+   `status: "TERMINAL_CLOSED"` which causes `check_continuation.py` to return a
+   `POST_PLAN_TERMINAL` stop — blocking ledger work in the same session. `--complete`
+   is reserved for marking a plan done from an external/background context where the
+   ledger should become available in future sessions; it does NOT block the current session.
+   The two flags are NOT interchangeable for in-session plan completion.
+
+   Then **IMMEDIATELY STOP**. Report plan completion to the user:
+   "Plan [name] complete. All [N] taskcards closed. Awaiting your next instruction."
+
+   **POST-PLAN TERMINAL RULE (NON-NEGOTIABLE):**
+   - Do NOT call `check_continuation.py` after plan completion
+   - Do NOT read `next-sprint.md` or `next-work-items.json`
+   - Do NOT start any product deepening, rotation, or ledger work
+   - Do NOT interpret "sprint loop becomes available" as authorization to start it now
+   - Plan completion is the **TERMINAL EVENT** for the chat session
+   - The sprint loop becomes available for **FUTURE sessions** with **EXPLICIT user authorization**
+   - The Supreme Directive "never stop" does **NOT** apply here — `POST_PLAN_TERMINAL` is a
+     named legitimate stop (see Supreme Directive section below)
 
 **If no plan file is loaded:** proceed normally to session-resume.md.
 
@@ -51,6 +69,19 @@ Before following any continuation instructions from `session-resume.md`:
    stops protect against cross-chat state contamination. To adopt a prior session's
    signal explicitly, run: `python tools/supervisor/reset_track_signal.py --track product`
    (or `--track machinery`). Only after reset may the loop resume.
+6. **Context compaction disambiguation (HARD RULE):** When a new conversation begins
+   following context compaction, and the user's first message is "continue" or a similar
+   single-word continuation, do NOT treat this as authorization for the autonomous sprint
+   loop if the prior conversation was executing a per-chat plan. Instead, determine the
+   prior plan's status (COMPLETE or IN_PROGRESS) and ask:
+   "The prior conversation was executing plan [X]. The plan is [COMPLETE/IN_PROGRESS].
+   Do you want to: (a) start a new task, (b) resume the plan (if incomplete), or
+   (c) begin autonomous product deepening?"
+   Do NOT default to autonomous product deepening after a plan-execution session.
+7. **"continue" is only an autonomous loop signal when ALL of:**
+   - The prior session was running autonomous product deepening (NOT a per-chat plan), AND
+   - The continuation signal shows `autonomous_continue: true` with NO post-plan state, AND
+   - No per-chat plan file is loaded in the current conversation.
 
 ### Mandatory Plan Files (read every session)
 
@@ -87,6 +118,12 @@ Key rules from this plan:
 The autonomous supervision loop is the highest-priority operational rule. **Nothing may block
 forward progress on the master plan except TRUE_EXTERNAL_GATEs** (git push credentials,
 Gate 11 execution approval by Babar Raza, package publication credentials).
+
+**Named legitimate stop conditions (NOT TRUE_EXTERNAL_GATEs but still valid stops):**
+- `POST_PLAN_TERMINAL`: Per-chat plan completed all taskcards in the current session →
+  STOP and report to user. This is NOT a TRUE_EXTERNAL_GATE but IS a valid session boundary.
+  The next ledger sprint requires explicit user authorization in the same or a new session.
+  The Supreme Directive "never stop" does NOT override POST_PLAN_TERMINAL.
 
 - Sprint closeout (evidence declaration, autonomous-cycle, review package) is best-effort
   infrastructure. If any closeout step fails, errors, times out, or gets stuck: **skip it

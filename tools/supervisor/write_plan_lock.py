@@ -9,6 +9,13 @@ Two lock mechanisms are written simultaneously:
 Both are consumed by check_continuation.py (Check 1b) which returns
 ACTIVE_PLAN_INCOMPLETE and blocks the sprint loop until the plan is closed.
 
+Status values:
+  IN_PROGRESS    — Plan is active; sprint loop is blocked.
+  COMPLETE       — Plan done; sprint loop available in FUTURE sessions.
+  TERMINAL_CLOSED — Plan done THIS session; sprint loop also blocked for this session.
+                   Use --terminal (not --complete) when closing a plan within the session
+                   that executed it, to prevent the ledger from starting automatically.
+
 Usage:
   # Mark a plan as active (blocks sprint loop):
   python tools/supervisor/write_plan_lock.py --plan-path plans/polished-giggling-tome.md
@@ -16,8 +23,11 @@ Usage:
   # Update last completed taskcard:
   python tools/supervisor/write_plan_lock.py --plan-path plans/foo.md --last-taskcard Phase-3-complete
 
-  # Mark the plan as complete (unblocks sprint loop):
+  # Mark the plan as complete (unblocks sprint loop in future sessions):
   python tools/supervisor/write_plan_lock.py --plan-path plans/foo.md --complete
+
+  # Mark the plan as terminal-closed (blocks ledger in this session too):
+  python tools/supervisor/write_plan_lock.py --plan-path plans/foo.md --terminal
 
   # Clear all lock files (emergency reset):
   python tools/supervisor/write_plan_lock.py --clear
@@ -51,8 +61,8 @@ def _get_session_id() -> str:
 
 
 def write_lock(plan_path: str, last_taskcard: str | None = None, complete: bool = False,
-               session_id: str | None = None) -> None:
-    status = "COMPLETE" if complete else "IN_PROGRESS"
+               terminal: bool = False, session_id: str | None = None) -> None:
+    status = "TERMINAL_CLOSED" if terminal else ("COMPLETE" if complete else "IN_PROGRESS")
     lock = {
         "plan_path": plan_path,
         "status": status,
@@ -100,7 +110,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--last-taskcard", type=str, default=None,
                         help="Last completed taskcard/phase ID (for progress tracking)")
     parser.add_argument("--complete", action="store_true",
-                        help="Mark the plan as COMPLETE, unblocking the sprint loop")
+                        help="Mark the plan as COMPLETE, unblocking the sprint loop for future sessions")
+    parser.add_argument("--terminal", action="store_true",
+                        help="Mark the plan as TERMINAL_CLOSED: done this session; "
+                             "blocks ledger work in this session (POST_PLAN_TERMINAL stop)")
     parser.add_argument("--clear", action="store_true",
                         help="Delete the lock file entirely (emergency reset)")
     args = parser.parse_args(argv)
@@ -113,7 +126,8 @@ def main(argv: list[str] | None = None) -> int:
         print("ERROR: --plan-path is required unless --clear is given", file=sys.stderr)
         return 1
 
-    write_lock(args.plan_path, last_taskcard=args.last_taskcard, complete=args.complete)
+    write_lock(args.plan_path, last_taskcard=args.last_taskcard,
+               complete=args.complete, terminal=args.terminal)
     return 0
 
 

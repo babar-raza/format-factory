@@ -162,6 +162,19 @@ def check(repo_root: Path, *, session_id: str | None = None,
                 max_iterations=signal.get("max_iterations", 5),
             )
 
+        # --- Stale lock expiry (M7): skip locks older than 7 days ---
+        try:
+            from datetime import datetime as _dt, timezone as _tz
+            _updated_at = plan_lock.get("updated_at", "")
+            if _updated_at:
+                _lock_age_hours = (
+                    _dt.now(_tz.utc) - _dt.fromisoformat(_updated_at)
+                ).total_seconds() / 3600
+                if _lock_age_hours > 168:  # 7 days
+                    continue  # Stale lock — skip silently
+        except Exception:
+            pass  # If date parsing fails, do not skip (fail-safe)
+
         # --- Session-scoped lock filtering (TC-P1-005 / REQ-PLK-003, REQ-PLK-004) ---
         lock_session_id = plan_lock.get("session_id")
         if lock_session_id and session_id and lock_session_id != session_id:
@@ -174,6 +187,25 @@ def check(repo_root: Path, *, session_id: str | None = None,
         lock_track = plan_lock.get("track_type")
         if lock_track and track and lock_track != track:
             continue  # This lock belongs to a different track — skip it
+
+        # --- M6: TERMINAL_CLOSED detection (POST_PLAN_TERMINAL) ---
+        # TERMINAL_CLOSED = plan completed in this session; ledger must NOT start.
+        # This is a NON-OVERRIDABLE stop — same class as SESSION_MISMATCH and CHAT_ID_MISMATCH.
+        if plan_lock.get("status") == "TERMINAL_CLOSED":
+            return _stop(
+                "POST_PLAN_TERMINAL",
+                (
+                    f"Per-chat plan was marked TERMINAL_CLOSED in this session: "
+                    f"plan={plan_lock.get('plan_path', 'unknown')!r}. "
+                    "Plan completion is a terminal event for the current session. "
+                    "No ledger or product deepening work may start automatically. "
+                    "Start a new conversation or provide explicit user authorization "
+                    "for ledger work."
+                ),
+                iteration=signal.get("iteration", 0),
+                max_iterations=signal.get("max_iterations", 5),
+                active_plan_path=plan_lock.get("plan_path"),
+            )
 
         if plan_lock.get("status") != "COMPLETE":
             return _stop(
