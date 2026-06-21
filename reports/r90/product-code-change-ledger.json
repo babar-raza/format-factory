@@ -17355,7 +17355,43 @@
         }
       ],
       "rollback": "Remove test_dogfood_fodt_text_analytics_ndjson_export.py and this ledger entry"
+    },
+    {
+      "entry_id": "R90-FODT-TEXT-CHAR-ANALYTICS-TEST-001",
+      "classification": "GOVERNED_PRODUCT_CHANGE",
+      "sprint_id": "autonomous-loop-20260621-205610-827f5a52",
+      "product": "FODT Python FOSS",
+      "skill_id": "add-analytics-function",
+      "format": "FODT",
+      "source_format_id": "fodt",
+      "gap_ledger_ref": "GAP-FODT-FOSS-FODT_LOWERCA-001",
+      "capability_refs": [
+        "foss_reduced_products.FODT.text_analytics.char_analytics"
+      ],
+      "api_symbols": [
+        "fodt_lowercase_ratio",
+        "fodt_digit_count",
+        "fodt_numeric_word_count"
+      ],
+      "api_behavior": "Test coverage for 3 FODT text character analytics. Closes GAP-FODT-FOSS-FODT_LOWERCA-001, FODT_DIGIT_C-001, FODT_NUMERIC-001.",
+      "changed_files": [
+        "tests/python/fodt/test_r131_fodt_text_char_analytics.py"
+      ],
+      "test_files": [
+        "tests/python/fodt/test_r131_fodt_text_char_analytics.py"
+      ],
+      "test_count": 15,
+      "validation_command": ".venv/Scripts/pytest tests/python/fodt/test_r131_fodt_text_char_analytics.py -v",
+      "validation_result": "15/15 PASS",
+      "source_files": [
+        {
+          "path": "tests/python/fodt/test_r131_fodt_text_char_analytics.py",
+          "state": "present",
+          "sha256": "unknown"
+        }
+      ],
+      "rollback": "Remove test_r131_fodt_text_char_analytics.py and this entry"
     }
   ],
-  "total_entries": 856
+  "total_entries": 949
 }
