@@ -104,6 +104,15 @@ desktop.ini
 # Do not add binary sample files without an LFS policy entry.
 
 # ============================================================
+# PIP EDITABLE-INSTALL ARTIFACTS (nested package copies)
+# When packages under src/python/ are installed with pip install -e,
+# pip may create a copy of the package inside its own directory.
+# Example: src/python/fods/fods/fods/ is a copy of src/python/fods/fods/
+# These are build artifacts and must NOT be committed.
+# ============================================================
+src/python/fods/fods/fods/
+
+# ============================================================
 # IN-PROGRESS SPRINT ARTIFACTS (untracked, not yet committed)
 # ============================================================
 
