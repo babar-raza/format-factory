@@ -1,0 +1,71 @@
+# QName Registry Schema
+# Each entry in a <format>.yaml registry file must conform to this schema.
+# Fields marked required: MUST be present. Optional fields may be null or absent.
+#
+# Status lifecycle: seeded -> architecture_only -> implementing -> implemented -> stable -> deprecated
+# Source layer: where the class lives in the target architecture
+
+type: array
+items:
+  type: object
+  required:
+    - qname
+    - namespace_uri
+    - local_name
+    - canonical_class
+    - spec_fact_ref
+    - status
+    - source_layer
+  properties:
+    qname:
+      type: string
+      description: "Fully qualified name with prefix, e.g. 'table:table-cell'"
+    namespace_uri:
+      type: string
+      description: "Full namespace URI, e.g. 'urn:oasis:names:tc:opendocument:xmlns:table:1.0'"
+    local_name:
+      type: string
+      description: "Local element/attribute name, e.g. 'table-cell'"
+    canonical_class:
+      type: string
+      description: "Target canonical class name in dot notation, e.g. 'Table.TableCell'"
+    spec_fact_ref:
+      type: string
+      description: "Reference to SAL context pack fact, e.g. 'FACT-FODT-003'"
+    status:
+      type: string
+      enum:
+        - seeded
+        - architecture_only
+        - implementing
+        - implemented
+        - stable
+        - deprecated
+      description: "Migration status of this registry entry"
+    source_layer:
+      type: string
+      enum:
+        - Spec
+        - Public
+        - Compat
+        - Reading
+        - Writing
+        - Validation
+        - Conversion
+        - Internal
+      description: "Target architecture layer where the canonical class lives"
+    facade_names:
+      type: array
+      items:
+        type: string
+      description: "Existing legacy class names that map to this canonical class"
+    python_file:
+      type:
+        - string
+        - "null"
+      description: "Relative path to the Python spec stub file, or null if Python has no equivalent"
+    dotnet_file:
+      type:
+        - string
+        - "null"
+      description: "Relative path to the .NET spec stub file, or null if .NET has no equivalent"

@@ -1,0 +1,103 @@
+# FODT QName Registry — seeded from SAL context pack (fodt-context-pack.json)
+# FACT-FODT-001 through FACT-FODT-007 verified present in context pack.
+# office:body has python_file: null — Python represents body through FodtDocument (public facade), not a spec class.
+# Status advanced to architecture_only (2026-06-20) after generate_canonical_stubs.py created all spec/ stubs.
+
+- qname: "office:body"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+  local_name: "body"
+  canonical_class: "Office.Body"
+  spec_fact_ref: "FACT-FODT-002"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: ["FodtBody (.NET only)"]
+  python_file: null
+  dotnet_file: "src/net/fodt/Spec/Office/Body.cs"
+
+- qname: "text:p"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  local_name: "p"
+  canonical_class: "Text.Paragraph"
+  spec_fact_ref: "FACT-FODT-003"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: ["FodtParagraph"]
+  python_file: "src/python/fodt/spec/text/paragraph.py"
+  dotnet_file: "src/net/fodt/Spec/Text/Paragraph.cs"
+
+- qname: "text:h"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  local_name: "h"
+  canonical_class: "Text.Heading"
+  spec_fact_ref: "FACT-FODT-004"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: "src/python/fodt/spec/text/heading.py"
+  dotnet_file: "src/net/fodt/Spec/Text/Heading.cs"
+
+- qname: "text:span"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  local_name: "span"
+  canonical_class: "Text.Span"
+  spec_fact_ref: "FACT-FODT-006"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: ["FodtSpan"]
+  python_file: "src/python/fodt/spec/text/span.py"
+  dotnet_file: "src/net/fodt/Spec/Text/Span.cs"
+
+- qname: "text:list"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  local_name: "list"
+  canonical_class: "Text.List"
+  spec_fact_ref: "FACT-FODT-005"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: "src/python/fodt/spec/text/list_.py"
+  dotnet_file: "src/net/fodt/Spec/Text/List.cs"
+
+- qname: "text:list-item"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  local_name: "list-item"
+  canonical_class: "Text.ListItem"
+  spec_fact_ref: "FACT-FODT-005"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: "src/python/fodt/spec/text/list_item.py"
+  dotnet_file: "src/net/fodt/Spec/Text/ListItem.cs"
+
+- qname: "table:table"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  local_name: "table"
+  canonical_class: "Table.Table"
+  spec_fact_ref: "FACT-FODT-007"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: "src/python/fodt/spec/table/table.py"
+  dotnet_file: "src/net/fodt/Spec/Table/Table.cs"
+
+- qname: "table:table-row"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  local_name: "table-row"
+  canonical_class: "Table.TableRow"
+  spec_fact_ref: "FACT-FODT-007"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: "src/python/fodt/spec/table/table_row.py"
+  dotnet_file: "src/net/fodt/Spec/Table/TableRow.cs"
+
+- qname: "table:table-cell"
+  namespace_uri: "urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  local_name: "table-cell"
+  canonical_class: "Table.TableCell"
+  spec_fact_ref: "FACT-FODT-007"
+  status: "architecture_only"
+  source_layer: "Spec"
+  facade_names: []
+  python_file: "src/python/fodt/spec/table/table_cell.py"
+  dotnet_file: "src/net/fodt/Spec/Table/TableCell.cs"
