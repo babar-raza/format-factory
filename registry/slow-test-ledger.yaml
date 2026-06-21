@@ -210,3 +210,17 @@ summary:
     - "test_r107 transcript enrichment tests (4 tests, ~32s total) — LLM pipeline mocking could reduce"
     - "test_r76_gate8_readiness oversized file test (1.43s) — smaller test file could help"
   note: "99.9% of tests complete in <0.04s. Only 5 tests exceed 1s, all in supervisor/ods."
+
+# Environment-dependent and flaky tests (not slow, but tracked here for consolidation)
+# Added: sprint format-factory-fullsuite-layering-20260618-001 (2026-06-18)
+flaky_tests:
+  - test_id: "tests/evidence/test_auto_proof_bundle.py"
+    category: "environment_dependent"
+    root_cause: >
+      Requires clean git working tree. Fails when repo has uncommitted changes (dirty state).
+      Not a true flaky test — the failure is deterministic given dirty state.
+    mitigation: "--no-state flag on pytest command skips state_dependent-marked tests"
+    owner: "governance"
+    expiry_date: "2026-12-31"
+    fix_strategy: "Use --no-state in all dirty-repo runs. Fix by committing/stashing changes before L3."
+    quarantine_marker: false
