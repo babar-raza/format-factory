@@ -1,0 +1,146 @@
+version: 1
+captured_date: "2026-06-18"
+environment: "Windows 11, Python 3.13.2, pytest-8.4.2"
+
+failures:
+  - test_id: "tests/test_layer_assignment.py::test_layer0_contains_health_check"
+    failure_class: "state_dependent"
+    failure_reason: >
+      Runs subprocess to collect layer0 tests. Collection spans >20s on large repo
+      with 32k+ tests. Times out when pytest collection touches arithmetic deepening
+      test files (1,012 files). Fixed by using --skip-arithmetic or --ignore=tests/python/deepening.
+    first_observed: "2026-06-18"
+    owner_lane: "test-infrastructure"
+    suppress_until: null
+    workaround: "Run tests/test_layer_assignment.py with --skip-arithmetic flag added to venv pytest"
+
+  - test_id: "tests/evidence/test_auto_proof_bundle.py::test_build_bundle_unchanged_without_auto_proof"
+    failure_class: "environment_specific"
+    failure_reason: >
+      Builds a ZIP archive of large evidence directory. os.stat() call times out at 15-20s
+      on OneDrive-backed directories. Environment-specific to OneDrive sync delay.
+    first_observed: "2026-06-18"
+    owner_lane: "evidence-infrastructure"
+    suppress_until: null
+    workaround: "Run with --timeout=120 or exclude with --ignore=tests/evidence/test_auto_proof_bundle.py"
+
+  - test_id: "tests/supervisor/test_llm_semantic_verification.py::TestSemanticVerifyItem::test_fallback_never_downgrades"
+    failure_class: "flaky_ordering_dependent"
+    failure_reason: >
+      Pydantic serialization state from LLM mock bleeds between test modules when the full suite
+      runs in certain orderings. Passes in isolation. Caused by PydanticSerializationUnexpectedValue
+      warnings from shared mock objects. Not a logic failure.
+    first_observed: "2026-06-18"
+    owner_lane: "supervisor"
+    suppress_until: null
+    workaround: "Run in isolation: pytest tests/supervisor/test_llm_semantic_verification.py -k test_fallback_never_downgrades"
+
+skipped:
+  - test_id: "tests/evidence/test_r46_timeout_portability.py::*"
+    skip_reason: "zstandard library not installed in base Python 3.13; installed in venv only"
+    skip_class: "optional_dependency"
+
+collection_errors:
+  description: >
+    Collection errors (ImportError) occur when test files reference functions not yet
+    implemented. These are NOT failures — they are gap tests. Known formats with
+    collection errors: csv (~32), tsv (~31), abw, dif, sylk (gap tests for unimplemented analytics),
+    and fodt-named deepening files (~107, catalogued 2026-06-20 by TC-HARD-008).
+    Use --continue-on-collection-errors to run remaining tests despite collection errors.
+  not_failures: true
+
+  fodt_deepening_collection_errors:
+    catalogued_date: "2026-06-20"
+    catalogued_by: "TC-HARD-008 (concurrent-honking-salamander.md)"
+    count: 107
+    failure_class: "pre_existing_import_error"
+    pre_existing: true
+    resolution: "delete or skip until FODT/FODS/PBM/ODS deepening rotation resumes with spec backing"
+    reason: >
+      107 deepening test files with 'fodt', 'fods_fodt', or 'pbm_pgm_fodp_fodt' in their name
+      have ImportError on collection. These reference functions from suspended arithmetic
+      deepening rotation (e.g. fods_total_text_length, pbm_border_density, fodt_*_mod_*_times_*)
+      that were never implemented because the rotation was suspended (keen-dancing-hopper).
+      These are NOT regression failures — they pre-date the concurrent-honking-salamander plan.
+    affected_file_patterns:
+      - "tests/python/deepening/test_r*_pbm_pgm_fodp_fodt_deepening.py"
+      - "tests/python/deepening/test_r*_fods_fodt_*.py"
+      - "tests/python/deepening/test_r*_fods_fodt_gnumeric_deepening.py"
+    sample_files:
+      - tests/python/deepening/test_r319_pbm_pgm_fodp_fodt_deepening.py
+      - tests/python/deepening/test_r323_pbm_pgm_fodp_fodt_deepening.py
+      - tests/python/deepening/test_r327_pbm_pgm_fodp_fodt_deepening.py
+      - tests/python/deepening/test_r335_pbm_pgm_fodp_fodt_deepening.py
+      - tests/python/deepening/test_r339_pbm_pgm_fodp_fodt_deepening.py
+      - tests/python/deepening/test_r420_fods_fodt_gnumeric_deepening.py
+      - tests/python/deepening/test_r425_fods_fodt_ods_odt_fodp_deepening.py
+      - tests/python/deepening/test_r429_fods_fodt_ods_odt_fodp_deepening.py
+      - tests/python/deepening/test_r433_fods_fodt_ods_odt_fodp_deepening.py
+      - tests/python/deepening/test_r437_fods_fodt_ods_odt_fodp_deepening.py
+    sample_missing_functions:
+      - "fods_total_text_length (from src.python.fods.neutral_model)"
+      - "pbm_border_density (from src.python.pbm.pbm_parser)"
+      - "ods_string_column_count (from src.python.ods.ods_parser)"
+    workaround: >
+      Run with --continue-on-collection-errors flag or explicitly exclude deepening tests:
+      .venv/Scripts/pytest tests/python/fodt/ --continue-on-collection-errors -v   (existing FODT tests pass)
+      .venv/Scripts/pytest tests/python/deepening/ --continue-on-collection-errors (skips broken imports)
+
+  fodt_format_dir_collection_errors:
+    catalogued_date: "2026-06-20"
+    catalogued_by: "TC-HARD-008 (concurrent-honking-salamander.md)"
+    count: 30
+    failure_class: "pre_existing_import_error"
+    pre_existing: true
+    location: "tests/python/fodt/"
+    resolution: "delete or skip until FODT analytics rotation resumes with spec backing"
+    reason: >
+      30 test files in tests/python/fodt/ have ImportError on collection. These reference
+      analytics functions (e.g. fodt_inline_count, fodt_max_block_word_count, fodt_vowel_count)
+      that were planned in the arithmetic analytics rotation but never implemented before the
+      rotation was suspended (keen-dancing-hopper). These are NOT regression failures —
+      they pre-date the concurrent-honking-salamander plan. The existing core FODT tests
+      (parser, analytics stubs, spec stubs, compat bootstrap) all pass.
+    affected_files:
+      - tests/python/fodt/test_r233_fodt_sprint135_gaps.py
+      - tests/python/fodt/test_r258_fodt_inline_count.py
+      - tests/python/fodt/test_r259_fodt_max_block_word_count.py
+      - tests/python/fodt/test_r260_fodt_sprint41_gaps.py
+      - tests/python/fodt/test_r261_fodt_sprint41_batch2.py
+      - tests/python/fodt/test_r262_fodt_sprint45_gaps.py
+      - tests/python/fodt/test_r263_fodt_sprint45_batch2.py
+      - tests/python/fodt/test_r264_fodt_sprint46_gaps.py
+      - tests/python/fodt/test_r265_fodt_sprint47_gaps.py
+      - tests/python/fodt/test_r266_fodt_sprint52_gaps.py
+      - tests/python/fodt/test_r267_fodt_sprint53_gaps.py
+      - tests/python/fodt/test_r268_fodt_sprint56_gaps.py
+      - tests/python/fodt/test_r269_fodt_sprint57_gaps.py
+      - tests/python/fodt/test_r270_fodt_sprint57_gaps.py
+      - tests/python/fodt/test_r271_fodt_sprint61_gaps.py
+      - tests/python/fodt/test_r286_fodt_gap_closure.py
+      - tests/python/fodt/test_r286_fodt_has_multiple_block_types_punctuation_density.py
+      - tests/python/fodt/test_r290g_fodt_analytics_deepening.py
+      - tests/python/fodt/test_r290l_fodt_analytics_deepening.py
+      - tests/python/fodt/test_r294_fodt_all_words_unique_has_more_words_than_unique.py
+      - tests/python/fodt/test_r294_fodt_char_analytics.py
+      - tests/python/fodt/test_r300_fodt_uppercase_ratio_min_block_text_length.py
+      - tests/python/fodt/test_r301_fodt_new_analytics.py
+      - tests/python/fodt/test_r306_fodt_content_flags.py
+      - tests/python/fodt/test_r306_fodt_vowel_count_space_count.py
+      - tests/python/fodt/test_r315_fodt_avg_word_count_per_paragraph_word_density.py
+      - tests/python/fodt/test_r320_fodt_new_analytics.py
+      - tests/python/fodt/test_r338_fodt_new_analytics.py
+      - tests/python/fodt/test_r356_fodt_new_analytics.py
+      - tests/python/fodt/test_r374_fodt_new_analytics.py
+    workaround: >
+      Run with --continue-on-collection-errors to skip broken imports and run passing tests:
+      .venv/Scripts/pytest tests/python/fodt/ --continue-on-collection-errors -q
+
+advisory:
+  - note: >
+      tests/supervisor/ tests that import litellm may time out if SSL context creation
+      is slow (observed: ssl.create_default_context with cafile on Windows takes 10-15s).
+      Use --timeout=30 or more for supervisor tests that exercise litellm-dependent code paths.
+  - note: >
+      The arithmetic deepening test suite (registry/arithmetic-deepening-tests.txt) contains
+      ~1,009 test files with no spec backing. Use --skip-arithmetic to exclude from routine validation.
